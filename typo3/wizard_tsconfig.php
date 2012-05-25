@@ -111,7 +111,7 @@ class SC_wizard_tsconfig {
 	 */
 	function init() {
 			// Check if the tsconfig_help extension is loaded - which is mandatory for this wizard to work.
-		t3lib_extMgm::isLoaded('tsconfig_help',1);
+		t3lib_extMgm::isLoaded('tsconfig_help', 1);
 
 			// Init GPvars:
 		$this->P = t3lib_div::_GP('P');
@@ -231,7 +231,7 @@ class SC_wizard_tsconfig {
 				while (pos!=-1) {
 					output+=""+input.substr(pointer, pos-pointer)+replace;
 					pointer=pos+matchStr.length;
-					pos = input.indexOf(match,pos+1);
+					pos = input.indexOf(match, pos+1);
 				}
 				output+=""+input.substr(pointer);
 				return output;
@@ -243,8 +243,8 @@ class SC_wizard_tsconfig {
 	 * @param	[type]		$show,objString: ...
 	 * @return	[type]		...
 	 */
-			function jump(show,objString) {
-				window.location.href = "'.t3lib_div::linkThisScript(array('show'=>'','objString'=>'')).'&show="+show+"&objString="+objString;
+			function jump(show, objString) {
+				window.location.href = "'.t3lib_div::linkThisScript(array('show'=>'', 'objString'=>'')).'&show="+show+"&objString="+objString;
 			}
 		');
 
@@ -260,18 +260,18 @@ class SC_wizard_tsconfig {
 	 */
 	function main() {
 			// Adding module content:
-		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tsprop'),$this->browseTSprop($this->mode,$this->show),0,1);
+		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tsprop'), $this->browseTSprop($this->mode, $this->show), 0, 1);
 
 			// Adding link to TSref:
 		if ($this->mode=='tsref') {
 			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tsprop_TSref'),'
-			<a href="'. TYPO3_URL_DOCUMENTATION_TSREF.'" target="_blank">'.$GLOBALS['LANG']->getLL('tsprop_TSref',1).'</a>
+			<a href="'. TYPO3_URL_DOCUMENTATION_TSREF.'" target="_blank">'.$GLOBALS['LANG']->getLL('tsprop_TSref', 1).'</a>
 			',0,1);
 		}
 			// Adding link to admin guides etc:
 		if ($this->mode=='page' || $this->mode=='beuser') {
 			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tsprop_tsconfig'),'
-			<a href="' . TYPO3_URL_DOCUMENTATION_TSCONFIG . '" target="_blank">' . $GLOBALS['LANG']->getLL('tsprop_tsconfig',1) . '</a>
+			<a href="' . TYPO3_URL_DOCUMENTATION_TSCONFIG . '" target="_blank">' . $GLOBALS['LANG']->getLL('tsprop_tsconfig', 1) . '</a>
 			',0,1);
 		}
 	}
@@ -294,7 +294,7 @@ class SC_wizard_tsconfig {
 	 * @param	integer		Pointing to an entry in static_tsconfig_help to show.
 	 * @return	string		HTML
 	 */
-	function browseTSprop($mode,$show) {
+	function browseTSprop($mode, $show) {
 			// Get object tree:
 		$objTree = $this->getObjTree();
 
@@ -305,7 +305,7 @@ class SC_wizard_tsconfig {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'static_tsconfig_help', 'uid='.intval($show));
 			$rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$table = unserialize($rec['appdata']);
-			$obj_string = strtr($this->objString,'()','[]');	// Title:
+			$obj_string = strtr($this->objString, '()', '[]');	// Title:
 
 				// Title and description:
 			$out.='<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>''))).'" class="typo3-goBack">'.
@@ -322,12 +322,12 @@ class SC_wizard_tsconfig {
 				// Printing the "mixer-field":
 			if (!$this->onlyProperty) {
 				$links=array();
-				$links[]='<a href="#" onclick="mixerField(\'Indent\');return false;">'.$GLOBALS['LANG']->getLL('tsprop_mixer_indent',1).'</a>';
-				$links[]='<a href="#" onclick="mixerField(\'Outdent\');return false;">'.$GLOBALS['LANG']->getLL('tsprop_mixer_outdent',1).'</a>';
-				$links[]='<a href="#" onclick="mixerField(\'Wrap\',unescape(\''.rawurlencode($obj_string).'\'));return false;">'.$GLOBALS['LANG']->getLL('tsprop_mixer_wrap',1).'</a>';
-				$links[]='<a href="#" onclick="mixerField(\'Transfer\');return false;">'.$GLOBALS['LANG']->getLL('tsprop_mixer_transfer',1).'</a>';
-				$out.='<textarea rows="5" name="mixer" wrap="off"'.$this->doc->formWidthText(48,'','off').' class="fixed-font enable-tab"></textarea>';
-				$out.='<br /><strong>'.implode('&nbsp; | &nbsp;',$links).'</strong>';
+				$links[]='<a href="#" onclick="mixerField(\'Indent\');return false;">'.$GLOBALS['LANG']->getLL('tsprop_mixer_indent', 1).'</a>';
+				$links[]='<a href="#" onclick="mixerField(\'Outdent\');return false;">'.$GLOBALS['LANG']->getLL('tsprop_mixer_outdent', 1).'</a>';
+				$links[]='<a href="#" onclick="mixerField(\'Wrap\',unescape(\''.rawurlencode($obj_string).'\'));return false;">'.$GLOBALS['LANG']->getLL('tsprop_mixer_wrap', 1).'</a>';
+				$links[]='<a href="#" onclick="mixerField(\'Transfer\');return false;">'.$GLOBALS['LANG']->getLL('tsprop_mixer_transfer', 1).'</a>';
+				$out.='<textarea rows="5" name="mixer" wrap="off"'.$this->doc->formWidthText(48, '', 'off').' class="fixed-font enable-tab"></textarea>';
+				$out.='<br /><strong>'.implode('&nbsp; | &nbsp;', $links).'</strong>';
 				$out.='<hr />';
 			}
 		}
@@ -353,7 +353,7 @@ class SC_wizard_tsconfig {
 				<table border="0" cellpadding="0" cellspacing="0" class="t3-tree t3-tree-config" id="typo3-objtree">
 					<tr class="t3-row-header"><td>TSref</td></tr>
 					<tr>
-						<td nowrap="nowrap">'.$tmpl->ext_getObjTree($this->removePointerObjects($objTree[$mode.'.']),'','','','','1').'</td>
+						<td nowrap="nowrap">'.$tmpl->ext_getObjTree($this->removePointerObjects($objTree[$mode.'.']), '', '', '', '', '1').'</td>
 					</tr>
 				</table>';
 		}
@@ -385,12 +385,12 @@ class SC_wizard_tsconfig {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,obj_string,title', 'static_tsconfig_help', '');
 		while($rec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$rec['obj_string'] = $this->revertFromSpecialChars($rec['obj_string']);
-			$p = explode(';',$rec['obj_string']);
+			$p = explode(';', $rec['obj_string']);
 			foreach ($p as $v) {
-				$p2 = t3lib_div::trimExplode(':',$v,1);
-				$subp=t3lib_div::trimExplode('/',$p2[1],1);
+				$p2 = t3lib_div::trimExplode(':', $v, 1);
+				$subp=t3lib_div::trimExplode('/', $p2[1], 1);
 				foreach ($subp as $v2) {
-					$this->setObj($objTree,explode('.',$p2[0].'.'.$v2),array($rec,$v2));
+					$this->setObj($objTree, explode('.', $p2[0].'.'.$v2), array($rec, $v2));
 				}
 			}
 		}
@@ -414,7 +414,7 @@ class SC_wizard_tsconfig {
 		if (count($strArr)>1) {
 			array_shift($strArr);
 			if (!isset($objTree[$key.'.']))	$objTree[$key.'.']=array();
-			$this->setObj($objTree[$key.'.'],$strArr,$params);
+			$this->setObj($objTree[$key.'.'], $strArr, $params);
 		} else {
 			$objTree[$key]=$params;
 			$objTree[$key]['_LINK']=$this->doLink($params);
@@ -429,8 +429,8 @@ class SC_wizard_tsconfig {
 	 * @access private
 	 */
 	function revertFromSpecialChars($str) {
-		$str = str_replace('&gt;','>',$str);
-		$str = str_replace('&lt;','<',$str);
+		$str = str_replace('&gt;', '>', $str);
+		$str = str_replace('&lt;', '<', $str);
 		return $str;
 	}
 
@@ -443,7 +443,7 @@ class SC_wizard_tsconfig {
 	 */
 	function doLink($params) {
 		$title = trim($params[0]['title'])?trim($params[0]['title']):'[GO]';
-		$str = $this->linkToObj($title,$params[0]['uid'],$params[1]);
+		$str = $this->linkToObj($title, $params[0]['uid'], $params[1]);
 		return $str;
 	}
 
@@ -456,8 +456,8 @@ class SC_wizard_tsconfig {
 	 */
 	function removePointerObjects($objArray) {
 		foreach ($objArray as $k => $value) {
-			if (substr(trim($k),0,2)=="->" && trim($k)!='->.') {
-				$objArray['->.'][substr(trim($k),2)]=$objArray[$k];
+			if (substr(trim($k), 0, 2)=="->" && trim($k)!='->.') {
+				$objArray['->.'][substr(trim($k), 2)]=$objArray[$k];
 				unset($objArray[$k]);
 			}
 		}
@@ -472,7 +472,7 @@ class SC_wizard_tsconfig {
 	 * @param	string		Title string for that record!
 	 * @return	string		Linked string
 	 */
-	function linkToObj($str,$uid,$objString='') {
+	function linkToObj($str, $uid, $objString='') {
 		$aOnClick='jump(\''.rawurlencode($uid).'\',\''.rawurlencode($objString).'\');return false;';
 		return '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.htmlspecialchars($str).'</a>';
 	}
@@ -485,7 +485,7 @@ class SC_wizard_tsconfig {
 	 * @param	array		Object tree
 	 * @return	string		HTML content.
 	 */
-	function printTable($table,$objString,$objTree) {
+	function printTable($table, $objString, $objTree) {
 		if (is_array($table['rows'])) {
 
 				// Initialize:
@@ -504,27 +504,27 @@ class SC_wizard_tsconfig {
 			foreach($table['rows'] as $i => $row) {
 
 					// Linking:
-				$lP=t3lib_div::trimExplode(LF,$row['property'],1);
+				$lP=t3lib_div::trimExplode(LF, $row['property'], 1);
 				$lP2=array();
 				foreach ($lP as $k => $lStr) {
-					$lP2[$k] = $this->linkProperty($lStr,$lStr,$objString,$row['datatype']);
+					$lP2[$k] = $this->linkProperty($lStr, $lStr, $objString, $row['datatype']);
 				}
-				$linkedProperties=implode('<hr />',$lP2);
+				$linkedProperties=implode('<hr />', $lP2);
 
 					// Data type:
 				$dataType = $row['datatype'];
 
 					// Generally "->[something]"
 				$reg=array();
-				preg_match('/->[[:alnum:]_]*/',$dataType,$reg);
+				preg_match('/->[[:alnum:]_]*/', $dataType, $reg);
 				if ($reg[0] && is_array($objTree[$reg[0]])) {
-					$dataType = str_replace($reg[0],'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>$objTree[$reg[0]][0]['uid'],'objString'=>$objString.'.'.$lP[0]))).'">'.htmlspecialchars($reg[0]).'</a>',$dataType);
+					$dataType = str_replace($reg[0],'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>$objTree[$reg[0]][0]['uid'], 'objString'=>$objString.'.'.$lP[0]))).'">'.htmlspecialchars($reg[0]).'</a>', $dataType);
 				}
 
 					// stdWrap
-				if (!strstr($dataType,'->stdWrap') && strstr(strip_tags($dataType),'stdWrap')) {
+				if (!strstr($dataType, '->stdWrap') && strstr(strip_tags($dataType), 'stdWrap')) {
 						// Potential problem can be that "stdWrap" is substituted inside another A-tag. So maybe we should even check if there is already a <A>-tag present and if so, not make a substitution?
-					$dataType = str_replace('stdWrap','<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>$objTree['->stdWrap'][0]['uid'],'objString'=>$objString.'.'.$lP[0]))).'">stdWrap</a>',$dataType);
+					$dataType = str_replace('stdWrap', '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>$objTree['->stdWrap'][0]['uid'], 'objString'=>$objString.'.'.$lP[0]))).'">stdWrap</a>', $dataType);
 				}
 
 
@@ -545,7 +545,7 @@ class SC_wizard_tsconfig {
 				TSconfig, attribute selector:
 			-->
 				<table border="0" cellpadding="0" cellspacing="1" width="98%" class="t3-table" id="typo3-attributes">
-					'.implode('',$lines).'
+					'.implode('', $lines).'
 				</table>';
 		}
 	}
@@ -559,11 +559,11 @@ class SC_wizard_tsconfig {
 	 * @param	string		Data type
 	 * @return	string		Linked $str
 	 */
-	function linkProperty($str,$propertyName,$prefix,$datatype) {
+	function linkProperty($str, $propertyName, $prefix, $datatype) {
 		$out='';
 
 			// Setting preset value:
-		if (strstr($datatype,'boolean')) {
+		if (strstr($datatype, 'boolean')) {
 			$propertyVal='1';	// preset "1" to boolean values.
 		}
 
@@ -577,7 +577,7 @@ class SC_wizard_tsconfig {
 		}
 
 			// Wrap string:
-		$aOnClick = 'setValue(unescape(\''.rawurlencode($propertyName).'\'),unescape(\''.rawurlencode($propertyVal).'\')); return false;';
+		$aOnClick = 'setValue(unescape(\''.rawurlencode($propertyName).'\'), unescape(\''.rawurlencode($propertyVal).'\')); return false;';
 		$out.= '<a href="#" onclick="'.htmlspecialchars($aOnClick).'">'.$str.'</a>';
 
 			// Return link:

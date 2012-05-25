@@ -968,7 +968,7 @@ class clickMenu {
 		return $this->linkItem(
 			$this->label($type),
 			$this->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-edit-' . $type . ($isSel === $type ? '-release' : ''))),
-			"top.loadTopMenu('".$this->clipObj->selUrlFile($path,($type=='copy'?1:0),($isSel==$type),$addParam)."');return false;"
+			"top.loadTopMenu('".$this->clipObj->selUrlFile($path, ($type=='copy'?1:0), ($isSel==$type), $addParam)."');return false;"
 		);
 	}
 
@@ -983,7 +983,7 @@ class clickMenu {
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
 		if($GLOBALS['BE_USER']->jsConfirmation(4)) {
-			$conf = "confirm(".$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.delete'),basename($path)).t3lib_BEfunc::referenceCount('_FILE',$path,' (There are %s reference(s) to this file!)')).")";
+			$conf = "confirm(".$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.delete'), basename($path)).t3lib_BEfunc::referenceCount('_FILE', $path, ' (There are %s reference(s) to this file!)')).")";
 		} else {
 			$conf = '1==1';
 		}
@@ -1010,7 +1010,7 @@ class clickMenu {
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
 		if($GLOBALS['BE_USER']->jsConfirmation(2)) {
-		$conf=$loc." && confirm(".$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.'.($elInfo[2]=='copy'?'copy':'move').'_into'),$elInfo[0],$elInfo[1])).")";
+		$conf=$loc." && confirm(".$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.'.($elInfo[2]=='copy'?'copy':'move').'_into'), $elInfo[0], $elInfo[1])).")";
 		} else {
 			$conf=$loc;
 		}
@@ -1184,7 +1184,7 @@ class clickMenu {
 							<!-- Items: -->
 						<td class="c-item">'.
 							implode('</td>
-						<td><img'.t3lib_iconWorks::skinImg($this->PH_backPath, 'gfx/acm_spacer2.gif','width="8" height="12"').' alt="" /></td>
+						<td><img'.t3lib_iconWorks::skinImg($this->PH_backPath, 'gfx/acm_spacer2.gif', 'width="8" height="12"').' alt="" /></td>
 						<td class="c-item">',$this->menuItemsForTopFrame($menuItems)).
 						'</td>
 
@@ -1297,9 +1297,9 @@ class clickMenu {
 					</tr>';
 			} else {	// Just make normal element:
 				$onClick=$i[3];
-				$onClick=preg_replace('/return[[:space:]]+hideCM\(\)[[:space:]]*;/i','', $onClick);
-				$onClick=preg_replace('/return[[:space:]]+false[[:space:]]*;/i','', $onClick);
-				$onClick=preg_replace('/hideCM\(\);/i','', $onClick);
+				$onClick=preg_replace('/return[[:space:]]+hideCM\(\)[[:space:]]*;/i', '', $onClick);
+				$onClick=preg_replace('/return[[:space:]]+false[[:space:]]*;/i', '', $onClick);
+				$onClick=preg_replace('/hideCM\(\);/i', '', $onClick);
 				if (!$i[5])	$onClick.='Clickmenu.hideAll();';
 
 				$CSM = ' oncontextmenu="'.htmlspecialchars($onClick).';return false;"';
@@ -1329,8 +1329,8 @@ class clickMenu {
 
 				$posArr = t3lib_div::trimExplode(',', $position, 1);
 				foreach($posArr as $pos) {
-					list($place,$menuEntry) = t3lib_div::trimExplode(':', $pos, 1);
-					list($place,$placeExtra) = t3lib_div::trimExplode('-', $place, 1);
+					list($place, $menuEntry) = t3lib_div::trimExplode(':', $pos, 1);
+					list($place, $placeExtra) = t3lib_div::trimExplode('-', $place, 1);
 
 						// bottom
 					$pointer = count($menuItems);
@@ -1428,7 +1428,7 @@ class clickMenu {
 	 * @return	string		The icon-image tag prefixed with space char IF the icon should be printed at all due to user settings
 	 */
 	function excludeIcon($iconCode) {
-		return ($GLOBALS['BE_USER']->uc['noMenuMode'] && strcmp($GLOBALS['BE_USER']->uc['noMenuMode'],'icons')) ? '' : ' '.$iconCode;
+		return ($GLOBALS['BE_USER']->uc['noMenuMode'] && strcmp($GLOBALS['BE_USER']->uc['noMenuMode'], 'icons')) ? '' : ' '.$iconCode;
 	}
 
 	/**

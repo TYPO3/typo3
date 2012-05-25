@@ -254,7 +254,7 @@ class SC_alt_file_navframe {
 		'</a>';
 
 			// CSH
-		$buttons['csh'] = str_replace('typo3-csh-inline','typo3-csh-inline show-right',t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filetree', $GLOBALS['BACK_PATH']));
+		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filetree', $GLOBALS['BACK_PATH']));
 
 		return $buttons;
 	}

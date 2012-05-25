@@ -194,7 +194,7 @@ class SC_alt_db_navframe {
 				'</a>		<br />' .
 				$GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.path', 1) . ': <span title="' .
 				htmlspecialchars($this->active_tempMountPoint['_thePathFull']) . '">' .
-				htmlspecialchars(t3lib_div::fixed_lgd_cs($this->active_tempMountPoint['_thePath'],-50)).
+				htmlspecialchars(t3lib_div::fixed_lgd_cs($this->active_tempMountPoint['_thePath'], -50)).
 				'</span>
 			';
 
@@ -276,7 +276,7 @@ class SC_alt_db_navframe {
 			'</a>';
 
 			// CSH
-		$buttons['csh'] = str_replace('typo3-csh-inline','typo3-csh-inline show-right',t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH'], '', TRUE));
+		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH'], '', TRUE));
 
 			// Filter
 		if ($this->hasFilterBox) {
@@ -330,7 +330,7 @@ class SC_alt_db_navframe {
 
 			// Set/Cancel Temporary DB Mount:
 		if (strlen($this->setTempDBmount)) {
-			$set = t3lib_utility_Math::forceIntegerInRange($this->setTempDBmount,0);
+			$set = t3lib_utility_Math::forceIntegerInRange($this->setTempDBmount, 0);
 			if ($set > 0 && $GLOBALS['BE_USER']->isInWebMount($set)){
 					// Setting...:
 				$this->settingTemporaryMountPoint($set);
@@ -362,7 +362,7 @@ class SC_alt_db_navframe {
 	 * @return	void
 	 */
 	function settingTemporaryMountPoint($pageId) {
-		$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint',intval($pageId));
+		$GLOBALS['BE_USER']->setAndSaveSessionData('pageTree_temporaryMountPoint', intval($pageId));
 	}
 
 

@@ -529,18 +529,18 @@ class SC_wizard_forms {
 // FIXME $inputStyle undefined
 					$brTag=$inputStyle?'':'<br />';
 					if ($k!=0) {
-						$ctrl.='<input type="image" name="FORMCFG[row_up]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/pil2up.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_up', 1).'" />'.$brTag;
+						$ctrl.='<input type="image" name="FORMCFG[row_up]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/pil2up.gif', '').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_up', 1).'" />'.$brTag;
 					} else {
-						$ctrl.='<input type="image" name="FORMCFG[row_bottom]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/turn_up.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_bottom', 1).'" />'.$brTag;
+						$ctrl.='<input type="image" name="FORMCFG[row_bottom]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/turn_up.gif', '').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_bottom', 1).'" />'.$brTag;
 					}
-					$ctrl.='<input type="image" name="FORMCFG[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/garbage.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_removeRow', 1).'" />'.$brTag;
+					$ctrl.='<input type="image" name="FORMCFG[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/garbage.gif', '').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_removeRow', 1).'" />'.$brTag;
 // FIXME $tLines undefined
 					if (($k+1)!=count($tLines)) {
-						$ctrl.='<input type="image" name="FORMCFG[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/pil2down.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_down', 1).'" />'.$brTag;
+						$ctrl.='<input type="image" name="FORMCFG[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/pil2down.gif', '').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_down', 1).'" />'.$brTag;
 					} else {
-						$ctrl.='<input type="image" name="FORMCFG[row_top]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/turn_down.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_top', 1).'" />'.$brTag;
+						$ctrl.='<input type="image" name="FORMCFG[row_top]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/turn_down.gif', '').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_top', 1).'" />'.$brTag;
 					}
-					$ctrl.='<input type="image" name="FORMCFG[row_add]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/add.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_addRow', 1).'" />'.$brTag;
+					$ctrl.='<input type="image" name="FORMCFG[row_add]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/add.gif', '').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_addRow', 1).'" />'.$brTag;
 
 					$ctrl='<span class="c-wizButtonsV">'.$ctrl.'</span>';
 
@@ -842,7 +842,7 @@ class SC_wizard_forms {
 					switch((string)$confData['type']) {
 						case 'select':
 						case 'radio':
-							$confData['default'] = implode(LF,t3lib_div::trimExplode(',', $parts[2]));
+							$confData['default'] = implode(LF, t3lib_div::trimExplode(',', $parts[2]));
 						break;
 						default:
 							$confData['default'] = trim($parts[2]);
