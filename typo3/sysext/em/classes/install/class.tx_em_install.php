@@ -738,7 +738,7 @@ class tx_em_Install {
 			} else {
 				$areYouSure = $GLOBALS['LANG']->getLL('extDelete_sure');
 				$deleteFromServer = $GLOBALS['LANG']->getLL('extDelete_from_server');
-				$onClick = "if (confirm('$areYouSure')) {window.location.href='" . t3lib_div::linkThisScript(array(
+				$onClick = "if (confirm('" . $areYouSure . "')) {window.location.href='" . t3lib_div::linkThisScript(array(
 					'CMD[showExt]' => $extKey,
 					'CMD[doDelete]' => 1,
 					'CMD[absPath]' => rawurlencode($absPath)
