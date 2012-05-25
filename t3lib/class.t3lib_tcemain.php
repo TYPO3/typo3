@@ -6571,8 +6571,10 @@ class t3lib_TCEmain {
 	 *
 	 * @param string $table Table name
 	 * @return array Array of fieldnames
+	 * @deprecated since 6.0, will be removed two versions later. Method was moved to EXT:version/class.tx_version_tcemain.php
 	 */
 	function getUniqueFields($table) {
+		t3lib_div::logDeprecatedFunction();
 		$listArr = array();
 		t3lib_div::loadTCA($table);
 		if ($GLOBALS['TCA'][$table]['columns']) {
