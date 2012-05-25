@@ -134,7 +134,7 @@ class t3lib_install {
 						if ($quoteValue) {
 							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
 						}
-						$line_array[$k] = $mainparts[0] . $variable . " = " . $value . ";	" . ('//' . $comment . str_replace($comment, '', $subparts[1]));
+						$line_array[$k] = $mainparts[0] . $variable . ' = ' . $value . ';	' . ('//' . $comment . str_replace($comment, '', $subparts[1]));
 						$this->touchedLine = count($line_array) - $k - 1;
 						$found = 1;
 						break;
@@ -152,7 +152,7 @@ class t3lib_install {
 						if ($quoteValue) {
 							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
 						}
-						$line_array[$k] = $mainparts[0] . $variable . " = " . $value . ";	" . ('//' . $comment . str_replace($comment, '', $subparts[1]));
+						$line_array[$k] = $mainparts[0] . $variable . ' = ' . $value . ';	' . ('//' . $comment . str_replace($comment, '', $subparts[1]));
 						$this->touchedLine = count($line_array) - $k - 1;
 						$found = 1;
 						break;
@@ -169,7 +169,7 @@ class t3lib_install {
 			if ($quoteValue) {
 				$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
 			}
-			$line_array[] = $variable . " = " . $value . ";	// " . $comment;
+			$line_array[] = $variable . ' = ' . $value . ';	// ' . $comment;
 			if (!$hasEndToken) {
 				$line_array[] = '';
 				$line_array[] = $this->localconf_endEditPointToken;
@@ -179,7 +179,7 @@ class t3lib_install {
 		if ($variable == '$typo_db_password') {
 			$this->messages[] = 'Updated ' . $variable;
 		} else {
-			$this->messages[] = $variable . " = " . htmlspecialchars($value);
+			$this->messages[] = $variable . ' = ' . htmlspecialchars($value);
 		}
 		$this->setLocalconf = 1;
 	}
@@ -480,7 +480,7 @@ class t3lib_install {
 					$out[] = '
 					<tr>
 						<td valign="top"></td>
-						<td nowrap="nowrap" style="color:#666666;">' . nl2br((!$cVfullMsg ? "Current value: " : "") . '<em>' . $currentValue[$key] . '</em>') . '</td>
+						<td nowrap="nowrap" style="color:#666666;">' . nl2br((!$cVfullMsg ? 'Current value: ' : '') . '<em>' . $currentValue[$key] . '</em>') . '</td>
 					</tr>';
 				}
 			}

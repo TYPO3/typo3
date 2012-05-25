@@ -142,8 +142,8 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 		$this->writeLogEntries($exception, self::CONTEXT_CLI);
 
 		echo "\nUncaught TYPO3 Exception " . $exceptionCodeNumber . $exception->getMessage() . LF;
-		echo "thrown in file " . $filePathAndName . LF;
-		echo "in line " . $exception->getLine() . "\n\n";
+		echo 'thrown in file ' . $filePathAndName . LF;
+		echo 'in line ' . $exception->getLine() . "\n\n";
 	}
 
 	/**

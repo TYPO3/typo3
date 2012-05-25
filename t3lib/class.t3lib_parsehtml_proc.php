@@ -141,10 +141,10 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 						return "ERROR: Editfile '" . $SW_relpath . "' did not exist";
 					}
 				} else {
-					return "ERROR: Edit file name could not be found or was bad.";
+					return 'ERROR: Edit file name could not be found or was bad.';
 				}
 			} else {
-				return "ERROR: staticFileEditPath was not set, not set correctly or did not exist!";
+				return 'ERROR: staticFileEditPath was not set, not set correctly or did not exist!';
 			}
 		}
 	}

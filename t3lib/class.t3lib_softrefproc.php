@@ -431,7 +431,7 @@ class t3lib_softrefproc {
 		$resultArray = array();
 
 			// Email:
-		$parts = preg_split("/([^[:alnum:]]+)([A-Za-z0-9\._-]+[@][A-Za-z0-9\._-]+[\.].[A-Za-z0-9]+)/", ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
+		$parts = preg_split('/([^[:alnum:]]+)([A-Za-z0-9\._-]+[@][A-Za-z0-9\._-]+[\.].[A-Za-z0-9]+)/', ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
 		foreach ($parts as $idx => $value) {
 			if ($idx % 3 == 2) {
 
@@ -553,7 +553,7 @@ class t3lib_softrefproc {
 	function fileadminReferences($content, &$elements) {
 
 			// Fileadmin files are found
-		$parts = preg_split("/([^[:alnum:]]+)(" . $this->fileAdminDir . "\/[^[:space:]\"'<>]*)/", ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
+		$parts = preg_split('/([^[:alnum:]]+)(' . $this->fileAdminDir . "\/[^[:space:]\"'<>]*)/", ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
 
 			// Traverse files:
 		foreach ($parts as $idx => $value) {

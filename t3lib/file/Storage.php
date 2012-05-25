@@ -1134,7 +1134,7 @@ class t3lib_file_Storage {
 
 			// Makes sure this is an uploaded file
 		if (!is_uploaded_file($localFilePath)) {
-			throw new t3lib_file_exception_UploadException("The upload has failed, no uploaded file found!", 1322110455);
+			throw new t3lib_file_exception_UploadException('The upload has failed, no uploaded file found!', 1322110455);
 		}
 
 			// Max upload size (kb) for files.

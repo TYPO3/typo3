@@ -557,7 +557,7 @@ class t3lib_spritemanager_SpriteGenerator {
 	 * @return array
 	 */
 	protected function explodeSizeTag($tag = '') {
-		$size = t3lib_div::trimExplode("x", $tag);
+		$size = t3lib_div::trimExplode('x', $tag);
 		return array(
 			'width' => $size[0],
 			'height' => $size[1]
