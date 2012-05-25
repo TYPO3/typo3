@@ -361,7 +361,7 @@ class PEAR_Exception extends Exception
                     }
                 }
             }
-            $html .= '(' . implode(', ',$args) . ')'
+            $html .= '(' . implode(', ', $args) . ')'
                    . '</td>'
                    . '<td>' . (isset($v['file']) ? $v['file'] : 'unknown')
                    . ':' . (isset($v['line']) ? $v['line'] : 'unknown')

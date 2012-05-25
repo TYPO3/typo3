@@ -93,21 +93,21 @@ class SC_wizard_add {
 		$this->returnEditConf = t3lib_div::_GP('returnEditConf');
 
 			// Get this record
-		$origRow = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
+		$origRow = t3lib_BEfunc::getRecord($this->P['table'], $this->P['uid']);
 
 			// Set table:
 		$this->table = $this->P['params']['table'];
 
 			// Get TSconfig for it.
-		$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig($this->P['table'],is_array($origRow)?$origRow:array('pid'=>$this->P['pid']));
+		$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig($this->P['table'], is_array($origRow)?$origRow:array('pid'=>$this->P['pid']));
 
 			// Set [params][pid]
-		if (substr($this->P['params']['pid'],0,3)=='###' && substr($this->P['params']['pid'],-3)=='###') {
-			$this->pid = intval($TSconfig['_'.substr($this->P['params']['pid'],3,-3)]);
+		if (substr($this->P['params']['pid'], 0, 3)=='###' && substr($this->P['params']['pid'], -3)=='###') {
+			$this->pid = intval($TSconfig['_'.substr($this->P['params']['pid'], 3, -3)]);
 		} else $this->pid = intval($this->P['params']['pid']);
 
 			// Return if new record as parent (not possibly/allowed)
-		if (!strcmp($this->pid,'')) {
+		if (!strcmp($this->pid, '')) {
 			t3lib_utility_Http::redirect(t3lib_div::sanitizeLocalUrl($this->P['returnUrl']));
 		}
 
@@ -149,7 +149,7 @@ class SC_wizard_add {
 
 					// Preparing the data of the parent record...:
 				$trData = t3lib_div::makeInstance('t3lib_transferData');
-				$trData->fetchRecord($this->P['table'],$this->P['uid'],'');	// 'new'
+				$trData->fetchRecord($this->P['table'], $this->P['uid'], '');	// 'new'
 				$current = reset($trData->regTableItems_data);
 
 					// If that record was found (should absolutely be...), then init TCEmain and set, prepend or append the record
@@ -178,10 +178,10 @@ class SC_wizard_add {
 								$insertValue = $addEl.','.$curValueOfFlexform;
 							break;
 						}
-						$insertValue = implode(',',t3lib_div::trimExplode(',',$insertValue,1));
+						$insertValue = implode(',', t3lib_div::trimExplode(',', $insertValue, 1));
 
 						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = array();
-						$flexToolObj->setArrayValueByPath($this->P['flexFormPath'],$data[$this->P['table']][$this->P['uid']][$this->P['field']],$insertValue);
+						$flexToolObj->setArrayValueByPath($this->P['flexFormPath'], $data[$this->P['table']][$this->P['uid']][$this->P['field']], $insertValue);
 					} else {
 						switch((string)$this->P['params']['setValue']) {
 							case 'set':
@@ -194,11 +194,11 @@ class SC_wizard_add {
 								$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl.','.$current[$this->P['field']];
 							break;
 						}
-						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',',t3lib_div::trimExplode(',',$data[$this->P['table']][$this->P['uid']][$this->P['field']],1));
+						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',', t3lib_div::trimExplode(',', $data[$this->P['table']][$this->P['uid']][$this->P['field']], 1));
 					}
 
 						// Submit the data:
-					$tce->start($data,array());
+					$tce->start($data, array());
 					$tce->process_datamap();
 				}
 			}

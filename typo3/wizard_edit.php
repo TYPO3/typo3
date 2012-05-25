@@ -97,12 +97,12 @@ class SC_wizard_edit {
 
 					// Selecting selected values into an array:
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
-				$dbAnalysis->start($this->P['currentSelectedValues'],$allowedTables);
+				$dbAnalysis->start($this->P['currentSelectedValues'], $allowedTables);
 				$value = $dbAnalysis->getValueArray($prependName);
 
 					// Traverse that array and make parameters for alt_doc.php:
 				foreach($value as $rec) {
-					$recTableUidParts = t3lib_div::revExplode('_',$rec,2);
+					$recTableUidParts = t3lib_div::revExplode('_', $rec, 2);
 					$params.='&edit['.$recTableUidParts[0].']['.$recTableUidParts[1].']=edit';
 				}
 

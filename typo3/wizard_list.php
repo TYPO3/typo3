@@ -91,18 +91,18 @@ class SC_wizard_list {
 	function main() {
 
 			// Get this record
-		$origRow = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
+		$origRow = t3lib_BEfunc::getRecord($this->P['table'], $this->P['uid']);
 
 			// Get TSconfig for it.
-		$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig($this->table,is_array($origRow)?$origRow:array('pid'=>$this->P['pid']));
+		$TSconfig = t3lib_BEfunc::getTCEFORM_TSconfig($this->table, is_array($origRow)?$origRow:array('pid'=>$this->P['pid']));
 
 			// Set [params][pid]
-		if (substr($this->P['params']['pid'],0,3)=='###' && substr($this->P['params']['pid'],-3)=='###') {
-			$this->pid = intval($TSconfig['_'.substr($this->P['params']['pid'],3,-3)]);
+		if (substr($this->P['params']['pid'],0,3)=='###' && substr($this->P['params']['pid'], -3)=='###') {
+			$this->pid = intval($TSconfig['_'.substr($this->P['params']['pid'], 3, -3)]);
 		} else $this->pid = intval($this->P['params']['pid']);
 
 			// Make redirect:
-		if (!strcmp($this->pid,'') || strcmp($this->id,''))	{	// If pid is blank OR if id is set, then return...
+		if (!strcmp($this->pid, '') || strcmp($this->id, ''))	{	// If pid is blank OR if id is set, then return...
 			$redirectUrl = t3lib_div::sanitizeLocalUrl($this->P['returnUrl']);
 		} else {	// Otherwise, show the list:
 			$urlParameters = array();

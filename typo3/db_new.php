@@ -61,8 +61,8 @@ class localPageTree extends t3lib_pageTree {
 	 * @param	array		Item row
 	 * @return	string		Wrapping icon image.
 	 */
-	function wrapIcon($icon,$row) {
-		return $this->addTagAttributes($icon,' title="id='.htmlspecialchars($row['uid']).'"');
+	function wrapIcon($icon, $row) {
+		return $this->addTagAttributes($icon, ' title="id='.htmlspecialchars($row['uid']).'"');
 	}
 
 	/**
@@ -165,14 +165,14 @@ class SC_db_new {
 
 			// Id a positive id is supplied, ask for the page record with permission information contained:
 		if ($this->id > 0) {
-			$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
+			$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
 		}
 
 			// If a page-record was returned, the user had read-access to the page.
 		if ($this->pageinfo['uid']) {
 				// Get record of parent page
 
-			$this->pidInfo=t3lib_BEfunc::getRecord('pages',$this->pageinfo['pid']);
+			$this->pidInfo=t3lib_BEfunc::getRecord('pages', $this->pageinfo['pid']);
 				// Checking the permissions for the user with regard to the parent page: Can he create new pages, new content record, new page after?
 			if ($GLOBALS['BE_USER']->doesUserHaveAccess($this->pageinfo, 8)) {
 				$this->newPagesInto=1;
@@ -207,14 +207,14 @@ class SC_db_new {
 			// If there was a page - or if the user is admin (admins has access to the root) we proceed:
 		if ($this->pageinfo['uid'] || $GLOBALS['BE_USER']->isAdmin()) {
 				// Acquiring TSconfig for this module/current page:
-			$this->web_list_modTSconfig = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
-			$this->allowedNewTables = t3lib_div::trimExplode(',',$this->web_list_modTSconfig['properties']['allowedNewTables'],1);
-			$this->deniedNewTables = t3lib_div::trimExplode(',',$this->web_list_modTSconfig['properties']['deniedNewTables'],1);
+			$this->web_list_modTSconfig = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
+			$this->allowedNewTables = t3lib_div::trimExplode(',', $this->web_list_modTSconfig['properties']['allowedNewTables'], 1);
+			$this->deniedNewTables = t3lib_div::trimExplode(',', $this->web_list_modTSconfig['properties']['deniedNewTables'], 1);
 
 				// Acquiring TSconfig for this module/parent page:
-			$this->web_list_modTSconfig_pid = t3lib_BEfunc::getModTSconfig($this->pageinfo['pid'],'mod.web_list');
-			$this->allowedNewTables_pid = t3lib_div::trimExplode(',',$this->web_list_modTSconfig_pid['properties']['allowedNewTables'],1);
-			$this->deniedNewTables_pid = t3lib_div::trimExplode(',',$this->web_list_modTSconfig_pid['properties']['deniedNewTables'],1);
+			$this->web_list_modTSconfig_pid = t3lib_BEfunc::getModTSconfig($this->pageinfo['pid'], 'mod.web_list');
+			$this->allowedNewTables_pid = t3lib_div::trimExplode(',', $this->web_list_modTSconfig_pid['properties']['allowedNewTables'], 1);
+			$this->deniedNewTables_pid = t3lib_div::trimExplode(',', $this->web_list_modTSconfig_pid['properties']['deniedNewTables'], 1);
 
 				// More init:
 			if (!$this->showNewRecLink('pages')) {
@@ -246,7 +246,7 @@ class SC_db_new {
 			}
 
 				// Add all the content to an output section
-			$this->content.=$this->doc->section('',$this->code);
+			$this->content.=$this->doc->section('', $this->code);
 
 							// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
@@ -357,11 +357,11 @@ class SC_db_new {
 		$this->tRows = array();
 
 			// tree images
-		$halfLine = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/halfline.gif', 'width="18" height="8"') . ' alt="" />';
-		$firstLevel = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/join.gif', 'width="18" height="16"') . ' alt="" />';
-		$secondLevel = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />
-						<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/join.gif', 'width="18" height="16"') . ' alt="" />';
-		$secondLevelLast = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />
+		$halfLine = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/halfline.gif', 'width="18" height="8"') . ' alt="" />';
+		$firstLevel = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/join.gif', 'width="18" height="16"') . ' alt="" />';
+		$secondLevel = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />
+						<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/join.gif', 'width="18" height="16"') . ' alt="" />';
+		$secondLevelLast = '<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />
 						<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/joinbottom.gif', 'width="18" height="16"') . ' alt="" />';
 
 			// Get TSconfig for current page
@@ -382,7 +382,7 @@ class SC_db_new {
 			// New Page
 		$table = 'pages';
 		$v = $GLOBALS['TCA'][$table];
-		$pageIcon = t3lib_iconWorks::getSpriteIconForRecord($table,array());
+		$pageIcon = t3lib_iconWorks::getSpriteIconForRecord($table, array());
 
 		$newPageIcon = t3lib_iconWorks::getSpriteIcon('actions-page-new');
 		$rowContent = '';
@@ -391,7 +391,7 @@ class SC_db_new {
 		$newPageLinks = array();
 		if ($this->newPagesInto
 			&& $this->isTableAllowedForThisPage($this->pageinfo, 'pages')
-			&& $GLOBALS['BE_USER']->check('tables_modify','pages')
+			&& $GLOBALS['BE_USER']->check('tables_modify', 'pages')
 			&& $GLOBALS['BE_USER']->workspaceCreateNewRecord($this->pageinfo['_ORIG_uid']?$this->pageinfo['_ORIG_uid']:$this->id, 'pages')
 			) {
 
@@ -413,7 +413,7 @@ class SC_db_new {
 
 				$newPageLinks[] = $this->linkWrap(
 					$pageIcon .
-						$GLOBALS['LANG']->sL($v['ctrl']['title'], 1) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.after',1) . ')',
+						$GLOBALS['LANG']->sL($v['ctrl']['title'], 1) . ' (' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.after', 1) . ')',
 					'pages',
 					-$this->id
 				);
@@ -480,7 +480,7 @@ class SC_db_new {
 
 							// Create new link for record:
 						$newLink = $this->linkWrap(
-							$newRecordIcon . $GLOBALS['LANG']->sL($v['ctrl']['title'],1)
+							$newRecordIcon . $GLOBALS['LANG']->sL($v['ctrl']['title'], 1)
 							,$table
 							,$this->id);
 
@@ -597,7 +597,7 @@ class SC_db_new {
 			// end of tree
 		$finalRows[]='
 			<tr>
-				<td><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/stopper.gif','width="18" height="16"') . ' alt="" /></td>
+				<td><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/stopper.gif', 'width="18" height="16"') . ' alt="" /></td>
 				<td></td>
 			</tr>
 		';
@@ -701,7 +701,7 @@ class SC_db_new {
 		if (!$allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) {
 			$allowedTableList = $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 		}
-		if (strstr($allowedTableList,'*') || t3lib_div::inList($allowedTableList,$checkTable))	{		// If all tables or the table is listed as a allowed type, return TRUE
+		if (strstr($allowedTableList, '*') || t3lib_div::inList($allowedTableList, $checkTable))	{		// If all tables or the table is listed as a allowed type, return TRUE
 			return TRUE;
 		}
 	}
