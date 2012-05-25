@@ -112,10 +112,10 @@ class SC_wizard_rte {
 		}
 
 			// If all parameters are available:
-		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'],$this->P['uid'])) {
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
 
 				// Getting the raw record (we need only the pid-value from here...)
-			$rawRec = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
+			$rawRec = t3lib_BEfunc::getRecord($this->P['table'], $this->P['uid']);
 			t3lib_BEfunc::fixVersioningPid($this->P['table'], $rawRec);
 
 				// Setting JavaScript, including the pid value for viewing:
@@ -129,7 +129,7 @@ class SC_wizard_rte {
 							}
 						} else window.location.href = URL;
 					}
-				'.($this->popView ? t3lib_BEfunc::viewOnClick($rawRec['pid'],'',t3lib_BEfunc::BEgetRootLine($rawRec['pid'])) : '').'
+				'.($this->popView ? t3lib_BEfunc::viewOnClick($rawRec['pid'], '', t3lib_BEfunc::BEgetRootLine($rawRec['pid'])) : '').'
 			');
 
 				// Initialize TCeforms - for rendering the field:
@@ -147,7 +147,7 @@ class SC_wizard_rte {
 				// Fetching content of record:
 			$trData = t3lib_div::makeInstance('t3lib_transferData');
 			$trData->lockRecords=1;
-			$trData->fetchRecord($this->P['table'],$this->P['uid'],'');
+			$trData->fetchRecord($this->P['table'], $this->P['uid'], '');
 
 				// Getting the processed record content out:
 			$rec = reset($trData->regTableItems_data);
@@ -155,15 +155,15 @@ class SC_wizard_rte {
 			$rec['pid'] = $rawRec['pid'];
 
 				// TSconfig, setting width:
-			$fieldTSConfig = $tceforms->setTSconfig($this->P['table'],$rec,$this->P['field']);
-			if (strcmp($fieldTSConfig['RTEfullScreenWidth'],'')) {
+			$fieldTSConfig = $tceforms->setTSconfig($this->P['table'], $rec, $this->P['field']);
+			if (strcmp($fieldTSConfig['RTEfullScreenWidth'], '')) {
 				$width=$fieldTSConfig['RTEfullScreenWidth'];
 			} else {
 				$width='100%';
 			}
 
 				// Get the form field and wrap it in the table with the buttons:
-			$formContent = $tceforms->getSoloField($this->P['table'],$rec,$this->P['field']);
+			$formContent = $tceforms->getSoloField($this->P['table'], $rec, $this->P['field']);
 			$formContent = '
 
 
@@ -190,7 +190,7 @@ class SC_wizard_rte {
 				$tceforms->printNeededJSFunctions();
 		} else {
 				// ERROR:
-			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('forms_title'),'<span class="typo3-red">'.$GLOBALS['LANG']->getLL('table_noData',1).'</span>',0,1);
+			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('forms_title'), '<span class="typo3-red">'.$GLOBALS['LANG']->getLL('table_noData',1).'</span>', 0, 1);
 		}
 
 		// Setting up the buttons and markers for docheader
@@ -231,7 +231,7 @@ class SC_wizard_rte {
 			'undo' => '',
 		);
 
-		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'],$this->P['uid'])) {
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
 			$closeUrl = t3lib_div::sanitizeLocalUrl($this->P['returnUrl']);
 
 			// Getting settings for the undo button:
@@ -284,16 +284,16 @@ class SC_wizard_rte {
 	 * @param	integer		Record uid
 	 * @return	void
 	 */
-	function checkEditAccess($table,$uid) {
-		$calcPRec = t3lib_BEfunc::getRecord($table,$uid);
-		t3lib_BEfunc::fixVersioningPid($table,$calcPRec);
+	function checkEditAccess($table, $uid) {
+		$calcPRec = t3lib_BEfunc::getRecord($table, $uid);
+		t3lib_BEfunc::fixVersioningPid($table, $calcPRec);
 		if (is_array($calcPRec)) {
 			if ($table=='pages')	{	// If pages:
 				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
 				$hasAccess = $CALC_PERMS&2 ? TRUE : FALSE;
 			} else {
 					// Fetching pid-record first.
-				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages',$calcPRec['pid']));
+				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages', $calcPRec['pid']));
 				$hasAccess = $CALC_PERMS&16 ? TRUE : FALSE;
 			}
 

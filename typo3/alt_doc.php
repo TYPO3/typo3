@@ -753,7 +753,7 @@ class SC_alt_doc {
 								$thePrevUid = $rec['uid'];
 							} else {
 								$this->errorC++;
-								$editForm .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.noEditPermission',1) . '<br /><br />' .
+								$editForm .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.noEditPermission', 1) . '<br /><br />' .
 									($deniedAccessReason ? 'Reason: ' . htmlspecialchars($deniedAccessReason) . '<br /><br />' : '');
 							}
 						}
@@ -825,7 +825,7 @@ class SC_alt_doc {
 
 					// Delete:
 				if ($this->firstEl['deleteAccess'] && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] && !$this->getNewIconMode($this->firstEl['table'],'disableDelete')) {
-					$aOnClick = 'return deleteRecord(\''.$this->firstEl['table'].'\',\''.$this->firstEl['uid'].'\',unescape(\''.rawurlencode($this->retUrl).'\'));';
+					$aOnClick = 'return deleteRecord(\''.$this->firstEl['table'].'\',\''.$this->firstEl['uid'].'\', unescape(\''.rawurlencode($this->retUrl).'\'));';
 					$buttons['delete'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $GLOBALS['LANG']->getLL('deleteItem', TRUE) . '">' .
 							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
 							'</a>';
@@ -1109,7 +1109,7 @@ class SC_alt_doc {
 						// If any languages are left, make selector:
 					if (count($langSelItems)>1) {
 						$onChange = 'if(this.options[this.selectedIndex].value){window.location.href=(this.options[this.selectedIndex].value);}';
-						$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.language',1).' <select name="_langSelector" onchange="'.htmlspecialchars($onChange).'">
+						$content = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.language', 1).' <select name="_langSelector" onchange="'.htmlspecialchars($onChange).'">
 							'.implode('', $langSelItems).'
 							</select>';
 					}
@@ -1127,7 +1127,7 @@ class SC_alt_doc {
 	 * @return	void
 	 */
 	function localizationRedirect($justLocalized) {
-		list($table,$orig_uid,$language) = explode(':', $justLocalized);
+		list($table, $orig_uid, $language) = explode(':', $justLocalized);
 
 		if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
 			$localizedRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(

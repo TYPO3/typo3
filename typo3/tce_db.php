@@ -151,7 +151,7 @@ class SC_tce_db {
 			$clipObj->initializeClipboard();
 			if ($this->CB['paste']) {
 				$clipObj->setCurrentPad($this->CB['pad']);
-				$this->cmd = $clipObj->makePasteCmdArray($this->CB['paste'],$this->cmd);
+				$this->cmd = $clipObj->makePasteCmdArray($this->CB['paste'], $this->cmd);
 			}
 			if ($this->CB['delete']) {
 				$clipObj->setCurrentPad($this->CB['pad']);
@@ -168,14 +168,14 @@ class SC_tce_db {
 	function main() {
 
 			// LOAD TCEmain with data and cmd arrays:
-		$this->tce->start($this->data,$this->cmd);
+		$this->tce->start($this->data, $this->cmd);
 		if (is_array($this->mirror))	{$this->tce->setMirror($this->mirror);}
 
 			// Checking referer / executing
 		$refInfo=parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
 		if ($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-			$this->tce->log('',0,0,0,1,'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!',1,array($refInfo['host'],$httpHost));
+			$this->tce->log('', 0, 0, 0, 1, 'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!', 1, array($refInfo['host'], $httpHost));
 		} else {
 				// Register uploaded files
 			$this->tce->process_uploads($_FILES);

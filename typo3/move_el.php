@@ -67,8 +67,8 @@ class localPageTree extends t3lib_pageTree {
 	 * @param	array		Item row
 	 * @return	string		Wrapping icon image.
 	 */
-	function wrapIcon($icon,$row) {
-		return $this->addTagAttributes($icon,' title="id='.htmlspecialchars($row['uid']).'"');
+	function wrapIcon($icon, $row) {
+		return $this->addTagAttributes($icon, ' title="id='.htmlspecialchars($row['uid']).'"');
 	}
 }
 
@@ -99,7 +99,7 @@ class ext_posMap_pages extends t3lib_positionMap {
 	 * @param	integer		New page id.
 	 * @return	string		Onclick attribute content
 	 */
-	function onClickEvent($pid,$newPagePID) {
+	function onClickEvent($pid, $newPagePID) {
 		return 'window.location.href=\'tce_db.php?cmd[pages][' . $GLOBALS['SOBE']->moveUid . '][' . $this->moveOrCopy . ']=' . $pid .
 				'&redirect=' . rawurlencode($this->R_URI) .
 				'&prErr=1&uPT=1&vC=' . $GLOBALS['BE_USER']->veriCode() .
@@ -114,8 +114,8 @@ class ext_posMap_pages extends t3lib_positionMap {
 	 * @param	array		Page record (?)
 	 * @return	string		Wrapped title.
 	 */
-	function linkPageTitle($str,$rec) {
-		$url = t3lib_div::linkThisScript(array('uid'=>intval($rec['uid']),'moveUid'=>$GLOBALS['SOBE']->moveUid));
+	function linkPageTitle($str, $rec) {
+		$url = t3lib_div::linkThisScript(array('uid'=>intval($rec['uid']), 'moveUid'=>$GLOBALS['SOBE']->moveUid));
 		return '<a href="'.htmlspecialchars($url).'">'.$str.'</a>';
 	}
 
@@ -127,8 +127,8 @@ class ext_posMap_pages extends t3lib_positionMap {
 	 * @param	integer		The current id.
 	 * @return	string		The title string.
 	 */
-	function boldTitle($t_code,$dat,$id) {
-		return parent::boldTitle($t_code,$dat,$GLOBALS['SOBE']->moveUid);
+	function boldTitle($t_code, $dat, $id) {
+		return parent::boldTitle($t_code, $dat, $GLOBALS['SOBE']->moveUid);
 	}
 }
 
@@ -160,8 +160,8 @@ class ext_posMap_tt_content extends t3lib_positionMap {
 	 * @param	array		Page record (?)
 	 * @return	string		Wrapped title.
 	 */
-	function linkPageTitle($str,$rec) {
-		$url = t3lib_div::linkThisScript(array('uid'=>intval($rec['uid']),'moveUid'=>$GLOBALS['SOBE']->moveUid));
+	function linkPageTitle($str, $rec) {
+		$url = t3lib_div::linkThisScript(array('uid'=>intval($rec['uid']), 'moveUid'=>$GLOBALS['SOBE']->moveUid));
 		return '<a href="'.htmlspecialchars($url).'">'.$str.'</a>';
 	}
 
@@ -172,9 +172,9 @@ class ext_posMap_tt_content extends t3lib_positionMap {
 	 * @param	array		The record row.
 	 * @return	string		Wrapped title string.
 	 */
-	function wrapRecordTitle($str,$row) {
+	function wrapRecordTitle($str, $row) {
 		if ($GLOBALS['SOBE']->moveUid==$row['uid'])	$str = '<strong>'.$str.'</strong>';
-		return parent::wrapRecordTitle($str,$row);
+		return parent::wrapRecordTitle($str, $row);
 	}
 }
 
@@ -255,11 +255,11 @@ class SC_move_el {
 		if ($this->page_id) {
 
 				// Get record for element:
-			$elRow = t3lib_BEfunc::getRecordWSOL($this->table,$this->moveUid);
+			$elRow = t3lib_BEfunc::getRecordWSOL($this->table, $this->moveUid);
 
 				// Headerline: Icon, record title:
-			$hline = t3lib_iconWorks::getSpriteIconForRecord($this->table, $elRow, array('id' => "c-recIcon", 'title' => htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow,$this->table))));
-			$hline.= t3lib_BEfunc::getRecordTitle($this->table,$elRow,TRUE);
+			$hline = t3lib_iconWorks::getSpriteIconForRecord($this->table, $elRow, array('id' => "c-recIcon", 'title' => htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow, $this->table))));
+			$hline.= t3lib_BEfunc::getRecordTitle($this->table, $elRow, TRUE);
 
 				// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
 			$hline .= $this->doc->spacer(5);
@@ -281,8 +281,8 @@ class SC_move_el {
 				// IF the table is "pages":
 			if ((string)$this->table=='pages') {
 					// Get page record (if accessible):
-				$pageinfo = t3lib_BEfunc::readPageAccess($this->page_id,$this->perms_clause);
-				if (is_array($pageinfo) && $GLOBALS['BE_USER']->isInWebMount($pageinfo['pid'],$this->perms_clause)) {
+				$pageinfo = t3lib_BEfunc::readPageAccess($this->page_id, $this->perms_clause);
+				if (is_array($pageinfo) && $GLOBALS['BE_USER']->isInWebMount($pageinfo['pid'], $this->perms_clause)) {
 
 						// Initialize the position map:
 					$posMap = t3lib_div::makeInstance('ext_posMap_pages');
@@ -290,23 +290,23 @@ class SC_move_el {
 
 						// Print a "go-up" link IF there is a real parent page (and if the user has read-access to that page).
 					if ($pageinfo['pid']) {
-						$pidPageInfo = t3lib_BEfunc::readPageAccess($pageinfo['pid'],$this->perms_clause);
+						$pidPageInfo = t3lib_BEfunc::readPageAccess($pageinfo['pid'], $this->perms_clause);
 						if (is_array($pidPageInfo)) {
-							if ($GLOBALS['BE_USER']->isInWebMount($pidPageInfo['pid'],$this->perms_clause)) {
-								$code.= '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('uid'=>intval($pageinfo['pid']),'moveUid'=>$this->moveUid))).'">'.
+							if ($GLOBALS['BE_USER']->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
+								$code.= '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('uid'=>intval($pageinfo['pid']), 'moveUid'=>$this->moveUid))).'">'.
 									t3lib_iconWorks::getSpriteIcon('actions-view-go-up') .
-									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
+									t3lib_BEfunc::getRecordTitle('pages', $pidPageInfo, TRUE).
 									'</a><br />';
 							} else {
 								$code.= t3lib_iconWorks::getSpriteIconForRecord('pages', $pidPageInfo) .
-									t3lib_BEfunc::getRecordTitle('pages',$pidPageInfo,TRUE).
+									t3lib_BEfunc::getRecordTitle('pages', $pidPageInfo, TRUE).
 									'<br />';
 							}
 						}
 					}
 
 						// Create the position tree:
-					$code.= $posMap->positionTree($this->page_id,$pageinfo,$this->perms_clause,$this->R_URI);
+					$code.= $posMap->positionTree($this->page_id, $pageinfo, $this->perms_clause, $this->R_URI);
 				}
 			}
 
@@ -314,14 +314,14 @@ class SC_move_el {
 			if ((string)$this->table=='tt_content') {
 
 					// First, get the record:
-				$tt_content_rec = t3lib_BEfunc::getRecord('tt_content',$this->moveUid);
+				$tt_content_rec = t3lib_BEfunc::getRecord('tt_content', $this->moveUid);
 
 					// ?
 				if (!$this->input_moveUid)	$this->page_id = $tt_content_rec['pid'];
 
 					// Checking if the parent page is readable:
-				$pageinfo = t3lib_BEfunc::readPageAccess($this->page_id,$this->perms_clause);
-				if (is_array($pageinfo) && $GLOBALS['BE_USER']->isInWebMount($pageinfo['pid'],$this->perms_clause)) {
+				$pageinfo = t3lib_BEfunc::readPageAccess($this->page_id, $this->perms_clause);
+				if (is_array($pageinfo) && $GLOBALS['BE_USER']->isInWebMount($pageinfo['pid'], $this->perms_clause)) {
 
 						// Initialize the position map:
 					$posMap = t3lib_div::makeInstance('ext_posMap_tt_content');
@@ -333,7 +333,7 @@ class SC_move_el {
 					$hline .= t3lib_BEfunc::getRecordTitle('pages', $pageinfo, TRUE);
 
 						// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
-					$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->page_id,'mod.SHARED');		// SHARED page-TSconfig settings.
+					$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->page_id, 'mod.SHARED');		// SHARED page-TSconfig settings.
 					$colPosArray = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getColPosListItemsParsed', $this->page_id, $this);
 					foreach ($colPosArray as $colPos) {
 						$colPosList .= $colPosList != '' ? ',' . $colPos[1] : $colPos[1];
