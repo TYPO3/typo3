@@ -1076,7 +1076,7 @@ class tx_em_Tools_Unzip {
 		// Create the directory
 		if (!@mkdir($p_dir, 0777)) {
 			$this->_errorLog(ARCHIVE_ZIP_ERR_DIR_CREATE_FAIL,
-				"Unable to create directory '$p_dir'");
+				'Unable to create directory "' . $p_dir . '"');
 			return tx_em_Tools_Unzip::errorCode();
 		}
 

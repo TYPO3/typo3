@@ -1177,12 +1177,12 @@ class t3lib_cs {
 
 			switch ($cat{0}) {
 				case 'M': // mark (accent, umlaut, ...)
-					$mark["U+$char"] = 1;
+					$mark['U+' . $char] = 1;
 					break;
 
 				case 'N': // numeric value
 					if ($ord > 0x80 && $num != '') {
-						$number["U+$char"] = $num;
+						$number['U+' . $char] = $num;
 					}
 			}
 
@@ -1194,7 +1194,7 @@ class t3lib_cs {
 					$c += 32;
 				}
 
-				$decomposition["U+$char"] = array(dechex($c));
+				$decomposition['U+' . $char] = array(dechex($c));
 				continue;
 			}
 
@@ -1223,7 +1223,7 @@ class t3lib_cs {
 					case '<vertical>':
 						continue 2;
 				}
-				$decomposition["U+$char"] = explode(' ', $match[2]);
+				$decomposition['U+' . $char] = explode(' ', $match[2]);
 			}
 		}
 		fclose($fh);
@@ -1278,9 +1278,9 @@ class t3lib_cs {
 					if ($line{0} != '#' && trim($line) != '') {
 						list($char, $translit) = t3lib_div::trimExplode(';', $line);
 						if (!$translit) {
-							$omit["U+$char"] = 1;
+							$omit['U+' . $char] = 1;
 						}
-						$decomposition["U+$char"] = explode(' ', $translit);
+						$decomposition['U+' . $char] = explode(' ', $translit);
 
 					}
 				}
@@ -1294,11 +1294,11 @@ class t3lib_cs {
 
 			while ($code_value = array_shift($to)) {
 					// Do recursive decomposition
-				if (isset($decomposition["U+$code_value"])) {
-					foreach (array_reverse($decomposition["U+$code_value"]) as $cv) {
+				if (isset($decomposition['U+' . $code_value])) {
+					foreach (array_reverse($decomposition['U+' . $code_value]) as $cv) {
 						array_unshift($to, $cv);
 					}
-				} elseif (!isset($mark["U+$code_value"])) { // remove mark
+				} elseif (!isset($mark['U+' . $code_value])) { // remove mark
 					array_push($code_decomp, $code_value);
 				}
 			}

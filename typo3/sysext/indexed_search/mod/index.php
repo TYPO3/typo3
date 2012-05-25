@@ -495,7 +495,7 @@ class SC_mod_tools_isearch_index {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*),item_type', 'index_phash', '', 'item_type', 'item_type');
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
 			$iT = $row[1];
-			$recList[] = array($this->tableHead($revTypes[$iT]." ($iT)"), $this->countUniqueTypes($iT)."/".$row[0]);
+			$recList[] = array($this->tableHead($revTypes[$iT] . ' (' . $iT . ')'), $this->countUniqueTypes($iT)."/".$row[0]);
 		}
 
 		return $recList;

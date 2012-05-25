@@ -1167,7 +1167,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						'fileExt'  => $fileExtension,
 						'fileIcon' => $icon,
 					);
-					$ATag = "<a href=\"#\" onclick=\"return BrowseLinks.File.insertElement('file_$filesIndex');\">";
+					$ATag = "<a href=\"#\" onclick=\"return BrowseLinks.File.insertElement('file_" . $filesIndex . "');\">";
 					$ATag_alt = substr($ATag, 0, -4).",1);\">";
 					$ATag_e='</a>';
 				}

@@ -2208,7 +2208,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		} else {
 			$sure = $GLOBALS['LANG']->getLL('extUpdateEMCONF_sure');
 			$updateEMConf = $GLOBALS['LANG']->getLL('extUpdateEMCONF_file');
-			$onClick = "if (confirm('$sure')) {window.location.href='" . t3lib_div::linkThisScript(array(
+			$onClick = "if (confirm('" . $sure . "')) {window.location.href='" . t3lib_div::linkThisScript(array(
 				'CMD[showExt]' => $extKey,
 				'CMD[doUpdateEMCONF]' => 1
 			)) . "';}";
