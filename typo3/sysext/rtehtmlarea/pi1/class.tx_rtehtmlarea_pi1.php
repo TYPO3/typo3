@@ -369,7 +369,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 					$AspellAnswer = shell_exec($AspellCommand);
 					$AspellResultLines = array();
 					$AspellResultLines = t3lib_div::trimExplode(LF, $AspellAnswer, 1);
-					if(substr($AspellResultLines[0], 0, 6) == 'Error:') echo("{$AspellAnswer}");
+					if(substr($AspellResultLines[0], 0, 6) == 'Error:') echo('{' . $AspellAnswer . '}');
 					t3lib_div::unlink_tempfile($tmpFileName);
 					if(substr($AspellResultLines['1'], 0, 1) != '*') {
 						if(!in_array($word, $this->misspelled)) {

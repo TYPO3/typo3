@@ -4289,7 +4289,7 @@ final class t3lib_div {
 
 			// Check prefix is valid:
 		if ($checkPrefix && !self::hasValidClassPrefix($funcRef, array($checkPrefix))) {
-			$errorMsg = "Function/class '$funcRef' was not prepended with '$checkPrefix'";
+			$errorMsg = 'Function/class \'' . $funcRef . '\' was not prepended with \'' . $checkPrefix . '\'';
 			if ($errorMode == 2) {
 				throw new InvalidArgumentException($errorMsg, 1294585864);
 			} elseif (!$errorMode) {

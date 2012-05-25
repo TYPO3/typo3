@@ -748,7 +748,7 @@ class t3lib_TSparser {
 					}
 
 						// Insert reference to the file in the rest content
-					$restContent[] = "<INCLUDE_TYPOSCRIPT: source=\"FILE:$fileName\">";
+					$restContent[] = '<INCLUDE_TYPOSCRIPT: source="FILE: ' . $fileName . '">';
 
 						// Reset variables (preparing for the next commented include statement)
 					$fileContent = array();
