@@ -57,7 +57,7 @@ class local_t3lib_parsehtml extends t3lib_parsehtml {
 	 * @return	string		The processed value.
 	 * @access private
 	 */
-	function processContent($value,$dir,$conf) {
+	function processContent($value, $dir, $conf) {
 		$value = $this->pObj->substituteGlossaryWords_htmlcleaner_callback($value);
 
 		return $value;
@@ -156,7 +156,7 @@ class SC_view_help {
 		}
 
 			// limitAccess is checked if the $this->table really IS a table (and if the user is NOT a translator who should see all!)
-		$showAllToUser = t3lib_BEfunc::isModuleSetInTBE_MODULES('txllxmltranslateM1') && $GLOBALS['BE_USER']->check('modules','txllxmltranslateM1');
+		$showAllToUser = t3lib_BEfunc::isModuleSetInTBE_MODULES('txllxmltranslateM1') && $GLOBALS['BE_USER']->check('modules', 'txllxmltranslateM1');
 		$this->limitAccess = isset($GLOBALS['TCA'][$this->table]) ? !$showAllToUser : FALSE;
 	}
 
@@ -260,7 +260,7 @@ class SC_view_help {
 		foreach($TCAkeys as $table) {
 				// Load descriptions for table $table
 			$GLOBALS['LANG']->loadSingleTableDescription($table);
-			if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && $GLOBALS['BE_USER']->check('tables_select',$table)) {
+			if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && $GLOBALS['BE_USER']->check('tables_select', $table)) {
 				$this->render_TOC_el($table, 'tables', $outputSections, $tocArray, $CSHkeys);
 			}
 		}
@@ -294,28 +294,28 @@ class SC_view_help {
 		$output = '';
 		$output.= '
 
-			<h1>'.$GLOBALS['LANG']->getLL('manual_title',1).'</h1>';
+			<h1>'.$GLOBALS['LANG']->getLL('manual_title', 1).'</h1>';
 
 		$output.= '
 
-			<h2>'.$GLOBALS['LANG']->getLL('introduction',1).'</h2>
-			<p>'.$GLOBALS['LANG']->getLL('description',1).'</p>';
+			<h2>'.$GLOBALS['LANG']->getLL('introduction', 1).'</h2>
+			<p>'.$GLOBALS['LANG']->getLL('description',  1).'</p>';
 
 		$output.= '
 
-			<h2>'.$GLOBALS['LANG']->getLL('TOC',1).'</h2>'.
+			<h2>'.$GLOBALS['LANG']->getLL('TOC', 1).'</h2>'.
 			$this->render_TOC_makeTocList($tocArray);
 
 		if (!$this->renderALL) {
 			$output.= '
 				<br/>
-				<p class="c-nav"><a href="view_help.php?renderALL=1">'.$GLOBALS['LANG']->getLL('full_manual',1).'</a></p>';
+				<p class="c-nav"><a href="view_help.php?renderALL=1">'.$GLOBALS['LANG']->getLL('full_manual', 1).'</a></p>';
 		}
 
 		if ($this->renderALL) {
 			$output.= '
 
-				<h2>'.$GLOBALS['LANG']->getLL('full_manual_chapters',1).'</h2>'.
+				<h2>'.$GLOBALS['LANG']->getLL('full_manual_chapters', 1).'</h2>'.
 				implode('
 
 
@@ -346,7 +346,7 @@ class SC_view_help {
 				$outputSections[$table] = '
 
 		<!-- New CSHkey/Table: '.$table.' -->
-		<p class="c-nav"><a name="ANCHOR_'.$table.'" href="#">'.$GLOBALS['LANG']->getLL('to_top',1).'</a></p>
+		<p class="c-nav"><a name="ANCHOR_'.$table.'" href="#">'.$GLOBALS['LANG']->getLL('to_top', 1).'</a></p>
 		<h2>'.$this->getTableFieldLabel($table).'</h2>
 
 		'.$outputSections[$table];
@@ -377,7 +377,7 @@ class SC_view_help {
 		foreach($keys as $tocKey) {
 			if (is_array($tocArray[$tocKey])) {
 				$output.='
-					<li>'.$GLOBALS['LANG']->getLL('TOC_'.$tocKey,1).'
+					<li>'.$GLOBALS['LANG']->getLL('TOC_'.$tocKey, 1).'
 						<ul>
 							<li>'.implode('</li>
 							<li>',$tocArray[$tocKey]).'</li>
@@ -512,33 +512,33 @@ class SC_view_help {
 		foreach($items as $val) {
 			$val = trim($val);
 			if ($val) {
-				$iP = explode(':',$val);
-				$iPUrl = t3lib_div::trimExplode('|',$val);
+				$iP = explode(':', $val);
+				$iPUrl = t3lib_div::trimExplode('|', $val);
 					// URL reference:
-				if (substr($iPUrl[1],0,4)=='http') {
+				if (substr($iPUrl[1], 0, 4)=='http') {
 					$lines[] = '<a href="'.htmlspecialchars($iPUrl[1]).'" target="_blank"><em>'.htmlspecialchars($iPUrl[0]).'</em></a>';
-				} elseif (substr($iPUrl[1],0,5)=='FILE:') {
-					$fileName = t3lib_div::getFileAbsFileName(substr($iPUrl[1],5),1,1);
+				} elseif (substr($iPUrl[1], 0, 5)=='FILE:') {
+					$fileName = t3lib_div::getFileAbsFileName(substr($iPUrl[1], 5), 1, 1);
 					if ($fileName && @is_file($fileName)) {
-						$fileName = '../'.substr($fileName,strlen(PATH_site));
+						$fileName = '../'.substr($fileName, strlen(PATH_site));
 						$lines[] = '<a href="'.htmlspecialchars($fileName).'" target="_blank"><em>'.htmlspecialchars($iPUrl[0]).'</em></a>';
 					}
 				} else {
 					// "table" reference
 					t3lib_div::loadTCA($iP[0]);
 
-					if (!isset($GLOBALS['TCA'][$iP[0]]) || ((!$iP[1] || is_array($GLOBALS['TCA'][$iP[0]]['columns'][$iP[1]])) && (!$this->limitAccess || ($GLOBALS['BE_USER']->check('tables_select',$iP[0]) && (!$iP[1] || !$GLOBALS['TCA'][$iP[0]]['columns'][$iP[1]]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields',$iP[0].':'.$iP[1]))))))	{	// Checking read access:
+					if (!isset($GLOBALS['TCA'][$iP[0]]) || ((!$iP[1] || is_array($GLOBALS['TCA'][$iP[0]]['columns'][$iP[1]])) && (!$this->limitAccess || ($GLOBALS['BE_USER']->check('tables_select', $iP[0]) && (!$iP[1] || !$GLOBALS['TCA'][$iP[0]]['columns'][$iP[1]]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $iP[0].':'.$iP[1]))))))	{	// Checking read access:
 						if (isset($GLOBALS['TCA_DESCR'][$iP[0]])) {
 								// Make see-also link:
-							$href = ($this->renderALL || ($anchorTable && $iP[0]==$anchorTable) ? '#'.implode('.',$iP) : 'view_help.php?tfID='.rawurlencode(implode('.',$iP)).'&back='.$this->tfID);
-							$label = $this->getTableFieldLabel($iP[0],$iP[1],' / ');
+							$href = ($this->renderALL || ($anchorTable && $iP[0]==$anchorTable) ? '#'.implode('.', $iP) : 'view_help.php?tfID='.rawurlencode(implode('.', $iP)).'&back='.$this->tfID);
+							$label = $this->getTableFieldLabel($iP[0], $iP[1], ' / ');
 							$lines[] = '<a href="'.htmlspecialchars($href).'">'.htmlspecialchars($label).'</a>';
 						}
 					}
 				}
 			}
 		}
-		return implode('<br />',$lines);
+		return implode('<br />', $lines);
 	}
 
 	/**
@@ -548,19 +548,19 @@ class SC_view_help {
 	 * @param	string		Description string (divided for each image by line break)
 	 * @return	string		Image HTML codes
 	 */
-	function printImage($images,$descr) {
+	function printImage($images, $descr) {
 		$code = '';
 			// Splitting:
 		$imgArray = t3lib_div::trimExplode(',', $images, 1);
 		if (count($imgArray)) {
-			$descrArray = explode(LF,$descr,count($imgArray));
+			$descrArray = explode(LF, $descr, count($imgArray));
 
 			foreach($imgArray as $k => $image) {
 				$descr = $descrArray[$k];
 
-				$absImagePath = t3lib_div::getFileAbsFileName($image,1,1);
+				$absImagePath = t3lib_div::getFileAbsFileName($image, 1, 1);
 				if ($absImagePath && @is_file($absImagePath)) {
-					$imgFile = substr($absImagePath,strlen(PATH_site));
+					$imgFile = substr($absImagePath, strlen(PATH_site));
 					$imgInfo = @getimagesize($absImagePath);
 					if (is_array($imgInfo)) {
 						$imgFile = '../'.$imgFile;
@@ -583,7 +583,7 @@ class SC_view_help {
 	 * @param	string		Header type (1, 0)
 	 * @return	string		The HTML for the header.
 	 */
-	function headerLine($str,$type=0) {
+	function headerLine($str, $type=0) {
 		switch($type) {
 			case 1:
 				$str = '<h2 class="t3-row-header">' . htmlspecialchars($str) . '</h2>
@@ -605,7 +605,7 @@ class SC_view_help {
 	 * @return	string		Formatted content.
 	 */
 	function prepareContent($str) {
-		return '<p>'.nl2br(trim(strip_tags($str,$this->allowedHTML))).'</p>
+		return '<p>'.nl2br(trim(strip_tags($str, $this->allowedHTML))).'</p>
 		';
 	}
 
@@ -634,7 +634,7 @@ class SC_view_help {
 					$this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['description']) .
 					($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details'] ? $this->headerLine($GLOBALS['LANG']->getLL('details').':').$this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['details']) : '') .
 					($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax'] ? $this->headerLine($GLOBALS['LANG']->getLL('syntax').':').$this->prepareContent($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['syntax']) : '') .
-					($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'] ? $this->printImage($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'],$GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image_descr']) : '') .
+					($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'] ? $this->printImage($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image'], $GLOBALS['TCA_DESCR'][$key]['columns'][$field]['image_descr']) : '') .
 					($GLOBALS['TCA_DESCR'][$key]['columns'][$field]['seeAlso'] && $seeAlsoRes ? $this->headerLine($GLOBALS['LANG']->getLL('seeAlso').':').'<p>'.$seeAlsoRes.'</p>' : '') .
 					($this->back ? '<br /><p><a href="' . htmlspecialchars('view_help.php?tfID=' . rawurlencode($this->back)) . '" class="typo3-goBack">' . htmlspecialchars($GLOBALS['LANG']->getLL('goBack')) . '</a></p>' : '') .
 					'<br />';
@@ -724,7 +724,7 @@ class SC_view_help {
 	function createGlossaryIndex() {
 			// Create hash string and try to retrieve glossary array:
 		$hash = md5('typo3/view_help.php:glossary');
-		list($this->glossaryWords,$this->substWords) = unserialize(t3lib_BEfunc::getHash($hash));
+		list($this->glossaryWords, $this->substWords) = unserialize(t3lib_BEfunc::getHash($hash));
 
 			// Generate glossary words if not found:
 		if (!is_array($this->glossaryWords)) {
@@ -746,7 +746,7 @@ class SC_view_help {
 							if ($field) {
 								$this->glossaryWords[$cshKey.'.'.$field] = array(
 									'title' => trim($data['alttitle'] ? $data['alttitle'] : $cshKey),
-									'description' =>  str_replace('%22','%23%23%23', rawurlencode($data['description'])),
+									'description' =>  str_replace('%22', '%23%23%23', rawurlencode($data['description'])),
 								);
 							}
 						}
@@ -766,7 +766,7 @@ class SC_view_help {
 
 			krsort($this->substWords);
 
-			t3lib_BEfunc::storeHash($hash,serialize(array($this->glossaryWords,$this->substWords)),'Glossary');
+			t3lib_BEfunc::storeHash($hash, serialize(array($this->glossaryWords, $this->substWords)), 'Glossary');
 		}
 	}
 
@@ -801,16 +801,16 @@ class SC_view_help {
 					// quoteMeta used so special chars (which should not occur though) in words will not break the regex. Seemed to work (- kasper)
 				$parts = preg_split('/( |[\(])('.quoteMeta($wordSet['title']).')([\.\!\)\?\:\,]+| )/i', ' '.$code.' ', 2, PREG_SPLIT_DELIM_CAPTURE);
 				if (count($parts) == 5) {
-					$parts[2] = '<a class="glossary-term" href="'.htmlspecialchars('view_help.php?tfID='.rawurlencode($wordSet['key']).'&back='.$this->tfID).'" title="'.rawurlencode(htmlspecialchars(t3lib_div::fixed_lgd_cs(rawurldecode($wordSet['description']),80))).'">'.
+					$parts[2] = '<a class="glossary-term" href="'.htmlspecialchars('view_help.php?tfID='.rawurlencode($wordSet['key']).'&back='.$this->tfID).'" title="'.rawurlencode(htmlspecialchars(t3lib_div::fixed_lgd_cs(rawurldecode($wordSet['description']), 80))).'">'.
 								htmlspecialchars($parts[2]).
 								'</a>';
-					$code = substr(implode('',$parts),1,-1);
+					$code = substr(implode('', $parts), 1, -1);
 
 						// Disable entry so it doesn't get used next time:
 					unset($this->substWords[$wordKey]);
 				}
 			}
-			$code = str_replace('###', '&quot;',rawurldecode($code));
+			$code = str_replace('###', '&quot;', rawurldecode($code));
 		}
 
 		return $code;

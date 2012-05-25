@@ -63,7 +63,7 @@ ob_start();
 // *******************************
 // Define constants
 // *******************************
-define('TYPO3_MODE','BE');
+define('TYPO3_MODE', 'BE');
 
 	// We use require instead of require_once here so we get a fatal error if Bootstrap.php is accidentally included twice
 	// (which would indicate a clear bug).

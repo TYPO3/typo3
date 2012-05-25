@@ -77,7 +77,7 @@ class Typo3_Bootstrap_Cli {
 			// This is a compatibility layer: Some cli scripts rely on this, like ext:phpunit cli
 		$GLOBALS['temp_cliScriptPath'] = array_shift($_SERVER['argv']);
 		$GLOBALS['temp_cliKey'] = array_shift($_SERVER['argv']);
-		array_unshift($_SERVER['argv'],$GLOBALS['temp_cliScriptPath']);
+		array_unshift($_SERVER['argv'], $GLOBALS['temp_cliScriptPath']);
 	}
 
 	/**

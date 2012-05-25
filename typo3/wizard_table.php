@@ -102,7 +102,7 @@ class SC_wizard_table {
 
 			// Setting options:
 		$this->xmlStorage = $this->P['params']['xmlOutput'];
-		$this->numNewRows = t3lib_utility_Math::forceIntegerInRange($this->P['params']['numNewRows'],1,50,5);
+		$this->numNewRows = t3lib_utility_Math::forceIntegerInRange($this->P['params']['numNewRows'], 1, 50, 5);
 
 			// Textareas or input fields:
 		$this->inputStyle=isset($this->TABLECFG['textFields']) ? $this->TABLECFG['textFields'] : 1;
@@ -118,7 +118,7 @@ class SC_wizard_table {
 		');
 
 			// Setting form tag:
-		list($rUri) = explode('#',t3lib_div::getIndpEnv('REQUEST_URI'));
+		list($rUri) = explode('#', t3lib_div::getIndpEnv('REQUEST_URI'));
 		$this->doc->form ='<form action="'.htmlspecialchars($rUri).'" method="post" name="wizardForm">';
 
 			// If save command found, include tcemain:
@@ -211,7 +211,7 @@ class SC_wizard_table {
 	function tableWizard() {
 
 			// First, check the references by selecting the record:
-		$row = t3lib_BEfunc::getRecord($this->P['table'],$this->P['uid']);
+		$row = t3lib_BEfunc::getRecord($this->P['table'], $this->P['uid']);
 		if (!is_array($row)) {
 			throw new RuntimeException('Wizard Error: No reference to record', 1294587125);
 		}
@@ -220,7 +220,7 @@ class SC_wizard_table {
 		$tableCfgArray = $this->getConfigCode($row);
 
 			// Generation of the Table Wizards HTML code:
-		$content = $this->getTableHTML($tableCfgArray,$row);
+		$content = $this->getTableHTML($tableCfgArray, $row);
 
 			// Return content:
 		return $content;
@@ -266,7 +266,7 @@ class SC_wizard_table {
 				// Convert to string (either line based or XML):
 			if ($this->xmlStorage) {
 					// Convert the input array to XML:
-				$bodyText = t3lib_div::array2xml_cs($this->TABLECFG['c'],'T3TableWizard');
+				$bodyText = t3lib_div::array2xml_cs($this->TABLECFG['c'], 'T3TableWizard');
 
 					// Setting cfgArr directly from the input:
 				$cfgArr = $this->TABLECFG['c'];
@@ -275,7 +275,7 @@ class SC_wizard_table {
 				$bodyText = $this->cfgArray2CfgString($this->TABLECFG['c']);
 
 					// Create cfgArr from the string based configuration - that way it is cleaned up and any incompatibilities will be removed!
-				$cfgArr = $this->cfgString2CfgArray($bodyText,$row[$this->colsFieldName]);
+				$cfgArr = $this->cfgString2CfgArray($bodyText, $row[$this->colsFieldName]);
 			}
 
 				// If a save button has been pressed, then save the new field content:
@@ -290,7 +290,7 @@ class SC_wizard_table {
 				$data[$this->P['table']][$this->P['uid']][$this->P['field']]=$bodyText;
 
 					// Perform the update:
-				$tce->start($data,array());
+				$tce->start($data, array());
 				$tce->process_datamap();
 
 					// If the save/close button was pressed, then redirect the screen:
@@ -302,7 +302,7 @@ class SC_wizard_table {
 			if ($this->xmlStorage) {
 				$cfgArr = t3lib_div::xml2array($row[$this->P['field']]);
 			} else {	// Regular linebased table configuration:
-				$cfgArr = $this->cfgString2CfgArray($row[$this->P['field']],$row[$this->colsFieldName]);
+				$cfgArr = $this->cfgString2CfgArray($row[$this->P['field']], $row[$this->colsFieldName]);
 			}
 			$cfgArr = is_array($cfgArr) ? $cfgArr : array();
 		}
@@ -318,7 +318,7 @@ class SC_wizard_table {
 	 * @return	string		HTML for the table wizard
 	 * @access private
 	 */
-	function getTableHTML($cfgArr,$row) {
+	function getTableHTML($cfgArr, $row) {
 			// Traverse the rows:
 		$tRows=array();
 		$k=0;
@@ -333,7 +333,7 @@ class SC_wizard_table {
 					if ($this->inputStyle) {
 						$cells[]='<input type="text"'.$this->doc->formWidth(20).' name="TABLE[c]['.(($k+1)*2).']['.(($a+1)*2).']" value="'.htmlspecialchars($cellContent).'" />';
 					} else {
-						$cellContent=preg_replace('/<br[ ]?[\/]?>/i',LF,$cellContent);
+						$cellContent=preg_replace('/<br[ ]?[\/]?>/i', LF, $cellContent);
 						$cells[]='<textarea '.$this->doc->formWidth(20).' rows="5" name="TABLE[c]['.(($k+1)*2).']['.(($a+1)*2).']">'.t3lib_div::formatForTextarea($cellContent).'</textarea>';
 					}
 
@@ -348,19 +348,19 @@ class SC_wizard_table {
 
 				$brTag=$this->inputStyle?'':'<br />';
 				if ($k!=0) {
-					$ctrl.='<input type="image" name="TABLE[row_up]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2up.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_up',1).'" />'.$brTag;
+					$ctrl.='<input type="image" name="TABLE[row_up]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/pil2up.gif', '').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_up', 1).'" />'.$brTag;
 				} else {
-					$ctrl.='<input type="image" name="TABLE[row_bottom]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_up.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_bottom',1).'" />'.$brTag;
+					$ctrl.='<input type="image" name="TABLE[row_bottom]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/turn_up.gif', '').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_bottom', 1).'" />'.$brTag;
 				}
-				$ctrl.='<input type="image" name="TABLE[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_removeRow',1).'" />'.$brTag;
+				$ctrl.='<input type="image" name="TABLE[row_remove]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/garbage.gif', '').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_removeRow', 1).'" />'.$brTag;
 
 // FIXME what is $tLines? See wizard_forms.php for the same.
 				if (($k+1)!=count($tLines)) {
-					$ctrl.='<input type="image" name="TABLE[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2down.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_down',1).'" />'.$brTag;
+					$ctrl.='<input type="image" name="TABLE[row_down]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/pil2down.gif', '').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_down', 1).'" />'.$brTag;
 				} else {
-					$ctrl.='<input type="image" name="TABLE[row_top]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_down.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_top',1).'" />'.$brTag;
+					$ctrl.='<input type="image" name="TABLE[row_top]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/turn_down.gif', '').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_top', 1).'" />'.$brTag;
 				}
-				$ctrl.='<input type="image" name="TABLE[row_add]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/add.gif','').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_addRow',1).'" />'.$brTag;
+				$ctrl.='<input type="image" name="TABLE[row_add]['.(($k+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/add.gif', '').$onClick.' title="'.$GLOBALS['LANG']->getLL('table_addRow', 1).'" />'.$brTag;
 
 				$tRows[]='
 					<tr class="bgColor4">
@@ -389,17 +389,17 @@ class SC_wizard_table {
 			foreach($firstRow as $temp) {
 				$ctrl='';
 				if ($a!=0) {
-					$ctrl.='<input type="image" name="TABLE[col_left]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2left.gif','').' title="'.$GLOBALS['LANG']->getLL('table_left',1).'" />';
+					$ctrl.='<input type="image" name="TABLE[col_left]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/pil2left.gif', '').' title="'.$GLOBALS['LANG']->getLL('table_left', 1).'" />';
 				} else {
-					$ctrl.='<input type="image" name="TABLE[col_end]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_left.gif','').' title="'.$GLOBALS['LANG']->getLL('table_end',1).'" />';
+					$ctrl.='<input type="image" name="TABLE[col_end]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/turn_left.gif', '').' title="'.$GLOBALS['LANG']->getLL('table_end', 1).'" />';
 				}
-				$ctrl.='<input type="image" name="TABLE[col_remove]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/garbage.gif','').' title="'.$GLOBALS['LANG']->getLL('table_removeColumn',1).'" />';
+				$ctrl.='<input type="image" name="TABLE[col_remove]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/garbage.gif', '').' title="'.$GLOBALS['LANG']->getLL('table_removeColumn', 1).'" />';
 				if (($a+1)!=$cols) {
-					$ctrl.='<input type="image" name="TABLE[col_right]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/pil2right.gif','').' title="'.$GLOBALS['LANG']->getLL('table_right',1).'" />';
+					$ctrl.='<input type="image" name="TABLE[col_right]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/pil2right.gif', '').' title="'.$GLOBALS['LANG']->getLL('table_right', 1).'" />';
 				} else {
-					$ctrl.='<input type="image" name="TABLE[col_start]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/turn_right.gif','').' title="'.$GLOBALS['LANG']->getLL('table_start',1).'" />';
+					$ctrl.='<input type="image" name="TABLE[col_start]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/turn_right.gif', '').' title="'.$GLOBALS['LANG']->getLL('table_start', 1).'" />';
 				}
-				$ctrl.='<input type="image" name="TABLE[col_add]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/add.gif','').' title="'.$GLOBALS['LANG']->getLL('table_addColumn',1).'" />';
+				$ctrl.='<input type="image" name="TABLE[col_add]['.(($a+1)*2).']"'.t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/add.gif', '').' title="'.$GLOBALS['LANG']->getLL('table_addColumn', 1).'" />';
 				$cells[]='<span class="c-wizButtonsH">'.$ctrl.'</span>';
 
 					// Incr. counter:
@@ -422,7 +422,7 @@ class SC_wizard_table {
 				Table wizard
 			-->
 			<table border="0" cellpadding="0" cellspacing="1" id="typo3-tablewizard">
-				'.implode('',$tRows).'
+				'.implode('', $tRows).'
 			</table>';
 
 			// Input type checkbox:
@@ -491,7 +491,7 @@ class SC_wizard_table {
 		}
 
 		if ($cmd && t3lib_utility_Math::canBeInterpretedAsInteger($kk)) {
-			if (substr($cmd,0,4)=='row_') {
+			if (substr($cmd, 0, 4)=='row_') {
 				switch($cmd) {
 					case 'row_remove':
 						unset($this->TABLECFG['c'][$kk]);
@@ -524,7 +524,7 @@ class SC_wizard_table {
 				}
 				ksort($this->TABLECFG['c']);
 			}
-			if (substr($cmd,0,4)=='col_') {
+			if (substr($cmd, 0, 4)=='col_') {
 				foreach ($this->TABLECFG['c'] as $cAK => $value) {
 					switch($cmd) {
 						case 'col_remove':
@@ -558,7 +558,7 @@ class SC_wizard_table {
 		// Convert line breaks to <br /> tags:
 		foreach ($this->TABLECFG['c'] as $a => $value) {
 			foreach ($this->TABLECFG['c'][$a] as $b => $value2) {
-				$this->TABLECFG['c'][$a][$b] = str_replace(LF,'<br />',str_replace(CR,'',$this->TABLECFG['c'][$a][$b]));
+				$this->TABLECFG['c'][$a][$b] = str_replace(LF, '<br />', str_replace(CR, '', $this->TABLECFG['c'][$a][$b]));
 			}
 		}
 	}
@@ -579,13 +579,13 @@ class SC_wizard_table {
 		foreach ($this->TABLECFG['c'] as $a => $value) {
 			$thisLine=array();
 			foreach ($this->TABLECFG['c'][$a] as $b => $value) {
-				$thisLine[]=$this->tableParsing_quote.str_replace($this->tableParsing_delimiter,'',$this->TABLECFG['c'][$a][$b]).$this->tableParsing_quote;
+				$thisLine[]=$this->tableParsing_quote.str_replace($this->tableParsing_delimiter, '', $this->TABLECFG['c'][$a][$b]).$this->tableParsing_quote;
 			}
-			$inLines[]=implode($this->tableParsing_delimiter,$thisLine);
+			$inLines[]=implode($this->tableParsing_delimiter, $thisLine);
 		}
 
 			// Finally, implode the lines into a string:
-		$bodyText = implode(LF,$inLines);
+		$bodyText = implode(LF, $inLines);
 
 			// Return the configuration code:
 		return $bodyText;
@@ -599,14 +599,14 @@ class SC_wizard_table {
 	 * @return	array		Configuration array
 	 * @see cfgArray2CfgString()
 	 */
-	function cfgString2CfgArray($cfgStr,$cols) {
+	function cfgString2CfgArray($cfgStr, $cols) {
 
 			// Explode lines in the configuration code - each line is a table row.
-		$tLines=explode(LF,$cfgStr);
+		$tLines=explode(LF, $cfgStr);
 
 			// Setting number of columns
 		if (!$cols && trim($tLines[0]))	{	// auto...
-			$cols = count(explode($this->tableParsing_delimiter,$tLines[0]));
+			$cols = count(explode($this->tableParsing_delimiter, $tLines[0]));
 		}
 		$cols=$cols?$cols:4;
 
@@ -615,12 +615,12 @@ class SC_wizard_table {
 		foreach($tLines as $k => $v) {
 
 				// Initialize:
-			$vParts = explode($this->tableParsing_delimiter,$v);
+			$vParts = explode($this->tableParsing_delimiter, $v);
 
 				// Traverse columns:
 			for ($a=0;$a<$cols;$a++) {
-				if ($this->tableParsing_quote && substr($vParts[$a],0,1) == $this->tableParsing_quote && substr($vParts[$a],-1,1) == $this->tableParsing_quote) {
-					$vParts[$a] = substr(trim($vParts[$a]),1,-1);
+				if ($this->tableParsing_quote && substr($vParts[$a], 0, 1) == $this->tableParsing_quote && substr($vParts[$a], -1, 1) == $this->tableParsing_quote) {
+					$vParts[$a] = substr(trim($vParts[$a]), 1, -1);
 				}
 				$cfgArr[$k][$a]=$vParts[$a];
 			}

@@ -178,16 +178,16 @@ class template {
 		} else {
 			$this->scriptID = preg_replace('/^.*\/(sysext|ext)\//', 'ext/', substr(PATH_thisScript, strlen(PATH_site)));
 		}
-		if (TYPO3_mainDir!='typo3/' && substr($this->scriptID,0,strlen(TYPO3_mainDir)) == TYPO3_mainDir) {
-			$this->scriptID = 'typo3/'.substr($this->scriptID,strlen(TYPO3_mainDir));	// This fixes if TYPO3_mainDir has been changed so the script ids are STILL "typo3/..."
+		if (TYPO3_mainDir!='typo3/' && substr($this->scriptID, 0, strlen(TYPO3_mainDir)) == TYPO3_mainDir) {
+			$this->scriptID = 'typo3/'.substr($this->scriptID, strlen(TYPO3_mainDir));	// This fixes if TYPO3_mainDir has been changed so the script ids are STILL "typo3/..."
 		}
 
-		$this->bodyTagId = preg_replace('/[^A-Za-z0-9-]/','-',$this->scriptID);
+		$this->bodyTagId = preg_replace('/[^A-Za-z0-9-]/','-', $this->scriptID);
 
 			// Individual configuration per script? If so, make a recursive merge of the arrays:
 		if (is_array($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID])) {
 			$ovr = $GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID];		// Make copy
-			$GLOBALS['TBE_STYLES'] = t3lib_div::array_merge_recursive_overrule($GLOBALS['TBE_STYLES'],$ovr);		// merge styles.
+			$GLOBALS['TBE_STYLES'] = t3lib_div::array_merge_recursive_overrule($GLOBALS['TBE_STYLES'], $ovr);		// merge styles.
 			unset($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID]);	// Have to unset - otherwise the second instantiation will do it again!
 		}
 
@@ -312,8 +312,8 @@ class template {
 		);
 
 			// Make link to view page
-		$str.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($id,$backPath,t3lib_BEfunc::BEgetRootLine($id))).'">'.
-				'<img'.t3lib_iconWorks::skinImg($backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage',1).'"'.($addParams?' '.trim($addParams):"").' hspace="3" alt="" />'.
+		$str.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($id, $backPath, t3lib_BEfunc::BEgetRootLine($id))).'">'.
+				'<img'.t3lib_iconWorks::skinImg($backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1).'"'.($addParams?' '.trim($addParams):"").' hspace="3" alt="" />'.
 				'</a>';
 		return $str;
 	}
@@ -369,7 +369,7 @@ class template {
 		if (is_array($row) && $row['uid']) {
 			$iconImgTag = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($path)));
 			$title = strip_tags(t3lib_BEfunc::getRecordTitle($table, $row));
-			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid'],$this->backPath,'');
+			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid'], $this->backPath, '');
 			if ($table == 'pages')
 				$path .= ' - ' . t3lib_BEfunc::titleAttribForPages($row, '', 0);
 		} else {
@@ -395,8 +395,8 @@ class template {
 	 */
 	function getFileheader($title, $path, $iconfile) {
 		$fileInfo = t3lib_div::split_fileref($title);
-		$title = htmlspecialchars(t3lib_div::fixed_lgd_cs($fileInfo['path'],-35)).'<strong>'.htmlspecialchars($fileInfo['file']).'</strong>';
-		return '<span class="typo3-moduleHeader"><img'.t3lib_iconWorks::skinImg($this->backPath,$iconfile,'width="18" height="16"').' title="'.htmlspecialchars($path).'" alt="" />'.$title.'</span>';
+		$title = htmlspecialchars(t3lib_div::fixed_lgd_cs($fileInfo['path'], -35)).'<strong>'.htmlspecialchars($fileInfo['file']).'</strong>';
+		return '<span class="typo3-moduleHeader"><img'.t3lib_iconWorks::skinImg($this->backPath, $iconfile, 'width="18" height="16"').' title="'.htmlspecialchars($path).'" alt="" />'.$title.'</span>';
 	}
 
 	/**
@@ -410,7 +410,7 @@ class template {
 	 */
 	function makeShortcutIcon($gvList, $setList, $modName, $motherModName = '') {
 		$backPath=$this->backPath;
-		$storeUrl=$this->makeShortcutUrl($gvList,$setList);
+		$storeUrl=$this->makeShortcutUrl($gvList, $setList);
 		$pathInfo = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
 
 			// Add the module identifier automatically if typo3/mod.php is used:
@@ -418,7 +418,7 @@ class template {
 			$storeUrl = '&M='.$modName.$storeUrl;
 		}
 
-		if (!strcmp($motherModName,'1')) {
+		if (!strcmp($motherModName, '1')) {
 			$mMN="&motherModName='+top.currentModuleLoaded+'";
 		} elseif ($motherModName) {
 			$mMN='&motherModName='.rawurlencode($motherModName);
@@ -449,10 +449,10 @@ class template {
 	function makeShortcutUrl($gvList, $setList) {
 		$GET = t3lib_div::_GET();
 		$storeArray = array_merge(
-			t3lib_div::compileSelectedGetVarsFromArray($gvList,$GET),
+			t3lib_div::compileSelectedGetVarsFromArray($gvList, $GET),
 			array('SET'=>t3lib_div::compileSelectedGetVarsFromArray($setList, (array)$GLOBALS['SOBE']->MOD_SETTINGS))
 		);
-		$storeUrl = t3lib_div::implodeArrayForUrl('',$storeArray);
+		$storeUrl = t3lib_div::implodeArrayForUrl('', $storeArray);
 		return $storeUrl;
 	}
 
@@ -481,9 +481,9 @@ class template {
 	/**
 	 * This function is dedicated to textareas, which has the wrapping on/off option to observe.
 	 * EXAMPLE:
-	 * 		<textarea rows="10" wrap="off" '.$GLOBALS["TBE_TEMPLATE"]->formWidthText(48,"","off").'>
+	 * 		<textarea rows="10" wrap="off" '.$GLOBALS["TBE_TEMPLATE"]->formWidthText(48, "", "off").'>
 	 *   or
-	 * 		<textarea rows="10" wrap="virtual" '.$GLOBALS["TBE_TEMPLATE"]->formWidthText(48,"","virtual").'>
+	 * 		<textarea rows="10" wrap="virtual" '.$GLOBALS["TBE_TEMPLATE"]->formWidthText(48, "", "virtual").'>
 	 *
 	 * @param integer $size A relative number which multiplied with approx. 10 will lead to the width in pixels
 	 * @param string $styleOverride A string which will be returned as attribute-value for style="" instead of the calculated width (if CSS is enabled)
@@ -492,7 +492,7 @@ class template {
 	 * @see formWidth()
 	 */
 	function formWidthText($size = 48, $styleOverride = '', $wrap = '') {
-		$wTags = $this->formWidth($size,1,$styleOverride);
+		$wTags = $this->formWidth($size, 1, $styleOverride);
 			// Netscape 6+/Mozilla seems to have this ODD problem where there WILL ALWAYS be wrapping with the cols-attribute set and NEVER without the col-attribute...
 		if (strtolower(trim($wrap))!='off' && $GLOBALS['CLIENT']['BROWSER']=='net' && $GLOBALS['CLIENT']['VERSION']>=5) {
 			$wTags.=' cols="'.$size.'"';
@@ -518,8 +518,8 @@ class template {
 		));
 
 		$out ="
-	var T3_RETURN_URL = '".str_replace('%20','',rawurlencode(t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'))))."';
-	var T3_THIS_LOCATION = '".str_replace('%20','',rawurlencode($thisLocation))."';
+	var T3_RETURN_URL = '".str_replace('%20', '', rawurlencode(t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'))))."';
+	var T3_THIS_LOCATION = '".str_replace('%20', '', rawurlencode($thisLocation))."';
 		";
 		return $out;
 	}
@@ -535,9 +535,9 @@ class template {
 	function formatTime($tstamp, $type) {
 		$dateStr = '';
 		switch($type) {
-			case 1: $dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],$tstamp);
+			case 1: $dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $tstamp);
 			break;
-			case 10: $dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],$tstamp);
+			case 10: $dateStr = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $tstamp);
 			break;
 		}
 		return $dateStr;
@@ -1087,11 +1087,11 @@ class template {
 			// insert accumulated CSS
 		$this->inDocStylesArray[] = $this->inDocStyles;
 		$styles = LF.implode(LF, $this->inDocStylesArray);
-		$content = str_replace('/*###POSTCSSMARKER###*/',$styles,$content);
+		$content = str_replace('/*###POSTCSSMARKER###*/', $styles, $content);
 
 			// insert accumulated JS
 		$jscode = $this->JScode.LF.$this->wrapScriptTags(implode(LF, $this->JScodeArray));
-		$content = str_replace('<!--###POSTJSMARKER###-->',$jscode,$content);
+		$content = str_replace('<!--###POSTJSMARKER###-->', $jscode, $content);
 
 		return $content;
 	}
@@ -1287,8 +1287,8 @@ class template {
 			$string = preg_replace ('/^\n+/', '', $string);
 				// re-ident to one tab using the first line as reference
 			$match = array();
-			if(preg_match('/^(\t+)/',$string,$match)) {
-				$string = str_replace($match[1],TAB, $string);
+			if(preg_match('/^(\t+)/', $string, $match)) {
+				$string = str_replace($match[1], TAB, $string);
 			}
 			$string = $cr.'<script type="text/javascript">
 /*<![CDATA[*/
@@ -1303,7 +1303,7 @@ class template {
 		// You can override these values from outside if you like.
 	var $tableLayout = array(
 		'defRow' => array(
-			'defCol' => array('<td valign="top">','</td>')
+			'defCol' => array('<td valign="top">', '</td>')
 		)
 	);
 	var $table_TR = '<tr>';
@@ -1361,8 +1361,8 @@ class template {
 	 * @param array $arr3 Third-level items
 	 * @return string HTML content, <table>...</table>
 	 */
-	function menuTable($arr1,$arr2 = array(), $arr3 = array()) {
-		$rows = max(array(count($arr1),count($arr2),count($arr3)));
+	function menuTable($arr1, $arr2 = array(), $arr3 = array()) {
+		$rows = max(array(count($arr1), count($arr2), count($arr3)));
 
 		$menu='
 		<table border="0" cellpadding="0" cellspacing="0" id="typo3-tablemenu">';
@@ -1377,7 +1377,7 @@ class template {
 					$cls[]='<td valign="'.$valign.'">'.$arr3[$a][0].'</td><td>'.$arr3[$a][1].'</td>';
 				}
 			}
-			$menu.=implode($cls,'<td>&nbsp;&nbsp;</td>');
+			$menu.=implode($cls, '<td>&nbsp;&nbsp;</td>');
 			$menu.='</tr>';
 		}
 		$menu.='
@@ -1483,13 +1483,13 @@ class template {
 			if (!is_array($mainParams)) {
 				$mainParams = array('id' => $mainParams);
 			}
-			$mainParams = t3lib_div::implodeArrayForUrl('',$mainParams);
+			$mainParams = t3lib_div::implodeArrayForUrl('', $mainParams);
 
 			if (!$script) {$script=basename(PATH_thisScript);}
 
 			$menuDef = array();
 			foreach($menuItems as $value => $label) {
-				$menuDef[$value]['isActive'] = !strcmp($currentValue,$value);
+				$menuDef[$value]['isActive'] = !strcmp($currentValue, $value);
 				$menuDef[$value]['label'] = t3lib_div::deHSCentities(htmlspecialchars($label));
 				$menuDef[$value]['url'] = $script . '?' . $mainParams . $addparams . '&' . $elementName . '=' . $value;
 			}
@@ -1516,10 +1516,10 @@ class template {
 			$widthLeft = 1;
 			$addToAct = 5;
 
-			$widthRight = max (1,floor(30-pow($count,1.72)));
+			$widthRight = max (1, floor(30-pow($count, 1.72)));
 			$widthTabs = 100 - $widthRight - $widthLeft;
 			$widthNo = floor(($widthTabs - $addToAct)/$count);
-			$addToAct = max ($addToAct,$widthTabs-($widthNo*$count));
+			$addToAct = max ($addToAct, $widthTabs-($widthNo*$count));
 			$widthAct = $widthNo + $addToAct;
 			$widthRight = 100 - ($widthLeft + ($count*$widthNo) + $addToAct);
 
@@ -1604,7 +1604,7 @@ class template {
 					$onclick = 'this.blur(); DTM_activate("'.$id.'","'.$index.'", '.($toggle<0?1:0).'); return false;';
 				}
 
-				$isEmpty = !(strcmp(trim($def['content']),'') || strcmp(trim($def['icon']),''));
+				$isEmpty = !(strcmp(trim($def['content']), '') || strcmp(trim($def['icon']), ''));
 
 					// "Removes" empty tabs
 				if ($isEmpty && $dividers2tabs == 1) {
@@ -1622,7 +1622,7 @@ class template {
 							$def['icon'].
 							($def['label'] ? htmlspecialchars($def['label']) : '&nbsp;').
 							$requiredIcon.
-							$this->icons($def['stateIcon'],'margin-left: 10px;').
+							$this->icons($def['stateIcon'], 'margin-left: 10px;').
 							($isEmpty ? '' : '</a>').
 							'</td>';
 					$titleLenCount+= strlen($def['label']);
@@ -1670,7 +1670,7 @@ class template {
 					<!-- Tab menu -->
 					<table cellpadding="0" cellspacing="0" border="0"'.($fullWidth ? ' width="100%"' : '').' class="typo3-dyntabmenu">
 						<tr>
-								'.implode('',$options[$a]).'
+								'.implode('', $options[$a]).'
 						</tr>
 					</table>';
 					}
@@ -1681,14 +1681,14 @@ class template {
 				$content.= '
 				<!-- Div layers for tab menu: -->
 				<div class="typo3-dyntabmenu-divs'.($foldout?'-foldout':'').'">
-				'.implode('',$divs).'</div>';
+				'.implode('', $divs).'</div>';
 
 					// Java Script section added:
 				$content.= '
 				<!-- Initialization JavaScript for the menu -->
 				<script type="text/javascript">
 					DTM_array["'.$id.'"] = new Array();
-					'.implode('',$JSinit).'
+					'.implode('', $JSinit).'
 					'.($toggle<=0 ? 'DTM_activate("'.$id.'", top.DTM_currentTabs["'.$id.'"]?top.DTM_currentTabs["'.$id.'"]:'.intval($defaultTabIndex).', 0);' : '').'
 				</script>
 
