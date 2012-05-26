@@ -61,7 +61,7 @@
  * @param	array		TypoScript properties passed on to this function.
  * @return	string		The input string reversed. If the TypoScript property "uppercase" was set it will also be in uppercase.
  */
-function user_reverseString($content,$conf) {
+function user_reverseString($content, $conf) {
 	$content = strrev($content);
 	if ($conf['uppercase']) {
 		$content=strtoupper($content);
@@ -86,7 +86,7 @@ function user_reverseString($content,$conf) {
  * @param	array		TypoScript configuration
  * @return	string		HTML output, showing the current server time.
  */
-function user_printTime($content,$conf) {
+function user_printTime($content, $conf) {
 	return '<font color="red">Dynamic time: '.date('H:i:s').'</font><br />';
 }
 
@@ -107,13 +107,13 @@ class user_various	{
 	 * @return	string		The input string reversed. If the TypoScript property "uppercase" was set it will also be in uppercase. May also be linked.
 	 * @see user_reverseString()
 	 */
-	function reverseString($content,$conf) {
+	function reverseString($content, $conf) {
 		$content = strrev($content);
 		if ($conf['uppercase']) {
-			$content=$this->cObj->caseshift($content,'upper');
+			$content=$this->cObj->caseshift($content, 'upper');
 		}
 		if ($conf['typolink']) {
-			$content=$this->cObj->getTypoLink($content,$conf['typolink']);
+			$content=$this->cObj->getTypoLink($content, $conf['typolink']);
 		}
 		return $content;
 	}
@@ -136,7 +136,7 @@ class user_various	{
 	 * @param	array		TypoScript configuration
 	 * @return	string		HTML output, showing content elements (in reverse order if configured.)
 	 */
-	function listContentRecordsOnPage($content,$conf) {
+	function listContentRecordsOnPage($content, $conf) {
 		$query = $GLOBALS['TYPO3_DB']->SELECTquery(
 						'header',
 						'tt_content',
@@ -161,7 +161,7 @@ class user_various	{
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$output[]=$row['header'];
 		}
-		return implode($output,'<br />');
+		return implode($output, '<br />');
 	}
 }
 

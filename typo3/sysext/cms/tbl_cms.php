@@ -268,7 +268,7 @@ $TCA['fe_users'] = array(
 				'eval' => 'datetime',
 				'default' => '0',
 				'range' => array(
-					'upper' => mktime(0,0,0,12,31,2020),
+					'upper' => mktime(0, 0, 0, 12, 31, 2020),
 				)
 			)
 		),
@@ -544,7 +544,7 @@ $TCA['pages_language_overlay'] = array(
 				'eval' => 'datetime',
 				'default' => '0',
 				'range' => array(
-					'upper' => mktime(0,0,0,12,31,2020),
+					'upper' => mktime(0, 0, 0, 12, 31, 2020),
 				)
 			)
 		),
@@ -687,7 +687,7 @@ $TCA['pages_language_overlay'] = array(
 				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
-					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value',0)
+					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0)
 				)
 			)
 		),
@@ -924,7 +924,7 @@ $TCA['sys_template'] = array(
 				'eval' => 'datetime',
 				'default' => '0',
 				'range' => array(
-					'upper' => mktime(0,0,0,12,31,2020),
+					'upper' => mktime(0, 0, 0, 12, 31, 2020),
 				)
 			)
 		),

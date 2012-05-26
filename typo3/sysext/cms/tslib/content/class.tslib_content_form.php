@@ -80,7 +80,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 							: $singleKeyArray['label'];
 						list ($temp[0]) = explode('|', $label);
 						$type = isset($singleKeyArray['type.'])
-							? $this->cObj->stdWrap($singleKeyArray['type'],$singleKeyArray['type.'])
+							? $this->cObj->stdWrap($singleKeyArray['type'], $singleKeyArray['type.'])
 							: $singleKeyArray['type'];
 						list ($temp[1]) = explode('|', $type);
 						$required = isset($singleKeyArray['required.'])

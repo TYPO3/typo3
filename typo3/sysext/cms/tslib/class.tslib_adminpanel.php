@@ -673,7 +673,7 @@ $query . '<table class="typo3-adminPanel">' .
 	 */
 	public function ext_makeToolBar() {
 			//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
-		$tsConfig = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
+		$tsConfig = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 		$tsConfig = $tsConfig['properties']['newContentWiz.']['overrideWithExtension'];
 		$newContentWizScriptPath = t3lib_extMgm::isLoaded($tsConfig) ? (t3lib_extMgm::extRelPath($tsConfig) . 'mod1/db_new_content_el.php') : (TYPO3_mainDir . 'sysext/cms/layout/db_new_content_el.php');
 
@@ -712,7 +712,7 @@ $query . '<table class="typo3-adminPanel">' .
 					'pid=' . intval($id) . ' AND sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid . $GLOBALS['TSFE']->sys_page->enableFields('pages_language_overlay'),
 					'', '', '1');
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-				$GLOBALS['TSFE']->sys_page->versionOL('pages_language_overlay',$row);
+				$GLOBALS['TSFE']->sys_page->versionOL('pages_language_overlay', $row);
 				if (is_array($row)) {
 					$params = '&edit[pages_language_overlay][' . $row['uid'] . ']=edit';
 					$toolBar .= '<a href="' . htmlspecialchars(TYPO3_mainDir . 'alt_doc.php?' . $params . '&noView=1&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'))) . '">' .
