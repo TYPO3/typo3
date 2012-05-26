@@ -10,6 +10,6 @@ if (TYPO3_MODE=='BE') {
 	);
 }
 
-t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_info','EXT:info_pagetsconfig/locallang_csh_webinfo.xml');
+t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_info', 'EXT:info_pagetsconfig/locallang_csh_webinfo.xml');
 
 ?>
