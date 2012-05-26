@@ -189,7 +189,7 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 		$linesArr = $this->pObj->writeToLocalconf_control();
 		$version = $this->userInput['version'] ? $this->userInput['version'] : TYPO3_branch;
 		$this->pObj->setValueInLocalconfFile($linesArr, '$TYPO3_CONF_VARS[\'SYS\'][\'compat_version\']', $version);
-		$this->pObj->writeToLocalconf_control($linesArr,0);
+		$this->pObj->writeToLocalconf_control($linesArr, 0);
 		$customMessages.= '<br />The compatibility version has been set to '.$version.'.';
 
 		return 1;
@@ -232,8 +232,8 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 			$updateWizardBoxes = '';
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version'] as $internalName => $details) {
 				if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion) {
-					$description = str_replace(chr(10),'<br />',$details['description']);
-					$description_acknowledge = (isset($details['description_acknowledge']) ? str_replace(chr(10),'<br />',$details['description_acknowledge']) : '');
+					$description = str_replace(chr(10), '<br />', $details['description']);
+					$description_acknowledge = (isset($details['description_acknowledge']) ? str_replace(chr(10), '<br />', $details['description_acknowledge']) : '');
 
 					$updateWizardBoxes.= '
 						<div style="border: 1px solid; padding: 10px; margin: 10px; padding-top: 0px; width: 500px;">
