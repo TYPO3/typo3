@@ -1349,7 +1349,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 	/**
 	 * Imports an extensions from the online repository
-	 * NOTICE: in version 4.0 this changed from "importExtFromRep_old($extRepUid,$loc,$uploadFlag=0,$directInput='',$recentTranslations=0,$incManual=0,$dontDelete=0)"
+	 * NOTICE: in version 4.0 this changed from "importExtFromRep_old($extRepUid, $loc, $uploadFlag=0, $directInput='', $recentTranslations=0, $incManual=0, $dontDelete=0)"
 	 *
 	 * @param	string		Extension key
 	 * @param	string		Version
