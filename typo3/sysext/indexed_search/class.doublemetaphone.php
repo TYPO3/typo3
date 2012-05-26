@@ -392,7 +392,7 @@ class user_DoubleMetaPhone
                            array("B","H","D")))
                 // e.g. 'bough'
                 || (($this->current > 2)
-                    &&  $this->StringAt($this->original, $this->current - 3, 1,
+                    && $this->StringAt($this->original, $this->current - 3, 1,
                                array("B","H","D")))
                 // e.g. 'broughton'
                 || (($this->current > 3)
