@@ -79,10 +79,10 @@ class TSpagegen {
 			unset($temp_copy_TSFE);
 		}
 		if ($GLOBALS['TSFE']->config['config']['MP_defaults']) {
-			$temp_parts = t3lib_div::trimExplode('|',$GLOBALS['TSFE']->config['config']['MP_defaults'],1);
+			$temp_parts = t3lib_div::trimExplode('|', $GLOBALS['TSFE']->config['config']['MP_defaults'], 1);
 			foreach ($temp_parts as $temp_p) {
-				list($temp_idP,$temp_MPp) = explode(':',$temp_p,2);
-				$temp_ids=t3lib_div::intExplode(',',$temp_idP);
+				list($temp_idP, $temp_MPp) = explode(':', $temp_p, 2);
+				$temp_ids=t3lib_div::intExplode(',', $temp_idP);
 				foreach ($temp_ids as $temp_id) {
 					$GLOBALS['TSFE']->MP_defaults[$temp_id]=$temp_MPp;
 				}
@@ -106,13 +106,13 @@ class TSpagegen {
 		if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'] === 'ascii') {
 			$GLOBALS['TSFE']->spamProtectEmailAddresses = 'ascii';
 		} else {
-			$GLOBALS['TSFE']->spamProtectEmailAddresses = t3lib_utility_Math::forceIntegerInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'],-10,10,0);
+			$GLOBALS['TSFE']->spamProtectEmailAddresses = t3lib_utility_Math::forceIntegerInRange($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'], -10, 10, 0);
 		}
 
 		$GLOBALS['TSFE']->absRefPrefix = ($GLOBALS['TSFE']->config['config']['absRefPrefix'] ? trim($GLOBALS['TSFE']->config['config']['absRefPrefix']) : '');
 
 		if ($GLOBALS['TSFE']->type && $GLOBALS['TSFE']->config['config']['frameReloadIfNotInFrameset']) {
-			$tdlLD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page,'_top',$GLOBALS['TSFE']->no_cache,'');
+			$tdlLD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page, '_top', $GLOBALS['TSFE']->no_cache, '');
 			$GLOBALS['TSFE']->JSCode = 'if(!parent.'.trim($GLOBALS['TSFE']->sPre).' && !parent.view_frame) top.location.href="'.$GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL']).'"';
 		}
 		$GLOBALS['TSFE']->compensateFieldWidth = ''.$GLOBALS['TSFE']->config['config']['compensateFieldWidth'];
@@ -135,7 +135,7 @@ class TSpagegen {
 						$GLOBALS['TSFE']->sWordRegEx.= $space.quotemeta($val).$space.'|';
 				}
 			}
-			$GLOBALS['TSFE']->sWordRegEx = preg_replace('/\|$/','',$GLOBALS['TSFE']->sWordRegEx);
+			$GLOBALS['TSFE']->sWordRegEx = preg_replace('/\|$/', '', $GLOBALS['TSFE']->sWordRegEx);
 		}
 
 			// linkVars
@@ -236,7 +236,7 @@ class TSpagegen {
 
 		foreach ($GLOBALS['TSFE']->JSeventFuncCalls as $event => $handlers) {
 			if (count($handlers)) {
-				$functions[] = '	function T3_'.$event.'Wrapper(e)	{	'.implode('   ',$handlers).'	}';
+				$functions[] = '	function T3_'.$event.'Wrapper(e)	{	'.implode('   ', $handlers).'	}';
 				$setEvents[] = '	document.'.$event.'=T3_'.$event.'Wrapper;';
 				if ($event == 'onload') {
 					$setBody[]='onload="T3_onloadWrapper();"';	// dubiuos double setting breaks on some browser - do we need it?
@@ -1117,7 +1117,7 @@ class TSpagegen {
 	 * @param	string		The string to find in $haystack
 	 * @return	boolean		Returns TRUE if $needle matches or is found in $haystack
 	 */
-	public static function isAllowedLinkVarValue($haystack,$needle) {
+	public static function isAllowedLinkVarValue($haystack, $needle) {
 		$OK = FALSE;
 
 		if ($needle=='int' || $needle=='integer')	{	// Integer
@@ -1132,23 +1132,23 @@ class TSpagegen {
 				$OK = TRUE;
 			}
 
-		} elseif (strstr($needle,'-'))	{	// Range
+		} elseif (strstr($needle, '-'))	{	// Range
 
 			if (t3lib_utility_Math::canBeInterpretedAsInteger($haystack)) {
-				$range = explode('-',$needle);
+				$range = explode('-', $needle);
 				if ($range[0] <= $haystack && $range[1] >= $haystack) {
 					$OK = TRUE;
 				}
 			}
 
-		} elseif (strstr($needle,'|'))	{	// List
+		} elseif (strstr($needle, '|'))	{	// List
 
-			$haystack = str_replace(' ','',$haystack);	// Trim the input
+			$haystack = str_replace(' ', '', $haystack);	// Trim the input
 			if (strstr('|'.$needle.'|', '|'.$haystack.'|')) {
 				$OK = TRUE;
 			}
 
-		} elseif (!strcmp($needle,$haystack))	{	// String comparison
+		} elseif (!strcmp($needle, $haystack))	{	// String comparison
 			$OK = TRUE;
 		}
 

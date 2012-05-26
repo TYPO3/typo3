@@ -100,14 +100,14 @@ class tslib_search {
 	 * @param	string		$allowedCols: is the list of columns, that MAY be searched. All allowed cols are set as result-fields. All requested cols MUST be in the allowed-fields list.
 	 * @return	void
 	 */
-	function register_tables_and_columns($requestedCols,$allowedCols) {
+	function register_tables_and_columns($requestedCols, $allowedCols) {
 		$rCols=$this->explodeCols($requestedCols);
 		$aCols=$this->explodeCols($allowedCols);
 
 		foreach ($rCols as $k => $v) {
 			$rCols[$k]=trim($v);
 			if (in_array($rCols[$k], $aCols)) {
-				$parts = explode('.',$rCols[$k]);
+				$parts = explode('.', $rCols[$k]);
 				$this->tables[$parts[0]]['searchfields'][] = $parts[1];
 			}
 		}
@@ -117,8 +117,8 @@ class tslib_search {
 
 		foreach ($aCols as $k => $v) {
 			$aCols[$k]=trim($v);
-			$parts = explode('.',$aCols[$k]);
-			$this->tables[$parts[0]]['resultfields'][] = $parts[1].' AS '.str_replace('.','_',$aCols[$k]);
+			$parts = explode('.', $aCols[$k]);
+			$this->tables[$parts[0]]['resultfields'][] = $parts[1].' AS '.str_replace('.', '_', $aCols[$k]);
 			$this->tables[$parts[0]]['fkey']='pid';
 		}
 
@@ -142,13 +142,13 @@ class tslib_search {
 	 * @see	register_tables_and_columns()
 	 */
 	function explodeCols($in) {
-		$theArray = explode(':',$in);
+		$theArray = explode(':', $in);
 		$out = Array();
 		foreach ($theArray as $val) {
 			$val=trim($val);
-			$parts = explode('.',$val);
+			$parts = explode('.', $val);
 			if ($parts[0] && $parts[1]) {
-				$subparts = explode('-',$parts[1]);
+				$subparts = explode('-', $parts[1]);
 				foreach ($subparts as $piece) {
 					$piece=trim($piece);
 					if ($piece)		$out[]=$parts[0].'.'.$piece;
@@ -204,23 +204,23 @@ class tslib_search {
 
 			// As long as $sword is TRUE (that means $sword MUST be reduced little by little until its empty inside the loop!)
 		while ($sword) {
-			if (preg_match('/^"/',$sword))	{		// There was a double-quote and we will then look for the ending quote.
-				$sword = preg_replace('/^"/','',$sword);		// Removes first double-quote
-				preg_match('/^[^"]*/',$sword,$reg);  // Removes everything till next double-quote
+			if (preg_match('/^"/', $sword))	{		// There was a double-quote and we will then look for the ending quote.
+				$sword = preg_replace('/^"/', '', $sword);		// Removes first double-quote
+				preg_match('/^[^"]*/', $sword, $reg);  // Removes everything till next double-quote
 				$value[] = $reg[0];  // reg[0] is the value, should not be trimmed
 				$sword = preg_replace('/^' . preg_quote($reg[0], '/') . '/', '', $sword);
-				$sword = trim(preg_replace('/^"/','',$sword));		// Removes last double-quote
-			} elseif (preg_match('/^'.$specs.'/',$sword,$reg)) {
+				$sword = trim(preg_replace('/^"/', '', $sword));		// Removes last double-quote
+			} elseif (preg_match('/^'.$specs.'/', $sword, $reg)) {
 				$value[] = $reg[0];
-				$sword = trim(preg_replace('/^'.$specs.'/','',$sword));		// Removes = sign
-			} elseif (preg_match('/[\+\-]/',$sword)) {	// Check if $sword contains + or -
+				$sword = trim(preg_replace('/^'.$specs.'/', '', $sword));		// Removes = sign
+			} elseif (preg_match('/[\+\-]/', $sword)) {	// Check if $sword contains + or -
 					// + and - shall only be interpreted as $specchars when there's whitespace before it
 					// otherwise it's included in the searchword (e.g. "know-how")
-				$a_sword = explode(' ',$sword);	// explode $sword to single words
+				$a_sword = explode(' ', $sword);	// explode $sword to single words
 				$word = array_shift($a_sword);	// get first word
 				$word = rtrim($word, $delchars);		// Delete $delchars at end of string
 				$value[] = $word;	// add searchword to values
-				$sword = implode(' ',$a_sword);	// re-build $sword
+				$sword = implode(' ', $a_sword);	// re-build $sword
 			} else {
 					// There are no double-quotes around the value. Looking for next (space) or special char.
 				preg_match('/^[^ ' . preg_quote($specchars, '/') . ']*/', $sword, $reg);
@@ -278,8 +278,8 @@ class tslib_search {
 						}
 					}
 				}
-				$this->queryParts['SELECT'] = implode(',',$fieldArray);
-				$this->queryParts['FROM'] = implode(',',$tableArray);
+				$this->queryParts['SELECT'] = implode(',', $fieldArray);
+				$this->queryParts['FROM'] = implode(',', $tableArray);
 
 					// Set join WHERE parts:
 				$whereArray = array();
@@ -293,7 +293,7 @@ class tslib_search {
 					}
 				}
 				if (count($primKeys)) {
-					$whereArray[] = '('.implode(' OR ',$primKeys).')';
+					$whereArray[] = '('.implode(' OR ', $primKeys).')';
 				}
 
 					// Additional where clause:
@@ -309,7 +309,7 @@ class tslib_search {
 				$whereArray[] = '('.$query_part.')';
 
 					// Implode where clauses:
-				$this->queryParts['WHERE'] = implode(' AND ',$whereArray);
+				$this->queryParts['WHERE'] = implode(' AND ', $whereArray);
 
 					// Group by settings:
 				if ($this->group_by) {
@@ -353,13 +353,13 @@ class tslib_search {
 
 				if (count($sub_query_part)) {
 					$main_query_part[] = $this->sword_array[$key]['oper'];
-					$main_query_part[] = '('.implode(' OR ',$sub_query_part).')';
+					$main_query_part[] = '('.implode(' OR ', $sub_query_part).')';
 				}
 			}
 
 			if (count($main_query_part)) {
 				unset($main_query_part[0]);	// Remove first part anyways.
-				return implode(' ',$main_query_part);
+				return implode(' ', $main_query_part);
 			}
 		}
 	}

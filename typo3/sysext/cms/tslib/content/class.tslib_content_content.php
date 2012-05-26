@@ -171,7 +171,7 @@ class tslib_content_Content extends tslib_content_Abstract {
 		}
 
 		$wrap = isset($conf['wrap.'])
-			? $this->cObj->stdWrap($conf['wrap'],$conf['wrap.'])
+			? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.'])
 			: $conf['wrap'];
 		if ($wrap) {
 			$theValue = $this->cObj->wrap($theValue, $wrap);
