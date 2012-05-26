@@ -189,9 +189,6 @@ class SC_view_help {
 			$this->content.= $this->render_TOC();
 		}
 
-			// Print close-button:
-#		$this->content.='<br /><form action=""><input type="submit" value="'.htmlspecialchars($GLOBALS['LANG']->getLL('close')).'" onclick="self.close(); return false;" /></form><br/>';
-
 			// End page:
 		$this->content.= '<br/>';
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
@@ -531,9 +528,6 @@ class SC_view_help {
 					t3lib_div::loadTCA($iP[0]);
 
 					if (!isset($GLOBALS['TCA'][$iP[0]]) || ((!$iP[1] || is_array($GLOBALS['TCA'][$iP[0]]['columns'][$iP[1]])) && (!$this->limitAccess || ($GLOBALS['BE_USER']->check('tables_select',$iP[0]) && (!$iP[1] || !$GLOBALS['TCA'][$iP[0]]['columns'][$iP[1]]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields',$iP[0].':'.$iP[1]))))))	{	// Checking read access:
-
-							// Load table descriptions:
-						#$GLOBALS['LANG']->loadSingleTableDescription($iP[0]);
 						if (isset($GLOBALS['TCA_DESCR'][$iP[0]])) {
 								// Make see-also link:
 							$href = ($this->renderALL || ($anchorTable && $iP[0]==$anchorTable) ? '#'.implode('.',$iP) : 'view_help.php?tfID='.rawurlencode(implode('.',$iP)).'&back='.$this->tfID);

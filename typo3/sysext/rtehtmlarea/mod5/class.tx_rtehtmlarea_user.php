@@ -271,7 +271,6 @@ class tx_rtehtmlarea_user {
 				} else {
 					$title = $GLOBALS['LANG']->sL($title, 1);
 				}
-				//$lines[]='<tr><td colspan="3" class="bgColor5"><a href="'.t3lib_div::linkThisScript(array('OC_key' => ($openKeys[$openK]?'C|':'O|').$openK, 'editorNo' => $this->editorNo)).'" title="'.$GLOBALS['LANG']->getLL('expand',1).'"><img' . t3lib_iconWorks::skinImg($BACK_PATH,'gfx/ol/'.($openKeys[$openK]?'minus':'plus').'bullet.gif','width="18" height="16"').' title="'.$GLOBALS['LANG']->getLL('expand',1).'" /><strong>'.$title.'</strong></a></td></tr>';
 				$lines[] = '<tr><td colspan="3" class="bgColor5"><a href="#" title="' . $GLOBALS['LANG']->getLL('expand', 1) . '" onClick="jumpToUrl(\'?OC_key=' . ($openKeys[$openK] ? 'C|' : 'O|') . $openK .  '\');return false;"><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/' . ($openKeys[$openK] ? 'minus' : 'plus') . 'bullet.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('expand', 1) . '" /><strong>' . $title . '</strong></a></td></tr>';
 				$lines[]=$v;
 			}

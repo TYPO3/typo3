@@ -153,14 +153,6 @@ class tx_t3editor_TSrefLoader {
 					}
 				}
 			}
-		} else {  // retrieve typedescription
-			/*
-			$descriptions = $type->getElementsByTagName('description');
-			if($descriptions->length){
-				$description = $descriptions->item(0)->textContent;
-
-				return htmlspecialchars($description);
-			}*/
 		}
 
 		return '';

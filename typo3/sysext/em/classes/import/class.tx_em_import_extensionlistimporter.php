@@ -89,8 +89,6 @@ class tx_em_Import_ExtensionListImporter implements SplObserver {
 		'description',
 		'dependencies',
 		'uploadcomment',
-		//'lastversion',
-		//'lastreviewedversion'
 	);
 
 	/**

@@ -55,15 +55,9 @@
  * 		// Finally load all the files.
  * 	$this->export->export_addFilesFromRelations();	// MUST be after the DBrelations are set so that file from ALL added records are included!
  *
- * 		// Now the internal DAT array is ready to export:
- * 	#debug($this->export->dat);
- *
  * 		// Write export
  * 	$out = $this->export->compileMemoryToFileContent();
- * 	#t3lib_div::writeFile(PATH_site."fileadmin/relations.t3d",$out);
- * 	#debug(strlen($out));
  */
-
 
 /**
  * T3D file Import/Export library (TYPO3 Record Document)
@@ -797,7 +791,7 @@ class tx_impexp {
 	 */
 	function flatSoftRefs($dbrels) {
 		$list = array();
-#debug($dbrels);
+
 		foreach($dbrels as $field => $dat) {
 			if (is_array($dat['softrefs']['keys'])) {
 				foreach($dat['softrefs']['keys'] as $spKey => $elements) {
@@ -833,7 +827,6 @@ class tx_impexp {
 			}
 		}
 
-#debug($list);
 		return $list;
 	}
 
@@ -1281,7 +1274,6 @@ class tx_impexp {
 				if ($this->update && $this->doesRecordExist($table,$uid) && $this->import_mode[$table.':'.$uid]!=='as_new') {
 					$ID = $uid;
 				} else {
-#debug($this->import_mode[$table.':'.$uid],$table.':'.$uid);
 					$ID = uniqid('NEW');
 				}
 				$this->import_newId[$table.':'.$ID] = array('table' => $table, 'uid' => $uid);
@@ -1296,11 +1288,6 @@ class tx_impexp {
 						// Have to reset the user/group IDs so pages are owned by importing user. Otherwise strange things may happen for non-admins!
 					unset($this->import_data[$table][$ID]['perms_userid']);
 					unset($this->import_data[$table][$ID]['perms_groupid']);
-
-						// user/group/everybody settings is kept - but these might still conflict with possibilities for writing the content!"
-					#unset($this->import_data[$table][$ID]['perms_user']);
-					#unset($this->import_data[$table][$ID]['perms_group']);
-					#unset($this->import_data[$table][$ID]['perms_everybody']);
 				}
 
 					// PID and UID:
@@ -1311,7 +1298,6 @@ class tx_impexp {
 					$this->import_data[$table][$ID]['pid'] = $pid;
 
 					if ((($this->import_mode[$table.':'.$uid]==='force_uid' && $this->update) || $this->force_all_UIDS) && $GLOBALS['BE_USER']->isAdmin()) {
-#debug($this->import_mode[$table.':'.$uid],$table.':'.$uid);
 						$this->import_data[$table][$ID]['uid'] = $uid;
 						$this->suggestedInsertUids[$table.':'.$uid] = 'DELETE';
 					}
@@ -1480,11 +1466,9 @@ class tx_impexp {
 		foreach($itemArray as $relDat) {
 			if (is_array($this->import_mapId[$relDat['table']]) && isset($this->import_mapId[$relDat['table']][$relDat['id']])) {
 
-				#debug('FOUND: '.$relDat['table'].':'.$relDat['id']);
 				$valArray[] = $relDat['table'].'_'.$this->import_mapId[$relDat['table']][$relDat['id']];
 			} elseif ($this->isTableStatic($relDat['table']) || $this->isExcluded($relDat['table'], $relDat['id']) || $relDat['id']<0) {	// Checking for less than zero because some select types could contain negative values, eg. fe_groups (-1, -2) and sys_language (-1 = ALL languages). This must be handled on both export and import.
 
-				#debug('STATIC: '.$relDat['table'].':'.$relDat['id']);
 				$valArray[] = $relDat['table'].'_'.$relDat['id'];
 			} else {
 
@@ -1930,14 +1914,12 @@ class tx_impexp {
 				$fileProcObj = $this->getFileProcObj();
 				$newName = $fileProcObj->getUniqueName($fileName, PATH_site.$dirPrefix);
 			}
-#debug($newName,'$newName');
 
 				// Write main file:
 			if ($this->writeFileVerify($newName, $fileID)) {
 
 					// If the resource was an HTML/CSS file with resources attached, we will write those as well!
 				if (is_array($fileHeaderInfo['EXT_RES_ID'])) {
-#debug($fileHeaderInfo['EXT_RES_ID']);
 					$tokenizedContent = $this->dat['files'][$fileID]['tokenizedContent'];
 					$tokenSubstituted = FALSE;
 
@@ -2060,8 +2042,6 @@ class tx_impexp {
 	 */
 	function verifyFolderAccess($dirPrefix, $noAlternative=FALSE) {
 		$fileProcObj = $this->getFileProcObj();
-
-#$fileProcObj->mounts['1f390e42e1dc46f125310ead30c7bd9d']['path'] = '/var/www/typo3/dev/testsite-3.6.0/fileadmin/user_upload/';
 
 			// Check, if dirPrefix is inside a valid Filemount for user:
 		$result = $fileProcObj->checkPathAgainstMounts(PATH_site.$dirPrefix);
@@ -2629,7 +2609,6 @@ class tx_impexp {
 
 					// Add files:
 				if ($info['subst']['type'] == 'file') {
-#debug($info);
 					$this->addFiles(array($info['file_ID']),$lines,$preCode_B, '', $info['subst']['tokenID']);
 				}
 			}
@@ -2674,13 +2653,10 @@ class tx_impexp {
 
 							$pInfo['msg'] = 'LOST RELATION'.(!$doesRE ? ' (Record not found!)' : ' (Path: '.$lostPath.')');
 							$Iprepend = '_lost';
-	#						debug('MISSING relation: '.$table.':'.$uid);
 						}
 					} else {
 						$pInfo['title'] = htmlspecialchars($record['title']);
 						$pInfo['title'] = '<span title="'.htmlspecialchars($this->getRecordPath($table==='pages' ? $record['uid'] : $record['pid'])).'">'.$pInfo['title'].'</span>';
-
-					#	$pInfo['size'] = $record['size'];
 					}
 				} else {	// Negative values in relation fields. This is typically sys_language fields, fe_users fields etc. They are static values. They CAN theoretically be negative pointers to uids in other tables but this is so rarely used that it is not supported
 					$pInfo['title'] = htmlspecialchars('FIXED: '.$pInfo['ref']);
@@ -3097,9 +3073,6 @@ class tx_impexp {
 							);
 						}
 						unset($importRecord[$fN]);
-					} else {
-							// This will tell us if the field is not in the import file, but who cares? It is totally ok that the database contains fields that are not in the import, isn't it (extensions could be installed that added these fields!)?
-						#$output[$fN] = '<strong>Field missing</strong> in import file';
 					}
 				}
 			}

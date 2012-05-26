@@ -282,7 +282,6 @@ $TCA['fe_users'] = array(
 				'wizards' => array(
 					'_PADDING' => 4,
 					'0' => array(
-#						'type' => t3lib_extMgm::isLoaded('tsconfig_help')?'popup':'',
 						'title'  => 'TSconfig QuickReference',
 						'script' => 'wizard_tsconfig.php?mode=fe_users',
 						'icon'   => 'wizard_tsconfig.gif',
@@ -394,7 +393,6 @@ $TCA['fe_groups'] = array(
 				'wizards' => array(
 					'_PADDING' => 4,
 					'0' => array(
-#						'type' => t3lib_extMgm::isLoaded('tsconfig_help')?'popup':'',
 						'title' => 'TSconfig QuickReference',
 						'script' => 'wizard_tsconfig.php?mode=fe_users',
 						'icon' => 'wizard_tsconfig.gif',
@@ -1064,7 +1062,6 @@ $TCA['sys_template'] = array(
 				'wizards' => array(
 					'_PADDING' => 4,
 					'0' => array(
-#						'type' => t3lib_extMgm::isLoaded('tsconfig_help')?'popup':'',
 						'title' => 'TSref online',
 						'script' => 'wizard_tsconfig.php?mode=tsref',
 						'icon' => 'wizard_tsconfig.gif',

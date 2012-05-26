@@ -1112,7 +1112,6 @@ class SC_mod_tools_be_user_index {
 		}
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
-		//$markers['CSH'] = $docHeaderButtons['csh'];
 		$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
 		$markers['CONTENT'] = $this->content;
 
@@ -1146,9 +1145,6 @@ class SC_mod_tools_be_user_index {
 			'shortcut' => '',
 			'save' => ''
 		);
-
-			// CSH
-		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
 
 			// Add user
 		if ($this->MOD_SETTINGS['function'] === 'compare') {

@@ -106,7 +106,7 @@ final class tx_em_Database {
 			$order,
 			$limit
 		);
-		//debug($GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
+
 		return $ret;
 	}
 

@@ -65,7 +65,6 @@ class SC_wizard_backend_layout {
 		// Setting GET vars (used in frameset script):
 		$this->P = t3lib_div::_GP('P', 1);
 
-		//data[layouts][2][config]
 		$this->formName = $this->P['formName'];
 		$this->fieldName = $this->P['itemName'];
 		$this->md5ID = $this->P['md5ID'];

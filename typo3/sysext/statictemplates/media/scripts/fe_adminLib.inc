@@ -214,11 +214,6 @@ class user_feAdmin {
 				$this->dataArr = $this->userProcess('evalFunc', $this->dataArr);
 			}
 
-			/*
-			debug($this->dataArr);
-			debug($this->failure);
-			debug($this->preview);
-			*/
 
 				// if not preview and no failures, then set data...
 			if (!$this->failure && !$this->preview && !t3lib_div::_GP('doNotSave'))	{	// doNotSave is a global var (eg a 'Cancel' submit button) that prevents the data from being processed
@@ -468,7 +463,6 @@ class user_feAdmin {
 	 * @see parseValues()
 	 */
 	function processFiles($cmdParts, $theField) {
-		//debug($_FILES);
 			// First, make an array with the filename and file reference, whether the file is just uploaded or a preview
 		$filesArr = array();
 
@@ -1483,14 +1477,14 @@ class user_feAdmin {
 			$this->cObj->sendNotifyEmail(
 				strip_tags($content),
 				$recipient,
-				'',			// ($admMail ? '' : $admin), 		// If the special administration mail was not found and send, the regular is...
+				'',
 				$this->conf['email.']['from'],
 				$this->conf['email.']['fromName']
 			);
 		} else {
 			$this->sendHTMLMail($content,
 				$recipient,
-				'',			// ($admMail ? '' : $admin), 		// If the special administration mail was not found and send, the regular is...
+				'',
 				$this->conf['email.']['from'],
 				$this->conf['email.']['fromName']
 			);

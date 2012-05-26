@@ -59,10 +59,6 @@ class tx_indexedsearch extends tslib_pibase {
 		Array ('+', 'AND'),
 		Array ('|', 'OR'),
 		Array ('-', 'AND NOT'),
-			// english
-#		Array ('AND', 'AND'),
-#		Array ('OR', 'OR'),
-#		Array ('NOT', 'AND NOT'),
 	);
 
 		// Internal variable
@@ -799,7 +795,7 @@ class tx_indexedsearch extends tslib_pibase {
 			// Traverse searchwords; for each, select all phash integers and merge/diff/intersect them with previous word (based on operator)
 		foreach ($sWArr as $k => $v) {
 				// Making the query for a single search word based on the search-type
-			$sWord = $v['sword'];	// $GLOBALS['TSFE']->csConvObj->conv_case('utf-8',$v['sword'],'toLower');	// lower-case all of them...
+			$sWord = $v['sword'];
 			$theType = (string)$this->piVars['type'];
 			if (strstr($sWord,' '))	$theType = 20;	// If there are spaces in the search-word, make a full text search instead.
 
@@ -1214,10 +1210,8 @@ class tx_indexedsearch extends tslib_pibase {
 			}
 
 			if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
-				#debug("Look up for external media '".$row['data_filename']."': phash:".$row['phash_t3'].' YES - ('.$GLOBALS['TSFE']->gr_list.")!");
 				return TRUE;
 			} else {
-				#debug("Look up for external media '".$row['data_filename']."': phash:".$row['phash_t3'].' NO - ('.$GLOBALS['TSFE']->gr_list.")!");
 				return FALSE;
 			}
 		} else {	// Ordinary TYPO3 pages:
@@ -1230,14 +1224,11 @@ class tx_indexedsearch extends tslib_pibase {
 				}
 
 				if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
-					#debug('Checking on it ...'.$row['item_title'].'/'.$row['phash'].' - YES ('.$GLOBALS['TSFE']->gr_list.")");
 					return TRUE;
 				} else {
-					#debug('Checking on it ...'.$row['item_title'].'/'.$row['phash']." - NOPE");
 					return FALSE;
 				}
 			} else {
-					#debug('Resume can be shown, because the document was in fact indexed by this combination of groups!'.$GLOBALS['TSFE']->gr_list.' - '.$row['item_title'].'/'.$row['phash']);
 				return TRUE;
 			}
 		}
@@ -1299,7 +1290,7 @@ class tx_indexedsearch extends tslib_pibase {
 		if ($newId) {
 			foreach ($sWArr as $val) {
 				$insertFields = array(
-					'word' => $val['sword'],		// $GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $val['sword'], 'toLower'),
+					'word' => $val['sword'],
 					'index_stat_search_id' => $newId,
 					'tstamp' => $GLOBALS['EXEC_TIME'],		// Time stamp
 					'pageid' => $GLOBALS['TSFE']->id	//search page id for indexed search stats
@@ -1934,21 +1925,19 @@ class tx_indexedsearch extends tslib_pibase {
 					$base = $row['order_val1']*256; // (3 MSB bit, 224 is highest value of order_val1 currently)
 					$freqNumber = $row['order_val2']/$this->firstRow['order_val2']*pow(2,12);	// 15-3 MSB = 12
 					$total = t3lib_utility_Math::forceIntegerInRange($base+$freqNumber,0,32767);
-					#debug($total);
 					return ceil(log($total)/log(32767)*100).'%';
 				}
 			break;
 			case 'rank_freq':	// Based on frequency
 				$max = 10000;
 				$total = t3lib_utility_Math::forceIntegerInRange($row['order_val'],0,$max);
-#				debug($total);
 				return ceil(log($total)/log($max)*100).'%';
 			break;
 			case 'crdate':	// Based on creation date
-				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'],0); // ,$conf['age']
+				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'],0);
 			break;
 			case 'mtime':	// Based on modification time
-				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'],0); // ,$conf['age']
+				return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_mtime'],0);
 			break;
 			default:	// fx. title
 				return '&nbsp;';
@@ -2017,7 +2006,6 @@ class tx_indexedsearch extends tslib_pibase {
 
 			// Split and combine:
 		$parts = preg_split('/'.$regExString.'/i', ' '.$str.' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
-// debug($parts,$regExString);
 			// Constants:
 		$summaryMax = 300;
 		$postPreLgd = 60;
@@ -2188,10 +2176,6 @@ class tx_indexedsearch extends tslib_pibase {
 // FIXME not all flags from typo3/gfx/flags are available in media/flags/
 					$file = substr(PATH_tslib,strlen(PATH_site)).'media/flags/flag_'.$flag;
 					$imgInfo = @getimagesize(PATH_site.$file);
-
-// original
-#					$file = TYPO3_mainDir.'gfx/flags/'.$flag;
-#					$imgInfo = @getimagesize(PATH_site.$file);
 
 					if (is_array($imgInfo)) {
 						$output = '<img src="' . $file . '" ' . $imgInfo[3] . ' title="' . htmlspecialchars($rowDat['title']) . '" alt="' . htmlspecialchars($rowDat['title']) . '" />';

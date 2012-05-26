@@ -279,8 +279,6 @@ class tx_em_Connection_ExtDirectServer {
 		if (!$form) {
 			return '<p>' . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_extNoConfiguration') . '</p>';
 		} else {
-			//$form = preg_replace('/<form([^>]+)>/', '', $form);
-			//$form = str_replace('</form>', '', $form);
 			return $form;
 		}
 	}

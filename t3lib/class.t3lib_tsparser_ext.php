@@ -1478,7 +1478,6 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 			$this->rawP++;
 			if ($line) {
 				if (substr($line, 0, 1) == '[') {
-					// return $line;
 				} elseif (strcspn($line, '}#/') != 0) {
 					$varL = strcspn($line, ' {=<');
 					$var = substr($line, 0, $varL);

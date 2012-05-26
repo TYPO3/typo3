@@ -227,7 +227,6 @@ class t3lib_folderTree extends t3lib_treeView {
 				// show the expansion of the current one, not the rest of the mounts
 			if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 				// @todo: currently the AJAX script runs through all storages thus, if something is expanded on storage #2, it does not work, the break stops this, the goal should be that only the $this->storages iterates over the selected storage/bank
-				// break;
 			}
 		}
 

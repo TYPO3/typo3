@@ -86,7 +86,7 @@ class tx_indexedsearch_mysql {
 			// Traverse searchwords and prefix them with corresponding operator
 		foreach ($searchWordArray as $searchWordData) {
 				// Making the query for a single search word based on the search-type
-			$searchWord = $searchWordData['sword'];	// $GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $v['sword'], 'toLower');	// lower-case all of them...
+			$searchWord = $searchWordData['sword'];
 			$wildcard = '';
 
 			if (strstr($searchWord, ' ')) {
