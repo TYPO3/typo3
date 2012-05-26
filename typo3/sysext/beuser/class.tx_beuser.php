@@ -60,7 +60,7 @@ class tx_beuser {
 	 * @param	integer		UID of clicked item.
 	 * @return	array		Modified $menuItems array
 	 */
-	function main(&$backRef,$menuItems,$table,$uid) {
+	function main(&$backRef, $menuItems, $table, $uid) {
 		$localItems = array();	// Accumulation of local items.
 
 			// Detecting menu level
@@ -72,11 +72,11 @@ class tx_beuser {
 			$localItems[] = $backRef->linkItem(
 				'Switch To User',
 				$backRef->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-system-backend-user-emulate')),
-				$backRef->urlRefForCM($url,'',1,'top'),
+				$backRef->urlRefForCM($url, '', 1, 'top'),
 				1
 			);
 
-			$menuItems=array_merge($menuItems,$localItems);
+			$menuItems=array_merge($menuItems, $localItems);
 		}
 		return $menuItems;
 	}
