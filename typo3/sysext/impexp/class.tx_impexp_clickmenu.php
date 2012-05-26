@@ -63,7 +63,7 @@ class tx_impexp_clickmenu {
 	 * @return	array		Menu item array, returned after modification
 	 * @todo	Skinning for icons...
 	 */
-	function main(&$backRef,$menuItems,$table,$uid) {
+	function main(&$backRef, $menuItems, $table, $uid) {
 		$localItems=array();
 		if (($backRef->cmLevel && t3lib_div::_GP('subname')=='moreoptions') || ($table==='pages' && $uid==0))	{	// Show import/export on second level menu OR root level.
 
@@ -80,7 +80,7 @@ class tx_impexp_clickmenu {
 				$url.='&tx_impexp[external_ref][tables][]=_ALL';
 			}
 			$localItems[] = $backRef->linkItem(
-				$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('export',$LL)),
+				$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('export', $LL)),
 				$backRef->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-document-export-t3d')),
 				$backRef->urlRefForCM($url),
 				1	// Disables the item in the top-bar
@@ -89,14 +89,14 @@ class tx_impexp_clickmenu {
 			if ($table=='pages') {
 				$url = $modUrl . '?id='. $uid . '&table=' . $table . '&tx_impexp[action]=import';
 				$localItems[] = $backRef->linkItem(
-					$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import',$LL)),
+					$GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import', $LL)),
 					$backRef->excludeIcon(t3lib_iconWorks::getSpriteIcon('actions-document-import-t3d')),
 					$backRef->urlRefForCM($url),
 					1	// Disables the item in the top-bar
 				);
 			}
 		}
-		return array_merge($menuItems,$localItems);
+		return array_merge($menuItems, $localItems);
 	}
 
 	/**
@@ -107,7 +107,7 @@ class tx_impexp_clickmenu {
 	function includeLL() {
 		global $LANG;
 
-		return $LANG->includeLLFile('EXT:impexp/app/locallang.php',FALSE);
+		return $LANG->includeLLFile('EXT:impexp/app/locallang.php', FALSE);
 	}
 }
 ?>

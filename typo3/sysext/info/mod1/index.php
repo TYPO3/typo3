@@ -40,7 +40,7 @@ require($BACK_PATH.'init.php');
 require($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_info.xml');
 
-$BE_USER->modAccess($MCONF,1);
+$BE_USER->modAccess($MCONF, 1);
 
 
 
@@ -74,13 +74,13 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	function main() {
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
+		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
 		if (($this->id && $access) || ($GLOBALS['BE_USER']->user['admin'] && !$this->id)) {
 			$this->CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($this->pageinfo);
 			if ($GLOBALS['BE_USER']->user['admin'] && !$this->id) {
-				$this->pageinfo=array('title' => '[root-level]','uid'=>0,'pid'=>0);
+				$this->pageinfo=array('title' => '[root-level]', 'uid'=>0, 'pid'=>0);
 			}
 
 			$this->doc = t3lib_div::makeInstance('template');
@@ -88,12 +88,12 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			$this->doc->setModuleTemplate('templates/info.html');
 			$this->doc->tableLayout = Array (
 				'0' => Array (
-					'0' => Array('<td valign="top"><strong>','</strong></td>'),
-					"defCol" => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><strong>','</strong></td>')
+					'0' => Array('<td valign="top"><strong>', '</strong></td>'),
+					"defCol" => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><strong>', '</strong></td>')
 				),
 				"defRow" => Array (
-					"0" => Array('<td valign="top">','</td>'),
-					"defCol" => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top">','</td>')
+					"0" => Array('<td valign="top">', '</td>'),
+					"defCol" => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top">', '</td>')
 				)
 			);
 
@@ -113,9 +113,9 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			$this->doc->getContextMenuCode();
 			$this->doc->form = '<form action="index.php" method="post" name="webinfoForm">';
 
-			$vContent = $this->doc->getVersionSelector($this->id,1);
+			$vContent = $this->doc->getVersionSelector($this->id, 1);
 			if ($vContent) {
-				$this->content.=$this->doc->section('',$vContent);
+				$this->content.=$this->doc->section('', $vContent);
 			}
 
 			$this->extObjContent();

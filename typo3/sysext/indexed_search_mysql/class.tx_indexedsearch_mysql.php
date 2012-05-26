@@ -198,7 +198,7 @@ class tx_indexedsearch_mysql {
 		$resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 				'index_fulltext.*, ISEC.*, IP.*',
 				'index_fulltext, index_section ISEC, index_phash IP' . $pageJoin,
-				'MATCH ('.$searchData['fulltextIndex'].') AGAINST (' . $GLOBALS['TYPO3_DB']->fullQuoteStr($searchData['searchString'],'index_fulltext') . $searchBoolean . ') '.
+				'MATCH ('.$searchData['fulltextIndex'].') AGAINST (' . $GLOBALS['TYPO3_DB']->fullQuoteStr($searchData['searchString'], 'index_fulltext') . $searchBoolean . ') '.
 					$this->pObj->mediaTypeWhere() . ' ' .
 					$this->pObj->languageWhere() .
 					$freeIndexUidClause . '

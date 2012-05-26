@@ -68,7 +68,7 @@ require_once ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:impexp/app/locallang.php');
 require_once (t3lib_extMgm::extPath('impexp').'class.tx_impexp.php');
 
-t3lib_extMgm::isLoaded('impexp',1);
+t3lib_extMgm::isLoaded('impexp', 1);
 
 
 
@@ -99,8 +99,8 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	mixed		(See parent class)
 	 * @return	string		Wrapped title
 	 */
-	function wrapTitle($title,$v) {
-		$title = (!strcmp(trim($title),'')) ? '<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</em>' : htmlspecialchars($title);
+	function wrapTitle($title, $v) {
+		$title = (!strcmp(trim($title), '')) ? '<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title', 1).']</em>' : htmlspecialchars($title);
 		return $title;
 	}
 
@@ -112,7 +112,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	mixed		(See parent class)
 	 * @return	string		Icon HTML
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='') {
+	function PM_ATagWrap($icon, $cmd, $bMark='') {
 		return $icon;
 	}
 
@@ -123,7 +123,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	array		Record row (page)
 	 * @return	string		Icon HTML
 	 */
-	function wrapIcon($icon,$row) {
+	function wrapIcon($icon, $row) {
 		return $icon;
 	}
 
@@ -152,7 +152,7 @@ class localPageTree extends t3lib_browseTree {
 		$this->stored = unserialize($this->BE_USER->uc['browseTrees']['browsePages']);
 
 			// PM action:
-		$PM = t3lib_div::intExplode('_',t3lib_div::_GP('PM'));
+		$PM = t3lib_div::intExplode('_', t3lib_div::_GP('PM'));
 
 			// traverse mounts:
 		$titleLen = intval($this->BE_USER->uc['titleLen']);
@@ -170,25 +170,25 @@ class localPageTree extends t3lib_browseTree {
 
 			// Set PM icon:
 		$cmd = $this->bank.'_'.($isOpen?'0_':'1_').$pid;
-		$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/'.($isOpen?'minus':'plus').'only.gif','width="18" height="16"').' align="top" alt="" />';
-		$firstHtml = $this->PM_ATagWrap($icon,$cmd);
+		$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/ol/'.($isOpen?'minus':'plus').'only.gif','width="18" height="16"').' align="top" alt="" />';
+		$firstHtml = $this->PM_ATagWrap($icon, $cmd);
 
 		if ($pid>0) {
-			$rootRec = t3lib_befunc::getRecordWSOL('pages',$pid);
+			$rootRec = t3lib_befunc::getRecordWSOL('pages', $pid);
 			$firstHtml.= $this->wrapIcon(t3lib_iconWorks::getSpriteIconForRecord('pages', $rootRec), $rootRec);
 		} else {
 			$rootRec = array(
 				'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
 				'uid' => 0
 			);
-			$firstHtml.= $this->wrapIcon('<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/i/_icon_website.gif','width="18" height="16"').' align="top" alt="" />',$rootRec);
+			$firstHtml.= $this->wrapIcon('<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif','width="18" height="16"').' align="top" alt="" />', $rootRec);
 		}
 		$this->tree[] = array('HTML'=>$firstHtml, 'row'=>$rootRec);
 		if ($isOpen) {
 				// Set depth:
-			$depthD = '<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/blank.gif','width="18" height="16"').' align="top" alt="" />';
+			$depthD = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/ol/blank.gif', 'width="18" height="16"').' align="top" alt="" />';
 			if ($this->addSelfId)	$this->ids[] = $pid;
-			$this->getTree($pid,999,$depthD);
+			$this->getTree($pid, 999, $depthD);
 
 			$idH = array();
 			$idH[$pid]['uid'] = $pid;
@@ -198,7 +198,7 @@ class localPageTree extends t3lib_browseTree {
 		}
 
 			// Add tree:
-		$treeArr = array_merge($treeArr,$this->tree);
+		$treeArr = array_merge($treeArr, $this->tree);
 
 		return $treeArr;
 	}
@@ -284,7 +284,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					// Finally: If upload went well, set the new file as the import file:
 				if (is_object($this->fileProcessor) && $this->fileProcessor->internalUploadMap[1]) {
 					$fI = pathinfo($this->fileProcessor->internalUploadMap[1]);
-					if (t3lib_div::inList('t3d,xml',strtolower($fI['extension'])))	{	// Only allowed extensions....
+					if (t3lib_div::inList('t3d,xml', strtolower($fI['extension'])))	{	// Only allowed extensions....
 						$inData['file'] = $this->fileProcessor->internalUploadMap[1];
 					}
 				}
@@ -376,10 +376,10 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// BUILDING EXPORT DATA:
 
 			// Processing of InData array values:
-		$inData['pagetree']['maxNumber'] = t3lib_utility_Math::forceIntegerInRange($inData['pagetree']['maxNumber'],1,10000,100);
-		$inData['listCfg']['maxNumber'] = t3lib_utility_Math::forceIntegerInRange($inData['listCfg']['maxNumber'],1,10000,100);
-		$inData['maxFileSize'] = t3lib_utility_Math::forceIntegerInRange($inData['maxFileSize'],1,10000,1000);
-		$inData['filename'] = trim(preg_replace('/[^[:alnum:]._-]*/','',preg_replace('/\.(t3d|xml)$/','',$inData['filename'])));
+		$inData['pagetree']['maxNumber'] = t3lib_utility_Math::forceIntegerInRange($inData['pagetree']['maxNumber'], 1, 10000, 100);
+		$inData['listCfg']['maxNumber'] = t3lib_utility_Math::forceIntegerInRange($inData['listCfg']['maxNumber'], 1, 10000, 100);
+		$inData['maxFileSize'] = t3lib_utility_Math::forceIntegerInRange($inData['maxFileSize'], 1, 10000, 1000);
+		$inData['filename'] = trim(preg_replace('/[^[:alnum:]._-]*/', '', preg_replace('/\.(t3d|xml)$/', '', $inData['filename'])));
 		if (strlen($inData['filename'])) {
 			$inData['filename'].= $inData['filetype']=='xml' ? '.xml' : '.t3d';
 		}
@@ -395,7 +395,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 			// Create export object and configure it:
 		$this->export = t3lib_div::makeInstance('tx_impexp');
-		$this->export->init(0,'export');
+		$this->export->init(0, 'export');
 		$this->export->setCharset($GLOBALS['LANG']->charSet);
 
 		$this->export->maxFileSize = $inData['maxFileSize']*1024;
@@ -429,7 +429,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		if ($inData['meta']['thumbnail']) {
 			$tempDir = $this->userTempFolder();
 			if ($tempDir) {
-				$thumbnails = t3lib_div::getFilesInDir($tempDir,'png,gif,jpg',1);
+				$thumbnails = t3lib_div::getFilesInDir($tempDir, 'png,gif,jpg', 1);
 				$theThumb = $thumbnails[$inData['meta']['thumbnail']];
 				if ($theThumb) {
 					$this->export->addThumbnail($theThumb);
@@ -441,19 +441,19 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Configure which records to export
 		if (is_array($inData['record'])) {
 			foreach($inData['record'] as $ref) {
-				$rParts = explode(':',$ref);
-				$this->export->export_addRecord($rParts[0],t3lib_BEfunc::getRecord($rParts[0],$rParts[1]));
+				$rParts = explode(':', $ref);
+				$this->export->export_addRecord($rParts[0], t3lib_BEfunc::getRecord($rParts[0], $rParts[1]));
 			}
 		}
 
 			// Configure which tables to export
 		if (is_array($inData['list'])) {
 			foreach($inData['list'] as $ref) {
-				$rParts = explode(':',$ref);
-				if ($GLOBALS['BE_USER']->check('tables_select',$rParts[0])) {
-					$res = $this->exec_listQueryPid($rParts[0],$rParts[1],t3lib_utility_Math::forceIntegerInRange($inData['listCfg']['maxNumber'],1));
+				$rParts = explode(':', $ref);
+				if ($GLOBALS['BE_USER']->check('tables_select', $rParts[0])) {
+					$res = $this->exec_listQueryPid($rParts[0], $rParts[1], t3lib_utility_Math::forceIntegerInRange($inData['listCfg']['maxNumber'], 1));
 					while($subTrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-						$this->export->export_addRecord($rParts[0],$subTrow);
+						$this->export->export_addRecord($rParts[0], $subTrow);
 					}
 				}
 			}
@@ -464,12 +464,12 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			if ($inData['pagetree']['levels']==-1)	{	// Based on click-expandable tree
 				$pagetree = t3lib_div::makeInstance('localPageTree');
 
-				$tree = $pagetree->ext_tree($inData['pagetree']['id'],$this->filterPageIds($this->export->excludeMap));
+				$tree = $pagetree->ext_tree($inData['pagetree']['id'], $this->filterPageIds($this->export->excludeMap));
 				$this->treeHTML = $pagetree->printTree($tree);
 
 				$idH = $pagetree->buffer_idH;
 			} elseif ($inData['pagetree']['levels']==-2)	{	// Only tables on page
-				$this->addRecordsForPid($inData['pagetree']['id'],$inData['pagetree']['tables'],$inData['pagetree']['maxNumber']);
+				$this->addRecordsForPid($inData['pagetree']['id'], $inData['pagetree']['tables'], $inData['pagetree']['maxNumber']);
 			} else {	// Based on depth
 					// Drawing tree:
 					// If the ID is zero, export root
@@ -479,7 +479,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						'title' => 'ROOT'
 					);
 				} else {
-					$sPage = t3lib_BEfunc::getRecordWSOL('pages',$inData['pagetree']['id'],'*',' AND '.$this->perms_clause);
+					$sPage = t3lib_BEfunc::getRecordWSOL('pages', $inData['pagetree']['id'], '*', ' AND '.$this->perms_clause);
 				}
 				if (is_array($sPage)) {
 					$pid = $inData['pagetree']['id'];
@@ -487,10 +487,10 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					$tree->init('AND '.$this->perms_clause.$this->filterPageIds($this->export->excludeMap));
 
 					$HTML = t3lib_iconWorks::getSpriteIconForRecord('pages', $sPage);
-					$tree->tree[] = Array('row'=>$sPage,'HTML'=>$HTML);
+					$tree->tree[] = Array('row'=>$sPage, 'HTML'=>$HTML);
 					$tree->buffer_idH = array();
 					if ($inData['pagetree']['levels']>0) {
-						$tree->getTree($pid,$inData['pagetree']['levels'],'');
+						$tree->getTree($pid, $inData['pagetree']['levels'], '');
 					}
 
 					$idH = array();
@@ -507,8 +507,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			if (is_array($idH)) {
 				$flatList = $this->export->setPageTree($idH);	// Sets the pagetree and gets a 1-dim array in return with the pages (in correct submission order BTW...)
 				foreach ($flatList as $k => $value) {
-					$this->export->export_addRecord('pages',t3lib_BEfunc::getRecord('pages',$k));
-					$this->addRecordsForPid($k,$inData['pagetree']['tables'],$inData['pagetree']['maxNumber']);
+					$this->export->export_addRecord('pages', t3lib_BEfunc::getRecord('pages', $k));
+					$this->addRecordsForPid($k, $inData['pagetree']['tables'], $inData['pagetree']['maxNumber']);
 				}
 			}
 		}
@@ -640,9 +640,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		);
 
 			// Add hidden fields and create tabs:
-		$content = $this->doc->getDynTabMenu($menuItems,'tx_impexp_export',-1);
+		$content = $this->doc->getDynTabMenu($menuItems, 'tx_impexp_export', -1);
 		$content.= '<input type="hidden" name="tx_impexp[action]" value="export" />';
-		$this->content.= $this->doc->section('',$content,0,1);
+		$this->content.= $this->doc->section('', $content, 0, 1);
 
 			// Output Overview:
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('execlistqu_structureToBeExported'), $overViewContent, 0, 1);
@@ -660,11 +660,11 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	function addRecordsForPid($k, $tables, $maxNumber) {
 		if (is_array($tables)) {
 			foreach ($GLOBALS['TCA'] as $table => $value) {
-				if ($table!='pages' && (in_array($table,$tables) || in_array('_ALL',$tables))) {
-					if ($GLOBALS['BE_USER']->check('tables_select',$table) && !$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
-						$res = $this->exec_listQueryPid($table,$k,t3lib_utility_Math::forceIntegerInRange($maxNumber,1));
+				if ($table!='pages' && (in_array($table, $tables) || in_array('_ALL', $tables))) {
+					if ($GLOBALS['BE_USER']->check('tables_select', $table) && !$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
+						$res = $this->exec_listQueryPid($table, $k, t3lib_utility_Math::forceIntegerInRange($maxNumber, 1));
 						while($subTrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-							$this->export->export_addRecord($table,$subTrow);
+							$this->export->export_addRecord($table, $subTrow);
 						}
 					}
 				}
@@ -680,7 +680,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	integer		Max number of records to select
 	 * @return	pointer		SQL resource pointer
 	 */
-	function exec_listQueryPid($table,$pid,$limit) {
+	function exec_listQueryPid($table, $pid, $limit) {
 		$orderBy = ($GLOBALS['TCA'][$table]['ctrl']['sortby']
 			? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby']
 			: $GLOBALS['TCA'][$table]['ctrl']['default_sortby']);
@@ -728,20 +728,20 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 			$row[] = '
 				<tr class="tableheader bgColor5">
-					<td colspan="2">'.$LANG->getLL('makeconfig_exportPagetreeConfiguration',1).t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'pageTreeCfg', $GLOBALS['BACK_PATH'],'').'</td>
+					<td colspan="2">'.$LANG->getLL('makeconfig_exportPagetreeConfiguration', 1).t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'pageTreeCfg', $GLOBALS['BACK_PATH'], '').'</td>
 				</tr>';
 
 			$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makeconfig_pageId',1).'</strong></td>
+					<td><strong>'.$LANG->getLL('makeconfig_pageId', 1).'</strong></td>
 					<td>'.htmlspecialchars($inData['pagetree']['id']).
 						'<input type="hidden" value="'.htmlspecialchars($inData['pagetree']['id']).'" name="tx_impexp[pagetree][id]" /></td>
 				</tr>';
 
 			$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makeconfig_tree',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'pageTreeDisplay', $GLOBALS['BACK_PATH'],'').'</td>
-					<td>'.($this->treeHTML ? $this->treeHTML : $LANG->getLL('makeconfig_noTreeExportedOnly',1)).'</td>
+					<td><strong>'.$LANG->getLL('makeconfig_tree', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'pageTreeDisplay', $GLOBALS['BACK_PATH'], '').'</td>
+					<td>'.($this->treeHTML ? $this->treeHTML : $LANG->getLL('makeconfig_noTreeExportedOnly', 1)).'</td>
 				</tr>';
 
 			$opt = array(
@@ -756,15 +756,15 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			);
 			$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makeconfig_levels',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'pageTreeMode', $GLOBALS['BACK_PATH'],'').'</td>
-					<td>'.$this->renderSelectBox('tx_impexp[pagetree][levels]',$inData['pagetree']['levels'],$opt).'</td>
+					<td><strong>'.$LANG->getLL('makeconfig_levels', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'pageTreeMode', $GLOBALS['BACK_PATH'], '').'</td>
+					<td>'.$this->renderSelectBox('tx_impexp[pagetree][levels]', $inData['pagetree']['levels'], $opt).'</td>
 				</tr>';
 
 			$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makeconfig_includeTables',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'pageTreeRecordLimit', $GLOBALS['BACK_PATH'],'').'</td>
-					<td>'.$this->tableSelector('tx_impexp[pagetree][tables]',$inData['pagetree']['tables'],'pages').'<br/>
-						'.$LANG->getLL('makeconfig_maxNumberOfRecords',1).'<br/>
+					<td><strong>'.$LANG->getLL('makeconfig_includeTables', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'pageTreeRecordLimit', $GLOBALS['BACK_PATH'], '').'</td>
+					<td>'.$this->tableSelector('tx_impexp[pagetree][tables]', $inData['pagetree']['tables'], 'pages').'<br/>
+						'.$LANG->getLL('makeconfig_maxNumberOfRecords', 1).'<br/>
 						<input type="text" name="tx_impexp[pagetree][maxNumber]" value="'.htmlspecialchars($inData['pagetree']['maxNumber']).'"'.$this->doc->formWidth(10).' /><br/>
 					</td>
 				</tr>';
@@ -774,20 +774,20 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		if (is_array($inData['record'])) {
 			$row[] = '
 				<tr class="tableheader bgColor5">
-					<td colspan="2">'.$LANG->getLL('makeconfig_exportSingleRecord',1).t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'singleRecord', $GLOBALS['BACK_PATH'],'').'</td>
+					<td colspan="2">'.$LANG->getLL('makeconfig_exportSingleRecord', 1).t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'singleRecord', $GLOBALS['BACK_PATH'], '').'</td>
 				</tr>';
 			foreach($inData['record'] as $ref) {
 				$rParts = explode(':', $ref);
 				$tName = $rParts[0];
 				$rUid = $rParts[1];
 				$nameSuggestion.= $tName.'_'.$rUid;
-				$rec = t3lib_BEfunc::getRecordWSOL($tName,$rUid);
+				$rec = t3lib_BEfunc::getRecordWSOL($tName, $rUid);
 
 				$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makeconfig_record',1).'</strong></td>
+					<td><strong>'.$LANG->getLL('makeconfig_record', 1).'</strong></td>
 					<td>' . t3lib_iconworks::getSpriteIconForRecord($tName, $rec) .
-						t3lib_BEfunc::getRecordTitle($tName,$rec,TRUE).
+						t3lib_BEfunc::getRecordTitle($tName, $rec, TRUE).
 						'<input type="hidden" name="tx_impexp[record][]" value="'.htmlspecialchars($tName.':'.$rUid).'" /></td>
 				</tr>';
 			}
@@ -797,7 +797,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		if (is_array($inData['list'])) {
 			$row[] = '
 				<tr class="tableheader bgColor5">
-					<td colspan="2">'.$LANG->getLL('makeconfig_exportTablesFromPages',1).'</td>
+					<td colspan="2">'.$LANG->getLL('makeconfig_exportTablesFromPages', 1).'</td>
 				</tr>';
 
 				// Display information about pages from which the export takes place
@@ -821,13 +821,13 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			}
 			$row[] = '
 			<tr class="bgColor4">
-				<td><strong>'.$LANG->getLL('makeconfig_tablePids',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'tableList', $GLOBALS['BACK_PATH'],'').'</td>
+				<td><strong>'.$LANG->getLL('makeconfig_tablePids', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'tableList', $GLOBALS['BACK_PATH'], '').'</td>
 				<td>'.$tblList.'</td>
 			</tr>';
 
 			$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makeconfig_maxNumberOfRecords',1).t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'tableListMaxNumber', $GLOBALS['BACK_PATH'],'').'</strong></td>
+					<td><strong>'.$LANG->getLL('makeconfig_maxNumberOfRecords', 1).t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'tableListMaxNumber', $GLOBALS['BACK_PATH'], '').'</strong></td>
 					<td>
 						<input type="text" name="tx_impexp[listCfg][maxNumber]" value="'.htmlspecialchars($inData['listCfg']['maxNumber']).'"'.$this->doc->formWidth(10).' /><br/>
 					</td>
@@ -837,22 +837,22 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 		$row[] = '
 			<tr class="tableheader bgColor5">
-				<td colspan="2">'.$LANG->getLL('makeconfig_relationsAndExclusions',1).'</td>
+				<td colspan="2">'.$LANG->getLL('makeconfig_relationsAndExclusions', 1).'</td>
 			</tr>';
 
 			// Add relation selector:
 		$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makeconfig_includeRelationsToTables',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'inclRelations', $GLOBALS['BACK_PATH'],'').'</td>
-					<td>'.$this->tableSelector('tx_impexp[external_ref][tables]',$inData['external_ref']['tables']).'</td>
+					<td><strong>'.$LANG->getLL('makeconfig_includeRelationsToTables', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'inclRelations', $GLOBALS['BACK_PATH'], '').'</td>
+					<td>'.$this->tableSelector('tx_impexp[external_ref][tables]', $inData['external_ref']['tables']).'</td>
 				</tr>';
 
 			// Add static relation selector:
 		$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makeconfig_useStaticRelationsFor',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'staticRelations', $GLOBALS['BACK_PATH'],'').'</td>
-					<td>'.$this->tableSelector('tx_impexp[external_static][tables]',$inData['external_static']['tables']).'<br/>
-						<label for="checkShowStaticRelations">'.$LANG->getLL('makeconfig_showStaticRelations',1).'</label> <input type="checkbox" name="tx_impexp[showStaticRelations]" id="checkShowStaticRelations" value="1"'.($inData['showStaticRelations'] ? ' checked="checked"' : '').' />
+					<td><strong>'.$LANG->getLL('makeconfig_useStaticRelationsFor', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'staticRelations', $GLOBALS['BACK_PATH'], '').'</td>
+					<td>'.$this->tableSelector('tx_impexp[external_static][tables]', $inData['external_static']['tables']).'<br/>
+						<label for="checkShowStaticRelations">'.$LANG->getLL('makeconfig_showStaticRelations', 1).'</label> <input type="checkbox" name="tx_impexp[showStaticRelations]" id="checkShowStaticRelations" value="1"'.($inData['showStaticRelations'] ? ' checked="checked"' : '').' />
 						</td>
 				</tr>';
 
@@ -865,9 +865,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		}
 		$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makeconfig_excludeElements',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'excludedElements', $GLOBALS['BACK_PATH'],'').'</td>
+					<td><strong>'.$LANG->getLL('makeconfig_excludeElements', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'excludedElements', $GLOBALS['BACK_PATH'], '').'</td>
 					<td>'.$excludeHiddenFields.'
-					'.(count($inData['exclude']) ? '<em>'.implode(', ',array_keys($inData['exclude'])).'</em><hr/><label for="checkExclude">'.$LANG->getLL('makeconfig_clearAllExclusions',1).'</label> <input type="checkbox" name="tx_impexp[exclude]" id="checkExclude" value="1" />' : $LANG->getLL('makeconfig_noExcludedElementsYet',1)).'
+					'.(count($inData['exclude']) ? '<em>'.implode(', ',array_keys($inData['exclude'])).'</em><hr/><label for="checkExclude">'.$LANG->getLL('makeconfig_clearAllExclusions', 1).'</label> <input type="checkbox" name="tx_impexp[exclude]" id="checkExclude" value="1" />' : $LANG->getLL('makeconfig_noExcludedElementsYet', 1)).'
 					</td>
 				</tr>';
 
@@ -877,8 +877,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				<tr class="bgColor4">
 					<td>&nbsp;</td>
 					<td>
-						<input type="submit" value="'.$LANG->getLL('makeadvanc_update',1).'" />
-						<input type="hidden" name="tx_impexp[download_export_name]" value="'.substr($nameSuggestion,0,30).'" />
+						<input type="submit" value="'.$LANG->getLL('makeadvanc_update', 1).'" />
+						<input type="hidden" name="tx_impexp[download_export_name]" value="'.substr($nameSuggestion, 0, 30).'" />
 					</td>
 				</tr>';
 
@@ -897,11 +897,11 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Soft references
 		$row[] = '
 			<tr class="tableheader bgColor5">
-				<td colspan="2">'.$LANG->getLL('makeadvanc_softReferences',1).'</td>
+				<td colspan="2">'.$LANG->getLL('makeadvanc_softReferences', 1).'</td>
 			</tr>';
 		$row[] = '
 				<tr class="bgColor4">
-					<td><label for="checkExcludeHTMLfileResources"><strong>'.$LANG->getLL('makeadvanc_excludeHtmlCssFile',1).'</strong></label>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'htmlCssResources', $GLOBALS['BACK_PATH'],'').'</td>
+					<td><label for="checkExcludeHTMLfileResources"><strong>'.$LANG->getLL('makeadvanc_excludeHtmlCssFile', 1).'</strong></label>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'htmlCssResources', $GLOBALS['BACK_PATH'], '').'</td>
 					<td><input type="checkbox" name="tx_impexp[excludeHTMLfileResources]" id="checkExcludeHTMLfileResources" value="1"'.($inData['excludeHTMLfileResources'] ? ' checked="checked"' : '').' /></td>
 				</tr>';
 
@@ -909,12 +909,12 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Extensions
 		$row[] = '
 			<tr class="tableheader bgColor5">
-				<td colspan="2">'.$LANG->getLL('makeadvanc_extensionDependencies',1).'</td>
+				<td colspan="2">'.$LANG->getLL('makeadvanc_extensionDependencies', 1).'</td>
 			</tr>';
 		$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makeadvanc_selectExtensionsThatThe',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'extensionDependencies', $GLOBALS['BACK_PATH'],'').'</td>
-					<td>'.$this->extensionSelector('tx_impexp[extension_dep]',$inData['extension_dep']).'</td>
+					<td><strong>'.$LANG->getLL('makeadvanc_selectExtensionsThatThe', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'extensionDependencies', $GLOBALS['BACK_PATH'], '').'</td>
+					<td>'.$this->extensionSelector('tx_impexp[extension_dep]', $inData['extension_dep']).'</td>
 				</tr>';
 
 
@@ -924,8 +924,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				<tr class="bgColor4">
 					<td>&nbsp;</td>
 					<td>
-						<input type="submit" value="'.$LANG->getLL('makesavefo_update',1).'" />
-						<input type="hidden" name="tx_impexp[download_export_name]" value="'.substr($nameSuggestion,0,30).'" />
+						<input type="submit" value="'.$LANG->getLL('makesavefo_update', 1).'" />
+						<input type="hidden" name="tx_impexp[download_export_name]" value="'.substr($nameSuggestion, 0, 30).'" />
 					</td>
 				</tr>';
 
@@ -945,7 +945,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Presets:
 		$row[] = '
 			<tr class="tableheader bgColor5">
-				<td colspan="2">'.$LANG->getLL('makesavefo_presets',1).'</td>
+				<td colspan="2">'.$LANG->getLL('makesavefo_presets', 1).'</td>
 			</tr>';
 
 		$opt = array('');
@@ -966,19 +966,19 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 		$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makesavefo_presets',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'presets', $GLOBALS['BACK_PATH'],'').'</td>
+					<td><strong>'.$LANG->getLL('makesavefo_presets', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'presets', $GLOBALS['BACK_PATH'], '').'</td>
 					<td>
-						'.$LANG->getLL('makesavefo_selectPreset',1).'<br/>
-						'.$this->renderSelectBox('preset[select]','',$opt).'
+						'.$LANG->getLL('makesavefo_selectPreset', 1).'<br/>
+						'.$this->renderSelectBox('preset[select]', '', $opt).'
 						<br/>
-						<input type="submit" value="'.$LANG->getLL('makesavefo_load',1).'" name="preset[load]" />
-						<input type="submit" value="'.$LANG->getLL('makesavefo_save',1).'" name="preset[save]" onclick="return confirm(\''.$LANG->getLL('makesavefo_areYouSure',1).'\');" />
-						<input type="submit" value="'.$LANG->getLL('makesavefo_delete',1).'" name="preset[delete]" onclick="return confirm(\''.$LANG->getLL('makesavefo_areYouSure',1).'\');" />
-						<input type="submit" value="'.$LANG->getLL('makesavefo_merge',1).'" name="preset[merge]" onclick="return confirm(\''.$LANG->getLL('makesavefo_areYouSure',1).'\');" />
+						<input type="submit" value="'.$LANG->getLL('makesavefo_load', 1).'" name="preset[load]" />
+						<input type="submit" value="'.$LANG->getLL('makesavefo_save', 1).'" name="preset[save]" onclick="return confirm(\''.$LANG->getLL('makesavefo_areYouSure', 1).'\');" />
+						<input type="submit" value="'.$LANG->getLL('makesavefo_delete', 1).'" name="preset[delete]" onclick="return confirm(\''.$LANG->getLL('makesavefo_areYouSure', 1).'\');" />
+						<input type="submit" value="'.$LANG->getLL('makesavefo_merge', 1).'" name="preset[merge]" onclick="return confirm(\''.$LANG->getLL('makesavefo_areYouSure', 1).'\');" />
 						<br/>
-						'.$LANG->getLL('makesavefo_titleOfNewPreset',1).'
+						'.$LANG->getLL('makesavefo_titleOfNewPreset', 1).'
 						<input type="text" name="tx_impexp[preset][title]" value="'.htmlspecialchars($inData['preset']['title']).'"'.$this->doc->formWidth(30).' /><br/>
-						<label for="checkPresetPublic">'.$LANG->getLL('makesavefo_public',1).'</label>
+						<label for="checkPresetPublic">'.$LANG->getLL('makesavefo_public', 1).'</label>
 						<input type="checkbox" name="tx_impexp[preset][public]" id="checkPresetPublic" value="1"'.($inData['preset']['public'] ? ' checked="checked"' : '').' /><br/>
 					</td>
 				</tr>';
@@ -986,30 +986,30 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Output options:
 		$row[] = '
 			<tr class="tableheader bgColor5">
-				<td colspan="2">'.$LANG->getLL('makesavefo_outputOptions',1).'</td>
+				<td colspan="2">'.$LANG->getLL('makesavefo_outputOptions', 1).'</td>
 			</tr>';
 
 			// Meta data:
 		$tempDir = $this->userTempFolder();
 		if ($tempDir) {
-			$thumbnails = t3lib_div::getFilesInDir($tempDir,'png,gif,jpg');
-			array_unshift($thumbnails,'');
+			$thumbnails = t3lib_div::getFilesInDir($tempDir, 'png,gif,jpg');
+			array_unshift($thumbnails, '');
 		} else $thumbnails = FALSE;
 		$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makesavefo_metaData',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'metadata', $GLOBALS['BACK_PATH'],'').'</td>
+					<td><strong>'.$LANG->getLL('makesavefo_metaData', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'metadata', $GLOBALS['BACK_PATH'], '').'</td>
 					<td>
-							'.$LANG->getLL('makesavefo_title',1).' <br/>
+							'.$LANG->getLL('makesavefo_title', 1).' <br/>
 							<input type="text" name="tx_impexp[meta][title]" value="'.htmlspecialchars($inData['meta']['title']).'"'.$this->doc->formWidth(30).' /><br/>
-							'.$LANG->getLL('makesavefo_description',1).' <br/>
+							'.$LANG->getLL('makesavefo_description', 1).' <br/>
 							<input type="text" name="tx_impexp[meta][description]" value="'.htmlspecialchars($inData['meta']['description']).'"'.$this->doc->formWidth(30).' /><br/>
-							'.$LANG->getLL('makesavefo_notes',1).' <br/>
-							<textarea name="tx_impexp[meta][notes]"'.$this->doc->formWidth(30,1).'>'.t3lib_div::formatForTextarea($inData['meta']['notes']).'</textarea><br/>
+							'.$LANG->getLL('makesavefo_notes', 1).' <br/>
+							<textarea name="tx_impexp[meta][notes]"'.$this->doc->formWidth(30, 1).'>'.t3lib_div::formatForTextarea($inData['meta']['notes']).'</textarea><br/>
 							'.(is_array($thumbnails) ? '
-							'.$LANG->getLL('makesavefo_thumbnail',1).'<br/>
-							'.$this->renderSelectBox('tx_impexp[meta][thumbnail]',$inData['meta']['thumbnail'],$thumbnails).'<br/>
-							'.($inData['meta']['thumbnail'] ? '<img src="'.$this->doc->backPath.'../'.substr($tempDir,strlen(PATH_site)).$thumbnails[$inData['meta']['thumbnail']].'" vspace="5" style="border: solid black 1px;" alt="" /><br/>' : '').'
-							'.$LANG->getLL('makesavefo_uploadThumbnail',1).'<br/>
+							'.$LANG->getLL('makesavefo_thumbnail', 1).'<br/>
+							'.$this->renderSelectBox('tx_impexp[meta][thumbnail]', $inData['meta']['thumbnail'], $thumbnails).'<br/>
+							'.($inData['meta']['thumbnail'] ? '<img src="'.$this->doc->backPath.'../'.substr($tempDir, strlen(PATH_site)).$thumbnails[$inData['meta']['thumbnail']].'" vspace="5" style="border: solid black 1px;" alt="" /><br/>' : '').'
+							'.$LANG->getLL('makesavefo_uploadThumbnail', 1).'<br/>
 							<input type="file" name="upload_1" '.$this->doc->formWidth(30).' size="30" /><br/>
 								<input type="hidden" name="file[upload][1][target]" value="'.htmlspecialchars($tempDir).'" />
 								<input type="hidden" name="file[upload][1][data]" value="1" /><br />
@@ -1027,11 +1027,11 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$opt['xml'] = $LANG->getLL('makesavefo_xml');
 		$row[] = '
 				<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('makesavefo_fileFormat',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'fileFormat', $GLOBALS['BACK_PATH'],'').'</td>
-					<td>'.$this->renderSelectBox('tx_impexp[filetype]',$inData['filetype'],$opt).'<br/>
-						'.$LANG->getLL('makesavefo_maxSizeOfFiles',1).'<br/>
+					<td><strong>'.$LANG->getLL('makesavefo_fileFormat', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'fileFormat', $GLOBALS['BACK_PATH'], '').'</td>
+					<td>'.$this->renderSelectBox('tx_impexp[filetype]', $inData['filetype'], $opt).'<br/>
+						'.$LANG->getLL('makesavefo_maxSizeOfFiles', 1).'<br/>
 						<input type="text" name="tx_impexp[maxFileSize]" value="'.htmlspecialchars($inData['maxFileSize']).'"'.$this->doc->formWidth(10).' /><br/>
-						'.($savePath ? sprintf($LANG->getLL('makesavefo_filenameSavedInS',1),substr($savePath,strlen(PATH_site))).'<br/>
+						'.($savePath ? sprintf($LANG->getLL('makesavefo_filenameSavedInS', 1), substr($savePath,strlen(PATH_site))).'<br/>
 						<input type="text" name="tx_impexp[filename]" value="'.htmlspecialchars($inData['filename']).'"'.$this->doc->formWidth(30).' /><br/>' : '').'
 					</td>
 				</tr>';
@@ -1041,8 +1041,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$row[] = '
 				<tr class="bgColor4">
 					<td>&nbsp;</td>
-					<td><input type="submit" value="'.$LANG->getLL('makesavefo_update',1).'" /> - <input type="submit" value="'.$LANG->getLL('makesavefo_downloadExport',1).'" name="tx_impexp[download_export]" />'.
-						($savePath ? ' - <input type="submit" value="'.$LANG->getLL('importdata_saveToFilename',1).'" name="tx_impexp[save_export]" />' : '').'</td>
+					<td><input type="submit" value="'.$LANG->getLL('makesavefo_update', 1).'" /> - <input type="submit" value="'.$LANG->getLL('makesavefo_downloadExport', 1).'" name="tx_impexp[download_export]" />'.
+						($savePath ? ' - <input type="submit" value="'.$LANG->getLL('importdata_saveToFilename', 1).'" name="tx_impexp[save_export]" />' : '').'</td>
 				</tr>';
 	}
 
@@ -1077,7 +1077,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 		if (($this->id && $access) || ($GLOBALS['BE_USER']->user['admin'] && !$this->id)) {
 			if ($GLOBALS['BE_USER']->user['admin'] && !$this->id) {
-				$this->pageinfo=array('title' => '[root-level]','uid'=>0,'pid'=>0);
+				$this->pageinfo=array('title' => '[root-level]', 'uid'=>0, 'pid'=>0);
 			}
 
 			if ($inData['new_import']) {
@@ -1086,7 +1086,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 			/** @var $import tx_impexp */
 			$import = t3lib_div::makeInstance('tx_impexp');
-			$import->init(0,'import');
+			$import->init(0, 'import');
 			$import->update = $inData['do_update'];
 			$import->import_mode = $inData['import_mode'];
 			$import->enableLogging = $inData['enableLogging'];
@@ -1122,79 +1122,79 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$row = array();
 			$opt = array('');
 			foreach($filesInDir as $file) {
-				$opt[$file] = substr($file,strlen(PATH_site));
+				$opt[$file] = substr($file, strlen(PATH_site));
 			}
 
 			$row[] = '<tr class="bgColor5">
-					<td colspan="2"><strong>'.$LANG->getLL('importdata_selectFileToImport',1).'</strong></td>
+					<td colspan="2"><strong>'.$LANG->getLL('importdata_selectFileToImport', 1).'</strong></td>
 				</tr>';
 
 			$row[] = '<tr class="bgColor4">
-				<td><strong>'.$LANG->getLL('importdata_file',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'importFile', $GLOBALS['BACK_PATH'],'').'</td>
+				<td><strong>'.$LANG->getLL('importdata_file', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'importFile', $GLOBALS['BACK_PATH'], '').'</td>
 				<td>'.
-					$this->renderSelectBox('tx_impexp[file]',$inData['file'],$opt).'<br />'.sprintf($LANG->getLL('importdata_fromPathS',1),$path).
-					(!$import->compress ? '<br /><span class="typo3-red">'.$LANG->getLL('importdata_noteNoDecompressorAvailable',1).'</span>':'').
+					$this->renderSelectBox('tx_impexp[file]', $inData['file'], $opt).'<br />'.sprintf($LANG->getLL('importdata_fromPathS', 1),$path).
+					(!$import->compress ? '<br /><span class="typo3-red">'.$LANG->getLL('importdata_noteNoDecompressorAvailable', 1).'</span>':'').
 				'</td>
 				</tr>';
 
 			$row[] = '<tr class="bgColor5">
-					<td colspan="2"><strong>'.$LANG->getLL('importdata_importOptions',1).'</strong></td>
+					<td colspan="2"><strong>'.$LANG->getLL('importdata_importOptions', 1).'</strong></td>
 				</tr>';
 
 			$row[] = '<tr class="bgColor4">
-				<td><strong>'.$LANG->getLL('importdata_update',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'update', $GLOBALS['BACK_PATH'],'').'</td>
+				<td><strong>'.$LANG->getLL('importdata_update', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'update', $GLOBALS['BACK_PATH'], '').'</td>
 				<td>
 					<input type="checkbox" name="tx_impexp[do_update]" id="checkDo_update" value="1"'.($inData['do_update'] ? ' checked="checked"' : '').' />
-					<label for="checkDo_update">'.$LANG->getLL('importdata_updateRecords',1).'</label><br/>
-				<em>('.$LANG->getLL('importdata_thisOptionRequiresThat',1).')</em>'.
+					<label for="checkDo_update">'.$LANG->getLL('importdata_updateRecords', 1).'</label><br/>
+				<em>('.$LANG->getLL('importdata_thisOptionRequiresThat', 1).')</em>'.
 				($inData['do_update'] ?
 				'	<hr/>
 					<input type="checkbox" name="tx_impexp[global_ignore_pid]" id="checkGlobal_ignore_pid" value="1"'.($inData['global_ignore_pid'] ? ' checked="checked"' : '').' />
-					<label for="checkGlobal_ignore_pid">'.$LANG->getLL('importdata_ignorePidDifferencesGlobally',1).'</label><br/>
-					<em>('.$LANG->getLL('importdata_ifYouSetThis',1).')</em>
+					<label for="checkGlobal_ignore_pid">'.$LANG->getLL('importdata_ignorePidDifferencesGlobally', 1).'</label><br/>
+					<em>('.$LANG->getLL('importdata_ifYouSetThis', 1).')</em>
 					' : ''
 				).'</td>
 				</tr>';
 
 			$row[] = '<tr class="bgColor4">
-				<td><strong>'.$LANG->getLL('importdata_options',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'options', $GLOBALS['BACK_PATH'],'').'</td>
+				<td><strong>'.$LANG->getLL('importdata_options', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'options', $GLOBALS['BACK_PATH'], '').'</td>
 				<td>
 					<input type="checkbox" name="tx_impexp[notShowDiff]" id="checkNotShowDiff" value="1"'.($inData['notShowDiff'] ? ' checked="checked"' : '').' />
-					<label for="checkNotShowDiff">'.$LANG->getLL('importdata_doNotShowDifferences',1).'</label><br/>
-					<em>('.$LANG->getLL('importdata_greenValuesAreFrom',1).')</em>
+					<label for="checkNotShowDiff">'.$LANG->getLL('importdata_doNotShowDifferences', 1).'</label><br/>
+					<em>('.$LANG->getLL('importdata_greenValuesAreFrom', 1).')</em>
 					<br/><br/>
 
 					'.($GLOBALS['BE_USER']->isAdmin() ? '
 					<input type="checkbox" name="tx_impexp[allowPHPScripts]" id="checkAllowPHPScripts" value="1"'.($inData['allowPHPScripts'] ? ' checked="checked"' : '').' />
-					<label for="checkAllowPHPScripts">'.$LANG->getLL('importdata_allowToWriteBanned',1).'</label><br/>' : '').
+					<label for="checkAllowPHPScripts">'.$LANG->getLL('importdata_allowToWriteBanned', 1).'</label><br/>' : '').
 
 					(!$inData['do_update'] && $GLOBALS['BE_USER']->isAdmin() ? '
 					<br/>
 					<input type="checkbox" name="tx_impexp[force_all_UIDS]" id="checkForce_all_UIDS" value="1"'.($inData['force_all_UIDS'] ? ' checked="checked"' : '').' />
-					<label for="checkForce_all_UIDS"><span class="typo3-red">'.$LANG->getLL('importdata_force_all_UIDS',1).'</span></label><br/>
-					<em>('.$LANG->getLL('importdata_force_all_UIDS_descr',1).')</em>' : '').
+					<label for="checkForce_all_UIDS"><span class="typo3-red">'.$LANG->getLL('importdata_force_all_UIDS', 1).'</span></label><br/>
+					<em>('.$LANG->getLL('importdata_force_all_UIDS_descr', 1).')</em>' : '').
 					'
 				</td>
 				</tr>';
 
 			$row[] = '<tr class="bgColor4">
-				<td><strong>'.$LANG->getLL('importdata_action',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'action', $GLOBALS['BACK_PATH'],'').'</td>
+				<td><strong>'.$LANG->getLL('importdata_action', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'action', $GLOBALS['BACK_PATH'], '').'</td>
 				<td>'.
-					(!$inData['import_file'] ? '<input type="submit" value="'.$LANG->getLL('importdata_preview',1).'" />'.($inData['file'] ? ' - <input type="submit" value="'.($inData['do_update']?$LANG->getLL('importdata_update_299e',1):$LANG->getLL('importdata_import',1)).'" name="tx_impexp[import_file]" onclick="return confirm(\''.$LANG->getLL('importdata_areYouSure',1).'\');" />':''):'<input type="submit" name="tx_impexp[new_import]" value="'.$LANG->getLL('importdata_newImport',1).'" />').'
+					(!$inData['import_file'] ? '<input type="submit" value="'.$LANG->getLL('importdata_preview', 1).'" />'.($inData['file'] ? ' - <input type="submit" value="'.($inData['do_update']?$LANG->getLL('importdata_update_299e', 1):$LANG->getLL('importdata_import', 1)).'" name="tx_impexp[import_file]" onclick="return confirm(\''.$LANG->getLL('importdata_areYouSure', 1).'\');" />':''):'<input type="submit" name="tx_impexp[new_import]" value="'.$LANG->getLL('importdata_newImport', 1).'" />').'
 					<input type="hidden" name="tx_impexp[action]" value="import" /></td>
 				</tr>';
 
 			$row[] = '<tr class="bgColor4">
-				<td><strong>'.$LANG->getLL('importdata_enableLogging',1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'enableLogging', $GLOBALS['BACK_PATH'],'').'</td>
+				<td><strong>'.$LANG->getLL('importdata_enableLogging', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'enableLogging', $GLOBALS['BACK_PATH'], '').'</td>
 				<td>
 					<input type="checkbox" name="tx_impexp[enableLogging]" id="checkEnableLogging" value="1"'.($inData['enableLogging'] ? ' checked="checked"' : '').' />
-					<label for="checkEnableLogging">'.$LANG->getLL('importdata_writeIndividualDbActions',1).'</label><br/>
-					<em>('.$LANG->getLL('importdata_thisIsDisabledBy',1).')</em>
+					<label for="checkEnableLogging">'.$LANG->getLL('importdata_writeIndividualDbActions', 1).'</label><br/>
+					<em>('.$LANG->getLL('importdata_thisIsDisabledBy', 1).')</em>
 				</td>
 				</tr>';
 
 			$menuItems[] = array(
-				'label' => $LANG->getLL('importdata_import',1),
+				'label' => $LANG->getLL('importdata_import', 1),
 				'content' => '
 					<table border="0" cellpadding="1" cellspacing="1">
 						'.implode('
@@ -1209,26 +1209,26 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				$row = array();
 
 				$row[] = '<tr class="bgColor5">
-						<td colspan="2"><strong>'.$LANG->getLL('importdata_uploadFileFromLocal',1).'</strong></td>
+						<td colspan="2"><strong>'.$LANG->getLL('importdata_uploadFileFromLocal', 1).'</strong></td>
 					</tr>';
 
 				$row[] = '<tr class="bgColor4">
-						<td>'.$LANG->getLL('importdata_browse',1).t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'upload', $GLOBALS['BACK_PATH'],'').'</td>
+						<td>'.$LANG->getLL('importdata_browse', 1).t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'upload', $GLOBALS['BACK_PATH'], '').'</td>
 						<td>
 
 								<input type="file" name="upload_1"'.$this->doc->formWidth(35).' size="40" />
 								<input type="hidden" name="file[upload][1][target]" value="'.htmlspecialchars($tempFolder).'" />
 								<input type="hidden" name="file[upload][1][data]" value="1" /><br />
 
-								<input type="submit" name="_upload" value="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit',1).'" />
-								<input type="checkbox" name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="1" checked="checked" /> <label for="checkOverwriteExistingFiles">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:overwriteExistingFiles',1).'</label>
+								<input type="submit" name="_upload" value="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit', 1).'" />
+								<input type="checkbox" name="overwriteExistingFiles" id="checkOverwriteExistingFiles" value="1" checked="checked" /> <label for="checkOverwriteExistingFiles">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:overwriteExistingFiles', 1).'</label>
 						</td>
 					</tr>';
 
 				if (t3lib_div::_POST('_upload')) {
 					$row[] = '<tr class="bgColor4">
-							<td>'.$LANG->getLL('importdata_uploadStatus',1).'</td>
-							<td>'.($this->fileProcessor->internalUploadMap[1] ? $LANG->getLL('importdata_success',1).' '.substr($this->fileProcessor->internalUploadMap[1],strlen(PATH_site)) : '<span class="typo3-red">'.$LANG->getLL('importdata_failureNoFileUploaded',1).'</span>').'</td>
+							<td>'.$LANG->getLL('importdata_uploadStatus', 1).'</td>
+							<td>'.($this->fileProcessor->internalUploadMap[1] ? $LANG->getLL('importdata_success', 1).' '.substr($this->fileProcessor->internalUploadMap[1], strlen(PATH_site)) : '<span class="typo3-red">'.$LANG->getLL('importdata_failureNoFileUploaded', 1).'</span>').'</td>
 						</tr>';
 				}
 
@@ -1251,7 +1251,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$inFile = t3lib_div::getFileAbsFileName($inData['file']);
 			if ($inFile && @is_file($inFile)) {
 				$trow = array();
-				if ($import->loadFile($inFile,1)) {
+				if ($import->loadFile($inFile, 1)) {
 
 						// Check extension dependencies:
 					$extKeysToInstall = array();
@@ -1268,10 +1268,10 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						unset($passParams['import_mode']);
 						unset($passParams['import_file']);
 
-						$thisScriptUrl = t3lib_div::getIndpEnv('REQUEST_URI').'?M=xMOD_tximpexp&id='.$this->id.t3lib_div::implodeArrayForUrl('tx_impexp',$passParams);
+						$thisScriptUrl = t3lib_div::getIndpEnv('REQUEST_URI').'?M=xMOD_tximpexp&id='.$this->id.t3lib_div::implodeArrayForUrl('tx_impexp', $passParams);
 						$emURL = $this->doc->backPath . t3lib_extMgm::extRelPath('em') . 'classes/index.php?CMD[requestInstallExtensions]=' .
 							implode(',', $extKeysToInstall) . '&returnUrl=' . rawurlencode($thisScriptUrl);
-						$extensionInstallationMessage = 'Before you can install this T3D file you need to install the extensions "'.implode('", "',$extKeysToInstall).'". Clicking Import will first take you to the Extension Manager so these dependencies can be resolved.';
+						$extensionInstallationMessage = 'Before you can install this T3D file you need to install the extensions "'.implode('", "', $extKeysToInstall).'". Clicking Import will first take you to the Extension Manager so these dependencies can be resolved.';
 					}
 
 					if ($inData['import_file']) {
@@ -1289,39 +1289,39 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 					// Meta data output:
 				$trow[] = '<tr class="bgColor5">
-						<td colspan="2"><strong>'.$LANG->getLL('importdata_metaData',1).'</strong></td>
+						<td colspan="2"><strong>'.$LANG->getLL('importdata_metaData', 1).'</strong></td>
 					</tr>';
 
 				$opt = array('');
 				foreach($filesInDir as $file) {
-					$opt[$file] = substr($file,strlen(PATH_site));
+					$opt[$file] = substr($file, strlen(PATH_site));
 				}
 
 				$trow[] = '<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('importdata_title',1).'</strong></td>
+					<td><strong>'.$LANG->getLL('importdata_title', 1).'</strong></td>
 					<td width="95%">'.nl2br(htmlspecialchars($import->dat['header']['meta']['title'])).'</td>
 					</tr>';
 
 				$trow[] = '<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('importdata_description',1).'</strong></td>
+					<td><strong>'.$LANG->getLL('importdata_description', 1).'</strong></td>
 					<td width="95%">'.nl2br(htmlspecialchars($import->dat['header']['meta']['description'])).'</td>
 					</tr>';
 
 				$trow[] = '<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('importdata_notes',1).'</strong></td>
+					<td><strong>'.$LANG->getLL('importdata_notes', 1).'</strong></td>
 					<td width="95%">'.nl2br(htmlspecialchars($import->dat['header']['meta']['notes'])).'</td>
 					</tr>';
 
 				$trow[] = '<tr class="bgColor4">
-					<td><strong>'.$LANG->getLL('importdata_packager',1).'</strong></td>
+					<td><strong>'.$LANG->getLL('importdata_packager', 1).'</strong></td>
 					<td width="95%">'.nl2br(htmlspecialchars($import->dat['header']['meta']['packager_name'].' ('.$import->dat['header']['meta']['packager_username'].')')).'<br/>
-						'.$LANG->getLL('importdata_email',1).' '.$import->dat['header']['meta']['packager_email'].'</td>
+						'.$LANG->getLL('importdata_email', 1).' '.$import->dat['header']['meta']['packager_email'].'</td>
 					</tr>';
 
 					// Thumbnail icon:
 				if (is_array($import->dat['header']['thumbnail'])) {
 					$pI = pathinfo($import->dat['header']['thumbnail']['filename']);
-					if (t3lib_div::inList('gif,jpg,png,jpeg',strtolower($pI['extension']))) {
+					if (t3lib_div::inList('gif,jpg,png,jpeg', strtolower($pI['extension']))) {
 
 							// Construct filename and write it:
 						$fileName = PATH_site.
@@ -1331,10 +1331,10 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 							// Check that the image really is an image and not a malicious PHP script...
 						if (getimagesize($fileName)) {
 								// Create icon tag:
-							$iconTag = '<img src="'.$this->doc->backPath.'../'.substr($fileName,strlen(PATH_site)).'" '.$import->dat['header']['thumbnail']['imgInfo'][3].' vspace="5" style="border: solid black 1px;" alt="" />';
+							$iconTag = '<img src="'.$this->doc->backPath.'../'.substr($fileName, strlen(PATH_site)).'" '.$import->dat['header']['thumbnail']['imgInfo'][3].' vspace="5" style="border: solid black 1px;" alt="" />';
 
 							$trow[] = '<tr class="bgColor4">
-								<td><strong>'.$LANG->getLL('importdata_icon',1).'</strong></td>
+								<td><strong>'.$LANG->getLL('importdata_icon', 1).'</strong></td>
 								<td>'.$iconTag.'</td>
 								</tr>';
 						} else {
@@ -1363,16 +1363,16 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			);
 
 				// Output tabs:
-			$content = $this->doc->getDynTabMenu($menuItems,'tx_impexp_import',-1);
+			$content = $this->doc->getDynTabMenu($menuItems, 'tx_impexp_import', -1);
 			if ($extensionInstallationMessage) {
 				$content = '<div style="border: 1px black solid; margin: 10px 10px 10px 10px; padding: 10px 10px 10px 10px;">'.$this->doc->icons(1).htmlspecialchars($extensionInstallationMessage).'</div>'.$content;
 			}
-			$this->content.= $this->doc->section('',$content,0,1);
+			$this->content.= $this->doc->section('', $content, 0, 1);
 
 
 				// Print overview:
 			if ($overviewContent) {
-				$this->content.= $this->doc->section($inData['import_file'] ? $LANG->getLL('importdata_structureHasBeenImported',1) : $LANG->getLL('filterpage_structureToBeImported',1), $overviewContent, 0, 1);
+				$this->content.= $this->doc->section($inData['import_file'] ? $LANG->getLL('importdata_structureHasBeenImported', 1) : $LANG->getLL('filterpage_structureToBeImported', 1), $overviewContent, 0, 1);
 			}
 		}
 	}
@@ -1417,7 +1417,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						'item_uid' => $inData['pagetree']['id'],
 						'preset_data' => serialize($inData)
 					);
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_impexp_presets','uid='.intval($preset['uid']),$fields_values);
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_impexp_presets','uid='.intval($preset['uid']), $fields_values);
 					$msg = 'Preset #'.$preset['uid'].' saved!';
 				} else {
 					$msg = 'ERROR: The preset was not saved because you were not the owner of it!';
@@ -1431,7 +1431,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					'item_uid' => $inData['pagetree']['id'],
 					'preset_data' => serialize($inData)
 				);
-				$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_impexp_presets',$fields_values);
+				$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_impexp_presets', $fields_values);
 				$msg = 'New preset "' . htmlspecialchars($inData['preset']['title']) . '" is created';
 			}
 		}
@@ -1441,7 +1441,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$preset = $this->getPreset($presetData['select']);
 			if (is_array($preset))	{	// Update existing
 				if ($GLOBALS['BE_USER']->isAdmin() || $preset['user_uid'] === $GLOBALS['BE_USER']->user['uid']) {
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_impexp_presets','uid='.intval($preset['uid']));
+					$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_impexp_presets', 'uid='.intval($preset['uid']));
 					$msg = 'Preset #'.$preset['uid'].' deleted!';
 				} else {
 					$msg = 'ERROR: You were not the owner of the preset so you could not delete it.';
@@ -1486,7 +1486,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 			// Show message:
 		if (strlen($msg)) {
-			$this->content.= $this->doc->section('Presets',$msg,0,1,$err ? 3 : 1);
+			$this->content.= $this->doc->section('Presets', $msg, 0, 1, $err ? 3 : 1);
 		}
 	}
 
@@ -1575,7 +1575,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
 		if ($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode()
 			&& !$GLOBALS['$TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-			$this->fileProcessor->writeLog(0,2,1,'Referer host "%s" and server host "%s" did not match!',array($refInfo['host'],$httpHost));
+			$this->fileProcessor->writeLog(0, 2, 1, 'Referer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
 		} else {
 			$this->fileProcessor->start($file);
 			$this->fileProcessor->processData();
@@ -1590,18 +1590,18 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	array		Options to display (key/value pairs)
 	 * @return	string		HTML select element
 	 */
-	function renderSelectBox($prefix,$value,$optValues) {
+	function renderSelectBox($prefix, $value, $optValues) {
 		$opt = array();
 		$isSelFlag = 0;
 		foreach ($optValues as $k => $v) {
-			$sel = (!strcmp($k,$value) ? ' selected="selected"' : '');
+			$sel = (!strcmp($k, $value) ? ' selected="selected"' : '');
 			if ($sel)	$isSelFlag++;
 			$opt[] = '<option value="'.htmlspecialchars($k).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
 		}
-		if (!$isSelFlag && strcmp('',$value)) {
+		if (!$isSelFlag && strcmp('', $value)) {
 			$opt[] = '<option value="'.htmlspecialchars($value).'" selected="selected">'.htmlspecialchars("['".$value."']").'</option>';
 		}
-		return '<select name="'.$prefix.'">'.implode('',$opt).'</select>';
+		return '<select name="'.$prefix.'">'.implode('', $opt).'</select>';
 	}
 
 	/**
@@ -1612,15 +1612,15 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	string		Table names (and the string "_ALL") to exclude. Comma list
 	 * @return	string		HTML select element
 	 */
-	function tableSelector($prefix,$value,$excludeList='') {
+	function tableSelector($prefix, $value, $excludeList='') {
 		$optValues = array();
 
-		if (!t3lib_div::inList($excludeList,'_ALL')) {
+		if (!t3lib_div::inList($excludeList, '_ALL')) {
 			$optValues['_ALL'] = '[' . $GLOBALS['LANG']->getLL('ALL_tables').']';
 		}
 
 		foreach ($GLOBALS['TCA'] as $table => $_) {
-			if ($GLOBALS['BE_USER']->check('tables_select',$table) && !t3lib_div::inList($excludeList,$table)) {
+			if ($GLOBALS['BE_USER']->check('tables_select', $table) && !t3lib_div::inList($excludeList, $table)) {
 				$optValues[$table] = $table;
 			}
 		}
@@ -1630,11 +1630,11 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$opt[] = '<option value=""></option>';
 		foreach ($optValues as $k => $v) {
 			if (is_array($value)) {
-				$sel = in_array($k,$value)?' selected="selected"':'';
+				$sel = in_array($k, $value)?' selected="selected"':'';
 			}
 			$opt[] = '<option value="'.htmlspecialchars($k).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
 		}
-		return '<select name="'.$prefix.'[]" multiple="multiple" size="'.t3lib_utility_Math::forceIntegerInRange(count($opt),5,10).'">'.implode('',$opt).'</select>';
+		return '<select name="'.$prefix.'[]" multiple="multiple" size="'.t3lib_utility_Math::forceIntegerInRange(count($opt), 5, 10).'">'.implode('', $opt).'</select>';
 	}
 
 	/**
@@ -1644,7 +1644,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	 * @param	array		The current values selected
 	 * @return	string		HTML select element
 	 */
-	function extensionSelector($prefix,$value) {
+	function extensionSelector($prefix, $value) {
 		global $TYPO3_LOADED_EXT;
 
 		$extTrav = array_keys($TYPO3_LOADED_EXT);
@@ -1655,12 +1655,12 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		foreach($extTrav as $v) {
 			if ($v!=='_CACHEFILE') {
 				if (is_array($value)) {
-					$sel = in_array($v,$value)?' selected="selected"':'';
+					$sel = in_array($v, $value)?' selected="selected"':'';
 				}
 				$opt[] = '<option value="'.htmlspecialchars($v).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
 			}
 		}
-		return '<select name="'.$prefix.'[]" multiple="multiple" size="'.t3lib_utility_Math::forceIntegerInRange(count($opt),5,10).'">'.implode('',$opt).'</select>';
+		return '<select name="'.$prefix.'[]" multiple="multiple" size="'.t3lib_utility_Math::forceIntegerInRange(count($opt), 5, 10).'">'.implode('', $opt).'</select>';
 	}
 
 	/**
@@ -1677,7 +1677,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Traverse
 		$pageIds = array();
 		foreach($exclude as $element) {
-			list($table,$uid) = explode(':', $element);
+			list($table, $uid) = explode(':', $element);
 			if ($table==='pages') {
 				$pageIds[] = intval($uid);
 			}

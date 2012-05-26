@@ -6072,7 +6072,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						if (count($statements)) {
 							$out = '';
 							foreach ($statements as $statement) {
-								$out.= '<p>' . nl2br(htmlspecialchars(t3lib_div::fixed_lgd_cs($statement,$maxlen))) . '</p>';
+								$out.= '<p>' . nl2br(htmlspecialchars(t3lib_div::fixed_lgd_cs($statement, $maxlen))) . '</p>';
 							}
 						}
 						$this->message($tLabel, 'Content of '.basename($actionParts[1]), $out, 1);
@@ -6879,7 +6879,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_remove['drop'], 'Drop fields (really!)', $this->setAllCheckBoxesByDefault);
 
 				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_update['create_table'], 'Add tables');
-				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_remove['change_table'], 'Removing tables (rename with prefix)', $this->setAllCheckBoxesByDefault,1,$arr_remove['tables_count'], 1);
+				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_remove['change_table'], 'Removing tables (rename with prefix)', $this->setAllCheckBoxesByDefault, 1, $arr_remove['tables_count'], 1);
 				$content.= $this->generateUpdateDatabaseForm_checkboxes($arr_remove['drop_table'], 'Drop tables (really!)', $this->setAllCheckBoxesByDefault, 0, $arr_remove['tables_count'], 1);
 
 				$content = $this->getUpdateDbFormWrap($action_type, $content);
