@@ -41,7 +41,7 @@ require($BACK_PATH.'init.php');
 require($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_func.xml');
 
-$BE_USER->modAccess($MCONF,1);
+$BE_USER->modAccess($MCONF, 1);
 
 
 
@@ -78,7 +78,7 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 
 		// Access check...
 		// The page will show only if there is a valid page and if this page may be viewed by the user
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
+		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
 			// Template markers
@@ -114,9 +114,9 @@ class SC_mod_web_func_index extends t3lib_SCbase {
 
 			$this->doc->form='<form action="index.php" method="post"><input type="hidden" name="id" value="'.$this->id.'" />';
 
-			$vContent = $this->doc->getVersionSelector($this->id,1);
+			$vContent = $this->doc->getVersionSelector($this->id, 1);
 			if ($vContent) {
-				$this->content.=$this->doc->section('',$vContent);
+				$this->content.=$this->doc->section('', $vContent);
 			}
 
 

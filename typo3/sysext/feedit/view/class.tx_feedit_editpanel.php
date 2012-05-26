@@ -90,7 +90,7 @@ class tx_feedit_editpanel {
 					$panel .= $GLOBALS['BE_USER']->adminPanel->ext_makeToolBar() . '<img src="clear.gif" width="2" height="1" alt="" title="" />';
 				}
 				if (isset($allow['edit'])) {
-					$panel .= $this->editPanelLinkWrap('<img ' . t3lib_iconWorks::skinImg(TYPO3_mainDir,'gfx/edit2.gif', 'width="11" height="12" hspace="2" border="0"') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_editRecord').'" align="top" alt="" />', $formName, 'edit', $dataArr['_LOCALIZED_UID'] ? $table . ':' . $dataArr['_LOCALIZED_UID'] : $currentRecord);
+					$panel .= $this->editPanelLinkWrap('<img ' . t3lib_iconWorks::skinImg(TYPO3_mainDir, 'gfx/edit2.gif', 'width="11" height="12" hspace="2" border="0"') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_editRecord').'" align="top" alt="" />', $formName, 'edit', $dataArr['_LOCALIZED_UID'] ? $table . ':' . $dataArr['_LOCALIZED_UID'] : $currentRecord);
 				}
 					// Hiding in workspaces because implementation is incomplete
 				if (isset($allow['move']) && $sortField && $GLOBALS['BE_USER']->workspace === 0) {
@@ -117,7 +117,7 @@ class tx_feedit_editpanel {
 					$panel .= $this->editPanelLinkWrap('<img  ' . t3lib_iconWorks::skinImg(TYPO3_mainDir, 'gfx/delete_record.gif', 'width="12" height="12" vspace="1" hspace="2" border="0" ') . ' title="' . $GLOBALS['BE_USER']->extGetLL('p_delete').'" align="top" alt="" />', $formName, 'delete', '', $GLOBALS['BE_USER']->extGetLL('p_deleteConfirm'));
 				}
 					//	Final
-				$labelTxt = $this->cObj->stdWrap($conf['label'],$conf['label.']);
+				$labelTxt = $this->cObj->stdWrap($conf['label'], $conf['label.']);
 
 				foreach((array) $hiddenFields as $name => $value) {
 					$hiddenFieldString .= '<input type="hidden" name="TSFE_EDIT[' . $name . ']" value="' . $value . '"/>' . LF;
@@ -302,17 +302,17 @@ class tx_feedit_editpanel {
 			$thick = t3lib_utility_Math::forceIntegerInRange($thick, 1, 100);
 			$color = $conf['color'] ? $conf['color'] : '#cccccc';
 			if ($conf['innerWrap']) {
-				$content = $this->wrap($content,$conf['innerWrap']);
+				$content = $this->wrap($content, $conf['innerWrap']);
 			}
 			if ($conf['innerWrap.']) {
-				$content = $this->stdWrap($content,$conf['innerWrap.']);
+				$content = $this->stdWrap($content, $conf['innerWrap.']);
 			}
 			$content = '<table class="typo3-editPanel-previewBorder" border="' . $thick . '" cellpadding="0" cellspacing="0" bordercolor="' . $color . '" width="100%" summary=""><tr><td>' . $content . '</td></tr></table>';
 			if ($conf['outerWrap']) {
-				$content = $this->wrap($content,$conf['outerWrap']);
+				$content = $this->wrap($content, $conf['outerWrap']);
 			}
 			if ($conf['outerWrap.']) {
-				$content = $this->stdWrap($panel,$conf['outerWrap.']);
+				$content = $this->stdWrap($panel, $conf['outerWrap.']);
 			}
 		}
 
