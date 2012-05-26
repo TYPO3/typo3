@@ -3018,7 +3018,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @return string Type of compression
 	 */
 	function _checkImageMagickGifCapability($path) {
-		if ($this->config_array['dir_typo3temp']) { //  && !$this->config_array['safemode']
+		if ($this->config_array['dir_typo3temp']) {
 			$tempPath = $this->typo3temp_path;
 			$uniqueName = md5(uniqid(microtime()));
 			$dest = $tempPath.$uniqueName.'.gif';
@@ -4560,7 +4560,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$imageProc->init();
 		$imageProc->tempPath = $this->typo3temp_path;
 		$imageProc->dontCheckForExistingTempFile=1;
-//		$imageProc->filenamePrefix='install_'.($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']?"v5":"");
 		$imageProc->filenamePrefix='install_';
 		$imageProc->dontCompress=1;
 		$imageProc->alternativeOutputKey='TYPO3_INSTALL_SCRIPT';
@@ -7209,7 +7208,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			foreach ($TCA as $table => $info) {
 				if (!isset($FDcomp[$table])) {
 						// If the table was not in the FDcomp-array, the result array is loaded with that table.
-					//$extraArr[$table]=$info;
 					$extraArr[$table]['whole_table']=1;
 				} else {
 					foreach ($info['columns'] as $fieldN => $fieldC) {

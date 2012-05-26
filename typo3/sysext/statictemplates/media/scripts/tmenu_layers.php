@@ -191,7 +191,6 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 				}
 				$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['layerCounter']++;
 				$zIndex = 10000-$GLOBALS['TSFE']->applicationData['GMENU_LAYERS']['layerCounter'];
-#				$zIndex = (($key+2)*$this->menuNumber*100);
 				$divStart = '<div id="Menu'.$this->WMid.$key.'" style="z-index:'.$zIndex.';'.$exStyle.'">';
 				$divStop = '</div>';
 

@@ -164,7 +164,6 @@ Reports problems with RTE images';
 		ksort($resultArray['missingFiles']);
 		ksort($resultArray['doubleFiles']);
 		ksort($resultArray['lostFiles']);
-	#	print_r($resultArray);
 
 		return $resultArray;
 	}

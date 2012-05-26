@@ -291,7 +291,6 @@ class t3lib_file_Service_FileProcessingService {
 		$targetFileName = 'previewcrm_' . $processedFile->calculateChecksum() . '.' . $targetFileExtension;
 
 			// @todo: implement meaningful TempFileIndex
-		// $processConfiguration['useTargetFileNameAsPrefix'] == 1;
 
 		if ($configuration['useSample']) {
 			$gifBuilder->scalecmd = '-sample';

@@ -49,7 +49,6 @@ class tx_recycler_helper {
 		// Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
 		// First, resetting flags.
 		$hasAccess = 0;
-		$deniedAccessReason = '';
 
 		$calcPRec = $row;
 		t3lib_BEfunc::fixVersioningPid($table,$calcPRec);
@@ -70,13 +69,6 @@ class tx_recycler_helper {
 
 		if (!$GLOBALS['BE_USER']->check('tables_modify', $table)) {
 			$hasAccess = 0;
-		}
-
-		if (!$hasAccess) {
-			$deniedAccessReason = $GLOBALS['BE_USER']->errorMsg;
-			if ($deniedAccessReason) {
-				//fb($deniedAccessReason);
-			}
 		}
 
 		return $hasAccess ? TRUE : FALSE;

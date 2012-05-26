@@ -604,8 +604,6 @@ class Auth_OpenID_AssociateRequest extends Auth_OpenID_Request {
                                              'session_type');
 
             if ($session_type == 'no-encryption') {
-                // oidutil.log('Received OpenID 1 request with a no-encryption '
-                //             'assocaition session type. Continuing anyway.')
             } else if (!$session_type) {
                 $session_type = 'no-encryption';
             }

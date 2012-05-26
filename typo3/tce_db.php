@@ -68,7 +68,6 @@ class SC_tce_db {
 	var $cacheCmd;		// Cache command sent to ->clear_cacheCmd
 	var $redirect;		// Redirect URL. Script will redirect to this location after performing operations (unless errors has occured)
 	var $prErr;			// Boolean. If set, errors will be printed on screen instead of redirection. Should always be used, otherwise you will see no errors if they happen.
-#	var $_disableRTE;
 	var $CB;			// Clipboard command array. May trigger changes in "cmd"
 	var $vC;			// Verification code
 	var $uPT;			// Boolean. Update Page Tree Trigger. If set and the manipulated records are pages then the update page tree signal will be set.
@@ -134,8 +133,6 @@ class SC_tce_db {
 		if ($this->flags['reverseOrder']) {
 			$this->tce->reverseOrder=1;
 		}
-
-#		$this->tce->disableRTE = $this->_disableRTE;
 
 			// Clipboard?
 		if (is_array($this->CB)) {

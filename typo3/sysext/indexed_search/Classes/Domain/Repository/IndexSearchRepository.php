@@ -292,7 +292,7 @@ class Tx_IndexedSearch_Domain_Repository_IndexSearchRepository {
 			// Traverse searchwords; for each, select all phash integers and merge/diff/intersect them with previous word (based on operator)
 		foreach ($searchWords as $k => $v) {
 				// Making the query for a single search word based on the search-type
-			$sWord = $v['sword'];	// $GLOBALS['TSFE']->csConvObj->conv_case('utf-8',$v['sword'],'toLower');	// lower-case all of them...
+			$sWord = $v['sword'];
 			$theType = (string) $this->searchType;
 				// If there are spaces in the search-word, make a full text search instead.
 			if (strstr($sWord,' ')) {
@@ -659,7 +659,7 @@ class Tx_IndexedSearch_Domain_Repository_IndexSearchRepository {
 		}
 			// otherwise select all / disable everything
 
-			// If any of the ranking sortings are selected, we must make a 
+			// If any of the ranking sortings are selected, we must make a
 			// join with the word/rel-table again, because we need to
 			// calculate ranking based on all search-words found.
 		if (substr($this->sortOrder, 0, 5) == 'rank_') {
@@ -711,7 +711,7 @@ class Tx_IndexedSearch_Domain_Repository_IndexSearchRepository {
 					);
 		} else {
 
-				// Otherwise, if sorting are done with the pages table or other fields, 
+				// Otherwise, if sorting are done with the pages table or other fields,
 				// there is no need for joining with the rel/word tables:
 			$orderBy = '';
 			switch((string) $this->sortOrder) {
@@ -777,10 +777,8 @@ class Tx_IndexedSearch_Domain_Repository_IndexSearchRepository {
 				$res = FALSE;
 			}
 			if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
-				#debug("Look up for external media '".$row['data_filename']."': phash:".$row['phash_t3'].' YES - ('.$this->frontendUserGroupList.")!");
 				return TRUE;
 			} else {
-				#debug("Look up for external media '".$row['data_filename']."': phash:".$row['phash_t3'].' NO - ('.$this->frontendUserGroupList.")!");
 				return FALSE;
 			}
 		} else {
@@ -797,14 +795,11 @@ class Tx_IndexedSearch_Domain_Repository_IndexSearchRepository {
 					$res = FALSE;
 				}
 				if ($res && $GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
-					#debug('Checking on it ...'.$row['item_title'].'/'.$row['phash'].' - YES ('.$this->frontendUserGroupList.")");
 					return TRUE;
 				} else {
-					#debug('Checking on it ...'.$row['item_title'].'/'.$row['phash']." - NOPE");
 					return FALSE;
 				}
 			} else {
-					#debug('Resume can be shown, because the document was in fact indexed by this combination of groups!'.$this->frontendUserGroupList.' - '.$row['item_title'].'/'.$row['phash']);
 				return TRUE;
 			}
 		}

@@ -520,7 +520,6 @@ class tx_em_Tools_Unzip {
 			// Look for path to remove
 		else {
 			if ($p_remove_path != "") {
-				//if (strcmp($p_remove_path, $p_entry['filename'])==0)
 				if ($this->_tool_PathInclusion($p_remove_path, $p_entry['filename']) == 2) {
 
 					// Change the file status
@@ -584,18 +583,12 @@ class tx_em_Tools_Unzip {
 				if (is_dir($p_entry['filename'])) {
 					// Change the file status
 					$p_entry['status'] = "already_a_directory";
-
-					// Return
-					//return $v_result;
 				}
 					// Look if file is write protected
 				else {
 					if (!is_writeable($p_entry['filename'])) {
 						// Change the file status
 						$p_entry['status'] = "write_protected";
-
-						// Return
-						//return $v_result;
 					}
 
 						// Look if the extracted file is older
@@ -603,9 +596,6 @@ class tx_em_Tools_Unzip {
 						if (filemtime($p_entry['filename']) > $p_entry['mtime']) {
 							// Change the file status
 							$p_entry['status'] = "newer_exist";
-
-							// Return
-							//return $v_result;
 						}
 					}
 				}
@@ -631,7 +621,6 @@ class tx_em_Tools_Unzip {
 					$p_entry['status'] = "path_creation_fail";
 
 					// Return
-					//return $v_result;
 					$v_result = 1;
 				}
 			}
@@ -809,10 +798,6 @@ class tx_em_Tools_Unzip {
 		}
 
 		// Other informations
-
-		// TBC
-		//for(reset($v_data); $key = key($v_data); next($v_data)) {
-		//}
 
 		// Set the stored filename
 		$p_header['stored_filename'] = $p_header['filename'];

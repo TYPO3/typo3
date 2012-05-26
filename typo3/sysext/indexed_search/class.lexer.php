@@ -73,7 +73,6 @@ class tx_indexedsearch_lexer {
 			0x3a,	// ":"
 			0x2f,	// "/"
 			0x27,	// "'"
-			// 0x615,	// ARABIC SMALL HIGH TAH
 		),
 		'casesensitive' => FALSE,	// Set, if case sensitive indexing is wanted.
 		'removeChars' => array(		// List of unicode numbers of chars that will be removed before words are returned (eg. "-")
@@ -270,7 +269,6 @@ class tx_indexedsearch_lexer {
 							if ($printJoinLgd) {
 								$len = $printJoinLgd;
 							}
-							#debug($cp);
 							return TRUE;
 						} else {	// If a printJoin char is found, record the length if it has not been recorded already:
 							if (!$printJoinLgd)	$printJoinLgd = $len;
@@ -316,11 +314,6 @@ class tx_indexedsearch_lexer {
 			// Numeric?
 		if (
 				($cp >= 0x30 && $cp <= 0x39)		// Arabic
-/*
-				($cp >= 0x660 && $cp <= 0x669) ||	// Arabic-Indic
-				($cp >= 0x6F0 && $cp <= 0x6F9) ||	// Arabic-Indic (Iran, Pakistan, and India)
-				($cp >= 0x3021 && $cp <= 0x3029) ||	// Hangzhou
-*/
 			)	{
 			return array('num');
 		}

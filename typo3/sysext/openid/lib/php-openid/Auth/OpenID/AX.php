@@ -243,8 +243,6 @@ function Auth_OpenID_AX_toTypeURIs($namespace_map, $alias_list_s)
         foreach (explode(',', $alias_list_s) as $alias) {
             $type_uri = $namespace_map->getNamespaceURI($alias);
             if ($type_uri === null) {
-                // raise KeyError(
-                // 'No type is defined for attribute name %r' % (alias,))
                 return new Auth_OpenID_AX_Error(
                   sprintf('No type is defined for attribute name %s',
                           $alias)

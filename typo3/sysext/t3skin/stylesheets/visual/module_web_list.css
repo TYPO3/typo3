@@ -72,10 +72,6 @@ table.typo3-dblist tr.c-headLine:hover td {
 	background-color: #dedede;
 }
 
-table#typo3-versionSelector {
-	/*background-color: #abbbb4;*/
-}
-
 div#typo3-newRecordLink,
 div.typo3-newRecordLink,
 div.typo3-localizationLink,

@@ -53,7 +53,7 @@ class SC_t3lib_thumbs {
 	var $imageList;		// Coming from $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
 	/**
 	 * will hold the file Object
-	 * 
+	 *
 	 * @var t3lib_file_File $input
 	 */
 	var $image;
@@ -155,7 +155,6 @@ class SC_t3lib_thumbs {
 		if ($OK) {
 			$this->image = $fileObject;
 			$this->size = $size;
-			//$this->mtime = $fileObject->getProperty('mtime');
 		} else {
 				// hide the path to the document root;
 			throw new RuntimeException(

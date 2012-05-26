@@ -1558,7 +1558,6 @@ class Auth_OpenID_GenericConsumer {
         $response_message = $this->_makeKVPost($args, $endpoint->server_url);
 
         if ($response_message === null) {
-            // oidutil.log('openid.associate request failed: %s' % (why[0],))
             return null;
         } else if (is_a($response_message,
                         'Auth_OpenID_ServerErrorContainer')) {
@@ -1723,8 +1722,6 @@ class Auth_OpenID_GenericConsumer {
         // no-encryption is not really a valid session type for OpenID
         // 1, but we'll accept it anyway, while issuing a warning.
         if ($session_type == 'no-encryption') {
-            // oidutil.log('WARNING: OpenID server sent "no-encryption"'
-            //             'for OpenID 1.X')
         } else if (($session_type == '') || ($session_type === null)) {
             // Missing or empty session type is the way to flag a
             // 'no-encryption' response. Change the session type to

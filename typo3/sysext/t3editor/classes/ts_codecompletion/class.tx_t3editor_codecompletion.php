@@ -113,12 +113,6 @@ class tx_t3editor_codecompletion {
 		array_pop($tsParser->config);
 		array_pop($tsParser->constants);
 
-		// some of the lines are not clear to me... do we need them?
-		//$tsParser->matchAlternative[] = 'dummydummydummydummydummydummydummydummydummydummydummy';		// This is just here to make sure that at least one element is in the array so that the tsparser actually uses this array to match.
-		//$tsParser->regexMode = $this->pObj->MOD_SETTINGS["ts_browser_regexsearch"];
-		// ??
-		//$tsParser->fixedLgd=$this->pObj->MOD_SETTINGS["ts_browser_fixedLgd"];
-		//$tsParser->matchAlternative = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'];
 		$tsParser->linkObjects = TRUE;
 		$tsParser->ext_regLinenumbers = FALSE;
 		$tsParser->bType=$bType;

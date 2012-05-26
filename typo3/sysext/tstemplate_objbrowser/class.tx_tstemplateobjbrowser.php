@@ -336,7 +336,6 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 		$tmpl->resourceCheck=1;
 		$tmpl->uplPath = PATH_site.$tmpl->uplPath;
 		$tmpl->removeFromGetFilePath = PATH_site;
-		//debug($tmpl->uplPath);
 
 		if ($this->pObj->MOD_SETTINGS["ts_browser_type"]=="const") {
 			$tmpl->ext_constants_BRP=intval(t3lib_div::_GP("breakPointLN"));

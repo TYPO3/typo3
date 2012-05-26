@@ -56,7 +56,6 @@ class user_DoubleMetaPhone
 		// TYPO3 specific API to this class. BEGIN
 	function metaphone($string,$sys_language_uid=0)	{
 		$res = $this->DoubleMetaPhone($string);
-		#debug(array($string,$res['primary']));
 		return $res['primary'];
 	}
 		// TYPO3 specific API to this class. END
@@ -971,12 +970,6 @@ class user_DoubleMetaPhone
           $this->current += 1;
 
       } // end switch
-
-    // printf("<br>ORIGINAL:    '%s'\n", $this->original);
-    // printf("<br>current:    '%s'\n", $this->current);
-    // printf("<br>  PRIMARY:   '%s'\n", $this->primary);
-    // printf("<br>  SECONDARY: '%s'\n", $this->secondary);
-
     } // end while
 
     $this->primary   = substr($this->primary,   0, 4);

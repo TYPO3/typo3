@@ -204,7 +204,7 @@ class tslib_pibase {
 	 * @see pi_linkToPage()
 	 */
 	function pi_getPageLink($id,$target='',$urlParameters=array()) {
-		return $this->cObj->getTypoLink_URL($id,$urlParameters,$target);	// ?$target:$GLOBALS['TSFE']->sPre
+		return $this->cObj->getTypoLink_URL($id,$urlParameters,$target);
 	}
 
 	/**
@@ -220,7 +220,7 @@ class tslib_pibase {
 	 * @see pi_getPageLink(), tslib_cObj::getTypoLink()
 	 */
 	function pi_linkToPage($str,$id,$target='',$urlParameters=array()) {
-		return $this->cObj->getTypoLink($str,$id,$urlParameters,$target);	// ?$target:$GLOBALS['TSFE']->sPre
+		return $this->cObj->getTypoLink($str,$id,$urlParameters,$target);
 	}
 
 	/**
@@ -1293,7 +1293,6 @@ class tslib_pibase {
 					$c=0;
 					foreach($tempArr as $values) {
 						if ($c==$v) {
-							#debug($values);
 							$tempArr=$values;
 							break;
 						}

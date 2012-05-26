@@ -511,10 +511,6 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 								$imgSplit[$k] = '<img ' . $params . ' />';
 							}
 						}
-					} else { // Remove image if it was not found in a proper position on the server!
-
-						// Commented out; removing the image tag might not be that logical...
-						// $imgSplit[$k]='';
 					}
 				}
 
@@ -777,7 +773,6 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							} elseif (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][array_shift(explode(':', $link_param))])) {
 								$href = $link_param;
 							} else {
-								#$href = '';
 								$href = $siteUrl . '?id=' . $link_param;
 								$error = 'No page found: ' . $idPart;
 							}

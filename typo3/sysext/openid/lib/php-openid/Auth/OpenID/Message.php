@@ -645,9 +645,6 @@ class Auth_OpenID_Message {
         $kvargs = array();
         foreach ($post_args as $k => $v) {
             if (strpos($k, 'openid.') !== 0) {
-                // raise ValueError(
-                //   'This message can only be encoded as a POST, because it '
-                //   'contains arguments that are not prefixed with "openid."')
                 return null;
             } else {
                 $kvargs[substr($k, 7)] = $v;

@@ -205,8 +205,6 @@ function Auth_OpenID_urinorm($uri)
         $host = preg_replace_callback(
                   Auth_OpenID_getEncodedPattern(),
                   'Auth_OpenID_pct_encoded_replace', $host);
-        // NO IDNA.
-        // $host = unicode($host, 'utf-8').encode('idna');
     } else {
         $host = strtolower($host);
     }

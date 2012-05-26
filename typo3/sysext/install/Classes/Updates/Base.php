@@ -56,44 +56,6 @@ abstract class Tx_Install_Updates_Base {
 	 */
 	public $versionNumber;
 
-
-
-	/**
-	 *
-	 * API functions
-	 *
-	 **/
-
-	/**
-	 * second step: get user input if needed
-	 *
-	 * @param	string	input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
-	 * @return	string	HTML output
-	 */
-	// public abstract function getUserInput($inputPrefix);
-
-
-	/**
-	 * third step: do the updates
-	 *
-	 * @param	array		&$dbQueries: queries done in this update
-	 * @param	mixed		&$customMessages: custom messages
-	 * @return	boolean		whether it worked (TRUE) or not (FALSE)
-	 */
-	// public abstract function performUpdate(&$dbQueries, &$customMessages);
-
-	/**
-	 * Checks if user input is valid
-	 *
-	 * @param	string		pointer to output custom messages
-	 * @return	boolean		TRUE if user input is correct, then the update is performed. When FALSE, return to getUserInput
-	 */
-	// public abstract function checkUserInput(&$customMessages);
-
-
-
-
-
 	/**
 	 *
 	 * Helper functions, getters and setters
@@ -102,7 +64,7 @@ abstract class Tx_Install_Updates_Base {
 
 	/**
 	 * returns the title attribute
-	 * 
+	 *
 	 * @return	the title of this update wizard
 	 **/
 	public function getTitle() {
@@ -115,7 +77,7 @@ abstract class Tx_Install_Updates_Base {
 
 	/**
 	 * sets the title attribute
-	 * 
+	 *
 	 * @param	$title	the title of this update wizard
 	 * @return	void
 	 **/
@@ -126,7 +88,7 @@ abstract class Tx_Install_Updates_Base {
 
 	/**
 	 * returns the identifier of this class
-	 * 
+	 *
 	 * @return	the identifier of this update wizard
 	 **/
 	public function getIdentifier() {
@@ -135,7 +97,7 @@ abstract class Tx_Install_Updates_Base {
 
 	/**
 	 * sets the identifier attribute
-	 * 
+	 *
 	 * @param	$identifier	the identifier of this update wizard
 	 * @return	void
 	 **/
@@ -176,7 +138,7 @@ abstract class Tx_Install_Updates_Base {
 	/**
 	 * This method creates an instance of a connection to the Extension Manager
 	 * and returns it. This is used when installing an extension.
-	 * 
+	 *
 	 * @return tx_em_Connection_ExtDirectServer EM connection instance
 	 */
 	public function getExtensionManagerConnection() {

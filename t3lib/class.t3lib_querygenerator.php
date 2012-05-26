@@ -1339,7 +1339,6 @@ class t3lib_queryGenerator {
 			}
 			if (in_array('order', $enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableOrderBy']) {
 				$orderByArr = explode(',', $this->extFieldLists['queryOrder']);
-					//		debug($orderByArr);
 				$orderBy = '';
 				$orderBy .= $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '') .
 							'&nbsp;' . t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'], '', '', 'id="checkQueryOrderDesc"') . '&nbsp;<label for="checkQueryOrderDesc">Descending</label>';

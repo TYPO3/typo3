@@ -69,7 +69,6 @@ $TCA['be_users'] = array(
 				'foreign_table_where' => 'ORDER BY be_groups.title',
 				'size' => '5',
 				'maxitems' => '20',
-				#				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
 				'iconsInOptionTags' => 1,
 				'wizards' => array(
 					'_PADDING' => 1,

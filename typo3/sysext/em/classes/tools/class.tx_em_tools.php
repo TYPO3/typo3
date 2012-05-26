@@ -558,7 +558,7 @@ final class tx_em_Tools {
 
 		if ($typePath) {
 			$path = $typePath . ($returnWithoutExtKey ? '' : $extKey . '/');
-			return $path; # @is_dir($path) ? $path : '';
+			return $path;
 		} else {
 			return '';
 		}
