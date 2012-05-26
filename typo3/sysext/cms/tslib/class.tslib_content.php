@@ -1160,7 +1160,7 @@ class tslib_cObj {
 	/**
 	 * Returns a <img> tag with the image file defined by $file and processed according to the properties in the TypoScript array.
 	 * Mostly this function is a sub-function to the IMAGE function which renders the IMAGE cObject in TypoScript.
-	 * This function is called by "$this->cImage($conf['file'],$conf);" from IMAGE().
+	 * This function is called by "$this->cImage($conf['file'], $conf);" from IMAGE().
 	 *
 	 * @param	string		File TypoScript resource
 	 * @param	array		TypoScript configuration properties
@@ -4345,13 +4345,13 @@ class tslib_cObj {
 				// calculate splitCount
 			$splitCount = count($valArr);
 			$max = isset($conf['max.'])
-				? $this->stdWrap($conf['max'],$conf['max.'])
+				? $this->stdWrap($conf['max'], $conf['max.'])
 				: $conf['max'];
 			if ($max && $splitCount > $max) {
 				$splitCount = $max;
 			}
 			$min = isset($conf['min.'])
-				? $this->stdWrap($conf['min'],$conf['min.'])
+				? $this->stdWrap($conf['min'], $conf['min.'])
 				: $conf['min'];
 			if ($min && $splitCount < $min) {
 				$splitCount = $min;
@@ -4896,7 +4896,7 @@ class tslib_cObj {
 					$backParts = t3lib_div::revExplode('<', substr($fwParts[1],0,-1), 2);
 					$attrib = t3lib_div::get_tag_attributes('<'.$fwParts[0].'>');
 					$str_content = $backParts[0];
-					$sameBeginEnd = (substr(strtolower($backParts[1]),1,strlen($tagName))==strtolower($tagName));
+					$sameBeginEnd = (substr(strtolower($backParts[1]), 1, strlen($tagName))==strtolower($tagName));
 				}
 			}
 
@@ -5097,7 +5097,7 @@ class tslib_cObj {
 	 * The value ($file) can either be a file reference (TypoScript resource) or the string "GIFBUILDER".
 	 * In the first case a current image is returned, possibly scaled down or otherwise processed.
 	 * In the latter case a GIFBUILDER image is returned; This means an image is made by TYPO3 from layers of elements as GIFBUILDER defines.
-	 * In the function IMG_RESOURCE() this function is called like $this->getImgResource($conf['file'],$conf['file.']);
+	 * In the function IMG_RESOURCE() this function is called like $this->getImgResource($conf['file'], $conf['file.']);
 	 *
 	 * @param	string		A "imgResource" TypoScript data type. Either a TypoScript file resource or the string GIFBUILDER. See description above.
 	 * @param	array		TypoScript properties for the imgResource type

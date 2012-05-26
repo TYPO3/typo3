@@ -97,9 +97,9 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 			// PAGES:
 		$this->pObj->MOD_SETTINGS['pages_levels']=$this->pObj->MOD_SETTINGS['depth'];		// ONLY for the sake of dblist module which uses this value.
 
-		$h_func = t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[depth]',$this->pObj->MOD_SETTINGS['depth'],$this->pObj->MOD_MENU['depth'],'index.php');
+		$h_func = t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth'], 'index.php');
 		if ($this->pObj->MOD_SETTINGS['function']=='tx_cms_webinfo_hits') {
-			$h_func.= t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[stat_type]',$this->pObj->MOD_SETTINGS['stat_type'],$this->pObj->MOD_MENU['stat_type'],'index.php');
+			$h_func.= t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[stat_type]', $this->pObj->MOD_SETTINGS['stat_type'], $this->pObj->MOD_MENU['stat_type'], 'index.php');
 
 			if ($this->pObj->MOD_SETTINGS['stat_type']==1)	$dblist->stat_select_field='rl0';
 			if ($this->pObj->MOD_SETTINGS['stat_type']==2)	$dblist->stat_select_field='rl1';
@@ -108,12 +108,12 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 			for ($a=0;$a<30;$a++) {
 				$dblist->stat_codes[]='HITS_days:'.(-$a);
 			}
-			$timespan_b = mktime (0,0,0);
-			$timespan_e = mktime (0,0,0)-(30-1)*3600*24+1;
-			$header='<br />'.sprintf($LANG->getLL('stat_period'),t3lib_BEfunc::date($timespan_b),t3lib_BEfunc::date($timespan_e)).'<br />';
+			$timespan_b = mktime (0, 0, 0);
+			$timespan_e = mktime (0, 0, 0)-(30-1)*3600*24+1;
+			$header='<br />'.sprintf($LANG->getLL('stat_period'), t3lib_BEfunc::date($timespan_b), t3lib_BEfunc::date($timespan_e)).'<br />';
 
 				//
-			$dblist->start($this->pObj->id,'pages',0);
+			$dblist->start($this->pObj->id, 'pages', 0);
 			$dblist->pages_noEditColumns=1;
 			$dblist->generateList();
 
@@ -128,8 +128,8 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 				1
 			);
 		} else {
-			$h_func.= t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[pages]',$this->pObj->MOD_SETTINGS['pages'],$this->pObj->MOD_MENU['pages'],'index.php');
-			$dblist->start($this->pObj->id,'pages',0);
+			$h_func.= t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages'], 'index.php');
+			$dblist->start($this->pObj->id, 'pages', 0);
 			$dblist->generateList();
 
 				// CSH
@@ -144,7 +144,7 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 
 				// SYS_NOTES:
 			if (t3lib_extMgm::isLoaded('sys_note')) {
-				$dblist->start($this->pObj->id,'sys_note',0);
+				$dblist->start($this->pObj->id, 'sys_note', 0);
 				$dblist->generateList();
 				if ($dblist->HTMLcode) {
 					$theOutput.=$this->pObj->doc->spacer(10);
@@ -159,7 +159,7 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 				// PAGE INFORMATION
 			if ($this->pObj->pageinfo['uid']) {
 				$theOutput.=$this->pObj->doc->spacer(10);
-				$theOutput.=$this->pObj->doc->section($LANG->getLL('pageInformation'),$dblist->getPageInfoBox($this->pObj->pageinfo,$this->pObj->CALC_PERMS&2),0,1);
+				$theOutput.=$this->pObj->doc->section($LANG->getLL('pageInformation'), $dblist->getPageInfoBox($this->pObj->pageinfo, $this->pObj->CALC_PERMS&2), 0, 1);
 			}
 		}
 

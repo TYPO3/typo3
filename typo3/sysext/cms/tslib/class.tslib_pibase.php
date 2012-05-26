@@ -168,7 +168,7 @@ class tslib_pibase {
 	 */
 	function pi_setPiVarDefaults() {
 		if (is_array($this->conf['_DEFAULT_PI_VARS.'])) {
-			$this->piVars = t3lib_div::array_merge_recursive_overrule($this->conf['_DEFAULT_PI_VARS.'],is_array($this->piVars)?$this->piVars:array());
+			$this->piVars = t3lib_div::array_merge_recursive_overrule($this->conf['_DEFAULT_PI_VARS.'], is_array($this->piVars)?$this->piVars:array());
 		}
 	}
 
@@ -203,8 +203,8 @@ class tslib_pibase {
 	 * @return	string		The resulting URL
 	 * @see pi_linkToPage()
 	 */
-	function pi_getPageLink($id,$target='',$urlParameters=array()) {
-		return $this->cObj->getTypoLink_URL($id,$urlParameters,$target);
+	function pi_getPageLink($id, $target='', $urlParameters=array()) {
+		return $this->cObj->getTypoLink_URL($id, $urlParameters, $target);
 	}
 
 	/**
@@ -219,8 +219,8 @@ class tslib_pibase {
 	 * @return	string		The input string wrapped in <a> tags with the URL and target set.
 	 * @see pi_getPageLink(), tslib_cObj::getTypoLink()
 	 */
-	function pi_linkToPage($str,$id,$target='',$urlParameters=array()) {
-		return $this->cObj->getTypoLink($str,$id,$urlParameters,$target);
+	function pi_linkToPage($str, $id, $target='', $urlParameters=array()) {
+		return $this->cObj->getTypoLink($str, $id, $urlParameters, $target);
 	}
 
 	/**
@@ -234,7 +234,7 @@ class tslib_pibase {
 	 * @return	string		The input string wrapped in <a> tags
 	 * @see pi_linkTP_keepPIvars(), tslib_cObj::typoLink()
 	 */
-	function pi_linkTP($str,$urlParameters=array(),$cache=0,$altPageId=0) {
+	function pi_linkTP($str, $urlParameters=array(), $cache=0, $altPageId=0) {
 		$conf=array();
 		$conf['useCacheHash'] = $this->pi_USER_INT_obj ? 0 : $cache;
 		$conf['no_cache'] = $this->pi_USER_INT_obj ? 0 : !$cache;
@@ -257,16 +257,16 @@ class tslib_pibase {
 	 * @return	string		The input string wrapped in <a> tags
 	 * @see pi_linkTP()
 	 */
-	function pi_linkTP_keepPIvars($str,$overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0) {
+	function pi_linkTP_keepPIvars($str, $overrulePIvars=array(), $cache=0, $clearAnyway=0, $altPageId=0) {
 		if (is_array($this->piVars) && is_array($overrulePIvars) && !$clearAnyway) {
 			$piVars = $this->piVars;
 			unset($piVars['DATA']);
-			$overrulePIvars = t3lib_div::array_merge_recursive_overrule($piVars,$overrulePIvars);
+			$overrulePIvars = t3lib_div::array_merge_recursive_overrule($piVars, $overrulePIvars);
 			if ($this->pi_autoCacheEn) {
 				$cache = $this->pi_autoCache($overrulePIvars);
 			}
 		}
-		$res = $this->pi_linkTP($str,Array($this->prefixId=>$overrulePIvars),$cache,$altPageId);
+		$res = $this->pi_linkTP($str, Array($this->prefixId=>$overrulePIvars), $cache, $altPageId);
 		return $res;
 	}
 
@@ -281,8 +281,8 @@ class tslib_pibase {
 	 * @return	string		The URL ($this->cObj->lastTypoLinkUrl)
 	 * @see pi_linkTP_keepPIvars()
 	 */
-	function pi_linkTP_keepPIvars_url($overrulePIvars=array(),$cache=0,$clearAnyway=0,$altPageId=0) {
-		$this->pi_linkTP_keepPIvars('|',$overrulePIvars,$cache,$clearAnyway,$altPageId);
+	function pi_linkTP_keepPIvars_url($overrulePIvars=array(), $cache=0, $clearAnyway=0, $altPageId=0) {
+		$this->pi_linkTP_keepPIvars('|', $overrulePIvars, $cache, $clearAnyway, $altPageId);
 		return $this->cObj->lastTypoLinkUrl;
 	}
 
@@ -299,16 +299,16 @@ class tslib_pibase {
 	 * @return	string		The input string wrapped in <a> tags
 	 * @see pi_linkTP(), pi_linkTP_keepPIvars()
 	 */
-	function pi_list_linkSingle($str,$uid,$cache=FALSE,$mergeArr=array(),$urlOnly=FALSE,$altPageId=0) {
+	function pi_list_linkSingle($str, $uid, $cache=FALSE, $mergeArr=array(), $urlOnly=FALSE, $altPageId=0) {
 		if ($this->prefixId) {
 			if ($cache) {
 				$overrulePIvars=$uid?array('showUid'=>$uid):Array();
-				$overrulePIvars=array_merge($overrulePIvars,(array)$mergeArr);
-				$str = $this->pi_linkTP($str,Array($this->prefixId=>$overrulePIvars),$cache,$altPageId);
+				$overrulePIvars=array_merge($overrulePIvars, (array)$mergeArr);
+				$str = $this->pi_linkTP($str, Array($this->prefixId=>$overrulePIvars), $cache, $altPageId);
 			} else {
 				$overrulePIvars=array('showUid'=>$uid?$uid:'');
-				$overrulePIvars=array_merge($overrulePIvars,(array)$mergeArr);
-				$str = $this->pi_linkTP_keepPIvars($str,$overrulePIvars,$cache,0,$altPageId);
+				$overrulePIvars=array_merge($overrulePIvars, (array)$mergeArr);
+				$str = $this->pi_linkTP_keepPIvars($str, $overrulePIvars, $cache, 0, $altPageId);
 			}
 
 				// If urlOnly flag, return only URL as it has recently be generated.
@@ -327,8 +327,8 @@ class tslib_pibase {
 	 * @param	string		Window parameters, see the default list for inspiration
 	 * @return	string		The processed input string, modified IF a <a> tag was found
 	 */
-	function pi_openAtagHrefInJSwindow($str,$winName='',$winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1') {
-		if (preg_match('/(.*)(<a[^>]*>)(.*)/i',$str,$match)) {
+	function pi_openAtagHrefInJSwindow($str, $winName='', $winParams='width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1') {
+		if (preg_match('/(.*)(<a[^>]*>)(.*)/i', $str, $match)) {
 			$aTagContent = t3lib_div::get_tag_attributes($match[2]);
 			$match[2]='<a href="#" onclick="'.
 				htmlspecialchars('vHWin=window.open(\''.$GLOBALS['TSFE']->baseUrlWrap($aTagContent['href']).'\',\''.($winName?$winName:md5($aTagContent['href'])).'\',\''.$winParams.'\');vHWin.focus();return false;').
@@ -397,9 +397,9 @@ class tslib_pibase {
 			// Initializing variables:
 		$pointer = intval($this->piVars[$pointerName]);
 		$count = intval($this->internal['res_count']);
-		$results_at_a_time = t3lib_utility_Math::forceIntegerInRange($this->internal['results_at_a_time'],1,1000);
+		$results_at_a_time = t3lib_utility_Math::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
 		$totalPages = ceil($count/$results_at_a_time);
-		$maxPages = t3lib_utility_Math::forceIntegerInRange($this->internal['maxPages'],1,100);
+		$maxPages = t3lib_utility_Math::forceIntegerInRange($this->internal['maxPages'], 1, 100);
 		$pi_isOnlyFields = $this->pi_isOnlyFields($this->pi_isOnlyFields);
 
 		if (!$forceOutput && $count <= $results_at_a_time) {
@@ -423,7 +423,7 @@ class tslib_pibase {
 				$pagefloat = ceil(($maxPages - 1)/2);
 			} else {
 				// pagefloat set as integer. 0 = left, value >= $this->internal['maxPages'] = right
-				$pagefloat = t3lib_utility_Math::forceIntegerInRange($this->internal['pagefloat'],-1,$maxPages-1);
+				$pagefloat = t3lib_utility_Math::forceIntegerInRange($this->internal['pagefloat'], -1, $maxPages-1);
 			}
 		} else {
 			$pagefloat = -1; // pagefloat disabled
@@ -444,64 +444,64 @@ class tslib_pibase {
 		</div>';
 
 			// now overwrite all entries in $wrapper which are also in $wrapArr
-		$wrapper = array_merge($wrapper,$wrapArr);
+		$wrapper = array_merge($wrapper, $wrapArr);
 
 		if ($showResultCount != 2) { //show pagebrowser
 			if ($pagefloat > -1) {
-				$lastPage = min($totalPages,max($pointer+1 + $pagefloat,$maxPages));
-				$firstPage = max(0,$lastPage-$maxPages);
+				$lastPage = min($totalPages, max($pointer+1 + $pagefloat, $maxPages));
+				$firstPage = max(0, $lastPage-$maxPages);
 			} else {
 				$firstPage = 0;
-				$lastPage = t3lib_utility_Math::forceIntegerInRange($totalPages,1,$maxPages);
+				$lastPage = t3lib_utility_Math::forceIntegerInRange($totalPages, 1, $maxPages);
 			}
 			$links=array();
 
 				// Make browse-table/links:
 			if ($showFirstLast) { // Link to first page
 				if ($pointer>0) {
-					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_first','<< First',$hscText),array($pointerName => NULL),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
+					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_first', '<< First', $hscText), array($pointerName => NULL), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
 				} else {
-					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_first','<< First',$hscText),$wrapper['disabledLinkWrap']);
+					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_first', '<< First', $hscText), $wrapper['disabledLinkWrap']);
 				}
 			}
 			if ($alwaysPrev>=0)	{ // Link to previous page
 				if ($pointer>0) {
-					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_prev','< Previous',$hscText),array($pointerName => ($pointer-1?$pointer-1:'')),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
+					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_prev', '< Previous', $hscText), array($pointerName => ($pointer-1?$pointer-1:'')), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
 				} elseif ($alwaysPrev) {
-					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_prev','< Previous',$hscText),$wrapper['disabledLinkWrap']);
+					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_prev', '< Previous', $hscText), $wrapper['disabledLinkWrap']);
 				}
 			}
 			for($a=$firstPage;$a<$lastPage;$a++)	{ // Links to pages
 				if ($this->internal['showRange']) {
-					$pageText = (($a*$results_at_a_time)+1).'-'.min($count,(($a+1)*$results_at_a_time));
+					$pageText = (($a*$results_at_a_time)+1).'-'.min($count, (($a+1)*$results_at_a_time));
 				} else {
-					$pageText = trim($this->pi_getLL('pi_list_browseresults_page','Page',$hscText).' '.($a+1));
+					$pageText = trim($this->pi_getLL('pi_list_browseresults_page', 'Page', $hscText).' '.($a+1));
 				}
 				if ($pointer == $a) { // current page
 					if ($this->internal['dontLinkActivePage']) {
-						$links[] = $this->cObj->wrap($pageText,$wrapper['activeLinkWrap']);
+						$links[] = $this->cObj->wrap($pageText, $wrapper['activeLinkWrap']);
 					} else {
-						$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText,array($pointerName  => ($a?$a:'')),$pi_isOnlyFields),$wrapper['activeLinkWrap']);
+						$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText, array($pointerName  => ($a?$a:'')), $pi_isOnlyFields), $wrapper['activeLinkWrap']);
 					}
 				} else {
-					$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText,array($pointerName => ($a?$a:'')),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
+					$links[] = $this->cObj->wrap($this->pi_linkTP_keepPIvars($pageText, array($pointerName => ($a?$a:'')), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
 				}
 			}
 			if ($pointer<$totalPages-1 || $showFirstLast) {
 				if ($pointer>=$totalPages-1) { // Link to next page
-					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_next','Next >',$hscText),$wrapper['disabledLinkWrap']);
+					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_next', 'Next >', $hscText), $wrapper['disabledLinkWrap']);
 				} else {
-					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_next','Next >',$hscText),array($pointerName => $pointer+1),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
+					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_next', 'Next >', $hscText), array($pointerName => $pointer+1), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
 				}
 			}
 			if ($showFirstLast) { // Link to last page
 				if ($pointer<$totalPages-1) {
-					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_last','Last >>',$hscText),array($pointerName => $totalPages-1),$pi_isOnlyFields),$wrapper['inactiveLinkWrap']);
+					$links[]=$this->cObj->wrap($this->pi_linkTP_keepPIvars($this->pi_getLL('pi_list_browseresults_last', 'Last >>', $hscText), array($pointerName => $totalPages-1), $pi_isOnlyFields), $wrapper['inactiveLinkWrap']);
 				} else {
-					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_last','Last >>',$hscText),$wrapper['disabledLinkWrap']);
+					$links[]=$this->cObj->wrap($this->pi_getLL('pi_list_browseresults_last', 'Last >>', $hscText), $wrapper['disabledLinkWrap']);
 				}
 			}
-			$theLinks = $this->cObj->wrap(implode(LF,$links),$wrapper['browseLinksWrap']);
+			$theLinks = $this->cObj->wrap(implode(LF, $links), $wrapper['browseLinksWrap']);
 		} else {
 			$theLinks = '';
 		}
@@ -514,28 +514,28 @@ class tslib_pibase {
 				// this will render the resultcount in a more flexible way using markers (new in TYPO3 3.8.0).
 				// the formatting string is expected to hold template markers (see function header). Example: 'Displaying results ###FROM### to ###TO### out of ###OUT_OF###'
 
-				$markerArray['###FROM###'] = $this->cObj->wrap($this->internal['res_count'] > 0 ? $pR1 : 0,$wrapper['showResultsNumbersWrap']);
-				$markerArray['###TO###'] = $this->cObj->wrap(min($this->internal['res_count'],$pR2),$wrapper['showResultsNumbersWrap']);
-				$markerArray['###OUT_OF###'] = $this->cObj->wrap($this->internal['res_count'],$wrapper['showResultsNumbersWrap']);
-				$markerArray['###FROM_TO###'] = $this->cObj->wrap(($this->internal['res_count'] > 0 ? $pR1 : 0).' '.$this->pi_getLL('pi_list_browseresults_to','to').' '.min($this->internal['res_count'],$pR2),$wrapper['showResultsNumbersWrap']);
-				$markerArray['###CURRENT_PAGE###'] = $this->cObj->wrap($pointer+1,$wrapper['showResultsNumbersWrap']);
-				$markerArray['###TOTAL_PAGES###'] = $this->cObj->wrap($totalPages,$wrapper['showResultsNumbersWrap']);
+				$markerArray['###FROM###'] = $this->cObj->wrap($this->internal['res_count'] > 0 ? $pR1 : 0, $wrapper['showResultsNumbersWrap']);
+				$markerArray['###TO###'] = $this->cObj->wrap(min($this->internal['res_count'], $pR2), $wrapper['showResultsNumbersWrap']);
+				$markerArray['###OUT_OF###'] = $this->cObj->wrap($this->internal['res_count'], $wrapper['showResultsNumbersWrap']);
+				$markerArray['###FROM_TO###'] = $this->cObj->wrap(($this->internal['res_count'] > 0 ? $pR1 : 0).' '.$this->pi_getLL('pi_list_browseresults_to', 'to').' '.min($this->internal['res_count'], $pR2), $wrapper['showResultsNumbersWrap']);
+				$markerArray['###CURRENT_PAGE###'] = $this->cObj->wrap($pointer+1, $wrapper['showResultsNumbersWrap']);
+				$markerArray['###TOTAL_PAGES###'] = $this->cObj->wrap($totalPages, $wrapper['showResultsNumbersWrap']);
 				// substitute markers
-				$resultCountMsg = $this->cObj->substituteMarkerArray($this->pi_getLL('pi_list_browseresults_displays','Displaying results ###FROM### to ###TO### out of ###OUT_OF###'),$markerArray);
+				$resultCountMsg = $this->cObj->substituteMarkerArray($this->pi_getLL('pi_list_browseresults_displays', 'Displaying results ###FROM### to ###TO### out of ###OUT_OF###'), $markerArray);
 			} else {
 				// render the resultcount in the "traditional" way using sprintf
 				$resultCountMsg = sprintf(
-					str_replace('###SPAN_BEGIN###','<span'.$this->pi_classParam('browsebox-strong').'>',$this->pi_getLL('pi_list_browseresults_displays','Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>')),
+					str_replace('###SPAN_BEGIN###','<span'.$this->pi_classParam('browsebox-strong').'>', $this->pi_getLL('pi_list_browseresults_displays', 'Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>')),
 					$count > 0 ? $pR1 : 0,
-					min($count,$pR2),
+					min($count, $pR2),
 					$count);
 			}
-			$resultCountMsg = $this->cObj->wrap($resultCountMsg,$wrapper['showResultsWrap']);
+			$resultCountMsg = $this->cObj->wrap($resultCountMsg, $wrapper['showResultsWrap']);
 		} else {
 			$resultCountMsg = '';
 		}
 
-		$sTables = $this->cObj->wrap($resultCountMsg.$theLinks,$wrapper['browseBoxWrap']);
+		$sTables = $this->cObj->wrap($resultCountMsg.$theLinks, $wrapper['browseBoxWrap']);
 
 		return $sTables;
 	}
@@ -559,7 +559,7 @@ class tslib_pibase {
 			<'.trim('table '.$tableParams).'>
 				<tr>
 					<td><input type="text" name="'.$this->prefixId.'[sword]" value="'.htmlspecialchars($this->piVars['sword']).'"'.$this->pi_classParam('searchbox-sword').' /></td>
-					<td><input type="submit" value="'.$this->pi_getLL('pi_list_searchBox_search','Search',TRUE).'"'.$this->pi_classParam('searchbox-button').' />'.
+					<td><input type="submit" value="'.$this->pi_getLL('pi_list_searchBox_search', 'Search',TRUE).'"'.$this->pi_classParam('searchbox-button').' />'.
 						'<input type="hidden" name="no_cache" value="1" />'.
 						'<input type="hidden" name="'.$this->prefixId.'[pointer]" value="" />'.
 						'</td>
@@ -578,12 +578,12 @@ class tslib_pibase {
 	 * @param	string		Attributes for the table tag which is wrapped around the table cells containing the menu
 	 * @return	string		Output HTML, wrapped in <div>-tags with a class attribute
 	 */
-	function pi_list_modeSelector($items=array(),$tableParams='') {
+	function pi_list_modeSelector($items=array(), $tableParams='') {
 		$cells=array();
 		foreach ($items as $k => $v) {
 			$cells[]='
 					<td'.($this->piVars['mode']==$k?$this->pi_classParam('modeSelector-SCell'):'').'><p>'.
-				$this->pi_linkTP_keepPIvars(htmlspecialchars($v),array('mode'=>$k),$this->pi_isOnlyFields($this->pi_isOnlyFields)).
+				$this->pi_linkTP_keepPIvars(htmlspecialchars($v), array('mode'=>$k), $this->pi_isOnlyFields($this->pi_isOnlyFields)).
 				'</p></td>';
 		}
 
@@ -595,7 +595,7 @@ class tslib_pibase {
 		<div'.$this->pi_classParam('modeSelector').'>
 			<'.trim('table '.$tableParams).'>
 				<tr>
-					'.implode('',$cells).'
+					'.implode('', $cells).'
 				</tr>
 			</table>
 		</div>';
@@ -615,7 +615,7 @@ class tslib_pibase {
 	 * @return	string		Output HTML, wrapped in <div>-tags with a class attribute
 	 * @see pi_list_row(), pi_list_header()
 	 */
-	function pi_list_makelist($res,$tableParams='') {
+	function pi_list_makelist($res, $tableParams='') {
 			// Make list table header:
 		$tRows=array();
 		$this->internal['currentRow']='';
@@ -635,7 +635,7 @@ class tslib_pibase {
 		-->
 		<div'.$this->pi_classParam('listrow').'>
 			<'.trim('table '.$tableParams).'>
-				'.implode('',$tRows).'
+				'.implode('', $tRows).'
 			</table>
 		</div>';
 
@@ -694,7 +694,7 @@ class tslib_pibase {
 	 * @return	string		The combined class name (with the correct prefix)
 	 */
 	function pi_getClassName($class) {
-		return str_replace('_','-',$this->prefixId).($this->prefixId?'-':'').$class;
+		return str_replace('_', '-', $this->prefixId).($this->prefixId?'-':'').$class;
 	}
 
 	/**
@@ -708,10 +708,10 @@ class tslib_pibase {
 	 */
 	function pi_classParam($class, $addClasses='') {
 		$output = '';
-		foreach (t3lib_div::trimExplode(',',$class) as $v) {
+		foreach (t3lib_div::trimExplode(',', $class) as $v) {
 			$output.= ' '.$this->pi_getClassName($v);
 		}
-		foreach (t3lib_div::trimExplode(',',$addClasses) as $v) {
+		foreach (t3lib_div::trimExplode(',', $addClasses) as $v) {
 			$output.= ' '.$v;
 		}
 		return ' class="'.trim($output).'"';
@@ -725,7 +725,7 @@ class tslib_pibase {
 	 * @return	string		HTML content wrapped, ready to return to the parent object.
 	 */
 	function pi_wrapInBaseClass($str) {
-		$content = '<div class="'.str_replace('_','-',$this->prefixId).'">
+		$content = '<div class="'.str_replace('_', '-', $this->prefixId).'">
 		'.$str.'
 	</div>
 	';
@@ -780,7 +780,7 @@ class tslib_pibase {
 	 * @return	string		Returns FALSE/blank if no BE User login and of course if the panel is not shown for other reasons. Otherwise the HTML for the panel (a table).
 	 * @see tslib_cObj::EDITPANEL()
 	 */
-	function pi_getEditPanel($row='',$tablename='',$label='',$conf=Array()) {
+	function pi_getEditPanel($row='', $tablename='', $label='', $conf=Array()) {
 		$panel='';
 		if (!$row || !$tablename) {
 			$row = $this->internal['currentRow'];
@@ -791,15 +791,15 @@ class tslib_pibase {
 				// Create local cObj if not set:
 			if (!is_object($this->pi_EPtemp_cObj)) {
 				$this->pi_EPtemp_cObj = t3lib_div::makeInstance('tslib_cObj');
-				$this->pi_EPtemp_cObj->setParent($this->cObj->data,$this->cObj->currentRecord);
+				$this->pi_EPtemp_cObj->setParent($this->cObj->data, $this->cObj->currentRecord);
 			}
 
 				// Initialize the cObj object with current row
-			$this->pi_EPtemp_cObj->start($row,$tablename);
+			$this->pi_EPtemp_cObj->start($row, $tablename);
 
 				// Setting TypoScript values in the $conf array. See documentation in TSref for the EDITPANEL cObject.
 			$conf['allow'] = 'edit,new,delete,move,hide';
-			$panel = $this->pi_EPtemp_cObj->cObjGetSingle('EDITPANEL',$conf,'editpanel');
+			$panel = $this->pi_EPtemp_cObj->cObjGetSingle('EDITPANEL', $conf, 'editpanel');
 		}
 
 		if ($panel) {
@@ -832,7 +832,7 @@ class tslib_pibase {
 				'beforeLastTag'=>1,
 				'iconTitle' => $title
 			),$oConf);
-			$content=$this->cObj->editIcons($content,$tablename.':'.$fields,$conf,$tablename.':'.$row['uid'],$row,'&viewUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')));
+			$content=$this->cObj->editIcons($content, $tablename.':'.$fields, $conf, $tablename.':'.$row['uid'], $row, '&viewUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')));
 		}
 		return $content;
 	}
@@ -927,7 +927,7 @@ class tslib_pibase {
 				// Read the strings in the required charset (since TYPO3 4.2)
 			$this->LOCAL_LANG = t3lib_div::readLLfile($basePath,$this->LLkey, $GLOBALS['TSFE']->renderCharset);
 			if ($this->altLLkey) {
-				$this->LOCAL_LANG = t3lib_div::readLLfile($basePath,$this->altLLkey);
+				$this->LOCAL_LANG = t3lib_div::readLLfile($basePath, $this->altLLkey);
 			}
 
 				// Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
@@ -935,7 +935,7 @@ class tslib_pibase {
 			if (is_array($confLL)) {
 				foreach ($confLL as $languageKey => $languageArray) {
 						// Don't process label if the langue is not loaded
-					$languageKey = substr($languageKey,0,-1);
+					$languageKey = substr($languageKey, 0, -1);
 					if (is_array($languageArray) && is_array($this->LOCAL_LANG[$languageKey])) {
 							// Remove the dot after the language key
 						foreach ($languageArray as $labelKey => $labelValue) {
@@ -1003,7 +1003,7 @@ class tslib_pibase {
 			if (is_array($mm_cat)) {
 				$query = 'FROM ' . $table . ',' . $mm_cat['table'] . ',' . $mm_cat['mmtable'] . LF .
 						' WHERE ' . $table . '.uid=' . $mm_cat['mmtable'] . '.uid_local AND ' . $mm_cat['table'] . '.uid=' . $mm_cat['mmtable'] . '.uid_foreign ' . LF .
-						(strcmp($mm_cat['catUidList'],'') ? ' AND ' . $mm_cat['table'] . '.uid IN (' . $mm_cat['catUidList'] . ')' : '') . LF .
+						(strcmp($mm_cat['catUidList'], '') ? ' AND ' . $mm_cat['table'] . '.uid IN (' . $mm_cat['catUidList'] . ')' : '') . LF .
 						' AND ' . $table . '.pid IN (' . $pidList . ')' . LF .
 						$this->cObj->enableFields($table) . LF;	// This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT selected, if they should not! Almost ALWAYS add this to your queries!
 			} else {
@@ -1072,8 +1072,8 @@ class tslib_pibase {
 	 * @param	boolean		If $checkPage is set, it's required that the page on which the record resides is accessible
 	 * @return	array		If record is found, an array. Otherwise FALSE.
 	 */
-	function pi_getRecord($table,$uid,$checkPage=0) {
-		return $GLOBALS['TSFE']->sys_page->checkRecord($table,$uid,$checkPage);
+	function pi_getRecord($table, $uid, $checkPage=0) {
+		return $GLOBALS['TSFE']->sys_page->checkRecord($table, $uid, $checkPage);
 	}
 
 	/**
@@ -1113,13 +1113,13 @@ class tslib_pibase {
 	 * @param	string		List of fields where each element will be prepended with the table name given.
 	 * @return	string		List of fields processed.
 	 */
-	function pi_prependFieldsWithTable($table,$fieldList) {
-		$list=t3lib_div::trimExplode(',',$fieldList,1);
+	function pi_prependFieldsWithTable($table, $fieldList) {
+		$list=t3lib_div::trimExplode(',', $fieldList, 1);
 		$return=array();
 		foreach ($list as $listItem) {
 			$return[]=$table.'.'.$listItem;
 		}
-		return implode(',',$return);
+		return implode(',', $return);
 	}
 
 	/**
@@ -1133,7 +1133,7 @@ class tslib_pibase {
 	 * @param	string		Optional LIMIT value ([begin,]max), if none, supply blank string.
 	 * @return	array		The array with the category records in.
 	 */
-	function pi_getCategoryTableContents($table,$pid,$whereClause='',$groupBy='',$orderBy='',$limit='') {
+	function pi_getCategoryTableContents($table, $pid, $whereClause='', $groupBy='', $orderBy='', $limit='') {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 					'*',
 					$table,
@@ -1177,10 +1177,10 @@ class tslib_pibase {
 	 * @param	integer		Limit for the values.
 	 * @return	boolean		Returns TRUE (1) if conditions are met.
 	 */
-	function pi_isOnlyFields($fList,$lowerThan=-1) {
+	function pi_isOnlyFields($fList, $lowerThan=-1) {
 		$lowerThan = $lowerThan==-1 ? $this->pi_lowerThan : $lowerThan;
 
-		$fList = t3lib_div::trimExplode(',',$fList,1);
+		$fList = t3lib_div::trimExplode(',', $fList, 1);
 		$tempPiVars = $this->piVars;
 		foreach ($fList as $k) {
 			if (!t3lib_utility_Math::canBeInterpretedAsInteger($tempPiVars[$k]) || $tempPiVars[$k]<$lowerThan)		unset($tempPiVars[$k]);
@@ -1200,7 +1200,7 @@ class tslib_pibase {
 	function pi_autoCache($inArray) {
 		if (is_array($inArray)) {
 			foreach ($inArray as $fN => $fV) {
-				if (!strcmp($inArray[$fN],'')) {
+				if (!strcmp($inArray[$fN], '')) {
 					unset($inArray[$fN]);
 				} elseif (is_array($this->pi_autoCacheFields[$fN])) {
 					if (is_array($this->pi_autoCacheFields[$fN]['range'])
@@ -1209,7 +1209,7 @@ class tslib_pibase {
 								unset($inArray[$fN]);
 					}
 					if (is_array($this->pi_autoCacheFields[$fN]['list'])
-							&& in_array($inArray[$fN],$this->pi_autoCacheFields[$fN]['list'])) {
+							&& in_array($inArray[$fN], $this->pi_autoCacheFields[$fN]['list'])) {
 								unset($inArray[$fN]);
 					}
 				}
@@ -1267,10 +1267,10 @@ class tslib_pibase {
 	 * @param	string		Value pointer, eg. "vDEF"
 	 * @return	string		The content.
 	 */
-	function pi_getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF') {
+	function pi_getFFvalue($T3FlexForm_array, $fieldName, $sheet='sDEF', $lang='lDEF', $value='vDEF') {
 		$sheetArray = is_array($T3FlexForm_array) ? $T3FlexForm_array['data'][$sheet][$lang] : '';
 		if (is_array($sheetArray)) {
-			return $this->pi_getFFvalueFromSheetArray($sheetArray,explode('/',$fieldName),$value);
+			return $this->pi_getFFvalueFromSheetArray($sheetArray, explode('/', $fieldName), $value);
 		}
 	}
 
@@ -1284,7 +1284,7 @@ class tslib_pibase {
 	 * @access private
 	 * @see pi_getFFvalue()
 	 */
-	function pi_getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value) {
+	function pi_getFFvalueFromSheetArray($sheetArray, $fieldNameArr, $value) {
 
 		$tempArr=$sheetArray;
 		foreach($fieldNameArr as $k => $v) {

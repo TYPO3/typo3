@@ -131,7 +131,7 @@ class SC_tslib_showpic {
 		$img->mayScaleUp = 0;
 		$img->init();
 		if ($this->sample)	{$img->scalecmd = '-sample';}
-		if ($this->alternativeTempPath && t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['allowedTempPaths'],$this->alternativeTempPath)) {
+		if ($this->alternativeTempPath && t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['allowedTempPaths'], $this->alternativeTempPath)) {
 			$img->tempPath = $this->alternativeTempPath;
 		}
 
@@ -144,12 +144,12 @@ class SC_tslib_showpic {
 			$max = '';
 		}
 
-		$this->height = t3lib_utility_Math::forceIntegerInRange($this->height,0);
-		$this->width = t3lib_utility_Math::forceIntegerInRange($this->width,0);
+		$this->height = t3lib_utility_Math::forceIntegerInRange($this->height, 0);
+		$this->width = t3lib_utility_Math::forceIntegerInRange($this->width, 0);
 		if ($this->frame) {
 			$this->frame = intval($this->frame);
 		}
-		$imgInfo = $img->imageMagickConvert($this->file,'web',$this->width.$max,$this->height,$img->IMparams($this->effects),$this->frame,'');
+		$imgInfo = $img->imageMagickConvert($this->file, 'web', $this->width.$max, $this->height, $img->IMparams($this->effects), $this->frame, '');
 
 			// Create HTML output:
 		$this->content='';
@@ -164,7 +164,7 @@ class SC_tslib_showpic {
 		'.($this->bodyTag ? $this->bodyTag : '<body>');
 
 		if (is_array($imgInfo)) {
-			$wrapParts = explode('|',$this->wrap);
+			$wrapParts = explode('|', $this->wrap);
 			$this->content.=trim($wrapParts[0]).$img->imgTag($imgInfo).trim($wrapParts[1]);
 		}
 		$this->content.='

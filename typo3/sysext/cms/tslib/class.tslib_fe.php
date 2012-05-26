@@ -2049,7 +2049,7 @@ class tslib_fe {
 				$GLOBALS['TCA'] = $newTc;
 				// Store it in cache if cache is enabled
 				if ($this->TYPO3_CONF_VARS['EXT']['extCache'] != 0) {
-					$this->sys_page->storeHash($tempHash, serialize(array($newTc,$this->TCAcachedExtras)), 'SHORT_TC');
+					$this->sys_page->storeHash($tempHash, serialize(array($newTc, $this->TCAcachedExtras)), 'SHORT_TC');
 				}
 			}
 		}

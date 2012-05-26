@@ -48,10 +48,10 @@ unset($MLANG);
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 $LOCAL_LANG_orig = $LOCAL_LANG;
 $LANG->includeLLFile('EXT:cms/layout/locallang_db_new_content_el.xml');
-$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG_orig,$LOCAL_LANG);
+$LOCAL_LANG = t3lib_div::array_merge_recursive_overrule($LOCAL_LANG_orig, $LOCAL_LANG);
 
 	// Exits if 'cms' extension is not loaded:
-t3lib_extMgm::isLoaded('cms',1);
+t3lib_extMgm::isLoaded('cms', 1);
 
 
 
@@ -76,7 +76,7 @@ class ext_posMap extends t3lib_positionMap {
 	 * @param	array		The record row.
 	 * @return	string		Wrapped title string.
 	 */
-	function wrapRecordTitle($str,$row) {
+	function wrapRecordTitle($str, $row) {
 		return $str;
 	}
 
@@ -90,7 +90,7 @@ class ext_posMap extends t3lib_positionMap {
 	 * @param	integer		System language
 	 * @return	string
 	 */
-	function onClickInsertRecord($row,$vv,$moveUid,$pid,$sys_lang=0) {
+	function onClickInsertRecord($row, $vv, $moveUid, $pid, $sys_lang=0) {
 		$table='tt_content';
 
 		$location=$this->backPath.'alt_doc.php?edit[tt_content]['.(is_array($row)?-$row['uid']:$pid).']=new&defVals[tt_content][colPos]='.$vv.'&defVals[tt_content][sys_language_uid]='.$sys_lang.'&returnUrl='.rawurlencode($GLOBALS['SOBE']->R_URI);
@@ -180,7 +180,7 @@ class SC_db_new_content_el {
 
 			// Getting the current page and receiving access information (used in main())
 		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$perms_clause);
+		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $perms_clause);
 		$this->access = is_array($this->pageinfo) ? 1 : 0;
 	}
 
@@ -332,19 +332,19 @@ class SC_db_new_content_el {
 			if (!$this->onClickEvent) {
 
 					// Add anchor "sel2"
-				$this->content.= $this->doc->section('','<a name="sel2"></a>');
+				$this->content.= $this->doc->section('', '<a name="sel2"></a>');
 				$this->content.= $this->doc->spacer(20);
 
 					// Select position
 				$code = $GLOBALS['LANG']->getLL('sel2', 1) . '<br /><br />';
 
 					// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
-				$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->id,'mod.SHARED');
-				$colPosList = strcmp(trim($modTSconfig_SHARED['properties']['colPos_list']),'') ? trim($modTSconfig_SHARED['properties']['colPos_list']) : '1,0,2,3';
-				$colPosList = implode(',',array_unique(t3lib_div::intExplode(',',$colPosList)));		// Removing duplicates, if any
+				$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED');
+				$colPosList = strcmp(trim($modTSconfig_SHARED['properties']['colPos_list']), '') ? trim($modTSconfig_SHARED['properties']['colPos_list']) : '1,0,2,3';
+				$colPosList = implode(',', array_unique(t3lib_div::intExplode(',', $colPosList)));		// Removing duplicates, if any
 
 					// Finally, add the content of the column selector to the content:
-				$code.= $posMap->printContentElementColumns($this->id,0,$colPosList,1,$this->R_URI);
+				$code.= $posMap->printContentElementColumns($this->id, 0, $colPosList, 1, $this->R_URI);
 				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('2_selectPosition'), $code, 0, 1);
 			}
 
@@ -543,12 +543,12 @@ class SC_db_new_content_el {
 				// Exploding parameter string, if any (old style)
 			if ($wizardItems[$key]['params']) {
 					// Explode GET vars recursively
-				$tempGetVars = t3lib_div::explodeUrl2Array($wizardItems[$key]['params'],TRUE);
+				$tempGetVars = t3lib_div::explodeUrl2Array($wizardItems[$key]['params'], TRUE);
 					// If tt_content values are set, merge them into the tt_content_defValues array, unset them from $tempGetVars and re-implode $tempGetVars into the param string (in case remaining parameters are around).
 				if (is_array($tempGetVars['defVals']['tt_content'])) {
 					$wizardItems[$key]['tt_content_defValues'] = array_merge(is_array($wizardItems[$key]['tt_content_defValues']) ? $wizardItems[$key]['tt_content_defValues'] : array(), $tempGetVars['defVals']['tt_content']);
 					unset($tempGetVars['defVals']['tt_content']);
-					$wizardItems[$key]['params'] = t3lib_div::implodeArrayForUrl('',$tempGetVars);
+					$wizardItems[$key]['params'] = t3lib_div::implodeArrayForUrl('', $tempGetVars);
 				}
 			}
 
@@ -563,7 +563,7 @@ class SC_db_new_content_el {
 						$authModeDeny = ($config['type']=='select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']));
 						$isNotInKeepItems = (count($keepItems) && !in_array($fV, $keepItems));
 
-						if ($authModeDeny || ($fN=='CType' && in_array($fV,$removeItems)) || $isNotInKeepItems) {
+						if ($authModeDeny || ($fN=='CType' && in_array($fV, $removeItems)) || $isNotInKeepItems) {
 								// Remove element all together:
 							unset($wizardItems[$key]);
 							break;
@@ -579,7 +579,7 @@ class SC_db_new_content_el {
 		}
 			// remove headers without elements
 		foreach ($wizardItems as $key => $cfg) {
-			$tmp = explode('_',$key);
+			$tmp = explode('_', $key);
 			if ($tmp[0] && !$tmp[1] && !in_array($tmp[0], $headersUsed)) {
 				unset($wizardItems[$key]);
 			}

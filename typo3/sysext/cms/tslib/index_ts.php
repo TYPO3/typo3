@@ -40,7 +40,7 @@
 // ******************
 // Constants defined
 // ******************
-define('TYPO3_MODE','FE');
+define('TYPO3_MODE', 'FE');
 
 // *********************
 // Prevent any output until AJAX/compression is initialized to stop
@@ -143,7 +143,7 @@ if ($TYPO3_CONF_VARS['FE']['compressionLevel'] && extension_loaded('zlib')) {
 // *********
 // FE_USER
 // *********
-$TT->push('Front End user initialized','');
+$TT->push('Front End user initialized', '');
 	/* @var $TSFE tslib_fe */
 	$TSFE->initFEuser();
 $TT->pull();
@@ -160,7 +160,7 @@ $BE_USER = $TSFE->initializeBackendUser();
 // Process the ID, type and other parameters
 // After this point we have an array, $page in TSFE, which is the page-record of the current page, $id
 // *****************************************
-$TT->push('Process ID','');
+$TT->push('Process ID', '');
 		// Initialize admin panel since simulation settings are required here:
 	if ($TSFE->isBackendUserLoggedIn()) {
 		$BE_USER->initializeAdminPanel();
@@ -210,7 +210,7 @@ $TSFE->getCompressedTCarray();
 // ********************************
 // Starts the template
 // *******************************
-$TT->push('Start Template','');
+$TT->push('Start Template', '');
 	$TSFE->initTemplate();
 $TT->pull();
 
@@ -218,7 +218,7 @@ $TT->pull();
 // ********************************
 // Get from cache
 // *******************************
-$TT->push('Get Page from cache','');
+$TT->push('Get Page from cache', '');
 	$TSFE->getFromCache();
 $TT->pull();
 
@@ -238,7 +238,7 @@ $TSFE->convPOSTCharset();
 // *******************************************
 // Setting language and locale
 // *******************************************
-$TT->push('Setting language and locale','');
+$TT->push('Setting language and locale', '');
 	$TSFE->settingLanguage();
 	$TSFE->settingLocale();
 $TT->pull();
@@ -273,7 +273,7 @@ $TSFE->checkPageForShortcutRedirect();
 // *******************************
 $TSFE->setUrlIdToken();
 
-$TT->push('Page generation','');
+$TT->push('Page generation', '');
 	if ($TSFE->isGeneratePage()) {
 		$TSFE->generatePage_preProcessing();
 		$temp_theScript=$TSFE->generatePage_whichScript();
@@ -294,7 +294,7 @@ $TT->pull();
 // $TSFE->config['INTincScript']
 // *******************************
 if ($TSFE->isINTincScript())		{
-	$TT->push('Non-cached objects','');
+	$TT->push('Non-cached objects', '');
 		$TSFE->INTincScript();
 	$TT->pull();
 }
@@ -304,7 +304,7 @@ if ($TSFE->isINTincScript())		{
 // ***************
 $sendTSFEContent = FALSE;
 if ($TSFE->isOutputting()) {
-	$TT->push('Print Content','');
+	$TT->push('Print Content', '');
 	$TSFE->processOutput();
 	$sendTSFEContent = TRUE;
 	$TT->pull();
@@ -377,7 +377,7 @@ if ($sendTSFEContent) {
 // *************
 // Debugging Output
 // *************
-if(isset($error) && is_object($error) && @is_callable(array($error,'debugOutput'))) {
+if(isset($error) && is_object($error) && @is_callable(array($error, 'debugOutput'))) {
 	$error->debugOutput();
 }
 if (TYPO3_DLOG) {

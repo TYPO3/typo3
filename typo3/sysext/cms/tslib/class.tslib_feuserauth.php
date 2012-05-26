@@ -243,7 +243,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 
 		if ($this->writeDevLog) 	{
 			if (is_array($this->user)) {
-				t3lib_div::devLog('Get usergroups for user: '.t3lib_div::arrayToLogString($this->user, array($this->userid_column,$this->username_column)), 'tslib_feUserAuth');
+				t3lib_div::devLog('Get usergroups for user: '.t3lib_div::arrayToLogString($this->user, array($this->userid_column, $this->username_column)), 'tslib_feUserAuth');
 			} else {
 				t3lib_div::devLog('Get usergroups for "anonymous" user', 'tslib_feUserAuth');
 			}
@@ -325,7 +325,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		if (!$this->userTSUpdated) {
 				// Parsing the user TS (or getting from cache)
 			$this->TSdataArray = t3lib_TSparser::checkIncludeLines_array($this->TSdataArray);
-			$userTS = implode(LF.'[GLOBAL]'.LF,$this->TSdataArray);
+			$userTS = implode(LF.'[GLOBAL]'.LF, $this->TSdataArray);
 			$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
 			$parseObj->parse($userTS);
 			$this->userTS = $parseObj->setup;
@@ -453,7 +453,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @return	mixed		Returns whatever value there was in the array for the key, $key
 	 * @see setKey()
 	 */
-	function getKey($type,$key) {
+	function getKey($type, $key) {
 		if ($key) {
 			switch($type) {
 				case 'user':
@@ -478,7 +478,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @return	void
 	 * @see setKey(), storeSessionData(), record_registration()
 	 */
-	function setKey($type,$key,$data) {
+	function setKey($type, $key, $data) {
 		if ($key) {
 			switch($type) {
 				case 'user':
@@ -529,7 +529,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * @param	integer		The maximum size of stored session data. If zero, no limit is applied and even confirmation of cookie session is discarded.
 	 * @return	void
 	 */
-	function record_registration($recs,$maxSizeOfSessionData=0) {
+	function record_registration($recs, $maxSizeOfSessionData=0) {
 
 			// Storing value ONLY if there is a confirmed cookie set (->cookieID),
 			// otherwise a shellscript could easily be spamming the fe_sessions table
@@ -539,7 +539,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 				$this->setKey('ses', 'recs', array());
 			}
 			$change=0;
-			$recs_array=$this->getKey('ses','recs');
+			$recs_array=$this->getKey('ses', 'recs');
 			foreach ($recs as $table => $data) {
 				if (is_array($data)) {
 					foreach ($data as $rec_id => $value) {
@@ -551,7 +551,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 				}
 			}
 			if ($change && (!$maxSizeOfSessionData || strlen(serialize($recs_array))<$maxSizeOfSessionData)) {
-				$this->setKey('ses','recs',$recs_array);
+				$this->setKey('ses', 'recs', $recs_array);
 			}
 		}
 	}

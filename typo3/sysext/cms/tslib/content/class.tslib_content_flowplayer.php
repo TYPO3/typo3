@@ -256,7 +256,7 @@ class tslib_content_FlowPlayer extends tslib_content_Abstract {
 			? $this->cObj->stdWrap($conf['flashVersion'], $conf['flashVersion.'])
 			:  $conf['flashVersion'];
 		if (!$flashVersion) {
-			$flashVersion = array(9,115);
+			$flashVersion = array(9, 115);
 		}
 
 		$flashConfiguration = array(
