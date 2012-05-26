@@ -833,27 +833,46 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * possible values are "all" or a commaseperated list of GET-vars
 	 * they are used as additionalParams for link generation
 	 *
-	 * @return	string		additionalParams-string
+	 * @return string additionalParams-string
 	 */
 	protected function getPreserveGetVars() {
+		$skipParameters = array('id', 'no_cache', 'logintype', 'redirect_url', 'cHash');
+		$this->conf['preserveGETvars'] = trim($this->conf['preserveGETvars']);
+		$preserveVars = $this->conf['preserveGETvars'] === '' || $this->conf['preserveGETvars'] === 'all' ?
+			array() : t3lib_div::trimExplode(',', $this->conf['preserveGETvars']);
 
 		$params = '';
-		$preserveVars =! ($this->conf['preserveGETvars'] || $this->conf['preserveGETvars']=='all' ? array() : implode(',', (array)$this->conf['preserveGETvars']));
-		$getVars = t3lib_div::_GET();
-
-		foreach ($getVars as $key => $val) {
-			if (stristr($key,$this->prefixId) === FALSE) {
-				if (is_array($val)) {
-					foreach ($val as $key1 => $val1) {
-						if ($this->conf['preserveGETvars'] == 'all' || in_array($key . '[' . $key1 .']', $preserveVars)) {
-							$params .= '&' . $key . '[' . $key1 . ']=' . $val1;
-						}
-					}
-				} else {
-					if (!in_array($key, array('id','no_cache','logintype','redirect_url','cHash'))) {
-						$params .= '&' . $key . '=' . $val;
-					}
+		$getVarsList = explode('&', t3lib_div::implodeArrayForUrl('', t3lib_div::_GET(), '', TRUE));
+		foreach ($getVarsList as $varString) {
+			if ($this->conf['preserveGETvars'] === 'all') {
+				$params .= '&' . $varString;
+				continue;
+			}
+			$var = explode('=', $varString, 2);
+			$key = $var[0];
+			if ($key === '') {
+				continue;
+			}
+			$extPrefix = '';
+			$extPrefixEnd = strpos('[', $key);
+			if ($extPrefixEnd !== FALSE) {
+				$extPrefix = substr($var[0], 0, $extPrefixEnd);
+			}
+			if (strpos($extPrefix, $this->prefixId)) {
+				continue;
+			}
+			while ($key !== '')) {
+					// if this key is not kept
+				if (in_array($key, $skipParameters)) {
+					break;
 				}
+					// if this key is kept
+				if (in_array($key, $preserveVars)) {
+					$params .= '&' . $varString;
+					break;
+				}
+					// remove last array item ('[xyz]') and check again
+				$key = substr($key, 0, strrpos($key, '['));
 			}
 		}
 		return $params;
