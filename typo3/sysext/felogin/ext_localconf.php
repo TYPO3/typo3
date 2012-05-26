@@ -22,7 +22,7 @@ tt_content.login {
 }
 ';
 
-t3lib_extMgm::addTypoScript($_EXTKEY,'setup','# Setting '.$_EXTKEY.' plugin TypoScript'.$addLine.'',43);
+t3lib_extMgm::addTypoScript($_EXTKEY, 'setup', '# Setting '.$_EXTKEY.' plugin TypoScript'.$addLine.'', 43);
 
 t3lib_extMgm::addPageTSConfig('
 mod.wizards.newContentElement.wizardItems.forms {

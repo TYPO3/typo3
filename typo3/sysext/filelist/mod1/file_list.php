@@ -40,7 +40,7 @@ require ($BACK_PATH . 'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_file_list.xml');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 require_once ($BACK_PATH . 'class.file_list.inc');
-$BE_USER->modAccess($MCONF,1);
+$BE_USER->modAccess($MCONF, 1);
 
 
 
@@ -274,7 +274,7 @@ class SC_file_list {
 			$this->filelist->clipObj->initializeClipboard();
 
 			$CB = t3lib_div::_GET('CB');
-			if ($this->cmd=='setCB') $CB['el'] = $this->filelist->clipObj->cleanUpCBC(array_merge(t3lib_div::_POST('CBH'),t3lib_div::_POST('CBC')),'_FILE');
+			if ($this->cmd=='setCB') $CB['el'] = $this->filelist->clipObj->cleanUpCBC(array_merge(t3lib_div::_POST('CBH'), t3lib_div::_POST('CBC')), '_FILE');
 			if (!$this->MOD_SETTINGS['clipBoard'])	$CB['setP']='normal';
 			$this->filelist->clipObj->setCmd($CB);
 			$this->filelist->clipObj->cleanCurrent();
@@ -282,7 +282,7 @@ class SC_file_list {
 
 				// If the "cmd" was to delete files from the list (clipboard thing), do that:
 			if ($this->cmd=='delete') {
-				$items = $this->filelist->clipObj->cleanUpCBC(t3lib_div::_POST('CBC'),'_FILE',1);
+				$items = $this->filelist->clipObj->cleanUpCBC(t3lib_div::_POST('CBC'), '_FILE', 1);
 				if (count($items)) {
 						// Make command array:
 					$FILE=array();
@@ -309,7 +309,7 @@ class SC_file_list {
 			}
 
 				// Start up filelisting object, include settings.
-			$this->pointer = t3lib_utility_Math::forceIntegerInRange($this->pointer,0,100000);
+			$this->pointer = t3lib_utility_Math::forceIntegerInRange($this->pointer, 0, 100000);
 			$this->filelist->start($this->folderObject, $this->pointer, $this->MOD_SETTINGS['sort'], $this->MOD_SETTINGS['reverse'], $this->MOD_SETTINGS['clipBoard'], $this->MOD_SETTINGS['bigControlPanel']);
 
 				// Generate the list
@@ -461,7 +461,7 @@ class SC_file_list {
 
 			// Add shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('pointer,id,target,table',implode(',',array_keys($this->MOD_MENU)),$this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('pointer,id,target,table', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
 
 			// FileList Module CSH:

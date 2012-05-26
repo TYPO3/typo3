@@ -53,9 +53,9 @@ class tx_funcwizards_webfunc extends t3lib_extobjbase {
 	 * @return	void
 	 * @see t3lib_extobjbase::handleExternalFunctionValue(), t3lib_extobjbase::init()
 	 */
-	function init(&$pObj,$conf) {
+	function init(&$pObj, $conf) {
 			// OK, handles ordinary init. This includes setting up the menu array with ->modMenu
-		parent::init($pObj,$conf);
+		parent::init($pObj, $conf);
 
 			// Making sure that any further external classes are added to the include_once array. Notice that inclusion happens twice in the main script because of this!!!
 		$this->handleExternalFunctionValue();
@@ -74,8 +74,8 @@ class tx_funcwizards_webfunc extends t3lib_extobjbase {
 			$this->function_key => array()
 		);
 
-		$modMenuAdd[$this->function_key] = $this->pObj->mergeExternalItems($this->pObj->MCONF['name'],$this->function_key,$modMenuAdd[$this->function_key]);
-		$modMenuAdd[$this->function_key] = t3lib_BEfunc::unsetMenuItems($this->pObj->modTSconfig['properties'],$modMenuAdd[$this->function_key],'menu.'.$this->function_key);
+		$modMenuAdd[$this->function_key] = $this->pObj->mergeExternalItems($this->pObj->MCONF['name'], $this->function_key, $modMenuAdd[$this->function_key]);
+		$modMenuAdd[$this->function_key] = t3lib_BEfunc::unsetMenuItems($this->pObj->modTSconfig['properties'], $modMenuAdd[$this->function_key], 'menu.'.$this->function_key);
 
 		return $modMenuAdd;
 	}
@@ -89,8 +89,8 @@ class tx_funcwizards_webfunc extends t3lib_extobjbase {
 	function main() {
 		global $SOBE,$LANG;
 
-		$menu= $LANG->getLL('wiz_lWizards',1).': '.t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[wiz]',$this->pObj->MOD_SETTINGS['wiz'],$this->pObj->MOD_MENU['wiz']);
-		$theOutput.=$this->pObj->doc->section('','<span class="nobr">'.$menu.'</span>');
+		$menu= $LANG->getLL('wiz_lWizards',1).': '.t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[wiz]', $this->pObj->MOD_SETTINGS['wiz'], $this->pObj->MOD_MENU['wiz']);
+		$theOutput.=$this->pObj->doc->section('', '<span class="nobr">'.$menu.'</span>');
 
 		$content = '';
 		$content.=$theOutput;
