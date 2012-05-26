@@ -1185,9 +1185,6 @@ class tx_em_Install {
 								$shouldBePath
 							);
 						}
-					} else {
-						// It seems like TYPO3_MOD_PATH and therefore also this warning is no longer needed.
-						// $infoArray['errors'][] = 'No definition of TYPO3_MOD_PATH constant found inside!';
 					}
 					if (is_array($confFileInfo['MCONF_name'])) {
 						$mName = $confFileInfo['MCONF_name'][1][1];

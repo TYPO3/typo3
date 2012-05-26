@@ -717,7 +717,6 @@ class t3lib_treeView {
 			if ($this->makeHTML) {
 				$HTML = $depthData . $this->PMicon($row, $a, $c, $nextCount, $exp);
 				$HTML .= $this->wrapStop($this->getIcon($row), $row);
-				#	$HTML.=$this->wrapStop($this->wrapIcon($this->getIcon($row),$row),$row);
 			}
 
 				// Finally, add the row/HTML content to the ->tree array in the reserved key.

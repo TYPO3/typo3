@@ -369,9 +369,6 @@ class t3lib_modSettings {
 	 * @return void
 	 */
 	function writeStoredSetting($writeArray = array(), $mconfName = '') {
-			// for debugging: just removes all module data from user settings
-			// $GLOBALS['BE_USER']->pushModuleData($GLOBALS['SOBE']->MCONF['name'],array());
-
 			// Making sure, index 0 is not set
 		unset($this->storedSettings[0]);!
 		$this->storedSettings = $this->cleanupStorageArray($this->storedSettings);

@@ -269,8 +269,6 @@ class SC_mod_tools_dbint_index {
 			'csh' => '',
 			'shortcut' => ''
 		);
-			// CSH
-		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
 
 			// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {

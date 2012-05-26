@@ -159,7 +159,6 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
-			// $markers['CSH'] = $docHeaderButtons['csh'];
 			$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 			$markers['CONTENT'] = $this->content;
 		} else {
@@ -215,7 +214,6 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
-			// $markers['CSH'] = $docHeaderButtons['csh'];
 			$markers['CONTENT'] = $this->content;
 		}
 

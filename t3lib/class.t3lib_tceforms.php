@@ -2476,12 +2476,6 @@ class t3lib_TCEforms {
 				// Find the data structure if sheets are found:
 			$sheet = $editData['meta']['currentSheetId'] ? $editData['meta']['currentSheetId'] : 'sDEF'; // Sheet to display
 
-				// Create sheet menu:
-				//TODO; Why is this commented out?
-			//			if (is_array($dataStructArray['sheets'])) {
-			//				#$item.=$this->getSingleField_typeFlex_sheetMenu($dataStructArray['sheets'], $PA['itemFormElName'].'[meta][currentSheetId]', $sheet).'<br />';
-			//			}
-
 				// Create language menu:
 			$langChildren = $dataStructArray['meta']['langChildren'] ? 1 : 0;
 			$langDisabled = $dataStructArray['meta']['langDisable'] ? 1 : 0;
@@ -2515,11 +2509,6 @@ class t3lib_TCEforms {
 			}
 
 			$editData['meta']['currentLangId'] = array_unique($editData['meta']['currentLangId']);
-
-				//TODO: Why is this commented out?
-			//			if (!$langDisabled && count($languages) > 1) {
-			//				$item.=$this->getSingleField_typeFlex_langMenu($languages, $PA['itemFormElName'].'[meta][currentLangId]', $editData['meta']['currentLangId']).'<br />';
-			//			}
 
 			$PA['_noEditDEF'] = FALSE;
 			if ($langChildren || $langDisabled) {
@@ -2848,7 +2837,6 @@ class t3lib_TCEforms {
 							$toggleIcon_close = t3lib_iconWorks::getSpriteIcon('actions-move-right');
 
 								// Create on-click actions.
-								//$onClickCopy = 'new Insertion.After($("'.$idTagPrefix.'"), getOuterHTML("'.$idTagPrefix.'").replace(/'.$idTagPrefix.'-/g,"'.$idTagPrefix.'-copy"+Math.floor(Math.random()*100000+1)+"-")); return false;';	// Copied elements doesn't work (well) in Safari while they do in Firefox and MSIE! UPDATE: It turned out that copying doesn't work for any browser, simply because the data from the copied form never gets submitted to the server for some reason! So I decided to simply disable copying for now. If it's requested by customers we can look to enable it again and fix the issue. There is one un-fixable problem though; Copying an element like this will violate integrity if files are attached inside that element because the file reference doesn't get an absolute path prefixed to it which would be required to have TCEmain generate a new copy of the file.
 							$onClickRemove = 'if (confirm("Are you sure?")){/*###REMOVE###*/;$("' . $idTagPrefix . '").hide();setActionStatus("' . $idPrefix . '");} return false;';
 							$onClickToggle = 'flexFormToggle("' . $idTagPrefix . '"); return false;';
 
@@ -5125,8 +5113,7 @@ class t3lib_TCEforms {
 						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.new', 1) .
 						'</span>';
 
-				// Kasper: Should not be used here because NEW records are not offline workspace versions...
-			#t3lib_BEfunc::fixVersioningPid($table,$rec);
+				// t3lib_BEfunc::fixVersioningPid Should not be used here because NEW records are not offline workspace versions...
 			$truePid = t3lib_BEfunc::getTSconfig_pidValue($table, $rec['uid'], $rec['pid']);
 			$prec = t3lib_BEfunc::getRecordWSOL('pages', $truePid, 'title');
 			$pageTitle = t3lib_BEfunc::getRecordTitle('pages', $prec, TRUE, FALSE);

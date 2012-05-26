@@ -383,7 +383,6 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 		$fileObject = $this->getFileObject($cmds['data']);
 
 			// @todo implement the recycler feature which has been removed from the original implementation
-			// $this->writelog(4, 0, 4, 'Item "%s" moved to recycler at "%s"', array($theFile, $recyclerPath));
 
 			// Copies the file
 		if ($fileObject instanceof t3lib_file_File) {

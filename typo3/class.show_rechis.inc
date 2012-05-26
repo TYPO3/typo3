@@ -701,7 +701,6 @@ class recordHistory {
 					);
 
 				// Traversing the result, building up changesArray / changeLog:
-			#$changesArray=array();	// used temporarily to track intermedia changes
 			$changeLog = array();
 
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -723,10 +722,6 @@ class recordHistory {
 					$hisDat['recuid'] = $row['recuid'];
 
 					$changeLog[$row['sys_log_uid']] = $hisDat;
-
-						// Update change array
-						// This is used to detect if any intermedia changes have been made.
-					#$changesArray = array_merge($changesArray,$hisDat['oldRecord']);
 				} else {
 					debug('ERROR: [getHistoryData]');
 					return 0;	// error fallback

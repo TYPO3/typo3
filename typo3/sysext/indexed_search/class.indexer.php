@@ -1139,7 +1139,6 @@ class tx_indexedsearch_indexer {
 					} else $this->log_setTSlogMessage('Indexing not needed, reason: '.$this->reasons[$check]);
 
 						// Checking and setting sections:
-		#			$this->submitFile_grlist($phash_arr['phash']);	// Setting a gr_list record if there is none already (set for default fe_group)
 					$this->submitFile_section($phash_arr['phash']);		// Setting a section-record for the file. This is done also if the file is not indexed. Notice that section records are deleted when the page is indexed.
 					$this->log_pull();
 				}
@@ -1274,8 +1273,6 @@ class tx_indexedsearch_indexer {
 			// Setting description
 		$maxL = t3lib_utility_Math::forceIntegerInRange($this->conf['index_descrLgd'],0,255,200);
 		if ($maxL) {
-				// Takes the quadruple lenght first, because whitespace and entities may be removed and thus shorten the string more yet.
-	#		$bodyDescription = implode(' ',split('[[:space:],]+',substr(trim($contentArr['body']),0,$maxL*4)));
 			$bodyDescription = str_replace(array(' ',TAB,CR,LF),' ',$contentArr['body']);
 
 				// Shorten the string:

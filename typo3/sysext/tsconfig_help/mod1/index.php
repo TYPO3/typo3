@@ -152,8 +152,6 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 			'csh' => '',
 			'shortcut' => '',
 		);
-			// CSH
-		//$buttons['csh'] = t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']);
 
 		if (($this->id && is_array($this->pageinfo)) || ($GLOBALS['BE_USER']->user['admin'] && !$this->id)) {
 				// Shortcut
@@ -454,9 +452,6 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 			case 'italic':
 				$styleTags[] = 'i';
 			break;
-		}
-		if (!strcmp($styleName,'Table Contents/PRE')) {
-			//$styleTags[]='pre'; // unused yet, but could be <pre> in the future - this is for inline code in the manuals
 		}
 		return $styleTags;
 	}

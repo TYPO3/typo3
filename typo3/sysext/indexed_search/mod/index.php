@@ -391,7 +391,6 @@ class SC_mod_tools_isearch_index {
 					);
 				}
 			}
-	//		debug($row);
 		}
 		return $recList;
 	}

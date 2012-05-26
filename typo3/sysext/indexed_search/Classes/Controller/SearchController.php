@@ -621,10 +621,6 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 					$file = substr(PATH_tslib, strlen(PATH_site)) . 'media/flags/flag_' . $flag;
 					$imgInfo = @getimagesize(PATH_site . $file);
 
-					// original
-					# $file = TYPO3_mainDir.'gfx/flags/'.$flag;
-					# $imgInfo = @getimagesize(PATH_site.$file);
-
 					if (is_array($imgInfo)) {
 						$output = '<img src="' . $file . '" ' . $imgInfo[3] . ' title="' . htmlspecialchars($languageRow['title']) . '" alt="' . htmlspecialchars($languageRow['title']) . '" />';
 					}
@@ -747,7 +743,6 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 
 			// Split and combine:
 		$parts = preg_split('/'.$regExString.'/i', ' '.$str.' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
-// debug($parts,$regExString);
 			// Constants:
 		$summaryMax = 300;
 		$postPreLgd = 60;
@@ -829,7 +824,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 				// Number of hits on the search
 			'hits'   => intval($count),
 				// Time stamp
-			'tstamp' => $GLOBALS['EXEC_TIME']					
+			'tstamp' => $GLOBALS['EXEC_TIME']
 		);
 
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('index_stat_search', $insertFields);
@@ -838,7 +833,7 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 		if ($newId) {
 			foreach ($searchWords as $val) {
 				$insertFields = array(
-					'word' => $val['sword'],	// $GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $val['sword'], 'toLower'),
+					'word' => $val['sword'],
 					'index_stat_search_id' => $newId,
 						// Time stamp
 					'tstamp' => $GLOBALS['EXEC_TIME'],
@@ -897,10 +892,6 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 					array('+', 'AND'),
 					array('|', 'OR'),
 					array('-', 'AND NOT'),
-						// english
-					// array('AND', 'AND'),
-					// array('OR', 'OR'),
-					// array('NOT', 'AND NOT'),
 						// Add operators for various languages
 						// Converts the operators to UTF-8 and lowercase
 					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8',$GLOBALS['TSFE']->csConvObj->utf8_encode(Tx_Extbase_Utility_Localization::translate('localizedOperandAnd', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND'),

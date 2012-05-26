@@ -2230,12 +2230,7 @@ class tslib_fe {
 
 			// Setting locale
 		if ($this->config['config']['locale_all']) {
-			# Change by René Fritz, 22/10 2002
 			# there's a problem that PHP parses float values in scripts wrong if the locale LC_NUMERIC is set to something with a comma as decimal point
-			# this does not work in php 4.2.3
-			#setlocale('LC_ALL', $this->config['config']['locale_all']);
-			#setlocale('LC_NUMERIC', 'en_US');
-
 			# so we set all except LC_NUMERIC
 			$locale = setlocale(LC_COLLATE, $this->config['config']['locale_all']);
 			if ($locale) {
@@ -3347,11 +3342,6 @@ if (version == "n3") {
 		} else {
 				// Build headers:
 			$headers = array(
-				#'Last-Modified: '.gmdate('D, d M Y H:i:s T', $this->register['SYS_LASTCHANGED']),
-				#'ETag: '.md5($this->content),
-
-				#'Cache-Control: no-cache',
-				#'Pragma: no-cache',
 				'Cache-Control: private',		// Changed to this according to Ole Tange, FI.dk
 			);
 

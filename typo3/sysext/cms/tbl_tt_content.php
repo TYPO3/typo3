@@ -1984,9 +1984,7 @@ $TCA['tt_content'] = array(
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended',
 			'subtype_value_field' => 'list_type',
 			'subtypes_excludelist' => array(
-//				'' => 'layout,select_key,pages',	// When no plugin is selected.
 				'3' => 'layout',
-//				'4' => 'layout',	// List type forum
 				'2' => 'layout',
 				'5' => 'layout',
 				'9' => 'layout',

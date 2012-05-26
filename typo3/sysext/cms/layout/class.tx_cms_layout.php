@@ -677,7 +677,6 @@ class tx_cms_layout extends recordList {
 				$out .= t3lib_BEfunc::cshItem($this->descrTable, 'language_list', $GLOBALS['BACK_PATH']);
 			}
 		} else { // SINGLE column mode (columns shown beneath each other):
-			#debug('single column');
 			if ($this->tt_contentConfig['sys_language_uid'] == 0 || !$this->defLangBinding) {
 
 				// Initialize:

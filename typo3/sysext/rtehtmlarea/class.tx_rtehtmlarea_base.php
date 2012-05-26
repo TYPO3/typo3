@@ -952,8 +952,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @deprecated since TYPO3 4.8, will be removed in TYPO3 4.10
 	 */
 	function buildStyleSheet() {
-			// This function will be DEPRECATED as of TYPO3 4.8 and will be removed in TYPO3 4.10
-		//t3lib_div::logDeprecatedFunction();
 			// These PageTSConfig properties are DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 4.8
 		$properties = array('mainStyle_font', 'mainStyle_size', 'mainStyle_color', 'mainStyle_bgcolor', 'mainStyleOverride');
 		foreach ($properties as $property) {

@@ -182,11 +182,11 @@ class tx_em_ExtensionManager {
 			'debug' => $GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] > 0,
 			//TODO: some are disabled until feater-proofed
 			'fileAllowSave' => $GLOBALS['TYPO3_CONF_VARS']['EXT']['noEdit'] == 0,
-			'fileAllowMove' => 0, //$fileAllowMove,
-			'fileAllowDelete' => 0, //$fileAllowDelete,
-			'fileAllowRename' => 0, //$fileAllowRename,
-			'fileAllowUpload' => 0, //$fileAllowUpload,
-			'fileAllowCreate' => 0, //$fileAllowCreate,
+			'fileAllowMove' => 0,
+			'fileAllowDelete' => 0,
+			'fileAllowRename' => 0,
+			'fileAllowUpload' => 0,
+			'fileAllowCreate' => 0,
 			'fileAllowDownload' => $fileAllowDownload,
 
 		);

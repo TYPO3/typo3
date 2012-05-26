@@ -170,7 +170,7 @@ class tx_aboutmodules_Functions {
 			$label = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
 			if ($link && $prefix) $link = $prefix . rawurlencode($link);
 			if ($link && !$dontLink) {
-				$label = '<a href="#" onclick="top.goToModule(\'' . $moduleName . '\');' . $onBlur . 'return false;">' . $label . '</a>'; //  && !$link_sub
+				$label = '<a href="#" onclick="top.goToModule(\'' . $moduleName . '\');' . $onBlur . 'return false;">' . $label . '</a>';
 
 				$mIcons[] = '<a href="#" onclick="top.goToModule(\'' . $moduleName . '\');' . $onBlur . 'return false;" class="c-mainitem" id="' . $moduleCSSId . '">' . $descr3_imageCode . '</a>';
 

@@ -294,15 +294,3 @@ TABLE.typo3-adminPanel TD FONT { font-family: verdana; font-size: 10px; color: b
 TABLE.typo3-adminPanel TD A FONT { font-family: verdana; font-size: 10px; color: black; }
 TABLE.typo3-editPanel { border: 1px solid black; background-color: #F6F2E6; }
 TABLE.typo3-editPanel TD { border: 0px; }
-
-
-/*************/
-/* Debugging */
-/*************/
-/*
-H1, H2, H3, H4, H5, P, UL, OL, LI, BLOCKQUOTE, PRE { border: 1px dotted #999999;}
-TD TABLE { border: 1px dotted #000099;}
-DIV { border: 1px dotted #990000;}
-IMG.spacer-gif { border: 1px solid black; }
-*/
-

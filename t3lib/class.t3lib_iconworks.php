@@ -350,10 +350,6 @@ final class t3lib_iconWorks {
 			$GLOBALS['TBE_STYLES']['skinImg'][$srcKey] = array($src, $wHattribs); // Set default...
 		}
 
-			// DEBUG: This doubles the size of all icons - for testing/debugging:
-			// if (preg_match('/^width="([0-9]+)" height="([0-9]+)"$/', $wHattribs, $reg))	$wHattribs='width="'.($reg[1]*2).'" height="'.($reg[2]*2).'"';
-
-
 			// Rendering disabled (greyed) icons using _i (inactive) as name suffix ("_d" is already used)
 		$matches = array();
 		$srcBasename = basename($src);

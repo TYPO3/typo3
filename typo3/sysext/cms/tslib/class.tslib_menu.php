@@ -2418,7 +2418,6 @@ class tslib_gmenu extends tslib_menu {
 			$totalWH['H'][$key]=$gifCreator->XY[1];
 			$totalWH['W_total']+=$gifCreator->XY[0];
 			$totalWH['H_total']+=$gifCreator->XY[1];
-				// ---- //
 
 			$Hcounter+=$gifCreator->XY[1];		// counter is increased
 			$Wcounter+=$gifCreator->XY[0];		// counter is increased

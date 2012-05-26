@@ -623,7 +623,6 @@ class SC_alt_doc {
 										$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
 										if ($table=='pages')	{	// If pages:
 											$hasAccess = $CALC_PERMS&8 ? 1 : 0;
-											#$this->viewId = $calcPRec['pid'];
 											$this->viewId = 0;
 										} else {
 											$hasAccess = $CALC_PERMS&16 ? 1 : 0;
@@ -1248,7 +1247,6 @@ class SC_alt_doc {
 										$ids[$idKey] = $calcPRec['uid'];
 									}
 								}
-	#else unset($ids[$idKey]);
 							}
 
 								// Add the possibly manipulated IDs to the new-build newConf array:

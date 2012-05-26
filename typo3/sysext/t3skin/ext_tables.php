@@ -91,7 +91,6 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']))) {
 		'absDir'             => t3lib_extMgm::extPath($_EXTKEY).'icons/',
 		'relDir'             => t3lib_extMgm::extRelPath($_EXTKEY).'icons/',
 		'forceFileExtension' => 'gif',	// Force to look for PNG alternatives...
-#		'scaleFactor'        => 2/3,	// Scaling factor, default is 1
 		'iconSizeWidth'      => 16,
 		'iconSizeHeight'     => 16,
 	);

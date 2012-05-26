@@ -64,9 +64,8 @@ class tx_indexedsearch_pihook {
 	 * @param	array		Array of search words
 	 * @return	array		Array of first row, result rows, count
 	 */
-#	function getResultRows($sWArr) {
-
-#	}
+	function getResultRows($sWArr) {
+	}
 
 	/**
 	 * Example of how the content displayed in the result rows can be post processed before rendered into HTML.

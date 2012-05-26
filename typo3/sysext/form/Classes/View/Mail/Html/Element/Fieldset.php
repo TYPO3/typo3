@@ -46,14 +46,6 @@ class tx_form_View_Mail_Html_Element_Fieldset extends tx_form_View_Mail_Html_Ele
 	';
 
 	/**
-	 * True if element needs no element wrap
-	 * like <li>element</li>
-	 *
-	 * @var boolean
-	 */
-	//protected $noWrap = TRUE;
-
-	/**
 	 * Constructor
 	 *
 	 * @param tx_form_Domain_Model_Element_Fieldset $model Model for this element

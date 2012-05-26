@@ -616,8 +616,6 @@ class template {
 				$this->pageRenderer->setTemplateFile($file);
 			}
 		}
-			// For debugging: If this outputs "QuirksMode"/"BackCompat" (IE) the browser runs in quirks-mode. Otherwise the value is "CSS1Compat"
-#		$this->JScodeArray[]='alert(document.compatMode);';
 
 			// Send HTTP header for selected charset. Added by Robert Lemke 23.10.2003
 		$this->initCharset();

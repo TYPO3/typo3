@@ -98,8 +98,6 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 			$theOutput .= $this->pObj->doc->section("",$manyTemplatesMenu);
 		}
 
-		//	debug($GLOBALS['tmpl']->hierarchyInfo);
-
 		$GLOBALS['tmpl']->clearList_const_temp = array_flip($GLOBALS['tmpl']->clearList_const);
 		$GLOBALS['tmpl']->clearList_setup_temp = array_flip($GLOBALS['tmpl']->clearList_setup);
 
