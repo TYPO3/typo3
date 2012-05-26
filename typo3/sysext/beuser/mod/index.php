@@ -32,7 +32,7 @@
 
 $GLOBALS['LANG']->includeLLFile('EXT:beuser/mod/locallang.xml');
 
-$BE_USER->modAccess($MCONF,1);
+$BE_USER->modAccess($MCONF, 1);
 
 
 
@@ -64,7 +64,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	array		Webmounts for the backend user.
 	 * @return	void
 	 */
-	function __construct($BE_USER,$WEBMOUNTS='') {
+	function __construct($BE_USER, $WEBMOUNTS='') {
 		$this->init();
 
 		$this->BE_USER = $BE_USER;
@@ -89,7 +89,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	array		[See parent]
 	 * @return	string
 	 */
-	function wrapTitle($str,$row) {
+	function wrapTitle($str, $row) {
 		return $str;
 	}
 
@@ -101,7 +101,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	string		[See parent]
 	 * @return	string
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='') {
+	function PM_ATagWrap($icon, $cmd,$bMark='') {
 		return '';
 	}
 
@@ -112,10 +112,10 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	array		Row.
 	 * @return	string		Icon with title attribute added.
 	 */
-	function wrapIcon($icon,$row) {
+	function wrapIcon($icon, $row) {
 			// Add title attribute to input icon tag
-		$title = '['.$row['uid'].'] '.t3lib_BEfunc::getRecordPath($row['uid'],'',15);
-		$theIcon = $this->addTagAttributes($icon,($this->titleAttrib ? $this->titleAttrib.'="'.htmlspecialchars($title).'"' : '').' border="0"');
+		$title = '['.$row['uid'].'] '.t3lib_BEfunc::getRecordPath($row['uid'], '', 15);
+		$theIcon = $this->addTagAttributes($icon, ($this->titleAttrib ? $this->titleAttrib.'="'.htmlspecialchars($title).'"' : '').' border="0"');
 
 		return $theIcon;
 	}
@@ -167,7 +167,7 @@ class printAllPageTree extends localPageTree {
 	 * @param	string		[See parent]
 	 * @return	string
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='') {
+	function PM_ATagWrap($icon, $cmd, $bMark='') {
 		return $icon;
 	}
 
@@ -178,10 +178,10 @@ class printAllPageTree extends localPageTree {
 	 * @param	array		Row.
 	 * @return	string		Icon with title attribute added.
 	 */
-	function wrapIcon($icon,$row) {
+	function wrapIcon($icon, $row) {
 			// Add title attribute to input icon tag
 		$title = '['.$row['uid'].']';
-		$theIcon = $this->addTagAttributes($icon,($this->titleAttrib ? $this->titleAttrib.'="'.htmlspecialchars($title).'"' : '').' border="0"');
+		$theIcon = $this->addTagAttributes($icon, ($this->titleAttrib ? $this->titleAttrib.'="'.htmlspecialchars($title).'"' : '').' border="0"');
 
 		return $theIcon;
 	}
@@ -212,7 +212,7 @@ class printAllPageTree_perms extends printAllPageTree {
 	 * @param	boolean		If set, the path of the pages in the tree is printed (only done for pages outside of mounts).
 	 * @return	string		HTML content.
 	 */
-	function printTree($treeArr='',$printPath=0) {
+	function printTree($treeArr='', $printPath=0) {
 		$titleLen=intval($this->BE_USER->uc['titleLen']);
 
 		$be_user_Array = t3lib_BEfunc::getUserNames();
@@ -232,22 +232,22 @@ class printAllPageTree_perms extends printAllPageTree {
 			$treeArr = $this->tree;
 		}
 		foreach ($treeArr as $v) {
-			$col1 = ' bgcolor="'.t3lib_div::modifyHtmlColor($GLOBALS['SOBE']->doc->bgColor4,+10,+10,+10).'"';
+			$col1 = ' bgcolor="'.t3lib_div::modifyHtmlColor($GLOBALS['SOBE']->doc->bgColor4, +10, +10, +10).'"';
 			$row = $v['row'];
-			$title = htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'],$this->BE_USER->uc['titleLen']));
+			$title = htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'], $this->BE_USER->uc['titleLen']));
 			$lines[]='<tr class="bgColor4">
 				<td nowrap="nowrap">'.$v['HTML'].$title.' &nbsp;</td>
-				'.($printPath?'<td nowrap="nowrap">'.htmlspecialchars(t3lib_BEfunc::getRecordPath ($row['pid'],'',15)).' &nbsp;</td>':'').'
+				'.($printPath?'<td nowrap="nowrap">'.htmlspecialchars(t3lib_BEfunc::getRecordPath ($row['pid'], '', 15)).' &nbsp;</td>':'').'
 				<td nowrap="nowrap"'.$col1.'>'.$be_user_Array[$row['perms_userid']]['username'].' &nbsp;</td>
 				<td nowrap="nowrap"'.$col1.'>'.$this->ext_printPerms($row['perms_user']).' &nbsp;</td>
 				<td nowrap="nowrap">'.$be_group_Array[$row['perms_groupid']]['title'].' &nbsp;</td>
 				<td nowrap="nowrap">'.$this->ext_printPerms($row['perms_group']).' &nbsp;</td>
 				<td nowrap="nowrap" align="center" '.$col1.'>'.$this->ext_printPerms($row['perms_everybody']).' &nbsp;</td>
 				<td nowrap="nowrap" align="center">' . ($row['editlock'] ? t3lib_iconWorks::getSpriteIcon('status-warning-in-use', array('title' => $GLOBALS['LANG']->getLL('editLock', TRUE))) : $this->ext_printPerms($this->BE_USER->calcPerms($row))) . ' &nbsp;</td>
-				<td nowrap="nowrap" align="center">'.$this->ext_printPerms($this->ext_groupPerms($row,$be_group_Array[$this->BE_USER->firstMainGroup])).' &nbsp;</td>
+				<td nowrap="nowrap" align="center">'.$this->ext_printPerms($this->ext_groupPerms($row, $be_group_Array[$this->BE_USER->firstMainGroup])).' &nbsp;</td>
 			</tr>';
 		}
-		return '<table border="0" cellpadding="0" cellspacing="0">'.implode('',$lines).'</table>';
+		return '<table border="0" cellpadding="0" cellspacing="0">'.implode('', $lines).'</table>';
 	}
 
 	/**
@@ -274,7 +274,7 @@ class printAllPageTree_perms extends printAllPageTree {
 	 * @param	array		First-group record.
 	 * @return	integer		Permissions.
 	 */
-	function ext_groupPerms($row,$firstGroup) {
+	function ext_groupPerms($row, $firstGroup) {
 		if (is_array($row)) {
 			$out=intval($row['perms_everybody']);
 			if ($row['perms_groupid'] && $firstGroup['uid']==$row['perms_groupid']) {
@@ -335,7 +335,7 @@ class localFolderTree extends t3lib_folderTree {
 	 * @param	array		[See parent]
 	 * @return	string
 	 */
-	function wrapTitle($str,$row) {
+	function wrapTitle($str, $row) {
 		return $str;
 	}
 
@@ -347,7 +347,7 @@ class localFolderTree extends t3lib_folderTree {
 	 * @param	string		[See parent]
 	 * @return	string
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='') {
+	function PM_ATagWrap($icon, $cmd, $bMark='') {
 		return '';
 	}
 
@@ -407,7 +407,7 @@ class printAllFolderTree extends localFolderTree {
 	 * @param	string		[See parent]
 	 * @return	string
 	 */
-	function PM_ATagWrap($icon,$cmd,$bMark='') {
+	function PM_ATagWrap($icon, $cmd, $bMark='') {
 		return $icon;
 	}
 }
@@ -444,16 +444,16 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	function returnWebmounts($pClause='') {
 
 			// Get array of webmounts:
-		$webmounts = (string)($this->groupData['webmounts'])!='' ? explode(',',$this->groupData['webmounts']) : Array();
+		$webmounts = (string)($this->groupData['webmounts'])!='' ? explode(',', $this->groupData['webmounts']) : Array();
 
 			// Get select clause:
 		$pClause=$pClause?$pClause:$this->getPagePermsClause(1);
 
 			// Traverse mounts, check if they are readable:
 		foreach ($webmounts as $k => $id) {
-			$rec=t3lib_BEfunc::getRecord('pages',$id,'*',' AND '.$pClause);
+			$rec=t3lib_BEfunc::getRecord('pages', $id, '*', ' AND '.$pClause);
 			if (!is_array($rec)) {
-				$this->ext_non_readAccessPageArray[$id]=t3lib_BEfunc::getRecord('pages',$id);
+				$this->ext_non_readAccessPageArray[$id]=t3lib_BEfunc::getRecord('pages', $id);
 				unset($webmounts[$k]);
 			}
 		}
@@ -470,7 +470,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 
 		foreach ($this->ext_non_readAccessPageArray as $pA) {
 			if ($pA) {
-				$lines[] = t3lib_BEfunc::getRecordPath($pA['uid'],'',15);
+				$lines[] = t3lib_BEfunc::getRecordPath($pA['uid'], '', 15);
 			}
 		}
 		if (count($lines)) {
@@ -479,7 +479,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 					<td align="center"><font color="white"><strong>' . $GLOBALS['LANG']->getLL('noReadAccess', TRUE) . '</strong></font></td>
 				</tr>
 				<tr>
-					<td>'.implode('</td></tr><tr><td>',$lines).'</td>
+					<td>'.implode('</td></tr><tr><td>', $lines).'</td>
 				</tr>
 			</table>';
 		}
@@ -502,17 +502,17 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 * @param	boolean		If set, the full trees of pages/folders are printed.
 	 * @return	array		Array with accumulated HTML content.
 	 */
-	function ext_printOverview($uInfo,$compareFlags,$printTrees=0) {
+	function ext_printOverview($uInfo, $compareFlags, $printTrees=0) {
 			// Prepare for file storages and db-mount
 		if ($printTrees)	{	// ... this is if we see the detailed view for a user:
 				// Page tree object:
 			$pagetree = t3lib_div::makeInstance(!$this->isAdmin() ? 'printAllPageTree_perms' : 'printAllPageTree', $this, $this->returnWebmounts());	// Here, only readable webmounts are returned (1=1)
-			$pagetree->addField('perms_user',1);
-			$pagetree->addField('perms_group',1);
-			$pagetree->addField('perms_everybody',1);
-			$pagetree->addField('perms_userid',1);
-			$pagetree->addField('perms_groupid',1);
-			$pagetree->addField('editlock',1);
+			$pagetree->addField('perms_user', 1);
+			$pagetree->addField('perms_group', 1);
+			$pagetree->addField('perms_everybody', 1);
+			$pagetree->addField('perms_userid', 1);
+			$pagetree->addField('perms_groupid', 1);
+			$pagetree->addField('editlock', 1);
 
 				// Folder tree object:
 			$foldertree = t3lib_div::makeInstance('printAllFolderTree', $this);
@@ -561,72 +561,72 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						$pagetree->addSelfId=1;
 						$out[$k] = $this->ext_non_readAccessPages();	// Add HTML for non-readable webmounts (only shown when viewing details of a user - in overview/comparison ALL mounts are shown)
 						$out[$k].= $pagetree->getBrowsableTree();		// Add HTML for readable webmounts.
-						$this->ext_pageIdsFromMounts=implode(',',array_unique($pagetree->ids));		// List of mounted page ids
+						$this->ext_pageIdsFromMounts=implode(',', array_unique($pagetree->ids));		// List of mounted page ids
 					break;
 					case 'tempPath':
 						$out[$k] = $GLOBALS['SOBE']->localPath($v);
 					break;
 					case 'pagetypes_select':
-						$pageTypes = explode(',',$v);
+						$pageTypes = explode(',', $v);
 						foreach ($pageTypes as &$vv) {
-							$vv = $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('pages','doktype',$vv));
+							$vv = $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('pages', 'doktype', $vv));
 						}
 						unset($vv);
-						$out[$k] = implode('<br />',$pageTypes);
+						$out[$k] = implode('<br />', $pageTypes);
 					break;
 					case 'tables_select':
 					case 'tables_modify':
-						$tables = explode(',',$v);
+						$tables = explode(',', $v);
 						foreach ($tables as &$vv) {
 							if ($vv) {
-								$vv = '<span class="nobr">'.t3lib_iconWorks::getSpriteIconForRecord($vv,array()).$GLOBALS['LANG']->sL($GLOBALS['TCA'][$vv]['ctrl']['title']).'</span>';
+								$vv = '<span class="nobr">'.t3lib_iconWorks::getSpriteIconForRecord($vv, array()).$GLOBALS['LANG']->sL($GLOBALS['TCA'][$vv]['ctrl']['title']).'</span>';
 							}
 						}
 						unset($vv);
-						$out[$k] = implode('<br />',$tables);
+						$out[$k] = implode('<br />', $tables);
 					break;
 					case 'non_exclude_fields':
-						$nef = explode(',',$v);
+						$nef = explode(',', $v);
 						$table='';
 						$pout=array();
 						foreach ($nef as $vv) {
 							if ($vv) {
-								list($thisTable,$field) = explode(':',$vv);
+								list($thisTable,$field) = explode(':', $vv);
 								if ($thisTable!=$table) {
 									$table=$thisTable;
 									t3lib_div::loadTCA($table);
-									$pout[]='<span class="nobr">'.t3lib_iconWorks::getSpriteIconForRecord($table,array()).$GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title']).'</span>';
+									$pout[]='<span class="nobr">'.t3lib_iconWorks::getSpriteIconForRecord($table, array()).$GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title']).'</span>';
 								}
 								if ($GLOBALS['TCA'][$table]['columns'][$field]) {
 									$pout[]='<span class="nobr"> - '.rtrim($GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$field]['label']), ':').'</span>';
 								}
 							}
 						}
-						$out[$k] = implode('<br />',$pout);
+						$out[$k] = implode('<br />', $pout);
 					break;
 					case 'groupList':
 					case 'firstMainGroup':
-						$uGroups = explode(',',$v);
+						$uGroups = explode(',', $v);
 						$table='';
 						$pout=array();
 						foreach ($uGroups as $vv) {
 							if ($vv) {
-								$uGRow = t3lib_BEfunc::getRecord('be_groups',$vv);
+								$uGRow = t3lib_BEfunc::getRecord('be_groups', $vv);
 								$title = t3lib_BEfunc::getRecordTitle('be_groups', $uGRow);
 								$pout[] = '<tr><td nowrap="nowrap">' . t3lib_iconWorks::getSpriteIconForRecord('be_groups', $uGRow) .
 									'&nbsp;' . htmlspecialchars($title) . '&nbsp;&nbsp;</td><td width="1%" nowrap="nowrap">' .
 									$GLOBALS['SOBE']->elementLinks('be_groups', $uGRow) . '</td></tr>';
 							}
 						}
-						$out[$k] = '<table border="0" cellpadding="0" cellspacing="0" width="100%">'.implode('',$pout).'</table>';
+						$out[$k] = '<table border="0" cellpadding="0" cellspacing="0" width="100%">'.implode('', $pout).'</table>';
 					break;
 					case 'modules':
-						$mods = explode(',',$v);
+						$mods = explode(',', $v);
 						$mainMod='';
 						$pout=array();
 						foreach ($mods as $vv) {
 							if ($vv) {
-								list($thisMod,$subMod) = explode('_',$vv);
+								list($thisMod,$subMod) = explode('_', $vv);
 								if ($thisMod!=$mainMod) {
 									$mainMod=$thisMod;
 									$pout[]='<span class="nobr">'.($modNames[$mainMod]?$modNames[$mainMod]:$mainMod).'</span>';
@@ -636,7 +636,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 								}
 							}
 						}
-						$out[$k] = implode('<br />',$pout);
+						$out[$k] = implode('<br />', $pout);
 					break;
 					case 'userTS':
 
@@ -648,17 +648,17 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						$tmpl->bType='';
 						$tmpl->ext_expandAllNotes=1;
 						$tmpl->ext_noPMicons=1;
-						$out[$k] = $tmpl->ext_getObjTree($v,'','','','','1');
+						$out[$k] = $tmpl->ext_getObjTree($v, '', '', '', '', '1');
 					break;
 					case 'userTS_hl':
 						$tsparser = t3lib_div::makeInstance('t3lib_TSparser');
 						$tsparser->lineNumberOffset=0;
-						$out[$k] = $tsparser->doSyntaxHighlight($v,0,1);
+						$out[$k] = $tsparser->doSyntaxHighlight($v, 0, 1);
 					break;
 					case 'explicit_allowdeny':
 
 							// Explode and flip values:
-						$nef = array_flip(explode(',',$v));
+						$nef = array_flip(explode(',', $v));
 						$pout = array();
 
 						$theTypes = t3lib_BEfunc::getExplicitAuthFieldValues();
@@ -693,12 +693,12 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						}
 
 							// Implode for display:
-						$out[$k] = implode('<br />',$pout);
+						$out[$k] = implode('<br />', $pout);
 					break;
 					case 'allowed_languages':
 
 							// Explode and flip values:
-						$nef = array_flip(explode(',',$v));
+						$nef = array_flip(explode(',', $v));
 						$pout = array();
 
 							// Get languages:
@@ -711,7 +711,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 								if (strpos($iCfg[2], '.gif') === FALSE) {
 									$icon = t3lib_iconWorks::getSpriteIcon($iCfg[2]) . '&nbsp;';
 								} elseif (strlen($iCfg[2])) {
-									$icon = '<img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/'.$iCfg[2]).' class="absmiddle" style="margin-right: 5px;" alt="" />';
+									$icon = '<img '.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$iCfg[2]).' class="absmiddle" style="margin-right: 5px;" alt="" />';
 								} else {
 									$icon = '';
 								}
@@ -725,18 +725,18 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						}
 
 							// Implode for display:
-						$out[$k] = implode('<br />',$pout);
+						$out[$k] = implode('<br />', $pout);
 					break;
 					case 'workspace_perms':
-						$out[$k] = implode('<br/>',explode(', ',t3lib_BEfunc::getProcessedValue('be_users','workspace_perms',$v)));
+						$out[$k] = implode('<br/>', explode(', ', t3lib_BEfunc::getProcessedValue('be_users','workspace_perms', $v)));
 					break;
 					case 'workspace_membership':
-						$out[$k] = implode('<br/>',$this->ext_workspaceMembership());
+						$out[$k] = implode('<br/>', $this->ext_workspaceMembership());
 					break;
 					case 'custom_options':
 
 							// Explode and flip values:
-						$nef = array_flip(explode(',',$v));
+						$nef = array_flip(explode(',', $v));
 						$pout = array();
 
 							// Initialize:
@@ -762,7 +762,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						}
 
 							// Implode for display:
-						$out[$k] = implode('<br />',$pout);
+						$out[$k] = implode('<br />', $pout);
 					break;
 				}
 			}
@@ -796,11 +796,11 @@ class local_beUserAuth extends t3lib_beUserAuth {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$dat[] = array(
 				'row'=>$row,
-				'HTML'=>t3lib_iconWorks::getSpriteIconForRecord('pages',$row,array('title'=>'['.$row['uid'].']'))
+				'HTML'=>t3lib_iconWorks::getSpriteIconForRecord('pages', $row,array('title'=>'['.$row['uid'].']'))
 			);
 		}
 		$pp = t3lib_div::makeInstance('printAllPageTree_perms', $this);
-		return $pp->printTree($dat,1);
+		return $pp->printTree($dat, 1);
 	}
 
 	/**
@@ -827,7 +827,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 * @param	array		First-group record.
 	 * @return	integer		Permissions.
 	 */
-	function ext_groupPerms($row,$firstGroup) {
+	function ext_groupPerms($row, $firstGroup) {
 		if (is_array($row)) {
 			$out=intval($row['perms_everybody']);
 			if ($row['perms_groupid'] && $firstGroup['uid']==$row['perms_groupid']) {
@@ -849,7 +849,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 
 			// Filemounts:
 		if ($renderAll || $filter['filemounts']) {
-			$uInfo['filemounts'] = $this->ext_uniqueAndSortList(implode(',',array_keys($this->groupData['filemounts'])));
+			$uInfo['filemounts'] = $this->ext_uniqueAndSortList(implode(',', array_keys($this->groupData['filemounts'])));
 		}
 
 			// DBmounts:
@@ -944,10 +944,10 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	 * @return	string		Sorted, unique commalist.
 	 */
 	function ext_uniqueAndSortList($list) {
-		$uList=t3lib_div::trimExplode(',',$list,1);
+		$uList=t3lib_div::trimExplode(',', $list, 1);
 		sort($uList);
 		$uList=array_unique($uList);
-		$uList=implode(',',$uList);
+		$uList=implode(',', $uList);
 		return $uList;
 	}
 
@@ -981,7 +981,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 
 			// Add custom workspaces (selecting all, filtering by BE_USER check):
 		if (t3lib_extMgm::isLoaded('workspaces')) {
-			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers,db_mountpoints','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
+			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers,db_mountpoints', 'sys_workspace', 'pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'), '', 'title');
 			if (count($workspaces)) {
 				foreach ($workspaces as $rec) {
 					if ($this->checkWorkspace($rec)) {
@@ -989,9 +989,9 @@ class local_beUserAuth extends t3lib_beUserAuth {
 
 							// Check if all mount points are accessible, otherwise show error:
 						if (trim($rec['db_mountpoints'])!=='') {
-							$mountPoints = t3lib_div::intExplode(',',$this->workspaceRec['db_mountpoints'],1);
+							$mountPoints = t3lib_div::intExplode(',', $this->workspaceRec['db_mountpoints'], 1);
 							foreach ($mountPoints as $mpId) {
-								if (!$this->isInWebMount($mpId,'1=1')) {
+								if (!$this->isInWebMount($mpId, '1=1')) {
 									$options[$rec['uid']].= '<br> \- ' . $GLOBALS['LANG']->getLL('notAccessible', TRUE) . ' ' . $mpId;
 								}
 							}
@@ -1100,9 +1100,9 @@ class SC_mod_tools_be_user_index {
 			case 'compare':
 				if (t3lib_div::_GP('ads')) {
 					$compareFlags = t3lib_div::_GP('compareFlags');
-					$GLOBALS['BE_USER']->pushModuleData('tools_beuser/index.php/compare',$compareFlags);
+					$GLOBALS['BE_USER']->pushModuleData('tools_beuser/index.php/compare', $compareFlags);
 				} else {
-					$compareFlags = $GLOBALS['BE_USER']->getModuleData('tools_beuser/index.php/compare','ses');
+					$compareFlags = $GLOBALS['BE_USER']->getModuleData('tools_beuser/index.php/compare', 'ses');
 				}
 				$this->content.=$this->compareUsers($compareFlags);
 			break;
@@ -1112,7 +1112,7 @@ class SC_mod_tools_be_user_index {
 		}
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
-		$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
+		$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 		$markers['CONTENT'] = $this->content;
 
 			// Build the <body> for the module
@@ -1208,7 +1208,7 @@ class SC_mod_tools_be_user_index {
 			$tempBE_USER->fetchGroupData();
 
 			$uInfo = $tempBE_USER->ext_compileUserInfoForHash();
-			$uInfo_dat = $tempBE_USER->ext_printOverview($uInfo,$options,1);
+			$uInfo_dat = $tempBE_USER->ext_printOverview($uInfo, $options, 1);
 
 			$lines=array();
 			foreach ($options as $kk => $vv) {
@@ -1227,12 +1227,12 @@ class SC_mod_tools_be_user_index {
 
 			$email = htmlspecialchars($tempBE_USER->user['email']);
 			$realname = htmlspecialchars($tempBE_USER->user['realName']);
-			$outTable = '<table border="0" cellpadding="1" cellspacing="1"><tr class="bgColor5"><td>'.t3lib_iconWorks::getSpriteIconForRecord('be_users',$tempBE_USER->user,array('title'=>$tempBE_USER->user['uid'])).htmlspecialchars($tempBE_USER->user['username']).'</td>';
+			$outTable = '<table border="0" cellpadding="1" cellspacing="1"><tr class="bgColor5"><td>'.t3lib_iconWorks::getSpriteIconForRecord('be_users', $tempBE_USER->user, array('title'=>$tempBE_USER->user['uid'])).htmlspecialchars($tempBE_USER->user['username']).'</td>';
 			$outTable.= '<td>'.($realname?$realname.', ':'').($email ? '<a href="mailto:'.$email.'">'.$email.'</a>' : '').'</td>';
-			$outTable.= '<td>'.$this->elementLinks('be_users',$tempBE_USER->user).'</td></tr></table>';
+			$outTable.= '<td>'.$this->elementLinks('be_users', $tempBE_USER->user).'</td></tr></table>';
 			$outTable.= '<strong><a href="'.htmlspecialchars($this->MCONF['_']).'">' . $GLOBALS['LANG']->getLL('backToOverview', TRUE) . '</a></strong><br />';
 
-			$outTable.= '<br /><table border="0" cellpadding="2" cellspacing="1">'.implode('',$lines).'</table>';
+			$outTable.= '<br /><table border="0" cellpadding="2" cellspacing="1">'.implode('', $lines).'</table>';
 			$content .= $this->doc->section($GLOBALS['LANG']->getLL('userInfo', TRUE), $outTable, FALSE, TRUE);
 		} else {
 			$menu = array(0 => array());
@@ -1288,7 +1288,7 @@ class SC_mod_tools_be_user_index {
 						// setting md5:
 					$md5=md5($md5pre);
 					if (!isset($comparation[$md5])) {
-						$comparation[$md5]=$tempBE_USER->ext_printOverview($uInfo,$compareFlags);
+						$comparation[$md5]=$tempBE_USER->ext_printOverview($uInfo, $compareFlags);
 						$comparation[$md5]['users']=array();
 					}
 					$comparation[$md5]['users'][]=$tempBE_USER->user;
@@ -1322,7 +1322,7 @@ class SC_mod_tools_be_user_index {
 				$uListArr=array();
 
 				foreach ($dat['users'] as $uDat) {
-					$uItem = '<tr><td width="130">' . t3lib_iconWorks::getSpriteIconForRecord('be_users',$uDat,array('title'=> $uDat['uid'] )) . $this->linkUser($uDat['username'],$uDat) . '&nbsp;&nbsp;</td><td nowrap="nowrap">' . $this->elementLinks('be_users',$uDat);
+					$uItem = '<tr><td width="130">' . t3lib_iconWorks::getSpriteIconForRecord('be_users', $uDat, array('title'=> $uDat['uid'] )) . $this->linkUser($uDat['username'], $uDat) . '&nbsp;&nbsp;</td><td nowrap="nowrap">' . $this->elementLinks('be_users', $uDat);
 					if ($curUid != $uDat['uid'] && !$uDat['disable'] && ($uDat['starttime'] == 0 ||
 						$uDat['starttime'] < $GLOBALS['EXEC_TIME']) && ($uDat['endtime'] == 0 ||
 						$uDat['endtime'] > $GLOBALS['EXEC_TIME'])) {
@@ -1336,7 +1336,7 @@ class SC_mod_tools_be_user_index {
 					$uItem .= '</td></tr>';
 					$uListArr[] = $uItem;
 				}
-				$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.implode('',$uListArr).'</table>';
+				$allCells['USERS'] = '<table border="0" cellspacing="0" cellpadding="0" width="100%">'.implode('', $uListArr).'</table>';
 
 				foreach ($options as $kk => $vv) {
 					if ($compareFlags[$kk]) {
@@ -1351,7 +1351,7 @@ class SC_mod_tools_be_user_index {
 			$TDparams=' nowrap="nowrap" class="bgColor5" valign="top"';
 			$i = 0;
 			foreach ($allGroups as $allCells) {
-				$outTable.='<tr><td'.$TDparams.'>'.implode('</td><td'.$TDparams.'>',$allCells).'</td></tr>';
+				$outTable.='<tr><td'.$TDparams.'>'.implode('</td><td'.$TDparams.'>', $allCells).'</td></tr>';
 				$TDparams=' nowrap="nowrap" class="'.($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6').'" valign="top"';
 			}
 			$outTable='<table border="0" cellpadding="2" cellspacing="2">' . $outTable . '</table>';
@@ -1372,7 +1372,7 @@ class SC_mod_tools_be_user_index {
 				t3lib_FlashMessageQueue::addMessage($flashMessageTooManyUsers);
 			}
 			$content.= $this->doc->spacer(10);
-			$content.= $this->doc->section($GLOBALS['LANG']->getLL('result', TRUE),$outTable,0,1);
+			$content.= $this->doc->section($GLOBALS['LANG']->getLL('result', TRUE), $outTable, 0, 1);
 		}
 		return $content;
 	}
@@ -1385,7 +1385,7 @@ class SC_mod_tools_be_user_index {
 	 * @param	array		the BE user record to link
 	 * @return	string		the HTML anchor
 	 */
-	function linkUser($str,$rec) {
+	function linkUser($str, $rec) {
 		return '<a href="'.htmlspecialchars($this->MCONF['_']).'&be_user_uid='.$rec['uid'].'">' . htmlspecialchars($str) . '</a>';
 	}
 
@@ -1397,7 +1397,7 @@ class SC_mod_tools_be_user_index {
 	 * @param	array		the BE user record to use
 	 * @return	string		a HTML formatted list of the link
 	 */
-	function elementLinks($table,$row) {
+	function elementLinks($table, $row) {
 			// Info:
 		$cells[]='<a href="#" onclick="top.launchView(\'' . $table . '\', \'' . $row['uid'] . '\',\'' . $GLOBALS['BACK_PATH'] . '\'); return false;" title="' . $GLOBALS['LANG']->getLL('showInformation', TRUE) . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-document-info') .
@@ -1405,7 +1405,7 @@ class SC_mod_tools_be_user_index {
 
 			// Edit:
 		$params='&edit[' . $table . '][' . $row['uid'] . ']=edit';
-		$cells[]='<a href="#" onclick="' . t3lib_BEfunc::editOnClick($params,$GLOBALS['BACK_PATH'],'') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit', TRUE) . '">' .
+		$cells[]='<a href="#" onclick="' . t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'], '') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:edit', TRUE) . '">' .
 				t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 			'</a>';
 
@@ -1429,7 +1429,7 @@ class SC_mod_tools_be_user_index {
 				t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
 			'</a>';
 
-		return implode('',$cells);
+		return implode('', $cells);
 	}
 
 
@@ -1459,8 +1459,8 @@ class SC_mod_tools_be_user_index {
 	 * @return	string		the local path
 	 */
 	function localPath($str) {
-		if (substr($str,0,strlen(PATH_site))==PATH_site) {
-			return substr($str,strlen(PATH_site));
+		if (substr($str, 0, strlen(PATH_site))==PATH_site) {
+			return substr($str, strlen(PATH_site));
 		} else {
 			return $str;
 		}
@@ -1473,7 +1473,7 @@ class SC_mod_tools_be_user_index {
 	 * @return	void
 	 */
 	function switchUser($switchUser) {
-		$uRec=t3lib_BEfunc::getRecord('be_users',$switchUser);
+		$uRec=t3lib_BEfunc::getRecord('be_users', $switchUser);
 		if (is_array($uRec) && $GLOBALS['BE_USER']->isAdmin()) {
 			$updateData['ses_userid'] = $uRec['uid'];
 				// user switchback
@@ -1508,7 +1508,7 @@ class SC_mod_tools_be_user_index {
 		}
 
 			// Fetch active sessions of other users from storage:
-		$sessions = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select_fields,$from_table,$where_clause,'',$orderBy);
+		$sessions = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select_fields, $from_table, $where_clause, '', $orderBy);
 			// Process and visualized each active session as a table row:
 		if (is_array($sessions)) {
 			foreach ($sessions as $session) {
@@ -1530,10 +1530,10 @@ class SC_mod_tools_be_user_index {
 							'<span'.$hostName.'>'.$ip.'</span>' .
 						'</td>' .
 						'<td width="130">' .
-							t3lib_iconWorks::getSpriteIconForRecord('be_users',$session,array('title'=>$session['uid'])).htmlspecialchars($session['username']).'&nbsp;' .
+							t3lib_iconWorks::getSpriteIconForRecord('be_users', $session, array('title'=>$session['uid'])).htmlspecialchars($session['username']).'&nbsp;' .
 						'</td>' .
 						'<td nowrap="nowrap">'.htmlspecialchars($session['realName']).'&nbsp;&nbsp;</td>' .
-						'<td nowrap="nowrap">'.$this->elementLinks('be_users',$session).'</td>' .
+						'<td nowrap="nowrap">'.$this->elementLinks('be_users', $session).'</td>' .
 						'<td nowrap="nowrap" valign="top">'.($session['bu_username'] ? '&nbsp;SU from: ' : '').htmlspecialchars($session['bu_username']).'&nbsp;</td>' .
 						'<td nowrap="nowrap" valign="top">&nbsp;'.htmlspecialchars($session['bu_realName']).'</td>' .
 					'</tr>';
