@@ -804,7 +804,7 @@ class localRecordList extends recordList {
 					$elFromTable = $this->clipObj->elFromTable($table);
 					if (count($elFromTable)) {
 						$cells['pasteAfter'] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl($table, $this->id)) .
-							'" onclick="' . htmlspecialchars('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into' ,$elFromTable)) .
+							'" onclick="' . htmlspecialchars('return ' . $this->clipObj->confirmMsg('pages', $this->pageRow, 'into', $elFromTable)) .
 							'" title="' . $GLOBALS['LANG']->getLL('clip_paste', TRUE) . '">' .
 							t3lib_iconWorks::getSpriteIcon('actions-document-paste-after') . '</a>';
 					}
