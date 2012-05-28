@@ -66,7 +66,7 @@ class t3lib_tree_pagetree_extdirect_Tree extends t3lib_tree_ExtDirect_AbstractEx
 	/**
 	 * Fetches the next tree level
 	 *
-	 * @param int $nodeId
+	 * @param integer $nodeId
 	 * @param stdClass $nodeData
 	 * @return array
 	 */
@@ -88,7 +88,7 @@ class t3lib_tree_pagetree_extdirect_Tree extends t3lib_tree_ExtDirect_AbstractEx
 	/**
 	 * Returns a tree that only contains elements that match the given search string
 	 *
-	 * @param int $nodeId
+	 * @param integer $nodeId
 	 * @param stdClass $nodeData
 	 * @param string $searchFilter
 	 * @return array

@@ -36,7 +36,7 @@ interface t3lib_tree_pagetree_interfaces_IndicatorProvider {
 	/**
 	 * Returns the indicator html code
 	 *
-	 * @return	string
+	 * @return string
 	 */
 	function getIndicator();
 }

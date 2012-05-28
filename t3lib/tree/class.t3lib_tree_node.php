@@ -171,7 +171,7 @@ class t3lib_tree_Node implements t3lib_tree_ComparableNode, Serializable {
 	 * 0 if its equal
 	 *
 	 * @param t3lib_tree_Node $other
-	 * @return int see description above
+	 * @return integer See description above
 	 */
 	public function compareTo($other) {
 		if ($this->equals($other)) {
@@ -184,7 +184,7 @@ class t3lib_tree_Node implements t3lib_tree_ComparableNode, Serializable {
 	/**
 	 * Returns the node in an array representation that can be used for serialization
 	 *
-	 * @param bool $addChildNodes
+	 * @param boolean $addChildNodes
 	 * @return array
 	 */
 	public function toArray($addChildNodes = TRUE) {
