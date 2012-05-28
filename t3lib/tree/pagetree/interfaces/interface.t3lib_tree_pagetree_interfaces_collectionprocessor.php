@@ -39,8 +39,8 @@ interface t3lib_tree_pagetree_interfaces_CollectionProcessor {
 	 *
 	 * @abstract
 	 * @param t3lib_tree_pagetree_Node $node
-	 * @param int $mountPoint
-	 * @param int $level
+	 * @param integer $mountPoint
+	 * @param integer $level
 	 * @param t3lib_tree_pagetree_NodeCollection $nodeCollection
 	 * @return void
 	 */
@@ -52,7 +52,7 @@ interface t3lib_tree_pagetree_interfaces_CollectionProcessor {
 	 * @abstract
 	 * @param t3lib_tree_pagetree_Node $node
 	 * @param string $searchFilter
-	 * @param int $mountPoint
+	 * @param integer $mountPoint
 	 * @param t3lib_tree_pagetree_NodeCollection $nodeCollection
 	 * @return void
 	 */

@@ -60,7 +60,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	protected $tableWhere = '';
 
 	/**
-	 * @var int
+	 * @var integer
 	 */
 	protected $lookupMode = t3lib_tree_tca_DatabaseTreeDataProvider::MODE_CHILDREN;
 
@@ -70,7 +70,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	protected $lookupField = '';
 
 	/**
-	 * @var int
+	 * @var integer
 	 */
 	protected $rootUid = 0;
 
@@ -78,7 +78,6 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	 * @var array
 	 */
 	protected $idCache = array();
-
 
 	/**
 	 * Stores TCA-Configuration of the LookUpField in tableName
@@ -159,7 +158,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	/**
 	 * Sets the lookup mode
 	 *
-	 * @param int $lookupMode
+	 * @param integer $lookupMode
 	 * @return void
 	 */
 	public function setLookupMode($lookupMode) {
@@ -169,12 +168,11 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	/**
 	 * Gets the lookup mode
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getLookupMode() {
 		return $this->lookupMode;
 	}
-
 
 	/**
 	 * Gets the nodes
@@ -198,7 +196,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	/**
 	 * Sets the root uid
 	 *
-	 * @param  $rootUid
+	 * @param integer $rootUid
 	 * @return void
 	 */
 	public function setRootUid($rootUid) {
@@ -208,7 +206,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	/**
 	 * Gets the root uid
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getRootUid() {
 		return $this->rootUid;
@@ -238,8 +236,8 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	 *
 	 * @param t3lib_tree_Node $basicNode
 	 * @param NULL|t3lib_tree_tca_DatabaseNode $parent
-	 * @param int $level
-	 * @return A|object
+	 * @param integer $level
+	 * @return An object
 	 */
 	protected function buildRepresentationForNode(t3lib_tree_Node $basicNode, t3lib_tree_tca_DatabaseNode $parent = NULL, $level = 0) {
 		$node = t3lib_div::makeInstance('t3lib_tree_tca_DatabaseNode');
@@ -311,8 +309,8 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	 * Gets node children
 	 *
 	 * @param t3lib_tree_Node $node
-	 * @param  $level
-	 * @return A|NULL|object
+	 * @param integer $level
+	 * @return NULL|object
 	 */
 	protected function getChildrenOf(t3lib_tree_Node $node, $level) {
 		$nodeData = NULL;
@@ -352,7 +350,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	/**
 	 * Gets related records depending on TCA configuration
 	 *
-	 * @param  $row
+	 * @param array $row
 	 * @return array
 	 */
 	protected function getRelatedRecords(array $row) {
@@ -377,7 +375,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	/**
 	 * Gets related records depending on TCA configuration
 	 *
-	 * @param  $row
+	 * @param array $row
 	 * @return array
 	 */
 	protected function getChildrenUidsFromParentRelation(array $row) {
@@ -388,7 +386,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 			case 'select':
 				if ($this->columnConfiguration['MM']) {
 					$dbGroup = t3lib_div::makeInstance('t3lib_loadDBGroup');
-						// dummy field for setting "look from other site"
+						// Dummy field for setting "look from other site"
 					$this->columnConfiguration['MM_oppositeField'] = 'children';
 
 					$dbGroup->start(
@@ -417,7 +415,7 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	/**
 	 * Gets related children records depending on TCA configuration
 	 *
-	 * @param  $row
+	 * @param array $row
 	 * @return array
 	 */
 	protected function getChildrenUidsFromChildrenRelation(array $row) {
@@ -464,9 +462,9 @@ class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTca
 	 * Queries the table for an field which might contain a list.
 	 *
 	 * @param string $fieldName the name of the field to be queried
-	 * @param int $queryId the uid to search for
+	 * @param integer $queryId the uid to search for
 	 *
-	 * @return int[] all uids found
+	 * @return integer[] all uids found
 	 */
 	protected function listFieldQuery($fieldName, $queryId) {
 		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(

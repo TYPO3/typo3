@@ -36,14 +36,14 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	/**
 	 * Node limit that should be loaded for this request per mount
 	 *
-	 * @var int
+	 * @var integer
 	 */
 	protected $nodeLimit = 0;
 
 	/**
 	 * Current amount of nodes
 	 *
-	 * @var int
+	 * @var integer
 	 */
 	protected $nodeCounter = 0;
 
@@ -64,7 +64,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	/**
 	 * Constructor
 	 *
-	 * @param int $nodeLimit (optional)
+	 * @param integer $nodeLimit (optional)
 	 */
 	public function __construct($nodeLimit = NULL) {
 		if ($nodeLimit === NULL) {
@@ -107,8 +107,8 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	 * Fetches the sub-nodes of the given node
 	 *
 	 * @param t3lib_tree_Node $node
-	 * @param int $mountPoint
-	 * @param int $level internally used variable as a recursion limiter
+	 * @param integer $mountPoint
+	 * @param integer $level internally used variable as a recursion limiter
 	 * @return t3lib_tree_NodeCollection
 	 */
 	public function getNodes(t3lib_tree_Node $node, $mountPoint = 0, $level = 0) {
@@ -186,7 +186,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	 *
 	 * @param t3lib_tree_Node $node
 	 * @param string $searchFilter
-	 * @param int $mountPoint
+	 * @param integer $mountPoint
 	 * @return void
 	 */
 	public function getFilteredNodes(t3lib_tree_Node $node, $searchFilter, $mountPoint = 0) {
@@ -413,7 +413,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	/**
 	 * Returns the where clause for fetching pages
 	 *
-	 * @param int $id
+	 * @param integer $id
 	 * @param string $searchFilter
 	 * @return string
 	 */
@@ -450,7 +450,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	/**
 	 * Returns all sub-pages of a given id
 	 *
-	 * @param int $id
+	 * @param integer $id
 	 * @param string $searchFilter
 	 * @return array
 	 */
@@ -466,8 +466,8 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	/**
 	 * Returns TRUE if the node has child's
 	 *
-	 * @param int $id
-	 * @return bool
+	 * @param integer $id
+	 * @return boolean
 	 */
 	protected function hasNodeSubPages($id) {
 		$where = $this->getWhereClause($id);
