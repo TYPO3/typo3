@@ -2093,7 +2093,7 @@ $str.=$this->docBodyTagBegin().
 	 */
 	protected function getPagePath($pageRecord) {
 			// Is this a real page
-		if ($pageRecord['uid'])	{
+		if (is_array($pageRecord) && $pageRecord['uid'])	{
 			$title = substr($pageRecord['_thePathFull'], 0, -1);
 				// remove current page title
 			$pos = strrpos($title, '/');
@@ -2128,7 +2128,7 @@ $str.=$this->docBodyTagBegin().
 	protected function getPageInfo($pageRecord) {
 		global $BE_USER;
 				// Add icon with clickmenu, etc:
-		if ($pageRecord['uid'])	{	// If there IS a real page
+		if (is_array($pageRecord) && $pageRecord['uid'])	{	// If there IS a real page
 			$alttext = t3lib_BEfunc::getRecordIconAltText($pageRecord, 'pages');
 			$iconImg = t3lib_iconWorks::getSpriteIconForRecord('pages', $pageRecord, array('title'=>$alttext));
 				// Make Icon:
