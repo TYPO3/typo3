@@ -28,7 +28,7 @@
 /**
  * Class to handle php environment specific options / functions
  *
- * @author	 Christian Kuhn <lolli@schwarzbu.ch>
+ * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -78,6 +78,7 @@ final class t3lib_utility_PhpOptions {
 	/**
 	 * Cast a on/off php ini value to boolean
 	 *
+	 * @param string $configOption
 	 * @return boolean TRUE if the given option is enabled, FALSE if disabled
 	 */
 	public static function getIniValueBoolean($configOption) {

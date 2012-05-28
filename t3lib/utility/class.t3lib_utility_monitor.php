@@ -28,7 +28,7 @@
 /**
  * Class to handle monitoring actions.
  *
- * @author	Jigal van Hemert <jigal@xs4all.nl>
+ * @author Jigal van Hemert <jigal@xs4all.nl>
  */
 final class t3lib_utility_Monitor {
 
