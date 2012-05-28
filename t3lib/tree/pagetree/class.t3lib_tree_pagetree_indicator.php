@@ -29,7 +29,7 @@
  * Class for pagetree indicator
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
- * @package	TYPO3
+ * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_tree_pagetree_Indicator {
@@ -49,7 +49,6 @@ class t3lib_tree_pagetree_Indicator {
 
 	/**
 	 * Gets all registered indicator providers and instantiates them
-	 *
 	 */
 	protected function getIndicatorProviders() {
 		$providers = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['pagetree']['t3lib_tree_pagetree']['indicator']['providers'];
@@ -69,7 +68,7 @@ class t3lib_tree_pagetree_Indicator {
 	/**
 	 * Runs through all indicator providers and returns all indicators collected.
 	 *
-	 * @return	array	An array of
+	 * @return array An array of
 	 */
 	public function getAllIndicators() {
 		$indicators = array();

@@ -36,7 +36,7 @@ class t3lib_tree_Renderer_UnorderedList extends t3lib_tree_Renderer_Abstract {
 	/**
 	 * recursion level
 	 *
-	 * @var int
+	 * @var integer
 	 */
 	protected $recursionLevel = 0;
 
@@ -44,8 +44,8 @@ class t3lib_tree_Renderer_UnorderedList extends t3lib_tree_Renderer_Abstract {
 	 * Renders a node recursive or just a single instance
 	 *
 	 * @param t3lib_tree_RepresentationNode $node
-	 * @param bool $recursive
-	 * @return mixed
+	 * @param boolean $recursive
+	 * @return string
 	 */
 	public function renderNode(t3lib_tree_RepresentationNode $node, $recursive = TRUE) {
 		$code = '<li><span class="' . $node->getIcon() . '">&nbsp;</span>' . $node->getLabel();
@@ -64,8 +64,8 @@ class t3lib_tree_Renderer_UnorderedList extends t3lib_tree_Renderer_Abstract {
 	 * Renders a node collection recursive or just a single instance
 	 *
 	 * @param t3lib_tree_NodeCollection $node
-	 * @param bool $recursive
-	 * @return mixed
+	 * @param boolean $recursive
+	 * @return string
 	 */
 	public function renderTree(t3lib_tree_AbstractTree $tree, $recursive = TRUE) {
 		$this->recursionLevel = 0;
@@ -79,9 +79,9 @@ class t3lib_tree_Renderer_UnorderedList extends t3lib_tree_Renderer_Abstract {
 	/**
 	 * Renders an tree recursive or just a single instance
 	 *
-	 * @param t3lib_tree_AbstractTree $node
-	 * @param bool $recursive
-	 * @return mixed
+	 * @param t3lib_tree_NodeCollection $collection
+	 * @param boolean $recursive
+	 * @return string
 	 */
 	public function renderNodeCollection(t3lib_tree_NodeCollection $collection, $recursive = TRUE) {
 		$code = '<ul class="level' . $this->recursionLevel . '" style="margin-left:10px">';
