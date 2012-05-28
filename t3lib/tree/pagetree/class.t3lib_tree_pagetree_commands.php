@@ -54,7 +54,7 @@ final class t3lib_tree_pagetree_Commands {
 	static protected $backgroundColors = NULL;
 
 	/**
-	 * @var int|null
+	 * @var integer|null
 	 */
 	static protected $titleLength = NULL;
 
@@ -95,7 +95,7 @@ final class t3lib_tree_pagetree_Commands {
 	 * Restore the page
 	 *
 	 * @param t3lib_tree_pagetree_Node $node
-	 * @param int $targetId
+	 * @param integer $targetId
 	 * @return void
 	 */
 	public static function restoreNode(t3lib_tree_pagetree_Node $node, $targetId) {
@@ -125,8 +125,8 @@ final class t3lib_tree_pagetree_Commands {
 	 * Node: Use a negative target id to specify a sibling target else the parent is used
 	 *
 	 * @param t3lib_tree_pagetree_Node $sourceNode
-	 * @param int $targetId
-	 * @return int
+	 * @param integer $targetId
+	 * @return integer
 	 */
 	public static function copyNode(t3lib_tree_pagetree_Node $sourceNode, $targetId) {
 		$cmd['pages'][$sourceNode->getId()]['copy'] = $targetId;
@@ -141,7 +141,7 @@ final class t3lib_tree_pagetree_Commands {
 	 * Node: Use a negative target id to specify a sibling target else the parent is used
 	 *
 	 * @param t3lib_tree_pagetree_Node $sourceNode
-	 * @param int $targetId
+	 * @param integer $targetId
 	 * @return void
 	 */
 	public static function moveNode(t3lib_tree_pagetree_Node $sourceNode, $targetId) {
@@ -153,9 +153,9 @@ final class t3lib_tree_pagetree_Commands {
 	 * Creates a page of the given doktype and returns the id of the created page
 	 *
 	 * @param t3lib_tree_pagetree_Node $parentNode
-	 * @param int $targetId
-	 * @param int $pageType
-	 * @return int
+	 * @param integer $targetId
+	 * @param integer $pageType
+	 * @return integer
 	 */
 	public static function createNode(t3lib_tree_pagetree_Node $parentNode, $targetId, $pageType) {
 		$placeholder = 'NEW12345';
@@ -196,8 +196,8 @@ final class t3lib_tree_pagetree_Commands {
 	 *
 	 * @param array $cmd
 	 * @param array $data
-	 * @throws RuntimeException if an error happened while the TCE processing
 	 * @return array
+	 * @throws RuntimeException if an error happened while the TCE processing
 	 */
 	protected static function processTceCmdAndDataMap(array $cmd, array $data = array()) {
 		/** @var $tce t3lib_TCEmain */
@@ -225,7 +225,7 @@ final class t3lib_tree_pagetree_Commands {
 	/**
 	 * Returns a node from the given node id
 	 *
-	 * @param int $nodeId
+	 * @param integer $nodeId
 	 * @param boolean $unsetMovePointers
 	 * @return t3lib_tree_pagetree_Node
 	 */
@@ -237,8 +237,7 @@ final class t3lib_tree_pagetree_Commands {
 	/**
 	 * Returns the mount point path for a temporary mount or the given id
 	 *
-	 * @static
-	 * @param int $uid
+	 * @param integer $uid
 	 * @return string
 	 */
 	public static function getMountPointPath($uid = -1) {
@@ -274,7 +273,7 @@ final class t3lib_tree_pagetree_Commands {
 	/**
 	 * Returns a node record from a given id
 	 *
-	 * @param int $nodeId
+	 * @param integer $nodeId
 	 * @param boolean $unsetMovePointers
 	 * @return array
 	 */
@@ -286,7 +285,6 @@ final class t3lib_tree_pagetree_Commands {
 	/**
 	 * Returns the first configured domain name for a page
 	 *
-	 * @static
 	 * @param integer $uid
 	 * @return string
 	 */
@@ -312,7 +310,7 @@ final class t3lib_tree_pagetree_Commands {
 	 * Creates a node with the given record information's
 	 *
 	 * @param array $record
-	 * @param int $mountPoint
+	 * @param integer $mountPoint
 	 * @return t3lib_tree_pagetree_Node
 	 */
 	public static function getNewNode($record, $mountPoint = 0) {

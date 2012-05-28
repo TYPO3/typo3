@@ -118,7 +118,7 @@ class t3lib_tree_pagetree_extdirect_Commands {
 	 * Restore the page
 	 *
 	 * @param stdClass $nodeData
-	 * @param int $destination
+	 * @param integer $destination
 	 * @return array
 	 */
 	public function restoreNode($nodeData, $destination) {
@@ -192,7 +192,7 @@ class t3lib_tree_pagetree_extdirect_Commands {
 	 * Moves the source node directly as the first child of the destination node
 	 *
 	 * @param stdClass $nodeData
-	 * @param int $destination
+	 * @param integer $destination
 	 * @return array
 	 */
 	public function moveNodeToFirstChildOfDestination($nodeData, $destination) {
@@ -218,7 +218,7 @@ class t3lib_tree_pagetree_extdirect_Commands {
 	 * Moves the source node directly after the destination node
 	 *
 	 * @param stdClass $nodeData
-	 * @param int $destination
+	 * @param integer $destination
 	 * @return void
 	 */
 	public function moveNodeAfterDestination($nodeData, $destination) {
@@ -245,7 +245,7 @@ class t3lib_tree_pagetree_extdirect_Commands {
 	 * returns the created node.
 	 *
 	 * @param stdClass $nodeData
-	 * @param int $destination
+	 * @param integer $destination
 	 * @return array
 	 */
 	public function copyNodeToFirstChildOfDestination($nodeData, $destination) {
@@ -275,7 +275,7 @@ class t3lib_tree_pagetree_extdirect_Commands {
 	 * created node.
 	 *
 	 * @param stdClass $nodeData
-	 * @param int $destination
+	 * @param integer $destination
 	 * @return array
 	 */
 	public function copyNodeAfterDestination($nodeData, $destination) {
@@ -304,7 +304,7 @@ class t3lib_tree_pagetree_extdirect_Commands {
 	 * Inserts a new node as the first child node of the destination node and returns the created node.
 	 *
 	 * @param stdClass $parentNodeData
-	 * @param int $pageType
+	 * @param integer $pageType
 	 * @return array
 	 */
 	public function insertNodeToFirstChildOfDestination($parentNodeData, $pageType) {
@@ -328,8 +328,8 @@ class t3lib_tree_pagetree_extdirect_Commands {
 	 * Inserts a new node directly after the destination node and returns the created node.
 	 *
 	 * @param stdClass $parentNodeData
-	 * @param int $destination
-	 * @param int $pageType
+	 * @param integer $destination
+	 * @param integer $pageType
 	 * @return array
 	 */
 	public function insertNodeAfterDestination($parentNodeData, $destination, $pageType) {
@@ -372,7 +372,7 @@ class t3lib_tree_pagetree_extdirect_Commands {
 	 *
 	 * @static
 	 * @param string $stateId
-	 * @param int $nodeId
+	 * @param integer $nodeId
 	 * @return array
 	 */
 	public static function addRootlineOfNodeToStateHash($stateId, $nodeId) {

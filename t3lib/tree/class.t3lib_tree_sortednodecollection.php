@@ -61,9 +61,9 @@ class t3lib_tree_SortedNodeCollection extends t3lib_tree_NodeCollection {
 	 * Binary search that returns the offset of a given node
 	 *
 	 * @param t3lib_tree_Node $node
-	 * @param int $start
-	 * @param int $end
-	 * @return int
+	 * @param integer $start
+	 * @param integer $end
+	 * @return integer
 	 */
 	protected function binarySearch(t3lib_tree_Node $node, $start, $end) {
 		if ((!$start && ($end - $start) >= 2) || ($end - $start) > 2) {

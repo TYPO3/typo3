@@ -37,7 +37,6 @@ class t3lib_tree_Tca_DataProviderFactory {
 	/**
 	 * Gets the data provider, depending on TCA configuration
 	 *
-	 * @static
 	 * @param array $tcaConfiguration
 	 * @return t3lib_tree_Tca_DatabaseTreeDataProvider
 	 * @throws InvalidArgumentException
@@ -52,9 +51,7 @@ class t3lib_tree_Tca_DataProviderFactory {
 		if ($tcaConfiguration['internal_type'] == 'db') {
 			$unselectableUids = array();
 
-			/**
-			 * @var $dataProvider t3lib_tree_Tca_DatabaseTreeDataProvider
-			 */
+			/** @var $dataProvider t3lib_tree_Tca_DatabaseTreeDataProvider */
 			$dataProvider = t3lib_div::makeInstance('t3lib_tree_Tca_DatabaseTreeDataProvider');
 
 			if (isset($tcaConfiguration['foreign_table'])) {
@@ -123,7 +120,7 @@ class t3lib_tree_Tca_DataProviderFactory {
 			}
 
 		} elseif ($tcaConfiguration['internal_type'] == 'file') {
-			// Not implemented yet
+				// TODO Not implemented yet
 			throw new InvalidArgumentException(
 				'TCA Tree configuration is invalid: tree for "internal_type=file" not implemented yet',
 				1288215891

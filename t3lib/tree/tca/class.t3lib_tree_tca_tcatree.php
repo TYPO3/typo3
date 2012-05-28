@@ -28,11 +28,10 @@
 /**
  * Class for tca tree
  *
- * @author	Steffen Ritter <info@steffen-ritter.net>
+ * @author Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
  * @subpackage t3lib_tree
  */
-
 class t3lib_tree_Tca_TcaTree extends t3lib_tree_AbstractTree {
 
 	/**

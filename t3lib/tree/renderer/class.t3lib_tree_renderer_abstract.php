@@ -37,7 +37,7 @@ abstract class t3lib_tree_Renderer_Abstract {
 	 * Renders a node recursive or just a single instance
 	 *
 	 * @param t3lib_tree_RepresentationNode $node
-	 * @param bool $recursive
+	 * @param boolean $recursive
 	 * @return mixed
 	 */
 	abstract public function renderNode(t3lib_tree_RepresentationNode $node, $recursive = TRUE);
@@ -46,7 +46,7 @@ abstract class t3lib_tree_Renderer_Abstract {
 	 * Renders a node collection recursive or just a single instance
 	 *
 	 * @param t3lib_tree_NodeCollection $node
-	 * @param bool $recursive
+	 * @param boolean $recursive
 	 * @return mixed
 	 */
 	abstract public function renderNodeCollection(t3lib_tree_NodeCollection $collection, $recursive = TRUE);
@@ -55,7 +55,7 @@ abstract class t3lib_tree_Renderer_Abstract {
 	 * Renders an tree recursive or just a single instance
 	 *
 	 * @param t3lib_tree_AbstractTree $node
-	 * @param bool $recursive
+	 * @param boolean $recursive
 	 * @return mixed
 	 */
 	abstract public function renderTree(t3lib_tree_AbstractTree $tree, $recursive = TRUE);
