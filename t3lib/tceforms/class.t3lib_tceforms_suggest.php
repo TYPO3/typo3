@@ -32,16 +32,16 @@
  */
 
 class t3lib_TCEforms_Suggest {
-		// count the number of ajax selectors used
+		// Count the number of ajax selectors used
 	public $suggestCount = 0;
 	public $cssClass = 'typo3-TCEforms-suggest';
-	public $TCEformsObj; // reference to t3lib_tceforms
-
+		// Reference to t3lib_tceforms
+	public $TCEformsObj;
 
 	/**
 	 * Initialize an instance of t3lib_TCEforms_suggest
 	 *
-	 * @param  t3lib_TCEforms  $tceForms  Reference to an TCEforms instance
+	 * @param t3lib_TCEforms $tceForms Reference to an TCEforms instance
 	 * @return void
 	 */
 	public function init(&$tceForms) {
@@ -82,17 +82,17 @@ class t3lib_TCEforms_Suggest {
 
 		</div>';
 
-			// get minimumCharacters from TCA
+			// Get minimumCharacters from TCA
 		if (isset($config['fieldConf']['config']['wizards']['suggest']['default']['minimumCharacters'])) {
 			$minChars = intval($config['fieldConf']['config']['wizards']['suggest']['default']['minimumCharacters']);
 		}
-			// overwrite it with minimumCharacters from TSConfig (TCEFORM) if given
+			// Overwrite it with minimumCharacters from TSConfig (TCEFORM) if given
 		if (isset($config['fieldTSConfig']['suggest.']['default.']['minimumCharacters'])) {
 			$minChars = intval($config['fieldTSConfig']['suggest.']['default.']['minimumCharacters']);
 		}
 		$minChars = ($minChars > 0 ? $minChars : 2);
 
-			// replace "-" with ucwords for the JS object name
+			// Replace "-" with ucwords for the JS object name
 		$jsObj = str_replace(' ', '', ucwords(str_replace('-', ' ', t3lib_div::strtolower($suggestId))));
 		$this->TCEformsObj->additionalJS_post[] = '
 			var ' . $jsObj . ' = new TCEForms.Suggest("' . $fieldname . '", "' . $table . '", "' . $field .
@@ -112,7 +112,7 @@ class t3lib_TCEforms_Suggest {
 	 */
 	public function processAjaxRequest($params, &$ajaxObj) {
 
-			// get parameters from $_GET/$_POST
+			// Get parameters from $_GET/$_POST
 		$search = t3lib_div::_GP('value');
 		$table = t3lib_div::_GP('table');
 		$field = t3lib_div::_GP('field');

@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Contains FlexForm manipulation methods as part of the TCEforms
  *
@@ -77,7 +76,8 @@ class t3lib_TCEforms_Flexforms extends t3lib_TCEforms {
 		$metaConf = (!empty($dataStructure['meta']) ? $dataStructure['meta'] : array());
 		$sheetConf = array();
 
-			// Get extension identifier (uses second pointer field if it's value is not empty, "list" or "*", else it must be a plugin and first one will be used)
+			// Get extension identifier (uses second pointer field if it's value is not empty,
+			// "list" or "*", else it must be a plugin and first one will be used)
 		$pointerFields = (!empty($tableConf['config']['ds_pointerField']) ? $tableConf['config']['ds_pointerField'] : 'list_type,CType');
 		$pointerFields = t3lib_div::trimExplode(',', $pointerFields);
 		$flexformIdentifier = (!empty($tableRow[$pointerFields[0]]) ? $tableRow[$pointerFields[0]] : '');
