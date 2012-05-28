@@ -53,13 +53,13 @@ class t3lib_TCEforms_Tree {
 	/**
 	 * renders the tree as replacement for the selector
 	 *
-	 * @param string The table name of the record
-	 * @param string The field name which this element is supposed to edit
-	 * @param array The record data array where the value(s) for the field can be found
-	 * @param array An array with additional configuration options.
-	 * @param array (Redundant) content of $PA['fieldConf']['config'] (for convenience)
-	 * @param array Items available for selection
-	 * @param string Label for no-matching-value
+	 * @param string $table The table name of the record
+	 * @param string $field The field name which this element is supposed to edit
+	 * @param array $row The record data array where the value(s) for the field can be found
+	 * @param array $PA An array with additional configuration options.
+	 * @param array $config (Redundant) content of $PA['fieldConf']['config'] (for convenience)
+	 * @param array $possibleSelectboxItems Items available for selection
+	 * @param string $noMatchLabel Label for no-matching-value
 	 * @return string The HTML code for the TCEform field
 	 */
 	public function renderField($table, $field, $row, &$PA, $config, $possibleSelectboxItems, $noMatchLabel) {
