@@ -63,10 +63,10 @@ final class t3lib_utility_Array {
 	 *
 	 * See the unit tests for more examples and expected behaviour
 	 *
-	 * @static
 	 * @param mixed $needle The value to search for
 	 * @param array $haystack The array in which to search
 	 * @return array $haystack array reduced matching $needle values
+	 * @static
 	 */
 	public static function filterByValueRecursive($needle = '', array $haystack = array()) {
 		$resultArray = array();

@@ -28,15 +28,15 @@
 /**
  * Class to handle and determine browser specific information.
  *
- * @author	Oliver Hader <oliver@typo3.org>
+ * @author Oliver Hader <oliver@typo3.org>
  */
 final class t3lib_utility_Client {
 
 	/**
 	 * Generates an array with abstracted browser information
 	 *
-	 * @param	string		$userAgent: The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
-	 * @return	array		Contains keys "browser", "version", "system"
+	 * @param string $userAgent The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
+	 * @return array Contains keys "browser", "version", "system"
 	 */
 	public static function getBrowserInfo($userAgent) {
 			// Hook: $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getBrowserInfo']:
@@ -66,7 +66,6 @@ final class t3lib_utility_Client {
 
 			// Analyze the userAgent string
 			// Declare known browsers to look for
-
 		$known = array('msie', 'firefox', 'webkit', 'opera', 'netscape', 'konqueror',
 					'gecko', 'chrome', 'safari', 'seamonkey', 'navigator', 'mosaic',
 					'lynx', 'amaya', 'omniweb', 'avant', 'camino', 'flock', 'aol');
@@ -86,13 +85,13 @@ final class t3lib_utility_Client {
 			$lastIndex = count($matches['browser']) - 1;
 			$browserInfo['browser'] = $matches['browser'][$lastIndex];
 			$browserInfo['version'] = $browserInfo['browser'] === 'msie' ? $matches['version'][0] : $matches['version'][$lastIndex];
-				//But return all parsed browsers / version in an extra array
+				// But return all parsed browsers / version in an extra array
 			for ($i = 0; $i <= $lastIndex; $i++) {
 				if (!isset($browserInfo['all'][$matches['browser'][$i]])) {
 					$browserInfo['all'][$matches['browser'][$i]] = $matches['version'][$i];
 				}
 			}
-				//Replace gecko build date with version given by rv
+				// Replace gecko build date with version given by rv
 			if (isset($browserInfo['all']['gecko'])) {
 				preg_match_all('/rv:([0-9\.]*)/', strtolower($userAgent), $version);
 				if ($version[1][0]) {
@@ -103,7 +102,7 @@ final class t3lib_utility_Client {
 
 		$browserInfo['all_systems'] = array();
 		if (strstr($userAgent, 'Win')) {
-				// windows
+				// Windows
 			if (strstr($userAgent, 'Windows NT 6.1')) {
 				$browserInfo['all_systems'][] = 'win7';
 				$browserInfo['all_systems'][] = 'winNT';
@@ -132,7 +131,7 @@ final class t3lib_utility_Client {
 			} else {
 				$browserInfo['all_systems'][] = 'mac';
 			}
-				// unixes
+			// Unixes
 		} elseif (strstr($userAgent, 'Android')) {
 			$browserInfo['all_systems'][] = 'android';
 			$browserInfo['all_systems'][] = 'linux';
@@ -158,8 +157,8 @@ final class t3lib_utility_Client {
 	 * Returns the version of a browser; Basically getting doubleval() of the input string,
 	 * stripping of any non-numeric values in the beginning of the string first.
 	 *
-	 * @param	string		$version: A string with version number, eg. "/7.32 blablabla"
-	 * @return	double		Returns double value, eg. "7.32"
+	 * @param string $version A string with version number, eg. "/7.32 blablabla"
+	 * @return double Returns double value, eg. "7.32"
 	 */
 	public static function getVersion($version) {
 		return doubleval(preg_replace('/^[^0-9]*/', '', $version));
@@ -168,8 +167,8 @@ final class t3lib_utility_Client {
 	/**
 	 * Gets a code for a browsing device based on the input useragent string.
 	 *
-	 * @param	string		$userAgent: The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
-	 * @return	string		Code for the specific device type
+	 * @param string $userAgent The useragent string, t3lib_div::getIndpEnv('HTTP_USER_AGENT')
+	 * @return string Code for the specific device type
 	 */
 	public static function getDeviceType($userAgent) {
 			// Hook: $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/div/class.t3lib_utility_client.php']['getDeviceType']:

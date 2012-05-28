@@ -31,24 +31,26 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-
 final class t3lib_utility_Math {
 
 	/**
 	 * Forces the integer $theInt into the boundaries of $min and $max. If the $theInt is FALSE then the $defaultValue is applied.
 	 *
-	 * @param $theInt integer Input value
-	 * @param $min integer Lower limit
-	 * @param $max integer Higher limit
-	 * @param $defaultValue integer Default value if input is FALSE.
+	 * @param integer $theInt Input value
+	 * @param integer $min Lower limit
+	 * @param integer $max Higher limit
+	 * @param integer $defaultValue Default value if input is FALSE.
 	 * @return integer The input value forced into the boundaries of $min and $max
 	 */
 	public static function forceIntegerInRange($theInt, $min, $max = 2000000000, $defaultValue = 0) {
 			// Returns $theInt as an integer in the integerspace from $min to $max
 		$theInt = intval($theInt);
+			// If the input value is zero after being converted to integer,
+			// defaultValue may set another default value for it.
 		if ($defaultValue && !$theInt) {
 			$theInt = $defaultValue;
-		} // If the input value is zero after being converted to integer, defaultValue may set another default value for it.
+		}
+
 		if ($theInt < $min) {
 			$theInt = $min;
 		}
@@ -61,7 +63,7 @@ final class t3lib_utility_Math {
 	/**
 	 * Returns $theInt if it is greater than zero, otherwise returns zero.
 	 *
-	 * @param $theInt integer Integer string to process
+	 * @param integer $theInt Integer string to process
 	 * @return integer
 	 */
 	public static function convertToPositiveInteger($theInt) {
@@ -78,7 +80,7 @@ final class t3lib_utility_Math {
 	 * Note: Integer casting from objects or arrays is considered undefined and thus will return false.
 	 * @see http://php.net/manual/en/language.types.integer.php#language.types.integer.casting.from-other
 	 *
-	 * @param $var mixed Any input variable to test
+	 * @param mixed $var Any input variable to test
 	 * @return boolean Returns TRUE if string is an integer
 	 */
 	public static function canBeInterpretedAsInteger($var) {
@@ -91,16 +93,18 @@ final class t3lib_utility_Math {
 	/**
 	 * Calculates the input by +,-,*,/,%,^ with priority to + and -
 	 *
-	 * @param $string string Input string, eg "123 + 456 / 789 - 4"
+	 * @param string $string Input string, eg "123 + 456 / 789 - 4"
 	 * @return integer Calculated value. Or error string.
 	 * @see t3lib_utility_Math::calculateWithParentheses()
 	 */
 	public static function calculateWithPriorityToAdditionAndSubtraction($string) {
-		$string = preg_replace('/[[:space:]]*/', '', $string); // removing all whitespace
-		$string = '+' . $string; // Ensuring an operator for the first entrance
+			// Removing all whitespace
+		$string = preg_replace('/[[:space:]]*/', '', $string);
+			// Ensuring an operator for the first entrance
+		$string = '+' . $string;
 		$qm = '\*\/\+-^%';
 		$regex = '([' . $qm . '])([' . $qm . ']?[0-9\.]*)';
-			// split the expression here:
+			// Split the expression here:
 		$reg = array();
 		preg_match_all('/' . $regex . '/', $string, $reg);
 
@@ -109,7 +113,8 @@ final class t3lib_utility_Math {
 		$Msign = '+';
 		$err = '';
 		$buffer = doubleval(current($reg[2]));
-		next($reg[2]); // Advance pointer
+			// Advance pointer
+		next($reg[2]);
 
 		while (list($k, $v) = each($reg[2])) {
 			$v = doubleval($v);
@@ -148,7 +153,7 @@ final class t3lib_utility_Math {
 	/**
 	 * Calculates the input with parenthesis levels
 	 *
-	 * @param $string string Input string, eg "(123 + 456) / 789 - 4"
+	 * @param string $string Input string, eg "(123 + 456) / 789 - 4"
 	 * @return integer Calculated value. Or error string.
 	 * @see calculateWithPriorityToAdditionAndSubtraction(), tslib_cObj::stdWrap()
 	 */

@@ -28,19 +28,18 @@
 /**
  * Class to handle system commands.
  *
- * @author	Steffen Kamper <steffen@typo3.org>
+ * @author Steffen Kamper <steffen@typo3.org>
  */
 final class t3lib_utility_Command {
-
 
 	/**
 	 * Wrapper function for php exec function
 	 * Needs to be central to have better control and possible fix for issues
 	 *
 	 * @static
-	 * @param  string  $command
-	 * @param  NULL|array $output
-	 * @param  integer $returnValue
+	 * @param string $command
+	 * @param NULL|array $output
+	 * @param integer $returnValue
 	 * @return NULL|array
 	 */
 	public static function exec($command, &$output = NULL, &$returnValue = 0) {
@@ -51,10 +50,10 @@ final class t3lib_utility_Command {
 	/**
 	 * Compile the command for running ImageMagick/GraphicsMagick.
 	 *
-	 * @param	string		Command to be run: identify, convert or combine/composite
-	 * @param	string		The parameters string
-	 * @param	string		Override the default path (e.g. used by the install tool)
-	 * @return	string		Compiled command that deals with IM6 & GraphicsMagick
+	 * @param string $command Command to be run: identify, convert or combine/composite
+	 * @param string $parameters The parameters string
+	 * @param string $path Override the default path (e.g. used by the install tool)
+	 * @return string Compiled command that deals with IM6 & GraphicsMagick
 	 */
 	public static function imageMagickCommand($command, $parameters, $path = '') {
 		$gfxConf = $GLOBALS['TYPO3_CONF_VARS']['GFX'];
@@ -69,7 +68,8 @@ final class t3lib_utility_Command {
 		$im_version = strtolower($gfxConf['im_version_5']);
 		$combineScript = $gfxConf['im_combine_filename'] ? trim($gfxConf['im_combine_filename']) : 'combine';
 
-		if ($command === 'combine') { // This is only used internally, has no effect outside
+			// This is only used internally, has no effect outside
+		if ($command === 'combine') {
 			$command = 'composite';
 		}
 
@@ -98,10 +98,13 @@ final class t3lib_utility_Command {
 
 		$cmdLine = $path . ' ' . $parameters;
 
-		if ($command == 'composite' && $switchCompositeParameters) { // Because of some weird incompatibilities between ImageMagick 4 and 6 (plus GraphicsMagick), it is needed to change the parameters order under some preconditions
+			// Because of some weird incompatibilities between ImageMagick 4 and 6 (plus GraphicsMagick),
+			// it is needed to change the parameters order under some preconditions
+		if ($command == 'composite' && $switchCompositeParameters) {
 			$paramsArr = t3lib_div::unQuoteFilenames($parameters);
 
-			if (count($paramsArr) > 5) { // The mask image has been specified => swap the parameters
+				// The mask image has been specified => swap the parameters
+			if (count($paramsArr) > 5) {
 				$tmp = $paramsArr[count($paramsArr) - 3];
 				$paramsArr[count($paramsArr) - 3] = $paramsArr[count($paramsArr) - 4];
 				$paramsArr[count($paramsArr) - 4] = $tmp;
@@ -112,7 +115,6 @@ final class t3lib_utility_Command {
 
 		return $cmdLine;
 	}
-
 }
 
 ?>
