@@ -37,7 +37,7 @@ final class t3lib_utility_VersionNumber {
 	/**
 	 * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
 	 *
-	 * @param $versionNumber string Version number on format x.x.x
+	 * @param string $versionNumber Version number on format x.x.x
 	 * @return integer Integer version of version number (where each part can count to 999)
 	 */
 	public static function convertVersionNumberToInteger($versionNumber) {
@@ -48,7 +48,7 @@ final class t3lib_utility_VersionNumber {
 	/**
 	 * Returns the three part version number (string) from an integer, eg 4012003 -> '4.12.3'
 	 *
-	 * @param $versionInteger integer Integer representation of version number
+	 * @param integer $versionInteger Integer representation of version number
 	 * @return string Version number as format x.x.x
 	 * @throws \InvalidArgumentException if $versionInteger is not an integer
 	 */

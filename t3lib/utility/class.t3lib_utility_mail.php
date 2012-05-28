@@ -29,7 +29,7 @@
  * Class to handle mail specific functionality
  *
  *
- * @author	 Tolleiv Nietsch <nietsch@aoemedia.de>
+ * @author Tolleiv Nietsch <nietsch@aoemedia.de>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -40,14 +40,14 @@ final class t3lib_utility_Mail {
 	 * The hook can be used by adding function to the configuration array:
 	 * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery']
 	 *
-	 * @param	string		Email address to send to.
-	 * @param	string		Subject line, non-encoded. (see PHP function mail())
-	 * @param	string		Message content, non-encoded. (see PHP function mail())
-	 * @param	string		 Additional headers for the mail (see PHP function mail())
-	 * @param	string		Additional flags for the sending mail tool (see PHP function mail())
-	 * @return	boolean		Indicates whether the mail has been sent or not
-	 * @see		PHP function mail() []
-	 * @link	http://www.php.net/manual/en/function.mail.php
+	 * @param string $to Email address to send to.
+	 * @param string $subject Subject line, non-encoded. (see PHP function mail())
+	 * @param string $messageBody Message content, non-encoded. (see PHP function mail())
+	 * @param string $additionalHeaders Additional headers for the mail (see PHP function mail())
+	 * @param string $additionalParameters Additional flags for the sending mail tool (see PHP function mail())
+	 * @return boolean Indicates whether the mail has been sent or not
+	 * @see PHP function mail() []
+	 * @link http://www.php.net/manual/en/function.mail.php
 	 */
 	public static function mail($to, $subject, $messageBody, $additionalHeaders = NULL, $additionalParameters = NULL) {
 		$success = TRUE;
@@ -154,7 +154,7 @@ final class t3lib_utility_Mail {
 	 *
 	 * Ready to be passed to $mail->setFrom() (t3lib_mail)
 	 *
-	 * @return	string	An email address
+	 * @return string An email address
 	 */
 	public static function getSystemFromAddress() {
 			// default, first check the localconf setting
@@ -177,7 +177,7 @@ final class t3lib_utility_Mail {
 				if (!t3lib_div::isFirstPartOfStr($tempUrl, 'http')) {
 						// shouldn't be the case anyways, but you never know
 						// ... there're crazy people out there
-					$tempUrl = 'http://' .$tempUrl;
+					$tempUrl = 'http://' . $tempUrl;
 				}
 				$host = parse_url($tempUrl, PHP_URL_HOST);
 			}
@@ -204,7 +204,7 @@ final class t3lib_utility_Mail {
 	 * @param string $str The string to break up
 	 * @param string $newlineChar The string to implode the broken lines with (default/typically \n)
 	 * @param integer $lineWidth The line width
-	 * @return string reformated text
+	 * @return string Reformated text
 	 */
 	public static function breakLinesForEmail($str, $newlineChar = LF, $lineWidth = 76) {
 		$lines = array();

@@ -29,7 +29,7 @@
  * Class to handle debug
  *
  *
- * @author	 Steffen Kamper <steffen@typo3.org>
+ * @author Steffen Kamper <steffen@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -54,6 +54,14 @@ final class t3lib_utility_Debug {
 	';
 
 
+	/**
+	 * Debug
+	 *
+	 * @param string $var
+	 * @param string $header
+	 * @param string $group
+	 * @return void
+	 */
 	public static function debug($var = '', $header = '', $group = 'Debug') {
 			// buffer the output of debug if no buffering started before
 		if (ob_get_level() == 0) {
@@ -216,7 +224,7 @@ final class t3lib_utility_Debug {
 	/**
 	 * Displays the "path" of the function call stack in a string, using debug_backtrace
 	 *
-	 * @return	string
+	 * @return string
 	 */
 	public static function debugTrail() {
 		$trail = debug_backtrace();
@@ -239,10 +247,10 @@ final class t3lib_utility_Debug {
 	/**
 	 * Displays an array as rows in a table. Useful to debug output like an array of database records.
 	 *
-	 * @param	mixed		Array of arrays with similar keys
-	 * @param	string		Table header
-	 * @param	boolean		If TRUE, will return content instead of echo'ing out.
-	 * @return	void		Outputs to browser.
+	 * @param mixed $rows Array of arrays with similar keys
+	 * @param string $header Table header
+	 * @param boolean $returnHTML If TRUE, will return content instead of echo'ing out.
+	 * @return void Outputs to browser.
 	 */
 	public static function debugRows($rows, $header = '', $returnHTML = FALSE) {
 		if (is_array($rows)) {
@@ -283,13 +291,10 @@ final class t3lib_utility_Debug {
 					</table>';
 				if ($returnHTML) {
 					return $table;
-				}
-				else
-				{
+				} else {
 					echo $table;
 				}
-			} else
-			{
+			} else {
 				debug('Empty array of rows', $header);
 			}
 		} else {
@@ -300,9 +305,9 @@ final class t3lib_utility_Debug {
 	/**
 	 * Returns a string with a list of ascii-values for the first $characters characters in $string
 	 *
-	 * @param	string		String to show ASCII value for
-	 * @param	integer		Number of characters to show
-	 * @return	string		The string with ASCII values in separated by a space char.
+	 * @param string $string String to show ASCII value for
+	 * @param integer $characters Number of characters to show
+	 * @return string The string with ASCII values in separated by a space char.
 	 */
 	public static function ordinalValue($string, $characters = 100) {
 		if (strlen($string) < $characters) {
@@ -319,8 +324,8 @@ final class t3lib_utility_Debug {
 	 * use t3lib_div::print_array() in order to print an array
 	 * Returns FALSE if $array_in is not an array
 	 *
-	 * @param	mixed		Array to view
-	 * @return	string		HTML output
+	 * @param mixed $array_in Array to view
+	 * @return string HTML output
 	 */
 	public static function viewArray($array_in) {
 		if (is_array($array_in)) {
@@ -367,16 +372,17 @@ final class t3lib_utility_Debug {
 					nl2br(htmlspecialchars((string) $array_in)) .
 					'<br /></font></td>
 				</tr>
-			</table>'; // Output it as a string.
+			</table>';
 		}
+			// Output it as a string.
 		return $result;
 	}
 
 	/**
 	 * Prints an array
 	 *
-	 * @param	mixed		Array to print visually (in a table).
-	 * @return	void
+	 * @param mixed $array_in Array to print visually (in a table).
+	 * @return void
 	 * @see viewArray()
 	 */
 	public static function printArray($array_in) {
