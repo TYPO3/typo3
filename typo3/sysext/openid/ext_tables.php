@@ -21,7 +21,7 @@ $tempColumns = array (
 // Add new columns to be_users table
 t3lib_div::loadTCA('be_users');
 t3lib_extMgm::addTCAcolumns('be_users', $tempColumns, FALSE);
-t3lib_extMgm::addToAllTCAtypes('be_users','tx_openid_openid;;;;1-1-1', '', 'after:username');
+t3lib_extMgm::addToAllTCAtypes('be_users', 'tx_openid_openid;;;;1-1-1', '', 'after:username');
 t3lib_extMgm::addLLrefForTCAdescr('be_users', 'EXT:' . $_EXTKEY . '/locallang_csh.xml');
 
 // Prepare new columns for fe_users table
@@ -43,5 +43,5 @@ $GLOBALS['TYPO3_USER_SETTINGS']['columns']['tx_openid_openid'] = array(
 	'access' => 'tx_openid_mod_setup'
 );
 t3lib_extMgm::addFieldsToUserSettings('tx_openid_openid', 'after:password2');
-t3lib_extMgm::addLLrefForTCAdescr('_MOD_user_setup','EXT:openid/locallang_csh_mod.xml');
+t3lib_extMgm::addLLrefForTCAdescr('_MOD_user_setup', 'EXT:openid/locallang_csh_mod.xml');
 ?>
