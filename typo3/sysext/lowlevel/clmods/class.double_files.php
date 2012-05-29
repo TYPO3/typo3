@@ -85,12 +85,12 @@ This will check the system for double files relations.';
 		$resultArray = array(
 			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
-				'multipleReferencesList_count' => array('Number of multi-reference files','(See below)',0),
-				'singleReferencesList_count' => array('Number of files correctly referenced','The amount of correct 1-1 references',0),
-				'multipleReferencesList' => array('Entries with files having multiple references','These are serious problems that should be resolved ASAP to prevent data loss! '.$this->label_infoString,3),
-				'dirname_registry' => array('Registry of directories in which files are found.','Registry includes which table/field pairs store files in them plus how many files their store.',0),
-				'missingFiles' => array('Tracking missing files','(Extra feature, not related to tracking of double references. Further, the list may include more files than found in the missing_files()-test because this list includes missing files from deleted records.)',0),
-				'warnings' => array('Warnings picked up','',2)
+				'multipleReferencesList_count' => array('Number of multi-reference files', '(See below)', 0),
+				'singleReferencesList_count' => array('Number of files correctly referenced', 'The amount of correct 1-1 references', 0),
+				'multipleReferencesList' => array('Entries with files having multiple references', 'These are serious problems that should be resolved ASAP to prevent data loss! '.$this->label_infoString, 3),
+				'dirname_registry' => array('Registry of directories in which files are found.', 'Registry includes which table/field pairs store files in them plus how many files their store.', 0),
+				'missingFiles' => array('Tracking missing files', '(Extra feature, not related to tracking of double references. Further, the list may include more files than found in the missing_files()-test because this list includes missing files from deleted records.)', 0),
+				'warnings' => array('Warnings picked up', '', 2)
 			),
 			'multipleReferencesList_count' => array('count' => 0),
 			'singleReferencesList_count' => array('count' => 0),
@@ -136,7 +136,7 @@ This will check the system for double files relations.';
 					$resultArray['multipleReferencesList'][$rec['ref_string']][$rec['hash']] = $infoString;
 					ksort($resultArray['multipleReferencesList'][$rec['ref_string']]);
 				} else {
-					$tempCount[$rec['ref_string']] = array($infoString,$rec['hash']);
+					$tempCount[$rec['ref_string']] = array($infoString, $rec['hash']);
 				}
 			}
 		}
@@ -152,8 +152,8 @@ This will check the system for double files relations.';
 		ksort($resultArray['dirname_registry']);
 		foreach($resultArray['dirname_registry'] as $dir => $temp) {
 			ksort($resultArray['dirname_registry'][$dir]);
-			if (!t3lib_div::isFirstPartOfStr($dir,'uploads/')) {
-				$resultArray['warnings'][t3lib_div::shortmd5($dir)] = 'Directory "'.$dir.'" was outside uploads/ which is unusual practice in TYPO3 although not forbidden. Directory used by the following table:field pairs: '.implode(',',array_keys($temp));
+			if (!t3lib_div::isFirstPartOfStr($dir, 'uploads/')) {
+				$resultArray['warnings'][t3lib_div::shortmd5($dir)] = 'Directory "'.$dir.'" was outside uploads/ which is unusual practice in TYPO3 although not forbidden. Directory used by the following table:field pairs: '.implode(',', array_keys($temp));
 			}
 		}
 
@@ -180,17 +180,17 @@ This will check the system for double files relations.';
 							// Create unique name for file:
 						$fileFunc = t3lib_div::makeInstance('t3lib_basicFileFunctions');
 						$newName = $fileFunc->getUniqueName(basename($key), dirname($absFileName));
-						echo '	Copying '.$key.' to '.substr($newName,strlen(PATH_site)).' for record "'.$recReference.'": ';
+						echo '	Copying '.$key.' to '.substr($newName, strlen(PATH_site)).' for record "'.$recReference.'": ';
 
 						if ($bypass = $this->cli_noExecutionCheck($recReference)) {
 							echo $bypass;
 						} else {
-							t3lib_div::upload_copy_move($absFileName,$newName);
+							t3lib_div::upload_copy_move($absFileName, $newName);
 							clearstatcache();
 
 							if (@is_file($newName)) {
 								$sysRefObj = t3lib_div::makeInstance('t3lib_refindex');
-								$error = $sysRefObj->setReferenceValue($hash,basename($newName));
+								$error = $sysRefObj->setReferenceValue($hash, basename($newName));
 								if ($error) {
 									echo '	ERROR:	t3lib_refindex::setReferenceValue(): '.$error.LF;
 									exit;

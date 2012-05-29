@@ -38,7 +38,7 @@ require ($BACK_PATH.'init.php');
 require ($BACK_PATH.'template.php');
 $GLOBALS['LANG']->includeLLFile('EXT:lowlevel/config/locallang.xml');
 
-$BE_USER->modAccess($MCONF,1);
+$BE_USER->modAccess($MCONF, 1);
 
 
 
@@ -148,7 +148,7 @@ class SC_mod_tools_config_index {
 						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', TRUE) . '</label>
 						<input type="text" id="search_field" name="search_field" value="' . htmlspecialchars($search_field) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />
 						<input type="submit" name="search" id="search" value="' . $GLOBALS['LANG']->getLL('search', TRUE) . '" />';
-		$this->content .= t3lib_BEfunc::getFuncCheck(0,'SET[regexsearch]',$this->MOD_SETTINGS['regexsearch'],'','','id="checkRegexsearch"') .
+		$this->content .= t3lib_BEfunc::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"') .
 						'<label for="checkRegexsearch">' . $GLOBALS['LANG']->getLL('useRegExp', TRUE) . '</label>';
 
 		$this->content.= t3lib_BEfunc::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"') .
@@ -225,7 +225,7 @@ class SC_mod_tools_config_index {
 			$update = 1;
 		}
 		if ($update) {
-			$GLOBALS['BE_USER']->pushModuleData($this->MCONF['name'],$this->MOD_SETTINGS);
+			$GLOBALS['BE_USER']->pushModuleData($this->MCONF['name'], $this->MOD_SETTINGS);
 		}
 
 		$arrayBrowser->depthKeys = $this->MOD_SETTINGS['node_'.$this->MOD_SETTINGS['function']];
@@ -355,7 +355,7 @@ class SC_mod_tools_config_index {
 
 			// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','function',$this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
 		}
 		return $buttons;
 	}

@@ -78,14 +78,14 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 		$resultArray = array(
 			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
-				'deleted' => array('Index of deleted records','These are records from the page tree having the deleted-flag set. The --AUTOFIX option will flush them completely!',1),
+				'deleted' => array('Index of deleted records', 'These are records from the page tree having the deleted-flag set. The --AUTOFIX option will flush them completely!', 1),
 			),
 			'deleted' => array(),
 		);
 
-		$startingPoint = $this->cli_isArg('--pid') ? t3lib_utility_Math::forceIntegerInRange($this->cli_argValue('--pid'),0) : 0;
-		$depth = $this->cli_isArg('--depth') ? t3lib_utility_Math::forceIntegerInRange($this->cli_argValue('--depth'),0) : 1000;
-		$this->genTree($startingPoint,$depth,(int)$this->cli_argValue('--echotree'));
+		$startingPoint = $this->cli_isArg('--pid') ? t3lib_utility_Math::forceIntegerInRange($this->cli_argValue('--pid'), 0) : 0;
+		$depth = $this->cli_isArg('--depth') ? t3lib_utility_Math::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
+		$this->genTree($startingPoint, $depth, (int)$this->cli_argValue('--echotree'));
 
 		$resultArray['deleted'] = $this->recStats['deleted'];
 
@@ -127,12 +127,12 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 						// Execute CMD array:
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values = FALSE;
-					$tce->start(array(),array());
-					$tce->deleteRecord($table,$uid, TRUE, TRUE);	// Notice, we are deleting pages with no regard to subpages/subrecords - we do this since they should also be included in the set of deleted pages of course (no un-deleted record can exist under a deleted page...)
+					$tce->start(array(), array());
+					$tce->deleteRecord($table, $uid, TRUE, TRUE);	// Notice, we are deleting pages with no regard to subpages/subrecords - we do this since they should also be included in the set of deleted pages of course (no un-deleted record can exist under a deleted page...)
 
 						// Return errors if any:
 					if (count($tce->errorLog)) {
-						echo '	ERROR from "TCEmain":'.LF.'TCEmain:'.implode(LF.'TCEmain:',$tce->errorLog);
+						echo '	ERROR from "TCEmain":'.LF.'TCEmain:'.implode(LF.'TCEmain:', $tce->errorLog);
 					} else echo "DONE";
 				}
 				echo LF;

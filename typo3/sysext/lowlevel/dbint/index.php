@@ -106,8 +106,8 @@ class SC_mod_tools_dbint_index {
 				'defCol' => array('<td class="t3-row-header"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top" class="t3-row-header"><strong>', '</strong></td>')
 			),
 			'defRow' => array (
-				'0' => array('<td valign="top">','</td>'),
-				'1' => array('<td valign="top">','</td>'),
+				'0' => array('<td valign="top">', '</td>'),
+				'1' => array('<td valign="top">', '</td>'),
 				'defCol' => array('<td><img src="' . $this->doc->backPath . 'clear.gif" width="15" height="1" alt="" /></td><td valign="top">', '</td>')
 			)
 		);
@@ -169,7 +169,7 @@ class SC_mod_tools_dbint_index {
 			'sword' => ''
 		);
 			// CLEAN SETTINGS
-		$OLD_MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU,'', $this->MCONF['name'], 'ses');
+		$OLD_MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, '', $this->MCONF['name'], 'ses');
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name'], 'ses');
 
 		if (t3lib_div::_GP('queryConfig')) {
@@ -189,7 +189,7 @@ class SC_mod_tools_dbint_index {
 			}
 		}
 		if ($setLimitToStart) {
-			$currentLimit = explode(',',$this->MOD_SETTINGS['queryLimit']);
+			$currentLimit = explode(',', $this->MOD_SETTINGS['queryLimit']);
 			if ($currentLimit[1]) {
 				$this->MOD_SETTINGS['queryLimit']='0,'.$currentLimit[1];
 			} else {
@@ -208,7 +208,7 @@ class SC_mod_tools_dbint_index {
 
 			// Content creation
 		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopMenu']) {
-			$this->menu = t3lib_BEfunc::getFuncMenu(0,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
+			$this->menu = t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 		}
 
 		switch($this->MOD_SETTINGS['function']) {
@@ -272,7 +272,7 @@ class SC_mod_tools_dbint_index {
 
 			// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','function,search,search_query_makeQuery',$this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function,search,search_query_makeQuery', $this->MCONF['name']);
 		}
 		return $buttons;
 	}
@@ -398,7 +398,7 @@ class SC_mod_tools_dbint_index {
 			$menu2 .= t3lib_BEfunc::getFuncCheck($GLOBALS['SOBE']->id, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'], '', '', 'id="checkShow_deleted"') . '&nbsp;<label for="checkShow_deleted">' . $GLOBALS['LANG']->getLL('showDeleted') . '</label>';
 		}
 
-		$this->content.= $this->doc->section('',$menu2).$this->doc->spacer(10);
+		$this->content.= $this->doc->section('', $menu2).$this->doc->spacer(10);
 
 		switch($this->MOD_SETTINGS['search'])		{
 			case 'query':
@@ -423,7 +423,7 @@ class SC_mod_tools_dbint_index {
 		$admin = t3lib_div::makeInstance('t3lib_admin');
 		$admin->genTree_makeHTML = 0;
 		$admin->backPath = $GLOBALS['BACK_PATH'];
-		$admin->genTree(0,'');
+		$admin->genTree(0, '');
 
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('records'));
 
@@ -470,7 +470,7 @@ class SC_mod_tools_dbint_index {
 		if ($admin->fixLostRecord(t3lib_div::_GET('fixLostRecords_table'), t3lib_div::_GET('fixLostRecords_uid'))) {
 			$admin = t3lib_div::makeInstance('t3lib_admin');
 			$admin->backPath = $BACK_PATH;
-			$admin->genTree(0,'');
+			$admin->genTree(0, '');
 			$id_list = '-1,0,' . implode(',', array_keys($admin->page_idArray));
 			$id_list = rtrim($id_list, ',');
 			$admin->lostRecords($id_list);
@@ -513,7 +513,7 @@ class SC_mod_tools_dbint_index {
 				$lr='';
 				if (is_array($admin->lRecords[$t])) {
 					foreach ($admin->lRecords[$t] as $data) {
-						if (!t3lib_div::inList($admin->lostPagesList,$data[pid])) {
+						if (!t3lib_div::inList($admin->lostPagesList, $data[pid])) {
 							$lr.= '<nobr><strong><a href="index.php?SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data[uid] . '"><img src="' . $BACK_PATH . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="' . $GLOBALS['LANG']->getLL('fixLostRecord') . '"></a>uid:' . $data[uid] . ', pid:' . $data[pid] . ', ' . t3lib_div::fixed_lgd_cs(strip_tags($data[title]), 20) . '</strong></nobr><br>';
 						} else {
 							$lr.= '<nobr><img src="' . $BACK_PATH . 'clear.gif" width="16" height="1" border="0"><font color="Gray">uid:' . $data[uid] . ', pid:' . $data[pid] . ', ' . t3lib_div::fixed_lgd_cs(strip_tags($data[title]), 20) . '</font></nobr><br>';
@@ -563,7 +563,7 @@ class SC_mod_tools_dbint_index {
 		} else {
 			$code = $GLOBALS['LANG']->getLL('no_files_found');
 		}
-		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('files_many_ref'),$code, FALSE, TRUE);
+		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('files_many_ref'), $code, FALSE, TRUE);
 
 		$code='';
 		if (is_array($fileTest['noFile'])) {
@@ -590,7 +590,7 @@ class SC_mod_tools_dbint_index {
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('findFilename'));
 		$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('pattern'), $pcontent, FALSE, TRUE);
 
-		if (strcmp($pattern,'')) {
+		if (strcmp($pattern, '')) {
 			$dirs = t3lib_div::get_dirs(PATH_site);
 			$lines=array();
 			$depth=10;
@@ -598,8 +598,8 @@ class SC_mod_tools_dbint_index {
 			foreach ($dirs as $key => $value) {
 				$matching_files=array();
 				$info='';
-				if (!t3lib_div::inList('typo3,typo3conf,tslib,media,t3lib',$value)) {
-					$info = $this->findFile(PATH_site.$value.'/',$pattern,$matching_files,$depth);
+				if (!t3lib_div::inList('typo3,typo3conf,tslib,media,t3lib', $value)) {
+					$info = $this->findFile(PATH_site.$value.'/', $pattern,$matching_files, $depth);
 				}
 				if (is_array($info)) {
 					$lines[]='<hr><strong>' . $value . '/</strong> ' . $GLOBALS['LANG']->getLL('beingChecked');

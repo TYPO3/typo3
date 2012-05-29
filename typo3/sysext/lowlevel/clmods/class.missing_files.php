@@ -151,7 +151,7 @@ This will show you missing files in the TYPO3 system and only report back if err
 					echo $bypass;
 				} else {
 					$sysRefObj = t3lib_div::makeInstance('t3lib_refindex');
-					$error = $sysRefObj->setReferenceValue($hash,NULL);
+					$error = $sysRefObj->setReferenceValue($hash, NULL);
 					if ($error) {
 						echo '		t3lib_refindex::setReferenceValue(): '.$error.LF;
 						echo 'missing_files: exit on error'.LF;
