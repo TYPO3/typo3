@@ -25,14 +25,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Contains the dynamic configuration of the fields in the core tables of TYPO3: be_users, be_groups and sys_filemounts
+ * Contains the dynamic configuration of the fields in the core tables
+ * of TYPO3: be_users, be_groups and sys_filemounts
  *
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see tables.php, tables.sql
  */
-
 
 /**
  * Backend users - Those who login into the TYPO3 administration backend
@@ -369,7 +369,8 @@ foreach ($languageItems as $locale => $name) {
 }
 
 /**
- * Backend usergroups - Much permission criterias are based on membership of backend groups.
+ * Backend usergroups - Much permission criterias are based on membership
+ * of backend groups.
  */
 $TCA['be_groups'] = array(
 	'ctrl' => $TCA['be_groups']['ctrl'],
@@ -646,7 +647,6 @@ $TCA['be_groups'] = array(
 		)
 	)
 );
-
 
 /**
  * System filemounts - Defines filepaths on the server which can be mounted for users so they can upload and manage files online by eg. the Filelist module
