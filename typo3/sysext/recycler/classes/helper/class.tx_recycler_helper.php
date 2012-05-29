@@ -51,13 +51,13 @@ class tx_recycler_helper {
 		$hasAccess = 0;
 
 		$calcPRec = $row;
-		t3lib_BEfunc::fixVersioningPid($table,$calcPRec);
+		t3lib_BEfunc::fixVersioningPid($table, $calcPRec);
 		if (is_array($calcPRec)) {
 			if ($table=='pages') {	// If pages:
 				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
 				$hasAccess = $CALC_PERMS & 2 ? 1 : 0;
 			} else {
-				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages',$calcPRec['pid']));	// Fetching pid-record first.
+				$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages', $calcPRec['pid']));	// Fetching pid-record first.
 				$hasAccess = $CALC_PERMS & 16 ? 1 : 0;
 			}
 					// Check internals regarding access:

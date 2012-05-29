@@ -53,7 +53,7 @@ class tx_rtehtmlarea_parse_html {
 
 		$this->modData = $GLOBALS['BE_USER']->getModuleData($GLOBALS['MCONF']['name'], 'ses');
 		if (t3lib_div::_GP('OC_key')) {
-			$parts = explode('|',t3lib_div::_GP('OC_key'));
+			$parts = explode('|', t3lib_div::_GP('OC_key'));
 			$this->modData['openKeys'][$parts[1]] = $parts[0]=='O' ? 1 : 0;
 			$GLOBALS['BE_USER']->pushModuleData($GLOBALS['MCONF']['name'], $this->modData);
 		}
@@ -90,9 +90,9 @@ class tx_rtehtmlarea_parse_html {
 		$editorNo = t3lib_div::_GP('editorNo');
 		$html = t3lib_div::_GP('content');
 
-		$RTEtsConfigParts = explode(':',t3lib_div::_GP('RTEtsConfigParams'));
+		$RTEtsConfigParts = explode(':', t3lib_div::_GP('RTEtsConfigParams'));
 		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
-		$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
+		$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
 
 		$HTMLParser = t3lib_div::makeInstance('t3lib_parsehtml');
 		if (is_array($thisConfig['enableWordClean.'])) {

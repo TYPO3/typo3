@@ -86,9 +86,9 @@ class tx_rtehtmlarea_SC_select_image {
 		if (!$browserRendered) {
 			$GLOBALS['SOBE']->browser = t3lib_div::makeInstance('tx_rtehtmlarea_select_image');
 			$GLOBALS['SOBE']->browser->init();
-			$modData = $GLOBALS['BE_USER']->getModuleData('select_image.php','ses');
+			$modData = $GLOBALS['BE_USER']->getModuleData('select_image.php', 'ses');
 			list($modData, $store) = $GLOBALS['SOBE']->browser->processSessionData($modData);
-			$GLOBALS['BE_USER']->pushModuleData('select_image.php',$modData);
+			$GLOBALS['BE_USER']->pushModuleData('select_image.php', $modData);
 			$this->content = $GLOBALS['SOBE']->browser->main_rte();
 		}
 	}

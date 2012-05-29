@@ -186,7 +186,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$pArr[1] = implode(':', array($this->editorNo, $this->sys_language_content));
 		$pArr[2] = $this->RTEtsConfigParams;
 		if ($this->act == 'dragdrop' || $this->act == 'plain') {
-			$this->allowedFileTypes = explode(',','jpg,jpeg,gif,png');
+			$this->allowedFileTypes = explode(',', 'jpg,jpeg,gif,png');
 		}
 		$pArr[3] = implode(',', $this->allowedFileTypes);
 		$this->bparams = implode('|', $pArr);
@@ -358,7 +358,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 <body>
 <script type="text/javascript">
 /*<![CDATA[*/
-	insertImage('.t3lib_div::quoteJSvalue($url,1).','.$width.','.$height.','.t3lib_div::quoteJSvalue($altText,1).','.t3lib_div::quoteJSvalue($titleText,1).','.t3lib_div::quoteJSvalue($additionalParams, 1).');
+	insertImage('.t3lib_div::quoteJSvalue($url, 1).','.$width.','.$height.','.t3lib_div::quoteJSvalue($altText, 1).','.t3lib_div::quoteJSvalue($titleText, 1).','.t3lib_div::quoteJSvalue($additionalParams, 1).');
 /*]]>*/
 </script>
 </body>
@@ -379,7 +379,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 		$removedProperties = array();
 		if (is_array($this->buttonConfig['properties.'])) {
 			if ($this->buttonConfig['properties.']['removeItems']) {
-				$removedProperties = t3lib_div::trimExplode(',',$this->buttonConfig['properties.']['removeItems'],1);
+				$removedProperties = t3lib_div::trimExplode(',', $this->buttonConfig['properties.']['removeItems'], 1);
 			}
 		}
 			// The following property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
@@ -497,7 +497,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					sz+=\'<tr><td\'+bgColor+\'><label for="iLang">\' + plugin.editor.getPlugin("Language").localize(\'Language-Tooltip\') + \': </label></td><td>\' + languageSelector + \'</td></tr>\';
 				}')
 				.((in_array('clickenlarge', $removedProperties) || in_array('data-htmlarea-clickenlarge', $removedProperties)) ?'':'
-				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">'.$GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom',1).' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';').'
+				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">'.$GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom', 1).' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';').'
 				sz+=\'<tr><td><input type="submit" value="'.$GLOBALS['LANG']->getLL('update').'" onClick="return setImageProperties();"></td></tr>\';
 				sz+=\'</form></table>\';
 				return sz;
@@ -742,7 +742,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 */
 	function main_rte() {
 			// Starting content:
-		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('Insert Image',1));
+		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('Insert Image', 1));
 
 			// Making menu in top:
 		$menuDef = array();
@@ -948,8 +948,8 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 */
 	protected function getRTEConfig() {
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
-		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE',t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
-		return t3lib_BEfunc::RTEsetup($RTEsetup['properties'],$RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
+		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
+		return t3lib_BEfunc::RTEsetup($RTEsetup['properties'], $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
 	}
 
 	/**
@@ -1168,7 +1168,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						'fileIcon' => $icon,
 					);
 					$ATag = "<a href=\"#\" onclick=\"return BrowseLinks.File.insertElement('file_$filesIndex');\">";
-					$ATag_alt = substr($ATag,0,-4).",1);\">";
+					$ATag_alt = substr($ATag, 0, -4).",1);\">";
 					$ATag_e='</a>';
 				}
 
@@ -1196,7 +1196,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 					$lines[]='
 						<tr class="file_list_normal">
 							<td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td>
-							<td nowrap="nowrap">' . ($ATag2 . '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom2.gif','width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
+							<td nowrap="nowrap">' . ($ATag2 . '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
 							<td>&nbsp;</td>
 						</tr>';
 				}
@@ -1211,7 +1211,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			File listing
 		-->
 				<table cellpadding="0" cellspacing="0" id="typo3-filelist">
-					'.implode('',$lines).'
+					'.implode('', $lines).'
 				</table>';
 		}
 			// Return accumulated content for filelisting:

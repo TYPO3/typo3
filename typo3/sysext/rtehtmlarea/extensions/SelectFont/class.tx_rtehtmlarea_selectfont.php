@@ -148,7 +148,7 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlarea_api {
 			foreach ($this->defaultFont[$buttonId] as $name => $value) {
 				if (!t3lib_div::inList($hideItems, strval($index+1))) {
 					if ($this->htmlAreaRTE->is_FE()) {
-						$label = $GLOBALS['TSFE']->getLLL($name,$this->LOCAL_LANG);
+						$label = $GLOBALS['TSFE']->getLLL($name, $this->LOCAL_LANG);
 					} else {
 						$label = $GLOBALS['LANG']->getLL($name);
 						if (!$label) {
@@ -163,9 +163,9 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlarea_api {
 			// Adding configured items
 		if (is_array($this->RTEProperties[($buttonId == 'fontstyle') ? 'fonts.' : 'fontSizes.'])) {
 			foreach ($this->RTEProperties[($buttonId == 'fontstyle') ? 'fonts.' : 'fontSizes.'] as $name => $conf) {
-				$name = substr($name,0,-1);
+				$name = substr($name, 0, -1);
 				if (in_array($name, $addItems)) {
-					$label = $this->htmlAreaRTE->getPageConfigLabel($conf['name'],0);
+					$label = $this->htmlAreaRTE->getPageConfigLabel($conf['name'], 0);
 					$items[$name] = array($label, $this->htmlAreaRTE->cleanList($conf['value']));
 				}
 			}
