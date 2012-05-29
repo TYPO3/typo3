@@ -28,14 +28,13 @@
 	// Make sure Swift's auto-loader is registered
 require_once(PATH_typo3 . 'contrib/swiftmailer/swift_required.php');
 
-
 /**
  * Adapter for Swift_Mailer to be used by TYPO3 extensions.
  *
  * This will use the setting in TYPO3_CONF_VARS to choose the correct transport
  * for it to work out-of-the-box.
  *
- * @author	Ernesto Baschny <ernst@cron-it.de>
+ * @author Ernesto Baschny <ernst@cron-it.de>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -54,7 +53,8 @@ class t3lib_mail_Mailer extends Swift_Mailer {
 	/**
 	 * When constructing, also initializes the Swift_Transport like configured
 	 *
-	 * @param null|Swift_Transport $transport optionally pass a transport to the constructor. By default the configured transport from $TYPO3_CONF_VARS is used
+	 * @param null|Swift_Transport $transport optionally pass a transport to the constructor.
+	 * 			By default the configured transport from $TYPO3_CONF_VARS is used
 	 * @throws t3lib_exception
 	 */
 	public function __construct(Swift_Transport $transport = NULL) {
