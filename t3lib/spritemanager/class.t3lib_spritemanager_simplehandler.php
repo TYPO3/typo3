@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * A class with an concrete implementation of t3lib_spritemanager_SpriteIconGenerator.
  * It is the standard / fallback handler of the sprite manager.
@@ -33,7 +32,7 @@
  * for all registered icons so that they may be used through t3lib_iconWorks::getSpriteIcon*
  * Without the css classes generated here, icons of for example tca records would be empty.
  *
- * @author	Steffen Ritter <info@steffen-ritter.net>
+ * @author Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -41,7 +40,7 @@ class t3lib_spritemanager_SimpleHandler extends t3lib_spritemanager_AbstractHand
 
 	/**
 	 * css template for single Icons registered by extension authors
-	 * @var String
+	 * @var string
 	 */
 	protected $styleSheetTemplateExtIcons = '
 .t3-icon-###NAME### {
@@ -54,7 +53,7 @@ class t3lib_spritemanager_SimpleHandler extends t3lib_spritemanager_AbstractHand
 	 * constructor just init's the temp-file-name
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 
@@ -66,12 +65,11 @@ class t3lib_spritemanager_SimpleHandler extends t3lib_spritemanager_AbstractHand
 	 */
 	public function generate() {
 
-			// generate IconData for single Icons registered
+			// Generate IconData for single Icons registered
 		$this->buildCssAndRegisterIcons();
 
 		parent::generate();
 	}
-
 
 	/**
 	 * This function builds an css class for every single icon registered via
@@ -82,7 +80,7 @@ class t3lib_spritemanager_SimpleHandler extends t3lib_spritemanager_AbstractHand
 	 * @return void
 	 */
 	protected function buildCssAndRegisterIcons() {
-			// backpath from the stylesheet file ($cssTcaFile) to PATH_site dir
+			// Backpath from the stylesheet file ($cssTcaFile) to PATH_site dir
 			// in order to set the background-image URL paths correct
 		$iconPath = '../../' . TYPO3_mainDir;
 

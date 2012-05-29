@@ -25,10 +25,9 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  *
- * @author	Steffen Ritter <info@steffen-ritter.net>
+ * @author Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
  * @subpackage t3lib
  */
