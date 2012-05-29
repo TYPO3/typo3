@@ -39,7 +39,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	/**
 	 * Constructor for this class
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function __construct() {
 	}
@@ -47,8 +47,8 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	/**
 	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
 	 *
-	 * @param	string		$string: The condition to match against its criterias.
-	 * @return	boolean		Whether the condition matched
+	 * @param string $string The condition to match against its criterias.
+	 * @return boolean Whether the condition matched
 	 * @see t3lib_tsparser::parse()
 	 */
 	protected function evaluateCondition($string) {
@@ -110,8 +110,8 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	/**
 	 * Returns GP / ENV vars
 	 *
-	 * @param	string		Identifier
-	 * @return	mixed		The value of the variable pointed to.
+	 * @param string $var Identifier
+	 * @return mixed The value of the variable pointed to.
 	 * @access private
 	 */
 	protected function getVariable($var) {
@@ -125,7 +125,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	/**
 	 * Get the usergroup list of the current user.
 	 *
-	 * @return	string		The usergroup list of the current user
+	 * @return string The usergroup list of the current user
 	 */
 	protected function getGroupList() {
 		$groupList = $GLOBALS['BE_USER']->groupList;
@@ -138,7 +138,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	 * (i.e. in the Extension Manager, etc.) this function will return "0", so that
 	 * the accordant conditions (e.g. PIDinRootline) will return "FALSE"
 	 *
-	 * @return	integer		The determined page id or otherwise 0
+	 * @return integer The determined page id or otherwise 0
 	 */
 	protected function determinePageId() {
 		$pageId = 0;
@@ -177,7 +177,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	/**
 	 * Gets the properties for the current page.
 	 *
-	 * @return	array		The properties for the current page.
+	 * @return array The properties for the current page.
 	 */
 	protected function getPage() {
 		$pageId = (isset($this->pageId) ? $this->pageId : $this->determinePageId());
@@ -187,11 +187,11 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	/**
 	 * Gets the page id by a record.
 	 *
-	 * @param	string		$table: Name of the table
-	 * @param	integer		$id: Id of the accordant record
-	 * @param	boolean		$ignoreTable: Whether to ignore the page, if TRUE a positive
+	 * @param string $table Name of the table
+	 * @param integer $id Id of the accordant record
+	 * @param boolean $ignoreTable Whether to ignore the page, if TRUE a positive
 	 *						id value is considered as page id without any further checks
-	 * @return	integer		Id of the page the record is persisted on
+	 * @return integer Id of the page the record is persisted on
 	 */
 	protected function getPageIdByRecord($table, $id, $ignoreTable = FALSE) {
 		$pageId = 0;
@@ -213,8 +213,8 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	 * Determine if record of table 'pages' with the given $pid is currently created in TCEforms.
 	 * This information is required for conditions in BE for PIDupinRootline.
 	 *
-	 * @param	integer		$pid: The pid the check for as parent page
-	 * @return	boolean		TRUE if the is currently a new page record being edited with $pid as uid of the parent page
+	 * @param integer $pid The pid the check for as parent page
+	 * @return boolean TRUE if the is currently a new page record being edited with $pid as uid of the parent page
 	 */
 	protected function isNewPageWithPageId($pageId) {
 		if (isset($GLOBALS['SOBE']) && $GLOBALS['SOBE'] instanceof SC_alt_doc) {
@@ -252,7 +252,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	/**
 	 * Determines the rootline for the current page.
 	 *
-	 * @return	array		The rootline for the current page.
+	 * @return array The rootline for the current page.
 	 */
 	protected function determineRootline() {
 		$pageId = (isset($this->pageId) ? $this->pageId : $this->determinePageId());
@@ -263,7 +263,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	/**
 	 * Get the id of the current user.
 	 *
-	 * @return	integer		The id of the current user
+	 * @return integer The id of the current user
 	 */
 	protected function getUserId() {
 		$userId = $GLOBALS['BE_USER']->user['uid'];
@@ -273,7 +273,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	/**
 	 * Determines if a user is logged in.
 	 *
-	 * @return	boolean		Determines if a user is logged in
+	 * @return boolean Determines if a user is logged in
 	 */
 	protected function isUserLoggedIn() {
 		$userLoggedIn = FALSE;
@@ -286,7 +286,7 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	/**
 	 * Determines whether the current user is admin.
 	 *
-	 * @return	boolean		Whether the current user is admin
+	 * @return boolean Whether the current user is admin
 	 */
 	protected function isAdminUser() {
 		$isAdminUser = FALSE;
@@ -299,8 +299,8 @@ class t3lib_matchCondition_backend extends t3lib_matchCondition_abstract {
 	/**
 	 * Set/write a log message.
 	 *
-	 * @param	string		$message: The log message to set/write
-	 * @return	void
+	 * @param string $message The log message to set/write
+	 * @return void
 	 */
 	protected function log($message) {
 		if (is_object($GLOBALS['BE_USER'])) {

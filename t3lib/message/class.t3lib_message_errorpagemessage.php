@@ -29,12 +29,11 @@
  * A class representing error messages shown on a page.
  * Classic Example: "No pages are found on rootlevel"
  *
- * @author	Benjamin Mack <benni@typo3.org>
+ * @author Benjamin Mack <benni@typo3.org>
  * @package TYPO3
  * @subpackage t3lib/message
  */
 class t3lib_message_ErrorpageMessage extends t3lib_message_AbstractStandaloneMessage {
-
 
 	/**
 	 * Constructor for an Error message

@@ -31,7 +31,7 @@
  * Used with the TypoScript parser.
  * Matches browserinfo, IPnumbers for use with templates
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -40,8 +40,8 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 	/**
 	 * Evaluates a TypoScript condition given as input, eg. "[browser=net][...(other conditions)...]"
 	 *
-	 * @param	string		$string: The condition to match against its criterias.
-	 * @return	boolean		Whether the condition matched
+	 * @param string $string The condition to match against its criterias.
+	 * @return boolean Whether the condition matched
 	 * @see t3lib_tsparser::parse()
 	 */
 	protected function evaluateCondition($string) {
@@ -55,7 +55,8 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 			switch ($key) {
 				case 'usergroup':
 					$groupList = $this->getGroupList();
-					if ($groupList != '0,-1') { // '0,-1' is the default usergroups when not logged in!
+						// '0,-1' is the default usergroups when not logged in!
+					if ($groupList != '0,-1') {
 						$values = t3lib_div::trimExplode(',', $value, TRUE);
 						foreach ($values as $test) {
 							if ($test == '*' || t3lib_div::inList($groupList, $test)) {
@@ -95,8 +96,8 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 	/**
 	 * Returns GP / ENV / TSFE vars
 	 *
-	 * @param	string		Identifier
-	 * @return	mixed		The value of the variable pointed to.
+	 * @param string $var Identifier
+	 * @return mixed The value of the variable pointed to.
 	 */
 	protected function getVariable($var) {
 		$vars = explode(':', $var, 2);
@@ -121,7 +122,7 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 	/**
 	 * Get the usergroup list of the current user.
 	 *
-	 * @return	string		The usergroup list of the current user
+	 * @return string The usergroup list of the current user
 	 */
 	protected function getGroupList() {
 		$groupList = $GLOBALS['TSFE']->gr_list;
@@ -131,7 +132,7 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 	/**
 	 * Determines the current page Id.
 	 *
-	 * @return	integer		The current page Id
+	 * @return integer The current page Id
 	 */
 	protected function determinePageId() {
 		return (int) $GLOBALS['TSFE']->id;
@@ -140,7 +141,7 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 	/**
 	 * Gets the properties for the current page.
 	 *
-	 * @return	array		The properties for the current page.
+	 * @return array The properties for the current page.
 	 */
 	protected function getPage() {
 		return $GLOBALS['TSFE']->page;
@@ -149,7 +150,7 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 	/**
 	 * Determines the rootline for the current page.
 	 *
-	 * @return	array		The rootline for the current page.
+	 * @return array The rootline for the current page.
 	 */
 	protected function determineRootline() {
 		$rootline = (array) $GLOBALS['TSFE']->tmpl->rootLine;
@@ -159,7 +160,7 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 	/**
 	 * Get the id of the current user.
 	 *
-	 * @return	integer		The id of the current user
+	 * @return integer The id of the current user
 	 */
 	protected function getUserId() {
 		$userId = $GLOBALS['TSFE']->fe_user->user['uid'];
@@ -169,7 +170,7 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 	/**
 	 * Determines if a user is logged in.
 	 *
-	 * @return	boolean		Determines if a user is logged in
+	 * @return boolean Determines if a user is logged in
 	 */
 	protected function isUserLoggedIn() {
 		$userLoggedIn = FALSE;
@@ -182,8 +183,8 @@ class t3lib_matchCondition_frontend extends t3lib_matchCondition_abstract {
 	/**
 	 * Set/write a log message.
 	 *
-	 * @param	string		$message: The log message to set/write
-	 * @return	void
+	 * @param string $message The log message to set/write
+	 * @return void
 	 */
 	protected function log($message) {
 		if (is_object($GLOBALS['TT'])) {
