@@ -43,7 +43,7 @@
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
 require_once ($BACK_PATH.'class.db_list.inc');
 require_once ($BACK_PATH.'class.db_list_extra.inc');
-$BE_USER->modAccess($MCONF,1);
+$BE_USER->modAccess($MCONF, 1);
 
 t3lib_BEfunc::lockRecords();
 
@@ -147,7 +147,7 @@ class SC_db_list {
 		);
 
 			// Loading module configuration:
-		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id,'mod.'.$this->MCONF['name']);
+		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.'.$this->MCONF['name']);
 
 			// Clean up settings:
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
@@ -162,7 +162,7 @@ class SC_db_list {
 		if ($this->clear_cache) {
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values=0;
-			$tce->start(Array(),Array());
+			$tce->start(Array(), Array());
 			$tce->clear_cacheCmd($this->id);
 		}
 	}
@@ -179,7 +179,7 @@ class SC_db_list {
 		$this->doc->setModuleTemplate('templates/db_list.html');
 
 			// Loading current page record and checking access:
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
+		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
 			// Apply predefined values for hidden checkboxes
@@ -238,7 +238,7 @@ class SC_db_list {
 		if ($this->cmd=='setCB') {
 				// CBH is all the fields selected for the clipboard, CBC is the checkbox fields which were checked. By merging we get a full array of checked/unchecked elements
 				// This is set to the 'el' array of the CB after being parsed so only the table in question is registered.
-			$CB['el'] = $dblist->clipObj->cleanUpCBC(array_merge((array)t3lib_div::_POST('CBH'),(array)t3lib_div::_POST('CBC')),$this->cmd_table);
+			$CB['el'] = $dblist->clipObj->cleanUpCBC(array_merge((array)t3lib_div::_POST('CBH'), (array)t3lib_div::_POST('CBC')), $this->cmd_table);
 		}
 		if (!$this->MOD_SETTINGS['clipBoard'])	$CB['setP']='normal';	// If the clipboard is NOT shown, set the pad to 'normal'.
 		$dblist->clipObj->setCmd($CB);		// Execute commands.
@@ -259,16 +259,16 @@ class SC_db_list {
 				// Deleting records...:
 				// Has not to do with the clipboard but is simply the delete action. The clipboard object is used to clean up the submitted entries to only the selected table.
 			if ($this->cmd=='delete') {
-				$items = $dblist->clipObj->cleanUpCBC(t3lib_div::_POST('CBC'),$this->cmd_table,1);
+				$items = $dblist->clipObj->cleanUpCBC(t3lib_div::_POST('CBC'), $this->cmd_table, 1);
 				if (count($items)) {
 					$cmd=array();
 					foreach ($items as $iK => $value) {
-						$iKParts = explode('|',$iK);
+						$iKParts = explode('|', $iK);
 						$cmd[$iKParts[0]][$iKParts[1]]['delete']=1;
 					}
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values=0;
-					$tce->start(array(),$cmd);
+					$tce->start(array(), $cmd);
 					$tce->process_cmdmap();
 
 					if (isset($cmd['pages'])) {
@@ -280,8 +280,8 @@ class SC_db_list {
 			}
 
 				// Initialize the listing object, dblist, for rendering the list:
-			$this->pointer = t3lib_utility_Math::forceIntegerInRange($this->pointer,0,100000);
-			$dblist->start($this->id,$this->table,$this->pointer,$this->search_field,$this->search_levels,$this->showLimit);
+			$this->pointer = t3lib_utility_Math::forceIntegerInRange($this->pointer, 0, 100000);
+			$dblist->start($this->id, $this->table, $this->pointer, $this->search_field, $this->search_levels, $this->showLimit);
 			$dblist->setDispFields();
 
 				// Render versioning selector:

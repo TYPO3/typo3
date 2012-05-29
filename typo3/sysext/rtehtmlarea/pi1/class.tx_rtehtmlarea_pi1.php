@@ -102,7 +102,7 @@ class tx_rtehtmlarea_pi1 {
 			// Setting the pspell suggestion mode
 		$this->pspellMode = t3lib_div::_POST('pspell_mode')?t3lib_div::_POST('pspell_mode'): $this->pspellMode;
 			// Now sanitize $this->pspellMode
-		$this->pspellMode = t3lib_div::inList('ultra,fast,normal,bad-spellers',$this->pspellMode)?$this->pspellMode:'normal';
+		$this->pspellMode = t3lib_div::inList('ultra,fast,normal,bad-spellers', $this->pspellMode)?$this->pspellMode:'normal';
 		switch($this->pspellMode) {
 			case 'ultra':
 			case 'fast':
@@ -178,7 +178,7 @@ class tx_rtehtmlarea_pi1 {
 			header('Pragma: no-cache');
 			if($to_p_dict || $to_r_list) {
 				$tmpFileName = t3lib_div::tempnam($this->filePrefix);
-				if($filehandle = fopen($tmpFileName,'wb')) {
+				if($filehandle = fopen($tmpFileName, 'wb')) {
 					foreach ($to_p_dict as $personal_word) {
 						$cmd = '&' . $personal_word . LF;
 						echo $cmd;
@@ -233,7 +233,7 @@ class tx_rtehtmlarea_pi1 {
 			if (!xml_set_element_handler($parser, 'startHandler', 'endHandler')) echo('Bad xml handler setting');
 			if (!xml_set_character_data_handler($parser, 'collectDataHandler')) echo('Bad xml handler setting');
 			if (!xml_set_default_handler($parser, 'defaultHandler')) echo('Bad xml handler setting');
-			if (!xml_parse($parser,'<?xml version="1.0" encoding="' . $this->parserCharset . '"?><spellchecker> ' . preg_replace('/&nbsp;/'.(($this->parserCharset == 'utf-8')?'u':''), ' ', $content) . ' </spellchecker>')) echo('Bad parsing');
+			if (!xml_parse($parser, '<?xml version="1.0" encoding="' . $this->parserCharset . '"?><spellchecker> ' . preg_replace('/&nbsp;/'.(($this->parserCharset == 'utf-8')?'u':''), ' ', $content) . ' </spellchecker>')) echo('Bad parsing');
 			if (xml_get_error_code($parser)) {
 				throw new UnexpectedException('Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser)), 1294585788);
 			}
@@ -336,7 +336,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 		$incurrent=array();
 		$stringText = $string;
 		$words = preg_split((($this->parserCharset == 'utf-8')?'/\P{L}+/u':'/\W+/'), $stringText);
-		while( list(,$word) = each($words) ) {
+		while( list(, $word) = each($words) ) {
 			$word = preg_replace('/ /'.(($this->parserCharset == 'utf-8')?'u':''), '', $word);
 			if( $word && !is_numeric($word)) {
 				if($this->pspell_is_available && !$this->forceCommandMode) {
@@ -351,7 +351,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 								$this->suggestionCount++;
 								$this->suggestedWordCount += sizeof($suggest);
 							}
-							$this->suggestedWords .= '"'.$word.'":"'.implode(',',$suggest).'"';
+							$this->suggestedWords .= '"'.$word.'":"'.implode(',', $suggest).'"';
 							$this->misspelled[] = $word;
 							unset($suggest);
 						}
@@ -362,23 +362,23 @@ var selectedDictionary = "' . $this->dictionary . '";
 					}
 				} else {
 					$tmpFileName = t3lib_div::tempnam($this->filePrefix);
-					if(!$filehandle = fopen($tmpFileName,'wb')) echo('SpellChecker tempfile open error');
+					if(!$filehandle = fopen($tmpFileName, 'wb')) echo('SpellChecker tempfile open error');
 					if(!fwrite($filehandle, $word)) echo('SpellChecker tempfile write error');
 					if(!fclose($filehandle)) echo('SpellChecker tempfile close error');
 					$AspellCommand = 'cat ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a check --mode=none --sug-mode=' . escapeshellarg($this->pspellMode) . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
 					$AspellAnswer = shell_exec($AspellCommand);
 					$AspellResultLines = array();
 					$AspellResultLines = t3lib_div::trimExplode(LF, $AspellAnswer, 1);
-					if(substr($AspellResultLines[0],0,6) == 'Error:') echo("{$AspellAnswer}");
+					if(substr($AspellResultLines[0], 0, 6) == 'Error:') echo("{$AspellAnswer}");
 					t3lib_div::unlink_tempfile($tmpFileName);
-					if(substr($AspellResultLines['1'],0,1) != '*') {
+					if(substr($AspellResultLines['1'], 0, 1) != '*') {
 						if(!in_array($word, $this->misspelled)) {
 							if(sizeof($this->misspelled) != 0 ) {
 								$this->suggestedWords .= ',';
 							}
 							$suggest = array();
 							$suggestions = array();
-							if (substr($AspellResultLines['1'],0,1) == '&') {
+							if (substr($AspellResultLines['1'], 0, 1) == '&') {
 								$suggestions = t3lib_div::trimExplode(':', $AspellResultLines['1'], 1);
 								$suggest =  t3lib_div::trimExplode(',', $suggestions['1'], 1);
 							}
@@ -386,7 +386,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 								$this->suggestionCount++;
 								$this->suggestedWordCount += sizeof($suggest);
 							}
-							$this->suggestedWords .= '"'.$word.'":"'.implode(',',$suggest).'"';
+							$this->suggestedWords .= '"'.$word.'":"'.implode(',', $suggest).'"';
 							$this->misspelled[] = $word;
 							unset($suggest);
 							unset($suggestions);

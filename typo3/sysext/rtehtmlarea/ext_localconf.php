@@ -48,9 +48,9 @@ $_EXTCONF = unserialize($_EXTCONF);
 t3lib_extMgm::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . $_EXTKEY . '/res/proc/pageTSConfig.txt">');
 
 	// Add default Page TS Config RTE configuration
-if (strstr($_EXTCONF['defaultConfiguration'],'Minimal')) {
+if (strstr($_EXTCONF['defaultConfiguration'], 'Minimal')) {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] = 'Advanced';
-} elseif (strstr($_EXTCONF['defaultConfiguration'],'Demo')) {
+} elseif (strstr($_EXTCONF['defaultConfiguration'], 'Demo')) {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] = 'Demo';
 } else {
 	$TYPO3_CONF_VARS['EXTCONF'][$_EXTKEY]['defaultConfiguration'] = 'Typical';

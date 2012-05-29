@@ -52,7 +52,7 @@ class tx_rtehtmlarea_pi3 extends tslib_pibase {
 	 * @return	string		HTML output.
 	 * @access private
 	 */
-	function render_clickenlarge($content,$conf) {
+	function render_clickenlarge($content, $conf) {
 
 		$clickenlarge = isset($this->cObj->parameters['data-htmlarea-clickenlarge']) ? $this->cObj->parameters['data-htmlarea-clickenlarge'] : 0;
 		if (!$clickenlarge) {

@@ -611,7 +611,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$show = is_array($this->specConf['richtext']['parameters']) ? $this->specConf['richtext']['parameters'] : array();
 			if ($this->thisConfig['showButtons']) {
 				if (!t3lib_div::inList($this->thisConfig['showButtons'], '*')) {
-					$show = array_unique(array_merge($show,t3lib_div::trimExplode(',', $this->thisConfig['showButtons'], 1)));
+					$show = array_unique(array_merge($show, t3lib_div::trimExplode(',', $this->thisConfig['showButtons'], 1)));
 				} else {
 					$show = array_unique(array_merge($show, $toolbarOrder));
 				}
@@ -638,7 +638,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		$hideButtons = array('space', 'bar', 'linebreak');
 		foreach ($this->pluginButton as $pluginId => $buttonList) {
 			if (!$this->isPluginEnabled($pluginId)) {
-				$buttonArray = t3lib_div::trimExplode(',',$buttonList,1);
+				$buttonArray = t3lib_div::trimExplode(',', $buttonList, 1);
 				foreach ($buttonArray as $button) {
 					$hideButtons[] = $button;
 				}
@@ -1272,7 +1272,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		global $LANG, $TSFE, $TYPO3_CONF_VARS;
 
 		if ($this->is_FE()) {
-			if (strcmp(substr($string,0,4), 'LLL:')) {
+			if (strcmp(substr($string, 0, 4), 'LLL:')) {
 					// A pure string coming from Page TSConfig must be in utf-8
 				$label = $TSFE->csConvObj->conv($TSFE->sL(trim($string)), 'utf-8', $this->OutputCharset);
 			} else {
@@ -1432,7 +1432,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	}
 
 	public function cleanList($str) {
-		if (strstr($str,'*')) {
+		if (strstr($str, '*')) {
 			$str = '*';
 		} else {
 			$str = implode(',', array_unique(t3lib_div::trimExplode(',', $str, 1)));
@@ -1440,7 +1440,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		return $str;
 	}
 
-	function filterStyleEl($elValue,$matchList) {
+	function filterStyleEl($elValue, $matchList) {
 		$matchParts = t3lib_div::trimExplode(',', $matchList, 1);
 		$styleParts = explode(';', $elValue);
 		$nStyle = array();

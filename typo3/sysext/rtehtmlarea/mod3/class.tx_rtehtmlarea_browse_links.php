@@ -73,13 +73,13 @@ class tx_rtehtmlarea_pageTree extends rtePageTree {
 
 			$aOnClick = 'return jumpToUrl(\''.$this->thisScript.'?act='.$GLOBALS['SOBE']->browser->act.'&editorNo='.$GLOBALS['SOBE']->browser->editorNo.'&contentTypo3Language='.$GLOBALS['SOBE']->browser->contentTypo3Language.'&mode='.$GLOBALS['SOBE']->browser->mode.'&expandPage='.$v['row']['uid'].'\');';
 			$cEbullet = ($this->ext_isLinkable($v['row']['doktype'], $v['row']['uid'])
-				? '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/ol/arrowbullet.gif', 'width="18" height="16"') . ' alt="" /></a>'
+				? '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/arrowbullet.gif', 'width="18" height="16"') . ' alt="" /></a>'
 				: '');
 			$out.='
 				<tr class="'.$bgColorClass.'">
 					<td nowrap="nowrap"'.($v['row']['_CSSCLASS'] ? ' class="'.$v['row']['_CSSCLASS'].'"' : '').'>'.
 					$v['HTML'].
-					$this->wrapTitle($this->getTitleStr($v['row'],$titleLen),$v['row'],$this->ext_pArrPages).
+					$this->wrapTitle($this->getTitleStr($v['row'], $titleLen), $v['row'], $this->ext_pArrPages).
 					'</td>'.
 					$arrCol.
 					'<td>'.$cEbullet.'</td>
@@ -285,7 +285,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$RTEtsConfigParts = explode(':', $this->RTEtsConfigParams);
 		$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', t3lib_BEfunc::getPagesTSconfig($RTEtsConfigParts[5]));
 		$this->RTEProperties = $RTEsetup['properties'];
-		return t3lib_BEfunc::RTEsetup($this->RTEProperties, $RTEtsConfigParts[0],$RTEtsConfigParts[2],$RTEtsConfigParts[4]);
+		return t3lib_BEfunc::RTEsetup($this->RTEProperties, $RTEtsConfigParts[0], $RTEtsConfigParts[2], $RTEtsConfigParts[4]);
 	}
 
 	/**
@@ -573,10 +573,10 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	function main_rte ($wiz=0) {
 
 			// Starting content:
-		$content=$this->doc->startPage($GLOBALS['LANG']->getLL('Insert/Modify Link',1));
+		$content=$this->doc->startPage($GLOBALS['LANG']->getLL('Insert/Modify Link', 1));
 
 			// Default allowed values
-		$this->allowedItems = explode(',','page,file,folder,url,mail,spec');
+		$this->allowedItems = explode(',', 'page,file,folder,url,mail,spec');
 
 			// Calling hook for extra options
 		foreach($this->hookObjects as $hookObject) {
@@ -584,7 +584,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 			// Removing items as per configuration
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
-			$this->allowedItems = array_diff($this->allowedItems,t3lib_div::trimExplode(',',$this->buttonConfig['options.']['removeItems'],1));
+			$this->allowedItems = array_diff($this->allowedItems, t3lib_div::trimExplode(',', $this->buttonConfig['options.']['removeItems'], 1));
 		}
 		reset($this->allowedItems);
 		if (!in_array($this->act, $this->allowedItems)) {
@@ -595,13 +595,13 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		$menuDef = array();
 		if (!$wiz && $this->curUrlArray['href']) {
 			$menuDef['removeLink']['isActive'] = $this->act=='removeLink';
-			$menuDef['removeLink']['label'] = $GLOBALS['LANG']->getLL('removeLink',1);
+			$menuDef['removeLink']['label'] = $GLOBALS['LANG']->getLL('removeLink', 1);
 			$menuDef['removeLink']['url'] = '#';
 			$menuDef['removeLink']['addParams'] = 'onclick="plugin.unLink();return false;"';
 		}
 		if (in_array('page', $this->allowedItems)) {
 			$menuDef['page']['isActive'] = $this->act=='page';
-			$menuDef['page']['label'] = $GLOBALS['LANG']->getLL('page',1);
+			$menuDef['page']['label'] = $GLOBALS['LANG']->getLL('page', 1);
 			$menuDef['page']['url'] = '#';
 			$menuDef['page']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars('?act=page&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
 		}
@@ -619,19 +619,19 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 		if (in_array('url', $this->allowedItems)) {
 			$menuDef['url']['isActive'] = $this->act=='url';
-			$menuDef['url']['label'] = $GLOBALS['LANG']->getLL('extUrl',1);
+			$menuDef['url']['label'] = $GLOBALS['LANG']->getLL('extUrl', 1);
 			$menuDef['url']['url'] = '#';
 			$menuDef['url']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars('?act=url&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
 		}
 		if (in_array('mail', $this->allowedItems)) {
 			$menuDef['mail']['isActive'] = $this->act=='mail';
-			$menuDef['mail']['label'] = $GLOBALS['LANG']->getLL('email',1);
+			$menuDef['mail']['label'] = $GLOBALS['LANG']->getLL('email', 1);
 			$menuDef['mail']['url'] = '#';
 			$menuDef['mail']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars('?act=mail&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
 		}
 		if (is_array($this->thisConfig['userLinks.']) && in_array('spec', $this->allowedItems)) {
 			$menuDef['spec']['isActive'] = $this->act=='spec';
-			$menuDef['spec']['label'] = $GLOBALS['LANG']->getLL('special',1);
+			$menuDef['spec']['label'] = $GLOBALS['LANG']->getLL('special', 1);
 			$menuDef['spec']['url'] = '#';
 			$menuDef['spec']['addParams'] = 'onclick="jumpToUrl(\''.htmlspecialchars('?act=spec&mode='.$this->mode.'&bparams='.$this->bparams).'\');return false;"';
 		}
@@ -656,9 +656,9 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 					<form action="" name="lurlform" id="lurlform">
 						<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkMail">
 							<tr>
-								<td>' . $GLOBALS['LANG']->getLL('emailAddress',1).':</td>
+								<td>' . $GLOBALS['LANG']->getLL('emailAddress', 1).':</td>
 								<td><input type="text" name="lemail"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='mail'?$this->curUrlInfo['info']:'').'" /> '.
-									'<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink',1).'" onclick="browse_links_setTarget(\'\');browse_links_setHref(\'mailto:\'+document.lurlform.lemail.value);browse_links_setAdditionalValue(\'data-htmlarea-external\', \'\');return link_current();" /></td>
+									'<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', 1).'" onclick="browse_links_setTarget(\'\');browse_links_setHref(\'mailto:\'+document.lurlform.lemail.value);browse_links_setAdditionalValue(\'data-htmlarea-external\', \'\');return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
@@ -675,7 +675,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<tr>
 								<td>URL:</td>
 								<td><input type="text" name="lurl"'.$this->doc->formWidth(20).' value="'.htmlspecialchars($this->curUrlInfo['act']=='url'?$this->curUrlInfo['info']:'http://').'" /> '.
-									'<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink',1).'" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.lurlform.lurl.value)) { browse_links_setHref(document.lurlform.lurl.value); } else { browse_links_setHref(\'http://\'+document.lurlform.lurl.value); }; browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); return link_current();" /></td>
+									'<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', 1).'" onclick="if (/^[A-Za-z0-9_+]{1,8}:/.test(document.lurlform.lurl.value)) { browse_links_setHref(document.lurlform.lurl.value); } else { browse_links_setHref(\'http://\'+document.lurlform.lurl.value); }; browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
@@ -768,7 +768,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 					$v=$this->thisConfig['userLinks.'];
 					foreach ($v as $k2 => $dummyValue) {
 						$k2i = intval($k2);
-						if (substr($k2,-1)=='.' && is_array($v[$k2i.'.'])) {
+						if (substr($k2, -1)=='.' && is_array($v[$k2i.'.'])) {
 
 								// Title:
 							$title = trim($v[$k2i]);
@@ -783,8 +783,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 								// URL + onclick event:
 							$onClickEvent='';
 							if (isset($v[$k2i.'.']['target']))	$onClickEvent.="browse_links_setTarget('".$v[$k2i.'.']['target']."');";
-							$v[$k2i.'.']['url'] = str_replace('###_URL###',$this->siteURL,$v[$k2i.'.']['url']);
-							if (substr($v[$k2i.'.']['url'],0,7)=="http://" || substr($v[$k2i.'.']['url'],0,7)=='mailto:') {
+							$v[$k2i.'.']['url'] = str_replace('###_URL###', $this->siteURL, $v[$k2i.'.']['url']);
+							if (substr($v[$k2i.'.']['url'], 0, 7)=="http://" || substr($v[$k2i.'.']['url'], 0, 7)=='mailto:') {
 								$onClickEvent.="cur_href=unescape('".rawurlencode($v[$k2i.'.']['url'])."');link_current();";
 							} else {
 								$onClickEvent.="link_spec(unescape('".$this->siteURL.rawurlencode($v[$k2i.'.']['url'])."'));";
@@ -796,7 +796,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 								// Adding link to menu of user defined links:
 							$subcats[$k2i]='
 								<tr>
-									<td class="bgColor4">'.$A[0].'<strong>'.htmlspecialchars($title).($this->curUrlInfo['info']==$v[$k2i.'.']['url']?'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/blinkarrow_right.gif','width="5" height="9"').' class="c-blinkArrowR" alt="" />':'').'</strong><br />'.$description.$A[1].'</td>
+									<td class="bgColor4">'.$A[0].'<strong>'.htmlspecialchars($title).($this->curUrlInfo['info']==$v[$k2i.'.']['url']?'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_right.gif', 'width="5" height="9"').' class="c-blinkArrowR" alt="" />':'').'</strong><br />'.$description.$A[1].'</td>
 								</tr>';
 						}
 					}
@@ -813,7 +813,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<tr>
 								<td class="bgColor5" class="c-wCell" valign="top"><strong>' . $GLOBALS['LANG']->getLL('special', 1) . '</strong></td>
 							</tr>
-							'.implode('',$subcats).'
+							'.implode('', $subcats).'
 						</table>
 						';
 				}
@@ -917,7 +917,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<td>
 							</td>
 							<td colspan="3">
-								<input type="submit" value="' . $GLOBALS['LANG']->getLL('update',1) . '" onclick="' . (($this->act == 'url') ? 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); ' : '') . 'return link_current();" />
+								<input type="submit" value="' . $GLOBALS['LANG']->getLL('update', 1) . '" onclick="' . (($this->act == 'url') ? 'browse_links_setAdditionalValue(\'data-htmlarea-external\', \'1\'); ' : '') . 'return link_current();" />
 							</td>
 						</tr>';
 		}
@@ -931,7 +931,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 		return ($this->act == 'page' && $this->buttonConfig && is_array($this->buttonConfig['pageIdSelector.']) && $this->buttonConfig['pageIdSelector.']['enabled'])?'
 						<tr>
-							<td>' . $GLOBALS['LANG']->getLL('page_id',1) . ':</td>
+							<td>' . $GLOBALS['LANG']->getLL('page_id', 1) . ':</td>
 							<td colspan="3">
 								<input type="text" size="6" name="luid" />&nbsp;<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', 1) . '" onclick="return link_typo3Page(document.ltargetform.luid.value);" />
 							</td>
@@ -941,7 +941,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	function addRelField() {
 		return (($this->act == 'page' || $this->act == 'url' || $this->act == 'file') && $this->buttonConfig && is_array($this->buttonConfig['relAttribute.']) && $this->buttonConfig['relAttribute.']['enabled'])?'
 						<tr>
-							<td>'.$GLOBALS['LANG']->getLL('linkRelationship',1).':</td>
+							<td>'.$GLOBALS['LANG']->getLL('linkRelationship', 1).':</td>
 							<td colspan="3">
 								<input type="text" name="lrel" value="' . $this->additionalAttributes['rel']. '"  ' . $this->doc->formWidth(30) . ' />
 							</td>
@@ -1037,7 +1037,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		if ($this->classesAnchorJSOptions[$this->act]) {
 			$selectClass ='
 						<tr>
-							<td>'.$GLOBALS['LANG']->getLL('anchor_class',1).':</td>
+							<td>'.$GLOBALS['LANG']->getLL('anchor_class', 1).':</td>
 							<td colspan="3">
 								<select name="anchor_class" onchange="'.$this->getClassOnChangeJS().'">
 									' . $this->classesAnchorJSOptions[$this->act] . '
@@ -1093,7 +1093,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		}
 		return '
 						<tr>
-							<td><label for="rtehtmlarea-browse-links-anchor_title" id="rtehtmlarea-browse-links-title-label">' . $GLOBALS['LANG']->getLL('anchor_title',1) . ':</label></td>
+							<td><label for="rtehtmlarea-browse-links-anchor_title" id="rtehtmlarea-browse-links-title-label">' . $GLOBALS['LANG']->getLL('anchor_title', 1) . ':</label></td>
 							<td colspan="3">
 								<span id="rtehtmlarea-browse-links-title-input" style="display: ' . ($readOnly ? 'none' : 'inline') . ';">
 									<input type="text" id="rtehtmlarea-browse-links-anchor_title" name="anchor_title" value="' . $title . '" ' . $this->doc->formWidth(30) . ' />
@@ -1125,8 +1125,8 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 * @param	string		string: the label to be localized
 	 * @return	string		Localized string.
 	 */
-	public function getPageConfigLabel($string,$JScharCode=1) {
-		if (strcmp(substr($string,0,4),'LLL:')) {
+	public function getPageConfigLabel($string, $JScharCode=1) {
+		if (strcmp(substr($string, 0, 4), 'LLL:')) {
 			$label = $string;
 		} else {
 			$label = $GLOBALS['LANG']->sL(trim($string));

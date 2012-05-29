@@ -2,7 +2,7 @@
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
 		// Add static template for Click-enlarge rendering
-	t3lib_extMgm::addStaticFile($_EXTKEY,'static/clickenlarge/','Clickenlarge Rendering');
+	t3lib_extMgm::addStaticFile($_EXTKEY, 'static/clickenlarge/', 'Clickenlarge Rendering');
 
 		// Add configuration of soft references on image tags in RTE content
 	require_once(t3lib_extMgm::extPath($_EXTKEY) . 'hooks/softref/ext_tables.php');
@@ -25,7 +25,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 		),
 	);
 	t3lib_extMgm::allowTableOnStandardPages('tx_rtehtmlarea_acronym');
-	t3lib_extMgm::addLLrefForTCAdescr('tx_rtehtmlarea_acronym','EXT:' . $_EXTKEY . '/locallang_csh_abbreviation.xml');
+	t3lib_extMgm::addLLrefForTCAdescr('tx_rtehtmlarea_acronym', 'EXT:' . $_EXTKEY . '/locallang_csh_abbreviation.xml');
 
 		// Add contextual help files
 	$htmlAreaRteContextHelpFiles = array(

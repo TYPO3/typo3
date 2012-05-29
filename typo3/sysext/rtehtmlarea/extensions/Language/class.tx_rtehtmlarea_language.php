@@ -74,7 +74,7 @@ class tx_rtehtmlarea_language extends tx_rtehtmlarea_api {
 			RTEarea['.$RTEcounter.'].buttons.'. $button .' = new Object();';
 		}
 		if ($this->htmlAreaRTE->is_FE()) {
-			$first = $GLOBALS['TSFE']->getLLL('No language mark',$this->LOCAL_LANG);
+			$first = $GLOBALS['TSFE']->getLLL('No language mark', $this->LOCAL_LANG);
 		} else {
 			$first = $GLOBALS['LANG']->getLL('No language mark');
 		}
