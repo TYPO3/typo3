@@ -71,16 +71,16 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		$this->cli_options[] = array('-v level', 'Verbosity level 0-3', "The value of level can be:\n  0 = all output\n  1 = info and greater (default)\n  2 = warnings and greater\n  3 = errors");
 		$this->cli_options[] = array('--refindex mode', 'Mode for reference index handling for operations that require a clean reference index ("update"/"ignore")', 'Options are "check" (default), "update" and "ignore". By default, the reference index is checked before running analysis that require a clean index. If the check fails, the analysis is not run. You can choose to bypass this completely (using value "ignore") or ask to have the index updated right away before the analysis (using value "update")');
 		$this->cli_options[] = array('--AUTOFIX [testName]', 'Repairs errors that can be automatically fixed.', 'Only add this option after having run the test without it so you know what will happen when you add this option! The optional parameter "[testName]" works for some tool keys to limit the fixing to a particular test.');
-		$this->cli_options[] = array('--dryrun', 'With --AUTOFIX it will only simulate a repair process','You may like to use this to see what the --AUTOFIX option will be doing. It will output the whole process like if a fix really occurred but nothing is in fact happening');
-		$this->cli_options[] = array('--YES', 'Implicit YES to all questions','Use this with EXTREME care. The option "-i" is not affected by this option.');
-		$this->cli_options[] = array('-i', 'Interactive','Will ask you before running the AUTOFIX on each element.');
-		$this->cli_options[] = array('--filterRegex expr', 'Define an expression for preg_match() that must match the element ID in order to auto repair it','The element ID is the string in quotation marks when the text \'Cleaning ... in "ELEMENT ID"\'. "expr" is the expression for preg_match(). To match for example "Nature3.JPG" and "Holiday3.JPG" you can use "/.*3.JPG/". To match for example "Image.jpg" and "Image.JPG" you can use "/.*.jpg/i". Try a --dryrun first to see what the matches are!');
+		$this->cli_options[] = array('--dryrun', 'With --AUTOFIX it will only simulate a repair process', 'You may like to use this to see what the --AUTOFIX option will be doing. It will output the whole process like if a fix really occurred but nothing is in fact happening');
+		$this->cli_options[] = array('--YES', 'Implicit YES to all questions', 'Use this with EXTREME care. The option "-i" is not affected by this option.');
+		$this->cli_options[] = array('-i', 'Interactive', 'Will ask you before running the AUTOFIX on each element.');
+		$this->cli_options[] = array('--filterRegex expr', 'Define an expression for preg_match() that must match the element ID in order to auto repair it', 'The element ID is the string in quotation marks when the text \'Cleaning ... in "ELEMENT ID"\'. "expr" is the expression for preg_match(). To match for example "Nature3.JPG" and "Holiday3.JPG" you can use "/.*3.JPG/". To match for example "Image.jpg" and "Image.JPG" you can use "/.*.jpg/i". Try a --dryrun first to see what the matches are!');
 		$this->cli_options[] = array('--showhowto', 'Displays HOWTO file for cleaner script.');
 
 			// Setting help texts:
 		$this->cli_help['name'] = 'lowlevel_cleaner -- Analysis and clean-up tools for TYPO3 installations';
 		$this->cli_help['synopsis'] = 'toolkey ###OPTIONS###';
-		$this->cli_help['description'] = "Dispatches to various analysis and clean-up tools which can plug into the API of this script. Typically you can run tests that will take longer than the usual max execution time of PHP. Such tasks could be checking for orphan records in the page tree or flushing all published versions in the system. For the complete list of options, please explore each of the 'toolkey' keywords below:\n\n  ".implode("\n  ",array_keys($this->cleanerModules));
+		$this->cli_help['description'] = "Dispatches to various analysis and clean-up tools which can plug into the API of this script. Typically you can run tests that will take longer than the usual max execution time of PHP. Such tasks could be checking for orphan records in the page tree or flushing all published versions in the system. For the complete list of options, please explore each of the 'toolkey' keywords below:\n\n  ".implode("\n  ", array_keys($this->cleanerModules));
 		$this->cli_help['examples'] = "/.../cli_dispatch.phpsh lowlevel_cleaner missing_files -s -r\nThis will show you missing files in the TYPO3 system and only report back if errors were found.";
 		$this->cli_help['author'] = "Kasper Skaarhoej, (c) 2006";
 	}
@@ -112,7 +112,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 			// Print Howto:
 		if ($this->cli_isArg('--showhowto')) {
 			$howto = t3lib_div::getUrl(t3lib_extMgm::extPath('lowlevel').'HOWTO_clean_up_TYPO3_installations.txt');
-			echo wordwrap($howto,120).LF;
+			echo wordwrap($howto, 120).LF;
 			exit;
 		}
 
@@ -141,7 +141,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 								if ($this->cli_isArg('--YES') || $this->cli_keyboardInput_yes("\n\nNOW Running --AUTOFIX on result. OK?".($this->cli_isArg('--dryrun')?' (--dryrun simulation)':''))) {
 									$cleanerMode->main_autofix($res);
 								} else {
-									$this->cli_echo("ABORTING AutoFix...\n",1);
+									$this->cli_echo("ABORTING AutoFix...\n", 1);
 								}
 							}
 						}
@@ -150,7 +150,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 						exit;
 					}
 				} else {
-					$this->cli_echo("ERROR: Analysis Type '".$analysisType."' is unknown.\n",1);
+					$this->cli_echo("ERROR: Analysis Type '".$analysisType."' is unknown.\n", 1);
 					exit;
 				}
 			break;
@@ -167,7 +167,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 			// Reference index option:
 		$refIndexMode = isset($this->cli_args['--refindex']) ? $this->cli_args['--refindex'][0] : 'check';
 		if (!t3lib_div::inList('update,ignore,check', $refIndexMode)) {
-			$this->cli_echo("ERROR: Wrong value for --refindex argument.\n",1);
+			$this->cli_echo("ERROR: Wrong value for --refindex argument.\n", 1);
 			exit;
 		}
 
@@ -175,11 +175,11 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 			case 'check':
 			case 'update':
 				$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
-				list($headerContent,$bodyContent,$errorCount) = $refIndexObj->updateIndex($refIndexMode=='check',$this->cli_echo());
+				list($headerContent, $bodyContent, $errorCount) = $refIndexObj->updateIndex($refIndexMode=='check', $this->cli_echo());
 
 				if ($errorCount && $refIndexMode=='check') {
 					$ok = FALSE;
-					$this->cli_echo("ERROR: Reference Index Check failed! (run with '--refindex update' to fix)\n",1);
+					$this->cli_echo("ERROR: Reference Index Check failed! (run with '--refindex update' to fix)\n", 1);
 				} else {
 					$ok = TRUE;
 				}
@@ -200,8 +200,8 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	function cli_noExecutionCheck($matchString) {
 
 			// Check for filter:
-		if ($this->cli_isArg('--filterRegex') && $regex = $this->cli_argValue('--filterRegex',0)) {
-			if (!preg_match($regex,$matchString))	return 'BYPASS: Filter Regex "'.$regex.'" did not match string "'.$matchString.'"';
+		if ($this->cli_isArg('--filterRegex') && $regex = $this->cli_argValue('--filterRegex', 0)) {
+			if (!preg_match($regex, $matchString))	return 'BYPASS: Filter Regex "'.$regex.'" did not match string "'.$matchString.'"';
 		}
 			// Check for interactive mode
 		if ($this->cli_isArg('-i')) {
@@ -220,7 +220,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @param	array		Result array from an analyze function
 	 * @return	void		Outputs with echo - capture content with output buffer if needed.
 	 */
-	function cli_printInfo($header,$res) {
+	function cli_printInfo($header, $res) {
 
 		$detailLevel = t3lib_utility_Math::forceIntegerInRange($this->cli_isArg('-v') ? $this->cli_argValue('-v') : 1,0,3);
 		$silent = !$this->cli_echo();
@@ -249,19 +249,19 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 					if (is_array($res[$key]) && (count($res[$key]) || !$silent)) {
 
 							// Header and explanaion:
-						$this->cli_echo('---------------------------------------------'.LF,1);
-						$this->cli_echo('['.$header.']'.LF,1);
-						$this->cli_echo($value[0].' ['.$severity[$value[2]].']'.LF,1);
-						$this->cli_echo('---------------------------------------------'.LF,1);
+						$this->cli_echo('---------------------------------------------'.LF, 1);
+						$this->cli_echo('['.$header.']'.LF, 1);
+						$this->cli_echo($value[0].' ['.$severity[$value[2]].']'.LF, 1);
+						$this->cli_echo('---------------------------------------------'.LF, 1);
 						if (trim($value[1])) {
-							$this->cli_echo('Explanation: '.wordwrap(trim($value[1])).LF.LF,1);
+							$this->cli_echo('Explanation: '.wordwrap(trim($value[1])).LF.LF, 1);
 						}
 					}
 
 						// Content:
 					if (is_array($res[$key])) {
 						if (count($res[$key])) {
-							if ($this->cli_echo('',1)) { print_r($res[$key]); }
+							if ($this->cli_echo('', 1)) { print_r($res[$key]); }
 						} else {
 							$this->cli_echo('(None)'.LF.LF);
 						}
@@ -300,14 +300,14 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @param	string		Call back function (from this class or subclass)
 	 * @return	void
 	 */
-	function genTree($rootID,$depth=1000,$echoLevel=0,$callBack='') {
+	function genTree($rootID, $depth=1000, $echoLevel=0, $callBack='') {
 
 		$pt = t3lib_div::milliseconds();
 		$this->performanceStatistics['genTree()'] = '';
 
 			// Initialize:
 		if (t3lib_extMgm::isLoaded('workspaces')) {
-			$this->workspaceIndex = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title','sys_workspace','1=1'.t3lib_BEfunc::deleteClause('sys_workspace'),'','','','uid');
+			$this->workspaceIndex = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'sys_workspace', '1=1'.t3lib_BEfunc::deleteClause('sys_workspace'), '', '', '', 'uid');
 		}
 		$this->workspaceIndex[-1] = TRUE;
 		$this->workspaceIndex[0] = TRUE;
@@ -329,7 +329,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		$pt2 = t3lib_div::milliseconds();
 		$this->performanceStatistics['genTree_traverse()'] = '';
 		$this->performanceStatistics['genTree_traverse():TraverseTables'] = '';
-		$this->genTree_traverse($rootID,$depth,$echoLevel,$callBack);
+		$this->genTree_traverse($rootID, $depth, $echoLevel, $callBack);
 		$this->performanceStatistics['genTree_traverse()'] = t3lib_div::milliseconds()-$pt2;
 
 			// Sort recStats (for diff'able displays)
@@ -381,11 +381,11 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @return	void
 	 * @access private
 	 */
-	function genTree_traverse($rootID,$depth,$echoLevel=0,$callBack='',$versionSwapmode='',$rootIsVersion=0,$accumulatedPath='') {
+	function genTree_traverse($rootID, $depth, $echoLevel=0, $callBack='', $versionSwapmode='', $rootIsVersion=0, $accumulatedPath='') {
 
 			// Register page:
 		$this->recStats['all']['pages'][$rootID] = $rootID;
-		$pageRecord = t3lib_BEfunc::getRecordRaw('pages','uid='.intval($rootID),'deleted,title,t3ver_count,t3ver_wsid');
+		$pageRecord = t3lib_BEfunc::getRecordRaw('pages', 'uid='.intval($rootID), 'deleted,title,t3ver_count,t3ver_wsid');
 		$accumulatedPath.='/'.$pageRecord['title'];
 
 			// Register if page is deleted:
@@ -420,7 +420,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 
 			// Call back:
 		if ($callBack) {
-			$this->$callBack('pages',$rootID,$echoLevel,$versionSwapmode,$rootIsVersion);
+			$this->$callBack('pages', $rootID, $echoLevel, $versionSwapmode, $rootIsVersion);
 		}
 
 		$pt3 = t3lib_div::milliseconds();
@@ -475,7 +475,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 
 							// Traverse plugins:
 						if ($callBack) {
-							$this->$callBack($tableName,$rowSub['uid'],$echoLevel,$versionSwapmode,$rootIsVersion);
+							$this->$callBack($tableName, $rowSub['uid'], $echoLevel, $versionSwapmode, $rootIsVersion);
 						}
 
 							// Add any versions of those records:
@@ -513,7 +513,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 
 											// Traverse plugins:
 										if ($callBack) {
-											$this->$callBack($tableName,$verRec['uid'],$echoLevel,$versionSwapmode,$rootIsVersion);
+											$this->$callBack($tableName, $verRec['uid'], $echoLevel, $versionSwapmode, $rootIsVersion);
 										}
 									}
 								}
@@ -545,7 +545,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 					'sorting'
 				);
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					$this->genTree_traverse($row['uid'],$depth,$echoLevel,$callBack,$versionSwapmode,0,$accumulatedPath);
+					$this->genTree_traverse($row['uid'], $depth, $echoLevel, $callBack, $versionSwapmode, 0, $accumulatedPath);
 				}
 			}
 
@@ -555,7 +555,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 				if (is_array($versions)) {
 					foreach($versions as $verRec) {
 						if (!$verRec['_CURRENT_VERSION']) {
-							$this->genTree_traverse($verRec['uid'],$depth,$echoLevel,$callBack,'SWAPMODE:'.t3lib_utility_Math::forceIntegerInRange($verRec['t3ver_swapmode'],-1,1),$versionSwapmode?2:1,$accumulatedPath.' [#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].']');
+							$this->genTree_traverse($verRec['uid'], $depth, $echoLevel, $callBack, 'SWAPMODE:'.t3lib_utility_Math::forceIntegerInRange($verRec['t3ver_swapmode'], -1, 1), $versionSwapmode?2:1, $accumulatedPath.' [#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].']');
 						}
 					}
 				}

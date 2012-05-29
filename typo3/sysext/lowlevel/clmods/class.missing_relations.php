@@ -91,12 +91,12 @@ Reports missing relations';
 		$resultArray = array(
 			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
-				'offlineVersionRecords_m' => array('Offline version records (managed)','These records are offline versions having a pid=-1 and references should never occur directly to their uids.'.$listExplain,3),
-				'deletedRecords_m' => array('Deleted-flagged records (managed)','These records are deleted with a flag but references are still pointing at them. Keeping the references is useful if you undelete the referenced records later, otherwise the references are lost completely when the deleted records are flushed at some point. Notice that if those records listed are themselves deleted (marked with "DELETED") it is not a problem.'.$listExplain,2),
-				'nonExistingRecords_m' => array('Non-existing records to which there are references (managed)','These references can safely be removed since there is no record found in the database at all.'.$listExplain,3),	// 3 = error
-				'offlineVersionRecords_s' => array('Offline version records (softref)','See above.'.$listExplain,2),
-				'deletedRecords_s' => array('Deleted-flagged records (softref)','See above.'.$listExplain,2),
-				'nonExistingRecords_s' => array('Non-existing records to which there are references (softref)','See above.'.$listExplain,2),
+				'offlineVersionRecords_m' => array('Offline version records (managed)', 'These records are offline versions having a pid=-1 and references should never occur directly to their uids.'.$listExplain, 3),
+				'deletedRecords_m' => array('Deleted-flagged records (managed)', 'These records are deleted with a flag but references are still pointing at them. Keeping the references is useful if you undelete the referenced records later, otherwise the references are lost completely when the deleted records are flushed at some point. Notice that if those records listed are themselves deleted (marked with "DELETED") it is not a problem.'.$listExplain, 2),
+				'nonExistingRecords_m' => array('Non-existing records to which there are references (managed)', 'These references can safely be removed since there is no record found in the database at all.'.$listExplain, 3),	// 3 = error
+				'offlineVersionRecords_s' => array('Offline version records (softref)', 'See above.'.$listExplain, 2),
+				'deletedRecords_s' => array('Deleted-flagged records (softref)', 'See above.'.$listExplain, 2),
+				'nonExistingRecords_s' => array('Non-existing records to which there are references (softref)', 'See above.'.$listExplain, 2),
 			),
 			'offlineVersionRecords_m' => array(),
 			'deletedRecords_m' => array(),
@@ -126,7 +126,7 @@ Reports missing relations';
 
 					// Get referenced record:
 				if (!isset($tempExists[$idx])) {
-					$tempExists[$idx] = t3lib_BEfunc::getRecordRaw($rec['ref_table'],'uid='.intval($rec['ref_uid']),'uid,pid'.($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ','.$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''));
+					$tempExists[$idx] = t3lib_BEfunc::getRecordRaw($rec['ref_table'], 'uid='.intval($rec['ref_uid']), 'uid,pid'.($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ','.$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''));
 				}
 
 					// Compile info string for location of reference:
@@ -177,7 +177,7 @@ Reports missing relations';
 						echo $bypass;
 					} else {
 						$sysRefObj = t3lib_div::makeInstance('t3lib_refindex');
-						$error = $sysRefObj->setReferenceValue($hash,NULL);
+						$error = $sysRefObj->setReferenceValue($hash, NULL);
 						if ($error) {
 							echo '		t3lib_refindex::setReferenceValue(): '.$error.LF;
 						} else echo 'DONE';

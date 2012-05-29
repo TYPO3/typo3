@@ -86,11 +86,11 @@ Reports problems with RTE images';
 		$resultArray = array(
 			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
-				'completeFileList' => array('Complete list of used RTEmagic files','Both parent and copy are listed here including usage count (which should in theory all be "1"). This list does not exclude files that might be missing.',1),
-				'RTEmagicFilePairs' => array('Statistical info about RTEmagic files','(copy used as index)',0),
-				'doubleFiles' => array('Duplicate RTEmagic image files','These files are RTEmagic images found used in multiple records! RTEmagic images should be used by only one record at a time. A large amount of such images probably stems from previous versions of TYPO3 (before 4.2) which did not support making copies automatically of RTEmagic images in case of new copies / versions.',3),
-				'missingFiles' => array('Missing RTEmagic image files','These files are not found in the file system! Should be corrected!',3),
-				'lostFiles' => array('Lost RTEmagic files from uploads/','These files you might be able to delete but only if _all_ RTEmagic images are found by the soft reference parser. If you are using the RTE in third-party extensions it is likely that the soft reference parser is not applied correctly to their RTE and thus these "lost" files actually represent valid RTEmagic images, just not registered. Lost files can be auto-fixed but only if you specifically set "lostFiles" as parameter to the --AUTOFIX option.',2),
+				'completeFileList' => array('Complete list of used RTEmagic files', 'Both parent and copy are listed here including usage count (which should in theory all be "1"). This list does not exclude files that might be missing.', 1),
+				'RTEmagicFilePairs' => array('Statistical info about RTEmagic files', '(copy used as index)', 0),
+				'doubleFiles' => array('Duplicate RTEmagic image files', 'These files are RTEmagic images found used in multiple records! RTEmagic images should be used by only one record at a time. A large amount of such images probably stems from previous versions of TYPO3 (before 4.2) which did not support making copies automatically of RTEmagic images in case of new copies / versions.', 3),
+				'missingFiles' => array('Missing RTEmagic image files', 'These files are not found in the file system! Should be corrected!', 3),
+				'lostFiles' => array('Lost RTEmagic files from uploads/', 'These files you might be able to delete but only if _all_ RTEmagic images are found by the soft reference parser. If you are using the RTE in third-party extensions it is likely that the soft reference parser is not applied correctly to their RTE and thus these "lost" files actually represent valid RTEmagic images, just not registered. Lost files can be auto-fixed but only if you specifically set "lostFiles" as parameter to the --AUTOFIX option.', 2),
 			),
 			'RTEmagicFilePairs' => array(),
 			'doubleFiles' => array(),
@@ -114,13 +114,13 @@ Reports problems with RTE images';
 		if (is_array($recs)) {
 			foreach($recs as $rec) {
 				$filename = basename($rec['ref_string']);
-				if (t3lib_div::isFirstPartOfStr($filename,'RTEmagicC_')) {
-					$original = 'RTEmagicP_'.preg_replace('/\.[[:alnum:]]+$/','',substr($filename,10));
+				if (t3lib_div::isFirstPartOfStr($filename, 'RTEmagicC_')) {
+					$original = 'RTEmagicP_'.preg_replace('/\.[[:alnum:]]+$/', '', substr($filename, 10));
 					$infoString = $this->infoStr($rec);
 
 						// Build index:
 					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['exists'] = @is_file(PATH_site.$rec['ref_string']);
-					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original'] = substr($rec['ref_string'],0,-strlen($filename)).$original;
+					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original'] = substr($rec['ref_string'], 0, -strlen($filename)).$original;
 					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original_exists'] = @is_file(PATH_site.$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['original']);
 					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['count']++;
 					$resultArray['RTEmagicFilePairs'][$rec['ref_string']]['usedIn'][$rec['hash']] = $infoString;
@@ -149,7 +149,7 @@ Reports problems with RTE images';
 			// Now, ask for RTEmagic files inside uploads/ folder:
 		$cleanerModules = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['lowlevel']['cleanerModules'];
 		$cleanerMode = t3lib_div::getUserObj($cleanerModules['lost_files'][0]);
-		$resLostFiles = $cleanerMode->main(array(),FALSE,TRUE);
+		$resLostFiles = $cleanerMode->main(array(), FALSE, TRUE);
 		if (is_array($resLostFiles['RTEmagicFiles'])) {
 			foreach($resLostFiles['RTEmagicFiles'] as $fileName) {
 				if (!isset($resultArray['completeFileList'][$fileName])) 	{
@@ -202,7 +202,7 @@ Reports problems with RTE images';
 								$rteOrigName = basename($fileInfo['original']);
 
 									// If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
-								if ($rteOrigName && t3lib_div::isFirstPartOfStr($dirPrefix,'uploads/') && @is_dir(PATH_site.$dirPrefix))	{	// RTE:
+								if ($rteOrigName && t3lib_div::isFirstPartOfStr($dirPrefix, 'uploads/') && @is_dir(PATH_site.$dirPrefix))	{	// RTE:
 
 										// From the "original" RTE filename, produce a new "original" destination filename which is unused.
 									$fileProcObj = $this->getFileProcObj();
@@ -210,7 +210,7 @@ Reports problems with RTE images';
 
 										// Create copy file name:
 									$pI = pathinfo($fileName);
-									$copyDestName = dirname($origDestName).'/RTEmagicC_'.substr(basename($origDestName),10).'.'.$pI['extension'];
+									$copyDestName = dirname($origDestName).'/RTEmagicC_'.substr(basename($origDestName), 10).'.'.$pI['extension'];
 									if (!@is_file($copyDestName) && !@is_file($origDestName)
 										&& $origDestName===t3lib_div::getFileAbsFileName($origDestName) && $copyDestName===t3lib_div::getFileAbsFileName($copyDestName)) {
 
@@ -220,13 +220,13 @@ Reports problems with RTE images';
 											echo $bypass;
 										} else {
 												// Making copies:
-											t3lib_div::upload_copy_move(PATH_site.$fileInfo['original'],$origDestName);
-											t3lib_div::upload_copy_move(PATH_site.$fileName,$copyDestName);
+											t3lib_div::upload_copy_move(PATH_site.$fileInfo['original'], $origDestName);
+											t3lib_div::upload_copy_move(PATH_site.$fileName, $copyDestName);
 											clearstatcache();
 
 											if (@is_file($copyDestName)) {
 												$sysRefObj = t3lib_div::makeInstance('t3lib_refindex');
-												$error = $sysRefObj->setReferenceValue($hash,substr($copyDestName,strlen(PATH_site)));
+												$error = $sysRefObj->setReferenceValue($hash, substr($copyDestName, strlen(PATH_site)));
 												if ($error) {
 													echo '	- ERROR:	t3lib_refindex::setReferenceValue(): '.$error.LF;
 													exit;

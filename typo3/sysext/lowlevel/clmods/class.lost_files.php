@@ -94,11 +94,11 @@ Will report lost files.';
 		$resultArray = array(
 			'message' => $this->cli_help['name'].LF.LF.$this->cli_help['description'],
 			'headers' => array(
-				'managedFiles' => array('Files related to TYPO3 records and managed by TCEmain','These files you definitely want to keep.',0),
-				'ignoredFiles' => array('Ignored files (index.html, .htaccess etc.)','These files are allowed in uploads/ folder',0),
-				'RTEmagicFiles' => array('RTE magic images - those found (and ignored)','These files are also allowed in some uploads/ folders as RTEmagic images.',0),
-				'lostFiles' => array('Lost files - those you can delete','You can delete these files!',3),
-				'warnings' => array('Warnings picked up','',2)
+				'managedFiles' => array('Files related to TYPO3 records and managed by TCEmain', 'These files you definitely want to keep.', 0),
+				'ignoredFiles' => array('Ignored files (index.html, .htaccess etc.)', 'These files are allowed in uploads/ folder', 0),
+				'RTEmagicFiles' => array('RTE magic images - those found (and ignored)', 'These files are also allowed in some uploads/ folders as RTEmagic images.', 0),
+				'lostFiles' => array('Lost files - those you can delete', 'You can delete these files!', 3),
+				'warnings' => array('Warnings picked up', '', 2)
 			),
 			'managedFiles' => array(),
 			'ignoredFiles' => array(),
@@ -109,17 +109,17 @@ Will report lost files.';
 
 			// Get all files:
 		$fileArr = array();
-		$fileArr = t3lib_div::getAllFilesAndFoldersInPath($fileArr,PATH_site.'uploads/');
-		$fileArr = t3lib_div::removePrefixPathFromList($fileArr,PATH_site);
+		$fileArr = t3lib_div::getAllFilesAndFoldersInPath($fileArr, PATH_site.'uploads/');
+		$fileArr = t3lib_div::removePrefixPathFromList($fileArr, PATH_site);
 
-		$excludePaths = t3lib_div::trimExplode(',',$this->cli_argValue('--excludePath',0),1);
+		$excludePaths = t3lib_div::trimExplode(',', $this->cli_argValue('--excludePath', 0), 1);
 
 			// Traverse files and for each, look up if its found in the reference index.
 		foreach($fileArr as $key => $value) {
 
 			$include = TRUE;
 			foreach($excludePaths as $exclPath) {
-				if (t3lib_div::isFirstPartOfStr($value,$exclPath)) {
+				if (t3lib_div::isFirstPartOfStr($value, $exclPath)) {
 					$include = FALSE;
 				}
 			}
@@ -128,7 +128,7 @@ Will report lost files.';
 
 			if ($include) {
 					// First, allow "index.html", ".htaccess" files since they are often used for good reasons
-				if (substr($value,-11) == '/index.html' || substr($value,-10) == '/.htaccess') {
+				if (substr($value, -11) == '/index.html' || substr($value, -10) == '/.htaccess') {
 					unset($fileArr[$key]);
 					$resultArray['ignoredFiles'][$shortKey] = $value;
 				} else {
@@ -152,7 +152,7 @@ Will report lost files.';
 						}
 					} else {
 							// When here it means the file was not found. So we test if it has a RTEmagic-image name and if so, we allow it:
-						if (preg_match('/^RTEmagic[P|C]_/',basename($value))) {
+						if (preg_match('/^RTEmagic[P|C]_/', basename($value))) {
 							unset($fileArr[$key]);
 							$resultArray['RTEmagicFiles'][$shortKey] = $value;
 						} else {
