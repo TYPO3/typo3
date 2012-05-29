@@ -262,7 +262,7 @@ class t3lib_search_livesearch {
 	 * Build a backend edit link based on given record.
 	 *
 	 * @param string $tableName Record table name
-	 * @param array	 $row  Current record row from database.
+	 * @param array $row Current record row from database.
 	 * @return string Link to open an edit window for record.
 	 *
 	 * @see t3lib_BEfunc::readPageAccess()
@@ -299,12 +299,13 @@ class t3lib_search_livesearch {
 	}
 
 	/**
-	 * Crops a title string to a limited lenght and if it really was cropped, wrap it in a <span title="...">|</span>,
+	 * Crops a title string to a limited lenght and if it really was cropped,
+	 * wrap it in a <span title="...">|</span>,
 	 * which offers a tooltip with the original title when moving mouse over it.
 	 *
-	 * @param	string		$title: The title string to be cropped
-	 * @param	integer		$titleLength: Crop title after this length - if not set, BE_USER->uc['titleLen'] is used
-	 * @return	string		The processed title string, wrapped in <span title="...">|</span> if cropped
+	 * @param string $title The title string to be cropped
+	 * @param integer $titleLength Crop title after this length - if not set, BE_USER->uc['titleLen'] is used
+	 * @return string The processed title string, wrapped in <span title="...">|</span> if cropped
 	 */
 	public function getRecordTitlePrep($title, $titleLength = 0) {
 			// If $titleLength is not a valid positive integer, use BE_USER->uc['titleLen']:
@@ -402,7 +403,6 @@ class t3lib_search_livesearch {
 	/**
 	 * Build the MySql ORDER BY statement.
 	 *
-	 *
 	 * @param string $tableName Record table name
 	 * @return string
 	 * @see t3lib_db::stripOrderBy()
@@ -492,10 +492,9 @@ class t3lib_search_livesearch {
 	 * Creates an instance of t3lib_pageTree which will select a page tree to
 	 * $depth and return the object. In that object we will find the ids of the tree.
 	 *
-	 * @param	integer		Page id.
-	 * @param	integer		Depth to go down.
-	 *
-	 * @return	string		coma separated list of uids
+	 * @param integer $id Page id.
+	 * @param integer $depth Depth to go down.
+	 * @return string Comma separated list of uids
 	 */
 	protected function getAvailablePageIds($id, $depth) {
 		$idList = '';
