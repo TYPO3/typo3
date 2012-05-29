@@ -26,7 +26,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * A class used for any kind of messages.
  *
@@ -105,7 +104,7 @@ abstract class t3lib_message_AbstractMessage {
 	/**
 	 * Gets the message' severity.
 	 *
-	 * @return int The message' severity, either of t3lib_message_AbstractMessage::INFO,
+	 * @return integer The message' severity, either of t3lib_message_AbstractMessage::INFO,
 	 *     t3lib_message_AbstractMessage::OK, t3lib_message_AbstractMessage::WARNING
 	 *     or t3lib_message_AbstractMessage::ERROR
 	 */
@@ -116,7 +115,7 @@ abstract class t3lib_message_AbstractMessage {
 	/**
 	 * Sets the message' severity
 	 *
-	 * @param int $severity The severity, must be either of t3lib_message_AbstractMessage::INFO,
+	 * @param integer $severity The severity, must be either of t3lib_message_AbstractMessage::INFO,
 	 *     t3lib_message_AbstractMessage::OK, t3lib_message_AbstractMessage::WARNING
 	 *     or t3lib_message_AbstractMessage::ERROR. Default is t3lib_message_AbstractMessage::OK.
 	 * @return void
@@ -129,7 +128,6 @@ abstract class t3lib_message_AbstractMessage {
 			self::OK // default if out of bounds
 		);
 	}
-
 
 	/**
 	 * Creates a string representation of the message. Useful for command

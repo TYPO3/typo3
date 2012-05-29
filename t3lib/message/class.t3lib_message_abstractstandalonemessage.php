@@ -26,7 +26,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Abstract class as base for standalone messages (error pages etc.)
  *
@@ -61,7 +60,7 @@ abstract class t3lib_message_AbstractStandaloneMessage extends t3lib_message_Abs
 	 *
 	 * @param string $message Message
 	 * @param string $title Title
-	 * @param int $severity Severity, see class constants of t3lib_message_AbstractMessage
+	 * @param integer $severity Severity, see class constants of t3lib_message_AbstractMessage
 	 */
 	public function __construct($message = '', $title = '', $severity = t3lib_message_AbstractMessage::ERROR) {
 		if (!empty($message)) {
