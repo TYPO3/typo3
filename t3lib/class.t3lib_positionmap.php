@@ -407,14 +407,16 @@ class t3lib_positionMap {
 		$row2 = '';
 		$count = t3lib_utility_Math::forceIntegerInRange(count($colPosArray), 1);
 
-		$backendLayout = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getSelectedBackendLayout', $pid, $this);
+		$backendLayout = t3lib_div::makeInstance('tx_cms_BackendLayout')->loadSetup($pid);
+		$backendLayoutId = $backendLayout->getSelectedBackendLayoutId($pid);
+		$backendLayoutSetup = $backendLayout->getSetup($backendLayoutId);
 
-		if (isset($backendLayout['__config']['backend_layout.'])) {
+		if ($backendLayoutSetup) {
 
 			$table = '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" id="typo3-ttContentList">';
 
-			$colCount = intval($backendLayout['__config']['backend_layout.']['colCount']);
-			$rowCount = intval($backendLayout['__config']['backend_layout.']['rowCount']);
+			$colCount = intval($backendLayoutSetup['colCount']);
+			$rowCount = intval($backendLayoutSetup['rowCount']);
 
 			$table .= '<colgroup>';
 			for ($i = 0; $i < $colCount; $i++) {
@@ -426,7 +428,7 @@ class t3lib_positionMap {
 
 				// Cycle through rows
 			for ($row = 1; $row <= $rowCount; $row++) {
-				$rowConfig = $backendLayout['__config']['backend_layout.']['rows.'][$row . '.'];
+				$rowConfig = $backendLayoutSetup['rows.'][$row . '.'];
 				if (!isset($rowConfig)) {
 					continue;
 				}
