@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * interface for classes with hook for postprocessing extTables after loading
  *

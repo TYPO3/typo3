@@ -28,7 +28,7 @@
 /**
  * Mailer Adapter interface
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -37,13 +37,13 @@ interface t3lib_mail_MailerAdapter {
 	/**
 	 * Mail sending function
 	 *
-	 * @param	string	$to Mail recipient.
-	 * @param	string	$subject Mail subject.
-	 * @param	string	$messageBody Mail body.
-	 * @param	array	$additionalHeaders Additional mail headers.
-	 * @param	array	$additionalParameters Additional mailer parameters.
-	 * @param	boolean	$fakeSending Whether to fake sending or not, used in Unit Tests.
-	 * @return	boolean	TRUE if the mail was successfully sent, FALSE otherwise.
+	 * @param string $to Mail recipient.
+	 * @param string $subject Mail subject.
+	 * @param string $messageBody Mail body.
+	 * @param array $additionalHeaders Additional mail headers.
+	 * @param array $additionalParameters Additional mailer parameters.
+	 * @param boolean $fakeSending Whether to fake sending or not, used in Unit Tests.
+	 * @return boolean TRUE if the mail was successfully sent, FALSE otherwise.
 	 */
 	public function mail($to, $subject, $messageBody, $additionalHeaders = NULL, $additionalParameters = NULL, $fakeSending = FALSE);
 

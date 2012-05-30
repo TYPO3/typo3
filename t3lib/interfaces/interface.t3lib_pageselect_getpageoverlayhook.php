@@ -25,11 +25,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * interface for classes which hook into t3lib_pageSelect
  *
- * @author	Tolleiv Nietsch <nietsch@aoemedia.de>
+ * @author Tolleiv Nietsch <nietsch@aoemedia.de>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -38,9 +37,9 @@ interface t3lib_pageSelect_getPageOverlayHook {
 	/**
 	 * enables to preprocess the pageoverlay
 	 *
-	 * @param array				$pageInput	- the page record
-	 * @param integer			$lUid		- the overlay language
-	 * @param t3lib_pageSelect	$parent		- the calling parent object
+	 * @param array $pageInput The page record
+	 * @param integer $lUid The overlay language
+	 * @param t3lib_pageSelect $parent The calling parent object
 	 * @return void
 	 */
 	public function getPageOverlay_preProcess(&$pageInput, &$lUid, t3lib_pageSelect $parent);

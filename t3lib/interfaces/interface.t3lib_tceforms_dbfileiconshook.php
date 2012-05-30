@@ -25,11 +25,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Interface for classes which hook into t3lib_TCEforms and do additional dbFileIcons processing
  *
- * @author	Andy Grunwald <andreas.grunwald@wmdb.de>
+ * @author Andy Grunwald <andreas.grunwald@wmdb.de>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -38,16 +37,16 @@ interface t3lib_TCEforms_dbFileIconsHook {
 	/**
 	 * Modifies the parameters for selector box form-field for the db/file/select elements (multiple)
 	 *
-	 * @param	array			$params				An array of additional parameters, eg: "size", "info", "headers" (array with "selector" and "items"), "noBrowser", "thumbnails"
-	 * @param	string			$selector			Alternative selector box.
-	 * @param	string			$thumbnails			Thumbnail view of images. Only filled if there are images only. This images will be shown under the selectorbox.
-	 * @param	array			$icons				Defined icons next to the selector box.
-	 * @param	string			$rightbox			Thumbnail view of images. Only filled if there are other types as images. This images will be shown right next to the selectorbox.
-	 * @param	string			$fName				Form element name
-	 * @param	array			$uidList			The array of item-uids. Have a look at t3lib_TCEforms::dbFileIcons parameter "$itemArray"
-	 * @param	array			$additionalParams	Array with additional parameters which are be available at method call. Includes $mode, $allowed, $itemArray, $onFocus, $table, $field, $uid. For more information have a look at PHPDoc-Comment of t3lib_TCEforms::dbFileIcons
-	 * @param	t3lib_TCEforms	$parentObject		parent t3lib_TCEforms object
-	 * @return	void
+	 * @param array $params An array of additional parameters, eg: "size", "info", "headers" (array with "selector" and "items"), "noBrowser", "thumbnails"
+	 * @param string $selector Alternative selector box.
+	 * @param string $thumbnails Thumbnail view of images. Only filled if there are images only. This images will be shown under the selectorbox.
+	 * @param array $icons Defined icons next to the selector box.
+	 * @param string $rightbox Thumbnail view of images. Only filled if there are other types as images. This images will be shown right next to the selectorbox.
+	 * @param string $fName Form element name
+	 * @param array $uidList The array of item-uids. Have a look at t3lib_TCEforms::dbFileIcons parameter "$itemArray"
+	 * @param array $additionalParams Array with additional parameters which are be available at method call. Includes $mode, $allowed, $itemArray, $onFocus, $table, $field, $uid. For more information have a look at PHPDoc-Comment of t3lib_TCEforms::dbFileIcons
+	 * @param t3lib_TCEforms $parentObject Parent t3lib_TCEforms object
+	 * @return void
 	 */
 	public function dbFileIcons_postProcess(array &$params, &$selector, &$thumbnails, array &$icons, &$rightbox, &$fName, array &$uidList, array $additionalParams, t3lib_TCEforms $parentObject);
 }
