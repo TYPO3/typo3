@@ -38,7 +38,6 @@ interface t3lib_file_Service_Publishing_Publisher {
 	/**
 	 * Publishes a file to this publisher's public space
 	 *
-	 * @abstract
 	 * @param t3lib_file_FileInterface $fileObject
 	 * @return string The URI of the published file
 	 */
@@ -47,7 +46,6 @@ interface t3lib_file_Service_Publishing_Publisher {
 	/**
 	 * Publishes a collection of files, if necessary also recursively.
 	 *
-	 * @abstract
 	 * @param t3lib_file_Folder $folder
 	 * @return void
 	 */
@@ -56,16 +54,14 @@ interface t3lib_file_Service_Publishing_Publisher {
 	/**
 	 * Returns TRUE if a file has been published.
 	 *
-	 * @abstract
 	 * @param t3lib_file_FileInterface $fileObject
-	 * @return bool
+	 * @return boolean
 	 */
 	public function isPublished(t3lib_file_FileInterface $fileObject);
 
 	/**
 	 * Returns the public URL of a given file. Will throw an exception if the file is not public.
 	 *
-	 * @abstract
 	 * @param t3lib_file_FileInterface $fileObject
 	 * @return string
 	 */

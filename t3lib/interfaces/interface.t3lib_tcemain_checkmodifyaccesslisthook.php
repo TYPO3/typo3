@@ -28,18 +28,19 @@
 /**
  * Interface for hook in t3lib_TCEmain::checkModifyAccessList
  *
- * @author	Oliver Hader <oliver@typo3.org>
+ * @author Oliver Hader <oliver@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
 interface t3lib_TCEmain_checkModifyAccessListHook {
+
 	/**
 	 * Hook that determines whether a user has access to modify a table.
 	 *
-	 * @param	boolean			&$accessAllowed: Whether the user has access to modify a table
-	 * @param	string			$table: The name of the table to be modified
-	 * @param	t3lib_TCEmain	$parent: The calling parent object
-	 * @return	void
+	 * @param boolean &$accessAllowed Whether the user has access to modify a table
+	 * @param string $table The name of the table to be modified
+	 * @param t3lib_TCEmain $parent The calling parent object
+	 * @return void
 	 */
 	public function checkModifyAccessList(&$accessAllowed, $table, t3lib_TCEmain $parent);
 }
