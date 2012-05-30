@@ -28,9 +28,9 @@
 /**
  * Parser for XLIFF file.
  *
- * @package	TYPO3
- * @subpackage	t3lib
- * @author	Dominique Feyer <dfeyer@reelpeek.net>
+ * @package TYPO3
+ * @subpackage t3lib
+ * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class t3lib_l10n_parser_Xliff extends t3lib_l10n_parser_AbstractXml {
 

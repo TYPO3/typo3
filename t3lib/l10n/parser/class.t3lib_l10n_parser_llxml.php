@@ -28,9 +28,9 @@
 /**
  * Parser for XML locallang file.
  *
- * @package	TYPO3
- * @subpackage	t3lib
- * @author	Dominique Feyer <dfeyer@reelpeek.net>
+ * @package TYPO3
+ * @subpackage t3lib
+ * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 
@@ -169,9 +169,9 @@ class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 	/**
 	 * Reads and parses XML file and returns internal representation of data.
 	 *
-	 * @throws t3lib_l10n_exception_InvalidXmlFile
 	 * @param string $targetPath Path of the target file
 	 * @return array
+	 * @throws t3lib_l10n_exception_InvalidXmlFile
 	 */
 	protected function parseXmlTargetFile($targetPath) {
 		$rootXmlNode = FALSE;

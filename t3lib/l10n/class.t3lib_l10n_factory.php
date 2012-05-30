@@ -28,9 +28,9 @@
 /**
  * Provides a language parser factory.
  *
- * @package	TYPO3
- * @subpackage	t3lib
- * @author	Dominique Feyer <dfeyer@reelpeek.net>
+ * @package TYPO3
+ * @subpackage t3lib
+ * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class t3lib_l10n_Factory implements t3lib_Singleton {
 
@@ -56,6 +56,11 @@ class t3lib_l10n_Factory implements t3lib_Singleton {
 		$this->initialize();
 	}
 
+	/**
+	 * Initialize
+	 *
+	 * @return void
+	 */
 	protected function initialize() {
 		$this->store = t3lib_div::makeInstance('t3lib_l10n_Store');
 
@@ -77,9 +82,9 @@ class t3lib_l10n_Factory implements t3lib_Singleton {
 	 * @param string $fileReference Input is a file-reference (see t3lib_div::getFileAbsFileName). That file is expected to be a supported locallang file format
 	 * @param string $languageKey Language key
 	 * @param string $charset Character set (option); if not set, determined by the language key
-	 * @param int $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception$
-	 * @param bool $isLocalizationOverride TRUE if $fileReference is a localization override
-	 * @return array|bool
+	 * @param integer $errorMode Error mode (when file could not be found): 0 - syslog entry, 1 - do nothing, 2 - throw an exception$
+	 * @param boolean $isLocalizationOverride TRUE if $fileReference is a localization override
+	 * @return array|boolean
 	 */
 	public function getParsedData($fileReference, $languageKey, $charset, $errorMode, $isLocalizationOverride = FALSE) {
 		try {

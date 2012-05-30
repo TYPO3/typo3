@@ -28,9 +28,9 @@
 /**
  * Language store.
  *
- * @package	Core
- * @subpackage	t3lib
- * @author	Dominique Feyer <dominique.feyer@reelpeek.net>
+ * @package TYPO3
+ * @subpackage t3lib
+ * @author Dominique Feyer <dominique.feyer@reelpeek.net>
  */
 class t3lib_l10n_Store implements t3lib_Singleton {
 
@@ -83,7 +83,7 @@ class t3lib_l10n_Store implements t3lib_Singleton {
 	 *
 	 * @param string $fileReference File reference
 	 * @param string $languageKey Valid language key
-	 * @return bool
+	 * @return boolean
 	 */
 	public function hasData($fileReference, $languageKey) {
 		if (isset($this->data[$fileReference][$languageKey]) && is_array($this->data[$fileReference][$languageKey])) {
@@ -121,7 +121,7 @@ class t3lib_l10n_Store implements t3lib_Singleton {
 	 *
 	 * @param string $fileReference File reference
 	 * @param string $languageKey Valid language key
-	 * @param $data
+	 * @param array $data
 	 * @return t3lib_l10n_Store This instance to allow method chaining
 	 */
 	public function setData($fileReference, $languageKey, $data) {
@@ -143,11 +143,11 @@ class t3lib_l10n_Store implements t3lib_Singleton {
 	/**
 	 * Checks file reference configuration (charset, extension, ...).
 	 *
-	 * @throws t3lib_l10n_exception_InvalidParser|t3lib_l10n_exception_FileNotFound
 	 * @param string $fileReference File reference
 	 * @param string $languageKey Valid language key
 	 * @param string $charset Rendering charset
 	 * @return t3lib_l10n_Store This instance to allow method chaining
+	 * @throws t3lib_l10n_exception_InvalidParser|t3lib_l10n_exception_FileNotFound
 	 */
 	public function setConfiguration($fileReference, $languageKey, $charset) {
 		$this->configuration[$fileReference] = array(
@@ -212,9 +212,9 @@ class t3lib_l10n_Store implements t3lib_Singleton {
 	/**
 	 * Returns the correct parser for a specific file reference.
 	 *
-	 * @throws t3lib_l10n_exception_InvalidParser
-	 * @param string $fileReference	File reference
+	 * @param string $fileReference File reference
 	 * @return t3lib_l10n_parser
+	 * @throws t3lib_l10n_exception_InvalidParser
 	 */
 	public function getParserInstance($fileReference) {
 		if (isset($this->configuration[$fileReference]['parserClass']) && trim($this->configuration[$fileReference]['parserClass']) !== '') {
@@ -230,9 +230,9 @@ class t3lib_l10n_Store implements t3lib_Singleton {
 	/**
 	 * Gets the absolute file path.
 	 *
-	 * @throws InvalidArgumentException
 	 * @param string $fileReference
 	 * @return string
+	 * @throws InvalidArgumentException
 	 */
 	public function getAbsoluteFileReference($fileReference) {
 		if (isset($this->configuration[$fileReference]['fileReference']) && trim($this->configuration[$fileReference]['fileReference']) !== '') {
