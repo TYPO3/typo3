@@ -29,8 +29,8 @@
  * Parser interface.
  *
  * @package	TYPO3
- * @subpackage	t3lib
- * @author	Dominique Feyer <dfeyer@reelpeek.net>
+ * @subpackage t3lib
+ * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 interface t3lib_l10n_parser {
 

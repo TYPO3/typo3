@@ -28,26 +28,36 @@
 /**
  * Parser for PHP locallang array.
  *
- * @package	TYPO3
- * @subpackage	t3lib
+ * @package TYPO3
+ * @subpackage t3lib
  * @author Dominique Feyer <dfeyer@reelpeek.net>
  * @author Dmitry Dulepov <dmitry.dulepov@gmail.com>
  */
 class t3lib_l10n_parser_Llphp implements t3lib_l10n_parser {
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $cacheFileName;
 
-	/** @var t3lib_cs */
+	/**
+	 * @var t3lib_cs
+	 */
 	protected $csConvObj;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $hashSource;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $sourceCharset;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	protected $targetCharset;
 
 	/**
@@ -62,11 +72,11 @@ class t3lib_l10n_parser_Llphp implements t3lib_l10n_parser {
 	/**
 	 * Returns parsed representation of PHP locallang file.
 	 *
-	 * @throws RuntimeException
 	 * @param string $sourcePath Source file path
 	 * @param string $languageKey Language key
 	 * @param string $charset Charset
 	 * @return array
+	 * @throws RuntimeException
 	 */
 	public function getParsedData($sourcePath, $languageKey, $charset = '') {
 		$this->validateParameters($sourcePath, $languageKey);
@@ -120,10 +130,10 @@ class t3lib_l10n_parser_Llphp implements t3lib_l10n_parser {
 	/**
 	 * Generates the cache file.
 	 *
-	 * @throws RuntimeException
 	 * @param string $sourcePath
 	 * @param string $languageKey
 	 * @return array
+	 * @throws RuntimeException
 	 */
 	protected function generateCacheFile($sourcePath, $languageKey) {
 		$LOCAL_LANG = array();
@@ -154,7 +164,7 @@ class t3lib_l10n_parser_Llphp implements t3lib_l10n_parser {
 			unset($labelValue);
 		}
 
-		// Cache the content now:
+			// Cache the content now:
 		$serContent = array('origFile' => $this->hashSource, 'LOCAL_LANG' => array('default' => $LOCAL_LANG['default'], $languageKey => $LOCAL_LANG[$languageKey]));
 		$res = t3lib_div::writeFileToTypo3tempDir($this->cacheFileName, serialize($serContent));
 		if ($res) {
@@ -196,7 +206,7 @@ class t3lib_l10n_parser_Llphp implements t3lib_l10n_parser {
 	 * Checks if the file is within the web root.
 	 *
 	 * @param string $fileName
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isWithinWebRoot($fileName) {
 		return (bool)t3lib_div::getFileAbsFileName($fileName);
@@ -222,10 +232,10 @@ class t3lib_l10n_parser_Llphp implements t3lib_l10n_parser {
 	/**
 	 * Validates parameters for the function.
 	 *
-	 * @throws RuntimeException
 	 * @param string $sourcePath
 	 * @param string $languageKey
 	 * @return void
+	 * @throws RuntimeException
 	 */
 	protected function validateParameters($sourcePath, $languageKey) {
 		if (!$this->isWithinWebRoot($sourcePath) || !@is_file($sourcePath) || !$languageKey) {

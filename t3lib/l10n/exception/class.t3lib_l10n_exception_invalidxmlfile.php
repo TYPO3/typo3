@@ -28,9 +28,9 @@
 /**
  * Invalid XML file exception
  *
- * @package	TYPO3
- * @subpackage	t3lib
- * @author	Dominique Feyer <dfeyer@reelpeek.net>
+ * @package TYPO3
+ * @subpackage t3lib
+ * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 class t3lib_l10n_exception_InvalidXmlFile extends RuntimeException {
 

@@ -28,9 +28,9 @@
 /**
  * Abstract class for XML based parser.
  *
- * @package	TYPO3
- * @subpackage	t3lib
- * @author	Dominique Feyer <dfeyer@reelpeek.net>
+ * @package TYPO3
+ * @subpackage t3lib
+ * @author Dominique Feyer <dfeyer@reelpeek.net>
  */
 abstract class t3lib_l10n_parser_AbstractXml implements t3lib_l10n_parser {
 
@@ -52,11 +52,11 @@ abstract class t3lib_l10n_parser_AbstractXml implements t3lib_l10n_parser {
 	/**
 	 * Returns parsed representation of XML file.
 	 *
-	 * @throws t3lib_l10n_exception_FileNotFound
 	 * @param string $sourcePath Source file path
 	 * @param string $languageKey Language key
 	 * @param string $charset File charset
 	 * @return array
+	 * @throws t3lib_l10n_exception_FileNotFound
 	 */
 	public function getParsedData($sourcePath, $languageKey, $charset = '') {
 		$this->sourcePath = $sourcePath;
@@ -117,8 +117,8 @@ abstract class t3lib_l10n_parser_AbstractXml implements t3lib_l10n_parser {
 	/**
 	 * Loads the current XML file before processing.
 	 *
-	 * @throws t3lib_l10n_exception_InvalidXmlFile
 	 * @return array An array representing parsed XML file (structure depends on concrete parser)
+	 * @throws t3lib_l10n_exception_InvalidXmlFile
 	 */
 	protected function parseXmlFile() {
 		$rootXmlNode = simplexml_load_file($this->sourcePath, 'SimpleXmlElement', \LIBXML_NOWARNING);
@@ -136,7 +136,6 @@ abstract class t3lib_l10n_parser_AbstractXml implements t3lib_l10n_parser {
 	/**
 	 * Returns array representation of XML data, starting from a root node.
 	 *
-	 * @abstract
 	 * @param SimpleXMLElement $root A root node
 	 * @return array An array representing the parsed XML file
 	 */

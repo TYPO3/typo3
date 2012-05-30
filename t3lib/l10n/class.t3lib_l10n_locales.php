@@ -30,14 +30,16 @@
  *
  * Defining backend system languages
  * When adding new keys, remember to:
- * 		- Add character encoding for lang. key in t3lib/class.t3lib_cs.php (default for new languages is "utf-8")
- * 		- Add mappings for language in t3lib/class.t3lib_cs.php (TYPO3/ISO, language/script, script/charset)
+ * 		- Add character encoding for lang. key in t3lib/class.t3lib_cs.php
+ * 		 (default for new languages is "utf-8")
+ * 		- Add mappings for language in t3lib/class.t3lib_cs.php (TYPO3/ISO,
+ * 			language/script, script/charset)
  * 		- Update 'setup' extension labels (sysext/setup/mod/locallang.xlf)
  * That's it!
  *
- * @package	Core
- * @subpackage	t3lib
- * @author	Xavier Perseguers <typo3@perseguers.ch>
+ * @package TYPO3
+ * @subpackage t3lib
+ * @author Xavier Perseguers <typo3@perseguers.ch>
  */
 class t3lib_l10n_Locales implements t3lib_Singleton {
 
@@ -147,7 +149,6 @@ class t3lib_l10n_Locales implements t3lib_Singleton {
 	/**
 	 * Initializes the languages.
 	 *
-	 * @static
 	 * @return void
 	 */
 	public static function initialize() {
