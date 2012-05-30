@@ -25,11 +25,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Interface all handlers in t3lib_spritemanager have to implement.
  *
- * @author	Steffen Ritter <info@steffen-ritter.net>
+ * @author Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -48,7 +47,7 @@ interface t3lib_spritemanager_SpriteIconGenerator {
 	 * The sprite manager will call this function after the call to "generate"
 	 * it should return an array of all sprite-icon-names generated through the run
 	 *
-	 * @retun array all generated/detected sprite-icon-names
+	 * @retun array All generated/detected sprite-icon-names
 	 */
 	public function getAvailableIconNames();
 }

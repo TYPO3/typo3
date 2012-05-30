@@ -25,11 +25,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * interface for classes which hook into localRecordList and do additional getTable processing
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -38,12 +37,12 @@ interface t3lib_localRecordListGetTableHook {
 	/**
 	 * modifies the DB list query
 	 *
-	 * @param	string				the current database table
-	 * @param	integer				the record's page ID
-	 * @param	string				an additional WHERE clause
-	 * @param	string				comma separated list of selected fields
-	 * @param	localRecordList		parent localRecordList object
-	 * @return	void
+	 * @param string $table The current database table
+	 * @param integer $pageId The record's page ID
+	 * @param string $additionalWhereClause An additional WHERE clause
+	 * @param string $selectedFieldsList Comma separated list of selected fields
+	 * @param localRecordList $parentObject Parent localRecordList object
+	 * @return void
 	 */
 	public function getDBlistQuery($table, $pageId, &$additionalWhereClause, &$selectedFieldsList, &$parentObject);
 
