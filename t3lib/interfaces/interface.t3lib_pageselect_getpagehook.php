@@ -25,24 +25,22 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Interface for classes which hook into pageSelect and do additional getPage processing
  *
- * @author	Christian Kuhn <lolli@schwarzbu.ch>
+ * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @package TYPO3
  * @subpackage t3lib
  */
-
 interface t3lib_pageSelect_getPageHook {
 
 	/**
 	 * Modifies the DB params
 	 *
-	 * @param	integer				The page ID
-	 * @param	boolean				If set, the check for group access is disabled. VERY rarely used
-	 * @param	t3lib_pageSelect	parent t3lib_pageSelect object
-	 * @return	void
+	 * @param integer $uid The page ID
+	 * @param boolean $disableGroupAccessCheck If set, the check for group access is disabled. VERY rarely used
+	 * @param t3lib_pageSelect $parentObject Parent t3lib_pageSelect object
+	 * @return void
 	 */
 	public function getPage_preProcess(&$uid, &$disableGroupAccessCheck, t3lib_pageSelect $parentObject);
 

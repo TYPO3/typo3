@@ -25,56 +25,55 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
- * interface for classes which hook into browse_links
+ * Interface for classes which hook into browse_links
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
 interface t3lib_browseLinksHook {
 
 	/**
-	 * initializes the hook object
+	 * Initializes the hook object
 	 *
-	 * @param	browse_links	parent browse_links object
-	 * @param	array			additional parameters
-	 * @return	void
+	 * @param browse_links Parent browse_links object
+	 * @param array Additional parameters
+	 * @return void
 	 */
 	public function init($parentObject, $additionalParameters);
 
 	/**
-	 * adds new items to the currently allowed ones and returns them
+	 * Adds new items to the currently allowed ones and returns them
 	 *
-	 * @param	array	currently allowed items
-	 * @return	array	currently allowed items plus added items
+	 * @param array Currently allowed items
+	 * @return array Currently allowed items plus added items
 	 */
 	public function addAllowedItems($currentlyAllowedItems);
 
 	/**
-	 * modifies the menu definition and returns it
+	 * Modifies the menu definition and returns it
 	 *
-	 * @param	array	menu definition
-	 * @return	array	modified menu definition
+	 * @param array	Menu definition
+	 * @return array Modified menu definition
 	 */
 	public function modifyMenuDefinition($menuDefinition);
 
 	/**
-	 * returns a new tab for the browse links wizard
+	 * Returns a new tab for the browse links wizard
 	 *
-	 * @param	string		current link selector action
-	 * @return	string		a tab for the selected link action
+	 * @param string Current link selector action
+	 * @return string A tab for the selected link action
 	 */
 	public function getTab($linkSelectorAction);
 
 	/**
-	 * checks the current URL and determines what to do
+	 * Checks the current URL and determines what to do
 	 *
-	 * @param	unknown_type		$href
-	 * @param	unknown_type		$siteUrl
-	 * @param	unknown_type		$info
-	 * @return	unknown_type
+	 * @param string $href
+	 * @param string $siteUrl
+	 * @param array $info
+	 * @return array
 	 */
 	public function parseCurrentUrl($href, $siteUrl, $info);
 
