@@ -637,6 +637,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 			// max usuable width for images (without spacers and borders)
 		$netW = $maxW - $colspacing * ($colCount - 1) - $colCount * $border * ($borderThickness + $borderSpace) * 2;
+		if ($netW < 0) {
+			$netW = 0;
+		}
 
 			// Specify the maximum width for each column
 		$columnWidths = $this->getImgColumnWidths($conf, $colCount, $netW);
