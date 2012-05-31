@@ -29,15 +29,16 @@
 /**
  * Ext Direct Router
  *
- * @author	Sebastian Kurfürst <sebastian@typo3.org>
- * @author	Stefan Galinski <stefan.galinski@gmail.com>
- * @package	TYPO3
+ * @author Sebastian Kurfürst <sebastian@typo3.org>
+ * @author Stefan Galinski <stefan.galinski@gmail.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_extjs_ExtDirectRouter {
 	/**
 	 * Dispatches the incoming calls to methods about the ExtDirect API.
 	 *
-	 * @param aray $ajaxParams ajax parameters
+	 * @param aray $ajaxParams Ajax parameters
 	 * @param TYPO3AJAX $ajaxObj typo3ajax instance
 	 * @return void
 	 */
@@ -138,8 +139,8 @@ class t3lib_extjs_ExtDirectRouter {
 	 *
 	 * @param object $singleRequest request object from extJS
 	 * @param string $namespace namespace like TYPO3.Backend
-	 * @throws UnexpectedValueException if the remote method couldn't be found
 	 * @return mixed return value of the called method
+	 * @throws UnexpectedValueException if the remote method couldn't be found
 	 */
 	protected function processRpc($singleRequest, $namespace) {
 		$endpointName = $namespace . '.' . $singleRequest->action;

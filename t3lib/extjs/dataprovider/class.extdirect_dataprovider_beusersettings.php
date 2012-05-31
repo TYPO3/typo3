@@ -27,6 +27,10 @@
 
 /**
  * ExtDirect DataProvider for BE User Settings
+ *
+ * @author Steffen Kamper <steffen@typo3.org>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class extDirect_DataProvider_BackendUserSettings {
 
@@ -35,8 +39,8 @@ class extDirect_DataProvider_BackendUserSettings {
 	 *
 	 * Returns all user settings, if $key is not specified, otherwise it retuns the value for $key
 	 *
-	 * @param  string $key  identifier, allows also dotted notation for subarrays
-	 * @return mixed value associated
+	 * @param string $key Identifier, allows also dotted notation for subarrays
+	 * @return mixed Value associated
 	 */
 	public function get($key = '') {
 		if (strpos($key, '.') !== FALSE) {
@@ -50,8 +54,8 @@ class extDirect_DataProvider_BackendUserSettings {
 	/**
 	 * Sets user settings by key/value pair
 	 *
-	 * @param  string $key
-	 * @param  mixed $value
+	 * @param string $key
+	 * @param mixed $value
 	 * @return void
 	 */
 	public function set($key, $value) {
@@ -136,7 +140,7 @@ class extDirect_DataProvider_BackendUserSettings {
 	/**
 	 * Computes the subarray from dotted notation
 	 *
-	 * @param  $key dotted notation of subkeys like moduleData.module1.general.checked
+	 * @param $key Dotted notation of subkeys like moduleData.module1.general.checked
 	 * @return mixed $array value of the settings
 	 */
 	protected function getFromDottedNotation($key) {
@@ -151,8 +155,8 @@ class extDirect_DataProvider_BackendUserSettings {
 	/**
 	 * Sets the value of a key written in dotted notation
 	 *
-	 * @param  string $key
-	 * @param  mixed $value
+	 * @param string $key
+	 * @param mixed $value
 	 * @return void
 	 */
 	protected function setFromDottedNotation($key, $value) {
