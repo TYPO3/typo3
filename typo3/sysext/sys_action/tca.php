@@ -125,7 +125,7 @@ $TCA['sys_action'] = array(
 				'type' => 'select',
 				'special' => 'tables',
 				'items' => array(
-					array('','')
+					array('', '')
 				)
 			)
 		),

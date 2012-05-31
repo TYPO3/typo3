@@ -81,5 +81,5 @@ if (TYPO3_MODE=='BE') {
 	t3lib_extMgm::allowTableOnStandardPages('sys_note');
 }
 
-t3lib_extMgm::addLLrefForTCAdescr('sys_note','EXT:sys_note/locallang_csh_sysnote.xml');
+t3lib_extMgm::addLLrefForTCAdescr('sys_note', 'EXT:sys_note/locallang_csh_sysnote.xml');
 ?>

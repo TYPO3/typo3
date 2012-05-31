@@ -227,20 +227,20 @@ class tx_sv_auth extends tx_sv_authbase 	{
 			if (is_array($user) && $user[$this->db_user['usergroup_column']]) {
 				$groupList = $user[$this->db_user['usergroup_column']];
 				$groups = array();
-				$this->getSubGroups($groupList,'',$groups);
+				$this->getSubGroups($groupList, '', $groups);
 			}
 
 				// ADD group-numbers if the IPmask matches.
 			if (is_array($TYPO3_CONF_VARS['FE']['IPmaskMountGroups'])) {
 				foreach($TYPO3_CONF_VARS['FE']['IPmaskMountGroups'] as $IPel) {
-					if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && t3lib_div::cmpIP($this->authInfo['REMOTE_ADDR'],$IPel[0]))	{$groups[]=intval($IPel[1]);}
+					if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && t3lib_div::cmpIP($this->authInfo['REMOTE_ADDR'], $IPel[0]))	{$groups[]=intval($IPel[1]);}
 				}
 			}
 
 			$groups = array_unique($groups);
 
 			if (count($groups)) {
-				$list = implode(',',$groups);
+				$list = implode(',', $groups);
 
 				if ($this->writeDevLog) 	t3lib_div::devLog('Get usergroups with id: '.$list, 'tx_sv_auth');
 
@@ -294,11 +294,11 @@ class tx_sv_auth extends tx_sv_authbase 	{
 
 				// Get row:
 			$row=$groupRows[$uid];
-			if (is_array($row) && !t3lib_div::inList($idList,$uid))	{	// Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
+			if (is_array($row) && !t3lib_div::inList($idList, $uid))	{	// Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
 
 					// Include sub groups
 				if (trim($row['subgroup'])) {
-					$theList = implode(',',t3lib_div::intExplode(',',$row['subgroup']));	// Make integer list
+					$theList = implode(',',t3lib_div::intExplode(',', $row['subgroup']));	// Make integer list
 					$this->getSubGroups($theList, $idList.','.$uid, $groups);		// Call recursively, pass along list of already processed groups so they are not recursed again.
 				}
 			}
