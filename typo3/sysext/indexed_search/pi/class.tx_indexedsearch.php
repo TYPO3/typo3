@@ -235,7 +235,7 @@ class tx_indexedsearch extends tslib_pibase {
 
 			// Free Index Uid:
 		if ($this->conf['search.']['defaultFreeIndexUidList']) {
-			$uidList = t3lib_div::intExplode(',' , $this->conf['search.']['defaultFreeIndexUidList']);
+			$uidList = t3lib_div::intExplode(',', $this->conf['search.']['defaultFreeIndexUidList']);
 			$indexCfgRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'index_config', 'uid IN ('.implode(',', $uidList).')'.$this->cObj->enableFields('index_config'), '', '', '', 'uid');
 
 			foreach ($uidList as $uidValue) {

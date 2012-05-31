@@ -479,10 +479,7 @@ class SC_db_new {
 						$rowContent = '';
 
 							// Create new link for record:
-						$newLink = $this->linkWrap(
-							$newRecordIcon . $GLOBALS['LANG']->sL($v['ctrl']['title'], 1)
-							,$table
-							,$this->id);
+						$newLink = $this->linkWrap($newRecordIcon . $GLOBALS['LANG']->sL($v['ctrl']['title'], 1), $table, $this->id);
 
 							// If the table is 'tt_content' (from "cms" extension), create link to wizard
 						if ($table == 'tt_content') {
