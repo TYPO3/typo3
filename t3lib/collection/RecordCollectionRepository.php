@@ -131,6 +131,7 @@ class t3lib_collection_RecordCollectionRepository {
 	 * Deletes a record collection by uid.
 	 *
 	 * @param integer $uid uid to be deleted
+	 * @return void
 	 */
 	public function deleteByUid($uid) {
 		$this->getDatabase()->exec_UPDATEquery(

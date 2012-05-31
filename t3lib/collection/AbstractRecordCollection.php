@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Abstract implementation of a RecordCollection
  *
@@ -39,7 +38,6 @@
  * The AbstractRecordCollection uses SplDoublyLinkedList for internal storage
  *
  * @author Steffen Ritter <typo3@steffen-ritter.net>
- * @abstract
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -61,7 +59,7 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	/**
 	 * Uid of the storage
 	 *
-	 * @var int
+	 * @var integer
 	 */
 	protected $uid = 0;
 
@@ -101,7 +99,7 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	}
 
 	/**
-	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * (PHP 5 >= 5.1.0)
 	 * Return the current element
 	 *
 	 * @link http://php.net/manual/en/iterator.current.php
@@ -112,7 +110,7 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	}
 
 	/**
-	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * (PHP 5 >= 5.1.0)
 	 * Move forward to next element
 	 *
 	 * @link http://php.net/manual/en/iterator.next.php
@@ -123,12 +121,11 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	}
 
 	/**
-	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * (PHP 5 >= 5.1.0)
 	 * Return the key of the current element
 	 *
 	 * @link http://php.net/manual/en/iterator.key.php
-	 * @return integer
-	 * 0 on failure.
+	 * @return integer 0 on failure.
 	 */
 	public function key() {
 		$currentRecord = $this->storage->current();
@@ -136,7 +133,7 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	}
 
 	/**
-	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * (PHP 5 >= 5.1.0)
 	 * Checks if current position is valid
 	 *
 	 * @link http://php.net/manual/en/iterator.valid.php
@@ -148,7 +145,7 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	}
 
 	/**
-	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * (PHP 5 >= 5.1.0)
 	 * Rewind the Iterator to the first element
 	 *
 	 * @link http://php.net/manual/en/iterator.rewind.php
@@ -159,7 +156,7 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	}
 
 	/**
-	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * (PHP 5 >= 5.1.0)
 	 * String representation of object
 	 *
 	 * @link http://php.net/manual/en/serializable.serialize.php
@@ -173,13 +170,11 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	}
 
 	/**
-	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * (PHP 5 >= 5.1.0)
 	 * Constructs the object
 	 *
 	 * @link http://php.net/manual/en/serializable.unserialize.php
-	 * @param string $serialized <p>
-	 * The string representation of the object.
-	 * </p>
+	 * @param string $serialized The string representation of the object
 	 * @return mixed the original value unserialized.
 	 */
 	public function unserialize($serialized) {
@@ -188,13 +183,11 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	}
 
 	/**
-	 * (PHP 5 &gt;= 5.1.0)<br/>
+	 * (PHP 5 >= 5.1.0)
 	 * Count elements of an object
 	 *
 	 * @link http://php.net/manual/en/countable.count.php
-	 * @return int The custom count as an integer.
-	 * </p>
-	 * <p>
+	 * @return integer The custom count as an integer.
 	 * The return value is cast to an integer.
 	 */
 	public function count() {
@@ -213,7 +206,7 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	/**
 	 * Getter for the UID
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getUid() {
 		return $this->uid;
@@ -288,15 +281,14 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	 * the item at $currentPosition will be moved to
 	 * $newPosition. Ommiting $newPosition will move to top.
 	 *
-	 * @param int $currentPosition
-	 * @param int $newPosition
+	 * @param integer $currentPosition
+	 * @param integer $newPosition
 	 * @return void
 	 */
 	public function moveItemAt($currentPosition, $newPosition = 0) {
 		// TODO: Implement usort() method with TCEforms in mind
 		throw new RuntimeException('This method is not yet supported.', 1322545626);
 	}
-
 
 	/**
 	 * Returns the uid of the collection
@@ -310,13 +302,12 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	/**
 	 * Sets the identifier of the collection
 	 *
-	 * @param int $id
+	 * @param integer $id
 	 * @return void
 	 */
 	public function setIdentifier($id) {
 		$this->uid = intval($id);
 	}
-
 
 	/**
 	 * Loads the collections with the given id from persistence
@@ -325,7 +316,6 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	 * identifier (what ever static data is defined) is loaded.
 	 * Entries can be load on first access.
 	 *
-	 * @static
 	 * @param integer $id Id of database record to be loaded
 	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @return t3lib_collection_Collection
@@ -346,9 +336,8 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	 * Creates a new collection objects and reconstitutes the
 	 * given database record to the new object.
 	 *
-	 * @static
 	 * @param array $collectionRecord Database record
-	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
+	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @return t3lib_collection_Collection
 	 */
 	public static function create(array $collectionRecord, $fillItems = FALSE) {
@@ -374,7 +363,7 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 				$uid => $this->getPersistableDataArray()
 			)
 		);
-			// new records always must have a pid
+			// New records always must have a pid
 		if ($this->getIdentifier() == 0) {
 			$data[trim(static::$storageTableName)][$uid]['pid'] = 0;
 		}
@@ -390,9 +379,8 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	 * Returns an array of the persistable properties and contents
 	 * which are processable by TCEmain.
 	 *
-	 * for internal usage in persist only.
+	 * For internal usage in persist only.
 	 *
-	 * @abstract
 	 * @return array
 	 */
 	abstract protected function getPersistableDataArray();

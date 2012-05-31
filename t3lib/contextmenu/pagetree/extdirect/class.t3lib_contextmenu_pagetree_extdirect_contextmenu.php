@@ -47,7 +47,7 @@ class t3lib_contextmenu_pagetree_extdirect_ContextMenu extends t3lib_contextmenu
 	/**
 	 * Returns the actions for the given node information's
 	 *
-	 * @param stdClass $node
+	 * @param stdClass $nodeData
 	 * @return array
 	 */
 	public function getActionsForNodeArray($nodeData) {

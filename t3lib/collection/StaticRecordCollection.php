@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Implementation of a RecordCollection for static TCA-Records
  *
@@ -38,9 +37,8 @@ class t3lib_collection_StaticRecordCollection extends t3lib_collection_AbstractR
 	 * Creates a new collection objects and reconstitutes the
 	 * given database record to the new object.
 	 *
-	 * @static
 	 * @param array $collectionRecord Database record
-	 * @param bool $fillItems Populates the entries directly on load, might be bad for memory on large collections
+	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @return t3lib_collection_StaticRecordCollection
 	 */
 	public static function create(array $collectionRecord, $fillItems = FALSE) {
@@ -162,7 +160,6 @@ class t3lib_collection_StaticRecordCollection extends t3lib_collection_AbstractR
 	 *
 	 * collection will be empty afterwards
 	 *
-	 * @abstract
 	 * @return void
 	 */
 	public function removeAll() {

@@ -47,7 +47,7 @@ abstract class t3lib_contextmenu_extdirect_ContextMenu extends t3lib_contextmenu
 	 * of the node should be given, because we need this information
 	 * to create the ndoe.
 	 *
-	 * @param stdClass $nodeInfo
+	 * @param stdClass $nodeData
 	 * @return array
 	 */
 	public function getActionsForNodeArray($nodeData) {

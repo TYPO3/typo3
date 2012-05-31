@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Interface for collection class being sortable
  *
@@ -47,7 +46,6 @@ interface t3lib_collection_Sortable {
 	 * The comparison function given as must return an integer less than, equal to, or greater than
 	 * zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
 	 *
-	 * @abstract
 	 * @param $callbackFunction
 	 * @see http://www.php.net/manual/en/function.usort.php
 	 * @return void
@@ -60,9 +58,8 @@ interface t3lib_collection_Sortable {
 	 * The item at $currentPosition will be moved to
 	 * $newPosition. Ommiting $newPosition will move to top.
 	 *
-	 * @abstract
-	 * @param int $currentPosition
-	 * @param int $newPosition
+	 * @param integer $currentPosition
+	 * @param integer $newPosition
 	 * @return void
 	 */
 	public function moveItemAt($currentPosition, $newPosition = 0);
