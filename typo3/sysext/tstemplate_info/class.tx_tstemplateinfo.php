@@ -71,8 +71,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$functions .= '<td' . $bgcol . ' nowrap="nowrap">' . $GLOBALS['LANG']->getLL('toTop') . ' <input type="checkbox" name="data[totop_resource][' . $k . ']" value="' . htmlspecialchars($v) . '" /></td>';
 				$functions .= '<td' . $bgcol . ' nowrap="nowrap">';
 				$fI = t3lib_div::split_fileref($v);
-				if (t3lib_div::inList($this->pObj->textExtensions,$fI['fileext'])) {
-					$functions.= '<a href="index.php?id='.$this->pObj->id.'&e[file]='.rawurlencode($v).'">'.t3lib_iconWorks::getSpriteIcon('actions-document-open',array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', TRUE))) . '</a>';
+				if (t3lib_div::inList($this->pObj->textExtensions, $fI['fileext'])) {
+					$functions.= '<a href="index.php?id='.$this->pObj->id.'&e[file]='.rawurlencode($v).'">'.t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', TRUE))) . '</a>';
 				}
 				$functions.= '</td>';
 			}
@@ -107,7 +107,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		$theResources = t3lib_div::trimExplode(',', $tmpl->resources, 1);
 		foreach ($theResources as $k => $v) {
 			$fI = pathinfo($v);
-			if (t3lib_div::inList($this->pObj->textExtensions,strtolower($fI['extension']))) {
+			if (t3lib_div::inList($this->pObj->textExtensions, strtolower($fI['extension']))) {
 				$path = PATH_site.$GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder'].'/'.$v;
 				$thumb = t3lib_BEfunc::thumbCode(array('resources' => $v), 'sys_template', 'resources', $GLOBALS['BACK_PATH'], '');
 				$out .= '<tr><td' . $bgcol . ' nowrap="nowrap">' . $v . '&nbsp;&nbsp;</td><td' . $bgcol . ' nowrap="nowrap">&nbsp;' . t3lib_div::formatSize(@filesize($path)) . '&nbsp;</td><td' . $bgcol . '>' . trim($thumb) . '</td><td><input type="Checkbox" name="data[makecopy_resource][' . $k . ']" value="' . htmlspecialchars($v) . '"></td></tr>';
@@ -481,7 +481,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				}
 			}
 			if ($e['config']) {
-				$outCode='<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48,"width:98%;height:70%","off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["config"]).'</textarea>';
+				$outCode='<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, "width:98%;height:70%", "off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["config"]).'</textarea>';
 				$outCode.= '<input type="Hidden" name="e[config]" value="1">';
 
 					// Display "Include TypoScript file content?" checkbox
