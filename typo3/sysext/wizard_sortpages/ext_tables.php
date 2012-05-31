@@ -9,6 +9,6 @@ if (TYPO3_MODE=='BE') {
 		'LLL:EXT:wizard_sortpages/locallang.php:wiz_sort',
 		'wiz'
 	);
-	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func','EXT:wizard_sortpages/locallang_csh.xml');
+	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func', 'EXT:wizard_sortpages/locallang_csh.xml');
 }
 ?>
