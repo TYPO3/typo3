@@ -722,7 +722,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		if ($path && @is_dir($path) &&
 				$GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] &&
 				t3lib_div::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath']) &&
-				substr($path,-1) == '/'
+				substr($path, -1) == '/'
 			) {
 			return $path;
 		}
@@ -931,7 +931,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		require_once($GLOBALS['BACK_PATH'] . 'class.db_list_extra.inc');
 
 			// Loading current page record and checking access:
-		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->taskObject->perms_clause);
+		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->taskObject->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
 			// If there is access to the page, then render the list contents and set up the document template object:
@@ -955,7 +955,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 
 				// Initialize the listing object, dblist, for rendering the list:
 			$this->pointer = t3lib_utility_Math::forceIntegerInRange(t3lib_div::_GP('pointer'), 0, 100000);
-			$dblist->start($this->id,$this->table,$this->pointer,$this->taskObject->search_field,$this->taskObject->search_levels,$this->taskObject->showLimit);
+			$dblist->start($this->id, $this->table, $this->pointer, $this->taskObject->search_field, $this->taskObject->search_levels, $this->taskObject->showLimit);
 			$dblist->setDispFields();
 
 				// Render the list of tables:

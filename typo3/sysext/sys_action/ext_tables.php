@@ -31,7 +31,7 @@ if (TYPO3_MODE == 'BE') {
 
 	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = t3lib_extMgm::extPath('sys_action') . 'toolbarmenu/registerToolbarItem.php';
 
-	t3lib_extMgm::addLLrefForTCAdescr('sys_action','EXT:sys_action/locallang_csh_sysaction.xml');
+	t3lib_extMgm::addLLrefForTCAdescr('sys_action', 'EXT:sys_action/locallang_csh_sysaction.xml');
 
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']['sys_action']['tx_sysaction_task'] = array(
 		'title'       => 'LLL:EXT:sys_action/locallang_tca.xml:sys_action',

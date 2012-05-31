@@ -123,9 +123,9 @@ class tx_sv_authbase extends t3lib_svbase {
 	 * @return	void
 	 * @see t3lib_userauthgroup::writelog()
 	 */
-	function writelog($type,$action,$error,$details_nr,$details,$data,$tablename='',$recuid='',$recpid='') {
+	function writelog($type, $action, $error, $details_nr, $details, $data, $tablename='', $recuid='', $recpid='') {
 		if($this->writeAttemptLog) {
-			$this->pObj->writelog($type,$action,$error,$details_nr,$details,$data,$tablename,$recuid,$recpid);
+			$this->pObj->writelog($type, $action, $error, $details_nr, $details, $data, $tablename, $recuid, $recpid);
 		}
 	}
 
