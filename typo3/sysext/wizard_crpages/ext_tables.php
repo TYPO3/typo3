@@ -9,6 +9,6 @@ if (TYPO3_MODE=='BE') {
 		'LLL:EXT:wizard_crpages/locallang.php:wiz_crMany',
 		'wiz'
 	);
-	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func','EXT:wizard_crpages/locallang_csh.xml');
+	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_func', 'EXT:wizard_crpages/locallang_csh.xml');
 }
 ?>
