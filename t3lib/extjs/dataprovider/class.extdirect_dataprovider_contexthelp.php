@@ -27,15 +27,19 @@
 
 /**
  * ExtDirect DataProvider for ContextHelp
+ *
+ * @author Steffen Kamper <steffen@typo3.org>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class extDirect_DataProvider_ContextHelp {
 
 	/**
 	 * Fetch the context help for the given table/field parameters
 	 *
-	 * @param  string $table table identifier
-	 * @param  string $field field identifier
-	 * @return array complete help information
+	 * @param  string $table Table identifier
+	 * @param  string $field Field identifier
+	 * @return array complete Help information
 	 */
 	public function getContextHelp($table, $field) {
 		$helpTextArray = t3lib_befunc::helpTextArray($table, $field);
@@ -52,8 +56,8 @@ class extDirect_DataProvider_ContextHelp {
 	/**
 	 * Fetch the context help for the given table
 	 *
-	 * @param  string $table table identifier
-	 * @return array complete help information
+	 * @param string $table Table identifier
+	 * @return array Complete help information
 	 */
 	public function getTableContextHelp($table) {
 		$output = array();
@@ -70,17 +74,17 @@ class extDirect_DataProvider_ContextHelp {
 					'id' => $table . '.' . $field,
 				);
 
-					// add alternative title, if defined
+					// Add alternative title, if defined
 				if ($data['alttitle']) {
 					$output[$field]['title'] = $data['alttitle'];
 				}
 
-					// if we have more information to show
+					// If we have more information to show
 				if ($data['image_descr'] || $data['seeAlso'] || $data['details'] || $data['syntax']) {
 					$output[$field]['moreInfo'] = TRUE;
 				}
 
-					// add description
+					// Add description
 				if ($data['description']) {
 					$output[$field]['description'] = $data['description'] . ($output[$field]['moreInfo'] ? $arrow : '');
 				}

@@ -28,8 +28,9 @@
 /**
  * Ext Direct Debug
  *
- * @author	Stefan Galinski <stefan.galinski@gmail.com>
- * @package	TYPO3
+ * @author Stefan Galinski <stefan.galinski@gmail.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_extjs_ExtDirectDebug {
 	/**
@@ -38,7 +39,6 @@ class t3lib_extjs_ExtDirectDebug {
 	 * @var array
 	 */
 	protected $debugMessages = array();
-
 
 	/**
 	 * destructor
@@ -50,10 +50,8 @@ class t3lib_extjs_ExtDirectDebug {
 	 * @see http://forge.typo3.org/issues/25278
 	 */
 	public function __destruct() {
-
-	/* currently empty */
+		// Currently empty
 	}
-
 
 	/**
 	 * Adds a new message of any data type to the internal debug message array.

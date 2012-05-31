@@ -27,6 +27,10 @@
 
 /**
  * ExtDirect DataProvider for State
+ *
+ * @author Steffen Kamper <steffen@typo3.org>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class extDirect_DataProvider_State {
 
@@ -39,14 +43,14 @@ class extDirect_DataProvider_State {
 	 * @return void
 	 */
 	public function __construct() {
-			//all data is saved in BE_USER->uc
+			// All data is saved in BE_USER->uc
 		$this->userSettings = t3lib_div::makeInstance('extDirect_DataProvider_BackenduserSettings');
 	}
 
 	/**
 	 * Gets state for given key
 	 *
-	 * @param  stdClass $parameter
+	 * @param stdClass $parameter
 	 * @return array
 	 */
 	public function getState($parameter) {
@@ -62,7 +66,7 @@ class extDirect_DataProvider_State {
 	/**
 	 * Save the state for a given key
 	 *
-	 * @param  stdClass $parameter
+	 * @param stdClass $parameter
 	 * @return array
 	 */
 	public function setState($parameter) {

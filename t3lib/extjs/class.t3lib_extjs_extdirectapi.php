@@ -28,9 +28,10 @@
 /**
  * Ext Direct API Generator
  *
- * @author	Sebastian Kurfürst <sebastian@typo3.org>
- * @author	Stefan Galinski <stefan.galinski@gmail.com>
- * @package	TYPO3
+ * @author Sebastian Kurfürst <sebastian@typo3.org>
+ * @author Stefan Galinski <stefan.galinski@gmail.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
 class t3lib_extjs_ExtDirectApi {
 	/**
@@ -57,7 +58,7 @@ class t3lib_extjs_ExtDirectApi {
 	 * the API and are required by ExtDirect. The result is cached to improve the overall
 	 * performance.
 	 *
-	 * @param array $ajaxParams ajax parameters
+	 * @param array $ajaxParams Ajax parameters
 	 * @param TYPO3AJAX $ajaxObj typo3ajax instance
 	 * @return void
 	 */
@@ -68,13 +69,13 @@ class t3lib_extjs_ExtDirectApi {
 	/**
 	 * Get the API for a given nameapace
 	 *
-	 * @throws InvalidArgumentException
-	 * @param  array $filterNamespaces
+	 * @param array $filterNamespaces
 	 * @return string
+	 * @throws InvalidArgumentException
 	 */
 	public function getApiPhp(array $filterNamespaces) {
 		$javascriptNamespaces = $this->getExtDirectApi($filterNamespaces);
-			// return the generated javascript API configuration
+			// Return the generated javascript API configuration
 		if (count($javascriptNamespaces)) {
 			return '
 				if (!Ext.isObject(Ext.app.ExtDirectAPI)) {
@@ -97,8 +98,8 @@ class t3lib_extjs_ExtDirectApi {
 	 * Generates the API that is configured inside the ExtDirect configuration
 	 * array "$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect']".
 	 *
-	 * @param array $filerNamespace namespace that should be loaded like array('TYPO3.Backend')
-	 * @return array javascript API configuration
+	 * @param array $filerNamespace Namespace that should be loaded like array('TYPO3.Backend')
+	 * @return array Javascript API configuration
 	 */
 	protected function generateAPI(array $filterNamespaces) {
 		$javascriptNamespaces = array();
@@ -108,7 +109,7 @@ class t3lib_extjs_ExtDirectApi {
 				$javascriptObjectName = array_pop($splittedJavascriptName);
 				$javascriptNamespace = implode('.', $splittedJavascriptName);
 
-					// only items inside the wanted namespace
+					// Only items inside the wanted namespace
 				if (!$this->findNamespace($javascriptNamespace, $filterNamespaces)) {
 					continue;
 				}
@@ -170,8 +171,8 @@ class t3lib_extjs_ExtDirectApi {
 	/**
 	 * Generates the API or reads it from cache
 	 *
-	 * @param  array $filterNamespaces
-	 * @param bool $checkGetParam
+	 * @param array $filterNamespaces
+	 * @param boolean $checkGetParam
 	 * @return string $javascriptNamespaces
 	 */
 	protected function getExtDirectApi(array $filterNamespaces) {
@@ -182,15 +183,15 @@ class t3lib_extjs_ExtDirectApi {
 		);
 		$noCache = t3lib_div::_GET('no_cache') ? TRUE : $noCache;
 
-			// look up into the cache
+			// Look up into the cache
 		$cacheIdentifier = 'ExtDirectApi';
 		$cacheHash = md5($cacheIdentifier . implode(',', $filterNamespaces) . t3lib_div::getIndpEnv('TYPO3_SSL') .
 			serialize($this->settings) . TYPO3_MODE . t3lib_div::getIndpEnv('HTTP_HOST'));
 
-			// with no_cache always generate the javascript content
+			// With no_cache always generate the javascript content
 		$cacheContent = $noCache ? '' : t3lib_pageSelect::getHash($cacheHash);
 
-			// generate the javascript content if it wasn't found inside the cache and cache it!
+			// Generate the javascript content if it wasn't found inside the cache and cache it!
 		if (!$cacheContent) {
 			$javascriptNamespaces = $this->generateAPI($filterNamespaces);
 			if (count($javascriptNamespaces)) {
@@ -210,18 +211,18 @@ class t3lib_extjs_ExtDirectApi {
 	/**
 	 * Generates the error message
 	 *
-	 * @param  array $filterNamespaces
+	 * @param array $filterNamespaces
 	 * @return string $errorMessage
 	 */
 	protected function getNamespaceError(array $filterNamespaces) {
 		if (count($filterNamespaces)) {
-				// namespace error
+				// Namespace error
 			$errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:ExtDirect.namespaceError'),
 									__CLASS__, implode(',', $filterNamespaces)
 			);
 		}
 		else {
-				// no namespace given
+				// No namespace given
 			$errorMessage = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:ExtDirect.noNamespace'),
 									__CLASS__
 			);
@@ -233,9 +234,9 @@ class t3lib_extjs_ExtDirectApi {
 	/**
 	 * Looks if the given namespace is present in $filterNamespaces
 	 *
-	 * @param  string $namespace
+	 * @param string $namespace
 	 * @param array $filterNamespaces
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function findNamespace($namespace, array $filterNamespaces) {
 		if ($filterNamespaces === array('TYPO3')) {
