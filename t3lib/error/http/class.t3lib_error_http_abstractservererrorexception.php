@@ -25,7 +25,7 @@
 /**
  * HTTP Server Error Exception (Error 5xx)
  *
- * @author	Steffen Gebert <steffen.gebert@typo3.org>
+ * @author Steffen Gebert <steffen.gebert@typo3.org>
  * @package TYPO3
  * @subpackage error
  */

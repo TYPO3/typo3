@@ -25,7 +25,7 @@
 /**
  * Exception for Error 401 - Unauthorized
  *
- * @author	Steffen Gebert <steffen.gebert@typo3.org>
+ * @author Steffen Gebert <steffen.gebert@typo3.org>
  * @package TYPO3
  * @subpackage error
  */
@@ -50,7 +50,7 @@ class t3lib_error_http_UnauthorizedException extends t3lib_error_http_AbstractCl
 	 * Constructor for this Status Exception
 	 *
 	 * @param string $message Error Message
-	 * @param int $code Exception Code
+	 * @param integer $code Exception Code
 	 */
 	public function __construct($message = NULL, $code = 0) {
 		if (!empty($message)) {

@@ -25,7 +25,7 @@
 /**
  * HTTP Status Exception
  *
- * @author	Steffen Gebert <steffen.gebert@typo3.org>
+ * @author Steffen Gebert <steffen.gebert@typo3.org>
  * @package TYPO3
  * @subpackage error
  */
@@ -47,7 +47,7 @@ class t3lib_error_http_StatusException extends t3lib_error_Exception {
 	 * @param string|array $statusHeaders HTTP Status header line(s)
 	 * @param string $title Title of the error message
 	 * @param string $message Error Message
-	 * @param int $code Exception Code
+	 * @param integer $code Exception Code
 	 */
 	public function __construct($statusHeaders, $message, $title = '', $code = 0) {
 		if (is_array($statusHeaders)) {
@@ -62,7 +62,7 @@ class t3lib_error_http_StatusException extends t3lib_error_Exception {
 	/**
 	 * Setter for the title.
 	 *
-	 * @param  string $title
+	 * @param string $title
 	 * @return void
 	 */
 	public function setTitle($title) {

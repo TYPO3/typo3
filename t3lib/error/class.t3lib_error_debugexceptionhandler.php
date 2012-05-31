@@ -22,7 +22,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * A basic but solid exception handler which catches everything which
  * falls through the other exception handlers and provides useful debugging
@@ -30,6 +29,7 @@
  *
  * This file is a backport from FLOW3
  *
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage t3lib_error
  */
@@ -47,7 +47,7 @@ class t3lib_error_DebugExceptionHandler extends t3lib_error_AbstractExceptionHan
 	/**
 	 * Formats and echoes the exception as XHTML.
 	 *
-	 * @param  Exception $exception The exception object
+	 * @param Exception $exception The exception object
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */

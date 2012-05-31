@@ -22,14 +22,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * A quite exception handler which catches but ignores any exception.
  *
  * This file is a backport from FLOW3
  *
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
- * @subpackage t3lib_error
+ * @subpackage error
  */
 class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExceptionHandler {
 
@@ -88,7 +88,7 @@ class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExcepti
 	 * Determines, whether Exception details should be outputted
 	 *
 	 * @param Exception $exception The exception
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function discloseExceptionInformation(Exception $exception) {
 			// Show client error messages 40x in every case
@@ -96,7 +96,7 @@ class t3lib_error_ProductionExceptionHandler extends t3lib_error_AbstractExcepti
 			return TRUE;
 		}
 
-			// only show errors in FE, if a BE user is authenticated
+			// Only show errors in FE, if a BE user is authenticated
 		if (TYPO3_MODE === 'FE') {
 			return $GLOBALS['TSFE']->beUserLogin;
 		}

@@ -22,29 +22,28 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Global error handler for TYPO3
  *
  * This file is a backport from FLOW3
  *
- * @package TYPO3
- * @subpackage t3lib_error
  * @author Rupert Germann <rupi@gmx.li>
+ * @package TYPO3
+ * @subpackage error
  */
 class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 
 	/**
 	 * Error levels which should result in an exception thrown.
 	 *
-	 * @var integer
+	 * @var array
 	 */
 	protected $exceptionalErrors = array();
 
 	/**
 	 * Registers this class as default error handler
 	 *
-	 * @param integer	 The integer representing the E_* error level which should be
+	 * @param integer $errorHandlerErrors The integer representing the E_* error level which should be
 	 *					 handled by the registered error handler.
 	 * @return void
 	 */
@@ -52,11 +51,10 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 		set_error_handler(array($this, 'handleError'), $errorHandlerErrors);
 	}
 
-
 	/**
 	 * Defines which error levels should result in an exception thrown.
 	 *
-	 * @param integer	 The integer representing the E_* error level to handle as exceptions
+	 * @param integer $exceptionalErrors The integer representing the E_* error level to handle as exceptions
 	 * @return void
 	 */
 	public function setExceptionalErrors($exceptionalErrors) {
@@ -71,15 +69,15 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 	 * If TYPO3_MODE is 'BE' the error message is also added to the flashMessageQueue, in FE the error message
 	 * is displayed in the admin panel (as TsLog message)
 	 *
-	 * @param integer	 The error level - one of the E_* constants
-	 * @param string	 The error message
-	 * @param string	 Name of the file the error occurred in
-	 * @param integer	 Line number where the error occurred
+	 * @param integer $errorLevel The error level - one of the E_* constants
+	 * @param string $errorMessage The error message
+	 * @param string $errorFile Name of the file the error occurred in
+	 * @param integer $errorLine Line number where the error occurred
 	 * @return void
 	 * @throws t3lib_error_Exception with the data passed to this method if the error is registered as exceptionalError
 	 */
 	public function handleError($errorLevel, $errorMessage, $errorFile, $errorLine) {
-			// don't do anything if error_reporting is disabled by an @ sign
+			// Don't do anything if error_reporting is disabled by an @ sign
 		if (error_reporting() == 0) {
 			return TRUE;
 		}
@@ -138,7 +136,7 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 				catch (Exception $e) {
 					// There's nothing more we can do at this point if the
 					// database failed. It is up to the various log writers
-					// to check for themselves whether the have a DB connection
+					// to check for themselves whether they have a DB connection
 					// available or not.
 				}
 			}
@@ -176,9 +174,9 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 	/**
 	 * Writes an error in the sys_log table
 	 *
-	 * @param	string		Default text that follows the message (in english!).
-	 * @param	integer		The eror level of the message (0 = OK, 1 = warning, 2 = error)
-	 * @return	void
+	 * @param string $logMessage Default text that follows the message (in english!).
+	 * @param integer $severity The eror level of the message (0 = OK, 1 = warning, 2 = error)
+	 * @return void
 	 */
 	protected function writeLog($logMessage, $severity) {
 		if (is_object($GLOBALS['TYPO3_DB']) && !empty($GLOBALS['TYPO3_DB']->link)) {

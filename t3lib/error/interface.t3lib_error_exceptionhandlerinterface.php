@@ -22,14 +22,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Contract for an exception handler
  *
  * This file is a backport from FLOW3
  *
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
- * @subpackage t3lib_error
+ * @subpackage error
  */
 interface t3lib_error_ExceptionHandlerInterface {
 
