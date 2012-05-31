@@ -36,8 +36,8 @@ $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_objbrowser/locallang.xml');
  */
 class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
-	function init(&$pObj,$conf) {
-		parent::init($pObj,$conf);
+	function init(&$pObj, $conf) {
+		parent::init($pObj, $conf);
 
 		$this->pObj->modMenu_dontValidateList.= ',ts_browser_toplevel_setup,ts_browser_toplevel_const,ts_browser_TLKeys_setup,ts_browser_TLKeys_const';
 		$this->pObj->modMenu_setDefaultList.= ',ts_browser_fixedLgd,ts_browser_showComments';
@@ -70,7 +70,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			'ts_browser_alphaSort' => '1',
 		);
 
-		foreach(array('setup','const') as $bType) {
+		foreach(array('setup', 'const') as $bType) {
 			$addKey = t3lib_div::_GET('addKey');
 			if (is_array($addKey))	{		// If any plus-signs were clicked, it's registred.
 				reset($addKey);
@@ -79,7 +79,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 				} else {
 					unset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_'.$bType][key($addKey)]);
 				}
-				$GLOBALS['BE_USER']->pushModuleData($this->pObj->MCONF['name'],$this->pObj->MOD_SETTINGS);
+				$GLOBALS['BE_USER']->pushModuleData($this->pObj->MCONF['name'], $this->pObj->MOD_SETTINGS);
 			}
 
 			if (count($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_'.$bType])) {
@@ -99,7 +99,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 	 * @param	[type]		$parentValue: ...
 	 * @return	[type]		...
 	 */
-	function verify_TSobjects($propertyArray,$parentType,$parentValue) {
+	function verify_TSobjects($propertyArray, $parentType, $parentValue) {
 		$TSobjTable = array(
 			"PAGE" => array(
 				"prop" => array (
@@ -132,7 +132,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 		);
 
 		if ($parentType) {
-			if (isset($TSobjDataTypes[$parentType]) && (!$TSobjDataTypes[$parentType] || t3lib_div::inlist($TSobjDataTypes[$parentType],$parentValue))) {
+			if (isset($TSobjDataTypes[$parentType]) && (!$TSobjDataTypes[$parentType] || t3lib_div::inlist($TSobjDataTypes[$parentType], $parentValue))) {
 				$ObjectKind = $parentValue;
 			} else {
 				$ObjectKind = ""; 	// Object kind is "" if it should be known.
@@ -163,7 +163,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 	 * @param	[type]		$template_uid: ...
 	 * @return	[type]		...
 	 */
-	function initialize_editor($pageId,$template_uid=0) {
+	function initialize_editor($pageId, $template_uid=0) {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $tmpl,$tplRow,$theConstants;
 
@@ -174,9 +174,9 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 				// Gets the rootLine
 		$sys_page = t3lib_div::makeInstance("t3lib_pageSelect");
 		$rootLine = $sys_page->getRootLine($pageId);
-		$tmpl->runThroughTemplates($rootLine,$template_uid);	// This generates the constants/config + hierarchy info for the template.
+		$tmpl->runThroughTemplates($rootLine, $template_uid);	// This generates the constants/config + hierarchy info for the template.
 
-		$tplRow = $tmpl->ext_getFirstTemplate($pageId,$template_uid);	// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
+		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);	// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
 		if (is_array($tplRow))	{	// IF there was a template...
 			return 1;
 		}
@@ -212,7 +212,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 		// BUGBUG: Should we check if the uset may at all read and write template-records???
 		$bType= $this->pObj->MOD_SETTINGS["ts_browser_type"];
-		$existTemplate = $this->initialize_editor($this->pObj->id,$template_uid);		// initialize
+		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);		// initialize
 		if ($existTemplate) {
 			$theOutput .= $this->pObj->doc->section(
 				$GLOBALS['LANG']->getLL('currentTemplate'),
@@ -295,14 +295,14 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 					$tce->stripslashes_values=0;
 						// Initialize
-					$tce->start($recData,Array());
+					$tce->start($recData, Array());
 						// Saved the stuff
 					$tce->process_datamap();
 						// Clear the cache (note: currently only admin-users can clear the cache in tce_main.php)
 					$tce->clear_cacheCmd("all");
 
 						// re-read the template ...
-					$this->initialize_editor($this->pObj->id,$template_uid);
+					$this->initialize_editor($this->pObj->id, $template_uid);
 				}
 			}
 		}
@@ -318,7 +318,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$this->pObj->MOD_SETTINGS["tsbrowser_conditions"] = $POST["conditions"];
 			$update=1;
 		}
-		if ($update)	{ $GLOBALS["BE_USER"]->pushModuleData($this->pObj->MCONF["name"],$this->pObj->MOD_SETTINGS); }
+		if ($update)	{ $GLOBALS["BE_USER"]->pushModuleData($this->pObj->MCONF["name"], $this->pObj->MOD_SETTINGS); }
 
 
 		$tmpl->matchAlternative = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'];
@@ -352,7 +352,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 			// EDIT A VALUE:
 		if ($this->pObj->sObj) {
-			list($theSetup,$theSetupValue) = $tmpl->ext_getSetup($theSetup, ($this->pObj->sObj?$this->pObj->sObj:""));
+			list($theSetup, $theSetupValue) = $tmpl->ext_getSetup($theSetup, ($this->pObj->sObj?$this->pObj->sObj:""));
 
 			if ($existTemplate) {
 					// Value
@@ -415,14 +415,14 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			}
 			if ($out) {
 				$theOutput.=$this->pObj->doc->divider(5);
-				$theOutput.=$this->pObj->doc->section("",$out);
+				$theOutput.=$this->pObj->doc->section("", $out);
 			}
 
 				// back
 			$out = $GLOBALS['LANG']->getLL('back');
 			$out = '<a href="index.php?id='.$this->pObj->id.'"><strong>'.$out.'</strong></a>';
 			$theOutput.=$this->pObj->doc->divider(5);
-			$theOutput.=$this->pObj->doc->section("",$out);
+			$theOutput.=$this->pObj->doc->section("", $out);
 
 		} else {
 			$tmpl->tsbrowser_depthKeys=$this->pObj->MOD_SETTINGS["tsbrowser_depthKeys_".$bType];
@@ -446,7 +446,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 			$theOutput .= $this->pObj->doc->section('', '<nobr>' . $menu . '</nobr>');
 			$theKey=$this->pObj->MOD_SETTINGS["ts_browser_toplevel_".$bType];
-			if (!$theKey || !str_replace("-","",$theKey))	{$theKey="";}
+			if (!$theKey || !str_replace("-", "", $theKey))	{$theKey="";}
 			list($theSetup,$theSetupValue) = $tmpl->ext_getSetup($theSetup, ($this->pObj->MOD_SETTINGS['ts_browser_toplevel_'.$bType]?$this->pObj->MOD_SETTINGS['ts_browser_toplevel_'.$bType]:''));
 			$tree = $tmpl->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
 			$tree = $tmpl->substituteCMarkers($tree);

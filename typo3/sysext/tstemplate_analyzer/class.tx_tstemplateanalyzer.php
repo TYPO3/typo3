@@ -31,8 +31,8 @@
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_analyzer/locallang.xml');
 
 class tx_tstemplateanalyzer extends t3lib_extobjbase {
-	function init(&$pObj,$conf) {
-		parent::init($pObj,$conf);
+	function init(&$pObj, $conf) {
+		parent::init($pObj, $conf);
 
 		$this->pObj->modMenu_setDefaultList.= ',ts_analyzer_checkLinenum,ts_analyzer_checkSyntax';
 	}
@@ -48,7 +48,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		);
 	}
 
-	function initialize_editor($pageId,$template_uid=0) {
+	function initialize_editor($pageId, $template_uid=0) {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 
 		$GLOBALS['tmpl'] = t3lib_div::makeInstance("t3lib_tsparser_ext");
@@ -63,7 +63,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$GLOBALS['tmpl']->runThroughTemplates($GLOBALS['rootLine'], $template_uid);
 
 			// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-		$GLOBALS['tplRow'] = $GLOBALS['tmpl']->ext_getFirstTemplate($pageId,$template_uid);
+		$GLOBALS['tplRow'] = $GLOBALS['tmpl']->ext_getFirstTemplate($pageId, $template_uid);
 		if (is_array($GLOBALS['tplRow'])) {
 				// IF there was a template...
 			return 1;
@@ -87,7 +87,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		// **************************
 
 		// BUGBUG: Should we check if the uset may at all read and write template-records???
-		$existTemplate = $this->initialize_editor($this->pObj->id,$template_uid);		// initialize
+		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);		// initialize
 		if ($existTemplate) {
 			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', TRUE),
 				t3lib_iconWorks::getSpriteIconForRecord('sys_template', $GLOBALS['tplRow']) . '<strong>' .
@@ -95,7 +95,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 				htmlspecialchars(trim($GLOBALS['tplRow']["sitetitle"]) ? ' (' . $GLOBALS['tplRow']["sitetitle"] . ')' : ''));
 		}
 		if ($manyTemplatesMenu) {
-			$theOutput .= $this->pObj->doc->section("",$manyTemplatesMenu);
+			$theOutput .= $this->pObj->doc->section("", $manyTemplatesMenu);
 		}
 
 		$GLOBALS['tmpl']->clearList_const_temp = array_flip($GLOBALS['tmpl']->clearList_const);

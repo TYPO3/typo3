@@ -38,7 +38,7 @@
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_ceditor/locallang.xml');
 
 class tx_tstemplateceditor extends t3lib_extobjbase {
-	function initialize_editor($pageId,$template_uid=0) {
+	function initialize_editor($pageId, $template_uid=0) {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $tmpl,$tplRow,$theConstants;
 
@@ -49,12 +49,12 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 		$tmpl->ext_localGfxPrefix=t3lib_extMgm::extPath("tstemplate_ceditor");
 		$tmpl->ext_localWebGfxPrefix=$GLOBALS["BACK_PATH"].t3lib_extMgm::extRelPath("tstemplate_ceditor");
 
-		$tplRow = $tmpl->ext_getFirstTemplate($pageId,$template_uid);	// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
+		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);	// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
 		if (is_array($tplRow))	{	// IF there was a template...
 				// Gets the rootLine
 			$sys_page = t3lib_div::makeInstance("t3lib_pageSelect");
 			$rootLine = $sys_page->getRootLine($pageId);
-			$tmpl->runThroughTemplates($rootLine,$template_uid);	// This generates the constants/config + hierarchy info for the template.
+			$tmpl->runThroughTemplates($rootLine, $template_uid);	// This generates the constants/config + hierarchy info for the template.
 			$theConstants = $tmpl->generateConfig_constants();	// The editable constants are returned in an array.
 			$tmpl->ext_categorizeEditableConstants($theConstants);	// The returned constants are sorted in categories, that goes into the $tmpl->categories array
 			$tmpl->ext_regObjectPositions($tplRow["constants"]);		// This array will contain key=[expanded constantname], value=linenumber in template. (after edit_divider, if any)
@@ -67,8 +67,8 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 			$theOutput.=$this->pObj->doc->spacer(30);
 			$theOutput.=$this->pObj->doc->section($tmpl->helpConfig["header"],
 				'<div align="center">'.$tmpl->helpConfig["imagetag"].'</div><BR>'.
-				($tmpl->helpConfig["description"] ? implode(explode("//",$tmpl->helpConfig["description"]),"<BR>")."<BR>" : "").
-				($tmpl->helpConfig["bulletlist"] ? "<ul><li>".implode(explode("//",$tmpl->helpConfig["bulletlist"]),"<li>")."</ul>" : "<BR>")
+				($tmpl->helpConfig["description"] ? implode(explode("//", $tmpl->helpConfig["description"]), "<BR>")."<BR>" : "").
+				($tmpl->helpConfig["bulletlist"] ? "<ul><li>".implode(explode("//", $tmpl->helpConfig["bulletlist"]), "<li>")."</ul>" : "<BR>")
 				);
 		}
 		return $theOutput;
@@ -116,7 +116,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 				if ($tmpl->changed) {
 						// Set the data to be saved
 					$recData=array();
-					$recData["sys_template"][$saveId]["constants"] = implode($tmpl->raw,LF);
+					$recData["sys_template"][$saveId]["constants"] = implode($tmpl->raw, LF);
 						// Create new  tce-object
 					$tce = t3lib_div::makeInstance("t3lib_TCEmain");
 					$tce->stripslashes_values = 0;
@@ -170,9 +170,9 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 				$theOutput=$this->displayExample($theOutput);
 			}
 
-			$printFields = trim($tmpl->ext_printFields($theConstants,$category));
+			$printFields = trim($tmpl->ext_printFields($theConstants, $category));
 			if ($printFields) {
-				$theOutput.=$this->pObj->doc->section("",$printFields);
+				$theOutput.=$this->pObj->doc->section("", $printFields);
 			}
 
 			if ($BE_USER_modOptions["properties"]["constantEditor."]["example"]!="top") {
