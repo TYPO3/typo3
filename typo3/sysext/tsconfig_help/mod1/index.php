@@ -30,7 +30,7 @@ require_once($BACK_PATH.'init.php');
 require_once($BACK_PATH.'template.php');
 
 $LANG->includeLLFile('EXT:tsconfig_help/mod1/locallang.xml');
-$BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
+$BE_USER->modAccess($MCONF, 1);	// This checks permissions and exits if the users has no permission for entry.
 // DEFAULT initialization of a module [END]
 
 
@@ -114,7 +114,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 
 			$this->content .= $this->doc->spacer(10);
 
-			$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu($this->id,'SET[function]',$this->MOD_SETTINGS['function'],$this->MOD_MENU['function']);
+			$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 		} else {
 			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 			$markers['FUNC_MENU'] = '';
@@ -172,7 +172,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 			case 1:
 				$content = '<div align="left"><strong>' . $GLOBALS['LANG']->getLL('referenceExplanation') . '</strong></div>';
 				$content .= '<p>' . $GLOBALS['LANG']->getLL('referenceExplanationDetailed') . '</p><br />';
-				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('displayReferences'),$content,0,1);
+				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('displayReferences'), $content, 0, 1);
 				$this->content .= '<a href="#" onclick="vHWin=window.open(\'' . $GLOBALS['BACK_PATH'] . 'wizard_tsconfig.php?mode=tsref&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">' . t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open') . 'TSREF</a><br />';
 				$this->content .= '<a href="#" onclick="vHWin=window.open(\'' . $GLOBALS['BACK_PATH'] . 'wizard_tsconfig.php?mode=beuser&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">' . t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open') . 'USER TSCONFIG</a><br />';
 				$this->content .= '<a href="#" onclick="vHWin=window.open(\'' . $GLOBALS['BACK_PATH'] . 'wizard_tsconfig.php?mode=page&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">' . t3lib_iconWorks::getSpriteIcon('actions-system-typoscript-documentation-open') . 'PAGE TSCONFIG</a><br />';
@@ -244,7 +244,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 							$warnings .= '<p class="typo3-red">'.$GLOBALS['LANG']->getLL('warning_duplicateMarkers').'<br />'.$duplicateWarnings.'</p>';
 						}
 						if (!empty($warnings)) {
-							$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('updateWarnings'),'<div>'.$warnings.'</div>',0,1);
+							$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('updateWarnings'), '<div>'.$warnings.'</div>', 0, 1);
 						}
 					}
 
@@ -326,7 +326,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 						case 'STYLE:STYLE':
 							$currentStyleName = $node['attributes']['STYLE:NAME'];
 
-							if (array_key_exists('STYLE:PARENT-STYLE-NAME',$node['attributes'])) {
+							if (array_key_exists('STYLE:PARENT-STYLE-NAME', $node['attributes'])) {
 								$parentStyleName = $node['attributes']['STYLE:PARENT-STYLE-NAME'];
 								$style[$currentStyleName]['parents'][] = $parentStyleName; // keep trace of parents in the style array
 							} else {
@@ -343,10 +343,10 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 				case 'complete':
 					switch ($node['tag']) {
 						case 'STYLE:PROPERTIES':
-							if (is_array($node['attributes']) && array_key_exists('FO:FONT-WEIGHT',$node['attributes'])) {
+							if (is_array($node['attributes']) && array_key_exists('FO:FONT-WEIGHT', $node['attributes'])) {
 								$style[$currentStyleName]['font-weight'] = $node['attributes']['FO:FONT-WEIGHT'];	// bold for example
 							}
-							if (is_array($node['attributes']) && array_key_exists('FO:FONT-STYLE',$node['attributes'])) {
+							if (is_array($node['attributes']) && array_key_exists('FO:FONT-STYLE', $node['attributes'])) {
 								$style[$currentStyleName]['font-style'] = $node['attributes']['FO:FONT-STYLE'];	// italic for example
 							}
 						break;
@@ -388,7 +388,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 		}
 
 		if (is_array($Styles[$child])  // the child is a documented style
-			&& array_key_exists('parents',$Styles[$child])  // it has some parents
+			&& array_key_exists('parents', $Styles[$child])  // it has some parents
 			&& (array_search($parent, $Styles[$child]['parents']) !== FALSE))	{ // and the parent appears amongst its ancestors
 			return TRUE;
 		}
@@ -486,7 +486,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	function HSCtext($text) {
 		global $LANG;
 
-		if (strcmp($text,''))	{ // there is some content in the text field
+		if (strcmp($text, ''))	{ // there is some content in the text field
 			$cleantext = stripslashes(htmlspecialchars($text, ENT_QUOTES)); // stripslashes required as it could confuse unserialize
 			return $LANG->csConvObj->utf8_to_entities($cleantext, $LANG->charSet);
 		} else { // there is no text, it's empty
@@ -568,7 +568,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 						case 'TEXT:P':
 							if ($sectionCell)	{ // make sure we are in a cell
 								$sectionP++;
-								$table[$rowID-1][$cellID-1] .= $this->styleHTML($this->styleTags($node),'') . $newLineRequired.$this->HSCtext($node['value']);
+								$table[$rowID-1][$cellID-1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired.$this->HSCtext($node['value']);
 								$newLineRequired = ''; // no newline required after this
 								$latestTEXTPopen = $node;
 							}
@@ -580,14 +580,14 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 					switch ($node['tag']) {
 						case 'TEXT:P':
 							if ($sectionCell)	{ // make sure we are in a cell
-								$table[$rowID-1][$cellID-1] .= $this->styleHTML($this->styleTags($node),'') . $newLineRequired.$this->HSCtext($node['value']).$this->styleHTML($this->styleTags($node),'/');
+								$table[$rowID-1][$cellID-1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired.$this->HSCtext($node['value']).$this->styleHTML($this->styleTags($node), '/');
 								$newLineRequired = '<br>'; // after a paragraph, require a new-line
 							}
 						break;
 
 						case 'TEXT:SPAN':
 							if ($sectionCell)	{ // make sure we are in a cell
-								$table[$rowID-1][$cellID-1] .= $this->styleHTML($this->styleTags($node),'').$newLineRequired.$this->HSCtext($node['value']).$this->styleHTML($this->styleTags($node),'/');
+								$table[$rowID-1][$cellID-1] .= $this->styleHTML($this->styleTags($node), '').$newLineRequired.$this->HSCtext($node['value']).$this->styleHTML($this->styleTags($node), '/');
 								$newLineRequired = ''; // no newline required after this
 							}
 						break;
@@ -607,7 +607,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 					switch ($node['tag']) {
 						case 'TEXT:P':
 							if ($sectionCell)	{ // make sure we are in a cell
-								$table[$rowID-1][$cellID-1] .= $this->styleHTML($this->styleTags($node),'') . $newLineRequired.$this->HSCtext($node['value']).$this->styleHTML($this->styleTags($node),'/');
+								$table[$rowID-1][$cellID-1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired.$this->HSCtext($node['value']).$this->styleHTML($this->styleTags($node), '/');
 								$newLineRequired = ''; // no newline required after this
 							}
 						break;
@@ -635,7 +635,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 						case 'TEXT:P':
 							$sectionP--;
 							$newLineRequired = '<br>'; // after a paragraph, require a new-line
-							$table[$rowID-1][$cellID-1] .= $this->styleHTML($this->styleTags($latestTEXTPopen),'/');
+							$table[$rowID-1][$cellID-1] .= $this->styleHTML($this->styleTags($latestTEXTPopen), '/');
 						break;
 					}
 				break;
@@ -692,7 +692,7 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 		}
 		$md5hash = md5($obj_string);
 		$description = ''; // unused
-		$guide = hexdec(substr(md5($extension),6,6));  // try to find a way to uniquely identify the source extension and place the identified into the "guide" column
+		$guide = hexdec(substr(md5($extension), 6, 6));  // try to find a way to uniquely identify the source extension and place the identified into the "guide" column
 		$title = ''; // unused
 
 		$insertFields = array(
