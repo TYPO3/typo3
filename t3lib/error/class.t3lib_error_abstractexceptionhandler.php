@@ -22,14 +22,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * An abstract exception handler
  *
  * This file is a backport from FLOW3
  *
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
- * @subpackage t3lib_error
+ * @subpackage error
  */
 abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_ExceptionHandlerInterface, t3lib_Singleton {
 	const CONTEXT_WEB = 'WEB';
@@ -51,12 +51,11 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 		}
 	}
 
-
 	/**
 	 * Writes exception to different logs
 	 *
 	 * @param Exception $exception The exception
-	 * @param string	 the context where the exception was thrown, WEB or CLI
+	 * @param string $context The context where the exception was thrown, WEB or CLI
 	 * @return void
 	 * @see t3lib_div::sysLog(), t3lib_div::devLog()
 	 */
@@ -72,7 +71,7 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 
 		$backtrace = $exception->getTrace();
 
-			// write error message to the configured syslogs
+			// Write error message to the configured syslogs
 		t3lib_div::sysLog($logMessage, $logTitle, 4);
 
 			// When database credentials are wrong, the exception is probably
@@ -85,7 +84,7 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 				$GLOBALS['TYPO3_DB']->connectDB();
 			}
 
-				// write error message to devlog
+				// Write error message to devlog
 				// see: $TYPO3_CONF_VARS['SYS']['enable_exceptionDLOG']
 			if (TYPO3_EXCEPTION_DLOG) {
 				t3lib_div::devLog(
@@ -99,7 +98,7 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 				);
 			}
 
-				// write error message to sys_log table
+				// Write error message to sys_log table
 			$this->writeLog($logTitle . ': ' . $logMessage);
 		} catch (Exception $exception) {
 			// Nothing happens here. It seems the database credentials are wrong
@@ -109,8 +108,8 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 	/**
 	 * Writes an exception in the sys_log table
 	 *
-	 * @param	string		Default text that follows the message.
-	 * @return	void
+	 * @param string $logMessage Default text that follows the message.
+	 * @return void
 	 */
 	protected function writeLog($logMessage) {
 		if (is_object($GLOBALS['TYPO3_DB']) && !empty($GLOBALS['TYPO3_DB']->link)) {
