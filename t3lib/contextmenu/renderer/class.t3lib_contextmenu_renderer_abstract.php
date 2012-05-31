@@ -37,7 +37,7 @@ abstract class t3lib_contextmenu_renderer_Abstract {
 	 * Renders an action recursive or just a single one
 	 *
 	 * @param t3lib_contextmenu_Action $action
-	 * @param bool $recursive
+	 * @param boolean $recursive
 	 * @return mixed
 	 */
 	abstract public function renderAction(t3lib_contextmenu_Action $action, $recursive = FALSE);
@@ -46,7 +46,7 @@ abstract class t3lib_contextmenu_renderer_Abstract {
 	 * Renders an action collection recursive or just a single one
 	 *
 	 * @param t3lib_contextmenu_ActionCollection $actionCollection
-	 * @param bool $recursive
+	 * @param boolean $recursive
 	 * @return mixed
 	 */
 	abstract public function renderActionCollection(
@@ -57,7 +57,7 @@ abstract class t3lib_contextmenu_renderer_Abstract {
 	 * Renders a context menu recursive or just a single one
 	 *
 	 * @param t3lib_contextmenu_AbstractContextMenu $contextMenu
-	 * @param bool $recursive
+	 * @param boolean $recursive
 	 * @return mixed
 	 */
 	abstract public function renderContextMenu(

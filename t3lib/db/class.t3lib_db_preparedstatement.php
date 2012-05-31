@@ -39,7 +39,7 @@
  * $statement->free();
  * </code>
  *
- * @author	Xavier Perseguers <typo3@perseguers.ch>
+ * @author Xavier Perseguers <typo3@perseguers.ch>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -143,7 +143,7 @@ class t3lib_db_PreparedStatement {
 	 * This constructor may only be used by t3lib_DB.
 	 *
 	 * @param string $query SQL query to be executed
-	 * @param string FROM table, used to call $GLOBALS['TYPO3_DB']->fullQuoteStr().
+	 * @param string $table FROM table, used to call $GLOBALS['TYPO3_DB']->fullQuoteStr().
 	 * @param array $precompiledQueryParts Components of the query to be executed
 	 * @access private
 	 */
@@ -486,10 +486,10 @@ class t3lib_db_PreparedStatement {
 	/**
 	 * Replace the markers with unpredictable token markers.
 	 *
-	 * @throws InvalidArgumentException
 	 * @param string $query
 	 * @param array $parameterValues
 	 * @return string
+	 * @throws InvalidArgumentException
 	 */
 	protected function tokenizeQueryParameterMarkers($query, array $parameterValues) {
 		$unnamedParameterCount = 0;
@@ -498,8 +498,8 @@ class t3lib_db_PreparedStatement {
 				if (!preg_match('/^:[\w]+$/', $key)) {
 					throw new InvalidArgumentException('Parameter names must start with ":" followed by an arbitrary number of alphanumerical characters.', 1282348825);
 				}
-				// Replace the marker (not preceeded by a word character or a ':' but
-				// followed by a word boundary)
+					// Replace the marker (not preceeded by a word character or a ':' but
+					// followed by a word boundary)
 				$query = preg_replace('/(?<![\w:])' . $key . '\b/', $this->parameterWrapToken . $key . $this->parameterWrapToken, $query);
 			} else {
 				$unnamedParameterCount++;

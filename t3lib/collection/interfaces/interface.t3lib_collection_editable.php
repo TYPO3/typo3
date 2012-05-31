@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Interface for collection classes which es enabled to be modified
  *
@@ -38,7 +37,6 @@ interface t3lib_collection_Editable {
 	/**
 	 * Adds on entry to the collection
 	 *
-	 * @abstract
 	 * @param mixed $data
 	 * @return void
 	 */
@@ -47,7 +45,6 @@ interface t3lib_collection_Editable {
 	/**
 	 * Adds a set of entries to the collection
 	 *
-	 * @abstract
 	 * @param t3lib_collection_Collection $other
 	 * @return void
 	 */
@@ -58,7 +55,6 @@ interface t3lib_collection_Editable {
 	 *
 	 * Note: not the given "index"
 	 *
-	 * @abstract
 	 * @param mixed $data
 	 * @return void
 	 */
@@ -69,7 +65,6 @@ interface t3lib_collection_Editable {
 	 *
 	 * collection will be empty afterwards
 	 *
-	 * @abstract
 	 * @return void
 	 */
 	public function removeAll();

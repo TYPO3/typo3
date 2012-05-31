@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Collection for handling records from a single database-table.
  *
@@ -38,7 +37,6 @@ interface t3lib_collection_RecordCollection extends t3lib_collection_Collection,
 	/**
 	 * Setter for the name of the data-source table
 	 *
-	 * @abstract
 	 * @param string $tableName
 	 * @return void
 	 */
@@ -47,7 +45,6 @@ interface t3lib_collection_RecordCollection extends t3lib_collection_Collection,
 	/**
 	 * Setter for the name of the data-source table
 	 *
-	 * @abstract
 	 * @return string
 	 */
 	public function getItemTableName();

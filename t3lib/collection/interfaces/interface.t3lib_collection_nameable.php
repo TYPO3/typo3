@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Marker interface for a collection class with title and description
  *
@@ -43,7 +42,6 @@ interface t3lib_collection_Nameable {
 	/**
 	 * Setter for the title
 	 *
-	 * @abstract
 	 * @param string $title
 	 * @return void
 	 */
@@ -52,7 +50,6 @@ interface t3lib_collection_Nameable {
 	/**
 	 * Setter for the description
 	 *
-	 * @abstract
 	 * @param string $description
 	 * @return void
 	 */
@@ -61,7 +58,6 @@ interface t3lib_collection_Nameable {
 	/**
 	 * Getter for the title
 	 *
-	 * @abstract
 	 * @return string
 	 */
 	public function getTitle();
@@ -69,7 +65,6 @@ interface t3lib_collection_Nameable {
 	/**
 	 * Getter for the description
 	 *
-	 * @abstract
 	 * @return void
 	 */
 	public function getDescription();

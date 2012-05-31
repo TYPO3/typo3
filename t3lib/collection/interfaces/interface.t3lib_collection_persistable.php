@@ -25,7 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Interface for collection class being persistable
  *
@@ -47,16 +46,14 @@ interface t3lib_collection_Persistable {
 	 * session stored, registry stored or other collections might
 	 * use a string as well
 	 *
-	 * @abstract
-	 * @return int|string
+	 * @return integer|string
 	 */
 	public function getIdentifier();
 
 	/**
 	 * Sets the identifier of the collection
 	 *
-	 * @abstract
-	 * @param int|string $id
+	 * @param integer|string $id
 	 * @return void
 	 */
 	public function setIdentifier($id);
@@ -68,9 +65,7 @@ interface t3lib_collection_Persistable {
 	 * identifier (what ever static data is defined) is loaded.
 	 * Entries can be load on first access.
 	 *
-	 * @static
-	 * @abstract
-	 * @param int|string $id
+	 * @param integer|string $id
 	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @return t3lib_collection_Collection
 	 */
@@ -79,7 +74,6 @@ interface t3lib_collection_Persistable {
 	/**
 	 * Persists current collection state to underlying storage
 	 *
-	 * @abstract
 	 * @return void
 	 */
 	public function persist();
@@ -94,7 +88,6 @@ interface t3lib_collection_Persistable {
 	 * ($fillItems = false) this function is to be used for loading the contents
 	 * afterwards.
 	 *
-	 * @abstract
 	 * @return void
 	 */
 	public function loadContents();
