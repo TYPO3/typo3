@@ -74,10 +74,10 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 			$sortByField = t3lib_div::_GP('sortByField');
 			if ($sortByField) {
 				$menuItems=array();
-				if (t3lib_div::inList('title,subtitle,crdate,tstamp',$sortByField)) {
-					$menuItems = $sys_pages->getMenu($this->pObj->id,'uid,pid,title',$sortByField,'',0);
+				if (t3lib_div::inList('title,subtitle,crdate,tstamp', $sortByField)) {
+					$menuItems = $sys_pages->getMenu($this->pObj->id, 'uid,pid,title', $sortByField, '', 0);
 				} elseif ($sortByField=='REV') {
-					$menuItems = $sys_pages->getMenu($this->pObj->id,'uid,pid,title','sorting','',0);
+					$menuItems = $sys_pages->getMenu($this->pObj->id, 'uid,pid,title', 'sorting', '', 0);
 					$menuItems = array_reverse($menuItems);
 				}
 				if (count($menuItems)) {
@@ -88,14 +88,14 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 					foreach ($menuItems as $r) {
 						$cmd['pages'][$r['uid']]['move']=$this->pObj->id;
 					}
-					$tce->start(array(),$cmd);
+					$tce->start(array(), $cmd);
 					$tce->process_cmdmap();
 					t3lib_BEfunc::setUpdateSignal('updatePageTree');
 				}
 			}
 
 				//
-			$menuItems = $sys_pages->getMenu($this->pObj->id,'*','sorting','',0);
+			$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', 0);
 			$lines=array();
 				$lines[]= '<tr class="t3-row-header">
 					<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'), 'title') . '</td>
@@ -105,11 +105,11 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 					</tr>';
 			foreach ($menuItems as $rec) {
 				$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(2);	// edit permissions for that page!
-				$pRec = t3lib_BEfunc::getRecord ('pages',$rec['uid'],'uid',' AND '.$m_perms_clause);
-				$lines[]= '<tr><td nowrap="nowrap">'.t3lib_iconWorks::getSpriteIconForRecord('pages',$rec).
-					(!is_array($pRec)?$GLOBALS['TBE_TEMPLATE']->rfw('<strong>'.$LANG->getLL('wiz_W',1).'</strong> '):'').
-					htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['title'],$GLOBALS['BE_USER']->uc['titleLen'])).'&nbsp;</td>
-					'.(t3lib_extMgm::isLoaded('cms')?'<td nowrap="nowrap">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['subtitle'],$GLOBALS['BE_USER']->uc['titleLen'])).'&nbsp;</td>':'').'
+				$pRec = t3lib_BEfunc::getRecord ('pages', $rec['uid'], 'uid', ' AND '.$m_perms_clause);
+				$lines[]= '<tr><td nowrap="nowrap">'.t3lib_iconWorks::getSpriteIconForRecord('pages', $rec).
+					(!is_array($pRec)?$GLOBALS['TBE_TEMPLATE']->rfw('<strong>'.$LANG->getLL('wiz_W', 1).'</strong> '):'').
+					htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])).'&nbsp;</td>
+					'.(t3lib_extMgm::isLoaded('cms')?'<td nowrap="nowrap">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($rec['subtitle'], $GLOBALS['BE_USER']->uc['titleLen'])).'&nbsp;</td>':'').'
 					<td nowrap="nowrap">'.t3lib_Befunc::datetime($rec['tstamp']).'&nbsp;&nbsp;</td>
 					<td nowrap="nowrap">'.t3lib_Befunc::datetime($rec['crdate']).'&nbsp;&nbsp;</td>
 					</tr>';
@@ -121,12 +121,12 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 			if (count($menuItems)) {
 					// Menu:
 				$lines=array();
-				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'),'title');
-				if (t3lib_extMgm::isLoaded('cms')) $lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'),'subtitle');
-				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'),'tstamp');
-				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'),'crdate');
+				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'), 'title');
+				if (t3lib_extMgm::isLoaded('cms')) $lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'), 'subtitle');
+				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'), 'tstamp');
+				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'), 'crdate');
 				$lines[] = '';
-				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_REVERSE'),'REV');
+				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_REVERSE'), 'REV');
 				$theCode.= '<h4>' . $LANG->getLL('wiz_changeOrder') . '</h4>' . implode('<br />', $lines);
 			}
 
@@ -147,7 +147,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 	 * @param	string		Field to sort by
 	 * @return	string		HTML string
 	 */
-	function wiz_linkOrder($title,$order) {
+	function wiz_linkOrder($title, $order) {
 		return '&nbsp; &nbsp;<a class="t3-link" href="' . htmlspecialchars('index.php?id=' . $GLOBALS['SOBE']->id . '&sortByField=' . $order) . '" onclick="return confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('wiz_changeOrder_msg1')) . ')">' . htmlspecialchars($title) . '</a>';
 	}
 }
