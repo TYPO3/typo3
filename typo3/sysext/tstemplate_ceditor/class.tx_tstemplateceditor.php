@@ -165,7 +165,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 			$category = $this->pObj->MOD_SETTINGS["constant_editor_cat"];
 			$tmpl->ext_getTSCE_config($category);
 
-# NOT WORKING:
+				// NOT WORKING:
 			if ($BE_USER_modOptions["properties"]["constantEditor."]["example"]=="top") {
 				$theOutput=$this->displayExample($theOutput);
 			}

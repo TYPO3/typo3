@@ -962,7 +962,7 @@ final class t3lib_BEfunc {
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'uid,' . $ds_pointerField . ',' . $ds_searchParentField . ($subFieldPointer ? ',' . $subFieldPointer : ''),
 						$table,
-							'uid=' . intval($newRecordPidValue ? $newRecordPidValue : $rr[$ds_searchParentField]) . self::deleteClause($table) ###NOTE_A###
+							'uid=' . intval($newRecordPidValue ? $newRecordPidValue : $rr[$ds_searchParentField]) . self::deleteClause($table)
 					);
 					$newRecordPidValue = 0;
 					$rr = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);

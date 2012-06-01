@@ -76,13 +76,14 @@ class Tx_Install_Updates_File_TceformsUpdateWizard extends Tx_Install_Updates_Ba
 	public function performUpdate(&$dbQueries, &$customMessages) {
 		$this->init();
 
-		### Function below copied from sysext/install/updates/class.tx_coreupdates_imagelink.php
+			// Function below copied from sysext/install/updates/class.tx_coreupdates_imagelink.php
 
 		$tables = array(
 			'tt_content' => array(
 				'image' => array(
 					'sourcePath' => 'uploads/pics/',
-					'targetPath' => '_migrated/pics/', # relative to fileadmin
+						// relative to fileadmin
+					'targetPath' => '_migrated/pics/',
 					'titleTexts' => 'titleText',
 					'captions' => 'imagecaption',
 					'links' => 'image_link',
@@ -92,13 +93,15 @@ class Tx_Install_Updates_File_TceformsUpdateWizard extends Tx_Install_Updates_Ba
 			'pages' => array(
 				'media' => array(
 					'sourcePath' => 'uploads/media/',
-					'targetPath' => '_migrated/media/', # relative to fileadmin
+						// relative to fileadmin
+					'targetPath' => '_migrated/media/',
 				),
 			),
 			'pages_language_overlay' => array(
 				'media' => array(
 					'sourcePath' => 'uploads/media/',
-					'targetPath' => '_migrated/media/', # relative to fileadmin
+						// relative to fileadmin
+					'targetPath' => '_migrated/media/',
 				),
 			),
 		);
