@@ -299,7 +299,7 @@ class SC_view_help {
 		$output.= '
 
 			<h2>'.$GLOBALS['LANG']->getLL('introduction', 1).'</h2>
-			<p>'.$GLOBALS['LANG']->getLL('description',  1).'</p>';
+			<p>'.$GLOBALS['LANG']->getLL('description', 1).'</p>';
 
 		$output.= '
 

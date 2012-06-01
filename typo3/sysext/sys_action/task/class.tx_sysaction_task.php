@@ -647,7 +647,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 
 				// walk through every wanted DB-Mount and check if it allowed for the current user
 			foreach ($dbMounts as $dbMount) {
-				$uid = intval(substr($dbMount,  (strrpos($dbMount, '_') + 1)));
+				$uid = intval(substr($dbMount, (strrpos($dbMount, '_') + 1)));
 				$page = t3lib_BEfunc::getRecord('pages', $uid);
 
 					// check rootline and access rights
@@ -743,7 +743,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		}
 
 		$content .= '<option value=""></option>';
-		$grList = t3lib_div::trimExplode(',',  $record['t1_allowed_groups'], 1);
+		$grList = t3lib_div::trimExplode(',', $record['t1_allowed_groups'], 1);
 		foreach($grList as $group) {
 			$checkGroup = t3lib_BEfunc::getRecord('be_groups', $group);
 			if (is_array($checkGroup)) {

@@ -392,7 +392,7 @@ class user_DoubleMetaPhone
                            array("B","H","D")))
                 // e.g. 'bough'
                 || (($this->current > 2)
-                    &&  $this->StringAt($this->original, $this->current - 3, 1,
+                    && $this->StringAt($this->original, $this->current - 3, 1,
                                array("B","H","D")))
                 // e.g. 'broughton'
                 || (($this->current > 3)
@@ -979,7 +979,7 @@ class user_DoubleMetaPhone
 
     } // end while
 
-    $this->primary   = substr($this->primary,   0, 4);
+    $this->primary   = substr($this->primary, 0, 4);
     $this->secondary = substr($this->secondary, 0, 4);
 
     $result["primary"] = $this->primary ;
