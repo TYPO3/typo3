@@ -297,21 +297,21 @@ class SC_db_list {
 			$listUrl = substr($dblist->listURL(), strlen($GLOBALS['BACK_PATH']));
 				// Add JavaScript functions to the page:
 			$this->doc->JScode=$this->doc->wrapScriptTags('
-				function jumpToUrl(URL)	{	//
+				function jumpToUrl(URL) {	//
 					window.location.href = URL;
 					return false;
 				}
-				function jumpExt(URL,anchor)	{	//
+				function jumpExt(URL,anchor) {	//
 					var anc = anchor?anchor:"";
 					window.location.href = URL+(T3_THIS_LOCATION?"&returnUrl="+T3_THIS_LOCATION:"")+anc;
 					return false;
 				}
-				function jumpSelf(URL)	{	//
+				function jumpSelf(URL) {	//
 					window.location.href = URL+(T3_RETURN_URL?"&returnUrl="+T3_RETURN_URL:"");
 					return false;
 				}
 
-				function setHighlight(id)	{	//
+				function setHighlight(id) {	//
 					top.fsMod.recentIds["web"]=id;
 					top.fsMod.navFrameHighlightedID["web"]="pages"+id+"_"+top.fsMod.currentBank;	// For highlighting
 
@@ -321,11 +321,11 @@ class SC_db_list {
 				}
 				' . $this->doc->redirectUrls($listUrl) . '
 				'.$dblist->CBfunctions().'
-				function editRecords(table,idList,addParams,CBflag)	{	//
+				function editRecords(table,idList,addParams,CBflag) {	//
 					window.location.href="' . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) .
 						'&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
-				function editList(table,idList)	{	//
+				function editList(table,idList) {	//
 					var list="";
 
 						// Checking how many is checked, how many is not

@@ -219,7 +219,7 @@ class SC_alt_shortcut {
 		$this->doc->form='<form action="alt_shortcut.php" name="shForm" method="post">';
 		$this->doc->divClass='typo3-shortcut';
 		$this->doc->JScode.=$this->doc->wrapScriptTags('
-			function jump(url,modName,mainModName)	{	//
+			function jump(url,modName,mainModName) {	//
 					// Clear information about which entry in nav. tree that might have been highlighted.
 				top.fsMod.navFrameHighlightedID = new Array();
 				if (top.content && top.content.nav_frame && top.content.nav_frame.refresh_nav) {
@@ -229,16 +229,16 @@ class SC_alt_shortcut {
 				top.nextLoadModuleUrl = url;
 				top.goToModule(modName);
 			}
-			function editSh(uid)	{	//
+			function editSh(uid) {	//
 				window.location.href="alt_shortcut.php?editShortcut="+uid;
 			}
-			function submitEditPage(id)	{	//
+			function submitEditPage(id) {	//
 				window.location.href="alt_shortcut.php?editPage="+top.rawurlencodeAndRemoveSiteUrl(id);
 			}
-			function changeWorkspace(workspaceId)	{	//
+			function changeWorkspace(workspaceId) {	//
 				window.location.href="alt_shortcut.php?changeWorkspace="+top.rawurlencodeAndRemoveSiteUrl(workspaceId);
 			}
-			function changeWorkspacePreview(newstate)	{	//
+			function changeWorkspacePreview(newstate) {	//
 				window.location.href="alt_shortcut.php?changeWorkspacePreview="+newstate;
 			}
 			function refreshShortcuts() {

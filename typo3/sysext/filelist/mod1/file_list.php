@@ -322,7 +322,7 @@ class SC_file_list {
 			$this->doc->JScode=$this->doc->wrapScriptTags('
 
 			if (top.fsMod) top.fsMod.recentIds["file"] = unescape("'.rawurlencode($this->id).'");
-			function jumpToUrl(URL)	{	//
+			function jumpToUrl(URL) {	//
 				window.location.href = URL;
 			}
 

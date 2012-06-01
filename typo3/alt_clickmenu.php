@@ -1637,21 +1637,21 @@ class SC_alt_clickmenu {
 
 	routImg = "t3-icon-empty";
 
-	function mo(c)	{	//
+	function mo(c) {	//
 		var name="roimg_"+c;
 		document.getElementById(name).className = roImg;
 		updateTime();
 	}
-	function mout(c)	{	//
+	function mout(c) {	//
 		var name="roimg_"+c;
 		document[name].src = routImg;
 		updateTime();
 	}
-	function updateTime()	{	//
+	function updateTime() {	//
 		date = new Date();
 		mo_timeout = Math.floor(date.getTime()/1000);
 	}
-	function timeout_func()	{	//
+	function timeout_func() {	//
 		date = new Date();
 		if (Math.floor(date.getTime()/1000)-mo_timeout > '.$secs.') {
 			hideCM();
@@ -1660,7 +1660,7 @@ class SC_alt_clickmenu {
 			window.setTimeout("timeout_func();",1*1000);
 		}
 	}
-	function hideCM()	{	//
+	function hideCM() {	//
 		window.location.href="alt_topmenu_dummy.php";
 		return false;
 	}

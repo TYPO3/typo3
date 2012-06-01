@@ -296,7 +296,7 @@ class t3lib_recordList {
 	function CBfunctions() {
 		return '
 		// checkOffCB()
-	function checkOffCB(listOfCBnames, link)	{	//
+	function checkOffCB(listOfCBnames, link) {	//
 		var checkBoxes, flag, i;
 		var checkBoxes = listOfCBnames.split(",");
 		if (link.rel === "") {
@@ -311,12 +311,12 @@ class t3lib_recordList {
 		}
 	}
 		// cbValue()
-	function cbValue(CBname)	{	//
+	function cbValue(CBname) {	//
 		var CBfullName = "CBC["+CBname+"]";
 		return (document.dblistForm[CBfullName] && document.dblistForm[CBfullName].checked ? 1 : 0);
 	}
 		// setcbValue()
-	function setcbValue(CBname,flag)	{	//
+	function setcbValue(CBname,flag) {	//
 		CBfullName = "CBC["+CBname+"]";
 		if(document.dblistForm[CBfullName]) {
 			document.dblistForm[CBfullName].checked = flag ? "on" : 0;

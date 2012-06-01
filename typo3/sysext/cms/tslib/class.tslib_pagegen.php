@@ -236,7 +236,7 @@ class TSpagegen {
 
 		foreach ($GLOBALS['TSFE']->JSeventFuncCalls as $event => $handlers) {
 			if (count($handlers)) {
-				$functions[] = '	function T3_'.$event.'Wrapper(e)	{	'.implode('   ', $handlers).'	}';
+				$functions[] = '	function T3_'.$event.'Wrapper(e) {	'.implode('   ', $handlers).'	}';
 				$setEvents[] = '	document.'.$event.'=T3_'.$event.'Wrapper;';
 				if ($event == 'onload') {
 					$setBody[]='onload="T3_onloadWrapper();"';	// dubiuos double setting breaks on some browser - do we need it?
@@ -819,7 +819,7 @@ class TSpagegen {
 		var msie4 = (browserName == "Microsoft Internet Explorer" && browserVer >= 4);
 		if ((browserName == "Netscape" && browserVer >= 3) || msie4 || browserName=="Konqueror" || browserName=="Opera") {version = "n3";} else {version = "n2";}
 			// Blurring links:
-		function blurLink(theObject)	{	//
+		function blurLink(theObject) {	//
 			if (msie4)	{theObject.blur();}
 		}
 		' . $JSef[0];

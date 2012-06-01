@@ -379,7 +379,7 @@ class SC_db_layout {
 			$this->doc->JScode.= $this->doc->wrapScriptTags('
 				if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 				if (top.fsMod) top.fsMod.navFrameHighlightedID["web"] = "pages'.intval($this->id).'_"+top.fsMod.currentBank; '.intval($this->id).';
-				function jumpToUrl(URL,formEl)	{	//
+				function jumpToUrl(URL,formEl) {	//
 					if (document.editform && TBE_EDITOR.isFormChanged)	{	// Check if the function exists... (works in all browsers?)
 						if (!TBE_EDITOR.isFormChanged())	{	//
 							window.location.href = URL;
@@ -390,7 +390,7 @@ class SC_db_layout {
 				}
 			' . ($this->popView ? t3lib_BEfunc::viewOnClick($this->id, $GLOBALS['BACK_PATH'], t3lib_BEfunc::BEgetRootLine($this->id)) : '') . '
 
-				function deleteRecord(table,id,url)	{	//
+				function deleteRecord(table,id,url) {	//
 					if (confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')) . ')) {
 						window.location.href = "' . $GLOBALS['BACK_PATH'] .
 						'tce_db.php?cmd["+table+"]["+id+"][delete]=1&redirect="+escape(url)+"&vC=' . $GLOBALS['BE_USER']->veriCode() .
@@ -408,7 +408,7 @@ class SC_db_layout {
 					top.DTM_currentTabs = new Array();
 				}
 
-				function DTM_activate(idBase,index,doToogle)	{	//
+				function DTM_activate(idBase,index,doToogle) {	//
 						// Hiding all:
 					if (DTM_array[idBase]) {
 						for(cnt = 0; cnt < DTM_array[idBase].length ; cnt++) {
@@ -440,7 +440,7 @@ class SC_db_layout {
 						}
 					}
 				}
-				function DTM_toggle(idBase,index,isInit)	{	//
+				function DTM_toggle(idBase,index,isInit) {	//
 						// Showing one:
 					if (document.getElementById(idBase+"-"+index+"-DIV")) {
 						if (document.getElementById(idBase+"-"+index+"-DIV").style.display == "block") {

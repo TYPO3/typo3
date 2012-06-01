@@ -100,7 +100,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 				// JavaScript
 			$this->doc->JScode = $this->doc->wrapScriptTags('
 				script_ended = 0;
-				function jumpToUrl(URL)	{	//
+				function jumpToUrl(URL) {	//
 					window.location.href = URL;
 				}
 			');

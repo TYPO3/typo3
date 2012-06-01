@@ -144,12 +144,12 @@ class SC_wizard_tsconfig {
 		';
 
 		$this->doc->JScode.=$this->doc->wrapScriptTags('
-			function checkReference_name()	{	// Checks if the input field containing the name exists in the document
+			function checkReference_name() {	// Checks if the input field containing the name exists in the document
 				if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"] ) {
 					return window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"];
 				}
 			}
-			function checkReference_value()	{	// Checks if the input field containing the value exists in the document
+			function checkReference_value() {	// Checks if the input field containing the value exists in the document
 				if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemValue'].'"] ) {
 					return window.opener.document.'.$this->P['formName'].'["'.$this->P['itemValue'].'"];
 				}
@@ -180,7 +180,7 @@ class SC_wizard_tsconfig {
 				}
 				close();
 			}
-			function getValue()	{	// This is never used. Remove it?
+			function getValue() {	// This is never used. Remove it?
 				var field = checkReference_name();
 				if (field) {
 					return field.value;

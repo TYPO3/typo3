@@ -251,7 +251,7 @@ class SC_db_new_content_el {
 
 				// add document inline javascript
 			$this->doc->JScode = $this->doc->wrapScriptTags('
-				function goToalt_doc()	{	//
+				function goToalt_doc() {	//
 					' . $this->onClickEvent . '
 				}
 

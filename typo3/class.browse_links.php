@@ -862,7 +862,7 @@ class browse_links {
 			var cur_title="'.($this->setTitle?$this->setTitle:'').'";
 			var cur_params="' . ($this->setParams ? $this->setParams : '') . '";
 
-			function browse_links_setTarget(target)	{	//
+			function browse_links_setTarget(target) {	//
 				cur_target=target;
 				add_target="&curUrl[target]="+escape(target);
 			}
@@ -870,7 +870,7 @@ class browse_links {
 				cur_class = cssClass;
 				add_class = "&curUrl[class]=" + escape(cssClass);
 			}
-			function browse_links_setTitle(title)	{	//
+			function browse_links_setTitle(title) {	//
 				cur_title=title;
 				add_title="&curUrl[title]="+escape(title);
 			}
@@ -878,7 +878,7 @@ class browse_links {
 				cur_href=value;
 				add_href="&curUrl[href]="+value;
 			}
-			function browse_links_setParams(params)	{	//
+			function browse_links_setParams(params) {	//
 				cur_params=params;
 				add_params="&curUrl[params]="+escape(params);
 			}
@@ -906,17 +906,17 @@ class browse_links {
 			$addPassOnParams.=t3lib_div::implodeArrayForUrl('P', $P2);
 
 			$JScode.='
-				function link_typo3Page(id,anchor)	{	//
+				function link_typo3Page(id,anchor) {	//
 					updateValueInMainForm(id + (anchor ? anchor : ""));
 					close();
 					return false;
 				}
-				function link_folder(folder)	{	//
+				function link_folder(folder) {	//
 					updateValueInMainForm(folder);
 					close();
 					return false;
 				}
-				function link_current()	{	//
+				function link_current() {	//
 					if (cur_href!="http://" && cur_href!="mailto:") {
 						returnBeforeCleaned = cur_href;
 						if (returnBeforeCleaned.substr(0, 7) == "http://") {
@@ -935,14 +935,14 @@ class browse_links {
 					}
 					return false;
 				}
-				function checkReference()	{	//
+				function checkReference() {	//
 					if (window.opener && window.opener.document && window.opener.document.'.$this->P['formName'].' && window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"] ) {
 						return window.opener.document.'.$this->P['formName'].'["'.$this->P['itemName'].'"];
 					} else {
 						close();
 					}
 				}
-				function updateValueInMainForm(input)	{	//
+				function updateValueInMainForm(input) {	//
 					var field = checkReference();
 					if (field) {
 						if (cur_target == "" && (cur_class != "" || cur_title != "" || cur_params != "")) {
@@ -977,21 +977,21 @@ class browse_links {
 			';
 		} else {	// Functions used, if the link selector is in RTE mode:
 			$JScode.='
-				function link_typo3Page(id,anchor)	{	//
+				function link_typo3Page(id,anchor) {	//
 					var theLink = \''.$this->siteURL.'?id=\'+id+(anchor?anchor:"");
 					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
 					return false;
 				}
-				function link_folder(folder)	{	//
+				function link_folder(folder) {	//
 					var theLink = \''.$this->siteURL.'\'+folder;
 					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
 					return false;
 				}
-				function link_spec(theLink)	{	//
+				function link_spec(theLink) {	//
 					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
 					return false;
 				}
-				function link_current()	{	//
+				function link_current() {	//
 					if (cur_href!="http://" && cur_href!="mailto:") {
 						self.parent.parent.renderPopup_addLink(cur_href, cur_target, cur_class, cur_title);
 					}
@@ -1002,7 +1002,7 @@ class browse_links {
 
 			// General "jumpToUrl" function:
 		$JScode.='
-			function jumpToUrl(URL,anchor)	{	//
+			function jumpToUrl(URL,anchor) {	//
 				var add_act = URL.indexOf("act=")==-1 ? "&act='.$this->act.'" : "";
 				var add_mode = URL.indexOf("mode=")==-1 ? "&mode='.$this->mode.'" : "";
 				var theLocation = URL + add_act + add_mode + add_href + add_target + add_class + add_title + add_params'.($addPassOnParams?'+"'.$addPassOnParams.'"':'').'+(anchor?anchor:"");
@@ -1089,14 +1089,14 @@ class browse_links {
 			var elRef="";
 			var targetDoc="";
 
-			function launchView(url)	{	//
+			function launchView(url) {	//
 				var thePreviewWindow="";
 				thePreviewWindow = window.open("'.$GLOBALS['BACK_PATH'].'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
 				if (thePreviewWindow && thePreviewWindow.focus) {
 					thePreviewWindow.focus();
 				}
 			}
-			function setReferences()	{	//
+			function setReferences() {	//
 				if (parent.window.opener && parent.window.opener.content && parent.window.opener.content.document.editform && parent.window.opener.content.document.editform["'.$formFieldName.'"]) {
 					targetDoc = parent.window.opener.content.document;
 					elRef = targetDoc.editform["'.$formFieldName.'"];
@@ -1105,7 +1105,7 @@ class browse_links {
 					return false;
 				}
 			}
-			function insertElement(table, uid, type, filename, fp, filetype, imagefile, action, close)	{	//
+			function insertElement(table, uid, type, filename, fp, filetype, imagefile, action, close) {	//
 				var performAction = true;
 				'.$JScodeCheck.'
 					// Call performing function and finish this action:
@@ -1119,7 +1119,7 @@ class browse_links {
 						' . $JScodeActionMultiple . '
 				return false;
 			}
-			function addElement(elName, elValue, altElValue, close)	{	//
+			function addElement(elName, elValue, altElValue, close) {	//
 				if (parent.window.opener && parent.window.opener.setFormValueFromBrowseWin) {
 					parent.window.opener.setFormValueFromBrowseWin("'.$pArr[0].'",altElValue?altElValue:elValue,elName);
 					focusOpenerAndClose(close);
@@ -1128,7 +1128,7 @@ class browse_links {
 					parent.close();
 				}
 			}
-			function focusOpenerAndClose(close)	{	//
+			function focusOpenerAndClose(close) {	//
 				BrowseLinks.focusOpenerAndClose(close);
 			}
 		';

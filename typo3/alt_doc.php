@@ -407,7 +407,7 @@ class SC_alt_doc {
 
 		$this->doc->getPageRenderer()->loadPrototype();
 		$this->doc->JScode = $this->doc->wrapScriptTags('
-			function jumpToUrl(URL,formEl)	{	//
+			function jumpToUrl(URL,formEl) {	//
 				if (!TBE_EDITOR.isFormChanged()) {
 					window.location.href = URL;
 				} else if (formEl && formEl.type=="checkbox") {
@@ -417,7 +417,7 @@ class SC_alt_doc {
 				// Object: TS:
 				// passwordDummy and decimalSign are used by tbe_editor.js and have to be declared here as
 				// TS object overwrites the object declared in tbe_editor.js
-			function typoSetup	()	{	//
+			function typoSetup() {	//
 				this.uniqueID = "";
 				this.passwordDummy = "********";
 				this.PATH_typo3 = " ";
@@ -426,7 +426,7 @@ class SC_alt_doc {
 			var TS = new typoSetup();
 
 				// Info view:
-			function launchView(table,uid,bP)	{	//
+			function launchView(table,uid,bP) {	//
 				var backPath= bP ? bP : "";
 				var thePreviewWindow="";
 				thePreviewWindow = window.open(backPath+"show_item.php?table="+encodeURIComponent(table)+"&uid="+encodeURIComponent(uid),"ShowItem"+TS.uniqueID,"height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
@@ -434,7 +434,7 @@ class SC_alt_doc {
 					thePreviewWindow.focus();
 				}
 			}
-			function deleteRecord(table,id,url)	{	//
+			function deleteRecord(table,id,url) {	//
 				if (
 					' . ($GLOBALS['BE_USER']->jsConfirmation(4) ? 'confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning')) . ')' : '1==1') . '
 				)	{
