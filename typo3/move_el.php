@@ -258,7 +258,7 @@ class SC_move_el {
 			$elRow = t3lib_BEfunc::getRecordWSOL($this->table, $this->moveUid);
 
 				// Headerline: Icon, record title:
-			$hline = t3lib_iconWorks::getSpriteIconForRecord($this->table, $elRow, array('id' => "c-recIcon", 'title' => htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow, $this->table))));
+			$hline = t3lib_iconWorks::getSpriteIconForRecord($this->table, $elRow, array('id' => 'c-recIcon', 'title' => htmlspecialchars(t3lib_BEfunc::getRecordIconAltText($elRow, $this->table))));
 			$hline.= t3lib_BEfunc::getRecordTitle($this->table, $elRow, TRUE);
 
 				// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):

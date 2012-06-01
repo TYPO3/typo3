@@ -352,7 +352,7 @@ class webPageTree extends t3lib_browseTree {
 			$this->ids = $curIds;
 
 				// Set PM icon for root of mount:
-			$cmd = $this->bank.'_'.($isOpen? "0_" : "1_").$uid.'_'.$this->treeName;
+			$cmd = $this->bank . '_' . ($isOpen? '0_' : '1_') . $uid . '_' . $this->treeName;
 				// only, if not for uid 0
 			if ($uid) {
 				$icon = '<img' . t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/' . ($isOpen ? 'minus' :'plus' ) . 'only.gif') . ' alt="" />';
@@ -429,13 +429,13 @@ class webPageTree extends t3lib_browseTree {
 			}
 		}
 
-		$label_shownAlphabetically = "";
+		$label_shownAlphabetically = '';
 		if (count($outOfMenuPages)) {
 				// Sort out-of-menu pages:
 			$outOfMenuPages_alphabetic = array();
 			if ($this->ext_alphasortNotinmenuPages) {
 				asort($outOfMenuPagesTextIndex);
-				$label_shownAlphabetically = " (alphabetic)";
+				$label_shownAlphabetically = ' (alphabetic)';
 			}
 			foreach($outOfMenuPagesTextIndex as $idx => $txt) {
 				$outOfMenuPages_alphabetic[] = $outOfMenuPages[$idx];

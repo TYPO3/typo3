@@ -475,7 +475,7 @@ class SC_show_item {
 				'<td>' . t3lib_BEfunc::getRecordTitle($row['tablename'], $record, TRUE) . '</td>' .
 				'<td><span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:page') . ': ' .
 				htmlspecialchars(t3lib_BEfunc::getRecordTitle('pages', t3lib_BEfunc::getRecord('pages', $record['pid']))) .
-				" (uid=" . $record['pid'] . ')">' . $record['uid'] . '</span></td>' .
+				' (uid=' . $record['pid'] . ')">' . $record['uid'] . '</span></td>' .
 				'<td>' . htmlspecialchars($this->getFieldName($row['tablename'], $row['field'])) . '</td>' .
 				'<td>' . htmlspecialchars($row['flexpointer']) . '</td>' .
 				'<td>' . htmlspecialchars($row['softref_key']) . '</td>' .

@@ -874,7 +874,7 @@ class localRecordList extends recordList {
 
 							// If new records can be created on this page, add links:
 						if ($this->calcPerms & ($table == 'pages'?8:16) && $this->showNewRecLink($table)) {
-							if ($table == "tt_content" && $this->newWizards) {
+							if ($table == 'tt_content' && $this->newWizards) {
 									//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
 								$tmpTSc = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
 								$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
@@ -1156,7 +1156,7 @@ class localRecordList extends recordList {
 		}
 
 			// "Move" wizard link for pages/tt_content elements:
-		if (($table=="tt_content" && $permsEdit) || ($table=='pages')) {
+		if (($table == 'tt_content' && $permsEdit) || ($table=='pages')) {
 			$cells['move'] = '<a href="#" onclick="' .
 				htmlspecialchars(
 					'return jumpExt(\'' . $this->backPath . 'move_el.php?table=' . $table . '&uid='.$row['uid'] . '\');'
