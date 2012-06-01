@@ -94,7 +94,7 @@ class tx_install_ajax {
 	 */
 	function createEncryptionKey($keyLength = 96) {
 		if (!headers_sent()) {
-			header("Content-type: text/plain");
+			header('Content-type: text/plain');
 		}
 
 		return t3lib_div::getRandomHexString($keyLength);
