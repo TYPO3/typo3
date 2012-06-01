@@ -151,7 +151,7 @@ class SC_alt_db_navframe {
 		'.($this->doHighlight ? 'Tree.highlightClass = "'.$hlClass.'";' : '').'
 
 		// Function, loading the list frame from navigation tree:
-		function jumpTo(id, linkObj, highlightID, bank)	{ //
+		function jumpTo(id, linkObj, highlightID, bank) { //
 			var theUrl = top.TS.PATH_typo3 + top.currentSubScript ;
 			if (theUrl.indexOf("?") != -1) {
 				theUrl += "&id=" + id

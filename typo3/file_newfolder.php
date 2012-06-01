@@ -112,13 +112,13 @@ class SC_file_newfolder {
 		$this->doc->JScode=$this->doc->wrapScriptTags('
 			var path = "' . $this->target . '";
 
-			function reload(a)	{	//
+			function reload(a) {	//
 				if (!changed || (changed && confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.redraw')) . '))) {
 					var params = "&target="+encodeURIComponent(path)+"&number="+a+"&returnUrl=' . rawurlencode($this->returnUrl) . '";
 					window.location.href = "file_newfolder.php?"+params;
 				}
 			}
-			function backToList()	{	//
+			function backToList() {	//
 				top.goToModule("file_list");
 			}
 

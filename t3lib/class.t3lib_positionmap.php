@@ -221,7 +221,7 @@ class t3lib_positionMap {
 			var img_newrecord_marker_d=new Image();
 			img_newrecord_marker_d.src = "' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/newrecord' . $prefix . '_marker_d.gif', '', 1) . '";
 
-			function changeImg(name,d)	{	//
+			function changeImg(name,d) {	//
 				if (document[name]) {
 					if (d) {
 						document[name].src = img_newrecord_marker_d.src;

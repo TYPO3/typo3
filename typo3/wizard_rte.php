@@ -120,7 +120,7 @@ class SC_wizard_rte {
 
 				// Setting JavaScript, including the pid value for viewing:
 			$this->doc->JScode = $this->doc->wrapScriptTags('
-					function jumpToUrl(URL,formEl)	{	//
+					function jumpToUrl(URL,formEl) {	//
 						if (document.editform) {
 							if (!TBE_EDITOR.isFormChanged()) {
 								window.location.href = URL;

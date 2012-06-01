@@ -2467,7 +2467,7 @@ class tslib_cObj {
 	 * @param	array		stdWrap properties for round.
 	 * @return	string		The processed input value
 	 */
-	public function stdWrap_round($content = '', $conf = array()){
+	public function stdWrap_round($content = '', $conf = array()) {
 		$content = $this->round($content, $conf['round.']);
 		return $content;
 	}

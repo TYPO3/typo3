@@ -70,10 +70,10 @@ class SC_browser {
 			// Set doktype:
 		$GLOBALS['TBE_TEMPLATE']->docType='xhtml_frames';
 		$GLOBALS['TBE_TEMPLATE']->JScode=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
-				function closing()	{	//
+				function closing() {	//
 					close();
 				}
-				function setParams(mode,params)	{	//
+				function setParams(mode,params) {	//
 					parent.content.location.href = "browse_links.php?mode="+mode+"&bparams="+params;
 				}
 				if (!window.opener) {

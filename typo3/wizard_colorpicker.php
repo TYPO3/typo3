@@ -122,7 +122,7 @@ class SC_wizard_colorpicker {
 		$this->doc = t3lib_div::makeInstance('smallDoc');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode = $this->doc->wrapScriptTags('
-			function checkReference()	{	//
+			function checkReference() {	//
 				if (parent.opener && parent.opener.document && parent.opener.document.'.$this->formName.' && parent.opener.document.'.$this->formName.'["'.$this->fieldName.'"]) {
 					return parent.opener.document.'.$this->formName.'["'.$this->fieldName.'"];
 				} else {
@@ -138,7 +138,7 @@ class SC_wizard_colorpicker {
 					parent.opener.document.getElementById("'.$this->md5ID.'").bgColor = color;
 				}
 			}
-			function setValue(input)	{	//
+			function setValue(input) {	//
 				var field = checkReference();
 				if (field) {
 					field.value = input;
@@ -146,7 +146,7 @@ class SC_wizard_colorpicker {
 					changeBGcolor(input);
 				}
 			}
-			function getValue()	{	//
+			function getValue() {	//
 				var field = checkReference();
 				return field.value;
 			}

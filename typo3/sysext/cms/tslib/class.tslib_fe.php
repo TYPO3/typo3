@@ -4311,13 +4311,13 @@ if (version == "n3") {
 				case 'mouseOver':
 					$this->additionalJavaScript[$key]=
 '		// JS function for mouse-over
-	function over(name, imgObj)	{	//
+	function over(name, imgObj) {	//
 		if (version == "n3" && document[name]) {document[name].src = eval(name+"_h.src");}
 		else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_h.src");}
 		else if (imgObj)	{imgObj.src = eval(name+"_h.src");}
 	}
 		// JS function for mouse-out
-	function out(name, imgObj)	{	//
+	function out(name, imgObj) {	//
 		if (version == "n3" && document[name]) {document[name].src = eval(name+"_n.src");}
 		else if (document.getElementById && document.getElementById(name)) {document.getElementById(name).src = eval(name+"_n.src");}
 		else if (imgObj)	{imgObj.src = eval(name+"_n.src");}
@@ -4325,7 +4325,7 @@ if (version == "n3") {
 				break;
 				case 'openPic':
 					$this->additionalJavaScript[$key]=
-'	function openPic(url, winName, winParams)	{	//
+'	function openPic(url, winName, winParams) {	//
 		var theWindow = window.open(url, winName, winParams);
 		if (theWindow)	{theWindow.focus();}
 	}';

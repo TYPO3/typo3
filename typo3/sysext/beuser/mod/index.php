@@ -1062,7 +1062,7 @@ class SC_mod_tools_be_user_index {
 				// JavaScript
 		$this->doc->JScode = $this->doc->wrapScriptTags('
 			script_ended = 0;
-			function jumpToUrl(URL)	{	//
+			function jumpToUrl(URL) {	//
 				window.location.href = URL;
 			}
 		' . $this->doc->redirectUrls());

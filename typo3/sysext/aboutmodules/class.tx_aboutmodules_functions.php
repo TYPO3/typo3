@@ -628,7 +628,7 @@ class tx_aboutmodules_Functions {
 	 * Function used to switch switch module.
 	 */
 	var currentModuleLoaded = "";
-	function goToModule(modName,cMR_flag,addGetVars)	{	//
+	function goToModule(modName,cMR_flag,addGetVars) {	//
 		var additionalGetVariables = "";
 		if (addGetVars)	additionalGetVariables = addGetVars;
 

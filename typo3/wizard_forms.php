@@ -194,7 +194,7 @@ class SC_wizard_forms {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/wizard_forms.html');
 		$this->doc->JScode=$this->doc->wrapScriptTags('
-			function jumpToUrl(URL,formEl)	{	//
+			function jumpToUrl(URL,formEl) {	//
 				window.location.href = URL;
 			}
 		');

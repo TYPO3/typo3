@@ -118,7 +118,7 @@ class SC_file_rename {
 		$this->doc->setModuleTemplate('templates/file_rename.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->JScode=$this->doc->wrapScriptTags('
-			function backToList()	{	//
+			function backToList() {	//
 				top.goToModule("file_list");
 			}
 		');

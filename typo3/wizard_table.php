@@ -112,7 +112,7 @@ class SC_wizard_table {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/wizard_table.html');
 		$this->doc->JScode=$this->doc->wrapScriptTags('
-			function jumpToUrl(URL,formEl)	{	//
+			function jumpToUrl(URL,formEl) {	//
 				window.location.href = URL;
 			}
 		');
