@@ -84,11 +84,11 @@ $TCA['sys_file'] = array (
 				'type' => 'select',
 				'size' => '1',
 				'items' => array(
-					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.unknown',  0),
-					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.text',     1),
-					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.image',    2),
-					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.audio',    3),
-					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.video',    4),
+					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.unknown', 0),
+					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.text', 1),
+					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.image', 2),
+					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.audio', 3),
+					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.video', 4),
 					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.software', 5),
 				),
 			)

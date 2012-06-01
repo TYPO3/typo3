@@ -9,7 +9,7 @@
  */
 
 /** URL to download Public Suffix List from */
-define('LIST_URL',    'http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1');
+define('LIST_URL', 'http://mxr.mozilla.org/mozilla-central/source/netwerk/dns/effective_tld_names.dat?raw=1');
 /** Name of PHP file to write */
 define('OUTPUT_FILE', dirname(__FILE__) . '/public-suffix-list.php');
 

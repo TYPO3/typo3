@@ -3802,7 +3802,7 @@ if (version == "n3") {
 					$previewInfo .= t3lib_div::callUserFunction($_funcRef, $_params, $this);
 				}
 			}
-			$this->content = str_ireplace('</body>',  $previewInfo . '</body>', $this->content);
+			$this->content = str_ireplace('</body>', $previewInfo . '</body>', $this->content);
 		}
 	}
 
