@@ -32,8 +32,7 @@
 
 
 
-
-# To make sure the backend charset is available:
+	// To make sure the backend charset is available:
 if (!is_object($GLOBALS['LANG'])) {
 	$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 	$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
@@ -146,7 +145,7 @@ class tx_indexedsearch_crawler {
 					$pObj->addQueueEntry_callBack($setId,$params,$this->callBack,$cfgRec['pid']);
 				break;
 				case 5:	// Meta configuration, nothing to do:
-					# NOOP
+					// NOOP
 				break;
 				default:
 					if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]) {
