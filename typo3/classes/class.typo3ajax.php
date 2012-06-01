@@ -72,7 +72,7 @@ class TYPO3AJAX {
 			// we need to convert the POST and GET parameters in the right charset
 		if ($this->charset != $this->requestCharset) {
 			$GLOBALS['LANG']->csConvObj->convArray($_POST, $this->requestCharset, $this->charset);
-			$GLOBALS['LANG']->csConvObj->convArray($_GET,  $this->requestCharset, $this->charset);
+			$GLOBALS['LANG']->csConvObj->convArray($_GET, $this->requestCharset, $this->charset);
 		}
 
 		$this->ajaxId = $ajaxId;

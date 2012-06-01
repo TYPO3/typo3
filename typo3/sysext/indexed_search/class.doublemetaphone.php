@@ -979,7 +979,7 @@ class user_DoubleMetaPhone
 
     } // end while
 
-    $this->primary   = substr($this->primary,   0, 4);
+    $this->primary   = substr($this->primary, 0, 4);
     $this->secondary = substr($this->secondary, 0, 4);
 
     $result["primary"] = $this->primary ;
