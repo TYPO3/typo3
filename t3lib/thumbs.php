@@ -24,33 +24,36 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Generates a thumbnail and returns an image stream, either GIF/PNG or JPG
  *
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  *
- * @author		Kasper Skårhøj	<kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj	<kasperYYYY@typo3.com>
  */
 /**
  * Class for generating a thumbnail from the input parameters given to the script
  *
- * Input GET var, &file: 		relative or absolute reference to an imagefile. WILL be validated against PATH_site / lockRootPath
- * Input GET var, &size: 		integer-values defining size of thumbnail, format '[int]' or '[int]x[int]'
+ * Input GET var, &file: relative or absolute reference to an imagefile. WILL be validated against PATH_site / lockRootPath
+ * Input GET var, &size: integer-values defining size of thumbnail, format '[int]' or '[int]x[int]'
  *
  * Relative paths MUST BE the first two characters ONLY: eg: '../dir/file.gif', otherwise it is expect to be absolute
  *
- * @author		Kasper Skårhøj	<kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj	<kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
  */
 class SC_t3lib_thumbs {
 	var $include_once = array();
 
-	var $outdir = 'typo3temp/';		// The output directory of temporary files in PATH_site
+		// The output directory of temporary files in PATH_site
+	var $outdir = 'typo3temp/';
 	var $output = '';
 	var $sizeDefault = '64x64';
 
-	var $imageList;		// Coming from $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+		// Coming from $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']
+	var $imageList;
 	/**
 	 * will hold the file Object
 	 *
@@ -59,38 +62,45 @@ class SC_t3lib_thumbs {
 	var $image;
 
 		// Internal, static: GPvar:
-	var $file;		// Holds the input filename (GET: file)
-	var $size;		// Holds the input size (GET: size)
-	var $mTime = 0;		// Last modification time of the supplied file
+		// Holds the input filename (GET: file)
+	var $file;
+		// Holds the input size (GET: size)
+	var $size;
+		// Last modification time of the supplied file
+	var $mTime = 0;
 
 
 	/**
 	 * Initialize; reading parameters with GPvar and checking file path
-	 * Results in internal var, $this->file, being set to the file object which should be used to make a thumbnail.
+	 * Results in internal var, $this->file, being set to the file object
+	 * which should be used to make a thumbnail.
 	 *
 	 * @return	void
 	 */
 	function init() {
 			// Setting GPvars:
-		$size = t3lib_div::_GP('size'); // Only needed for MD5 sum calculation of backwards-compatibility uploads/ files thumbnails.
+			// Only needed for MD5 sum calculation of backwards-compatibility uploads/ files thumbnails.
+		$size = t3lib_div::_GP('size');
 		$filePathOrCombinedFileIdentifier = rawurldecode(t3lib_div::_GP('file'));
 		$md5sum = t3lib_div::_GP('md5sum');
 
 			// Image extension list is set:
-		$this->imageList = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];			// valid extensions. OBS: No spaces in the list, all lowercase...
+			// valid extensions. OBS: No spaces in the list, all lowercase...
+		$this->imageList = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
 
 			// Check if we got a combined file identifier of the form storageUid:fileIdentifer.
-		// We need to distinguish it from absolute Windows paths by cbecking for an integer as first part.
+			// We need to distinguish it from absolute Windows paths by cbecking for an integer as first part.
 		$parts = t3lib_div::trimExplode(':', $filePathOrCombinedFileIdentifier);
 
-			// best case: we get a sys_file UID
+			// Best case: we get a sys_file UID
 		if (t3lib_utility_Math::canBeInterpretedAsInteger($filePathOrCombinedFileIdentifier)) {
 			/** @var t3lib_file_File $filePathOrCombinedFileIdentifier */
 			$fileObject = t3lib_file_Factory::getInstance()->getFileObject($filePathOrCombinedFileIdentifier);
 
 		} elseif (count($parts) <= 1 || !t3lib_utility_Math::canBeInterpretedAsInteger($parts[0])) {
 				// TODO: Historically, the input parameter could also be an absolute path. This should be supported again to stay compatible.
-			$relativeFilePath = $filePathOrCombinedFileIdentifier; // We assume the FilePath to be a relative file path (as in backwards compatibility mode)
+				// We assume the FilePath to be a relative file path (as in backwards compatibility mode)
+			$relativeFilePath = $filePathOrCombinedFileIdentifier;
 
 				// The incoming relative path is relative to the typo3/ directory, but we need it relative to PATH_site. This is corrected here:
 			if (substr($relativeFilePath, 0, 3) == '../') {
@@ -108,7 +118,8 @@ class SC_t3lib_thumbs {
 			}
 
 			if(strstr($relativeFilePath, '../') !== FALSE) {
-				$this->errorGif('File path', 'must not contain', '"../"'); // Maybe this could be relaxed to not throw an error as long as the path is still within PATH_site
+					// Maybe this could be relaxed to not throw an error as long as the path is still within PATH_site
+				$this->errorGif('File path', 'must not contain', '"../"');
 			}
 
 			if ($relativeFilePath && file_exists(PATH_site . $relativeFilePath)) {
@@ -156,7 +167,7 @@ class SC_t3lib_thumbs {
 			$this->image = $fileObject;
 			$this->size = $size;
 		} else {
-				// hide the path to the document root;
+				// Hide the path to the document root;
 			throw new RuntimeException('TYPO3 Fatal Error: The requested image does not exist and/or MD5 checksum did not match. If the target file exists and its file name contains special characters, the setting of $TYPO3_CONF_VARS[SYS][systemLocale] might be wrong.', 1270853950);
 		}
 	}
@@ -165,7 +176,7 @@ class SC_t3lib_thumbs {
 	 * Create the thumbnail
 	 * Will exit before return if all is well.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 			// If file exists, we make a thumbnail of the file.
@@ -173,19 +184,27 @@ class SC_t3lib_thumbs {
 
 				// Check file extension:
 			if ($this->image->getExtension() == 'ttf') {
-				$this->fontGif($this->image);	// Make font preview... (will not return)
+					// Make font preview... (will not return)
+				$this->fontGif($this->image);
 			} elseif(($this->image->getType() != t3lib_file_File::FILETYPE_IMAGE) && !t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $this->image->getExtension())) {
 				$this->errorGif('Not imagefile!', 'No ext!', $this->image->getName());
 			}
 
 				// ... so we passed the extension test meaning that we are going to make a thumbnail here:
-			if (!$this->size) $this->size = $this->sizeDefault;	// default
+				// default
+			if (!$this->size) $this->size = $this->sizeDefault;
 
-				// I added extra check, so that the size input option could not be fooled to pass other values. That means the value is exploded, evaluated to an integer and the imploded to [value]x[value]. Furthermore you can specify: size=340 and it'll be translated to 340x340.
-			$sizeParts = explode('x', $this->size . 'x' . $this->size);	// explodes the input size (and if no "x" is found this will add size again so it is the same for both dimensions)
-			$sizeParts = array(t3lib_utility_Math::forceIntegerInRange($sizeParts[0], 1, 1000), t3lib_utility_Math::forceIntegerInRange($sizeParts[1], 1, 1000));	// Cleaning it up, only two parameters now.
-			$this->size = implode('x', $sizeParts);		// Imploding the cleaned size-value back to the internal variable
-			$sizeMax = max($sizeParts);	// Getting max value
+				// I added extra check, so that the size input option could not be fooled to pass other values.
+				// That means the value is exploded, evaluated to an integer and the imploded to [value]x[value].
+				// Furthermore you can specify: size=340 and it'll be translated to 340x340.
+				// explodes the input size (and if no "x" is found this will add size again so it is the same for both dimensions)
+			$sizeParts = explode('x', $this->size . 'x' . $this->size);
+				// Cleaning it up, only two parameters now.
+			$sizeParts = array(t3lib_utility_Math::forceIntegerInRange($sizeParts[0], 1, 1000), t3lib_utility_Math::forceIntegerInRange($sizeParts[1], 1, 1000));
+				// Imploding the cleaned size-value back to the internal variable
+			$this->size = implode('x', $sizeParts);
+				// Getting max value
+			$sizeMax = max($sizeParts);
 
 				// Init
 			$outpath = PATH_site . $this->outdir;
@@ -229,16 +248,6 @@ class SC_t3lib_thumbs {
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
 	/***************************
 	 *
 	 * OTHER FUNCTIONS:
@@ -250,10 +259,10 @@ class SC_t3lib_thumbs {
 	 * Requires GD lib enabled, otherwise it will exit with the three textstrings outputted as text.
 	 * Outputs the image stream to browser and exits!
 	 *
-	 * @param	string		Text line 1
-	 * @param	string		Text line 2
-	 * @param	string		Text line 3
-	 * @return	void
+	 * @param string $l1 Text line 1
+	 * @param string $l2 Text line 2
+	 * @param string $l3 Text line 3
+	 * @return void
 	 */
 	function errorGif($l1, $l2, $l3) {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
@@ -307,8 +316,8 @@ class SC_t3lib_thumbs {
 	 * Requires GD lib enabled.
 	 * Outputs the image stream to browser and exits!
 	 *
-	 * @param	string		The filepath to the font file (absolute, probably)
-	 * @return	void
+	 * @param string $font The filepath to the font file (absolute, probably)
+	 * @return void
 	 */
 	function fontGif($font) {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
@@ -356,8 +365,7 @@ class SC_t3lib_thumbs {
 	/**
 	 * Escapes a file name so it can safely be used on the command line.
 	 *
-	 * @param string $inputName filename to safeguard, must not be empty
-	 *
+	 * @param string $inputName Filename to safeguard, must not be empty
 	 * @return string $inputName escaped as needed
 	 */
 	protected function wrapFileName($inputName) {
