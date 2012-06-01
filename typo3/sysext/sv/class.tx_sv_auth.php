@@ -253,8 +253,8 @@ class tx_sv_auth extends tx_sv_authbase 	{
 			}
 		} elseif ($this->mode=='getGroupsBE') {
 
-			# Get the BE groups here
-			# still needs to be implemented in t3lib_userauthgroup
+			// Get the BE groups here
+			// still needs to be implemented in t3lib_userauthgroup
 		}
 
 		return $groupDataArr;

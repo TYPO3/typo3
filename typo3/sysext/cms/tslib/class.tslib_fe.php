@@ -2230,8 +2230,9 @@ class tslib_fe {
 
 			// Setting locale
 		if ($this->config['config']['locale_all']) {
-			# there's a problem that PHP parses float values in scripts wrong if the locale LC_NUMERIC is set to something with a comma as decimal point
-			# so we set all except LC_NUMERIC
+				// There's a problem that PHP parses float values in scripts wrong if the
+				// locale LC_NUMERIC is set to something with a comma as decimal point
+				// Do we set all except LC_NUMERIC
 			$locale = setlocale(LC_COLLATE, $this->config['config']['locale_all']);
 			if ($locale) {
 

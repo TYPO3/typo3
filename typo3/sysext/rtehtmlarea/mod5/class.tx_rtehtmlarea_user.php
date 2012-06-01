@@ -261,7 +261,7 @@ class tx_rtehtmlarea_user {
 			}
 			ksort($categories);
 
-			# Render menu of the items:
+				// Render menu of the items:
 			$lines=array();
 			foreach ($categories as $k => $v) {
 				$title = trim($thisConfig['userElements.'][$k]);
