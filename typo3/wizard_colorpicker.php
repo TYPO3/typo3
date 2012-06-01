@@ -62,7 +62,7 @@ class SC_wizard_colorpicker {
 	var $showPicker;	// Internal: If FALSE, a frameset is rendered, if TRUE the content of the picker script.
 
 		// Static:
-	var $HTMLcolorList = "aqua,black,blue,fuchsia,gray,green,lime,maroon,navy,olive,purple,red,silver,teal,yellow,white";
+	var $HTMLcolorList = 'aqua,black,blue,fuchsia,gray,green,lime,maroon,navy,olive,purple,red,silver,teal,yellow,white';
 
 		// Internal:
 	var $pickerImage = '';

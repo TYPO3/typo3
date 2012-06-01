@@ -2285,7 +2285,7 @@ class browse_links {
 					'fileIcon' => $icon,
 				);
 				$ATag = "<a href=\"#\" onclick=\"return BrowseLinks.File.insertElement('file_" . $filesIndex . "');\">";
-				$ATag_alt = substr($ATag, 0, -4).",1);\">";
+				$ATag_alt = substr($ATag, 0, -4) . ',1);">';
 				$bulkCheckBox = '<input type="checkbox" class="typo3-bulk-item" name="file_'.$filesIndex.'" value="0" /> ';
 
 				$ATag_e='</a>';
@@ -2361,7 +2361,7 @@ class browse_links {
 			if (strstr($baseFolder, ',') || strstr($baseFolder, '|')) {
 					// In case an invalid character is in the filepath, display error message:
 				$errorMessage     = $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('invalidChar'), ', |'));
-				$aTag = $aTag_alt = "<a href=\"#\" onclick=\"alert(".$errorMessage.");return false;\">";
+				$aTag = $aTag_alt = '<a href="#" onclick="alert(' . $errorMessage . ');return false;">';
 			} else {
 					// If foldername is OK, just add it:
 				$aTag = "<a href=\"#\" onclick=\"return insertElement('','".rawurlencode($baseFolder)."', 'folder', '".rawurlencode($baseFolder)."', unescape('".rawurlencode($baseFolder)."'), '".$fI['extension']."', '".$ficon."');\">";
@@ -2404,7 +2404,7 @@ class browse_links {
 					if (strstr($folderPath, ',') || strstr($folderPath, '|')) {
 							// In case an invalid character is in the filepath, display error message:
 						$errorMessage     = $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('invalidChar'), ', |'));
-						$aTag = $aTag_alt = "<a href=\"#\" onclick=\"alert(".$errorMessage.");return false;\">";
+						$aTag = $aTag_alt = '<a href="#" onclick="alert(' . $errorMessage . ');return false;">';
 					} else {
 							// If foldername is OK, just add it:
 						$aTag_alt = substr($aTag, 0, -4).",'',1);\">";

@@ -313,7 +313,7 @@ class template {
 
 			// Make link to view page
 		$str.= '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($id, $backPath, t3lib_BEfunc::BEgetRootLine($id))).'">'.
-				'<img'.t3lib_iconWorks::skinImg($backPath,'gfx/zoom.gif','width="12" height="12"').' title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1).'"'.($addParams?' '.trim($addParams):"").' hspace="3" alt="" />'.
+				'<img' . t3lib_iconWorks::skinImg($backPath, 'gfx/zoom.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1). '"' . ($addParams ? ' '.trim($addParams) : '') . ' hspace="3" alt="" />' .
 				'</a>';
 		return $str;
 	}
@@ -428,7 +428,7 @@ class template {
 			.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeBookmark')).', '
 			.'\''.$backPath.'\', '
 			.'\''.rawurlencode($modName).'\', '
-			.'\''.rawurlencode($pathInfo['path']."?".$storeUrl).$mMN.'\''
+			. '\'' . rawurlencode($pathInfo['path'] . '?' . $storeUrl) . $mMN . '\''
 		.');return false;';
 
 		$sIcon = '<a href="#" onclick="' . htmlspecialchars($onClick).'" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeBookmark', TRUE) . '">'

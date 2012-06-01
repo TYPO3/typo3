@@ -456,7 +456,7 @@ class SC_wizard_tsconfig {
 	 */
 	function removePointerObjects($objArray) {
 		foreach ($objArray as $k => $value) {
-			if (substr(trim($k), 0, 2)=="->" && trim($k)!='->.') {
+			if (substr(trim($k), 0, 2) == '->' && trim($k) != '->.') {
 				$objArray['->.'][substr(trim($k), 2)]=$objArray[$k];
 				unset($objArray[$k]);
 			}

@@ -123,7 +123,7 @@ class recordList extends t3lib_recordList {
 	 * @param	integer		Limit of records to be listed.
 	 * @return	void
 	 */
-	function start($id,$table,$pointer,$search="",$levels="",$showLimit=0) {
+	function start($id, $table, $pointer, $search = '', $levels = '', $showLimit = 0) {
 
 			// Setting internal variables:
 		$this->id=intval($id);					// sets the parent id
