@@ -27,10 +27,10 @@ if (TYPO3_MODE=='BE')    {
 		'LLL:EXT:indexed_search/locallang.php:mod_indexed_search'
 	);
 	t3lib_extMgm::insertModuleFunction(
-		"web_info",
-		"tx_indexedsearch_modfunc2",
-		t3lib_extMgm::extPath($_EXTKEY)."modfunc2/class.tx_indexedsearch_modfunc2.php",
-		"LLL:EXT:indexed_search/locallang.php:mod2_indexed_search"
+		'web_info',
+		'tx_indexedsearch_modfunc2',
+		t3lib_extMgm::extPath($_EXTKEY).'modfunc2/class.tx_indexedsearch_modfunc2.php',
+		'LLL:EXT:indexed_search/locallang.php:mod2_indexed_search'
 	);
 }
 

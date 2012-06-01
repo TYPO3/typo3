@@ -709,12 +709,12 @@ class tx_indexedsearch_crawler {
 	function getUidRootLineForClosestTemplate($id) {
 		global $TYPO3_CONF_VARS;
 
-		$tmpl = t3lib_div::makeInstance("t3lib_tsparser_ext");
+		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');
 		$tmpl->tt_track = 0;	// Do not log time-performance information
 		$tmpl->init();
 
 				// Gets the rootLine
-		$sys_page = t3lib_div::makeInstance("t3lib_pageSelect");
+		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$rootLine = $sys_page->getRootLine($id);
 		$tmpl->runThroughTemplates($rootLine,0);	// This generates the constants/config + hierarchy info for the template.
 
