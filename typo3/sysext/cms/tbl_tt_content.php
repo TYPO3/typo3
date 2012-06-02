@@ -298,7 +298,7 @@ $TCA['tt_content'] = array(
 			'label' => 'LLL:EXT:cms/locallang_ttc.xml:colPos',
 			'config' => array(
 				'type' => 'select',
-				'itemsProcFunc' => 'EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->colPosListItemProcFunc',
+				'itemsProcFunc' => 'EXT:cms/classes/class.tx_cms_backendlayout_procfunc.php:tx_cms_BackendLayout_ProcFunc->colPosListItemsProcFunc',
 				'items' => array(
 					array(
 						'LLL:EXT:cms/locallang_ttc.xml:colPos.I.0',

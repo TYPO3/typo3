@@ -334,7 +334,8 @@ class SC_move_el {
 
 						// Load SHARED page-TSconfig settings and retrieve column list from there, if applicable:
 					$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->page_id, 'mod.SHARED');		// SHARED page-TSconfig settings.
-					$colPosArray = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getColPosListItemsParsed', $this->page_id, $this);
+					$backendLayout = t3lib_div::makeInstance('tx_cms_BackendLayout')->loadSetup($this->page_id);
+					$colPosArray = $backendLayout->getColPosListItemsParsed();
 					foreach ($colPosArray as $colPos) {
 						$colPosList .= $colPosList != '' ? ',' . $colPos[1] : $colPos[1];
 					}
