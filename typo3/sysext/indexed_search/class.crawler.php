@@ -178,7 +178,7 @@ class tx_indexedsearch_crawler {
 	 * @param	object		Parent object (tx_crawler lib)
 	 * @return	array		Result array
 	 */
-	function crawler_execute($params,&$pObj) {
+	function crawler_execute($params, &$pObj) {
 
 			// Indexer configuration ID must exist:
 		if ($params['indexConfigUid']) {
@@ -244,7 +244,7 @@ class tx_indexedsearch_crawler {
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
 	 */
-	function crawler_execute_type1($cfgRec,&$session_data,$params,&$pObj) {
+	function crawler_execute_type1($cfgRec, &$session_data, $params, &$pObj) {
 		if ($cfgRec['table2index'] && isset($GLOBALS['TCA'][$cfgRec['table2index']])) {
 
 				// Init session data array if not already:
@@ -305,7 +305,7 @@ class tx_indexedsearch_crawler {
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
 	 */
-	function crawler_execute_type2($cfgRec,&$session_data,$params,&$pObj) {
+	function crawler_execute_type2($cfgRec, &$session_data, $params, &$pObj) {
 
 			// Prepare path, making it absolute and checking:
 		$readpath = $params['url'];
@@ -380,7 +380,7 @@ class tx_indexedsearch_crawler {
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
 	 */
-	function crawler_execute_type3($cfgRec,&$session_data,$params,&$pObj) {
+	function crawler_execute_type3($cfgRec, &$session_data, $params, &$pObj) {
 
 			// Init session data array if not already:
 		if (!is_array($session_data)) {
@@ -430,7 +430,7 @@ class tx_indexedsearch_crawler {
 	 * @param	object		Parent object (from "crawler" extension!)
 	 * @return	void
 	 */
-	function crawler_execute_type4($cfgRec,&$session_data,$params,&$pObj) {
+	function crawler_execute_type4($cfgRec, &$session_data, $params, &$pObj) {
 
 			// Base page uid:
 		$pageUid = intval($params['url']);
@@ -567,7 +567,7 @@ class tx_indexedsearch_crawler {
 	 * @param	string		Base URL of the indexing process (input URL must be "inside" the base URL!)
 	 * @return	string		Returls the URL if OK, otherwise FALSE
 	 */
-	function checkUrl($url,$urlLog,$baseUrl) {
+	function checkUrl($url, $urlLog, $baseUrl) {
 		$url = preg_replace('/\/\/$/','/',$url);
 		list($url) = explode('#',$url);
 
@@ -647,7 +647,7 @@ class tx_indexedsearch_crawler {
 	 * @param	array		Rootline array to relate indexing to
 	 * @return	void
 	 */
-	function indexSingleRecord($r,$cfgRec,$rl=NULL) {
+	function indexSingleRecord($r, $cfgRec, $rl = NULL) {
 
 			// Load indexer if not yet.
 		$this->loadIndexerClass();
@@ -921,7 +921,7 @@ class tx_indexedsearch_files {
 	 * @param	object		Parent object (tx_crawler lib)
 	 * @return	array		Result array
 	 */
-	function crawler_execute($params,&$pObj) {
+	function crawler_execute($params, &$pObj) {
 
 			// Load indexer if not yet.
 		$this->loadIndexerClass();

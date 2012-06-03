@@ -48,7 +48,7 @@
  * @return	array		The processed $I array returned (and stored in $this->I of the parent object again)
  * @see tslib_menu::userProcess(), tslib_tmenu::writeMenu(), tslib_gmenu::writeMenu()
  */
-function user_keepRolloverAtOnClick($I,$conf) {
+function user_keepRolloverAtOnClick($I, $conf) {
 	$itemRow = $conf['parentObj']->menuArr[$I['key']];
 
 		// Setting the document status content to the value of the page title on mouse over

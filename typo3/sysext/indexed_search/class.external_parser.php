@@ -374,7 +374,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		Pointer to section (zero for all other than PDF which will have an indication of pages into which the document should be splitted.)
 	 * @return	array		Standard content array (title, description, keywords, body keys)
 	 */
-	function readFileContent($ext,$absFile,$cPKey) {
+	function readFileContent($ext, $absFile, $cPKey) {
 		unset($contentArr);
 
 			// Return immediately if initialization didn't set support up:
@@ -554,7 +554,7 @@ class tx_indexed_search_extparse {
 	 * @param	string		Absolute filename (must exist and be validated OK before calling function)
 	 * @return	array		Array of pointers to sections that the document should be divided into
 	 */
-	function fileContentParts($ext,$absFile) {
+	function fileContentParts($ext, $absFile) {
 		$cParts = array(0);
 		switch ($ext) {
 			case 'pdf':

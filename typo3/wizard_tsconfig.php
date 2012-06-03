@@ -408,7 +408,7 @@ class SC_wizard_tsconfig {
 	 * @access private
 	 * @see getObjTree()
 	 */
-	function setObj(&$objTree,$strArr,$params) {
+	function setObj(&$objTree, $strArr, $params) {
 		$key = current($strArr);
 		reset($strArr);
 		if (count($strArr)>1) {

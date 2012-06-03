@@ -822,7 +822,7 @@ class tslib_pibase {
 	 * @return	string		The processed content
 	 * @see tslib_cObj::editIcons()
 	 */
-	function pi_getEditIcon($content,$fields,$title='',$row='',$tablename='',$oConf=array()) {
+	function pi_getEditIcon($content, $fields, $title = '', $row = '', $tablename = '', $oConf = array()) {
 		if ($GLOBALS['TSFE']->beUserLogin){
 			if (!$row || !$tablename) {
 				$row = $this->internal['currentRow'];

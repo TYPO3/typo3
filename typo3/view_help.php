@@ -504,7 +504,7 @@ class SC_view_help {
 	 * @param	string		If $anchorTable is set to a tablename, then references to this table will be made as anchors, not URLs.
 	 * @return	string		See-also links HTML
 	 */
-	function make_seeAlso($value,$anchorTable='') {
+	function make_seeAlso($value, $anchorTable = '') {
 			// Split references by comma or linebreak
 		$items = preg_split('/[,' . LF . ']/', $value);
 		$lines = array();
