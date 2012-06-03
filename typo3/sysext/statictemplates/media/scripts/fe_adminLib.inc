@@ -1080,7 +1080,7 @@ class user_feAdmin {
 			$markerArray['###HIDDENFIELDS###'] .= '<input type="hidden" name="preview" value="1" />';
 		}
 		$content = $this->cObj->substituteMarkerArray($templateCode, $markerArray);
-		$content .= $this->cObj->getUpdateJS($this->modifyDataArrForFormUpdate($currentArr), $this->theTable . '_form',  'FE[' . $this->theTable . ']', $this->fieldList . $this->additionalUpdateFields);
+		$content .= $this->cObj->getUpdateJS($this->modifyDataArrForFormUpdate($currentArr), $this->theTable . '_form', 'FE[' . $this->theTable . ']', $this->fieldList . $this->additionalUpdateFields);
 
 		return $content;
 	}

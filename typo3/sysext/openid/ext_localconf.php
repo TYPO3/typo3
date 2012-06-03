@@ -5,7 +5,7 @@ if (!defined ('TYPO3_MODE')) {
 }
 
 // Register OpenID authentication service with TYPO3
-t3lib_extMgm::addService($_EXTKEY, 'auth' /* sv type */,  'tx_openid_sv1' /* sv key */,
+t3lib_extMgm::addService($_EXTKEY, 'auth' /* sv type */, 'tx_openid_sv1' /* sv key */,
 	array(
 		'title' => 'OpenID Authentication',
 		'description' => 'OpenID authentication service for Frontend and Backend',

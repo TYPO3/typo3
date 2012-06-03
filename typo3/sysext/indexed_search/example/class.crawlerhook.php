@@ -119,9 +119,12 @@ class tx_indexedsearch_crawlerhook {
 						'',
 						'',
 						$item['content'],
-						$GLOBALS['LANG']->charSet,	// Charset of content - MUST be set.
-						$item['tstamp'],			// Last-modified date
-						$item['create_date'],		// Created date
+							// Charset of content - MUST be set.
+						$GLOBALS['LANG']->charSet,
+							// Last-modified date
+						$item['tstamp'],
+							// Created date
+						$item['create_date'],
 						$item['ID']
 					);
 				}
