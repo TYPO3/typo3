@@ -216,7 +216,7 @@ GLV_restoreMenu["'.$this->WMid.'"] = "'.$this->WMactiveKey.'";
 	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
 	 * @return	string		The modified version of $item, going back into $this->I['theItem']
 	 */
-	function extProc_beforeAllWrap($item,$key) {
+	function extProc_beforeAllWrap($item, $key) {
 		if ($this->mconf['relativeToTriggerItem']) {
 			$item = '<div id="anchorID'.t3lib_div::shortmd5($this->I['uid'].'-'.$this->WMid).'" style="position:absolute;visibility:hidden;"></div><div id="itemID'.t3lib_div::shortmd5($this->I['uid'].'-'.$this->WMid).'" style="width:100%; height:100%;">'.$item.'</div>';
 		}
@@ -419,7 +419,7 @@ GLV_timeout_count++;
 	 * @return	string		JavaScript string for correction of the layer position (if $integer is true)
 	 * @see extProc_finish(), extProc_init()
 	 */
-	function extCalcBorderWithin($kind,$integer) {
+	function extCalcBorderWithin($kind, $integer) {
 		if ($integer) {
 			switch($kind) {
 				case 'right':

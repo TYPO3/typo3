@@ -62,7 +62,7 @@ class tx_indexedsearch_crawlerhook {
 	 * @param	object		Parent Object (from "indexed_search" extension)
 	 * @return	void
 	 */
-	function indexOperation($cfgRec,&$session_data,$params,&$pObj) {
+	function indexOperation($cfgRec, &$session_data, $params, &$pObj) {
 
 			// Init session data array if not already:
 		if (!is_array($session_data)) {

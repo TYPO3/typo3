@@ -388,7 +388,7 @@ class SC_wizard_colorpicker {
 	 * @return	string		HEX RGB value for color
 	 * @see colorImage()
 	 */
-	function getIndex($im, $x,$y) {
+	function getIndex($im, $x, $y) {
 		$rgb = ImageColorAt($im, $x, $y);
 		$colorrgb = imagecolorsforindex($im, $rgb);
 		$index['r'] = dechex($colorrgb['red']);

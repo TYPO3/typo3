@@ -101,7 +101,7 @@ class localPageTree extends t3lib_browseTree {
 	 * @param	string		[See parent]
 	 * @return	string
 	 */
-	function PM_ATagWrap($icon, $cmd,$bMark='') {
+	function PM_ATagWrap($icon, $cmd, $bMark = '') {
 		return '';
 	}
 
