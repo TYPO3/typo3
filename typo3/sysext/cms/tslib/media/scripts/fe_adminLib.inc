@@ -798,7 +798,7 @@ class user_feAdmin	{
 	 */
 	function deleteRecord() {
 		if ($this->conf['delete'])	{	// If deleting is enabled
-			$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,  $this->recUid);
+			$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable, $this->recUid);
 			if ($GLOBALS['TSFE']->loginUser || $this->aCAuth($origArr))	{	// Must be logged in OR be authenticated by the aC code in order to delete
 					// If the recUid selects a record.... (no check here)
 				if (is_array($origArr)) {
@@ -883,7 +883,7 @@ class user_feAdmin	{
 	 */
 	function displayDeleteScreen() {
 		if ($this->conf['delete'])	{	// If deleting is enabled
-			$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,  $this->recUid);
+			$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable, $this->recUid);
 			if ($GLOBALS['TSFE']->loginUser || $this->aCAuth($origArr))	{	// Must be logged in OR be authenticated by the aC code in order to delete
 					// If the recUid selects a record.... (no check here)
 				if (is_array($origArr)) {
@@ -938,7 +938,7 @@ class user_feAdmin	{
 	 */
 	function displayEditScreen() {
 		if ($this->conf['edit'])	{	// If editing is enabled
-			$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,  $this->dataArr['uid']?$this->dataArr['uid']:$this->recUid);
+			$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable, $this->dataArr['uid']?$this->dataArr['uid']:$this->recUid);
 
 			if ($GLOBALS['TSFE']->loginUser || $this->aCAuth($origArr))	{	// Must be logged in OR be authenticated by the aC code in order to edit
 					// If the recUid selects a record.... (no check here)
@@ -1004,7 +1004,7 @@ class user_feAdmin	{
 		$markerArray['###HIDDENFIELDS###'].= '<input type="hidden" name="FE['.$this->theTable.'][uid]" value="'.$currentArr['uid'].'" />';
 		if ($this->conf['edit.']['preview'] && !$this->previewLabel)	{$markerArray['###HIDDENFIELDS###'].= '<input type="hidden" name="preview" value="1" />';}
 		$content = $this->cObj->substituteMarkerArray($templateCode, $markerArray);
-		$content.=$this->cObj->getUpdateJS($this->modifyDataArrForFormUpdate($currentArr), $this->theTable.'_form',  'FE['.$this->theTable.']', $this->fieldList.$this->additionalUpdateFields);
+		$content.=$this->cObj->getUpdateJS($this->modifyDataArrForFormUpdate($currentArr), $this->theTable.'_form', 'FE['.$this->theTable.']', $this->fieldList.$this->additionalUpdateFields);
 
 		return $content;
 	}
@@ -1018,7 +1018,7 @@ class user_feAdmin	{
 	function procesSetFixed() {
 		if ($this->conf['setfixed']) {
 			$theUid = intval($this->recUid);
-			$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,  $theUid);
+			$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable, $theUid);
 			$fD = t3lib_div::_GP('fD');
 			$sFK = t3lib_div::_GP('sFK');
 

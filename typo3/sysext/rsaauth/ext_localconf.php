@@ -4,7 +4,7 @@ if (!defined ('TYPO3_MODE')) {
 }
 
 // Add the service
-t3lib_extMgm::addService($_EXTKEY,  'auth' /* sv type */,  'tx_rsaauth_sv1' /* sv key */,
+t3lib_extMgm::addService($_EXTKEY, 'auth' /* sv type */, 'tx_rsaauth_sv1' /* sv key */,
 	array(
 		'title' => 'RSA authentication',
 		'description' => 'Authenticates users by using encrypted passwords',
