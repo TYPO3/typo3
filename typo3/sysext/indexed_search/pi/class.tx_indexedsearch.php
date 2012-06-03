@@ -2094,7 +2094,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @param	array		Template array to modify
 	 * @return	array		Modified template array
 	 */
-	function makeInfo($row,$tmplArray) {
+	function makeInfo($row, $tmplArray) {
 		$tmplArray['size'] = t3lib_div::formatSize($row['item_size']);
 		$tmplArray['created'] = $this->formatCreatedDate($row['item_crdate']);
 		$tmplArray['modified'] = $this->formatModifiedDate($row['item_mtime']);

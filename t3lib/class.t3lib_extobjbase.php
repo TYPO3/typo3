@@ -85,7 +85,7 @@
  *	 class tx_funcwizards_webfunc extends t3lib_extobjbase {
  *		 var $localLangFile = "locallang.php";
  *		 var $function_key = "wiz";
- *		 function init(&$pObj,$conf) {
+ *		 function init(&$pObj, $conf) {
  *				 // OK, handles ordinary init. This includes setting up the menu array with ->modMenu
  *			 parent::init($pObj,$conf);
  *				 // Making sure that any further external classes are added to the include_once array. Notice that inclusion happens twice in the main script because of this!!!
