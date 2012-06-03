@@ -549,46 +549,44 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 		foreach ($tableNames as $tN) {
 				// Basically list ALL tables - not only those being copied might be found!
-			#if ($GLOBALS['TCA'][$tN]['ctrl']['versioning_followPages'] || $tN=='pages')	{
-				$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'*',
-					$tN,
-					'pid=' . intval($pid) . t3lib_BEfunc::deleteClause($tN),
-					'',
-					($GLOBALS['TCA'][$tN]['ctrl']['sortby'] ? $GLOBALS['TCA'][$tN]['ctrl']['sortby'] : '')
-				);
+			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'*',
+				$tN,
+				'pid=' . intval($pid) . t3lib_BEfunc::deleteClause($tN),
+				'',
+				($GLOBALS['TCA'][$tN]['ctrl']['sortby'] ? $GLOBALS['TCA'][$tN]['ctrl']['sortby'] : '')
+			);
 
-				if ($GLOBALS['TYPO3_DB']->sql_num_rows($mres))	{
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($mres))	{
+				$content.='
+					<tr>
+						<td colspan="4" class="' . ($GLOBALS['TCA'][$tN]['ctrl']['versioning_followPages'] ? 'bgColor6' : ($tN == 'pages' ? 'bgColor5' : 'bgColor-10')) . '"' . (!$GLOBALS['TCA'][$tN]['ctrl']['versioning_followPages'] && $tN !== 'pages' ? ' style="color: #666666; font-style:italic;"' : '') . '>' . $tN . '</td>
+					</tr>';
+				while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
+					$ownVer = $this->lookForOwnVersions($tN,$subrow['uid']);
 					$content.='
 						<tr>
-							<td colspan="4" class="' . ($GLOBALS['TCA'][$tN]['ctrl']['versioning_followPages'] ? 'bgColor6' : ($tN == 'pages' ? 'bgColor5' : 'bgColor-10')) . '"' . (!$GLOBALS['TCA'][$tN]['ctrl']['versioning_followPages'] && $tN !== 'pages' ? ' style="color: #666666; font-style:italic;"' : '') . '>' . $tN . '</td>
+							<td>'.$this->adminLinks($tN,$subrow).'</td>
+							<td>'.$subrow['uid'].'</td>
+							'.($ownVer>1 ? '<td style="font-weight: bold; background-color: yellow;"><a href="index.php?table='.rawurlencode($tN).'&uid='.$subrow['uid'].'">'.($ownVer-1).'</a></td>' : '<td></td>').'
+							<td width="98%">'.t3lib_BEfunc::getRecordTitle($tN,$subrow,TRUE).'</td>
 						</tr>';
-					while ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres))	{
-						$ownVer = $this->lookForOwnVersions($tN,$subrow['uid']);
-						$content.='
-							<tr>
-								<td>'.$this->adminLinks($tN,$subrow).'</td>
-								<td>'.$subrow['uid'].'</td>
-								'.($ownVer>1 ? '<td style="font-weight: bold; background-color: yellow;"><a href="index.php?table='.rawurlencode($tN).'&uid='.$subrow['uid'].'">'.($ownVer-1).'</a></td>' : '<td></td>').'
-								<td width="98%">'.t3lib_BEfunc::getRecordTitle($tN,$subrow,TRUE).'</td>
-							</tr>';
 
-						if ($tN == 'pages' && $c<100)	{
-							$sub = $this->pageSubContent($subrow['uid'],$c+1);
+					if ($tN == 'pages' && $c<100)	{
+						$sub = $this->pageSubContent($subrow['uid'],$c+1);
 
-							if ($sub)	{
-								$content.='
-									<tr>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td width="98%">'.$sub.'</td>
-									</tr>';
-							}
+						if ($sub)	{
+							$content.='
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td width="98%">'.$sub.'</td>
+								</tr>';
 						}
 					}
 				}
-			#}
+			}
 		}
 
 		return $content ? '<table border="1" cellpadding="1" cellspacing="0" width="100%">'.$content.'</table>' : '';
@@ -1592,7 +1590,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * @return	string		HTML content, mainly link tags and images.
 	 */
 	function displayWorkspaceOverview_stageCmd($table,&$rec_off)	{
-#debug($rec_off['t3ver_stage']);
 		switch ((int)$rec_off['t3ver_stage']) {
 			case 0:
 				$sId = 1;
@@ -1625,7 +1622,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$color = '';
 			break;
 		}
-#debug($sId);
 
 		$raiseOk = !$GLOBALS['BE_USER']->workspaceCannotEditOfflineVersion($table,$rec_off);
 

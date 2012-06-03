@@ -184,8 +184,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 	function execute()	{
 		$post = t3lib_div::_POST();
 
-#		debug($post);
-
 		if ($post['_with_selected_do'])	{
 			if (is_array($post['items']) && count($post['items']))	{
 				$cmdArray = array();
