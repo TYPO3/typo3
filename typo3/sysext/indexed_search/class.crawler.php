@@ -210,7 +210,7 @@ class tx_indexedsearch_crawler {
 						$this->crawler_execute_type4($cfgRec,$session_data,$params,$pObj);
 					break;
 					case 5:	// Meta
-						# NOOP (should never enter here!)
+						// NOOP (should never enter here!)
 					break;
 					default:
 						if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['crawler'][$cfgRec['type']]) {
