@@ -730,13 +730,11 @@ $TCA['pages'] = array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.backend_layout_formlabel',
 			'config' => array(
 				'type' => 'select',
-#				'foreign_table' => 'backend_layout',
-#				'foreign_table_where' => 'AND ( ( ###PAGE_TSCONFIG_ID### = 0 AND ###STORAGE_PID### = 0 ) OR ( backend_layout.pid = ###PAGE_TSCONFIG_ID### OR backend_layout.pid = ###STORAGE_PID### ) OR ( ###PAGE_TSCONFIG_ID### = 0 AND backend_layout.pid = ###THIS_UID### ) ) AND backend_layout.hidden = 0',
 				'items' => array(
 					array('', 0),
 					array('LLL:EXT:cms/locallang_tca.xml:pages.backend_layout.none', -1)
 				),
-				'itemsProcFunc' => 'EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_backendlayout->backendLayoutItemsProcFunc',
+				'itemsProcFunc' => 'EXT:cms/classes/class.tx_cms_backendlayout_procfunc.php:&tx_cms_BackendLayout_ProcFunc->backendLayoutItemsProcFunc',
 				'selicon_cols' => 5,
 				'size' => 1,
 				'maxitems' => 1,
@@ -748,13 +746,11 @@ $TCA['pages'] = array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:pages.backend_layout_next_level_formlabel',
 			'config' => array(
 				'type' => 'select',
-#				'foreign_table' => 'backend_layout',
-#				'foreign_table_where' => 'AND ( ( ###PAGE_TSCONFIG_ID### = 0 AND ###STORAGE_PID### = 0 ) OR ( backend_layout.pid = ###PAGE_TSCONFIG_ID### OR backend_layout.pid = ###STORAGE_PID### ) OR ( ###PAGE_TSCONFIG_ID### = 0 AND backend_layout.pid = ###THIS_UID### ) ) AND backend_layout.hidden = 0',
 				'items' => array(
 					array('', 0),
 					array('LLL:EXT:cms/locallang_tca.xml:pages.backend_layout.none', -1)
 				),
-				'itemsProcFunc' => 'EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_backendlayout->backendLayoutItemsProcFunc',
+				'itemsProcFunc' => 'EXT:cms/classes/class.tx_cms_backendlayout_procfunc.php:&tx_cms_BackendLayout_ProcFunc->backendLayoutItemsProcFunc',
 				'selicon_cols' => 5,
 				'size' => 1,
 				'maxitems' => 1,

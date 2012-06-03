@@ -407,9 +407,8 @@ class t3lib_positionMap {
 		$row2 = '';
 		$count = t3lib_utility_Math::forceIntegerInRange(count($colPosArray), 1);
 
-		$backendLayout = t3lib_div::makeInstance('tx_cms_BackendLayout')->loadSetup($pid);
-		$backendLayoutId = $backendLayout->getSelectedBackendLayoutId($pid);
-		$backendLayoutSetup = $backendLayout->getSetup($backendLayoutId);
+		$backendLayout = t3lib_div::makeInstance('tx_cms_BackendLayout', $pid);
+		$backendLayoutSetup = $backendLayout->getSelectedBackendLayoutSetup();
 
 		if ($backendLayoutSetup) {
 
@@ -424,7 +423,7 @@ class t3lib_positionMap {
 			}
 			$table .= '</colgroup>';
 
-			$tcaItems = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getColPosListItemsParsed', $pid, $this);
+			$tcaItems = $backendLayout->getColPosListItemsParsed();
 
 				// Cycle through rows
 			for ($row = 1; $row <= $rowCount; $row++) {

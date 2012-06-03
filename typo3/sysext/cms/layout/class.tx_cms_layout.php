@@ -342,15 +342,15 @@ class tx_cms_layout extends recordList {
 			$defLanguageCount = array();
 			$defLangBinding = array();
 
+			$backendLayout = t3lib_div::makeInstance('tx_cms_BackendLayout', $id);
+			$backendLayoutSetup = $backendLayout->getSelectedBackendLayoutSetup();
+
 			// For EACH languages... :
 			foreach ($langListArr as $lP) { // If NOT languageMode, then we'll only be through this once.
 				$showLanguage = $lP == 0 ? ' AND sys_language_uid IN (0,-1)' : ' AND sys_language_uid=' . $lP;
 				$cList = explode(',', $this->tt_contentConfig['cols']);
 				$content = array();
 				$head = array();
-
-				$backendLayout = t3lib_div::makeInstance('tx_cms_BackendLayout')->loadSetup($id);
-				$backendLayoutId = $backendLayout->getSelectedBackendLayoutId($id);
 
 				// For EACH column, render the content into a variable:
 				foreach ($cList as $key) {
@@ -428,7 +428,7 @@ class tx_cms_layout extends recordList {
 					$newP = $this->newContentElementOnClick($id, $key, $lP);
 					$colTitle = t3lib_BEfunc::getProcessedValue('tt_content', 'colPos', $key);
 
-					$tcaItems = $backendLayout->getColPosListItemsParsed($id);
+					$tcaItems = $backendLayout->getColPosListItemsParsed();
 					foreach ($tcaItems as $item) {
 						if ($item[1] == $key) {
 							$colTitle = $GLOBALS['LANG']->sL($item[0]);
@@ -440,8 +440,6 @@ class tx_cms_layout extends recordList {
 
 				// For EACH column, fit the rendered content into a table cell:
 				$out = '';
-
-				$backendLayoutSetup = $backendLayout->getSetup($backendLayoutId);
 
 				$this->tt_contentConfig['showAsGrid'] = !empty($backendLayoutSetup['config']) && !$this->tt_contentConfig['languageMode'];
 
@@ -642,7 +640,7 @@ class tx_cms_layout extends recordList {
 				$out .= t3lib_BEfunc::cshItem($this->descrTable, 'language_list', $GLOBALS['BACK_PATH']);
 			}
 		} else { // SINGLE column mode (columns shown beneath each other):
-			#debug('single column');
+
 			if ($this->tt_contentConfig['sys_language_uid'] == 0 || !$this->defLangBinding) {
 
 				// Initialize:
