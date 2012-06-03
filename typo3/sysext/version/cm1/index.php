@@ -1283,7 +1283,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 					$uid,
 					$rec,
 					$origId,
-					$c==$elCount && $treeLevel==0 ? 1 : 0,		// If TRUE, will show bottom-join icon.
+						// If TRUE, will show bottom-join icon.
+					$c==$elCount && $treeLevel==0 ? 1 : 0,
 					''
 				);
 			}
@@ -1305,9 +1306,11 @@ class tx_version_cm1 extends t3lib_SCbase {
 						$tCell,
 						'pages',
 						$uid,
-						t3lib_BEfunc::getRecord('pages',$data['row']['uid']),	// Needs all fields, at least more than what is given in $data['row']...
+							// Needs all fields, at least more than what is given in $data['row']...
+						t3lib_BEfunc::getRecord('pages',$data['row']['uid']),
 						$origId,
-						2,		// 2=the join icon and icon for the record is not rendered for pages (where all is in $data['HTML']
+							// 2=the join icon and icon for the record is not rendered for pages (where all is in $data['HTML']
+						2,
 						$data['HTML']
 					);
 
