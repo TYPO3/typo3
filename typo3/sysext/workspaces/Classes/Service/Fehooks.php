@@ -52,7 +52,7 @@ class Tx_Workspaces_Service_Fehooks {
 				)
 			)
 		);
-		$GLOBALS['TSFE']->content = str_ireplace('</body>',  $previewParts . '</body>', $GLOBALS['TSFE']->content);
+		$GLOBALS['TSFE']->content = str_ireplace('</body>', $previewParts . '</body>', $GLOBALS['TSFE']->content);
 
 	}
 }
