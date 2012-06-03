@@ -3996,11 +3996,11 @@ final class t3lib_div {
 	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 4.9 - use t3lib_cacheHash instead
 	 */
 	public static function cHashParams($addQueryParams) {
-		t3lib_div::logDeprecatedFunction();
+		self::logDeprecatedFunction();
 			// Splitting parameters up
 		$params = explode('&', substr($addQueryParams, 1));
 		/* @var $cacheHash t3lib_cacheHash */
-		$cacheHash = t3lib_div::makeInstance('t3lib_cacheHash');
+		$cacheHash = self::makeInstance('t3lib_cacheHash');
 		$pA = $cacheHash->getRelevantParameters($addQueryParams);
 
 			// Hook: Allows to manipulate the parameters which are taken to build the chash:
@@ -4028,12 +4028,12 @@ final class t3lib_div {
 	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu"
 	 * @return string Hash of all the values
 	 * @see t3lib_div::cHashParams(), t3lib_div::calculateCHash()
-	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 4.9 - use t3lib_cacheHash instead
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
 	 */
 	public static function generateCHash($addQueryParams) {
-		t3lib_div::logDeprecatedFunction();
+		self::logDeprecatedFunction();
 		/* @var $cacheHash t3lib_cacheHash */
-		$cacheHash = t3lib_div::makeInstance('t3lib_cacheHash');
+		$cacheHash = self::makeInstance('t3lib_cacheHash');
 		return $cacheHash->generateForParameters($addQueryParams);
 	}
 
@@ -4045,9 +4045,9 @@ final class t3lib_div {
 	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 4.9 - use t3lib_cacheHash instead
 	 */
 	public static function calculateCHash($params) {
-		t3lib_div::logDeprecatedFunction();
+		self::logDeprecatedFunction();
 		/* @var $cacheHash t3lib_cacheHash */
-		$cacheHash = t3lib_div::makeInstance('t3lib_cacheHash');
+		$cacheHash = self::makeInstance('t3lib_cacheHash');
 		return $cacheHash->calculateCacheHash($params);
 	}
 
@@ -4088,7 +4088,7 @@ final class t3lib_div {
 	 */
 	public static function readLLfile($fileRef, $langKey, $charset = '', $errorMode = 0) {
 		/** @var $languageFactory t3lib_l10n_Factory */
-		$languageFactory = t3lib_div::makeInstance('t3lib_l10n_Factory');
+		$languageFactory = self::makeInstance('t3lib_l10n_Factory');
 		return $languageFactory->getParsedData($fileRef, $langKey, $charset, $errorMode);
 	}
 
@@ -4465,7 +4465,7 @@ final class t3lib_div {
 		) {
 			$validPrefixes = array_merge(
 				$validPrefixes,
-				t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])
+				self::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])
 			);
 		}
 		return $validPrefixes;
@@ -5131,7 +5131,7 @@ final class t3lib_div {
 
 				// Write message to a file
 			if ($type == 'file') {
-				$lockObject = t3lib_div::makeInstance('t3lib_lock', $destination, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+				$lockObject = self::makeInstance('t3lib_lock', $destination, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
 				/** @var t3lib_lock $lockObject */
 				$lockObject->setEnableLogging(FALSE);
 				$lockObject->acquire();
@@ -5146,11 +5146,11 @@ final class t3lib_div {
 				// Send message per mail
 			elseif ($type == 'mail') {
 				list($to, $from) = explode('/', $destination);
-				if (!t3lib_div::validEmail($from)) {
+				if (!self::validEmail($from)) {
 					$from = t3lib_utility_Mail::getSystemFrom();
 				}
 				/** @var $mail t3lib_mail_Message */
-				$mail = t3lib_div::makeInstance('t3lib_mail_Message');
+				$mail = self::makeInstance('t3lib_mail_Message');
 				$mail->setTo($to)
 						->setFrom($from)
 						->setSubject('Warning - error in TYPO3 installation')
@@ -5223,7 +5223,7 @@ final class t3lib_div {
 			}
 				// Write a longer message to the deprecation log
 			$destination = self::getDeprecationLogFileName();
-			$lockObject = t3lib_div::makeInstance('t3lib_lock', $destination, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
+			$lockObject = self::makeInstance('t3lib_lock', $destination, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
 			/** @var t3lib_lock $lockObject */
 			$lockObject->setEnableLogging(FALSE);
 			$lockObject->acquire();
