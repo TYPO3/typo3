@@ -784,7 +784,7 @@ class t3lib_TSparser {
 	 */
 	public static function extractIncludes_array($array) {
 		foreach ($array as $k => $v) {
-			$array[$k] = t3lib_TSparser::extractIncludes($array[$k]);
+			$array[$k] = self::extractIncludes($array[$k]);
 		}
 		return $array;
 	}

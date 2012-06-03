@@ -241,33 +241,33 @@ class tx_t3editor implements t3lib_Singleton {
 	 */
 	protected function getParserfileByMode($mode) {
 		switch ($mode) {
-			case tx_t3editor::MODE_TYPOSCRIPT:
+			case self::MODE_TYPOSCRIPT:
 				$relPath = ($GLOBALS['BACK_PATH'] ? $GLOBALS['BACK_PATH'] : '../../../' ) . t3lib_extmgm::extRelPath('t3editor') . 'res/jslib/parse_typoscript/';
 				$parserfile = '["' . $relPath . 'tokenizetyposcript.js", "' . $relPath . 'parsetyposcript.js"]';
 				break;
 
-			case tx_t3editor::MODE_JAVASCRIPT:
+			case self::MODE_JAVASCRIPT:
 				$parserfile = '["tokenizejavascript.js", "parsejavascript.js"]';
 				break;
 
-			case tx_t3editor::MODE_CSS:
+			case self::MODE_CSS:
 				$parserfile = '"parsecss.js"';
 				break;
 
-			case tx_t3editor::MODE_XML:
+			case self::MODE_XML:
 				$parserfile = '"parsexml.js"';
 				break;
 
-			case tx_t3editor::MODE_SPARQL:
+			case self::MODE_SPARQL:
 				$parserfile = '"parsesparql.js"';
 				break;
 
-			case tx_t3editor::MODE_HTML:
+			case self::MODE_HTML:
 				$parserfile = '["tokenizejavascript.js", "parsejavascript.js", "parsecss.js", "parsexml.js", "parsehtmlmixed.js"]';
 				break;
 
-			case tx_t3editor::MODE_PHP:
-			case tx_t3editor::MODE_MIXED:
+			case self::MODE_PHP:
+			case self::MODE_MIXED:
 				$parserfile = '[' .
 					'"tokenizejavascript.js", ' .
 					'"parsejavascript.js", ' .
@@ -290,37 +290,37 @@ class tx_t3editor implements t3lib_Singleton {
 	 */
 	protected function getStylesheetByMode($mode) {
 		switch ($mode) {
-			case tx_t3editor::MODE_TYPOSCRIPT:
+			case self::MODE_TYPOSCRIPT:
 				$stylesheet = 'T3editor.PATH_t3e + "res/css/typoscriptcolors.css"';
 				break;
 
-			case tx_t3editor::MODE_JAVASCRIPT:
+			case self::MODE_JAVASCRIPT:
 				$stylesheet = 'T3editor.PATH_codemirror + "../css/jscolors.css"';
 				break;
 
-			case tx_t3editor::MODE_CSS:
+			case self::MODE_CSS:
 				$stylesheet = 'T3editor.PATH_codemirror + "../css/csscolors.css"';
 				break;
 
-			case tx_t3editor::MODE_XML:
+			case self::MODE_XML:
 				$stylesheet = 'T3editor.PATH_codemirror + "../css/xmlcolors.css"';
 				break;
 
-			case tx_t3editor::MODE_HTML:
+			case self::MODE_HTML:
 				$stylesheet = 'T3editor.PATH_codemirror + "../css/xmlcolors.css", ' .
 					'T3editor.PATH_codemirror + "../css/jscolors.css", ' .
 					'T3editor.PATH_codemirror + "../css/csscolors.css"';
 				break;
 
-			case tx_t3editor::MODE_SPARQL:
+			case self::MODE_SPARQL:
 				$stylesheet = 'T3editor.PATH_codemirror + "../css/sparqlcolors.css"';
 				break;
 
-			case tx_t3editor::MODE_PHP:
+			case self::MODE_PHP:
 				$stylesheet = 'T3editor.PATH_codemirror + "../contrib/php/css/phpcolors.css"';
 				break;
 
-			case tx_t3editor::MODE_MIXED:
+			case self::MODE_MIXED:
 				$stylesheet = 'T3editor.PATH_codemirror + "../css/xmlcolors.css", ' .
 					'T3editor.PATH_codemirror + "../css/jscolors.css", ' .
 					'T3editor.PATH_codemirror + "../css/csscolors.css", ' .

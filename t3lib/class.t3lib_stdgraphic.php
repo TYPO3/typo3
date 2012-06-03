@@ -516,7 +516,7 @@ class t3lib_stdGraphic {
 				for ($a = 0; $a < $conf['iterations']; $a++) {
 						// If any kind of spacing applys, we use this function:
 					if ($spacing || $wordSpacing) {
-						$this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.']);
+						$this->SpacedImageTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, self::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.']);
 					} else {
 						$this->renderTTFText($im, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'], $conf);
 					}
@@ -542,7 +542,7 @@ class t3lib_stdGraphic {
 				$Fcolor = ImageColorAllocate($maskImg, 0, 0, 0);
 					// If any kind of spacing applys, we use this function:
 				if ($spacing || $wordSpacing) {
-					$this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, t3lib_stdGraphic::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'], $sF);
+					$this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, self::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'], $sF);
 				} else {
 					$this->renderTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, $conf['fontFile'], $theText, $conf['splitRendering.'], $conf, $sF);
 				}
@@ -898,7 +898,7 @@ class t3lib_stdGraphic {
 
 			// Traverse string parts:
 		foreach ($stringParts as $strCfg) {
-			$fontFile = t3lib_stdGraphic::prependAbsolutePath($strCfg['fontFile']);
+			$fontFile = self::prependAbsolutePath($strCfg['fontFile']);
 			if (is_readable($fontFile)) {
 
 				/**
@@ -977,14 +977,14 @@ class t3lib_stdGraphic {
 				$y -= intval($strCfg['ySpaceBefore']);
 			}
 
-			$fontFile = t3lib_stdGraphic::prependAbsolutePath($strCfg['fontFile']);
+			$fontFile = self::prependAbsolutePath($strCfg['fontFile']);
 			if (is_readable($fontFile)) {
 
 					// Render part:
 				ImageTTFText($im, t3lib_div::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
 
 					// Calculate offset to apply:
-				$wordInf = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, t3lib_stdGraphic::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
+				$wordInf = ImageTTFBBox(t3lib_div::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, self::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
 				$x += $wordInf[2] - $wordInf[0] + intval($splitRendering['compX']) + intval($strCfg['xSpaceAfter']);
 				$y += $wordInf[5] - $wordInf[7] - intval($splitRendering['compY']) - intval($strCfg['ySpaceAfter']);
 

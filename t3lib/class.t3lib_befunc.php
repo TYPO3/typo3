@@ -785,7 +785,7 @@ final class t3lib_BEfunc {
 
 					// Get field value from database if field is not in the $row array
 				if (!isset($row[$pointerField])) {
-					$localRow = t3lib_BEfunc::getRecord($table, $row['uid'], $pointerField);
+					$localRow = self::getRecord($table, $row['uid'], $pointerField);
 					$foreignUid = $localRow[$pointerField];
 				} else {
 					$foreignUid = $row[$pointerField];
@@ -803,7 +803,7 @@ final class t3lib_BEfunc {
 						throw new RuntimeException('TCA foreign field pointer fields are only allowed to be used with group or select field types.', 1325862240);
 					}
 
-					$foreignRow = t3lib_BEfunc::getRecord($foreignTable, $foreignUid, $foreignTableTypeField);
+					$foreignRow = self::getRecord($foreignTable, $foreignUid, $foreignTableTypeField);
 
 					if ($foreignRow[$foreignTableTypeField]) {
 						$typeNum = $foreignRow[$foreignTableTypeField];
