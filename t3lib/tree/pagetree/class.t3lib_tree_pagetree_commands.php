@@ -257,7 +257,7 @@ final class t3lib_tree_pagetree_Commands {
 
 		$path = array();
 		foreach ($rootline as $rootlineElement) {
-			$record = t3lib_tree_pagetree_Commands::getNodeRecord($rootlineElement['uid']);
+			$record = self::getNodeRecord($rootlineElement['uid']);
 
 			$text = $record['title'];
 			if (self::$useNavTitle && trim($record['nav_title']) !== '') {

@@ -4304,7 +4304,7 @@ class tslib_cObj {
 	function calcIntExplode($delim, $string) {
 		$temp = explode($delim, $string);
 		foreach ($temp as $key => $val) {
-			$temp[$key] = intval(tslib_cObj::calc($val));
+			$temp[$key] = intval(self::calc($val));
 		}
 		return $temp;
 	}
@@ -7438,7 +7438,7 @@ class tslib_cObj {
 							}
 								// Call recursively, if the id is not in prevID_array:
 							if (!in_array($next_id, $prevId_array)) {
-								$theList .= tslib_cObj::getTreeList(
+								$theList .= self::getTreeList(
 									$next_id,
 									$depth - 1,
 									$begin - 1,

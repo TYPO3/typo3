@@ -470,7 +470,7 @@ class t3lib_pageSelect {
 				}
 
 					// If shortcut, look up if the target exists and is currently visible
-				if ($row['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT && ($row['shortcut'] || $row['shortcut_mode']) && $checkShortcuts) {
+				if ($row['doktype'] == self::DOKTYPE_SHORTCUT && ($row['shortcut'] || $row['shortcut_mode']) && $checkShortcuts) {
 					if ($row['shortcut_mode'] == self::SHORTCUT_MODE_NONE) {
 							// No shortcut_mode set, so target is directly set in $row['shortcut']
 						$searchField = 'uid';
@@ -496,7 +496,7 @@ class t3lib_pageSelect {
 					if (!$count) {
 						unset($row);
 					}
-				} elseif ($row['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT && $checkShortcuts) {
+				} elseif ($row['doktype'] == self::DOKTYPE_SHORTCUT && $checkShortcuts) {
 						// Neither shortcut target nor mode is set. Remove the page from the menu.
 					unset($row);
 				}
@@ -613,7 +613,7 @@ class t3lib_pageSelect {
 
 				if (is_array($row)) {
 						// Mount Point page types are allowed ONLY a) if they are the outermost record in rootline and b) if the overlay flag is not set:
-					if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] && $row['doktype'] == t3lib_pageSelect::DOKTYPE_MOUNTPOINT && !$ignoreMPerrors) {
+					if ($GLOBALS['TYPO3_CONF_VARS']['FE']['enable_mount_pids'] && $row['doktype'] == self::DOKTYPE_MOUNTPOINT && !$ignoreMPerrors) {
 						$mount_info = $this->getMountPointInfo($row['uid'], $row);
 						if ($loopCheck > 0 || $mount_info['overlay']) {
 							$this->error_getRootLine = 'Illegal Mount Point found in rootline';
@@ -738,7 +738,7 @@ class t3lib_pageSelect {
 	 * @see tslib_fe::setExternalJumpUrl()
 	 */
 	function getExtURL($pagerow, $disable = 0) {
-		if ($pagerow['doktype'] == t3lib_pageSelect::DOKTYPE_LINK && !$disable) {
+		if ($pagerow['doktype'] == self::DOKTYPE_LINK && !$disable) {
 			$redirectTo = $this->urltypes[$pagerow['urltype']] . $pagerow['url'];
 
 				// If relative path, prefix Site URL:
@@ -787,7 +787,7 @@ class t3lib_pageSelect {
 
 				// Look for mount pid value plus other required circumstances:
 			$mount_pid = intval($pageRec['mount_pid']);
-			if (is_array($pageRec) && $pageRec['doktype'] == t3lib_pageSelect::DOKTYPE_MOUNTPOINT && $mount_pid > 0 && !in_array($mount_pid, $prevMountPids)) {
+			if (is_array($pageRec) && $pageRec['doktype'] == self::DOKTYPE_MOUNTPOINT && $mount_pid > 0 && !in_array($mount_pid, $prevMountPids)) {
 
 					// Get the mount point record (to verify its general existence):
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', 'uid=' . $mount_pid . ' AND pages.deleted=0 AND pages.doktype<>255');

@@ -294,7 +294,7 @@ class tx_em_Tools_Unzip {
 
 
 	/**
-	 * tx_em_Tools_Unzip::_openFd()
+	 * self::_openFd()
 	 *
 	 * { Description }
 	 *
@@ -306,7 +306,7 @@ class tx_em_Tools_Unzip {
 		if ($this->_zip_fd != 0) {
 			$this->_errorLog(ARCHIVE_ZIP_ERR_READ_OPEN_FAIL,
 					'Zip file \'' . $this->_zipname . '\' already open');
-			return tx_em_Tools_Unzip::errorCode();
+			return self::errorCode();
 		}
 
 		// Open the zip file
@@ -314,7 +314,7 @@ class tx_em_Tools_Unzip {
 			$this->_errorLog(ARCHIVE_ZIP_ERR_READ_OPEN_FAIL,
 					'Unable to open archive \'' . $this->_zipname
 							. '\' in ' . $p_mode . ' mode');
-			return tx_em_Tools_Unzip::errorCode();
+			return self::errorCode();
 		}
 
 		// Return
@@ -436,7 +436,7 @@ class tx_em_Tools_Unzip {
 				$this->_errorLog(ARCHIVE_ZIP_ERR_INVALID_ARCHIVE_ZIP,
 					'Invalid archive size');
 
-				return tx_em_Tools_Unzip::errorCode();
+				return self::errorCode();
 			}
 
 			// Read the file header
@@ -464,7 +464,7 @@ class tx_em_Tools_Unzip {
 				$this->_errorLog(ARCHIVE_ZIP_ERR_INVALID_ARCHIVE_ZIP, 'Invalid archive size');
 
 				// Return
-				return tx_em_Tools_Unzip::errorCode();
+				return self::errorCode();
 			}
 
 			// Extracting the file
@@ -737,7 +737,7 @@ class tx_em_Tools_Unzip {
 			$this->_errorLog(ARCHIVE_ZIP_ERR_BAD_FORMAT, 'Invalid archive structure');
 
 			// Return
-			return tx_em_Tools_Unzip::errorCode();
+			return self::errorCode();
 		}
 
 		// Read the first 42 bytes of the header
@@ -752,7 +752,7 @@ class tx_em_Tools_Unzip {
 			$this->_errorLog(ARCHIVE_ZIP_ERR_BAD_FORMAT, "Invalid block size : " . strlen($v_binary_data));
 
 			// Return
-			return tx_em_Tools_Unzip::errorCode();
+			return self::errorCode();
 		}
 
 		// Extract the values
@@ -829,7 +829,7 @@ class tx_em_Tools_Unzip {
 			$this->_errorLog(ARCHIVE_ZIP_ERR_BAD_FORMAT, 'Invalid archive structure');
 
 			// Return
-			return tx_em_Tools_Unzip::errorCode();
+			return self::errorCode();
 		}
 
 		// Read the first 42 bytes of the header
@@ -844,7 +844,7 @@ class tx_em_Tools_Unzip {
 			$this->_errorLog(ARCHIVE_ZIP_ERR_BAD_FORMAT, "Invalid block size : " . strlen($v_binary_data));
 
 			// Return
-			return tx_em_Tools_Unzip::errorCode();
+			return self::errorCode();
 		}
 
 		// Extract the values
@@ -930,7 +930,7 @@ class tx_em_Tools_Unzip {
 			$this->_errorLog(ARCHIVE_ZIP_ERR_BAD_FORMAT,
 					'Unable to go to the end of the archive \''
 							. $this->_zipname . '\'');
-			return tx_em_Tools_Unzip::errorCode();
+			return self::errorCode();
 		}
 
 		// First try : look if this is an archive with no commentaries
@@ -943,7 +943,7 @@ class tx_em_Tools_Unzip {
 				$this->_errorLog(ARCHIVE_ZIP_ERR_BAD_FORMAT,
 						'Unable to seek back to the middle of the archive \''
 								. $this->_zipname . '\'');
-				return tx_em_Tools_Unzip::errorCode();
+				return self::errorCode();
 			}
 
 			// Read for bytes
@@ -969,7 +969,7 @@ class tx_em_Tools_Unzip {
 				$this->_errorLog(ARCHIVE_ZIP_ERR_BAD_FORMAT,
 						'Unable to seek back to the middle of the archive \''
 								. $this->_zipname . '\'');
-				return tx_em_Tools_Unzip::errorCode();
+				return self::errorCode();
 			}
 
 			// Read byte per byte in order to find the signature
@@ -995,7 +995,7 @@ class tx_em_Tools_Unzip {
 			if ($v_pos == $v_size) {
 				$this->_errorLog(ARCHIVE_ZIP_ERR_BAD_FORMAT,
 					"Unable to find End of Central Dir Record signature");
-				return tx_em_Tools_Unzip::errorCode();
+				return self::errorCode();
 			}
 		}
 
@@ -1007,7 +1007,7 @@ class tx_em_Tools_Unzip {
 			$this->_errorLog(ARCHIVE_ZIP_ERR_BAD_FORMAT,
 					"Invalid End of Central Dir Record size : "
 							. strlen($v_binary_data));
-			return tx_em_Tools_Unzip::errorCode();
+			return self::errorCode();
 		}
 
 		// Extract the values
@@ -1017,7 +1017,7 @@ class tx_em_Tools_Unzip {
 		if (($v_pos + $v_data['comment_size'] + 18) != $v_size) {
 			$this->_errorLog(ARCHIVE_ZIP_ERR_BAD_FORMAT,
 				"Fail to find the right signature");
-			return tx_em_Tools_Unzip::errorCode();
+			return self::errorCode();
 		}
 
 		// Get comment
@@ -1077,7 +1077,7 @@ class tx_em_Tools_Unzip {
 		if (!@mkdir($p_dir, 0777)) {
 			$this->_errorLog(ARCHIVE_ZIP_ERR_DIR_CREATE_FAIL,
 				'Unable to create directory "' . $p_dir . '"');
-			return tx_em_Tools_Unzip::errorCode();
+			return self::errorCode();
 		}
 
 		// Return
@@ -1098,7 +1098,7 @@ class tx_em_Tools_Unzip {
 		if (!is_array($p_params)) {
 			$this->_errorLog(ARCHIVE_ZIP_ERR_INVALID_PARAMETER,
 				'Unsupported parameter, waiting for an array');
-			return tx_em_Tools_Unzip::errorCode();
+			return self::errorCode();
 		}
 
 		// Check that all the params are valid
@@ -1107,7 +1107,7 @@ class tx_em_Tools_Unzip {
 				$this->_errorLog(ARCHIVE_ZIP_ERR_INVALID_PARAMETER,
 						'Unsupported parameter with key \'' . $v_key . '\'');
 
-				return tx_em_Tools_Unzip::errorCode();
+				return self::errorCode();
 			}
 		}
 
@@ -1129,7 +1129,7 @@ class tx_em_Tools_Unzip {
 							"Callback '" . $p_params[$v_key]
 									. "()' is not an existing function for "
 									. "parameter '" . $v_key . "'");
-					return tx_em_Tools_Unzip::errorCode();
+					return self::errorCode();
 				}
 			}
 		}

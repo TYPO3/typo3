@@ -267,7 +267,7 @@ class TSpagegen {
 		if ($GLOBALS['TSFE']->config['config']['disableAllHeaderCode']) {
 			$GLOBALS['TSFE']->content = $pageContent;
 		} else {
-			TSpagegen::renderContentWithHeader($pageContent);
+			self::renderContentWithHeader($pageContent);
 		}
 		$GLOBALS['TT']->pull($GLOBALS['TT']->LR?$GLOBALS['TSFE']->content:'');
 		$GLOBALS['TT']->decStackPointer();
@@ -483,7 +483,7 @@ class TSpagegen {
 			}
 			if (count($temp_styleLines)) {
 				if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile']) {
-					$pageRenderer->addCssFile(TSpagegen::inline2TempFile(implode(LF, $temp_styleLines), 'css'));
+					$pageRenderer->addCssFile(self::inline2TempFile(implode(LF, $temp_styleLines), 'css'));
 				} else {
 					$pageRenderer->addCssInlineBlock('TSFEinlineStyle', implode(LF, $temp_styleLines));
 				}
@@ -593,7 +593,7 @@ class TSpagegen {
 
 		if (trim($style)) {
 			if ($GLOBALS['TSFE']->config['config']['inlineStyle2TempFile']) {
-				$pageRenderer->addCssFile(TSpagegen::inline2TempFile($style, 'css'));
+				$pageRenderer->addCssFile(self::inline2TempFile($style, 'css'));
 			} else {
 				$pageRenderer->addCssInlineBlock('additionalTSFEInlineStyle', $style);
 			}
@@ -809,7 +809,7 @@ class TSpagegen {
 		} else {
 			$GLOBALS['TSFE']->INTincScript_loadJSCode();
 		}
-		$JSef = TSpagegen::JSeventFunctions();
+		$JSef = self::JSeventFunctions();
 
 			// Adding default Java Script:
 		$scriptJsCode = '
@@ -932,7 +932,7 @@ class TSpagegen {
 			if ($inlineJSint) {
 				$pageRenderer->addJsInlineCode('TS_inlineJSint', $inlineJSint, $GLOBALS['TSFE']->config['config']['compressJs']);
 			}
-			$pageRenderer->addJsFile(TSpagegen::inline2TempFile($scriptJsCode . $inlineJS, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['compressJs']);
+			$pageRenderer->addJsFile(self::inline2TempFile($scriptJsCode . $inlineJS, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['compressJs']);
 
 			if ($inlineFooterJs) {
 				$inlineFooterJSint = '';
@@ -940,7 +940,7 @@ class TSpagegen {
 				if ($inlineFooterJSint) {
 					$pageRenderer->addJsFooterInlineCode('TS_inlineFooterJSint', $inlineFooterJSint, $GLOBALS['TSFE']->config['config']['compressJs']);
 				}
-				$pageRenderer->addJsFooterFile(TSpagegen::inline2TempFile($inlineFooterJs, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['compressJs']);
+				$pageRenderer->addJsFooterFile(self::inline2TempFile($inlineFooterJs, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['compressJs']);
 			}
 		} else {
 				// include only inlineJS
