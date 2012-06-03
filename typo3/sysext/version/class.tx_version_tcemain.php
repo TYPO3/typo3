@@ -947,7 +947,7 @@ class tx_version_tcemain {
 											} else {
 												$label = $GLOBALS['LANG']->sL ('LLL:EXT:lang/locallang_tcemain.xml:version_swap.online_record_updated');
 											}
-											$theLogId = $tcemainObj->log($table, $id, 2, $propArr['pid'], 0, $label , 10, array($propArr['header'], $table . ':' . $id), $propArr['event_pid']);
+											$theLogId = $tcemainObj->log($table, $id, 2, $propArr['pid'], 0, $label, 10, array($propArr['header'], $table . ':' . $id), $propArr['event_pid']);
 											$tcemainObj->setHistory($table, $id, $theLogId);
 
 												// Update reference index of the offline record:
