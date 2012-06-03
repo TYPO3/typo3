@@ -65,7 +65,14 @@ class Typo3_Bootstrap_Cli {
 				$message = "The supplied 'cliKey' is not valid.";
 			}
 			$message .= " Valid keys are:\n\n";
-			$message .= var_export(array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']), TRUE);
+
+			$cliKeys = array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']);
+			asort($cliKeys);
+
+			foreach ($cliKeys as $key => $value) {
+				$message .= '  ' . $value . LF;
+			}
+
 			fwrite(STDERR, $message . LF);
 			exit(1);
 		}
