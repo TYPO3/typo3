@@ -901,7 +901,7 @@ final class tx_em_Tools {
 									$out['NSerrors']['classfilename'][] = $baseName;
 								} else {
 									$out['NSok']['classfilename'][] = $baseName;
-									if (is_array($out['files'][$fileName]['classes']) && tx_em_Tools::first_in_array($testName, $out['files'][$fileName]['classes'], 1)) {
+									if (is_array($out['files'][$fileName]['classes']) && self::first_in_array($testName, $out['files'][$fileName]['classes'], 1)) {
 										$out['msg'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_class_ok'),
 																$fileName, $testName
 										);
@@ -941,7 +941,7 @@ final class tx_em_Tools {
 								} else {
 									$out['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_no_xclass_filename'), $fileName);
 								}
-							} elseif (!tx_em_Tools::first_in_array('ux_', $out['files'][$fileName]['classes'])) {
+							} elseif (!self::first_in_array('ux_', $out['files'][$fileName]['classes'])) {
 									// No Xclass definition required if classname starts with 'ux_'
 								$out['errors'][] = sprintf($GLOBALS['LANG']->getLL('detailedExtAnalysis_no_xclass_found'), $fileName);
 							}

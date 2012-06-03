@@ -663,7 +663,7 @@ class t3lib_loadDBGroup {
 					$row = t3lib_BEfunc::getRecord($table, $uid, $fields, '', FALSE);
 				}
 				if ($symmetric_field) {
-					$isOnSymmetricSide = t3lib_loadDBGroup::isOnSymmetricSide($parentUid, $conf, $row);
+					$isOnSymmetricSide = self::isOnSymmetricSide($parentUid, $conf, $row);
 				}
 
 				$updateValues = $foreign_match_fields;

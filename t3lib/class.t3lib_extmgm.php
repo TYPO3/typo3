@@ -827,7 +827,7 @@ final class t3lib_extMgm {
 			'access' => 'admin',
 			'icon' => 'gfx/typo3.png',
 			'labels' => '',
-			'extRelPath' => t3lib_extMgm::extRelPath($extensionKey) . 'Classes/'
+			'extRelPath' => self::extRelPath($extensionKey) . 'Classes/'
 		);
 
 			// Add mandatory parameter to use new pagetree
@@ -850,7 +850,7 @@ final class t3lib_extMgm {
 
 		$GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
 
-		t3lib_extMgm::addModule($mainModuleName, $subModuleName, $position);
+		self::addModule($mainModuleName, $subModuleName, $position);
 	}
 
 	/**
@@ -869,7 +869,7 @@ final class t3lib_extMgm {
 		$iconPathAndFilename = $moduleConfiguration['icon'];
 		if (substr($iconPathAndFilename, 0, 4) === 'EXT:') {
 			list($extensionKey, $relativePath) = explode('/', substr($iconPathAndFilename, 4), 2);
-			$iconPathAndFilename = t3lib_extMgm::extPath($extensionKey) . $relativePath;
+			$iconPathAndFilename = self::extPath($extensionKey) . $relativePath;
 		}
 		// TODO: skin support
 
