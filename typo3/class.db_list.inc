@@ -357,64 +357,11 @@ class recordList extends t3lib_recordList {
 	 * Relies on the "sys_note" extension to be loaded.
 	 *
 	 * @return string HTML for the sys-notes (if any)
+	 * @deprecated since 6.0, will be removed two versions later
 	 */
 	function showSysNotesForPage() {
-		$out = '';
-
-			// Checking if extension is loaded:
-		if (!t3lib_extMgm::isLoaded('sys_note')) {
-			return '';
-		}
-
-			// Create query for selecting the notes:
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_note', 'pid IN (' . $this->id . ') AND (personal=0 OR cruser=' . intval($GLOBALS['BE_USER']->user['uid']) . ')' . t3lib_BEfunc::deleteClause('sys_note') . t3lib_BEfunc::versioningPlaceholderClause('sys_note'));
-
-			// Executing query:
-		$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
-
-			// If some notes were found, render them:
-		if ($dbCount) {
-			$cat = array();
-
-				// Load full table description:
-			t3lib_div::loadTCA('sys_note');
-
-				// Traverse note-types and get labels:
-			if ($GLOBALS['TCA']['sys_note'] && $GLOBALS['TCA']['sys_note']['columns']['category']
-				&& is_array($GLOBALS['TCA']['sys_note']['columns']['category']['config']['items'])) {
-				foreach($GLOBALS['TCA']['sys_note']['columns']['category']['config']['items'] as $el) {
-					$cat[$el[1]]=$GLOBALS['LANG']->sL($el[0]);
-				}
-			}
-
-				// For each note found, make rendering:
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-
-					// Create content:
-				$iconImg = t3lib_iconWorks::getSpriteIconForRecord('sys_note', $row);
-				$subject = htmlspecialchars($row['subject']);
-				$fields = array();
-				$fields['Author:'] = htmlspecialchars($row['author'].($row['email'] && $row['author'] ? ', ':'').$row['email']);
-				$fields['Category:'] = htmlspecialchars($cat[$row['category']]);
-				$fields['Note:'] = nl2br(htmlspecialchars($row['message']));
-
-					// Compile content:
-				$out .= '
-
-
-				<!--
-					Sys-notes for list module:
-				-->
-					<table border="0" cellpadding="1" cellspacing="1" id="typo3-dblist-sysnotes">
-						<tr><td colspan="2" class="bgColor2">' . $iconImg . '<strong>' . $subject . '</strong></td></tr>
-						<tr><td class="bgColor4">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.category', 1) . '</td><td class="bgColor4">' . $fields['Category:'] . '</td></tr>
-						<tr><td class="bgColor4">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.author', 1) . '</td><td class="bgColor4">' . $fields['Author:'] . '</td></tr>
-						<tr><td class="bgColor4">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.note', 1) . '</td><td class="bgColor4">' . $fields['Note:'] . '</td></tr>
-					</table>
-				';
-			}
-		}
-		return $out;
+		t3lib_div::logDeprecatedFunction();
+		return '';
 	}
 
 	/******************************

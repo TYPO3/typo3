@@ -1122,12 +1122,13 @@ class SC_db_layout {
 				);
 			}
 
-				// Making display of Sys-notes (from extension "sys_note")
-			$dblist->id=$this->id;
-			$sysNotes = $dblist->showSysNotesForPage();
-			if ($sysNotes) {
-				$content .= $this->doc->spacer(10);
-				$content .= $this->doc->section($GLOBALS['LANG']->getLL('internalNotes'), $sysNotes, 0, 1);
+				// Additional footer content
+			$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'];
+			if (is_array($footerContentHook)) {
+				foreach ($footerContentHook as $hook) {
+					$params = array();
+					$content .= t3lib_div::callUserFunction($hook, $params, $this);
+				}
 			}
 
 				// Add spacer in bottom of page:
