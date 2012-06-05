@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="sys_note">
+		<header/>
+		<body>
+			<trans-unit id="date" xml:space="preserve">
+				<source>Date</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

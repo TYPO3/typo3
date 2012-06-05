@@ -462,8 +462,14 @@ class SC_db_list {
 				) . '</div>';
 			}
 
-				// Display sys-notes, if any are found:
-			$this->body.=$dblist->showSysNotesForPage();
+				// Additional footer content
+			$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/mod1/index.php']['drawFooterHook'];
+			if (is_array($footerContentHook)) {
+				foreach ($footerContentHook as $hook) {
+					$params = array();
+					$this->body .= t3lib_div::callUserFunction($hook, $params, $this);
+				}
+			}
 		}
 
 			// Setting up the buttons and markers for docheader
