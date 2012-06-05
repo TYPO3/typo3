@@ -54,7 +54,7 @@ class TYPO3Logo {
 	public function render() {
 
 		$logoFile = 'gfx/alt_backend_logo.gif'; // default
-		if(is_string($this->logo)) {
+		if (is_string($this->logo)) {
 				// overwrite
 			$logoFile = $this->logo;
 		}
@@ -66,7 +66,7 @@ class TYPO3Logo {
 				'</a>';
 
 			// overwrite with custom logo
-		if($GLOBALS['TBE_STYLES']['logo']) {
+		if ($GLOBALS['TBE_STYLES']['logo']) {
 			$imgInfo = @getimagesize(t3lib_div::resolveBackPath(PATH_typo3 . $GLOBALS['TBE_STYLES']['logo'], 3));
 			$logo = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' .
 				'<img src="' . $GLOBALS['TBE_STYLES']['logo'] . '" ' . $imgInfo[3] . ' title="TYPO3 Content Management System" alt="" />' .
@@ -82,7 +82,7 @@ class TYPO3Logo {
 	 * @param	string		path to logo file as seen from typo3/
 	 */
 	public function setLogo($logo) {
-		if(!is_string($logo)) {
+		if (!is_string($logo)) {
 			throw new InvalidArgumentException('parameter $logo must be of type string', 1194041104);
 		}
 
