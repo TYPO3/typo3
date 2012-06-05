@@ -1,3 +1,51 @@
-table#typo3-dblist-sysnotes {
+#typo3-dblist-sysnotes {
 	margin-top: 15px;
+}
+
+#typo3-dblist-sysnotes .single-note {
+	margin-bottom:10px;
+}
+
+#typo3-dblist-sysnotes .single-note .header {
+	background: #d7d7d7  url(../../icons/ext/sys_note/icon-default.png) no-repeat top left;
+	padding-left: 30px;
+	height:23px;
+	line-height: 25px;
+}
+
+#typo3-dblist-sysnotes  .category-1 .header {
+	background-image: url(../../icons/ext/sys_note/icon-instruction.png);
+}
+#typo3-dblist-sysnotes  .category-2 .header {
+	background-image: url(../../icons/ext/sys_note/icon-template.png);
+}
+#typo3-dblist-sysnotes  .category-3 .header {
+	background-image: url(../../icons/ext/sys_note/icon-note.png);
+}
+#typo3-dblist-sysnotes  .category-4 .header {
+	background-image: url(../../icons/ext/sys_note/icon-todo.png);
+}
+
+
+
+#typo3-dblist-sysnotes .single-note .header span {
+	color: #666;
+}
+
+#typo3-dblist-sysnotes .single-note .header .right {
+	float: right;
+	margin-top: -3px;
+	margin-right: 5px;
+}
+
+#typo3-dblist-sysnotes .single-note .content {
+	background: #fffeed;
+	border: 1px solid #dadada;
+	border-top: none;
+	padding: 15px 10px;
+}
+
+#typo3-dblist-sysnotes .single-note .content .title {
+	font-weight: bold;
+	margin-bottom: 5px;
 }
