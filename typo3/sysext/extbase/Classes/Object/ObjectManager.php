@@ -46,6 +46,41 @@ class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManager
 	}
 
 	/**
+	 * Serialization (sleep) helper.
+	 *
+	 * Removes properties of this object from serialization.
+	 * This action is necessary, since there might be closures used
+	 * in the accordant content objects (e.g. in FLUIDTEMPLATE) which
+	 * cannot be serialized. It's fine to reset $this->contentObjects
+	 * since elements will be recreated and are just a local cache,
+	 * but not required for runtime logic and behaviour.
+	 *
+	 * @see http://forge.typo3.org/issues/36820
+	 * @return array Names of the properties to be serialized
+	 */
+	public function __sleep() {
+			// Use get_objects_vars() instead of
+			// a much more expensive Reflection:
+		$properties = get_object_vars($this);
+		unset($properties['objectContainer']);
+
+		return array_keys($properties);
+	}
+
+	/**
+	 * Unserialization (wakeup) helper.
+	 *
+	 * Initializes the properties again that have been removed by
+	 * a call to the __sleep() method on serialization before.
+	 *
+	 * @see http://forge.typo3.org/issues/36820
+	 * @return void
+	 */
+	public function __wakeup() {
+		$this->__construct();
+	}
+
+	/**
 	 * Returns TRUE if an object with the given name is registered
 	 *
 	 * @param  string $objectName Name of the object
