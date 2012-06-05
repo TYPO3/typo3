@@ -56,7 +56,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 		$this->optionValues     = array('all', 'pages');
 
 			// Clear cache for ALL tables!
-		if($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) {
+		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.all')) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_all', TRUE);
 			$this->cacheActions[] = array(
 				'id'    => 'all',
@@ -71,7 +71,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 		}
 
 			// Clear cache for either ALL pages
-		if($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')) {
+		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.pages')) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_pages', TRUE);
 			$this->cacheActions[] = array(
 				'id'    => 'pages',
@@ -86,7 +86,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 		}
 
 			// Clearing of cache-files in typo3conf/ + menu
-		if($GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']) {
+		if ($GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_allTypo3Conf', TRUE);
 			$this->cacheActions[] = array(
 				'id'    => 'temp_CACHED',
@@ -101,11 +101,11 @@ class ClearCacheMenu implements backend_toolbarItem {
 		}
 
 			// hook for manipulate cacheActions
-		if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'])) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'])) {
 			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheActions'] as $cacheAction) {
 				$hookObject = t3lib_div::getUserObj($cacheAction);
 
-				if(!($hookObject instanceof backend_cacheActionsHook)) {
+				if (!($hookObject instanceof backend_cacheActionsHook)) {
 					throw new UnexpectedValueException('$hookObject must implement interface backend_cacheActionsHook', 1228262000);
 				}
 

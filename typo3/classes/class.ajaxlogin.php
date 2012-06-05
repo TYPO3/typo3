@@ -90,7 +90,7 @@ class AjaxLogin {
 	 */
 	public function logout(array $parameters, TYPO3AJAX $ajaxObj) {
 		$GLOBALS['BE_USER']->logoff();
-		if($GLOBALS['BE_USER']->user['uid']) {
+		if ($GLOBALS['BE_USER']->user['uid']) {
 			$ajaxObj->addContent('logout', array('success' => FALSE));
 		} else {
 			$ajaxObj->addContent('logout', array('success' => TRUE));
@@ -121,7 +121,7 @@ class AjaxLogin {
 	 * @return	void
 	 */
 	function isTimedOut(array $parameters, TYPO3AJAX $ajaxObj) {
-		if(is_object($GLOBALS['BE_USER'])) {
+		if (is_object($GLOBALS['BE_USER'])) {
 			$ajaxObj->setContentFormat('json');
 			if (@is_file(PATH_typo3conf.'LOCK_BACKEND')) {
 				$ajaxObj->addContent('login', array('will_time_out' => FALSE, 'locked' => TRUE));

@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
+if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 	require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
 	$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 
@@ -156,7 +156,7 @@ class ShortcutMenu implements backend_toolbarItem {
 		$groups = $this->getGroupsFromShortcuts();
 		krsort($groups, SORT_NUMERIC);
 		foreach($groups as $groupId => $groupLabel) {
-			if($groupId != 0 ) {
+			if ($groupId != 0 ) {
 				$shortcutGroup = '
 				<tr class="shortcut-group" id="shortcut-group-'.$groupId.'">
 					<td class="shortcut-group-icon">'.$groupIcon.'</td>
@@ -170,7 +170,7 @@ class ShortcutMenu implements backend_toolbarItem {
 					$i++;
 
 					$firstRow = '';
-					if($i == 1) {
+					if ($i == 1) {
 						$firstRow = ' first-row';
 					}
 
@@ -189,7 +189,7 @@ class ShortcutMenu implements backend_toolbarItem {
 			}
 		}
 
-		if(count($shortcutMenu) == 1) {
+		if (count($shortcutMenu) == 1) {
 				//no shortcuts added yet, show a small help message how to add shortcuts
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarks', TRUE);
 			$icon = t3lib_iconWorks::getSpriteIcon('actions-system-shortcut-new', array(
@@ -268,17 +268,17 @@ class ShortcutMenu implements backend_toolbarItem {
 			$queryParts           = parse_url($row['url']);
 			$queryParameters      = t3lib_div::explodeUrl2Array($queryParts['query'], 1);
 
-			if($row['module_name'] == 'xMOD_alt_doc.php' && is_array($queryParameters['edit'])) {
+			if ($row['module_name'] == 'xMOD_alt_doc.php' && is_array($queryParameters['edit'])) {
 				$shortcut['table']    = key($queryParameters['edit']);
 				$shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
 
-				if($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
+				if ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
 					$shortcut['type'] = 'edit';
-				} elseif($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'new') {
+				} elseif ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'new') {
 					$shortcut['type'] = 'new';
 				}
 
-				if(substr($shortcut['recordid'], -1) == ',') {
+				if (substr($shortcut['recordid'], -1) == ',') {
 					$shortcut['recordid'] = substr($shortcut['recordid'], 0, -1);
 				}
 			} else {
@@ -287,33 +287,33 @@ class ShortcutMenu implements backend_toolbarItem {
 
 				// check for module access
 			$pageId = $this->getLinkedPageId($row['url']);
-			if(!$GLOBALS['BE_USER']->isAdmin()) {
-				if(!isset($GLOBALS['LANG']->moduleLabels['tabs_images'][implode('_', $moduleParts).'_tab'])) {
+			if (!$GLOBALS['BE_USER']->isAdmin()) {
+				if (!isset($GLOBALS['LANG']->moduleLabels['tabs_images'][implode('_', $moduleParts).'_tab'])) {
 						// nice hack to check if the user has access to this module
 						// - otherwise the translation label would not have been loaded :-)
 					continue;
 				}
 
-				if(t3lib_utility_Math::canBeInterpretedAsInteger($pageId)) {
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($pageId)) {
 						// check for webmount access
-					if(!$GLOBALS['BE_USER']->isInWebMount($pageId)) {
+					if (!$GLOBALS['BE_USER']->isInWebMount($pageId)) {
 						continue;
 					}
 
 						// check for record access
 					$pageRow = t3lib_BEfunc::getRecord('pages', $pageId);
-					if(!$GLOBALS['BE_USER']->doesUserHaveAccess($pageRow, $perms = 1)) {
+					if (!$GLOBALS['BE_USER']->doesUserHaveAccess($pageRow, $perms = 1)) {
 						continue;
 					}
 				}
 			}
 
 			$shortcutGroup = $row['sc_group'];
-			if($shortcutGroup && strcmp($lastGroup, $shortcutGroup) && ($shortcutGroup != -100)) {
+			if ($shortcutGroup && strcmp($lastGroup, $shortcutGroup) && ($shortcutGroup != -100)) {
 				$shortcut['groupLabel'] = $this->getShortcutGroupLabel($shortcutGroup);
 			}
 
-			if($row['description']) {
+			if ($row['description']) {
 				$shortcut['label'] = $row['description'];
 			} else {
 				$shortcut['label'] = t3lib_div::fixed_lgd_cs(rawurldecode($queryParts['query']), 150);
@@ -341,7 +341,7 @@ class ShortcutMenu implements backend_toolbarItem {
 		$shortcuts = array();
 
 		foreach($this->shortcuts as $shortcut) {
-			if($shortcut['group'] == $groupId) {
+			if ($shortcut['group'] == $groupId) {
 				$shortcuts[] = $shortcut;
 			}
 		}
@@ -359,7 +359,7 @@ class ShortcutMenu implements backend_toolbarItem {
 		$returnShortcut = FALSE;
 
 		foreach($this->shortcuts as $shortcut) {
-			if($shortcut['raw']['uid'] == (int) $shortcutId) {
+			if ($shortcut['raw']['uid'] == (int) $shortcutId) {
 				$returnShortcut = $shortcut;
 				continue;
 			}
@@ -380,18 +380,18 @@ class ShortcutMenu implements backend_toolbarItem {
 			// groups from TSConfig
 		$bookmarkGroups = $GLOBALS['BE_USER']->getTSConfigProp('options.bookmarkGroups');
 
-		if(is_array($bookmarkGroups) && count($bookmarkGroups)) {
+		if (is_array($bookmarkGroups) && count($bookmarkGroups)) {
 			foreach($bookmarkGroups as $groupId => $label) {
-				if(strcmp('', $label) && strcmp('0', $label)) {
+				if (strcmp('', $label) && strcmp('0', $label)) {
 					$this->shortcutGroups[$groupId] = (string) $label;
-				} elseif($GLOBALS['BE_USER']->isAdmin()) {
+				} elseif ($GLOBALS['BE_USER']->isAdmin()) {
 					unset($this->shortcutGroups[$groupId]);
 				}
 			}
 		}
 
 			// generate global groups, all global groups have negative IDs.
-		if(count($this->shortcutGroups)) {
+		if (count($this->shortcutGroups)) {
 			$groups = $this->shortcutGroups;
 			foreach($groups as $groupId => $groupLabel) {
 				$this->shortcutGroups[($groupId * -1)] = $groupLabel;
@@ -405,16 +405,16 @@ class ShortcutMenu implements backend_toolbarItem {
 		foreach($this->shortcutGroups as $groupId => $groupLabel) {
 			$label = $groupLabel;
 
-			if($groupLabel == '1') {
+			if ($groupLabel == '1') {
 				$label = $GLOBALS['LANG']->getLL('bookmark_group_'.abs($groupId), 1);
 
-				if(empty($label)) {
+				if (empty($label)) {
 						// fallback label
 					$label = $GLOBALS['LANG']->getLL('bookmark_group', 1).' '.abs($groupId);
 				}
 			}
 
-			if($groupId < 0) {
+			if ($groupId < 0) {
 					// global group
 				$label = $GLOBALS['LANG']->getLL('bookmark_global', 1).': '.
 					(!empty($label) ?
@@ -422,7 +422,7 @@ class ShortcutMenu implements backend_toolbarItem {
 						abs($groupId)
 					);
 
-				if($groupId == -100) {
+				if ($groupId == -100) {
 					$label = $GLOBALS['LANG']->getLL('bookmark_global', 1).': '.$GLOBALS['LANG']->getLL('bookmark_all', 1);
 				}
 			}
@@ -443,9 +443,9 @@ class ShortcutMenu implements backend_toolbarItem {
 	public function getAjaxShortcutGroups($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 		$shortcutGroups = $this->shortcutGroups;
 
-		if(!$GLOBALS['BE_USER']->isAdmin()) {
+		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			foreach($shortcutGroups as $groupId => $groupName) {
-				if(intval($groupId) < 0) {
+				if (intval($groupId) < 0) {
 					unset($shortcutGroups[$groupId]);
 				}
 			}
@@ -467,13 +467,13 @@ class ShortcutMenu implements backend_toolbarItem {
 		$fullShortcut = $this->getShortcutById($shortcutId);
 		$ajaxReturn   = 'failed';
 
-		if($fullShortcut['raw']['userid'] == $GLOBALS['BE_USER']->user['uid']) {
+		if ($fullShortcut['raw']['userid'] == $GLOBALS['BE_USER']->user['uid']) {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 				'sys_be_shortcuts',
 				'uid = '.$shortcutId
 			);
 
-			if($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
+			if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
 				$ajaxReturn = 'deleted';
 			}
 		}
@@ -507,10 +507,10 @@ class ShortcutMenu implements backend_toolbarItem {
 				$shortcut['table']    = key($queryParameters['edit']);
 				$shortcut['recordid'] = key($queryParameters['edit'][$shortcut['table']]);
 
-				if($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
+				if ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'edit') {
 					$shortcut['type']    = 'edit';
 					$shortcutNamePrepend = $GLOBALS['LANG']->getLL('shortcut_edit', 1);
-				} elseif($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'new') {
+				} elseif ($queryParameters['edit'][$shortcut['table']][$shortcut['recordid']] == 'new') {
 					$shortcut['type']    = 'new';
 					$shortcutNamePrepend = $GLOBALS['LANG']->getLL('shortcut_create', 1);
 				}
@@ -521,11 +521,11 @@ class ShortcutMenu implements backend_toolbarItem {
 				// Lookup the title of this page and use it as default description
 			$pageId = $shortcut['recordid'] ? $shortcut['recordid'] : $this->getLinkedPageId($url);
 
-			if(t3lib_utility_Math::canBeInterpretedAsInteger($pageId)) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($pageId)) {
 				$page = t3lib_BEfunc::getRecord('pages', $pageId);
-				if(count($page)) {
+				if (count($page)) {
 						// set the name to the title of the page
-					if($shortcut['type'] == 'other') {
+					if ($shortcut['type'] == 'other') {
 						$shortcutName = $page['title'];
 					} else {
 						$shortcutName = $shortcutNamePrepend.' '.$GLOBALS['LANG']->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']).' ('.$page['title'].')';
@@ -542,7 +542,7 @@ class ShortcutMenu implements backend_toolbarItem {
 			}
 
 				// adding the shortcut
-			if($module && $url) {
+			if ($module && $url) {
 				$fieldValues = array(
 					'userid'      => $GLOBALS['BE_USER']->user['uid'],
 					'module_name' => $module.'|'.$motherModule,
@@ -552,7 +552,7 @@ class ShortcutMenu implements backend_toolbarItem {
 				);
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_be_shortcuts', $fieldValues);
 
-				if($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
+				if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
 					$shortcutCreated = 'success';
 				}
 			}
@@ -575,7 +575,7 @@ class ShortcutMenu implements backend_toolbarItem {
 		$shortcutName    = strip_tags(t3lib_div::_POST('value'));
 		$shortcutGroupId = (int) t3lib_div::_POST('shortcut-group');
 
-		if($shortcutGroupId > 0 || $GLOBALS['BE_USER']->isAdmin()) {
+		if ($shortcutGroupId > 0 || $GLOBALS['BE_USER']->isAdmin()) {
 				// users can delete only their own shortcuts (except admins)
 			$addUserWhere = (!$GLOBALS['BE_USER']->isAdmin() ?
 				' AND userid='.intval($GLOBALS['BE_USER']->user['uid'])
@@ -587,7 +587,7 @@ class ShortcutMenu implements backend_toolbarItem {
 				'sc_group'    => $shortcutGroupId
 			);
 
-			if($fieldValues['sc_group'] < 0 && !$GLOBALS['BE_USER']->isAdmin()) {
+			if ($fieldValues['sc_group'] < 0 && !$GLOBALS['BE_USER']->isAdmin()) {
 				$fieldValues['sc_group'] = 0;
 			}
 
@@ -598,7 +598,7 @@ class ShortcutMenu implements backend_toolbarItem {
 			);
 
 			$affectedRows = $GLOBALS['TYPO3_DB']->sql_affected_rows();
-			if($affectedRows == 1) {
+			if ($affectedRows == 1) {
 				$ajaxObj->addContent('shortcut', $shortcutName);
 			} else {
 				$ajaxObj->addContent('shortcut', 'failed');
@@ -617,7 +617,7 @@ class ShortcutMenu implements backend_toolbarItem {
 	protected function getShortcutGroupLabel($groupId) {
 		$label = '';
 
-		if($this->shortcutGroups[$groupId]) {
+		if ($this->shortcutGroups[$groupId]) {
 			$label = $this->shortcutGroups[$groupId];
 		}
 
@@ -633,7 +633,7 @@ class ShortcutMenu implements backend_toolbarItem {
 		$globalGroups = array();
 
 		foreach($this->shortcutGroups as $groupId => $groupLabel) {
-			if($groupId < 0) {
+			if ($groupId < 0) {
 				$globalGroups[$groupId] = $groupLabel;
 			}
 		}
@@ -668,33 +668,33 @@ class ShortcutMenu implements backend_toolbarItem {
 				$table 				= $shortcut['table'];
 				$recordid			= $shortcut['recordid'];
 
-				if($shortcut['type'] == 'edit') {
+				if ($shortcut['type'] == 'edit') {
 						// Creating the list of fields to include in the SQL query:
 					$selectFields = $this->fieldArray;
 					$selectFields[] = 'uid';
 					$selectFields[] = 'pid';
 
-					if($table=='pages') {
-						if(t3lib_extMgm::isLoaded('cms')) {
+					if ($table=='pages') {
+						if (t3lib_extMgm::isLoaded('cms')) {
 							$selectFields[] = 'module';
 							$selectFields[] = 'extendToSubpages';
 						}
 						$selectFields[] = 'doktype';
 					}
 
-					if(is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
+					if (is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
 						$selectFields = array_merge($selectFields, $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']);
 					}
 
-					if($GLOBALS['TCA'][$table]['ctrl']['type']) {
+					if ($GLOBALS['TCA'][$table]['ctrl']['type']) {
 						$selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['type'];
 					}
 
-					if($GLOBALS['TCA'][$table]['ctrl']['typeicon_column']) {
+					if ($GLOBALS['TCA'][$table]['ctrl']['typeicon_column']) {
 						$selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
 					}
 
-					if($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+					if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 						$selectFields[] = 't3ver_state';
 					}
 
@@ -714,7 +714,7 @@ class ShortcutMenu implements backend_toolbarItem {
 					$row    = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
 
 					$icon = t3lib_iconWorks::getIcon($table, $row, $this->backPath);
-				} elseif($shortcut['type'] == 'new') {
+				} elseif ($shortcut['type'] == 'new') {
 					$icon = t3lib_iconWorks::getIcon($table, '', $this->backPath);
 				}
 
@@ -727,13 +727,13 @@ class ShortcutMenu implements backend_toolbarItem {
 				$icon = 'gfx/edit_rtewiz.gif';
 				break;
 			default:
-				if($GLOBALS['LANG']->moduleLabels['tabs_images'][$row['module_name'].'_tab']) {
+				if ($GLOBALS['LANG']->moduleLabels['tabs_images'][$row['module_name'].'_tab']) {
 					$icon = $GLOBALS['LANG']->moduleLabels['tabs_images'][$row['module_name'].'_tab'];
 
 						// change icon of fileadmin references - otherwise it doesn't differ with Web->List
 					$icon = str_replace('mod/file/list/list.gif', 'mod/file/file.gif', $icon);
 
-					if(t3lib_div::isAbsPath($icon)) {
+					if (t3lib_div::isAbsPath($icon)) {
 						$icon = '../'.substr($icon, strlen(PATH_site));
 					}
 				} else {
@@ -755,18 +755,18 @@ class ShortcutMenu implements backend_toolbarItem {
 	protected function getShortcutIconTitle($shortcutLabel, $moduleName, $parentModuleName = '') {
 		$title = '';
 
-		if(substr($moduleName, 0, 5) == 'xMOD_') {
+		if (substr($moduleName, 0, 5) == 'xMOD_') {
 			$title = substr($moduleName, 5);
 		} else {
 			$splitModuleName = explode('_', $moduleName);
 			$title = $GLOBALS['LANG']->moduleLabels['tabs'][$splitModuleName[0].'_tab'];
 
-			if(count($splitModuleName) > 1) {
+			if (count($splitModuleName) > 1) {
 				$title .= '>'.$GLOBALS['LANG']->moduleLabels['tabs'][$moduleName.'_tab'];
 			}
 		}
 
-		if($parentModuleName) {
+		if ($parentModuleName) {
 			$title .= ' ('.$parentModuleName.')';
 		}
 

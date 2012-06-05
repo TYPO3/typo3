@@ -26,7 +26,7 @@
 ***************************************************************/
 
 
-if(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
+if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 	$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 }
 
@@ -76,7 +76,7 @@ class ModuleMenu {
 	 * @return	void
 	 */
 	public function setBackPath($backPath) {
-		if(!is_string($backPath)) {
+		if (!is_string($backPath)) {
 			throw new InvalidArgumentException('parameter $backPath must be of type string', 1193315266);
 		}
 
@@ -91,7 +91,7 @@ class ModuleMenu {
 	protected function getCollapsedStates() {
 
 		$collapsedStates = array();
-		if($GLOBALS['BE_USER']->uc['moduleData']['moduleMenu']) {
+		if ($GLOBALS['BE_USER']->uc['moduleData']['moduleMenu']) {
 			$collapsedStates = $GLOBALS['BE_USER']->uc['moduleData']['moduleMenu'];
 		}
 
@@ -111,14 +111,14 @@ class ModuleMenu {
 		foreach($rawModuleData as $moduleKey => $moduleData) {
 			$key = substr($moduleKey, 8);
 			$num = count($data['root']);
-			if($moduleData['link'] != 'dummy.php' || ($moduleData['link'] == 'dummy.php' && is_array($moduleData['subitems'])) ) {
+			if ($moduleData['link'] != 'dummy.php' || ($moduleData['link'] == 'dummy.php' && is_array($moduleData['subitems'])) ) {
 				$data['root'][$num]['key'] = $key;
 				$data['root'][$num]['menuState'] = $GLOBALS['BE_USER']->uc['moduleData']['menuState'][$moduleKey];
 				$data['root'][$num]['label'] = $moduleData['title'];
 				$data['root'][$num]['subitems'] = is_array($moduleData['subitems']) ? count($moduleData['subitems']) : 0;
 
 
-				if($moduleData['link'] && $this->linkModules) {
+				if ($moduleData['link'] && $this->linkModules) {
 					$data['root'][$num]['link'] = 'top.goToModule(\'' . $moduleData['name'] . '\')';
 				}
 
@@ -185,13 +185,13 @@ class ModuleMenu {
 		$modules = array();
 
 			// Remove the 'doc' module?
-		if($GLOBALS['BE_USER']->getTSConfigVal('options.disableDocModuleInAB')) {
+		if ($GLOBALS['BE_USER']->getTSConfigVal('options.disableDocModuleInAB')) {
 			unset($this->loadedModules['doc']);
 		}
 
 		foreach($this->loadedModules as $moduleName => $moduleData) {
 			$moduleLink = '';
-			if(!is_array($moduleData['sub'])) {
+			if (!is_array($moduleData['sub'])) {
 				$moduleLink = $moduleData['script'];
 			}
 			$moduleLink = t3lib_div::resolveBackPath($moduleLink);
@@ -245,7 +245,7 @@ class ModuleMenu {
 						'navigationComponentId' => $submoduleData['navigationComponentId'],
 					);
 
-					if($moduleData['navFrameScript']) {
+					if ($moduleData['navFrameScript']) {
 						$modules[$moduleKey]['subitems'][$submoduleKey]['parentNavigationFrameScript'] = $moduleData['navFrameScript'];
 					}
 				}
@@ -274,7 +274,7 @@ class ModuleMenu {
 		$iconSizes        = @getimagesize($iconFileAbsolute);
 		$iconTitle        = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
 
-		if(!empty($iconFileRelative)) {
+		if (!empty($iconFileRelative)) {
 			$icon['filename'] = $iconFileRelative;
 			$icon['size']     = $iconSizes[3];
 			$icon['title']    = htmlspecialchars($iconTitle);
@@ -296,7 +296,7 @@ class ModuleMenu {
 	 */
 	protected function getModuleIconAbsolute($iconFilename) {
 
-		if(!t3lib_div::isAbsPath($iconFilename)) {
+		if (!t3lib_div::isAbsPath($iconFilename)) {
 			$iconFilename = $this->backPath . $iconFilename;
 		}
 
@@ -326,7 +326,7 @@ class ModuleMenu {
 	 * @return	string		link URl appended with ? if there wasn't one
 	 */
 	protected function appendQuestionmarkToLink($link) {
-		if(!strstr($link, '?')) {
+		if (!strstr($link, '?')) {
 			$link .= '?';
 		}
 
@@ -355,7 +355,7 @@ class ModuleMenu {
 	 * @param	boolean		status for linking modules with a-tags, set to FALSE to turn lining off
 	 */
 	public function setLinkModules($linkModules) {
-		if(!is_bool($linkModules)) {
+		if (!is_bool($linkModules)) {
 			throw new InvalidArgumentException('parameter $linkModules must be of type bool', 1193326558);
 		}
 
