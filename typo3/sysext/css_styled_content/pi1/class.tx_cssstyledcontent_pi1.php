@@ -191,7 +191,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 					}
 
 					if (!strcmp(trim($cells[$a]),''))	$cells[$a]='&nbsp;';
-					$cellAttribs = ($noStyles?'':($a>0 && ($cols-1)==$a) ? ' class="td-last td-'.$a.'"' : ' class="td-'.$a.'"');
+					$cellAttribs = ($noStyles ? '' : (($a > 0 && ($cols - 1) == $a) ? ' class="td-last td-' . $a . '"' : ' class="td-' . $a . '"'));
 					if (($headerPos == 'top' && !$k) || ($headerPos == 'left' && !$a))	{
 						$scope = ' scope="'.$headerScope.'"';
 						$scope .= ' id="'.$headerIdPrefix.(($headerScope=='col')?$a:$k).'"';
