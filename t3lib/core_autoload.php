@@ -153,6 +153,7 @@ $t3libClasses = array(
 	't3lib_file_service_publishing_publisher' => PATH_t3lib . 'interfaces/file/Service/Publishing/Publisher.php',
 	't3lib_file_service_userfilemountservice' => PATH_t3lib . 'file/Service/UserfilemountService.php',
 	't3lib_file_storage' => PATH_t3lib . 'file/Storage.php',
+	't3lib_file_utility_compatibility' => PATH_t3lib . 'file/Utility/Compatibility.php',
 	't3lib_file_utility_filenamefilters' => PATH_t3lib . 'file/Utility/FilenameFilters.php',
 	't3lib_file_utility_fileextensionfilter' => PATH_t3lib . 'file/Utility/FileExtensionFilter.php',
 	't3lib_flashmessage' => PATH_t3lib . 'class.t3lib_flashmessage.php',
