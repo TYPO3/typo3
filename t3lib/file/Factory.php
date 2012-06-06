@@ -132,7 +132,7 @@ class t3lib_file_Factory implements t3lib_Singleton {
 				/**  @var $storage t3lib_file_Storage */
 				$storageObject = $storageRepository->findByUid($uid);
 			}
-			if(!($storageObject instanceof t3lib_file_Storage)) {
+			if (!($storageObject instanceof t3lib_file_Storage)) {
 				$storageObject = $this->createStorageObject($recordData, $storageConfiguration);
 			}
 			$this->storageInstances[$uid] = $storageObject;

@@ -963,7 +963,7 @@ function debug($variable='', $name='*variable*', $line='*line*', $file='*file*',
 		// If you wish to use the debug()-function, and it does not output something, please edit the IP mask in TYPO3_CONF_VARS
 	if (!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask']))	return;
 
-	if(is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'],'debug'))) {
+	if (is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'],'debug'))) {
 		$GLOBALS['error']->debug($variable, $name, $line, $file, $recursiveDepth, $debugLevel);
 	} else {
 		$title = ($name === '*variable*') ? '' : $name;
@@ -972,12 +972,12 @@ function debug($variable='', $name='*variable*', $line='*line*', $file='*file*',
 	}
 }
 function debugBegin() {
-	if(is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'],'debugBegin'))) {
+	if (is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'],'debugBegin'))) {
 		$GLOBALS['error']->debugBegin();
 	}
 }
 function debugEnd() {
-	if(is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'],'debugEnd'))) {
+	if (is_object($GLOBALS['error']) && @is_callable(array($GLOBALS['error'],'debugEnd'))) {
 		$GLOBALS['error']->debugEnd();
 	}
 }
@@ -1019,7 +1019,7 @@ if (($displayErrors = intval($TYPO3_CONF_VARS['SYS']['displayErrors'])) != '-1')
 
 
 	// Set PHP memory limit depending on value of $TYPO3_CONF_VARS["SYS"]["setMemoryLimit"]
-if(intval($TYPO3_CONF_VARS['SYS']['setMemoryLimit']) > 16) {
+if (intval($TYPO3_CONF_VARS['SYS']['setMemoryLimit']) > 16) {
 	@ini_set('memory_limit', intval($TYPO3_CONF_VARS['SYS']['setMemoryLimit']) . 'm');
 }
 
@@ -1055,7 +1055,7 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
 
 	// Write deprecation log if the TYPO3 instance uses deprecated XCLASS
 	// registrations via $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
-if(count($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']) > 0) {
+if (count($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']) > 0) {
 	t3lib_div::deprecationLog('This installation runs with extensions that use XCLASSing by setting the XCLASS path in ext_localconf.php. This is deprecated and will be removed in TYPO3 6.2 and later. It is preferred to define XCLASSes in ext_autoload.php instead. See http://wiki.typo3.org/Autoload for more information.');
 }
 
