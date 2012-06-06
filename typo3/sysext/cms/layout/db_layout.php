@@ -487,11 +487,11 @@ class SC_db_layout {
 			if (!strcmp($this->colPosList, '')) {
 				$backendLayout = t3lib_div::callUserFunction( 'EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getSelectedBackendLayout', $this->id, $this );
 
-				if(count($backendLayout['__colPosList'])) {
+				if (count($backendLayout['__colPosList'])) {
 					$this->colPosList = implode(',', $backendLayout['__colPosList']);
 				}
 			}
-			if( !strcmp($this->colPosList, '') ){
+			if (!strcmp($this->colPosList, '')) {
 				$this->colPosList = '1,0,2,3';
 			}
 			$this->colPosList = implode(',', array_unique(t3lib_div::intExplode(',', $this->colPosList)));		// Removing duplicates, if any
@@ -1239,13 +1239,13 @@ class SC_db_layout {
 					'</a>';
 
 					// Delete record
-				if($this->deleteButton) {
+				if ($this->deleteButton) {
 					$buttons['deletedok'] = '<a href="#" onclick="' . htmlspecialchars('return deleteRecord(\'' . $this->eRParts[0] . '\',\'' . $this->eRParts[1] . '\',\'' . t3lib_div::getIndpEnv('SCRIPT_NAME') . '?id=' . $this->id . '\');') . '" title="' . $GLOBALS['LANG']->getLL('deleteItem', TRUE) . '">' .
 							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
 						'</a>';
 				}
 
-				if($this->undoButton) {
+				if ($this->undoButton) {
 						// Undo button
 					$buttons['undo'] = '<a href="#"
 						onclick="' . htmlspecialchars('window.location.href=\'' . $GLOBALS['BACK_PATH'] . 'show_rechis.php?element=' . rawurlencode($this->eRParts[0] . ':' . $this->eRParts[1]) . '&revert=ALL_FIELDS&sumUp=-1&returnUrl=' . rawurlencode($this->R_URI) . '\'; return false;') . '"

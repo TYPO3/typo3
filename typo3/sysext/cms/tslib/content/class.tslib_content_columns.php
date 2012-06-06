@@ -110,7 +110,7 @@ class tslib_content_Columns extends tslib_content_Abstract {
 			}
 			$content = '<tr>' . $content . '</tr>';
 			$content = '<table' . $tableParams . '>' . $content . '</table>';
-			if($conf['after'] || isset($conf['after.'])) {
+			if ($conf['after'] || isset($conf['after.'])) {
 				$content .= $this->cObj->cObjGetSingle($conf['after'], $conf['after.'], 'after');
 			}
 			if (isset($conf['stdWrap.'])) {

@@ -730,7 +730,7 @@ class tslib_pibase {
 	</div>
 	';
 
-		if(!$GLOBALS['TSFE']->config['config']['disablePrefixComment']) {
+		if (!$GLOBALS['TSFE']->config['config']['disablePrefixComment']) {
 			$content = '
 
 
