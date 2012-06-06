@@ -770,7 +770,7 @@ class t3lib_TCEforms {
 					$PA['itemFormElValue'] = $this->defaultLanguageData[$table . ':' . $row['uid']][$field];
 				}
 
-				if(strpos($GLOBALS['TCA'][$table]['ctrl']['type'], ':') === FALSE) {
+				if (strpos($GLOBALS['TCA'][$table]['ctrl']['type'], ':') === FALSE) {
 					$typeField = $GLOBALS['TCA'][$table]['ctrl']['type'];
 				} else {
 					$typeField = substr($GLOBALS['TCA'][$table]['ctrl']['type'], 0, strpos($GLOBALS['TCA'][$table]['ctrl']['type'],':'));
@@ -3253,7 +3253,7 @@ class t3lib_TCEforms {
 					t3lib_div::loadTCA($foreignTable);
 					$this->registerDefaultLanguageData($foreignTable, $foreignRow);
 
-					if($foreignRow[$foreignTypeField]) {
+					if ($foreignRow[$foreignTypeField]) {
 						$foreignTypeFieldConfig = $GLOBALS['TCA'][$table]['columns'][$field];
 						$typeNum = $this->getLanguageOverlayRawValue($foreignTable, $foreignRow, $foreignTypeField, $foreignTypeFieldConfig);
 					}
@@ -3822,13 +3822,13 @@ class t3lib_TCEforms {
 					}
 				}
 
-				if(is_array($config['appearance']) && isset($config['appearance']['elementBrowserType'])) {
+				if (is_array($config['appearance']) && isset($config['appearance']['elementBrowserType'])) {
 					$elementBrowserType = $config['appearance']['elementBrowserType'];
 				} else {
 					$elementBrowserType = $mode;
 				}
 
-				if(is_array($config['appearance']) && isset($config['appearance']['elementBrowserAllowed'])) {
+				if (is_array($config['appearance']) && isset($config['appearance']['elementBrowserAllowed'])) {
 					$elementBrowserAllowed = $config['appearance']['elementBrowserAllowed'];
 				} else {
 					$elementBrowserAllowed = $allowed;
@@ -4379,7 +4379,7 @@ class t3lib_TCEforms {
 			}
 			$padLeft = $selIconInfo[0] + 4;
 
-			if($padLeft >= 18 && $padLeft <= 24) {
+			if ($padLeft >= 18 && $padLeft <= 24) {
 					// In order to get the same padding for all option tags even if icon sizes differ a little,
 					// set it to 22, if it was between 18 and 24 pixels.
 				$padLeft = 22;

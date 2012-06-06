@@ -1468,7 +1468,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$this->doCompress();
 		}
 			// PostTransform for possible manuipulation of concatenated and compressed files
-		if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postTransform'])) {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-postTransform'])) {
 			$params = array(
 				'jsLibs' => &$this->jsLibs,
 				'jsFooterLibs'   => &$this->jsFooterLibs,
