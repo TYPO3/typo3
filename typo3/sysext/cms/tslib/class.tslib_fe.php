@@ -1152,10 +1152,10 @@ class tslib_fe {
 	 * @access private
 	 */
 	function checkPageGroupAccess($row, $groupList=NULL) {
-		if(is_null($groupList)) {
+		if (is_null($groupList)) {
 			$groupList = $this->gr_list;
 		}
-		if(!is_array($groupList)) {
+		if (!is_array($groupList)) {
 			$groupList = explode(',', $groupList);
 		}
 		$pageGroupList = explode(',', $row['fe_group'] ? $row['fe_group'] : 0);
@@ -1348,7 +1348,7 @@ class tslib_fe {
 	 * @return	boolean		TRUE/FALSE whether the pageUnavailable_handler should be used.
 	 */
 	function checkPageUnavailableHandler() {
-		if($this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling'] &&
+		if ($this->TYPO3_CONF_VARS['FE']['pageUnavailable_handling'] &&
 			!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $this->TYPO3_CONF_VARS['SYS']['devIPmask'])) {
 			$checkPageUnavailableHandler = TRUE;
 		} else {
@@ -3602,7 +3602,7 @@ if (version == "n3") {
 	 * @return string stripped address
 	 */
 	protected function stripIPv6($strIP) {
-		if(isset($this->config['config']['stat_IP_anonymize_mask_ipv6'])) {
+		if (isset($this->config['config']['stat_IP_anonymize_mask_ipv6'])) {
 			$netPrefix = intval($this->config['config']['stat_IP_anonymize_mask_ipv6']);
 		} else {
 			$netPrefix = 64;
@@ -3633,7 +3633,7 @@ if (version == "n3") {
 	 * @return string  stripped IP address
 	 */
 	protected function stripIPv4($strIP) {
-		if(isset($this->config['config']['stat_IP_anonymize_mask_ipv4'])) {
+		if (isset($this->config['config']['stat_IP_anonymize_mask_ipv4'])) {
 			$netPrefix = intval($this->config['config']['stat_IP_anonymize_mask_ipv4']);
 		} else {
 			$netPrefix = 24;
@@ -3656,7 +3656,7 @@ if (version == "n3") {
 	 * @return the host name to log
 	 */
 	public function getLogHostName() {
-		if($this->config['config']['stat_IP_anonymize']) {
+		if ($this->config['config']['stat_IP_anonymize']) {
 				// ignore hostname if IP anonymized
 			$hostName = '<anonymized>';
 		} else {
@@ -4258,7 +4258,7 @@ if (version == "n3") {
 	function getStorageSiterootPids() {
 		$res=array();
 
-		if(!is_array($this->rootLine)) {
+		if (!is_array($this->rootLine)) {
 			return array();
 		}
 

@@ -1177,7 +1177,7 @@ class tslib_cObj {
 
 
 			$altParam = $this->getAltParam($conf);
-			if($conf['params'] && !isset($conf['params.'])) {
+			if ($conf['params'] && !isset($conf['params.'])) {
 				$params = ' ' . $conf['params'];
 			} else {
 				$params = isset($conf['params.'])
@@ -1202,7 +1202,7 @@ class tslib_cObj {
 			$wrap = isset($conf['wrap.'])
 				? $this->stdWrap($conf['wrap'], $conf['wrap.'])
 				: $conf['wrap'];
-			if($wrap) {
+			if ($wrap) {
 				$theValue = $this->wrap($theValue, $conf['wrap']);
 			}
 			return $theValue;
@@ -1242,7 +1242,7 @@ class tslib_cObj {
 			: $conf['enable'];
 		if ($enable) {
 			$content = $this->typolink($string, $conf['typolink.']);
-			if(isset($conf['file.'])) {
+			if (isset($conf['file.'])) {
 				$imageFile = $this->stdWrap($imageFile, $conf['file.']);
 			}
 
@@ -1259,7 +1259,7 @@ class tslib_cObj {
 				}
 
 				foreach ($parameterNames as $parameterName) {
-					if(isset($conf[$parameterName.'.'])) {
+					if (isset($conf[$parameterName.'.'])) {
 						$conf[$parameterName] = $this->stdWrap($conf[$parameterName], $conf[$parameterName.'.']);
 					}
 					if (isset($conf[$parameterName]) && $conf[$parameterName]) {
@@ -1351,7 +1351,7 @@ class tslib_cObj {
 					$string = $this->typoLink($string, $conf['linkParams.']);
 				}
 
-				if(isset($conf['stdWrap.'])) {
+				if (isset($conf['stdWrap.'])) {
 					$string = $this->stdWrap($string, $conf['stdWrap.']);
 				}
 
@@ -1954,7 +1954,7 @@ class tslib_cObj {
 							$singleConf
 						);
 					// for booleans we have to mark the function as executed in any case, even if it has been 0, '' or false to avoid a second call based on the functionProperties, which would always be true
-					} elseif($functionType == 'boolean' && !$conf[$functionName]) {
+					} elseif ($functionType == 'boolean' && !$conf[$functionName]) {
 						$isExecuted[$functionName] = TRUE;
 						$isExecuted[$functionProperties] = TRUE;
 					}
@@ -3171,7 +3171,7 @@ class tslib_cObj {
 	 */
 	public function stdWrap_editIcons($content = '', $conf = array()) {
 		if ($GLOBALS['TSFE']->beUserLogin && $conf['editIcons']) {
-			if(!is_array($conf['editIcons.'])) {
+			if (!is_array($conf['editIcons.'])) {
 				$conf['editIcons.'] = array();
 			}
 			$content = $this->editIcons($content, $conf['editIcons'], $conf['editIcons.']);
@@ -3913,21 +3913,21 @@ class tslib_cObj {
 
 			// Fonttag
 		$theFace = $conf['face.'][$face];
-		if(!$theFace) {
+		if (!$theFace) {
 			$theFace = isset($conf['face.']['default.'])
 				? $this->stdWrap($conf['face.']['default'], $conf['face.']['default.'])
 				: $conf['face.']['default'];
 		}
 
 		$theSize = $conf['size.'][$size];
-		if(!$theSize) {
+		if (!$theSize) {
 			$theSize = isset($conf['size.']['default.'])
 				? $this->stdWrap($conf['size.']['default'], $conf['size.']['default.'])
 				: $conf['size.']['default'];
 		}
 
 		$theColor = $conf['color.'][$color];
-		if(!$theColor) {
+		if (!$theColor) {
 			$theColor = isset($conf['color.']['default.'])
 				? $this->stdWrap($conf['color.']['default'], $conf['color.']['default.'])
 				: $conf['color.']['default.'];
@@ -4183,7 +4183,7 @@ class tslib_cObj {
 			if ($conf['removePrependedNumbers']) {
 				$theValue = preg_replace('/_[0-9][0-9](\.[[:alnum:]]*)$/', '\1', $theValue);
 			}
-			if(isset($conf['labelStdWrap.'])) {
+			if (isset($conf['labelStdWrap.'])) {
 				$theValue = $this->stdWrap($theValue, $conf['labelStdWrap.']);
 			}
 
@@ -4215,7 +4215,7 @@ class tslib_cObj {
 					// output
 				$output = $icon . $file . $size;
 			}
-			if(isset($conf['stdWrap.'])) {
+			if (isset($conf['stdWrap.'])) {
 				$output = $this->stdWrap($output, $conf['stdWrap.']);
 			}
 
@@ -5453,7 +5453,7 @@ class tslib_cObj {
 					return $fileObject->getUid();
 					break;
 				case 'originalUid':
-					if($fileObject instanceof t3lib_file_FileReference) {
+					if ($fileObject instanceof t3lib_file_FileReference) {
 						return $fileObject->getOriginalFile()->getUid();
 					} else {
 						return NULL;
@@ -5973,7 +5973,7 @@ class tslib_cObj {
 							$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 								// Set targetDomain to first found domain record if the target page cannot be reached within the current domain
-							if(
+							if (
 								count($foundDomains) > 0 &&
 								(
 									(

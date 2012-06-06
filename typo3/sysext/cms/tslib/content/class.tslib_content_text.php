@@ -46,7 +46,7 @@ class tslib_content_Text extends tslib_content_Abstract {
 			$content = $conf['value'];
 			unset($conf['value']);
 		}
-		if(count($conf)) {
+		if (count($conf)) {
 			$content = $this->cObj->stdWrap($content, $conf);
 		}
 		return $content;

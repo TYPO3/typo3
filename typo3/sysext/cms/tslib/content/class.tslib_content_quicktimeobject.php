@@ -89,14 +89,14 @@ class tslib_content_QuicktimeObject extends tslib_content_Abstract {
 		$width = isset($conf['width.'])
 			? $this->cObj->stdWrap($conf['width'], $conf['width.'])
 			: $conf['width'];
-		if(!$width) {
+		if (!$width) {
 			$width = $conf[$type . '.']['defaultWidth'];
 		}
 
 		$height = isset($conf['height.'])
 			? $this->cObj->stdWrap($conf['height'], $conf['height.'])
 			: $conf['height'];
-		if(!$height) {
+		if (!$height) {
 			$height = $conf[$type . '.']['defaultHeight'];
 		}
 

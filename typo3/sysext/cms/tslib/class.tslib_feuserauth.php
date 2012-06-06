@@ -196,19 +196,19 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 */
 	function getLoginFormData() {
 		$loginData = parent::getLoginFormData();
-		if($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 0 || $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 1) {
 			if ($this->getMethodEnabled) {
 				$isPermanent = t3lib_div::_GP($this->formfield_permanent);
 			} else {
 				$isPermanent = t3lib_div::_POST($this->formfield_permanent);
 			}
-			if(strlen($isPermanent) != 1) {
+			if (strlen($isPermanent) != 1) {
 				$isPermanent = $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'];
-			} elseif(!$isPermanent) {
+			} elseif (!$isPermanent) {
 				$this->forceSetCookie = TRUE; // To make sure the user gets a session cookie and doesn't keep a possibly existing time based cookie, we need to force seeting the session cookie here
 			}
 			$isPermanent = $isPermanent?1:0;
-		} elseif($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 2) {
+		} elseif ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 2) {
 			$isPermanent = 1;
 		} else {
 			$isPermanent = 0;

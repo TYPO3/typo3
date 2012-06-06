@@ -81,7 +81,7 @@ class tslib_content_FluidTemplate extends tslib_content_Abstract {
 		$layoutRootPath = isset($conf['layoutRootPath.'])
 			? $this->cObj->stdWrap($conf['layoutRootPath'], $conf['layoutRootPath.'])
 			: $conf['layoutRootPath'];
-		if($layoutRootPath) {
+		if ($layoutRootPath) {
 			$layoutRootPath = t3lib_div::getFileAbsFileName($layoutRootPath);
 			$view->setLayoutRootPath($layoutRootPath);
 		}
@@ -90,7 +90,7 @@ class tslib_content_FluidTemplate extends tslib_content_Abstract {
 		$partialRootPath = isset($conf['partialRootPath.'])
 			? $this->cObj->stdWrap($conf['partialRootPath'], $conf['partialRootPath.'])
 			: $conf['partialRootPath'];
-		if($partialRootPath) {
+		if ($partialRootPath) {
 			$partialRootPath = t3lib_div::getFileAbsFileName($partialRootPath);
 			$view->setPartialRootPath($partialRootPath);
 		}
@@ -107,28 +107,28 @@ class tslib_content_FluidTemplate extends tslib_content_Abstract {
 		$requestPluginName = isset($conf['extbase.']['pluginName.'])
 			? $this->cObj->stdWrap($conf['extbase.']['pluginName'], $conf['extbase.']['pluginName.'])
 			: $conf['extbase.']['pluginName'];
-		if($requestPluginName) {
+		if ($requestPluginName) {
 			$view->getRequest()->setPluginName($requestPluginName);
 		}
 
 		$requestControllerExtensionName = isset($conf['extbase.']['controllerExtensionName.'])
 			? $this->cObj->stdWrap($conf['extbase.']['controllerExtensionName'], $conf['extbase.']['controllerExtensionName.'])
 			: $conf['extbase.']['controllerExtensionName'];
-		if($requestControllerExtensionName) {
+		if ($requestControllerExtensionName) {
 			$view->getRequest()->setControllerExtensionName($requestControllerExtensionName);
 		}
 
 		$requestControllerName = isset($conf['extbase.']['controllerName.'])
 			? $this->cObj->stdWrap($conf['extbase.']['controllerName'], $conf['extbase.']['controllerName.'])
 			: $conf['extbase.']['controllerName'];
-		if($requestControllerName) {
+		if ($requestControllerName) {
 			$view->getRequest()->setControllerName($requestControllerName);
 		}
 
 		$requestControllerActionName = isset($conf['extbase.']['controllerActionName.'])
 			? $this->cObj->stdWrap($conf['extbase.']['controllerActionName'], $conf['extbase.']['controllerActionName.'])
 			: $conf['extbase.']['controllerActionName'];
-		if($requestControllerActionName) {
+		if ($requestControllerActionName) {
 			$view->getRequest()->setControllerActionName($requestControllerActionName);
 		}
 
@@ -143,7 +143,7 @@ class tslib_content_FluidTemplate extends tslib_content_Abstract {
 			if (is_array($cObjType)) {
 				continue;
 			}
-			if(!in_array($variableName, $reservedVariables)) {
+			if (!in_array($variableName, $reservedVariables)) {
 				$view->assign($variableName, $this->cObj->cObjGetSingle($cObjType, $variables[$variableName . '.']));
 			} else {
 				throw new InvalidArgumentException('Cannot use reserved name "' . $variableName . '" as variable name in FLUIDTEMPLATE.', 1288095720);
@@ -157,7 +157,7 @@ class tslib_content_FluidTemplate extends tslib_content_Abstract {
 		 */
 		$theValue = $view->render();
 
-		if(isset($conf['stdWrap.'])) {
+		if (isset($conf['stdWrap.'])) {
 			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
 		}
 

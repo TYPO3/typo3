@@ -135,18 +135,18 @@ class tslib_content_ImageText extends tslib_content_Abstract {
 				? 1
 				: 0;
 
-			if($border) {
+			if ($border) {
 				$borderColor = isset($conf['borderCol.'])
 					? $this->cObj->stdWrap($conf['borderCol'], $conf['borderCol.'])
 					: $conf['borderCol'];
-				if(!$borderColor) {
+				if (!$borderColor) {
 					$borderColor = 'black';
 				}
 
 				$borderThickness = isset($conf['borderThick.'])
 					? intval($this->cObj->stdWrap($conf['borderThick'], $conf['borderThick.']))
 					: intval($conf['borderThick']);
-				if(!$borderThickness) {
+				if (!$borderThickness) {
 					$borderThickness = 'black';
 				}
 			}

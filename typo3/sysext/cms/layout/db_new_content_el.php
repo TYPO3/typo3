@@ -232,11 +232,11 @@ class SC_db_new_content_el {
 
 
 				// Hook for manipulating wizardItems, wrapper, onClickEvent etc.
-			if(is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'])) {
+			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'])) {
 				foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'] as $classData) {
 					$hookObject = t3lib_div::getUserObj($classData);
 
-					if(!($hookObject instanceof cms_newContentElementWizardsHook)) {
+					if (!($hookObject instanceof cms_newContentElementWizardsHook)) {
 						throw new UnexpectedValueException('$hookObject must implement interface cms_newContentElementWizardItemsHook', 1227834741);
 					}
 

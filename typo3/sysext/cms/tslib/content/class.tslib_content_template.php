@@ -49,7 +49,7 @@ class tslib_content_Template extends tslib_content_Abstract {
 		$markerWrap = isset($conf['markerWrap.'])
 			? $this->cObj->stdWrap($conf['markerWrap'], $conf['markerWrap.'])
 			: $conf['markerWrap'];
-		if(!$markerWrap) {
+		if (!$markerWrap) {
 			$markerWrap = '### | ###';
 		}
 
