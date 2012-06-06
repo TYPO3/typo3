@@ -2156,7 +2156,7 @@ $TCA['tt_content'] = array(
 	// keep old code (pre-FAL) for installations that haven't upgraded yet. please remove this code in TYPO3 7.0
 	// @deprecated since TYPO3 6.0, please remove in TYPO3 7.0
 	// existing installation - and files are merged, nothing to do
-if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'tt_content:image')) && !t3lib_div::compat_version('6.0')) {
+if (!t3lib_file_Utility_Compatibility::isFieldMigrated('tt_content', 'image') && !t3lib_div::compat_version('6.0')) {
 	t3lib_div::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[tt_content][columns][image] yet. Please do so before TYPO3 v7.');
 	// existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
 	$TCA['tt_content']['columns']['image']['config'] = array(
@@ -2173,7 +2173,7 @@ if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Upd
 	);
 }
 
-if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'tt_content:media')) && !t3lib_div::compat_version('6.0')) {
+if (!t3lib_file_Utility_Compatibility::isFieldMigrated('tt_content', 'media') && !t3lib_div::compat_version('6.0')) {
 	t3lib_div::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[tt_content][columns][media] yet. Please do so before TYPO3 v7.');
 	// existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
 	$TCA['tt_content']['columns']['media']['config'] = array(
