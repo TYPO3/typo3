@@ -74,7 +74,7 @@ class t3lib_tree_pagetree_Indicator {
 		$indicators = array();
 		foreach ($this->indicatorProviders as $indicatorProvider) {
 			$indicator = $indicatorProvider->getIndicator();
-			if($indicator) {
+			if ($indicator) {
 				$indicators[] = $indicator;
 			}
 		}

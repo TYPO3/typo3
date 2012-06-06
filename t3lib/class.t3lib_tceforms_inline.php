@@ -400,7 +400,7 @@ class t3lib_TCEforms_inline {
 			} else {
 					// Set additional field for processing for saving
 				$fields .= '<input type="hidden" name="' . $this->prependCmdFieldNames . $appendFormFieldNames . '[delete]" value="1" disabled="disabled" />';
-				if(!$isExpanded) {
+				if (!$isExpanded) {
 					$checked = ($rec['hidden'] == 1) ? ' checked="checked"' : '';
 					$fields .= '<input type="checkbox" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]_0" value="1"'.$checked.' />';
 					$fields .= '<input type="input" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]" value="'.$rec['hidden'].'" />';
@@ -914,7 +914,7 @@ class t3lib_TCEforms_inline {
 			$createNewRelationText = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.createNewRelation', 1);
 		}
 
-		if(is_array($config['appearance'])) {
+		if (is_array($config['appearance'])) {
 			if (isset($config['appearance']['elementBrowserType'])) {
 				$mode = $config['appearance']['elementBrowserType'];
 			}

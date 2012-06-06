@@ -117,7 +117,7 @@ class SC_t3lib_thumbs {
 				$mTime = filemtime(PATH_site . $relativeFilePath);
 			}
 
-			if(strstr($relativeFilePath, '../') !== FALSE) {
+			if (strstr($relativeFilePath, '../') !== FALSE) {
 					// Maybe this could be relaxed to not throw an error as long as the path is still within PATH_site
 				$this->errorGif('File path', 'must not contain', '"../"');
 			}
@@ -186,7 +186,7 @@ class SC_t3lib_thumbs {
 			if ($this->image->getExtension() == 'ttf') {
 					// Make font preview... (will not return)
 				$this->fontGif($this->image);
-			} elseif(($this->image->getType() != t3lib_file_File::FILETYPE_IMAGE) && !t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $this->image->getExtension())) {
+			} elseif (($this->image->getType() != t3lib_file_File::FILETYPE_IMAGE) && !t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $this->image->getExtension())) {
 				$this->errorGif('Not imagefile!', 'No ext!', $this->image->getName());
 			}
 
