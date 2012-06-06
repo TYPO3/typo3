@@ -64,7 +64,7 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 		$installUrl = isset($conf['installUrl.'])
 			? $this->cObj->stdWrap($conf['installUrl'], $conf['installUrl.'])
 			: $conf['installUrl'];
-		if(!$installUrl) {
+		if (!$installUrl) {
 			$installUrl = $prefix . TYPO3_mainDir . 'contrib/flashmedia/swfobject/expressInstall.swf';
 		}
 
@@ -146,14 +146,14 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 		$width = isset($conf['width.'])
 			? $this->cObj->stdWrap($conf['width'], $conf['width.'])
 			: $conf['width'];
-		if(!$width) {
+		if (!$width) {
 			$width = $conf[$type . '.']['defaultWidth'];
 		}
 
 		$height = isset($conf['height.'])
 			? $this->cObj->stdWrap($conf['height'], $conf['height.'])
 			: $conf['height'];
-		if(!$height) {
+		if (!$height) {
 			$height = $conf[$type . '.']['defaultHeight'];
 		}
 

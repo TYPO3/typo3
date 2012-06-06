@@ -492,7 +492,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 								? $this->cObj->stdWrap($conf['radioWrap.']['accessibilityWrap'], $conf['radioWrap.']['accessibilityWrap.'])
 								: $conf['radioWrap.']['accessibilityWrap.'];
 
-							if($accessibilityWrap) {
+							if ($accessibilityWrap) {
 								$search = array(
 									'###RADIO_FIELD_ID###', '###RADIO_GROUP_LABEL###'
 								);
@@ -629,7 +629,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 					}
 
 						// Getting template code:
-					if(isset($conf['fieldWrap.'])) {
+					if (isset($conf['fieldWrap.'])) {
 						$fieldCode = $this->cObj->stdWrap($fieldCode, $conf['fieldWrap.']);
 					}
 					$labelCode = isset($conf['labelWrap.'])
@@ -744,7 +744,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 		}
 
 			// Formtype (where to submit to!):
-		if($propertyOverride['type']) {
+		if ($propertyOverride['type']) {
 			$formtype = $propertyOverride['type'];
 		} else {
 			$formtype = isset($conf['type.'])

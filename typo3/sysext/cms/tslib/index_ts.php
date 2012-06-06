@@ -116,7 +116,7 @@ $TSFE = t3lib_div::makeInstance('tslib_fe',
 );
 /** @var $TSFE tslib_fe */
 
-if($TYPO3_CONF_VARS['FE']['pageUnavailable_force'] &&
+if ($TYPO3_CONF_VARS['FE']['pageUnavailable_force'] &&
 	!t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $TYPO3_CONF_VARS['SYS']['devIPmask'])) {
 	$TSFE->pageUnavailableAndExit('This page is temporarily unavailable.');
 }
@@ -377,7 +377,7 @@ if ($sendTSFEContent) {
 // *************
 // Debugging Output
 // *************
-if(isset($error) && is_object($error) && @is_callable(array($error, 'debugOutput'))) {
+if (isset($error) && is_object($error) && @is_callable(array($error, 'debugOutput'))) {
 	$error->debugOutput();
 }
 if (TYPO3_DLOG) {

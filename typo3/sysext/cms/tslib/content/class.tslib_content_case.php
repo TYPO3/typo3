@@ -43,7 +43,7 @@ class tslib_content_Case extends tslib_content_Abstract {
 	public function render($conf = array()) {
 		if ($this->cObj->checkIf($conf['if.'])) {
 			$setCurrent = isset($conf['setCurrent.']) ? $this->cObj->stdWrap($conf['setCurrent'], $conf['setCurrent.']) : $conf['setCurrent'];
-			if($setCurrent) {
+			if ($setCurrent) {
 				$this->cObj->data[$this->cObj->currentValKey] = $setCurrent;
 			}
 			$key = isset($conf['key.']) ? $this->cObj->stdWrap($conf['key'], $conf['key.']) : $conf['key'];

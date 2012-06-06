@@ -160,10 +160,10 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 					: explode('|', trim($this->setup['transparentColor']));
 			}
 
-			if(isset($this->setup['transparentBackground.'])) {
+			if (isset($this->setup['transparentBackground.'])) {
 				$this->setup['transparentBackground'] = $this->cObj->stdWrap($this->setup['transparentBackground'], $this->setup['transparentBackground.']);
 			}
-			if(isset($this->setup['reduceColors.'])) {
+			if (isset($this->setup['reduceColors.'])) {
 				$this->setup['reduceColors'] = $this->cObj->stdWrap($this->setup['reduceColors'], $this->setup['reduceColors.']);
 			}
 
@@ -236,12 +236,12 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				// Calculate offsets on elements
 			$this->setup['XY'] = $this->calcOffset($this->setup['XY']);
 
-			if(isset($this->setup['offset.'])) {
+			if (isset($this->setup['offset.'])) {
 				$this->setup['offset'] = $this->cObj->stdWrap($this->setup['offset'], $this->setup['offset.']);
 			}
 			$this->setup['offset'] = $this->calcOffset($this->setup['offset']);
 
-			if(isset($this->setup['workArea.'])) {
+			if (isset($this->setup['workArea.'])) {
 				$this->setup['workArea'] = $this->cObj->stdWrap($this->setup['workArea'], $this->setup['workArea.']);
 			}
 			$this->setup['workArea'] = $this->calcOffset($this->setup['workArea']);
@@ -253,7 +253,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 					switch($theValue) {
 						case 'TEXT':
 						case 'IMAGE':
-							if(isset($this->setup[$theKey.'.']['offset.'])) {
+							if (isset($this->setup[$theKey.'.']['offset.'])) {
 								$this->setup[$theKey.'.']['offset'] = $this->cObj->stdWrap($this->setup[$theKey.'.']['offset'], $this->setup[$theKey.'.']['offset.']);
 							}
 							if ($this->setup[$theKey.'.']['offset']) {
@@ -262,7 +262,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 						break;
 						case 'BOX':
 						case 'ELLIPSE':
-							if(isset($this->setup[$theKey.'.']['dimensions.'])) {
+							if (isset($this->setup[$theKey.'.']['dimensions.'])) {
 								$this->setup[$theKey.'.']['dimensions'] = $this->cObj->stdWrap($this->setup[$theKey.'.']['dimensions'], $this->setup[$theKey.'.']['dimensions.']);
 							}
 							if ($this->setup[$theKey.'.']['dimensions']) {
@@ -270,7 +270,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 							}
 						break;
 						case 'WORKAREA':
-							if(isset($this->setup[$theKey.'.']['set.'])) {
+							if (isset($this->setup[$theKey.'.']['set.'])) {
 								$this->setup[$theKey.'.']['set'] = $this->cObj->stdWrap($this->setup[$theKey.'.']['set'], $this->setup[$theKey.'.']['set.']);
 							}
 							if ($this->setup[$theKey.'.']['set']) {
@@ -278,7 +278,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 							}
 						break;
 						case 'CROP':
-							if(isset($this->setup[$theKey.'.']['crop.'])) {
+							if (isset($this->setup[$theKey.'.']['crop.'])) {
 								$this->setup[$theKey.'.']['crop'] = $this->cObj->stdWrap($this->setup[$theKey.'.']['crop'], $this->setup[$theKey.'.']['crop.']);
 							}
 							if ($this->setup[$theKey.'.']['crop']) {
@@ -286,13 +286,13 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 							}
 						break;
 						case 'SCALE':
-							if(isset($this->setup[$theKey.'.']['width.'])) {
+							if (isset($this->setup[$theKey.'.']['width.'])) {
 								$this->setup[$theKey.'.']['width'] = $this->cObj->stdWrap($this->setup[$theKey.'.']['width'], $this->setup[$theKey.'.']['width.']);
 							}
 							if ($this->setup[$theKey.'.']['width']) {
 								$this->setup[$theKey.'.']['width'] = $this->calcOffset($this->setup[$theKey.'.']['width']);
 							}
-							if(isset($this->setup[$theKey.'.']['height.'])) {
+							if (isset($this->setup[$theKey.'.']['height.'])) {
 								$this->setup[$theKey.'.']['height'] = $this->cObj->stdWrap($this->setup[$theKey.'.']['height'], $this->setup[$theKey.'.']['height.']);
 							}
 							if ($this->setup[$theKey.'.']['height']) {
@@ -406,7 +406,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 					$isStdWrapped = array();
 					foreach($conf as $key => $value) {
 						$parameter = rtrim($key,'.');
-						if(!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
+						if (!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
 							$conf[$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter.'.']);
 							$isStdWrapped[$parameter] = 1;
 						}
@@ -428,7 +428,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 									$isStdWrapped = array();
 									foreach($conf['shadow.'] as $key => $value) {
 										$parameter = rtrim($key, '.');
-										if(!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
+										if (!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
 											$conf['shadow.'][$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter.'.']);
 											$isStdWrapped[$parameter] = 1;
 										}
@@ -439,7 +439,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 									$isStdWrapped = array();
 									foreach($conf['emboss.'] as $key => $value) {
 										$parameter = rtrim($key, '.');
-										if(!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
+										if (!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
 											$conf['emboss.'][$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter.'.']);
 											$isStdWrapped[$parameter] = 1;
 										}
@@ -450,7 +450,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 									$isStdWrapped = array();
 									foreach($conf['outline.'] as $key => $value) {
 										$parameter = rtrim($key, '.');
-										if(!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
+										if (!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
 											$conf['outline.'][$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter.'.']);
 											$isStdWrapped[$parameter] = 1;
 										}
@@ -575,7 +575,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		$isStdWrapped = array();
 		foreach($conf as $key => $value) {
 			$parameter = rtrim($key, '.');
-			if(!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
+			if (!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
 				$conf[$parameter] = $cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
 				$isStdWrapped[$parameter] = 1;
 			}

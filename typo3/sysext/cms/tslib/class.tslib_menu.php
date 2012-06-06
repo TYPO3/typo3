@@ -171,7 +171,7 @@ class tslib_menu {
 			}
 
 				// 'not in menu' doktypes
-			if($this->conf['excludeDoktypes']) {
+			if ($this->conf['excludeDoktypes']) {
 				$this->doktypeExcludeList = $GLOBALS['TYPO3_DB']->cleanIntList($this->conf['excludeDoktypes']);
 			}
 				// EntryLevel
@@ -1220,7 +1220,7 @@ class tslib_menu {
 		$targetIsType = $LD['target'] && (string) intval($LD['target']) == trim($LD['target']) ? intval($LD['target']) : FALSE;
 		if (preg_match('/([0-9]+[\s])?(([0-9]+)x([0-9]+))?(:.+)?/s', $LD['target'], $matches) || $targetIsType) {
 				// has type?
-			if(intval($matches[1]) || $targetIsType) {
+			if (intval($matches[1]) || $targetIsType) {
 				$LD['totalURL'] = $this->parent_cObj->URLqMark(
 					$LD['totalURL'],
 					'&type=' . ($targetIsType ? $targetIsType : intval($matches[1]))
@@ -1789,7 +1789,7 @@ class tslib_tmenu extends tslib_menu {
 
 					// Make link tag
 				$this->I['val']['ATagParams'] = $this->WMcObj->getATagParams($this->I['val']);
-				if(isset($this->I['val']['additionalParams.'])) {
+				if (isset($this->I['val']['additionalParams.'])) {
 					$this->I['val']['additionalParams'] = $this->WMcObj->stdWrap($this->I['val']['additionalParams'], $this->I['val']['additionalParams.']);
 				}
 				$this->I['linkHREF'] = $this->link($key, $this->I['val']['altTarget'], $this->mconf['forceTypeValue']);
@@ -2757,7 +2757,7 @@ class tslib_imgmenu extends tslib_menu {
 									if (is_array($theValArr['imgMap.']['altText.'])) {
 										$cObj =t3lib_div::makeInstance('tslib_cObj');
 										$cObj->start($cObjData, 'pages');
-										if(isset($theValArr['imgMap.']['altText.'])) {
+										if (isset($theValArr['imgMap.']['altText.'])) {
 											$theValArr['imgMap.']['altText'] = $cObj->stdWrap($theValArr['imgMap.']['altText'], $theValArr['imgMap.']['altText.']);
 										}
 										unset($theValArr['imgMap.']['altText.']);
@@ -2765,7 +2765,7 @@ class tslib_imgmenu extends tslib_menu {
 									if (is_array($theValArr['imgMap.']['titleText.'])) {
 										$cObj =t3lib_div::makeInstance('tslib_cObj');
 										$cObj->start($cObjData, 'pages');
-										if(isset($theValArr['imgMap.']['titleText.'])) {
+										if (isset($theValArr['imgMap.']['titleText.'])) {
 											$theValArr['imgMap.']['titleText'] = $cObj->stdWrap($theValArr['imgMap.']['titleText'], $theValArr['imgMap.']['titleText.']);
 										}
 										unset($theValArr['imgMap.']['titleText.']);

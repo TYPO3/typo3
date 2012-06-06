@@ -58,14 +58,14 @@ class tslib_content_Multimedia extends tslib_content_Abstract {
 				$width = isset($conf['width.'])
 					? $this->cObj->stdWrap($conf['width'], $conf['width.'])
 					: $conf['width'];
-				if(!$width) {
+				if (!$width) {
 					$width = 200;
 				}
 
 				$height = isset($conf['height.'])
 					? $this->cObj->stdWrap($conf['height'], $conf['height.'])
 					: $conf['height'];
-				if(!$height) {
+				if (!$height) {
 					$height = 200;
 				}
 

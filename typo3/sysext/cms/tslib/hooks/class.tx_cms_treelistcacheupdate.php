@@ -310,7 +310,7 @@ class tx_cms_treelistCacheUpdate {
 
 		$rootlineIds = array();
 		foreach ($rootline as $page) {
-			if($page['uid'] != 0) {
+			if ($page['uid'] != 0) {
 				$rootlineIds[] = $page['uid'];
 			}
 		}
@@ -424,7 +424,7 @@ class tx_cms_treelistCacheUpdate {
 							 expiration time. When unsetting the end time the
 							 page must become listed in the treelist again.
 							*/
-						if($updatedFields['endtime'] > 0) {
+						if ($updatedFields['endtime'] > 0) {
 							$actions['setExpiration'] = TRUE;
 						} else {
 							$actions['uidInTreelist'] = TRUE;

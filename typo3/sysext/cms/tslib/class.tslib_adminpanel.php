@@ -111,7 +111,7 @@ class tslib_AdminPanel {
 		// Include BE styles
 		$GLOBALS['TSFE']->includeTCA();
 
-		if(!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
+		if (!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
 			$result =	'<link rel="stylesheet" type="text/css" href="' .
 				htmlspecialchars(t3lib_div::locationHeaderUrl($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) .
 				'" />';

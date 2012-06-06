@@ -50,7 +50,7 @@ class tslib_content_HorizontalRuler extends tslib_content_Abstract {
 		$lineColor = isset($conf['lineColor.'])
 			? $this->cObj->stdWrap($conf['lineColor'], $conf['lineColor.'])
 			: $conf['lineColor'];
-		if(!$lineColor) {
+		if (!$lineColor) {
 			$lineColor = 'black';
 		}
 
@@ -65,7 +65,7 @@ class tslib_content_HorizontalRuler extends tslib_content_Abstract {
 		$tableWidth = isset($conf['tableWidth.'])
 			? intval($this->cObj->stdWrap($conf['tableWidth'], $conf['tableWidth.']))
 			: intval($conf['tableWidth']);
-		if(!$tableWidth) {
+		if (!$tableWidth) {
 			$tableWidth = '99%';
 		}
 
