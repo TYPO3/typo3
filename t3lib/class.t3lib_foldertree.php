@@ -482,7 +482,7 @@ class t3lib_folderTree extends t3lib_treeView {
 
 			// If this item is the start of a new level,
 			// then a new level <ul> is needed, but not in ajax mode
-			if($treeItem['isFirst'] && !($doCollapse) && !($doExpand && $isExpandedFolderIdentifier)) {
+			if ($treeItem['isFirst'] && !($doCollapse) && !($doExpand && $isExpandedFolderIdentifier)) {
 				$itemHTML = "<ul>\n";
 			}
 

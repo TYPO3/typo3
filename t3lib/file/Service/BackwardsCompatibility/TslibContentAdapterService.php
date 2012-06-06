@@ -101,7 +101,7 @@ class t3lib_file_Service_BackwardsCompatibility_TslibContentAdapterService {
 							// For all other fields, separate by newline
 							$fieldContents = implode(chr(10), $fileFieldContents[$oldFieldType]);
 						}
-						if($fieldContents) {
+						if ($fieldContents) {
 							$row[$oldFieldName] = $fieldContents;
 						}
 					}

@@ -71,7 +71,7 @@ class t3lib_ajax {
 					A=null;
 				}
 			}
-			if(!A && typeof XMLHttpRequest != "undefined") {
+			if (!A && typeof XMLHttpRequest != "undefined") {
 				A = new XMLHttpRequest();
 			}
 			return A;
@@ -87,7 +87,7 @@ class t3lib_ajax {
 			var x;
 
 			x = ajax_initObject();
-			if(!x) {
+			if (!x) {
 				' . $fallback . ';
 			}
 			x.open("GET", url, true);
