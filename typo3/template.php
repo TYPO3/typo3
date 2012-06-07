@@ -1422,7 +1422,7 @@ class template {
 	 * Includes the necessary Javascript function for the clickmenu (context sensitive menus) in the document
 	 * @return void
 	 */
-	function getContextMenuCode()   {
+	function getContextMenuCode() {
 		$this->pageRenderer->loadPrototype();
 		$this->loadJavascriptLib('js/clickmenu.js');
 

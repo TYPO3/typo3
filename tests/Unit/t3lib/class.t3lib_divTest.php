@@ -3390,7 +3390,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function splitFileRefReturnsFileTypeNotForFolders(){
+	public function splitFileRefReturnsFileTypeNotForFolders() {
 		$directoryName = uniqid('test_') . '.com';
 		$directoryPath = PATH_site . 'typo3temp/';
 		$directory = $directoryPath . $directoryName;

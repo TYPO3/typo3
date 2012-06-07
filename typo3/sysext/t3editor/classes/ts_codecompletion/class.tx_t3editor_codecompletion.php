@@ -133,7 +133,7 @@ class tx_t3editor_codecompletion {
 	 * @param	array		$treeBranch: TypoScript configuration or sub branch of it
 	 * @return	array		Cleaned TypoScript branch
 	 */
-	private function treeWalkCleanup(array $treeBranch){
+	private function treeWalkCleanup(array $treeBranch) {
 		$cleanedTreeBranch = array();
 
 		foreach ($treeBranch as $key => $value) {

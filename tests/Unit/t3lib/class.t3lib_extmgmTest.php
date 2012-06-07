@@ -216,7 +216,7 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 	 * @test
 	 * @see t3lib_extMgm::getExtensionKeyByPrefix
 	 */
-	public function getExtensionKeyByPrefixForNotLoadedExtensionReturnsFalse(){
+	public function getExtensionKeyByPrefixForNotLoadedExtensionReturnsFalse() {
 		t3lib_extMgm::clearExtensionKeyMap();
 
 		$uniqueSuffix = uniqid('test');
