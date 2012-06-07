@@ -144,7 +144,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			// fetches the configuration of the version extension
 		$versionExtconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['version']);
 			// show draft workspace only if enabled in the version extensions config
-		if($versionExtconf['showDraftWorkspace']) {
+		if ($versionExtconf['showDraftWorkspace']) {
 			$this->showDraftWorkspace = TRUE;
 		}
 
@@ -163,14 +163,14 @@ class tx_version_cm1 extends t3lib_SCbase {
 			'diff' => ''
 		);
 
-		if($this->showDraftWorkspace === TRUE) {
+		if ($this->showDraftWorkspace === TRUE) {
 			$this->MOD_MENU['display'][-1] = $GLOBALS['LANG']->getLL('defaultDraft');
 		}
 
 			// Add workspaces (only if the live workspace is currently active):
 		if (t3lib_extMgm::isLoaded('workspaces') && $GLOBALS['BE_USER']->workspace ===0 ) {
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
-			foreach($workspaces as $rec)	{
+			foreach ($workspaces as $rec) {
 				if ($GLOBALS['BE_USER']->checkWorkspace($rec))	{
 					$this->MOD_MENU['display'][$rec['uid']] = '['.$rec['uid'].'] '.$rec['title'];
 				}
@@ -405,7 +405,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 										<td width="98%">' . $GLOBALS['LANG']->getLL('coloredDiffView') . ':</td>
 									</tr>
 								';
-					foreach($diff_1_record as $fN => $fV)	{
+					foreach ($diff_1_record as $fN => $fV) {
 						if ($GLOBALS['TCA'][$this->table]['columns'][$fN] && $GLOBALS['TCA'][$this->table]['columns'][$fN]['config']['type'] !== 'passthrough'
 								&& !t3lib_div::inList('t3ver_label', $fN)) {
 
@@ -465,7 +465,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				</tr>';
 
 		$versions = t3lib_BEfunc::selectVersionsOfRecord($this->table, $this->uid, '*', $GLOBALS['BE_USER']->workspace);
-		foreach($versions as $row)	{
+		foreach ($versions as $row) {
 			$adminLinks = $this->adminLinks($this->table,$row);
 
 			$content.='
@@ -547,7 +547,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$tableNames = t3lib_div::removeArrayEntryByValue(array_keys($GLOBALS['TCA']), 'pages');
 		$tableNames[] = 'pages';
 
-		foreach($tableNames as $tN)	{
+		foreach ($tableNames as $tN) {
 				// Basically list ALL tables - not only those being copied might be found!
 			#if ($GLOBALS['TCA'][$tN]['ctrl']['versioning_followPages'] || $tN=='pages')	{
 				$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -737,7 +737,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	}
 
 	function workspaceMenu() {
-		if($this->id) {
+		if ($this->id) {
 			$menu = '';
 			if ($GLOBALS['BE_USER']->workspace===0)	{
 				$menu.= t3lib_BEfunc::getFuncMenu($this->id,'SET[filter]',$this->MOD_SETTINGS['filter'],$this->MOD_MENU['filter']);
@@ -787,8 +787,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			// Traverse versions and build page-display array:
 		$pArray = array();
-		foreach($versions as $table => $records)	{
-			foreach($records as $rec)	{
+		foreach ($versions as $table => $records) {
+			foreach ($records as $rec) {
 				$pageIdField = $table==='pages' ? 't3ver_oid' : 'realpid';
 				$this->displayWorkspaceOverview_setInPageArray(
 					$pArray,
@@ -838,8 +838,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$warnAboutVersions_nonPages = FALSE;
 		$warnAboutVersions_page = FALSE;
 		if (is_array($pArray))	{
-			foreach($pArray as $table => $oidArray)	{
-				foreach($oidArray as $oid => $recs)	{
+			foreach ($pArray as $table => $oidArray) {
+				foreach ($oidArray as $oid => $recs) {
 
 						// Get CURRENT online record and icon based on "t3ver_oid":
 					$rec_on = t3lib_BEfunc::getRecord($table,$oid);
@@ -865,7 +865,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 						// Offline versions display:
 						// Traverse the versions of the element
-					foreach($recs as $rec)	{
+					foreach ($recs as $rec) {
 
 							// Get the offline version record and icon:
 						$rec_off = t3lib_BEfunc::getRecord($table,$rec['uid']);
@@ -905,7 +905,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 							}
 						} else $diffCode = '';
 
-						switch($vType) {
+						switch ($vType) {
 							case 'element':
 								$swapLabel = $GLOBALS['LANG']->getLL('element');
 								$swapClass = 'ver-element';
@@ -1029,7 +1029,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if ($table)	{
 			if ($uid && $this->recIndex[$table][$uid])	{
 				$sId = $this->recIndex[$table][$uid];
-				switch($sId)	{
+				switch ($sId) {
 					case 1:
 						$label = $GLOBALS['LANG']->getLL('commentForReviewer');
 					break;
@@ -1044,7 +1044,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$color = '#666666';
 				$label = $GLOBALS['LANG']->getLL('sendItemsToReview') . $GLOBALS['LANG']->getLL('commentForReviewer');
 				$titleAttrib = $GLOBALS['LANG']->getLL('sendAllToReview');
-			} elseif(count($this->stageIndex[10]))  {	// Publish:
+				// Publish:
+			} elseif (count($this->stageIndex[10])) {
 				$sId = 10;
 				$color = '#6666cc';
 				$label = $GLOBALS['LANG']->getLL('approveToPublish') . $GLOBALS['LANG']->getLL('commentForPublisher');
@@ -1062,7 +1063,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$issueCmd.='&cmd['.$table.']['.$uid.'][version][action]=setStage';
 				$issueCmd.='&cmd['.$table.']['.$uid.'][version][stageId]='.$this->recIndex[$table][$uid];
 			} else {
-				foreach($this->stageIndex[$sId] as $table => $uidArray)	{
+				foreach ($this->stageIndex[$sId] as $table => $uidArray) {
 					$issueCmd.='&cmd['.$table.']['.implode(',',$uidArray).'][version][action]=setStage';
 					$issueCmd.='&cmd['.$table.']['.implode(',',$uidArray).'][version][stageId]='.$sId;
 					$itemCount+=count($uidArray);
@@ -1121,7 +1122,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			// Render, if not cached:
 		if (!isset($this->formatWorkspace_cache[$wsid]))	{
-			switch($wsid)	{
+			switch ($wsid) {
 				case -1:
 					$this->formatWorkspace_cache[$wsid] = $GLOBALS['LANG']->getLL('offline');
 				break;
@@ -1148,7 +1149,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			// Render, if not cached:
 		if (!isset($this->formatCount_cache[$count]))	{
-			switch($count)	{
+			switch ($count) {
 				case 0:
 					$this->formatCount_cache[$count] = $GLOBALS['LANG']->getLL('draft');
 				break;
@@ -1211,11 +1212,11 @@ class tx_version_cm1 extends t3lib_SCbase {
 		);
 
 		$entry = array();
-		foreach($rows as $dat)	{
+		foreach ($rows as $dat) {
 			$data = unserialize($dat['log_data']);
 			$username = $this->be_user_Array[$dat['userid']] ? $this->be_user_Array[$dat['userid']]['username'] : '['.$dat['userid'].']';
 
-			switch($data['stage'])	{
+			switch ($data['stage']) {
 				case 1:
 					$text = $GLOBALS['LANG']->getLL('stage.sentToReview');
 				break;
@@ -1273,7 +1274,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 				// Render records collected above:
 			$elCount = count($recList)-1;
-			foreach($recList as $c => $comb)	{
+			foreach ($recList as $c => $comb) {
 				list($tN,$rec) = $comb;
 
 				$this->subElements_renderItem(
@@ -1297,7 +1298,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$tree->getTree($uid, 99, '');
 
 					// Traverse page tree:
-				foreach($tree->tree as $data)	{
+				foreach ($tree->tree as $data) {
 
 						// Render page in table cell:
 					$this->subElements_renderItem(
@@ -1320,7 +1321,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 						// Render records collected above:
 					$elCount = count($recList)-1;
-					foreach($recList as $c => $comb)	{
+					foreach ($recList as $c => $comb) {
 						list($tN,$rec) = $comb;
 
 						$this->subElements_renderItem(
@@ -1363,7 +1364,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$GLOBALS['TCA'][$tN]['ctrl']['sortby'] ? $GLOBALS['TCA'][$tN]['ctrl']['sortby'] : $GLOBALS['TYPO3_DB']->stripOrderBy($GLOBALS['TCA'][$tN]['ctrl']['default_sortby'])
 		);
 
-		foreach($records as $rec)	{
+		foreach ($records as $rec) {
 			$recList[] = array($tN,$rec);
 		}
 	}
@@ -1452,7 +1453,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 		if (count($this->targets))	{
 			$scriptCode = '';
-			foreach($this->targets as $key => $rec)	{
+			foreach ($this->targets as $key => $rec) {
 				$scriptCode.='
 					document.getElementById(\''.$key.'\').attributes.getNamedItem("class").nodeValue = \'typo3-ver-new\';
 				';
@@ -1496,7 +1497,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$diffStrLen = 0;
 
 				// Traversing the first record and process all fields which are editable:
-			foreach($diff_1_record as $fN => $fV)	{
+			foreach ($diff_1_record as $fN => $fV) {
 				if ($GLOBALS['TCA'][$table]['columns'][$fN] && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] !== 'passthrough'
 					&& !t3lib_div::inList('t3ver_label', $fN)) {
 
@@ -1512,10 +1513,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 						$files2 = array_flip(t3lib_div::trimExplode(',', $diff_2_record[$fN],1));
 
 							// Traverse filenames and read their md5 sum:
-						foreach($files1 as $filename => $tmp)	{
+						foreach ($files1 as $filename => $tmp) {
 							$files1[$filename] = @is_file(PATH_site.$uploadFolder.'/'.$filename) ? md5(t3lib_div::getUrl(PATH_site.$uploadFolder.'/'.$filename)) : $filename;
 						}
-						foreach($files2 as $filename => $tmp)	{
+						foreach ($files2 as $filename => $tmp) {
 							$files2[$filename] = @is_file(PATH_site.$uploadFolder.'/'.$filename) ? md5(t3lib_div::getUrl(PATH_site.$uploadFolder.'/'.$filename)) : $filename;
 						}
 
@@ -1541,7 +1542,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 							// If the compared values were files, substituted MD5 hashes:
 						if ($isFiles)	{
 							$allFiles = array_merge($files1,$files2);
-							foreach($allFiles as $filename => $token)	{
+							foreach ($allFiles as $filename => $token) {
 								if (strlen($token)==32 && strstr($diffres,$token))	{
 									$filename =
 										t3lib_BEfunc::thumbCode(array($fN=>$filename),$table,$fN,$this->doc->backPath).
@@ -1589,7 +1590,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 */
 	function displayWorkspaceOverview_stageCmd($table,&$rec_off)	{
 #debug($rec_off['t3ver_stage']);
-		switch((int)$rec_off['t3ver_stage'])	{
+		switch ((int)$rec_off['t3ver_stage']) {
 			case 0:
 				$sId = 1;
 				$sLabel = $GLOBALS['LANG']->getLL('editing');

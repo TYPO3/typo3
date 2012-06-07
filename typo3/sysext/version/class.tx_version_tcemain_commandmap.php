@@ -392,7 +392,7 @@ class tx_version_tcemain_CommandMap {
 		}
 
 		foreach ($elementList as $elementTable => $elementIds) {
-			foreach($elementIds as $elementId) {
+			foreach ($elementIds as $elementId) {
 				$extendedCommandMap[$elementTable][$elementId]['version'] = $properties;
 			}
 		}

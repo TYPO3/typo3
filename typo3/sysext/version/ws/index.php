@@ -131,7 +131,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// fetches the configuration of the version extension
 		$versionExtconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['version']);
 			// show draft workspace only if enabled in the version extensions config
-		if($versionExtconf['showDraftWorkspace']) {
+		if ($versionExtconf['showDraftWorkspace']) {
 			$this->showDraftWorkspace = TRUE;
 		}
 
@@ -167,7 +167,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// Add workspaces:
 		if ($GLOBALS['BE_USER']->workspace===0)	{	// Spend time on this only in online workspace because it might take time:
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers','sys_workspace','pid=0'.t3lib_BEfunc::deleteClause('sys_workspace'),'','title');
-			foreach($workspaces as $rec)	{
+			foreach ($workspaces as $rec) {
 				if ($GLOBALS['BE_USER']->checkWorkspace($rec))	{
 					$this->MOD_MENU['display'][$rec['uid']] = '[' . $rec['uid'] . '] ' . htmlspecialchars($rec['title']);
 				}
@@ -190,11 +190,11 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			if (is_array($post['items']) && count($post['items']))	{
 				$cmdArray = array();
 
-				foreach($post['items'] as $item => $v)	{
+				foreach ($post['items'] as $item => $v) {
 					list($table,$uid) = explode(':',$item,2);
 
 					if ($GLOBALS['TCA'][$table] && t3lib_utility_Math::canBeInterpretedAsInteger($uid)) {
-						switch($post['_with_selected_do'])	{
+						switch ($post['_with_selected_do']) {
 							case "stage_-1":
 								$cmdArray[$table][$uid]['version']['action'] = 'setStage';
 								$cmdArray[$table][$uid]['version']['stageId'] = -1;
@@ -418,7 +418,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 			// Create header:
 		$title = '';
 		$description = '';
-		switch($GLOBALS['BE_USER']->workspace)	{
+		switch ($GLOBALS['BE_USER']->workspace) {
 			case 0:
 				$title = t3lib_iconWorks::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"') . '[' . $GLOBALS['LANG']->getLL('shortcut_onlineWS') . ']';
 				$description = $GLOBALS['LANG']->getLL('workspace_description_live');
@@ -663,7 +663,7 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		}
 
 			// Custom
-		foreach($workspaces as $rec)	{
+		foreach ($workspaces as $rec) {
 				// see if user can access this workspace in any way
 			if (FALSE !== ($result = $GLOBALS['BE_USER']->checkWorkspace($rec)))	{
 				$availableWorkspaces[] = $result;	// `$result` contains `$rec` plus access type through '_ACCESS' key

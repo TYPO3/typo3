@@ -81,8 +81,8 @@ class wslib {
 			$versions = $this->selectVersionsInWorkspace($wsid,0,$stage,($pageId?$pageId:-1));
 
 				// Traverse the selection to build CMD array:
-			foreach($versions as $table => $records)	{
-				foreach($records as $rec)	{
+			foreach ($versions as $table => $records) {
+				foreach ($records as $rec) {
 
 						// Build the cmd Array:
 					$cmd[$table][$rec['t3ver_oid']]['version'] = array(
@@ -184,7 +184,7 @@ class wslib {
 				t3lib_BEfunc::deleteClause('sys_workspace')
 		);
 
-		foreach($workspaces as $rec)	{
+		foreach ($workspaces as $rec) {
 
 				// First, clear start/end time so it doesn't get select once again:
 			$fieldArray = $rec['publish_time']!=0 ? array('publish_time'=>0) : array('unpublish_time'=>0);

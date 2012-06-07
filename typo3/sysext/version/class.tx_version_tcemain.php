@@ -411,9 +411,9 @@ class tx_version_tcemain {
 			if ($notificationAlternativeRecipients === FALSE) {
 					// Compile list of recipients:
 				$emails = array();
-				switch((int)$stat['stagechg_notification'])	{
+				switch ((int)$stat['stagechg_notification']) {
 					case 1:
-						switch((int)$stageId)	{
+						switch ((int)$stageId) {
 							case 1:
 								$emails = $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']);
 							break;
@@ -536,7 +536,7 @@ class tx_version_tcemain {
 
 					// Hook for preprocessing of the content for formmails:
 				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'])) {
-					foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'] as $_classRef) {
+					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'] as $_classRef) {
 						$_procObj = &t3lib_div::getUserObj($_classRef);
 						$markers = $_procObj->postModifyMarkers($markers, $this);
 					}
