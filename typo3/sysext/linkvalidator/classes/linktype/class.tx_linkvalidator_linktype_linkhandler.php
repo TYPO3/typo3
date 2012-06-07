@@ -83,7 +83,7 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 			}
 		}
 
-		if(!$response) {
+		if (!$response) {
 			$this->setErrorParams();
 		}
 

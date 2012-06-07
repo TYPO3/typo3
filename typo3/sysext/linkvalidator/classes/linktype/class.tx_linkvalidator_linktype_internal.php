@@ -289,7 +289,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 		if (count($rootLine) > 0) {
 				$protocol = t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
 				$domainRecord = t3lib_BEfunc::firstDomainRecord($rootLine);
-				if(!empty($domainRecord)) {
+				if (!empty($domainRecord)) {
 					$domain = $protocol . $domainRecord;
 				}
 		}
