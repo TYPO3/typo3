@@ -391,7 +391,7 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 				$mountPoints = array_unique($mountPoints);
 			}
 			$newList = array();
-			foreach($mountPoints as $mountPoint) {
+			foreach ($mountPoints as $mountPoint) {
 				$newList[] = $searchObj->getTreeList($mountPoint, $recursionLevel, 0, $perms_clause);
 			}
 			$pageList = implode(',', $newList);

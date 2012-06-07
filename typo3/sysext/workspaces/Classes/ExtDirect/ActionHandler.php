@@ -121,7 +121,7 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 	}
 
 	public function loadColumnModel() {
-		if(is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
+		if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
 			return $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'];
 		} else {
 			return array();
@@ -139,7 +139,7 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 	public function sendToNextStageWindow($uid, $table, $t3ver_oid) {
 		$elementRecord = t3lib_BEfunc::getRecord($table, $uid);
 
-		if(is_array($elementRecord)) {
+		if (is_array($elementRecord)) {
 			$stageId = $elementRecord['t3ver_stage'];
 
 			if ($this->getStageService()->isValid($stageId)) {
@@ -171,7 +171,7 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 	public function sendToPrevStageWindow($uid, $table) {
 		$elementRecord = t3lib_BEfunc::getRecord($table, $uid);
 
-		if(is_array($elementRecord)) {
+		if (is_array($elementRecord)) {
 			$stageId = $elementRecord['t3ver_stage'];
 
 			if ($this->getStageService()->isValid($stageId)) {
@@ -231,7 +231,7 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 		$recipients = array();
 		foreach ($uidOfRecipients as $userUid) {
 			$beUserRecord = t3lib_befunc::getRecord('be_users',intval($userUid));
-			if(is_array($beUserRecord) && $beUserRecord['email'] != '') {
+			if (is_array($beUserRecord) && $beUserRecord['email'] != '') {
 				$recipients[] = $beUserRecord['email'];
 			}
 		}
@@ -480,7 +480,7 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 		$elements = $parameters->affects->elements;
 		$recipients = $this->getRecipientList($parameters->receipients, $parameters->additional, $setStageId);
 
-		foreach($elements as $key=>$element) {
+		foreach ($elements as $key=>$element) {
 			if ($setStageId == Tx_Workspaces_Service_Stages::STAGE_PUBLISH_EXECUTE_ID) {
 				$cmdArray[$element->table][$element->t3ver_oid]['version']['action'] = 'swap';
 				$cmdArray[$element->table][$element->t3ver_oid]['version']['swapWith'] = $element->uid;

@@ -43,7 +43,7 @@ class Tx_Workspaces_ExtDirect_PagetreeCollectionsProcessor implements t3lib_tree
 	 * @return void
 	 */
 	public function postProcessGetNodes($node, $mountPoint, $level, $nodeCollection) {
-		foreach($nodeCollection as $node) {
+		foreach ($nodeCollection as $node) {
 			/** @var $node t3lib_tree_Node */
 			$this->highlightVersionizedElements($node);
 		}
@@ -58,7 +58,7 @@ class Tx_Workspaces_ExtDirect_PagetreeCollectionsProcessor implements t3lib_tree
 	 * @return void
 	 */
 	public function postProcessFilteredNodes($node, $searchFilter, $mountPoint, $nodeCollection) {
-		foreach($nodeCollection as $node) {
+		foreach ($nodeCollection as $node) {
 			/** @var $node t3lib_tree_Node */
 			$this->highlightVersionizedElements($node);
 		}
@@ -71,7 +71,7 @@ class Tx_Workspaces_ExtDirect_PagetreeCollectionsProcessor implements t3lib_tree
 	 * @return void
 	 */
 	public function postProcessGetTreeMounts($searchFilter, $nodeCollection) {
-		foreach($nodeCollection as $node) {
+		foreach ($nodeCollection as $node) {
 			/** @var $node t3lib_tree_Node */
 			$this->highlightVersionizedElements($node);
 		}

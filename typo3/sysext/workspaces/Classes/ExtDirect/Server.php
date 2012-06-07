@@ -150,7 +150,7 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 			// Hook for modifying the difference and live arrays
 			// (this may be used by custom or dynamically-defined fields)
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'])) {
-			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'] as $className) {
+			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['workspaces']['modifyDifferenceArray'] as $className) {
 				$hookObject = &t3lib_div::getUserObj($className);
 				$hookObject->modifyDifferenceArray($parameter, $diffReturnArray, $liveReturnArray, $t3lib_diff);
 			}
@@ -197,7 +197,7 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 				'tstamp DESC'
 		);
 
-		foreach($sysLogRows as $sysLogRow)	{
+		foreach ($sysLogRows as $sysLogRow) {
 			$sysLogEntry = array();
 			$data = unserialize($sysLogRow['log_data']);
 			$beUserRecord = t3lib_BEfunc::getRecord('be_users', $sysLogRow['userid']);

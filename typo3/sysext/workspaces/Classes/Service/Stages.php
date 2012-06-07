@@ -237,7 +237,7 @@ class Tx_Workspaces_Service_Stages {
 					'',
 					'uid'
 				);
-				foreach($workspaceStageRecs as $stage) {
+				foreach ($workspaceStageRecs as $stage) {
 					$stage['title'] =  $GLOBALS['LANG']->sL($this->pathToLocallang . ':actionSendToStage') . ' "' . $stage['title'] . '"';
 					$stages[] = $stage;
 				}
