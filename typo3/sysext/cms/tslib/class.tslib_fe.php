@@ -279,12 +279,12 @@
 			JSImgCode : reserved
 	*/
 	var $additionalHeaderData=array();	// used to accumulate additional HTML-code for the header-section, <head>...</head>. Insert either associative keys (like additionalHeaderData['myStyleSheet'], see reserved keys above) or num-keys (like additionalHeaderData[] = '...')
+	public $additionalFooterData = array();	// used to accumulate additional HTML-code for the footer-section of the template
 	var $additionalJavaScript=array();	// used to accumulate additional JavaScript-code. Works like additionalHeaderData. Reserved keys at 'openPic' and 'mouseOver'
 	var $additionalCSS=array();			// used to accumulate additional Style code. Works like additionalHeaderData.
 	var $JSeventFuncCalls = array(		// you can add JavaScript functions to each entry in these arrays. Please see how this is done in the GMENU_LAYERS script. The point is that many applications on a page can set handlers for onload, onmouseover and onmouseup
 		'onmousemove' => array(),
 		'onmouseup' => array(),
-		'onmousemove' => array(),
 		'onkeydown' => array(),
 		'onkeyup' => array(),
 		'onkeypress' => array(),
@@ -3212,6 +3212,7 @@
 	function INTincScript()	{
 			// Deprecated stuff:
 		$this->additionalHeaderData = is_array($this->config['INTincScript_ext']['additionalHeaderData']) ? $this->config['INTincScript_ext']['additionalHeaderData'] : array();
+		$this->additionalFooterData = is_array($this->config['INTincScript_ext']['additionalFooterData']) ? $this->config['INTincScript_ext']['additionalFooterData'] : array();
 		$this->additionalJavaScript = $this->config['INTincScript_ext']['additionalJavaScript'];
 		$this->additionalCSS = $this->config['INTincScript_ext']['additionalCSS'];
 		$this->JSCode = $this->additionalHeaderData['JSCode'];
@@ -3230,6 +3231,7 @@
 		$GLOBALS['TT']->push('Substitute header section');
 		$this->INTincScript_loadJSCode();
 		$this->content = str_replace('<!--HD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(LF,$this->additionalHeaderData),'HD'), $this->content);
+		$this->content = str_replace('<!--FD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'), $this->content);
 		$this->content = str_replace('<!--TDS_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset($this->divSection,'TDS'), $this->content);
 		$this->setAbsRefPrefix();
 		$GLOBALS['TT']->pull();
