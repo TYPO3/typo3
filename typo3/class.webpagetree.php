@@ -177,7 +177,7 @@ class webPageTree extends t3lib_browseTree {
 	 * @param	array		"tree-array" - if blank string, the internal ->tree array is used.
 	 * @return	string		The HTML code for the tree
 	 */
-	function printTree($treeArr = '')   {
+	function printTree($treeArr = '') {
 		$titleLen = intval($this->BE_USER->uc['titleLen']);
 		if (!is_array($treeArr)) {
 			$treeArr = $this->tree;
