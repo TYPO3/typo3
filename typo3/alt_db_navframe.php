@@ -326,7 +326,7 @@ class SC_alt_db_navframe {
 	 *
 	 * @return	void
 	 */
-	function initializeTemporaryDBmount(){
+	function initializeTemporaryDBmount() {
 
 			// Set/Cancel Temporary DB Mount:
 		if (strlen($this->setTempDBmount)) {

@@ -3580,7 +3580,7 @@ if (version == "n3") {
 	 *
 	 *  @return string the IP to log
 	 */
-	public function getLogIPAddress(){
+	public function getLogIPAddress() {
 		$result = t3lib_div::getIndpEnv('REMOTE_ADDR');
 		if ($this->config['config']['stat_IP_anonymize']) {
 			if (strpos($result, ':')) {
@@ -3655,7 +3655,7 @@ if (version == "n3") {
 	 *
 	 * @return the host name to log
 	 */
-	public function getLogHostName(){
+	public function getLogHostName() {
 		if($this->config['config']['stat_IP_anonymize']) {
 				// ignore hostname if IP anonymized
 			$hostName = '<anonymized>';
@@ -3671,7 +3671,7 @@ if (version == "n3") {
 	 *
 	 * @return the user name /uid to log
 	 */
-	public function getLogUserName(){
+	public function getLogUserName() {
 		$logUser = (isset($this->config['config']['stat_logUser'])) ? $this->config['config']['stat_logUser'] : TRUE;
 		if ($this->loginUser && $logUser) {
 			$userName =  $this->fe_user->user['username'];
@@ -4099,7 +4099,7 @@ if (version == "n3") {
 	 * @param	string		The page content to clean up. Will be written to a temporary file which "tidy" is then asked to clean up. File content is read back and returned.
 	 * @return	string		Returns the
 	 */
-	function tidyHTML($content)		{
+	function tidyHTML($content) {
 		if ($this->TYPO3_CONF_VARS['FE']['tidy'] && $this->TYPO3_CONF_VARS['FE']['tidy_path']) {
 			$oldContent = $content;
 			$fname = t3lib_div::tempnam('typo3_tidydoc_');		// Create temporary name

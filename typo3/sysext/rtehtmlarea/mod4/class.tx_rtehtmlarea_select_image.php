@@ -932,7 +932,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 *
 	 * @return	void
 	 */
-	public function initConfiguration(){
+	public function initConfiguration() {
 		$this->thisConfig = $this->getRTEConfig();
 		$this->buttonConfig = $this->getButtonConfig();
 		$this->imgPath = $this->getImgPath();

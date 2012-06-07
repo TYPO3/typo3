@@ -101,7 +101,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @param	array		TypoScript configuration of the plugin!
 	 * @return	string		HTML code for the search form / result display.
 	 */
-	function main($content, $conf)    {
+	function main($content, $conf) {
 
 			// Initialize:
 		$this->conf = $conf;

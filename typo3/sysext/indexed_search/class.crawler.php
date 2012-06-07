@@ -65,7 +65,7 @@ class tx_indexedsearch_crawler {
 	 * @param	object		Parent object (tx_crawler lib)
 	 * @return	void
 	 */
-	function crawler_init(&$pObj){
+	function crawler_init(&$pObj) {
 
 			// Select all indexing configuration which are waiting to be activated:
 		$indexingConfigurations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(

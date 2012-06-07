@@ -754,7 +754,7 @@ class clickMenu {
 	 * @param	string		Icon path relative to typo3/ folder
 	 * @return	array		Item array, element in $menuItems
 	 */
-	function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath='gfx/')    {
+	function DB_changeFlag($table, $rec, $flagField, $title, $name, $iconRelPath='gfx/') {
 		$uid = $rec['_ORIG_uid'] ? $rec['_ORIG_uid'] : $rec['uid'];
 		$editOnClick='';
 		$loc = 'top.content.list_frame';
