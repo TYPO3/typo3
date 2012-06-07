@@ -183,7 +183,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 		preg_match_all('/((?:http|https))(?::\/\/)(?:[^\s<>]+)/i', $value['tokenValue'], $urls, PREG_PATTERN_ORDER);
 
 		if (!empty($urls[0][0])) {
-			$type = "external";
+			$type = 'external';
 		}
 
 		return $type;

@@ -59,7 +59,7 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 	public function checkLink($url, $softRefEntry, $reference) {
 		$response = TRUE;
 		$errorParams = array();
-		$parts = explode(":", $url);
+		$parts = explode(':', $url);
 		if (count($parts) == 3) {
 			$tableName = htmlspecialchars($parts[1]);
 			$rowid = intval($parts[2]);
