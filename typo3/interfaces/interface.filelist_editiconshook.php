@@ -25,22 +25,21 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
- * interface for classes which hook into file list module and manipulateds edit icon array
+ * Interface for classes which hook into file list module and manipulateds edit icon array
  *
- * @author	Steffen Kamper <info@sk-typo3.de>
+ * @author Steffen Kamper <info@sk-typo3.de>
  * @package TYPO3
  * @subpackage cms
  */
 interface fileList_editIconHook {
 
 	/**
-	 * modifies edit icon array
+	 * Modifies edit icon array
 	 *
-	 * @param	array					array of edit icons
-	 * @param	fileList	parent object
-	 * @return	void
+	 * @param array $cells Array of edit icons
+	 * @param fileList $parentObject Parent object
+	 * @return void
 	 */
 	public function manipulateEditIcons(&$cells, &$parentObject);
 

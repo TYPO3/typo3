@@ -25,22 +25,21 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
- * interface for classes which hook into SC_db_new_content_el and manipulater wizardItems array
+ * Interface for classes which hook into SC_db_new_content_el and manipulater wizardItems array
  *
- * @author	Steffen Kamper <info@sk-typo3.de>
+ * @author Steffen Kamper <info@sk-typo3.de>
  * @package TYPO3
  * @subpackage cms
  */
 interface cms_newContentElementWizardsHook {
 
 	/**
-	 * modifies WizardItems array
+	 * Modifies WizardItems array
 	 *
-	 * @param	array					array of Wizard Items
-	 * @param	SC_db_new_content_el	parent object New Content element wizard
-	 * @return	void
+	 * @param array $wizardItems Array of Wizard Items
+	 * @param SC_db_new_content_el $parentObject Parent object New Content element wizard
+	 * @return void
 	 */
 	public function manipulateWizardItems(&$wizardItems, &$parentObject);
 
