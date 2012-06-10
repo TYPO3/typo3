@@ -25,21 +25,20 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
- * interface for classes which hook into ClearCacheMenu and manipulate CacheMenuItems array
+ * Interface for classes which hook into ClearCacheMenu and manipulate CacheMenuItems array
  *
- * @author	Steffen Kamper <info@sk-typo3.de>
+ * @author Steffen Kamper <info@sk-typo3.de>
  * @package TYPO3
  * @subpackage backend
  */
 interface backend_cacheActionsHook {
 
 	/**
-	 * modifies CacheMenuItems array
+	 * Modifies CacheMenuItems array
 	 *
-	 * @param	array	array of CacheMenuItems
-	 * @param	array	array of AccessConfigurations-identifiers (typically  used by userTS with options.clearCache.identifier)
+	 * @param array $cacheActions Array of CacheMenuItems
+	 * @param array $optionValues Array of AccessConfigurations-identifiers (typically  used by userTS with options.clearCache.identifier)
 	 * @return
 	 */
 	public function manipulateCacheActions(&$cacheActions, &$optionValues);
