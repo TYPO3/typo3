@@ -80,7 +80,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 
 		$content = $GLOBALS['LANG']->getLL('title2') . '
 			<table cellpading="5" cellspacing="5" valign="top"><tr><td valign="top">' .
-			$this->listSeveralStats($GLOBALS['LANG']->getLL('all'), $addwhere1,$conf) . '</td><td valign="top">' .
+			$this->listSeveralStats($GLOBALS['LANG']->getLL('all'), $addwhere1, $conf) . '</td><td valign="top">' .
 			$this->listSeveralStats($GLOBALS['LANG']->getLL('last30days'), $addwhere2, $conf) . '</td><td valign="top">' .
 			$this->listSeveralStats($GLOBALS['LANG']->getLL('last24hours'), $addwhere3, $conf) . '</td></tr></table>' .
 			$this->note;
@@ -180,8 +180,8 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 	 * @return	string		Returns the list with a comma in the end (if any pages selected!)
 	 */
 	function extGetTreeList($id, $depth, $begin = 0, $perms_clause) {
-		// TODO: Fix this as this calls a non-static method
-		return t3lib_tsfeBeUserAuth::extGetTreeList($id,$depth,$begin,$perms_clause);
+			// TODO: Fix this as this calls a non-static method
+		return t3lib_tsfeBeUserAuth::extGetTreeList($id, $depth, $begin, $perms_clause);
 	}
 
 	/**

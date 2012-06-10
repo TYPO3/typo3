@@ -157,7 +157,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		} elseif (t3lib_div::_GET('reindex')) {
 				// Show title / function menu:
 			$theOutput.=$this->pObj->doc->spacer(5);
-			$theOutput.=$this->pObj->doc->section('Reindexing...', $this->reindexPhash(t3lib_div::_GET('reindex'),t3lib_div::_GET('reindex_id')), 0, 1);
+			$theOutput.=$this->pObj->doc->section('Reindexing...', $this->reindexPhash(t3lib_div::_GET('reindex'), t3lib_div::_GET('reindex_id')), 0, 1);
 
 		} else {	// Detail listings:
 				// Depth function menu:
@@ -793,7 +793,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 * @return	string		Wrapped string
 	 */
 	function linkMetaPhoneDetails($string, $metaphone) {
-		return '<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('metaphone'=>$metaphone,'wid'=>'','phash'=>''))).'">'.$string.'</a>';
+		return '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('metaphone' => $metaphone, 'wid'=>'', 'phash' => ''))) . '">' . $string . '</a>';
 	}
 
 	/**

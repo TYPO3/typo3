@@ -18,7 +18,7 @@ if (t3lib_extMgm::isLoaded('extbase')) {
 }
 
 if (TYPO3_MODE=='BE')    {
-	t3lib_extMgm::addModule('tools','isearch','after:log',t3lib_extMgm::extPath($_EXTKEY).'mod/');
+	t3lib_extMgm::addModule('tools', 'isearch', 'after:log', t3lib_extMgm::extPath($_EXTKEY) . 'mod/');
 
 	t3lib_extMgm::insertModuleFunction(
 		'web_info',
@@ -35,7 +35,7 @@ if (TYPO3_MODE=='BE')    {
 }
 
 t3lib_extMgm::allowTableOnStandardPages('index_config');
-t3lib_extMgm::addLLrefForTCAdescr('index_config','EXT:indexed_search/locallang_csh_indexcfg.xml');
+t3lib_extMgm::addLLrefForTCAdescr('index_config', 'EXT:indexed_search/locallang_csh_indexcfg.xml');
 
 $TCA['index_config'] = array(
 	'ctrl' => array(
