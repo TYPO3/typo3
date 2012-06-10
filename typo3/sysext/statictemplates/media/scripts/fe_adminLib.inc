@@ -125,8 +125,8 @@ class user_feAdmin {
 
 			// globally substituted markers, fonts and colors.
 		$splitMark = md5(microtime());
-		list($this->markerArray['###GW1B###'], $this->markerArray['###GW1E###']) = explode($splitMark,$this->cObj->stdWrap($splitMark, $this->conf['wrap1.']));
-		list($this->markerArray['###GW2B###'], $this->markerArray['###GW2E###']) = explode($splitMark,$this->cObj->stdWrap($splitMark, $this->conf['wrap2.']));
+		list($this->markerArray['###GW1B###'], $this->markerArray['###GW1E###']) = explode($splitMark, $this->cObj->stdWrap($splitMark, $this->conf['wrap1.']));
+		list($this->markerArray['###GW2B###'], $this->markerArray['###GW2E###']) = explode($splitMark, $this->cObj->stdWrap($splitMark, $this->conf['wrap2.']));
 		$this->markerArray['###GC1###'] = $this->cObj->stdWrap($this->conf['color1'], $this->conf['color1.']);
 		$this->markerArray['###GC2###'] = $this->cObj->stdWrap($this->conf['color2'], $this->conf['color2.']);
 		$this->markerArray['###GC3###'] = $this->cObj->stdWrap($this->conf['color3'], $this->conf['color3.']);
@@ -142,7 +142,7 @@ class user_feAdmin {
 		}
 
 		$formURL = $this->cObj->typoLink_URL($linkConf);
-		if (!strstr($formURL,'?')) {
+		if (!strstr($formURL, '?')) {
 			$formURL .= '?';
 		}
 
@@ -259,7 +259,7 @@ class user_feAdmin {
 			}
 				// Output message
 			$templateCode = $this->cObj->getSubpart($this->templateCode, '###TEMPLATE_' . $key . '_SAVED###');
-			$this->setCObjects($templateCode,$this->currentArr);
+			$this->setCObjects($templateCode, $this->currentArr);
 			$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $this->currentArr, '', TRUE, 'FIELD_', $this->recInMarkersHSC);
 			$content = $this->cObj->substituteMarkerArray($templateCode, $markerArray);
 
@@ -379,7 +379,7 @@ class user_feAdmin {
 							break;
 
 						case 'num':
-							$this->dataArr[$theField] = preg_replace('/[^0-9]/','', $this->dataArr[$theField]);
+							$this->dataArr[$theField] = preg_replace('/[^0-9]/', '', $this->dataArr[$theField]);
 							break;
 
 						case 'alphanum':
@@ -539,7 +539,7 @@ class user_feAdmin {
 				$fI = pathinfo($infoArr['name']);
 				$tmpFilename = $this->theTable.'_'.t3lib_div::shortmd5(uniqid($infoArr['name'])).'.'.$fI['extension'];
 				$theDestFile = $this->fileFunc->getUniqueName($this->fileFunc->cleanFileName($tmpFilename), PATH_site.'typo3temp/');
-				t3lib_div::upload_copy_move($infoArr['tmp_name'],$theDestFile);
+				t3lib_div::upload_copy_move($infoArr['tmp_name'], $theDestFile);
 					// Setting the filename in the list
 				$fI2 = pathinfo($theDestFile);
 				$fileNameList[] = $fI2['basename'].'|'.$infoArr['name'];
@@ -632,7 +632,7 @@ class user_feAdmin {
 			}
 
 			foreach ($this->conf[$this->cmdKey.'.']['evalValues.'] as $theField => $theValue) {
-				$listOfCommands = t3lib_div::trimExplode(',',$theValue,1);
+				$listOfCommands = t3lib_div::trimExplode(',', $theValue, 1);
 				foreach ($listOfCommands as $cmd) {
 					$cmdParts = preg_split('/\[|\]/', $cmd);	// Point is to enable parameters after each command enclosed in brackets [..]. These will be in position 1 in the array.
 					$theCmd = trim($cmdParts[0]);
@@ -648,7 +648,7 @@ class user_feAdmin {
 							break;
 
 						case 'uniqueLocal':
-							if ($DBrows = $GLOBALS['TSFE']->sys_page->getRecordsByField($this->theTable, $theField,$this->dataArr[$theField], 'AND pid IN (' . $recordTestPid . ')', '', '', '1')) {
+							if ($DBrows = $GLOBALS['TSFE']->sys_page->getRecordsByField($this->theTable, $theField, $this->dataArr[$theField], 'AND pid IN (' . $recordTestPid . ')', '', '', '1')) {
 								if (!$recExist || $DBrows[0]['uid']!=$this->dataArr['uid'])	{ // Only issue an error if the record is not existing (if new...) and if the record with the false value selected was not our self.
 									$tempArr[] = $theField;
 									$this->failureMsg[$theField][] = $this->getFailure($theField, $theCmd, 'The value existed already. Enter a new value.');
@@ -701,7 +701,7 @@ class user_feAdmin {
 									intval($pars[1]) ? intval($pars[1]) : 999,
 									intval($pars[2])
 								);
-								if (!$pid_list || !t3lib_div::inList($pid_list,$this->dataArr[$theField])) {
+								if (!$pid_list || !t3lib_div::inList($pid_list, $this->dataArr[$theField])) {
 									$tempArr[] = $theField;
 									$this->failureMsg[$theField][] = sprintf($this->getFailure($theField, $theCmd, 'The value was not a valid valud from this list: %s'), $pid_list);
 								}
@@ -733,7 +733,7 @@ class user_feAdmin {
 	 * @return	array		The processed $passVar ($this->dataArr)
 	 * @see init(), evalValues()
 	 */
-	function userProcess($mConfKey,$passVar) {
+	function userProcess($mConfKey, $passVar) {
 		if ($this->conf[$mConfKey]) {
 			$funcConf = $this->conf[$mConfKey . '.'];
 			$funcConf['parentObj'] = $this;
@@ -797,8 +797,10 @@ class user_feAdmin {
 		switch($this->cmd) {
 			case 'edit':
 				$theUid = $this->dataArr['uid'];
-				$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable,$theUid);		// Fetches the original record to check permissions
-				if ($this->conf['edit'] && ($GLOBALS['TSFE']->loginUser || $this->aCAuth($origArr)))	{	// Must be logged in in order to edit  (OR be validated by email)
+					// Fetches the original record to check permissions
+				$origArr = $GLOBALS['TSFE']->sys_page->getRawRecord($this->theTable, $theUid);
+					// Must be logged in in order to edit  (OR be validated by email)
+				if ($this->conf['edit'] && ($GLOBALS['TSFE']->loginUser || $this->aCAuth($origArr)))	{
 					$newFieldList = implode(',', array_intersect(explode(',', $this->fieldList), t3lib_div::trimExplode(',', $this->conf['edit.']['fields'], 1)));
 					if ($this->aCAuth($origArr) || $this->cObj->DBmayFEUserEdit($this->theTable, $origArr, $GLOBALS['TSFE']->fe_user->user, $this->conf['allowedGroups'], $this->conf['fe_userEditSelf'])) {
 						$this->cObj->DBgetUpdate($this->theTable, $theUid, $this->dataArr, $newFieldList, TRUE);
@@ -861,7 +863,8 @@ class user_feAdmin {
 			if ($GLOBALS['TSFE']->loginUser || $this->aCAuth($origArr))	{	// Must be logged in OR be authenticated by the aC code in order to delete
 					// If the recUid selects a record.... (no check here)
 				if (is_array($origArr)) {
-					if ($this->aCAuth($origArr) || $this->cObj->DBmayFEUserEdit($this->theTable, $origArr, $GLOBALS['TSFE']->fe_user->user, $this->conf['allowedGroups'],$this->conf['fe_userEditSelf'])) {	// Display the form, if access granted.
+						// Display the form, if access granted.
+					if ($this->aCAuth($origArr) || $this->cObj->DBmayFEUserEdit($this->theTable, $origArr, $GLOBALS['TSFE']->fe_user->user, $this->conf['allowedGroups'], $this->conf['fe_userEditSelf'])) {
 						if (!$GLOBALS['TCA'][$this->theTable]['ctrl']['delete']) {	// If the record is fully deleted... then remove the image (or any file) attached.
 							$this->deleteFilesFromRecord($this->recUid);
 						}
@@ -1021,7 +1024,7 @@ class user_feAdmin {
 				} elseif ($GLOBALS['TSFE']->loginUser) { 	// If the recUid did not select a record, we display a menu of records. (eg. if no recUid)
 					$lockPid = $this->conf['edit.']['menuLockPid'] ? ' AND pid='.intval($this->thePid) : '';
 
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->theTable, '1 '.$lockPid.$this->cObj->DBmayFEUserEditSelect($this->theTable,$GLOBALS['TSFE']->fe_user->user, $this->conf['allowedGroups'],$this->conf['fe_userEditSelf']).$GLOBALS['TSFE']->sys_page->deleteClause($this->theTable));
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->theTable, '1 ' . $lockPid.$this->cObj->DBmayFEUserEditSelect($this->theTable, $GLOBALS['TSFE']->fe_user->user, $this->conf['allowedGroups'], $this->conf['fe_userEditSelf']) . $GLOBALS['TSFE']->sys_page->deleteClause($this->theTable));
 
 					if ($GLOBALS['TYPO3_DB']->sql_num_rows($res))	{	// If there are menu-items ...
 						$templateCode = $this->getPlainTemplate('###TEMPLATE_EDITMENU###');
@@ -1029,7 +1032,7 @@ class user_feAdmin {
 						$itemCode = $this->cObj->getSubpart($templateCode, '###ITEM###');
 						while($menuRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$markerArray = $this->cObj->fillInMarkerArray(array(), $menuRow, '', TRUE, 'FIELD_', $this->recInMarkersHSC);
-							$markerArray = $this->setCObjects($itemCode,$menuRow,$markerArray,'ITEM_');
+							$markerArray = $this->setCObjects($itemCode, $menuRow, $markerArray, 'ITEM_');
 							$out.= $this->cObj->substituteMarkerArray($itemCode, $markerArray);
 						}
 						$content=$this->cObj->substituteSubpart($templateCode, '###ALLITEMS###', $out);
@@ -1069,9 +1072,9 @@ class user_feAdmin {
 			$templateCode = $this->cObj->substituteSubpart($templateCode, '###SUB_REQUIRED_FIELDS_WARNING###', '');
 		}
 
-		$templateCode = $this->removeRequired($templateCode,$failure);
+		$templateCode = $this->removeRequired($templateCode, $failure);
 
-		$this->setCObjects($templateCode,$currentArr);
+		$this->setCObjects($templateCode, $currentArr);
 
 		$markerArray = $this->cObj->fillInMarkerArray($this->markerArray, $currentArr, '', TRUE, 'FIELD_', $this->recInMarkersHSC);
 
@@ -1186,9 +1189,9 @@ class user_feAdmin {
 	 * @param	string		Comma list of fields which has errors (and therefore should not be removed)
 	 * @return	string		The processed template HTML code
 	 */
-	function removeRequired($templateCode,$failure) {
+	function removeRequired($templateCode, $failure) {
 		foreach ($this->requiredArr as $theField) {
-			if (!t3lib_div::inList($failure,$theField)) {
+			if (!t3lib_div::inList($failure, $theField)) {
 				$templateCode = $this->cObj->substituteSubpart($templateCode, '###SUB_REQUIRED_FIELD_'.$theField.'###', '');
 			}
 		}
@@ -1252,14 +1255,14 @@ class user_feAdmin {
 					switch($theCmd) {
 						case 'multiple':
 							if (isset($inputArr[$theField]) && !$this->isPreview()) {
-								$inputArr[$theField] = explode(',',$inputArr[$theField]);
+								$inputArr[$theField] = explode(',', $inputArr[$theField]);
 							}
 						break;
 
 						case 'checkArray':
 							if ($inputArr[$theField] && !$this->isPreview()) {
 								for($a=0; $a <= 30; $a++) {
-									if ($inputArr[$theField] & pow(2,$a)) {
+									if ($inputArr[$theField] & pow(2, $a)) {
 										$alt_theField = $theField . '][' . $a;
 										$inputArr[$alt_theField] = 1;
 										$this->additionalUpdateFields .= ',' . $alt_theField;
@@ -1638,13 +1641,13 @@ class user_feAdmin {
 	function setfixed($markerArray, $setfixed, $r) {
 		if (is_array($setfixed)) {
 			foreach ($setfixed as $theKey => $data) {
-				if (!strcmp($theKey,'DELETE')) {
+				if (!strcmp($theKey, 'DELETE')) {
 					$recCopy = $r;
 					$string = '&cmd=setfixed&sFK=' . rawurlencode($theKey) . '&rU=' . $r['uid'];
 					$string .= '&aC=' . $this->setfixedHash($recCopy, $data['_FIELDLIST']);
 					$markerArray['###SYS_SETFIXED_DELETE###'] = $string;
 					$markerArray['###SYS_SETFIXED_HSC_DELETE###'] = htmlspecialchars($string);
-				} elseif (strstr($theKey,'.')) {
+				} elseif (strstr($theKey, '.')) {
 					$theKey = substr($theKey, 0, -1);
 					if (is_array($data)) {
 						$recCopy = $r;
@@ -1653,7 +1656,7 @@ class user_feAdmin {
 							$string .= '&fD%5B' . $fieldName . '%5D=' . rawurlencode($fieldValue);
 							$recCopy[$fieldName] = $fieldValue;
 						}
-						$string .= '&aC=' . $this->setfixedHash($recCopy,$data['_FIELDLIST']);
+						$string .= '&aC=' . $this->setfixedHash($recCopy, $data['_FIELDLIST']);
 						$markerArray['###SYS_SETFIXED_' . $theKey . '###'] = $string;
 						$markerArray['###SYS_SETFIXED_HSC_' . $theKey . '###'] = htmlspecialchars($string);
 					}
@@ -1671,7 +1674,7 @@ class user_feAdmin {
 	 * @return	string		Hash string of $this->codeLength (if TypoScript "authcodeFields" was set)
 	 * @see setfixed(),authCode()
 	 */
-	function setfixedHash($recCopy,$fields='') {
+	function setfixedHash($recCopy, $fields = '') {
 		if ($fields) {
 			$fieldArr = t3lib_div::trimExplode(',', $fields, 1);
 			foreach ($fieldArr as $k => $v) {

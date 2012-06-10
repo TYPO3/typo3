@@ -60,6 +60,6 @@ $flags[] = ($GLOBALS['TSFE']->sys_language_uid==1?$pointer:'').'<a href="'.htmls
 $flags[] = ($GLOBALS['TSFE']->sys_language_uid==2?$pointer:'').'<a href="'.htmlspecialchars('index.php?id='.$GLOBALS['TSFE']->id.'&L=2').'" target="_top"><img src="typo3/sysext/cms/tslib/media/uploads/flag_de'.($langArr[2]?'':'_d').'.gif" width="21" height="13" hspace="5" border="0" alt="" /></a>';
 
 // Make the little menu. Notice, the menu does ONLY transfer the page-id and the "L" variable (which is also SPECIFIC for this website because "L" has been used in the extension template used to control the language setup)
-$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td><img src="clear.gif" width="30" height="1" alt="" /></td><td>'.implode('',$flags).'</td></tr></table>';
+$content = '<table border="0" cellpadding="0" cellspacing="0"><tr><td><img src="clear.gif" width="30" height="1" alt="" /></td><td>' . implode('', $flags) . '</td></tr></table>';
 
 ?>
