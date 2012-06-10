@@ -38,7 +38,7 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * Revised for TYPO3 4.3 Mar/2009 by Benjamin Mack
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 require_once(PATH_typo3 . 'template.php');
@@ -46,7 +46,7 @@ require_once(PATH_typo3 . 'template.php');
 /**
  * Script Class, handling the calling of methods in the file admin classes.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -71,15 +71,13 @@ class TYPO3_tcefile {
 		// the result array from the file processor
 	protected $fileData;
 
-
-
 	/**
 	 * Registering incoming data
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function init() {
-			// set the GPvars from outside
+			// Set the GPvars from outside
 		$this->file = t3lib_div::_GP('file');
 		$this->CB = t3lib_div::_GP('CB');
 		$this->overwriteExistingFiles = t3lib_div::_GP('overwriteExistingFiles');
@@ -92,7 +90,7 @@ class TYPO3_tcefile {
 	/**
 	 * Initialize the Clipboard. This will fetch the data about files to paste/delete if such an action has been sent.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function initClipboard() {
 		if (is_array($this->CB)) {
@@ -113,7 +111,7 @@ class TYPO3_tcefile {
 	 * Performing the file admin action:
 	 * Initializes the objects, setting permissions, sending data to object.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function main() {
 			// Initializing:
@@ -140,7 +138,7 @@ class TYPO3_tcefile {
 	 * Redirecting the user after the processing has been done.
 	 * Might also display error messages directly, if any.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function finish() {
 			// Prints errors, if there are any
@@ -157,9 +155,8 @@ class TYPO3_tcefile {
 	 * but without calling the "finish" method, thus makes it simpler to deal with the
 	 * actual return value
 	 *
-	 *
-	 * @param string $params 	always empty.
-	 * @param string $ajaxObj	The Ajax object used to return content and set content types
+	 * @param array $params Always empty.
+	 * @param TYPO3AJAX $ajaxObj The Ajax object used to return content and set content types
 	 * @return void
 	 */
 	public function processAjaxRequest(array $params, TYPO3AJAX $ajaxObj) {
