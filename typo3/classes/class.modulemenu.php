@@ -25,7 +25,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 	$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 }
@@ -33,14 +32,14 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 /**
  * class to render the TYPO3 backend menu for the modules
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage core
  */
 class ModuleMenu {
 
 	/**
-	 * module loading object
+	 * Module loading object
 	 *
 	 * @var t3lib_loadModules
 	 */
@@ -50,11 +49,8 @@ class ModuleMenu {
 	protected $linkModules;
 	protected $loadedModules;
 
-
 	/**
-	 * constructor, initializes several variables
-	 *
-	 * @return	void
+	 * Constructor, initializes several variables
 	 */
 	public function __construct() {
 
@@ -66,14 +62,14 @@ class ModuleMenu {
 		$this->moduleLoader->observeWorkspaces = TRUE;
 		$this->moduleLoader->load($GLOBALS['TBE_MODULES']);
 		$this->loadedModules = $this->moduleLoader->modules;
-
 	}
 
 	/**
 	 * sets the path back to /typo3/
 	 *
-	 * @param	string	path back to /typo3/
-	 * @return	void
+	 * @param string $backPath Path back to /typo3/
+	 * @throws InvalidArgumentException
+	 * @return void
 	 */
 	public function setBackPath($backPath) {
 		if (!is_string($backPath)) {
@@ -86,7 +82,7 @@ class ModuleMenu {
 	/**
 	 * loads the collapse states for the main modules from user's configuration (uc)
 	 *
-	 * @return	array		collapse states
+	 * @return array Collapse states
 	 */
 	protected function getCollapsedStates() {
 
@@ -101,14 +97,15 @@ class ModuleMenu {
 	/**
 	 * ModuleMenu Store loading data
 	 *
-	 * @param array_type $params
-	 * @param object $ajaxObj
+	 * @param array $params
+	 * @param TYPO3AJAX $ajaxObj
+	 * @return array
 	 */
 	public function getModuleData($params, $ajaxObj) {
 		$data = array('success' => TRUE, 'root' => array());
 		$rawModuleData = $this->getRawModuleData();
 		$index = 0;
-		foreach($rawModuleData as $moduleKey => $moduleData) {
+		foreach ($rawModuleData as $moduleKey => $moduleData) {
 			$key = substr($moduleKey, 8);
 			$num = count($data['root']);
 			if ($moduleData['link'] != 'dummy.php' || ($moduleData['link'] == 'dummy.php' && is_array($moduleData['subitems'])) ) {
@@ -117,12 +114,11 @@ class ModuleMenu {
 				$data['root'][$num]['label'] = $moduleData['title'];
 				$data['root'][$num]['subitems'] = is_array($moduleData['subitems']) ? count($moduleData['subitems']) : 0;
 
-
 				if ($moduleData['link'] && $this->linkModules) {
 					$data['root'][$num]['link'] = 'top.goToModule(\'' . $moduleData['name'] . '\')';
 				}
 
-					// traverse submodules
+					// Traverse submodules
 				if (is_array($moduleData['subitems'])) {
 					foreach($moduleData['subitems'] as $subKey => $subData) {
 						$data['root'][$num]['sub'][] = array(
@@ -145,16 +141,15 @@ class ModuleMenu {
 		if ($ajaxObj) {
 			$ajaxObj->setContent($data);
 			$ajaxObj->setContentFormat('jsonbody');
-
 		} else {
 			return $data;
 		}
 	}
 
 	/**
-	 * returns the loaded modules
+	 * Returns the loaded modules
 	 *
-	 * @return	array	array of loaded modules
+	 * @return array Array of loaded modules
 	 */
 	public function getLoadedModules() {
 		return $this->loadedModules;
@@ -163,23 +158,22 @@ class ModuleMenu {
 	/**
 	 * saves the menu's toggle state in the backend user's uc
 	 *
-	 * @param	array		array of parameters from the AJAX interface, currently unused
-	 * @param	TYPO3AJAX	object of type TYPO3AJAX
-	 * @return	void
+	 * @param array $params Array of parameters from the AJAX interface, currently unused
+	 * @param TYPO3AJAX $ajaxObj Object of type TYPO3AJAX
+	 * @return void
 	 */
 	public function saveMenuState($params, $ajaxObj) {
 		$menuItem = t3lib_div::_POST('menuid');
-		$state    = t3lib_div::_POST('state') === 'true' ? 1 : 0;
+		$state = t3lib_div::_POST('state') === 'true' ? 1 : 0;
 
 		$GLOBALS['BE_USER']->uc['moduleData']['menuState'][$menuItem] = $state;
 		$GLOBALS['BE_USER']->writeUC();
 	}
 
-
 	/**
 	 * gets the raw module data
 	 *
-	 * @return	array		multi dimension array with module data
+	 * @return array Multi dimension array with module data
 	 */
 	public function getRawModuleData() {
 		$modules = array();
@@ -189,7 +183,7 @@ class ModuleMenu {
 			unset($this->loadedModules['doc']);
 		}
 
-		foreach($this->loadedModules as $moduleName => $moduleData) {
+		foreach ($this->loadedModules as $moduleName => $moduleData) {
 			$moduleLink = '';
 			if (!is_array($moduleData['sub'])) {
 				$moduleLink = $moduleData['script'];
@@ -258,8 +252,8 @@ class ModuleMenu {
 	/**
 	 * gets the module icon and its size
 	 *
-	 * @param	string		module key
-	 * @return	array		icon data array with 'filename', 'size', and 'html'
+	 * @param string $moduleKey Module key
+	 * @return array Icon data array with 'filename', 'size', and 'html'
 	 */
 	protected function getModuleIcon($moduleKey) {
 		$icon = array(
@@ -290,8 +284,8 @@ class ModuleMenu {
 	 * That means absolute names are just returned while relative names are
 	 * prepended with the path pointing back to typo3/ dir
 	 *
-	 * @param	string		icon filename
-	 * @return	string		icon filename with absolute path
+	 * @param string $iconFilename Icon filename
+	 * @return string Icon filename with absolute path
 	 * @see getModuleIconRelative()
 	 */
 	protected function getModuleIconAbsolute($iconFilename) {
@@ -306,8 +300,8 @@ class ModuleMenu {
 	/**
 	 * Returns relative path to the icon filename for use in img-tags
 	 *
-	 * @param	string		icon filename
-	 * @return	string		icon filename with relative path
+	 * @param string $iconFilename Icon filename
+	 * @return string Icon filename with relative path
 	 * @see getModuleIconAbsolute()
 	 */
 	protected function getModuleIconRelative($iconFilename) {
@@ -317,13 +311,11 @@ class ModuleMenu {
 		return $this->backPath.$iconFilename;
 	}
 
-
-
 	/**
 	 * Appends a '?' if there is none in the string already
 	 *
-	 * @param	string		Link URL
-	 * @return	string		link URl appended with ? if there wasn't one
+	 * @param string $link Link URL
+	 * @return string Link URl appended with ? if there wasn't one
 	 */
 	protected function appendQuestionmarkToLink($link) {
 		if (!strstr($link, '?')) {
@@ -336,7 +328,7 @@ class ModuleMenu {
 	/**
 	 * renders the logout button form
 	 *
-	 * @return	string		html code snippet displaying the logout button
+	 * @return string Html code snippet displaying the logout button
 	 */
 	public function renderLogoutButton() {
 		$buttonLabel      = $GLOBALS['BE_USER']->user['ses_backuserid'] ? 'LLL:EXT:lang/locallang_core.php:buttons.exit' : 'LLL:EXT:lang/locallang_core.php:buttons.logout';
@@ -352,7 +344,9 @@ class ModuleMenu {
 	/**
 	 * turns linking of modules on or off
 	 *
-	 * @param	boolean		status for linking modules with a-tags, set to FALSE to turn lining off
+	 * @param boolean $linkModules Status for linking modules with a-tags, set to FALSE to turn lining off
+	 * @throws InvalidArgumentException
+	 * @return void
 	 */
 	public function setLinkModules($linkModules) {
 		if (!is_bool($linkModules)) {

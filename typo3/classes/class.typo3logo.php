@@ -25,11 +25,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * class to render the TYPO3 logo in the backend
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage core
  */
@@ -39,8 +38,6 @@ class TYPO3Logo {
 
 	/**
 	 * constructor
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		$this->logo = NULL;
@@ -49,13 +46,14 @@ class TYPO3Logo {
 	/**
 	 * renders the actual logo code
 	 *
-	 * @return	string	logo html code snippet to use in the backend
+	 * @return string Logo html code snippet to use in the backend
 	 */
 	public function render() {
 
-		$logoFile = 'gfx/alt_backend_logo.gif'; // default
+			// Default
+		$logoFile = 'gfx/alt_backend_logo.gif';
 		if (is_string($this->logo)) {
-				// overwrite
+				// Overwrite
 			$logoFile = $this->logo;
 		}
 		$imgInfo = getimagesize(PATH_site . TYPO3_mainDir . $logoFile);
@@ -65,7 +63,7 @@ class TYPO3Logo {
 				'<img' . t3lib_iconWorks::skinImg('', $logoFile, $imgInfo[3]) . ' title="TYPO3 Content Management System" alt="" />' .
 				'</a>';
 
-			// overwrite with custom logo
+			// Overwrite with custom logo
 		if ($GLOBALS['TBE_STYLES']['logo']) {
 			$imgInfo = @getimagesize(t3lib_div::resolveBackPath(PATH_typo3 . $GLOBALS['TBE_STYLES']['logo'], 3));
 			$logo = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' .
@@ -77,9 +75,10 @@ class TYPO3Logo {
 	}
 
 	/**
-	 * sets the logo
+	 * Sets the logo
 	 *
-	 * @param	string		path to logo file as seen from typo3/
+	 * @param string $logo Path to logo file as seen from typo3/
+	 * @throws InvalidArgumentException
 	 */
 	public function setLogo($logo) {
 		if (!is_string($logo)) {
