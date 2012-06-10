@@ -86,7 +86,7 @@ class tx_indexed_search_extparse {
 		$mainExtension = '';
 
 			// Ignore extensions
-		$ignoreExtensions = t3lib_div::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']),1);
+		$ignoreExtensions = t3lib_div::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), 1);
 		if (in_array($extension, $ignoreExtensions)) {
 			$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:ignoreExtensions'), $extension), 1);
 			return FALSE;
@@ -102,7 +102,7 @@ class tx_indexed_search_extparse {
 						$this->app['pdfinfo'] = $pdfPath.'pdfinfo'.$exe;
 						$this->app['pdftotext'] = $pdfPath.'pdftotext'.$exe;
 							// PDF mode:
-						$this->pdf_mode = t3lib_utility_Math::forceIntegerInRange($indexerConfig['pdf_mode'],-100,100);
+						$this->pdf_mode = t3lib_utility_Math::forceIntegerInRange($indexerConfig['pdf_mode'], -100, 100);
 						$extOK = TRUE;
 					} else $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:pdfToolsNotFound'), $pdfPath), 3);
 				} else $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/locallang.xml:pdfToolsDisabled'), 1);
@@ -234,7 +234,7 @@ class tx_indexed_search_extparse {
 		$indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
 
 			// Ignore extensions
-		$ignoreExtensions = t3lib_div::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']),1);
+		$ignoreExtensions = t3lib_div::trimExplode(',', strtolower($indexerConfig['ignoreExtensions']), 1);
 		if (in_array($extension, $ignoreExtensions)) {
 			return FALSE;
 		}
@@ -390,7 +390,7 @@ class tx_indexed_search_extparse {
 					$pdfInfo = $this->splitPdfInfo($res);
 					unset($res);
 					if (intval($pdfInfo['pages'])) {
-						list($low,$high) = explode('-',$cPKey);
+						list($low, $high) = explode('-', $cPKey);
 
 							// Get pdf content:
 						$tempFileName = t3lib_div::tempnam('Typo3_indexer');		// Create temporary name
@@ -413,7 +413,7 @@ class tx_indexed_search_extparse {
 				if ($this->app['catdoc']) {
 					$cmd = $this->app['catdoc'] . ' -d utf-8 ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
-					$content = implode(LF,$res);
+					$content = implode(LF, $res);
 					unset($res);
 					$contentArr = $this->pObj->splitRegularContent($this->removeEndJunk($content));
 				}
@@ -423,7 +423,7 @@ class tx_indexed_search_extparse {
 				if ($this->app['ppthtml']) {
 					$cmd = $this->app['ppthtml'] . ' ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
-					$content = implode(LF,$res);
+					$content = implode(LF, $res);
 					unset($res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
 					$contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
@@ -434,7 +434,7 @@ class tx_indexed_search_extparse {
 				if ($this->app['xlhtml']) {
 					$cmd = $this->app['xlhtml'] . ' -nc -te ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
-					$content = implode(LF,$res);
+					$content = implode(LF, $res);
 					unset($res);
 					$content = $this->pObj->convertHTMLToUtf8($content);
 					$contentArr = $this->pObj->splitHTMLContent($this->removeEndJunk($content));
@@ -451,16 +451,16 @@ class tx_indexed_search_extparse {
 						// Read content.xml:
 					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' content.xml';
 					t3lib_utility_Command::exec($cmd, $res);
-					$content_xml = implode(LF,$res);
+					$content_xml = implode(LF, $res);
 					unset($res);
 
 						// Read meta.xml:
 					$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' meta.xml';
 					t3lib_utility_Command::exec($cmd, $res);
-					$meta_xml = implode(LF,$res);
+					$meta_xml = implode(LF, $res);
 					unset($res);
 
-					$utf8_content = trim(strip_tags(str_replace('<',' <',$content_xml)));
+					$utf8_content = trim(strip_tags(str_replace('<', ' <', $content_xml)));
 					$contentArr = $this->pObj->splitRegularContent($utf8_content);
 					$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
 
@@ -484,7 +484,7 @@ class tx_indexed_search_extparse {
 				if ($this->app['unrtf']) {
 					$cmd = $this->app['unrtf'] . ' ' . escapeshellarg($absFile);
 					t3lib_utility_Command::exec($cmd, $res);
-					$fileContent = implode(LF,$res);
+					$fileContent = implode(LF, $res);
 					unset($res);
 					$fileContent = $this->pObj->convertHTMLToUtf8($fileContent);
 					$contentArr = $this->pObj->splitHTMLContent($fileContent);
@@ -509,11 +509,11 @@ class tx_indexed_search_extparse {
 				$fileContent = t3lib_div::getUrl($absFile);
 
 					// Finding charset:
-				preg_match('/^[[:space:]]*<\?xml[^>]+encoding[[:space:]]*=[[:space:]]*["\'][[:space:]]*([[:alnum:]_-]+)[[:space:]]*["\']/i',substr($fileContent,0,200),$reg);
+				preg_match('/^[[:space:]]*<\?xml[^>]+encoding[[:space:]]*=[[:space:]]*["\'][[:space:]]*([[:alnum:]_-]+)[[:space:]]*["\']/i', substr($fileContent, 0, 200), $reg);
 				$charset = $reg[1] ? $this->pObj->csObj->parse_charset($reg[1]) : 'utf-8';
 
 					// Converting content:
-				$fileContent = $this->pObj->convertHTMLToUtf8(strip_tags(str_replace('<',' <',$fileContent)), $charset);
+				$fileContent = $this->pObj->convertHTMLToUtf8(strip_tags(str_replace('<', ' <', $fileContent)), $charset);
 				$contentArr = $this->pObj->splitRegularContent($fileContent);
 				$contentArr['title'] = basename($absFile);	// Make sure the title doesn't expose the absolute path!
 			break;
@@ -540,7 +540,8 @@ class tx_indexed_search_extparse {
 		}
 			// If no title (and why should there be...) then the file-name is set as title. This will raise the hits considerably if the search matches the document name.
 		if (is_array($contentArr) && !$contentArr['title']) {
-			$contentArr['title'] = str_replace('_',' ',basename($absFile));	// Substituting "_" for " " because many filenames may have this instead of a space char.
+				// Substituting "_" for " " because many filenames may have this instead of a space char.
+			$contentArr['title'] = str_replace('_', ' ', basename($absFile));
 		}
 
 		return $contentArr;
@@ -571,7 +572,7 @@ class tx_indexed_search_extparse {
 					if ($this->pdf_mode>0) {
 						$iter = ceil($pdfInfo['pages']/$this->pdf_mode);
 					} else {
-						$iter = t3lib_utility_Math::forceIntegerInRange(abs($this->pdf_mode),1,$pdfInfo['pages']);
+						$iter = t3lib_utility_Math::forceIntegerInRange(abs($this->pdf_mode), 1, $pdfInfo['pages']);
 					}
 
 						// Traverse and create intervals.
@@ -598,7 +599,7 @@ class tx_indexed_search_extparse {
 		$res = array();
 		if (is_array($pdfInfoArray)) {
 			foreach($pdfInfoArray as $line) {
-				$parts = explode(':',$line,2);
+				$parts = explode(':', $line, 2);
 				if (count($parts)>1 && trim($parts[0])) {
 					$res[strtolower(trim($parts[0]))] = trim($parts[1]);
 				}
@@ -614,7 +615,7 @@ class tx_indexed_search_extparse {
 	 * @return	string		String
 	 */
 	function removeEndJunk($string) {
-		return trim(preg_replace('/['.LF.chr(12).']*$/','',$string));
+		return trim(preg_replace('/['.LF.chr(12).']*$/', '', $string));
 	}
 
 
