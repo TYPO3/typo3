@@ -39,16 +39,14 @@ require('classes/class.livesearch.php');
 
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 
-
 /**
  * Class for rendering the TYPO3 backend version 4.2+
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage core
  */
 class TYPO3backend {
-
 	protected $content;
 	protected $css;
 	protected $cssFiles;
@@ -82,12 +80,12 @@ class TYPO3backend {
 	protected $pageRenderer;
 
 	/**
-	 * constructor
+	 * Constructor
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function __construct() {
-			// set debug flag for BE development only
+			// Set debug flag for BE development only
 		$this->debug = intval($GLOBALS['TYPO3_CONF_VARS']['BE']['debug']) === 1;
 
 			// Initializes the backend modules structure for use later.
@@ -101,7 +99,6 @@ class TYPO3backend {
 		$this->pageRenderer->loadExtJS();
 		$this->pageRenderer->enableExtJSQuickTips();
 
-
 		$this->pageRenderer->addJsInlineCode(
 			'consoleOverrideWithDebugPanel',
 			'//already done',
@@ -109,8 +106,8 @@ class TYPO3backend {
 		);
 		$this->pageRenderer->addExtDirectCode();
 
-			// add default BE javascript
-		$this->js      = '';
+			// Add default BE javascript
+		$this->js = '';
 		$this->jsFiles = array(
 			'common'                => 'js/common.js',
 			'locallang'             => $this->getLocalLangFileName(),
@@ -143,8 +140,8 @@ class TYPO3backend {
 			unset($this->jsFiles['loginrefresh']);
 		}
 
-			// add default BE css
-		$this->css      = '';
+			// Add default BE css
+		$this->css = '';
 		$this->cssFiles = array();
 
 		$this->toolbarItems = array();
@@ -159,9 +156,9 @@ class TYPO3backend {
 	}
 
 	/**
-	 * initializes the core toolbar items
+	 * Initializes the core toolbar items
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function initializeCoreToolbarItems() {
 
@@ -174,11 +171,11 @@ class TYPO3backend {
 		foreach($coreToolbarItems as $toolbarItemName => $toolbarItemClassName) {
 			$toolbarItem = t3lib_div::makeInstance($toolbarItemClassName, $this);
 
-			if(!($toolbarItem instanceof backend_toolbarItem)) {
+			if (!($toolbarItem instanceof backend_toolbarItem)) {
 				throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface backend_toolbarItem', 1195126772);
 			}
 
-			if($toolbarItem->checkAccess()) {
+			if ($toolbarItem->checkAccess()) {
 				$this->toolbarItems[$toolbarItemName] = $toolbarItem;
 			} else {
 				unset($toolbarItem);
@@ -187,20 +184,18 @@ class TYPO3backend {
 	}
 
 	/**
-	 * main function generating the BE scaffolding
+	 * Main function generating the BE scaffolding
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function render() {
 		$this->executeHook('renderPreProcess');
 
-			// prepare the scaffolding, at this point extension may still add javascript and css
-		$logo         = t3lib_div::makeInstance('TYPO3Logo');
+			// Prepare the scaffolding, at this point extension may still add javascript and css
+		$logo = t3lib_div::makeInstance('TYPO3Logo');
 		$logo->setLogo('gfx/typo3logo_mini.png');
 
-
-
-			// create backend scaffolding
+			// Create backend scaffolding
 		$backendScaffolding = '
 		<div id="typo3-top-container" class="x-hide-display">
 			<div id="typo3-logo">'.$logo->render().'</div>
@@ -212,19 +207,19 @@ class TYPO3backend {
 ';
 
 		/******************************************************
-		 * now put the complete backend document together
+		 * Now put the complete backend document together
 		 ******************************************************/
 
-		foreach($this->cssFiles as $cssFileName => $cssFile) {
+		foreach ($this->cssFiles as $cssFileName => $cssFile) {
 			$this->pageRenderer->addCssFile($cssFile);
 
 				// load addditional css files to overwrite existing core styles
-			if(!empty($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName])) {
+			if (!empty($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName])) {
 				$this->pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName]);
 			}
 		}
 
-		if(!empty($this->css)) {
+		if (!empty($this->css)) {
 			$this->pageRenderer->addCssInlineBlock('BackendInlineCSS', $this->css);
 		}
 
@@ -232,16 +227,17 @@ class TYPO3backend {
 			$this->pageRenderer->addJsFile($jsFile);
 		}
 
+		$this->pageRenderer->setFavIcon('gfx/favicon.ico');
 
 		$this->generateJavascript();
 		$this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js, FALSE);
 
 		$this->loadResourcesForRegisteredNavigationComponents();
 
-			// add state provider
+			// Add state provider
 		$GLOBALS['TBE_TEMPLATE']->setExtDirectStateProvider();
 		$states = $GLOBALS['BE_USER']->uc['BackendComponents']['States'];
-			//save states in BE_USER->uc
+			// Save states in BE_USER->uc
 		$extOnReadyCode = '
 			Ext.state.Manager.setProvider(new TYPO3.state.ExtDirectProvider({
 				key: "BackendComponents.States",
@@ -259,8 +255,7 @@ class TYPO3backend {
 			TYPO3.ContextHelpWindow.init();';
 		$this->pageRenderer->addExtOnReadyCode($extOnReadyCode);
 
-
-			// set document title:
+			// Set document title:
 		$title = ($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']
 			? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'].' [TYPO3 '.TYPO3_version.']'
 			: 'TYPO3 '.TYPO3_version
@@ -309,7 +304,7 @@ class TYPO3backend {
 
 			$cssFiles = t3lib_div::getFilesInDir($absoluteComponentPath . 'css/', 'css');
 			if (file_exists($absoluteComponentPath . 'css/loadorder.txt')) {
-					//don't allow inclusion outside directory
+					// Don't allow inclusion outside directory
 				$loadOrder = str_replace('../', '', t3lib_div::getUrl($absoluteComponentPath . 'css/loadorder.txt'));
 				$cssFilesOrdered = t3lib_div::trimExplode(LF, $loadOrder, TRUE);
 				$cssFiles = array_merge($cssFilesOrdered, $cssFiles);
@@ -333,13 +328,13 @@ class TYPO3backend {
 	}
 
 	/**
-	 * renders the items in the top toolbar
+	 * Renders the items in the top toolbar
 	 *
-	 * @return	string	top toolbar elements as HTML
+	 * @return string top toolbar elements as HTML
 	 */
 	protected function renderToolbar() {
 
-			// move search to last position
+			// Move search to last position
 		if (array_key_exists('liveSearch', $this->toolbarItems)) {
 			$search = $this->toolbarItems['liveSearch'];
 			unset($this->toolbarItems['liveSearch']);
@@ -372,7 +367,7 @@ class TYPO3backend {
 	/**
 	 * Gets the label of the BE user currently logged in
 	 *
-	 * @return	string		html code snippet displaying the currently logged in user
+	 * @return string html code snippet displaying the currently logged in user
 	 */
 	protected function getLoggedInUserLabel() {
 		$css = 'toolbar-item';
@@ -389,7 +384,7 @@ class TYPO3backend {
 			$link = '<a href="#" onclick="top.goToModule(\'user_setup\'); this.blur(); return false;">';
 		}
 
-			// superuser mode
+			// Superuser mode
 		if ($GLOBALS['BE_USER']->user['ses_backuserid']) {
 			$css .= ' su-user';
 			$title = $GLOBALS['LANG']->getLL('switchtouser') . ': ' . $username;
@@ -508,9 +503,9 @@ class TYPO3backend {
 		$generatedLabels = array();
 		$generatedLabels['core'] = $coreLabels;
 
-			// first loop over all categories (fileUpload, liveSearch, ..)
+			// First loop over all categories (fileUpload, liveSearch, ..)
 		foreach ($labels as $categoryName => $categoryLabels) {
-				// then loop over every single label
+				// Then loop over every single label
 			foreach ($categoryLabels as $label) {
 					// LLL identifier must be called $categoryName_$label, e.g. liveSearch_loadingText
 				$generatedLabels[$categoryName][$label] = $GLOBALS['LANG']->getLL($categoryName . '_' . $label);
@@ -523,11 +518,11 @@ class TYPO3backend {
 	/**
 	 * Generates the JavaScript code for the backend.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function generateJavascript() {
 
-		$pathTYPO3          = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')).'/';
+		$pathTYPO3 = t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')) . '/';
 
 			// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
@@ -541,7 +536,7 @@ class TYPO3backend {
 			$menuFrameName = 'topmenuFrame';
 		}
 
-		// determine security level from conf vars and default to super challenged
+			// Determine security level from conf vars and default to super challenged
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) {
 			$this->loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'];
 		} else {
@@ -622,11 +617,11 @@ class TYPO3backend {
 	 * Checking if the "&edit" variable was sent so we can open it for editing the page.
 	 * Code based on code from "alt_shortcut.php"
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function handlePageEditing() {
 
-		if(!t3lib_extMgm::isLoaded('cms')) {
+		if (!t3lib_extMgm::isLoaded('cms')) {
 			return;
 		}
 
@@ -634,25 +629,25 @@ class TYPO3backend {
 		$editId     = preg_replace('/[^[:alnum:]_]/', '', t3lib_div::_GET('edit'));
 		$editRecord = '';
 
-		if($editId) {
+		if ($editId) {
 
 				// Looking up the page to edit, checking permissions:
-			$where = ' AND ('.$GLOBALS['BE_USER']->getPagePermsClause(2)
-					.' OR '.$GLOBALS['BE_USER']->getPagePermsClause(16).')';
+			$where = ' AND ('.$GLOBALS['BE_USER']->getPagePermsClause(2) .
+				' OR ' . $GLOBALS['BE_USER']->getPagePermsClause(16) . ')';
 
-			if(t3lib_utility_Math::canBeInterpretedAsInteger($editId)) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($editId)) {
 				$editRecord = t3lib_BEfunc::getRecordWSOL('pages', $editId, '*', $where);
 			} else {
 				$records = t3lib_BEfunc::getRecordsByField('pages', 'alias', $editId, $where);
 
-				if(is_array($records)) {
+				if (is_array($records)) {
 					$editRecord = reset($records);
 					t3lib_BEfunc::workspaceOL('pages', $editRecord);
 				}
 			}
 
 				// If the page was accessible, then let the user edit it.
-			if(is_array($editRecord) && $GLOBALS['BE_USER']->isInWebMount($editRecord['uid'])) {
+			if (is_array($editRecord) && $GLOBALS['BE_USER']->isInWebMount($editRecord['uid'])) {
 					// Setting JS code to open editing:
 				$this->js .= '
 		// Load page to edit:
@@ -669,7 +664,7 @@ class TYPO3backend {
 			} else {
 				$this->js .= '
 		// Warning about page editing:
-	alert('.$GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('noEditPage'), $editId)).');
+	alert(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('noEditPage'), $editId)) . ');
 			';
 			}
 		}
@@ -683,7 +678,7 @@ class TYPO3backend {
 	protected function setStartupModule() {
 		$startModule = preg_replace('/[^[:alnum:]_]/', '', t3lib_div::_GET('module'));
 
-		if(!$startModule) {
+		if (!$startModule) {
 			if ($GLOBALS['BE_USER']->uc['startModule']) {
 				$startModule = $GLOBALS['BE_USER']->uc['startModule'];
 			} elseif ($GLOBALS['BE_USER']->uc['startInTaskCenter']) {
@@ -692,7 +687,7 @@ class TYPO3backend {
 		}
 
 		$moduleParameters = t3lib_div::_GET('modParams');
-		if($startModule) {
+		if ($startModule) {
 			return '
 					// start in module:
 				top.startInModule = [\'' . $startModule . '\', ' . t3lib_div::quoteJSvalue($moduleParameters) . '];
@@ -704,14 +699,14 @@ class TYPO3backend {
 	}
 
 	/**
-	 * adds a javascript snippet to the backend
+	 * Sdds a javascript snippet to the backend
 	 *
 	 * @param	string	javascript snippet
 	 * @return	void
 	 */
 	public function addJavascript($javascript) {
 			// TODO do we need more checks?
-		if(!is_string($javascript)) {
+		if (!is_string($javascript)) {
 			throw new InvalidArgumentException('parameter $javascript must be of type string', 1195129553);
 		}
 
@@ -719,31 +714,31 @@ class TYPO3backend {
 	}
 
 	/**
-	 * adds a javscript file to the backend after it has been checked that it exists
+	 * Adds a javscript file to the backend after it has been checked that it exists
 	 *
-	 * @param	string	javascript file reference
-	 * @return	boolean	TRUE if the javascript file was successfully added, FALSE otherwise
+	 * @param string javascript file reference
+	 * @return boolean TRUE if the javascript file was successfully added, FALSE otherwise
 	 */
 	public function addJavascriptFile($javascriptFile) {
 		$jsFileAdded = FALSE;
 
 			//TODO add more checks if neccessary
-		if(file_exists(t3lib_div::resolveBackPath(PATH_typo3.$javascriptFile))) {
+		if (file_exists(t3lib_div::resolveBackPath(PATH_typo3.$javascriptFile))) {
 			$this->jsFiles[] = $javascriptFile;
-			$jsFileAdded     = TRUE;
+			$jsFileAdded = TRUE;
 		}
 
 		return $jsFileAdded;
 	}
 
 	/**
-	 * adds a css snippet to the backend
+	 * Adds a css snippet to the backend
 	 *
-	 * @param	string	css snippet
-	 * @return	void
+	 * @param string css snippet
+	 * @return void
 	 */
 	public function addCss($css) {
-		if(!is_string($css)) {
+		if (!is_string($css)) {
 			throw new InvalidArgumentException('parameter $css must be of type string', 1195129642);
 		}
 
@@ -751,16 +746,16 @@ class TYPO3backend {
 	}
 
 	/**
-	 * adds a css file to the backend after it has been checked that it exists
+	 * Adds a css file to the backend after it has been checked that it exists
 	 *
-	 * @param	string	the css file's name with out the .css ending
-	 * @param	string	css file reference
-	 * @return	boolean	TRUE if the css file was added, FALSE otherwise
+	 * @param string the css file's name with out the .css ending
+	 * @param string css file reference
+	 * @return boolean TRUE if the css file was added, FALSE otherwise
 	 */
 	public function addCssFile($cssFileName, $cssFile) {
 		$cssFileAdded = FALSE;
 
-		if(empty($this->cssFiles[$cssFileName])) {
+		if (empty($this->cssFiles[$cssFileName])) {
 			$this->cssFiles[$cssFileName] = $cssFile;
 			$cssFileAdded = TRUE;
 		}
@@ -769,20 +764,20 @@ class TYPO3backend {
 	}
 
 	/**
-	 * adds an item to the toolbar, the class file for the toolbar item must be loaded at this point
+	 * Adds an item to the toolbar, the class file for the toolbar item must be loaded at this point
 	 *
-	 * @param	string	toolbar item name, f.e. tx_toolbarExtension_coolItem
-	 * @param	string	toolbar item class name, f.e. tx_toolbarExtension_coolItem
-	 * @return	void
+	 * @param string toolbar item name, f.e. tx_toolbarExtension_coolItem
+	 * @param string toolbar item class name, f.e. tx_toolbarExtension_coolItem
+	 * @return void
 	 */
 	public function addToolbarItem($toolbarItemName, $toolbarItemClassName) {
 		$toolbarItem = t3lib_div::makeInstance($toolbarItemClassName, $this);
 
-		if(!($toolbarItem instanceof backend_toolbarItem)) {
-			throw new UnexpectedValueException('$toolbarItem "'.$toolbarItemName.'" must implement interface backend_toolbarItem', 1195125501);
+		if (!($toolbarItem instanceof backend_toolbarItem)) {
+			throw new UnexpectedValueException('$toolbarItem "' . $toolbarItemName . '" must implement interface backend_toolbarItem', 1195125501);
 		}
 
-		if($toolbarItem->checkAccess()) {
+		if ($toolbarItem->checkAccess()) {
 			$this->toolbarItems[$toolbarItemName] = $toolbarItem;
 		} else {
 			unset($toolbarItem);
@@ -804,7 +799,7 @@ class TYPO3backend {
 	protected function executeHook($identifier, array $hookConfiguration = array()) {
 		$options =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php'];
 
-		if(isset($options[$identifier]) && is_array($options[$identifier])) {
+		if (isset($options[$identifier]) && is_array($options[$identifier])) {
 			foreach($options[$identifier] as $hookFunction) {
 				t3lib_div::callUserFunction($hookFunction, $hookConfiguration, $this);
 			}
@@ -812,16 +807,16 @@ class TYPO3backend {
 	}
 }
 
-	// document generation
+	// Document generation
 $TYPO3backend = t3lib_div::makeInstance('TYPO3backend');
 
-	// include extensions which may add css, javascript or toolbar items
-if(is_array($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'])) {
+	// Include extensions which may add css, javascript or toolbar items
+if (is_array($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'])) {
 	foreach($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'] as $additionalBackendItem) {
 		include_once($additionalBackendItem);
 	}
 }
-	// process ExtJS module js and css
+	// Process ExtJS module js and css
 if (is_array($GLOBALS['TBE_MODULES']['_configuration'])) {
 	foreach ($GLOBALS['TBE_MODULES']['_configuration'] as $moduleConfig) {
 		if (is_array($moduleConfig['cssFiles'])) {
