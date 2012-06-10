@@ -51,7 +51,7 @@ Good luck....
 
 
 BTW: The time:
-<?php if ($CONF['showTime'])	{echo user_printTimeExt('','');} ?>
+<?php if ($CONF['showTime'])	{echo user_printTimeExt('', '');} ?>
 <br />
 <br />
 

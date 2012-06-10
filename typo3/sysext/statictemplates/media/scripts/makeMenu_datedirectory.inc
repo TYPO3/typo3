@@ -46,14 +46,17 @@ $day = $conf['day'];
 $name =	$conf['name'];
 $menuItemsArray = array();
 
-if ($day==-1) $day=date('w');
-if ($day==date('w')) {
-	$son=mktime(0,0,0,date('m'),date('d'),date('Y'));
+if ($day == -1) {
+	$day = date('w');
+}
+if ($day == date('w')) {
+	$son = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 } else {
-	for ($i=1;;$i++) {
-		$son=mktime(0,0,0,date('m'),date('d')-$i,date('Y'));
-		if ($day==date('w',$son)) break;
-		if ($i>100) break;	// Security that it's not an eternal loop.
+	for ($i = 1; ; $i++) {
+		$son = mktime(0, 0, 0, date('m'), date('d') - $i, date('Y'));
+		if ($day == date('w', $son)) break;
+			// Security that it's not an eternal loop.
+		if ($i > 100) break;
 	}
 }
 
@@ -66,9 +69,9 @@ $value=$row['uid'];
 if ($value=='') {
 	$value=$GLOBALS['TSFE']->page['uid'];
 }
-$items=t3lib_div::intExplode(',',$value);
+$items = t3lib_div::intExplode(',', $value);
 foreach ($items as $id) {
-	$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages',Array('pidInList'=>$id,'orderBy'=>$altSortField));
+	$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages', Array('pidInList' => $id, 'orderBy' => $altSortField));
 	while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))        {
 		$menuItemsArray[]=$row;
 	}

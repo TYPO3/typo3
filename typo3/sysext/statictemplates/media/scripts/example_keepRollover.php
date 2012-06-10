@@ -54,7 +54,7 @@ function user_keepRolloverAtOnClick($I, $conf) {
 		// Setting the document status content to the value of the page title on mouse over
 	if (!$I['linkHREF']['TARGET']) {
 		$I['linkHREF']['HREF']='#';
-		$I['linkHREF']['onClick'].='ARO_setLocation'.($conf['setLocation']).'('.$itemRow['uid'].',\''.$I['theName'].'\'); return false;';
+		$I['linkHREF']['onClick'] .= 'ARO_setLocation' . ($conf['setLocation']) . '(' . $itemRow['uid'] . ',\'' . $I['theName'] . '\'); return false;';
 	} else {
 		$I['linkHREF']['onClick'].='ARO_setActiveImg'.'(\''.$I['theName'].'\');';
 	}

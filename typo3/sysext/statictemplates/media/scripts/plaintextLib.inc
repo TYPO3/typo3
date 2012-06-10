@@ -224,7 +224,7 @@ class user_plaintext {
 		$aConf['parseFunc.']['tags.']['a.']['userFunc'] = 'user_plaintext->atag_to_http';
 		$aConf['parseFunc.']['tags.']['a.']['siteUrl'] = $this->siteUrl;
 
-		$str = $this->cObj->stdWrap($str,$aConf);
+		$str = $this->cObj->stdWrap($str, $aConf);
 		$str = str_replace('&nbsp;', ' ', t3lib_div::htmlspecialchars_decode($str));
 		return $str;
 	}
@@ -304,7 +304,7 @@ class user_plaintext {
 				if ($this->cObj->data['header_position'] == 'center') {
 					$prefix=str_pad(' ', floor(($this->charWidth-strlen($str)) / 2));
 				}
-				$lines[] = $this->cObj->stdWrap($prefix.$str,$tConf['stdWrap.']);
+				$lines[] = $this->cObj->stdWrap($prefix . $str, $tConf['stdWrap.']);
 				if ($this->cObj->data['header_link']) {
 					$lines[] = $this->getString($hConf['linkPrefix']).$this->getLink($this->cObj->data['header_link']);
 				}
@@ -334,7 +334,7 @@ class user_plaintext {
 	 * @return	array		The input array with a new line added.
 	 * @see renderHeader()
 	 */
-	function pad($lines,$preLineChar, $len) {
+	function pad($lines, $preLineChar, $len) {
 		$strPad = t3lib_utility_Math::forceIntegerInRange($len, 0, 1000);
 		$strPadChar = $preLineChar?$preLineChar : '-';
 		if ($strPad) {
@@ -354,7 +354,7 @@ class user_plaintext {
 		$cParts = explode(chr(10), $str);
 		reset($cParts);
 		$lines = array();
-		while(list(,$substrs)=each($cParts)) {
+		while(list(, $substrs) = each($cParts)) {
 			$lines[] = $this->breakLines($substrs);
 		}
 		return implode(chr(10), $lines);
@@ -376,12 +376,12 @@ class user_plaintext {
 		reset($cParts);
 		$lines = array();
 		$c = 0;
-		while(list(,$substrs)=each($cParts)) {
+		while(list(, $substrs) = each($cParts)) {
 			$c++;
 			$bullet = $tConf['bullet'] ? $this->getString($tConf['bullet']) : ' - ';
 			$bLen=strlen($bullet);
 			$bullet = substr(str_replace('#', $c, $bullet), 0, $bLen);
-			$secondRow = substr($tConf['secondRow'] ? $this->getString($tConf['secondRow']) : str_pad('',strlen($bullet),' '), 0, $bLen);
+			$secondRow = substr($tConf['secondRow'] ? $this->getString($tConf['secondRow']) : str_pad('', strlen($bullet), ' '), 0, $bLen);
 
 			$lines[] = $bullet . $this->breakLines($substrs, chr(10). $secondRow, $this->charWidth - $bLen);
 
@@ -405,7 +405,7 @@ class user_plaintext {
 		$lines = array();
 		$cols = intval($this->conf['cols']) ? intval($this->conf['cols']) : 0;
 		$c = 0;
-		while(list(,$substrs) = each($cParts)) {
+		while(list(, $substrs) = each($cParts)) {
 			$c++;
 			if (trim($substrs)) {
 				$lineParts = explode('|', $substrs);
@@ -429,14 +429,14 @@ class user_plaintext {
 		$outLines[] = $this->addDiv($messure, '', $divChar, $joinChar, $cols);
 
 		reset($lines);
-		while(list($k,$v)=each($lines)) {
+		while(list($k, $v) = each($lines)) {
 			$top = intval($messure[1][$k]);
 			for ($aa=0; $aa < $top; $aa++) {
 				$tempArr = array();
 				for ($bb=0; $bb < $cols; $bb++) {
 					$tempArr[$bb] = str_pad($v[$bb][$aa], $messure[0][$bb], ' ');
 				}
-				$outLines[] = $colChar . implode($colChar,$tempArr) . $colChar;
+				$outLines[] = $colChar . implode($colChar, $tempArr) . $colChar;
 			}
 			$outLines[] = $this->addDiv($messure, '', $divChar, $joinChar, $cols);
 		}
@@ -455,7 +455,7 @@ class user_plaintext {
 	 * @access private
 	 * @see breakTable()
 	 */
-	function addDiv($messure,$content,$divChar,$joinChar,$cols) {
+	function addDiv($messure, $content, $divChar, $joinChar, $cols) {
 		$tempArr = array();
 		for ($a = 0; $a< $cols; $a++) {
 			$tempArr[$a] = str_pad($content, $messure[0][$a], $divChar);
@@ -487,7 +487,7 @@ class user_plaintext {
 					$maxLines[$k] = count($vv);
 			}
 		}
-		return array($maxLen,$maxLines);
+		return array($maxLen, $maxLines);
 	}
 
 	/**
@@ -587,7 +587,7 @@ class user_plaintext {
 	 * @param	mixed		Variable to process
 	 * @return	mixed		The processed $passVar as returned by the function call
 	 */
-	function userProcess($mConfKey,$passVar) {
+	function userProcess($mConfKey, $passVar) {
 		if ($this->conf[$mConfKey]) {
 			$funcConf = $this->conf[$mConfKey . '.'];
 			$funcConf['parentObj'] = $this;

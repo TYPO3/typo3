@@ -83,8 +83,8 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 		$this->WMimagesFlag=0;
 		$this->WMimageHTML ='';
 		if (($this->mconf['arrowNO'] || $this->mconf['arrowNO.']) && ($this->mconf['arrowACT'] || $this->mconf['arrowACT.'])) {
-			$this->WMarrowNO = $GLOBALS['TSFE']->cObj->getImgResource($this->mconf['arrowNO'],$this->mconf['arrowNO.']);
-			$this->WMarrowACT = $GLOBALS['TSFE']->cObj->getImgResource($this->mconf['arrowACT'],$this->mconf['arrowACT.']);
+			$this->WMarrowNO = $GLOBALS['TSFE']->cObj->getImgResource($this->mconf['arrowNO'], $this->mconf['arrowNO.']);
+			$this->WMarrowACT = $GLOBALS['TSFE']->cObj->getImgResource($this->mconf['arrowACT'], $this->mconf['arrowACT.']);
 			if (is_array($this->WMarrowACT) && is_array($this->WMarrowNO)) {
 				$this->WMimagesFlag=1;
 			}
@@ -143,15 +143,15 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	 */
 	function extProc_finish() {
 		$bHeight = t3lib_utility_Math::forceIntegerInRange(($this->mconf['bottomHeight']?$this->mconf['bottomHeight']:100), 0, 3000);
-		$bottomContent = $this->mconf['bottomContent'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($this->mconf['bottomContent'],$this->mconf['bottomContent.'], '/GMENU_FOLDOUT/.bottomContent') : '';
+		$bottomContent = $this->mconf['bottomContent'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($this->mconf['bottomContent'], $this->mconf['bottomContent.'], '/GMENU_FOLDOUT/.bottomContent') : '';
 		$adjustTopHeights = intval($this->mconf['adjustItemsH']);
 		$adjustSubHeights = intval($this->mconf['adjustSubItemsH']);
 		$mWidth = t3lib_utility_Math::forceIntegerInRange(($this->mconf['menuWidth']?$this->mconf['menuWidth']:170), 0, 3000);
 		$mHeight = t3lib_utility_Math::forceIntegerInRange(($this->mconf['menuHeight']?$this->mconf['menuHeight']:400), 0, 3000);
 		$insertmColor= $this->mconf['menuBackColor'] ? 'BACKGROUND-COLOR: '.$this->mconf['menuBackColor'].'; layer-background-color: '.$this->mconf['menuBackColor'] : '';
 		$insertBottomColor= $this->mconf['bottomBackColor'] ? 'BACKGROUND-COLOR: '.$this->mconf['bottomBackColor'].'; layer-background-color: '.$this->mconf['bottomBackColor'] : '';
-		$menuOffset = t3lib_div::intExplode(',',$this->mconf['menuOffset'].',');
-		$subOffset = t3lib_div::intExplode(',',$this->mconf['subMenuOffset'].',');
+		$menuOffset = t3lib_div::intExplode(',', $this->mconf['menuOffset'] . ',');
+		$subOffset = t3lib_div::intExplode(',', $this->mconf['subMenuOffset'] . ',');
 
 
 		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared']='<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath('cms').'tslib/media/scripts/jsfunc.layermenu.js"></script>';
@@ -212,7 +212,7 @@ GFV_exImg.src="'.$GLOBALS['TSFE']->absRefPrefix.$this->WMarrowACT[3].'";   //...
 
 		$GLOBALS['TSFE']->divSection.= '
 <div id="divCont"><!-- These are the contents of the foldoutmenu. -->
-		'.$this->tmpl->wrap($this->WMresult,$this->mconf['wrap']).'
+		' . $this->tmpl->wrap($this->WMresult, $this->mconf['wrap']) . '
 <div class="bottomLayer" id="divTop'.($this->WMmenuItems+1).'">
 	<div class="clSub" id="divSub'.($this->WMmenuItems+1).'"><!-- This is a cover layer, it should always be the last one, and does NOT count in your number of toplinks! --><!-- So if this one is divTop7, the GFV_foldNumber variable should be set to 6 --><!-- This layer covers up the last sub, so if the last sub gets too big, increase this layers size in the stylesheet. --><!-- There are tables with width="100%" around the toplinks, to force NS4 to use the real width specified for the toplinks in the stylesheet. -->
 	</div>'.$this->tmpl->wrap($bottomContent, $this->WMtableWrap).'

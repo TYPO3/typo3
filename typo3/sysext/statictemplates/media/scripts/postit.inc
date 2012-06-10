@@ -111,18 +111,18 @@ tt_content.splash.20 {
 
 
 
-$data = $this->stdWrap($conf['data'],$conf['data.']);
+$data = $this->stdWrap($conf['data'], $conf['data.']);
 $cols = intval($conf['cols']) ? intval($conf['cols']) : 3;
 
 
-$lines = explode(chr(10),$data);
+$lines = explode(chr(10), $data);
 $imageArr = array();
 foreach ($lines as $key => $content) {
 	$content = trim($content);
 	if ($content) {
-		$parts = explode('|',$content);
+		$parts = explode('|', $content);
 		$text = trim($parts[0]);
-		$type = t3lib_utility_Math::forceIntegerInRange($parts[1],1,3);
+		$type = t3lib_utility_Math::forceIntegerInRange($parts[1], 1, 3);
 		$link = trim($parts[2]);
 		if ($text) {
 			$imgConf = $conf['images.'][$type.'.'];
@@ -131,7 +131,7 @@ foreach ($lines as $key => $content) {
 			$image = $this->IMAGE($imgConf);
 			if ($image) {
 				$this->setCurrentVal($link);
-				$imageArr[] = $this->typolink($image,$conf['typolink.']);
+				$imageArr[] = $this->typolink($image, $conf['typolink.']);
 			}
 		}
 	}
@@ -154,7 +154,7 @@ if (is_array($imageArr)) {
 
 		$content='<table border="0" cellspacing="0" cellpadding="0">'.$res.'</table>';
 	} else {
-		$content.=implode($imageArr,'');
+		$content .= implode($imageArr, '');
 	}
 }
 

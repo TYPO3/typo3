@@ -110,10 +110,10 @@ class user_various	{
 	function reverseString($content, $conf) {
 		$content = strrev($content);
 		if ($conf['uppercase']) {
-			$content=$this->cObj->caseshift($content,'upper');
+			$content = $this->cObj->caseshift($content, 'upper');
 		}
 		if ($conf['typolink']) {
-			$content=$this->cObj->getTypoLink($content,$conf['typolink']);
+			$content = $this->cObj->getTypoLink($content, $conf['typolink']);
 		}
 		return $content;
 	}
@@ -161,7 +161,7 @@ class user_various	{
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$output[]=$row['header'];
 		}
-		return implode($output,'<br />');
+		return implode($output, '<br />');
 	}
 }
 
