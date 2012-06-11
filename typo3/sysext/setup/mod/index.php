@@ -488,7 +488,7 @@ class SC_mod_user_setup_index {
 		);
 
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','',$this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', '', $this->MCONF['name']);
 		}
 
 		return $buttons;
@@ -785,11 +785,11 @@ class SC_mod_user_setup_index {
 			$opt = array();
 			foreach ($users as $rr) {
 				if ($rr['uid'] != $GLOBALS['BE_USER']->user['uid']) {
-					$opt[] = '<option value="'.$rr['uid'].'"'.($this->simUser==$rr['uid']?' selected="selected"':'').'>'.htmlspecialchars($rr['username'].' ('.$rr['realName'].')').'</option>';
+					$opt[] = '<option value="' . $rr['uid'] . '"' . ($this->simUser==$rr['uid']?' selected="selected"':'') . '>' . htmlspecialchars($rr['username'] . ' (' . $rr['realName'] . ')') . '</option>';
 				}
 			}
 			if (count($opt)) {
-				$this->simulateSelector = '<select id="field_simulate" name="simulateUser" onchange="window.location.href=\'index.php?simUser=\'+this.options[this.selectedIndex].value;"><option></option>'.implode('',$opt).'</select>';
+				$this->simulateSelector = '<select id="field_simulate" name="simulateUser" onchange="window.location.href=\'index.php?simUser=\'+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
 			}
 		}
 
@@ -855,7 +855,7 @@ class SC_mod_user_setup_index {
 
 
 		if (isset($this->overrideConf[($key?$key:$str)])) {
-			$out = '<span style="color:#999999">'.$out.'</span>';
+			$out = '<span style="color:#999999">' . $out . '</span>';
 		}
 
 		if($addLabelTag) {
