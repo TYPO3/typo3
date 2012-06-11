@@ -139,7 +139,7 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 			while ($actionRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($queryResource)) {
 				$actions[] = array(
 					$actionRow['title'],
-					'mod.php?M=user_task&SET[function]==sys_action.tx_sysaction_task&show=' . $actionRow['uid'],
+					'mod.php?M=user_task&SET[mode]=tasks&SET[function]=sys_action.tx_sysaction_task&show=' . $actionRow['uid'],
 					t3lib_iconworks::getSpriteIconForRecord(
 						'sys_action',
 						$actionRow
