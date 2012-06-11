@@ -65,13 +65,6 @@ final class t3lib_div {
 	 */
 	protected static $nonSingletonInstances = array();
 
-	/**
-	 * Register for makeInstance with given class name and final class names to reduce number of class_exists() calls
-	 *
-	 * @var array Given class name => final class name
-	 */
-	protected static $finalClassNameRegister = array();
-
 	/*************************
 	 *
 	 * GET/POST Variables
@@ -4488,12 +4481,7 @@ final class t3lib_div {
 			throw new InvalidArgumentException('$className must be a non empty string.', 1288965219);
 		}
 
-			// Determine final class name which must be instantiated, this takes XCLASS handling
-			// into account. Cache in a local array to save some cycles for consecutive calls.
-		if (!isset(self::$finalClassNameRegister[$className])) {
-			self::addClassNameToMakeInstanceCache($className, self::getClassName($className));
-		}
-		$finalClassName = self::$finalClassNameRegister[$className];
+		$finalClassName = self::getClassName($className);
 
 			// Return singleton instance if it is already registered
 		if (isset(self::$singletonInstances[$finalClassName])) {
@@ -4562,22 +4550,6 @@ final class t3lib_div {
 	public static function setSingletonInstance($className, t3lib_Singleton $instance) {
 		self::checkInstanceClassName($className, $instance);
 		self::$singletonInstances[$className] = $instance;
-	}
-
-	/**
-	 * Adds a $className / $finalClassName to the cache register.
-	 * This register is used to determine the final class name only once instead of multiple times.
-	 *
-	 * Warning: This is _not_ a public API method and must not be used in own extensions!
-	 *
-	 * @see makeInstance
-	 * @param string $className the name of the class to set, must not be empty
-	 * @param string $finalClassName the name of the final class which will be loaded in case of $className
-	 * @return void
-	 * @internal
-	 */
-	public static function addClassNameToMakeInstanceCache($className, $finalClassName) {
-		self::$finalClassNameRegister[$className] = $finalClassName;
 	}
 
 	/**

@@ -360,6 +360,30 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 	/**
 	 * @test
 	 */
+	public function unregisterAutoloaderWritesNotExistingUxCLassLookupFromGetClassPathByRegistryLookupToCache() {
+		$uxClassName = 'ux_Tx_Foo' . uniqid();
+
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+
+		t3lib_autoloader::unregisterAutoloader();
+		t3lib_autoloader::registerAutoloader();
+
+			// Class is not found by returning NULL
+		$this->assertSame(NULL, t3lib_autoloader::getClassPathByRegistryLookup($uxClassName));
+
+			// Expect NULL lookup is cached
+		$expectedCacheString = '\'' . strtolower($uxClassName) . '\' => NULL,';
+		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains($expectedCacheString));
+
+			// Trigger writing new cache file
+		t3lib_autoloader::unregisterAutoloader();
+	}
+
+	/**
+	 * @test
+	 */
 	public function unregisterAutoloaderWritesDeprecatedTypo3ConfVarsRegisteredXclassClassFoundByGetClassPathByRegistryLookupToCache() {
 			// Create a fake extension
 		$extKey = $this->createFakeExtension();
