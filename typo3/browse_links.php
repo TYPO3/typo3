@@ -24,6 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Displays the page/file tree for browsing database records or files.
  * Used from TCEFORMS an other elements
@@ -32,36 +33,23 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-$BACK_PATH='';
+$BACK_PATH = '';
 require ('init.php');
 require ('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_browse_links.xml');
 
 require_once (PATH_typo3.'/class.browse_links.php');
 
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Script class for the Element Browser window.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_browse_links {
-
 
 	/**
 	 * The mode determines the main kind of output from the element browser.
@@ -76,7 +64,7 @@ class SC_browse_links {
 	var $mode;
 
 	/**
-	 * holds Instance of main browse_links class
+	 * Holds Instance of main browse_links class
 	 * needed fo intercommunication between various classes that need access to variables via $GLOBALS['SOBE']
 	 * Not the most nice solution but introduced since we don't have another general way to return class-instances or registry for now
 	 *
@@ -85,16 +73,16 @@ class SC_browse_links {
 	var $browser;
 
 	/**
-	 * document template object
+	 * Document template object
 	 *
 	 * @var template
 	 */
 	var $doc;
 
 	/**
-	 * not really needed but for backwards compatibility ...
+	 * Not really needed but for backwards compatibility ...
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 
@@ -110,11 +98,10 @@ class SC_browse_links {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 	}
 
-
 	/**
 	 * Main function, detecting the current mode of the element browser and branching out to internal methods.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 
@@ -137,7 +124,7 @@ class SC_browse_links {
 
 		$this->content = '';
 
-			// look for alternativ mountpoints
+			// Look for alternativ mountpoints
 		switch((string)$this->mode) {
 			case 'rte':
 			case 'db':
@@ -156,7 +143,7 @@ class SC_browse_links {
 				$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.folderTree.altElementBrowserMountPoints'));
 				if ($altMountPoints) {
 					$altMountPoints = t3lib_div::trimExplode(',', $altMountPoints);
-					foreach($altMountPoints as $filePathRelativeToFileadmindir) {
+					foreach ($altMountPoints as $filePathRelativeToFileadmindir) {
 						$GLOBALS['BE_USER']->addFileMount('', $filePathRelativeToFileadmindir, $filePathRelativeToFileadmindir, 1, 'readonly');
 					}
 					$GLOBALS['FILEMOUNTS'] = $GLOBALS['BE_USER']->returnFilemounts();
@@ -164,8 +151,7 @@ class SC_browse_links {
 				break;
 		}
 
-
-			// render type by user func
+			// Render type by user func
 		$browserRendered = FALSE;
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/browse_links.php']['browserRendering'] as $classRef) {
@@ -181,7 +167,7 @@ class SC_browse_links {
 		}
 
 			// if type was not rendered use default rendering functions
-		if(!$browserRendered) {
+		if (!$browserRendered) {
 			$this->browser = t3lib_div::makeInstance('browse_links');
 			$this->browser->init();
 			$modData = $GLOBALS['BE_USER']->getModuleData('browse_links.php', 'ses');
@@ -213,14 +199,14 @@ class SC_browse_links {
 	/**
 	 * Print module content
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_browse_links');
 $SOBE->init();
 $SOBE->main();

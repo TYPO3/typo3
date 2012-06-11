@@ -32,7 +32,7 @@ require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
 require('classes/class.typo3logo.php');
 require('classes/class.modulemenu.php');
 
-	// core toolbar items
+	// Core toolbar items
 require('classes/class.clearcachemenu.php');
 require('classes/class.shortcutmenu.php');
 require('classes/class.livesearch.php');
@@ -54,7 +54,8 @@ class TYPO3backend {
 	protected $jsFiles;
 	protected $jsFilesAfterInline;
 	protected $toolbarItems;
-	private   $menuWidthDefault = 190; // intentionally private as nobody should modify defaults
+		// intentionally private as nobody should modify defaults
+	private   $menuWidthDefault = 190;
 	protected $menuWidth;
 	protected $debug;
 
@@ -81,8 +82,6 @@ class TYPO3backend {
 
 	/**
 	 * Constructor
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 			// Set debug flag for BE development only
@@ -168,7 +167,7 @@ class TYPO3backend {
 			'liveSearch'        => 'LiveSearch'
 		);
 
-		foreach($coreToolbarItems as $toolbarItemName => $toolbarItemClassName) {
+		foreach ($coreToolbarItems as $toolbarItemName => $toolbarItemClassName) {
 			$toolbarItem = t3lib_div::makeInstance($toolbarItemClassName, $this);
 
 			if (!($toolbarItem instanceof backend_toolbarItem)) {
@@ -202,9 +201,7 @@ class TYPO3backend {
 			<div id="typo3-top" class="typo3-top-toolbar">' .
 				$this->renderToolbar() .
 			'</div>
-		</div>
-
-';
+		</div>';
 
 		/******************************************************
 		 * Now put the complete backend document together
@@ -213,7 +210,7 @@ class TYPO3backend {
 		foreach ($this->cssFiles as $cssFileName => $cssFile) {
 			$this->pageRenderer->addCssFile($cssFile);
 
-				// load addditional css files to overwrite existing core styles
+				// Load addditional css files to overwrite existing core styles
 			if (!empty($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName])) {
 				$this->pageRenderer->addCssFile($GLOBALS['TBE_STYLES']['stylesheets'][$cssFileName]);
 			}
@@ -315,7 +312,7 @@ class TYPO3backend {
 
 			$jsFiles = t3lib_div::getFilesInDir($absoluteComponentPath . 'javascript/', 'js');
 			if (file_exists($absoluteComponentPath . 'javascript/loadorder.txt')) {
-					//don't allow inclusion outside directory
+					// Don't allow inclusion outside directory
 				$loadOrder = str_replace('../', '', t3lib_div::getUrl($absoluteComponentPath . 'javascript/loadorder.txt'));
 				$jsFilesOrdered = t3lib_div::trimExplode(LF, $loadOrder, TRUE);
 				$jsFiles = array_merge($jsFilesOrdered, $jsFiles);
@@ -346,7 +343,7 @@ class TYPO3backend {
 		$toolbar .= '<li class="separator"><div id="logout-button" class="toolbar-item no-separator">' . $this->moduleMenu->renderLogoutButton() . '</div></li>';
 
 		$i = 0;
-		foreach($this->toolbarItems as $key => $toolbarItem) {
+		foreach ($this->toolbarItems as $key => $toolbarItem) {
 			$i++;
 			$menu = $toolbarItem->render();
 			if ($menu) {
@@ -367,7 +364,7 @@ class TYPO3backend {
 	/**
 	 * Gets the label of the BE user currently logged in
 	 *
-	 * @return string html code snippet displaying the currently logged in user
+	 * @return string Html code snippet displaying the currently logged in user
 	 */
 	protected function getLoggedInUserLabel() {
 		$css = 'toolbar-item';
@@ -673,7 +670,7 @@ class TYPO3backend {
 	/**
 	 * Sets the startup module from either GETvars module and mpdParams or user configuration.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function setStartupModule() {
 		$startModule = preg_replace('/[^[:alnum:]_]/', '', t3lib_div::_GET('module'));
@@ -701,8 +698,8 @@ class TYPO3backend {
 	/**
 	 * Sdds a javascript snippet to the backend
 	 *
-	 * @param	string	javascript snippet
-	 * @return	void
+	 * @param string $javascript Javascript snippet
+	 * @return void
 	 */
 	public function addJavascript($javascript) {
 			// TODO do we need more checks?
@@ -716,7 +713,7 @@ class TYPO3backend {
 	/**
 	 * Adds a javscript file to the backend after it has been checked that it exists
 	 *
-	 * @param string javascript file reference
+	 * @param string $javascriptFile Javascript file reference
 	 * @return boolean TRUE if the javascript file was successfully added, FALSE otherwise
 	 */
 	public function addJavascriptFile($javascriptFile) {
@@ -734,7 +731,7 @@ class TYPO3backend {
 	/**
 	 * Adds a css snippet to the backend
 	 *
-	 * @param string css snippet
+	 * @param string $css Css snippet
 	 * @return void
 	 */
 	public function addCss($css) {
@@ -748,8 +745,8 @@ class TYPO3backend {
 	/**
 	 * Adds a css file to the backend after it has been checked that it exists
 	 *
-	 * @param string the css file's name with out the .css ending
-	 * @param string css file reference
+	 * @param string $cssFileName The css file's name with out the .css ending
+	 * @param string $cssFile Css file reference
 	 * @return boolean TRUE if the css file was added, FALSE otherwise
 	 */
 	public function addCssFile($cssFileName, $cssFile) {
@@ -766,8 +763,8 @@ class TYPO3backend {
 	/**
 	 * Adds an item to the toolbar, the class file for the toolbar item must be loaded at this point
 	 *
-	 * @param string toolbar item name, f.e. tx_toolbarExtension_coolItem
-	 * @param string toolbar item class name, f.e. tx_toolbarExtension_coolItem
+	 * @param string $toolbarItemName Toolbar item name, f.e. tx_toolbarExtension_coolItem
+	 * @param string $toolbarItemClassName Toolbar item class name, f.e. tx_toolbarExtension_coolItem
 	 * @return void
 	 */
 	public function addToolbarItem($toolbarItemName, $toolbarItemClassName) {
@@ -812,7 +809,7 @@ $TYPO3backend = t3lib_div::makeInstance('TYPO3backend');
 
 	// Include extensions which may add css, javascript or toolbar items
 if (is_array($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'])) {
-	foreach($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'] as $additionalBackendItem) {
+	foreach ($GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'] as $additionalBackendItem) {
 		include_once($additionalBackendItem);
 	}
 }
