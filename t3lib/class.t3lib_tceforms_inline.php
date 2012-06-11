@@ -402,8 +402,8 @@ class t3lib_TCEforms_inline {
 				$fields .= '<input type="hidden" name="' . $this->prependCmdFieldNames . $appendFormFieldNames . '[delete]" value="1" disabled="disabled" />';
 				if (!$isExpanded) {
 					$checked = ($rec['hidden'] == 1) ? ' checked="checked"' : '';
-					$fields .= '<input type="checkbox" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]_0" value="1"'.$checked.' />';
-					$fields .= '<input type="input" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]" value="'.$rec['hidden'].'" />';
+					$fields .= '<input type="checkbox" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]_0" value="1"' . $checked . ' />';
+					$fields .= '<input type="input" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]" value="' . $rec['hidden'] . '" />';
 				}
 			}
 				// If this record should be shown collapsed
