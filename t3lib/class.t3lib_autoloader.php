@@ -83,7 +83,7 @@ class t3lib_autoloader {
 	}
 
 	/**
-	 * Uninstalls TYPO3 autoloader and writes any additional classes
+	 * Unload TYPO3 autoloader and write any additional classes
 	 * found during the script run to the cache file.
 	 *
 	 * This method is called during shutdown of the framework.
@@ -135,6 +135,7 @@ class t3lib_autoloader {
 	 * @return void
 	 */
 	protected static function loadCoreAndExtensionRegistry() {
+		/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
 		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
 
 			// Create autoload cache file if it does not exist yet
@@ -182,10 +183,19 @@ class t3lib_autoloader {
 			// Look up class name in cache file
 		if (array_key_exists($classNameLower, self::$classNameToFileMapping)) {
 			$classPath = self::$classNameToFileMapping[$classNameLower];
+		} else {
+				// Handle deprecated XCLASS lookups
+			$classPath = self::classPathForDeprecatedXclassHandling($classPath, $classNameLower);
 		}
 
-			// Handle deprecated XCLASS lookups
-		$classPath = self::classPathForDeprecatedXclassHandling($classPath, $classNameLower);
+		if (
+			$classPath === NULL
+			&& substr($classNameLower, 0, 3) === 'ux_'
+			&& !array_key_exists($classNameLower, self::$classNameToFileMapping)
+		) {
+			self::$cacheUpdateRequired = TRUE;
+			self::$classNameToFileMapping[$classNameLower] = NULL;
+		}
 
 		return $classPath;
 	}
@@ -344,7 +354,8 @@ class t3lib_autoloader {
 	protected static function updateRegistryCacheEntry(array $registry) {
 		$cachedFileContent = 'return array(';
 		foreach ($registry as $className => $classLocation) {
-			$cachedFileContent .= LF . '\'' . strtolower($className) . '\' => \'' . $classLocation . '\',';
+			$nullOrLocation = is_string($classLocation) ? '\'' . $classLocation . '\',' : 'NULL,';
+			$cachedFileContent .= LF . '\'' . strtolower($className) . '\' => ' . $nullOrLocation;
 		}
 		$cachedFileContent .= LF . ');';
 		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
