@@ -212,7 +212,7 @@ class TYPO3AJAX {
 	 */
 	protected function renderAsError() {
 		header(t3lib_utility_Http::HTTP_STATUS_500 . ' (AJAX)');
-		header('Content-type: text/xml; charset='.$this->charset);
+		header('Content-type: text/xml; charset=' . $this->charset);
 		header('X-JSON: false');
 		die('<t3err>'.htmlspecialchars($this->errorMessage).'</t3err>');
 	}
@@ -224,7 +224,7 @@ class TYPO3AJAX {
 	 * @return void
 	 */
 	protected function renderAsPlain() {
-		header('Content-type: text/html; charset='.$this->charset);
+		header('Content-type: text/html; charset=' . $this->charset);
 		header('X-JSON: true');
 		echo implode('', $this->content);
 	}
@@ -236,7 +236,7 @@ class TYPO3AJAX {
 	 * @return void
 	 */
 	protected function renderAsXML() {
-		header('Content-type: text/xml; charset='.$this->charset);
+		header('Content-type: text/xml; charset=' . $this->charset);
 		header('X-JSON: true');
 		echo implode('', $this->content);
 	}
@@ -262,8 +262,8 @@ class TYPO3AJAX {
 
 		$content = json_encode($this->content);
 
-		header('Content-type: application/json; charset='.$this->requestCharset);
-		header('X-JSON: '.($this->contentFormat != 'jsonbody' ? $content : TRUE));
+		header('Content-type: application/json; charset=' . $this->requestCharset);
+		header('X-JSON: ' . ($this->contentFormat != 'jsonbody' ? $content : TRUE));
 
 			// Bring content in xhr.responseText except when in "json head only" mode
 		if ($this->contentFormat != 'jsonhead') {
