@@ -104,7 +104,7 @@ class tx_saltedpasswords_salts_md5 extends tx_saltedpasswords_abstract_salts imp
 		$isCorrect = FALSE;
 
 		if ($this->isValidSalt($saltedHashPW)) {
-			$isCorrect = (crypt($plainPW,$saltedHashPW) == $saltedHashPW);
+			$isCorrect = (crypt($plainPW, $saltedHashPW) == $saltedHashPW);
 		}
 
 		return $isCorrect;
@@ -231,7 +231,7 @@ class tx_saltedpasswords_salts_md5 extends tx_saltedpasswords_abstract_salts imp
 
 				// checking base64 characters
 			if (!$skip && (strlen($salt) >= $reqLenBase64)) {
-				if (preg_match('/^[' . preg_quote($this->getItoa64(),'/') . ']{' . $reqLenBase64 . ',' . $reqLenBase64 . '}$/', substr($salt, 0, $reqLenBase64))) {
+				if (preg_match('/^[' . preg_quote($this->getItoa64(), '/') . ']{' . $reqLenBase64 . ',' . $reqLenBase64 . '}$/', substr($salt, 0, $reqLenBase64))) {
 					$isValid = TRUE;
 				}
 			}

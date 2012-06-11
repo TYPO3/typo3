@@ -255,7 +255,7 @@ Please disable either one of them.
 EOT;
 			}
 				// check if the configured hash-method is available on system
-			if (!$instance = tx_saltedpasswords_salts_factory::getSaltingInstance(NULL,'BE') || !$instance->isAvailable()) {
+			if (!$instance = tx_saltedpasswords_salts_factory::getSaltingInstance(NULL, 'BE') || !$instance->isAvailable()) {
 				$this->setErrorLevel('error');
 				$problems[] = <<< EOT
 The selected method for hashing your salted passwords is not available on this
