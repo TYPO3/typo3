@@ -216,7 +216,7 @@ class tx_form_Controller_Form {
 		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
 
 		/** @var $view tx_form_View_Form */
-		$view = t3lib_div::makeInstance('tx_form_View_Form', $form);
+		$view = t3lib_div::makeInstance('tx_form_View_Form', $form, $this->typoscript);
 
 		return $view->get();
 	}
@@ -256,7 +256,6 @@ class tx_form_Controller_Form {
 		$form = $this->typoscriptFactory->buildModelFromTyposcript($this->typoscript);
 
 		$this->requestHandler->storeSession();
-
 		$confirmationTyposcript = array();
 		if (isset($this->typoscript['confirmation.'])) {
 			$confirmationTyposcript = $this->typoscript['confirmation.'];

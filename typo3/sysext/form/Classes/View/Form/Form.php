@@ -76,11 +76,13 @@ class tx_form_View_Form extends tx_form_View_Form_Element_Container {
 	 * @return void
 	 */
 	protected function setCss() {
-		$GLOBALS['TSFE']->additionalHeaderData['tx_form_css'] =
-			'<link rel="stylesheet" type="text/css" href="' .
-			t3lib_extMgm::siteRelPath('form') .
-			'Resources/Public/CSS/Form.css' .
-			'" media="all" />';
+		if (!empty($this->typoscript['form.']['includeCSS'])) {
+			$cssFile = $GLOBALS['TSFE']->tmpl->getFileName($this->typoscript['form.']['includeCSS']);
+			$GLOBALS['TSFE']->additionalHeaderData['tx_form_css'] =
+				'<link rel="stylesheet" type="text/css" href="' .
+				$cssFile .
+				'" media="all" />';
+		}
 	}
 }
 ?>
