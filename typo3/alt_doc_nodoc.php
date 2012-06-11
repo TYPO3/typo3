@@ -24,14 +24,16 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * No-document script
- * This is used by eg. the Doc module if no documents is registered as "open" (a concept which is better known from the "classic backend"...)
+ * This is used by eg. the Doc module if no documents is registered as "open"
+ * (a concept which is better known from the "classic backend"...)
  *
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 require('init.php');
@@ -40,18 +42,18 @@ $LANG->includeLLFile('EXT:lang/locallang_alt_doc.xml');
 
 require_once(t3lib_extMgm::extPath('opendocs') . 'class.tx_opendocs.php');
 
-
 /**
  * Script Class for the "No-doc" display; This shows most recently edited records.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_alt_doc_nodoc {
 
 		// Internal:
-	var $content;		// Content accumulation
+		// Content accumulation
+	var $content;
 
 	/**
 	 * Document template object
@@ -70,13 +72,13 @@ class SC_alt_doc_nodoc {
 	/**
 	 * Constructor, initialize.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 			// Start the template object:
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
-		$this->doc->bodyTagMargins['x']=5;
-		$this->doc->bodyTagMargins['y']=5;
+		$this->doc->bodyTagMargins['x'] = 5;
+		$this->doc->bodyTagMargins['y'] = 5;
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
 			// Add JS
@@ -95,8 +97,8 @@ class SC_alt_doc_nodoc {
 		');
 
 			// Start the page:
-		$this->content='';
-		$this->content.=$this->doc->startPage('TYPO3 Edit Document');
+		$this->content = '';
+		$this->content .= $this->doc->startPage('TYPO3 Edit Document');
 
 			// Loads the backend modules available for the logged in user.
 		$this->loadModules = t3lib_div::makeInstance('t3lib_loadModules');
@@ -106,10 +108,10 @@ class SC_alt_doc_nodoc {
 	/**
 	 * Rendering the content.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
-		$msg=array();
+		$msg = array();
 
 			// Add a message, telling that no documents were open...
 		$msg[] = '<p>' . $GLOBALS['LANG']->getLL('noDocuments_msg', 1) . '</p><br />';
@@ -133,17 +135,18 @@ class SC_alt_doc_nodoc {
 		$imgInfo = @getimagesize($imgFile);
 		$img_web_list = is_array($imgInfo) ? '<img src="../'.substr($imgFile, strlen(PATH_site)).'" '.$imgInfo[3].' alt="" />' : '';
 
-
 			// If either the Web>List OR Web>Page module are active, show the little message with links to those modules:
 		if ($a_wl || $a_wp) {
 			$msg_2 = array();
-			if ($a_wp)	{	// Web>Page:
+				// Web>Page:
+			if ($a_wp) {
 				$msg_2[] = '<strong><a href="#" onclick="top.goToModule(\'' . $pageModule . '\'); return false;">' . $GLOBALS['LANG']->getLL('noDocuments_pagemodule', 1) . $img_web_layout . '</a></strong>';
 				if ($a_wl) {
 					$msg_2[] = $GLOBALS['LANG']->getLL('noDocuments_OR');
 				}
 			}
-			if ($a_wl)	{	// Web>List
+				// Web>List
+			if ($a_wl) {
 				$msg_2[] = '<strong><a href="#" onclick="top.goToModule(\'web_list\'); return false;">' . $GLOBALS['LANG']->getLL('noDocuments_listmodule', 1) . $img_web_list . '</a></strong>';
 			}
 			$msg[] = '<p>' . sprintf($GLOBALS['LANG']->getLL('noDocuments_msg2', 1), implode(' ', $msg_2)) . '</p><br />';
@@ -160,16 +163,16 @@ class SC_alt_doc_nodoc {
 	/**
 	 * Printing the content.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
-		$this->content.= $this->doc->endPage();
+		$this->content .= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 		echo $this->content;
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_alt_doc_nodoc');
 $SOBE->init();
 $SOBE->main();

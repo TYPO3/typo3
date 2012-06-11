@@ -30,7 +30,7 @@
  * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 $BACK_PATH = '';
@@ -38,18 +38,18 @@ require_once('init.php');
 require('template.php');
 require_once('class.filelistfoldertree.php');
 
-
 /**
  * Main script class for rendering of the folder tree
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_alt_file_navframe {
 
 		// Internal, dynamic:
-	var $content;		// Content accumulates in this variable.
+		// Content accumulates in this variable.
+	var $content;
 
 	/**
 	 * @var filelistFolderTree $foldertree the folder tree object
@@ -67,7 +67,6 @@ class SC_alt_file_navframe {
 		// Internal, static: GPvar:
 	var $currentSubScript;
 	var $cMR;
-
 
 	/**
 	 * Initialiation of the script class
@@ -90,12 +89,11 @@ class SC_alt_file_navframe {
 		$this->foldertree->thisScript = 'alt_file_navframe.php';
 	}
 
-
 	/**
 	 * initialization for the visual parts of the class
 	 * Use template rendering only if this is a non-AJAX call
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function initPage() {
 
@@ -191,7 +189,7 @@ class SC_alt_file_navframe {
 	/**
 	 * Main function, rendering the folder tree
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 
@@ -223,15 +221,15 @@ class SC_alt_file_navframe {
 
 			// Build the <body> for the module
 		$this->content = $this->doc->startPage('TYPO3 Folder Tree');
-		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers, $subparts);
-		$this->content.= $this->doc->endPage();
+		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers, $subparts);
+		$this->content .= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
 	 * Outputting the accumulated content to screen
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
@@ -240,7 +238,7 @@ class SC_alt_file_navframe {
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
-	 * @return	array	all available buttons as an assoc. array
+	 * @return array All available buttons as an assoc. array
 	 */
 	protected function getButtons() {
 		$buttons = array(
@@ -269,9 +267,9 @@ class SC_alt_file_navframe {
 	 * Makes the AJAX call to expand or collapse the foldertree.
 	 * Called by typo3/ajax.php
 	 *
-	 * @param	array		$params: additional parameters (not used here)
-	 * @param	TYPO3AJAX	$ajaxObj: The TYPO3AJAX object of this request
-	 * @return	void
+	 * @param array $params Additional parameters (not used here)
+	 * @param TYPO3AJAX $ajaxObj The TYPO3AJAX object of this request
+	 * @return void
 	 */
 	public function ajaxExpandCollapse($params, $ajaxObj) {
 		$this->init();
@@ -284,7 +282,7 @@ class SC_alt_file_navframe {
 	}
 }
 
-// Make instance if it is not an AJAX call
+	// Make instance if it is not an AJAX call
 if (!(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX)) {
 	$SOBE = t3lib_div::makeInstance('SC_alt_file_navframe');
 	$SOBE->init();
