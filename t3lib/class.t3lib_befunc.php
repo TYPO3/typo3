@@ -127,7 +127,7 @@ final class t3lib_BEfunc {
 	 * This function does NOT check if a record has the deleted flag set.
 	 * $table does NOT need to be configured in $GLOBALS['TCA']
 	 * The query used is simply this:
-	 * $query = 'SELECT '.$fields.' FROM '.$table.' WHERE '.$where;
+	 * $query = 'SELECT ' . $fields . ' FROM ' . $table . ' WHERE ' . $where;
 	 *
 	 * @param string $table Table name (not necessarily in TCA)
 	 * @param string $where WHERE clause
@@ -3095,7 +3095,7 @@ final class t3lib_BEfunc {
 
 	/**
 	 * Set preview keyword, eg:
-	 *	 $previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('id='.$pageId.'&L='.$language.'&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS='.$this->workspace, $GLOBALS['BE_USER']->user['uid'], 120);
+	 * $previewUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL').'index.php?ADMCMD_prev='.t3lib_BEfunc::compilePreviewKeyword('id=' . $pageId . '&L=' . $language . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $this->workspace, $GLOBALS['BE_USER']->user['uid'], 120);
 	 *
 	 * todo for sys_preview:
 	 * - Add a comment which can be shown to previewer in frontend in some way (plus maybe ability to write back, take other action?)

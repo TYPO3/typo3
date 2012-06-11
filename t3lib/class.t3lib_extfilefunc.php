@@ -842,7 +842,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 	 *	)
 	 * in HTML you'd need sth like this: <input type="file" name="upload_1[]" multiple="true" />
 	 *
-	 * @param array $cmds $cmds['data'] is the ID-number (points to the global var that holds the filename-ref  ($_FILES['upload_'.$id]['name']). $cmds['target'] is the target directory, $cmds['charset'] is the the character set of the file name (utf-8 is needed for JS-interaction)
+	 * @param array $cmds $cmds['data'] is the ID-number (points to the global var that holds the filename-ref  ($_FILES['upload_' . $id]['name']) . $cmds['target'] is the target directory, $cmds['charset'] is the the character set of the file name (utf-8 is needed for JS-interaction)
 	 * @return string Returns the new filename upon success
 	 */
 	function func_upload($cmds) {

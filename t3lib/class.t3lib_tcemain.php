@@ -5890,7 +5890,7 @@ class t3lib_TCEmain {
 	}
 
 	/**
-	 * Setting sys_history record, based on content previously set in $this->historyRecords[$table.':'.$id] (by compareFieldArrayWithCurrentAndUnset())
+	 * Setting sys_history record, based on content previously set in $this->historyRecords[$table . ':' . $id] (by compareFieldArrayWithCurrentAndUnset())
 	 *
 	 * @param string $table Table name
 	 * @param integer $id Record ID
