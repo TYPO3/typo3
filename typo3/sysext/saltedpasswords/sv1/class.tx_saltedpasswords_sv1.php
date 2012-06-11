@@ -135,7 +135,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 
 			// existing record is in format of Salted Hash password
 		if (is_object($this->objInstanceSaltedPW)) {
-			$validPasswd = $this->objInstanceSaltedPW->checkPassword($password,$user['password']);
+			$validPasswd = $this->objInstanceSaltedPW->checkPassword($password, $user['password']);
 
 				// record is in format of Salted Hash password but authentication failed
 				// skip further authentication methods
