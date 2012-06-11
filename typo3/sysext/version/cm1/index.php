@@ -1283,7 +1283,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 					$rec,
 					$origId,
 						// If TRUE, will show bottom-join icon.
-					$c==$elCount && $treeLevel==0 ? 1 : 0,
+					$c == $elCount && $treeLevel == 0 ? 1 : 0,
 					''
 				);
 			}
