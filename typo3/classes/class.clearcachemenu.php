@@ -159,7 +159,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 		$cacheMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 
 		foreach($this->cacheActions as $actionKey => $cacheAction) {
-			$cacheMenu[] = '<li><a href="'.htmlspecialchars($cacheAction['href']).'">'.$cacheAction['icon'].' '.$cacheAction['title'].'</a></li>';
+			$cacheMenu[] = '<li><a href="' . htmlspecialchars($cacheAction['href']) . '">' . $cacheAction['icon'] . ' ' . $cacheAction['title'] . '</a></li>';
 		}
 
 		$cacheMenu[] = '</ul>';

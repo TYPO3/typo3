@@ -196,7 +196,7 @@ class ModuleMenu {
 			$modules[$moduleKey] = array(
 				'name'        => $moduleName,
 				'title'       => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
-				'onclick'     => 'top.goToModule(\''.$moduleName.'\');',
+				'onclick'     => 'top.goToModule(\'' . $moduleName . '\');',
 				'icon'        => $moduleIcon,
 				'link'        => $moduleLink,
 				'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey.'label']
