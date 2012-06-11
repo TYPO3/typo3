@@ -187,6 +187,15 @@ class t3lib_autoloader {
 			// Handle deprecated XCLASS lookups
 		$classPath = self::classPathForDeprecatedXclassHandling($classPath, $classNameLower);
 
+		if (
+			$classPath === NULL
+			&& substr($classNameLower, 0, 3) === 'ux_'
+			&& !array_key_exists($classNameLower, self::$classNameToFileMapping)
+		) {
+			self::$cacheUpdateRequired = TRUE;
+			self::$classNameToFileMapping[$classNameLower] = NULL;
+		}
+
 		return $classPath;
 	}
 
@@ -343,7 +352,8 @@ class t3lib_autoloader {
 	protected static function updateRegistryCacheEntry(array $registry) {
 		$cachedFileContent = 'return array(';
 		foreach ($registry as $className => $classLocation) {
-			$cachedFileContent .= LF . '\'' . strtolower($className) . '\' => \'' . $classLocation . '\',';
+			$nullOrLocation = is_string($classLocation) ? '\'' . $classLocation . '\',' : 'NULL,';
+			$cachedFileContent .= LF . '\'' . strtolower($className) . '\' => ' . $nullOrLocation;
 		}
 		$cachedFileContent .= LF . ');';
 		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
