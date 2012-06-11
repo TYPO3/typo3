@@ -172,11 +172,13 @@ class tx_form_View_Confirmation extends tx_form_View_Confirmation_Element_Contai
 	 * @return void
 	 */
 	protected function setCss() {
-		$GLOBALS['TSFE']->additionalHeaderData['tx_form_css'] =
-			'<link rel="stylesheet" type="text/css" href="' .
-			t3lib_extMgm::siteRelPath('form') .
-			'Resources/Public/CSS/Confirmation.css' .
-			'" media="all" />';
+		if (!empty($this->typoscript['includeCSS'])) {
+			$cssFile = $GLOBALS['TSFE']->tmpl->getFileName($this->typoscript['includeCSS']);
+			$GLOBALS['TSFE']->additionalHeaderData['tx_form_css'] =
+				'<link rel="stylesheet" type="text/css" href="' .
+				$cssFile .
+				'" media="all" />';
+		}
 	}
 }
 ?>

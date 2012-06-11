@@ -8,6 +8,8 @@ tt_content.mailform.20 {
 
 		prefixComment = 2 | Mail form inserted:
 	}
+	form.includeCSS = EXT:form/Resources/Public/CSS/Form.css
+	confirmation.includeCSS = EXT:form/Resources/Public/CSS/Confirmation.css
 }
 
 #tt_content.login.20 >

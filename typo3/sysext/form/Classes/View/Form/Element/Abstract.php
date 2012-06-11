@@ -39,6 +39,13 @@ abstract class tx_form_View_Form_Element_Abstract {
 	protected $model;
 
 	/**
+	 * The TypoScript configuration for the current object
+	 *
+	 * @var array
+	 */
+	protected $typoscript;
+
+	/**
 	 * @var string
 	 */
 	protected $expectedModelName;
@@ -68,11 +75,12 @@ abstract class tx_form_View_Form_Element_Abstract {
 	 * @param tx_form_Domain_Model_Element_Abstract $model Current elements model
 	 * @return void
 	 */
-	public function __construct(tx_form_Domain_Model_Element_Abstract $model) {
+	public function __construct(tx_form_Domain_Model_Element_Abstract $model, $typoscript=array()) {
 		if ($this->isValidModel($model) === FALSE) {
 			throw new RuntimeException('Unexpected model "' . get_class($model) . '".');
 		}
 
+		$this->typoscript = $typoscript;
 		$this->model = $model;
 	}
 
