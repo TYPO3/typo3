@@ -24,6 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * This is the frameset to the file/record browser window
  *
@@ -32,15 +33,8 @@
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-require ('init.php');
-require ('template.php');
-
-
-
-
-
-
-
+require('init.php');
+require('template.php');
 
 /**
  * Script Class, putting the frameset together.
@@ -58,18 +52,17 @@ class SC_browser {
 	 * Main function.
 	 * Creates the header code in XHTML, the JavaScript, then the frameset for the two frames.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 
 			// Setting GPvars:
-		$mode =t3lib_div::_GP('mode');
+		$mode = t3lib_div::_GP('mode');
 		$bparams = t3lib_div::_GP('bparams');
 
-
 			// Set doktype:
-		$GLOBALS['TBE_TEMPLATE']->docType='xhtml_frames';
-		$GLOBALS['TBE_TEMPLATE']->JScode=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+		$GLOBALS['TBE_TEMPLATE']->docType = 'xhtml_frames';
+		$GLOBALS['TBE_TEMPLATE']->JScode = $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 				function closing() {	//
 					close();
 				}
@@ -82,35 +75,35 @@ class SC_browser {
 				}
 		');
 
-		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:TYPO3_Element_Browser'));
+		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:TYPO3_Element_Browser'));
 
 			// URL for the inner main frame:
 		$url = $GLOBALS['BACK_PATH'].'browse_links.php?mode='.rawurlencode($mode).'&bparams='.rawurlencode($bparams);
 
 			// Create the frameset for the window:
 			// Formerly there were a ' onunload="closing();"' in the <frameset> tag - but it failed on Safari browser on Mac unless the handler was "onUnload"
-		$this->content.='
+		$this->content .= '
 			<frameset rows="*,1" framespacing="0" frameborder="0" border="0">
 				<frame name="content" src="'.htmlspecialchars($url).'" marginwidth="0" marginheight="0" frameborder="0" scrolling="auto" noresize="noresize" />
 				<frame name="menu" src="'.$GLOBALS['BACK_PATH'].'dummy.php" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" noresize="noresize" />
 			</frameset>
 		';
 
-		$this->content.='
+		$this->content .= '
 </html>';
 	}
 
 	/**
 	 * Outputs the page content.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_browser');
 $SOBE->main();
 $SOBE->printContent();
