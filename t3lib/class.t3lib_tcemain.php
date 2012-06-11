@@ -4622,6 +4622,14 @@ class t3lib_TCEmain {
 								if ($GLOBALS['TCA'][$table]['ctrl']['editlock']) {
 									$overrideArray[$GLOBALS['TCA'][$table]['ctrl']['editlock']] = 0;
 								}
+								if ($table === 'pages') {
+										// Usage of t3ver_swapmode is deprecated and has therefore been removed from here.
+										// However, the value is still used across the code to determine handling of records
+										// and especially how to publish workspace versions to live workspace.
+										// If left at default value of 0, content and page translations will disappear
+										// when the page is published!
+									$overrideArray['t3ver_swapmode'] = -1;
+								}
 
 									// Checking if the record already has a version in the current workspace of the backend user
 								$workspaceCheck = TRUE;
