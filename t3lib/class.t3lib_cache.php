@@ -47,12 +47,10 @@ class t3lib_cache {
 				// New operator used on purpose, makeInstance() is not ready to be used so early in bootstrap
 			$GLOBALS['typo3CacheManager'] = new t3lib_cache_Manager();
 			t3lib_div::setSingletonInstance('t3lib_cache_Manager', $GLOBALS['typo3CacheManager']);
-			t3lib_div::addClassNameToMakeInstanceCache('t3lib_cache_Manager', 't3lib_cache_Manager');
 			$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 				// New operator used on purpose, makeInstance() is not ready to be used so early in bootstrap
 			$GLOBALS['typo3CacheFactory'] = new t3lib_cache_Factory('production', $GLOBALS['typo3CacheManager']);
 			t3lib_div::setSingletonInstance('t3lib_cache_Factory', $GLOBALS['typo3CacheFactory']);
-			t3lib_div::addClassNameToMakeInstanceCache('t3lib_cache_Factory', 't3lib_cache_Factory');
 			self::$isCachingFrameworkInitialized = TRUE;
 		}
 	}
