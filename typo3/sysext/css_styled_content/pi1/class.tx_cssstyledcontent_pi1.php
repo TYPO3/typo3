@@ -80,7 +80,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				// Split into single lines:
 			$lines = t3lib_div::trimExplode(LF, $content);
 			foreach($lines as &$val) {
-				$val = '<li>'.$this->cObj->stdWrap($val, $conf['innerStdWrap.']).'</li>';
+				$val = '<li>' . $this->cObj->stdWrap($val, $conf['innerStdWrap.']) . '</li>';
 			}
 			unset($val);
 
@@ -89,7 +89,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 				// Compile list:
 			$out = '
-				<ul class="csc-bulletlist csc-bulletlist-'.$type.'">'.
+				<ul class="csc-bulletlist csc-bulletlist-' . $type.'">'.
 					implode('', $lines).'
 				</ul>';
 
@@ -168,29 +168,29 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 					}
 
 					if (!strcmp(trim($cells[$a]), ''))	$cells[$a]='&nbsp;';
-					$cellAttribs = ($noStyles?'':($a>0 && ($cols-1)==$a) ? ' class="td-last td-'.$a.'"' : ' class="td-'.$a.'"');
+					$cellAttribs = ($noStyles?'':($a>0 && ($cols-1)==$a) ? ' class="td-last td-' . $a . '"' : ' class="td-' . $a . '"');
 					if (($headerPos == 'top' && !$k) || ($headerPos == 'left' && !$a)) {
-						$scope = ' scope="'.$headerScope.'"';
-						$scope .= ' id="'.$headerIdPrefix.(($headerScope=='col')?$a:$k).'"';
+						$scope = ' scope="' . $headerScope . '"';
+						$scope .= ' id="' . $headerIdPrefix.(($headerScope=='col') ? $a : $k) . '"';
 
 						$newCells[$a] = '
-							<th'.$cellAttribs.$scope.'>'.$this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']).'</th>';
+							<th' . $cellAttribs . $scope . '>' . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']) . '</th>';
 					} else {
 						if (empty($headerPos)) {
 							$accessibleHeader = '';
 						} else {
-							$accessibleHeader = ' headers="'.$headerIdPrefix.(($headerScope=='col')?$a:$k).'"';
+							$accessibleHeader = ' headers="' . $headerIdPrefix . (($headerScope=='col') ? $a : $k) . '"';
 						}
 						$newCells[$a] = '
-							<td'.$cellAttribs.$accessibleHeader.'>'.$this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']).'</td>';
+							<td' . $cellAttribs . $accessibleHeader . '>' . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']) . '</td>';
 					}
 				}
 				if (!$noStyles) {
 					$oddEven = $k%2 ? 'tr-odd' : 'tr-even';
-					$rowAttribs =  ($k>0 && ($rCount-1)==$k) ? ' class="'.$oddEven.' tr-last"' : ' class="'.$oddEven.' tr-'.$k.'"';
+					$rowAttribs = ($k > 0 && ($rCount - 1) == $k) ? ' class="' . $oddEven . ' tr-last"' : ' class="' . $oddEven . ' tr-' . $k . '"';
 				}
 				$rows[$k]='
-					<tr'.$rowAttribs.'>'.implode('', $newCells).'
+					<tr' . $rowAttribs . '>' . implode('', $newCells) . '
 					</tr>';
 			}
 
@@ -198,7 +198,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			$tableContents = '';
 			if ($caption) {
 				$tableContents .= '
-					<caption>'.$caption.'</caption>';
+					<caption>' . $caption . '</caption>';
 			}
 			if ($headerPos == 'top' && $rows[0]) {
 				$tableContents .= '<thead>'. $rows[0] .'
@@ -208,13 +208,13 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			}
 			if ($useTfoot) {
 				$tableContents .= '
-					<tfoot>'.$rows[$rCount-1].'</tfoot>';
+					<tfoot>' . $rows[$rCount-1] . '</tfoot>';
 				unset($rows[$rCount-1]);
 				$addTbody = 1;
 			}
 			$tmpTable = implode('', $rows);
 			if ($addTbody) {
-				$tmpTable = '<tbody>'.$tmpTable.'</tbody>';
+				$tmpTable = '<tbody>' . $tmpTable . '</tbody>';
 			}
 			$tableContents .= $tmpTable;
 
@@ -400,7 +400,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				} else	{
 						// Table tag params
 					$tableTagParams = $this->getTableAttributes($conf, $type);
-					$tableTagParams['class'] = 'csc-uploads csc-uploads-'.$type;
+					$tableTagParams['class'] = 'csc-uploads csc-uploads-' . $type;
 					$outerWrap = '<table ' . t3lib_div::implodeAttributes($tableTagParams) . '>|</table>';
 				}
 
@@ -740,11 +740,11 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 			if ($imgConf || $imgConf['file']) {
 				if ($this->cObj->image_effects[$image_effects]) {
-					$imgConf['file.']['params'] .= ' '.$this->cObj->image_effects[$image_effects];
+					$imgConf['file.']['params'] .= ' ' . $this->cObj->image_effects[$image_effects];
 				}
 				if ($image_frames) {
-					if (is_array($conf['image_frames.'][$image_frames.'.'])) {
-						$imgConf['file.']['m.'] = $conf['image_frames.'][$image_frames.'.'];
+					if (is_array($conf['image_frames.'][$image_frames . '.'])) {
+						$imgConf['file.']['m.'] = $conf['image_frames.'][$image_frames . '.'];
 					}
 				}
 				if ($image_compression && $imgConf['file'] != 'GIFBUILDER') {
@@ -755,7 +755,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 						$imgConf['file.']['import'] = $tempImport;
 						$imgConf['file.']['import.'] = $tempImport_dot;
 					} elseif (isset($this->cObj->image_compression[$image_compression])) {
-						$imgConf['file.']['params'] .= ' '.$this->cObj->image_compression[$image_compression]['params'];
+						$imgConf['file.']['params'] .= ' ' . $this->cObj->image_compression[$image_compression]['params'];
 						$imgConf['file.']['ext'] = $this->cObj->image_compression[$image_compression]['ext'];
 						unset($imgConf['file.']['ext.']);
 					}
@@ -1265,7 +1265,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	function getTableAttributes($conf, $type) {
 
 			// Initializing:
-		$tableTagParams_conf = $conf['tableParams_'.$type.'.'];
+		$tableTagParams_conf = $conf['tableParams_' . $type . '.'];
 
 		$border = $this->cObj->data['table_border'] ? intval($this->cObj->data['table_border']) : $tableTagParams_conf['border'];
 		$cellSpacing = $this->cObj->data['table_cellspacing'] ? intval($this->cObj->data['table_cellspacing']) : $tableTagParams_conf['cellspacing'];
