@@ -24,31 +24,23 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Redirects to real module if shortcut pressed
  *
  * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  * XHTML-trans compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require ('init.php');
-require ('template.php');
-
-
-
-
-
-
-
-
-
+require('init.php');
+require('template.php');
 
 /**
  * Script Class for redirecting shortcut actions to the correct script
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -57,24 +49,24 @@ class SC_listframe_loader {
 	/**
 	 * Main content generated
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
-		$GLOBALS['TBE_TEMPLATE']->divClass='';
-		$this->content.=$GLOBALS['TBE_TEMPLATE']->startPage('List Frame Loader');
-		$this->content.=$GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
+		$GLOBALS['TBE_TEMPLATE']->divClass = '';
+		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage('List Frame Loader');
+		$this->content .= $GLOBALS['TBE_TEMPLATE']->wrapScriptTags('
 			var theUrl = top.getModuleUrl("");
 			if (theUrl)	window.location.href=theUrl;
 		');
 			// End page:
-		$this->content.=$GLOBALS['TBE_TEMPLATE']->endPage();
+		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
 
 			// Output:
 		echo $this->content;
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_listframe_loader');
 $SOBE->main();
 
