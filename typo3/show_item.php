@@ -29,7 +29,7 @@
  *
  * Revised for TYPO3 3.7 May/2004 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 
@@ -37,21 +37,10 @@ $GLOBALS['BACK_PATH'] = '';
 require_once('init.php');
 require_once('template.php');
 
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Extension of transfer data class
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -66,11 +55,11 @@ class transferData extends t3lib_transferData	{
 	/**
 	 * Register item function.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record uid
-	 * @param	string		Field name
-	 * @param	string		Content string.
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $id Record uid
+	 * @param string $field Field name
+	 * @param string $content Content string.
+	 * @return void
 	 */
 	function regItem($table, $id, $field, $content) {
 		t3lib_div::loadTCA($table);
@@ -94,39 +83,38 @@ class transferData extends t3lib_transferData	{
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
 /**
  * Script Class for showing information about an item.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_show_item {
 
 		// GET vars:
-	var $table;			// Record table (or filename)
-	var $uid;			// Record uid  (or '' when filename)
+		// Record table (or filename)
+	var $table;
+		// Record uid  (or '' when filename)
+	var $uid;
 
 		// Internal, static:
-	var $perms_clause;	// Page select clause
-	var $access;		// If TRUE, access to element is granted
-	var $type;			// Which type of element: "file" or "db"
-	var $doc;			// Document Template Object
+		// Page select clause
+	var $perms_clause;
+		// If TRUE, access to element is granted
+	var $access;
+		// Which type of element: "file" or "db"
+	var $type;
+		// Document Template Object
+	var $doc;
 
 		// Internal, dynamic:
-	var $content;		// Content Accumulation
-	var $pageinfo;		// For type "db": Set to page record of the parent page of the item set (if type="db")
-	var $row;			// For type "db": The database record row.
+		// Content Accumulation
+	var $content;
+		// For type "db": Set to page record of the parent page of the item set (if type="db")
+	var $pageinfo;
+		// For type "db": The database record row.
+	var $row;
 
 	/**
 	 * The fileObject if present
@@ -146,7 +134,7 @@ class SC_show_item {
 	 * Initialization of the class
 	 * Will determine if table/uid GET vars are database record or a file and if the user has access to view information about the item.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 			// Setting input variables.
@@ -155,8 +143,10 @@ class SC_show_item {
 
 			// Initialize:
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
-		$this->access = FALSE;	// Set to TRUE if there is access to the record / file.
-		$this->type = '';	// Sets the type, "db" or "file". If blank, nothing can be shown.
+			// Set to TRUE if there is access to the record / file.
+		$this->access = FALSE;
+			// Sets the type, "db" or "file". If blank, nothing can be shown.
+		$this->type = '';
 
 			// Checking if the $table value is really a table and if the user has access to it.
 		if (isset($GLOBALS['TCA'][$this->table])) {
@@ -210,15 +200,15 @@ class SC_show_item {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
 			// Starting the page by creating page header stuff:
-		$this->content.=$this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem'));
-		$this->content.='<h3 class="t3-row-header">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem') . '</h3>';
-		$this->content.=$this->doc->spacer(5);
+		$this->content .= $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem'));
+		$this->content .= '<h3 class="t3-row-header">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem') . '</h3>';
+		$this->content .= $this->doc->spacer(5);
 	}
 
 	/**
 	 * Main function. Will generate the information to display for the item set internally.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 
@@ -240,8 +230,8 @@ class SC_show_item {
 				}
 			}
 
-				// if type was not rendered use default rendering functions
-			if(!$typeRendered) {
+				// If type was not rendered use default rendering functions
+			if (!$typeRendered) {
 					// Branch out based on type:
 				switch ($this->type) {
 					case 'db':
@@ -277,7 +267,7 @@ class SC_show_item {
 		$this->content.= $this->doc->section('', $code);
 
 			// Initialize variables:
-		$tableRows = Array();
+		$tableRows = array();
 		$i = 0;
 
 			// Traverse the list of fields to display for the record:
@@ -301,19 +291,19 @@ class SC_show_item {
 					<table border="0" cellpadding="0" cellspacing="0" id="typo3-showitem" class="t3-table-info">
 						'.implode('', $tableRows).'
 					</table>';
-		$this->content.=$this->doc->section('', $tableCode);
+		$this->content .= $this->doc->section('', $tableCode);
 
 			// Add path and table information in the bottom:
 		$code = '';
 		$code .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path') . ': ' . t3lib_div::fixed_lgd_cs($this->pageinfo['_thePath'], -48) . '<br />';
 		$code .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.table') . ': ' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']) . ' (' . $this->table . ') - UID: ' . $this->uid . '<br />';
-		$this->content.= $this->doc->section('', $code);
+		$this->content .= $this->doc->section('', $code);
 
 			// References:
-		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem'), $this->makeRef($this->table, $this->row['uid']));
+		$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem'), $this->makeRef($this->table, $this->row['uid']));
 
 			// References:
-		$this->content.= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesFromThisItem'), $this->makeRefFrom($this->table, $this->row['uid']));
+		$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesFromThisItem'), $this->makeRefFrom($this->table, $this->row['uid']));
 	}
 
 	/**
@@ -362,7 +352,7 @@ class SC_show_item {
 			$this->content .= $this->doc->section('', $thumb);
 		}
 
-					// Initialize variables:
+			// Initialize variables:
 		$tableRows = array();
 		$i = 0;
 
@@ -382,7 +372,7 @@ class SC_show_item {
 			}
 		}
 
-					// Create table from the information:
+			// Create table from the information:
 		$tableCode = '
 					<table border="0" cellpadding="0" cellspacing="0" id="typo3-showitem" class="t3-table-info">
 						' . implode('', $tableRows) . '
@@ -465,7 +455,7 @@ class SC_show_item {
 				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting') . '</td>' .
 				'</tr>';
 		}
-		foreach($rows as $row) {
+		foreach ($rows as $row) {
 			if($table === '_FILE') {
 				$row = $this->mapFileReferenceOnRefIndex($row);
 			}
@@ -509,8 +499,8 @@ class SC_show_item {
 	/**
 	 * Make reference display (what this elements points to)
 	 *
-	 * @param $table string Table name
-	 * @param $ref string Filename or uid
+	 * @param string $table Table name
+	 * @param string $ref Filename or uid
 	 * @return string HTML
 	 */
 	function makeRefFrom($table, $ref) {
@@ -536,7 +526,7 @@ class SC_show_item {
 				'<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refString') . '</td>' .
 				'</tr>';
 		}
-		foreach($rows as $row) {
+		foreach ($rows as $row) {
 			$infoData[] = '<tr class="bgColor4">' .
 				'<td>' . htmlspecialchars($this->getFieldName($table, $row['field'])) . '</td>' .
 				'<td>' . htmlspecialchars($row['flexpointer']) . '</td>' .
@@ -554,7 +544,7 @@ class SC_show_item {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_show_item');
 $SOBE->init();
 $SOBE->main();
