@@ -24,24 +24,21 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Logout script for the backend
  * This script saves the interface positions and calls the closeTypo3Windows in the frameset
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require ('init.php');
-
-
-
-
+require('init.php');
 
 /**
  * Script Class for logging a user out.
  * Does not display any content, just calls the logout-function for the current user and then makes a redirect.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -50,7 +47,7 @@ class SC_logout {
 	/**
 	 * Performs the logout processing
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function logout() {
 			// Logout written to log
@@ -63,7 +60,7 @@ class SC_logout {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_logout');
 $SOBE->logout();
 

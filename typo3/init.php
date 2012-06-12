@@ -24,6 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * TYPO3 Backend initialization
  *
@@ -54,26 +55,21 @@
  * @subpackage core
  */
 
-// *******************************
-// Prevent any unwanted output that may corrupt AJAX/compression. Note: this does
-// not interfeer with "die()" or "echo"+"exit()" messages!
-// *******************************
+	// Prevent any unwanted output that may corrupt AJAX/compression. Note: this does
+	// not interfeer with "die()" or "echo"+"exit()" messages!
 ob_start();
 
-// *******************************
-// Define constants
-// *******************************
+	// Define constants
 define('TYPO3_MODE', 'BE');
 
-	// We use require instead of require_once here so we get a fatal error if Bootstrap.php is accidentally included twice
-	// (which would indicate a clear bug).
+	// We use require instead of require_once here so we get a fatal error if
+	// Bootstrap.php is accidentally included twice (which would indicate a clear bug).
 require('Bootstrap.php');
 Typo3_Bootstrap::checkEnvironmentOrDie();
 Typo3_Bootstrap::defineBaseConstants();
 Typo3_Bootstrap::defineAndCheckPaths('typo3/');
 Typo3_Bootstrap::requireBaseClasses();
 Typo3_Bootstrap::setUpEnvironment();
-
 
 require(PATH_t3lib . 'config_default.php');
 
@@ -82,9 +78,7 @@ Typo3_Bootstrap::checkLockedBackendAndRedirectOrDie();
 Typo3_Bootstrap::checkBackendIpOrDie();
 Typo3_Bootstrap::checkSslBackendAndRedirectIfNeeded();
 
-// *************************
-// Connect to the database
-// *************************
+	// Connect to the database
 	// Redirect to install tool if database host and database are not defined
 if (!TYPO3_db_host && !TYPO3_db) {
 	t3lib_utility_Http::redirect('install/index.php?mode=123&step=1&password=joh316');
@@ -92,10 +86,7 @@ if (!TYPO3_db_host && !TYPO3_db) {
 	$TYPO3_DB->connectDB();
 }
 
-
-// *******************************
-// Checks for proper browser
-// *******************************
+	// Checks for proper browser
 if (!$CLIENT['BROWSER']) {
 	throw new RuntimeException('Browser Error: Your browser version looks incompatible with this TYPO3 version!', 1294587023);
 }

@@ -24,73 +24,69 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Login-screen of TYPO3.
  *
  * Revised for TYPO3 3.6 December/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 define('TYPO3_PROCEED_IF_NO_USER', 1);
 require('init.php');
 require('template.php');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Script Class for rendering the login form
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_index {
 
 		// Internal, GPvars:
-	var $redirect_url;			// GPvar: redirect_url; The URL to redirect to after login.
-	var $GPinterface;			// GPvar: Defines which interface to load (from interface selector)
-	var $u;					// GPvar: preset username
-	var $p;					// GPvar: preset password
-	var $L;					// GPvar: If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
-	var $loginRefresh;			// Login-refresh boolean; The backend will call this script with this value set when the login is close to being expired and the form needs to be redrawn.
-	var $commandLI;				// Value of forms submit button for login.
+		// GPvar: redirect_url; The URL to redirect to after login.
+	var $redirect_url;
+		// GPvar: Defines which interface to load (from interface selector)
+	var $GPinterface;
+		// GPvar: preset username
+	var $u;
+		// GPvar: preset password
+	var $p;
+		// GPvar: If "L" is "OUT", then any logged in used is logged out. If redirect_url is given, we redirect to it
+	var $L;
+		// Login-refresh boolean; The backend will call this script with this value set when the login is close to being expired and the form needs to be redrawn.
+	var $loginRefresh;
+		// Value of forms submit button for login.
+	var $commandLI;
 
 		// Internal, static:
-	var $redirectToURL;			// Set to the redirect URL of the form (may be redirect_url or "backend.php")
+		// Set to the redirect URL of the form (may be redirect_url or "backend.php")
+	var $redirectToURL;
 
 		// Internal, dynamic:
-	var $content;				// Content accumulation
+		// Content accumulation
+	var $content;
+		// A selector box for selecting value for "interface" may be rendered into this variable
+	var $interfaceSelector;
+		// A selector box for selecting value for "interface" may be rendered into this variable
+		// this will have an onchange action which will redirect the user to the selected interface right away
+	var $interfaceSelector_jump;
+		// A hidden field, if the interface is not set.
+	var $interfaceSelector_hidden;
+		// Additional hidden fields to be placed at the login form
+	var $addFields_hidden = '';
 
-	var $interfaceSelector;			// A selector box for selecting value for "interface" may be rendered into this variable
-	var $interfaceSelector_jump;	// A selector box for selecting value for "interface" may be rendered into this variable - this will have an onchange action which will redirect the user to the selected interface right away
-	var $interfaceSelector_hidden;	// A hidden field, if the interface is not set.
-	var $addFields_hidden = '';		// Additional hidden fields to be placed at the login form
-
-		// sets the level of security. *'normal' = clear-text. 'challenged' = hashed password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
+		// sets the level of security. *'normal' = clear-text. 'challenged' = hashed
+		// password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 	var $loginSecurityLevel = 'superchallenged';
-
-
-
-
 	/**
 	 * Initialize the login box. Will also react on a &L=OUT flag and exit.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 			// We need a PHP session session for most login levels
@@ -114,14 +110,14 @@ class SC_index {
 			// Value of "Login" button. If set, the login button was pressed.
 		$this->commandLI = t3lib_div::_GP('commandLI');
 
-			// sets the level of security from conf vars
+			// Sets the level of security from conf vars
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) {
 			$this->loginSecurityLevel = $GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'];
 		}
 
-			// try to get the preferred browser language
+			// Try to get the preferred browser language
 		$preferredBrowserLanguage = $GLOBALS['LANG']->csConvObj->getPreferredClientLanguage(t3lib_div::getIndpEnv('HTTP_ACCEPT_LANGUAGE'));
-			// if we found a $preferredBrowserLanguage and it is not the default language and no be_user is logged in
+			// If we found a $preferredBrowserLanguage and it is not the default language and no be_user is logged in
 			// initialize $GLOBALS['LANG'] again with $preferredBrowserLanguage
 		if ($preferredBrowserLanguage != 'default' && !$GLOBALS['BE_USER']->user['uid']) {
 			$GLOBALS['LANG']->init($preferredBrowserLanguage);
@@ -142,11 +138,10 @@ class SC_index {
 		}
 	}
 
-
 	/**
 	 * Main function - creating the login/logout form
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 			// Initialize template object:
@@ -183,15 +178,15 @@ class SC_index {
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage('TYPO3 Login: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], FALSE);
 
 			// Add login form:
-		$this->content.=$this->wrapLoginForm($loginForm);
+		$this->content .= $this->wrapLoginForm($loginForm);
 
-		$this->content.= $GLOBALS['TBE_TEMPLATE']->endPage();
+		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
 	}
 
 	/**
 	 * Outputting the accumulated content to screen
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
@@ -207,7 +202,7 @@ class SC_index {
 	 * Creates the login form
 	 * This is drawn when NO login exists.
 	 *
-	 * @return	string		HTML output
+	 * @return string HTML output
 	 */
 	function makeLoginForm() {
 		$content = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_FORM###');
@@ -217,7 +212,7 @@ class SC_index {
 			'VALUE_SUBMIT'   => $GLOBALS['LANG']->getLL('labels.submitLogin', TRUE),
 		);
 
-			// show an error message if the login command was successful already, otherwise remove the subpart
+			// Show an error message if the login command was successful already, otherwise remove the subpart
 		if (!$this->isLoginInProgress()) {
 			$content = t3lib_parsehtml::substituteSubpart($content, '###LOGIN_ERROR###', '');
 		} else {
@@ -226,8 +221,7 @@ class SC_index {
 			$markers['ERROR_LOGIN_DESCRIPTION'] = $GLOBALS['LANG']->getLL('error.login.description', TRUE);
 		}
 
-
-			// remove the interface selector markers if it's not available
+			// Remove the interface selector markers if it's not available
 		if (!($this->interfaceSelector && !$this->loginRefresh)) {
 			$content = t3lib_parsehtml::substituteSubpart($content, '###INTERFACE_SELECTOR###', '');
 		} else {
@@ -238,12 +232,11 @@ class SC_index {
 		return t3lib_parsehtml::substituteMarkerArray($content, $markers, '###|###');
 	}
 
-
 	/**
 	 * Creates the logout form
 	 * This is drawn if a user login already exists.
 	 *
-	 * @return	string		HTML output
+	 * @return string HTML output
 	 */
 	function makeLogoutForm() {
 		$content = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGOUT_FORM###');
@@ -253,7 +246,7 @@ class SC_index {
 			'VALUE_SUBMIT'   => $GLOBALS['LANG']->getLL('labels.submitLogout', TRUE),
 		);
 
-			// remove the interface selector markers if it's not available
+			// Remove the interface selector markers if it's not available
 		if (!$this->interfaceSelector_jump) {
 			$content = t3lib_parsehtml::substituteSubpart($content, '###INTERFACE_SELECTOR###', '');
 		} else {
@@ -264,12 +257,11 @@ class SC_index {
 		return t3lib_parsehtml::substituteMarkerArray($content, $markers, '###|###');
 	}
 
-
 	/**
 	 * Wrapping the login form table in another set of tables etc:
 	 *
-	 * @param	string		HTML content for the login form
-	 * @return	string		The HTML for the page.
+	 * @param string HTML content for the login form
+	 * @return string The HTML for the page.
 	 */
 	function wrapLoginForm($content) {
 		$mainContent = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###PAGE###');
@@ -298,7 +290,7 @@ class SC_index {
 			'CSS_ERRORCLASS'   => ($this->isLoginInProgress() ? ' class="error"' : ''),
 			'CSS_OPENIDCLASS'  => 't3-login-openid-' . (t3lib_extMgm::isLoaded('openid') ? 'enabled' : 'disabled'),
 
-				// the labels will be replaced later on, thus the other parts above
+				// The labels will be replaced later on, thus the other parts above
 				// can use these markers as well and it will be replaced
 			'HEADLINE'         => $GLOBALS['LANG']->getLL('headline', TRUE),
 			'INFO_ABOUT'       => $GLOBALS['LANG']->getLL('info.about', TRUE),
@@ -321,17 +313,16 @@ class SC_index {
 			'LOGIN_PROCESS'    => $GLOBALS['LANG']->getLL('login_process', TRUE),
 			'SITELINK'         => '<a href="/">###SITENAME###</a>',
 
-				// global variables will now be replaced (at last)
+				// Global variables will now be replaced (at last)
 			'SITENAME'         => htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
 		);
 		return t3lib_parsehtml::substituteMarkerArray($mainContent, $markers, '###|###');
 	}
 
-
 	/**
 	 * Checking, if we should perform some sort of redirection OR closing of windows.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function checkRedirect() {
 			// Do redirect:
@@ -340,7 +331,7 @@ class SC_index {
 
 				// If no cookie has been set previously we tell people that this is a problem. This assumes that a cookie-setting script (like this one) has been hit at least once prior to this instance.
 			if (!$_COOKIE[t3lib_beUserAuth::getCookieName()]) {
-				if ($this->commandLI=='setCookie') {
+				if ($this->commandLI == 'setCookie') {
 						// we tried it a second time but still no cookie
 						// 26/4 2005: This does not work anymore, because the saving of challenge values in $_SESSION means the system will act as if the password was wrong.
 					throw new RuntimeException('Login-error: Yeah, that\'s a classic. No cookies, no TYPO3.<br /><br />Please accept cookies from TYPO3 - otherwise you\'ll not be able to use the system.', 1294586846);
@@ -390,14 +381,15 @@ class SC_index {
 				');
 			}
 		} elseif (!$GLOBALS['BE_USER']->user['uid'] && $this->isLoginInProgress()) {
-			sleep(5);	// Wrong password, wait for 5 seconds
+				// Wrong password, wait for 5 seconds
+			sleep(5);
 		}
 	}
 
 	/**
 	 * Making interface selector:
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function makeInterfaceSelectorBox() {
 			// Reset variables:
@@ -408,22 +400,23 @@ class SC_index {
 			// If interfaces are defined AND no input redirect URL in GET vars:
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] && ($this->isLoginInProgress() || !$this->redirect_url)) {
 			$parts = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']);
-			if (count($parts)>1)	{	// Only if more than one interface is defined will we show the selector:
+				// Only if more than one interface is defined will we show the selector:
+			if (count($parts) > 1) {
 
 					// Initialize:
-				$labels=array();
+				$labels = array();
 
 				$labels['backend']     = $GLOBALS['LANG']->getLL('interface.backend');
 				$labels['backend_old'] = $GLOBALS['LANG']->getLL('interface.backend_old');
 				$labels['frontend']    = $GLOBALS['LANG']->getLL('interface.frontend');
 
-				$jumpScript=array();
+				$jumpScript = array();
 				$jumpScript['backend']     = 'backend.php';
 				$jumpScript['backend_old'] = 'backend.php';
 				$jumpScript['frontend']    = '../';
 
 					// Traverse the interface keys:
-				foreach($parts as $valueStr) {
+				foreach ($parts as $valueStr) {
 					$this->interfaceSelector.='
 							<option value="'.htmlspecialchars($valueStr).'"'.(t3lib_div::_GP('interface')==htmlspecialchars($valueStr) ? ' selected="selected"' : '').'>'.htmlspecialchars($labels[$valueStr]).'</option>';
 					$this->interfaceSelector_jump.='
@@ -451,7 +444,7 @@ class SC_index {
 	 * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
 	 * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use a stylesheet to obstruct the display.
 	 *
-	 * @return	string		Text/Image (HTML) for copyright notice.
+	 * @return string Text/Image (HTML) for copyright notice.
 	 */
 	function makeCopyrightNotice() {
 
@@ -485,11 +478,12 @@ class SC_index {
 	/**
 	 * Returns the login box image, whether the default or an image from the rotation folder.
 	 *
-	 * @return	string		HTML image tag.
+	 * @return string HTML image tag.
 	 */
 	function makeLoginBoxImage() {
 		$loginboxImage = '';
-		if ($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'])	{		// Look for rotation image folder:
+			// Look for rotation image folder:
+		if ($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'])	{
 			$absPath = t3lib_div::resolveBackPath(PATH_typo3.$GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder']);
 
 				// Get rotation folder:
@@ -513,8 +507,8 @@ class SC_index {
 				}
 			}
 		} else {	// If no rotation folder configured, print default image:
-
-			if (strstr(TYPO3_version, '-dev'))	{	// development version
+				// Development version
+			if (strstr(TYPO3_version, '-dev')) {
 				$loginImage = 'loginbox_image_dev.png';
 				$imagecopy = 'You are running a development version of TYPO3 '.TYPO3_branch;
 			} else {
@@ -543,7 +537,7 @@ class SC_index {
 			// Traverse news array IF there are records in it:
 		if (is_array($systemNews) && count($systemNews) && !t3lib_div::_GP('loginRefresh')) {
 			$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml_proc');
-				// get the main news template, and replace the subpart after looped through
+				// Get the main news template, and replace the subpart after looped through
 			$newsContent      = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_NEWS###');
 			$newsItemTemplate = t3lib_parsehtml::getSubpart($newsContent, '###NEWS_ITEM###');
 
@@ -582,7 +576,7 @@ class SC_index {
 	 * Gets news from sys_news and converts them into a format suitable for
 	 * showing them at the login screen.
 	 *
-	 * @return	array	An array of login news.
+	 * @return array An array of login news.
 	 */
 	protected function getSystemNews() {
 		$systemNewsTable = 'sys_news';
@@ -615,19 +609,19 @@ class SC_index {
 	/**
 	 * Returns the form tag
 	 *
-	 * @return	string		Opening form tag string
+	 * @return string Opening form tag string
 	 */
 	function startForm() {
 		$output = '';
 
-		// The form defaults to 'no login'. This prevents plain
-		// text logins to the Backend. The 'sv' extension changes the form to
-		// use superchallenged method and rsaauth extension makes rsa authetication.
+			// The form defaults to 'no login'. This prevents plain
+			// text logins to the Backend. The 'sv' extension changes the form to
+			// use superchallenged method and rsaauth extension makes rsa authetication.
 		$form = '<form action="index.php" method="post" name="loginform" ' .
 				'onsubmit="alert(\'No authentication methods available. Please, ' .
 				'contact your TYPO3 administrator.\');return false">';
 
-		// Call hooks. If they do not return anything, we fail to login
+			// Call hooks. If they do not return anything, we fail to login
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'] as $function) {
 				$params = array();
@@ -652,7 +646,7 @@ class SC_index {
 	/**
 	 * Creates JavaScript for the login form
 	 *
-	 * @return	string		JavaScript code
+	 * @return string JavaScript code
 	 */
 	function getJScode() {
 		$JSCode = '';
@@ -741,7 +735,7 @@ class SC_index {
 	/**
 	 * Checks if login credentials are currently submitted
 	 *
-	 * @return	boolean
+	 * @return boolean
 	 */
 	protected function isLoginInProgress() {
 		$username = t3lib_div::_GP('username');
@@ -749,7 +743,7 @@ class SC_index {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_index');
 $SOBE->init();
 $SOBE->main();
