@@ -1464,8 +1464,12 @@ class tx_cms_layout extends recordList {
 					}
 					if (strcmp($hookOut, '')) {
 						$out .= $hookOut;
+					} elseif (!empty($row['list_type'])) {
+						$out .= '<strong>' . $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'list_type', $row['list_type']), TRUE) . '</strong><br />';
 					} elseif (!empty($row['select_key'])) {
 						$out .= $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('tt_content', 'select_key'), 1) . ' ' . $row['select_key'] . '<br />';
+					} else {
+						$out .= '<strong>' . $GLOBALS['LANG']->getLL('noPluginSelected') . '</strong>';
 					}
 
 					$out .= $GLOBALS['LANG']->sL(t3lib_BEfunc::getLabelFromItemlist('tt_content', 'pages', $row['pages']), 1) . '<br />';

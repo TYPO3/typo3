@@ -249,6 +249,9 @@
 			<trans-unit id="goToListModuleMessage" xml:space="preserve">
 				<source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
 			</trans-unit>
+			<trans-unit id="noPluginSelected" xml:space="preserve">
+				<source>No plugin selected</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
