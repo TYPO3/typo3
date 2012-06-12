@@ -49,7 +49,7 @@ class tx_version_cm1 {
 	 * @param	integer		Record UID of the element
 	 * @return	array		Modified menuItems array
 	 */
-	function main(&$backRef,$menuItems,$table,$uid)	{
+	function main(&$backRef, $menuItems, $table, $uid) {
 		$localItems = Array();
 		if (!$backRef->cmLevel && $uid > 0 && $GLOBALS['BE_USER']->check('modules', 'web_txversionM1')) {
 
@@ -64,7 +64,7 @@ class tx_version_cm1 {
 				// "Versioning" element added:
 			$url = t3lib_extMgm::extRelPath('version').'cm1/index.php?table='.rawurlencode($table).'&uid='.$uid;
 			$localItems[] = $backRef->linkItem(
-				$GLOBALS['LANG']->getLLL('title',$LL),
+				$GLOBALS['LANG']->getLLL('title', $LL),
 				$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('version').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 				$backRef->urlRefForCM($url),
 				1
@@ -74,7 +74,7 @@ class tx_version_cm1 {
 			/*
 			$url = t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table=='pages'?$uid:$backRef->rec['pid']).'&table='.rawurlencode($table).'&uid='.$uid.'&sendToReview=1';
 			$localItems[] = $backRef->linkItem(
-				$GLOBALS['LANG']->getLLL('title_review',$LL),
+				$GLOBALS['LANG']->getLLL('title_review', $LL),
 				$backRef->excludeIcon('<img src="'.$backRef->backPath.t3lib_extMgm::extRelPath('version').'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'),
 				$backRef->urlRefForCM($url),
 				1
@@ -85,7 +85,9 @@ class tx_version_cm1 {
 			$c=0;
 			foreach ($menuItems as $k => $value) {
 				$c++;
-				if (!strcmp($k,'delete'))	break;
+				if (!strcmp($k, 'delete')) {
+					break;
+				}
 			}
 				// .. subtract two (delete item + divider line)
 			$c-=2;
@@ -106,7 +108,7 @@ class tx_version_cm1 {
 	 * @return	array		Local lang array
 	 */
 	function includeLL()	{
-		return $GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xml',FALSE);
+		return $GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xml', FALSE);
 	}
 }
 

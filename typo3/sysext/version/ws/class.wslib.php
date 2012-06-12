@@ -61,7 +61,7 @@ class wslib {
 	 * @param	[type]		$pageId: ...
 	 * @return	array		Command array for tcemain
 	 */
-	function getCmdArrayForPublishWS($wsid, $doSwap,$pageId=0)	{
+	function getCmdArrayForPublishWS($wsid, $doSwap, $pageId=0) {
 
 		$wsid = intval($wsid);
 		$cmd = array();
@@ -71,14 +71,14 @@ class wslib {
 				// Define stage to select:
 			$stage = -99;
 			if ($wsid>0)	{
-				$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace',$wsid);
+				$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $wsid);
 				if ($workspaceRec['publish_access']&1)	{
 					$stage = 10;
 				}
 			}
 
 				// Select all versions to swap:
-			$versions = $this->selectVersionsInWorkspace($wsid,0,$stage,($pageId?$pageId:-1));
+			$versions = $this->selectVersionsInWorkspace($wsid, 0, $stage, ($pageId ? $pageId : -1));
 
 				// Traverse the selection to build CMD array:
 			foreach ($versions as $table => $records) {
@@ -107,7 +107,7 @@ class wslib {
 	 * @param	integer		Page id: Live page for which to find versions in workspace!
 	 * @return	array		Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The REAL pid of the online record is found as "realpid"
 	 */
-	function selectVersionsInWorkspace($wsid,$filter=0,$stage=-99,$pageId=-1)	{
+	function selectVersionsInWorkspace($wsid, $filter = 0, $stage = -99, $pageId = -1) {
 		$wsid = intval($wsid);
 		$filter = intval($filter);
 		$output = array();
@@ -128,8 +128,8 @@ class wslib {
 						($stage!=-99 ? ' AND A.t3ver_stage='.intval($stage) : '').
 						' AND B.pid>=0'.	// Table B (online) must have PID >= 0 to signify being online.
 						' AND A.t3ver_oid=B.uid'.	// ... and finally the join between the two tables.
-						t3lib_BEfunc::deleteClause($table,'A').
-						t3lib_BEfunc::deleteClause($table,'B'),
+						t3lib_BEfunc::deleteClause($table, 'A') .
+						t3lib_BEfunc::deleteClause($table, 'B'),
 					'',
 					'B.uid'		// Order by UID, mostly to have a sorting in the backend overview module which doesn't "jump around" when swapping.
 				);
@@ -188,7 +188,7 @@ class wslib {
 
 				// First, clear start/end time so it doesn't get select once again:
 			$fieldArray = $rec['publish_time']!=0 ? array('publish_time'=>0) : array('unpublish_time'=>0);
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_workspace','uid='.intval($rec['uid']),$fieldArray);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_workspace', 'uid=' . intval($rec['uid']), $fieldArray);
 
 				// Get CMD array:
 			$cmd = $this->getCmdArrayForPublishWS($rec['uid'], $rec['swap_modes']==1);	// $rec['swap_modes']==1 means that auto-publishing will swap versions, not just publish and empty the workspace.
@@ -196,7 +196,7 @@ class wslib {
 				// Execute CMD array:
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values = 0;
-			$tce->start(array(),$cmd);
+			$tce->start(array(), $cmd);
 			$tce->process_cmdmap();
 		}
 

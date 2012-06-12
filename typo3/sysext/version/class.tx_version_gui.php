@@ -83,7 +83,7 @@ class tx_version_gui {
 
 					// Controls:
 				if ($id == $onlineId) {
-					$controls .= '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif','width="5" height="9"') .
+					$controls .= '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"') .
 						' class="absmiddle" alt="" /> <strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.online', TRUE) .
 						'</strong>';
 				} elseif (!$noAction) {

@@ -235,14 +235,14 @@ class tx_version_tcemain {
 								// it from workspace (because it clears both version and placeholder).
 							$this->version_clearWSID($table, $id, FALSE, $tcemainObj);
 						}
-					} else $tcemainObj->newlog('Tried to delete record from another workspace',1);
-				} else $tcemainObj->newlog('Versioning not enabled for record with PID = -1!',2);
+					} else $tcemainObj->newlog('Tried to delete record from another workspace', 1);
+				} else $tcemainObj->newlog('Versioning not enabled for record with PID = -1!', 2);
 			} elseif ($res = $tcemainObj->BE_USER->workspaceAllowLiveRecordsInPID($record['pid'], $table)) {
 					// Look, if record is "online" or in a versionized branch, then delete directly.
 				if ($res>0) {
 					$tcemainObj->deleteEl($table, $id);
 				} else {
-					$tcemainObj->newlog('Stage of root point did not allow for deletion',1);
+					$tcemainObj->newlog('Stage of root point did not allow for deletion', 1);
 				}
 			} elseif ((int)$record['t3ver_state']===3) {
 					// Placeholders for moving operations are deletable directly.
@@ -421,9 +421,6 @@ class tx_version_tcemain {
 								$emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], TRUE);
 							break;
 							case -1:
-#								$emails = $this->getEmailsForStageChangeNotification($workspaceRec['reviewers']);
-#								$emails = array_merge($emails,$this->getEmailsForStageChangeNotification($workspaceRec['members']));
-
 									// List of elements to reject:
 								$allElements = explode(',', $elementName);
 									// Traverse them, and find the history of each
@@ -739,9 +736,9 @@ class tx_version_tcemain {
 							}
 						}
 					}	// else the page was not copied. Too bad...
-				} else $tcemainObj->newlog('The root version could not be created!',1);
-			} else $tcemainObj->newlog('Versioning type "'.$versionizeTree.'" was not allowed in workspace',1);
-		} else $tcemainObj->newlog('Could not read all subpages to versionize.',1);
+				} else $tcemainObj->newlog('The root version could not be created!', 1);
+			} else $tcemainObj->newlog('Versioning type "' . $versionizeTree . '" was not allowed in workspace', 1);
+		} else $tcemainObj->newlog('Could not read all subpages to versionize.', 1);
 	}
 
 
@@ -771,7 +768,7 @@ class tx_version_tcemain {
 				if ($tcemainObj->BE_USER->workspacePublishAccess($swapVersion['t3ver_wsid'])) {
 					$wsAccess = $tcemainObj->BE_USER->checkWorkspace($swapVersion['t3ver_wsid']);
 					if ($swapVersion['t3ver_wsid'] <= 0 || !($wsAccess['publish_access'] & 1) || (int)$swapVersion['t3ver_stage'] === -10) {
-						if ($tcemainObj->doesRecordExist($table,$swapWith,'show') && $tcemainObj->checkRecordUpdateAccess($table,$swapWith)) {
+						if ($tcemainObj->doesRecordExist($table, $swapWith, 'show') && $tcemainObj->checkRecordUpdateAccess($table, $swapWith)) {
 							if (!$swapIntoWS || $tcemainObj->BE_USER->workspaceSwapAccess()) {
 
 									// Check if the swapWith record really IS a version of the original!
@@ -1113,7 +1110,7 @@ class tx_version_tcemain {
 
 					// Clear workspace ID for live version AND DELETE IT as well because it is a new record!
 				if ((int) $liveRec['t3ver_state'] == 1 || (int) $liveRec['t3ver_state'] == 2) {
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table,'uid=' . intval($liveRec['uid']), $updateData);
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . intval($liveRec['uid']), $updateData);
 						// THIS assumes that the record was placeholder ONLY for ONE record (namely $id)
 					$tcemainObj->deleteEl($table, $liveRec['uid'], TRUE);
 				}
@@ -1132,7 +1129,7 @@ class tx_version_tcemain {
 					}
 				}
 			}
-		} else $tcemainObj->newlog('Attempt to reset workspace for record failed because you do not have edit access',1);
+		} else $tcemainObj->newlog('Attempt to reset workspace for record failed because you do not have edit access', 1);
 	}
 
 
@@ -1241,8 +1238,8 @@ class tx_version_tcemain {
 						'A.pid=-1' .		// Offline version
 						' AND A.t3ver_wsid=' . $workspaceId .
 						' AND B.pid IN (' . implode(',', $pageIdList) . ') AND A.t3ver_oid=B.uid' .
-						t3lib_BEfunc::deleteClause($table,'A').
-						t3lib_BEfunc::deleteClause($table,'B')
+						t3lib_BEfunc::deleteClause($table, 'A') .
+						t3lib_BEfunc::deleteClause($table, 'B')
 					);
 					while (FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
 						$elementList[$table][] = $row[0];
@@ -1276,8 +1273,8 @@ class tx_version_tcemain {
 				'A.pid=-1' .		// Offline version
 				' AND A.t3ver_wsid=' . $workspaceId .
 				' AND A.uid IN (' . implode(',', $idList) . ') AND A.t3ver_oid=B.uid' .
-				t3lib_BEfunc::deleteClause($table,'A').
-				t3lib_BEfunc::deleteClause($table,'B')
+				t3lib_BEfunc::deleteClause($table, 'A') .
+				t3lib_BEfunc::deleteClause($table, 'B')
 			);
 			while (FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res))) {
 				$pageIdList[] = $row[0];
