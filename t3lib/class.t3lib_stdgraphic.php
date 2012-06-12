@@ -439,7 +439,7 @@ class t3lib_stdGraphic {
 				// Make true color image
 			$tmpImg = imagecreatetruecolor(imagesx($dstImg), imagesy($dstImg));
 				// Copy the source image onto that
-			imagecopyresized($tmpImg, $srcImg, 0, 0, 0, 0, imagesx($dstImg), imagesy($dstImg), imagesx($dstImg), imagesy($dstImg));
+			imagecopyresized($tmpImg, $dstImg, 0, 0, 0, 0, imagesx($dstImg), imagesy($dstImg), imagesx($dstImg), imagesy($dstImg));
 				// Then copy the source image onto that (the actual operation!)
 			imagecopyresized($tmpImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
 				// Set the destination image
