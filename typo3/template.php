@@ -182,7 +182,7 @@ class template {
 			$this->scriptID = 'typo3/'.substr($this->scriptID, strlen(TYPO3_mainDir));	// This fixes if TYPO3_mainDir has been changed so the script ids are STILL "typo3/..."
 		}
 
-		$this->bodyTagId = preg_replace('/[^A-Za-z0-9-]/','-', $this->scriptID);
+		$this->bodyTagId = preg_replace('/[^A-Za-z0-9-]/', '-', $this->scriptID);
 
 			// Individual configuration per script? If so, make a recursive merge of the arrays:
 		if (is_array($GLOBALS['TBE_STYLES']['scriptIDindex'][$this->scriptID])) {

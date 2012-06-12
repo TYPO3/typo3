@@ -190,7 +190,7 @@ class SC_wizard_rte {
 				$tceforms->printNeededJSFunctions();
 		} else {
 				// ERROR:
-			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('forms_title'), '<span class="typo3-red">'.$GLOBALS['LANG']->getLL('table_noData',1).'</span>', 0, 1);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('forms_title'), '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('table_noData', 1) . '</span>', 0, 1);
 		}
 
 		// Setting up the buttons and markers for docheader

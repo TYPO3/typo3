@@ -320,7 +320,7 @@ class SC_view_help {
 
 
 				<!-- NEW SECTION: -->
-				',$outputSections);
+				', $outputSections);
 		}
 
 		$output .= '<hr /><p class="manual-title">'.t3lib_BEfunc::TYPO3_copyRightNotice().'</p>';
@@ -379,8 +379,8 @@ class SC_view_help {
 				$output.='
 					<li>'.$GLOBALS['LANG']->getLL('TOC_'.$tocKey, 1).'
 						<ul>
-							<li>'.implode('</li>
-							<li>',$tocArray[$tocKey]).'</li>
+							<li>' . implode('</li>
+							<li>', $tocArray[$tocKey]) . '</li>
 						</ul>
 					</li>';
 			}

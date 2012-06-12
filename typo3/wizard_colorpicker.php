@@ -345,8 +345,8 @@ class SC_wizard_colorpicker {
 		$output = '
 			<p class="c-head">'.$GLOBALS['LANG']->getLL('colorpicker_fromList', 1).'</p>
 			<select onchange="document.colorform.colorValue.value = this.options[this.selectedIndex].value; document.colorform.submit(); return false;">
-				'.implode('
-				',$opt).'
+				' . implode('
+				', $opt) . '
 			</select><br />';
 
 		return $output;
