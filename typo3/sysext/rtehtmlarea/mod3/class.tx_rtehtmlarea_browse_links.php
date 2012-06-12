@@ -778,7 +778,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 								$title=$GLOBALS['LANG']->sL($title);
 							}
 								// Description:
-							$description=$v[$k2i.'.']['description'] ? $GLOBALS['LANG']->sL($v[$k2i.'.']['description'],1).'<br />' : '';
+							$description = $v[$k2i . '.']['description'] ? $GLOBALS['LANG']->sL($v[$k2i . '.']['description'], 1) . '<br />' : '';
 
 								// URL + onclick event:
 							$onClickEvent='';

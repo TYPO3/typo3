@@ -266,7 +266,8 @@ class tx_form_System_Request implements t3lib_Singleton {
 			);
 		} else {
 			$GLOBALS['TSFE']->fe_user->setKey(
-				'ses',$this->prefix,
+				'ses',
+				$this->prefix,
 				$this->getByMethod()
 			);
 		}
@@ -288,7 +289,8 @@ class tx_form_System_Request implements t3lib_Singleton {
 			);
 		} else {
 			$GLOBALS['TSFE']->fe_user->setKey(
-				'ses',$this->prefix,
+				'ses',
+				$this->prefix,
 				NULL
 			);
 		}

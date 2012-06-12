@@ -434,7 +434,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$menu = '<div class="tsob-menu"><label>' . $GLOBALS['LANG']->getLL('browse') . '</label>';
 			$menu .= t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[ts_browser_type]', $bType, $this->pObj->MOD_MENU['ts_browser_type']);
 			$menu .= '<label for="ts_browser_toplevel_' . $bType . '">' . $GLOBALS['LANG']->getLL('objectList') . '</label>';
-			$menu .= t3lib_BEfunc::getFuncMenu($this->pObj->id,'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]);
+			$menu .= t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[ts_browser_toplevel_' . $bType . ']', $this->pObj->MOD_SETTINGS['ts_browser_toplevel_' . $bType], $this->pObj->MOD_MENU['ts_browser_toplevel_' . $bType]);
 
 			//search
 			$menu .= '<label for="search_field">' . $GLOBALS['LANG']->getLL('search') .'</label>';

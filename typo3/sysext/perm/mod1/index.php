@@ -660,8 +660,8 @@ class SC_mod_web_perm_index {
 				// Compile table row:
 			$code .= '
 				<tr>
-					'.implode('
-					',$cells).'
+					' . implode('
+					', $cells) . '
 				</tr>';
 		}
 
