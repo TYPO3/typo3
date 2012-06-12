@@ -179,7 +179,7 @@ class SC_mod_tools_isearch_index {
 
 		// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-			$buttons['shortcut'] = $this->doc->makeShortcutIcon('','function',$this->MCONF['name']);
+			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
 		}
 		return $buttons;
 	}

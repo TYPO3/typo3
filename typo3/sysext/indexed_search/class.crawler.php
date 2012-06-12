@@ -118,7 +118,7 @@ class tx_indexedsearch_crawler {
 						'depth' => 0	// Specific for URL and file types
 					);
 
-					$pObj->addQueueEntry_callBack($setId,$params,$this->callBack,$cfgRec['pid']);
+					$pObj->addQueueEntry_callBack($setId, $params, $this->callBack, $cfgRec['pid']);
 				break;
 				case 3:	// External URL:
 

@@ -731,15 +731,15 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 	protected function markupSWpartsOfString($str) {
 
 			// Init:
-		$str = str_replace('&nbsp;',' ',t3lib_parsehtml::bidir_htmlspecialchars($str,-1));
-		$str = preg_replace('/\s\s+/',' ',$str);
+		$str = str_replace('&nbsp;', ' ', t3lib_parsehtml::bidir_htmlspecialchars($str, -1));
+		$str = preg_replace('/\s\s+/', ' ', $str);
 		$swForReg = array();
 
 			// Prepare search words for regex:
 		foreach ($this->sWArr as $d) {
-			$swForReg[] = preg_quote($d['sword'],'/');
+			$swForReg[] = preg_quote($d['sword'], '/');
 		}
-		$regExString = '('.implode('|',$swForReg).')';
+		$regExString = '(' . implode('|', $swForReg) . ')';
 
 			// Split and combine:
 		$parts = preg_split('/'.$regExString.'/i', ' '.$str.' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
@@ -773,13 +773,14 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 					}
 				} elseif ($summaryLgd > $summaryMax || !isset($parts[$k+1])) {	// In case summary length is exceed OR if there are no more entries at all:
 					if ($strLen > $postPreLgd) {
-						$output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/','',$GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], $postPreLgd - $postPreLgd_offset)) . $divider;
+						$output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], $postPreLgd - $postPreLgd_offset)) . $divider;
 					}
-				} else {	// In-between search words:
+					// In-between search words:
+				} else {
 					if ($strLen > $postPreLgd * 2) {
-						$output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/','',$GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], $postPreLgd - $postPreLgd_offset)).
-										$divider.
-										preg_replace('/^[^[:space:]]+[[:space:]]/','',$GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
+						$output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], $postPreLgd - $postPreLgd_offset)) .
+							$divider .
+							preg_replace('/^[^[:space:]]+[[:space:]]/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
 					}
 				}
 				$summaryLgd+= $GLOBALS['TSFE']->csConvObj->strlen('utf-8', $output[$k]);
@@ -894,9 +895,9 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 					array('-', 'AND NOT'),
 						// Add operators for various languages
 						// Converts the operators to UTF-8 and lowercase
-					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8',$GLOBALS['TSFE']->csConvObj->utf8_encode(Tx_Extbase_Utility_Localization::translate('localizedOperandAnd', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND'),
-					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8',$GLOBALS['TSFE']->csConvObj->utf8_encode(Tx_Extbase_Utility_Localization::translate('localizedOperandOr', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'OR'),
-					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8',$GLOBALS['TSFE']->csConvObj->utf8_encode(Tx_Extbase_Utility_Localization::translate('localizedOperandNot', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND NOT'),
+					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(Tx_Extbase_Utility_Localization::translate('localizedOperandAnd', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND'),
+					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(Tx_Extbase_Utility_Localization::translate('localizedOperandOr', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'OR'),
+					array($GLOBALS['TSFE']->csConvObj->conv_case('utf-8', $GLOBALS['TSFE']->csConvObj->utf8_encode(Tx_Extbase_Utility_Localization::translate('localizedOperandNot', 'indexed_search'), $GLOBALS['TSFE']->renderCharset), 'toLower'), 'AND NOT'),
 				);
 
 				$search = t3lib_div::makeInstance('tslib_search');

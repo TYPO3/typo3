@@ -132,9 +132,9 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		$this->indexerObj = t3lib_div::makeInstance('tx_indexedsearch_indexer');
 
 			// Set CSS styles specific for this document:
-		$this->pObj->content = str_replace('/*###POSTCSSMARKER###*/','
+		$this->pObj->content = str_replace('/*###POSTCSSMARKER###*/', '
 			TABLE.c-list TR TD { white-space: nowrap; vertical-align: top; }
-		',$this->pObj->content);
+		', $this->pObj->content);
 
 
 			// Check if details for a phash record should be shown:
