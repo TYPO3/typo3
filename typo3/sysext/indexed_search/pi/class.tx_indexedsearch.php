@@ -963,7 +963,7 @@ class tx_indexedsearch extends tslib_pibase {
 			$out.= ' AND ISEC.rl1 IN (' . $list . ')';
 			$match = TRUE;
 		} elseif (substr($this->piVars['sections'], 0, 4)=='rl2_') {
-			$list = implode(',',t3lib_div::intExplode(',', substr($this->piVars['sections'], 4)));
+			$list = implode(',', t3lib_div::intExplode(',', substr($this->piVars['sections'], 4)));
 			$out.= ' AND ISEC.rl2 IN (' . $list . ')';
 			$match = TRUE;
 		} elseif (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['indexed_search']['addRootLineFields'])) {
@@ -1736,7 +1736,7 @@ class tx_indexedsearch extends tslib_pibase {
 			} else {	// Suspicious, so linking to page instead...
 				$copy_row = $row;
 				unset($copy_row['cHashParams']);
-				$title = $this->linkPage($row['page_id'],htmlspecialchars($this->makeTitle($row)),$copy_row);
+				$title = $this->linkPage($row['page_id'], htmlspecialchars($this->makeTitle($row)), $copy_row);
 			}
 		} else {	// Else the page:
 
@@ -1924,7 +1924,7 @@ class tx_indexedsearch extends tslib_pibase {
 				if ($this->firstRow['order_val2']) {
 					$base = $row['order_val1']*256; // (3 MSB bit, 224 is highest value of order_val1 currently)
 					$freqNumber = $row['order_val2']/$this->firstRow['order_val2']*pow(2, 12);	// 15-3 MSB = 12
-					$total = t3lib_utility_Math::forceIntegerInRange($base+$freqNumber,0,32767);
+					$total = t3lib_utility_Math::forceIntegerInRange($base+$freqNumber, 0, 32767);
 					return ceil(log($total)/log(32767)*100).'%';
 				}
 			break;
@@ -2032,17 +2032,17 @@ class tx_indexedsearch extends tslib_pibase {
 					// Possibly shorten string:
 				if (!$k)	{	// First entry at all (only cropped on the frontside)
 					if ($strLen > $postPreLgd) {
-						$output[$k] = $divider.preg_replace('/^[^[:space:]]+[[:space:]]/','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],-($postPreLgd-$postPreLgd_offset)));
+						$output[$k] = $divider.preg_replace('/^[^[:space:]]+[[:space:]]/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
 					}
 				} elseif ($summaryLgd > $summaryMax || !isset($parts[$k+1])) {	// In case summary length is exceed OR if there are no more entries at all:
 					if ($strLen > $postPreLgd) {
-						$output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],$postPreLgd-$postPreLgd_offset)).$divider;
+						$output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], $postPreLgd - $postPreLgd_offset)) . $divider;
 					}
 				} else {	// In-between search words:
 					if ($strLen > $postPreLgd*2) {
-						$output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],$postPreLgd-$postPreLgd_offset)).
-										$divider.
-										preg_replace('/^[^[:space:]]+[[:space:]]/','',$GLOBALS['TSFE']->csConvObj->crop('utf-8',$parts[$k],-($postPreLgd-$postPreLgd_offset)));
+						$output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], $postPreLgd - $postPreLgd_offset)) .
+										$divider .
+										preg_replace('/^[^[:space:]]+[[:space:]]/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
 					}
 				}
 				$summaryLgd+= $GLOBALS['TSFE']->csConvObj->strlen('utf-8', $output[$k]);
@@ -2196,7 +2196,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 */
 	function makeAccessIndication($id) {
 		if (is_array($this->fe_groups_required[$id]) && count($this->fe_groups_required[$id])) {
-			return '<img src="'.t3lib_extMgm::siteRelPath('indexed_search').'pi/res/locked.gif" width="12" height="15" vspace="5" title="'.sprintf($this->pi_getLL('res_memberGroups', '', 1),implode(',', array_unique($this->fe_groups_required[$id]))).'" alt="" />';
+			return '<img src="' . t3lib_extMgm::siteRelPath('indexed_search') . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="' . sprintf($this->pi_getLL('res_memberGroups', '', 1), implode(',', array_unique($this->fe_groups_required[$id]))) . '" alt="" />';
 		}
 	}
 

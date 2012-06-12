@@ -295,7 +295,7 @@ class Tx_IndexedSearch_Domain_Repository_IndexSearchRepository {
 			$sWord = $v['sword'];
 			$theType = (string) $this->searchType;
 				// If there are spaces in the search-word, make a full text search instead.
-			if (strstr($sWord,' ')) {
+			if (strstr($sWord, ' ')) {
 				$theType = 20;
 			}
 
@@ -424,7 +424,7 @@ class Tx_IndexedSearch_Domain_Repository_IndexSearchRepository {
 		$wildcard_right = ($mode & WILDCARD_RIGHT) ? '%' : '';
 
 		$wSel = 'IW.baseword LIKE \'' . $wildcard_left . $GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_words') . $wildcard_right . '\'';
-		$res = $this->execPHashListQuery($wSel,' AND is_stopword=0');
+		$res = $this->execPHashListQuery($wSel, ' AND is_stopword=0');
 		return $res;
 	}
 
