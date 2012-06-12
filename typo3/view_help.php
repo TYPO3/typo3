@@ -24,6 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Document for viewing the online help texts, also known as TCA_DESCR.
  * See Inside TYPO3 for details.
@@ -31,18 +32,17 @@
  * Revised for TYPO3 3.7 5/2004 by Kasper Skårhøj
  * XHTML-trans compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 require('init.php');
 require('template.php');
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_view_help.xml');
 
-
 /**
  * Extension of the parse_html class.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -51,10 +51,10 @@ class local_t3lib_parsehtml extends t3lib_parsehtml {
 	/**
 	 * Processing content between tags for HTML_cleaner
 	 *
-	 * @param	string		The value
-	 * @param	integer		Direction, either -1 or +1. 0 (zero) means no change to input value.
-	 * @param	mixed		Not used, ignore.
-	 * @return	string		The processed value.
+	 * @param string $value The value
+	 * @param integer $dir Direction, either -1 or +1. 0 (zero) means no change to input value.
+	 * @param mixed $conf Not used, ignore.
+	 * @return string The processed value.
 	 * @access private
 	 */
 	function processContent($value, $dir, $conf) {
@@ -64,16 +64,10 @@ class local_t3lib_parsehtml extends t3lib_parsehtml {
 	}
 }
 
-
-
-
-
-
-
 /**
  * Script Class for rendering the Context Sensitive Help documents, either the single display in the small pop-up window or the full-table view in the larger window.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -81,9 +75,12 @@ class SC_view_help {
 	var $allowedHTML = '<strong><em><b><i>';
 
 		// For these vars, see init()
-	var $limitAccess;	// If set access to fields and tables is checked. Should be done for TRUE database tables.
-	var $table;			// The "table" key
-	var $field;			// The "field" key
+		// If set access to fields and tables is checked. Should be done for TRUE database tables.
+	var $limitAccess;
+		// The "table" key
+	var $table;
+		// The "field" key
+	var $field;
 		/**
 		 * Key used to point to the right CSH resource
 		 * In simple cases, is equal to $table
@@ -93,21 +90,25 @@ class SC_view_help {
 	protected $mainKey;
 
 		// Internal, static: GPvar:
-	var $tfID;			// Table/FIeld id.
-	var $ffID;			// Flexform file/field information
-	var $back;			// Back (previous tfID)
-	var $renderALL;		// If set, then in TOC mode the FULL manual will be printed as well!
+		// Table/FIeld id.
+	var $tfID;
+		// Flexform file/field information
+	var $ffID;
+		// Back (previous tfID)
+	var $back;
+		// If set, then in TOC mode the FULL manual will be printed as well!
+	var $renderALL;
 
 		// Internal, dynamic:
-	var $content;	// Content accumulation.
-	var $glossaryWords;		// Glossary words
-
-
+		// Content accumulation.
+	var $content;
+		// Glossary words
+	var $glossaryWords;
 
 	/**
 	 * Initialize the class for various input etc.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 
@@ -163,7 +164,7 @@ class SC_view_help {
 	/**
 	 * Main function, rendering the display
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 
@@ -190,26 +191,18 @@ class SC_view_help {
 		}
 
 			// End page:
-		$this->content.= '<br/>';
+		$this->content .= '<br/>';
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
 	}
 
 	/**
 	 * Outputting the accumulated content to screen
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
 	}
-
-
-
-
-
-
-
-
 
 	/************************************
 	 *
@@ -220,7 +213,7 @@ class SC_view_help {
 	/**
 	 * Creates Table Of Contents and possibly "Full Manual" mode if selected.
 	 *
-	 * @return	string		HTML content
+	 * @return string HTML content
 	 */
 	function render_TOC() {
 			// Initialize:
@@ -238,7 +231,7 @@ class SC_view_help {
 			// Backend Modules:
 		$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 		$loadModules->load($GLOBALS['TBE_MODULES']);
-		foreach($loadModules->modules as $mainMod => $info) {
+		foreach ($loadModules->modules as $mainMod => $info) {
 			$cshKey = '_MOD_'.$mainMod;
 			if ($CSHkeys[$cshKey]) {
 				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
@@ -246,7 +239,7 @@ class SC_view_help {
 			}
 
 			if (is_array($info['sub'])) {
-				foreach($info['sub'] as $subMod => $subInfo) {
+				foreach ($info['sub'] as $subMod => $subInfo) {
 					$cshKey = '_MOD_'.$mainMod.'_'.$subMod;
 					if ($CSHkeys[$cshKey]) {
 						$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
@@ -257,7 +250,7 @@ class SC_view_help {
 		}
 
 			// Database Tables:
-		foreach($TCAkeys as $table) {
+		foreach ($TCAkeys as $table) {
 				// Load descriptions for table $table
 			$GLOBALS['LANG']->loadSingleTableDescription($table);
 			if (is_array($GLOBALS['TCA_DESCR'][$table]['columns']) && $GLOBALS['BE_USER']->check('tables_select', $table)) {
@@ -266,7 +259,7 @@ class SC_view_help {
 		}
 
 			// Extensions
-		foreach($CSHkeys as $cshKey => $value) {
+		foreach ($CSHkeys as $cshKey => $value) {
 			if (t3lib_div::isFirstPartOfStr($cshKey, 'xEXT_') && !isset($GLOBALS['TCA'][$cshKey])) {
 				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'extensions', $outputSections, $tocArray, $CSHkeys);
@@ -274,7 +267,7 @@ class SC_view_help {
 		}
 
 			// Glossary
-		foreach($CSHkeys as $cshKey => $value) {
+		foreach ($CSHkeys as $cshKey => $value) {
 			if (t3lib_div::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($GLOBALS['TCA'][$cshKey])) {
 				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'glossary', $outputSections, $tocArray, $CSHkeys);
@@ -282,7 +275,7 @@ class SC_view_help {
 		}
 
 			// Other:
-		foreach($CSHkeys as $cshKey => $value) {
+		foreach ($CSHkeys as $cshKey => $value) {
 			if (!t3lib_div::isFirstPartOfStr($cshKey, '_MOD_') && !isset($GLOBALS['TCA'][$cshKey])) {
 				$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 				$this->render_TOC_el($cshKey, 'other', $outputSections, $tocArray, $CSHkeys);
@@ -292,28 +285,28 @@ class SC_view_help {
 
 			// COMPILE output:
 		$output = '';
-		$output.= '
+		$output .= '
 
 			<h1>'.$GLOBALS['LANG']->getLL('manual_title', 1).'</h1>';
 
-		$output.= '
+		$output .= '
 
 			<h2>'.$GLOBALS['LANG']->getLL('introduction', 1).'</h2>
 			<p>'.$GLOBALS['LANG']->getLL('description', 1).'</p>';
 
-		$output.= '
+		$output .= '
 
 			<h2>'.$GLOBALS['LANG']->getLL('TOC', 1).'</h2>'.
 			$this->render_TOC_makeTocList($tocArray);
 
 		if (!$this->renderALL) {
-			$output.= '
+			$output .= '
 				<br/>
 				<p class="c-nav"><a href="view_help.php?renderALL=1">'.$GLOBALS['LANG']->getLL('full_manual', 1).'</a></p>';
 		}
 
 		if ($this->renderALL) {
-			$output.= '
+			$output .= '
 
 				<h2>'.$GLOBALS['LANG']->getLL('full_manual_chapters', 1).'</h2>'.
 				implode('
@@ -331,15 +324,16 @@ class SC_view_help {
 	/**
 	 * Creates a TOC list element and renders corresponding HELP content if "renderALL" mode is set.
 	 *
-	 * @param	string		CSH key / Table name
-	 * @param	string		TOC category keyword: "core", "modules", "tables", "other"
-	 * @param	array		Array for accumulation of rendered HELP Content (in "renderALL" mode). Passed by reference!
-	 * @param	array		TOC array; Here TOC index elements are created. Passed by reference!
-	 * @param	array		CSH keys array. Every item rendered will be unset in this array so finally we can see what CSH keys are not processed yet. Passed by reference!
-	 * @return	void
+	 * @param string $table CSH key / Table name
+	 * @param string $tocCat TOC category keyword: "core", "modules", "tables", "other"
+	 * @param array $outputSections Array for accumulation of rendered HELP Content (in "renderALL" mode). Passed by reference!
+	 * @param array $tocArray TOC array; Here TOC index elements are created. Passed by reference!
+	 * @param array $CSHkeys CSH keys array. Every item rendered will be unset in this array so finally we can see what CSH keys are not processed yet. Passed by reference!
+	 * @return void
 	 */
 	function render_TOC_el($table, $tocCat, &$outputSections, &$tocArray, &$CSHkeys) {
-		if ($this->renderALL)	{	// Render full manual right here!
+			// Render full manual right here!
+		if ($this->renderALL) {
 			$outputSections[$table] = $this->render_Table($table);
 
 			if ($outputSections[$table]) {
@@ -365,8 +359,8 @@ class SC_view_help {
 	/**
 	 * Renders the TOC index as a HTML bullet list from TOC array
 	 *
-	 * @param	array		ToC Array.
-	 * @return	string		HTML bullet list for index.
+	 * @param array $tocArray ToC Array.
+	 * @return string HTML bullet list for index.
 	 */
 	function render_TOC_makeTocList($tocArray) {
 			// The Various manual sections:
@@ -374,7 +368,7 @@ class SC_view_help {
 
 			// Create TOC bullet list:
 		$output = '';
-		foreach($keys as $tocKey) {
+		foreach ($keys as $tocKey) {
 			if (is_array($tocArray[$tocKey])) {
 				$output.='
 					<li>'.$GLOBALS['LANG']->getLL('TOC_'.$tocKey, 1).'
@@ -409,7 +403,7 @@ class SC_view_help {
 	function render_Table($key, $table = NULL) {
 		$output = '';
 
-			// take default key if not explicitly specified
+			// Take default key if not explicitly specified
 		if ($table === NULL) {
 			$table = $key;
 		}
@@ -423,7 +417,8 @@ class SC_view_help {
 		if (is_array($GLOBALS['TCA_DESCR'][$key]['columns']) && (!$this->limitAccess || $GLOBALS['BE_USER']->check('tables_select', $table))) {
 				// Initialize variables:
 			$parts = array();
-			$parts[0] = '';	// Reserved for header of table
+				// Reserved for header of table
+			$parts[0] = '';
 
 				// Traverse table columns as listed in TCA_DESCR
 			foreach ($GLOBALS['TCA_DESCR'][$key]['columns'] as $field => $_) {
@@ -432,9 +427,11 @@ class SC_view_help {
 
 				if (is_array($fieldValue) && (!$this->limitAccess || !$fieldValue['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $field))) {
 					if (!$field) {
-						$parts[0] = $this->printItem($key, '', 1);	// Header
+							// Header
+						$parts[0] = $this->printItem($key, '', 1);
 					} else {
-						$parts[] = $this->printItem($key, $field, 1);	// Field
+							// Field
+						$parts[] = $this->printItem($key, $field, 1);
 					}
 				}
 			}
@@ -477,14 +474,14 @@ class SC_view_help {
 		$GLOBALS['LANG']->loadSingleTableDescription($key);
 
 			// Render single item
-		$output.= $this->printItem($key, $field);
+		$output .= $this->printItem($key, $field);
 
 			// Substitute glossary words:
 		$output = $this->substituteGlossaryWords($output);
 
 			// Link to Full table description and TOC:
 		$getLLKey = $this->limitAccess ? 'fullDescription' : 'fullDescription_module';
-		$output.= '<br />
+		$output .= '<br />
 			<p class="c-nav"><a href="view_help.php?tfID=' . rawurlencode($key . '.*') . '">' . $GLOBALS['LANG']->getLL($getLLKey, 1) . '</a></p>
 			<p class="c-nav"><a href="view_help.php">' . $GLOBALS['LANG']->getLL('goToToc', 1) . '</a></p>';
 
@@ -500,37 +497,37 @@ class SC_view_help {
 	/**
 	 * Make seeAlso links from $value
 	 *
-	 * @param	string		See-also input codes
-	 * @param	string		If $anchorTable is set to a tablename, then references to this table will be made as anchors, not URLs.
-	 * @return	string		See-also links HTML
+	 * @param string $value See-also input codes
+	 * @param string $anchorTable If $anchorTable is set to a tablename, then references to this table will be made as anchors, not URLs.
+	 * @return string See-also links HTML
 	 */
 	function make_seeAlso($value, $anchorTable = '') {
 			// Split references by comma or linebreak
 		$items = preg_split('/[,' . LF . ']/', $value);
 		$lines = array();
 
-		foreach($items as $val) {
+		foreach ($items as $val) {
 			$val = trim($val);
 			if ($val) {
 				$iP = explode(':', $val);
 				$iPUrl = t3lib_div::trimExplode('|', $val);
 					// URL reference:
-				if (substr($iPUrl[1], 0, 4)=='http') {
+				if (substr($iPUrl[1], 0, 4) == 'http') {
 					$lines[] = '<a href="'.htmlspecialchars($iPUrl[1]).'" target="_blank"><em>'.htmlspecialchars($iPUrl[0]).'</em></a>';
-				} elseif (substr($iPUrl[1], 0, 5)=='FILE:') {
+				} elseif (substr($iPUrl[1], 0, 5) == 'FILE:') {
 					$fileName = t3lib_div::getFileAbsFileName(substr($iPUrl[1], 5), 1, 1);
 					if ($fileName && @is_file($fileName)) {
 						$fileName = '../'.substr($fileName, strlen(PATH_site));
 						$lines[] = '<a href="'.htmlspecialchars($fileName).'" target="_blank"><em>'.htmlspecialchars($iPUrl[0]).'</em></a>';
 					}
 				} else {
-					// "table" reference
+						// "table" reference
 					t3lib_div::loadTCA($iP[0]);
 
 					if (!isset($GLOBALS['TCA'][$iP[0]]) || ((!$iP[1] || is_array($GLOBALS['TCA'][$iP[0]]['columns'][$iP[1]])) && (!$this->limitAccess || ($GLOBALS['BE_USER']->check('tables_select', $iP[0]) && (!$iP[1] || !$GLOBALS['TCA'][$iP[0]]['columns'][$iP[1]]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $iP[0].':'.$iP[1]))))))	{	// Checking read access:
 						if (isset($GLOBALS['TCA_DESCR'][$iP[0]])) {
 								// Make see-also link:
-							$href = ($this->renderALL || ($anchorTable && $iP[0]==$anchorTable) ? '#'.implode('.', $iP) : 'view_help.php?tfID='.rawurlencode(implode('.', $iP)).'&back='.$this->tfID);
+							$href = ($this->renderALL || ($anchorTable && $iP[0] == $anchorTable) ? '#'.implode('.', $iP) : 'view_help.php?tfID='.rawurlencode(implode('.', $iP)).'&back='.$this->tfID);
 							$label = $this->getTableFieldLabel($iP[0], $iP[1], ' / ');
 							$lines[] = '<a href="'.htmlspecialchars($href).'">'.htmlspecialchars($label).'</a>';
 						}
@@ -544,9 +541,9 @@ class SC_view_help {
 	/**
 	 * Will return an image tag with description in italics.
 	 *
-	 * @param	string		Image file reference (list of)
-	 * @param	string		Description string (divided for each image by line break)
-	 * @return	string		Image HTML codes
+	 * @param string $images Image file reference (list of)
+	 * @param string $descr Description string (divided for each image by line break)
+	 * @return string Image HTML codes
 	 */
 	function printImage($images, $descr) {
 		$code = '';
@@ -555,7 +552,7 @@ class SC_view_help {
 		if (count($imgArray)) {
 			$descrArray = explode(LF, $descr, count($imgArray));
 
-			foreach($imgArray as $k => $image) {
+			foreach ($imgArray as $k => $image) {
 				$descr = $descrArray[$k];
 
 				$absImagePath = t3lib_div::getFileAbsFileName($image, 1, 1);
@@ -568,8 +565,8 @@ class SC_view_help {
 						';
 						$code.= '<p><em>' . htmlspecialchars($descr) . '</em></p>
 						';
-					} else $code.= '<div style="background-color: red; border: 1px solid black; color: white;">NOT AN IMAGE: '.$imgFile.'</div>';
-				} else $code.= '<div style="background-color: red; border: 1px solid black; color: white;">IMAGE FILE NOT FOUND: '.$image.'</div>';
+					} else $code .= '<div style="background-color: red; border: 1px solid black; color: white;">NOT AN IMAGE: '.$imgFile.'</div>';
+				} else $code .= '<div style="background-color: red; border: 1px solid black; color: white;">IMAGE FILE NOT FOUND: '.$image.'</div>';
 			}
 		}
 
@@ -579,11 +576,11 @@ class SC_view_help {
 	/**
 	 * Returns header HTML content
 	 *
-	 * @param	string		Header text
-	 * @param	string		Header type (1, 0)
-	 * @return	string		The HTML for the header.
+	 * @param string $str Header text
+	 * @param string $type Header type (1, 0)
+	 * @return string The HTML for the header.
 	 */
-	function headerLine($str, $type=0) {
+	function headerLine($str, $type = 0) {
 		switch($type) {
 			case 1:
 				$str = '<h2 class="t3-row-header">' . htmlspecialchars($str) . '</h2>
@@ -601,8 +598,8 @@ class SC_view_help {
 	/**
 	 * Returns prepared content
 	 *
-	 * @param	string		Content to format.
-	 * @return	string		Formatted content.
+	 * @param string $str Content to format.
+	 * @return string Formatted content.
 	 */
 	function prepareContent($str) {
 		return '<p>'.nl2br(trim(strip_tags($str, $this->allowedHTML))).'</p>
@@ -699,16 +696,6 @@ class SC_view_help {
 		return $labelString;
 	}
 
-
-
-
-
-
-
-
-
-
-
 	/******************************
 	 *
 	 * Glossary related
@@ -719,7 +706,7 @@ class SC_view_help {
 	 * Creates glossary index in $this->glossaryWords
 	 * Glossary is cached in cache_hash cache and so will be updated only when cache is cleared.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function createGlossaryIndex() {
 			// Create hash string and try to retrieve glossary array:
@@ -735,7 +722,7 @@ class SC_view_help {
 			$CSHkeys = array_flip(array_keys($GLOBALS['TCA_DESCR']));
 
 				// Glossary
-			foreach($CSHkeys as $cshKey => $value) {
+			foreach ($CSHkeys as $cshKey => $value) {
 				if (t3lib_div::isFirstPartOfStr($cshKey, 'xGLOSSARY_') && !isset($GLOBALS['TCA'][$cshKey])) {
 					$GLOBALS['LANG']->loadSingleTableDescription($cshKey);
 
@@ -755,10 +742,11 @@ class SC_view_help {
 			}
 
 				// First, create unique list of words:
-			foreach($this->glossaryWords as $key => $value) {
-				$word = strtolower($value['title']);	// Making word lowercase in order to filter out same words in different cases.
+			foreach ($this->glossaryWords as $key => $value) {
+					// Making word lowercase in order to filter out same words in different cases.
+				$word = strtolower($value['title']);
 
-				if ($word!=='') {
+				if ($word !== '') {
 					$this->substWords[$word] = $value;
 					$this->substWords[$word]['key'] = $key;
 				}
@@ -774,8 +762,8 @@ class SC_view_help {
 	 * Processing of all non-HTML content in the output
 	 * Will be done by a call-back to ->substituteGlossaryWords_htmlcleaner_callback()
 	 *
-	 * @param	string		Input HTML code
-	 * @return	string		Output HTML code
+	 * @param string $code Input HTML code
+	 * @return string Output HTML code
 	 */
 	function substituteGlossaryWords($code) {
 		$htmlParser = t3lib_div::makeInstance('local_t3lib_parsehtml');
@@ -789,9 +777,9 @@ class SC_view_help {
 	 * Substituting glossary words in the CSH
 	 * (This is a call-back function from "class local_t3lib_parsehtml extends t3lib_parsehtml", see top of this script)
 	 *
-	 * @param	string		Input HTML string
-	 * @return	string		HTML with substituted words in.
-	 * @coauthor	alex widschwendter, media.res kommunikationsloesungen
+	 * @param string $code Input HTML string
+	 * @return string HTML with substituted words in.
+	 * @coauthor Alex Widschwendter, media.res kommunikationsloesungen
 	 */
 	function substituteGlossaryWords_htmlcleaner_callback($code) {
 		if (is_array($this->substWords) && count($this->substWords) && strlen(trim($code))) {
@@ -817,7 +805,7 @@ class SC_view_help {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_view_help');
 $SOBE->init();
 $SOBE->main();
