@@ -4882,7 +4882,7 @@ class tslib_cObj {
 			$nWrapped = 0;
 			if (substr($l, 0, 1) == '<' && substr($l, -1) == '>') {
 				$fwParts = explode('>', substr($l, 1), 2);
-				list($tagName, $tagParams) = explode(' ',$fwParts[0], 2);
+				list($tagName, $tagParams) = explode(' ', $fwParts[0], 2);
 				if (!$fwParts[1]) {
 					if (substr($tagName, -1) == '/') {
 						$tagName = substr($tagName, 0, -1);
@@ -4893,7 +4893,7 @@ class tslib_cObj {
 						$attrib = t3lib_div::get_tag_attributes('<'.substr($fwParts[0], 0, -1).'>');
 					}
 				} else {
-					$backParts = t3lib_div::revExplode('<', substr($fwParts[1],0,-1), 2);
+					$backParts = t3lib_div::revExplode('<', substr($fwParts[1], 0, -1), 2);
 					$attrib = t3lib_div::get_tag_attributes('<'.$fwParts[0].'>');
 					$str_content = $backParts[0];
 					$sameBeginEnd = (substr(strtolower($backParts[1]), 1, strlen($tagName))==strtolower($tagName));

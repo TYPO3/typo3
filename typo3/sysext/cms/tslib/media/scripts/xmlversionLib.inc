@@ -69,22 +69,22 @@ class user_xmlversion {
 	 * @param	array		TypoScript properties for this content object/function call
 	 * @return	string		XML content
 	 */
-	function main_xmlversion($content,$conf) {
+	function main_xmlversion($content, $conf) {
 		$xmlObj = t3lib_div::makeInstance('t3lib_xml', 'typo3_page');
 		$xmlObj->XMLdebug=0;
-		$xmlObj->setRecFields('pages','doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,author,author_email,newUntil,lastUpdated,cache_timeout');
-		$xmlObj->setRecFields('tt_content','CType,header,header_link,bodytext,image,imagewidth,imageorient,media,records,colPos,starttime,endtime,fe_group');
+		$xmlObj->setRecFields('pages', 'doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,author,author_email,newUntil,lastUpdated,cache_timeout');
+		$xmlObj->setRecFields('tt_content', 'CType,header,header_link,bodytext,image,imagewidth,imageorient,media,records,colPos,starttime,endtime,fe_group');
 
 			// Creating top level object
 		$xmlObj->renderHeader();
 
 			// Add page information
-		$xmlObj->addRecord('pages',$GLOBALS['TSFE']->page);
+		$xmlObj->addRecord('pages', $GLOBALS['TSFE']->page);
 
 			// Add page content information
-		$xmlObj->newLevel('content_records',1);
-		$xmlObj->renderRecords('pages',$this->getContentResult('pages'));
-		$xmlObj->renderRecords('tt_content',$this->getContentResult('tt_content'));
+		$xmlObj->newLevel('content_records', 1);
+		$xmlObj->renderRecords('pages', $this->getContentResult('pages'));
+		$xmlObj->renderRecords('tt_content', $this->getContentResult('tt_content'));
 		$xmlObj->newLevel('content_records');
 
 		$xmlObj->renderFooter();

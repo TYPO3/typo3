@@ -468,7 +468,7 @@ class tslib_menu {
 						$id_list_arr = Array();
 
 						foreach($items as $id) {
-							$bA = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0,100);
+							$bA = t3lib_utility_Math::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
 							$id_list_arr[] = tslib_cObj::getTreeList(-1*$id, $depth-1+$bA, $bA-1);
 						}
 						$id_list = implode(',', $id_list_arr);
@@ -501,7 +501,13 @@ class tslib_menu {
 							$extraWhere.=' AND '.$sortField.'>'.($GLOBALS['SIM_ACCESS_TIME']-$maxAge);
 						}
 
-						$res = $this->parent_cObj->exec_getQuery('pages',Array('pidInList'=>'0', 'uidInList'=>$id_list, 'where'=>$sortField.'>=0'.$extraWhere, 'orderBy'=>($altSortFieldValue ? $altSortFieldValue : $sortField.' desc'),'max'=>$limit));
+						$res = $this->parent_cObj->exec_getQuery('pages', Array(
+							'pidInList' =>'0',
+							'uidInList' => $id_list,
+							'where' => $sortField . '>=0' . $extraWhere,
+							'orderBy' => ($altSortFieldValue ? $altSortFieldValue : $sortField . ' desc'),
+							'max' => $limit)
+						);
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
 							if (is_array($row)) {
@@ -1262,7 +1268,7 @@ class tslib_menu {
 			$addParams = $this->mconf['showAccessRestrictedPages.']['addParams'];
 			$addParams = str_replace('###RETURN_URL###', rawurlencode($LD['totalURL']), $addParams);
 			$addParams = str_replace('###PAGE_ID###', $page['uid'], $addParams);
-			$LD = $this->menuTypoLink($thePage,$mainTarget, '', '', '', $addParams, $typeOverride);
+			$LD = $this->menuTypoLink($thePage, $mainTarget, '', '', '', $addParams, $typeOverride);
 		}
 	}
 
@@ -3033,7 +3039,8 @@ class tslib_jsmenu extends tslib_menu {
 
 			$spacer = (t3lib_div::inList($this->spacerIDList, $data['doktype'])?1:0);		// if item is a spacer, $spacer is set
 			if ($this->mconf['SPC'] || !$spacer)	{	// If the spacer-function is not enabled, spacers will not enter the $menuArr
-				if (!t3lib_div::inList($this->doktypeExcludeList,$data['doktype']) && (!$data['nav_hide'] || $this->conf['includeNotInMenu']) && !t3lib_div::inArray($banUidArray, $uid))	{		// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
+					// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
+				if (!t3lib_div::inList($this->doktypeExcludeList, $data['doktype']) && (!$data['nav_hide'] || $this->conf['includeNotInMenu']) && !t3lib_div::inArray($banUidArray, $uid))	{
 					if ($count<$levels) {
 						$addLines = $this->generate_level($levels, $count+1, $data['uid'], '', $MP_array_sub);
 					} else {

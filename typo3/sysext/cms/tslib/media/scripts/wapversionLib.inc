@@ -87,7 +87,7 @@ class user_wapversion {
 	 * @param	array		TypoScript properties for this content object/function call
 	 * @return	string		WML content
 	 */
-	function main_wapversion($content,$conf) {
+	function main_wapversion($content, $conf) {
 		$GLOBALS['TSFE']->set_no_cache();
 
 		$xmlObj = t3lib_div::makeInstance('t3lib_xml', 'wml');
@@ -108,19 +108,23 @@ class user_wapversion {
 			));
 
 			$cParts = $this->contentAll();
-			$pointer = t3lib_utility_Math::forceIntegerInRange($GLOBALS['TSFE']->idParts[1],1,10000);
+			$pointer = t3lib_utility_Math::forceIntegerInRange($GLOBALS['TSFE']->idParts[1], 1, 10000);
 
 			$msg='';
-			if ($pointer-1)	{$msg.=$this->navLink(htmlspecialchars($conf['navLabels.']['prev']),$pointer-1).' ';}
-			$msg.=$this->navLink(htmlspecialchars($conf['navLabels.']['up']),0).' ';
-			if ($pointer<count($cParts))	{$msg.=$this->navLink(htmlspecialchars($conf['navLabels.']['next']),$pointer+1).' ';}
+			if ($pointer - 1)	{
+				$msg .= $this->navLink(htmlspecialchars($conf['navLabels.']['prev']), $pointer - 1) . ' ';
+			}
+			$msg .= $this->navLink(htmlspecialchars($conf['navLabels.']['up']), 0).' ';
+			if ($pointer < count($cParts)) {
+				$msg .= $this->navLink(htmlspecialchars($conf['navLabels.']['next']), $pointer + 1) . ' ';
+			}
 			$msg.= '['.$pointer.'/'.count($cParts).']<br/>';
 
 			$xmlObj->lines[] = $this->paragraph($msg);
 			$xmlObj->lines[] = $this->paragraph($cParts[$pointer-1]);
 			$xmlObj->lines[] = $this->paragraph('<br/>'.$msg);
 
-			$xmlObj->newLevel('card',0);
+			$xmlObj->newLevel('card', 0);
 		} else {
 				// Creating menu card:
 			$xmlObj->newLevel('card',1,array(
@@ -130,7 +134,7 @@ class user_wapversion {
 			$xmlObj->lines[] = $this->contentAbstract();
 			$xmlObj->lines[] = '<p><br/>'.$this->bold('Menu:').'</p>';
 			$xmlObj->lines[] = $this->menuCurrentLevel($xmlObj->Icode);
-			$xmlObj->newLevel('card',0);
+			$xmlObj->newLevel('card', 0);
 		}
 
 			// Footer
@@ -147,9 +151,9 @@ class user_wapversion {
 	function contentAbstract() {
 		$res = $this->getContentResult('tt_content');
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-		$out = $this->bold(t3lib_div::fixed_lgd_cs(htmlspecialchars($row['header']),20)).'<br/>';
-		$out.= t3lib_div::fixed_lgd_cs(htmlspecialchars($row['bodytext']),50);
-		$out = '<p>'.$out.' <a href="'.htmlspecialchars('?id='.$GLOBALS['TSFE']->id.',1.'.$GLOBALS['TSFE']->type).'">[more]</a></p>';
+		$out = $this->bold(t3lib_div::fixed_lgd_cs(htmlspecialchars($row['header']), 20)) . '<br/>' .
+			t3lib_div::fixed_lgd_cs(htmlspecialchars($row['bodytext']), 50);
+		$out = '<p>' . $out . ' <a href="' . htmlspecialchars('?id=' . $GLOBALS['TSFE']->id . ',1.' . $GLOBALS['TSFE']->type) . '">[more]</a></p>';
 		return $out;
 	}
 
@@ -183,7 +187,7 @@ class user_wapversion {
 				case 'textpic':
 				case 'image':
 					if ($row['CType']!='image')		{$bodyText = $row['bodytext'];}
-					$bodyText.= chr(10).'['.count(explode(',',$row['image'])).'images, caption: '.$row['imagecaption'].']';
+					$bodyText .= chr(10) . '[' . count(explode(',', $row['image'])) . 'images, caption: ' . $row['imagecaption'] . ']';
 				break;
 				case 'header':
 					$bodyText=$row['subheader'];
@@ -200,12 +204,12 @@ class user_wapversion {
 			if ($diff>strlen($get)) {
 				$out[$idx].=$get;
 			} else {
-				$out[$idx].=$this->cBodytext($bodyText,0,$diff+$overlap).'<br/>';
+				$out[$idx] .= $this->cBodytext($bodyText, 0, $diff + $overlap) . '<br/>';
 
 				$safe=0;
 				do {
 					$idx++;
-					$out[$idx].=$this->cBodytext($bodyText,$diff+($safe*$chunkLgd)-$overlap,$chunkLgd+$overlap).'<br/>';
+					$out[$idx] .= $this->cBodytext($bodyText, $diff + ($safe * $chunkLgd) - $overlap, $chunkLgd + $overlap) . '<br/>';
 					$safe++;
 					if ($safe>100) break;
 				} while (strlen($out[$idx])>$chunkLgd);
@@ -235,9 +239,10 @@ class user_wapversion {
 	 * @return	string		Prepared content
 	 * @see contentAll()
 	 */
-	function cBodytext($str,$start=0,$max=0) {
-		$out = t3lib_div::fixed_lgd_cs(($start?'...':'').substr($this->nl2br(htmlspecialchars(strip_tags($str))),$start),($max?$max:100000));
-		$out = str_replace('&','',$out);	// No & in WAP docs??? --> or maybe just htmlspecialchar() things as the LAST thing instead!)
+	function cBodytext($str, $start = 0, $max = 0) {
+		$out = t3lib_div::fixed_lgd_cs(($start ? '...' : '') . substr($this->nl2br(htmlspecialchars(strip_tags($str))), $start), ($max ? $max : 100000));
+			// No & in WAP docs??? --> or maybe just htmlspecialchar() things as the LAST thing instead!)
+		$out = str_replace('&', '', $out);
 		return $out;
 	}
 
@@ -248,7 +253,7 @@ class user_wapversion {
 	 * @return	string		The processed value returned.
 	 */
 	function nl2br($str) {
-		return str_replace(chr(10),'<br/>',$str);
+		return str_replace(chr(10), '<br/>', $str);
 	}
 
 	/**
@@ -305,7 +310,7 @@ class user_wapversion {
 	 * @param	integer		The pointer value
 	 * @return	string		The input string, linked with the pointer value to the current page.
 	 */
-	function navLink($str,$pointer) {
+	function navLink($str, $pointer) {
 		return '<a href="'.htmlspecialchars('?id='.$GLOBALS['TSFE']->id.','.$pointer.'.'.$GLOBALS['TSFE']->type).'">'.$str.'</a>';
 	}
 
@@ -323,7 +328,7 @@ class user_wapversion {
 		foreach ($rL as $level => $data) {
 			$preSign = count($rL)-1 > $level ? '-' : '>';
 			$menuItem = htmlspecialchars($preSign.' '.$data['title']);
-			$menuItem = $this->link($preSpace.$menuItem,$data['uid']);
+			$menuItem = $this->link($preSpace . $menuItem, $data['uid']);
 			$out[]=$indent.$this->line($menuItem);
 			$preSpace.='..';
 		}
@@ -332,10 +337,10 @@ class user_wapversion {
 		foreach ($menu as $data) {
 			$preSign = count($this->cleanMenuArray($GLOBALS['TSFE']->sys_page->getMenu($data['uid']))) ? '+' : '*';
 			$menuItem = htmlspecialchars($preSign.' '.$data['title']);
-			$menuItem = $this->link($preSpace.$menuItem,$data['uid']);
+			$menuItem = $this->link($preSpace . $menuItem, $data['uid']);
 			$out[]=$indent.$this->line($menuItem);
 		}
-		return $this->paragraph(implode(chr(10),$out));
+		return $this->paragraph(implode(chr(10), $out));
 	}
 
 	/**
@@ -348,7 +353,7 @@ class user_wapversion {
 	 * @return	string		String wrapped in <a> tags
 	 * @see menuCurrentLevel()
 	 */
-	function link($str,$id,$deck='') {
+	function link($str, $id, $deck = '') {
 		if ($GLOBALS['TSFE']->id==$id && $deck) {
 			$out = '<a href="#'.$deck.'">'.$str.'</a>';
 		} else {
@@ -368,7 +373,7 @@ class user_wapversion {
 	function cleanMenuArray($menu) {
 		reset($menu);
 		$newMenu=array();
-		while(list(,$data)=each($menu)) {
+		while(list(, $data) = each($menu)) {
 			if (!$data['nav_hide']) {
 				$newMenu[]=$data;
 			}
