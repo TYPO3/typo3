@@ -24,32 +24,30 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Web>File: Create new folders in the filemounts
  *
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-
 
 $BACK_PATH = '';
 require('init.php');
 require('template.php');
 
-
 /**
  * Script Class for the create-new script; Displays a form for creating up to 10 folders or one new text file
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_file_newfolder {
 
 		// External, static:
-	var $folderNumber=10;
+	var $folderNumber = 10;
 
 		// Internal, static:
 	/**
@@ -58,30 +56,31 @@ class SC_file_newfolder {
 	 * @var smallDoc
 	 */
 	var $doc;
-
-	var $title;			// Name of the filemount
+		// Name of the filemount
+	var $title;
 
 		// Internal, static (GPVar):
 	var $number;
-	var $target;		// Set with the target path inputted in &target
+		// Set with the target path inputted in &target
+	var $target;
 
 	/**
-	 * the folder object which is  the target directory
+	 * The folder object which is  the target directory
 	 *
 	 * @var t3lib_file_Folder $folderObject
 	 */
 	protected $folderObject;
-	var $returnUrl;		// Return URL of list module.
+		// Return URL of list module.
+	var $returnUrl;
 
 		// Internal, dynamic:
-	var $content;		// Accumulating content
-
-
+		// Accumulating content
+	var $content;
 
 	/**
 	 * Constructor function for class
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 			// Initialize GPvars:
@@ -109,7 +108,7 @@ class SC_file_newfolder {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->setModuleTemplate('templates/file_newfolder.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->JScode=$this->doc->wrapScriptTags('
+		$this->doc->JScode = $this->doc->wrapScriptTags('
 			var path = "' . $this->target . '";
 
 			function reload(a) {	//
@@ -129,18 +128,17 @@ class SC_file_newfolder {
 	/**
 	 * Main function, rendering the main module content
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 
-			// start content compilation
+			// Start content compilation
 		$this->content .= $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle'));
 
-
 			// Make page header:
-		$pageContent='';
-		$pageContent.=$this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle'));
-		$pageContent.=$this->doc->spacer(5);
+		$pageContent = '';
+		$pageContent .= $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle'));
+		$pageContent .= $this->doc->spacer(5);
 		$pageContent.=$this->doc->divider(5);
 
 
@@ -153,32 +151,32 @@ class SC_file_newfolder {
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.number_of_folders') .
 				'</label>
 				<select name="number" id="number-of-new-folders" onchange="reload(this.options[this.selectedIndex].value);">';
-		for ($a=1;$a<=$this->folderNumber;$a++) {
+		for ($a = 1; $a <= $this->folderNumber; $a++) {
 			$code .= '<option value="' . $a . '"' .
 					($this->number == $a ? ' selected="selected"' : '') .
 					'>' . $a . '</option>';
 		}
-		$code.='
+		$code .= '
 				</select>
 			</div>
 			';
 
 			// Making the number of new-folder boxes needed:
-		$code.='
+		$code .= '
 			<div id="c-createFolders">
 		';
-		for ($a=0;$a<$this->number;$a++) {
-			$code.='
+		for ($a = 0; $a < $this->number; $a++) {
+			$code .= '
 					<input'.$this->doc->formWidth(20).' type="text" name="file[newfolder]['.$a.'][data]" onchange="changed=true;" />
 					<input type="hidden" name="file[newfolder][' . $a . '][target]" value="' . htmlspecialchars($this->target) . '" /><br />
 				';
 		}
-		$code.='
+		$code .= '
 			</div>
 		';
 
 			// Making submit button for folder creation:
-		$code.='
+		$code .= '
 			<div id="c-submitFolders">
 				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.submit', 1) . '" />
 				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.cancel', 1) . '" onclick="backToList(); return false;" />
@@ -187,18 +185,16 @@ class SC_file_newfolder {
 			';
 
 			// CSH:
-		$code.= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_newfolder', $GLOBALS['BACK_PATH'], '<br />');
+		$code .= t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'file_newfolder', $GLOBALS['BACK_PATH'], '<br />');
 
-		$pageContent.= $code;
-
-
+		$pageContent .= $code;
 
 			// Add spacer:
-		$pageContent.= $this->doc->spacer(10);
+		$pageContent .= $this->doc->spacer(10);
 
 			// Switching form tags:
-		$pageContent.= $this->doc->sectionEnd();
-		$pageContent.= '</form><form action="tce_file.php" method="post" name="editform2">';
+		$pageContent .= $this->doc->sectionEnd();
+		$pageContent .= '</form><form action="tce_file.php" method="post" name="editform2">';
 
 			// Create a list of allowed file extensions with the nice format "*.jpg, *.gif" etc.
 		$fileExtList = array();
@@ -209,7 +205,7 @@ class SC_file_newfolder {
 			}
 		}
 			// Add form fields for creation of a new, blank text file:
-		$code='
+		$code = '
 			<div id="c-newFile">
 				<p>[' . htmlspecialchars(implode(', ', $fileExtList)) . ']</p>
 				<input'.$this->doc->formWidth(20).' type="text" name="file[newfile][0][data]" onchange="changed=true;" />
@@ -218,7 +214,7 @@ class SC_file_newfolder {
 			';
 
 			// Submit button for creation of a new file:
-		$code.='
+		$code .= '
 			<div id="c-submitFiles">
 				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.newfile_submit', 1) . '" />
 				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.cancel', 1) . '" onclick="backToList(); return false;" />
@@ -242,8 +238,8 @@ class SC_file_newfolder {
 			'PATH' => $this->title,
 		);
 
-		$this->content.= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
-		$this->content.= $this->doc->endPage();
+		$this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
+		$this->content .= $this->doc->endPage();
 
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
@@ -251,14 +247,14 @@ class SC_file_newfolder {
 	/**
 	 * Outputting the accumulated content to screen
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_file_newfolder');
 $SOBE->init();
 $SOBE->main();
