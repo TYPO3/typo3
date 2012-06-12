@@ -99,18 +99,18 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 		if ($GLOBALS['TCA'][$parameter->table]) {
 			if ($GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList']) {
 				$fieldsOfRecords = $GLOBALS['TCA'][$parameter->table]['interface']['showRecordFieldList'];
-				$fieldsOfRecords = t3lib_div::trimExplode(',',$fieldsOfRecords,1);
+				$fieldsOfRecords = t3lib_div::trimExplode(',', $fieldsOfRecords, 1);
 			}
 		}
 
 		foreach ($fieldsOfRecords as $fieldName) {
 				// check for exclude fields
-			if ($GLOBALS['BE_USER']->isAdmin() || ($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] == 0) || t3lib_div::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'],$parameter->table.':'.$fieldName)) {
+			if ($GLOBALS['BE_USER']->isAdmin() || ($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] == 0) || t3lib_div::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'], $parameter->table . ':' . $fieldName)) {
 					// call diff class only if there is a difference
-				if (strcmp($liveRecord[$fieldName],$versionRecord[$fieldName]) !== 0) {
+				if (strcmp($liveRecord[$fieldName], $versionRecord[$fieldName]) !== 0) {
 						// Select the human readable values before diff
-					$liveRecord[$fieldName] = t3lib_BEfunc::getProcessedValue($parameter->table,$fieldName,$liveRecord[$fieldName],0,1);
-					$versionRecord[$fieldName] = t3lib_BEfunc::getProcessedValue($parameter->table,$fieldName,$versionRecord[$fieldName],0,1);
+					$liveRecord[$fieldName] = t3lib_BEfunc::getProcessedValue($parameter->table, $fieldName, $liveRecord[$fieldName], 0, 1);
+					$versionRecord[$fieldName] = t3lib_BEfunc::getProcessedValue($parameter->table, $fieldName, $versionRecord[$fieldName], 0, 1);
 
 						// Get the field's label. If not available, use the field name
 					$fieldTitle = $GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($parameter->table, $fieldName));
@@ -191,8 +191,8 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 				'log_data,tstamp,userid',
 				'sys_log',
 				'action=6 and details_nr=30
-				AND tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table,'sys_log').'
-				AND recuid='.intval($uid),
+				AND tablename='.$GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_log') . '
+				AND recuid=' . intval($uid),
 				'',
 				'tstamp DESC'
 		);

@@ -109,7 +109,7 @@ $TCA['sys_workspace'] = array(
 				'checkbox' => '0',
 				'default' => '0',
 				'range' => array(
-					'upper' => mktime(0,0,0,12,31,2020),
+					'upper' => mktime(0, 0, 0, 12, 31, 2020),
 				)
 			),
 			'displayCond' => 'FALSE'			// this feature doesn't work yet therefore it's not shown by default

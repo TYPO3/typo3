@@ -105,7 +105,7 @@ $icons = array(
 	'generatepreviewlink' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Images/generate-ws-preview-link.png',
 );
 t3lib_SpriteManager::addSingleIcons($icons, $_EXTKEY);
-t3lib_extMgm::addLLrefForTCAdescr('sys_workspace_stage','EXT:workspaces/Resources/Private/Language/locallang_csh_sysws_stage.xml');
+t3lib_extMgm::addLLrefForTCAdescr('sys_workspace_stage', 'EXT:workspaces/Resources/Private/Language/locallang_csh_sysws_stage.xml');
 
 
 ?>
