@@ -112,12 +112,15 @@ Will report orphan uids from TCA tables.';
 			$idList = is_array($this->recStats['all'][$tableName]) && count($this->recStats['all'][$tableName]) ? implode(',', $this->recStats['all'][$tableName]) : 0;
 
 				// Select all records belonging to page:
-			$orphanRecords = 	$GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-									'uid',
-									$tableName,
-									'uid NOT IN ('.$idList.')',
-									'','uid','','uid'
-								);
+			$orphanRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'uid',
+				$tableName,
+				'uid NOT IN (' . $idList . ')',
+				'',
+				'uid',
+				'',
+				'uid'
+			);
 
 			if (count($orphanRecords)) {
 				$resultArray['orphans'][$tableName] = array();

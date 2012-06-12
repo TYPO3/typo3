@@ -222,7 +222,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 */
 	function cli_printInfo($header, $res) {
 
-		$detailLevel = t3lib_utility_Math::forceIntegerInRange($this->cli_isArg('-v') ? $this->cli_argValue('-v') : 1,0,3);
+		$detailLevel = t3lib_utility_Math::forceIntegerInRange($this->cli_isArg('-v') ? $this->cli_argValue('-v') : 1, 0, 3);
 		$silent = !$this->cli_echo();
 
 		$severity = array(
