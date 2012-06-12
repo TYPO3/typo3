@@ -101,7 +101,7 @@ class tslib_gmenu_layers extends tslib_gmenu {
 
 			// Save:
 		$this->WMonlyOnLoad = ($this->mconf['displayActiveOnLoad'] && !$this->mconf['displayActiveOnLoad.']['onlyOnLoad']);
-		$this->WMbordersWithin = t3lib_div::intExplode(',', $this->mconf['bordersWithin'].',0,0,0,0,0');
+		$this->WMbordersWithin = t3lib_div::intExplode(',', $this->mconf['bordersWithin'] . ',0,0,0,0,0');
 	}
 
 	/**

@@ -210,7 +210,7 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 						$info.= '<a href="#" onclick="'.htmlspecialchars('top.loadEditId('.intval($data['row']['uid']).',"&SET[language]='.$langRow['uid'].'"); return false;').'" title="' . $LANG->getLL('lang_renderl10n_editPageLang', TRUE) . '">' .
 									t3lib_iconWorks::getSpriteIcon('actions-page-open') .
 								'</a>';
-						$info.= str_replace('###LANG_UID###',$langRow['uid'], $viewPageLink);
+						$info .= str_replace('###LANG_UID###', $langRow['uid'], $viewPageLink);
 
 						$tCells[] = '<td class="'.$status.'">'.$info.'</td>';
 						$tCells[] = '<td class="'.$status.'" title="'.$LANG->getLL('lang_renderl10n_CEcount', '1').'" align="center">'.$this->getContentElementCount($data['row']['uid'], $langRow['uid']).'</td>';
@@ -234,10 +234,10 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 				}
 			}
 
-			$output.= '
+			$output .= '
 				<tr class="bgColor4">
-					'.implode('
-					',$tCells).'
+					' . implode('
+					', $tCells) . '
 				</tr>';
 		}
 
@@ -281,9 +281,9 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 
 		$output = '
 			<tr class="t3-row-header">
-				'.implode('
-				',$tCells).'
-			</tr>'.$output;
+				' . implode('
+				', $tCells) . '
+			</tr>' . $output;
 
 		$output = '
 
