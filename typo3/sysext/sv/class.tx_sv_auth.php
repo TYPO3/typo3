@@ -294,7 +294,8 @@ class tx_sv_auth extends tx_sv_authbase 	{
 
 					// Include sub groups
 				if (trim($row['subgroup'])) {
-					$theList = implode(',',t3lib_div::intExplode(',', $row['subgroup']));	// Make integer list
+						// Make integer list
+					$theList = implode(',', t3lib_div::intExplode(',', $row['subgroup']));
 					$this->getSubGroups($theList, $idList.','.$uid, $groups);		// Call recursively, pass along list of already processed groups so they are not recursed again.
 				}
 			}

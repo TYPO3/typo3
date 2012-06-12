@@ -728,7 +728,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 						$out[$k] = implode('<br />', $pout);
 					break;
 					case 'workspace_perms':
-						$out[$k] = implode('<br/>', explode(', ', t3lib_BEfunc::getProcessedValue('be_users','workspace_perms', $v)));
+						$out[$k] = implode('<br/>', explode(', ', t3lib_BEfunc::getProcessedValue('be_users', 'workspace_perms', $v)));
 					break;
 					case 'workspace_membership':
 						$out[$k] = implode('<br/>', $this->ext_workspaceMembership());
@@ -796,7 +796,7 @@ class local_beUserAuth extends t3lib_beUserAuth {
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$dat[] = array(
 				'row'=>$row,
-				'HTML'=>t3lib_iconWorks::getSpriteIconForRecord('pages', $row,array('title'=>'['.$row['uid'].']'))
+				'HTML'=>t3lib_iconWorks::getSpriteIconForRecord('pages', $row, array('title' => '[' . $row['uid'] . ']'))
 			);
 		}
 		$pp = t3lib_div::makeInstance('printAllPageTree_perms', $this);

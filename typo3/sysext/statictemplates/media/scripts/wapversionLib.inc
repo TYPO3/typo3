@@ -102,9 +102,9 @@ class user_wapversion {
 		$pageRec = $GLOBALS['TSFE']->page;
 		if ($GLOBALS['TSFE']->idParts[1]) {
 				// Creating content card:
-			$xmlObj->newLevel('card',1,array(
+			$xmlObj->newLevel('card', 1, array(
 				'id' => 'content',
-				'title' => ($conf['preTitle']?$conf['preTitle'].': ':'').$pageRec['title']
+				'title' => ($conf['preTitle'] ? $conf['preTitle'] . ': ' : '') . $pageRec['title']
 			));
 
 			$cParts = $this->contentAll();
@@ -127,9 +127,9 @@ class user_wapversion {
 			$xmlObj->newLevel('card', 0);
 		} else {
 				// Creating menu card:
-			$xmlObj->newLevel('card',1,array(
+			$xmlObj->newLevel('card', 1, array(
 				'id' => 'menu',
-				'title' => ($conf['preTitle']?$conf['preTitle'].': ':'').$pageRec['title']
+				'title' => ($conf['preTitle'] ? $conf['preTitle'] . ': ' : '') . $pageRec['title']
 			));
 			$xmlObj->lines[] = $this->contentAbstract();
 			$xmlObj->lines[] = '<p><br/>'.$this->bold('Menu:').'</p>';

@@ -728,7 +728,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	protected function mergeflexFormValuesIntoConf() {
 		$flex = array();
 		if ($this->flexFormValue('showForgotPassword', 'sDEF')) {
-			$flex['showForgotPassword'] = $this->flexFormValue('showForgotPassword','sDEF');
+			$flex['showForgotPassword'] = $this->flexFormValue('showForgotPassword', 'sDEF');
 		}
 
 		if ($this->flexFormValue('showPermaLogin', 'sDEF')) {
@@ -791,7 +791,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * @return	string		value of var
 	 */
 	protected function flexFormValue($var, $sheet) {
-		return $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $var,$sheet);
+		return $this->pi_getFFvalue($this->cObj->data['pi_flexform'], $var, $sheet);
 	}
 
 	/**
