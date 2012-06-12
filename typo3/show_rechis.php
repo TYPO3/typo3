@@ -24,6 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Shows information about a database or file item
  *
@@ -33,16 +34,16 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-$BACK_PATH='';
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
+$BACK_PATH = '';
+require($BACK_PATH.'init.php');
+require($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_show_rechis.xml');
-require_once ('class.show_rechis.inc');
+require_once('class.show_rechis.inc');
 
 /**
  * Script Class for showing the history module of TYPO3s backend
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  * @see class.show_rechis.inc
@@ -62,7 +63,7 @@ class SC_show_rechis {
 	/**
 	 * Initialize the module output
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 
@@ -78,7 +79,7 @@ class SC_show_rechis {
 	/**
 	 * Generate module output
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 
@@ -101,7 +102,7 @@ class SC_show_rechis {
 	/**
 	 * Outputting the accumulated content to screen
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		$this->content .= $this->doc->endPage();
@@ -112,7 +113,7 @@ class SC_show_rechis {
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
-	 * @return	array	all available buttons as an assoc. array
+	 * @return array All available buttons as an assoc. array
 	 */
 	protected function getButtons() {
 		$buttons = array(
@@ -134,7 +135,7 @@ class SC_show_rechis {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_show_rechis');
 $SOBE->init();
 $SOBE->main();
