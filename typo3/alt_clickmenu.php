@@ -913,7 +913,7 @@ class clickMenu {
 		$editOnClick = 'if(' . $loc . '){' . $loc . ".location.href=top.TS.PATH_typo3+'".$script.'?target=' . rawurlencode($path) . ($noReturnUrl ? "'" : "&returnUrl='+top.rawurlencode(" . $this->frameLocation($loc . '.document') . '.pathname+' . $this->frameLocation($loc . '.document') . '.search)') . ';}';
 		return $this->linkItem(
 			$this->label($type),
-			$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/'.$image, 'width="12" height="12"').' alt="" />'),
+			$this->excludeIcon('<img' . t3lib_iconWorks::skinImg($this->PH_backPath, 'gfx/' . $image, 'width="12" height="12"') . ' alt="" />'),
 			$editOnClick . 'top.nav.refresh();return hideCM();'
 		);
 	}
@@ -936,7 +936,7 @@ class clickMenu {
 
 			return $this->linkItem(
 				$this->label($type),
-				$this->excludeIcon('<img'.t3lib_iconWorks::skinImg($this->PH_backPath,'gfx/'.$image, 'width="12" height="12"').' alt="" />'),
+				$this->excludeIcon('<img' . t3lib_iconWorks::skinImg($this->PH_backPath, 'gfx/' . $image, 'width="12" height="12"') . ' alt="" />'),
 				$editOnClick . 'return hideCM();'
 				);
 		} else {
@@ -1167,10 +1167,10 @@ class clickMenu {
 					<tr>
 
 							<!-- Items: -->
-						<td class="c-item">'.
+						<td class="c-item">' .
 							implode('</td>
-						<td><img'.t3lib_iconWorks::skinImg($this->PH_backPath, 'gfx/acm_spacer2.gif', 'width="8" height="12"').' alt="" /></td>
-						<td class="c-item">',$this->menuItemsForTopFrame($menuItems)).
+						<td><img' . t3lib_iconWorks::skinImg($this->PH_backPath, 'gfx/acm_spacer2.gif', 'width="8" height="12"') . ' alt="" /></td>
+						<td class="c-item">', $this->menuItemsForTopFrame($menuItems)) .
 						'</td>
 
 							<!-- Close button: -->

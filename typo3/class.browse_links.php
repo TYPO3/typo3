@@ -603,7 +603,7 @@ class browse_links {
 	 * 6: IRRE uniqueness: name of function in opener window that performs some additional(!) action, eg. "inline.setUniqueElement"
 	 * 7: IRRE uniqueness: name of function in opener window that performs action instead of using addElement/insertElement, eg. "inline.importElement"
 	 *
-	 * $pArr = explode('|',$this->bparams);
+	 * $pArr = explode('|', $this->bparams);
 	 * $formFieldName = $pArr[0];
 	 * $allowedTablesOrFileTypes = $pArr[3];
 	 */
@@ -1178,7 +1178,7 @@ class browse_links {
 			// Initializing the action value, possibly removing blinded values etc:
 		$allowedItems = array_diff(
 			explode(',', 'page,file,folder,url,mail,spec'),
-			t3lib_div::trimExplode(',', $this->thisConfig['blindLinkOptions'],1)
+			t3lib_div::trimExplode(',', $this->thisConfig['blindLinkOptions'], 1)
 		);
 		$allowedItems = array_diff(
 			$allowedItems,
@@ -1381,7 +1381,14 @@ class browse_links {
 								// Adding link to menu of user defined links:
 							$subcats[$k2i] = '
 								<tr>
-									<td class="bgColor4">'.$A[0].'<strong>'.htmlspecialchars($title).($this->curUrlInfo['info']==$v[$k2i.'.']['url']?'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/blinkarrow_right.gif','width="5" height="9"').' class="c-blinkArrowR" alt="" />':'').'</strong><br />'.$description.$A[1].'</td>
+									<td class="bgColor4">' .
+									$A[0] .
+									'<strong>' .
+									htmlspecialchars($title) . ($this->curUrlInfo['info'] == $v[$k2i . '.']['url'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_right.gif', 'width="5" height="9"') . ' class="c-blinkArrowR" alt="" />' : '') .
+									'</strong><br />' .
+									$description .
+									$A[1] .
+									'</td>
 								</tr>';
 						}
 					}
@@ -2101,7 +2108,7 @@ class browse_links {
 				}
 
 					// Put it all together for the file element:
-				$out.='<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/join'.($c == $totalItems ?'bottom':'').'.gif','width="18" height="16"').' alt="" />'.
+				$out .= '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/join' . ($c == $totalItems ? 'bottom' : '') . '.gif', 'width="18" height="16"') . ' alt="" />' .
 						$arrCol.
 						'<a href="#" onclick="return link_folder(\'' . $itemUid . '\');">'.
 						$icon.
@@ -2242,7 +2249,7 @@ class browse_links {
 						<tr class="file_list_normal">
 							<td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td>
 							<td>' . $ATag . '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList', 1) . '" alt="" />' . $ATag_e . '</td>
-							<td nowrap="nowrap">' . ($ATag2 . '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'],'gfx/zoom2.gif','width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
+							<td nowrap="nowrap">' . ($ATag2 . '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
 							<td>&nbsp;</td>
 						</tr>';
 				}
@@ -2275,7 +2282,7 @@ class browse_links {
 
 			// Create headline (showing number of folders):
 		$content .= $this->barheader(
-			sprintf($GLOBALS['LANG']->getLL('folders').' (%s):',count($folders))
+			sprintf($GLOBALS['LANG']->getLL('folders') . ' (%s):', count($folders))
 		);
 
 		$titleLength = intval($GLOBALS['BE_USER']->uc['titleLen']);
@@ -2297,7 +2304,7 @@ class browse_links {
 			$folderIcon = $aTag_alt;
 			$folderIcon .= '<img'.t3lib_iconWorks::skinImg(
 				$GLOBALS['BACK_PATH'],
-				'gfx/i/_icon_webfolders.gif','width="18" height="16"'
+				'gfx/i/_icon_webfolders.gif', 'width="18" height="16"'
 			).' alt="" />';
 			$folderIcon .= htmlspecialchars(
 				t3lib_div::fixed_lgd_cs(basename($baseFolder), $titleLength)
@@ -2316,7 +2323,7 @@ class browse_links {
 					$pathInfo = pathinfo($folderPath);
 
 						// Create folder icon:
-					$icon = '<img src="clear.gif" width="16" height="16" alt="" /><img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif','width="16" height="16"').' title="'.htmlspecialchars($pathInfo['basename'].$size).'" class="absmiddle" alt="" />';
+					$icon = '<img src="clear.gif" width="16" height="16" alt="" /><img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="16" height="16"') . ' title="' . htmlspecialchars($pathInfo['basename'] . $size) . '" class="absmiddle" alt="" />';
 
 						// Create links for adding the folder:
 					if ($this->P['itemName'] != '' && $this->P['formName'] != '') {

@@ -868,7 +868,7 @@ class SC_alt_doc {
 			if ($this->firstEl['cmd'] != 'new' && t3lib_utility_Math::canBeInterpretedAsInteger($this->firstEl['uid'])) {
 
 					// Delete:
-				if ($this->firstEl['deleteAccess'] && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] && !$this->getNewIconMode($this->firstEl['table'],'disableDelete')) {
+				if ($this->firstEl['deleteAccess'] && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] && !$this->getNewIconMode($this->firstEl['table'], 'disableDelete')) {
 					$aOnClick = 'return deleteRecord(\''.$this->firstEl['table'].'\',\''.$this->firstEl['uid'].'\', unescape(\''.rawurlencode($this->retUrl).'\'));';
 					$buttons['delete'] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '" title="' . $GLOBALS['LANG']->getLL('deleteItem', TRUE) . '">' .
 							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
@@ -1000,7 +1000,7 @@ class SC_alt_doc {
 		if ($this->returnUrl == 'close.html' || !$GLOBALS['BE_USER']->mayMakeShortcut()) {
 			return '';
 		}
-		return $this->doc->makeShortcutIcon('returnUrl,edit,defVals,overrideVals,columnsOnly,returnNewPageId,editRegularContentFromId,disHelp,noView',implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name'], 1);
+		return $this->doc->makeShortcutIcon('returnUrl,edit,defVals,overrideVals,columnsOnly,returnNewPageId,editRegularContentFromId,disHelp,noView', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name'], 1);
 	}
 
 	/**

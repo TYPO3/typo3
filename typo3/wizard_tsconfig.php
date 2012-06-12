@@ -263,16 +263,16 @@ class SC_wizard_tsconfig {
 		$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tsprop'), $this->browseTSprop($this->mode, $this->show), 0, 1);
 
 			// Adding link to TSref:
-		if ($this->mode=='tsref') {
-			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tsprop_TSref'),'
-			<a href="'. TYPO3_URL_DOCUMENTATION_TSREF.'" target="_blank">'.$GLOBALS['LANG']->getLL('tsprop_TSref', 1).'</a>
-			',0,1);
+		if ($this->mode == 'tsref') {
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('tsprop_TSref'), '
+			<a href="' . TYPO3_URL_DOCUMENTATION_TSREF . '" target="_blank">' . $GLOBALS['LANG']->getLL('tsprop_TSref', 1) . '</a>
+			', 0, 1);
 		}
 			// Adding link to admin guides etc:
-		if ($this->mode=='page' || $this->mode=='beuser') {
-			$this->content.=$this->doc->section($GLOBALS['LANG']->getLL('tsprop_tsconfig'),'
+		if ($this->mode == 'page' || $this->mode == 'beuser') {
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('tsprop_tsconfig'), '
 			<a href="' . TYPO3_URL_DOCUMENTATION_TSCONFIG . '" target="_blank">' . $GLOBALS['LANG']->getLL('tsprop_tsconfig', 1) . '</a>
-			',0,1);
+			', 0, 1);
 		}
 	}
 
@@ -518,7 +518,7 @@ class SC_wizard_tsconfig {
 				$reg=array();
 				preg_match('/->[[:alnum:]_]*/', $dataType, $reg);
 				if ($reg[0] && is_array($objTree[$reg[0]])) {
-					$dataType = str_replace($reg[0],'<a href="'.htmlspecialchars(t3lib_div::linkThisScript(array('show'=>$objTree[$reg[0]][0]['uid'], 'objString'=>$objString.'.'.$lP[0]))).'">'.htmlspecialchars($reg[0]).'</a>', $dataType);
+					$dataType = str_replace($reg[0], '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('show' => $objTree[$reg[0]][0]['uid'], 'objString' => $objString . '.' . $lP[0]))) . '">' . htmlspecialchars($reg[0]) . '</a>', $dataType);
 				}
 
 					// stdWrap

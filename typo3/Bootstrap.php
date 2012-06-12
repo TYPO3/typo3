@@ -271,14 +271,14 @@ class Typo3_Bootstrap {
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] == 3) {
 				$requestStr = substr(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir));
 				if ($requestStr === 'index.php' && !t3lib_div::getIndpEnv('TYPO3_SSL')) {
-					list(,$url) = explode('://', t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), 2);
+					list(, $url) = explode('://', t3lib_div::getIndpEnv('TYPO3_REQUEST_URL'), 2);
 					list($server, $address) = explode('/', $url, 2);
 					header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
 					exit;
 				}
 			} elseif (!t3lib_div::getIndpEnv('TYPO3_SSL')) {
 				if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']) === 2) {
-					list(,$url) = explode('://', t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
+					list(, $url) = explode('://', t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir, 2);
 					list($server, $address) = explode('/', $url, 2);
 					header('Location: https://' . $server . $sslPortSuffix . '/' . $address);
 				} else {
