@@ -77,7 +77,7 @@ if (TYPO3_extTableDef_script) {
 }
 Typo3_Bootstrap::runExtTablesPostProcessingHooks();
 
-// TODO: Check if we really need the sprite manager on the command line
+	// TODO: Check if we really need the sprite manager on the command line
 Typo3_Bootstrap::initializeSpriteManager(TRUE);
 
 Typo3_Bootstrap::initializeBackendUser();

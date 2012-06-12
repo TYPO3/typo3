@@ -24,6 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * New database item menu
  *
@@ -33,22 +34,18 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-
-
-
-$BACK_PATH='';
+$BACK_PATH = '';
 require('init.php');
 require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 
-
 /**
  * Extension for the tree class that generates the tree of pages in the page-wizard mode
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -57,9 +54,9 @@ class localPageTree extends t3lib_pageTree {
 	/**
 	 * Inserting uid-information in title-text for an icon
 	 *
-	 * @param	string		Icon image
-	 * @param	array		Item row
-	 * @return	string		Wrapping icon image.
+	 * @param string $icon Icon image
+	 * @param array $row Item row
+	 * @return string Wrapping icon image.
 	 */
 	function wrapIcon($icon, $row) {
 		return $this->addTagAttributes($icon, ' title="id='.htmlspecialchars($row['uid']).'"');
@@ -69,24 +66,18 @@ class localPageTree extends t3lib_pageTree {
 	 * Determines whether to expand a branch or not.
 	 * Here the branch is expanded if the current id matches the global id for the listing/new
 	 *
-	 * @param	integer		The ID (page id) of the element
-	 * @return	boolean		Returns TRUE if the IDs matches
+	 * @param integer $id The ID (page id) of the element
+	 * @return boolean Returns TRUE if the IDs matches
 	 */
 	function expandNext($id) {
-		return $id==$GLOBALS['SOBE']->id ? 1 : 0;
+		return $id == $GLOBALS['SOBE']->id ? 1 : 0;
 	}
 }
-
-
-
-
-
-
 
 /**
  * Script class for 'db_new'
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -113,12 +104,16 @@ class SC_db_new {
 	var $R_URI;
 
 		// Internal, static: GPvar
-	var $id;			// see init()
-	var $returnUrl;		// Return url.
-	var $pagesOnly;		// pagesOnly flag.
+		// see init()
+	var $id;
+		// Return url.
+	var $returnUrl;
+		// pagesOnly flag.
+	var $pagesOnly;
 
 		// Internal
-	var $perms_clause;	// see init()
+		// see init()
+	var $perms_clause;
 
 	/**
 	 * Document template object
@@ -126,27 +121,29 @@ class SC_db_new {
 	 * @var mediumDoc
 	 */
 	var $doc;
-	var $content;		// Accumulated HTML output
+		// Accumulated HTML output
+	var $content;
 	var $tRows;
 
 	/**
 	 * Constructor function for the class
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 
-			// page-selection permission clause (reading)
+			// Page-selection permission clause (reading)
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 
-			// this will hide records from display - it has nothing to do with user rights!!
+			// This will hide records from display - it has nothing to do with user rights!!
 		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
 			if ($pidList = $GLOBALS['TYPO3_DB']->cleanIntList($pidList)) {
 				$this->perms_clause .= ' AND pages.uid NOT IN ('.$pidList.')';
 			}
 		}
 			// Setting GPvars:
-		$this->id = intval(t3lib_div::_GP('id'));	// The page id to operate from
+			// The page id to operate from
+		$this->id = intval(t3lib_div::_GP('id'));
 		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 		$this->pagesOnly = t3lib_div::_GP('pagesOnly');
 
@@ -154,14 +151,14 @@ class SC_db_new {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/db_new.html');
-		$this->doc->JScode='';
+		$this->doc->JScode = '';
 
 			// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 
 			// Creating content
-		$this->content='';
-		$this->content.=$this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
+		$this->content = '';
+		$this->content .= $this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
 
 			// Id a positive id is supplied, ask for the page record with permission information contained:
 		if ($this->id > 0) {
@@ -200,7 +197,7 @@ class SC_db_new {
 	/**
 	 * Main processing, creating the list of new record tables to select from
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 
@@ -224,7 +221,6 @@ class SC_db_new {
 				$this->newPagesAfter=0;
 			}
 
-
 				// Set header-HTML and return_url
 			if (is_array($this->pageinfo) && $this->pageinfo['uid']) {
 				$iconImgTag = t3lib_iconWorks::getSpriteIconForRecord('pages', $this->pageinfo, array('title' => htmlspecialchars($this->pageinfo['_thePath'])));
@@ -239,16 +235,17 @@ class SC_db_new {
 			$this->R_URI = $this->returnUrl;
 
 				// GENERATE the HTML-output depending on mode (pagesOnly is the page wizard)
-			if (!$this->pagesOnly)	{	// Regular new element:
+				// Regular new element:
+			if (!$this->pagesOnly) {
 				$this->regularNew();
-			} elseif ($this->showNewRecLink('pages')) {	// Pages only wizard
+			} elseif ($this->showNewRecLink('pages')) { // Pages only wizard
 				$this->pagesOnly();
 			}
 
 				// Add all the content to an output section
-			$this->content.=$this->doc->section('', $this->code);
+			$this->content .= $this->doc->section('', $this->code);
 
-							// Setting up the buttons and markers for docheader
+				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers['CSH'] = $docHeaderButtons['csh'];
 
@@ -256,8 +253,8 @@ class SC_db_new {
 
 				// Build the <body> for the module
 			$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:db_new.php.pagetitle'));
-			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-			$this->content.= $this->doc->endPage();
+			$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			$this->content .= $this->doc->endPage();
 			$this->content = $this->doc->insertStylesAndJS($this->content);
 		}
 	}
@@ -265,7 +262,7 @@ class SC_db_new {
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
-	 * @return	array	all available buttons as an assoc. array
+	 * @return array All available buttons as an assoc. array
 	 */
 	protected function getButtons() {
 		$buttons = array(
@@ -276,8 +273,8 @@ class SC_db_new {
 			'record_list' => ''
 		);
 
-
-		if (!$this->pagesOnly)	{	// Regular new element:
+			// Regular new element:
+		if (!$this->pagesOnly) {
 				// New page
 			if ($this->showNewRecLink('pages')) {
 				$buttons['new_page'] = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('pagesOnly' => '1'))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:newPage', 1) . '">' .
@@ -286,7 +283,7 @@ class SC_db_new {
 			}
 				// CSH
 			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_regular', $GLOBALS['BACK_PATH'], '', TRUE);
-		} elseif($this->showNewRecLink('pages')) {	// Pages only wizard
+		} elseif ($this->showNewRecLink('pages')) {	// Pages only wizard
 				// CSH
 			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_pages', $GLOBALS['BACK_PATH'], '', TRUE);
 		}
@@ -315,15 +312,13 @@ class SC_db_new {
 			);
 		}
 
-
-
 		return $buttons;
 	}
 
 	/**
 	 * Creates the position map for pages wizard
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function pagesOnly() {
 		$numberOfPages = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'pages', '1=1' . t3lib_BEfunc::deleteClause('pages'));
@@ -335,7 +330,7 @@ class SC_db_new {
 			/** @var t3lib_positionMap $positionMap */
 			$this->code .= $positionMap->positionTree($this->id, $this->pageinfo, $this->perms_clause, $this->R_URI);
 		} else {
-			// No pages yet, no need to prompt for position, redirect to page creation.
+				// No pages yet, no need to prompt for position, redirect to page creation.
 			$javascript = t3lib_BEfunc::editOnClick('returnUrl=%2Ftypo3%2Fdb_new.php%3Fid%3D0%26pagesOnly%3D1&edit[pages][0]=new&returnNewPageId=1');
 			$startPos = strpos($javascript, 'href=\'') + 6;
 			$endPos = strpos($javascript, '\';');
@@ -348,7 +343,7 @@ class SC_db_new {
 	/**
 	 * Create a regular new element (pages and records)
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function regularNew() {
 
@@ -371,7 +366,7 @@ class SC_db_new {
 
 			// Enabled option for the position of a new page
 		$this->newPagesSelectPosition = !empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageSelectPosition']);
-			// pseudo-boolean (0/1) for backward compatibility
+			// Pseudo-boolean (0/1) for backward compatibility
 		$this->newPagesInto = (!empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']) ? 1 : 0);
 		$this->newPagesAfter = (!empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']) ? 1 : 0);
 
@@ -404,7 +399,7 @@ class SC_db_new {
 			);
 		}
 
-				// New pages AFTER this pages
+			// New pages AFTER this pages
 		if ($this->newPagesAfter
 			&& $this->isTableAllowedForThisPage($this->pidInfo, 'pages')
 			&& $GLOBALS['BE_USER']->check('tables_modify', 'pages')
@@ -417,7 +412,6 @@ class SC_db_new {
 					'pages',
 					-$this->id
 				);
-
 		}
 
 			// New pages at selection position
@@ -464,7 +458,7 @@ class SC_db_new {
 		if ($this->newContentInto) {
 			if (is_array($GLOBALS['TCA'])) {
 				$groupName = '';
-				foreach($GLOBALS['TCA'] as $table => $v) {
+				foreach ($GLOBALS['TCA'] as $table => $v) {
 					$count = count($GLOBALS['TCA'][$table]);
 					$counter = 1;
 					if ($table != 'pages'
@@ -499,7 +493,7 @@ class SC_db_new {
 								// Half-line added:
 							$rowContent.= '<br />' . $halfLine;
 						}  else {
-							// get the title
+								// Get the title
 							if ($v['ctrl']['readOnly'] || $v['ctrl']['hideTable'] || $v['ctrl']['is_static']) {
 								continue;
 							}
@@ -509,16 +503,16 @@ class SC_db_new {
 							$nameParts = explode('_', $table);
 							$thisTitle = '';
 							if ($nameParts[0] == 'tx' || $nameParts[0] == 'tt') {
-								// try to extract extension name
+									// Try to extract extension name
 								if (substr($v['ctrl']['title'], 0, 8) == 'LLL:EXT:') {
 									$_EXTKEY = substr($v['ctrl']['title'], 8);
 									$_EXTKEY = substr($_EXTKEY, 0, strpos($_EXTKEY, '/'));
 									if ($_EXTKEY != '') {
-										// first try to get localisation of extension title
+											// First try to get localisation of extension title
 										$temp = explode(':', substr($v['ctrl']['title'], 9 + strlen($_EXTKEY)));
 										$langFile = $temp[0];
 										$thisTitle = $GLOBALS['LANG']->sL('LLL:EXT:' . $_EXTKEY . '/' . $langFile . ':extension.title');
-										// if no localisation available, read title from ext_emconf.php
+											// If no localisation available, read title from ext_emconf.php
 										if (!$thisTitle && is_file(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php')) {
 											include(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php');
 											$thisTitle = $EM_CONF[$_EXTKEY]['title'];
@@ -547,7 +541,6 @@ class SC_db_new {
 
 						}
 
-
 							// Compile table row:
 						if ($table == 'tt_content') {
 							$startRows[] = '
@@ -565,7 +558,7 @@ class SC_db_new {
 			}
 		}
 
-			// user sort
+			// User sort
 		if (isset($pageTS['mod.']['wizards.']['newRecord.']['order'])) {
 			$this->newRecordSortList = t3lib_div::trimExplode(',', $pageTS['mod.']['wizards.']['newRecord.']['order'], TRUE);
 		}
@@ -592,7 +585,7 @@ class SC_db_new {
 		}
 
 			// end of tree
-		$finalRows[]='
+		$finalRows[] = '
 			<tr>
 				<td><img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/stopper.gif', 'width="18" height="16"') . ' alt="" /></td>
 				<td></td>
@@ -601,7 +594,7 @@ class SC_db_new {
 
 
 			// Make table:
-		$this->code.='
+		$this->code .= '
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-newRecord">
 			' . implode('', $finalRows) . '
 			</table>
@@ -609,31 +602,31 @@ class SC_db_new {
 	}
 
 	/**
-	 * user array sort function used by regularNew
+	 * User array sort function used by regularNew
 	 *
-	 * @param	string		first array element for compare
-	 * @param	string		first array element for compare
-	 * @return	int			-1 for lower, 0 for equal, 1 for greater
+	 * @param string $a First array element for compare
+	 * @param string $b First array element for compare
+	 * @return integer -1 for lower, 0 for equal, 1 for greater
 	 */
 	function sortNewRecordsByConfig($a, $b) {
 		if (count($this->newRecordSortList)) {
 			if (in_array($a, $this->newRecordSortList) && in_array($b, $this->newRecordSortList)) {
-					// both are in the list, return relative to position in array
+					// Both are in the list, return relative to position in array
 				$sub = array_search($a, $this->newRecordSortList) - array_search($b, $this->newRecordSortList);
 				$ret = $sub < 0 ? -1 : $sub == 0 ? 0 : 1;
 			} elseif (in_array($a, $this->newRecordSortList)) {
-					// first element is in array, put to top
+					// First element is in array, put to top
 				$ret = -1;
 			} elseif (in_array($b, $this->newRecordSortList)) {
-					// second element is in array, put first to bottom
+					// Second element is in array, put first to bottom
 				$ret = 1;
 			} else {
-					// no element is in array, return alphabetic order
+					// No element is in array, return alphabetic order
 				$ret = strnatcasecmp($this->tRows[$a]['title'], $this->tRows[$b]['title']);
 		}
 			return $ret;
 		} else {
-				// return alphabetic order
+				// Return alphabetic order
 			return strnatcasecmp($this->tRows[$a]['title'], $this->tRows[$b]['title']);
 		}
 	}
@@ -641,7 +634,7 @@ class SC_db_new {
 	/**
 	 * Ending page output and echo'ing content to browser.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
@@ -650,11 +643,11 @@ class SC_db_new {
 	/**
 	 * Links the string $code to a create-new form for a record in $table created on page $pid
 	 *
-	 * @param	string		Link text
-	 * @param	string		Table name (in which to create new record)
-	 * @param	integer		PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
-	 * @param	boolean		If $addContentTable is set, then a new contentTable record is created together with pages
-	 * @return	string		The link.
+	 * @param string $linkText Link text
+	 * @param string $table Table name (in which to create new record)
+	 * @param integer $pid PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
+	 * @param boolean $addContentTable If $addContentTable is set, then a new contentTable record is created together with pages
+	 * @return string The link.
 	 */
 	function linkWrap($linkText, $table, $pid, $addContentTable = FALSE) {
 		$parameters = '&edit[' . $table . '][' . $pid . ']=new';
@@ -677,9 +670,9 @@ class SC_db_new {
 	/**
 	 * Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
 	 *
-	 * @param	array		Record for parent page.
-	 * @param	string		Table name to check
-	 * @return	boolean		Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
+	 * @param array $pid_row Record for parent page.
+	 * @param string $checkTable Table name to check
+	 * @return boolean Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
 	 */
 	function isTableAllowedForThisPage($pid_row, $checkTable) {
 		if (!is_array($pid_row)) {
@@ -690,7 +683,7 @@ class SC_db_new {
 			}
 		}
 			// be_users and be_groups may not be created anywhere but in the root.
-		if ($checkTable=='be_users' || $checkTable=='be_groups') {
+		if ($checkTable == 'be_users' || $checkTable == 'be_groups') {
 			return FALSE;
 		}
 			// Checking doktype:
@@ -698,7 +691,8 @@ class SC_db_new {
 		if (!$allowedTableList = $GLOBALS['PAGES_TYPES'][$doktype]['allowedTables']) {
 			$allowedTableList = $GLOBALS['PAGES_TYPES']['default']['allowedTables'];
 		}
-		if (strstr($allowedTableList, '*') || t3lib_div::inList($allowedTableList, $checkTable))	{		// If all tables or the table is listed as a allowed type, return TRUE
+			// If all tables or the table is listed as a allowed type, return TRUE
+		if (strstr($allowedTableList, '*') || t3lib_div::inList($allowedTableList, $checkTable)) {
 			return TRUE;
 		}
 	}
@@ -711,12 +705,12 @@ class SC_db_new {
 	 * If $table tablename is found in $allowedNewTables and $deniedNewTables, $deniedNewTables
 	 * has priority over $allowedNewTables.
 	 *
-	 * @param	string		Table name to test if in allowedTables
-	 * @param	array		Array of new tables that are allowed.
-	 * @param	array		Array of new tables that are not allowed.
-	 * @return	boolean		Returns TRUE if a link for creating new records should be displayed for $table
+	 * @param string $table Table name to test if in allowedTables
+	 * @param array $allowedNewTables Array of new tables that are allowed.
+	 * @param array $deniedNewTables Array of new tables that are not allowed.
+	 * @return boolean Returns TRUE if a link for creating new records should be displayed for $table
 	 */
-	function showNewRecLink($table, array $allowedNewTables=array(), array $deniedNewTables=array()) {
+	function showNewRecLink($table, array $allowedNewTables = array(), array $deniedNewTables = array()) {
 		$allowedNewTables = ($allowedNewTables ? $allowedNewTables : $this->allowedNewTables);
 		$deniedNewTables = ($deniedNewTables ? $deniedNewTables : $this->deniedNewTables);
 			// No deny/allow tables are set:
@@ -732,7 +726,7 @@ class SC_db_new {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_db_new');
 $SOBE->init();
 $SOBE->main();

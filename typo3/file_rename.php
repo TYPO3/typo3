@@ -24,26 +24,23 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Web>File: Renaming files and folders
  *
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-
 
 $BACK_PATH = '';
 require('init.php');
 require('template.php');
 
-
-
 /**
  * Script Class for the rename-file form.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -56,23 +53,25 @@ class SC_file_rename {
 	 * @var smallDoc
 	 */
 	var $doc;
-	var $title;			// Name of the filemount
+		// Name of the filemount
+	var $title;
 
 		// Internal, static (GPVar):
-	var $target;		// Set with the target path inputted in &target
+		// Set with the target path inputted in &target
+	var $target;
 
 	/**
-	 * the file or folder object that should be renamed
+	 * The file or folder object that should be renamed
 	 *
 	 * @var t3lib_file_ResourceInterface $fileOrFolderObject
 	 */
 	protected $fileOrFolderObject;
-
-	var $returnUrl;		// Return URL of list module.
+		// Return URL of list module.
+	var $returnUrl;
 
 		// Internal, dynamic:
-	var $content;		// Accumulating content
-
+		// Accumulating content
+	var $content;
 
 	/**
 	 * Constructor function for class
@@ -95,7 +94,7 @@ class SC_file_rename {
 			throw new RuntimeException($title . ': ' . $message, 1294586844);
 		}
 
-			// if a folder should be renamed, AND the returnURL should go to the old directory name, the redirect is forced
+			// If a folder should be renamed, AND the returnURL should go to the old directory name, the redirect is forced
 			// so the redirect will NOT end in a error message
 			// this case only happens if you select the folder itself in the foldertree and then use the clickmenu to
 			// rename the folder
@@ -106,8 +105,6 @@ class SC_file_rename {
 				$this->returnUrl = str_replace(urlencode($queryParts['id']), urlencode($this->fileOrFolderObject->getStorage()->getRootLevelFolder()->getCombinedIdentifier()), $this->returnUrl);
 			}
 		}
-
-
 
 			// Setting icon and title
 		$icon = t3lib_iconWorks::getSpriteIcon('apps-filetree-root');
@@ -127,11 +124,10 @@ class SC_file_rename {
 	/**
 	 * Main function, rendering the content of the rename form
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
-		//TODO: change locallang*.php to locallang*.xml
-
+			//TODO: change locallang*.php to locallang*.xml
 			// Make page header:
 		$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_rename.php.pagetitle'));
 
@@ -156,7 +152,7 @@ class SC_file_rename {
 		';
 
 			// Making submit button:
-		$code.='
+		$code .= '
 			<div id="c-submit">
 				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_rename.php.submit', 1) . '" />
 				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.cancel', 1) . '" onclick="backToList(); return false;" />
@@ -180,22 +176,22 @@ class SC_file_rename {
 			'PATH' => $this->title,
 		);
 
-		$this->content.= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
-		$this->content.= $this->doc->endPage();
+		$this->content .= $this->doc->moduleBody(array(), $docHeaderButtons, $markerArray);
+		$this->content .= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
 	 * Outputting the accumulated content to screen
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_file_rename');
 $SOBE->init();
 $SOBE->main();

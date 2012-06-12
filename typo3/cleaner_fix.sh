@@ -9,4 +9,3 @@
 ./cli_dispatch.phpsh lowlevel_cleaner missing_relations -r -v 2 -s --AUTOFIX --YES --refindex update
 ./cli_dispatch.phpsh lowlevel_cleaner cleanflexform -r -v 2 -s --AUTOFIX --YES
 ./cli_dispatch.phpsh lowlevel_cleaner rte_images -r -v 2 -s --refindex ignore
-

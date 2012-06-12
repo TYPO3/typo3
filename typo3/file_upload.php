@@ -24,12 +24,13 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Web>File: Upload of files
  *
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 $BACK_PATH = '';
@@ -37,11 +38,10 @@ require('init.php');
 require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 
-
 /**
  * Script Class for display up to 10 upload fields
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -54,18 +54,21 @@ class SC_file_upload {
 	 * @var smallDoc
 	 */
 	var $doc;
-
-	var $title;			// Name of the filemount
+		// Name of the filemount
+	var $title;
 
 		// Internal, static (GPVar):
-	var $target;		// Set with the target path inputted in &target
-	var $returnUrl;		// Return URL of list module.
+		// Set with the target path inputted in &target
+	var $target;
+		// Return URL of list module.
+	var $returnUrl;
 
 		// Internal, dynamic:
-	var $content;		// Accumulating content
+		// Accumulating content
+	var $content;
 
 	/**
-	 * the folder object which is the target directory for the upload
+	 * The folder object which is the target directory for the upload
 	 *
 	 * @var t3lib_file_Folder $folderObject
 	 */
@@ -84,7 +87,7 @@ class SC_file_upload {
 			$this->returnUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . t3lib_extMgm::extRelPath('filelist') . 'mod1/file_list.php?id=' . rawurlencode($this->target);
 		}
 
-			// create the folder object
+			// Create the folder object
 		if ($this->target) {
 			$this->folderObject = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($this->target);
 		}
@@ -108,11 +111,10 @@ class SC_file_upload {
 		$this->doc->form = '<form action="tce_file.php" method="post" name="editform" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
 	}
 
-
 	/**
 	 * Main function, rendering the upload file form fields
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 			// Make page header:
@@ -123,7 +125,6 @@ class SC_file_upload {
 		$pageContent =
 			$this->doc->header($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.pagetitle')) .
 			$this->doc->section('', $form);
-
 
 			// Header Buttons
 		$docHeaderButtons = array(
@@ -141,7 +142,6 @@ class SC_file_upload {
 		$this->content .= $this->doc->endPage();
 		$this->content  = $this->doc->insertStylesAndJS($this->content);
 	}
-
 
 	/**
 	 * This function renders the upload form
@@ -186,18 +186,17 @@ class SC_file_upload {
 		return $content;
 	}
 
-
 	/**
 	 * Outputting the accumulated content to screen
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_file_upload');
 $SOBE->init();
 $SOBE->main();
