@@ -167,6 +167,8 @@ class SC_view_help {
 	 */
 	function main() {
 
+		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->setFavIcon('gfx/favicon.ico');
+
 			// Start HTML output accumulation:
 		$GLOBALS['TBE_TEMPLATE']->divClass = 'typo3-view-help';
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->getLL('title'));
