@@ -139,7 +139,7 @@ class SC_wizard_table {
 		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
 			$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('table_title'), $this->tableWizard(), 0, 1);
 		} else {
-			$this->content.= $this->doc->section($GLOBALS['LANG']->getLL('table_title'), '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('table_noData',1) . '</span>', 0, 1);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('table_title'), '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('table_noData', 1) . '</span>', 0, 1);
 		}
 
 		// Setting up the buttons and markers for docheader
@@ -365,8 +365,8 @@ class SC_wizard_table {
 				$tRows[]='
 					<tr class="bgColor4">
 						<td class="bgColor5"><a name="ANC_'.(($k+1)*2).'"></a><span class="c-wizButtonsV">'.$ctrl.'</span></td>
-						<td>'.implode('</td>
-						<td>',$cells).'</td>
+						<td>' . implode('</td>
+						<td>', $cells) . '</td>
 					</tr>';
 
 					// Increment counter:
@@ -407,8 +407,8 @@ class SC_wizard_table {
 			}
 			$tRows[]='
 				<tr class="bgColor5">
-					<td align="center">'.implode('</td>
-					<td align="center">',$cells).'</td>
+					<td align="center">' . implode('</td>
+					<td align="center">', $cells) . '</td>
 				</tr>';
 		}
 
