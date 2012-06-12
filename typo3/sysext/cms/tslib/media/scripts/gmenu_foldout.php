@@ -149,8 +149,8 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 		$mHeight = t3lib_utility_Math::forceIntegerInRange(($this->mconf['menuHeight']?$this->mconf['menuHeight']:400), 0, 3000);
 		$insertmColor= $this->mconf['menuBackColor'] ? 'BACKGROUND-COLOR: '.$this->mconf['menuBackColor'].'; layer-background-color: '.$this->mconf['menuBackColor'] : '';
 		$insertBottomColor= $this->mconf['bottomBackColor'] ? 'BACKGROUND-COLOR: '.$this->mconf['bottomBackColor'].'; layer-background-color: '.$this->mconf['bottomBackColor'] : '';
-		$menuOffset = t3lib_div::intExplode(',', $this->mconf['menuOffset'].',');
-		$subOffset = t3lib_div::intExplode(',', $this->mconf['subMenuOffset'].',');
+		$menuOffset = t3lib_div::intExplode(',', $this->mconf['menuOffset'] . ',');
+		$subOffset = t3lib_div::intExplode(',', $this->mconf['subMenuOffset'] . ',');
 
 
 		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared']='<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath('cms').'tslib/media/scripts/jsfunc.layermenu.js"></script>';

@@ -405,7 +405,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				if (intval($theKey) && $conf=$this->setup[$theKey.'.']) {
 					$isStdWrapped = array();
 					foreach($conf as $key => $value) {
-						$parameter = rtrim($key,'.');
+						$parameter = rtrim($key, '.');
 						if (!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
 							$conf[$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter.'.']);
 							$isStdWrapped[$parameter] = 1;
@@ -433,7 +433,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 											$isStdWrapped[$parameter] = 1;
 										}
 									}
-									$this->makeShadow($this->im,$conf['shadow.'], $this->workArea, $conf);
+									$this->makeShadow($this->im, $conf['shadow.'], $this->workArea, $conf);
 								}
 								if (is_array($conf['emboss.'])) {
 									$isStdWrapped = array();
@@ -444,7 +444,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 											$isStdWrapped[$parameter] = 1;
 										}
 									}
-									$this->makeEmboss($this->im,$conf['emboss.'], $this->workArea, $conf);
+									$this->makeEmboss($this->im, $conf['emboss.'], $this->workArea, $conf);
 								}
 								if (is_array($conf['outline.'])) {
 									$isStdWrapped = array();

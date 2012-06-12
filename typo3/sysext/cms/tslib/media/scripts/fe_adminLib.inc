@@ -207,7 +207,7 @@ class user_feAdmin	{
 			$this->overrideValues();
 			$this->evalValues();
 			if ($this->conf['evalFunc']) {
-				$this->dataArr = $this->userProcess('evalFunc',$this->dataArr);
+				$this->dataArr = $this->userProcess('evalFunc', $this->dataArr);
 			}
 
 				// if not preview and no failures, then set data...
@@ -353,16 +353,16 @@ class user_feAdmin	{
 							$this->dataArr[$theField] = str_replace(' ', '', $this->dataArr[$theField]);
 						break;
 						case 'alpha':
-							$this->dataArr[$theField] = preg_replace('/[^a-zA-Z]/','',$this->dataArr[$theField]);
+							$this->dataArr[$theField] = preg_replace('/[^a-zA-Z]/', '', $this->dataArr[$theField]);
 						break;
 						case 'num':
-							$this->dataArr[$theField] = preg_replace('/[^0-9]/','',$this->dataArr[$theField]);
+							$this->dataArr[$theField] = preg_replace('/[^0-9]/', '', $this->dataArr[$theField]);
 						break;
 						case 'alphanum':
-							$this->dataArr[$theField] = preg_replace('/[^a-zA-Z0-9]/','',$this->dataArr[$theField]);
+							$this->dataArr[$theField] = preg_replace('/[^a-zA-Z0-9]/', '', $this->dataArr[$theField]);
 						break;
 						case 'alphanum_x':
-							$this->dataArr[$theField] = preg_replace('/[^a-zA-Z0-9_-]/','',$this->dataArr[$theField]);
+							$this->dataArr[$theField] = preg_replace('/[^a-zA-Z0-9_-]/', '', $this->dataArr[$theField]);
 						break;
 						case 'trim':
 							$this->dataArr[$theField] = trim($this->dataArr[$theField]);
@@ -382,7 +382,7 @@ class user_feAdmin	{
 						break;
 						case 'multiple':
 							if (is_array($this->dataArr[$theField])) {
-								$this->dataArr[$theField] = implode(',',$this->dataArr[$theField]);
+								$this->dataArr[$theField] = implode(',', $this->dataArr[$theField]);
 							}
 						break;
 						case 'checkArray':
@@ -404,8 +404,8 @@ class user_feAdmin	{
 							$hashArray=array();
 							foreach ($otherFields as $fN) {
 								$vv = $this->dataArr[$fN];
-								$vv = preg_replace('/[[:space:]]/','',$vv);
-								$vv = preg_replace('/[^[:alnum:]]/','',$vv);
+								$vv = preg_replace('/[[:space:]]/', '', $vv);
+								$vv = preg_replace('/[^[:alnum:]]/', '', $vv);
 								$vv = strtolower($vv);
 								$hashArray[]=$vv;
 							}
@@ -432,9 +432,9 @@ class user_feAdmin	{
 		$filesArr = array();
 
 		if (is_string($this->dataArr[$theField]))	{		// files from preview.
-			$tmpArr = explode(',',$this->dataArr[$theField]);
+			$tmpArr = explode(',', $this->dataArr[$theField]);
 			foreach ($tmpArr as $val) {
-				$valParts = explode('|',$val);
+				$valParts = explode('|', $val);
 				$filesArr[] = array (
 					'name'=>$valParts[1],
 					'tmp_name'=>PATH_site.'typo3temp/'.$valParts[0]
@@ -472,7 +472,7 @@ class user_feAdmin	{
 		$this->dataArr[$theField]='';
 		$finalFilesArr=array();
 		if (count($filesArr)) {
-			$extArray = t3lib_div::trimExplode(';',strtolower($cmdParts[1]),1);
+			$extArray = t3lib_div::trimExplode(';', strtolower($cmdParts[1]), 1);
 			$maxSize = intval($cmdParts[3]);
 			foreach ($filesArr as $infoArr) {
 				$fI = pathinfo($infoArr['name']);
@@ -517,7 +517,7 @@ class user_feAdmin	{
 				}
 			}
 				// Implode the list of filenames
-			$this->dataArr[$theField] = implode(',',$fileNameList);
+			$this->dataArr[$theField] = implode(',', $fileNameList);
 		}
 	}
 
@@ -642,7 +642,7 @@ class user_feAdmin	{
 							}
 						break;
 						case 'inBranch':
-							$pars = explode(';',$cmdParts[1]);
+							$pars = explode(';', $cmdParts[1]);
 							if (intval($pars[0])) {
 								$pid_list = $this->cObj->getTreeList(
 									intval($pars[0]),
@@ -666,10 +666,11 @@ class user_feAdmin	{
 						break;
 					}
 				}
-				$this->markerArray['###EVAL_ERROR_FIELD_'.$theField.'###'] = is_array($this->failureMsg[$theField]) ? implode('<br />',$this->failureMsg[$theField]) : '';
+				$this->markerArray['###EVAL_ERROR_FIELD_' . $theField . '###'] = is_array($this->failureMsg[$theField]) ? implode('<br />', $this->failureMsg[$theField]) : '';
 			}
 		}
-		$this->failure=implode(',',$tempArr);	 //$failure will show which fields were not OK
+			// $failure will show which fields were not OK
+		$this->failure=implode(',', $tempArr);
 	}
 
 	/**
@@ -759,7 +760,7 @@ class user_feAdmin	{
 			break;
 			default:
 				if ($this->conf['create']) {
-					$newFieldList = implode(',',array_intersect(explode(',', $this->fieldList), t3lib_div::trimExplode(',', $this->conf['create.']['fields'], 1)));
+					$newFieldList = implode(',', array_intersect(explode(',', $this->fieldList), t3lib_div::trimExplode(',', $this->conf['create.']['fields'], 1)));
 					$this->cObj->DBgetInsert($this->theTable, $this->thePid, $this->dataArr, $newFieldList, TRUE);
 					$newId = $GLOBALS['TYPO3_DB']->sql_insert_id();
 
@@ -773,7 +774,7 @@ class user_feAdmin	{
 						}
 						if ($GLOBALS['TCA'][$this->theTable]['ctrl']['fe_crgroup_id']) {
 							$field=$GLOBALS['TCA'][$this->theTable]['ctrl']['fe_crgroup_id'];
-							list($dataArr[$field])=explode(',',$this->dataArr['usergroup']);
+							list($dataArr[$field])=explode(',', $this->dataArr['usergroup']);
 							$dataArr[$field]=intval($dataArr[$field]);
 							$extraList.=','.$field;
 						}
@@ -840,7 +841,7 @@ class user_feAdmin	{
 
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid='.intval($uid), array($field => ''));
 
-				$delFileArr = explode(',',$rec[$field]);
+				$delFileArr = explode(',', $rec[$field]);
 				foreach ($delFileArr as $n) {
 					if ($n) {
 						$fpath = $conf['config']['uploadfolder'].'/'.$n;
@@ -992,7 +993,9 @@ class user_feAdmin	{
 	function displayEditForm($origArr) {
 		$currentArr = is_array($this->dataArr) ? $this->dataArr+$origArr : $origArr;
 
-		if ($this->conf['debug'])	debug('displayEditForm(): '.'###TEMPLATE_EDIT'.$this->previewLabel.'###',1);
+		if ($this->conf['debug']) {
+			debug('displayEditForm(): ###TEMPLATE_EDIT' . $this->previewLabel . '###', 1);
+		}
 		$templateCode = $this->cObj->getSubpart($this->templateCode, '###TEMPLATE_EDIT'.$this->previewLabel.'###');
 		$failure = t3lib_div::_GP('noWarnings')?'':$this->failure;
 		if (!$failure)	{$templateCode = $this->cObj->substituteSubpart($templateCode, '###SUB_REQUIRED_FIELDS_WARNING###', '');}
@@ -1168,7 +1171,7 @@ class user_feAdmin	{
 					switch($theCmd) {
 						case 'multiple':
 							if (isset($inputArr[$theField]) && !$this->isPreview()) {
-								$inputArr[$theField] = explode(',',$inputArr[$theField]);
+								$inputArr[$theField] = explode(',', $inputArr[$theField]);
 							}
 						break;
 						case 'checkArray':
@@ -1265,7 +1268,7 @@ class user_feAdmin	{
 	 * Sends info mail to user
 	 *
 	 * @return	string		HTML content message
-	 * @see init(),compileMail(), sendMail()
+	 * @see init(), compileMail(), sendMail()
 	 */
 	function sendInfoMail() {
 		if ($this->conf['infomail'] && $this->conf['email.']['field']) {
@@ -1339,7 +1342,7 @@ class user_feAdmin	{
 		if ($adminContent['all'])	$adminContent['final'].=$this->cObj->substituteSubpart($adminContent['all'], '###SUB_RECORD###', $adminContent['accum']);
 
 		if (t3lib_utility_Math::canBeInterpretedAsInteger($recipient)) {
-			$fe_userRec = $GLOBALS['TSFE']->sys_page->getRawRecord('fe_users',$recipient);
+			$fe_userRec = $GLOBALS['TSFE']->sys_page->getRawRecord('fe_users', $recipient);
 			$recipient=$fe_userRec['email'];
 		}
 
@@ -1580,7 +1583,7 @@ class user_feAdmin	{
 	 * @param	array		The data record
 	 * @param	string		List of fields to use
 	 * @return	string		Hash string of $this->codeLength (if TypoScript "authcodeFields" was set)
-	 * @see setfixed(),authCode()
+	 * @see setfixed(), authCode()
 	 */
 	function setfixedHash($recCopy, $fields='') {
 		if ($fields) {
@@ -1591,7 +1594,7 @@ class user_feAdmin	{
 		} else {
 			$recCopy_temp=$recCopy;
 		}
-		$encStr = implode('|',$recCopy_temp).'|'.$this->conf['authcodeFields.']['addKey'].'|'.$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+		$encStr = implode('|', $recCopy_temp) . '|' . $this->conf['authcodeFields.']['addKey'] . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 		$hash = substr(md5($encStr), 0, $this->codeLength);
 		return $hash;
 	}

@@ -3570,7 +3570,7 @@ if (version == "n3") {
 		if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8') {
 			$this->config['stat_vars']['pageName'] = str_replace('[path]', $path.'/', $pageName);
 		} else {
-			$this->config['stat_vars']['pageName'] = str_replace('[path]', preg_replace('/[^.[:alnum:]\/_-]/','_', $path.'/'), $pageName);
+			$this->config['stat_vars']['pageName'] = str_replace('[path]', preg_replace('/[^.[:alnum:]\/_-]/', '_', $path . '/'), $pageName);
 		}
 	}
 
@@ -3688,7 +3688,7 @@ if (version == "n3") {
 	 */
 	function statistics() {
 		if (!empty($this->config['config']['stat']) &&
-				(!strcmp('',$this->config['config']['stat_typeNumList']) || t3lib_div::inList(str_replace(' ', '', $this->config['config']['stat_typeNumList']), $this->type)) &&
+				(!strcmp('', $this->config['config']['stat_typeNumList']) || t3lib_div::inList(str_replace(' ', '', $this->config['config']['stat_typeNumList']), $this->type)) &&
 				(empty($this->config['config']['stat_excludeBEuserHits']) || !$this->beUserLogin) &&
 				(empty($this->config['config']['stat_excludeIPList']) || !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), str_replace(' ', '', $this->config['config']['stat_excludeIPList'])))) {
 

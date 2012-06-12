@@ -525,7 +525,7 @@ class tslib_pibase {
 			} else {
 				// render the resultcount in the "traditional" way using sprintf
 				$resultCountMsg = sprintf(
-					str_replace('###SPAN_BEGIN###','<span'.$this->pi_classParam('browsebox-strong').'>', $this->pi_getLL('pi_list_browseresults_displays', 'Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>')),
+					str_replace('###SPAN_BEGIN###', '<span' . $this->pi_classParam('browsebox-strong') . '>', $this->pi_getLL('pi_list_browseresults_displays', 'Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>')),
 					$count > 0 ? $pR1 : 0,
 					min($count, $pR2),
 					$count);
@@ -559,7 +559,7 @@ class tslib_pibase {
 			<'.trim('table '.$tableParams).'>
 				<tr>
 					<td><input type="text" name="'.$this->prefixId.'[sword]" value="'.htmlspecialchars($this->piVars['sword']).'"'.$this->pi_classParam('searchbox-sword').' /></td>
-					<td><input type="submit" value="'.$this->pi_getLL('pi_list_searchBox_search', 'Search',TRUE).'"'.$this->pi_classParam('searchbox-button').' />'.
+					<td><input type="submit" value="' . $this->pi_getLL('pi_list_searchBox_search', 'Search', TRUE) . '"' . $this->pi_classParam('searchbox-button') . ' />'.
 						'<input type="hidden" name="no_cache" value="1" />'.
 						'<input type="hidden" name="'.$this->prefixId.'[pointer]" value="" />'.
 						'</td>
@@ -829,9 +829,9 @@ class tslib_pibase {
 				$tablename = $this->internal['currentTable'];
 			}
 			$conf=array_merge(array(
-				'beforeLastTag'=>1,
+				'beforeLastTag' => 1,
 				'iconTitle' => $title
-			),$oConf);
+			), $oConf);
 			$content=$this->cObj->editIcons($content, $tablename.':'.$fields, $conf, $tablename.':'.$row['uid'], $row, '&viewUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')));
 		}
 		return $content;
@@ -925,7 +925,7 @@ class tslib_pibase {
 			$basePath = 'EXT:' . $this->extKey . '/' . dirname($this->scriptRelPath) . '/locallang.xml';
 
 				// Read the strings in the required charset (since TYPO3 4.2)
-			$this->LOCAL_LANG = t3lib_div::readLLfile($basePath,$this->LLkey, $GLOBALS['TSFE']->renderCharset);
+			$this->LOCAL_LANG = t3lib_div::readLLfile($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
 			if ($this->altLLkey) {
 				$this->LOCAL_LANG = t3lib_div::readLLfile($basePath, $this->altLLkey);
 			}

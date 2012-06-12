@@ -642,7 +642,7 @@ class SC_db_layout {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 						'*',
 						'tt_content',
-						'pid='.intval($this->id).' AND colPos='.intval(substr($edit_record,10)).' AND sys_language_uid='.intval($this->current_sys_language).
+						'pid=' . intval($this->id) . ' AND colPos=' . intval(substr($edit_record, 10)) . ' AND sys_language_uid=' . intval($this->current_sys_language) .
 								($this->MOD_SETTINGS['tt_content_showHidden'] ? '' : t3lib_BEfunc::BEenableFields('tt_content')).
 								t3lib_BEfunc::deleteClause('tt_content').
 								t3lib_BEfunc::versioningPlaceholderClause('tt_content'),
@@ -1226,7 +1226,7 @@ class SC_db_layout {
 
 			if ($function == 'quickEdit') {
 					// Save record
-				$buttons['savedok'] = '<input class="c-inputButton" type="image" name="savedok"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif','') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" alt="" />';
+				$buttons['savedok'] = '<input class="c-inputButton" type="image" name="savedok"' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/savedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" alt="" />';
 
 					// Save record and show page
 				$buttons['savedokshow'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow', TRUE) . '">' .
