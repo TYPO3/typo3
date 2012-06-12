@@ -599,7 +599,7 @@ class SC_mod_tools_dbint_index {
 				$matching_files=array();
 				$info='';
 				if (!t3lib_div::inList('typo3,typo3conf,tslib,media,t3lib', $value)) {
-					$info = $this->findFile(PATH_site.$value.'/', $pattern,$matching_files, $depth);
+					$info = $this->findFile(PATH_site . $value . '/', $pattern, $matching_files, $depth);
 				}
 				if (is_array($info)) {
 					$lines[]='<hr><strong>' . $value . '/</strong> ' . $GLOBALS['LANG']->getLL('beingChecked');
