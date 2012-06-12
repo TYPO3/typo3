@@ -24,52 +24,41 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Wizard to list records from a page id.
  *
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-
-
-$BACK_PATH='';
-require ('init.php');
-require ('template.php');
+$BACK_PATH = '';
+require('init.php');
+require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Script Class for redirecting the user to the Web > List module if a wizard-link has been clicked in TCEforms
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_wizard_list {
 
 		// Internal, static:
-	var $pid;					// PID
+		// PID
+	var $pid;
 
 		// Internal, static: GPvars
-	var $P;						// Wizard parameters, coming from TCEforms linking to the wizard.
-	var $table;					// Table to show, if none, then all tables are listed in list module.
-	var $id;					// Page id to list.
-
-
-
-
+		// Wizard parameters, coming from TCEforms linking to the wizard.
+	var $P;
+		// Table to show, if none, then all tables are listed in list module.
+	var $table;
+		// Page id to list.
+	var $id;
 
 	/**
 	 * Initialization of the class, setting GPvars.
@@ -86,7 +75,7 @@ class SC_wizard_list {
 	 * Main function
 	 * Will issue a location-header, redirecting either BACK or to a new alt_doc.php instance...
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 
@@ -102,7 +91,8 @@ class SC_wizard_list {
 		} else $this->pid = intval($this->P['params']['pid']);
 
 			// Make redirect:
-		if (!strcmp($this->pid, '') || strcmp($this->id, ''))	{	// If pid is blank OR if id is set, then return...
+			// If pid is blank OR if id is set, then return...
+		if (!strcmp($this->pid, '') || strcmp($this->id, '')) {
 			$redirectUrl = t3lib_div::sanitizeLocalUrl($this->P['returnUrl']);
 		} else {	// Otherwise, show the list:
 			$urlParameters = array();
@@ -115,7 +105,7 @@ class SC_wizard_list {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_wizard_list');
 $SOBE->init();
 $SOBE->main();
