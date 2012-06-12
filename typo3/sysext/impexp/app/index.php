@@ -169,8 +169,8 @@ class localPageTree extends t3lib_browseTree {
 		$this->ids = $curIds;
 
 			// Set PM icon:
-		$cmd = $this->bank.'_'.($isOpen?'0_':'1_').$pid;
-		$icon = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/ol/'.($isOpen?'minus':'plus').'only.gif','width="18" height="16"').' align="top" alt="" />';
+		$cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') .$pid;
+		$icon = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif', 'width="18" height="16"') . ' align="top" alt="" />';
 		$firstHtml = $this->PM_ATagWrap($icon, $cmd);
 
 		if ($pid>0) {
@@ -181,7 +181,7 @@ class localPageTree extends t3lib_browseTree {
 				'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
 				'uid' => 0
 			);
-			$firstHtml.= $this->wrapIcon('<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif','width="18" height="16"').' align="top" alt="" />', $rootRec);
+			$firstHtml .= $this->wrapIcon('<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif', 'width="18" height="16"') . ' align="top" alt="" />', $rootRec);
 		}
 		$this->tree[] = array('HTML'=>$firstHtml, 'row'=>$rootRec);
 		if ($isOpen) {
@@ -596,8 +596,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			'label' => $GLOBALS['LANG']->getLL('tableselec_configuration'),
 			'content' => '
 				<table border="0" cellpadding="1" cellspacing="1">
-					'.implode('
-					',$row).'
+					' . implode('
+					', $row) . '
 				</table>
 			'
 		);
@@ -609,8 +609,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			'label' => $GLOBALS['LANG']->getLL('exportdata_filePreset'),
 			'content' => '
 				<table border="0" cellpadding="1" cellspacing="1">
-					'.implode('
-					',$row).'
+					' . implode('
+					', $row) . '
 				</table>
 			'
 		);
@@ -622,8 +622,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			'label' => $GLOBALS['LANG']->getLL('exportdata_advancedOptions'),
 			'content' => '
 				<table border="0" cellpadding="1" cellspacing="1">
-					'.implode('
-					',$row).'
+					' . implode('
+					', $row) . '
 				</table>
 			'
 		);
@@ -867,7 +867,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				<tr class="bgColor4">
 					<td><strong>'.$LANG->getLL('makeconfig_excludeElements', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'excludedElements', $GLOBALS['BACK_PATH'], '').'</td>
 					<td>'.$excludeHiddenFields.'
-					'.(count($inData['exclude']) ? '<em>'.implode(', ',array_keys($inData['exclude'])).'</em><hr/><label for="checkExclude">'.$LANG->getLL('makeconfig_clearAllExclusions', 1).'</label> <input type="checkbox" name="tx_impexp[exclude]" id="checkExclude" value="1" />' : $LANG->getLL('makeconfig_noExcludedElementsYet', 1)).'
+					' . (count($inData['exclude']) ? '<em>' . implode(', ', array_keys($inData['exclude'])) . '</em><hr/><label for="checkExclude">' . $LANG->getLL('makeconfig_clearAllExclusions', 1) . '</label> <input type="checkbox" name="tx_impexp[exclude]" id="checkExclude" value="1" />' : $LANG->getLL('makeconfig_noExcludedElementsYet', 1)).'
 					</td>
 				</tr>';
 
@@ -1031,7 +1031,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					<td>'.$this->renderSelectBox('tx_impexp[filetype]', $inData['filetype'], $opt).'<br/>
 						'.$LANG->getLL('makesavefo_maxSizeOfFiles', 1).'<br/>
 						<input type="text" name="tx_impexp[maxFileSize]" value="'.htmlspecialchars($inData['maxFileSize']).'"'.$this->doc->formWidth(10).' /><br/>
-						'.($savePath ? sprintf($LANG->getLL('makesavefo_filenameSavedInS', 1), substr($savePath,strlen(PATH_site))).'<br/>
+						' . ($savePath ? sprintf($LANG->getLL('makesavefo_filenameSavedInS', 1), substr($savePath, strlen(PATH_site))) . '<br/>
 						<input type="text" name="tx_impexp[filename]" value="'.htmlspecialchars($inData['filename']).'"'.$this->doc->formWidth(30).' /><br/>' : '').'
 					</td>
 				</tr>';
@@ -1132,8 +1132,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$row[] = '<tr class="bgColor4">
 				<td><strong>'.$LANG->getLL('importdata_file', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'importFile', $GLOBALS['BACK_PATH'], '').'</td>
 				<td>'.
-					$this->renderSelectBox('tx_impexp[file]', $inData['file'], $opt).'<br />'.sprintf($LANG->getLL('importdata_fromPathS', 1),$path).
-					(!$import->compress ? '<br /><span class="typo3-red">'.$LANG->getLL('importdata_noteNoDecompressorAvailable', 1).'</span>':'').
+					$this->renderSelectBox('tx_impexp[file]', $inData['file'], $opt) . '<br />' . sprintf($LANG->getLL('importdata_fromPathS', 1), $path) .
+					(!$import->compress ? '<br /><span class="typo3-red">' . $LANG->getLL('importdata_noteNoDecompressorAvailable', 1) . '</span>' : '') .
 				'</td>
 				</tr>';
 
@@ -1197,8 +1197,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				'label' => $LANG->getLL('importdata_import', 1),
 				'content' => '
 					<table border="0" cellpadding="1" cellspacing="1">
-						'.implode('
-						',$row).'
+						' . implode('
+						', $row) . '
 					</table>
 				'
 			);
@@ -1236,8 +1236,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					'label' => $LANG->getLL('importdata_upload'),
 					'content' => '
 						<table border="0" cellpadding="1" cellspacing="1">
-							'.implode('
-							',$row).'
+							' . implode('
+							', $row) . '
 						</table>
 					'
 				);
@@ -1347,8 +1347,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					'label' => $LANG->getLL('importdata_metaData_1387'),
 					'content' => '
 						<table border="0" cellpadding="1" cellspacing="1">
-							'.implode('
-							',$trow).'
+							' . implode('
+							', $trow) . '
 						</table>
 					'
 				);
@@ -1417,7 +1417,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						'item_uid' => $inData['pagetree']['id'],
 						'preset_data' => serialize($inData)
 					);
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_impexp_presets','uid='.intval($preset['uid']), $fields_values);
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_impexp_presets', 'uid=' . intval($preset['uid']), $fields_values);
 					$msg = 'Preset #'.$preset['uid'].' saved!';
 				} else {
 					$msg = 'ERROR: The preset was not saved because you were not the owner of it!';

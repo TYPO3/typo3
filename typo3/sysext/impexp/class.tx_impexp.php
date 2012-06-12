@@ -695,7 +695,7 @@ class tx_impexp {
 							$fileRec['content_md5'] = md5($fileRec['content']);
 							$this->dat['files'][$RTEoriginal_ID] = $fileRec;
 						} else {
-							$this->error('RTE original file "'.substr($RTEoriginal_absPath,strlen(PATH_site)).'" was not found!');
+							$this->error('RTE original file "' . substr($RTEoriginal_absPath, strlen(PATH_site)) . '" was not found!');
 						}
 					}
 
@@ -2059,7 +2059,7 @@ class tx_impexp {
 				if (t3lib_div::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName.'/')) {
 					$dirPrefix = substr($dirPrefix, strlen($this->fileadminFolderName.'/'));
 				}
-				return substr($fileProcObj->mounts[$result]['path'].$dirPrefix,strlen(PATH_site));
+				return substr($fileProcObj->mounts[$result]['path'] . $dirPrefix, strlen(PATH_site));
 			}
 		} else {
 			return $dirPrefix;
@@ -2527,7 +2527,7 @@ class tx_impexp {
 					if (!$recInf && $GLOBALS['BE_USER']->isAdmin()) $optValues['force_uid'] = sprintf($LANG->getLL('impexpcore_singlereco_forceUidSAdmin'), $uid);
 					$optValues['exclude'] = $LANG->getLL('impexpcore_singlereco_exclude');
 
-					$pInfo['updateMode'] = $this->renderSelectBox('tx_impexp[import_mode]['.$table.':'.$uid.']',$this->import_mode[$table.':'.$uid], $optValues);
+					$pInfo['updateMode'] = $this->renderSelectBox('tx_impexp[import_mode][' . $table . ':' . $uid . ']', $this->import_mode[$table . ':' . $uid], $optValues);
 				}
 
 					// Diff vieiw:
