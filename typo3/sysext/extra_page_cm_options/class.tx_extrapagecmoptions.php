@@ -111,15 +111,26 @@ class tx_extrapagecmoptions {
 					0,
 					$localItems
 				);
-			} else {	// If no delete item was found, then just merge in the items:
+				// If no delete item was found, then just merge in the items:
+			} else {
 				$menuItems=array_merge($menuItems, $localItems);
 			}
-		} elseif ($subname==='moreoptions') {	// LEVEL: Secondary level of menus (activated by an item on the first level).
-			if ($backRef->editOK)	{	// If the page can be edited, then show this:
-				if (!in_array('move_wizard', $backRef->disabledItems) && ($table=='pages' || $table=='tt_content'))	$localItems['move_wizard']=$backRef->DB_moveWizard($table, $uid, $backRef->rec);
-				if (!in_array('new_wizard', $backRef->disabledItems) && ($table=='pages' || $table=='tt_content'))	$localItems['new_wizard']=$backRef->DB_newWizard($table, $uid, $backRef->rec);
-				if (!in_array('perms', $backRef->disabledItems) && $table=='pages' && $GLOBALS['BE_USER']->check('modules','web_perm'))	$localItems['perms']=$backRef->DB_perms($table, $uid, $backRef->rec);
-				if (!in_array('db_list', $backRef->disabledItems) && $GLOBALS['BE_USER']->check('modules', 'web_list'))	$localItems['db_list']=$backRef->DB_db_list($table, $uid, $backRef->rec);
+			// LEVEL: Secondary level of menus (activated by an item on the first level).
+		} elseif ($subname === 'moreoptions') {
+				// If the page can be edited, then show this:
+			if ($backRef->editOK)	{
+				if (!in_array('move_wizard', $backRef->disabledItems) && ($table=='pages' || $table=='tt_content')) {
+					$localItems['move_wizard']=$backRef->DB_moveWizard($table, $uid, $backRef->rec);
+				}
+				if (!in_array('new_wizard', $backRef->disabledItems) && ($table=='pages' || $table=='tt_content')) {
+					$localItems['new_wizard']=$backRef->DB_newWizard($table, $uid, $backRef->rec);
+				}
+				if (!in_array('perms', $backRef->disabledItems) && $table=='pages' && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
+					$localItems['perms']=$backRef->DB_perms($table, $uid, $backRef->rec);
+				}
+				if (!in_array('db_list', $backRef->disabledItems) && $GLOBALS['BE_USER']->check('modules', 'web_list')) {
+					$localItems['db_list']=$backRef->DB_db_list($table, $uid, $backRef->rec);
+				}
 			}
 
 				// Temporary mount point item:
