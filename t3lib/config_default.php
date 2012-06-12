@@ -947,7 +947,7 @@ if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState']) {
 
 	// Convert type of "pageNotFound_handling" setting in case it was written as a string (e.g. if edited in Install Tool)
 	// TODO: Once the Install Tool handles such data types correctly, this workaround should be removed again...
-if (!strcasecmp($TYPO3_CONF_VARS['FE']['pageNotFound_handling'],'TRUE')) {
+if (!strcasecmp($TYPO3_CONF_VARS['FE']['pageNotFound_handling'], 'TRUE')) {
 	$TYPO3_CONF_VARS['FE']['pageNotFound_handling'] = TRUE;
 }
 
@@ -1007,7 +1007,7 @@ if (($displayErrors = intval($TYPO3_CONF_VARS['SYS']['displayErrors'])) != '-1')
 	}
 	if ($displayErrors == 1) {
 		$TYPO3_CONF_VARS['SC_OPTIONS']['errors']['exceptionHandler'] = $TYPO3_CONF_VARS['SYS']['debugExceptionHandler'];
-		define('TYPO3_ERRORHANDLER_MODE','debug');
+		define('TYPO3_ERRORHANDLER_MODE', 'debug');
 	}
 
 	@ini_set('display_errors', $displayErrors);

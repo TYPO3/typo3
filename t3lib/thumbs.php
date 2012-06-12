@@ -224,7 +224,7 @@ class SC_t3lib_thumbs {
 					$cmd = t3lib_div::imageMagickCommand('convert', $parameters);
 					t3lib_utility_Command::exec($cmd);
 					if (!file_exists($this->output)) {
-						$this->errorGif('No thumb','generated!', $this->image->getName());
+						$this->errorGif('No thumb', 'generated!', $this->image->getName());
 					} else {
 						t3lib_div::fixPermissions($this->output);
 					}
