@@ -24,53 +24,51 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Wizard to edit records from group/select lists in TCEforms
  *
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-
-
-$BACK_PATH='';
-require ('init.php');
-require ('template.php');
+$BACK_PATH = '';
+require('init.php');
+require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
-
 
 /**
  * Script Class for redirecting a backend user to the editing form when an "Edit wizard" link was clicked in TCEforms somewhere
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_wizard_edit {
 
 		// Internal, static: GPvars
-	var $P;						// Wizard parameters, coming from TCEforms linking to the wizard.
-	var $doClose;				// Boolean; if set, the window will be closed by JavaScript
-
-
-
+		// Wizard parameters, coming from TCEforms linking to the wizard.
+	var $P;
+		// Boolean; if set, the window will be closed by JavaScript
+	var $doClose;
 
 	/**
 	 * Initialization of the script
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 		$this->P = t3lib_div::_GP('P');
-		$this->doClose = t3lib_div::_GP('doClose');		// Used for the return URL to alt_doc.php so that we can close the window.
+			// Used for the return URL to alt_doc.php so that we can close the window.
+		$this->doClose = t3lib_div::_GP('doClose');
 	}
 
 	/**
 	 * Main function
 	 * Makes a header-location redirect to an edit form IF POSSIBLE from the passed data - otherwise the window will just close.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 		if ($this->doClose) {
@@ -92,8 +90,8 @@ class SC_wizard_edit {
 
 					// Init settings:
 				$allowedTables = $config['type']=='group' ? $config['allowed'] : $config['foreign_table'].','.$config['neg_foreign_table'];
-				$prependName=1;
-				$params='';
+				$prependName = 1;
+				$params = '';
 
 					// Selecting selected values into an array:
 				$dbAnalysis = t3lib_div::makeInstance('t3lib_loadDBGroup');
@@ -101,7 +99,7 @@ class SC_wizard_edit {
 				$value = $dbAnalysis->getValueArray($prependName);
 
 					// Traverse that array and make parameters for alt_doc.php:
-				foreach($value as $rec) {
+				foreach ($value as $rec) {
 					$recTableUidParts = t3lib_div::revExplode('_', $rec, 2);
 					$params.='&edit['.$recTableUidParts[0].']['.$recTableUidParts[1].']=edit';
 				}
@@ -117,7 +115,7 @@ class SC_wizard_edit {
 	/**
 	 * Printing a little JavaScript to close the open window.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function closeWindow() {
 		echo '<script language="javascript" type="text/javascript">close();</script>';
@@ -125,7 +123,7 @@ class SC_wizard_edit {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_wizard_edit');
 $SOBE->init();
 $SOBE->main();
