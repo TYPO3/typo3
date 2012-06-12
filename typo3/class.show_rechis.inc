@@ -234,7 +234,7 @@ class recordHistory {
 		}
 
 			// Removing fields:
-		$data = $this->removeFilefields($rollbackData[0],$data);
+		$data = $this->removeFilefields($rollbackData[0], $data);
 
 			// Writes the data:
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -315,7 +315,7 @@ class recordHistory {
 			$displayCode .= '<tr><td>' . $GLOBALS['LANG']->getLL($key, 1) . '</td>';
 			$displayCode .= '<td><select name="settings[' . $key . ']" onChange="document.settings.submit()" style="width:100px">';
 			foreach ($values as $singleKey => $singleVal) {
-				$caption = $GLOBALS['LANG']->getLL($singleVal,1)?$GLOBALS['LANG']->getLL($singleVal,1):$singleVal;
+				$caption = ($GLOBALS['LANG']->getLL($singleVal, 1) ? $GLOBALS['LANG']->getLL($singleVal, 1) : $singleVal);
 				$displayCode .= '<option value="' . $singleKey . '"' . (($singleKey == $currentSelection[$key]) ? ' selected="selected"' : '').'> ' . $caption . '</option>';
 			}
 			$displayCode .= '</select></td></tr>';
@@ -337,7 +337,7 @@ class recordHistory {
 		$elParts = explode(':', $this->element);
 		if ($elParts[0] != 'pages') {
 			$content .= '<strong>' . $GLOBALS['LANG']->getLL('elementHistory', 1) . '</strong><br />';
-			$pid = t3lib_BEfunc::getRecordRaw($elParts[0],'uid='.intval($elParts[1]));
+			$pid = t3lib_BEfunc::getRecordRaw($elParts[0], 'uid=' . intval($elParts[1]));
 			$content .= $this->linkPage($GLOBALS['LANG']->getLL('elementHistory_link', 1), array('element' => 'pages:' . $pid['pid']));
 		}
 		$content .= '<form name="settings" action="' . t3lib_div::getIndpEnv('TYPO3_REQUEST_URL') . '" method="post"><table>' . $displayCode . '</table></form>';
@@ -372,7 +372,7 @@ class recordHistory {
 		} else {
 			$pid = $elParts[1];
 		}
-		$tmpTsConfig = $GLOBALS['BE_USER']->getTSConfig('TCEMAIN',t3lib_BEfunc::getPagesTSconfig($pid));
+		$tmpTsConfig = $GLOBALS['BE_USER']->getTSConfig('TCEMAIN', t3lib_BEfunc::getPagesTSconfig($pid));
 		$expirationTime = isset($tmpTsConfig['properties']['default.']['history.']['maxAgeDays']) ?
 				$tmpTsConfig['properties']['default.']['history.']['maxAgeDays'] : 30;
 
@@ -442,7 +442,7 @@ class recordHistory {
 					}
 					$singleLine[] = htmlspecialchars(implode(',', $tmpFieldList));
 				} else {	// Display diff
-					$diff = $this->renderDiff($entry,$entry['tablename']);
+					$diff = $this->renderDiff($entry, $entry['tablename']);
 					$singleLine[] = $diff;
 				}
 			}
@@ -454,7 +454,7 @@ class recordHistory {
 				} else {
 					$image = '<img' . t3lib_iconWorks::skinImg('', 'gfx/markstate.gif') . ' align="top" alt="' . $GLOBALS['LANG']->getLL('markState', 1) . '" title="' . $GLOBALS['LANG']->getLL('markState', 1) . '" />';
 				}
-				$singleLine[] = $this->linkPage($image,array('highlight' => $entry['uid']));
+				$singleLine[] = $this->linkPage($image, array('highlight' => $entry['uid']));
 			} else {
 				$singleLine[] = '';
 			}
@@ -503,7 +503,7 @@ class recordHistory {
 		$content = '';
 
 			// Get all array keys needed
-		$arrayKeys = array_merge(array_keys($diff['newData']),array_keys($diff['insertsDeletes']), array_keys($diff['oldData']));
+		$arrayKeys = array_merge(array_keys($diff['newData']), array_keys($diff['insertsDeletes']), array_keys($diff['oldData']));
 		$arrayKeys = array_unique($arrayKeys);
 
 		if ($arrayKeys) {

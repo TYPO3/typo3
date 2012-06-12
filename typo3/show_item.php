@@ -81,7 +81,7 @@ class transferData extends t3lib_transferData	{
 					$content = '';
 					break;
 				}
-				if (t3lib_div::inList($config['eval'],'date')) {
+				if (t3lib_div::inList($config['eval'], 'date')) {
 					$content = Date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $content);
 				}
 			break;

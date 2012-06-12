@@ -383,7 +383,7 @@ class SC_alt_shortcut {
 		if (!$this->editLoaded && t3lib_extMgm::isLoaded('cms')) {
 				$editIdCode = '<td nowrap="nowrap">'.$GLOBALS['LANG']->getLL('bookmark_editID', 1).': <input type="text" value="'.($this->editError?htmlspecialchars($this->editPage):'').'" name="editPage"'.$this->doc->formWidth(15).' onchange="submitEditPage(this.value);" />'.
 					($this->editError?'&nbsp;<strong><span class="typo3-red">'.htmlspecialchars($this->editError).'</span></strong>':'').
-					(is_array($this->theEditRec)?'&nbsp;<strong>'.$GLOBALS['LANG']->getLL('bookmark_loadEdit', 1).' \''.t3lib_BEfunc::getRecordTitle('pages', $this->theEditRec,TRUE).'\'</strong> ('.htmlspecialchars($this->editPath).')':'').
+					(is_array($this->theEditRec) ? '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('bookmark_loadEdit', 1) . ' \'' . t3lib_BEfunc::getRecordTitle('pages', $this->theEditRec, TRUE) . '\'</strong> (' . htmlspecialchars($this->editPath) . ')' : '') .
 					($this->searchFor?'&nbsp;'.$GLOBALS['LANG']->getLL('bookmark_searchFor', 1).' <strong>\''.htmlspecialchars($this->searchFor).'\'</strong>':'').
 					'</td>';
 		} else $editIdCode = '';

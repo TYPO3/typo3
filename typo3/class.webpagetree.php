@@ -355,7 +355,7 @@ class webPageTree extends t3lib_browseTree {
 			$cmd = $this->bank . '_' . ($isOpen? '0_' : '1_') . $uid . '_' . $this->treeName;
 				// only, if not for uid 0
 			if ($uid) {
-				$icon = '<img' . t3lib_iconWorks::skinImg($this->backPath,'gfx/ol/' . ($isOpen ? 'minus' :'plus' ) . 'only.gif') . ' alt="" />';
+				$icon = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/ol/' . ($isOpen ? 'minus' : 'plus' ) . 'only.gif') . ' alt="" />';
 				$firstHtml = $this->PMiconATagWrap($icon, $cmd, !$isOpen);
 			}
 

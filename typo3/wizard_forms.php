@@ -413,8 +413,8 @@ class SC_wizard_forms {
 		$tRows[]='
 			<tr class="bgColor2" id="typo3-formWizardHeader">
 				<td>&nbsp;</td>
-				<td>'.implode('</td>
-				<td>',$cells).'</td>
+				<td>' . implode('</td>
+				<td>', $cells) . '</td>
 			</tr>';
 
 			// Traverse the number of form elements:
@@ -449,8 +449,8 @@ class SC_wizard_forms {
 					}
 					$temp_cells[$GLOBALS['LANG']->getLL('forms_type')]='
 							<select name="FORMCFG[c]['.(($k+1)*2).'][type]">
-								'.implode('
-								',$opt).'
+								' . implode('
+								', $opt) . '
 							</select>';
 
 						// Title field:
@@ -547,10 +547,10 @@ class SC_wizard_forms {
 						// Finally, put together the full row from the generated content above:
 					$bgC = $confData['type']?' class="bgColor5"':'';
 					$tRows[]='
-						<tr'.$bgC.'>
-							<td><a name="ANC_'.(($k+1)*2).'"></a>'.$ctrl.'</td>
-							<td class="bgColor4">'.implode('</td>
-							<td valign="top">',$cells).'</td>
+						<tr' . $bgC . '>
+							<td><a name="ANC_' . (($k + 1) * 2) . '"></a>' . $ctrl . '</td>
+							<td class="bgColor4">' . implode('</td>
+							<td valign="top">', $cells) . '</td>
 						</tr>';
 				}
 			} else {
