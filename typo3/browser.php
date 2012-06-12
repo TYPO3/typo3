@@ -74,6 +74,7 @@ class SC_browser {
 					close();
 				}
 		');
+		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->setFavIcon('gfx/favicon.ico');
 
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:TYPO3_Element_Browser'));
 
