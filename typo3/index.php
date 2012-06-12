@@ -152,6 +152,7 @@ class SC_index {
 			// Initialize template object:
 		$GLOBALS['TBE_TEMPLATE']->bodyTagAdditions = ' onload="startUp();"';
 		$GLOBALS['TBE_TEMPLATE']->moduleTemplate = $GLOBALS['TBE_TEMPLATE']->getHtmlTemplate('templates/login.html');
+		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->setFavIcon('gfx/favicon.ico');
 
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadExtJS();
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadPrototype();
