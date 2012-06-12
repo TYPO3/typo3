@@ -773,7 +773,7 @@ class t3lib_TCEforms {
 				if (strpos($GLOBALS['TCA'][$table]['ctrl']['type'], ':') === FALSE) {
 					$typeField = $GLOBALS['TCA'][$table]['ctrl']['type'];
 				} else {
-					$typeField = substr($GLOBALS['TCA'][$table]['ctrl']['type'], 0, strpos($GLOBALS['TCA'][$table]['ctrl']['type'],':'));
+					$typeField = substr($GLOBALS['TCA'][$table]['ctrl']['type'], 0, strpos($GLOBALS['TCA'][$table]['ctrl']['type'], ':'));
 				}
 
 					// Create a JavaScript code line which will ask the user to save/update the form due to changing the element. This is used for eg. "type" fields and others configured with "requestUpdate"
