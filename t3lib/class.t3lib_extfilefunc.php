@@ -402,7 +402,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 						$icon = t3lib_iconWorks::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
 
 						$onClick = 'showClickmenu("' . $row['tablename'] . '", "' . $row['recuid'] . '", "1", "+info,history,edit,delete", "|", "");return false;';
-						$shortcutContent[] = '<a href="#" oncontectmenu="' . htmlspecialchars($onClick) . '" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' .
+						$shortcutContent[] = '<a href="#" oncontextmenu="' . htmlspecialchars($onClick) . '" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' .
 							htmlspecialchars(t3lib_BEfunc::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . t3lib_BEfunc::getRecordPath($shortcutRecord['pid'], '', 80) . ']');
 					}
 				}
