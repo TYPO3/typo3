@@ -211,7 +211,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 		// **************************
 
 		// BUGBUG: Should we check if the uset may at all read and write template-records???
-		$bType= $this->pObj->MOD_SETTINGS['ts_browser_type'];
+		$bType = $this->pObj->MOD_SETTINGS['ts_browser_type'];
 		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);		// initialize
 		if ($existTemplate) {
 			$theOutput .= $this->pObj->doc->section(
@@ -530,7 +530,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					$out .= '<tr><td nowrap class="tsob-conditions"><input type="checkbox" name="conditions[' . $key . ']" id="check' . $key . '" value="' . htmlspecialchars($val) . '"' . ($this->pObj->MOD_SETTINGS['tsbrowser_conditions'][$key] ? ' checked' : '') . ' />';
 					$out .= '<label for="check' .$key . '">' . $tmpl->substituteCMarkers(htmlspecialchars($val)) . '</label></td></tr>';
 				}
-				$theOutput.='
+				$theOutput .= '
 								<table border="0" cellpadding="0" cellspacing="0" class="bgColor4">'.$out.'
 						<td><br /><input type="Submit" name="Submit" value="' . $GLOBALS['LANG']->getLL('setConditions') . '" /></td>
 								</table>
