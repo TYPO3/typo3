@@ -24,10 +24,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Grid wizard
  */
-
 require_once('conf.php');
 require($BACK_PATH . 'init.php');
 require($BACK_PATH . 'template.php');
@@ -36,33 +36,33 @@ $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
 /**
  * Script Class for grid wizard
  *
- * @author	T3UXW09 Team1 <modernbe@cybercraft.de>
+ * @author T3UXW09 Team1 <modernbe@cybercraft.de>
  * @package TYPO3
  * @subpackage core
  */
 class SC_wizard_backend_layout {
 
-	// GET vars:
-	var $P; // Wizard parameters, coming from TCEforms linking to the wizard.
+		// GET vars:
+		// Wizard parameters, coming from TCEforms linking to the wizard.
+	var $P;
 
 	/**
-	 * document template object
+	 * Document template object
 	 *
 	 * @var smallDoc
 	 */
 	var $doc;
-	var $content; // Accumulated content.
-
+		// Accumulated content.
+	var $content;
 
 	/**
 	 * Initialises the Class
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 
-
-		// Setting GET vars (used in frameset script):
+			// Setting GET vars (used in frameset script):
 		$this->P = t3lib_div::_GP('P', 1);
 
 		$this->formName = $this->P['formName'];
@@ -70,7 +70,7 @@ class SC_wizard_backend_layout {
 		$this->md5ID = $this->P['md5ID'];
 		$uid = intval($this->P['uid']);
 
-		// Initialize document object:
+			// Initialize document object:
 		$this->doc = t3lib_div::makeInstance('noDoc');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 
@@ -103,7 +103,7 @@ class SC_wizard_backend_layout {
 		);
 		$pageRenderer->addInlineLanguageLabelArray($languageLabels);
 
-		// select record
+			// Select record
 		$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($this->P['field'], $this->P['table'], 'uid=' . intval($this->P['uid']));
 		if (trim($record[0][$this->P['field']]) == '') {
 			$t3GridData = "[[{colspan:1,rowspan:1,spanned:false,name:''}]]";
@@ -111,7 +111,7 @@ class SC_wizard_backend_layout {
 			$rowCount = 1;
 		} else {
 
-			// load TS parser
+				// load TS parser
 			$parser = t3lib_div::makeInstance('t3lib_TSparser');
 			$parser->parse($record[0][$this->P['field']]);
 			$data = $parser->setup['backend_layout.'];
@@ -185,8 +185,6 @@ class SC_wizard_backend_layout {
 			}
 
 			$t3GridData .= implode(',', $rows) . ']';
-
-
 		}
 
 		$pageRenderer->enableExtJSQuickTips();
@@ -201,14 +199,13 @@ class SC_wizard_backend_layout {
 			t3Grid.drawTable();
 			');
 
-
 		$this->doc->styleSheetFile_post = TYPO3_MOD_PATH . 'res/grideditor.css';
 	}
 
 	/**
 	 * Main Method, rendering either colorpicker or frameset depending on ->showPicker
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 
@@ -262,7 +259,7 @@ class SC_wizard_backend_layout {
 	/**
 	 * Returnes the sourcecode to the browser
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->doc->render(
@@ -272,7 +269,7 @@ class SC_wizard_backend_layout {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_wizard_backend_layout');
 $SOBE->init();
 $SOBE->main();
