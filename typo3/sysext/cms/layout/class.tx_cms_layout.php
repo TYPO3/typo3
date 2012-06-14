@@ -24,45 +24,60 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Include file extending db_list.inc for use with the web_layout module
  *
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Child class for the Web > Page module
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class tx_cms_layout extends recordList {
 
-	// External, static: For page statistics:
-	var $stat_select_field = 'page_id'; // fieldname from sys_stat to select on.
-	var $stat_codes = array(); // eg. 	"HITS_days:-1"
+		// External, static: For page statistics:
+		// fieldname from sys_stat to select on.
+	var $stat_select_field = 'page_id';
+		// eg. 	"HITS_days:-1"
+	var $stat_codes = array();
 
-	// External, static: Flags of various kinds:
-	var $pI_showUser = 0; // If TRUE, users/groups are shown in the page info box.
-	var $pI_showStat = 1; // If TRUE, hit statistics are shown in the page info box.
-	var $nextThree = 3; // The number of successive records to edit when showing content elements.
-	var $pages_noEditColumns = 0; // If TRUE, disables the edit-column icon for tt_content elements
-	var $option_showBigButtons = 1; // If TRUE, shows big buttons for editing page properties, moving, creating elements etc. in the columns view.
-	var $option_newWizard = 1; // If TRUE, new-wizards are linked to rather than the regular new-element list.
-	var $ext_function = 0; // If set to "1", will link a big button to content element wizard.
-	var $doEdit = 1; // If TRUE, elements will have edit icons (probably this is whethere the user has permission to edit the page content). Set externally.
-	var $agePrefixes = ' min| hrs| days| yrs| min| hour| day| year'; // Age prefixes for displaying times. May be set externally to localized values.
-	var $externalTables = array(); // Array of tables to be listed by the Web > Page module in addition to the default tables.
-	var $descrTable; // "Pseudo" Description -table name
-	var $defLangBinding = FALSE; // If set TRUE, the language mode of tt_content elements will be rendered with hard binding between default language content elements and their translations!
+		// External, static: Flags of various kinds:
+		// If TRUE, users/groups are shown in the page info box.
+	var $pI_showUser = 0;
+		// If TRUE, hit statistics are shown in the page info box.
+	var $pI_showStat = 1;
+		// The number of successive records to edit when showing content elements.
+	var $nextThree = 3;
+		// If TRUE, disables the edit-column icon for tt_content elements
+	var $pages_noEditColumns = 0;
+		// If TRUE, shows big buttons for editing page properties, moving, creating elements etc. in the columns view.
+	var $option_showBigButtons = 1;
+		// If TRUE, new-wizards are linked to rather than the regular new-element list.
+	var $option_newWizard = 1;
+		// If set to "1", will link a big button to content element wizard.
+	var $ext_function = 0;
+		// If TRUE, elements will have edit icons (probably this is whethere the user has permission to edit the page content). Set externally.
+	var $doEdit = 1;
+		// Age prefixes for displaying times. May be set externally to localized values.
+	var $agePrefixes = ' min| hrs| days| yrs| min| hour| day| year';
+		// Array of tables to be listed by the Web > Page module in addition to the default tables.
+	var $externalTables = array();
+		// "Pseudo" Description -table name
+	var $descrTable;
+		// If set TRUE, the language mode of tt_content elements will be rendered with hard binding between
+		// default language content elements and their translations!
+	var $defLangBinding = FALSE;
 
 	// External, static: Configuration of tt_content element display:
-	var $tt_contentConfig = Array(
+	var $tt_contentConfig = array(
 		'showInfo' => 1, // Boolean: Display info-marks or not
 		'showCommands' => 1, // Boolean: Display up/down arrows and edit icons for tt_content records
 		'single' => 1, // Boolean: If set, the content of column(s) $this->tt_contentConfig['showSingleCol'] is shown in the total width of the page
@@ -76,17 +91,20 @@ class tx_cms_layout extends recordList {
 		'cols' => '1,0,2,3' // The order of the rows: Default is left(1), Normal(0), right(2), margin(3)
 	);
 
-	// Internal, dynamic:
-	var $allowedTableNames = array(); // Will contain a list of tables which can be listed by the user.
-	var $activeTables = array(); // Contains icon/title of pages which are listed in the tables menu (see getTableMenu() function )
-	var $tt_contentData = Array(
-		'nextThree' => Array(),
-		'prev' => Array(),
-		'next' => Array()
+		// Internal, dynamic:
+		// Will contain a list of tables which can be listed by the user.
+	var $allowedTableNames = array();
+		// Contains icon/title of pages which are listed in the tables menu (see getTableMenu() function )
+	var $activeTables = array();
+	var $tt_contentData = array(
+		'nextThree' => array(),
+		'prev' => array(),
+		'next' => array()
 	);
-	var $CType_labels = array(); // Used to store labels for CTypes for tt_content elements
-	var $itemLabels = array(); // Used to store labels for the various fields in tt_content elements
-
+		// Used to store labels for CTypes for tt_content elements
+	var $CType_labels = array();
+		// Used to store labels for the various fields in tt_content elements
+	var $itemLabels = array();
 
 	/*****************************************
 	 *
@@ -97,9 +115,9 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Adds the code of a single table
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Current page id
-	 * @return	string		HTML for listing.
+	 * @param string $table Table name
+	 * @param integer $id Current page id
+	 * @return string HTML for listing.
 	 */
 	function getTable($table, $id) {
 
@@ -121,13 +139,12 @@ class tx_cms_layout extends recordList {
 		}
 	}
 
-
 	/**
 	 * Renders an external table from page id
 	 *
-	 * @param	integer		Page id
-	 * @param	string		name of the table
-	 * @return	string		HTML for the listing
+	 * @param integer $id Page id
+	 * @param string $table Name of the table
+	 * @return string HTML for the listing
 	 */
 	function getExternalTables($id, $table) {
 
@@ -136,44 +153,46 @@ class tx_cms_layout extends recordList {
 			$type = 0;
 		}
 
-		$fList = $this->externalTables[$table][$type]['fList']; // eg. "name;title;email;company,image"
-		// The columns are separeted by comma ','.
-		// Values separated by semicolon ';' are shown in the same column.
+			// eg. "name;title;email;company,image"
+		$fList = $this->externalTables[$table][$type]['fList'];
+			// The columns are separeted by comma ','.
+			// Values separated by semicolon ';' are shown in the same column.
 		$icon = $this->externalTables[$table][$type]['icon'];
 		$addWhere = $this->externalTables[$table][$type]['addWhere'];
 
-		// Create listing
+			// Create listing
 		$out = $this->makeOrdinaryList($table, $id, $fList, $icon, $addWhere);
 		return $out;
 	}
-
 
 	/**
 	 * Renders records from the pages table from page id
 	 * (Used to get information about the page tree content by "Web>Info"!)
 	 *
-	 * @param	integer		Page id
-	 * @return	string		HTML for the listing
+	 * @param integer $id Page id
+	 * @return string HTML for the listing
 	 */
 	function getTable_pages($id) {
 
-		// Initializing:
+			// Initializing:
 		$out = '';
-		$delClause = t3lib_BEfunc::deleteClause('pages') . ' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1); // Select clause for pages:
+			// Select clause for pages:
+		$delClause = t3lib_BEfunc::deleteClause('pages') . ' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1);
 
-		// Select current page:
+			// Select current page:
 		if (!$id) {
-			$row = $GLOBALS['SOBE']->pageinfo; // The root has a pseudo record in pageinfo...
+				// The root has a pseudo record in pageinfo...
+			$row = $GLOBALS['SOBE']->pageinfo;
 		} else {
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid=' . intval($id) . $delClause);
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
 			t3lib_BEfunc::workspaceOL('pages', $row);
 		}
 
-		// If there was found a page:
+			// If there was found a page:
 		if (is_array($row)) {
 
-			// Select which fields to show:
+				// Select which fields to show:
 			$pKey = $GLOBALS['SOBE']->MOD_SETTINGS['function'] == 'tx_cms_webinfo_hits' ? 'hits' : $GLOBALS['SOBE']->MOD_SETTINGS['pages'];
 			switch ($pKey) {
 				case 'hits':
@@ -192,36 +211,36 @@ class tx_cms_layout extends recordList {
 					break;
 			}
 
-			// Getting select-depth:
+				// Getting select-depth:
 			$depth = intval($GLOBALS['SOBE']->MOD_SETTINGS['pages_levels']);
 
-			// Half line is drawn
-			$theData = Array();
+				// Half line is drawn
+			$theData = array();
 			$theData['subject'] = $this->widthGif;
 			$out .= $this->addelement(0, '', $theData);
 
-			// Overriding a few things:
+				// Overriding a few things:
 			$this->no_noWrap = 0;
 			$this->oddColumnsCssClass = 'bgColor3-20';
 
-			// Items
+				// Items
 			$this->eCounter = $this->firstElementNumber;
 
-			// Creating elements:
+				// Creating elements:
 			list($flag, $code) = $this->fwd_rwd_nav();
 			$out .= $code;
 			$editUids = array();
 			if ($flag) {
 
-				// Getting children:
-				$theRows = Array();
+					// Getting children:
+				$theRows = array();
 				$theRows = $this->pages_getTree($theRows, $row['uid'], $delClause . t3lib_BEfunc::versioningPlaceholderClause('pages'), '', $depth);
 				if ($GLOBALS['BE_USER']->doesUserHaveAccess($row, 2)) {
 					$editUids[] = $row['uid'];
 				}
 				$out .= $this->pages_drawItem($row, $this->fieldArray);
 
-				// Traverse all pages selected:
+					// Traverse all pages selected:
 				foreach ($theRows as $n => $sRow) {
 					if ($GLOBALS['BE_USER']->doesUserHaveAccess($sRow, 2)) {
 						$editUids[] = $sRow['uid'];
@@ -231,11 +250,11 @@ class tx_cms_layout extends recordList {
 				$this->eCounter++;
 			}
 
-			// Header line is drawn
-			$theData = Array();
+				// Header line is drawn
+			$theData = array();
 			$editIdList = implode(',', $editUids);
 
-			// Traverse fields (as set above) in order to create header values:
+				// Traverse fields (as set above) in order to create header values:
 			foreach ($this->fieldArray as $field) {
 				if ($editIdList && isset($GLOBALS['TCA']['pages']['columns'][$field]) && $field != 'uid' && !$this->pages_noEditColumns) {
 					$params = '&edit[pages][' . $editIdList . ']=edit&columnsOnly=' . $field . '&disHelp=1';
@@ -283,10 +302,10 @@ class tx_cms_layout extends recordList {
 				}
 			}
 
-			// Start table:
+				// Start table:
 			$this->oddColumnsCssClass = '';
 
-			// CSH:
+				// CSH:
 			$out = t3lib_BEfunc::cshItem($this->descrTable, 'func_' . $pKey, $GLOBALS['BACK_PATH']) .
 					'
 				<table border="0" cellpadding="0" cellspacing="0" class="typo3-page-pages">
@@ -301,7 +320,7 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Returns the backend layout which should be used for this page.
 	 *
-	 * @param integer $id: Uid of the current page
+	 * @param integer $id Uid of the current page
 	 * @return mixed Uid of the backend layout record or NULL if no layout should be used
 	 */
 	function getSelectedBackendLayoutUid($id) {
@@ -311,37 +330,37 @@ class tx_cms_layout extends recordList {
 
 		$backendLayoutUid = intval($page['backend_layout']);
 		if ($backendLayoutUid == -1) {
-				// if it is set to "none" - don't use any
+				// If it is set to "none" - don't use any
 			$backendLayoutUid = NULL;
 		} elseif ($backendLayoutUid == 0) {
-				// if it not set check the rootline for a layout on next level and use this
+				// If it not set check the rootline for a layout on next level and use this
 			$rootline = t3lib_BEfunc::BEgetRootLine($id, '', TRUE);
 			for ($i = count($rootline) - 2; $i > 0; $i--) {
 				$backendLayoutUid = intval($rootline[$i]['backend_layout_next_level']);
 				if ($backendLayoutUid > 0) {
-						// stop searching if a layout for "next level" is set
+						// Stop searching if a layout for "next level" is set
 					break;
 				} elseif ($backendLayoutUid == -1){
-						// if layout for "next level" is set to "none" - don't use any and stop searching
+						// If layout for "next level" is set to "none" - don't use any and stop searching
 					$backendLayoutUid = NULL;
 					break;
 				}
 			}
 		}
-			// if it is set to a positive value use this
+			// If it is set to a positive value use this
 		return $backendLayoutUid;
 	}
 
 	/**
 	 * Renders Content Elements from the tt_content table from page id
 	 *
-	 * @param	integer		Page id
-	 * @return	string		HTML for the listing
+	 * @param integer $id Page id
+	 * @return string HTML for the listing
 	 */
 	function getTable_tt_content($id) {
 		$this->initializeLanguages();
 
-		// Initialize:
+			// Initialize:
 		$RTE = $GLOBALS['BE_USER']->isRTE();
 		$lMarg = 1;
 		$showHidden = $this->tt_contentConfig['showHidden'] ? '' : t3lib_BEfunc::BEenableFields('tt_content');
@@ -349,7 +368,7 @@ class tx_cms_layout extends recordList {
 		$GLOBALS['SOBE']->doc->getPageRenderer()->loadExtJs();
 		$GLOBALS['SOBE']->doc->getPageRenderer()->addJsFile($GLOBALS['BACK_PATH'] . 'sysext/cms/layout/js/typo3pageModule.js');
 
-		// Get labels for CTypes and tt_content element fields in general:
+			// Get labels for CTypes and tt_content element fields in general:
 		$this->CType_labels = array();
 		foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $val) {
 			$this->CType_labels[$val[1]] = $GLOBALS['LANG']->sL($val[0]);
@@ -359,10 +378,11 @@ class tx_cms_layout extends recordList {
 			$this->itemLabels[$name] = $GLOBALS['LANG']->sL($val['label']);
 		}
 
-		// Select display mode:
-		if (!$this->tt_contentConfig['single']) { // MULTIPLE column display mode, side by side:
+			// Select display mode:
+			// MULTIPLE column display mode, side by side:
+		if (!$this->tt_contentConfig['single']) {
 
-			// Setting language list:
+				// Setting language list:
 			$langList = $this->tt_contentConfig['sys_language_uid'];
 			if ($this->tt_contentConfig['languageMode']) {
 				if ($this->tt_contentConfig['languageColsPointer']) {
@@ -376,31 +396,32 @@ class tx_cms_layout extends recordList {
 			$defLanguageCount = array();
 			$defLangBinding = array();
 
-			// For EACH languages... :
-			foreach ($langListArr as $lP) { // If NOT languageMode, then we'll only be through this once.
+				// For each languages... :
+				// If not languageMode, then we'll only be through this once.
+			foreach ($langListArr as $lP) {
 				$showLanguage = $lP == 0 ? ' AND sys_language_uid IN (0,-1)' : ' AND sys_language_uid=' . $lP;
 				$cList = explode(',', $this->tt_contentConfig['cols']);
 				$content = array();
 				$head = array();
 
-				// For EACH column, render the content into a variable:
+					// For each column, render the content into a variable:
 				foreach ($cList as $key) {
 					if (!$lP) {
 						$defLanguageCount[$key] = array();
 					}
 
-					// Select content elements from this column/language:
+						// Select content elements from this column/language:
 					$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos=' . intval($key) . $showHidden . $showLanguage);
 					$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 
-					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
+						// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
 					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result)) {
 						$onClick = "window.location.href='db_new_content_el.php?id=" . $id . '&colPos=' . intval($key) . '&sys_language_uid=' . $lP . '&uid_pid=' . $id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . "';";
 						$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick, $GLOBALS['LANG']->getLL('newPageContent'));
 						$content[$key] .= '<img src="clear.gif" width="1" height="5" alt="" /><br />' . $theNewButton;
 					}
 
-					// Traverse any selected elements and render their display code:
+						// Traverse any selected elements and render their display code:
 					$rowArr = $this->getResult($result);
 
 					foreach ($rowArr as $rKey => $row) {
@@ -423,8 +444,8 @@ class tx_cms_layout extends recordList {
 													'</div>' .
 													$this->tt_content_drawFooter($row);
 
-							// NOTE: this is the end tag for <div class="t3-page-ce-body">
-							// because of bad (historic) conception, starting tag has to be placed inside tt_content_drawHeader()
+								// NOTE: this is the end tag for <div class="t3-page-ce-body">
+								// because of bad (historic) conception, starting tag has to be placed inside tt_content_drawHeader()
 							$singleElementHTML .= '</div>';
 
 
@@ -433,7 +454,7 @@ class tx_cms_layout extends recordList {
 
 								// Add icon "new content element below"
 							if (!$disableMoveAndNewButtons) {
-								// New content element:
+									// New content element:
 								if ($this->option_newWizard) {
 									$onClick = "window.location.href='db_new_content_el.php?id=" . $row['pid'] . '&sys_language_uid=' . $row['sys_language_uid'] . '&colPos=' . $row['colPos'] . '&uid_pid=' . (-$row['uid']) . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . "';";
 								} else {
@@ -455,7 +476,7 @@ class tx_cms_layout extends recordList {
 						}
 					}
 
-					// Add new-icon link, header:
+						// Add new-icon link, header:
 					$newP = $this->newContentElementOnClick($id, $key, $lP);
 					$colTitle = t3lib_BEfunc::getProcessedValue('tt_content', 'colPos', $key);
 
@@ -469,7 +490,7 @@ class tx_cms_layout extends recordList {
 					$editUidList = '';
 				}
 
-				// For EACH column, fit the rendered content into a table cell:
+					// For each column, fit the rendered content into a table cell:
 				$out = '';
 
 				$backendLayoutUid = $this->getSelectedBackendLayoutUid($id);
@@ -491,7 +512,7 @@ class tx_cms_layout extends recordList {
 						$out .= '
 								<td class="t3-page-column t3-page-column-' . $key . '">' . $head[$key] . $content[$key] . '</td>';
 
-						// Storing content for use if languageMode is set:
+							// Storing content for use if languageMode is set:
 						if ($this->tt_contentConfig['languageMode']) {
 							$languageColumn[$key][$lP] = $head[$key] . $content[$key];
 							if (!$this->defLangBinding) {
@@ -500,7 +521,7 @@ class tx_cms_layout extends recordList {
 						}
 					}
 
-					// Wrap the cells into a table row:
+						// Wrap the cells into a table row:
 					$out = '
 					<table border="0" cellpadding="0" cellspacing="0" class="t3-page-columns">
 						<tr>' . $out . '
@@ -508,15 +529,15 @@ class tx_cms_layout extends recordList {
 					</table>';
 
 				} else {
-					// GRID VIEW:
+						// GRID VIEW:
 
-					// initialize TS parser to parse config to array
+						// Initialize TS parser to parse config to array
 					$parser = t3lib_div::makeInstance('t3lib_TSparser');
 					$parser->parse($backendLayoutRecord['config']);
 
 					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="1" cellpadding="4" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
 
-					// add colgroups
+						// Add colgroups
 					$colCount = intval($parser->setup['backend_layout.']['colCount']);
 					$rowCount = intval($parser->setup['backend_layout.']['rowCount']);
 
@@ -526,7 +547,7 @@ class tx_cms_layout extends recordList {
 					}
 					$grid .= '</colgroup>';
 
-					// cycle through rows
+						// Cycle through rows
 					for ($row = 1; $row <= $rowCount; $row++) {
 						$rowConfig = $parser->setup['backend_layout.']['rows.'][$row . '.'];
 						if (!isset($rowConfig)) {
@@ -542,10 +563,10 @@ class tx_cms_layout extends recordList {
 								continue;
 							}
 
-							// which tt_content colPos should be displayed inside this cell
+								// Which tt_content colPos should be displayed inside this cell
 							$columnKey = intval($columnConfig['colPos']);
 
-							// render the grid cell
+								// Render the grid cell
 							$colSpan = intval($columnConfig['colspan']);
 							$rowSpan = intval($columnConfig['rowspan']);
 
@@ -558,8 +579,8 @@ class tx_cms_layout extends recordList {
 									($colSpan > 0 ? ' t3-gridCell-width' . $colSpan : '') .
 									($rowSpan > 0 ? ' t3-gridCell-height' . $rowSpan : '') . '">';
 
-							// Draw the pre-generated header with edit and new buttons if a colPos is assigned.
-							// If not, a new header without any buttons will be generated.
+								// Draw the pre-generated header with edit and new buttons if a colPos is assigned.
+								// If not, a new header without any buttons will be generated.
 							if (isset($columnConfig['colPos']) && $head[$columnKey]) {
 								$grid .= $head[$columnKey] . $content[$columnKey];
 							} elseif ($columnConfig['colPos']) {
@@ -575,40 +596,40 @@ class tx_cms_layout extends recordList {
 					$out .= $grid . '</table></div>';
 				}
 
-				// CSH:
+					// CSH:
 				$out .= t3lib_BEfunc::cshItem($this->descrTable, 'columns_multi', $GLOBALS['BACK_PATH']);
 			}
 
-			// If language mode, then make another presentation:
-			// Notice that THIS presentation will override the value of $out! But it needs the code above to execute since $languageColumn is filled with content we need!
+				// If language mode, then make another presentation:
+				// Notice that THIS presentation will override the value of $out! But it needs the code above to execute since $languageColumn is filled with content we need!
 			if ($this->tt_contentConfig['languageMode']) {
 
-				// Get language selector:
+					// Get language selector:
 				$languageSelector = $this->languageSelector($id);
 
-				// Reset out - we will make new content here:
+					// Reset out - we will make new content here:
 				$out = '';
-				// Separator between language columns (black thin line)
+					// Separator between language columns (black thin line)
 				$midSep = '
 						<td><img src="clear.gif" width="4" height="1" alt="" /></td>
 						<td class="t3-page-border"><img src="clear.gif" width="1" height="1" alt="" /></td>
 						<td><img src="clear.gif" width="4" height="1" alt="" /></td>';
 
-				// Traverse languages found on the page and build up the table displaying them side by side:
+					// Traverse languages found on the page and build up the table displaying them side by side:
 				$cCont = array();
 				$sCont = array();
 				foreach ($langListArr as $lP) {
 
-					// Header:
+						// Header:
 					$cCont[$lP] = '
 						<td valign="top" align="center" class="bgColor6"><strong>' . htmlspecialchars($this->tt_contentConfig['languageCols'][$lP]) . '</strong></td>';
 
-					// "View page" icon is added:
+						// "View page" icon is added:
 					$viewLink = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->id, $this->backPath, t3lib_BEfunc::BEgetRootLine($this->id), '', '', '&L=' . $lP)) . '">' .
 							t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 							'</a>';
 
-					// Language overlay page header:
+						// Language overlay page header:
 					if ($lP) {
 
 						list($lpRecord) = t3lib_BEfunc::getRecordsByField('pages_language_overlay', 'pid', $id, 'AND sys_language_uid=' . intval($lP));
@@ -627,11 +648,11 @@ class tx_cms_layout extends recordList {
 						<td nowrap="nowrap">' . $lPLabel . '</td>';
 				}
 
-				// Add headers:
+					// Add headers:
 				$out .= '<tr>' . implode($midSep, $cCont) . '</tr>';
 				$out .= '<tr class="bgColor5">' . implode($midSep, $sCont) . '</tr>';
 
-				// Traverse previously built content for the columns:
+					// Traverse previously built content for the columns:
 				foreach ($languageColumn as $cKey => $cCont) {
 					$out .= '
 					<tr>
@@ -640,7 +661,7 @@ class tx_cms_layout extends recordList {
 					</tr>';
 
 					if ($this->defLangBinding) {
-						// "defLangBinding" mode
+							// "defLangBinding" mode
 						foreach ($defLanguageCount[$cKey] as $defUid) {
 							$cCont = array();
 							foreach ($langListArr as $lP) {
@@ -654,7 +675,7 @@ class tx_cms_layout extends recordList {
 							</tr>';
 						}
 
-						// Create spacer:
+							// Create spacer:
 						$cCont = array();
 						foreach ($langListArr as $lP) {
 							$cCont[] = '&nbsp;';
@@ -667,19 +688,19 @@ class tx_cms_layout extends recordList {
 					}
 				}
 
-				// Finally, wrap it all in a table and add the language selector on top of it:
+					// Finally, wrap it all in a table and add the language selector on top of it:
 				$out = $languageSelector . '
 					<table cellpadding="0" cellspacing="0" class="t3-page-langMode">
 						' . $out . '
 					</table>';
 
-				// CSH:
+					// CSH:
 				$out .= t3lib_BEfunc::cshItem($this->descrTable, 'language_list', $GLOBALS['BACK_PATH']);
 			}
 		} else { // SINGLE column mode (columns shown beneath each other):
 			if ($this->tt_contentConfig['sys_language_uid'] == 0 || !$this->defLangBinding) {
 
-				// Initialize:
+					// Initialize:
 				if ($this->defLangBinding && $this->tt_contentConfig['sys_language_uid'] == 0) {
 					$showLanguage = ' AND sys_language_uid IN (0,-1)';
 					$lP = 0;
@@ -692,7 +713,7 @@ class tx_cms_layout extends recordList {
 				$content = array();
 				$out = '';
 
-				// Expand the table to some preset dimensions:
+					// Expand the table to some preset dimensions:
 				$out .= '
 					<tr>
 						<td><img src="clear.gif" width="' . $lMarg . '" height="1" alt="" /></td>
@@ -701,17 +722,17 @@ class tx_cms_layout extends recordList {
 						<td valign="top"><img src="clear.gif" width="300" height="1" alt="" /></td>
 					</tr>';
 
-				// Traverse columns to display top-on-top
+					// Traverse columns to display top-on-top
 				foreach ($cList as $counter => $key) {
 
-					// Select content elements:
+						// Select content elements:
 					$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos=' . intval($key) . $showHidden . $showLanguage);
 					$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 					$c = 0;
 					$rowArr = $this->getResult($result);
 					$rowOut = '';
 
-					// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
+						// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
 					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result)) {
 						$onClick = "window.location.href='db_new_content_el.php?id=" . $id . '&colPos=' . intval($key) . '&sys_language_uid=' . $lP . '&uid_pid=' . $id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . "';";
 						$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick, $GLOBALS['LANG']->getLL('newPageContent'));
@@ -720,7 +741,7 @@ class tx_cms_layout extends recordList {
 						$theNewButton = '';
 					}
 
-					// Traverse any selected elements:
+						// Traverse any selected elements:
 					foreach ($rowArr as $rKey => $row) {
 
 						if (is_array($row) && (int) $row['t3ver_state'] != 2) {
@@ -729,7 +750,7 @@ class tx_cms_layout extends recordList {
 							$editUidList .= $row['uid'] . ',';
 							$isRTE = $RTE && $this->isRTEforField('tt_content', $row, 'bodytext');
 
-							// Create row output:
+								// Create row output:
 							$rowOut .= '
 								<tr>
 									<td></td>
@@ -738,7 +759,7 @@ class tx_cms_layout extends recordList {
 									<td' . ($row['_ORIG_uid'] ? ' class="ver-element"' : '') . ' valign="top">' . $this->tt_content_drawItem($row, $isRTE) . '</td>
 								</tr>';
 
-							// If the element was not the last element, add a divider line:
+								// If the element was not the last element, add a divider line:
 							if ($c != $GLOBALS['TYPO3_DB']->sql_num_rows($result)) {
 								$rowOut .= '
 								<tr>
@@ -751,7 +772,7 @@ class tx_cms_layout extends recordList {
 						}
 					}
 
-					// Add spacer between sections in the vertical list
+						// Add spacer between sections in the vertical list
 					if ($counter) {
 						$out .= '
 							<tr>
@@ -760,7 +781,7 @@ class tx_cms_layout extends recordList {
 							</tr>';
 					}
 
-					// Add section header:
+						// Add section header:
 					$newP = $this->newContentElementOnClick($id, $key, $this->tt_contentConfig['sys_language_uid']);
 					$out .= '
 
@@ -773,17 +794,17 @@ class tx_cms_layout extends recordList {
 							'<br /></td>
 						</tr>';
 
-					// Finally, add the content from the records in this column:
+						// Finally, add the content from the records in this column:
 					$out .= $rowOut;
 				}
 
-				// Finally, wrap all table rows in one, big table:
+					// Finally, wrap all table rows in one, big table:
 				$out = '
 					<table border="0" cellpadding="0" cellspacing="0" width="400" class="typo3-page-columnsMode">
 						' . $out . '
 					</table>';
 
-				// CSH:
+					// CSH:
 				$out .= t3lib_BEfunc::cshItem($this->descrTable, 'columns_single', $GLOBALS['BACK_PATH']);
 			} else {
 				$out = '<br/><br/>' . $GLOBALS['SOBE']->doc->icons(1) . 'Sorry, you cannot view a single language in this localization mode (Default Language Binding is enabled)<br/><br/>';
@@ -791,7 +812,7 @@ class tx_cms_layout extends recordList {
 		}
 
 
-		// Add the big buttons to page:
+			// Add the big buttons to page:
 		if ($this->option_showBigButtons) {
 			$bArray = array();
 
@@ -826,10 +847,9 @@ class tx_cms_layout extends recordList {
 				' . $out;
 		}
 
-		// Return content:
+			// Return content:
 		return $out;
 	}
-
 
 	/**********************************
 	 *
@@ -840,35 +860,35 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Creates a standard list of elements from a table.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Page id.
-	 * @param	string		Comma list of fields to display
-	 * @param	boolean		If TRUE, icon is shown
-	 * @param	string		Additional WHERE-clauses.
-	 * @return	string		HTML table
+	 * @param string $table Table name
+	 * @param integer $id Page id.
+	 * @param string $fList Comma list of fields to display
+	 * @param boolean $icon If TRUE, icon is shown
+	 * @param string $addWhere Additional WHERE-clauses.
+	 * @return string HTML table
 	 */
 	function makeOrdinaryList($table, $id, $fList, $icon = 0, $addWhere = '') {
 
-		// Initialize:
+			// Initialize:
 		$out = '';
 		$queryParts = $this->makeQueryArray($table, $id, $addWhere);
 		$this->setTotalItems($queryParts);
 		$dbCount = 0;
 
-		// Make query for records if there were any records found in the count operation:
+			// Make query for records if there were any records found in the count operation:
 		if ($this->totalItems) {
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 			$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 		}
 
-		// If records were found, render the list:
+			// If records were found, render the list:
 		$out = '';
 		if ($dbCount) {
 
-			// Set fields
+				// Set fields
 			$this->fieldArray = t3lib_div::trimExplode(',', '__cmds__,' . $fList, TRUE);
 
-			// Header line is drawn
+				// Header line is drawn
 			$theData = array();
 			$theData = $this->headerFields($this->fieldArray, $table, $theData);
 			if ($this->doEdit) {
@@ -878,7 +898,7 @@ class tx_cms_layout extends recordList {
 			}
 			$out .= $this->addelement(1, '', $theData, ' class="c-headLine"', 15);
 
-			// Render Items
+				// Render Items
 			$this->eCounter = $this->firstElementNumber;
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 				t3lib_BEfunc::workspaceOL($table, $row);
@@ -890,7 +910,7 @@ class tx_cms_layout extends recordList {
 						$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
 						$Nrow = array();
 
-						// Setting icons/edit links:
+							// Setting icons/edit links:
 						if ($icon) {
 							$Nrow['__cmds__'] = $this->getIcon($table, $row);
 						}
@@ -902,7 +922,7 @@ class tx_cms_layout extends recordList {
 							$Nrow['__cmds__'] .= $this->noEditIcon();
 						}
 
-						// Get values:
+							// Get values:
 						$Nrow = $this->dataFields($this->fieldArray, $table, $row, $Nrow);
 						$tdparams = $this->eCounter % 2 ? ' class="bgColor4"' : ' class="bgColor4-20"';
 						$out .= $this->addelement(1, '', $Nrow, $tdparams);
@@ -911,7 +931,7 @@ class tx_cms_layout extends recordList {
 				}
 			}
 
-			// Wrap it all in a table:
+				// Wrap it all in a table:
 			$out = '
 
 				<!--
@@ -927,26 +947,27 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Adds content to all data fields in $out array
 	 *
-	 * @param	array		Array of fields to display. Each field name has a special feature which is that the field name can be specified as more field names. Eg. "field1,field2;field3". Field 2 and 3 will be shown in the same cell of the table separated by <br /> while field1 will have its own cell.
-	 * @param	string		Table name
-	 * @param	array		Record array
-	 * @param	array		Array to which the data is added
-	 * @return	array		$out array returned after processing.
+	 * @param array $fieldArr Array of fields to display. Each field name has a special feature which is that the field name can be specified as more field names. Eg. "field1,field2;field3". Field 2 and 3 will be shown in the same cell of the table separated by <br /> while field1 will have its own cell.
+	 * @param string $table Table name
+	 * @param array $row Record array
+	 * @param array $out Array to which the data is added
+	 * @return array $out array returned after processing.
 	 * @see makeOrdinaryList()
 	 */
 	function dataFields($fieldArr, $table, $row, $out = array()) {
 
-		// Check table validity:
+			// Check table validity:
 		if ($GLOBALS['TCA'][$table]) {
 			t3lib_div::loadTCA($table);
 			$thumbsCol = $GLOBALS['TCA'][$table]['ctrl']['thumbnail'];
 
-			// Traverse fields:
+				// Traverse fields:
 			foreach ($fieldArr as $fieldName) {
 
 				if ($GLOBALS['TCA'][$table]['columns'][$fieldName]) {
-					// Each field has its own cell (if configured in TCA)
-					if ($fieldName == $thumbsCol) { // If the column is a thumbnail column:
+						// Each field has its own cell (if configured in TCA)
+						// If the column is a thumbnail column:
+					if ($fieldName == $thumbsCol) {
 						$out[$fieldName] = $this->thumbCode($row, $table, $fieldName);
 					} else { // ... otherwise just render the output:
 						$out[$fieldName] = nl2br(htmlspecialchars(trim(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getProcessedValue($table, $fieldName, $row[$fieldName], 0, 0, 0, $row['uid']), 250))));
@@ -954,7 +975,7 @@ class tx_cms_layout extends recordList {
 				} else { // Each field is separated by <br /> and shown in the same cell (If not a TCA field, then explode the field name with ";" and check each value there as a TCA configured field)
 					$theFields = explode(';', $fieldName);
 
-					// Traverse fields, separated by ";" (displayed in a single cell).
+						// Traverse fields, separated by ";" (displayed in a single cell).
 					foreach ($theFields as $fName2) {
 						if ($GLOBALS['TCA'][$table]['columns'][$fName2]) {
 							$out[$fieldName] .= '<strong>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fName2]['label'], 1) . '</strong>' .
@@ -964,12 +985,12 @@ class tx_cms_layout extends recordList {
 						}
 					}
 				}
-				// If no value, add a nbsp.
+					// If no value, add a nbsp.
 				if (!$out[$fieldName]) {
 					$out[$fieldName] = '&nbsp;';
 				}
 
-				// Wrap in dimmed-span tags if record is "disabled"
+					// Wrap in dimmed-span tags if record is "disabled"
 				if ($this->isDisabled($table, $row)) {
 					$out[$fieldName] = $GLOBALS['TBE_TEMPLATE']->dfw($out[$fieldName]);
 				}
@@ -981,10 +1002,10 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Header fields made for the listing of records
 	 *
-	 * @param	array		Field names
-	 * @param	string		The table name
-	 * @param	array		Array to which the headers are added.
-	 * @return	array		$out returned after addition of the header fields.
+	 * @param array $fieldArr Field names
+	 * @param string $table The table name
+	 * @param array $out Array to which the headers are added.
+	 * @return array $out returned after addition of the header fields.
 	 * @see makeOrdinaryList()
 	 */
 	function headerFields($fieldArr, $table, $out = array()) {
@@ -997,7 +1018,6 @@ class tx_cms_layout extends recordList {
 		return $out;
 	}
 
-
 	/**********************************
 	 *
 	 * Additional functions; Pages
@@ -1007,12 +1027,12 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Adds pages-rows to an array, selecting recursively in the page tree.
 	 *
-	 * @param	array		Array which will accumulate page rows
-	 * @param	integer		Pid to select from
-	 * @param	string		Query-where clause
-	 * @param	string		Prefixed icon code.
-	 * @param	integer		Depth (decreasing)
-	 * @return	array		$theRows, but with added rows.
+	 * @param array $theRows Array which will accumulate page rows
+	 * @param integer $pid Pid to select from
+	 * @param string $qWhere Query-where clause
+	 * @param string $treeIcons Prefixed icon code.
+	 * @param integer $depth Depth (decreasing)
+	 * @return array $theRows, but with added rows.
 	 */
 	function pages_getTree($theRows, $pid, $qWhere, $treeIcons, $depth) {
 		$depth--;
@@ -1027,7 +1047,7 @@ class tx_cms_layout extends recordList {
 					$row['treeIcons'] = $treeIcons . '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/ol/join' . ($rc == $c ? 'bottom' : '') . '.gif', 'width="18" height="16"') . ' alt="" />';
 					$theRows[] = $row;
 
-					// Get the branch
+						// Get the branch
 					$spaceOutIcons = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/ol/' . ($rc == $c ? 'blank.gif' : 'line.gif'), 'width="18" height="16"') . ' alt="" />';
 					$theRows = $this->pages_getTree($theRows, $row['uid'], $qWhere, $treeIcons . $spaceOutIcons, $row['php_tree_stop'] ? 0 : $depth);
 				}
@@ -1044,16 +1064,16 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Adds a list item for the pages-rendering
 	 *
-	 * @param	array		Record array
-	 * @param	array		Field list
-	 * @return	string		HTML for the item
+	 * @param array $row Record array
+	 * @param array $fieldArr Field list
+	 * @return string HTML for the item
 	 */
 	function pages_drawItem($row, $fieldArr) {
 
-		// Initialization
+			// Initialization
 		$theIcon = $this->getIcon('pages', $row);
 
-		// 	Preparing and getting the data-array
+			// Preparing and getting the data-array
 		$theData = Array();
 		foreach ($fieldArr as $field) {
 			switch ($field) {
@@ -1093,7 +1113,7 @@ class tx_cms_layout extends recordList {
 							switch ($fParts[0]) {
 								case 'days':
 									$timespan = mktime(0, 0, 0) + intval($fParts[1]) * 3600 * 24;
-									// Page hits
+										// Page hits
 									$number = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
 										'*',
 										'sys_stat',
@@ -1102,7 +1122,7 @@ class tx_cms_layout extends recordList {
 													' AND tstamp <' . intval($timespan + 3600 * 24)
 									);
 									if ($number) {
-										// Sessions
+											// Sessions
 										$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 											'count(*)',
 											'sys_stat',
@@ -1134,7 +1154,6 @@ class tx_cms_layout extends recordList {
 		return $this->addelement(1, '', $theData);
 	}
 
-
 	/**********************************
 	 *
 	 * Additional functions; Content Elements
@@ -1144,23 +1163,23 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Draw header for a content element column:
 	 *
-	 * @param	string		Column name
-	 * @param	string		Edit params (Syntax: &edit[...] for alt_doc.php)
-	 * @param	string		New element params (Syntax: &edit[...] for alt_doc.php)
-	 * @return	string		HTML table
+	 * @param string $colName Column name
+	 * @param string $editParams Edit params (Syntax: &edit[...] for alt_doc.php)
+	 * @param string $newParams New element params (Syntax: &edit[...] for alt_doc.php)
+	 * @return string HTML table
 	 */
 	function tt_content_drawColHeader($colName, $editParams, $newParams) {
 
 		$icons = '';
-		// Create command links:
+			// Create command links:
 		if ($this->tt_contentConfig['showCommands']) {
-			// New record:
+				// New record:
 			if ($newParams) {
 				$icons .= '<a href="#" onclick="' . htmlspecialchars($newParams) . '" title="' . $GLOBALS['LANG']->getLL('newInColumn', TRUE) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-document-new') .
 						'</a>';
 			}
-			// Edit whole of column:
+				// Edit whole of column:
 			if ($editParams) {
 				$icons .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($editParams, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('editColumn', TRUE) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-document-open') .
@@ -1171,7 +1190,7 @@ class tx_cms_layout extends recordList {
 			$icons = '<div class="t3-page-colHeader-icons">' . $icons . '</div>';
 		}
 
-		// Create header row:
+			// Create header row:
 		$out = '<div class="t3-page-colHeader t3-row-header">
 					' . $icons . '
 					<div class="t3-page-colHeader-label">' . htmlspecialchars($colName) . '</div>
@@ -1182,7 +1201,7 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Draw the footer for a single tt_content element
 	 *
-	 * @param array Record array
+	 * @param array $row Record array
 	 * @return string HTML of the footer
 	 */
 	protected function tt_content_drawFooter(array $row) {
@@ -1210,11 +1229,11 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Draw the header for a single tt_content element
 	 *
-	 * @param	array		Record array
-	 * @param	integer		Amount of pixel space above the header.
-	 * @param	boolean		If set the buttons for creating new elements and moving up and down are not shown.
-	 * @param	boolean		If set, we are in language mode and flags will be shown for languages
-	 * @return	string		HTML table with the record header.
+	 * @param array $row Record array
+	 * @param integer $space Amount of pixel space above the header.
+	 * @param boolean $disableMoveAndNewButtons If set the buttons for creating new elements and moving up and down are not shown.
+	 * @param boolean $langModen If set, we are in language mode and flags will be shown for languages
+	 * @return string HTML table with the record header.
 	 */
 	function tt_content_drawHeader($row, $space = 0, $disableMoveAndNewButtons = FALSE, $langMode = FALSE) {
 
@@ -1224,17 +1243,17 @@ class tx_cms_layout extends recordList {
 			// If show info is set...;
 		if ($this->tt_contentConfig['showInfo']) {
 
-			// Render control panel for the element:
+				// Render control panel for the element:
 			if ($this->tt_contentConfig['showCommands'] && $this->doEdit) {
 
-				// Edit content element:
+					// Edit content element:
 				$params = '&edit[tt_content][' . $this->tt_contentData['nextThree'][$row['uid']] . ']=edit';
 				$out .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath)) . '" title="' .
 						htmlspecialchars($this->nextThree > 1 ? sprintf($GLOBALS['LANG']->getLL('nextThree'), $this->nextThree) : $GLOBALS['LANG']->getLL('edit')) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 						'</a>';
 
-				// Hide element:
+					// Hide element:
 				$hiddenField = $GLOBALS['TCA']['tt_content']['ctrl']['enablecolumns']['disabled'];
 				if ($hiddenField && $GLOBALS['TCA']['tt_content']['columns'][$hiddenField]
 					&& (!$GLOBALS['TCA']['tt_content']['columns'][$hiddenField]['exclude']
@@ -1252,7 +1271,7 @@ class tx_cms_layout extends recordList {
 					}
 				}
 
-				// Delete
+					// Delete
 				$params = '&cmd[tt_content][' . $row['uid'] . '][delete]=1';
 				$confirm = $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('deleteWarning') .
 						t3lib_BEfunc::translationCount('tt_content', $row['uid'], ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.translationsOfRecord')));
@@ -1312,8 +1331,8 @@ class tx_cms_layout extends recordList {
 			}
 		}
 
-		// Wrap the whole header
-		// NOTE: end-tag for <div class="t3-page-ce-body"> is in getTable_tt_content()
+			// Wrap the whole header
+			// NOTE: end-tag for <div class="t3-page-ce-body"> is in getTable_tt_content()
 		return '<h4 class="t3-page-ce-header">
 					<div class="t3-row-header">
 					<span class="ce-icons-left">' . implode('', $additionalIcons) . '</span>
@@ -1327,20 +1346,20 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Draws the preview content for a content element
 	 *
-	 * @param	string		Content element
-	 * @param	boolean		Set if the RTE link can be created.
-	 * @return	string		HTML
+	 * @param string $row Content element
+	 * @param boolean $isRTE Set if the RTE link can be created.
+	 * @return string HTML
 	 */
 	function tt_content_drawItem($row, $isRTE = FALSE) {
 		$out = '';
 		$outHeader = '';
 
-		// Make header:
+			// Make header:
 		if ($row['header']) {
 			$infoArr = Array();
 			$this->getProcessedValue('tt_content', 'header_position,header_layout,header_link', $row, $infoArr);
 
-			// If header layout is set to 'hidden', display an accordant note:
+				// If header layout is set to 'hidden', display an accordant note:
 			if ($row['header_layout'] == 100) {
 				$hiddenHeaderNote = ' <em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.hidden', TRUE) . ']</em>';
 			}
@@ -1348,11 +1367,11 @@ class tx_cms_layout extends recordList {
 					'<strong>' . $this->linkEditContent($this->renderText($row['header']), $row) . $hiddenHeaderNote . '</strong><br />';
 		}
 
-		// Make content:
+			// Make content:
 		$infoArr = array();
 		$drawItem = TRUE;
 
-		// Hook: Render an own preview of a record
+			// Hook: Render an own preview of a record
 		$drawItemHooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'];
 
 		if (is_array($drawItemHooks)) {
@@ -1367,7 +1386,7 @@ class tx_cms_layout extends recordList {
 			}
 		}
 
-		// Draw preview of the item depending on its CType (if not disabled by previous hook):
+			// Draw preview of the item depending on its CType (if not disabled by previous hook):
 		if ($drawItem) {
 			switch ($row['CType']) {
 				case 'header':
@@ -1487,17 +1506,17 @@ class tx_cms_layout extends recordList {
 			}
 		}
 
-		// Wrap span-tags:
+			// Wrap span-tags:
 		$out = '
 			<span class="exampleContent">' . $out . '</span>';
-		// Add header:
+			// Add header:
 		$out = $outHeader . $out;
-		// Add RTE button:
+			// Add RTE button:
 		if ($isRTE) {
 			$out .= $this->linkRTEbutton($row);
 		}
 
-		// Return values:
+			// Return values:
 		if ($this->isDisabled('tt_content', $row)) {
 			return $GLOBALS['TBE_TEMPLATE']->dfw($out);
 		} else {
@@ -1509,19 +1528,19 @@ class tx_cms_layout extends recordList {
 	 * Filters out all tt_content uids which are already translated so only non-translated uids is left.
 	 * Selects across columns, but within in the same PID. Columns are expect to be the same for translations and original but this may be a conceptual error (?)
 	 *
-	 * @param	array		Numeric array with uids of tt_content elements in the default language
-	 * @param	integer		Page pid
-	 * @param	integer		Sys language UID
-	 * @return	array		Modified $defLanguageCount
+	 * @param array $defLanguageCount Numeric array with uids of tt_content elements in the default language
+	 * @param integer $id Page pid
+	 * @param integer $lP Sys language UID
+	 * @return array Modified $defLanguageCount
 	 */
 	function getNonTranslatedTTcontentUids($defLanguageCount, $id, $lP) {
 		if ($lP && count($defLanguageCount)) {
 
-			// Select all translations here:
+				// Select all translations here:
 			$queryParts = $this->makeQueryArray('tt_content', $id, 'AND sys_language_uid=' . intval($lP) . ' AND l18n_parent IN (' . implode(',', $defLanguageCount) . ')');
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 
-			// Flip uids:
+				// Flip uids:
 			$defLanguageCount = array_flip($defLanguageCount);
 
 			// Traverse any selected elements and unset original UID if any:
@@ -1530,7 +1549,7 @@ class tx_cms_layout extends recordList {
 				unset($defLanguageCount[$row['l18n_parent']]);
 			}
 
-			// Flip again:
+				// Flip again:
 			$defLanguageCount = array_keys($defLanguageCount);
 		}
 
@@ -1540,9 +1559,9 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Creates button which is used to create copies of records..
 	 *
-	 * @param	array		Numeric array with uids of tt_content elements in the default language
-	 * @param	integer		Sys language UID
-	 * @return	string		"Copy languages" button, if available.
+	 * @param array $defLanguageCount Numeric array with uids of tt_content elements in the default language
+	 * @param integer $lP Sys language UID
+	 * @return string "Copy languages" button, if available.
 	 */
 	function newLanguageButton($defLanguageCount, $lP) {
 		if ($this->doEdit && count($defLanguageCount) && $lP) {
@@ -1552,7 +1571,7 @@ class tx_cms_layout extends recordList {
 				$params .= '&cmd[tt_content][' . $uidVal . '][localize]=' . $lP;
 			}
 
-			// Copy for language:
+				// Copy for language:
 			$onClick = "window.location.href='" . $GLOBALS['SOBE']->doc->issueCommand($params) . "'; return false;";
 			$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick, $GLOBALS['LANG']->getLL('newPageContent_copyForLang') . ' [' . count($defLanguageCount) . ']');
 			return $theNewButton;
@@ -1562,10 +1581,10 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Creates onclick-attribute content for a new content element
 	 *
-	 * @param	integer		Page id where to create the element.
-	 * @param	integer		Preset: Column position value
-	 * @param	integer		Preset: Sys langauge value
-	 * @return	string		String for onclick attribute.
+	 * @param integer $id Page id where to create the element.
+	 * @param integer $colPos Preset: Column position value
+	 * @param integer $sys_language Preset: Sys langauge value
+	 * @return string String for onclick attribute.
 	 * @see getTable_tt_content()
 	 */
 	function newContentElementOnClick($id, $colPos, $sys_language) {
@@ -1581,9 +1600,9 @@ class tx_cms_layout extends recordList {
 	 * Will create a link on the input string and possible a big button after the string which links to editing in the RTE
 	 * Used for content element content displayed so the user can click the content / "Edit in Rich Text Editor" button
 	 *
-	 * @param	string		String to link. Must be prepared for HTML output.
-	 * @param	array		The row.
-	 * @return	string		If the whole thing was editable ($this->doEdit) $str is return with link around. Otherwise just $str.
+	 * @param string $str String to link. Must be prepared for HTML output.
+	 * @param array $row The row.
+	 * @return string If the whole thing was editable ($this->doEdit) $str is return with link around. Otherwise just $str.
 	 * @see getTable_tt_content()
 	 */
 	function linkEditContent($str, $row) {
@@ -1591,18 +1610,18 @@ class tx_cms_layout extends recordList {
 		$onClick = '';
 
 		if ($this->doEdit) {
-			// Setting onclick action for content link:
+				// Setting onclick action for content link:
 			$onClick = t3lib_BEfunc::editOnClick('&edit[tt_content][' . $row['uid'] . ']=edit', $this->backPath);
 		}
-		// Return link
+			// Return link
 		return $onClick ? '<a href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->getLL('edit', 1) . '">' . $str . '</a>' . $addButton : $str;
 	}
 
 	/**
 	 * Adds a button to edit the row in RTE wizard
 	 *
-	 * @param	array		The row of tt_content element
-	 * @return	string		Button to click if you want to edit in RTE wizard.
+	 * @param array $row The row of tt_content element
+	 * @return string Button to click if you want to edit in RTE wizard.
 	 */
 	function linkRTEbutton($row) {
 		$params = array();
@@ -1622,14 +1641,14 @@ class tx_cms_layout extends recordList {
 	 * Displays only languages which are not yet present for the current page and
 	 * that are not disabled with page TS.
 	 *
-	 * @param	integer		Page id for which to create a new language (pages_language_overlay record)
-	 * @return	string		<select> HTML element (if there were items for the box anyways...)
+	 * @param integer $id Page id for which to create a new language (pages_language_overlay record)
+	 * @return string <select> HTML element (if there were items for the box anyways...)
 	 * @see getTable_tt_content()
 	 */
 	function languageSelector($id) {
 		if ($GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay')) {
 
-			// First, select all
+				// First, select all
 			$res = $GLOBALS['SOBE']->exec_languageQuery(0);
 			$langSelItems = array();
 			$langSelItems[0] = '
@@ -1641,12 +1660,12 @@ class tx_cms_layout extends recordList {
 				}
 			}
 
-			// Then, subtract the languages which are already on the page:
+				// Then, subtract the languages which are already on the page:
 			$res = $GLOBALS['SOBE']->exec_languageQuery($id);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				unset($langSelItems[$row['uid']]);
 			}
-			// Remove disallowed languages
+				// Remove disallowed languages
 			if (count($langSelItems) > 1 &&
 					!$GLOBALS['BE_USER']->user['admin'] &&
 					strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
@@ -1661,7 +1680,7 @@ class tx_cms_layout extends recordList {
 					}
 				}
 			}
-			// Remove disabled languages
+				// Remove disabled languages
 			$modSharedTSconfig = t3lib_BEfunc::getModTSconfig($id, 'mod.SHARED');
 			$disableLanguages = isset($modSharedTSconfig['properties']['disableLanguages']) ? t3lib_div::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], 1) : array();
 			if (count($langSelItems) && count($disableLanguages)) {
@@ -1672,7 +1691,7 @@ class tx_cms_layout extends recordList {
 				}
 			}
 
-			// If any languages are left, make selector:
+				// If any languages are left, make selector:
 			if (count($langSelItems) > 1) {
 				$onChangeContent = 'window.location.href=\'' . $this->backPath . 'alt_doc.php?&edit[pages_language_overlay][' . $id . ']=new&overrideVals[pages_language_overlay][doktype]=' . (int) $this->pageRecord['doktype'] . '&overrideVals[pages_language_overlay][sys_language_uid]=\'+this.options[this.selectedIndex].value+\'&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '\'';
 				return $GLOBALS['LANG']->getLL('new_language', 1) . ': <select name="createNewLanguage" onchange="' . htmlspecialchars($onChangeContent) . '">
@@ -1685,39 +1704,39 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Traverse the result pointer given, adding each record to array and setting some internal values at the same time.
 	 *
-	 * @param	pointer		SQL result pointer for select query.
-	 * @param	string		Table name defaulting to tt_content
-	 * @return	array		The selected rows returned in this array.
+	 * @param resource $result SQL result pointer for select query.
+	 * @param string $table Table name defaulting to tt_content
+	 * @return array The selected rows returned in this array.
 	 */
 	function getResult($result, $table = 'tt_content') {
 
-		// Initialize:
+			// Initialize:
 		$editUidList = '';
-		$recs = Array();
+		$recs = array();
 		$nextTree = $this->nextThree;
 		$c = 0;
-		$output = Array();
+		$output = array();
 
-		// Traverse the result:
+			// Traverse the result:
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 
 			t3lib_BEfunc::workspaceOL($table, $row, -99, TRUE);
 
 			if ($row) {
-				// Add the row to the array:
+					// Add the row to the array:
 				$output[] = $row;
 
-				// Set an internal register:
+					// Set an internal register:
 				$recs[$c] = $row['uid'];
 
-				// Create the list of the next three ids (for editing links...)
+					// Create the list of the next three ids (for editing links...)
 				for ($a = 0; $a < $nextTree; $a++) {
 					if (isset($recs[$c - $a])) {
 						$this->tt_contentData['nextThree'][$recs[$c - $a]] .= $row['uid'] . ',';
 					}
 				}
 
-				// Set next/previous ids:
+					// Set next/previous ids:
 				if (isset($recs[$c - 1])) {
 					if (isset($recs[$c - 2])) {
 						$this->tt_contentData['prev'][$row['uid']] = -$recs[$c - 2];
@@ -1730,10 +1749,9 @@ class tx_cms_layout extends recordList {
 			}
 		}
 
-		// Return selected records
+			// Return selected records
 		return $output;
 	}
-
 
 	/********************************
 	 *
@@ -1744,9 +1762,9 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Counts and returns the number of records on the page with $pid
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Page id
-	 * @return	integer		Number of records.
+	 * @param string $table Table name
+	 * @param integer $pid Page id
+	 * @return integer Number of records.
 	 */
 	function numberOfRecords($table, $pid) {
 		if ($GLOBALS['TCA'][$table]) {
@@ -1764,8 +1782,8 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Processing of larger amounts of text (usually from RTE/bodytext fields) with word wrapping etc.
 	 *
-	 * @param	string		Input string
-	 * @return	string		Output string
+	 * @param string $input Input string
+	 * @return string Output string
 	 */
 	function renderText($input) {
 		$input = strip_tags($input);
@@ -1776,19 +1794,18 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Creates the icon image tag for record from table and wraps it in a link which will trigger the click menu.
 	 *
-	 * @param	string		Table name
-	 * @param	array		Record array
-	 * @param	string		Record title (NOT USED)
-	 * @return	string		HTML for the icon
+	 * @param string $table Table name
+	 * @param array $row Record array
+	 * @return string HTML for the icon
 	 */
 	function getIcon($table, $row) {
 
-		// Initialization
+			// Initialization
 		$alttext = t3lib_BEfunc::getRecordIconAltText($row, $table);
 		$iconImg = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => $alttext));
 		$this->counter++;
 
-		// The icon with link
+			// The icon with link
 		$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, $table, $row['uid']);
 
 		return $theIcon;
@@ -1798,10 +1815,10 @@ class tx_cms_layout extends recordList {
 	 * Creates processed values for all fieldnames in $fieldList based on values from $row array.
 	 * The result is 'returned' through $info which is passed as a reference
 	 *
-	 * @param string Table name
-	 * @param string Commalist of fields.
-	 * @param array Record from which to take values for processing.
-	 * @param array Array to which the processed values are added.
+	 * @param string $table Table name
+	 * @param string $fieldList Commalist of fields.
+	 * @param array $row Record from which to take values for processing.
+	 * @param array $info Array to which the processed values are added.
 	 * @return void
 	 */
 	function getProcessedValue($table, $fieldList, array $row, array &$info) {
@@ -1819,9 +1836,9 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Returns TRUE, if the record given as parameters is NOT visible based on hidden/starttime/endtime (if available)
 	 *
-	 * @param	string		Tablename of table to test
-	 * @param	array		Record row.
-	 * @return	boolean		Returns TRUE, if disabled.
+	 * @param string $table Tablename of table to test
+	 * @param array $row Record row.
+	 * @return boolean Returns TRUE, if disabled.
 	 */
 	function isDisabled($table, $row) {
 		if (
@@ -1841,10 +1858,10 @@ class tx_cms_layout extends recordList {
 	 * Will perform "word-wrapping" on the input string. What it does is to split by space or linebreak, then find any word longer than $max and if found, a hyphen is inserted.
 	 * Works well on normal texts, little less well when HTML is involved (since much HTML will have long strings that will be broken).
 	 *
-	 * @param	string		Content to word-wrap.
-	 * @param	integer		Max number of chars in a word before it will be wrapped.
-	 * @param	string		Character to insert when wrapping.
-	 * @return	string		Processed output.
+	 * @param string $content Content to word-wrap.
+	 * @param integer $max Max number of chars in a word before it will be wrapped.
+	 * @param string $char Character to insert when wrapping.
+	 * @return string Processed output.
 	 */
 	function wordWrapper($content, $max = 50, $char = ' -') {
 		$array = preg_split('/[ ' . LF . ']/', $content);
@@ -1860,8 +1877,8 @@ class tx_cms_layout extends recordList {
 	 * Returns icon for "no-edit" of a record.
 	 * Basically, the point is to signal that this record could have had an edit link if the circumstances were right. A placeholder for the regular edit icon...
 	 *
-	 * @param	string		Label key from LOCAL_LANG
-	 * @return	string		IMG tag for icon.
+	 * @param string $label Label key from LOCAL_LANG
+	 * @return string IMG tag for icon.
 	 */
 	function noEditIcon($label = 'noEditItems') {
 		return t3lib_iconWorks::getSpriteIcon('status-edit-read-only', array('title' => $GLOBALS['LANG']->getLL($label, TRUE)));
@@ -1870,14 +1887,14 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Function, which fills in the internal array, $this->allowedTableNames with all tables to which the user has access. Also a set of standard tables (pages, static_template, sys_filemounts, etc...) are filtered out. So what is left is basically all tables which makes sense to list content from.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function cleanTableNames() {
 
-		// Get all table names:
+			// Get all table names:
 		$tableNames = array_flip(array_keys($GLOBALS['TCA']));
 
-		// Unset common names:
+			// Unset common names:
 		unset($tableNames['pages']);
 		unset($tableNames['static_template']);
 		unset($tableNames['sys_filemounts']);
@@ -1888,7 +1905,7 @@ class tx_cms_layout extends recordList {
 
 		$this->allowedTableNames = array();
 
-		// Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
+			// Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
 		if (is_array($tableNames)) {
 			foreach ($tableNames as $k => $v) {
 				if ($GLOBALS['BE_USER']->check('tables_select', $k)) {
@@ -1902,10 +1919,10 @@ class tx_cms_layout extends recordList {
 	 * Checking if the RTE is available/enabled for a certain table/field and if so, it returns TRUE.
 	 * Used to determine if the RTE button should be displayed.
 	 *
-	 * @param	string		Table name
-	 * @param	array		Record row (needed, if there are RTE dependencies based on other fields in the record)
-	 * @param	string		Field name
-	 * @return	boolean		Returns TRUE if the rich text editor would be enabled/available for the field name specified.
+	 * @param string $table Table name
+	 * @param array $row Record row (needed, if there are RTE dependencies based on other fields in the record)
+	 * @param string $field Field name
+	 * @return boolean Returns TRUE if the rich text editor would be enabled/available for the field name specified.
 	 */
 	function isRTEforField($table, $row, $field) {
 		$specConf = $this->getSpecConfForField($table, $row, $field);
@@ -1913,7 +1930,8 @@ class tx_cms_layout extends recordList {
 		if (isset($specConf['richtext']) && (!$p['flag'] || !$row[$p['flag']])) {
 			t3lib_BEfunc::fixVersioningPid($table, $row);
 			list($tscPID, $thePidValue) = t3lib_BEfunc::getTSCpid($table, $row['uid'], $row['pid']);
-			if ($thePidValue >= 0) { // If the pid-value is not negative (that is, a pid could NOT be fetched)
+				// If the pid-value is not negative (that is, a pid could NOT be fetched)
+			if ($thePidValue >= 0) {
 				$RTEsetup = $GLOBALS['BE_USER']->getTSConfig('RTE', t3lib_BEfunc::getPagesTSconfig($tscPID));
 				$RTEtypeVal = t3lib_BEfunc::getTCAtypeValue($table, $row);
 				$thisConfig = t3lib_BEfunc::RTEsetup($RTEsetup['properties'], $table, $field, $RTEtypeVal);
@@ -1930,19 +1948,19 @@ class tx_cms_layout extends recordList {
 	 * Returns "special" configuration from the "types" configuration in TCA for the record given by tablename/fieldname.
 	 * Used by isRTEforField() in the process of finding whether a field has RTE enabled or not.
 	 *
-	 * @param	string		Table name
-	 * @param	array		Record array
-	 * @param	string		Field name
-	 * @return	array		Spec. conf (if available)
+	 * @param string $table Table name
+	 * @param array $row Record array
+	 * @param string $field Field name
+	 * @return array Spec. conf (if available)
 	 * @access private
 	 * @see isRTEforField()
 	 */
 	function getSpecConfForField($table, $row, $field) {
 
-		// Get types-configuration for the record:
+			// Get types-configuration for the record:
 		$types_fieldConfig = t3lib_BEfunc::getTCAtypes($table, $row);
 
-		// Find the given field and return the spec key value if found:
+			// Find the given field and return the spec key value if found:
 		if (is_array($types_fieldConfig)) {
 			foreach ($types_fieldConfig as $vconf) {
 				if ($vconf['field'] == $field) {
@@ -1951,7 +1969,6 @@ class tx_cms_layout extends recordList {
 			}
 		}
 	}
-
 
 	/*****************************************
 	 *
@@ -1962,12 +1979,12 @@ class tx_cms_layout extends recordList {
 	/**
 	 * Creates an info-box for the current page (identified by input record).
 	 *
-	 * @param	array		Page record
-	 * @param	boolean		If set, there will be shown an edit icon, linking to editing of the page properties.
-	 * @return	string		HTML for the box.
+	 * @param array $rec Page record
+	 * @param boolean $edit If set, there will be shown an edit icon, linking to editing of the page properties.
+	 * @return string HTML for the box.
 	 */
 	function getPageInfoBox($rec, $edit = 0) {
-		// If editing of the page properties is allowed:
+			// If editing of the page properties is allowed:
 		if ($edit) {
 			$params = '&edit[pages][' . $rec['uid'] . ']=edit';
 			$editIcon = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' .
@@ -1977,19 +1994,19 @@ class tx_cms_layout extends recordList {
 			$editIcon = $this->noEditIcon('noEditPage');
 		}
 
-		// Setting page icon, link, title:
+			// Setting page icon, link, title:
 		$outPutContent = t3lib_iconWorks::getSpriteIconForRecord('pages', $rec, array('title' => t3lib_BEfunc::titleAttribForPages($rec))) .
 				$editIcon .
 				'&nbsp;' .
 				htmlspecialchars($rec['title']);
 
 
-		// Init array where infomation is accumulated as label/value pairs.
+			// Init array where infomation is accumulated as label/value pairs.
 		$lines = array();
 
-		// Owner user/group:
+			// Owner user/group:
 		if ($this->pI_showUser) {
-			// User:
+				// User:
 			$users = t3lib_BEfunc::getUserNames('username,usergroup,usergroup_cached_list,uid,realName');
 			$groupArray = explode(',', $GLOBALS['BE_USER']->user['usergroup_cached_list']);
 			$users = t3lib_BEfunc::blindUserNames($users, $groupArray);
@@ -1997,19 +2014,19 @@ class tx_cms_layout extends recordList {
 				' (' . $users[$rec['cruser_id']]['realName'] . ')');
 		}
 
-		// Created:
+			// Created:
 		$lines[] = array(
 			$GLOBALS['LANG']->getLL('pI_crDate') . ':',
 			t3lib_BEfunc::datetime($rec['crdate']) . ' (' . t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME'] - $rec['crdate'], $this->agePrefixes) . ')',
 		);
 
-		// Last change:
+			// Last change:
 		$lines[] = array(
 			$GLOBALS['LANG']->getLL('pI_lastChange') . ':',
 			t3lib_BEfunc::datetime($rec['tstamp']) . ' (' . t3lib_BEfunc::calcAge($GLOBALS['EXEC_TIME'] - $rec['tstamp'], $this->agePrefixes) . ')',
 		);
 
-		// Last change of content:
+			// Last change of content:
 		if ($rec['SYS_LASTCHANGED']) {
 			$lines[] = array(
 				$GLOBALS['LANG']->getLL('pI_lastChangeContent') . ':',
@@ -2017,10 +2034,10 @@ class tx_cms_layout extends recordList {
 			);
 		}
 
-		// Spacer:
+			// Spacer:
 		$lines[] = '';
 
-		// Display contents of certain page fields, if any value:
+			// Display contents of certain page fields, if any value:
 		$dfields = explode(',', 'alias,target,hidden,starttime,endtime,fe_group,no_cache,cache_timeout,newUntil,lastUpdated,subtitle,keywords,description,abstract,author,author_email');
 		foreach ($dfields as $fV) {
 			if ($rec[$fV]) {
@@ -2028,14 +2045,14 @@ class tx_cms_layout extends recordList {
 			}
 		}
 
-		// Page hits (depends on "sys_stat" extension)
+			// Page hits (depends on "sys_stat" extension)
 		if ($this->pI_showStat && t3lib_extMgm::isLoaded('sys_stat')) {
 
-			// Counting total hits:
+				// Counting total hits:
 			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_stat', 'page_id=' . intval($rec['uid']));
 			if ($count) {
 
-				// Get min/max
+					// Get min/max
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('min(tstamp) AS min,max(tstamp) AS max', 'sys_stat', 'page_id=' . intval($rec['uid']));
 				$rrow2 = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
 
@@ -2045,7 +2062,7 @@ class tx_cms_layout extends recordList {
 				$lines[] = array($GLOBALS['LANG']->getLL('pI_hitsTotal') . ':', $rrow2[0]);
 
 
-				// Last 10 days
+					// Last 10 days
 				$nextMidNight = mktime(0, 0, 0) + 1 * 3600 * 24;
 
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*), FLOOR((' . $nextMidNight . '-tstamp)/(24*3600)) AS day', 'sys_stat', 'page_id=' . intval($rec['uid']) . ' AND tstamp>' . ($nextMidNight - 10 * 24 * 3600), 'day');
@@ -2063,7 +2080,7 @@ class tx_cms_layout extends recordList {
 							<td align="center">' . ($days[$a] ? intval($days[$a]) : '-') . '</td>';
 				}
 
-				// Compile first hit-table (last 10 days)
+					// Compile first hit-table (last 10 days)
 				$hitTable = '
 					<table border="0" cellpadding="0" cellspacing="1" class="typo3-page-hits">
 						<tr>' . implode('', $headerH) . '</tr>
@@ -2072,7 +2089,7 @@ class tx_cms_layout extends recordList {
 				$lines[] = array($GLOBALS['LANG']->getLL('pI_hits10days') . ':', $hitTable, 1);
 
 
-				// Last 24 hours
+					// Last 24 hours
 				$nextHour = mktime(date('H'), 0, 0) + 3600;
 				$hours = 16;
 
@@ -2091,7 +2108,7 @@ class tx_cms_layout extends recordList {
 							<td align="center">' . ($days[$a] ? intval($days[$a]) : '-') . '</td>';
 				}
 
-				// Compile second hit-table (last 24 hours)
+					// Compile second hit-table (last 24 hours)
 				$hitTable = '
 					<table border="0" cellpadding="0" cellspacing="1" class="typo3-page-stat">
 						<tr>' . implode('', $headerH) . '</tr>
@@ -2101,8 +2118,7 @@ class tx_cms_layout extends recordList {
 			}
 		}
 
-
-		// Finally, wrap the elements in the $lines array in table cells/rows
+			// Finally, wrap the elements in the $lines array in table cells/rows
 		foreach ($lines as $fV) {
 			if (is_array($fV)) {
 				if (!$fV[2]) {
@@ -2121,7 +2137,7 @@ class tx_cms_layout extends recordList {
 			}
 		}
 
-		// Wrap table tags around...
+			// Wrap table tags around...
 		$outPutContent .= '
 
 
@@ -2133,7 +2149,7 @@ class tx_cms_layout extends recordList {
 				' . $out . '
 			</table>';
 
-		// ... and return it.
+			// ... and return it.
 		return $outPutContent;
 	}
 
@@ -2142,8 +2158,8 @@ class tx_cms_layout extends recordList {
 	 * Only tables which has records on the page will be included.
 	 * Notice: The function also fills in the internal variable $this->activeTables with icon/titles.
 	 *
-	 * @param	integer		Page id from which we are listing records (the function will look up if there are records on the page)
-	 * @return	string		HTML output.
+	 * @param integer $id Page id from which we are listing records (the function will look up if there are records on the page)
+	 * @return string HTML output.
 	 */
 	function getTableMenu($id) {
 
@@ -2213,9 +2229,9 @@ class tx_cms_layout extends recordList {
 	 * Enhancement for the strip_tags function that provides the feature to fill in empty tags.
 	 * Example <link email@hostname.com></link> is accepted by TYPO3 but would not displayed in the Backend otherwise.
 	 *
-	 * @param	string		Input string
-	 * @param	boolean		If TRUE, empty tags will be filled with the first attribute of the tag before.
-	 * @return	string		Input string with all HTML and PHP tags stripped
+	 * @param string $content Input string
+	 * @param boolean $fillEmptyContent If TRUE, empty tags will be filled with the first attribute of the tag before.
+	 * @return string Input string with all HTML and PHP tags stripped
 	 * @deprecated since TYPO3 4.6, deprecationLog since 6.0, will be removed two versions later - use php-function strip_tags instead
 	 */
 	function strip_tags($content, $fillEmptyContent = FALSE) {
