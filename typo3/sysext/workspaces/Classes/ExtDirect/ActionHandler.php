@@ -234,25 +234,35 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 
 		$recipients = array();
 		foreach ($uidOfRecipients as $userUid) {
-			$beUserRecord = t3lib_befunc::getRecord('be_users',intval($userUid));
-			if(is_array($beUserRecord) && $beUserRecord['email'] != '') {
-				$recipients[] = $beUserRecord['email'];
+			$beUserRecord = t3lib_befunc::getRecord('be_users', intval($userUid));
+			if (is_array($beUserRecord) && $beUserRecord['email'] !== '') {
+				$uc = $beUserRecord['uc'] ? unserialize($beUserRecord['uc']) : array();
+				$recipients[$beUserRecord['email']] = array(
+					'email' => $beUserRecord['email'],
+					'lang'  => (isset($uc['lang']) ? $uc['lang'] : $beUserRecord['lang']),
+				);
 			}
 		}
 
-		if ($additionalRecipients != '') {
-			$additionalRecipients = t3lib_div::trimExplode("\n", $additionalRecipients, TRUE);
+		if ($additionalRecipients !== '') {
+			$emails = t3lib_div::trimExplode(LF, $additionalRecipients, TRUE);
+			$additionalRecipients = array();
+			foreach ($emails as $email) {
+				$additionalRecipients[$email] = array('email' => $email);
+			};
 		} else {
 			$additionalRecipients = array();
 		}
 
-		$allRecipients = array_unique(
-			array_merge($recipients, $additionalRecipients)
-		);
+			// We merge $recipients on top of $additionalRecipients because $recipients
+			// possibly is more complete with a user language. Furthermore, the list of
+			// recipients is automatically unique since we indexed $additionalRecipients
+			// and $recipients with the email address
+		$allRecipients = array_merge($additionalRecipients, $recipients);
 
-		foreach ($allRecipients as $recipient) {
-			if (t3lib_div::validEmail($recipient)) {
-				$finalRecipients[] = $recipient;
+		foreach ($allRecipients as $email => $recipientInformation) {
+			if (t3lib_div::validEmail($email)) {
+				$finalRecipients[] = $recipientInformation;
 			}
 		}
 
@@ -276,7 +286,6 @@ class tx_Workspaces_ExtDirect_ActionHandler extends tx_Workspaces_ExtDirect_Abst
 	 */
 	public function sendToNextStageExecute(stdClass $parameters) {
 		$cmdArray = array();
-		$recipients = array();
 
 		$setStageId = $parameters->affects->nextStage;
 		$comments = $parameters->comments;
