@@ -37,8 +37,8 @@ class tslib_content_ContentTable extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, CTABLE
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 
@@ -56,7 +56,7 @@ class tslib_content_ContentTable extends tslib_content_Abstract {
 			: $conf['cWidth'];
 		$controlTable->contentW = $conf['cWidth'];
 
-		// loads the menues if any
+			// loads the menues if any
 		if (is_array($conf['c.'])) {
 			$controlTable->content = $this->cObj->cObjGet($conf['c.'], 'c.');
 			$contentTDParams = isset($conf['c.']['TDParams.'])
@@ -118,7 +118,6 @@ class tslib_content_ContentTable extends tslib_content_Abstract {
 		}
 
 		return $theValue;
-
 	}
 }
 ?>

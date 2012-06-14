@@ -37,8 +37,8 @@ class tslib_content_HierarchicalMenu extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, HMENU
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 
@@ -70,7 +70,6 @@ class tslib_content_HierarchicalMenu extends tslib_content_Abstract {
 				$menu->makeMenu();
 
 				$theValue .= $menu->writeMenu();
-
 			}
 
 			$wrap =  isset($conf['wrap.'])
@@ -87,7 +86,6 @@ class tslib_content_HierarchicalMenu extends tslib_content_Abstract {
 		}
 
 		return $theValue;
-
 	}
 }
 ?>

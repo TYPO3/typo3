@@ -37,8 +37,8 @@ class tslib_content_File extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, FILE
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 
@@ -67,7 +67,6 @@ class tslib_content_File extends tslib_content_Abstract {
 		}
 
 		return $theValue;
-
 	}
 }
 ?>

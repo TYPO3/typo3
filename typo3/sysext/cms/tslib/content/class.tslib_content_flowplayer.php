@@ -200,8 +200,8 @@ class tslib_content_FlowPlayer extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, SWFOBJECT
 	 *
-	 * @param	array	$conf	Array of TypoScript properties
-	 * @return	string	Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		$prefix = '';
@@ -547,7 +547,7 @@ class tslib_content_FlowPlayer extends tslib_content_Abstract {
 				}
 			}
 			$videoJsOptions = count($videoJsOptions) ? json_encode($videoJsOptions) : '{}';
-	
+
 				// videoJS setup and videoJS listeners for audio description synchronisation
 			if ($audioSources || isset($conf['audioFallback'])) {
 				$videoJsSetup = '
@@ -586,8 +586,8 @@ class tslib_content_FlowPlayer extends tslib_content_Abstract {
 						}
 							// Create "track" elements
 						if (isset($conf['caption'])) {
-							// Assemble captions track tag
-							// It will take a while before the captions are loaded and parsed...
+								// Assemble captions track tag
+								// It will take a while before the captions are loaded and parsed...
 							$videoTagAssembly .= '
 			var track  = document.createElement("track");
 			track.setAttribute("src", "' . $conf['caption'] . '");
@@ -785,7 +785,7 @@ class tslib_content_FlowPlayer extends tslib_content_Abstract {
 			$videoSourcesEmbedding .
 			$flowplayerHandlers;
 		if ($jsInlineCode) {
-			$jsInlineCode = 'VideoJS.DOMReady(function(){' . 
+			$jsInlineCode = 'VideoJS.DOMReady(function(){' .
 			$jsInlineCode . LF .
 			'});';
 		}

@@ -34,7 +34,7 @@ class tslib_content_Files extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject FILES
 	 *
-	 * @param array Array of TypoScript properties
+	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
@@ -155,8 +155,8 @@ class tslib_content_Files extends tslib_content_Abstract {
 	 * Gets a configuration value by passing them through stdWrap first and taking a default value if stdWrap doesn't yield a result.
 	 *
 	 * @param string $key The config variable key (from TS array).
-	 * @param array $config	 The TypoScript array.
-	 * @param string $defaultValue	Optional default value.
+	 * @param array $config The TypoScript array.
+	 * @param string $defaultValue Optional default value.
 	 * @return string Value of the config variable
 	 */
 	protected function stdWrapValue($key, array $config, $defaultValue = '') {
