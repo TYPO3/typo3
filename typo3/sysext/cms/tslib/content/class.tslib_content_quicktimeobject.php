@@ -37,8 +37,8 @@ class tslib_content_QuicktimeObject extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, QTOBJECT
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		$params = $prefix = '';
@@ -59,13 +59,13 @@ class tslib_content_QuicktimeObject extends tslib_content_Abstract {
 
 		$typeConf = $conf[$type . '.'];
 
-			//add QTobject js-file
+			// Add QTobject js-file
 		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/flashmedia/qtobject/qtobject.js');
 		$replaceElementIdString = uniqid('mmqt');
 		$GLOBALS['TSFE']->register['MMQTID'] = $replaceElementIdString;
 		$qtObject = 'QTObject' . $replaceElementIdString;
 
-		// merge with default parameters
+			// Merge with default parameters
 		$conf['params.'] = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.']);
 
 		if (is_array($conf['params.'])) {

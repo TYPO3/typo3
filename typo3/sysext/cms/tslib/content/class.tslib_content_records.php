@@ -37,14 +37,16 @@ class tslib_content_Records extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, RECORDS
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		$theValue = '';
 
 		$originalRec = $GLOBALS['TSFE']->currentRecord;
-		if ($originalRec) { // If the currentRecord is set, we register, that this record has invoked this function. It's should not be allowed to do this again then!!
+			// If the currentRecord is set, we register, that this record has invoked this function.
+			// It's should not be allowed to do this again then!!
+		if ($originalRec) {
 			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
 		}
 
@@ -95,7 +97,8 @@ class tslib_content_Records extends tslib_content_Abstract {
 					);
 				}
 
-				if (is_array($row)) { // Might be unset in the content overlay things...
+					// Might be unset in the content overlay things...
+				if (is_array($row)) {
 					$dontCheckPid = isset($conf['dontCheckPid.'])
 						? $this->cObj->stdWrap($conf['dontCheckPid'], $conf['dontCheckPid.'])
 						: $conf['dontCheckPid'];
@@ -134,8 +137,8 @@ class tslib_content_Records extends tslib_content_Abstract {
 		if (isset($conf['stdWrap.'])) {
 			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
 		}
-
-		$GLOBALS['TSFE']->currentRecord = $originalRec; // Restore
+			// Restore
+		$GLOBALS['TSFE']->currentRecord = $originalRec;
 
 		return $theValue;
 	}

@@ -37,8 +37,8 @@ class tslib_content_OffsetTable extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, OTABLE
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		/** @var $controlTable tslib_tableOffset */
@@ -63,6 +63,5 @@ class tslib_content_OffsetTable extends tslib_content_Abstract {
 
 		return $content;
 	}
-
 }
 ?>

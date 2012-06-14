@@ -37,8 +37,8 @@ class tslib_content_UserInternal extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, USER_INT
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		$this->cObj->setUserObjectType(tslib_cObj::OBJECTTYPE_USER_INT);
