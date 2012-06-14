@@ -49,9 +49,9 @@ class tslib_content_Form extends tslib_content_Abstract {
 	 *
 	 * If $formData is an array the value of $conf['data'] is ignored.
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @param	array		Alternative formdata overriding whatever comes from TypoScript
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @param array $formData Alternative formdata overriding whatever comes from TypoScript
+	 * @return string Output
 	 */
 	public function render($conf = array(), $formData = '') {
 		$content = '';
@@ -123,7 +123,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 							: $singleKeyArray['specialEval'];
 						list ($temp[3]) = explode('|', $specialEval);
 
-							// adding the form entry to the dataArray
+							// Adding the form entry to the dataArray
 						$dataArray[] = implode('|', $temp);
 					}
 				}
@@ -145,7 +145,8 @@ class tslib_content_Form extends tslib_content_Abstract {
 		if ($formName) {
 			$formName = $this->cObj->cleanFormName($formName);
 		} else {
-			$formName = 'a' . $GLOBALS['TSFE']->uniqueHash(); // form name has to start with a letter to reach XHTML compliance
+				// form name has to start with a letter to reach XHTML compliance
+			$formName = 'a' . $GLOBALS['TSFE']->uniqueHash();
 		}
 
 		$fieldPrefix = isset($conf['fieldPrefix.'])
@@ -167,7 +168,8 @@ class tslib_content_Form extends tslib_content_Abstract {
 			$confData = array();
 			if (is_array($formData)) {
 				$parts = $dataValue;
-				$dataValue = 1; // TRUE...
+					// TRUE...
+				$dataValue = 1;
 			} else {
 				$dataValue = trim($dataValue);
 				$parts = explode('|', $dataValue);
@@ -374,21 +376,25 @@ class tslib_content_Form extends tslib_content_Abstract {
 						$size = trim($fParts[1]) ? t3lib_utility_Math::forceIntegerInRange($fParts[1], 1, 20) : 1;
 							// multiple
 						$multiple = strtolower(trim($fParts[2])) == 'm' ? ' multiple="multiple"' : '';
-
-						$items = array(); // Where the items will be
-						$defaults = array(); //RTF
+							// Where the items will be
+						$items = array();
+							//RTF
+						$defaults = array();
 						$pCount = count($valueParts);
 						for ($a = 0; $a < $pCount; $a++) {
 							$valueParts[$a] = trim($valueParts[$a]);
-							if (substr($valueParts[$a], 0, 1) == '*') { // Finding default value
+								// Finding default value
+							if (substr($valueParts[$a], 0, 1) == '*') {
 								$sel = 'selected';
 								$valueParts[$a] = substr($valueParts[$a], 1);
 							} else
 								$sel = '';
 								// Get value/label
 							$subParts = explode('=', $valueParts[$a]);
-							$subParts[1] = (isset($subParts[1]) ? trim($subParts[1]) : trim($subParts[0])); // Sets the value
-							$items[] = $subParts; // Adds the value/label pair to the items-array
+								// Sets the value
+							$subParts[1] = (isset($subParts[1]) ? trim($subParts[1]) : trim($subParts[0]));
+								// Adds the value/label pair to the items-array
+							$items[] = $subParts;
 							if ($sel) {
 								$defaults[] = $subParts[1];
 							} // Sets the default value if value/label pair is marked as default.
@@ -432,7 +438,8 @@ class tslib_content_Form extends tslib_content_Abstract {
 						$option = '';
 
 						$valueParts = explode(',', $parts[2]);
-						$items = array(); // Where the items will be
+							// Where the items will be
+						$items = array();
 						$default = '';
 						$pCount = count($valueParts);
 						for ($a = 0; $a < $pCount; $a++) {
@@ -444,8 +451,10 @@ class tslib_content_Form extends tslib_content_Abstract {
 								$sel = '';
 								// Get value/label
 							$subParts = explode('=', $valueParts[$a]);
-							$subParts[1] = (isset($subParts[1]) ? trim($subParts[1]) : trim($subParts[0])); // Sets the value
-							$items[] = $subParts; // Adds the value/label pair to the items-array
+								// Sets the value
+							$subParts[1] = (isset($subParts[1]) ? trim($subParts[1]) : trim($subParts[0]));
+								// Adds the value/label pair to the items-array
+							$items[] = $subParts;
 							if ($sel) {
 								$default = $subParts[1];
 							} // Sets the default value if value/label pair is marked as default.
@@ -598,7 +607,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 						$modeParameters = array();
 					}
 
-					// Adding evaluation based on settings:
+						// Adding evaluation based on settings:
 					switch ((string) $modeParameters[0]) {
 						case 'EREG' :
 							$fieldlist[] = '_EREG';
@@ -606,13 +615,15 @@ class tslib_content_Form extends tslib_content_Abstract {
 							$fieldlist[] = $modeParameters[2];
 							$fieldlist[] = $confData['fieldname'];
 							$fieldlist[] = $confData['label'];
-							$confData['required'] = 1; // Setting this so "required" layout is used.
+								// Setting this so "required" layout is used.
+							$confData['required'] = 1;
 						break;
 						case 'EMAIL' :
 							$fieldlist[] = '_EMAIL';
 							$fieldlist[] = $confData['fieldname'];
 							$fieldlist[] = $confData['label'];
-							$confData['required'] = 1; // Setting this so "required" layout is used.
+								// Setting this so "required" layout is used.
+							$confData['required'] = 1;
 						break;
 						default :
 							if ($confData['required']) {
@@ -699,8 +710,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 		}
 
-
-			// redirect (external: where to go afterwards. internal: where to submit to)
+			// Redirect (external: where to go afterwards. internal: where to submit to)
 		$theRedirect = isset($conf['redirect.'])
 			? $this->cObj->stdWrap($conf['redirect'], $conf['redirect.'])
 			: $conf['redirect']; // redirect should be set to the page to redirect to after an external script has been used. If internal scripts is used, and if no 'type' is set that dictates otherwise, redirect is used as the url to jump to as long as it's an integer (page)
@@ -711,7 +721,8 @@ class tslib_content_Form extends tslib_content_Abstract {
 			? $this->cObj->stdWrap($conf['no_cache'], $conf['no_cache.'])
 			: $conf['no_cache']; // redirect should be set to the page to redirect to after an external script has been used. If internal scripts is used, and if no 'type' is set that dictates otherwise, redirect is used as the url to jump to as long as it's an integer (page)
 		$page = $GLOBALS['TSFE']->page;
-		if (!$theRedirect) { // Internal: Just submit to current page
+			// Internal: Just submit to current page
+		if (!$theRedirect) {
 			$LD = $GLOBALS['TSFE']->tmpl->linkData(
 				$page,
 				$target,
@@ -751,7 +762,8 @@ class tslib_content_Form extends tslib_content_Abstract {
 				? $this->cObj->stdWrap($conf['type'], $conf['type.'])
 				: $conf['type'];
 		}
-		if (t3lib_utility_Math::canBeInterpretedAsInteger($formtype)) { // Submit to a specific page
+			// Submit to a specific page
+		if (t3lib_utility_Math::canBeInterpretedAsInteger($formtype)) {
 			$page = $GLOBALS['TSFE']->sys_page->getPage_noCheck($formtype);
 			$LD_A = $GLOBALS['TSFE']->tmpl->linkData(
 				$page,
@@ -807,7 +819,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 			$hiddenfields .= '<input type="hidden" name="locationData" value="' . htmlspecialchars($locationData) . '" />';
 		}
 
-			// hidden fields:
+			// Hidden fields:
 		if (is_array($conf['hiddenFields.'])) {
 			foreach ($conf['hiddenFields.'] as $hF_key => $hF_conf) {
 				if (substr($hF_key, -1) != '.') {

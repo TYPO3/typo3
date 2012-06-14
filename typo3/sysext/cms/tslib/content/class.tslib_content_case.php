@@ -37,8 +37,8 @@ class tslib_content_Case extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, CASE
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		if ($this->cObj->checkIf($conf['if.'])) {

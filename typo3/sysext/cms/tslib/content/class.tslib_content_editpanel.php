@@ -35,8 +35,8 @@ class tslib_content_EditPanel extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, EDITPANEL
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		$theValue = '';

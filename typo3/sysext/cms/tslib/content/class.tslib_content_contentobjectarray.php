@@ -37,8 +37,8 @@ class tslib_content_ContentObjectArray extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, COBJ_ARRAY / COA
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		if (is_array($conf)) {

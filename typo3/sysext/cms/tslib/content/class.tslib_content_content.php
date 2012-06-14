@@ -37,14 +37,16 @@ class tslib_content_Content extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, CONTENT
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		$theValue = '';
 
 		$originalRec = $GLOBALS['TSFE']->currentRecord;
-		if ($originalRec) { // If the currentRecord is set, we register, that this record has invoked this function. It's should not be allowed to do this again then!!
+			// If the currentRecord is set, we register, that this record has invoked this function.
+			// It's should not be allowed to do this again then!!
+		if ($originalRec) {
 			$GLOBALS['TSFE']->recordRegister[$originalRec]++;
 		}
 
@@ -123,7 +125,8 @@ class tslib_content_Content extends tslib_content_Abstract {
 							}
 						}
 
-						if (is_array($row)) { // Might be unset in the sys_language_contentOL
+							// Might be unset in the sys_language_contentOL
+						if (is_array($row)) {
 								// Call hook for possible manipulation of database row for cObj->data
 							if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'])) {
 								foreach($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content_content.php']['modifyDBRow'] as $_classRef) {
@@ -181,10 +184,10 @@ class tslib_content_Content extends tslib_content_Abstract {
 			$theValue = $this->cObj->stdWrap($theValue, $conf['stdWrap.']);
 		}
 
-		$GLOBALS['TSFE']->currentRecord = $originalRec; // Restore
+			// Restore
+		$GLOBALS['TSFE']->currentRecord = $originalRec;
 
 		return $theValue;
-
 	}
 }
 ?>

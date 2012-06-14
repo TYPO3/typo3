@@ -37,8 +37,8 @@ class tslib_content_Image extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, IMAGE
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		if ($this->cObj->checkIf($conf['if.'])) {

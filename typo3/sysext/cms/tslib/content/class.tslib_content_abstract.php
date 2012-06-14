@@ -35,7 +35,7 @@
 abstract class tslib_content_Abstract {
 
 	/**
-	 * @var $cObj tslib_cObj
+	 * @var tslib_cObj $cObj
 	 */
 	protected $cObj;
 
