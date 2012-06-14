@@ -34,7 +34,7 @@ interface tx_about_customSections {
 	 * @abstract
 	 * @param  array $sections
 	 * @return void
-	 * @deprecated since 4.7, will be removed in 4.9. Use fluid overrides to change the view
+	 * @deprecated since 4.7, will be removed in 6.1. Use fluid overrides to change the view
 	 */
 	public function addSection(array &$sections);
 }

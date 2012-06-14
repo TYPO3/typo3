@@ -25,14 +25,14 @@
 /**
  * Check connection wizard for ADO DB databases. For usage in a popup window.
  *
- * @author	Robert Lemke <robert@typo3.org>
+ * @author Robert Lemke <robert@typo3.org>
  */
 
  	// Build TYPO3 enviroment:
-$BACK_PATH='../../../typo3/';
+$BACK_PATH = '../../../typo3/';
 define('TYPO3_MOD_PATH', 'sysext/adodb/');
-require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
+require($BACK_PATH.'init.php');
+require($BACK_PATH.'template.php');
 
 	// Include ADODB library:
 require_once(t3lib_extMgm::extPath('adodb').'adodb/adodb.inc.php');
@@ -43,7 +43,7 @@ $LANG->includeLLFile('EXT:adodb/locallang_wizard.xml');
 /**
  * Script Class checking the connection to an ADODB handled database
  *
- * @author	Robert Lemke <robert@typo3.org>
+ * @author Robert Lemke <robert@typo3.org>
  * @package TYPO3
  * @subpackage adodb
  */
@@ -63,7 +63,8 @@ class tx_adodb_checkconnectionwizard {
 				$dsArr = t3lib_div::xml2array ($dsRecord['configuration']);
 				$dsConf = $dsArr['data']['sDEF']['lDEF'];
 
-				$content .= '<p>Trying to connect with Host / DSN <strong>'.htmlspecialchars($dsConf['field_host']['vDEF']).'</strong> with user <strong>'.htmlspecialchars($dsConf['field_username']['vDEF']).'</strong> ... ';
+				$content .= '<p>Trying to connect with Host / DSN <strong>' . htmlspecialchars($dsConf['field_host']['vDEF']) .
+							'</strong> with user <strong>' . htmlspecialchars($dsConf['field_username']['vDEF']) . '</strong> ... ';
 				$dbConn = &ADONewConnection($dsConf['field_dbtype']['vDEF']);
 				$dbConn->PConnect($dsConf['field_host']['vDEF'], $dsConf['field_username']['vDEF'], $dsConf['field_password']['vDEF'], $dsConf['field_dbname']['vDEF']);
 				$dbConn->SetFetchMode(ADODB_FETCH_ASSOC);

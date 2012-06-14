@@ -24,17 +24,27 @@
 ***************************************************************/
 
 /**
- * @author	Robert Lemke <robert@typo3.org>
- * @author	Karsten Dambekalns <karsten@typo3.org>
+ * @author Robert Lemke <robert@typo3.org>
+ * @author Karsten Dambekalns <karsten@typo3.org>
  */
 class tx_adodb_tceforms {
 
 	function itemsProcFunc_dbtype(&$params, $pObj) {
-		if (is_callable('sybase_get_last_message')) $params['items'][] = array ('Sybase', 'sybase');
-		if (is_callable('odbc_error')) $params['items'][] = array ('ODBC', 'odbc');
-		if (is_callable('mysql_error')) $params['items'][] = array ('MySQL', 'mysql');
-		if (is_callable('mssql_connect')) $params['items'][] = array ('MSSQL', 'mssql');
-		if (is_callable('ocilogon')) $params['items'][] = array ('Oracle', 'oci8');
+		if (is_callable('sybase_get_last_message')) {
+			$params['items'][] = array ('Sybase', 'sybase');
+		}
+		if (is_callable('odbc_error')) {
+			$params['items'][] = array ('ODBC', 'odbc');
+		}
+		if (is_callable('mysql_error')) {
+			$params['items'][] = array ('MySQL', 'mysql');
+		}
+		if (is_callable('mssql_connect')) {
+			$params['items'][] = array ('MSSQL', 'mssql');
+		}
+		if (is_callable('ocilogon')) {
+			$params['items'][] = array ('Oracle', 'oci8');
+		}
 	}
 }
 ?>
