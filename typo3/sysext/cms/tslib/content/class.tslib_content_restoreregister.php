@@ -38,8 +38,8 @@ class tslib_content_RestoreRegister extends tslib_content_Abstract {
 	 * Rendering the cObject, RESTORE_REGISTER
 	 * NOTICE: This cObject does NOT return any content since it just sets internal data based on the TypoScript properties.
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Empty string (the cObject only sets internal data!)
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Empty string (the cObject only sets internal data!)
 	 */
 	public function render($conf = array()) {
 		$GLOBALS['TSFE']->register = array_pop($GLOBALS['TSFE']->registerStack);

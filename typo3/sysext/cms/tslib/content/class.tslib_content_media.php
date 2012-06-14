@@ -37,7 +37,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, MEDIA
 	 *
-	 * @param $conf array Array of TypoScript properties
+	 * @param array $conf Array of TypoScript properties
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
@@ -50,7 +50,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 		if (substr($flexParams, 0, 1) === '<') {
 				// It is a content element rather a TS object
 			$flexParams = t3lib_div::xml2array($flexParams, 'T3');
-			foreach($flexParams['data'] as $sheetData) {
+			foreach ($flexParams['data'] as $sheetData) {
 				$this->cObj->readFlexformIntoConf($sheetData['lDEF'], $conf['parameter.'], TRUE);
 			}
 		}
@@ -142,9 +142,9 @@ class tslib_content_Media extends tslib_content_Abstract {
 			foreach ($conf['parameter.']['mmMediaOptions'] as $key => $value) {
 				if ($key == 'mmMediaCustomParameterContainer') {
 					foreach ($value as $val) {
-							//custom parameter entry
+							// Custom parameter entry
 						$rawTS = $val['mmParamCustomEntry'];
-							//read and merge
+							// Read and merge
 						$tmp = t3lib_div::trimExplode(LF, $rawTS);
 						if (count($tmp)) {
 							foreach ($tmp as $tsLine) {
@@ -290,7 +290,7 @@ class tslib_content_Media extends tslib_content_Abstract {
 	 * with stdWrap (if needed) and returns that value.
 	 *
 	 * @param array &$confArray
-	 * @param string$key
+	 * @param string $key
 	 * @param string $sectionKey
 	 * @return mixed
 	 */

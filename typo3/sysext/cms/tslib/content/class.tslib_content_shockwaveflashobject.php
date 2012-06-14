@@ -37,8 +37,8 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 	/**
 	 * Rendering the cObject, SWFOBJECT
 	 *
-	 * @param	array		Array of TypoScript properties
-	 * @return	string		Output
+	 * @param array $conf Array of TypoScript properties
+	 * @return string Output
 	 */
 	public function render($conf = array()) {
 		$prefix = '';
@@ -54,7 +54,7 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 			: $conf['type'];
 		$typeConf = $conf[$type . '.'];
 
-			//add SWFobject js-file
+			// Add SWFobject js-file
 		$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . 'contrib/flashmedia/swfobject/swfobject.js');
 
 		$player = isset($typeConf['player.'])
@@ -95,7 +95,7 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 		$conf['filename'] = $filename;
 		$conf['prefix'] = $prefix;
 
-			// merge with default parameters
+			// Merge with default parameters
 		$conf['flashvars.'] = array_merge((array) $typeConf['default.']['flashvars.'], (array) $conf['flashvars.']);
 		$conf['params.'] = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.']);
 		$conf['attributes.'] = array_merge((array) $typeConf['default.']['attributes.'], (array) $conf['attributes.']);
