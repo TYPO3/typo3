@@ -37,7 +37,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
- * @deprecated since 4.7, will be removed in 4.9
+ * @deprecated since 4.7, will be removed in 6.1
  */
 class tx_aboutmodules_Functions {
 
