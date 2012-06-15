@@ -155,7 +155,27 @@ class Typo3_Bootstrap_Backend {
 	 */
 	public static function requireBaseClasses() {
 		require_once(PATH_t3lib . 'class.t3lib_div.php');
+
 		require_once(PATH_t3lib . 'class.t3lib_extmgm.php');
+
+		require_once(PATH_t3lib . 'class.t3lib_cache.php');
+		require_once(PATH_t3lib . 'cache/class.t3lib_cache_exception.php');
+		require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_nosuchcache.php');
+		require_once(PATH_t3lib . 'cache/exception/class.t3lib_cache_exception_invaliddata.php');
+		require_once(PATH_t3lib . 'interfaces/interface.t3lib_singleton.php');
+		require_once(PATH_t3lib . 'cache/class.t3lib_cache_factory.php');
+		require_once(PATH_t3lib . 'cache/class.t3lib_cache_manager.php');
+		require_once(PATH_t3lib . 'cache/frontend/interfaces/interface.t3lib_cache_frontend_frontend.php');
+		require_once(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php');
+		require_once(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_stringfrontend.php');
+		require_once(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_phpfrontend.php');
+		require_once(PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_backend.php');
+		require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_abstractbackend.php');
+		require_once(PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_phpcapablebackend.php');
+		require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_filebackend.php');
+		require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_nullbackend.php');
+
+		require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
 	}
 
 	/**
