@@ -7515,7 +7515,7 @@ $out="
 			t3lib_div::loadTCA($table);
 		}
 
-		Typo3_Bootstrap::runExtTablesPostProcessingHooks();
+		Typo3_Bootstrap_Backend::runExtTablesPostProcessingHooks();
 	}
 
 

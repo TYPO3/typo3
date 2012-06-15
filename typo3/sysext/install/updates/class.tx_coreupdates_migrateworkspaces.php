@@ -387,7 +387,7 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 			include_once(PATH_t3lib . 'stddb/load_ext_tables.php');
 		}
 
-		Typo3_Bootstrap::runExtTablesPostProcessingHooks();
+		Typo3_Bootstrap_Backend::runExtTablesPostProcessingHooks();
 	}
 
 	/**
