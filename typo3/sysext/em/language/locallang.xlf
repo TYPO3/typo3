@@ -9,6 +9,12 @@
 			<trans-unit id="tasks_updateExtensionlistTask.description" xml:space="preserve">
 				<source>Update the extension list on a regular basis. Once a day is a good interval.</source>
 			</trans-unit>
+			<trans-unit id="tasks_updateLanguagePackagesTask.name" xml:space="preserve">
+				<source>Update Language Packages</source>
+			</trans-unit>
+			<trans-unit id="tasks_updateLanguagePackagesTask.description" xml:space="preserve">
+				<source>Update the language packages on a regular basis. Once a week is a good interval.</source>
+			</trans-unit>
 			<trans-unit id="mlang_labels_tablabel" xml:space="preserve">
 				<source>TYPO3 Extension Manager</source>
 			</trans-unit>
