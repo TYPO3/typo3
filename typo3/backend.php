@@ -29,13 +29,13 @@ require_once('init.php');
 require_once('template.php');
 require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
 
-require('Classes/class.typo3logo.php');
-require('Classes/class.modulemenu.php');
+require('classes/class.typo3logo.php');
+require('classes/class.modulemenu.php');
 
 	// Core toolbar items
-require('Classes/class.clearcachemenu.php');
-require('Classes/class.shortcutmenu.php');
-require('Classes/class.livesearch.php');
+require('classes/class.clearcachemenu.php');
+require('classes/class.shortcutmenu.php');
+require('classes/class.livesearch.php');
 
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 

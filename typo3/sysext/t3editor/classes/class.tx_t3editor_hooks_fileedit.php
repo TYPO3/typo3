@@ -137,7 +137,7 @@ class tx_t3editor_hooks_fileedit {
 		$savingsuccess = FALSE;
 		if ($parameters['type'] == $this->ajaxSaveType) {
 			require_once('init.php');
-			require_once('Classes/class.typo3_tcefile.php');
+			require_once('classes/class.typo3_tcefile.php');
 
 			$tceFile = t3lib_div::makeInstance('TYPO3_tcefile');
 			$tceFile->processAjaxRequest(array(), $parameters['ajaxObj']);
