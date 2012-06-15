@@ -715,6 +715,7 @@ class template {
 		$this->pageRenderer->setCharSet($this->charset);
 		$this->pageRenderer->addMetaTag($this->generator());
 		$this->pageRenderer->addMetaTag('<meta name="robots" content="noindex,follow" />');
+		$this->pageRenderer->setFavIcon('gfx/favicon.ico');
 		if ($this->useCompatibilityTag) {
 			$this->pageRenderer->addMetaTag($this->xUaCompatible($this->xUaCompatibilityVersion));
 		}
