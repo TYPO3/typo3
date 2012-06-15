@@ -633,8 +633,8 @@ class t3lib_TStemplate {
 					'uid' => $mExtKey
 				);
 				$subrow = $this->prependStaticExtra($subrow);
+				$this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID);
 			}
-			$this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID);
 		}
 	}
 
