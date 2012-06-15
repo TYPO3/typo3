@@ -32,21 +32,10 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-
-unset($MCONF);
-require ('conf.php');
-require ($BACK_PATH . 'init.php');
-require ($BACK_PATH . 'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_file_list.xml');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
-require_once ($BACK_PATH . 'class.file_list.inc');
+require_once(PATH_typo3 . 'class.file_list.inc');
 $BE_USER->modAccess($MCONF, 1);
-
-
-
-
-
-
 
 /**
  * Script Class for creating the list of files in the File > Filelist module
@@ -94,7 +83,7 @@ class SC_file_list {
 
 			// Setting GPvars:
 		$this->id = $combinedIdentifier = t3lib_div::_GP('id');
-		
+
 		$this->pointer = t3lib_div::_GP('pointer');
 		$this->table = t3lib_div::_GP('table');
 		$this->imagemode = t3lib_div::_GP('imagemode');
@@ -365,7 +354,7 @@ class SC_file_list {
 						$this->id,
 						'SET[bigControlPanel]',
 						$this->MOD_SETTINGS['bigControlPanel'],
-						'file_list.php',
+						'',
 						'',
 						'id="bigControlPanel"'
 					) . '<label for="bigControlPanel"> ' . $GLOBALS['LANG']->getLL('bigControlPanel', TRUE) . '</label><br />';
@@ -377,7 +366,7 @@ class SC_file_list {
 						$this->id,
 						'SET[displayThumbs]',
 						$this->MOD_SETTINGS['displayThumbs'],
-						'file_list.php',
+						'',
 						'',
 						'id="checkDisplayThumbs"'
 					) . ' <label for="checkDisplayThumbs">' . $GLOBALS['LANG']->getLL('displayThumbs', TRUE) . '</label><br />';
@@ -389,7 +378,7 @@ class SC_file_list {
 						$this->id,
 						'SET[clipBoard]',
 						$this->MOD_SETTINGS['clipBoard'],
-						'file_list.php',
+						'',
 						'',
 						'id="checkClipBoard"'
 					) . ' <label for="checkClipBoard">' . $GLOBALS['LANG']->getLL('clipBoard', TRUE) . '</label>';
