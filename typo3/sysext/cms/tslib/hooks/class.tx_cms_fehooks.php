@@ -37,8 +37,8 @@ class tx_cms_fehooks {
 	 * Include the preview block in cause we're looking at a hidden page
 	 * in the LIVE workspace
 	 *
-	 * @param  $params
-	 * @param  $pObj
+	 * @param array $params
+	 * @param tslib_fe $pObj
 	 * @return string
 	 */
 	public function hook_previewInfo($params, $pObj) {

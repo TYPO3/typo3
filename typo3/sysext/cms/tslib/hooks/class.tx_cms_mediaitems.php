@@ -37,8 +37,9 @@ class tx_cms_mediaItems implements t3lib_Singleton {
 	/**
 	 * Load extra render types if they exist
 	 *
-	 * @param	array		$params: Existing types by reference
-	 * @param 	array		$conf: config array
+	 * @param array $params Existing types by reference
+	 * @param array $conf Config array
+	 * @return void
 	 */
 	public function customMediaRenderTypes(&$params, $conf) {
 		if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/hooks/class.tx_cms_mediaitems.php']['customMediaRenderTypes'])) {
@@ -47,15 +48,14 @@ class tx_cms_mediaItems implements t3lib_Singleton {
 				$hookObj->customMediaRenderTypes($params, $conf);
 			}
 		}
-
-
 	}
 
 	/**
 	 * Load extra predefined media params if they exist
 	 *
-	 * @param	array		$params: Existing types by reference
-	 * @param 	array		$conf: config array
+	 * @param array $params Existing types by reference
+	 * @param array $conf Config array
+	 * @return void
 	 */
 	public function customMediaParams(&$params, $conf) {
 
@@ -65,8 +65,6 @@ class tx_cms_mediaItems implements t3lib_Singleton {
 				$hookObj->customMediaParams($params, $conf);
 			}
 		}
-
-
 	}
 }
 ?>
