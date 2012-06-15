@@ -6,7 +6,7 @@ if (TYPO3_MODE == 'BE') {
 	$TBE_MODULES['_dispatcher'][] = 'Tx_Extbase_Core_BootstrapInterface';
 }
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['extbase'][] = 'tx_extbase_utility_extbaserequirementscheck';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers']['extbase'][] = 'Tx_Extbase_Utility_ExtbaseRequirementsCheck';
 
 t3lib_div::loadTCA('fe_users');
 if (!isset($TCA['fe_users']['ctrl']['type'])) {
