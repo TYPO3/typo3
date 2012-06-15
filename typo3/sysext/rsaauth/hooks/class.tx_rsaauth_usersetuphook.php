@@ -99,7 +99,7 @@ class tx_rsaauth_usersetuphook {
 			$storage->put($keyPair->getPrivateKey());
 
 			// Add form tag
-			$form = '<form action="index.php" method="post" name="usersetup" enctype="application/x-www-form-urlencoded" onsubmit="tx_rsaauth_encryptUserSetup();">';
+			$form = '<form action="' . t3lib_BEfunc::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="application/x-www-form-urlencoded" onsubmit="tx_rsaauth_encryptUserSetup();">';
 			// Add RSA hidden fields
 			$form .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
 			$form .= '<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent()) . '" />';

@@ -34,23 +34,6 @@
  * XHTML compatible.
  */
 
-unset($MCONF);
-require('conf.php');
-require($BACK_PATH.'init.php');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Script class for the Setup module
  *
@@ -291,7 +274,7 @@ class SC_mod_user_setup_index {
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/setup.html');
-		$this->doc->form = '<form action="index.php" method="post" name="usersetup" enctype="application/x-www-form-urlencoded">';
+		$this->doc->form = '<form action="' . t3lib_BEfunc::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="application/x-www-form-urlencoded">';
 		$this->doc->tableLayout = array(
 			'defRow' => array(
 				'0' => array('<td class="td-label">','</td>'),
@@ -789,7 +772,7 @@ class SC_mod_user_setup_index {
 				}
 			}
 			if (count($opt)) {
-				$this->simulateSelector = '<select id="field_simulate" name="simulateUser" onchange="window.location.href=\'index.php?simUser=\'+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
+				$this->simulateSelector = '<select id="field_simulate" name="simulateUser" onchange="window.location.href=\'' . t3lib_BEfunc::getModuleUrl('user_setup') . '&simUser=\'+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
 			}
 		}
 
@@ -909,7 +892,6 @@ $SOBE->simulateUser();
 $SOBE->storeIncomingData();
 
 // These includes MUST be afterwards the settings are saved...!
-require ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:setup/mod/locallang.xml');
 
 $SOBE->init();
