@@ -46,7 +46,11 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 */
 	function tableRow($label, $data, $field) {
 		$ret = '<tr><td>';
-		$ret.= '<a href="index.php?id=' . $this->pObj->id . '&e[' . $field . ']=1">' .
+		$urlParameters = array(
+				'id' => $this->pObj->id,
+			);
+		$aHref = t3lib_BEfunc::getModuleUrl('web_ts', $urlParameters);
+		$ret.= '<a href="' . htmlspecialchars($aHref . '&e[' . $field . ']=1') . '">' .
 			t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', TRUE))) . '<strong>' . $label . '&nbsp;&nbsp;</strong></a>';
 		$ret .= '</td><td width="80%" class="bgColor4">' . $data . '&nbsp;</td></tr>';
 		return $ret;
@@ -72,7 +76,11 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$functions .= '<td' . $bgcol . ' nowrap="nowrap">';
 				$fI = t3lib_div::split_fileref($v);
 				if (t3lib_div::inList($this->pObj->textExtensions, $fI['fileext'])) {
-					$functions.= '<a href="index.php?id='.$this->pObj->id.'&e[file]='.rawurlencode($v).'">'.t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title'=> $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', TRUE))) . '</a>';
+					$urlParameters = array(
+							'id' => $this->pObj->id,
+						);
+					$aHref = t3lib_BEfunc::getModuleUrl('web_ts', $urlParameters);
+					$functions.= '<a href="' . htmlspecialchars($aHref . '&e[file]=' . rawurlencode($v)) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', TRUE))) . '</a>';
 				}
 				$functions.= '</td>';
 			}
@@ -216,7 +224,12 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		$newId = $this->pObj->createTemplate($this->pObj->id, $saveId);
 		if($newId) {
 			// switch to new template
-			t3lib_utility_Http::redirect('index.php?id=' . $this->pObj->id. '&SET[templatesOnPage]=' . $newId);
+			$urlParameters = array(
+					'id' => $this->pObj->id,
+					'SET[templatesOnPage]' => $newId,
+				);
+			$aHref = t3lib_BEfunc::getModuleUrl('web_ts', $urlParameters);
+			t3lib_utility_Http::redirect($aHref);
 		}
 
 		if ($existTemplate) {
@@ -443,7 +456,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					$this->pObj->id,
 					'SET[includeTypoScriptFileContent]',
 					$this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'],
-					'index.php',
+					'',
 					'&e[constants]=1',
 					'id="checkIncludeTypoScriptFileContent"'
 				);
@@ -489,7 +502,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 					$this->pObj->id,
 					'SET[includeTypoScriptFileContent]',
 					$this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'],
-					'index.php',
+					'',
 					'&e[config]=1',
 					'id="checkIncludeTypoScriptFileContent"'
 				);

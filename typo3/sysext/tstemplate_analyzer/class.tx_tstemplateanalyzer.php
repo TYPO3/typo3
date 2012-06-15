@@ -121,7 +121,13 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$theOutput.=$this->pObj->doc->spacer(5);
 		$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('templateHierarchy', TRUE), $hierar, 0, 1);
 
-		$completeLink = '<p><a href="index.php?id=' . $GLOBALS['SOBE']->id . '&amp;template=all">' . $GLOBALS['LANG']->getLL('viewCompleteTS', TRUE) . '</a></p>';
+		$urlParameters = array(
+				'id' => $GLOBALS['SOBE']->id,
+				'template' => 'all',
+			);
+		$aHref = t3lib_BEfunc::getModuleUrl('web_ts', $urlParameters);
+
+		$completeLink = '<p><a href="' . htmlspecialchars($aHref) . '">' . $GLOBALS['LANG']->getLL('viewCompleteTS', TRUE) . '</a></p>';
 		$theOutput .= $this->pObj->doc->spacer(5);
 		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('completeTS', TRUE), $completeLink, 0, 1);
 		$theOutput.=$this->pObj->doc->spacer(15);

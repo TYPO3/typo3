@@ -344,10 +344,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 				if ($PM == 'join') {
 					$HTML .= $theIcon;
 				} else {
-					$aHref = 'index.php?id=' . $GLOBALS['SOBE']->id .
-							'&tsbr[' . $depth . ']=' . ($deeper ? 0 : 1) .
-							(t3lib_div::_GP('breakPointLN') ? '&breakPointLN=' . t3lib_div::_GP('breakPointLN') : '') .
-							'#' . $goto;
+					$urlParameters = array(
+							'id' => $GLOBALS['SOBE']->id,
+							'tsbr[' . $depth . ']' => ($deeper ? 0 : 1),
+						);
+					if (t3lib_div::_GP('breakPointLN')) {
+						$urlParameters['breakPointLN'] = t3lib_div::_GP('breakPointLN');
+					}
+					$aHref = t3lib_BEfunc::getModuleUrl('web_ts', $urlParameters) . '#' . $goto;
 					$HTML .= '<a name="' . $goto . '" href="' . htmlspecialchars($aHref) . '">' . $theIcon . '</a>';
 				}
 
@@ -357,9 +361,14 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 					$label = '<font color="#666666">' . $label . '</font>';
 				} else {
 					if ($this->linkObjects) {
-						$aHref = 'index.php?id=' . $GLOBALS['SOBE']->id .
-								'&sObj=' . $depth .
-								(t3lib_div::_GP('breakPointLN') ? '&breakPointLN=' . t3lib_div::_GP('breakPointLN') : '');
+						$urlParameters = array(
+								'id' => $GLOBALS['SOBE']->id,
+								'sObj' => $depth,
+							);
+						if (t3lib_div::_GP('breakPointLN')) {
+							$urlParameters['breakPointLN'] = t3lib_div::_GP('breakPointLN');
+						}
+						$aHref = t3lib_BEfunc::getModuleUrl('web_ts', $urlParameters);
 						if ($this->bType != 'const') {
 							$ln = is_array($arr[$key . '.ln..']) ? 'Defined in: ' . $this->lineNumberToScript($arr[$key . '.ln..']) : 'N/A';
 						} else {
@@ -583,7 +592,12 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 					: t3lib_iconWorks::getSpriteIcon('mimetypes-x-content-template-static', array('title' => $alttext))
 			);
 			if (in_array($row['templateID'], $this->clearList_const) || in_array($row['templateID'], $this->clearList_setup)) {
-				$A_B = '<a href="index.php?id=' . htmlspecialchars($GLOBALS['SOBE']->id . '&template=' . $row['templateID']) . '">';
+				$urlParameters = array(
+						'id' => $GLOBALS['SOBE']->id,
+						'template' => $row['templateID'],
+					);
+				$aHref = t3lib_BEfunc::getModuleUrl('web_ts', $urlParameters);
+				$A_B = '<a href="'. htmlspecialchars($aHref) . '">';
 				$A_E = '</a>';
 				if (t3lib_div::_GP('template') == $row['templateID']) {
 					$A_B = '<strong>' . $A_B;
