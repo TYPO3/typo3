@@ -40,22 +40,22 @@
 define('TYPO3_MODE','BE');
 define('TYPO3_cliMode', TRUE);
 
-	// We use require instead of require_once here so we get a fatal error if Bootstrap.php is accidentally included twice
+	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap/Backend.php is accidentally included twice
 	// (which would indicate a clear bug).
-require('Bootstrap_Cli.php');
+require('classes/Bootstrap/Cli.php');
 Typo3_Bootstrap_Cli::checkEnvironmentOrDie();
 
-require('Bootstrap.php');
-Typo3_Bootstrap::checkEnvironmentOrDie();
-Typo3_Bootstrap::defineBaseConstants();
-Typo3_Bootstrap::defineAndCheckPaths('typo3/');
-Typo3_Bootstrap::requireBaseClasses();
-Typo3_Bootstrap::setUpEnvironment();
+require('classes/Bootstrap/Backend.php');
+Typo3_Bootstrap_Backend::checkEnvironmentOrDie();
+Typo3_Bootstrap_Backend::defineBaseConstants();
+Typo3_Bootstrap_Backend::defineAndCheckPaths('typo3/');
+Typo3_Bootstrap_Backend::requireBaseClasses();
+Typo3_Bootstrap_Backend::setUpEnvironment();
 
 	/** @define "PATH_t3lib" "../t3lib/" */
 require(PATH_t3lib . 'config_default.php');
 
-Typo3_Bootstrap::initializeTypo3DbGlobal(TRUE);
+Typo3_Bootstrap_Backend::initializeTypo3DbGlobal(TRUE);
 
 Typo3_Bootstrap_Cli::initializeCliKeyOrDie();
 
@@ -71,15 +71,15 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
 if (TYPO3_extTableDef_script) {
 	include(PATH_typo3conf . TYPO3_extTableDef_script);
 }
-Typo3_Bootstrap::runExtTablesPostProcessingHooks();
+Typo3_Bootstrap_Backend::runExtTablesPostProcessingHooks();
 
 	// TODO: Check if we really need the sprite manager on the command line
-Typo3_Bootstrap::initializeSpriteManager(TRUE);
+Typo3_Bootstrap_Backend::initializeSpriteManager(TRUE);
 
-Typo3_Bootstrap::initializeBackendUser();
-Typo3_Bootstrap::initializeBackendUserMounts();
+Typo3_Bootstrap_Backend::initializeBackendUser();
+Typo3_Bootstrap_Backend::initializeBackendUserMounts();
 
-Typo3_Bootstrap::initializeLanguageObject();
+Typo3_Bootstrap_Backend::initializeLanguageObject();
 
 	// Make sure output is not buffered, so command-line output and interaction can take place
 t3lib_div::flushOutputBuffers();
@@ -91,5 +91,5 @@ try {
 	exit(99);
 }
 
-Typo3_Bootstrap::shutdown();
+Typo3_Bootstrap_Backend::shutdown();
 ?>

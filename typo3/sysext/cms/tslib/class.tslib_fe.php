@@ -2086,7 +2086,7 @@ class tslib_fe {
 
 			$this->TCAloaded = $TCAloaded;
 
-			Typo3_Bootstrap::runExtTablesPostProcessingHooks();
+			Typo3_Bootstrap_Backend::runExtTablesPostProcessingHooks();
 		}
 	}
 

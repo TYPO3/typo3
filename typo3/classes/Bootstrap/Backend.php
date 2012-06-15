@@ -40,7 +40,7 @@
  * @package TYPO3
  * @subpackage core
  */
-class Typo3_Bootstrap {
+class Typo3_Bootstrap_Backend {
 
 	/**
 	 * Check several a priori conditions like the current
