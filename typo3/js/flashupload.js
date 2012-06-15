@@ -2,7 +2,7 @@
  * Javascript functions regarding the inclusion 
  * of a TYPO3-customized version of SWFupload
  *
- * For proper use see file_list.php or the doc_core_api manual
+ * For proper use see filelist/mod1/index.php or the doc_core_api manual
  *
  * (c) 2009-2011 Benjamin Mack <benni@typo3.org>
  * All rights reserved

@@ -123,7 +123,7 @@ class t3lib_clipboard {
 	/**
 	 * The array $cmd may hold various keys which notes some action to take.
 	 * Normally perform only one action at a time.
-	 * In scripts like db_list.php / file_list.php the GET-var CB is used to control the clipboard.
+	 * In scripts like db_list.php / filelist/mod1/index.php the GET-var CB is used to control the clipboard.
 	 *
 	 * Selecting / Deselecting elements
 	 * Array $cmd['el'] has keys = element-ident, value = element value (see description of clipData array in header)
@@ -529,7 +529,7 @@ class t3lib_clipboard {
 			} else {
 				if (t3lib_extMgm::isLoaded('filelist')) {
 					$str = '<a href="' . htmlspecialchars(
-						$this->backPath . t3lib_extMgm::extRelPath('filelist') . 'mod1/file_list.php?id=' . dirname($rec)
+						$this->backPath . t3lib_BEfunc::getModuleUrl('file_list') . '&id=' . dirname($rec)
 					) . '">' . $str . '</a>';
 				}
 			}

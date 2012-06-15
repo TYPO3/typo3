@@ -39,7 +39,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
- * @see typo3/db_list.php, typo3/file_list.php
+ * @see typo3/db_list.php, typo3/sysext/filelist/mod1/index.php
  */
 class t3lib_recordList {
 

@@ -48,7 +48,7 @@ class fileList extends t3lib_recordList {
 	var $widthGif = '<img src="clear.gif" width="1" height="1" hspace="165" alt="" />';
 		// Max length of strings
 	var $fixedL = 30;
-	var $script = 'file_list.php';
+	var $script = '';
 		// If TRUE click menus are generated on files and folders
 	var $clickMenus = 1;
 		// The field to sort by...
@@ -91,7 +91,7 @@ class fileList extends t3lib_recordList {
 	 */
 	function start(t3lib_file_Folder $folderObject, $pointer, $sort, $sortRev, $clipBoard = FALSE, $bigControlPanel = FALSE) {
 
-		$this->script = t3lib_extMgm::extRelPath('filelist') . 'mod1/file_list.php';
+		$this->script = t3lib_BEfunc::getModuleUrl('file_list');
 		$this->folderObject = $folderObject;
 		$this->counter = 0;
 		$this->totalbytes = 0;
@@ -596,7 +596,7 @@ class fileList extends t3lib_recordList {
 	}
 
 	/**
-	 * Wraps the directory-titles ($code) in a link to file_list.php (id=$path) and sorting commands...
+	 * Wraps the directory-titles ($code) in a link to filelist/mod1/index.php (id=$path) and sorting commands...
 	 *
 	 * @param string $code String to be wrapped
 	 * @param string $folderIdentifier ID (path)
