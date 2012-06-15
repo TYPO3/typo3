@@ -213,8 +213,6 @@ class TYPO3backend {
 			$this->pageRenderer->addJsFile($jsFile);
 		}
 
-		$this->pageRenderer->setFavIcon('gfx/favicon.ico');
-
 		$this->generateJavascript();
 		$this->pageRenderer->addJsInlineCode('BackendInlineJavascript', $this->js, FALSE);
 
