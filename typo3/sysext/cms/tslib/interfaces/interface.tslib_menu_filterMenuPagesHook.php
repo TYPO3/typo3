@@ -25,26 +25,24 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * interface for classes which hook into tslib_menu
  *
- * @author	Tolleiv Nietsch <nietsch@aoemedia.de>
+ * @author Tolleiv Nietsch <nietsch@aoemedia.de>
  * @package TYPO3
  */
-
 interface tslib_menu_filterMenuPagesHook {
 
 	/**
 	 * Checks if a page is OK to include in the final menu item array.
 	 *
-	 * @param	array		Array of menu items
-	 * @param	array		Array of page uids which are to be excluded
-	 * @param	boolean		If set, then the page is a spacer.
-	 * @param	tslib_menu	The menu object
-	 * @return	boolean		Returns TRUE if the page can be safely included.
+	 * @param array $data Array of menu items
+	 * @param array $banUidArray Array of page uids which are to be excluded
+	 * @param boolean $spacer If set, then the page is a spacer.
+	 * @param tslib_menu $obj The menu object
+	 * @return boolean Returns TRUE if the page can be safely included.
 	 */
-	public function processFilter (array &$data, array $banUidArray, $spacer, tslib_menu $obj);
+	public function processFilter(array &$data, array $banUidArray, $spacer, tslib_menu $obj);
 }
 
 ?>
