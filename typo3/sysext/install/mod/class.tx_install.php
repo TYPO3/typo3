@@ -7498,7 +7498,7 @@ $out="
 			// this line hast to stay, as included files use $TCA in global scope
 		global $TCA;
 
-		include (TYPO3_tables_script ? PATH_typo3conf.TYPO3_tables_script : PATH_t3lib.'stddb/tables.php');
+		include (PATH_t3lib . 'stddb/tables.php');
 
 			// Extension additions
 		if ($GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']) {

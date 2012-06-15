@@ -70,6 +70,12 @@ The ancient noBlur TypoScript setting for old Browsers (Internet Explorer <= 5.5
 was removed without alternative. The setting has no effect anymore and can be
 removed from custom TypoScript objects, especially MENU.
 
+* Removed TYPO3_tables_script constant
+
+It was possible to define a different base TCA definition file by defining the
+variable typo_db_tables_script in localconf.php. This functionality is removed
+without substitution.
+
 ===============================================================================
 Changes and Improvements
 ===============================================================================

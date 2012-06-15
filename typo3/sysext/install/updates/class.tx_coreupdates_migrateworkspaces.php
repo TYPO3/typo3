@@ -379,7 +379,7 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 	protected function includeTCA() {
 		global $TCA; // this is relevant because it's used within the included ext_tables.php files - do NOT remove it
 
-		include_once(TYPO3_tables_script ? PATH_typo3conf . TYPO3_tables_script : PATH_t3lib . 'stddb/tables.php');
+		include_once(PATH_t3lib . 'stddb/tables.php');
 			// Extension additions
 		if ($GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']) {
 			include_once(PATH_typo3conf . $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] . '_ext_tables.php');
