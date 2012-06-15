@@ -84,7 +84,7 @@ class SC_file_upload {
 		$this->target = t3lib_div::_GP('target');
 		$this->returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 		if (!$this->returnUrl) {
-			$this->returnUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . t3lib_extMgm::extRelPath('filelist') . 'mod1/file_list.php?id=' . rawurlencode($this->target);
+			$this->returnUrl = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . t3lib_BEfunc::getModuleUrl('file_list') . '&id=' . rawurlencode($this->target);
 		}
 
 			// Create the folder object
