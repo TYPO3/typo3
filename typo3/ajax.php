@@ -56,7 +56,7 @@ if (in_array($ajaxID, $noUserAjaxIDs)) {
 }
 
 require('init.php');
-require('classes/class.typo3ajax.php');
+require('Classes/class.typo3ajax.php');
 
 	// finding the script path from the variable
 $ajaxScript = $TYPO3_CONF_VARS['BE']['AJAX'][$ajaxID];
