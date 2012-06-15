@@ -91,12 +91,8 @@ if (!$CLIENT['BROWSER']) {
 	throw new RuntimeException('Browser Error: Your browser version looks incompatible with this TYPO3 version!', 1294587023);
 }
 
-	// Include standard tables.php or own file
-if (TYPO3_tables_script) {
-	include(PATH_typo3conf . TYPO3_tables_script);
-} else {
-	include(PATH_t3lib . 'stddb/tables.php');
-}
+	// Include standard tables.php file
+include(PATH_t3lib . 'stddb/tables.php');
 	// Load temp_CACHED file of ext_tables or each ext_tables.php of loaded extensions
 if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
 	include(PATH_typo3conf . $TYPO3_LOADED_EXT['_CACHEFILE'] . '_ext_tables.php');

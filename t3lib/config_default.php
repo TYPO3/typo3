@@ -739,7 +739,6 @@ $typo_db = '';					// The database name
 $typo_db_username = '';			// The database username
 $typo_db_password = '';			// The database password
 $typo_db_host = '';				// The database host
-$typo_db_tables_script = '';	// The filename of the tables.php script in typo3conf/ folder IF the default t3lib/stddb/tables.php should NOT be used for some reason. It's recommended to use the default and modify it through the extTableDef-script, see below.
 $typo_db_extTableDef_script = '';	// The filename of an additional script in typo3conf/-folder which is included after tables.php. Code in this script should modify the tables.php-configuration only, and this provides a good way to extend the standard-distributed tables.php file.
 
 	// Include localconf.php. Use this file to configure TYPO3 for your needs and database
@@ -903,7 +902,6 @@ define('TYPO3_db', $typo_db);
 define('TYPO3_db_username', $typo_db_username);
 define('TYPO3_db_password', $typo_db_password);
 define('TYPO3_db_host', $typo_db_host);
-define('TYPO3_tables_script', $typo_db_tables_script);
 define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
 
 	// Initialize the locales handled by TYPO3
@@ -914,7 +912,6 @@ unset($typo_db);
 unset($typo_db_username);
 unset($typo_db_password);
 unset($typo_db_host);
-unset($typo_db_tables_script);
 unset($typo_db_extTableDef_script);
 
 	// Based on the configuration of the image processing some options may be forced:

@@ -38,8 +38,7 @@
  * This file is included from "typo3/init.php" (backend) and "index_ts.php"
  * (frontend) as the first file of a three-fold inclusion session
  * (see references):
- * 1) First this script is included (unless the constant "TYPO3_tables_script"
- * instructs another filename to substitute it, see t3lib/config_default.php);
+ * 1) First this script is included.
  * This should initialize the variables shown above.
  * 2) Then either the "typo3conf/temp_CACHED_??????_ext_tables.php" cache file
  * OR "stddb/load_ext_tables.php" is included in order to let extensions
