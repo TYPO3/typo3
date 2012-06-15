@@ -46,6 +46,7 @@ return array(
 	'tx_em_settings' => $emClassesPath . 'settings/class.tx_em_settings.php',
 
 	'tx_em_tasks_updateextensionlist' => $emClassesPath . 'tasks/class.tx_em_tasks_updateextensionlist.php',
+	'tx_em_tasks_updatelanguagepackages' => $emClassesPath . 'tasks/class.tx_em_tasks_updatelanguagepackages.php',
 
 	'tx_em_tools' => $emClassesPath . 'tools/class.tx_em_tools.php',
 	'tx_em_tools_unzip' => $emClassesPath . 'tools/class.tx_em_tools_unzip.php',
