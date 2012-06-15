@@ -2086,16 +2086,7 @@ class tslib_fe {
 
 			$this->TCAloaded = $TCAloaded;
 
-				// Hook for postprocessing values set in extTables.php
-			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
-				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] AS $_classRef) {
-					$hookObject = t3lib_div::getUserObj($_classRef);
-					if (!$hookObject instanceof t3lib_extTables_PostProcessingHook) {
-						throw new UnexpectedValueException('$hookObject must implement interface t3lib_extTables_PostProcessingHook', 1320585902);
-					}
-					$hookObject->processData();
-				}
-			}
+			Typo3_Bootstrap::runExtTablesPostProcessingHooks();
 		}
 	}
 
