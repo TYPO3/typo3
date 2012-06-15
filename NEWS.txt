@@ -22,6 +22,11 @@ symlink, make sure that this file is also a symlink to the cores index.php,
 otherwise the frontend will be broken. If index.php is a copy of the source
 file, make sure to install a fresh version from 6.0 sources.
 
+* Moved default TYPO3_CONF_VARS
+
+The default TYPO3_CONF_VARS definitions where moved from t3lib/config_default.php
+to an own file in t3lib/stddb/DefaultSettings.php.
+
 * Deprecated methods
 
 Deprecated methods that were initially targeted to be removed in TYPO3 4.8/6.0
