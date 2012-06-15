@@ -6073,8 +6073,18 @@ class tslib_cObj {
 								}
 								$urlParts = parse_url($LD['totalURL']);
 								if ($urlParts['host'] == '') {
-									$LD['totalURL'] = $absoluteUrlScheme . '://' . $targetDomain .
-										($LD['totalURL']{0} == '/' ? '' : '/') . $LD['totalURL'];
+										// If $page has the same siteroot as current page and domain record is based on that $page
+										// remove totalURL as otherwise it's no valid URL
+									$tmpRootLine = $GLOBALS['TSFE']->sys_page->getRootLine($page);
+									if (is_array($tmpRootLine)
+										&& $tmpRootLine[0]['uid'] == $GLOBALS['TSFE']->rootLine[0]['uid']
+										&& $page == array_search($targetDomain, $foundDomains)) {
+
+										$LD['totalURL'] = $absoluteUrlScheme . '://' . $targetDomain;
+									} else {
+										$LD['totalURL'] = $absoluteUrlScheme . '://' . $targetDomain .
+											($LD['totalURL']{0} == '/' ? '' : '/') . $LD['totalURL'];
+									}
 								}
 							}
 							$this->lastTypoLinkUrl = $this->URLqMark($LD['totalURL'], '') . $sectionMark;
