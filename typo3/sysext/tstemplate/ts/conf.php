@@ -1,11 +1,13 @@
 <?php
-define('TYPO3_MOD_PATH', 'sysext/tstemplate/ts/');
-$BACK_PATH='../../../';
+
+$MCONF['script'] = '_DISPATCH';
+
+$MCONF['access'] = 'admin';
+$MCONF['name'] = 'web_ts';
 
 $MLANG['default']['tabs_images']['tab'] = 'ts1.gif';
-$MLANG['default']['ll_ref']='LLL:EXT:tstemplate/ts/locallang_mod.xml';
+$MLANG['default']['ll_ref'] = 'LLL:EXT:tstemplate/ts/locallang_mod.xml';
 
-$MCONF['script']='index.php';
-$MCONF['access']='admin';		// If this is changed so not only admin-users can manipulate templates, there need to be done something with the constant editor that is not allowed to 'clear all cache' then!!
-$MCONF['name']='web_ts';
+
+
 ?>

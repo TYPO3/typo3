@@ -34,14 +34,7 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-
-
-unset($MCONF);
-require('conf.php');
-require($BACK_PATH . 'init.php');
-require($BACK_PATH . 'template.php');
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate/ts/locallang.xml');
-
 $BE_USER->modAccess($MCONF, TRUE);
 
 
@@ -104,7 +97,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		$this->doc->setModuleTemplate('templates/tstemplate.html');
 
 		if ($this->id && $this->access) {
-			$this->doc->form = '<form action="index.php?id=' . $this->id . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editForm">';
+			$this->doc->form = '<form action="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . $this->id . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editForm">';
 
 
 				// JavaScript
@@ -115,10 +108,10 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				window.location.href = URL;
 			}
 			function uFormUrl(aname) {
-				document.forms[0].action = "index.php?id=' . $this->id . '#"+aname;
+				document.forms[0].action = "mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . $this->id . '#"+aname;
 			}
 			function brPoint(lnumber,t) {
-				window.location.href = "index.php?id=' . $this->id . '&SET[function]=tx_tstemplateobjbrowser&SET[ts_browser_type]="+(t?"setup":"const")+"&breakPointLN="+lnumber;
+				window.location.href = "mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . $this->id . '&SET[function]=tx_tstemplateobjbrowser&SET[ts_browser_type]="+(t?"setup":"const")+"&breakPointLN="+lnumber;
 				return false;
 			}
 		</script>
@@ -309,7 +302,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			} elseif($this->extClassConf['name'] == 'tx_tstemplateobjbrowser') {
 				if(!empty($this->sObj)) {
 						// BACK
-					$buttons['back'] = '<a href="index.php?id=' . $this->id . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
+					$buttons['back'] = '<a href="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . $this->id . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goBack', TRUE) . '">' .
 									t3lib_iconWorks::getSpriteIcon('actions-view-go-back') .
 								'</a>';
 				}
@@ -335,9 +328,9 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 	function linkWrapTemplateTitle($title, $onlyKey = '') {
 		if ($onlyKey) {
-			$title = '<a href="index.php?id=' . htmlspecialchars($GLOBALS['SOBE']->id . '&e[' . $onlyKey . ']=1&SET[function]=tx_tstemplateinfo') . '">' . htmlspecialchars($title) . '</a>';
+			$title = '<a href="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . htmlspecialchars($GLOBALS['SOBE']->id . '&e[' . $onlyKey . ']=1&SET[function]=tx_tstemplateinfo') . '">' . htmlspecialchars($title) . '</a>';
 		} else {
-			$title = '<a href="index.php?id=' . htmlspecialchars($GLOBALS['SOBE']->id . '&e[constants]=1&e[config]=1&SET[function]=tx_tstemplateinfo') . '">' . htmlspecialchars($title) . '</a>';
+			$title = '<a href="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . htmlspecialchars($GLOBALS['SOBE']->id . '&e[constants]=1&e[config]=1&SET[function]=tx_tstemplateinfo') . '">' . htmlspecialchars($title) . '</a>';
 		}
 		return $title;
 	}
@@ -348,7 +341,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		/* @var $tmpl t3lib_tsparser_ext */
 		$tmpl->tt_track = FALSE;	// Do not log time-performance information
 		$tmpl->init();
-
+		$theOutput = '';
 		$flashMessage = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
 			$GLOBALS['LANG']->getLL('noTemplateDescription') . '<br />' . $GLOBALS['LANG']->getLL('createTemplateToEditConfiguration'),
@@ -391,7 +384,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$theOutput .= $this->doc->spacer(10);
 			$theOutput .= $this->doc->section($GLOBALS['LANG']->getLL('goToClosest'),
 					sprintf($GLOBALS['LANG']->getLL('goToClosestDescription') . '<br /><br />%s<strong>' . $GLOBALS['LANG']->getLL('goToClosestAction') . '</strong>%s', htmlspecialchars($first['title']), $first['uid'],
-					'<a href="index.php?id=' . $first['uid'] . '">', '</a>'), 0, 1);
+					'<a href="mod.php?M=' . htmlspecialchars(t3lib_div::_GP('M')) . '&id=' . $first['uid'] . '">', '</a>'), 0, 1);
 		}
 		return $theOutput;
 	}
