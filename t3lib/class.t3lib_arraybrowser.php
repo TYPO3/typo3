@@ -91,7 +91,7 @@ class t3lib_arrayBrowser {
 				$HTML .= $theIcon;
 			} else {
 				$HTML .=
-						($this->expAll ? '' : '<a id="' . $goto . '" href="' . htmlspecialchars('index.php?node[' .
+						($this->expAll ? '' : '<a id="' . $goto . '" href="' . htmlspecialchars(t3lib_BEfunc::getModuleUrl(t3lib_div::_GP('M')) . '&node[' .
 								$depth . ']=' . ($deeper ? 0 : 1) . '#' . $goto) . '">') .
 								$theIcon .
 								($this->expAll ? '' : '</a>');
@@ -156,7 +156,7 @@ class t3lib_arrayBrowser {
 		if ($this->varName && !$this->dontLinkVar) {
 			$variableName = $this->varName . '[\'' . str_replace('.', '\'][\'', $depth) . '\'] = ' .
 				(!t3lib_utility_Math::canBeInterpretedAsInteger($theValue) ? '\'' . addslashes($theValue) . '\'' : $theValue) . '; ';
-			$label = '<a href="index.php?varname=' . urlencode($variableName) . '#varname">' . $label . '</a>';
+			$label = '<a href="' . htmlspecialchars(t3lib_BEfunc::getModuleUrl(t3lib_div::_GP('M')) . '&varname=' . urlencode($variableName)) . '#varname">' . $label . '</a>';
 		}
 
 			// Return:
@@ -177,6 +177,7 @@ class t3lib_arrayBrowser {
 		if ($depth_in) {
 			$depth_in = $depth_in . '.';
 		}
+
 		foreach ($keyArr as $key => $value) {
 			$depth = $depth_in . $key;
 			$deeper = is_array($keyArr[$key]);
