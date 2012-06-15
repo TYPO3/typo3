@@ -25,11 +25,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
- * interface for classes which hook into tslib_content and do additional cObjGetSingle processing
+ * Interface for classes which hook into tslib_content and do additional cObjGetSingle processing
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -38,11 +37,11 @@ interface tslib_content_cObjGetSingleHook {
 	/**
 	 * Renders content objects, that are not defined in the core
 	 *
-	 * @param	string		The content object name, eg. "TEXT" or "USER" or "IMAGE"
-	 * @param	array		array with TypoScript properties for the content object
-	 * @param	string		label used for the internal debug tracking
-	 * @param	tslib_cObj	parent content object
-	 * @return	string		cObject output
+	 * @param string $contentObjectName The content object name, eg. "TEXT" or "USER" or "IMAGE"
+	 * @param array $configuration Array with TypoScript properties for the content object
+	 * @param string $TypoScriptKey Label used for the internal debug tracking
+	 * @param tslib_cObj $parentObject Parent content object
+	 * @return string cObject output
 	 */
 	public function getSingleContentObject($contentObjectName, array $configuration, $TypoScriptKey, tslib_cObj &$parentObject);
 

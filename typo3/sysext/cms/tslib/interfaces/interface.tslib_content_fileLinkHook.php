@@ -25,7 +25,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Interface for classes which hook into tslib_content and do additional getImgResource processing
  *
@@ -38,9 +37,9 @@ interface tslib_content_fileLinkHook {
 	/**
 	 * Finds alternative previewImage for given File.
 	 *
-	 * @abstract
 	 * @param t3lib_file_File $file
 	 * @return t3lib_file_File
+	 * @abstract
 	 */
 	function getPreviewImage(t3lib_file_File $file);
 }

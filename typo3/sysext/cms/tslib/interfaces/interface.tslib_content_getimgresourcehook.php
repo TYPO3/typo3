@@ -25,11 +25,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Interface for classes which hook into tslib_content and do additional getImgResource processing
  *
- * @author	Oliver Hader <oliver@typo3.org>
+ * @author Oliver Hader <oliver@typo3.org>
  * @package TYPO3
  * @subpackage cms
  */
@@ -37,11 +36,11 @@ interface tslib_cObj_getImgResourceHook {
 	/**
 	 * Hook for post-processing image resources
 	 *
-	 * @param	string		$file: Original image file
-	 * @param	array		$configuration: TypoScript getImgResource properties
-	 * @param	array		$imageResource: Information of the created/converted image resource
-	 * @param	tslib_cObj	$parent: Parent content object
-	 * @return	array		Modified image resource information
+	 * @param string $file Original image file
+	 * @param array $configuration TypoScript getImgResource properties
+	 * @param array $imageResource Information of the created/converted image resource
+	 * @param tslib_cObj $parent Parent content object
+	 * @return array Modified image resource information
 	 */
 	public function getImgResourcePostProcess($file, array $configuration, array $imageResource, tslib_cObj $parent);
 }
