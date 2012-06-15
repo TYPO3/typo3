@@ -1928,7 +1928,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @return void
 	 */
 	function generateConfigForm($type='') {
-		$default_config_content = t3lib_div::getUrl(PATH_t3lib.'config_default.php');
+		$default_config_content = t3lib_div::getUrl(PATH_t3lib . 'stddb/DefaultSettings.php');
 		$commentArr = $this->getDefaultConfigArrayComments($default_config_content);
 
 		switch($type) {
@@ -2151,7 +2151,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					}
 				}
 			}
-			if (!strcmp($lc, '$TYPO3_CONF_VARS = array(')) {
+			if (!strcmp($lc, 'return array(')) {
 				$in=1;
 			}
 		}
