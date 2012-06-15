@@ -33,18 +33,9 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-unset($MCONF);
-require('conf.php');
-require($BACK_PATH.'init.php');
-require($BACK_PATH.'template.php');
 require('class.sc_mod_web_perm_ajax.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_perm.xml');
-
 $BE_USER->modAccess($MCONF, 1);
-
-
-
-
 
 
 /**
@@ -188,7 +179,7 @@ class SC_mod_web_perm_index {
 		$this->doc->form = '<form action="'.$GLOBALS['BACK_PATH'].'tce_db.php" method="post" name="editform">';
 		$this->doc->loadJavascriptLib('../t3lib/jsfunc.updateform.js');
 		$this->doc->getPageRenderer()->loadPrototype();
-		$this->doc->loadJavascriptLib(TYPO3_MOD_PATH . 'perm.js');
+		$this->doc->loadJavascriptLib(t3lib_extMgm::extRelPath('perm') . 'mod1/perm.js');
 
 			// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
@@ -480,9 +471,10 @@ class SC_mod_web_perm_index {
 			<input type="hidden" name="data[pages]['.$this->id.'][perms_everybody]" value="'.$this->pageinfo['perms_everybody'].'" />
 			'.$this->getRecursiveSelect($this->id, $this->perms_clause).'
 			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', 1) . '" />'.
-			'<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', 1) . '" onclick="' . htmlspecialchars('jumpToUrl(\'index.php?id=' . $this->id . '\'); return false;') . '" />
-			<input type="hidden" name="redirect" value="'.htmlspecialchars(TYPO3_MOD_PATH.'index.php?mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.intval($this->return_id).'&lastEdited='.$this->id).'" />
-		' . t3lib_TCEforms::getHiddenTokenField('tceAction');
+			'<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', 1) . '" onclick="' . htmlspecialchars('jumpToUrl(' . t3lib_div::quoteJSvalue(t3lib_BEfunc::getModuleUrl('web_perm') . '&id=' . $this->id, TRUE) . '); return false;') . '" />
+			<input type="hidden" name="redirect" value="' . htmlspecialchars(t3lib_BEfunc::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] .
+			'&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . intval($this->return_id) . '&lastEdited=' . $this->id) . '" />
+			' . t3lib_TCEforms::getHiddenTokenField('tceAction');
 
 			// Adding section with the permission setting matrix:
 		$this->content.=$this->doc->divider(5);
@@ -617,7 +609,7 @@ class SC_mod_web_perm_index {
 
 				// "Edit permissions" -icon
 			if ($editPermsAllowed && $pageId) {
-				$aHref = 'index.php?mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId).'&return_id='.$this->id.'&edit=1';
+				$aHref = t3lib_BEfunc::getModuleUrl('web_perm') . '&mode='.$this->MOD_SETTINGS['mode'].'&depth='.$this->MOD_SETTINGS['depth'].'&id='.($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId).'&return_id='.$this->id.'&edit=1';
 				$cells[]='
 					<td' . $bgCol . '><a href="' . htmlspecialchars($aHref) . '" title="' . $GLOBALS['LANG']->getLL('ch_permissions', 1) . '">' . t3lib_iconWorks::getSpriteIcon('actions-document-open') . '</a></td>';
 			} else {
