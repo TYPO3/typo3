@@ -37,27 +37,27 @@ ob_start();
 define('TYPO3_MODE', 'BE');
 define('TYPO3_enterInstallScript', '1');
 
-	// We use require instead of require_once here so we get a fatal error if Bootstrap.php is accidentally included twice
+	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap/Backend.php is accidentally included twice
 	// (which would indicate a clear bug).
-require('../Bootstrap.php');
-Typo3_Bootstrap::checkEnvironmentOrDie();
-Typo3_Bootstrap::defineBaseConstants();
-Typo3_Bootstrap::defineAndCheckPaths('typo3/install/');
-Typo3_Bootstrap::requireBaseClasses();
-Typo3_Bootstrap::setUpEnvironment();
+require('../classes/Bootstrap/Backend.php');
+Typo3_Bootstrap_Backend::checkEnvironmentOrDie();
+Typo3_Bootstrap_Backend::defineBaseConstants();
+Typo3_Bootstrap_Backend::defineAndCheckPaths('typo3/install/');
+Typo3_Bootstrap_Backend::requireBaseClasses();
+Typo3_Bootstrap_Backend::setUpEnvironment();
 
-require('../Bootstrap_Install.php');
+require('../classes/Bootstrap/Install.php');
 Typo3_Bootstrap_Install::checkEnabledInstallToolOrDie();
 
 require(PATH_t3lib . 'config_default.php');
 
-Typo3_Bootstrap::initializeTypo3DbGlobal(FALSE);
+Typo3_Bootstrap_Backend::initializeTypo3DbGlobal(FALSE);
 
-Typo3_Bootstrap::checkLockedBackendAndRedirectOrDie();
+Typo3_Bootstrap_Backend::checkLockedBackendAndRedirectOrDie();
 
-Typo3_Bootstrap::checkBackendIpOrDie();
+Typo3_Bootstrap_Backend::checkBackendIpOrDie();
 
-Typo3_Bootstrap::checkSslBackendAndRedirectIfNeeded();
+Typo3_Bootstrap_Backend::checkSslBackendAndRedirectIfNeeded();
 
 	// Run install script
 if (!t3lib_extMgm::isLoaded('install')) {
