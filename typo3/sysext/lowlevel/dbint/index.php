@@ -34,18 +34,8 @@
  */
 
 
-unset($MCONF);
-require('conf.php');
-require($BACK_PATH . 'init.php');
-require($BACK_PATH . 'template.php');
-
 $GLOBALS['LANG']->includeLLFile('EXT:lowlevel/dbint/locallang.xml');
 $BE_USER->modAccess($MCONF, 1);
-
-
-
-
-
 
 /**
  * Script class for the DB int module
@@ -299,7 +289,7 @@ class SC_mod_tools_dbint_index {
 		$content     = '<dl class="t3-overview-list">';
 
 		foreach ($availableModFuncs as $modFunc) {
-			$link        = 'index.php?SET[function]=' . $modFunc;
+			$link        = t3lib_BEfunc::getModuleUrl('tools_dbint') . '&SET[function]=' . $modFunc;
 			$title       = $GLOBALS['LANG']->getLL($modFunc);
 			$description = $GLOBALS['LANG']->getLL($modFunc . '_description');
 
@@ -514,7 +504,7 @@ class SC_mod_tools_dbint_index {
 				if (is_array($admin->lRecords[$t])) {
 					foreach ($admin->lRecords[$t] as $data) {
 						if (!t3lib_div::inList($admin->lostPagesList, $data[pid])) {
-							$lr.= '<nobr><strong><a href="index.php?SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data[uid] . '"><img src="' . $BACK_PATH . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="' . $GLOBALS['LANG']->getLL('fixLostRecord') . '"></a>uid:' . $data[uid] . ', pid:' . $data[pid] . ', ' . t3lib_div::fixed_lgd_cs(strip_tags($data[title]), 20) . '</strong></nobr><br>';
+							$lr.= '<nobr><strong><a href="' . t3lib_BEfunc::getModuleUrl('tools_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data[uid] . '"><img src="' . $BACK_PATH . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="' . $GLOBALS['LANG']->getLL('fixLostRecord') . '"></a>uid:' . $data[uid] . ', pid:' . $data[pid] . ', ' . t3lib_div::fixed_lgd_cs(strip_tags($data[title]), 20) . '</strong></nobr><br>';
 						} else {
 							$lr.= '<nobr><img src="' . $BACK_PATH . 'clear.gif" width="16" height="1" border="0"><font color="Gray">uid:' . $data[uid] . ', pid:' . $data[pid] . ', ' . t3lib_div::fixed_lgd_cs(strip_tags($data[title]), 20) . '</font></nobr><br>';
 						}
