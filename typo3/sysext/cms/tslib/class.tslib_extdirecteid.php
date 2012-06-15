@@ -23,7 +23,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once(PATH_site . 'typo3/classes/class.typo3ajax.php');
+require_once(PATH_site . 'typo3/Classes/class.typo3ajax.php');
 
 /**
  * eID controller for ExtDirect
