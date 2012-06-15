@@ -25,11 +25,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * interface for classes which hook into tslib_content and do additional stdWrap processing
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -38,40 +37,40 @@ interface tslib_content_stdWrapHook {
 	/**
 	 * Hook for modifying $content before core's stdWrap does anything
 	 *
-	 * @param	string		input value undergoing processing in this function. Possibly substituted by other values fetched from another source.
-	 * @param	array		TypoScript stdWrap properties
-	 * @param	tslib_cObj	parent content object
-	 * @return	string		further processed $content
+	 * @param string $content Input value undergoing processing in this function. Possibly substituted by other values fetched from another source.
+	 * @param array $configuration TypoScript stdWrap properties
+	 * @param tslib_cObj $parentObject Parent content object
+	 * @return string Further processed $content
 	 */
 	public function stdWrapPreProcess($content, array $configuration, tslib_cObj &$parentObject);
 
 	/**
 	 * Hook for modifying $content after core's stdWrap has processed setContentToCurrent, setCurrent, lang, data, field, current, cObject, numRows, filelist and/or preUserFunc
 	 *
-	 * @param	string		input value undergoing processing in this function. Possibly substituted by other values fetched from another source.
-	 * @param	array		TypoScript stdWrap properties
-	 * @param	tslib_cObj	parent content object
-	 * @return	string		further processed $content
+	 * @param string $content Input value undergoing processing in this function. Possibly substituted by other values fetched from another source.
+	 * @param array $configuration TypoScript stdWrap properties
+	 * @param tslib_cObj $parentObject Parent content object
+	 * @return string Further processed $content
 	 */
 	public function stdWrapOverride($content, array $configuration, tslib_cObj &$parentObject);
 
 	/**
 	 * Hook for modifying $content after core's stdWrap has processed override, preIfEmptyListNum, ifEmpty, ifBlank, listNum, trim and/or more (nested) stdWraps
 	 *
-	 * @param	string		input value undergoing processing in this function. Possibly substituted by other values fetched from another source.
-	 * @param	array		TypoScript "stdWrap properties".
-	 * @param	tslib_cObj	parent content object
-	 * @return	string		further processed $content
+	 * @param string $content Input value undergoing processing in this function. Possibly substituted by other values fetched from another source.
+	 * @param array $configuration TypoScript "stdWrap properties".
+	 * @param tslib_cObj $parentObject Parent content object
+	 * @return string Further processed $content
 	 */
 	public function stdWrapProcess($content, array $configuration, tslib_cObj &$parentObject);
 
 	/**
 	 * Hook for modifying $content after core's stdWrap has processed anything but debug
 	 *
-	 * @param	string		input value undergoing processing in this function. Possibly substituted by other values fetched from another source.
-	 * @param	array		TypoScript stdWrap properties
-	 * @param	tslib_cObj	parent content object
-	 * @return	string		further processed $content
+	 * @param string $content Input value undergoing processing in this function. Possibly substituted by other values fetched from another source.
+	 * @param array $configuration TypoScript stdWrap properties
+	 * @param tslib_cObj $parentObject Parent content object
+	 * @return string Further processed $content
 	 */
 	public function stdWrapPostProcess($content, array $configuration, tslib_cObj &$parentObject);
 

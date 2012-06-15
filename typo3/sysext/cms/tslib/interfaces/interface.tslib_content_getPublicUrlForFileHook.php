@@ -25,7 +25,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Interface for hooks to fetch the public URL of files
  *
