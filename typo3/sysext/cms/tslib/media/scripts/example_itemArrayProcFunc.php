@@ -31,17 +31,8 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-
-
-
-
-
-
-
-
 
 /**
  * This function basically adds the parent page to the sublevel but only if the sublevel is empty!
@@ -66,13 +57,14 @@
  *   linkWrap = <b> - |</b>
  * }
  *
- * @param	array		The $menuArr array which simply is a num-array of page records which goes into the menu.
- * @param	array		TypoScript configuration for the function. Notice that the property "parentObj" is a reference to the parent (calling) object (the tslib_Xmenu class instantiated)
- * @return	array		The modified $menuArr array
+ * @param array $menuArr The $menuArr array which simply is a num-array of page records which goes into the menu.
+ * @param array $conf TypoScript configuration for the function. Notice that the property "parentObj" is a reference to the parent (calling) object (the tslib_Xmenu class instantiated)
+ * @return array The modified $menuArr array
  */
 function user_itemArrayProcFuncTest($menuArr, $conf) {
-	if ($conf['demoItemStates'])	{		// Used in the example of item states
-		$c=0;
+		// Used in the example of item states
+	if ($conf['demoItemStates']) {
+		$c = 0;
 		$teststates=explode(',', 'NO,ACT,IFSUB,CUR,USR,SPC,USERDEF1,USERDEF2');
 		foreach ($menuArr as $k => $v) {
 			$menuArr[$k]['ITEM_STATE']=$teststates[$c];
@@ -80,10 +72,14 @@ function user_itemArrayProcFuncTest($menuArr, $conf) {
 			$c++;
 		}
 	} else {	// used in the fake menu item example!
-		if (!count($menuArr))	{		// There must be no menu items if we add the parent page to the submenu:
-			$parentPageId = $conf['parentObj']->id;	// id of the parent page
-			$parentPageRow = $GLOBALS['TSFE']->sys_page->getPage($parentPageId);	// ... and get the record...
-			if (is_array($parentPageRow))	{	// ... and if that page existed (a row was returned) then add it!
+			// There must be no menu items if we add the parent page to the submenu:
+		if (!count($menuArr)) {
+				// id of the parent page
+			$parentPageId = $conf['parentObj']->id;
+				// ... and get the record...
+			$parentPageRow = $GLOBALS['TSFE']->sys_page->getPage($parentPageId);
+				// ... and if that page existed (a row was returned) then add it!
+			if (is_array($parentPageRow)) {
 				$menuArr[]=$parentPageRow;
 			}
 		}
@@ -94,20 +90,22 @@ function user_itemArrayProcFuncTest($menuArr, $conf) {
 /**
  * Used in the menu item state example of the "testsite" package at page-path "/Intro/TypoScript examples/Menu object examples/Menu state test/"
  *
- * @param	array		The menu item array, $this->I (in the parent object)
- * @param	array		TypoScript configuration for the function. Notice that the property "parentObj" is a reference to the parent (calling) object (the tslib_Xmenu class instantiated)
- * @return	array		The processed $I array returned (and stored in $this->I of the parent object again)
+ * @param array $I The menu item array, $this->I (in the parent object)
+ * @param array $conf TypoScript configuration for the function. Notice that the property "parentObj" is a reference to the parent (calling) object (the tslib_Xmenu class instantiated)
+ * @return array The processed $I array returned (and stored in $this->I of the parent object again)
  * @see tslib_menu::userProcess(), tslib_tmenu::writeMenu(), tslib_gmenu::writeMenu()
  */
 function user_IProcFuncTest($I, $conf) {
 	$itemRow = $conf['parentObj']->menuArr[$I['key']];
 
 		// Setting the document status content to the value of the page title on mouse over
-	$I['linkHREF']['onMouseover'].='extraRollover(\''.rawurlencode($itemRow['title']).'\');';
+	$I['linkHREF']['onMouseover'] .= 'extraRollover(\'' . rawurlencode($itemRow['title']) . '\');';
 	$conf['parentObj']->I = $I;
 	$conf['parentObj']->setATagParts();
 	$I = $conf['parentObj']->I;
-	if ($I['parts']['ATag_begin'])	$I['parts']['ATag_begin']=$I['A1'];
+	if ($I['parts']['ATag_begin']) {
+		$I['parts']['ATag_begin'] = $I['A1'];
+	}
 
 	if ($conf['debug']) {
 			// Outputting for debug example:
@@ -119,6 +117,5 @@ function user_IProcFuncTest($I, $conf) {
 		// Returns:
 	return $I;
 }
-
 
 ?>

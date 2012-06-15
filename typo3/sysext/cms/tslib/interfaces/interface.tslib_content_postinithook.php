@@ -25,12 +25,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Interface for classes which hook into tslib_content and do additional
  * initialization processing.
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tslib
  */
@@ -39,7 +38,7 @@ interface tslib_content_PostInitHook {
 	/**
 	 * Hook for post processing the initialization of tslib_cObj
 	 *
-	 * @param	tslib_cObj	parent content object
+	 * @param tslib_cObj $parentObject Parent content object
 	 */
 	public function postProcessContentObjectInitialization(tslib_cObj &$parentObject);
 
