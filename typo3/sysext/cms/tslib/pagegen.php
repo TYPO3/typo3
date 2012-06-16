@@ -24,52 +24,39 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Generating the TypoScript based page.
  * Must be included from index_ts.php
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
 
-
-
-if (!is_object($TSFE))	{die('You cannot execute this file directly. It\'s meant to be included from index_ts.php');}
+if (!is_object($TSFE)) {
+	die('You cannot execute this file directly. It\'s meant to be included from index_ts.php');
+}
 $TT->push('pagegen.php, initialize');
 
-
-// *********************************
-// Initialization of some variables
-// *********************************
+	// Initialization of some variables
 TSpagegen::pagegenInit();
 
-
-// *************************
-// Global content object...
-// *************************
+	// Global content object...
 $GLOBALS['TSFE']->newCObj();
 
-
-// ******************************
-// LIBRARY INCLUSION, TypoScript
-// ******************************
-$temp_incFiles=TSpagegen::getIncFiles();
+	// LIBRARY INCLUSION, TypoScript
+$temp_incFiles = TSpagegen::getIncFiles();
 foreach ($temp_incFiles as $temp_file) {
-	include_once('./'.$temp_file);
+	include_once('./' . $temp_file);
 }
-
 
 $TT->pull();
 
-
-// *******************
-// Content generation
-// *******************
-
-// If this is an array, it's a sign that this script is included in order to include certain INT-scripts
-if (!$GLOBALS['TSFE']->isINTincScript())		{
+	// Content generation
+	// If this is an array, it's a sign that this script is included in order to include certain INT-scripts
+if (!$GLOBALS['TSFE']->isINTincScript()) {
 	$TT->push('pagegen.php, render');
 	TSpagegen::renderContent();
 	$GLOBALS['TSFE']->setAbsRefPrefix();
