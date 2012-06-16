@@ -28,8 +28,8 @@
 /**
  * View class for the admin panel in frontend editing.
  *
- * @author	Jeff Segars <jeff@webempoweredchurch.org>
- * @author	David Slayback <dave@webempoweredchurch.org>
+ * @author Jeff Segars <jeff@webempoweredchurch.org>
+ * @author David Slayback <dave@webempoweredchurch.org>
  * @author Dmitry Dulepov <dmitry@typo3.org>
  * @package TYPO3
  * @subpackage tslib
@@ -50,6 +50,9 @@ class tslib_AdminPanel {
 	 */
 	protected $ext_forcePreview = FALSE;
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 		$this->initialize();
 	}
@@ -63,7 +66,7 @@ class tslib_AdminPanel {
 	/**
 	 * Initializes settings for the admin panel.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function initialize() {
 		$this->saveConfigOptions();
@@ -74,7 +77,8 @@ class tslib_AdminPanel {
 		$GLOBALS['TSFE']->displayFieldEditIcons = $this->extGetFeAdminValue('edit', 'displayFieldIcons');
 
 		if ($this->extGetFeAdminValue('tsdebug', 'displayQueries')) {
-			if ($GLOBALS['TYPO3_DB']->explainOutput == 0) {		// do not override if the value is already set in t3lib_db
+				// do not override if the value is already set in t3lib_db
+			if ($GLOBALS['TYPO3_DB']->explainOutput == 0) {
 					// Enable execution of EXPLAIN SELECT queries
 				$GLOBALS['TYPO3_DB']->explainOutput = 3;
 			}
@@ -108,7 +112,7 @@ class tslib_AdminPanel {
 	public function getAdminPanelHeaderData() {
 		$result = '';
 
-		// Include BE styles
+			// Include BE styles
 		$GLOBALS['TSFE']->includeTCA();
 
 		if (!empty($GLOBALS['TBE_STYLES']['stylesheets']['admPanel'])) {
@@ -122,8 +126,8 @@ class tslib_AdminPanel {
 	/**
 	 * Checks if a Admin Panel section ("module") is available for the user. If so, TRUE is returned.
 	 *
-	 * @param	string		The module key, eg. "edit", "preview", "info" etc.
-	 * @return	boolean
+	 * @param string $key The module key, eg. "edit", "preview", "info" etc.
+	 * @return boolean
 	 */
 	public function isAdminModuleEnabled($key) {
 		$result = FALSE;
@@ -149,7 +153,7 @@ class tslib_AdminPanel {
 	 * Saves any change in settings made in the Admin Panel.
 	 * Called from index_ts.php right after access check for the Admin Panel
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function saveConfigOptions() {
 		$input = t3lib_div::_GP('TSFE_ADMIN_PANEL');
@@ -160,7 +164,7 @@ class tslib_AdminPanel {
 
 				// Actions:
 			if ($input['action']['clearCache'] && $this->isAdminModuleEnabled('cache')) {
-				$GLOBALS['BE_USER']->extPageInTreeInfo=array();
+				$GLOBALS['BE_USER']->extPageInTreeInfo = array();
 				$theStartId = intval($input['cache_clearCacheId']);
 				$GLOBALS['TSFE']->clearPageCacheContent_pidList($GLOBALS['BE_USER']->extGetTreeList($theStartId, $this->extGetFeAdminValue('cache', 'clearCacheLevels'), 0, $GLOBALS['BE_USER']->getPagePermsClause(1)) . $theStartId);
 			}
@@ -178,9 +182,9 @@ class tslib_AdminPanel {
 	/**
 	 * Returns the value for a Admin Panel setting. You must specify both the module-key and the internal setting key.
 	 *
-	 * @param	string		Module key
-	 * @param	string		Setting key
-	 * @return	string		The setting value
+	 * @param string $sectionName Module key
+	 * @param string $val Setting key
+	 * @return string The setting value
 	 */
 	public function extGetFeAdminValue($sectionName, $val = '') {
 			// Check if module is enabled.
@@ -194,7 +198,7 @@ class tslib_AdminPanel {
 				return TRUE;
 			}
 
-				// override all settings with user TSconfig
+				// Override all settings with user TSconfig
 			if ($val && $GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName . '.'][$val]) {
 				return $GLOBALS['BE_USER']->extAdminConfig['override.'][$sectionName . '.'][$val];
 			}
@@ -207,8 +211,9 @@ class tslib_AdminPanel {
 			if ($sectionName == 'preview' && $this->ext_forcePreview) {
 				return (!$val ? TRUE : $retVal);
 			}
-				// regular check:
-			if ($this->isAdminModuleOpen($sectionName)) {	// See if the menu is expanded!
+				// Regular check:
+				// See if the menu is expanded!
+			if ($this->isAdminModuleOpen($sectionName)) {
 				return $retVal;
 			}
 		}
@@ -217,7 +222,7 @@ class tslib_AdminPanel {
 	/**
 	 * Enables the force preview option.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function forcePreview() {
 		$this->ext_forcePreview = TRUE;
@@ -226,8 +231,8 @@ class tslib_AdminPanel {
 	/**
 	 * Returns TRUE if admin panel module is open
 	 *
-	 * @param	string		Module key
-	 * @return	boolean		TRUE, if the admin panel is open for the specified admin panel module key.
+	 * @param string $pre Module key
+	 * @return boolean TRUE, if the admin panel is open for the specified admin panel module key.
 	 */
 	public function isAdminModuleOpen($pre) {
 		return $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_top'] && $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['display_' . $pre];
@@ -242,7 +247,7 @@ class tslib_AdminPanel {
 	/**
 	 * Creates and returns the HTML code for the Admin Panel in the TSFE frontend.
 	 *
-	 * @return	string		HTML for the Admin Panel
+	 * @return string HTML for the Admin Panel
 	 */
 	public function display() {
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_tsfe.php');
@@ -301,7 +306,8 @@ class tslib_AdminPanel {
 		}
 
 		$query = !t3lib_div::_GET('id') ? ('<input type="hidden" name="id" value="' . $GLOBALS['TSFE']->id . '" />') : '';
-			// the dummy field is needed for Firefox: to force a page reload on submit with must change the form value with JavaScript (see "onsubmit" attribute of the "form" element")
+			// The dummy field is needed for Firefox: to force a page reload on submit
+			// with must change the form value with JavaScript (see "onsubmit" attribute of the "form" element")
 		$query .= '<input type="hidden" name="TSFE_ADMIN_PANEL[DUMMY]" value="" />';
 		foreach (t3lib_div::_GET() as $key => $value) {
 			if ($key != 'TSFE_ADMIN_PANEL') {
@@ -369,9 +375,9 @@ $query . '<table class="typo3-adminPanel">' .
 	 * Fetches recursively all GET parameters as hidden fields.
 	 * Called from display()
 	 *
-	 * @param	string		current key
-	 * @param	mixed		current value
-	 * @return	string		hidden fields
+	 * @param string $key Current key
+	 * @param array $val Current value
+	 * @return string Hidden fields
 	 * @see display()
 	 */
 	protected function getHiddenFields($key, array $val) {
@@ -395,7 +401,7 @@ $query . '<table class="typo3-adminPanel">' .
 	/**
 	 * Creates the content for the "preview" section ("module") of the Admin Panel
 	 *
-	 * @return	string		HTML content for the section. Consists of a string with table-rows with four columns.
+	 * @return string HTML content for the section. Consists of a string with table-rows with four columns.
 	 * @see display()
 	 */
 	protected function getPreviewModule() {
@@ -428,7 +434,7 @@ $query . '<table class="typo3-adminPanel">' .
 	/**
 	 * Creates the content for the "cache" section ("module") of the Admin Panel
 	 *
-	 * @return	string		HTML content for the section. Consists of a string with table-rows with four columns.
+	 * @return string HTML content for the section. Consists of a string with table-rows with four columns.
 	 * @see display()
 	 */
 	protected function getCacheModule() {
@@ -469,7 +475,7 @@ $query . '<table class="typo3-adminPanel">' .
 	/**
 	 * Creates the content for the "edit" section ("module") of the Admin Panel
 	 *
-	 * @return	string		HTML content for the section. Consists of a string with table-rows with four columns.
+	 * @return string HTML content for the section. Consists of a string with table-rows with four columns.
 	 * @see display()
 	 */
 	protected function getEditModule() {
@@ -513,7 +519,7 @@ $query . '<table class="typo3-adminPanel">' .
 	/**
 	 * Creates the content for the "tsdebug" section ("module") of the Admin Panel
 	 *
-	 * @return	string		HTML content for the section. Consists of a string with table-rows with four columns.
+	 * @return string HTML content for the section. Consists of a string with table-rows with four columns.
 	 * @see display()
 	 */
 	protected function getTSDebugModule() {
@@ -544,7 +550,7 @@ $query . '<table class="typo3-adminPanel">' .
 	/**
 	 * Creates the content for the "info" section ("module") of the Admin Panel
 	 *
-	 * @return	string		HTML content for the section. Consists of a string with table-rows with four columns.
+	 * @return string HTML content for the section. Consists of a string with table-rows with four columns.
 	 * @see display()
 	 */
 	protected function getInfoModule() {
@@ -565,7 +571,8 @@ $query . '<table class="typo3-adminPanel">' .
 						$count++;
 					}
 				}
-				$tableArr[] = array('', '');	// Add an empty line
+					// Add an empty line
+				$tableArr[] = array('', '');
 
 				$tableArr[] = array('*Total number of images:*', $count);
 				$tableArr[] = array('*Total image file sizes:*', t3lib_div::formatSize($theBytes));
@@ -581,14 +588,16 @@ $query . '<table class="typo3-adminPanel">' .
 			$tableArr[] = array('USER_INT objects:', count($GLOBALS['TSFE']->config['INTincScript']));
 			$tableArr[] = array('fe_user, name:', $GLOBALS['TSFE']->fe_user->user['username']);
 			$tableArr[] = array('fe_user, uid:', $GLOBALS['TSFE']->fe_user->user['uid']);
-			$tableArr[] = array('', '');	// Add an empty line
+				// Add an empty line
+			$tableArr[] = array('', '');
 
-				// parsetime:
+				// Parsetime:
 			$tableArr[] = array('*Total parsetime:*', $GLOBALS['TSFE']->scriptParseTime . ' ms');
 
 			$table = '';
 			foreach ($tableArr as $arr) {
-				if (strlen($arr[0])) {	// Put text wrapped by "*" between <strong> tags
+					// Put text wrapped by "*" between <strong> tags
+				if (strlen($arr[0])) {
 					$value1 = preg_replace('/^\*(.*)\*$/', '$1', $arr[0], -1, $count);
 					$value1 = ($count?'<strong>':'') . $value1 . ($count?'</strong>':'');
 				} else {
@@ -621,8 +630,8 @@ $query . '<table class="typo3-adminPanel">' .
 	 * It will have a plus/minus icon and a label which is linked so that it submits the form which surrounds the whole Admin Panel when clicked, alterting the TSFE_ADMIN_PANEL[display_' . $pre . '] value
 	 * See the functions get*Module
 	 *
-	 * @param	string		The suffix to the display_ label. Also selects the label from the LOCAL_LANG array.
-	 * @return	string		HTML table row.
+	 * @param string $sectionSuffix The suffix to the display_ label. Also selects the label from the LOCAL_LANG array.
+	 * @return string HTML table row.
 	 * @see extGetItem()
 	 */
 	public function extGetHead($sectionSuffix) {
@@ -639,9 +648,9 @@ $query . '<table class="typo3-adminPanel">' .
 	/**
 	 * Wraps a string in a link which will open/close a certain part of the Admin Panel
 	 *
-	 * @param	string		The code for the display_ label/key
-	 * @param	string		Input string
-	 * @return	string		Linked input string
+	 * @param string $sectionSuffix The code for the display_ label/key
+	 * @param string $sectionTitle Input string
+	 * @return string $className Linked input string
 	 * @see extGetHead()
 	 */
 	public function linkSectionHeader($sectionSuffix, $sectionTitle, $className = '') {
@@ -654,9 +663,9 @@ $query . '<table class="typo3-adminPanel">' .
 	 * Returns a row (with 4 columns) for content in a section of the Admin Panel.
 	 * It will take $pre as a key to a label to display and $element as the content to put into the forth cell.
 	 *
-	 * @param	string		Key to label
-	 * @param	string		The HTML content for the forth table cell.
-	 * @return	string		HTML table row.
+	 * @param string $title Key to label
+	 * @param string $content The HTML content for the forth table cell.
+	 * @return string $checkboxContent HTML table row.
 	 * @see extGetHead()
 	 */
 	public function extGetItem($title, $content = '', $checkboxContent = '') {
@@ -669,7 +678,7 @@ $query . '<table class="typo3-adminPanel">' .
 	/**
 	 * Creates the tool bar links for the "edit" section of the Admin Panel.
 	 *
-	 * @return	string		A string containing images wrapped in <a>-tags linking them to proper functions.
+	 * @return string A string containing images wrapped in <a>-tags linking them to proper functions.
 	 */
 	public function ext_makeToolBar() {
 			//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
@@ -735,13 +744,14 @@ $query . '<table class="typo3-adminPanel">' .
 	 * Returns the label for key, $key. If a translation for the language set in $GLOBALS['BE_USER']->uc['lang'] is found that is returned, otherwise the default value.
 	 * IF the global variable $LOCAL_LANG is NOT an array (yet) then this function loads the global $LOCAL_LANG array with the content of "sysext/lang/locallang_tsfe.php" so that the values therein can be used for labels in the Admin Panel
 	 *
-	 * FIXME The function should onvert to $TSFE->renderCharset, not to UTF8!
+	 * FIXME The function should convert to $TSFE->renderCharset, not to UTF8!
 	 *
-	 * @param	string		Key for a label in the $LOCAL_LANG array of "sysext/lang/locallang_tsfe.php"
-	 * @return	string		The value for the $key
+	 * @param string $key Key for a label in the $LOCAL_LANG array of "sysext/lang/locallang_tsfe.php"
+	 * @return string The value for the $key
 	 */
 	public function extGetLL($key) {
-		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key));	// Label string in the default backend output charset.
+			// Label string in the default backend output charset.
+		$labelStr = htmlspecialchars($GLOBALS['LANG']->getLL($key));
 		$labelStr = $GLOBALS['LANG']->csConvObj->utf8_to_entities($labelStr);
 
 		return $labelStr;
