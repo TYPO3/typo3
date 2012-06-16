@@ -747,6 +747,49 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	}
 
 	/**
+	 * Load extension configuration files (ext_localconf.php)
+	 *
+	 * The ext_localconf.php files in extensions are meant to make changes
+	 * to the global $TYPO3_CONF_VARS configuration array.
+	 *
+	 * @return Typo3_Bootstrap_Backend
+	 */
+	public function loadAdditionalConfigurationFromExtensions() {
+			// This is the main array meant to be manipulated in the ext_localconf.php files
+			// In general it is recommended to not rely on it to be globally defined in that
+			// scope but to use $GLOBALS['TYPO3_CONF_VARS'] instead.
+			// Nevertheless we define it here as global for backwards compatibility.
+		global $TYPO3_CONF_VARS;
+
+			// These globals for internal use only. Manipulating them directly is highly discouraged!
+			// We set them here as global for backwards compatibility, but this will change in
+			// future versions.
+			// @deprecated since 6.0 Will be removed in two versions.
+		global $T3_SERVICES, $T3_VAR;
+
+			// Load extensions:
+		$GLOBALS['TYPO3_LOADED_EXT'] = t3lib_extMgm::typo3_loadExtensions();
+
+			// Load temp_CACHED file of ext_tables or each ext_tables.php of loaded extensions
+		if ($GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']
+			&& file_exists(PATH_typo3conf . $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] . '_ext_localconf.php')
+			) {
+			require(PATH_typo3conf . $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] . '_ext_localconf.php');
+		} else {
+			foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $_EXTKEY => $extensionInformation) {
+				if (is_array($extensionInformation) && $extensionInformation['ext_localconf.php']) {
+						// $_EXTKEY and $_EXTCONF are available in ext_localconf.php
+						// and are explicitly set in temp_CACHED file as well
+					$_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
+					require($extensionInformation['ext_localconf.php']);
+				}
+			}
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Write deprecation log if the TYPO3 instance uses deprecated XCLASS
 	 * registrations via $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
 	 *
