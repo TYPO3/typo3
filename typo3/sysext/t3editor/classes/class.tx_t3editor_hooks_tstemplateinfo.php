@@ -33,7 +33,7 @@ class tx_t3editor_hooks_tstemplateinfo {
 	 * @var tx_t3editor
 	 */
 	protected $t3editor = NULL;
-	
+
 	/**
 	 * @var string
 	 */
@@ -59,12 +59,10 @@ class tx_t3editor_hooks_tstemplateinfo {
 	 * @param template $pObj
 	 */
 	public function preStartPageHook($parameters, $pObj) {
-		// enable editor in Template-Modul
-		if (preg_match('/sysext\/tstemplate\/ts\/index\.php/', $_SERVER['SCRIPT_NAME'])) {
-
+			// enable editor in Template-Modul
+		if (t3lib_div::_GET('M') === 'web_ts') {
 			$t3editor = $this->getT3editor();
-
-			// insert javascript code in document header
+				// insert javascript code in document header
 			$pObj->JScode .= $t3editor->getJavascriptCode($pObj);
 		}
 	}
@@ -168,18 +166,18 @@ class tx_t3editor_hooks_tstemplateinfo {
 						}
 					}
 					if (count($recData)) {
-						
+
 						// process template row before saving
 						require_once t3lib_extMgm::extPath('tstemplate_info').'class.tx_tstemplateinfo.php';
 						$tstemplateinfo = t3lib_div::makeInstance('tx_tstemplateinfo'); /* @var $tstemplateinfo tx_tstemplateinfo */
-							// load the MOD_SETTINGS in order to check if the includeTypoScriptFileContent is set						
+							// load the MOD_SETTINGS in order to check if the includeTypoScriptFileContent is set
 						$tstemplateinfo->pObj->MOD_SETTINGS = t3lib_BEfunc::getModuleData(
 							array('includeTypoScriptFileContent' => TRUE),
-							array(), 
+							array(),
 							'web_ts'
 						);
 						$recData['sys_template'][$saveId] = $tstemplateinfo->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
-						
+
 						// Create new tce-object
 						$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 						$tce->stripslashes_values = 0;
