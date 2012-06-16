@@ -31,10 +31,6 @@
  */
 
 
-unset($MCONF);
-require('conf.php');
-require($BACK_PATH . 'init.php');
-require($BACK_PATH . 'template.php');
 $BE_USER->modAccess($MCONF, 1);
 
 t3lib_extMgm::isLoaded('indexed_search', 1);
