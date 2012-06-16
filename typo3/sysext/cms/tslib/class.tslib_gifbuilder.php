@@ -30,28 +30,8 @@
  *
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * GIFBUILDER extension class.
@@ -71,25 +51,33 @@
  * }
  * return $gifCreator->getImageDimensions($theImage);
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
 class tslib_gifBuilder extends t3lib_stdGraphic {
 
 		// Internal
-	var $im = '';		// the main image
-	var $w = 0;			// the image-width
-	var $h = 0;			// the image-height
-	var $map;			// map-data
+		// the main image
+	var $im = '';
+		// the image-width
+	var $w = 0;
+		// the image-height
+	var $h = 0;
+		// map-data
+	var $map;
 	var $workArea;
-	var $setup = Array ();		// This holds the operational setup for gifbuilder. Basically this is a TypoScript array with properties.
-	var $combinedTextStrings = array();		// Contains all text strings used on this image
-	var $combinedFileNames = array();		// Contains all filenames (basename without extension) used on this image
-	var $data = Array();		// This is the array from which data->field: [key] is fetched. So this is the current record!
-	var $objBB = Array();
+		// This holds the operational setup for gifbuilder. Basically this is a TypoScript array with properties.
+	var $setup = array();
+		// Contains all text strings used on this image
+	var $combinedTextStrings = array();
+		// Contains all filenames (basename without extension) used on this image
+	var $combinedFileNames = array();
+		// This is the array from which data->field: [key] is fetched. So this is the current record!
+	var $data = array();
+	var $objBB = array();
 	var $myClassName = 'gifbuilder';
-	var $charRangeMap=array();
+	var $charRangeMap = array();
 
 	/**
 	 * Initialization of the GIFBUILDER objects, in particular TEXT and IMAGE. This includes finding the bounding box, setting dimensions and offset values before the actual rendering is started.
@@ -97,9 +85,9 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * Should be called after the ->init() function which initializes the parent class functions/variables in general.
 	 * The class tslib_gmenu also uses gifbuilder and here there is an interesting use since the function findLargestDims() from that class calls the init() and start() functions to find the total dimensions before starting the rendering of the images.
 	 *
-	 * @param	array		TypoScript properties for the GIFBUILDER session. Stored internally in the variable ->setup
-	 * @param	array		The current data record from tslib_cObj. Stored internally in the variable ->data
-	 * @return	void
+	 * @param array $conf TypoScript properties for the GIFBUILDER session. Stored internally in the variable ->setup
+	 * @param array $data The current data record from tslib_cObj. Stored internally in the variable ->data
+	 * @return void
 	 * @see tslib_cObj::getImgResource(), tslib_gmenu::makeGifs(), tslib_gmenu::findLargestDims()
 	 */
 	function start($conf, $data) {
@@ -111,14 +99,12 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$this->cObj->start($this->data);
 
 
-			/* Hook preprocess gifbuilder conf
-			 * Added by Julle for 3.8.0
-			 *
-			 * Let's you pre-process the gifbuilder configuration. for
-			 * example you can split a string up into lines and render each
-			 * line as TEXT obj, see extension julle_gifbconf
-			 */
-
+			// Hook preprocess gifbuilder conf
+		 	// Added by Julle for 3.8.0
+			//
+			// Let's you pre-process the gifbuilder configuration. for
+			// example you can split a string up into lines and render each
+			// line as TEXT obj, see extension julle_gifbconf
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_gifbuilder.php']['gifbuilder-ConfPreProcess']))    {
 				foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_gifbuilder.php']['gifbuilder-ConfPreProcess'] as $_funcRef)    {
 					$_params = $this->setup;
@@ -317,9 +303,10 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$this->w = $XY[0];
 			$this->h = $XY[1];
 			$this->OFFSET = t3lib_div::intExplode(',', $this->setup['offset']);
-
-			$this->setWorkArea($this->setup['workArea']);	// this sets the workArea
-			$this->defaultWorkArea = $this->workArea;	// this sets the default to the current;
+				// this sets the workArea
+			$this->setWorkArea($this->setup['workArea']);
+				// this sets the default to the current;
+			$this->defaultWorkArea = $this->workArea;
 		}
 	}
 
@@ -328,13 +315,15 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * Gets filename from fileName() and if file exists in typo3temp/ dir it will - of course - not be rendered again.
 	 * Otherwise rendering means calling ->make(), then ->output(), then ->destroy()
 	 *
-	 * @return	string		The filename for the created GIF/PNG file. The filename will be prefixed "GB_"
+	 * @return string The filename for the created GIF/PNG file. The filename will be prefixed "GB_"
 	 * @see make(), fileName()
 	 */
 	function gifBuild() {
 		if ($this->setup) {
-			$gifFileName = $this->fileName('GB/');	// Relative to PATH_site
-			if (!file_exists($gifFileName))	{		// File exists
+				// Relative to PATH_site
+			$gifFileName = $this->fileName('GB/');
+				// File exists
+			if (!file_exists($gifFileName))	{
 
 					// Create temporary directory if not done:
 				$this->createTempSubDir('GB/');
@@ -354,7 +343,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * Creates a GDlib resource in $this->im and works on that
 	 * Called by gifBuild()
 	 *
-	 * @return	void
+	 * @return void
 	 * @access private
 	 * @see gifBuild()
 	 */
@@ -497,10 +486,12 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 						break;
 						case 'WORKAREA':
 							if ($conf['set']) {
-								$this->setWorkArea($conf['set']);	// this sets the workArea
+									// this sets the workArea
+								$this->setWorkArea($conf['set']);
 							}
 							if (isset($conf['clear'])) {
-								$this->workArea = $this->defaultWorkArea;	// this sets the current to the default;
+									// This sets the current to the default;
+								$this->workArea = $this->defaultWorkArea;
 							}
 						break;
 						case 'ELLIPSE':
@@ -511,7 +502,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			}
 		}
 
-			// preserve alpha transparency
+			// Preserve alpha transparency
 		if (!$this->saveAlphaLayer) {
 			if ($this->setup['transparentBackground']) {
 					// Auto transparent background is set
@@ -533,29 +524,11 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/*********************************************
 	 *
 	 * Various helper functions
 	 *
 	 ********************************************/
-
 
 	/**
 	 * Initializing/Cleaning of TypoScript properties for TEXT GIFBUILDER objects
@@ -564,8 +537,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * Finds the title if its a 'variable' (instantiates a cObj and loads it with the ->data record)
 	 * Performs caseshift if any.
 	 *
-	 * @param	array		GIFBUILDER object TypoScript properties
-	 * @return	array		Modified $conf array IF the "text" property is not blank
+	 * @param array $conf GIFBUILDER object TypoScript properties
+	 * @return array Modified $conf array IF the "text" property is not blank
 	 * @access private
 	 */
 	function checkTextObj($conf) {
@@ -581,11 +554,18 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			}
 		}
 		$conf['fontFile']=$this->checkFile($conf['fontFile']);
-		if (!$conf['fontFile']){$conf['fontFile']='t3lib/fonts/nimbus.ttf';}
-		if (!$conf['iterations']){$conf['iterations'] = 1;}
-		if (!$conf['fontSize']){$conf['fontSize']=12;}
-		if ($conf['spacing'] || $conf['wordSpacing'])	{		// If any kind of spacing applys, we cannot use angles!!
-			$conf['angle']=0;
+		if (!$conf['fontFile']) {
+			$conf['fontFile'] = 't3lib/fonts/nimbus.ttf';
+		}
+		if (!$conf['iterations']) {
+			$conf['iterations'] = 1;
+		}
+		if (!$conf['fontSize']) {
+			$conf['fontSize'] = 12;
+		}
+			// If any kind of spacing applys, we cannot use angles!!
+		if ($conf['spacing'] || $conf['wordSpacing']) {
+			$conf['angle'] = 0;
 		}
 		if (!isset($conf['antiAlias'])){$conf['antiAlias']=1;}
 
@@ -617,16 +597,17 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				}
 
 				$cfgK = $this->charRangeMap[$fontBaseName]['cfgKey'];
-				if (!isset($conf['splitRendering.'][$cfgK]))	{	// Do not impose settings if a splitRendering object already exists:
+					// Do not impose settings if a splitRendering object already exists:
+				if (!isset($conf['splitRendering.'][$cfgK])) {
 						// Set configuration:
 					$conf['splitRendering.'][$cfgK] = 'charRange';
 					$conf['splitRendering.'][$cfgK.'.'] = $this->charRangeMap[$fontBaseName]['charMapConfig'];
 
-						// multiplicator of fontsize:
+						// Multiplicator of fontsize:
 					if ($this->charRangeMap[$fontBaseName]['multiplicator']) {
 						$conf['splitRendering.'][$cfgK.'.']['fontSize'] = round($conf['fontSize'] * $this->charRangeMap[$fontBaseName]['multiplicator']);
 					}
-						// multiplicator of pixelSpace:
+						// Multiplicator of pixelSpace:
 					if ($this->charRangeMap[$fontBaseName]['pixelSpace']) {
 						$travKeys = array('xSpaceBefore', 'xSpaceAfter', 'ySpaceBefore', 'ySpaceAfter');
 						foreach($travKeys as $pxKey) {
@@ -658,8 +639,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * Input: 2+2, 2*3, 123, [10.w]
 	 * Output: 4,6,123,45  (provided that the width of object in position 10 was 45 pixels wide)
 	 *
-	 * @param	string		The string to resolve/calculate the result of. The string is divided by a comma first and each resulting part is calculated into an integer.
-	 * @return	string		The resolved string with each part (separated by comma) returned separated by comma
+	 * @param string $string The string to resolve/calculate the result of. The string is divided by a comma first and each resulting part is calculated into an integer.
+	 * @return string The resolved string with each part (separated by comma) returned separated by comma
 	 * @access private
 	 */
 	function calcOffset($string) {
@@ -681,9 +662,9 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	/**
 	 * Returns an "imgResource" creating an instance of the tslib_cObj class and calling tslib_cObj::getImgResource
 	 *
-	 * @param	string		Filename value OR the string "GIFBUILDER", see documentation in TSref for the "datatype" called "imgResource"
-	 * @param	array		TypoScript properties passed to the function. Either GIFBUILDER properties or imgResource properties, depending on the value of $file (whether that is "GIFBUILDER" or a file reference)
-	 * @return	array		Returns an array with file information if an image was returned. Otherwise FALSE.
+	 * @param string $file Filename value OR the string "GIFBUILDER", see documentation in TSref for the "datatype" called "imgResource"
+	 * @param array $fileArray TypoScript properties passed to the function. Either GIFBUILDER properties or imgResource properties, depending on the value of $file (whether that is "GIFBUILDER" or a file reference)
+	 * @return array Returns an array with file information if an image was returned. Otherwise FALSE.
 	 * @access private
 	 * @see tslib_cObj::getImgResource()
 	 */
@@ -699,8 +680,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	/**
 	 * Returns the reference to a "resource" in TypoScript.
 	 *
-	 * @param	string		The resource value.
-	 * @return	string		Returns the relative filepath
+	 * @param string $file The resource value.
+	 * @return string Returns the relative filepath
 	 * @access private
 	 * @see t3lib_TStemplate::getFileName()
 	 */
@@ -711,7 +692,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	/**
 	 * Calculates the GIFBUILDER output filename/path based on a serialized, hashed value of this->setup
 	 *
-	 * @param $pre string Filename prefix, eg. "GB_"
+	 * @param string $pre Filename prefix, eg. "GB_"
 	 * @return string The relative filepath (relative to PATH_site)
 	 * @access private
 	 */
@@ -727,7 +708,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$meaningfulPrefix = $basicFileFunctions->cleanFileName($meaningfulPrefix);
 			$meaningfulPrefixLength = intval($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']);
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-					/** @var $t3libCsInstance t3lib_cs */
+				/** @var $t3libCsInstance t3lib_cs */
 				$t3libCsInstance = t3lib_div::makeInstance('t3lib_cs');
 				$meaningfulPrefix = $t3libCsInstance->substr('utf-8', $meaningfulPrefix, 0, $meaningfulPrefixLength);
 			} else {
@@ -736,7 +717,10 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$meaningfulPrefix .= '_';
 		}
 
-			// WARNING: In PHP5 I discovered that rendering with freetype of Japanese letters was totally corrupt. Not only the wrong glyphs are printed but also some memory stack overflow resulted in strange additional chars - and finally the reason for this investigation: The Bounding box data was changing all the time resulting in new images being generated all the time. With PHP4 it works fine.
+			// WARNING: In PHP5 I discovered that rendering with freetype of Japanese letters was totally corrupt.
+			// Not only the wrong glyphs are printed but also some memory stack overflow resulted in strange additional
+			// chars - and finally the reason for this investigation: The Bounding box data was changing all the time
+			// resulting in new images being generated all the time. With PHP4 it works fine.
 		return $this->tempPath .
 				$pre .
 				$meaningfulPrefix .
@@ -747,7 +731,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	/**
 	 * Returns the file extension used in the filename
 	 *
-	 * @return	string		Extension; "jpg" or "gif"/"png"
+	 * @return string Extension; "jpg" or "gif"/"png"
 	 * @access private
 	 */
 	function extension() {
@@ -771,9 +755,9 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	/**
 	 * Calculates the value concerning the dimensions of objects.
 	 *
-	 * @param	string		$string: The string to be calculated (e.g. "[20.h]+13")
-	 * @return	integer		The calculated value (e.g. "23")
-	 * @see		calcOffset()
+	 * @param string $string The string to be calculated (e.g. "[20.h]+13")
+	 * @return integer The calculated value (e.g. "23")
+	 * @see calcOffset()
 	 */
 	protected function calculateValue($string) {
 		$calculatedValue = 0;
@@ -824,8 +808,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	 * Calculates special functions:
 	 * + max([10.h], [20.h])	-> gets the maximum of the given values
 	 *
-	 * @param	string		$string: The raw string with functions to be calculated
-	 * @return	string		The calculated values
+	 * @param string $string The raw string with functions to be calculated
+	 * @return string The calculated values
 	 */
 	protected function calculateFunctions($string) {
 		if (preg_match_all('#max\(([^)]+)\)#', $string, $matches)) {
@@ -846,8 +830,8 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 	/**
 	 * Calculates the maximum of a set of values defined like "[10.h],[20.h],1000"
 	 *
-	 * @param	string		$string: The string to be used to calculate the maximum (e.g. "[10.h],[20.h],1000")
-	 * @return	integer		The maxium value of the given comma separated and calculated values
+	 * @param string $string The string to be used to calculate the maximum (e.g. "[10.h],[20.h],1000")
+	 * @return integer The maxium value of the given comma separated and calculated values
 	 */
 	protected function calculateMaximum($string) {
 		$parts = t3lib_div::trimExplode(',', $this->calcOffset($string), TRUE);

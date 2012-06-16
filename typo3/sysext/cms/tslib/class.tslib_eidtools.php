@@ -24,6 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Tools for scripts using the eID feature of index.php
  * Included from index_ts.php
@@ -33,14 +34,14 @@
  * initialize parts of the FE environment as needed,
  * eg. Frontend User session, Database connection etc.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 /**
  * Tools for scripts using the eID feature of index.php
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author	Dmitry Dulepov <dmitry@typo3.org>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Dmitry Dulepov <dmitry@typo3.org>
  * @package TYPO3
  * @subpackage tslib
  */
@@ -50,22 +51,22 @@ final class tslib_eidtools {
 	 * Load and initialize Frontend User. Note, this process is slow because
 	 * it creates a calls many objects. Call this method only if necessary!
 	 *
-	 * @return	object		Frontend User object (usually known as TSFE->fe_user)
+	 * @return object Frontend User object (usually known as TSFE->fe_user)
 	 */
 	public static function initFeUser() {
-		// Initialize the database. Do not use TSFE method as it may redirect to
-		// Install tool and call hooks, which do not expect to be called from eID
+			// Initialize the database. Do not use TSFE method as it may redirect to
+			// Install tool and call hooks, which do not expect to be called from eID
 		self::connectDB();
 
-		// Get TSFE instance. It knows how to initialize the user. We also
-		// need TCA because services may need extra tables!
+			// Get TSFE instance. It knows how to initialize the user. We also
+			// need TCA because services may need extra tables!
 		self::initTCA();
+		/** @var $tsfe tslib_fe */
 		$tsfe = self::getTSFE();
-		/* @var $tsfe tslib_fe */
 
 		$tsfe->initFEuser();
 
-		// Return FE user object:
+			// Return FE user object:
 		return $tsfe->fe_user;
 	}
 
@@ -73,7 +74,7 @@ final class tslib_eidtools {
 	 * Connecting to database. If the function fails, last error message
 	 * can be retrieved using $GLOBALS['TYPO3_DB']->sql_error().
 	 *
-	 * @return	boolean		TRUE if connection was successful
+	 * @return boolean TRUE if connection was successful
 	 */
 	public static function connectDB() {
 		if (!$GLOBALS['TYPO3_DB']->isConnected()) {
@@ -88,8 +89,8 @@ final class tslib_eidtools {
 	/**
 	 * Initializes $GLOBALS['LANG'] for use in eID scripts.
 	 *
-	 * @param	string		$language	TYPO3 language code
-	 * @return	void
+	 * @param string $language TYPO3 language code
+	 * @return void
 	 */
 	public static function initLanguage($language = 'default') {
 		if (!is_object($GLOBALS['LANG'])) {
@@ -101,15 +102,15 @@ final class tslib_eidtools {
 	/**
 	 * Makes TCA available inside eID
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public static function initTCA() {
-		// Some badly made extensions attempt to manipulate TCA in a wrong way
-		// (inside ext_localconf.php). Therefore $GLOBALS['TCA'] may become an array
-		// but in fact it is not loaded. The check below ensure that
-		// TCA is still loaded if such bad extensions are installed
+			// Some badly made extensions attempt to manipulate TCA in a wrong way
+			// (inside ext_localconf.php). Therefore $GLOBALS['TCA'] may become an array
+			// but in fact it is not loaded. The check below ensure that
+			// TCA is still loaded if such bad extensions are installed
 		if (!is_array($GLOBALS['TCA']) || !isset($GLOBALS['TCA']['pages'])) {
-			// Load TCA using TSFE
+				// Load TCA using TSFE
 			self::getTSFE()->includeTCA(FALSE);
 		}
 	}
@@ -119,28 +120,28 @@ final class tslib_eidtools {
 	 * you need not to include the whole $GLOBALS['TCA']. However, you still need to call
 	 * t3lib_div::loadTCA() if you want to access column array!
 	 *
-	 * @param	string		$extensionKey	Extension key
-	 * @return	void
+	 * @param string $extensionKey Extension key
+	 * @return void
 	 */
 	public static function initExtensionTCA($extensionKey) {
 		$extTablesPath = t3lib_extMgm::extPath($extensionKey, 'ext_tables.php');
 		if (file_exists($extTablesPath)) {
 			$GLOBALS['_EXTKEY'] = $extensionKey;
 			require_once($extTablesPath);
+				// We do not need to save restore the value of $GLOBALS['_EXTKEY']
+				// because it is not defined to anything real outside of
+				// ext_tables.php or ext_localconf.php scope.
 			unset($GLOBALS['_EXTKEY']);
-			// We do not need to save restore the value of $GLOBALS['_EXTKEY']
-			// because it is not defined to anything real outside of
-			// ext_tables.php or ext_localconf.php scope.
 		}
 	}
 
 	/**
 	 * Creating a single static cached instance of TSFE to use with this class.
 	 *
-	 * @return	tslib_fe		New instance of tslib_fe
+	 * @return tslib_fe New instance of tslib_fe
 	 */
 	private static function getTSFE() {
-		// Cached instance
+			// Cached instance
 		static $tsfe = NULL;
 
 		if (is_null($tsfe)) {

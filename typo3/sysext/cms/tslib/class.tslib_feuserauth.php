@@ -24,41 +24,30 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Front End session user. Login and session data
  * Included from index_ts.php
  *
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author René Fritz <r.fritz@colorcube.de>
  */
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Extension class for Front End User Authentication.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage tslib
  */
 class tslib_feUserAuth extends t3lib_userAuth {
-	var $formfield_permanent = 'permalogin';	// formfield with 0 or 1 // 1 = permanent login enabled // 0 = session is valid for a browser session only
-
-	protected $sessionDataLifetime = 86400;		// Lifetime of session data in seconds.
+		// formfield with 0 or 1 // 1 = permanent login enabled // 0 = session is valid for a browser session only
+	var $formfield_permanent = 'permalogin';
+		// Lifetime of session data in seconds.
+	protected $sessionDataLifetime = 86400;
 
 	var $usergroup_column = 'usergroup';
 	var $usergroup_table = 'fe_groups';
@@ -67,10 +56,11 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		'uid' =>Array(),
 		'pid' =>Array()
 	);
-	var $TSdataArray=array();		// Used to accumulate the TSconfig data of the user
+		// Used to accumulate the TSconfig data of the user
+	var $TSdataArray = array();
 	var $userTS = array();
-	var $userTSUpdated=0;
-	var $showHiddenRecords=0;
+	var $userTSUpdated = 0;
+	var $showHiddenRecords = 0;
 
 		// Session and user data:
 		/*
@@ -80,7 +70,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 				- 'recs': Array: Used to 'register' records, eg in a shopping basket. Structure: [recs][tablename][record_uid]=number
 				- sys: Reserved for TypoScript standard code.
 		*/
-	var $sesData = Array();
+	var $sesData = array();
 	var $sesData_change = 0;
 	var $userData_change = 0;
 	protected $sessionDataTimestamp = NULL;
@@ -119,11 +109,9 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		$this->getMethodEnabled = TRUE;
 	}
 
-
 	/**
 	 * Returns the configured cookie name
 	 *
-	 * @static
 	 * @return string
 	 */
 	public static function getCookieName() {
@@ -134,11 +122,10 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		return $configuredCookieName;
 	}
 
-
 	/**
 	 * Starts a user session
 	 *
-	 * @return	void
+	 * @return void
 	 * @see t3lib_userAuth::start()
 	 */
 	function start() {
@@ -158,7 +145,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	/**
 	 * Returns a new session record for the current user for insertion into the DB.
 	 *
-	 * @return	array		user session record
+	 * @return array User session record
 	 */
 	function getNewSessionRecord($tempuser) {
 		$insertFields = parent::getNewSessionRecord($tempuser);
@@ -170,7 +157,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	/**
 	 * Determine whether a session cookie needs to be set (lifetime=0)
 	 *
-	 * @return	boolean
+	 * @return boolean
 	 * @internal
 	 */
 	function isSetSessionCookie() {
@@ -181,7 +168,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	/**
 	 * Determine whether a non-session cookie needs to be set (lifetime>0)
 	 *
-	 * @return	boolean
+	 * @return boolean
 	 * @internal
 	 */
 	function isRefreshTimeBasedCookie() {
@@ -191,7 +178,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	/**
 	 * Returns an info array with Login/Logout data submitted by a form or params
 	 *
-	 * @return	array
+	 * @return array
 	 * @see t3lib_userAuth::getLoginFormData()
 	 */
 	function getLoginFormData() {
@@ -205,7 +192,9 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			if (strlen($isPermanent) != 1) {
 				$isPermanent = $GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'];
 			} elseif (!$isPermanent) {
-				$this->forceSetCookie = TRUE; // To make sure the user gets a session cookie and doesn't keep a possibly existing time based cookie, we need to force seeting the session cookie here
+					// To make sure the user gets a session cookie and doesn't keep a possibly existing time based cookie,
+					// we need to force seeting the session cookie here
+				$this->forceSetCookie = TRUE;
 			}
 			$isPermanent = $isPermanent?1:0;
 		} elseif ($GLOBALS['TYPO3_CONF_VARS']['FE']['permalogin'] == 2) {
@@ -223,7 +212,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * Will select all fe_groups records that the current fe_user is member of - and which groups are also allowed in the current domain.
 	 * It also accumulates the TSconfig for the fe_user/fe_groups in ->TSdataArray
 	 *
-	 * @return	integer		Returns the number of usergroups for the frontend users (if the internal user record exists and the usergroup field contains a value)
+	 * @return integer Returns the number of usergroups for the frontend users (if the internal user record exists and the usergroup field contains a value)
 	 */
 	function fetchGroupData() {
 		$this->TSdataArray = array();
@@ -238,7 +227,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			// Setting default configuration:
 		$this->TSdataArray[]=$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultUserTSconfig'];
 
-			// get the info data for auth services
+			// Get the info data for auth services
 		$authInfo = $this->getAuthInfoArray();
 
 		if ($this->writeDevLog) 	{
@@ -251,7 +240,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 
 		$groupDataArr = array();
 
-			// use 'auth' service to find the groups for the user
+			// Use 'auth' service to find the groups for the user
 		$serviceChain='';
 		$subType = 'getGroups'.$this->loginType;
 		while (is_object($serviceObj = t3lib_div::makeInstanceService('auth', $subType, $serviceChain))) {
@@ -260,18 +249,25 @@ class tslib_feUserAuth extends t3lib_userAuth {
 
 			$groupData = $serviceObj->getGroups($this->user, $groupDataArr);
 			if (is_array($groupData) && count($groupData)) {
-				$groupDataArr = t3lib_div::array_merge($groupDataArr, $groupData);	// Keys in $groupData should be unique ids of the groups (like "uid") so this function will override groups.
+					// Keys in $groupData should be unique ids of the groups (like "uid") so this function will override groups.
+				$groupDataArr = t3lib_div::array_merge($groupDataArr, $groupData);
 			}
 			unset($serviceObj);
 		}
-		if ($this->writeDevLog AND $serviceChain) 	t3lib_div::devLog($subType.' auth services called: '.$serviceChain, 'tslib_feUserAuth');
-		if ($this->writeDevLog AND !count($groupDataArr)) 	t3lib_div::devLog('No usergroups found by services', 'tslib_feUserAuth');
-		if ($this->writeDevLog AND count($groupDataArr)) 	t3lib_div::devLog(count($groupDataArr).' usergroup records found by services', 'tslib_feUserAuth');
+		if ($this->writeDevLog && $serviceChain) {
+			t3lib_div::devLog($subType.' auth services called: '.$serviceChain, 'tslib_feUserAuth');
+		}
+		if ($this->writeDevLog && !count($groupDataArr)) {
+			t3lib_div::devLog('No usergroups found by services', 'tslib_feUserAuth');
+		}
+		if ($this->writeDevLog && count($groupDataArr)) {
+			t3lib_div::devLog(count($groupDataArr).' usergroup records found by services', 'tslib_feUserAuth');
+		}
 
 
-			// use 'auth' service to check the usergroups if they are really valid
+			// Use 'auth' service to check the usergroups if they are really valid
 		foreach ($groupDataArr as $groupData) {
-				// by default a group is valid
+				// By default a group is valid
 			$validGroup = TRUE;
 
 			$serviceChain='';
@@ -282,7 +278,9 @@ class tslib_feUserAuth extends t3lib_userAuth {
 
 				if (!$serviceObj->authGroup($this->user, $groupData)) {
 					$validGroup = FALSE;
-					if ($this->writeDevLog) 	t3lib_div::devLog($subType.' auth service did not auth group: '.t3lib_div::arrayToLogString($groupData, 'uid,title'), 'tslib_feUserAuth', 2);
+					if ($this->writeDevLog) {
+						t3lib_div::devLog($subType.' auth service did not auth group: '.t3lib_div::arrayToLogString($groupData, 'uid,title'), 'tslib_feUserAuth', 2);
+					}
 
 					break;
 				}
@@ -291,10 +289,10 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			unset($serviceObj);
 
 			if ($validGroup) {
-				$this->groupData['title'][$groupData['uid']]=$groupData['title'];
-				$this->groupData['uid'][$groupData['uid']]=$groupData['uid'];
-				$this->groupData['pid'][$groupData['uid']]=$groupData['pid'];
-				$this->groupData['TSconfig'][$groupData['uid']]=$groupData['TSconfig'];
+				$this->groupData['title'][$groupData['uid']] = $groupData['title'];
+				$this->groupData['uid'][$groupData['uid']] = $groupData['uid'];
+				$this->groupData['pid'][$groupData['uid']] = $groupData['pid'];
+				$this->groupData['TSconfig'][$groupData['uid']] = $groupData['TSconfig'];
 			}
 		}
 
@@ -304,7 +302,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 				$this->TSdataArray[]=$TSdata;
 			}
 
-			$this->TSdataArray[]=$this->user['TSconfig'];
+			$this->TSdataArray[] = $this->user['TSconfig'];
 
 				// Sort information
 			ksort($this->groupData['title']);
@@ -319,37 +317,21 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * Returns the parsed TSconfig for the fe_user
 	 * First time this function is called it will parse the TSconfig and store it in $this->userTS. Subsequent requests will not re-parse the TSconfig but simply return what is already in $this->userTS
 	 *
-	 * @return	array		TSconfig array for the fe_user
+	 * @return array TSconfig array for the fe_user
 	 */
 	function getUserTSconf() {
 		if (!$this->userTSUpdated) {
 				// Parsing the user TS (or getting from cache)
 			$this->TSdataArray = t3lib_TSparser::checkIncludeLines_array($this->TSdataArray);
-			$userTS = implode(LF.'[GLOBAL]'.LF, $this->TSdataArray);
+			$userTS = implode(LF . '[GLOBAL]' . LF, $this->TSdataArray);
 			$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
 			$parseObj->parse($userTS);
 			$this->userTS = $parseObj->setup;
 
-			$this->userTSUpdated=1;
+			$this->userTSUpdated = 1;
 		}
 		return $this->userTS;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	/*****************************************
 	 *
@@ -362,7 +344,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * The session data is restored to $this->sesData
 	 * 1/100 calls will also do a garbage collection.
 	 *
-	 * @return	void
+	 * @return void
 	 * @access private
 	 * @see storeSessionData()
 	 */
@@ -389,7 +371,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * If the flag $this->sesData_change has been set, the fe_session_data table is updated with the content of $this->sesData
 	 * If the $this->sessionDataTimestamp is NULL there was no session record yet, so we need to insert it into the database
 	 *
-	 * @return	void
+	 * @return void
 	 * @see fetchSessionData(), getKey(), setKey()
 	 */
 	function storeSessionData() {
@@ -423,7 +405,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	/**
 	 * Removes data of the current session.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function removeSessionData() {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
@@ -436,7 +418,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * Executes the garbage collection of session data and session.
 	 * The lifetime of session data is defined by $TYPO3_CONF_VARS['FE']['sessionDataLifetime'].
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function gc() {
 		$timeoutTimeStamp = intval($GLOBALS['EXEC_TIME'] - $this->sessionDataLifetime);
@@ -448,9 +430,9 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	/**
 	 * Returns session data for the fe_user; Either persistent data following the fe_users uid/profile (requires login) or current-session based (not available when browse is closed, but does not require login)
 	 *
-	 * @param	string		Session data type; Either "user" (persistent, bound to fe_users profile) or "ses" (temporary, bound to current session cookie)
-	 * @param	string		Key from the data array to return; The session data (in either case) is an array ($this->uc / $this->sesData) and this value determines which key to return the value for.
-	 * @return	mixed		Returns whatever value there was in the array for the key, $key
+	 * @param string $type Session data type; Either "user" (persistent, bound to fe_users profile) or "ses" (temporary, bound to current session cookie)
+	 * @param string $key Key from the data array to return; The session data (in either case) is an array ($this->uc / $this->sesData) and this value determines which key to return the value for.
+	 * @return mixed Returns whatever value there was in the array for the key, $key
 	 * @see setKey()
 	 */
 	function getKey($type, $key) {
@@ -472,10 +454,10 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * Notice: The key "recs" is already used by the function record_registration() which stores table/uid=value pairs in that key. This is used for the shopping basket among other things.
 	 * Notice: Simply calling this function will not save the data to the database! The actual saving is done in storeSessionData() which is called as some of the last things in index_ts.php. So if you exit before this point, nothing gets saved of course! And the solution is to call $GLOBALS['TSFE']->storeSessionData(); before you exit.
 	 *
-	 * @param	string		Session data type; Either "user" (persistent, bound to fe_users profile) or "ses" (temporary, bound to current session cookie)
-	 * @param	string		Key from the data array to store incoming data in; The session data (in either case) is an array ($this->uc / $this->sesData) and this value determines in which key the $data value will be stored.
-	 * @param	mixed		The data value to store in $key
-	 * @return	void
+	 * @param string $type Session data type; Either "user" (persistent, bound to fe_users profile) or "ses" (temporary, bound to current session cookie)
+	 * @param string $key Key from the data array to store incoming data in; The session data (in either case) is an array ($this->uc / $this->sesData) and this value determines in which key the $data value will be stored.
+	 * @param mixed $data The data value to store in $key
+	 * @return void
 	 * @see setKey(), storeSessionData(), record_registration()
 	 */
 	function setKey($type, $key, $data) {
@@ -499,7 +481,7 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 * Returns the session data stored for $key.
 	 * The data will last only for this login session since it is stored in the session table.
 	 *
-	 * @param  string  $key
+	 * @param string $key
 	 * @return mixed
 	 */
 	public function getSessionData($key) {
@@ -509,8 +491,8 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	/**
 	 * Saves the tokens so that they can be used by a later incarnation of this class.
 	 *
-	 * @param  string  $key
-	 * @param  mixed   $data
+	 * @param string $key
+	 * @param mixed $data
 	 * @return void
 	 */
 	public function setAndSaveSessionData($key, $data) {
@@ -518,18 +500,16 @@ class tslib_feUserAuth extends t3lib_userAuth {
 		$this->storeSessionData();
 	}
 
-
-
 	/**
 	 * Registration of records/"shopping basket" in session data
 	 * This will take the input array, $recs, and merge into the current "recs" array found in the session data.
 	 * If a change in the recs storage happens (which it probably does) the function setKey() is called in order to store the array again.
 	 *
-	 * @param	array		The data array to merge into/override the current recs values. The $recs array is constructed as [table]][uid] = scalar-value (eg. string/integer).
-	 * @param	integer		The maximum size of stored session data. If zero, no limit is applied and even confirmation of cookie session is discarded.
-	 * @return	void
+	 * @param array $recs The data array to merge into/override the current recs values. The $recs array is constructed as [table]][uid] = scalar-value (eg. string/integer).
+	 * @param integer $maxSizeOfSessionData The maximum size of stored session data. If zero, no limit is applied and even confirmation of cookie session is discarded.
+	 * @return void
 	 */
-	function record_registration($recs, $maxSizeOfSessionData=0) {
+	function record_registration($recs, $maxSizeOfSessionData = 0) {
 
 			// Storing value ONLY if there is a confirmed cookie set (->cookieID),
 			// otherwise a shellscript could easily be spamming the fe_sessions table
@@ -562,8 +542,8 @@ class tslib_feUserAuth extends t3lib_userAuth {
 	 *
 	 * This calls the parent function but additionally tries to look up the session ID in the "fe_session_data" table.
 	 *
-	 * @param	integer		Claimed Session ID
-	 * @return	boolean		Returns TRUE if a corresponding session was found in the database
+	 * @param integer $id Claimed Session ID
+	 * @return boolean Returns TRUE if a corresponding session was found in the database
 	 */
 	function isExistingSessionRecord($id) {
 			// Perform check in parent function
