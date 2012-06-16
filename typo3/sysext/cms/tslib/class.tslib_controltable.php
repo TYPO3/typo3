@@ -29,37 +29,45 @@
  * Rendering of tables for content positioning
  *
  * @see tslib_cObj::CTABLE()
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
 class tslib_controlTable {
-	var $offX = 0; // offset, x
-	var $offY = 0; // offset, y
-
-
-	var $tm = ''; // top menu
-	var $lm = ''; // left menu
-	var $rm = ''; // right menu
-	var $bm = ''; // bottom menu
-	var $content = ''; // content
-
-
-	var $tmTDparams = 'valign="top"'; // top menu TDparams
-	var $lmTDparams = 'valign="top"'; // left menu TDparams
-	var $rmTDparams = 'valign="top"'; // right menu TDparams
-	var $bmTDparams = 'valign="top"'; // bottom menu TDparams
-	var $contentTDparams = 'valign="top"'; // content TDparams
-
-
-	var $cMl = 1; // content margin, left
-	var $cMr = 1; // content margin, right
-	var $cMt = 0; // content margin, top
-	var $cMb = 1; // content margin, bottom
-
-
-	var $contentW = 0; // Places a little gif-spacer in the bottom of the content frame
-
+		// offset, x
+	var $offX = 0;
+		// offset, y
+	var $offY = 0;
+		// top menu
+	var $tm = '';
+		// left menu
+	var $lm = '';
+		// right menu
+	var $rm = '';
+		// bottom menu
+	var $bm = '';
+		// content
+	var $content = '';
+		// top menu TDparams
+	var $tmTDparams = 'valign="top"';
+		// left menu TDparams
+	var $lmTDparams = 'valign="top"';
+		// right menu TDparams
+	var $rmTDparams = 'valign="top"';
+		// bottom menu TDparams
+	var $bmTDparams = 'valign="top"';
+		// content TDparams
+	var $contentTDparams = 'valign="top"';
+		// content margin, left
+	var $cMl = 1;
+		// content margin, right
+	var $cMr = 1;
+		// content margin, top
+	var $cMt = 0;
+		// content margin, bottom
+	var $cMb = 1;
+		// Places a little gif-spacer in the bottom of the content frame
+	var $contentW = 0;
 
 	var $tableParams = 'border="0" cellspacing="0" cellpadding="0"';
 
@@ -67,9 +75,9 @@ class tslib_controlTable {
 	 * Wrapping internal vars ->tm, ->lm, ->rm, ->bm and ->content in a table where each content part is stored in a cell.
 	 * The two arguments to this function defines some offsets and margins to use in the arrangement of the content in the table.
 	 *
-	 * @param	string		List of offset parameters; x,y
-	 * @param	string		List of margin parameters; left, top, right, bottom
-	 * @return	string		The content strings wrapped in a <table> as the parameters defined
+	 * @param string $offset List of offset parameters; x,y
+	 * @param string $cMargins List of margin parameters; left, top, right, bottom
+	 * @return string The content strings wrapped in a <table> as the parameters defined
 	 * @see tslib_cObj::CTABLE()
 	 */
 	function start($offset, $cMargins) {
@@ -79,36 +87,58 @@ class tslib_controlTable {
 		$cols = 0;
 		$rows = 0;
 
-		if ($this->lm)
+		if ($this->lm) {
 			$cols++;
-		if ($this->rm)
-			$cols++;
-		if ($cMargArr[0])
-			$cols++;
-		if ($cMargArr[2])
-			$cols++;
-		if ($cMargArr[1] || $cMargArr[3] || $this->tm || $this->bm || $this->content || $this->contentW)
-			$cols++;
+		}
 
-		if ($cMargArr[1])
-			$rows++;
-		if ($cMargArr[3])
-			$rows++;
-		if ($this->tm)
-			$rows++;
-		if ($this->bm)
-			$rows++;
-		if ($this->content)
-			$rows++;
-		if ($this->contentW)
-			$rows++;
-		if (!$rows && $cols)
-			$rows = 1; // If there are no rows in the middle but still som columns...
+		if ($this->rm) {
+			$cols++;
+		}
 
+		if ($cMargArr[0]) {
+			$cols++;
+		}
+
+		if ($cMargArr[2]) {
+			$cols++;
+		}
+
+		if ($cMargArr[1] || $cMargArr[3] || $this->tm || $this->bm || $this->content || $this->contentW) {
+			$cols++;
+		}
+
+		if ($cMargArr[1]) {
+			$rows++;
+		}
+
+		if ($cMargArr[3]) {
+			$rows++;
+		}
+
+		if ($this->tm) {
+			$rows++;
+		}
+
+		if ($this->bm) {
+			$rows++;
+		}
+
+		if ($this->content) {
+			$rows++;
+		}
+
+		if ($this->contentW) {
+			$rows++;
+		}
+
+		if (!$rows && $cols) {
+				// If there are no rows in the middle but still som columns...
+			$rows = 1;
+		}
 
 		if ($rows && $cols) {
 			$res = LF . '<table ' . $this->tableParams . '>';
-				// top offset:
+				// Top offset:
 			if ($offArr[1]) {
 				$xoff = $offArr[0] ? 1 : 0;
 				if ($cols + $xoff > 1) {
@@ -133,9 +163,7 @@ class tslib_controlTable {
 				$res .= '<td' . $rowspan . '><img src="' . $GLOBALS['TSFE']->absRefPrefix .
 					'clear.gif" height="1" width="' . $cMargArr[0] . '" alt="" title="" /></td>';
 			}
-				// content...
-
-
+				// Content...
 			$middle = array();
 			if ($this->tm) {
 				$middle[] = '<td ' . $this->tmTDparams . '>' . $this->tm . '</td>';

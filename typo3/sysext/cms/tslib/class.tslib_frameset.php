@@ -37,8 +37,8 @@ class tslib_frameset {
 	/**
 	 * Generates a frameset based on input configuration in a TypoScript array.
 	 *
-	 * @param	array		The TypoScript properties of the PAGE object property "frameSet.". See link.
-	 * @return	string		A <frameset> tag.
+	 * @param array $setup The TypoScript properties of the PAGE object property "frameSet.". See link.
+	 * @return string A <frameset> tag.
 	 * @see TSpagegen::renderContentWithHeader()
 	 */
 	function make($setup) {
@@ -70,9 +70,9 @@ class tslib_frameset {
 	/**
 	 * Creates the attributes for a <frame> tag based on a $conf array and the type number
 	 *
-	 * @param	array		Configuration for the parameter generation for the FRAME set. See link
-	 * @param	integer		The typenumber to use for the link.
-	 * @return	string		String with attributes for the frame-tag. With a prefixed space character.
+	 * @param array $setup Configuration for the parameter generation for the FRAME set. See link
+	 * @param integer $typeNum The typenumber to use for the link.
+	 * @return string String with attributes for the frame-tag. With a prefixed space character.
 	 * @access private
 	 * @link http://typo3.org/documentation/document-library/references/doc_core_tsref/current/view/7/9/
 	 * @see make(), t3lib_TStemplate::linkData()
@@ -114,8 +114,8 @@ class tslib_frameset {
 	/**
 	 * Creates the attributes for a <frameset> tag based on a conf array($setup)
 	 *
-	 * @param	array		The setup array(TypoScript properties)
-	 * @return	string		Attributes with preceeding space.
+	 * @param array $setup The setup array(TypoScript properties)
+	 * @return string Attributes with preceeding space.
 	 * @access private
 	 * @see make()
 	 */

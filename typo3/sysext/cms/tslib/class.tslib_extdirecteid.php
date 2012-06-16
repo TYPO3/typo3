@@ -28,14 +28,13 @@ require_once(PATH_site . 'typo3/classes/class.typo3ajax.php');
 /**
  * eID controller for ExtDirect
  *
- * @author	Stefan Galinski <stefan.galinski@gmail.com>
+ * @author Stefan Galinski <stefan.galinski@gmail.com>
  * @package	TYPO3
  */
 class tslib_ExtDirectEid {
 	/**
 	 * Ajax Instance
-	 * 
-	 * @property TYPO3AJAX
+	 *
 	 * @var TYPO3AJAX
 	 */
 	protected $ajaxObjext = NULL;
@@ -43,7 +42,7 @@ class tslib_ExtDirectEid {
 	/**
 	 * Routes the given eID action to the related ExtDirect method with the necessary
 	 * ajax object.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function routeAction() {

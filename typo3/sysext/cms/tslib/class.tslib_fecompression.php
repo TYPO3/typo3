@@ -26,9 +26,9 @@
  * This class contains compression functions for the TYPO3 Frontend. It can be
  * used only in EXT:cms/tslib/index_ts.php
  *
- * @author	Dmitry Dulepov <dmitry@typo3.org>
- * @package	TYPO3
- * @subpackage	tx_cms
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_cms
  */
 class tslib_fecompression implements t3lib_Singleton {
 
@@ -37,30 +37,30 @@ class tslib_fecompression implements t3lib_Singleton {
 	 * replace the Content-length HTTP header after compression if it was added
 	 * by TYPO3 before compression.
 	 *
-	 * @var	int
+	 * @var integer
 	 */
-	protected	$contentLength = 0;
+	protected $contentLength = 0;
 
 	/**
 	 * Corrects HTTP "Content-length" header if it was sent by TYPO3 and compression
 	 * is enabled.
 	 *
-	 * @param	string	$outputBuffer	Output buffer to compress
-	 * @param	int	$mode	One of PHP_OUTPUT_HANDLER_xxx contants
-	 * @return	string	Compressed string
-	 * @see	ob_start()
-	 * @see	ob_gzhandler()
+	 * @param string $outputBuffer Output buffer to compress
+	 * @param integer $mode One of PHP_OUTPUT_HANDLER_xxx contants
+	 * @return string Compressed string
+	 * @see ob_start()
+	 * @see ob_gzhandler()
 	 */
 	function compressionOutputHandler($outputBuffer, $mode) {
-		// Compress the content
+			// Compress the content
 		$outputBuffer = ob_gzhandler($outputBuffer, $mode);
 		if ($outputBuffer !== FALSE) {
-			// Save compressed size
+				// Save compressed size
 			$this->contentLength += strlen($outputBuffer);
 
-			// Check if this was the last content chunk
+				// Check if this was the last content chunk
 			if (0 != ($mode & PHP_OUTPUT_HANDLER_END)) {
-				// Check if we have content-length header
+					// Check if we have content-length header
 				foreach (headers_list() as $header) {
 					if (0 == strncasecmp('Content-length:', $header, 15)) {
 						header('Content-length: ' . $this->contentLength);
