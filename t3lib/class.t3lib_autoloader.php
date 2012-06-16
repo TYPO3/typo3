@@ -196,7 +196,8 @@ class t3lib_autoloader {
 	 * @param string $classPath The current class path from previous lookup
 	 * @param string $classNameLower Lower cased class name to be looked up
 	 * @return string Class path
-	 * @deprecated since 6.0, deprecation log is handled in config_default. This method and the call can be safely removed in two versions
+	 * @deprecated since 6.0, deprecation log is handled in bootstrap deprecationLogForOldXclassRegistration().
+	 * 		This method and the call can be safely removed in two versions.
 	 */
 	protected static function classPathForDeprecatedXclassHandling($classPath, $classNameLower) {
 			// Start XCLASS handling if the requested class starts with 'ux_'

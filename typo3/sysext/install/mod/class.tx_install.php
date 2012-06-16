@@ -2101,7 +2101,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									}
 									if (preg_match('/^boolean/i', $description)) {
 											// When submitting settings in the Install Tool, values that default to "FALSE" or "true"
-											// in config_default.php will be sent as "0" resp. "1". Therefore, reset the values
+											// in t3lib/stddb/DefaultSettings.php will be sent as "0" resp. "1". Therefore, reset the values
 											// to their boolean equivalent.
 										if ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === FALSE && $value === '0') {
 											$value = FALSE;
@@ -2122,9 +2122,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	}
 
 	/**
-	 * Make an array of the comments in the t3lib/config_default.php file
+	 * Make an array of the comments in the t3lib/stddb/DefaultSettings.php file
 	 *
-	 * @param string $string The contents of the config_default.php file
+	 * @param string $string The contents of the t3lib/stddb/DefaultSettings.php file
 	 * @param array $mainArray
 	 * @param array $commentArray
 	 * @return array
@@ -4249,7 +4249,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			<br />
 			The options in the TYPO3_CONF_VARS array and how to use it for your
 			own purposes is discussed in the base configuration file,
-			t3lib/config_default.php. This file sets up the default values and
+			t3lib/stddb/DefaultSettings.php. This file sets up the default values and
 			subsequently includes the localconf.php file in which you can then
 			override values.
 			<br />
@@ -7495,27 +7495,11 @@ $out="
 	 * @return void
 	 */
 	function includeTCA() {
-			// this line hast to stay, as included files use $TCA in global scope
-		global $TCA;
-
-		include (PATH_t3lib . 'stddb/tables.php');
-
-			// Extension additions
-		if ($GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']) {
-			include(PATH_typo3conf.$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'].'_ext_tables.php');
-		} else {
-			include(PATH_t3lib.'stddb/load_ext_tables.php');
-		}
-
-		if (TYPO3_extTableDef_script) {
-			include (PATH_typo3conf.TYPO3_extTableDef_script);
-		}
+		Typo3_Bootstrap_Backend::getInstance()->loadExtensionTables();
 
 		foreach ($GLOBALS['TCA'] as $table => $conf) {
 			t3lib_div::loadTCA($table);
 		}
-
-		Typo3_Bootstrap_Backend::getInstance()->runExtTablesPostProcessingHooks();
 	}
 
 

@@ -26,7 +26,7 @@
  * Test case for basic core related constants in config_default.php
  *
  * @author Oliver Hader <oliver@typo3.org>
- *
+ * @TODO: This test should be moved elsewhere?!
  * @package TYPO3
  */
 class config_defaultTest extends tx_phpunit_testcase {
