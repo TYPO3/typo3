@@ -27,6 +27,20 @@ file, make sure to install a fresh version from 6.0 sources.
 The default TYPO3_CONF_VARS definitions where moved from t3lib/config_default.php
 to an own file in t3lib/stddb/DefaultSettings.php.
 
+* Removed TYPO3_tables_script constant
+
+It was possible to define a different base TCA definition file by defining the
+variable typo_db_tables_script in localconf.php. This functionality is removed
+without substitution.
+
+* Restricted access of global variables in ext_tables.php and ext_localconf.php
+
+With the bootstrap refactoring the visibility of ext_tables.php and
+ext_localconf.php was reduced. The files do not run in global context anymore,
+so variables like $TCA should be accessed through $GLOBALS['TCA']. There is a
+compatibility layer, but the core can not guarantee that extensions with
+strange setup does not break.
+
 * Deprecated methods
 
 Deprecated methods that were initially targeted to be removed in TYPO3 4.8/6.0
@@ -74,12 +88,6 @@ removal will be reverted.
 The ancient noBlur TypoScript setting for old Browsers (Internet Explorer <= 5.5)
 was removed without alternative. The setting has no effect anymore and can be
 removed from custom TypoScript objects, especially MENU.
-
-* Removed TYPO3_tables_script constant
-
-It was possible to define a different base TCA definition file by defining the
-variable typo_db_tables_script in localconf.php. This functionality is removed
-without substitution.
 
 ===============================================================================
 Changes and Improvements
