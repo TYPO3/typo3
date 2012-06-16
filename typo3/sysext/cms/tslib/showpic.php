@@ -30,22 +30,25 @@
  *
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
- * @author		Kasper Skårhøj	<kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-if (!defined ('PATH_typo3conf')) 	die ('The configuration path was not properly defined!');
+if (!defined('PATH_typo3conf')) {
+	die('The configuration path was not properly defined!');
+}
 require_once(PATH_t3lib.'class.t3lib_stdgraphic.php');
 
 /**
  * Script Class, generating the page output.
  * Instantiated in the bottom of this script.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
 class SC_tslib_showpic {
-	var $content;		// Page content accumulated here.
+		// Page content accumulated here.
+	var $content;
 
 		// Parameters loaded into these internal variables:
 	var $file;
@@ -68,7 +71,7 @@ class SC_tslib_showpic {
 	/**
 	 * Init function, setting the input vars in the global space.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 			// Loading internal vars with the GET/POST parameters from outside:
@@ -76,10 +79,7 @@ class SC_tslib_showpic {
 		$parametersArray = t3lib_div::_GP('parameters');
 		$this->frame = t3lib_div::_GP('frame');
 		$this->md5 = t3lib_div::_GP('md5');
-
-		// ***********************
-		// Check parameters
-		// ***********************
+			// Check parameters
 			// If no file-param or parameters are given, we must exit
 		if (!$this->file || !isset($parametersArray) || !is_array($parametersArray)) {
 			throw new UnexpectedValueException('Parameter Error: No file or no parameters given.', 1299514081);
@@ -104,12 +104,9 @@ class SC_tslib_showpic {
 			$this->$parameterName = $parameterValue;
 		}
 
-		// ***********************
-		// Check the file. If must be in a directory beneath the dir of this script...
-		// $this->file remains unchanged, because of the code in stdgraphic, but we do check if the file exists within the current path
-		// ***********************
-
-		$test_file=PATH_site.$this->file;
+			// Check the file. If must be in a directory beneath the dir of this script...
+			// $this->file remains unchanged, because of the code in stdgraphic, but we do check if the file exists within the current path
+		$test_file = PATH_site . $this->file;
 		if (!t3lib_div::validPathStr($test_file)) {
 			throw new UnexpectedValueException('Parameter Error: No valid filepath', 1299514083);
 		}
@@ -122,7 +119,7 @@ class SC_tslib_showpic {
 	 * Main function which creates the image if needed and outputs the HTML code for the page displaying the image.
 	 * Accumulates the content in $this->content
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 
@@ -130,12 +127,14 @@ class SC_tslib_showpic {
 		$img = t3lib_div::makeInstance('t3lib_stdGraphic');
 		$img->mayScaleUp = 0;
 		$img->init();
-		if ($this->sample)	{$img->scalecmd = '-sample';}
+		if ($this->sample) {
+			$img->scalecmd = '-sample';
+		}
 		if ($this->alternativeTempPath && t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['allowedTempPaths'], $this->alternativeTempPath)) {
 			$img->tempPath = $this->alternativeTempPath;
 		}
 
-		// Need to connect to database, because this is used (typo3temp_db_tracking, cached image dimensions).
+			// Need to connect to database, because this is used (typo3temp_db_tracking, cached image dimensions).
 		$GLOBALS['TYPO3_DB']->connectDB();
 
 		if (strstr($this->width . $this->height, 'm')) {
@@ -152,22 +151,22 @@ class SC_tslib_showpic {
 		$imgInfo = $img->imageMagickConvert($this->file, 'web', $this->width.$max, $this->height, $img->IMparams($this->effects), $this->frame, '');
 
 			// Create HTML output:
-		$this->content='';
-		$this->content.='
+		$this->content = '';
+		$this->content .= '
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 <html>
 <head>
-	<title>'.htmlspecialchars($this->title ? $this->title : "Image").'</title>
+	<title>' . htmlspecialchars($this->title ? $this->title : "Image").'</title>
 	' . ($this->title ? '' : '<meta name="robots" content="noindex,follow" />') . '
 </head>
-		'.($this->bodyTag ? $this->bodyTag : '<body>');
+		' . ($this->bodyTag ? $this->bodyTag : '<body>');
 
 		if (is_array($imgInfo)) {
 			$wrapParts = explode('|', $this->wrap);
 			$this->content.=trim($wrapParts[0]).$img->imgTag($imgInfo).trim($wrapParts[1]);
 		}
-		$this->content.='
+		$this->content .= '
 		</body>
 		</html>';
 	}
@@ -175,14 +174,14 @@ class SC_tslib_showpic {
 	/**
 	 * Outputs the content from $this->content
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_tslib_showpic');
 $SOBE->init();
 $SOBE->main();

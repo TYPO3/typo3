@@ -29,7 +29,7 @@
  * Rendering of tables for offset
  *
  * @see	tslib_cObj::OTABLE(), tslib_cObj::stdWrap()
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
@@ -41,15 +41,16 @@ class tslib_tableOffset {
 	/**
 	 * Wrapping the input content string in a table which will space it out from top/left/right/bottom
 	 *
-	 * @param	string		The HTML content string
-	 * @param	string		List of offset parameters; x,y,r,b,w,h
-	 * @return	string		The HTML content string being wrapped in a <table> offsetting the content as the $offset parameters defined
+	 * @param string $content The HTML content string
+	 * @param string $offset List of offset parameters; x,y,r,b,w,h
+	 * @return string The HTML content string being wrapped in a <table> offsetting the content as the $offset parameters defined
 	 */
 	function start($content, $offset) {
 		$valPairs = t3lib_div::intExplode(',', $offset . ',,,,,');
 
 		if ($valPairs[0] || $valPairs[1] || $valPairs[2] || $valPairs[3] || $valPairs[4] || $valPairs[5]) {
-				// If width is defined AND there has been no change to the default table params, then extend them to a tablewidth of 1
+				// If width is defined AND there has been no change to the default table params,
+				// then extend them to a tablewidth of 1
 			if ($valPairs[4] && $this->default_tableParams == $this->tableParams) {
 				$this->tableParams .= ' width="1"';
 			}
@@ -61,29 +62,38 @@ class tslib_tableOffset {
 			$heightImg = '';
 				// If width is required, set so bottom column will display for sure
 			if ($valPairs[4]) {
-				if (!$valPairs[3])
+				if (!$valPairs[3]) {
 					$valPairs[3] = 1;
+				}
+
 				$widthImg = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' .
 					$valPairs[4] . '" height="1" alt="" title="" />';
 			}
 				// If height is required, set so right column will display for sure
 			if ($valPairs[5]) {
-				if (!$valPairs[2])
+				if (!$valPairs[2]) {
 					$valPairs[2] = 1;
+				}
+
 				$valPairs[2] = 1;
 				$heightImg = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' .
 					$valPairs[5] . '" alt="" title="" />';
 			}
 
 				// First row:
-			if ($valPairs[1]) { // top
+				// top
+			if ($valPairs[1]) {
 				$rows[1] .= '<tr>';
 				$rows[1] .= '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' .
 					($valPairs[0] ? $valPairs[0] : 1) . '" height="' . $valPairs[1] . '" alt="" title="" /></td>';
-				if ($valPairs[0])
+				if ($valPairs[0]) {
 					$rows[1] .= '<td></td>';
-				if ($valPairs[2])
+				}
+
+				if ($valPairs[2]) {
 					$rows[1] .= '<td></td>';
+				}
+
 				$rows[1] .= '</tr>';
 			}
 				// Middle row:
@@ -100,7 +110,7 @@ class tslib_tableOffset {
 			}
 			$rows[2] .= '</tr>';
 				// Bottom row:
-			if ($valPairs[3]) { // bottom
+			if ($valPairs[3]) {
 				$rows[3] .= '<tr>';
 				if ($valPairs[0])
 					$rows[3] .= '<td></td>';
@@ -112,8 +122,9 @@ class tslib_tableOffset {
 				$rows[3] .= '</tr>';
 			}
 			return $this->begin . implode('', $rows) . $this->end;
-		} else
+		} else {
 			return $content;
+		}
 	}
 }
 ?>
