@@ -1466,12 +1466,12 @@ class t3lib_TCEmain {
 	 * @throws RuntimeException
 	 */
 	protected function applyFiltersToValues(array $tcaFieldConfiguration, array $values) {
-		if (!is_array($tcaFieldConfiguration['filter'])) {
+		if (empty($tcaFieldConfiguration['filter']) || !is_array($tcaFieldConfiguration['filter'])) {
 			return $values;
 		}
 
 		foreach ($tcaFieldConfiguration['filter'] as $filter) {
-			if (!$filter['userFunc']) {
+			if (empty($filter['userFunc'])) {
 				continue;
 			}
 

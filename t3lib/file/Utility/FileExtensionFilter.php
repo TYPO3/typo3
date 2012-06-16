@@ -51,11 +51,11 @@ class t3lib_file_Utility_FileExtensionFilter {
 	/**
 	 * Entry method for use as TCEMain "inline" field filter
 	 *
-	 * @param $parameters
-	 * @param $tceMain
+	 * @param array $parameters
+	 * @param t3lib_TCEmain $tceMain
 	 * @return array
 	 */
-	public function filterInlineChildren($parameters, t3lib_TCEmain $tceMain) {
+	public function filterInlineChildren(array $parameters, t3lib_TCEmain $tceMain) {
 		$values = $parameters['values'];
 
 		if ($parameters['allowedFileExtensions']) {
@@ -69,13 +69,15 @@ class t3lib_file_Utility_FileExtensionFilter {
 		$cleanValues = array();
 
 		foreach ($values as $value) {
+			if (empty($value)) {
+				continue;
+			}
+
 			$parts = t3lib_div::revExplode('_', $value, 2);
-			$fileReferenceUid = $parts[count($parts)-1];
+			$fileReferenceUid = $parts[count($parts) - 1];
 
-			$fileReferenceRecord = t3lib_BEfunc::getRecord('sys_file_reference', $fileReferenceUid);
-			$fileUid = $fileReferenceRecord['uid_local'];
-
-			$file = t3lib_file_Factory::getInstance()->getFileObject($fileUid);
+			$fileReference = t3lib_file_Factory::getInstance()->getFileReferenceObject($fileReferenceUid);
+			$file = $fileReference->getOriginalFile();
 
 			if ($this->isAllowed($file)) {
 				$cleanValues[] = $value;
@@ -125,7 +127,7 @@ class t3lib_file_Utility_FileExtensionFilter {
 	 * Checks whether a file is allowed according to the criteria defined in the class variables ($this->allowedFileExtensions etc.)
 	 *
 	 * @param t3lib_file_FileInterface $file
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isAllowed(t3lib_file_FileInterface $file) {
 		$result = TRUE;
@@ -139,7 +141,6 @@ class t3lib_file_Utility_FileExtensionFilter {
 
 			// Check disallowed file extensions
 		if ($this->disallowedFileExtensions !== NULL && count($this->disallowedFileExtensions) > 0 && in_array($fileExt, $this->disallowedFileExtensions)) {
-
 			$result = FALSE;
 		}
 
