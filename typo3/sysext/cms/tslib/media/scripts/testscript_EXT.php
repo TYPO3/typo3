@@ -1,16 +1,15 @@
 <?php
 
-if (!is_object($TSFE)) die ('Error: No parent object present.');
-
-
-
+if (!is_object($TSFE)) {
+	die('Error: No parent object present.');
+}
 
 /**
  * Printing current time dynamically
  *
- * @param	string		Content (ignore)
- * @param	array		TypoScript configuration passed
- * @return	string		Current time wrapped in <font> tags with red color
+ * @param string $content Content (ignore)
+ * @param array $conf TypoScript configuration passed
+ * @return string Current time wrapped in <font> tags with red color
  */
 function user_printTimeExt($content, $conf) {
 	return '<font color="red">Dynamic time: '.date('H:i:s').'</font><br />';
@@ -33,9 +32,6 @@ You can get the content of the record, that included this script in $REC:<br />
 The configuration for the script is in the array, $CONF:<br />
 <br />
 
-
-
-
 <?php
 debug($CONF);
 
@@ -48,7 +44,6 @@ These are global variables!
 <br />
 <br />
 Good luck....
-
 
 BTW: The time:
 <?php if ($CONF['showTime'])	{echo user_printTimeExt('', '');} ?>

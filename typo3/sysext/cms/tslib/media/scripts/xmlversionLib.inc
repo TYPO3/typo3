@@ -24,13 +24,15 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Example class showing how one could make XML export of page content elements in TYPO3
  *
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
+
 /**
  * Class that creates the current page and content element records as an XML structure using the library "t3lib_xml"
  * It is demonstrated in use in the testsite package on page "59"
@@ -56,22 +58,23 @@
  *
  * @package TYPO3
  * @subpackage tslib
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class user_xmlversion {
-	var $cObj;		// The backReference to the mother cObj object set at call time
+		// The backReference to the mother cObj object set at call time
+	var $cObj;
 
 
 	/**
 	 * Main function, called from TypoScript
 	 *
-	 * @param	string		Empty, ignore.
-	 * @param	array		TypoScript properties for this content object/function call
-	 * @return	string		XML content
+	 * @param string $content Empty, ignore.
+	 * @param array $conf TypoScript properties for this content object/function call
+	 * @return string XML content
 	 */
 	function main_xmlversion($content, $conf) {
 		$xmlObj = t3lib_div::makeInstance('t3lib_xml', 'typo3_page');
-		$xmlObj->XMLdebug=0;
+		$xmlObj->XMLdebug = 0;
 		$xmlObj->setRecFields('pages', 'doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,author,author_email,newUntil,lastUpdated,cache_timeout');
 		$xmlObj->setRecFields('tt_content', 'CType,header,header_link,bodytext,image,imagewidth,imageorient,media,records,colPos,starttime,endtime,fe_group');
 
@@ -95,8 +98,8 @@ class user_xmlversion {
 	/**
 	 * Selects all records from $table having the current page id as PID (records belonging to that page)
 	 *
-	 * @param	string		A tablename found in $GLOBALS['TCA']
-	 * @return	pointer		A database resource pointer
+	 * @param string $table A tablename found in $GLOBALS['TCA']
+	 * @return pointer A database resource pointer
 	 */
 	function getContentResult($table) {
 		if ($GLOBALS['TCA'][$table]) {
@@ -108,8 +111,6 @@ class user_xmlversion {
 		}
 	}
 }
-
-
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['media/scripts/xmlversionLib.inc'])) {
 	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['media/scripts/xmlversionLib.inc']);
