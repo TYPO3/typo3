@@ -16,31 +16,33 @@ if (!defined ('PATH_typo3conf')) {
 	die('The configuration path was not properly defined!');
 }
 
-Typo3_Bootstrap_Backend::loadDefaultTypo3ConfVars();
-Typo3_Bootstrap_Backend::registerExtDirectComponents();
-Typo3_Bootstrap_Backend::initializeGlobalVariables();
-Typo3_Bootstrap_Backend::checkLocalconfExistsOrDie();
-Typo3_Bootstrap_Backend::setGlobalDatabaseVariablesToEmptyString();
+Typo3_Bootstrap_Backend::getInstance()
+	->loadDefaultTypo3ConfVars()
+	->registerExtDirectComponents()
+	->initializeGlobalVariables()
+	->checkLocalconfExistsOrDie()
+	->setGlobalDatabaseVariablesToEmptyString();
 
 require(PATH_typo3conf . 'localconf.php');
 
-Typo3_Bootstrap_Backend::defineTypo3DatabaseConstants();
-Typo3_Bootstrap_Backend::initializeCachingFramework();
-Typo3_Bootstrap_Backend::registerAutoloader();
-Typo3_Bootstrap_Backend::addCorePearPathToIncludePath();
-Typo3_Bootstrap_Backend::checkUtf8DatabaseSettingsOrDie();
-Typo3_Bootstrap_Backend::transferDeprecatedCurlSettings();
-Typo3_Bootstrap_Backend::setCacheHashOptions();
-Typo3_Bootstrap_Backend::enforceCorrectProxyAuthScheme();
-Typo3_Bootstrap_Backend::setDefaultTimezone();
-Typo3_Bootstrap_Backend::initializeL10nLocales();
-Typo3_Bootstrap_Backend::configureImageProcessingOptions();
-Typo3_Bootstrap_Backend::convertPageNotFoundHandlingToBoolean();
-Typo3_Bootstrap_Backend::registerGlobalDebugFunctions();
-Typo3_Bootstrap_Backend::registerSwiftMailer();
-Typo3_Bootstrap_Backend::configureExceptionHandling();
-Typo3_Bootstrap_Backend::setMemoryLimit();
-Typo3_Bootstrap_Backend::defineTypo3RequestTypes();
+Typo3_Bootstrap_Backend::getInstance()
+	->defineTypo3DatabaseConstants()
+	->initializeCachingFramework()
+	->registerAutoloader()
+	->addCorePearPathToIncludePath()
+	->checkUtf8DatabaseSettingsOrDie()
+	->transferDeprecatedCurlSettings()
+	->setCacheHashOptions()
+	->enforceCorrectProxyAuthScheme()
+	->setDefaultTimezone()
+	->initializeL10nLocales()
+	->configureImageProcessingOptions()
+	->convertPageNotFoundHandlingToBoolean()
+	->registerGlobalDebugFunctions()
+	->registerSwiftMailer()
+	->configureExceptionHandling()
+	->setMemoryLimit()
+	->defineTypo3RequestTypes();
 
 	// Load extensions:
 $TYPO3_LOADED_EXT = t3lib_extMgm::typo3_loadExtensions();
@@ -56,11 +58,12 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
 	}
 }
 
-Typo3_Bootstrap_Backend::deprecationLogForOldXclassRegistration();
-Typo3_Bootstrap_Backend::initializeExceptionHandling();
-Typo3_Bootstrap_Backend::requireAdditionalExtensionFiles();
-Typo3_Bootstrap_Backend::setFinalCachingFrameworkCacheConfiguration();
-Typo3_Bootstrap_Backend::defineLoggingAndExceptionConstants();
-Typo3_Bootstrap_Backend::unsetReservedGlobalVariables();
-Typo3_Bootstrap_Backend::initializeGlobalTimeVariables();
+Typo3_Bootstrap_Backend::getInstance()
+	->deprecationLogForOldXclassRegistration()
+	->initializeExceptionHandling()
+	->requireAdditionalExtensionFiles()
+	->setFinalCachingFrameworkCacheConfiguration()
+	->defineLoggingAndExceptionConstants()
+	->unsetReservedGlobalVariables()
+	->initializeGlobalTimeVariables();
 ?>

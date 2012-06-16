@@ -833,6 +833,6 @@ if (is_array($GLOBALS['TBE_MODULES']['_configuration'])) {
 
 $TYPO3backend->render();
 
-Typo3_Bootstrap_Backend::shutdown();
+Typo3_Bootstrap_Backend::getInstance()->shutdown();
 
 ?>

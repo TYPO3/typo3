@@ -71,7 +71,7 @@ if ($_COOKIE[t3lib_beUserAuth::getCookieName()]) {
 }
 $TT->start();
 
-Typo3_Bootstrap_Backend::initializeTypo3DbGlobal(FALSE);
+Typo3_Bootstrap_Backend::getInstance()->initializeTypo3DbGlobal(FALSE);
 
 
 
@@ -189,11 +189,11 @@ $TT->pull();
 // Admin Panel & Frontend editing
 // *****************************************
 if ($TSFE->isBackendUserLoggedIn()) {
-	Typo3_Bootstrap_Backend::initializeSpriteManager(FALSE);
+	Typo3_Bootstrap_Backend::getInstance()->initializeSpriteManager(FALSE);
 
 	$BE_USER->initializeFrontendEdit();
 	if ($BE_USER->adminPanel instanceof tslib_AdminPanel) {
-		Typo3_Bootstrap_Backend::initializeLanguageObject();
+		Typo3_Bootstrap_Backend::getInstance()->initializeLanguageObject();
 	}
 	if ($BE_USER->frontendEdit instanceof t3lib_frontendedit) {
 		$BE_USER->frontendEdit->initConfigOptions();
@@ -384,6 +384,6 @@ if (TYPO3_DLOG) {
 	t3lib_div::devLog('END of FRONTEND session', 'cms', 0, array('_FLUSH' => TRUE));
 }
 
-Typo3_Bootstrap_Backend::shutdown();
+Typo3_Bootstrap_Backend::getInstance()->shutdown();
 
 ?>
