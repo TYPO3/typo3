@@ -45,8 +45,38 @@ define('TYPO3_MODE', 'FE');
 	// AJAX/compression data corruption
 ob_start();
 
-	// Include configuration
-require(PATH_t3lib.'config_default.php');
+Typo3_Bootstrap_Backend::getInstance()->loadDefaultTypo3ConfVars()
+	->registerExtDirectComponents()
+	->initializeGlobalVariables()
+	->checkLocalconfExistsOrDie()
+	->setGlobalDatabaseVariablesToEmptyString()
+	->loadMainConfigurationFile()
+	->defineTypo3DatabaseConstants()
+	->initializeCachingFramework()
+	->registerAutoloader()
+	->addCorePearPathToIncludePath()
+	->checkUtf8DatabaseSettingsOrDie()
+	->transferDeprecatedCurlSettings()
+	->setCacheHashOptions()
+	->enforceCorrectProxyAuthScheme()
+	->setDefaultTimezone()
+	->initializeL10nLocales()
+	->configureImageProcessingOptions()
+	->convertPageNotFoundHandlingToBoolean()
+	->registerGlobalDebugFunctions()
+	->registerSwiftMailer()
+	->configureExceptionHandling()
+	->setMemoryLimit()
+	->defineTypo3RequestTypes()
+	->loadAdditionalConfigurationFromExtensions()
+	->deprecationLogForOldXclassRegistration()
+	->initializeExceptionHandling()
+	->requireAdditionalExtensionFiles()
+	->setFinalCachingFrameworkCacheConfiguration()
+	->defineLoggingAndExceptionConstants()
+	->unsetReservedGlobalVariables()
+	->initializeGlobalTimeVariables();
+
 if (!t3lib_extMgm::isLoaded('cms')) {
 	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');
 }

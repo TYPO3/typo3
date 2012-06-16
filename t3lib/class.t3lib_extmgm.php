@@ -1523,7 +1523,7 @@ tt_content.' . $key . $prefix . ' {
 	 *		 The returned value will be an array where each key is an extension key and the value is an array with filepaths for the extension.
 	 *		 This array will later be set in the global var $GLOBALS['TYPO3_LOADED_EXT']
 	 *
-	 * Usages of this function can be seen in config_default.php
+	 * Usages of this function can be seen in bootstrap
 	 * Extensions are always detected in the order local - global - system.
 	 *
 	 * @return array Extension Array
