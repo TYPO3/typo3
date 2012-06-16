@@ -26,33 +26,6 @@
 ***************************************************************/
 
 /**
- * Page navigation tree for the Web module
- *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author Benjamin Mack <bmack@xnos.org>
- *
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *   71: class webPageTree extends t3lib_browseTree
- *   81:     function webPageTree()
- *   92:     function wrapIcon($icon, &$row)
- *  130:     function wrapStop($str, $row)
- *  146:     function wrapTitle($title, $row, $bank=0)
- *  165:     function printTree($treeArr = '')
- *  271:     function PMicon($row, $a, $c, $nextCount, $exp)
- *  292:     function PMiconATagWrap($icon, $cmd, $isExpand = TRUE)
- *  309:     function getBrowsableTree()
- *  377:     function getTree($uid, $depth=999, $depthData='', $blankLineCode='', $subCSSclass='')
- *
- *
- * TOTAL FUNCTIONS: 9
- * (This index is automatically created/updated by the extension "extdeveval")
- */
-
-/**
  * Extension class for the t3lib_browsetree class, specially made
  * for browsing pages in the Web module
  *

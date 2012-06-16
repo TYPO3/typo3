@@ -24,30 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * Folder navigation tree for the File main module
- *
- * @author Benjamin Mack <bmack@xnos.org>
- *
- *
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *   71: class fileListTree extends t3lib_browseTree
- *   81:     function webPageTree()
- *   92:     function wrapIcon($icon, &$row)
- *  130:     function wrapStop($str, $row)
- *  146:     function wrapTitle($title, $row, $bank=0)
- *  165:     function printTree($treeItems = '')
- *  271:     function PMicon($row, $a, $c, $nextCount, $exp)
- *  292:     function PMiconATagWrap($icon, $cmd, $isExpand = TRUE)
- *  309:     function getBrowsableTree()
- *  377:     function getTree($uid, $depth=999, $depthData='', $blankLineCode='', $subCSSclass='')
- *
- *
- * TOTAL FUNCTIONS: 9
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
+
 /**
  * Extension class for the t3lib_filetree class, needed for drag and drop and ajax functionality
  *
