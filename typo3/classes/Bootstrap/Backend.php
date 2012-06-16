@@ -351,6 +351,18 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	}
 
 	/**
+	 * Loads the main configuration file (localconf.php)
+	 *
+	 * @return Typo3_Bootstrap_Backend
+	 */
+	public function loadMainConfigurationFile() {
+		global $TYPO3_CONF_VARS, $typo_db, $typo_db_username, $typo_db_password, $typo_db_host, $typo_db_extTableDef_script;
+		require(PATH_typo3conf . 'localconf.php');
+
+		return $this;
+	}
+
+	/**
 	 * Define the database setup as constants
 	 * and unset no longer needed global variables
 	 *
