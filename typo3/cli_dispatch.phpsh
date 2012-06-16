@@ -57,25 +57,10 @@ Typo3_Bootstrap_Backend::getInstance()
 require(PATH_t3lib . 'config_default.php');
 
 Typo3_Bootstrap_Backend::getInstance()->initializeTypo3DbGlobal(TRUE);
-
 Typo3_Bootstrap_Cli::getInstance()->initializeCliKeyOrDie();
-
-	// Include standard tables.php file
-include(PATH_t3lib . 'stddb/tables.php');
-	// Load temp_CACHED file of ext_tables or each ext_tables.php of loaded extensions
-if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
-	include(PATH_typo3conf . $TYPO3_LOADED_EXT['_CACHEFILE'] . '_ext_tables.php');
-} else {
-	include(PATH_t3lib . 'stddb/load_ext_tables.php');
-}
-	// Load additional ext tables script
-if (TYPO3_extTableDef_script) {
-	include(PATH_typo3conf . TYPO3_extTableDef_script);
-}
-Typo3_Bootstrap_Backend::getInstance()->runExtTablesPostProcessingHooks();
-
-	// TODO: Check if we really need the sprite manager on the command line
 Typo3_Bootstrap_Backend::getInstance()
+	->loadExtensionTables()
+		// TODO: Check if we really need the sprite manager on the command line
 	->initializeSpriteManager(TRUE)
 	->initializeBackendUser()
 	->initializeBackendUserMounts()
