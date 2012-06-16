@@ -21,11 +21,8 @@ Typo3_Bootstrap_Backend::getInstance()
 	->registerExtDirectComponents()
 	->initializeGlobalVariables()
 	->checkLocalconfExistsOrDie()
-	->setGlobalDatabaseVariablesToEmptyString();
-
-require(PATH_typo3conf . 'localconf.php');
-
-Typo3_Bootstrap_Backend::getInstance()
+	->setGlobalDatabaseVariablesToEmptyString()
+	->loadMainConfigurationFile()
 	->defineTypo3DatabaseConstants()
 	->initializeCachingFramework()
 	->registerAutoloader()
