@@ -2101,7 +2101,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									}
 									if (preg_match('/^boolean/i', $description)) {
 											// When submitting settings in the Install Tool, values that default to "FALSE" or "true"
-											// in config_default.php will be sent as "0" resp. "1". Therefore, reset the values
+											// in t3lib/stddb/DefaultSettings.php will be sent as "0" resp. "1". Therefore, reset the values
 											// to their boolean equivalent.
 										if ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === FALSE && $value === '0') {
 											$value = FALSE;
@@ -2122,9 +2122,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	}
 
 	/**
-	 * Make an array of the comments in the t3lib/config_default.php file
+	 * Make an array of the comments in the t3lib/stddb/DefaultSettings.php file
 	 *
-	 * @param string $string The contents of the config_default.php file
+	 * @param string $string The contents of the t3lib/stddb/DefaultSettings.php file
 	 * @param array $mainArray
 	 * @param array $commentArray
 	 * @return array
@@ -4249,7 +4249,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			<br />
 			The options in the TYPO3_CONF_VARS array and how to use it for your
 			own purposes is discussed in the base configuration file,
-			t3lib/config_default.php. This file sets up the default values and
+			t3lib/stddb/DefaultSettings.php. This file sets up the default values and
 			subsequently includes the localconf.php file in which you can then
 			override values.
 			<br />
