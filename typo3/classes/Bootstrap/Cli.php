@@ -25,6 +25,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Abstract.php';
+
 /**
  * This class encapsulates cli specific bootstrap methods.
  *
@@ -32,19 +34,35 @@
  * @package TYPO3
  * @subpackage core
  */
-class Typo3_Bootstrap_Cli {
+class Typo3_Bootstrap_Cli extends Typo3_Bootstrap_Abstract {
+	/**
+	 * @var Typo3_Bootstrap_Cli
+	 */
+	protected static $instance = NULL;
+
+	/**
+	 * @return Typo3_Bootstrap_Cli
+	 */
+	public static function getInstance() {
+		if (is_null(self::$instance)) {
+			self::$instance = new Typo3_Bootstrap_Cli();
+		}
+		return self::$instance;
+	}
 
 	/**
 	 * Check the script is called from a cli environment.
 	 *
-	 * @return void
+	 * @return Typo3_Bootstrap_Cli
 	 */
-	public static function checkEnvironmentOrDie() {
+	public function checkEnvironmentOrDie() {
 		if (substr(php_sapi_name(), 0, 3) === 'cgi') {
-			self::initializeCgiCompatibilityLayerOrDie();
+			$this->initializeCgiCompatibilityLayerOrDie();
 		} elseif (php_sapi_name() !== 'cli') {
 			die('Not called from a command line interface (e.g. a shell or scheduler).' . chr(10));
 		}
+
+		return $this;
 	}
 
 	/**
@@ -52,9 +70,9 @@ class Typo3_Bootstrap_Cli {
 	 * First argument is a key that points to the script configuration.
 	 * If it is not set or not valid, the script exits with an error message.
 	 *
-	 * @return void
+	 * @return Typo3_Bootstrap_Cli
 	 */
-	public static function initializeCliKeyOrDie() {
+	public function initializeCliKeyOrDie() {
 		if (
 			!isset($_SERVER['argv'][1])
 			|| !is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys'][$_SERVER['argv'][1]])
@@ -85,6 +103,8 @@ class Typo3_Bootstrap_Cli {
 		$GLOBALS['temp_cliScriptPath'] = array_shift($_SERVER['argv']);
 		$GLOBALS['temp_cliKey'] = array_shift($_SERVER['argv']);
 		array_unshift($_SERVER['argv'], $GLOBALS['temp_cliScriptPath']);
+
+		return $this;
 	}
 
 	/**
@@ -93,7 +113,7 @@ class Typo3_Bootstrap_Cli {
 	 *
 	 * @return void
 	 */
-	protected static function initializeCgiCompatibilityLayerOrDie() {
+	protected function initializeCgiCompatibilityLayerOrDie() {
 			// Sanity check: Ensure we're running in a shell or cronjob (and NOT via HTTP)
 		$checkEnvVars = array('HTTP_USER_AGENT', 'HTTP_HOST', 'SERVER_NAME', 'REMOTE_ADDR', 'REMOTE_PORT', 'SERVER_PROTOCOL');
 		foreach ($checkEnvVars as $var) {

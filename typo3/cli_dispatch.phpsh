@@ -43,21 +43,22 @@ define('TYPO3_cliMode', TRUE);
 	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap/Backend.php is accidentally included twice
 	// (which would indicate a clear bug).
 require('classes/Bootstrap/Cli.php');
-Typo3_Bootstrap_Cli::checkEnvironmentOrDie();
+Typo3_Bootstrap_Cli::getInstance()->checkEnvironmentOrDie();
 
 require('classes/Bootstrap/Backend.php');
-Typo3_Bootstrap_Backend::checkEnvironmentOrDie();
-Typo3_Bootstrap_Backend::defineBaseConstants();
-Typo3_Bootstrap_Backend::defineAndCheckPaths('typo3/');
-Typo3_Bootstrap_Backend::requireBaseClasses();
-Typo3_Bootstrap_Backend::setUpEnvironment();
+Typo3_Bootstrap_Backend::getInstance()
+	->checkEnvironmentOrDie()
+	->defineBaseConstants()
+	->defineAndCheckPaths('typo3/')
+	->requireBaseClasses()
+	->setUpEnvironment();
 
 	/** @define "PATH_t3lib" "../t3lib/" */
 require(PATH_t3lib . 'config_default.php');
 
-Typo3_Bootstrap_Backend::initializeTypo3DbGlobal(TRUE);
+Typo3_Bootstrap_Backend::getInstance()->initializeTypo3DbGlobal(TRUE);
 
-Typo3_Bootstrap_Cli::initializeCliKeyOrDie();
+Typo3_Bootstrap_Cli::getInstance()->initializeCliKeyOrDie();
 
 	// Include standard tables.php file
 include(PATH_t3lib . 'stddb/tables.php');
@@ -71,15 +72,14 @@ if ($TYPO3_LOADED_EXT['_CACHEFILE']) {
 if (TYPO3_extTableDef_script) {
 	include(PATH_typo3conf . TYPO3_extTableDef_script);
 }
-Typo3_Bootstrap_Backend::runExtTablesPostProcessingHooks();
+Typo3_Bootstrap_Backend::getInstance()->runExtTablesPostProcessingHooks();
 
 	// TODO: Check if we really need the sprite manager on the command line
-Typo3_Bootstrap_Backend::initializeSpriteManager(TRUE);
-
-Typo3_Bootstrap_Backend::initializeBackendUser();
-Typo3_Bootstrap_Backend::initializeBackendUserMounts();
-
-Typo3_Bootstrap_Backend::initializeLanguageObject();
+Typo3_Bootstrap_Backend::getInstance()
+	->initializeSpriteManager(TRUE)
+	->initializeBackendUser()
+	->initializeBackendUserMounts()
+	->initializeLanguageObject();
 
 	// Make sure output is not buffered, so command-line output and interaction can take place
 t3lib_div::flushOutputBuffers();
@@ -91,5 +91,5 @@ try {
 	exit(99);
 }
 
-Typo3_Bootstrap_Backend::shutdown();
+Typo3_Bootstrap_Backend::getInstance()->shutdown();
 ?>

@@ -25,6 +25,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Abstract.php';
+
 /**
  * Encapsulate install tool specific bootstrap methods.
  *
@@ -32,15 +34,29 @@
  * @package TYPO3
  * @subpackage core
  */
-class Typo3_Bootstrap_Install {
+class Typo3_Bootstrap_Install extends Typo3_Bootstrap_Abstract {
+	/**
+	 * @var Typo3_Bootstrap_Install
+	 */
+	protected static $instance = NULL;
+
+	/**
+	 * @return Typo3_Bootstrap_Install
+	 */
+	public static function getInstance() {
+		if (is_null(self::$instance)) {
+			self::$instance = new Typo3_Bootstrap_Install();
+		}
+		return self::$instance;
+	}
 
 	/**
 	 * Check ENABLE_INSTALL_TOOL and FIRST_INSTALL file in typo3conf
 	 * or exit the scipt if conditions to access the install tool are not met.
 	 *
-	 * @return void
+	 * @return Typo3_Bootstrap_Install
 	 */
-	public static function checkEnabledInstallToolOrDie() {
+	public function checkEnabledInstallToolOrDie() {
 		$quickstartFile = PATH_site . 'typo3conf/FIRST_INSTALL';
 		$enableInstallToolFile = PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL';
 
@@ -67,8 +83,10 @@ class Typo3_Bootstrap_Install {
 		}
 
 		if (!is_file($enableInstallToolFile) || $removeInstallToolFileFailed) {
-			self::dieWithLockedInstallToolMessage();
+			$this->dieWithLockedInstallToolMessage();
 		}
+
+		return $this;
 	}
 
 	/**
@@ -76,7 +94,7 @@ class Typo3_Bootstrap_Install {
 	 *
 	 * @return void
 	 */
-	protected static function dieWithLockedInstallToolMessage() {
+	protected function dieWithLockedInstallToolMessage() {
 		require_once(PATH_site . 't3lib/class.t3lib_parsehtml.php');
 
 			// Define the stylesheet
