@@ -2063,30 +2063,15 @@ class tslib_fe {
 	 * full TCA for the table, use t3lib_div::loadTCA($tableName) after calling
 	 * this function.
 	 *
-	 * @param	boolean		Probably, keep hands of this value. Just don't set it. (This may affect the first-ever time this function is called since if you set it to zero/FALSE any subsequent call will still trigger the inclusion; In other words, this value will be set in $this->TCAloaded after inclusion and therefore if its FALSE, another inclusion will be possible on the next call. See ->getCompressedTCarray())
-	 * @return	void
+	 * @param integer $TCAloaded Probably, keep hands of this value. Just don't set it. (This may affect the first-ever time this function is called since if you set it to zero/FALSE any subsequent call will still trigger the inclusion; In other words, this value will be set in $this->TCAloaded after inclusion and therefore if its FALSE, another inclusion will be possible on the next call. See ->getCompressedTCarray())
+	 * @return void
 	 * @see getCompressedTCarray()
 	 */
-	function includeTCA($TCAloaded = 1) {
-			// do not remove this global declaration - it's used inside the ext_tables.php files
-		global $TCA;
+	public function includeTCA($TCAloaded = 1) {
 		if (!$this->TCAloaded) {
 			$GLOBALS['TCA'] = array();
-			include(PATH_t3lib . 'stddb/tables.php');
-				// Extension additions
-			if ($GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] && file_exists(PATH_typo3conf . $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] . '_ext_tables.php')) {
-				include(PATH_typo3conf.$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'].'_ext_tables.php');
-			} else {
-				include(PATH_t3lib.'stddb/load_ext_tables.php');
-			}
-				// ext-script
-			if (TYPO3_extTableDef_script) {
-				include (PATH_typo3conf.TYPO3_extTableDef_script);
-			}
-
+			Typo3_Bootstrap_Backend::getInstance()->loadExtensionTables();
 			$this->TCAloaded = $TCAloaded;
-
-			Typo3_Bootstrap_Backend::getInstance()->runExtTablesPostProcessingHooks();
 		}
 	}
 

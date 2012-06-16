@@ -983,12 +983,72 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	}
 
 	/**
+	 * Load ext_tables and friends.
+	 *
+	 * This will mainly set up $TCA and several other global arrays
+	 * through API's like extMgm.
+	 * Executes ext_tables.php files of loaded extensions or the
+	 * according typo3conf/temp_CACHED_*_ext_tables.php if exists.
+	 *
+	 * Note: For backwards compatibility some global variables are
+	 * explicitly set as global to be used without $GLOBALS[] in
+	 * ext_tables.php. It is discouraged to access variables like
+	 * $TBE_MODULES directly in ext_tables.php, but we can not prohibit
+	 * this without heavily breaking backwards compatibility.
+	 * @TODO: We could write a scheduler / reports module or an update checker
+	 * that hints extension authors about discouraged direct variable access.
+	 *
+	 * Note: include / require are used instead of include_once / require_once on
+	 * purpose here: in FE (tslib_fe), this method here can be loaded mulitple times
+	 *
+	 * @TODO: It should be defined, which global arrays are ok to be manipulated
+	 *
+	 * @return Typo3_Bootstrap_Backend
+	 */
+	public function loadExtensionTables() {
+		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
+		global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
+		global $PAGES_TYPES, $TBE_STYLES, $FILEICONS;
+
+			// Include standard tables.php file
+		require(PATH_t3lib . 'stddb/tables.php');
+
+		if (
+			$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']
+			&& file_exists(PATH_typo3conf . $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] . '_ext_tables.php')
+		) {
+				// Load temp_CACHED_x_ext_tables.php file if exists
+			require(PATH_typo3conf . $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] . '_ext_tables.php');
+		} else {
+				// Load each ext_tables.php file of loaded extensions
+			foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $_EXTKEY => $extensionInformation) {
+				if (is_array($extensionInformation) && $extensionInformation['ext_tables.php']) {
+						// $_EXTKEY and $_EXTCONF are available in ext_tables.php
+						// and are explicitly set in temp_CACHED file as well
+					$_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
+					require($extensionInformation['ext_tables.php']);
+				}
+			}
+		}
+
+			// Load additional ext tables script if registered
+		if (TYPO3_extTableDef_script) {
+			include(PATH_typo3conf . TYPO3_extTableDef_script);
+		}
+
+			// Run post hook for additional manipulation
+		$this->runExtTablesPostProcessingHooks();
+
+		return $this;
+	}
+
+	/**
 	 * Check for registered ext tables hooks and run them
 	 *
 	 * @throws UnexpectedValueException
 	 * @return Typo3_Bootstrap_Backend
 	 */
-	public function runExtTablesPostProcessingHooks() {
+	protected function runExtTablesPostProcessingHooks() {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'] as $classReference) {
 					/** @var $hookObject t3lib_extTables_PostProcessingHook */
