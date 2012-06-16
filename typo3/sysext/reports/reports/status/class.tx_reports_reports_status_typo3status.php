@@ -41,6 +41,7 @@ class tx_reports_reports_status_Typo3Status implements tx_reports_StatusProvider
 	public function getStatus() {
 		$statuses = array(
 			'Typo3Version' => $this->getTypo3VersionStatus(),
+			'oldXclassStatus' => $this->getOldXclassUsageStatus(),
 		);
 
 		return $statuses;
@@ -58,6 +59,28 @@ class tx_reports_reports_status_Typo3Status implements tx_reports_StatusProvider
 			'',
 			tx_reports_reports_status_Status::NOTICE
 		);
+	}
+
+	/**
+	 * Check for usage of old way of implementing XCLASSes
+	 *
+	 * @return tx_reports_reports_status_Status
+	 */
+	protected function getOldXclassUsageStatus() {
+		$value = $GLOBALS['LANG']->getLL('status_none');
+		$message = '';
+		$severity = tx_reports_reports_status_Status::OK;
+
+		$xclasses = array_merge($GLOBALS['TYPO3_CONF_VARS']['BE']['XCLASS'], $GLOBALS['TYPO3_CONF_VARS']['FE']['XCLASS']);
+		$numberOfXclasses = count($xclasses);
+		if ($numberOfXclasses > 0) {
+			$value = sprintf($GLOBALS['LANG']->getLL('status_oldXclassUsageFound'), $numberOfXclasses);
+			$message = '<ol><li>' . implode('</li><li>', $xclasses) . '</li></ol>';
+			$severity = tx_reports_reports_status_Status::WARNING;
+		}
+
+		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
+			$GLOBALS['LANG']->getLL('status_oldXclassUsage'), $value, $message, $severity);
 	}
 }
 ?>
