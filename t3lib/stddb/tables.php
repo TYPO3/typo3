@@ -45,7 +45,7 @@
  * add/modify these variables as they desire.
  * 3) Finally if the constant "TYPO3_extTableDef_script" defines a file name
  * from typo3conf/ it is included, also for overriding values (the old-school
- * way before extensions came in). See config_default.php
+ * way before extensions came in). See bootstrap loadExtensionTables()
  *
  * Configuration in this file should NOT be edited directly. If you would like
  * to alter or extend this information, please make an extension which does so.

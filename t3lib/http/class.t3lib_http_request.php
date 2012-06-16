@@ -52,19 +52,18 @@ class t3lib_http_Request extends HTTP_Request2 {
 	}
 
 	/**
-	* Sets the configuration
-	* Merges default values with provided $config and overrides all not provided values
-	* with there defaults from localconf.php or config_default.php.
-	*
-	* @param array $config Configuration options which override the default configuration
-	* @return void
-	* @link http://pear.php.net/manual/en/package.http.http-request2.config.php
-	*/
+	 * Sets the configuration for this object instance.
+	 * Merges default values with provided $config and overrides all
+	 * not provided values with those from $TYPO3_CONF_VARS
+	 *
+	 * @param array $config Configuration options which override the default configuration
+	 * @return void
+	 * @see http://pear.php.net/manual/en/package.http.http-request2.config.php
+	 */
 	public function setConfiguration(array $config = array()) {
 			// set a branded user-agent
 		$this->setHeader('user-agent', $GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent']);
 
-			// set defaults from localconf.php or config_default.php
 		$default = array(
 			'adapter' => 			$GLOBALS['TYPO3_CONF_VARS']['HTTP']['adapter'],
 			'connect_timeout' => 	$GLOBALS['TYPO3_CONF_VARS']['HTTP']['connect_timeout'],

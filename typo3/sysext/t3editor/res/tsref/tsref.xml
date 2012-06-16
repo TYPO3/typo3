@@ -642,7 +642,7 @@ Norwegian = no
 Italian = it
 etc...
 
-Value must correspond with the key used for backend system language if there is one. See inside config_default.php or look at the translation page on TYPO3.org for the official 2-byte key for a given language. Notice that selecting the official key is important if you want labels in the correct language from "locallang" files.
+Value must correspond with the key used for backend system language if there is one. Look at the translation page on TYPO3.org for the official 2-byte key for a given language. Notice that selecting the official key is important if you want labels in the correct language from "locallang" files.
 If the language you need is not yet a system language in TYPO3 you can use an artificial string of your choice and provide values for it via the TypoScript template where the property "_LOCAL_LANG" for most plugins will provide a way to override/add values for labels. The keys to use must be looked up in the locallang-file used by the plugin of course.]]></description>
 			<default><![CDATA[
 ]]></default>

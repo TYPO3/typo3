@@ -857,7 +857,7 @@ final class t3lib_iconWorks {
 	 * We wanted to not have these icons blown over by tons of overlays, so this is limited
 	 * to just one.
 	 *
-	 * see t3lib/config_default.php for the default options, you will find
+	 * see t3lib/stddb/DefaultSettings for the default options, you will find
 	 * $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconRecordOverlayNames'] that shows
 	 * the list of CSS classes that will be used for the sprites, mapped to the statuses here
 	 *

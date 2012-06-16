@@ -95,7 +95,13 @@ class tslib_fe {
 	var $simUserGroup='0';				// Value that contains the simulated usergroup if any
 
 		// CONFIGURATION
-	var $TYPO3_CONF_VARS=array();		// The configuration array as set up in t3lib/config_default.php. Should be an EXACT copy of the global array.
+
+	/**
+	 * Copy of $GLOBALS['TYPO3_CONF_VARS']
+	 *
+	 * @var array
+	 */
+	public $TYPO3_CONF_VARS = array();
 	var $config='';						// "CONFIG" object from TypoScript. Array generated based on the TypoScript configuration of the current page. Saved with the cached pages.
 	var $TCAcachedExtras=array();		// Array of cached information from TCA. This is NOT TCA itself!
 
@@ -551,7 +557,8 @@ class tslib_fe {
 
 	/**
 	 * Clears the preview-flags, sets sim_exec_time to current time.
-	 * Hidden pages must be hidden as default, $GLOBALS['SIM_EXEC_TIME'] is set to $GLOBALS['EXEC_TIME'] in t3lib/config_default.inc. Alter it by adding or subtracting seconds.
+	 * Hidden pages must be hidden as default, $GLOBALS['SIM_EXEC_TIME'] is set to $GLOBALS['EXEC_TIME']
+	 * in bootstrap initializeGlobalTimeVariables(). Alter it by adding or subtracting seconds.
 	 *
 	 * @return	void
 	 */
@@ -4070,7 +4077,9 @@ if (version == "n3") {
 
 	/**
 	 * Pass the content through tidy - a little program that cleans up HTML-code.
-	 * Requires $this->TYPO3_CONF_VARS['FE']['tidy'] to be TRUE and $this->TYPO3_CONF_VARS['FE']['tidy_path'] to contain the filename/path of tidy including clean-up arguments for tidy. See default value in TYPO3_CONF_VARS in t3lib/config_default.php
+	 * Requires $this->TYPO3_CONF_VARS['FE']['tidy'] to be TRUE and $this->TYPO3_CONF_VARS['FE']['tidy_path'] to
+	 * contain the filename/path of tidy including clean-up arguments for tidy. See default value in
+	 * TYPO3_CONF_VARS in t3lib/stddb/DefaultSettings.php
 	 *
 	 * @param	string		The page content to clean up. Will be written to a temporary file which "tidy" is then asked to clean up. File content is read back and returned.
 	 * @return	string		Returns the
