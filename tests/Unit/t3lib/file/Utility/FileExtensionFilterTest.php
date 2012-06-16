@@ -49,20 +49,31 @@ class t3lib_file_Utility_FileExtensionFilterTest extends Tx_Phpunit_TestCase {
 	protected $tceMainMock;
 
 	/**
+	 * @var t3lib_file_Factory|PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected $fileFactoryMock;
+
+	/**
 	 * Sets up this test suite.
 	 */
 	protected function setUp() {
 		$this->filter = new t3lib_file_Utility_FileExtensionFilter();
 		$this->tceMainMock = $this->getMock('t3lib_TCEmain', array('deleteAction'), array());
+		$this->fileFactoryMock = $this->getMock('t3lib_file_Factory', array('getFileReferenceObject'), array());
+
+		t3lib_div::setSingletonInstance('t3lib_file_Factory', $this->fileFactoryMock);
 	}
 
 	/**
 	 * Cleans up this test suite.
 	 */
 	protected function tearDown() {
+		unset($this->fileFactoryMock);
 		unset($this->tceMainMock);
 		unset($this->parameters);
 		unset($this->filter);
+
+		t3lib_div::purgeInstances();
 	}
 
 	/**
@@ -81,6 +92,7 @@ class t3lib_file_Utility_FileExtensionFilterTest extends Tx_Phpunit_TestCase {
 		);
 
 		$this->tceMainMock->expects($this->never())->method('deleteAction');
+		$this->fileFactoryMock->expects(($this->never()))->method(('getFileReferenceObject'));
 		$this->filter->filterInlineChildren($this->parameters, $this->tceMainMock);
 	}
 
@@ -89,9 +101,9 @@ class t3lib_file_Utility_FileExtensionFilterTest extends Tx_Phpunit_TestCase {
 	 */
 	public function invalidInlineChildrenFilterParametersDataProvider() {
 		return array(
-			array('', '', array(0, 1, 3, 4)),
 			array(NULL, NULL, NULL),
-			array(NULL, NULL, array('', NULL, FALSE)),
+			array('', '', array(0, '', NULL, FALSE)),
+			array(NULL, NULL, array(0, '', NULL, FALSE)),
 		);
 	}
 }
