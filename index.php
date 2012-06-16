@@ -37,11 +37,12 @@
 	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap/Backend.php is accidentally included twice
 	// (which would indicate a clear bug).
 require('typo3/classes/Bootstrap/Backend.php');
-Typo3_Bootstrap_Backend::checkEnvironmentOrDie();
-Typo3_Bootstrap_Backend::defineBaseConstants();
-Typo3_Bootstrap_Backend::defineAndCheckPaths('');
-Typo3_Bootstrap_Backend::requireBaseClasses();
-Typo3_Bootstrap_Backend::setUpEnvironment();
+Typo3_Bootstrap_Backend::getInstance()
+	->checkEnvironmentOrDie()
+	->defineBaseConstants()
+	->defineAndCheckPaths('')
+	->requireBaseClasses()
+	->setUpEnvironment();
 
 require(PATH_tslib . 'index_ts.php');
 ?>
