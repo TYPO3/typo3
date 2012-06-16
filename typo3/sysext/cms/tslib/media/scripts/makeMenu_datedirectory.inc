@@ -30,23 +30,21 @@
  *
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
- * @author	Olaf.Schuemann@erz.be.ch
+ * @author Olaf.Schuemann@erz.be.ch
  * @see makeMenu_keywords_updated.inc
  */
-
-
-if (!is_object($this)) die ('Error: No parent object present.');
-
-
-
-
+if (!is_object($this)) {
+	die('Error: No parent object present.');
+}
 
 $day = $conf['day'];
 $name =	$conf['name'];
 $menuItemsArray = array();
 
-if ($day==-1) $day=date('w');
-if ($day==date('w')) {
+if ($day==-1) {
+	$day = date('w');
+}
+if ($day == date('w')) {
 	$son = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 } else {
 	for ($i=1;;$i++) {
@@ -67,8 +65,8 @@ $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
 $value=$row['uid'];
 
-if ($value=='') {
-	$value=$GLOBALS['TSFE']->page['uid'];
+if ($value == '') {
+	$value = $GLOBALS['TSFE']->page['uid'];
 }
 $items = t3lib_div::intExplode(',', $value);
 foreach ($items as $id) {
