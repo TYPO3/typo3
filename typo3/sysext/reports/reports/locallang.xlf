@@ -33,6 +33,9 @@
 			<trans-unit id="status_empty" xml:space="preserve">
 				<source>Empty</source>
 			</trans-unit>
+			<trans-unit id="status_none" xml:space="preserve">
+				<source>None</source>
+			</trans-unit>
 			<trans-unit id="status_connectionFailed" xml:space="preserve">
 				<source>Connection Failed</source>
 			</trans-unit>
@@ -218,6 +221,12 @@
 			</trans-unit>
 			<trans-unit id="status_updateTask_email_issues" xml:space="preserve">
 				<source>Issues</source>
+			</trans-unit>
+			<trans-unit id="status_oldXclassUsage" xml:space="preserve">
+				<source>Old XCLASS method used</source>
+			</trans-unit>
+			<trans-unit id="status_oldXclassUsageFound" xml:space="preserve">
+				<source>Old XCLASS method is used in %d cases:</source>
 			</trans-unit>
 		</body>
 	</file>
