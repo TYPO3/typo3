@@ -65,18 +65,20 @@ define('TYPO3_MODE', 'BE');
 	// We use require instead of require_once here so we get a fatal error if
 	// classes/Bootstrap/Backend.php is accidentally included twice (which would indicate a clear bug).
 require('classes/Bootstrap/Backend.php');
-Typo3_Bootstrap_Backend::checkEnvironmentOrDie();
-Typo3_Bootstrap_Backend::defineBaseConstants();
-Typo3_Bootstrap_Backend::defineAndCheckPaths('typo3/');
-Typo3_Bootstrap_Backend::requireBaseClasses();
-Typo3_Bootstrap_Backend::setUpEnvironment();
+Typo3_Bootstrap_Backend::getInstance()
+	->checkEnvironmentOrDie()
+	->defineBaseConstants()
+	->defineAndCheckPaths('typo3/')
+	->requireBaseClasses()
+	->setUpEnvironment();
 
 require(PATH_t3lib . 'config_default.php');
 
-Typo3_Bootstrap_Backend::initializeTypo3DbGlobal(FALSE);
-Typo3_Bootstrap_Backend::checkLockedBackendAndRedirectOrDie();
-Typo3_Bootstrap_Backend::checkBackendIpOrDie();
-Typo3_Bootstrap_Backend::checkSslBackendAndRedirectIfNeeded();
+Typo3_Bootstrap_Backend::getInstance()
+	->initializeTypo3DbGlobal(FALSE)
+	->checkLockedBackendAndRedirectOrDie()
+	->checkBackendIpOrDie()
+	->checkSslBackendAndRedirectIfNeeded();
 
 	// Connect to the database
 	// Redirect to install tool if database host and database are not defined
@@ -104,11 +106,12 @@ if (TYPO3_extTableDef_script) {
 	include(PATH_typo3conf . TYPO3_extTableDef_script);
 }
 
-Typo3_Bootstrap_Backend::runExtTablesPostProcessingHooks();
-Typo3_Bootstrap_Backend::initializeSpriteManager(TRUE);
-Typo3_Bootstrap_Backend::initializeBackendUser();
-Typo3_Bootstrap_Backend::initializeBackendUserMounts();
-Typo3_Bootstrap_Backend::initializeLanguageObject();
+Typo3_Bootstrap_Backend::getInstance()
+	->runExtTablesPostProcessingHooks()
+	->initializeSpriteManager(TRUE)
+	->initializeBackendUser()
+	->initializeBackendUserMounts()
+	->initializeLanguageObject();
 
 	// Compression
 ob_clean();
