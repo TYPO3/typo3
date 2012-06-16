@@ -73,6 +73,9 @@ Typo3_Bootstrap_Backend::setUpEnvironment();
 
 require(PATH_t3lib . 'config_default.php');
 
+
+
+
 Typo3_Bootstrap_Backend::initializeTypo3DbGlobal(FALSE);
 Typo3_Bootstrap_Backend::checkLockedBackendAndRedirectOrDie();
 Typo3_Bootstrap_Backend::checkBackendIpOrDie();
