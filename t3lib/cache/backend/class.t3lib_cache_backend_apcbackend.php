@@ -62,6 +62,24 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	protected $identifierPrefix;
 
 	/**
+	 * Set the cache identifier prefix.
+	 *
+	 * @param string $identifierPrefix
+	 */
+	protected function setIdentifierPrefix($identifierPrefix) {
+		$this->identifierPrefix = $identifierPrefix;
+	}
+
+	/**
+	 * Retrieves the cache identifier prefix.
+	 *
+	 * @return string
+	 */
+	protected function getIdentifierPrefix() {
+		return $this->identifierPrefix;
+	}
+
+	/**
 	 * Constructs this backend
 	 *
 	 * @param string $context FLOW3's application context
@@ -86,9 +104,28 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 */
 	public function setCache(t3lib_cache_frontend_Frontend $cache) {
 		parent::setCache($cache);
-		$processUser = extension_loaded('posix') ? posix_getpwuid(posix_geteuid()) : array('name' => 'default');
-		$pathHash = t3lib_div::shortMD5(PATH_site . $processUser['name'] . $this->context, 12);
-		$this->identifierPrefix = 'TYPO3_' . $pathHash;
+		$processUser = $this->getCurrentUserData();
+		$pathHash = t3lib_div::shortMD5($this->getPathSite() . $processUser['name'] . $this->context . $cache->getIdentifier(), 12);
+		$this->setIdentifierPrefix('TYPO3_' . $pathHash);
+	}
+
+	/**
+	 * Returns the current user data with posix_getpwuid or a default structure when
+	 * posix_getpwuid is not available.
+	 *
+	 * @return array
+	 */
+	protected function getCurrentUserData() {
+		return extension_loaded('posix') ? posix_getpwuid(posix_geteuid()) : array('name' => 'default');
+	}
+
+	/**
+	 * Returns the PATH_site constant.
+	 *
+	 * @return string
+	 */
+	protected function getPathSite() {
+		return PATH_site;
 	}
 
 	/**
@@ -122,7 +159,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 		$tags[] = '%APCBE%' . $this->cacheIdentifier;
 		$expiration = $lifetime !== NULL ? $lifetime : $this->defaultLifetime;
 
-		$success = apc_store($this->identifierPrefix . $entryIdentifier, $data, $expiration);
+		$success = apc_store($this->getIdentifierPrefix() . $entryIdentifier, $data, $expiration);
 		if ($success === TRUE) {
 			$this->removeIdentifierFromAllTags($entryIdentifier);
 			$this->addIdentifierToTags($entryIdentifier, $tags);
@@ -143,7 +180,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 */
 	public function get($entryIdentifier) {
 		$success = FALSE;
-		$value = apc_fetch($this->identifierPrefix . $entryIdentifier, $success);
+		$value = apc_fetch($this->getIdentifierPrefix() . $entryIdentifier, $success);
 
 		return ($success ? $value : $success);
 	}
@@ -157,7 +194,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 */
 	public function has($entryIdentifier) {
 		$success = FALSE;
-		apc_fetch($this->identifierPrefix . $entryIdentifier, $success);
+		apc_fetch($this->getIdentifierPrefix() . $entryIdentifier, $success);
 		return $success;
 	}
 
@@ -172,7 +209,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 */
 	public function remove($entryIdentifier) {
 		$this->removeIdentifierFromAllTags($entryIdentifier);
-		return apc_delete($this->identifierPrefix . $entryIdentifier);
+		return apc_delete($this->getIdentifierPrefix() . $entryIdentifier);
 	}
 
 	/**
@@ -185,7 +222,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 */
 	public function findIdentifiersByTag($tag) {
 		$success = FALSE;
-		$identifiers = apc_fetch($this->identifierPrefix . 'tag_' . $tag, $success);
+		$identifiers = apc_fetch($this->getIdentifierPrefix() . 'tag_' . $tag, $success);
 		if ($success === FALSE) {
 			return array();
 		} else {
@@ -202,7 +239,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 */
 	protected function findTagsByIdentifier($identifier) {
 		$success = FALSE;
-		$tags = apc_fetch($this->identifierPrefix . 'ident_' . $identifier, $success);
+		$tags = apc_fetch($this->getIdentifierPrefix() . 'ident_' . $identifier, $success);
 		return ($success ? (array)$tags : array());
 	}
 
@@ -249,13 +286,13 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 			$identifiers = $this->findIdentifiersByTag($tag);
 			if (array_search($entryIdentifier, $identifiers) === FALSE) {
 				$identifiers[] = $entryIdentifier;
-				apc_store($this->identifierPrefix . 'tag_' . $tag, $identifiers);
+				apc_store($this->getIdentifierPrefix() . 'tag_' . $tag, $identifiers);
 			}
 
 				// Update identifier-to-tag index
 			$existingTags = $this->findTagsByIdentifier($entryIdentifier);
 			if (array_search($entryIdentifier, $existingTags) === FALSE) {
-				apc_store($this->identifierPrefix . 'ident_' . $entryIdentifier, array_merge($existingTags, $tags));
+				apc_store($this->getIdentifierPrefix() . 'ident_' . $entryIdentifier, array_merge($existingTags, $tags));
 			}
 
 		}
@@ -281,14 +318,14 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 			if (($key = array_search($entryIdentifier, $identifiers)) !== FALSE) {
 				unset($identifiers[$key]);
 				if (count($identifiers)) {
-					apc_store($this->identifierPrefix . 'tag_' . $tag, $identifiers);
+					apc_store($this->getIdentifierPrefix() . 'tag_' . $tag, $identifiers);
 				} else {
-					apc_delete($this->identifierPrefix . 'tag_' . $tag);
+					apc_delete($this->getIdentifierPrefix() . 'tag_' . $tag);
 				}
 			}
 		}
 			// Clear reverse tag index for this identifier
-		apc_delete($this->identifierPrefix . 'ident_' . $entryIdentifier);
+		apc_delete($this->getIdentifierPrefix() . 'ident_' . $entryIdentifier);
 	}
 
 	/**
