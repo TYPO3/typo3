@@ -37,10 +37,10 @@ ob_start();
 define('TYPO3_MODE', 'BE');
 define('TYPO3_enterInstallScript', '1');
 
-	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap/Backend.php is accidentally included twice
+	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap.php is accidentally included twice
 	// (which would indicate a clear bug).
-require('../classes/Bootstrap/Backend.php');
-Typo3_Bootstrap_Backend::getInstance()
+require('../classes/Bootstrap.php');
+Typo3_Bootstrap::getInstance()
 	->checkEnvironmentOrDie()
 	->defineBaseConstants()
 	->defineAndCheckPaths('typo3/install/')
@@ -48,9 +48,9 @@ Typo3_Bootstrap_Backend::getInstance()
 	->setUpEnvironment();
 
 require('../classes/Bootstrap/Install.php');
-Typo3_Bootstrap_Install::getInstance()->checkEnabledInstallToolOrDie();
+Typo3_Bootstrap_Install::checkEnabledInstallToolOrDie();
 
-Typo3_Bootstrap_Backend::getInstance()
+Typo3_Bootstrap::getInstance()
 	->loadDefaultTypo3ConfVars()
 	->registerExtDirectComponents()
 	->initializeGlobalVariables()

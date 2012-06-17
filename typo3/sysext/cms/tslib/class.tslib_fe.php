@@ -2077,7 +2077,7 @@ class tslib_fe {
 	public function includeTCA($TCAloaded = 1) {
 		if (!$this->TCAloaded) {
 			$GLOBALS['TCA'] = array();
-			Typo3_Bootstrap_Backend::getInstance()->loadExtensionTables();
+			Typo3_Bootstrap::getInstance()->loadExtensionTables();
 			$this->TCAloaded = $TCAloaded;
 		}
 	}
