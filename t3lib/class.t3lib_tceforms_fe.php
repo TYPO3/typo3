@@ -143,7 +143,6 @@ class t3lib_TCEforms_FE extends t3lib_TCEforms {
 	 * @return void
 	 */
 	public function initializeTemplateContainer() {
-		t3lib_div::requireOnce(PATH_typo3 . 'template.php');
 		$GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('frontendDoc');
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addInlineSetting(
 			'', 'PATH_typo3', t3lib_div::dirname(t3lib_div::getIndpEnv('SCRIPT_NAME')) . '/' . TYPO3_mainDir

@@ -39,9 +39,7 @@
 unset($MCONF);
 require('conf.php');
 require($BACK_PATH.'init.php');
-require($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:cms/layout/locallang.xml');
-require_once(PATH_typo3.'class.db_list.inc');
 require_once('class.tx_cms_layout.php');
 $BE_USER->modAccess($MCONF, 1);
 
@@ -235,19 +233,6 @@ class SC_db_layout {
 
 			// Setting sys language from session var:
 		$this->current_sys_language=intval($this->MOD_SETTINGS['language']);
-
-			// Include scripts: QuickEdit
-		if ($this->MOD_SETTINGS['function']==0) {
-			$this->include_once[]=PATH_t3lib.'class.t3lib_tceforms.php';
-			$this->include_once[]=PATH_t3lib.'class.t3lib_clipboard.php';
-			$this->include_once[]=PATH_t3lib.'class.t3lib_loaddbgroup.php';
-			$this->include_once[]=PATH_t3lib.'class.t3lib_transferdata.php';
-		}
-
-			// Include scripts: Clear-cache cmd.
-		if ($this->clear_cache) {
-			$this->include_once[]=PATH_t3lib.'class.t3lib_tcemain.php';
-		}
 
 			// CSH / Descriptions:
 		$this->descrTable = '_MOD_'.$this->MCONF['name'];

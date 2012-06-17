@@ -34,7 +34,6 @@
 
 $LANG->includeLLFile('EXT:lang/locallang_mod_file_list.xml');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
-require_once(PATH_typo3 . 'class.file_list.inc');
 $BE_USER->modAccess($MCONF, 1);
 
 /**

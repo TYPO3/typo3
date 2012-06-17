@@ -64,9 +64,7 @@
 unset($MCONF);
 require ('conf.php');
 require_once ($BACK_PATH.'init.php');
-require_once ($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:impexp/app/locallang.php');
-require_once (t3lib_extMgm::extPath('impexp').'class.tx_impexp.php');
 
 t3lib_extMgm::isLoaded('impexp', 1);
 

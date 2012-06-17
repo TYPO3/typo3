@@ -41,10 +41,7 @@
 
 
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_list.xml');
-require_once ($BACK_PATH.'class.db_list.inc');
-require_once ($BACK_PATH.'class.db_list_extra.inc');
 $BE_USER->modAccess($MCONF, 1);
-
 t3lib_BEfunc::lockRecords();
 
 
@@ -125,11 +122,6 @@ class SC_db_list {
 
 			// Initialize menu
 		$this->menuConfig();
-
-			// Inclusions?
-		if ($this->clear_cache || $this->cmd=='delete') {
-			$this->include_once[]=PATH_t3lib.'class.t3lib_tcemain.php';
-		}
 	}
 
 	/**

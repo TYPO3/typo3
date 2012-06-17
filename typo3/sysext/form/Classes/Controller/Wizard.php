@@ -24,7 +24,6 @@
 define('TYPO3_MOD_PATH', 'sysext/form/Classes/Controller/');
 $BACK_PATH = '../../../../';
 require($BACK_PATH . 'init.php');
-require($BACK_PATH . 'template.php');
 
 /**
  * The form wizard controller

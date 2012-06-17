@@ -36,7 +36,6 @@
 
 $BACK_PATH = '';
 require('init.php');
-require('template.php');
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xml');
 
 /**
@@ -116,11 +115,6 @@ class SC_wizard_table {
 			// Setting form tag:
 		list($rUri) = explode('#', t3lib_div::getIndpEnv('REQUEST_URI'));
 		$this->doc->form ='<form action="'.htmlspecialchars($rUri).'" method="post" name="wizardForm">';
-
-			// If save command found, include tcemain:
-		if ($_POST['savedok_x'] || $_POST['saveandclosedok_x']) {
-			$this->include_once[] = PATH_t3lib.'class.t3lib_tcemain.php';
-		}
 
 		$this->tableParsing_delimiter = '|';
 		$this->tableParsing_quote = '';
