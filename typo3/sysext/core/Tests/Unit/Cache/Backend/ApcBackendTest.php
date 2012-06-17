@@ -25,7 +25,10 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  ***************************************************************/
 
 /**
- * Testcase for the APC cache backend
+ * Testcase for the APC cache backend.
+ *
+ * NOTE: If you want to execute these tests you need to enable apc in
+ * cli context (apc.enable_cli = 1)
  *
  * This file is a backport from FLOW3
  *
@@ -134,6 +137,33 @@ class ApcBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$backend->set($identifier, $data, array('UnitTestTag%tag3'));
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
 		$this->assertEquals(array(), $retrieved, 'Found entry which should no longer exist.');
+	}
+
+	/**
+	 * @test
+	 */
+	public function setCacheIsSettingIdentifierPrefixWithCacheIdentifier() {
+		$cacheMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$cacheMock->expects($this->any())->method('getIdentifier')->will($this->returnValue(
+			'testidentifier'
+		));
+
+		/** @var $backendMock \TYPO3\CMS\Core\Cache\Backend\ApcBackend */
+		$backendMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\ApcBackend',
+										array('setIdentifierPrefix','getCurrentUserData','getPathSite'),
+										array('testcontext'));
+
+		$backendMock->expects($this->once())->method('getCurrentUserData')->will(
+			$this->returnValue(array('name' => 'testname'))
+		);
+
+		$backendMock->expects($this->once())->method('getPathSite')->will(
+			$this->returnValue('testpath')
+		);
+
+		$expectedIdentifier = 'TYPO3_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('testpath' . 'testname' . 'testcontext' . 'testidentifier', 12);
+		$backendMock->expects($this->once())->method('setIdentifierPrefix')->with($expectedIdentifier);
+		$backendMock->setCache($cacheMock);
 	}
 
 	/**
