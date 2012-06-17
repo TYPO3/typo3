@@ -37,7 +37,6 @@
  */
 
 require('init.php');
-require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_alt_doc.xml');
 
 require_once(t3lib_extMgm::extPath('opendocs') . 'class.tx_opendocs.php');

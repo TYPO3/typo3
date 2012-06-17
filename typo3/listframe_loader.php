@@ -35,7 +35,6 @@
  */
 
 require('init.php');
-require('template.php');
 
 /**
  * Script Class for redirecting shortcut actions to the correct script
