@@ -30,7 +30,7 @@ require_once('template.php');
 require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
 
 require('classes/class.typo3logo.php');
-require('classes/class.modulemenu.php');
+require_once('classes/class.modulemenu.php');
 
 	// Core toolbar items
 require('classes/class.clearcachemenu.php');

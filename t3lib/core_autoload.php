@@ -308,6 +308,11 @@ $t3libClasses = array(
 	't3lib_xml' => PATH_t3lib . 'class.t3lib_xml.php',
 	'tx_lang_clearcache' => t3lib_extMgm::extPath('lang') . 'hooks/clearcache/class.tx_lang_clearcache.php',
 	'tx_lang_clearcachemenu' => t3lib_extMgm::extPath('lang') . 'hooks/clearcache/class.tx_lang_clearcachemenu.php',
+	'Typo3_ModuleMenu' => PATH_typo3 . 'classes/ModuleMenu/Model/ModuleMenu.php',
+	'Typo3_ModuleMenuEntry' => PATH_typo3 . 'classes/ModuleMenu/Model/ModuleMenuEntry.php',
+	'Typo3_Repository_ModuleMenuRepository' => PATH_typo3 . 'classes/ModuleMenu/Repository/ModuleMenuRepository.php',
+	'Typo3_ModuleMenu_Utiliy' => PATH_typo3 . 'classes/ModuleMenu/Utility.php',
+	'ModuleMenu' => PATH_typo3 . 'classes/class.modulemenu.php'
 );
 
 $tslibClasses = require(PATH_typo3 . 'sysext/cms/ext_autoload.php');
