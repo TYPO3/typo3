@@ -35,7 +35,6 @@
 
 $BACK_PATH = '';
 require('init.php');
-require('template.php');
 
 /**
  * Script Class for the create-new script; Displays a form for creating up to 10 folders or one new text file

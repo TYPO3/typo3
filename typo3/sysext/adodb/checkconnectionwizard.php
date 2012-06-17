@@ -32,7 +32,6 @@
 $BACK_PATH = '../../../typo3/';
 define('TYPO3_MOD_PATH', 'sysext/adodb/');
 require($BACK_PATH.'init.php');
-require($BACK_PATH.'template.php');
 
 	// Include ADODB library:
 require_once(t3lib_extMgm::extPath('adodb').'adodb/adodb.inc.php');

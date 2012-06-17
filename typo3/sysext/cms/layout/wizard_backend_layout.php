@@ -30,7 +30,6 @@
  */
 require_once('conf.php');
 require($BACK_PATH . 'init.php');
-require($BACK_PATH . 'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
 
 /**

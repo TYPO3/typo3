@@ -35,10 +35,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-
-require_once (PATH_typo3.'class.browse_links.php');
-
-
 /**
  * Class which generates the page tree
  *

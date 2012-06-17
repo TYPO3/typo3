@@ -36,7 +36,6 @@
  */
 
 require('init.php');
-require('template.php');
 
 /**
  * Script Class, creating object of t3lib_TCEmain and sending the posted data to the object.
@@ -132,11 +131,6 @@ class SC_tce_db {
 			// Reverse order.
 		if ($this->flags['reverseOrder']) {
 			$this->tce->reverseOrder=1;
-		}
-
-			// Clipboard?
-		if (is_array($this->CB)) {
-			$this->include_once[]=PATH_t3lib.'class.t3lib_clipboard.php';
 		}
 	}
 

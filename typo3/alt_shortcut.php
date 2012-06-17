@@ -38,7 +38,6 @@
  */
 
 require('init.php');
-require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 
 /**

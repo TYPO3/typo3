@@ -36,9 +36,7 @@
 
 $BACK_PATH = '';
 require($BACK_PATH.'init.php');
-require($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_show_rechis.xml');
-require_once('class.show_rechis.inc');
 
 /**
  * Script Class for showing the history module of TYPO3s backend
