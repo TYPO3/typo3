@@ -23,7 +23,10 @@
 ***************************************************************/
 
 /**
- * Testcase for the APC cache backend
+ * Testcase for the APC cache backend.
+ *
+ * NOTE: If you want to execute these tests you need to enable apc in
+ * cli context (apc.enable_cli = 1)
  *
  * This file is a backport from FLOW3
  *
@@ -150,6 +153,34 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
 		$this->assertEquals(array(), $retrieved, 'Found entry which should no longer exist.');
+	}
+
+	/**
+	 * @test
+	 * @author Timo Schmidt <timo.schmidt@gmx.net>
+	 */
+	public function setCacheIsSettingIdentifierPrefixWithCacheIdentifier() {
+		$cacheMock = $this->getMock('t3lib_cache_frontend_Frontend',array(),array(),'',false);
+		$cacheMock->expects($this->any())->method('getIdentifier')->will($this->returnValue(
+			'testidentifier'
+		));
+
+			/** @var $backendMock t3lib_cache_backend_ApcBackend */
+		$backendMock = $this->getMock(	't3lib_cache_backend_ApcBackend',
+										array('setIdentifierPrefix','getCurrentUserData','getPathSite'),
+										array('testcontext'));
+
+		$backendMock->expects($this->once())->method('getCurrentUserData')->will(
+			$this->returnValue(array('name' => 'testname'))
+		);
+
+		$backendMock->expects($this->once())->method('getPathSite')->will(
+			$this->returnValue('testpath')
+		);
+
+		$expectedIdentifier = 'TYPO3_'.t3lib_div::shortMD5('testpath'.'testname'.'testcontext'.'testidentifier',12);
+		$backendMock->expects($this->once())->method('setIdentifierPrefix')->with($expectedIdentifier);
+		$backendMock->setCache($cacheMock);
 	}
 
 	/**
