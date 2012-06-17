@@ -25,8 +25,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'Abstract.php';
-
 /**
  * This class encapsulates bootstrap related methods.
  * It is required directly as the very first thing in entry scripts and
@@ -42,18 +40,30 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'Abstract.php';
  * @package TYPO3
  * @subpackage core
  */
-class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
+class Typo3_Bootstrap {
 	/**
-	 * @var Typo3_Bootstrap_Backend
+	 * @var Typo3_Bootstrap
 	 */
 	protected static $instance = NULL;
 
 	/**
-	 * @return Typo3_Bootstrap_Backend
+	 * Disable direct creation of this object.
+	 */
+	protected function __construct() {
+	}
+
+	/**
+	 * Disable direct cloning of this object.
+	 */
+	protected function __clone() {
+	}
+
+	/**
+	 * @return Typo3_Bootstrap
 	 */
 	public static function getInstance() {
 		if (is_null(self::$instance)) {
-			self::$instance = new Typo3_Bootstrap_Backend();
+			self::$instance = new Typo3_Bootstrap();
 		}
 		return self::$instance;
 	}
@@ -62,7 +72,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Check several a priori conditions like the current
 	 * php version or exit the script with an error.
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function checkEnvironmentOrDie() {
 		$this->checkPhpVersionOrDie();
@@ -74,7 +84,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Define all simple base constants
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function defineBaseConstants() {
 			// This version, branch and copyright
@@ -125,7 +135,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * The script execution will be aborted if this fails.
 	 *
 	 * @param string $relativePathPart The relative path of the entry script to the document root
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function defineAndCheckPaths($relativePathPart = '') {
 			// Relative path from document root to typo3/ directory
@@ -173,7 +183,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Load several base classes during bootstrap
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function requireBaseClasses() {
 		require_once(PATH_t3lib . 'class.t3lib_div.php');
@@ -205,7 +215,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Set up php error reporting and various things like time tracking
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function setUpEnvironment() {
 			// Core should be notice free at least until this point ...
@@ -238,7 +248,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Load default TYPO3_CONF_VARS
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function loadDefaultTypo3ConfVars() {
 		$GLOBALS['TYPO3_CONF_VARS'] = require(PATH_t3lib . 'stddb/DefaultSettings.php');
@@ -249,7 +259,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Register default ExtDirect components
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function registerExtDirectComponents() {
 		if (TYPO3_MODE === 'BE') {
@@ -303,7 +313,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Initialize some globals
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function initializeGlobalVariables() {
 		$GLOBALS['T3_VAR'] = array();
@@ -316,7 +326,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Check typo3conf/localconf.php exists
 	 *
 	 * @throws RuntimeException
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function checkLocalconfExistsOrDie() {
 		if (!@is_file(PATH_typo3conf . 'localconf.php')) {
@@ -331,7 +341,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Database-variables are cleared!
 	 *
 	 * @TODO: Figure out why we do this (security reasons with register globals?)
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function setGlobalDatabaseVariablesToEmptyString() {
 			// The database name
@@ -353,7 +363,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Loads the main configuration file (localconf.php)
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function loadMainConfigurationFile() {
 		global $TYPO3_CONF_VARS, $typo_db, $typo_db_username, $typo_db_password, $typo_db_host, $typo_db_extTableDef_script;
@@ -366,7 +376,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Define the database setup as constants
 	 * and unset no longer needed global variables
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function defineTypo3DatabaseConstants() {
 		define('TYPO3_db', $GLOBALS['typo_db']);
@@ -388,7 +398,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Initialize caching framework
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function initializeCachingFramework() {
 		t3lib_cache::initializeCachingFramework();
@@ -399,7 +409,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Register autoloader
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function registerAutoloader() {
 		t3lib_autoloader::registerAutoloader();
@@ -419,7 +429,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * thus avoiding any incompatibilities with newer or older
 	 * versions.
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function addCorePearPathToIncludePath() {
 		set_include_path(PATH_typo3 . 'contrib/pear/' . PATH_SEPARATOR . get_include_path());
@@ -436,7 +446,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 *   [SYS][setDBinit] is used to set the DB connection
 	 * and both settings need to be adjusted for UTF-8 in order to work properly
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function checkUtf8DatabaseSettingsOrDie() {
 			// Check if [BE][forceCharset] has been set in localconf.php
@@ -478,7 +488,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Parse old curl options and set new http ones instead
 	 *
 	 * @TODO: This code segment must still be finished
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function transferDeprecatedCurlSettings() {
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])) {
@@ -510,7 +520,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Set cacheHash options
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function setCacheHashOptions() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash'] = array(
@@ -531,7 +541,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * $GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_auth_scheme'] must be either
 	 * 'digest' or 'basic' with fallback to 'basic'
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function enforceCorrectProxyAuthScheme() {
 		$GLOBALS['TYPO3_CONF_VARS']['HTTP']['proxy_auth_scheme'] === 'digest' ?
@@ -543,7 +553,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Set default timezone
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function setDefaultTimezone() {
 		$timeZone = $GLOBALS['TYPO3_CONF_VARS']['SYS']['phpTimeZone'];
@@ -565,7 +575,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Initialize the locales handled by TYPO3
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function initializeL10nLocales() {
 		t3lib_l10n_Locales::initialize();
@@ -577,7 +587,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Based on the configuration of the image processing some options are forced
 	 * to simplify configuration settings and combinations
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function configureImageProcessingOptions() {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['image_processing']) {
@@ -613,7 +623,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * string (e.g. if edited in Install Tool)
 	 *
 	 * @TODO: Remove, if the Install Tool handles such data types correctly
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function convertPageNotFoundHandlingToBoolean() {
 		if (!strcasecmp($GLOBALS['TYPO3_CONF_VARS']['FE']['pageNotFound_handling'], 'TRUE')) {
@@ -629,7 +639,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Note: Yes, this is possible in php! xdebug() is then a global function, even
 	 * if registerGlobalDebugFunctions() is encapsulated in class scope.
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function registerGlobalDebugFunctions() {
 			// Simple debug function which prints output immediately
@@ -676,7 +686,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Mail sending via Swift Mailer
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function registerSwiftMailer() {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/utility/class.t3lib_utility_mail.php']['substituteMailDelivery'][]
@@ -688,7 +698,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Configure and set up exception and error handling
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function configureExceptionHandling() {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['productionExceptionHandler'];
@@ -725,7 +735,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Set PHP memory limit depending on value of
 	 * $GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit']
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function setMemoryLimit() {
 		if (intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['setMemoryLimit']) > 16) {
@@ -739,7 +749,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Define TYPO3_REQUESTTYPE* constants
 	 * so devs exactly know what type of request it is
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function defineTypo3RequestTypes() {
 		define('TYPO3_REQUESTTYPE_FE', 1);
@@ -764,7 +774,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * The ext_localconf.php files in extensions are meant to make changes
 	 * to the global $TYPO3_CONF_VARS configuration array.
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function loadAdditionalConfigurationFromExtensions() {
 			// This is the main array meant to be manipulated in the ext_localconf.php files
@@ -805,7 +815,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Write deprecation log if the TYPO3 instance uses deprecated XCLASS
 	 * registrations via $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function deprecationLogForOldXclassRegistration() {
 		if (count($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']) > 0) {
@@ -822,7 +832,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Initialize exception handling
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function initializeExceptionHandling() {
 		if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['errors']['exceptionHandler'] !== '') {
@@ -846,7 +856,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Load some additional classes that are encapsulated in extensions
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function requireAdditionalExtensionFiles() {
 		require_once(t3lib_extMgm::extPath('lang') . 'lang.php');
@@ -858,7 +868,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Extensions may register new caches, so we set the
 	 * global cache array to the manager again at this point
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function setFinalCachingFrameworkCacheConfiguration() {
 		$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
@@ -869,7 +879,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Define logging and exception constants
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function defineLoggingAndExceptionConstants() {
 		define('TYPO3_DLOG', $GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']);
@@ -883,7 +893,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Unsetting reserved global variables:
 	 * Those which are/can be set in "stddb/tables.php" files:
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function unsetReservedGlobalVariables() {
 		unset($GLOBALS['PAGES_TYPES']);
@@ -909,7 +919,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Initialize some global time variables
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function initializeGlobalTimeVariables() {
 			// $EXEC_TIME is set so that the rest of the script has a common value for the script execution time
@@ -929,7 +939,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Initialize t3lib_db in $GLOBALS and connect if requested
 	 *
 	 * @param bool $connect Whether or not the db should be connected already
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function initializeTypo3DbGlobal($connect = TRUE) {
 			/** @var TYPO3_DB t3lib_db */
@@ -947,7 +957,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * to an URL in file typo3conf/LOCK_BACKEND or exit the script
 	 *
 	 * @throws RuntimeException
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function checkLockedBackendAndRedirectOrDie() {
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['adminOnly'] < 0) {
@@ -980,7 +990,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Compare client IP with IPmaskList and exit the script run
 	 * if the client is not allowed to access the backend
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function checkBackendIpOrDie() {
 		if (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['IPmaskList'])) {
@@ -1001,7 +1011,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Check lockSSL configuration variable and redirect
 	 * to https version of the backend if needed
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function checkSslBackendAndRedirectIfNeeded() {
 		if (intval($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'])) {
@@ -1058,7 +1068,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 *
 	 * @TODO: It should be defined, which global arrays are ok to be manipulated
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function loadExtensionTables() {
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
@@ -1101,7 +1111,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Check for registered ext tables hooks and run them
 	 *
 	 * @throws UnexpectedValueException
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	protected function runExtTablesPostProcessingHooks() {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing'])) {
@@ -1122,7 +1132,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * Initialize sprite manager global
 	 *
 	 * @param bool $allowRegeneration
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function initializeSpriteManager($allowRegeneration = TRUE) {
 			/** @var $spriteManager t3lib_SpriteManager */
@@ -1135,7 +1145,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Initialize backend user object in globals
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function initializeBackendUser() {
 			/** @var $backendUser t3lib_beUserAuth */
@@ -1158,7 +1168,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Initialize backend user mount points
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function initializeBackendUserMounts() {
 			// Includes deleted mount pages as well! @TODO: Figure out why ...
@@ -1171,7 +1181,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	/**
 	 * Initialize language object
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function initializeLanguageObject() {
 			/** @var $GLOBALS['LANG'] language */
@@ -1186,7 +1196,7 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	 * This method is called in all important scripts for a clean
 	 * shut down of the system.
 	 *
-	 * @return Typo3_Bootstrap_Backend
+	 * @return Typo3_Bootstrap
 	 */
 	public function shutdown() {
 		t3lib_autoloader::unregisterAutoloader();

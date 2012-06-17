@@ -63,9 +63,9 @@ ob_start();
 define('TYPO3_MODE', 'BE');
 
 	// We use require instead of require_once here so we get a fatal error if
-	// classes/Bootstrap/Backend.php is accidentally included twice (which would indicate a clear bug).
-require('classes/Bootstrap/Backend.php');
-Typo3_Bootstrap_Backend::getInstance()
+	// classes/Bootstrap.php is accidentally included twice (which would indicate a clear bug).
+require('classes/Bootstrap.php');
+Typo3_Bootstrap::getInstance()
 	->checkEnvironmentOrDie()
 	->defineBaseConstants()
 	->defineAndCheckPaths('typo3/')
@@ -120,7 +120,7 @@ if (!$CLIENT['BROWSER']) {
 	throw new RuntimeException('Browser Error: Your browser version looks incompatible with this TYPO3 version!', 1294587023);
 }
 
-Typo3_Bootstrap_Backend::getInstance()
+Typo3_Bootstrap::getInstance()
 	->loadExtensionTables()
 	->initializeSpriteManager(TRUE)
 	->initializeBackendUser()
