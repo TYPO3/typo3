@@ -36,11 +36,8 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 $BACK_PATH = '';
-require ('init.php');
-require ('template.php');
+require('init.php');
 $LANG->includeLLFile('EXT:lang/locallang_browse_links.xml');
-
-require_once (PATH_typo3.'/class.browse_links.php');
 
 /**
  * Script class for the Element Browser window.

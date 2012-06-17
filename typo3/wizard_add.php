@@ -35,7 +35,6 @@
 
 $BACK_PATH = '';
 require('init.php');
-require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
 
 /**
@@ -116,10 +115,6 @@ class SC_wizard_add {
 					if ($LiveRec = t3lib_BEfunc::getLiveVersionOfRecord($this->table, $this->id, 'uid')) {
 						$this->id=$LiveRec['uid'];
 					}
-
-					$this->include_once[] = PATH_t3lib.'class.t3lib_loaddbgroup.php';
-					$this->include_once[] = PATH_t3lib.'class.t3lib_transferdata.php';
-					$this->include_once[] = PATH_t3lib.'class.t3lib_tcemain.php';
 					$this->processDataFlag = 1;
 				}
 			}

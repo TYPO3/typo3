@@ -32,7 +32,6 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require_once(PATH_typo3.'class.db_list.inc');
 require_once(t3lib_extMgm::extPath('cms').'layout/class.tx_cms_layout.php');
 
 

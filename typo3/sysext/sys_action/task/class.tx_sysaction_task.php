@@ -927,9 +927,6 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 			return $content;
 		}
 
-		require_once($GLOBALS['BACK_PATH'] . 'class.db_list.inc');
-		require_once($GLOBALS['BACK_PATH'] . 'class.db_list_extra.inc');
-
 			// Loading current page record and checking access:
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->taskObject->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;

@@ -35,8 +35,6 @@
 
 $BACK_PATH = '';
 require_once('init.php');
-require('template.php');
-require_once('class.filelistfoldertree.php');
 
 /**
  * Main script class for rendering of the folder tree

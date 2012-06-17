@@ -33,7 +33,6 @@
 
 unset($MCONF);
 require('init.php');
-require('template.php');
 
 	// Find module path:
 $temp_M = (string)t3lib_div::_GET('M');

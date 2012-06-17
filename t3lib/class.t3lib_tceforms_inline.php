@@ -1047,8 +1047,6 @@ class t3lib_TCEforms_inline {
 	 * @return void
 	 */
 	protected function processAjaxRequestConstruct(&$ajaxArguments) {
-		require_once(PATH_typo3 . 'template.php');
-
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
 
 			// Create a new anonymous object:
