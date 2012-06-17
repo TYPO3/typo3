@@ -310,7 +310,40 @@ $t3libClasses = array(
 	'tx_lang_clearcachemenu' => t3lib_extMgm::extPath('lang') . 'hooks/clearcache/class.tx_lang_clearcachemenu.php',
 );
 
+	// all utility classes from typo3/ that are not part of a sysext, excluding scripting classes
+$typo3CoreClasses = array(
+	'clickmenu' => PATH_typo3 . 'alt_clickmenu.php',
+	'typo3backend' => PATH_typo3 . 'backend.php',
+	'typo3_bootstrap' => PATH_typo3 . 'Bootstrap.php',
+	'tbe_browser_recordlist' => PATH_typo3 . 'class.browse_links.php',
+	'recordlist' => PATH_typo3 . 'class.db_list.inc',
+	'localrecordlist' => PATH_typo3 . 'class.db_list_extra.inc',
+	'filelist' => PATH_typo3 . 'class.file_list.inc',
+	'filelistfoldertree' => PATH_typo3 . 'class.filelistfoldertree.php',
+	'recordhistory' => PATH_typo3 . 'class.show_rechis.inc',
+	'webpagetree' => PATH_typo3 . 'class.webpagetree.php',
+	'ajaxlogin' => PATH_typo3 . 'classes/class.ajaxlogin.php',
+	'clearcachemenu' => PATH_typo3 . 'classes/class.clearcachemenu.php',
+	'livesearch' => PATH_typo3 . 'classes/class.livesearch.php',
+	'modulemenu' => PATH_typo3 . 'classes/class.modulemenu.php',
+	'shortcutmenu' => PATH_typo3 . 'classes/class.shortcutmenu.php',
+	'typo3_tcefile' => PATH_typo3 . 'classes/class.typo3_tcefile.php',
+	'typo3ajax' => PATH_typo3 . 'classes/class.typo3ajax.php',
+	'typo3logo' => PATH_typo3 . 'classes/class.typo3logo.php',
+	'backend_cacheactionshook' => PATH_typo3 . 'interfaces/interface.backend_cacheActionsHook.php',
+	'backend_toolbaritem' => PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php',
+	'cms_newcontentelementwizardshook' => PATH_typo3 . 'interfaces/interface.cms_newcontentelementwizardshook.php',
+	'filelist_editiconhook' => PATH_typo3 . 'interfaces/interface.filelist_editiconhook.php',
+	'localrecordlist_actionshook' => PATH_typo3 . 'interfaces/interface.localrecordlist_actionsHook.php',
+	'template' => PATH_typo3 . 'template.php',
+	'bigdoc' => PATH_typo3 . 'template.php',
+	'nodoc' => PATH_typo3 . 'template.php',
+	'smalldoc' => PATH_typo3 . 'template.php',
+	'mediumdoc' => PATH_typo3 . 'template.php',
+	'frontenddoc' => PATH_typo3 . 'template.php',
+);
+
 $tslibClasses = require(PATH_typo3 . 'sysext/cms/ext_autoload.php');
 
-return array_merge($t3libClasses, $tslibClasses);
+return array_merge($t3libClasses, $typo3CoreClasses, $tslibClasses);
 ?>

@@ -34,7 +34,6 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 require('init.php');
-require('template.php');
 
 /**
  * Script Class, putting the frameset together.

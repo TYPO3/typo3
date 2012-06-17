@@ -37,7 +37,6 @@
 unset($MCONF);
 require('conf.php');
 require($BACK_PATH.'init.php');
-require($BACK_PATH.'template.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_info.xml');
 
 $BE_USER->modAccess($MCONF, 1);
