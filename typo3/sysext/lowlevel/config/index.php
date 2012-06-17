@@ -114,6 +114,7 @@ class SC_mod_tools_config_index {
 				7 => $GLOBALS['LANG']->getLL('tbeStyles', TRUE),
 				8 => $GLOBALS['LANG']->getLL('beUser', TRUE),
 				9 => $GLOBALS['LANG']->getLL('usersettings', TRUE),
+				10 => $GLOBALS['LANG']->getLL('xclasses', TRUE),
 			),
 			'regexsearch' => '',
 			'fixedLgd' => ''
@@ -124,19 +125,20 @@ class SC_mod_tools_config_index {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Main function of this module
 	 *
-	 * @return	[type]		...
+	 * @return void
 	 */
 	function main() {
 
+		/** @var $arrayBrowser t3lib_arrayBrowser */
 		$arrayBrowser = t3lib_div::makeInstance('t3lib_arrayBrowser');
 
 		$this->content= $this->doc->header($GLOBALS['LANG']->getLL('configuration', TRUE));
 
 		$this->content .= '<div id="lowlevel-config">
 						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', TRUE) . '</label>
-						<input type="text" id="search_field" name="search_field" value="' . htmlspecialchars($search_field) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />
+						<input type="text" id="search_field" name="search_field" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />
 						<input type="submit" name="search" id="search" value="' . $GLOBALS['LANG']->getLL('search', TRUE) . '" />';
 		$this->content .= t3lib_BEfunc::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"') .
 						'<label for="checkRegexsearch">' . $GLOBALS['LANG']->getLL('useRegExp', TRUE) . '</label>';
@@ -201,6 +203,10 @@ class SC_mod_tools_config_index {
 				t3lib_div::naturalKeySortRecursive($theVar);
 				$arrayBrowser->varName = '$TYPO3_USER_SETTINGS';
 			break;
+			case 10:
+				$theVar = $this->getAutoloadXclasses();
+				$arrayBrowser->varName = '$XCLASSES';
+			break;
 			default:
 				$theVar = array();
 			break;
@@ -210,19 +216,21 @@ class SC_mod_tools_config_index {
 			// Update node:
 		$update = 0;
 		$node = t3lib_div::_GET('node');
-		if (is_array($node))	{		// If any plus-signs were clicked, it's registred.
-			$this->MOD_SETTINGS['node_'.$this->MOD_SETTINGS['function']] = $arrayBrowser->depthKeys($node, $this->MOD_SETTINGS['node_'.$this->MOD_SETTINGS['function']]);
+		if (is_array($node))	{		// If any plus-signs were clicked, it's registered.
+			$this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']] = $arrayBrowser->depthKeys(
+				$node,
+				$this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']]
+			);
 			$update = 1;
 		}
 		if ($update) {
 			$GLOBALS['BE_USER']->pushModuleData($this->MCONF['name'], $this->MOD_SETTINGS);
 		}
 
-		$arrayBrowser->depthKeys = $this->MOD_SETTINGS['node_'.$this->MOD_SETTINGS['function']];
+		$arrayBrowser->depthKeys = $this->MOD_SETTINGS['node_' . $this->MOD_SETTINGS['function']];
 		$arrayBrowser->regexMode = $this->MOD_SETTINGS['regexsearch'];
 		$arrayBrowser->fixedLgd = $this->MOD_SETTINGS['fixedLgd'];
 		$arrayBrowser->searchKeysToo = TRUE;
-
 
 		$search_field = t3lib_div::_GP('search_field');
 		if (t3lib_div::_POST('search') && trim($search_field))	{		// If any POST-vars are send, update the condition array
@@ -232,7 +240,7 @@ class SC_mod_tools_config_index {
 		$tree = $arrayBrowser->tree($theVar, '', '');
 
 		$label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
-		$this->content.= $this->doc->sectionEnd();
+		$this->content .= $this->doc->sectionEnd();
 
 			// Variable name:
 		if (t3lib_div::_GP('varname')) {
@@ -263,6 +271,7 @@ class SC_mod_tools_config_index {
 				$success = t3lib_div::writeFile(PATH_typo3conf . TYPO3_extTableDef_script, $extTables);
 				if ($success) {
 						// show flash message
+					/** @var $flashMessage t3lib_FlashMessage */
 					$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
 						'',
@@ -270,7 +279,8 @@ class SC_mod_tools_config_index {
 						t3lib_FlashMessage::OK
 					);
 				} else {
-					// Error: show flash message
+						// Error: show flash message
+					/** @var $flashMessage t3lib_FlashMessage */
 					$flashMessage = t3lib_div::makeInstance(
 						't3lib_FlashMessage',
 						'',
@@ -282,7 +292,7 @@ class SC_mod_tools_config_index {
 			}
 			$this->content .= '<div id="lowlevel-config-var">
 				<strong>' . $GLOBALS['LANG']->getLL('variable', TRUE) . '</strong><br />
-				<input type="text" name="_" value="'.trim(htmlspecialchars($line)).'" size="120" /><br/>';
+				<input type="text" name="_" value="' . trim(htmlspecialchars($line)) . '" size="120" /><br/>';
 
 			if (TYPO3_extTableDef_script !== '' && ($this->MOD_SETTINGS['function'] === '1' || $this->MOD_SETTINGS['function'] === '4')) {
 					// write only for $TCA and TBE_STYLES if  TYPO3_extTableDef_script is defined
@@ -294,8 +304,8 @@ class SC_mod_tools_config_index {
 
 		}
 
-		$this->content.= '<br /><table border="0" cellpadding="0" cellspacing="0" class="t3-tree t3-tree-config">';
-		$this->content.= '<tr>
+		$this->content .= '<br /><table border="0" cellpadding="0" cellspacing="0" class="t3-tree t3-tree-config">';
+		$this->content .= '<tr>
 					<th class="t3-row-header t3-tree-config-header">' . $label . '</th>
 				</tr>
 				<tr>
@@ -359,9 +369,33 @@ class SC_mod_tools_config_index {
 		$funcMenu = t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function']);
 		return $funcMenu;
 	}
+
+	/**
+	 * Crete list of XCLASSes using the autoload method
+	 *
+	 * @return array
+	 */
+	protected function getAutoloadXclasses() {
+		$classRegistry = array();
+		$loadedExtensions = array_unique(t3lib_div::trimExplode(',', t3lib_extMgm::getEnabledExtensionList(), TRUE));
+		foreach ($loadedExtensions as $extensionKey) {
+			$extensionAutoloadFile = t3lib_extMgm::extPath($extensionKey, 'ext_autoload.php');
+			if (file_exists($extensionAutoloadFile)) {
+				$classRegistry = array_merge($classRegistry, require($extensionAutoloadFile));
+			}
+		}
+		$xclasses = array();
+		foreach ($classRegistry as $registryKey => $pathToClassFile) {
+			if (t3lib_div::isFirstPartOfStr($registryKey, 'ux_')) {
+				$xclasses[$registryKey] = $pathToClassFile;
+			}
+		}
+		return $xclasses;
+	}
 }
 
 // Make instance:
+/** @var $SOBE SC_mod_tools_config_index */
 $SOBE = t3lib_div::makeInstance('SC_mod_tools_config_index');
 $SOBE->init();
 $SOBE->main();

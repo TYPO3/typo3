@@ -36,6 +36,9 @@
 			<trans-unit id="tbemodules" xml:space="preserve">
 				<source>$TBE_MODULES (BE Modules)</source>
 			</trans-unit>
+			<trans-unit id="xclasses" xml:space="preserve">
+				<source>XCLASSes (autoloaded)</source>
+			</trans-unit>
 			<trans-unit id="cropLines" xml:space="preserve">
 				<source>Crop lines</source>
 			</trans-unit>
