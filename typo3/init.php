@@ -55,17 +55,13 @@
  * @subpackage core
  */
 
-	// Prevent any unwanted output that may corrupt AJAX/compression. Note: this does
-	// not interfeer with "die()" or "echo"+"exit()" messages!
-ob_start();
-
-	// Define constants
 define('TYPO3_MODE', 'BE');
 
 	// We use require instead of require_once here so we get a fatal error if
 	// classes/Bootstrap.php is accidentally included twice (which would indicate a clear bug).
 require('classes/Bootstrap.php');
 Typo3_Bootstrap::getInstance()
+	->startOutputBuffering()
 	->checkEnvironmentOrDie()
 	->defineBaseConstants()
 	->defineAndCheckPaths('typo3/')
@@ -105,35 +101,15 @@ Typo3_Bootstrap::getInstance()
 	->initializeTypo3DbGlobal(FALSE)
 	->checkLockedBackendAndRedirectOrDie()
 	->checkBackendIpOrDie()
-	->checkSslBackendAndRedirectIfNeeded();
-
-	// Connect to the database
-	// Redirect to install tool if database host and database are not defined
-if (!TYPO3_db_host && !TYPO3_db) {
-	t3lib_utility_Http::redirect('install/index.php?mode=123&step=1&password=joh316');
-} else {
-	$TYPO3_DB->connectDB();
-}
-
-	// Checks for proper browser
-if (!$CLIENT['BROWSER']) {
-	throw new RuntimeException('Browser Error: Your browser version looks incompatible with this TYPO3 version!', 1294587023);
-}
-
-Typo3_Bootstrap::getInstance()
+	->checkSslBackendAndRedirectIfNeeded()
+	->redirectToInstallToolIfDatabaseCredentialsAreMissing()
+	->checkValidBrowserOrDie()
+	->establishDatabaseConnection()
 	->loadExtensionTables()
 	->initializeSpriteManager(TRUE)
 	->initializeBackendUser()
 	->initializeBackendUserMounts()
-	->initializeLanguageObject();
-
-	// Compression
-ob_clean();
-if (extension_loaded('zlib') && $TYPO3_CONF_VARS['BE']['compressionLevel']) {
-	if (t3lib_utility_Math::canBeInterpretedAsInteger($TYPO3_CONF_VARS['BE']['compressionLevel'])) {
-		@ini_set('zlib.output_compression_level', $TYPO3_CONF_VARS['BE']['compressionLevel']);
-	}
-	ob_start('ob_gzhandler');
-}
-
+	->initializeLanguageObject()
+	->endOutputBufferingAndCleanPreviousOutput()
+	->initializeOutputCompression();
 ?>

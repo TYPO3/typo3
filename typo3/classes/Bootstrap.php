@@ -69,6 +69,18 @@ class Typo3_Bootstrap {
 	}
 
 	/**
+	 * Prevent any unwanted output that may corrupt AJAX/compression.
+	 * This does not interfeer with "die()" or "echo"+"exit()" messages!
+	 *
+	 * @return Typo3_Bootstrap
+	 */
+	public function startOutputBuffering() {
+		ob_start();
+
+		return $this;
+	}
+
+	/**
 	 * Check several a priori conditions like the current
 	 * php version or exit the script with an error.
 	 *
@@ -246,6 +258,22 @@ class Typo3_Bootstrap {
 	}
 
 	/**
+	 * Throws an exception if no browser could be identified
+	 *
+	 * @return Typo3_Bootstrap
+	 * @throws RuntimeException
+	 */
+	public function checkValidBrowserOrDie() {
+			// Checks for proper browser
+		if (empty($GLOBALS['CLIENT']['BROWSER'])) {
+			throw new RuntimeException('Browser Error: Your browser version looks incompatible with this TYPO3 version!', 1294587023);
+		}
+
+		return $this;
+	}
+
+
+	/**
 	 * Load default TYPO3_CONF_VARS
 	 *
 	 * @return Typo3_Bootstrap
@@ -391,6 +419,19 @@ class Typo3_Bootstrap {
 		unset($GLOBALS['typo_db_password']);
 		unset($GLOBALS['typo_db_host']);
 		unset($GLOBALS['typo_db_extTableDef_script']);
+
+		return $this;
+	}
+
+	/**
+	 * Redirect to install tool if database host and database are not defined
+	 *
+	 * @return Typo3_Bootstrap
+	 */
+	public function redirectToInstallToolIfDatabaseCredentialsAreMissing() {
+		if (!TYPO3_db_host && !TYPO3_db) {
+			t3lib_utility_Http::redirect('install/index.php?mode=123&step=1&password=joh316');
+		}
 
 		return $this;
 	}
@@ -946,7 +987,7 @@ class Typo3_Bootstrap {
 		$GLOBALS['TYPO3_DB'] = t3lib_div::makeInstance('t3lib_DB');
 		$GLOBALS['TYPO3_DB']->debugOutput = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sqlDebug'];
 		if ($connect) {
-			$GLOBALS['TYPO3_DB']->connectDB();
+			$this->establishDatabaseConnection();
 		}
 
 		return $this;
@@ -1043,6 +1084,17 @@ class Typo3_Bootstrap {
 				exit;
 			}
 		}
+
+		return $this;
+	}
+
+	/**
+	 * Establish connection to the database
+	 *
+	 * @return Typo3_Bootstrap
+	 */
+	public function establishDatabaseConnection() {
+		$GLOBALS['TYPO3_DB']->connectDB();
 
 		return $this;
 	}
@@ -1187,6 +1239,33 @@ class Typo3_Bootstrap {
 			/** @var $GLOBALS['LANG'] language */
 		$GLOBALS['LANG'] = t3lib_div::makeInstance('language');
 		$GLOBALS['LANG']->init($GLOBALS['BE_USER']->uc['lang']);
+
+		return $this;
+	}
+
+	/**
+	 * Throw away all output that may have happened during bootstrapping by weird extensions
+	 *
+	 * @return Typo3_Bootstrap
+	 */
+	public function endOutputBufferingAndCleanPreviousOutput() {
+		ob_clean();
+
+		return $this;
+	}
+
+	/**
+	 * Initialize output compression if configured
+	 *
+	 * @return Typo3_Bootstrap
+	 */
+	public function initializeOutputCompression() {
+		if (extension_loaded('zlib') && $GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']) {
+			if (t3lib_utility_Math::canBeInterpretedAsInteger($GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel'])) {
+				@ini_set('zlib.output_compression_level', $GLOBALS['TYPO3_CONF_VARS']['BE']['compressionLevel']);
+			}
+			ob_start('ob_gzhandler');
+		}
 
 		return $this;
 	}
