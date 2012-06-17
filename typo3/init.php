@@ -125,7 +125,8 @@ Typo3_Bootstrap::getInstance()
 	->initializeSpriteManager(TRUE)
 	->initializeBackendUser()
 	->initializeBackendUserMounts()
-	->initializeLanguageObject();
+	->initializeLanguageObject()
+	->initializeModuleMenuObject();
 
 	// Compression
 ob_clean();
