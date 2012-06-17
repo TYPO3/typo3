@@ -7495,7 +7495,7 @@ $out="
 	 * @return void
 	 */
 	function includeTCA() {
-		Typo3_Bootstrap_Backend::getInstance()->loadExtensionTables();
+		Typo3_Bootstrap::getInstance()->loadExtensionTables();
 
 		foreach ($GLOBALS['TCA'] as $table => $conf) {
 			t3lib_div::loadTCA($table);

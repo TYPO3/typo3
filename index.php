@@ -34,10 +34,10 @@
  * @subpackage tslib
  */
 
-	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap/Backend.php is accidentally included twice
+	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap.php is accidentally included twice
 	// (which would indicate a clear bug).
-require('typo3/classes/Bootstrap/Backend.php');
-Typo3_Bootstrap_Backend::getInstance()
+require('typo3/classes/Bootstrap.php');
+Typo3_Bootstrap::getInstance()
 	->checkEnvironmentOrDie()
 	->defineBaseConstants()
 	->defineAndCheckPaths('')

@@ -45,7 +45,7 @@ define('TYPO3_MODE', 'FE');
 	// AJAX/compression data corruption
 ob_start();
 
-Typo3_Bootstrap_Backend::getInstance()->loadDefaultTypo3ConfVars()
+Typo3_Bootstrap::getInstance()->loadDefaultTypo3ConfVars()
 	->registerExtDirectComponents()
 	->initializeGlobalVariables()
 	->checkLocalconfExistsOrDie()
@@ -91,7 +91,7 @@ if ($_COOKIE[t3lib_beUserAuth::getCookieName()]) {
 }
 $TT->start();
 
-Typo3_Bootstrap_Backend::getInstance()->initializeTypo3DbGlobal(FALSE);
+Typo3_Bootstrap::getInstance()->initializeTypo3DbGlobal(FALSE);
 
 // Hook to preprocess the current request:
 if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
@@ -187,11 +187,11 @@ $TT->pull();
 
 	// Admin Panel & Frontend editing
 if ($TSFE->isBackendUserLoggedIn()) {
-	Typo3_Bootstrap_Backend::getInstance()->initializeSpriteManager(FALSE);
+	Typo3_Bootstrap::getInstance()->initializeSpriteManager(FALSE);
 
 	$BE_USER->initializeFrontendEdit();
 	if ($BE_USER->adminPanel instanceof tslib_AdminPanel) {
-		Typo3_Bootstrap_Backend::getInstance()->initializeLanguageObject();
+		Typo3_Bootstrap::getInstance()->initializeLanguageObject();
 	}
 	if ($BE_USER->frontendEdit instanceof t3lib_frontendedit) {
 		$BE_USER->frontendEdit->initConfigOptions();
@@ -322,6 +322,6 @@ if (TYPO3_DLOG) {
 	t3lib_div::devLog('END of FRONTEND session', 'cms', 0, array('_FLUSH' => TRUE));
 }
 
-Typo3_Bootstrap_Backend::getInstance()->shutdown();
+Typo3_Bootstrap::getInstance()->shutdown();
 
 ?>
