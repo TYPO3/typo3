@@ -87,7 +87,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	public function setCache(t3lib_cache_frontend_Frontend $cache) {
 		parent::setCache($cache);
 		$processUser = extension_loaded('posix') ? posix_getpwuid(posix_geteuid()) : array('name' => 'default');
-		$pathHash = t3lib_div::shortMD5(PATH_site . $processUser['name'] . $this->context, 12);
+		$pathHash = t3lib_div::shortMD5(PATH_site . $processUser['name'] . $this->context . $cache->getIdentifier(), 12);
 		$this->identifierPrefix = 'TYPO3_' . $pathHash;
 	}
 
