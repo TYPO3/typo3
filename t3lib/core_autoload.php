@@ -345,6 +345,11 @@ $typo3Classes = array(
 	'typo3backend' => PATH_typo3 . 'backend.php',
 	'typo3logo' => PATH_typo3 . 'classes/class.typo3logo.php',
 	'webpagetree' => PATH_typo3 . 'class.webpagetree.php',
+	'typo3_modulestorage' => PATH_typo3 . 'classes/ModuleStorage.php',
+	'typo3_domain_model_backendmodule' => PATH_typo3 . 'classes/Domain/Model/BackendModule.php',
+	'typo3_domain_repository_backendmodulerepository' => PATH_typo3 . 'classes/Domain/Repository/BackendModuleRepository.php',
+	'typo3_utility_backendmoduleutility' => PATH_typo3 . 'classes/Utility/BackendModuleUtility.php',
+	'modulemenu' => PATH_typo3 . 'classes/class.modulemenu.php',
 );
 
 $tslibClasses = require(PATH_typo3 . 'sysext/cms/ext_autoload.php');

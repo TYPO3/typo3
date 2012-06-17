@@ -110,8 +110,8 @@ Typo3_Bootstrap::getInstance()
 	->initializeBackendUser()
 	->initializeBackendUserMounts()
 	->initializeLanguageObject()
+	->initializeModuleMenuObject()
 	->initializeBackendTemplate()
 	->endOutputBufferingAndCleanPreviousOutput()
 	->initializeOutputCompression();
-
 ?>
