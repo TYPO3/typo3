@@ -1182,6 +1182,19 @@ class Typo3_Bootstrap_Backend extends Typo3_Bootstrap_Abstract {
 	}
 
 	/**
+	 * Initialize module menu object
+	 *
+	 * @return Typo3_Bootstrap_Backend
+	 */
+	public function initializeModuleMenuObject() {
+		/** @var $moduleMenuUtility Typo3_ModuleMenu_Utiliy */
+		$moduleMenuUtility = t3lib_div::makeInstance('Typo3_ModuleMenu_Utiliy');
+		$moduleMenuUtility->createModuleMenu();
+
+		return $this;
+	}
+
+	/**
 	 * Things that should be performed to shut down the framework.
 	 * This method is called in all important scripts for a clean
 	 * shut down of the system.
