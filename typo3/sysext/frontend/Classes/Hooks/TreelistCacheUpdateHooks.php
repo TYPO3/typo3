@@ -89,8 +89,8 @@ class TreelistCacheUpdateHooks {
 	}
 
 	/**
-	 * waits for TCEmain commands and looks for deleted pages, if found further
-	 * changes take place to determine whether the cache needs to be updated
+	 * Waits for DataHandler commands and looks for deleted pages or swapped pages, if found
+	 * further changes take place to determine whether the cache needs to be updated
 	 *
 	 * @param string $command The TCE command
 	 * @param string $table The record's table
@@ -100,13 +100,26 @@ class TreelistCacheUpdateHooks {
 	 * @return void
 	 */
 	public function processCmdmap_postProcess($command, $table, $recordId, $commandValue, DataHandler $tceMain) {
-		if ($table == 'pages' && $command == 'delete') {
-			$deletedRecord = BackendUtility::getRecord($table, $recordId, '*', '', FALSE);
-			$affectedPageUid = $deletedRecord['uid'];
-			$affectedPagePid = $deletedRecord['pid'];
+		$action = (string)$commandValue['action'];
+		if ($table === 'pages' && ($command === 'delete' || ($command === 'version' && $action === 'swap'))) {
+
+			$affectedRecord = BackendUtility::getRecord($table, $recordId, '*', '', FALSE);
+			$affectedPageUid = $affectedRecord['uid'];
+			$affectedPagePid = $affectedRecord['pid'];
+
 			// Faking the updated fields
-			$updatedFields = array('deleted' => 1);
-			$clearCacheActions = $this->determineClearCacheActions('update', $updatedFields);
+			$updatedFields = array();
+			if ($command === 'delete') {
+				$updatedFields['deleted'] = 1;
+			} else {
+				// page was published to live (swapped)
+				$updatedFields['t3ver_wsid'] = 0;
+			}
+			$clearCacheActions = $this->determineClearCacheActions(
+				'update',
+				$updatedFields
+			);
+
 			$this->processClearCacheActions($affectedPageUid, $affectedPagePid, $updatedFields, $clearCacheActions);
 		}
 	}
@@ -297,6 +310,8 @@ class TreelistCacheUpdateHooks {
 					case $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['fe_group']:
 
 					case 'extendToSubpages':
+
+					case 't3ver_wsid':
 
 					case 'php_tree_stop':
 						// php_tree_stop
