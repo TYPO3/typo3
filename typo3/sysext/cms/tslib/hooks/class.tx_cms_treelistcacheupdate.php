@@ -118,8 +118,8 @@ class tx_cms_treelistCacheUpdate {
 	}
 
 	/**
-	 * waits for TCEmain commands and looks for deleted pages, if found further
-	 * changes take place to determine whether the cache needs to be updated
+	 * waits for TCEmain commands and looks for deleted pages or swapped pages, if found
+	 * further changes take place to determine whether the cache needs to be updated
 	 *
 	 * @param string $command The TCE command
 	 * @param string $table The record's table
@@ -129,10 +129,10 @@ class tx_cms_treelistCacheUpdate {
 	 * @return void
 	 */
 	public function processCmdmap_postProcess($command, $table, $recordId, $commandValue, t3lib_TCEmain $tceMain) {
+		$action = (string) $commandValue['action'];
+		if ($table == 'pages' && ($command == 'delete' || ($command == 'version' && $action == 'swap'))) {
 
-		if ($table == 'pages' && $command == 'delete') {
-
-			$deletedRecord = t3lib_BEfunc::getRecord(
+			$affectedRecord = t3lib_BEfunc::getRecord(
 				$table,
 				$recordId,
 				'*',
@@ -140,11 +140,14 @@ class tx_cms_treelistCacheUpdate {
 				FALSE
 			);
 
-			$affectedPageUid = $deletedRecord['uid'];
-			$affectedPagePid = $deletedRecord['pid'];
+			$affectedPageUid = $affectedRecord['uid'];
+			$affectedPagePid = $affectedRecord['pid'];
 				// Faking the updated fields
-			$updatedFields   = array('deleted' => 1);
-
+			if ($command == 'delete') {
+				$updatedFields   = array('deleted' => 1);
+			} elseif ($command == 'version') {
+				$updatedFields   = array('deleted' => 0);
+			}
 			$clearCacheActions = $this->determineClearCacheActions(
 				'update',
 				$updatedFields
