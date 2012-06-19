@@ -378,7 +378,7 @@ class tx_cms_layout extends recordList {
 
 			// For EACH languages... :
 			foreach ($langListArr as $lP) { // If NOT languageMode, then we'll only be through this once.
-				$showLanguage = $lP == 0 ? ' AND sys_language_uid IN (0,-1)' : ' AND sys_language_uid=' . $lP;
+				$showLanguage = ' AND sys_language_uid IN (' . $lP . ',-1)';
 				$cList = explode(',', $this->tt_contentConfig['cols']);
 				$content = array();
 				$head = array();
