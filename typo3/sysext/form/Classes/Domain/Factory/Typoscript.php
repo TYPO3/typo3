@@ -200,6 +200,11 @@ class tx_form_Domain_Factory_Typoscript implements t3lib_Singleton {
 	 * @return void
 	 */
 	protected function reconstituteElement(tx_form_Domain_Model_Element_Abstract $element, array $arguments = array()) {
+		if (isset($arguments['value']) && isset($arguments['value.'])) {
+			$cObj = $this->getLocalConentObject();
+			$arguments['value'] = $cObj->stdWrap($arguments['value'], $arguments['value.']);
+		}
+
 		$this->setAttributes($element, $arguments);
 		$this->setAdditionals($element, $arguments);
 
