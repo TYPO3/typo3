@@ -87,6 +87,8 @@ Typo3_Bootstrap::getInstance()
 	->checkBackendIpOrDie()
 	->checkSslBackendAndRedirectIfNeeded();
 
+Typo3_Bootstrap::getInstance()->fireInitializedEvent();
+
 	// Run install script
 if (!t3lib_extMgm::isLoaded('install')) {
 	die('Install Tool is not loaded as an extension.<br />You must add the key "install" to the list of installed extensions in typo3conf/localconf.php, $TYPO3_CONF_VARS[\'EXT\'][\'extList\'].');

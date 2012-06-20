@@ -92,6 +92,7 @@ if ($_COOKIE[t3lib_beUserAuth::getCookieName()]) {
 $TT->start();
 
 Typo3_Bootstrap::getInstance()->initializeTypo3DbGlobal(FALSE);
+Typo3_Bootstrap::getInstance()->fireInitializedEvent();
 
 // Hook to preprocess the current request:
 if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest'])) {
