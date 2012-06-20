@@ -27,18 +27,11 @@
 /**
  * Dynamic configuation of the system-related tables, typ. sys_* series
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-
-
-
-
-// ******************************************************************
-// fe_users
-//
-// FrontEnd users - login on the website
-// ******************************************************************
+	// fe_users
+	// FrontEnd users - login on the website
 $TCA['fe_users'] = array(
 	'ctrl' => $TCA['fe_users']['ctrl'],
 	'interface' => array(
@@ -320,15 +313,8 @@ $TCA['fe_users'] = array(
 	)
 );
 
-
-
-
-
-// ******************************************************************
-// fe_groups
-//
-// FrontEnd usergroups - Membership of these determines access to elements
-// ******************************************************************
+	// fe_groups
+	// FrontEnd usergroups - Membership of these determines access to elements
 $TCA['fe_groups'] = array(
 	'ctrl' => $TCA['fe_groups']['ctrl'],
 	'interface' => array(
@@ -413,12 +399,7 @@ $TCA['fe_groups'] = array(
 	)
 );
 
-
-
-
-// ******************************************************************
-// sys_domain
-// ******************************************************************
+	// sys_domain
 $TCA['sys_domain'] = array(
 	'ctrl' => $TCA['sys_domain']['ctrl'],
 	'interface' => array(
@@ -494,13 +475,7 @@ $TCA['sys_domain'] = array(
 	)
 );
 
-
-
-
-
-// ******************************************************************
-// pages_language_overlay
-// ******************************************************************
+	// pages_language_overlay
 $TCA['pages_language_overlay'] = array(
 	'ctrl' => $TCA['pages_language_overlay']['ctrl'],
 	'interface' => array(
@@ -701,7 +676,7 @@ $TCA['pages_language_overlay'] = array(
 		),
 	),
 	'types' => array(
-		// normal
+			// normal
 		(string) t3lib_pageSelect::DOKTYPE_DEFAULT => array(
 			'showitem' =>
 			'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
@@ -717,7 +692,7 @@ $TCA['pages_language_overlay'] = array(
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
-		// external URL
+			// external URL
 		(string) t3lib_pageSelect::DOKTYPE_LINK => array(
 			'showitem' =>
 			'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.external;external,
@@ -732,7 +707,7 @@ $TCA['pages_language_overlay'] = array(
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
-		// shortcut
+			// shortcut
 		(string) t3lib_pageSelect::DOKTYPE_SHORTCUT => array(
 			'showitem' =>
 			'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.shortcut;shortcut,
@@ -748,7 +723,7 @@ $TCA['pages_language_overlay'] = array(
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 				'),
-		// mount page
+			// mount page
 		(string) t3lib_pageSelect::DOKTYPE_MOUNTPOINT => array(
 			'showitem' =>
 			'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
@@ -763,7 +738,7 @@ $TCA['pages_language_overlay'] = array(
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
-		// spacer
+			// spacer
 		(string) t3lib_pageSelect::DOKTYPE_SPACER => array(
 			'showitem' =>
 			'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
@@ -773,7 +748,7 @@ $TCA['pages_language_overlay'] = array(
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.access;access,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 			'),
-		// sysfolder
+			// sysfolder
 		(string) t3lib_pageSelect::DOKTYPE_SYSFOLDER => array(
 			'showitem' =>
 			'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
@@ -784,7 +759,7 @@ $TCA['pages_language_overlay'] = array(
 					--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.media;media,
 				--div--;LLL:EXT:cms/locallang_tca.xml:pages.tabs.extended,
 		'),
-		// trash
+			// trash
 		(string) t3lib_pageSelect::DOKTYPE_RECYCLER => array(
 			'showitem' =>
 			'--palette--;LLL:EXT:cms/locallang_tca.xml:pages.palettes.standard;standard,
@@ -851,15 +826,12 @@ $TCA['pages_language_overlay'] = array(
 	)
 );
 
-
-
-
 	// Keep old code (pre-FAL) for installations that haven't upgraded yet.
 	// @deprecated since TYPO3 6.0, please remove in TYPO3 7.0
 	// existing installation - and files are merged, nothing to do
 if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard']) || !t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Updates_File_TceformsUpdateWizard'], 'pages_language_overlay:media')) && !t3lib_div::compat_version('6.0')) {
 	t3lib_div::deprecationLog('This installation hasn\'t been migrated to FAL for the field $TCA[pages_language_overlay][columns][media] yet. Please do so before TYPO3 v7.');
-		// existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
+		// Existing installation and no upgrade wizard was executed - and files haven't been merged: use the old code
 	$TCA['pages_language_overlay']['columns']['media']['config'] = array(
 		'type' => 'group',
 		'internal_type' => 'file',
@@ -873,11 +845,7 @@ if ((!isset($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone']['Tx_Install_Upd
 	);
 }
 
-
-
-// ******************************************************************
-// sys_template
-// ******************************************************************
+	// sys_template
 $TCA['sys_template'] = array(
 	'ctrl' => $TCA['sys_template']['ctrl'],
 	'interface' => array(
@@ -1115,9 +1083,7 @@ $TCA['sys_template'] = array(
 	)
 );
 
-// ******************************************************************
-// backend_layout
-// ******************************************************************
+	// backend_layout
 $TCA['backend_layout'] = array(
 	'ctrl' => $TCA['backend_layout']['ctrl'],
 	'interface' => array(
