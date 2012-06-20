@@ -107,9 +107,10 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	protected $extCorePath = 'contrib/extjs/';
 	protected $extJsPath = 'contrib/extjs/';
 	protected $svgPath = 'contrib/websvg/';
-
+	protected $jqueryPath = 'contrib/jQuery/';
 
 		// Internal flags for JS-libraries
+	protected $addJQuery = FALSE;
 	protected $addPrototype = FALSE;
 	protected $addScriptaculous = FALSE;
 	protected $addScriptaculousModules = array('builder' => FALSE, 'effects' => FALSE, 'dragdrop' => FALSE, 'controls' => FALSE, 'slider' => FALSE);
@@ -1181,6 +1182,15 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 *  Call function if you need the jQuery library
+	 *
+	 * @return void
+	 */
+	public function loadJQuery() {
+		$this->addJQuery = TRUE;
+	}
+
+	/**
 	 *  Call function if you need the prototype library
 	 *
 	 * @return void
@@ -1702,7 +1712,13 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 					'" data-path="' . $this->backPath . $this->svgPath .
 					'"' . ($this->enableSvgDebug ? ' data-debug="true"' : '') . '></script>';
 		}
-
+		
+		if ($this->addJQuery) {
+			$out .= '<script src="' . $this->processJsFile($this->backPath . $this->jqueryPath . 'jquery.latest.js') .
+					'" type="text/javascript"></script><script> var t3jQuery = {}; t3jQuery.lastest = jQuery.noConflict(true); </script>' . LF;
+			unset($this->jsFiles[$this->backPath . $this->jqueryPath . 'jquery.latest.js']);
+		}
+		
 		if ($this->addPrototype) {
 			$out .= '<script src="' . $this->processJsFile($this->backPath . $this->prototypePath . 'prototype.js') .
 					'" type="text/javascript"></script>' . LF;

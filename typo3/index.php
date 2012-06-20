@@ -149,6 +149,7 @@ class SC_index {
 		$GLOBALS['TBE_TEMPLATE']->moduleTemplate = $GLOBALS['TBE_TEMPLATE']->getHtmlTemplate('templates/login.html');
 
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadExtJS();
+		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadJQuery();
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadPrototype();
 		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->loadScriptaculous();
 
