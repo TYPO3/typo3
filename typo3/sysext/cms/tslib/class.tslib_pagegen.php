@@ -31,26 +31,8 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Class for starting TypoScript page generation
@@ -58,7 +40,7 @@
  * The class is not instantiated as an objects but called directly with the "::" operator.
  * eg: TSpagegen::pagegenInit()
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  */
@@ -67,12 +49,14 @@ class TSpagegen {
 	/**
 	 * Setting some vars in TSFE, primarily based on TypoScript config settings.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public static function pagegenInit() {
-		if ($GLOBALS['TSFE']->page['content_from_pid']>0) {
-			$temp_copy_TSFE = clone($GLOBALS['TSFE']);	// make REAL copy of TSFE object - not reference!
-			$temp_copy_TSFE->id = $GLOBALS['TSFE']->page['content_from_pid'];	// Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
+		if ($GLOBALS['TSFE']->page['content_from_pid'] > 0) {
+				// make REAL copy of TSFE object - not reference!
+			$temp_copy_TSFE = clone($GLOBALS['TSFE']);
+				// Set ->id to the content_from_pid value - we are going to evaluate this pid as was it a given id for a page-display!
+			$temp_copy_TSFE->id = $GLOBALS['TSFE']->page['content_from_pid'];
 			$temp_copy_TSFE->MP = '';
 			$temp_copy_TSFE->getPageAndRootlineWithDomain($GLOBALS['TSFE']->config['config']['content_from_pid_allowOutsideDomain']?0:$GLOBALS['TSFE']->domainStartPage);
 			$GLOBALS['TSFE']->contentPid = intval($temp_copy_TSFE->id);
@@ -82,7 +66,7 @@ class TSpagegen {
 			$temp_parts = t3lib_div::trimExplode('|', $GLOBALS['TSFE']->config['config']['MP_defaults'], 1);
 			foreach ($temp_parts as $temp_p) {
 				list($temp_idP, $temp_MPp) = explode(':', $temp_p, 2);
-				$temp_ids=t3lib_div::intExplode(',', $temp_idP);
+				$temp_ids = t3lib_div::intExplode(',', $temp_idP);
 				foreach ($temp_ids as $temp_id) {
 					$GLOBALS['TSFE']->MP_defaults[$temp_id]=$temp_MPp;
 				}
@@ -91,7 +75,7 @@ class TSpagegen {
 
 			// Global vars...
 		$GLOBALS['TSFE']->indexedDocTitle = $GLOBALS['TSFE']->page['title'];
-		$GLOBALS['TSFE']->debug = ''.$GLOBALS['TSFE']->config['config']['debug'];
+		$GLOBALS['TSFE']->debug = '' . $GLOBALS['TSFE']->config['config']['debug'];
 
 			// Base url:
 		if (isset($GLOBALS['TSFE']->config['config']['baseURL'])) {
@@ -100,9 +84,9 @@ class TSpagegen {
 		}
 
 			// Internal and External target defaults
-		$GLOBALS['TSFE']->intTarget = ''.$GLOBALS['TSFE']->config['config']['intTarget'];
-		$GLOBALS['TSFE']->extTarget = ''.$GLOBALS['TSFE']->config['config']['extTarget'];
-		$GLOBALS['TSFE']->fileTarget = ''.$GLOBALS['TSFE']->config['config']['fileTarget'];
+		$GLOBALS['TSFE']->intTarget = '' . $GLOBALS['TSFE']->config['config']['intTarget'];
+		$GLOBALS['TSFE']->extTarget = '' . $GLOBALS['TSFE']->config['config']['extTarget'];
+		$GLOBALS['TSFE']->fileTarget = '' . $GLOBALS['TSFE']->config['config']['fileTarget'];
 		if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses'] === 'ascii') {
 			$GLOBALS['TSFE']->spamProtectEmailAddresses = 'ascii';
 		} else {
@@ -115,24 +99,28 @@ class TSpagegen {
 			$tdlLD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page, '_top', $GLOBALS['TSFE']->no_cache, '');
 			$GLOBALS['TSFE']->JSCode = 'if(!parent.'.trim($GLOBALS['TSFE']->sPre).' && !parent.view_frame) top.location.href="'.$GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL']).'"';
 		}
-		$GLOBALS['TSFE']->compensateFieldWidth = ''.$GLOBALS['TSFE']->config['config']['compensateFieldWidth'];
-		$GLOBALS['TSFE']->lockFilePath = ''.$GLOBALS['TSFE']->config['config']['lockFilePath'];
+		$GLOBALS['TSFE']->compensateFieldWidth = '' . $GLOBALS['TSFE']->config['config']['compensateFieldWidth'];
+		$GLOBALS['TSFE']->lockFilePath = '' . $GLOBALS['TSFE']->config['config']['lockFilePath'];
 		$GLOBALS['TSFE']->lockFilePath = $GLOBALS['TSFE']->lockFilePath ? $GLOBALS['TSFE']->lockFilePath : $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'] = isset($GLOBALS['TSFE']->config['config']['noScaleUp']) ? ''.$GLOBALS['TSFE']->config['config']['noScaleUp'] : $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'];
 		$GLOBALS['TSFE']->TYPO3_CONF_VARS['GFX']['im_noScaleUp'] = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_noScaleUp'];
 
 		$GLOBALS['TSFE']->ATagParams = trim($GLOBALS['TSFE']->config['config']['ATagParams']) ? ' '.trim($GLOBALS['TSFE']->config['config']['ATagParams']) : '';
-		if ($GLOBALS['TSFE']->config['config']['setJS_mouseOver'])	$GLOBALS['TSFE']->setJS('mouseOver');
-		if ($GLOBALS['TSFE']->config['config']['setJS_openPic'])	$GLOBALS['TSFE']->setJS('openPic');
+		if ($GLOBALS['TSFE']->config['config']['setJS_mouseOver']) {
+			$GLOBALS['TSFE']->setJS('mouseOver');
+		}
+		if ($GLOBALS['TSFE']->config['config']['setJS_openPic']) {
+			$GLOBALS['TSFE']->setJS('openPic');
+		}
 
-		$GLOBALS['TSFE']->sWordRegEx='';
+		$GLOBALS['TSFE']->sWordRegEx = '';
 		$GLOBALS['TSFE']->sWordList = t3lib_div::_GP('sword_list');
 		if (is_array($GLOBALS['TSFE']->sWordList)) {
 			$space = (!empty($GLOBALS['TSFE']->config['config']['sword_standAlone'])) ? '[[:space:]]' : '';
 
 			foreach ($GLOBALS['TSFE']->sWordList as $val) {
 				if (strlen(trim($val)) > 0) {
-						$GLOBALS['TSFE']->sWordRegEx.= $space.quotemeta($val).$space.'|';
+						$GLOBALS['TSFE']->sWordRegEx .= $space . quotemeta($val) . $space . '|';
 				}
 			}
 			$GLOBALS['TSFE']->sWordRegEx = preg_replace('/\|$/', '', $GLOBALS['TSFE']->sWordRegEx);
@@ -192,7 +180,7 @@ class TSpagegen {
 	/**
 	 * Returns an array with files to include. These files are the ones set up in TypoScript config.
 	 *
-	 * @return	array		Files to include. Paths are relative to PATH_site.
+	 * @return array Files to include. Paths are relative to PATH_site.
 	 */
 	public static function getIncFiles() {
 		$incFilesArray = array();
@@ -227,7 +215,7 @@ class TSpagegen {
 	/**
 	 * Processing JavaScript handlers
 	 *
-	 * @return	array		Array with a) a JavaScript section with event handlers and variables set and b) an array with attributes for the body tag.
+	 * @return array Array with a) a JavaScript section with event handlers and variables set and b) an array with attributes for the body tag.
 	 */
 	public static function JSeventFunctions() {
 		$functions = array();
@@ -239,7 +227,8 @@ class TSpagegen {
 				$functions[] = '	function T3_'.$event.'Wrapper(e) {	'.implode('   ', $handlers).'	}';
 				$setEvents[] = '	document.'.$event.'=T3_'.$event.'Wrapper;';
 				if ($event == 'onload') {
-					$setBody[]='onload="T3_onloadWrapper();"';	// dubiuos double setting breaks on some browser - do we need it?
+						// Dubiuos double setting breaks on some browser - do we need it?
+					$setBody[] = 'onload="T3_onloadWrapper();"';
 				}
 			}
 		}
@@ -250,16 +239,20 @@ class TSpagegen {
 	/**
 	 * Rendering the page content
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public static function renderContent() {
 			// PAGE CONTENT
 		$GLOBALS['TT']->incStackPointer();
 		$GLOBALS['TT']->push($GLOBALS['TSFE']->sPre, 'PAGE');
-			$pageContent = $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup);
+		$pageContent = $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup);
 
-			if ($GLOBALS['TSFE']->pSetup['wrap'])	{$pageContent = $GLOBALS['TSFE']->cObj->wrap($pageContent, $GLOBALS['TSFE']->pSetup['wrap']);}
-			if ($GLOBALS['TSFE']->pSetup['stdWrap.'])	{$pageContent = $GLOBALS['TSFE']->cObj->stdWrap($pageContent, $GLOBALS['TSFE']->pSetup['stdWrap.']);}
+		if ($GLOBALS['TSFE']->pSetup['wrap']) {
+			$pageContent = $GLOBALS['TSFE']->cObj->wrap($pageContent, $GLOBALS['TSFE']->pSetup['wrap']);
+		}
+		if ($GLOBALS['TSFE']->pSetup['stdWrap.']) {
+			$pageContent = $GLOBALS['TSFE']->cObj->stdWrap($pageContent, $GLOBALS['TSFE']->pSetup['stdWrap.']);
+		}
 
 			// PAGE HEADER (after content - maybe JS is inserted!
 
@@ -276,8 +269,8 @@ class TSpagegen {
 	/**
 	 * Rendering normal HTML-page with header by wrapping the generated content ($pageContent) in body-tags and setting the header accordingly.
 	 *
-	 * @param	string		The page content which TypoScript objects has generated
-	 * @return	void
+	 * @param string $pageContent The page content which TypoScript objects has generated
+	 * @return void
 	 */
 	public static function renderContentWithHeader($pageContent) {
 			// get instance of t3lib_PageRenderer
@@ -318,7 +311,7 @@ class TSpagegen {
 			// Setting document type:
 		$docTypeParts = array ();
 		$xmlDocument = TRUE;
-		// Part 1: XML prologue
+			// Part 1: XML prologue
 		switch ((string) $GLOBALS['TSFE']->config['config']['xmlprologue']) {
 			case 'none' :
 				$xmlDocument = FALSE;
@@ -337,7 +330,7 @@ class TSpagegen {
 			default :
 				$docTypeParts[] = $GLOBALS['TSFE']->config['config']['xmlprologue'];
 		}
-		// Part 2: DTD
+			// Part 2: DTD
 		$doctype = $GLOBALS['TSFE']->config['config']['doctype'];
 		if ($doctype) {
 			switch ($doctype) {
@@ -402,10 +395,12 @@ class TSpagegen {
 		}
 
 		if ($GLOBALS['TSFE']->xhtmlVersion || ($doctype === 'html5' && $xmlDocument)) {
-			$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml'; // We add this to HTML5 to achieve a slightly better backwards compatibility
+				// We add this to HTML5 to achieve a slightly better backwards compatibility
+			$htmlTagAttributes['xmlns'] = 'http://www.w3.org/1999/xhtml';
 			if (is_array($GLOBALS['TSFE']->config['config']['namespaces.'])) {
 				foreach ($GLOBALS['TSFE']->config['config']['namespaces.'] as $prefix => $uri) {
-					$htmlTagAttributes['xmlns:' . htmlspecialchars($prefix)] = $uri; // $uri gets htmlspecialchared later
+						// $uri gets htmlspecialchared later
+					$htmlTagAttributes['xmlns:' . htmlspecialchars($prefix)] = $uri;
 				}
 			}
 		}
@@ -676,7 +671,7 @@ class TSpagegen {
 					$ss = $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
 					if ($ss) {
 						$type = $GLOBALS['TSFE']->pSetup['includeJSFooterlibs.'][$key . '.']['type'];
-						if (! $type) {
+						if (!$type) {
 							$type = 'text/javascript';
 						}
 						$pageRenderer->addJsFooterLibrary(
@@ -704,7 +699,7 @@ class TSpagegen {
 					$ss = $GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
 					if ($ss) {
 						$type = $GLOBALS['TSFE']->pSetup['includeJS.'][$key . '.']['type'];
-						if (! $type) {
+						if (!$type) {
 							$type = 'text/javascript';
 						}
 						$pageRenderer->addJsFile(
@@ -730,7 +725,7 @@ class TSpagegen {
 					$ss = $GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['external'] ? $JSfile : $GLOBALS['TSFE']->tmpl->getFileName($JSfile);
 					if ($ss) {
 						$type = $GLOBALS['TSFE']->pSetup['includeJSFooter.'][$key . '.']['type'];
-						if (! $type) {
+						if (!$type) {
 							$type = 'text/javascript';
 						}
 						$pageRenderer->addJsFooterFile(
@@ -766,7 +761,7 @@ class TSpagegen {
 			$pageRenderer->setTitle($titleTagContent);
 		}
 
-			// add ending slash only to documents rendered as xhtml
+			// Add ending slash only to documents rendered as xhtml
 		$endingSlash = $GLOBALS['TSFE']->xhtmlVersion ? ' /' : '';
 
 		$pageRenderer->addMetaTag('<meta name="generator" content="TYPO3 ' . TYPO3_branch . ' CMS"' . $endingSlash . '>');
@@ -774,7 +769,8 @@ class TSpagegen {
 		$conf = $GLOBALS['TSFE']->pSetup['meta.'];
 		if (is_array($conf)) {
 			foreach ($conf as $theKey => $theValue) {
-				if (! strstr($theKey, '.') || ! isset($conf[substr($theKey, 0, - 1)])) { // Only if 1) the property is set but not the value itself, 2) the value and/or any property
+					// Only if 1) the property is set but not the value itself, 2) the value and/or any property
+				if (! strstr($theKey, '.') || ! isset($conf[substr($theKey, 0, - 1)])) {
 					if (strstr($theKey, '.')) {
 						$theKey = substr($theKey, 0, - 1);
 					}
@@ -795,7 +791,7 @@ class TSpagegen {
 		unset($GLOBALS['TSFE']->additionalHeaderData['JSImgCode']);
 
 		if (is_array($GLOBALS['TSFE']->config['INTincScript'])) {
-			// Storing the JSCode and JSImgCode vars...
+				// Storing the JSCode and JSImgCode vars...
 			$GLOBALS['TSFE']->additionalHeaderData['JSCode'] = $GLOBALS['TSFE']->JSCode;
 			$GLOBALS['TSFE']->additionalHeaderData['JSImgCode'] = $GLOBALS['TSFE']->JSImgCode;
 			$GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] = $GLOBALS['TSFE']->uniqueHash();
@@ -820,7 +816,7 @@ class TSpagegen {
 		if ((browserName == "Netscape" && browserVer >= 3) || msie4 || browserName=="Konqueror" || browserName=="Opera") {version = "n3";} else {version = "n2";}
 			// Blurring links:
 		function blurLink(theObject) {	//
-			if (msie4)	{theObject.blur();}
+			if (msie4) {theObject.blur();}
 		}
 		' . $JSef[0];
 
@@ -861,7 +857,7 @@ class TSpagegen {
 		';
 		}
 
-			//add inline JS
+			// Add inline JS
 		$inlineJS = '';
 
 			// defined in php
@@ -943,7 +939,7 @@ class TSpagegen {
 				$pageRenderer->addJsFooterFile(self::inline2TempFile($inlineFooterJs, 'js'), 'text/javascript', $GLOBALS['TSFE']->config['config']['compressJs']);
 			}
 		} else {
-				// include only inlineJS
+				// Include only inlineJS
 			if ($inlineJS) {
 				$pageRenderer->addJsInlineCode('TS_inlineJS', $inlineJS, $GLOBALS['TSFE']->config['config']['compressJs']);
 			}
@@ -965,7 +961,7 @@ class TSpagegen {
 			$pageRenderer->addExtOnReadyCode($GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['extOnReady.'], 'extOnReady.'));
 		}
 
-			// compression and concatenate settings
+			// Compression and concatenate settings
 		if ($GLOBALS['TSFE']->config['config']['compressCss']) {
 			$pageRenderer->enableCompressCss();
 		}
@@ -978,23 +974,22 @@ class TSpagegen {
 		if ($GLOBALS['TSFE']->config['config']['concatenateJs']) {
 			$pageRenderer->enableConcatenateJavascript();
 		}
-			// backward compatibility for old configuration
+			// Backward compatibility for old configuration
 		if ($GLOBALS['TSFE']->config['config']['concatenateJsAndCss']) {
 			$pageRenderer->enableConcatenateFiles();
 		}
 
-			// add header data block
+			// Add header data block
 		if ($GLOBALS['TSFE']->additionalHeaderData) {
 			$pageRenderer->addHeaderData(implode(LF, $GLOBALS['TSFE']->additionalHeaderData));
 		}
 
-			// add footer data block
+			// Add footer data block
 		if ($GLOBALS['TSFE']->additionalFooterData) {
 			$pageRenderer->addFooterData(implode(LF, $GLOBALS['TSFE']->additionalFooterData));
 		}
 
 		// Header complete, now add content
-
 
 		if ($GLOBALS['TSFE']->pSetup['frameSet.']) {
 			$fs = t3lib_div::makeInstance('tslib_frameset');
@@ -1024,7 +1019,8 @@ class TSpagegen {
 			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']) . '>';
 		}
 
-		if (count($JSef[1])) { // Event functions:
+			// Event functions
+		if (count($JSef[1])) {
 			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim(implode(' ', $JSef[1])) . '>';
 		}
 		$pageRenderer->addBodyContent(LF . $bodyTag);
@@ -1047,18 +1043,6 @@ class TSpagegen {
 
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
 	/*************************
 	 *
 	 * Helper functions
@@ -1070,8 +1054,8 @@ class TSpagegen {
 	 * Searches for placeholder created from *_INT cObjects, removes them from
 	 * $searchString and merges them to $intObjects
 	 *
-	 * @param	string		$searchString: the String which should be cleaned from int-object markers
-	 * @param	string		$intObjects: the String the found int-placeholders are moved to (for further processing)
+	 * @param string $searchString The String which should be cleaned from int-object markers
+	 * @param string $intObjects The String the found int-placeholders are moved to (for further processing)
 	 */
 	protected static function stripIntObjectPlaceholder(&$searchString, &$intObjects) {
 		$tempArray = array();
@@ -1083,9 +1067,9 @@ class TSpagegen {
 	/**
 	 * Writes string to a temporary file named after the md5-hash of the string
 	 *
-	 * @param	string		CSS styles / JavaScript to write to file.
-	 * @param	string		Extension: "css" or "js"
-	 * @return	string		<script> or <link> tag for the file.
+	 * @param string $str CSS styles / JavaScript to write to file.
+	 * @param string $ext Extension: "css" or "js"
+	 * @return string <script> or <link> tag for the file.
 	 */
 	public static function inline2TempFile($str, $ext) {
 
@@ -1113,26 +1097,26 @@ class TSpagegen {
 	/**
 	 * Checks if the value defined in "config.linkVars" contains an allowed value. Otherwise, return FALSE which means the value will not be added to any links.
 	 *
-	 * @param	string		The string in which to find $needle
-	 * @param	string		The string to find in $haystack
-	 * @return	boolean		Returns TRUE if $needle matches or is found in $haystack
+	 * @param string $haystack The string in which to find $needle
+	 * @param string $needle The string to find in $haystack
+	 * @return boolean Returns TRUE if $needle matches or is found in $haystack
 	 */
 	public static function isAllowedLinkVarValue($haystack, $needle) {
 		$OK = FALSE;
-
-		if ($needle=='int' || $needle=='integer')	{	// Integer
+			// Integer
+		if ($needle == 'int' || $needle == 'integer') {
 
 			if (t3lib_utility_Math::canBeInterpretedAsInteger($haystack)) {
 				$OK = TRUE;
 			}
 
-		} elseif (preg_match('/^\/.+\/[imsxeADSUXu]*$/', $needle))	{	// Regular expression, only "//" is allowed as delimiter
+		} elseif (preg_match('/^\/.+\/[imsxeADSUXu]*$/', $needle)) {	// Regular expression, only "//" is allowed as delimiter
 
 			if (@preg_match($needle, $haystack)) {
 				$OK = TRUE;
 			}
 
-		} elseif (strstr($needle, '-'))	{	// Range
+		} elseif (strstr($needle, '-')) {	// Range
 
 			if (t3lib_utility_Math::canBeInterpretedAsInteger($haystack)) {
 				$range = explode('-', $needle);
@@ -1141,14 +1125,13 @@ class TSpagegen {
 				}
 			}
 
-		} elseif (strstr($needle, '|'))	{	// List
-
-			$haystack = str_replace(' ', '', $haystack);	// Trim the input
+		} elseif (strstr($needle, '|')) {	// List
+				// Trim the input
+			$haystack = str_replace(' ', '', $haystack);
 			if (strstr('|'.$needle.'|', '|'.$haystack.'|')) {
 				$OK = TRUE;
 			}
-
-		} elseif (!strcmp($needle, $haystack))	{	// String comparison
+		} elseif (!strcmp($needle, $haystack)) {	// String comparison
 			$OK = TRUE;
 		}
 
@@ -1159,13 +1142,14 @@ class TSpagegen {
 /**
  * Class for fetching record relations for the frontend.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
  * @see tslib_cObj::RECORDS()
  */
 class FE_loadDBGroup extends t3lib_loadDBGroup {
-	var $fromTC = 0;	// Means that everything is returned instead of only uid and label-field
+		// Means that everything is returned instead of only uid and label-field
+	var $fromTC = 0;
 }
 
 ?>

@@ -29,7 +29,7 @@
  *
  * Revised for TYPO3 3.6 5/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 require_once(PATH_typo3.'class.db_list.inc');
@@ -39,7 +39,7 @@ require_once(t3lib_extMgm::extPath('cms').'layout/class.tx_cms_layout.php');
 /**
  * Class for displaying page information (records, page record properties)
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_cms
  */
@@ -76,7 +76,7 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 	/**
 	 * MAIN function for page information display (including hit statistics)
 	 *
-	 * @return	string		Output HTML for the module.
+	 * @return string Output HTML for the module.
 	 */
 	function main() {
 		global $BACK_PATH,$LANG,$SOBE;
@@ -87,12 +87,11 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 		$dblist->thumbs = 0;
 		$dblist->script = 'index.php';
 		$dblist->showIcon = 0;
-		$dblist->setLMargin=0;
+		$dblist->setLMargin = 0;
 		$dblist->agePrefixes=$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears');
 
-		$dblist->pI_showUser=1;
-		$dblist->pI_showStat=0;
-
+		$dblist->pI_showUser = 1;
+		$dblist->pI_showStat = 0;
 
 			// PAGES:
 		$this->pObj->MOD_SETTINGS['pages_levels']=$this->pObj->MOD_SETTINGS['depth'];		// ONLY for the sake of dblist module which uses this value.
@@ -105,16 +104,16 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 			if ($this->pObj->MOD_SETTINGS['stat_type']==2)	$dblist->stat_select_field='rl1';
 
 				// Timespan
-			for ($a=0;$a<30;$a++) {
+			for ($a = 0;$a < 30; $a++) {
 				$dblist->stat_codes[]='HITS_days:'.(-$a);
 			}
 			$timespan_b = mktime (0, 0, 0);
 			$timespan_e = mktime (0, 0, 0)-(30-1)*3600*24+1;
-			$header='<br />'.sprintf($LANG->getLL('stat_period'), t3lib_BEfunc::date($timespan_b), t3lib_BEfunc::date($timespan_e)).'<br />';
+			$header = '<br />'.sprintf($LANG->getLL('stat_period'), t3lib_BEfunc::date($timespan_b), t3lib_BEfunc::date($timespan_e)).'<br />';
 
 				//
 			$dblist->start($this->pObj->id, 'pages', 0);
-			$dblist->pages_noEditColumns=1;
+			$dblist->pages_noEditColumns = 1;
 			$dblist->generateList();
 
 
@@ -128,13 +127,13 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 				1
 			);
 		} else {
-			$h_func.= t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages'], 'index.php');
+			$h_func .= t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[pages]', $this->pObj->MOD_SETTINGS['pages'], $this->pObj->MOD_MENU['pages'], 'index.php');
 			$dblist->start($this->pObj->id, 'pages', 0);
 			$dblist->generateList();
 
 				// CSH
 			$theOutput .= $this->pObj->doc->header($LANG->getLL('page_title'));
-			$theOutput .=$this->pObj->doc->section('',
+			$theOutput .= $this->pObj->doc->section('',
 				t3lib_BEfunc::cshItem($dblist->descrTable, 'pagetree_overview', $GLOBALS['BACK_PATH'], '|<br />') . // CSH
 					$h_func.
 					$dblist->HTMLcode,
@@ -174,7 +173,7 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
  * IMPORTANT: This class is used by the extension "sys_stat" and will be added to the Info module only when "sys_stat" is installed.
  * The display of statistics goes on in "tx_cms_webinfo_page" though
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_cms
  */

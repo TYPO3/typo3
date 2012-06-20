@@ -1,5 +1,7 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die ('Access denied.');
+}
 
 t3lib_extMgm::addUserTSConfig('
 	options.saveDocView = 1
@@ -180,8 +182,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version']['cms'] = array(
 					'</ul>',
 );
 
-
-	// registering hooks for the treelist cache
+	// Registering hooks for the treelist cache
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:cms/tslib/hooks/class.tx_cms_treelistcacheupdate.php:&tx_cms_treelistCacheUpdate';
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][]  = 'EXT:cms/tslib/hooks/class.tx_cms_treelistcacheupdate.php:&tx_cms_treelistCacheUpdate';
 $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'][]     = 'EXT:cms/tslib/hooks/class.tx_cms_treelistcacheupdate.php:&tx_cms_treelistCacheUpdate';
@@ -189,15 +190,15 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass
 if (TYPO3_MODE === 'FE') {
 		// Register the core media wizard provider
 	tslib_mediaWizardManager::registerMediaWizardProvider('tslib_mediaWizardCoreProvider');
-		// register eID provider for ExtDirect for the frontend
+		// Register eID provider for ExtDirect for the frontend
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['ExtDirect'] = PATH_tslib . 'extdirecteid.php';
 }
 
-	// register search keys
+	// Register search keys
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['content'] = 'tt_content';
 
-	//register hook to show preview info
+	// Register hook to show preview info
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo']['cms'] = 'EXT:cms/tslib/hooks/class.tx_cms_fehooks.php:tx_cms_fehooks->hook_previewInfo';
 
 ?>
