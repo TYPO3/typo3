@@ -24,32 +24,31 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Plugin 'Content rendering' for the 'css_styled_content' extension.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
+
 /**
  * Plugin class - instantiated from TypoScript.
  * Rendering some content elements from tt_content table.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_cssstyledcontent
  */
 class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 		// Default plugin variables:
-	var $prefixId = 'tx_cssstyledcontent_pi1';		// Same as class name
-	var $scriptRelPath = 'pi1/class.tx_cssstyledcontent_pi1.php';	// Path to this script relative to the extension dir.
-	var $extKey = 'css_styled_content';		// The extension key.
+		// Same as class name
+	var $prefixId = 'tx_cssstyledcontent_pi1';
+		// Path to this script relative to the extension dir.
+	var $scriptRelPath = 'pi1/class.tx_cssstyledcontent_pi1.php';
+		// The extension key.
+	var $extKey = 'css_styled_content';
 	var $conf = array();
-
-
-
-
-
-
 
 	/***********************************
 	 *
@@ -60,9 +59,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	/**
 	 * Rendering the "Bulletlist" type content element, called from TypoScript (tt_content.bullets.20)
 	 *
-	 * @param	string		Content input. Not used, ignore.
-	 * @param	array		TypoScript configuration
-	 * @return	string		HTML output.
+	 * @param string $content Content input. Not used, ignore.
+	 * @param array $conf TypoScript configuration
+	 * @return string HTML output.
 	 * @access private
 	 */
 	function render_bullets($content, $conf) {
@@ -75,11 +74,13 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				// Get bodytext field content, returning blank if empty:
 			$field = (isset($conf['field']) && trim($conf['field']) ? trim($conf['field']) : 'bodytext');
 			$content = trim($this->cObj->data[$field]);
-			if (!strcmp($content, ''))	return '';
+			if (!strcmp($content, '')) {
+				return '';
+			}
 
 				// Split into single lines:
 			$lines = t3lib_div::trimExplode(LF, $content);
-			foreach($lines as &$val) {
+			foreach ($lines as &$val) {
 				$val = '<li>' . $this->cObj->stdWrap($val, $conf['innerStdWrap.']) . '</li>';
 			}
 			unset($val);
@@ -106,9 +107,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	/**
 	 * Rendering the "Table" type content element, called from TypoScript (tt_content.table.20)
 	 *
-	 * @param	string		Content input. Not used, ignore.
-	 * @param	array		TypoScript configuration
-	 * @return	string		HTML output.
+	 * @param string $content Content input. Not used, ignore.
+	 * @param array $conf TypoScript configuration
+	 * @return string HTML output.
 	 * @access private
 	 */
 	function render_table($content, $conf) {
@@ -145,7 +146,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				$quotedInput = '';
 			}
 
-				// generate id prefix for accessible header
+				// Generate id prefix for accessible header
 			$headerScope = ($headerPos=='top'?'col':'row');
 			$headerIdPrefix = $headerScope.$this->cObj->data['uid'].'-';
 
@@ -158,11 +159,11 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 				// Traverse rows (rendering the table here)
 			$rCount = count($rows);
-			foreach($rows as $k => $v) {
+			foreach ($rows as $k => $v) {
 				$cells = explode($delimiter, $v);
 				$newCells=array();
-				for($a=0;$a<$cols;$a++) {
-						// remove quotes if needed
+				for ($a = 0; $a < $cols; $a++) {
+						// Remove quotes if needed
 					if ($quotedInput && substr($cells[$a], 0, 1) == $quotedInput && substr($cells[$a], -1, 1) == $quotedInput) {
 						$cells[$a] = substr($cells[$a], 1, -1);
 					}
@@ -250,9 +251,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	/**
 	 * Rendering the "Filelinks" type content element, called from TypoScript (tt_content.uploads.20)
 	 *
-	 * @param	string		Content input. Not used, ignore.
-	 * @param	array		TypoScript configuration
-	 * @return	string		HTML output.
+	 * @param string $content Content input. Not used, ignore.
+	 * @param array $conf TypoScript configuration
+	 * @return string HTML output.
 	 * @access private
 	 */
 	function render_uploads($content, $conf) {
@@ -269,7 +270,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				// Set layout type:
 			$type = intval($this->cObj->data['layout']);
 
-				// see if the file path variable is set, this takes precedence
+				// See if the file path variable is set, this takes precedence
 			$filePathConf = $this->cObj->stdWrap($conf['filePath'], $conf['filePath.']);
 			if ($filePathConf) {
 				$fileList = $this->cObj->filelist($filePathConf);
@@ -281,7 +282,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				t3lib_div::loadTCA('tt_content');
 				$path = 'uploads/media/';
 				if (is_array($GLOBALS['TCA']['tt_content']['columns'][$field]) && !empty($GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'])) {
-					// in TCA-Array folders are saved without trailing slash, so $path.$fileName won't work
+						// In TCA-Array folders are saved without trailing slash, so $path.$fileName won't work
 					$path = $GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'] .'/';
 				}
 			}
@@ -313,9 +314,12 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				if ($conf['linkProc.']['combinedLink']) {
 					$conf['linkProc.']['icon'] = $type > 0 ? 1 : 0;
 				} else {
-					$conf['linkProc.']['icon'] = 1;	// Always render icon - is inserted by PHP if needed.
-					$conf['linkProc.']['icon.']['wrap'] = ' | //**//';	// Temporary, internal split-token!
-					$conf['linkProc.']['icon_link'] = 1;	// ALways link the icon
+						// Always render icon - is inserted by PHP if needed.
+					$conf['linkProc.']['icon'] = 1;
+						// Temporary, internal split-token!
+					$conf['linkProc.']['icon.']['wrap'] = ' | //**//';
+						// ALways link the icon
+					$conf['linkProc.']['icon_link'] = 1;
 				}
 				$conf['linkProc.']['icon_image_ext_list'] = ($type==2 || $type==3) ? $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] : '';	// If the layout is type 2 or 3 we will render an image based icon if possible.
 
@@ -397,7 +401,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				if (isset($conf['outerWrap'])) {
 						// Wrap around the whole content
 					$outerWrap = $this->cObj->stdWrap($conf['outerWrap'], $conf['outerWrap.']);
-				} else	{
+				} else {
 						// Table tag params
 					$tableTagParams = $this->getTableAttributes($conf, $type);
 					$tableTagParams['class'] = 'csc-uploads csc-uploads-' . $type;
@@ -419,13 +423,13 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * returns an array containing width relations for $colCount columns.
+	 * Returns an array containing width relations for $colCount columns.
 	 *
-	 * tries to use "colRelations" setting given by TS.
+	 * Tries to use "colRelations" setting given by TS.
 	 * uses "1:1" column relations by default.
 	 *
 	 * @param array $conf TS configuration for img
-	 * @param int $colCount number of columns
+	 * @param integer $colCount number of columns
 	 * @return array
 	 */
 	protected function getImgColumnRelations($conf, $colCount) {
@@ -434,9 +438,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$colRelationsTypoScript = trim($this->cObj->stdWrap($conf['colRelations'], $conf['colRelations.']));
 
 		if ($colRelationsTypoScript) {
-				// try to use column width relations given by TS
+				// Try to use column width relations given by TS
 			$relationParts = explode(':', $colRelationsTypoScript);
-				// enough columns defined?
+				// Enough columns defined?
 			if (count($relationParts) >= $colCount) {
 				$out = array();
 				for ($a = 0; $a < $colCount; $a++) {
@@ -460,11 +464,11 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * returns an array containing the image widths for an image row with $colCount columns.
+	 * Returns an array containing the image widths for an image row with $colCount columns.
 	 *
 	 * @param array $conf TS configuration of img
-	 * @param int $colCount number of columns
-	 * @param int $netW max usable width for images (without spaces and borders)
+	 * @param integer $colCount number of columns
+	 * @param integer $netW max usable width for images (without spaces and borders)
 	 * @return array
 	 */
 	protected function getImgColumnWidths($conf, $colCount, $netW) {
@@ -476,13 +480,17 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$relUnitCount = array_sum($colRelations);
 
 		for ($a = 0; $a < $colCount; $a++) {
-			$availableWidth = $netW - $accumWidth; // this much width is available for the remaining images in this row (int)
-			$desiredWidth = $netW / $relUnitCount * $colRelations[$a]; // theoretical width of resized image. (float)
-			$accumDesiredWidth += $desiredWidth; // add this width. $accumDesiredWidth becomes the desired horizontal position
-				// calculate width by comparing actual and desired horizontal position.
+				// This much width is available for the remaining images in this row (int)
+			$availableWidth = $netW - $accumWidth;
+				// Theoretical width of resized image. (float)
+			$desiredWidth = $netW / $relUnitCount * $colRelations[$a];
+				// Add this width. $accumDesiredWidth becomes the desired horizontal position
+			$accumDesiredWidth += $desiredWidth;
+				// Calculate width by comparing actual and desired horizontal position.
 				// this evenly distributes rounding errors across all images in this row.
 			$suggestedWidth = round($accumDesiredWidth - $accumWidth);
-			$finalImgWidth = (int) min($availableWidth, $suggestedWidth); // finalImgWidth may not exceed $availableWidth
+				// finalImgWidth may not exceed $availableWidth
+			$finalImgWidth = (int) min($availableWidth, $suggestedWidth);
 			$accumWidth += $finalImgWidth;
 			$columnWidths[$a] = $finalImgWidth;
 		}
@@ -492,11 +500,11 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	/**
 	 * Rendering the IMGTEXT content element, called from TypoScript (tt_content.textpic.20)
 	 *
-	 * @param	string		Content input. Not used, ignore.
-	 * @param	array		TypoScript configuration. See TSRef "IMGTEXT". This function aims to be compatible.
-	 * @return	string		HTML output.
+	 * @param string $content Content input. Not used, ignore.
+	 * @param array $conf TypoScript configuration. See TSRef "IMGTEXT". This function aims to be compatible.
+	 * @return string HTML output.
 	 * @access private
-	 * @coauthor	Ernesto Baschny <ernst@cron-it.de>
+	 * @coauthor Ernesto Baschny <ernst@cron-it.de>
 	 * @coauthor Patrick Broens <patrick@patrickbroens.nl>
 	 */
 	function render_textpic($content, $conf) {
@@ -571,9 +579,10 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 			// Positioning
 		$position = $this->cObj->stdWrap($conf['textPos'], $conf['textPos.']);
-
-		$imagePosition = $position&7;	// 0,1,2 = center,right,left
-		$contentPosition = $position&24;	// 0,8,16,24 (above,below,intext,intext-wrap)
+			// 0,1,2 = center,right,left
+		$imagePosition = $position&7;
+			// 0,8,16,24 (above,below,intext,intext-wrap)
+		$contentPosition = $position&24;
 		$align = $this->cObj->align[$imagePosition];
 		$textMargin = intval($this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.']));
 		if (!$conf['textMargin_outOfText'] && $contentPosition < 16) {
@@ -594,14 +603,14 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			// Generate cols
 		$cols = intval($this->cObj->stdWrap($conf['cols'], $conf['cols.']));
 		$colCount = ($cols > 1) ? $cols : 1;
-		if ($colCount > $imgCount)	{$colCount = $imgCount;}
+		if ($colCount > $imgCount) {$colCount = $imgCount;}
 		$rowCount = ceil($imgCount / $colCount);
 
 			// Generate rows
 		$rows = intval($this->cObj->stdWrap($conf['rows'], $conf['rows.']));
-		if ($rows>1) {
+		if ($rows > 1) {
 			$rowCount = $rows;
-			if ($rowCount > $imgCount)	{$rowCount = $imgCount;}
+			if ($rowCount > $imgCount) {$rowCount = $imgCount;}
 			$colCount = ($rowCount>1) ? ceil($imgCount / $rowCount) : $imgCount;
 		}
 
@@ -609,8 +618,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$maxW = intval($this->cObj->stdWrap($conf['maxW'], $conf['maxW.']));
 		$maxWInText = intval($this->cObj->stdWrap($conf['maxWInText'], $conf['maxWInText.']));
 		$fiftyPercentWidthInText = round($maxW / 100 * 50);
-
-		if ($contentPosition>=16)	{	// in Text
+			// in Text
+		if ($contentPosition >= 16) {
 			if (!$maxWInText) {
 					// If maxWInText is not set, it's calculated to the 50% of the max
 				$maxW = $fiftyPercentWidthInText;
@@ -651,15 +660,19 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				// Initiate gifbuilder object in order to get dimensions AND calculate the imageWidth's
 			$gifCreator = t3lib_div::makeInstance('tslib_gifbuilder');
 			$gifCreator->init();
-			$relations_cols = Array();
-			$imgWidths = array(); // contains the individual width of all images after scaling to $equalHeight
-			for ($a=0; $a<$imgCount; $a++) {
+			$relations_cols = array();
+				// contains the individual width of all images after scaling to $equalHeight
+			$imgWidths = array();
+			for ($a = 0; $a < $imgCount; $a++) {
 				$imgKey = $a+$imgStart;
 				$imgInfo = $gifCreator->getImageDimensions($imgPath.$imgs[$imgKey]);
-				$rel = $imgInfo[1] / $equalHeight;	// relationship between the original height and the wished height
-				if ($rel)	{	// if relations is zero, then the addition of this value is omitted as the image is not expected to display because of some error.
+					// relationship between the original height and the wished height
+				$rel = $imgInfo[1] / $equalHeight;
+					// if relations is zero, then the addition of this value is omitted as the image is not expected to display because of some error.
+				if ($rel) {
 					$imgWidths[$a] = $imgInfo[0] / $rel;
-					$relations_cols[floor($a/$colCount)] += $imgWidths[$a];	// counts the total width of the row with the new height taken into consideration.
+						// counts the total width of the row with the new height taken into consideration.
+					$relations_cols[floor($a/$colCount)] += $imgWidths[$a];
 				}
 			}
 		}
@@ -668,16 +681,17 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		$splitArr = array();
 		$splitArr['imgObjNum'] = $conf['imgObjNum'];
 		$splitArr = $GLOBALS['TSFE']->tmpl->splitConfArray($splitArr, $imgCount);
-
-		$imageRowsFinalWidths = Array();	// contains the width of every image row
-		$imgsTag = array();		// array index of $imgsTag will be the same as in $imgs, but $imgsTag only contains the images that are actually shown
+			// Contains the width of every image row
+		$imageRowsFinalWidths = array();
+			// Array index of $imgsTag will be the same as in $imgs, but $imgsTag only contains the images that are actually shown
+		$imgsTag = array();
 		$origImages = array();
 		$rowIdx = 0;
-		for ($a=0; $a<$imgCount; $a++) {
+		for ($a = 0; $a < $imgCount; $a++) {
 			$imgKey = $a+$imgStart;
 			$totalImagePath = $imgPath.$imgs[$imgKey];
-
-			$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgKey;	// register IMG_NUM is kept for backwards compatibility
+				// register IMG_NUM is kept for backwards compatibility
+			$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgKey;
 			$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgKey;
 			$GLOBALS['TSFE']->register['ORIG_FILENAME'] = $totalImagePath;
 
@@ -688,9 +702,11 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			if ($equalHeight) {
 
 				if ($a % $colCount == 0) {
-						// a new row startsS
-					$accumWidth = 0; // reset accumulated net width
-					$accumDesiredWidth = 0; // reset accumulated desired width
+						// A new row starts
+						// Reset accumulated net width
+					$accumWidth = 0;
+						// Reset accumulated desired width
+					$accumDesiredWidth = 0;
 					$rowTotalMaxW = $relations_cols[$rowIdx];
 					if ($rowTotalMaxW > $netW && $netW > 0) {
 						$scale = $rowTotalMaxW / $netW;
@@ -700,14 +716,17 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 					$desiredHeight = $equalHeight / $scale;
 					$rowIdx++;
 				}
-
-				$availableWidth= $netW - $accumWidth; // this much width is available for the remaining images in this row (int)
-				$desiredWidth= $imgWidths[$a] / $scale; // theoretical width of resized image. (float)
-				$accumDesiredWidth += $desiredWidth; // add this width. $accumDesiredWidth becomes the desired horizontal position
-					// calculate width by comparing actual and desired horizontal position.
+					// This much width is available for the remaining images in this row (int)
+				$availableWidth= $netW - $accumWidth;
+					// Theoretical width of resized image. (float)
+				$desiredWidth= $imgWidths[$a] / $scale;
+					// Add this width. $accumDesiredWidth becomes the desired horizontal position
+				$accumDesiredWidth += $desiredWidth;
+					// Calculate width by comparing actual and desired horizontal position.
 					// this evenly distributes rounding errors across all images in this row.
 				$suggestedWidth = round($accumDesiredWidth - $accumWidth);
-				$finalImgWidth = (int) min($availableWidth, $suggestedWidth); // finalImgWidth may not exceed $availableWidth
+					// finalImgWidth may not exceed $availableWidth
+				$finalImgWidth = (int) min($availableWidth, $suggestedWidth);
 				$accumWidth += $finalImgWidth;
 				$imgConf['file.']['width'] = $finalImgWidth;
 				$imgConf['file.']['height'] = round($desiredHeight);
@@ -772,7 +791,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				}
 				$imgsTag[$imgKey] = $this->cObj->IMAGE($imgConf);
 			} else {
-				$imgsTag[$imgKey] = $this->cObj->IMAGE(Array('file' => $totalImagePath)); 	// currentValKey !!!
+					// currentValKey !!!
+				$imgsTag[$imgKey] = $this->cObj->IMAGE(Array('file' => $totalImagePath));
 			}
 				// Restore our ATagParams
 			$GLOBALS['TSFE']->ATagParams = $oldATagParms;
@@ -795,7 +815,10 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 			// noCols is just one COLUMN, each images placed side by side on each row
 		$noRows = $this->cObj->stdWrap($conf['noRows'], $conf['noRows.']);
 		$noCols = $this->cObj->stdWrap($conf['noCols'], $conf['noCols.']);
-		if ($noRows) {$noCols=0;}	// noRows overrides noCols. They cannot exist at the same time.
+			// noRows overrides noCols. They cannot exist at the same time.
+		if ($noRows) {
+			$noCols = 0;
+		}
 
 		$rowCount_temp = 1;
 		$colCount_temp = $colCount;
@@ -816,12 +839,18 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 
 			// If noRows, we need multiple imagecolumn wraps
 		$imageWrapCols = 1;
-		if ($noRows)	{ $imageWrapCols = $colCount; }
+		if ($noRows) {
+			$imageWrapCols = $colCount;
+		}
 
 			// User wants to separate the rows, but only do that if we do have rows
 		$separateRows = $this->cObj->stdWrap($conf['separateRows'], $conf['separateRows.']);
-		if ($noRows)	{ $separateRows = 0; }
-		if ($rowCount == 1)	{ $separateRows = 0; }
+		if ($noRows) {
+			$separateRows = 0;
+		}
+		if ($rowCount == 1) {
+			$separateRows = 0;
+		}
 
 		if ($accessibilityMode) {
 			$imagesInColumns = round(($imgCount / ($rowCount * $colCount)), 0, PHP_ROUND_HALF_UP);
@@ -1208,13 +1237,6 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 		}
 	}
 
-
-
-
-
-
-
-
 	/************************************
 	 *
 	 * Helper functions
@@ -1228,13 +1250,13 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * Has the possibility to cut off FileType.
 
 	 * @param array $links
-	 *        array with [0] linked file icon, [1] text link
+	 *        Array with [0] linked file icon, [1] text link
 	 * @param string $fileName
-	 *        the name of the file to be linked (without path)
+	 *        The name of the file to be linked (without path)
 	 * @param boolean $useSpaces
-	 *        whether underscores in the file name should be replaced with spaces
+	 *        Whether underscores in the file name should be replaced with spaces
 	 * @param boolean $cutFileExtension
-	 *        whether the file extension should be removed
+	 *        Whether the file extension should be removed
 	 *
 	 * @return array modified array with new link text
 	 */
@@ -1258,9 +1280,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	/**
 	 * Returns table attributes for uploads / tables.
 	 *
-	 * @param	array		TypoScript configuration array
-	 * @param	integer		The "layout" type
-	 * @return	array		Array with attributes inside.
+	 * @param array $conf TypoScript configuration array
+	 * @param integer $type The "layout" type
+	 * @return array Array with attributes inside.
 	 */
 	function getTableAttributes($conf, $type) {
 
@@ -1358,8 +1380,8 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	/**
 	 * Returns an object reference to the hook object if any
 	 *
-	 * @param	string		Name of the function you want to call / hook key
-	 * @return	object		Hook object, if any. Otherwise NULL.
+	 * @param string $functionName Name of the function you want to call / hook key
+	 * @return object Hook object, if any. Otherwise NULL.
 	 */
 	function hookRequest($functionName) {
 		global $TYPO3_CONF_VARS;
