@@ -36,120 +36,367 @@
  * @subpackage t3lib
  */
 class t3lib_PageRenderer implements t3lib_Singleton {
-
-	protected $compressJavascript = FALSE;
-	protected $compressCss = FALSE;
-	protected $removeLineBreaksFromTemplate = FALSE;
-
-	protected $concatenateFiles = FALSE;
-	protected $concatenateJavascript = FALSE;
-	protected $concatenateCss = FALSE;
-
-	protected $moveJsFromHeaderToFooter = FALSE;
-
-	/** @var t3lib_cs $csConvObj */
-	protected $csConvObj;
-	/** @var t3lib_l10n_Locales */
-	protected $locales;
-	protected $lang;
-
-	/** @var t3lib_Compressor $compressor */
-	protected $compressor;
-
-		// Arrays containing associative array for the included files
-	protected $jsFiles = array();
-	protected $jsFooterFiles = array();
-	protected $jsLibs = array();
-	protected $jsFooterLibs = array();
-	protected $cssFiles = array();
-
-	protected $title;
-	protected $charSet;
-	protected $favIcon;
-	protected $baseUrl;
-
-	protected $renderXhtml = TRUE;
-
-		// Static header blocks
-	protected $xmlPrologAndDocType = '';
-	protected $metaTags = array();
-	protected $inlineComments = array();
-	protected $headerData = array();
-	protected $footerData = array();
-	protected $titleTag = '<title>|</title>';
-	protected $metaCharsetTag = '<meta http-equiv="Content-Type" content="text/html; charset=|" />';
-	protected $htmlTag = '<html>';
-	protected $headTag = '<head>';
-	protected $baseUrlTag = '<base href="|" />';
-	protected $iconMimeType = '';
-	protected $shortcutTag = '<link rel="shortcut icon" href="%1$s"%2$s />
-<link rel="icon" href="%1$s"%2$s />';
-
-		// Static inline code blocks
-	protected $jsInline = array();
-	protected $jsFooterInline = array();
-	protected $extOnReadyCode = array();
-	protected $cssInline = array();
-
-	protected $bodyContent;
-
-	protected $templateFile;
-
-	protected $jsLibraryNames = array('prototype', 'scriptaculous', 'extjs');
-
+		// Constants for the part to be rendered
 	const PART_COMPLETE = 0;
 	const PART_HEADER = 1;
 	const PART_FOOTER = 2;
-
-		// Paths to contibuted libraries
-	protected $prototypePath = 'contrib/prototype/';
-	protected $scriptaculousPath = 'contrib/scriptaculous/';
-	protected $extCorePath = 'contrib/extjs/';
-	protected $extJsPath = 'contrib/extjs/';
-	protected $svgPath = 'contrib/websvg/';
-
-
-		// Internal flags for JS-libraries
-	protected $addPrototype = FALSE;
-	protected $addScriptaculous = FALSE;
-	protected $addScriptaculousModules = array('builder' => FALSE, 'effects' => FALSE, 'dragdrop' => FALSE, 'controls' => FALSE, 'slider' => FALSE);
-	protected $addExtJS = FALSE;
-	protected $addExtCore = FALSE;
-	protected $extJSadapter = 'ext/ext-base.js';
-	protected $extDirectCodeAdded = FALSE;
-
-	protected $enableExtJsDebug = FALSE;
-	protected $enableExtCoreDebug = FALSE;
 
 		// Available adapters for extJs
 	const EXTJS_ADAPTER_JQUERY = 'jquery';
 	const EXTJS_ADAPTER_PROTOTYPE = 'prototype';
 	const EXTJS_ADAPTER_YUI = 'yui';
 
+	/**
+	 * @var boolean
+	 */
+	protected $compressJavascript = FALSE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $compressCss = FALSE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $removeLineBreaksFromTemplate = FALSE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $concatenateFiles = FALSE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $concatenateJavascript = FALSE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $concatenateCss = FALSE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $moveJsFromHeaderToFooter = FALSE;
+
+	/**
+	 * @var t3lib_cs
+	 */
+	protected $csConvObj;
+
+	/**
+	 * @var t3lib_l10n_Locales
+	 */
+	protected $locales;
+
+	/**
+	 * The language key
+	 * Two character string or 'default'
+	 *
+	 * @var string
+	 */
+	protected $lang;
+
+	/**
+	 * @var t3lib_Compressor
+	 */
+	protected $compressor;
+
+	// Arrays containing associative array for the included files
+
+	/**
+	 * @var array
+	 */
+	protected $jsFiles = array();
+
+	/**
+	 * @var array
+	 */
+	protected $jsFooterFiles = array();
+
+	/**
+	 * @var array
+	 */
+	protected $jsLibs = array();
+
+	/**
+	 * @var array
+	 */
+	protected $jsFooterLibs = array();
+
+	/**
+	 * @var array
+	 */
+	protected $cssFiles = array();
+
+	/**
+	 * The title of the page
+	 *
+	 * @var string
+	 */
+	protected $title;
+
+	/**
+	 * Charset for the rendering
+	 *
+	 * @var string
+	 */
+	protected $charSet;
+
+	/**
+	 * @var string
+	 */
+	protected $favIcon;
+
+	/**
+	 * @var string
+	 */
+	protected $baseUrl;
+
+	/**
+	 * @var boolean
+	 */
+	protected $renderXhtml = TRUE;
+
+
+	// Static header blocks
+
+	/**
+	 * @var string
+	 */
+	protected $xmlPrologAndDocType = '';
+
+	/**
+	 * @var array
+	 */
+	protected $metaTags = array();
+
+	/**
+	 * @var array
+	 */
+	protected $inlineComments = array();
+
+	/**
+	 * @var array
+	 */
+	protected $headerData = array();
+
+	/**
+	 * @var array
+	 */
+	protected $footerData = array();
+
+	/**
+	 * @var string
+	 */
+	protected $titleTag = '<title>|</title>';
+
+	/**
+	 * @var string
+	 */
+	protected $metaCharsetTag = '<meta http-equiv="Content-Type" content="text/html; charset=|" />';
+
+	/**
+	 * @var string
+	 */
+	protected $htmlTag = '<html>';
+
+	/**
+	 * @var string
+	 */
+	protected $headTag = '<head>';
+
+	/**
+	 * @var string
+	 */
+	protected $baseUrlTag = '<base href="|" />';
+
+	/**
+	 * @var string
+	 */
+	protected $iconMimeType = '';
+
+	/**
+	 * @var string
+	 */
+	protected $shortcutTag = '<link rel="shortcut icon" href="%1$s"%2$s />
+<link rel="icon" href="%1$s"%2$s />';
+
+	// Static inline code blocks
+
+	/**
+	 * @var array
+	 */
+	protected $jsInline = array();
+
+	/**
+	 * @var array
+	 */
+	protected $jsFooterInline = array();
+
+	/**
+	 * @var array
+	 */
+	protected $extOnReadyCode = array();
+
+	/**
+	 * @var array
+	 */
+	protected $cssInline = array();
+
+	/**
+	 * @var string
+	 */
+	protected $bodyContent;
+
+	/**
+	 * @var string
+	 */
+	protected $templateFile;
+
+	/**
+	 * @var array
+	 */
+	protected $jsLibraryNames = array('prototype', 'scriptaculous', 'extjs');
+
+	// Paths to contibuted libraries
+
+	/**
+	 * @var string
+	 */
+	protected $prototypePath = 'contrib/prototype/';
+
+	/**
+	 * @var string
+	 */
+	protected $scriptaculousPath = 'contrib/scriptaculous/';
+
+	/**
+	 * @var string
+	 */
+	protected $extCorePath = 'contrib/extjs/';
+
+	/**
+	 * @var string
+	 */
+	protected $extJsPath = 'contrib/extjs/';
+
+	/**
+	 * @var string
+	 */
+	protected $svgPath = 'contrib/websvg/';
+
+	// Internal flags for JS-libraries
+
+	/**
+	 * @var boolean
+	 */
+	protected $addPrototype = FALSE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $addScriptaculous = FALSE;
+
+	/**
+	 * @var array
+	 */
+	protected $addScriptaculousModules = array('builder' => FALSE, 'effects' => FALSE, 'dragdrop' => FALSE, 'controls' => FALSE, 'slider' => FALSE);
+
+	/**
+	 * @var boolean
+	 */
+	protected $addExtJS = FALSE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $addExtCore = FALSE;
+
+	/**
+	 * @var string
+	 */
+	protected $extJSadapter = 'ext/ext-base.js';
+
+	/**
+	 * @var boolean
+	 */
+	protected $extDirectCodeAdded = FALSE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $enableExtJsDebug = FALSE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $enableExtCoreDebug = FALSE;
+
+	/**
+	 * @var boolean
+	 */
 	protected $extJStheme = TRUE;
+
+	/**
+	 * @var boolean
+	 */
 	protected $extJScss = TRUE;
 
+	/**
+	 * @var boolean
+	 */
 	protected $enableExtJSQuickTips = FALSE;
 
+	/**
+	 * @var array
+	 */
 	protected $inlineLanguageLabels = array();
+
+	/**
+	 * @var array
+	 */
 	protected $inlineLanguageLabelFiles = array();
+
+	/**
+	 * @var array
+	 */
 	protected $inlineSettings = array();
 
+	/**
+	 * @var array
+	 */
 	protected $inlineJavascriptWrap = array();
 
-		// Saves error messages generated during compression
+	/**
+	 * Saves error messages generated during compression
+	 *
+	 * @var string
+	 */
 	protected $compressError = '';
 
-		// SVG library
+	/**
+	 * SVG library
+	 *
+	 * @var boolean
+	 */
 	protected $addSvg = FALSE;
+
+	/**
+	 * @var boolean
+	 */
 	protected $enableSvgDebug = FALSE;
 
-		// Used by BE modules
+	/**
+	 * Used by BE modules
+	 *
+	 * @var null|string
+	 */
 	public $backPath;
 
 	/**
-	 * Constructor
-	 *
 	 * @param string $templateFile Declare the used template file. Omit this parameter will use default template
 	 * @param string $backPath Relative path to typo3-folder. It varies for BE modules, in FE it will be typo3/
 	 */
@@ -175,7 +422,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * reset all vars to initial values
+	 * Reset all vars to initial values
 	 *
 	 * @return void
 	 */
@@ -769,7 +1016,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/*****************************************************/
 	/*                                                   */
-	/*  Public Function to add Data                      */
+	/*  Public Functions to add Data                     */
 	/*                                                   */
 	/*                                                   */
 	/*****************************************************/
@@ -1423,7 +1670,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/*****************************************************/
 
 	/**
-	 * render the section (Header or Footer)
+	 * Render the section (Header or Footer)
 	 *
 	 * @param integer $part Section which should be rendered: self::PART_COMPLETE, self::PART_HEADER or self::PART_FOOTER
 	 * @return string Content of rendered section
@@ -1859,6 +2106,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @param string $stripFromSelectionName
 	 * @param integer $errorMode
 	 * @return void
+	 * @throws RuntimeException
 	 */
 	protected function includeLanguageFileForInline($fileRef, $selectionPrefix = '', $stripFromSelectionName = '', $errorMode = 0) {
 		if (!isset($this->lang) || !isset($this->charSet)) {
