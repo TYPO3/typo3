@@ -112,4 +112,6 @@ Typo3_Bootstrap::getInstance()
 	->initializeLanguageObject()
 	->endOutputBufferingAndCleanPreviousOutput()
 	->initializeOutputCompression();
+
+Typo3_Bootstrap::getInstance()->fireInitializedEvent();
 ?>

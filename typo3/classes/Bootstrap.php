@@ -41,10 +41,18 @@
  * @subpackage core
  */
 class Typo3_Bootstrap {
+	const EVENT_Initialized = 'eventInitialized';
+	const EVENT_DatabaseInitialized = 'eventDatabaseInitialized';
+
 	/**
 	 * @var Typo3_Bootstrap
 	 */
 	protected static $instance = NULL;
+
+	/**
+	 * @var array
+	 */
+	protected $callbacks = array();
 
 	/**
 	 * Disable direct creation of this object.
@@ -66,6 +74,47 @@ class Typo3_Bootstrap {
 			self::$instance = new Typo3_Bootstrap();
 		}
 		return self::$instance;
+	}
+
+	/**
+	 * Adds an event callback.
+	 *
+	 * @param string $event
+	 * @param callback $callback
+	 * @param array $arguments
+	 * @throws LogicException
+	 */
+	public function addEventCallback($event, $callback, array $arguments = array()) {
+		if (is_callable($callback) === FALSE) {
+			throw new LogicException('The given event callback is not callable.', 1340214121);
+		}
+
+		$this->callbacks[$event][] = array(
+			'callback' => $callback,
+			'arguments' => $arguments,
+		);
+	}
+
+	/**
+	 * Fires the initializezed event and calls callbacks.
+	 */
+	public function fireInitializedEvent() {
+		if (empty($this->callbacks[self::EVENT_Initialized]) === FALSE) {
+			foreach ($this->callbacks[self::EVENT_Initialized] as $callback) {
+				call_user_func_array($callback['callback'], $callback['arguments']);
+			}
+		}
+	}
+
+	/**
+	 * Fires the database initialized event and calls callbacks.
+	 */
+	public function fireDatabaseInitializedEvent() {
+		if (empty($this->callbacks[self::EVENT_DatabaseInitialized]) === FALSE) {
+			foreach ($this->callbacks[self::EVENT_DatabaseInitialized] as $callback) {
+				call_user_func_array($callback['callback'], $callback['arguments']);
+			}
+		}
 	}
 
 	/**
@@ -1095,6 +1144,8 @@ class Typo3_Bootstrap {
 	 */
 	public function establishDatabaseConnection() {
 		$GLOBALS['TYPO3_DB']->connectDB();
+
+		$this->fireDatabaseInitializedEvent();
 
 		return $this;
 	}

@@ -93,6 +93,8 @@ Typo3_Bootstrap::getInstance()
 	->initializeBackendUserMounts()
 	->initializeLanguageObject();
 
+Typo3_Bootstrap::getInstance()->fireInitializedEvent();
+
 	// Make sure output is not buffered, so command-line output and interaction can take place
 t3lib_div::flushOutputBuffers();
 
