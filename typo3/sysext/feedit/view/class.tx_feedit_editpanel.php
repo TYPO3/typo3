@@ -28,8 +28,8 @@
 /**
  * View class for the edit panels in frontend editing.
  *
- * @author	Jeff Segars <jeff@webempoweredchurch.org>
- * @author	David Slayback <dave@webempoweredchurch.org>
+ * @author Jeff Segars <jeff@webempoweredchurch.org>
+ * @author David Slayback <dave@webempoweredchurch.org>
  * @package TYPO3
  * @subpackage feedit
  */
@@ -45,7 +45,7 @@ class tx_feedit_editpanel {
 	/**
 	 * Constructor for the edit panel. Creates a new cObject instance to be used in wrapping, etc.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function __construct() {
 		$this->cObj = t3lib_div::makeInstance('tslib_cObj');
@@ -57,13 +57,17 @@ class tx_feedit_editpanel {
 	 * With the "edit panel" the user will see buttons with links to editing, moving, hiding, deleting the element
 	 * This function is used for the cObject EDITPANEL and the stdWrap property ".editPanel"
 	 *
-	 * @param	string		A content string containing the content related to the edit panel. For cObject "EDITPANEL" this is empty but not so for the stdWrap property. The edit panel is appended to this string and returned.
-	 * @param	array		TypoScript configuration properties for the editPanel
-	 * @param	string		The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW"
-	 * @param	array		Alternative data array to use. Default is $this->data
-	 * @return	string		The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
+	 * @param string $content A content string containing the content related to the edit panel. For cObject "EDITPANEL" this is empty but not so for the stdWrap property. The edit panel is appended to this string and returned.
+	 * @param array $conf TypoScript configuration properties for the editPanel
+	 * @param string $currentRecord The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW"
+	 * @param array $dataArr Alternative data array to use. Default is $this->data
+	 * @param string $table
+	 * @param string $allow
+	 * @param integer $newUID
+	 * @param array $hiddenFields
+	 * @return string The input content string with the editPanel appended. This function returns only an edit panel appended to the content string if a backend user is logged in (and has the correct permissions). Otherwise the content string is directly returned.
 	 */
-	public function editPanel($content, array $conf, $currentRecord='', array $dataArr=array(), $table='', $allow='', $newUID=0, array $hiddenFields=array()) {
+	public function editPanel($content, array $conf, $currentRecord = '', array $dataArr = array(), $table = '', $allow = '', $newUID = 0, array $hiddenFields = array()) {
 			// Special content is about to be shown, so the cache must be disabled.
 		$GLOBALS['TSFE']->set_no_cache();
 		$formName = 'TSFE_EDIT_FORM_' . substr($GLOBALS['TSFE']->uniqueHash(), 0, 4);
@@ -79,7 +83,7 @@ class tx_feedit_editpanel {
 			$theCmd =$TSFE_EDIT['cmd'];
 		}
 
-		switch($theCmd) {
+		switch ($theCmd) {
 			case 'edit':
 			case 'new':
 				$finalOut = $this->editContent($formTag, $formName, $theCmd, $newUID, $dataArr, $table, $currentRecord, $blackLine);
@@ -119,7 +123,7 @@ class tx_feedit_editpanel {
 					//	Final
 				$labelTxt = $this->cObj->stdWrap($conf['label'], $conf['label.']);
 
-				foreach((array) $hiddenFields as $name => $value) {
+				foreach ((array) $hiddenFields as $name => $value) {
 					$hiddenFieldString .= '<input type="hidden" name="TSFE_EDIT[' . $name . ']" value="' . $value . '"/>' . LF;
 				}
 
@@ -137,7 +141,7 @@ class tx_feedit_editpanel {
 									</tr>
 								</table>
 							</form>';
-					// wrap the panel
+					// Wrap the panel
 				if ($conf['innerWrap']) {
 					$panel = $this->cObj->wrap($panel, $conf['innerWrap']);
 				}
@@ -145,10 +149,10 @@ class tx_feedit_editpanel {
 					$panel = $this->cObj->stdWrap($panel, $conf['innerWrap.']);
 				}
 
-					// add black line:
+					// Add black line:
 				$panel .= $blackLine;
 
-					// wrap the complete panel
+					// Wrap the complete panel
 				if ($conf['outerWrap']) {
 					$panel = $this->cObj->wrap($panel, $conf['outerWrap']);
 				}
@@ -177,15 +181,18 @@ class tx_feedit_editpanel {
 	 * Adds an edit icon to the content string. The edit icon links to alt_doc.php with proper parameters for editing the table/fields of the context.
 	 * This implements TYPO3 context sensitive editing facilities. Only backend users will have access (if properly configured as well).
 	 *
-	 * @param	string		The content to which the edit icons should be appended
-	 * @param	string		The parameters defining which table and fields to edit. Syntax is [tablename]:[fieldname],[fieldname],[fieldname],... OR [fieldname],[fieldname],[fieldname],... (basically "[tablename]:" is optional, default table is the one of the "current record" used in the function). The fieldlist is sent as "&columnsOnly=" parameter to alt_doc.php
-	 * @param	array		TypoScript properties for configuring the edit icons.
-	 * @param	string		The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW"
-	 * @param	array		Alternative data array to use. Default is $this->data
-	 * @param	string		Additional URL parameters for the link pointing to alt_doc.php
-	 * @return	string		The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
+	 * @param string $content The content to which the edit icons should be appended
+	 * @param string $params The parameters defining which table and fields to edit. Syntax is [tablename]:[fieldname],[fieldname],[fieldname],... OR [fieldname],[fieldname],[fieldname],... (basically "[tablename]:" is optional, default table is the one of the "current record" used in the function). The fieldlist is sent as "&columnsOnly=" parameter to alt_doc.php
+	 * @param array $conf TypoScript properties for configuring the edit icons.
+	 * @param string $currentRecord The "table:uid" of the record being shown. If empty string then $this->currentRecord is used. For new records (set by $conf['newRecordFromTable']) it's auto-generated to "[tablename]:NEW"
+	 * @param array $dataArr Alternative data array to use. Default is $this->data
+	 * @param string $addUrlParamStr Additional URL parameters for the link pointing to alt_doc.php
+	 * @param string $table
+	 * @param integer $editUid
+	 * @param string $fieldList
+	 * @return string The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
 	 */
-	public function editIcons($content, $params, array $conf=array(), $currentRecord='', array $dataArr=array(), $addUrlParamStr='', $table, $editUid, $fieldList) {
+	public function editIcons($content, $params, array $conf  =array(), $currentRecord = '', array $dataArr = array(), $addUrlParamStr = '', $table, $editUid, $fieldList) {
 			// Special content is about to be shown, so the cache must be disabled.
 		$GLOBALS['TSFE']->set_no_cache();
 		$style = $conf['styleAttribute'] ? ' style="' . htmlspecialchars($conf['styleAttribute']) . '"' : '';
@@ -216,16 +223,16 @@ class tx_feedit_editpanel {
 	 * Helper function for editPanel() which wraps icons in the panel in a link with the action of the panel.
 	 * The links are for some of them not simple hyperlinks but onclick-actions which submits a little form which the panel is wrapped in.
 	 *
-	 * @param	string		The string to wrap in a link, typ. and image used as button in the edit panel.
-	 * @param	string		The name of the form wrapping the edit panel.
-	 * @param	string		The command of the link. There is a predefined list available: edit, new, up, down etc.
-	 * @param	string		The "table:uid" of the record being processed by the panel.
-	 * @param	string		Text string with confirmation message; If set a confirm box will be displayed before carrying out the action (if Yes is pressed)
-	 * @param	integer		"New pid" - for new records
-	 * @return	string		A <a> tag wrapped string.
+	 * @param string $string The string to wrap in a link, typ. and image used as button in the edit panel.
+	 * @param string $formName The name of the form wrapping the edit panel.
+	 * @param string $cmd The command of the link. There is a predefined list available: edit, new, up, down etc.
+	 * @param string $currentRecord The "table:uid" of the record being processed by the panel.
+	 * @param string $confirm Text string with confirmation message; If set a confirm box will be displayed before carrying out the action (if Yes is pressed)
+	 * @param integer $nPid "New pid" - for new records
+	 * @return string A <a> tag wrapped string.
 	 * @see	editPanel(), editIcons(), t3lib_tsfeBeUserAuth::extEditAction()
 	 */
-	protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord='', $confirm='', $nPid='') {
+	protected function editPanelLinkWrap($string, $formName, $cmd, $currentRecord = '', $confirm = '', $nPid = '') {
 			// Editing forms on page only supported in Live workspace (because of incomplete implementation)
 		$editFormsOnPage = $GLOBALS['BE_USER']->uc['TSFE_adminConfig']['edit_editFormsOnPage'] && $GLOBALS['BE_USER']->workspace === 0;
 		$nV=t3lib_div::_GP('ADMCMD_view') ? 1 : 0;
@@ -263,10 +270,10 @@ class tx_feedit_editpanel {
 	/**
 	 * Creates a link to a script (eg. typo3/alt_doc.php or typo3/db_new.php) which either opens in the current frame OR in a pop-up window.
 	 *
-	 * @param	string		The string to wrap in a link, typ. and image used as button in the edit panel.
-	 * @param	string		The URL of the link. Should be absolute if supposed to work with <base> path set.
-	 * @param	string		The "table:uid" of the record being processed by the panel.
-	 * @return	string		A <a> tag wrapped string.
+	 * @param string $string The string to wrap in a link, typ. and image used as button in the edit panel.
+	 * @param string $url The URL of the link. Should be absolute if supposed to work with <base> path set.
+	 * @param string $currentRecord The "table:uid" of the record being processed by the panel.
+	 * @return string A <a> tag wrapped string.
 	 * @see	editPanelLinkWrap()
 	 */
 	protected function editPanelLinkWrap_doWrap($string, $url, $currentRecord) {
@@ -289,12 +296,12 @@ class tx_feedit_editpanel {
 	 * Wraps the input content string in a table with a gray border if the table/row combination evaluates to being disabled/hidden.
 	 * Used for marking previewed records in the frontend.
 	 *
-	 * @param	string		The table name
-	 * @param	array		The data record from $table
-	 * @param	string		The content string to wrap
-	 * @param	integer		The thickness of the border
-	 * @param	array		The array with TypoScript properties for the content object
-	 * @return	string		The input string wrapped in a table with a border color of #cccccc and thickness = $thick
+	 * @param string $table The table name
+	 * @param array $row The data record from $table
+	 * @param string $content The content string to wrap
+	 * @param integer $thick The thickness of the border
+	 * @param array $conf The array with TypoScript properties for the content object
+	 * @return string The input string wrapped in a table with a border color of #cccccc and thickness = $thick
 	 * @see	editPanel()
 	 */
 	protected function editPanelPreviewBorder($table, array $row, $content, $thick, array $conf = array()) {
@@ -322,9 +329,9 @@ class tx_feedit_editpanel {
 	/**
 	 * Returns TRUE if the input table/row would be hidden in the frontend (according nto the current time and simulate user group)
 	 *
-	 * @param	string		The table name
-	 * @param	array		The data record
-	 * @return	boolean
+	 * @param string $table The table name
+	 * @param array $row The data record
+	 * @return boolean
 	 * @see	editPanelPreviewBorder()
 	 */
 	protected function isDisabled($table, $row) {
@@ -339,15 +346,15 @@ class tx_feedit_editpanel {
 	/**
 	 * Returns the editing form for a content element.
 	 *
-	 * @param	string		Form tag
-	 * @param	string		Form name
-	 * @param	string		the command
-	 * @param	integer		newUID
-	 * @param	array		dataArray for element
-	 * @param	string		Table name of element
-	 * @param	string		Current record
-	 * @param	string		Blackline
-	 * @return	string
+	 * @param string $formTag Form tag
+	 * @param string $formName Form name
+	 * @param string $theCmd The command
+	 * @param integer $newUID newUID
+	 * @param array $dataArray dataArray for element
+	 * @param string $table Table name of element
+	 * @param string $currentRecord Current record
+	 * @param string $blackLine Blackline
+	 * @return string
 	 */
 	protected function editContent($formTag, $formName, $theCmd, $newUID, array $dataArray, $table, $currentRecord, $blackLine) {
 		$tceforms = t3lib_div::makeInstance('t3lib_TCEforms_FE');
@@ -363,7 +370,7 @@ class tx_feedit_editpanel {
 
 			// Icon only mode for CSH destroys the layout for frontend editing so force full text mode instead.
 			// @todo	Make sure the necessary Javascript and CSS are included so that CSH can work properly in all modes.
-		if($tceforms->edit_showFieldHelp == 'icon') {
+		if ($tceforms->edit_showFieldHelp == 'icon') {
 			$tceforms->edit_showFieldHelp = 'text';
 		}
 
@@ -390,7 +397,7 @@ class tx_feedit_editpanel {
 		$panel .= $tceforms->intoTemplate(array('ITEM' => $buttons));
 		$panel .= $tceforms->getMainFields($table, $processedDataArr);
 
-		$hiddenF = "";
+		$hiddenF = '';
 		if ($theCmd == 'new') {
 			$hiddenF .= '<input type="hidden" name="TSFE_EDIT[data][' . $table . '][NEW][pid]" value="' . $newUID . '" />';
 			if ($table == 'pages') {

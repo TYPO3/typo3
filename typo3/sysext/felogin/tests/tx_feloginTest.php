@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 require_once t3lib_extMgm::extPath('felogin', 'pi1/class.tx_felogin_pi1.php');
 
 /**
@@ -70,7 +69,7 @@ class tx_feloginTest extends tx_phpunit_testcase {
 		$this->testHostName = 'hostname.tld';
 		$this->testSitePath = '/';
 
-		// we need to subclass because the method we want to test is protected
+			// We need to subclass because the method we want to test is protected
 		$className = uniqid('FeLogin_');
 		eval('
 			class ' . $className. ' extends tx_felogin_pi1 {
@@ -110,10 +109,10 @@ class tx_feloginTest extends tx_phpunit_testcase {
 	 * Callback method for pageIdCanBeDetermined test cases.
 	 * Simulates TYPO3_DB->exec_SELECTgetRows().
 	 *
-	 * @param	string		$fields
-	 * @param	string		$table
-	 * @param	string		$where
-	 * @return	mixed
+	 * @param string $fields
+	 * @param string $table
+	 * @param string $where
+	 * @return mixed
 	 * @see setUpDatabaseMock
 	 */
 	public function getDomainRecordsCallback($fields, $table, $where) {
@@ -310,8 +309,5 @@ class tx_feloginTest extends tx_phpunit_testcase {
 		$this->setUpDatabaseMock();
 		$this->assertEquals($url, $this->txFelogin->validateRedirectUrl($url));
 	}
-
-
-
 }
 ?>
