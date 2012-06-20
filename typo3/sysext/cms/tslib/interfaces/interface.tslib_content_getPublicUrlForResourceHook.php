@@ -26,22 +26,23 @@
 ***************************************************************/
 
 /**
- * Interface for hooks to fetch the public URL of files
+ * Interface for hooks to fetch the public URL of
+ * a resource (file or folder).
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
-interface tslib_content_getPublicUrlForFileHook {
+interface tslib_content_getPublicUrlForResourceHook {
 
 	/**
 	 * Post-processes a public URL.
 	 *
 	 * @param tslib_cObj $parent The current content object (context)
 	 * @param array $configuration TypoScript configuration
-	 * @param t3lib_file_File $file The file object to be used
+	 * @param t3lib_file_ResourceInterface $resource The resource object to be used
 	 * @param string $pubicUrl Reference to the public URL
 	 */
-	public function postProcess(tslib_cObj $parent, array $configuration, t3lib_file_File $file, &$pubicUrl);
+	public function postProcess(tslib_cObj $parent, array $configuration, t3lib_file_ResourceInterface $resource, &$pubicUrl);
 }
 ?>

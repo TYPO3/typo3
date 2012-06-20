@@ -362,6 +362,11 @@ class tslib_cObj {
 	protected $getImgResourceHookObjects;
 
 	/**
+	 * @var tslib_content_getPublicUrlForResourceHook[]
+	 */
+	protected $getPublicUrlForResourceHookObjects = array();
+
+	/**
 	 * @var array with members of tslib_content_abstract
 	 */
 	protected $contentObjects = array();
@@ -432,6 +437,22 @@ class tslib_cObj {
 				}
 
 				$this->stdWrapHookObjects[] = $hookObject;
+			}
+		}
+
+		$this->getPublicUrlForResourceHookObjects = array();
+		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['getPublicUrlForResource'])) {
+			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['getPublicUrlForResource'] as $classData) {
+				$hookObject = t3lib_div::getUserObj($classData);
+
+				if (!($hookObject instanceof tslib_content_getPublicUrlForResourceHook)) {
+					throw new UnexpectedValueException(
+						$classData . ' must implement interface tslib_content_getPublicUrlForResourceHook',
+						1326990978
+					);
+				}
+
+				$this->getPublicUrlForResourceHookObjects[] = $hookObject;
 			}
 		}
 
@@ -5242,8 +5263,8 @@ class tslib_cObj {
 									0 => $processedFileObject->getProperty('width'),
 									1 => $processedFileObject->getProperty('height'),
 									2 => $processedFileObject->getExtension(),
-									3 => $processedFileObject->getPublicUrl(),
-									'origFile' => $fileObject->getPublicUrl(),
+									3 => $this->getPublicUrlForResource($processedFileObject, $fileArray),
+									'origFile' => $this->getPublicUrlForResource($fileObject, $fileArray),
 									'origFile_mtime' => $fileObject->getModificationTime(), // This is needed by tslib_gifbuilder, ln 100ff in order for the setup-array to create a unique filename hash.
 									'originalFile' => $fileObject,
 									'processedFile' => $processedFileObject,
@@ -5524,7 +5545,7 @@ class tslib_cObj {
 					return $fileObject->getContents();
 					break;
 				case 'publicUrl':
-					return $fileObject->getPublicUrl();
+					return $this->getPublicUrlForResource($fileObject);
 					break;
 				case 'localPath':
 					return $fileObject->getForLocalProcessing();
@@ -5539,6 +5560,24 @@ class tslib_cObj {
 			return 'Error: no file object';
 		}
 	}
+
+		/**
+		 * Gets public URL for a resource (file or folder).
+		 *
+		 * @param t3lib_file_ResourceInterface $resource
+		 * @param array $configuration TypoScript context configuration
+		 * @return string
+		 */
+		public function getPublicUrlForResource(t3lib_file_ResourceInterface $resource, array $configuration = array()) {
+			/** @var $resource t3lib_file_FileInterface|t3lib_file_FolderInterface  */
+			$publicUrlForResource = $resource->getPublicUrl();
+
+			foreach ($this->getPublicUrlForResourceHookObjects as $hookObject) {
+				$hookObject->postProcess($this, $configuration, $resource, $publicUrlForResource);
+			}
+
+			return $publicUrlForResource;
+		}
 
 	/**
 	 * Returns a value from the current rootline (site) from $GLOBALS['TSFE']->tmpl->rootLine;
@@ -5715,7 +5754,7 @@ class tslib_cObj {
 
 						// Link to a folder or file
 					if ($fileOrFolderObject instanceof t3lib_file_ResourceInterface) {
-						$link_paramA[0] = $fileOrFolderObject->getPublicUrl();
+						$link_paramA[0] = $this->getPublicUrlForResource($fileOrFolderObject, $conf);
 
 						// Not resolvable, although it started with file:...
 					} else {
