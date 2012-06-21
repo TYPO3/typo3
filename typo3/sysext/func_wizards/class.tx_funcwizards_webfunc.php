@@ -24,20 +24,21 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Contains a class for the Wizard function in the Web>Info module
  *
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 /**
  * The Wizard function in the Web>Info module
  * Creates a framework for adding wizard sub-sub-modules under the Wizard function in Web>Info
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_funcwizardswebfunc
  */
@@ -48,9 +49,9 @@ class tx_funcwizards_webfunc extends t3lib_extobjbase {
 	 * Initialize.
 	 * Calls parent init function and then the handleExternalFunctionValue() function from the parent class
 	 *
-	 * @param	object		A reference to the parent (calling) object (which is probably an instance of an extension class to t3lib_SCbase)
-	 * @param	array		The configuration set for this module - from global array TBE_MODULES_EXT
-	 * @return	void
+	 * @param object $pObj A reference to the parent (calling) object (which is probably an instance of an extension class to t3lib_SCbase)
+	 * @param array $conf The configuration set for this module - from global array TBE_MODULES_EXT
+	 * @return void
 	 * @see t3lib_extobjbase::handleExternalFunctionValue(), t3lib_extobjbase::init()
 	 */
 	function init(&$pObj, $conf) {
@@ -64,7 +65,7 @@ class tx_funcwizards_webfunc extends t3lib_extobjbase {
 	/**
 	 * Modifies parent objects internal MOD_MENU array, adding items this module needs.
 	 *
-	 * @return	array		Items merged with the parent objects.
+	 * @return array Items merged with the parent objects.
 	 * @see t3lib_extobjbase::init()
 	 */
 	function modMenu() {
@@ -83,7 +84,7 @@ class tx_funcwizards_webfunc extends t3lib_extobjbase {
 	/**
 	 * Creation of the main content. Calling extObjContent() to trigger content generation from the sub-sub modules
 	 *
-	 * @return	string		The content
+	 * @return string The content
 	 * @see t3lib_extobjbase::extObjContent()
 	 */
 	function main() {
@@ -93,9 +94,9 @@ class tx_funcwizards_webfunc extends t3lib_extobjbase {
 		$theOutput.=$this->pObj->doc->section('', '<span class="nobr">'.$menu.'</span>');
 
 		$content = '';
-		$content.=$theOutput;
-		$content.=$this->pObj->doc->spacer(20);
-		$content.=$this->extObjContent();
+		$content .= $theOutput;
+		$content .= $this->pObj->doc->spacer(20);
+		$content .= $this->extObjContent();
 
 		return $content;
 	}

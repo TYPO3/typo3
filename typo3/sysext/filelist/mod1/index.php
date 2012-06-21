@@ -29,7 +29,7 @@
  *
  * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 $LANG->includeLLFile('EXT:lang/locallang_mod_file_list.xml');
@@ -40,18 +40,19 @@ $BE_USER->modAccess($MCONF, 1);
 /**
  * Script Class for creating the list of files in the File > Filelist module
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
 class SC_file_list {
-	var $MCONF=array();			// Module configuration
-	var $MOD_MENU=array();
-	var $MOD_SETTINGS=array();
-
+		// Module configuration
+	var $MCONF = array();
+	var $MOD_MENU = array();
+	var $MOD_SETTINGS = array();
 
 		// Internal:
-	var $content;	// Accumulated HTML output
+		// Accumulated HTML output
+	var $content;
 
 	/**
 	 * Document template object
@@ -61,23 +62,26 @@ class SC_file_list {
 	var $doc;
 
 		// Internal, static: GPvars:
-	var $id;		// "id" -> the path to list.
+		// "id" -> the path to list.
+	var $id;
 	/* @var t3lib_file_Folder $folderObject */
 	protected $folderObject;
 	/* @var t3lib_FlashMessage $errorMessage */
 	protected $errorMessage;
-	var $pointer;	// Pointer to listing
-	var $table;		// "Table"
-	var $imagemode;	// Thumbnail mode.
+		// Pointer to listing
+	var $pointer;
+		// "Table"
+	var $table;
+		// Thumbnail mode.
+	var $imagemode;
 	var $cmd;
 	var $overwriteExistingFiles;
-
 
 	/**
 	 * Initialize variables, file object
 	 * Incoming GET vars include id, pointer, table, imagemode
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 
@@ -93,12 +97,12 @@ class SC_file_list {
 			// Setting module name:
 		$this->MCONF = $GLOBALS['MCONF'];
 
-			// create the folder object
+			// Create the folder object
 		try {
 			if ($combinedIdentifier) {
 				$fileFactory = t3lib_div::makeInstance('t3lib_file_Factory');
 				$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
-					// disallow the rendering of the processing folder (e.g. could be called manually)
+					// Disallow the rendering of the processing folder (e.g. could be called manually)
 					// and all folders without any defined storage
 				if ($this->folderObject &&
 						($this->folderObject->getStorage()->getUid() == 0 || trim($this->folderObject->getStorage()->getProcessingFolder()->getIdentifier(), '/') == trim($this->folderObject->getIdentifier(), '/'))
@@ -106,7 +110,7 @@ class SC_file_list {
 					$this->folderObject = NULL;
 				}
 			} else {
-				// take the first object of the first storage
+					// Take the first object of the first storage
 				$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
 				$fileStorage = reset($fileStorages);
 				if ($fileStorage) {
@@ -118,11 +122,10 @@ class SC_file_list {
 				}
 			}
 		} catch (t3lib_file_exception_FolderDoesNotExistException $fileException) {
-				// set folder object to null and throw a message later on
+				// Set folder object to null and throw a message later on
 			$this->folderObject = NULL;
 			$this->errorMessage = t3lib_div::makeInstance('t3lib_FlashMessage', sprintf($GLOBALS['LANG']->getLL('folderNotFoundMessage', TRUE), htmlspecialchars($this->id)), $GLOBALS['LANG']->getLL('folderNotFoundTitle', TRUE), t3lib_FlashMessage::ERROR);
 		}
-
 
 			// Configure the "menu" - which is used internally to save the values of sorting, displayThumbs etc.
 		$this->menuConfig();
@@ -131,7 +134,7 @@ class SC_file_list {
 	/**
 	 * Setting the menu/session variables
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function menuConfig() {
 			// MENU-ITEMS:
@@ -153,7 +156,7 @@ class SC_file_list {
 	/**
 	 * Main function, creating the listing
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 			// Initialize the template object
@@ -164,7 +167,7 @@ class SC_file_list {
 
 			// There there was access to this file path, continue, make the list
 		if ($this->folderObject) {
-				// include the initialization for the flash uploader
+				// Include the initialization for the flash uploader
 			if ($GLOBALS['BE_USER']->uc['enableFlashUploader']) {
 
 				$this->doc->JScodeArray['flashUploader'] = '
@@ -251,7 +254,7 @@ class SC_file_list {
 				$this->MOD_SETTINGS['clipBoard'] = FALSE;
 			}
 
-				// if user never opened the list module, set the value for displayThumbs
+				// If user never opened the list module, set the value for displayThumbs
 			if (!isset($this->MOD_SETTINGS['displayThumbs'])) {
 				$this->MOD_SETTINGS['displayThumbs'] = $GLOBALS['BE_USER']->uc['thumbnailsByDefault'];
 			}
@@ -263,20 +266,26 @@ class SC_file_list {
 			$this->filelist->clipObj->initializeClipboard();
 
 			$CB = t3lib_div::_GET('CB');
-			if ($this->cmd=='setCB') $CB['el'] = $this->filelist->clipObj->cleanUpCBC(array_merge(t3lib_div::_POST('CBH'), t3lib_div::_POST('CBC')), '_FILE');
-			if (!$this->MOD_SETTINGS['clipBoard'])	$CB['setP']='normal';
+			if ($this->cmd == 'setCB') {
+				$CB['el'] = $this->filelist->clipObj->cleanUpCBC(array_merge(t3lib_div::_POST('CBH'), t3lib_div::_POST('CBC')), '_FILE');
+			}
+
+			if (!$this->MOD_SETTINGS['clipBoard']) {
+				$CB['setP'] = 'normal';
+			}
 			$this->filelist->clipObj->setCmd($CB);
 			$this->filelist->clipObj->cleanCurrent();
-			$this->filelist->clipObj->endClipboard();	// Saves
+				// Saves
+			$this->filelist->clipObj->endClipboard();
 
 				// If the "cmd" was to delete files from the list (clipboard thing), do that:
-			if ($this->cmd=='delete') {
+			if ($this->cmd == 'delete') {
 				$items = $this->filelist->clipObj->cleanUpCBC(t3lib_div::_POST('CBC'), '_FILE', 1);
 				if (count($items)) {
 						// Make command array:
-					$FILE=array();
+					$FILE = array();
 					foreach ($items as $v) {
-						$FILE['delete'][]=array('data'=>$v);
+						$FILE['delete'][] = array('data' => $v);
 					}
 
 						// Init file processing object for deleting and pass the cmd array.
@@ -332,15 +341,15 @@ class SC_file_list {
 				// Build the <body> for the module
 
 				// Create output
-			$pageContent='';
-			$pageContent.= '<form action="'.htmlspecialchars($this->filelist->listURL()).'" method="post" name="dblistForm">';
-			$pageContent.= $this->filelist->HTMLcode;
-			$pageContent.= '<input type="hidden" name="cmd" /></form>';
+			$pageContent = '';
+			$pageContent .= '<form action="'.htmlspecialchars($this->filelist->listURL()).'" method="post" name="dblistForm">';
+			$pageContent .= $this->filelist->HTMLcode;
+			$pageContent .= '<input type="hidden" name="cmd" /></form>';
 
+				// Making listing options:
+			if ($this->filelist->HTMLcode) {
 
-			if ($this->filelist->HTMLcode)	{	// Making listing options:
-
-				$pageContent.='
+				$pageContent .= '
 
 					<!--
 						Listing options for extended view, clipboard and thumbnails
@@ -388,7 +397,6 @@ class SC_file_list {
 					</div>
 				';
 
-
 					// Set clipboard:
 				if ($this->MOD_SETTINGS['clipBoard']) {
 					$pageContent.=$this->filelist->clipObj->printClipboard();
@@ -422,14 +430,12 @@ class SC_file_list {
 				$content
 			);
 		}
-
-
 	}
 
 	/**
 	 * Outputting the accumulated content to screen
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
@@ -438,7 +444,7 @@ class SC_file_list {
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
-	 * @return	array	all available buttons as an assoc. array
+	 * @return array All available buttons as an assoc. array
 	 */
 	function getButtons() {
 		$buttons = array(
@@ -456,7 +462,7 @@ class SC_file_list {
 			// FileList Module CSH:
 		$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH'], '', TRUE);
 
-			// upload button (only if upload to this directory is allowed)
+			// Upload button (only if upload to this directory is allowed)
 		if ($this->folderObject && $this->folderObject->getStorage()->checkUserActionPermission('upload', 'File') && $this->folderObject->checkActionPermission('write')) {
 			$buttons['upload'] = '<a href="' . $GLOBALS['BACK_PATH'] . 'file_upload.php?target=' . rawurlencode($this->folderObject->getCombinedIdentifier()) .
 				'&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" id="button-upload" title="' .
@@ -465,7 +471,7 @@ class SC_file_list {
 			'</a>';
 		}
 
-			// new folder button
+			// New folder button
 		if ($this->folderObject && $this->folderObject->checkActionPermission('add')) {
 			$buttons['new'] = '<a href="' . $GLOBALS['BACK_PATH'] . 'file_newfolder.php?target=' . rawurlencode($this->folderObject->getCombinedIdentifier()) .
 				'&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" title="' .
@@ -478,7 +484,7 @@ class SC_file_list {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_file_list');
 $SOBE->init();
 $SOBE->main();

@@ -30,24 +30,13 @@
  * Revised for TYPO3 3.6 December/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Adding Import/Export clickmenu item
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_impexp
  */
@@ -56,16 +45,17 @@ class tx_impexp_clickmenu {
 	/**
 	 * Processing of clickmenu items
 	 *
-	 * @param	object		Reference to parent
-	 * @param	array		Menu items array to modify
-	 * @param	string		Table name
-	 * @param	integer		Uid of the record
-	 * @return	array		Menu item array, returned after modification
-	 * @todo	Skinning for icons...
+	 * @param object $backRef Reference to parent
+	 * @param array $menuItems Menu items array to modify
+	 * @param string $table Table name
+	 * @param integer $uid Uid of the record
+	 * @return array Menu item array, returned after modification
+	 * @todo Skinning for icons...
 	 */
 	function main(&$backRef, $menuItems, $table, $uid) {
-		$localItems=array();
-		if (($backRef->cmLevel && t3lib_div::_GP('subname')=='moreoptions') || ($table==='pages' && $uid==0))	{	// Show import/export on second level menu OR root level.
+		$localItems = array();
+			// Show import/export on second level menu OR root level.
+		if (($backRef->cmLevel && t3lib_div::_GP('subname') == 'moreoptions') || ($table === 'pages' && $uid == 0)) {
 
 			$LL = $this->includeLL();
 
@@ -102,7 +92,7 @@ class tx_impexp_clickmenu {
 	/**
 	 * Include local lang file and return $LOCAL_LANG array loaded.
 	 *
-	 * @return	array		Local lang array
+	 * @return array Local lang array
 	 */
 	function includeLL() {
 		global $LANG;
