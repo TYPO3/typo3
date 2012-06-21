@@ -161,7 +161,7 @@ class recordList extends t3lib_recordList {
 		$this->firstElementNumber = $pointer;
 		$this->searchString = trim($search);
 		$this->searchLevels = trim($levels);
-		$this->showLimit = t3lib_utility_Math::forceIntegerInRange($showLimit,0,10000);
+		$this->showLimit = t3lib_utility_Math::forceIntegerInRange($showLimit, 0, 10000);
 
 			// Setting GPvars:
 		$this->csvOutput = t3lib_div::_GP('csv') ? TRUE : FALSE;
@@ -243,13 +243,14 @@ class recordList extends t3lib_recordList {
 	function generateList() {
 
 			// Set page record in header
-		$this->pageRecord = t3lib_BEfunc::getRecordWSOL('pages',$this->id);
+		$this->pageRecord = t3lib_BEfunc::getRecordWSOL('pages', $this->id);
 
 			// Traverse the TCA table array:
 		foreach ($GLOBALS['TCA'] as $tableName => $value) {
 
 				// Checking if the table should be rendered:
-			if ((!$this->table || $tableName==$this->table) && (!$this->tableList || t3lib_div::inList($this->tableList,$tableName)) && $GLOBALS['BE_USER']->check('tables_select',$tableName))	{		// Checks that we see only permitted/requested tables:
+				// Checks that we see only permitted/requested tables:
+			if ((!$this->table || $tableName == $this->table) && (!$this->tableList || t3lib_div::inList($this->tableList, $tableName)) && $GLOBALS['BE_USER']->check('tables_select', $tableName)) {
 
 					// Load full table definitions:
 				t3lib_div::loadTCA($tableName);
@@ -288,7 +289,7 @@ class recordList extends t3lib_recordList {
 					$fields[]='_PATH_';
 					$fields[]='_CONTROL_';
 					if (is_array($this->setFields[$tableName])) {
-						$fields = array_intersect($fields,$this->setFields[$tableName]);
+						$fields = array_intersect($fields, $this->setFields[$tableName]);
 					} else {
 						$fields = array();
 					}
@@ -307,7 +308,7 @@ class recordList extends t3lib_recordList {
 				}
 
 					// Finally, render the list:
-				$this->HTMLcode.=$this->getTable($tableName, $this->id, implode(',',$fields));
+				$this->HTMLcode .= $this->getTable($tableName, $this->id, implode(',', $fields));
 			}
 		}
 	}
@@ -328,11 +329,11 @@ class recordList extends t3lib_recordList {
 
 			// Make level selector:
 		$opt = array();
-		$parts = explode('|',$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.enterSearchLevels'));
+		$parts = explode('|', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.enterSearchLevels'));
 		foreach ($parts as $kv => $label) {
 			$opt[] = '<option value="'.$kv.'"'.($kv==intval($this->searchLevels)?' selected="selected"':'').'>'.htmlspecialchars($label).'</option>';
 		}
-		$lMenu = '<select name="search_levels">'.implode('',$opt).'</select>';
+		$lMenu = '<select name="search_levels">' . implode('', $opt) . '</select>';
 
 			// Table with the search box:
 		$content = '<div class="db_list-searchbox-form">
@@ -371,7 +372,7 @@ class recordList extends t3lib_recordList {
 		if (!t3lib_extMgm::isLoaded('sys_note')) return '';
 
 			// Create query for selecting the notes:
-		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*','sys_note','pid IN ('.$this->id.') AND (personal=0 OR cruser='.intval($GLOBALS['BE_USER']->user['uid']).')'.t3lib_BEfunc::deleteClause('sys_note').t3lib_BEfunc::versioningPlaceholderClause('sys_note'));
+		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_note', 'pid IN (' . $this->id . ') AND (personal=0 OR cruser=' . intval($GLOBALS['BE_USER']->user['uid']) . ')' . t3lib_BEfunc::deleteClause('sys_note') . t3lib_BEfunc::versioningPlaceholderClause('sys_note'));
 
 			// Executing query:
 		$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
@@ -410,10 +411,10 @@ class recordList extends t3lib_recordList {
 					Sys-notes for list module:
 				-->
 					<table border="0" cellpadding="1" cellspacing="1" id="typo3-dblist-sysnotes">
-						<tr><td colspan="2" class="bgColor2">'.$iconImg.'<strong>'.$subject.'</strong></td></tr>
-						<tr><td class="bgColor4">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.category',1).'</td><td class="bgColor4">'.$fields['Category:'].'</td></tr>
-						<tr><td class="bgColor4">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.author',1).'</td><td class="bgColor4">'.$fields['Author:'].'</td></tr>
-						<tr><td class="bgColor4">'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.note',1).'</td><td class="bgColor4">'.$fields['Note:'].'</td></tr>
+						<tr><td colspan="2" class="bgColor2">' . $iconImg . '<strong>' . $subject . '</strong></td></tr>
+						<tr><td class="bgColor4">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.category', 1) . '</td><td class="bgColor4">' . $fields['Category:'] . '</td></tr>
+						<tr><td class="bgColor4">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.author', 1) . '</td><td class="bgColor4">' . $fields['Author:'] . '</td></tr>
+						<tr><td class="bgColor4">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.note', 1) . '</td><td class="bgColor4">' . $fields['Note:'] . '</td></tr>
 					</table>
 				';
 			}
@@ -442,8 +443,8 @@ class recordList extends t3lib_recordList {
 		if (is_array($this->displayFields)) {
 			reset($this->displayFields);
 			$tKey = key($this->displayFields);
-			$dispFields[$tKey]=$this->displayFields[$tKey];
-			$GLOBALS['BE_USER']->pushModuleData('list/displayFields',$dispFields);
+			$dispFields[$tKey] = $this->displayFields[$tKey];
+			$GLOBALS['BE_USER']->pushModuleData('list/displayFields', $dispFields);
 		}
 
 			// Setting result:
@@ -484,7 +485,7 @@ class recordList extends t3lib_recordList {
 			? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby']
 			: $GLOBALS['TCA'][$table]['ctrl']['default_sortby']);
 		if ($this->sortField) {
-			if (in_array($this->sortField,$this->makeFieldList($table,1))) {
+			if (in_array($this->sortField, $this->makeFieldList($table, 1))) {
 				$orderBy = 'ORDER BY '.$this->sortField;
 				if ($this->sortRev)	$orderBy.=' DESC';
 			}
@@ -613,8 +614,8 @@ class recordList extends t3lib_recordList {
 								}
 							}
 							if ($fieldConfig['type'] == 'text' ||
-									$fieldConfig['type'] == 'flex' ||
-									($fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] || !preg_match('/date|time|int/',$fieldConfig['eval'])))) {
+								$fieldConfig['type'] == 'flex' ||
+								($fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] || !preg_match('/date|time|int/', $fieldConfig['eval'])))) {
 								$whereParts[] = sprintf($format, $fieldName, $like);
 							}
 						}
@@ -691,8 +692,8 @@ class recordList extends t3lib_recordList {
 		$origCode = $code;
 
 			// If the title is blank, make a "no title" label:
-		if (!strcmp($code,'')) {
-			$code = '<i>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title',1).']</i> - '.htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table,$row),$GLOBALS['BE_USER']->uc['titleLen']));
+		if (!strcmp($code, '')) {
+			$code = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title', 1) . ']</i> - ' . htmlspecialchars(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $row), $GLOBALS['BE_USER']->uc['titleLen']));
 		} else {
 			$code = htmlspecialchars(t3lib_div::fixed_lgd_cs($code, $this->fixedL));
 			if ($code != htmlspecialchars($origCode)) {
@@ -704,7 +705,7 @@ class recordList extends t3lib_recordList {
 			case 'edit':
 					// If the listed table is 'pages' we have to request the permission settings for each page:
 				if ($table == 'pages') {
-					$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages',$row['uid']));
+					$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages', $row['uid']));
 					$permsEdit = $localCalcPerms&2;
 				} else {
 					$permsEdit = $this->calcPerms&16;
@@ -740,7 +741,7 @@ class recordList extends t3lib_recordList {
 				if ($table == 'pages') {
 					$code = '<a href="' . htmlspecialchars($this->listURL($uid, '', 'firstElementNumber')) . '" onclick="setHighlight(' . $uid . ')">' . $code . '</a>';
 				} else {
-					$code = $this->linkUrlMail($code,$origCode);
+					$code = $this->linkUrlMail($code, $origCode);
 				}
 			break;
 		}
@@ -759,7 +760,7 @@ class recordList extends t3lib_recordList {
 
 			// Check for URL:
 		$schema = parse_url($testString);
-		if ($schema['scheme'] && t3lib_div::inList('http,https,ftp',$schema['scheme'])) {
+		if ($schema['scheme'] && t3lib_div::inList('http,https,ftp', $schema['scheme'])) {
 			return '<a href="'.htmlspecialchars($testString).'" target="_blank">'.$code.'</a>';
 		}
 

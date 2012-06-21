@@ -294,19 +294,19 @@ class fileList extends t3lib_recordList {
 				$table = '_FILE';
 				$elFromTable = $this->clipObj->elFromTable($table);
 				if (count($elFromTable)) {
-					$cells[] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE',$this->folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elFromTable)) . '" title="' . $GLOBALS['LANG']->getLL('clip_paste', 1) . '">' .
+					$cells[] = '<a href="' . htmlspecialchars($this->clipObj->pasteUrl('_FILE', $this->folderObject->getCombinedIdentifier())) . '" onclick="return ' . htmlspecialchars($this->clipObj->confirmMsg('_FILE', $this->path, 'into', $elFromTable)) . '" title="' . $GLOBALS['LANG']->getLL('clip_paste', 1) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-document-paste-after') .
 					'</a>';
 				}
 				if ($this->clipObj->current!='normal' && $iOut) {
-					$cells[]=$this->linkClipboardHeaderIcon(t3lib_iconWorks::getSpriteIcon('actions-edit-copy', array('title' => $GLOBALS['LANG']->getLL('clip_selectMarked', 1))), $table,'setCB');
-					$cells[]=$this->linkClipboardHeaderIcon(t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->getLL('clip_deleteMarked'))), $table,'delete',$GLOBALS['LANG']->getLL('clip_deleteMarkedWarning'));
+					$cells[]=$this->linkClipboardHeaderIcon(t3lib_iconWorks::getSpriteIcon('actions-edit-copy', array('title' => $GLOBALS['LANG']->getLL('clip_selectMarked', 1))), $table, 'setCB');
+					$cells[]=$this->linkClipboardHeaderIcon(t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->getLL('clip_deleteMarked'))), $table, 'delete', $GLOBALS['LANG']->getLL('clip_deleteMarkedWarning'));
 					$onClick = 'checkOffCB(\'' . implode(',', $this->CBnames) . '\', this); return false;';
 					$cells[] = '<a class="cbcCheckAll" rel="" href="#" onclick="' . htmlspecialchars($onClick) . '" title="' . $GLOBALS['LANG']->getLL('clip_markRecords', TRUE) . '">' .
 							t3lib_iconWorks::getSpriteIcon('actions-document-select').
 						'</a>';
 				}
-				$theData[$v] = implode('',$cells);
+				$theData[$v] = implode('', $cells);
 			} else {	// Normal row:
 				$theT = $this->linkWrapSort($GLOBALS['LANG']->getLL('c_' . $v, 1), $this->folderObject->getCombinedIdentifier(), $v);
 				$theData[$v] = $theT;
@@ -456,7 +456,7 @@ class fileList extends t3lib_recordList {
 		$fileUrl = $fileObject->getPublicUrl(TRUE);
 		if ($fileUrl) {
 			$aOnClick = "return top.openUrlInWindow('" . $fileUrl . "', 'WebFile');";
-			$code = '<a href="#" title="'.htmlspecialchars($code).'" onclick="'.htmlspecialchars($aOnClick).'">'.t3lib_div::fixed_lgd_cs($code,$this->fixedL).'</a>';
+			$code = '<a href="#" title="' . htmlspecialchars($code) . '" onclick="' . htmlspecialchars($aOnClick) . '">' . t3lib_div::fixed_lgd_cs($code, $this->fixedL) . '</a>';
 		}
 		return $code;
 	}
@@ -629,16 +629,16 @@ class fileList extends t3lib_recordList {
 		if ($this->clipObj->current == 'normal') {
 			$isSel = $this->clipObj->isSelected('_FILE', $md5);
 			$cells[]='<a href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 1, ($isSel == 'copy'))) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-edit-copy'.($isSel=='copy'?'-release':''),array('title'=>$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.copy',1))).
-						'</a>';
+				t3lib_iconWorks::getSpriteIcon('actions-edit-copy' . ($isSel == 'copy' ? '-release' : ''), array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.copy', 1))) .
+				'</a>';
 			$cells[]='<a href="' . htmlspecialchars($this->clipObj->selUrlFile($fullIdentifier, 0, ($isSel == 'cut'))) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-edit-cut'.($isSel=='cut'?'-release':''),array('title'=>$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.cut',1))).
-						'</a>';
+				t3lib_iconWorks::getSpriteIcon('actions-edit-cut' . ($isSel == 'cut' ? '-release' : ''), array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.cut', 1))) .
+				'</a>';
 		} else {	// For numeric pads, add select checkboxes:
 			$n = '_FILE|'.$md5;
 			$this->CBnames[] = $n;
 
-			$checked = ($this->clipObj->isSelected('_FILE',$md5)?' checked="checked"':'');
+			$checked = ($this->clipObj->isSelected('_FILE', $md5) ? ' checked="checked"' : '');
 			$cells[] = '<input type="hidden" name="CBH['.$n.']" value="0" />'.
 					'<input type="checkbox" name="CBC[' . $n . ']" value="' . htmlspecialchars($fullIdentifier) . '" class="smallCheckboxes"' . $checked . ' />';
 		}
@@ -654,8 +654,8 @@ class fileList extends t3lib_recordList {
 			// Compile items into a DIV-element:
 		return '							<!-- CLIPBOARD PANEL: -->
 											<div class="typo3-clipCtrl">
-												'.implode('
-												',$cells).'
+												' . implode('
+												', $cells) . '
 											</div>';
 	}
 
@@ -760,7 +760,7 @@ class fileList extends t3lib_recordList {
 			}
 		}
 
-		return count($infoData) ? '<a href="#" onclick="'.htmlspecialchars('top.launchView( \'_FILE\', \'' . $fileOrFolderObject->getCombinedIdentifier() . '\'); return false;').'" title="'.htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ',$infoData),100)).'">' . count($infoData) . '</a>' : '-';
+		return count($infoData) ? '<a href="#" onclick="' . htmlspecialchars('top.launchView( \'_FILE\', \'' . $fileOrFolderObject->getCombinedIdentifier() . '\'); return false;') . '" title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ', $infoData), 100)) . '">' . count($infoData) . '</a>' : '-';
 	}
 }
 

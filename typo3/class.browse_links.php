@@ -1115,7 +1115,7 @@ class browse_links {
 			'expandPage' => $this->expandPage,
 			'expandFolder' => $this->expandFolder,
 			'PM' => $this->PM,
-		),'Internal variables of Script Class:');
+		), 'Internal variables of Script Class:');
 	}
 
 	/**
