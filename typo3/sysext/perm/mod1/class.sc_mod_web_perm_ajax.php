@@ -29,16 +29,17 @@ $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_web_perm.xml');
  * convenient methods of editing of page permissions (including page ownership
  * (user and group)) via new TYPO3AJAX facility
  *
- * @author		Andreas Kundoch <typo3@mehrwert.de>
- * @package		TYPO3
- * @subpackage	core
- * @license		GPL
- * @since		TYPO3_4-2
+ * @author Andreas Kundoch <typo3@mehrwert.de>
+ * @package TYPO3
+ * @subpackage core
+ * @license GPL
+ * @since TYPO3_4-2
  */
 class SC_mod_web_perm_ajax {
-
-	protected $conf = array();	// The local configuration array
-	protected $backPath = '../../../';	// TYPO3 Back Path
+		// The local configuration array
+	protected $conf = array();
+		// TYPO3 Back Path
+	protected $backPath = '../../../';
 
 	/********************************************
 	 *
@@ -48,8 +49,6 @@ class SC_mod_web_perm_ajax {
 
 	/**
 	 * The constructor of this class
-	 *
-	 * @return	Void
 	 */
 	public function __construct() {
 
@@ -97,9 +96,9 @@ class SC_mod_web_perm_ajax {
 	/**
 	 * The main dispatcher function. Collect data and prepare HTML output.
 	 *
-	 * @param	array		$params: array of parameters from the AJAX interface, currently unused
-	 * @param	TYPO3AJAX		$ajaxObj: object of type TYPO3AJAX
-	 * @return	Void
+	 * @param array $params array of parameters from the AJAX interface, currently unused
+	 * @param TYPO3AJAX $ajaxObj object of type TYPO3AJAX
+	 * @return void
 	 */
 	public function dispatch($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 		$content = '';
@@ -206,10 +205,10 @@ class SC_mod_web_perm_ajax {
 	/**
 	 * Generate the user selector element
 	 *
-	 * @param	Integer		$page: The page id to change the user for
-	 * @param	Integer		$ownerUid: The page owner uid
-	 * @param	String		$username: The username to display
-	 * @return	String		The html select element
+	 * @param integer $page The page id to change the user for
+	 * @param integer $ownerUid The page owner uid
+	 * @param string $username The username to display
+	 * @return string The html select element
 	 */
 	protected function renderUserSelector($page, $ownerUid, $username = '') {
 
@@ -244,10 +243,10 @@ class SC_mod_web_perm_ajax {
 	/**
 	 * Generate the group selector element
 	 *
-	 * @param	Integer		$page: The page id to change the user for
-	 * @param	Integer		$groupUid: The page group uid
-	 * @param	String		$username: The username to display
-	 * @return	String		The html select element
+	 * @param integer $page The page id to change the user for
+	 * @param integer $groupUid The page group uid
+	 * @param string $username The username to display
+	 * @return string The html select element
 	 */
 	protected function renderGroupSelector($page, $groupUid, $groupname = '') {
 
@@ -290,15 +289,14 @@ class SC_mod_web_perm_ajax {
 		return $ret;
 	}
 
-
 	/**
 	 * Print the string with the new owner of a page record
 	 *
-	 * @param	Integer		$page: The TYPO3 page id
-	 * @param	Integer		$ownerUid: The new page user uid
-	 * @param	String		$username: The TYPO3 BE username (used to display in the element)
-	 * @param	Boolean		$validUser: Must be set to FALSE, if the user has no name or is deleted
-	 * @return	String		The new group wrapped in HTML
+	 * @param integer $page The TYPO3 page id
+	 * @param integer $ownerUid The new page user uid
+	 * @param string $username The TYPO3 BE username (used to display in the element)
+	 * @param boolean $validUser Must be set to FALSE, if the user has no name or is deleted
+	 * @return string The new group wrapped in HTML
 	 */
 	public static function renderOwnername($page, $ownerUid, $username, $validUser = TRUE) {
 		$elementId = 'o_'.$page;
@@ -306,15 +304,14 @@ class SC_mod_web_perm_ajax {
 		return $ret;
 	}
 
-
 	/**
 	 * Print the string with the new group of a page record
 	 *
-	 * @param	Integer		$page: The TYPO3 page id
-	 * @param	Integer		$groupUid: The new page group uid
-	 * @param	String		$groupname: The TYPO3 BE groupname (used to display in the element)
-	 * @param	Boolean		$validGroup: Must be set to FALSE, if the group has no name or is deleted
-	 * @return	String		The new group wrapped in HTML
+	 * @param integer $page The TYPO3 page id
+	 * @param integer $groupUid The new page group uid
+	 * @param string $groupname The TYPO3 BE groupname (used to display in the element)
+	 * @param boolean $validGroup Must be set to FALSE, if the group has no name or is deleted
+	 * @return string The new group wrapped in HTML
 	 */
 	public static function renderGroupname($page, $groupUid, $groupname, $validGroup = TRUE) {
 		$elementId = 'g_'.$page;
@@ -322,13 +319,12 @@ class SC_mod_web_perm_ajax {
 		return $ret;
 	}
 
-
 	/**
 	 * Print the string with the new edit lock state of a page record
 	 *
-	 * @param	Integer		$page: The TYPO3 page id
-	 * @param	String		$editlockstate: The state of the TYPO3 page (locked, unlocked)
-	 * @return	String		The new edit lock string wrapped in HTML
+	 * @param integer $page The TYPO3 page id
+	 * @param string $editlockstate The state of the TYPO3 page (locked, unlocked)
+	 * @return string The new edit lock string wrapped in HTML
 	 */
 	protected function renderToggleEditLock($page, $editLockState) {
 		if ($editLockState === 1) {
@@ -343,10 +339,10 @@ class SC_mod_web_perm_ajax {
 	/**
 	 * Print a set of permissions. Also used in index.php
 	 *
-	 * @param	integer		Permission integer (bits)
-	 * @param	Integer		$page: The TYPO3 page id
-	 * @param	String		$who: The scope (user, group or everybody)
-	 * @return	string		HTML marked up x/* indications.
+	 * @param integer $int Permission integer (bits)
+	 * @param integer $page The TYPO3 page id
+	 * @param string $who The scope (user, group or everybody)
+	 * @return string HTML marked up x/* indications.
 	 */
 	public static function renderPermissions($int, $pageId = 0, $who = 'user') {
 		$str = '';

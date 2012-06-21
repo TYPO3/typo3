@@ -25,17 +25,16 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-	// load the language file
+	// Load the language file
 $GLOBALS['LANG']->includeLLFile('EXT:opendocs/locallang_opendocs.xml');
-
 
 /**
  * Adding a list of all open documents of a user to the backend.php
  *
- * @author	Benjamin Mack <benni@typo3.org>
- * @author	Ingo Renner <ingo@typo3.org>
- * @package	TYPO3
- * @subpackage	opendocs
+ * @author Benjamin Mack <benni@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
+ * @package TYPO3
+ * @subpackage opendocs
  */
 class tx_opendocs implements backend_toolbarItem {
 
@@ -50,11 +49,10 @@ class tx_opendocs implements backend_toolbarItem {
 	protected $recentDocs;
 	protected $EXTKEY = 'opendocs';
 
-
 	/**
-	 * constructor, loads the documents from the user control
+	 * Constructor, loads the documents from the user control
 	 *
-	 * @param	TYPO3backend	TYPO3 backend object reference
+	 * @param TYPO3backend TYPO3 backend object reference
 	 */
 	public function __construct(TYPO3backend &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
@@ -62,9 +60,9 @@ class tx_opendocs implements backend_toolbarItem {
 	}
 
 	/**
-	 * checks whether the user has access to this toolbar item
+	 * Checks whether the user has access to this toolbar item
 	 *
-	 * @return  boolean  TRUE if user has access, FALSE if not
+	 * @return boolean TRUE if user has access, FALSE if not
 	 */
 	public function checkAccess() {
 		$conf = $GLOBALS['BE_USER']->getTSConfig('backendToolbarItem.tx_opendocs.disabled');
@@ -72,33 +70,33 @@ class tx_opendocs implements backend_toolbarItem {
 	}
 
 	/**
-	 * loads the opened and recently opened documents from the user
+	 * Loads the opened and recently opened documents from the user
 	 *
-	 * @return  void
+	 * @return void
 	 */
 	public function loadDocsFromUserSession() {
-		list($this->openDocs, )  = $GLOBALS['BE_USER']->getModuleData('alt_doc.php', 'ses');
-		$this->recentDocs        = $GLOBALS['BE_USER']->getModuleData('opendocs::recent');
+		list($this->openDocs, ) = $GLOBALS['BE_USER']->getModuleData('alt_doc.php', 'ses');
+		$this->recentDocs = $GLOBALS['BE_USER']->getModuleData('opendocs::recent');
 	}
 
 	/**
-	 * renders the toolbar item and the initial menu
+	 * Renders the toolbar item and the initial menu
 	 *
-	 * @return	string		the toolbar item including the initial menu content as HTML
+	 * @return string The toolbar item including the initial menu content as HTML
 	 */
 	public function render() {
 		$this->addJavascriptToBackend();
 		$this->addCssToBackend();
-		$numDocs      = count($this->openDocs);
+		$numDocs = count($this->openDocs);
 		$opendocsMenu = array();
-		$title        = $GLOBALS['LANG']->getLL('toolbaritem', TRUE);
+		$title = $GLOBALS['LANG']->getLL('toolbaritem', TRUE);
 
-			// toolbar item icon
+			// Toolbar item icon
 		$opendocsMenu[] = '<a href="#" class="toolbar-item">';
 		$opendocsMenu[] = '<input type="text" id="tx-opendocs-counter" disabled="disabled" value="' . $numDocs . '" />';
 		$opendocsMenu[] = t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-opendocs', array('title' => $title)) . '</a>';
 
-			// toolbar item menu and initial content
+			// Toolbar item menu and initial content
 		$opendocsMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
 		$opendocsMenu[] = $this->renderMenu();
 		$opendocsMenu[] = '</div>';
@@ -109,13 +107,13 @@ class tx_opendocs implements backend_toolbarItem {
 	/**
 	 * renders the pure contents of the menu
 	 *
-	 * @return	string		the menu's content
+	 * @return string The menu's content
 	 */
 	public function renderMenu() {
-		$openDocuments   = $this->openDocs;
+		$openDocuments = $this->openDocs;
 		$recentDocuments = $this->recentDocs;
-		$entries         = array();
-		$content         = '';
+		$entries = array();
+		$content = '';
 
 		if (count($openDocuments)) {
 			$entries[] = '<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('open_docs', TRUE) . '</th></tr>';
@@ -148,16 +146,16 @@ class tx_opendocs implements backend_toolbarItem {
 	}
 
 	/**
-	 * returns the recent documents list as an array
+	 * Returns the recent documents list as an array
 	 *
-	 * @return	array	all recent documents as list-items
+	 * @return array All recent documents as list-items
 	 */
 	public function renderMenuEntry($document, $md5sum, $isRecentDoc = FALSE, $isFirstDoc = FALSE) {
 		$table  = $document[3]['table'];
 		$uid    = $document[3]['uid'];
 		$record = t3lib_BEfunc::getRecordWSOL($table, $uid);
 		if (!is_array($record)) {
-				// record seems to be deleted
+				// Record seems to be deleted
 			return '';
 		}
 		$label  = htmlspecialchars(strip_tags(t3lib_div::htmlspecialchars_decode($document[0])));
@@ -177,7 +175,7 @@ class tx_opendocs implements backend_toolbarItem {
 		if (!$isRecentDoc) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.closeDoc', TRUE);
 
-				// open document
+				// Open document
 			$closeIcon = t3lib_iconWorks::getSpriteIcon('actions-document-close');
 
 			$entry = '
@@ -187,7 +185,7 @@ class tx_opendocs implements backend_toolbarItem {
 					<td class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\'' . $md5sum . '\');">' . $closeIcon . '</td>
 				</tr>';
 		} else {
-				// recently used document
+				// Recently used document
 			$entry = '
 				<tr class="recentdoc' . $firstRow . '">
 					<td class="icon">' . $icon . '</td>
@@ -199,44 +197,43 @@ class tx_opendocs implements backend_toolbarItem {
 	}
 
 	/**
-	 * returns additional attributes for the list item in the toolbar
+	 * Returns additional attributes for the list item in the toolbar
 	 *
-	 * @return	string		list item HTML attibutes
+	 * @return string List item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
 		return ' id="tx-opendocs-menu"';
 	}
 
 	/**
-	 * adds the neccessary javascript to the backend
+	 * Adds the neccessary javascript to the backend
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile(t3lib_extMgm::extRelPath($this->EXTKEY) . 'opendocs.js');
 	}
 
 	/**
-	 * adds the neccessary CSS to the backend
+	 * Adds the neccessary CSS to the backend
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function addCssToBackend() {
 		$this->backendReference->addCssFile('opendocs', t3lib_extMgm::extRelPath($this->EXTKEY) . 'opendocs.css');
 	}
-
 
 	/*******************
 	 ***    HOOKS    ***
 	 *******************/
 
 	/**
-	 * called as a hook in t3lib_BEfunc::setUpdateSignal, calls a JS function to change
+	 * Called as a hook in t3lib_BEfunc::setUpdateSignal, calls a JS function to change
 	 * the number of opened documents
 	 *
-	 * @param	array		$params
-	 * @param	unknown_type		$ref
-	 * @return	string		list item HTML attibutes
+	 * @param array $params
+	 * @param unknown_type $ref
+	 * @return string list item HTML attibutes
 	 */
 	public function updateNumberOfOpenDocsHook(&$params, $ref) {
 		$params['JScode'] = '
@@ -246,35 +243,34 @@ class tx_opendocs implements backend_toolbarItem {
 		';
 	}
 
-
 	/******************
 	 *** AJAX CALLS ***
 	 ******************/
 
 	/**
-	 * closes a document in the session and
+	 * Closes a document in the session and
 	 *
-	 * @param	array		array of parameters from the AJAX interface, currently unused
-	 * @param	TYPO3AJAX	object of type TYPO3AJAX
-	 * @return	string		list item HTML attibutes
+	 * @param array $params Array of parameters from the AJAX interface, currently unused
+	 * @param TYPO3AJAX $ajaxObj Object of type TYPO3AJAX
+	 * @return string List item HTML attibutes
 	 */
 	public function closeDocument($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 		$md5sum = t3lib_div::_GP('md5sum');
 
 		if ($md5sum && isset($this->openDocs[$md5sum])) {
 
-				// add the document to be closed to the recent documents
+				// Add the document to be closed to the recent documents
 			$this->recentDocs = array_merge(
 				array($md5sum => $this->openDocs[$md5sum]),
 				$this->recentDocs
 			);
 
-				// allow a maximum of 8 recent documents
+				// Allow a maximum of 8 recent documents
 			if (count($this->recentDocs) > 8) {
 				$this->recentDocs = array_slice($this->recentDocs, 0, 8);
 			}
 
-				// remove it from the list of the open documents, and store the status
+				// Remove it from the list of the open documents, and store the status
 			unset($this->openDocs[$md5sum]);
 			list(, $docDat) = $GLOBALS['BE_USER']->getModuleData('alt_doc.php', 'ses');
 			$GLOBALS['BE_USER']->pushModuleData('alt_doc.php', array($this->openDocs, $docDat));
@@ -285,11 +281,11 @@ class tx_opendocs implements backend_toolbarItem {
 	}
 
 	/**
-	 * renders the menu so that it can be returned as response to an AJAX call
+	 * Renders the menu so that it can be returned as response to an AJAX call
 	 *
-	 * @param	array		array of parameters from the AJAX interface, currently unused
-	 * @param	TYPO3AJAX	object of type TYPO3AJAX
-	 * @return	void
+	 * @param array $params Array of parameters from the AJAX interface, currently unused
+	 * @param TYPO3AJAX $ajaxObj Object of type TYPO3AJAX
+	 * @return void
 	 */
 	public function renderAjax($params = array(), TYPO3AJAX &$ajaxObj = NULL) {
 		$menuContent = $this->renderMenu();
