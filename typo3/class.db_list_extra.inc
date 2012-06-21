@@ -395,12 +395,12 @@ class localRecordList extends recordList {
 			$this->firstElementNumber = $this->firstElementNumber - 2;
 			$this->iLimit = $this->iLimit + 2;
 				// (API function from class.db_list.inc)
-			$queryParts = $this->makeQueryArray($table, $id,$addWhere,$selFieldList);
+			$queryParts = $this->makeQueryArray($table, $id, $addWhere, $selFieldList);
 			$this->firstElementNumber = $this->firstElementNumber + 2;
 			$this->iLimit = $this->iLimit - 2;
 		} else {
 				// (API function from class.db_list.inc)
-			$queryParts = $this->makeQueryArray($table, $id,$addWhere,$selFieldList);
+			$queryParts = $this->makeQueryArray($table, $id, $addWhere, $selFieldList);
 		}
 			// Finding the total amount of records on the page (API function from class.db_list.inc)
 		$this->setTotalItems($queryParts);
@@ -575,7 +575,7 @@ class localRecordList extends recordList {
 						$hasMore = ($this->totalItems > $this->itemsLimitSingleTable);
 						$iOut .= '<tr><td colspan="' . count($this->fieldArray) . '" style="padding:5px;">
 								<a href="'.htmlspecialchars($this->listURL() . '&table=' . rawurlencode($table)) . '">' .
-								'<img' . t3lib_iconWorks::skinImg($this->backPath,'gfx/pildown.gif', 'width="14" height="14"') .' alt="" />'.
+								'<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/pildown.gif', 'width="14" height="14"') .' alt="" />'.
 								' <i>[1 - ' . $countOnFirstPage . ($hasMore ? '+' : '') . ']</i></a>
 								</td></tr>';
 						}
@@ -708,11 +708,11 @@ class localRecordList extends recordList {
 				} elseif ($fCol == '_REF_') {
 					$theData[$fCol] = $this->createReferenceHtml($table, $row['uid']);
 				} elseif ($fCol == '_CONTROL_') {
-					$theData[$fCol]=$this->makeControl($table,$row);
+					$theData[$fCol] = $this->makeControl($table, $row);
 				} elseif ($fCol == '_AFTERCONTROL_' || $fCol == '_AFTERREF_') {
 					$theData[$fCol] = '&nbsp;';
 				} elseif ($fCol == '_CLIPBOARD_') {
-					$theData[$fCol]=$this->makeClip($table,$row);
+					$theData[$fCol] = $this->makeClip($table, $row);
 				} elseif ($fCol == '_LOCALIZATION_') {
 					list($lC1, $lC2) = $this->makeLocalizationPanel($table, $row);
 					$theData[$fCol] = $lC1;
@@ -735,7 +735,7 @@ class localRecordList extends recordList {
 
 				// Add row to CSV list:
 			if ($this->csvOutput) {
-				$this->addToCSV($row,$table);
+				$this->addToCSV($row, $table);
 			}
 
 			// Add classes to table cells
@@ -897,7 +897,7 @@ class localRecordList extends recordList {
 						if ($this->calcPerms & ($table == 'pages'?8:16) && $this->showNewRecLink($table)) {
 							if ($table == 'tt_content' && $this->newWizards) {
 									//  If mod.web_list.newContentWiz.overrideWithExtension is set, use that extension's create new content wizard instead:
-								$tmpTSc = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'],'mod.web_list');
+								$tmpTSc = t3lib_BEfunc::getModTSconfig($this->pageinfo['uid'], 'mod.web_list');
 								$tmpTSc = $tmpTSc['properties']['newContentWiz.']['overrideWithExtension'];
 								$newContentWizScriptPath = $this->backPath.t3lib_extMgm::isLoaded($tmpTSc) ? (t3lib_extMgm::extRelPath($tmpTSc).'mod1/db_new_content_el.php') : 'sysext/cms/layout/db_new_content_el.php';
 
@@ -1142,7 +1142,7 @@ class localRecordList extends recordList {
 
 			// If the listed table is 'pages' we have to request the permission settings for each page:
 		if ($table == 'pages') {
-			$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages',$row['uid']));
+			$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages', $row['uid']));
 		}
 
 			// This expresses the edit permissions for this particular element:
@@ -1222,7 +1222,7 @@ class localRecordList extends recordList {
 				}
 
 					// "Edit Perms" link:
-				if ($table == 'pages' && $GLOBALS['BE_USER']->check('modules','web_perm') && t3lib_extMgm::isLoaded('perm')) {
+				if ($table == 'pages' && $GLOBALS['BE_USER']->check('modules', 'web_perm') && t3lib_extMgm::isLoaded('perm')) {
 					$cells['perms'] =
 						'<a href="' .
 							htmlspecialchars(
@@ -1233,7 +1233,7 @@ class localRecordList extends recordList {
 						'">'.
 							t3lib_iconWorks::getSpriteIcon('status-status-locked') .
 						'</a>';
-				} elseif (!$this->table && $GLOBALS['BE_USER']->check('modules','web_perm')) {
+				} elseif (!$this->table && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
 					$cells['perms'] = $this->spaceIcon;
 				}
 
@@ -1270,9 +1270,9 @@ class localRecordList extends recordList {
 					}
 					if ($this->currentTable['next'][$row['uid']])	{	// Down
 						$params='&cmd['.$table.']['.$row['uid'].'][move]='.$this->currentTable['next'][$row['uid']];
-						$cells['moveDown']='<a href="#" onclick="'.htmlspecialchars('return jumpToUrl(\''.$GLOBALS['SOBE']->doc->issueCommand($params,-1).'\');').'" title="'.$GLOBALS['LANG']->getLL('moveDown', TRUE) . '">' .
-									t3lib_iconWorks::getSpriteIcon('actions-move-down') .
-								'</a>';
+						$cells['moveDown'] = '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '" title="' . $GLOBALS['LANG']->getLL('moveDown', TRUE) . '">' .
+							t3lib_iconWorks::getSpriteIcon('actions-move-down') .
+							'</a>';
 					} else {
 						$cells['moveDown'] = $this->spaceIcon;
 					}
@@ -1301,7 +1301,7 @@ class localRecordList extends recordList {
 
 					// "Delete" link:
 				if (($table == 'pages' && ($localCalcPerms&4)) || ($table != 'pages' && ($this->calcPerms&16))) {
-					$titleOrig = t3lib_BEfunc::getRecordTitle($table,$row,FALSE,TRUE);
+					$titleOrig = t3lib_BEfunc::getRecordTitle($table, $row, FALSE, TRUE);
 					$title = t3lib_div::slashJS(t3lib_div::fixed_lgd_cs($titleOrig, $this->fixedL), 1);
 					$params = '&cmd['.$table.']['.$row['uid'].'][delete]=1';
 
@@ -1333,7 +1333,7 @@ class localRecordList extends recordList {
 					}
 						// Down (Paste as subpage to the page right above)
 					if ($this->currentTable['prevUid'][$row['uid']]) {
-						$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages',$this->currentTable['prevUid'][$row['uid']]));
+						$localCalcPerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages', $this->currentTable['prevUid'][$row['uid']]));
 						if ($localCalcPerms&8) {
 							$params='&cmd['.$table.']['.$row['uid'].'][move]='.$this->currentTable['prevUid'][$row['uid']];
 							$cells['moveRight'] = '<a href="#" onclick="' . htmlspecialchars('return jumpToUrl(\'' . $GLOBALS['SOBE']->doc->issueCommand($params, -1) . '\');') . '" title="' . $GLOBALS['LANG']->getLL('nextLevel', TRUE) . '">' .
@@ -1360,9 +1360,9 @@ class localRecordList extends recordList {
 		 */
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'])) {
 			$stat = '';
-			$_params = array($table,$row['uid']);
+			$_params = array($table, $row['uid']);
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['recStatInfoHooks'] as $_funcRef) {
-				$stat .= t3lib_div::callUserFunction($_funcRef,$_params,$this);
+				$stat .= t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
 			$cells['stat'] = $stat;
 		}
@@ -1384,8 +1384,8 @@ class localRecordList extends recordList {
 
 			// Compile items into a DIV-element:
 		return '
-											<!-- CONTROL PANEL: '.$table.':'.$row['uid'].' -->
-											<div class="typo3-DBctrl">'.implode('',$cells).'</div>';
+											<!-- CONTROL PANEL: ' . $table . ':' . $row['uid'] . ' -->
+											<div class="typo3-DBctrl">' . implode('', $cells) . '</div>';
 	}
 
 	/**
@@ -1409,7 +1409,7 @@ class localRecordList extends recordList {
 		if ($this->clipObj->current=='normal') {
 
 				// Show copy/cut icons:
-			$isSel = (string)$this->clipObj->isSelected($table,$row['uid']);
+			$isSel = (string)$this->clipObj->isSelected($table, $row['uid']);
 			$cells['copy'] = $isL10nOverlay ? $this->spaceIcon : '<a href="#" onclick="' . htmlspecialchars('return jumpSelf(\'' . $this->clipObj->selUrlDB($table, $row['uid'], 1, ($isSel=='copy'), array('returnUrl'=>'')) . '\');') . '" title="'.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.copy', TRUE) . '">' .
 						((!$isSel=='copy') ? t3lib_iconWorks::getSpriteIcon('actions-edit-copy') : t3lib_iconWorks::getSpriteIcon('actions-edit-copy-release')) .
 					'</a>';
@@ -1424,7 +1424,7 @@ class localRecordList extends recordList {
 			$this->CBnames[] = $n;
 
 				// Check if the current element is selected and if so, prepare to set the checkbox as selected:
-			$checked = ($this->clipObj->isSelected($table,$row['uid'])?' checked="checked"':'');
+			$checked = ($this->clipObj->isSelected($table, $row['uid']) ? ' checked="checked"' : '');
 
 				// If the "duplicateField" value is set then select all elements which are duplicates...
 			if ($this->duplicateField && isset($row[$this->duplicateField])) {
@@ -1473,8 +1473,8 @@ class localRecordList extends recordList {
 		}
 
 			// Compile items into a DIV-element:
-		return '							<!-- CLIPBOARD PANEL: '.$table.':'.$row['uid'].' -->
-											<div class="typo3-clipCtrl">'.implode('',$cells).'</div>';
+		return '							<!-- CLIPBOARD PANEL: ' . $table . ':' . $row['uid'] . ' -->
+											<div class="typo3-clipCtrl">' . implode('', $cells) . '</div>';
 	}
 
 	/**
@@ -1617,12 +1617,12 @@ class localRecordList extends recordList {
 				? rtrim($GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label']), ':')
 				: '[' . $fN . ']');
 			$opt[] = '
-											<option value="'.$fN.'"'.(in_array($fN,$setFields)?' selected="selected"':'').'>'.htmlspecialchars($fL).'</option>';
+											<option value="' . $fN . '"' . (in_array($fN, $setFields) ? ' selected="selected"' : '') . '>' . htmlspecialchars($fL) . '</option>';
 		}
 
 			// Compile the options into a multiple selector box:
 		$lMenu = '
-										<select size="'.t3lib_utility_Math::forceIntegerInRange(count($fields)+1,3,20).'" multiple="multiple" name="displayFields['.$table.'][]">'.implode('',$opt).'
+										<select size="' . t3lib_utility_Math::forceIntegerInRange(count($fields) + 1, 3, 20) . '" multiple="multiple" name="displayFields[' . $table . '][]">' . implode('', $opt) . '
 										</select>
 				';
 
@@ -1671,7 +1671,7 @@ class localRecordList extends recordList {
 	 * @return boolean
 	 */
 	function clipNumPane() {
-		return in_Array('_CLIPBOARD_',$this->fieldArray) && $this->clipObj->current!='normal';
+		return in_Array('_CLIPBOARD_', $this->fieldArray) && $this->clipObj->current != 'normal';
 	}
 
 	/**
@@ -1694,7 +1694,7 @@ class localRecordList extends recordList {
 
 			//	 Create the sort link:
 		$sortUrl = $this->listURL('', -1, 'sortField,sortRev,table,firstElementNumber') . '&table=' . $table . '&sortField=' . $field . '&sortRev=' . ($this->sortRev || ($this->sortField != $field) ? 0 : 1);
-		$sortArrow = ($this->sortField==$field?'<img'.t3lib_iconWorks::skinImg($this->backPath,'gfx/red'.($this->sortRev?'up':'down').'.gif','width="7" height="4"').' alt="" />':'');
+		$sortArrow = ($this->sortField == $field ? '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/red' . ($this->sortRev ? 'up' : 'down') . '.gif', 'width="7" height="4"') . ' alt="" />' : '');
 
 			// Return linked field:
 		return '<a href="'.htmlspecialchars($sortUrl).'">'.$code.
@@ -1711,7 +1711,7 @@ class localRecordList extends recordList {
 	 */
 	function recPath($pid) {
 		if (!isset($this->recPath_cache[$pid])) {
-			$this->recPath_cache[$pid] = t3lib_BEfunc::getRecordPath($pid,$this->perms_clause,20);
+			$this->recPath_cache[$pid] = t3lib_BEfunc::getRecordPath($pid, $this->perms_clause, 20);
 		}
 		return $this->recPath_cache[$pid];
 	}
@@ -1832,7 +1832,7 @@ class localRecordList extends recordList {
 		header('Content-Disposition: attachment; filename='.$filename);
 
 			// Printing the content of the CSV lines:
-		echo implode(chr(13).chr(10),$this->csvLines);
+		echo implode(chr(13) . chr(10), $this->csvLines);
 
 			// Exits:
 		exit;
