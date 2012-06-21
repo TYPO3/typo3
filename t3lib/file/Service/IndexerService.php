@@ -332,7 +332,7 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 	 */
 	protected function emitPreFileIndexSignal(t3lib_file_File $fileObject, $fileInfo) {
 		$this->getSignalSlotDispatcher()->dispatch(
-			't3lib_file_Storage',
+			't3lib_file_Service_IndexerService',
 			'preFileIndex',
 			array($fileObject, $fileInfo)
 		);
@@ -347,7 +347,7 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 	 */
 	protected function emitPostFileIndexSignal(t3lib_file_File $fileObject, $fileInfo) {
 		$this->getSignalSlotDispatcher()->dispatch(
-			't3lib_file_Storage',
+			't3lib_file_Service_IndexerService',
 			'postFileIndex',
 			array($fileObject, $fileInfo)
 		);
