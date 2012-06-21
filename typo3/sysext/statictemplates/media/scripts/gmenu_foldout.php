@@ -179,7 +179,7 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 <!--
 GFV_foldNumber='.$this->WMmenuItems.';          //How many toplinks do you have?
 GFV_foldTimer='.t3lib_utility_Math::forceIntegerInRange(($this->mconf['foldTimer']?$this->mconf['foldTimer']:40), 1, 3000).';          //The timeout in the animation, these are milliseconds.
-GFV_foldSpeed='.t3lib_utility_Math::forceIntegerInRange($this->mconf['foldSpeed'],1,100).';           //How many steps in an animation?
+GFV_foldSpeed=' . t3lib_utility_Math::forceIntegerInRange($this->mconf['foldSpeed'], 1, 100) . ';           //How many steps in an animation?
 GFV_stayFolded='.($this->mconf['stayFolded'] ? 'true' : 'false').';      //Stay open when you click a new toplink?
 GFV_foldImg='.$this->WMimagesFlag.';             //Do you want images (if not set to 0 and remove the images from the body)?
 GFV_currentFold=null;

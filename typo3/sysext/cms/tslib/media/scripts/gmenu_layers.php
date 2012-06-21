@@ -324,7 +324,7 @@ GLV_curLayerHeight["'.$this->WMid.'"]=0;
 GLV_curLayerX["'.$this->WMid.'"]=0;
 GLV_curLayerY["'.$this->WMid.'"]=0;
 GLV_menuOn["'.$this->WMid.'"] = null;
-GLV_gap["'.$this->WMid.'"]='.t3lib_utility_Math::forceIntegerInRange($this->mconf['hideMenuWhenNotOver'],0,600).';
+GLV_gap["' . $this->WMid . '"]=' . t3lib_utility_Math::forceIntegerInRange($this->mconf['hideMenuWhenNotOver'], 0, 600) . ';
 GLV_currentLayer["'.$this->WMid.'"] = null;
 GLV_currentROitem["'.$this->WMid.'"] = null;
 GLV_hasBeenOver["'.$this->WMid.'"]=0;
@@ -335,7 +335,7 @@ GLV_dontHideOnMouseUp["'.$this->WMid.'"] = '.($this->mconf['dontHideOnMouseUp']?
 GLV_dontFollowMouse["'.$this->WMid.'"] = '.($this->mconf['dontFollowMouse']?1:0).';
 GLV_date = new Date();
 GLV_timeout["'.$this->WMid.'"] = GLV_date.getTime();
-GLV_timeoutRef["'.$this->WMid.'"] = '.t3lib_utility_Math::forceIntegerInRange($this->mconf['hideMenuTimer'],0,20000).';
+GLV_timeoutRef["' . $this->WMid . '"] = ' . t3lib_utility_Math::forceIntegerInRange($this->mconf['hideMenuTimer'], 0, 20000) . ';
 GLV_menuXY["'.$this->WMid.'"] = new Array();
 '.implode(LF, $this->WMxyArray).'
 '.$this->WMrestoreVars;
