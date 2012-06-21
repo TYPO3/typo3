@@ -1,6 +1,6 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
-	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
 }
 
 if (TYPO3_MODE == 'BE') {
@@ -18,10 +18,10 @@ if (TYPO3_MODE == 'BE') {
 
 	t3lib_extMgm::addLLrefForTCAdescr('xMOD_tx_impexp', 'EXT:impexp/locallang_csh.xml');
 
-	// CSH labels for TYPO3 4.5 and greater.  These labels override the ones set above, while still falling back to the original labels if no translation is available.
+		// CSH labels for TYPO3 4.5 and greater.  These labels override the ones set above, while still falling back to the original labels if no translation is available.
 	$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride']['EXT:impexp/locallang_csh.xml'][] = 'EXT:impexp/locallang_csh_45.xml';
 
-		// special context menu actions for the import/export module
+		// Special context menu actions for the import/export module
 	$importExportActions = '
 		9000 = DIVIDER
 
@@ -42,7 +42,7 @@ if (TYPO3_MODE == 'BE') {
 		}
 	';
 
-		// context menu user default configuration
+		// Context menu user default configuration
 	$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 		options.contextMenu.table {
 			virtual_root.items {
