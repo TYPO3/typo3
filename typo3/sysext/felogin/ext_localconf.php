@@ -11,7 +11,7 @@ plugin.tx_felogin_pi1 {
   userFunc = tx_felogin_pi1->main
 }
 ');
-	t3lib_extMgm::addTypoScript($_EXTKEY, 'setup','
+	t3lib_extMgm::addTypoScript($_EXTKEY, 'setup', '
 # Setting '.$_EXTKEY.' plugin TypoScript
 '.$pluginContent);
 
