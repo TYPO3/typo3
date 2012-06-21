@@ -79,9 +79,4 @@ class Tx_Workspaces_Service_AutoPublish {
 		$GLOBALS['BE_USER']->user['admin'] = $currentAdminStatus;
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/AutoPublish.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/AutoPublish.php']);
-}
 ?>

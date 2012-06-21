@@ -585,10 +585,4 @@ class Tx_Workspaces_Service_GridData {
 		return t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/GridData.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/GridData.php']);
-}
-
 ?>

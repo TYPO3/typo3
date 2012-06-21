@@ -671,9 +671,4 @@ class Tx_Workspaces_Service_Workspaces implements t3lib_Singleton {
 		return $this->pageCache[$uid];
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/Workspaces.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/Workspaces.php']);
-}
 ?>

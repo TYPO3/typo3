@@ -71,9 +71,4 @@ abstract class Tx_Workspaces_ExtDirect_AbstractHandler {
 		return t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/AbstractHandler.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/AbstractHandler.php']);
-}
 ?>

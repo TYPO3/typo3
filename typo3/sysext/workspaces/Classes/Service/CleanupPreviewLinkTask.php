@@ -48,8 +48,4 @@ class Tx_Workspaces_Service_CleanupPreviewLinkTask extends tx_scheduler_Task {
 		return TRUE;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/CleanupPreviewLinkTask.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/Service/CleanupPreviewLinkTask.php']);
-}
 ?>

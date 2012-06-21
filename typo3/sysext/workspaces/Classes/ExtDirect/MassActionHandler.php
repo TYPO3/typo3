@@ -234,9 +234,4 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 		return $recordsProcessed;
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/MassActionHandler.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/workspaces/Classes/ExtDirect/MassActionHandler.php']);
-}
 ?>
