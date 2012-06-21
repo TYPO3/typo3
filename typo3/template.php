@@ -2103,4 +2103,7 @@ class frontendDoc extends template {
 	}
 }
 
+	// The template is loaded
+$GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('template');
+
 ?>

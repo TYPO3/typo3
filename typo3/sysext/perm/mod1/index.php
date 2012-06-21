@@ -33,6 +33,7 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
+require('class.sc_mod_web_perm_ajax.php');
 $LANG->includeLLFile('EXT:lang/locallang_mod_web_perm.xml');
 $BE_USER->modAccess($MCONF, 1);
 

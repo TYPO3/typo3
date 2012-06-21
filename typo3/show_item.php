@@ -35,6 +35,7 @@
 
 $GLOBALS['BACK_PATH'] = '';
 require_once('init.php');
+require_once('template.php');
 
 /**
  * Extension of transfer data class

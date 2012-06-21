@@ -35,6 +35,11 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
+
+	// Include classes
+require_once(PATH_typo3.'/class.db_list.inc');
+require_once(PATH_typo3.'/class.db_list_extra.inc');
+
 /**
  * Local version of the record list.
  *

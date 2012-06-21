@@ -42,7 +42,8 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require('init.php');
+require ('init.php');
+require ('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
 
 /**

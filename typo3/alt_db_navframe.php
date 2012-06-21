@@ -36,6 +36,8 @@
 
 $BACK_PATH = '';
 require_once('init.php');
+require('template.php');
+require_once('class.webpagetree.php');
 
 
 /**
