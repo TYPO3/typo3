@@ -32,6 +32,7 @@
  * @package	TYPO3
  * @subpackage tx_Lang
  */
+require_once (PATH_typo3 . 'interfaces/interface.backend_cacheActionsHook.php');
 class tx_lang_clearcachemenu implements backend_cacheActionsHook {
 
 	/**

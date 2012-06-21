@@ -34,6 +34,7 @@
 $BE_USER->modAccess($MCONF, 1);
 
 t3lib_extMgm::isLoaded('indexed_search', 1);
+require_once(t3lib_extMgm::extPath('indexed_search') . 'class.indexer.php');
 
 
 

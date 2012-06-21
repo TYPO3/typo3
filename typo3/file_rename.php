@@ -35,6 +35,7 @@
 
 $BACK_PATH = '';
 require('init.php');
+require('template.php');
 
 /**
  * Script Class for the rename-file form.

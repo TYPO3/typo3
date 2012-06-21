@@ -36,6 +36,7 @@
 
 $BACK_PATH = '';
 require('init.php');
+require('template.php');
 $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
 
 /**

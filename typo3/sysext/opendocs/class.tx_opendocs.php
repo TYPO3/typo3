@@ -25,6 +25,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+require_once(PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php');
+
 	// load the language file
 $GLOBALS['LANG']->includeLLFile('EXT:opendocs/locallang_opendocs.xml');
 

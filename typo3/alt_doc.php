@@ -37,6 +37,7 @@
  */
 
 require_once('init.php');
+require_once('template.php');
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_alt_doc.xml');
 
 t3lib_BEfunc::lockRecords();

@@ -36,6 +36,7 @@
 
 define('TYPO3_PROCEED_IF_NO_USER', 1);
 require('init.php');
+require('template.php');
 
 /**
  * Script Class for rendering the login form

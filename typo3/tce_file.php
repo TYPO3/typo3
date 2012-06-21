@@ -38,6 +38,7 @@
  */
 
 require_once('init.php');
+require_once('classes/class.typo3_tcefile.php');
 
 	// Make instance:
 $SOBE = t3lib_div::makeInstance('TYPO3_tcefile');

@@ -36,6 +36,7 @@
 
 $GLOBALS['BACK_PATH'] = '';
 require('init.php');
+require('template.php');
 
 /**
  * Script Class for rendering the file editing screen

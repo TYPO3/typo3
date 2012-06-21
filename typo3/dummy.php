@@ -34,7 +34,8 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require('init.php');
+require ('init.php');
+require ('template.php');
 
 /**
  * Script Class, creating the content for the dummy script - which is just blank output.

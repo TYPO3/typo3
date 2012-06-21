@@ -40,6 +40,9 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
+
+require_once(PATH_typo3 . 'template.php');
+
 /**
  * Script Class, handling the calling of methods in the file admin classes.
  *

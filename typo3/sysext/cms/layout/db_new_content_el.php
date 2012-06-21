@@ -38,6 +38,7 @@
 unset($MCONF);
 require('conf.php');
 require($BACK_PATH.'init.php');
+require($BACK_PATH.'template.php');
 
 	// Unset MCONF/MLANG since all we wanted was back path etc. for this particular script.
 unset($MCONF);
