@@ -5422,6 +5422,10 @@ final class t3lib_div {
 
 				// write message to a file
 			if ($type == 'file') {
+					// In case lock is acquired before autoloader was defined:
+				if (class_exists('t3lib_lock') === FALSE) {
+					require_once PATH_t3lib . 'class.t3lib_lock.php';
+				}
 				$lockObject = t3lib_div::makeInstance('t3lib_lock', $destination, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
 				/** @var t3lib_lock $lockObject */
 				$lockObject->setEnableLogging(FALSE);
