@@ -165,7 +165,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disableDiscardStageButton', $this->isInvalidStage($nextStage) && $this->isInvalidStage($previousStage));
 		$resourcePath = t3lib_extMgm::extRelPath('lang') . 'res/js/be/';
 		$this->pageRenderer->addJsFile($resourcePath . 'typo3lang.js');
-		$this->pageRenderer->addJsInlineCode("workspaces.preview.lll", "
+		$this->pageRenderer->addJsInlineCode('workspaces.preview.lll', "
 		TYPO3.lang = {
 			visualPreview: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.visualPreview', TRUE) . "',
 			listView: '" . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.listView', TRUE) . "',

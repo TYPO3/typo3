@@ -40,8 +40,8 @@ class Tx_Workspaces_Service_WorkspacesTest extends tx_phpunit_database_testcase 
 
 		$service = new Tx_Workspaces_Service_Workspaces();
 		$result = $service->selectVersionsInWorkspace(90);
-		$this->assertTrue(empty($result), "The workspace 90 contains no changes and the result was supposed to be empty");
-		$this->assertTrue(is_array($result), "Even the empty result from workspace 90 is supposed to be an array");
+		$this->assertTrue(empty($result), 'The workspace 90 contains no changes and the result was supposed to be empty');
+		$this->assertTrue(is_array($result), 'Even the empty result from workspace 90 is supposed to be an array');
 	}
 
 	/**
@@ -53,10 +53,10 @@ class Tx_Workspaces_Service_WorkspacesTest extends tx_phpunit_database_testcase 
 
 		$service = new Tx_Workspaces_Service_Workspaces();
 		$result = $service->selectVersionsInWorkspace(91, 0, -99, 2);
-		$this->assertTrue(is_array($result), "The result from workspace 91 is supposed to be an array");
-		$this->assertEquals(1, sizeof($result['pages']), "The result is supposed to contain one version for this page in workspace 91");
-		$this->assertEquals(102, $result['pages'][0]['uid'], "Wrong workspace overlay record picked");
-		$this->assertEquals(1, $result['pages'][0]['livepid'], "Real pid wasn't resolved correctly");
+		$this->assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
+		$this->assertEquals(1, sizeof($result['pages']), 'The result is supposed to contain one version for this page in workspace 91');
+		$this->assertEquals(102, $result['pages'][0]['uid'], 'Wrong workspace overlay record picked');
+		$this->assertEquals(1, $result['pages'][0]['livepid'], 'Real pid wasn\'t resolved correctly');
 	}
 
 	/**
@@ -68,8 +68,8 @@ class Tx_Workspaces_Service_WorkspacesTest extends tx_phpunit_database_testcase 
 
 		$service = new Tx_Workspaces_Service_Workspaces();
 		$result = $service->selectVersionsInWorkspace(Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES, 0, -99, 2);
-		$this->assertTrue(is_array($result), "The result from workspace 91 is supposed to be an array");
-		$this->assertEquals(2, sizeof($result['pages']), "The result is supposed to contain one version for this page in workspace 91");
+		$this->assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
+		$this->assertEquals(2, sizeof($result['pages']), 'The result is supposed to contain one version for this page in workspace 91');
 	}
 
 	/**
@@ -81,8 +81,8 @@ class Tx_Workspaces_Service_WorkspacesTest extends tx_phpunit_database_testcase 
 
 		$service = new Tx_Workspaces_Service_Workspaces();
 		$result = $service->selectVersionsInWorkspace(91, 0, -99, 1, 99);
-		$this->assertTrue(is_array($result), "The result from workspace 91 is supposed to be an array");
-		$this->assertEquals(4, sizeof($result['pages']), "The result is supposed to contain four versions for this page in workspace 91");
+		$this->assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
+		$this->assertEquals(4, sizeof($result['pages']), 'The result is supposed to contain four versions for this page in workspace 91');
 	}
 
 	/**
@@ -96,17 +96,17 @@ class Tx_Workspaces_Service_WorkspacesTest extends tx_phpunit_database_testcase 
 
 			// testing stage 1
 		$result = $service->selectVersionsInWorkspace(91, 0, 1, 1, 99);
-		$this->assertTrue(is_array($result), "The result from workspace 91 is supposed to be an array");
-		$this->assertEquals(2, sizeof($result['pages']), "The result is supposed to contain two versions for this page in workspace 91");
-		$this->assertEquals(102, $result['pages'][0]['uid'], "First records is supposed to have the uid 102");
-		$this->assertEquals(105, $result['pages'][1]['uid'], "First records is supposed to have the uid 105");
+		$this->assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
+		$this->assertEquals(2, sizeof($result['pages']), 'The result is supposed to contain two versions for this page in workspace 91');
+		$this->assertEquals(102, $result['pages'][0]['uid'], 'First records is supposed to have the uid 102');
+		$this->assertEquals(105, $result['pages'][1]['uid'], 'First records is supposed to have the uid 105');
 
 			// testing stage 2
 		$result = $service->selectVersionsInWorkspace(91, 0, 2, 1, 99);
-		$this->assertTrue(is_array($result), "The result from workspace 91 is supposed to be an array");
-		$this->assertEquals(2, sizeof($result['pages']), "The result is supposed to contain two versions for this page in workspace 91");
-		$this->assertEquals(104, $result['pages'][0]['uid'], "First records is supposed to have the uid 106");
-		$this->assertEquals(106, $result['pages'][1]['uid'], "First records is supposed to have the uid 106");
+		$this->assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
+		$this->assertEquals(2, sizeof($result['pages']), 'The result is supposed to contain two versions for this page in workspace 91');
+		$this->assertEquals(104, $result['pages'][0]['uid'], 'First records is supposed to have the uid 106');
+		$this->assertEquals(106, $result['pages'][1]['uid'], 'First records is supposed to have the uid 106');
 	}
 
 	/**
@@ -120,16 +120,16 @@ class Tx_Workspaces_Service_WorkspacesTest extends tx_phpunit_database_testcase 
 
 			// testing all "draft" records
 		$result = $service->selectVersionsInWorkspace(91, 1, -99, 1, 99);
-		$this->assertTrue(is_array($result), "The result from workspace 91 is supposed to be an array");
-		$this->assertEquals(2, sizeof($result['pages']), "The result is supposed to contain three versions for this page in workspace 91");
+		$this->assertTrue(is_array($result), 'The result from workspace 91 is supposed to be an array');
+		$this->assertEquals(2, sizeof($result['pages']), 'The result is supposed to contain three versions for this page in workspace 91');
 
 			// testing all "archive" records
 		$result = $service->selectVersionsInWorkspace(91, 2, -99, 1, 99);
-		$this->assertEquals(2, sizeof($result['pages']), "The result is supposed to contain two versions for this page in workspace 91");
+		$this->assertEquals(2, sizeof($result['pages']), 'The result is supposed to contain two versions for this page in workspace 91');
 
 			// testing both types records
 		$result = $service->selectVersionsInWorkspace(91, 0, -99, 1, 99);
-		$this->assertEquals(4, sizeof($result['pages']), "The result is supposed to contain two versions for this page in workspace 91");
+		$this->assertEquals(4, sizeof($result['pages']), 'The result is supposed to contain two versions for this page in workspace 91');
 	}
 
 	/**
@@ -146,8 +146,8 @@ class Tx_Workspaces_Service_WorkspacesTest extends tx_phpunit_database_testcase 
 		$service = new Tx_Workspaces_Service_Workspaces();
 		$result = $service->selectVersionsInWorkspace(91, 0, -99, 2, 99);
 
-		$this->assertEquals(0, sizeof($result['pages']), "Changes should not show up in this branch of the tree within workspace 91");
-		$this->assertEquals(0, sizeof($result['tt_content']), "Changes should not show up in this branch of the tree within workspace 91");
+		$this->assertEquals(0, sizeof($result['pages']), 'Changes should not show up in this branch of the tree within workspace 91');
+		$this->assertEquals(0, sizeof($result['tt_content']), 'Changes should not show up in this branch of the tree within workspace 91');
 	}
 
 	/**
@@ -160,14 +160,14 @@ class Tx_Workspaces_Service_WorkspacesTest extends tx_phpunit_database_testcase 
 			// Test if the placeholder can be found when we ask using recursion (same result)
 		$service = new Tx_Workspaces_Service_Workspaces();
 		$result = $service->selectVersionsInWorkspace(91, 0, -99, 5, 99);
-		$this->assertEquals(1, sizeof($result['pages']), "Wrong amount of page versions found within workspace 91");
-		$this->assertEquals(103, $result['pages'][0]['uid'], "Wrong move-to pointer found for page 3 in workspace 91");
-		$this->assertEquals(5, $result['pages'][0]['wspid'], "Wrong workspace-pointer found for page 3 in workspace 91");
-		$this->assertEquals(2, $result['pages'][0]['livepid'], "Wrong live-pointer found for page 3 in workspace 91");
-		$this->assertEquals(1, sizeof($result['tt_content']), "Wrong amount of tt_content versions found within workspace 91");
-		$this->assertEquals(106, $result['tt_content'][0]['uid'], "Wrong move-to pointer found for page 3 in workspace 91");
-		$this->assertEquals(7, $result['tt_content'][0]['wspid'], "Wrong workspace-pointer found for page 3 in workspace 91");
-		$this->assertEquals(2, $result['tt_content'][0]['livepid'], "Wrong live-pointer found for page 3 in workspace 91");
+		$this->assertEquals(1, sizeof($result['pages']), 'Wrong amount of page versions found within workspace 91');
+		$this->assertEquals(103, $result['pages'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');
+		$this->assertEquals(5, $result['pages'][0]['wspid'], 'Wrong workspace-pointer found for page 3 in workspace 91');
+		$this->assertEquals(2, $result['pages'][0]['livepid'], 'Wrong live-pointer found for page 3 in workspace 91');
+		$this->assertEquals(1, sizeof($result['tt_content']), 'Wrong amount of tt_content versions found within workspace 91');
+		$this->assertEquals(106, $result['tt_content'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');
+		$this->assertEquals(7, $result['tt_content'][0]['wspid'], 'Wrong workspace-pointer found for page 3 in workspace 91');
+		$this->assertEquals(2, $result['tt_content'][0]['livepid'], 'Wrong live-pointer found for page 3 in workspace 91');
 	}
 
 	/**
@@ -181,9 +181,9 @@ class Tx_Workspaces_Service_WorkspacesTest extends tx_phpunit_database_testcase 
 		$service = new Tx_Workspaces_Service_Workspaces();
 		$result = $service->selectVersionsInWorkspace(91, 0, -99, 3, 99);
 
-		$this->assertEquals(1, sizeof($result), "Wrong amount of versions found within workspace 91");
-		$this->assertEquals(1, sizeof($result['pages']), "Wrong amount of page versions found within workspace 91");
-		$this->assertEquals(103, $result['pages'][0]['uid'], "Wrong move-to pointer found for page 3 in workspace 91");
+		$this->assertEquals(1, sizeof($result), 'Wrong amount of versions found within workspace 91');
+		$this->assertEquals(1, sizeof($result['pages']), 'Wrong amount of page versions found within workspace 91');
+		$this->assertEquals(103, $result['pages'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');
 	}
 
 	/**
