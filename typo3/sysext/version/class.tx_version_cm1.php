@@ -21,15 +21,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * Addition of the versioning item to the clickmenu
- *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
-
-
-
 
 /**
  * "Versioning" item added to click menu of elements.
@@ -110,11 +101,5 @@ class tx_version_cm1 {
 	function includeLL() {
 		return $GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xml', FALSE);
 	}
-}
-
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/class.tx_version_cm1.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/class.tx_version_cm1.php']);
 }
 ?>

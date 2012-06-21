@@ -24,22 +24,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * Library with Workspace related functionality
- *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Library with Workspace related functionality
@@ -49,9 +33,6 @@
  * @subpackage core
  */
 class wslib {
-
-
-
 
 	/**
 	 * Building tcemain CMD-array for swapping all versions in a workspace.
@@ -203,11 +184,5 @@ class wslib {
 			// Restore admin status
 		$GLOBALS['BE_USER']->user['admin'] = $currentAdminStatus;
 	}
-}
-
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/mod/user/ws/class.wslib.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/mod/user/ws/class.wslib.php']);
 }
 ?>

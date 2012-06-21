@@ -26,6 +26,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  *
  * Contains some parts for staging, versioning and workspaces
@@ -1441,9 +1442,5 @@ class tx_version_tcemain {
 	public function getCommandMap(t3lib_TCEmain $tceMain, array $commandMap) {
 		return t3lib_div::makeInstance('tx_version_tcemain_CommandMap', $this, $tceMain, $commandMap);
 	}
-}
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/class.tx_version_tcemain.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/class.tx_version_tcemain.php']);
 }
 ?>

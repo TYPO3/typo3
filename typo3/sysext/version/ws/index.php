@@ -24,51 +24,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * Module: Workspace manager
- *
- * $Id: index.php 9427 2010-11-17 08:38:31Z benni $
- *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author	Dmitry Dulepov <typo3@accio.lv>
- */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  101: class SC_mod_user_ws_index extends t3lib_SCbase
- *
- *              SECTION: Standard module initialization
- *  128:     function menuConfig()
- *  175:     function init()
- *  233:     function main()
- *  280:     function printContent()
- *
- *              SECTION: Module content: Publish
- *  310:     function moduleContent_publish()
- *  411:     function displayVersionDetails($details)
- *  420:     function displayWorkspaceOverview()
- *
- *              SECTION: Module content: Workspace list
- *  461:     function moduleContent_workspaceList()
- *  476:     function workspaceList_displayUserWorkspaceList()
- *  553:     function workspaceList_getUserWorkspaceList()
- *  592:     function workspaceList_formatWorkspaceData(&$wksp)
- *  634:     function workspaceList_getWebMountPoints(&$wksp)
- *  683:     function workspaceList_getFileMountPoints(&$wksp)
- *  736:     function workspaceList_displayUserWorkspaceListHeader()
- *  756:     function workspaceList_getUserList(&$wksp)
- *  783:     function workspaceList_getUserListForSysWorkspace(&$wksp)
- *  810:     function workspaceList_getUserListWithAccess(&$list, $access)
- *  883:     function workspaceList_displayIcons($currentWorkspace, &$wksp)
- *  931:     function workspaceList_hasEditAccess(&$wksp)
- *  943:     function workspaceList_createFakeWorkspaceRecord($uid)
- *
- * TOTAL FUNCTIONS: 20
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
 
 	// Initialize module:
 unset($MCONF);
@@ -82,9 +37,6 @@ $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_user_ws.xml');
 $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
 require_once('class.wslib.php');
 require_once('class.wslib_gui.php');
-
-
-
 
 /**
  * Module: Workspace manager
@@ -1054,13 +1006,6 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 		return $record;
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/mod/user/ws/index.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/mod/user/ws/index.php']);
-}
-
-
 
 // Make instance:
 $SOBE = t3lib_div::makeInstance('SC_mod_user_ws_index');

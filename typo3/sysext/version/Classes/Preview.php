@@ -24,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Hook for checking if the preview mode is activated
  *    preview mode = show a page of a workspace without having to log in
@@ -289,10 +290,4 @@ class Tx_Version_Preview implements t3lib_Singleton {
 	}
 
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/Classes/Preview.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/Classes/Preview.php']);
-}
-
 ?>

@@ -21,60 +21,6 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * Versioning module
- *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- *
- *
- *  102: class tx_version_cm1 extends t3lib_SCbase
- *
- *              SECTION: Standard module initialization
- *  138:     function menuConfig()
- *  175:     function main()
- *  236:     function jumpToUrl(URL)
- *  296:     function printContent()
- *
- *              SECTION: Versioning management
- *  322:     function versioningMgm()
- *  485:     function pageSubContent($pid, $c=0)
- *  539:     function lookForOwnVersions($table, $uid)
- *  556:     function adminLinks($table, $row)
- *
- *              SECTION: Workspace management
- *  628:     function workspaceMgm()
- *  688:     function displayWorkspaceOverview()
- *  758:     function displayWorkspaceOverview_list($pArray)
- *  923:     function displayWorkspaceOverview_setInPageArray(&$pArray, $table, $row)
- *  936:     function displayWorkspaceOverview_allStageCmd()
- *
- *              SECTION: Helper functions (REDUNDANT FROM user/ws/index.php - someone could refactor this...)
- *  986:     function formatVerId($verId)
- *  996:     function formatWorkspace($wsid)
- * 1023:     function formatCount($count)
- * 1050:     function versionsInOtherWS($table, $uid)
- * 1080:     function showStageChangeLog($table, $id, $stageCommands)
- * 1129:     function subElements($uid, $treeLevel, $origId = 0)
- * 1232:     function subElements_getNonPageRecords($tN, $uid, &$recList)
- * 1262:     function subElements_renderItem(&$tCell, $tN, $uid, $rec, $origId, $iconMode, $HTMLdata)
- * 1331:     function markupNewOriginals()
- * 1353:     function createDiffView($table, $diff_1_record, $diff_2_record)
- * 1470:     function displayWorkspaceOverview_stageCmd($table, &$rec_off)
- * 1557:     function displayWorkspaceOverview_commandLinks($table, &$rec_on, &$rec_off, $vType)
- * 1627:     function displayWorkspaceOverview_commandLinksSub($table, $rec, $origId)
- *
- *              SECTION: Processing
- * 1683:     function publishAction()
- *
- * TOTAL FUNCTIONS: 27
- * (This index is automatically created/updated by the extension "extdeveval")
- *
- */
-
 
 	// DEFAULT initialization of a module [BEGIN]
 unset($MCONF);
@@ -85,8 +31,6 @@ $GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xml');
 	// DEFAULT initialization of a module [END]
 
 require_once('../ws/class.wslib.php');
-
-
 
 /**
  * Versioning module, including workspace management
@@ -1825,15 +1769,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 		}
 	}
 }
-
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/cm1/index.php'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/version/cm1/index.php']);
-}
-
-
-
 
 // Make instance:
 $SOBE = t3lib_div::makeInstance('tx_version_cm1');
