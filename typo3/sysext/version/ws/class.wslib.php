@@ -66,13 +66,13 @@ class wslib {
 		$wsid = intval($wsid);
 		$cmd = array();
 
-		if ($wsid>=-1 && $wsid!==0)	{
+		if ($wsid>=-1 && $wsid!==0) {
 
 				// Define stage to select:
 			$stage = -99;
-			if ($wsid>0)	{
+			if ($wsid>0) {
 				$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $wsid);
-				if ($workspaceRec['publish_access']&1)	{
+				if ($workspaceRec['publish_access']&1) {
 					$stage = 10;
 				}
 			}
@@ -167,7 +167,7 @@ class wslib {
 	 *
 	 * @return	void
 	 */
-	function autoPublishWorkspaces()	{
+	function autoPublishWorkspaces() {
 			// Temporarily set admin rights
 			// FIXME: once workspaces are cleaned up a better solution should be implemented
 		$currentAdminStatus = $GLOBALS['BE_USER']->user['admin'];

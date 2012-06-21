@@ -139,7 +139,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function menuConfig()	{
+	function menuConfig() {
 
 			// fetches the configuration of the version extension
 		$versionExtconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['version']);
@@ -171,7 +171,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if (t3lib_extMgm::isLoaded('workspaces') && $GLOBALS['BE_USER']->workspace ===0 ) {
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers', 'sys_workspace', 'pid=0' . t3lib_BEfunc::deleteClause('sys_workspace'), '', 'title');
 			foreach($workspaces as $rec) {
-				if ($GLOBALS['BE_USER']->checkWorkspace($rec))	{
+				if ($GLOBALS['BE_USER']->checkWorkspace($rec)) {
 					$this->MOD_MENU['display'][$rec['uid']] = '['.$rec['uid'].'] '.$rec['title'];
 				}
 			}
@@ -186,7 +186,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function main()	{
+	function main() {
 			// Template markers
 		$markers = array(
 			'CSH' => '',
@@ -216,7 +216,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			// Getting input data:
 		$this->id = intval(t3lib_div::_GP('id'));		// Page id. If set, indicates activation from Web>Versioning module
-		if (!$this->id)	{
+		if (!$this->id) {
 			$this->uid = intval(t3lib_div::_GP('uid'));		// Record uid. Goes with table name to indicate specific record
 			$this->table = t3lib_div::_GP('table');			// Record table. Goes with uid to indicate specific record
 		} else {
@@ -256,21 +256,21 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$this->doc->JScode.= '
 					<script language="javascript" type="text/javascript">
 						script_ended = 0;
-						function jumpToUrl(URL)	{
+						function jumpToUrl(URL) {
 							window.location.href = URL;
 						}
 
 						function hlSubelements(origId, verId, over, diffLayer)	{	//
-							if (over)	{
+							if (over) {
 								document.getElementById(\'orig_\'+origId).attributes.getNamedItem("class").nodeValue = \'typo3-ver-hl\';
 								document.getElementById(\'ver_\'+verId).attributes.getNamedItem("class").nodeValue = \'typo3-ver-hl\';
-								if (diffLayer)	{
+								if (diffLayer) {
 									document.getElementById(\'diff_\'+verId).style.visibility = \'visible\';
 								}
 							} else {
 								document.getElementById(\'orig_\'+origId).attributes.getNamedItem("class").nodeValue = \'typo3-ver\';
 								document.getElementById(\'ver_\'+verId).attributes.getNamedItem("class").nodeValue = \'typo3-ver\';
-								if (diffLayer)	{
+								if (diffLayer) {
 									document.getElementById(\'diff_\'+verId).style.visibility = \'hidden\';
 								}
 							}
@@ -286,7 +286,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$this->publishAccess = $GLOBALS['BE_USER']->workspacePublishAccess($GLOBALS['BE_USER']->workspace);
 
 					// Render content:
-				if ($this->id)	{
+				if ($this->id) {
 					$this->workspaceMgm();
 				} else {
 					$this->versioningMgm();
@@ -321,7 +321,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function printContent()	{
+	function printContent() {
 		echo $this->content;
 	}
 
@@ -330,7 +330,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 *
 	 * @return	array	all available buttons as an assoc. array
 	 */
-	protected function getButtons()	{
+	protected function getButtons() {
 		$buttons = array(
 			'csh' => '',
 			'view' => '',
@@ -382,19 +382,19 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function versioningMgm()	{
+	function versioningMgm() {
 
 			// Diffing:
 		$diff_1 = t3lib_div::_POST('diff_1');
 		$diff_2 = t3lib_div::_POST('diff_2');
-		if (t3lib_div::_POST('do_diff'))	{
+		if (t3lib_div::_POST('do_diff')) {
 			$content='';
 			$content.='<h3>' . $GLOBALS['LANG']->getLL('diffing') . ':</h3>';
-			if ($diff_1 && $diff_2)	{
+			if ($diff_1 && $diff_2) {
 				$diff_1_record = t3lib_BEfunc::getRecord($this->table, $diff_1);
 				$diff_2_record = t3lib_BEfunc::getRecord($this->table, $diff_2);
 
-				if (is_array($diff_1_record) && is_array($diff_2_record))	{
+				if (is_array($diff_1_record) && is_array($diff_2_record)) {
 					t3lib_div::loadTCA($this->table);
 					$t3lib_diff_Obj = t3lib_div::makeInstance('t3lib_diff');
 
@@ -426,7 +426,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						}
 					}
 
-					if (count($tRows)>1)	{
+					if (count($tRows)>1) {
 						$content .= '<table border="0" cellpadding="1" cellspacing="1" width="100%">' . implode('', $tRows) . '</table><br /><br />';
 					} else {
 						$content .= $GLOBALS['LANG']->getLL('recordsMatchesCompletely');
@@ -498,10 +498,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 				</tr>';
 
 				// Show sub-content if the table is pages AND it is not the online branch (because that will mostly render the WHOLE tree below - not smart;)
-			if ($this->table == 'pages' && $row['uid']!=$this->uid)	{
+			if ($this->table == 'pages' && $row['uid']!=$this->uid) {
 				$sub = $this->pageSubContent($row['uid']);
 
-				if ($sub)	{
+				if ($sub) {
 					$content.='
 						<tr>
 							<td></td>
@@ -557,7 +557,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				($GLOBALS['TCA'][$tN]['ctrl']['sortby'] ? $GLOBALS['TCA'][$tN]['ctrl']['sortby'] : '')
 			);
 
-			if ($GLOBALS['TYPO3_DB']->sql_num_rows($mres))	{
+			if ($GLOBALS['TYPO3_DB']->sql_num_rows($mres)) {
 				$content.='
 					<tr>
 						<td colspan="4" class="' . ($GLOBALS['TCA'][$tN]['ctrl']['versioning_followPages'] ? 'bgColor6' : ($tN == 'pages' ? 'bgColor5' : 'bgColor-10')) . '"' . (!$GLOBALS['TCA'][$tN]['ctrl']['versioning_followPages'] && $tN !== 'pages' ? ' style="color: #666666; font-style:italic;"' : '') . '>' . $tN . '</td>
@@ -600,7 +600,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 */
 	function lookForOwnVersions($table, $uid) {
 		$versions = t3lib_BEfunc::selectVersionsOfRecord($table, $uid, 'uid');
-		if (is_array($versions))	{
+		if (is_array($versions)) {
 			return count($versions);
 		}
 		return FALSE;
@@ -627,7 +627,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 
 
-		if ($table == 'pages')	{
+		if ($table == 'pages') {
 
 				// If another page module was specified, replace the default Page module with the new one
 			$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
@@ -649,7 +649,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 				'</a>';
 		} else {
-			if ($row['pid']==-1)	{
+			if ($row['pid']==-1) {
 				$getVars = '&ADMCMD_vPrev['.rawurlencode($table.':'.$row['t3ver_oid']).']='.$row['uid'];
 
 					// "View page" icon is added:
@@ -684,7 +684,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function workspaceMgm()	{
+	function workspaceMgm() {
 
 			// Perform workspace publishing action if buttons are pressed:
 		$errors = $this->publishAction();
@@ -694,10 +694,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			// Buttons for publish / swap:
 		$actionLinks = '<br />';
-		if ($GLOBALS['BE_USER']->workspace!==0)	{
-			if ($this->publishAccess)	{
+		if ($GLOBALS['BE_USER']->workspace!==0) {
+			if ($this->publishAccess) {
 				$actionLinks.= '<input type="submit" name="_publish" value="' . $GLOBALS['LANG']->getLL('publishPage') . '" onclick="return confirm(\'' . sprintf($GLOBALS['LANG']->getLL('publishPageQuestion'), $GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1 ? $GLOBALS['LANG']->getLL('publishPageQuestionStage') : '') . '\');"/>';
-				if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
+				if ($GLOBALS['BE_USER']->workspaceSwapAccess()) {
 					$actionLinks.= '<input type="submit" name="_swap" value="' . $GLOBALS['LANG']->getLL('swapPage') . '" onclick="return confirm(\'' . sprintf($GLOBALS['LANG']->getLL('swapPageQuestion'), $GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1 ? $GLOBALS['LANG']->getLL('publishPageQuestionStage') : '') . '\');" />';
 				}
 			} else {
@@ -710,15 +710,15 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$actionLinks.= '<input type="checkbox" class="checkbox" name="_previewLink_wholeWorkspace" id="_previewLink_wholeWorkspace" value="1" /><label for="_previewLink_wholeWorkspace">' . $GLOBALS['LANG']->getLL('allowPreviewOfWholeWorkspace') . '</label>';
 		$actionLinks.= $this->displayWorkspaceOverview_allStageCmd();
 
-		if ($actionLinks || count($errors))	{
+		if ($actionLinks || count($errors)) {
 			$this->content .= $this->doc->section('', $actionLinks . (count($errors) ? '<h3>' . $GLOBALS['LANG']->getLL('errors') . '</h3><br />' . implode('<br />', $errors) . '<hr />' : ''), 0, 1);
 		}
 
-		if (t3lib_div::_POST('_previewLink'))	{
+		if (t3lib_div::_POST('_previewLink')) {
 			$ttlHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));
 			$ttlHours = ($ttlHours ? $ttlHours : 24*2);
 
-			if (t3lib_div::_POST('_previewLink_wholeWorkspace'))	{
+			if (t3lib_div::_POST('_previewLink_wholeWorkspace')) {
 				$previewUrl = t3lib_BEfunc::getViewDomain($this->id) . '/index.php?ADMCMD_prev=' . t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], 60*60*$ttlHours, $GLOBALS['BE_USER']->workspace) . '&id=' . intval($this->id);
 			} else {
 				$params = 'id='.$this->id.'&ADMCMD_previewWS='.$GLOBALS['BE_USER']->workspace;
@@ -736,15 +736,15 @@ class tx_version_cm1 extends t3lib_SCbase {
 	function workspaceMenu() {
 		if ($this->id) {
 			$menu = '';
-			if ($GLOBALS['BE_USER']->workspace===0)	{
+			if ($GLOBALS['BE_USER']->workspace===0) {
 				$menu .= t3lib_BEfunc::getFuncMenu($this->id, 'SET[filter]' ,$this->MOD_SETTINGS['filter'], $this->MOD_MENU['filter']);
 				$menu .= t3lib_BEfunc::getFuncMenu($this->id, 'SET[display]' ,$this->MOD_SETTINGS['display'], $this->MOD_MENU['display']);
 			}
-			if (!$this->details && $GLOBALS['BE_USER']->workspace && !$this->diffOnly)	{
+			if (!$this->details && $GLOBALS['BE_USER']->workspace && !$this->diffOnly) {
 				$menu .= t3lib_BEfunc::getFuncCheck($this->id, 'SET[diff]', $this->MOD_SETTINGS['diff'], '', '', 'id="checkDiff"') . ' <label for="checkDiff">' . $GLOBALS['LANG']->getLL('showDiffView') . '</label>';
 			}
 
-			if ($menu)	{
+			if ($menu) {
 				return $menu;
 			}
 		}
@@ -756,7 +756,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * @return	string		HTML (table)
 	 * @see ws/index.php for sister function!
 	 */
-	function displayWorkspaceOverview()	{
+	function displayWorkspaceOverview() {
 
 			// Initialize variables:
 		$this->showWorkspaceCol = $GLOBALS['BE_USER']->workspace===0 && $this->MOD_SETTINGS['display']<=-98;
@@ -770,7 +770,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		}
 
 			// Initialize Workspace ID and filter-value:
-		if ($GLOBALS['BE_USER']->workspace===0)	{
+		if ($GLOBALS['BE_USER']->workspace===0) {
 			$wsid = $this->details ? -99 : $this->MOD_SETTINGS['display'];		// Set wsid to the value from the menu (displaying content of other workspaces)
 			$filter = $this->details ? 0 : $this->MOD_SETTINGS['filter'];
 		} else {
@@ -799,7 +799,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 			// Make header of overview:
 		$tableRows = array();
-		if (count($pArray))	{
+		if (count($pArray)) {
 			$tableRows[] = '
 				<tr class="bgColor5 tableheader">
 					'.($this->diffOnly?'':'<td nowrap="nowrap" colspan="2">' . $GLOBALS['LANG']->getLL('liveVersion') . '</td>').'
@@ -831,12 +831,12 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * @param	array		Storage of the elements to display (see displayWorkspaceOverview() / displayWorkspaceOverview_setInPageArray())
 	 * @return	array		Table rows, see displayWorkspaceOverview()
 	 */
-	function displayWorkspaceOverview_list($pArray)	{
+	function displayWorkspaceOverview_list($pArray) {
 
 			// If there ARE elements on this level, print them:
 		$warnAboutVersions_nonPages = FALSE;
 		$warnAboutVersions_page = FALSE;
-		if (is_array($pArray))	{
+		if (is_array($pArray)) {
 			foreach ($pArray as $table => $oidArray) {
 				foreach ($oidArray as $oid => $recs) {
 
@@ -870,8 +870,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 						$rec_off = t3lib_BEfunc::getRecord($table, $rec['uid']);
 
 						// Prepare swap-mode values:
-						if ($table==='pages' && $rec_off['t3ver_swapmode']!=-1)	{
-							if ($rec_off['t3ver_swapmode']>0)	{
+						if ($table==='pages' && $rec_off['t3ver_swapmode']!=-1) {
+							if ($rec_off['t3ver_swapmode']>0) {
 								$vType = 'branch';
 							} else {
 								$vType = 'page';
@@ -886,17 +886,17 @@ class tx_version_cm1 extends t3lib_SCbase {
 						$icon = $this->doc->wrapClickMenuOnIcon($icon, $table, $tempUid, 1, '', '+edit,' . ($table == 'pages' ? 'view,info,' : '') . 'delete');
 
 							// Prepare diff-code:
-						if ($this->MOD_SETTINGS['diff'] || $this->diffOnly)	{
+						if ($this->MOD_SETTINGS['diff'] || $this->diffOnly) {
 							$diffCode = '';
 							list($diffHTML, $diffPct) = $this->createDiffView($table, $rec_off, $rec_on);
 							if ($rec_on['t3ver_state']==1)	{	// New record:
 								$diffCode.= $this->doc->icons(1) . $GLOBALS['LANG']->getLL('newElement') . '<br />';
 								$diffCode.= $diffHTML;
-							} elseif ($rec_off['t3ver_state']==2)	{
+							} elseif ($rec_off['t3ver_state']==2) {
 								$diffCode.= $this->doc->icons(2) . $GLOBALS['LANG']->getLL('deletedElement') . '<br />';
-							} elseif ($rec_on['t3ver_state']==3)	{
+							} elseif ($rec_on['t3ver_state']==3) {
 								$diffCode.= $this->doc->icons(1) . $GLOBALS['LANG']->getLL('moveToPlaceholder') . '<br />';
-							} elseif ($rec_off['t3ver_state']==4)	{
+							} elseif ($rec_off['t3ver_state']==4) {
 								$diffCode.= $this->doc->icons(1) . $GLOBALS['LANG']->getLL('moveToPointer') . '<br />';
 							} else {
 								$diffCode.= ($diffPct<0 ? $GLOBALS['LANG']->getLL('notAvailable') : ($diffPct ? $diffPct . '% ' . $GLOBALS['LANG']->getLL('change') : ''));
@@ -952,7 +952,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 									($this->showWorkspaceCol ? '
 								<td nowrap="nowrap">&nbsp;&nbsp;<strong>' . $GLOBALS['LANG']->getLL('workspace')  . ':</strong> '.htmlspecialchars($this->formatWorkspace($rec_off['t3ver_wsid'])).'</td>' : ''):'');
 
-						if ($diffCode)	{
+						if ($diffCode) {
 							$verElement = $verElement.'
 							<br /><strong>' . $GLOBALS['LANG']->getLL('diffToLiveElement') . '</strong>
 							<table border="0" cellpadding="0" cellspacing="0" class="ver-verElement">
@@ -1015,18 +1015,18 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * @param	array		Offline record (version)
 	 * @return	string		HTML content, mainly link tags and images.
 	 */
-	function displayWorkspaceOverview_allStageCmd()	{
+	function displayWorkspaceOverview_allStageCmd() {
 
 		$table = t3lib_div::_GP('table');
-		if ($table && $table!='pages')	{
+		if ($table && $table!='pages') {
 			$uid = t3lib_div::_GP('uid');
 			if ($rec_off = t3lib_BEfunc::getRecordWSOL($table, $uid)) {
 				$uid = $rec_off['_ORIG_uid'];
 			}
 		} else $table = '';
 
-		if ($table)	{
-			if ($uid && $this->recIndex[$table][$uid])	{
+		if ($table) {
+			if ($uid && $this->recIndex[$table][$uid]) {
 				$sId = $this->recIndex[$table][$uid];
 				switch ($sId) {
 					case 1:
@@ -1054,15 +1054,15 @@ class tx_version_cm1 extends t3lib_SCbase {
 			}
 		}
 
-		if ($sId>0)	{
+		if ($sId>0) {
 			$issueCmd = '';
 			$itemCount = 0;
 
-			if ($table && $uid && $this->recIndex[$table][$uid])	{
+			if ($table && $uid && $this->recIndex[$table][$uid]) {
 				$issueCmd.='&cmd['.$table.']['.$uid.'][version][action]=setStage';
 				$issueCmd.='&cmd['.$table.']['.$uid.'][version][stageId]='.$this->recIndex[$table][$uid];
 			} else {
-				foreach($this->stageIndex[$sId] as $table => $uidArray)	{
+				foreach($this->stageIndex[$sId] as $table => $uidArray) {
 					$issueCmd .= '&cmd[' . $table . '][' . implode(',', $uidArray) . '][version][action]=setStage';
 					$issueCmd .= '&cmd[' . $table . '][' . implode(',', $uidArray) . '][version][stageId]=' . $sId;
 					$itemCount += count($uidArray);
@@ -1072,7 +1072,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$onClick = 'var commentTxt=window.prompt("' . sprintf($label, $itemCount) . '","");
 				if (commentTxt!=null) {window.location.href="' . $this->doc->issueCommand($issueCmd, $this->REQUEST_URI) . '&generalComment="+escape(commentTxt);}';
 
-			if (t3lib_div::_GP('sendToReview'))	{
+			if (t3lib_div::_GP('sendToReview')) {
 				$onClick.= ' else {window.location.href = "'.$this->REQUEST_URI.'"}';
 				$actionLinks.=
 					$this->doc->wrapScriptTags($onClick);
@@ -1081,7 +1081,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				$actionLinks.=
 					'<input type="submit" name="_" value="'.htmlspecialchars($titleAttrib).'" onclick="'.htmlspecialchars($onClick).'" />';
 			}
-		} elseif (t3lib_div::_GP('sendToReview'))	{
+		} elseif (t3lib_div::_GP('sendToReview')) {
 			$onClick = 'window.location.href = "'.$this->REQUEST_URI.'";';
 			$actionLinks.=
 				$this->doc->wrapScriptTags($onClick);
@@ -1107,7 +1107,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * @param	integer		Version number
 	 * @return	string		Version number for output
 	 */
-	function formatVerId($verId)	{
+	function formatVerId($verId) {
 		return '1.'.$verId;
 	}
 
@@ -1117,10 +1117,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * @param	integer		Workspace ID
 	 * @return	string		Workspace title
 	 */
-	function formatWorkspace($wsid)	{
+	function formatWorkspace($wsid) {
 
 			// Render, if not cached:
-		if (!isset($this->formatWorkspace_cache[$wsid]))	{
+		if (!isset($this->formatWorkspace_cache[$wsid])) {
 			switch ($wsid) {
 				case -1:
 					$this->formatWorkspace_cache[$wsid] = $GLOBALS['LANG']->getLL('offline');
@@ -1144,10 +1144,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * @param	integer		t3ver_count value (number of times it has been online)
 	 * @return	string		String translation of count.
 	 */
-	function formatCount($count)	{
+	function formatCount($count) {
 
 			// Render, if not cached:
-		if (!isset($this->formatCount_cache[$count]))	{
+		if (!isset($this->formatCount_cache[$count])) {
 			switch ($count) {
 				case 0:
 					$this->formatCount_cache[$count] = $GLOBALS['LANG']->getLL('draft');
@@ -1188,7 +1188,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			'',
 			't3ver_wsid'
 		);
-		if (count($rows))	{
+		if (count($rows)) {
 			return implode(',', array_keys($rows));
 		}
 	}
@@ -1316,7 +1316,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						// Find all records from page and collect in $recList:
 					$recList = array();
 					foreach ($GLOBALS['TCA'] as $tN => $tCfg) {
-						if ($tN!=='pages')	{
+						if ($tN!=='pages') {
 							$this->subElements_getNonPageRecords($tN, $data['row']['uid'], $recList);
 						}
 					}
@@ -1355,7 +1355,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * @param	array		Array where records are accumulated, passed by reference
 	 * @return	void
 	 */
-	function subElements_getNonPageRecords($tN, $uid, &$recList)	{
+	function subElements_getNonPageRecords($tN, $uid, &$recList) {
 		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'*',
 			$tN,
@@ -1402,10 +1402,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 								' id="ver_'.$uid.'_'.$tN.'_'.$rec[$origUidFields].'" class="typo3-ver"';
 
 						// Create diff view:
-					if ($this->MOD_SETTINGS['diff'])	{
+					if ($this->MOD_SETTINGS['diff']) {
 						list($diffHTML, $diffPct) = $this->createDiffView($tN, $rec, $this->targets['orig_'.$origId.'_'.$tN.'_'.$rec[$origUidFields]]);
 
-						if ($this->MOD_SETTINGS['diff']==2)	{
+						if ($this->MOD_SETTINGS['diff']==2) {
 							$diffCode =
 								($diffPct ? '<span class="nobr">'.$diffPct.'% change</span>' : '-').
 								'<div style="visibility: hidden; position: absolute;" id="diff_'.$uid.'_'.$tN.'_'.$rec[$origUidFields].'" class="diffLayer">'.
@@ -1451,9 +1451,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 *
 	 * @return	string		HTML javascript section
 	 */
-	function markupNewOriginals()	{
+	function markupNewOriginals() {
 
-		if (count($this->targets))	{
+		if (count($this->targets)) {
 			$scriptCode = '';
 			foreach ($this->targets as $key => $rec) {
 				$scriptCode.='
@@ -1473,13 +1473,13 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 * @param	array		Old version record (red)
 	 * @return	array		Array with two keys (0/1) with HTML content / percentage integer (if -1, then it means N/A) indicating amount of change
 	 */
-	function createDiffView($table, $diff_1_record, $diff_2_record)	{
+	function createDiffView($table, $diff_1_record, $diff_2_record) {
 
 			// Initialize:
 		$pctChange = 'N/A';
 
 			// Check that records are arrays:
-		if (is_array($diff_1_record) && is_array($diff_2_record))	{
+		if (is_array($diff_1_record) && is_array($diff_2_record)) {
 
 				// Load full table description and initialize diff-object:
 			t3lib_div::loadTCA($table);
@@ -1529,7 +1529,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 					}
 
 						// If there is a change of value:
-					if (strcmp(trim($diff_1_record[$fN]), trim($diff_2_record[$fN])))	{
+					if (strcmp(trim($diff_1_record[$fN]), trim($diff_2_record[$fN]))) {
 
 
 							// Get the best visual presentation of the value and present that:
@@ -1542,7 +1542,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						$allStrLen+= strlen($val1.$val2);
 
 							// If the compared values were files, substituted MD5 hashes:
-						if ($isFiles)	{
+						if ($isFiles) {
 							$allFiles = array_merge($files1, $files2);
 							foreach ($allFiles as $filename => $token) {
 								if (strlen($token) == 32 && strstr($diffres,$token)) {
@@ -1572,7 +1572,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$pctChange = $allStrLen ? ceil($diffStrLen*100/$allStrLen) : -1;
 
 				// Create visual representation of result:
-			if (count($tRows)>1)	{
+			if (count($tRows)>1) {
 				$content .= '<table border="0" cellpadding="1" cellspacing="1" class="diffTable">' . implode('', $tRows) . '</table>';
 			} else {
 				$content.= '<span class="nobr">'.$this->doc->icons(1) . $GLOBALS['LANG']->getLL('completeMatch') . '</span>';
@@ -1626,7 +1626,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 		$raiseOk = !$GLOBALS['BE_USER']->workspaceCannotEditOfflineVersion($table, $rec_off);
 
-		if ($raiseOk && $rec_off['t3ver_stage']!=-1)	{
+		if ($raiseOk && $rec_off['t3ver_stage']!=-1) {
 			$onClick = 'var commentTxt=window.prompt("' . $GLOBALS['LANG']->getLL('rejectExplain') . '","");
 							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
@@ -1647,14 +1647,14 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$actionLinks.= '<span style="background-color: '.$color.'; color: white;">'.$sLabel.'</span>';
 
 			// Raise
-		if ($raiseOk)	{
+		if ($raiseOk) {
 			$onClick = 'var commentTxt=window.prompt("'.$label.'","");
 							if (commentTxt!=null) {window.location.href="'.$this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][action]=setStage'.
 							'&cmd['.$table.']['.$rec_off['uid'].'][version][stageId]='.$sId
 							).'&cmd['.$table.']['.$rec_off['uid'].'][version][comment]="+escape(commentTxt);}'.
 							' return false;';
-			if ($rec_off['t3ver_stage']!=10)	{
+			if ($rec_off['t3ver_stage']!=10) {
 				$actionLinks.=
 					'<a href="#" onclick="'.htmlspecialchars($onClick).'" title="' . htmlspecialchars($titleAttrib) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-move-up') .
@@ -1685,7 +1685,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						)).'" title="' . $GLOBALS['LANG']->getLL('publish', TRUE) . '">'.
 					t3lib_iconWorks::getSpriteIcon('actions-version-swap-version') .
 				'</a>';
-			if ($GLOBALS['BE_USER']->workspaceSwapAccess())	{
+			if ($GLOBALS['BE_USER']->workspaceSwapAccess()) {
 				$actionLinks.=
 					'<a href="'.htmlspecialchars($this->doc->issueCommand(
 							'&cmd['.$table.']['.$rec_on['uid'].'][version][action]=swap'.
@@ -1705,7 +1705,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 				'</a>';
 
 				// Edit
-			if ($table==='pages' && $vType!=='element')	{
+			if ($table==='pages' && $vType!=='element') {
 				$tempUid = ($vType==='branch' || $GLOBALS['BE_USER']->workspace===0 ? $rec_off['uid'] : $rec_on['uid']);
 				$actionLinks.=
 					'<a href="#" onclick="top.loadEditId('.$tempUid.');top.goToModule(\''.$this->pageModule.'\'); return false;" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:img_title_edit_page', TRUE) . '">'.
@@ -1727,7 +1727,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			'</a>';
 
 			// View
-		if ($table==='pages')	{
+		if ($table==='pages') {
 			$tempUid = ($vType==='branch' || $GLOBALS['BE_USER']->workspace===0 ? $rec_off['uid'] : $rec_on['uid']);
 			$actionLinks.=
 				'<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($tempUid, $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($tempUid))) . '">' .
@@ -1748,10 +1748,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 */
 	function displayWorkspaceOverview_commandLinksSub($table, $rec, $origId) {
 		$uid = $rec['uid'];
-		if ($origId || $GLOBALS['BE_USER']->workspace===0)	{
+		if ($origId || $GLOBALS['BE_USER']->workspace===0) {
 			if (!$GLOBALS['BE_USER']->workspaceCannotEditRecord($table, $rec)) {
 					// Edit
-				if ($table==='pages')	{
+				if ($table==='pages') {
 					$actionLinks.=
 						'<a href="#" onclick="top.loadEditId('.$uid.');top.goToModule(\''.$this->pageModule.'\'); return false;" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:img_title_edit_page', TRUE) . '">'.
 							t3lib_iconWorks::getSpriteIcon('apps-version-page-open') .
@@ -1773,7 +1773,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 		}
 
 			// View
-		if ($table==='pages')	{
+		if ($table==='pages') {
 			$actionLinks.=
 				'<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($uid, $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($uid))) . '">' .
 					t3lib_iconWorks::getSpriteIcon('actions-document-view') .
@@ -1802,10 +1802,10 @@ class tx_version_cm1 extends t3lib_SCbase {
 	 *
 	 * @return	void
 	 */
-	function publishAction()	{
+	function publishAction() {
 
 			// If "Publish" or "Swap" buttons are pressed:
-		if (t3lib_div::_POST('_publish') || t3lib_div::_POST('_swap'))	{
+		if (t3lib_div::_POST('_publish') || t3lib_div::_POST('_swap')) {
 
 			if ($this->table==='pages')	{	// Making sure ->uid is a page ID!
 					// Initialize workspace object and request all pending versions:

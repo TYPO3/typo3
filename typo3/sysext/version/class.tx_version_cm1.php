@@ -107,7 +107,7 @@ class tx_version_cm1 {
 	 *
 	 * @return	array		Local lang array
 	 */
-	function includeLL()	{
+	function includeLL() {
 		return $GLOBALS['LANG']->includeLLFile('EXT:version/locallang.xml', FALSE);
 	}
 }
