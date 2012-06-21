@@ -26,16 +26,6 @@
 ***************************************************************/
 
 /**
- * Include file extending recordList which extended t3lib_recordList
- * Used specifically for the Web>List module (db_list.php)
- *
- * Revised for TYPO3 3.6 December/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
-/**
  * Class for rendering of Web>List module
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
@@ -1838,9 +1828,4 @@ class localRecordList extends recordList {
 		exit;
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/class.db_list_extra.inc'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/class.db_list_extra.inc']);
-}
-
 ?>

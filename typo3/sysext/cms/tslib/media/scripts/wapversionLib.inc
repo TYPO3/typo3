@@ -26,14 +26,8 @@
 ***************************************************************/
 
 /**
- * Contains class for creating WAP pages for TYPO3
+ * Class for creating WAP pages for TYPO3
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
-/**
  * Class that creates the current page and content element records as an WML structure using the library "t3lib_xml"
  * It is demonstrated in use in the testsite package on page "59"
  * The static template "plugin.alt.wap" is used to trigger this WML creation as well. That template contains this set of TypoScript lines which triggers the WML creation and disables all regular HTML headers
@@ -383,50 +377,4 @@ class user_wapversion {
 		return $newMenu;
 	}
 }
-
-// AND HERE just some debugging content: Basically a valid WML deck.
-
-		/*
-switch($id) {
-	case 1:
-		<wml>
-			<card id="Hallo" ontimer="#Login" title="wapportal.dk">
-				<timer value="35"/>
-				<p>
-					<img src="/images/logo.wbmp" alt="WAPPORTAL"/>
-					asf asdf asdf
-				</p>
-			</card>
-			<card id="Login" title="wapportal.dk" newcontext="true">
-				<p>Mobil nr:
-					<input name="Login" title="Mobil nr:" value="" format="*N" size="15"/>Kodeord:
-					<input name="Passwd" title="Kodeord:" value="" type="password" format="*N" size="12"/>
-					<anchor>Login !<go href="/wap/portal/DeckPortal/menu.wml?sid=FGBNRru&amp;rnd=107915&amp;login=$(Login:u)&amp;pwd=$(Passwd:u)"/></anchor>
-					<br/>
-					<anchor>G&#xe6;st<go href="/wap/portal/DeckPortal/menu.wml?sid=FGBNRru&amp;rnd=107916&amp;login=visitor&amp;pwd=visitor"></go></anchor>
-				</p>
-			</card>
-		</wml>
-	break;
-	default:
-		<wml>
-		<template>
-			<do type="accept" label="Back"><prev/></do>
-		</template>
-		<card id="index1" title="Hovedside">
-			<p>Hej Kasper.
-			Dette er noget
-			<img src="/images/logo.wbmp" alt="WAPPORTAL"/>
-			 tekst.</p>
-
-		</card>
-		</wml>
-	break;
-}
-*/
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['media/scripts/wapversionLib.inc'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['media/scripts/wapversionLib.inc']);
-}
-
 ?>
