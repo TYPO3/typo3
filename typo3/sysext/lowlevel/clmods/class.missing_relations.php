@@ -28,14 +28,13 @@
  * Cleaner module: Missing relations
  * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Looking for missing relations.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_lowlevel
  */
@@ -45,8 +44,6 @@ class tx_lowlevel_missing_relations extends tx_lowlevel_cleaner_core {
 
 	/**
 	 * Constructor
-	 *
-	 * @return	void
 	 */
 	function __construct() {
 		parent::__construct();
@@ -81,7 +78,7 @@ Reports missing relations';
 	 * Find relations pointing to non-existing records
 	 * Fix methods: API in t3lib_refindex that allows to change the value of a reference (or remove it) [Only for managed relations!]
 	 *
-	 * @return	array
+	 * @return array
 	 */
 	function main() {
 		global $TYPO3_DB;
@@ -120,7 +117,7 @@ Reports missing relations';
 			// Traverse the records
 		$tempExists = array();
 		if (is_array($recs)) {
-			foreach($recs as $rec) {
+			foreach ($recs as $rec) {
 				$suffix = $rec['softref_key']!='' ? '_s' : '_m';
 				$idx = $rec['ref_table'].':'.$rec['ref_uid'];
 
@@ -134,7 +131,7 @@ Reports missing relations';
 
 					// Handle missing file:
 				if ($tempExists[$idx]['uid']) {
-					if ($tempExists[$idx]['pid']==-1) {
+					if ($tempExists[$idx]['pid'] == -1) {
 						$resultArray['offlineVersionRecords'.$suffix][$idx][$rec['hash']] = $infoString;
 						ksort($resultArray['offlineVersionRecords'.$suffix][$idx]);
 					} elseif ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] && $tempExists[$idx][$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']]) {
@@ -162,16 +159,16 @@ Reports missing relations';
 	 * Mandatory autofix function
 	 * Will run auto-fix on the result array. Echos status during processing.
 	 *
-	 * @param	array		Result array from main() function
-	 * @return	void
+	 * @param array $resultArray Result array from main() function
+	 * @return void
 	 */
 	function main_autoFix($resultArray) {
 
 		$trav = array('offlineVersionRecords_m', 'nonExistingRecords_m');
-		foreach($trav as $tk) {
+		foreach ($trav as $tk) {
 			echo 'Processing managed "'.$tk.'"...'.LF;
-			foreach($resultArray[$tk] as $key => $value) {
-				foreach($value as $hash => $recReference) {
+			foreach ($resultArray[$tk] as $key => $value) {
+				foreach ($value as $hash => $recReference) {
 					echo '	Removing reference to '.$key.' in record "'.$recReference.'": ';
 					if ($bypass = $this->cli_noExecutionCheck($recReference)) {
 						echo $bypass;

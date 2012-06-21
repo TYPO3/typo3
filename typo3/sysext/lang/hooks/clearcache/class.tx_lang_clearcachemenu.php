@@ -28,8 +28,8 @@
 /**
  * Extending class to render the menu for the cache clearing actions, and adding Clear lang/l10n cache option
  *
- * @author	Dominique Feyer <dominique.feyer@reelpeek.net>
- * @package	TYPO3
+ * @author Dominique Feyer <dominique.feyer@reelpeek.net>
+ * @package TYPO3
  * @subpackage tx_Lang
  */
 require_once (PATH_typo3 . 'interfaces/interface.backend_cacheActionsHook.php');

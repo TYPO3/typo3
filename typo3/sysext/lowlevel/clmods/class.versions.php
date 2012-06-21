@@ -28,14 +28,13 @@
  * Cleaner module: Versions of records
  * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Looking for versions of records
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_lowlevel
  */
@@ -43,8 +42,6 @@ class tx_lowlevel_versions extends tx_lowlevel_cleaner_core {
 
 	/**
 	 * Constructor
-	 *
-	 * @return	void
 	 */
 	function __construct() {
 		parent::__construct();
@@ -74,7 +71,7 @@ Automatic Repair:
 	 * Find orphan records
 	 * VERY CPU and memory intensive since it will look up the whole page tree!
 	 *
-	 * @return	array
+	 * @return array
 	 */
 	function main() {
 		global $TYPO3_DB;
@@ -108,10 +105,10 @@ Automatic Repair:
 
 			// Finding all placeholders with no records attached!
 		$resultArray['versions_unused_placeholders'] = array();
-		foreach($GLOBALS['TCA'] as $table => $cfg) {
+		foreach ($GLOBALS['TCA'] as $table => $cfg) {
 			if ($cfg['ctrl']['versioningWS']) {
 				$placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid', $table, 't3ver_state=1 AND pid>=0'.t3lib_BEfunc::deleteClause($table));
-				foreach($placeHolders as $phrec) {
+				foreach ($placeHolders as $phrec) {
 					if (count(t3lib_BEfunc::selectVersionsOfRecord($table, $phrec['uid'], 'uid'))<=1) {
 						$resultArray['versions_unused_placeholders'][t3lib_div::shortmd5($table.':'.$phrec['uid'])] = $table.':'.$phrec['uid'];
 					}
@@ -123,12 +120,12 @@ Automatic Repair:
 			// Finding all move placeholders with inconsistencies:
 		$resultArray['versions_move_placeholders_ok'] = array();
 		$resultArray['versions_move_placeholders_bad'] = array();
-		foreach($GLOBALS['TCA'] as $table => $cfg) {
-			if ((int)$cfg['ctrl']['versioningWS']>=2) {
+		foreach ($GLOBALS['TCA'] as $table => $cfg) {
+			if ((int)$cfg['ctrl']['versioningWS'] >= 2) {
 				$placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid,t3ver_move_id,t3ver_wsid,t3ver_state', $table, 't3ver_state=3 AND pid>=0'.t3lib_BEfunc::deleteClause($table));
-				foreach($placeHolders as $phrec) {
+				foreach ($placeHolders as $phrec) {
 					$shortID = t3lib_div::shortmd5($table.':'.$phrec['uid']);
-					if ((int)$phrec['t3ver_wsid']!=0) {
+					if ((int)$phrec['t3ver_wsid'] != 0) {
 						$phrecCopy = $phrec;
 						if (t3lib_BEfunc::movePlhOL($table, $phrec)) {
 							if ($wsAlt = t3lib_BEfunc::getWorkspaceVersionOfRecord($phrecCopy['t3ver_wsid'], $table, $phrec['uid'], 'uid,pid,t3ver_state')) {
@@ -160,12 +157,12 @@ Automatic Repair:
 
 			// Finding move_id_check inconsistencies:
 		$resultArray['versions_move_id_check'] = array();
-		foreach($GLOBALS['TCA'] as $table => $cfg) {
-			if ((int)$cfg['ctrl']['versioningWS']>=2) {
+		foreach ($GLOBALS['TCA'] as $table => $cfg) {
+			if ((int)$cfg['ctrl']['versioningWS'] >= 2) {
 				$placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid,t3ver_move_id,t3ver_wsid,t3ver_state', $table, 't3ver_move_id<>0'.t3lib_BEfunc::deleteClause($table));
-				foreach($placeHolders as $phrec) {
-					if ((int)$phrec['t3ver_state']==3) {
-						if ($phrec['pid']!=-1) {
+				foreach ($placeHolders as $phrec) {
+					if ((int)$phrec['t3ver_state'] == 3) {
+						if ($phrec['pid'] != -1) {
 								// OK
 						} else {
 							$resultArray['versions_move_id_check'][] = array($table.':'.$phrec['uid'], 'Record was offline, must not be!', $phrec);
@@ -184,8 +181,8 @@ Automatic Repair:
 	 * Mandatory autofix function
 	 * Will run auto-fix on the result array. Echos status during processing.
 	 *
-	 * @param	array		Result array from main() function
-	 * @return	void
+	 * @param array $resultArray Result array from main() function
+	 * @return void
 	 */
 	function main_autoFix($resultArray) {
 
@@ -199,9 +196,9 @@ Automatic Repair:
 		}
 
 			// Traversing records:
-		foreach($resultArray[$kk] as $table => $list) {
+		foreach ($resultArray[$kk] as $table => $list) {
 			echo 'Flushing published records from table "'.$table.'":'.LF;
-			foreach($list as $uid) {
+			foreach ($list as $uid) {
 				echo '	Flushing record "'.$table.':'.$uid.'": ';
 
 				if ($bypass = $this->cli_noExecutionCheck($table.':'.$uid)) {
@@ -224,9 +221,9 @@ Automatic Repair:
 		}
 
 			// Traverse workspace:
-		foreach($resultArray['versions_lost_workspace'] as $table => $list) {
+		foreach ($resultArray['versions_lost_workspace'] as $table => $list) {
 			echo 'Resetting workspace to zero for records from table "'.$table.'":'.LF;
-			foreach($list as $uid) {
+			foreach ($list as $uid) {
 				echo '	Flushing record "'.$table.':'.$uid.'": ';
 				if ($bypass = $this->cli_noExecutionCheck($table.':'.$uid)) {
 					echo $bypass;
@@ -242,7 +239,7 @@ Automatic Repair:
 		}
 
 			// Delete unused placeholders
-		foreach($resultArray['versions_unused_placeholders'] as $recID) {
+		foreach ($resultArray['versions_unused_placeholders'] as $recID) {
 			list($table,$uid)	= explode(':', $recID);
 			echo 'Deleting unused placeholder (soft) "'.$table.':'.$uid.'": ';
 			if ($bypass = $this->cli_noExecutionCheck($table.':'.$uid)) {
