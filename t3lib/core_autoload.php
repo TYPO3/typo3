@@ -345,6 +345,8 @@ $typo3Classes = array(
 	'typo3backend' => PATH_typo3 . 'backend.php',
 	'typo3logo' => PATH_typo3 . 'classes/class.typo3logo.php',
 	'webpagetree' => PATH_typo3 . 'class.webpagetree.php',
+	'Typo3_Clipboard_Clipboard' => PATH_typo3 . 'classes/Clipboard/Clipboard.php',
+	'Typo3_Clipboard_Pad' => PATH_typo3 . 'classes/Clipboard/Pad.php',
 );
 
 $tslibClasses = require(PATH_typo3 . 'sysext/cms/ext_autoload.php');
