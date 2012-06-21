@@ -26,17 +26,8 @@
 ***************************************************************/
 
 /**
- * Include file extending t3lib_recordList
- * Shared between Web>List (db_list.php) and Web>Page (sysext/cms/layout/db_layout.php)
- *
- * Revised for TYPO3 3.6 December/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
-/**
  * Child class for rendering of Web > List (not the final class. see class.db_list_extra)
+ * Shared between Web>List (db_list.php) and Web>Page (sysext/cms/layout/db_layout.php)
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
@@ -958,10 +949,4 @@ class recordList extends t3lib_recordList {
 		}
 	}
 }
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/class.db_list.inc'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/class.db_list.inc']);
-}
-
 ?>

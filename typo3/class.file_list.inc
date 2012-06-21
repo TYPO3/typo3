@@ -26,14 +26,6 @@
 ***************************************************************/
 
 /**
- * Include file extending t3lib_recordList
- *
- * Revised for TYPO3 3.6 2/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
-/**
  * Class for rendering of File>Filelist
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
@@ -763,9 +755,4 @@ class fileList extends t3lib_recordList {
 		return count($infoData) ? '<a href="#" onclick="' . htmlspecialchars('top.launchView( \'_FILE\', \'' . $fileOrFolderObject->getCombinedIdentifier() . '\'); return false;') . '" title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ', $infoData), 100)) . '">' . count($infoData) . '</a>' : '-';
 	}
 }
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/class.file_list.inc'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3/class.file_list.inc']);
-}
-
 ?>

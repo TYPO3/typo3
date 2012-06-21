@@ -24,17 +24,10 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Generating plain text content of content elements for Direct Mails
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
- *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
-
-
-/**
  * Alternative rendering of content elements for Plain Text emails. That means text-only output. No HTML at all. Used by the Direct Mail extension.
  * Normally the plain text output should appear with type=99.
  * To use this library you can include the static template "plugin.alt.plaintext"
@@ -664,12 +657,5 @@ class user_plaintext {
 		$this->siteUrl=$conf['siteUrl'];
 		return $this->cObj->getCurrentVal();
 	}
-}
-
-
-
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['media/scripts/plaintextLib.inc'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['media/scripts/plaintextLib.inc']);
 }
 ?>

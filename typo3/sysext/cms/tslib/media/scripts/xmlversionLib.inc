@@ -28,12 +28,6 @@
 /**
  * Example class showing how one could make XML export of page content elements in TYPO3
  *
- * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
-/**
  * Class that creates the current page and content element records as an XML structure using the library "t3lib_xml"
  * It is demonstrated in use in the testsite package on page "59"
  * The static template "plugin.alt.xml" is used to trigger this XML creation as well. That template contains this set of TypoScript lines which triggers the XML creation and disables all regular HTML headers
@@ -110,9 +104,5 @@ class user_xmlversion {
 			return $res;
 		}
 	}
-}
-
-if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['media/scripts/xmlversionLib.inc'])) {
-	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['media/scripts/xmlversionLib.inc']);
 }
 ?>
