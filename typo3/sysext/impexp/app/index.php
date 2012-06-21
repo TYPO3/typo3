@@ -27,7 +27,7 @@
 /**
  * Import / Export module
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * 	IMPORTING DATA:
@@ -62,20 +62,16 @@
  */
 
 unset($MCONF);
-require ('conf.php');
-require_once ($BACK_PATH.'init.php');
+require('conf.php');
+require_once($BACK_PATH . 'init.php');
 $LANG->includeLLFile('EXT:impexp/app/locallang.php');
 
 t3lib_extMgm::isLoaded('impexp', 1);
 
-
-
-
-
 /**
  * Extension of the page tree class. Used to get the tree of pages to export.
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_impexp
  */
@@ -83,8 +79,6 @@ class localPageTree extends t3lib_browseTree {
 
 	/**
 	 * Initialization
-	 *
-	 * @return	void
 	 */
 	function __construct() {
 		$this->init();
@@ -93,9 +87,9 @@ class localPageTree extends t3lib_browseTree {
 	/**
 	 * Wrapping title from page tree.
 	 *
-	 * @param	string		Title to wrap
-	 * @param	mixed		(See parent class)
-	 * @return	string		Wrapped title
+	 * @param string $title Title to wrap
+	 * @param mixed $v (See parent class)
+	 * @return string Wrapped title
 	 */
 	function wrapTitle($title, $v) {
 		$title = (!strcmp(trim($title), '')) ? '<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title', 1).']</em>' : htmlspecialchars($title);
@@ -105,21 +99,21 @@ class localPageTree extends t3lib_browseTree {
 	/**
 	 * Wrapping Plus/Minus icon
 	 *
-	 * @param	string		Icon HTML
-	 * @param	mixed		(See parent class)
-	 * @param	mixed		(See parent class)
-	 * @return	string		Icon HTML
+	 * @param string $icon Icon HTML
+	 * @param mixed $cmd (See parent class)
+	 * @param mixed $bMark (See parent class)
+	 * @return string Icon HTML
 	 */
-	function PM_ATagWrap($icon, $cmd, $bMark='') {
+	function PM_ATagWrap($icon, $cmd, $bMark = '') {
 		return $icon;
 	}
 
 	/**
 	 * Wrapping Icon
 	 *
-	 * @param	string		Icon HTML
-	 * @param	array		Record row (page)
-	 * @return	string		Icon HTML
+	 * @param string $icon Icon HTML
+	 * @param array $row Record row (page)
+	 * @return string Icon HTML
 	 */
 	function wrapIcon($icon, $row) {
 		return $icon;
@@ -128,7 +122,7 @@ class localPageTree extends t3lib_browseTree {
 	/**
 	 * Select permissions
 	 *
-	 * @return	string		SQL where clause
+	 * @return string SQL where clause
 	 */
 	function permsC() {
 		return $this->BE_USER->getPagePermsClause(1);
@@ -137,11 +131,11 @@ class localPageTree extends t3lib_browseTree {
 	/**
 	 * Tree rendering
 	 *
-	 * @param	integer		PID value
-	 * @param	string		Additional where clause
-	 * @return	array		Array of tree elements
+	 * @param integer $pid PID value
+	 * @param string $clause Additional where clause
+	 * @return array Array of tree elements
 	 */
-	function ext_tree($pid, $clause='') {
+	function ext_tree($pid, $clause = '') {
 
 			// Initialize:
 		$this->init(' AND '.$this->permsC().$clause);
@@ -161,8 +155,8 @@ class localPageTree extends t3lib_browseTree {
 			// Set first:
 		$this->bank = $idx;
 		$isOpen = $this->stored[$idx][$pid] || $this->expandFirst;
-
-		$curIds = $this->ids;	// save ids
+			// save ids
+		$curIds = $this->ids;
 		$this->reset();
 		$this->ids = $curIds;
 
@@ -202,34 +196,21 @@ class localPageTree extends t3lib_browseTree {
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Main script class for the Import / Export facility
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_impexp
  */
 class SC_mod_tools_log_index extends t3lib_SCbase {
-
-	var $pageinfo;			// array containing the current page.
+		// Array containing the current page.
+	var $pageinfo;
 
 	/**
 	 * Main module function
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 			// Start document template object:
@@ -249,7 +230,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			}
 		');
 
-		// Setting up the context sensitive menu:
+			// Setting up the context sensitive menu:
 		$this->doc->getContextMenuCode();
 
 		$this->doc->postCode = $this->doc->wrapScriptTags('
@@ -282,7 +263,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					// Finally: If upload went well, set the new file as the import file:
 				if (is_object($this->fileProcessor) && $this->fileProcessor->internalUploadMap[1]) {
 					$fI = pathinfo($this->fileProcessor->internalUploadMap[1]);
-					if (t3lib_div::inList('t3d,xml', strtolower($fI['extension'])))	{	// Only allowed extensions....
+						// Only allowed extensions....
+					if (t3lib_div::inList('t3d,xml', strtolower($fI['extension'])))	{
 						$inData['file'] = $this->fileProcessor->internalUploadMap[1];
 					}
 				}
@@ -292,21 +274,21 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			break;
 		}
 
-		// Setting up the buttons and markers for docheader
+			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers['CONTENT'] = $this->content;
 
-		// Build the <body> for the module
+			// Build the <body> for the module
 		$this->content = $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
-		$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-		$this->content.= $this->doc->endPage();
+		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content .= $this->doc->endPage();
 		$this->content = $this->doc->insertStylesAndJS($this->content);
 	}
 
 	/**
 	 * Print the content
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
@@ -354,10 +336,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		return $buttons;
 	}
 
-
-
-
-
 	/**************************
 	 *
 	 * EXPORT FUNCTIONS
@@ -367,8 +345,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Export part of module
 	 *
-	 * @param	array		Content of POST VAR tx_impexp[]..
-	 * @return	void		Setting content in $this->content
+	 * @param array $inData Content of POST VAR tx_impexp[]..
+	 * @return void Setting content in $this->content
 	 */
 	function exportData($inData) {
 			// BUILDING EXPORT DATA:
@@ -446,7 +424,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 			// Configure which tables to export
 		if (is_array($inData['list'])) {
-			foreach($inData['list'] as $ref) {
+			foreach ($inData['list'] as $ref) {
 				$rParts = explode(':', $ref);
 				if ($GLOBALS['BE_USER']->check('tables_select', $rParts[0])) {
 					$res = $this->exec_listQueryPid($rParts[0], $rParts[1], t3lib_utility_Math::forceIntegerInRange($inData['listCfg']['maxNumber'], 1));
@@ -459,14 +437,16 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 			// Pagetree
 		if (isset($inData['pagetree']['id'])) {
-			if ($inData['pagetree']['levels']==-1)	{	// Based on click-expandable tree
+				// Based on click-expandable tree
+			if ($inData['pagetree']['levels'] == -1) {
 				$pagetree = t3lib_div::makeInstance('localPageTree');
 
 				$tree = $pagetree->ext_tree($inData['pagetree']['id'], $this->filterPageIds($this->export->excludeMap));
 				$this->treeHTML = $pagetree->printTree($tree);
 
 				$idH = $pagetree->buffer_idH;
-			} elseif ($inData['pagetree']['levels']==-2)	{	// Only tables on page
+				// Only tables on page
+			} elseif ($inData['pagetree']['levels'] == -2) {
 				$this->addRecordsForPid($inData['pagetree']['id'], $inData['pagetree']['tables'], $inData['pagetree']['maxNumber']);
 			} else {	// Based on depth
 					// Drawing tree:
@@ -503,7 +483,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			}
 				// In any case we should have a multi-level array, $idH, with the page structure here (and the HTML-code loaded into memory for nice display...)
 			if (is_array($idH)) {
-				$flatList = $this->export->setPageTree($idH);	// Sets the pagetree and gets a 1-dim array in return with the pages (in correct submission order BTW...)
+					// Sets the pagetree and gets a 1-dim array in return with the pages (in correct submission order BTW...)
+				$flatList = $this->export->setPageTree($idH);
 				foreach ($flatList as $k => $value) {
 					$this->export->export_addRecord('pages', t3lib_BEfunc::getRecord('pages', $k));
 					$this->addRecordsForPid($k, $inData['pagetree']['tables'], $inData['pagetree']['maxNumber']);
@@ -512,7 +493,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		}
 
 			// After adding ALL records we set relations:
-		for($a=0;$a<10;$a++) {
+		for ($a = 0; $a < 10; $a++) {
 			$addR = $this->export->export_addDBRelations($a);
 			if (!count($addR)) {
 				break;
@@ -520,7 +501,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		}
 
 			// Finally files are added:
-		$this->export->export_addFilesFromRelations();	// MUST be after the DBrelations are set so that files from ALL added records are included!
+			// MUST be after the DBrelations are set so that files from ALL added records are included!
+		$this->export->export_addFilesFromRelations();
 			// If the download button is clicked, return file
 		if ($inData['download_export'] || $inData['save_export']) {
 			switch((string)$inData['filetype']) {
@@ -581,7 +563,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				}
 			}
 		}
-
 
 			// OUTPUT to BROWSER:
 			// Now, if we didn't make download file, show configuration form based on export:
@@ -650,10 +631,10 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Adds records to the export object for a specific page id.
 	 *
-	 * @param	integer		Page id for which to select records to add
-	 * @param	array		Array of table names to select from
-	 * @param	integer		Max amount of records to select
-	 * @return	void
+	 * @param integer $k Page id for which to select records to add
+	 * @param array $tables Array of table names to select from
+	 * @param integer $maxNumber Max amount of records to select
+	 * @return void
 	 */
 	function addRecordsForPid($k, $tables, $maxNumber) {
 		if (is_array($tables)) {
@@ -673,10 +654,10 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Selects records from table / pid
 	 *
-	 * @param	string		Table to select from
-	 * @param	integer		Page ID to select from
-	 * @param	integer		Max number of records to select
-	 * @return	pointer		SQL resource pointer
+	 * @param string $table Table to select from
+	 * @param integer $pid Page ID to select from
+	 * @param integer $limit Max number of records to select
+	 * @return pointer SQL resource pointer
 	 */
 	function exec_listQueryPid($table, $pid, $limit) {
 		$orderBy = ($GLOBALS['TCA'][$table]['ctrl']['sortby']
@@ -710,9 +691,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Create configuration form
 	 *
-	 * @param	array		Form configurat data
-	 * @param	array		Table row accumulation variable. This is filled with table rows.
-	 * @return	void		Sets content in $this->content
+	 * @param array $inData Form configurat data
+	 * @param array  Table row accumulation variable. This is filled with table rows.
+	 * @return void Sets content in $this->content
 	 */
 	function makeConfigurationForm($inData, &$row) {
 		global $LANG;
@@ -774,7 +755,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				<tr class="tableheader bgColor5">
 					<td colspan="2">'.$LANG->getLL('makeconfig_exportSingleRecord', 1).t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'singleRecord', $GLOBALS['BACK_PATH'], '').'</td>
 				</tr>';
-			foreach($inData['record'] as $ref) {
+			foreach ($inData['record'] as $ref) {
 				$rParts = explode(':', $ref);
 				$tName = $rParts[0];
 				$rUid = $rParts[1];
@@ -885,9 +866,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Create advanced options form
 	 *
-	 * @param	array		Form configurat data
-	 * @param	array		Table row accumulation variable. This is filled with table rows.
-	 * @return	void		Sets content in $this->content
+	 * @param array $inData Form configurat data
+	 * @param array $row Table row accumulation variable. This is filled with table rows.
+	 * @return void Sets content in $this->content
 	 */
 	function makeAdvancedOptionsForm($inData, &$row) {
 		global $LANG;
@@ -933,9 +914,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Create configuration form
 	 *
-	 * @param	array		Form configurat data
-	 * @param	array		Table row accumulation variable. This is filled with table rows.
-	 * @return	void		Sets content in $this->content
+	 * @param array $inData Form configurat data
+	 * @param array $row Table row accumulation variable. This is filled with table rows.
+	 * @return void Sets content in $this->content
 	 */
 	function makeSaveForm($inData, &$row) {
 		global $LANG;
@@ -1044,18 +1025,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				</tr>';
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
 	/**************************
 	 *
 	 * IMPORT FUNCTIONS
@@ -1065,8 +1034,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Import part of module
 	 *
-	 * @param	array		Content of POST VAR tx_impexp[]..
-	 * @return	void		Setting content in $this->content
+	 * @param array $inData Content of POST VAR tx_impexp[]..
+	 * @return void Setting content in $this->content
 	 */
 	function importData($inData) {
 		global $LANG;
@@ -1098,8 +1067,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				// OUTPUT creation:
 			$menuItems = array();
 
-			// Make input selector:
-			$path = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];	// must have trailing slash.
+				// Make input selector:
+				// must have trailing slash.
+			$path = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
 			$filesInDir = t3lib_div::getFilesInDir(PATH_site.$path, 't3d,xml', 1, 1);
 
 			$userPath = $this->userSaveFolder(); //Files from User-Dir
@@ -1119,7 +1089,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				// Configuration
 			$row = array();
 			$opt = array('');
-			foreach($filesInDir as $file) {
+			foreach ($filesInDir as $file) {
 				$opt[$file] = substr($file, strlen(PATH_site));
 			}
 
@@ -1291,7 +1261,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					</tr>';
 
 				$opt = array('');
-				foreach($filesInDir as $file) {
+				foreach ($filesInDir as $file) {
 					$opt[$file] = substr($file, strlen(PATH_site));
 				}
 
@@ -1375,18 +1345,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
 	/****************************
 	 *
 	 * Preset functions
@@ -1396,8 +1354,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Manipulate presets
 	 *
-	 * @param	array		In data array, passed by reference!
-	 * @return	void
+	 * @param array $inData In data array, passed by reference!
+	 * @return void
 	 */
 	function processPresets(&$inData) {
 
@@ -1407,7 +1365,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// Save preset
 		if (isset($presetData['save'])) {
 			$preset = $this->getPreset($presetData['select']);
-			if (is_array($preset))	{	// Update existing
+				// Update existing
+			if (is_array($preset)) {
 				if ($GLOBALS['BE_USER']->isAdmin() || $preset['user_uid'] === $GLOBALS['BE_USER']->user['uid']) {
 					$fields_values = array(
 						'public' => $inData['preset']['public'],
@@ -1491,23 +1450,13 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Get single preset record
 	 *
-	 * @param	integer		Preset record
-	 * @return	array		Preset record, if any (otherwise FALSE)
+	 * @param integer $uid Preset record
+	 * @return array Preset record, if any (otherwise FALSE)
 	 */
 	function getPreset($uid) {
 		$preset = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'tx_impexp_presets', 'uid=' . intval($uid));
 		return $preset;
 	}
-
-
-
-
-
-
-
-
-
-
 
 	/****************************
 	 *
@@ -1518,7 +1467,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Returns first temporary folder of the user account (from $FILEMOUNTS)
 	 *
-	 * @return	string		Absolute path to first "_temp_" folder of the current user, otherwise blank.
+	 * @return string Absolute path to first "_temp_" folder of the current user, otherwise blank.
 	 */
 	function userTempFolder() {
 		global $FILEMOUNTS;
@@ -1534,7 +1483,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Returns folder where user can save export files.
 	 *
-	 * @return	string		Absolute path to folder where export files can be saved.
+	 * @return string Absolute path to folder where export files can be saved.
 	 */
 	function userSaveFolder() {
 		global $FILEMOUNTS;
@@ -1557,7 +1506,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Check if a file has been uploaded
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function checkUpload() {
 		$file = t3lib_div::_GP('file');
@@ -1583,10 +1532,10 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Makes a selector-box from optValues
 	 *
-	 * @param	string		Form element name
-	 * @param	string		Current value
-	 * @param	array		Options to display (key/value pairs)
-	 * @return	string		HTML select element
+	 * @param string $prefix Form element name
+	 * @param string $value Current value
+	 * @param array $optValues Options to display (key/value pairs)
+	 * @return string HTML select element
 	 */
 	function renderSelectBox($prefix, $value, $optValues) {
 		$opt = array();
@@ -1605,12 +1554,12 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Returns a selector-box with TCA tables
 	 *
-	 * @param	string		Form element name prefix
-	 * @param	array		The current values selected
-	 * @param	string		Table names (and the string "_ALL") to exclude. Comma list
-	 * @return	string		HTML select element
+	 * @param string $prefix Form element name prefix
+	 * @param array $value The current values selected
+	 * @param string $excludeList Table names (and the string "_ALL") to exclude. Comma list
+	 * @return string HTML select element
 	 */
-	function tableSelector($prefix, $value, $excludeList='') {
+	function tableSelector($prefix, $value, $excludeList = '') {
 		$optValues = array();
 
 		if (!t3lib_div::inList($excludeList, '_ALL')) {
@@ -1638,9 +1587,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Returns a selector-box with loaded extension keys
 	 *
-	 * @param	string		Form element name prefix
-	 * @param	array		The current values selected
-	 * @return	string		HTML select element
+	 * @param string $prefix Form element name prefix
+	 * @param array $value The current values selected
+	 * @return string HTML select element
 	 */
 	function extensionSelector($prefix, $value) {
 		global $TYPO3_LOADED_EXT;
@@ -1650,7 +1599,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			// make box:
 		$opt = array();
 		$opt[] = '<option value=""></option>';
-		foreach($extTrav as $v) {
+		foreach ($extTrav as $v) {
 			if ($v!=='_CACHEFILE') {
 				if (is_array($value)) {
 					$sel = in_array($v, $value)?' selected="selected"':'';
@@ -1664,8 +1613,8 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	/**
 	 * Filter page IDs by traversing exclude array, finding all excluded pages (if any) and making an AND NOT IN statement for the select clause.
 	 *
-	 * @param	array		Exclude array from import/export object.
-	 * @return	string		AND where clause part to filter out page uids.
+	 * @param array $exclude Exclude array from import/export object.
+	 * @return string AND where clause part to filter out page uids.
 	 */
 	function filterPageIds($exclude) {
 
@@ -1674,9 +1623,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 
 			// Traverse
 		$pageIds = array();
-		foreach($exclude as $element) {
+		foreach ($exclude as $element) {
 			list($table, $uid) = explode(':', $element);
-			if ($table==='pages') {
+			if ($table === 'pages') {
 				$pageIds[] = intval($uid);
 			}
 		}
@@ -1688,7 +1637,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_mod_tools_log_index');
 $SOBE->init();
 $SOBE->main();

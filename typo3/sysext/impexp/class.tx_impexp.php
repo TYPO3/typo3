@@ -27,7 +27,7 @@
 /**
  * T3D file Import/Export library (TYPO3 Record Document)
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * EXAMPLE for using the impexp-class for exporting stuff:
@@ -62,56 +62,91 @@
 /**
  * T3D file Import/Export library (TYPO3 Record Document)
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_impexp
  */
 class tx_impexp {
 
 		// Configuration, general
-	var $showStaticRelations = FALSE;		// If set, static relations (not exported) will be shown in overview as well
-	var $fileadminFolderName = 'fileadmin';	// Name of the "fileadmin" folder where files for export/import should be located
-
-	var $mode = '';							// Whether "import" or "export" mode of object. Set through init() function
-	var $update = FALSE;					// Updates all records that has same UID instead of creating new!
-	var $doesImport = FALSE;				// Is set by importData() when an import has been done.
+		// If set, static relations (not exported) will be shown in overview as well
+	var $showStaticRelations = FALSE;
+		// Name of the "fileadmin" folder where files for export/import should be located
+	var $fileadminFolderName = 'fileadmin';
+		// Whether "import" or "export" mode of object. Set through init() function
+	var $mode = '';
+		// Updates all records that has same UID instead of creating new!
+	var $update = FALSE;
+		// Is set by importData() when an import has been done.
+	var $doesImport = FALSE;
 
 		// Configuration, import
-	var $display_import_pid_record = '';		// If set to a page-record, then the preview display of the content will expect this page-record to be the target for the import and accordingly display validation information. This triggers the visual view of the import/export memory to validate if import is possible
-	var $suggestedInsertUids = array();		// Used to register the forged UID values for imported records that we want to create with the same UIDs as in the import file. Admin-only feature.
-	var $import_mode = array();				// Setting import modes during update state: as_new, exclude, force_uid
-	var $global_ignore_pid = FALSE;			// If set, PID correct is ignored globally
-	var $force_all_UIDS = FALSE;			// If set, all UID values are forced! (update or import)
-	var $showDiff = FALSE;					// If set, a diff-view column is added to the overview.
-	var $allowPHPScripts = FALSE;			// If set, and if the user is admin, allow the writing of PHP scripts to fileadmin/ area.
-	var $enableLogging = FALSE;				// Disable logging when importing
-	var $softrefInputValues = array();		// Array of values to substitute in editable softreferences.
-	var $fileIDMap = array();				// Mapping between the fileID from import memory and the final filenames they are written to.
+		// If set to a page-record, then the preview display of the content will expect this page-record to be the target
+		// for the import and accordingly display validation information. This triggers the visual view of the
+		// import/export memory to validate if import is possible
+	var $display_import_pid_record = '';
+		// Used to register the forged UID values for imported records that we want to create with the same UIDs as in the import file. Admin-only feature.
+	var $suggestedInsertUids = array();
+		// Setting import modes during update state: as_new, exclude, force_uid
+	var $import_mode = array();
+		// If set, PID correct is ignored globally
+	var $global_ignore_pid = FALSE;
+		// If set, all UID values are forced! (update or import)
+	var $force_all_UIDS = FALSE;
+		// If set, a diff-view column is added to the overview.
+	var $showDiff = FALSE;
+		// If set, and if the user is admin, allow the writing of PHP scripts to fileadmin/ area.
+	var $allowPHPScripts = FALSE;
+		// Disable logging when importing
+	var $enableLogging = FALSE;
+		// Array of values to substitute in editable softreferences.
+	var $softrefInputValues = array();
+		// Mapping between the fileID from import memory and the final filenames they are written to.
+	var $fileIDMap = array();
 
 		// Configuration, export
-	var $maxFileSize = 1000000;		// 1MB max file size
-	var $maxRecordSize = 1000000;	// 1MB max record size
-	var $maxExportSize = 10000000;	// 10MB max export size
-	var $relOnlyTables = array();	// add table names here which are THE ONLY ones which will be included into export if found as relations. '_ALL' will allow all tables.
-	var $relStaticTables = array();	// add tables names here which should not be exported with the file. (Where relations should be mapped to same UIDs in target system).
-	var $excludeMap = array();		// Exclude map. Keys are table:uid  pairs and if set, records are not added to the export.
-	var $softrefCfg = array();		// Soft Reference Token ID modes.
-	var $extensionDependencies = array();		// Listing extension dependencies.
-	var $dontCompress = 0;			// Set  by user: If set, compression in t3d files is disabled
-	var $includeExtFileResources = 0;	// Boolean, if set, HTML file resources are included.
-	var $extFileResourceExtensions = 'html,htm,css';	// Files with external media (HTML/css style references inside)
+		// 1MB max file size
+	var $maxFileSize = 1000000;
+		// 1MB max record size
+	var $maxRecordSize = 1000000;
+		// 10MB max export size
+	var $maxExportSize = 10000000;
+		// add table names here which are THE ONLY ones which will be included into export if found as relations. '_ALL' will allow all tables.
+	var $relOnlyTables = array();
+		// add tables names here which should not be exported with the file. (Where relations should be mapped to same UIDs in target system).
+	var $relStaticTables = array();
+		// Exclude map. Keys are table:uid  pairs and if set, records are not added to the export.
+	var $excludeMap = array();
+		// Soft Reference Token ID modes.
+	var $softrefCfg = array();
+		// Listing extension dependencies.
+	var $extensionDependencies = array();
+		// Set  by user: If set, compression in t3d files is disabled
+	var $dontCompress = 0;
+		// Boolean, if set, HTML file resources are included.
+	var $includeExtFileResources = 0;
+		// Files with external media (HTML/css style references inside)
+	var $extFileResourceExtensions = 'html,htm,css';
 
 		// Internal, dynamic:
-	var $import_mapId = array();		// After records are written this array is filled with [table][original_uid] = [new_uid]
-	var $import_newId = array();		// Keys are [tablename]:[new NEWxxx ids (or when updating it is uids)] while values are arrays with table/uid of the original record it is based on. By the array keys the new ids can be looked up inside tcemain
-	var $import_newId_pids = array();	// Page id map for page tree (import)
-	var $import_data = array();			// Internal data accumulation for writing records during import
-	var $errorLog = array();			// Error log.
-	var $cache_getRecordPath = array();	// Cache for record paths
-	var $checkPID_cache = array();		// Cache of checkPID values.
-
-	var $compress = 0;					// Set internally if the gzcompress function exists
-	var $dat = array();					// Internal import/export memory
+		// After records are written this array is filled with [table][original_uid] = [new_uid]
+	var $import_mapId = array();
+		// Keys are [tablename]:[new NEWxxx ids (or when updating it is uids)] while values are arrays with table/uid of the original record it is based on. By the array keys the new ids can be looked up inside tcemain
+	var $import_newId = array();
+		// Page id map for page tree (import)
+	var $import_newId_pids = array();
+		// Internal data accumulation for writing records during import
+	var $import_data = array();
+		// Error log.
+	var $errorLog = array();
+		// Cache for record paths
+	var $cache_getRecordPath = array();
+		// Cache of checkPID values.
+	var $checkPID_cache = array();
+		// Set internally if the gzcompress function exists
+	var $compress = 0;
+		// Internal import/export memory
+	var $dat = array();
 
 	/**
 	 * File processing object
@@ -119,8 +154,6 @@ class tx_impexp {
 	 * @var t3lib_extFileFunctions
 	 */
 	var $fileProcObj = '';
-
-
 
 	/**************************
 	 *
@@ -131,29 +164,16 @@ class tx_impexp {
 	/**
 	 * Init the object, both import and export
 	 *
-	 * @param	boolean		If set, compression in t3d files is disabled
-	 * @param	string		Mode of usage, either "import" or "export"
-	 * @return	void
+	 * @param boolean $dontCompress If set, compression in t3d files is disabled
+	 * @param string $mode Mode of usage, either "import" or "export"
+	 * @return void
 	 */
-	function init($dontCompress=0, $mode='') {
+	function init($dontCompress = 0, $mode = '') {
 		$this->compress = function_exists('gzcompress');
 		$this->dontCompress = $dontCompress;
 
 		$this->mode = $mode;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	/**************************
 	 *
@@ -164,31 +184,39 @@ class tx_impexp {
 	/**
 	 * Set header basics
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function setHeaderBasics() {
 
 			// Initializing:
 		if (is_array($this->softrefCfg)) {
-			foreach($this->softrefCfg as $key => $value) {
-				if (!strlen($value['mode']))	unset($this->softrefCfg[$key]);
+			foreach ($this->softrefCfg as $key => $value) {
+				if (!strlen($value['mode'])) {
+					unset($this->softrefCfg[$key]);
+				}
 			}
 		}
 
 			// Setting in header memory:
-		$this->dat['header']['XMLversion'] = '1.0';		// Version of file format
-		$this->dat['header']['meta'] = array();			// Initialize meta data array (to put it in top of file)
-		$this->dat['header']['relStaticTables'] = $this->relStaticTables;	// Add list of tables to consider static
-		$this->dat['header']['excludeMap'] = $this->excludeMap;				// The list of excluded records
-		$this->dat['header']['softrefCfg'] = $this->softrefCfg;			// Soft Reference mode for elements
-		$this->dat['header']['extensionDependencies'] = $this->extensionDependencies;		// List of extensions the import depends on.
+			// Version of file format
+		$this->dat['header']['XMLversion'] = '1.0';
+			// Initialize meta data array (to put it in top of file)
+		$this->dat['header']['meta'] = array();
+			// Add list of tables to consider static
+		$this->dat['header']['relStaticTables'] = $this->relStaticTables;
+			// The list of excluded records
+		$this->dat['header']['excludeMap'] = $this->excludeMap;
+			// Soft Reference mode for elements
+		$this->dat['header']['softrefCfg'] = $this->softrefCfg;
+			// List of extensions the import depends on.
+		$this->dat['header']['extensionDependencies'] = $this->extensionDependencies;
 	}
 
 	/**
 	 * Set charset
 	 *
-	 * @param	string		Charset for the content in the export. During import the character set will be converted if the target system uses another charset.
-	 * @return	void
+	 * @param string $charset Charset for the content in the export. During import the character set will be converted if the target system uses another charset.
+	 * @return void
 	 */
 	function setCharset($charset) {
 		$this->dat['header']['charset'] = $charset;
@@ -197,13 +225,13 @@ class tx_impexp {
 	/**
 	 * Sets meta data
 	 *
-	 * @param	string		Title of the export
-	 * @param	string		Description of the export
-	 * @param	string		Notes about the contents
-	 * @param	string		Backend Username of the packager (the guy making the export)
-	 * @param	string		Real name of the packager
-	 * @param	string		Email of the packager
-	 * @return	void
+	 * @param string $title Title of the export
+	 * @param string $description Description of the export
+	 * @param string $notes Notes about the contents
+	 * @param string $packager_username Backend Username of the packager (the guy making the export)
+	 * @param string $packager_name Real name of the packager
+	 * @param string $packager_email Email of the packager
+	 * @return void
 	 */
 	function setMetaData($title, $description, $notes, $packager_username, $packager_name, $packager_email) {
 		$this->dat['header']['meta'] = array(
@@ -221,8 +249,8 @@ class tx_impexp {
 	/**
 	 * Sets a thumbnail image to the exported file
 	 *
-	 * @param	string		Filename reference, gif, jpg, png. Absolute path.
-	 * @return	void
+	 * @param string $imgFilepath Filename reference, gif, jpg, png. Absolute path.
+	 * @return void
 	 */
 	function addThumbnail($imgFilepath) {
 		if (@is_file($imgFilepath)) {
@@ -240,16 +268,6 @@ class tx_impexp {
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
 	/**************************
 	 *
 	 * Export / Init Page tree
@@ -259,8 +277,8 @@ class tx_impexp {
 	/**
 	 * Sets the page-tree array in the export header and returns the array in a flattened version
 	 *
-	 * @param	array		Hierarchy of ids, the page tree: array([uid] => array("uid" => [uid], "subrow" => array(.....)), [uid] => ....)
-	 * @return	array		The hierarchical page tree converted to a one-dimensional list of pages
+	 * @param array $idH Hierarchy of ids, the page tree: array([uid] => array("uid" => [uid], "subrow" => array(.....)), [uid] => ....)
+	 * @return array The hierarchical page tree converted to a one-dimensional list of pages
 	 */
 	function setPageTree($idH) {
 		$this->dat['header']['pagetree'] = $this->unsetExcludedSections($idH);
@@ -270,8 +288,8 @@ class tx_impexp {
 	/**
 	 * Removes entries in the page tree which are found in ->excludeMap[]
 	 *
-	 * @param	array		Page uid hierarchy
-	 * @return	array		Modified input array
+	 * @param array $idH Page uid hierarchy
+	 * @return array Modified input array
 	 * @access private
 	 * @see setPageTree()
 	 */
@@ -291,12 +309,12 @@ class tx_impexp {
 	/**
 	 * Recursively flattening the idH array (for setPageTree() function)
 	 *
-	 * @param	array		Page uid hierarchy
-	 * @param	array		Accumulation array of pages (internal, don't set from outside)
-	 * @return	array		Array with uid-uid pairs for all pages in the page tree.
+	 * @param array $idH Page uid hierarchy
+	 * @param array $a Accumulation array of pages (internal, don't set from outside)
+	 * @return array Array with uid-uid pairs for all pages in the page tree.
 	 * @see flatInversePageTree_pid()
 	 */
-	function flatInversePageTree($idH, $a=array()) {
+	function flatInversePageTree($idH, $a = array()) {
 		if (is_array($idH)) {
 			$idH = array_reverse($idH);
 			foreach ($idH as $k => $v) {
@@ -312,13 +330,13 @@ class tx_impexp {
 	/**
 	 * Recursively flattening the idH array (for setPageTree() function), setting PIDs as values
 	 *
-	 * @param	array		Page uid hierarchy
-	 * @param	array		Accumulation array of pages (internal, don't set from outside)
-	 * @param	integer		PID value (internal)
-	 * @return	array		Array with uid-pid pairs for all pages in the page tree.
+	 * @param array $idH Page uid hierarchy
+	 * @param array $a Accumulation array of pages (internal, don't set from outside)
+	 * @param integer $pid PID value (internal)
+	 * @return array Array with uid-pid pairs for all pages in the page tree.
 	 * @see flatInversePageTree()
 	 */
-	function flatInversePageTree_pid($idH, $a=array(), $pid=-1) {
+	function flatInversePageTree_pid($idH, $a = array(), $pid = -1) {
 		if (is_array($idH)) {
 			$idH = array_reverse($idH);
 			foreach ($idH as $k => $v) {
@@ -331,16 +349,6 @@ class tx_impexp {
 		return $a;
 	}
 
-
-
-
-
-
-
-
-
-
-
 	/**************************
 	 *
 	 * Export
@@ -351,17 +359,17 @@ class tx_impexp {
 	 * Adds the record $row from $table.
 	 * No checking for relations done here. Pure data.
 	 *
-	 * @param	string		Table name
-	 * @param	array		Record row.
-	 * @param	integer		(Internal) if the record is added as a relation, this is set to the "level" it was on.
-	 * @return	void
+	 * @param string $table Table name
+	 * @param array $row Record row.
+	 * @param integer $relationLevel (Internal) if the record is added as a relation, this is set to the "level" it was on.
+	 * @return void
 	 */
-	function export_addRecord($table, $row, $relationLevel=0) {
+	function export_addRecord($table, $row, $relationLevel = 0) {
 
 		t3lib_BEfunc::workspaceOL($table, $row);
 
-		if (strcmp($table, '') && is_array($row) && $row['uid']>0 && !$this->excludeMap[$table.':'.$row['uid']]) {
-			if ($this->checkPID($table==='pages' ? $row['uid'] : $row['pid'])) {
+		if (strcmp($table, '') && is_array($row) && $row['uid'] > 0 && !$this->excludeMap[$table.':'.$row['uid']]) {
+			if ($this->checkPID($table === 'pages' ? $row['uid'] : $row['pid'])) {
 				if (!isset($this->dat['records'][$table.':'.$row['uid']])) {
 
 						// Prepare header info:
@@ -385,7 +393,8 @@ class tx_impexp {
 
 							// Initialize reference index object:
 						$refIndexObj = t3lib_div::makeInstance('t3lib_refindex');
-						$refIndexObj->WSOL = TRUE;	// Yes to workspace overlays for exporting....
+							// Yes to workspace overlays for exporting....
+						$refIndexObj->WSOL = TRUE;
 
 							// Data:
 						$this->dat['records'][$table.':'.$row['uid']] = array();
@@ -410,11 +419,11 @@ class tx_impexp {
 	 * This function can be called repeatedly until it returns an empty array. In principle it should not allow to infinite recursivity, but you better set a limit...
 	 * Call this BEFORE the ext_addFilesFromRelations (so files from added relations are also included of course)
 	 *
-	 * @param	integer		Recursion level
-	 * @return	array		overview of relations found and added: Keys [table]:[uid], values array with table and id
+	 * @param integer $relationLevel Recursion level
+	 * @return array overview of relations found and added: Keys [table]:[uid], values array with table and id
 	 * @see export_addFilesFromRelations()
 	 */
-	function export_addDBRelations($relationLevel=0) {
+	function export_addDBRelations($relationLevel = 0) {
 
 			// Initialize:
 		$addR = array();
@@ -426,27 +435,27 @@ class tx_impexp {
 					foreach ($this->dat['records'][$k]['rels'] as $fieldname => $vR) {
 
 							// For all DB types of relations:
-						if ($vR['type']=='db') {
-							foreach($vR['itemArray'] as $fI) {
+						if ($vR['type'] == 'db') {
+							foreach ($vR['itemArray'] as $fI) {
 								$this->export_addDBRelations_registerRelation($fI, $addR);
 							}
 						}
 
 							// For all flex/db types of relations:
-						if ($vR['type']=='flex') {
+						if ($vR['type'] == 'flex') {
 								// DB relations in flex form fields:
 							if (is_array($vR['flexFormRels']['db'])) {
-								foreach($vR['flexFormRels']['db'] as $subList) {
-									foreach($subList as $fI) {
+								foreach ($vR['flexFormRels']['db'] as $subList) {
+									foreach ($subList as $fI) {
 										$this->export_addDBRelations_registerRelation($fI, $addR);
 									}
 								}
 							}
 								// DB oriented soft references in flex form fields:
 							if (is_array($vR['flexFormRels']['softrefs'])) {
-								foreach($vR['flexFormRels']['softrefs'] as $subList) {
-									foreach($subList['keys'] as $spKey => $elements) {
-										foreach($elements as $el) {
+								foreach ($vR['flexFormRels']['softrefs'] as $subList) {
+									foreach ($subList['keys'] as $spKey => $elements) {
+										foreach ($elements as $el) {
 											if ($el['subst']['type'] === 'db' && $this->includeSoftref($el['subst']['tokenID'])) {
 												list($tempTable, $tempUid) = explode(':', $el['subst']['recordRef']);
 												$fI = array(
@@ -463,8 +472,8 @@ class tx_impexp {
 
 							// In any case, if there are soft refs:
 						if (is_array($vR['softrefs']['keys'])) {
-							foreach($vR['softrefs']['keys'] as $spKey => $elements) {
-								foreach($elements as $el) {
+							foreach ($vR['softrefs']['keys'] as $spKey => $elements) {
+								foreach ($elements as $el) {
 									if ($el['subst']['type'] === 'db' && $this->includeSoftref($el['subst']['tokenID'])) {
 										list($tempTable, $tempUid) = explode(':', $el['subst']['recordRef']);
 										$fI = array(
@@ -483,7 +492,7 @@ class tx_impexp {
 
 			// Now, if there were new records to add, do so:
 		if (count($addR)) {
-			foreach($addR as $fI) {
+			foreach ($addR as $fI) {
 
 					// Get and set record:
 				$row = t3lib_BEfunc::getRecord($fI['table'], $fI['id']);
@@ -492,7 +501,8 @@ class tx_impexp {
 				}
 
 					// Set status message
-				if ($fI['id']>0)	{	// Relation pointers always larger than zero except certain "select" types with negative values pointing to uids - but that is not supported here.
+					// Relation pointers always larger than zero except certain "select" types with negative values pointing to uids - but that is not supported here.
+				if ($fI['id'] > 0) {
 					$rId = $fI['table'].':'.$fI['id'];
 					if (!isset($this->dat['records'][$rId])) {
 						$this->dat['records'][$rId] = 'NOT_FOUND';
@@ -509,13 +519,13 @@ class tx_impexp {
 	/**
 	 * Helper function for export_addDBRelations()
 	 *
-	 * @param	array		Array with table/id keys to add
-	 * @param	array		Add array, passed by reference to be modified
-	 * @param	string		Softref Token ID, if applicable.
-	 * @return	void
+	 * @param array $fI Array with table/id keys to add
+	 * @param array $addR Add array, passed by reference to be modified
+	 * @param string $tokenID Softref Token ID, if applicable.
+	 * @return void
 	 * @see export_addDBRelations()
 	 */
-	function export_addDBRelations_registerRelation($fI, &$addR, $tokenID='') {
+	function export_addDBRelations_registerRelation($fI, &$addR, $tokenID = '') {
 		$rId = $fI['table'].':'.$fI['id'];
 		if (isset($GLOBALS['TCA'][$fI['table']])
 				&& !$this->isTableStatic($fI['table'])
@@ -534,7 +544,7 @@ class tx_impexp {
 	 * This adds all files in relations.
 	 * Call this method AFTER adding all records including relations.
 	 *
-	 * @return	void
+	 * @return void
 	 * @see export_addDBRelations()
 	 */
 	function export_addFilesFromRelations() {
@@ -546,8 +556,8 @@ class tx_impexp {
 					foreach ($this->dat['records'][$k]['rels'] as $fieldname => $vR) {
 
 							// For all file type relations:
-						if ($vR['type']=='file') {
-							foreach($vR['newValueFiles'] as $key => $fI) {
+						if ($vR['type'] == 'file') {
+							foreach ($vR['newValueFiles'] as $key => $fI) {
 								$this->export_addFile($fI, $k, $fieldname);
 									// Remove the absolute reference to the file so it doesn't expose absolute paths from source server:
 								unset($this->dat['records'][$k]['rels'][$fieldname]['newValueFiles'][$key]['ID_absFile']);
@@ -555,10 +565,10 @@ class tx_impexp {
 						}
 
 							// For all flex type relations:
-						if ($vR['type']=='flex') {
+						if ($vR['type'] == 'flex') {
 							if (is_array($vR['flexFormRels']['file'])) {
-								foreach($vR['flexFormRels']['file'] as $key => $subList) {
-									foreach($subList as $subKey => $fI) {
+								foreach ($vR['flexFormRels']['file'] as $key => $subList) {
+									foreach ($subList as $subKey => $fI) {
 										$this->export_addFile($fI, $k, $fieldname);
 											// Remove the absolute reference to the file so it doesn't expose absolute paths from source server:
 										unset($this->dat['records'][$k]['rels'][$fieldname]['flexFormRels']['file'][$key][$subKey]['ID_absFile']);
@@ -568,9 +578,9 @@ class tx_impexp {
 
 								// DB oriented soft references in flex form fields:
 							if (is_array($vR['flexFormRels']['softrefs'])) {
-								foreach($vR['flexFormRels']['softrefs'] as $key => $subList) {
-									foreach($subList['keys'] as $spKey => $elements) {
-										foreach($elements as $subKey => $el) {
+								foreach ($vR['flexFormRels']['softrefs'] as $key => $subList) {
+									foreach ($subList['keys'] as $spKey => $elements) {
+										foreach ($elements as $subKey => $el) {
 											if ($el['subst']['type'] === 'file' && $this->includeSoftref($el['subst']['tokenID'])) {
 
 													// Create abs path and ID for file:
@@ -598,8 +608,8 @@ class tx_impexp {
 
 							// In any case, if there are soft refs:
 						if (is_array($vR['softrefs']['keys'])) {
-							foreach($vR['softrefs']['keys'] as $spKey => $elements) {
-								foreach($elements as $subKey => $el) {
+							foreach ($vR['softrefs']['keys'] as $spKey => $elements) {
+								foreach ($elements as $subKey => $el) {
 									if ($el['subst']['type'] === 'file' && $this->includeSoftref($el['subst']['tokenID'])) {
 
 											// Create abs path and ID for file:
@@ -631,12 +641,12 @@ class tx_impexp {
 	/**
 	 * Adds a files content to the export memory
 	 *
-	 * @param	array		File information with three keys: "filename" = filename without path, "ID_absFile" = absolute filepath to the file (including the filename), "ID" = md5 hash of "ID_absFile". "relFileName" is optional for files attached to records, but mandatory for soft referenced files (since the relFileName determines where such a file should be stored!)
-	 * @param	string		If the file is related to a record, this is the id on the form [table]:[id]. Information purposes only.
-	 * @param	string		If the file is related to a record, this is the field name it was related to. Information purposes only.
-	 * @return	void
+	 * @param array $fI File information with three keys: "filename" = filename without path, "ID_absFile" = absolute filepath to the file (including the filename), "ID" = md5 hash of "ID_absFile". "relFileName" is optional for files attached to records, but mandatory for soft referenced files (since the relFileName determines where such a file should be stored!)
+	 * @param string $recordRef If the file is related to a record, this is the id on the form [table]:[id]. Information purposes only.
+	 * @param string $fieldname If the file is related to a record, this is the field name it was related to. Information purposes only.
+	 * @return void
 	 */
-	function export_addFile($fI, $recordRef='', $fieldname='') {
+	function export_addFile($fI, $recordRef = '', $fieldname = '') {
 		if (@is_file($fI['ID_absFile'])) {
 			if (filesize($fI['ID_absFile']) < $this->maxFileSize) {
 				$fileRec = array();
@@ -713,7 +723,7 @@ class tx_impexp {
 						}
 
 						$htmlResourceCaptured = FALSE;
-						foreach($prefixedMedias as $k => $v) {
+						foreach ($prefixedMedias as $k => $v) {
 							if ($k%2) {
 								$EXTres_absPath = t3lib_div::resolveBackPath(dirname($fI['ID_absFile']).'/'.$v);
 								$EXTres_absPath = t3lib_div::getFileAbsFileName($EXTres_absPath);
@@ -731,8 +741,8 @@ class tx_impexp {
 										$fileRec['filename'] = basename($EXTres_absPath);
 										$fileRec['filemtime'] = filemtime($EXTres_absPath);
 										$fileRec['record_ref'] = '_EXT_PARENT_:'.$fI['ID'];
-
-										$fileRec['parentRelFileName'] = $v;		// Media relative to the HTML file.
+											// Media relative to the HTML file.
+										$fileRec['parentRelFileName'] = $v;
 
 											// Setting this data in the header
 										$this->dat['header']['files'][$EXTres_ID] = $fileRec;
@@ -760,21 +770,21 @@ class tx_impexp {
 	 * DB relations flattend to 1-dim array.
 	 * The list will be unique, no table/uid combination will appear twice.
 	 *
-	 * @param	array		2-dim Array of database relations organized by table key
-	 * @return	array		1-dim array where entries are table:uid and keys are array with table/id
+	 * @param array $dbrels 2-dim Array of database relations organized by table key
+	 * @return array 1-dim array where entries are table:uid and keys are array with table/id
 	 */
 	function flatDBrels($dbrels) {
 		$list = array();
 
-		foreach($dbrels as $dat) {
+		foreach ($dbrels as $dat) {
 			if ($dat['type']=='db') {
 				foreach($dat['itemArray'] as $i) {
 					$list[$i['table'].':'.$i['id']] = $i;
 				}
 			}
 			if ($dat['type']=='flex' && is_array($dat['flexFormRels']['db'])) {
-				foreach($dat['flexFormRels']['db'] as $subList) {
-					foreach($subList as $i) {
+				foreach ($dat['flexFormRels']['db'] as $subList) {
+					foreach ($subList as $i) {
 						$list[$i['table'].':'.$i['id']] = $i;
 					}
 				}
@@ -786,17 +796,17 @@ class tx_impexp {
 	/**
 	 * Soft References flattend to 1-dim array.
 	 *
-	 * @param	array		2-dim Array of database relations organized by table key
-	 * @return	array		1-dim array where entries are arrays with properties of the soft link found and keys are a unique combination of field, spKey, structure path if applicable and token ID
+	 * @param array $dbrels 2-dim Array of database relations organized by table key
+	 * @return array 1-dim array where entries are arrays with properties of the soft link found and keys are a unique combination of field, spKey, structure path if applicable and token ID
 	 */
 	function flatSoftRefs($dbrels) {
 		$list = array();
 
-		foreach($dbrels as $field => $dat) {
+		foreach ($dbrels as $field => $dat) {
 			if (is_array($dat['softrefs']['keys'])) {
 				foreach($dat['softrefs']['keys'] as $spKey => $elements) {
 					if (is_array($elements)) {
-						foreach($elements as $subKey => $el) {
+						foreach ($elements as $subKey => $el) {
 							$lKey = $field.':'.$spKey.':'.$subKey;
 							$list[$lKey] = array_merge(array('field' => $field, 'spKey' => $spKey), $el);
 
@@ -808,11 +818,11 @@ class tx_impexp {
 					}
 				}
 			}
-			if ($dat['type']=='flex' && is_array($dat['flexFormRels']['softrefs'])) {
-				foreach($dat['flexFormRels']['softrefs'] as $structurePath => $subSoftrefs) {
+			if ($dat['type'] == 'flex' && is_array($dat['flexFormRels']['softrefs'])) {
+				foreach ($dat['flexFormRels']['softrefs'] as $structurePath => $subSoftrefs) {
 					if (is_array($subSoftrefs['keys'])) {
-						foreach($subSoftrefs['keys'] as $spKey => $elements) {
-							foreach($elements as $subKey => $el) {
+						foreach ($subSoftrefs['keys'] as $spKey => $elements) {
+							foreach ($elements as $subKey => $el) {
 								$lKey = $field.':'.$structurePath.':'.$spKey.':'.$subKey;
 								$list[$lKey] = array_merge(array('field' => $field, 'spKey' => $spKey, 'structurePath' => $structurePath), $el);
 
@@ -830,16 +840,6 @@ class tx_impexp {
 		return $list;
 	}
 
-
-
-
-
-
-
-
-
-
-
 	/**************************
 	 *
 	 * File Output
@@ -849,25 +849,25 @@ class tx_impexp {
 	/**
 	 * This compiles and returns the data content for an exported file
 	 *
-	 * @param	string		Type of output; "xml" gives xml, otherwise serialized array, possibly compressed.
-	 * @return	string		The output file stream
+	 * @param string $type Type of output; "xml" gives xml, otherwise serialized array, possibly compressed.
+	 * @return string The output file stream
 	 */
-	function compileMemoryToFileContent($type='') {
+	function compileMemoryToFileContent($type = '') {
 
-		if ($type=='xml') {
+		if ($type == 'xml') {
 			$out = $this->createXML();
 		} else {
 			$compress = $this->doOutputCompress();
 			$out = '';
 
-			// adding header:
-			$out.= $this->addFilePart(serialize($this->dat['header']), $compress);
+				// adding header:
+			$out .= $this->addFilePart(serialize($this->dat['header']), $compress);
 
-			// adding records:
-			$out.= $this->addFilePart(serialize($this->dat['records']), $compress);
+				// adding records:
+			$out .= $this->addFilePart(serialize($this->dat['records']), $compress);
 
-			// adding files:
-			$out.= $this->addFilePart(serialize($this->dat['files']), $compress);
+				// adding files:
+			$out .= $this->addFilePart(serialize($this->dat['files']), $compress);
 		}
 
 		return $out;
@@ -876,7 +876,7 @@ class tx_impexp {
 	/**
 	 * Creates XML string from input array
 	 *
-	 * @return	string		XML content
+	 * @return string XML content
 	 */
 	function createXML() {
 
@@ -960,7 +960,7 @@ class tx_impexp {
 			// Creating XML file from $outputArray:
 		$charset = $this->dat['header']['charset'] ? $this->dat['header']['charset'] : 'utf-8';
 		$XML = '<?xml version="1.0" encoding="'.$charset.'" standalone="yes" ?>'.LF;
-		$XML.= t3lib_div::array2xml($this->dat, '', 0, 'T3RecordDocument', 0, $options);
+		$XML .= t3lib_div::array2xml($this->dat, '', 0, 'T3RecordDocument', 0, $options);
 
 		return $XML;
 	}
@@ -968,7 +968,7 @@ class tx_impexp {
 	/**
 	 * Returns TRUE if the output should be compressed.
 	 *
-	 * @return	boolean		TRUE if compression is possible AND requested.
+	 * @return boolean TRUE if compression is possible AND requested.
 	 */
 	function doOutputCompress() {
 		return $this->compress && !$this->dontCompress;
@@ -977,30 +977,17 @@ class tx_impexp {
 	/**
 	 * Returns a content part for a filename being build.
 	 *
-	 * @param	array		Data to store in part
-	 * @param	boolean		Compress file?
-	 * @return	string		Content stream.
+	 * @param array $data Data to store in part
+	 * @param boolean $compress Compress file?
+	 * @return string Content stream.
 	 */
-	function addFilePart($data, $compress=FALSE) {
+	function addFilePart($data, $compress = FALSE) {
 		if ($compress)	$data = gzcompress($data);
 		return md5($data).':'.
 				($compress?'1':'0').':'.
 				str_pad(strlen($data), 10, '0', STR_PAD_LEFT).':'.
 				$data.':';
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	/***********************
 	 *
@@ -1011,8 +998,8 @@ class tx_impexp {
 	/**
 	 * Imports the internal data array to $pid.
 	 *
-	 * @param	integer		Page ID in which to import the content
-	 * @return	void		...
+	 * @param integer $pid Page ID in which to import the content
+	 * @return void
 	 */
 	function importData($pid) {
 
@@ -1052,8 +1039,8 @@ class tx_impexp {
 	/**
 	 * Writing pagetree/pages to database:
 	 *
-	 * @param	integer		PID in which to import. If the operation is an update operation, the root of the page tree inside will be moved to this PID unless it is the same as the root page from the import
-	 * @return	void
+	 * @param integer $pid PID in which to import. If the operation is an update operation, the root of the page tree inside will be moved to this PID unless it is the same as the root page from the import
+	 * @return void
 	 * @see writeRecords_records()
 	 */
 	function writeRecords_pages($pid) {
@@ -1068,7 +1055,7 @@ class tx_impexp {
 				// First add page tree if any
 			if (is_array($this->dat['header']['pagetree'])) {
 				$pagesFromTree = $this->flatInversePageTree($this->dat['header']['pagetree']);
-				foreach($pagesFromTree as $uid) {
+				foreach ($pagesFromTree as $uid) {
 					$thisRec = $this->dat['header']['records']['pages'][$uid];
 						// PID: Set the main $pid, unless a NEW-id is found
 					$setPid = isset($this->import_newId_pids[$thisRec['pid']])	? $this->import_newId_pids[$thisRec['pid']] : $pid;
@@ -1112,8 +1099,8 @@ class tx_impexp {
 	 * Organize all updated pages in page tree so they are related like in the import file
 	 * Only used for updates and when $this->dat['header']['pagetree'] is an array.
 	 *
-	 * @param	integer		Page id in which to import
-	 * @return	void
+	 * @param integer $pid Page id in which to import
+	 * @return void
 	 * @access private
 	 * @see writeRecords_pages(), writeRecords_records_order()
 	 */
@@ -1123,9 +1110,10 @@ class tx_impexp {
 			// Get uid-pid relations and traverse them in order to map to possible new IDs
 		$pidsFromTree = $this->flatInversePageTree_pid($this->dat['header']['pagetree']);
 
-		foreach($pidsFromTree as $origPid => $newPid) {
-			if ($newPid>=0 && $this->dontIgnorePid('pages', $origPid)) {
-				if (substr($this->import_newId_pids[$origPid], 0, 3)==='NEW')	{	// If the page had a new id (because it was created) use that instead!
+		foreach ($pidsFromTree as $origPid => $newPid) {
+			if ($newPid >= 0 && $this->dontIgnorePid('pages', $origPid)) {
+					// If the page had a new id (because it was created) use that instead!
+				if (substr($this->import_newId_pids[$origPid], 0, 3)==='NEW') {
 
 					if ($this->import_mapId['pages'][$origPid]) {
 						$mappedPid = $this->import_mapId['pages'][$origPid];
@@ -1150,14 +1138,13 @@ class tx_impexp {
 				'tce' => &$tce,
 			));
 		}
-
 	}
 
 	/**
 	 * Write all database records except pages (writtein in writeRecords_pages())
 	 *
-	 * @param	integer		Page id in which to import
-	 * @return	void
+	 * @param integer $pid Page id in which to import
+	 * @return void
 	 * @see writeRecords_pages()
 	 */
 	function writeRecords_records($pid) {
@@ -1188,8 +1175,9 @@ class tx_impexp {
 			'data' => &$this->import_data,
 		));
 		$tce->suggestedInsertUids = $this->suggestedInsertUids;
-		$tce->reverseOrder=1;	// Because all records are being submitted in their correct order with positive pid numbers - and so we should reverse submission order internally.
-		$tce->start($this->import_data, Array());
+			// Because all records are being submitted in their correct order with positive pid numbers - and so we should reverse submission order internally.
+		$tce->reverseOrder = 1;
+		$tce->start($this->import_data, array());
 		$tce->process_datamap();
 		$this->callHook('after_writeRecordsRecords', array(
 			'tce' => &$tce,
@@ -1208,8 +1196,8 @@ class tx_impexp {
 	 * Organize all updated record to their new positions.
 	 * Only used for updates
 	 *
-	 * @param	integer		Main PID into which we import.
-	 * @return	void
+	 * @param integer $mainPid Main PID into which we import.
+	 * @return void
 	 * @access private
 	 * @see writeRecords_records(), writeRecords_pages_order()
 	 */
@@ -1221,12 +1209,14 @@ class tx_impexp {
 		} else $pagesFromTree = array();
 
 		if (is_array($this->dat['header']['pid_lookup'])) {
-			foreach($this->dat['header']['pid_lookup'] as $pid => $recList) {
+			foreach ($this->dat['header']['pid_lookup'] as $pid => $recList) {
 				$newPid = isset($this->import_mapId['pages'][$pid]) ? $this->import_mapId['pages'][$pid] : $mainPid;
 
 				if (t3lib_utility_Math::canBeInterpretedAsInteger($newPid)) {
 					foreach($recList as $tableName => $uidList) {
-						if (($tableName!='pages' || !$pagesFromTree[$pid]) && is_array($uidList))	{		// If $mainPid===$newPid then we are on root level and we can consider to move pages as well! (they will not be in the page tree!)
+							// If $mainPid===$newPid then we are on root level and we can consider to move pages as well!
+							// (they will not be in the page tree!)
+						if (($tableName!='pages' || !$pagesFromTree[$pid]) && is_array($uidList)) {
 							$uidList = array_reverse(array_keys($uidList));
 							foreach($uidList as $uid) {
 								if ($this->dontIgnorePid($tableName, $uid)) {
@@ -1260,10 +1250,10 @@ class tx_impexp {
 	 * Adds a single record to the $importData array. Also copies files to tempfolder.
 	 * However all File/DB-references and flexform field contents are set to blank for now! That is done with setRelations() later
 	 *
-	 * @param	string		Table name (from import memory)
-	 * @param	integer		Record UID (from import memory)
-	 * @param	integer		Page id
-	 * @return	void
+	 * @param string $table Table name (from import memory)
+	 * @param integer $uid Record UID (from import memory)
+	 * @param integer $pid Page id
+	 * @return void
 	 * @see writeRecords()
 	 */
 	function addSingle($table, $uid, $pid) {
@@ -1277,14 +1267,14 @@ class tx_impexp {
 					$ID = uniqid('NEW');
 				}
 				$this->import_newId[$table.':'.$ID] = array('table' => $table, 'uid' => $uid);
-				if ($table=='pages')	$this->import_newId_pids[$uid] = $ID;
+				if ($table == 'pages')	$this->import_newId_pids[$uid] = $ID;
 
 					// Set main record data:
 				$this->import_data[$table][$ID] = $record;
 				$this->import_data[$table][$ID]['tx_impexp_origuid'] = $this->import_data[$table][$ID]['uid'];
 
 					// Reset permission data:
-				if ($table==='pages') {
+				if ($table === 'pages') {
 						// Have to reset the user/group IDs so pages are owned by importing user. Otherwise strange things may happen for non-admins!
 					unset($this->import_data[$table][$ID]['perms_userid']);
 					unset($this->import_data[$table][$ID]['perms_groupid']);
@@ -1292,7 +1282,8 @@ class tx_impexp {
 
 					// PID and UID:
 				unset($this->import_data[$table][$ID]['uid']);
-				if (t3lib_utility_Math::canBeInterpretedAsInteger($ID))	{	// Updates:
+					// Updates:
+				if (t3lib_utility_Math::canBeInterpretedAsInteger($ID))	{
 					unset($this->import_data[$table][$ID]['pid']);
 				} else {	// Inserts:
 					$this->import_data[$table][$ID]['pid'] = $pid;
@@ -1328,8 +1319,8 @@ class tx_impexp {
 	/**
 	 * Registers the substNEWids in memory.
 	 *
-	 * @param	array		$substNEWwithIDs from tcemain to be merged into internal mapping variable in this object
-	 * @return	void
+	 * @param array $substNEWwithIDs From tcemain to be merged into internal mapping variable in this object
+	 * @return void
 	 * @see writeRecords()
 	 */
 	function addToMapId($substNEWwithIDs) {
@@ -1339,7 +1330,8 @@ class tx_impexp {
 				if (isset($substNEWwithIDs[$id])) {
 					$this->import_mapId[$table][$old_uid] = $substNEWwithIDs[$id];
 				} elseif ($this->update) {
-					$this->import_mapId[$table][$old_uid] = $id;	// Map same ID to same ID....
+						// Map same ID to same ID....
+					$this->import_mapId[$table][$old_uid] = $id;
 				} else $this->error('Possible error: '.$table.':'.$old_uid.' had no new id assigned to it. This indicates that the record was not added to database during import. Please check changelog!', 1);
 			}
 		}
@@ -1348,7 +1340,7 @@ class tx_impexp {
 	/**
 	 * Returns a new $TCE object
 	 *
-	 * @return	object		$TCE object
+	 * @return object $TCE object
 	 */
 	function getNewTCE() {
 		$tce = t3lib_div::makeInstance('t3lib_TCEmain');
@@ -1363,10 +1355,10 @@ class tx_impexp {
 	/**
 	 * Cleaning up all the temporary files stored in typo3temp/ folder
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function unlinkTempFiles() {
-		foreach($this->unlinkFiles as $fileName) {
+		foreach ($this->unlinkFiles as $fileName) {
 			if (t3lib_div::isFirstPartOfStr($fileName, PATH_site.'typo3temp/')) {
 				t3lib_div::unlink_tempfile($fileName);
 				clearstatcache();
@@ -1378,18 +1370,6 @@ class tx_impexp {
 		$this->unlinkFiles = array();
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
 	/***************************
 	 *
 	 * Import / Relations setting
@@ -1400,7 +1380,7 @@ class tx_impexp {
 	 * At the end of the import process all file and DB relations should be set properly (that is relations to imported records are all re-created so imported records are correctly related again)
 	 * Relations in flexform fields are processed in setFlexFormRelations() after this function
 	 *
-	 * @return	void
+	 * @return void
 	 * @see setFlexFormRelations()
 	 */
 	function setRelations() {
@@ -1457,13 +1437,13 @@ class tx_impexp {
 	/**
 	 * Maps relations for database
 	 *
-	 * @param	array		Array of item sets (table/uid) from a dbAnalysis object
-	 * @return	array		Array with values [table]_[uid]. These values have the regular tcemain-input group/select type which means they will automatically be processed into a uid-list or MM relations.
+	 * @param array $itemArray Array of item sets (table/uid) from a dbAnalysis object
+	 * @return array Array with values [table]_[uid]. These values have the regular tcemain-input group/select type which means they will automatically be processed into a uid-list or MM relations.
 	 */
 	function setRelations_db($itemArray) {
 		$valArray = array();
 
-		foreach($itemArray as $relDat) {
+		foreach ($itemArray as $relDat) {
 			if (is_array($this->import_mapId[$relDat['table']]) && isset($this->import_mapId[$relDat['table']][$relDat['id']])) {
 
 				$valArray[] = $relDat['table'].'_'.$this->import_mapId[$relDat['table']][$relDat['id']];
@@ -1482,8 +1462,8 @@ class tx_impexp {
 	/**
 	 * Writes the file from import array to temp dir and returns the filename of it.
 	 *
-	 * @param	array		File information with three keys: "filename" = filename without path, "ID_absFile" = absolute filepath to the file (including the filename), "ID" = md5 hash of "ID_absFile"
-	 * @return	string		Absolute filename of the temporary filename of the file. In ->alternativeFileName the original name is set.
+	 * @param array $fI File information with three keys: "filename" = filename without path, "ID_absFile" = absolute filepath to the file (including the filename), "ID" = md5 hash of "ID_absFile"
+	 * @return string Absolute filename of the temporary filename of the file. In ->alternativeFileName the original name is set.
 	 */
 	function import_addFileNameToBeCopied($fI) {
 		if (is_array($this->dat['files'][$fI['ID']])) {
@@ -1506,7 +1486,7 @@ class tx_impexp {
 	 * After all DB relations has been set in the end of the import (see setRelations()) then it is time to correct all relations inside of FlexForm fields.
 	 * The reason for doing this after is that the setting of relations may affect (quite often!) which data structure is used for the flexforms field!
 	 *
-	 * @return	void
+	 * @return void
 	 * @see setRelations()
 	 */
 	function setFlexFormRelations() {
@@ -1577,13 +1557,13 @@ class tx_impexp {
 	/**
 	 * Callback function for traversing the FlexForm structure in relation to remapping database relations
 	 *
-	 * @param	array		Set of parameters in numeric array: table, uid, field
-	 * @param	array		TCA config for field (from Data Structure of course)
-	 * @param	string		Field value (from FlexForm XML)
-	 * @param	string		Not used
-	 * @param	string		Not used
-	 * @param	string		Path of where the data structure of the element is found
-	 * @return	array		Array where the "value" key carries the value.
+	 * @param array $pParams Set of parameters in numeric array: table, uid, field
+	 * @param array $dsConf TCA config for field (from Data Structure of course)
+	 * @param string $dataValue Field value (from FlexForm XML)
+	 * @param string $dataValue_ext1 Not used
+	 * @param string $dataValue_ext2 Not used
+	 * @param string $path Path of where the data structure of the element is found
+	 * @return array Array where the "value" key carries the value.
 	 * @see setFlexFormRelations()
 	 */
 	function remapListedDBRecords_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path) {
@@ -1610,16 +1590,6 @@ class tx_impexp {
 		return array('value' => $dataValue);
 	}
 
-
-
-
-
-
-
-
-
-
-
 	/**************************
 	 *
 	 * Import / Soft References
@@ -1629,7 +1599,7 @@ class tx_impexp {
 	/**
 	 * Processing of soft references
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function processSoftReferences() {
 
@@ -1638,8 +1608,8 @@ class tx_impexp {
 
 			// Traverse records:
 		if (is_array($this->dat['header']['records'])) {
-			foreach($this->dat['header']['records'] as $table => $recs) {
-				foreach($recs as $uid => $thisRec) {
+			foreach ($this->dat['header']['records'] as $table => $recs) {
+				foreach ($recs as $uid => $thisRec) {
 
 						// If there are soft references defined, traverse those:
 					if (isset($GLOBALS['TCA'][$table]) && is_array($thisRec['softrefs'])) {
@@ -1659,12 +1629,12 @@ class tx_impexp {
 						$thisNewUid = t3lib_BEfunc::wsMapId($table, $this->import_mapId[$table][$uid]);
 
 							// Now, if there are any fields that require substitution to be done, lets go for that:
-						foreach($fieldsIndex as $field => $softRefCfgs) {
+						foreach ($fieldsIndex as $field => $softRefCfgs) {
 							if (is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
 								$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-								if ($conf['type']==='flex') {
-
-									$origRecordRow = t3lib_BEfunc::getRecord($table, $thisNewUid, '*');	// This will fetch the new row for the element (which should be updated with any references to data structures etc.)
+								if ($conf['type'] === 'flex') {
+										// This will fetch the new row for the element (which should be updated with any references to data structures etc.)
+									$origRecordRow = t3lib_BEfunc::getRecord($table, $thisNewUid, '*');
 									if (is_array($origRecordRow)) {
 
 											// Get current data structure and value array:
@@ -1720,13 +1690,13 @@ class tx_impexp {
 	/**
 	 * Callback function for traversing the FlexForm structure in relation to remapping softreference relations
 	 *
-	 * @param	array		Set of parameters in numeric array: table, uid, field
-	 * @param	array		TCA config for field (from Data Structure of course)
-	 * @param	string		Field value (from FlexForm XML)
-	 * @param	string		Not used
-	 * @param	string		Not used
-	 * @param	string		Path of where the data structure where the element is found
-	 * @return	array		Array where the "value" key carries the value.
+	 * @param array $pParams Set of parameters in numeric array: table, uid, field
+	 * @param array $dsConf TCA config for field (from Data Structure of course)
+	 * @param string $dataValue Field value (from FlexForm XML)
+	 * @param string $dataValue_ext1 Not used
+	 * @param string $dataValue_ext2 Not used
+	 * @param string $path Path of where the data structure where the element is found
+	 * @return array Array where the "value" key carries the value.
 	 * @see setFlexFormRelations()
 	 */
 	function processSoftReferences_flexFormCallBack($pParams, $dsConf, $dataValue, $dataValue_ext1, $dataValue_ext2, $path) {
@@ -1762,11 +1732,11 @@ class tx_impexp {
 	/**
 	 * Substition of softreference tokens
 	 *
-	 * @param	string		Content of field with soft reference tokens in.
-	 * @param	array		Soft reference configurations
-	 * @param	string		Table for which the processing occurs
-	 * @param	string		UID of record from table
-	 * @return	string		The input content with tokens substituted according to entries in softRefCfgs
+	 * @param string $tokenizedContent Content of field with soft reference tokens in.
+	 * @param array $softRefCfgs Soft reference configurations
+	 * @param string $table Table for which the processing occurs
+	 * @param string $uid UID of record from table
+	 * @return string The input content with tokens substituted according to entries in softRefCfgs
 	 */
 	function processSoftReferences_substTokens($tokenizedContent, $softRefCfgs, $table, $uid) {
 
@@ -1826,11 +1796,11 @@ class tx_impexp {
 	/**
 	 * Process a soft reference file
 	 *
-	 * @param	string		Old Relative filename
-	 * @param	array		soft reference configuration array
-	 * @param	string		Table for which the processing occurs
-	 * @param	string		UID of record from table
-	 * @return	string		New relative filename (value to insert instead of the softref token)
+	 * @param string $relFileName Old Relative filename
+	 * @param array $cfg soft reference configuration array
+	 * @param string $table Table for which the processing occurs
+	 * @param string $uid UID of record from table
+	 * @return string New relative filename (value to insert instead of the softref token)
 	 */
 	function processSoftReferences_saveFile($relFileName, $cfg, $table, $uid) {
 
@@ -1853,7 +1823,7 @@ class tx_impexp {
 					$pI = pathinfo($relFileName);
 					$copyDestName = dirname($origDestName).'/RTEmagicC_'.substr(basename($origDestName), 10).'.'.$pI['extension'];
 					if (!@is_file($copyDestName) && !@is_file($origDestName)
-						&& $origDestName===t3lib_div::getFileAbsFileName($origDestName) && $copyDestName===t3lib_div::getFileAbsFileName($copyDestName)) {
+						&& $origDestName === t3lib_div::getFileAbsFileName($origDestName) && $copyDestName === t3lib_div::getFileAbsFileName($copyDestName)) {
 
 						if ($this->dat['header']['files'][$fileHeaderInfo['RTE_ORIG_ID']]) {
 
@@ -1886,12 +1856,12 @@ class tx_impexp {
 	/**
 	 * Create file in directory and return the new (unique) filename
 	 *
-	 * @param	string		Directory prefix, relative, with trailing slash
-	 * @param	string		Filename (without path)
-	 * @param	string		File ID from import memory
-	 * @param	string		Table for which the processing occurs
-	 * @param	string		UID of record from table
-	 * @return	string		New relative filename, if any
+	 * @param string $origDirPrefix Directory prefix, relative, with trailing slash
+	 * @param string $fileName Filename (without path)
+	 * @param string $fileID File ID from import memory
+	 * @param string $table Table for which the processing occurs
+	 * @param string $uid UID of record from table
+	 * @return string New relative filename, if any
 	 */
 	function processSoftReferences_saveFile_createRelFile($origDirPrefix, $fileName, $fileID, $table, $uid) {
 
@@ -1907,7 +1877,8 @@ class tx_impexp {
 			$fileHeaderInfo = $this->dat['header']['files'][$fileID];
 			$updMode = $this->update && $this->import_mapId[$table][$uid]===$uid && $this->import_mode[$table.':'.$uid]!=='as_new';
 				// Create new name for file:
-			if ($updMode)	{	// Must have same ID in map array (just for security, is not really needed) and NOT be set "as_new".
+				// Must have same ID in map array (just for security, is not really needed) and NOT be set "as_new".
+			if ($updMode) {
 				$newName = PATH_site.$dirPrefix.$fileName;
 			} else {
 					// Create unique filename:
@@ -1926,7 +1897,7 @@ class tx_impexp {
 					$fileProcObj = $this->getFileProcObj();
 
 					if ($updMode) {
-						foreach($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
+						foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
 							if ($this->dat['files'][$res_fileID]['filename']) {
 
 									// Resolve original filename:
@@ -1948,7 +1919,7 @@ class tx_impexp {
 							// Create the resouces directory name (filename without extension, suffixed "_FILES")
 						$resourceDir = dirname($newName).'/'.preg_replace('/\.[^.]*$/', '', basename($newName)).'_FILES';
 						if (t3lib_div::mkdir($resourceDir)) {
-							foreach($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
+							foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
 								if ($this->dat['files'][$res_fileID]['filename']) {
 									$absResourceFileName = $fileProcObj->getUniqueName($this->dat['files'][$res_fileID]['filename'], $resourceDir);
 									$relResourceFileName = substr($absResourceFileName, strlen(dirname($resourceDir))+1);
@@ -1975,16 +1946,17 @@ class tx_impexp {
 	/**
 	 * Writes a file from the import memory having $fileID to file name $fileName which must be an absolute path inside PATH_site
 	 *
-	 * @param	string		Absolute filename inside PATH_site to write to
-	 * @param	string		File ID from import memory
-	 * @param	boolean		Bypasses the checking against filemounts - only for RTE files!
-	 * @return	boolean		Returns TRUE if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
+	 * @param string $fileName Absolute filename inside PATH_site to write to
+	 * @param string $fileID File ID from import memory
+	 * @param boolean $bypassMountCheck Bypasses the checking against filemounts - only for RTE files!
+	 * @return boolean Returns TRUE if it went well. Notice that the content of the file is read again, and md5 from import memory is validated.
 	 */
-	function writeFileVerify($fileName, $fileID, $bypassMountCheck=FALSE) {
+	function writeFileVerify($fileName, $fileID, $bypassMountCheck = FALSE) {
 		$fileProcObj = $this->getFileProcObj();
 
 		if ($fileProcObj->actionPerms['newFile']) {
-			if ($fileProcObj->checkPathAgainstMounts($fileName) || $bypassMountCheck)	{	// Just for security, check again. Should actually not be necessary.
+				// Just for security, check again. Should actually not be necessary.
+			if ($fileProcObj->checkPathAgainstMounts($fileName) || $bypassMountCheck) {
 				$fI = t3lib_div::split_fileref($fileName);
 				if ($fileProcObj->checkIfAllowed($fI['fileext'], $fI['path'], $fI['file']) || ($this->allowPHPScripts && $GLOBALS['BE_USER']->isAdmin())) {
 					if (t3lib_div::getFileAbsFileName($fileName)) {
@@ -2004,8 +1976,8 @@ class tx_impexp {
 	/**
 	 * Returns TRUE if directory exists  and if it doesn't it will create directory and return TRUE if that succeeded.
 	 *
-	 * @param	string		Directory to create. Having a trailing slash. Must be in fileadmin/. Relative to PATH_site
-	 * @return	boolean		TRUE, if directory exists (was created)
+	 * @param string $dirPrefix Directory to create. Having a trailing slash. Must be in fileadmin/. Relative to PATH_site
+	 * @return boolean TRUE, if directory exists (was created)
 	 */
 	function checkOrCreateDir($dirPrefix) {
 
@@ -2013,7 +1985,7 @@ class tx_impexp {
 		$filePathParts = explode('/', $dirPrefix);
 		$firstDir = array_shift($filePathParts);
 
-		if ($firstDir===$this->fileadminFolderName && t3lib_div::getFileAbsFileName($dirPrefix)) {
+		if ($firstDir === $this->fileadminFolderName && t3lib_div::getFileAbsFileName($dirPrefix)) {
 
 			$pathAcc = '';
 			foreach($filePathParts as $dirname) {
@@ -2036,11 +2008,11 @@ class tx_impexp {
 	 * Verifies that the input path (relative to PATH_site) is found in the backend users filemounts.
 	 * If it doesn't it will try to find another relative filemount for the user and return an alternative path prefix for the file.
 	 *
-	 * @param	string		Path relative to PATH_site
-	 * @param	boolean		If set, Do not look for alternative path! Just return FALSE
-	 * @return	string		If a path is available that will be returned, otherwise FALSE.
+	 * @param string $dirPrefix Path relative to PATH_site
+	 * @param boolean $noAlternative If set, Do not look for alternative path! Just return FALSE
+	 * @return string If a path is available that will be returned, otherwise FALSE.
 	 */
-	function verifyFolderAccess($dirPrefix, $noAlternative=FALSE) {
+	function verifyFolderAccess($dirPrefix, $noAlternative = FALSE) {
 		$fileProcObj = $this->getFileProcObj();
 
 			// Check, if dirPrefix is inside a valid Filemount for user:
@@ -2066,15 +2038,6 @@ class tx_impexp {
 		}
 	}
 
-
-
-
-
-
-
-
-
-
 	/**************************
 	 *
 	 * File Input
@@ -2084,11 +2047,11 @@ class tx_impexp {
 	/**
 	 * Loads the header section/all of the $filename into memory
 	 *
-	 * @param	string		Filename, absolute
-	 * @param	boolean		If set, all information is loaded (header, records and files). Otherwise the default is to read only the header information
-	 * @return	boolean		TRUE if the operation went well
+	 * @param string $filename Filename, absolute
+	 * @param boolean $all If set, all information is loaded (header, records and files). Otherwise the default is to read only the header information
+	 * @return boolean TRUE if the operation went well
 	 */
-	function loadFile($filename, $all=0) {
+	function loadFile($filename, $all = 0) {
 		if (@is_file($filename)) {
 			$fI = pathinfo($filename);
 			if (strtolower($fI['extension'])=='xml') {
@@ -2124,17 +2087,17 @@ class tx_impexp {
 	/**
 	 * Returns the next content part form the fileresource (t3d), $fd
 	 *
-	 * @param	pointer		File pointer
-	 * @param	boolean		If set, the returned content is unserialized into an array, otherwise you get the raw string
-	 * @param	string		For error messages this indicates the section of the problem.
-	 * @return	string		Data string
+	 * @param pointer $fd File pointer
+	 * @param boolean $unserialize If set, the returned content is unserialized into an array, otherwise you get the raw string
+	 * @param string $name For error messages this indicates the section of the problem.
+	 * @return string Data string
 	 * @access private
 	 * @see loadFile()
 	 */
-	function getNextFilePart($fd, $unserialize=0, $name='') {
+	function getNextFilePart($fd, $unserialize = 0, $name = '') {
 		$initStrLen = 32+1+1+1+10+1;
 
-			// getting header data
+			// Getting header data
 		$initStr = fread($fd, $initStrLen);
 		$initStrDat = explode(':', $initStr);
 		if (strstr($initStrDat[0], 'Warning') == FALSE) {
@@ -2157,8 +2120,8 @@ class tx_impexp {
 	 * Loads T3D file content into the $this->dat array
 	 * (This function can be used to test the output strings from ->compileMemoryToFileContent())
 	 *
-	 * @param	string		File content
-	 * @return	void
+	 * @param string $filecontent File content
+	 * @return void
 	 */
 	function loadContent($filecontent) {
 		$pointer = 0;
@@ -2172,13 +2135,13 @@ class tx_impexp {
 	/**
 	 * Returns the next content part from the $filecontent
 	 *
-	 * @param	string		File content string
-	 * @param	integer		File pointer (where to read from)
-	 * @param	boolean		If set, the returned content is unserialized into an array, otherwise you get the raw string
-	 * @param	string		For error messages this indicates the section of the problem.
-	 * @return	string		Data string
+	 * @param string $filecontent File content string
+	 * @param integer $pointer File pointer (where to read from)
+	 * @param boolean $unserialize If set, the returned content is unserialized into an array, otherwise you get the raw string
+	 * @param string $name For error messages this indicates the section of the problem.
+	 * @return string Data string
 	 */
-	function getNextContentPart($filecontent, &$pointer, $unserialize=0, $name='') {
+	function getNextContentPart($filecontent, &$pointer, $unserialize = 0, $name = '') {
 		$initStrLen = 32+1+1+1+10+1;
 			// getting header data
 		$initStr = substr($filecontent, $pointer, $initStrLen);
@@ -2201,7 +2164,7 @@ class tx_impexp {
 	/**
 	 * Setting up the object based on the recently loaded ->dat array
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function loadInit() {
 		$this->relStaticTables = (array)$this->dat['header']['relStaticTables'];
@@ -2216,7 +2179,7 @@ class tx_impexp {
 	/**
 	 * Fix charset of import memory if different from system charset
 	 *
-	 * @return	void
+	 * @return void
 	 * @see loadInit()
 	 */
 	function fixCharsets() {
@@ -2227,15 +2190,15 @@ class tx_impexp {
 			if ($importCharset!==$LANG->charSet) {
 				$this->error('CHARSET: Converting charset of input file ('.$importCharset.') to the system charset ('.$LANG->charSet.')');
 
-					// convert meta data:
+					// Convert meta data:
 				if (is_array($this->dat['header']['meta'])) {
 					$LANG->csConvObj->convArray($this->dat['header']['meta'], $importCharset, $LANG->charSet);
 				}
-					// convert record headers:
+					// Convert record headers:
 				if (is_array($this->dat['header']['records'])) {
 					$LANG->csConvObj->convArray($this->dat['header']['records'], $importCharset, $LANG->charSet);
 				}
-					// convert records themselves:
+					// Convert records themselves:
 				if (is_array($this->dat['records'])) {
 					$LANG->csConvObj->convArray($this->dat['records'], $importCharset, $LANG->charSet);
 				}
@@ -2244,24 +2207,6 @@ class tx_impexp {
 			$this->error('CHARSET: No charset found in import file!');
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	/********************************************************
 	 *
@@ -2272,7 +2217,7 @@ class tx_impexp {
 	/**
 	 * Displays an overview of the header-content.
 	 *
-	 * @return	string		HTML content
+	 * @return string HTML content
 	 */
 	function displayContentOverview() {
 		global $LANG;
@@ -2311,7 +2256,7 @@ class tx_impexp {
 					'.($this->showDiff ? '<td>'.$LANG->getLL('impexpcore_displaycon_result', 1).'</td>' : '').'
 				</tr>';
 
-				foreach($lines as $r) {
+				foreach ($lines as $r) {
 					$rows[] = '
 					<tr class="'.$r['class'].'">
 						<td>'.$this->renderControls($r).'</td>
@@ -2352,7 +2297,7 @@ class tx_impexp {
 						'.($this->showDiff ? '<td>'.$LANG->getLL('impexpcore_displaycon_result', 1).'</td>' : '').'
 					</tr>';
 
-					foreach($lines as $r) {
+					foreach ($lines as $r) {
 						$rows[] = '<tr class="'.$r['class'].'">
 							<td>'.$this->renderControls($r).'</td>
 							<td nowrap="nowrap">'.$r['preCode'].$r['title'].'</td>
@@ -2377,12 +2322,12 @@ class tx_impexp {
 	/**
 	 * Go through page tree for display
 	 *
-	 * @param	array		Page tree array with uid/subrow (from ->dat[header][pagetree]
-	 * @param	array		Output lines array (is passed by reference and modified)
-	 * @param	string		Pre-HTML code
-	 * @return	void
+	 * @param array $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
+	 * @param array $lines Output lines array (is passed by reference and modified)
+	 * @param string $preCode Pre-HTML code
+	 * @return void
 	 */
-	function traversePageTree($pT, &$lines, $preCode='') {
+	function traversePageTree($pT, &$lines, $preCode = '') {
 		foreach ($pT as $k => $v) {
 
 				// Add this page:
@@ -2410,9 +2355,9 @@ class tx_impexp {
 	/**
 	 * Go through remaining pages (not in tree)
 	 *
-	 * @param	array		Page tree array with uid/subrow (from ->dat[header][pagetree]
-	 * @param	array		Output lines array (is passed by reference and modified)
-	 * @return	void
+	 * @param array $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
+	 * @param array $lines Output lines array (is passed by reference and modified)
+	 * @return void
 	 */
 	function traversePageRecords($pT, &$lines) {
 		foreach ($pT as $k => $rHeader) {
@@ -2420,7 +2365,7 @@ class tx_impexp {
 				// Subrecords:
 			if (is_array($this->dat['header']['pid_lookup'][$k])) {
 				foreach ($this->dat['header']['pid_lookup'][$k] as $t => $recUidArr) {
-					if ($t!='pages') {
+					if ($t != 'pages') {
 						foreach ($recUidArr as $ruid => $value) {
 							$this->singleRecordLines($t, $ruid, $lines, '&nbsp;&nbsp;&nbsp;&nbsp;');
 						}
@@ -2434,9 +2379,9 @@ class tx_impexp {
 	/**
 	 * Go through ALL records (if the pages are displayed first, those will not be amoung these!)
 	 *
-	 * @param	array		Page tree array with uid/subrow (from ->dat[header][pagetree]
-	 * @param	array		Output lines array (is passed by reference and modified)
-	 * @return	void
+	 * @param array $pT Page tree array with uid/subrow (from ->dat[header][pagetree]
+	 * @param array $lines Output lines array (is passed by reference and modified)
+	 * @return void
 	 */
 	function traverseAllRecords($pT, &$lines) {
 		foreach ($pT as $t => $recUidArr) {
@@ -2452,14 +2397,14 @@ class tx_impexp {
 	/**
 	 * Add entries for a single record
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Record uid
-	 * @param	array		Output lines array (is passed by reference and modified)
-	 * @param	string		Pre-HTML code
-	 * @param	boolean		If you want import validation, you can set this so it checks if the import can take place on the specified page.
-	 * @return	void
+	 * @param string $table Table name
+	 * @param integer $uid Record uid
+	 * @param array $lines Output lines array (is passed by reference and modified)
+	 * @param string $preCode Pre-HTML code
+	 * @param boolean $checkImportInPidRecord If you want import validation, you can set this so it checks if the import can take place on the specified page.
+	 * @return void
 	 */
-	function singleRecordLines($table, $uid, &$lines, $preCode, $checkImportInPidRecord=0) {
+	function singleRecordLines($table, $uid, &$lines, $preCode, $checkImportInPidRecord = 0) {
 		global $LANG;
 
 			// Get record:
@@ -2470,7 +2415,8 @@ class tx_impexp {
 			// Begin to create the line arrays information record, pInfo:
 		$pInfo = array();
 		$pInfo['ref'] = $table.':'.$uid;
-		if ($table==='_SOFTREF_')	{	// Unknown table name:
+			// Unknown table name:
+		if ($table === '_SOFTREF_')	{
 			$pInfo['preCode'] = $preCode;
 			$pInfo['title'] = '<em>' . $GLOBALS['LANG']->getLL('impexpcore_singlereco_softReferencesFiles', 1) . '</em>';
 		} elseif (!isset($GLOBALS['TCA'][$table])) {
@@ -2509,7 +2455,8 @@ class tx_impexp {
 
 				$diffInverse = FALSE;
 				if ($this->update) {
-					$diffInverse = TRUE;	// In case of update-PREVIEW we swap the diff-sources.
+						// In case of update-PREVIEW we swap the diff-sources.
+					$diffInverse = TRUE;
 					$recInf = $this->doesRecordExist($table, $uid, $this->showDiff ? '*' : '');
 					$pInfo['updatePath']= $recInf ? htmlspecialchars($this->getRecordPath($recInf['pid'])) : '<strong>NEW!</strong>';
 
@@ -2548,7 +2495,7 @@ class tx_impexp {
 			$pInfo['title'] = htmlspecialchars($record['title']);
 
 				// View page:
-			if ($table==='pages') {
+			if ($table === 'pages') {
 				$viewID = $this->mode === 'export' ? $uid : ($this->doesImport ? $this->import_mapId['pages'][$uid] : 0);
 				if ($viewID) {
 					$pInfo['title'] = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::viewOnClick($viewID, $GLOBALS['BACK_PATH'])).'return false;">'.$pInfo['title'].'</a>';
@@ -2574,7 +2521,7 @@ class tx_impexp {
 		if (count($record['softrefs']))		{
 			$preCode_A = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;';
 			$preCode_B = $preCode.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-			foreach($record['softrefs'] as $info) {
+			foreach ($record['softrefs'] as $info) {
 				$pInfo = array();
 				$pInfo['preCode'] = $preCode_A. t3lib_iconWorks::getSpriteIcon('status-status-reference-soft');
 				$pInfo['title'] = '<em>'.$info['field'].', "'.$info['spKey'].'" </em>: <span title="'.htmlspecialchars($info['matchString']).'">'.htmlspecialchars(t3lib_div::fixed_lgd_cs($info['matchString'], 60)).'</span>';
@@ -2618,18 +2565,18 @@ class tx_impexp {
 	/**
 	 * Add DB relations entries for a record's rels-array
 	 *
-	 * @param	array		Array of relations
-	 * @param	array		Output lines array (is passed by reference and modified)
-	 * @param	string		Pre-HTML code
-	 * @param	array		Recursivity check stack
-	 * @param	string		Alternative HTML color class to use.
-	 * @return	void
+	 * @param array $rels Array of relations
+	 * @param array $lines Output lines array (is passed by reference and modified)
+	 * @param string $preCode Pre-HTML code
+	 * @param array $recurCheck Recursivity check stack
+	 * @param string $htmlColorClass Alternative HTML color class to use.
+	 * @return void
 	 * @access private
 	 * @see singleRecordLines()
 	 */
-	function addRelations($rels, &$lines, $preCode, $recurCheck=array(), $htmlColorClass='') {
+	function addRelations($rels, &$lines, $preCode, $recurCheck = array(), $htmlColorClass = '') {
 
-		foreach($rels as $dat) {
+		foreach ($rels as $dat) {
 			$table = $dat['table'];
 			$uid = $dat['id'];
 			$pInfo = array();
@@ -2646,7 +2593,7 @@ class tx_impexp {
 							$staticFixed = TRUE;
 						} else {
 							$doesRE = $this->doesRecordExist($table, $uid);
-							$lostPath = $this->getRecordPath($table==='pages' ? $doesRE['uid'] : $doesRE['pid']);
+							$lostPath = $this->getRecordPath($table === 'pages' ? $doesRE['uid'] : $doesRE['pid']);
 
 							$pInfo['title'] = htmlspecialchars($pInfo['ref']);
 							$pInfo['title'] = '<span title="'.htmlspecialchars($lostPath).'">'.$pInfo['title'].'</span>';
@@ -2656,7 +2603,7 @@ class tx_impexp {
 						}
 					} else {
 						$pInfo['title'] = htmlspecialchars($record['title']);
-						$pInfo['title'] = '<span title="'.htmlspecialchars($this->getRecordPath($table==='pages' ? $record['uid'] : $record['pid'])).'">'.$pInfo['title'].'</span>';
+						$pInfo['title'] = '<span title="'.htmlspecialchars($this->getRecordPath($table === 'pages' ? $record['uid'] : $record['pid'])).'">'.$pInfo['title'].'</span>';
 					}
 				} else {	// Negative values in relation fields. This is typically sys_language fields, fe_users fields etc. They are static values. They CAN theoretically be negative pointers to uids in other tables but this is so rarely used that it is not supported
 					$pInfo['title'] = htmlspecialchars('FIXED: '.$pInfo['ref']);
@@ -2680,18 +2627,18 @@ class tx_impexp {
 	/**
 	 * Add file relation entries for a record's rels-array
 	 *
-	 * @param	array		Array of file IDs
-	 * @param	array		Output lines array (is passed by reference and modified)
-	 * @param	string		Pre-HTML code
-	 * @param	string		Alternative HTML color class to use.
-	 * @param	string		Token ID if this is a softreference (in which case it only makes sense with a single element in the $rels array!)
-	 * @return	void
+	 * @param array $rels Array of file IDs
+	 * @param array $lines Output lines array (is passed by reference and modified)
+	 * @param string $preCode Pre-HTML code
+	 * @param string $htmlColorClass Alternative HTML color class to use.
+	 * @param string $tokenID Token ID if this is a softreference (in which case it only makes sense with a single element in the $rels array!)
+	 * @return void
 	 * @access private
 	 * @see singleRecordLines()
 	 */
-	function addFiles($rels, &$lines, $preCode, $htmlColorClass='', $tokenID='') {
+	function addFiles($rels, &$lines, $preCode, $htmlColorClass = '', $tokenID = '') {
 
-		foreach($rels as $ID) {
+		foreach ($rels as $ID) {
 
 				// Process file:
 			$pInfo = array();
@@ -2712,7 +2659,7 @@ class tx_impexp {
 			$pInfo['type'] = 'file';
 
 				// If import mode and there is a non-RTE softreference, check the destination directory:
-			if ($this->mode==='import' && $tokenID && !$fI['RTE_ORIG_ID']) {
+			if ($this->mode === 'import' && $tokenID && !$fI['RTE_ORIG_ID']) {
 				if (isset($fI['parentRelFileName'])) {
 					$pInfo['msg'] = 'Seems like this file is already referenced from within an HTML/CSS file. That takes precedence. ';
 				} else {
@@ -2803,15 +2750,16 @@ class tx_impexp {
 	/**
 	 * Verifies that a table is allowed on a certain doktype of a page
 	 *
-	 * @param	string		Table name to check
-	 * @param	integer		doktype value.
-	 * @return	boolean		TRUE if OK
+	 * @param string $checkTable Table name to check
+	 * @param integer $doktype doktype value.
+	 * @return boolean TRUE if OK
 	 */
 	function checkDokType($checkTable, $doktype) {
 		global $PAGES_TYPES;
 		$allowedTableList = isset($PAGES_TYPES[$doktype]['allowedTables']) ? $PAGES_TYPES[$doktype]['allowedTables'] : $PAGES_TYPES['default']['allowedTables'];
 		$allowedArray = t3lib_div::trimExplode(',', $allowedTableList, 1);
-		if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray))	{		// If all tables or the table is listed as a allowed type, return TRUE
+			// If all tables or the table is listed as a allowed type, return TRUE
+		if (strstr($allowedTableList, '*') || in_array($checkTable, $allowedArray)) {
 			return TRUE;
 		}
 	}
@@ -2819,20 +2767,19 @@ class tx_impexp {
 	/**
 	 * Render input controls for import or export
 	 *
-	 * @param	array		Configuration for element
-	 * @param	boolean		Set if export situation
-	 * @return	string		HTML
+	 * @param array $r Configuration for element
+	 * @return string HTML
 	 */
 	function renderControls($r) {
 		global $LANG;
 
 		if ($this->mode==='export') {
-			return ($r['type']=='record' ? '<input type="checkbox" name="tx_impexp[exclude]['.$r['ref'].']" id="checkExclude'.$r['ref'].'" value="1" /> <label for="checkExclude'.$r['ref'].'">'.$LANG->getLL('impexpcore_singlereco_exclude', 1).'</label>' :
+			return ($r['type'] == 'record' ? '<input type="checkbox" name="tx_impexp[exclude]['.$r['ref'].']" id="checkExclude'.$r['ref'].'" value="1" /> <label for="checkExclude'.$r['ref'].'">'.$LANG->getLL('impexpcore_singlereco_exclude', 1).'</label>' :
 								($r['type']=='softref' ? $this->softrefSelector($r['_softRefInfo']) : ''));
 		} else {	// During import
 
 				// For softreferences with editable fields:
-			if ($r['type']=='softref' && is_array($r['_softRefInfo']['subst']) && $r['_softRefInfo']['subst']['tokenID']) {
+			if ($r['type'] == 'softref' && is_array($r['_softRefInfo']['subst']) && $r['_softRefInfo']['subst']['tokenID']) {
 				$tokenID = $r['_softRefInfo']['subst']['tokenID'];
 				$cfg = $this->softrefCfg[$tokenID];
 				if ($cfg['mode'] === 'editable') {
@@ -2848,8 +2795,8 @@ class tx_impexp {
 	/**
 	 * Selectorbox with export options for soft references
 	 *
-	 * @param	array		softref configuration array. An export box is shown only if a substitution scheme is found for the soft reference.
-	 * @return	string		Selector box HTML
+	 * @param array $cfg Softref configuration array. An export box is shown only if a substitution scheme is found for the soft reference.
+	 * @return string Selector box HTML
 	 */
 	function softrefSelector($cfg) {
 		global $LANG;
@@ -2904,17 +2851,6 @@ class tx_impexp {
 		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
 	/*****************************
 	 *
 	 * Helper functions of kinds
@@ -2924,8 +2860,8 @@ class tx_impexp {
 	/**
 	 * Returns TRUE if the input table name is to be regarded as a static relation (that is, not exported etc).
 	 *
-	 * @param	string		Table name
-	 * @return	boolean		TRUE, if table is marked static
+	 * @param string $table Table name
+	 * @return boolean TRUE, if table is marked static
 	 */
 	function isTableStatic($table) {
 		if (is_array($GLOBALS['TCA'][$table])) {
@@ -2936,8 +2872,8 @@ class tx_impexp {
 	/**
 	 * Returns TRUE if the input table name is to be included as relation
 	 *
-	 * @param	string		Table name
-	 * @return	boolean		TRUE, if table is marked static
+	 * @param string $table Table name
+	 * @return boolean TRUE, if table is marked static
 	 */
 	function inclRelation($table) {
 		if (is_array($GLOBALS['TCA'][$table])) {
@@ -2948,9 +2884,9 @@ class tx_impexp {
 	/**
 	 * Returns TRUE if the element should be excluded as static record.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		UID value
-	 * @return	boolean		TRUE, if table is marked static
+	 * @param string $table Table name
+	 * @param integer $uid UID value
+	 * @return boolean TRUE, if table is marked static
 	 */
 	function isExcluded($table, $uid) {
 		return $this->excludeMap[$table.':'.$uid] ? TRUE : FALSE;
@@ -2959,8 +2895,8 @@ class tx_impexp {
 	/**
 	 * Returns TRUE if soft reference should be included in exported file.
 	 *
-	 * @param	string		Token ID for soft reference
-	 * @return	boolean		TRUE if softreference media should be included
+	 * @param string $tokenID Token ID for soft reference
+	 * @return boolean TRUE if softreference media should be included
 	 */
 	function includeSoftref($tokenID) {
 		return $tokenID && !t3lib_div::inList('exclude,editable', $this->softrefCfg[$tokenID]['mode']);
@@ -2969,8 +2905,8 @@ class tx_impexp {
 	/**
 	 * Checking if a PID is in the webmounts of the user
 	 *
-	 * @param	integer		Page ID to check
-	 * @return	boolean		TRUE if OK
+	 * @param integer $pid Page ID to check
+	 * @return boolean TRUE if OK
 	 */
 	function checkPID($pid) {
 		if (!isset($this->checkPID_cache[$pid])) {
@@ -2983,32 +2919,32 @@ class tx_impexp {
 	/**
 	 * Checks if the position of an updated record is configured to be corrected. This can be disabled globally and changed for elements individually.
 	 *
-	 * @param	string		Table name
-	 * @param	integer		Uid or record
-	 * @return	boolean		TRUE if the position of the record should be updated to match the one in the import structure
+	 * @param string $table Table name
+	 * @param integer $uid Uid or record
+	 * @return boolean TRUE if the position of the record should be updated to match the one in the import structure
 	 */
 	function dontIgnorePid($table, $uid) {
 		return $this->import_mode[$table.':'.$uid]!=='ignore_pid' &&
-				(!$this->global_ignore_pid || $this->import_mode[$table.':'.$uid]==='respect_pid');
+				(!$this->global_ignore_pid || $this->import_mode[$table.':'.$uid] === 'respect_pid');
 	}
 
 	/**
 	 * Checks if the record exists
 	 *
-	 * @param	string		Table name
-	 * @param	integer		UID of record
-	 * @param	string		Field list to select. Default is "uid,pid"
-	 * @return	array		Result of t3lib_BEfunc::getRecord() which means the record if found, otherwise FALSE
+	 * @param string $table Table name
+	 * @param integer $uid UID of record
+	 * @param string $fields Field list to select. Default is "uid,pid"
+	 * @return array Result of t3lib_BEfunc::getRecord() which means the record if found, otherwise FALSE
 	 */
-	function doesRecordExist($table, $uid, $fields='') {
+	function doesRecordExist($table, $uid, $fields = '') {
 		return t3lib_BEfunc::getRecord($table, $uid, $fields ? $fields : 'uid,pid');
 	}
 
 	/**
 	 * Returns the page title path of a PID value. Results are cached internally
 	 *
-	 * @param	integer		Record PID to check
-	 * @return	string		The path for the input PID
+	 * @param integer $pid Record PID to check
+	 * @return string The path for the input PID
 	 */
 	function getRecordPath($pid) {
 		if (!isset($this->cache_getRecordPath[$pid])) {
@@ -3022,10 +2958,10 @@ class tx_impexp {
 	/**
 	 * Makes a selector-box from optValues
 	 *
-	 * @param	string		Form element name
-	 * @param	string		Current value
-	 * @param	array		Options to display (key/value pairs)
-	 * @return	string		HTML select element
+	 * @param string $prefix Form element name
+	 * @param string $value Current value
+	 * @param array $optValues Options to display (key/value pairs)
+	 * @return string HTML select element
 	 */
 	function renderSelectBox($prefix, $value, $optValues) {
 		$opt = array();
@@ -3044,13 +2980,13 @@ class tx_impexp {
 	/**
 	 * Compares two records, the current database record and the one from the import memory. Will return HTML code to show any differences between them!
 	 *
-	 * @param	array		Database record, all fields (new values)
-	 * @param	array		Import memorys record for the same table/uid, all fields (old values)
-	 * @param	string		The table name of the record
-	 * @param	boolean		Inverse the diff view (switch red/green, needed for pre-update difference view)
-	 * @return	string		HTML
+	 * @param array $databaseRecord Database record, all fields (new values)
+	 * @param array $importRecord Import memorys record for the same table/uid, all fields (old values)
+	 * @param string $table The table name of the record
+	 * @param boolean $inverseDiff Inverse the diff view (switch red/green, needed for pre-update difference view)
+	 * @return string HTML
 	 */
-	function compareRecords($databaseRecord, $importRecord, $table, $inverseDiff=FALSE) {
+	function compareRecords($databaseRecord, $importRecord, $table, $inverseDiff = FALSE) {
 		global $LANG;
 
 			// Initialize:
@@ -3061,7 +2997,7 @@ class tx_impexp {
 		if (is_array($databaseRecord) && is_array($importRecord)) {
 
 				// Traverse based on database record
-			foreach($databaseRecord as $fN => $value) {
+			foreach ($databaseRecord as $fN => $value) {
 				if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type']!='passthrough') {
 					if (isset($importRecord[$fN])) {
 						if (strcmp(trim($databaseRecord[$fN]), trim($importRecord[$fN]))) {
@@ -3078,7 +3014,7 @@ class tx_impexp {
 			}
 
 				// Traverse remaining in import record:
-			foreach($importRecord as $fN => $value) {
+			foreach ($importRecord as $fN => $value) {
 				if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] !== 'passthrough') {
 					$output[$fN] = '<strong>Field missing</strong> in database';
 				}
@@ -3105,15 +3041,14 @@ class tx_impexp {
 			return '<strong class="nobr">['.htmlspecialchars($table.':'.$importRecord['uid'].' => '.$databaseRecord['uid']).']:</strong> '.$output;
 		}
 
-
 		return 'ERROR: One of the inputs were not an array!';
 	}
 
 	/**
 	 * Creates the original file name for a copy-RTE image (magic type)
 	 *
-	 * @param	string		RTE copy filename, eg. "RTEmagicC_user_pm_icon_01.gif.gif"
-	 * @return	string		RTE original filename, eg. "RTEmagicP_user_pm_icon_01.gif". IF the input filename was NOT prefixed RTEmagicC_ as RTE images would be, nothing is returned!
+	 * @param string $string RTE copy filename, eg. "RTEmagicC_user_pm_icon_01.gif.gif"
+	 * @return string RTE original filename, eg. "RTEmagicP_user_pm_icon_01.gif". IF the input filename was NOT prefixed RTEmagicC_ as RTE images would be, nothing is returned!
 	 */
 	function getRTEoriginalFilename($string) {
 			// If "magic image":
@@ -3130,7 +3065,7 @@ class tx_impexp {
 	/**
 	 * Returns file processing object, initialized only once.
 	 *
-	 * @return	object		File processor object
+	 * @return object File processor object
 	 */
 	function getFileProcObj() {
 		if (!is_object($this->fileProcObj)) {
@@ -3144,8 +3079,8 @@ class tx_impexp {
 	/**
 	 * Call Hook
 	 *
-	 * @param string $name name of the hook
-	 * @param array $params array with params
+	 * @param string $name Name of the hook
+	 * @param array $params Array with params
 	 * @return void
 	 */
 	public function callHook($name, $params) {
@@ -3156,12 +3091,6 @@ class tx_impexp {
 		}
 	}
 
-
-
-
-
-
-
 	/*****************************
 	 *
 	 * Error handling
@@ -3171,17 +3100,17 @@ class tx_impexp {
 	/**
 	 * Sets error message in the internal error log
 	 *
-	 * @param	string		Error message
-	 * @return	void
+	 * @param string Error message
+	 * @return void
 	 */
 	function error($msg) {
-		$this->errorLog[]=$msg;
+		$this->errorLog[] = $msg;
 	}
 
 	/**
 	 * Returns a table with the error-messages.
 	 *
-	 * @return	string		HTML print of error log
+	 * @return string HTML print of error log
 	 */
 	function printErrorLog() {
 		return count($this->errorLog) ? t3lib_utility_Debug::viewArray($this->errorLog) : '';
