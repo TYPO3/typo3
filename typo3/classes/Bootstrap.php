@@ -1529,5 +1529,18 @@ class Typo3_Bootstrap {
 			die('Calculated absolute path to typo3conf directory does not exist');
 		}
 	}
+
+	/**
+	 * Provides an instance of "template" for backend-modules to
+	 * work with.
+	 *
+	 * @return Typo3_Bootstrap
+	 */
+	public function initializeBackendTemplate() {
+		$GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('template');
+
+		return $this;
+	}
+
 }
 ?>

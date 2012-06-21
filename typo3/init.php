@@ -110,12 +110,8 @@ Typo3_Bootstrap::getInstance()
 	->initializeBackendUser()
 	->initializeBackendUserMounts()
 	->initializeLanguageObject()
+	->initializeBackendTemplate()
 	->endOutputBufferingAndCleanPreviousOutput()
 	->initializeOutputCompression();
-
-// ******************************
-// The template is loaded
-// ******************************
-$GLOBALS['TBE_TEMPLATE'] = t3lib_div::makeInstance('template');
 
 ?>
