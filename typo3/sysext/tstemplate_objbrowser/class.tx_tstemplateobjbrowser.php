@@ -30,12 +30,19 @@ $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_objbrowser/locallang.xml');
 /**
  * This class displays the submodule "TypoScript Object Browser" inside the Web > Template module
  *
- * @author		Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package		TYPO3
- * @subpackage	tx_tstemplateobjbrowser
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @package TYPO3
+ * @subpackage tx_tstemplateobjbrowser
  */
 class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
+	/**
+	 * Init
+	 *
+	 * @param object $pObj
+	 * @param array $conf
+	 * @return void
+	 */
 	function init(&$pObj, $conf) {
 		parent::init($pObj, $conf);
 
@@ -43,6 +50,11 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 		$this->pObj->modMenu_setDefaultList .= ',ts_browser_fixedLgd,ts_browser_showComments';
 	}
 
+	/**
+	 * Mod menu
+	 *
+	 * @return array
+	 */
 	function modMenu() {
 		$modMenu = array (
 			'ts_browser_type' => array(
@@ -70,9 +82,10 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			'ts_browser_alphaSort' => '1',
 		);
 
-		foreach(array('setup', 'const') as $bType) {
+		foreach (array('setup', 'const') as $bType) {
 			$addKey = t3lib_div::_GET('addKey');
-			if (is_array($addKey))	{		// If any plus-signs were clicked, it's registred.
+				// If any plus-signs were clicked, it's registred.
+			if (is_array($addKey)) {
 				reset($addKey);
 				if (current($addKey)) {
 					$this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][key($addKey)] = key($addKey);
@@ -92,12 +105,12 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Verify TS objects
 	 *
-	 * @param	[type]		$propertyArray: ...
-	 * @param	[type]		$parentType: ...
-	 * @param	[type]		$parentValue: ...
-	 * @return	[type]		...
+	 * @param array $propertyArray
+	 * @param string $parentType
+	 * @param string $parentValue
+	 * @return array
 	 */
 	function verify_TSobjects($propertyArray, $parentType, $parentValue) {
 		$TSobjTable = array(
@@ -135,14 +148,16 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			if (isset($TSobjDataTypes[$parentType]) && (!$TSobjDataTypes[$parentType] || t3lib_div::inlist($TSobjDataTypes[$parentType], $parentValue))) {
 				$ObjectKind = $parentValue;
 			} else {
-				$ObjectKind = ''; 	// Object kind is "" if it should be known.
+					// Object kind is "" if it should be known.
+				$ObjectKind = '';
 			}
 		} else {
-			$ObjectKind = $parentValue;	// If parentType is not given, then it can be anything. Free.
+				// If parentType is not given, then it can be anything. Free.
+			$ObjectKind = $parentValue;
 		}
 
 		if ($ObjectKind && is_array($TSobjTable[$ObjectKind])) {
-			$result=array();
+			$result = array();
 			if (is_array($propertyArray))		{
 				foreach ($propertyArray as $key => $val) {
 					if (t3lib_utility_Math::canBeInterpretedAsInteger($key))	{	// If num-arrays
@@ -157,35 +172,38 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Initialize editor
 	 *
-	 * @param	[type]		$pageId: ...
-	 * @param	[type]		$template_uid: ...
-	 * @return	[type]		...
+	 * @param integer $pageId
+	 * @param integer $template_uid
+	 * @return integer
 	 */
 	function initialize_editor($pageId, $template_uid=0) {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $tmpl,$tplRow,$theConstants;
-
-		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');	// Defined global here!
-		$tmpl->tt_track = 0;	// Do not log time-performance information
+			// Defined global here!
+		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');
+			// Do not log time-performance information
+		$tmpl->tt_track = 0;
 		$tmpl->init();
 
 				// Gets the rootLine
 		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$rootLine = $sys_page->getRootLine($pageId);
-		$tmpl->runThroughTemplates($rootLine, $template_uid);	// This generates the constants/config + hierarchy info for the template.
-
-		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);	// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-		if (is_array($tplRow))	{	// IF there was a template...
+			// This generates the constants/config + hierarchy info for the template.
+		$tmpl->runThroughTemplates($rootLine, $template_uid);
+			// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
+		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
+			// IF there was a template...
+		if (is_array($tplRow)) {
 			return 1;
 		}
 	}
 
 	/**
-	 * [Describe function...]
+	 * Main
 	 *
-	 * @return	[type]		...
+	 * @return string
 	 */
 	function main() {
 		global $BACK_PATH;
@@ -193,24 +211,14 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 		$POST = t3lib_div::_POST();
 
-		// **************************
-		// Checking for more than one template an if, set a menu...
-		// **************************
+			// Checking for more than one template an if, set a menu...
 		$manyTemplatesMenu = $this->pObj->templateMenu();
 		$template_uid = 0;
 		if ($manyTemplatesMenu) {
 			$template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
 		}
 
-
-
-
-
-		// **************************
-		// Main
-		// **************************
-
-		// BUGBUG: Should we check if the uset may at all read and write template-records???
+			// BUGBUG: Should we check if the uset may at all read and write template-records???
 		$bType = $this->pObj->MOD_SETTINGS['ts_browser_type'];
 		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);		// initialize
 		if ($existTemplate) {
@@ -309,23 +317,26 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 
 		$tsbr = t3lib_div::_GET('tsbr');
 		$update=0;
-		if (is_array($tsbr))	{		// If any plus-signs were clicked, it's registred.
+		if (is_array($tsbr)) {		// If any plus-signs were clicked, it's registred.
 			$this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType] = $tmpl->ext_depthKeys($tsbr, $this->pObj->MOD_SETTINGS['tsbrowser_depthKeys_' . $bType]);
 			$update=1;
 		}
 
-		if ($POST['Submit'])	{		// If any POST-vars are send, update the condition array
+		if ($POST['Submit']) {		// If any POST-vars are send, update the condition array
 			$this->pObj->MOD_SETTINGS['tsbrowser_conditions'] = $POST['conditions'];
 			$update=1;
 		}
-		if ($update)	{ $GLOBALS['BE_USER']->pushModuleData($this->pObj->MCONF['name'], $this->pObj->MOD_SETTINGS); }
-
+		if ($update) {
+			$GLOBALS['BE_USER']->pushModuleData($this->pObj->MCONF['name'], $this->pObj->MOD_SETTINGS);
+		}
 
 		$tmpl->matchAlternative = $this->pObj->MOD_SETTINGS['tsbrowser_conditions'];
 		$tmpl->matchAlternative[] = 'dummydummydummydummydummydummydummydummydummydummydummy';	// This is just here to make sure that at least one element is in the array so that the tsparser actually uses this array to match.
 
 		$tmpl->constantMode = $this->pObj->MOD_SETTINGS['ts_browser_const'];
-		if ($this->pObj->sObj && $tmpl->constantMode)	{$tmpl->constantMode = 'untouched';}
+		if ($this->pObj->sObj && $tmpl->constantMode) {
+			$tmpl->constantMode = 'untouched';
+		}
 
 		$tmpl->regexMode = $this->pObj->MOD_SETTINGS['ts_browser_regexsearch'];
 		$tmpl->fixedLgd = $this->pObj->MOD_SETTINGS['ts_browser_fixedLgd'];
@@ -512,7 +523,7 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 				</table>
 			';
 
-			// second row options
+				// second row options
 			$menu = '<div class="tsob-menu-row2">';
 			$menu .= t3lib_BEfunc::getFuncCheck($this->pObj->id, 'SET[ts_browser_showComments]', $this->pObj->MOD_SETTINGS['ts_browser_showComments'], '', '', 'id="checkTs_browser_showComments"');
 			$menu .= '<label for="checkTs_browser_showComments">' . $GLOBALS['LANG']->getLL('displayComments') . '</label>';

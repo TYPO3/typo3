@@ -30,19 +30,23 @@ $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_info/locallang.xml');
 /**
  * This class displays the Info/Modify screen of the Web > Template module
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class tx_tstemplateinfo extends t3lib_extobjbase {
 
-	public $tce_processed = FALSE;  // indicator for t3editor, whether data is stored
+	/**
+	 * Indicator for t3editor, whether data is stored
+	 * @var boolean
+	 */
+	public $tce_processed = FALSE;
 
 	/**
 	 * Creates a row for a HTML table
 	 *
-	 * @param	string		$label: The label to be shown (e.g. 'Title:', 'Sitetitle:')
-	 * @param	string		$data: The data/information to be shown (e.g. 'Template for my site')
-	 * @param	string		$field: The field/variable to be sent on clicking the edit icon (e.g. 'title', 'sitetitle')
-	 * @return	string		A row for a HTML table
+	 * @param string $label The label to be shown (e.g. 'Title:', 'Sitetitle:')
+	 * @param string $data The data/information to be shown (e.g. 'Template for my site')
+	 * @param string $field The field/variable to be sent on clicking the edit icon (e.g. 'title', 'sitetitle')
+	 * @return string A row for a HTML table
 	 */
 	function tableRow($label, $data, $field) {
 		$ret = '<tr><td>';
@@ -50,7 +54,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				'id' => $this->pObj->id,
 			);
 		$aHref = t3lib_BEfunc::getModuleUrl('web_ts', $urlParameters);
-		$ret.= '<a href="' . htmlspecialchars($aHref . '&e[' . $field . ']=1') . '">' .
+		$ret .= '<a href="' . htmlspecialchars($aHref . '&e[' . $field . ']=1') . '">' .
 			t3lib_iconWorks::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', TRUE))) . '<strong>' . $label . '&nbsp;&nbsp;</strong></a>';
 		$ret .= '</td><td width="80%" class="bgColor4">' . $data . '&nbsp;</td></tr>';
 		return $ret;
@@ -59,9 +63,9 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	/**
 	 * Renders HTML table with available template resources/files
 	 *
-	 * @param	string		$resources: List of  resources/files to be shown (e.g. 'file_01.txt,file.txt')
-	 * @param	boolean		$func: Whether to render functions like 'to top' or 'delete' for each resource (default: FALSE)
-	 * @return	string		HTML table with available template resources/files
+	 * @param string $resources List of  resources/files to be shown (e.g. 'file_01.txt,file.txt')
+	 * @param boolean $func Whether to render functions like 'to top' or 'delete' for each resource (default: FALSE)
+	 * @return string HTML table with available template resources/files
 	 */
 	function procesResources($resources, $func=FALSE) {
 		$arr = t3lib_div::trimExplode(',', $resources.',,', 1);
@@ -103,15 +107,16 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	/**
 	 * Renders HTML table with all available template resources/files in the current rootline that could be copied
 	 *
-	 * @param	integer		$id: The uid of the current page
-	 * @param	integer		$template_uid: The uid of the template record to be rendered (only if more than one template on the current page)
-	 * @return	string		HTML table with all available template resources/files in the current rootline that could be copied
+	 * @param integer $id The uid of the current page
+	 * @param integer $template_uid The uid of the template record to be rendered (only if more than one template on the current page)
+	 * @return string HTML table with all available template resources/files in the current rootline that could be copied
 	 */
 	function resourceListForCopy($id, $template_uid) {
 		global $tmpl;
 		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$rootLine = $sys_page->getRootLine($id);
-		$tmpl->runThroughTemplates($rootLine, $template_uid);	// This generates the constants/config + hierarchy info for the template.
+			// This generates the constants/config + hierarchy info for the template.
+		$tmpl->runThroughTemplates($rootLine, $template_uid);
 		$theResources = t3lib_div::trimExplode(',', $tmpl->resources, 1);
 		foreach ($theResources as $k => $v) {
 			$fI = pathinfo($v);
@@ -129,16 +134,17 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	 * Create an instance of t3lib_tsparser_ext in $GLOBALS['tmpl'] and looks for the first (visible) template
 	 * record. If $template_uid was given and greater than zero, this record will be checked.
 	 *
-	 * @param	integer		$id: The uid of the current page
-	 * @param	integer		$template_uid: The uid of the template record to be rendered (only if more than one template on the current page)
-	 * @return	boolean		Returns TRUE if a template record was found, otherwise FALSE
+	 * @param integer $pageId The uid of the current page
+	 * @param integer $template_uid: The uid of the template record to be rendered (only if more than one template on the current page)
+	 * @return boolean Returns TRUE if a template record was found, otherwise FALSE
 	 */
-	function initialize_editor($pageId, $template_uid=0) {
+	function initialize_editor($pageId, $template_uid = 0) {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $tmpl,$tplRow,$theConstants;
-
-		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');	// Defined global here!
-		$tmpl->tt_track = 0;	// Do not log time-performance information
+			// Defined global here!
+		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');
+			// Do not log time-performance information
+		$tmpl->tt_track = 0;
 		$tmpl->init();
 
 			// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
@@ -153,9 +159,9 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	/**
 	 * Process template row after loading
 	 *
-	 * @param 	array 	$tplRow: template row
-	 * @return 	array	preprocessed template row
-	 * @author	Fabrizio Branca <typo3@fabrizio-branca.de>
+	 * @param array $tplRow Template row
+	 * @return array Preprocessed template row
+	 * @author Fabrizio Branca <typo3@fabrizio-branca.de>
 	 */
 	function processTemplateRowAfterLoading(array $tplRow) {
 		if ($this->pObj->MOD_SETTINGS['includeTypoScriptFileContent']) {
@@ -170,9 +176,9 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	/**
 	 * Process template row before saving
 	 *
-	 * @param 	array 	$tplRow: template row
-	 * @return 	array	preprocessed template row
-	 * @author	Fabrizio Branca <typo3@fabrizio-branca.de>
+	 * @param array $tplRow Template row
+	 * @return array Preprocessed template row
+	 * @author Fabrizio Branca <typo3@fabrizio-branca.de>
 	 */
 	function processTemplateRowBeforeSaving(array $tplRow) {
 		if ($this->pObj->MOD_SETTINGS['includeTypoScriptFileContent']) {
@@ -184,7 +190,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 	/**
 	 * The main processing method if this class
 	 *
-	 * @return	string		Information of the template status or the taken actions as HTML string
+	 * @return string Information of the template status or the taken actions as HTML string
 	 */
 	function main() {
 		global $BACK_PATH;
@@ -197,33 +203,24 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 
 		t3lib_div::loadTCA('sys_template');
 
-
-
-
-		// **************************
-		// Checking for more than one template an if, set a menu...
-		// **************************
+			// Checking for more than one template an if, set a menu...
 		$manyTemplatesMenu = $this->pObj->templateMenu();
 		$template_uid = 0;
 		if ($manyTemplatesMenu) {
 			$template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
 		}
 
-
-		// **************************
-		// Initialize
-		// **************************
-		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);		// initialize
+			// Initialize
+		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
 
 		if ($existTemplate) {
 			$saveId = ($tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid']);
 		}
-		// **************************
-		// Create extension template
-		// **************************
+
+			// Create extension template
 		$newId = $this->pObj->createTemplate($this->pObj->id, $saveId);
 		if($newId) {
-			// switch to new template
+			// Switch to new template
 			$urlParameters = array(
 					'id' => $this->pObj->id,
 					'SET[templatesOnPage]' => $newId,
@@ -243,7 +240,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$resList = $tplRow['resources'];
 
 				$tmp_upload_name = '';
-				$tmp_newresource_name = '';	// Set this to blank
+					// Set this to blank
+				$tmp_newresource_name = '';
 
 				if (is_array($POST['data'])) {
 					foreach ($POST['data'] as $field => $val) {
@@ -340,7 +338,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 						$fI = t3lib_div::split_fileref($edit['filename']);
 						if (@is_file($path) && t3lib_div::getFileAbsFileName($path) && t3lib_div::inList($this->pObj->textExtensions, $fI['fileext']))	{		// checks that have already been done.. Just to make sure
 								// @TODO: Check if the hardcorded value already has a config member, otherwise create one
-							if (filesize($path) < 30720)	{	// checks that have already been done.. Just to make sure
+								// Checks that have already been done.. Just to make sure
+							if (filesize($path) < 30720) {
 								t3lib_div::writeFile($path, $edit['file']);
 
 								$theOutput.= $this->pObj->doc->spacer(10);
@@ -363,7 +362,7 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				}
 			}
 
-				// hook	Post updating template/TCE processing
+				// Hook	post updating template/TCE processing
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postTCEProcessingHook'])) {
 				$postTCEProcessingHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postTCEProcessingHook'];
 				if (is_array($postTCEProcessingHook)) {
