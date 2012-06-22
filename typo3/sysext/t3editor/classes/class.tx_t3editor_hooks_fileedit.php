@@ -127,7 +127,6 @@ class tx_t3editor_hooks_fileedit {
 			$outCode,
 			$parameters['pageContent']
 		);
-
 	}
 
 	/**

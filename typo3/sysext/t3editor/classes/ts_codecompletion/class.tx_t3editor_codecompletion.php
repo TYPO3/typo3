@@ -36,10 +36,10 @@ class tx_t3editor_codecompletion {
 	 * General processor for AJAX requests.
 	 * (called by typo3/ajax.php)
 	 *
-	 * @param	array		$params: additional parameters (not used here)
-	 * @param	TYPO3AJAX	&$ajaxObj: the TYPO3AJAX object of this request
-	 * @return	void
-	 * @author	Oliver Hader <oliver@typo3.org>
+	 * @param array $params Additional parameters (not used here)
+	 * @param TYPO3AJAX &$ajaxObj The TYPO3AJAX object of this request
+	 * @return void
+	 * @author Oliver Hader <oliver@typo3.org>
 	 */
 	public function processAjaxRequest($params, TYPO3AJAX &$ajaxObj) {
 		$this->ajaxObj = $ajaxObj;
@@ -48,7 +48,7 @@ class tx_t3editor_codecompletion {
 		$ajaxMethod = $ajaxIdParts[1];
 		$response = array();
 
-		// Process the AJAX requests:
+			// Process the AJAX requests:
 		if ($ajaxMethod == 'loadTemplates') {
 			$ajaxObj->setContent($this->loadTemplates(
 				intval(t3lib_div::_GP('pageId')))
@@ -61,10 +61,10 @@ class tx_t3editor_codecompletion {
 	 * Loads all templates up to a given page id (walking the rootline) and
 	 * cleans parts that are not required for the t3editor codecompletion.
 	 *
-	 * @param	integer		$pageId: id of the page
-	 * @param	integer		$templateId: currently unused (default: 0)
-	 * @return	array		Cleaned array of TypoScript information
-	 * @author	Oliver Hader <oliver@typo3.org>
+	 * @param integer $pageId ID of the page
+	 * @param integer $templateId Currently unused (default: 0)
+	 * @return array Cleaned array of TypoScript information
+	 * @author Oliver Hader <oliver@typo3.org>
 	 */
 	protected function loadTemplates($pageId, $templateId = 0) {
 		$templates = array();
@@ -89,10 +89,10 @@ class tx_t3editor_codecompletion {
 	/**
 	 * Gets merged templates by walking the rootline to a given page id.
 	 *
-	 * @todo	oliver@typo3.org: Refactor this method and comment what's going on there
-	 * @param	integer		$pageId
-	 * @param	integer		$templateId
-	 * @return	array		Setup part of merged template records
+	 * @todo oliver@typo3.org: Refactor this method and comment what's going on there
+	 * @param integer $pageId
+	 * @param integer $templateId
+	 * @return array Setup part of merged template records
 	 */
 	protected function getMergedTemplates($pageId, $templateId = 0) {
 		$result = array();
@@ -108,15 +108,15 @@ class tx_t3editor_codecompletion {
 			// This generates the constants/config + hierarchy info for the template.
 		$tsParser->runThroughTemplates($rootLine);
 
-		// ts-setup & ts-constants of the currently edited template should not be included
-		// therefor we have to delete the last template from the stack
+			// ts-setup & ts-constants of the currently edited template should not be included
+			// therefor we have to delete the last template from the stack
 		array_pop($tsParser->config);
 		array_pop($tsParser->constants);
 
 		$tsParser->linkObjects = TRUE;
 		$tsParser->ext_regLinenumbers = FALSE;
-		$tsParser->bType=$bType;
-		$tsParser->resourceCheck=1;
+		$tsParser->bType = $bType;
+		$tsParser->resourceCheck = 1;
 		$tsParser->uplPath = PATH_site . $tsParser->uplPath;
 		$tsParser->removeFromGetFilePath = PATH_site;
 		$tsParser->generateConfig();
@@ -129,16 +129,17 @@ class tx_t3editor_codecompletion {
 	/**
 	 * Walks through a tree of TypoScript configuration an cleans it up.
 	 *
-	 * @TODO	oliver@typo3.org: Define and comment why this is necessary and exactly happens below
-	 * @param	array		$treeBranch: TypoScript configuration or sub branch of it
-	 * @return	array		Cleaned TypoScript branch
+	 * @TODO oliver@typo3.org: Define and comment why this is necessary and exactly happens below
+	 * @param array $treeBranch TypoScript configuration or sub branch of it
+	 * @return array Cleaned TypoScript branch
 	 */
 	private function treeWalkCleanup(array $treeBranch) {
 		$cleanedTreeBranch = array();
 
 		foreach ($treeBranch as $key => $value) {
 			$dotCount = substr_count($key, '.');
-			if ($dotCount == 0){	//type definition or value-assignment
+				//type definition or value-assignment
+			if ($dotCount == 0) {
 				if ($value != '') {
 					if (strlen($value) > 20) {
 						$value = substr($value, 0, 20);

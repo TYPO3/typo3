@@ -25,30 +25,32 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-	// load the language file
+	// Load the language file
 $GLOBALS['LANG']->includeLLFile('EXT:sys_action/locallang.xml');
 
 /**
  * Adds action links to the backend's toolbar
  *
- * @author	Steffen Kamper <info@sk-typo3.de>
+ * @author Steffen Kamper <info@sk-typo3.de>
  * @package TYPO3
  * @subpackage tx_sysaction
  */
 class tx_sysactionToolbarMenu implements backend_toolbarItem {
 
 	/**
-	 * reference back to the backend object
+	 * Reference back to the backend object
 	 *
-	 * @var	TYPO3backend
+	 * @var TYPO3backend
 	 */
 	protected $backendReference;
+
+	/**
+	 * @var string
+	 */
 	protected $EXTKEY = 'sys_action';
 
 	/**
-	 * constructor
-	 *
-	 * @return	void
+	 * Constructor
 	 */
 	public function __construct(TYPO3backend &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
@@ -57,21 +59,21 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 	/**
 	 * sets the backend reference
 	 *
-	 * @param	TYPO3backend	backend object reference
-	 * @return	void
+	 * @param TYPO3backend $backendReference Backend object reference
+	 * @return void
 	 */
 	public function setBackend(TYPO3backend &$backendReference) {
 		$this->backendReference = $backendReference;
 	}
 
 	/**
-	 * renders the toolbar menu
+	 * Renders the toolbar menu
 	 *
-	 * @return	string	the rendered backend menu
-	 * @author	Ingo Renner <ingo@typo3.org>
+	 * @return string The rendered backend menu
+	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function render() {
-		$actionMenu    = array();
+		$actionMenu = array();
 		$actionEntries = $this->getActionEntries();
 
 		if ($actionEntries) {
@@ -95,16 +97,14 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 		} else {
 			return '';
 		}
-
-
 	}
 
 	/**
-	 * gets the entries for the action menu
+	 * Gets the entries for the action menu
 	 *
-	 * @return	array	array of action menu entries
-	 * @author	Steffen Kamper <info@sk-typo3.de>
-	 * @author	Ingo Renner <ingo@typo3.org>
+	 * @return array Array of action menu entries
+	 * @author Steffen Kamper <info@sk-typo3.de>
+	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	protected function getActionEntries() {
 		$actions = array();
@@ -154,18 +154,18 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 	}
 
 	/**
-	 * returns additional attributes for the list item in the toolbar
+	 * Returns additional attributes for the list item in the toolbar
 	 *
-	 * @return	string	list item HTML attibutes
+	 * @return string List item HTML attibutes
 	 */
 	public function getAdditionalAttributes() {
 		return ' id="tx-sys-action-menu"';
 	}
 
 	/**
-	 * adds the neccessary javascript ot the backend
+	 * Adds the neccessary javascript ot the backend
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function addJavascriptToBackend() {
 		$this->backendReference->addJavascriptFile(
@@ -174,9 +174,9 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 	}
 
 	/**
-	 * adds the neccessary css ot the backend
+	 * Adds the neccessary css ot the backend
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function addCssToBackend() {
 		$this->backendReference->addCssFile(
@@ -189,10 +189,10 @@ class tx_sysactionToolbarMenu implements backend_toolbarItem {
 	/**
 	 * Checks if user has access to the sys action menu
 	 *
-	 * @return	boolean	TRUE if the user has access, FALSE otherwise
+	 * @return boolean TRUE if the user has access, FALSE otherwise
 	 */
 	public function checkAccess() {
-			// taskcenter is enabled for everybody
+			// Taskcenter is enabled for everybody
 		return TRUE;
 	}
 }

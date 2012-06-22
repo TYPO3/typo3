@@ -27,7 +27,7 @@
 /**
  * Class for the list rendering of Web>Task Center module
  *
- * @author	Thomas Maroschik <tmaroschik@dfau.de>
+ * @author Thomas Maroschik <tmaroschik@dfau.de>
  * @package TYPO3
  * @subpackage core
  */

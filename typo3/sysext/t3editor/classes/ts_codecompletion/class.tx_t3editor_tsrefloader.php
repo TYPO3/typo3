@@ -28,7 +28,6 @@
 /**
  * Loads TSref information from a XML file an responds to an AJAX call.
  *
- * @TODO Refactor and correct phpDoc comments
  * @package TYPO3
  * @author Stephan Petzl <spetzl@gmx.at>
  * @author Christian Kartnig <office@hahnepeter.de>
@@ -37,32 +36,36 @@
 $GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
 
 class tx_t3editor_TSrefLoader {
-	/** @var DOMDocument */
+	/**
+	 * @var DOMDocument
+	 */
 	protected $xmlDoc;
 
-	/** @var TYPO3AJAX */
+	/**
+	 * @var TYPO3AJAX
+	 */
 	protected $ajaxObj;
 
 	/**
 	 * General processor for AJAX requests.
 	 * (called by typo3/ajax.php)
 	 *
-	 * @param	array		$params: additional parameters (not used here)
-	 * @param	TYPO3AJAX	&$ajaxObj: the TYPO3AJAX object of this request
-	 * @return	void
-	 * @author	Oliver Hader <oliver@typo3.org>
+	 * @param array $params Additional parameters (not used here)
+	 * @param TYPO3AJAX &$ajaxObj The TYPO3AJAX object of this request
+	 * @return void
+	 * @author Oliver Hader <oliver@typo3.org>
 	 */
 	public function processAjaxRequest($params, TYPO3AJAX &$ajaxObj) {
 		$this->ajaxObj = $ajaxObj;
 
-		// Load the TSref XML information:
+			// Load the TSref XML information:
 		$this->loadFile(t3lib_extMgm::extPath('t3editor') . 'res/tsref/tsref.xml');
 
 		$ajaxIdParts = explode('::', $ajaxObj->getAjaxID(), 2);
 		$ajaxMethod = $ajaxIdParts[1];
 		$response = array();
 
-		// Process the AJAX requests:
+			// Process the AJAX requests:
 		if ($ajaxMethod == 'getTypes') {
 			$ajaxObj->setContent($this->getTypes());
 			$ajaxObj->setContentFormat('jsonbody');
@@ -79,28 +82,28 @@ class tx_t3editor_TSrefLoader {
 	}
 
 	/**
-	 * Enter description here...
+	 * Load XML file
 	 *
-	 * @param	string		$filepath
-	 * @return	void
+	 * @param string $filepath
+	 * @return void
 	 */
 	protected function loadFile($filepath) {
 		$this->xmlDoc = new DOMDocument('1.0', 'utf-8');
 		$this->xmlDoc->load($filepath);
 
-		// @TODO: oliver@typo3.org: I guess this is not required here
+			// @TODO: oliver@typo3.org: I guess this is not required here
 		$this->xmlDoc->saveXML();
 	}
 
 	/**
-	 * Enter description here...
+	 * Get types from XML
 	 *
-	 * @return	array
+	 * @return array
 	 */
 	protected function getTypes() {
 		$types = $this->xmlDoc->getElementsByTagName('type');
 		$typeArr = array();
-		foreach($types as $type){
+		foreach ($types as $type){
 			$typeId = $type->getAttribute('id');
 			$typeName = $type->getAttribute('name');
 			if(!$typeName) {
@@ -108,7 +111,7 @@ class tx_t3editor_TSrefLoader {
 			}
 			$properties = $type->getElementsByTagName('property');
 			$propArr = array();
-			foreach($properties as $property) {
+			foreach ($properties as $property) {
 				$p = array();
 				$p['name'] = $property->getAttribute('name');
 				$p['type'] = $property->getAttribute('type');
@@ -125,11 +128,11 @@ class tx_t3editor_TSrefLoader {
 	}
 
 	/**
-	 * Enter description here...
+	 * Get description
 	 *
-	 * @param	string		$typeId
-	 * @param	string		$parameterName
-	 * @return	string
+	 * @param string $typeId
+	 * @param string $parameterName
+	 * @return string
 	 */
 	protected function getDescription($typeId, $parameterName = '') {
 		if (!$typeId) {
@@ -137,9 +140,10 @@ class tx_t3editor_TSrefLoader {
 			return '';
 		}
 
-		// getElementById does only work with schema
+			// getElementById does only work with schema
 		$type = $this->getType($typeId);
-		if ($parameterName) {  //retrieve propertyDescription
+			// Retrieve propertyDescription
+		if ($parameterName) {
 			$properties = $type->getElementsByTagName('property');
 			foreach ($properties as $propery) {
 				$propName = $propery->getAttribute('name');
@@ -159,10 +163,10 @@ class tx_t3editor_TSrefLoader {
 	}
 
 	/**
-	 * Enter description here...
+	 * Get type
 	 *
-	 * @param	string		$typeId
-	 * @return	DOMNode
+	 * @param string $typeId
+	 * @return DOMNode
 	 */
 	protected function getType($typeId) {
 		$types = $this->xmlDoc->getElementsByTagName('type');
