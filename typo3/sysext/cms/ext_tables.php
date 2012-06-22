@@ -266,6 +266,7 @@ $TCA['backend_layout'] = array (
 		'selicon_field' => 'icon',
 		'selicon_field_path' => 'uploads/media',
 		'thumbnail' => 'resources',
+		'dividers2tabs' => 1,
 	)
 );
 
