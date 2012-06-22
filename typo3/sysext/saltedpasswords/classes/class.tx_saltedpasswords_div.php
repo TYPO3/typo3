@@ -33,131 +33,130 @@
 /**
  * General library class.
  *
- * @author      Marcus Krause <marcus#exp2009@t3sec.info>
- * @author		Steffen Ritter <info@rs-websystems.de>
+ * @author Marcus Krause <marcus#exp2009@t3sec.info>
+ * @author Steffen Ritter <info@rs-websystems.de>
  *
- * @since       2009-06-14
- * @package     TYPO3
- * @subpackage  tx_saltedpasswords
+ * @since 2009-06-14
+ * @package TYPO3
+ * @subpackage tx_saltedpasswords
  */
 class tx_saltedpasswords_div {
-		/**
-		 * Keeps this extension's key.
-		 */
-		const EXTKEY = 'saltedpasswords';
+	/**
+	 * Keeps this extension's key.
+	 */
+	const EXTKEY = 'saltedpasswords';
 
-		/**
-		 * Calculates number of backend users, who have no saltedpasswords
-		 * protection.
-		 *
-		 * @static
-		 * @return int
-		 */
-		public static function getNumberOfBackendUsersWithInsecurePassword() {
-			$userCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
-				'*',
-				'be_users',
-				'password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('$%', 'be_users')
-					. ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('M$%', 'be_users')
-			);
-			return $userCount;
-		}
+	/**
+	 * Calculates number of backend users, who have no saltedpasswords
+	 * protection.
+	 *
+	 * @return integer
+	 */
+	public static function getNumberOfBackendUsersWithInsecurePassword() {
+		$userCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
+			'*',
+			'be_users',
+			'password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('$%', 'be_users')
+				. ' AND password NOT LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('M$%', 'be_users')
+		);
+		return $userCount;
+	}
 
-		/**
-		 * Returns extension configuration data from $TYPO3_CONF_VARS (configurable in Extension Manager)
-		 *
-		 * @author  Rainer Kuhn <kuhn@punkt.de>
-		 * @author  Marcus Krause <marcus#exp2009@t3sec.info>
-		 *
-		 * @param	string		TYPO3_MODE, wether Configuration for Frontend or Backend should be delivered
-		 * @return	array		extension configuration data
-		 */
-		public static function returnExtConf($mode = TYPO3_MODE) {
-			$currentConfiguration = self::returnExtConfDefaults();
+	/**
+	 * Returns extension configuration data from $TYPO3_CONF_VARS (configurable in Extension Manager)
+	 *
+	 * @author Rainer Kuhn <kuhn@punkt.de>
+	 * @author Marcus Krause <marcus#exp2009@t3sec.info>
+	 *
+	 * @param string $mode TYPO3_MODE, wether Configuration for Frontend or Backend should be delivered
+	 * @return array Extension configuration data
+	 */
+	public static function returnExtConf($mode = TYPO3_MODE) {
+		$currentConfiguration = self::returnExtConfDefaults();
 
-			if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords'])) {
-				$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords'])) {
+			$extensionConfiguration = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
 
-					// Merge default configuration with modified configuration:
-				if (isset($extensionConfiguration[$mode . '.'])) {
-					$currentConfiguration = array_merge(
-						$currentConfiguration,
-						$extensionConfiguration[$mode . '.']
-					);
-				}
-			}
-
-			return $currentConfiguration;
-		}
-
-		/**
-		 * Hook function for felogin "forgotPassword" functionality
-		 * encrypts the new password before storing in database
-		 *
-		 * @param	array			$params: Parameter the hook delivers
-		 * @param	tx_felogin_pi1	$pObj: Parent Object from which the hook is called
-		 * @return	void
-		 *
-		 */
-		public function feloginForgotPasswordHook(array &$params, tx_felogin_pi1 $pObj) {
-			if (self::isUsageEnabled('FE')) {
-				$this->objInstanceSaltedPW = tx_saltedpasswords_salts_factory::getSaltingInstance();
-				$params['newPassword'] = $this->objInstanceSaltedPW->getHashedPassword($params['newPassword']);
+				// Merge default configuration with modified configuration:
+			if (isset($extensionConfiguration[$mode . '.'])) {
+				$currentConfiguration = array_merge(
+					$currentConfiguration,
+					$extensionConfiguration[$mode . '.']
+				);
 			}
 		}
 
-		/**
-		 * Returns default configuration of this extension.
-		 *
-		 * @return	array		default extension configuration data for localconf.php
-		 */
-		public static function returnExtConfDefaults() {
-			return array(
-				'onlyAuthService' => '0',
-				'forceSalted' => '0',
-				'updatePasswd' => '1',
-				'saltedPWHashingMethod' => 'tx_saltedpasswords_salts_phpass',
-				'enabled' => '1',
-			);
+		return $currentConfiguration;
+	}
+
+	/**
+	 * Hook function for felogin "forgotPassword" functionality
+	 * encrypts the new password before storing in database
+	 *
+	 * @param array $params Parameter the hook delivers
+	 * @param tx_felogin_pi1 $pObj Parent Object from which the hook is called
+	 * @return void
+	 *
+	 */
+	public function feloginForgotPasswordHook(array &$params, tx_felogin_pi1 $pObj) {
+		if (self::isUsageEnabled('FE')) {
+			$this->objInstanceSaltedPW = tx_saltedpasswords_salts_factory::getSaltingInstance();
+			$params['newPassword'] = $this->objInstanceSaltedPW->getHashedPassword($params['newPassword']);
+		}
+	}
+
+	/**
+	 * Returns default configuration of this extension.
+	 *
+	 * @return array Default extension configuration data for localconf.php
+	 */
+	public static function returnExtConfDefaults() {
+		return array(
+			'onlyAuthService' => '0',
+			'forceSalted' => '0',
+			'updatePasswd' => '1',
+			'saltedPWHashingMethod' => 'tx_saltedpasswords_salts_phpass',
+			'enabled' => '1',
+		);
+	}
+
+	/**
+	 * Function determines the default(=configured) type of
+	 * salted hashing method to be used.
+	 *
+	 * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
+	 * @return string Classname of object to be used
+	 */
+	public static function getDefaultSaltingHashingMethod($mode = TYPO3_MODE) {
+
+		$extConf = self::returnExtConf($mode);
+		$classNameToUse = 'tx_saltedpasswords_salts_md5';
+		if (in_array($extConf['saltedPWHashingMethod'], array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods']))) {
+			$classNameToUse = $extConf['saltedPWHashingMethod'];
 		}
 
-		/**
-		 * Function determines the default(=configured) type of
-		 * salted hashing method to be used.
-		 *
-		 * @param	string		$mode: (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
-		 * @return	string		classname of object to be used
-		 */
-		public static function getDefaultSaltingHashingMethod($mode = TYPO3_MODE) {
+		return $classNameToUse;
+	}
 
-			$extConf = self::returnExtConf($mode);
-			$classNameToUse = 'tx_saltedpasswords_salts_md5';
-			if (in_array($extConf['saltedPWHashingMethod'], array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods']))) {
-				$classNameToUse = $extConf['saltedPWHashingMethod'];
-			}
-
-			return $classNameToUse;
+	/**
+	 * Returns information if salted password hashes are
+	 * indeed used in the TYPO3_MODE.
+	 *
+	 * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
+	 * @return boolean TRUE, if salted password hashes are used in the TYPO3_MODE, otherwise FALSE
+	 */
+	public static function isUsageEnabled($mode = TYPO3_MODE) {
+			// Login Security Level Recognition
+		$extConf = self::returnExtConf($mode);
+		$securityLevel = $GLOBALS['TYPO3_CONF_VARS'][$mode]['loginSecurityLevel'];
+		if ($mode == 'BE' && $extConf['enabled']) {
+			return (($securityLevel =='normal' && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0) || $securityLevel == 'rsa');
+		} elseif ($mode =='FE' && $extConf['enabled']) {
+			return t3lib_div::inList('normal,rsa', $securityLevel);
 		}
 
-		/**
-		 * Returns information if salted password hashes are
-		 * indeed used in the TYPO3_MODE.
-		 *
-		 * @param	string		$mode: (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
-		 * @return	boolean		TRUE, if salted password hashes are used in the TYPO3_MODE, otherwise FALSE
-		 */
-		public static function isUsageEnabled($mode = TYPO3_MODE) {
-				// Login Security Level Recognition
-			$extConf = self::returnExtConf($mode);
-			$securityLevel = $GLOBALS['TYPO3_CONF_VARS'][$mode]['loginSecurityLevel'];
-			if ($mode == 'BE' && $extConf['enabled']) {
-				return (($securityLevel =='normal' && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0) || $securityLevel == 'rsa');
-			} elseif ($mode =='FE' && $extConf['enabled']) {
-				return t3lib_div::inList('normal,rsa', $securityLevel);
-			}
-
-			return FALSE;
-		}
+		return FALSE;
+	}
 }
 
 ?>

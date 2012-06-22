@@ -32,12 +32,11 @@
 /**
  * Testcases for class tx_saltedpasswords_salts_phpass.
  *
- * @author  Marcus Krause <marcus#exp2009@t3sec.info>
- * @package  TYPO3
- * @subpackage  tx_saltedpasswords
+ * @author Marcus Krause <marcus#exp2009@t3sec.info>
+ * @package TYPO3
+ * @subpackage tx_saltedpasswords
  */
 class tx_saltedpasswords_salts_phpassTest extends tx_phpunit_testcase {
-
 
 	/**
 	 * Keeps instance of object to test.
@@ -50,7 +49,7 @@ class tx_saltedpasswords_salts_phpassTest extends tx_phpunit_testcase {
 	/**
 	 * Sets up the fixtures for this testcase.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function setUp() {
 		$this->objectInstance = t3lib_div::makeInstance('tx_saltedpasswords_salts_phpass');
@@ -59,7 +58,7 @@ class tx_saltedpasswords_salts_phpassTest extends tx_phpunit_testcase {
 	/**
 	 * Tears down objects and settings created in this testcase.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function tearDown() {
 		unset($this->objectInstance);

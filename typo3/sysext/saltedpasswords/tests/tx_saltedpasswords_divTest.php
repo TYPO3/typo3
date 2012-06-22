@@ -32,9 +32,9 @@
 /**
  * Testcases for class tx_saltedpasswords_div.
  *
- * @author  Marcus Krause <marcus#exp2009@t3sec.info>
- * @package  TYPO3
- * @subpackage  tx_saltedpasswords
+ * @author Marcus Krause <marcus#exp2009@t3sec.info>
+ * @package TYPO3
+ * @subpackage tx_saltedpasswords
  */
 class tx_saltedpasswords_divTest extends tx_phpunit_testcase {
 	protected $backupGlobals = TRUE;

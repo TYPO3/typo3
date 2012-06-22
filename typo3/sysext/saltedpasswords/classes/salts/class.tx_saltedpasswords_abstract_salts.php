@@ -29,55 +29,53 @@
  * to be used in classes that provide salted hashing.
  */
 
-
 /**
  * Abtract class with methods needed to be extended
  * in a salted hashing class.
  *
- * @author      Marcus Krause <marcus#exp2009@t3sec.info>
+ * @author Marcus Krause <marcus#exp2009@t3sec.info>
  *
- * @abstract
- * @since   	2009-09-06
- * @package     TYPO3
- * @subpackage  tx_saltedpasswords
+ * @since 2009-09-06
+ * @package TYPO3
+ * @subpackage tx_saltedpasswords
  */
 abstract class tx_saltedpasswords_abstract_salts {
 	/**
 	 * Method applies settings (prefix, optional hash count, optional suffix)
 	 * to a salt.
 	 *
-	 * @param	string		$salt:  a salt to apply setting to
-	 * @return	string		salt with setting
+	 * @param string $salt A salt to apply setting to
+	 * @return string Salt with setting
 	 */
 	abstract protected function applySettingsToSalt($salt);
 
 	/**
 	 * Generates a random base salt settings for the hash.
 	 *
-	 * @return	string		a string containing settings and a random salt
+	 * @return string A string containing settings and a random salt
 	 */
 	abstract protected function getGeneratedSalt();
 
 	/**
 	 * Returns a string for mapping an int to the corresponding base 64 character.
 	 *
-	 * @return	string		string for mapping an int to the corresponding base 64 character
+	 * @return string String for mapping an int to the corresponding base 64 character
 	 */
 	abstract protected function getItoa64();
 
 	/**
 	 * Returns setting string to indicate type of hashing method.
 	 *
-	 * @return	string		setting string of hashing method
+	 * @return string Setting string of hashing method
 	 */
 	abstract protected function getSetting();
 
 	/**
 	 * Encodes bytes into printable base 64 using the *nix standard from crypt().
 	 *
-	 * @param	string		$input: the string containing bytes to encode.
-	 * @param	integer		$count: the number of characters (bytes) to encode.
-	 * @return	string		encoded string
+	 * @param string $input The string containing bytes to encode.
+	 * @param integer $count The number of characters (bytes) to encode.
+	 * @return string Encoded string
 	 */
 	public function base64Encode($input, $count) {
 		$output = '';
@@ -109,11 +107,11 @@ abstract class tx_saltedpasswords_abstract_salts {
 	 * Method determines required length of base64 characters for a given
 	 * length of a byte string.
 	 *
-	 * @param	integer		$byteLength: length of bytes to calculate in base64 chars
-	 * @return	integer		required length of base64 characters
+	 * @param integer $byteLength Length of bytes to calculate in base64 chars
+	 * @return integer Required length of base64 characters
 	 */
 	protected function getLengthBase64FromBytes($byteLength) {
-			// calculates bytes in bits in base64
+			// Calculates bytes in bits in base64
 		return intval(ceil(($byteLength * 8) / 6));
 	}
 }
