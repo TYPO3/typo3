@@ -25,36 +25,37 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 	// Make sure that we are executed only in TYPO3 context
-if (!defined ('TYPO3_MODE')) die ('Access denied.');
-
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
+}
 
 /**
  * class providing configuration checks for saltedpasswords.
  *
- * @author	Steffen Ritter <info@rs-websystems.de>
+ * @author Steffen Ritter <info@rs-websystems.de>
  *
- * @since	2009-09-04
- * @package	TYPO3
- * @subpackage	tx_saltedpasswords
+ * @since 2009-09-04
+ * @package TYPO3
+ * @subpackage tx_saltedpasswords
  */
 class tx_saltedpasswords_emconfhelper {
 	/**
-	 * @var	integer
+	 * @var integer
 	 */
 	protected $errorType = t3lib_FlashMessage::OK;
 
 	/**
-	 * @var	string
+	 * @var string
 	 */
 	protected $header;
 
 	/**
-	 * @var	string
+	 * @var string
 	 */
 	protected $preText;
 
-	/*
-	 * @var	array
+	/**
+	 * @var array
 	 */
 	protected $problems = array();
 
@@ -62,8 +63,8 @@ class tx_saltedpasswords_emconfhelper {
 	 * Set the error level if no higher level
 	 * is set already
 	 *
-	 * @param	string		$level: one out of error, ok, warning, info
-	 * @return	void
+	 * @param string $level One out of error, ok, warning, info
+	 * @return void
 	 */
 	private function setErrorLevel($level) {
 
@@ -101,11 +102,11 @@ class tx_saltedpasswords_emconfhelper {
 	/**
 	 * Renders the flash messages if problems have been found.
 	 *
-	 * @return	string		The flash message as HTML.
+	 * @return string The flash message as HTML.
 	 */
 	private function renderFlashMessage() {
 		$message = '';
-			// if there are problems, render them into an unordered list
+			// If there are problems, render them into an unordered list
 		if (count($this->problems) > 0) {
 			$message = <<< EOT
 <ul>
@@ -149,15 +150,15 @@ EOT;
 	/**
 	 * Checks the backend configuration and shows a message if necessary.
 	 *
-	 * @param	array				$params: Field information to be rendered
-	 * @param	t3lib_tsStyleConfig	$pObj: The calling parent object.
-	 * @return	string				Messages as HTML if something needs to be reported
+	 * @param array $params Field information to be rendered
+	 * @param t3lib_tsStyleConfig $pObj The calling parent object.
+	 * @return string Messages as HTML if something needs to be reported
 	 */
 	public function checkConfigurationBackend(array $params, t3lib_tsStyleConfig $pObj) {
 		$this->init();
 		$extConf = $this->extConf['BE'];
 
-			// the backend is called over SSL
+			// The backend is called over SSL
 		$SSL = (($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] > 0 ? TRUE : FALSE) && ($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel'] != 'superchallenged'));
 		$rsaAuthLoaded = t3lib_extMgm::isLoaded('rsaauth');
 
@@ -172,14 +173,14 @@ EOT;
 						$this->setErrorLevel('ok');
 						$problems[] = 'The backend is configured to use SaltedPasswords with RSA authentication.';
 					} else {
-							// this means that login would fail because rsaauth is not working properly
+							// This means that login would fail because rsaauth is not working properly
 						$this->setErrorLevel('error');
 						$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' .
 									'is available. Please install and configure the PHP extension "openssl". '.
 									'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
 					}
 				} else {
-						// this means that we are not using saltedpasswords
+						// This means that we are not using saltedpasswords
 					$this->setErrorLevel('error');
 					$problems[] = 'The "rsaauth" extension is installed, but TYPO3 is not configured to use it during login.
 						Use the Install Tool to set the Login Security Level for the backend to "rsa"
@@ -187,7 +188,7 @@ EOT;
 
 				}
 			} else {
-					// this means that we are not using saltedpasswords
+					// This means that we are not using saltedpasswords
 				$this->setErrorLevel('error');
 				$problems[] = <<< EOT
 Backend requirements for SaltedPasswords are not met, therefore the
@@ -211,9 +212,9 @@ time.
 EOT;
 			}
 
-				// only saltedpasswords as authsservice
+				// Only saltedpasswords as authsservice
 			if ($extConf['onlyAuthService']) {
-					// warn user that the combination with "forceSalted" may lock him out from Backend
+					// Warn user that the combination with "forceSalted" may lock him out from Backend
 				if ($extConf['forceSalted']) {
 					$this->setErrorLevel('warning');
 					$problems[] = <<< EOT
@@ -224,7 +225,7 @@ password hash.<br />
 <strong><i>WARNING:</i></strong> This may lock you out of the backend!
 EOT;
 				} else {
-						// inform the user that things like openid won't work anymore
+						// Inform the user that things like openid won't work anymore
 					$this->setErrorLevel('info');
 					$problems[] = <<< EOT
 SaltedPasswords has been configured to be the only authentication service for
@@ -254,7 +255,7 @@ It is not possible to set "updatePasswd" and "forceSalted" at the same time.
 Please disable either one of them.
 EOT;
 			}
-				// check if the configured hash-method is available on system
+				// Check if the configured hash-method is available on system
 			if (!$instance = tx_saltedpasswords_salts_factory::getSaltingInstance(NULL, 'BE') || !$instance->isAvailable()) {
 				$this->setErrorLevel('error');
 				$problems[] = <<< EOT
@@ -264,7 +265,7 @@ EOT;
 			}
 
 		} else {
-			// not enabled warning
+				// Not enabled warning
 			$this->setErrorLevel('error');
 			$problems[] = 'SaltedPasswords has been disabled for backend users.';
 		}
@@ -277,7 +278,7 @@ EOT;
 	/**
 	 * Checks if rsaauth is able to obtain a backend
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isRsaAuthBackendAvailable() {
 		/**
@@ -292,16 +293,16 @@ EOT;
 	/**
 	 * Checks the frontend configuration and shows a message if necessary.
 	 *
-	 * @param	array				$params: Field information to be rendered
-	 * @param	t3lib_tsStyleConfig	$pObj: The calling parent object.
-	 * @return	string				Messages as HTML if something needs to be reported
+	 * @param array $params Field information to be rendered
+	 * @param t3lib_tsStyleConfig $pObj The calling parent object.
+	 * @return string Messages as HTML if something needs to be reported
 	 */
 	public function checkConfigurationFrontend(array $params, t3lib_tsStyleConfig $pObj) {
 		$this->init();
 		$extConf = $this->extConf['FE'];
 
 		if ($extConf['enabled']) {
-				// inform the user if securityLevel in FE is challenged or blank --> extension won't work
+				// Inform the user if securityLevel in FE is challenged or blank --> extension won't work
 			if (!t3lib_div::inList('normal,rsa', $GLOBALS['TYPO3_CONF_VARS']['FE']['loginSecurityLevel'])) {
 				$this->setErrorLevel('info');
 				$problems[] = <<< EOT
@@ -326,16 +327,16 @@ EOT;
 					$this->setErrorLevel('ok');
 					$problems[] = 'The frontend is configured to use SaltedPasswords with RSA authentication.';
 				} else {
-						// this means that login would fail because rsaauth is not working properly
+						// This means that login would fail because rsaauth is not working properly
 					$this->setErrorLevel('error');
 					$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' .
 								'is available. Please install and configure the PHP extension "openssl". '.
 								'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
 				}
 			}
-				// only saltedpasswords as authsservice
+				// Only saltedpasswords as authsservice
 			if ($extConf['onlyAuthService']) {
-					// warn user taht the combination with "forceSalted" may lock him out from frontend
+					// Warn user taht the combination with "forceSalted" may lock him out from frontend
 				if ($extConf['forceSalted']) {
 					$this->setErrorLevel('warning');
 					$problems[] = <<< EOT
@@ -347,7 +348,7 @@ login.<br />
 users not having a salted password hash (e.g. existing frontend users).
 EOT;
 				} else {
-						// inform the user that things like openid won't work anymore
+						// Inform the user that things like openid won't work anymore
 					$this->setErrorLevel('info');
 					$problems[] = <<< EOT
 SaltedPasswords has been configured to be the only authentication service for
@@ -380,7 +381,7 @@ EOT;
 			}
 
 		} else {
-			// not enabled warning
+				// Not enabled warning
 			$this->setErrorLevel('info');
 			$problems[] = 'SaltedPasswords has been disabled for frontend users.';
 		}
@@ -393,10 +394,10 @@ EOT;
 	/**
 	 * Renders a selector element that allows to select the hash method to be used.
 	 *
-	 * @param	array				$params: Field information to be rendered
-	 * @param	t3lib_tsStyleConfig	$pObj: The calling parent object.
-	 * @param	string				$disposal: The configuration disposal ('FE' or 'BE')
-	 * @return	string				The HTML selector
+	 * @param array $params Field information to be rendered
+	 * @param t3lib_tsStyleConfig $pObj The calling parent object.
+	 * @param string $disposal The configuration disposal ('FE' or 'BE')
+	 * @return string The HTML selector
 	 */
 	protected function buildHashMethodSelector(array $params, t3lib_tsStyleConfig $pObj, $disposal) {
 		$this->init();
@@ -423,9 +424,9 @@ EOT;
 	/**
 	 * Renders a selector element that allows to select the hash method to be used (frontend disposal).
 	 *
-	 * @param	array				$params: Field information to be rendered
-	 * @param	t3lib_tsStyleConfig	$pObj: The calling parent object.
-	 * @return	string				The HTML selector
+	 * @param array $params Field information to be rendered
+	 * @param t3lib_tsStyleConfig $pObj The calling parent object.
+	 * @return string The HTML selector
 	 */
 	public function buildHashMethodSelectorFE(array $params, t3lib_tsStyleConfig $pObj) {
 		return $this->buildHashMethodSelector($params, $pObj, 'FE');
@@ -434,9 +435,9 @@ EOT;
 	/**
 	 * Renders a selector element that allows to select the hash method to be used (backend disposal)
 	 *
-	 * @param	array				$params: Field information to be rendered
-	 * @param	t3lib_tsStyleConfig	$pObj: The calling parent object.
-	 * @return	string				The HTML selector
+	 * @param array $params Field information to be rendered
+	 * @param t3lib_tsStyleConfig $pObj The calling parent object.
+	 * @return string The HTML selector
 	 */
 	public function buildHashMethodSelectorBE(array $params, t3lib_tsStyleConfig $pObj) {
 		return $this->buildHashMethodSelector($params, $pObj, 'BE');
@@ -446,20 +447,20 @@ EOT;
 	 * Processes the information submitted by the user using a POST request and
 	 * transforms it to a TypoScript node notation.
 	 *
-	 * @param	array		$postArray: Incoming POST information
-	 * @return	array		Processed and transformed POST information
+	 * @param array $postArray Incoming POST information
+	 * @return array Processed and transformed POST information
 	 */
 	private function processPostData(array $postArray = array()) {
 		foreach ($postArray as $key => $value) {
-			// TODO: Explain
+				// TODO: Explain
 			$parts = explode('.', $key, 2);
 
 			if (count($parts)==2) {
-				// TODO: Explain
+					// TODO: Explain
 				$value = $this->processPostData(array($parts[1] => $value));
 				$postArray[$parts[0].'.'] = array_merge((array)$postArray[$parts[0].'.'], $value);
 			} else {
-				// TODO: Explain
+					// TODO: Explain
 				$postArray[$parts[0]] = $value;
 			}
 		}

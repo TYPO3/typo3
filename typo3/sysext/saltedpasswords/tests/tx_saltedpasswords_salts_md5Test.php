@@ -32,9 +32,9 @@
 /**
  * Testcases for class tx_saltedpasswords_salts_md5.
  *
- * @author  Marcus Krause <marcus#exp2009@t3sec.info>
- * @package  TYPO3
- * @subpackage  tx_saltedpasswords
+ * @author Marcus Krause <marcus#exp2009@t3sec.info>
+ * @package TYPO3
+ * @subpackage tx_saltedpasswords
  */
 class tx_saltedpasswords_salts_md5Test extends tx_phpunit_testcase {
 
@@ -50,7 +50,7 @@ class tx_saltedpasswords_salts_md5Test extends tx_phpunit_testcase {
 	/**
 	 * Sets up the fixtures for this testcase.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function setUp() {
 		$this->objectInstance = t3lib_div::makeInstance('tx_saltedpasswords_salts_md5');
@@ -59,7 +59,7 @@ class tx_saltedpasswords_salts_md5Test extends tx_phpunit_testcase {
 	/**
 	 * Tears down objects and settings created in this testcase.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function tearDown() {
 		unset($this->objectInstance);
@@ -68,7 +68,7 @@ class tx_saltedpasswords_salts_md5Test extends tx_phpunit_testcase {
 	/**
 	 * Prepares a message to be shown when a salted hashing is not supported.
 	 *
-	 * @return  string     empty string if salted hashing method is available, otherwise an according warning
+	 * @return string Empty string if salted hashing method is available, otherwise an according warning
 	 */
 	protected function getWarningWhenMethodUnavailable() {
 		$warningMsg = '';

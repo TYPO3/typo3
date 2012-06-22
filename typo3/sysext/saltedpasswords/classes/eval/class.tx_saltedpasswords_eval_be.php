@@ -29,18 +29,16 @@
 /**
  * Class implementing salted evaluation methods for BE users.
  *
- * @author	Marcus Krause <marcus#exp2009@t3sec.info>
- * @author	Steffen Ritter <info@rs-websystems.de>
+ * @author Marcus Krause <marcus#exp2009@t3sec.info>
+ * @author Steffen Ritter <info@rs-websystems.de>
  *
- * @since	2009-06-14
- * @package	TYPO3
- * @subpackage	tx_saltedpasswords
+ * @since 2009-06-14
+ * @package TYPO3
+ * @subpackage tx_saltedpasswords
  */
 class tx_saltedpasswords_eval_be extends tx_saltedpasswords_eval {
 	/**
 	 * Class constructor.
-	 *
-	 * @return	tx_saltedpasswords_eval_fe	instance of object
 	 */
 	public function __construct() {
 		$this->mode = 'BE';

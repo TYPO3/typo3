@@ -134,7 +134,7 @@ class tx_saltedpasswords_autoloader {
 
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('tx_saltedpasswords_autoloader');
 $SOBE->execute($this);
 ?>

@@ -32,11 +32,11 @@
 /**
  * Testcases for class tx_saltedpasswords_salts_factory.
  *
- * @author      Marcus Krause <marcus#exp2009@t3sec.info>
+ * @author Marcus Krause <marcus#exp2009@t3sec.info>
  *
- * @since   	2009-09-06
- * @package     TYPO3
- * @subpackage  tx_saltedpasswords
+ * @since 2009-09-06
+ * @package TYPO3
+ * @subpackage tx_saltedpasswords
  */
 class tx_saltedpasswords_salts_factoryTest extends tx_phpunit_testcase {
 
@@ -51,7 +51,7 @@ class tx_saltedpasswords_salts_factoryTest extends tx_phpunit_testcase {
 	/**
 	 * Sets up the fixtures for this testcase.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function setUp() {
 		$this->objectInstance = tx_saltedpasswords_salts_factory::getSaltingInstance();
@@ -60,7 +60,7 @@ class tx_saltedpasswords_salts_factoryTest extends tx_phpunit_testcase {
 	/**
 	 * Tears down objects and settings created in this testcase.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function tearDown() {
 		unset($this->objectInstance);

@@ -32,9 +32,9 @@
 /**
  * Testcases for class tx_saltedpasswords_salts_blowfish.
  *
- * @author  Marcus Krause <marcus#exp2009@t3sec.info>
- * @package  TYPO3
- * @subpackage  tx_saltedpasswords
+ * @author Marcus Krause <marcus#exp2009@t3sec.info>
+ * @package TYPO3
+ * @subpackage tx_saltedpasswords
  */
 class tx_saltedpasswords_salts_blowfishTest extends tx_phpunit_testcase {
 
@@ -50,7 +50,7 @@ class tx_saltedpasswords_salts_blowfishTest extends tx_phpunit_testcase {
 	/**
 	 * Sets up the fixtures for this testcase.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function setUp() {
 		$this->objectInstance = t3lib_div::makeInstance('tx_saltedpasswords_salts_blowfish');
@@ -59,7 +59,7 @@ class tx_saltedpasswords_salts_blowfishTest extends tx_phpunit_testcase {
 	/**
 	 * Tears down objects and settings created in this testcase.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function tearDown() {
 		unset($this->objectInstance);
@@ -68,7 +68,7 @@ class tx_saltedpasswords_salts_blowfishTest extends tx_phpunit_testcase {
 	/**
 	 * Marks tests as skipped if the blowfish method is not available.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function skipTestIfBlowfishIsNotAvailable() {
 		if (!CRYPT_BLOWFISH) {

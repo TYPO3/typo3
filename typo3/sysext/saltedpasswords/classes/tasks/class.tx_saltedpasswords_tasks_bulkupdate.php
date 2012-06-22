@@ -59,8 +59,6 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 
 	/**
 	 * Constructor initializes user record pointer
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		parent::__construct();
@@ -108,7 +106,7 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	/**
 	 * Find next set of frontend or backend users to update.
 	 *
-	 * @param string 'FE' for frontend, 'BE' for backend user records
+	 * @param string $mode 'FE' for frontend, 'BE' for backend user records
 	 * @return array Rows with uid and password
 	 */
 	protected function findUsersToUpdate($mode) {
@@ -128,8 +126,8 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	/**
 	 * Iterate over given user records and update password if needed.
 	 *
-	 * @param string 'FE' for frontend, 'BE' for backend user records
-	 * @param array with user uids and passwords
+	 * @param string $mode 'FE' for frontend, 'BE' for backend user records
+	 * @param array $users With user uids and passwords
 	 * @return void
 	 */
 	protected function convertPasswords($mode, $users) {
@@ -151,8 +149,8 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	/**
 	 * Update password and persist salted hash.
 	 *
-	 * @param string 'FE' for frontend, 'BE' for backend user records
-	 * @param array with user uids and passwords
+	 * @param string $mode 'FE' for frontend, 'BE' for backend user records
+	 * @param array $users With user uids and passwords
 	 * @return void
 	 */
 	protected function updatePasswords($mode, $users) {
@@ -189,7 +187,7 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	 *
 	 * If a password does not start with M or C determine if a password is already a usual salted hash.
 	 *
-	 * @param string Password
+	 * @param string $password Password
 	 * @return boolean TRUE if password is a salted hash
 	 */
 	protected function isSaltedHash($password) {
@@ -210,6 +208,7 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	/**
 	 * Check if a given password is a md5 hash, the default for be_user records before saltedpasswords.
 	 *
+	 * @param string $password
 	 * @return boolean TRUE if password is md5
 	 */
 	protected function isMd5Password($password) {
@@ -219,8 +218,8 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	/**
 	 * Increment current user record counter by number of handled rows.
 	 *
-	 * @param string 'FE' for frontend, 'BE' for backend user records
-	 * @param integer Number of handled rows
+	 * @param string $mode 'FE' for frontend, 'BE' for backend user records
+	 * @param integer $number Number of handled rows
 	 * @return void
 	 */
 	protected function incrementUserRecordPointer($mode, $number) {
@@ -236,5 +235,5 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	protected function deactivateSelf() {
 		$this->setDisabled(TRUE);
 	}
-} // End of class
+}
 ?>

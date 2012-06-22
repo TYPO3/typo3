@@ -29,26 +29,24 @@
  * that provides a salted hashing method factory.
  */
 
-
 /**
  * Class that implements Blowfish salted hashing based on PHP's
  * crypt() function.
  *
- * @author      Marcus Krause <marcus#exp2009@t3sec.info>
+ * @author Marcus Krause <marcus#exp2009@t3sec.info>
  *
- * @since   	2009-09-06
- * @package     TYPO3
- * @subpackage  tx_saltedpasswords
+ * @since 2009-09-06
+ * @package TYPO3
+ * @subpackage tx_saltedpasswords
  */
 class tx_saltedpasswords_salts_factory {
 	/**
 	 * An instance of the salted hashing method.
 	 * This member is set in the getSaltingInstance() function.
 	 *
-	 * @var	tx_saltedpasswords_abstract_salts
+	 * @var tx_saltedpasswords_abstract_salts
 	 */
 	static protected $instance = NULL;
-
 
 	/**
 	 * Obtains a salting hashing method instance.
@@ -58,18 +56,18 @@ class tx_saltedpasswords_salts_factory {
 	 *
 	 * Use parameter NULL to reset the factory!
 	 *
-	 * @param	string		$saltedHash: (optional) salted hashed password to determine the type of used method from or NULL to reset the factory
-	 * @param	string		$mode: (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
-	 * @return	tx_saltedpasswords_abstract_salts	an instance of salting hashing method object
+	 * @param string $saltedHash (optional) Salted hashed password to determine the type of used method from or NULL to reset the factory
+	 * @param string $mode (optional) The TYPO3 mode (FE or BE) saltedpasswords shall be used for
+	 * @return tx_saltedpasswords_abstract_salts	an instance of salting hashing method object
 	 */
 	static public function getSaltingInstance($saltedHash = '', $mode = TYPO3_MODE) {
-			// creating new instance when
+			// Creating new instance when
 			// * no instance existing
 			// * a salted hash given to determine salted hashing method from
 			// * a NULL parameter given to reset instance back to default method
 		if (!is_object(self::$instance) || !empty($saltedHash) || is_NULL($saltedHash)) {
 
-				// determine method by checking the given hash
+				// Determine method by checking the given hash
 			if (!empty($saltedHash)) {
 				$result = self::determineSaltingHashingMethod($saltedHash);
 				if(!$result) {
@@ -90,8 +88,8 @@ class tx_saltedpasswords_salts_factory {
 	 *
 	 * Method implicitly sets the instance of the found method object in the class property when found.
 	 *
-	 * @param	string		$saltedHash
-	 * @return	boolean		TRUE, if salting hashing method has been found, otherwise FALSE
+	 * @param string $saltedHash
+	 * @return boolean TRUE, if salting hashing method has been found, otherwise FALSE
 	 */
 	static public function determineSaltingHashingMethod($saltedHash) {
 		$methodFound = FALSE;
@@ -113,8 +111,8 @@ class tx_saltedpasswords_salts_factory {
 	/**
 	 * Method sets a custom salting hashing method class.
 	 *
-	 * @param	string		$resource: object resource to use (e.g. 'EXT:saltedpasswords/classes/salts/class.tx_saltedpasswords_salts_blowfish.php:tx_saltedpasswords_salts_blowfish')
-	 * @return	tx_saltedpasswords_abstract_salts	an instance of salting hashing method object
+	 * @param string $resource Object resource to use (e.g. 'EXT:saltedpasswords/classes/salts/class.tx_saltedpasswords_salts_blowfish.php:tx_saltedpasswords_salts_blowfish')
+	 * @return tx_saltedpasswords_abstract_salts	an instance of salting hashing method object
 	 */
 	static public function setPreferredHashingMethod($resource) {
 		self::$instance = NULL;

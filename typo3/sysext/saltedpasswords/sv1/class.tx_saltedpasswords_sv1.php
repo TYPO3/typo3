@@ -29,43 +29,42 @@
  * Contains authentication service class for salted hashed passwords.
  */
 
-
 /**
  * Class implements salted-password hashes authentication service.
  *
- * @author	Marcus Krause <marcus#exp2009@t3sec.info>
- * @author	Steffen Ritter <info@rs-websystems.de>
+ * @author Marcus Krause <marcus#exp2009@t3sec.info>
+ * @author Steffen Ritter <info@rs-websystems.de>
  *
- * @since	2009-06-14
- * @package	TYPO3
- * @subpackage	tx_saltedpasswords
+ * @since 2009-06-14
+ * @package TYPO3
+ * @subpackage tx_saltedpasswords
  */
 class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 	/**
 	 * Keeps class name.
 	 *
-	 * @var	string
+	 * @var string
 	 */
 	public $prefixId = 'tx_saltedpasswords_sv1';
 
 	/**
 	 * Keeps path to this script relative to the extension directory.
 	 *
-	 * @var	string
+	 * @var string
 	 */
 	public $scriptRelPath = 'sv1/class.tx_saltedpasswords_sv1.php';
 
 	/**
 	 * Keeps extension key.
 	 *
-	 * @var	string
+	 * @var string
 	 */
 	public $extKey = 'saltedpasswords';
 
 	/**
 	 * Keeps extension configuration.
 	 *
-	 * @var	mixed
+	 * @var mixed
 	 */
 	protected $extConf;
 
@@ -73,7 +72,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 	 * An instance of the salted hashing method.
 	 * This member is set in the getSaltingInstance() function.
 	 *
-	 * @var	tx_saltedpasswords_abstract_salts
+	 * @var tx_saltedpasswords_abstract_salts
 	 */
 	protected $objInstanceSaltedPW = NULL;
 
@@ -92,7 +91,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 	 * following prerequesties are fulfilled:
 	 * - loginSecurityLevel of according TYPO3_MODE is set to normal
 	 *
-	 * @return	boolean		TRUE if service is available
+	 * @return boolean TRUE if service is available
 	 */
 	public function init() {
 		$available = FALSE;
@@ -115,29 +114,29 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 	/**
 	 * Checks the login data with the user record data for builtin login method.
 	 *
-	 * @param	array		user data array
-	 * @param	array		login data array
-	 * @param	string		login security level (optional)
-	 * @return	boolean		TRUE if login data matched
+	 * @param array $user User data array
+	 * @param array $loginData Login data array
+	 * @param string $security_level Login security level (optional)
+	 * @return boolean TRUE if login data matched
 	 */
 	function compareUident(array $user, array $loginData, $security_level = 'normal') {
 		$validPasswd = FALSE;
 
-			// could be merged; still here to clarify
+			// Could be merged; still here to clarify
 		if (!strcmp(TYPO3_MODE, 'BE')) {
 			$password = $loginData['uident_text'];
 		} elseif (!strcmp(TYPO3_MODE, 'FE')) {
 			$password = $loginData['uident_text'];
 		}
 
-			// determine method used for given salted hashed password
+			// Determine method used for given salted hashed password
 		$this->objInstanceSaltedPW = tx_saltedpasswords_salts_factory::getSaltingInstance($user['password']);
 
-			// existing record is in format of Salted Hash password
+			// Existing record is in format of Salted Hash password
 		if (is_object($this->objInstanceSaltedPW)) {
 			$validPasswd = $this->objInstanceSaltedPW->checkPassword($password, $user['password']);
 
-				// record is in format of Salted Hash password but authentication failed
+				// Record is in format of Salted Hash password but authentication failed
 				// skip further authentication methods
 			if (!$validPasswd) {
 				$this->authenticationFailed = TRUE;
@@ -146,9 +145,9 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 			$defaultHashingClassName = tx_saltedpasswords_div::getDefaultSaltingHashingMethod();
 			$skip = FALSE;
 
-				// test for wrong salted hashing method
+				// Test for wrong salted hashing method
 			if ($validPasswd && !(get_class($this->objInstanceSaltedPW) == $defaultHashingClassName) || (is_subclass_of($this->objInstanceSaltedPW, $defaultHashingClassName))) {
-					// instanciate default method class
+					// Instanciate default method class
 				$this->objInstanceSaltedPW = tx_saltedpasswords_salts_factory::getSaltingInstance(NULL);
 				$this->updatePassword(
 					intval($user['uid']),
@@ -162,13 +161,13 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 					array('password' => $this->objInstanceSaltedPW->getHashedPassword($password))
 				);
 			}
-			// we process also clear-text, md5 and passwords updated by Portable PHP password hashing framework
+			// We process also clear-text, md5 and passwords updated by Portable PHP password hashing framework
 		} elseif (!intval($this->extConf['forceSalted'])) {
 
-				// stored password is in deprecated salted hashing method
+				// Stored password is in deprecated salted hashing method
 			if (t3lib_div::inList('C$,M$', substr($user['password'], 0, 2))) {
 
-					// instanciate default method class
+					// Instanciate default method class
 				$this->objInstanceSaltedPW = tx_saltedpasswords_salts_factory::getSaltingInstance(substr($user['password'], 1));
 
 					// md5
@@ -178,27 +177,27 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 					$validPasswd = $this->objInstanceSaltedPW->checkPassword($password, substr($user['password'], 1));
 				}
 
-					// skip further authentication methods
+					// Skip further authentication methods
 				if (!$validPasswd) {
 					$this->authenticationFailed = TRUE;
 				}
 
-				// password is stored as md5
+				// Password is stored as md5
 			} elseif (preg_match('/[0-9abcdef]{32,32}/', $user['password'])) {
 				$validPasswd = (!strcmp(md5($password), $user['password']) ? TRUE : FALSE);
 
-					// skip further authentication methods
+					// Skip further authentication methods
 				if (!$validPasswd) {
 					$this->authenticationFailed = TRUE;
 				}
 
-				// password is stored plain or unrecognized format
+				// Password is stored plain or unrecognized format
 			} else {
 				$validPasswd = (!strcmp($password, $user['password']) ? TRUE : FALSE);
 			}
-				// should we store the new format value in DB?
+				// Should we store the new format value in DB?
 			if ($validPasswd && intval($this->extConf['updatePasswd'])) {
-					// instanciate default method class
+					// Instanciate default method class
 				$this->objInstanceSaltedPW = tx_saltedpasswords_salts_factory::getSaltingInstance(NULL);
 				$this->updatePassword(
 					intval($user['uid']),
@@ -218,8 +217,8 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 	 *  - 100 - just go on. User is not authenticated but there is still no reason to stop
 	 *  - 200 - the service was able to authenticate the user
 	 *
-	 * @param	array		Array containing FE user data of the logged user.
-	 * @return	integer		authentication statuscode, one of 0,100 and 200
+	 * @param array Array containing FE user data of the logged user.
+	 * @return integer Authentication statuscode, one of 0,100 and 200
 	 */
 	public function authUser(array $user) {
 		$OK = 100;
@@ -236,7 +235,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 			if (!$validPasswd) {
 					// Failed login attempt (wrong password)
 				$errorMessage = 'Login-attempt from %s (%s), username \'%s\', password not accepted!';
-					// no delegation to further services
+					// No delegation to further services
 				if (intval($this->extConf['onlyAuthService']) || $this->authenticationFailed) {
 					$this->writeLogMessage(
 						TYPO3_MODE . ' Authentication failed - wrong password for username \'%s\'',
@@ -320,9 +319,9 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 	/**
 	 * Method updates a FE/BE user record - in this case a new password string will be set.
 	 *
-	 * @param	integer		$uid: uid of user record that will be updated
-	 * @param	mixed		$updateFields: Field values as key=>value pairs to be updated in database
-	 * @return	void
+	 * @param integer $uid uid of user record that will be updated
+	 * @param mixed $updateFields Field values as key=>value pairs to be updated in database
+	 * @return void
 	 */
 	protected function updatePassword($uid, $updateFields) {
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->pObj->user_table, sprintf('uid = %u', $uid), $updateFields);
@@ -338,8 +337,8 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 	 * This function accepts variable number of arguments and can format
 	 * parameters. The syntax is the same as for sprintf()
 	 *
-	 * @param	string		$message: Message to output
-	 * @return	void
+	 * @param string $message Message to output
+	 * @return void
 	 * @see	sprintf()
 	 * @see	t3lib::divLog()
 	 * @see	t3lib_div::sysLog()
