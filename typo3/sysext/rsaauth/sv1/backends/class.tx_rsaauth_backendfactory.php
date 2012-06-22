@@ -22,13 +22,12 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * This class contains a factory for the RSA backends.
  *
- * @author	Dmitry Dulepov <dmitry@typo3.org>
- * @package	TYPO3
- * @subpackage	tx_rsaauth
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_rsaauth
  */
 class tx_rsaauth_backendfactory {
 
@@ -37,7 +36,7 @@ class tx_rsaauth_backendfactory {
 	 * This is for security reasons to avoid inserting some dummy backend to
 	 * the list.
 	 *
-	 * @var	array
+	 * @var array
 	 */
 	static protected $availableBackends = array(
 		'EXT:rsaauth/sv1/backends/class.tx_rsaauth_php_backend.php:tx_rsaauth_php_backend',
@@ -48,7 +47,7 @@ class tx_rsaauth_backendfactory {
 	 * A flag that tells if the factory is initialized. This is to prevent
 	 * continious creation of backends in case if none of them is available.
 	 *
-	 * @var	boolean
+	 * @var boolean
 	 */
 	static protected $initialized = FALSE;
 
@@ -59,7 +58,7 @@ class tx_rsaauth_backendfactory {
 	 *
 	 * <!-- Please, keep the variable type! It helps IDEs to provide autocomple! -->
 	 *
-	 * @var	tx_rsaauth_abstract_backend
+	 * @var tx_rsaauth_abstract_backend
 	 */
 	static protected $selectedBackend = NULL;
 
@@ -68,23 +67,23 @@ class tx_rsaauth_backendfactory {
 	 * is derieved from the tx_rsaauth_abstract_backend. Applications should
 	 * not use anoy methods that are not declared in the tx_rsaauth_abstract_backend.
 	 *
-	 * @return	tx_rsaauth_abstract_backend	A backend
+	 * @return tx_rsaauth_abstract_backend A backend
 	 */
 	static public function getBackend() {
 		if (!self::$initialized) {
-			// Backend does not exist yet. Create it.
+				// Backend does not exist yet. Create it.
 			foreach (self::$availableBackends as $backend) {
 				$backendObject = t3lib_div::getUserObj($backend);
-				// Check that it is derieved from the proper base class
+					// Check that it is derieved from the proper base class
 				if ($backendObject instanceof tx_rsaauth_abstract_backend) {
-					/* @var $backendObject tx_rsaauth_abstract_backend */
+					/** @var $backendObject tx_rsaauth_abstract_backend */
 					if ($backendObject->isAvailable()) {
-						// The backend is available, save it and stop the loop
+							// The backend is available, save it and stop the loop
 						self::$selectedBackend = $backendObject;
 						self::$initialized = TRUE;
 						break;
 					}
-					// Attempt to force destruction of the object
+						// Attempt to force destruction of the object
 					unset($backend);
 				}
 			}
