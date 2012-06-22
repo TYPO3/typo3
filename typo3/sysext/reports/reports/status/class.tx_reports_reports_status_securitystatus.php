@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Performs several checks about the system's health
  *
@@ -77,7 +76,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 				// Check against salted password
 			if (t3lib_extMgm::isLoaded('saltedpasswords')) {
 				if (tx_saltedpasswords_div::isUsageEnabled('BE')) {
-						/** @var $saltingObject tx_saltedpasswords_salts */
+					/** @var $saltingObject tx_saltedpasswords_salts */
 					$saltingObject = tx_saltedpasswords_salts_factory::getSaltingInstance($row['password']);
 					if (is_object($saltingObject)) {
 						if ($saltingObject->checkPassword('password', $row['password'])) {
