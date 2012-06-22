@@ -51,13 +51,13 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 	function initialize_editor($pageId, $template_uid=0) {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 
-		$GLOBALS['tmpl'] = t3lib_div::makeInstance("t3lib_tsparser_ext");
+		$GLOBALS['tmpl'] = t3lib_div::makeInstance('t3lib_tsparser_ext');
 			// Do not log time-performance information
 		$GLOBALS['tmpl']->tt_track = 0;
 		$GLOBALS['tmpl']->init();
 
 			// Gets the rootLine
-		$sys_page = t3lib_div::makeInstance("t3lib_pageSelect");
+		$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 		$GLOBALS['rootLine'] = $sys_page->getRootLine($pageId);
 			// This generates the constants/config + hierarchy info for the template.
 		$GLOBALS['tmpl']->runThroughTemplates($GLOBALS['rootLine'], $template_uid);
@@ -79,7 +79,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$manyTemplatesMenu = $this->pObj->templateMenu();
 		$template_uid = 0;
 		if ($manyTemplatesMenu) {
-			$template_uid = $this->pObj->MOD_SETTINGS["templatesOnPage"];
+			$template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
 		}
 
 		// **************************
@@ -91,11 +91,11 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		if ($existTemplate) {
 			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', TRUE),
 				t3lib_iconWorks::getSpriteIconForRecord('sys_template', $GLOBALS['tplRow']) . '<strong>' .
-				$this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']["title"]) . '</strong>' .
-				htmlspecialchars(trim($GLOBALS['tplRow']["sitetitle"]) ? ' (' . $GLOBALS['tplRow']["sitetitle"] . ')' : ''));
+				$this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']['title']) . '</strong>' .
+				htmlspecialchars(trim($GLOBALS['tplRow']['sitetitle']) ? ' (' . $GLOBALS['tplRow']['sitetitle'] . ')' : ''));
 		}
 		if ($manyTemplatesMenu) {
-			$theOutput .= $this->pObj->doc->section("", $manyTemplatesMenu);
+			$theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
 		}
 
 		$GLOBALS['tmpl']->clearList_const_temp = array_flip($GLOBALS['tmpl']->clearList_const);
@@ -115,7 +115,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$head.= '<td>' . $GLOBALS['LANG']->getLL('rootline', TRUE) . '</td>';
 		$head.= '<td>' . $GLOBALS['LANG']->getLL('nextLevel', TRUE) . '</td>';
 		$head.= '</tr>';
-		$hierar = implode(array_reverse($GLOBALS['tmpl']->ext_getTemplateHierarchyArr($GLOBALS['tmpl']->hierarchyInfoArr, "", array(), 1)), "");
+		$hierar = implode(array_reverse($GLOBALS['tmpl']->ext_getTemplateHierarchyArr($GLOBALS['tmpl']->hierarchyInfoArr, '', array(), 1)), '');
 		$hierar= '<table id="ts-analyzer" cellpadding="0" cellspacing="0">' . $head . $hierar . '</table>';
 
 		$theOutput.=$this->pObj->doc->spacer(5);
@@ -137,14 +137,14 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$theOutput.=$this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions', TRUE), '', FALSE, TRUE);
 		$addParams = t3lib_div::_GET('template') ? '&template=' . t3lib_div::_GET('template') : '';
 		$theOutput .= '<div class="tst-analyzer-options">' .
-			t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkLinenum]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkLinenum"], '', $addParams, 'id="checkTs_analyzer_checkLinenum"') .
+			t3lib_BEfunc::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkLinenum]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], '', $addParams, 'id="checkTs_analyzer_checkLinenum"') .
 			'<label for="checkTs_analyzer_checkLinenum">' . $GLOBALS['LANG']->getLL('lineNumbers', TRUE) . '</label> ' .
-			t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkSyntax]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"], '', $addParams, 'id="checkTs_analyzer_checkSyntax"') .
+			t3lib_BEfunc::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkSyntax]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], '', $addParams, 'id="checkTs_analyzer_checkSyntax"') .
 			'<label for="checkTs_analyzer_checkSyntax">' . $GLOBALS['LANG']->getLL('syntaxHighlight', TRUE) . '</label> ' .
-			(!$this->pObj->MOD_SETTINGS["ts_analyzer_checkSyntax"] ?
-				t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkComments]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkComments"], '', $addParams, 'id="checkTs_analyzer_checkComments"') .
+			(!$this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'] ?
+				t3lib_BEfunc::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkComments]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], '', $addParams, 'id="checkTs_analyzer_checkComments"') .
 				'<label for="checkTs_analyzer_checkComments">' . $GLOBALS['LANG']->getLL('comments', TRUE) . '</label> ' .
-				t3lib_BEfunc::getFuncCheck($this->pObj->id, "SET[ts_analyzer_checkCrop]", $this->pObj->MOD_SETTINGS["ts_analyzer_checkCrop"], '', $addParams, 'id="checkTs_analyzer_checkCrop"') .
+				t3lib_BEfunc::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkCrop]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], '', $addParams, 'id="checkTs_analyzer_checkCrop"') .
 				'<label for="checkTs_analyzer_checkCrop">' . $GLOBALS['LANG']->getLL('cropLines', TRUE) . '</label> '
 				:
 				''
@@ -155,15 +155,15 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 
 				// Output Constants
 			if (t3lib_div::_GET('template')) {
-				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants', TRUE), "", 0, 1);
+				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants', TRUE), '', 0, 1);
 				$theOutput .= $this->pObj->doc->sectionEnd();
 				$theOutput .= '
 					<table class="ts-typoscript" border="0" cellpadding="1" cellspacing="0">
 				';
 					// Don't know why -2 and not 0... :-) But works.
 				$GLOBALS['tmpl']->ext_lineNumberOffset = -2;
-				$GLOBALS['tmpl']->ext_lineNumberOffset_mode = "const";
-				$GLOBALS['tmpl']->ext_lineNumberOffset += count(explode(LF, t3lib_TSparser::checkIncludeLines("" . $GLOBALS["TYPO3_CONF_VARS"]["FE"]["defaultTypoScript_constants"]))) + 1;
+				$GLOBALS['tmpl']->ext_lineNumberOffset_mode = 'const';
+				$GLOBALS['tmpl']->ext_lineNumberOffset += count(explode(LF, t3lib_TSparser::checkIncludeLines('' . $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_constants']))) + 1;
 
 				reset($GLOBALS['tmpl']->clearList_const);
 				foreach ($GLOBALS['tmpl']->constants as $key => $val) {
@@ -179,7 +179,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 								</td>
 							</tr>
 						';
-						if (t3lib_div::_GET('template') != "all") {
+						if (t3lib_div::_GET('template') != 'all') {
 							break;
 						}
 					}
@@ -194,14 +194,14 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 			// Output setup
 			if (t3lib_div::_GET('template')) {
 				$theOutput .= $this->pObj->doc->spacer(15);
-				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup', TRUE), "", 0, 1);
+				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup', TRUE), '', 0, 1);
 				$theOutput .= $this->pObj->doc->sectionEnd();
 				$theOutput .= '
 					<table class="ts-typoscript" border="0" cellpadding="1" cellspacing="0">
 				';
 				$GLOBALS['tmpl']->ext_lineNumberOffset = 0;
-				$GLOBALS['tmpl']->ext_lineNumberOffset_mode = "setup";
-				$GLOBALS['tmpl']->ext_lineNumberOffset += count(explode(LF, t3lib_TSparser::checkIncludeLines("" . $GLOBALS["TYPO3_CONF_VARS"]["FE"]["defaultTypoScript_setup"]))) + 1;
+				$GLOBALS['tmpl']->ext_lineNumberOffset_mode = 'setup';
+				$GLOBALS['tmpl']->ext_lineNumberOffset += count(explode(LF, t3lib_TSparser::checkIncludeLines('' . $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup']))) + 1;
 
 				reset($GLOBALS['tmpl']->clearList_setup);
 				foreach ($GLOBALS['tmpl']->config as $key => $val) {
@@ -222,7 +222,7 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 								</td>
 							</tr>
 						';
-						if (t3lib_div::_GET('template') != "all") {
+						if (t3lib_div::_GET('template') != 'all') {
 							break;
 						}
 					}
