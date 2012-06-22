@@ -26,9 +26,9 @@
 /**
  * A class representing a certain status
  *
- * @author		Ingo Renner <ingo@typo3.org>
- * @package		TYPO3
- * @subpackage	reports
+ * @author Ingo Renner <ingo@typo3.org>
+ * @package TYPO3
+ * @subpackage reports
  */
 class tx_reports_reports_status_Status {
 
@@ -38,18 +38,33 @@ class tx_reports_reports_status_Status {
 	const WARNING = 1;
 	const ERROR   = 2;
 
+	/**
+	 * @var string
+	 */
 	protected $title;
+
+	/**
+	 * @var string
+	 */
 	protected $value;
+
+	/**
+	 * @var string
+	 */
 	protected $message;
+
+	/**
+	 * @var integer
+	 */
 	protected $severity;
 
 	/**
 	 * constructor for class tx_reports_report_status_Status
 	 *
-	 * @param	string	the status' title
-	 * @param	string	the status' value
-	 * @param	string	an optional message further describing the status
-	 * @param	integer	a severity level, one of
+	 * @param string $title The status' title
+	 * @param string $value The status' value
+	 * @param string $message An optional message further describing the status
+	 * @param integer $severity A severity level, one of
 	 */
 	public function __construct($title, $value, $message = '', $severity = self::OK) {
 		$this->title    = (string) $title;
@@ -63,36 +78,36 @@ class tx_reports_reports_status_Status {
 	}
 
 	/**
-	 * gets the status' title
+	 * Gets the status' title
 	 *
-	 * @return	string
+	 * @return string
 	 */
 	public function getTitle() {
 		return $this->title;
 	}
 
 	/**
-	 * gets the status' value
+	 * Gets the status' value
 	 *
-	 * @return	string
+	 * @return string
 	 */
 	public function getValue() {
 		return $this->value;
 	}
 
 	/**
-	 * gets the status' message (if any)
+	 * Gets the status' message (if any)
 	 *
-	 * @return	string
+	 * @return string
 	 */
 	public function getMessage() {
 		return $this->message;
 	}
 
 	/**
-	 * gets the status' severity
+	 * Gets the status' severity
 	 *
-	 * @return	integer
+	 * @return integer
 	 */
 	public function getSeverity() {
 		return $this->severity;
@@ -101,7 +116,7 @@ class tx_reports_reports_status_Status {
 	/**
 	 * Creates a string representation of a status.
 	 *
-	 * @return	string	String representation of this status.
+	 * @return string String representation of this status.
 	 */
 	public function __toString() {
 		$severity = array(
@@ -112,7 +127,7 @@ class tx_reports_reports_status_Status {
 			self::ERROR   => 'ERR',
 		);
 
-			// max length 80 characters
+			// Max length 80 characters
 		$stringRepresentation =
 			str_pad('[' . $severity[$this->severity] . ']', 7) .
 			str_pad($this->title, 40) . ' - ' .

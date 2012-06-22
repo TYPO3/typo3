@@ -22,11 +22,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Post processes the warning messages found in about modules.
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage reports
  */
@@ -38,11 +37,11 @@ class tx_reports_reports_status_WarningMessagePostProcessor {
 	 * properly or the status report has been checked manually and we take over
 	 * control over the system warning messages.
 	 *
-	 * @param	array	An array of messages related to already found issues.
+	 * @param array $warningMessages An array of messages related to already found issues.
 	 */
 	public function displayWarningMessages_postProcess(array &$warningMessages) {
 
-			// get highest severity
+			// Get highest severity
 		$registry = t3lib_div::makeInstance('t3lib_Registry');
 		$highestSeverity = $registry->get(
 			'tx_reports',
@@ -51,7 +50,7 @@ class tx_reports_reports_status_WarningMessagePostProcessor {
 		);
 
 		if (!is_null($highestSeverity)) {
-				// status update has run, so taking over control over the core messages
+				// Status update has run, so taking over control over the core messages
 			unset(
 				$warningMessages['install_password'],
 				$warningMessages['backend_admin'],
@@ -65,7 +64,7 @@ class tx_reports_reports_status_WarningMessagePostProcessor {
 			);
 
 			if ($highestSeverity > tx_reports_reports_status_Status::OK) {
-					// display a message that there's something wrong and that
+					// Display a message that there's something wrong and that
 					// the admin should take a look at the detailed status report
 				$GLOBALS['LANG']->includeLLFile('EXT:reports/reports/locallang.xml');
 

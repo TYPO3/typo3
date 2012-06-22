@@ -22,20 +22,19 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Performs basic checks about the TYPO3 install
  *
- * @author		Ingo Renner <ingo@typo3.org>
- * @package		TYPO3
- * @subpackage	reports
+ * @author Ingo Renner <ingo@typo3.org>
+ * @package TYPO3
+ * @subpackage reports
  */
 class tx_reports_reports_status_Typo3Status implements tx_reports_StatusProvider {
 
 	/**
 	 * Returns the status for this report
 	 *
-	 * @return	array	List of statuses
+	 * @return array List of statuses
 	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
@@ -50,7 +49,7 @@ class tx_reports_reports_status_Typo3Status implements tx_reports_StatusProvider
 	/**
 	 * Simply gets the current TYPO3 version.
 	 *
-	 * @return	tx_reports_reports_status_Status
+	 * @return tx_reports_reports_status_Status
 	 */
 	protected function getTypo3VersionStatus() {
 		return t3lib_div::makeInstance(

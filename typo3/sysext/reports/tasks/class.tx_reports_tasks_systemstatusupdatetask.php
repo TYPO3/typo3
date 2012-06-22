@@ -22,11 +22,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * A task that should be run regularly to determine the system's status.
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage reports
  */
@@ -36,7 +35,7 @@ class tx_reports_tasks_SystemStatusUpdateTask extends tx_scheduler_Task {
 	 * Email address to send email notification to in case we find problems with
 	 * the system.
 	 *
-	 * @var	string
+	 * @var string
 	 */
 	protected $notificationEmail = NULL;
 
@@ -66,7 +65,7 @@ class tx_reports_tasks_SystemStatusUpdateTask extends tx_scheduler_Task {
 	/**
 	 * Gets the notification email address.
 	 *
-	 * @return	string	Notification email address.
+	 * @return string Notification email address.
 	 */
 	public function getNotificationEmail() {
 		return $this->notificationEmail;
@@ -75,7 +74,7 @@ class tx_reports_tasks_SystemStatusUpdateTask extends tx_scheduler_Task {
 	/**
 	 * Sets the notification email address.
 	 *
-	 * @param	string	$notificationEmail Notification email address.
+	 * @param string $notificationEmail Notification email address.
 	 */
 	public function setNotificationEmail($notificationEmail) {
 		$this->notificationEmail = $notificationEmail;
@@ -84,7 +83,7 @@ class tx_reports_tasks_SystemStatusUpdateTask extends tx_scheduler_Task {
 	/**
 	 * Sends a notification email, reporting system issues.
 	 *
-	 * @param	array	$systemStatus Array of statuses
+	 * @param array $systemStatus Array of statuses
 	 */
 	protected function sendNotificationEmail(array $systemStatus) {
 		$systemIssues = array();

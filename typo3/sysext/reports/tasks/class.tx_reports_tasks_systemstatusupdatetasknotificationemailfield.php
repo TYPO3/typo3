@@ -22,39 +22,37 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Additional field to set the notification email address(es) for system health
  * issue notifications.
  *
- * @author	Ingo Renner <ingo@typo3.org>
- * @package	TYPO3
- * @subpackage	reports
+ * @author Ingo Renner <ingo@typo3.org>
+ * @package TYPO3
+ * @subpackage reports
  */
 class tx_reports_tasks_SystemStatusUpdateTaskNotificationEmailField implements tx_scheduler_AdditionalFieldProvider {
-
 
 	/**
 	 * Additional fields
 	 *
-	 * @var	array
+	 * @var array
 	 */
 	protected $fields = array('notificationEmail');
 
 	/**
 	 * Field prefix.
 	 *
-	 * @var	string
+	 * @var string
 	 */
 	protected $fieldPrefix = 'SystemStatusUpdate';
 
 	/**
 	 * Gets additional fields to render in the form to add/edit a task
 	 *
-	 * @param	array	$taskInfo Values of the fields from the add/edit task form
-	 * @param	tx_scheduler_Task	$task The task object being eddited. Null when adding a task!
-	 * @param	tx_scheduler_Module	$schedulerModule Reference to the scheduler backend module
-	 * @return	array	A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
+	 * @param array $taskInfo Values of the fields from the add/edit task form
+	 * @param tx_scheduler_Task $task The task object being eddited. Null when adding a task!
+	 * @param tx_scheduler_Module $schedulerModule Reference to the scheduler backend module
+	 * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
 	 */
 	public function getAdditionalFields(array &$taskInfo, $task, tx_scheduler_Module $schedulerModule) {
 		$fields = array('notificationEmail');
@@ -86,9 +84,9 @@ class tx_reports_tasks_SystemStatusUpdateTaskNotificationEmailField implements t
 	/**
 	 * Validates the additional fields' values
 	 *
-	 * @param	array	$submittedData An array containing the data submitted by the add/edit task form
-	 * @param	tx_scheduler_Module	$schedulerModule Reference to the scheduler backend module
-	 * @return	boolean	TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
+	 * @param array $submittedData An array containing the data submitted by the add/edit task form
+	 * @param tx_scheduler_Module $schedulerModule Reference to the scheduler backend module
+	 * @return boolean TRUE if validation was ok (or selected class is not relevant), FALSE otherwise
 	 */
 	public function validateAdditionalFields(array &$submittedData, tx_scheduler_Module $schedulerModule) {
 		$validInput = TRUE;
@@ -111,9 +109,9 @@ class tx_reports_tasks_SystemStatusUpdateTaskNotificationEmailField implements t
 	/**
 	 * Takes care of saving the additional fields' values in the task's object
 	 *
-	 * @param	array	$submittedData An array containing the data submitted by the add/edit task form
-	 * @param	tx_scheduler_Task	$task Reference to the scheduler backend module
-	 * @return	void
+	 * @param array $submittedData An array containing the data submitted by the add/edit task form
+	 * @param tx_scheduler_Task $task Reference to the scheduler backend module
+	 * @return void
 	 */
 	public function saveAdditionalFields(array $submittedData, tx_scheduler_Task $task) {
 
@@ -130,8 +128,8 @@ class tx_reports_tasks_SystemStatusUpdateTaskNotificationEmailField implements t
 	/**
 	 * Constructs the full field name which can be used in HTML markup.
 	 *
-	 * @param	string	$fieldName A raw field name
-	 * @return	string Field name ready to use in HTML markup
+	 * @param string $fieldName A raw field name
+	 * @return string Field name ready to use in HTML markup
 	 */
 	protected function getFullFieldName($fieldName) {
 		return $this->fieldPrefix . ucfirst($fieldName);
