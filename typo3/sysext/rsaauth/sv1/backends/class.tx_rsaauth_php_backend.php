@@ -22,49 +22,48 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * This class contains a PHP OpenSSL backend for the TYPO3 RSA authentication
  * service. See class tx_rsaauth_abstract_backend for the information on using
  * backends.
  *
- * @author	Dmitry Dulepov <dmitry@typo3.org>
- * @package	TYPO3
- * @subpackage	tx_rsaauth
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_rsaauth
  */
 class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 
 	/**
 	 * Creates a new public/private key pair using PHP OpenSSL extension.
 	 *
-	 * @return tx_rsaauth_keypair	A new key pair or NULL in case of error
+	 * @return tx_rsaauth_keypair A new key pair or NULL in case of error
 	 * @see tx_rsaauth_abstract_backend::createNewKeyPair()
 	 */
 	public function createNewKeyPair() {
 		$result = NULL;
 		$privateKey = @openssl_pkey_new();
 		if ($privateKey) {
-			// Create private key as string
+				// Create private key as string
 			$privateKeyStr = '';
 			openssl_pkey_export($privateKey, $privateKeyStr);
 
-			// Prepare public key information
+				// Prepare public key information
 			$exportedData = '';
 			$csr = openssl_csr_new(array(), $privateKey);
 			openssl_csr_export($csr, $exportedData, FALSE);
 
-			// Get public key (in fact modulus) and exponent
+				// Get public key (in fact modulus) and exponent
 			$publicKey = $this->extractPublicKeyModulus($exportedData);
 			$exponent = $this->extractExponent($exportedData);
 
-			// Create result object
+				// Create result object
 			$result = t3lib_div::makeInstance('tx_rsaauth_keypair');
-			/* @var $result tx_rsaauth_keypair */
+			/** @var $result tx_rsaauth_keypair */
 			$result->setExponent($exponent);
 			$result->setPrivateKey($privateKeyStr);
 			$result->setPublicKey($publicKey);
 
-			// Clean up all resources
+				// Clean up all resources
 			openssl_free_key($privateKey);
 		}
 		return $result;
@@ -74,9 +73,9 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 	 * Decrypts data using the private key. This implementation uses PHP OpenSSL
 	 * extension.
 	 *
-	 * @param string	$privateKey	The private key (obtained from a call to createNewKeyPair())
-	 * @param string	$data	Data to decrypt (base64-encoded)
-	 * @return string	Decrypted data or NULL in case of a error
+	 * @param string $privateKey The private key (obtained from a call to createNewKeyPair())
+	 * @param string $data Data to decrypt (base64-encoded)
+	 * @return string Decrypted data or NULL in case of a error
 	 * @see tx_rsaauth_abstract_backend::decrypt()
 	 */
 	public function decrypt($privateKey, $data) {
@@ -112,21 +111,21 @@ class tx_rsaauth_php_backend extends tx_rsaauth_abstract_backend {
 	/**
 	 * Extracts the exponent from the OpenSSL CSR
 	 *
-	 * @param	string	$data	The result of openssl_csr_export()
-	 * @return	int	The exponent as a number
+	 * @param string $data The result of openssl_csr_export()
+	 * @return integer The exponent as a number
 	 */
 	protected function extractExponent($data) {
 		$index = strpos($data, 'Exponent: ');
-		// We do not check for '$index === FALSE' because the exponent is
-		// always there!
+			// We do not check for '$index === FALSE' because the exponent is
+			// always there!
 		return intval(substr($data, $index + 10));
 	}
 
 	/**
 	 * Extracts public key modulus from the OpenSSL CSR.
 	 *
-	 * @param	string	$data	The result of openssl_csr_export()
-	 * @return	string	Modulus as uppercase hex string
+	 * @param string $data The result of openssl_csr_export()
+	 * @return string Modulus as uppercase hex string
 	 */
 	protected function extractPublicKeyModulus($data) {
 		$fragment = preg_replace('/.*Modulus.*?\n(.*)Exponent:.*/ms', '\1', $data);

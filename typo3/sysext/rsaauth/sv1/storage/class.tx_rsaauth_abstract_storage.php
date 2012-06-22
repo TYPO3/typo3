@@ -22,27 +22,26 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * This class contains the abstract storage for the RSA private keys
  *
- * @author	Dmitry Dulepov <dmitry@typo3.org>
- * @package	TYPO3
- * @subpackage	tx_rsaauth
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_rsaauth
  */
 abstract class tx_rsaauth_abstract_storage {
 
 	/**
 	 * Retrieves the key from the storage
 	 *
-	 * @return	string	The key or NULL
+	 * @return string The key or NULL
 	 */
 	abstract public function get();
 
 	/**
 	 * Stores the key in the storage
 	 *
-	 * @param	string	$key	The key
+	 * @param string $key The key
 	 */
 	abstract public function put($key);
 }

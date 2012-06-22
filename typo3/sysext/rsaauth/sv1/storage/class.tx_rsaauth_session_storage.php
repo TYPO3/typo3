@@ -22,7 +22,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * This class contains a session-based storage for private keys. This storage
  * is not secure enough because its implementation stores keys completely in the
@@ -30,9 +29,9 @@
  * easy to extract. This storage is useful only as an example. It is better to
  * use "split" storage for keys.
  *
- * @author	Dmitry Dulepov <dmitry@typo3.org>
- * @package	TYPO3
- * @subpackage	tx_rsaauth
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_rsaauth
  */
 class tx_rsaauth_session_storage extends tx_rsaauth_abstract_storage {
 
@@ -40,7 +39,7 @@ class tx_rsaauth_session_storage extends tx_rsaauth_abstract_storage {
 	 * Creates an instance of this class. It checks and initializes PHP
 	 * sessions if necessary.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function __construct() {
 		if (!isset($_SESSION) || !is_array($_SESSION)) {
@@ -51,7 +50,7 @@ class tx_rsaauth_session_storage extends tx_rsaauth_abstract_storage {
 	/**
 	 * Obtains key from the session
 	 *
-	 * @return string	The key or NULL
+	 * @return string The key or NULL
 	 * @see tx_rsaauth_abstract_storage::get()
 	 */
 	public function get() {
@@ -61,7 +60,7 @@ class tx_rsaauth_session_storage extends tx_rsaauth_abstract_storage {
 	/**
 	 * Puts key to the session
 	 *
-	 * @param string	$key	The key
+	 * @param string $key The key
 	 * @see tx_rsaauth_abstract_storage::put()
 	 */
 	public function put($key) {

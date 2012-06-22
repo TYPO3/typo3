@@ -22,14 +22,13 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * This class provides a hook to the login form to add extra javascript code
  * and supply a proper form tag.
  *
- * @author	Helmut Hummel <helmut.hummel@typo3.org>
- * @package	TYPO3
- * @subpackage	tx_rsaauth
+ * @author Helmut Hummel <helmut.hummel@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_rsaauth
  */
 class tx_rsaauth_usersetuphook {
 
@@ -46,8 +45,8 @@ class tx_rsaauth_usersetuphook {
 
 			if (substr($be_user_data['password'], 0, 4) === 'rsa:' && substr($be_user_data['password2'], 0, 4) === 'rsa:') {
 				$backend = tx_rsaauth_backendfactory::getBackend();
+				/** @var $storage tx_rsaauth_abstract_storage */
 				$storage = tx_rsaauth_storagefactory::getStorage();
-				/* @var $storage tx_rsaauth_abstract_storage */
 
 				$key = $storage->get();
 
@@ -90,17 +89,17 @@ class tx_rsaauth_usersetuphook {
 					t3lib_div::getIndpEnv('TYPO3_SITE_URL') .
 					$javascriptPath . $file . '"></script>';
 			}
-			// Generate a new key pair
+				// Generate a new key pair
 			$keyPair = $backend->createNewKeyPair();
 
 			// Save private key
 			$storage = tx_rsaauth_storagefactory::getStorage();
-			/* @var $storage tx_rsaauth_abstract_storage */
+			/** @var $storage tx_rsaauth_abstract_storage */
 			$storage->put($keyPair->getPrivateKey());
 
-			// Add form tag
+				// Add form tag
 			$form = '<form action="' . t3lib_BEfunc::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="application/x-www-form-urlencoded" onsubmit="tx_rsaauth_encryptUserSetup();">';
-			// Add RSA hidden fields
+				// Add RSA hidden fields
 			$form .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
 			$form .= '<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent()) . '" />';
 
@@ -112,7 +111,7 @@ class tx_rsaauth_usersetuphook {
 	/**
 	 * Rsa is available if loginSecurityLevel is set and rsa backend is working.
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function isRsaAvailable() {
 		return (trim($GLOBALS['TYPO3_CONF_VARS']['BE']['loginSecurityLevel']) === 'rsa') && (tx_rsaauth_backendfactory::getBackend() !== NULL);

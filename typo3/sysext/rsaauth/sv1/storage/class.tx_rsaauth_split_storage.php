@@ -22,22 +22,19 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * This class contains a "split" storage for the data. It keeps part of the data
  * in the database, part in the database.
  *
- * @author	Dmitry Dulepov <dmitry@typo3.org>
- * @package	TYPO3
- * @subpackage	tx_rsaauth
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_rsaauth
  */
 class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 
 	/**
 	 * Creates an instance of this class. It checks and initializes PHP
 	 * sessions if necessary.
-	 *
-	 * @return	void
 	 */
 	public function __construct() {
 		if (session_id() === '') {
@@ -48,7 +45,7 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 	/**
 	 * Obtains a key from the database
 	 *
-	 * @return string	The key or NULL
+	 * @return string The key or NULL
 	 * @see tx_rsaauth_abstract_storage::get()
 	 */
 	public function get() {
@@ -57,7 +54,7 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 		list($keyId, $keyPart1) = $_SESSION['tx_rsaauth_key'];
 		if (t3lib_utility_Math::canBeInterpretedAsInteger($keyId)) {
 
-			// Remove expired keys (more than 30 minutes old)
+				// Remove expired keys (more than 30 minutes old)
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_rsaauth_keys',
 						'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
 
@@ -74,13 +71,13 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 	/**
 	 * Adds a key to the storage or removes existing key
 	 *
-	 * @param	string	$key	The key
-	 * @return	void
+	 * @param string $key The key
+	 * @return void
 	 * @see	tx_rsaauth_abstract_storage::put()
 	 */
 	public function put($key) {
 		if ($key == NULL) {
-			// Remove existing key
+				// Remove existing key
 			list($keyId) = $_SESSION['tx_rsaauth_key'];
 
 			if (t3lib_utility_Math::canBeInterpretedAsInteger($keyId)) {
@@ -90,21 +87,21 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 			}
 		}
 		else {
-			// Add key
+				// Add key
 
-			// Get split point. First part is always smaller than the second
-			// because it goes to the file system
+				// Get split point. First part is always smaller than the second
+				// because it goes to the file system
 			$keyLength = strlen($key);
 			$splitPoint = rand(intval($keyLength/10), intval($keyLength/2));
 
-			// Get key parts
+				// Get key parts
 			$keyPart1 = substr($key, 0, $splitPoint);
 			$keyPart2 = substr($key, $splitPoint);
 
-			// Store part of the key in the database
-			//
-			// Notice: we may not use TCEmain below to insert key part into the
-			// table because TCEmain requires a valid BE user!
+				// Store part of the key in the database
+				//
+				// Notice: we may not use TCEmain below to insert key part into the
+				// table because TCEmain requires a valid BE user!
 			$time = $GLOBALS['EXEC_TIME'];
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_rsaauth_keys', array(
 				'pid' => 0,
@@ -113,11 +110,11 @@ class tx_rsaauth_split_storage extends tx_rsaauth_abstract_storage {
 			));
 			$keyId = $GLOBALS['TYPO3_DB']->sql_insert_id();
 
-			// Store another part in session
+				// Store another part in session
 			$_SESSION['tx_rsaauth_key'] = array($keyId, $keyPart1);
 		}
 
-		// Remove expired keys (more than 30 minutes old)
+			// Remove expired keys (more than 30 minutes old)
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_rsaauth_keys',
 					'crdate<' . ($GLOBALS['EXEC_TIME'] - 30 * 60));
 	}

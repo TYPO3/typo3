@@ -22,42 +22,41 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * This class provides a hook to the login form to add extra javascript code
  * and supply a proper form tag.
  *
- * @author	Dmitry Dulepov <dmitry@typo3.org>
- * @package	TYPO3
- * @subpackage	tx_rsaauth
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_rsaauth
  */
 class tx_rsaauth_loginformhook {
 
 	/**
 	 * Adds RSA-specific JavaScript and returns a form tag
 	 *
-	 * @return	string	Form tag
+	 * @return string Form tag
 	 */
 	public function getLoginFormTag(array $params, SC_index& $pObj) {
 		$form = NULL;
 		if ($pObj->loginSecurityLevel == 'rsa') {
 
-			// If we can get the backend, we can proceed
+				// If we can get the backend, we can proceed
 			$backend = tx_rsaauth_backendfactory::getBackend();
 			if (!is_null($backend)) {
 
-				// Add form tag
+					// Add form tag
 				$form = '<form action="index.php" method="post" name="loginform" onsubmit="tx_rsaauth_encrypt();">';
 
-				// Generate a new key pair
+					// Generate a new key pair
 				$keyPair = $backend->createNewKeyPair();
 
-				// Save private key
+					// Save private key
 				$storage = tx_rsaauth_storagefactory::getStorage();
-				/* @var $storage tx_rsaauth_abstract_storage */
+				/** @var $storage tx_rsaauth_abstract_storage */
 				$storage->put($keyPair->getPrivateKey());
 
-				// Add RSA hidden fields
+					// Add RSA hidden fields
 				$form .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
 				$form .= '<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent()) . '" />';
 			} else {
@@ -74,9 +73,9 @@ class tx_rsaauth_loginformhook {
 	/**
 	 * Provides form code for the superchallenged authentication.
 	 *
-	 * @param	array	$params	Parameters to the script
-	 * @param	SC_index	$pObj	Calling object
-	 * @return	string	The code for the login form
+	 * @param array $params Parameters to the script
+	 * @param SC_index $pObj Calling object
+	 * @return string The code for the login form
 	 */
 	public function getLoginScripts(array $params, SC_index &$pObj) {
 		$content = '';

@@ -22,21 +22,20 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * This class contains a hook to implement RSA authentication for the TYPO3
  * Frontend. Warning: felogin must be USER_INT for this to work!
  *
- * @author	Dmitry Dulepov <dmitry@typo3.org>
- * @package	TYPO3
- * @subpackage	tx_rsaauth
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_rsaauth
  */
 class tx_rsaauth_feloginhook {
 
 	/**
 	 * Hooks to the felogin extension to provide additional code for FE login
 	 *
-	 * @return	array	0 => onSubmit function, 1 => extra fields and required files
+	 * @return array 0 => onSubmit function, 1 => extra fields and required files
 	 */
 	public function loginFormHook() {
 		$result = array(0 => '', 1 => '');
@@ -62,15 +61,15 @@ class tx_rsaauth_feloginhook {
 						$javascriptPath . $file . '"></script>';
 				}
 
-				// Generate a new key pair
+					// Generate a new key pair
 				$keyPair = $backend->createNewKeyPair();
 
-				// Save private key
+					// Save private key
 				$storage = tx_rsaauth_storagefactory::getStorage();
-				/* @var $storage tx_rsaauth_abstract_storage */
+				/** @var $storage tx_rsaauth_abstract_storage */
 				$storage->put($keyPair->getPrivateKey());
 
-				// Add RSA hidden fields
+					// Add RSA hidden fields
 				$result[1] .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
 				$result[1] .= '<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent()) . '" />';
 			}
