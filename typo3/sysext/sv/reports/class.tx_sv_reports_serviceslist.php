@@ -22,12 +22,11 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * This class provides a report displaying a list of all installed services
  * Code inspired by EXT:dam/lib/class.tx_dam_svlist.php by René Fritz
  *
- * @author	Francois Suter <francois@typo3.org>
+ * @author Francois Suter <francois@typo3.org>
  * @package TYPO3
  * @subpackage sv
  */
@@ -36,7 +35,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	/**
 	 * Back-reference to the calling reports module
 	 *
-	 * @var	tx_reports_Module	$reportsModule
+	 * @var tx_reports_Module
 	 */
 	protected $reportsModule;
 
@@ -53,7 +52,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	/**
 	 * This method renders the report
 	 *
-	 * @return	string	The status report as HTML
+	 * @return string The status report as HTML
 	 */
 	public function getReport() {
 		$content = '';
@@ -75,7 +74,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	/**
 	 * Renders the help comments at the top of the module.
 	 *
-	 * @return	string	The help content for this module.
+	 * @return string The help content for this module.
 	 */
 	protected function renderHelp() {
 		$help = '<p class="help">'
@@ -91,7 +90,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	/**
 	 * This method assembles a list of all installed services
 	 *
-	 * @return	string	HTML to display
+	 * @return string HTML to display
 	 */
 	protected function renderServicesList() {
 		$servicesList = '';
@@ -143,9 +142,9 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	/**
 	 * Renders a single service's row.
 	 *
-	 * @param	string	$serviceKey The service key to access the service.
-	 * @param	array	$serviceInformation registration information of the service.
-	 * @return	string	HTML row for the service.
+	 * @param string $serviceKey The service key to access the service.
+	 * @param array $serviceInformation registration information of the service.
+	 * @return string HTML row for the service.
 	 */
 	protected function renderServiceRow($serviceKey, $serviceInformation) {
 		$serviceDescription = '
@@ -177,8 +176,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 				$serviceAvailabilityClass = 'typo3-message message-ok';
 				$serviceAvailable = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:yes');
 			}
-		}
-		catch (t3lib_exception $e) {
+		} catch (t3lib_exception $e) {
 			// Nothing to do, the default display is already not available
 		}
 
@@ -199,7 +197,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	/**
 	 * This method assembles a list of all defined executables search paths
 	 *
-	 * @return	string	HTML to display
+	 * @return string HTML to display
 	 */
 	protected function renderExecutablesSearchPathList() {
 		$searchPaths = t3lib_exec::getPaths(TRUE);
@@ -253,7 +251,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	 * Furthermore, inside each service type, installed services must be
 	 * ordered by priority and quality
 	 *
-	 * @return	array	List of filtered and ordered services
+	 * @return array List of filtered and ordered services
 	 */
 	protected function getInstalledServices() {
 		$filteredServices = array();

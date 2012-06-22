@@ -1,10 +1,10 @@
 <?php
 
-if (!defined ("TYPO3_MODE")) 	die ("Access denied.");
+if (!defined("TYPO3_MODE")) {
+	die("Access denied.");
+}
 
-// ******************************************************************
-// static_template
-// ******************************************************************
+	// static_template
 $TCA['static_template'] = array(
 	'ctrl' => array(
 		'label' => 'title',

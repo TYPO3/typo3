@@ -27,16 +27,15 @@
 /**
  * Service base class for 'User authentication'.
  *
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author René Fritz <r.fritz@colorcube.de>
  */
 
 require_once(PATH_t3lib . 'class.t3lib_svbase.php');
 
-
 /**
  * Authentication services class
  *
- * @author	René Fritz <r.fritz@colorcube.de>
+ * @author René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage tx_sv
  */
@@ -48,33 +47,35 @@ class tx_sv_authbase extends t3lib_svbase {
 	 * @var t3lib_userAuth
 	 */
 	var $pObj;
-
-	var $mode;			// Subtype of the service which is used to call the service.
-
-	var $login = array();		// Submitted login form data
-	var $authInfo = array();	// Various data
-
-	var $db_user = array();		// User db table definition
-	var $db_groups = array();	// Usergroups db table definition
-
-	var $writeAttemptLog = FALSE;	// If the writelog() functions is called if a login-attempt has be tried without success
-	var $writeDevLog = FALSE;	// If the t3lib_div::devLog() function should be used
-
+		// Subtype of the service which is used to call the service.
+	var $mode;
+		// Submitted login form data
+	var $login = array();
+		// Various data
+	var $authInfo = array();
+		// User db table definition
+	var $db_user = array();
+		// Usergroups db table definition
+	var $db_groups = array();
+		// If the writelog() functions is called if a login-attempt has be tried without success
+	var $writeAttemptLog = FALSE;
+		// If the t3lib_div::devLog() function should be used
+	var $writeDevLog = FALSE;
 
 	/**
 	 * Initialize authentication service
 	 *
-	 * @param	string		Subtype of the service which is used to call the service.
-	 * @param	array		Submitted login form data
-	 * @param	array		Information array. Holds submitted form data etc.
-	 * @param	object		Parent object
-	 * @return	void
+	 * @param string $mode Subtype of the service which is used to call the service.
+	 * @param array $loginData Submitted login form data
+	 * @param array $authInfo Information array. Holds submitted form data etc.
+	 * @param object $pObj Parent object
+	 * @return void
 	 */
 	function initAuth($mode, $loginData, $authInfo, $pObj) {
 
 		$this->pObj = $pObj;
-
-		$this->mode = $mode;	// sub type
+			// Sub type
+		$this->mode = $mode;
 		$this->login = $loginData;
 		$this->authInfo = $authInfo;
 
@@ -88,9 +89,9 @@ class tx_sv_authbase extends t3lib_svbase {
 	/**
 	 * Check the login data with the user record data for builtin login methods
 	 *
-	 * @param array $user user data array
-	 * @param array $loginData login data array
-	 * @param string $passwordCompareStrategy password compare strategy
+	 * @param array $user User data array
+	 * @param array $loginData Login data array
+	 * @param string $passwordCompareStrategy Password compare strategy
 	 * @return boolean TRUE if login data matched
 	 */
 	function compareUident(array $user, array $loginData, $passwordCompareStrategy = '') {
@@ -111,16 +112,16 @@ class tx_sv_authbase extends t3lib_svbase {
 	/**
 	 * Writes to log database table in pObj
 	 *
-	 * @param	integer		$type: denotes which module that has submitted the entry. This is the current list:  1=tce_db; 2=tce_file; 3=system (eg. sys_history save); 4=modules; 254=Personal settings changed; 255=login / out action: 1=login, 2=logout, 3=failed login (+ errorcode 3), 4=failure_warning_email sent
-	 * @param	integer		$action: denotes which specific operation that wrote the entry (eg. 'delete', 'upload', 'update' and so on...). Specific for each $type. Also used to trigger update of the interface. (see the log-module for the meaning of each number !!)
-	 * @param	integer		$error: flag. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
-	 * @param	integer		$details_nr: The message number. Specific for each $type and $action. in the future this will make it possible to translate errormessages to other languages
-	 * @param	string		$details: Default text that follows the message
-	 * @param	array		$data: Data that follows the log. Might be used to carry special information. If an array the first 5 entries (0-4) will be sprintf'ed the details-text...
-	 * @param	string		$tablename: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-	 * @param	integer		$recuid: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-	 * @param	integer		$recpid: Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-	 * @return	void
+	 * @param integer $type denotes which module that has submitted the entry. This is the current list:  1=tce_db; 2=tce_file; 3=system (eg. sys_history save); 4=modules; 254=Personal settings changed; 255=login / out action: 1=login, 2=logout, 3=failed login (+ errorcode 3), 4=failure_warning_email sent
+	 * @param integer $action denotes which specific operation that wrote the entry (eg. 'delete', 'upload', 'update' and so on...). Specific for each $type. Also used to trigger update of the interface. (see the log-module for the meaning of each number !!)
+	 * @param integer $error flag. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
+	 * @param integer $details_nr The message number. Specific for each $type and $action. in the future this will make it possible to translate errormessages to other languages
+	 * @param string $details Default text that follows the message
+	 * @param array $data Data that follows the log. Might be used to carry special information. If an array the first 5 entries (0-4) will be sprintf'ed the details-text...
+	 * @param string $tablename Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
+	 * @param integer $recuid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
+	 * @param integer $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
+	 * @return void
 	 * @see t3lib_userauthgroup::writelog()
 	 */
 	function writelog($type, $action, $error, $details_nr, $details, $data, $tablename='', $recuid='', $recpid='') {
@@ -128,15 +129,6 @@ class tx_sv_authbase extends t3lib_svbase {
 			$this->pObj->writelog($type, $action, $error, $details_nr, $details, $data, $tablename, $recuid, $recpid);
 		}
 	}
-
-
-
-
-
-
-
-
-
 
 	/*************************
 	 *
@@ -147,12 +139,12 @@ class tx_sv_authbase extends t3lib_svbase {
 	/**
 	 * Get a user from DB by username
 	 *
-	 * @param	string		user name
-	 * @param	string		additional WHERE clause: " AND ...
-	 * @param	array		User db table definition: $this->db_user
-	 * @return	mixed		user array or FALSE
+	 * @param string $username User name
+	 * @param string $extraWhere Additional WHERE clause: " AND ...
+	 * @param array $dbUserSetup User db table definition: $this->db_user
+	 * @return mixed User array or FALSE
 	 */
-	function fetchUserRecord($username, $extraWhere='', $dbUserSetup='') {
+	function fetchUserRecord($username, $extraWhere = '', $dbUserSetup = '') {
 
 		$dbUser = is_array($dbUserSetup) ? $dbUserSetup : $this->db_user;
 		$user = $this->pObj->fetchUserRecord($dbUser, $username, $extraWhere);

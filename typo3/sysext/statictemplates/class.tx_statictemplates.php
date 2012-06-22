@@ -28,15 +28,12 @@
 
 class tx_statictemplates {
 
-
 	/**
 	 * Includes static template records from static_template table, loaded through a hook
 	 *
-	 * @param	string		A list of already processed template ids including the current; The list is on the form "[prefix]_[uid]" where [prefix] is "sys" for "sys_template" records, "static" for "static_template" records and "ext_" for static include files (from extensions). The list is used to check that the recursive inclusion of templates does not go into circles: Simply it is used to NOT include a template record/file which has already BEEN included somewhere in the recursion.
-	 * @param	string		The id of the current template. Same syntax as $idList ids, eg. "sys_123"
-	 * @param	array		The PID of the input template record
-	 * @param	array		A full TypoScript template record
-	 * @return	void
+	 * @param array $params
+	 * @param object $pObj
+	 * @return void
 	 */
 	public function includeStaticTypoScriptSources(&$params, &$pObj) {
 			// Static Template Records (static_template): include_static is a
