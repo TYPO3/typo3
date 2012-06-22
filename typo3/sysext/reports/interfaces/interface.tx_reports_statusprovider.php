@@ -25,20 +25,19 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Interface for classes which provide a status report entry.
  *
- * @author		Ingo Renner <ingo@typo3.org>
- * @package		TYPO3
- * @subpackage	tx_reports
+ * @author Ingo Renner <ingo@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_reports
  */
 interface tx_reports_StatusProvider {
 
 	/**
-	 * returns the staus of an extension or (sub)system
+	 * Returns the staus of an extension or (sub)system
 	 *
-	 * @return	array	An array of tx_reports_reports_status_Status objects
+	 * @return array An array of tx_reports_reports_status_Status objects
 	 */
 	public function getStatus();
 }

@@ -22,16 +22,18 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * The status report
  *
- * @author	Ingo Renner <ingo@typo3.org>
- * @package	TYPO3
- * @subpackage	reports
+ * @author Ingo Renner <ingo@typo3.org>
+ * @package TYPO3
+ * @subpackage reports
  */
 class tx_reports_reports_Status implements tx_reports_Report {
 
+	/**
+	 * @var array
+	 */
 	protected $statusProviders = array();
 
 	/**
@@ -46,7 +48,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	/**
 	 * Takes care of creating / rendering the status report
 	 *
-	 * @return	string	The status report as HTML
+	 * @return string The status report as HTML
 	 */
 	public function getReport() {
 		$content = '';
@@ -54,7 +56,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 		$status = $this->getSystemStatus();
 		$highestSeverity = $this->getHighestSeverity($status);
 
-			// updating the registry
+			// Updating the registry
 		$registry = t3lib_div::makeInstance('t3lib_Registry');
 		$registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
 
@@ -67,7 +69,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 
 	/**
 	 * Gets all registered status providers and creates instances of them.
-	 *
+	 * @return void
 	 */
 	protected function getStatusProviders() {
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports']['tx_reports']['status']['providers'] as $key => $statusProvidersList) {
@@ -86,7 +88,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	/**
 	 * Runs through all status providers and returns all statuses collected.
 	 *
-	 * @return	array	An array of tx_reports_reports_status_Status objects
+	 * @return array An array of tx_reports_reports_status_Status objects
 	 */
 	public function getSystemStatus() {
 		$status = array();
@@ -106,8 +108,8 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	/**
 	 * Determines the highest severity from the given statuses.
 	 *
-	 * @param	array	An array of tx_reports_reports_status_Status objects.
-	 * @return	integer	The highest severity found from the statuses.
+	 * @param array $statusCollection An array of tx_reports_reports_status_Status objects.
+	 * @return integer The highest severity found from the statuses.
 	 */
 	public function getHighestSeverity(array $statusCollection) {
 		$highestSeverity = tx_reports_reports_status_Status::NOTICE;
@@ -118,7 +120,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 					$highestSeverity = $status->getSeverity();
 				}
 
-					// reached the highest severity level, no need to go on
+					// Reached the highest severity level, no need to go on
 				if ($highestSeverity == tx_reports_reports_status_Status::ERROR) {
 					break;
 				}
@@ -131,12 +133,12 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	/**
 	 * Renders the system's status
 	 *
-	 * @param	array	An array of statuses as returned by the available status providers
-	 * @return	string	The system status as an HTML table
+	 * @param array $statusCollection An array of statuses as returned by the available status providers
+	 * @return string The system status as an HTML table
 	 */
 	protected function renderStatus(array $statusCollection) {
 
-		// TODO refactor into separate methods, status list and single status
+			// TODO refactor into separate methods, status list and single status
 
 		$content = '';
 		$template = '
@@ -150,7 +152,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 
 		$statuses = $this->sortStatusProviders($statusCollection);
 
-		foreach($statuses as $provider => $providerStatus) {
+		foreach ($statuses as $provider => $providerStatus) {
 			$providerState = $this->sortStatuses($providerStatus);
 
 			$id = str_replace(' ', '-', $provider);
@@ -190,8 +192,8 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	/**
 	 * Sorts the status providers (alphabetically and puts primary status providers at the beginning)
 	 *
-	 * @param	array	A collection of statuses (with providers)
-	 * @return	array	The collection of statuses sorted by provider (beginning with provider "_install")
+	 * @param array $statusCollection A collection of statuses (with providers)
+	 * @return array The collection of statuses sorted by provider (beginning with provider "_install")
 	 */
 	protected function sortStatusProviders(array $statusCollection) {
 			// Extract the primary status collections, i.e. the status groups
@@ -238,8 +240,8 @@ class tx_reports_reports_Status implements tx_reports_Report {
 	/**
 	 * Sorts the statuses by severity
 	 *
-	 * @param	array	A collection of statuses per provider
-	 * @return	array	The collection of statuses sorted by severity
+	 * @param array $statusCollection A collection of statuses per provider
+	 * @return array The collection of statuses sorted by severity
 	 */
 	protected function sortStatuses(array $statusCollection) {
 		$statuses  = array();
@@ -256,7 +258,7 @@ class tx_reports_reports_Status implements tx_reports_Report {
 		}
 		array_multisort($sortTitle, SORT_DESC, $statuses);
 
-			// making sure that the core version information is always on the top
+			// Making sure that the core version information is always on the top
 		if (is_object($header)) {
 			array_unshift($statuses, $header);
 		}

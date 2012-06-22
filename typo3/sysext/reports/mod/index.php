@@ -22,18 +22,16 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 $LANG->includeLLFile('EXT:reports/mod/locallang.xml');
 	// This checks permissions and exits if the users has no permission for entry.
 $BE_USER->modAccess($MCONF, 1);
 
-
 /**
  * Module 'Reports' for the 'reports' extension.
  *
- * @author		Ingo Renner <ingo@typo3.org>
- * @package		TYPO3
- * @subpackage	tx_reports
+ * @author Ingo Renner <ingo@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_reports
  */
 class tx_reports_Module extends t3lib_SCbase {
 
@@ -42,12 +40,12 @@ class tx_reports_Module extends t3lib_SCbase {
 	/**
 	 * Initializes the Module
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function __construct() {
 		parent::init();
 
-			// initialize document
+			// Initialize document
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->setModuleTemplate(
 			t3lib_extMgm::extPath('reports') . 'mod/mod_template.html'
@@ -62,11 +60,11 @@ class tx_reports_Module extends t3lib_SCbase {
 	/**
 	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function menuConfig() {
 		$reportsMenuItems = array();
-		$this->MOD_MENU   = array('function' => array());
+		$this->MOD_MENU = array('function' => array());
 
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['reports'] as $extKey => $reports) {
 			foreach ($reports as $reportName => $report) {
@@ -91,7 +89,7 @@ class tx_reports_Module extends t3lib_SCbase {
 	 * Creates the module's content. In this case it rather acts as a kind of #
 	 * dispatcher redirecting requests to specific reports.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function main() {
 		$docHeaderButtons = $this->getButtons();
@@ -122,7 +120,7 @@ class tx_reports_Module extends t3lib_SCbase {
 		} else {
 				// If no access or if ID == 0
 			$docHeaderButtons['save'] = '';
-			$this->content.=$this->doc->spacer(10);
+			$this->content .= $this->doc->spacer(10);
 		}
 
 			// compile document
@@ -148,7 +146,7 @@ class tx_reports_Module extends t3lib_SCbase {
 	/**
 	 * Prints out the module's HTML
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -157,7 +155,7 @@ class tx_reports_Module extends t3lib_SCbase {
 	/**
 	 * Generates the module content by calling the selected report
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function renderModuleContent() {
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
@@ -190,7 +188,7 @@ class tx_reports_Module extends t3lib_SCbase {
 	/**
 	 * Shows an overview list of available reports.
 	 *
-	 * @return	string	list of available reports
+	 * @return string List of available reports
 	 */
 	protected function indexAction() {
 		$defaultIcon = t3lib_extMgm::extRelPath('reports') . 'mod/moduleicon.gif';
@@ -235,7 +233,7 @@ class tx_reports_Module extends t3lib_SCbase {
 	 * Create the panel of buttons for submitting the form or otherwise
 	 * perform operations.
 	 *
-	 * @return	array	all available buttons as an assoc. array
+	 * @return array All available buttons as an assoc. array
 	 */
 	protected function getButtons() {
 		$buttons = array(
@@ -255,7 +253,7 @@ class tx_reports_Module extends t3lib_SCbase {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('tx_reports_Module');
 
 // Include files?

@@ -22,19 +22,27 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * Performs some checks about the install tool protection status
  *
- * @author		Ingo Renner <ingo@typo3.org>
- * @package		TYPO3
- * @subpackage	reports
+ * @author Ingo Renner <ingo@typo3.org>
+ * @package TYPO3
+ * @subpackag reports
  */
 class tx_reports_reports_status_ConfigurationStatus implements tx_reports_StatusProvider {
 
-		// 10 MB
+	/**
+	 * 10MB
+	 *
+	 * @var integer
+	 */
 	protected $deprecationLogFileSizeWarningThreshold = 10485760;
-		// 100 MB
+
+	/**
+	 * 100MB
+	 *
+	 * @var integer
+	 */
 	protected $deprecationLogFileSizeErrorThreshold   = 104857600;
 
 	/**
@@ -47,7 +55,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	/**
 	 * Determines the Install Tool's status, mainly concerning its protection.
 	 *
-	 * @return	array	List of statuses
+	 * @return array List of statuses
 	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
@@ -74,7 +82,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	/**
 	 * Checks if sys_refindex is empty.
 	 *
-	 * @return	tx_reports_reports_status_Status	An tx_reports_reports_status_Status object representing whether the reference index is empty or not
+	 * @return tx_reports_reports_status_Status An tx_reports_reports_status_Status object representing whether the reference index is empty or not
 	 */
 	protected function getReferenceIndexStatus() {
 		$value    = $GLOBALS['LANG']->getLL('status_ok');
@@ -105,7 +113,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	/**
 	 * Checks if PHP safe_mode is enabled.
 	 *
-	 * @return	tx_reports_reports_status_Status	A tx_reports_reports_status_Status object representing whether the safe_mode is enabled or not
+	 * @return tx_reports_reports_status_Status A tx_reports_reports_status_Status object representing whether the safe_mode is enabled or not
 	 */
 	protected function getPhpSafeModeStatus() {
 		$value    = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:disabled');
@@ -126,7 +134,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	/**
 	 * Checks if PHP magic_quotes_gpc is enabled.
 	 *
-	 * @return	tx_reports_reports_status_Status	A tx_reports_reports_status_Status object representing whether the magic_quote_gpc is enabled or not
+	 * @return tx_reports_reports_status_Status A tx_reports_reports_status_Status object representing whether the magic_quote_gpc is enabled or not
 	 */
 	protected function getPhpMagicQuotesGpcStatus() {
 		$value    = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:disabled');
@@ -147,7 +155,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	/**
 	 * Checks whether memcached is configured, if that's the case we asume it's also used.
 	 *
-	 * @return	boolean	TRUE if memcached is used, FALSE otherwise.
+	 * @return boolean TRUE if memcached is used, FALSE otherwise.
 	 */
 	protected function isMemcachedUsed() {
 		$memcachedUsed = FALSE;
@@ -163,7 +171,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	/**
 	 * Gets the configured memcached server connections.
 	 *
-	 * @return	array 	An array of configured memcached server connections.
+	 * @return array An array of configured memcached server connections.
 	 */
 	protected function getConfiguredMemcachedServers() {
 		$memcachedServers = array();
@@ -187,7 +195,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	/**
 	 * Checks whether TYPO3 can connect to the configured memcached servers.
 	 *
-	 * @return	tx_reports_reports_status_Status	An tx_reports_reports_status_Status object representing whether TYPO3 can connect to the configured memcached servers
+	 * @return tx_reports_reports_status_Status An tx_reports_reports_status_Status object representing whether TYPO3 can connect to the configured memcached servers
 	 */
 	protected function getMemcachedConnectionStatus() {
 		$value    = $GLOBALS['LANG']->getLL('status_ok');
@@ -244,7 +252,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	 * Provides status information on the deprecation log, whether it's enabled
 	 * and if so whether certain limits in file size are reached.
 	 *
-	 * @return	tx_reports_reports_status_Status	The deprecation log status.
+	 * @return tx_reports_reports_status_Status The deprecation log status.
 	 */
 	protected function getDeprecationLogStatus() {
 		$title    = $GLOBALS['LANG']->getLL('status_configuration_DeprecationLog');
@@ -294,7 +302,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 	 * Creates a link to the deprecation log file with the absolute path as the
 	 * link text.
 	 *
-	 * @return	string	Link to the deprecation log file
+	 * @return string Link to the deprecation log file
 	 */
 	protected function getDeprecationLogFileLink() {
 		$logFile = t3lib_div::getDeprecationLogFileName();

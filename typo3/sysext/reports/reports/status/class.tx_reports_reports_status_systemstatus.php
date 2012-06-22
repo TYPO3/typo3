@@ -26,13 +26,17 @@
 /**
  * Performs several checks about the system's health
  *
- * @author		Ingo Renner <ingo@typo3.org>
- * @package		TYPO3
- * @subpackage	reports
+ * @author Ingo Renner <ingo@typo3.org>
+ * @package TYPO3
+ * @subpackage reports
  */
 class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvider {
 
-		// PHP modules which are required. Can be changed by hook in getMissingPhpModules()
+	/**
+	 * PHP modules which are required. Can be changed by hook in getMissingPhpModules()
+	 *
+	 * @var array
+	 */
 	protected $requiredPhpModules = array(
 		'fileinfo', 'filter', 'gd', 'json', 'mysql', 'pcre', 'session', 'SPL', 'standard', 'openssl', 'xml', 'zlib', 'soap'
 	);
@@ -40,7 +44,7 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 	/**
 	 * Determines the Install Tool's status, mainly concerning its protection.
 	 *
-	 * @return	array	List of statuses
+	 * @return array List of statuses
 	 * @see typo3/sysext/reports/interfaces/tx_reports_StatusProvider::getStatus()
 	 */
 	public function getStatus() {
@@ -58,11 +62,10 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 		return $statuses;
 	}
 
-
 	/**
 	 * Checks the current PHP version against a minimum required version.
 	 *
-	 * @return	tx_reports_reports_status_Status	A status of whether a minimum PHP version requirment is met
+	 * @return tx_reports_reports_status_Status A status of whether a minimum PHP version requirment is met
 	 */
 	protected function getPhpStatus() {
 		$message  = '';
@@ -84,7 +87,7 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 	/**
 	 * Checks the current memory limit against a minimum required version.
 	 *
-	 * @return	tx_reports_reports_status_Status	A status of whether a minimum memory limit requirment is met
+	 * @return tx_reports_reports_status_Status A status of whether a minimum memory limit requirment is met
 	 */
 	protected function getPhpMemoryLimitStatus() {
 		$memoryLimit = ini_get('memory_limit');
@@ -124,7 +127,7 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 	/**
 	 * Executes commands like clearing the memory status flag
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function executeAdminCommand() {
 		$command = t3lib_div::_GET('adminCmd');
@@ -178,9 +181,9 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 	}
 
 	/**
-	 * checks whether register globals is on or off.
+	 * Checks whether register globals is on or off.
 	 *
-	 * @return	tx_reports_reports_status_Status	A status of whether register globals is on or off
+	 * @return tx_reports_reports_status_Status A status of whether register globals is on or off
 	 */
 	protected function getPhpRegisterGlobalsStatus() {
 		$value    = $GLOBALS['LANG']->getLL('status_disabled');
@@ -189,7 +192,7 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 
 		$registerGlobals = trim(ini_get('register_globals'));
 
-			// can't reliably check for 'on', therefore checking for the oposite 'off', '', or 0
+			// Can't reliably check for 'on', therefore checking for the opposite 'off', '', or 0
 		if (!empty($registerGlobals) && strtolower($registerGlobals) != 'off') {
 			$registerGlobalsHighlight = '<em>register_globals</em>';
 			$phpManualLink .= '<a href="http://php.net/configuration.changes">' . $GLOBALS['LANG']->getLL('status_phpRegisterGlobalsHowToChange') . '</a>';
@@ -209,7 +212,7 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 	/**
 	 * Reports the webserver TYPO3 is running on.
 	 *
-	 * @return	tx_reports_reports_status_Status	The server software as a status
+	 * @return tx_reports_reports_status_Status The server software as a status
 	 */
 	protected function getWebserverStatus() {
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
