@@ -22,26 +22,19 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * This class provides a taskcenter for BE users
  *
- * @author		Georg Ringer <typo3@ringerge.org>
- * @package		TYPO3
- * @subpackage	taskcenter
+ * @author Georg Ringer <typo3@ringerge.org>
+ * @package TYPO3
+ * @subpackage taskcenter
  *
  */
 
-
 $LANG->includeLLFile('EXT:taskcenter/task/locallang.xml');
-
-
 $BE_USER->modAccess($MCONF, 1);
 
-
-// ***************************
-// Script Classes
-// ***************************
+	// Script Classes
 class SC_mod_user_task_index extends t3lib_SCbase {
 
 	protected $pageinfo;
@@ -49,12 +42,12 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	/**
 	 * Initializes the Module
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function __construct() {
 		parent::init();
 
-			// initialize document
+			// Initialize document
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->setModuleTemplate(
 			t3lib_extMgm::extPath('taskcenter') . 'res/mod_template.html'
@@ -70,7 +63,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	/**
 	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function menuConfig() {
 		$this->MOD_MENU  = array('mode' => array());
@@ -85,7 +78,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	 * Creates the module's content. In this case it rather acts as a kind of #
 	 * dispatcher redirecting requests to specific tasks.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function main() {
 		$docHeaderButtons = $this->getButtons();
@@ -114,7 +107,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 			$this->renderModuleContent();
 		}
 
-			// compile document
+			// Compile document
 		$markers['FUNC_MENU'] = t3lib_BEfunc::getFuncMenu(
 				0,
 				'SET[mode]',
@@ -135,7 +128,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	/**
 	 * Prints out the module's HTML
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function printContent() {
 		echo $this->content;
@@ -144,18 +137,18 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	/**
 	 * Generates the module content by calling the selected task
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function renderModuleContent() {
 		$title = $content = $actionContent = '';
 		$chosenTask	= (string)$this->MOD_SETTINGS['function'];
 
-			// render the taskcenter task as default
+			// Render the taskcenter task as default
 		if (empty($chosenTask) || $chosenTask == 'index') {
 			$chosenTask = 'taskcenter.tasks';
 		}
 
-			// remder the task
+			// Render the task
 		list($extKey, $taskClass) = explode('.', $chosenTask, 2);
 		$title = $GLOBALS['LANG']->sL($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'][$extKey][$taskClass]['title']);
 
@@ -163,7 +156,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 			$taskInstance = t3lib_div::makeInstance($taskClass, $this);
 
 			if ($taskInstance instanceof tx_taskcenter_Task) {
-					// check if the task is restricted to admins only
+					// Check if the task is restricted to admins only
 				if ($this->checkAccess($extKey, $taskClass)) {
 					$actionContent .= $taskInstance->getTask();
 				} else {
@@ -176,7 +169,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 					$actionContent .= $flashMessage->render();
 				}
 			} else {
-					// error if the task is not an instance of tx_taskcenter_Task
+					// Error if the task is not an instance of tx_taskcenter_Task
 				$flashMessage = t3lib_div::makeInstance(
 					't3lib_FlashMessage',
 					sprintf($GLOBALS['LANG']->getLL('error_no-instance', TRUE), $taskClass, 'tx_taskcenter_Task'),
@@ -208,7 +201,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	/**
 	 * Generates the information content
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function renderInformationContent() {
 		$content = $this->description (
@@ -231,9 +224,9 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	/**
 	 * Render the headline of a task including a title and an optional description.
 	 *
-	 * @param	string		$title: Title
-	 * @param	string		$description: Description
-	 * @return	string formatted title and description
+	 * @param string $title Title
+	 * @param string $description Description
+	 * @return string formatted title and description
 	 */
 	public function description($title, $description='') {
 		if (!empty($description)) {
@@ -255,22 +248,22 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	 * 	- descriptionHtml:	Description allowing HTML tags which will override the
 	 * 											description
 	 *
-	 * @param	array		$items: List of items to be displayed in the definition list.
-	 * @param	boolean		$mainMenu: Set it to TRUE to render the main menu
-	 * @return	string	definition list
+	 * @param array $items List of items to be displayed in the definition list.
+	 * @param boolean $mainMenu Set it to TRUE to render the main menu
+	 * @return string Fefinition list
 	 */
 	public function renderListMenu($items, $mainMenu = FALSE) {
 		$content = $section = '';
 		$count = 0;
 
-			// change the sorting of items to the user's one
+			// Change the sorting of items to the user's one
 		if ($mainMenu) {
 			$this->doc->getPageRenderer()->addJsFile(t3lib_extMgm::extRelPath('taskcenter') . 'res/tasklist.js');
 			$userSorting = unserialize($GLOBALS['BE_USER']->uc['taskcenter']['sorting']);
 			if (is_array($userSorting)) {
 				$newSorting = array();
-				foreach($userSorting as $item) {
-					if(isset($items[$item])) {
+				foreach ($userSorting as $item) {
+					if (isset($items[$item])) {
 						$newSorting[] = $items[$item];
 						unset($items[$item]);
 					}
@@ -280,7 +273,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 		}
 
 		if (is_array($items) && count($items) > 0) {
-			foreach($items as $item) {
+			foreach ($items as $item) {
 				$title = htmlspecialchars($item['title']);
 
 				$icon = $additionalClass = $collapsedStyle = '';
@@ -306,7 +299,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 
 				$id = $this->getUniqueKey($item['uid']);
 
-					// collapsed & expanded menu items
+					// Collapsed & expanded menu items
 				if ($mainMenu && isset($GLOBALS['BE_USER']->uc['taskcenter']['states'][$id]) && $GLOBALS['BE_USER']->uc['taskcenter']['states'][$id]) {
 					$collapsedStyle = 'style="display:none"';
 					$additionalClass = 'collapsed';
@@ -314,14 +307,14 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 					$additionalClass = 'expanded';
 				}
 
-					// first & last menu item
+					// First & last menu item
 				if ($count == 0) {
 					$additionalClass .= ' first-item';
 				} elseif ($count + 1 === count($items)) {
 					$additionalClass .= ' last-item';
 				}
 
-					// active menu item
+					// Active menu item
 				$active = ((string) $this->MOD_SETTINGS['function'] == $item['uid']) ? ' active-task' : '';
 
 					// Main menu: Render additional syntax to sort tasks
@@ -345,7 +338,6 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 			$navigationId = ($mainMenu) ? 'id="task-list"' : '';
 
 			$content = '<ul ' . $navigationId . ' class="task-list">' . $content . '</ul>';
-
 		}
 
 		return $content;
@@ -354,14 +346,14 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	/**
 	 * Shows an overview list of available reports.
 	 *
-	 * @return	string	list of available reports
+	 * @return string List of available reports
 	 */
 	protected function indexAction() {
 		$content = '';
 		$tasks = array();
 		$icon = t3lib_extMgm::extRelPath('taskcenter') . 'task/task.gif';
 
-			// render the tasks only if there are any available
+			// Render the tasks only if there are any available
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']) && count($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter']) > 0) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'] as $extKey => $extensionReports) {
 				foreach ($extensionReports as $taskClass => $task) {
@@ -384,7 +376,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 						}
 					}
 
-						// generate an array of all tasks
+						// Generate an array of all tasks
 					$uniqueKey = $this->getUniqueKey($extKey . '.' . $taskClass);
 					$tasks[$uniqueKey] = array(
 						'title'				=> $taskTitle,
@@ -415,7 +407,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	 * Create the panel of buttons for submitting the form or otherwise
 	 * perform operations.
 	 *
-	 * @return	array	all available buttons as an assoc. array
+	 * @return array All available buttons as an assoc. array
 	 */
 	protected function getButtons() {
 		$buttons = array(
@@ -438,23 +430,23 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	 *  - Tasks can be restriced to admins only
 	 *  - Tasks can be blinded for Users with TsConfig taskcenter.<extensionkey>.<taskName> = 0
 	 *
-	 * @param	string		$extKey: Extension key
-	 * @param	string		$taskClass: Name of the task
-	 * @return boolean		Access to the task allowed or not
+	 * @param string $extKey Extension key
+	 * @param string $taskClass Name of the task
+	 * @return boolean Access to the task allowed or not
 	 */
 	protected function checkAccess($extKey, $taskClass) {
-			// check if task is blinded with TsConfig (taskcenter.<extkey>.<taskName>
+			// Check if task is blinded with TsConfig (taskcenter.<extkey>.<taskName>
 		$tsConfig = $GLOBALS['BE_USER']->getTSConfig('taskcenter.' . $extKey . '.' . $taskClass);
 		if (isset($tsConfig['value']) && intval($tsConfig['value']) == 0) {
 			return FALSE;
 		}
 
-		// admins are always allowed
+			// Admins are always allowed
 		if ($GLOBALS['BE_USER']->isAdmin()) {
 			return TRUE;
 		}
 
-			// check if task is restricted to admins
+			// Check if task is restricted to admins
 		if (intval($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['taskcenter'][$extKey][$taskClass]['admin']) == 1) {
 			return FALSE;
 		}
@@ -465,9 +457,9 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	/**
 	 * Returns HTML code to dislay an url in an iframe at the right side of the taskcenter
 	 *
-	 * @param	string		$url: url to display
-	 * @param	int		$max:
-	 * @return	string		code that inserts the iframe (HTML)
+	 * @param string $url Url to display
+	 * @param integer $max
+	 * @return string Code that inserts the iframe (HTML)
 	 */
 	public function urlInIframe($url, $max=0) {
 		$this->doc->JScodeArray[] =
@@ -487,8 +479,8 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	 * Create a unique key from a string which can be used in Prototype's Sortable
 	 * Therefore '_' are replaced
 	 *
-	 * @param	string		$string: string which is used to generate the identifier
-	 * @return	string		modified string
+	 * @param string $string string which is used to generate the identifier
+	 * @return string Modified string
 	 */
 	protected function getUniqueKey($string) {
 		$search		= array('.', '_');
@@ -500,7 +492,7 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 	/**
 	 * This method prepares the link for opening the devlog in a new window
 	 *
-	 * @return	string	Hyperlink with icon and appropriate JavaScript
+	 * @return string Hyperlink with icon and appropriate JavaScript
 	 */
 	protected function openInNewWindow() {
 		$url = t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT');

@@ -1,10 +1,12 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
+}
 
 if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']))) {
 	global $TBE_STYLES;
 
-		// register as a skin
+		// Register as a skin
 	$TBE_STYLES['skins'][$_EXTKEY] = array(
 		'name' => 't3skin',
 	);
@@ -78,9 +80,12 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']))) {
 	$temp_eP = t3lib_extMgm::extRelPath($_EXTKEY);
 
 		// Alternative dimensions for frameset sizes:
-	$TBE_STYLES['dims']['leftMenuFrameW'] = 190;		// Left menu frame width
-	$TBE_STYLES['dims']['topFrameH']      = 42;			// Top frame height
-	$TBE_STYLES['dims']['navFrameWidth']  = 280;		// Default navigation frame width
+		// Left menu frame width
+	$TBE_STYLES['dims']['leftMenuFrameW'] = 190;
+		// Top frame height
+	$TBE_STYLES['dims']['topFrameH']      = 42;
+		// Default navigation frame width
+	$TBE_STYLES['dims']['navFrameWidth']  = 280;
 
 		// Setting roll-over background color for click menus:
 		// Notice, this line uses the the 'scriptIDindex' feature to override another value in this array (namely $TBE_STYLES['mainColors']['bgColor5']), for a specific script "typo3/alt_clickmenu.php"
@@ -180,7 +185,7 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']))) {
 		// extJS theme
 	$TBE_STYLES['extJS']['theme'] =  $temp_eP . 'extjs/xtheme-t3skin.css';
 
-	// Adding HTML template for login screen
+		// Adding HTML template for login screen
 	$TBE_STYLES['htmlTemplates']['templates/login.html'] = 'sysext/t3skin/templates/login.html';
 
 	$GLOBALS['TBE_STYLES']['stylesheets']['admPanel'] = t3lib_extMgm::siteRelPath('t3skin') . 'stylesheets/standalone/admin_panel.css';
@@ -194,7 +199,6 @@ if (TYPO3_MODE == 'BE' || (TYPO3_MODE == 'FE' && isset($GLOBALS['BE_USER']))) {
 		);
 	}
 	unset($flagNames, $flagName);
-
 }
 
 ?>
