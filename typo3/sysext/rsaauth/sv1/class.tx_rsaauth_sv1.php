@@ -24,7 +24,7 @@
 
 require_once(t3lib_extMgm::extPath('sv') . 'class.tx_sv_auth.php');
 
-// Include backends
+	// Include backends
 
 /**
  * Service "RSA authentication" for the "rsaauth" extension. This service will
@@ -33,40 +33,42 @@ require_once(t3lib_extMgm::extPath('sv') . 'class.tx_sv_auth.php');
  * the password and then pass it to the parent service ('sv'). This ensures that it
  * always works, even if other TYPO3 internals change.
  *
- * @author	Dmitry Dulepov <dmitry@typo3.org>
- * @package	TYPO3
- * @subpackage	tx_rsaauth
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_rsaauth
  */
 class tx_rsaauth_sv1 extends tx_sv_auth  {
 
 	/**
 	 * An RSA backend.
 	 *
-	 * @var	tx_rsaauth_abstract_backend
+	 * @var tx_rsaauth_abstract_backend
 	 */
-	protected	$backend = NULL;
+	protected $backend = NULL;
 
 	/**
 	 * Standard extension key for the service
+	 * The extension key.
 	 *
-	 * @var	string
+	 * @var string
 	 */
-	public	$extKey = 'rsaauth';	// The extension key.
+	public $extKey = 'rsaauth';
 
 	/**
 	 * Standard prefix id for the service
+	 * Same as class name
 	 *
-	 * @var	string
+	 * @var string
 	 */
-	public	$prefixId = 'tx_rsaauth_sv1';		// Same as class name
+	public $prefixId = 'tx_rsaauth_sv1';
 
 	/**
 	 * Standard relative path for the service
+	 * Path to this script relative to the extension dir.
 	 *
-	 * @var	string
+	 * @var string
 	 */
-	public	$scriptRelPath = 'sv1/class.tx_rsaauth_sv1.php';	// Path to this script relative to the extension dir.
-
+	public $scriptRelPath = 'sv1/class.tx_rsaauth_sv1.php';
 
 	/**
 	 * Process the submitted credentials.
@@ -74,7 +76,7 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 	 *
 	 * @param array $loginData Credentials that are submitted and potentially modified by other services
 	 * @param string $passwordTransmissionStrategy Keyword of how the password has been hashed or encrypted before submission
-	 * @return bool
+	 * @return boolean
 	 */
 	public function processLoginData(array &$loginData, $passwordTransmissionStrategy) {
 
@@ -82,7 +84,7 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 
 		if ($passwordTransmissionStrategy === 'rsa') {
 			$storage = tx_rsaauth_storagefactory::getStorage();
-			/* @var $storage tx_rsaauth_abstract_storage */
+			/** @var $storage tx_rsaauth_abstract_storage */
 
 				// Decrypt the password
 			$password = $loginData['uident'];
@@ -113,12 +115,12 @@ class tx_rsaauth_sv1 extends tx_sv_auth  {
 	/**
 	 * Initializes the service.
 	 *
-	 * @return	boolean
+	 * @return boolean
 	 */
 	public function init() {
 		$available = parent::init();
 		if ($available) {
-			// Get the backend
+				// Get the backend
 			$this->backend = tx_rsaauth_backendfactory::getBackend();
 			if (is_null($this->backend)) {
 				$available = FALSE;
