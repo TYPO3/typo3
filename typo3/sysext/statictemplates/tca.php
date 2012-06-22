@@ -1,8 +1,6 @@
 <?php
 
-// ******************************************************************
-// static_template
-// ******************************************************************
+	// static_template
 $TCA['static_template'] = array(
 	'ctrl' => $TCA['static_template']['ctrl'],
 	'interface' => array(
@@ -62,6 +60,5 @@ $TCA['static_template'] = array(
 		'1' => array('showitem' => 'title;;;;2-2-2, constants;;;;3-3-3, config, include_static;;;;5-5-5, description;;;;5-5-5')
 	)
 );
-
 
 ?>

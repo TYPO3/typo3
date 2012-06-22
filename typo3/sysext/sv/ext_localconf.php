@@ -1,5 +1,7 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
+}
 
 	// Register base authentication service
 t3lib_extMgm::addService($_EXTKEY, 'auth' /* sv type */, 'tx_sv_auth' /* sv key */,

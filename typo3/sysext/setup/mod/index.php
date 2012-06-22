@@ -29,7 +29,7 @@
  *
  * This module lets users viev and change their individual settings
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * Revised for TYPO3 3.7 6/2004 by Kasper Skårhøj
  * XHTML compatible.
  */
@@ -37,7 +37,7 @@
 /**
  * Script class for the Setup module
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_setup
  */
@@ -92,7 +92,6 @@ class SC_mod_user_setup_index {
 	 *
 	 ******************************/
 
-
 	/**
 	 * Instanciate the form protection before a simulated user is initialized.
 	 */
@@ -133,12 +132,12 @@ class SC_mod_user_setup_index {
 
 				// PUT SETTINGS into the ->uc array:
 
-				// reload left frame when switching BE language
+				// Reload left frame when switching BE language
 			if (isset($d['lang']) && ($d['lang'] != $GLOBALS['BE_USER']->uc['lang'])) {
 				$this->languageUpdate = TRUE;
 			}
 
-				// reload pagetree if the title length is changed
+				// Reload pagetree if the title length is changed
 			if (isset($d['titleLen']) && ($d['titleLen'] !== $GLOBALS['BE_USER']->uc['titleLen'])) {
 				$this->pagetreeNeedsRefresh = TRUE;
 			}
@@ -155,9 +154,9 @@ class SC_mod_user_setup_index {
 				}
 				$this->tempDataIsCleared = TRUE;
 			} elseif ($d['save']) {
-					// save all submitted values if they are no array (arrays are with table=be_users) and exists in $GLOBALS['TYPO3_USER_SETTINGS'][columns]
+					// Save all submitted values if they are no array (arrays are with table=be_users) and exists in $GLOBALS['TYPO3_USER_SETTINGS'][columns]
 
-				foreach($columns as $field => $config) {
+				foreach ($columns as $field => $config) {
 					if (!in_array($field, $fieldList)) {
 						continue;
 					}
@@ -212,7 +211,8 @@ class SC_mod_user_setup_index {
 			$GLOBALS['BE_USER']->overrideUC();
 
 			$save_after = md5(serialize($GLOBALS['BE_USER']->uc));
-			if ($save_before!=$save_after)	{	// If something in the uc-array of the user has changed, we save the array...
+				// If something in the uc-array of the user has changed, we save the array...
+			if ($save_before!=$save_after) {
 				$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
 				$GLOBALS['BE_USER']->writelog(254, 1, 0, 1, 'Personal settings changed', array());
 				$this->setupIsUpdated = TRUE;
@@ -226,10 +226,12 @@ class SC_mod_user_setup_index {
 			if (count($storeRec) && $this->saveData) {
 					// Make instance of TCE for storing the changes.
 				$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-				$tce->stripslashes_values=0;
+				$tce->stripslashes_values = 0;
 				$tce->start($storeRec, array(), $GLOBALS['BE_USER']);
-				$tce->admin = 1;	// This is so the user can actually update his user record.
-				$tce->bypassWorkspaceRestrictions = TRUE;	// This is to make sure that the users record can be updated even if in another workspace. This is tolerated.
+					// This is so the user can actually update his user record.
+				$tce->admin = 1;
+					// This is to make sure that the users record can be updated even if in another workspace. This is tolerated.
+				$tce->bypassWorkspaceRestrictions = TRUE;
 				$tce->process_datamap();
 				unset($tce);
 
@@ -240,7 +242,6 @@ class SC_mod_user_setup_index {
 		}
 	}
 
-
 	/******************************
 	 *
 	 * Rendering module
@@ -250,7 +251,7 @@ class SC_mod_user_setup_index {
 	/**
 	 * Initializes the module for display of the settings form.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function init() {
 		$this->MCONF = $GLOBALS['MCONF'];
@@ -306,7 +307,7 @@ class SC_mod_user_setup_index {
 	/**
 	 * Generate the main settings formular:
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
 		global $LANG;
@@ -328,7 +329,7 @@ class SC_mod_user_setup_index {
 			// Start page:
 		$this->doc->loadJavascriptLib('md5.js');
 
-			// use a wrapper div
+			// Use a wrapper div
 		$this->content .= '<div id="user-setup-wrapper">';
 
 			// Load available backend modules
@@ -338,7 +339,7 @@ class SC_mod_user_setup_index {
 
 		$this->content .= $this->doc->header($LANG->getLL('UserSettings'));
 
-			// show if setup was saved
+			// Show if setup was saved
 		if ($this->setupIsUpdated && !$this->tempDataIsCleared && !$this->settingsAreResetToDefault) {
 			$flashMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',
@@ -397,7 +398,7 @@ class SC_mod_user_setup_index {
 		}
 
 
-			// render the menu items
+			// Render the menu items
 		$menuItems = $this->renderUserSetup();
 
 		$this->content .= $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 1, FALSE, 1, $this->dividers2tabs);
@@ -423,7 +424,7 @@ class SC_mod_user_setup_index {
 			TRUE
 		);
 
-			// end of wrapper div
+			// End of wrapper div
 		$this->content .= '</div>';
 
 			// Setting up the buttons and markers for docheader
@@ -439,13 +440,12 @@ class SC_mod_user_setup_index {
 			$LANG->getLL('UserSettings'),
 			$this->content
 		);
-
 	}
 
 	/**
 	 * Prints the content / ends page
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		echo $this->content;
@@ -454,7 +454,7 @@ class SC_mod_user_setup_index {
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
-	 * @return	array	all available buttons as an assoc. array
+	 * @return array All available buttons as an assoc. array
 	 */
 	protected function getButtons() {
 		$buttons = array(
@@ -477,21 +477,17 @@ class SC_mod_user_setup_index {
 		return $buttons;
 	}
 
-
-
-
 	/******************************
 	 *
 	 * Render module
 	 *
 	 ******************************/
 
-
 	/**
 	 * renders the data for all tabs in the user setup and returns
 	 * everything that is needed with tabs and dyntab menu
 	 *
-	 * @return	ready to use for the dyntabmenu itemarray
+	 * @return array Ready to use for the dyntabmenu itemarray
 	 */
 	protected function renderUserSetup() {
 		$result = array();
@@ -509,7 +505,7 @@ class SC_mod_user_setup_index {
 
 			if (substr($fieldName, 0, 8) == '--div--;') {
 				if ($firstTabLabel == '') {
-					// first tab
+						// First tab
 					$tabLabel = $this->getLabel(substr($fieldName, 8), '', FALSE);
 					$firstTabLabel = $tabLabel;
 				} else {
@@ -528,7 +524,7 @@ class SC_mod_user_setup_index {
 
 			$config = $GLOBALS['TYPO3_USER_SETTINGS']['columns'][$fieldName];
 
-				// field my be disabled in setup.fields
+				// Field my be disabled in setup.fields
 			if (isset($this->tsFieldConf[$fieldName . '.']['disabled']) && $this->tsFieldConf[$fieldName . '.']['disabled'] == 1) {
 				continue;
 			}
@@ -615,12 +611,8 @@ class SC_mod_user_setup_index {
 					$html = '';
 			}
 
-
 			$code[$i][1] = $label;
 			$code[$i++][2] = $html;
-
-
-
 		}
 
 		if ($this->dividers2tabs == 0) {
@@ -632,14 +624,8 @@ class SC_mod_user_setup_index {
 			'content' => count($code) ? $this->doc->spacer(20) . $this->doc->table($code) : ''
 		);
 
-
 		return $result;
 	}
-
-
-
-
-
 
 	/******************************
 	 *
@@ -651,29 +637,28 @@ class SC_mod_user_setup_index {
 	 * Returns the backend user object, either the global OR the $this->OLD_BE_USER which is set during simulate-user operation.
 	 * Anyway: The REAL user is returned - the one logged in.
 	 *
-	 * @return	object		The REAL user is returned - the one logged in.
+	 * @return object The REAL user is returned - the one logged in.
 	 */
 	protected function getRealScriptUserObj() {
 		return is_object($this->OLD_BE_USER) ? $this->OLD_BE_USER : $GLOBALS['BE_USER'];
 	}
 
-
 	/**
 	* Return a select with available languages
 	 *
-	* @return	string		complete select as HTML string or warning box if something went wrong.
+	* @return string Complete select as HTML string or warning box if something went wrong.
 	 */
 	public function renderLanguageSelect($params, $pObj) {
 
 		$languageOptions = array();
 
-			// compile the languages dropdown
+			// Compile the languages dropdown
 		$langDefault = $GLOBALS['LANG']->getLL('lang_default', 1);
 		$languageOptions[$langDefault] = '<option value=""' .
 			($GLOBALS['BE_USER']->uc['lang'] === '' ? ' selected="selected"' : '') .
 			'>' . $langDefault . '</option>';
 
-			// traverse the number of languages
+			// Traverse the number of languages
 		/** @var $locales t3lib_l10n_Locales */
 		$locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
 		$languages = $locales->getLanguages();
@@ -724,10 +709,10 @@ class SC_mod_user_setup_index {
 	/**
 	* Returns a select with all modules for startup
 	*
-	* @return	string		complete select as HTML string
+	* @return string Complete select as HTML string
 	*/
 	public function renderStartModuleSelect($params, $pObj) {
-			// start module select
+			// Start module select
 		if (empty($GLOBALS['BE_USER']->uc['startModule'])) {
 			$GLOBALS['BE_USER']->uc['startModule'] = $GLOBALS['BE_USER']->uc_default['startModule'];
 		}
@@ -750,13 +735,11 @@ class SC_mod_user_setup_index {
 	 * Will make the simulate-user selector if the logged in user is administrator.
 	 * It will also set the GLOBAL(!) BE_USER to the simulated user selected if any (and set $this->OLD_BE_USER to logged in user)
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	public function simulateUser() {
 
-		// *******************************************************************************
-		// If admin, allow simulation of another user
-		// *******************************************************************************
+			// If admin, allow simulation of another user
 		$this->simUser = 0;
 		$this->simulateSelector = '';
 		unset($this->OLD_BE_USER);
@@ -776,24 +759,27 @@ class SC_mod_user_setup_index {
 			}
 		}
 
-		if ($this->simUser>0)	{	// This can only be set if the previous code was executed.
+			// This can only be set if the previous code was executed.
+		if ($this->simUser > 0) {
 				// Save old user...
 			$this->OLD_BE_USER = $GLOBALS['BE_USER'];
 			unset($GLOBALS['BE_USER']);	// Unset current
 
-			$BE_USER = t3lib_div::makeInstance('t3lib_beUserAuth');	// New backend user object
+				// New backend user object
+			$BE_USER = t3lib_div::makeInstance('t3lib_beUserAuth');
 			$BE_USER->OS = TYPO3_OS;
 			$BE_USER->setBeUserByUid($this->simUser);
 			$BE_USER->fetchGroupData();
 			$BE_USER->backendSetUC();
-			$GLOBALS['BE_USER'] = $BE_USER;	// Must do this, because unsetting $BE_USER before apparently unsets the reference to the global variable by this name!
+				// Must do this, because unsetting $BE_USER before apparently unsets the reference to the global variable by this name!
+			$GLOBALS['BE_USER'] = $BE_USER;
 		}
 	}
 
 	/**
 	* Returns a select with simulate users
 	*
-	* @return	string		complete select as HTML string
+	* @return string Complete select as HTML string
 	*/
 	public function renderSimulateUserSelect($params, $pObj) {
 		return $pObj->simulateSelector;
@@ -802,16 +788,16 @@ class SC_mod_user_setup_index {
 	/**
 	* Returns access check (currently only "admin" is supported)
 	*
-	* @param	array		$config: Configuration of the field, access mode is defined in key 'access'
-	* @return	boolean		Whether it is allowed to modify the given field
+	* @param array $config Configuration of the field, access mode is defined in key 'access'
+	* @return boolean Whether it is allowed to modify the given field
 	*/
 	protected function checkAccess(array $config) {
 		$access = $config['access'];
-			// check for hook
+			// Check for hook
 		if (t3lib_div::hasValidClassPrefix($access)) {
 			$accessObject = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck'][$access] . ':&' . $access);
 			if (is_object($accessObject) && method_exists($accessObject, 'accessLevelCheck')) {
-					// initialize vars. If method fails, $set will be set to FALSE
+					// Initialize vars. If method fails, $set will be set to FALSE
 				return $accessObject->accessLevelCheck($config);
 			}
 		} elseif ($access == 'admin') {
@@ -823,19 +809,18 @@ class SC_mod_user_setup_index {
 	/**
 	 * Returns the label $str from getLL() and grays out the value if the $str/$key is found in $this->overrideConf array
 	 *
-	 * @param	string		Locallang key
-	 * @param	string		Alternative override-config key
-	 * @param	boolean		Defines whether the string should be wrapped in a <label> tag.
-	 * @param	string		Alternative id for use in "for" attribute of <label> tag. By default the $str key is used prepended with "field_".
-	 * @return	string		HTML output.
+	 * @param string $str Locallang key
+	 * @param string $key Alternative override-config key
+	 * @param boolean $addLabelTag Defines whether the string should be wrapped in a <label> tag.
+	 * @param string $altLabelTagId Alternative id for use in "for" attribute of <label> tag. By default the $str key is used prepended with "field_".
+	 * @return string HTML output.
 	 */
-	protected function getLabel($str, $key='', $addLabelTag=TRUE, $altLabelTagId='') {
+	protected function getLabel($str, $key = '', $addLabelTag = TRUE, $altLabelTagId = '') {
 		if (substr($str, 0, 4) == 'LLL:') {
 			$out = $GLOBALS['LANG']->sL($str);
 		} else {
 			$out = htmlspecialchars($str);
 		}
-
 
 		if (isset($this->overrideConf[($key?$key:$str)])) {
 			$out = '<span style="color:#999999">' . $out . '</span>';
@@ -850,9 +835,9 @@ class SC_mod_user_setup_index {
 	/**
 	 * Returns the CSH Icon for given string
 	 *
-	 * @param	string		Locallang key
-	 * @param	string		The label to be used, that should be wrapped in help
-	 * @return	string		HTML output.
+	 * @param string $str Locallang key
+	 * @param string $label The label to be used, that should be wrapped in help
+	 * @return string HTML output.
 	 */
 	protected function getCSH($str, $label) {
 		$context = '_MOD_user_setup';
@@ -870,13 +855,12 @@ class SC_mod_user_setup_index {
 	/**
 	 * Returns array with fields defined in $GLOBALS['TYPO3_USER_SETTINGS']['showitem']
 	 *
-	 * @param	void
-	 * @return	array	array with fieldnames visible in form
+	 * @return array Array with fieldnames visible in form
 	 */
 	protected function getFieldsFromShowItem() {
 		$fieldList = $GLOBALS['TYPO3_USER_SETTINGS']['showitem'];
 
-			// disable fields depended on settings
+			// Disable fields depended on settings
 		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled']) {
 			$fieldList = t3lib_div::rmFromList('edit_RTE', $fieldList);
 		}
@@ -886,12 +870,12 @@ class SC_mod_user_setup_index {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_mod_user_setup_index');
 $SOBE->simulateUser();
 $SOBE->storeIncomingData();
 
-// These includes MUST be afterwards the settings are saved...!
+	// These includes MUST be afterwards the settings are saved...!
 $LANG->includeLLFile('EXT:setup/mod/locallang.xml');
 
 $SOBE->init();

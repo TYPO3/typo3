@@ -22,26 +22,25 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-
 /**
  * This class contains a BE login form hook. It adds all necessary JavaScript
  * for the superchallenged authentication.
  *
- * @author	Dmitry Dulepov <dmitry@typo3.org>
- * @package	TYPO3
- * @subpackage	tx_sv
+ * @author Dmitry Dulepov <dmitry@typo3.org>
+ * @package TYPO3
+ * @subpackage tx_sv
  */
 class tx_sv_loginformhook {
 
 	/**
 	 * Provides form code for the superchallenged authentication.
 	 *
-	 * @param	array	$params	Parameters to the script
-	 * @param	SC_index	$pObj	Calling object
-	 * @return	string	The code for the login form
+	 * @param array $params Parameters to the script
+	 * @param SC_index $pObj Calling object
+	 * @return string The code for the login form
 	 */
 	public function getLoginFormTag(array $params, SC_index &$pObj) {
-		// Get the code according to the login level
+			// Get the code according to the login level
 		switch ($pObj->loginSecurityLevel) {
 			case 'challenged':
 			case 'superchallenged':
@@ -56,7 +55,7 @@ class tx_sv_loginformhook {
 				$content = '<form action="index.php" method="post" name="loginform" onsubmit="document.loginform.userident.value=document.loginform.p_field.value;document.loginform.p_field.value=\'\';return true;">';
 				break;
 			default:
-				// No code for unknown level!
+					// No code for unknown level!
 				$content = '';
 		}
 
@@ -66,9 +65,9 @@ class tx_sv_loginformhook {
 	/**
 	 * Provides form code for the superchallenged authentication.
 	 *
-	 * @param	array	$params	Parameters to the script
-	 * @param	SC_index	$pObj	Calling object
-	 * @return	string	The code for the login form
+	 * @param array $params Parameters to the script
+	 * @param SC_index $pObj Calling object
+	 * @return string The code for the login form
 	 */
 	public function getLoginScripts(array $params, SC_index &$pObj) {
 		$content = '';
@@ -96,11 +95,10 @@ class tx_sv_loginformhook {
 		return $content;
 	}
 
-
 	/**
 	 * Create a random challenge string
 	 *
-	 * @return	string		Challenge value
+	 * @return string Challenge value
 	 */
 	protected function getChallenge() {
 		$challenge = md5(uniqid('') . getmypid());
