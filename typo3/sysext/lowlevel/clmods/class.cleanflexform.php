@@ -28,14 +28,13 @@
  * Cleaner module: cleanflexform
  * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * cleanflexform
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_lowlevel
  */
@@ -43,8 +42,6 @@ class tx_lowlevel_cleanflexform extends tx_lowlevel_cleaner_core {
 
 	/**
 	 * Constructor
-	 *
-	 * @return	void
 	 */
 	function __construct() {
 		parent::__construct();
@@ -69,7 +66,7 @@ Cleaning XML for FlexForm fields.
 	 * Find orphan records
 	 * VERY CPU and memory intensive since it will look up the whole page tree!
 	 *
-	 * @return	array
+	 * @return array
 	 */
 	function main() {
 		global $TYPO3_DB;
@@ -87,7 +84,8 @@ Cleaning XML for FlexForm fields.
 		$depth = $this->cli_isArg('--depth') ? t3lib_utility_Math::forceIntegerInRange($this->cli_argValue('--depth'), 0) : 1000;
 
 		$this->cleanFlexForm_dirtyFields = &$resultArray['dirty'];
-		$this->genTree_traverseDeleted = FALSE;	// Do not repair flexform data in deleted records.
+			// Do not repair flexform data in deleted records.
+		$this->genTree_traverseDeleted = FALSE;
 
 		$this->genTree($startingPoint, $depth, (int)$this->cli_argValue('--echotree'), 'main_parseTreeCallBack');
 
@@ -98,19 +96,21 @@ Cleaning XML for FlexForm fields.
 	/**
 	 * Call back function for page tree traversal!
 	 *
-	 * @param	string		Table name
-	 * @param	integer		UID of record in processing
-	 * @param	integer		Echo level  (see calling function
-	 * @param	string		Version swap mode on that level (see calling function
-	 * @param	integer		Is root version (see calling function
-	 * @return	void
+	 * @param string $tableName Table name
+	 * @param integer $uid UID of record in processing
+	 * @param integer $echoLevel Echo level  (see calling function
+	 * @param string $versionSwapmode Version swap mode on that level (see calling function
+	 * @param integer $rootIsVersion Is root version (see calling function
+	 * @return void
 	 */
 	function main_parseTreeCallBack($tableName, $uid, $echoLevel, $versionSwapmode, $rootIsVersion) {
 
 		t3lib_div::loadTCA($tableName);
-		foreach($GLOBALS['TCA'][$tableName]['columns'] as $colName => $config) {
+		foreach ($GLOBALS['TCA'][$tableName]['columns'] as $colName => $config) {
 			if ($config['config']['type']=='flex') {
-				if ($echoLevel>2)	echo LF.'			[cleanflexform:] Field "'.$colName.'" in '.$tableName.':'.$uid.' was a flexform and...';
+				if ($echoLevel > 2) {
+					echo LF.'			[cleanflexform:] Field "'.$colName.'" in '.$tableName.':'.$uid.' was a flexform and...';
+				}
 
 				$recRow = t3lib_BEfunc::getRecordRaw($tableName, 'uid='.intval($uid));
 				$flexObj = t3lib_div::makeInstance('t3lib_flexformtools');
@@ -120,12 +120,18 @@ Cleaning XML for FlexForm fields.
 					$newXML = $flexObj->cleanFlexFormXML($tableName, $colName, $recRow);
 
 					if (md5($recRow[$colName])!=md5($newXML)) {
-						if ($echoLevel>2)	echo ' was DIRTY, needs cleanup!';
+						if ($echoLevel > 2) {
+							echo ' was DIRTY, needs cleanup!';
+						}
 						$this->cleanFlexForm_dirtyFields[t3lib_div::shortMd5($tableName.':'.$uid.':'.$colName)] = $tableName.':'.$uid.':'.$colName;
 					} else {
-						if ($echoLevel>2)	echo ' was CLEAN';
+						if ($echoLevel > 2) {
+							echo ' was CLEAN';
+						}
 					}
-				} elseif ($echoLevel>2)	echo ' was EMPTY';
+				} elseif ($echoLevel > 2) {
+					echo ' was EMPTY';
+				}
 			}
 		}
 	}
@@ -134,11 +140,11 @@ Cleaning XML for FlexForm fields.
 	 * Mandatory autofix function
 	 * Will run auto-fix on the result array. Echos status during processing.
 	 *
-	 * @param	array		Result array from main() function
-	 * @return	void
+	 * @param array $resultArray Result array from main() function
+	 * @return void
 	 */
 	function main_autoFix($resultArray) {
-		foreach($resultArray['dirty'] as $fieldID) {
+		foreach ($resultArray['dirty'] as $fieldID) {
 			list($table, $uid, $field) = explode(':', $fieldID);
 			echo 'Cleaning XML in "'.$fieldID.'": ';
 			if ($bypass = $this->cli_noExecutionCheck($fieldID)) {
@@ -160,13 +166,16 @@ Cleaning XML for FlexForm fields.
 				$tce->bypassWorkspaceRestrictions = TRUE;
 				$tce->bypassFileHandling = TRUE;
 
-				$tce->start($data, array());	// check has been done previously that there is a backend user which is Admin and also in live workspace
+					// Check has been done previously that there is a backend user which is Admin and also in live workspace
+				$tce->start($data, array());
 				$tce->process_datamap();
 
 					// Return errors if any:
 				if (count($tce->errorLog)) {
 					echo '	ERROR from "TCEmain":'.LF.'TCEmain:'.implode(LF.'TCEmain:', $tce->errorLog);
-				} else echo 'DONE';
+				} else {
+					echo 'DONE';
+				}
 			}
 			echo LF;
 		}

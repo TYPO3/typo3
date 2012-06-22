@@ -27,8 +27,8 @@
 /**
  * Class to clear temp files of htmlArea RTE
  *
- * @author	Dominique Feyer <dominique.feyer@reelpeek.net>
- * @package	TYPO3
+ * @author Dominique Feyer <dominique.feyer@reelpeek.net>
+ * @package TYPO3
  * @subpackage tx_Lang
  */
 class tx_lang_clearcache {
@@ -65,7 +65,6 @@ class tx_lang_clearcache {
 		}
 		$this->cacheInstance->flush();
 	}
-
 }
 
 ?>

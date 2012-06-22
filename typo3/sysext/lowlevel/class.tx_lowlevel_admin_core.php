@@ -27,12 +27,12 @@
 /**
  * Core functions for admin
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * Core functions for administration
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_lowlevel
  */
@@ -46,8 +46,6 @@ class tx_lowlevel_admin_core extends t3lib_cli {
 
 	/**
 	 * Constructor
-	 *
-	 * @return	void
 	 */
 	function __construct() {
 
@@ -65,12 +63,6 @@ class tx_lowlevel_admin_core extends t3lib_cli {
 		$this->cli_help['author'] = "Kasper Skaarhoej, (c) 2009";
 	}
 
-
-
-
-
-
-
 	/**************************
 	 *
 	 * CLI functionality
@@ -80,8 +72,8 @@ class tx_lowlevel_admin_core extends t3lib_cli {
 	/**
 	 * CLI engine
 	 *
-	 * @param	array		Command line arguments
-	 * @return	string
+	 * @param array $argv Command line arguments
+	 * @return string
 	 */
 	function cli_main($argv) {
 
@@ -98,7 +90,7 @@ class tx_lowlevel_admin_core extends t3lib_cli {
 		}
 
 			// Analysis type:
-		switch((string)$analysisType)    {
+		switch ((string)$analysisType)    {
 			case 'setBElock':
 				if (@is_file(PATH_typo3conf.'LOCK_BACKEND')) {
 					$this->cli_echo("A lockfile already exists. Overwriting it... \n");

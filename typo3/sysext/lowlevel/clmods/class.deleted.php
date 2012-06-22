@@ -28,14 +28,13 @@
  * Cleaner module: Deleted records
  * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Looking for Deleted records
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_lowlevel
  */
@@ -43,8 +42,6 @@ class tx_lowlevel_deleted extends tx_lowlevel_cleaner_core {
 
 	/**
 	 * Constructor
-	 *
-	 * @return	[type]		...
 	 */
 	function __construct() {
 		parent::__construct();
@@ -69,7 +66,7 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 	 * Find orphan records
 	 * VERY CPU and memory intensive since it will look up the whole page tree!
 	 *
-	 * @return	array
+	 * @return array
 	 */
 	function main() {
 		global $TYPO3_DB;
@@ -96,8 +93,8 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 	 * Mandatory autofix function
 	 * Will run auto-fix on the result array. Echos status during processing.
 	 *
-	 * @param	array		Result array from main() function
-	 * @return	void
+	 * @param array $resultArray Result array from main() function
+	 * @return void
 	 */
 	function main_autoFix($resultArray) {
 
@@ -112,13 +109,14 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 		if (isset($resultArray['deleted']['pages'])) {
 			$_pages = $resultArray['deleted']['pages'];
 			unset($resultArray['deleted']['pages']);
-			$resultArray['deleted']['pages'] = array_reverse($_pages);	// To delete sub pages first assuming they are accumulated from top of page tree.
+				// To delete sub pages first assuming they are accumulated from top of page tree.
+			$resultArray['deleted']['pages'] = array_reverse($_pages);
 		}
 
 			// Traversing records:
-		foreach($resultArray['deleted'] as $table => $list) {
+		foreach ($resultArray['deleted'] as $table => $list) {
 			echo 'Flushing deleted records from table "'.$table.'":'.LF;
-			foreach($list as $uid) {
+			foreach ($list as $uid) {
 				echo '	Flushing record "'.$table.':'.$uid.'": ';
 				if ($bypass = $this->cli_noExecutionCheck($table.':'.$uid)) {
 					echo $bypass;
@@ -128,7 +126,10 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 					$tce->stripslashes_values = FALSE;
 					$tce->start(array(), array());
-					$tce->deleteRecord($table, $uid, TRUE, TRUE);	// Notice, we are deleting pages with no regard to subpages/subrecords - we do this since they should also be included in the set of deleted pages of course (no un-deleted record can exist under a deleted page...)
+						// Notice, we are deleting pages with no regard to subpages/subrecords - we do this since they
+						// should also be included in the set of deleted pages of course (no un-deleted record can exist
+						// under a deleted page...)
+					$tce->deleteRecord($table, $uid, TRUE, TRUE);
 
 						// Return errors if any:
 					if (count($tce->errorLog)) {

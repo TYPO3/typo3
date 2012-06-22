@@ -27,7 +27,7 @@
 /**
  * Contains the TYPO3 Backend Language class
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 /**
@@ -39,7 +39,7 @@
  * This class is normally instantiated as the global variable $LANG in typo3/template.php
  * It's only available in the backend and under certain circumstances in the frontend
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  * @see typo3/template.php, template
@@ -77,7 +77,7 @@ class language {
 
 	/**
 	 * If TRUE, will show the key/location of labels in the backend.
-	 * @var bool
+	 * @var boolean
 	 */
 	public $debugKey = FALSE;
 
@@ -133,7 +133,7 @@ class language {
 	 * $LANG->init($GLOBALS['BE_USER']->uc['lang']);
 	 *
 	 * @throws RuntimeException
-	 * @param  string $lang		The language key (two character string from backend users profile)
+	 * @param string $lang The language key (two character string from backend users profile)
 	 * @return void
 	 */
 	public function init($lang) {
@@ -178,11 +178,11 @@ class language {
 	/**
 	 * Adds labels and image references from the backend modules to the internal moduleLabels array
 	 *
-	 * @param  array $arr		Array with references to module labels, keys: ['labels']['tablabel'],
+	 * @param array $arr Array with references to module labels, keys: ['labels']['tablabel'],
 	 * 							['labels']['tabdescr'], ['tabs']['tab']
-	 * @param  string $prefix	Module name prefix
+	 * @param string $prefix Module name prefix
 	 * @return void
-	 * @see    t3lib_loadModules
+	 * @see t3lib_loadModules
 	 */
 	public function addModuleLabels($arr, $prefix) {
 		if (is_array($arr)) {
@@ -208,9 +208,9 @@ class language {
 	 * is used in the document otherwise (only MSIE, Mozilla is OK).
 	 * So by converting we by-pass this problem.
 	 *
-	 * @param  string $str	Input string
-	 * @return string		Output string
-	 * @access	public
+	 * @param string $str Input string
+	 * @return string Output string
+	 * @access public
 	 */
 	public function makeEntities($str) {
 			// Convert string back again, but using the full entity conversion:
@@ -225,9 +225,9 @@ class language {
 	 * rawurlencode() in order to pass strings in a safe way. This could still be done
 	 * for iso-8859-1 charsets but now I have applied the same method here for all charsets.
 	 *
-	 * @param	string $str		Input string, encoded with UTF-8
-	 * @return	string			Output string, a JavaScript function: "String.fromCharCode(......)"
-	 * @access	public
+	 * @param string $str Input string, encoded with UTF-8
+	 * @return string Output string, a JavaScript function: "String.fromCharCode(......)"
+	 * @access public
 	 */
 	public function JScharCode($str) {
 			// Convert the UTF-8 string into a array of char numbers:
@@ -250,10 +250,10 @@ class language {
 	 * Returns the label with key $index form the globally loaded $LOCAL_LANG array.
 	 * Mostly used from modules with only one LOCAL_LANG file loaded into the global space.
 	 *
-	 * @param	string $index	Label key
-	 * @param	boolean $hsc	If set, the return value is htmlspecialchar'ed
-	 * @return	string
-	 * @access	public
+	 * @param string $index Label key
+	 * @param boolean $hsc If set, the return value is htmlspecialchar'ed
+	 * @return string
+	 * @access public
 	 */
 	public function getLL($index, $hsc = FALSE) {
 			// Get Local Language
@@ -272,11 +272,11 @@ class language {
 	 * Works like ->getLL() but takes the $LOCAL_LANG array
 	 * used as the second argument instead of using the global array.
 	 *
-	 * @param	string  $index			Label key
-	 * @param	array   $localLanguage	$LOCAL_LANG array to get label key from
-	 * @param	boolean	$hsc			If set, the return value is htmlspecialchar'ed
-	 * @return	string
-	 * @access	public
+	 * @param string $index Label key
+	 * @param array $localLanguage $LOCAL_LANG array to get label key from
+	 * @param boolean $hsc If set, the return value is htmlspecialchar'ed
+	 * @return string
+	 * @access public
 	 */
 	public function getLLL($index, $localLanguage, $hsc = FALSE) {
 			// Get Local Language. Special handling for all extensions that
@@ -304,10 +304,10 @@ class language {
 	 * (and thereby it's highly deprecated to use 'language-splitted' label strings)
 	 * Refer to 'Inside TYPO3' for more details
 	 *
-	 * @param	string $input	Label key/reference
-	 * @param	boolean	$hsc	If set, the return value is htmlspecialchar'ed
-	 * @return	string
-	 * @access	public
+	 * @param string $input Label key/reference
+	 * @param boolean $hsc If set, the return value is htmlspecialchar'ed
+	 * @return string
+	 * @access public
 	 */
 	public function sL($input, $hsc = FALSE) {
 			// If cached label
@@ -357,9 +357,9 @@ class language {
 	 * as defined in $TCA_DESCR[$table]['refs']
 	 * $TCA_DESCR is a global var
 	 *
-	 * @param	string $table	Table name found as key in global array $TCA_DESCR
-	 * @return	void
-	 * @access	public
+	 * @param string $table Table name found as key in global array $TCA_DESCR
+	 * @return void
+	 * @access public
 	 */
 	public function loadSingleTableDescription($table) {
 
@@ -432,11 +432,11 @@ class language {
 	 * Includes locallang file (and possibly additional localized version if configured for)
 	 * Read language labels will be merged with $LOCAL_LANG (if $setGlobal = TRUE).
 	 *
-	 * @param	string $fileRef					$fileRef is a file-reference (see t3lib_div::getFileAbsFileName)
-	 * @param	boolean $setGlobal				Setting in global variable $LOCAL_LANG (or returning the variable)
-	 * @param	boolean	$mergeLocalOntoDefault	If $mergeLocalOntoDefault is set the local part of the $LOCAL_LANG array is merged onto the default part (if the local part exists) and the local part is unset.
-	 * @return	mixed							If $setGlobal is TRUE the LL-files will set the $LOCAL_LANG in the global scope. Otherwise the $LOCAL_LANG array is returned from function
-	 * @access	public
+	 * @param string $fileRef $fileRef is a file-reference (see t3lib_div::getFileAbsFileName)
+	 * @param boolean $setGlobal Setting in global variable $LOCAL_LANG (or returning the variable)
+	 * @param boolean $mergeLocalOntoDefault If $mergeLocalOntoDefault is set the local part of the $LOCAL_LANG array is merged onto the default part (if the local part exists) and the local part is unset.
+	 * @return mixed If $setGlobal is TRUE the LL-files will set the $LOCAL_LANG in the global scope. Otherwise the $LOCAL_LANG array is returned from function
+	 * @access public
 	 */
 	public function includeLLFile($fileRef, $setGlobal = TRUE, $mergeLocalOntoDefault = FALSE) {
 
@@ -482,9 +482,9 @@ class language {
 	/**
 	 * Includes a locallang file and returns the $LOCAL_LANG array found inside.
 	 *
-	 * @param	string $fileRef	Input is a file-reference (see t3lib_div::getFileAbsFileName) which, if exists, is included. That file is expected to be a 'local_lang' file containing a $LOCAL_LANG array.
-	 * @return	array			Value of $LOCAL_LANG found in the included file. If that array is found it's returned. Otherwise an empty array
-	 * @access	private
+	 * @param string $fileRef Input is a file-reference (see t3lib_div::getFileAbsFileName) which, if exists, is included. That file is expected to be a 'local_lang' file containing a $LOCAL_LANG array.
+	 * @return array Value of $LOCAL_LANG found in the included file. If that array is found it's returned. Otherwise an empty array
+	 * @access private
 	 */
 	protected function readLLfile($fileRef) {
 		if ($this->lang !== 'default') {
@@ -513,9 +513,9 @@ class language {
 	/**
 	 * Returns localized fileRef (.[langkey].php)
 	 *
-	 * @param	string $fileRef	Filename/path of a 'locallang.php' file
-	 * @return	string			Input filename with a '.[lang-key].php' ending added if $this->lang is not 'default'
-	 * @access	private
+	 * @param string $fileRef Filename/path of a 'locallang.php' file
+	 * @return string Input filename with a '.[lang-key].php' ending added if $this->lang is not 'default'
+	 * @access private
 	 */
 	protected function localizedFileRef($fileRef) {
 		if ($this->lang != 'default' && substr($fileRef, -4) == '.php') {

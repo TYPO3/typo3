@@ -31,7 +31,7 @@
  * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 unset($MCONF);
@@ -41,13 +41,11 @@ $LANG->includeLLFile('EXT:lang/locallang_mod_web_info.xml');
 
 $BE_USER->modAccess($MCONF, 1);
 
-
-
 /**
  * Script Class for the Web > Info module
  * This class creates the framework to which other extensions can connect their sub-modules
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
  */
@@ -68,11 +66,11 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	/**
 	 * Initialize module header etc and call extObjContent function
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function main() {
-		// Access check...
-		// The page will show only if there is a valid page and if this page may be viewed by the user
+			// Access check...
+			// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
 		$access = is_array($this->pageinfo) ? 1 : 0;
 
@@ -85,14 +83,14 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			$this->doc = t3lib_div::makeInstance('template');
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 			$this->doc->setModuleTemplate('templates/info.html');
-			$this->doc->tableLayout = Array (
-				'0' => Array (
-					'0' => Array('<td valign="top"><strong>', '</strong></td>'),
-					"defCol" => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><strong>', '</strong></td>')
+			$this->doc->tableLayout = array (
+				'0' => array (
+					'0' => array('<td valign="top"><strong>', '</strong></td>'),
+					"defCol" => array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><strong>', '</strong></td>')
 				),
-				"defRow" => Array (
-					"0" => Array('<td valign="top">', '</td>'),
-					"defCol" => Array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top">', '</td>')
+				"defRow" => array (
+					"0" => array('<td valign="top">', '</td>'),
+					"defCol" => array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top">', '</td>')
 				)
 			);
 
@@ -138,7 +136,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			$this->content .= $this->doc->spacer(5);
 			$this->content .= $this->doc->spacer(10);
 		}
-		// Renders the module page
+			// Renders the module page
 		$this->content = $this->doc->render(
 			$GLOBALS['LANG']->getLL('title'),
 			$this->content
@@ -148,7 +146,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	/**
 	 * Print module content (from $this->content)
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function printContent() {
 		$this->content = $this->doc->insertStylesAndJS($this->content);
@@ -158,7 +156,7 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
-	 * @return	array	all available buttons as an assoc. array
+	 * @return array All available buttons as an assoc. array
 	 */
 	protected function getButtons() {
 		$buttons = array(
@@ -198,17 +196,23 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_mod_web_info_index');
 $SOBE->init();
 
-// Include files?
-foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
-$SOBE->checkExtObj();	// Checking for first level external objects
+	// Include files?
+foreach($SOBE->include_once as $INC_FILE) {
+	include_once($INC_FILE);
+}
+	// Checking for first level external objects
+$SOBE->checkExtObj();
 
-// Repeat Include files! - if any files has been added by second-level extensions
-foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
-$SOBE->checkSubExtObj();	// Checking second level external objects
+	// Repeat Include files! - if any files has been added by second-level extensions
+foreach($SOBE->include_once as $INC_FILE) {
+	include_once($INC_FILE);
+}
+	// Checking second level external objects
+$SOBE->checkSubExtObj();
 
 $SOBE->main();
 $SOBE->printContent();

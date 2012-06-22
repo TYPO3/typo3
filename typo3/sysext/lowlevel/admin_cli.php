@@ -1,6 +1,8 @@
 <?php
 
-if (!defined('TYPO3_cliMode'))	die('You cannot run this script directly!');
+if (!defined('TYPO3_cliMode')) {
+	die('You cannot run this script directly!');
+}
 
 require_once(t3lib_extMgm::extPath('lowlevel').'class.tx_lowlevel_admin_core.php');
 

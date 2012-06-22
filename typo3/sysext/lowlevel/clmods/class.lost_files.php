@@ -28,14 +28,13 @@
  * Cleaner module: Lost files
  * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 
 /**
  * Looking for Lost files
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_lowlevel
  */
@@ -45,8 +44,6 @@ class tx_lowlevel_lost_files extends tx_lowlevel_cleaner_core {
 
 	/**
 	 * Constructor
-	 *
-	 * @return	void
 	 */
 	function __construct() {
 		parent::__construct();
@@ -85,7 +82,7 @@ Will report lost files.';
 	 * TODO: Add parameter to list more file names/patterns to ignore
 	 * TODO: Add parameter to include RTEmagic images
 	 *
-	 * @return	array
+	 * @return array
 	 */
 	function main() {
 		global $TYPO3_DB;
@@ -115,10 +112,10 @@ Will report lost files.';
 		$excludePaths = t3lib_div::trimExplode(',', $this->cli_argValue('--excludePath', 0), 1);
 
 			// Traverse files and for each, look up if its found in the reference index.
-		foreach($fileArr as $key => $value) {
+		foreach ($fileArr as $key => $value) {
 
 			$include = TRUE;
-			foreach($excludePaths as $exclPath) {
+			foreach ($excludePaths as $exclPath) {
 				if (t3lib_div::isFirstPartOfStr($value, $exclPath)) {
 					$include = FALSE;
 				}
@@ -173,7 +170,6 @@ Will report lost files.';
 
 		// $fileArr variable should now be empty with all contents transferred to the result array keys.
 
-
 		return $resultArray;
 	}
 
@@ -181,8 +177,8 @@ Will report lost files.';
 	 * Mandatory autofix function
 	 * Will run auto-fix on the result array. Echos status during processing.
 	 *
-	 * @param	array		Result array from main() function
-	 * @return	void
+	 * @param array $resultArray Result array from main() function
+	 * @return void
 	 */
 	function main_autoFix($resultArray) {
 		foreach($resultArray['lostFiles'] as $key => $value) {
