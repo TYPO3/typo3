@@ -3,6 +3,13 @@ require_once(t3lib_extMgm::extPath('t3editor', 'classes/class.tx_t3editor.php'))
 
 class tx_t3editor_tceforms_wizard {
 
+	/**
+	 * Main function
+	 *
+	 * @param array $parameters
+	 * @param object $pObj
+	 * @return string|NULL
+	 */
 	public function main($parameters, $pObj) {
 		$t3editor = t3lib_div::makeInstance('tx_t3editor');
 		if (!$t3editor->isEnabled()) {
