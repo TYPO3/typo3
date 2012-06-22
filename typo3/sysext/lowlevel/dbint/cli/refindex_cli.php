@@ -1,6 +1,8 @@
 <?php
 
-if (!defined('TYPO3_cliMode'))	die('You cannot run this script directly!');
+if (!defined('TYPO3_cliMode')) {
+	die('You cannot run this script directly!');
+}
 
 	// Call the functionality
 if (in_array('-e', $_SERVER["argv"]) || in_array('-c', $_SERVER["argv"])) {

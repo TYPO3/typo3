@@ -28,12 +28,13 @@
  * Cleaner module: RTE magicc images
  * User function called from tx_lowlevel_cleaner_core configured in ext_localconf.php
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
+
 /**
  * Looking for RTE images integrity
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_lowlevel
  */
@@ -43,8 +44,6 @@ class tx_lowlevel_rte_images extends tx_lowlevel_cleaner_core {
 
 	/**
 	 * Constructor
-	 *
-	 * @return	void
 	 */
 	function __construct() {
 		parent::__construct();
@@ -77,7 +76,7 @@ Reports problems with RTE images';
 	 * Analyse situation with RTE magic images. (still to define what the most useful output is).
 	 * Fix methods: API in t3lib_refindex that allows to change the value of a reference (we could copy the files) or remove reference
 	 *
-	 * @return	array
+	 * @return array
 	 */
 	function main() {
 			global $TYPO3_DB;
@@ -112,7 +111,7 @@ Reports problems with RTE images';
 
 			// Traverse the files and put into a large table:
 		if (is_array($recs)) {
-			foreach($recs as $rec) {
+			foreach ($recs as $rec) {
 				$filename = basename($rec['ref_string']);
 				if (t3lib_div::isFirstPartOfStr($filename, 'RTEmagicC_')) {
 					$original = 'RTEmagicP_'.preg_replace('/\.[[:alnum:]]+$/', '', substr($filename, 10));
@@ -139,8 +138,8 @@ Reports problems with RTE images';
 			}
 
 				// Searching for duplicates:
-			foreach($resultArray['RTEmagicFilePairs'] as $fileName => $fileInfo) {
-				if ($fileInfo['count']>1 && $fileInfo['exists'] && $fileInfo['original_exists']) 	{
+			foreach ($resultArray['RTEmagicFilePairs'] as $fileName => $fileInfo) {
+				if ($fileInfo['count']>1 && $fileInfo['exists'] && $fileInfo['original_exists']) {
 					$resultArray['doubleFiles'][$fileName] = $fileInfo['usedIn'];
 				}
 			}
@@ -151,7 +150,7 @@ Reports problems with RTE images';
 		$cleanerMode = t3lib_div::getUserObj($cleanerModules['lost_files'][0]);
 		$resLostFiles = $cleanerMode->main(array(), FALSE, TRUE);
 		if (is_array($resLostFiles['RTEmagicFiles'])) {
-			foreach($resLostFiles['RTEmagicFiles'] as $fileName) {
+			foreach ($resLostFiles['RTEmagicFiles'] as $fileName) {
 				if (!isset($resultArray['completeFileList'][$fileName])) 	{
 					$resultArray['lostFiles'][$fileName] = $fileName;
 				}
@@ -172,8 +171,8 @@ Reports problems with RTE images';
 	 * Mandatory autofix function
 	 * Will run auto-fix on the result array. Echos status during processing.
 	 *
-	 * @param	array		Result array from main() function
-	 * @return	void
+	 * @param array $resultArray Result array from main() function
+	 * @return void
 	 */
 	function main_autoFix($resultArray) {
 
@@ -183,15 +182,15 @@ Reports problems with RTE images';
 			if (!$limitTo || $limitTo==='doubleFiles') {
 
 				echo 'FIXING double-usages of RTE files in uploads/: '.LF;
-				foreach($resultArray['RTEmagicFilePairs'] as $fileName => $fileInfo) {
+				foreach ($resultArray['RTEmagicFilePairs'] as $fileName => $fileInfo) {
 
 						// Only fix something if there is a usage count of more than 1 plus if both original and copy exists:
 					if ($fileInfo['count']>1 && $fileInfo['exists'] && $fileInfo['original_exists']) 	{
 
 							// Traverse all records using the file:
-						$c=0;
-						foreach($fileInfo['usedIn'] as $hash => $recordID) {
-							if ($c==0) {
+						$c = 0;
+						foreach ($fileInfo['usedIn'] as $hash => $recordID) {
+							if ($c == 0) {
 								echo '	Keeping file '.$fileName.' for record '.$recordID.LF;
 							} else {
 									// CODE below is adapted from "class.tx_impexp.php" where there is support for duplication of RTE images:
@@ -248,10 +247,10 @@ Reports problems with RTE images';
 
 
 		if (is_array($resultArray['lostFiles'])) {
-			if ($limitTo==='lostFiles') {
+			if ($limitTo === 'lostFiles') {
 				echo 'Removing lost RTEmagic files from folders inside uploads/: '.LF;
 
-				foreach($resultArray['lostFiles'] as $key => $value) {
+				foreach ($resultArray['lostFiles'] as $key => $value) {
 					$absFileName = t3lib_div::getFileAbsFileName($value);
 					echo 'Deleting file: "'.$absFileName.'": ';
 					if ($bypass = $this->cli_noExecutionCheck($absFileName)) {
@@ -273,7 +272,7 @@ Reports problems with RTE images';
 	/**
 	 * Returns file processing object, initialized only once.
 	 *
-	 * @return	object		File processor object
+	 * @return object File processor object
 	 */
 	function getFileProcObj() {
 		if (!is_object($this->fileProcObj)) {

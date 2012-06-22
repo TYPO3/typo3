@@ -1,6 +1,6 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
-	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
 }
 
 	// Register cache t3lib_l10n

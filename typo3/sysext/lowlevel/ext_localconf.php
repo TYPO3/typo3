@@ -1,7 +1,9 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
+}
 
-if (TYPO3_MODE=='BE') {
+if (TYPO3_MODE == 'BE') {
 		// Setting up scripts that can be run from the cli_dispatch.phpsh script.
 	$TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']['lowlevel_refindex'] = array('EXT:lowlevel/dbint/cli/refindex_cli.php', '_CLI_lowlevel');
 	$TYPO3_CONF_VARS['SC_OPTIONS']['GLOBAL']['cliKeys']['lowlevel_cleaner'] = array('EXT:lowlevel/dbint/cli/cleaner_cli.php', '_CLI_lowlevel');

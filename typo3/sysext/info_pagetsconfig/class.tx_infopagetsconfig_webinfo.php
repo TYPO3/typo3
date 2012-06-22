@@ -30,22 +30,21 @@
  * Revised for TYPO3 3.7 June/2004 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * Page TSconfig viewer
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_infopagetsconfig
  */
 class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 
-
 	/**
 	 * Function menu initialization
 	 *
-	 * @return	array		Menu array
+	 * @return array Menu array
 	 */
 	function modMenu() {
 		global $LANG;
@@ -71,14 +70,16 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 			'tsconf_alphaSort' => '1',
 		);
 
-		if (!$GLOBALS['BE_USER']->isAdmin())	unset($modMenuAdd['tsconf_parts'][99]);
+		if (!$GLOBALS['BE_USER']->isAdmin()) {
+			unset($modMenuAdd['tsconf_parts'][99]);
+		}
 		return $modMenuAdd;
 	}
 
 	/**
 	 * Main function of class
 	 *
-	 * @return	string		HTML output
+	 * @return string HTML output
 	 */
 	function main() {
 		global $LANG;
@@ -94,8 +95,8 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 			$lines = array();
 			$pUids = array();
 
-			foreach($TSparts as $k => $v) {
-				if ($k!='uid_0') {
+			foreach ($TSparts as $k => $v) {
+				if ($k != 'uid_0') {
 					if ($k=='defaultPageTSconfig') {
 						$pTitle = '<strong>'.$GLOBALS['LANG']->getLL('editTSconfig_default', 1).'</strong>';
 						$editIcon = '';
@@ -147,8 +148,10 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 				1
 			);
 		} else {
-			$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');	// Defined global here!
-			$tmpl->tt_track = 0;	// Do not log time-performance information
+				// Defined global here!
+			$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');
+				// Do not log time-performance information
+			$tmpl->tt_track = 0;
 
 			$tmpl->fixedLgd = 0;
 			$tmpl->linkObjects = 0;
@@ -202,7 +205,9 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 			}
 			$modTSconfig = $modTSconfig['properties'];
 
-			if (!is_array($modTSconfig))	$modTSconfig = array();
+			if (!is_array($modTSconfig)) {
+				$modTSconfig = array();
+			}
 
 			$theOutput .= $this->pObj->doc->section('',
 					t3lib_BEfunc::cshItem('_MOD_' . $GLOBALS['MCONF']['name'], 'tsconfig_hierarchy', $GLOBALS['BACK_PATH'], '|<br />') .
