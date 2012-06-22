@@ -90,7 +90,7 @@ class Tx_Viewpage_Controller_ViewController extends Tx_Extbase_MVC_Controller_Ac
 	/**
 	 * Get admin command
 	 *
-	 * @param $pageId
+	 * @param integer $pageId
 	 * @return string
 	 */
 	protected function getAdminCommand($pageId) {
@@ -108,7 +108,7 @@ class Tx_Viewpage_Controller_ViewController extends Tx_Extbase_MVC_Controller_Ac
 	 * for a page id or a page tree.
 	 * The method checks if a type is set for the given id and returns the additional GET string.
 	 *
-	 * @param $pageId
+	 * @param integer $pageId
 	 * @return string
 	 */
 	protected function getTypeParameterIfSet($pageId) {
@@ -124,7 +124,7 @@ class Tx_Viewpage_Controller_ViewController extends Tx_Extbase_MVC_Controller_Ac
 	/**
 	 * Get domain name for requested page id
 	 *
-	 * @param $pageId
+	 * @param integer $pageId
 	 * @return boolean|string Domain name if there is one, FALSE if not
 	 */
 	protected function getDomainName($pageId) {

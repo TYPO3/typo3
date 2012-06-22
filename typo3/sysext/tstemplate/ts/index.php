@@ -31,16 +31,13 @@
  * 	$TYPO3_CONF_VARS["MODS"]["web_ts"]["onlineResourceDir"]  = Directory of default resources. Eg. "fileadmin/res/" or so.
  *
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate/ts/locallang.xml');
 $BE_USER->modAccess($MCONF, TRUE);
 
-
-// ***************************
-// Script Classes
-// ***************************
+	// Script Classes
 class SC_mod_web_ts_index extends t3lib_SCbase {
 	var $perms_clause;
 	var $e;
@@ -52,6 +49,11 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 	var $modMenu_dontValidateList = '';
 	var $modMenu_setDefaultList = '';
 
+	/**
+	 * Init
+	 *
+	 * @return void
+	 */
 	function init() {
 
 		parent::init();
@@ -68,16 +70,26 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		}
 	}
 
+	/**
+	 * Clear cache
+	 *
+	 * @return void
+	 */
 	function clearCache() {
 		if (t3lib_div::_GP('clear_all_cache')) {
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-			/* @var $tce t3lib_TCEmain */
+			/** @var $tce t3lib_TCEmain */
 			$tce->stripslashes_values = 0;
 			$tce->start(array(), array());
 			$tce->clear_cacheCmd('all');
 		}
 	}
 
+	/**
+	 * Main
+	 *
+	 * @return void
+	 */
 	function main() {
 
 			// Template markers
@@ -87,8 +99,8 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			'CONTENT' => ''
 		);
 
-		// Access check...
-		// The page will show only if there is a valid page and if this page may be viewed by the user
+			// Access check...
+			// The page will show only if there is a valid page and if this page may be viewed by the user
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
 		$this->access = is_array($this->pageinfo) ? 1 : 0;
 
@@ -160,7 +172,6 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$markers['CONTENT'] = $this->content;
 		} else {
 				// If no access or if ID == zero
-
 			$this->doc->inDocStylesArray[] = '
 				TABLE#ts-overview tr.t3-row-header { background-color: #A2AAB8; }
 				TABLE#ts-overview tr td {padding: 2px;}
@@ -205,9 +216,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			' . $GLOBALS['LANG']->getLL('overview') . '
 			<br /><br />' . $table);
 
-			// ********************************************
-			// RENDER LIST of pages with templates, END
-			// ********************************************
+				// RENDER LIST of pages with templates, END
 
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
@@ -223,6 +232,11 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		);
 	}
 
+	/**
+	 * Print content
+	 *
+	 * @return void
+	 */
 	function printContent() {
 		echo $this->content;
 	}
@@ -230,7 +244,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
-	 * @return	array	all available buttons as an assoc. array
+	 * @return array All available buttons as an assoc. array
 	 */
 	protected function getButtons() {
 
@@ -330,10 +344,15 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		return $buttons;
 	}
 
-	// ***************************
 	// OTHER FUNCTIONS:
-	// ***************************
 
+	/**
+	 * Wrap title for link in template
+	 *
+	 * @param string $title
+	 * @param string $onlyKey
+	 * @return string
+	 */
 	function linkWrapTemplateTitle($title, $onlyKey = '') {
 		$urlParameters = array(
 				'id' => $this->id,
@@ -347,11 +366,18 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		return $title;
 	}
 
+	/**
+	 * No template
+	 *
+	 * @param integer $newStandardTemplate
+	 * @return string
+	 */
 	function noTemplate($newStandardTemplate = 0) {
-
-		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');	// Defined global here!
-		/* @var $tmpl t3lib_tsparser_ext */
-		$tmpl->tt_track = FALSE;	// Do not log time-performance information
+			// Defined global here!
+		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');
+		/** @var $tmpl t3lib_tsparser_ext */
+			// Do not log time-performance information
+		$tmpl->tt_track = FALSE;
 		$tmpl->init();
 		$theOutput = '';
 		$flashMessage = t3lib_div::makeInstance(
@@ -365,7 +391,8 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 
 			// New standard?
 		if ($newStandardTemplate) {
-			if (t3lib_extMgm::isLoaded('statictemplates')) { // check wether statictemplates are supported
+				// check wether statictemplates are supported
+			if (t3lib_extMgm::isLoaded('statictemplates')) {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title,uid', 'static_template', '', '', 'title');
 				$opt = '';
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -406,9 +433,11 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 	}
 
 	function templateMenu() {
-		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');	// Defined global here!
-		/* @var $tmpl t3lib_tsparser_ext */
-		$tmpl->tt_track = FALSE;	// Do not log time-performance information
+			// Defined global here!
+		$tmpl = t3lib_div::makeInstance('t3lib_tsparser_ext');
+		/** @var $tmpl t3lib_tsparser_ext */
+			// Do not log time-performance information
+		$tmpl->tt_track = FALSE;
 		$tmpl->init();
 		$all = $tmpl->ext_getAllTemplates($this->id, $this->perms_clause);
 		$menu = '';
@@ -426,10 +455,17 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 		return $menu;
 	}
 
+	/**
+	 * Create template
+	 *
+	 * @param integer $id
+	 * @param integer $actTemplateId
+	 * @return string
+	 */
 	function createTemplate($id, $actTemplateId = 0) {
 		if (t3lib_div::_GP('createExtension') || t3lib_div::_GP('createExtension_x')) {
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-			/* @var $tce t3lib_TCEmain */
+			/** @var $tce t3lib_TCEmain */
 			$tce->stripslashes_values = 0;
 			$recData = array();
 			$recData['sys_template']['NEW'] = array(
@@ -442,7 +478,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			return $tce->substNEWwithIDs['NEW'];
 		} elseif (t3lib_div::_GP('newWebsite')) {
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-			/* @var $tce t3lib_TCEmain */
+			/** @var $tce t3lib_TCEmain */
 			$tce->stripslashes_values = 0;
 			$recData = array();
 
@@ -477,9 +513,16 @@ page.10.value = HELLO WORLD!
 		}
 	}
 
-	// ********************************************
 	// RENDER LIST of pages with templates, BEGIN
-	// ********************************************
+
+	/**
+	 * Set page in array
+	 *
+	 * @param array $pArray
+	 * @param array $rlArr
+	 * @param array $row
+	 * @return void
+	 */
 	function setInPageArray(&$pArray, $rlArr, $row) {
 		ksort($rlArr);
 		reset($rlArr);
@@ -500,6 +543,14 @@ page.10.value = HELLO WORLD!
 		}
 	}
 
+	/**
+	 * Render the list
+	 *
+	 * @param array $pArray
+	 * @param array $lines
+	 * @param integer $c
+	 * @return array
+	 */
 	function renderList($pArray, $lines = array(), $c = 0) {
 		if (is_array($pArray)) {
 			reset($pArray);
@@ -536,7 +587,7 @@ page.10.value = HELLO WORLD!
 	}
 }
 
-// Make instance:
+	// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_mod_web_ts_index');
 /* @var $SOBE SC_mod_web_ts_index */
 $SOBE->init();
@@ -545,7 +596,8 @@ $SOBE->init();
 foreach($SOBE->include_once as $INC_FILE) {
 	include_once($INC_FILE);
 }
-$SOBE->checkExtObj();	// Checking for first level external objects
+	// Checking for first level external objects
+$SOBE->checkExtObj();
 
 $SOBE->clearCache();
 $SOBE->main();

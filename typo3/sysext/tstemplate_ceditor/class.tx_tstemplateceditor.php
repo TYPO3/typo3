@@ -32,12 +32,19 @@
  * localconf-variables:
  * $TYPO3_CONF_VARS['MODS']['web_ts']['onlineResourceDir'] = 'fileadmin/fonts/';		// This is the path (must be in "fileadmin/" !!) where the web_ts/constant-editor submodule fetches online resources. Put fonts (ttf) and standard images here!
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_ceditor/locallang.xml');
 
 class tx_tstemplateceditor extends t3lib_extobjbase {
+	/**
+	 * Initialize editor
+	 *
+	 * @param integer $pageId
+	 * @param integer $template_uid
+	 * @return integer
+	 */
 	function initialize_editor($pageId, $template_uid=0) {
 			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 		global $tmpl,$tplRow,$theConstants;
@@ -48,19 +55,31 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 
 		$tmpl->ext_localGfxPrefix = t3lib_extMgm::extPath('tstemplate_ceditor');
 		$tmpl->ext_localWebGfxPrefix = $GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('tstemplate_ceditor');
-
-		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);	// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
-		if (is_array($tplRow))	{	// IF there was a template...
+			// Get the row of the first VISIBLE template of the page. whereclause like the frontend.
+		$tplRow = $tmpl->ext_getFirstTemplate($pageId, $template_uid);
+			// IF there was a template...
+		if (is_array($tplRow)) {
 				// Gets the rootLine
 			$sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
 			$rootLine = $sys_page->getRootLine($pageId);
-			$tmpl->runThroughTemplates($rootLine, $template_uid);	// This generates the constants/config + hierarchy info for the template.
-			$theConstants = $tmpl->generateConfig_constants();	// The editable constants are returned in an array.
-			$tmpl->ext_categorizeEditableConstants($theConstants);	// The returned constants are sorted in categories, that goes into the $tmpl->categories array
-			$tmpl->ext_regObjectPositions($tplRow['constants']);		// This array will contain key=[expanded constantname], value=linenumber in template. (after edit_divider, if any)
+				// This generates the constants/config + hierarchy info for the template.
+			$tmpl->runThroughTemplates($rootLine, $template_uid);
+				// The editable constants are returned in an array.
+			$theConstants = $tmpl->generateConfig_constants();
+				// The returned constants are sorted in categories, that goes into the $tmpl->categories array
+			$tmpl->ext_categorizeEditableConstants($theConstants);
+				// This array will contain key=[expanded constantname], value=linenumber in template. (after edit_divider, if any)
+			$tmpl->ext_regObjectPositions($tplRow['constants']);
 			return 1;
 		}
 	}
+
+	/**
+	 * Display example
+	 *
+	 * @param string $theOutput
+	 * @return string
+	 */
 	function displayExample($theOutput) {
 		global $tmpl;
 		if ($tmpl->helpConfig['imagetag'] || $tmpl->helpConfig['description'] || $tmpl->helpConfig['header']) {
@@ -74,37 +93,30 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 		return $theOutput;
 	}
 
+	/**
+	 * Main
+	 *
+	 * @return string
+	 */
 	function main() {
 		global $TYPO3_CONF_VARS;
 		global $tmpl, $tplRow, $theConstants;
 
 		$theOutput = '';
 
-		// **************************
-		// Create extension template
-		// **************************
+			// Create extension template
 		$this->pObj->createTemplate($this->pObj->id);
 
-
-
-
-		// **************************
-		// Checking for more than one template an if, set a menu...
-		// **************************
+			// Checking for more than one template an if, set a menu...
 		$manyTemplatesMenu = $this->pObj->templateMenu();
 		$template_uid = 0;
 		if ($manyTemplatesMenu) {
 			$template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
 		}
 
-
-
-		// **************************
-		// Main
-		// **************************
-
-		// BUGBUG: Should we check if the uset may at all read and write template-records???
-		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid); // initialize
+			// BUGBUG: Should we check if the uset may at all read and write template-records???
+			// initialize
+		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
 
 		if ($existTemplate) {
 			$saveId = $tplRow['_ORIG_uid'] ? $tplRow['_ORIG_uid'] : $tplRow['uid'];
@@ -132,7 +144,7 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 				}
 			}
 
-			// Output edit form
+				// Output edit form
 			$tmpl->ext_readDirResources($TYPO3_CONF_VARS['MODS']['web_ts']['onlineResourceDir']);
 			$tmpl->ext_resourceDims();
 

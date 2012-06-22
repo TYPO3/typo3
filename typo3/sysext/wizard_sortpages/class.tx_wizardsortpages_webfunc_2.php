@@ -30,12 +30,12 @@
  * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 /**
  * Creates the "Sort pages" wizard
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tx_wizardsortpages
  */
@@ -44,7 +44,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 	/**
 	 * Adds menu items... but I think this is not used at all. Looks very much like some testing code. If anyone cares to check it we can remove it some day...
 	 *
-	 * @return	array
+	 * @return array
 	 * @ignore
 	 */
 	function modMenu() {
@@ -58,7 +58,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 	/**
 	 * Main function creating the content for the module.
 	 *
-	 * @return	string		HTML content for the module, actually a "section" made through the parent object in $this->pObj
+	 * @return string HTML content for the module, actually a "section" made through the parent object in $this->pObj
 	 */
 	function main() {
 		global $SOBE,$LANG;
@@ -69,22 +69,22 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 
 			$theCode='';
 
-				// check if user has modify permissions to
+				// Check if user has modify permissions to
 			$sys_pages = t3lib_div::makeInstance('t3lib_pageSelect');
 			$sortByField = t3lib_div::_GP('sortByField');
 			if ($sortByField) {
-				$menuItems=array();
+				$menuItems = array();
 				if (t3lib_div::inList('title,subtitle,crdate,tstamp', $sortByField)) {
 					$menuItems = $sys_pages->getMenu($this->pObj->id, 'uid,pid,title', $sortByField, '', 0);
-				} elseif ($sortByField=='REV') {
+				} elseif ($sortByField == 'REV') {
 					$menuItems = $sys_pages->getMenu($this->pObj->id, 'uid,pid,title', 'sorting', '', 0);
 					$menuItems = array_reverse($menuItems);
 				}
 				if (count($menuItems)) {
 					$tce = t3lib_div::makeInstance('t3lib_TCEmain');
-					$tce->stripslashes_values=0;
+					$tce->stripslashes_values = 0;
 					$menuItems = array_reverse($menuItems);
-					$cmd=array();
+					$cmd = array();
 					foreach ($menuItems as $r) {
 						$cmd['pages'][$r['uid']]['move']=$this->pObj->id;
 					}
@@ -94,15 +94,15 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 				}
 			}
 
-				//
+
 			$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', 0);
-			$lines=array();
-				$lines[]= '<tr class="t3-row-header">
-					<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'), 'title') . '</td>
-					' . (t3lib_extMgm::isLoaded('cms') ? '<td> ' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'), 'subtitle') . '</td>' : '').'
-					<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'), 'tstamp') . '</td>
-					<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'), 'crdate') . '</td>
-					</tr>';
+			$lines = array();
+			$lines[]= '<tr class="t3-row-header">
+				<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'), 'title') . '</td>
+				' . (t3lib_extMgm::isLoaded('cms') ? '<td> ' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'), 'subtitle') . '</td>' : '').'
+				<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'), 'tstamp') . '</td>
+				<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'), 'crdate') . '</td>
+				</tr>';
 			foreach ($menuItems as $rec) {
 				$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(2);	// edit permissions for that page!
 				$pRec = t3lib_BEfunc::getRecord ('pages', $rec['uid'], 'uid', ' AND '.$m_perms_clause);
@@ -120,7 +120,7 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 
 			if (count($menuItems)) {
 					// Menu:
-				$lines=array();
+				$lines = array();
 				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'), 'title');
 				if (t3lib_extMgm::isLoaded('cms')) $lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'), 'subtitle');
 				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'), 'tstamp');
@@ -143,9 +143,9 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 	/**
 	 * Creates a link for the sorting order
 	 *
-	 * @param	string		Title of the link
-	 * @param	string		Field to sort by
-	 * @return	string		HTML string
+	 * @param string $title Title of the link
+	 * @param string $order Field to sort by
+	 * @return string HTML string
 	 */
 	function wiz_linkOrder($title, $order) {
 		return '&nbsp; &nbsp;<a class="t3-link" href="' . htmlspecialchars('index.php?id=' . $GLOBALS['SOBE']->id . '&sortByField=' . $order) . '" onclick="return confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('wiz_changeOrder_msg1')) . ')">' . htmlspecialchars($title) . '</a>';

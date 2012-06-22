@@ -1,7 +1,9 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
+}
 
-if (TYPO3_MODE=='BE') {
+if (TYPO3_MODE == 'BE') {
 	t3lib_extMgm::insertModuleFunction(
 		'web_func',
 		'tx_wizardsortpages_webfunc_2',
