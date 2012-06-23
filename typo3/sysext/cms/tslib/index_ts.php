@@ -45,16 +45,14 @@ define('TYPO3_MODE', 'FE');
 	// AJAX/compression data corruption
 ob_start();
 
-Typo3_Bootstrap::getInstance()->loadDefaultTypo3ConfVars()
+Typo3_Bootstrap::getInstance()
 	->registerExtDirectComponents()
-	->initializeGlobalVariables()
 	->checkLocalconfExistsOrDie()
 	->setGlobalDatabaseVariablesToEmptyString()
 	->loadMainConfigurationFile()
 	->defineTypo3DatabaseConstants()
 	->initializeCachingFramework()
 	->registerAutoloader()
-	->addCorePearPathToIncludePath()
 	->checkUtf8DatabaseSettingsOrDie()
 	->transferDeprecatedCurlSettings()
 	->setCacheHashOptions()
@@ -74,8 +72,7 @@ Typo3_Bootstrap::getInstance()->loadDefaultTypo3ConfVars()
 	->requireAdditionalExtensionFiles()
 	->setFinalCachingFrameworkCacheConfiguration()
 	->defineLoggingAndExceptionConstants()
-	->unsetReservedGlobalVariables()
-	->initializeGlobalTimeVariables();
+	->unsetReservedGlobalVariables();
 
 if (!t3lib_extMgm::isLoaded('cms')) {
 	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');

@@ -3490,7 +3490,10 @@ final class t3lib_div {
 			case 'HTTP_ACCEPT_LANGUAGE':
 			case 'REMOTE_HOST':
 			case 'QUERY_STRING':
-				$retVal = $_SERVER[$getEnvName];
+				$retVal = '';
+				if (isset($_SERVER[$getEnvName])) {
+					$retVal = $_SERVER[$getEnvName];
+				}
 				break;
 			case 'TYPO3_DOCUMENT_ROOT':
 					// Get the web root (it is not the root of the TYPO3 installation)
@@ -3635,7 +3638,9 @@ final class t3lib_div {
 		} elseif (strpos($useragent, 'Flash') !== FALSE) {
 			$bInfo['BROWSER'] = 'flash';
 		}
-		if ($bInfo['BROWSER']) {
+
+		$bInfo['FORMSTYLE'] = FALSE;
+		if (isset($bInfo['BROWSER'])) {
 				// Browser version
 			switch ($bInfo['BROWSER']) {
 				case 'net':
@@ -3671,9 +3676,10 @@ final class t3lib_div {
 			} elseif (strpos($useragent, 'Linux') !== FALSE || strpos($useragent, 'X11') !== FALSE || strpos($useragent, 'SGI') !== FALSE || strpos($useragent, ' SunOS ') !== FALSE || strpos($useragent, ' HP-UX ') !== FALSE) {
 				$bInfo['SYSTEM'] = 'unix';
 			}
+
+				// Is TRUE if the browser supports css to format forms, especially the width
+			$bInfo['FORMSTYLE'] = ($bInfo['BROWSER'] == 'msie' || ($bInfo['BROWSER'] == 'net' && $bInfo['VERSION'] >= 5) || $bInfo['BROWSER'] == 'opera' || $bInfo['BROWSER'] == 'konqu');
 		}
-			// Is TRUE if the browser supports css to format forms, especially the width
-		$bInfo['FORMSTYLE'] = ($bInfo['BROWSER'] == 'msie' || ($bInfo['BROWSER'] == 'net' && $bInfo['VERSION'] >= 5) || $bInfo['BROWSER'] == 'opera' || $bInfo['BROWSER'] == 'konqu');
 
 		return $bInfo;
 	}
