@@ -92,7 +92,7 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlarea_api {
 	 */
 	public function buildJavascriptConfiguration($RTEcounter) {
 		$registerRTEinJavascriptString = '';
-		$pluginButtonsArray = t3lib_div::trimExplode(",", $this->pluginButtons);
+		$pluginButtonsArray = t3lib_div::trimExplode(',', $this->pluginButtons);
 
 			// Process Page TSConfig configuration for each button
 		foreach ($pluginButtonsArray as $buttonId) {

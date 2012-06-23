@@ -760,39 +760,39 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			break;
 			case 'spec':
 				if (is_array($this->thisConfig['userLinks.'])) {
-					$subcats=array();
+					$subcats = array();
 					$v=$this->thisConfig['userLinks.'];
 					foreach ($v as $k2 => $dummyValue) {
 						$k2i = intval($k2);
-						if (substr($k2, -1)=='.' && is_array($v[$k2i.'.'])) {
+						if (substr($k2, -1) == '.' && is_array($v[$k2i . '.'])) {
 
 								// Title:
 							$title = trim($v[$k2i]);
 							if (!$title) {
-								$title=$v[$k2i.'.']['url'];
+								$title = $v[$k2i.'.']['url'];
 							} else {
-								$title=$GLOBALS['LANG']->sL($title);
+								$title = $GLOBALS['LANG']->sL($title);
 							}
 								// Description:
 							$description = $v[$k2i . '.']['description'] ? $GLOBALS['LANG']->sL($v[$k2i . '.']['description'], 1) . '<br />' : '';
 
 								// URL + onclick event:
-							$onClickEvent='';
-							if (isset($v[$k2i.'.']['target']))	$onClickEvent.="browse_links_setTarget('".$v[$k2i.'.']['target']."');";
+							$onClickEvent = '';
+							if (isset($v[$k2i . '.']['target']))	$onClickEvent .= 'browse_links_setTarget(\'' . $v[$k2i . '.']['target'] . '\');';
 							$v[$k2i.'.']['url'] = str_replace('###_URL###', $this->siteURL, $v[$k2i.'.']['url']);
-							if (substr($v[$k2i.'.']['url'], 0, 7)=="http://" || substr($v[$k2i.'.']['url'], 0, 7)=='mailto:') {
-								$onClickEvent.="cur_href=unescape('".rawurlencode($v[$k2i.'.']['url'])."');link_current();";
+							if (substr($v[$k2i . '.']['url'], 0, 7) == 'http://' || substr($v[$k2i . '.']['url'], 0, 7) == 'mailto:') {
+								$onClickEvent .= 'cur_href=unescape(\'' . rawurlencode($v[$k2i . '.']['url']) . '\');link_current();';
 							} else {
-								$onClickEvent.="link_spec(unescape('".$this->siteURL.rawurlencode($v[$k2i.'.']['url'])."'));";
+								$onClickEvent .= 'link_spec(unescape(\'' . $this->siteURL . rawurlencode($v[$k2i . '.']['url']) . '\'));';
 							}
 
 								// Link:
-							$A=array('<a href="#" onclick="'.htmlspecialchars($onClickEvent).'return false;">','</a>');
+							$A = array('<a href="#" onclick="' . htmlspecialchars($onClickEvent) . 'return false;">', '</a>');
 
 								// Adding link to menu of user defined links:
-							$subcats[$k2i]='
+							$subcats[$k2i] = '
 								<tr>
-									<td class="bgColor4">'.$A[0].'<strong>'.htmlspecialchars($title).($this->curUrlInfo['info']==$v[$k2i.'.']['url']?'<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_right.gif', 'width="5" height="9"').' class="c-blinkArrowR" alt="" />':'').'</strong><br />'.$description.$A[1].'</td>
+									<td class="bgColor4">' . $A[0] . '<strong>' . htmlspecialchars($title) . ($this->curUrlInfo['info'] == $v[$k2i . '.']['url'] ? '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_right.gif', 'width="5" height="9"') . ' class="c-blinkArrowR" alt="" />' : '') . '</strong><br />' . $description . $A[1] . '</td>
 								</tr>';
 						}
 					}
@@ -809,7 +809,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 							<tr>
 								<td class="bgColor5" class="c-wCell" valign="top"><strong>' . $GLOBALS['LANG']->getLL('special', 1) . '</strong></td>
 							</tr>
-							'.implode('', $subcats).'
+							' . implode('', $subcats) . '
 						</table>
 						';
 				}

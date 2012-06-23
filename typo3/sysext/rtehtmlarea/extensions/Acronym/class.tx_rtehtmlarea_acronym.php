@@ -62,7 +62,7 @@ class tx_rtehtmlarea_acronym extends tx_rtehtmlarea_api {
 			// <abbr> was not supported by IE before verison 7
 		if ($this->htmlAreaRTE->client['browser'] == 'msie' && $this->htmlAreaRTE->client['version'] < 7) {
 				// change <abbr> to <acronym>
-			$content = preg_replace('/<(\/?)abbr/i', "<$1acronym", $content);
+			$content = preg_replace('/<(\/?)abbr/i', '<$1acronym', $content);
 		}
 
 		return $content;
