@@ -40,27 +40,19 @@ define('TYPO3_enterInstallScript', '1');
 	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap.php is accidentally included twice
 	// (which would indicate a clear bug).
 require('../classes/Bootstrap.php');
-Typo3_Bootstrap::getInstance()
-	->checkEnvironmentOrDie()
-	->defineBaseConstants()
-	->defineAndCheckPaths('typo3/install/')
-	->requireBaseClasses()
-	->setUpEnvironment();
+Typo3_Bootstrap::getInstance()->baseSetup('typo3/install/');
 
 require('../classes/Bootstrap/Install.php');
 Typo3_Bootstrap_Install::checkEnabledInstallToolOrDie();
 
 Typo3_Bootstrap::getInstance()
-	->loadDefaultTypo3ConfVars()
 	->registerExtDirectComponents()
-	->initializeGlobalVariables()
 	->checkLocalconfExistsOrDie()
 	->setGlobalDatabaseVariablesToEmptyString()
 	->loadMainConfigurationFile()
 	->defineTypo3DatabaseConstants()
 	->initializeCachingFramework()
 	->registerAutoloader()
-	->addCorePearPathToIncludePath()
 	->checkUtf8DatabaseSettingsOrDie()
 	->transferDeprecatedCurlSettings()
 	->setCacheHashOptions()
@@ -81,7 +73,6 @@ Typo3_Bootstrap::getInstance()
 	->setFinalCachingFrameworkCacheConfiguration()
 	->defineLoggingAndExceptionConstants()
 	->unsetReservedGlobalVariables()
-	->initializeGlobalTimeVariables()
 	->initializeTypo3DbGlobal(FALSE)
 	->checkLockedBackendAndRedirectOrDie()
 	->checkBackendIpOrDie()
