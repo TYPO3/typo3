@@ -32,16 +32,6 @@
 class tx_form_System_Validate_Email extends tx_form_System_Validate_Abstract {
 
 	/**
-	 * Constructor
-	 *
-	 * @param array $arguments Typoscript configuration
-	 * @return void
-	 */
-	public function __construct($arguments) {
-		parent::__construct($arguments);
-	}
-
-	/**
 	 * Returns TRUE if submitted value validates according to rule
 	 *
 	 * @return boolean
