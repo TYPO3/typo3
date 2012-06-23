@@ -41,14 +41,6 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 	var $allObjStrings = array();
 
 	/**
-	 * Initializes the Module
-	 * @return void
-	 */
-	function init() {
-		parent::init();
-	}
-
-	/**
 	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
 	 *
 	 * @return void
