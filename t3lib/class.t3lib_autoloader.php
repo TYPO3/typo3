@@ -157,7 +157,15 @@ class t3lib_autoloader {
 			$classRegistry = self::createCoreAndExtensionRegistry();
 		}
 
-		self::$classNameToFileMapping = $classRegistry;
+			// Lowercase all keys. We must use the multi byte safe version
+			// of strtolower from t3lib_div here, so array_change_key_case()
+			// can not be used
+		$lowerCasedClassRegistry = array();
+		foreach ($classRegistry as $className => $classFile) {
+			$lowerCasedClassRegistry[t3lib_div::strtolower($className)] = $classFile;
+		}
+
+		self::$classNameToFileMapping = $lowerCasedClassRegistry;
 	}
 
 	/**
@@ -173,7 +181,7 @@ class t3lib_autoloader {
 	 */
 	public static function getClassPathByRegistryLookup($className) {
 		$classPath = NULL;
-		$classNameLower = strtolower($className);
+		$classNameLower = t3lib_div::strtolower($className);
 
 			// Try to resolve extbase naming scheme if class is not already in cache file
 		if (!array_key_exists($classNameLower, self::$classNameToFileMapping)) {
@@ -341,12 +349,13 @@ class t3lib_autoloader {
 	protected static function addClassToCache($classFilePathAndName, $className) {
 		if (file_exists($classFilePathAndName)) {
 			self::$cacheUpdateRequired = TRUE;
-			self::$classNameToFileMapping[strtolower($className)] = $classFilePathAndName;
+			self::$classNameToFileMapping[t3lib_div::strtolower($className)] = $classFilePathAndName;
 		}
 	}
 
 	/**
-	 * Set or update autoloader cache entry
+	 * Set or update autoloader cache entry.
+	 * It is expected that all class names (keys) are already lowercased!
 	 *
 	 * @param array $registry Current registry entries
 	 * @return void
@@ -355,7 +364,7 @@ class t3lib_autoloader {
 		$cachedFileContent = 'return array(';
 		foreach ($registry as $className => $classLocation) {
 			$nullOrLocation = is_string($classLocation) ? '\'' . $classLocation . '\',' : 'NULL,';
-			$cachedFileContent .= LF . '\'' . strtolower($className) . '\' => ' . $nullOrLocation;
+			$cachedFileContent .= LF . '\'' . $className . '\' => ' . $nullOrLocation;
 		}
 		$cachedFileContent .= LF . ');';
 		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
