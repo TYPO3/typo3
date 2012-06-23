@@ -67,16 +67,6 @@ class t3lib_file_Repository_FileCollectionRepository extends t3lib_collection_Re
 	}
 
 	/**
-	 * Finds record collection by type.
-	 *
-	 * @param string $type The type to be looked up
-	 * @return NULL|t3lib_file_Collection_AbstractFileCollection[]
-	 */
-	public function findByType($type) {
-		return parent::findByType($type);
-	}
-
-	/**
 	 * Creates a record collection domain object.
 	 *
 	 * @param $record Database record to be reconsituted
