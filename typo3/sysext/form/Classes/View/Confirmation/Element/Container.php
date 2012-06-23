@@ -43,16 +43,6 @@ class tx_form_View_Confirmation_Element_Container extends tx_form_View_Confirmat
 	';
 
 	/**
-	 * Constructor
-	 *
-	 * @param object $model Model for this element
-	 * @return void
-	 */
-	public function __construct($model) {
-		parent::__construct($model);
-	}
-
-	/**
 	 * Get the child objects
 	 * and render them as document fragment
 	 *

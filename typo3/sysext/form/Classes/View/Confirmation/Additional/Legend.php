@@ -41,15 +41,5 @@ class tx_form_View_Confirmation_Additional_Legend extends tx_form_View_Confirmat
 			<legendvalue />
 		</legend>
 	';
-
-	/**
-	 * Constructor
-	 *
-	 * @param object $model The parent model
-	 * @return void
-	 */
-	public function __construct($model) {
-		parent::__construct($model);
-	}
 }
 ?>
