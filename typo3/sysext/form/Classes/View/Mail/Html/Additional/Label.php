@@ -41,15 +41,5 @@ class tx_form_View_Mail_Html_Additional_Label extends tx_form_View_Mail_Html_Add
 			<labelvalue />
 		</em>
 	';
-
-	/**
-	 * Constructor
-	 *
-	 * @param object $model The parent model
-	 * @return void
-	 */
-	public function __construct($model) {
-		parent::__construct($model);
-	}
 }
 ?>
