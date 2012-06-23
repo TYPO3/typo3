@@ -91,13 +91,6 @@ class localRecordList extends recordList {
 	public $disableSingleTableView = FALSE;
 
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Create the panel of buttons for submitting the form or otherwise perform operations.
 	 *
 	 * @return array All available buttons as an assoc. array
