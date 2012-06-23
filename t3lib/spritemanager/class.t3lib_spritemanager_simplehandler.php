@@ -50,14 +50,6 @@ class t3lib_spritemanager_SimpleHandler extends t3lib_spritemanager_AbstractHand
 	';
 
 	/**
-	 * constructor just init's the temp-file-name
-	 * @return void
-	 */
-	public function __construct() {
-		parent::__construct();
-	}
-
-	/**
 	 * Interface function. This will be called from the sprite manager to
 	 * refresh all caches.
 	 *
