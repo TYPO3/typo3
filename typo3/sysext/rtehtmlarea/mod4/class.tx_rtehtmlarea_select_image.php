@@ -418,10 +418,10 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				}
 			}
 			function jumpToUrl(URL,anchor) {
-				var add_act = URL.indexOf("act=")==-1 ? "&act='.$act.'" : "";
-				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo='.$editorNo.'" : "";
-				var add_sys_language_content = URL.indexOf("sys_language_content=")==-1 ? "&sys_language_content='.$sys_language_content.'" : "";
-				var RTEtsConfigParams = "&RTEtsConfigParams='.rawurlencode($this->RTEtsConfigParams).'";
+				var add_act = URL.indexOf("act=")==-1 ? "&act=' . $act . '" : "";
+				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo=' . $editorNo . '" : "";
+				var add_sys_language_content = URL.indexOf("sys_language_content=")==-1 ? "&sys_language_content=' . $sys_language_content . '" : "";
+				var RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams) . '";
 
 				var cur_width = selectedImageRef ? "&cWidth="+selectedImageRef.style.width : "";
 				var cur_height = selectedImageRef ? "&cHeight="+selectedImageRef.style.height : "";
@@ -431,11 +431,11 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				return false;
 			}
 			function insertImage(file,width,height) {
-				plugin.insertImage(\'<img src="\'+file+\'"' . ($this->defaultClass?(' class="'.$this->defaultClass.'"'):'') . ' width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'" />\');
+				plugin.insertImage(\'<img src="\'+file+\'"' . ($this->defaultClass ? (' class="' . $this->defaultClass . '"') : '') . ' width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'" />\');
 			}
 			function launchView(url) {
 				var thePreviewWindow="";
-				thePreviewWindow = window.open("'.t3lib_div::getIndpEnv('TYPO3_SITE_URL').TYPO3_mainDir.'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
+				thePreviewWindow = window.open("' . t3lib_div::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
 				if (thePreviewWindow && thePreviewWindow.focus) {
 					thePreviewWindow.focus();
 				}
@@ -461,7 +461,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				var bgColor=\' class="bgColor4"\';
 				var sz="";
 				sz+=\'<table border="0" cellpadding="1" cellspacing="1"><form action="" name="imageData">\';
-				'.(in_array('class', $removedProperties)?'':'
+				' . (in_array('class', $removedProperties)?'':'
 				if(classesImage) {
 					sz+=\'<tr><td\'+bgColor+\'><label for="iClass">'.$GLOBALS['LANG']->getLL('class').': </label></td><td>\'+styleSelector+\'</td></tr>\';
 				}')
@@ -1164,35 +1164,35 @@ class tx_rtehtmlarea_select_image extends browse_links {
 						'fileExt'  => $fileExtension,
 						'fileIcon' => $icon,
 					);
-					$ATag = "<a href=\"#\" onclick=\"return BrowseLinks.File.insertElement('file_" . $filesIndex . "');\">";
-					$ATag_alt = substr($ATag, 0, -4).",1);\">";
-					$ATag_e='</a>';
+					$ATag = '<a href="#" onclick="return BrowseLinks.File.insertElement(\'file_' . $filesIndex . '\');">';
+					$ATag_alt = substr($ATag, 0, -4) . ',1);">';
+					$ATag_e = '</a>';
 				}
 
 					// Create link to showing details about the file in a window:
-				$Ahref = $GLOBALS['BACK_PATH'].'show_item.php?type=file&table='.rawurlencode($fileObject->getCombinedIdentifier()).'&returnUrl='.rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-				$ATag2='<a href="'.htmlspecialchars($Ahref).'">';
-				$ATag2_e='</a>';
+				$Ahref = $GLOBALS['BACK_PATH'] . 'show_item.php?type=file&table=' . rawurlencode($fileObject->getCombinedIdentifier()) . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
+				$ATag2 = '<a href="' . htmlspecialchars($Ahref) . '">';
+				$ATag2_e = '</a>';
 
 					// Combine the stuff:
 				$filenameAndIcon = $ATag_alt . $icon . htmlspecialchars(t3lib_div::fixed_lgd_cs($fileObject->getName(), $titleLen)) . $ATag_e;
 
 					// Show element:
 				if ($pDim)	{		// Image...
-					$lines[]='
+					$lines[] = '
 						<tr class="file_list_normal">
-							<td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td>
-							<td nowrap="nowrap">' . ($ATag2 . '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
+							<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
+							<td nowrap="nowrap">' . ($ATag2 . '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
 							<td nowrap="nowrap">&nbsp;'.$pDim.'</td>
 						</tr>';
-					$lines[]='
+					$lines[] = '
 						<tr>
 							<td class="filelistThumbnail" colspan="4">' . $ATag_alt . $clickIcon . $ATag_e . '</td>
 						</tr>';
 				} else {
-					$lines[]='
+					$lines[] = '
 						<tr class="file_list_normal">
-							<td nowrap="nowrap">'.$filenameAndIcon.'&nbsp;</td>
+							<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
 							<td nowrap="nowrap">' . ($ATag2 . '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
 							<td>&nbsp;</td>
 						</tr>';
@@ -1200,7 +1200,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			}
 
 				// Wrap all the rows in table tags:
-			$out.='
+			$out .= '
 
 
 
@@ -1208,7 +1208,7 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			File listing
 		-->
 				<table cellpadding="0" cellspacing="0" id="typo3-filelist">
-					'.implode('', $lines).'
+					' . implode('', $lines) . '
 				</table>';
 		}
 			// Return accumulated content for filelisting:

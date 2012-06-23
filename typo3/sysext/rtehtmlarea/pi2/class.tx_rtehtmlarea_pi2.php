@@ -239,7 +239,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 
 			// Further content transformation by registered plugins
 		foreach ($this->registeredPlugins as $pluginId => $plugin) {
-			if ($this->isPluginEnabled($pluginId) && method_exists($plugin, "transformContent")) {
+			if ($this->isPluginEnabled($pluginId) && method_exists($plugin, 'transformContent')) {
 				$value = $plugin->transformContent($value);
 			}
 		}
