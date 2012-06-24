@@ -389,7 +389,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 			// Display versions:
 		$content.='
 			'.$recordIcon.$recTitle.'
-			<form name="theform" action="'.str_replace('&sendToReview=1','',$this->REQUEST_URI).'" method="post">
+			<form name="theform" action="' . str_replace('&sendToReview=1', '', $this->REQUEST_URI) . '" method="post">
 			<table border="0" cellspacing="1" cellpadding="1">';
 			$content.='
 				<tr class="bgColor5 tableheader">
@@ -681,8 +681,8 @@ class tx_version_cm1 extends t3lib_SCbase {
 		if ($this->id) {
 			$menu = '';
 			if ($GLOBALS['BE_USER']->workspace===0) {
-				$menu .= t3lib_BEfunc::getFuncMenu($this->id, 'SET[filter]' ,$this->MOD_SETTINGS['filter'], $this->MOD_MENU['filter']);
-				$menu .= t3lib_BEfunc::getFuncMenu($this->id, 'SET[display]' ,$this->MOD_SETTINGS['display'], $this->MOD_MENU['display']);
+				$menu .= t3lib_BEfunc::getFuncMenu($this->id, 'SET[filter]', $this->MOD_SETTINGS['filter'], $this->MOD_MENU['filter']);
+				$menu .= t3lib_BEfunc::getFuncMenu($this->id, 'SET[display]', $this->MOD_SETTINGS['display'], $this->MOD_MENU['display']);
 			}
 			if (!$this->details && $GLOBALS['BE_USER']->workspace && !$this->diffOnly) {
 				$menu .= t3lib_BEfunc::getFuncCheck($this->id, 'SET[diff]', $this->MOD_SETTINGS['diff'], '', '', 'id="checkDiff"') . ' <label for="checkDiff">' . $GLOBALS['LANG']->getLL('showDiffView') . '</label>';
@@ -1378,7 +1378,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 							<td class="iconTitle">'.
 								$HTMLdata.
 								($iconMode < 2 ?
-									'<img'.t3lib_iconWorks::skinImg($this->doc->backPath,'gfx/ol/join'.($iconMode ? 'bottom' : '').'.gif','width="18" height="16"').' alt="" />'.
+									'<img' . t3lib_iconWorks::skinImg($this->doc->backPath, 'gfx/ol/join' . ($iconMode ? 'bottom' : '') . '.gif', 'width="18" height="16"') . ' alt="" />' .
 									t3lib_iconWorks::getSpriteIconForRecord($tN, $rec) : '').
 								t3lib_BEfunc::getRecordTitle($tN, $rec, TRUE).
 							'</td>
@@ -1489,7 +1489,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 						if ($isFiles) {
 							$allFiles = array_merge($files1, $files2);
 							foreach ($allFiles as $filename => $token) {
-								if (strlen($token) == 32 && strstr($diffres,$token)) {
+								if (strlen($token) == 32 && strstr($diffres, $token)) {
 									$filename =
 										t3lib_BEfunc::thumbCode(array($fN=>$filename), $table, $fN, $this->doc->backPath) .
 										$filename;
