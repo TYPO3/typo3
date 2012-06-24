@@ -259,11 +259,8 @@ class tx_em_Install {
 											// Remove cache files:
 											$updateContent = '';
 											if (t3lib_extMgm::isLoaded($extKey)) {
-												if (t3lib_extMgm::removeCacheFiles()) {
-													$messageContent .= $GLOBALS['LANG']->getLL('ext_import_cache_files_removed') . '<br />';
-												}
-													// Flush autoloader cache
-												$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->flushByTag('t3lib_autoloader');
+												t3lib_extMgm::removeCacheFiles();
+												$messageContent .= $GLOBALS['LANG']->getLL('ext_import_cache_files_removed') . '<br />';
 
 												list($new_list) = $this->parentObject->extensionList->getInstalledExtensions();
 												$updateContent = $this->updatesForm($extKey, $new_list[$extKey], 1, t3lib_div::linkThisScript(array(
@@ -1464,7 +1461,7 @@ class tx_em_Install {
 
 	/**
 	 * Writes the TSstyleconf values to "localconf.php"
-	 * Removes the temp_CACHED* files before return.
+	 * Removes the cached core files before return.
 	 *
 	 * @param	string		Extension key
 	 * @param	array		Configuration array to write back
@@ -1568,7 +1565,7 @@ class tx_em_Install {
 
 	/**
 	 * Writes the extension list to "localconf.php" file
-	 * Removes the temp_CACHED* files before return.
+	 * Removes the cached core files before return.
 	 *
 	 * @param	string		List of extensions
 	 * @return	void
@@ -1587,7 +1584,6 @@ class tx_em_Install {
 
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
 		t3lib_extMgm::removeCacheFiles();
-		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->flushByTag('t3lib_autoloader');
 	}
 
 	/**

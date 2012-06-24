@@ -135,20 +135,9 @@ final class tx_em_Tools {
 	 * @return void
 	 */
 	public static function refreshGlobalExtList() {
-		$GLOBALS['TYPO3_LOADED_EXT'] = t3lib_extMgm::typo3_loadExtensions();
-		if ($GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']) {
-			require(PATH_typo3conf . $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] . '_ext_localconf.php');
-		} else {
-			$temp_TYPO3_LOADED_EXT = $GLOBALS['TYPO3_LOADED_EXT'];
-			foreach ($temp_TYPO3_LOADED_EXT as $_EXTKEY => $temp_lEDat) {
-				if (is_array($temp_lEDat) && $temp_lEDat['ext_localconf.php']) {
-						// Make sure $TYPO3_CONF_VARS is also available within the included files
-					global $TYPO3_CONF_VARS;
-					$_EXTCONF = $TYPO3_CONF_VARS['EXT']['extConf'][$_EXTKEY];
-					require($temp_lEDat['ext_localconf.php']);
-				}
-			}
-		}
+		Typo3_Bootstrap::getInstance()
+			->populateTypo3LoadedExtGlobal(FALSE)
+			->loadAdditionalConfigurationFromExtensions(FALSE);
 	}
 
 	/**

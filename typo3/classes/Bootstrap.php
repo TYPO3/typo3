@@ -61,6 +61,8 @@ class Typo3_Bootstrap {
 	}
 
 	/**
+	 * Return 'this' as singleton
+	 *
 	 * @return Typo3_Bootstrap
 	 */
 	public static function getInstance() {
@@ -606,44 +608,29 @@ class Typo3_Bootstrap {
 	}
 
 	/**
+	 * Set up $GLOBALS['TYPO3_LOADED_EXT'] array with basic information
+	 * about extensions.
+	 *
+	 * @param boolean $allowCaching
+	 * @return Typo3_Bootstrap
+	 */
+	public function populateTypo3LoadedExtGlobal($allowCaching = TRUE) {
+		$GLOBALS['TYPO3_LOADED_EXT'] = t3lib_extMgm::loadTypo3LoadedExtensionInformation($allowCaching);
+
+		return $this;
+	}
+
+	/**
 	 * Load extension configuration files (ext_localconf.php)
 	 *
 	 * The ext_localconf.php files in extensions are meant to make changes
 	 * to the global $TYPO3_CONF_VARS configuration array.
 	 *
+	 * @param boolean $allowCaching
 	 * @return Typo3_Bootstrap
 	 */
-	public function loadAdditionalConfigurationFromExtensions() {
-			// This is the main array meant to be manipulated in the ext_localconf.php files
-			// In general it is recommended to not rely on it to be globally defined in that
-			// scope but to use $GLOBALS['TYPO3_CONF_VARS'] instead.
-			// Nevertheless we define it here as global for backwards compatibility.
-		global $TYPO3_CONF_VARS;
-
-			// These globals for internal use only. Manipulating them directly is highly discouraged!
-			// We set them here as global for backwards compatibility, but this will change in
-			// future versions.
-			// @deprecated since 6.0 Will be removed in two versions.
-		global $T3_SERVICES, $T3_VAR;
-
-			// Load extensions:
-		$GLOBALS['TYPO3_LOADED_EXT'] = t3lib_extMgm::typo3_loadExtensions();
-
-			// Load temp_CACHED file of ext_tables or each ext_tables.php of loaded extensions
-		if ($GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']
-			&& file_exists(PATH_typo3conf . $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] . '_ext_localconf.php')
-			) {
-			require(PATH_typo3conf . $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] . '_ext_localconf.php');
-		} else {
-			foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $_EXTKEY => $extensionInformation) {
-				if (is_array($extensionInformation) && $extensionInformation['ext_localconf.php']) {
-						// $_EXTKEY and $_EXTCONF are available in ext_localconf.php
-						// and are explicitly set in temp_CACHED file as well
-					$_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
-					require($extensionInformation['ext_localconf.php']);
-				}
-			}
-		}
+	public function loadAdditionalConfigurationFromExtensions($allowCaching = TRUE) {
+		t3lib_extMgm::loadExtLocalconf($allowCaching);
 
 		return $this;
 	}
@@ -660,6 +647,25 @@ class Typo3_Bootstrap {
 				'This installation runs with extensions that use XCLASSing by setting the XCLASS path in ext_localconf.php. ' .
 				'This is deprecated and will be removed in TYPO3 6.2 and later. It is preferred to define XCLASSes in ' .
 				'ext_autoload.php instead. See http://wiki.typo3.org/Autoload for more information.'
+			);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Write deprecation log if deprecated extCache setting was set in the instance.
+	 *
+	 * @return Typo3_Bootstrap
+	 * @deprecated since 6.0, the check will be removed two version later.
+	 */
+	public function deprecationLogForOldExtCacheSetting() {
+		if (
+			isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'])
+			&& $GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] !== -1
+		) {
+			t3lib_div::deprecationLog(
+				'Setting $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'extCache\'] is unused and can be removed from localconf.php'
 			);
 		}
 
@@ -756,7 +762,7 @@ class Typo3_Bootstrap {
 	/**
 	 * Initialize t3lib_db in $GLOBALS and connect if requested
 	 *
-	 * @param bool $connect Whether or not the db should be connected already
+	 * @param boolean $connect Whether or not the db should be connected already
 	 * @return Typo3_Bootstrap
 	 */
 	public function initializeTypo3DbGlobal($connect = TRUE) {
@@ -882,7 +888,7 @@ class Typo3_Bootstrap {
 	 * This will mainly set up $TCA and several other global arrays
 	 * through API's like extMgm.
 	 * Executes ext_tables.php files of loaded extensions or the
-	 * according typo3conf/temp_CACHED_*_ext_tables.php if exists.
+	 * according cache file if exists.
 	 *
 	 * Note: For backwards compatibility some global variables are
 	 * explicitly set as global to be used without $GLOBALS[] in
@@ -897,9 +903,12 @@ class Typo3_Bootstrap {
 	 *
 	 * @TODO: It should be defined, which global arrays are ok to be manipulated
 	 *
+	 * @param boolean $allowCaching True, if reading compiled ext_tables file from cache is allowed
 	 * @return Typo3_Bootstrap
 	 */
-	public function loadExtensionTables() {
+	public function loadExtensionTables($allowCaching = TRUE) {
+			// It is discouraged to use those global variables directly, but we
+			// can not prohibit this without breaking backwards compatibility
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
 		global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
 		global $PAGES_TYPES, $TBE_STYLES, $FILEICONS;
@@ -907,23 +916,7 @@ class Typo3_Bootstrap {
 			// Include standard tables.php file
 		require(PATH_t3lib . 'stddb/tables.php');
 
-		if (
-			$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']
-			&& file_exists(PATH_typo3conf . $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] . '_ext_tables.php')
-		) {
-				// Load temp_CACHED_x_ext_tables.php file if exists
-			require(PATH_typo3conf . $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] . '_ext_tables.php');
-		} else {
-				// Load each ext_tables.php file of loaded extensions
-			foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $_EXTKEY => $extensionInformation) {
-				if (is_array($extensionInformation) && $extensionInformation['ext_tables.php']) {
-						// $_EXTKEY and $_EXTCONF are available in ext_tables.php
-						// and are explicitly set in temp_CACHED file as well
-					$_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
-					require($extensionInformation['ext_tables.php']);
-				}
-			}
-		}
+		t3lib_extMgm::loadExtTables($allowCaching);
 
 			// Load additional ext tables script if registered
 		if (TYPO3_extTableDef_script) {
@@ -960,7 +953,7 @@ class Typo3_Bootstrap {
 	/**
 	 * Initialize sprite manager global
 	 *
-	 * @param bool $allowRegeneration
+	 * @param boolean $allowRegeneration
 	 * @return Typo3_Bootstrap
 	 */
 	public function initializeSpriteManager($allowRegeneration = TRUE) {

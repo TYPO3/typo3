@@ -57,10 +57,20 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 	 */
 	protected $globals = array();
 
+	/**
+	 * Absolute path to files that must be removed
+	 * after a test - handled in tearDown
+	 *
+	 * @TODO: Check if the tests can use vfs:// instead
+	 */
+	protected $testFilesToDelete = array();
+
 	public function setUp() {
+		$this->createAccessibleProxyClass();
 		$this->globals = array(
 			'TYPO3_LOADED_EXT' => serialize($GLOBALS['TYPO3_LOADED_EXT']),
 		);
+		$this->testFilesToDelete = array();
 	}
 
 	public function tearDown() {
@@ -69,7 +79,53 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 		foreach ($this->globals as $key => $value) {
 			$GLOBALS[$key] = unserialize($value);
 		}
+
+		foreach ($this->testFilesToDelete as $absoluteFileName) {
+			t3lib_div::unlink_tempfile($absoluteFileName);
+		}
 	}
+
+	/**
+	 * Create a subclass with protected methods made public
+	 *
+	 * @return void
+	 */
+	protected function createAccessibleProxyClass() {
+		$className = 't3lib_extMgmAccessibleProxy';
+		if (!class_exists($className, FALSE)) {
+			eval(
+				'class ' . $className . ' extends t3lib_extMgm {' .
+				'  public static function createTypo3LoadedExtensionInformationArray() {' .
+				'    return parent::createTypo3LoadedExtensionInformationArray();' .
+				'  }' .
+				'  public static function getTypo3LoadedExtensionInformationCacheIdentifier() {' .
+				'    return parent::getTypo3LoadedExtensionInformationCacheIdentifier();' .
+				'  }' .
+				'  public static function getExtLocalconfCacheIdentifier() {' .
+				'    return parent::getExtLocalconfCacheIdentifier();' .
+				'  }' .
+				'  public static function loadSingleExtLocalconfFiles() {' .
+				'    return parent::loadSingleExtLocalconfFiles();' .
+				'  }' .
+					// Additional method allows to manipulate $extTablesWasReadFromCacheOnce
+					// for test loadExtTablesRequiresCacheFileIfExistsAndCachingIsAllowed
+				'  public static function resetExtTablesWasReadFromCacheOnceBoolean() {' .
+				'    self::$extTablesWasReadFromCacheOnce = FALSE;' .
+				'  }' .
+				'  public static function createExtLocalconfCacheEntry() {' .
+				'    return parent::createExtLocalconfCacheEntry();' .
+				'  }' .
+				'  public static function createExtTablesCacheEntry() {' .
+				'    return parent::createExtTablesCacheEntry();' .
+				'  }' .
+				'  public static function getExtTablesCacheIdentifier() {' .
+				'    return parent::getExtTablesCacheIdentifier();' .
+				'  }' .
+				'}'
+			);
+		}
+	}
+
 
 	///////////////////////////////
 	// Tests concerning extPath
@@ -661,6 +717,293 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 		$this->assertEquals($expectedResultArray, $GLOBALS['TCA']['testTable']['columns']['testField']['config']['items']);
 	}
 
+	/////////////////////////////////////////
+	// Tests concerning loadTypo3LoadedExtensionInformation
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function loadTypo3LoadedExtensionInformationDoesNotCallCacheIfCachingIsDenied() {
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->never())->method('getCache');
+		t3lib_extMgm::loadTypo3LoadedExtensionInformation(FALSE);
+	}
+
+	/**
+	 * @test
+	 */
+	public function loadTypo3LoadedExtensionInformationRequiresCacheFileIfExistsAndCachingIsAllowed() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		$mockCache->expects($this->any())->method('has')->will($this->returnValue(TRUE));
+		$mockCache->expects($this->once())->method('requireOnce');
+		t3lib_extMgm::loadTypo3LoadedExtensionInformation(TRUE);
+	}
+
+	/**
+	 * @test
+	 */
+	public function loadTypo3LoadedExtensionInformationSetsNewCacheEntryIfCacheFileDoesNotExistAndCachingIsAllowed() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		$mockCache->expects($this->any())->method('has')->will($this->returnValue(FALSE));
+		$mockCache->expects($this->once())->method('set');
+		t3lib_extMgm::loadTypo3LoadedExtensionInformation(TRUE);
+	}
+
+	/**
+	 * @test
+	 */
+	public function loadTypo3LoadedExtensionInformationSetsNewCacheEntryTaggedWithTypo3LoadedExtensionArrayAndCore() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		$mockCache->expects($this->any())->method('has')->will($this->returnValue(FALSE));
+		$mockCache->expects($this->once())->method('set')
+			->with($this->anything(), $this->anything(), $this->equalTo(array('typo3LoadedExtensionArray', 'core')));
+		t3lib_extMgm::loadTypo3LoadedExtensionInformation(TRUE);
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning createTypo3LoadedExtensionInformationArray
+	/////////////////////////////////////////
+
+	/**
+	 * Data provider for createTypo3LoadedExtensionInformationArrayReturnsExpectedInformationForCmsExtension
+	 *
+	 * @return array
+	 */
+	public function createTypo3LoadedExtensionInformationArrayReturnsExpectedInformationForCmsExtensionDataProvider() {
+		return array(
+			'System extension' => array('type', 'S'),
+			'Site relative path' => array('siteRelPath', 'typo3/sysext/cms/'),
+			'Typo3 relative path' => array('typo3RelPath', 'sysext/cms/'),
+			'Path ext_localconf.php' => array('ext_localconf.php', '/typo3/sysext/cms/ext_localconf.php'),
+			'Path ext_tables.php' => array('ext_tables.php', '/typo3/sysext/cms/ext_tables.php'),
+			'Path ext_tablps.sql' => array('ext_tables.sql', '/typo3/sysext/cms/ext_tables.sql'),
+		);
+	}
+
+	/**
+	 * @param string $arrayKeyToTest
+	 * @param string $expectedContent
+	 * @test
+	 * @dataProvider createTypo3LoadedExtensionInformationArrayReturnsExpectedInformationForCmsExtensionDataProvider
+	 */
+	public function createTypo3LoadedExtensionInformationArrayReturnsExpectedInformationForCmsExtension(
+		$arrayKeyToTest,
+		$expectedContent
+	) {
+		$actualArray = t3lib_extMgmAccessibleProxy::createTypo3LoadedExtensionInformationArray();
+		$this->assertStringEndsWith($expectedContent, $actualArray['cms'][$arrayKeyToTest]);
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning getTypo3LoadedExtensionInformationCacheIdentifier
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function getTypo3LoadedExtensionInformationCacheIdentifierCreatesSha1WithFourtyCharacters() {
+		$sha1 = t3lib_extMgmAccessibleProxy::getTypo3LoadedExtensionInformationCacheIdentifier();
+		$this->assertEquals(40, strlen($sha1));
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning loadExtLocalconf
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function loadExtLocalconfDoesNotReadFromCacheIfCachingIsDenied() {
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->never())->method('getCache');
+		t3lib_extMgm::loadExtLocalconf(FALSE);
+	}
+
+	/**
+	 * @test
+	 */
+	public function loadExtLocalconfRequiresCacheFileIfExistsAndCachingIsAllowed() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		$mockCache->expects($this->any())->method('has')->will($this->returnValue(TRUE));
+		$mockCache->expects($this->once())->method('requireOnce');
+		t3lib_extMgm::loadExtLocalconf(TRUE);
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning loadSingleExtLocalconfFiles
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 * @expectedException RuntimeException
+	 */
+	public function loadSingleExtLocalconfFilesRequiresExtLocalconfFileRegisteredInGlobalTypo3LoadedExt() {
+		$extensionName = uniqid('foo');
+		$extLocalconfLocation = PATH_site . 'typo3temp/' . uniqid('test_ext_localconf') . '.php';
+		$this->testFilesToDelete[] = $extLocalconfLocation;
+		file_put_contents($extLocalconfLocation, "<?php\n\nthrow new RuntimeException('', 1340559079);\n\n?>");
+		$GLOBALS['TYPO3_LOADED_EXT'] = array(
+			$extensionName => array(
+				'ext_localconf.php' => $extLocalconfLocation,
+			),
+		);
+		t3lib_extMgmAccessibleProxy::loadSingleExtLocalconfFiles();
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning createExtLocalconfCacheEntry
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function createExtLocalconfCacheEntryWritesCacheEntryWithContentOfLoadedExtensionExtLocalconf() {
+		$extensionName = uniqid('foo');
+		$extLocalconfLocation = PATH_site . 'typo3temp/' . uniqid('test_ext_localconf') . '.php';
+		$this->testFilesToDelete[] = $extLocalconfLocation;
+		$uniqueStringInLocalconf = uniqid('foo');
+		file_put_contents($extLocalconfLocation, "<?php\n\n" . $uniqueStringInLocalconf . "\n\n?>");
+		$GLOBALS['TYPO3_LOADED_EXT'] = array(
+			$extensionName => array(
+				'ext_localconf.php' => $extLocalconfLocation,
+			),
+		);
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		$mockCache->expects($this->once())->method('set')
+			->with($this->anything(), $this->stringContains($uniqueStringInLocalconf), $this->anything());
+		t3lib_extMgmAccessibleProxy::createExtLocalconfCacheEntry();
+	}
+
+	/**
+	 * @test
+	 */
+	public function createExtLocalconfCacheEntryWritesCacheEntryTaggedWithCore() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		$mockCache->expects($this->once())->method('set')
+			->with($this->anything(), $this->anything(), $this->equalTo(array('concatenatedExtLocalconf', 'core')));
+		t3lib_extMgmAccessibleProxy::createExtLocalconfCacheEntry();
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning getExtLocalconfCacheIdentifier
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function getExtLocalconfCacheIdentifierCreatesSha1WithFourtyCharacters() {
+		$sha1 = t3lib_extMgmAccessibleProxy::getExtLocalconfCacheIdentifier();
+		$this->assertEquals(40, strlen($sha1));
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning loadExtTables
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function loadExtTablesDoesNotReadFromCacheIfCachingIsDenied() {
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->never())->method('getCache');
+		t3lib_extMgm::loadExtLocalconf(FALSE);
+	}
+
+	/**
+	 * @test
+	 */
+	public function loadExtTablesRequiresCacheFileIfExistsAndCachingIsAllowed() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		$mockCache->expects($this->any())->method('has')->will($this->returnValue(TRUE));
+		$mockCache->expects($this->once())->method('requireOnce');
+
+			// Reset the internal cache access tracking variable of extMgm
+			// This method is only in the ProxyClass!
+		t3lib_extMgmAccessibleProxy::resetExtTablesWasReadFromCacheOnceBoolean();
+
+		t3lib_extMgm::loadExtTables(TRUE);
+	}
+
+
+	/////////////////////////////////////////
+	// Tests concerning createExtTablesCacheEntry
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function createExtTablesCacheEntryWritesCacheEntryWithContentOfLoadedExtensionExtTables() {
+		$extensionName = uniqid('foo');
+		$extTablesLocation = PATH_site . 'typo3temp/' . uniqid('test_ext_tables') . '.php';
+		$this->testFilesToDelete[] = $extTablesLocation;
+		$uniqueStringInTables = uniqid('foo');
+		file_put_contents($extTablesLocation, "<?php\n\n" . $uniqueStringInTables . "\n\n?>");
+		$GLOBALS['TYPO3_LOADED_EXT'] = array(
+			$extensionName => array(
+				'ext_tables.php' => $extTablesLocation,
+			),
+		);
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		$mockCache->expects($this->once())->method('set')
+			->with($this->anything(), $this->stringContains($uniqueStringInTables), $this->anything());
+		t3lib_extMgmAccessibleProxy::createExtTablesCacheEntry();
+	}
+
+	/**
+	 * @test
+	 */
+	public function createExtTablesCacheEntryWritesCacheEntryTaggedWithCore() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		$mockCache->expects($this->once())->method('set')
+			->with($this->anything(), $this->anything(), $this->equalTo(array('combinedExtTables', 'core')));
+		t3lib_extMgmAccessibleProxy::createExtTablesCacheEntry();
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning getExtTablesCacheIdentifier
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function getExtTablesCacheIdentifierCreatesSha1WithFourtyCharacters() {
+		$sha1 = t3lib_extMgmAccessibleProxy::getExtTablesCacheIdentifier();
+		$this->assertEquals(40, strlen($sha1));
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning removeCacheFiles
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function removeCacheFilesRemovesCacheEntriesTaggedWithCore() {
+		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
+		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
+		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
+		$mockCache->expects($this->once())->method('flushByTag')->with($this->equalTo('core'));
+		t3lib_extMgm::removeCacheFiles();
+	}
 
 	/////////////////////////////////////////
 	// Tests concerning getExtensionVersion

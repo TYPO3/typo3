@@ -40,9 +40,8 @@
  * (see references):
  * 1) First this script is included.
  * This should initialize the variables shown above.
- * 2) Then either the "typo3conf/temp_CACHED_??????_ext_tables.php" cache file
- * OR "stddb/load_ext_tables.php" is included in order to let extensions
- * add/modify these variables as they desire.
+ * 2) Then either the concatenated ext_tables.php cache file of all extensions
+ * is loaded, or each ext_tables.php file of active extensions.
  * 3) Finally if the constant "TYPO3_extTableDef_script" defines a file name
  * from typo3conf/ it is included, also for overriding values (the old-school
  * way before extensions came in). See bootstrap loadExtensionTables()

@@ -176,12 +176,7 @@ class t3lib_extjs_ExtDirectApi {
 	 * @return string $javascriptNamespaces
 	 */
 	protected function getExtDirectApi(array $filterNamespaces) {
-			// Check GET-parameter no_cache and extCache setting
-		$noCache = isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache']) && (
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] === 0 ||
-				$GLOBALS['TYPO3_CONF_VARS']['SYS']['extCache'] === '0'
-		);
-		$noCache = t3lib_div::_GET('no_cache') ? TRUE : $noCache;
+		$noCache = t3lib_div::_GET('no_cache') ? TRUE : FALSE;
 
 			// Look up into the cache
 		$cacheIdentifier = 'ExtDirectApi';

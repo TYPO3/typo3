@@ -121,15 +121,17 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 	/**
 	 * @test
 	 */
-	public function unregisterAutoloaderSetsCacheEntryWithT3libAutoloaderTag() {
+	public function unregisterAutoloaderSetsCacheEntryWithT3libAutoloaderAndCoreTag() {
 		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 			// Expect the mock cache set method to be called
 			// once with t3lib_autoloader as third parameter
-		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), array('t3lib_autoloader'));
+		$mockCache->expects($this->once())->method('set')
+			->with($this->anything(), $this->anything(), array('t3lib_autoloader', 'core'));
 		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		t3lib_autoloader::unregisterAutoloader();
 	}
+
 
 	/**
 	 * @test
