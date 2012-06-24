@@ -370,7 +370,7 @@ class t3lib_autoloader {
 		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
 			self::getAutoloadCacheIdentifier(),
 			$cachedFileContent,
-			array('t3lib_autoloader')
+			array('t3lib_autoloader', 'core')
 		);
 	}
 
