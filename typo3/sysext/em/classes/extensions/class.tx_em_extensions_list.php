@@ -938,7 +938,7 @@ EXTENSION KEYS:
 	function removeRequiredExtFromListArr($listArr) {
 		$requiredExtensions = t3lib_div::trimExplode(',', t3lib_extMgm::getRequiredExtensionList(), 1);
 		foreach ($listArr as $k => $ext) {
-			if (in_array($ext, $requiredExtensions) || !strcmp($ext, '_CACHEFILE')) {
+			if (in_array($ext, $requiredExtensions)) {
 				unset($listArr[$k]);
 			}
 		}

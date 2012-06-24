@@ -202,7 +202,7 @@ return array(
 		'requiredExt' => '',		// String. List of additional extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
 		'ignoredExt' => '',			// String. List of extensions to be ignored (not loaded), e.g. "em" can be disabled this way.
 		'excludeForPackaging' => '(CVS|\..*|.*~|.*\.bak)',		// String: List of directories and files which will not be packaged into extensions nor taken into account otherwise by the Extension Manager. Perl regular expression syntax!
-		'extCache' => 1,						// <p>Integer (0, 1)</p><dl><dt>0</dt><dd>ext-scripts (ext_localconf.php and ext_tables.php) are NOT cached, but included every time</dd><dt>1</dt><dd>scripts cached to typo3conf/temp_CACHED_[sitePathHash]* (saves some milliseconds even with PHP accelerators)</dd></dl>
+		'extCache' => -1,						// Deprecated and unused. Do not set anymore and remove from localconf.php
 		'extList' => 'filelist,version,tsconfig_help,context_help,extra_page_cm_options,impexp,belog,about,cshmanual,aboutmodules,setup,opendocs,install,t3editor,felogin,feedit,recycler',						// String (exclude) List of extensions which are enabled for this install. Use the Extension Manager (EM) to manage this!
 		'extConf' => array(						// Config-options for extensions, stored as serialized arrays by extension-keys. Handled automatically by the EM.
 //			'--key--' => array()

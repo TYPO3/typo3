@@ -1600,12 +1600,10 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$opt = array();
 		$opt[] = '<option value=""></option>';
 		foreach ($extTrav as $v) {
-			if ($v!=='_CACHEFILE') {
-				if (is_array($value)) {
-					$sel = in_array($v, $value)?' selected="selected"':'';
-				}
-				$opt[] = '<option value="'.htmlspecialchars($v).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
+			if (is_array($value)) {
+				$sel = in_array($v, $value)?' selected="selected"':'';
 			}
+			$opt[] = '<option value="'.htmlspecialchars($v).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
 		}
 		return '<select name="'.$prefix.'[]" multiple="multiple" size="'.t3lib_utility_Math::forceIntegerInRange(count($opt), 5, 10).'">'.implode('', $opt).'</select>';
 	}
