@@ -24,27 +24,15 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Typo Link PopUp EXAMPLE!
  *
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Demonstrates how to make typolink tags (<link ...>) open in a pop-up window
@@ -61,16 +49,15 @@
  *
  * (Plus the "content (default)" static template included as well)
  *
- * @param	array		In this case: An array with data you can use for processing; keys "url" and "aTagParams" contains something at least
- * @param	array		TypoScript array with custom properties for this function call.
- * @return	string		Return the new <a> tag
+ * @param array $content In this case: An array with data you can use for processing; keys "url" and "aTagParams" contains something at least
+ * @param array $conf TypoScript array with custom properties for this function call.
+ * @return string Return the new <a> tag
  * @see tslib_cObj::typoLink()
  */
 function user_typoLinkPopUp($content, $conf) {
-	$aOnClick = 'openPic(\'' . $GLOBALS['TSFE']->baseUrlWrap($content['url']) . '\',\'popupwin\',\'width=400,height=500,status=0,menubar=0\'); return false;';
-	$TAG = 	'<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . $content['aTagParams'] . '>';
+	$aOnClick = 'openPic(\''.$GLOBALS['TSFE']->baseUrlWrap($content['url']).'\',\'popupwin\',\'width=400,height=500,status=0,menubar=0\'); return false;';
+	$TAG = 	'<a href="#" onclick="'.htmlspecialchars($aOnClick).'"'.$content['aTagParams'].'>';
 	return $TAG;
 }
-
 
 ?>

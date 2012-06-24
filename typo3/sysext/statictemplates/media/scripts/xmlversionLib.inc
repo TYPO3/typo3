@@ -52,22 +52,23 @@
  *
  * @package TYPO3
  * @subpackage tslib
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class user_xmlversion {
-	var $cObj;		// The backReference to the mother cObj object set at call time
+		// The backReference to the mother cObj object set at call time
+	var $cObj;
 
 
 	/**
 	 * Main function, called from TypoScript
 	 *
-	 * @param	string		Empty, ignore.
-	 * @param	array		TypoScript properties for this content object/function call
-	 * @return	string		XML content
+	 * @param string $content Empty, ignore.
+	 * @param array $conf TypoScript properties for this content object/function call
+	 * @return string XML content
 	 */
 	function main_xmlversion($content, $conf) {
 		$xmlObj = t3lib_div::makeInstance('t3lib_xml', 'typo3_page');
-		$xmlObj->XMLdebug=0;
+		$xmlObj->XMLdebug = 0;
 		$xmlObj->setRecFields('pages', 'doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,author,author_email,newUntil,lastUpdated,cache_timeout');
 		$xmlObj->setRecFields('tt_content', 'CType,header,header_link,bodytext,image,imagewidth,imageorient,media,records,colPos,starttime,endtime,fe_group');
 
@@ -91,13 +92,13 @@ class user_xmlversion {
 	/**
 	 * Selects all records from $table having the current page id as PID (records belonging to that page)
 	 *
-	 * @param	string		A tablename found in $GLOBALS['TCA']
-	 * @return	pointer		A database resource pointer
+	 * @param string $table A tablename found in $GLOBALS['TCA']
+	 * @return pointer A database resource pointer
 	 */
 	function getContentResult($table) {
 		if ($GLOBALS['TCA'][$table]) {
 			$orderBy = ($GLOBALS['TCA'][$table]['ctrl']['sortby']
-				? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby']
+				? 'ORDER BY '.$GLOBALS['TCA'][$table]['ctrl']['sortby']
 				: $GLOBALS['TCA'][$table]['ctrl']['default_sortby']);
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid='.intval($GLOBALS['TSFE']->id).$this->cObj->enableFields($table), '', $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy));
 			return $res;
