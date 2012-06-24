@@ -35,9 +35,21 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-final class t3lib_extMgm {
+class t3lib_extMgm {
 
 	protected static $extensionKeyMap;
+
+	/**
+	 * TRUE, if ext_tables file was read from cache for this script run.
+	 * The frontend tends to do that multiple times, but the caching framework does
+	 * not allow this (via a require_once call). This variable is used to track
+	 * the access to the cache file to read the single ext_tables.php if it was
+	 * already read from cache
+	 *
+	 * @TODO: See if we can get rid of the 'load multiple times' scenario in fe
+	 * @var boolean
+	 */
+	protected static $extTablesWasReadFromCacheOnce = FALSE;
 
 	/**************************************
 	 *
@@ -1507,92 +1519,363 @@ tt_content.' . $key . $prefix . ' {
 		}
 	}
 
-	/**************************************
+	/***************************************
 	 *
-	 *	 INTERNAL EXTENSION MANAGEMENT:
+	 * Internal extension management methods
 	 *
 	 ***************************************/
 
 	/**
-	 * Loading extensions configured in $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']
+	 * Load the extension information array. This array is set as
+	 * $GLOBALS['TYPO3_LOADED_EXT'] in bootstrap. It contains basic information
+	 * about every loaded extension.
 	 *
-	 * CACHING ON: ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] = 1)
-	 *		 If caching is enabled (and possible), the output will be $extensions['_CACHEFILE'] set to the cacheFilePrefix. Subsequently the cache files must be included then since those will eventually set up the extensions.
-	 *		 If cachefiles are not found they will be generated
-	 * CACHING OFF:	($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] = 0)
-	 *		 The returned value will be an array where each key is an extension key and the value is an array with filepaths for the extension.
-	 *		 This array will later be set in the global var $GLOBALS['TYPO3_LOADED_EXT']
+	 * This is an internal method. It is only used during bootstrap and
+	 * extensions should not use it!
+	 *
+	 * @param boolean $allowCaching If FALSE, the array will not be read / created from cache
+	 * @return array Result array that will be set as $GLOBALS['TYPO3_LOADED_EXT']
+	 * @access private
+	 * @createTypo3LoadedExtensionInformationArray
+	 */
+	public static function loadTypo3LoadedExtensionInformation($allowCaching = TRUE) {
+		if ($allowCaching) {
+			$cacheIdentifier = self::getTypo3LoadedExtensionInformationCacheIdentifier();
+			/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
+			$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
+			if ($phpCodeCache->has($cacheIdentifier)) {
+				$typo3LoadedExtensionArray = $phpCodeCache->requireOnce($cacheIdentifier);
+			} else {
+				$typo3LoadedExtensionArray = self::createTypo3LoadedExtensionInformationArray();
+				$phpCodeCache->set(
+					$cacheIdentifier,
+					'return ' . var_export($typo3LoadedExtensionArray, TRUE) . ';',
+					array('typo3LoadedExtensionArray', 'core')
+				);
+			}
+		} else {
+			$typo3LoadedExtensionArray = self::createTypo3LoadedExtensionInformationArray();
+		}
+
+		return $typo3LoadedExtensionArray;
+	}
+
+	/**
+	 * Set up array with basic information about loaded extension:
+	 *
+	 * array(
+	 * 		'extensionKey' => array(
+	 * 			'type' => Either S, L or G, inidicating if the extension is a system, a local or a global extension
+	 * 			'siteRelPath' => Relative path to the extension from document root
+	 * 			'typo3RelPath' => Relative path to extension from typo3/ subdirectory
+	 * 			'ext_localconf.php' => Absolute path to ext_localconf.php file of extension
+	 * 			'ext_...' => Further absolute path of extension files, see $extensionFilesToCheckFor var for details
+	 * 		),
+	 * );
+	 *
+	 * @return array Result array that will be set as $GLOBALS['TYPO3_LOADED_EXT']
+	 */
+	protected static function createTypo3LoadedExtensionInformationArray() {
+		$loadedExtensions = array_unique(t3lib_div::trimExplode(',', self::getEnabledExtensionList(), 1));
+		$loadedExtensionInformation = array();
+
+		$extensionFilesToCheckFor = array(
+			'ext_localconf.php',
+			'ext_tables.php',
+			'ext_tables.sql',
+			'ext_tables_static+adt.sql',
+			'ext_typoscript_constants.txt',
+			'ext_typoscript_setup.txt'
+		);
+
+			// Clear file status cache to make sure we get good results from is_dir()
+		clearstatcache();
+
+		foreach ($loadedExtensions as $extensionKey) {
+				// Determine if extension is installed locally, globally or system (in this order)
+			if (@is_dir(PATH_typo3conf . 'ext/' . $extensionKey . '/')) {
+					// local
+				$loadedExtensionInformation[$extensionKey] = array(
+					'type' => 'L',
+					'siteRelPath' => 'typo3conf/ext/' . $extensionKey . '/',
+					'typo3RelPath' => '../typo3conf/ext/' . $extensionKey . '/'
+				);
+			} elseif (@is_dir(PATH_typo3 . 'ext/' . $extensionKey . '/')) {
+					// global
+				$loadedExtensionInformation[$extensionKey] = array(
+					'type' => 'G',
+					'siteRelPath' => TYPO3_mainDir . 'ext/' . $extensionKey . '/',
+					'typo3RelPath' => 'ext/' . $extensionKey . '/'
+				);
+			} elseif (@is_dir(PATH_typo3 . 'sysext/' . $extensionKey . '/')) {
+					// system
+				$loadedExtensionInformation[$extensionKey] = array(
+					'type' => 'S',
+					'siteRelPath' => TYPO3_mainDir . 'sysext/' . $extensionKey . '/',
+					'typo3RelPath' => 'sysext/' . $extensionKey . '/'
+				);
+			}
+
+				// Register found files in extension array if extension was found
+			if (isset($loadedExtensionInformation[$extensionKey])) {
+				foreach ($extensionFilesToCheckFor as $fileName) {
+					$absolutePathToFile = PATH_site . $loadedExtensionInformation[$extensionKey]['siteRelPath'] . $fileName;
+					if (@is_file($absolutePathToFile)) {
+						$loadedExtensionInformation[$extensionKey][$fileName] = $absolutePathToFile;
+					}
+				}
+			}
+		}
+
+		return $loadedExtensionInformation;
+	}
+
+	/**
+	 * Cache identifier of cached Typo3LoadedExtensionInformation array
+	 *
+	 * @return string
+	 */
+	protected static function getTypo3LoadedExtensionInformationCacheIdentifier() {
+		return sha1(TYPO3_version . PATH_site . 'loadedExtensions');
+	}
+
+	/**
+	 * Execute all ext_localconf.php files of loaded extensions.
+	 * The method implements an optionally used caching mechanism that concatenates all
+	 * ext_localconf.php files in one file.
+	 *
+	 * This is an internal method. It is only used during bootstrap and
+	 * extensions should not use it!
+	 *
+	 * @param boolean $allowCaching Whether or not to load / create concatenated cache file
+	 * @return void
+	 * @access private
+	 */
+	public static function loadExtLocalconf($allowCaching = TRUE) {
+		if ($allowCaching) {
+			$cacheIdentifier = self::getExtLocalconfCacheIdentifier();
+			/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
+			$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
+			if ($phpCodeCache->has($cacheIdentifier)) {
+				$phpCodeCache->requireOnce($cacheIdentifier);
+			} else {
+				self::loadSingleExtLocalconfFiles();
+				self::createExtLocalconfCacheEntry();
+			}
+		} else {
+			self::loadSingleExtLocalconfFiles();
+		}
+	}
+
+	/**
+	 * Execute ext_localconf.php files from extensions
+	 *
+	 * @return void
+	 */
+	protected static function loadSingleExtLocalconfFiles() {
+			// This is the main array meant to be manipulated in the ext_localconf.php files
+			// In general it is recommended to not rely on it to be globally defined in that
+			// scope but to use $GLOBALS['TYPO3_CONF_VARS'] instead.
+			// Nevertheless we define it here as global for backwards compatibility.
+		global $TYPO3_CONF_VARS;
+
+			// These globals for internal use only. Manipulating them directly is highly discouraged!
+			// We set them here as global for backwards compatibility, but this will change in
+			// future versions.
+			// @deprecated since 6.0 Will be removed in two versions.
+		global $T3_SERVICES, $T3_VAR;
+
+		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $_EXTKEY => $extensionInformation) {
+			if (is_array($extensionInformation) && $extensionInformation['ext_localconf.php']) {
+					// $_EXTKEY and $_EXTCONF are available in ext_localconf.php
+					// and are explicitly set in cached file as well
+				$_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
+				require($extensionInformation['ext_localconf.php']);
+			}
+		}
+	}
+
+	/**
+	 * Create cache entry for concatenated ext_localconf.php files
+	 *
+	 * @return void
+	 */
+	protected static function createExtLocalconfCacheEntry() {
+		$extensionInformation = $GLOBALS['TYPO3_LOADED_EXT'];
+		$phpCodeToCache = array();
+
+			// Set same globals as in loadSingleExtLocalconfFiles()
+		$phpCodeToCache[] = '/**';
+		$phpCodeToCache[] = ' * Compiled ext_localconf.php cache file';
+		$phpCodeToCache[] = ' */';
+		$phpCodeToCache[] = '';
+		$phpCodeToCache[] = 'global $TYPO3_CONF_VARS, $T3_SERVICES, $T3_VAR;';
+		$phpCodeToCache[] = '';
+
+			// Iterate through loaded extensions and add ext_localconf content
+		foreach ($extensionInformation as $extensionKey => $extensionDetails) {
+				// Include a header per extension to make the cache file more readable
+			$phpCodeToCache[] = '/**';
+			$phpCodeToCache[] = ' * Extension: ' . $extensionKey;
+			$phpCodeToCache[] = ' * File: ' . $extensionDetails['ext_localconf.php'];
+			$phpCodeToCache[] = ' */';
+			$phpCodeToCache[] = '';
+
+				// Set $_EXTKEY and $_EXTCONF for this extension
+			$phpCodeToCache[] = '$_EXTKEY = \'' . $extensionKey . '\';';
+			$phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];';
+			$phpCodeToCache[] = '';
+
+				// Add ext_localconf.php content of extension
+			$phpCodeToCache[] = trim(t3lib_div::getUrl($extensionDetails['ext_localconf.php']));
+			$phpCodeToCache[] = '';
+			$phpCodeToCache[] = '';
+		}
+
+		$phpCodeToCache = implode(LF, $phpCodeToCache);
+			// Remove all start and ending php tags from content
+		$phpCodeToCache = preg_replace('/<\?php|\?>/is', '', $phpCodeToCache);
+
+		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
+			self::getExtLocalconfCacheIdentifier(),
+			$phpCodeToCache,
+			array('concatenatedExtLocalconf', 'core')
+		);
+	}
+
+	/**
+	 * Cache identifier of concatenated ext_localconf file
+	 *
+	 * @return string
+	 */
+	protected static function getExtLocalconfCacheIdentifier() {
+		return sha1(TYPO3_version . PATH_site . 'extLocalconf');
+	}
+
+	/**
+	 * Execute all ext_tables.php files of loaded extensions.
+	 * The method implements an optionally used caching mechanism that concatenates all
+	 * ext_tables.php files in one file.
+	 *
+	 * This is an internal method. It is only used during bootstrap and
+	 * extensions should not use it!
+	 *
+	 * @param boolean $allowCaching Whether to load / create concatenated cache file
+	 * @return void
+	 * @access private
+	 */
+	public static function loadExtTables($allowCaching = TRUE) {
+		if ($allowCaching && !self::$extTablesWasReadFromCacheOnce) {
+			self::$extTablesWasReadFromCacheOnce = TRUE;
+			$cacheIdentifier = self::getExtTablesCacheIdentifier();
+			/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
+			$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
+			if ($phpCodeCache->has($cacheIdentifier)) {
+				$phpCodeCache->requireOnce($cacheIdentifier);
+			} else {
+				self::loadSingleExtTablesFiles();
+				self::createExtTablesCacheEntry();
+			}
+		} else {
+			self::loadSingleExtTablesFiles();
+		}
+	}
+
+	/**
+	 * Load ext_tables.php as single files
+	 *
+	 * @return void
+	 */
+	protected static function loadSingleExtTablesFiles() {
+			// In general it is recommended to not rely on it to be globally defined in that
+			// scope, but we can not prohibit this without breaking backwards compatibility
+		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
+		global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
+		global $PAGES_TYPES, $TBE_STYLES, $FILEICONS;
+
+			// Load each ext_tables.php file of loaded extensions
+		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $_EXTKEY => $extensionInformation) {
+			if (is_array($extensionInformation) && $extensionInformation['ext_tables.php']) {
+					// $_EXTKEY and $_EXTCONF are available in ext_tables.php
+					// and are explicitly set in cached file as well
+				$_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY];
+				require($extensionInformation['ext_tables.php']);
+			}
+		}
+	}
+
+	/**
+	 * Create concatenated ext_tables.php cache file
+	 *
+	 * @return void
+	 */
+	protected static function createExtTablesCacheEntry() {
+		$extensionInformation = $GLOBALS['TYPO3_LOADED_EXT'];
+		$phpCodeToCache = array();
+
+			// Set same globals as in loadSingleExtTablesFiles()
+		$phpCodeToCache[] = '/**';
+		$phpCodeToCache[] = ' * Compiled ext_tables.php cache file';
+		$phpCodeToCache[] = ' */';
+		$phpCodeToCache[] = '';
+		$phpCodeToCache[] = 'global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;';
+		$phpCodeToCache[] = 'global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;';
+		$phpCodeToCache[] = 'global $PAGES_TYPES, $TBE_STYLES, $FILEICONS;';
+		$phpCodeToCache[] = '';
+
+			// Iterate through loaded extensions and add ext_tables content
+		foreach ($extensionInformation as $extensionKey => $extensionDetails) {
+				// Include a header per extension to make the cache file more readable
+			$phpCodeToCache[] = '/**';
+			$phpCodeToCache[] = ' * Extension: ' . $extensionKey;
+			$phpCodeToCache[] = ' * File: ' . $extensionDetails['ext_tables.php'];
+			$phpCodeToCache[] = ' */';
+			$phpCodeToCache[] = '';
+
+				// Set $_EXTKEY and $_EXTCONF for this extension
+			$phpCodeToCache[] = '$_EXTKEY = \'' . $extensionKey . '\';';
+			$phpCodeToCache[] = '$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];';
+			$phpCodeToCache[] = '';
+
+				// Add ext_tables.php content of extension
+			$phpCodeToCache[] = trim(t3lib_div::getUrl($extensionDetails['ext_tables.php']));
+			$phpCodeToCache[] = '';
+			$phpCodeToCache[] = '';
+		}
+
+		$phpCodeToCache = implode(LF, $phpCodeToCache);
+			// Remove all start and ending php tags from content
+		$phpCodeToCache = preg_replace('/<\?php|\?>/is', '', $phpCodeToCache);
+
+		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
+			self::getExtTablesCacheIdentifier(),
+			$phpCodeToCache,
+			array('combinedExtTables', 'core')
+		);
+	}
+
+	/**
+	 * Cache identifier for concatenated ext_tables.php files
+	 *
+	 * @return string
+	 */
+	protected static function getExtTablesCacheIdentifier() {
+		return sha1(TYPO3_version . PATH_site . 'extTables');
+	}
+
+	/**
+	 * Loading extensions configured in $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']
 	 *
 	 * Usages of this function can be seen in bootstrap
 	 * Extensions are always detected in the order local - global - system.
 	 *
 	 * @return array Extension Array
 	 * @internal
+	 * @deprecated since 6.0, will be removed in two versions
 	 */
 	public static function typo3_loadExtensions() {
-
-			// Caching behaviour of ext_tables.php and ext_localconf.php files:
-		$extensionCacheBehaviour = self::getExtensionCacheBehaviour();
-			// Full list of extensions includes both required and extList:
-		$rawExtList = self::getEnabledExtensionList();
-
-			// Empty array as a start.
-		$extensions = array();
-
-			//
-		if ($rawExtList) {
-				// The cached File prefix.
-			$cacheFilePrefix = self::getCacheFilePrefix();
-
-				// If cache files available, set cache file prefix and return:
-			if ($extensionCacheBehaviour && self::isCacheFilesAvailable($cacheFilePrefix)) {
-					// Return cache file prefix:
-				$extensions['_CACHEFILE'] = $cacheFilePrefix;
-			} else { // ... but if not, configure...
-
-					// Prepare reserved filenames:
-				$files = array('ext_localconf.php', 'ext_tables.php', 'ext_tables.sql', 'ext_tables_static+adt.sql', 'ext_typoscript_constants.txt', 'ext_typoscript_setup.txt');
-					// Traverse extensions and check their existence:
-				clearstatcache(); // Clear file state cache to make sure we get good results from is_dir()
-				$temp_extensions = array_unique(t3lib_div::trimExplode(',', $rawExtList, 1));
-				foreach ($temp_extensions as $temp_extKey) {
-						// Check local, global and system locations:
-					if (@is_dir(PATH_typo3conf . 'ext/' . $temp_extKey . '/')) {
-						$extensions[$temp_extKey] = array('type' => 'L', 'siteRelPath' => 'typo3conf/ext/' . $temp_extKey . '/', 'typo3RelPath' => '../typo3conf/ext/' . $temp_extKey . '/');
-					} elseif (@is_dir(PATH_typo3 . 'ext/' . $temp_extKey . '/')) {
-						$extensions[$temp_extKey] = array('type' => 'G', 'siteRelPath' => TYPO3_mainDir . 'ext/' . $temp_extKey . '/', 'typo3RelPath' => 'ext/' . $temp_extKey . '/');
-					} elseif (@is_dir(PATH_typo3 . 'sysext/' . $temp_extKey . '/')) {
-						$extensions[$temp_extKey] = array('type' => 'S', 'siteRelPath' => TYPO3_mainDir . 'sysext/' . $temp_extKey . '/', 'typo3RelPath' => 'sysext/' . $temp_extKey . '/');
-					}
-
-						// If extension was found, check for reserved filenames:
-					if (isset($extensions[$temp_extKey])) {
-						foreach ($files as $fName) {
-							$temp_filename = PATH_site . $extensions[$temp_extKey]['siteRelPath'] . trim($fName);
-							if (is_array($extensions[$temp_extKey]) && @is_file($temp_filename)) {
-								$extensions[$temp_extKey][$fName] = $temp_filename;
-							}
-						}
-					}
-				}
-				unset($extensions['_CACHEFILE']);
-
-					// Write cache?
-				if ($extensionCacheBehaviour &&
-						@is_dir(PATH_typo3 . 'sysext/') &&
-								@is_dir(PATH_typo3 . 'ext/')) { // Must also find global and system extension directories to exist, otherwise caching cannot be allowed (since it is most likely a temporary server problem). This might fix a rare, unrepeatable bug where global/system extensions are not loaded resulting in fatal errors if that is cached!
-					$wrError = self::cannotCacheFilesWritable($cacheFilePrefix);
-					if ($wrError) {
-						$GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache'] = 0;
-					} else {
-							// Write cache files:
-						$extensions = self::writeCacheFiles($extensions, $cacheFilePrefix);
-					}
-				}
-			}
-		}
-
-		return $extensions;
+		t3lib_div::logDeprecatedFunction();
+		return self::loadTypo3LoadedExtensionInformation(TRUE);
 	}
 
 	/**
@@ -1602,32 +1885,24 @@ tt_content.' . $key . $prefix . ' {
 	 * @param string $file Is the filename (only informative for comment)
 	 * @return string
 	 * @internal
+	 * @deprecated since 6.0, will be removed in two versions
 	 */
 	public static function _makeIncludeHeader($key, $file) {
-		return '<?php
-###########################
-## EXTENSION: ' . $key . '
-## FILE:      ' . $file . '
-###########################
-
-$_EXTKEY = \'' . $key . '\';
-$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
-
-?>';
+		t3lib_div::logDeprecatedFunction();
+		return '';
 	}
 
 	/**
-	 * Returns TRUE if both the localconf and tables cache file exists (with $cacheFilePrefix) and if they are not empty
+	 * Returns TRUE if both the localconf and tables cache file exists
+	 * (with $cacheFilePrefix) and if they are not empty
 	 *
 	 * @param $cacheFilePrefix string Prefix of the cache file to check
 	 * @return boolean
+	 * @deprecated since 6.0, will be removed in two versions
 	 */
 	public static function isCacheFilesAvailable($cacheFilePrefix) {
-		return
-			@is_file(PATH_typo3conf . $cacheFilePrefix . '_ext_localconf.php') &&
-				@is_file(PATH_typo3conf . $cacheFilePrefix . '_ext_tables.php') &&
-				@filesize(PATH_typo3conf . $cacheFilePrefix . '_ext_localconf.php') > 0 &&
-				@filesize(PATH_typo3conf . $cacheFilePrefix . '_ext_tables.php') > 0;
+		t3lib_div::logDeprecatedFunction();
+		return FALSE;
 	}
 
 	/**
@@ -1647,51 +1922,26 @@ $_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
 	 * @param string $cacheFilePrefix Prefix of the cache file to check
 	 * @return string
 	 * @internal
+	 * @deprecated since 6.0, will be removed in two versions
 	 */
 	public static function cannotCacheFilesWritable($cacheFilePrefix) {
-		$error = array();
-		if (!@is_writable(PATH_typo3conf)) {
-			$error[] = PATH_typo3conf;
-		}
-		if (@is_file(PATH_typo3conf . $cacheFilePrefix . '_ext_localconf.php') &&
-				!@is_writable(PATH_typo3conf . $cacheFilePrefix . '_ext_localconf.php')) {
-			$error[] = PATH_typo3conf . $cacheFilePrefix . '_ext_localconf.php';
-		}
-		if (@is_file(PATH_typo3conf . $cacheFilePrefix . '_ext_tables.php') &&
-				!@is_writable(PATH_typo3conf . $cacheFilePrefix . '_ext_tables.php')) {
-			$error[] = PATH_typo3conf . $cacheFilePrefix . '_ext_tables.php';
-		}
-		return implode(', ', $error);
+		t3lib_div::logDeprecatedFunction();
+		return '';
 	}
 
 	/**
-	 * Returns an array with the two cache-files (0=>localconf, 1=>tables) from typo3conf/ if they (both) exist. Otherwise FALSE.
+	 * Returns an array with the two cache-files (0=>localconf, 1=>tables)
+	 * from typo3conf/ if they (both) exist. Otherwise FALSE.
 	 * Evaluation relies on $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE']
 	 *
 	 * @param string $cacheFilePrefix Cache file prefix to be used (optional)
 	 * @return array
 	 * @internal
+	 * @deprecated since 6.0, will be removed in versions
 	 */
 	public static function currentCacheFiles($cacheFilePrefix = NULL) {
-		if (is_null($cacheFilePrefix)) {
-			$cacheFilePrefix = $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'];
-		}
-
-		if ($cacheFilePrefix) {
-			$cacheFilePrefixFE = str_replace('temp_CACHED', 'temp_CACHED_FE', $cacheFilePrefix);
-			$files = array();
-			if (self::isCacheFilesAvailable($cacheFilePrefix)) {
-				$files[] = PATH_typo3conf . $cacheFilePrefix . '_ext_localconf.php';
-				$files[] = PATH_typo3conf . $cacheFilePrefix . '_ext_tables.php';
-			}
-			if (self::isCacheFilesAvailable($cacheFilePrefixFE)) {
-				$files[] = PATH_typo3conf . $cacheFilePrefixFE . '_ext_localconf.php';
-				$files[] = PATH_typo3conf . $cacheFilePrefixFE . '_ext_tables.php';
-			}
-			if (!empty($files)) {
-				return $files;
-			}
-		}
+		t3lib_div::logDeprecatedFunction();
+		return array();
 	}
 
 	/**
@@ -1702,60 +1952,32 @@ $_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
 	 * @param string $cacheFilePrefix Prefix for the cache files
 	 * @return array
 	 * @internal
+	 * @deprecated since 6.0, will be removed in two versions
 	 */
 	public static function writeCacheFiles($extensions, $cacheFilePrefix) {
-			// Making cache files:
-		$extensions['_CACHEFILE'] = $cacheFilePrefix;
-		$cFiles = array();
-		$cFiles['ext_localconf'] .= '<?php
-
-$GLOBALS[\'TYPO3_LOADED_EXT\'] = unserialize(stripslashes(\'' . addslashes(serialize($extensions)) . '\'));
-
-?>';
-
-		foreach ($extensions as $key => $conf) {
-			if (is_array($conf)) {
-				if ($conf['ext_localconf.php']) {
-					$cFiles['ext_localconf'] .= self::_makeIncludeHeader($key, $conf['ext_localconf.php']);
-					$cFiles['ext_localconf'] .= trim(t3lib_div::getUrl($conf['ext_localconf.php']));
-				}
-				if ($conf['ext_tables.php']) {
-					$cFiles['ext_tables'] .= self::_makeIncludeHeader($key, $conf['ext_tables.php']);
-					$cFiles['ext_tables'] .= trim(t3lib_div::getUrl($conf['ext_tables.php']));
-				}
-			}
-		}
-
-		$cFiles['ext_localconf'] = "<?php\n" . preg_replace('/<\?php|\?>/is', '', $cFiles['ext_localconf']) . "?>\n";
-		$cFiles['ext_tables'] = "<?php\n" . preg_replace('/<\?php|\?>/is', '', $cFiles['ext_tables']) . "?>\n";
-
-		t3lib_div::writeFile(PATH_typo3conf . $cacheFilePrefix . '_ext_localconf.php', $cFiles['ext_localconf']);
-		t3lib_div::writeFile(PATH_typo3conf . $cacheFilePrefix . '_ext_tables.php', $cFiles['ext_tables']);
-
-		$extensions = array();
-		$extensions['_CACHEFILE'] = $cacheFilePrefix;
-
-		return $extensions;
+		t3lib_div::logDeprecatedFunction();
+		return array();
 	}
 
 	/**
-	 * Unlink (delete) cache files
+	 * Remove cache files from php code cache, tagged with 'core'
 	 *
-	 * @param string $cacheFilePrefix Cache file prefix to be used (optional)
-	 * @return integer Number of deleted files.
+	 * This removes the following cache entries:
+	 * 	- autoloader cache registry
+	 * 	- cache loaded extension array
+	 * 	- ext_localconf concatenation
+	 * 	- ext_tables concatenation
+	 *
+	 * This method is usually only used by extension that fiddle
+	 * with the loaded extensions. An example is the extension
+	 * manager and the install tool.
+	 *
+	 * @return void
 	 */
-	public static function removeCacheFiles($cacheFilePrefix = NULL) {
-		$cacheFiles = self::currentCacheFiles($cacheFilePrefix);
-
-		$out = 0;
-		if (is_array($cacheFiles)) {
-			foreach ($cacheFiles as $cfile) {
-				@unlink($cfile);
-				clearstatcache();
-				$out++;
-			}
-		}
-		return $out;
+	public static function removeCacheFiles() {
+		/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
+		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
+		$phpCodeCache->flushByTag('core');
 	}
 
 	/**
@@ -1764,16 +1986,11 @@ $GLOBALS[\'TYPO3_LOADED_EXT\'] = unserialize(stripslashes(\'' . addslashes(seria
 	 *
 	 * @param boolean $usePlainValue Whether to use the value as it is without modifications
 	 * @return integer
+	 * @deprecated since 6.0, will be removed in two versions
 	 */
 	public static function getExtensionCacheBehaviour($usePlainValue = FALSE) {
-		$extensionCacheBehaviour = intval($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']);
-
-			// Caching of extensions is disabled when install tool is used:
-		if (!$usePlainValue && defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript) {
-			$extensionCacheBehaviour = 0;
-		}
-
-		return $extensionCacheBehaviour;
+		t3lib_div::logDeprecatedFunction();
+		return 1;
 	}
 
 	/**
@@ -1782,17 +1999,11 @@ $GLOBALS[\'TYPO3_LOADED_EXT\'] = unserialize(stripslashes(\'' . addslashes(seria
 	 * @return string
 	 */
 	public static function getCacheFilePrefix() {
-		$extensionCacheBehaviour = self::getExtensionCacheBehaviour(TRUE);
-
-		if ($extensionCacheBehaviour) {
-			$cacheFilePrefix = 'temp_CACHED_ps' . substr(t3lib_div::shortMD5(PATH_site . '|' . TYPO3_version), 0, 4);
-		}
-
-		return $cacheFilePrefix;
+		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**
-	 * Gets the list of enabled extensions for the accordant context (frontend or backend).
+	 * Gets the list of enabled extensions
 	 *
 	 * @return string
 	 */

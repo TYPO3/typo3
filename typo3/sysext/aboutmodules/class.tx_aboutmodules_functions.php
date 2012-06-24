@@ -573,19 +573,17 @@ class tx_aboutmodules_Functions {
 		$functions = array();
 
 		// Clearing of cache-files in typo3conf/ + menu
-		if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']) {
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_allTypo3Conf');
-			$functions[] = array(
-				'id' => 'temp_CACHED',
-				'title' => $title,
-				'href' => $backPath .
-						'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
-						'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')) .
-						'&cacheCmd=temp_CACHED' .
-						t3lib_BEfunc::getUrlToken('tceAction'),
-				'icon' => '<img' . t3lib_iconWorks::skinImg($backPath, 'gfx/clear_cache_files_in_typo3c.gif', 'width="21" height="18"') . ' title="' . htmlspecialchars($title) . '" alt="" />'
-			);
-		}
+		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_allTypo3Conf');
+		$functions[] = array(
+			'id' => 'temp_CACHED',
+			'title' => $title,
+			'href' => $backPath .
+					'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() .
+					'&redirect=' . rawurlencode(t3lib_div::getIndpEnv('TYPO3_REQUEST_SCRIPT')) .
+					'&cacheCmd=temp_CACHED' .
+					t3lib_BEfunc::getUrlToken('tceAction'),
+			'icon' => '<img' . t3lib_iconWorks::skinImg($backPath, 'gfx/clear_cache_files_in_typo3c.gif', 'width="21" height="18"') . ' title="' . htmlspecialchars($title) . '" alt="" />'
+		);
 
 		// Clear all page cache
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_all');

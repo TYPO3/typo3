@@ -37,7 +37,7 @@
  * @author Kasper Skaarhoj <kasperYYYY@typo3.com>
  */
 
-define('TYPO3_MODE','BE');
+define('TYPO3_MODE', 'BE');
 define('TYPO3_cliMode', TRUE);
 
 	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap.php is accidentally included twice
@@ -68,8 +68,10 @@ Typo3_Bootstrap::getInstance()
 	->configureExceptionHandling()
 	->setMemoryLimit()
 	->defineTypo3RequestTypes()
-	->loadAdditionalConfigurationFromExtensions()
+	->populateTypo3LoadedExtGlobal(TRUE)
+	->loadAdditionalConfigurationFromExtensions(TRUE)
 	->deprecationLogForOldXclassRegistration()
+	->deprecationLogForOldExtCacheSetting()
 	->initializeExceptionHandling()
 	->requireAdditionalExtensionFiles()
 	->setFinalCachingFrameworkCacheConfiguration()
@@ -78,7 +80,7 @@ Typo3_Bootstrap::getInstance()
 	->initializeTypo3DbGlobal(TRUE);
 Typo3_Bootstrap_Cli::initializeCliKeyOrDie();
 Typo3_Bootstrap::getInstance()
-	->loadExtensionTables()
+	->loadExtensionTables(TRUE)
 		// TODO: Check if we really need the sprite manager on the command line
 	->initializeSpriteManager(TRUE)
 	->initializeBackendUser()

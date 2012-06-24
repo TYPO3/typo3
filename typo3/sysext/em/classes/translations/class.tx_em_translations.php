@@ -199,7 +199,6 @@ class tx_em_Translations {
 
 			if (t3lib_div::_GET('l10n') == 'check') {
 				$loadedExtensions = array_keys($TYPO3_LOADED_EXT);
-				$loadedExtensions = array_diff($loadedExtensions, array('_CACHEFILE'));
 
 				// Override content output - we now do that ourselves:
 				$this->parentObject->content .= $this->parentObject->doc->section($GLOBALS['LANG']->getLL('translation_status'), $content, 0, 1);

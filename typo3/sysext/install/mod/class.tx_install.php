@@ -6390,8 +6390,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @return void
 	 */
 	function updateWizard() {
-			// clear cache files
-		t3lib_extMgm::removeCacheFiles(t3lib_extMgm::getCacheFilePrefix());
+		t3lib_extMgm::removeCacheFiles();
 
 			// Forces creation / update of caching framework tables that are needed by some update wizards
 		$cacheTablesConfiguration = implode(LF, $this->sqlHandler->getStatementArray(t3lib_cache::getDatabaseTableDefinitions(), 1, '^CREATE TABLE '));
@@ -7495,7 +7494,7 @@ $out="
 	 * @return void
 	 */
 	function includeTCA() {
-		Typo3_Bootstrap::getInstance()->loadExtensionTables();
+		Typo3_Bootstrap::getInstance()->loadExtensionTables(FALSE);
 
 		foreach ($GLOBALS['TCA'] as $table => $conf) {
 			t3lib_div::loadTCA($table);

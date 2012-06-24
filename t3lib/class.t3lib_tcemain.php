@@ -6417,11 +6417,13 @@ class t3lib_TCEmain {
 	}
 
 	/**
-	 * Unlink (delete) typo3conf/temp_CACHED_*.php cache files
+	 * Unlink (delete) core cache files
 	 *
 	 * @return integer The number of files deleted
+	 * @deprecated since 6.0, will be removed in two versions, use t3lib_extMgm::removeCacheFiles() instead
 	 */
 	function removeCacheFiles() {
+		t3lib_div::logDeprecatedFunction();
 		return t3lib_extMgm::removeCacheFiles();
 	}
 
@@ -6958,14 +6960,10 @@ class t3lib_TCEmain {
 						}
 					}
 				}
-				if ($this->admin && $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']) {
-					$this->removeCacheFiles();
-				}
+				t3lib_extMgm::removeCacheFiles();
 				break;
 			case 'temp_cached':
-				if ($this->admin && $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']) {
-					$this->removeCacheFiles();
-				}
+				t3lib_extMgm::removeCacheFiles();
 				break;
 		}
 

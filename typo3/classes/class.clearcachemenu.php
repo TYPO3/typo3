@@ -92,7 +92,7 @@ class ClearCacheMenu implements backend_toolbarItem {
 		}
 
 			// Clearing of cache-files in typo3conf/ + menu
-		if ($GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['EXT']['extCache']) {
+		if ($GLOBALS['BE_USER']->isAdmin()) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCacheMenu_allTypo3Conf', TRUE);
 			$this->cacheActions[] = array(
 				'id'    => 'temp_CACHED',

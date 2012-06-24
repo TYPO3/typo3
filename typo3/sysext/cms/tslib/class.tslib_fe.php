@@ -2123,14 +2123,10 @@ class tslib_fe {
 				// Create hash string for storage / retrieval of cached content:
 			$tempHash = md5('tables.php:'.
 				filemtime(TYPO3_extTableDef_script ? PATH_typo3conf.TYPO3_extTableDef_script : PATH_t3lib.'stddb/tables.php').
-				(TYPO3_extTableDef_script?filemtime(PATH_typo3conf.TYPO3_extTableDef_script):'').
-				($GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] ? filemtime(PATH_typo3conf.$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'].'_ext_tables.php') : '')
+				(TYPO3_extTableDef_script?filemtime(PATH_typo3conf.TYPO3_extTableDef_script):'')
 			);
 
-			if ($this->TYPO3_CONF_VARS['EXT']['extCache'] != 0) {
-					// Try to fetch if cache is enabled
-				list($GLOBALS['TCA'], $this->TCAcachedExtras) = unserialize($this->sys_page->getHash($tempHash));
-			}
+			list($GLOBALS['TCA'], $this->TCAcachedExtras) = unserialize($this->sys_page->getHash($tempHash));
 
 				// If no result, create it:
 			if (!is_array($GLOBALS['TCA'])) {
@@ -2156,10 +2152,7 @@ class tslib_fe {
 				}
 
 				$GLOBALS['TCA'] = $newTc;
-					// Store it in cache if cache is enabled
-				if ($this->TYPO3_CONF_VARS['EXT']['extCache'] != 0) {
-					$this->sys_page->storeHash($tempHash, serialize(array($newTc, $this->TCAcachedExtras)), 'SHORT_TC');
-				}
+				$this->sys_page->storeHash($tempHash, serialize(array($newTc, $this->TCAcachedExtras)), 'SHORT_TC');
 			}
 		}
 		$GLOBALS['TT']->pull();
@@ -2179,7 +2172,7 @@ class tslib_fe {
 	public function includeTCA($TCAloaded = 1) {
 		if (!$this->TCAloaded) {
 			$GLOBALS['TCA'] = array();
-			Typo3_Bootstrap::getInstance()->loadExtensionTables();
+			Typo3_Bootstrap::getInstance()->loadExtensionTables(TRUE);
 			$this->TCAloaded = $TCAloaded;
 		}
 	}

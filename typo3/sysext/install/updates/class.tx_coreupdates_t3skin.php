@@ -98,9 +98,6 @@ class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
 	protected function addExtToList(array $extKeys) {
 			// Get list of installed extensions and add this one.
 		$tmpLoadedExt = $GLOBALS['TYPO3_LOADED_EXT'];
-		if (isset($tmpLoadedExt['_CACHEFILE'])) {
-			unset($tmpLoadedExt['_CACHEFILE']);
-		}
 
 		$listArr = array_keys($tmpLoadedExt);
 		$listArr = array_merge($listArr, $extKeys);
@@ -112,7 +109,7 @@ class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
 
 	/**
 	 * Writes the extension list to "localconf.php" file
-	 * Removes the temp_CACHED* files before return.
+	 * Removes the cached core files before return.
 	 *
 	 * @param	string		List of extensions
 	 * @return	string		Result of writeToLocalconf_control()
