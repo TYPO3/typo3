@@ -157,7 +157,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 		}
 
 		if ($i==0) {
-			$table1='<tr class="bgColor4"><td callspan="3">'.$LANG->getLL("noresults").'</td></tr>';
+			$table1='<tr class="bgColor4"><td callspan="3">'.$LANG->getLL('noresults').'</td></tr>';
 		}
 
 		$table1='<table class="bgColor5" cellpadding="2" cellspacing="1"><tr class="tableheader"><td colspan="3">'.$title.'</td></tr>'.$table1.'</table>';

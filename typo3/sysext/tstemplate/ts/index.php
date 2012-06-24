@@ -470,7 +470,7 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			$recData = array();
 			$recData['sys_template']['NEW'] = array(
 				'pid' => $actTemplateId ? -1 * $actTemplateId : $id,
-				'title' => "+ext",
+				'title' => '+ext',
 			);
 
 			$tce->start($recData, array());
@@ -557,16 +557,16 @@ page.10.value = HELLO WORLD!
 			static $i;
 			foreach ($pArray as $k => $v) {
 				if (t3lib_utility_Math::canBeInterpretedAsInteger($k)) {
-					if (isset($pArray[$k . "_"])) {
+					if (isset($pArray[$k . '_'])) {
 						$lines[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
 							<td nowrap><img src="clear.gif" width="1" height="1" hspace=' . ($c * 10) . ' align="top">' .
 							'<a href="' . t3lib_div::linkThisScript(array('id' => $k)) . '">' .
-							t3lib_iconWorks::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecordWSOL('pages', $k), array("title"=>'ID: ' . $k )) .
+							t3lib_iconWorks::getSpriteIconForRecord('pages', t3lib_BEfunc::getRecordWSOL('pages', $k), array('title' => 'ID: ' . $k )) .
 							t3lib_div::fixed_lgd_cs($pArray[$k], 30) . '</a></td>
 							<td align="center">' . $pArray[$k . '_']['count'] . '</td>
-							<td align="center" class="bgColor5">' . ($pArray[$k . '_']['root_max_val'] > 0 ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : "&nbsp;") .
+							<td align="center" class="bgColor5">' . ($pArray[$k . '_']['root_max_val'] > 0 ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : '&nbsp;') .
 							'</td>
-							<td align="center">' . ($pArray[$k . '_']['root_min_val'] == 0 ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : "&nbsp;") .
+							<td align="center">' . ($pArray[$k . '_']['root_min_val'] == 0 ? t3lib_iconWorks::getSpriteIcon('status-status-checked') : '&nbsp;') .
 							'</td>
 							</tr>';
 						} else {

@@ -86,11 +86,11 @@ class SC_mod_web_info_index extends t3lib_SCbase {
 			$this->doc->tableLayout = array (
 				'0' => array (
 					'0' => array('<td valign="top"><strong>', '</strong></td>'),
-					"defCol" => array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><strong>', '</strong></td>')
+					'defCol' => array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><strong>', '</strong></td>')
 				),
-				"defRow" => array (
-					"0" => array('<td valign="top">', '</td>'),
-					"defCol" => array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top">', '</td>')
+				'defRow' => array (
+					'0' => array('<td valign="top">', '</td>'),
+					'defCol' => array('<td><img src="'.$this->doc->backPath.'clear.gif" width="10" height="1" alt="" /></td><td valign="top">', '</td>')
 				)
 			);
 

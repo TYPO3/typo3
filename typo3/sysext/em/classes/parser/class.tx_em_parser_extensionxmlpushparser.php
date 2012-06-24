@@ -94,7 +94,7 @@ class tx_em_Parser_ExtensionXmlPushParser extends tx_em_Parser_ExtensionXmlAbstr
 		xml_set_element_handler($this->objXML, 'startElement', 'endElement');
 		xml_set_character_data_handler($this->objXML, 'characterData');
 
-		if (!($fp = fopen($file, "r"))) {
+		if (!($fp = fopen($file, 'r'))) {
 			$this->throwException(sprintf('Unable to open file resource %s.', htmlspecialchars($file)));
 		}
 		while ($data = fread($fp, 4096)) {

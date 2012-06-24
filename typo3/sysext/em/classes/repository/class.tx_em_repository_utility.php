@@ -103,7 +103,7 @@ class tx_em_Repository_Utility implements t3lib_Singleton {
 	 * @param   integer	$code  the exception code.
 	 * @return  void
 	 */
-	protected function throwConnectionException($message = "", $code = 0) {
+	protected function throwConnectionException($message = '', $code = 0) {
 		throw new tx_em_ConnectionException(get_class($this) . ': ' . $message, $code);
 	}
 

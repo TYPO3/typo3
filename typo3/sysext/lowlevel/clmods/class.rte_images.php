@@ -229,7 +229,9 @@ Reports problems with RTE images';
 												if ($error) {
 													echo '	- ERROR:	t3lib_refindex::setReferenceValue(): '.$error.LF;
 													exit;
-												} else echo " - DONE";
+												} else {
+													echo ' - DONE';
+												}
 											} else {
 												echo '	- ERROR: File "'.$copyDestName.'" was not created!';
 											}

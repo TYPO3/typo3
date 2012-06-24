@@ -215,7 +215,7 @@ abstract class tx_em_Parser_MirrorXmlAbstractParser extends tx_em_Parser_XmlAbst
 	 * @param   integer	$code  the exception code.
 	 * @return  void
 	 */
-	protected function throwException($message = "", $code = 0) {
+	protected function throwException($message = '', $code = 0) {
 		throw new tx_em_MirrorXmlException(get_class($this) . ': ' . $message, $code);
 	}
 }

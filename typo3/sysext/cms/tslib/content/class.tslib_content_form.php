@@ -321,7 +321,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 							$default = '';
 						}
 
-						$max = trim($fParts[2]) ? ' maxlength="' . t3lib_utility_Math::forceIntegerInRange($fParts[2], 1, 1000) . '"' : "";
+						$max = trim($fParts[2]) ? ' maxlength="' . t3lib_utility_Math::forceIntegerInRange($fParts[2], 1, 1000) . '"' : '';
 						$theType = $confData['type'] == 'input' ? 'text' : 'password';
 
 						$fieldCode = sprintf(

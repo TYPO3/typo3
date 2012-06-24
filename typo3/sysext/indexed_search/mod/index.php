@@ -357,7 +357,7 @@ class SC_mod_tools_isearch_index {
 				t3lib_BEfunc::datetime($row['item_mtime']),
 				t3lib_BEfunc::datetime($row['crdate']),
 				($row['tstamp']!=$row['crdate'] ? t3lib_BEfunc::datetime($row['tstamp']) : ''),
-				$row["parsetime"],
+				$row['parsetime'],
 				$this->getNumberOfSections($row['phash']).'/'.$grListRec[0]['pcount'].'/'.$this->getNumberOfFulltext($row['phash']),
 				$row['pcount'],
 				$cHash,
@@ -451,7 +451,7 @@ class SC_mod_tools_isearch_index {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_grlist.*', 'index_grlist', 'phash='.intval($phash));
 		$allRows = array();
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$row["pcount"] = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
+			$row['pcount'] = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 			$allRows[] = $row;
 		}
 		return $allRows;
@@ -485,7 +485,7 @@ class SC_mod_tools_isearch_index {
 		);
 
 		$revTypes=array_flip($Itypes);
-		$revTypes[0]="TYPO3 page";
+		$revTypes[0] = 'TYPO3 page';
 
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*),item_type', 'index_phash', '', 'item_type', 'item_type');
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {

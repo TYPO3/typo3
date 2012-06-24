@@ -153,7 +153,9 @@ This will show you missing files in the TYPO3 system and only report back if err
 						echo '		t3lib_refindex::setReferenceValue(): '.$error.LF;
 						echo 'missing_files: exit on error'.LF;
 						exit;
-					} else echo "DONE";
+					} else {
+						echo 'DONE';
+					}
 				}
 				echo LF;
 			}

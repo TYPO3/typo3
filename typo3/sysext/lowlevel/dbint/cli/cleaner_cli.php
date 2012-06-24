@@ -8,6 +8,6 @@ require_once(t3lib_extMgm::extPath('lowlevel') . 'class.tx_lowlevel_cleaner_core
 
 	// Call the functionality
 $cleanerObj = t3lib_div::makeInstance('tx_lowlevel_cleaner_core');
-$cleanerObj->cli_main($_SERVER["argv"]);
+$cleanerObj->cli_main($_SERVER['argv']);
 
 ?>

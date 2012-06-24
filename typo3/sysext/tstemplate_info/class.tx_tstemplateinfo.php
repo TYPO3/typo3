@@ -493,8 +493,8 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				}
 			}
 			if ($e['config']) {
-				$outCode='<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, "width:98%;height:70%", "off").' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow["config"]).'</textarea>';
-				$outCode.= '<input type="Hidden" name="e[config]" value="1">';
+				$outCode = '<textarea name="data[config]" rows="'.$numberOfRows.'" wrap="off" class="fixed-font enable-tab"'.$this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off').' class="fixed-font">'.t3lib_div::formatForTextarea($tplRow['config']).'</textarea>';
+				$outCode .= '<input type="Hidden" name="e[config]" value="1">';
 
 					// Display "Include TypoScript file content?" checkbox
 				$outCode .= t3lib_BEfunc::getFuncCheck(
