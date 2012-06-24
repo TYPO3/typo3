@@ -40,7 +40,7 @@ class Typo3_Utility_BackendModuleUtility {
 	protected $moduleMenu;
 
 	/**
-	 * @var Typo3_Repository_BackendModuleRepository
+	 * @var Typo3_Domain_Repository_BackendModuleRepository
 	 */
 	protected $moduleMenuRepository;
 
@@ -72,8 +72,8 @@ class Typo3_Utility_BackendModuleUtility {
 	/**
 	 * Creates the module menu object structure from the raw data array
 	 *
-	 * @see class.modulemenu.php getRawModuleData()
 	 * @param array $rawModuleData
+	 * @see class.modulemenu.php getRawModuleData()
 	 * @return void
 	 */
 	protected function convertRawModuleDataToModuleMenuObject(array $rawModuleData) {
@@ -93,10 +93,10 @@ class Typo3_Utility_BackendModuleUtility {
 	 * Creates a menu entry object from an array
 	 *
 	 * @param array $module
-	 * @return Typo3_BackendModule
+	 * @return Typo3_Domain_Model_BackendModule
 	 */
 	protected function createEntryFromRawData(array $module) {
-		/** @var $entry Typo3_BackendModule */
+		/** @var $entry Typo3_Domain_Model_BackendModule */
 		$entry = t3lib_div::makeInstance('Typo3_Domain_Model_BackendModule');
 		if (!empty($module['name']) && is_string($module['name'])) {
 			$entry->setName($module['name']);
@@ -126,8 +126,8 @@ class Typo3_Utility_BackendModuleUtility {
 	}
 
 	/**
-	 * Creates the "third level" menu entries (submodules for the info module for example)
-	 * from the TBE_MODULES_EXT array
+	 * Creates the "third level" menu entries (submodules for the info module for
+	 * example) from the TBE_MODULES_EXT array
 	 *
 	 * @return void
 	 */

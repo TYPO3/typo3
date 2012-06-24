@@ -82,13 +82,18 @@ class Typo3_Domain_Model_BackendModule {
 	}
 
 	/**
+	 * Set children
+	 *
 	 * @param \SplObjectStorage $children
+	 * @return void
 	 */
 	public function setChildren($children) {
 		$this->children = $children;
 	}
 
 	/**
+	 * Get children
+	 *
 	 * @return \SplObjectStorage
 	 */
 	public function getChildren() {
@@ -96,20 +101,28 @@ class Typo3_Domain_Model_BackendModule {
 	}
 
 	/**
-	 * @param Typo3_BackendModule $child
+	 * Add Child
+	 *
+	 * @param Typo3_Domain_Model_BackendModule $child
+	 * @return void
 	 */
 	public function addChild(Typo3_Domain_Model_BackendModule $child) {
 		$this->children->attach($child);
 	}
 
 	/**
+	 * Set icon
+	 *
 	 * @param array $icon
+	 * @return void
 	 */
 	public function setIcon(array $icon) {
 		$this->icon = $icon;
 	}
 
 	/**
+	 * Get icon
+	 *
 	 * @return array
 	 */
 	public function getIcon() {
@@ -117,13 +130,18 @@ class Typo3_Domain_Model_BackendModule {
 	}
 
 	/**
+	 * Set name
+	 *
 	 * @param string $name
+	 * @return void
 	 */
 	public function setName($name) {
 		$this->name = $name;
 	}
 
 	/**
+	 * Get name
+	 *
 	 * @return string
 	 */
 	public function getName() {
@@ -131,13 +149,18 @@ class Typo3_Domain_Model_BackendModule {
 	}
 
 	/**
+	 * Set title
+	 *
 	 * @param string $title
+	 * @return void
 	 */
 	public function setTitle($title) {
 		$this->title = $title;
 	}
 
 	/**
+	 * Get Title
+	 *
 	 * @return string
 	 */
 	public function getTitle() {
@@ -145,13 +168,18 @@ class Typo3_Domain_Model_BackendModule {
 	}
 
 	/**
+	 * Set Link
+	 *
 	 * @param string $link
+	 * @return void
 	 */
 	public function setLink($link) {
 		$this->link = $link;
 	}
 
 	/**
+	 * Get Link
+	 *
 	 * @return string
 	 */
 	public function getLink() {
@@ -159,13 +187,18 @@ class Typo3_Domain_Model_BackendModule {
 	}
 
 	/**
+	 * Set Description
+	 *
 	 * @param string $description
+	 * @return void
 	 */
 	public function setDescription($description) {
 		$this->description = $description;
 	}
 
 	/**
+	 * Get Description
+	 *
 	 * @return string
 	 */
 	public function getDescription() {
@@ -173,13 +206,18 @@ class Typo3_Domain_Model_BackendModule {
 	}
 
 	/**
+	 * Set Navigation Component Id
+	 *
 	 * @param string $navigationComponentId
+	 * @return void
 	 */
 	public function setNavigationComponentId($navigationComponentId) {
 		$this->navigationComponentId = $navigationComponentId;
 	}
 
 	/**
+	 * Get Navigation Component Id
+	 *
 	 * @return string
 	 */
 	public function getNavigationComponentId() {
@@ -187,13 +225,18 @@ class Typo3_Domain_Model_BackendModule {
 	}
 
 	/**
+	 * Set onClick
+	 *
 	 * @param string $onClick
+	 * @return void
 	 */
 	public function setOnClick($onClick) {
 		$this->onClick = $onClick;
 	}
 
 	/**
+	 * Get onClick
+	 *
 	 * @return string
 	 */
 	public function getOnClick() {
