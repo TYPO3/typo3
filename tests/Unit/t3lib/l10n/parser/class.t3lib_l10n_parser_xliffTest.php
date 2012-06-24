@@ -59,10 +59,12 @@ class t3lib_l10n_parser_xliffTest extends tx_phpunit_testcase {
 		$this->l10nPriority = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'];
 
 		$this->parser = t3lib_div::makeInstance('t3lib_l10n_parser_xliff');
+		$testFinder = t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder');
+		$fixturePath = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/l10n/parser/fixtures/';
 		$this->xliffFileNames = array(
-			'locallang' => PATH_site . 'typo3_src/tests/Unit/t3lib/l10n/parser/fixtures/locallang.xlf',
-			'locallang_override' => PATH_site . 'typo3_src/tests/Unit/t3lib/l10n/parser/fixtures/locallang_override.xlf',
-			'locallang_override_fr' => PATH_site . 'typo3_src/tests/Unit/t3lib/l10n/parser/fixtures/fr.locallang_override.xlf',
+			'locallang' => $fixturePath . 'locallang.xlf',
+			'locallang_override' => $fixturePath . 'locallang_override.xlf',
+			'locallang_override_fr' => $fixturePath . 'fr.locallang_override.xlf',
 		);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xlf';
 		t3lib_div::makeInstance('t3lib_l10n_Store')->initialize();

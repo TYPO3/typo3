@@ -59,10 +59,12 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 		$this->l10nPriority = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'];
 
 		$this->parser = t3lib_div::makeInstance('t3lib_l10n_parser_llxml');
+		$testFinder = t3lib_div::makeInstance('Tx_Phpunit_Service_TestFinder');
+		$fixturePath = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/l10n/parser/fixtures/';
 		$this->llxmlFileNames = array(
-			'locallang' => PATH_site . 'typo3_src/tests/Unit/t3lib/l10n/parser/fixtures/locallang.xml',
-			'locallang_override' => PATH_site . 'typo3_src/tests/Unit/t3lib/l10n/parser/fixtures/locallang_override.xml',
-			'locallangOnlyDefaultLanguage' =>  PATH_site . 'typo3_src/tests/Unit/t3lib/l10n/parser/fixtures/locallangOnlyDefaultLanguage.xml',
+			'locallang' => $fixturePath . 'locallang.xml',
+			'locallang_override' => $fixturePath . 'locallang_override.xml',
+			'locallangOnlyDefaultLanguage' =>  $fixturePath . 'locallangOnlyDefaultLanguage.xml',
 		);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xml';
 		t3lib_div::makeInstance('t3lib_l10n_Store')->initialize();

@@ -4115,7 +4115,10 @@ final class t3lib_div {
 			$validatedPrefix = PATH_typo3 . 'ext/';
 		} elseif (self::isFirstPartOfStr($fileRef, PATH_typo3conf . 'ext/')) { // Is local:
 			$validatedPrefix = PATH_typo3conf . 'ext/';
-		} elseif (self::isFirstPartOfStr($fileRef, PATH_site . 'typo3_src/tests/')) { // Is test:
+		} elseif (self::isFirstPartOfStr($fileRef, PATH_site . 'tests/')) { // Is test:
+			$validatedPrefix = PATH_site . 'tests/';
+			$location = $validatedPrefix;
+		} elseif (self::isFirstPartOfStr($fileRef, PATH_site . 'typo3_src/tests/')) { // Is test (typo3_src deprecated as ov TYPO3 6.0):
 			$validatedPrefix = PATH_site . 'typo3_src/tests/';
 			$location = $validatedPrefix;
 		} else {
