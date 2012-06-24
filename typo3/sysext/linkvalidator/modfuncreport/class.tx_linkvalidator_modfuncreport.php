@@ -248,8 +248,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		if ($this->modTS['showCheckLinkTab'] == 1) {
 			$panelCheck = "{
 				title: TYPO3.l10n.localize('CheckLink'),
-				html: " . json_encode($this->flush()) . ",
-			}";
+				html: " . json_encode($this->flush()) . ',
+			}';
 		}
 
 		$this->render();
@@ -263,13 +263,13 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			{
 				autoHeight: true,
 				title: TYPO3.l10n.localize('Report'),
-				html: " . json_encode($this->flush(TRUE)) . "
+				html: " . json_encode($this->flush(TRUE)) . '
 			},
-			" . $panelCheck . "
+			' . $panelCheck . '
 			]
 
 		});
-		";
+		';
 		$this->pageRenderer->addExtOnReadyCode($js);
 	}
 

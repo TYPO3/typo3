@@ -301,11 +301,11 @@ class tx_linkvalidator_Processor {
 						$r['type'] = $type;
 					}
 				}
-				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["substr"] = $r;
-				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["row"] = $record;
-				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["table"] = $table;
-				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["field"] = $field;
-				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r["tokenID"]]["uid"] = $idRecord;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['substr'] = $r;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['row'] = $record;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['table'] = $table;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['field'] = $field;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['uid'] = $idRecord;
 
 			}
 		}
@@ -364,13 +364,13 @@ class tx_linkvalidator_Processor {
 				}
 			}
 
-			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["substr"] = $currentR;
-			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["row"] = $record;
-			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["table"] = $table;
-			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["field"] = $field;
-			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["uid"] = $idRecord;
-			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["link_title"] = $title;
-			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR["tokenID"]]["pageAndAnchor"] = $referencedRecordType;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['substr'] = $currentR;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['row'] = $record;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['table'] = $table;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['field'] = $field;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['uid'] = $idRecord;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['link_title'] = $title;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['pageAndAnchor'] = $referencedRecordType;
 
 		}
 	}
