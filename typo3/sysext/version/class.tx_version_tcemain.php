@@ -352,7 +352,7 @@ class tx_version_tcemain {
 					$recordWasMoved = FALSE;
 				}
 			} else {
-				$tcemainObj->newlog("Move attempt failed due to workspace restrictions: " . implode(' // ', $workspaceAccessBlocked), 1);
+				$tcemainObj->newlog('Move attempt failed due to workspace restrictions: ' . implode(' // ', $workspaceAccessBlocked), 1);
 			}
 		}
 	}

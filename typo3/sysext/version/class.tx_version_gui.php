@@ -79,7 +79,7 @@ class tx_version_gui {
 				$management = '<input type="button" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:ver.mgm', TRUE) . '" onclick="window.location.href=\'' .
 						htmlspecialchars($GLOBALS['BACK_PATH'] . t3lib_extMgm::extRelPath('version') . 'cm1/index.php?table=pages&uid=' . $onlineId) . '\';" />';
 					// Create onchange handler:
-				$onChange = "window.location.href=this.options[this.selectedIndex].value;";
+				$onChange = 'window.location.href=this.options[this.selectedIndex].value;';
 
 					// Controls:
 				if ($id == $onlineId) {

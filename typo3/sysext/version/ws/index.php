@@ -145,39 +145,39 @@ class SC_mod_user_ws_index extends t3lib_SCbase {
 
 					if ($GLOBALS['TCA'][$table] && t3lib_utility_Math::canBeInterpretedAsInteger($uid)) {
 						switch ($post['_with_selected_do']) {
-							case "stage_-1":
+							case 'stage_-1':
 								$cmdArray[$table][$uid]['version']['action'] = 'setStage';
 								$cmdArray[$table][$uid]['version']['stageId'] = -1;
 							break;
-							case "stage_0":
+							case 'stage_0':
 								$cmdArray[$table][$uid]['version']['action'] = 'setStage';
 								$cmdArray[$table][$uid]['version']['stageId'] = 0;
 							break;
-							case "stage_1":
+							case 'stage_1':
 								$cmdArray[$table][$uid]['version']['action'] = 'setStage';
 								$cmdArray[$table][$uid]['version']['stageId'] = 1;
 							break;
-							case "stage_10":
+							case 'stage_10':
 								$cmdArray[$table][$uid]['version']['action'] = 'setStage';
 								$cmdArray[$table][$uid]['version']['stageId'] = 10;
 							break;
-							case "publish":
+							case 'publish':
 								if ($onlineRec = t3lib_BEfunc::getLiveVersionOfRecord($table, $uid, 'uid')) {
 									$cmdArray[$table][$onlineRec['uid']]['version']['action'] = 'swap';
 									$cmdArray[$table][$onlineRec['uid']]['version']['swapWith'] = $uid;
 								}
 							break;
-							case "swap":
+							case 'swap':
 							if ($onlineRec = t3lib_BEfunc::getLiveVersionOfRecord($table, $uid, 'uid')) {
 								$cmdArray[$table][$onlineRec['uid']]['version']['action'] = 'swap';
 								$cmdArray[$table][$onlineRec['uid']]['version']['swapWith'] = $uid;
 								$cmdArray[$table][$onlineRec['uid']]['version']['swapIntoWS'] = 1;
 							}
 							break;
-							case "release":
+							case 'release':
 								$cmdArray[$table][$uid]['version']['action'] = 'clearWSID';
 							break;
-							case "flush":
+							case 'flush':
 								$cmdArray[$table][$uid]['version']['action'] = 'flush';
 							break;
 						}
