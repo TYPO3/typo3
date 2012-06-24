@@ -47,13 +47,18 @@ class Typo3_ModuleStorage implements t3lib_Singleton {
 	}
 
 	/**
+	 * Set Entries
+	 *
 	 * @param \SplObjectStorage $entries
+	 * @return void
 	 */
 	public function setEntries($entries) {
 		$this->entries = $entries;
 	}
 
 	/**
+	 * Get Entries
+	 *
 	 * @return \SplObjectStorage
 	 */
 	public function getEntries() {
@@ -61,7 +66,10 @@ class Typo3_ModuleStorage implements t3lib_Singleton {
 	}
 
 	/**
+	 * Attach Entry
+	 *
 	 * @param Typo3_Domain_Model_BackendModule $entry
+	 * @return void
 	 */
 	public function attachEntry(Typo3_Domain_Model_BackendModule $entry) {
 		$this->entries->attach($entry);
