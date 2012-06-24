@@ -98,6 +98,6 @@ abstract class tx_em_Parser_XmlAbstractParser {
 	 * @param   integer	$code  the exception code
 	 * @return  void
 	 */
-	abstract protected function throwException($message = "", $code = 0);
+	abstract protected function throwException($message = '', $code = 0);
 }
 ?>

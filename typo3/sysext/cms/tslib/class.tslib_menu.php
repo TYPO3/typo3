@@ -2592,7 +2592,7 @@ class tslib_gmenu extends tslib_menu {
 						// Set rollover
 					if ($this->result['RO'][$key] && !$this->I['noLink']) {
 						$this->I['theName'] = $this->imgNamePrefix.$this->I['uid'].$this->I['INPfix'];
-						$this->I['name'] = ' '.$this->nameAttribute.'="'.$this->I["theName"].'"';
+						$this->I['name'] = ' '.$this->nameAttribute.'="'.$this->I['theName'].'"';
 						$this->I['linkHREF']['onMouseover']=$this->WMfreezePrefix.'over(\''.$this->I['theName'].'\');';
 						$this->I['linkHREF']['onMouseout']=$this->WMfreezePrefix.'out(\''.$this->I['theName'].'\');';
 						$GLOBALS['TSFE']->JSImgCode.= LF.$this->I['theName'].'_n=new Image(); '.$this->I['theName'].'_n.src = "'.$GLOBALS['TSFE']->absRefPrefix.$this->I['val']['output_file'].'"; ';
@@ -3022,10 +3022,10 @@ class tslib_jsmenu extends tslib_menu {
 			$this->JSVarName = 'eid' . $uniqueParam;
 			$this->JSMenuName = ($this->mconf['menuName'] ? $this->mconf['menuName'] : 'JSmenu' . $uniqueParam);
 
-			$JScode="\n var ".$this->JSMenuName." = new JSmenu(".$levels.", '".$this->JSMenuName."Form');";
+			$JScode="\n var ".$this->JSMenuName . ' = new JSmenu(' . $levels.", '".$this->JSMenuName."Form');";
 
 			for ($a = 1; $a <= $levels; $a++) {
-				$JScode.="\n var ".$this->JSVarName.$a."=0;";
+				$JScode .= "\n var " . $this->JSVarName . $a . '=0;';
 			}
 			$JScode.= $this->generate_level($levels, 1, $this->id, $this->menuArr, $this->MP_array).LF;
 
@@ -3139,9 +3139,9 @@ class tslib_jsmenu extends tslib_menu {
 						// do it...
 					if ($active || $first) {
 						if ($count == 1) {
-							$codeLines.=LF.$menuName.".openID = ".$var.$count.";";
+							$codeLines .= LF . $menuName . '.openID = ' .$var.$count.';';
 						} else {
-							$codeLines.=LF.$menuName.".entry[".$parent."].openID = ".$var.$count.";";
+							$codeLines .= LF . $menuName . '.entry[' . $parent . '].openID = ' . $var . $count . ';';
 						}
 					}
 						// Add submenu...

@@ -1003,7 +1003,7 @@ class TSpagegen {
 			$defBT = $GLOBALS['TSFE']->defaultBodyTag;
 		$bodyTag = $GLOBALS['TSFE']->pSetup['bodyTag'] ? $GLOBALS['TSFE']->pSetup['bodyTag'] : $defBT;
 		if ($bgImg = $GLOBALS['TSFE']->cObj->getImgResource($GLOBALS['TSFE']->pSetup['bgImg'], $GLOBALS['TSFE']->pSetup['bgImg.'])) {
-			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' background="' . $GLOBALS["TSFE"]->absRefPrefix . $bgImg[3] . '">';
+			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' background="' . $GLOBALS['TSFE']->absRefPrefix . $bgImg[3] . '">';
 		}
 
 		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins'])) {

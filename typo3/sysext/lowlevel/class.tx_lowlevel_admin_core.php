@@ -59,8 +59,8 @@ class tx_lowlevel_admin_core extends t3lib_cli {
 		$this->cli_help['name'] = 'lowlevel_admin -- Various functions for administration and maintenance of TYPO3 from the command line';
 		$this->cli_help['synopsis'] = 'toolkey ###OPTIONS###';
 		$this->cli_help['description'] = "The 'toolkey' keywords are:\n\n  ".implode("\n  ", array_keys($this->adminModules));
-		$this->cli_help['examples'] = "/.../cli_dispatch.phpsh lowlevel_admin setBElock --redirect=http://url_which_explains_why.com/";
-		$this->cli_help['author'] = "Kasper Skaarhoej, (c) 2009";
+		$this->cli_help['examples'] = '/.../cli_dispatch.phpsh lowlevel_admin setBElock --redirect=http://url_which_explains_why.com/';
+		$this->cli_help['author'] = 'Kasper Skaarhoej, (c) 2009';
 	}
 
 	/**************************

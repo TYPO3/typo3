@@ -506,7 +506,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 		$link = '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($username) . '</a>';
 
 			// Link to delete the user record
-		$onClick = ' onClick="return confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL("lDelete_warning")).');"';
+		$onClick = ' onClick="return confirm('.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('lDelete_warning')).');"';
 		$link .= '
 				<a href="' . htmlspecialchars($href . '&delete=1') . '" ' . $onClick . '>
 					<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/delete_record.gif') . ' alt="" />
@@ -572,7 +572,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 
 			// Save/update user by using TCEmain
 		if (is_array($data)) {
-			$tce = t3lib_div::makeInstance("t3lib_TCEmain");
+			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values = 0;
 			$tce->start($data, array(), $GLOBALS['BE_USER']);
 			$tce->admin = 1;
@@ -681,7 +681,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 	 * @return void
 	 */
 	protected function JScode() {
-		$this->t3lib_TCEforms = t3lib_div::makeInstance("t3lib_TCEforms");
+		$this->t3lib_TCEforms = t3lib_div::makeInstance('t3lib_TCEforms');
 		$this->t3lib_TCEforms->backPath = $GLOBALS['BACK_PATH'];
 		$js = $this->t3lib_TCEforms->dbFileCon();
 		$this->taskObject->doc->JScodeArray[] = $js;
@@ -791,7 +791,7 @@ class tx_sysaction_task implements tx_taskcenter_Task {
 				'title'				=> $title,
 				'description'		=> t3lib_BEfunc::getRecordTitle($el['table'], $dbAnalysis->results[$el['table']][$el['id']]),
 				'descriptionHtml'	=> $description,
-				'link'				=> $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . rawurlencode(t3lib_div::getIndpEnv("REQUEST_URI")) . '&edit[' . $el['table'] . '][' . $el['id'] . ']=edit',
+				'link'				=> $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . '&edit[' . $el['table'] . '][' . $el['id'] . ']=edit',
 				'icon'				=> t3lib_iconworks::getSpriteIconForRecord($el['table'], $dbAnalysis->results[$el['table']][$el['id']], array('title' => htmlspecialchars($path)))
 			);
 		}

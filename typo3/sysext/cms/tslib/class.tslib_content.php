@@ -3725,13 +3725,13 @@ class tslib_cObj {
 			// Split $content into an array(even items in the array are outside the tags, odd numbers are tag-blocks).
 		$tags = 'a|b|blockquote|body|div|em|font|form|h1|h2|h3|h4|h5|h6|i|li|map|ol|option|p|pre|sub|sup|select|span|strong|table|thead|tbody|tfoot|td|textarea|tr|u|ul|br|hr|img|input|area|link';
 			// TODO We should not crop inside <script> tags.
-		$tagsRegEx = "
+		$tagsRegEx = '
 			(
 				(?:
 					<!--.*?-->					# a comment
 				)
 				|
-				</?(?:" . $tags . ")+			# opening tag ('<tag') or closing tag ('</tag')
+				</?(?:' . $tags . ")+			# opening tag ('<tag') or closing tag ('</tag')
 				(?:
 					(?:
 						(?:
@@ -6211,7 +6211,7 @@ class tslib_cObj {
 					$target = '';
 				}
 
-				$onClick = "vHWin=window.open(" . t3lib_div::quoteJSvalue($GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url']), TRUE) .
+				$onClick = 'vHWin=window.open(' . t3lib_div::quoteJSvalue($GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url']), TRUE) .
 					",'FEopenLink','" . $JSwindowParams . "');vHWin.focus();return false;";
 				$res = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"' .
 					$target . ' onclick="' . htmlspecialchars($onClick) . '"' .
@@ -7020,12 +7020,12 @@ class tslib_cObj {
 			if (is_array($value)) {
 				foreach ($value as $Nvalue) {
 					$JSPart .= "
-	updateForm('" . $formName . "','" . $arrPrefix . "[" . $fKey . "][]'," . t3lib_div::quoteJSvalue($Nvalue, TRUE) . ");";
+	updateForm('" . $formName . "','" . $arrPrefix . '[' . $fKey . "][]'," . t3lib_div::quoteJSvalue($Nvalue, TRUE) . ');';
 				}
 
 			} else {
 				$JSPart .= "
-	updateForm('" . $formName . "','" . $arrPrefix . "[" . $fKey . "]'," . t3lib_div::quoteJSvalue($value, TRUE) . ");";
+	updateForm('" . $formName . "','" . $arrPrefix . '[' . $fKey . "]'," . t3lib_div::quoteJSvalue($value, TRUE) . ');';
 			}
 		}
 		$JSPart = '<script type="text/javascript">

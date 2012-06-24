@@ -162,7 +162,7 @@ class tx_t3editor implements t3lib_Singleton {
 	 */
 	public function __construct() {
 			// Disable pmktextarea to avoid conflicts (thanks Peter Klein for this suggestion)
-		$GLOBALS["BE_USER"]->uc['disablePMKTextarea'] = 1;
+		$GLOBALS['BE_USER']->uc['disablePMKTextarea'] = 1;
 	}
 
 	/**

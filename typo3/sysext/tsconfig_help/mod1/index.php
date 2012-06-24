@@ -196,8 +196,8 @@ class tx_tsconfighelp_module1 extends t3lib_SCbase {
 										'doc/manual.sxw">manual</a>)</p>';
 								}
 							} else	{
-									// this should never happen!
-								die ("Fatal error : loaded extension not actually loaded? Please file a bug report at http://bugs.typo3.org!");
+									// This should never happen!
+								die('Fatal error : loaded extension not actually loaded? Please file a bug report at http://forge.typo3.org!');
 							}
 						}
 

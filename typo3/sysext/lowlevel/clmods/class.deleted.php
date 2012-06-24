@@ -134,7 +134,9 @@ Although deleted records are not errors to be repaired, this tool allows you to 
 						// Return errors if any:
 					if (count($tce->errorLog)) {
 						echo '	ERROR from "TCEmain":'.LF.'TCEmain:'.implode(LF.'TCEmain:', $tce->errorLog);
-					} else echo "DONE";
+					} else {
+						echo 'DONE';
+					}
 				}
 				echo LF;
 			}

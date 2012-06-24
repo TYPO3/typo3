@@ -195,8 +195,8 @@ class tx_feloginTest extends tx_phpunit_testcase {
 			'invalid URL, UNC path' => array('\\\\foo\\bar\\'),
 			'invalid URL, backslashes in path' => array('http://domainhostname.tld\\bla\\blupp'),
 			'invalid URL, linefeed in path' => array("http://domainhostname.tld/bla/blupp\n"),
-			'invalid URL, only one slash after scheme' => array("http:/domainhostname.tld/bla/blupp"),
-			'invalid URL, illegal chars' => array("http://(<>domainhostname).tld/bla/blupp"),
+			'invalid URL, only one slash after scheme' => array('http:/domainhostname.tld/bla/blupp'),
+			'invalid URL, illegal chars' => array('http://(<>domainhostname).tld/bla/blupp'),
 
 		);
 	}

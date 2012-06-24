@@ -76,7 +76,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 		$this->cli_help['synopsis'] = 'toolkey ###OPTIONS###';
 		$this->cli_help['description'] = "Dispatches to various analysis and clean-up tools which can plug into the API of this script. Typically you can run tests that will take longer than the usual max execution time of PHP. Such tasks could be checking for orphan records in the page tree or flushing all published versions in the system. For the complete list of options, please explore each of the 'toolkey' keywords below:\n\n  ".implode("\n  ", array_keys($this->cleanerModules));
 		$this->cli_help['examples'] = "/.../cli_dispatch.phpsh lowlevel_cleaner missing_files -s -r\nThis will show you missing files in the TYPO3 system and only report back if errors were found.";
-		$this->cli_help['author'] = "Kasper Skaarhoej, (c) 2006";
+		$this->cli_help['author'] = 'Kasper Skaarhoej, (c) 2006';
 	}
 
 	/**************************
