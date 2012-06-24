@@ -64,7 +64,7 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 					install "fluid" and "extbase" too, as they are used by the "workspaces" extension).';
 			} else {
 
-				Typo3_Bootstrap::getInstance()->loadExtensionTables();
+				Typo3_Bootstrap::getInstance()->loadExtensionTables(FALSE);
 
 				if (!t3lib_extMgm::isLoaded('version') || !t3lib_extMgm::isLoaded('workspaces')) {
 					$result = TRUE;
@@ -153,7 +153,7 @@ class tx_coreupdates_migrateworkspaces extends tx_coreupdates_installsysexts {
 			return TRUE;
 		}
 
-		Typo3_Bootstrap::getInstance()->loadExtensionTables();
+		Typo3_Bootstrap::getInstance()->loadExtensionTables(FALSE);
 
 			// install version and workspace extension (especially when updating from very old TYPO3 versions
 		$this->installExtensions(array('extbase', 'fluid', 'version', 'workspaces'));

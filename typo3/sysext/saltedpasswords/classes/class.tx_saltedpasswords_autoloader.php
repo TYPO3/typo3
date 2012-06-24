@@ -90,7 +90,7 @@ class tx_saltedpasswords_autoloader {
 			$extList[] = 'saltedpasswords';
 		}
 		$this->updateExtensionList(implode(',', $extList));
-		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->flushByTag('t3lib_autoloader');
+		t3lib_extMgm::removeCacheFiles();
 	}
 
 	/**
@@ -125,11 +125,6 @@ class tx_saltedpasswords_autoloader {
 		}
 
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
-
-			// Make sure to get cache file for backend, not frontend
-		$cacheFilePrefix = t3lib_extMgm::getCacheFilePrefix();
-		$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] = str_replace('temp_CACHED_FE', 'temp_CACHED', $cacheFilePrefix);
-		t3lib_extMgm::removeCacheFiles();
 	}
 
 }
