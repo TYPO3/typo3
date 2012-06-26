@@ -277,7 +277,6 @@ var inline = {
 	},
 
 	importElementMultiple: function(objectId, table, uidArray, type) {
-		inline.collapseAllRecords();
 		uidArray.each(function(uid) {
 			inline.delayedImportElement(objectId, table, uid, type);
 		});
