@@ -79,7 +79,7 @@ class Tx_Extbase_Tests_Unit_Validation_Validator_BeforeExtbase14_NumberRangeVali
 	 */
 	public function numberRangeValidatorCreatesTheCorrectErrorForANumberOutOfRange() {
 		$numberRangeValidator = $this->getMock('Tx_Extbase_Validation_Validator_NumberRangeValidator', array('addError'), array(), '', FALSE);
-		$numberRangeValidator->expects($this->once())->method('addError')->with('The given subject was not in the valid range (1 - 42).', 1221561046);
+		$numberRangeValidator->expects($this->once())->method('addError')->with('The given subject was not in the valid range (%1$d - %2$d).', 1221561046, array(1, 42));
 		$numberRangeValidator->setOptions(array('startRange' => 1, 'endRange' => 42));
 		$numberRangeValidator->isValid(4711);
 	}
