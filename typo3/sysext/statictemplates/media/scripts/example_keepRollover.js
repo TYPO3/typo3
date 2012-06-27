@@ -47,5 +47,3 @@ function ARO_out(name,imgObj,noOverAction)	{
 		else if (imgObj)	{imgObj.src = eval(name+'_n.src');}
 	if (!noOverAction)	ARO_over(ARO_Image,'',1);
 }
-
-

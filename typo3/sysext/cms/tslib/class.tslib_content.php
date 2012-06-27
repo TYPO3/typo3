@@ -4156,7 +4156,7 @@ class tslib_cObj {
 				$conf['icon.']['path'] = isset($conf['icon.']['path.'])
 					? $this->stdWrap($conf['icon.']['path'], $conf['icon.']['path.'])
 					: $conf['icon.']['path'];
-				$iconP = !empty($conf['icon.']['path']) ? $conf['icon.']['path'] : t3lib_extMgm::siteRelPath('cms') . 'tslib/media/fileicons/';
+				$iconP = !empty($conf['icon.']['path']) ? $conf['icon.']['path'] : TYPO3_mainDir . '/gfx/fileicons/';
 				$conf['icon.']['ext'] = isset($conf['icon.']['ext.'])
 					? $this->stdWrap($conf['icon.']['ext'], $conf['icon.']['ext.'])
 					: $conf['icon.']['ext'];
@@ -4183,7 +4183,7 @@ class tslib_cObj {
 							$icon = 't3lib/thumbs.php?file=' .
 								rawurlencode('../' . $theFile) . $thumbSize . $md5sum;
 						} else {
-							$icon = t3lib_extMgm::siteRelPath('cms') . 'tslib/media/miscicons/notfound_thumb.gif';
+							$icon = TYPO3_mainDir . 'gfx/fileicons/notfound_thumb.gif';
 						}
 						$icon = '<img src="' . htmlspecialchars($GLOBALS['TSFE']->absRefPrefix . $icon) . '"' .
 							$this->getBorderAttr(' border="0"') . '' . $this->getAltParam($conf) . ' />';
@@ -6918,7 +6918,7 @@ class tslib_cObj {
 	}
 
 	/**
-	 * This function creates a number of TEXT-objects in a Gifbuilder configuration in order to create a text-field like thing. Used with the script tslib/media/scripts/postit.inc
+	 * This function creates a number of TEXT-objects in a Gifbuilder configuration in order to create a text-field like thing.
 	 *
 	 * @param array $gifbuilderConf TypoScript properties for Gifbuilder - TEXT GIFBUILDER objects are added to this array and returned.
 	 * @param array $conf TypoScript properties for this function

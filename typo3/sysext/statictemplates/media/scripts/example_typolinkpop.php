@@ -30,26 +30,14 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Demonstrates how to make typolink tags (<link ...>) open in a pop-up window
  *
- * Example can be found in the testsite package at the page-path "/Intro/TypoScript examples/Small Tricks/Making Pop-up links/"
+ * Example can be found in the testsite package at the page-path
+ * "/Intro/TypoScript examples/Small Tricks/Making Pop-up links/"
  * This TypoScript configuration will also demonstrate it:
  *
  * tt_content.text.20.parseFunc.tags.link.typolink.userFunc = user_typoLinkPopUp
@@ -61,9 +49,9 @@
  *
  * (Plus the "content (default)" static template included as well)
  *
- * @param	array		In this case: An array with data you can use for processing; keys "url" and "aTagParams" contains something at least
- * @param	array		TypoScript array with custom properties for this function call.
- * @return	string		Return the new <a> tag
+ * @param array $content In this case: An array with data you can use for processing; keys "url" and "aTagParams" contains something at least
+ * @param array $conf TypoScript array with custom properties for this function call.
+ * @return string Return the new <a> tag
  * @see tslib_cObj::typoLink()
  */
 function user_typoLinkPopUp($content, $conf) {

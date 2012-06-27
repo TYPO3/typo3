@@ -54,10 +54,9 @@
  *
  * (And then also "lib.alt_plaintext.renderObj" is configured extensively - basically with the TypoScript options passed to this class. See the static template "plugin.alt.plaintext")
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
- * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=398&cHash=e3024de334
  */
 class user_plaintext {
 	var $cObj;
@@ -69,23 +68,22 @@ class user_plaintext {
 	 * A content object that renders "tt_content" records. See the comment to this class for TypoScript example of how to trigger it.
 	 * This detects the CType of the current content element and renders it accordingly. Only wellknown types are rendered.
 	 *
-	 * @param	string		Empty, ignore.
-	 * @param	array		TypoScript properties for this content object/function call
-	 * @return	string		Plain text content
+	 * @param string $content Empty, ignore.
+	 * @param array $conf TypoScript properties for this content object/function call
+	 * @return string Plain text content
 	 */
 	function main_plaintext($content, $conf) {
 		$this->conf = $conf;
-		$this->siteUrl = $conf['siteUrl'];
+		$this->siteUrl=$conf['siteUrl'];
 		$lines = array();
 		$CType = (string)$this->cObj->data['CType'];
-
 		switch($CType) {
 			case 'header':
-				$lines[]=$this->getHeader();
+				$lines[] = $this->getHeader();
 				if ($this->cObj->data['subheader']) {
-					$lines[]=$this->breakContent(strip_tags($this->cObj->data['subheader']));
+					$lines[] = $this->breakContent(strip_tags($this->cObj->data['subheader']));
 				}
-				break;
+			break;
 			case 'text':
 			case 'textpic':
 				$lines[] = $this->getHeader();
@@ -98,46 +96,47 @@ class user_plaintext {
 					$lines[] = '';
 					$lines[] = $this->getImages();
 				}
-				break;
+			break;
 			case 'image':
 				$lines[] = $this->getHeader();
 				$lines[] = $this->getImages();
-				break;
+			break;
 			case 'uploads':
 				$lines[] = $this->getHeader();
 				$lines[] = $this->renderUploads($this->cObj->data['media']);
-				break;
+			break;
 			case 'menu':
 				$lines[] = $this->getHeader();
 				$lines[] = $this->getMenuSitemap();
-				break;
+			break;
 			case 'shortcut':
 				$lines[] = $this->getShortcut();
-				break;
+			break;
 			case 'bullets':
 				$lines[] = $this->getHeader();
 				$lines[] = $this->breakBulletlist(strip_tags($this->parseBody($this->cObj->data['bodytext'])));
-				break;
+			break;
 			case 'list':
 				$lines[] = $this->getHeader();
 				$lines[] = $this->getList();
-				break;
+			break;
 			case 'table':
 				$lines[] = $this->getHeader();
 				$lines[] = $this->breakTable(strip_tags($this->parseBody($this->cObj->data['bodytext'])));
-				break;
+			break;
 			case 'html':
 				$lines[] = $this->getHTML();
-				break;
+			break;
 			default:
 				$defaultOutput = $this->getString($this->conf['defaultOutput']);
 				if ($defaultOutput) {
 					$lines[] = str_replace('###CType###', $CType, $defaultOutput);
 				}
-				break;
+			break;
 		}
 
-		$lines[] = '';	// First break.
+			// First break.
+		$lines[] = '';
 		$content = implode(chr(10), $lines);
 
 			// User processing:
@@ -148,7 +147,7 @@ class user_plaintext {
 	/**
 	 * Creates a menu/sitemap
 	 *
-	 * @return	string		Content
+	 * @return string Content
 	 */
 	function getMenuSitemap() {
 		$str = $this->cObj->cObjGetSingle($this->conf['menu'], $this->conf['menu.']);
@@ -159,7 +158,7 @@ class user_plaintext {
 	/**
 	 * Creates a shortcut ("Insert Records")
 	 *
-	 * @return	string		Content
+	 * @return string Content
 	 */
 	function getShortcut() {
 		$str = $this->cObj->cObjGetSingle($this->conf['shortcut'], $this->conf['shortcut.']);
@@ -169,8 +168,8 @@ class user_plaintext {
 	/**
 	 * Creates an HTML element (stripping tags of course)
 	 *
-	 * @param	string		HTML content to process. If not passed along, the bodytext field is used.
-	 * @return	string		Content
+	 * @param string $str HTML content to process. If not passed along, the bodytext field is used.
+	 * @return string Content
 	 */
 	function getHTML($str = array()) {
 		return $this->breakContent(strip_tags(preg_replace('/<br[ \/]*>/i', chr(10), $this->parseBody(is_string($str) ? $str : $this->cObj->data['bodytext']))));
@@ -179,18 +178,18 @@ class user_plaintext {
 	/**
 	 * Creates a header (used for most elements)
 	 *
-	 * @return	string		Content
+	 * @return string Content
 	 * @see renderHeader()
 	 */
 	function getHeader() {
-		// links...
+			// links...
 		return $this->renderHeader($this->cObj->data['header'], $this->cObj->data['header_layout']);
 	}
 
 	/**
 	 * Get images found in the "image" field of "tt_content"
 	 *
-	 * @return	string		Content
+	 * @return string Content
 	 */
 	function getImages() {
 		$images = $this->renderImages(
@@ -204,8 +203,8 @@ class user_plaintext {
 	/**
 	 * Parsing the bodytext field content, removing typical entities and <br /> tags.
 	 *
-	 * @param	string		Field content from "bodytext"
-	 * @return	string		Processed content
+	 * @param string $str Field content from "bodytext"
+	 * @return string Processed content
 	 */
 	function parseBody($str) {
 			// First, regular parsing:
@@ -225,19 +224,18 @@ class user_plaintext {
 	/**
 	 * Creates a list of links to uploaded files.
 	 *
-	 * @param	string		List of uploaded filenames from "uploads/media/" (or $upload_path)
-	 * @param	string		Alternative path value
-	 * @return	string		Content
+	 * @param string $str List of uploaded filenames from "uploads/media/" (or $upload_path)
+	 * @param string $upload_path Alternative path value
+	 * @return string Content
 	 */
 	function renderUploads($str, $upload_path = 'uploads/media/') {
 		$files = explode(',', $str);
-		reset($files);
 		$lines = array();
 		if ($this->conf['uploads.']['header']) {
-			$lines[]=$this->getString($this->conf['uploads.']['header']);
+			$lines[] = $this->getString($this->conf['uploads.']['header']);
 		}
-		while(list($k, $file) = each($files)) {
-			$lines[] = $this->siteUrl . $upload_path . $file;
+		foreach ($files as $k => $file) {
+			$lines[] = $this->siteUrl.$upload_path.$file;
 		}
 		return implode(chr(10), $lines);
 	}
@@ -245,8 +243,8 @@ class user_plaintext {
 	/**
 	 * Creates a list
 	 *
-	 * @param	string	type of content
-	 * @return	string	Content
+	 * @param string $CType Type of content
+	 * @return string Content
 	 */
 	function getList($CType = 'list') {
 		$str = $this->cObj->cObjGetSingle($this->conf[$CType], $this->conf[$CType . '.']);
@@ -256,9 +254,9 @@ class user_plaintext {
 	/**
 	 * Renders a content element header, observing the layout type giving different header formattings
 	 *
-	 * @param	string		The header string
-	 * @param	integer		The layout type of the header (in the content element)
-	 * @return	string		Content
+	 * @param string $str The header string
+	 * @param integer $type The layout type of the header (in the content element)
+	 * @return string Content
 	 */
 	function renderHeader($str, $type = 0) {
 		if ($str) {
@@ -321,15 +319,15 @@ class user_plaintext {
 	/**
 	 * Function used to repeat a char pattern in head lines (like if you want "********" above/below a header)
 	 *
-	 * @param	array		Array of existing lines to which the new char-pattern should be added
-	 * @param	string		The character pattern to repeat. Default is "-"
-	 * @param	integer		The length of the line. $preLineChar will be repeated to fill in this length.
-	 * @return	array		The input array with a new line added.
+	 * @param array $lines Array of existing lines to which the new char-pattern should be added
+	 * @param string $preLineChar The character pattern to repeat. Default is "-"
+	 * @param integer $len The length of the line. $preLineChar will be repeated to fill in this length.
+	 * @return array The input array with a new line added.
 	 * @see renderHeader()
 	 */
 	function pad($lines, $preLineChar, $len) {
 		$strPad = t3lib_utility_Math::forceIntegerInRange($len, 0, 1000);
-		$strPadChar = $preLineChar?$preLineChar : '-';
+		$strPadChar = $preLineChar?$preLineChar:'-';
 		if ($strPad) {
 			$lines[] = str_pad('', $strPad, $strPadChar);
 		}
@@ -339,15 +337,14 @@ class user_plaintext {
 	/**
 	 * Function used to wrap the bodytext field content (or image caption) into lines of a max length of
 	 *
-	 * @param	string		The content to break
-	 * @return	string		Processed value.
+	 * @param string The content to break
+	 * @return string Processed value.
 	 * @see main_plaintext(), breakLines()
 	 */
 	function breakContent($str) {
 		$cParts = explode(chr(10), $str);
-		reset($cParts);
 		$lines = array();
-		while(list(, $substrs) = each($cParts)) {
+		foreach ($cParts as $substrs) {
 			$lines[] = $this->breakLines($substrs);
 		}
 		return implode(chr(10), $lines);
@@ -356,8 +353,8 @@ class user_plaintext {
 	/**
 	 * Breaks content lines into a bullet list
 	 *
-	 * @param	string		Content string to make into a bullet list
-	 * @return	string		Processed value
+	 * @param string $str Content string to make into a bullet list
+	 * @return string Processed value
 	 */
 	function breakBulletlist($str) {
 		$type = $this->cObj->data['layout'];
@@ -366,10 +363,9 @@ class user_plaintext {
 		$tConf = $this->conf['bulletlist.'][$type . '.'];
 
 		$cParts = explode(chr(10), $str);
-		reset($cParts);
 		$lines = array();
 		$c = 0;
-		while(list(, $substrs) = each($cParts)) {
+		foreach ($cParts as $substrs) {
 			$c++;
 			$bullet = $tConf['bullet'] ? $this->getString($tConf['bullet']) : ' - ';
 			$bLen=strlen($bullet);
@@ -389,16 +385,15 @@ class user_plaintext {
 	/**
 	 * Formatting a table in plain text (based on the paradigm of lines being content rows and cells separated by "|")
 	 *
-	 * @param	string		Content string
-	 * @return	string		Processed value
+	 * @param string $str Content string
+	 * @return string Processed value
 	 */
 	function breakTable($str) {
 		$cParts = explode(chr(10), $str);
-		reset($cParts);
 		$lines = array();
 		$cols = intval($this->conf['cols']) ? intval($this->conf['cols']) : 0;
 		$c = 0;
-		while(list(, $substrs) = each($cParts)) {
+		foreach ($cParts as $substrs) {
 			$c++;
 			if (trim($substrs)) {
 				$lineParts = explode('|', $substrs);
@@ -417,16 +412,15 @@ class user_plaintext {
 		$joinChar = '+';
 		$colChar = '|';
 
-		// Make table:
+			// Make table:
 		$outLines = array();
 		$outLines[] = $this->addDiv($messure, '', $divChar, $joinChar, $cols);
 
-		reset($lines);
-		while(list($k, $v) = each($lines)) {
+		foreach ($lines as $k => $v) {
 			$top = intval($messure[1][$k]);
-			for ($aa=0; $aa < $top; $aa++) {
+			for ($aa = 0; $aa < $top; $aa++) {
 				$tempArr = array();
-				for ($bb=0; $bb < $cols; $bb++) {
+				for ($bb = 0; $bb < $cols; $bb++) {
 					$tempArr[$bb] = str_pad($v[$bb][$aa], $messure[0][$bb], ' ');
 				}
 				$outLines[] = $colChar . implode($colChar, $tempArr) . $colChar;
@@ -439,12 +433,12 @@ class user_plaintext {
 	/**
 	 * Subfunction for breakTable(): Adds a divider line between table rows.
 	 *
-	 * @param	array		Some information about sizes
-	 * @param	string		Empty string.
-	 * @param	string		Character to use for the divider line, typically "-"
-	 * @param	string		Join character, typically "+"
-	 * @param	integer		Number of table columns
-	 * @return	string		Divider line for the table
+	 * @param array $messure Some information about sizes
+	 * @param string $content Empty string.
+	 * @param string $divChar Character to use for the divider line, typically "-"
+	 * @param string $joinChar Join character, typically "+"
+	 * @param integer $colsNumber of table columns
+	 * @return string Divider line for the table
 	 * @access private
 	 * @see breakTable()
 	 */
@@ -453,28 +447,24 @@ class user_plaintext {
 		for ($a = 0; $a< $cols; $a++) {
 			$tempArr[$a] = str_pad($content, $messure[0][$a], $divChar);
 		}
-		return $joinChar.implode($joinChar, $tempArr) . $joinChar;
+		return $joinChar . implode($joinChar, $tempArr) . $joinChar;
 	}
 
 	/**
 	 * Traverses the table lines/cells and creates arrays with statistics for line numbers and lengths
 	 *
-	 * @param	array		Array with [table rows] [table cells] [lines in cell]
-	 * @return	array		Statistics (max lines/lengths)
+	 * @param array $tableLines Array with [table rows] [table cells] [lines in cell]
+	 * @return array Statistics (max lines/lengths)
 	 * @access private
 	 * @see breakTable()
 	 */
 	function traverseTable($tableLines) {
-		$maxLen = array();
-		$maxLines = array();
-		reset($tableLines);
-		while(list($k, $v) = each($tableLines)) {
-			reset($v);
-			while(list($kk, $vv) = each($v)) {
-				reset($vv);
-				while(list($lk, $lv) = each($vv)) {
-					if (strlen($lv) > intval($maxLen[$kk]))
-						$maxLen[$kk]=strlen($lv);
+		$maxLen=array();
+		$maxLines=array();
+		foreach ($tableLines as $k => $v) {
+			foreach ($v as $kk => $vv) {
+				foreach ($vv as $lk => $lv) {
+					if (strlen($lv)>intval($maxLen[$kk]))	$maxLen[$kk]=strlen($lv);
 				}
 				if (count($vv) > intval($maxLines[$k]))
 					$maxLines[$k] = count($vv);
@@ -486,17 +476,16 @@ class user_plaintext {
 	/**
 	 * Render block of images - which means creating lines with links to the images.
 	 *
-	 * @param	string		List of image filenames (from "image" field in tt_content records)
-	 * @param	string		Link value from the "image_link" field in tt_content records
-	 * @param	string		Caption text
-	 * @param	string		Alternative relative path for the files listed in $str
-	 * @return	string		Content
+	 * @param string $str List of image filenames (from "image" field in tt_content records)
+	 * @param string $links Link value from the "image_link" field in tt_content records
+	 * @param string $caption Caption text
+	 * @param string $upload_path Alternative relative path for the files listed in $str
+	 * @return string Content
 	 * @see getImages()
 	 */
 	function renderImages($str, $links, $caption, $upload_path = 'uploads/pics/') {
 		$images = explode(',', $str);
-		$linksArr = explode(',', $links);
-		reset($images);
+		$linksArr = explode(LF, $links);
 		$lines = array();
 		if ($this->conf['images.']['header']) {
 			$lines[] = $this->getString($this->conf['images.']['header']);
@@ -536,8 +525,8 @@ class user_plaintext {
 	/**
 	 * Returns a typolink URL based on input.
 	 *
-	 * @param	string		Parameter to typolink
-	 * @return	string		The URL returned from $this->cObj->getTypoLink_URL(); - possibly it prefixed with the URL of the site if not present already
+	 * @param string $ll Parameter to typolink
+	 * @return string The URL returned from $this->cObj->getTypoLink_URL(); - possibly it prefixed with the URL of the site if not present already
 	 */
 	function getLink($ll) {
 		$theLink=$this->cObj->getTypoLink_URL($ll);
@@ -550,10 +539,10 @@ class user_plaintext {
 	/**
 	 * Breaking lines into fixed length lines, using t3lib_div::breakLinesForEmail()
 	 *
-	 * @param	string		The string to break
-	 * @param	string		Line break character
-	 * @param	integer		Length of lines, default is $this->charWidth
-	 * @return	string		Processed string
+	 * @param string $str The string to break
+	 * @param string $implChar Line break character
+	 * @param integer $charWidth Length of lines, default is $this->charWidth
+	 * @return string Processed string
 	 * @see t3lib_div::breakLinesForEmail()
 	 */
 	function breakLines($str, $implChar = "\n", $charWidth = 0) {
@@ -564,8 +553,8 @@ class user_plaintext {
 	 * Explodes a string with "|" and if the second part is found it will return this, otherwise the first part.
 	 * Used for many TypoScript properties used in this class since they need preceeding whitespace to be preserved.
 	 *
-	 * @param	string		Input string
-	 * @return	string		Output string
+	 * @param string $str Input string
+	 * @return string Output string
 	 * @access private
 	 */
 	function getString($str) {
@@ -576,9 +565,9 @@ class user_plaintext {
 	/**
 	 * Calls a user function for processing of data
 	 *
-	 * @param	string		TypoScript property name, pointing to the definition of the user function to call (from the TypoScript array internally in this class). This array is passed to the user function. Notice that "parentObj" property is a reference to this class ($this)
-	 * @param	mixed		Variable to process
-	 * @return	mixed		The processed $passVar as returned by the function call
+	 * @param string $mConfKey TypoScript property name, pointing to the definition of the user function to call (from the TypoScript array internally in this class). This array is passed to the user function. Notice that "parentObj" property is a reference to this class ($this)
+	 * @param mixed $passVar Variable to process
+	 * @return mixed The processed $passVar as returned by the function call
 	 */
 	function userProcess($mConfKey, $passVar) {
 		if ($this->conf[$mConfKey]) {
@@ -593,19 +582,19 @@ class user_plaintext {
 	 * Function used by TypoScript "parseFunc" to process links in the bodytext.
 	 * Extracts the link and shows it in plain text in a parathesis next to the link text. If link was relative the site URL was prepended.
 	 *
-	 * @param	string		Empty, ignore.
-	 * @param	array		TypoScript parameters
-	 * @return	string		Processed output.
+	 * @param string $content Empty, ignore.
+	 * @param array $conf TypoScript parameters
+	 * @return string Processed output.
 	 * @see parseBody()
 	 */
 	function atag_to_http($content, $conf) {
 		$this->conf = $conf;
-		$this->siteUrl=$conf['siteUrl'];
+		$this->siteUrl = $conf['siteUrl'];
 		$theLink  = trim($this->cObj->parameters['href']);
 		if (strtolower(substr($theLink, 0, 7)) == 'mailto:') {
-			$theLink=substr($theLink, 7);
+			$theLink = substr($theLink, 7);
 		} elseif (substr($theLink, 0, 4) != 'http') {
-			$theLink=$this->siteUrl . $theLink;
+			$theLink = $this->siteUrl . $theLink;
 		}
 		return $this->cObj->getCurrentVal() . ' (Link: ' . $theLink . ' )';
 	}
@@ -613,9 +602,9 @@ class user_plaintext {
 	/**
 	 * User function (called from TypoScript) for generating a bullet list (used in parsefunc)
 	 *
-	 * @param	string		Empty, ignore.
-	 * @param	array		TypoScript parameters
-	 * @return	string		Processed output.
+	 * @param string $content Empty, ignore.
+	 * @param array $conf TypoScript parameters
+	 * @return string Processed output.
 	 */
 	function typolist($content, $conf) {
 		$this->conf = $this->cObj->mergeTSRef($conf, 'bulletlist');
@@ -628,14 +617,14 @@ class user_plaintext {
 	/**
 	 * User function (called from TypoScript) for generating a typo header tag (used in parsefunc)
 	 *
-	 * @param	string		Empty, ignore.
-	 * @param	array		TypoScript parameters
-	 * @return	string		Processed output.
+	 * @param string $content Empty, ignore.
+	 * @param array $conf TypoScript parameters
+	 * @return string Processed output.
 	 */
 	function typohead($content, $conf) {
 		$this->conf = $this->cObj->mergeTSRef($conf, 'header');
 
-		$this->siteUrl = $conf['siteUrl'];
+		$this->siteUrl=$conf['siteUrl'];
 		$str = trim($this->cObj->getCurrentVal());
 		$this->cObj->data['header_layout'] = $this->cObj->parameters['type'];
 		$this->cObj->data['header_position'] = $this->cObj->parameters['align'];
@@ -647,14 +636,14 @@ class user_plaintext {
 	/**
 	 * User function (called from TypoScript) for generating a code listing (used in parsefunc)
 	 *
-	 * @param	string		Empty, ignore.
-	 * @param	array		TypoScript parameters
-	 * @return	string		Processed output.
+	 * @param string $content Empty, ignore.
+	 * @param array $conf TypoScript parameters
+	 * @return string Processed output.
 	 */
 	function typocode($content, $conf) {
 			// Nothing is really done here...
 		$this->conf = $conf;
-		$this->siteUrl=$conf['siteUrl'];
+		$this->siteUrl = $conf['siteUrl'];
 		return $this->cObj->getCurrentVal();
 	}
 }
