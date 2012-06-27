@@ -24,6 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * postit.inc
  *
@@ -32,17 +33,12 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-
-
-if (!is_object($this)) die ('Error: No parent object present.');
-
-
-
-
-
+if (!is_object($this)) {
+	die('Error: No parent object present.');
+}
 
 /***************************************************************
 TypoScript config:
@@ -107,13 +103,8 @@ tt_content.splash.20 {
 
 ****************************************************************/
 
-
-
-
-
 $data = $this->stdWrap($conf['data'], $conf['data.']);
 $cols = intval($conf['cols']) ? intval($conf['cols']) : 3;
-
 
 $lines = explode(chr(10), $data);
 $imageArr = array();
@@ -144,15 +135,15 @@ if (is_array($imageArr)) {
 		$res = '';
 		$rows = ceil(count($imageArr)/$cols);
 
-		for ($a=0;$a<$rows;$a++) {
+		for ($a = 0; $a < $rows; $a++) {
 			$res.='<tr>';
-			for ($b=0;$b<$cols;$b++) {
+			for ($b = 0; $b < $cols; $b++) {
 				$res.='<td>'.$imageArr[(($a*$cols)+$b)].'</td>';
 			}
-			$res.='</tr>';
+			$res .= '</tr>';
 		}
 
-		$content='<table border="0" cellspacing="0" cellpadding="0">'.$res.'</table>';
+		$content = '<table border="0" cellspacing="0" cellpadding="0">'.$res.'</table>';
 	} else {
 		$content .= implode($imageArr, '');
 	}

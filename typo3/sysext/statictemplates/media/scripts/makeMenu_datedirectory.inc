@@ -30,33 +30,32 @@
  *
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  *
- * @author	Olaf.Schuemann@erz.be.ch
- * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=358&cHash=5400c1c06a
+ * @author Olaf.Schuemann@erz.be.ch
  * @see makeMenu_keywords_updated.inc
  */
-
-
-if (!is_object($this)) die ('Error: No parent object present.');
-
-
-
-
+if (!is_object($this)) {
+	die('Error: No parent object present.');
+}
 
 $day = $conf['day'];
 $name =	$conf['name'];
 $menuItemsArray = array();
 
-if ($day == -1) {
+if ($day==-1) {
 	$day = date('w');
 }
 if ($day == date('w')) {
 	$son = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 } else {
-	for ($i = 1;; $i++) {
+	for ($i=1;;$i++) {
 		$son = mktime(0, 0, 0, date('m'), date('d') - $i, date('Y'));
-		if ($day == date('w', $son)) break;
+		if ($day == date('w', $son)) {
+			break;
+		}
 			// Security that it's not an eternal loop.
-		if ($i > 100) break;
+		if ($i > 100) {
+			break;
+		}
 	}
 }
 
@@ -66,13 +65,13 @@ $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 
 $value=$row['uid'];
 
-if ($value=='') {
-	$value=$GLOBALS['TSFE']->page['uid'];
+if ($value == '') {
+	$value = $GLOBALS['TSFE']->page['uid'];
 }
 $items = t3lib_div::intExplode(',', $value);
 foreach ($items as $id) {
 	$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages', Array('pidInList' => $id, 'orderBy' => $altSortField));
-	while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))        {
+	while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 		$menuItemsArray[]=$row;
 	}
 }

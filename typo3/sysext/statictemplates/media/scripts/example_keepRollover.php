@@ -24,6 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Demonstrates how to manipulate menu generation so that a click on a menu item will trigger two (or more) frames to load an URL
  * Used in the "testsite" package
@@ -31,21 +32,15 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-
-
-
-
-
 
 /**
  * Example can be found in the testsite package at the page-path "/Intro/TypoScript examples/Menu object examples/Loading multiple.../"
  *
- * @param	array		The menu item array, $this->I (in the parent object)
- * @param	array		TypoScript configuration for the function. Notice that the property "parentObj" is a reference to the parent (calling) object (the tslib_Xmenu class instantiated)
- * @return	array		The processed $I array returned (and stored in $this->I of the parent object again)
+ * @param array $I The menu item array, $this->I (in the parent object)
+ * @param array $conf TypoScript configuration for the function. Notice that the property "parentObj" is a reference to the parent (calling) object (the tslib_Xmenu class instantiated)
+ * @return array The processed $I array returned (and stored in $this->I of the parent object again)
  * @see tslib_menu::userProcess(), tslib_tmenu::writeMenu(), tslib_gmenu::writeMenu()
  */
 function user_keepRolloverAtOnClick($I, $conf) {
@@ -73,10 +68,14 @@ function user_keepRolloverAtOnClick($I, $conf) {
 	}
 
 		// Update the link in the parent object:
-	$conf['parentObj']->I = $I;	// setting internal $I - needed by setATagParts() function!
-	$conf['parentObj']->setATagParts();	// Setting the A1 and A2 of the internal $I
-	$I = $conf['parentObj']->I;	// retrieving internal $I
-	$I['parts']['ATag_begin']=$I['A1'];	// Setting the ATag_begin to the value of this $I
+		// setting internal $I - needed by setATagParts() function!
+	$conf['parentObj']->I = $I;
+		// Setting the A1 and A2 of the internal $I
+	$conf['parentObj']->setATagParts();
+		// retrieving internal $I
+	$I = $conf['parentObj']->I;
+		// Setting the ATag_begin to the value of this $I
+	$I['parts']['ATag_begin'] = $I['A1'];
 
 		// Debug:
 	if ($conf['debug']) {
