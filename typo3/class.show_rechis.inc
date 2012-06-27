@@ -364,21 +364,6 @@ class recordHistory {
 				<td>&nbsp;</td>
 			</tr>';
 
-			// Get default page TSconfig expiration time
-		$elParts = explode(':', $this->element);
-		if ($elParts[0] != 'pages') {
-			$tmp = t3lib_BEfunc::getRecordRaw($elParts[0], 'uid=' . intval($elParts[1]));
-			$pid = $tmp['pid'];
-		} else {
-			$pid = $elParts[1];
-		}
-		$tmpTsConfig = $GLOBALS['BE_USER']->getTSConfig('TCEMAIN', t3lib_BEfunc::getPagesTSconfig($pid));
-		$expirationTime = isset($tmpTsConfig['properties']['default.']['history.']['maxAgeDays']) ?
-				$tmpTsConfig['properties']['default.']['history.']['maxAgeDays'] : 30;
-
-		$expirationTimestamp = $expirationTime ? ($GLOBALS['EXEC_TIME'] - 60 * 60 * 24 * $expirationTime) : 0;
-		$expirationWarning = 0;
-
 		$be_user_array = t3lib_BEfunc::getUserNames();
 
 			// Traverse changelog array:
@@ -390,16 +375,6 @@ class recordHistory {
 				// stop after maxSteps
 			if ($i > $this->maxSteps && $this->maxSteps) {
 				break;
-			}
-
-				// Display inconsistency warning
-			if ($entry['tstamp'] < $expirationTimestamp && !$expirationWarning) {
-				$expirationWarning = 1;
-
-				$lines[] = '
-				<tr class="c-headLine">
-					<td colspan="7"><strong>' . $GLOBALS['LANG']->getLL('consistenceWarning', 1) . '</strong></td>
-				</tr>';
 			}
 
 				// Show only marked states
