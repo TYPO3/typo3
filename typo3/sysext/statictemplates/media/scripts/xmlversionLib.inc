@@ -1,36 +1,40 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 1999-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 1999-2009 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
- * Example class showing how one could make XML export of page content elements in TYPO3
+ * Example class showing how one could make XML export of page
+ * content elements in TYPO3
  *
- * Class that creates the current page and content element records as an XML structure using the library "t3lib_xml"
+ * Class that creates the current page and content element records as an
+ * XML structure using the library "t3lib_xml"
  * It is demonstrated in use in the testsite package on page "59"
- * The static template "plugin.alt.xml" is used to trigger this XML creation as well. That template contains this set of TypoScript lines which triggers the XML creation and disables all regular HTML headers
+ * The static template "plugin.alt.xml" is used to trigger this XML creation as
+ * well. That template contains this set of TypoScript lines which triggers
+ * the XML creation and disables all regular HTML headers
  *
  * ## Set up page/type number:
  * alt_xml >
@@ -52,22 +56,23 @@
  *
  * @package TYPO3
  * @subpackage tslib
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class user_xmlversion {
-	var $cObj;		// The backReference to the mother cObj object set at call time
+		// The backReference to the mother cObj object set at call time
+	var $cObj;
 
 
 	/**
 	 * Main function, called from TypoScript
 	 *
-	 * @param	string		Empty, ignore.
-	 * @param	array		TypoScript properties for this content object/function call
-	 * @return	string		XML content
+	 * @param string $content Empty, ignore.
+	 * @param array $conf TypoScript properties for this content object/function call
+	 * @return string XML content
 	 */
 	function main_xmlversion($content, $conf) {
 		$xmlObj = t3lib_div::makeInstance('t3lib_xml', 'typo3_page');
-		$xmlObj->XMLdebug=0;
+		$xmlObj->XMLdebug = 0;
 		$xmlObj->setRecFields('pages', 'doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,author,author_email,newUntil,lastUpdated,cache_timeout');
 		$xmlObj->setRecFields('tt_content', 'CType,header,header_link,bodytext,image,imagewidth,imageorient,media,records,colPos,starttime,endtime,fe_group');
 
@@ -89,19 +94,21 @@ class user_xmlversion {
 	}
 
 	/**
-	 * Selects all records from $table having the current page id as PID (records belonging to that page)
+	 * Selects all records from $table having the current page id as
+	 * PID (records belonging to that page)
 	 *
-	 * @param	string		A tablename found in $GLOBALS['TCA']
-	 * @return	pointer		A database resource pointer
+	 * @param string $table A tablename found in $GLOBALS['TCA']
+	 * @return pointer A database resource pointer
 	 */
 	function getContentResult($table) {
 		if ($GLOBALS['TCA'][$table]) {
 			$orderBy = ($GLOBALS['TCA'][$table]['ctrl']['sortby']
 				? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby']
 				: $GLOBALS['TCA'][$table]['ctrl']['default_sortby']);
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid='.intval($GLOBALS['TSFE']->id).$this->cObj->enableFields($table), '', $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid=' . intval($GLOBALS['TSFE']->id) . $this->cObj->enableFields($table), '', $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy));
 			return $res;
 		}
 	}
 }
+
 ?>

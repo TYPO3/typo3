@@ -30,39 +30,18 @@
  * Revised for TYPO3 3.6 June/2003 by Kasper Skårhøj
  * XHTML compliant
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Class extension tslib_gmenu for the creation of DHTML foldout menus
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
- * @link http://typo3.org/doc.0.html?&tx_extrepmgm_pi1[extUid]=270&tx_extrepmgm_pi1[tocEl]=386&cHash=f69ab462e2
  */
 class tslib_gmenu_foldout extends tslib_gmenu {
-	var $GMENU_fixKey='foldout';
+	var $GMENU_fixKey = 'foldout';
 
 	var $WMarrowNO;
 	var $WMarrowACT;
@@ -70,23 +49,23 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	var $WMimageHTML;
 	var $WMsubmenu;
 	var $WMtableWrap;
-	var $WM_activeOnLoad='';
+	var $WM_activeOnLoad = '';
 
 	/**
 	 * Initializing, setting internal variables (prefixed WM)
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	function extProc_init() {
-		$this->WMarrowNO='';
-		$this->WMarrowACT='';
-		$this->WMimagesFlag=0;
-		$this->WMimageHTML ='';
+		$this->WMarrowNO = '';
+		$this->WMarrowACT = '';
+		$this->WMimagesFlag = 0;
+		$this->WMimageHTML = '';
 		if (($this->mconf['arrowNO'] || $this->mconf['arrowNO.']) && ($this->mconf['arrowACT'] || $this->mconf['arrowACT.'])) {
 			$this->WMarrowNO = $GLOBALS['TSFE']->cObj->getImgResource($this->mconf['arrowNO'], $this->mconf['arrowNO.']);
 			$this->WMarrowACT = $GLOBALS['TSFE']->cObj->getImgResource($this->mconf['arrowACT'], $this->mconf['arrowACT.']);
 			if (is_array($this->WMarrowACT) && is_array($this->WMarrowNO)) {
-				$this->WMimagesFlag=1;
+				$this->WMimagesFlag = 1;
 			}
 		}
 	}
@@ -95,16 +74,17 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	 * Processing before the links are created.
 	 * Basically this is setting an onclick handler for clicking the menu item.
 	 *
-	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
-	 * @return	void
+	 * @param integer $key Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @return void
 	 */
 	function extProc_beforeLinking($key) {
-		$this->I['addATagParams']='';
+		$this->I['addATagParams'] = '';
 		$this->WMsubmenu = $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		if (trim($this->WMsubmenu)) {
-			$this->I['addATagParams']=' onclick="GF_menu('.$key.');'.($this->mconf['dontLinkIfSubmenu'] ? ' return false;' : '').'"';
-			if ($this->isActive($this->I['uid'], $this->getMPvar($key)) && $this->mconf['displayActiveOnLoad'])	{	// orig: && $this->WMisSub, changed 210901
-				$this->WM_activeOnLoad='GF_menu('.$key.');';
+			$this->I['addATagParams'] = ' onclick="GF_menu('.$key.');'.($this->mconf['dontLinkIfSubmenu'] ? ' return false;' : '').'"';
+				// orig: && $this->WMisSub, changed 210901
+			if ($this->isActive($this->I['uid'], $this->getMPvar($key)) && $this->mconf['displayActiveOnLoad']) {
+				$this->WM_activeOnLoad = 'GF_menu('.$key.');';
 			}
 		}
 	}
@@ -112,15 +92,17 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 	/**
 	 * Processing after linking, basically setting the <div>-layers for the menu items and possibly wrapping in table, adding bullet images.
 	 *
-	 * @param	integer		Pointer to $this->menuArr[$key] where the current menu element record is found
-	 * @return	void
+	 * @param integer $key Pointer to $this->menuArr[$key] where the current menu element record is found
+	 * @return void
 	 */
 	function extProc_afterLinking($key) {
 		$this->WMtableWrap = $this->mconf['dontWrapInTable'] ? '' : '<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>|</td></tr></table>';
 
 		if ($this->WMimagesFlag) {
-			$this->WMimageHTML='<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->WMarrowNO[3].'" width="'.$this->WMarrowNO[0].'" height="'.$this->WMarrowNO[1].'" border="0" name="imgA'.$key.'"'.($this->mconf['arrowImgParams']?' '.$this->mconf['arrowImgParams']:'').' alt="" />';
-		} else {$this->WMimageHTML="";}
+			$this->WMimageHTML = '<img src="'.$GLOBALS['TSFE']->absRefPrefix.$this->WMarrowNO[3].'" width="'.$this->WMarrowNO[0].'" height="'.$this->WMarrowNO[1].'" border="0" name="imgA'.$key.'"'.($this->mconf['arrowImgParams']?' '.$this->mconf['arrowImgParams']:'').' alt="" />';
+		} else {
+			$this->WMimageHTML = '';
+		}
 
 		if (strstr($this->I['theItem'], '###ARROW_IMAGE###')) {
 			$this->I['theItem'] = str_replace('###ARROW_IMAGE###', $this->WMimageHTML, $this->I['theItem']);
@@ -128,18 +110,18 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 			$this->I['theItem'] = $this->WMimageHTML.$this->I['theItem'];
 		}
 
-		$this->WMresult.= '
-<div class="clTop" id="divTop'.($key+1).'">'.$this->tmpl->wrap($this->I['theItem'], $this->WMtableWrap).'
-<div class="clSub" id="divSub'.($key+1).'">
-		'.$this->WMsubmenu.'
+		$this->WMresult .= '
+<div class="clTop" id="divTop' . ($key + 1) . '">' . $this->tmpl->wrap($this->I['theItem'], $this->WMtableWrap) . '
+<div class="clSub" id="divSub' . ($key + 1) . '">
+		' . $this->WMsubmenu . '
 </div>
-</div>';		// Originally a <br /> between the div-tags, but it seemed to break stuff.
+</div>';
 	}
 
 	/**
 	 * Putting things together, in particular the JavaScript code needed for the DHTML menu.
 	 *
-	 * @return	string		Empty string! (Since $GLOBALS['TSFE']->divSection is set with the <div>-sections used in the menu)
+	 * @return string Empty string! (Since $GLOBALS['TSFE']->divSection is set with the <div>-sections used in the menu)
 	 */
 	function extProc_finish() {
 		$bHeight = t3lib_utility_Math::forceIntegerInRange(($this->mconf['bottomHeight']?$this->mconf['bottomHeight']:100), 0, 3000);
@@ -148,16 +130,16 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 		$adjustSubHeights = intval($this->mconf['adjustSubItemsH']);
 		$mWidth = t3lib_utility_Math::forceIntegerInRange(($this->mconf['menuWidth']?$this->mconf['menuWidth']:170), 0, 3000);
 		$mHeight = t3lib_utility_Math::forceIntegerInRange(($this->mconf['menuHeight']?$this->mconf['menuHeight']:400), 0, 3000);
-		$insertmColor= $this->mconf['menuBackColor'] ? 'BACKGROUND-COLOR: '.$this->mconf['menuBackColor'].'; layer-background-color: '.$this->mconf['menuBackColor'] : '';
-		$insertBottomColor= $this->mconf['bottomBackColor'] ? 'BACKGROUND-COLOR: '.$this->mconf['bottomBackColor'].'; layer-background-color: '.$this->mconf['bottomBackColor'] : '';
+		$insertmColor = $this->mconf['menuBackColor'] ? 'BACKGROUND-COLOR: ' . $this->mconf['menuBackColor'] . '; layer-background-color: ' . $this->mconf['menuBackColor'] : '';
+		$insertBottomColor = $this->mconf['bottomBackColor'] ? 'BACKGROUND-COLOR: ' . $this->mconf['bottomBackColor'] . '; layer-background-color: ' . $this->mconf['bottomBackColor'] : '';
 		$menuOffset = t3lib_div::intExplode(',', $this->mconf['menuOffset'] . ',');
 		$subOffset = t3lib_div::intExplode(',', $this->mconf['subMenuOffset'] . ',');
 
 
-		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared']='<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath('cms').'tslib/media/scripts/jsfunc.layermenu.js"></script>';
-		$GLOBALS['TSFE']->additionalHeaderData['gmenu_foldout']='<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath('cms').'tslib/media/scripts/jsfunc.foldout.js"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared'] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('statictemplates') . 'media/scripts/jsfunc.layermenu.js"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData['gmenu_foldout'] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('statictemplates') . 'media/scripts/jsfunc.foldout.js"></script>';
 
-		$GLOBALS["TSFE"]->additionalHeaderData[].= '
+		$GLOBALS["TSFE"]->additionalHeaderData[] .= '
 <style type="text/css">
 	/*<![CDATA[*/
 #divCont {
@@ -207,15 +189,15 @@ GFV_exImg.src="'.$GLOBALS['TSFE']->absRefPrefix.$this->WMarrowACT[3].'";   //...
 </script>
 ';
 
-		$GLOBALS['TSFE']->JSeventFuncCalls['onmousemove']['GF_resizeForOpera()']= 'GF_resizeForOpera();';
-		$GLOBALS['TSFE']->JSeventFuncCalls['onload']['GMENU_FOLDOUT']= 'if(bw.bw) {GF_initFoldout();'.$this->WM_activeOnLoad.'}';
+		$GLOBALS['TSFE']->JSeventFuncCalls['onmousemove']['GF_resizeForOpera()'] = 'GF_resizeForOpera();';
+		$GLOBALS['TSFE']->JSeventFuncCalls['onload']['GMENU_FOLDOUT'] = 'if(bw.bw) {GF_initFoldout();' . $this->WM_activeOnLoad . '}';
 
-		$GLOBALS['TSFE']->divSection.= '
+		$GLOBALS['TSFE']->divSection .= '
 <div id="divCont"><!-- These are the contents of the foldoutmenu. -->
 		' . $this->tmpl->wrap($this->WMresult, $this->mconf['wrap']) . '
-<div class="bottomLayer" id="divTop'.($this->WMmenuItems+1).'">
-	<div class="clSub" id="divSub'.($this->WMmenuItems+1).'"><!-- This is a cover layer, it should always be the last one, and does NOT count in your number of toplinks! --><!-- So if this one is divTop7, the GFV_foldNumber variable should be set to 6 --><!-- This layer covers up the last sub, so if the last sub gets too big, increase this layers size in the stylesheet. --><!-- There are tables with width="100%" around the toplinks, to force NS4 to use the real width specified for the toplinks in the stylesheet. -->
-	</div>'.$this->tmpl->wrap($bottomContent, $this->WMtableWrap).'
+<div class="bottomLayer" id="divTop' . ($this->WMmenuItems + 1) . '">
+	<div class="clSub" id="divSub' . ($this->WMmenuItems + 1) . '"><!-- This is a cover layer, it should always be the last one, and does NOT count in your number of toplinks! --><!-- So if this one is divTop7, the GFV_foldNumber variable should be set to 6 --><!-- This layer covers up the last sub, so if the last sub gets too big, increase this layers size in the stylesheet. --><!-- There are tables with width="100%" around the toplinks, to force NS4 to use the real width specified for the toplinks in the stylesheet. -->
+	</div>' . $this->tmpl->wrap($bottomContent, $this->WMtableWrap) . '
 </div>
 </div><!-- Here ends the foldoutmenu. -->
 		';
