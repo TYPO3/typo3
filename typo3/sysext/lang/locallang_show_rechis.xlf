@@ -108,9 +108,6 @@
 			<trans-unit id="showInsertDelete" xml:space="preserve">
 				<source>Show inserts/deletes of records:</source>
 			</trans-unit>
-			<trans-unit id="consistenceWarning" xml:space="preserve">
-				<source>From this point on, there is no guarantee that a rollback reverts all changes, as changes of records  prior to this message are normally not preserved.</source>
-			</trans-unit>
 			<trans-unit id="noDifferences" xml:space="preserve">
 				<source>There are no differences to the current page!</source>
 			</trans-unit>

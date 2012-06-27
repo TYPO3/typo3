@@ -89,6 +89,11 @@ The ancient noBlur TypoScript setting for old Browsers (Internet Explorer <= 5.5
 was removed without alternative. The setting has no effect anymore and can be
 removed from custom TypoScript objects, especially MENU.
 
+* Removed internal sys_history cleanup feature
+
+You can still cleanup your history table by using the table garbage collection
+scheduler task.
+
 ===============================================================================
 Changes and Improvements
 ===============================================================================

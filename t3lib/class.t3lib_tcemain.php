@@ -5899,18 +5899,6 @@ class t3lib_TCEmain {
 	 */
 	function setHistory($table, $id, $logId) {
 		if (isset($this->historyRecords[$table . ':' . $id])) {
-
-				// Initialize settings:
-			list($tscPID) = t3lib_BEfunc::getTSCpid($table, $id, '');
-			$TSConfig = $this->getTCEMAIN_TSconfig($tscPID);
-
-			$tE = $this->getTableEntries($table, $TSConfig);
-			$maxAgeSeconds = 60 * 60 * 24 * (strcmp($tE['history.']['maxAgeDays'], '') ? t3lib_utility_Math::forceIntegerInRange($tE['history.']['maxAgeDays'], 0, 365) : 30); // one month
-
-				// Garbage collect old entries:
-			$this->clearHistory($maxAgeSeconds, $table);
-
-				// Set history data:
 			$fields_values = array();
 			$fields_values['history_data'] = serialize($this->historyRecords[$table . ':' . $id]);
 			$fields_values['fieldlist'] = implode(',', array_keys($this->historyRecords[$table . ':' . $id]['newRecord']));
@@ -5921,19 +5909,6 @@ class t3lib_TCEmain {
 
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_history', $fields_values);
 		}
-	}
-
-	/**
-	 * Clearing sys_history table from older entries that are expired.
-	 *
-	 * @param integer $maxAgeSeconds (int+) however will set a max age in seconds so that any entry older than current time minus the age removed no matter what. If zero, this is not effective.
-	 * @param string $table Table where the history should be cleared
-	 * @return void
-	 */
-	function clearHistory($maxAgeSeconds = 604800, $table) {
-		$tstampLimit = $maxAgeSeconds ? $GLOBALS['EXEC_TIME'] - $maxAgeSeconds : 0;
-
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_history', 'tstamp<' . intval($tstampLimit) . ' AND tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_history'));
 	}
 
 	/**
