@@ -352,7 +352,7 @@ class Typo3_Bootstrap_BaseSetup {
 	 *
 	 * @return string Absolute path to entry script
 	 */
-	protected function getPathThisScript() {
+	protected static function getPathThisScript() {
 		if (defined('TYPO3_cliMode') && TYPO3_cliMode === TRUE) {
 			return self::getPathThisScriptCli();
 		} else {
