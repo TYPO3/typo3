@@ -285,7 +285,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 		}
 		if (HTMLArea.classesAnchorSetup) {
 			var range = this.editor.getSelection().createRange();
-			if (!Ext.isIE) {
+			if (!(Ext.isIE6 || Ext.isIE7 || Ext.isIE8)) {
 				this.cleanAllLinks(node, range, false);
 			} else {
 				this.cleanAllLinks(node, range, true);
@@ -316,7 +316,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 	setLinkAttributes: function(node, range, cur_target, cur_class, cur_title, imageNode, addIconAfterLink, additionalValues) {
 		if (/^a$/i.test(node.nodeName)) {
 			var nodeInRange = false;
-			if (!Ext.isIE) {
+			if (!(Ext.isIE6 || Ext.isIE7 || Ext.isIE8)) {
 				this.editor.focus();
 				nodeInRange = HTMLArea.DOM.rangeIntersectsNode(range, node);
 			} else {
@@ -347,7 +347,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 				} else {
 					if (!Ext.isOpera) {
 						node.removeAttribute('class');
-						if (Ext.isIE) {
+						if (Ext.isIE6 || Ext.isIE7 || Ext.isIE8) {
 							node.removeAttribute('className');
 						}
 					} else {
@@ -411,7 +411,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 	cleanAllLinks: function(node, range, keepLinks) {
 		if (/^a$/i.test(node.nodeName)) {
 			var intersection = false;
-			if (!Ext.isIE) {
+			if (!(Ext.isIE6 || Ext.isIE7 || Ext.isIE8)) {
 				this.editor.focus();
 				intersection = HTMLArea.DOM.rangeIntersectsNode(range, node);
 			} else {
