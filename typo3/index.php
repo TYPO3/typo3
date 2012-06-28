@@ -46,6 +46,8 @@ require('init.php');
  */
 class SC_index {
 
+	const SIGNAL_RenderLoginForm = 'renderLoginForm';
+
 		// Internal, GPvars:
 		// GPvar: redirect_url; The URL to redirect to after login.
 	var $redirect_url;
@@ -82,6 +84,12 @@ class SC_index {
 		// sets the level of security. *'normal' = clear-text. 'challenged' = hashed
 		// password/username from form in $formfield_uident. 'superchallenged' = hashed password hashed again with username.
 	var $loginSecurityLevel = 'superchallenged';
+
+	/**
+	 * @var Tx_Extbase_SignalSlot_Dispatcher
+	 */
+	protected $signalSlotDispatcher;
+
 	/**
 	 * Initialize the login box. Will also react on a &L=OUT flag and exit.
 	 *
@@ -258,7 +266,7 @@ class SC_index {
 	/**
 	 * Wrapping the login form table in another set of tables etc:
 	 *
-	 * @param string HTML content for the login form
+	 * @param string $content HTML content for the login form
 	 * @return string The HTML for the page.
 	 */
 	function wrapLoginForm($content) {
@@ -270,6 +278,7 @@ class SC_index {
 			$logo = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/typo3logo.gif', 'width="123" height="34"').' alt="" />';
 		}
 
+		/** @var $browserWarning t3lib_FlashMessage */
 		$browserWarning = t3lib_div::makeInstance(
 			't3lib_FlashMessage',
 				// TODO: refactor if other old browsers are not supported anymore
@@ -322,6 +331,7 @@ class SC_index {
 				// Global variables will now be replaced (at last)
 			'SITENAME'         => htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])
 		);
+		$this->emitRenderLoginFormSignal($markers);
 		return t3lib_parsehtml::substituteMarkerArray($mainContent, $markers, '###|###');
 	}
 
@@ -367,6 +377,7 @@ class SC_index {
 				break;
 			}
 
+			/** @var $formProtection t3lib_formprotection_BackendFormProtection */
 			$formProtection = t3lib_formprotection_Factory::get();
 				// If there is a redirect URL AND if loginRefresh is not set...
 			if (!$this->loginRefresh) {
@@ -467,7 +478,7 @@ class SC_index {
 		}
 
 			// Compile full copyright notice:
-		$copyrightNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">'.
+		$copyrightNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' .
 					'<img src="' . $loginImageSmall . '" alt="' . $GLOBALS['LANG']->getLL('typo3.logo') . '" align="left" />' .
 					$GLOBALS['LANG']->getLL('typo3.cms') . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion']?' ' . $GLOBALS['LANG']->getLL('version.short') . ' ' . htmlspecialchars(TYPO3_version):'') .
 					'</a>. ' .
@@ -509,19 +520,22 @@ class SC_index {
 
 					// Create image tag:
 				if (is_array($imgSize)) {
-					$loginboxImage = '<img src="'.htmlspecialchars($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'].$files[$randImg]).'" '.$imgSize[3].' id="loginbox-image" alt="'.$imgAuthor.'" title="'.$imgAuthor.'" />';
+					$loginboxImage = '<img src="' . htmlspecialchars($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'] .
+						$files[$randImg]) . '" ' . $imgSize[3] . ' id="loginbox-image" alt="' . $imgAuthor . '" title="' .
+						$imgAuthor . '" />';
 				}
 			}
 		} else {	// If no rotation folder configured, print default image:
 				// Development version
 			if (strstr(TYPO3_version, '-dev')) {
 				$loginImage = 'loginbox_image_dev.png';
-				$imagecopy = 'You are running a development version of TYPO3 '.TYPO3_branch;
+				$imagecopy = 'You are running a development version of TYPO3 ' . TYPO3_branch;
 			} else {
 				$loginImage = 'loginbox_image.jpg';
 				$imagecopy = 'Photo by J.C. Franca (www.digitalphoto.com.br)';
 			}
-			$loginboxImage = '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/'.$loginImage, 'width="200" height="133"').' id="loginbox-image" alt="'.$imagecopy.'" title="'.$imagecopy.'" />';
+			$loginboxImage = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/' . $loginImage, 'width="200" height="133"') .
+				' id="loginbox-image" alt="' . $imagecopy . '" title="' . $imagecopy . '" />';
 		}
 
 			// Return image tag:
@@ -542,6 +556,7 @@ class SC_index {
 
 			// Traverse news array IF there are records in it:
 		if (is_array($systemNews) && count($systemNews) && !t3lib_div::_GP('loginRefresh')) {
+			/** @var $htmlParser t3lib_parsehtml_proc */
 			$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml_proc');
 				// Get the main news template, and replace the subpart after looped through
 			$newsContent      = t3lib_parsehtml::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###LOGIN_NEWS###');
@@ -642,8 +657,8 @@ class SC_index {
 		$output .= $form .
 			'<input type="hidden" name="login_status" value="login" />' .
 			'<input type="hidden" name="userident" value="" />' .
-			'<input type="hidden" name="redirect_url" value="'.htmlspecialchars($this->redirectToURL).'" />' .
-			'<input type="hidden" name="loginRefresh" value="'.htmlspecialchars($this->loginRefresh).'" />' .
+			'<input type="hidden" name="redirect_url" value="' . htmlspecialchars($this->redirectToURL) . '" />' .
+			'<input type="hidden" name="loginRefresh" value="' . htmlspecialchars($this->loginRefresh) . '" />' .
 			$this->interfaceSelector_hidden . $this->addFields_hidden;
 
 		return $output;
@@ -747,9 +762,46 @@ class SC_index {
 		$username = t3lib_div::_GP('username');
 		return !(empty($username) && empty($this->commandLI));
 	}
+
+	/**
+	 * Emits the render login form signal
+	 *
+	 * @param array $markers Array with markers for the login form
+	 * @return void
+	 */
+	protected function emitRenderLoginFormSignal(array &$markers) {
+		$this->getSignalSlotDispatcher()->dispatch(
+			'SC_index',
+			self::SIGNAL_RenderLoginForm,
+			array($this, $markers)
+		);
+	}
+
+	/**
+	 * Get the SignalSlot dispatcher
+	 *
+	 * @return Tx_Extbase_SignalSlot_Dispatcher
+	 */
+	protected function getSignalSlotDispatcher() {
+		if (!isset($this->signalSlotDispatcher)) {
+			$this->signalSlotDispatcher = $this->getObjectManager()->get('Tx_Extbase_SignalSlot_Dispatcher');
+		}
+		return $this->signalSlotDispatcher;
+	}
+
+	/**
+	 * Get the ObjectManager
+	 *
+	 * @return Tx_Extbase_Object_ObjectManager
+	 */
+	protected function getObjectManager() {
+		return t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+	}
+
 }
 
 	// Make instance:
+/** @var $SOBE SC_index */
 $SOBE = t3lib_div::makeInstance('SC_index');
 $SOBE->init();
 $SOBE->main();
