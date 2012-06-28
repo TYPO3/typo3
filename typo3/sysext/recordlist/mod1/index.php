@@ -219,7 +219,6 @@ class SC_db_list {
 		$dblist->hideTables = $this->modTSconfig['properties']['hideTables'];
 		$dblist->hideTranslations = $this->modTSconfig['properties']['hideTranslations'];
 		$dblist->tableTSconfigOverTCA = $this->modTSconfig['properties']['table.'];
-		$dblist->clickTitleMode = $this->modTSconfig['properties']['clickTitleMode'];
 		$dblist->alternateBgColors=$this->modTSconfig['properties']['alternateBgColors']?1:0;
 		$dblist->allowedNewTables = t3lib_div::trimExplode(',', $this->modTSconfig['properties']['allowedNewTables'], 1);
 		$dblist->deniedNewTables = t3lib_div::trimExplode(',', $this->modTSconfig['properties']['deniedNewTables'], 1);
@@ -228,6 +227,9 @@ class SC_db_list {
 		$dblist->counter++;
 		$dblist->MOD_MENU = array('bigControlPanel' => '', 'clipBoard' => '', 'localization' => '');
 		$dblist->modTSconfig = $this->modTSconfig;
+
+		$clickTitleMode = trim($this->modTSconfig['properties']['clickTitleMode']);
+		$dblist->clickTitleMode = ($clickTitleMode === '' ? 'edit' : $clickTitleMode);
 
 			// Clipboard is initialized:
 			// Start clipboard
