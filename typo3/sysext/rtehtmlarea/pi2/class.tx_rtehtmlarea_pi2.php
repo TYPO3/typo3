@@ -68,7 +68,7 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 	 * @param	integer		PID value of record (true parent page id)
 	 * @return	string		HTML code for RTE!
 	 */
-	function drawRTE($parentObject,$table,$field,$row,$PA,$specConf,$thisConfig,$RTEtypeVal,$RTErelPath,$thePidValue) {
+	function drawRTE(&$parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
 		global $TSFE, $TYPO3_CONF_VARS, $TYPO3_DB;
 
 		$this->TCEform = $parentObject;
