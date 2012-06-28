@@ -230,7 +230,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		HTML code for RTE!
 	 */
 
-	function drawRTE($parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
+	function drawRTE(&$parentObject, $table, $field, $row, $PA, $specConf, $thisConfig, $RTEtypeVal, $RTErelPath, $thePidValue) {
 		global $LANG, $TYPO3_DB, $TYPO3_CONF_VARS;
 
 		$this->TCEform = $parentObject;
