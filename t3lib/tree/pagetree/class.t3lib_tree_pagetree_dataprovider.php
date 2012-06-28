@@ -127,12 +127,16 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 					continue;
 				}
 
+					// must be calculated above getRecordWSOL, because the information is lost otherwise
+				$isMountPoint = ($subpage['isMountPoint'] === TRUE);
+
 				$subpage = t3lib_befunc::getRecordWSOL('pages', $subpage['uid'], '*', '', TRUE, TRUE);
 				if (!$subpage) {
 					continue;
 				}
 
 				$subNode = t3lib_tree_pagetree_Commands::getNewNode($subpage, $mountPoint);
+				$subNode->setIsMountPoint($isMountPoint);
 				if ($this->nodeCounter < $this->nodeLimit) {
 					$childNodes = $this->getNodes($subNode, $mountPoint, $level + 1);
 					$subNode->setChildNodes($childNodes);
@@ -325,7 +329,6 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 
 			$subNode->setIsMountPoint(TRUE);
 			$subNode->setDraggable(FALSE);
-			$subNode->setIsDropTarget(FALSE);
 
 			if ($searchFilter === '') {
 				$childNodes = $this->getNodes($subNode, $mountPoint);
