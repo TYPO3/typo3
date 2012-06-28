@@ -403,6 +403,7 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 			// init proxy element
 		this.on('startdrag', this.initDd, this);
 		this.on('enddrag', this.stopDd, this);
+		this.on('nodedragover', this.nodeDragOver, this);
 
 			// node is moved
 		this.on('movenode', this.moveNode, this);
@@ -497,6 +498,17 @@ TYPO3.Components.PageTree.Tree = Ext.extend(Ext.tree.TreePanel, {
 		this.copyHint.setVisibilityMode(Ext.Element.DISPLAY);
 		this.dragZone.proxy.el.shadow = false;
 		this.dragZone.proxy.ghost.dom.appendChild(this.copyHint.dom);
+	},
+
+	/**
+	 * Cancels the drop possibility for the position above and below a mount page
+	 *
+	 * @param {Object} event
+	 * @return {void}
+	 */
+	nodeDragOver: function(event) {
+		var isMountPage = (event.target.attributes.realId == 0 || event.target.attributes.nodeData.isMountPoint);
+		return !((event.point === 'above' || event.point === 'below') && isMountPage);
 	},
 
 	/**
