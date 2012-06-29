@@ -716,9 +716,15 @@ class SC_wizard_forms {
 					$tArr = array('', '', '', '', '', '');
 					switch((string)$vv['type']) {
 						case 'textarea':
-							if (intval($vv['cols']))	$tArr[0] = intval($vv['cols']);
-							if (intval($vv['rows']))	$tArr[1] = intval($vv['rows']);
-							if (trim($vv['extra']))		$tArr[2] = trim($vv['extra']);
+							if (intval($vv['cols'])) {
+								$tArr[0] = intval($vv['cols']);
+							}
+							if (intval($vv['rows'])) {
+								$tArr[1] = intval($vv['rows']);
+							}
+							if (trim($vv['extra'])) {
+								$tArr[2] = trim($vv['extra']);
+							}
 							if (strlen($vv['specialEval'])) {
 									// Preset blank default value so position 3 can get a value...
 								$thisLine[2] = '';
@@ -727,8 +733,12 @@ class SC_wizard_forms {
 						break;
 						case 'input':
 						case 'password':
-							if (intval($vv['size']))	$tArr[0] = intval($vv['size']);
-							if (intval($vv['max']))		$tArr[1] = intval($vv['max']);
+							if (intval($vv['size'])) {
+								$tArr[0] = intval($vv['size']);
+							}
+							if (intval($vv['max'])) {
+								$tArr[1] = intval($vv['max']);
+							}
 							if (strlen($vv['specialEval'])) {
 									// Preset blank default value so position 3 can get a value...
 								$thisLine[2] = '';
@@ -736,16 +746,26 @@ class SC_wizard_forms {
 							}
 						break;
 						case 'file':
-							if (intval($vv['size']))	$tArr[0] = intval($vv['size']);
+							if (intval($vv['size'])) {
+								$tArr[0] = intval($vv['size']);
+							}
 						break;
 						case 'select':
-							if (intval($vv['size']))	$tArr[0] = intval($vv['size']);
-							if ($vv['autosize'])	$tArr[0] = 'auto';
-							if ($vv['multiple'])	$tArr[1] = 'm';
+							if (intval($vv['size'])) {
+								$tArr[0] = intval($vv['size']);
+							}
+							if ($vv['autosize']) {
+								$tArr[0] = 'auto';
+							}
+							if ($vv['multiple']) {
+								$tArr[1] = 'm';
+							}
 						break;
 					}
 					$tArr = $this->cleanT($tArr);
-					if (count($tArr))	$thisLine[1].=','.implode(',', $tArr);
+					if (count($tArr)) {
+						$thisLine[1] .= ','.implode(',', $tArr);
+					}
 
 					$thisLine[1] = str_replace('|', '', $thisLine[1]);
 
@@ -753,11 +773,15 @@ class SC_wizard_forms {
 					if ($vv['type'] == 'select' || $vv['type'] == 'radio') {
 						$thisLine[2] = str_replace(LF, ', ', str_replace(',', '', $vv['options']));
 					} elseif ($vv['type'] == 'check') {
-						if ($vv['default'])	$thisLine[2] = 1;
+						if ($vv['default']) {
+							$thisLine[2] = 1;
+						}
 					} elseif (strcmp(trim($vv['default']), '')) {
 						$thisLine[2] = $vv['default'];
 					}
-					if (isset($thisLine[2]))		$thisLine[2] = str_replace('|', '', $thisLine[2]);
+					if (isset($thisLine[2])) {
+						$thisLine[2] = str_replace('|', '', $thisLine[2]);
+					}
 				}
 
 					// Compile the final line:

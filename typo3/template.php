@@ -229,20 +229,44 @@ class template {
 		}
 
 			// Color scheme:
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor'])	$this->bgColor=$GLOBALS['TBE_STYLES']['mainColors']['bgColor'];
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor1'])	$this->bgColor1=$GLOBALS['TBE_STYLES']['mainColors']['bgColor1'];
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor2'])	$this->bgColor2=$GLOBALS['TBE_STYLES']['mainColors']['bgColor2'];
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor3'])	$this->bgColor3=$GLOBALS['TBE_STYLES']['mainColors']['bgColor3'];
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor4'])	$this->bgColor4=$GLOBALS['TBE_STYLES']['mainColors']['bgColor4'];
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor5'])	$this->bgColor5=$GLOBALS['TBE_STYLES']['mainColors']['bgColor5'];
-		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor6'])	$this->bgColor6=$GLOBALS['TBE_STYLES']['mainColors']['bgColor6'];
-		if ($GLOBALS['TBE_STYLES']['mainColors']['hoverColor'])	$this->hoverColor=$GLOBALS['TBE_STYLES']['mainColors']['hoverColor'];
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor']) {
+			$this->bgColor = $GLOBALS['TBE_STYLES']['mainColors']['bgColor'];
+		}
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor1']) {
+			$this->bgColor1 = $GLOBALS['TBE_STYLES']['mainColors']['bgColor1'];
+		}
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor2']) {
+			$this->bgColor2 = $GLOBALS['TBE_STYLES']['mainColors']['bgColor2'];
+		}
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor3']) {
+			$this->bgColor3 = $GLOBALS['TBE_STYLES']['mainColors']['bgColor3'];
+		}
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor4']) {
+			$this->bgColor4 = $GLOBALS['TBE_STYLES']['mainColors']['bgColor4'];
+		}
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor5']) {
+			$this->bgColor5 = $GLOBALS['TBE_STYLES']['mainColors']['bgColor5'];
+		}
+		if ($GLOBALS['TBE_STYLES']['mainColors']['bgColor6']) {
+			$this->bgColor6 = $GLOBALS['TBE_STYLES']['mainColors']['bgColor6'];
+		}
+		if ($GLOBALS['TBE_STYLES']['mainColors']['hoverColor']) {
+			$this->hoverColor = $GLOBALS['TBE_STYLES']['mainColors']['hoverColor'];
+		}
 
 			// Main Stylesheets:
-		if ($GLOBALS['TBE_STYLES']['stylesheet'])	$this->styleSheetFile = $GLOBALS['TBE_STYLES']['stylesheet'];
-		if ($GLOBALS['TBE_STYLES']['stylesheet2'])	$this->styleSheetFile2 = $GLOBALS['TBE_STYLES']['stylesheet2'];
-		if ($GLOBALS['TBE_STYLES']['styleSheetFile_post'])	$this->styleSheetFile_post = $GLOBALS['TBE_STYLES']['styleSheetFile_post'];
-		if ($GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'])	$this->inDocStyles_TBEstyle = $GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'];
+		if ($GLOBALS['TBE_STYLES']['stylesheet']) {
+			$this->styleSheetFile = $GLOBALS['TBE_STYLES']['stylesheet'];
+		}
+		if ($GLOBALS['TBE_STYLES']['stylesheet2']) {
+			$this->styleSheetFile2 = $GLOBALS['TBE_STYLES']['stylesheet2'];
+		}
+		if ($GLOBALS['TBE_STYLES']['styleSheetFile_post']) {
+			$this->styleSheetFile_post = $GLOBALS['TBE_STYLES']['styleSheetFile_post'];
+		}
+		if ($GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle']) {
+			$this->inDocStyles_TBEstyle = $GLOBALS['TBE_STYLES']['inDocStyles_TBEstyle'];
+		}
 
 			// include all stylesheets
 		foreach ($this->getSkinStylesheetDirectories() as $stylesheetDirectory) {
@@ -250,7 +274,9 @@ class template {
 		}
 
 			// Background image
-		if ($GLOBALS['TBE_STYLES']['background'])	$this->backGroundImage = $GLOBALS['TBE_STYLES']['background'];
+		if ($GLOBALS['TBE_STYLES']['background']) {
+			$this->backGroundImage = $GLOBALS['TBE_STYLES']['background'];
+		}
 	}
 
 	/**
@@ -397,8 +423,9 @@ class template {
 			$iconImgTag = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($path)));
 			$title = strip_tags(t3lib_BEfunc::getRecordTitle($table, $row));
 			$viewPage = $noViewPageIcon ? '' : $this->viewPageIcon($row['uid'], $this->backPath, '');
-			if ($table == 'pages')
+			if ($table == 'pages') {
 				$path .= ' - ' . t3lib_BEfunc::titleAttribForPages($row, '', 0);
+			}
 		} else {
 			$iconImgTag = t3lib_iconWorks::getSpriteIcon('apps-pagetree-page-domain', array('title' => htmlspecialchars($path)));
 			$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
@@ -446,10 +473,12 @@ class template {
 		}
 
 		if (!strcmp($motherModName, '1')) {
-			$mMN="&motherModName='+top.currentModuleLoaded+'";
+			$mMN = "&motherModName='+top.currentModuleLoaded+'";
 		} elseif ($motherModName) {
-			$mMN='&motherModName='.rawurlencode($motherModName);
-		} else $mMN='';
+			$mMN = '&motherModName='.rawurlencode($motherModName);
+		} else {
+			$mMN = '';
+		}
 
 		$onClick = 'top.ShortcutManager.createShortcut('
 			.$GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeBookmark')).', '
@@ -791,7 +820,7 @@ class template {
 
 		if ($this->docType == 'xhtml_frames') {
 			return $str;
-		} else
+		} else {
 			$str .= $this->docBodyTagBegin().
 				($this->divClass ?
 '
@@ -800,6 +829,7 @@ class template {
 <div class="' . $this->divClass . '">
 '
 					: '' ) . trim($this->form);
+		}
 		return $str;
 	}
 
@@ -835,7 +865,9 @@ class template {
 
 
 			// Logging: Can't find better place to put it:
-		if (TYPO3_DLOG)	t3lib_div::devLog('END of BACKEND session', 'template', 0, array('_FLUSH' => TRUE));
+		if (TYPO3_DLOG) {
+			t3lib_div::devLog('END of BACKEND session', 'template', 0, array('_FLUSH' => TRUE));
+		}
 
 		return $str;
 	}
@@ -965,8 +997,8 @@ class template {
 	 */
 	function sectionBegin() {
 		if (!$this->sectionFlag) {
-			$this->sectionFlag=1;
-			$str='
+			$this->sectionFlag = 1;
+			$str = '
 
 	<!-- ***********************
 	      Begin output section.
@@ -974,7 +1006,9 @@ class template {
 	<div>
 ';
 			return $str;
-		} else return '';
+		} else {
+			return '';
+		}
 	}
 
 	/**
@@ -986,14 +1020,16 @@ class template {
 	 */
 	function sectionEnd() {
 		if ($this->sectionFlag) {
-			$this->sectionFlag=0;
+			$this->sectionFlag = 0;
 			return '
 	</div>
 	<!-- *********************
 	      End output section.
 	     ********************* -->
 ';
-		} else return '';
+		} else {
+			return '';
+		}
 	}
 
 	/**

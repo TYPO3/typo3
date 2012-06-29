@@ -324,8 +324,9 @@ class TSpagegen {
 				$docTypeParts[] = '<?xml version="1.1" encoding="' . $theCharset . '"?>';
 				break;
 			case '' :
-				if ($GLOBALS['TSFE']->xhtmlVersion)
+				if ($GLOBALS['TSFE']->xhtmlVersion) {
 					$docTypeParts[] = '<?xml version="1.0" encoding="' . $theCharset . '"?>';
+				}
 				break;
 			default :
 				$docTypeParts[] = $GLOBALS['TSFE']->config['config']['xmlprologue'];
@@ -1000,8 +1001,10 @@ class TSpagegen {
 
 			// Bodytag:
 		$defBT = $GLOBALS['TSFE']->pSetup['bodyTagCObject'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($GLOBALS['TSFE']->pSetup['bodyTagCObject'], $GLOBALS['TSFE']->pSetup['bodyTagCObject.'], 'bodyTagCObject') : '';
-		if (! $defBT)
+		if (! $defBT) {
 			$defBT = $GLOBALS['TSFE']->defaultBodyTag;
+		}
+
 		$bodyTag = $GLOBALS['TSFE']->pSetup['bodyTag'] ? $GLOBALS['TSFE']->pSetup['bodyTag'] : $defBT;
 		if ($bgImg = $GLOBALS['TSFE']->cObj->getImgResource($GLOBALS['TSFE']->pSetup['bgImg'], $GLOBALS['TSFE']->pSetup['bgImg.'])) {
 			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' background="' . $GLOBALS['TSFE']->absRefPrefix . $bgImg[3] . '">';

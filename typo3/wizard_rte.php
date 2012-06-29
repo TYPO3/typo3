@@ -296,7 +296,9 @@ class SC_wizard_rte {
 			if ($hasAccess) {
 				$hasAccess = $GLOBALS['BE_USER']->recordEditAccessInternals($table, $calcPRec);
 			}
-		} else $hasAccess = FALSE;
+		} else {
+			$hasAccess = FALSE;
+		}
 
 		return $hasAccess;
 	}

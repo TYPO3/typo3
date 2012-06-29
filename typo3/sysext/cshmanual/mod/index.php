@@ -551,8 +551,12 @@ class SC_view_help {
 						';
 						$code.= '<p><em>' . htmlspecialchars($descr) . '</em></p>
 						';
-					} else $code .= '<div style="background-color: red; border: 1px solid black; color: white;">NOT AN IMAGE: '.$imgFile.'</div>';
-				} else $code .= '<div style="background-color: red; border: 1px solid black; color: white;">IMAGE FILE NOT FOUND: '.$image.'</div>';
+					} else {
+						$code .= '<div style="background-color: red; border: 1px solid black; color: white;">NOT AN IMAGE: '.$imgFile.'</div>';
+					}
+				} else {
+					$code .= '<div style="background-color: red; border: 1px solid black; color: white;">IMAGE FILE NOT FOUND: '.$image.'</div>';
+				}
 			}
 		}
 
