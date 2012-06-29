@@ -287,7 +287,10 @@ class localRecordList extends recordList {
 		$selectFields[] = 'uid';
 		$selectFields[] = 'pid';
 			// adding column for thumbnails
-		if ($thumbsCol)	$selectFields[] = $thumbsCol;
+		if ($thumbsCol) {
+			$selectFields[] = $thumbsCol;
+		}
+
 		if ($table == 'pages') {
 			if (t3lib_extMgm::isLoaded('cms')) {
 				$selectFields[] = 'module';
@@ -414,13 +417,16 @@ class localRecordList extends recordList {
 
 				// Half line is drawn between tables:
 			if (!$listOnlyInSingleTableMode) {
-				$theData = Array();
+				$theData = array();
 				if (!$this->table && !$rowlist) {
 					$theData[$titleCol] = '<img src="clear.gif" width="' . ($GLOBALS['SOBE']->MOD_SETTINGS['bigControlPanel'] ? '230' : '350') . '" height="1" alt="" />';
-					if (in_array('_CONTROL_', $this->fieldArray))
-						$theData['_CONTROL_']='';
-					if (in_array('_CLIPBOARD_', $this->fieldArray))
-						$theData['_CLIPBOARD_']='';
+					if (in_array('_CONTROL_', $this->fieldArray)) {
+						$theData['_CONTROL_'] = '';
+					}
+
+					if (in_array('_CLIPBOARD_', $this->fieldArray)) {
+						$theData['_CLIPBOARD_'] = '';
+					}
 				}
 				$out .= $this->addelement(0, '', $theData, 'class="c-table-row-spacer"', $this->leftMargin);
 			}
@@ -494,7 +500,7 @@ class localRecordList extends recordList {
 								$this->currentTable['prevUid'][$row['uid']] = $prevUid;
 							}
 							$prevPrevUid = isset($this->currentTable['prev'][$row['uid']]) ? -$prevUid : $row['pid'];
-							$prevUid=$row['uid'];
+							$prevUid = $row['uid'];
 						}
 					}
 				}
@@ -503,7 +509,9 @@ class localRecordList extends recordList {
 				$this->totalRowCount = count($accRows);
 
 					// CSV initiated
-				if ($this->csvOutput) $this->initCSV();
+				if ($this->csvOutput) {
+					$this->initCSV();
+				}
 
 					// Render items:
 				$this->CBnames = array();
@@ -587,7 +595,9 @@ class localRecordList extends recordList {
 
 				// Output csv if...
 				// This ends the page with exit.
-			if ($this->csvOutput)	$this->outputCSV($table);
+			if ($this->csvOutput) {
+				$this->outputCSV($table);
+			}
 		}
 
 			// Return content:
@@ -906,8 +916,10 @@ class localRecordList extends recordList {
 							// If the table can be edited, add link for editing ALL SHOWN fields for all listed records:
 						if ($permsEdit && $this->table && is_array($currentIdList)) {
 							$editIdList = implode(',', $currentIdList);
-							if ($this->clipNumPane())
+							if ($this->clipNumPane()) {
 								$editIdList = "'+editList('" . $table . "','" . $editIdList . "')+'";
+							}
+
 							$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . implode(',', $this->fieldArray) . '&disHelp=1';
 							$icon  .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath, -1 )) . '" title="' . $GLOBALS['LANG']->getLL('editShownColumns', TRUE) . '">' .
 									t3lib_iconWorks::getSpriteIcon('actions-document-open') .
@@ -935,8 +947,10 @@ class localRecordList extends recordList {
 							// If the table can be edited, add link for editing THIS field for all listed records:
 						if (!$GLOBALS['TCA'][$table]['ctrl']['readOnly'] && $permsEdit && $GLOBALS['TCA'][$table]['columns'][$fCol]) {
 							$editIdList = implode(',', $currentIdList);
-							if ($this->clipNumPane())
+							if ($this->clipNumPane()) {
 								$editIdList = "'+editList('" . $table . "','" . $editIdList . "')+'";
+							}
+
 							$params = '&edit[' . $table . '][' . $editIdList . ']=edit&columnsOnly=' . $fCol . '&disHelp=1';
 							$iTitle = sprintf($GLOBALS['LANG']->getLL('editThisColumn'), rtrim(trim($GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($table, $fCol))), ':'));
 							$theData[$fCol] .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath, -1)) . '" title="' . htmlspecialchars($iTitle) . '">' .
@@ -1111,8 +1125,9 @@ class localRecordList extends recordList {
 	 * @return string HTML table with the control panel (unless disabled)
 	 */
 	function makeControl($table, $row) {
-		if ($this->dontShowClipControlPanels)
+		if ($this->dontShowClipControlPanels) {
 			return '';
+		}
 
 		$rowUid = $row['uid'];
 		if (t3lib_extMgm::isLoaded('version') && isset($row['_ORIG_uid'])) {
@@ -1380,8 +1395,10 @@ class localRecordList extends recordList {
 	 */
 	function makeClip($table, $row) {
 			// Return blank, if disabled:
-		if ($this->dontShowClipControlPanels) return '';
-		$cells=array();
+		if ($this->dontShowClipControlPanels) {
+			return '';
+		}
+		$cells = array();
 
 		$cells['pasteAfter'] = $cells['pasteInto'] = $this->spaceIcon;
 			//enables to hide the copy, cut and paste icons for localized records - doesn't make much sense to perform these options for them
@@ -1389,7 +1406,7 @@ class localRecordList extends recordList {
 			// Return blank, if disabled:
 			// Whether a numeric clipboard pad is active or the normal pad we will see different content of the panel:
 			// For the "Normal" pad:
-		if ($this->clipObj->current=='normal') {
+		if ($this->clipObj->current == 'normal') {
 
 				// Show copy/cut icons:
 			$isSel = (string)$this->clipObj->isSelected($table, $row['uid']);
@@ -1554,7 +1571,9 @@ class localRecordList extends recordList {
 				}
 			}
 
-			if ($lNew)	$out[1].= $lNew;
+			if ($lNew) {
+				$out[1] .= $lNew;
+			}
 		} elseif ($row['l18n_parent']) {
 			$out[0] = '&nbsp;&nbsp;&nbsp;&nbsp;'.$out[0];
 		}
@@ -1644,7 +1663,9 @@ class localRecordList extends recordList {
 	 */
 	function linkClipboardHeaderIcon($string, $table, $cmd, $warning = '') {
 		$onClickEvent = 'document.dblistForm.cmd.value=\''.$cmd.'\';document.dblistForm.cmd_table.value=\''.$table.'\';document.dblistForm.submit();';
-		if ($warning)	$onClickEvent = 'if (confirm('.$GLOBALS['LANG']->JScharCode($warning).')){'.$onClickEvent.'}';
+		if ($warning) {
+			$onClickEvent = 'if (confirm('.$GLOBALS['LANG']->JScharCode($warning).')){'.$onClickEvent.'}';
+		}
 		return '<a href="#" onclick="'.htmlspecialchars($onClickEvent.'return false;').'">'.$string.'</a>';
 	}
 
@@ -1670,10 +1691,14 @@ class localRecordList extends recordList {
 	function addSortLink($code, $field, $table) {
 
 			// Certain circumstances just return string right away (no links):
-		if ($field == '_CONTROL_' || $field == '_LOCALIZATION_' || $field == '_CLIPBOARD_' || $field == '_REF_' || $this->disableSingleTableView)	return $code;
+		if ($field == '_CONTROL_' || $field == '_LOCALIZATION_' || $field == '_CLIPBOARD_' || $field == '_REF_' || $this->disableSingleTableView) {
+			return $code;
+		}
 
 			// If "_PATH_" (showing record path) is selected, force sorting by pid field (will at least group the records!)
-		if ($field == '_PATH_')	$field = pid;
+		if ($field == '_PATH_') {
+			$field = 'pid';
+		}
 
 			//	 Create the sort link:
 		$sortUrl = $this->listURL('', -1, 'sortField,sortRev,table,firstElementNumber') . '&table=' . $table . '&sortField=' . $field . '&sortRev=' . ($this->sortRev || ($this->sortField != $field) ? 0 : 1);

@@ -270,7 +270,9 @@ class recordList extends t3lib_recordList {
 						? intval($GLOBALS['TCA'][$tableName]['interface']['maxDBListItems'])
 						: $this->itemsLimitPerTable);
 				}
-				if ($this->showLimit)	$this->iLimit = $this->showLimit;
+				if ($this->showLimit) {
+					$this->iLimit = $this->showLimit;
+				}
 
 					// Setting fields to select:
 				if ($this->allFields) {
@@ -360,7 +362,9 @@ class recordList extends t3lib_recordList {
 		$out = '';
 
 			// Checking if extension is loaded:
-		if (!t3lib_extMgm::isLoaded('sys_note')) return '';
+		if (!t3lib_extMgm::isLoaded('sys_note')) {
+			return '';
+		}
 
 			// Create query for selecting the notes:
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_note', 'pid IN (' . $this->id . ') AND (personal=0 OR cruser=' . intval($GLOBALS['BE_USER']->user['uid']) . ')' . t3lib_BEfunc::deleteClause('sys_note') . t3lib_BEfunc::versioningPlaceholderClause('sys_note'));
@@ -478,7 +482,9 @@ class recordList extends t3lib_recordList {
 		if ($this->sortField) {
 			if (in_array($this->sortField, $this->makeFieldList($table, 1))) {
 				$orderBy = 'ORDER BY '.$this->sortField;
-				if ($this->sortRev)	$orderBy.=' DESC';
+				if ($this->sortRev) {
+					$orderBy .= ' DESC';
+				}
 			}
 		}
 

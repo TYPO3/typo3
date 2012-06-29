@@ -176,7 +176,9 @@ class fileList extends t3lib_recordList {
 	 */
 	function linkClipboardHeaderIcon($string, $table, $cmd, $warning = '') {
 		$onClickEvent = 'document.dblistForm.cmd.value=\''.$cmd.'\';document.dblistForm.submit();';
-		if ($warning)	$onClickEvent = 'if (confirm('.$GLOBALS['LANG']->JScharCode($warning).')){'.$onClickEvent.'}';
+		if ($warning) {
+			$onClickEvent = 'if (confirm('.$GLOBALS['LANG']->JScharCode($warning).')){'.$onClickEvent.'}';
+		}
 		return '<a href="#" onclick="'.htmlspecialchars($onClickEvent).'return false;">'.$string.'</a>';
 	}
 

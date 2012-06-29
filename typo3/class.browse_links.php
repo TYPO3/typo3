@@ -252,7 +252,9 @@ class localPageTree extends t3lib_browseTree {
 	 */
 	function printTree($treeArr = '') {
 		$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
-		if (!is_array($treeArr)) $treeArr=$this->tree;
+		if (!is_array($treeArr)) {
+			$treeArr = $this->tree;
+		}
 
 		$out = '';
 		$c = 0;
@@ -1103,19 +1105,21 @@ class browse_links {
 		$this->doc->JScode.= $this->doc->wrapScriptTags($JScode);
 
 			// Debugging:
-		if (FALSE) debug(array(
-			'pointer' => $this->pointer,
-			'act' => $this->act,
-			'mode' => $this->mode,
-			'curUrlInfo' => $this->curUrlInfo,
-			'curUrlArray' => $this->curUrlArray,
-			'P' => $this->P,
-			'bparams' => $this->bparams,
-			'RTEtsConfigParams' => $this->RTEtsConfigParams,
-			'expandPage' => $this->expandPage,
-			'expandFolder' => $this->expandFolder,
-			'PM' => $this->PM,
-		), 'Internal variables of Script Class:');
+		if (FALSE) {
+			debug(array(
+				'pointer' => $this->pointer,
+				'act' => $this->act,
+				'mode' => $this->mode,
+				'curUrlInfo' => $this->curUrlInfo,
+				'curUrlArray' => $this->curUrlArray,
+				'P' => $this->P,
+				'bparams' => $this->bparams,
+				'RTEtsConfigParams' => $this->RTEtsConfigParams,
+				'expandPage' => $this->expandPage,
+				'expandFolder' => $this->expandFolder,
+				'PM' => $this->PM,
+			), 'Internal variables of Script Class:');
+		}
 	}
 
 	/**
@@ -1362,7 +1366,9 @@ class browse_links {
 
 								// URL + onclick event:
 							$onClickEvent = '';
-							if (isset($v[$k2i.'.']['target']))	$onClickEvent.="browse_links_setTarget('".$v[$k2i.'.']['target']."');";
+							if (isset($v[$k2i.'.']['target'])) {
+								$onClickEvent .= "browse_links_setTarget('".$v[$k2i.'.']['target']."');";
+							}
 							$v[$k2i.'.']['url'] = str_replace('###_URL###', $this->siteURL, $v[$k2i.'.']['url']);
 							if (substr($v[$k2i.'.']['url'], 0, 7)=='http://' || substr($v[$k2i.'.']['url'], 0, 7)=='mailto:') {
 								$onClickEvent.="cur_href=unescape('".rawurlencode($v[$k2i.'.']['url'])."');link_current();";

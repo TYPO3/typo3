@@ -409,11 +409,12 @@ class recordHistory {
 					foreach ($tmpFieldList as $key => $value) {
 						$tmp = str_replace(':', '', $GLOBALS['LANG']->sl(t3lib_BEfunc::getItemLabel($entry['tablename'], $value), 1));
 
-						if ($tmp)
+						if ($tmp) {
 							$tmpFieldList[$key] = $tmp;
-						else
-							// remove fields if no label available
+						} else {
+								// remove fields if no label available
 							unset($tmpFieldList[$key]);
+						}
 					}
 					$singleLine[] = htmlspecialchars(implode(',', $tmpFieldList));
 				} else {	// Display diff
