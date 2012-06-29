@@ -394,10 +394,10 @@ class t3lib_TCEforms_inline {
 			} else {
 					// set additional field for processing for saving
 				$fields .= '<input type="hidden" name="' . $this->prependCmdFieldNames . $appendFormFieldNames . '[delete]" value="1" disabled="disabled" />';
-				if(!$isExpanded) {
-					$checked = ($rec['hidden'] == 1) ? ' checked="checked"' : '';
-					$fields .= '<input type="checkbox" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]_0" value="1"'.$checked.' />';
-					$fields .= '<input type="input" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]" value="'.$rec['hidden'].'" />';
+				if (!$isExpanded && !empty($GLOBALS['TCA'][$foreign_table]['ctrl']['enablecolumns']['disabled'])) {
+					$checked = (!empty($rec['hidden']) ? ' checked="checked"' : '');
+					$fields .= '<input type="checkbox" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]_0" value="1"' . $checked . ' />';
+					$fields .= '<input type="input" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]" value="' . $rec['hidden'] . '" />';
 				}
 			}
 				// if this record should be shown collapsed
