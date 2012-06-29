@@ -60,8 +60,9 @@ class tslib_content_Records extends tslib_content_Abstract {
 			$allowedTables = $tables;
 			if (is_array($conf['conf.'])) {
 				foreach ($conf['conf.'] as $k => $v) {
-					if (substr($k, -1) != '.')
+					if (substr($k, -1) != '.') {
 						$allowedTables .= ',' . $k;
+					}
 				}
 			}
 

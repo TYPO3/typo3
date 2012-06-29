@@ -124,7 +124,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				// Get bodytext field content
 			$field = (isset($conf['field']) && trim($conf['field']) ? trim($conf['field']) : 'bodytext');
 			$content = trim($this->cObj->data[$field]);
-			if (!strcmp($content, ''))	return '';
+			if (!strcmp($content, '')) {
+				return '';
+			}
 
 				// get flexform values
 			$caption = trim(htmlspecialchars($this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'acctables_caption')));
@@ -168,7 +170,9 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 						$cells[$a] = substr($cells[$a], 1, -1);
 					}
 
-					if (!strcmp(trim($cells[$a]), ''))	$cells[$a]='&nbsp;';
+					if (!strcmp(trim($cells[$a]), '')) {
+						$cells[$a] = '&nbsp;';
+					}
 					$cellAttribs = ($noStyles?'':($a>0 && ($cols-1)==$a) ? ' class="td-last td-' . $a . '"' : ' class="td-' . $a . '"');
 					if (($headerPos == 'top' && !$k) || ($headerPos == 'left' && !$a)) {
 						$scope = ' scope="' . $headerScope . '"';

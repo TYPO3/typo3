@@ -252,7 +252,9 @@ class tx_cms_webinfo_lang extends t3lib_extobjbase {
 			$editIco = '<a href="#" onclick="'.htmlspecialchars(t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'])).'" title="' . $LANG->getLL('lang_renderl10n_editPageProperties', TRUE) . '">' .
 					t3lib_iconWorks::getSpriteIcon('actions-document-new') .
 				'</a>';
-		} else $editIco = '';
+		} else {
+			$editIco = '';
+		}
 		$tCells[] = '<td class="c-leftLine" colspan="2">'.
 					$LANG->getLL('lang_renderl10n_default', '1').':'.
 					$editIco.

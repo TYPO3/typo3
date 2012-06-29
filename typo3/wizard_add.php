@@ -91,7 +91,9 @@ class SC_wizard_add {
 			// Set [params][pid]
 		if (substr($this->P['params']['pid'], 0, 3) == '###' && substr($this->P['params']['pid'], -3)=='###') {
 			$this->pid = intval($TSconfig['_'.substr($this->P['params']['pid'], 3, -3)]);
-		} else $this->pid = intval($this->P['params']['pid']);
+		} else {
+			$this->pid = intval($this->P['params']['pid']);
+		}
 
 			// Return if new record as parent (not possibly/allowed)
 		if (!strcmp($this->pid, '')) {

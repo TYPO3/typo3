@@ -111,8 +111,9 @@ class tx_aboutmodules_Functions {
 			// all items have to be expanded when expandAll is set
 			if ($config['expandAll'] == 1) {
 				foreach ($config as $key => $value) {
-					if ($key != 'expandAll')
+					if ($key != 'expandAll') {
 						$config[$key] = 0;
+					}
 				}
 			}
 		}
@@ -168,7 +169,9 @@ class tx_aboutmodules_Functions {
 
 			// Creating the various links:
 			$label = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
-			if ($link && $prefix) $link = $prefix . rawurlencode($link);
+			if ($link && $prefix) {
+				$link = $prefix . rawurlencode($link);
+			}
 			if ($link && !$dontLink) {
 				$label = '<a href="#" onclick="top.goToModule(\'' . $moduleName . '\');' . $onBlur . 'return false;">' . $label . '</a>';
 
@@ -259,7 +262,9 @@ class tx_aboutmodules_Functions {
 					$label_descr = ' title="' . htmlspecialchars($GLOBALS['LANG']->moduleLabels['labels'][$subKey . 'label']) . '"';
 					$flabel = htmlspecialchars($label);
 					$origLink = $link;
-					if ($link && $prefix) $link = $prefix . rawurlencode($link);
+					if ($link && $prefix) {
+						$link = $prefix . rawurlencode($link);
+					}
 
 					// Setting additional JavaScript if frameset script:
 					$addJS = '';
@@ -610,7 +615,9 @@ class tx_aboutmodules_Functions {
 	function wrapLinkWithAB($link) {
 		if (!strstr($link, '?')) {
 			return $link . '?';
-		} else return $link;
+		} else {
+			return $link;
+		}
 	}
 
 	/**

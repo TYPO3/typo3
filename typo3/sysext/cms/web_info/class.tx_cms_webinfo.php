@@ -99,8 +99,12 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 		if ($this->pObj->MOD_SETTINGS['function']=='tx_cms_webinfo_hits') {
 			$h_func.= t3lib_BEfunc::getFuncMenu($this->pObj->id, 'SET[stat_type]', $this->pObj->MOD_SETTINGS['stat_type'], $this->pObj->MOD_MENU['stat_type'], 'index.php');
 
-			if ($this->pObj->MOD_SETTINGS['stat_type']==1)	$dblist->stat_select_field='rl0';
-			if ($this->pObj->MOD_SETTINGS['stat_type']==2)	$dblist->stat_select_field='rl1';
+			if ($this->pObj->MOD_SETTINGS['stat_type'] == 1) {
+				$dblist->stat_select_field = 'rl0';
+			}
+			if ($this->pObj->MOD_SETTINGS['stat_type'] == 2) {
+				$dblist->stat_select_field = 'rl1';
+			}
 
 				// Timespan
 			for ($a = 0;$a < 30; $a++) {

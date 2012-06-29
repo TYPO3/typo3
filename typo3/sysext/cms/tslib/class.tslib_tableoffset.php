@@ -112,10 +112,13 @@ class tslib_tableOffset {
 				// Bottom row:
 			if ($valPairs[3]) {
 				$rows[3] .= '<tr>';
-				if ($valPairs[0])
+				if ($valPairs[0]) {
 					$rows[3] .= '<td></td>';
-				if ($valPairs[2])
+				}
+				if ($valPairs[2]) {
 					$rows[3] .= '<td>' . $widthImg . '</td>';
+				}
+
 				$rows[3] .= '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' .
 					($valPairs[2] ? $valPairs[2] : ($valPairs[4] ? $valPairs[4] : 1)) . '" height="' .
 					$valPairs[3] . '" alt="" title="" /></td>';

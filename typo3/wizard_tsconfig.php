@@ -298,8 +298,12 @@ class SC_wizard_tsconfig {
 					t3lib_iconWorks::getSpriteIcon('actions-view-go-back') .
 					htmlspecialchars($obj_string).
 					'</a><br />';
-			if ($rec['title'])	$out .= '<strong>'.htmlspecialchars($rec['title']).': </strong>';
-			if ($rec['description'])	$out .= nl2br(htmlspecialchars(trim($rec['description']))).'<br />';
+			if ($rec['title']) {
+				$out .= '<strong>'.htmlspecialchars($rec['title']).': </strong>';
+			}
+			if ($rec['description']) {
+				$out .= nl2br(htmlspecialchars(trim($rec['description']))).'<br />';
+			}
 
 				// Printing the content:
 			$out .= '<br />'.$this->printTable($table, $obj_string, $objTree[$mode.'.']);
@@ -394,7 +398,9 @@ class SC_wizard_tsconfig {
 		reset($strArr);
 		if (count($strArr) > 1) {
 			array_shift($strArr);
-			if (!isset($objTree[$key.'.']))	$objTree[$key.'.'] = array();
+			if (!isset($objTree[$key.'.'])) {
+				$objTree[$key.'.'] = array();
+			}
 			$this->setObj($objTree[$key.'.'], $strArr, $params);
 		} else {
 			$objTree[$key]=$params;

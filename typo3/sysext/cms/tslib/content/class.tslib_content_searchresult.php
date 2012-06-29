@@ -181,8 +181,10 @@ class tslib_content_SearchResult extends tslib_content_Abstract {
 					$next = '<a href="' . htmlspecialchars($urlParams .
 						'&spointer=' . ($spointer + $theRange)) . '"' .
 						$targetPart . $GLOBALS['TSFE']->ATagParams . '>' . $next . '</a>';
-				} else
+				} else {
 					$next = '';
+				}
+
 				$result = str_replace('###NEXT###', $next, $result);
 
 				if ($rangeLow > 1) {
@@ -190,8 +192,10 @@ class tslib_content_SearchResult extends tslib_content_Abstract {
 					$prev = '<a href="' . htmlspecialchars($urlParams .
 						'&spointer=' . ($spointer - $theRange)) . '"' .
 						$targetPart . $GLOBALS['TSFE']->ATagParams . '>' . $prev . '</a>';
-				} else
+				} else {
 					$prev = '';
+				}
+
 				$result = str_replace('###PREV###', $prev, $result);
 
 					// Searching result

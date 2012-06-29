@@ -324,7 +324,9 @@ class tslib_menu {
 							array_merge($this->conf['special.'], array('_altSortField'=>$altSortField)),
 							''
 						);
-						if (!is_array($temp))	$temp=array();
+						if (!is_array($temp)) {
+							$temp = array();
+						}
 					break;
 					case 'language':
 						$temp = array();
@@ -338,7 +340,9 @@ class tslib_menu {
 								// Find overlay record:
 							if ($sUid) {
 								$lRecs = $this->sys_page->getPageOverlay($GLOBALS['TSFE']->page['uid'], $sUid);
-							} else $lRecs=array();
+							} else {
+								$lRecs = array();
+							}
 								// Checking if the "disabled" state should be set.
 							if (
 										(t3lib_div::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && $sUid && !count($lRecs)) // Blocking for all translations?
@@ -413,7 +417,9 @@ class tslib_menu {
 
 										// Add external MP params, then the row:
 									if (is_array($row)) {
-										if ($MP)	$row['_MP_PARAM'] = $MP.($row['_MP_PARAM'] ? ','.$row['_MP_PARAM'] : '');
+										if ($MP) {
+											$row['_MP_PARAM'] = $MP.($row['_MP_PARAM'] ? ','.$row['_MP_PARAM'] : '');
+										}
 										$temp[$row['uid']] = $this->sys_page->getPageOverlay($row);
 									}
 								}
@@ -446,7 +452,9 @@ class tslib_menu {
 										// Overlays should already have their full MPvars calculated
 									if ($mount_info['overlay']) {
 										$MP = $this->tmpl->getFromMPmap($mount_info['mount_pid']);
-										if ($MP) unset($row['_MP_PARAM']);
+										if ($MP) {
+											unset($row['_MP_PARAM']);
+										}
 									}
 								} else {
 										// If the mount point could not be fetched with respect to
@@ -464,7 +472,9 @@ class tslib_menu {
 
 								// Add external MP params, then the row:
 							if (is_array($row)) {
-								if ($MP)	$row['_MP_PARAM'] = $MP.($row['_MP_PARAM'] ? ','.$row['_MP_PARAM'] : '');
+								if ($MP) {
+									$row['_MP_PARAM'] = $MP.($row['_MP_PARAM'] ? ','.$row['_MP_PARAM'] : '');
+								}
 								$temp[] = $this->sys_page->getPageOverlay($row);
 							}
 						}
@@ -655,7 +665,9 @@ class tslib_menu {
 										$temp[$temp_key]['target'] = $this->conf['special.']['targets.'][$k_rl];
 										$temp[$temp_key]['_MP_PARAM'] = implode(',', $rl_MParray);
 									}
-								} else unset($temp[$temp_key]);
+								} else {
+									unset($temp[$temp_key]);
+								}
 							}
 								// For normal mount points, set the variable for next level.
 							if ($v_rl['_MP_PARAM'] && !$v_rl['_MOUNT_OL']) {
@@ -911,7 +923,9 @@ class tslib_menu {
 			return FALSE;
 		}
 
-		if ($data['_SAFE'])	return TRUE;
+		if ($data['_SAFE']) {
+			return TRUE;
+		}
 
 		$uid = $data['uid'];
 			// If the spacer-function is not enabled, spacers will not enter the $menuArr
@@ -1300,7 +1314,9 @@ class tslib_menu {
 			// Overriding URL / Target if set to do so:
 		if ($this->menuArr[$key]['_OVERRIDE_HREF']) {
 			$LD['totalURL'] = $this->menuArr[$key]['_OVERRIDE_HREF'];
-			if ($this->menuArr[$key]['_OVERRIDE_TARGET'])	$LD['target'] = $this->menuArr[$key]['_OVERRIDE_TARGET'];
+			if ($this->menuArr[$key]['_OVERRIDE_TARGET']) {
+				$LD['target'] = $this->menuArr[$key]['_OVERRIDE_TARGET'];
+			}
 		}
 
 			// OnClick open in windows.
@@ -1913,7 +1929,9 @@ class tslib_tmenu extends tslib_menu {
 					}
 					$this->I['linkHREF']['onMouseover']=$over;
 					$this->I['linkHREF']['onMouseout']=$out;
-					if ($over || $out)	$GLOBALS['TSFE']->setJS('mouseOver');
+					if ($over || $out) {
+						$GLOBALS['TSFE']->setJS('mouseOver');
+					}
 
 						// Change background color:
 					if ($this->I['val']['RO_chBgColor']) {

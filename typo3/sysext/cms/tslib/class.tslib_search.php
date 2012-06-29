@@ -140,7 +140,9 @@ class tslib_search {
 				$subparts = explode('-', $parts[1]);
 				foreach ($subparts as $piece) {
 					$piece=trim($piece);
-					if ($piece)		$out[]=$parts[0].'.'.$piece;
+					if ($piece) {
+						$out[] = $parts[0] . '.' . $piece;
+					}
 				}
 			}
 		}

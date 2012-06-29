@@ -231,8 +231,9 @@ class tslib_content_Form extends tslib_content_Abstract {
 					if (strcmp('', $addParams)) {
 						$addParams = ' ' . $addParams;
 					}
-				} else
+				} else {
 					$addParams = '';
+				}
 
 				$dontMd5FieldNames = isset($conf['dontMd5FieldNames.'])
 					? $this->cObj->stdWrap($conf['dontMd5FieldNames'], $conf['dontMd5FieldNames.'])
@@ -387,8 +388,10 @@ class tslib_content_Form extends tslib_content_Abstract {
 							if (substr($valueParts[$a], 0, 1) == '*') {
 								$sel = 'selected';
 								$valueParts[$a] = substr($valueParts[$a], 1);
-							} else
+							} else {
 								$sel = '';
+							}
+
 								// Get value/label
 							$subParts = explode('=', $valueParts[$a]);
 								// Sets the value
@@ -447,8 +450,10 @@ class tslib_content_Form extends tslib_content_Abstract {
 							if (substr($valueParts[$a], 0, 1) == '*') {
 								$sel = 'checked';
 								$valueParts[$a] = substr($valueParts[$a], 1);
-							} else
+							} else {
 								$sel = '';
+							}
+
 								// Get value/label
 							$subParts = explode('=', $valueParts[$a]);
 								// Sets the value
