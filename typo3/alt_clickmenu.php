@@ -125,9 +125,15 @@ class clickMenu {
 		$this->iParts[3] = t3lib_div::_GP('enDisItems');
 
 			// Setting flags:
-		if ($this->iParts[2])	$this->listFrame=1;
-		if ($GLOBALS['BE_USER']->uc['condensedMode'] || $this->iParts[2]==2) $this->alwaysContentFrame=1;
-		if (strcmp($this->iParts[1], ''))	$this->isDBmenu=1;
+		if ($this->iParts[2]) {
+			$this->listFrame = 1;
+		}
+		if ($GLOBALS['BE_USER']->uc['condensedMode'] || $this->iParts[2] == 2) {
+			$this->alwaysContentFrame = 1;
+		}
+		if (strcmp($this->iParts[1], '')) {
+			$this->isDBmenu = 1;
+		}
 
 		$TSkey = ($this->isDBmenu? 'page' : 'folder' ) . ($this->listFrame ? 'List' : 'Tree');
 		$this->disabledItems = t3lib_div::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.'.$TSkey.'.disableItems'), 1);
@@ -210,17 +216,21 @@ class clickMenu {
 
 				// View
 			if (!in_array('view', $this->disabledItems)) {
-				if ($table == 'pages')	$menuItems['view'] = $this->DB_view($uid);
+				if ($table == 'pages') {
+					$menuItems['view'] = $this->DB_view($uid);
+				}
 				if ($table == $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable']) {
 					$ws_rec = t3lib_BEfunc::getRecordWSOL($table, $this->rec['uid']);
-					$menuItems['view']=$this->DB_view($ws_rec['pid']);
+					$menuItems['view'] = $this->DB_view($ws_rec['pid']);
 				}
 			}
 
 				// Edit:
-			if(!$root && ($GLOBALS['BE_USER']->isPSet($lCP, $table, 'edit') || $GLOBALS['BE_USER']->isPSet($lCP, $table, 'editcontent'))) {
-				if (!in_array('edit', $this->disabledItems))		$menuItems['edit']=$this->DB_edit($table, $uid);
-				$this->editOK=1;
+			if (!$root && ($GLOBALS['BE_USER']->isPSet($lCP, $table, 'edit') || $GLOBALS['BE_USER']->isPSet($lCP, $table, 'editcontent'))) {
+				if (!in_array('edit', $this->disabledItems)) {
+					$menuItems['edit']=$this->DB_edit($table, $uid);
+				}
+				$this->editOK =1 ;
 			}
 
 				// New:
@@ -229,20 +239,26 @@ class clickMenu {
 			}
 
 				// Info:
-			if(!in_array('info', $this->disabledItems) && !$root)	$menuItems['info']=$this->DB_info($table, $uid);
+			if (!in_array('info', $this->disabledItems) && !$root) {
+				$menuItems['info'] = $this->DB_info($table, $uid);
+			}
 
-			$menuItems['spacer1']='spacer';
+			$menuItems['spacer1'] = 'spacer';
 
 				// Copy:
-			if (!in_array('copy', $this->disabledItems) && !$root && !$DBmount && !$l10nOverlay)	$menuItems['copy'] = $this->DB_copycut($table, $uid, 'copy');
+			if (!in_array('copy', $this->disabledItems) && !$root && !$DBmount && !$l10nOverlay) {
+				$menuItems['copy'] = $this->DB_copycut($table, $uid, 'copy');
+			}
 				// Cut:
-			if (!in_array('cut', $this->disabledItems) && !$root && !$DBmount && !$l10nOverlay)	$menuItems['cut'] = $this->DB_copycut($table, $uid, 'cut');
+			if (!in_array('cut', $this->disabledItems) && !$root && !$DBmount && !$l10nOverlay) {
+				$menuItems['cut'] = $this->DB_copycut($table, $uid, 'cut');
+			}
 
 				// Paste:
 			$elFromAllTables = count($this->clipObj->elFromTable(''));
 			if (!in_array('paste', $this->disabledItems) && $elFromAllTables) {
 				$selItem = $this->clipObj->getSelectedRecord();
-				$elInfo=array(
+				$elInfo = array(
 					t3lib_div::fixed_lgd_cs($selItem['_RECORD_TITLE'],
 						$GLOBALS['BE_USER']->uc['titleLen']),
 						($root
@@ -252,22 +268,26 @@ class clickMenu {
 						$this->clipObj->currentMode()
 					);
 				if ($table == 'pages' && ($lCP & 8)) {
-					if ($elFromAllTables)	$menuItems['pasteinto']=$this->DB_paste('', $uid, 'into', $elInfo);
+					if ($elFromAllTables) {
+						$menuItems['pasteinto'] = $this->DB_paste('', $uid, 'into', $elInfo);
+					}
 				}
 
 				$elFromTable = count($this->clipObj->elFromTable($table));
-				if (!$root && !$DBmount && $elFromTable && $GLOBALS['TCA'][$table]['ctrl']['sortby'])	$menuItems['pasteafter']=$this->DB_paste($table, -$uid, 'after', $elInfo);
+				if (!$root && !$DBmount && $elFromTable && $GLOBALS['TCA'][$table]['ctrl']['sortby']) {
+					$menuItems['pasteafter'] = $this->DB_paste($table, -$uid, 'after', $elInfo);
+				}
 			}
 
 				// Delete:
 			$elInfo=array(t3lib_div::fixed_lgd_cs(t3lib_BEfunc::getRecordTitle($table, $this->rec), $GLOBALS['BE_USER']->uc['titleLen']));
 			if (!in_array('delete', $this->disabledItems) && !$root && !$DBmount && $GLOBALS['BE_USER']->isPSet($lCP, $table, 'delete')) {
-				$menuItems['spacer2']='spacer';
-				$menuItems['delete']=$this->DB_delete($table, $uid, $elInfo);
+				$menuItems['spacer2'] = 'spacer';
+				$menuItems['delete'] = $this->DB_delete($table, $uid, $elInfo);
 			}
 
 			if (!in_array('history', $this->disabledItems)) {
-				$menuItems['history']=$this->DB_history($table, $uid, $elInfo);
+				$menuItems['history'] = $this->DB_history($table, $uid, $elInfo);
 			}
 		}
 
@@ -303,7 +323,7 @@ class clickMenu {
 		$menuItems = array();
 		$root = 0;
 			// Rootlevel
-		if ($table == 'pages' && !strcmp($uid, '0'))	{
+		if ($table == 'pages' && !strcmp($uid, '0')) {
 			$root = 1;
 		}
 
@@ -315,14 +335,16 @@ class clickMenu {
 			);
 				// Edit:
 			if (!$root && ($GLOBALS['BE_USER']->isPSet($lCP, $table, 'edit') || $GLOBALS['BE_USER']->isPSet($lCP, $table, 'editcontent'))) {
-				$this->editOK=1;
+				$this->editOK = 1;
 			}
 
 			$menuItems = $this->processingByExtClassArray($menuItems, $table, $uid);
 		}
 
 			// Return the printed elements:
-		if (!is_array($menuItems))	$menuItems = array();
+		if (!is_array($menuItems)) {
+			$menuItems = array();
+		}
 		return $this->printItems($menuItems,
 			$root?
 			t3lib_iconWorks::getSpriteIcon('apps-pagetree-root') . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']):
@@ -1205,7 +1227,9 @@ class clickMenu {
 			// Clipboard must not be submitted - then it's probably a copy/cut situation.
 		if ($this->isCMlayers()) {
 			$frameName = '.'.($this->listFrame ? 'list_frame' : 'nav_frame');
-			if ($this->alwaysContentFrame)	$frameName='';
+			if ($this->alwaysContentFrame) {
+				$frameName = '';
+			}
 
 				// Create the table displayed in the clickmenu layer:
 			$CMtable = '
@@ -1261,8 +1285,12 @@ class clickMenu {
 				// IF the topbar is the ONLY means of the click menu, then items normally disabled from
 				// the top menu will appear anyways IF they are disabled with a "1" (2+ will still disallow
 				// them in the topbar)
-			if ($i[4]==1 && !$GLOBALS['SOBE']->doc->isCMlayers())	$i[4] = 0;
-			if (is_array($i) && !$i[4])	$out[]=$i[0];
+			if ($i[4] == 1 && !$GLOBALS['SOBE']->doc->isCMlayers()) {
+				$i[4] = 0;
+			}
+			if (is_array($i) && !$i[4]) {
+				$out[] = $i[0];
+			}
 		}
 		return $out;
 	}
@@ -1287,7 +1315,9 @@ class clickMenu {
 				$onClick = preg_replace('/return[[:space:]]+hideCM\(\)[[:space:]]*;/i', '', $onClick);
 				$onClick = preg_replace('/return[[:space:]]+false[[:space:]]*;/i', '', $onClick);
 				$onClick = preg_replace('/hideCM\(\);/i', '', $onClick);
-				if (!$i[5])	$onClick.='Clickmenu.hideAll();';
+				if (!$i[5]) {
+					$onClick.='Clickmenu.hideAll();';
+				}
 
 				$CSM = ' oncontextmenu="'.htmlspecialchars($onClick).';return false;"';
 
@@ -1337,10 +1367,14 @@ class clickMenu {
 											$found = TRUE;
 											break;
 										}
-										if (!next($menuItems)) break;
+										if (!next($menuItems)) {
+											break;
+										}
 										$p++;
 									}
-									if (!$found) break;
+									if (!$found) {
+										break;
+									}
 
 									if ($place == 'before') {
 										$pointer--;
@@ -1364,7 +1398,9 @@ class clickMenu {
 							break;
 						}
 					}
-					if ($found) break;
+					if ($found) {
+						break;
+					}
 				}
 			}
 			$pointer = max(0, $pointer);
@@ -1390,7 +1426,6 @@ class clickMenu {
 		if ($this->ajax) {
 			$onClick = str_replace('top.loadTopMenu', 'showClickmenu_raw', $onClick);
 		}
-
 
 		return array(
 			t3lib_iconWorks::getSpriteIcon('empty-empty', array(
@@ -1485,7 +1520,6 @@ class clickMenu {
 		if (is_string($value) && $value == 'spacer') {
 			unset($menuItems[$key]);
 		}
-
 
 			// Remove last:
 		end($menuItems);
@@ -1592,7 +1626,9 @@ class SC_alt_clickmenu {
 			// Traversing that array and setting files for inclusion:
 		if (is_array($this->extClassArray)) {
 			foreach ($this->extClassArray as $extClassConf) {
-				if ($extClassConf['path'])	$this->include_once[]=$extClassConf['path'];
+				if ($extClassConf['path']) {
+					$this->include_once[]=$extClassConf['path'];
+				}
 			}
 		}
 
@@ -1718,7 +1754,9 @@ $SOBE = t3lib_div::makeInstance('SC_alt_clickmenu');
 $SOBE->init();
 
 	// Include files?
-foreach ($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
+foreach ($SOBE->include_once as $INC_FILE) {
+	include_once($INC_FILE);
+}
 
 $SOBE->main();
 $SOBE->printContent();

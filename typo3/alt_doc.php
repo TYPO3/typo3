@@ -699,7 +699,9 @@ class SC_alt_doc {
 										$hasAccess = $GLOBALS['BE_USER']->recordEditAccessInternals($table, $calcPRec);
 										$deniedAccessReason = $GLOBALS['BE_USER']->errorMsg;
 									}
-								} else $hasAccess = 0;
+								} else {
+									$hasAccess = 0;
+								}
 							}
 
 							if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'])) {
@@ -1308,9 +1310,18 @@ class SC_alt_doc {
 						$versionRec = t3lib_BEfunc::getWorkspaceVersionOfRecord($GLOBALS['BE_USER']->workspace, $table, $reqRecord['uid'], 'uid,pid,t3ver_oid');
 						return is_array($versionRec) ? $versionRec : $reqRecord;
 					}
-				} else return FALSE;		// This means that editing cannot occur on this record because it was not supporting versioning which is required inside an offline workspace.
-			} else return $reqRecord; 	// In ONLINE workspace, just return the originally requested record:
-		} else return FALSE;	// Return FALSE because the table/uid was not found anyway.
+				} else {
+						// This means that editing cannot occur on this record because it was not supporting versioning which is required inside an offline workspace.
+					return FALSE;
+				}
+			} else {
+					// In ONLINE workspace, just return the originally requested record:
+				return $reqRecord;
+			}
+		} else {
+				// Return FALSE because the table/uid was not found anyway.
+			return FALSE;
+		}
 	}
 
 	/**
@@ -1424,7 +1435,9 @@ class SC_alt_doc {
 	 * @return void
 	 */
 	function setDocument($currentDocFromHandlerMD5 = '', $retUrl = 'alt_doc_nodoc.php') {
-		if (!t3lib_extMgm::isLoaded('cms') && !strcmp($retUrl, 'alt_doc_nodoc.php')) return;
+		if (!t3lib_extMgm::isLoaded('cms') && !strcmp($retUrl, 'alt_doc_nodoc.php')) {
+			return;
+		}
 
 		if (!$this->modTSconfig['properties']['disableDocSelector'] && is_array($this->docHandler) && count($this->docHandler)) {
 			if (isset($this->docHandler[$currentDocFromHandlerMD5])) {

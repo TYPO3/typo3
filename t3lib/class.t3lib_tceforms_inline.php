@@ -2269,7 +2269,9 @@ class t3lib_TCEforms_inline {
 		$flat = FALSE;
 		if (is_array($possibleRecords)) {
 			$flat = array();
-			foreach ($possibleRecords as $record) $flat[$record[1]] = $record[0];
+			foreach ($possibleRecords as $record) {
+				$flat[$record[1]] = $record[0];
+			}
 		}
 		return $flat;
 	}

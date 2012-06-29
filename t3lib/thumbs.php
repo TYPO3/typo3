@@ -192,7 +192,9 @@ class SC_t3lib_thumbs {
 
 				// ... so we passed the extension test meaning that we are going to make a thumbnail here:
 				// default
-			if (!$this->size) $this->size = $this->sizeDefault;
+			if (!$this->size) {
+				$this->size = $this->sizeDefault;
+			}
 
 				// I added extra check, so that the size input option could not be fooled to pass other values.
 				// That means the value is exploded, evaluated to an integer and the imploded to [value]x[value].
@@ -242,7 +244,9 @@ class SC_t3lib_thumbs {
 				} else {
 					$this->errorGif('Read problem!', '', $this->output);
 				}
-			} else exit;
+			} else {
+				exit;
+			}
 		} else {
 			$this->errorGif('No valid', 'inputfile!', basename($this->image));
 		}
