@@ -205,7 +205,9 @@ class SC_alt_shortcut {
 			if (isset($_POST['_deletedok_x'])) {
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_be_shortcuts', 'uid='.intval($this->whichItem).$addUSERWhere);
 					// Just to have the checkbox set...
-				if (!$this->editSC)	$this->editSC = -1;
+				if (!$this->editSC) {
+					$this->editSC = -1;
+				}
 			}
 		}
 	}
@@ -312,7 +314,9 @@ class SC_alt_shortcut {
 				$page_id = $this->getLinkedPageId($row['url']);
 				if (t3lib_utility_Math::canBeInterpretedAsInteger($page_id)) {
 						// Check for webmount access
-					if (!$GLOBALS['BE_USER']->isInWebMount($page_id)) continue;
+					if (!$GLOBALS['BE_USER']->isInWebMount($page_id)) {
+						continue;
+					}
 
 						// Check for record access
 					$pageRow = t3lib_BEfunc::getRecord('pages', $page_id);
@@ -334,7 +338,9 @@ class SC_alt_shortcut {
 					} else {
 						$label = $GLOBALS['LANG']->getLL('shortcut_group_'.abs($sc_group), 1);
 							// Fallback label
-						if (!$label) $label = $GLOBALS['LANG']->getLL('shortcut_group', 1).' '.abs($sc_group);
+						if (!$label) {
+							$label = $GLOBALS['LANG']->getLL('shortcut_group', 1).' '.abs($sc_group);
+						}
 					}
 
 					if ($sc_group >= 0) {
@@ -385,7 +391,9 @@ class SC_alt_shortcut {
 					(is_array($this->theEditRec) ? '&nbsp;<strong>' . $GLOBALS['LANG']->getLL('bookmark_loadEdit', 1) . ' \'' . t3lib_BEfunc::getRecordTitle('pages', $this->theEditRec, TRUE) . '\'</strong> (' . htmlspecialchars($this->editPath) . ')' : '') .
 					($this->searchFor?'&nbsp;'.$GLOBALS['LANG']->getLL('bookmark_searchFor', 1).' <strong>\''.htmlspecialchars($this->searchFor).'\'</strong>':'').
 					'</td>';
-		} else $editIdCode = '';
+		} else {
+			$editIdCode = '';
+		}
 
 			// Adding CSH:
 		$editIdCode .= '<td>&nbsp;'.t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'bookmarks', $GLOBALS['BACK_PATH'], '', TRUE).'</td>';
@@ -458,7 +466,7 @@ class SC_alt_shortcut {
 			$this->editLoaded = 1;
 
 			$opt = array();
-			$opt[]='<option value="0"></option>';
+			$opt[] = '<option value="0"></option>';
 
 			foreach ($this->groupLabels as $k => $v) {
 				if ($v && strcmp('1', $v)) {
@@ -466,7 +474,9 @@ class SC_alt_shortcut {
 				} else {
 					$label = $GLOBALS['LANG']->getLL('bookmark_group_'.$k, 1);
 						// Fallback label
-					if (!$label) $label = $GLOBALS['LANG']->getLL('bookmark_group', 1).' '.$k;
+					if (!$label) {
+						$label = $GLOBALS['LANG']->getLL('bookmark_group', 1).' '.$k;
+					}
 				}
 				$opt[] = '<option value="'.$k.'"'.(!strcmp($this->editSC_rec['sc_group'], $k)?' selected="selected"':'').'>'.$label.'</option>';
 			}
@@ -478,7 +488,9 @@ class SC_alt_shortcut {
 					} else {
 						$label = $GLOBALS['LANG']->getLL('bookmark_group_'.$k, 1);
 							// Fallback label
-						if (!$label) $label = $GLOBALS['LANG']->getLL('bookmark_group', 1).' '.$k;
+						if (!$label) {
+							$label = $GLOBALS['LANG']->getLL('bookmark_group', 1).' '.$k;
+						}
 					}
 						// Add a prefix for global groups
 					$label = $GLOBALS['LANG']->getLL('bookmark_global', 1).': '.$label;
@@ -489,7 +501,7 @@ class SC_alt_shortcut {
 			}
 
 				// border="0" hspace="2" width="21" height="16" - not XHTML compliant in <input type="image" ...>
-			$manageForm='
+			$manageForm = '
 
 				<!--
 					Shortcut Editing Form:
@@ -508,7 +520,9 @@ class SC_alt_shortcut {
 				<input type="hidden" name="whichItem" value="'.$this->editSC_rec['uid'].'" />
 
 				';
-		} else $manageForm = '';
+		} else {
+			$manageForm = '';
+		}
 
 		if (!$this->editLoaded && count($this->selOpt)>1) {
 			$this->lines[] = '<td>&nbsp;</td>';
@@ -537,7 +551,9 @@ class SC_alt_shortcut {
 	 * @return void
 	 */
 	function editPageIdFunc() {
-		if (!t3lib_extMgm::isLoaded('cms'))	return;
+		if (!t3lib_extMgm::isLoaded('cms')) {
+			return;
+		}
 
 			// EDIT page:
 		$this->editPage = trim($GLOBALS['LANG']->csConvObj->conv_case($GLOBALS['LANG']->charSet, $this->editPage, 'toLower'));
@@ -764,7 +780,9 @@ class SC_alt_shortcut {
 				$label .= '>'.$GLOBALS['LANG']->moduleLabels['tabs'][$modName.'_tab'];
 			}
 		}
-		if ($M_modName)	$label .= ' ('.$M_modName.')';
+		if ($M_modName) {
+			$label .= ' ('.$M_modName.')';
+		}
 		$label .= ': '.$inlabel;
 		return $label;
 	}

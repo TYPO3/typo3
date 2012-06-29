@@ -336,10 +336,11 @@ class TYPO3backend {
 			if ($menu) {
 				$additionalAttributes = $toolbarItem->getAdditionalAttributes();
 				if (sizeof($this->toolbarItems) > 1 && $i == sizeof($this->toolbarItems) -1) {
-					if (strpos($additionalAttributes, 'class="'))
+					if (strpos($additionalAttributes, 'class="')) {
 						str_replace('class="', 'class="separator ', $additionalAttributes);
-					else
+					} else {
 						$additionalAttributes .= 'class="separator"';
+					}
 				}
 				$toolbar .= '<li' . $additionalAttributes . '>' .$menu. '</li>';
 			}

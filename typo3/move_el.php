@@ -142,7 +142,9 @@ class ext_posMap_tt_content extends t3lib_positionMap {
 	 * @return string Wrapped title string.
 	 */
 	function wrapRecordTitle($str, $row) {
-		if ($GLOBALS['SOBE']->moveUid==$row['uid'])	$str = '<strong>'.$str.'</strong>';
+		if ($GLOBALS['SOBE']->moveUid==$row['uid']) {
+			$str = '<strong>'.$str.'</strong>';
+		}
 		return parent::wrapRecordTitle($str, $row);
 	}
 }
@@ -279,7 +281,9 @@ class SC_move_el {
 				$tt_content_rec = t3lib_BEfunc::getRecord('tt_content', $this->moveUid);
 
 					// ?
-				if (!$this->input_moveUid) $this->page_id = $tt_content_rec['pid'];
+				if (!$this->input_moveUid) {
+					$this->page_id = $tt_content_rec['pid'];
+				}
 
 					// Checking if the parent page is readable:
 				$pageinfo = t3lib_BEfunc::readPageAccess($this->page_id, $this->perms_clause);
