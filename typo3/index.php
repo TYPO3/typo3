@@ -280,13 +280,21 @@ class SC_index {
 		);
 		$browserWarning = $browserWarning->render();
 
+		$additionalCssClasses = array();
+		if ($this->isLoginInProgress()) {
+			$additionalCssClasses[] = 'error';
+		}
+		if ($this->loginRefresh) {
+			$additionalCssClasses[] = 'refresh';
+		}
+
 		$markers = array(
 			'LOGO'             => $logo,
 			'LOGINBOX_IMAGE'   => $this->makeLoginBoxImage(),
 			'FORM'             => $content,
 			'NEWS'             => $this->makeLoginNews(),
 			'COPYRIGHT'        => $this->makeCopyrightNotice(),
-			'CSS_ERRORCLASS'   => ($this->isLoginInProgress() ? ' class="error"' : ''),
+			'CSS_CLASSES'      => !empty($additionalCssClasses) ? 'class="' . implode(' ', $additionalCssClasses) . '"' : '',
 			'CSS_OPENIDCLASS'  => 't3-login-openid-' . (t3lib_extMgm::isLoaded('openid') ? 'enabled' : 'disabled'),
 
 				// The labels will be replaced later on, thus the other parts above
