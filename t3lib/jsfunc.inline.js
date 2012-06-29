@@ -405,20 +405,35 @@ var inline = {
 		}
 	},
 	domAddRecordDetails: function(objectId, objectPrefix, expandSingle, htmlData) {
+		var hiddenValue, formObj, valueObj;
 		var objectDiv = $(objectId + '_fields');
 		if (!objectDiv || objectDiv.innerHTML.substr(0,16) != '<!--notloaded-->')
 			return;
 
 		var elName = this.parseObjectId('full', objectId, 2, 0, true);
 
-		var formObj = document.getElementsByName(elName+'[hidden]_0')[0];
-		var tempHiddenValue = formObj.checked;
-		formObj.remove();
-		document.getElementsByName(elName+'[hidden]')[0].remove();
+		formObj = document.getElementsByName(elName + '[hidden]_0');
+		valueObj = document.getElementsByName(elName + '[hidden]');
 
+			// It might be the case that a child record
+			// cannot be hidden at all (no hidden field)
+		if (formObj.length && valueObj.length) {
+			hiddenValue = formObj[0].checked;
+			formObj[0].remove();
+			valueObj[0].remove();
+		}
+
+			// Update DOM
 		objectDiv.update(htmlData);
-		document.getElementsByName(elName+'[hidden]')[0].value = tempHiddenValue ? 1 : 0;
-		document.getElementsByName(elName+'[hidden]_0')[0].checked = tempHiddenValue;
+
+		formObj = document.getElementsByName(elName + '[hidden]_0');
+		valueObj = document.getElementsByName(elName + '[hidden]');
+
+			// Set the hidden value again
+		if (formObj.length && valueObj.length) {
+			valueObj[0].value = hiddenValue ? 1 : 0;
+			formObj[0].checked = hiddenValue;
+		}
 
 			// remove loading-indicator
 		if ($(objectId + '_icon')) {
@@ -716,22 +731,26 @@ var inline = {
 	},
 
 	enableDisableRecord: function(objectId) {
-		var elName = this.parseObjectId('full', objectId, 2, 0, true);
-		var currentUid = this.parseObjectId('none', objectId, 1);
-		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
-		var formObj = document.getElementsByName(elName+'[hidden]_0')[0];
+		var elName = this.parseObjectId('full', objectId, 2, 0, true) + '[hidden]';
+		var formObj = document.getElementsByName(elName + '_0');
+		var valueObj = document.getElementsByName(elName);
+		var icon = $(objectId + '_disabled');
 
-		formObj.click();
+			// It might be the case that there's no hidden field
+		if (formObj.length && valueObj.length) {
+			formObj[0].click();
+			valueObj[0].value = formObj[0].checked ? 1 : 0;
+			TBE_EDITOR.fieldChanged_fName(elName, elName);
+		}
 
-		document.getElementsByName(elName+'[hidden]')[0].value = formObj.checked?1:0;
-		TBE_EDITOR.fieldChanged(objectPrefix,'1','hidden',elName+'[hidden]');
-
-		if($(objectId+'_disabled').hasClassName('t3-icon-edit-hide')) {
-			$(objectId+'_disabled').removeClassName ('t3-icon-edit-hide');
-			$(objectId+'_disabled').addClassName('t3-icon-edit-unhide');
-		} else {
-			$(objectId+'_disabled').removeClassName ('t3-icon-edit-unhide');
-			$(objectId+'_disabled').addClassName('t3-icon-edit-hide');
+		if (icon) {
+			if (icon.hasClassName('t3-icon-edit-hide')) {
+				icon.removeClassName ('t3-icon-edit-hide');
+				icon.addClassName('t3-icon-edit-unhide');
+			} else {
+				icon.removeClassName ('t3-icon-edit-unhide');
+				icon.addClassName('t3-icon-edit-hide');
+			}
 		}
 
 		return false;
