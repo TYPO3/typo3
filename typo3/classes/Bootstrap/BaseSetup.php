@@ -43,6 +43,16 @@
  */
 class Typo3_Bootstrap_BaseSetup {
 
+		// Submodules which must not be empty
+	protected static $submodules = array(
+		'typo3/sysext/dbal',
+		'typo3/sysext/extbase',
+		'typo3/sysext/fluid',
+		'typo3/sysext/linkvalidator',
+		'typo3/sysext/version',
+		'typo3/sysext/workspaces',
+	);
+
 	/**
 	 * Run base setup.
 	 *
@@ -55,6 +65,7 @@ class Typo3_Bootstrap_BaseSetup {
 		self::defineBaseConstants();
 		self::definePaths($relativePathPart);
 		self::checkMainPathsExist();
+		self::checkSubmodulesAreNotEmpty();
 		self::requireBaseClasses();
 		self::handleMagicQuotesGpc();
 		self::addCorePearPathToIncludePath();
@@ -194,6 +205,30 @@ class Typo3_Bootstrap_BaseSetup {
 		}
 		if (!is_dir(PATH_typo3conf)) {
 			die('Calculated absolute path to typo3conf directory does not exist');
+		}
+	}
+
+	/**
+	 * Check that all submodules are not empty and exit otherwise.
+	 *
+	 * Required submodules are listed inside the submodules array.
+	 *
+	 * @return void
+	 * @see submodules
+	 */
+	protected static function checkSubmodulesAreNotEmpty() {
+		$submodulesAreEmpty = FALSE;
+
+		foreach(self::$submodules as $submodule) {
+			$fulldir = PATH_site . $submodule;
+			if (!is_readable($fulldir) || count(scandir($fulldir)) === 2) {
+				$submodulesAreEmpty = TRUE;
+			}
+		}
+
+		if ($submodulesAreEmpty) {
+			die('The git submodules must not be empty. ' .
+				'Please make sure to run <em>git submodule update --init</em> inside your git clone.');
 		}
 	}
 
