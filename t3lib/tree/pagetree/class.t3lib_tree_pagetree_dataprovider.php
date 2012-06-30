@@ -148,10 +148,12 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 					continue;
 				}
 
-					// must be calculated above getRecordWSOL, because the information is lost otherwise
+					// must be calculated above getRecordWithWorkspaceOverlay,
+					// because the information is lost otherwise
 				$isMountPoint = ($subpage['isMountPoint'] === TRUE);
 
-				$subpage = t3lib_befunc::getRecordWSOL('pages', $subpage['uid'], '*', '', TRUE, TRUE);
+				$subpage = $this->getRecordWithWorkspaceOverlay($subpage['uid'], TRUE);
+
 				if (!$subpage) {
 					continue;
 				}
@@ -177,6 +179,18 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		}
 
 		return $nodeCollection;
+	}
+
+	/**
+	 * Wrapper method for t3lib_befunc::getRecordWSOL
+	 *
+	 * @param integer $uid The page id
+	 * @param boolean $unsetMovePointers Whether to unset move pointers
+	 * @return array
+	 */
+	protected function getRecordWithWorkspaceOverlay($uid, $unsetMovePointers = FALSE) {
+		$subpage = t3lib_befunc::getRecordWSOL('pages', $uid, '*', '', TRUE, $unsetMovePointers);
+		return $subpage;
 	}
 
 	/**
@@ -370,7 +384,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 					continue;
 				}
 
-				$record = t3lib_BEfunc::getRecordWSOL('pages', $mountPoint, '*', '', TRUE);
+				$record = $this->getRecordWithWorkspaceOverlay($mountPoint);
 				if (!$record) {
 					continue;
 				}
