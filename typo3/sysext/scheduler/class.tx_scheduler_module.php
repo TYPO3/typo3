@@ -1587,8 +1587,9 @@ class tx_scheduler_Module extends t3lib_SCbase {
 				t3lib_iconWorks::getSpriteIcon('actions-document-close') . '</a>';
 
 			$buttons['save'] = t3lib_iconWorks::getSpriteIcon(
-				'actions-document-save',
-				array('html' => '<input type="image" name="data[save]" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:save', TRUE) . '" />')
+				'actions-document-save-close',
+				array('html' => '<input type="image" name="data[save]" class="c-inputButton" src="clear.gif" title="'
+					. $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:saveAndClose', TRUE) . '" />')
 			);
 		}
 
