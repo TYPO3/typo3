@@ -11,7 +11,6 @@ branches:
 
 before_script:
 # TODO hh 2012-04-16 Move the build environment to a more official place
-  - git submodule update --init --recursive
   - git clone git://github.com/typo3-ci/TYPO3-Travis-Integration.git build-environment
   - git clone git://git.typo3.org/TYPO3v4/Distributions/Introduction.git build-environment/Introduction
   - mv build-environment/typo3conf .
@@ -21,5 +20,6 @@ before_script:
   - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS typo3_test;" -uroot; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/Introduction/typo3conf/ext/introduction/Resources/Private/Subpackages/Introduction/Database/introduction.sql; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/dbimport/cli_users.sql; fi
+  - /bin/bash build-environment/install-php-extensions.sh > /dev/null 2>&1
 
 script: php $PWD/typo3/cli_dispatch.phpsh phpunit $PWD/tests/
