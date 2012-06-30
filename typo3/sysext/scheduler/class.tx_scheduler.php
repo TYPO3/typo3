@@ -208,7 +208,7 @@ class tx_scheduler implements t3lib_Singleton {
 	 */
 	public function recordLastRun($type = 'cron') {
 			// Validate input value
-		if ($type != 'manual') {
+		if ($type !== 'manual' && $type !== 'cli-by-id') {
 			$type = 'cron';
 		}
 
