@@ -208,7 +208,7 @@ class tx_scheduler implements t3lib_Singleton {
 	 */
 	public function recordLastRun($type = 'cron') {
 			// Validate input value
-		if ($type != 'manual') {
+		if ($type !== 'manual' && $type !== 'cli-by-id') {
 			$type = 'cron';
 		}
 
@@ -297,17 +297,15 @@ class tx_scheduler implements t3lib_Singleton {
 			// Otherwise unserialize the task and return it
 		} else {
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+			/** @var $task tx_scheduler_Task */
 			$task = unserialize($row['serialized_task_object']);
 
 			if ($this->isValidTaskObject($task)) {
-				// The task is valid, return it
-
+					// The task is valid, return it
 				$task->setScheduler();
-
 			} else {
-				// Forcibly set the disable flag to 1 in the database,
-				// so that the task does not come up again and again for execution
-
+					// Forcibly set the disable flag to 1 in the database,
+					// so that the task does not come up again and again for execution
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid = ' . $row['uid'], array('disable' => 1));
 					// Throw an exception to raise the problem
 				throw new UnexpectedValueException('Could not unserialize task', 1255083671);
@@ -349,6 +347,7 @@ class tx_scheduler implements t3lib_Singleton {
 	 * @return array List of task objects
 	 */
 	public function fetchTasksWithCondition($where, $includeDisabledTasks = FALSE) {
+		$whereClause = '';
 		$tasks = array();
 		if (!empty($where)) {
 			$whereClause = $where;
@@ -362,6 +361,7 @@ class tx_scheduler implements t3lib_Singleton {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('serialized_task_object', 'tx_scheduler_task', $whereClause);
 		if ($res) {
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+				/** @var $task tx_scheduler_task */
 				$task = unserialize($row['serialized_task_object']);
 					// Add the task to the list only if it is valid
 				if ($this->isValidTaskObject($task)) {

@@ -35,35 +35,65 @@ if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) && basename(PATH_thisScript) == 
 		// Create an instance of the scheduler object
 		/** @var $scheduler tx_scheduler */
 	$scheduler = t3lib_div::makeInstance('tx_scheduler');
-		// Loop as long as there are tasks
-	do {
-			// Try getting the next task and execute it
-			// If there are no more tasks to execute, an exception is thrown by tx_scheduler::fetchTask()
-		try {
-				/** @var $task tx_scheduler_Task */
-			$task = $scheduler->fetchTask();
-			$hasTask = TRUE;
-			try {
-				$scheduler->executeTask($task);
+	/** @var t3lib_cli $cli */
+	$cli =  t3lib_div::makeInstance('t3lib_cli');
+		// If a specific id is given in arguments, then run that task. Otherwise run scheduled tasks.
+	if ($cli->cli_isArg('-i')) {
+		$taskId = intval($cli->cli_argValue('-i'));
+		if ($taskId > 0) {
+				// Force the execution of the task even if it is disabled or no execution scheduled
+			if ($cli->cli_isArg('-f')) {
+				$task = $scheduler->fetchTask($taskId);
+			} else {
+				$whereClause = 'uid = ' . $taskId . ' AND nextexecution != 0 AND nextexecution <= ' .
+					$GLOBALS['EXEC_TIME'];
+				list($task) = $scheduler->fetchTasksWithCondition($whereClause);
 			}
-			catch (Exception $e) {
+			if ($scheduler->isValidTaskObject($task)) {
+				try {
+					$scheduler->executeTask($task);
+				}
+				catch (Exception $e) {
 					// We ignore any exception that may have been thrown during execution,
 					// as this is a background process.
-					// The exception message has been recorded to the database anyway
-				continue;
+					// The exception message has been recorded to the database anyway.
+				}
+					// Record the run in the system registry
+				$scheduler->recordLastRun('cli-by-id');
 			}
 		}
-			// There are no more tasks, quit the run
-		catch (OutOfBoundsException $e) {
-			$hasTask = FALSE;
-		}
-			// A task could not be unserialized properly, skip to next task
-		catch (UnexpectedValueException $e) {
-			continue;
-		}
-	} while ($hasTask);
-		// Record the run in the system registry
-	$scheduler->recordLastRun();
+
+	} else {
+			// Loop as long as there are tasks
+		do {
+				// Try getting the next task and execute it
+				// If there are no more tasks to execute, an exception is thrown by tx_scheduler::fetchTask()
+			try {
+					/** @var $task tx_scheduler_Task */
+				$task = $scheduler->fetchTask();
+				$hasTask = TRUE;
+				try {
+					$scheduler->executeTask($task);
+				}
+				catch (Exception $e) {
+						// We ignore any exception that may have been thrown during execution,
+						// as this is a background process.
+						// The exception message has been recorded to the database anyway
+					continue;
+				}
+			}
+				// There are no more tasks, quit the run
+			catch (OutOfBoundsException $e) {
+				$hasTask = FALSE;
+			}
+				// A task could not be unserialized properly, skip to next task
+			catch (UnexpectedValueException $e) {
+				continue;
+			}
+		} while ($hasTask);
+			// Record the run in the system registry
+		$scheduler->recordLastRun();
+	}
 } else {
 	die('This script must be included by the "CLI module dispatcher"');
 }
