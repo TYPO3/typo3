@@ -71,9 +71,31 @@ class t3lib_tree_pagetree_DataProviderTest extends tx_phpunit_testcase {
 			),
 		);
 
-		$this->fixture = $this->getMock('t3lib_tree_pagetree_DataProvider', array('getSubpages'));
+		$subpagesWithWorkspaceOverlay = array(
+			array(
+				'uid' => 1,
+				'title' => 'Home',
+			),
+			array(
+				'uid' => 2,
+				'title' => 'service',
+			),
+			array(
+				'uid' => 3,
+				'title' => 'contact',
+			),
+		);
+
+		$this->fixture = $this->getMock('t3lib_tree_pagetree_DataProvider', array('getSubpages', 'getRecordWithWorkspaceOverlay'));
 		$this->fixture->expects($this->once())->method('getSubpages')
 			->will($this->returnValue($subpages));
+
+		$this->fixture->expects($this->at(1))->method('getRecordWithWorkspaceOverlay')->with(1)
+			->will($this->returnValue($subpagesWithWorkspaceOverlay[0]));
+		$this->fixture->expects($this->at(2))->method('getRecordWithWorkspaceOverlay')->with(2)
+			->will($this->returnValue($subpagesWithWorkspaceOverlay[1]));
+		$this->fixture->expects($this->at(3))->method('getRecordWithWorkspaceOverlay')->with(3)
+			->will($this->returnValue($subpagesWithWorkspaceOverlay[2]));
 
 		$node = new t3lib_tree_Node();
 		$node->setId(12);
