@@ -1,0 +1,27 @@
+<phpunit backupGlobals="false"
+	backupStaticAttributes="false"
+	colors="false"
+	convertErrorsToExceptions="true"
+	convertWarningsToExceptions="true"
+	forceCoversAnnotation="false"
+	processIsolation="false"
+	stopOnError="false"
+	stopOnFailure="false"
+	stopOnIncomplete="false"
+	stopOnSkipped="false"
+	strict="false"
+	verbose="false">
+
+	<testsuites>
+		<testsuite name="Core Tests">
+			<directory>../../tests/</directory>
+  		</testsuite>
+		<testsuite name="Extbase Tests">
+			<directory>../../typo3/sysext/extbase/[Tt]ests/</directory>
+		</testsuite>
+		<testsuite name="Fluid Tests">
+			<directory>../../typo3/sysext/fluid/[Tt]ests/</directory>
+		</testsuite>
+	</testsuites>
+
+</phpunit>
