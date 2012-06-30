@@ -808,8 +808,11 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function getTypo3LoadedExtensionInformationCacheIdentifierCreatesSha1WithFourtyCharacters() {
-		$sha1 = t3lib_extMgmAccessibleProxy::getTypo3LoadedExtensionInformationCacheIdentifier();
+	public function getTypo3LoadedExtensionInformationCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix() {
+		$prefix = 'loaded_extensions_';
+		$identifier = t3lib_extMgmAccessibleProxy::getTypo3LoadedExtensionInformationCacheIdentifier();
+		$this->assertStringStartsWith($prefix, $identifier);
+		$sha1 = str_replace($prefix, '', $identifier);
 		$this->assertEquals(40, strlen($sha1));
 	}
 
@@ -904,8 +907,11 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function getExtLocalconfCacheIdentifierCreatesSha1WithFourtyCharacters() {
-		$sha1 = t3lib_extMgmAccessibleProxy::getExtLocalconfCacheIdentifier();
+	public function getExtLocalconfCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix() {
+		$prefix = 'ext_localconf_';
+		$identifier = t3lib_extMgmAccessibleProxy::getExtLocalconfCacheIdentifier();
+		$this->assertStringStartsWith($prefix, $identifier);
+		$sha1 = str_replace($prefix, '', $identifier);
 		$this->assertEquals(40, strlen($sha1));
 	}
 
@@ -985,8 +991,11 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function getExtTablesCacheIdentifierCreatesSha1WithFourtyCharacters() {
-		$sha1 = t3lib_extMgmAccessibleProxy::getExtTablesCacheIdentifier();
+	public function getExtTablesCacheIdentifierCreatesSha1WithFourtyCharactersAndPrefix() {
+		$prefix = 'ext_tables_';
+		$identifier = t3lib_extMgmAccessibleProxy::getExtTablesCacheIdentifier();
+		$this->assertStringStartsWith($prefix, $identifier);
+		$sha1 = str_replace($prefix, '', $identifier);
 		$this->assertEquals(40, strlen($sha1));
 	}
 
