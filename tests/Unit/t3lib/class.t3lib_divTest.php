@@ -261,6 +261,8 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] = TRUE;
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] = FALSE;
 
+		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress'] = TRUE;
+
 			// Copy file to unique filename in typo3temp, set target permissions and run method
 		$testFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
 		@copy($fixtureGifFile, $testFilename);
