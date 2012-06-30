@@ -387,7 +387,7 @@ class t3lib_autoloader {
 	 */
 	protected static function getAutoloadCacheIdentifier() {
 		if (is_null(self::$autoloadCacheIdentifier)) {
-			self::$autoloadCacheIdentifier = sha1(TYPO3_version . PATH_site . 'autoload');
+			self::$autoloadCacheIdentifier = 'autoload_' . sha1(TYPO3_version . PATH_site . 'autoload');
 		}
 		return self::$autoloadCacheIdentifier;
 	}

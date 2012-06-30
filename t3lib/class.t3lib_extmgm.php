@@ -1636,7 +1636,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @return string
 	 */
 	protected static function getTypo3LoadedExtensionInformationCacheIdentifier() {
-		return sha1(TYPO3_version . PATH_site . 'loadedExtensions');
+		return 'loaded_extensions_' . sha1(TYPO3_version . PATH_site . 'loadedExtensions');
 	}
 
 	/**
@@ -1749,7 +1749,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @return string
 	 */
 	protected static function getExtLocalconfCacheIdentifier() {
-		return sha1(TYPO3_version . PATH_site . 'extLocalconf');
+		return 'ext_localconf_' . sha1(TYPO3_version . PATH_site . 'extLocalconf');
 	}
 
 	/**
@@ -1860,7 +1860,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @return string
 	 */
 	protected static function getExtTablesCacheIdentifier() {
-		return sha1(TYPO3_version . PATH_site . 'extTables');
+		return 'ext_tables_' . sha1(TYPO3_version . PATH_site . 'extTables');
 	}
 
 	/**
