@@ -230,7 +230,7 @@ class clickMenu {
 				if (!in_array('edit', $this->disabledItems)) {
 					$menuItems['edit']=$this->DB_edit($table, $uid);
 				}
-				$this->editOK =1 ;
+				$this->editOK = 1;
 			}
 
 				// New:
