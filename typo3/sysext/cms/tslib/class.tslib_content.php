@@ -1190,7 +1190,6 @@ class tslib_cObj {
 				// This array is used to collect the image-refs on the page...
 			$GLOBALS['TSFE']->imagesOnPage[] = $info[3];
 
-
 			$altParam = $this->getAltParam($conf);
 			if ($conf['params'] && !isset($conf['params.'])) {
 				$params = ' ' . $conf['params'];
@@ -4828,7 +4827,6 @@ class tslib_cObj {
 							// This flag indicates, that this TypoTag section should NOT be included in the nonTypoTag content.
 						$breakOut = ($theConf['breakoutTypoTagContent'] ? 1 : 0);
 
-
 						$this->parameters = array();
 						if ($currentTag[1]) {
 							$params = t3lib_div::get_tag_attributes($currentTag[1]);
@@ -4848,7 +4846,6 @@ class tslib_cObj {
 						}
 						$this->data[$this->currentValKey] = $contentAccum[$contentAccumP];
 						$newInput = $this->cObjGetSingle($theName, $theConf, '/parseFunc/.tags.' . $tag[0]); // fetch the content object
-
 
 						$contentAccum[$contentAccumP] = $newInput;
 						$contentAccumP++;
@@ -5035,7 +5032,6 @@ class tslib_cObj {
 				if (!preg_match('/[A-Za-z0-9\/#_-]/', $lastChar)) {
 					$len--;
 				} // Included '\/' 3/12
-
 
 				$parts[0] = substr($textpieces[$i], 0, $len);
 				$parts[1] = substr($textpieces[$i], $len);
@@ -5987,7 +5983,6 @@ class tslib_cObj {
 								// We do not come here if additionalParams had '&MP='. This happens when typoLink is called from
 								// menu. Mount points always work in the content of the current domain and we must not change
 								// domain if MP variables exist.
-
 
 								// If we link across domains and page is free type shortcut, we must resolve the shortcut first!
 								// If we do not do it, TYPO3 will fail to (1) link proper page in RealURL/CoolURI because
@@ -6952,7 +6947,6 @@ class tslib_cObj {
 					$diff_y_d = $y_d * count($textArr);
 					$diff_y_d = $diff_y_d / 2;
 				}
-
 
 				$x_d = round($x_d * $c - $diff_x_d);
 				$y_d = round($y_d * $c - $diff_y_d);

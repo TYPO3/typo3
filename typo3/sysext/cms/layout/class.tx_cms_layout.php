@@ -448,7 +448,6 @@ class tx_cms_layout extends recordList {
 								// because of bad (historic) conception, starting tag has to be placed inside tt_content_drawHeader()
 							$singleElementHTML .= '</div>';
 
-
 							$statusHidden = ($this->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '');
 							$singleElementHTML = '<div class="t3-page-ce' . $statusHidden . '">' . $singleElementHTML . '</div>';
 
@@ -810,7 +809,6 @@ class tx_cms_layout extends recordList {
 				$out = '<br/><br/>' . $GLOBALS['SOBE']->doc->icons(1) . 'Sorry, you cannot view a single language in this localization mode (Default Language Binding is enabled)<br/><br/>';
 			}
 		}
-
 
 			// Add the big buttons to page:
 		if ($this->option_showBigButtons) {
@@ -2000,7 +1998,6 @@ class tx_cms_layout extends recordList {
 				'&nbsp;' .
 				htmlspecialchars($rec['title']);
 
-
 			// Init array where infomation is accumulated as label/value pairs.
 		$lines = array();
 
@@ -2061,7 +2058,6 @@ class tx_cms_layout extends recordList {
 					t3lib_BEfunc::date($rrow2[1]) . ' (' . t3lib_BEfunc::calcAge($rrow2[1] - $rrow2[0], $this->agePrefixes) . ')');
 				$lines[] = array($GLOBALS['LANG']->getLL('pI_hitsTotal') . ':', $rrow2[0]);
 
-
 					// Last 10 days
 				$nextMidNight = mktime(0, 0, 0) + 1 * 3600 * 24;
 
@@ -2087,7 +2083,6 @@ class tx_cms_layout extends recordList {
 						<tr>' . implode('', $contentH) . '</tr>
 					</table>';
 				$lines[] = array($GLOBALS['LANG']->getLL('pI_hits10days') . ':', $hitTable, 1);
-
 
 					// Last 24 hours
 				$nextHour = mktime(date('H'), 0, 0) + 3600;

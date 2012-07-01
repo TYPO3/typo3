@@ -355,8 +355,6 @@ class tx_em_Connection_ExtDirectSoap {
 				'error' => $error->faultstring
 			);
 		}
-
-
 	}
 
 	/**

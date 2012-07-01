@@ -528,7 +528,6 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 				$emConf[$key]
 			);
 
-
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_clear_cache');
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_clearCacheOnLoad', $headerCol);
 			if ($emConf['clearCacheOnLoad']) {

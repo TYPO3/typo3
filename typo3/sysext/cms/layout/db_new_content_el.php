@@ -199,7 +199,6 @@ class SC_db_new_content_el {
 				$this->onClickEvent = '';
 			}
 
-
 				// ***************************
 				// Creating content
 				// ***************************
@@ -219,7 +218,6 @@ class SC_db_new_content_el {
 			$this->elementWrapper['wizardPart'] = array('<td>', '</td>');
 				// Copy wrapper for tabs
 			$this->elementWrapperForTabs = $this->elementWrapper;
-
 
 				// Hook for manipulating wizardItems, wrapper, onClickEvent etc.
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'])) {
@@ -375,7 +373,6 @@ class SC_db_new_content_el {
 			'back' => ''
 		);
 
-
 		if ($this->id && $this->access) {
 				// CSH
 			$buttons['csh'] = t3lib_BEfunc::cshItem('xMOD_csh_corebe', 'new_ce', $GLOBALS['BACK_PATH'], '', TRUE);
@@ -387,7 +384,6 @@ class SC_db_new_content_el {
 					'</a>';
 			}
 		}
-
 
 		return $buttons;
 	}

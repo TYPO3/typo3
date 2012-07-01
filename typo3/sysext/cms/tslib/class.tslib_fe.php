@@ -3807,7 +3807,6 @@ if (version == "n3") {
 						}
 					}
 
-
 					$GLOBALS['TT']->push('Store SQL');
 					$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_stat', $insertFields);
 					$GLOBALS['TT']->pull();

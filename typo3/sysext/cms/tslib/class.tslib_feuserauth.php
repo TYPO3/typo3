@@ -264,7 +264,6 @@ class tslib_feUserAuth extends t3lib_userAuth {
 			t3lib_div::devLog(count($groupDataArr).' usergroup records found by services', 'tslib_feUserAuth');
 		}
 
-
 			// Use 'auth' service to check the usergroups if they are really valid
 		foreach ($groupDataArr as $groupData) {
 				// By default a group is valid

@@ -42,7 +42,6 @@ class tx_em_API {
 	 */
 	public $typeBackPaths = array();
 
-
 	/**
 	 * Constructor
 	 *
@@ -66,9 +65,6 @@ class tx_em_API {
 			'G' => $GLOBALS['LANG']->getLL('descr_global'),
 			'L' => $GLOBALS['LANG']->getLL('descr_local'),
 		);
-
-
-
 	}
 }
 ?>
