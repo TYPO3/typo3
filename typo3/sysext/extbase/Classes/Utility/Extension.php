@@ -115,7 +115,7 @@ class Tx_Extbase_Utility_Extension {
 				$pluginContent = trim('
 tt_content.list.20.' . $pluginSignature . ' = USER
 tt_content.list.20.' . $pluginSignature . ' {
-	userFunc = tx_extbase_core_bootstrap->run
+	userFunc = Tx_Extbase_Core_Bootstrap->run
 	extensionName = ' . $extensionName . '
 	pluginName = ' . $pluginName . '
 }');
@@ -127,7 +127,7 @@ tt_content.' . $pluginSignature . ' {
 	10 = < lib.stdheader
 	20 = USER
 	20 {
-		userFunc = tx_extbase_core_bootstrap->run
+		userFunc = Tx_Extbase_Core_Bootstrap->run
 		extensionName = ' . $extensionName . '
 		pluginName = ' . $pluginName . '
 	}

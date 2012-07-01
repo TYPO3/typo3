@@ -60,19 +60,19 @@ class Tx_Extbase_Tests_Unit_Utility_ExtensionTest extends tx_phpunit_testcase {
 				),
 			'extensionname_someplugin' => 'USER',
 			'extensionname_someplugin.' => array(
-				'userFunc' => 'tx_extbase_core_bootstrap->run',
+				'userFunc' => 'Tx_Extbase_Core_Bootstrap->run',
 				'extensionName' => 'ExtensionName',
 				'pluginName' => 'SomePlugin',
 			),
 			'someotherextensionname_secondplugin' => 'USER',
 			'someotherextensionname_secondplugin.' => array(
-				'userFunc' => 'tx_extbase_core_bootstrap->run',
+				'userFunc' => 'Tx_Extbase_Core_Bootstrap->run',
 				'extensionName' => 'SomeOtherExtensionName',
 				'pluginName' => 'SecondPlugin',
 			),
 			'extensionname_thirdplugin' => 'USER',
 			'extensionname_thirdplugin.' => array(
-				'userFunc' => 'tx_extbase_core_bootstrap->run',
+				'userFunc' => 'Tx_Extbase_Core_Bootstrap->run',
 				'extensionName' => 'ExtensionName',
 				'pluginName' => 'ThirdPlugin',
 			),
@@ -99,7 +99,7 @@ class Tx_Extbase_Tests_Unit_Utility_ExtensionTest extends tx_phpunit_testcase {
 
 		$this->assertContains('tt_content.list.20.myextension_pi1 = USER', $staticTypoScript);
 		$this->assertContains('
-	userFunc = tx_extbase_core_bootstrap->run
+	userFunc = Tx_Extbase_Core_Bootstrap->run
 	extensionName = MyExtension
 	pluginName = Pi1', $staticTypoScript);
 
