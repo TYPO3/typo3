@@ -143,7 +143,7 @@ class t3lib_autoloader {
 			$classRegistry = $phpCodeCache->requireOnce(self::getAutoloadCacheIdentifier());
 		} else {
 			self::$cacheUpdateRequired = TRUE;
-			$classRegistry = self::createCoreAndExtensionRegistry();
+			$classRegistry = self::lowerCaseClassRegistry(self::createCoreAndExtensionRegistry());
 		}
 
 			// This can only happen if the autoloader was already registered
@@ -154,18 +154,11 @@ class t3lib_autoloader {
 			// switched to NullBackend for example to simplify development
 		if (!is_array($classRegistry)) {
 			self::$cacheUpdateRequired = TRUE;
-			$classRegistry = self::createCoreAndExtensionRegistry();
+			$classRegistry = self::lowerCaseClassRegistry(self::createCoreAndExtensionRegistry());
 		}
 
-			// Lowercase all keys. We must use the multi byte safe version
-			// of strtolower from t3lib_div here, so array_change_key_case()
-			// can not be used
-		$lowerCasedClassRegistry = array();
-		foreach ($classRegistry as $className => $classFile) {
-			$lowerCasedClassRegistry[t3lib_div::strtolower($className)] = $classFile;
-		}
 
-		self::$classNameToFileMapping = $lowerCasedClassRegistry;
+		self::$classNameToFileMapping = $classRegistry;
 	}
 
 	/**
@@ -390,6 +383,23 @@ class t3lib_autoloader {
 			self::$autoloadCacheIdentifier = 'autoload_' . sha1(TYPO3_version . PATH_site . 'autoload');
 		}
 		return self::$autoloadCacheIdentifier;
+	}
+
+	/**
+	 * Lowercase all keys of the class registry.
+	 *
+	 * Use the multi byte safe version of strtolower from t3lib_div,
+	 * so array_change_key_case() can not be used
+	 *
+	 * @param array $registry Given registry entries
+	 * @return array with lower cased keys
+	 */
+	protected static function lowerCaseClassRegistry($registry) {
+		$lowerCasedClassRegistry = array();
+		foreach ($registry as $className => $classFile) {
+			$lowerCasedClassRegistry[t3lib_div::strtolower($className)] = $classFile;
+		}
+		return $lowerCasedClassRegistry;
 	}
 }
 ?>
