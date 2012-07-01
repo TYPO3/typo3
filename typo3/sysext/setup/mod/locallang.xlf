@@ -312,11 +312,17 @@
 			<trans-unit id="resetConfiguration" xml:space="preserve">
 				<source>Reset Configuration and Clear Temporary Data</source>
 			</trans-unit>
+			<trans-unit id="resetConfigurationShort" xml:space="preserve">
+				<source>Reset</source>
+			</trans-unit>
 			<trans-unit id="setToStandardQuestion" xml:space="preserve">
 				<source>Are you sure you want to reset all values to default?</source>
 			</trans-unit>
 			<trans-unit id="clearSessionVars" xml:space="preserve">
 				<source>Clear Temporary Data</source>
+			</trans-unit>
+			<trans-unit id="clearSessionVarsShort" xml:space="preserve">
+				<source>Clear</source>
 			</trans-unit>
 			<trans-unit id="clearSessionVarsQuestion" xml:space="preserve">
 				<source>Are you sure you want to clear the temporary data?</source>

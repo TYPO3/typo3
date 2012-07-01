@@ -99,9 +99,29 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 		'simulate' => array(
 			'type' => 'select',
 			'itemsProcFunc' => 'SC_mod_user_setup_index->renderSimulateUserSelect',
-			'access' => 'admin',
 			'label' => 'LLL:EXT:setup/mod/locallang.xml:simulate',
 			'csh' => 'simuser'
+		),
+		'resetConfiguration' => array(
+			'type' => 'button',
+			'label' => 'LLL:EXT:setup/mod/locallang.xml:resetConfiguration',
+			'buttonlabel' => 'LLL:EXT:setup/mod/locallang.xml:resetConfigurationShort',
+			'csh' => 'reset',
+			'onClick' => 'if (confirm(\'%s\')) { document.getElementById(\'setValuesToDefault\').value = 1; this.form.submit(); }',
+			'onClickLabels' => array(
+				'LLL:EXT:setup/mod/locallang.xml:setToStandardQuestion'
+			)
+		),
+		'clearSessionVars' => array(
+			'type' => 'button',
+			'access' => 'admin',
+			'label' => 'LLL:EXT:setup/mod/locallang.xml:clearSessionVars',
+			'buttonlabel' => 'LLL:EXT:setup/mod/locallang.xml:clearSessionVarsShort',
+			'csh' => 'reset',
+			'onClick' => 'if (confirm(\'%s\')) { document.getElementById(\'clearSessionVars\').value = 1; this.form.submit(); }',
+			'onClickLabels' => array(
+				'LLL:EXT:setup/mod/locallang.xml:clearSessionVarsQuestion'
+			)
 		),
 		'enableFlashUploader' => array(
 			'type' => 'check',
@@ -131,7 +151,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = array(
 	),
 	'showitem' => '--div--;LLL:EXT:setup/mod/locallang.xml:personal_data,realName,email,emailMeAtLogin,password,password2,lang,
 			--div--;LLL:EXT:setup/mod/locallang.xml:opening,startModule,thumbnailsByDefault,titleLen,
-			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,showHiddenFilesAndFolders,enableFlashUploader,resizeTextareas,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,
+			--div--;LLL:EXT:setup/mod/locallang.xml:editFunctionsTab,edit_RTE,edit_wideDocument,edit_docModuleUpload,showHiddenFilesAndFolders,enableFlashUploader,resizeTextareas,resizeTextareas_Flexible,resizeTextareas_MaxHeight,copyLevels,recursiveDelete,resetConfiguration,clearSessionVars,
 			--div--;LLL:EXT:setup/mod/locallang.xml:adminFunctions,simulate,debugInWindow'
 
 );

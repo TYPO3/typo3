@@ -410,19 +410,6 @@ class SC_mod_user_setup_index {
 			<input type="hidden" name="data[clearSessionVars]" value="0" id="clearSessionVars" />'
 		);
 
-			// Section: Reset settings
-		$this->content .= $this->doc->spacer(20);
-		$this->content .= $this->doc->section($LANG->getLL('resetSectionHeader') . ' ' . t3lib_BEfunc::cshItem('_MOD_user_setup', 'reset', $GLOBALS['BACK_PATH']),
-			'<input type="button" value="' . $LANG->getLL('resetConfiguration') .
-					'" onclick="if (confirm(\'' . $LANG->getLL('setToStandardQuestion') . '\')) { document.getElementById(\'setValuesToDefault\').value = 1; this.form.submit(); }" />
-			<input type="button" value="' . $LANG->getLL('clearSessionVars') .
-					'" onclick="if (confirm(\'' . $LANG->getLL('clearSessionVarsQuestion') . '\')) { document.getElementById(\'clearSessionVars\').value = 1;this.form.submit(); }" />',
-			FALSE,
-			FALSE,
-			0,
-			TRUE
-		);
-
 			// End of wrapper div
 		$this->content .= '</div>';
 
@@ -495,7 +482,6 @@ class SC_mod_user_setup_index {
 		$i = 0;
 
 		$fieldArray = $this->getFieldsFromShowItem();
-
 		$this->dividers2tabs = isset($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) ? intval($GLOBALS['TYPO3_USER_SETTINGS']['ctrl']['dividers2tabs']) : 0;
 		$tabLabel = '';
 
@@ -593,7 +579,7 @@ class SC_mod_user_setup_index {
 					if ($config['itemsProcFunc']) {
 						$html = t3lib_div::callUserFunction($config['itemsProcFunc'], $config, $this, '');
 					} else {
-						$html = '<select id="field_' . $fieldName . '" name="data[' . $fieldName . ']"' . $more . '>' . LF;
+						$html = '<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' id="field_' . $fieldName . '" name="data[' . $fieldName . ']"' . $more . '>' . LF;
 						foreach ($config['items'] as $key => $optionLabel) {
 							$html .= '<option value="' . $key . '"' .
 								($value == $key ? ' selected="selected"' : '') .
@@ -606,6 +592,19 @@ class SC_mod_user_setup_index {
 				case 'user':
 					$html = t3lib_div::callUserFunction($config['userFunc'], $config, $this, '');
 				break;
+				case 'button':
+					if ($config['onClick']) {
+						$onClick = $config['onClick'];
+						if ($config['onClickLabels']) {
+							foreach ($config['onClickLabels'] as $key => $labelclick) {
+								$config['onClickLabels'][$key] = $this->getLabel($labelclick, '', FALSE);
+							}
+							$onClick = vsprintf($onClick, $config['onClickLabels']);
+						}
+						$html = '<input ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' type="button" value="' . $this->getLabel($config['buttonlabel'], '', FALSE) .
+							'" onclick="' . $onClick . '" />';
+					}
+					break;
 				default:
 					$html = '';
 			}
@@ -680,7 +679,7 @@ class SC_mod_user_setup_index {
 		ksort($languageOptions);
 
 		$languageCode = '
-				<select id="field_lang" name="data[lang]" class="select">' .
+				<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' id="field_lang" name="data[lang]" class="select">' .
 					implode('', $languageOptions) . '
 				</select>';
 		if ( $GLOBALS['BE_USER']->uc['lang'] && !@is_dir(PATH_typo3conf . 'l10n/' . $GLOBALS['BE_USER']->uc['lang'])) {
@@ -726,7 +725,7 @@ class SC_mod_user_setup_index {
 			}
 		}
 
-		return '<select id="field_startModule" name="data[startModule]" class="select">' . $startModuleSelect . '</select>';
+		return '<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . 'id="field_startModule" name="data[startModule]" class="select">' . $startModuleSelect . '</select>';
 	}
 
 	/**
@@ -753,7 +752,7 @@ class SC_mod_user_setup_index {
 				}
 			}
 			if (count($opt)) {
-				$this->simulateSelector = '<select id="field_simulate" name="simulateUser" onchange="window.location.href=\'' . t3lib_BEfunc::getModuleUrl('user_setup') . '&simUser=\'+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
+				$this->simulateSelector = '<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' id="field_simulate" name="simulateUser" onchange="window.location.href=\'' . t3lib_BEfunc::getModuleUrl('user_setup') . '&simUser=\'+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
 			}
 		}
 
@@ -841,7 +840,7 @@ class SC_mod_user_setup_index {
 				// Setting comes from another extension
 			$context = $strParts[0];
 			$field = $strParts[1];
-		} elseif (!t3lib_div::inList('language,simuser', $str)) {
+		} elseif (!t3lib_div::inList('language,simuser,reset', $str)) {
 			$field = 'option_' . $str;
 		}
 		return t3lib_BEfunc::wrapInHelp($context, $field, $label);
