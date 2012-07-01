@@ -72,7 +72,9 @@ class dbGeneralTest extends BaseTestCase {
 		// Clear DBAL-generated cache files
 		$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
 		// Delete temporary files
-		foreach ($this->temporaryFiles as $filename) unlink($filename);
+		foreach ($this->temporaryFiles as $filename) {
+			unlink($filename);
+		}
 		// Restore DB connection
 		$GLOBALS['TYPO3_DB'] = $this->db;
 		// Restore list of loaded extensions

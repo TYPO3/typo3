@@ -435,7 +435,9 @@ class ux_t3lib_DB extends t3lib_DB {
 					}
 					if (is_array($this->lastQuery[1])) {
 						foreach ($this->lastQuery[1] as $field => $content) {
-							if (empty($content)) continue;
+							if (empty($content)) {
+								continue;
+							}
 
 							if (isset($this->cache_autoIncFields[$table]) && isset($new_id)) {
 								$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table), $field, $content, $this->quoteWhereClause($this->cache_autoIncFields[$table] . '=' . $new_id));
@@ -443,8 +445,9 @@ class ux_t3lib_DB extends t3lib_DB {
 								$where = '';
 								$pks = explode(',', $this->cache_primaryKeys[$table]);
 								foreach ($pks as $pk) {
-									if (isset($fields_values[$pk]))
+									if (isset($fields_values[$pk])) {
 										$where .= $pk . '=' . $this->fullQuoteStr($fields_values[$pk], $table) . ' AND ';
+									}
 								}
 								$where = $this->quoteWhereClause($where . '1=1');
 								$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table), $field, $content, $where);
@@ -460,7 +463,9 @@ class ux_t3lib_DB extends t3lib_DB {
 					}
 					if (is_array($this->lastQuery[2])) {
 						foreach ($this->lastQuery[2] as $field => $content) {
-							if (empty($content)) continue;
+							if (empty($content)) {
+								continue;
+							}
 
 							if (isset($this->cache_autoIncFields[$table]) && isset($new_id)) {
 								$this->handlerInstance[$this->lastHandlerKey]->UpdateClob($this->quoteFromTables($table), $field, $content, $this->quoteWhereClause($this->cache_autoIncFields[$table] . '=' . $new_id));
@@ -468,8 +473,9 @@ class ux_t3lib_DB extends t3lib_DB {
 								$where = '';
 								$pks = explode(',', $this->cache_primaryKeys[$table]);
 								foreach ($pks as $pk) {
-									if (isset($fields_values[$pk]))
+									if (isset($fields_values[$pk])) {
 										$where .= $pk . '=' . $this->fullQuoteStr($fields_values[$pk], $table) . ' AND ';
+									}
 								}
 								$where = $this->quoteWhereClause($where . '1=1');
 								$this->handlerInstance[$this->lastHandlerKey]->UpdateClob($this->quoteFromTables($table), $field, $content, $where);
@@ -1001,9 +1007,15 @@ class ux_t3lib_DB extends t3lib_DB {
 						', $nArr) . '
 					)';
 				}
-				if (count($blobfields)) $query[1] = $blobfields;
-				if (count($clobfields)) $query[2] = $clobfields;
-				if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query[0];
+				if (count($blobfields)) {
+					$query[1] = $blobfields;
+				}
+				if (count($clobfields)) {
+					$query[2] = $clobfields;
+				}
+				if ($this->debugOutput || $this->store_lastBuiltQuery) {
+					$this->debug_lastBuiltQuery = $query[0];
+				}
 			} else {
 				$query = 'INSERT INTO ' . $this->quoteFromTables($table) . '
 				(
@@ -1014,7 +1026,9 @@ class ux_t3lib_DB extends t3lib_DB {
 					', $nArr) . '
 				)';
 
-				if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
+				if ($this->debugOutput || $this->store_lastBuiltQuery) {
+					$this->debug_lastBuiltQuery = $query;
+				}
 			}
 
 			return $query;
@@ -1167,7 +1181,9 @@ class ux_t3lib_DB extends t3lib_DB {
 			$query = 'DELETE FROM ' . $table .
 					(strlen($where) > 0 ? ' WHERE ' . $where : '');
 
-			if ($this->debugOutput || $this->store_lastBuiltQuery) $this->debug_lastBuiltQuery = $query;
+			if ($this->debugOutput || $this->store_lastBuiltQuery) {
+				$this->debug_lastBuiltQuery = $query;
+			}
 			return $query;
 		} else {
 			throw new InvalidArgumentException(
@@ -2472,12 +2488,12 @@ class ux_t3lib_DB extends t3lib_DB {
 		if ($res === NULL) {
 			debug(array('no res in sql_field_type!'));
 			return 'text';
-		}
-		elseif (is_string($res)) {
-			if ($res === 'tx_dbal_debuglog') return 'text';
+		} elseif (is_string($res)) {
+			if ($res === 'tx_dbal_debuglog') {
+				return 'text';
+			}
 			$handlerType = 'adodb';
-		}
-		else {
+		} else {
 			$handlerType = is_object($res) ? $res->TYPO3_DBAL_handlerType : 'native';
 		}
 
@@ -2663,7 +2679,10 @@ class ux_t3lib_DB extends t3lib_DB {
 				if (method_exists($this->handlerInstance['_DEFAULT'], 'MetaTables')) {
 					$sqlTables = $this->handlerInstance['_DEFAULT']->MetaTables('TABLES');
 					while (list($k, $theTable) = each($sqlTables)) {
-						if (preg_match('/BIN\$/', $theTable)) continue; // skip tables from the Oracle 10 Recycle Bin
+						if (preg_match('/BIN\$/', $theTable)) {
+								// Skip tables from the Oracle 10 Recycle Bin
+							continue;
+						}
 						$whichTables[$theTable] = $theTable;
 					}
 				}
@@ -3086,7 +3105,9 @@ class ux_t3lib_DB extends t3lib_DB {
 				case 'adodb':
 					$output = TRUE;
 					require_once(t3lib_extMgm::extPath('adodb') . 'adodb/adodb.inc.php');
-					if (!defined('ADODB_FORCE_NULLS')) define('ADODB_FORCE_NULLS', 1);
+					if (!defined('ADODB_FORCE_NULLS')) {
+						define('ADODB_FORCE_NULLS', 1);
+					}
 					$GLOBALS['ADODB_FORCE_TYPE'] = ADODB_FORCE_VALUE;
 					$GLOBALS['ADODB_FETCH_MODE'] = ADODB_FETCH_BOTH;
 
@@ -3666,7 +3687,9 @@ class ux_t3lib_DB extends t3lib_DB {
 						if ($newFieldName) {
 							if ($parsedQuery['FIELD'] == $parsedQuery['newField']) {
 								$parsedQuery['FIELD'] = $parsedQuery['newField'] = $newFieldName;
-							} else $parsedQuery['FIELD'] = $newFieldName;
+							} else {
+								$parsedQuery['FIELD'] = $newFieldName;
+							}
 						}
 
 						// Changing key field names:
@@ -3803,7 +3826,9 @@ class ux_t3lib_DB extends t3lib_DB {
 						$parseResults['ORDERBY'] = $this->SQLparser->debug_parseSQLpart('SELECT', $inData['args'][4]); // Using select field list syntax
 
 						foreach ($parseResults as $k => $v) {
-							if (!strlen($parseResults[$k]))	unset($parseResults[$k]);
+							if (!strlen($parseResults[$k]))	{
+								unset($parseResults[$k]);
+							}
 						}
 						if (count($parseResults)) {
 							$data['parseError'] = $parseResults;
@@ -3820,8 +3845,9 @@ class ux_t3lib_DB extends t3lib_DB {
 
 					// Logging it:
 					$this->debug_log($query, $execTime, $data, $joinTable, $errorFlag, $script);
-					if (!empty($inData['args'][2]))
+					if (!empty($inData['args'][2])) {
 						$this->debug_WHERE($inData['args'][0], $inData['args'][2], $script);
+					}
 					break;
 			}
 		}
