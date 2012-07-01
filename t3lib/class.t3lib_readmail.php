@@ -425,7 +425,6 @@ class t3lib_readmail {
 			// Content types
 		$mailParts['_CONTENT_TYPE_DAT'] = $this->getContentTypeData($mailParts['content-type']);
 
-
 		// *************************
 		// PROCESSING the CONTENT part of the mail (the body)
 		// *************************

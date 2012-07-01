@@ -126,7 +126,6 @@ class SC_index {
 			// Setting the redirect URL to "backend.php" if no alternative input is given
 		$this->redirectToURL = ($this->redirect_url ? $this->redirect_url : 'backend.php');
 
-
 			// Do a logout if the command is set
 		if ($this->L == 'OUT' && is_object($GLOBALS['BE_USER'])) {
 			$GLOBALS['BE_USER']->logoff();

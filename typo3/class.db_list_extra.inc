@@ -666,7 +666,6 @@ class localRecordList extends recordList {
 			$alttext = t3lib_BEfunc::getRecordIconAltText($row, $table);
 			$iconImg = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => htmlspecialchars($alttext), 'style' => ($indent ? ' margin-left: ' . $indent . 'px;' : '')));
 
-
 			$theIcon = $this->clickMenuEnabled ? $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, $table, $row['uid']) : $iconImg;
 
 				// Preparing and getting the data-array
@@ -1349,7 +1348,6 @@ class localRecordList extends recordList {
 				}
 			}
 		}
-
 
 		/**
 		 * @hook recStatInfoHooks: Allows to insert HTML before record icons on various places

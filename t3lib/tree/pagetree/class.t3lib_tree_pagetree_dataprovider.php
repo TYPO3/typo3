@@ -172,7 +172,6 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 			}
 		}
 
-
 		foreach ($this->processCollectionHookObjects as $hookObject) {
 			/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
 			$hookObject->postProcessGetNodes($node, $mountPoint, $level, $nodeCollection);

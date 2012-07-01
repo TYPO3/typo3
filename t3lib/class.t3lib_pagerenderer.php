@@ -1904,7 +1904,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 				// Swedish
 			$localeMap['se'] = 'se_SV';
 
-
 			$extJsLang = isset($localeMap[$this->lang]) ? $localeMap[$this->lang] : $this->lang;
 				// TODO autoconvert file from UTF8 to current BE charset if necessary!!!!
 			$extJsLocaleFile = $this->extJsPath . 'locale/ext-lang-' . $extJsLang . '.js';

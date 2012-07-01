@@ -361,7 +361,6 @@ final class t3lib_iconWorks {
 			}
 		}
 
-
 			// Return icon source/wHattributes:
 		$output = '';
 		switch ($outputMode) {
@@ -402,7 +401,6 @@ final class t3lib_iconWorks {
 		$iconFileName = 'icon_' . t3lib_div::shortMD5($iconfile . '|' . $mode . '|-' . $user . '|' . $protectSection) . '_' . $iconFileName_stateTagged . '.' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? 'png' : 'gif');
 		$mainpath = '../typo3temp/' . $iconFileName;
 		$path = PATH_site . 'typo3temp/' . $iconFileName;
-
 
 		if (file_exists(PATH_typo3 . 'icons/' . $iconFileName)) { // Returns if found in typo3/icons/
 			return 'icons/' . $iconFileName;

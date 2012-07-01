@@ -737,7 +737,6 @@ class t3lib_TStemplate {
 		$this->setup['resources'] = $this->resources;
 		$this->setup['sitetitle'] = $this->sitetitle;
 
-
 			// ****************************
 			// Parse TypoScript Constants
 			// ****************************
@@ -765,7 +764,6 @@ class t3lib_TStemplate {
 			// Then flatten the structure from a multi-dim array to a single dim array with all constants listed as key/value pairs (ready for substitution)
 		$this->flatSetup = array();
 		$this->flattenSetup($constants->setup, '', '');
-
 
 			// ***********************************************
 			// Parse TypoScript Setup (here called "config")

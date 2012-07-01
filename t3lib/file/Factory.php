@@ -436,7 +436,6 @@ class t3lib_file_Factory implements t3lib_Singleton {
 			throw new InvalidArgumentException('uid of fileusage (sys_file_reference) has to be numeric.', 1300086584);
 		}
 
-
 		if (!$this->fileReferenceInstances[$uid]) {
 				// Fetches data in case $fileData is empty
 			if (empty($fileReferenceData)) {

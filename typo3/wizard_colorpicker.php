@@ -101,7 +101,6 @@ class SC_wizard_colorpicker {
 		$this->md5ID = t3lib_div::_GP('md5ID');
 		$this->exampleImg = t3lib_div::_GP('exampleImg');
 
-
 			// Resolving image (checking existence etc.)
 		$this->imageError = '';
 		if ($this->exampleImg) {

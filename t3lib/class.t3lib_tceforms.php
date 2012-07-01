@@ -745,7 +745,6 @@ class t3lib_TCEforms {
 			(!$GLOBALS['TCA'][$table]['ctrl']['languageField'] || !$this->localizationMode || $this->localizationMode === $PA['fieldConf']['l10n_cat'])
 		) {
 
-
 				// Fetching the TSconfig for the current table/field. This includes the $row which means that
 			$PA['fieldTSConfig'] = $this->setTSconfig($table, $row, $field);
 
@@ -2745,7 +2744,6 @@ class t3lib_TCEforms {
 				$onClick = 'if(TBE_EDITOR.checkSubmit(-1)){ ' . $this->elName($elName) . ".value='" . $sKey . "'; TBE_EDITOR.submitForm();}";
 			}
 
-
 			$tCells[] = '<td width="' . $pct . '%" style="' . ($sKey == $sheetKey ? 'background-color: #9999cc; font-weight: bold;' : 'background-color: #aaaaaa;') . ' cursor: hand;" onclick="' . htmlspecialchars($onClick) . '" align="center">' .
 						($sheetCfg['ROOT']['TCEforms']['sheetTitle'] ? $this->sL($sheetCfg['ROOT']['TCEforms']['sheetTitle']) : $sKey) .
 						'</td>';
@@ -3805,7 +3803,6 @@ class t3lib_TCEforms {
 			$selector = '<select id="' . uniqid('tceforms-multiselect-') . '" ' . ($params['noList'] ? 'style="display: none"' : 'size="' . $sSize . '"' . $this->insertDefStyle('group', 'tceforms-multiselect')) . ($isMultiple ? ' multiple="multiple"' : '') . ' name="' . $fName . '_list" ' . $onFocus . $params['style'] . $disabled . '>' . implode('', $opt) . '</select>';
 		}
 
-
 		$icons = array(
 			'L' => array(),
 			'R' => array(),
@@ -3833,7 +3830,6 @@ class t3lib_TCEforms {
 				} else {
 					$elementBrowserAllowed = $allowed;
 				}
-
 
 				$aOnClick = 'setFormValueOpenBrowser(\'' . $elementBrowserType . '\',\'' . ($fName . '|||' . $elementBrowserAllowed . '|' . $aOnClickInline) . '\'); return false;';
 				$icons['R'][] = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' .
@@ -6040,7 +6036,6 @@ class t3lib_TCEforms {
 	function printNeededJSFunctions() {
 			// JS evaluation:
 		$out = $this->JSbottom($this->formName);
-
 
 			// Integrate JS functions for the element browser if such fields or IRRE fields were processed:
 		if ($this->printNeededJS['dbFileIcons'] || $this->inline->inlineCount) {

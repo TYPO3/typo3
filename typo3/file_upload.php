@@ -102,7 +102,6 @@ class SC_file_upload {
 		$icon = t3lib_iconWorks::getSpriteIcon('apps-filetree-root');
 		$this->title = $icon . htmlspecialchars($this->folderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->folderObject->getIdentifier());
 
-
 			// Setting template object
 		$this->doc = t3lib_div::makeInstance('template');
 		$this->doc->setModuleTemplate('templates/file_upload.html');
@@ -157,7 +156,6 @@ class SC_file_upload {
 				<p>' . $GLOBALS['LANG']->getLL('uploadMultipleFilesInfo', TRUE) . '</p>
 			</div>
 			';
-
 
 			// Produce the number of upload-fields needed:
 		$content .= '

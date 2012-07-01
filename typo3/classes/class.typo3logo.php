@@ -58,7 +58,6 @@ class TYPO3Logo {
 		}
 		$imgInfo = getimagesize(PATH_site . TYPO3_mainDir . $logoFile);
 
-
 		$logo = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' .
 				'<img' . t3lib_iconWorks::skinImg('', $logoFile, $imgInfo[3]) . ' title="TYPO3 Content Management System" alt="" />' .
 				'</a>';

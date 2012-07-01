@@ -233,7 +233,6 @@ class SC_wizard_tsconfig {
 			}
 		');
 
-
 			// Start the page:
 		$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('tsprop'));
 	}
@@ -321,7 +320,6 @@ class SC_wizard_tsconfig {
 				$out .= '<hr />';
 			}
 		}
-
 
 			// SECTION: Showing property tree:
 		$tmpl = t3lib_div::makeInstance('ext_TSparser');

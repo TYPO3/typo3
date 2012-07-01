@@ -863,7 +863,6 @@ class template {
 </div>':'') . $this->endOfPageJsBlock;
 		}
 
-
 			// Logging: Can't find better place to put it:
 		if (TYPO3_DLOG) {
 			t3lib_div::devLog('END of BACKEND session', 'template', 0, array('_FLUSH' => TRUE));

@@ -86,7 +86,6 @@ class t3lib_arrayBrowser {
 			$BTM = ($a == $c) ? 'bottom' : '';
 			$PM = $isArray ? ($deeper ? 'minus' : 'plus') : 'join';
 
-
 			$HTML .= $depthData;
 			$theIcon = '<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/' . $PM . $BTM . '.gif', 'width="18" height="16"') .
 				' align="top" border="0" alt="" />';

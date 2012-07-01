@@ -197,7 +197,6 @@ class fileList extends t3lib_recordList {
 		$folders = $storage->getFolderList($this->folderObject->getIdentifier());
 		$files = $storage->getFileList($this->folderObject->getIdentifier());
 
-
 			// Only render the contents of a browsable storage
 		if ($this->folderObject->getStorage()->isBrowsable()) {
 
@@ -277,7 +276,6 @@ class fileList extends t3lib_recordList {
 
 				// Files are added
 			$iOut .= $this->formatFileList($files, $titleCol);
-
 
 			// Header line is drawn
 		$theData = array();

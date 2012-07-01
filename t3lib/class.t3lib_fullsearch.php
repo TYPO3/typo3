@@ -341,7 +341,6 @@ class t3lib_fullsearch {
 			$output .= $GLOBALS['SOBE']->doc->spacer(20);
 		}
 
-
 			// Query Maker:
 		$qGen = t3lib_div::makeInstance('t3lib_queryGenerator');
 		$qGen->init('queryConfig', $GLOBALS['SOBE']->MOD_SETTINGS['queryTable']);

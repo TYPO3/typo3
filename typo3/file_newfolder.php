@@ -140,7 +140,6 @@ class SC_file_newfolder {
 		$pageContent .= $this->doc->spacer(5);
 		$pageContent.=$this->doc->divider(5);
 
-
 		$code = '<form action="tce_file.php" method="post" name="editform">';
 			// Making the selector box for the number of concurrent folder-creations
 		$this->number = t3lib_utility_Math::forceIntegerInRange($this->number, 1, 10);

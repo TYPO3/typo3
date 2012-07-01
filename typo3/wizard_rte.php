@@ -176,7 +176,6 @@ class SC_wizard_rte {
 						<input type="hidden" name="_serialNumber" value="'.md5(microtime()).'" />' .
 						t3lib_TCEforms::getHiddenTokenField('tceAction');
 
-
 				// Finally, add the whole setup:
 			$this->content.=
 				$tceforms->printNeededJSFunctions_top().

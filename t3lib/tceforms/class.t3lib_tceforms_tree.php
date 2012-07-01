@@ -134,7 +134,6 @@ class t3lib_TCEforms_Tree {
 			$autoSizeMax = intval($PA['fieldConf']['config']['autoSizeMax']) * 20;
 		}
 
-
 		$header = FALSE;
 		$expanded = FALSE;
 		$appearance = $PA['fieldConf']['config']['treeConfig']['appearance'];

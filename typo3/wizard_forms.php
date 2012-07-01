@@ -411,7 +411,6 @@ class SC_wizard_forms {
 						// Render title/field preview COLUMN
 					$cells[] = $confData['type'] != 'hidden' ? '<strong>'.htmlspecialchars($confData['label']).'</strong>' : '';
 
-
 						// Render general type/title COLUMN:
 					$temp_cells = array();
 
@@ -441,7 +440,6 @@ class SC_wizard_forms {
 
 						// Put sub-items together into table cell:
 					$cells[] = $this->formatCells($temp_cells);
-
 
 						// Render specific field configuration COLUMN:
 					$temp_cells = array();
