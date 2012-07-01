@@ -1760,7 +1760,6 @@ class t3lib_cs {
 			// Move the iso codes to the (because we're comparing the keys with "isset" later on)
 		$allLanguageCodes = array_flip($allLanguageCodes);
 
-
 		$preferredLanguages = t3lib_div::trimExplode(',', $languageCodesList);
 			// Order the preferred languages after they key
 		$sortedPreferredLanguages = array();

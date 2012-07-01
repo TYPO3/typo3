@@ -758,7 +758,6 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 				}
 			}
 
-
 		}
 		$output = implode($cArr, '<br />') . '<br />';
 		return $output;
@@ -1403,7 +1402,6 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 							$userTyposcriptStyle = 'style="display:none;"';
 							$defaultTyposcriptStyle = '';
 						}
-
 
 						$deleteIconHTML = t3lib_iconWorks::getSpriteIcon(
 							'actions-edit-undo',

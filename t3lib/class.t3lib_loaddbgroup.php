@@ -302,7 +302,6 @@ class t3lib_loadDBGroup {
 			$sorting_field = 'sorting';
 		}
 
-
 		if ($this->MM_table_where) {
 			$additionalWhere .= LF . str_replace('###THIS_UID###', intval($uid), $this->MM_table_where);
 		}

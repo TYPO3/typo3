@@ -88,7 +88,6 @@ class t3lib_file_Service_FileProcessingService {
 			}
 		}
 
-
 		return $processedFile;
 	}
 

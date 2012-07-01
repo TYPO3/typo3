@@ -229,7 +229,6 @@ class t3lib_file_Service_IndexerService implements t3lib_Singleton {
 			// signal before the files are modified
 		$this->emitPreGatherFileInformationSignal($file, $fileInfo, $gatherDefaultInformation);
 
-
 			// the check helps you to disable the regular file fetching,
 			// so a signal could actually remotely access the service
 		if ($gatherDefaultInformation->getDefaultFileInfo) {

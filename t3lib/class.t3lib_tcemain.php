@@ -3339,7 +3339,6 @@ class t3lib_TCEmain {
 			'sorting DESC'
 		);
 
-
 			// Traverse the files found and copy them:
 		if (is_array($recs)) {
 			foreach ($recs as $rec) {

@@ -1639,7 +1639,6 @@ class browse_links {
 			// Starting content:
 		$content = $this->doc->startPage('TBE file selector');
 
-
 			// Init variable:
 		$pArr = explode('|', $this->bparams);
 

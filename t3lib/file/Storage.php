@@ -611,7 +611,6 @@ class t3lib_file_Storage {
 			return FALSE;
 		}
 
-
 		$isReadCheck = FALSE;
 		if (in_array($action, array('read'))) {
 			$isReadCheck = TRUE;

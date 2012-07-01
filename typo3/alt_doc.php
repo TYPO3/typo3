@@ -863,7 +863,6 @@ class SC_alt_doc {
 					t3lib_iconWorks::getSpriteIcon('actions-document-close') .
 				'</a>';
 
-
 			// DELETE + UNDO buttons:
 		if (!$this->errorC && !$GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] && count($this->elementsData) == 1) {
 			if ($this->firstEl['cmd'] != 'new' && t3lib_utility_Math::canBeInterpretedAsInteger($this->firstEl['uid'])) {
@@ -1411,7 +1410,6 @@ class SC_alt_doc {
 			$GLOBALS['BE_USER']->pushModuleData('alt_doc.php', array($this->docHandler, $this->docDat[1]));
 			t3lib_BEfunc::setUpdateSignal('tx_opendocs::updateNumber', count($this->docHandler));
 		}
-
 
 			// If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: (used by other scripts, like wizard_add, to know which records was created or so...)
 		if ($this->returnEditConf && $this->retUrl != 'dummy.php') {

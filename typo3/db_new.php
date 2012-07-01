@@ -369,7 +369,6 @@ class SC_db_new {
 		$this->newPagesInto = (!empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageInside']) ? 1 : 0);
 		$this->newPagesAfter = (!empty($pageTS['mod.']['wizards.']['newRecord.']['pages.']['show.']['pageAfter']) ? 1 : 0);
 
-
 			// Slight spacer from header:
 		$this->code .= $halfLine;
 
@@ -449,7 +448,6 @@ class SC_db_new {
 				</tr>
 			';
 		}
-
 
 			// New tables (but not pages) INSIDE this pages
 		$isAdmin = $GLOBALS['BE_USER']->isAdmin();
@@ -590,7 +588,6 @@ class SC_db_new {
 				<td></td>
 			</tr>
 		';
-
 
 			// Make table:
 		$this->code .= '

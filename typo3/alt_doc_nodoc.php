@@ -123,7 +123,6 @@ class SC_alt_doc_nodoc {
 		$a_wl = $GLOBALS['BE_USER']->check('modules', 'web_list');
 		$a_wp = t3lib_extMgm::isLoaded('cms') && $GLOBALS['BE_USER']->check('modules', $pageModule);
 
-
 			// Finding module images: PAGE
 		$imgFile = $GLOBALS['LANG']->moduleLabels['tabs_images']['web_layout_tab'];
 		$imgInfo = @getimagesize($imgFile);

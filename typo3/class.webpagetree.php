@@ -206,7 +206,6 @@ class webPageTree extends t3lib_browseTree {
 					$v['HTML'].
 					$this->wrapTitle($this->getTitleStr($v['row'], $titleLen), $v['row'], $v['bank'])."</div>\n";
 
-
 			if (!$v['hasSub']) {
 				$itemHTML .= '</li>';
 			}

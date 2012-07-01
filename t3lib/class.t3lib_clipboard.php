@@ -302,7 +302,6 @@ class t3lib_clipboard {
 				'</a></td>
 			</tr>';
 
-
 			// Print header and content for the NORMAL tab:
 		$out[] = '
 			<tr class="bgColor5">
@@ -376,7 +375,6 @@ class t3lib_clipboard {
 							if ($this->clipData['_setThumb'] && t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
 								$thumb = '<br />' . t3lib_BEfunc::getThumbNail($this->backPath . 'thumbs.php', $v, ' vspace="4"');
 							}
-
 
 							$lines[] = '
 								<tr>

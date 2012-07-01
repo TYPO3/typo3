@@ -184,7 +184,6 @@ class SC_alt_db_navframe {
 			// Produce browse-tree:
 		$tree = $this->pagetree->getBrowsableTree();
 
-
 			// Outputting Temporary DB mount notice:
 		if ($this->active_tempMountPoint) {
 			$flashText = '
@@ -203,7 +202,6 @@ class SC_alt_db_navframe {
 				'',
 				t3lib_FlashMessage::INFO
 			);
-
 
 			$this->content.= $flashMessage->render();
 		}

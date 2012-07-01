@@ -895,7 +895,6 @@ class t3lib_TSparser {
 				$lineC = $this->highLightStyles['linenum'][0] . str_pad($lineNum, 4, ' ', STR_PAD_LEFT) . ':' . $this->highLightStyles['linenum'][1] . ' ' . $lineC;
 			}
 
-
 			$lines[] = $lineC;
 		}
 

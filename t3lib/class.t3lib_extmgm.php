@@ -1147,7 +1147,6 @@ class t3lib_extMgm {
 				);
 			}
 
-
 				// OS check
 				// Empty $os means 'not limited to one OS', therefore a check is not needed
 			if ($GLOBALS['T3_SERVICES'][$serviceType][$serviceKey]['available']
