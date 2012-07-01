@@ -115,7 +115,9 @@ class tx_recycler_helper {
 						$output = '<span class="deletedPath">' . $output . '</span>';
 					}
 
-					if ($fullTitleLimit) $fullOutput = '/' . htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'], $fullTitleLimit)) . $fullOutput;
+					if ($fullTitleLimit) {
+						$fullOutput = '/' . htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'], $fullTitleLimit)) . $fullOutput;
+					}
 				} else {
 					break;
 				}

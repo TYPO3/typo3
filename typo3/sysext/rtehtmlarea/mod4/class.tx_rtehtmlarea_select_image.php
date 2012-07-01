@@ -52,7 +52,7 @@ class tx_rtehtmlarea_image_folderTree extends TBE_FolderTree {
 		if ($this->ext_isLinkable($folderObject)) {
 			$aOnClick = 'return jumpToUrl(\'' . $this->thisScript .
 				'?editorNo=' . $GLOBALS['SOBE']->browser->editorNo .
-				'&act=' . $GLOBALS['SOBE']->browser->act . 
+				'&act=' . $GLOBALS['SOBE']->browser->act .
 				'&mode=' . $GLOBALS['SOBE']->browser->mode .
 				'&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier()) . '\');';
 			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
@@ -1040,18 +1040,34 @@ class tx_rtehtmlarea_select_image extends browse_links {
 	 */
 	protected function setMaximumImageDimensions() {
 		if (is_array($this->buttonConfig['options.']) && is_array($this->buttonConfig['options.']['plain.'])) {
-			if ($this->buttonConfig['options.']['plain.']['maxWidth']) $this->plainMaxWidth = $this->buttonConfig['options.']['plain.']['maxWidth'];
-			if ($this->buttonConfig['options.']['plain.']['maxHeight']) $this->plainMaxHeight = $this->buttonConfig['options.']['plain.']['maxHeight'];
+			if ($this->buttonConfig['options.']['plain.']['maxWidth']) {
+				$this->plainMaxWidth = $this->buttonConfig['options.']['plain.']['maxWidth'];
+			}
+			if ($this->buttonConfig['options.']['plain.']['maxHeight']) {
+				$this->plainMaxHeight = $this->buttonConfig['options.']['plain.']['maxHeight'];
+			}
 		}
-		if (!$this->plainMaxWidth) $this->plainMaxWidth = 640;
-		if (!$this->plainMaxHeight) $this->plainMaxHeight = 680;
+		if (!$this->plainMaxWidth) {
+			$this->plainMaxWidth = 640;
+		}
+		if (!$this->plainMaxHeight) {
+			$this->plainMaxHeight = 680;
+		}
 		if (is_array($this->buttonConfig['options.']) && is_array($this->buttonConfig['options.']['magic.'])) {
-			if ($this->buttonConfig['options.']['magic.']['maxWidth']) $this->magicMaxWidth = $this->buttonConfig['options.']['magic.']['maxWidth'];
-			if ($this->buttonConfig['options.']['magic.']['maxHeight']) $this->magicMaxHeight = $this->buttonConfig['options.']['magic.']['maxHeight'];
+			if ($this->buttonConfig['options.']['magic.']['maxWidth']) {
+				$this->magicMaxWidth = $this->buttonConfig['options.']['magic.']['maxWidth'];
+			}
+			if ($this->buttonConfig['options.']['magic.']['maxHeight']) {
+				$this->magicMaxHeight = $this->buttonConfig['options.']['magic.']['maxHeight'];
+			}
 		}
 			// These defaults allow images to be based on their width - to a certain degree - by setting a high height. Then we're almost certain the image will be based on the width
-		if (!$this->magicMaxWidth) $this->magicMaxWidth = 300;
-		if (!$this->magicMaxHeight) $this->magicMaxHeight = 1000;
+		if (!$this->magicMaxWidth) {
+			$this->magicMaxWidth = 300;
+		}
+		if (!$this->magicMaxHeight) {
+			$this->magicMaxHeight = 1000;
+		}
 	}
 
 	/**

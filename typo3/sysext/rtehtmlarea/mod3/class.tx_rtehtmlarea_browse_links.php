@@ -52,7 +52,9 @@ class tx_rtehtmlarea_pageTree extends rtePageTree {
 	 */
 	function printTree($treeArr='') {
 		$titleLen=intval($GLOBALS['BE_USER']->uc['titleLen']);
-		if (!is_array($treeArr))	$treeArr=$this->tree;
+		if (!is_array($treeArr)) {
+			$treeArr = $this->tree;
+		}
 
 		$out='';
 		$c=0;
@@ -371,7 +373,9 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				}
 				if ($this->classesAnchorJSOptions[$anchorType] && !($this->buttonConfig['properties.']['class.']['required'] || $this->buttonConfig[$this->act.'.']['properties.']['class.']['required'])) {
 					$selected = '';
-					if (!$this->setClass && !$this->classesAnchorDefault[$anchorType])  $selected = 'selected="selected"';
+					if (!$this->setClass && !$this->classesAnchorDefault[$anchorType]) {
+						$selected = 'selected="selected"';
+					}
 					$this->classesAnchorJSOptions[$anchorType] =  '<option ' . $selected . ' value=""></option>' . $this->classesAnchorJSOptions[$anchorType];
 				}
 			}
@@ -384,7 +388,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		if (isset($this->curUrlArray['target']) && !(
 				$this->curUrlArray['target'] != $this->defaultLinkTarget
 				&& !$classSelected[$this->act]
-				&& is_array($this->buttonConfig['targetSelector.']) && $this->buttonConfig['targetSelector.']['disabled'] 
+				&& is_array($this->buttonConfig['targetSelector.']) && $this->buttonConfig['targetSelector.']['disabled']
 				&& is_array($this->buttonConfig['popupSelector.']) && $this->buttonConfig['popupSelector.']['disabled']
 				)
 			) {
@@ -778,7 +782,9 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 								// URL + onclick event:
 							$onClickEvent = '';
-							if (isset($v[$k2i . '.']['target']))	$onClickEvent .= 'browse_links_setTarget(\'' . $v[$k2i . '.']['target'] . '\');';
+							if (isset($v[$k2i . '.']['target'])) {
+								$onClickEvent .= 'browse_links_setTarget(\'' . $v[$k2i . '.']['target'] . '\');';
+							}
 							$v[$k2i.'.']['url'] = str_replace('###_URL###', $this->siteURL, $v[$k2i.'.']['url']);
 							if (substr($v[$k2i . '.']['url'], 0, 7) == 'http://' || substr($v[$k2i . '.']['url'], 0, 7) == 'mailto:') {
 								$onClickEvent .= 'cur_href=unescape(\'' . rawurlencode($v[$k2i . '.']['url']) . '\');link_current();';

@@ -1,5 +1,7 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
+}
 
 		// Add static template for Click-enlarge rendering
 	t3lib_extMgm::addStaticFile($_EXTKEY, 'static/clickenlarge/', 'Clickenlarge Rendering');
@@ -8,7 +10,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 	require_once(t3lib_extMgm::extPath($_EXTKEY) . 'hooks/softref/ext_tables.php');
 
 		// Add acronyms table
-	$GLOBALS['TCA']['tx_rtehtmlarea_acronym'] = Array (
+	$GLOBALS['TCA']['tx_rtehtmlarea_acronym'] = array (
 		'ctrl' => Array (
 			'title' => 'LLL:EXT:rtehtmlarea/locallang_db.xml:tx_rtehtmlarea_acronym',
 			'label' => 'term',

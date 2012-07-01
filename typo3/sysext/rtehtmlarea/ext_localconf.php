@@ -30,11 +30,11 @@
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
 
-if (!defined ('TYPO3_MODE')) {
-	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
 }
 
-if(!$TYPO3_CONF_VARS['BE']['RTEenabled']) {
+if (!$TYPO3_CONF_VARS['BE']['RTEenabled']) {
 	$TYPO3_CONF_VARS['BE']['RTEenabled'] = 1;
 }
 

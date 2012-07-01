@@ -618,7 +618,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 			if (is_array($this->thisConfig['showButtons.'])) {
 				foreach ($this->thisConfig['showButtons.'] as $buttonId => $value) {
-					if ($value) $show[] = $buttonId;
+					if ($value) {
+						$show[] = $buttonId;
+					}
 				}
 				$show = array_unique($show);
 			}
@@ -1451,8 +1453,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					$star=substr($el, -1) == '*';
 					if (!strcmp($pp[0], $el) || ($star && t3lib_div::isFirstPartOfStr($pp[0], substr($el, 0, -1)) )) {
 						$nStyle[] = $pp[0] . ':' . $pp[1];
-					} else
+					} else {
 						unset($styleParts[$k]);
+					}
 				}
 			} else {
 				unset($styleParts[$k]);

@@ -190,7 +190,9 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 
 			// Check for filter:
 		if ($this->cli_isArg('--filterRegex') && $regex = $this->cli_argValue('--filterRegex', 0)) {
-			if (!preg_match($regex, $matchString))	return 'BYPASS: Filter Regex "'.$regex.'" did not match string "'.$matchString.'"';
+			if (!preg_match($regex, $matchString)) {
+				return 'BYPASS: Filter Regex "'.$regex.'" did not match string "'.$matchString.'"';
+			}
 		}
 			// Check for interactive mode
 		if ($this->cli_isArg('-i')) {
@@ -395,14 +397,19 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 			}
 		}
 
-		if ($echoLevel > 0)
+		if ($echoLevel > 0) {
 			echo LF.$accumulatedPath.' ['.$rootID.']'.
 				($pageRecord['deleted'] ? ' (DELETED)':'').
 				($this->recStats['versions_published']['pages'][$rootID] ? ' (PUBLISHED)':'');
-		if ($echoLevel > 1 && $this->recStats['versions_lost_workspace']['pages'][$rootID])
+		}
+
+		if ($echoLevel > 1 && $this->recStats['versions_lost_workspace']['pages'][$rootID]) {
 			echo LF.'	ERROR! This version belongs to non-existing workspace ('.$pageRecord['t3ver_wsid'].')!';
-		if ($echoLevel > 1 && $this->recStats['versions_inside_versioned_page']['pages'][$rootID])
+		}
+
+		if ($echoLevel > 1 && $this->recStats['versions_inside_versioned_page']['pages'][$rootID]) {
 			echo LF.'	WARNING! This version is inside an already versioned page or branch!';
+		}
 
 			// Call back:
 		if ($callBack) {
@@ -482,7 +489,9 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 							if (is_array($versions)) {
 								foreach ($versions as $verRec) {
 									if (!$verRec['_CURRENT_VERSION']) {
-										if ($echoLevel==3)	echo LF.'		\-[#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].'] '.$tableName.':'.$verRec['uid'].')';
+										if ($echoLevel == 3) {
+											echo LF.'		\-[#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].'] '.$tableName.':'.$verRec['uid'].')';
+										}
 										$this->recStats['all'][$tableName][$verRec['uid']] = $verRec['uid'];
 
 											// Register deleted:

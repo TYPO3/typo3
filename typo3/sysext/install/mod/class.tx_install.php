@@ -462,9 +462,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @return void
 	 */
 	function init() {
-		// Must be called after inclusion of init.php (or from init.php)
-		if (!defined('PATH_typo3'))	exit;
-		if (!$this->passwordOK)	exit;
+			// Must be called after inclusion of init.php (or from init.php)
+		if (!defined('PATH_typo3')) {
+			exit;
+		}
+		if (!$this->passwordOK) {
+			exit;
+		}
 
 			// Setting stuff...
 		$this->check_mail();
@@ -997,7 +1001,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								TRUE,
 								TRUE
 							);
-							if ($dbname==TYPO3_db)	$dbIncluded=1;
+							if ($dbname == TYPO3_db) {
+								$dbIncluded = 1;
+							}
 						}
 						if (!$dbIncluded && TYPO3_db) {
 								// // Define the markers content when no access
@@ -1100,8 +1106,11 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 							$step4DatabaseTypeOptions = array();
 							foreach ($sFiles as $f) {
-								if ($f=='Default TYPO3 Tables')	$key='CURRENT_TABLES+STATIC';
-								else $key=htmlspecialchars($f);
+								if ($f == 'Default TYPO3 Tables') {
+									$key = 'CURRENT_TABLES+STATIC';
+								} else {
+									$key = htmlspecialchars($f);
+								}
 									// Define the markers content for database type subpart
 								$step4DatabaseTypeOptionMarkers = array(
 									'databaseTypeValue' => 'import|' . $key,
@@ -1245,12 +1254,14 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			$paths=array(ini_get('safe_mode_exec_dir'), '/usr/local/php/bin/');
 		}
 		if ($this->INSTALL['checkIM']['lzw']) {
-			$this->checkIMlzw=1;
+			$this->checkIMlzw = 1;
 		}
 		if ($this->INSTALL['checkIM']['path']) {
 			$paths[]=trim($this->INSTALL['checkIM']['path']);
 		}
-		if ($this->checkIM)	$this->checkImageMagick($paths);
+		if ($this->checkIM)	{
+			$this->checkImageMagick($paths);
+		}
 		$this->checkDatabase();
 	}
 
@@ -1718,14 +1729,16 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$fileCounter = 0;
 		$deleteCounter = 0;
 		$criteriaMatch = 0;
-		$tmap=array('day'=>1, 'week'=>7, 'month'=>30);
+		$tmap = array('day'=>1, 'week'=>7, 'month'=>30);
 		$tt = $this->INSTALL['typo3temp_delete'];
 		$subdir = $this->INSTALL['typo3temp_subdir'];
-		if (strlen($subdir) && !preg_match('/^[[:alnum:]_]+\/$/', $subdir))	die('subdir "'.$subdir.'" was not allowed!');
+		if (strlen($subdir) && !preg_match('/^[[:alnum:]_]+\/$/', $subdir))	{
+			die('subdir "'.$subdir.'" was not allowed!');
+		}
 		$action = $this->INSTALL['typo3temp_action'];
 		$d = @dir($this->typo3temp_path.$subdir);
 		if (is_object($d)) {
-			while($entry=$d->read()) {
+			while ($entry = $d->read()) {
 				$theFile = $this->typo3temp_path.$subdir.$entry;
 				if (@is_file($theFile)) {
 					$ok = 0;
@@ -2089,8 +2102,12 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 															'match! The password was not changed.';
 												}
 											}
-											if (t3lib_div::_GP('installToolPassword_md5'))	$value =md5($value);
-										} else $doit=0;
+											if (t3lib_div::_GP('installToolPassword_md5')) {
+												$value =md5($value);
+											}
+										} else {
+											$doit=0;
+										}
 									}
 
 									$description = trim($commentArr[1][$k][$vk]);
@@ -2111,7 +2128,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 										}
 									}
 
-									if ($doit && strcmp($GLOBALS['TYPO3_CONF_VARS'][$k][$vk], $value))	$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\''.$k.'\'][\''.$vk.'\']', $value);
+									if ($doit && strcmp($GLOBALS['TYPO3_CONF_VARS'][$k][$vk], $value)) {
+										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\''.$k.'\'][\''.$vk.'\']', $value);
+									}
 								}
 							}
 						}
@@ -2203,7 +2222,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					some extensions.
 				</p>
 			', 1);
-		} else $this->message($ext, 'Current directory in include path', '', -1);
+		} else {
+			$this->message($ext, 'Current directory in include path', '', -1);
+		}
 
 			// *****************
 			// File uploads
@@ -2229,7 +2250,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					with \$TYPO3_CONF_VARS[SYS][form_enctype].
 				</p>
 			', 3);
-		} else $this->message($ext, 'File uploads allowed', '', -1);
+		} else {
+			$this->message($ext, 'File uploads allowed', '', -1);
+		}
 
 		$upload_max_filesize = t3lib_div::getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
 		$post_max_size = t3lib_div::getBytesFromSizeMeasurement(ini_get('post_max_size'));
@@ -2911,7 +2934,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$isExt = TYPO3_OS=='WIN' ? '.exe' : '';
 		$this->config_array['im_combine_filename']='combine';
 		foreach ($paths as $k => $v) {
-			if (!preg_match('/[\\/]$/', $v)) $v.='/';
+			if (!preg_match('/[\\/]$/', $v)) {
+				$v .= '/';
+			}
 			foreach ($programs as $filename) {
 				if (ini_get('open_basedir') || (file_exists($v) && @is_file($v.$filename.$isExt))) {
 					$version = $this->_checkImageMagick_getVersion($filename, $v);
@@ -3027,8 +3052,10 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			if (@is_file($src) && !strstr($src, ' ') && !strstr($dest, ' ')) {
 				$cmd = t3lib_div::imageMagickCommand('convert', $src.' '.$dest, $path);
 				t3lib_utility_Command::exec($cmd);
-			} else die('No typo3/gfx/typo3logo.gif file!');
-			$out='';
+			} else {
+				die('No typo3/gfx/typo3logo.gif file!');
+			}
+			$out = '';
 			if (@is_file($dest)) {
 				$new_info = @getimagesize($dest);
 				clearstatcache();
@@ -3282,7 +3309,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							TRUE,
 							FALSE
 						);
-						if ($dbname==TYPO3_db)	$dbIncluded=1;
+						if ($dbname == TYPO3_db) {
+							$dbIncluded = 1;
+						}
 					}
 					if (!$dbIncluded && TYPO3_db) {
 						$databaseItemMarkers['databaseName'] = htmlspecialchars(TYPO3_db);
@@ -3717,9 +3746,10 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					foreach ($this->INSTALL['localconf.php'] as $key => $value) {
 						switch((string)$key) {
 							case 'typo_db_username':
-								if (strlen($value)<50) {
-									if (strcmp(TYPO3_db_username, $value))
+								if (strlen($value) < 50) {
+									if (strcmp(TYPO3_db_username, $value)) {
 										$this->setValueInLocalconfFile($lines, '$typo_db_username', trim($value));
+									}
 								} else {
 									$this->errorMessages[] = '
 										Username \'' . $value . '\' was longer
@@ -3729,8 +3759,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								break;
 							case 'typo_db_password':
 								if (strlen($value)<50) {
-									if (strcmp(TYPO3_db_password, $value))
+									if (strcmp(TYPO3_db_password, $value)) {
 										$this->setValueInLocalconfFile($lines, '$typo_db_password', trim($value));
+									}
 								} else {
 									$this->errorMessages[] = '
 										Password was longer than 50 chars (...not saved)
@@ -3739,8 +3770,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								break;
 							case 'typo_db_host':
 								if (preg_match('/^[a-zA-Z0-9_\.-]+(:.+)?$/', $value) && strlen($value)<50) {
-									if (strcmp(TYPO3_db_host, $value))
+									if (strcmp(TYPO3_db_host, $value)) {
 										$this->setValueInLocalconfFile($lines, '$typo_db_host', $value);
+									}
 								} else {
 									$this->errorMessages[] = '
 										Host \'' . $value . '\' was not
@@ -3751,8 +3783,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								break;
 							case 'typo_db':
 								if (strlen($value)<50) {
-									if (strcmp(TYPO3_db, $value))
+									if (strcmp(TYPO3_db, $value)) {
 										$this->setValueInLocalconfFile($lines, '$typo_db', trim($value));
+									}
 								} else {
 									$this->errorMessages[] = '
 										Database name \'' . $value . '\' was
@@ -3761,24 +3794,29 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								}
 								break;
 							case 'disable_exec_function':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function'], $value))
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function'], $value)) {
 									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'BE\'][\'disable_exec_function\']', $value ? 1 : 0);
+								}
 								break;
 							case 'sitename':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], $value))
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], $value)) {
 									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'SYS\'][\'sitename\']', $value);
+								}
 								break;
 							case 'encryptionKey':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'], $value))
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'], $value)) {
 									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'SYS\'][\'encryptionKey\']', $value);
+								}
 								break;
 							case 'compat_version':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'], $value))
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'], $value)) {
 									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'SYS\'][\'compat_version\']', $value);
+								}
 								break;
 							case 'im_combine_filename':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'], $value))
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'], $value)) {
 									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'im_combine_filename\']', $value);
+								}
 								break;
 							case 'gdlib':
 							case 'gdlib_png':
@@ -3810,8 +3848,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								}
 								break;
 							case 'TTFdpi':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'], $value))
+								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'], $value)) {
 									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'TTFdpi\']', $value);
+								}
 								break;
 						}
 					}
@@ -4492,7 +4531,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$mismatch=FALSE;
 		switch (strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'])) {
 			case 'gm':
-				if (doubleval($im_path_version)>=2)	$mismatch=TRUE;
+				if (doubleval($im_path_version) >= 2) {
+					$mismatch = TRUE;
+				}
 			break;
 			default:
 				if (($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] ? TRUE : FALSE) != (doubleval($im_path_version) >= 6)) {
@@ -4510,7 +4551,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				</p>
 			';
 			$etype=2;
-		} else $etype=1;
+		} else {
+			$etype = 1;
+		}
 
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']=='gm') {
 			$msg = str_replace('ImageMagick', 'GraphicsMagick', $msg);
@@ -4596,7 +4639,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						if ($this->isExtensionEnabled($ext, $headCode, 'Read ' . strtoupper($ext))) {
 							$imageProc->IM_commands=array();
 							$theFile = t3lib_extMgm::extPath('install').'imgs/jesus.'.$ext;
-							if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
+							if (!@is_file($theFile)) {
+								die('Error: '.$theFile.' was not a file');
+							}
 
 							$imageProc->imageMagickConvert_forceFileNameBody='read_'.$ext;
 							$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '', '', '', '', '', 1);
@@ -4608,7 +4653,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					if ($this->isExtensionEnabled('pdf', $headCode, 'Read PDF')) {
 						$imageProc->IM_commands=array();
 						$theFile = t3lib_extMgm::extPath('install').'imgs/pdf_from_imagemagick.pdf';
-						if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
+						if (!@is_file($theFile)) {
+							die('Error: '.$theFile.' was not a file');
+						}
 
 						$imageProc->imageMagickConvert_forceFileNameBody='read_pdf';
 						$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '170', '', '', '', '', 1);
@@ -4618,7 +4665,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					if ($this->isExtensionEnabled('ai', $headCode, 'Read AI')) {
 						$imageProc->IM_commands=array();
 						$theFile = t3lib_extMgm::extPath('install').'imgs/typo3logotype.ai';
-						if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
+						if (!@is_file($theFile)) {
+							die('Error: '.$theFile.' was not a file');
+						}
 
 						$imageProc->imageMagickConvert_forceFileNameBody='read_ai';
 						$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '170', '', '', '', '', 1);
@@ -4656,7 +4705,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						// Writing GIF
 					$imageProc->IM_commands=array();
 					$theFile = t3lib_extMgm::extPath('install').'imgs/jesus.gif';
-					if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
+					if (!@is_file($theFile)) {
+						die('Error: '.$theFile.' was not a file');
+					}
 
 					$imageProc->imageMagickConvert_forceFileNameBody='write_gif';
 					$fileInfo = $imageProc->imageMagickConvert($theFile, 'gif', '', '', '', '', '', 1);
@@ -4667,13 +4718,15 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						clearstatcache();
 						$curSize=t3lib_div::formatSize(@filesize($fileInfo[3]));
 						$note = array('Note on gif_compress() function:', "The 'gif_compress' method used was '".$returnCode."'.<br />Previous filesize: ".$prevSize.'. Current filesize:'.$curSize);
-					} else  $note=array('Note on gif_compress() function:', '<em>Not used! Disabled by [GFX][gif_compress]</em>');
+					} else  {
+						$note = array('Note on gif_compress() function:', '<em>Not used! Disabled by [GFX][gif_compress]</em>');
+					}
 					$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands, $note);
 					$this->message($headCode, 'Write GIF', $result[0], $result[1]);
 
 
 						// Writing PNG
-					$imageProc->IM_commands=array();
+					$imageProc->IM_commands = array();
 					$theFile = t3lib_extMgm::extPath('install').'imgs/jesus.gif';
 
 					$imageProc->imageMagickConvert_forceFileNameBody='write_png';
@@ -4708,7 +4761,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						// Scaling transparent image
 					$imageProc->IM_commands=array();
 					$theFile = t3lib_extMgm::extPath('install').'imgs/jesus2_transp.gif';
-					if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
+					if (!@is_file($theFile)) {
+						die('Error: '.$theFile.' was not a file');
+					}
 
 					$imageProc->imageMagickConvert_forceFileNameBody='scale_gif';
 					$fileInfo = $imageProc->imageMagickConvert($theFile, 'gif', '150', '', '', '', '', 1);
@@ -4719,13 +4774,17 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						clearstatcache();
 						$curSize=t3lib_div::formatSize(@filesize($fileInfo[3]));
 						$note = array('Note on gif_compress() function:', "The 'gif_compress' method used was '".$returnCode."'.<br />Previous filesize: ".$prevSize.'. Current filesize:'.$curSize);
-					} else $note=array('Note on gif_compress() function:', '<em>Not used! Disabled by [GFX][gif_compress]</em>');
+					} else {
+						$note = array('Note on gif_compress() function:', '<em>Not used! Disabled by [GFX][gif_compress]</em>');
+					}
 					$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands, $note);
 					$this->message($headCode, 'GIF to GIF, 150 pixels wide', $result[0], $result[1]);
 
 					$imageProc->IM_commands=array();
 					$theFile = t3lib_extMgm::extPath('install').'imgs/jesus2_transp.png';
-					if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
+					if (!@is_file($theFile)) {
+						die('Error: '.$theFile.' was not a file');
+					}
 
 					$imageProc->imageMagickConvert_forceFileNameBody='scale_png';
 					$fileInfo = $imageProc->imageMagickConvert($theFile, 'png', '150', '', '', '', '', 1);
@@ -4734,7 +4793,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 					$imageProc->IM_commands=array();
 					$theFile = t3lib_extMgm::extPath('install').'imgs/jesus2_transp.gif';
-					if (!@is_file($theFile))	die('Error: '.$theFile.' was not a file');
+					if (!@is_file($theFile)) {
+						die('Error: '.$theFile.' was not a file');
+					}
 					$imageProc->imageMagickConvert_forceFileNameBody='scale_jpg';
 					$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '150', '', '', '', '', 1);
 					$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
@@ -4773,9 +4834,15 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$input = t3lib_extMgm::extPath('install').'imgs/greenback.gif';
 					$overlay = t3lib_extMgm::extPath('install').'imgs/jesus.jpg';
 					$mask = t3lib_extMgm::extPath('install').'imgs/blackwhite_mask.gif';
-						if (!@is_file($input))	die('Error: '.$input.' was not a file');
-						if (!@is_file($overlay))	die('Error: '.$overlay.' was not a file');
-						if (!@is_file($mask))	die('Error: '.$mask.' was not a file');
+						if (!@is_file($input)) {
+							die('Error: '.$input.' was not a file');
+						}
+						if (!@is_file($overlay)) {
+							die('Error: '.$overlay.' was not a file');
+						}
+						if (!@is_file($mask)) {
+							die('Error: '.$mask.' was not a file');
+						}
 
 					$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5($imageProc->alternativeOutputKey.'combine1').'.jpg';
 					$imageProc->combineExec($input, $overlay, $mask, $output, TRUE);
@@ -4788,9 +4855,15 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$input = t3lib_extMgm::extPath('install').'imgs/combine_back.jpg';
 					$overlay = t3lib_extMgm::extPath('install').'imgs/jesus.jpg';
 					$mask = t3lib_extMgm::extPath('install').'imgs/combine_mask.jpg';
-						if (!@is_file($input))	die('Error: '.$input.' was not a file');
-						if (!@is_file($overlay))	die('Error: '.$overlay.' was not a file');
-						if (!@is_file($mask))	die('Error: '.$mask.' was not a file');
+						if (!@is_file($input)) {
+							die('Error: '.$input.' was not a file');
+						}
+						if (!@is_file($overlay)) {
+							die('Error: '.$overlay.' was not a file');
+						}
+						if (!@is_file($mask)) {
+							die('Error: '.$mask.' was not a file');
+						}
 
 					$output = $imageProc->tempPath.$imageProc->filenamePrefix.t3lib_div::shortMD5($imageProc->alternativeOutputKey.'combine2').'.jpg';
 					$imageProc->combineExec($input, $overlay, $mask, $output, TRUE);
@@ -4847,7 +4920,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						// GD from image with box
 					$imageProc->IM_commands=array();
 					$input = t3lib_extMgm::extPath('install').'imgs/jesus.'.$imageProc->gifExtension;
-						if (!@is_file($input))	die('Error: '.$input.' was not a file');
+					if (!@is_file($input)) {
+						die('Error: '.$input.' was not a file');
+					}
 					$im = $imageProc->imageCreateFromFile($input);
 					$workArea=array(0, 0, 170, 136);
 					$conf=array();
@@ -7531,11 +7606,15 @@ $out="
 			return;
 		}
 
-		if ($type==3) { $this->fatalError=1; }
+		if ($type == 3) {
+			$this->fatalError = 1;
+		}
 
 		$long_string = trim($long_string);
 
-		if (!$this->silent)	$this->printSection($head, $short_string, $long_string, $type);
+		if (!$this->silent) {
+			$this->printSection($head, $short_string, $long_string, $type);
+		}
 	}
 
 	/**
@@ -7877,8 +7956,10 @@ $out="
 	 * @return string HTML of the main menu
 	 */
 	function menu() {
-		if ($this->mode !='123') {
-			if (!$this->passwordOK)	return;
+		if ($this->mode != '123') {
+			if (!$this->passwordOK) {
+				return;
+			}
 
 			$c = 0;
 			$items = array();
@@ -8459,7 +8540,9 @@ $out="
 			// remove all existing databases from the list of allowed patterns
 		$existingDatabases = $this->getDatabaseList();
 		foreach ($allowedPatterns as $index => $pattern) {
-			if (strpos($pattern, '%') !== FALSE) continue;
+			if (strpos($pattern, '%') !== FALSE) {
+				continue;
+			}
 
 			if (in_array($pattern, $existingDatabases)) {
 				unset($allowedPatterns[$index]);

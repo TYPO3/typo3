@@ -214,7 +214,9 @@ Automatic Repair:
 						// Return errors if any:
 					if (count($tce->errorLog)) {
 						echo '	ERROR from "TCEmain":'.LF.'TCEmain:'.implode(LF.'TCEmain:', $tce->errorLog);
-					} else echo 'DONE';
+					} else {
+						echo 'DONE';
+					}
 				}
 				echo LF;
 			}
@@ -255,7 +257,9 @@ Automatic Repair:
 					// Return errors if any:
 				if (count($tce->errorLog)) {
 					echo '	ERROR from "TCEmain":'.LF.'TCEmain:'.implode(LF.'TCEmain:', $tce->errorLog);
-				} else echo 'DONE';
+				} else {
+					echo 'DONE';
+				}
 			}
 			echo LF;
 		}
