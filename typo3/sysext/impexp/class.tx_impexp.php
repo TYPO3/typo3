@@ -408,9 +408,15 @@ class tx_impexp {
 							// Add information about the softrefs to header:
 						$this->dat['header']['records'][$table][$row['uid']]['softrefs'] = $this->flatSoftRefs($this->dat['records'][$table.':'.$row['uid']]['rels']);
 
-					} else $this->error('Record '.$table.':'.$row['uid'].' was larger than maxRecordSize ('.t3lib_div::formatSize($this->maxRecordSize).')');
-				} else $this->error('Record '.$table.':'.$row['uid'].' already added.');
-			} else $this->error('Record '.$table.':'.$row['uid'].' was outside your DB mounts!');
+					} else {
+						$this->error('Record '.$table.':'.$row['uid'].' was larger than maxRecordSize ('.t3lib_div::formatSize($this->maxRecordSize).')');
+					}
+				} else {
+					$this->error('Record '.$table.':'.$row['uid'].' already added.');
+				}
+			} else {
+				$this->error('Record '.$table.':'.$row['uid'].' was outside your DB mounts!');
+			}
 		}
 	}
 
@@ -488,7 +494,9 @@ class tx_impexp {
 					}
 				}
 			}
-		} else $this->error('There were no records available.');
+		} else {
+			$this->error('There were no records available.');
+		}
 
 			// Now, if there were new records to add, do so:
 		if (count($addR)) {
@@ -635,7 +643,9 @@ class tx_impexp {
 					}
 				}
 			}
-		} else $this->error('There were no records available.');
+		} else {
+			$this->error('There were no records available.');
+		}
 	}
 
 	/**
@@ -761,9 +771,12 @@ class tx_impexp {
 						}
 					}
 				}
-
-			} else  $this->error($fI['ID_absFile'].' was larger ('.t3lib_div::formatSize(filesize($fI['ID_absFile'])).') than the maxFileSize ('.t3lib_div::formatSize($this->maxFileSize).')! Skipping.');
-		} else $this->error($fI['ID_absFile'].' was not a file! Skipping.');
+			} else {
+				$this->error($fI['ID_absFile'].' was larger ('.t3lib_div::formatSize(filesize($fI['ID_absFile'])).') than the maxFileSize ('.t3lib_div::formatSize($this->maxFileSize).')! Skipping.');
+			}
+		} else {
+			$this->error($fI['ID_absFile'].' was not a file! Skipping.');
+		}
 	}
 
 	/**
@@ -982,7 +995,9 @@ class tx_impexp {
 	 * @return string Content stream.
 	 */
 	function addFilePart($data, $compress = FALSE) {
-		if ($compress)	$data = gzcompress($data);
+		if ($compress) {
+			$data = gzcompress($data);
+		}
 		return md5($data).':'.
 				($compress?'1':'0').':'.
 				str_pad(strlen($data), 10, '0', STR_PAD_LEFT).':'.
@@ -1166,7 +1181,9 @@ class tx_impexp {
 					}
 				}
 			}
-		} else $this->error('Error: No records defined in internal data array.');
+		} else {
+			$this->error('Error: No records defined in internal data array.');
+		}
 
 			// Now write to database:
 		$tce = $this->getNewTCE();
@@ -1206,7 +1223,9 @@ class tx_impexp {
 
 		if (is_array($this->dat['header']['pagetree'])) {
 			$pagesFromTree = $this->flatInversePageTree($this->dat['header']['pagetree']);
-		} else $pagesFromTree = array();
+		} else {
+			$pagesFromTree = array();
+		}
 
 		if (is_array($this->dat['header']['pid_lookup'])) {
 			foreach ($this->dat['header']['pid_lookup'] as $pid => $recList) {
@@ -1267,7 +1286,9 @@ class tx_impexp {
 					$ID = uniqid('NEW');
 				}
 				$this->import_newId[$table.':'.$ID] = array('table' => $table, 'uid' => $uid);
-				if ($table == 'pages')	$this->import_newId_pids[$uid] = $ID;
+				if ($table == 'pages') {
+					$this->import_newId_pids[$uid] = $ID;
+				}
 
 					// Set main record data:
 				$this->import_data[$table][$ID] = $record;
@@ -1332,7 +1353,9 @@ class tx_impexp {
 				} elseif ($this->update) {
 						// Map same ID to same ID....
 					$this->import_mapId[$table][$old_uid] = $id;
-				} else $this->error('Possible error: '.$table.':'.$old_uid.' had no new id assigned to it. This indicates that the record was not added to database during import. Please check changelog!', 1);
+				} else {
+					$this->error('Possible error: '.$table.':'.$old_uid.' had no new id assigned to it. This indicates that the record was not added to database during import. Please check changelog!', 1);
+				}
 			}
 		}
 	}
@@ -1365,7 +1388,9 @@ class tx_impexp {
 				if (is_file($fileName)) {
 					$this->error('Error: '.$fileName.' was NOT unlinked as it should have been!', 1);
 				}
-			} else $this->error('Error: '.$fileName.' was not in temp-path. Not removed!', 1);
+			} else {
+				$this->error('Error: '.$fileName.' was not in temp-path. Not removed!', 1);
+			}
 		}
 		$this->unlinkFiles = array();
 	}
@@ -1409,7 +1434,7 @@ class tx_impexp {
 							case 'file':
 								if (is_array($config['newValueFiles']) && count($config['newValueFiles'])) {
 									$valArr = array();
-									foreach($config['newValueFiles'] as $fI) {
+									foreach ($config['newValueFiles'] as $fI) {
 										$valArr[] = $this->import_addFileNameToBeCopied($fI);
 									}
 									$updateData[$table][$thisNewUid][$field] = implode(',', $valArr);	// List of absolute files
@@ -1417,8 +1442,12 @@ class tx_impexp {
 							break;
 						}
 					}
-				} else $this->error('Error: no record was found in data array!', 1);
-			} else $this->error('Error: this records is NOT created it seems! ('.$table.':'.$uid.')', 1);
+				} else {
+					$this->error('Error: no record was found in data array!', 1);
+				}
+			} else {
+				$this->error('Error: this records is NOT created it seems! ('.$table.':'.$uid.')', 1);
+			}
 		}
 		if (count($updateData)) {
 			$tce = $this->getNewTCE();
@@ -1445,13 +1474,10 @@ class tx_impexp {
 
 		foreach ($itemArray as $relDat) {
 			if (is_array($this->import_mapId[$relDat['table']]) && isset($this->import_mapId[$relDat['table']][$relDat['id']])) {
-
 				$valArray[] = $relDat['table'].'_'.$this->import_mapId[$relDat['table']][$relDat['id']];
 			} elseif ($this->isTableStatic($relDat['table']) || $this->isExcluded($relDat['table'], $relDat['id']) || $relDat['id']<0) {	// Checking for less than zero because some select types could contain negative values, eg. fe_groups (-1, -2) and sys_language (-1 = ALL languages). This must be handled on both export and import.
-
 				$valArray[] = $relDat['table'].'_'.$relDat['id'];
 			} else {
-
 				$this->error('Lost relation: '.$relDat['table'].':'.$relDat['id'], 1);
 			}
 		}
@@ -1477,9 +1503,15 @@ class tx_impexp {
 					$this->alternativeFilePath[$tmpFile] = $this->dat['files'][$fI['ID']]['relFileRef'];
 
 					return $tmpFile;
-				} else $this->error('Error: temporary file '.$tmpFile.' had a size ('.filesize($tmpFile).') different from the original ('.$this->dat['files'][$fI['ID']]['filesize'].')', 1);
-			} else $this->error('Error: temporary file '.$tmpFile.' was not written as it should have been!', 1);
-		} else $this->error('Error: No file found for ID '.$fI['ID'], 1);
+				} else {
+					$this->error('Error: temporary file '.$tmpFile.' had a size ('.filesize($tmpFile).') different from the original ('.$this->dat['files'][$fI['ID']]['filesize'].')', 1);
+				}
+			} else {
+				$this->error('Error: temporary file '.$tmpFile.' was not written as it should have been!', 1);
+			}
+		} else {
+			$this->error('Error: No file found for ID '.$fI['ID'], 1);
+		}
 	}
 
 	/**
@@ -1537,8 +1569,12 @@ class tx_impexp {
 							break;
 						}
 					}
-				} else $this->error('Error: no record was found in data array!', 1);
-			} else $this->error('Error: this records is NOT created it seems! ('.$table.':'.$uid.')', 1);
+				} else {
+					$this->error('Error: no record was found in data array!', 1);
+				}
+			} else {
+				$this->error('Error: this records is NOT created it seems! ('.$table.':'.$uid.')', 1);
+			}
 		}
 		if (count($updateData)) {
 			$tce = $this->getNewTCE();
@@ -1833,21 +1869,31 @@ class tx_impexp {
 
 								// Return the relative path of the copy file name:
 							return substr($copyDestName, strlen(PATH_site));
-						} else $this->error('ERROR: Could not find original file ID');
-					} else $this->error('ERROR: The destination filenames "'.$copyDestName.'" and "'.$origDestName.'" either existed or have non-valid names');
-				} else $this->error('ERROR: "'.PATH_site.$dirPrefix.'" was not a directory, so could not process file "'.$relFileName.'"');
-
-
-			} elseif (t3lib_div::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName.'/'))	{	// File in fileadmin/ folder:
+						} else {
+							$this->error('ERROR: Could not find original file ID');
+						}
+					} else {
+						$this->error('ERROR: The destination filenames "'.$copyDestName.'" and "'.$origDestName.'" either existed or have non-valid names');
+					}
+				} else {
+					$this->error('ERROR: "'.PATH_site.$dirPrefix.'" was not a directory, so could not process file "'.$relFileName.'"');
+				}
+			} elseif (t3lib_div::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName.'/')) {	// File in fileadmin/ folder:
 
 					// Create file (and possible resources)
 				$newFileName = $this->processSoftReferences_saveFile_createRelFile($dirPrefix, basename($relFileName), $cfg['file_ID'], $table, $uid);
 
 				if (strlen($newFileName)) {
 					$relFileName = $newFileName;
-				} else $this->error('ERROR: No new file created for "'.$relFileName.'"');
-			} else $this->error('ERROR: Sorry, cannot operate on non-RTE files which are outside the fileadmin folder.');
-		} else $this->error('ERROR: Could not find file ID in header.');
+				} else {
+					$this->error('ERROR: No new file created for "'.$relFileName.'"');
+				}
+			} else {
+				$this->error('ERROR: Sorry, cannot operate on non-RTE files which are outside the fileadmin folder.');
+			}
+		} else {
+			$this->error('ERROR: Could not find file ID in header.');
+		}
 
 			// Return (new) filename relative to PATH_site:
 		return $relFileName;
@@ -1908,8 +1954,12 @@ class tx_impexp {
 									$destDir = substr(dirname($absResourceFileName).'/', strlen(PATH_site));
 									if ($this->verifyFolderAccess($destDir, TRUE) && $this->checkOrCreateDir($destDir)) {
 										$this->writeFileVerify($absResourceFileName, $res_fileID);
-									} else $this->error('ERROR: Could not create file in directory "'.$destDir.'"');
-								} else $this->error('ERROR: Could not resolve path for "'.$relResourceFileName.'"');
+									} else {
+										$this->error('ERROR: Could not create file in directory "'.$destDir.'"');
+									}
+								} else {
+									$this->error('ERROR: Could not resolve path for "'.$relResourceFileName.'"');
+								}
 
 								$tokenizedContent = str_replace('{EXT_RES_ID:'.$res_fileID.'}', $relResourceFileName, $tokenizedContent);
 								$tokenSubstituted = TRUE;
@@ -1965,12 +2015,24 @@ class tx_impexp {
 							$this->fileIDMap[$fileID] = $fileName;
 							if (md5(t3lib_div::getUrl($fileName))==$this->dat['files'][$fileID]['content_md5']) {
 								return TRUE;
-							} else $this->error('ERROR: File content "'.$fileName.'" was corrupted');
-						} else $this->error('ERROR: File ID "'.$fileID.'" could not be found');
-					} else $this->error('ERROR: Filename "'.$fileName.'" was not a valid relative file path!');
-				} else $this->error('ERROR: Filename "'.$fileName.'" failed against extension check or deny-pattern!');
-			} else $this->error('ERROR: Filename "'.$fileName.'" was not allowed in destination path!');
-		} else $this->error('ERROR: You did not have sufficient permissions to write the file "'.$fileName.'"');
+							} else {
+								$this->error('ERROR: File content "'.$fileName.'" was corrupted');
+							}
+						} else {
+							$this->error('ERROR: File ID "'.$fileID.'" could not be found');
+						}
+					} else {
+						$this->error('ERROR: Filename "'.$fileName.'" was not a valid relative file path!');
+					}
+				} else {
+					$this->error('ERROR: Filename "'.$fileName.'" failed against extension check or deny-pattern!');
+				}
+			} else {
+				$this->error('ERROR: Filename "'.$fileName.'" was not allowed in destination path!');
+			}
+		} else {
+			$this->error('ERROR: You did not have sufficient permissions to write the file "'.$fileName.'"');
+		}
 	}
 
 	/**
@@ -1988,7 +2050,7 @@ class tx_impexp {
 		if ($firstDir === $this->fileadminFolderName && t3lib_div::getFileAbsFileName($dirPrefix)) {
 
 			$pathAcc = '';
-			foreach($filePathParts as $dirname) {
+			foreach ($filePathParts as $dirname) {
 				$pathAcc.='/'.$dirname;
 				if (strlen($dirname)) {
 					if (!@is_dir(PATH_site.$this->fileadminFolderName.$pathAcc)) {
@@ -1997,9 +2059,11 @@ class tx_impexp {
 							return FALSE;
 						}
 					}
-				} elseif ($dirPrefix===$this->fileadminFolderName.$pathAcc) {
+				} elseif ($dirPrefix === $this->fileadminFolderName . $pathAcc) {
 					return TRUE;
-				} else $this->error('ERROR: Directory could not be created....A');
+				} else {
+					$this->error('ERROR: Directory could not be created....A');
+				}
 			}
 		}
 	}
@@ -2063,9 +2127,15 @@ class tx_impexp {
 						if ($this->dat['_DOCUMENT_TAG']==='T3RecordDocument' && is_array($this->dat['header']) && is_array($this->dat['records'])) {
 							$this->loadInit();
 							return TRUE;
-						} else $this->error('XML file did not contain proper XML for TYPO3 Import');
-					} else $this->error('XML could not be parsed: '.$this->dat);
-				} else $this->error('Error opening file: '.$filename);
+						} else {
+							$this->error('XML file did not contain proper XML for TYPO3 Import');
+						}
+					} else {
+						$this->error('XML could not be parsed: '.$this->dat);
+					}
+				} else {
+					$this->error('Error opening file: '.$filename);
+				}
 			} else {
 					// T3D
 				if($fd = fopen($filename, 'rb')) {
@@ -2076,10 +2146,14 @@ class tx_impexp {
 					}
 					$this->loadInit();
 					return TRUE;
-				} else $this->error('Error opening file: '.$filename);
+				} else {
+					$this->error('Error opening file: '.$filename);
+				}
 				fclose($fd);
 			}
-		} else $this->error('Filename not found: '.$filename);
+		} else {
+			$this->error('Filename not found: '.$filename);
+		}
 
 		return FALSE;
 	}
@@ -2108,12 +2182,20 @@ class tx_impexp {
 					if ($initStrDat[1]) {
 						if ($this->compress) {
 							$datString = gzuncompress($datString);
-						} else $this->error('Content read error: This file requires decompression, but this server does not offer gzcompress()/gzuncompress() functions.', 1);
+						} else {
+							$this->error('Content read error: This file requires decompression, but this server does not offer gzcompress()/gzuncompress() functions.', 1);
+						}
 					}
 					return $unserialize ? unserialize($datString) : $datString;
-				} else $this->error('MD5 check failed ('.$name.')');
-			} else $this->error('File read error: InitString had a wrong length. ('.$name.')');
-		} else $this->error('File read error: Warning message in file. ('.$initStr.fgets($fd).')');
+				} else {
+					$this->error('MD5 check failed ('.$name.')');
+				}
+			} else {
+				$this->error('File read error: InitString had a wrong length. ('.$name.')');
+			}
+		} else {
+			$this->error('File read error: Warning message in file. ('.$initStr.fgets($fd).')');
+		}
 	}
 
 	/**
@@ -2154,11 +2236,17 @@ class tx_impexp {
 				if ($initStrDat[1]) {
 					if ($this->compress) {
 						$datString = gzuncompress($datString);
-					} else $this->error('Content read error: This file requires decompression, but this server does not offer gzcompress()/gzuncompress() functions.', 1);
+					} else {
+						$this->error('Content read error: This file requires decompression, but this server does not offer gzcompress()/gzuncompress() functions.', 1);
+					}
 				}
 				return $unserialize ? unserialize($datString) : $datString;
-			} else $this->error('MD5 check failed ('.$name.')');
-		} else $this->error('Content read error: InitString had a wrong length. ('.$name.')');
+			} else {
+				$this->error('MD5 check failed ('.$name.')');
+			}
+		} else {
+			$this->error('Content read error: InitString had a wrong length. ('.$name.')');
+		}
 	}
 
 	/**
@@ -2410,7 +2498,9 @@ class tx_impexp {
 			// Get record:
 		$record = $this->dat['header']['records'][$table][$uid];
 		unset($this->remainHeader['records'][$table][$uid]);
-		if (!is_array($record) && !($table==='pages' && !$uid))	$this->error('MISSING RECORD: '.$table.':'.$uid, 1);
+		if (!is_array($record) && !($table === 'pages' && !$uid)) {
+			$this->error('MISSING RECORD: '.$table.':'.$uid, 1);
+		}
 
 			// Begin to create the line arrays information record, pInfo:
 		$pInfo = array();
@@ -2463,7 +2553,9 @@ class tx_impexp {
 						// Mode selector:
 					$optValues = array();
 					$optValues[] = $recInf ? $LANG->getLL('impexpcore_singlereco_update') : $LANG->getLL('impexpcore_singlereco_insert');
-					if ($recInf) $optValues['as_new'] = $LANG->getLL('impexpcore_singlereco_importAsNew');
+					if ($recInf) {
+						$optValues['as_new'] = $LANG->getLL('impexpcore_singlereco_importAsNew');
+					}
 					if ($recInf) {
 						if (!$this->global_ignore_pid) {
 							$optValues['ignore_pid'] = $LANG->getLL('impexpcore_singlereco_ignorePid');
@@ -2471,7 +2563,9 @@ class tx_impexp {
 							$optValues['respect_pid'] = $LANG->getLL('impexpcore_singlereco_respectPid');
 						}
 					}
-					if (!$recInf && $GLOBALS['BE_USER']->isAdmin()) $optValues['force_uid'] = sprintf($LANG->getLL('impexpcore_singlereco_forceUidSAdmin'), $uid);
+					if (!$recInf && $GLOBALS['BE_USER']->isAdmin()) {
+						$optValues['force_uid'] = sprintf($LANG->getLL('impexpcore_singlereco_forceUidSAdmin'), $uid);
+					}
 					$optValues['exclude'] = $LANG->getLL('impexpcore_singlereco_exclude');
 
 					$pInfo['updateMode'] = $this->renderSelectBox('tx_impexp[import_mode][' . $table . ':' . $uid . ']', $this->import_mode[$table . ':' . $uid], $optValues);
@@ -2620,7 +2714,9 @@ class tx_impexp {
 						$this->addRelations($record['rels'], $lines, $preCode.'&nbsp;&nbsp;', array_merge($recurCheck, array($pInfo['ref'])), $htmlColorClass);
 					}
 				}
-			} else $this->error($pInfo['ref'].' was recursive...');
+			} else {
+				$this->error($pInfo['ref'].' was recursive...');
+			}
 		}
 	}
 
@@ -2690,7 +2786,9 @@ class tx_impexp {
 					if (!$this->allowPHPScripts && !$fileProcObj->checkIfAllowed($testFI['fileext'], $testFI['path'], $testFI['file'])) {
 						$pInfo['msg'].= 'File extension was not allowed!';
 					}
-				} else $pInfo['msg'] = 'You user profile does not allow you to create files on the server!';
+				} else {
+					$pInfo['msg'] = 'You user profile does not allow you to create files on the server!';
+				}
 			}
 
 			$pInfo['showDiffContent'] = substr($this->fileIDMap[$ID], strlen(PATH_site));
@@ -2845,7 +2943,9 @@ class tx_impexp {
 					// Default Value:
 				$descriptionField.= '<input type="hidden" name="tx_impexp[softrefCfg]['.$cfg['subst']['tokenID'].'][defValue]" value="'.htmlspecialchars($cfg['subst']['tokenValue']).'" />';
 
-			} else $descriptionField = '';
+			} else {
+				$descriptionField = '';
+			}
 
 			return $selectorbox.$descriptionField;
 		}
@@ -2968,7 +3068,9 @@ class tx_impexp {
 		$isSelFlag = 0;
 		foreach ($optValues as $k => $v) {
 			$sel = (!strcmp($k, $value) ? ' selected="selected"' : '');
-			if ($sel)	$isSelFlag++;
+			if ($sel) {
+				$isSelFlag++;
+			}
 			$opt[] = '<option value="'.htmlspecialchars($k).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
 		}
 		if (!$isSelFlag && strcmp('', $value)) {
@@ -3023,7 +3125,7 @@ class tx_impexp {
 				// Create output:
 			if (count($output)) {
 				$tRows = array();
-				foreach($output as $fN => $state) {
+				foreach ($output as $fN => $state) {
 					$tRows[] = '
 						<tr>
 							<td class="bgColor5">' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label'], 1 ) .

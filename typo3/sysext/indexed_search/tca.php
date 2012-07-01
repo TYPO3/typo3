@@ -1,5 +1,7 @@
 <?php
-if (!defined ('TYPO3_MODE'))     die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
+}
 
 $TCA['index_config'] = Array (
 	'ctrl' => $TCA['index_config']['ctrl'],

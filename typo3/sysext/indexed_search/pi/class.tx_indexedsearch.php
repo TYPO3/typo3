@@ -156,10 +156,14 @@ class tx_indexedsearch extends tslib_pibase {
 		$this->lexerObj = t3lib_div::getUserObj($lexerObjRef);
 
 			// If "_sections" is set, this value overrides any existing value.
-		if ($this->piVars['_sections'])		$this->piVars['sections'] = $this->piVars['_sections'];
+		if ($this->piVars['_sections']) {
+			$this->piVars['sections'] = $this->piVars['_sections'];
+		}
 
 			// If "_sections" is set, this value overrides any existing value.
-		if ($this->piVars['_freeIndexUid']!=='_')		$this->piVars['freeIndexUid'] = $this->piVars['_freeIndexUid'];
+		if ($this->piVars['_freeIndexUid'] !== '_') {
+			$this->piVars['freeIndexUid'] = $this->piVars['_freeIndexUid'];
+		}
 
 			// Add previous search words to current
 		if ($this->piVars['sword_prev_include'] && $this->piVars['sword_prev']) {
@@ -284,11 +288,15 @@ class tx_indexedsearch extends tslib_pibase {
 						foreach ($secondLevelMenu as $kk2 => $mR2) {
 							if (!$mR2['nav_hide']) {
 								$this->optValues['sections']['rl2_'.$mR2['uid']] = trim($this->pi_getLL('opt_RL2').' '.$mR2['title']);
-							} else unset($secondLevelMenu[$kk2]);
+							} else {
+								unset($secondLevelMenu[$kk2]);
+							}
 						}
 						$this->optValues['sections']['rl2_'.implode(',', array_keys($secondLevelMenu))] = $this->pi_getLL('opt_RL2ALL');
 					}
-				} else unset($firstLevelMenu[$optionName]);
+				} else {
+					unset($firstLevelMenu[$optionName]);
+				}
 			}
 			$this->optValues['sections']['rl1_'.implode(',', array_keys($firstLevelMenu))] = $this->pi_getLL('opt_RL1ALL');
 		}
@@ -702,7 +710,9 @@ class tx_indexedsearch extends tslib_pibase {
 						// Insert new:
 					$newResultRows[$id] = $row;
 					$newResultRows[$id]['_sub'] = $subrows;
-				} else $newResultRows[$id]['_sub'][] = $row;
+				} else {
+					$newResultRows[$id]['_sub'][] = $row;
+				}
 			} else {
 				$newResultRows[$id] = $row;
 			}
@@ -729,7 +739,9 @@ class tx_indexedsearch extends tslib_pibase {
 						$theRLid = $rlParts[2] ? 'rl2_'.$rlParts[2]:($rlParts[1]?'rl1_'.$rlParts[1]:'0');
 
 						$sectionName = $this->getPathFromPageId($theId);
-						if ($sectionName{0} == '/') $sectionName = substr($sectionName, 1);
+						if ($sectionName{0} == '/') {
+							$sectionName = substr($sectionName, 1);
+						}
 
 						if (!trim($sectionName)) {
 							$sectionTitleLinked = $this->pi_getLL('unnamedSection', '', 1).':';
@@ -797,7 +809,10 @@ class tx_indexedsearch extends tslib_pibase {
 				// Making the query for a single search word based on the search-type
 			$sWord = $v['sword'];
 			$theType = (string)$this->piVars['type'];
-			if (strstr($sWord, ' '))	$theType = 20;	// If there are spaces in the search-word, make a full text search instead.
+			if (strstr($sWord, ' ')) {
+					// If there are spaces in the search-word, make a full text search instead.
+				$theType = 20;
+			}
 
 			$GLOBALS['TT']->push('SearchWord "'.$sWord.'" - $theType='.$theType);
 
@@ -1026,7 +1041,7 @@ class tx_indexedsearch extends tslib_pibase {
 	 * @return	string		AND statement for selection of langauge
 	 */
 	function languageWhere() {
-		if ($this->piVars['lang']>=0)	{	// -1 is the same as ALL language.
+		if ($this->piVars['lang']>=0) {	// -1 is the same as ALL language.
 			return 'AND IP.sys_language_uid='.intval($this->piVars['lang']);
 		}
 	}
@@ -1051,7 +1066,9 @@ class tx_indexedsearch extends tslib_pibase {
 					switch ($table) {
 						case 'index_config':
 							$idxRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', 'index_config', 'uid=' . intval($uid) . $this->cObj->enableFields('index_config'));
-							if ($idxRec)	$list[] = $uid;
+							if ($idxRec) {
+								$list[] = $uid;
+							}
 						break;
 						case 'pages':
 							$indexCfgRecordsFromPid = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'index_config', 'pid='.intval($uid).$this->cObj->enableFields('index_config'));
@@ -1261,7 +1278,9 @@ class tx_indexedsearch extends tslib_pibase {
 	 */
 	function isDescending($inverse=FALSE) {
 		$desc = $this->piVars['desc'];
-		if ($inverse)	$desc=!$desc;
+		if ($inverse) {
+			$desc =! $desc;
+		}
 		return !$desc ? ' DESC':'';
 	}
 
@@ -1830,7 +1849,9 @@ class tx_indexedsearch extends tslib_pibase {
 
 			foreach ($optValues as $k => $v) {
 				$sel = (!strcmp($k, $value) ? ' selected="selected"' : '');
-				if ($sel)	$isSelFlag++;
+				if ($sel) {
+					$isSelFlag++;
+				}
 				$opt[] = '<option value="'.htmlspecialchars($k).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
 			}
 
@@ -2079,7 +2100,9 @@ class tx_indexedsearch extends tslib_pibase {
 			$pp = explode('-', $dat['key']);
 			if ($pp[0]!=$pp[1]) {
 				$add=', '.$this->pi_getLL('word_pages').' '.$dat['key'];
-			} else $add=', '.$this->pi_getLL('word_page').' '.$pp[0];
+			} else {
+				$add = ', '.$this->pi_getLL('word_page').' '.$pp[0];
+			}
 		}
 
 		$outputString = $GLOBALS['TSFE']->csConvObj->crop('utf-8', $row['item_title'], 50, '...');
@@ -2215,9 +2238,15 @@ class tx_indexedsearch extends tslib_pibase {
 		$urlParameters = (array)unserialize($row['cHashParams']);
 
 			// Add &type and &MP variable:
-		if ($row['data_page_type']) $urlParameters['type'] = $row['data_page_type'];
-		if ($row['data_page_mp']) $urlParameters['MP'] = $row['data_page_mp'];
-		if ($row['sys_language_uid']) $urlParameters['L'] = $row['sys_language_uid'];
+		if ($row['data_page_type']) {
+			$urlParameters['type'] = $row['data_page_type'];
+		}
+		if ($row['data_page_mp']) {
+			$urlParameters['MP'] = $row['data_page_mp'];
+		}
+		if ($row['sys_language_uid']) {
+			$urlParameters['L'] = $row['sys_language_uid'];
+		}
 
 			// markup-GET vars:
 		$urlParameters = array_merge($urlParameters, $markUpSwParams);

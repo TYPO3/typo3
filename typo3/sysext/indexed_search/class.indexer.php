@@ -193,10 +193,18 @@ class tx_indexedsearch_indexer {
 								// Init and start indexing:
 							$this->init();
 							$this->indexTypo3PageContent();
-						} else $this->log_setTSlogMessage('Index page? No, ->sys_language_uid was different from sys_language_content which indicates that the page contains fall-back content and that would be falsely indexed as localized content.');
-					} else $this->log_setTSlogMessage('Index page? No, page was set to "no_cache" and so cannot be indexed.');
-				} else $this->log_setTSlogMessage('Index page? No, The "No Search" flag has been set in the page properties!');
-			} else $this->log_setTSlogMessage('Index page? No, Ordinary Frontend indexing during rendering is disabled.');
+						} else {
+							$this->log_setTSlogMessage('Index page? No, ->sys_language_uid was different from sys_language_content which indicates that the page contains fall-back content and that would be falsely indexed as localized content.');
+						}
+					} else {
+						$this->log_setTSlogMessage('Index page? No, page was set to "no_cache" and so cannot be indexed.');
+					}
+				} else {
+					$this->log_setTSlogMessage('Index page? No, The "No Search" flag has been set in the page properties!');
+				}
+			} else {
+				$this->log_setTSlogMessage('Index page? No, Ordinary Frontend indexing during rendering is disabled.');
+			}
 			$this->log_pull();
 		}
 	}
@@ -341,7 +349,10 @@ class tx_indexedsearch_indexer {
 			// Initializing:
 		$this->cHashParams = $this->conf['cHash_array'];
 		if (is_array($this->cHashParams) && count($this->cHashParams)) {
-			if ($this->conf['cHash'])	$this->cHashParams['cHash'] = $this->conf['cHash'];	// Add this so that URL's come out right...
+			if ($this->conf['cHash']) {
+					// Add this so that URL's come out right...
+				$this->cHashParams['cHash'] = $this->conf['cHash'];
+			}
 			unset($this->cHashParams['encryptionKey']);		// encryptionKey is added inside TSFE in order to calculate the cHash value and it should NOT be a part of this array!!! If it is it will be exposed in links!!!
 		}
 
@@ -561,7 +572,7 @@ class tx_indexedsearch_indexer {
 
 			// Get rid of unwanted sections (ie. scripting and style stuff) in body
 		$tagList = explode(',', $this->excludeSections);
-		foreach($tagList as $tag) {
+		foreach ($tagList as $tag) {
 			while($this->embracingTags($contentArr['body'], $tag, $dummy, $contentArr['body'], $dummy2));
 		}
 
@@ -632,7 +643,9 @@ class tx_indexedsearch_indexer {
 			// stristr used because we want a case-insensitive search for the tag.
 		$isTagInText = stristr($string, $startTag);
 			// if the tag was not found, return FALSE
-		if(!$isTagInText) return FALSE;
+		if(!$isTagInText) {
+			return FALSE;
+		}
 
 		list($paramList, $isTagInText) = explode('>', substr($isTagInText, strlen($startTag)), 2);
 		$afterTagInText = stristr($isTagInText, $endTag);
@@ -1142,16 +1155,26 @@ class tx_indexedsearch_indexer {
 									$this->updateTstamp($phash_arr['phash'], $mtime);
 									$this->log_setTSlogMessage('Indexing not needed, the contentHash, ' . $content_md5h . ', has not changed. Timestamp updated.');
 								}
-							} else $this->log_setTSlogMessage('Could not index file! Unsupported extension.');
-						} else $this->log_setTSlogMessage('The limit of '.$this->maxExternalFiles.' has already been exceeded, so no indexing will take place this time.');
-					} else $this->log_setTSlogMessage('Indexing not needed, reason: '.$this->reasons[$check]);
+							} else {
+								$this->log_setTSlogMessage('Could not index file! Unsupported extension.');
+							}
+						} else {
+							$this->log_setTSlogMessage('The limit of '.$this->maxExternalFiles.' has already been exceeded, so no indexing will take place this time.');
+						}
+					} else {
+						$this->log_setTSlogMessage('Indexing not needed, reason: '.$this->reasons[$check]);
+					}
 
 						// Checking and setting sections:
 					$this->submitFile_section($phash_arr['phash']);		// Setting a section-record for the file. This is done also if the file is not indexed. Notice that section records are deleted when the page is indexed.
 					$this->log_pull();
 				}
-			} else $this->log_setTSlogMessage('Indexing not possible; The extension "'.$ext.'" was not supported.');
-		} else $this->log_setTSlogMessage('Indexing not possible; File "'.$absFile.'" not found or valid.');
+			} else {
+				$this->log_setTSlogMessage('Indexing not possible; The extension "'.$ext.'" was not supported.');
+			}
+		} else {
+			$this->log_setTSlogMessage('Indexing not possible; File "'.$absFile.'" not found or valid.');
+		}
 	}
 
 	/**
@@ -2165,7 +2188,9 @@ class tx_indexedsearch_indexer {
 	 * @return	void
 	 */
 	function log_pull() {
-		if (is_object($GLOBALS['TT']))		$GLOBALS['TT']->pull();
+		if (is_object($GLOBALS['TT'])) {
+			$GLOBALS['TT']->pull();
+		}
 	}
 
 	/**

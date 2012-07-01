@@ -89,7 +89,9 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		global $LANG,$TYPO3_CONF_VARS;
 
 			// Return if no page id:
-		if ($this->pObj->id<=0)		return;
+		if ($this->pObj->id <= 0) {
+			return;
+		}
 
 			// Indexer configuration from Extension Manager interface:
 		$this->indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
@@ -347,7 +349,9 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 		if ($row['item_type']) {
 			$arr = unserialize($row['cHashParams']);
 			$page = $arr['key'] ? ' ['.$arr['key'].']' : '';
-		} else $page = '';
+		} else {
+			$page = '';
+		}
 		$elTitle = $this->linkDetails($row['item_title'] ? htmlspecialchars(t3lib_div::fixed_lgd_cs($this->utf8_to_currentCharset($row['item_title']), 20).$page) : '<em>[No Title]</em>', $row['phash']);
 		$cmdLinks = $this->printRemoveIndexed($row['phash'], 'Clear phash-row').$this->printReindex($row, 'Re-index element');
 
@@ -679,7 +683,9 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				// Add go-back link:
 			$content = $this->linkList().$content.$this->linkList();
 
-		} else $content.= 'Error: No phash row found';
+		} else {
+			$content .= 'Error: No phash row found';
+		}
 
 		return $content;
 	}

@@ -134,7 +134,9 @@ class tx_infopagetsconfig_webinfo extends t3lib_extobjbase {
 							t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 							'<strong>'.$GLOBALS['LANG']->getLL('editTSconfig_all', 1).'</strong>'.
 						'</a>';
-			} else $editIcon = '';
+			} else {
+				$editIcon = '';
+			}
 
 			$theOutput .= $this->pObj->doc->section('',
 				t3lib_BEfunc::cshItem('_MOD_' . $GLOBALS['MCONF']['name'], 'tsconfig_edit', $GLOBALS['BACK_PATH'], '|<br />') .

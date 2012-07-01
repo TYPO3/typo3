@@ -104,8 +104,12 @@ class tx_indexed_search_extparse {
 							// PDF mode:
 						$this->pdf_mode = t3lib_utility_Math::forceIntegerInRange($indexerConfig['pdf_mode'], -100, 100);
 						$extOK = TRUE;
-					} else $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:pdfToolsNotFound'), $pdfPath), 3);
-				} else $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/locallang.xml:pdfToolsDisabled'), 1);
+					} else {
+						$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:pdfToolsNotFound'), $pdfPath), 3);
+					}
+				} else {
+					$this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/locallang.xml:pdfToolsDisabled'), 1);
+				}
 			break;
 			case 'doc':
 					// Catdoc
@@ -114,8 +118,12 @@ class tx_indexed_search_extparse {
 					if (@is_file($catdocPath . 'catdoc' . $exe)) {
 						$this->app['catdoc'] = $catdocPath.'catdoc'.$exe;
 						$extOK = TRUE;
-					} else $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:catdocNotFound'), $catdocPath), 3);
-				} else $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/locallang.xml:catdocDisabled'), 1);
+					} else {
+						$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:catdocNotFound'), $catdocPath), 3);
+					}
+				} else {
+					$this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/locallang.xml:catdocDisabled'), 1);
+				}
 			break;
 			case 'pps':		// MS PowerPoint(?)
 			case 'ppt':		// MS PowerPoint
@@ -125,8 +133,12 @@ class tx_indexed_search_extparse {
 					if (@is_file($ppthtmlPath . 'ppthtml' . $exe)) {
 						$this->app['ppthtml'] = $ppthtmlPath.'ppthtml'.$exe;
 						$extOK = TRUE;
-					} else $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:ppthtmlNotFound'), $ppthtmlPath), 3);
-				} else $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/locallang.xml:ppthtmlDisabled'), 1);
+					} else {
+						$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:ppthtmlNotFound'), $ppthtmlPath), 3);
+					}
+				} else {
+					$this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/locallang.xml:ppthtmlDisabled'), 1);
+				}
 			break;
 			case 'xls':		// MS Excel
 					// Xlhtml
@@ -135,8 +147,12 @@ class tx_indexed_search_extparse {
 					if (@is_file($xlhtmlPath . 'xlhtml' . $exe)) {
 						$this->app['xlhtml'] = $xlhtmlPath.'xlhtml'.$exe;
 						$extOK = TRUE;
-					} else $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:xlhtmlNotFound'), $xlhtmlPath), 3);
-				} else $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/locallang.xml:xlhtmlDisabled'), 1);
+					} else {
+						$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:xlhtmlNotFound'), $xlhtmlPath), 3);
+					}
+				} else {
+					$this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/locallang.xml:xlhtmlDisabled'), 1);
+				}
 			break;
 			case 'sxc':		// Open Office Calc.
 			case 'sxi':		// Open Office Impress
@@ -149,8 +165,12 @@ class tx_indexed_search_extparse {
 					if (@is_file($unzipPath . 'unzip' . $exe)) {
 						$this->app['unzip'] = $unzipPath.'unzip'.$exe;
 						$extOK = TRUE;
-					} else $this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:unzipNotFound'), $unzipPath), 3);
-				} else $this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/locallang.xml:unzipDisabled'), 1);
+					} else {
+						$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:unzipNotFound'), $unzipPath), 3);
+					}
+				} else {
+					$this->pObj->log_setTSlogMessage($this->sL('LLL:EXT:indexed_search/locallang.xml:unzipDisabled'), 1);
+				}
 			break;
 			case 'rtf':
 					// Catdoc
@@ -378,7 +398,9 @@ class tx_indexed_search_extparse {
 		unset($contentArr);
 
 			// Return immediately if initialization didn't set support up:
-		if (!$this->supportedExtensions[$ext])	return FALSE;
+		if (!$this->supportedExtensions[$ext]) {
+			return FALSE;
+		}
 
 			// Switch by file extension
 		switch ($ext) {
@@ -642,8 +664,12 @@ class tx_indexed_search_extparse {
 	 * @return	string		Relative file reference, resolvable by t3lib_div::getFileAbsFileName()
 	 */
 	function getIcon($extension) {
-		if ($extension=='htm')	$extension = 'html';
-		if ($extension=='jpeg')	$extension = 'jpg';
+		if ($extension=='htm') {
+			$extension = 'html';
+		}
+		if ($extension=='jpeg') {
+			$extension = 'jpg';
+		}
 		return 'EXT:indexed_search/pi/res/'.$extension.'.gif';
 	}
 }

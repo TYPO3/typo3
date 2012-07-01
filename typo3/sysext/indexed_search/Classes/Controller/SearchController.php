@@ -1378,8 +1378,12 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 		$urlParameters = (array) unserialize($row['cHashParams']);
 
 			// Add &type and &MP variable:
-		if ($row['data_page_mp']) $urlParameters['MP'] = $row['data_page_mp'];
-		if ($row['sys_language_uid']) $urlParameters['L'] = $row['sys_language_uid'];
+		if ($row['data_page_mp']) {
+			$urlParameters['MP'] = $row['data_page_mp'];
+		}
+		if ($row['sys_language_uid']) {
+			$urlParameters['L'] = $row['sys_language_uid'];
+		}
 
 			// markup-GET vars:
 		$urlParameters = array_merge($urlParameters, $markUpSwParams);
