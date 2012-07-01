@@ -111,7 +111,9 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 				if (t3lib_div::_GP('createInListEnd')) {
 					$endI = end($menuItems);
 					$thePid = -intval($endI['uid']);
-					if (!$thePid)	$thePid = $this->pObj->id;
+					if (!$thePid) {
+						$thePid = $this->pObj->id;
+					}
 				} else {
 					$thePid = $this->pObj->id;
 				}

@@ -263,8 +263,10 @@ class user_plaintext {
 			$hConf = $this->conf['header.'];
 			$defaultType = t3lib_utility_Math::forceIntegerInRange($hConf['defaultType'], 1, 5);
 			$type=t3lib_utility_Math::forceIntegerInRange($type, 0, 6);
-			if (!$type)
+			if (!$type) {
 				$type = $defaultType;
+			}
+
 			if ($type != 6) {	// not hidden
 				$tConf = $hConf[$type . '.'];
 
@@ -287,8 +289,10 @@ class user_plaintext {
 				}
 				$prefix = '';
 				$str = $this->getString($tConf['prefix']) . $str;
-				if ($tConf['autonumber'])
-					$str=$this->cObj->parentRecordNumber . $str;
+				if ($tConf['autonumber']) {
+					$str = $this->cObj->parentRecordNumber . $str;
+				}
+
 				if ($this->cObj->data['header_position'] == 'right') {
 					$prefix=str_pad(' ', ($this->charWidth - strlen($str)));
 				}
@@ -397,8 +401,9 @@ class user_plaintext {
 			$c++;
 			if (trim($substrs)) {
 				$lineParts = explode('|', $substrs);
-				if (!$cols)
-					$cols=count($lineParts);
+				if (!$cols) {
+					$cols = count($lineParts);
+				}
 
 				for ($a=0; $a<$cols; $a++) {
 					$jdu = explode(chr(10), $this->breakLines($lineParts[$a], chr(10), ceil($this->charWidth / $cols)));
@@ -464,10 +469,13 @@ class user_plaintext {
 		foreach ($tableLines as $k => $v) {
 			foreach ($v as $kk => $vv) {
 				foreach ($vv as $lk => $lv) {
-					if (strlen($lv)>intval($maxLen[$kk]))	$maxLen[$kk]=strlen($lv);
+					if (strlen($lv) > intval($maxLen[$kk])) {
+						$maxLen[$kk] = strlen($lv);
+					}
 				}
-				if (count($vv) > intval($maxLines[$k]))
+				if (count($vv) > intval($maxLines[$k])) {
 					$maxLines[$k] = count($vv);
+				}
 			}
 		}
 		return array($maxLen, $maxLines);
@@ -514,8 +522,10 @@ class user_plaintext {
 		if ($caption) {
 			$lines[] = '';
 			$cHeader = trim($this->getString($this->conf['images.']['captionHeader']));
-			if ($cHeader)
-				$lines[]=$cHeader;
+			if ($cHeader) {
+				$lines[] = $cHeader;
+			}
+
 			$lines[] = $this->breakContent($caption);
 		}
 
