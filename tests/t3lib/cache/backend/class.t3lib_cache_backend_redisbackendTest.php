@@ -129,18 +129,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
-	public function initializeObjectThrowsNoExceptionIfPasswordOptionIsSet() {
-		try {
-			$this->setUpBackend(array('password' => 'foo'));
-		} catch (Exception $e) {
-			$this->assertTrue();
-		}
-	}
-
-	/**
-	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 */
 	public function initializeObjectThrowsNoExceptionIfGivenDatabaseWasSuccessfullySelected() {
 		try {
 			$this->setUpBackend(array('database' => 1));
