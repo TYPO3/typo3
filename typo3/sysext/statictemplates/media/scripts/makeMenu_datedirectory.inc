@@ -47,7 +47,7 @@ if ($day == -1) {
 if ($day == date('w')) {
 	$son = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
 } else {
-	for ($i = 1; ; $i++) {
+	for ($i = 1;; $i++) {
 		$son = mktime(0, 0, 0, date('m'), date('d') - $i, date('Y'));
 		if ($day == date('w', $son)) {
 			break;
