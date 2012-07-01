@@ -27,10 +27,8 @@
 /**
  * Module: Extension manager, developer module
  *
- * @author	Steffen Kamper <info@sk-typo3.de>
+ * @author Steffen Kamper <info@sk-typo3.de>
  */
-
-
 class tx_em_ExtensionManager {
 
 	/**
@@ -68,8 +66,6 @@ class tx_em_ExtensionManager {
 	 */
 	protected $gzSupport = FALSE;
 
-
-
 	/**
 	 * Constructor
 	 *
@@ -101,7 +97,6 @@ class tx_em_ExtensionManager {
 		$this->pageRenderer->addCssFile($this->resPath . 'js/ux/css/RangeMenu.css');
 		$this->pageRenderer->addCssFile($this->resPath . 'css/t3_em.css');
 
-
 		$iconsGfxPath = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'] . 'gfx/';
 		$this->pageRenderer->addCssInlineBlock('em-t3skin-icons', '
 			.x-tree-node-leaf img.tree-edit { background-image:url(' . $iconsGfxPath . 'edit_file.gif);}
@@ -123,7 +118,6 @@ class tx_em_ExtensionManager {
 		$this->pageRenderer->enableExtJSQuickTips();
 
 		$this->pageRenderer->addExtDirectCode();
-
 
 			// Localization
 		$labels = array();
@@ -163,7 +157,6 @@ class tx_em_ExtensionManager {
 		$fileAllowUpload = intval($GLOBALS['BE_USER']->getTSConfigVal('mod.tools_em.fileAllowUpload'));
 		$fileAllowCreate = intval($GLOBALS['BE_USER']->getTSConfigVal('mod.tools_em.fileAllowCreate'));
 		$fileAllowDownload = intval($GLOBALS['BE_USER']->getTSConfigVal('mod.tools_em.fileAllowDownload'));
-
 
 			// add the settings
 		$additionalSettings = array(

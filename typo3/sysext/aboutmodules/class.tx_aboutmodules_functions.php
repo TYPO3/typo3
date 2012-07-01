@@ -154,7 +154,7 @@ class tx_aboutmodules_Functions {
 				'onclick' => 'top.goToModule(\'' . $moduleName . '\');',
 			);
 
-			// Creating image icon
+				// Creating image icon
 			$image = @getimagesize($this->mIconFile($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey], $backPath));
 			$imageCode = '';
 			$descr3_title = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey] . ' ';
@@ -167,7 +167,7 @@ class tx_aboutmodules_Functions {
 				$descr3_imageCode = '<img' . t3lib_iconWorks::skinImg($backPath, 'gfx/dummy_module.gif', 'width="14" height="12"') . ' title="' . htmlspecialchars($descr3_title) . '" alt="" />';
 			}
 
-			// Creating the various links:
+				// Creating the various links:
 			$label = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
 			if ($link && $prefix) {
 				$link = $prefix . rawurlencode($link);
@@ -186,8 +186,7 @@ class tx_aboutmodules_Functions {
 			$selectItems[] = '<option value="top.goToModule(\'' . $moduleName . '\');">' . htmlspecialchars($GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey]) . '</option>';
 			$label = '&nbsp;<strong>' . $label . '</strong>&nbsp;';
 
-
-			// make menu collapsable
+				// make menu collapsable
 			if ($collapsable == 1 && is_array($moduleInfo['sub'])) {
 				$collapseJS = 'onclick="window.location.href=\'alt_menu.php?collapsedOverride[' . $moduleName . ']=' . ($config[$moduleName]
 						? '0' : '1') . '\'"';
@@ -197,25 +196,24 @@ class tx_aboutmodules_Functions {
 				$collapseJS = $collapseIcon = '';
 			}
 
-			// Creating a main item for the vertical menu (descr=0)
+				// Creating a main item for the vertical menu (descr=0)
 			$menuCode .= '
 						<tr class="c-mainitem" id="' . $moduleCSSId . '">
 							<td colspan="3" ' . $collapseJS . ' >' . $imageCode . '<span class="c-label">' . $label . '</span>' . $collapseIcon . '</td>
 						</tr>';
 
-			// Code for "About modules"
+				// Code for "About modules"
 			$descrCode .= '
 						<tr class="c-mainitem">
 							<td colspan="3">' . $imageCode . $label . '</td>
 						</tr>';
 
-
-			// Hide submodules when collapsed:
+				// Hide submodules when collapsed:
 			if ($collapsable == 1 && $config[$moduleName] == 1 && $descr == 0 && $config['expandAll'] != 1) {
 				unset($moduleInfo['sub']);
 			}
 
-			// Traversing submodules
+				// Traversing submodules
 			$subCode = '';
 			if (is_array($moduleInfo['sub'])) {
 				$collection[$moduleKey]['subitems'] = array();

@@ -157,7 +157,6 @@ class tslib_content_ShockwaveFlashObject extends tslib_content_Abstract {
 			$height = $conf[$type . '.']['defaultHeight'];
 		}
 
-
 		$embed = 'swfobject.embedSWF("' . $conf['player'] . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '",
 		 		"' . $flashVersion . '", "' . $installUrl . '", ' . $conf['embedParams'] . ');';
 

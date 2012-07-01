@@ -235,7 +235,6 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				$tableTagParams['class'] = $tableClass;
 			}
 
-
 				// Compile table output:
 			$out = '
 				<table ' . t3lib_div::implodeAttributes($tableTagParams) . '>' .
@@ -1127,7 +1126,6 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 						$allRows .= $thisImage;
 					}
 					$GLOBALS['TSFE']->register['columnwidth'] = $maxImageSpace + $tmpColspacing;
-
 
 						// Close this row at the end (colCount), or the last row at the final end
 					if ($separateRows && ($i + 1 == count($imgsTag))) {

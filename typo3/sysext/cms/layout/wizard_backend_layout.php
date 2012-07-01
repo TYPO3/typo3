@@ -220,7 +220,6 @@ class SC_wizard_backend_layout {
 			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE) . '" onclick="window.close();return true;">' .
 			t3lib_iconWorks::getSpriteIcon('actions-document-close') . '</a>';
 
-
 		$content .= $this->doc->spacer(10);
 
 		$content .= '

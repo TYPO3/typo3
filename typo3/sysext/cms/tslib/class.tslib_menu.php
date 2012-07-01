@@ -2320,7 +2320,6 @@ class tslib_gmenu extends tslib_menu {
 			}
 			$c++;
 
-
 			if ($isGD) {
 					// Pre-working the item
 				$gifCreator = t3lib_div::makeInstance('tslib_gifBuilder');
@@ -2828,7 +2827,6 @@ class tslib_imgmenu extends tslib_menu {
 
 						foreach ($sKeyArray as $theKey) {
 							$theValue=$val[$theKey];
-
 
 							if (intval($theKey) && $theValArr=$val[$theKey.'.']) {
 								$cObjData = $this->menuArr[$key] ? $this->menuArr[$key] : Array();

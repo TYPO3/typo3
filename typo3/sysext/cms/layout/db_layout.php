@@ -523,7 +523,6 @@ class SC_db_layout {
 				}
 			}
 
-
 			if ($this->pageinfo['content_from_pid']) {
 				$contentPage = t3lib_BEfunc::getRecord('pages', intval($this->pageinfo['content_from_pid']));
 				$title = t3lib_BEfunc::getRecordTitle('pages', $contentPage);
@@ -665,7 +664,6 @@ class SC_db_layout {
 				$edit_record=$sys_log_row['tablename'].':'.$sys_log_row['recuid'];
 			}
 		}
-
 
 			// Creating the selector box, allowing the user to select which element to edit:
 		$opt = array();
@@ -843,7 +841,6 @@ class SC_db_layout {
 					// Initialize - reads the clipboard content from the user session
 				$tceforms->clipObj->initializeClipboard();
 
-
 				if ($GLOBALS['BE_USER']->uc['edit_showFieldHelp'] !== 'text' && $this->MOD_SETTINGS['showDescriptions']) {
 					$tceforms->edit_showFieldHelp = 'text';
 				}
@@ -888,7 +885,6 @@ class SC_db_layout {
 			$content .= $this->doc->section($GLOBALS['LANG']->getLL('noAccess'), $GLOBALS['LANG']->getLL('noAccess_msg') . '<br /><br />', 0, 1);
 		}
 
-
 			// Bottom controls (function menus):
 		$q_count = $this->getNumberOfHiddenElements();
 		$h_func_b= t3lib_BEfunc::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"').
@@ -915,7 +911,6 @@ class SC_db_layout {
 			// Add the function menus to bottom:
 		$content.=$this->doc->section('', $h_func_b, 0, 0);
 		$content.=$this->doc->spacer(10);
-
 
 			// Select element matrix:
 		if ($this->eRParts[0]=='tt_content' && t3lib_utility_Math::canBeInterpretedAsInteger($this->eRParts[1])) {
@@ -1091,7 +1086,6 @@ class SC_db_layout {
 			$h_func = '';
 			$h_func_b = '';
 		}	// END: traverse tables
-
 
 			// For Context Sensitive Menus:
 		$this->doc->getContextMenuCode();

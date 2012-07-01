@@ -98,7 +98,6 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			$this->cObj =t3lib_div::makeInstance('tslib_cObj');
 			$this->cObj->start($this->data);
 
-
 			// Hook preprocess gifbuilder conf
 		 	// Added by Julle for 3.8.0
 			//
@@ -158,7 +157,6 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 				$this->setup['XY'] = $this->cObj->stdWrap($this->setup['XY'], $this->setup['XY.']);
 			}
 			if (!$this->setup['XY'])	{$this->setup['XY']='120,50';}
-
 
 				// Checking TEXT and IMAGE objects for files. If any errors the objects are cleared.
 				// The Bounding Box for the objects is stored in an array

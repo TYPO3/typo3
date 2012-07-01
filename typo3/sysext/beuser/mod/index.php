@@ -34,11 +34,6 @@ $GLOBALS['LANG']->includeLLFile('EXT:beuser/mod/locallang.xml');
 
 $BE_USER->modAccess($MCONF, 1);
 
-
-
-
-
-
 /**
  * Base Extension class for printing a page tree (non-browsable though)
  *
@@ -130,15 +125,6 @@ class localPageTree extends t3lib_browseTree {
 	}
 }
 
-
-
-
-
-
-
-
-
-
 /**
  * Extension class for printing a page tree: All pages of a mount point.
  *
@@ -186,15 +172,6 @@ class printAllPageTree extends localPageTree {
 		return $theIcon;
 	}
 }
-
-
-
-
-
-
-
-
-
 
 /**
  * Extension class for printing a page tree: Printing all pages, with permissions.
@@ -285,16 +262,6 @@ class printAllPageTree_perms extends printAllPageTree {
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
 /**
  * Base Extension class for printing a folder tree (non-browsable though)
  *
@@ -376,18 +343,6 @@ class localFolderTree extends t3lib_folderTree {
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Extension class for printing a folder tree: All folders
  *
@@ -411,16 +366,6 @@ class printAllFolderTree extends localFolderTree {
 		return $icon;
 	}
 }
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Extension class of beuserauth class.
@@ -1005,17 +950,6 @@ class local_beUserAuth extends t3lib_beUserAuth {
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
 /**
  * Main script class
  *
@@ -1038,7 +972,6 @@ class SC_mod_tools_be_user_index {
 	var $include_once=array();
 	var $content;
 
-
 	/**
 	 * Basic initialization of the class
 	 *
@@ -1049,7 +982,6 @@ class SC_mod_tools_be_user_index {
 
 		$this->menuConfig();
 		$this->switchUser(t3lib_div::_GP('SwitchUser'));
-
 
 		// **************************
 		// Initializing
@@ -1159,10 +1091,6 @@ class SC_mod_tools_be_user_index {
 
 		return $buttons;
 	}
-
-
-
-
 
 	/***************************
 	 *
@@ -1377,7 +1305,6 @@ class SC_mod_tools_be_user_index {
 		return $content;
 	}
 
-
 	/**
 	 * Creates a HTML anchor to the user record
 	 *
@@ -1388,7 +1315,6 @@ class SC_mod_tools_be_user_index {
 	function linkUser($str, $rec) {
 		return '<a href="'.htmlspecialchars($this->MCONF['_']).'&be_user_uid='.$rec['uid'].'">' . htmlspecialchars($str) . '</a>';
 	}
-
 
 	/**
 	 * Builds a list of all links for a specific element (here: BE user) and returns it for print.
@@ -1431,7 +1357,6 @@ class SC_mod_tools_be_user_index {
 
 		return implode('', $cells);
 	}
-
 
 	/**
 	 * Inits all BE-users available, for development ONLY!

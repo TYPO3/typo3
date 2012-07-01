@@ -134,7 +134,7 @@ class SC_view_help {
 			// The remaining parts make up the FlexForm field name itself
 			// (reassembled with dots)
 			$flexFormField = implode('.', $identifierParts);
-			// Assemble a different main key and switch field to use FlexForm field name
+				// Assemble a different main key and switch field to use FlexForm field name
 			$this->mainKey .= '.' . $this->field;
 			foreach ($extraIdentifierInformation as $extraKey) {
 				$this->mainKey .= '.' . $extraKey;
@@ -142,7 +142,7 @@ class SC_view_help {
 			$this->field = $flexFormField;
 		}
 
-		// limitAccess is checked if the $this->table really IS a table (and if the user is NOT a translator who should see all!)
+			// limitAccess is checked if the $this->table really IS a table (and if the user is NOT a translator who should see all!)
 		$showAllToUser = t3lib_BEfunc::isModuleSetInTBE_MODULES('txllxmltranslateM1') && $GLOBALS['BE_USER']->check('modules', 'txllxmltranslateM1');
 		$this->limitAccess = isset($GLOBALS['TCA'][$this->table]) ? !$showAllToUser : FALSE;
 		$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_view_help.xlf', 1);
@@ -155,17 +155,17 @@ class SC_view_help {
 	 */
 	function main() {
 
-		// Start HTML output accumulation:
+			// Start HTML output accumulation:
 		$GLOBALS['TBE_TEMPLATE']->divClass = 'typo3-view-help';
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($GLOBALS['LANG']->getLL('title'));
 
 		if ($this->field == '*') {
-			// If ALL fields is supposed to be shown:
+				// If ALL fields is supposed to be shown:
 			$this->createGlossaryIndex();
 			$this->content .= $this->render_Table($this->mainKey);
 
 		} elseif ($this->tfID) {
-			// ... otherwise show only single field:
+				// ... otherwise show only single field:
 			$this->createGlossaryIndex();
 			$this->content .= $this->render_Single($this->mainKey, $this->field);
 
@@ -173,11 +173,11 @@ class SC_view_help {
 			$this->content .= $this->render_Single($this->mainKey, $this->field);
 
 		} else {
-			// Render Table Of Contents if nothing else:
+				// Render Table Of Contents if nothing else:
 			$this->content.= $this->render_TOC();
 		}
 
-		// End page:
+			// End page:
 		$this->content .= '<br/>';
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->endPage();
 	}
@@ -203,19 +203,18 @@ class SC_view_help {
 	 * @return string HTML content
 	 */
 	function render_TOC() {
-		// Initialize:
+			// Initialize:
 		$CSHkeys = array_flip(array_keys($GLOBALS['TCA_DESCR']));
 		$TCAkeys = array_keys($GLOBALS['TCA']);
 
 		$outputSections = array();
 		$tocArray = array();
 
-
-		// TYPO3 Core Features:
+			// TYPO3 Core Features:
 		$GLOBALS['LANG']->loadSingleTableDescription('xMOD_csh_corebe');
 		$this->render_TOC_el('xMOD_csh_corebe', 'core', $outputSections, $tocArray, $CSHkeys);
 
-		// Backend Modules:
+			// Backend Modules:
 		$loadModules = t3lib_div::makeInstance('t3lib_loadModules');
 		$loadModules->load($GLOBALS['TBE_MODULES']);
 		foreach ($loadModules->modules as $mainMod => $info) {

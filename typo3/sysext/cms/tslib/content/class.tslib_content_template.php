@@ -180,7 +180,6 @@ class tslib_content_Template extends tslib_content_Abstract {
 					// Reset current to empty
 				$this->cObj->data[$this->cObj->currentValKey] = '';
 
-
 					// Getting marks
 				$markerArray = array();
 				foreach ($marks as $theKey => $theValue) {

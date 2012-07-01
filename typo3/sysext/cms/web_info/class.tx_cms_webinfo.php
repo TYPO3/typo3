@@ -114,11 +114,9 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 			$timespan_e = mktime (0, 0, 0)-(30-1)*3600*24+1;
 			$header = '<br />'.sprintf($LANG->getLL('stat_period'), t3lib_BEfunc::date($timespan_b), t3lib_BEfunc::date($timespan_e)).'<br />';
 
-				//
 			$dblist->start($this->pObj->id, 'pages', 0);
 			$dblist->pages_noEditColumns = 1;
 			$dblist->generateList();
-
 
 			$theOutput .= $this->pObj->doc->header($LANG->getLL('hits_title'));
 			$theOutput .= $this->pObj->doc->section('',
