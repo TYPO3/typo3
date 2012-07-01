@@ -13,7 +13,7 @@
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'TYPO3 skin',
 	'description' => '',
-	'category' => '',
+	'category' => 'be',
 	'shy' => 0,
 	'dependencies' => '',
 	'conflicts' => '',
