@@ -128,7 +128,9 @@ class tx_indexedsearch_lexer {
 				}
 
 				$pos = $start+$len;
-			} else break;
+			} else {
+				break;
+			}
 		}
 		return $words;
 	}
@@ -233,7 +235,10 @@ class tx_indexedsearch_lexer {
 
 			// If the return value was FALSE it means a sequence of non-word chars were found (or blank string) - so we will start another search for the word:
 		$pos += $len;
-		if ($str{$pos} == '')	return FALSE;	// check end of string before looking for word of course.
+		if ($str{$pos} == '') {
+				// Check end of string before looking for word of course.
+			return FALSE;
+		}
 
 		$this->utf8_is_letter($str, $len, $pos);
 		return array($pos, $len);
@@ -255,7 +260,10 @@ class tx_indexedsearch_lexer {
 		$cType = $cType_prev = FALSE; // Letter type
 		$letter = TRUE; // looking for a letter?
 
-		if ($str{$pos} == '')	return FALSE;	// Return FALSE on end-of-string at this stage
+		if ($str{$pos} == '') {
+				// Return FALSE on end-of-string at this stage
+			return FALSE;
+		}
 
 		while(1) {
 
@@ -273,19 +281,23 @@ class tx_indexedsearch_lexer {
 							}
 							return TRUE;
 						} else {	// If a printJoin char is found, record the length if it has not been recorded already:
-							if (!$printJoinLgd)	$printJoinLgd = $len;
+							if (!$printJoinLgd) {
+								$printJoinLgd = $len;
+							}
 						}
 					} else {	// When a true letter is found, reset printJoinLgd counter:
 						$printJoinLgd = 0;
 					}
-				}
-				elseif (!$letter && $cType)	{	// end of non-word reached
+				} elseif (!$letter && $cType) {	// end of non-word reached
 					return FALSE;
 				}
 			}
 			$len += $bc;	// add byte-length of last found character
 
-			if ($str{$pos} == '')	return $letter;	// end of string; return status of string till now
+			if ($str{$pos} == '') {
+					// End of string; return status of string till now
+				return $letter;
+			}
 
 				// Get next chars unicode number:
 			$cp = $this->utf8_ord($str, $bc, $pos);
@@ -299,7 +311,9 @@ class tx_indexedsearch_lexer {
 			}
 
 				// Setting letter to FALSE if the first char was not a letter!
-			if (!$len)	$letter = FALSE;
+			if (!$len) {
+				$letter = FALSE;
+			}
 		}
 
 		return FALSE;
@@ -372,8 +386,10 @@ class tx_indexedsearch_lexer {
 			$len += $bc;
 
 			$ord = $ord & ((1 << (6-$bc)) - 1);	// mask utf-8 lead-in bytes
-			for ($i=$pos+1; $bc; $bc--, $i++)	// "bring in" data bytes
+				// "bring in" data bytes
+			for ($i = $pos + 1; $bc; $bc--, $i++) {
 				$ord = ($ord << 6) | (ord($str{$i}) & 0x3F);
+			}
 		}
 
 		return $hex ? 'x'.dechex($ord) : $ord;

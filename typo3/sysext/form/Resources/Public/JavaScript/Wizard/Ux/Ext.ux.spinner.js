@@ -284,12 +284,12 @@ Ext.ux.Spinner = Ext.extend(Ext.util.Observable, {
 		if (delta > 0) {
 			this.onSpinUp();
 			e.stopEvent();
-		}
-		else
+		} else {
 			if (delta < 0) {
 				this.onSpinDown();
 				e.stopEvent();
 			}
+		}
 	},
 
 	//private

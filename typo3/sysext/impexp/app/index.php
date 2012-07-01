@@ -179,12 +179,16 @@ class localPageTree extends t3lib_browseTree {
 		if ($isOpen) {
 				// Set depth:
 			$depthD = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/ol/blank.gif', 'width="18" height="16"').' align="top" alt="" />';
-			if ($this->addSelfId)	$this->ids[] = $pid;
+			if ($this->addSelfId) {
+				$this->ids[] = $pid;
+			}
 			$this->getTree($pid, 999, $depthD);
 
 			$idH = array();
 			$idH[$pid]['uid'] = $pid;
-			if (count($this->buffer_idH))	$idH[$pid]['subrow'] = $this->buffer_idH;
+			if (count($this->buffer_idH)) {
+				$idH[$pid]['subrow'] = $this->buffer_idH;
+			}
 			$this->buffer_idH = $idH;
 
 		}
@@ -973,7 +977,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		if ($tempDir) {
 			$thumbnails = t3lib_div::getFilesInDir($tempDir, 'png,gif,jpg');
 			array_unshift($thumbnails, '');
-		} else $thumbnails = FALSE;
+		} else {
+			$thumbnails = FALSE;
+		}
 		$row[] = '
 				<tr class="bgColor4">
 					<td><strong>'.$LANG->getLL('makesavefo_metaData', 1).'</strong>'.t3lib_BEfunc::cshItem('xMOD_tx_impexp', 'metadata', $GLOBALS['BACK_PATH'], '').'</td>
@@ -1542,7 +1548,9 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$isSelFlag = 0;
 		foreach ($optValues as $k => $v) {
 			$sel = (!strcmp($k, $value) ? ' selected="selected"' : '');
-			if ($sel)	$isSelFlag++;
+			if ($sel) {
+				$isSelFlag++;
+			}
 			$opt[] = '<option value="'.htmlspecialchars($k).'"'.$sel.'>'.htmlspecialchars($v).'</option>';
 		}
 		if (!$isSelFlag && strcmp('', $value)) {
