@@ -122,7 +122,9 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 					// Menu:
 				$lines = array();
 				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'), 'title');
-				if (t3lib_extMgm::isLoaded('cms')) $lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'), 'subtitle');
+				if (t3lib_extMgm::isLoaded('cms')) {
+					$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'), 'subtitle');
+				}
 				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'), 'tstamp');
 				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'), 'crdate');
 				$lines[] = '';

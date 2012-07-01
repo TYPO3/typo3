@@ -381,7 +381,9 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					$params['itemName'] = 'data[' . htmlspecialchars($this->pObj->sObj) . '][name]';
 					$params['itemValue'] = 'data[' . htmlspecialchars($this->pObj->sObj) . '][propertyValue]';
 					$TSicon = '<a href="#" onClick="vHWin=window.open(\'' . $url . t3lib_div::implodeArrayForUrl('', array('P'=>$params)) . '\',\'popUp' . $md5ID . '\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;"><img src="' . $BACK_PATH . 'gfx/wizard_tsconfig_s.gif" width="22" height="16" border="0" class="absmiddle" hspace=2 title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:tsRef') . '"></a>';
-				} else $TSicon = '';
+				} else {
+					$TSicon = '';
+				}
 				$out = '';
 				$out = '<nobr>' . htmlspecialchars($this->pObj->sObj) . '.';
 				$out .= '<input type="Text" name="data[' . htmlspecialchars($this->pObj->sObj) . '][name]"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />' . $TSicon . ' = </nobr><br />';

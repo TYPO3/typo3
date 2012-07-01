@@ -282,7 +282,9 @@ class tx_sv_auth extends tx_sv_authbase {
 
 			// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
 		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\''.$this->authInfo['HTTP_HOST'].'\')';
-		if (!$this->authInfo['showHiddenRecords'])	$hiddenP = 'AND hidden=0 ';
+		if (!$this->authInfo['showHiddenRecords']) {
+			$hiddenP = 'AND hidden=0 ';
+		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,subgroup', 'fe_groups', 'deleted=0 '.$hiddenP.' AND uid IN ('.$grList.')'.$lockToDomain_SQL);
 			// Internal group record storage
 		$groupRows = array();

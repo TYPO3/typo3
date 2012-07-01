@@ -152,7 +152,9 @@ GLV_restoreMenu["' . $this->WMid . '"] = "' . $this->WMactiveKey . '";
 			} else {
 				$this->I['linkHREF']['onMouseover'] = 'GL_hideAll("' . $this->WMid . '");' . $this->I['linkHREF']['onMouseover'];
 					// IESelectFix - Hides IFRAME layer below menu
-				if ($this->mconf['ieSelectFix']) $this->I['linkHREF']['onMouseover'] = $this->I['linkHREF']['onMouseover'] . 'GL_iframer(\'' . $this->WMid . '\',\'\',false);';
+				if ($this->mconf['ieSelectFix']) {
+					$this->I['linkHREF']['onMouseover'] = $this->I['linkHREF']['onMouseover'] . 'GL_iframer(\'' . $this->WMid . '\',\'\',false);';
+				}
 				$event = 'GL_resetAll("' . $this->WMid . '");';
 				$this->I['linkHREF']['onMouseout'] .= $event;
 			}
