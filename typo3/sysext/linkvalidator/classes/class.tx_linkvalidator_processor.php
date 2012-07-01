@@ -154,7 +154,9 @@ class tx_linkvalidator_Processor {
 					$where .= t3lib_BEfunc::BEenableFields($table);
 				}
 					// If table is not configured, assume the extension is not installed and therefore no need to check it
-				if (!is_array($GLOBALS['TCA'][$table])) continue;
+				if (!is_array($GLOBALS['TCA'][$table])) {
+					continue;
+				}
 
 					// Re-init selectFields for table
 				$selectFields = 'uid, pid';
