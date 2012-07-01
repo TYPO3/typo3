@@ -114,14 +114,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	 * @test Functional
 	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
-	public function constructorThrowsNoExceptionIfPasswordOptionIsSet() {
-		$this->setUpBackend(array('password' => 'foo'));
-	}
-
-	/**
-	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
-	 */
 	public function constructorThrowsNoExceptionIfGivenDatabaseWasSuccessfullySelected() {
 		$this->setUpBackend(array('database' => 1));
 	}
