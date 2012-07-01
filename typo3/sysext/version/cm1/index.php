@@ -375,7 +375,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 					} else {
 						$content .= $GLOBALS['LANG']->getLL('recordsMatchesCompletely');
 					}
-				} else $content .= $GLOBALS['LANG']->getLL('errorRecordsNotFound');
+				} else {
+					$content .= $GLOBALS['LANG']->getLL('errorRecordsNotFound');
+				}
 			} else {
 				$content .= $GLOBALS['LANG']->getLL('errorDiffSources');
 			}
@@ -755,7 +757,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$tableRows = array_merge($tableRows, $this->displayWorkspaceOverview_list($pArray));
 
 			$table = '<table border="0" cellpadding="0" cellspacing="1" class="lrPadding workspace-overview">' . implode('', $tableRows) . '</table>';
-		} else $table = '';
+		} else {
+			$table = '';
+		}
 
 		$returnUrl = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
 		$linkBack = t3lib_div::_GP('returnUrl') ? '<a href="' . htmlspecialchars($returnUrl) . '" class="typo3-goBack">' .
@@ -846,7 +850,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 								$diffCode.= ($diffPct<0 ? $GLOBALS['LANG']->getLL('notAvailable') : ($diffPct ? $diffPct . '% ' . $GLOBALS['LANG']->getLL('change') : ''));
 								$diffCode.= $diffHTML;
 							}
-						} else $diffCode = '';
+						} else {
+							$diffCode = '';
+						}
 
 						switch ($vType) {
 							case 'element':
@@ -967,7 +973,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 			if ($rec_off = t3lib_BEfunc::getRecordWSOL($table, $uid)) {
 				$uid = $rec_off['_ORIG_uid'];
 			}
-		} else $table = '';
+		} else {
+			$table = '';
+		}
 
 		if ($table) {
 			if ($uid && $this->recIndex[$table][$uid]) {
@@ -980,9 +988,12 @@ class tx_version_cm1 extends t3lib_SCbase {
 						$label = $GLOBALS['LANG']->getLL('commentForPublisher');
 					break;
 				}
-			} else $sId = 0;
+			} else {
+				$sId = 0;
+			}
 		} else {
-			if (count($this->stageIndex[1]))	{	// Review:
+				// Review:
+			if (count($this->stageIndex[1])) {
 				$sId = 1;
 				$color = '#666666';
 				$label = $GLOBALS['LANG']->getLL('sendItemsToReview') . $GLOBALS['LANG']->getLL('commentForReviewer');
@@ -1029,7 +1040,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 			$onClick = 'window.location.href = "'.$this->REQUEST_URI.'";';
 			$actionLinks.=
 				$this->doc->wrapScriptTags($onClick);
-		} else $actionLinks = '';
+		} else {
+			$actionLinks = '';
+		}
 
 		return $actionLinks;
 	}
@@ -1521,7 +1534,9 @@ class tx_version_cm1 extends t3lib_SCbase {
 			} else {
 				$content.= '<span class="nobr">'.$this->doc->icons(1) . $GLOBALS['LANG']->getLL('completeMatch') . '</span>';
 			}
-		} else $content.= $this->doc->icons(3) . $GLOBALS['LANG']->getLL('errorRecordsNotFound');
+		} else {
+			$content.= $this->doc->icons(3) . $GLOBALS['LANG']->getLL('errorRecordsNotFound');
+		}
 
 			// Return value:
 		return array($content, $pctChange);

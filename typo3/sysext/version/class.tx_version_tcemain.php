@@ -236,8 +236,12 @@ class tx_version_tcemain {
 								// it from workspace (because it clears both version and placeholder).
 							$this->version_clearWSID($table, $id, FALSE, $tcemainObj);
 						}
-					} else $tcemainObj->newlog('Tried to delete record from another workspace', 1);
-				} else $tcemainObj->newlog('Versioning not enabled for record with PID = -1!', 2);
+					} else {
+						$tcemainObj->newlog('Tried to delete record from another workspace', 1);
+					}
+				} else {
+					$tcemainObj->newlog('Versioning not enabled for record with PID = -1!', 2);
+				}
 			} elseif ($res = $tcemainObj->BE_USER->workspaceAllowLiveRecordsInPID($record['pid'], $table)) {
 					// Look, if record is "online" or in a versionized branch, then delete directly.
 				if ($res>0) {
@@ -671,8 +675,12 @@ class tx_version_tcemain {
 						$this->notifyStageChange($stat, $stageId, $table, $id, $comment, $tcemainObj, $notificationAlternativeRecipients);
 					}
 				}
-			} else $tcemainObj->newlog('The member user tried to set a stage value "' . $stageId . '" that was not allowed', 1);
-		} else $tcemainObj->newlog('Attempt to set stage for record failed because you do not have edit access', 1);
+			} else {
+				$tcemainObj->newlog('The member user tried to set a stage value "' . $stageId . '" that was not allowed', 1);
+			}
+		} else {
+			$tcemainObj->newlog('Attempt to set stage for record failed because you do not have edit access', 1);
+		}
 	}
 
 
@@ -737,9 +745,15 @@ class tx_version_tcemain {
 							}
 						}
 					}	// else the page was not copied. Too bad...
-				} else $tcemainObj->newlog('The root version could not be created!', 1);
-			} else $tcemainObj->newlog('Versioning type "' . $versionizeTree . '" was not allowed in workspace', 1);
-		} else $tcemainObj->newlog('Could not read all subpages to versionize.', 1);
+				} else {
+					$tcemainObj->newlog('The root version could not be created!', 1);
+				}
+			} else {
+				$tcemainObj->newlog('Versioning type "' . $versionizeTree . '" was not allowed in workspace', 1);
+			}
+		} else {
+			$tcemainObj->newlog('Could not read all subpages to versionize.', 1);
+		}
 	}
 
 
@@ -996,15 +1010,33 @@ class tx_version_tcemain {
 													// For delete + completely delete!
 												$tcemainObj->deleteEl($table, $swapWith, TRUE, TRUE);
 											}
-										} else $tcemainObj->newlog('During Swapping: SQL errors happened: ' . implode('; ', $sqlErrors), 2);
-									} else $tcemainObj->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.', 2);
-								} else $tcemainObj->newlog('In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!', 2);
-							} else $tcemainObj->newlog('Workspace #' . $swapVersion['t3ver_wsid'] . ' does not support swapping.', 1);
-						} else $tcemainObj->newlog('You cannot publish a record you do not have edit and show permissions for', 1);
-					} else $tcemainObj->newlog('Records in workspace #' . $swapVersion['t3ver_wsid'] . ' can only be published when in "Publish" stage.', 1);
-				} else $tcemainObj->newlog('User could not publish records from workspace #' . $swapVersion['t3ver_wsid'], 1);
-			} else $tcemainObj->newlog('Error: Either online or swap version could not be selected!', 2);
-		} else $tcemainObj->newlog('Error: You cannot swap versions for a record you do not have access to edit!', 1);
+										} else {
+											$tcemainObj->newlog('During Swapping: SQL errors happened: ' . implode('; ', $sqlErrors), 2);
+										}
+									} else {
+										$tcemainObj->newlog('A swapping lock file was present. Either another swap process is already running or a previous swap process failed. Ask your administrator to handle the situation.', 2);
+									}
+								} else {
+									$tcemainObj->newlog('In swap version, either pid was not -1 or the t3ver_oid didn\'t match the id of the online version as it must!', 2);
+								}
+							} else {
+								$tcemainObj->newlog('Workspace #' . $swapVersion['t3ver_wsid'] . ' does not support swapping.', 1);
+							}
+						} else {
+							$tcemainObj->newlog('You cannot publish a record you do not have edit and show permissions for', 1);
+						}
+					} else {
+						$tcemainObj->newlog('Records in workspace #' . $swapVersion['t3ver_wsid'] . ' can only be published when in "Publish" stage.', 1);
+					}
+				} else {
+					$tcemainObj->newlog('User could not publish records from workspace #' . $swapVersion['t3ver_wsid'], 1);
+				}
+			} else {
+				$tcemainObj->newlog('Error: Either online or swap version could not be selected!', 2);
+			}
+		} else {
+			$tcemainObj->newlog('Error: You cannot swap versions for a record you do not have access to edit!', 1);
+		}
 	}
 
 
@@ -1130,7 +1162,9 @@ class tx_version_tcemain {
 					}
 				}
 			}
-		} else $tcemainObj->newlog('Attempt to reset workspace for record failed because you do not have edit access', 1);
+		} else {
+			$tcemainObj->newlog('Attempt to reset workspace for record failed because you do not have edit access', 1);
+		}
 	}
 
 
