@@ -1103,23 +1103,6 @@ class browse_links {
 
 			// Finally, add the accumulated JavaScript to the template object:
 		$this->doc->JScode.= $this->doc->wrapScriptTags($JScode);
-
-			// Debugging:
-		if (FALSE) {
-			debug(array(
-				'pointer' => $this->pointer,
-				'act' => $this->act,
-				'mode' => $this->mode,
-				'curUrlInfo' => $this->curUrlInfo,
-				'curUrlArray' => $this->curUrlArray,
-				'P' => $this->P,
-				'bparams' => $this->bparams,
-				'RTEtsConfigParams' => $this->RTEtsConfigParams,
-				'expandPage' => $this->expandPage,
-				'expandFolder' => $this->expandFolder,
-				'PM' => $this->PM,
-			), 'Internal variables of Script Class:');
-		}
 	}
 
 	/**
