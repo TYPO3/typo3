@@ -177,7 +177,9 @@ Reports missing relations';
 						$error = $sysRefObj->setReferenceValue($hash, NULL);
 						if ($error) {
 							echo '		t3lib_refindex::setReferenceValue(): '.$error.LF;
-						} else echo 'DONE';
+						} else {
+							echo 'DONE';
+						}
 					}
 					echo LF;
 				}

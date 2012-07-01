@@ -236,8 +236,12 @@ Reports problems with RTE images';
 												echo '	- ERROR: File "'.$copyDestName.'" was not created!';
 											}
 										}
-									} else echo '	- ERROR: Could not construct new unique names for file!';
-								} else echo '	- ERROR: Maybe directory of file was not within "uploads/"?';
+									} else {
+										echo '	- ERROR: Could not construct new unique names for file!';
+									}
+								} else {
+									echo '	- ERROR: Maybe directory of file was not within "uploads/"?';
+								}
 								echo LF;
 							}
 							$c++;

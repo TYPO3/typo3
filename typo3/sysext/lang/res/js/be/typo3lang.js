@@ -54,7 +54,9 @@ TYPO3.l10n = function() {
 		},
 
 		localize: function(label, replace, plural) {
-			if (typeof lang === 'undefined' || typeof lang[label] === 'undefined') return false;
+			if (typeof lang === 'undefined' || typeof lang[label] === 'undefined') {
+				return false;
+			}
 
 			var i = plural || 0,
 					translationUnit = lang[label],

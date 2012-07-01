@@ -1,5 +1,7 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
+}
 
 $TCA['tx_rtehtmlarea_acronym'] = Array (
 	'ctrl' => $TCA['tx_rtehtmlarea_acronym']['ctrl'],

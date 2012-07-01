@@ -54,8 +54,12 @@ function user_keepRolloverAtOnClick($I, $conf) {
 	} else {
 		$I['linkHREF']['onClick'] .= 'ARO_setActiveImg' . '(\'' . $I['theName'] . '\');';
 	}
-	if ($I['linkHREF']['onMouseover']) $I['linkHREF']['onMouseover'] = 'ARO_' . $I['linkHREF']['onMouseover'];
-	if ($I['linkHREF']['onMouseout']) $I['linkHREF']['onMouseout'] = 'ARO_' . $I['linkHREF']['onMouseout'];
+	if ($I['linkHREF']['onMouseover']) {
+		$I['linkHREF']['onMouseover'] = 'ARO_' . $I['linkHREF']['onMouseover'];
+	}
+	if ($I['linkHREF']['onMouseout']) {
+		$I['linkHREF']['onMouseout'] = 'ARO_' . $I['linkHREF']['onMouseout'];
+	}
 
 	if ($conf['parentObj']->isActive($itemRow['uid'])) {
 		$conf['parentObj']->WMextraScript .= '

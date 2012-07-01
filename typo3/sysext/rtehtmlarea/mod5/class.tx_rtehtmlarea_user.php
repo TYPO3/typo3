@@ -224,7 +224,9 @@ class tx_rtehtmlarea_user {
 									$title = $GLOBALS['LANG']->sL($title, 1);
 								}
 								$description = $GLOBALS['LANG']->sL($v[$k2i . '.']['description'], 1) . '<br />';
-								if (!$v[$k2i.'.']['dontInsertSiteUrl'])	$v[$k2i . '.']['content'] = str_replace('###_URL###', $this->siteUrl, $v[$k2i . '.']['content']);
+								if (!$v[$k2i.'.']['dontInsertSiteUrl']) {
+									$v[$k2i . '.']['content'] = str_replace('###_URL###', $this->siteUrl, $v[$k2i . '.']['content']);
+								}
 
 								$logo = $v[$k2i.'.']['_icon'] ? $v[$k2i.'.']['_icon'] : '';
 
@@ -236,7 +238,9 @@ class tx_rtehtmlarea_user {
 									break;
 									case 'processor':
 										$script = trim($v[$k2i.'.']['submitToScript']);
-										if (substr($script, 0, 4)!='http') $script = $this->siteUrl.$script;
+										if (substr($script, 0, 4)!='http') {
+											$script = $this->siteUrl.$script;
+										}
 										if ($script) {
 											$onClickEvent='processSelection(' . $GLOBALS['LANG']->JScharCode($script) . ');';
 										}

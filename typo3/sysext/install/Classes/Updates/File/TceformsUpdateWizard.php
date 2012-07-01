@@ -208,7 +208,9 @@ class Tx_Install_Updates_File_TceformsUpdateWizard extends Tx_Install_Updates_Ba
 		$i = 0;
 		foreach ($fieldItems as $item) {
 
-			if(!PATH_site) throw new Exception('PATH_site was undefined.');
+			if(!PATH_site) {
+				throw new Exception('PATH_site was undefined.');
+			}
 
 				// copy file
 			$sourcePath = PATH_site . $fieldConfiguration['sourcePath'] . $item;
