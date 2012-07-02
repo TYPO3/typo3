@@ -3,6 +3,9 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 
+	// TYPO3 6.0 - Update localconf.php to LocalConfiguration.php
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['localConfiguration'] = 'tx_coreupdates_localconfiguration';
+
 	// TYPO3 4.5 - Check the database to be utf-8 compliant
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['charsetDefaults'] = 'tx_coreupdates_charsetdefaults';
 
