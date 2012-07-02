@@ -25,6 +25,7 @@ before_script:
   - mv build-environment/typo3conf .
   - git clone git://git.typo3.org/TYPO3v4/Extensions/phpunit.git typo3conf/ext/phpunit/
   - mkdir fileadmin
+  - ln -s $PWD typo3_src
   - if [[ "$DB" == "mysql" ]]; then mysql -e "DROP DATABASE IF EXISTS typo3_test;" -uroot; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -e "create database IF NOT EXISTS typo3_test;" -uroot; fi
   - if [[ "$DB" == "mysql" ]]; then mysql -uroot typo3_test < build-environment/Introduction/typo3conf/ext/introduction/Resources/Private/Subpackages/Introduction/Database/introduction.sql; fi
