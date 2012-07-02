@@ -216,7 +216,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 	 */
 	protected function findUpdateablePagesWithDeprecatedRteProperties(&$pages) {
 		foreach ($pages as $index => $page) {
-			$deprecatedProperties = explode(',', '/' . implode('/,/((RTE\.(default\.|config\.[a-zA-Z0-9_\-]*\.[a-zA-Z0-9_\-]*\.))|\s)', array_keys($this->replacementRteProperties)) . '/');	
+			$deprecatedProperties = explode(',', '/' . implode('/,/((RTE\.(default\.|config\.[a-zA-Z0-9_\-]*\.[a-zA-Z0-9_\-]*\.))|\s)', array_keys($this->replacementRteProperties)) . '/');
 			$replacementProperties = explode(',', '$1' . implode(',$1', array_values($this->replacementRteProperties)));
 			$updatedPageTSConfig = preg_replace($deprecatedProperties, $replacementProperties, $page['TSconfig']);
 			if ($updatedPageTSConfig == $page['TSconfig']) {
