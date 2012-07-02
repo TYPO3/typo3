@@ -32,7 +32,7 @@ if (!top.DTM_currentTabs) {
 function DTM_activate(idBase,index,doToogle) {
 		// Hiding all:
 	if (DTM_array[idBase]) {
-		for(var cnt = 0; cnt < DTM_array[idBase].length ; cnt++) {
+		for(var cnt = 0; cnt < DTM_array[idBase].length; cnt++) {
 			if (DTM_array[idBase][cnt] !== idBase + '-' + index) {
 				document.getElementById(DTM_array[idBase][cnt]+'-DIV').style.display = 'none';
 				// Only Overriding when Tab not disabled

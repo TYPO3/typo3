@@ -396,7 +396,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 				row = firstRow;
 				while (row) {
 					cells = [];
-					for (var i = 0, n = row.cells.length; i < n ; ++i) {
+					for (var i = 0, n = row.cells.length; i < n; ++i) {
 						cells.push(row.cells[i].innerHTML);
 						if (operation === 'Cut') {
 							row.cells[i].innerHTML = '';

@@ -995,7 +995,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	/*
 	 * Create one of each of the configured custom tags so they are properly parsed by the walker when using IE
 	 * See: http://en.wikipedia.org/wiki/HTML5_Shiv
-	 * 
+	 *
 	 * @return	void
 	 */
 	initializeCustomTags: function () {
@@ -2127,7 +2127,7 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 	/*
 	 * Determine whether the editor document is currently contentEditable
 	 *
-	 * @return	boolean		true, if the document is contentEditable	
+	 * @return	boolean		true, if the document is contentEditable
 	 */
  	isEditable: function () {
  		return Ext.isIE ? this.document.body.contentEditable : (this.document.designMode === 'on');
@@ -2862,7 +2862,7 @@ Ext.apply(HTMLArea.util, {
 		str = str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 		str = str.replace(/&nbsp;/g, '\xA0'); // Decimal 160, non-breaking-space
 		str = str.replace(/&quot;/g, '\x22');
-		str = str.replace(/&#39;/g, "'") ;
+		str = str.replace(/&#39;/g, "'");
 		str = str.replace(/&amp;/g, '&');
 		return str;
 	},
@@ -3398,7 +3398,7 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 		var attributes = node.attributes;
 		var filterededAttributes = [];
 		var attribute, attributeName, attributeValue;
-		for (var i = attributes.length; --i >= 0 ;) {
+		for (var i = attributes.length; --i >= 0;) {
 			attribute = attributes.item(i);
 			attributeName = attribute.nodeName.toLowerCase();
 			attributeValue = attribute.nodeValue;
@@ -3539,7 +3539,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 * Get the current selection object
 	 *
 	 * @return	object		this
-	 */		
+	 */
 	get: function () {
 		this.editor.focus();
 	 	this.selection = this.window.getSelection ? this.window.getSelection() : this.document.selection;
@@ -3809,7 +3809,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	/*
 	 * Get the deepest node that contains both endpoints of the current selection.
 	 *
-	 * @return	object		the deepest node that contains both endpoints of the current selection.	
+	 * @return	object		the deepest node that contains both endpoints of the current selection.
 	 */
 	getParentElement: function () {
 		var parentElement,
@@ -4113,7 +4113,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 * Execute some native execCommand command on the current selection
 	 *
 	 * @param	string		cmdID: the command name or id
-	 * @param	object		UI: 
+	 * @param	object		UI:
 	 * @param	object		param:
 	 *
 	 * @return	boolean		false
@@ -4217,14 +4217,14 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					}
 				}
 			}, 10);
-			return false;	
+			return false;
 		}
 	},
 	/*
 	 * Detect emails and urls as they are typed in non-IE browsers
 	 * Borrowed from Xinha (is not htmlArea) - http://xinha.gogo.co.nz/
 	 *
-	 * @param	object		event: the ExtJS key event 
+	 * @param	object		event: the ExtJS key event
 	 *
 	 * @return	void
 	 */
@@ -4243,7 +4243,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 				a.appendChild(textNode);
 				selection.collapse(rightText, 0);
 				rightText.parentNode.normalize();
-		
+
 				editor.unLink = function() {
 					var t = a.firstChild;
 					a.removeChild(t);
@@ -4253,7 +4253,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 					editor.unLink = null;
 					editor.unlinkOnUndo = false;
 				};
-		
+
 				editor.unlinkOnUndo = true;
 				return a;
 			};
@@ -4746,7 +4746,7 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 				var rangeEnd = range.duplicate();
 				rangeEnd.collapse(true);
 				var newRange = this.selection.createRange();
-				
+
 				var parentEnd = rangeEnd.parentElement();
 				var upperParentStart = parentStart;
 				if (parentStart !== parent) {
@@ -4754,7 +4754,7 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 						upperParentStart = upperParentStart.parentNode;
 					}
 				}
-				
+
 				element.innerHTML = range.htmlText;
 					// IE eats spaces on the start boundary
 				if (range.htmlText.charAt(0) === '\x20') {
@@ -4892,7 +4892,7 @@ HTMLArea.isBlockElement = HTMLArea.DOM.isBlockElement;
 HTMLArea.needsClosingTag = HTMLArea.DOM.needsClosingTag;
 /*
  * Get the current selection object
- * 
+ *
  ***********************************************
  * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.7 *
  ***********************************************

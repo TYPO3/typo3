@@ -62,7 +62,6 @@ TYPO3.backendContentIframePanel = Ext.extend(TYPO3.iframePanel ,{
 				return this.url;
 			}
 		}
-		;
 	}
 });
 Ext.reg('backendContentIframePanel', TYPO3.backendContentIframePanel);

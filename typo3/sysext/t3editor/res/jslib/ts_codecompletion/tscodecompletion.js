@@ -134,7 +134,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 	 * instantiates all plugins and adds the instances to the plugin array
 	 */
 	function loadPlugins() {
-		for (var i = 0; i < plugins.length ; i++) {
+		for (var i = 0; i < plugins.length; i++) {
 			var script = document.createElement('script');
 			script.setAttribute('type', 'text/javascript');
 			script.setAttribute('src', plugins[i].extpath+plugins[i].classpath);
@@ -186,7 +186,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 			var childNode;
 			// if the childnode has a value and there is a parto of a reference operator ('<')
 			// and it does not look like a html tag ('>')
-			if (childNodes[key].v && childNodes[key].v[0] == '<' 
+			if (childNodes[key].v && childNodes[key].v[0] == '<'
 			 && childNodes[key].v.indexOf('>') == -1 ) {
 				var path = childNodes[key].v.replace(/</,"").strip();
 				// if there are still whitespaces its no path
@@ -210,7 +210,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 		var path = path.split('.');
 		var pathSeg;
 		var i;
-		for ( i=0 ; i < path.length; i++) {
+		for ( i=0; i < path.length; i++) {
 			pathSeg = path[i];
 			if(extTree.c == null || extTree.c[pathSeg] == null) {
 				return null;
@@ -424,7 +424,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 			// init styles
 			codeCompleteBox.style.overflowY = 'scroll';
 			codeCompleteBox.style.height = (options.ccWords * ($("cc_word_0").offsetHeight)) + 'px';
-			
+
 
 			var leftpos = (Position.cumulativeOffset($$('.t3e_iframe_wrap')[index])[0] + Position.cumulativeOffset(cursorNode)[0] + cursorNode.offsetWidth) + 'px';
 			var toppos = (Position.cumulativeOffset(cursorNode)[1] + cursorNode.offsetHeight - Element.cumulativeScrollOffset(cursorNode)[1]) + 'px';
@@ -523,7 +523,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 		mousePos.x = event.clientX;
 		mousePos.y = event.clientY;
 	}
-	
+
 	/**
 	 * highlights entry in codecomplete box by id
 	 * @param {int} id
@@ -537,7 +537,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 			}
 		}
 	}
-	
+
 	function highlightCurrWord(id,event) {
 		// if it is a mouseover event
 		if(event){
@@ -564,7 +564,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 	this.insertCurrWordAtCursor = function(){
 		insertCurrWordAtCursor();
 	}
-	
+
 	/**
 	 * insert selected word into text from codecompletebox
 	 */
@@ -574,7 +574,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 		mirror.editor.highlightAtCursor();
 		var select = mirror.win.select;
 		var cursorNode = getCursorNode();
-		
+
 		if (cursorNode.currentText
 			&& cursorNode.currentText != '.'
 			&& cursorNode.currentText.strip() != '' ) {
