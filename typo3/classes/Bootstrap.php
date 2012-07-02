@@ -43,6 +43,12 @@ require('Bootstrap' . DIRECTORY_SEPARATOR . 'BaseSetup.php');
  * @subpackage core
  */
 class Typo3_Bootstrap {
+
+	const DATABASE_CONFIGURATION_FILE = 'DatabaseConfiguration.php';
+	const LOCAL_CONFIGURATION_FILE = 'LocalConfiguration.php';
+	const ADDITIONAL_CONFIGURATION_FILE = 'AdditionalConfiguration.php';
+	const LOCALCONF_FILE = 'localconf.php';
+
 	/**
 	 * @var Typo3_Bootstrap
 	 */
@@ -174,9 +180,9 @@ class Typo3_Bootstrap {
 	 * @throws RuntimeException
 	 * @return Typo3_Bootstrap
 	 */
-	public function checkLocalconfExistsOrDie() {
-		if (!@is_file(PATH_typo3conf . 'localconf.php')) {
-			throw new RuntimeException('localconf.php is not found!', 1333754332);
+	public function checkConfigurationFilesExistsOrDie() {
+		if (!@is_file(PATH_typo3conf . self::LOCALCONF_FILE)) {
+			//throw new RuntimeException('localconf.php is not found!', 1333754332);
 		}
 
 		return $this;
@@ -207,13 +213,34 @@ class Typo3_Bootstrap {
 	}
 
 	/**
-	 * Loads the main configuration file (localconf.php)
+	 * Loads the configuration files
 	 *
 	 * @return Typo3_Bootstrap
 	 */
-	public function loadMainConfigurationFile() {
+	public function loadConfigurationFiles() {
 		global $TYPO3_CONF_VARS, $typo_db, $typo_db_username, $typo_db_password, $typo_db_host, $typo_db_extTableDef_script;
-		require(PATH_typo3conf . 'localconf.php');
+
+		if (@is_file(PATH_typo3conf . self::DATABASE_CONFIGURATION_FILE) && @is_file(PATH_typo3conf . self::LOCAL_CONFIGURATION_FILE)) {
+			require(PATH_typo3conf . self::DATABASE_CONFIGURATION_FILE);
+
+			$localSettings = require(PATH_typo3conf . self::LOCAL_CONFIGURATION_FILE);
+			if (is_array($localSettings) === TRUE) {
+				$TYPO3_CONF_VARS = t3lib_div::array_merge_recursive_overrule(
+					$TYPO3_CONF_VARS,
+					$localSettings
+				);
+			} else {
+				die('LocalSettings not found');
+			}
+
+			if (@is_file(PATH_typo3conf . self::ADDITIONAL_CONFIGURATION_FILE)) {
+				require(PATH_typo3conf . self::ADDITIONAL_CONFIGURATION_FILE);
+			}
+		} elseif (@is_file(PATH_typo3conf . self::LOCALCONF_FILE)) {
+			require(PATH_typo3conf . self::LOCALCONF_FILE);
+		} else {
+			throw new RuntimeException(self::LOCALCONF_FILE . ' is not found!', 1333754332);
+		}
 
 		return $this;
 	}
