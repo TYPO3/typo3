@@ -80,8 +80,8 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 				'  public static function initializeGlobalVariables() {' .
 				'    return parent::initializeGlobalVariables();' .
 				'  }' .
-				'  public static function loadDefaultTypo3ConfVars() {' .
-				'    return parent::loadDefaultTypo3ConfVars();' .
+				'  public static function loadDefaultConfiguration() {' .
+				'    return parent::loadDefaultConfiguration();' .
 				'  }' .
 				'  public static function initializeGlobalTimeTrackingVariables() {' .
 				'    return parent::initializeGlobalTimeTrackingVariables();' .
@@ -210,9 +210,9 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function loadDefaultTypo3ConfVarsPopulatesTypo3ConfVarsArray() {
+	public function loadDefaultConfigurationPopulatesTypo3ConfVarsArray() {
 		unset($GLOBALS['TYPO3_CONF_VARS']);
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::loadDefaultTypo3ConfVars();
+		Typo3_Bootstrap_BaseSetupAccessibleProxy::loadDefaultConfiguration();
 		$this->assertInternalType('array', $GLOBALS['TYPO3_CONF_VARS']);
 	}
 

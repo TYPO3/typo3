@@ -249,7 +249,7 @@ class tx_em_Extensions_List {
 
 				$list[$key]['categoryShort'] = $list[$key]['category'];
 				$list[$key]['category'] = isset($this->categories[$list[$key]['category']]) ? $this->categories[$list[$key]['category']] : $list[$key]['category'];
-				$list[$key]['required'] = t3lib_div::inList(t3lib_extMgm::getRequiredExtensionList(), $extKey);
+				$list[$key]['required'] = in_array($extKey, t3lib_extMgm::getRequiredExtensionListArray(), TRUE);
 
 				$constraints = $this->humanizeConstraints($list[$key]['constraints']);
 				$list[$key]['depends'] = $constraints['depends'];
@@ -930,7 +930,7 @@ EXTENSION KEYS:
 	 * @see removeExtFromList(), addExtToList()
 	 */
 	function removeRequiredExtFromListArr($listArr) {
-		$requiredExtensions = t3lib_div::trimExplode(',', t3lib_extMgm::getRequiredExtensionList(), 1);
+		$requiredExtensions = t3lib_extMgm::getRequiredExtensionListArray();
 		foreach ($listArr as $k => $ext) {
 			if (in_array($ext, $requiredExtensions)) {
 				unset($listArr[$k]);
