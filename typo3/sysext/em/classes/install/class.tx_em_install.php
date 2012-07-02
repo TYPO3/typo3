@@ -1565,25 +1565,19 @@ class tx_em_Install {
 	}
 
 	/**
-	 * Writes the extension list to "localconf.php" file
+	 * Writes the extension list to local configuration
 	 * Removes the cached core files before return.
 	 *
 	 * @param	string		List of extensions
 	 * @return	void
 	 */
 	function writeNewExtensionList($newExtList) {
+		$extensionList = array_unique(t3lib_div::trimExplode(',', $newExtList));
+		t3lib_Configuration::setLocalConfigurationValueByPath($extensionList, 'EXT/extList');
 
-		// Instance of install tool
-		$instObj = t3lib_div::makeInstance('t3lib_install');
-		$instObj->allowUpdateLocalConf = 1;
-		$instObj->updateIdentity = 'TYPO3 Extension Manager';
+			// @todo: is the next line required with the new bootstrapping?
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $extensionList;
 
-		// Get lines from localconf file
-		$lines = $instObj->writeToLocalconf_control();
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
-		$instObj->writeToLocalconf_control($lines);
-
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
 		t3lib_extMgm::removeCacheFiles();
 	}
 

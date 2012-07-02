@@ -85,6 +85,7 @@ class t3lib_extMgm {
 	 * @return string
 	 */
 	public static function extPath($key, $script = '') {
+
 		if (isset($GLOBALS['TYPO3_LOADED_EXT'])) {
 			if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$key])) {
 				throw new BadFunctionCallException(
@@ -95,8 +96,7 @@ class t3lib_extMgm {
 
 			$extensionPath = PATH_site . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'];
 		} else {
-			$extensionList = self::getRequiredExtensionList() . ',' . $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
-			$loadedExtensions = array_flip(array_unique(t3lib_div::trimExplode(',', $extensionList, TRUE)));
+			$loadedExtensions = array_flip(self::getLoadedExtensionListArray());
 
 			if (!isset($loadedExtensions[$key])) {
 				throw new BadFunctionCallException(
@@ -1575,7 +1575,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @return array Result array that will be set as $GLOBALS['TYPO3_LOADED_EXT']
 	 */
 	protected static function createTypo3LoadedExtensionInformationArray() {
-		$loadedExtensions = array_unique(t3lib_div::trimExplode(',', self::getEnabledExtensionList(), 1));
+		$loadedExtensions = self::getEnabledExtensionListArray();
 		$loadedExtensionInformation = array();
 
 		$extensionFilesToCheckFor = array(
@@ -2005,18 +2005,80 @@ tt_content.' . $key . $prefix . ' {
 	 * Gets the list of enabled extensions
 	 *
 	 * @return string
+	 * @deprecated with 6.0
 	 */
 	public static function getEnabledExtensionList() {
-		$extensionList = self::getRequiredExtensionList() . ',' . $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
-		$ignoredExtensionList = self::getIgnoredExtensionList();
+		t3lib_div::logDeprecatedFunction();
+
+		return implode(',', self::getEnabledExtensionListArray());
+	}
+
+	/**
+	 * Gets the list of required extensions.
+	 *
+	 * @return string
+	 * @deprecated with 6.0
+	 */
+	public static function getRequiredExtensionList() {
+		t3lib_div::logDeprecatedFunction();
+
+		return implode(',', self::getRequiredExtensionListArray());
+	}
+
+	/**
+	 * Gets the list of extensions to be ignored (not to be loaded).
+	 *
+	 * @return string
+	 * @deprecated with 6.0
+	 */
+	public static function getIgnoredExtensionList() {
+		t3lib_div::logDeprecatedFunction();
+
+		return implode(',', self::getIgnoredExtensionListArray());
+	}
+
+	/**
+	 * Gets the list of extensions to be loaded
+	 *
+	 * @return array
+	 */
+	public static function getLoadedExtensionListArray() {
+
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']) === TRUE) {
+			$loadedExtensions = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
+		} else {
+			$loadedExtensions = t3lib_div::trimExplode(
+				',',
+				$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']
+			);
+		}
+
+		$loadedExtensions = array_merge(
+			self::getRequiredExtensionListArray(),
+			$loadedExtensions
+		);
+		$loadedExtensions = array_unique($loadedExtensions);
+
+		return $loadedExtensions;
+	}
+
+	/**
+	 * Gets the list of enabled extensions for the accordant context (frontend or backend).
+	 *
+	 * @return array
+	 */
+	public static function getEnabledExtensionListArray() {
+		$extensionList = self::getLoadedExtensionListArray();
 
 			// Remove the extensions to be ignored:
-		if ($ignoredExtensionList && (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript) === FALSE) {
-			$extensions = array_diff(
-				explode(',', $extensionList),
-				explode(',', $ignoredExtensionList)
+		if (
+			count(self ::getIgnoredExtensionListArray()) > 0
+			&& (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript) === FALSE
+		) {
+			$extensionList = array_diff(
+				$extensionList,
+				self::getIgnoredExtensionListArray()
 			);
-			$extensionList = implode(',', $extensions);
 		}
 
 		return $extensionList;
@@ -2025,14 +2087,26 @@ tt_content.' . $key . $prefix . ' {
 	/**
 	 * Gets the list of required extensions.
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public static function getRequiredExtensionList() {
-		$requiredExtensionList = t3lib_div::uniqueList(
-			REQUIRED_EXTENSIONS . ',' . $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt']
-		);
+	public static function getRequiredExtensionListArray() {
 
-		return $requiredExtensionList;
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt']) === TRUE) {
+			$requiredExtensions = $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'];
+		} else {
+			$requiredExtensions = t3lib_div::trimExplode(
+				',',
+				$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt']
+			);
+		}
+
+		$requiredExtensions = array_merge(
+			$requiredExtensions,
+			t3lib_div::trimExplode(',', REQUIRED_EXTENSIONS)
+		);
+		$requiredExtensions = array_unique($requiredExtensions);
+
+		return $requiredExtensions;
 	}
 
 	/**
@@ -2040,13 +2114,40 @@ tt_content.' . $key . $prefix . ' {
 	 *
 	 * @return string
 	 */
-	public static function getIgnoredExtensionList() {
-		$ignoredExtensionList = t3lib_div::uniqueList(
-			$GLOBALS['TYPO3_CONF_VARS']['EXT']['ignoredExt']
+	public static function getIgnoredExtensionListArray() {
+
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['ignoredExt']) === TRUE) {
+			$ignoredExtensions = $GLOBALS['TYPO3_CONF_VARS']['EXT']['ignoredExt'];
+		} else {
+			$ignoredExtensions = t3lib_div::trimExplode(
+				',',
+				$GLOBALS['TYPO3_CONF_VARS']['EXT']['ignoredExt']
+			);
+		}
+		$ignoredExtensions = array_unique($ignoredExtensions);
+
+		return $ignoredExtensions;
+	}
+
+	/**
+	 * Writes the extension list to "extList.php" file
+	 * Removes the temp_CACHED* files before return.
+	 *
+	 * @param	array		List of extensions
+	 * @return	void
+	 */
+	public static function writeNewExtensionList(array $newExtList) {
+		$extensionList = array_unique($newExtList);
+		file_put_contents(
+			PATH_typo3conf . 'extList.php',
+			"<?php\n\$TYPO3_CONF_VARS['EXT']['extList'] = " . var_export($extensionList, TRUE) . ";\n ?>"
 		);
 
-		return $ignoredExtensionList;
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $extensionList;
+		self::removeCacheFiles();
+		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->flushByTag('t3lib_autoloader');
 	}
+
 }
 
 ?>

@@ -43,6 +43,7 @@ require('Bootstrap' . DIRECTORY_SEPARATOR . 'BaseSetup.php');
  * @subpackage core
  */
 class Typo3_Bootstrap {
+
 	/**
 	 * @var Typo3_Bootstrap
 	 */
@@ -169,20 +170,6 @@ class Typo3_Bootstrap {
 	}
 
 	/**
-	 * Check typo3conf/localconf.php exists
-	 *
-	 * @throws RuntimeException
-	 * @return Typo3_Bootstrap
-	 */
-	public function checkLocalconfExistsOrDie() {
-		if (!@is_file(PATH_typo3conf . 'localconf.php')) {
-			throw new RuntimeException('localconf.php is not found!', 1333754332);
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Set global database variables to empty string.
 	 * Database-variables are cleared!
 	 *
@@ -207,13 +194,12 @@ class Typo3_Bootstrap {
 	}
 
 	/**
-	 * Loads the main configuration file (localconf.php)
+	 * Loads the configuration
 	 *
 	 * @return Typo3_Bootstrap
 	 */
-	public function loadMainConfigurationFile() {
-		global $TYPO3_CONF_VARS, $typo_db, $typo_db_username, $typo_db_password, $typo_db_host, $typo_db_extTableDef_script;
-		require(PATH_typo3conf . 'localconf.php');
+	public function loadConfiguration() {
+		t3lib_Configuration::loadConfiguration();
 
 		return $this;
 	}
