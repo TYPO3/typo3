@@ -48,11 +48,6 @@ class t3lib_file_Driver_DriverRegistry implements t3lib_Singleton {
 	 * Creates this object.
 	 */
 	public function __construct() {
-		t3lib_div::sysLog(
-			't3lib_file_Driver_DriverRegistry::__construct: ' . t3lib_utility_Debug::debugTrail(),
-			't3lib_file_Driver_DriverRegistry'
-		);
-
 		$driverConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'];
 
 		foreach ($driverConfigurations as $shortName => $driverConfig) {
@@ -96,8 +91,6 @@ class t3lib_file_Driver_DriverRegistry implements t3lib_Singleton {
 			'label' => $label,
 			'flexFormDS' => $flexFormDataStructurePathAndFilename
 		);
-
-		t3lib_div::sysLog('Registered driver ' . $shortName . ' (' . $className . ') ' . t3lib_utility_Debug::debugTrail(), 't3lib_file_Driver_DriverRegistry');
 
 		return TRUE;
 	}
