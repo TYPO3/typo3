@@ -91,6 +91,160 @@ final class t3lib_utility_Array {
 			// Pointers to result array are reset internally
 		return $resultArray;
 	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param array $array
+	 * @param $path
+	 * @param string $delimiter
+	 * @return bool
+	 * @throws RuntimeException
+	 */
+	public static function isValidPath(array $array, $path,  $delimiter = '/') {
+		$isValid = TRUE;
+
+		try {
+			t3lib_utility_Array::getValueByPath(
+				$array,
+				$path,
+				$delimiter
+			);
+		} catch(RuntimeException $e) {
+			$isValid = FALSE;
+		}
+
+		return $isValid;
+	}
+
+	/**
+	 * Returns value by given path
+	 *
+	 * array(
+	 *     'foo' => array(
+	 *         'bar' => array(
+	 *             'baz' => 42
+	 *         )
+	 *     )
+	 * );
+	 *
+	 * path: foo/bar/baz
+	 * return: 42
+	 *
+	 * @static
+	 * @param array $array
+	 * @param string $path
+	 * @param string $delimiter
+	 * @return mixed
+	 * @throws RuntimeException
+	 */
+	public static function getValueByPath(array $array, $path,  $delimiter = '/') {
+
+			// fail if the path is empty
+		if (empty($path)) {
+			throw new RuntimeException(
+				'Path cannot be empty',
+				1341397767
+			);
+		}
+
+			// use current array as the initial value
+		$value = $array;
+
+			// extract parts of the path
+		$path = t3lib_div::trimExplode($delimiter, $path);
+
+			// loop through each part and extract its value
+		foreach ($path as $segment) {
+			if (array_key_exists($segment, $value)) {
+					// replace current value with the child
+				$value = $value[$segment];
+			} else {
+					// key doesn't exist, fail
+				throw new RuntimeException(
+					'Path not exists',
+					1341397869
+				);
+			}
+		}
+
+		return $value;
+	}
+
+	/**
+	 *
+	 *
+	 * @static
+	 * @param array $array
+	 * @param string $path
+	 * @param mixed $value
+	 * @param string $delimiter
+	 * @return array
+	 * @throws RuntimeException
+	 */
+	public static function setValueByPath(array $array, $path, $value, $delimiter = '/') {
+
+			// fail if the path is empty
+		if (empty($path)) {
+			throw new RuntimeException(
+				'Path cannot be empty',
+				1341406194
+			);
+		}
+
+			// fail if path is not a string
+		if (is_string($path) === FALSE) {
+			throw new RuntimeException(
+				'Path must be a string',
+				1341406402
+			);
+		}
+
+			// split the path in into separate segments
+		$path = t3lib_div::trimExplode($delimiter, $path);
+
+			// initially point to the root of the array
+		$pointer =& $array;
+
+			// loop through each segment and ensure that the cell is there
+		foreach ($path as $segment) {
+
+				// fail if the part is empty
+			if (empty($segment)) {
+				throw new RuntimeException(
+					'Invalid path specified: ' . $path,
+					1341406846
+				);
+			}
+
+				// create the cell if it doesn't exist
+			if (isset($pointer[$segment]) === FALSE) {
+				$pointer[$segment] = array();
+			}
+
+				// redirect the pointer to the new cell
+			$pointer =& $pointer[$segment];
+		}
+
+			// set value of the target cell
+		$pointer = $value;
+
+		return $array;
+	}
+
+	/**
+	 * @static
+	 * @param $array
+	 */
+	public static function sortByKeyRecursive(&$array) {
+		ksort($array);
+		foreach ($array as &$entry) {
+			if (is_array($entry) && !empty($entry)) {
+				self::sortByKeyRecursive($entry);
+			}
+		}
+	}
 }
 
 ?>

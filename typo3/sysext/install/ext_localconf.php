@@ -62,4 +62,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['sysext_file_filemounts'
 
 	// Version 4.7: Migrate the flexforms of MediaElement
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['mediaElementFlexform'] = 'tx_coreupdates_mediaFlexform';
+
+
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['localConfiguration'] = 'Tx_Install_Updates_LocalConfiguration';
 ?>
