@@ -63,6 +63,10 @@
  * }
  * </pre>
  *
+ */
+
+/**
+ * Install Tool form protection
  *
  * @package TYPO3
  * @subpackage t3lib

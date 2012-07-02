@@ -25,6 +25,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
+
 /**
  * Loads TSref information from a XML file an responds to an AJAX call.
  *
@@ -32,9 +34,6 @@
  * @author Stephan Petzl <spetzl@gmx.at>
  * @author Christian Kartnig <office@hahnepeter.de>
  */
-
-$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
-
 class tx_t3editor_TSrefLoader {
 	/**
 	 * @var DOMDocument

@@ -31,7 +31,6 @@
  * @author	Kasper Skårhøj <kasper@typo3.com>
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-
 class tx_rtehtmlarea_user {
 	var $content;
 	var $modData;

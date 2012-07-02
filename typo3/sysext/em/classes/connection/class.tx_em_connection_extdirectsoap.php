@@ -25,6 +25,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+/**
+ * ExtDirect connection for SOAP
+ *
+ * @author Steffen Kamper <steffen@typo3.org>
+ * @package TYPO3
+ * @subpackage em
+ */
 class tx_em_Connection_ExtDirectSoap {
 	/**
 	 * @var tx_em_Repository

@@ -32,7 +32,6 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-
 interface t3lib_extFileFunctions_processDataHook {
 
 	/**

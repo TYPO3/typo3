@@ -25,12 +25,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * A TS-Config parsing class which performs condition evaluation
  *
  * @author Kraft Bernhard <kraftb@kraftb.at>
+ * @package TYPO3
+ * @subpackage t3lib
  */
-
 class t3lib_TSparser_TSconfig extends t3lib_TSparser {
 	/**
 	 * @var	array

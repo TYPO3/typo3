@@ -27,11 +27,11 @@ require_once(t3lib_extMgm::extPath('recycler', 'classes/helper/class.tx_recycler
 /**
  * Deleted Records View
  *
- * @author  Erik Frister <erik_frister@otq-solutions.com>
- * @author	Julian Kleinhans <typo3@kj187.de>
- * @package	TYPO3
- * @subpackage	tx_recycler
- **/
+ * @author Erik Frister <erik_frister@otq-solutions.com>
+ * @author Julian Kleinhans <typo3@kj187.de>
+ * @package TYPO3
+ * @subpackage tx_recycler
+ */
 class tx_recycler_view_deletedRecords {
 
 	/**

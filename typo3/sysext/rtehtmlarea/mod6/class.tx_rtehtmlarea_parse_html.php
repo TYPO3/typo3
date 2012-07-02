@@ -29,7 +29,6 @@
  *
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-
 class tx_rtehtmlarea_parse_html {
 	var $content;
 	var $modData;

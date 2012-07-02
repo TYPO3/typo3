@@ -22,10 +22,8 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * Invalid token exception
- *
  *
  * @package TYPO3
  * @subpackage t3lib_formprotection
@@ -34,6 +32,5 @@
 class t3lib_formprotection_InvalidTokenException extends UnexpectedValueException {
 
 }
-
 
 ?>

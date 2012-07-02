@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
+	// TODO should this be a singleton?
 /**
  * Thumbnail service
  *
@@ -33,7 +33,6 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-// TODO should this be a singleton?
 class t3lib_file_Service_ImageProcessingService {
 
 	/**

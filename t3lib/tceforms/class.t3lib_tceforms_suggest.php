@@ -24,13 +24,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * TCEforms wizard for rendering an AJAX selector for records
  *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @author Benjamin Mack <benni@typo3.org>
  */
-
 class t3lib_TCEforms_Suggest {
 		// Count the number of ajax selectors used
 	public $suggestCount = 0;

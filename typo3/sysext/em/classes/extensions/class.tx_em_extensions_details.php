@@ -28,10 +28,13 @@
 ***************************************************************/
 
 /**
- * This class handles extension details
+ * Class for extension details
  *
+ * @author Karsten Dambekalns <karsten@typo3.org>
+ * @author Steffen Kamper <steffen@typo3.org>
+ * @package TYPO3
+ * @subpackage em
  */
-
 class tx_em_Extensions_Details {
 
 	protected $maxUploadSize = 31457280;

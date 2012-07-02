@@ -35,7 +35,7 @@
  * @author Karsten Dambekalns <karsten@typo3.org>
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
- * @subpackage EM
+ * @subpackage em
  */
 class tx_em_Connection_Ter {
 	var $wsdlURL;

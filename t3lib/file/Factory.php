@@ -25,7 +25,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
+	// TODO implement constructor-level caching
 /**
  * Factory class for FAL objects.
  *
@@ -35,8 +35,6 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-
-	// TODO implement constructor-level caching
 class t3lib_file_Factory implements t3lib_Singleton {
 
 	/**

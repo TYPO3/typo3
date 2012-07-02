@@ -25,7 +25,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class tx_em_reports_ExtensionStatus  implements tx_reports_StatusProvider {
+/**
+ * Extension reports
+ *
+ * @author Steffen Kamper <steffen@typo3.org>
+ * @package TYPO3
+ * @subpackage em
+ */
+class tx_em_reports_ExtensionStatus implements tx_reports_StatusProvider {
 
 	/**
 	 * @var string

@@ -24,6 +24,9 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+$GLOBALS['LANG']->includeLLFile('EXT:tstemplate_ceditor/locallang.xml');
+
 /**
  * TypoScript Constant editor
  *
@@ -34,9 +37,6 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-$GLOBALS['LANG']->includeLLFile('EXT:tstemplate_ceditor/locallang.xml');
-
 class tx_tstemplateceditor extends t3lib_extobjbase {
 	/**
 	 * Initialize editor

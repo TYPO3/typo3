@@ -24,6 +24,8 @@
 ***************************************************************/
 
 /**
+ * Tceforms class for adodb
+ *
  * @author Robert Lemke <robert@typo3.org>
  * @author Karsten Dambekalns <karsten@typo3.org>
  */

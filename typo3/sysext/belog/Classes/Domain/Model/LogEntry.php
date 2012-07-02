@@ -27,6 +27,7 @@
 /**
  * A sys log entry
  * This model is 'complete': All current database properties are in there.
+ *
  * @TODO: This should be stuffed to some more central place
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>

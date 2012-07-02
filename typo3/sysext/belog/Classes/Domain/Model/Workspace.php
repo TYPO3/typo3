@@ -26,6 +26,7 @@
 
 /**
  * Stub model for workspaces - only properties required for belog module are added currently
+ *
  * @TODO: This should be extended and put at some more central place
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
