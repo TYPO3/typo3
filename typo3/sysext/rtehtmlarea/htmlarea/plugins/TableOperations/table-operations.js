@@ -36,7 +36,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 * This function gets called by the class constructor
 	 */
 	configurePlugin: function (editor) {
-		
+
 		this.classesUrl = this.editorConfiguration.classesUrl;
 		this.buttonsConfiguration = this.editorConfiguration.buttons;
 		this.disableEnterParagraphs = this.buttonsConfiguration.table ? this.buttonsConfiguration.table.disableEnterParagraphs : false;
@@ -51,7 +51,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				this.floatRight = (floatConfiguration.right && floatConfiguration.right.useClass) ? floatConfiguration.right.useClass : "float-right";
 				this.floatDefault = (floatConfiguration.defaultValue) ?  floatConfiguration.defaultValue : "not set";
 			}
-			if (this.buttonsConfiguration.table.properties.headers && this.buttonsConfiguration.table.properties.headers.both 
+			if (this.buttonsConfiguration.table.properties.headers && this.buttonsConfiguration.table.properties.headers.both
 					&& this.buttonsConfiguration.table.properties.headers.both.useHeaderClass) {
 				this.useHeaderClass = this.buttonsConfiguration.table.properties.headers.both.useHeaderClass;
 			}
@@ -98,7 +98,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			this.registerButton(buttonConfiguration);
 		}
 		return true;
-	 }, 
+	 },
 	/*
 	 * The list of buttons added by this plugin
 	 */
@@ -681,11 +681,11 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
+
 		var mozbr = !Ext.isIE ? "<br />" : "";
 		var tableParts = ["tfoot", "thead", "tbody"];
 		var tablePartsIndex = { tfoot : 0, thead : 1, tbody : 2 };
-		
+
 		// helper function that clears the content in a table row
 		function clearRow(tr) {
 			var tds = tr.getElementsByTagName("td");
@@ -701,7 +701,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				td.innerHTML = mozbr;
 			}
 		};
-	
+
 		function splitRow(td) {
 			var n = parseInt("" + td.rowSpan);
 			var colSpan = td.colSpan;
@@ -721,7 +721,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				tr.insertBefore(otd, tr.cells[index]);
 			}
 		};
-	
+
 		function splitCol(td) {
 			var nc = parseInt("" + td.colSpan);
 			var nodeName = td.nodeName.toLowerCase();
@@ -735,7 +735,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				tr.insertBefore(otd, ref);
 			}
 		};
-	
+
 		function splitCell(td) {
 			var nc = parseInt("" + td.colSpan);
 			splitCol(td);
@@ -745,7 +745,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				splitRow(cells[index++]);
 			}
 		};
-	
+
 		function selectNextNode(el) {
 			var node = el.nextSibling;
 			while (node && node.nodeType != 1) {
@@ -760,7 +760,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			if (!node) node = el.parentNode;
 			editor.getSelection().selectNodeContents(node);
 		};
-		
+
 		function getSelectedCells(sel) {
 			var cell, range, i = 0, cells = [];
 			try {
@@ -774,7 +774,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			}
 			return cells;
 		};
-		
+
 		function deleteEmptyTable(table) {
 			var lastPart = true;
 			for (var j = tableParts.length; --j >= 0;) {
@@ -786,7 +786,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				table.parentNode.removeChild(table);
 			}
 		};
-		
+
 		function computeCellIndexes(table) {
 			var matrix = [];
 			var lookup = {};
@@ -825,11 +825,11 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			}
 			return lookup;
 		};
-		
+
 		function getActualCellIndex(cell, lookup) {
 			return lookup[cell.parentNode.parentNode.nodeName.toLowerCase()+"-"+cell.parentNode.rowIndex+"-"+cell.cellIndex];
 		};
-		
+
 		switch (buttonId) {
 			// ROWS
 		    case "TO-row-insert-above":
@@ -871,7 +871,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				splitRow(cell);
 			}
 			break;
-	
+
 			// COLUMNS
 		    case "TO-col-insert-before":
 		    case "TO-col-insert-after":
@@ -952,7 +952,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			}
 			this.reStyleTable(table);
 			break;
-	
+
 			// CELLS
 		    case "TO-cell-split":
 			var cell = this.editor.getSelection().getFirstAncestorOfType(['td', 'th']);
@@ -1103,7 +1103,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			}
 			this.reStyleTable(table);
 			break;
-			
+
 			// CREATION AND PROPERTIES
 		    case "InsertTable":
 		    case "TO-table-prop":
@@ -1502,7 +1502,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			if (thead) {
 				var rows = thead.rows;
 				if (rows.length) {
-					for (var i = rows.length; --i >= 0 ;) {
+					for (var i = rows.length; --i >= 0;) {
 						this.remapRowCells(rows[i], "td");
 						if (tbody.rows.length) {
 							tbody.insertBefore(rows[i], tbody.rows[0]);
@@ -1530,7 +1530,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		}
 		if (headers == "left" || headers == "both") {
 			var rows = tbody.rows;
-			for (var i = rows.length; --i >= 0 ;) {
+			for (var i = rows.length; --i >= 0;) {
 				if (i || rows[i] == firstRow) {
 					if (rows[i].cells[0].nodeName.toLowerCase() != "th") {
 						var th = this.remapCell(rows[i].cells[0], "th");
@@ -1540,7 +1540,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			}
 		} else {
 			var rows = tbody.rows;
-			for (var i = rows.length; --i >= 0 ;) {
+			for (var i = rows.length; --i >= 0;) {
 				if (rows[i].cells[0].nodeName.toLowerCase() != "td") {
 					rows[i].cells[0].scope = "";
 					var td = this.remapCell(rows[i].cells[0], "td");
@@ -1549,7 +1549,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		}
 		this.reStyleTable(table);
 	},
-	
+
 	/*
 	 * This function remaps the given cell to the specified node name
 	 */
@@ -1582,7 +1582,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				newCell.removeAttribute("className");
 			}
 		}
-		
+
 		if (this.tags && this.tags[nodeName] && this.tags[nodeName].allowedClasses) {
 			if (newCell.className && /\S/.test(newCell.className)) {
 				var allowedClasses = this.tags[nodeName].allowedClasses;
@@ -1596,18 +1596,18 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		}
 		return newCell;
 	},
-	
+
 	remapRowCells : function (row, toType) {
 		var cells = row.cells;
 		if (toType === "th") {
-			for (var i = cells.length; --i >= 0 ;) {
+			for (var i = cells.length; --i >= 0;) {
 				if (cells[i].nodeName.toLowerCase() != "th") {
 					var th = this.remapCell(cells[i], "th");
 					th.scope = "col";
 				}
 			}
 		} else {
-			for (var i = cells.length; --i >= 0 ;) {
+			for (var i = cells.length; --i >= 0;) {
 				if (cells[i].nodeName.toLowerCase() != "td") {
 					var td = this.remapCell(cells[i], "td");
 					td.scope = "";
@@ -1615,7 +1615,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 	},
-	
+
 	/*
 	 * This function applies the style properties found in params to the given element
 	 *
