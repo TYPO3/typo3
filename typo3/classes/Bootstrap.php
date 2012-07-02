@@ -186,74 +186,64 @@ class Typo3_Bootstrap {
 	}
 
 	/**
-	 * Check typo3conf/localconf.php exists
+	 * Populate the local configuration.
+	 * Merge default TYPO3_CONF_VARS with content of typo3conf/LocalConfiguration.php,
+	 * execute typo3conf/AdditionalConfiguration.php, define database related constants.
 	 *
-	 * @throws RuntimeException
 	 * @return Typo3_Bootstrap
 	 */
-	public function checkLocalconfExistsOrDie() {
-		if (!@is_file(PATH_typo3conf . 'localconf.php')) {
-			throw new RuntimeException('localconf.php is not found!', 1333754332);
+	public function populateLocalConfiguration() {
+		if (@is_file(PATH_site . t3lib_Configuration::LOCAL_CONFIGURATION_FILE)) {
+			$localConfiguration = t3lib_Configuration::getLocalConfiguration();
+			if (is_array($localConfiguration)) {
+				$GLOBALS['TYPO3_CONF_VARS'] = t3lib_div::array_merge_recursive_overrule(
+					$GLOBALS['TYPO3_CONF_VARS'],
+					$localConfiguration
+				);
+			} else {
+				die('LocalConfiguration invalid.');
+			}
+
+			if (@is_file(PATH_site . t3lib_Configuration::ADDITIONAL_CONFIGURATION_FILE)) {
+				require(PATH_site . t3lib_Configuration::ADDITIONAL_CONFIGURATION_FILE);
+			}
+
+			define('TYPO3_db', $GLOBALS['TYPO3_CONF_VARS']['DB']['database']);
+			define('TYPO3_db_username', $GLOBALS['TYPO3_CONF_VARS']['DB']['username']);
+			define('TYPO3_db_password', $GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
+			define('TYPO3_db_host', $GLOBALS['TYPO3_CONF_VARS']['DB']['host']);
+			define('TYPO3_extTableDef_script', $GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript']);
+
+			unset($GLOBALS['TYPO3_CONF_VARS']['DB']);
+		} elseif (@is_file(PATH_site . t3lib_Configuration::LOCALCONF_FILE)) {
+				// Legacy localconf.php handling
+				// @deprecated: Can be removed if old localconf.php is not supported anymore
+			global $TYPO3_CONF_VARS, $typo_db, $typo_db_username, $typo_db_password, $typo_db_host, $typo_db_extTableDef_script;
+
+			require(PATH_site . t3lib_Configuration::LOCALCONF_FILE);
+
+				// If the localconf.php was not upgraded to LocalConfiguration.php, the default extListArray
+				// from t3lib/stddb/DefaultConfiguration.php is still set. In this case we just unset
+				// this key here, so t3lib_extMgm::getLoadedExtensionListArray() falls back to use extList string
+				// @deprecated: This case can be removed later if localconf.php is not supported anymore
+			unset($TYPO3_CONF_VARS['EXT']['extListArray']);
+
+			define('TYPO3_db', $typo_db);
+			define('TYPO3_db_username', $typo_db_username);
+			define('TYPO3_db_password', $typo_db_password);
+			define('TYPO3_db_host', $typo_db_host);
+			define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
+
+			unset($GLOBALS['typo_db']);
+			unset($GLOBALS['typo_db_username']);
+			unset($GLOBALS['typo_db_password']);
+			unset($GLOBALS['typo_db_host']);
+			unset($GLOBALS['typo_db_extTableDef_script']);
+		} else {
+			die(t3lib_Configuration::LOCALCONF_FILE . ' not found!');
 		}
 
-		return $this;
-	}
-
-	/**
-	 * Set global database variables to empty string.
-	 * Database-variables are cleared!
-	 *
-	 * @TODO: Figure out why we do this (security reasons with register globals?)
-	 * @return Typo3_Bootstrap
-	 */
-	public function setGlobalDatabaseVariablesToEmptyString() {
-			// The database name
-		$GLOBALS['typo_db'] = '';
-			// The database username
-		$GLOBALS['typo_db_username'] = '';
-			// The database password
-		$GLOBALS['typo_db_password'] = '';
-			// The database host
-		$GLOBALS['typo_db_host'] = '';
-			// The filename of an additional script in typo3conf/-folder which is included after
-			// tables.php. Code in this script should modify the tables.php-configuration only,
-			// and this provides a good way to extend the standard-distributed tables.php file.
-		$GLOBALS['typo_db_extTableDef_script'] = '';
-
-		return $this;
-	}
-
-	/**
-	 * Loads the main configuration file (localconf.php)
-	 *
-	 * @return Typo3_Bootstrap
-	 */
-	public function loadMainConfigurationFile() {
-		global $TYPO3_CONF_VARS, $typo_db, $typo_db_username, $typo_db_password, $typo_db_host, $typo_db_extTableDef_script;
-		require(PATH_typo3conf . 'localconf.php');
-
-		return $this;
-	}
-
-	/**
-	 * Define the database setup as constants
-	 * and unset no longer needed global variables
-	 *
-	 * @return Typo3_Bootstrap
-	 */
-	public function defineTypo3DatabaseConstants() {
-		define('TYPO3_db', $GLOBALS['typo_db']);
-		define('TYPO3_db_username', $GLOBALS['typo_db_username']);
-		define('TYPO3_db_password', $GLOBALS['typo_db_password']);
-		define('TYPO3_db_host', $GLOBALS['typo_db_host']);
-		define('TYPO3_extTableDef_script', $GLOBALS['typo_db_extTableDef_script']);
 		define('TYPO3_user_agent', 'User-Agent: '. $GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent']);
-
-		unset($GLOBALS['typo_db']);
-		unset($GLOBALS['typo_db_username']);
-		unset($GLOBALS['typo_db_password']);
-		unset($GLOBALS['typo_db_host']);
-		unset($GLOBALS['typo_db_extTableDef_script']);
 
 		return $this;
 	}

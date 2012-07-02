@@ -63,15 +63,17 @@ class t3lib_extMgm {
 	 * @param string $key Extension key to test
 	 * @param boolean $exitOnError If $exitOnError is TRUE and the extension is not loaded the function will die with an error message
 	 * @return boolean
+	 * @throws BadFunctionCallException
 	 */
-	public static function isLoaded($key, $exitOnError = 0) {
-		if ($exitOnError && !isset($GLOBALS['TYPO3_LOADED_EXT'][$key])) {
+	public static function isLoaded($key, $exitOnError = FALSE) {
+		$isLoaded = in_array($key, static::getLoadedExtensionListArray());
+		if ($exitOnError && !$isLoaded) {
 			throw new BadFunctionCallException(
-				'TYPO3 Fatal Error: Extension "' . $key . '" was not loaded!',
+				'TYPO3 Fatal Error: Extension "' . $key . '" is not loaded!',
 				1270853910
 			);
 		}
-		return isset($GLOBALS['TYPO3_LOADED_EXT'][$key]);
+		return $isLoaded;
 	}
 
 	/**
@@ -88,19 +90,18 @@ class t3lib_extMgm {
 		if (isset($GLOBALS['TYPO3_LOADED_EXT'])) {
 			if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$key])) {
 				throw new BadFunctionCallException(
-					'TYPO3 Fatal Error: Extension key "' . $key . '" was NOT loaded!',
+					'TYPO3 Fatal Error: Extension key "' . $key . '" is NOT loaded!',
 					1270853878
 				);
 			}
 
 			$extensionPath = PATH_site . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'];
 		} else {
-			$extensionList = self::getRequiredExtensionList() . ',' . $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
-			$loadedExtensions = array_flip(array_unique(t3lib_div::trimExplode(',', $extensionList, TRUE)));
+			$loadedExtensions = array_flip(static::getLoadedExtensionListArray());
 
 			if (!isset($loadedExtensions[$key])) {
 				throw new BadFunctionCallException(
-					'TYPO3 Fatal Error: Extension key "' . $key . '" was NOT loaded!',
+					'TYPO3 Fatal Error: Extension key "' . $key . '" is NOT loaded!',
 					1294430950
 				);
 			}
@@ -113,7 +114,7 @@ class t3lib_extMgm {
 				$extensionPath = PATH_typo3 . 'sysext/' . $key . '/';
 			} else {
 				throw new BadFunctionCallException(
-					'TYPO3 Fatal Error: Extension "' . $key . '" was NOT found!',
+					'TYPO3 Fatal Error: Extension "' . $key . '" NOT found!',
 					1294430951
 				);
 			}
@@ -133,7 +134,7 @@ class t3lib_extMgm {
 	public static function extRelPath($key) {
 		if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$key])) {
 			throw new BadFunctionCallException(
-				'TYPO3 Fatal Error: Extension key "' . $key . '" was NOT loaded!',
+				'TYPO3 Fatal Error: Extension key "' . $key . '" is NOT loaded!',
 				1270853879
 			);
 		}
@@ -208,7 +209,7 @@ class t3lib_extMgm {
 		if (!is_string($key) || empty($key)) {
 			throw new InvalidArgumentException('Extension key must be a non-empty string.', 1294586096);
 		}
-		if (!self::isLoaded($key)) {
+		if (!static::isLoaded($key)) {
 			return '';
 		}
 		$runtimeCache = $GLOBALS['typo3CacheManager']->getCache('cache_runtime');
@@ -1535,7 +1536,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @param boolean $allowCaching If FALSE, the array will not be read / created from cache
 	 * @return array Result array that will be set as $GLOBALS['TYPO3_LOADED_EXT']
 	 * @access private
-	 * @createTypo3LoadedExtensionInformationArray
+	 * @see createTypo3LoadedExtensionInformationArray
 	 */
 	public static function loadTypo3LoadedExtensionInformation($allowCaching = TRUE) {
 		if ($allowCaching) {
@@ -1575,7 +1576,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @return array Result array that will be set as $GLOBALS['TYPO3_LOADED_EXT']
 	 */
 	protected static function createTypo3LoadedExtensionInformationArray() {
-		$loadedExtensions = array_unique(t3lib_div::trimExplode(',', self::getEnabledExtensionList(), 1));
+		$loadedExtensions = static::getLoadedExtensionListArray();
 		$loadedExtensionInformation = array();
 
 		$extensionFilesToCheckFor = array(
@@ -1865,7 +1866,7 @@ tt_content.' . $key . $prefix . ' {
 	}
 
 	/**
-	 * Loading extensions configured in $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']
+	 * Loading extensions configured in $GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray']
 	 *
 	 * Usages of this function can be seen in bootstrap
 	 * Extensions are always detected in the order local - global - system.
@@ -1907,13 +1908,23 @@ tt_content.' . $key . $prefix . ' {
 	}
 
 	/**
-	 * Returns TRUE if the "localconf.php" file in "typo3conf/" is writable
+	 * Returns TRUE if configuration files in typo3conf/ are writable
 	 *
-	 * @return boolean
+	 * @return boolean TRUE if at least one configuration file in typo3conf/ is writable
 	 * @internal
 	 */
 	public static function isLocalconfWritable() {
-		return @is_writable(PATH_typo3conf) && @is_writable(PATH_typo3conf . 'localconf.php');
+		$result = TRUE;
+		if (!@is_writable(PATH_typo3conf)) {
+			$result = FALSE;
+		}
+		if (
+			!@is_writable(PATH_site . t3lib_Configuration::LOCALCONF_FILE)
+			&& !@is_writable(PATH_site . t3lib_Configuration::LOCAL_CONFIGURATION_FILE)
+		) {
+			$result = FALSE;
+		}
+		return $result;
 	}
 
 	/**
@@ -1987,7 +1998,7 @@ tt_content.' . $key . $prefix . ' {
 	 *
 	 * @param boolean $usePlainValue Whether to use the value as it is without modifications
 	 * @return integer
-	 * @deprecated since 6.0, will be removed in two versions
+	 * @deprecated since 6.0, will be removed two versions later
 	 */
 	public static function getExtensionCacheBehaviour($usePlainValue = FALSE) {
 		t3lib_div::logDeprecatedFunction();
@@ -1998,6 +2009,7 @@ tt_content.' . $key . $prefix . ' {
 	 * Gets the prefix used for the ext_tables.php and ext_localconf.php cached files.
 	 *
 	 * @return string
+	 * @deprecated since 6.0, will be removed two versions later
 	 */
 	public static function getCacheFilePrefix() {
 		t3lib_div::logDeprecatedFunction();
@@ -2007,47 +2019,159 @@ tt_content.' . $key . $prefix . ' {
 	 * Gets the list of enabled extensions
 	 *
 	 * @return string
+	 * @deprecated since 6.0, will be removed two versions later
 	 */
 	public static function getEnabledExtensionList() {
-		$extensionList = self::getRequiredExtensionList() . ',' . $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
-		$ignoredExtensionList = self::getIgnoredExtensionList();
-
-			// Remove the extensions to be ignored:
-		if ($ignoredExtensionList && (defined('TYPO3_enterInstallScript') && TYPO3_enterInstallScript) === FALSE) {
-			$extensions = array_diff(
-				explode(',', $extensionList),
-				explode(',', $ignoredExtensionList)
-			);
-			$extensionList = implode(',', $extensions);
-		}
-
-		return $extensionList;
+		t3lib_div::logDeprecatedFunction();
+		return implode(',', self::getLoadedExtensionListArray());
 	}
 
 	/**
 	 * Gets the list of required extensions.
 	 *
 	 * @return string
+	 * @deprecated since 6.0, will be removed two versions later
 	 */
 	public static function getRequiredExtensionList() {
-		$requiredExtensionList = t3lib_div::uniqueList(
-			REQUIRED_EXTENSIONS . ',' . $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt']
-		);
-
-		return $requiredExtensionList;
+		t3lib_div::logDeprecatedFunction();
+		return implode(',', self::getRequiredExtensionListArray());
 	}
 
 	/**
-	 * Gets the list of extensions to be ignored (not to be loaded).
+	 * Get list of extensions to be ignored (not to be loaded).
 	 *
 	 * @return string
+	 * @deprecated since 6.0, will be removed two versions later
 	 */
 	public static function getIgnoredExtensionList() {
-		$ignoredExtensionList = t3lib_div::uniqueList(
-			$GLOBALS['TYPO3_CONF_VARS']['EXT']['ignoredExt']
-		);
+		t3lib_div::logDeprecatedFunction();
+		return '';
+	}
 
-		return $ignoredExtensionList;
+	/**
+	 * Gets an array of loaded extension keys
+	 *
+	 * @return array Loaded extensions
+	 */
+	public static function getLoadedExtensionListArray() {
+			// Extensions in extListArray
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'])) {
+			$loadedExtensions = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'];
+		} else {
+				// Fallback handling if extlist is still a string and not an array
+			$loadedExtensions = t3lib_div::trimExplode(
+				',',
+				$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']
+			);
+		}
+
+			// Add required extensions
+		$loadedExtensions = array_merge(
+			static::getRequiredExtensionListArray(),
+			$loadedExtensions
+		);
+		$loadedExtensions = array_unique($loadedExtensions);
+
+		return $loadedExtensions;
+	}
+
+	/**
+	 * Gets list of required extensions.
+	 * This is the list of extensions from constant REQUIRED_EXTENSIONS defined
+	 * in bootstrap, together with a possible additional list of extensions from
+	 * local configuration
+	 *
+	 * @return array List of required extensions
+	 */
+	public static function getRequiredExtensionListArray() {
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'])) {
+			$requiredExtensions = $GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'];
+		} else {
+			$requiredExtensions = t3lib_div::trimExplode(
+				',',
+				$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt']
+			);
+		}
+
+		$requiredExtensions = array_merge(
+			t3lib_div::trimExplode(',', REQUIRED_EXTENSIONS),
+			$requiredExtensions
+		);
+		$requiredExtensions = array_unique($requiredExtensions);
+
+		return $requiredExtensions;
+	}
+
+	/**
+	 * Loads given extension
+	 *
+	 * Warning: This method only works if the ugrade wizard to transform
+	 * localconf.php to LocalConfiguration.php was already run
+	 *
+	 * @param string $extensionKey Extension key to load
+	 * @return void
+	 * @throws RuntimeException
+	 */
+	public static function loadExtension($extensionKey) {
+		if (static::isLoaded($extensionKey)) {
+			throw new RuntimeException(
+				'Extension already loaded',
+				1342345486
+			);
+		}
+		$extList = t3lib_Configuration::getLocalConfigurationValueByPath('EXT/extListArray');
+		$extList[] = $extensionKey;
+		static::writeNewExtensionList($extList);
+	}
+
+	/**
+	 * Unloads given extension
+	 *
+	 * Warning: This method only works if the ugrade wizard to transform
+	 * localconf.php to LocalConfiguration.php was already run
+	 *
+	 * @param string $extensionKey Extension key to remove
+	 * @return void
+	 * @throws RuntimeException
+	 */
+	public static function unloadExtension($extensionKey) {
+		if (!static::isLoaded($extensionKey)) {
+			throw new RuntimeException(
+				'Extension not loaded',
+				1342345487
+			);
+		}
+		if (in_array($extensionKey, static::getRequiredExtensionListArray())) {
+			throw new RuntimeException(
+				'Can not unload required extension',
+				1342348167
+			);
+		}
+		$extList = t3lib_Configuration::getLocalConfigurationValueByPath('EXT/extListArray');
+		$extList = array_diff(
+			$extList,
+			array($extensionKey)
+		);
+		static::writeNewExtensionList($extList);
+	}
+
+	/**
+	 * Writes extension list and clear cache files.
+	 *
+	 * @TODO: This method should be protected, but with current em it is hard to do so,
+	 * so it is public for now, but will be made protected as soon as the em is fixed.
+	 *
+	 * @param array Extension array to load, loader order is kept
+	 * @return void
+	 * @internal
+	 */
+	public static function writeNewExtensionList(array $newExtensionList) {
+		$extensionList = array_unique($newExtensionList);
+		t3lib_Configuration::setLocalConfigurationValueByPath('EXT/extListArray', $extensionList);
+			// @deprecated: extList as string is deprecated, the handling will be removed with 6.2
+			// For now, this value is still set for better backwards compatibility
+		t3lib_Configuration::setLocalConfigurationValueByPath('EXT/extList', implode(',', $extensionList));
+		static::removeCacheFiles();
 	}
 
 	/**

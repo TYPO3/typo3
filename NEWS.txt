@@ -22,6 +22,28 @@ symlink, make sure that this file is also a symlink to the cores index.php,
 otherwise the frontend will be broken. If index.php is a copy of the source
 file, make sure to install a fresh version from 6.0 sources.
 
+* New handling of typo3conf/localconf.php
+
+The localconf.php file is deprecated and not used in the core any longer. As
+substitution the new file typo3conf/LocalConfiguration.php is introduced that
+basically only returns the local configuration as array. The install tool and
+other installation changing core code like the extension manager now writes
+the whole file if configuration is changed. As a result, no more local
+code is allowed in this file.
+To overload the local configuration with special instance specific code that
+might still be needed, it is possible to add the php code to the optional
+additional file typo3conf/AdditionalConfiguration.php that is executed during
+bootstrap of TYPO3 after LocalConfiguration.php.
+An ugrade wizard takes care of moving the old localconf.php file to the new scheme.
+
+* List of loaded extensions stored as array
+
+The list of loaded extensions in typo3conf/LocalConfiguration (key EXT/extList)
+was transferred to an array for better readability and maintenance. It is
+available with the new key EXT/extListArray. The old, comma separated value is
+still kept, but not used in the core anymore. It will be removed with a later
+version from the core.
+
 * Moved default TYPO3_CONF_VARS
 
 The default TYPO3_CONF_VARS definitions where moved from t3lib/config_default.php

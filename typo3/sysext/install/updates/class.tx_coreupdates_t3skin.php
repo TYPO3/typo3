@@ -30,8 +30,11 @@
  * @author	Steffen Ritter <info@rs-websystems.de>
  */
 class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
-	protected $title = 'Install the new TYPO3 Skin "t3skin"';
 
+	/**
+	 * @var string
+	 */
+	protected $title = 'Install the new TYPO3 Skin "t3skin"';
 
 	/**
 	 * Checks if t3skin is not installed.
@@ -41,7 +44,7 @@ class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
 	 */
 	public function checkForUpdate(&$description) {
 		$result = FALSE;
-		$description = '<strong>The backend skin "t3skin" is not loaded.</strong>
+		$description[] = '<strong>The backend skin "t3skin" is not loaded.</strong>
 		TYPO3 4.4 introduced many changes in backend skinning and old backend skins are now incompatible.
 		<strong>Without "t3skin" the backend may be unusable.</strong> Install extension "t3skin".';
 		if (!t3lib_extMgm::isLoaded('t3skin')) {
@@ -72,62 +75,17 @@ class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$result = FALSE;
 		if ($this->versionNumber >= 4004000 && !t3lib_extMgm::isLoaded('t3skin')) {
-			// check wether the table can be truncated or if sysext with tca has to be installed
-			if ($this->checkForUpdate($customMessages[])) {
-				$extList = $this->addExtToList(array('t3skin'));
-				if ($extList) {
-					$message = $this->writeNewExtensionList($extList);
-				}
-
-				if ($message == 'continue') {
-					$customMessages = 'The system extension "t3skin" was succesfully loaded.';
+				// check wether the table can be truncated or if sysext with tca has to be installed
+			if ($this->checkForUpdate($customMessages)) {
+				try {
+					t3lib_extMgm::loadExtension('t3skin');
+					$customMessages = 'The system extension "t3skin" was successfully loaded.';
 					$result = TRUE;
-				}
+				} catch (RuntimeException $e) {
+					$result = FALSE;
 				}
 			}
-		return $result;
-	}
-
-	/**
-	 * Adds extension to extension list and returns new list. If -1 is returned, an error happend.
-	 * Does NOT check dependencies yet.
-	 *
-	 * @param	array		Extension keys to add
-	 * @return	string		New list of installed extensions or -1 if error
-	 */
-	protected function addExtToList(array $extKeys) {
-			// Get list of installed extensions and add this one.
-		$tmpLoadedExt = $GLOBALS['TYPO3_LOADED_EXT'];
-
-		$listArr = array_keys($tmpLoadedExt);
-		$listArr = array_merge($listArr, $extKeys);
-
-			// Implode unique list of extensions to load and return:
-		return implode(',', array_unique($listArr));
-	}
-
-
-	/**
-	 * Writes the extension list to "localconf.php" file
-	 * Removes the cached core files before return.
-	 *
-	 * @param	string		List of extensions
-	 * @return	string		Result of writeToLocalconf_control()
-	 */
-	protected function writeNewExtensionList($newExtList) {
-			// Instance of install tool
-		$instObj = t3lib_div::makeInstance('t3lib_install');
-		$instObj->allowUpdateLocalConf = 1;
-		$instObj->updateIdentity = 'TYPO3 Core Update Manager';
-
-			// Get lines from localconf file
-		$lines = $instObj->writeToLocalconf_control();
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
-		$result = $instObj->writeToLocalconf_control($lines);
-
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
-		t3lib_extMgm::removeCacheFiles();
-
+		}
 		return $result;
 	}
 }

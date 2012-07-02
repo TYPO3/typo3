@@ -277,7 +277,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		// Setting internal static:
 
-		$this->requiredExt = t3lib_div::trimExplode(',', t3lib_extMgm::getRequiredExtensionList(), TRUE);
+		$this->requiredExt = t3lib_extMgm::getRequiredExtensionListArray();
 
 		// Initialize Document Template object:
 		$this->doc = t3lib_div::makeInstance('template');
