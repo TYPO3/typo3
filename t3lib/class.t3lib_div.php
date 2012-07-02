@@ -5065,7 +5065,7 @@ final class t3lib_div {
 	 *
 	 * @param string $msg Message (in English).
 	 * @param string $extKey Extension key (from which extension you are calling the log) or "Core"
-	 * @param integer $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is error, 4 is fatal error
+	 * @param integer $severity t3lib_div::SYSLOG_SEVERITY_* constant
 	 * @return void
 	 */
 	public static function sysLog($msg, $extKey, $severity = 0) {

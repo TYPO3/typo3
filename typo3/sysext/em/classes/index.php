@@ -1372,7 +1372,11 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				// Read uploaded file:
 				if (!$uploadedTempFile) {
 					if (!is_uploaded_file($_FILES['upload_ext_file']['tmp_name'])) {
-						t3lib_div::sysLog('Possible file upload attack: ' . $_FILES['upload_ext_file']['tmp_name'], 'Extension Manager', 3);
+						t3lib_div::sysLog(
+							'Possible file upload attack: ' . $_FILES['upload_ext_file']['tmp_name'],
+							'Extension Manager',
+							t3lib_div::SYSLOG_SEVERITY_ERROR
+						);
 
 						/** @var $flashMessage t3lib_FlashMessage */
 						$flashMessage = t3lib_div::makeInstance(

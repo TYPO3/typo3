@@ -310,7 +310,11 @@ class t3lib_TSparser {
 												$fakeThis = FALSE;
 												$newValue = t3lib_div::callUserFunction($hookMethod, $params, $fakeThis);
 											} else {
-												t3lib_div::sysLog('Missing function definition for ' . $tsFunc . ' on TypoScript line ' . $lineP, 'Core', 2);
+												t3lib_div::sysLog(
+													'Missing function definition for ' . $tsFunc . ' on TypoScript line ' . $lineP,
+													'Core',
+													t3lib_div::SYSLOG_SEVERITY_WARNING
+												);
 											}
 									}
 
@@ -565,7 +569,11 @@ class t3lib_TSparser {
 	public static function checkIncludeLines($string, $cycle_counter = 1, $returnFiles = FALSE) {
 		$includedFiles = array();
 		if ($cycle_counter > 100) {
-			t3lib_div::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', 2);
+			t3lib_div::sysLog(
+				'It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags',
+				'Core',
+				t3lib_div::SYSLOG_SEVERITY_WARNING
+			);
 			if ($returnFiles) {
 				return array(
 					'typoscript' => '',
@@ -612,11 +620,19 @@ class t3lib_TSparser {
 												$newString .= $included_text . LF;
 											} else {
 												$newString .= "\n###\n### ERROR: File \"" . $filename . "\" was not was not found.\n###\n\n";
-												t3lib_div::sysLog('File "' . $filename . '" was not found.', 'Core', 2);
+												t3lib_div::sysLog(
+													'File "' . $filename . '" was not found.',
+													'Core',
+													t3lib_div::SYSLOG_SEVERITY_WARNING
+												);
 											}
 										} else {
 											$newString .= "\n###\n### ERROR: File \"" . $filename . "\" was not included since it is not allowed due to fileDenyPattern\n###\n\n";
-											t3lib_div::sysLog('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern', 'Core', 2);
+											t3lib_div::sysLog(
+												'File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern',
+												'Core',
+												t3lib_div::SYSLOG_SEVERITY_WARNING
+											);
 										}
 									}
 								break;
@@ -670,7 +686,11 @@ class t3lib_TSparser {
 	public static function extractIncludes($string, $cycle_counter = 1, $extractedFileNames = array()) {
 
 		if ($cycle_counter > 10) {
-			t3lib_div::sysLog('It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags', 'Core', 2);
+			t3lib_div::sysLog(
+				'It appears like TypoScript code is looping over itself. Check your templates for "&lt;INCLUDE_TYPOSCRIPT: ..." tags',
+				'Core',
+				t3lib_div::SYSLOG_SEVERITY_WARNING
+			);
 			return "\n###\n### ERROR: Recursion!\n###\n";
 		}
 
