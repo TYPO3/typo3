@@ -33,6 +33,10 @@
  */
 class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 
+	#######################
+	# Tests concerning filterByValueRecursive
+	#######################
+
 	/**
 	 * Data provider for filterByValueRecursiveCorrectlyFiltersArray
 	 */
@@ -182,6 +186,437 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 */
 	public function filterByValueRecursiveDoesNotMatchDifferentInstancesOfSameClass() {
 		$this->assertEquals(array(), t3lib_utility_Array::filterByValueRecursive(new stdClass(), array(new stdClass())));
+	}
+
+	#######################
+	# Tests concerning  isValidPath
+	#######################
+
+	/**
+	 * @test
+	 */
+	public function isValidPathReturnsTrueIfPathExists() {
+		$className = uniqid('t3lib_utility_Array');
+			// Mock the class under test, isValidPath() (method under test), calls
+			// static getValuePath() internally, which is mocked here to return a specific
+			// result. This works because of 'static' keyword'  instead of 'self'
+			// for getValueByPath() call, using late static binding in PHP 5.3
+		eval(
+			'class ' . $className . ' extends t3lib_utility_Array {' .
+			'  public static function isValidPath($array, $path,  $delimiter) {' .
+			'    return parent::isValidPath($array, $path, $delimiter);' .
+			'  }' .
+			'  public static function getValueByPath() {' .
+			'    return 42;' .
+			'  }' .
+			'}'
+		);
+		$this->assertTrue($className::isValidPath(array('foo'), 'foo'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function isValidPathReturnsFalseIfPathDoesNotExist() {
+		$className = uniqid('t3lib_utility_Array');
+			//
+		eval(
+			'class ' . $className . ' extends t3lib_utility_Array {' .
+			'  public static function isValidPath($array, $path,  $delimiter) {' .
+			'    return parent::isValidPath($array, $path, $delimiter);' .
+			'  }' .
+			'  public static function getValueByPath() {' .
+			'    throw new RuntimeException(\'foo\', 123);' .
+			'  }' .
+			'}'
+		);
+		$this->assertFalse($className::isValidPath(array('foo'), 'foo'));
+	}
+
+	#######################
+	# Tests concerning getValueByPath
+	#######################
+
+	/**
+	 * @test
+	 */
+	public function getValueByPathThrowsExceptionIfPathIsEmpty() {
+		$this->setExpectedException('RuntimeException', $this->anything(), 1341397767);
+		t3lib_utility_Array::getValueByPath(array(), '');
+	}
+
+	/**
+	 * Data provider for getValueByPathThrowsExceptionIfPathNotExists
+	 */
+	public function getValueByPathInvalidPathDataProvider() {
+			// Every array splits into:
+			// - Array to get value from
+			// - String path
+			// - Expected result
+		return array(
+			'not existing path 1' => array(
+				array(
+					'foo' => array()
+				),
+				'foo/bar/baz',
+				FALSE
+			),
+			'not existing path 2' => array(
+				array(
+					'foo' => array(
+						'baz' => 42
+					),
+					'bar' => array(),
+				),
+				'foo/bar/baz',
+				FALSE
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getValueByPathInvalidPathDataProvider
+	 */
+	public function getValueByPathThrowsExceptionIfPathNotExists(array $array, $path) {
+		$this->setExpectedException('RuntimeException', $this->anything(), 1341397869);
+		t3lib_utility_Array::getValueByPath($array, $path);
+	}
+
+	/**
+	 * Data provider for getValueByPathReturnsCorrectValue
+	 */
+	public function getValueByPathValidDataProvider() {
+		$testObject = new StdClass();
+		$testObject->foo = 'foo';
+		$testObject->bar = 'bar';
+
+			// Every array splits into:
+			// - Array to get value from
+			// - String path
+			// - Expected result
+		return array(
+			'integer in multi level array' => array(
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => 42,
+						),
+						'bar2' => array(),
+					),
+				),
+				'foo/bar/baz',
+				42,
+			),
+			'zero integer in multi level array' => array(
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => 0,
+						),
+					),
+				),
+				'foo/bar/baz',
+				0,
+			),
+			'NULL value in multi level array' => array(
+				array(
+					'foo' => array(
+						'baz' => NULL,
+					),
+				),
+				'foo/baz',
+				NULL,
+			),
+			'get string value' => array(
+				array(
+					'foo' => array(
+						'baz' => 'this is a test string',
+					),
+				),
+				'foo/baz',
+				'this is a test string',
+			),
+			'get boolean value: FALSE' => array(
+				array(
+					'foo' => array(
+						'baz' => FALSE,
+					),
+				),
+				'foo/baz',
+				FALSE,
+			),
+			'get boolean value: TRUE' => array(
+				array(
+					'foo' => array(
+						'baz' => TRUE,
+					),
+				),
+				'foo/baz',
+				TRUE,
+			),
+			'get object value' => array(
+				array(
+					'foo' => array(
+						'baz' => $testObject,
+					),
+				),
+				'foo/baz',
+				$testObject,
+			),
+			'enclosed path' => array(
+				array(
+					'foo/bar' => array(
+						'foobar' => 42,
+					),
+				),
+				'"foo/bar"/foobar',
+				42,
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getValueByPathValidDataProvider
+	 */
+	public function getValueByPathGetsCorrectValue(array $array, $path, $expectedResult) {
+		$this->assertEquals(
+			$expectedResult,
+			t3lib_utility_Array::getValueByPath($array, $path)
+		);
+	}
+
+	#######################
+	# Tests concerning  setValueByPath
+	#######################
+
+	/**
+	 * Data provider for setValueByPathSetsCorrectValueDataProvider
+	 */
+	public function setValueByPathSetsCorrectValueDataProvider() {
+		$testObject = new StdClass();
+		$testObject->foo = 'foo';
+		$testObject->bar = 'bar';
+
+			// Every array splits into:
+			// - Array to set value in
+			// - String path
+			// - Value to set
+			// - Expected result
+		return array(
+			'set integer value: 42' => array(
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => 0
+						)
+					)
+				),
+				'foo/bar/baz',
+				42,
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => 42
+						)
+					)
+				),
+			),
+			'set integer value: 0' => array(
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => 42
+						)
+					)
+				),
+				'foo/bar/baz',
+				0,
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => 0
+						)
+					)
+				),
+			),
+			'set null value' => array(
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => 42
+						)
+					)
+				),
+				'foo/bar/baz',
+				NULL,
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => NULL
+						)
+					)
+				),
+			),
+			'set array value' => array(
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => 42
+						)
+					)
+				),
+				'foo/bar/baz',
+				array(
+					'foo' => 123
+				),
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => array(
+								'foo' => 123
+							),
+						)
+					)
+				),
+			),
+			'set boolean value: FALSE' => array(
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => TRUE
+						)
+					)
+				),
+				'foo/bar/baz',
+				FALSE,
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => FALSE
+						)
+					)
+				),
+			),
+			'set boolean value: TRUE' => array(
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => NULL
+						)
+					)
+				),
+				'foo/bar/baz',
+				TRUE,
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => TRUE
+						)
+					)
+				),
+			),
+			'set object value' => array(
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => NULL
+						)
+					)
+				),
+				'foo/bar/baz',
+				$testObject,
+				array(
+					'foo' => array(
+						'bar' => array(
+							'baz' => $testObject
+						)
+					)
+				),
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setValueByPathThrowsExceptionIfPathIsEmpty() {
+		$this->setExpectedException(
+			'RuntimeException',
+			'',
+			1341406194
+		);
+		t3lib_utility_Array::setValueByPath(array(), '', NULL);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setValueByPathThrowsExceptionIfPathIsNotAString() {
+		$this->setExpectedException(
+			'RuntimeException',
+			'',
+			1341406402
+		);
+		t3lib_utility_Array::setValueByPath(array(), array('foo'), NULL);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider setValueByPathSetsCorrectValueDataProvider
+	 */
+	public function setValueByPathSetsCorrectValue(array $array, $path, $value, $expectedResult) {
+		$this->assertEquals(
+			$expectedResult,
+			t3lib_utility_Array::setValueByPath($array, $path, $value)
+		);
+	}
+
+
+	/**
+	 * Data provider for sortByKeyRecursiveCheckIfSortingIsCorrect
+	 */
+	public function sortByKeyRecursiveCheckIfSortingIsCorrectDataProvider() {
+			// Every array splits into:
+			// - Input array
+			// - Expected result
+		return array(
+			'sorting 1' => array(
+				array(
+					'z' => NULL,
+					'a' => NULL,
+					'd' => array(
+						'c' => NULL,
+						'b' => NULL,
+						'd' => NULL,
+						'a' => NULL
+					),
+				),
+				array(
+					'a' => NULL,
+					'd' => array(
+						'a' => NULL,
+						'b' => NULL,
+						'c' => NULL,
+						'd' => NULL
+					),
+					'z' => NULL,
+				),
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider sortByKeyRecursiveCheckIfSortingIsCorrectDataProvider
+	 */
+	public function sortByKeyRecursiveCheckIfSortingIsCorrect(array $array, array $expectedResult) {
+		t3lib_utility_Array::sortByKeyRecursive($array);
+		$this->assertEquals(
+			$expectedResult,
+			$array
+		);
 	}
 }
 

@@ -68,13 +68,13 @@ class tx_coreupdates_charsetDefaults extends Tx_Install_Updates_Base {
 		$localconf = $this->pObj->writeToLocalconf_control();
 
 			// Update "setDBinit" setting
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] === '-1') {
-			$this->pObj->setValueInLocalconfFile($localconf, '$TYPO3_CONF_VARS[\'SYS\'][\'setDBinit\']', '');
+		if (t3lib_Configuration::getLocalConfigurationValueByPath('SYS/setDBinit') === '-1') {
+			t3lib_Configuration::setLocalConfigurationValueByPath('SYS/setDBinit', '');
 		}
 
 			// Update the "forceCharset" setting
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] != '') {
-			$this->pObj->setValueInLocalconfFile($localconf, '$TYPO3_CONF_VARS[\'BE\'][\'forceCharset\']', '');
+		if (t3lib_Configuration::getLocalConfigurationValueByPath('BE/forceCharset') !== '') {
+			t3lib_Configuration::setLocalConfigurationValueByPath('BE/forceCharset', '');
 		}
 
 		$message = $this->pObj->writeToLocalconf_control($localconf);
