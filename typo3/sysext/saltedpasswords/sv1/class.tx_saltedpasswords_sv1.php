@@ -265,7 +265,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 						$this->login['uname']
 					),
 					'Core',
-					0
+					t3lib_div::SYSLOG_SEVERITY_INFO
 				);
 				if (intval($this->extConf['onlyAuthService']) || $this->authenticationFailed) {
 					$OK = 0;
@@ -301,7 +301,7 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 						$this->authInfo['HTTP_HOST']
 					),
 					'Core',
-					0
+					t3lib_div::SYSLOG_SEVERITY_INFO
 				);
 				$OK = 0;
 			} elseif ($validPasswd) {
@@ -352,13 +352,13 @@ class tx_saltedpasswords_sv1 extends tx_sv_authbase {
 		}
 
 		if (TYPO3_MODE === 'BE') {
-			t3lib_div::sysLog($message, $this->extKey, 1);
+			t3lib_div::sysLog($message, $this->extKey, t3lib_div::SYSLOG_SEVERITY_NOTICE);
 		} else {
 			$GLOBALS['TT']->setTSlogMessage($message);
 		}
 
 		if (TYPO3_DLOG) {
-			t3lib_div::devLog($message, $this->extKey, 1);
+			t3lib_div::devLog($message, $this->extKey, t3lib_div::SYSLOG_SEVERITY_NOTICE);
 		}
 	}
 }

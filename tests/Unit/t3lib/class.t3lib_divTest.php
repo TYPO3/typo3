@@ -4028,7 +4028,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
 
 			// Call method, get actual permissions and clean up
-		t3lib_div::syslog('testLog', 'test', 1);
+		t3lib_div::syslog('testLog', 'test', t3lib_div::SYSLOG_SEVERITY_NOTICE);
 		clearstatcache();
 		$resultFilePermissions = substr(decoct(fileperms($testLogFilename)), 2);
 		t3lib_div::unlink_tempfile($testLogFilename);
