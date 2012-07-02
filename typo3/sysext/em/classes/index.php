@@ -277,7 +277,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 		// Setting internal static:
 
-		$this->requiredExt = t3lib_div::trimExplode(',', t3lib_extMgm::getRequiredExtensionList(), TRUE);
+		$this->requiredExt = t3lib_extMgm::getRequiredExtensionListArray();
 
 		// Initialize Document Template object:
 		$this->doc = t3lib_div::makeInstance('template');
@@ -1507,7 +1507,7 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			// Checking if a command for install/uninstall is executed:
 			if (($this->CMD['remove'] || $this->CMD['load']) && !in_array($extKey, $this->requiredExt)) {
 
-				// Install / Uninstall extension here:
+					// Install / Uninstall extension here:
 				if (t3lib_extMgm::isLocalconfWritable()) {
 					// Check dependencies:
 					$depStatus = $this->install->checkDependencies($extKey, $list[$extKey]['EM_CONF'], $list);

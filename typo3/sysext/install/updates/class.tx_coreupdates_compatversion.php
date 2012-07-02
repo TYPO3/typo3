@@ -186,11 +186,10 @@ class tx_coreupdates_compatversion extends Tx_Install_Updates_Base {
 			$customMessages .= 'If you want to see what you need to do to use the new features, run the update wizard again!';
 		}
 
-		$linesArr = $this->pObj->writeToLocalconf_control();
 		$version = $this->userInput['version'] ? $this->userInput['version'] : TYPO3_branch;
-		$this->pObj->setValueInLocalconfFile($linesArr, '$TYPO3_CONF_VARS[\'SYS\'][\'compat_version\']', $version);
-		$this->pObj->writeToLocalconf_control($linesArr, 0);
-		$customMessages.= '<br />The compatibility version has been set to '.$version.'.';
+		t3lib_Configuration::setLocalConfigurationValueByPath('SYS/compat_version', $version);
+
+		$customMessages .=  '<br />The compatibility version has been set to '.$version.'.';
 
 		return 1;
 	}

@@ -1431,6 +1431,7 @@ class tx_em_Connection_ExtDirectServer {
 	 */
 	public function enableExtension($extensionKey) {
 		$this->extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
+		/** @var $install tx_em_Install */
 		$install = t3lib_div::makeInstance('tx_em_Install', $this);
 
 		list($installedList,) = $this->extensionList->getInstalledExtensions();
