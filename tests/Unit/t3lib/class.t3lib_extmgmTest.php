@@ -126,6 +126,31 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 		}
 	}
 
+	///////////////////////////////
+	// Tests concerning isLoaded
+	///////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function isLoadedReturnsTrueIfExtensionIsLoaded() {
+		$this->assertTrue(t3lib_extMgm::isLoaded('cms'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function isLoadedReturnsFalseIfExtensionIsNotLoadedAndExitIsDisabled() {
+		$this->assertFalse(t3lib_extMgm::isLoaded(uniqid('foobar'), FALSE));
+	}
+
+	/**
+	 * @test
+	 * @expectedException BadFunctionCallException
+	 */
+	public function isLoadedThrowsExceptionIfExtensionIsNotLoaded() {
+		$this->assertFalse(t3lib_extMgm::isLoaded(uniqid('foobar'), TRUE));
+	}
 
 	///////////////////////////////
 	// Tests concerning extPath
@@ -1060,6 +1085,15 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getExtensionVersionForLoadedExtensionReturnsExtensionVersion() {
+		$className = uniqid('t3lib_extMgm');
+		eval(
+			'class ' . $className . ' extends t3lib_extMgm {' .
+			'  public static function isLoaded() {' .
+			'    return TRUE;' .
+			'  }' .
+			'}'
+		);
+
 		t3lib_extMgm::clearExtensionKeyMap();
 
 		$uniqueSuffix = uniqid('test');
@@ -1070,33 +1104,197 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 		);
 		$this->assertEquals(
 			'1.2.3',
-			t3lib_extMgm::getExtensionVersion($extensionKey)
+			$className::getExtensionVersion($extensionKey)
 		);
 	}
 
+	/////////////////////////////////////////
+	// Tests concerning getLoadedExtensionListArray
+	/////////////////////////////////////////
+
 	/**
 	 * @test
 	 */
-	public function getEnabledExtensionListConsidersRequiredExtensions() {
-		$testrequiRedExtension = uniqid('test');
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = $testrequiRedExtension;
-
-		$extensions = explode(',', t3lib_extMgm::getEnabledExtensionList());
-		$this->assertTrue(in_array($testrequiRedExtension, $extensions));
+	public function getLoadedExtensionListArrayConsidersExtListAsString() {
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = 'foo,bar';
+		$this->assertEquals(array('foo', 'bar'), array_intersect(array('foo', 'bar'), t3lib_extMgm::getLoadedExtensionListArray()));
 	}
 
 	/**
 	 * @test
 	 */
-	public function getEnabledExtensionListConsidersRequiredAndIgnoredExtensions() {
-		$testRequiredExtension = uniqid('test');
-		$testIgnoredExtension = uniqid('test');
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = $testRequiredExtension . ',' . $testIgnoredExtension;
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['ignoredExt'] = $testIgnoredExtension;
+	public function getLoadedExtensionListArrayConsidersExtListAsArray() {
+		$extList = array('foo', 'bar');
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $extList;
+		$this->assertEquals($extList, array_intersect($extList, t3lib_extMgm::getLoadedExtensionListArray()));
+	}
 
-		$extensions = explode(',', t3lib_extMgm::getEnabledExtensionList());
-		$this->assertTrue(in_array($testRequiredExtension, $extensions));
-		$this->assertFalse(in_array($testIgnoredExtension, $extensions));
+	/**
+	 * @test
+	 */
+	public function getLoadedExtensionListArrayConsidersRequiredExtensions() {
+		$className = uniqid('t3lib_extMgm');
+		eval(
+			'class ' . $className . ' extends t3lib_extMgm {' .
+			'  public static function getRequiredExtensionListArray() {' .
+			'    return array(\'baz\');' .
+			'  }' .
+			'}'
+		);
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = array();
+		$this->assertEquals(array('baz'), $className::getLoadedExtensionListArray());
+	}
+
+	/**
+	 * @test
+	 */
+	public function getLoadedExtensionListArrayReturnsUniqueList() {
+		$className = uniqid('t3lib_extMgm');
+		eval(
+			'class ' . $className . ' extends t3lib_extMgm {' .
+			'  public static function getRequiredExtensionListArray() {' .
+			'    return array(\'bar\');' .
+			'  }' .
+			'}'
+		);
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = array('foo', 'bar', 'foo');
+		$this->assertSame(array('bar', 'foo'), $className::getLoadedExtensionListArray());
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning getRequiredExtensionListArray
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function getRequiredExtensionListArrayContainsAdditionalRequiredExtensionsAsString() {
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = 'foo,bar';
+		$this->assertEquals(array('foo', 'bar'), array_intersect(array('foo', 'bar'), t3lib_extMgm::getLoadedExtensionListArray()));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getRequiredExtensionListArrayContainsAdditionalRequiredExtensionsAsArray() {
+		$requiredExtList = array('foo', 'bar');
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = $requiredExtList;
+		$this->assertEquals($requiredExtList, array_intersect($requiredExtList, t3lib_extMgm::getLoadedExtensionListArray()));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getRequiredExtensionListArrayReturnsUniqueList() {
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['requiredExt'] = 'foo,bar,foo';
+		$this->assertEquals(array('foo', 'bar'), array_intersect(array('foo', 'bar'), t3lib_extMgm::getLoadedExtensionListArray()));
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning loadExtension
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 * @expectedException RuntimeException
+	 */
+	public function loadExtensionThrowsExceptionIfExtensionIsLoaded() {
+		$className = uniqid('t3lib_extMgm');
+		eval(
+			'class ' . $className . ' extends t3lib_extMgm {' .
+			'  public static function isLoaded() {' .
+			'    return TRUE;' .
+			'  }' .
+			'}'
+		);
+		$className::loadExtension('test');
+	}
+
+	/**
+	 * @test
+	 * @expectedException RuntimeException
+	 */
+	public function loadExtensionAddsExtensionToExtList() {
+		if (!file_exists(PATH_typo3conf . 'LocalConfiguration.php')) {
+			$this->markTestSkipped('Test is not available until update wizard to transform localconf.php was run.');
+		}
+		$extensionKeyToLoad = uniqid('loadMe');
+		$className = uniqid('t3lib_extMgm');
+		eval(
+			'class ' . $className . ' extends t3lib_extMgm {' .
+			'  public static function writeNewExtensionList($extList) {' .
+			'    if (in_array(' . $extensionKeyToLoad . ', $extList)) {' .
+			'      throw new RuntimeException(\'test\');' .
+			'    }' .
+			'  }' .
+			'}'
+		);
+		$className::loadExtension($extensionKeyToLoad);
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning unloadExtension
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 * @expectedException RuntimeException
+	 */
+	public function unloadExtensionThrowsExceptionIfExtensionIsNotLoaded() {
+		$className = uniqid('t3lib_extMgm');
+		eval(
+			'class ' . $className . ' extends t3lib_extMgm {' .
+			'  public static function isLoaded() {' .
+			'    return FALSE;' .
+			'  }' .
+			'}'
+		);
+		$className::unloadExtension('test');
+	}
+
+	/**
+	 * @test
+	 * @expectedException RuntimeException
+	 */
+	public function unloadExtensionThrowsExceptionIfExtensionIsRequired() {
+		$extensionKey = uniqid('test');
+		$className = uniqid('t3lib_extMgm');
+		eval(
+			'class ' . $className . ' extends t3lib_extMgm {' .
+			'  public static function isLoaded() {' .
+			'    return TRUE;' .
+			'  }' .
+			'  public static function getRequiredExtensionListArray() {' .
+			'    return array(\'' . $extensionKey . '\');' .
+			'  }' .
+			'}'
+		);
+		$className::unloadExtension($extensionKey);
+	}
+
+	/**
+	 * @test
+	 * @expectedException RuntimeException
+	 */
+	public function unloadExtensionRemovesExtensionFromExtList() {
+		if (!file_exists(PATH_typo3conf . 'LocalConfiguration.php')) {
+			$this->markTestSkipped('Test is not available until update wizard to transform localconf.php was run.');
+		}
+		$extensionKeyToUnload = uniqid('unloadMe');
+		$className = uniqid('t3lib_extMgm');
+		eval(
+			'class ' . $className . ' extends t3lib_extMgm {' .
+			'  public static function isLoaded() {' .
+			'    return TRUE;' .
+			'  }' .
+			'  public static function writeNewExtensionList($extList) {' .
+			'    if (!in_array(' . $extensionKeyToUnload . ', $extList)) {' .
+			'      throw new RuntimeException(\'test\');' .
+			'    }' .
+			'  }' .
+			'}'
+		);
+		$className::unloadExtension($extensionKeyToUnload);
 	}
 }
 ?>
