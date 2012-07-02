@@ -32,7 +32,6 @@
  * @package TYPO3
  * @subpackage t3lib_tree
  */
-
 class t3lib_tree_Tca_DatabaseTreeDataProvider extends t3lib_tree_Tca_AbstractTcaTreeDataProvider {
 
 	const MODE_CHILDREN = 1;

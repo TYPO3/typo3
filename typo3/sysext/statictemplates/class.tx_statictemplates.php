@@ -25,7 +25,12 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
+/**
+ * Statictemplates
+ *
+ * @author Kasper Skårhøj (kasperYYYY@typo3.com)
+ * @author Benjamin Mack (benn@typo3.org)
+ */
 class tx_statictemplates {
 
 	/**

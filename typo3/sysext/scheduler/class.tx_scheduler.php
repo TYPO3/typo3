@@ -32,7 +32,6 @@
  * @package		TYPO3
  * @subpackage	tx_scheduler
  */
-
 class tx_scheduler implements t3lib_Singleton {
 	/**
 	 * @var	array		$extConf: settings from the extension manager

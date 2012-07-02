@@ -27,6 +27,11 @@
 
 require_once(t3lib_extMgm::extPath('t3editor', 'classes/class.tx_t3editor.php'));
 
+/**
+ * File edit hook for t3editor
+ *
+ * @author Tobias Liebig <mail_typo3@etobi.de>
+ */
 class tx_t3editor_hooks_fileedit {
 
 	/**

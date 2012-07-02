@@ -24,20 +24,17 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * Module: TypoScript Tools
- *
- *
- * 	$TYPO3_CONF_VARS["MODS"]["web_ts"]["onlineResourceDir"]  = Directory of default resources. Eg. "fileadmin/res/" or so.
- *
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
 
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate/ts/locallang.xml');
 $BE_USER->modAccess($MCONF, TRUE);
 
-	// Script Classes
+/**
+ * Module: TypoScript Tools
+ *
+ * 	$TYPO3_CONF_VARS["MODS"]["web_ts"]["onlineResourceDir"]  = Directory of default resources. Eg. "fileadmin/res/" or so.
+ *
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ */
 class SC_mod_web_ts_index extends t3lib_SCbase {
 	var $perms_clause;
 	var $e;

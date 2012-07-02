@@ -25,14 +25,13 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
+
 /**
  * Provides a javascript-driven code editor with syntax highlighting for TS, HTML, CSS and more
  *
  * @author Tobias Liebig <mail_typo3@etobi.de>
  */
-
-$GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
-
 class tx_t3editor implements t3lib_Singleton {
 
 	const MODE_TYPOSCRIPT = 'typoscript';

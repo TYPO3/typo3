@@ -31,7 +31,6 @@
  * @author Steffen Ritter <info@steffen-ritter.net>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-
 class t3lib_TCEforms_Tree {
 	/**
 	 * Stores a reference to the original tceForms object

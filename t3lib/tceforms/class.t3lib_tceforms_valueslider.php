@@ -30,7 +30,6 @@
  *
  * @author Steffen Kamper <steffen@typo3.org>
  */
-
 class t3lib_TCEforms_ValueSlider {
 
 	/**

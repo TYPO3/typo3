@@ -25,7 +25,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
+/**
+ * Interface for custom sections
+ *
+ * @author Steffen Kamper <steffen@typo3.org>
+ * @package TYPO3
+ * @subpackage about
+ */
 interface tx_about_customSections {
 
 	/**

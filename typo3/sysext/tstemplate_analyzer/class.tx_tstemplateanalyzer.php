@@ -24,12 +24,14 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
 
 $GLOBALS['LANG']->includeLLFile('EXT:tstemplate_analyzer/locallang.xml');
 
+/**
+ * TypoScript template analyzer
+ *
+ * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ */
 class tx_tstemplateanalyzer extends t3lib_extobjbase {
 	/**
 	 * Init

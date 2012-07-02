@@ -58,9 +58,13 @@
  * Check 3: "Capabilities" of Storage (then: of Driver) [is the storage/driver writable?]
  * Check 4: "File permissions" of the Driver [is the folder writable?]
  *
+ */
+
+/**
+ * File storage
  *
- * @author  Andreas Wolf <andreas.wolf@ikt-werk.de>
- * @author  Ingmar Schlecht <ingmar@typo3.org>
+ * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
+ * @author Ingmar Schlecht <ingmar@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */

@@ -31,7 +31,6 @@
  * @package TYPO3
  * @subpackage cms
  */
-
 class tx_cms_mediaItems implements t3lib_Singleton {
 
 	/**

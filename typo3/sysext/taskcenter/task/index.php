@@ -22,19 +22,16 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+$LANG->includeLLFile('EXT:taskcenter/task/locallang.xml');
+$BE_USER->modAccess($MCONF, 1);
+
 /**
  * This class provides a taskcenter for BE users
  *
  * @author Georg Ringer <typo3@ringerge.org>
  * @package TYPO3
  * @subpackage taskcenter
- *
  */
-
-$LANG->includeLLFile('EXT:taskcenter/task/locallang.xml');
-$BE_USER->modAccess($MCONF, 1);
-
-	// Script Classes
 class SC_mod_user_task_index extends t3lib_SCbase {
 
 	protected $pageinfo;

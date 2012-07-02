@@ -26,6 +26,7 @@
  ***************************************************************/
 
 /**
+ * Sprite build handler
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
  * @package TYPO3

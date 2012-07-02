@@ -32,7 +32,6 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-
 class t3lib_spritemanager_SpriteGenerator {
 	/**
 	 * Template creating CSS for the spritefile

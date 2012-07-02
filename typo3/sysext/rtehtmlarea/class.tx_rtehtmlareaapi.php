@@ -21,13 +21,12 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * API for extending htmlArea RTE
  *
  * @author Stanislas Rolland <typo3(arobas)sjbr.ca>
- *
  */
-
 abstract class tx_rtehtmlarea_api {
 
 	protected $extensionKey;				// The key of the extension that is extending htmlArea RTE
@@ -227,7 +226,8 @@ abstract class tx_rtehtmlarea_api {
 		return $this->requiredPlugins;
 	}
 }
-/*
+
+/**
  * Class alias for backward compatibility (TYPO3 4.5)
  */
 abstract class tx_rtehtmlareaapi extends tx_rtehtmlarea_api {

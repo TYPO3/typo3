@@ -28,6 +28,12 @@
 require_once(PATH_t3lib.'class.t3lib_page.php');
 $GLOBALS['LANG']->includeLLFile('EXT:t3editor/locallang.xml');
 
+/**
+ * Code completion for t3editor
+ *
+ * @author Stephan Petzl <spetzl@gmx.at>
+ * @author Christian Kartnig <office@hahnepeter.de>
+ */
 class tx_t3editor_codecompletion {
 	/** @var TYPO3AJAX */
 	protected $ajaxObj;

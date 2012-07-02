@@ -32,7 +32,6 @@
  * @author	Philipp Borgmann <philipp.borgmann@gmx.de>
  * @author	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-
 class tx_rtehtmlarea_base extends t3lib_rteapi {
 		// Configuration of supported browsers
 	var $conf_supported_browser = array (

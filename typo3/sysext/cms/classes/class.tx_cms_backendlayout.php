@@ -25,6 +25,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+/**
+ * Backend layout for CMS
+ *
+ * @author GridView Team
+ * @package TYPO3
+ * @subpackage core
+ */
 class tx_cms_BackendLayout {
 
 	/**

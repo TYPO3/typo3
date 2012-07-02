@@ -24,13 +24,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Module: Extension manager, (un-)install extensions
  *
  * @author	Steffen Kamper <info@sk-typo3.de>
+ * @package TYPO3
+ * @subpackage em
  */
-
-
 class tx_em_Install {
 
 	/**
