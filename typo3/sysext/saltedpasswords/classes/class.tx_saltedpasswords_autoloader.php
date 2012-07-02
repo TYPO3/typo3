@@ -82,24 +82,25 @@ class tx_saltedpasswords_autoloader {
 	 * @return void
 	 */
 	protected function activateSaltedPasswords() {
-		$extList = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);
+		$extList = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
 		if (!t3lib_div::inArray($extList, 'rsaauth')) {
 			$extList[] = 'rsaauth';
 		}
 		if (!t3lib_div::inArray($extList, 'saltedpasswords')) {
 			$extList[] = 'saltedpasswords';
 		}
-		$this->updateExtensionList(implode(',', $extList));
+		$this->updateExtensionList($extList);
 		t3lib_extMgm::removeCacheFiles();
 	}
 
 	/**
 	 * Updates the list of extensions.
 	 *
-	 * @param string $newExtList
+	 * @param array $newExtList
 	 * @return void
 	 */
-	protected function updateExtensionList($newExtList) {
+	protected function updateExtensionList(array $newExtList) {
+
 			// Instance of install tool
 		$instObj = t3lib_div::makeInstance('t3lib_install');
 		$instObj->allowUpdateLocalConf = 1;
@@ -110,7 +111,7 @@ class tx_saltedpasswords_autoloader {
 		$saltedPasswordDefaultConfiguration =
 				'a:2:{s:3:"FE.";a:2:{s:7:"enabled";s:1:"1";s:21:"saltedPWHashingMethod";s:28:"tx_saltedpasswords_salts_md5";}s:3:"BE.";a:2:{s:7:"enabled";s:1:"1";s:21:"saltedPWHashingMethod";s:28:"tx_saltedpasswords_salts_md5";}}';
 
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
+		//$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
 		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][\'saltedpasswords\']', $saltedPasswordDefaultConfiguration);
 		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\'] ', 'rsa');
 		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'FE\'][\'loginSecurityLevel\'] ', 'rsa');
@@ -124,7 +125,7 @@ class tx_saltedpasswords_autoloader {
 			throw new RuntimeException($message, 1310931362);
 		}
 
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
+		t3lib_extMgm::writeNewExtensionList($newExtList);
 	}
 
 }
