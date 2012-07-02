@@ -1464,25 +1464,17 @@ class tx_em_Install {
 	 * Writes the TSstyleconf values to "localconf.php"
 	 * Removes the cached core files before return.
 	 *
-	 * @param	string		Extension key
-	 * @param	array		Configuration array to write back
-	 * @return	void
+	 * @param string $extensionKey Extension key
+	 * @param array $configuration Configuration array to write back
+	 * @return void
 	 */
-	function writeTsStyleConfig($extKey, $arr) {
-
-		// Instance of install tool
-		$instObj = t3lib_div::makeInstance('t3lib_install');
-		$instObj->allowUpdateLocalConf = 1;
-		$instObj->updateIdentity = 'TYPO3 Extension Manager';
-
-		// Get lines from localconf file
-		$lines = $instObj->writeToLocalconf_control();
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][\'' . $extKey . '\']', serialize($arr)); // This will be saved only if there are no linebreaks in it !
-		$instObj->writeToLocalconf_control($lines);
-
+	function writeTsStyleConfig($extensionKey, array $configuration) {
+		t3lib_Configuration::setLocalConfigurationValueByPath(
+			'EXT/extConf/' . $extensionKey,
+			serialize($configuration)
+		);
 		t3lib_extMgm::removeCacheFiles();
 	}
-
 
 	/**
 	 * Creates a form for an extension which contains all options for configuration, updates of database, clearing of cache etc.
@@ -1565,26 +1557,16 @@ class tx_em_Install {
 	}
 
 	/**
-	 * Writes the extension list to "localconf.php" file
+	 * Writes the extension list to local configuration
 	 * Removes the cached core files before return.
 	 *
-	 * @param	string		List of extensions
-	 * @return	void
+	 * @param string $newExtList List of extensions
+	 * @return void
 	 */
 	function writeNewExtensionList($newExtList) {
-
-		// Instance of install tool
-		$instObj = t3lib_div::makeInstance('t3lib_install');
-		$instObj->allowUpdateLocalConf = 1;
-		$instObj->updateIdentity = 'TYPO3 Extension Manager';
-
-		// Get lines from localconf file
-		$lines = $instObj->writeToLocalconf_control();
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
-		$instObj->writeToLocalconf_control($lines);
-
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
-		t3lib_extMgm::removeCacheFiles();
+		t3lib_extMgm::writeNewExtensionList(
+			t3lib_div::trimExplode(',', $newExtList)
+		);
 	}
 
 	/**

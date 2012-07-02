@@ -54,6 +54,7 @@ require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_fl
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_addflexformstoacl.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_imagelink.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_mediaflexform.php');
+require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_localconfiguration.php');
 
 /**
  * Install Tool module
@@ -166,7 +167,12 @@ class tx_install extends t3lib_install {
 		parent::__construct();
 
 		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']) {
-			$this->outputErrorAndExit('Install Tool deactivated.<br />You must enable it by setting a password in typo3conf/localconf.php. If you insert the line below, the password will be \'joh316\':<br /><br />$TYPO3_CONF_VARS[\'BE\'][\'installToolPassword\'] = \'bacb98acf97e0b6112b1d1b650b84971\';', 'Fatal error');
+			$this->outputErrorAndExit(
+				'Install Tool deactivated.<br />
+				You must enable it by setting a password in typo3conf/LocalConfiguration.php. If you insert the value below at array position \'EXT\' \'installToolPassword\', the password will be \'joh316\':<br /><br />
+				\'bacb98acf97e0b6112b1d1b650b84971\'',
+				'Fatal error'
+			);
 		}
 
 		if ($this->sendNoCacheHeaders) {
@@ -525,7 +531,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					);
 					$this->checkTheConfig();
 
-					$ext = 'Write config to localconf.php';
+					$ext = 'Write configuration';
 					if ($this->fatalError) {
 						if (
 							$this->config_array['no_database'] ||
@@ -611,9 +617,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							Also make sure to clear the cache_pages table.
 						</p>
 					', 1, 1);
-					$this->message($ext, 'Update localconf.php', '
+					$this->message($ext, 'Update configuration', '
 						<p>
-							This form updates the localconf.php file with the
+							This form updates the configuration with the
 							suggested values you see below. The values are based
 							on the analysis above.
 							<br />
@@ -644,10 +650,10 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$markers = array(
 						'action' => $this->action,
 						'content' => $this->printAll(),
-						'write' => 'Write to localconf.php',
+						'write' => 'Write configuration',
 						'notice' => 'NOTICE:',
 						'explanation' => '
-							By clicking this button, localconf.php is updated
+							By clicking this button, the configuration is updated
 							with new values for the parameters listed above!
 						'
 					);
@@ -712,8 +718,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							<br />
 							Finally the image processing settings are entered
 							and verified and you can choose to let the script
-							update the configuration file,
-							typo3conf/localconf.php with the suggested settings.
+							update the configuration with the suggested settings.
 						</p>
 						<p>
 							<strong>2: Database Analyser</strong>
@@ -1933,7 +1938,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 * @return void
 	 */
 	function generateConfigForm($type='') {
-		$default_config_content = t3lib_div::getUrl(PATH_t3lib . 'stddb/DefaultSettings.php');
+		$default_config_content = t3lib_div::getUrl(PATH_site . t3lib_Configuration::DEFAULT_CONFIGURATION_FILE);
 		$commentArr = $this->getDefaultConfigArrayComments($default_config_content);
 
 		switch($type) {
@@ -2066,7 +2071,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			break;
 			default:
 				if (is_array($this->INSTALL['extConfig'])) {
-					$lines = $this->writeToLocalconf_control();
+
+					$configurationPathValuePairs = array();
+
 					foreach ($this->INSTALL['extConfig'] as $k => $va) {
 						if (is_array($GLOBALS['TYPO3_CONF_VARS'][$k])) {
 							foreach ($va as $vk => $value) {
@@ -2109,8 +2116,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 										$value = str_replace(LF, "' . LF . '", $value);
 									}
 									if (preg_match('/^boolean/i', $description)) {
-											// When submitting settings in the Install Tool, values that default to "FALSE" or "true"
-											// in t3lib/stddb/DefaultSettings.php will be sent as "0" resp. "1". Therefore, reset the values
+											// When submitting settings in the Install Tool, values that default to "FALSE" or "TRUE"
+											// in t3lib/stddb/DefaultConfiguration.php will be sent as "0" resp. "1". Therefore, reset the values
 											// to their boolean equivalent.
 										if ($GLOBALS['TYPO3_CONF_VARS'][$k][$vk] === FALSE && $value === '0') {
 											$value = FALSE;
@@ -2120,22 +2127,22 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									}
 
 									if ($doit && strcmp($GLOBALS['TYPO3_CONF_VARS'][$k][$vk], $value)) {
-										$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\''.$k.'\'][\''.$vk.'\']', $value);
+										$configurationPathValuePairs['"' . $k . '"' . '/' . '"' . $vk . '"'] = $value;
 									}
 								}
 							}
 						}
 					}
-					$this->writeToLocalconf_control($lines);
+					$this->setLocalConfigurationValues($configurationPathValuePairs);
 				}
 			break;
 		}
 	}
 
 	/**
-	 * Make an array of the comments in the t3lib/stddb/DefaultSettings.php file
+	 * Make an array of the comments in the t3lib/stddb/DefaultConfiguration.php file
 	 *
-	 * @param string $string The contents of the t3lib/stddb/DefaultSettings.php file
+	 * @param string $string The contents of the t3lib/stddb/DefaultConfiguration.php file
 	 * @param array $mainArray
 	 * @param array $commentArray
 	 * @return array
@@ -2262,7 +2269,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					<strong>Notice:</strong> The limits for filesizes attached
 					to database records are set in the tables.php configuration
 					files (\$TCA) for each group/file field. You may override
-					these values in localconf.php or by page TSconfig settings.
+					these values in the local configuration or by page TSconfig settings.
 				</p>
 			', 1);
 		}
@@ -2474,7 +2481,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					ImageMagick 6 or GraphicsMagick is recommended and the binaries are
 					normally installed in /usr/bin.
 					<br />
-					Paths to ImageMagick are defined in localconf.php and may be
+					Paths to ImageMagick are defined in local configuration and may be
 					something else than /usr/bin/, but this is default for
 					ImageMagick 6+
 				</p>
@@ -2631,7 +2638,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						// Get the subpart for the mail is sent message
 					$mailSentSubpart = t3lib_parsehtml::getSubpart($template, '###MAILSENT###');
 				}
-					// Substitute the subpart for the mail is sent message
 				$template = t3lib_parsehtml::substituteSubpart(
 					$template,
 					'###MAILSENT###',
@@ -3682,9 +3688,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					);
 				}
 
-				$formMarkers['labelUpdateLocalConf'] = 'Update localconf.php';
+				$formMarkers['labelUpdateLocalConf'] = 'Update configuration';
 				$formMarkers['labelNotice'] = 'NOTICE:';
-				$formMarkers['labelCommentUpdateLocalConf'] = 'By clicking this button, localconf.php is updated with new values for the parameters listed above!';
+				$formMarkers['labelCommentUpdateLocalConf'] = 'By clicking this button, the configuration is updated with new values for the parameters listed above!';
 					// Substitute the subpart for regular mode
 				$form = t3lib_parsehtml::substituteSubpart(
 					$form,
@@ -3701,44 +3707,46 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				);
 			break;
 			default:
-				if (is_array($this->INSTALL['localconf.php'])) {
-					$lines = $this->writeToLocalconf_control();
+
+				if (is_array($this->INSTALL['Database'])) {
 
 						// New database?
-					if (trim($this->INSTALL['localconf.php']['NEW_DATABASE_NAME'])) {
-						$newdbname=trim($this->INSTALL['localconf.php']['NEW_DATABASE_NAME']);
-						if (!preg_match('/[^[:alnum:]_-]/', $newdbname)) {
+					if (trim($this->INSTALL['Database']['NEW_DATABASE_NAME'])) {
+						$newDatabaseName = trim($this->INSTALL['Database']['NEW_DATABASE_NAME']);
+
+						if (!preg_match('/[^[:alnum:]_-]/', $newDatabaseName)) {
 							if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
-								if ($GLOBALS['TYPO3_DB']->admin_query('CREATE DATABASE ' . $newdbname . ' CHARACTER SET utf8')) {
-									$this->INSTALL['localconf.php']['typo_db'] = $newdbname;
-									$this->messages[]= "Database '".$newdbname."' created";
+								if ($GLOBALS['TYPO3_DB']->admin_query('CREATE DATABASE ' . $newDatabaseName . ' CHARACTER SET utf8')) {
+									$this->INSTALL['Database']['typo_db'] = $newDatabaseName;
+									$this->messages[] = "Database '".$newDatabaseName."' created";
 								} else {
 									$this->errorMessages[] = '
 										Could not create database \'' .
-										$newdbname . '\' (...not created)
+										$newDatabaseName . '\' (...not created)
 									';
 								}
 							} else {
 								$this->errorMessages[] = '
 									Could not connect to database when creating
-									database \'' . $newdbname . '\' (...not
+									database \'' . $newDatabaseName . '\' (...not
 									created)
 								';
 							}
 						} else {
 							$this->errorMessages[] = '
-								The NEW database name \'' . $newdbname . '\' was
+								The NEW database name \'' . $newDatabaseName . '\' was
 								not alphanumeric, a-zA-Z0-9_- (...not created)
 							';
 						}
 					}
-						// Parsing values
-					foreach ($this->INSTALL['localconf.php'] as $key => $value) {
+
+					foreach ($this->INSTALL['Database'] as $key => $value) {
 						switch((string)$key) {
 							case 'typo_db_username':
 								if (strlen($value) < 50) {
 									if (strcmp(TYPO3_db_username, $value)) {
-										$this->setValueInLocalconfFile($lines, '$typo_db_username', trim($value));
+										// @TODO: This is currently disabled and must be fixed before 6.0 final
+										//$this->setValueInLocalconfFile($lines, '$typo_db_username', trim($value));
 									}
 								} else {
 									$this->errorMessages[] = '
@@ -3750,7 +3758,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							case 'typo_db_password':
 								if (strlen($value)<50) {
 									if (strcmp(TYPO3_db_password, $value)) {
-										$this->setValueInLocalconfFile($lines, '$typo_db_password', trim($value));
+										// @TODO: This is currently disabled and must be fixed before 6.0 final
+										//$this->setValueInLocalconfFile($lines, '$typo_db_password', trim($value));
 									}
 								} else {
 									$this->errorMessages[] = '
@@ -3761,7 +3770,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							case 'typo_db_host':
 								if (preg_match('/^[a-zA-Z0-9_\.-]+(:.+)?$/', $value) && strlen($value)<50) {
 									if (strcmp(TYPO3_db_host, $value)) {
-										$this->setValueInLocalconfFile($lines, '$typo_db_host', $value);
+										// @TODO: This is currently disabled and must be fixed before 6.0 final
+										//$this->setValueInLocalconfFile($lines, '$typo_db_host', $value);
 									}
 								} else {
 									$this->errorMessages[] = '
@@ -3774,7 +3784,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							case 'typo_db':
 								if (strlen($value)<50) {
 									if (strcmp(TYPO3_db, $value)) {
-										$this->setValueInLocalconfFile($lines, '$typo_db', trim($value));
+										// @TODO: This is currently disabled and must be fixed before 6.0 final
+										//$this->setValueInLocalconfFile($lines, '$typo_db', trim($value));
 									}
 								} else {
 									$this->errorMessages[] = '
@@ -3783,42 +3794,53 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 									';
 								}
 								break;
+						}
+					}
+				}
+
+				if (is_array($this->INSTALL['LocalConfiguration'])) {
+
+					$localConfigurationPathValuePairs = array();
+
+					foreach ($this->INSTALL['LocalConfiguration'] as $key => $value) {
+
+						switch((string)$key) {
 							case 'disable_exec_function':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['BE']['disable_exec_function'], $value)) {
-									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'BE\'][\'disable_exec_function\']', $value ? 1 : 0);
+								if (strcmp(t3lib_Configuration::getConfigurationValueByPath('BE/disable_exec_function'), $value)) {
+									$localConfigurationPathValuePairs['BE/disable_exec_function'] = $value ? 1 : 0;
 								}
 								break;
 							case 'sitename':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'], $value)) {
-									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'SYS\'][\'sitename\']', $value);
+								if (strcmp(t3lib_Configuration::getConfigurationValueByPath('SYS/sitename'), $value)) {
+									$localConfigurationPathValuePairs['SYS/sitename'] = $value;
 								}
 								break;
 							case 'encryptionKey':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'], $value)) {
-									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'SYS\'][\'encryptionKey\']', $value);
+								if (strcmp(t3lib_Configuration::getConfigurationValueByPath('SYS/encryptionKey'), $value)) {
+									$localConfigurationPathValuePairs['SYS/encryptionKey'] = $value;
 								}
 								break;
 							case 'compat_version':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['SYS']['compat_version'], $value)) {
-									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'SYS\'][\'compat_version\']', $value);
+								if (strcmp(t3lib_Configuration::getConfigurationValueByPath('SYS/compat_version'), $value)) {
+									$localConfigurationPathValuePairs['SYS/compat_version'] = $value;
 								}
 								break;
 							case 'im_combine_filename':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'], $value)) {
-									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'im_combine_filename\']', $value);
+								if (strcmp(t3lib_Configuration::getConfigurationValueByPath('GFX/im_combine_filename'), $value)) {
+									$localConfigurationPathValuePairs['GFX/im_combine_filename'] = $value;
 								}
 								break;
 							case 'gdlib':
 							case 'gdlib_png':
 							case 'im':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
-									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', ($value ? 1 : 0));
+								if (strcmp(t3lib_Configuration::getConfigurationValueByPath('GFX/' . $key), $value)) {
+									$localConfigurationPathValuePairs['GFX/' . $key] = ($value ? 1 : 0);
 								}
 								break;
 							case 'im_path':
 								list($value, $version) = explode('|', $value);
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
-									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', $value);
+								if (strcmp(t3lib_Configuration::getConfigurationValueByPath('GFX/' . $key), $value)) {
+									$localConfigurationPathValuePairs['GFX/' . $key] = $value;
 								}
 								if (doubleval($version) > 0 && doubleval($version) < 4) {
 										// Assume GraphicsMagick
@@ -3827,19 +3849,19 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 										// Assume ImageMagick 6.x
 									$value_ext = 'im6';
 								}
-								if (strcmp(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']), $value_ext)) {
-									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\']', $value_ext);
+								if (strcmp(strtolower(t3lib_Configuration::getConfigurationValueByPath('GFX/im_version_5')), $value_ext)) {
+									$localConfigurationPathValuePairs['GFX/im_version_5'] = $value_ext;
 								}
 								break;
 							case 'im_path_lzw':
 								list($value) = explode('|', $value);
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX'][$key], $value)) {
-									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'' . $key . '\']', $value);
+								if (strcmp(t3lib_Configuration::getConfigurationValueByPath('GFX/' . $key), $value)) {
+									$localConfigurationPathValuePairs['GFX/' . $key] = $value;
 								}
 								break;
 							case 'TTFdpi':
-								if (strcmp($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'], $value)) {
-									$this->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'GFX\'][\'TTFdpi\']', $value);
+								if (strcmp(t3lib_Configuration::getConfigurationValueByPath('GFX/TTFdpi'), $value)) {
+									$localConfigurationPathValuePairs['GFX/TTFdpi'] = $value;
 								}
 								break;
 						}
@@ -3848,11 +3870,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						// Hook to modify localconf.php lines in the 1-2-3 installer
 					if (is_array ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['writeLocalconf'])) {
 						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['writeLocalconf'] as $classData) {
-							$hookObject = t3lib_div::getUserObj($classData);
-							$hookObject->executeWriteLocalconf($lines, $this->step, $this);
+								// @TODO: Disabled for now. This is currently broken and must be fixed before 6.0 final
+							//$hookObject = t3lib_div::getUserObj($classData);
+							//$hookObject->executeWriteLocalconf($lines, $this->step, $this);
 						}
 					}
-					$this->writeToLocalconf_control($lines);
+
+					t3lib_Configuration::setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
 				}
 			break;
 		}
@@ -3860,86 +3884,92 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	}
 
 	/**
+	 * Set new configuration values in LocalConfiguration.php
+	 *
+	 * @param array $pathValuePairs
+	 * @return void
+	 */
+	protected function setLocalConfigurationValues(array $pathValuePairs) {
+			// Get the template file
+		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'WriteToLocalConfControl.html');
+
+		if (t3lib_Configuration::setLocalConfigurationValuesByPathValuePairs($pathValuePairs)) {
+
+				// Get the template part from the file
+			$template = t3lib_parsehtml::getSubpart($templateFile, '###CONTINUE###');
+				// Get the subpart for messages
+			$messagesSubPart = t3lib_parsehtml::getSubpart($template, '###MESSAGES###');
+
+			$messages = array();
+
+			foreach ($this->messages as $message) {
+					// Define the markers content
+				$messagesMarkers['message'] = $message;
+					// Fill the markers in the subpart
+				$messages[] = t3lib_parsehtml::substituteMarkerArray(
+					$messagesSubPart,
+					$messagesMarkers,
+					'###|###',
+					TRUE,
+					FALSE
+				);
+			}
+				// Substitute the subpart for messages
+			$content = t3lib_parsehtml::substituteSubpart(
+				$template,
+				'###MESSAGES###',
+				implode(LF, $messages)
+			);
+				// Define the markers content
+			$markers = array(
+				'header' => 'Writing configuration',
+				'action' => $this->action,
+				'label' => 'Click to continue...'
+			);
+				// Fill the markers
+			$content = t3lib_parsehtml::substituteMarkerArray(
+				$content,
+				$markers,
+				'###|###',
+				TRUE,
+				FALSE
+			);
+			$this->outputExitBasedOnStep($content);
+
+		} else {
+				// Get the template part from the file
+			$template = t3lib_parsehtml::getSubpart($templateFile, '###NOCHANGE###');
+
+				// Define the markers content
+			$markers = array(
+				'header' => 'Writing configuration',
+				'message' => 'No values were changed, so nothing is updated!',
+				'action' => $this->action,
+				'label' => 'Click to continue...'
+			);
+
+				// Fill the markers
+			$content = t3lib_parsehtml::substituteMarkerArray(
+				$template,
+				$markers,
+				'###|###',
+				TRUE,
+				FALSE
+			);
+			$this->outputExitBasedOnStep($content);
+		}
+	}
+
+	/**
 	 * Writes or returns lines from localconf.php
 	 *
 	 * @param array $lines Array of lines to write back to localconf.php. Possibly
 	 * @param boolean $showOutput If TRUE then print what has been done.
-	 * @return mixed If $lines is not an array it will return an array with the lines from localconf.php. Otherwise it will return a status string, either "continue" (updated) or "nochange" (not updated)
-	 * @see parent::writeToLocalconf_control()
+	 * @return void
+	 * @deprecated with 6.0, will be removed two versions later
 	 */
 	function writeToLocalconf_control($lines='', $showOutput=TRUE) {
-			// Get the template file
-		$templateFile = @file_get_contents(PATH_site . $this->templateFilePath . 'WriteToLocalConfControl.html');
-
-		$returnVal = parent::writeToLocalconf_control($lines);
-
-		if ($showOutput) {
-			switch($returnVal) {
-				case 'continue':
-						// Get the template part from the file
-					$template = t3lib_parsehtml::getSubpart($templateFile, '###CONTINUE###');
-						// Get the subpart for messages
-					$messagesSubPart = t3lib_parsehtml::getSubpart($template, '###MESSAGES###');
-
-					$messages = array();
-
-					foreach ($this->messages as $message) {
-							// Define the markers content
-						$messagesMarkers['message'] = $message;
-							// Fill the markers in the subpart
-						$messages[] = t3lib_parsehtml::substituteMarkerArray(
-							$messagesSubPart,
-							$messagesMarkers,
-							'###|###',
-							TRUE,
-							FALSE
-						);
-					}
-						// Substitute the subpart for messages
-					$content = t3lib_parsehtml::substituteSubpart(
-						$template,
-						'###MESSAGES###',
-						implode(LF, $messages)
-					);
-						// Define the markers content
-					$markers = array(
-						'header' => 'Writing to \'localconf.php\'',
-						'action' => $this->action,
-						'label' => 'Click to continue...'
-					);
-						// Fill the markers
-					$content = t3lib_parsehtml::substituteMarkerArray(
-						$content,
-						$markers,
-						'###|###',
-						TRUE,
-						FALSE
-					);
-					$this->outputExitBasedOnStep($content);
-				break;
-				case 'nochange':
-						// Get the template part from the file
-					$template = t3lib_parsehtml::getSubpart($templateFile, '###NOCHANGE###');
-						// Define the markers content
-					$markers = array(
-						'header' => 'Writing to \'localconf.php\'',
-						'message' => 'No values were changed, so nothing is updated!',
-						'action' => $this->action,
-						'label' => 'Click to continue...'
-					);
-						// Fill the markers
-					$content = t3lib_parsehtml::substituteMarkerArray(
-						$template,
-						$markers,
-						'###|###',
-						TRUE,
-						FALSE
-					);
-					$this->outputExitBasedOnStep($content);
-				break;
-			}
-		}
-		return $returnVal;
+		t3lib_div::logDeprecatedFunction();
 	}
 
 	/**
@@ -4273,13 +4303,13 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		return '
 		<p>
 			Local configuration is done by overriding default values in the
-			included file, typo3conf/localconf.php. In this file you enter the
+			included file, typo3conf/LocalConfiguration.php. In this file you enter the
 			database information along with values in the global array
 			TYPO3_CONF_VARS.
 			<br />
 			The options in the TYPO3_CONF_VARS array and how to use it for your
 			own purposes is discussed in the base configuration file,
-			t3lib/stddb/DefaultSettings.php. This file sets up the default values and
+			t3lib/stddb/DefaultConfiguration.php. This file sets up the default values and
 			subsequently includes the localconf.php file in which you can then
 			override values.
 			<br />

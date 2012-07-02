@@ -198,12 +198,29 @@ return array(
 		'allowSystemInstall' => FALSE,			// Boolean: If set, you can install extensions in the sysext/ dir. Use this to upgrade the 'cms' and 'lang' extensions.
 		'em_wsdlURL' => 'http://typo3.org/wsdl/tx_ter_wsdl.php',				// The SOAP URL for uploading extensions to the TER2. Usually doesn't need to be changed.
 		'em_mirrorListURL' => 'http://repositories.typo3.org/mirrors.xml.gz',				// Allows to preset the URL for fetching the extension repository mirror list from. Used in the Extension Manager.
-
-		'requiredExt' => '',		// String. List of additional extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
-		'ignoredExt' => '',			// String. List of extensions to be ignored (not loaded), e.g. "em" can be disabled this way.
+		'requiredExt' => array(),		// Array. List of additional extensions which are REQUIRED and cannot be unloaded by the Extension Manager!
 		'excludeForPackaging' => '(CVS|\..*|.*~|.*\.bak)',		// String: List of directories and files which will not be packaged into extensions nor taken into account otherwise by the Extension Manager. Perl regular expression syntax!
 		'extCache' => -1,						// Deprecated and unused. Do not set anymore and remove from localconf.php
-		'extList' => 'filelist,version,tsconfig_help,context_help,extra_page_cm_options,impexp,belog,about,cshmanual,aboutmodules,setup,opendocs,install,t3editor,felogin,feedit,recycler',						// String (exclude) List of extensions which are enabled for this install. Use the Extension Manager (EM) to manage this!
+		'extList' => 'filelist,version,tsconfig_help,context_help,extra_page_cm_options,impexp,belog,about,cshmanual,aboutmodules,setup,opendocs,install,t3editor,felogin,feedit,recycler', // String (exclude) Deprecated List of extensions which are enabled for this install. Use extListArray instead! Will be dropped with 6.2
+		'extListArray' => array(
+			'filelist',
+			'version',
+			'tsconfig_help',
+			'context_help',
+			'extra_page_cm_options',
+			'impexp',
+			'belog',
+			'about',
+			'cshmanual',
+			'aboutmodules',
+			'setup',
+			'opendocs',
+			'install',
+			't3editor',
+			'felogin',
+			'feedit',
+			'recycler',
+		),// Array (exclude) List of extensions which are enabled for this install. Use the Extension Manager (EM) to manage this!
 		'extConf' => array(						// Config-options for extensions, stored as serialized arrays by extension-keys. Handled automatically by the EM.
 //			'--key--' => array()
 		),

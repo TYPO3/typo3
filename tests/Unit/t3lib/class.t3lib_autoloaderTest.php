@@ -100,7 +100,7 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 		$GLOBALS['TYPO3_LOADED_EXT'][$extKey] = array(
 			'siteRelPath' => $relPath
 		);
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] .= ',' . $extKey;
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'][] = $extKey;
 
 		$this->fakedExtensions[] = $extKey;
 		t3lib_extMgm::clearExtensionKeyMap();

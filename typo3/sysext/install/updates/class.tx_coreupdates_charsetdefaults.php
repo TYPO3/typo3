@@ -65,20 +65,19 @@ class tx_coreupdates_charsetDefaults extends Tx_Install_Updates_Base {
 	 * @return	boolean		whether the updated was made or not
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
-		$localconf = $this->pObj->writeToLocalconf_control();
-
 			// Update "setDBinit" setting
-		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] === '-1') {
-			$this->pObj->setValueInLocalconfFile($localconf, '$TYPO3_CONF_VARS[\'SYS\'][\'setDBinit\']', '');
+		$result1 = FALSE;
+		if (t3lib_Configuration::getLocalConfigurationValueByPath('SYS/setDBinit') === '-1') {
+			$result1 = t3lib_Configuration::setLocalConfigurationValueByPath('SYS/setDBinit', '');
 		}
 
 			// Update the "forceCharset" setting
-		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] != '') {
-			$this->pObj->setValueInLocalconfFile($localconf, '$TYPO3_CONF_VARS[\'BE\'][\'forceCharset\']', '');
+		$result2 = FALSE;
+		if (t3lib_Configuration::getLocalConfigurationValueByPath('BE/forceCharset') !== '') {
+			$result2 = t3lib_Configuration::setLocalConfigurationValueByPath('BE/forceCharset', '');
 		}
 
-		$message = $this->pObj->writeToLocalconf_control($localconf);
-		if ($message == 'continue') {
+		if ($result1 && $result2) {
 			$customMessages[] = 'The configuration was successfully updated.';
 			return TRUE;
 		} else {

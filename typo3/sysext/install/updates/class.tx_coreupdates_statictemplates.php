@@ -82,17 +82,16 @@ class tx_coreupdates_statictemplates extends Tx_Install_Updates_Base {
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		if ($this->versionNumber >= 4004000 && !t3lib_extMgm::isLoaded('statictemplates')) {
-			// check wether the table can be truncated or if sysext with tca has to be installed
+				// check wether the table can be truncated or if sysext with tca has to be installed
 			if ($this->checkForUpdate($customMessages[])) {
-				$localconf = $this->pObj->writeToLocalconf_control();
-				$this->pObj->setValueInLocalconfFile($localconf, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] . ',statictemplates');
-				$message = $this->pObj->writeToLocalconf_control($localconf);
-				if ($message == 'continue') {
-					$customMessages[] = 'System Extension "statictemplates" was succesfully loaded, static templates are now supported.';
-					return TRUE;
-				} else {
-					return FALSE;	// something went wrong
+				try {
+					t3lib_extMgm::loadExtension('statictemplates');
+					$customMessages[] = 'System Extension "statictemplates" was successfully loaded, static templates are now supported.';
+					$result = TRUE;
+				} catch (RuntimeException $e) {
+					$result = FALSE;
 				}
+				return $result;
 			}
 			return TRUE;
 		}
