@@ -59,7 +59,7 @@ class Typo3_Bootstrap_BaseSetup {
 		self::handleMagicQuotesGpc();
 		self::addCorePearPathToIncludePath();
 		self::initializeGlobalVariables();
-		self::loadDefaultTypo3ConfVars();
+		self::loadDefaultConfiguration();
 		self::initializeGlobalTimeTrackingVariables();
 		self::initializeBasicErrorReporting();
 	}
@@ -206,6 +206,8 @@ class Typo3_Bootstrap_BaseSetup {
 		/** @define "PATH_t3lib" "../../../t3lib/" */
 		require_once(PATH_t3lib . 'class.t3lib_div.php');
 
+		require_once(PATH_t3lib . 'utility/class.t3lib_utility_array.php');
+		require_once(PATH_t3lib . 'class.t3lib_configuration.php');
 		require_once(PATH_t3lib . 'class.t3lib_extmgm.php');
 
 		require_once(PATH_t3lib . 'class.t3lib_cache.php');
@@ -282,8 +284,8 @@ class Typo3_Bootstrap_BaseSetup {
 	 *
 	 * @return void
 	 */
-	protected static function loadDefaultTypo3ConfVars() {
-		$GLOBALS['TYPO3_CONF_VARS'] = require(PATH_t3lib . 'stddb/DefaultSettings.php');
+	protected static function loadDefaultConfiguration() {
+		$GLOBALS['TYPO3_CONF_VARS'] = t3lib_Configuration::getDefaultConfiguration();
 	}
 
 	/**
