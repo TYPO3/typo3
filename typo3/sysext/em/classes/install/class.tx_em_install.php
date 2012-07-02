@@ -1571,18 +1571,13 @@ class tx_em_Install {
 	 * @return	void
 	 */
 	function writeNewExtensionList($newExtList) {
+		$extensionList = array_unique(t3lib_div::trimExplode(',', $newExtList));
+		file_put_contents(
+			PATH_typo3conf . 'extList.php',
+			"<?php\n\$TYPO3_CONF_VARS['EXT']['extList'] = " . var_export($extensionList, TRUE) . "\n ?>"
+		);
 
-		// Instance of install tool
-		$instObj = t3lib_div::makeInstance('t3lib_install');
-		$instObj->allowUpdateLocalConf = 1;
-		$instObj->updateIdentity = 'TYPO3 Extension Manager';
-
-		// Get lines from localconf file
-		$lines = $instObj->writeToLocalconf_control();
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
-		$instObj->writeToLocalconf_control($lines);
-
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $extensionList;
 		t3lib_extMgm::removeCacheFiles();
 	}
 

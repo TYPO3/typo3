@@ -68,11 +68,13 @@ class t3lib_install {
 	 */
 	protected $sqlHandler = NULL;
 
+
 	/**
 	 * Constructor function
 	 */
 	public function __construct() {
 		$this->sqlHandler = t3lib_div::makeInstance('t3lib_install_Sql');
+		///$this->configurationHandler = t3lib_div::makeInstance('t3lib_install_Configuration');
 	}
 
 	/**************************************
