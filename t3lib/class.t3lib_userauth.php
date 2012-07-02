@@ -409,7 +409,11 @@ abstract class t3lib_userAuth {
 				$match = array();
 				$matchCnt = @preg_match($cookieDomain, t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'), $match);
 				if ($matchCnt === FALSE) {
-					t3lib_div::sysLog('The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.', 'Core', 3);
+					t3lib_div::sysLog(
+						'The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.',
+						'Core',
+						t3lib_div::SYSLOG_SEVERITY_ERROR
+					);
 				} elseif ($matchCnt) {
 					$result = $match[0];
 				}

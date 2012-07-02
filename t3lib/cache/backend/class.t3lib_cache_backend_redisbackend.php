@@ -184,7 +184,11 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 		try {
 			$this->connected = $this->redis->connect($this->hostname, $this->port);
 		} catch (Exception $e) {
-			t3lib_div::sysLog('Could not connect to redis server.', 'core', 3);
+			t3lib_div::sysLog(
+				'Could not connect to redis server.',
+				'core',
+				t3lib_div::SYSLOG_SEVERITY_ERROR
+			);
 		}
 
 		if ($this->connected) {

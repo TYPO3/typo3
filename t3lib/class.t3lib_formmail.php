@@ -145,9 +145,11 @@ class t3lib_formmail {
 				$autoRespondChecksum = $valueList['auto_respond_checksum'];
 				$correctHmacChecksum = t3lib_div::hmac($this->autoRespondMessage);
 				if ($autoRespondChecksum !== $correctHmacChecksum) {
-					t3lib_div::sysLog('Possible misuse of t3lib_formmail auto respond method. Subject: ' . $valueList['subject'],
+					t3lib_div::sysLog(
+						'Possible misuse of t3lib_formmail auto respond method. Subject: ' . $valueList['subject'],
 						'Core',
-						3);
+						t3lib_div::SYSLOG_SEVERITY_ERROR
+					);
 					return;
 				} else {
 					$this->autoRespondMessage = $this->sanitizeHeaderString($this->autoRespondMessage);
@@ -192,13 +194,21 @@ class t3lib_formmail {
 					continue;
 				}
 				if (!is_uploaded_file($_FILES[$variableName]['tmp_name'])) {
-					t3lib_div::sysLog('Possible abuse of t3lib_formmail: temporary file "' . $_FILES[$variableName]['tmp_name']
-							. '" ("' . $_FILES[$variableName]['name'] . '") was not an uploaded file.', 'Core', 3);
+					t3lib_div::sysLog(
+						'Possible abuse of t3lib_formmail: temporary file "' . $_FILES[$variableName]['tmp_name'] .
+							'" ("' . $_FILES[$variableName]['name'] . '") was not an uploaded file.',
+						'Core',
+						t3lib_div::SYSLOG_SEVERITY_ERROR
+					);
 				}
 				if ($_FILES[$variableName]['tmp_name']['error'] !== UPLOAD_ERR_OK) {
-					t3lib_div::sysLog('Error in uploaded file in t3lib_formmail: temporary file "'
-							. $_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") Error code: '
-							. $_FILES[$variableName]['tmp_name']['error'], 'Core', 3);
+					t3lib_div::sysLog(
+						'Error in uploaded file in t3lib_formmail: temporary file "' .
+							$_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") Error code: ' .
+							$_FILES[$variableName]['tmp_name']['error'],
+						'Core',
+						t3lib_div::SYSLOG_SEVERITY_ERROR
+					);
 				}
 				$theFile = t3lib_div::upload_to_tempfile($_FILES[$variableName]['tmp_name']);
 				$theName = $_FILES[$variableName]['name'];
@@ -230,7 +240,11 @@ class t3lib_formmail {
 
 				// Log dirty header lines
 			if ($this->dirtyHeaders) {
-				t3lib_div::sysLog('Possible misuse of t3lib_formmail: see TYPO3 devLog', 'Core', 3);
+				t3lib_div::sysLog(
+					'Possible misuse of t3lib_formmail: see TYPO3 devLog',
+					'Core',
+					t3lib_div::SYSLOG_SEVERITY_ERROR
+				);
 				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
 					t3lib_div::devLog('t3lib_formmail: ' . t3lib_div::arrayToLogString($this->dirtyHeaders, '', 200), 'Core', 3);
 				}

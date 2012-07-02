@@ -602,12 +602,12 @@ class tx_openid_sv1 extends t3lib_svbase {
 			$message = vsprintf($message, $params);
 		}
 		if (TYPO3_MODE == 'BE') {
-			t3lib_div::sysLog($message, $this->extKey, 1);
+			t3lib_div::sysLog($message, $this->extKey, t3lib_div::SYSLOG_SEVERITY_NOTICE);
 		} else {
 			$GLOBALS['TT']->setTSlogMessage($message);
 		}
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enable_DLOG']) {
-			t3lib_div::devLog($message, $this->extKey, 1);
+			t3lib_div::devLog($message, $this->extKey, t3lib_div::SYSLOG_SEVERITY_NOTICE);
 		}
 	}
 }

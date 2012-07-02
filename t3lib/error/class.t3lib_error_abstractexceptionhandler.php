@@ -72,7 +72,7 @@ abstract class t3lib_error_AbstractExceptionHandler implements t3lib_error_Excep
 		$backtrace = $exception->getTrace();
 
 			// Write error message to the configured syslogs
-		t3lib_div::sysLog($logMessage, $logTitle, 4);
+		t3lib_div::sysLog($logMessage, $logTitle, t3lib_div::SYSLOG_SEVERITY_FATAL);
 
 			// When database credentials are wrong, the exception is probably
 			// caused by this. Therefor we cannot do any database operation,

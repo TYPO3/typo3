@@ -398,7 +398,7 @@ class t3lib_install {
 		$this->messages[] = $msg;
 
 		if (!$success) {
-			t3lib_div::sysLog($msg, 'Core', 3);
+			t3lib_div::sysLog($msg, 'Core', t3lib_div::SYSLOG_SEVERITY_ERROR);
 		}
 
 		return $success;

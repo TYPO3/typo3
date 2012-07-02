@@ -1082,7 +1082,7 @@ class t3lib_DB {
 			t3lib_div::sysLog('Could not connect to MySQL server ' . $TYPO3_db_host .
 					' with user ' . $TYPO3_db_username . ': ' . $error_msg,
 				'Core',
-				4
+				t3lib_div::SYSLOG_SEVERITY_FATAL
 			);
 		} else {
 			$setDBinit = t3lib_div::trimExplode(LF, str_replace("' . LF . '", LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']), TRUE);
@@ -1091,7 +1091,7 @@ class t3lib_DB {
 					t3lib_div::sysLog('Could not initialize DB connection with query "' . $v .
 							'": ' . mysql_error($this->link),
 						'Core',
-						3
+						t3lib_div::SYSLOG_SEVERITY_ERROR
 					);
 				}
 			}
@@ -1121,7 +1121,7 @@ class t3lib_DB {
 				t3lib_div::sysLog(
 					'NO_BACKSLASH_ESCAPES could not be removed from SQL mode: ' . $this->sql_error(),
 					'Core',
-					3
+					t3lib_div::SYSLOG_SEVERITY_ERROR
 				);
 			}
 		}
@@ -1140,7 +1140,7 @@ class t3lib_DB {
 			t3lib_div::sysLog('Could not select MySQL database ' . $TYPO3_db . ': ' .
 					mysql_error(),
 				'Core',
-				4
+				t3lib_div::SYSLOG_SEVERITY_FATAL
 			);
 		}
 		return $ret;
@@ -1399,7 +1399,11 @@ class t3lib_DB {
 			$msg .= ': function t3lib_DB->' . $trace[0]['function'] . ' called from file ' .
 					substr($trace[0]['file'], strlen(PATH_site) + 2) . ' in line ' .
 					$trace[0]['line'];
-			t3lib_div::sysLog($msg . '. Use a devLog extension to get more details.', 'Core/t3lib_db', 3);
+			t3lib_div::sysLog(
+				$msg . '. Use a devLog extension to get more details.',
+				'Core/t3lib_db',
+				t3lib_div::SYSLOG_SEVERITY_ERROR
+			);
 				// Send to devLog if enabled
 			if (TYPO3_DLOG) {
 				$debugLogData = array(
