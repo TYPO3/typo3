@@ -65,7 +65,7 @@ if (version_compare(phpversion(), '5.3', '<'))	die ('TYPO3 requires PHP 5.3.0 or
 // *******************************
 // Set error reporting
 // *******************************
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
 
 // *******************************
 // Prevent any unwanted output that may corrupt AJAX/compression. Note: this does
