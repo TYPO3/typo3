@@ -16,7 +16,7 @@
 				<ol>
 					<li>
 						<label for="t3-install-form-username">###LABELUSERNAME###</label>
-						<input id="t3-install-form-username" type="text" name="TYPO3_INSTALL[localconf.php][typo_db_username]" value="###USERNAME###" class="t3-install-form-input-text" />
+						<input id="t3-install-form-username" type="text" name="TYPO3_INSTALL[Database][typo_db_username]" value="###USERNAME###" class="t3-install-form-input-text" />
 					</li>
 					<!-- ###SQLSAFEMODEUSERSUBPART### begin -->
 					<li>
@@ -29,11 +29,11 @@
 					<!-- ###SQLSAFEMODEUSERSUBPART### end -->
 					<li>
 						<label for="t3-install-form-password">###LABELPASSWORD###</label>
-						<input id="t3-install-form-password" type="password" name="TYPO3_INSTALL[localconf.php][typo_db_password]" value="###PASSWORD###" class="t3-install-form-input-text" />
+						<input id="t3-install-form-password" type="password" name="TYPO3_INSTALL[Database][typo_db_password]" value="###PASSWORD###" class="t3-install-form-input-text" />
 					</li>
 					<li>
 						<label for="t3-install-form-host">###LABELHOST###</label>
-						<input id="t3-install-form-host" type="text" name="TYPO3_INSTALL[localconf.php][typo_db_host]" value="###HOST###" class="t3-install-form-input-text" />
+						<input id="t3-install-form-host" type="text" name="TYPO3_INSTALL[Database][typo_db_host]" value="###HOST###" class="t3-install-form-input-text" />
 					</li>
 				</ol>
 			</fieldset>
@@ -43,7 +43,7 @@
 					<!-- ###DATABASEAVAILABLE### begin -->
 					<li>
 						<label for="t3-install-form-db">###LABELDATABASE###</label>
-						<select id="t3-install-form-db" name="TYPO3_INSTALL[localconf.php][typo_db]">
+						<select id="t3-install-form-db" name="TYPO3_INSTALL[Database][typo_db]">
 							<!-- ###DATABASEITEM### begin -->
 							<option value="###DATABASENAME###" ###DATABASESELECTED###>
 								###DATABASEVALUE###
@@ -53,7 +53,7 @@
 					</li>
 					<li>
 						<label for="t3-install-form-createdatabase">###LABELCREATEDATABASE###</label>
-						<input id="t3-install-form-createdatabase" type="text" name="TYPO3_INSTALL[localconf.php][NEW_DATABASE_NAME]" value="" class="t3-install-form-input-text" />
+						<input id="t3-install-form-createdatabase" type="text" name="TYPO3_INSTALL[Database][NEW_DATABASE_NAME]" value="" class="t3-install-form-input-text" />
 					</li>
 					<!-- ###DATABASEAVAILABLE### end -->
 					<!-- ###DATABASENOTAVAILABLE### begin -->
@@ -64,7 +64,7 @@
 						</strong>
 						<br />
 						###LABELNODATABASE###
-						<input type="hidden" name="TYPO3_INSTALL[localconf.php][typo_db]" value="###TYPO3DB###" />
+						<input type="hidden" name="TYPO3_INSTALL[Database][typo_db]" value="###TYPO3DB###" />
 					</li>
 					<!-- ###DATABASENOTAVAILABLE### end -->
 				</ol>
@@ -76,7 +76,7 @@
 				<ol>
 					<li>
 						<label for="t3-install-form-sitename">###LABELSITENAME###</label>
-						<input id="t3-install-form-sitename" type="text" name="TYPO3_INSTALL[localconf.php][sitename]" value="###SITENAME###" class="t3-install-form-input-text" />
+						<input id="t3-install-form-sitename" type="text" name="TYPO3_INSTALL[LocalConfiguration][sitename]" value="###SITENAME###" class="t3-install-form-input-text" />
 					</li>
 				</ol>
 			</fieldset>
@@ -85,7 +85,7 @@
 					<li>
 						<label for="t3-install-form-encryptionkey">###LABELENCRYPTIONKEY###</label>
 						<span>
-							<input id="t3-install-form-encryptionkey" type="text" name="TYPO3_INSTALL[localconf.php][encryptionKey]" value="###ENCRYPTIONKEY###" class="t3-install-form-input-text" />
+							<input id="t3-install-form-encryptionkey" type="text" name="TYPO3_INSTALL[LocalConfiguration][encryptionKey]" value="###ENCRYPTIONKEY###" class="t3-install-form-input-text" />
 							<br />
 							<button type="button" onclick="EncryptionKey.load(this)">###LABELGENERATERANDOMKEY###<span class="t3-install-form-button-icon-positive">&nbsp;</span></button>
 						</span>
@@ -101,7 +101,7 @@
 							###STRONGDISABLEEXECFUNCTION###
 							<br />
 							###LABELCURRENTVALUEIS### ###DEFAULTDISABLEEXECFUNCTION###
-							<input id="t3-install-form-disableexecfunction" type="hidden" name="TYPO3_INSTALL[localconf.php][disable_exec_function]" value="###DISABLEEXECFUNCTION###" />
+							<input id="t3-install-form-disableexecfunction" type="hidden" name="TYPO3_INSTALL[LocalConfiguration][disable_exec_function]" value="###DISABLEEXECFUNCTION###" />
 						</span>
 					</li>
 				</ol>
@@ -116,7 +116,7 @@
 							###STRONGGDLIB###
 							<br />
 							###LABELCURRENTVALUEIS### ###DEFAULTGDLIB###
-							<input id="t3-install-form-gdlib" type="hidden" name="TYPO3_INSTALL[localconf.php][gdlib]" value="###GDLIB###" />
+							<input id="t3-install-form-gdlib" type="hidden" name="TYPO3_INSTALL[LocalConfiguration][gdlib]" value="###GDLIB###" />
 						</span>
 					</li>
 				</ol>
@@ -132,7 +132,7 @@
 							<br />
 							###LABELCURRENTVALUEIS### ###DEFAULTGDLIBPNG###
 							<br />
-							<select id="t3-install-form-gdlibpng" name="TYPO3_INSTALL[localconf.php][gdlib_png]">
+							<select id="t3-install-form-gdlibpng" name="TYPO3_INSTALL[LocalConfiguration][gdlib_png]">
 								<!-- ###GDLIBPNGOPTION### -->
 								<option value="###VALUE###" ###SELECTED###>
 									###DATA###
@@ -153,7 +153,7 @@
 							###STRONGIMAGEMAGICK###
 							<br />
 							###LABELCURRENTVALUEIS### ###DEFAULTIMAGEMAGICK###
-							<input id="t3-install-form-imagemagick" type="hidden" name="TYPO3_INSTALL[localconf.php][im]" value="###IMAGEMAGICK###" />
+							<input id="t3-install-form-imagemagick" type="hidden" name="TYPO3_INSTALL[LocalConfiguration][im]" value="###IMAGEMAGICK###" />
 						</span>
 					</li>
 				</ol>
@@ -168,7 +168,7 @@
 							###STRONGIMCOMBINEFILENAME###
 							<br />
 							###LABELCURRENTVALUEIS### ###DEFAULTIMCOMBINEFILENAME###
-							<input id="t3-install-form-imcombinefilename" type="hidden" name="TYPO3_INSTALL[localconf.php][im_combine_filename]" value="###IMCOMBINEFILENAME###" />
+							<input id="t3-install-form-imcombinefilename" type="hidden" name="TYPO3_INSTALL[LocalConfiguration][im_combine_filename]" value="###IMCOMBINEFILENAME###" />
 						</span>
 					</li>
 				</ol>
@@ -183,7 +183,7 @@
 							###STRONGIMVERSION5###
 							<br />
 							###LABELCURRENTVALUEIS### ###DEFAULTIMVERSION5###
-							<input id="t3-install-form-imversion5" type="hidden" name="TYPO3_INSTALL[localconf.php][im_version_5]" value="###IMVERSION5###" />
+							<input id="t3-install-form-imversion5" type="hidden" name="TYPO3_INSTALL[LocalConfiguration][im_version_5]" value="###IMVERSION5###" />
 						</span>
 					</li>
 				</ol>
@@ -198,7 +198,7 @@
 							###STRONGIMPATH###
 							<br />
 							###LABELCURRENTVALUEIS### ###DEFAULTIMPATH###
-							<input id="t3-install-form-impath" type="hidden" name="TYPO3_INSTALL[localconf.php][im_path]" value="###IMPATH###" />
+							<input id="t3-install-form-impath" type="hidden" name="TYPO3_INSTALL[LocalConfiguration][im_path]" value="###IMPATH###" />
 						</span>
 					</li>
 				</ol>
@@ -214,7 +214,7 @@
 							<br />
 							###LABELCURRENTVALUEIS### ###DEFAULTIMPATH###
 							<br />
-							<select id="t3-install-form-impathlzw" name="TYPO3_INSTALL[localconf.php][im_path_lzw]">
+							<select id="t3-install-form-impathlzw" name="TYPO3_INSTALL[LocalConfiguration][im_path_lzw]">
 								<!-- ###IMPATHLZWOPTION### begin -->
 								<option value="###VALUE###" ###SELECTED###>
 									###DATA###
@@ -231,7 +231,7 @@
 				<ol>
 					<li>
 						<label for="t3-install-form-ttfdpi">###LABELTTFDPI###</label>
-						<input id="t3-install-form-ttfdpi" type="text" name="TYPO3_INSTALL[localconf.php][TTFdpi]" value="###TTFDPI###" class="t3-install-form-input-text" />
+						<input id="t3-install-form-ttfdpi" type="text" name="TYPO3_INSTALL[LocalConfiguration][TTFdpi]" value="###TTFDPI###" class="t3-install-form-input-text" />
 					</li>
 				</ol>
 			</fieldset>
@@ -246,7 +246,7 @@
 						</button>
 					</li>
 					<li>
-						<strong>###LABELNOTICE###</strong> 
+						<strong>###LABELNOTICE###</strong>
 						###LABELCOMMENTUPDATELOCALCONF###
 					</li>
 				</ol>
