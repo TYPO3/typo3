@@ -32,7 +32,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-final class t3lib_utility_Array {
+class t3lib_utility_Array {
 
 	/**
 	 * Reduce an array by a search value and keep the array structure.
@@ -90,6 +90,216 @@ final class t3lib_utility_Array {
 
 			// Pointers to result array are reset internally
 		return $resultArray;
+	}
+
+	/**
+	 * Checks if a given path exists in array
+	 *
+	 * array:
+	 * array(
+	 * 	'foo' => array(
+	 * 		'bar' = 'test',
+	 * 	)
+	 * );
+	 * path: 'foo/bar'
+	 * return: TRUE
+	 *
+	 * @param array $array Given array
+	 * @param string $path Path to test, 'foo/bar/foobar'
+	 * @param string $delimiter Delimeter for path, default /
+	 * @return boolean TRUE if path exists in array
+	 */
+	public static function isValidPath(array $array, $path,  $delimiter = '/') {
+		$isValid = TRUE;
+		try {
+				// Use late static binding to enable mocking of this call in unit tests
+			static::getValueByPath(
+				$array,
+				$path,
+				$delimiter
+			);
+		} catch (RuntimeException $e) {
+			$isValid = FALSE;
+		}
+		return $isValid;
+	}
+
+	/**
+	 * Returns a value by given path
+	 *
+	 * Simple example
+	 * Input array:
+	 * array(
+	 * 	'foo' => array(
+	 * 		'bar' => array(
+	 * 			'baz' => 42
+	 * 		)
+	 * 	)
+	 * );
+	 * Path to get: foo/bar/baz
+	 * Will return: 42
+	 *
+	 * If a path segments contains a delimeter character, the path segment
+	 * must be enclodsed by " (doubletick), see unit tests for details
+	 *
+	 * @param array $array Input array
+	 * @param string $path Path within the array
+	 * @param string $delimiter Defined path delimeter, default /
+	 * @return mixed
+	 * @throws RuntimeException
+	 */
+	public static function getValueByPath(array $array, $path,  $delimiter = '/') {
+		if (empty($path)) {
+			throw new RuntimeException(
+				'Path must not be empty',
+				1341397767
+			);
+		}
+
+			// Extract parts of the path
+		$path = str_getcsv($path, $delimiter);
+
+			// Loop through each part and extract its value
+		$value = $array;
+		foreach ($path as $segment) {
+			if (array_key_exists($segment, $value)) {
+					// Replace current value with child
+				$value = $value[$segment];
+			} else {
+					// Fail if key does not exist
+				throw new RuntimeException(
+					'Path does not exist in array',
+					1341397869
+				);
+			}
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Modifies or sets a new value in an array by given path
+	 *
+	 * Input array:
+	 * array(
+	 * 	'foo' => array(
+	 * 		'bar' => 42,
+	 * 	),
+	 * );
+	 * Path to get: foo/bar
+	 * Value to set: 23
+	 * Will return:
+	 * array(
+	 * 	'foo' => array(
+	 * 		'bar' => 23,
+	 * 	),
+	 * );
+	 *
+	 * @param array $array Input array to manipulate
+	 * @param string $path Path in array to search for
+	 * @param mixed $value Value to set at path location in array
+	 * @param string $delimiter Path delimeter
+	 * @return array Modified array
+	 * @throws RuntimeException
+	 */
+	public static function setValueByPath(array $array, $path, $value, $delimiter = '/') {
+		if (empty($path)) {
+			throw new RuntimeException(
+				'Path must not be empty',
+				1341406194
+			);
+		}
+		if (!is_string($path)) {
+			throw new RuntimeException(
+				'Path must be a string',
+				1341406402
+			);
+		}
+
+			// Extract parts of the path
+		$path = str_getcsv($path, $delimiter);
+
+			// Point to the root of the array
+		$pointer = &$array;
+
+			// Find path in given array
+		foreach ($path as $segment) {
+				// Fail if the part is empty
+			if (empty($segment)) {
+				throw new RuntimeException(
+					'Invalid path specified: ' . $path,
+					1341406846
+				);
+			}
+
+				// Create cell if it doesn't exist
+			if (!array_key_exists($segment, $pointer)) {
+				$pointer[$segment] = array();
+			}
+
+				// Set pointer to new cell
+			$pointer = &$pointer[$segment];
+		}
+
+			// Set value of target cell
+		$pointer = $value;
+
+		return $array;
+	}
+
+	/**
+	 * Sorts an array recursively by key
+	 *
+	 * @param $array Array to sort recursively by key
+	 * @return array Sorted array
+	 */
+	public static function sortByKeyRecursive(array $array) {
+		ksort($array);
+		foreach ($array as $key => $value) {
+			if (is_array($value) && !empty($value)) {
+				$array[$key] = self::sortByKeyRecursive($value);
+			}
+		}
+		return $array;
+	}
+
+	/**
+	 * Exports an array as string.
+	 * Similar to var_export(), but representation follows the TYPO3 core CGL.
+	 *
+	 * @param array $array Array to export
+	 * @param integer $level Internal level used for recursion, do *not* set from outside!
+	 * @return string String representation of array
+	 */
+	public static function arrayExport(array $array = array(), $level = 0) {
+		$lines = 'array(' . LF;
+		$level ++;
+		foreach ($array as $key => $value) {
+			$lines .= str_repeat(TAB, $level) . '\'' . $key . '\' => ';
+			if (is_array($value)) {
+				if (count($value) > 0) {
+					$lines .= self::arrayExport($value, $level);
+				} else {
+					$lines .= 'array(),' . LF;
+				}
+			} elseif (is_int($value)) {
+				$lines .= $value . ',' . LF;
+			} elseif (is_null($value)) {
+				$lines .= 'NULL' . ',' . LF;
+			} elseif (is_bool($value)) {
+				$lines .= $value ? 'TRUE' : 'FALSE';
+				$lines .= ',' . LF;
+			} elseif (is_string($value)) {
+				$lines .= '\'' . str_replace('\\', '\\\\', $value) . '\'' . ',' . LF;
+			} else {
+				throw new RuntimeException(
+					'Objects are not supported',
+					1342294986
+				);
+			}
+		}
+		$lines .= str_repeat(TAB, $level - 1) . ')' . ($level - 1 == 0 ? '' : ',' . LF);
+		return $lines;
 	}
 }
 

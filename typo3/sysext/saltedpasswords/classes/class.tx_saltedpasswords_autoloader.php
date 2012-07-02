@@ -82,54 +82,22 @@ class tx_saltedpasswords_autoloader {
 	 * @return void
 	 */
 	protected function activateSaltedPasswords() {
-		$extList = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);
-		if (!t3lib_div::inArray($extList, 'rsaauth')) {
-			$extList[] = 'rsaauth';
+		if (!t3lib_extMgm::isLoaded('rsaauth')) {
+			t3lib_extMgm::loadExtension('rsaauth');
 		}
-		if (!t3lib_div::inArray($extList, 'saltedpasswords')) {
-			$extList[] = 'saltedpasswords';
+		if (!t3lib_extMgm::isLoaded('saltedpasswords')) {
+			t3lib_extMgm::loadExtension('saltedpasswords');
 		}
-		$this->updateExtensionList(implode(',', $extList));
-		t3lib_extMgm::removeCacheFiles();
+		t3lib_Configuration::setLocalConfigurationValueByPath(
+			'EXT/extConf/saltedpasswords',
+			'a:2:{s:3:"FE.";a:2:{s:7:"enabled";s:1:"1";s:21:"saltedPWHashingMethod";s:28:"tx_saltedpasswords_salts_md5";}s:3:"BE.";a:2:{s:7:"enabled";s:1:"1";s:21:"saltedPWHashingMethod";s:28:"tx_saltedpasswords_salts_md5";}}'
+		);
+		t3lib_Configuration::setLocalConfigurationValueByPath('BE/loginSecurityLevel', 'rsa');
+		t3lib_Configuration::setLocalConfigurationValueByPath('FE/loginSecurityLevel', 'rsa');
 	}
-
-	/**
-	 * Updates the list of extensions.
-	 *
-	 * @param string $newExtList
-	 * @return void
-	 */
-	protected function updateExtensionList($newExtList) {
-			// Instance of install tool
-		$instObj = t3lib_div::makeInstance('t3lib_install');
-		$instObj->allowUpdateLocalConf = 1;
-		$instObj->updateIdentity = 'TYPO3 Core Update Manager';
-
-			// Get lines from localconf file
-		$lines = $instObj->writeToLocalconf_control();
-		$saltedPasswordDefaultConfiguration =
-				'a:2:{s:3:"FE.";a:2:{s:7:"enabled";s:1:"1";s:21:"saltedPWHashingMethod";s:28:"tx_saltedpasswords_salts_md5";}s:3:"BE.";a:2:{s:7:"enabled";s:1:"1";s:21:"saltedPWHashingMethod";s:28:"tx_saltedpasswords_salts_md5";}}';
-
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][\'saltedpasswords\']', $saltedPasswordDefaultConfiguration);
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'BE\'][\'loginSecurityLevel\'] ', 'rsa');
-		$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'FE\'][\'loginSecurityLevel\'] ', 'rsa');
-
-		$result = $instObj->writeToLocalconf_control($lines);
-		if ($result === 'nochange') {
-			$message = 'Saltedpasswords was not loaded.';
-			if (!@is_writable(PATH_typo3conf)) {
-				$message .= ' ' . PATH_typo3conf . ' is not writable!';
-			}
-			throw new RuntimeException($message, 1310931362);
-		}
-
-		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
-	}
-
 }
 
-	// Make instance:
+/** @var $SOBE tx_saltedpasswords_autoloader */
 $SOBE = t3lib_div::makeInstance('tx_saltedpasswords_autoloader');
 $SOBE->execute($this);
 ?>
