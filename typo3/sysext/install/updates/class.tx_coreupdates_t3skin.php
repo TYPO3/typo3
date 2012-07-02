@@ -74,17 +74,16 @@ class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
 		if ($this->versionNumber >= 4004000 && !t3lib_extMgm::isLoaded('t3skin')) {
 			// check wether the table can be truncated or if sysext with tca has to be installed
 			if ($this->checkForUpdate($customMessages[])) {
-				$extList = $this->addExtToList(array('t3skin'));
-				if ($extList) {
-					$message = $this->writeNewExtensionList($extList);
-				}
 
-				if ($message == 'continue') {
+				$extList = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
+				if (!t3lib_div::inArray($extList, 't3skin')) {
+					$extList[] = 't3skin';
+					t3lib_extMgm::writeNewExtensionList($extList);
 					$customMessages = 'The system extension "t3skin" was succesfully loaded.';
 					$result = TRUE;
 				}
-				}
 			}
+		}
 		return $result;
 	}
 
@@ -115,6 +114,7 @@ class tx_coreupdates_t3skin extends Tx_Install_Updates_Base {
 	 * @return	string		Result of writeToLocalconf_control()
 	 */
 	protected function writeNewExtensionList($newExtList) {
+		die('writeNewExtensionList');
 			// Instance of install tool
 		$instObj = t3lib_div::makeInstance('t3lib_install');
 		$instObj->allowUpdateLocalConf = 1;

@@ -47,9 +47,8 @@ ob_start();
 
 Typo3_Bootstrap::getInstance()
 	->registerExtDirectComponents()
-	->checkLocalconfExistsOrDie()
 	->setGlobalDatabaseVariablesToEmptyString()
-	->loadMainConfigurationFile()
+	->loadConfigurationFiles()
 	->defineTypo3DatabaseConstants()
 	->initializeCachingFramework()
 	->registerAutoloader()

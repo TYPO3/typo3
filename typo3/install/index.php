@@ -47,9 +47,8 @@ Typo3_Bootstrap_Install::checkEnabledInstallToolOrDie();
 
 Typo3_Bootstrap::getInstance()
 	->registerExtDirectComponents()
-	->checkLocalconfExistsOrDie()
 	->setGlobalDatabaseVariablesToEmptyString()
-	->loadMainConfigurationFile()
+	->loadConfigurationFiles()
 	->defineTypo3DatabaseConstants()
 	->initializeCachingFramework()
 	->registerAutoloader()
@@ -86,6 +85,7 @@ if (!t3lib_extMgm::isLoaded('install')) {
 }
 
 require_once(t3lib_extMgm::extPath('install') . 'mod/class.tx_install.php');
+	/** @var $install_check tx_install */
 $install_check = t3lib_div::makeInstance('tx_install');
 $install_check->allowUpdateLocalConf = 1;
 $install_check->init();
