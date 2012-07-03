@@ -389,11 +389,12 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	 * @param	integer		Depth
 	 * @param	integer		Echo Level
 	 * @param	string		Call back function (from this class or subclass)
-	 * @param	string		DON'T set from outside, internal. (indicates we are inside a version of a page)
+	 * @param	string		DON'T set from outside, internal. (indicates we are inside a version of a page) - will be "SWAPMODE:-1" or empty
 	 * @param	integer		DON'T set from outside, internal. (1: Indicates that rootID is a version of a page, 2: ...that it is even a version of a version (which triggers a warning!)
 	 * @param	string		Internal string that accumulates the path
 	 * @return	void
 	 * @access private
+	 * @todo $versionSwapmode needs to be cleaned up, since page and branch version (0, 1) does not exist anymore
 	 */
 	function genTree_traverse($rootID,$depth,$echoLevel=0,$callBack='',$versionSwapmode='',$rootIsVersion=0,$accumulatedPath='')	{
 
@@ -566,11 +567,11 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 
 				// Add any versions of pages
 			if ($rootID>0 && $this->genTree_traverseVersions)	{
-				$versions = t3lib_BEfunc::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid,t3ver_count,t3ver_swapmode', 0, TRUE);
+				$versions = t3lib_BEfunc::selectVersionsOfRecord('pages', $rootID, 'uid,t3ver_oid,t3ver_wsid,t3ver_count', 0, TRUE);
 				if (is_array($versions))	{
 					foreach($versions as $verRec)	{
 						if (!$verRec['_CURRENT_VERSION'])	{
-							$this->genTree_traverse($verRec['uid'],$depth,$echoLevel,$callBack,'SWAPMODE:'.t3lib_utility_Math::forceIntegerInRange($verRec['t3ver_swapmode'],-1,1),$versionSwapmode?2:1,$accumulatedPath.' [#OFFLINE VERSION: WS#'.$verRec['t3ver_wsid'].'/Cnt:'.$verRec['t3ver_count'].']');
+							$this->genTree_traverse($verRec['uid'], $depth, $echoLevel, $callBack, 'SWAPMODE:-1', ($versionSwapmode ? 2 : 1), $accumulatedPath . ' [#OFFLINE VERSION: WS#' . $verRec['t3ver_wsid'] . '/Cnt:' . $verRec['t3ver_count'] . ']');
 						}
 					}
 				}

@@ -100,7 +100,7 @@ class tx_recycler_helper {
 		while ($uid != 0 && $loopCheck > 0) {
 			$loopCheck--;
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'uid,pid,title,deleted,t3ver_oid,t3ver_wsid,t3ver_swapmode',
+				'uid,pid,title,deleted,t3ver_oid,t3ver_wsid',
 				'pages',
 				'uid=' . intval($uid) . (strlen(trim($clause)) ? ' AND ' . $clause : '')
 			);
@@ -113,9 +113,6 @@ class tx_recycler_helper {
 				if (is_array($row)) {
 					t3lib_BEfunc::fixVersioningPid('pages', $row);
 
-					if ($row['_ORIG_pid'] && $row['t3ver_swapmode'] > 0) {	// Branch points
-						$output = ' [#VEP#]' . $output;		// Adding visual token - Versioning Entry Point - that tells that THIS position was where the versionized branch got connected to the main tree. I will have to find a better name or something...
-					}
 					$uid = $row['pid'];
 					$output = '/' . htmlspecialchars(t3lib_div::fixed_lgd_cs($row['title'], $titleLimit)) . $output;
 
