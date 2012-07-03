@@ -74,7 +74,7 @@ class Tx_Workspaces_Service_GridData {
 	/**
 	 * Generates grid list array from given versions.
 	 *
-	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
+	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
 	 * @param object $parameter Parameters as submitted by JavaScript component
 	 * @param integer $currentWorkspace The current workspace
 	 * @return array Version record information (filtered, sorted and limited)
@@ -249,7 +249,7 @@ class Tx_Workspaces_Service_GridData {
 	/**
 	 * Puts the generated dataArray into the workspace cache.
 	 *
-	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
+	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
 	 * @param string $filterTxt The given filter text from the grid.
 	 */
 	protected function setDataArrayIntoCache(array $versions, $filterTxt) {
@@ -260,7 +260,7 @@ class Tx_Workspaces_Service_GridData {
 	/**
 	 * Checks if a cache entry is given for given versions and filter text and tries to load the data array from cache.
 	 *
-	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
+	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
 	 * @param string $filterTxt The given filter text from the grid.
 	 * @return boolean TRUE if cache entry was successfully fetched from cache and content put to $this->dataArray
 	 */
@@ -282,7 +282,7 @@ class Tx_Workspaces_Service_GridData {
 	/**
 	 * Calculates the hash value of the used workspace, the user id, the versions array, the filter text, the sorting attribute, the workspace selected in grid and the sorting direction.
 	 *
-	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
+	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
 	 * @param string $filterTxt The given filter text from the grid.
 	 * @return string
 	 */
