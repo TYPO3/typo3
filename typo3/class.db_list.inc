@@ -276,12 +276,7 @@ class recordList extends t3lib_recordList {
 
 					// Find ID to use (might be different for "versioning_followPages" tables)
 				if (intval($this->searchLevels)==0)	{
-					if ($GLOBALS['TCA'][$tableName]['ctrl']['versioning_followPages'] && $this->pageRecord['_ORIG_pid'] == -1
-						&& $this->pageRecord['t3ver_swapmode'] == 0) {
-						$this->pidSelect = 'pid='.intval($this->pageRecord['_ORIG_uid']);
-					} else {
-						$this->pidSelect = 'pid='.intval($this->id);
-					}
+					$this->pidSelect = 'pid='.intval($this->id);
 				}
 
 					// Finally, render the list:
@@ -871,9 +866,6 @@ class recordList extends t3lib_recordList {
 						$fieldListArr[]='t3ver_id';
 						$fieldListArr[]='t3ver_state';
 						$fieldListArr[]='t3ver_wsid';
-						if ($table==='pages')	{
-							$fieldListArr[]='t3ver_swapmode';
-						}
 					}
 				}
 			} else {

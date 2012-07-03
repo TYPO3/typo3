@@ -111,7 +111,7 @@ class t3lib_admin {
 
 		if ($versions) {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'uid,title,doktype,deleted,t3ver_wsid,t3ver_id,t3ver_count,t3ver_swapmode' . (t3lib_extMgm::isLoaded('cms') ? ',hidden' : ''),
+				'uid,title,doktype,deleted,t3ver_wsid,t3ver_id,t3ver_count' . (t3lib_extMgm::isLoaded('cms') ? ',hidden' : ''),
 				'pages',
 				'pid=-1 AND t3ver_oid=' . intval($theID) . ' ' . ((!$this->genTree_includeDeleted) ? 'AND deleted=0' : '') . $this->perms_clause,
 				'',
