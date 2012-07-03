@@ -90,5 +90,26 @@ class t3lib_cache {
 		}
 		return $tableDefinitions;
 	}
+
+	/**
+	 * Returns the global cache manager instance
+	 *
+	 * @return t3lib_cache_Manager Cache manager instance
+	 */
+	public static function getCacheManager() {
+		self::initializeCachingFramework();
+		return $GLOBALS['typo3CacheManager'];
+	}
+
+	/**
+	 * Returns the global cache factory instance
+	 *
+	 * @return t3lib_cache_Factory Cache factory instance
+	 */
+	public static function getCacheFactory() {
+		self::initializeCachingFramework();
+		return $GLOBALS['typo3CacheFactory'];
+	}
+
 }
 ?>
