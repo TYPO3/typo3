@@ -858,15 +858,6 @@ class tslib_fe {
 			// Make sure it's an integer
 		$this->type = intval($this->type);
 
-			// Look for alternative content PID if page is under version preview:
-		if ($this->fePreview) {
-				// Current page must have been an offline version and have swapmode set to 0:
-			if ($this->page['_ORIG_pid'] == -1 && $this->page['t3ver_swapmode'] == 0) {
-					// Setting contentPid here for preview might not be completely correct to do. Strictly the "_ORIG_uid" value should be used for tables where "versioning_followPages" is set and for others not. However this is a working quick-fix to display content elements at least!
-				$this->contentPid = $this->page['_ORIG_uid'];
-			}
-		}
-
 			// Call post processing function for id determination:
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PostProc'])) {
 			$_params = array('pObj' => &$this);

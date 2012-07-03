@@ -992,7 +992,6 @@ class t3lib_TCEmain {
 						case 't3ver_id':
 						case 't3ver_wsid':
 						case 't3ver_state':
-						case 't3ver_swapmode':
 						case 't3ver_count':
 						case 't3ver_stage':
 						case 't3ver_tstamp':
