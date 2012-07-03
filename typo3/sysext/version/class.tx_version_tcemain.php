@@ -28,10 +28,8 @@
 ***************************************************************/
 
 /**
- *
  * Contains some parts for staging, versioning and workspaces
  * to interact with the TYPO3 Core Engine
- *
  */
 class tx_version_tcemain {
 

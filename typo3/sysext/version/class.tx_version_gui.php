@@ -27,10 +27,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- *
  * Contains some parts for staging, versioning and workspaces
  * to interact with the TYPO3 Core Engine
- *
  */
 class tx_version_gui {
 
