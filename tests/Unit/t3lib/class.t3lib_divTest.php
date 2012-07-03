@@ -3985,7 +3985,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function validPathStrDetectsInvalidCharacters($path) {
-		$this->assertNull(t3lib_div::validPathStr($path));
+		$this->assertFalse(t3lib_div::validPathStr($path));
 	}
 
 	/**
