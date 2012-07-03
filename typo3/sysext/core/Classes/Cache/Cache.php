@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Cache;
 class Cache {
 
 	/**
-	 * @var 	boolean
+	 * @var boolean
 	 */
 	static protected $isCachingFrameworkInitialized = FALSE;
 
@@ -86,7 +86,15 @@ class Cache {
 		return $tableDefinitions;
 	}
 
-}
+	/**
+	 * Returns the global cache manager instance
+	 *
+	 * @return \TYPO3\CMS\Core\Cache\CacheManager Cache manager instance
+	 */
+	static public function getCacheManager() {
+		return $GLOBALS['typo3CacheManager'];
+	}
 
+}
 
 ?>
