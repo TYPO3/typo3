@@ -849,7 +849,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	protected function getPreserveGetVars() {
 
 		$params = '';
-		$preserveVars =! ($this->conf['preserveGETvars'] || $this->conf['preserveGETvars']=='all' ? array() : implode(',', (array)$this->conf['preserveGETvars']));
+		$preserveVars = ((!isset($this->conf['preserveGETvars']) || $this->conf['preserveGETvars']=='all') ? array() : explode(',', $this->conf['preserveGETvars']));
 		$getVars = t3lib_div::_GET();
 
 		foreach ($getVars as $key => $val) {
