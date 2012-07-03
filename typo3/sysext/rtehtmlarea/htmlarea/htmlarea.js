@@ -52,6 +52,10 @@ Ext.apply(HTMLArea, {
 	RE_noClosingTag		: /^(img|br|hr|col|input|area|base|link|meta|param)$/i,
 	RE_numberOrPunctuation	: /[0-9.(),;:!¡?¿%#$'"_+=\\\/-]*/g,
 	/***************************************************
+	 * BROWSER IDENTIFICATION                          *
+	 ***************************************************/
+	isIEBeforeIE9: Ext.isIE6 || Ext.isIE7 || Ext.isIE8 || (Ext.isIE && typeof(document.documentMode) !== 'undefined' && document.documentMode < 9),
+	/***************************************************
 	 * LOCALIZATION                                    *
 	 ***************************************************/
 	localize: function (label, plural) {
@@ -959,7 +963,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * @return	void
 	 */
 	initializeCustomTags: function () {
-		if (Ext.isIE6 || Ext.isIE7 || Ext.isIE8 || (Ext.isIE && this.document.documentMode < 9)) {
+		if (HTMLArea.isIEBeforeIE9) {
 			Ext.each(this.config.customTags, function (tag) {
 				this.document.createElement(tag);
 			}, this);
@@ -3550,7 +3554,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 				this.error = 'Document.readyState not complete';
 			}
 		} else {
-			if (Ext.isIE) {
+			if (HTMLArea.isIEBeforeIE9) {
 				try {
 					var rules = this.editor.document.styleSheets[0].rules;
 					var imports = this.editor.document.styleSheets[0].imports;
@@ -3576,11 +3580,11 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 			if (this.editor.document.styleSheets.length > 2) {
 				Ext.each(this.editor.document.styleSheets, function (styleSheet, index) {
 					try {
-						if (Ext.isIE) {
+						if (HTMLArea.isIEBeforeIE9) {
 							var rules = styleSheet.rules;
 							var imports = styleSheet.imports;
 								// Default page style may contain only a comment
-							if (!rules.length && !imports.length && index != 1) {
+							if (!rules.length && !imports.length && index != 1 && typeof(document.documentMode) === 'undefined') {
 								this.cssLoaded = false;
 								this.error = 'Empty rules and imports arrays of styleSheets[' + index + ']';
 								return false;
