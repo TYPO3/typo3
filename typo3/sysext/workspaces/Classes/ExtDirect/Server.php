@@ -26,6 +26,8 @@
 ***************************************************************/
 
 /**
+ * ExtDirect server
+ *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  * @package Workspaces
  * @subpackage ExtDirect

@@ -27,6 +27,8 @@
  ***************************************************************/
 
 /**
+ * Tcemain service
+ *
  * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
  * @package Workspaces
  * @subpackage Service
@@ -56,7 +58,7 @@ class Tx_Workspaces_Service_Tcemain {
 	}
 
 	/**
-	 * hook that is called AFTER all commands of the commandmap was 
+	 * hook that is called AFTER all commands of the commandmap was
 	 * executed
 	 *
 	 * @param t3lib_TCEmain $tcemainObj reference to the main tcemain object
@@ -142,7 +144,7 @@ class Tx_Workspaces_Service_Tcemain {
 
 	/**
 	 * Flushes the workspace cache for current workspace and for the virtual "all workspaces" too.
-	 * 
+	 *
 	 * @param integer $workspaceId The workspace to be flushed in cache
 	 * @return void
 	 */

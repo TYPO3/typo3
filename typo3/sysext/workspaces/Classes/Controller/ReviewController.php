@@ -25,6 +25,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+/**
+ * Review controller.
+ *
+ * @author Workspaces Team (http://forge.typo3.org/projects/show/typo3v4-workspaces)
+ * @package Workspaces
+ * @subpackage Controller
+ */
 class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller_AbstractController {
 
 	/**
