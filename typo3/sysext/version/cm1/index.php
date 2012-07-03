@@ -817,16 +817,7 @@ class tx_version_cm1 extends t3lib_SCbase {
 							// Get the offline version record and icon:
 						$rec_off = t3lib_BEfunc::getRecord($table, $rec['uid']);
 
-						// Prepare swap-mode values:
-						if ($table==='pages' && $rec_off['t3ver_swapmode']!=-1) {
-							if ($rec_off['t3ver_swapmode']>0) {
-								$vType = 'branch';
-							} else {
-								$vType = 'page';
-							}
-						} else {
-							$vType = 'element';
-						}
+						$vType = 'element';
 
 						// Get icon
 						$icon = t3lib_iconWorks::getSpriteIconForRecord($table, $rec_off, array('title' => t3lib_BEfunc::getRecordIconAltText($rec_off, $table)));
@@ -873,10 +864,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 							// Modify main cell based on first version shown:
 						$subElements = array();
-						if ($table==='pages' && $rec_off['t3ver_swapmode']!=-1 && $mainCell)	{	// For "Page" and "Branch" swap modes where $mainCell is still carrying content (only first version)
-							$subElements['on'] = $this->subElements($rec_on['uid'], $rec_off['t3ver_swapmode']);
-							$subElements['off'] = $this->subElements($rec_off['uid'], $rec_off['t3ver_swapmode'], $rec_on['uid']);
-						}
 						$mainCell = str_replace('###SUB_ELEMENTS###', $subElements['on'], $mainCell);
 
 							// Create version element:

@@ -893,11 +893,6 @@ class tx_version_tcemain {
 											$curVersion['t3ver_state'] = 0;
 										}
 
-											// Keeping the swapmode state
-										if ($table === 'pages') {
-											$curVersion['t3ver_swapmode'] = $swapVersion['t3ver_swapmode'];
-										}
-
 											// Registering and swapping MM relations in current and swap records:
 										$tcemainObj->version_remapMMForVersionSwap($table, $id, $swapWith);
 
@@ -971,37 +966,6 @@ class tx_version_tcemain {
 											$theLogId = $tcemainObj->log($table, $swapWith, 2, $propArr['pid'], 0, $label, 10, array($propArr['header'], $table . ':' . $swapWith), $propArr['event_pid']);
 											$tcemainObj->setHistory($table, $swapWith, $theLogId);
 
-												// SWAPPING pids for subrecords:
-											if ($table=='pages' && $swapVersion['t3ver_swapmode'] >= 0) {
-
-													// Collect table names that should be copied along with the tables:
-												foreach ($GLOBALS['TCA'] as $tN => $tCfg) {
-														// For "Branch" publishing swap ALL,
-														// otherwise for "page" publishing, swap only "versioning_followPages" tables
-													if ($swapVersion['t3ver_swapmode'] > 0 || $GLOBALS['TCA'][$tN]['ctrl']['versioning_followPages']) {
-														$temporaryPid = -($id+1000000);
-
-														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN, 'pid=' . intval($id), array('pid' => $temporaryPid));
-														if ($GLOBALS['TYPO3_DB']->sql_error()) {
-															$sqlErrors[] = $GLOBALS['TYPO3_DB']->sql_error();
-														}
-
-														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN, 'pid=' . intval($swapWith), array('pid' => $id));
-														if ($GLOBALS['TYPO3_DB']->sql_error()) {
-															$sqlErrors[] = $GLOBALS['TYPO3_DB']->sql_error();
-														}
-
-														$GLOBALS['TYPO3_DB']->exec_UPDATEquery($tN, 'pid=' . intval($temporaryPid), array('pid' => $swapWith));
-														if ($GLOBALS['TYPO3_DB']->sql_error()) {
-															$sqlErrors[] = $GLOBALS['TYPO3_DB']->sql_error();
-														}
-
-														if (count($sqlErrors)) {
-															$tcemainObj->newlog('During Swapping: SQL errors happened: ' . implode('; ', $sqlErrors), 2);
-														}
-													}
-												}
-											}
 												// Clear cache:
 											$tcemainObj->clear_cache($table, $id);
 
