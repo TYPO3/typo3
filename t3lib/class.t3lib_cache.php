@@ -90,5 +90,15 @@ class t3lib_cache {
 		}
 		return $tableDefinitions;
 	}
+
+	/**
+	 * Returns the global cache manager instance
+	 *
+	 * @return t3lib_cache_Manager Cache manager instance
+	 */
+	public static function getCacheManager() {
+		return $GLOBALS['typo3CacheManager'];
+	}
+
 }
 ?>
