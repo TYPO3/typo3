@@ -64,6 +64,10 @@ Ext.apply(HTMLArea, {
 	RE_noClosingTag		: /^(img|br|hr|col|input|area|base|link|meta|param)$/i,
 	RE_numberOrPunctuation	: /[0-9.(),;:!¡?¿%#$'"_+=\\\/-]*/g,
 	/***************************************************
+	 * BROWSER IDENTIFICATION                          *
+	 ***************************************************/
+	isIEBeforeIE9: Ext.isIE6 || Ext.isIE7 || Ext.isIE8 || (Ext.isIE && typeof(document.documentMode) !== 'undefined' && document.documentMode < 9),
+	/***************************************************
 	 * TROUBLESHOOTING                                 *
 	 ***************************************************/
 	_appendToLog: function(str){
@@ -942,7 +946,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * @return	void
 	 */
 	initializeCustomTags: function () {
-		if (Ext.isIE6 || Ext.isIE7 || Ext.isIE8 || (Ext.isIE && this.document.documentMode < 9)) {
+		if (HTMLArea.isIEBeforeIE9) {
 			Ext.each(this.config.customTags, function (tag) {
 				this.document.createElement(tag);
 			}, this);
@@ -1015,7 +1019,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			}
 		} else {
 				// Test if the styleSheets array is at all accessible
-			if (Ext.isIE) {
+			if (HTMLArea.isIEBeforeIE9) {
 				try {
 					var rules = this.document.styleSheets[0].rules;
 					var imports = this.document.styleSheets[0].imports;
@@ -1040,12 +1044,12 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 					// Expecting 3 stylesheets...
 				if (this.document.styleSheets.length > 2) {
 					Ext.each(this.document.styleSheets, function (styleSheet, index) {
-						if (Ext.isIE) {
+						if (HTMLArea.isIEBeforeIE9) {
 							try { 
 								var rules = styleSheet.rules;
 								var imports = styleSheet.imports;
 									// Default page style may contain only a comment
-								if (!rules.length && !imports.length && index != 1) {
+								if (!rules.length && !imports.length && styleSheet.href.indexOf('defaultPageStyle') === -1) {
 									stylesAreLoaded = false;
 									errorText = 'Empty rules and imports arrays of styleSheets[' + index + ']';
 									return false;
