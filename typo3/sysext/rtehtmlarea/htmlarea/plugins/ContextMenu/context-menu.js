@@ -177,7 +177,7 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 	 */
 	showMenu: function (target) {
 		this.showContextItems(target);
-		if (!HTMLArea.isIEBeforeIE9) {
+		if (!(Ext.isIE6 || Ext.isIE7 || Ext.isIE8)) {
 			this.ranges = this.editor.getSelection().getRanges();
 		}
 		var iframeEl = this.editor.iframe.getEl();
@@ -236,7 +236,7 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 	 * Handler invoked when a menu item is clicked on
 	 */
 	onItemClick: function (item, event) {
-		if (!HTMLArea.isIEBeforeIE9) {
+		if (!(Ext.isIE6 || Ext.isIE7 || Ext.isIE8)) {
 			this.editor.getSelection().setRanges(this.ranges);
 		}
 		var button = this.getButton(item.getItemId());
