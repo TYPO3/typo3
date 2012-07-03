@@ -312,8 +312,6 @@ class localRecordList extends recordList {
 			$selectFields[] = 't3ver_id';
 			$selectFields[] = 't3ver_state';
 			$selectFields[] = 't3ver_wsid';
-				// Filtered out when pages in makeFieldList()
-			$selectFields[] = 't3ver_swapmode';
 		}
 		if ($l10nEnabled) {
 			$selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
