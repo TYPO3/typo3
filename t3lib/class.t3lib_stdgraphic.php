@@ -2212,7 +2212,7 @@ class t3lib_stdGraphic {
 				if ($noScale && !$data['crs'] && !$params && !$frame && $newExt == $info[2] && !$mustCreate) {
 						// Set the new width and height before returning,
 						// if the noScale option is set
-					if ($options['noScale']) {
+					if (isset($options['noScale'])) {
 						$info[0] = $data[0];
 						$info[1] = $data[1];
 					}
@@ -2411,7 +2411,7 @@ class t3lib_stdGraphic {
 		$w = intval($w);
 		$h = intval($h);
 			// If there are max-values...
-		if ($options['maxW']) {
+		if (isset($options['maxW'])) {
 				// If width is given...
 			if ($w) {
 				if ($w > $options['maxW']) {
@@ -2427,7 +2427,7 @@ class t3lib_stdGraphic {
 				}
 			}
 		}
-		if ($options['maxH']) {
+		if (isset($options['maxH'])) {
 				// If height is given...
 			if ($h) {
 				if ($h > $options['maxH']) {
@@ -2490,13 +2490,13 @@ class t3lib_stdGraphic {
 		$out[0] = $info[0];
 		$out[1] = $info[1];
 			// Set minimum-measures!
-		if ($options['minW'] && $out[0] < $options['minW']) {
+		if (isset($options['minW']) && $out[0] < $options['minW']) {
 			if (($max || $crs) && $out[0]) {
 				$out[1] = round($out[1] * $options['minW'] / $out[0]);
 			}
 			$out[0] = $options['minW'];
 		}
-		if ($options['minH'] && $out[1] < $options['minH']) {
+		if (isset($options['minH']) && $out[1] < $options['minH']) {
 			if (($max || $crs) && $out[1]) {
 				$out[0] = round($out[0] * $options['minH'] / $out[1]);
 			}
