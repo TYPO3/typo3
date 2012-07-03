@@ -105,7 +105,7 @@ class wslib {
 	 * @param	integer		Lifecycle filter: 1 = select all drafts (never-published), 2 = select all published one or more times (archive/multiple), anything else selects all.
 	 * @param	integer		Stage filter: -99 means no filtering, otherwise it will be used to select only elements with that stage. For publishing, that would be "10"
 	 * @param	integer		Page id: Live page for which to find versions in workspace!
-	 * @return	array		Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid, t3ver_oid and t3ver_swapmode fields. The REAL pid of the online record is found as "realpid"
+	 * @return	array		Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The REAL pid of the online record is found as "realpid"
 	 */
 	function selectVersionsInWorkspace($wsid,$filter=0,$stage=-99,$pageId=-1)	{
 		$wsid = intval($wsid);
@@ -119,7 +119,7 @@ class wslib {
 					// Select all records from this table in the database from the workspace
 					// This joins the online version with the offline version as tables A and B
 				$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows (
-					'A.uid, A.t3ver_oid,'.($table==='pages' ? ' A.t3ver_swapmode,':'').' B.pid AS realpid',
+					'A.uid, A.t3ver_oid, B.pid AS realpid',
 					$table.' A,'.$table.' B',
 					'A.pid=-1'.	// Table A is the offline version and pid=-1 defines offline
 						($pageId!=-1 ? ($table==='pages' ? ' AND B.uid='.intval($pageId) : ' AND B.pid='.intval($pageId)) : '').
