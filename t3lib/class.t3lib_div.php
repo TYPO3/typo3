@@ -3775,7 +3775,7 @@ final class t3lib_div {
 	 * So it's compatible with the UNIX style path strings valid for TYPO3 internally.
 	 *
 	 * @param string $theFile File path to evaluate
-	 * @return boolean TRUE, $theFile is allowed path string
+	 * @return boolean TRUE, $theFile is allowed path string, FALSE otherwise
 	 * @see http://php.net/manual/en/security.filesystem.nullbytes.php
 	 * @todo Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded?
 	 */
@@ -3783,6 +3783,8 @@ final class t3lib_div {
 		if (strpos($theFile, '//') === FALSE && strpos($theFile, '\\') === FALSE && !preg_match('#(?:^\.\.|/\.\./|[[:cntrl:]])#u', $theFile)) {
 			return TRUE;
 		}
+
+		return FALSE;
 	}
 
 	/**
