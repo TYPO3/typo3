@@ -128,8 +128,6 @@ HTMLArea.Acronym = Ext.extend(HTMLArea.Plugin, {
 		this.dialog = new Ext.Window({
 			title: this.getHelpTip('', title),
 			cls: 'htmlarea-window',
-				// As of ExtJS 3.1, JS error with IE when the window is resizable
-			resizable: !Ext.isIE,
 			border: false,
 			width: dimensions.width,
 			height: 'auto',
