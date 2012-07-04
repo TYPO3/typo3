@@ -11,160 +11,163 @@ t3lib_extMgm::addUserTSConfig('
 ');
 
 t3lib_extMgm::addPageTSConfig('
-mod.wizards.newContentElement.wizardItems {
-	common.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common
-	common.elements {
-		text {
-			icon = gfx/c_wiz/regular_text.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_regularText_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_regularText_description
-			tt_content_defValues {
-				CType = text
+mod.wizards.newContentElement {
+	renderMode = tabs
+	wizardItems {
+		common.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common
+		common.elements {
+			text {
+				icon = gfx/c_wiz/regular_text.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_regularText_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_regularText_description
+				tt_content_defValues {
+					CType = text
+				}
 			}
-		}
-		textpic {
-			icon = gfx/c_wiz/text_image_right.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_textImage_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_textImage_description
-			tt_content_defValues {
-				CType = textpic
-				imageorient = 17
+			textpic {
+				icon = gfx/c_wiz/text_image_right.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_textImage_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_textImage_description
+				tt_content_defValues {
+					CType = textpic
+					imageorient = 17
+				}
 			}
-		}
-		image {
-			icon = gfx/c_wiz/images_only.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_imagesOnly_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_imagesOnly_description
-			tt_content_defValues {
-				CType = image
-				imagecols = 2
+			image {
+				icon = gfx/c_wiz/images_only.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_imagesOnly_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_imagesOnly_description
+				tt_content_defValues {
+					CType = image
+					imagecols = 2
+				}
 			}
-		}
-		bullets {
-			icon = gfx/c_wiz/bullet_list.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_bulletList_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_bulletList_description
-			tt_content_defValues {
-				CType = bullets
+			bullets {
+				icon = gfx/c_wiz/bullet_list.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_bulletList_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_bulletList_description
+				tt_content_defValues {
+					CType = bullets
+				}
 			}
-		}
-		table {
-			icon = gfx/c_wiz/table.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_table_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_table_description
-			tt_content_defValues {
-				CType = table
+			table {
+				icon = gfx/c_wiz/table.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_table_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_table_description
+				tt_content_defValues {
+					CType = table
+				}
 			}
-		}
 
+		}
+		common.show = text,textpic,image,bullets,table
+
+		special.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special
+		special.elements {
+			uploads {
+				icon = gfx/c_wiz/filelinks.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_filelinks_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_filelinks_description
+				tt_content_defValues {
+					CType = uploads
+				}
+			}
+			multimedia {
+				icon = gfx/c_wiz/multimedia.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_multimedia_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_multimedia_description
+				tt_content_defValues {
+					CType = multimedia
+				}
+			}
+			media {
+				icon = gfx/c_wiz/multimedia.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_description
+				tt_content_defValues {
+					CType = media
+				}
+			}
+			menu {
+				icon = gfx/c_wiz/sitemap2.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_menus_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_menus_description
+				tt_content_defValues {
+					CType = menu
+					menu_type = 0
+				}
+			}
+			html {
+				icon = gfx/c_wiz/html.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_plainHTML_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_plainHTML_description
+				tt_content_defValues {
+					CType = html
+				}
+			}
+			div {
+				icon = gfx/c_wiz/div.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_divider_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_divider_description
+				tt_content_defValues {
+					CType = div
+				}
+			}
+			shortcut {
+				icon = gfx/c_wiz/shortcut.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_shortcut_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_shortcut_description
+				tt_content_defValues {
+					CType = shortcut
+				}
+			}
+
+		}
+		special.show = uploads,media,menu,html,div,shortcut
+
+		forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms
+		forms.elements {
+			mailform {
+				icon = gfx/c_wiz/mailform.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_mail_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_mail_description
+				tt_content_defValues {
+					CType = mailform
+					bodytext (
+	# Example content:
+	Name: | *name = input,40 | Enter your name here
+	Email: | *email=input,40 |
+	Address: | address=textarea,40,5 |
+	Contact me: | tv=check | 1
+
+	|formtype_mail = submit | Send form!
+	|html_enabled=hidden | 1
+	|subject=hidden| This is the subject
+					)
+				}
+			}
+			search {
+				icon = gfx/c_wiz/searchform.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_search_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_search_description
+				tt_content_defValues {
+					CType = search
+				}
+			}
+		}
+		forms.show = mailform,search
+
+		plugins.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:plugins
+		plugins.elements {
+			general {
+				icon = gfx/c_wiz/user_defined.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:plugins_general_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:plugins_general_description
+				tt_content_defValues.CType = list
+			}
+		}
+		plugins.show = *
 	}
-	common.show = text,textpic,image,bullets,table
-
-	special.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special
-	special.elements {
-		uploads {
-			icon = gfx/c_wiz/filelinks.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_filelinks_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_filelinks_description
-			tt_content_defValues {
-				CType = uploads
-			}
-		}
-		multimedia {
-			icon = gfx/c_wiz/multimedia.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_multimedia_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_multimedia_description
-			tt_content_defValues {
-				CType = multimedia
-			}
-		}
-		media {
-			icon = gfx/c_wiz/multimedia.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_description
-			tt_content_defValues {
-				CType = media
-			}
-		}
-		menu {
-			icon = gfx/c_wiz/sitemap2.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_menus_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_menus_description
-			tt_content_defValues {
-				CType = menu
-				menu_type = 0
-			}
-		}
-		html {
-			icon = gfx/c_wiz/html.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_plainHTML_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_plainHTML_description
-			tt_content_defValues {
-				CType = html
-			}
-		}
-		div {
-		 	icon = gfx/c_wiz/div.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_divider_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_divider_description
-			tt_content_defValues {
-				CType = div
-			}
-		}
-		shortcut {
-		 	icon = gfx/c_wiz/shortcut.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_shortcut_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_shortcut_description
-			tt_content_defValues {
-				CType = shortcut
-			}
-		}
-
-	}
-	special.show = uploads,media,menu,html,div,shortcut
-
-	forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms
-	forms.elements {
-		mailform {
-			icon = gfx/c_wiz/mailform.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_mail_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_mail_description
-			tt_content_defValues {
-				CType = mailform
-				bodytext (
-# Example content:
-Name: | *name = input,40 | Enter your name here
-Email: | *email=input,40 |
-Address: | address=textarea,40,5 |
-Contact me: | tv=check | 1
-
-|formtype_mail = submit | Send form!
-|html_enabled=hidden | 1
-|subject=hidden| This is the subject
-				)
-			}
-		}
-		search {
-			icon = gfx/c_wiz/searchform.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_search_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms_search_description
-			tt_content_defValues {
-				CType = search
-			}
-		}
-	}
-	forms.show = mailform,search
-
-	plugins.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:plugins
-	plugins.elements {
-		general {
-			icon = gfx/c_wiz/user_defined.gif
-			title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:plugins_general_title
-			description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:plugins_general_description
-			tt_content_defValues.CType = list
-		}
-	}
-	plugins.show = *
 }
 
 ');
