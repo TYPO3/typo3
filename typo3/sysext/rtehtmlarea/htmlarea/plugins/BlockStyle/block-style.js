@@ -38,33 +38,6 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 		this.classesUrl = this.editorConfiguration.classesUrl;
 		this.pageTSconfiguration = this.editorConfiguration.buttons.blockstyle;
 		this.tags = (this.pageTSconfiguration && this.pageTSconfiguration.tags) ? this.pageTSconfiguration.tags : {};
-			// classesTag is DEPRECATED as of TYPO3 4.6 and will be removed#in TYPO3 4.8
-		if (typeof(this.editorConfiguration.classesTag) !== "undefined") {
-			if (this.editorConfiguration.classesTag.div) {
-				if (!this.tags.div) {
-					this.tags.div = new Object();
-				}
-				if (!this.tags.div.allowedClasses) {
-					this.tags.div.allowedClasses = this.editorConfiguration.classesTag.div;
-				}
-			}
-			if (this.editorConfiguration.classesTag.td) {
-				if (!this.tags.td) {
-					this.tags.td = new Object();
-				}
-				if (!this.tags.td.allowedClasses) {
-					this.tags.td.allowedClasses = this.editorConfiguration.classesTag.td;
-				}
-			}
-			if (this.editorConfiguration.classesTag.table) {
-				if (!this.tags.table) {
-					this.tags.table = new Object();
-				}
-				if (!this.tags.table.allowedClasses) {
-					this.tags.table.allowedClasses = this.editorConfiguration.classesTag.table;
-				}
-			}
-		}
 		var allowedClasses;
 		for (var tagName in this.tags) {
 			if (this.tags.hasOwnProperty(tagName)) {
@@ -79,8 +52,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		}
-			// Property this.editorConfiguration.showTagFreeClasses is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
-		this.showTagFreeClasses = (this.pageTSconfiguration ? this.pageTSconfiguration.showTagFreeClasses : false) || this.editorConfiguration.showTagFreeClasses;
+		this.showTagFreeClasses = this.pageTSconfiguration ? this.pageTSconfiguration.showTagFreeClasses : false;
 		this.prefixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.prefixLabelWithClassName : false;
 		this.postfixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.postfixLabelWithClassName : false;
 		/*
@@ -284,8 +256,7 @@ HTMLArea.BlockStyle = Ext.extend(HTMLArea.Plugin, {
 			}
 			Ext.iterate(allowedClasses, function (cssClass, value) {
 				var style = null;
-					// this.editor.config.disablePCexamples is deprecated as of TYPO3 4.6 and will be removed in TYPO 4.8
-				if (!this.pageTSconfiguration.disableStyleOnOptionLabel && !this.editor.config.disablePCexamples) {
+				if (!this.pageTSconfiguration.disableStyleOnOptionLabel) {
 					if (HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) {
 						style = HTMLArea.classesValues[cssClass];
 					} else if (/-[0-9]+$/.test(cssClass) && HTMLArea.classesValues[RegExp.leftContext + '-'])  {

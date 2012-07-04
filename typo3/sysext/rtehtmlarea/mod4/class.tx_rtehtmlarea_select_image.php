@@ -379,14 +379,6 @@ class tx_rtehtmlarea_select_image extends browse_links {
 				$removedProperties = t3lib_div::trimExplode(',', $this->buttonConfig['properties.']['removeItems'], 1);
 			}
 		}
-			// The following property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
-		if ($this->thisConfig['classesImage']) {
-			$classesImageArray = t3lib_div::trimExplode(',', $this->thisConfig['classesImage'], 1);
-			$classesImageJSOptions = '<option value=""></option>';
-			foreach ($classesImageArray as $class) {
-				$classesImageJSOptions .= '<option value="' .$class . '">' . $class . '</option>';
-			}
-		}
 		if ($this->buttonConfig['properties.']['class.']['allowedClasses']) {
 			$classesImageArray = t3lib_div::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], 1);
 			$classesImageJSOptions = '<option value=""></option>';
@@ -991,9 +983,6 @@ class tx_rtehtmlarea_select_image extends browse_links {
 			// Remove options according to RTE configuration
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
 			$allowedItems = array_diff($allowedItems, t3lib_div::trimExplode(',', $this->buttonConfig['options.']['removeItems'], 1));
-		} else {
-				// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
-			$allowedItems = array_diff($allowedItems, t3lib_div::trimExplode(',', $this->thisConfig['blindImageOptions'], 1));
 		}
 		return $allowedItems;
 	}

@@ -1038,19 +1038,8 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 			head.appendChild(link0);
 			this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Skin CSS set to: ' + link0.href, 'info');
 		}
-		if (this.config.defaultPageStyle) {
-			var link = this.document.getElementsByTagName('link')[1];
-			if (!link) {
-				link = this.document.createElement('link');
-				link.rel = 'stylesheet';
-				link.type = 'text/css';
-				link.href = ((Ext.isGecko && navigator.productSub < 2010072200 && !/^https?:\/{2}/.test(this.config.defaultPageStyle)) ? this.config.baseURL : '') + this.config.defaultPageStyle;
-				head.appendChild(link);
-			}
-			this.getEditor().appendToLog('HTMLArea.Iframe', 'createHead', 'Override CSS set to: ' + link.href, 'info');
-		}
 		if (this.config.pageStyle) {
-			var link = this.document.getElementsByTagName('link')[2];
+			var link = this.document.getElementsByTagName('link')[1];
 			if (!link) {
 				link = this.document.createElement('link');
 				link.rel = 'stylesheet';
@@ -5313,15 +5302,14 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 			}
 		}
 		if (this.cssLoaded) {
-				// Expecting 3 stylesheets...
-			if (this.editor.document.styleSheets.length > 2) {
+				// Expecting 2 stylesheets...
+			if (this.editor.document.styleSheets.length > 1) {
 				Ext.each(this.editor.document.styleSheets, function (styleSheet, index) {
 					try {
 						if (HTMLArea.isIEBeforeIE9) {
 							var rules = styleSheet.rules;
 							var imports = styleSheet.imports;
-								// Default page style may contain only a comment
-							if (!rules.length && !imports.length && styleSheet.href.indexOf('defaultPageStyle') === -1) {
+							if (!rules.length && !imports.length) {
 								this.cssLoaded = false;
 								this.error = 'Empty rules and imports arrays of styleSheets[' + index + ']';
 								return false;
