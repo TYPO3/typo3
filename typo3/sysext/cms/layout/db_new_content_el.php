@@ -263,15 +263,8 @@ class SC_db_new_content_el {
 					$key = count($menuItems) - 1;
 				} else {
 					$content = '';
-						// Radio button:
-					$oC = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$this->onClickEvent?"window.location.hash='#sel2';":'');
-					$content .= $this->elementWrapper['wizardPart'][0] .
-						'<input type="radio" name="tempB" value="' . htmlspecialchars($k) . '" onclick="' . htmlspecialchars($oC) . '" />' .
-						$this->elementWrapper['wizardPart'][1];
-
 						// Onclick action for icon/title:
-					$aOnClick = 'document.getElementsByName(\'tempB\')['.$cc.'].checked=1;'.$oC.'return false;';
-
+					$aOnClick = "document.editForm.defValues.value=unescape('".rawurlencode($wInfo['params'])."');goToalt_doc();".(!$this->onClickEvent?"window.location.hash='#sel2';":'');
 						// Icon:
 					$iInfo = @getimagesize($wInfo['icon']);
 					$content .= $this->elementWrapper['wizardPart'][0] .
