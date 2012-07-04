@@ -314,8 +314,6 @@ HTMLArea.TYPO3Color = Ext.extend(HTMLArea.Plugin, {
 			width: dimensions.width,
 			height: dimensions.height,
 			autoScroll: true,
-				// As of ExtJS 3.1, JS error with IE when the window is resizable
-			resizable: !Ext.isIE,
 			iconCls: this.getButton(arguments.buttonId).iconCls,
 			listeners: {
 				close: {

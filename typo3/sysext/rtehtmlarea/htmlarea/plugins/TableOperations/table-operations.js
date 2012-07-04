@@ -314,8 +314,6 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			title: this.getHelpTip(arguments.buttonId, title),
 			arguments: arguments,
 			cls: 'htmlarea-window',
-				// As of ExtJS 3.1, JS error with IE when the window is resizable
-			resizable: !Ext.isIE,
 			border: false,
 			width: dimensions.width,
 			height: 'auto',
