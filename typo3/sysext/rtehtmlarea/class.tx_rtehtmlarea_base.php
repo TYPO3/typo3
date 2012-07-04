@@ -824,16 +824,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea[editornumber].useHTTPS = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
 			RTEarea[editornumber].tceformsNested = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(TRUE) : '[]') . ';
 			RTEarea[editornumber].dialogueWindows = new Object();';
-			// The following property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
-		if (isset($this->thisConfig['showTagFreeClasses'])) {
-			$this->logDeprecatedProperty('showTagFreeClasses', 'buttons.blockstyle.showTagFreeClasses', '4.8');
-			$this->logDeprecatedProperty('showTagFreeClasses', 'buttons.textstyle.showTagFreeClasses', '4.8');
-		}
-			// The following property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
-		if (isset($this->thisConfig['disablePCexamples'])) {
-			$this->logDeprecatedProperty('disablePCexamples', 'buttons.blockstyle.disableStyleOnOptionLabel', '4.8');
-			$this->logDeprecatedProperty('disablePCexamples', 'buttons.textstyle.disableStyleOnOptionLabel', '4.8');
-		}
 		if (isset($this->thisConfig['dialogueWindows.']['defaultPositionFromTop'])) {
 			$configureRTEInJavascriptString .= '
 			RTEarea[editornumber].dialogueWindows.positionFromTop = ' . intval($this->thisConfig['dialogueWindows.']['defaultPositionFromTop']) . ';';
@@ -899,11 +889,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 				RTEarea[editornumber].customTags= ' . json_encode($customTags) . ';';
 			}
 		}
-			// Process default style configuration
-			// This default configuration is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8.
-			// Use contentCSS instead.
-		$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].defaultPageStyle = "' . $this->writeTemporaryFile('', 'defaultPageStyle', 'css', $this->buildStyleSheet()) . '";';
 			// Setting the pageStyle
 		$configureRTEInJavascriptString .= '
 			RTEarea[editornumber].pageStyle = "' . t3lib_div::createVersionNumberedFilename($this->getContentCssFileName()) .'";';
@@ -950,58 +935,10 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * Build the default content style sheet
 	 *
 	 * @return string		Style sheet
-	 * @deprecated since TYPO3 4.8, will be removed in TYPO3 4.10
+	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.2
 	 */
 	function buildStyleSheet() {
-			// These PageTSConfig properties are DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 4.8
-		$properties = array('mainStyle_font', 'mainStyle_size', 'mainStyle_color', 'mainStyle_bgcolor', 'mainStyleOverride');
-		foreach ($properties as $property) {
-			if (isset($this->thisConfig[$property])) {
-				$this->logDeprecatedProperty($property, 'contentCSS', '4.8');
-			}
-		}
-		if (is_array($this->thisConfig['mainStyleOverride_add.'])) {
-			$this->logDeprecatedProperty('mainStyleOverride_add', 'contentCSS', '4.8');
-		}
-		if (is_array($this->thisConfig['inlineStyle.']))        {
-			$this->logDeprecatedProperty('inlineStyle', 'contentCSS', '4.8');
-		}
-		if (!trim($this->thisConfig['ignoreMainStyleOverride'])) {
-			$mainStyle_font = $this->thisConfig['mainStyle_font'] ? $this->thisConfig['mainStyle_font']: 'Verdana,sans-serif';
-			$mainElements = array();
-			$mainElements['P'] = $this->thisConfig['mainStyleOverride_add.']['P'];
-			$elList = explode(',', 'H1,H2,H3,H4,H5,H6,PRE');
-			foreach ($elList as $elListName) {
-				if ($this->thisConfig['mainStyleOverride_add.'][$elListName]) {
-					$mainElements[$elListName] = $this->thisConfig['mainStyleOverride_add.'][$elListName];
-				}
-			}
-
-			$addElementCode = '';
-			foreach ($mainElements as $elListName => $elValue) {
-				$addElementCode .= strToLower($elListName) . ' {' . $elValue . '}' . LF;
-			}
-
-			$stylesheet = $this->thisConfig['mainStyleOverride'] ? $this->thisConfig['mainStyleOverride'] : LF .
-				'body.htmlarea-content-body { font-family: ' . $mainStyle_font .
-					'; font-size: '.($this->thisConfig['mainStyle_size'] ? $this->thisConfig['mainStyle_size'] : '12px') .
-					'; color: '.($this->thisConfig['mainStyle_color']?$this->thisConfig['mainStyle_color'] : 'black') .
-					'; background-color: '.($this->thisConfig['mainStyle_bgcolor'] ? $this->thisConfig['mainStyle_bgcolor'] : 'white') .
-					';'.$this->thisConfig['mainStyleOverride_add.']['BODY'].'}' . LF .
-				'td { ' . $this->thisConfig['mainStyleOverride_add.']['TD'].'}' . LF .
-				'div { ' . $this->thisConfig['mainStyleOverride_add.']['DIV'].'}' . LF .
-				'pre { ' . $this->thisConfig['mainStyleOverride_add.']['PRE'].'}' . LF .
-				'ol { ' . $this->thisConfig['mainStyleOverride_add.']['OL'].'}' . LF .
-				'ul { ' . $this->thisConfig['mainStyleOverride_add.']['UL'].'}' . LF .
-				'blockquote { ' . $this->thisConfig['mainStyleOverride_add.']['BLOCKQUOTE'].'}' . LF .
-				$addElementCode;
-
-			if (is_array($this->thisConfig['inlineStyle.']))        {
-				$stylesheet .= LF . implode(LF, $this->thisConfig['inlineStyle.']) . LF;
-			}
-		} else {
-			$stylesheet = '/* mainStyleOverride and inlineStyle properties ignored. */';
-		}
+		$stylesheet = '/* mainStyleOverride and inlineStyle properties ignored. */';
 		return $stylesheet;
 	}
 
@@ -1013,22 +950,6 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		Javascript configuration of classes
 	 */
 	function buildJSClassesConfig($RTEcounter) {
-			// Build JS array of lists of classes
-			// These PageTSConfig properties are DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 4.8
-		$classesTagList = 'classesCharacter, classesParagraph, classesImage, classesTable, classesLinks, classesTD';
-		$classesTagConvert = array('classesCharacter' => 'span', 'classesParagraph' => 'div', 'classesImage' => 'img', 'classesTable' => 'table', 'classesLinks' => 'a', 'classesTD' => 'td');
-		$classesUseInstead = array('classesCharacter' => 'buttons.textstyle.tags.span.allowedClasses', 'classesParagraph' => 'buttons.blockstyle.tags.div.allowedClasses', 'classesImage' => 'buttons.image.properties.class.allowedClasses', 'classesTable' => 'buttons.blockstyle.tags.table.allowedClasses', 'classesLinks' => 'buttons.link.properties.class.allowedClasses', 'classesTD' => 'buttons.blockstyle.tags.td.allowedClasses');
-		$classesTagArray = t3lib_div::trimExplode(',', $classesTagList);
-		$configureRTEInJavascriptString = '
-			RTEarea[editornumber].classesTag = new Object();';
-		foreach ($classesTagArray as $classesTagName) {
-			$HTMLAreaJSClasses = $this->thisConfig[$classesTagName] ? ('"' . $this->cleanList($this->thisConfig[$classesTagName]) . '";') : 'null;';
-			$configureRTEInJavascriptString .= '
-			RTEarea[editornumber].classesTag.'. $classesTagConvert[$classesTagName] .' = '. $HTMLAreaJSClasses;
-			if (isset($this->thisConfig[$classesTagName])) {
-				$this->logDeprecatedProperty($classesTagName, $classesUseInstead[$classesTagName], '4.8');
-			}
-		}
 			// Include JS arrays of configured classes
 		$configureRTEInJavascriptString .= '
 			RTEarea[editornumber].classesUrl = "' . (($this->is_FE() && $GLOBALS['TSFE']->absRefPrefix) ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->writeTemporaryFile('', 'classes_' . $this->language, 'js', $this->buildJSClassesArray(), TRUE) . '";';

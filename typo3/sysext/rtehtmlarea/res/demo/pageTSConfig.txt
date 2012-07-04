@@ -131,11 +131,6 @@ RTE.default {
 		## Enable status bar
 	showStatusBar =  1
 
-		## Property ignoreMainStyleOverride is DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 4.8
-		## Use stylesheet file rather than mainStyleOverride and inlineStyle properties to style the contents
-		## When RTE.default.contentCSS is not specified, file EXT:rtehtmlarea/res/contentcsss/default.css is used.
-	ignoreMainStyleOverride = 1
-
 		## For this demo, do not remove font, strike and u tags
 	proc.entryHTMLparser_db.removeTags := removeFromList(font,strike,u)
 
