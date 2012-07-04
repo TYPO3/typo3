@@ -6283,7 +6283,6 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 			cls: 'htmlarea-window',
 			width: dimensions.width,
 			border: false,
-			resizable: true,
 			iconCls: this.getButton(buttonId).iconCls,
 			listeners: {
 				afterrender: {
