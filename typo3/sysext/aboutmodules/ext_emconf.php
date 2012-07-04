@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "aboutmodules".
 #
-# Auto generated 22-05-2012 11:27
+# Auto generated 04-07-2012 10:28
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '4.7.1',
+	'version' => '4.7.2',
 	'_md5_values_when_last_written' => 'a:8:{s:35:"class.tx_aboutmodules_functions.php";s:4:"b1a4";s:16:"ext_autoload.php";s:4:"06c5";s:12:"ext_icon.gif";s:4:"6101";s:14:"ext_tables.php";s:4:"aede";s:40:"Classes/Controller/ModulesController.php";s:4:"f6e2";s:44:"Resources/Private/Language/locallang_mod.xlf";s:4:"8645";s:38:"Resources/Private/Layouts/Default.html";s:4:"42e7";s:46:"Resources/Private/Templates/Modules/Index.html";s:4:"0596";}',
 	'constraints' => array(
 		'depends' => array(

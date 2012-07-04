@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "saltedpasswords".
 #
-# Auto generated 22-05-2012 11:29
+# Auto generated 04-07-2012 10:29
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -31,7 +31,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'TYPO3 Security Team',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '4.7.1',
+	'version' => '4.7.2',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
