@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "recordlist".
 #
-# Auto generated 22-05-2012 11:29
+# Auto generated 04-07-2012 10:29
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => '',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '4.7.1',
+	'version' => '4.7.2',
 	'_md5_values_when_last_written' => 'a:7:{s:16:"ext_autoload.php";s:4:"5a67";s:12:"ext_icon.gif";s:4:"f201";s:14:"ext_tables.php";s:4:"c03b";s:14:"mod1/clear.gif";s:4:"cc11";s:13:"mod1/conf.php";s:4:"b015";s:14:"mod1/index.php";s:4:"8a38";s:13:"mod1/list.gif";s:4:"2225";}',
 	'constraints' => array(
 		'depends' => array(

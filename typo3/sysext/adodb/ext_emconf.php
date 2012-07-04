@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "adodb".
 #
-# Auto generated 22-05-2012 11:27
+# Auto generated 04-07-2012 10:28
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
