@@ -48,12 +48,6 @@ Ext.apply(HTMLArea, {
 	reservedClassNames	: /htmlarea/,
 	RE_email		: /([0-9a-z]+([a-z0-9_-]*[0-9a-z])*){1}(\.[0-9a-z]+([a-z0-9_-]*[0-9a-z])*)*@([0-9a-z]+([a-z0-9_-]*[0-9a-z])*\.)+[a-z]{2,9}/i,
 	RE_url			: /(([^:/?#]+):\/\/)?(([a-z0-9_]+:[a-z0-9_]+@)?[a-z0-9_-]{2,}(\.[a-z0-9_-]{2,})+\.[a-z]{2,5}(:[0-9]+)?(\/\S+)*\/?)/i,
-		// This expression is deprecated as of TYPO3 4.6
-	RE_blockTags		: /^(address|article|aside|body|blockquote|caption|dd|div|dl|dt|fieldset|footer|form|header|hr|h1|h2|h3|h4|h5|h6|iframe|li|ol|p|pre|nav|noscript|section|table|tbody|td|tfoot|th|thead|tr|ul)$/i,
-		// This expression is deprecated as of TYPO3 4.6
-	RE_closingTags		: /^(p|blockquote|a|li|ol|ul|dl|dt|td|th|tr|tbody|thead|tfoot|caption|colgroup|table|div|b|bdo|big|cite|code|del|dfn|em|i|ins|kbd|label|q|samp|small|span|strike|strong|sub|sup|tt|u|var|abbr|acronym|font|center|object|embed|style|script|title|head)$/i,
-		// This expression is deprecated as of TYPO3 4.6
-	RE_noClosingTag		: /^(area|base|br|col|command|embed|hr|img|input|keygen|meta|param|source|track|wbr)$/i,
 	RE_numberOrPunctuation	: /[0-9.(),;:!¡?¿%#$'"_+=\\\/-]*/g,
 	/***************************************************
 	 * BROWSER IDENTIFICATION                          *
@@ -5833,18 +5827,6 @@ var lorem_ipsum = function (element, text) {
  */
 HTMLArea.Plugin = function (editor, pluginName) {
 };
-/**
- ***********************************************
- * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.6 *
- ***********************************************
- * Extends class HTMLArea.Plugin
- *
- * Defined for backward compatibility only
- * Use Ext.extend(SubClassName, config) directly
- */
-HTMLArea.Plugin.extend = function (config) {
-	return Ext.extend(HTMLArea.Plugin, config);
-};
 HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	/**
 	 * HTMLArea.Plugin constructor
@@ -5866,18 +5848,6 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 			this.I18N = new Object();
 		}
 		this.configurePlugin(editor);
-		/**
-		 ***********************************************
-		 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.6 *
-		 ***********************************************
-		 * Extends class HTMLArea[pluginName]
-		 *
-		 * Defined for backward compatibility only
-		 * Use Ext.extend(SubClassName, config) directly
-		 */
-		HTMLArea[pluginName].extend = function (config) {
-			return Ext.extend(HTMLArea[pluginName], config);
-		};
 	},
 	/**
 	 * Configures the plugin
@@ -5893,19 +5863,6 @@ HTMLArea.Plugin = Ext.extend(HTMLArea.Plugin, {
 	 */
 	configurePlugin: function (editor) {
 		return false;
-	},
-	/**
-	 ***********************************************
-	 * THIS FUNCTION IS DEPRECATED AS OF TYPO3 4.6 *
-	 ***********************************************
-	 * Invove the base class constructor
-	 *
-	 * Defined for backward compatibility only
-	 * Note: this.base will exclusively refer to the HTMLArea.Plugin class constructor
-	 */
-	base: function (editor, pluginName) {
-		HTMLArea.appendToLog(editor.editorId, 'HTMLArea.' + pluginName, 'base', 'Deprecated use of base function. Use Ext superclass reference instead.', 'warn');
-		HTMLArea.Plugin.prototype.constructor.call(this, editor, pluginName);
 	},
 	/**
 	 * Registers the plugin "About" information
