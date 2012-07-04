@@ -99,7 +99,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 			foreach ($this->doubleReplacementRteProperties as $deprecatedProperty => $replacementProperties) {
 				$deprecatedProperties .= '<tr><td>' . $deprecatedProperty . '</td><td>' . implode(' and ', $replacementProperties) . '</td></tr>' . LF;
 			}
-			$description = '<p>The following Page TSconfig RTE properties are deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8.</p>' . LF .
+			$description = '<p>The following Page TSconfig RTE properties are deprecated since TYPO3 4.6 and have been removed in TYPO3 6.0.</p>' . LF .
 				'<table><thead><tr><th>Deprecated property</th><th>Use instead</th></tr></thead>' . LF . '<tbody>' . $deprecatedProperties . '</tboby></table>' . LF .
 				'<p>You are currently using some of these properties on <strong>' . strval($pagesCount) . '&nbsp;pages</strong>  (including deleted and hidden pages).</p>' . LF;
 			if ($pagesCount) {
