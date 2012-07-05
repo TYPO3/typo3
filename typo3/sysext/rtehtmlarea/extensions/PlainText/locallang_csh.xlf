@@ -66,7 +66,7 @@ The "Clean Paste Behaviour" dialogue is activated by clicking on the "Clean Past
 			</trans-unit>
 			<trans-unit id="pasteStructure.details" xml:space="preserve">
 				<source>By default, "Structure only" means that:
-- only the following HTML elements are retained: a, p, h[0-6], pre, address, blockquote, div, hr, br, table, thead, tbody, tfoot, caption, tr, th, td, ul, ol, dl, li, dt, dd;
+- only the following HTML elements are retained: a, p, h[0-6], pre, address, article, aside, blockquote, div, footer, header, nav, section, hr, br, table, thead, tbody, tfoot, caption, tr, th, td, ul, ol, dl, li, dt, dd;
 - the following HTML attributes are removed: id, style, class, lang, align, valign, bgcolor, color, border, face, any attribute starting with "on", and any attribute containing ":".
 
 These defaults may be modified in Page TSConfig.</source>
@@ -83,7 +83,7 @@ These defaults may be modified in Page TSConfig.</source>
 			</trans-unit>
 			<trans-unit id="pasteFormat.details" xml:space="preserve">
 				<source>By default, "Structure and basic format" means that:
-- the following HTML structural elements are retained: a, p, h[0-6], pre, address, blockquote, div, hr, br, table, thead, tbody, tfoot, caption, tr, th, td, ul, ol, dl, li, dt, dd;
+- the following HTML structural elements are retained: a, p, h[0-6], pre, address, article, aside, blockquote, div, footer, header, nav, section, hr, br, table, thead, tbody, tfoot, caption, tr, th, td, ul, ol, dl, li, dt, dd;
 - the following HTML inline elements are also retained: b, bdo, big, cite, code, del, dfn, em, i, ins, kbd, label, q, samp, small, strike, strong, sub, sup, tt, u, var;
 - the following HTML attributes are removed: id, style, class, lang, align, valign, bgcolor, color, border, face, any attribute starting with "on", and any attribute containing ":".
 
