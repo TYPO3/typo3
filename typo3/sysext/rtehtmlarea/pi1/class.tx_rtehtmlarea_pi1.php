@@ -178,7 +178,8 @@ class tx_rtehtmlarea_pi1 {
 					fwrite($filehandle, $cmd, strlen($cmd));
 					fclose($filehandle);
 						// $this->personalDictsArg has already been escapeshellarg()'ed above, it is an optional paramter and might be empty here
-					$AspellCommand = 'cat ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a --mode=none' . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
+					$catCommand = (TYPO3_OS == 'WIN') ? 'type' : 'cat';
+					$AspellCommand = $catCommand . ' ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a --mode=none' . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
 					print $AspellCommand . LF;
 					print shell_exec($AspellCommand);
 					t3lib_div::unlink_tempfile($tmpFileName);
@@ -349,7 +350,8 @@ var selectedDictionary = "' . $this->dictionary . '";
 					if(!$filehandle = fopen($tmpFileName,'wb')) echo('SpellChecker tempfile open error');
 					if(!fwrite($filehandle, $word)) echo('SpellChecker tempfile write error');
 					if(!fclose($filehandle)) echo('SpellChecker tempfile close error');
-					$AspellCommand = 'cat ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a check --mode=none --sug-mode=' . escapeshellarg($this->pspellMode) . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
+					$catCommand = (TYPO3_OS == 'WIN') ? 'type' : 'cat';
+					$AspellCommand = $catCommand . ' ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a check --mode=none --sug-mode=' . escapeshellarg($this->pspellMode) . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
 					$AspellAnswer = shell_exec($AspellCommand);
 					$AspellResultLines = array();
 					$AspellResultLines = t3lib_div::trimExplode(LF, $AspellAnswer, 1);
