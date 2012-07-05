@@ -216,7 +216,7 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 		if (/^(a)$/i.test(parent.nodeName)) {
 			parent.normalize();
 			if (!parent.innerHTML || (parent.childNodes.length == 1 && /^(br)$/i.test(parent.firstChild.nodeName))) {
-				if (!Ext.isIE) {
+				if (!HTMLArea.isIEBeforeIE9) {
 					var container = parent.parentNode;
 					this.editor.getDomNode().removeMarkup(parent);
 						// Opera does not render empty list items

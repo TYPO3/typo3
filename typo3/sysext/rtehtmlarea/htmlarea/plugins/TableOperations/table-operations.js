@@ -432,7 +432,9 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				tbody.appendChild(tr);
 				for (var j = params.f_cols; --j >= 0;) {
 					var td = doc.createElement('td');
-					if (!Ext.isIE) td.innerHTML = '<br />';
+					if (!HTMLArea.isIEBeforeIE9) {
+						td.innerHTML = '<br />';
+					}
 					tr.appendChild(td);
 				}
 			}
@@ -534,7 +536,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			}
 		}, this);
 		if (this.dialog.arguments.buttonId === "InsertTable") {
-			if (!Ext.isIE) {
+			if (!HTMLArea.isIEBeforeIE9) {
 				this.editor.getSelection().insertNode(table);
 			} else {
 				table.id = "htmlarea_table_insert";
@@ -680,7 +682,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
 
-		var mozbr = !Ext.isIE ? "<br />" : "";
+		var mozbr = !HTMLArea.isIEBeforeIE9 ? "<br />" : "";
 		var tableParts = ["tfoot", "thead", "tbody"];
 		var tablePartsIndex = { tfoot : 0, thead : 1, tbody : 2 };
 
@@ -1563,8 +1565,8 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		}
-			// In IE, the above fails to update the classname and style attributes.
-		if (Ext.isIE) {
+			// In IE before IE9, the above fails to update the classname and style attributes.
+		if (HTMLArea.isIEBeforeIE9) {
 			if (element.style.cssText) {
 				newCell.style.cssText = element.style.cssText;
 			}
@@ -1624,7 +1626,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 */
 	processStyle: function (element, params) {
 		var style = element.style;
-		if (Ext.isIE) {
+		if (HTMLArea.isIEBeforeIE9) {
 			style.styleFloat = "";
 		} else {
 			style.cssFloat = "";
@@ -2606,7 +2608,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			parentElement = parentElement.parentNode;
 		}
 		if (/^(td|th)$/i.test(parentElement.nodeName)) {
-			if (Ext.isIE) {
+			if (HTMLArea.isIEBeforeIE9) {
 				range.pasteHTML('<br />');
 				range.select();
 			} else {

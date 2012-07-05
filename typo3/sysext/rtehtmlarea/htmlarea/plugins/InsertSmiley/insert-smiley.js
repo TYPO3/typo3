@@ -154,7 +154,7 @@ HTMLArea.InsertSmiley = Ext.extend(HTMLArea.Plugin, {
 		imgTag.setAttribute('alt', target.getAttribute('ext:qtitle'));
 		imgTag.setAttribute('title', target.getAttribute('ext:qtip'));
 		this.editor.getSelection().insertNode(imgTag);
-		if (!Ext.isIE) {
+		if (!HTMLArea.isIEBeforeIE9) {
 			this.editor.getSelection().selectNode(imgTag, false);
 		}
 		this.close();

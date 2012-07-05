@@ -94,7 +94,7 @@ HTMLArea.DefaultClean = Ext.extend(HTMLArea.Plugin, {
 				if (!/\S/.test(node.className)) {
 					if (!Ext.isOpera) {
 						node.removeAttribute('class');
-						if (Ext.isIE) {
+						if (HTMLArea.isIEBeforeIE9) {
 							node.removeAttribute('className');
 						}
 					} else {
@@ -104,7 +104,7 @@ HTMLArea.DefaultClean = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 		function clearStyle(node) {
-			var style = Ext.isIE ? node.style.cssText : node.getAttribute('style');
+			var style = HTMLArea.isIEBeforeIE9 ? node.style.cssText : node.getAttribute('style');
 			if (style) {
 				var declarations = style.split(/\s*;\s*/);
 				for (var i = declarations.length; --i >= 0;) {
@@ -116,7 +116,7 @@ HTMLArea.DefaultClean = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 		function stripTag(el) {
-			if (Ext.isIE) {
+			if (HTMLArea.isIEBeforeIE9) {
 				el.outerHTML = HTMLArea.util.htmlEncode(el.innerText);
 			} else {
 				var txt = document.createTextNode(HTMLArea.DOM.getInnerText(el));
@@ -141,7 +141,7 @@ HTMLArea.DefaultClean = Ext.extend(HTMLArea.Plugin, {
 				case HTMLArea.DOM.TEXT_NODE:
 				case HTMLArea.DOM.DOCUMENT_NODE:
 				case HTMLArea.DOM.DOCUMENT_FRAGMENT_NODE:
-					if ((Ext.isIE && root.scopeName != 'HTML') || (!Ext.isIE && /:/.test(tag)) || /o:p/.test(tag)) {
+					if ((HTMLArea.isIEBeforeIE9 && root.scopeName != 'HTML') || (!HTMLArea.isIEBeforeIE9 && /:/.test(tag)) || /o:p/.test(tag)) {
 						stripTag(root);
 						return false;
 					} else {
