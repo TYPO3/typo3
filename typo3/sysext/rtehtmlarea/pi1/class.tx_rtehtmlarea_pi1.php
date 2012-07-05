@@ -195,6 +195,11 @@ class tx_rtehtmlarea_pi1 {
 					$AspellCommand = $catCommand . ' ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a --mode=none' . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
 					print $AspellCommand . LF;
 					print shell_exec($AspellCommand);
+					fclose($filehandle);
+					unset($filehandle);
+					if (TYPO3_OS == 'WIN') {
+						chown($tmpFileName, 0666);
+					}
 					t3lib_div::unlink_tempfile($tmpFileName);
 					echo('Personal word list was updated.');
 				} else {
@@ -370,6 +375,11 @@ var selectedDictionary = "' . $this->dictionary . '";
 					$AspellResultLines = array();
 					$AspellResultLines = t3lib_div::trimExplode(LF, $AspellAnswer, 1);
 					if(substr($AspellResultLines[0],0,6) == 'Error:') echo("{$AspellAnswer}");
+					fclose($filehandle);
+					unset($filehandle);
+					if (TYPO3_OS == 'WIN') {
+						chown($tmpFileName, 0666);
+					}
 					t3lib_div::unlink_tempfile($tmpFileName);
 					if(substr($AspellResultLines['1'],0,1) != '*') {
 						if(!in_array($word, $this->misspelled)) {
