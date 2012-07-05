@@ -3624,7 +3624,7 @@ HTMLArea.CSS.Parser = Ext.extend(Ext.util.Observable, {
 				this.parseSelectorText(cssRules[rule].selectorText);
 			} else {
 					// Import rule
-				if (cssRules[rule].styleSheet) {
+				if (cssRules[rule].styleSheet && cssRules[rule].styleSheet.cssRules) {
 					this.parseRules(cssRules[rule].styleSheet.cssRules);
 				}
 					// Media rule
