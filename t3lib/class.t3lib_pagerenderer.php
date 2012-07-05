@@ -46,6 +46,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	const EXTJS_ADAPTER_PROTOTYPE = 'prototype';
 	const EXTJS_ADAPTER_YUI = 'yui';
 
+		// jQuery Core version that is shipped with TYPO3
+	const JQUERY_VERSION_LATEST = '1.8b1';
+
 	/**
 	 * @var boolean
 	 */
@@ -288,7 +291,53 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	protected $svgPath = 'contrib/websvg/';
 
+	/**
+	 * The local directory where one can find jQuery versions and plugins
+	 *
+	 * @var string
+	 */
+	protected $jQueryPath = 'contrib/jquery/';
+
 	// Internal flags for JS-libraries
+
+	/**
+	 * This array holds all jQuery versions that should be included in the
+	 * current page.
+	 * Each version is described by "source", "version" and "namespace"
+	 *
+	 * The namespace of every particular version is the key
+	 * of that array, because only one version per namespace can exist.
+	 *
+	 * The type "source" describes where the jQuery core should be included from
+	 * currently, TYPO3 supports "local" (make use of jQuery path), "google",
+	 * "jquery" and "msn".
+	 * Currently there are downsides to "local" and "jquery", as "local" only
+	 * supports the latest/shipped jQuery core out of the box, and
+	 * "jquery" does not have SSL support.
+	 *
+	 * @var array
+	 */
+	protected $jQueryVersions = array();
+
+	/**
+	 * Array of jQuery version numbers shipped with the core
+	 *
+	 * @var array
+	 */
+	protected $availableLocalJqueryVersions = array(
+		self::JQUERY_VERSION_LATEST,
+	);
+
+	/**
+	 * Array of jQuery CDNs with placeholders
+	 *
+	 * @var array
+	 */
+	protected $jQueryCdnUrls = array(
+		'google' => '//ajax.googleapis.com/ajax/libs/jquery/%1$s/jquery%2$s.js',
+		'msn' => '//ajax.aspnetcdn.com/ajax/jQuery/jquery-%1$s%2$s.js',
+		'jquery' => 'http://code.jquery.com/jquery-%1$s%2$s.js',
+	);
 
 	/**
 	 * @var boolean
@@ -334,6 +383,11 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 * @var boolean
 	 */
 	protected $enableExtCoreDebug = FALSE;
+
+	/**
+	 * @var boolean
+	 */
+	protected $enableJqueryDebug = FALSE;
 
 	/**
 	 * @var boolean
@@ -447,6 +501,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$this->headerData = array();
 		$this->footerData = array();
 		$this->extOnReadyCode = array();
+		$this->jQueryVersions = array();
 	}
 
 	/*****************************************************/
@@ -777,6 +832,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$this->removeLineBreaksFromTemplate = FALSE;
 		$this->enableExtCoreDebug = TRUE;
 		$this->enableExtJsDebug = TRUE;
+		$this->enableJqueryDebug = TRUE;
 		$this->enableSvgDebug = TRUE;
 	}
 
@@ -1435,6 +1491,46 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 * Call this function if you need to include the jQuery library
+	 *
+	 * @param null|string $version The jQuery version that should be included, either "latest" or any available version
+	 * @param null|string $source The location of the jQuery source, can be "local", "google", "msn", "jquery" or just an URL to your jQuery lib
+	 * @param null|string $namespace The namespace in which the jQuery object of the specific version should be stored. Can be FALSE to disable jQuery no conflict mode.
+	 * @return void
+	 * @throws UnexpectedValueException
+	 */
+	public function loadJquery($version = NULL, $source = NULL, $namespace = NULL) {
+			// Set it to the version that is shipped with the TYPO3 core
+		if ($version === NULL || $version === 'latest') {
+			$version = self::JQUERY_VERSION_LATEST;
+		}
+
+			// Check if the source is set, otherwise set it to "default"
+		if ($source === NULL) {
+			$source = 'local';
+		}
+
+		if ($namespace === NULL) {
+			$namespace = 'jQuery';
+		} elseif ($namespace === FALSE) {
+			$namespace = 'FALSE';
+		}
+
+		if ($source === 'local' && !in_array($version, $this->availableLocalJqueryVersions)) {
+			throw new UnexpectedValueException('The requested jQuery version is not available in the local filesystem.', 1341505305);
+		}
+
+		if (!ctype_alnum($namespace)) {
+			throw new UnexpectedValueException('The requested namespace contains non alphanumeric characters.', 1341571604);
+		}
+
+		$this->jQueryVersions[$namespace] = array(
+			'version' => $version,
+			'source' => $source,
+		);
+	}
+
+	/**
 	 *  Call function if you need the prototype library
 	 *
 	 * @return void
@@ -1829,8 +1925,8 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
-	 * Helper function for render the main JavaScript libraries
-	 * currently: prototype, SVG, ExtJs
+	 * Helper function for render the main JavaScript libraries,
+	 * currently: jQuery, prototype, SVG, ExtJs
 	 *
 	 * @return string Content with JavaScript libraries
 	 */
@@ -1841,6 +1937,17 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$out .= '<script src="' . $this->processJsFile($this->backPath . $this->svgPath . 'svg.js') .
 					'" data-path="' . $this->backPath . $this->svgPath .
 					'"' . ($this->enableSvgDebug ? ' data-debug="true"' : '') . '></script>';
+		}
+
+			// Include jQuery Core for each namespace, depending on the version and source
+		if (!empty($this->jQueryVersions)) {
+			foreach ($this->jQueryVersions as $namespace => $jQueryVersion) {
+				$out .= $this->renderJqueryScriptTag(
+					$jQueryVersion['version'],
+					$jQueryVersion['source'],
+					$namespace
+				);
+			}
 		}
 
 		if ($this->addPrototype) {
@@ -1988,6 +2095,54 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		}
 
 		return $out;
+	}
+
+	/**
+	 * Renders the HTML script tag for the given jQuery version.
+	 *
+	 * @param string $version The jQuery version that should be included, either "latest" or any available version
+	 * @param string $source The location of the jQuery source, can be "local", "google", "msn" or "jquery"
+	 * @param string $namespace The namespace in which the jQuery object of the specific version should be stored
+	 * @return string
+	 */
+	protected function renderJqueryScriptTag($version, $source, $namespace) {
+
+		switch (TRUE) {
+			case isset($this->jQueryCdnUrls[$source]):
+				if ($this->enableJqueryDebug) {
+					$minifyPart = '';
+				} else {
+					$minifyPart = '.min';
+				}
+				$jQueryFileName = sprintf($this->jQueryCdnUrls[$source], $version, $minifyPart);
+				break;
+
+				// Local source - include the latest
+			case $source === 'local':
+				$jQueryFileName = $this->backPath . $this->jQueryPath . 'jquery-' . rawurlencode($version);
+
+				if ($this->enableJqueryDebug) {
+					$jQueryFileName .= '.js';
+				} else {
+					$jQueryFileName .= '.min.js';
+				}
+				break;
+				// No special key found, assume the source is a valid URL to a jQuery library
+			default:
+				$jQueryFileName = $source;
+		}
+
+			// Include the jQuery Core
+		$scriptTag = '<script src="' . htmlspecialchars($jQueryFileName) . '" type="text/javascript"></script>' . LF;
+
+			// Set the noConflict mode to be available via "TYPO3.jQuery" in all installations
+		if ($namespace !== 'FALSE') {
+			$scriptTag .= t3lib_div::wrapJS(
+				'var TYPO3 = TYPO3 || {}; TYPO3.' . $namespace . ' = jQuery = jQuery.noConflict(true);'
+			);
+		}
+
+		return $scriptTag;
 	}
 
 	/**
