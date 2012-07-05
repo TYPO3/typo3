@@ -63,7 +63,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		
 			// Allowed attributes on inline elements
 		this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'itemscope', 'itemtype', 'itemprop');
-		if (Ext.isIE) {
+		if (HTMLArea.isIEBeforeIE9) {
 			this.addAllowedAttribute('className');
 		}
 		/*
@@ -139,8 +139,8 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		if (!selectionEmpty) {
 				// The selection is not empty
 			for (var i = 0; i < ancestors.length; ++i) {
-				fullNodeSelected = (Ext.isIE && ((statusBarSelection === ancestors[i] && ancestors[i].innerText === range.text) || (!statusBarSelection && ancestors[i].innerText === range.text)))
-							|| (!Ext.isIE && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())));
+				fullNodeSelected = (HTMLArea.isIEBeforeIE9 && ((statusBarSelection === ancestors[i] && ancestors[i].innerText === range.text) || (!statusBarSelection && ancestors[i].innerText === range.text)))
+							|| (!HTMLArea.isIEBeforeIE9 && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())));
 				if (fullNodeSelected) {
 					if (this.isInlineElement(ancestors[i])) {
 						parent = ancestors[i];
@@ -161,7 +161,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 				var newElement = editor.document.createElement('span');
 				HTMLArea.DOM.addClass(newElement, className);
 				editor.getDomNode().wrapWithInlineElement(newElement, range);
-				if (!Ext.isIE) {
+				if (!HTMLArea.isIEBeforeIE9) {
 					range.detach();
 				}
 			}
@@ -266,7 +266,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 			if (!selectionEmpty) {
 				for (var i = 0; i < ancestors.length; ++i) {
 					fullNodeSelected = (statusBarSelection === ancestors[i])
-						&& ((!Ext.isIE && ancestors[i].textContent === range.toString()) || (Ext.isIE && ancestors[i].innerText === range.text));
+						&& ((!HTMLArea.isIEBeforeIE9 && ancestors[i].textContent === range.toString()) || (HTMLArea.isIEBeforeIE9 && ancestors[i].innerText === range.text));
 					if (fullNodeSelected) {
 						if (!HTMLArea.DOM.isBlockElement(ancestors[i])) {
 							tagName = ancestors[i].nodeName.toLowerCase();

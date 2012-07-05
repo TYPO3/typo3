@@ -34,8 +34,6 @@ error_reporting(E_ALL & ~(E_STRICT | E_NOTICE));
 unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
-
 
 // Make instance:
 $SOBE = t3lib_div::makeInstance('tx_rtehtmlarea_parse_html');

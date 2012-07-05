@@ -62,7 +62,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 		this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'itemscope', 'itemtype', 'itemprop');
-		if (Ext.isIE) {
+		if (HTMLArea.isIEBeforeIE9) {
 			this.addAllowedAttribute('className');
 		}
 		this.indentedList = null;
@@ -314,7 +314,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		}
-		var fullNodeTextSelected = (!Ext.isIE && parentElement.textContent === range.toString()) || (Ext.isIE && parentElement.innerText === range.text);
+		var fullNodeTextSelected = (!HTMLArea.isIEBeforeIE9 && parentElement.textContent === range.toString()) || (HTMLArea.isIEBeforeIE9 && parentElement.innerText === range.text);
 		switch (buttonId) {
 			case "Indent" :
 				if (/^(ol|ul)$/i.test(parentElement.nodeName) && !(fullNodeTextSelected && !/^(li)$/i.test(parentElement.parentNode.nodeName))) {
@@ -866,11 +866,11 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 		}
 		if (endElement) {
 			var parent = endElement.parentNode;
-			var paragraph = this.editor.document.createElement("p");
-			if (Ext.isIE) {
-				paragraph.innerHTML = "&nbsp";
+			var paragraph = this.editor.document.createElement('p');
+			if (HTMLArea.isIEBeforeIE9) {
+				paragraph.innerHTML = '&nbsp';
 			} else {
-				paragraph.appendChild(this.editor.document.createElement("br"));
+				paragraph.appendChild(this.editor.document.createElement('br'));
 			}
 			if (after && !endElement.nextSibling) {
 				parent.appendChild(paragraph);

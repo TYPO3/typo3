@@ -55,7 +55,7 @@ HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 		}
 		if (!this.allowedAttributes) {
 			this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class');
-			if (Ext.isIE) {
+			if (HTMLArea.isIEBeforeIE9) {
 				this.allowedAttributes.push('className');
 			}
 		}
@@ -154,7 +154,7 @@ HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 				var selector = 'body.htmlarea-show-language-marks *[' + 'lang="' + option.get('value') + '"]:before';
 				var style = 'content: "' + option.get('value') + ': ";';
 				var rule = selector + ' { ' + style + ' }';
-				if (!Ext.isIE) {
+				if (!HTMLArea.isIEBeforeIE9) {
 					try {
 						styleSheet.insertRule(rule, styleSheet.cssRules.length);
 					} catch (e) {
@@ -247,8 +247,8 @@ HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 			if (endPointsInSameBlock) {
 				var ancestors = this.editor.getSelection().getAllAncestors();
 				for (var i = 0; i < ancestors.length; ++i) {
-					fullNodeSelected = (statusBarSelection === ancestors[i])
-						&& ((!Ext.isIE && ancestors[i].textContent === range.toString()) || (Ext.isIE && ((this.editor.getSelection().getType() !== 'Control' && ancestors[i].innerText === range.text) || (this.editor.getSelection().getType() === 'Control' && ancestors[i].innerText === range.item(0).text))));
+					fullNodeSelected =  (!HTMLArea.isIEBeforeIE9 && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())))
+						|| (HTMLArea.isIEBeforeIE9 && statusBarSelection === ancestors[i] && ((this.editor.getSelection().getType() !== 'Control' && ancestors[i].innerText === range.text) || (this.editor.getSelection().getType() === 'Control' && ancestors[i].innerText === range.item(0).text)));
 					if (fullNodeSelected) {
 						parent = ancestors[i];
 						break;
@@ -274,7 +274,7 @@ HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 				var newElement = this.editor.document.createElement('span');
 				this.setLanguageAttributes(newElement, language);
 				this.editor.getDomNode().wrapWithInlineElement(newElement, range);
-				if (!Ext.isIE) {
+				if (!HTMLArea.isIEBeforeIE9) {
 					range.detach();
 				}
 			}
@@ -415,8 +415,8 @@ HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 					if (!selectionEmpty) {
 						if (endPointsInSameBlock) {
 							for (var i = 0; i < ancestors.length; ++i) {
-								fullNodeSelected = (statusBarSelection === ancestors[i])
-									&& ((!Ext.isIE && ancestors[i].textContent === range.toString()) || (Ext.isIE && ((this.editor.getSelection().getType() !== 'Control' && ancestors[i].innerText === range.text) || (this.editor.getSelection().getType() === 'Control' && ancestors[i].innerText === range.item(0).text))));
+								fullNodeSelected =  (!HTMLArea.isIEBeforeIE9 && ((statusBarSelection === ancestors[i] && ancestors[i].textContent === range.toString()) || (!statusBarSelection && ancestors[i].textContent === range.toString())))
+									|| (HTMLArea.isIEBeforeIE9 && statusBarSelection === ancestors[i] && ((this.editor.getSelection().getType() !== 'Control' && ancestors[i].innerText === range.text) || (this.editor.getSelection().getType() === 'Control' && ancestors[i].innerText === range.item(0).text)));
 								if (fullNodeSelected) {
 									parent = ancestors[i];
 									break;

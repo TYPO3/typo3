@@ -1696,7 +1696,7 @@ HTMLArea.StatusBar = Ext.extend(Ext.Container, {
 	selectElement: function (element) {
 		var editor = this.getEditor();
 		element.blur();
-		if (!Ext.isIE) {
+		if (!HTMLArea.isIEBeforeIE9) {
 			if (/^(img|table)$/i.test(element.ancestor.nodeName)) {
 				editor.getSelection().selectNode(element.ancestor);
 			} else {
@@ -3021,7 +3021,7 @@ HTMLArea.DOM = function () {
 				} else {
 					if (!Ext.isOpera) {
 						node.removeAttribute('class');
-						if (Ext.isIE) {
+						if (HTMLArea.isIEBeforeIE9) {
 							node.removeAttribute('className');
 						}
 					} else {
@@ -3398,9 +3398,11 @@ HTMLArea.DOM.Walker = Ext.extend(HTMLArea.DOM.Walker, {
 				continue;
 			}
 			if (Ext.isIE) {
-					// IE fails to put style in attributes list.
+					// IE before I9 fails to put style in attributes list.
 				if (attributeName === 'style') {
-					attributeValue = node.style.cssText;
+					if (HTMLArea.isIEBeforeIE9) {
+						attributeValue = node.style.cssText;
+					}
 					// May need to strip the base url
 				} else if (attributeName === 'href' || attributeName === 'src') {
 					attributeValue = this.stripBaseURL(attributeValue);

@@ -40,7 +40,7 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 			this.allowedAttributes = this.getPluginInstance('TextStyle').allowedAttributes;
 		} else {
 			this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'itemscope', 'itemtype', 'itemprop');
-			if (Ext.isIE) {
+			if (HTMLArea.isIEBeforeIE9) {
 				this.addAllowedAttribute('className');
 			}
 		}
@@ -213,7 +213,7 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 		var ancestors = editor.getSelection().getAllAncestors();
 		var elementIsAncestor = false;
 		var fullNodeSelected = false;
-		if (Ext.isIE) {
+		if (HTMLArea.isIEBeforeIE9) {
 			var bookmark = editor.getBookMark().get(range);
 		}
 			// Check if the chosen element is among the ancestors
@@ -237,7 +237,7 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 				if (element === "bdo") {
 					newElement.setAttribute("dir", "rtl");
 				}
-				if (!Ext.isIE) {
+				if (!HTMLArea.isIEBeforeIE9) {
 					if (fullNodeSelected && statusBarSelection) {
 						if (Ext.isWebKit) {
 							newElement = parent.parentNode.insertBefore(newElement, statusBarSelection);
@@ -315,8 +315,8 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 				newElement.setAttribute(this.allowedAttributes[i], attributeValue);
 			}
 		}
-			// In IE, the above fails to update the class and style attributes.
-		if (Ext.isIE) {
+			// In IE before IE9, the above fails to update the class and style attributes.
+		if (HTMLArea.isIEBeforeIE9) {
 			if (element.style.cssText) {
 				newElement.style.cssText = element.style.cssText;
 			}

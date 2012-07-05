@@ -50,7 +50,7 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 		}
 		if (!this.allowedAttributes) {
 			this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'style');
-			if (Ext.isIE) {
+			if (HTMLArea.isIEBeforeIE9) {
 				this.allowedAttributes.push('className');
 			}
 		}
@@ -176,7 +176,7 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 			this.setStyle(element, combo.itemId, param);
 				// Wrap the selection with span tag with the style attribute
 			editor.getDomNode().wrapWithInlineElement(element, range);
-			if (!Ext.isIE) {
+			if (!HTMLArea.isIEBeforeIE9) {
 				range.detach();
 			}
 		}
@@ -218,7 +218,7 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 			var parentElement = statusBarSelection ? statusBarSelection : editor.getSelection().getParentElement();
 			var value = parentElement.style[this.styleProperty[select.itemId]];
 			if (!value) {
-				if (!Ext.isIE) {
+				if (!HTMLArea.isIEBeforeIE9) {
 					if (editor.document.defaultView && editor.document.defaultView.getComputedStyle(parentElement, null)) {
 						value = editor.document.defaultView.getComputedStyle(parentElement, null).getPropertyValue(this.cssProperty[select.itemId]);
 					}
