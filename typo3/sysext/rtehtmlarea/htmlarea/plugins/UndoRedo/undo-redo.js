@@ -162,7 +162,7 @@ HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
 		var bookmark = null, bookmarkedText = null;
 			// Insert a bookmark
 		if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
-			if ((!Ext.isIE && !(Ext.isOpera && navigator.userAgent.toLowerCase().indexOf('presto/2.1') != -1)) || (Ext.isIE && this.editor.getSelection().getType() !== 'Control')) {
+			if ((!HTMLArea.isIEBeforeIE9 && !(Ext.isOpera && navigator.userAgent.toLowerCase().indexOf('presto/2.1') != -1)) || (HTMLArea.isIEBeforeIE9 && this.editor.getSelection().getType() !== 'Control')) {
 					// Catch error in FF when the selection contains no usable range
 				try {
 					bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());

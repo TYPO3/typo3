@@ -248,7 +248,7 @@ HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 				var ancestors = this.editor.getSelection().getAllAncestors();
 				for (var i = 0; i < ancestors.length; ++i) {
 					fullNodeSelected = (statusBarSelection === ancestors[i])
-						&& ((!Ext.isIE && ancestors[i].textContent === range.toString()) || (Ext.isIE && ((this.editor.getSelection().getType() !== 'Control' && ancestors[i].innerText === range.text) || (this.editor.getSelection().getType() === 'Control' && ancestors[i].innerText === range.item(0).text))));
+						&& ((!HTMLArea.isIEBeforeIE9 && ancestors[i].textContent === range.toString()) || (HTMLArea.isIEBeforeIE9 && ((this.editor.getSelection().getType() !== 'Control' && ancestors[i].innerText === range.text) || (this.editor.getSelection().getType() === 'Control' && ancestors[i].innerText === range.item(0).text))));
 					if (fullNodeSelected) {
 						parent = ancestors[i];
 						break;
@@ -416,7 +416,7 @@ HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 						if (endPointsInSameBlock) {
 							for (var i = 0; i < ancestors.length; ++i) {
 								fullNodeSelected = (statusBarSelection === ancestors[i])
-									&& ((!Ext.isIE && ancestors[i].textContent === range.toString()) || (Ext.isIE && ((this.editor.getSelection().getType() !== 'Control' && ancestors[i].innerText === range.text) || (this.editor.getSelection().getType() === 'Control' && ancestors[i].innerText === range.item(0).text))));
+									&& ((!HTMLArea.isIEBeforeIE9 && ancestors[i].textContent === range.toString()) || (HTMLArea.isIEBeforeIE9 && ((this.editor.getSelection().getType() !== 'Control' && ancestors[i].innerText === range.text) || (this.editor.getSelection().getType() === 'Control' && ancestors[i].innerText === range.item(0).text))));
 								if (fullNodeSelected) {
 									parent = ancestors[i];
 									break;

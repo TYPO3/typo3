@@ -314,7 +314,7 @@ HTMLArea.BlockElements = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		}
-		var fullNodeTextSelected = (!Ext.isIE && parentElement.textContent === range.toString()) || (Ext.isIE && parentElement.innerText === range.text);
+		var fullNodeTextSelected = (!HTMLArea.isIEBeforeIE9 && parentElement.textContent === range.toString()) || (HTMLArea.isIEBeforeIE9 && parentElement.innerText === range.text);
 		switch (buttonId) {
 			case "Indent" :
 				if (/^(ol|ul)$/i.test(parentElement.nodeName) && !(fullNodeTextSelected && !/^(li)$/i.test(parentElement.parentNode.nodeName))) {
