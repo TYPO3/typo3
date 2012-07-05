@@ -527,10 +527,10 @@ class tx_scheduler_Module extends t3lib_SCbase {
 	 */
 	protected function renderTaskProgressBar($progress) {
 		$progressText .= $GLOBALS['LANG']->getLL('status.progress')
-			. ': ' . $progress . '%';
+			. ':&nbsp;' . $progress . '%';
 
 		$progressBar = '<div class="progress"> <div class="bar" style="width: '
-			. round($progress)
+			. $progress
 			. '%;">'
 			. $progressText
 			. '</div> </div>';
@@ -1096,6 +1096,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					// The task object is valid
 
 					$name = htmlspecialchars($registeredClasses[$schedulerRecord['classname']]['title']. ' (' . $registeredClasses[$schedulerRecord['classname']]['extension'] . ')');
+					$name .= '<br /> ';
 					$additionalInformation = $task->getAdditionalInformation();
 
 					if ($task instanceof tx_scheduler_ProgressProvider) {
@@ -1104,7 +1105,7 @@ class tx_scheduler_Module extends t3lib_SCbase {
 					}
 
 					if (!empty($additionalInformation)) {
-						$name .= '<br />[' . htmlspecialchars($additionalInformation) . ']';
+						$name .= '[' . htmlspecialchars($additionalInformation) . ']';
 					}
 
 						// Check if task currently has a running execution
