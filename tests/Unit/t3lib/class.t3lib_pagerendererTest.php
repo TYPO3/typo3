@@ -540,6 +540,117 @@ class t3lib_PageRendererTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * test load jQuery
+	 * @test
+	 */
+	public function loadJqueryLoadsTheLatestJqueryMinifiedVersionInNoConflictMode() {
+		$this->markTestSkipped('Remove skip once we include the minified version of jQuery!');
+		$expectedRegExp =
+				'#<script src="contrib/jquery/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '\.min\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>' .
+				'<script>[ ]*if \(!TYPO3\) { var TYPO3 = {}; }; TYPO3.jQuery = jQuery.noConflict\(true\);[ ]*</script>#';
+		$this->fixture->loadJQuery();
+		$out = $this->fixture->render();
+
+		$this->assertRegExp(
+			$expectedRegExp,
+			$out
+		);
+	}
+
+	/**
+	 * test load jQuery
+	 * @test
+	 */
+	public function loadJqueryLoadsTheLatestJqueryVersionInNoConflictModeUncompressedInDebugMode() {
+		$expectedRegExp =
+				'#<script src="contrib/jquery/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>' .
+				'<script>[ ]*if \(!TYPO3\) { var TYPO3 = {}; }; TYPO3.jQuery = jQuery.noConflict\(true\);[ ]*</script>#';
+		$this->fixture->loadJQuery();
+		$this->fixture->enableDebugMode();
+		$out = $this->fixture->render();
+
+		$this->assertRegExp(
+			$expectedRegExp,
+			$out
+		);
+	}
+
+	/**
+	 * @expectedException UnexpectedValueException
+	 * @test
+	 */
+	public function includingNotAvailableLocalJqueryVersionThrowsException() {
+		$this->fixture->loadJQuery('1.3.34');
+		$this->fixture->render();
+	}
+
+	/**
+	 * @return array
+	 */
+	public function loadJqueryFromCdnsDataProvider() {
+		$specificVersion = '1.6.3';
+		return array(
+			'google with no version number' => array(NULL, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '/jquery.js" type="text/javascript"></script>#'),
+			'google with version number' => array($specificVersion, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . $specificVersion . '/jquery.js" type="text/javascript"></script>#'),
+			'msn with no version number' => array(NULL, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '.js" type="text/javascript"></script>#'),
+			'msn with version number' => array($specificVersion, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . $specificVersion . '.js" type="text/javascript"></script>#'),
+			'jquery with no version number' => array(NULL, 'jquery', '#<script src="http://code.jquery.com/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '.js" type="text/javascript"></script>#'),
+			'jquery with version number' => array($specificVersion, 'jquery', '#<script src="http://code.jquery.com/jquery-' . $specificVersion . '.js" type="text/javascript"></script>#'),
+		);
+	}
+
+
+	/**
+	 * Tests whether jQuery is correctly loaded, from the respective CDNs
+	 *
+	 * @dataProvider loadJqueryFromCdnsDataProvider
+	 * @test
+	 */
+	public function isJqueryLoadedFromCdnUncompressedIfDebugModeIsEnabled($version, $cdn, $regex) {
+		$this->fixture->loadJQuery($version, $cdn);
+		$this->fixture->enableDebugMode();
+		$out = $this->fixture->render();
+
+		$this->assertRegExp(
+			$regex,
+			$out
+		);
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function loadJqueryMinifiedFromCdnsDataProvider() {
+		$specificVersion = '1.6.3';
+		return array(
+			'google with no version number' => array(NULL, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '/jquery.min.js" type="text/javascript"></script>#'),
+			'google with version number' => array($specificVersion, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . $specificVersion . '/jquery.min.js" type="text/javascript"></script>#'),
+			'msn with no version number' => array(NULL, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '.min.js" type="text/javascript"></script>#'),
+			'msn with version number' => array($specificVersion, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . $specificVersion . '.min.js" type="text/javascript"></script>#'),
+			'jquery with no version number' => array(NULL, 'jquery', '#<script src="http://code.jquery.com/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '.min.js" type="text/javascript"></script>#'),
+			'jquery with version number' => array($specificVersion, 'jquery', '#<script src="http://code.jquery.com/jquery-' . $specificVersion . '.min.js" type="text/javascript"></script>#'),
+		);
+	}
+
+
+	/**
+	 * Tests whether jQuery is correctly loaded, from the respective CDNs
+	 *
+	 * @dataProvider loadJqueryMinifiedFromCdnsDataProvider
+	 * @test
+	 */
+	public function isJqueryLoadedMinifiedFromCdnByDefault($version, $cdn, $regex) {
+		$this->fixture->loadJQuery($version, $cdn);
+		$out = $this->fixture->render();
+
+		$this->assertRegExp(
+			$regex,
+			$out
+		);
+	}
+
+	/**
 	 * test load ExtJS
 	 *
 	 */
