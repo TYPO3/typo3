@@ -85,6 +85,7 @@ class TYPO3backend {
 		$this->pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 		$this->pageRenderer->loadScriptaculous('builder,effects,controls,dragdrop');
 		$this->pageRenderer->loadExtJS();
+		$this->pageRenderer->loadjQuery();
 		$this->pageRenderer->enableExtJSQuickTips();
 
 		$this->pageRenderer->addJsInlineCode(
