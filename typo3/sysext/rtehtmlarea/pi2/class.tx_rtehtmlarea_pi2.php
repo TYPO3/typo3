@@ -208,6 +208,9 @@ class tx_rtehtmlarea_pi2 extends tx_rtehtmlarea_base {
 		 * =======================================
 		 */
 		$pageRenderer = $this->getPageRenderer();
+			// Add metatag for IE9 to use IE8 standards mode
+			// This version of RTE may not behave correctl in IE9 native mode
+		$pageRenderer->addMetaTag('<meta http-equiv="X-UA-Compatible" content="IE=8" />');
 			// Preloading the pageStyle and including RTE skin stylesheets
 		$this->addPageStyle();
 		$this->addSkin();
