@@ -620,6 +620,21 @@ class TSpagegen {
 					$pageRenderer->enableExtCoreDebug();
 				}
 			}
+				// Include jQuery into the page renderer
+			if (isset($GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery']) && $GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery']) {
+				$jQueryTS = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery.'];
+					// Check if version / source is set, if not set variable to "NULL" to use the default of the page renderer
+				$version = isset($jQueryTS['version']) ? $jQueryTS['version'] : NULL;
+				$source = isset($jQueryTS['source']) ? $jQueryTS['source'] : NULL;
+					// When "noConflict" is not set or "1" use the default namespace of the page renderer, otherwise disable the namespace
+				$namespace = (!isset($jQueryTS['noConflict']) || !empty($jQueryTS['noConflict'])) ? NULL : FALSE;
+					// Set namespace to the "noConflict.namespace" value if "noConflict.namespace" has a value and noConflict is not "FALSE"
+				if ($namespace !== FALSE && !empty($jQueryTS['noConflict.']['namespace'])) {
+					$namespace = $jQueryTS['noConflict.']['namespace'];
+				}
+				$pageRenderer->loadJQuery($version, $source, $namespace);
+			}
+
 			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs']) {
 				$css = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['css'] ? TRUE : FALSE;
 				$theme = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['theme'] ? TRUE : FALSE;
