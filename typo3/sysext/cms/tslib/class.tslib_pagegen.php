@@ -620,6 +620,14 @@ class TSpagegen {
 					$pageRenderer->enableExtCoreDebug();
 				}
 			}
+				// Include jQuery into the page renderer
+			if (isset($GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery']) && $GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery']) {
+					// Check if version / source is set, if not set variable to null to use the default from the page renderer class
+				$version = isset($GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery.']['version']) ? $GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery.']['version'] : NULL;
+				$source = isset($GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery.']['source']) ? $GLOBALS['TSFE']->pSetup['javascriptLibs.']['jQuery.']['source'] : NULL;
+				$pageRenderer->loadJQuery($version, $source);
+			}
+
 			if ($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs']) {
 				$css = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['css'] ? TRUE : FALSE;
 				$theme = $GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.']['theme'] ? TRUE : FALSE;
