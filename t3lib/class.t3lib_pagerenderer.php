@@ -46,6 +46,9 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	const EXTJS_ADAPTER_PROTOTYPE = 'prototype';
 	const EXTJS_ADAPTER_YUI = 'yui';
 
+		// jQuery Core version that is shipped with TYPO3 
+	const JQUERY_VERSION_LATEST = '1.8b1';
+
 	/**
 	 * @var boolean
 	 */
@@ -288,7 +291,43 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	protected $svgPath = 'contrib/websvg/';
 
+	/**
+	 * the local directory where one can find jQuery versions and plugins
+	 *
+	 * @var string
+	 */
+	protected $jQueryPath = 'contrib/jquery/';
+
+	/**
+	 * the version of the jQuery Core to include
+	 *
+	 * @var string
+	 */
+	protected $jQueryVersion = 'latest';
+
+	/**
+	 * the type of "source" where the jQuery core should be included from
+	 * currently, TYPO3 supports "local" (make use of jQuery path), "google",
+	 * "jquery" and "msn".
+	 * there are downsides to "local" and "jquery", as "local" only
+	 * supports the latest/shipped jQuery core out of the box, and
+	 * "jquery" does not have SSL support
+	 *
+	 * @var string
+	 */
+	protected $jQuerySource = 'local';
+
+
 	// Internal flags for JS-libraries
+
+	/**
+	 * if set, jQuery is included in the current page
+	 * and the parameters "jQueryPath", "jQueryVersion" and "jQuerySource"
+	 * are evaluated
+	 *
+	 * @var boolean
+	 */
+	protected $addJQuery = FALSE;
 
 	/**
 	 * @var boolean
@@ -1435,6 +1474,30 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	}
 
 	/**
+	 *  Call this function if you need to include the jQuery library
+	 *
+	 * @param string $version the jQuery version that should be included, either "latest" or any available version
+	 * @param string $source the location of the jQuery source, can be "local", "google", "msn" or "jquery"
+	 * @return void
+	 */
+	public function loadJQuery($version = NULL, $source = NULL) {
+		$this->addJQuery = TRUE;
+
+			// set it to the version that is shipped with the TYPO3 core
+		if ($version === NULL || $version === 'latest') {
+			$version = self::JQUERY_VERSION_LATEST;
+		}
+
+			// check if the source is set, otherwise set it to "default"
+		if ($source === NULL) {
+			$source = 'local';
+		}
+
+		$this->jQueryVersion = $version;
+		$this->jQuerySource = $source;
+	}
+
+	/**
 	 *  Call function if you need the prototype library
 	 *
 	 * @return void
@@ -1830,7 +1893,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 
 	/**
 	 * Helper function for render the main JavaScript libraries
-	 * currently: prototype, SVG, ExtJs
+	 * currently: jQuery, prototype, SVG, ExtJs
 	 *
 	 * @return string Content with JavaScript libraries
 	 */
@@ -1841,6 +1904,61 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$out .= '<script src="' . $this->processJsFile($this->backPath . $this->svgPath . 'svg.js') .
 					'" data-path="' . $this->backPath . $this->svgPath .
 					'"' . ($this->enableSvgDebug ? ' data-debug="true"' : '') . '></script>';
+		}
+
+
+			// include jQuery Core, depending on the version and jQuery source
+		if ($this->addJQuery) {
+
+			switch ($this->jQuerySource) {
+
+					// include jQuery from google CDN
+				case 'google':
+					$jQueryFileName = '//ajax.googleapis.com/ajax/libs/jquery/' . rawurlencode($this->jQueryVersion);
+						// check if the minified / compressed version should be included
+					if ($this->compressJavascript) {
+						$jQueryFileName .= '/jquery.min.js';
+					} else {
+						$jQueryFileName .= '/jquery.js';
+					}
+				break;
+
+					// include jQuery from msn CDN
+				case 'msn':
+					$jQueryFileName = '//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . rawurlencode($this->jQueryVersion);
+						// check if the minified / compressed version should be included
+					if ($this->compressJavascript) {
+						$jQueryFileName .= '.min.js';
+					} else {
+						$jQueryFileName .= '.js';
+					}
+				break;
+
+					// include jQuery from mediatemple/jquery.com
+					// downside: does not support SSL
+				case 'jquery':
+					$jQueryFileName = 'http://code.jquery.com/jquery-' . rawurlencode($this->jQueryVersion);
+						// check if the minified / compressed version should be included
+					if ($this->compressJavascript) {
+						$jQueryFileName .= '.min.js';
+					} else {
+						$jQueryFileName .= '.js';
+					}
+				break;
+
+					// local source - include the latest
+				case 'local':
+				default:
+					$jQueryFileName = $this->backPath . $this->jQueryPath . 'jquery-' . rawurlencode($this->jQueryVersion) . '.js';
+			}
+
+				// include the jQuery Core
+			$out .= '<script src="' . htmlspecialchars($this->processJsFile($jQueryFileName)) . '" type="text/javascript"></script>';
+
+				// set the noConflict mode to be available via "TYPO3.jQuery" in all installations
+			$out .= '<script> var TYPO3.jQuery = {}; TYPO3.jQuery = jQuery.noConflict(true); </script>' . LF;
+
+			unset($this->jsFiles[$jQueryFileName]);
 		}
 
 		if ($this->addPrototype) {
