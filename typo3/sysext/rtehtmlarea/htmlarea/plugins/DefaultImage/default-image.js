@@ -131,7 +131,7 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 				paddingRight:	isNaN(parseInt(this.image.style.paddingRight)) ? '' : parseInt(this.image.style.paddingRight),
 				paddingBottom:	isNaN(parseInt(this.image.style.paddingBottom)) ? '' : parseInt(this.image.style.paddingBottom),
 				paddingLeft:	isNaN(parseInt(this.image.style.paddingLeft)) ? '' : parseInt(this.image.style.paddingLeft),
-				cssFloat: 	Ext.isIE ? this.image.style.styleFloat : this.image.style.cssFloat
+				cssFloat: 	HTMLArea.isIEBeforeIE9 ? this.image.style.styleFloat : this.image.style.cssFloat
 			};
 		} else {
 			this.parameters = {
@@ -450,7 +450,7 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 			if (Ext.isWebKit) {
 				this.editor.getDomNode().cleanAppleStyleSpans(this.editor.document.body);
 			}
-			if (Ext.isIE) {
+			if (HTMLArea.isIEBeforeIE9) {
 				image = range.parentElement();
 				if (!/^img$/i.test(image.nodeName)) {
 					image = image.previousSibling;
@@ -496,7 +496,7 @@ HTMLArea.DefaultImage = Ext.extend(HTMLArea.Plugin, {
 						}
 						break;
 					case 'cssFloat':
-						if (Ext.isIE) {
+						if (HTMLArea.isIEBeforeIE9) {
 							image.style.styleFloat = value;
 						} else {
 							image.style.cssFloat = value;

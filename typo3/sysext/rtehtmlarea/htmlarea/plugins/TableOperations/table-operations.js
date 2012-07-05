@@ -1624,7 +1624,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 	 */
 	processStyle: function (element, params) {
 		var style = element.style;
-		if (Ext.isIE) {
+		if (HTMLArea.isIEBeforeIE9) {
 			style.styleFloat = "";
 		} else {
 			style.cssFloat = "";
@@ -2606,7 +2606,7 @@ HTMLArea.TableOperations = Ext.extend(HTMLArea.Plugin, {
 			parentElement = parentElement.parentNode;
 		}
 		if (/^(td|th)$/i.test(parentElement.nodeName)) {
-			if (Ext.isIE) {
+			if (HTMLArea.isIEBeforeIE9) {
 				range.pasteHTML('<br />');
 				range.select();
 			} else {
