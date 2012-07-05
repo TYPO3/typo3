@@ -540,6 +540,180 @@ class t3lib_PageRendererTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * test load jQuery
+	 * @test
+	 */
+	public function loadJqueryLoadsTheLatestJqueryMinifiedVersionInNoConflictMode() {
+		$expectedRegExp =
+			'#<script src="contrib/jquery/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '\.min\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
+		$expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery = jQuery.noConflict(true);';
+
+		$this->fixture->loadJquery();
+		$out = $this->fixture->render();
+
+		$this->assertRegExp(
+			$expectedRegExp,
+			$out
+		);
+
+		$this->assertContains(
+			$expectedStatement,
+			$out
+		);
+	}
+
+	/**
+	 * test load jQuery
+	 * @test
+	 */
+	public function loadJqueryRespectsGivenNamespace() {
+		$expectedRegExp =
+			'#<script src="contrib/jquery/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '\.min\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
+		$expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.MyNameSpace = jQuery = jQuery.noConflict(true);';
+
+		$this->fixture->loadJquery(NULL, NULL, 'MyNameSpace');
+		$out = $this->fixture->render();
+
+		$this->assertRegExp(
+			$expectedRegExp,
+			$out
+		);
+
+		$this->assertContains(
+			$expectedStatement,
+			$out
+		);
+	}
+
+	/**
+	 * test load jQuery
+	 * @test
+	 */
+	public function loadJqueryWithNamespaceFalseDoesNotIncludeNoConflictHandling() {
+		$expectedRegExp =
+			'#<script src="contrib/jquery/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '\.min\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
+
+		$this->fixture->loadJquery(NULL, NULL, FALSE);
+		$out = $this->fixture->render();
+
+		$this->assertRegExp(
+			$expectedRegExp,
+			$out
+		);
+
+		$this->assertNotContains('jQuery.noConflict(true);', $out);
+	}
+
+	/**
+	 * test load jQuery
+	 * @test
+	 */
+	public function loadJqueryLoadsTheLatestJqueryVersionInNoConflictModeUncompressedInDebugMode() {
+		$expectedRegExp =
+			'#<script src="contrib/jquery/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '\.(js|\d+\.js|js\?\d+)" type="text/javascript"></script>#';
+		$expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery = jQuery.noConflict(true);';
+
+		$this->fixture->loadJquery();
+		$this->fixture->enableDebugMode();
+		$out = $this->fixture->render();
+
+		$this->assertRegExp(
+			$expectedRegExp,
+			$out
+		);
+
+		$this->assertContains(
+			$expectedStatement,
+			$out
+		);
+	}
+
+	/**
+	 * @expectedException UnexpectedValueException
+	 * @test
+	 */
+	public function includingNotAvailableLocalJqueryVersionThrowsException() {
+		$this->fixture->loadJquery('1.3.34');
+		$this->fixture->render();
+	}
+
+	/**
+	 * @expectedException UnexpectedValueException
+	 * @test
+	 */
+	public function includingJqueryWithNonAlphnumericNamespaceThrowsException() {
+		$this->fixture->loadJquery(NULL, NULL, '12sd.12fsd');
+		$this->fixture->render();
+	}
+
+	/**
+	 * @return array
+	 */
+	public function loadJqueryFromSourceDataProvider() {
+		$specificVersion = '1.6.3';
+		return array(
+			'google with no version number' => array(NULL, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '/jquery.js" type="text/javascript"></script>#'),
+			'google with version number' => array($specificVersion, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . $specificVersion . '/jquery.js" type="text/javascript"></script>#'),
+			'msn with no version number' => array(NULL, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '.js" type="text/javascript"></script>#'),
+			'msn with version number' => array($specificVersion, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . $specificVersion . '.js" type="text/javascript"></script>#'),
+			'jquery with no version number' => array(NULL, 'jquery', '#<script src="http://code.jquery.com/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '.js" type="text/javascript"></script>#'),
+			'jquery with version number' => array($specificVersion, 'jquery', '#<script src="http://code.jquery.com/jquery-' . $specificVersion . '.js" type="text/javascript"></script>#'),
+			'jquery with custom URL' => array($specificVersion, 'http://my.cool.cdn/foo/jquery.js', '#<script src="http://my.cool.cdn/foo/jquery.js" type="text/javascript"></script>#'),
+		);
+	}
+
+
+	/**
+	 * Tests whether jQuery is correctly loaded, from the respective CDNs
+	 *
+	 * @dataProvider loadJqueryFromSourceDataProvider
+	 * @test
+	 */
+	public function isJqueryLoadedFromSourceUncompressedIfDebugModeIsEnabled($version, $source, $regex) {
+		$this->fixture->loadJquery($version, $source);
+		$this->fixture->enableDebugMode();
+		$out = $this->fixture->render();
+
+		$this->assertRegExp(
+			$regex,
+			$out
+		);
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function loadJqueryMinifiedFromSourceDataProvider() {
+		$specificVersion = '1.6.3';
+		return array(
+			'google with no version number' => array(NULL, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '/jquery.min.js" type="text/javascript"></script>#'),
+			'google with version number' => array($specificVersion, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . $specificVersion . '/jquery.min.js" type="text/javascript"></script>#'),
+			'msn with no version number' => array(NULL, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '.min.js" type="text/javascript"></script>#'),
+			'msn with version number' => array($specificVersion, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . $specificVersion . '.min.js" type="text/javascript"></script>#'),
+			'jquery with no version number' => array(NULL, 'jquery', '#<script src="http://code.jquery.com/jquery-' . t3lib_PageRenderer::JQUERY_VERSION_LATEST . '.min.js" type="text/javascript"></script>#'),
+			'jquery with version number' => array($specificVersion, 'jquery', '#<script src="http://code.jquery.com/jquery-' . $specificVersion . '.min.js" type="text/javascript"></script>#'),
+		);
+	}
+
+
+	/**
+	 * Tests whether jQuery is correctly loaded, from the respective CDNs
+	 *
+	 * @dataProvider loadJqueryMinifiedFromSourceDataProvider
+	 * @test
+	 */
+	public function isJqueryLoadedMinifiedFromSourceByDefault($version, $cdn, $regex) {
+		$this->fixture->loadJquery($version, $cdn);
+		$out = $this->fixture->render();
+
+		$this->assertRegExp(
+			$regex,
+			$out
+		);
+	}
+
+	/**
 	 * test load ExtJS
 	 *
 	 */
