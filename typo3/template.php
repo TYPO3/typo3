@@ -1468,6 +1468,7 @@ class template {
 	 */
 	function getContextMenuCode() {
 		$this->pageRenderer->loadPrototype();
+		$this->pageRenderer->loadJQuery();
 		$this->loadJavascriptLib('js/clickmenu.js');
 
 		$this->JScodeArray['clickmenu'] = '
@@ -1484,6 +1485,7 @@ class template {
 	 */
 	function getDragDropCode($table) {
 		$this->pageRenderer->loadPrototype();
+		$this->pageRenderer->loadJQuery();
 		$this->loadJavascriptLib('js/common.js');
 		$this->loadJavascriptLib('js/tree.js');
 
@@ -1806,6 +1808,7 @@ class template {
 	public function setModuleTemplate($filename) {
 			// Load Prototype lib for IE event
 		$this->pageRenderer->loadPrototype();
+		$this->pageRenderer->loadJQuery();
 		$this->loadJavascriptLib('js/iecompatibility.js');
 		$this->moduleTemplate = $this->getHtmlTemplate($filename);
 	}
