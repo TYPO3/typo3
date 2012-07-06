@@ -2047,6 +2047,116 @@ tt_content.' . $key . $prefix . ' {
 
 		return $ignoredExtensionList;
 	}
+
+	/**
+	 * Makes a table categorizable by extending its TCA.
+	 *
+	 * @param string $extensionKey Extension key to be used
+	 * @param string $tableName Name of the table to be categoriezed
+	 * @param string $fieldName Name of the field to be used to store categories
+	 * @param array $options Additional configuration options
+	 *              + fieldList: field configuration to be added to showitems
+	 *              + typesList: list of types that shall visualize the categories field
+	 *              + position: insert position of the categories field
+	 *              + fieldConfiguration: TCA field config array to override defaults
+	 * @see addTCAcolumns
+	 * @see addToAllTCAtypes
+	 */
+	public static function makeCategorizable($extensionKey, $tableName, $fieldName = 'categories', array $options = array())  {
+			// Load TCA first
+		t3lib_div::loadTCA($tableName);
+
+			// Update the category registry
+		$result = t3lib_category_Registry::getInstance()->add($extensionKey, $tableName, $fieldName);
+
+		if ($result === FALSE) {
+			$message = 't3lib_categoryRegistry: no category registered for table "%s". Double check if there is a TCA configured';
+			t3lib_div::devLog(sprintf($message, $tableName), 'Core', 2);
+		}
+
+			// Makes sure to add more TCA to an existing structure
+		if (isset($GLOBALS['TCA'][$tableName]['columns'])) {
+				// Forges a new field, default name is "categories"
+			$fieldConfiguration = array(
+				'type' => 'select',
+				'foreign_table' => 'sys_category',
+				'foreign_table_where' => ' ORDER BY sys_category.title ASC',
+				'MM' => 'sys_category_record_mm',
+				'MM_opposite_field' => 'items',
+				'MM_match_fields' => array('tablenames' => $tableName),
+				'size' => 10,
+				'autoSizeMax' => 50,
+				'maxitems' => 9999,
+				'renderMode' => 'tree',
+				'treeConfig' => array(
+					'parentField' => 'parent',
+					'appearance' => array(
+						'expandAll' => TRUE,
+						'showHeader' => TRUE,
+					),
+				),
+				'wizards' => array(
+					'_PADDING' => 1,
+					'_VERTICAL' => 1,
+					'edit' => array(
+						'type' => 'popup',
+						'title' => 'Edit',
+						'script' => 'wizard_edit.php',
+						'icon' => 'edit2.gif',
+						'popup_onlyOpenIfSelected' => 1,
+						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+					),
+					'add' => Array(
+						'type' => 'script',
+						'title' => 'Create new',
+						'icon' => 'add.gif',
+						'params' => array(
+							'table' => 'sys_category',
+							'pid' => '###CURRENT_PID###',
+							'setValue' => 'prepend'
+						),
+						'script' => 'wizard_add.php',
+					),
+				),
+			);
+
+			if (!empty($options['fieldConfiguration'])) {
+				$fieldConfiguration = t3lib_div::array_merge_recursive_overrule(
+					$fieldConfiguration,
+					$options['fieldConfiguration']
+				);
+			}
+
+			$columns = array(
+				$fieldName => array(
+					'exclude' => 0,
+					'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category.categories',
+					'config' => $fieldConfiguration,
+				),
+			);
+
+				// Adding fields to an existing table definition
+			self::addTCAcolumns($tableName, $columns);
+
+			$fieldList = '--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.category, ' . $fieldName;
+			if (!empty($options['fieldList'])) {
+				$fieldList = $options['fieldList'];
+			}
+
+			$typesList = '';
+			if (!empty($options['typesList'])) {
+				$typesList = $options['typesList'];
+			}
+
+			$position = '';
+			if (!empty($options['position'])) {
+				$position = $options['position'];
+			}
+
+				// Makes the new "categories" field to be visible in TSFE.
+			self::addToAllTCAtypes($tableName, $fieldList, $typesList, $position);
+		}
+	}
 }
 
 ?>
