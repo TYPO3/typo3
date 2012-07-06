@@ -28,6 +28,8 @@
 ***************************************************************/
 
 var inline = {
+    classVisible: 't3-form-field-container-inline-visible',
+    classCollapsed: 't3-form-field-container-inline-collapsed',
 	structureSeparator: '-',
 	prependFormFieldNames: 'data',
 	noTitleString: '[No title]',
@@ -51,37 +53,40 @@ var inline = {
 		var currentUid = this.parseObjectId('none', objectId, 1);
 		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
 
+        var currentObject = $(objectId);
+        currentObject.addClass(this.classCollapsed);
 			// if content is not loaded yet, get it now from server
-		if(($(objectId+'_fields') && $("irre-loading-indicator"+objectId)) || inline.isLoading) {
+		if(($(objectId + '_fields') && $("irre-loading-indicator" + objectId)) || inline.isLoading) {
 			return false;
-		} else if ($(objectId+'_fields') && $(objectId+'_fields').innerHTML.substr(0,16) == '<!--notloaded-->') {
+		} else if ($(objectId + '_fields') && $(objectId + '_fields').innerHTML.substr(0,16) == '<!--notloaded-->') {
 			inline.isLoading = true;
 				// add loading-indicator
 			if ($(objectId + '_icon')) {
 				$(objectId + '_icon').hide();
-				$(objectId + '_iconcontainer').addClassName('loading-indicator');
+				$(objectId + '_iconcontainer').addClass('loading-indicator');
 			}
+            currentObject.addClass(this.classVisible);
 			return this.getRecordDetails(objectId, returnURL);
 		}
 
-		var currentState = '';
+		var isCollapsed = true;
 		var collapse = new Array();
 		var expand = new Array();
 
 			// if only a single record should be visibly for that set of records
 			// and the record clicked itself is no visible, collapse all others
-		if (expandSingle && !Element.visible(objectId+'_fields')) {
+		if (expandSingle && currentObject.hasClass(this.classCollapsed)) {
 			collapse = this.collapseAllRecords(objectId, objectPrefix, currentUid);
 		}
 
-		Element.toggle(objectId+'_fields');
-		currentState = Element.visible(objectId+'_fields') ? 1 : 0
+		//Element.toggle(objectId + '_fields');
+		isCollapsed = $(objectId).hasClass(this.classCollapsed);
 
 		if (this.isNewRecord(objectId)) {
-			this.updateExpandedCollapsedStateLocally(objectId, currentState);
-		} else if (currentState) {
+			this.updateExpandedCollapsedStateLocally(objectId, isCollapsed);
+		} else if (isCollapsed) {
 			expand.push(currentUid);
-		} else if (!currentState) {
+		} else if (!isCollapsed) {
 			collapse.push(currentUid);
 		}
 
@@ -461,6 +466,7 @@ var inline = {
 			$(objectId + '_iconcontainer').removeClassName('loading-indicator');
 			$(objectId + '_icon').show();
 		}
+
 			// now that the content is loaded, set the expandState
 		this.expandCollapseRecord(objectId, expandSingle);
 	},
