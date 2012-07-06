@@ -161,21 +161,21 @@ table.typo3-TCEforms div.typo3-dyntabmenu-tabs {
 	z-index: 3500;
 }
 
-table.typo3-TCEforms .class-main1 td,
-table.typo3-TCEforms .class-main11 td,
-table.typo3-TCEforms .class-main21 td,
-table.typo3-TCEforms .class-main31 td,
-table.typo3-TCEforms .class-main41 td,
-table.typo3-TCEforms .class-main51 td {
+table.typo3-TCEforms .class-main1 > td,
+table.typo3-TCEforms .class-main11 > td,
+table.typo3-TCEforms .class-main21 > td,
+table.typo3-TCEforms .class-main31 > td,
+table.typo3-TCEforms .class-main41 > td,
+table.typo3-TCEforms .class-main51 > td {
 	padding: 2px 0px 2px 0px;
 }
 
-table.typo3-TCEforms .class-main2 td,
-table.typo3-TCEforms .class-main12 td,
-table.typo3-TCEforms .class-main22 td,
-table.typo3-TCEforms .class-main32 td,
-table.typo3-TCEforms .class-main42 td,
-table.typo3-TCEforms .class-main52 td {
+table.typo3-TCEforms .class-main2 > td,
+table.typo3-TCEforms .class-main12 > td,
+table.typo3-TCEforms .class-main22 > td,
+table.typo3-TCEforms .class-main32 > td,
+table.typo3-TCEforms .class-main42 > td,
+table.typo3-TCEforms .class-main52 > td {
 	padding: 6px 0px 2px 0px;
 }
 
@@ -394,20 +394,90 @@ TCEforms Inline-Relational-Record-Editing
 .typo3-TCEforms div.inlineDivMSIE {
 	display: inline-block;
 }
+.t3-form-field-container-inline:first-child {
+	margin-top:16px;
+}
 
 .t3-form-field-container-inline {
 	margin-right: 20px;
-	margin-bottom: 3px;
+	margin-bottom: 2px;
+	width:100%;
+}
+
+.t3-form-field-container-inline-collapsed  div.t3-form-field-record-inline {
+	display:none !important;
 }
 
 .t3-form-field-header-inline {
-	padding: 0 5px;
+	padding: 6px 16px;
+	position:relative;
+}
+
+.t3-form-field-header-inline > span {
+	position:absolute;
+	left:4px;
+	top:50%;
+	margin-top:-4px;
+}
+
+.t3-form-field-header-inline > table {
+	margin:0px;
+	padding:0px;
+	width:100%;
+}
+
+div.t3-form-field-header-inline td {
+	padding:0px;
+	margin:0px;
+	min-height:100px;
+}
+
+.t3-form-field-header-inline td.t3-form-field-header-inline-ctrl {
+	text-align:right;
+    height:22px;
+    vertical-align:middle;
+}
+
+.t3-form-field-header-inline td.t3-form-field-header-inline-ctrl > * {
+	display:none;
+}
+
+.t3-form-field-header-inline:hover td.t3-form-field-header-inline-ctrl > * {
+	display:inline-block;
+}
+
+.t3-form-field-header-inline td.t3-form-field-header-inline-ctrl > span.sortableHandle {
+	margin-left:16px;
+	display:inline-block;
+}
+
+.t3-form-field-header-inline td.t3-form-field-header-inline-summary {
+	text-align:left;
+}
+
+.t3-form-field-header-inline td.t3-form-field-header-inline-icon {
+	width:25px;
+}
+
+.t3-form-field-header-inline td.t3-form-field-header-inline-thumbnail {
+	width:80px;
+	padding:0px!important;
+	vertical-align: middle;
 }
 
 .t3-form-field-record-inline {
-	padding: 0 5px;
+	padding: 8px 8px;
+    position:relative;
 }
-
+.t3-form-field-record-inline > table {
+    width:100%;
+}
+.t3-form-field-record-inline .typo3-dyntabmenu-divs,
+.t3-form-field-record-inline .typo3-dyntabmenu-tabs {
+    margin-left:8px;
+    margin-right:8px !important;
+    margin-bottom:0px !important;
+}
 .sortableHandle {
 	cursor: move;
 }

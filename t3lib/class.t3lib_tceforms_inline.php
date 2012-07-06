@@ -360,6 +360,7 @@ class t3lib_TCEforms_inline {
 			// Put the current level also to the dynNestedStack of TCEforms:
 		$this->fObj->pushToDynNestedStack('inline', $objectId);
 
+		$class = '';
 		if (!$isVirtualRecord) {
 				// Get configuration:
 			$collapseAll = (isset($config['appearance']['collapseAll']) && $config['appearance']['collapseAll']);
@@ -408,7 +409,7 @@ class t3lib_TCEforms_inline {
 			}
 				// If this record should be shown collapsed
 			if (!$isExpanded) {
-				$appearanceStyleFields = ' style="display: none;"';
+				$class = 't3-form-field-container-inline-collapsed';
 			}
 		}
 
@@ -416,13 +417,15 @@ class t3lib_TCEforms_inline {
 			$out = $fields . $combination;
 		} else {
 				// Set the record container with data for output
-			$out = '<div class="t3-form-field-record-inline" id="' . $objectId . '_fields"' . $appearanceStyleFields . '>' . $fields . $combination . '</div>';
-			$header = $this->renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
+			$out = '<div class="t3-form-field-record-inline" id="' . $objectId . '_fields" data-expandSingle="' . ($config['appearance']['expandSingle'] ? 1 : 0) . '" data-returnURL="' . htmlspecialchars(t3lib_div::getIndpEnv('REQUEST_URI')) . '">' . $fields . $combination . '</div>';
+
+			$header  = t3lib_iconWorks::getSpriteIcon('apps-irre-' . ($class != '' ? 'collapsed' : 'expanded'));
+			$header .= $this->renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
 			$out = '<div class="t3-form-field-header-inline" id="' . $objectId . '_header">' . $header . '</div>' . $out;
 				// Wrap the header, fields and combination part of a child record with a div container
 			$classMSIE = ($this->fObj->clientInfo['BROWSER'] == 'msie' && $this->fObj->clientInfo['VERSION'] < 8 ? 'MSIE' : '');
-			$class = 'inlineDiv' . $classMSIE . ($isNewRecord ? ' inlineIsNewRecord' : '');
-			$out = '<div id="' . $objectId . '_div" class="t3-form-field-container-inline ' . $class . '">' . $out . '</div>';
+			$class .= ' inlineDiv' . $classMSIE . ($isNewRecord ? ' inlineIsNewRecord' : '');
+			$out = '<div id="' . $objectId . '_div" class="t3-form-field-container-inline ' . trim($class) . '">' . $out . '</div>';
 		}
 			// Remove the current level also from the dynNestedStack of TCEforms:
 		$this->fObj->popFromDynNestedStack();
@@ -468,9 +471,7 @@ class t3lib_TCEforms_inline {
 	function renderForeignRecordHeader($parentUid, $foreign_table, $rec, $config, $isVirtualRecord = FALSE) {
 			// Init:
 		$objectId = $this->inlineNames['object'] . self::Structure_Separator . $foreign_table . self::Structure_Separator . $rec['uid'];
-		$expandSingle = $config['appearance']['expandSingle'] ? 1 : 0;
 			// We need the returnUrl of the main script when loading the fields via AJAX-call (to correct wizard code, so include it as 3rd parameter)
-		$onClick = "return inline.expandCollapseRecord('" . htmlspecialchars($objectId) . "', " . $expandSingle . ", '" . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . "')";
 
 			// Pre-Processing:
 		$isOnSymmetricSide = t3lib_loadDBGroup::isOnSymmetricSide($parentUid, $config, $rec);
@@ -533,7 +534,9 @@ class t3lib_TCEforms_inline {
 							array('width' => 64, 'height' => 64)
 						)->getPublicUrl(TRUE);
 
-						$thumbnail = '<span class="nobr"><img src="' . $imageUrl . '" alt="' . htmlspecialchars($recTitle) . '" /></span>';
+						$thumbnail = '<img src="' . $imageUrl . '" alt="' . htmlspecialchars($recTitle) . '">';
+					} else {
+						$thumbnail = FALSE;
 					}
 				}
 			}
@@ -543,28 +546,16 @@ class t3lib_TCEforms_inline {
 		$iconImg = t3lib_iconWorks::getSpriteIconForRecord($foreign_table, $rec, array('title' => htmlspecialchars($altText), 'id' => $objectId . '_icon'));
 		$label = '<span id="' . $objectId . '_label">' . $recTitle . '</span>';
 
-		if (!$isVirtualRecord) {
-			$iconImg = $this->wrapWithAnchor($iconImg, '#', array('onclick' => $onClick));
-			$label = $this->wrapWithAnchor($label, '#', array('onclick' => $onClick, 'style' => 'display: block;'));
-
-			if (!empty($config['appearance']['headerThumbnail'])) {
-				$thumbnail = $this->wrapWithAnchor($thumbnail, '#', array('onclick' => $onClick, 'style' => 'display: block;'));
-			}
-		}
-
 		$ctrl = $this->renderForeignRecordHeaderControl($parentUid, $foreign_table, $rec, $config, $isVirtualRecord);
 
-			// @TODO: Check the table wrapping and the CSS definitions
 		$header =
-				'<table cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-right: ' . $this->inlineStyles['margin-right'] . 'px;"' .
-				($this->fObj->borderStyle[2] ? ' background="' . htmlspecialchars($this->backPath . $this->fObj->borderStyle[2]) . '"' : '') .
-				($this->fObj->borderStyle[3] ? ' class="' . htmlspecialchars($this->fObj->borderStyle[3]) . '"' : '') . '>' .
-				'<tr class="class-main12">' .
-					(!empty($config['appearance']['headerThumbnail']) && !empty($thumbnail)
-						?	'<td width="75" id="' . $objectId . '_thumbnailcontainer">' . $thumbnail . '</td>'
-						:	'<td width="18" id="' . $objectId . '_iconcontainer">' . $iconImg . '</td>') .
-					'<td align="left"><strong>' . $label . '</strong></td>' .
-					'<td align="right">' . $ctrl . '</td>' .
+				'<table>' .
+				'<tr>' .
+					(!empty($config['appearance']['headerThumbnail']) && $thumbnail
+						?	'<td class="t3-form-field-header-inline-thumbnail" id="' . $objectId . '_thumbnailcontainer">' . $thumbnail . '</td>'
+						:	'<td class="t3-form-field-header-inline-icon" id="' . $objectId . '_iconcontainer">' . $iconImg . '</td>') .
+					'<td class="t3-form-field-header-inline-summary">' . $label . '</td>' .
+					'<td clasS="t3-form-field-header-inline-ctrl">' . $ctrl . '</td>' .
 				'</tr>' .
 				'</table>';
 
@@ -655,10 +646,6 @@ class t3lib_TCEforms_inline {
 				}
 			}
 
-				// Drag&Drop Sorting: Sortable handler for script.aculo.us
-			if ($enabledControls['dragdrop'] && $permsEdit && $enableManualSorting && $config['appearance']['useSortable']) {
-				$cells['dragdrop'] = t3lib_iconWorks::getSpriteIcon('actions-move-move', array('class' => 'sortableHandle', 'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.move', TRUE)));
-			}
 
 				// "Up/Down" links
 			if ($enabledControls['sort'] && $permsEdit && $enableManualSorting) {
@@ -709,6 +696,11 @@ class t3lib_TCEforms_inline {
 								t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_web_list.xml:delete', TRUE))) .
 								'</a>';
 			}
+
+				// Drag&Drop Sorting: Sortable handler for script.aculo.us
+			if ($enabledControls['dragdrop'] && $permsEdit && $enableManualSorting && $config['appearance']['useSortable']) {
+				$cells['dragdrop'] = t3lib_iconWorks::getSpriteIcon('actions-move-move', array('class' => 'sortableHandle', 'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.move', TRUE)));
+			}
 				// If this is a virtual record offer a minimized set of icons for user interaction:
 		} elseif ($isVirtualRecord) {
 			if ($enabledControls['localize'] && isset($rec['__create'])) {
@@ -730,10 +722,8 @@ class t3lib_TCEforms_inline {
 		foreach ($this->hookObjects as $hookObj) {
 			$hookObj->renderForeignRecordHeaderControl_postProcess($parentUid, $foreign_table, $rec, $config, $isVirtualRecord, $cells);
 		}
-			// Compile items into a DIV-element:
-		return '
-											<!-- CONTROL PANEL: ' . $foreign_table . ':' . $rec['uid'] . ' -->
-											<div class="typo3-DBctrl">' . implode('', $cells) . '</div>';
+
+		return '<!-- CONTROL PANEL: ' . $foreign_table . ':' . $rec['uid'] . ' -->'  . implode('', $cells);
 	}
 
 
@@ -2066,9 +2056,6 @@ class t3lib_TCEforms_inline {
 	function wrapFormsSection($section, $styleAttrs = array(), $tableAttrs = array()) {
 		$style = '';
 		$table = '';
-		if (!$styleAttrs['margin-right']) {
-			$styleAttrs['margin-right'] = $this->inlineStyles['margin-right'] . 'px';
-		}
 
 		foreach ($styleAttrs as $key => $value) {
 			$style .= ($style ? ' ' : '') . $key . ': ' . htmlspecialchars($value) . '; ';
@@ -2080,18 +2067,7 @@ class t3lib_TCEforms_inline {
 		if (!$tableAttrs['background'] && $this->fObj->borderStyle[2]) {
 			$tableAttrs['background'] = $this->backPath . $this->borderStyle[2];
 		}
-		if (!$tableAttrs['cellspacing']) {
-			$tableAttrs['cellspacing'] = '0';
-		}
-		if (!$tableAttrs['cellpadding']) {
-			$tableAttrs['cellpadding'] = '0';
-		}
-		if (!$tableAttrs['border']) {
-			$tableAttrs['border'] = '0';
-		}
-		if (!$tableAttrs['width']) {
-			$tableAttrs['width'] = '100%';
-		}
+
 		if (!$tableAttrs['class'] && $this->borderStyle[3]) {
 			$tableAttrs['class'] = $this->borderStyle[3];
 		}

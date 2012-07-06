@@ -808,6 +808,8 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'apps-filetree-folder-user',
 	'apps-filetree-mount',
 	'apps-filetree-root',
+	'apps-irre-collapsed',
+	'apps-irre-expanded',
 	'apps-pagetree-backend-user',
 	'apps-pagetree-backend-user-hideinmenu',
 	'apps-pagetree-collapse',
@@ -994,10 +996,6 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-in-use',
 	'status-warning-lock'
 );
-
-
-
-
 
 
 
