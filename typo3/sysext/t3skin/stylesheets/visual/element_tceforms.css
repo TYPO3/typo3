@@ -456,3 +456,20 @@ TCEforms Sections
 	text-indent: 0px;
 	background-position-x: 5px;
 }
+
+.t3-tceforms-fieldReadOnly {
+    padding:5px;
+    border:1px solid #cccccc;
+    background: #f4f4f4;
+    color: #696362;
+    -webkit-box-shadow: inset 0px 0px 5px 0px #e8e8e8;
+    box-shadow: inset 0px 0px 5px 0px #e8e8e8;
+    padding-right:21px;
+    position:relative;
+}
+
+.t3-tceforms-fieldReadOnly span.t3-icon {
+    position:absolute;
+    right:3px;
+    top:4px;
+}

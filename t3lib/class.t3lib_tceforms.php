@@ -2448,9 +2448,6 @@ class t3lib_TCEforms {
 	 */
 	function getSingleField_typeNone_render($config, $itemValue) {
 
-			// Is colorScheme[0] the right value?
-		$divStyle = 'border:solid 1px ' . t3lib_div::modifyHTMLColorAll($this->colorScheme[0], -30) . ';' . $this->defStyle . $this->formElStyle('none') . ' background-color: ' . $this->colorScheme[0] . '; padding-left:1px;color:#555;';
-
 		if ($config['format']) {
 			$itemValue = $this->formatValue($config, $itemValue);
 		}
@@ -2481,8 +2478,9 @@ class t3lib_TCEforms {
 			$height = $rows * 12;
 
 			$item = '
-				<div style="' . htmlspecialchars($divStyle . ' overflow:auto; height:' . $height . 'px; width:' . $width . 'px;') . '" class="' . htmlspecialchars($this->formElClass('none')) . '">' .
+				<div style="overflow:auto; height:' . $height . 'px; width:' . $width . 'px;" class="t3-tceforms-fieldReadOnly">' .
 					$itemValue .
+					t3lib_iconWorks::getSpriteIcon('status-status-readonly') .
 					'</div>';
 		} else {
 			if (!$config['pass_content']) {
@@ -2497,8 +2495,9 @@ class t3lib_TCEforms {
 
 				// Overflow:auto crashes mozilla here. Title tag is usefull when text is longer than the div box (overflow:hidden).
 			$item = '
-				<div style="' . htmlspecialchars($divStyle . ' overflow:hidden; width:' . $width . 'px;') . '" class="' . htmlspecialchars($this->formElClass('none')) . '" title="' . $itemValue . '">' .
+				<div style="overflow:hidden; width:' . $width . 'px;" class="t3-tceforms-fieldReadOnly" title="' . $itemValue . '">' .
 					'<span class="nobr">' . (strcmp($itemValue, '') ? $itemValue : '&nbsp;') . '</span>' .
+					t3lib_iconWorks::getSpriteIcon('status-status-readonly') .
 					'</div>';
 		}
 
