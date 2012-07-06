@@ -15,7 +15,8 @@ h1,
 }
 
 #t3-install-box-body,
-#t3-install-menu {
+#t3-install-menu,
+#t3-install-form-submit-fieldset {
 	border: 1px #dcdcdc solid;
 	background-color: #ffffff;
 }
@@ -191,6 +192,14 @@ h1,
 .t3-install-description {
 	word-wrap: break-word;
 	width: 48em;
+}
+
+#t3-install-form-submit-fieldset {
+	position: fixed;
+	left: 100em;
+	top: 80%;
+	width: 16em;
+	padding: 1em;
 }
 
 /* 6: typo3temp/ */
@@ -443,6 +452,11 @@ body.standalone #t3-install-box-border-top {
 }
 
 body.standalone #t3-install-box-body {
+	background-color: #eeeeee;
+}
+
+body.standalone #t3-install-form-submit-fieldset {
+	left: 108em;
 	background-color: #eeeeee;
 }
 
