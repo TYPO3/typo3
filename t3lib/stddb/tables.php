@@ -1047,4 +1047,9 @@ $TCA['sys_category'] = array(
 );
 
 t3lib_extMgm::allowTableOnStandardPages('sys_category');
+
+$defaultCategorizedTables = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables']);
+foreach ($defaultCategorizedTables as $defaultCategorizedTable) {
+	t3lib_extMgm::makeCategorizable('core', $defaultCategorizedTable, 'categories');
+}
 ?>
