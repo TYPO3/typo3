@@ -53,7 +53,10 @@ class tx_rtehtmlarea_pi1 {
 	var $filePrefix = 'rtehtmlarea_';
 	var $uploadFolder = 'uploads/tx_rtehtmlarea/';
 	var $userUid;
-	var $personalDictsArg = '';
+		// Path to main dictionary
+	protected $mainDictionaryPath;
+		// Path to personal dictionary
+	protected $personalDictionaryPath;
 	var $xmlCharacterData = '';
 
 	/**
@@ -136,18 +139,11 @@ class tx_rtehtmlarea_pi1 {
 			$this->pspell_link = pspell_new($this->dictionary, '', '', $this->parserCharset, $pspellModeFlag);
 		}
 
-			// Setting the path to user personal dicts, if any
-		if (t3lib_div::_POST('enablePersonalDicts') == 'true' && TYPO3_MODE == 'BE' && is_object($GLOBALS['BE_USER'])) {
-			$this->userUid = 'BE_' . $GLOBALS['BE_USER']->user['uid'];
-			if ($this->userUid) {
-				$this->personalDictPath = t3lib_div::getFileAbsFileName($this->uploadFolder . $this->userUid);
-				if (!is_dir($this->personalDictPath)) {
-					t3lib_div::mkdir($this->personalDictPath);
-				}
-					// escape here for later use
-				$this->personalDictsArg = ' --home-dir=' . escapeshellarg($this->personalDictPath);
-			}
-		}
+			// Setting the path to main dictionary
+		$this->setMainDictionaryPath();
+			// Setting the path to user personal dictionary, if any
+		$this->setPersonalDictionaryPath();
+		$this->fixPersonalDictionaryCharacterSet();
 
 		$cmd = t3lib_div::_POST('cmd');
 		if ($cmd == 'learn') {
@@ -160,35 +156,44 @@ class tx_rtehtmlarea_pi1 {
 			$to_r_list = $to_r_list ? $to_r_list : array();
 			header('Content-Type: text/plain; charset=' . strtoupper($this->parserCharset));
 			header('Pragma: no-cache');
-			if($to_p_dict || $to_r_list) {
+			if ($to_p_dict || $to_r_list) {
 				$tmpFileName = t3lib_div::tempnam($this->filePrefix);
-				if($filehandle = fopen($tmpFileName,'wb')) {
+				$filehandle = fopen($tmpFileName, 'wb');
+				if ($filehandle) {
+						// Get the character set of the main dictionary
+						// We need to convert the input into the character set of the main dictionary
+					$mainDictionaryCharacterSet = $this->getMainDictionaryCharacterSet();
+						// Write the personal words addition commands to the temporary file
 					foreach ($to_p_dict as $personal_word) {
-						$cmd = '&' . $personal_word . LF;
-						echo $cmd;
+						$cmd = '&' . $this->csConvObj->conv($personal_word, $this->parserCharset, $mainDictionaryCharacterSet) . LF;
 						fwrite($filehandle, $cmd, strlen($cmd));
 					}
+						// Write the replacent pairs addition commands to the temporary file
 					foreach ($to_r_list as $replace_pair) {
-						$cmd = '$$ra ' . $replace_pair[0] . ' , ' . $replace_pair[1] . LF;
-						echo $cmd;
+						$cmd = '$$ra ' . $this->csConvObj->conv($replace_pair[0], $this->parserCharset, $mainDictionaryCharacterSet) . ' , ' . $this->csConvObj->conv($replace_pair[1], $this->parserCharset, $mainDictionaryCharacterSet) . LF;
 						fwrite($filehandle, $cmd, strlen($cmd));
 					}
-					$cmd = "#\n";
-					echo $cmd;
+					$cmd = '#' . LF;
 					fwrite($filehandle, $cmd, strlen($cmd));
+						// Assemble the Aspell command
+					$AspellCommand = ((TYPO3_OS === 'WIN') ? 'type ' : 'cat ') . escapeshellarg($tmpFileName) . ' | '
+						. $this->AspellDirectory
+						. ' -a --mode=none'
+						. ($this->personalDictionaryPath ? ' --home-dir=' . escapeshellarg($this->personalDictionaryPath) : '')
+						. ' --lang=' . escapeshellarg($this->dictionary)
+						. ' --encoding=' . escapeshellarg($mainDictionaryCharacterSet)
+						. ' 2>&1';
+					$AspellAnswer = shell_exec($AspellCommand);
+						// Close and delete the temporary file
 					fclose($filehandle);
-						// $this->personalDictsArg has already been escapeshellarg()'ed above, it is an optional paramter and might be empty here
-					$catCommand = (TYPO3_OS == 'WIN') ? 'type' : 'cat';
-					$AspellCommand = $catCommand . ' ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a --mode=none' . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
-					print $AspellCommand . LF;
-					print shell_exec($AspellCommand);
 					t3lib_div::unlink_tempfile($tmpFileName);
-					echo('Personal word list was updated.');
+					echo 'Personal word list was updated.';
 				} else {
-					echo('SpellChecker tempfile open error.');
+					t3lib_div::sysLog('SpellChecker tempfile open error: ' . $tmpFileName, $this->extKey, t3lib_div::SYSLOG_SEVERITY_ERROR);
+					echo 'SpellChecker tempfile open error.';
 				}
 			} else {
-				echo('Nothing to add to the personal word list.');
+				echo 'Nothing to add to the personal word list.';
 			}
 			flush();
 			exit();
@@ -254,6 +259,82 @@ var selectedDictionary = "' . $this->dictionary . '";
 		}
 
 	}  // end of function main
+
+	/**
+	 * Sets the path to the main dictionary
+	 *
+	 * @return string path to the main dictionary
+	 */
+	protected function setMainDictionaryPath() {
+		$this->mainDictionaryPath = trim(shell_exec($this->AspellDirectory . ' config dict-dir'));
+		return $this->mainDictionaryPath;
+	}
+
+	/**
+	 * Gets the character set the main dictionary
+	 *
+	 * @return string character set the main dictionary
+	 */
+	protected function getMainDictionaryCharacterSet() {
+		$characterSet = '';
+			// Read the options of the dictionary
+		$dictionaryHandle = fopen($this->mainDictionaryPath . '/' . $this->dictionary . '.dat', 'rb');
+		$dictionaryContent = fread($dictionaryHandle, 500);
+		fclose($dictionaryHandle);
+			// Get the line that contains the character set option
+		$dictionaryContent = preg_split('/charset\s*/', $dictionaryContent, 2);
+		if ($dictionaryContent[1]) {
+				// Isolate the character set
+			$dictionaryContent = t3lib_div::trimExplode(LF, $dictionaryContent[1]);
+			$characterSet = $dictionaryContent[0];
+		}
+			// Fix Aspell character set oddity (i.e. iso8859-1)
+		$characterSet = str_replace('iso', 'iso-', $characterSet);
+		$characterSet = str_replace('--', '-', $characterSet);
+		return $characterSet;
+	}
+
+	/**
+	 * Sets the path to the personal dictionary
+	 *
+	 * @return string path to the personal dictionary
+	 */
+	protected function setPersonalDictionaryPath() {
+		$this->personalDictionaryPath = '';
+		if (t3lib_div::_POST('enablePersonalDicts') == 'true' && TYPO3_MODE == 'BE' && is_object($GLOBALS['BE_USER'])) {
+			$this->userUid = 'BE_' . $GLOBALS['BE_USER']->user['uid'];
+			if ($this->userUid) {
+				$this->personalDictionaryPath = t3lib_div::getFileAbsFileName($this->uploadFolder . $this->userUid);
+				if (!is_dir($this->personalDictionaryPath)) {
+					t3lib_div::mkdir($this->personalDictionaryPath);
+				}
+			}
+		}
+		return $this->personalDictionaryPath;
+	}
+
+	/**
+	 * Ensures that the personal dictionary is utf-8 encoded
+	 *
+	 * @return void
+	 */
+	protected function fixPersonalDictionaryCharacterSet() {
+			// Fix the options of the personl word list and of the replacement pairs files
+		$fileNames = array();
+		$fileNames[0] = $this->personalDictionaryPath . '/' . '.aspell.' . $this->dictionary . '.pws';
+		$fileNames[1] = $this->personalDictionaryPath . '/' . '.aspell.' . $this->dictionary . '.prepl';
+		foreach ($fileNames as $fileName) {
+			if (file_exists($fileName)) {
+				$fileContent = file_get_contents($fileName);
+				$fileContent = explode(LF, $fileContent);
+				if (strpos($fileContent[0], 'utf-8') === FALSE) {
+					$fileContent[0] .= ' utf-8';
+				}
+				$fileContent = implode(LF, $fileContent);
+				file_put_contents($fileName, $fileContent);
+			}
+		}
+	}
 
 	function startHandler($xml_parser, $tag, $attributes) {
 
@@ -351,7 +432,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 					if(!fwrite($filehandle, $word)) echo('SpellChecker tempfile write error');
 					if(!fclose($filehandle)) echo('SpellChecker tempfile close error');
 					$catCommand = (TYPO3_OS == 'WIN') ? 'type' : 'cat';
-					$AspellCommand = $catCommand . ' ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a check --mode=none --sug-mode=' . escapeshellarg($this->pspellMode) . $this->personalDictsArg . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
+					$AspellCommand = $catCommand . ' ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a check --mode=none --sug-mode=' . escapeshellarg($this->pspellMode) . ($this->personalDictionaryPath ? ' --home-dir=' . escapeshellarg($this->personalDictionaryPath) : '') . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
 					$AspellAnswer = shell_exec($AspellCommand);
 					$AspellResultLines = array();
 					$AspellResultLines = t3lib_div::trimExplode(LF, $AspellAnswer, 1);
