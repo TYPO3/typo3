@@ -3090,7 +3090,7 @@ final class t3lib_div {
 								$sortarray[$key] = filemtime($path . '/' . $entry);
 							}
 							elseif ($order) {
-								$sortarray[$key] = $entry;
+								$sortarray[$key] = strtolower($entry);
 							}
 						}
 					}
