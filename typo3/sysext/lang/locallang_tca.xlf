@@ -474,6 +474,30 @@
 			<trans-unit id="editlock" xml:space="preserve">
 				<source>Restrict editing by non-Admins:</source>
 			</trans-unit>
+			<trans-unit id="sys_category" xml:space="preserve">
+				<source>Category</source>
+			</trans-unit>
+			<trans-unit id="sys_category.title" xml:space="preserve">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="sys_category.description" xml:space="preserve">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="sys_category.parent" xml:space="preserve">
+				<source>Parent</source>
+			</trans-unit>
+			<trans-unit id="sys_category.items" xml:space="preserve">
+				<source>Items</source>
+			</trans-unit>
+			<trans-unit id="sys_category.categories" xml:space="preserve">
+				<source>Categories</source>
+			</trans-unit>
+			<trans-unit id="sys_category.tabs.category" xml:space="preserve">
+				<source>Categories</source>
+			</trans-unit>
+			<trans-unit id="sys_category.tabs.items" xml:space="preserve">
+				<source>Items</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

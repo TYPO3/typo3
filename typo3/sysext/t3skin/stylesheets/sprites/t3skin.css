@@ -1,24 +1,24 @@
 
 .t3-icon-actions {
-	background-image: url('../../images/sprites/t3skin.png?1341698812') !important;
+	background-image: url('../../images/sprites/t3skin.png?1341895083') !important;
 	height: 16px;
 	width: 16px;
 }
 
 .t3-icon-apps {
-	background-image: url('../../images/sprites/t3skin.png?1341698812') !important;
+	background-image: url('../../images/sprites/t3skin.png?1341895083') !important;
 	height: 16px;
 	width: 16px;
 }
 
 .t3-icon-mimetypes {
-	background-image: url('../../images/sprites/t3skin.png?1341698812') !important;
+	background-image: url('../../images/sprites/t3skin.png?1341895083') !important;
 	height: 16px;
 	width: 16px;
 }
 
 .t3-icon-status {
-	background-image: url('../../images/sprites/t3skin.png?1341698812') !important;
+	background-image: url('../../images/sprites/t3skin.png?1341895083') !important;
 	height: 16px;
 	width: 16px;
 }
@@ -183,7 +183,7 @@
 
 }
 .t3-icon-input-clear {
-	background-position: -0px -348px !important;
+	background-position: -0px -366px !important;
 	height: 13px;
 	width: 13px;
 
@@ -225,7 +225,7 @@
 
 }
 .t3-icon-move-move {
-	background-position: -0px -335px !important;
+	background-position: -0px -353px !important;
 	height: 11px;
 
 }
@@ -502,13 +502,13 @@
 
 }
 .t3-icon-irre-collapsed {
-	background-position: -0px -324px !important;
+	background-position: -0px -342px !important;
 	height: 9px;
 	width: 9px;
 
 }
 .t3-icon-irre-expanded {
-	background-position: -11px -324px !important;
+	background-position: -11px -342px !important;
 	height: 9px;
 	width: 9px;
 
@@ -894,8 +894,13 @@
 	background-position: -216px -198px !important;
 
 }
-.t3-icon-x-sys_language {
+.t3-icon-x-sys_category {
 	background-position: -20px -306px !important;
+	width: 18px;
+
+}
+.t3-icon-x-sys_language {
+	background-position: -0px -324px !important;
 	width: 18px;
 
 }

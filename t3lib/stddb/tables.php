@@ -302,6 +302,40 @@ $TCA['sys_filemounts'] = array(
 );
 
 /**
+ * Table "sys_category":
+ * Represents all categories to be used for record categorization
+ */
+$TCA['sys_category'] = array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category',
+		'label' => 'title',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'delete' => 'deleted',
+		'default_sortby' => 'ORDER BY title ASC',
+		'dividers2tabs' => TRUE,
+		'versioningWS' => 2,
+		'versioning_followPages' => TRUE,
+		'origUid' => 't3_origuid',
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'searchFields' => 'title,description',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+		),
+		'dynamicConfigFile' => 'T3LIB:tca_sys_category.php',
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-sys_category',
+		),
+	),
+);
+t3lib_extMgm::allowTableOnStandardPages('sys_category');
+
+/**
  * Table "sys_collection":
  */
 $TCA['sys_collection'] = array(
@@ -905,6 +939,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'mimetypes-x-content-text',
 	'mimetypes-x-content-text-picture',
 	'mimetypes-x-sys_action',
+	'mimetypes-x-sys_category',
 	'mimetypes-x-sys_language',
 	'mimetypes-x-sys_news',
 	'mimetypes-x-sys_workspace',
@@ -999,6 +1034,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-lock'
 );
 
+
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array(
 	'deleted',
 	'hidden',
@@ -1021,5 +1057,4 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayNames'] = array(
 	'translated' => 'status-overlay-translated',
 	'protectedSection' => 'status-overlay-includes-subpages',
 );
-
 ?>

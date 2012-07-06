@@ -867,6 +867,10 @@ class tx_em_Install {
 		if (is_array($extInfo['files']) && in_array('ext_tables.sql', $extInfo['files'])) {
 			$path = tx_em_Tools::getExtPath($extKey, $extInfo['type']);
 			$fileContent = t3lib_div::getUrl($path . 'ext_tables.sql');
+
+				// Add SQL content coming from the category registry
+			$fileContent .= t3lib_category_Registry::getInstance()->getDatabaseTableDefinition($extKey);
+
 				// Take caching tables into account only if necessary
 				// (this is not always the case, because this method is also called, for example,
 				// to list all tables for which to dump data for in the extension maintenance operations)
