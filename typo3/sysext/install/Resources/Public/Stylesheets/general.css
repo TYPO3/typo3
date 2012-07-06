@@ -207,6 +207,15 @@ button span.t3-install-form-button-icon-positive {
 	margin: 1em auto;
 }
 
+#t3-install-form-submit-fieldset {
+	position: fixed;
+	left: 108em;
+	top: 80%;
+	background-color: #eeeeee;
+	width: 16em;
+	padding: 1em;
+}
+
 #t3-install-left {
 	float: left;
 	width: 19em;
