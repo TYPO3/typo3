@@ -28,6 +28,8 @@
 ***************************************************************/
 
 var inline = {
+	classVisible: 't3-form-field-container-inline-visible',
+	classCollapsed: 't3-form-field-container-inline-collapsed',
 	structureSeparator: '-',
 	prependFormFieldNames: 'data',
 	noTitleString: '[No title]',
@@ -47,41 +49,49 @@ var inline = {
 	setNoTitleString: function(value) {
 		this.noTitleString = value;
 	},
+	toggleEvent: function(event) {
+		var recordHeader = TYPO3.jQuery(this);
+		inline.expandCollapseRecord(
+			recordHeader.attr('id').replace('_header', ''),
+			recordHeader.attr('data-expandSingle'),
+			recordHeader.attr('data-returnURL')
+		);
+	},
 	expandCollapseRecord: function(objectId, expandSingle, returnURL) {
 		var currentUid = this.parseObjectId('none', objectId, 1);
 		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
 
+		var currentObject = TYPO3.jQuery('#' + objectId + '_div');
 			// if content is not loaded yet, get it now from server
-		if(($(objectId+'_fields') && $("irre-loading-indicator"+objectId)) || inline.isLoading) {
+		if((TYPO3.jQuery('#' + objectId + '_fields') && $("irre-loading-indicator" + objectId)) || inline.isLoading) {
 			return false;
-		} else if ($(objectId+'_fields') && $(objectId+'_fields').innerHTML.substr(0,16) == '<!--notloaded-->') {
+		} else if ($(objectId + '_fields') && $(objectId + '_fields').innerHTML.substr(0,16) == '<!--notloaded-->') {
 			inline.isLoading = true;
 				// add loading-indicator
-			if ($(objectId + '_icon')) {
-				$(objectId + '_icon').hide();
-				$(objectId + '_iconcontainer').addClassName('loading-indicator');
+			if (TYPO3.jQuery('#' + objectId + '_icon')) {
+				TYPO3.jQuery('#' + objectId + '_icon').hide();
+				TYPO3.jQuery('#' + objectId + '_iconcontainer').addClass('loading-indicator');
 			}
 			return this.getRecordDetails(objectId, returnURL);
 		}
 
-		var currentState = '';
+		var isCollapsed = currentObject.hasClass(this.classCollapsed);
 		var collapse = new Array();
 		var expand = new Array();
 
 			// if only a single record should be visibly for that set of records
 			// and the record clicked itself is no visible, collapse all others
-		if (expandSingle && !Element.visible(objectId+'_fields')) {
+		if (expandSingle && currentObject.hasClass(this.classCollapsed)) {
 			collapse = this.collapseAllRecords(objectId, objectPrefix, currentUid);
 		}
 
-		Element.toggle(objectId+'_fields');
-		currentState = Element.visible(objectId+'_fields') ? 1 : 0
+		inline.toggleElement(objectId);
 
 		if (this.isNewRecord(objectId)) {
-			this.updateExpandedCollapsedStateLocally(objectId, currentState);
-		} else if (currentState) {
+			this.updateExpandedCollapsedStateLocally(objectId, isCollapsed);
+		} else if (isCollapsed) {
 			expand.push(currentUid);
-		} else if (!currentState) {
+		} else if (!isCollapsed) {
 			collapse.push(currentUid);
 		}
 
@@ -90,6 +100,16 @@ var inline = {
 		return false;
 	},
 
+	toggleElement: function(objectId) {
+		var jQueryObject = TYPO3.jQuery('#' + objectId + '_div');
+		if (jQueryObject.hasClass(this.classCollapsed)) {
+			jQueryObject.removeClass(this.classCollapsed).addClass(this.classVisible);
+			jQueryObject.find('#' + objectId + '_header .t3-icon-irre-collapsed').removeClass('t3-icon-irre-collapsed').addClass('t3-icon-irre-expanded');
+		} else {
+			jQueryObject.removeClass(this.classVisible).addClass(this.classCollapsed);
+			jQueryObject.find('#' + objectId + '_header .t3-icon-irre-expanded').addClass('t3-icon-irre-collapsed').removeClass('t3-icon-irre-expanded');
+		}
+	},
 	collapseAllRecords: function(objectId, objectPrefix, callingUid) {
 			// get the form field, where all records are stored
 		var objectName = this.prependFormFieldNames+this.parseObjectId('parts', objectId, 3, 2, true);
@@ -103,8 +123,9 @@ var inline = {
 			var records = formObj[0].value.split(',');
 			for (var i=0; i<records.length; i++) {
 				recObjectId = objectPrefix + this.structureSeparator + records[i];
-				if (records[i] != callingUid && Element.visible(recObjectId+'_fields')) {
-					Element.hide(recObjectId+'_fields');
+				var recordEntry = TYPO3.jQuery('#' + recObjectId);
+				if (records[i] != callingUid && recordEntry.hasClass(this.classVisible)) {
+					TYPO3.jQuery('#' + recObjectId + '_div').removeClass(this.classVisible).addClass(this.classCollapsed);
 					if (this.isNewRecord(recObjectId)) {
 						this.updateExpandedCollapsedStateLocally(recObjectId, 0);
 					} else {
@@ -461,6 +482,7 @@ var inline = {
 			$(objectId + '_iconcontainer').removeClassName('loading-indicator');
 			$(objectId + '_icon').show();
 		}
+
 			// now that the content is loaded, set the expandState
 		this.expandCollapseRecord(objectId, expandSingle);
 	},
@@ -1162,3 +1184,8 @@ Object.extend(Array.prototype, {
 });
 
 /*]]>*/
+(function($) {
+	$(function() {
+		$(document).delegate('div.t3-form-field-header-inline', 'click', inline.toggleEvent);
+	});
+})(TYPO3.jQuery);
