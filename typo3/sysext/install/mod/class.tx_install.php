@@ -644,7 +644,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$markers = array(
 						'action' => $this->action,
 						'content' => $this->printAll(),
-						'write' => 'Write to localconf.php',
+						'write' => 'Save',
 						'notice' => 'NOTICE:',
 						'explanation' => '
 							By clicking this button, localconf.php is updated

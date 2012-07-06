@@ -211,6 +211,7 @@ button span.t3-install-form-button-icon-positive {
 	float: left;
 	width: 19em;
 	clear: both;
+	position: fixed;
 }
 
 #t3-install-right {
