@@ -5545,6 +5545,7 @@ class t3lib_TCEforms {
 			/** @var $pageRenderer t3lib_PageRenderer */
 			$pageRenderer = $GLOBALS['SOBE']->doc->getPageRenderer();
 			$pageRenderer->loadPrototype();
+			$pageRenderer->loadJquery();
 			$pageRenderer->loadExtJS();
 
 				// Make textareas resizable and flexible
