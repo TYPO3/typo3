@@ -928,6 +928,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-status-locked',
 	'status-status-permission-denied',
 	'status-status-permission-granted',
+	'status-status-readonly',
 	'status-status-reference-hard',
 	'status-status-reference-soft',
 	'status-status-workspace-draft',
@@ -991,6 +992,10 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-in-use',
 	'status-warning-lock'
 );
+
+
+
+
 
 
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array(
