@@ -83,6 +83,8 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 		foreach ($this->testFilesToDelete as $absoluteFileName) {
 			t3lib_div::unlink_tempfile($absoluteFileName);
 		}
+
+		t3lib_div::purgeInstances();
 	}
 
 	/**
@@ -1097,6 +1099,57 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 		$extensions = explode(',', t3lib_extMgm::getEnabledExtensionList());
 		$this->assertTrue(in_array($testRequiredExtension, $extensions));
 		$this->assertFalse(in_array($testIgnoredExtension, $extensions));
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning makeCategorizable
+	/////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function isMakeCategorizableAvailableInRegistryWithDefaultField() {
+		$extensionKey = uniqid('extension');
+		$tableName = uniqid('table');
+
+		$GLOBALS['TCA'][$tableName] = array(
+			'ctrl' => array(),
+			'columns' => array(),
+		);
+
+		$registryMock = $this->getMock('t3lib_category_Registry', array('add'));
+		$registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, 'categories');
+		t3lib_div::setSingletonInstance('t3lib_category_Registry', $registryMock);
+
+		t3lib_extMgm::makeCategorizable($extensionKey, $tableName);
+
+		$this->assertNotEmpty(
+			$GLOBALS['TCA'][$tableName]['columns']['categories']
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function isMakeCategorizableAvailableInRegistryWithSpecifictField() {
+		$extensionKey = uniqid('extension');
+		$tableName = uniqid('table');
+		$fieldName = uniqid('field');
+
+		$GLOBALS['TCA'][$tableName] = array(
+			'ctrl' => array(),
+			'columns' => array(),
+		);
+
+		$registryMock = $this->getMock('t3lib_category_Registry', array('add'));
+		$registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, $fieldName);
+		t3lib_div::setSingletonInstance('t3lib_category_Registry', $registryMock);
+
+		t3lib_extMgm::makeCategorizable($extensionKey, $tableName, $fieldName);
+
+		$this->assertNotEmpty(
+			$GLOBALS['TCA'][$tableName]['columns'][$fieldName]
+		);
 	}
 }
 ?>

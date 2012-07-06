@@ -5623,6 +5623,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$tblFileContent='';
 					$hookObjects = array();
 
+						// Load TCA first
+					$this->includeTCA();
+
 					if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['checkTheDatabase'])) {
 						foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['checkTheDatabase'] as $classData) {
 							/** @var $hookObject Tx_Install_Interfaces_CheckTheDatabaseHook **/
@@ -5667,7 +5670,12 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							break;
 						}
 					}
+
+						// Add SQL content coming from the caching framework
 					$tblFileContent .= t3lib_cache::getDatabaseTableDefinitions();
+						// Add SQL content coming from the category registry
+					$tblFileContent .= t3lib_category_Registry::getInstance()->getDatabaseTableDefinitions();
+
 					if ($tblFileContent) {
 						$fileContent = implode(
 							LF,
