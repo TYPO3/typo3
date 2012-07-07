@@ -414,6 +414,9 @@ table.typo3-TCEforms .t3-form-field-container-inline .wrapperTable5 {
 /* - - - - - - - - - - - - - - - - - - - - -
 TCEforms Sections
 - - - - - - - - - - - - - - - - - - - - - */
+.t3-flex-section-header .t3-record-title {
+	font-weight: bold;
+}
 
 .typo3-TCEforms-flexForm .bgColor4,
 .typo3-TCEforms-flexForm .bgColor5 {
@@ -425,10 +428,12 @@ TCEforms Sections
 	border-top: 1px solid #cdcdcd;
 }
 
+.t3-flex-section,
 .t3-form-field-container-flexsections {
 	background: #dadada;
 }
 
+.t3-flex-section-content,
 .t3-form-field-record-flexsection {
 	background: #eee;
 }

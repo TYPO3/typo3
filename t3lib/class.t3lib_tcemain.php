@@ -1854,7 +1854,8 @@ class t3lib_TCEmain {
 				$xmlValue = $this->checkValue_flexArray2Xml($arrValue, TRUE);
 			}
 
-				// Action commands (sorting order and removals of elements)
+				// Action commands (sorting order and removals of elements) for flexform sections, see t3lib_tceforms
+				// for the use of this GP parameter
 			$actionCMDs = t3lib_div::_GP('_ACTION_FLEX_FORMdata');
 			if (is_array($actionCMDs[$table][$id][$field]['data'])) {
 				$arrValue = t3lib_div::xml2array($xmlValue);
@@ -1888,12 +1889,15 @@ class t3lib_TCEmain {
 
 	/**
 	 * Actions for flex form element (move, delete)
+	 * allows to remove and move flexform sections
+	 *
+	 * in the future, this function should go to a specific flexform class
 	 *
 	 * @param array &$valueArrayToRemoveFrom by reference
 	 * @param array $deleteCMDS
 	 * @return void
 	 */
-	function _ACTION_FLEX_FORMdata(&$valueArray, $actionCMDs) {
+	protected function _ACTION_FLEX_FORMdata(&$valueArray, $actionCMDs) {
 		if (is_array($valueArray) && is_array($actionCMDs)) {
 			foreach ($actionCMDs as $key => $value) {
 				if ($key == '_ACTION') {

@@ -2671,7 +2671,12 @@ class t3lib_TCEforms {
 							$PA,
 							'[data][' . $sheet . '][' . $lang . ']'
 						);
-						$sheetContent = '<div class="typo3-TCEforms-flexForm">' . $tRows . '</div>';
+
+						$sheetContent = '<div class="typo3-TCEforms-flexForm t3-form-flexform">' . $tRows . '</div>';
+
+							// load external flexform javascript files
+						$GLOBALS['SOBE']->doc->getPageRenderer()->loadjQuery();
+						$this->loadJavascriptLib('../t3lib/js/jquery.flexform.js');
 
 							// Pop the sheet level tab from DynNestedStack
 						if (is_array($dataStructArray['sheets'])) {
@@ -2799,8 +2804,11 @@ class t3lib_TCEforms {
 						$theTitle = htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($theTitle), 30));
 					}
 
+
+
 						// If it's a "section" or "container":
 					if ($value['type'] == 'array') {
+
 
 							// Creating IDs for form fields:
 							// It's important that the IDs "cascade" - otherwise we can't dynamically expand the flex form because this relies on simple string substitution of the first parts of the id values.
@@ -2809,7 +2817,7 @@ class t3lib_TCEforms {
 							// $idPrefix is the prefix for elements on lower levels in the hierarchy and we combine this with the thisId value to form a new ID on this level.
 						$idTagPrefix = $idPrefix . '-' . $thisId;
 
-							// If it's a "section" containing other elements:
+							// If it's a "section container" containing other elements (= sections):
 						if ($value['section']) {
 
 								// Load script.aculo.us if flexform sections can be moved by drag'n'drop:
@@ -2881,60 +2889,72 @@ class t3lib_TCEforms {
 								$onClickInsert .= 'TBE_EDITOR.addActionChecks("submit", unescape("' . rawurlencode(implode(';', $this->additionalJS_submit)) . '").' . $replace . ');';
 								$onClickInsert .= 'TYPO3.TCEFORMS.update();';
 								$onClickInsert .= 'return false;';
+
 									// Kasper's comment (kept for history): Maybe there is a better way to do this than store the HTML for the new element in rawurlencoded format - maybe it even breaks with certain charsets? But for now this works...
 								$this->additionalJS_post = $additionalJS_post_saved;
 								$this->additionalJS_submit = $additionalJS_submit_saved;
-								$new = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.new', 1);
+
+									// get the record title for the "new section of type XY", for legacy reasons, we also allow $nCfg['tx_templavoila']['title']
+								$recordTitle = ($nCfg['title'] ? $nCfg['title'] : $nCfg['tx_templavoila']['title']);
+								$recordTitle = t3lib_div::fixed_lgd_cs($this->sL($recordTitle), 30);
 								$newElementsLinks[] = '<a href="#" onclick="' . htmlspecialchars($onClickInsert) . '">' .
-													t3lib_iconWorks::getSpriteIcon('actions-document-new') .
-													htmlspecialchars(t3lib_div::fixed_lgd_cs($this->sL($nCfg['tx_templavoila']['title']), 30)) . '</a>';
+													t3lib_iconWorks::getSpriteIcon('actions-document-new') . htmlspecialchars($recordTitle) . '</a>';
 							}
 
 								// Reverting internal variables we don't want to change:
 							$this->requiredElements = $TEMP_requiredElements;
 
 								// Adding the sections:
-							$toggleAll = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.toggleall', 1);
+
+								// add the "toggle all" button for the sections
+							$toggleAll = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.toggleall', TRUE);
 							$output .= '
-							<div class="t3-form-field-toggle-flexsection">
-								<a href="#" onclick="' . htmlspecialchars('flexFormToggleSubs("' . $idTagPrefix . '"); return false;') . '">'
-									. t3lib_iconWorks::getSpriteIcon('actions-move-right', array('title' => $toggleAll)) . $toggleAll . '
-								</a>
-							</div>
+							<div class="t3-form-field-toggle-flexsection t3-form-flexsection-toggle"><a href="#">'
+								. t3lib_iconWorks::getSpriteIcon('actions-move-right', array('title' => $toggleAll)) . $toggleAll . '
+							</a></div>
 
-							<div id="' . $idTagPrefix . '" class="t3-form-field-container-flexsection">' . implode('', $tRows) . '</div>';
-							$output .= $mayRestructureFlexforms ? '<div class="t3-form-field-add-flexsection"><strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.addnew', 1) . ':</strong> ' . implode(' | ', $newElementsLinks) . '</div>' : '';
+							<div id="' . $idTagPrefix . '" class="t3-form-field-container-flexsection t3-flex-container" data-t3-flex-allow-restructure="' . ($mayRestructureFlexforms ? 1 : 0) . '">' . implode('', $tRows) . '</div>';
+
+								// add the "new" links
+							if ($mayRestructureFlexforms) {
+								$output .= '<div class="t3-form-field-add-flexsection"><strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xlf:labels.addnew', 1) . ':</strong> ' . implode(' | ', $newElementsLinks) . '</div>';
+							}
+							$output = '<div class="t3-form-field-container t3-form-flex">' . $output . '</div>';
+
 						} else {
-								// It is a container
 
-							$toggleIcon_open = t3lib_iconWorks::getSpriteIcon('actions-move-down');
-							$toggleIcon_close = t3lib_iconWorks::getSpriteIcon('actions-move-right');
+								// It is a container of a single section
+							$toggleIconOpenState = $toggleIconCloseState = $toggleIcons = '';
+							if ($toggleClosed) {
+								$toggleIconOpenState = 'display: none;';
+							} else {
+								$toggleIconCloseState = 'display: none;';
+							}
 
-								// Create on-click actions.
-							$onClickRemove = 'if (confirm("Are you sure?")){/*###REMOVE###*/;$("' . $idTagPrefix . '").hide();setActionStatus("' . $idPrefix . '");} return false;';
-							$onClickToggle = 'flexFormToggle("' . $idTagPrefix . '"); return false;';
+							$toggleIcons .= t3lib_iconWorks::getSpriteIcon('actions-move-down', array('class' => 't3-flex-control-toggle-icon-open', 'style' => $toggleIconOpenState));
+							$toggleIcons .= t3lib_iconWorks::getSpriteIcon('actions-move-right', array('class' => 't3-flex-control-toggle-icon-close', 'style' => $toggleIconCloseState));
 
-							$onMove = 'flexFormSortable("' . $idPrefix . '")';
 								// Notice: Creating "new" elements after others seemed to be too difficult to do and since moving new elements created in the bottom is now so easy with drag'n'drop I didn't see the need.
 
 								// Putting together header of a section. Sections can be removed, copied, opened/closed, moved up and down:
 								// I didn't know how to make something right-aligned without a table, so I put it in a table. can be made into <div>'s if someone like to.
 								// Notice: The fact that I make a "Sortable.create" right onmousedown is that if we initialize this when rendering the form in PHP new and copied elements will not be possible to move as a sortable. But this way a new sortable is initialized everytime someone tries to move and it will always work.
 							$ctrlHeader = '
-								<table class="t3-form-field-header-flexsection" onmousedown="' . ($mayRestructureFlexforms ? htmlspecialchars($onMove) : '') . '">
-								<tr>
-									<td>
-										<a href="#" onclick="' . htmlspecialchars($onClickToggle) . '" id="' . $idTagPrefix . '-toggle">
-											' . ($toggleClosed ? $toggleIcon_close : $toggleIcon_open) . '
-										</a>
-										<strong>' . $theTitle . '</strong> <em><span id="' . $idTagPrefix . '-preview"></span></em>
-									</td>
-									<td align="right">' .
-										($mayRestructureFlexforms ? t3lib_iconWorks::getSpriteIcon('actions-move-move', array('title' => 'Drag to Move')) : '') .
-										($mayRestructureFlexforms ? '<a href="#" onclick="' . htmlspecialchars($onClickRemove) . '">' . t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => 'Delete')) : '') .
-										'</td>
-									</tr>
-								</table>';
+									<div class="t3-pull-left">
+										<a href="#" class="t3-flex-control-toggle-button">' . $toggleIcons . '</a>
+										<span class="t3-record-title">' . $theTitle . '</span>
+									</div>';
+
+								// add drag & delete, if allowed to
+							if ($mayRestructureFlexforms) {
+								$ctrlHeader .= '<div class="t3-pull-right">' .
+									t3lib_iconWorks::getSpriteIcon('actions-move-move', array('title' => 'Drag to Move')) .
+									t3lib_iconWorks::getSpriteIcon('actions-edit-delete', array('title' => 'Delete', 'class' => 't3-delete')) .
+								'</div>';
+							}
+
+							$ctrlHeader = '<div class="t3-form-field-header-flexsection t3-flex-section-header">' . $ctrlHeader . '</div>';
+
 
 							$s = t3lib_div::revExplode('[]', $formPrefix, 2);
 							$actionFieldName = '_ACTION_FLEX_FORM' . $PA['itemFormElName'] . $s[0] . '][_ACTION][' . $s[1];
@@ -2945,11 +2965,11 @@ class t3lib_TCEforms {
 								// Putting together the container:
 							$this->additionalJS_delete = array();
 							$output .= '
-								<div id="' . $idTagPrefix . '" class="t3-form-field-container-flexsections">
-									<input id="' . $idTagPrefix . '-action" type="hidden" name="' . htmlspecialchars($actionFieldName) . '" value=""/>
+								<div id="' . $idTagPrefix . '" class="t3-form-field-container-flexsections t3-flex-section">
+									<input class="t3-flex-control t3-flex-control-action" type="hidden" name="' . htmlspecialchars($actionFieldName) . '" value=""/>
 
 									' . $ctrlHeader . '
-									<div class="t3-form-field-record-flexsection" id="' . $idTagPrefix . '-content"' . ($toggleClosed ? ' style="display:none;"' : '') . '>' .
+									<div class="t3-form-field-record-flexsection t3-flex-section-content"' . ($toggleClosed ? ' style="display:none;"' : '') . '>' .
 										$this->getSingleField_typeFlex_draw(
 										$value['el'],
 										$editData[$key]['el'],
@@ -2962,18 +2982,22 @@ class t3lib_TCEforms {
 										$idTagPrefix
 									) . '
 									</div>
-									<input id="' . $idTagPrefix . '-toggleClosed" type="hidden" name="' . htmlspecialchars('data[' . $table . '][' . $row['uid'] . '][' . $field . ']' . $formPrefix . '[_TOGGLE]') . '" value="' . ($toggleClosed ? 1 : 0) . '" />
+									<input class="t3-flex-control t3-flex-control-toggle" id="' . $idTagPrefix . '-toggleClosed" type="hidden" name="' . htmlspecialchars('data[' . $table . '][' . $row['uid'] . '][' . $field . ']' . $formPrefix . '[_TOGGLE]') . '" value="' . ($toggleClosed ? 1 : 0) . '" />
 								</div>';
-							$output = str_replace('/*###REMOVE###*/', t3lib_div::slashJS(htmlspecialchars(implode('', $this->additionalJS_delete))), $output);
-								// NOTICE: We are saving the toggle-state directly in the flexForm XML and "unauthorized" according to the data structure. It means that flexform XML will report unclean and a cleaning operation will remove the recorded togglestates. This is not a fatal problem. Ideally we should save the toggle states in meta-data but it is much harder to do that. And this implementation was easy to make and with no really harmful impact.
+
+								// NOTICE: We are saving the toggle-state directly in the flexForm XML and "unauthorized" according to the data structure. It means that flexform XML will
+								// report unclean and a cleaning operation will remove the recorded togglestates. This is not a fatal problem. Ideally we should save the toggle states in meta-data but it is much harder to do that. And this implementation was easy to make and with no really harmful impact.
+								// NOTICE by benni: maybe this could be saved by HTML5 localStorage in the future
 
 								// Pop the container from DynNestedStack
 							$this->popFromDynNestedStack('flex', $idTagPrefix);
 						}
 
 							// If it's a "single form element":
-					} elseif (is_array($value['TCEforms']['config'])) { // Rendering a single form element:
+					} elseif (is_array($value['TCEforms']['config'])) {
 
+
+							// Rendering a single form element:
 						if (is_array($PA['_valLang'])) {
 							$rotateLang = $PA['_valLang'];
 						} else {
@@ -5592,73 +5616,10 @@ class t3lib_TCEforms {
 				}
 			}
 
-				// Toggle icons:
-			$toggleIcon_open = t3lib_iconWorks::getSpriteIcon('actions-move-down', array('title' => 'Open'));
-			$toggleIcon_close = t3lib_iconWorks::getSpriteIcon('actions-move-right', array('title' => 'Close'));
-
 			$out .= '
 			function getOuterHTML(idTagPrefix) {	// Function getting the outerHTML of an element with id
 				var str=($(idTagPrefix).inspect()+$(idTagPrefix).innerHTML+"</"+$(idTagPrefix).tagName.toLowerCase()+">");
 				return str;
-			}
-			function flexFormToggle(id) {	// Toggling flexform elements on/off:
-				Element.toggle(""+id+"-content");
-
-				if (Element.visible(id+"-content")) {
-					$(id+"-toggle").update(\'' . $toggleIcon_open . '\');
-					$(id+"-toggleClosed").value = 0;
-				} else {
-					$(id+"-toggle").update(\'' . $toggleIcon_close . '\');
-					$(id+"-toggleClosed").value = 1;
-				}
-
-				var previewContent = "";
-				var children = $(id+"-content").getElementsByTagName("input");
-				for (var i = 0, length = children.length; i < length; i++) {
-					if (children[i].type=="text" && children[i].value)	previewContent+= (previewContent?" / ":"")+children[i].value;
-				}
-				if (previewContent.length>80) {
-					previewContent = previewContent.substring(0,67)+"...";
-				}
-				$(id+"-preview").update(previewContent);
-			}
-			function flexFormToggleSubs(id) {	// Toggling sub flexform elements on/off:
-				var descendants = $(id).immediateDescendants();
-				var isOpen=0;
-				var isClosed=0;
-					// Traverse and find how many are open or closed:
-				for (var i = 0, length = descendants.length; i < length; i++) {
-					if (descendants[i].id) {
-						if (Element.visible(descendants[i].id+"-content"))	{isOpen++;} else {isClosed++;}
-					}
-				}
-
-					// Traverse and toggle
-				for (var i = 0, length = descendants.length; i < length; i++) {
-					if (descendants[i].id) {
-						if (isOpen!=0 && isClosed!=0) {
-							if (Element.visible(descendants[i].id+"-content"))	{flexFormToggle(descendants[i].id);}
-						} else {
-							flexFormToggle(descendants[i].id);
-						}
-					}
-				}
-			}
-			function flexFormSortable(id) {	// Create sortables for flexform sections
-				Position.includeScrollOffsets = true;
- 				Sortable.create(id, {tag:\'div\',constraint: false, onChange:function(){
-					setActionStatus(id);
-				} });
-			}
-			function setActionStatus(id) {	// Updates the "action"-status for a section. This is used to move and delete elements.
-				var descendants = $(id).immediateDescendants();
-
-					// Traverse and find how many are open or closed:
-				for (var i = 0, length = descendants.length; i < length; i++) {
-					if (descendants[i].id) {
-						$(descendants[i].id+"-action").value = descendants[i].visible() ? i : "DELETE";
-					}
-				}
 			}
 
 			TBE_EDITOR.images.req.src = "' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/required_h.gif', '', 1) . '";

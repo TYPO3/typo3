@@ -157,3 +157,17 @@ table.t3-table-info td {
 	margin: 2px 0 15px 20px;
 	padding-left: 22px; 
 }
+
+
+
+
+/** generic functions necessary for styling in the backend **/
+.t3-pull-left {
+	float: left;
+}
+.t3-pull-right {
+	float: right;
+}
+.t3-hide {
+	display: none !important;
+}
