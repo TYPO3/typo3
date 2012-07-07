@@ -25,7 +25,14 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
+/**
+ * Class t3lib_utility_math_fixture_classWithStringRepresentation.
+ *
+ * This is a fixture subclass for t3lib_utility_math
+ *
+ * @package TYPO3
+ * @subpackage t3lib
+ */
 class t3lib_utility_math_fixture_classWithStringRepresentation {
 
 	protected $string = '';
