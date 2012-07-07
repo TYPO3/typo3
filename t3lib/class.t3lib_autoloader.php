@@ -318,11 +318,12 @@ class t3lib_autoloader {
 	protected static function attemptToLoadRegistryWithNamingConventionForGivenClassName($className) {
 		$classNameParts = explode('_', $className, 3);
 		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($classNameParts[1]);
+		
 		if ($extensionKey) {
-			try {
+			try {							
 					// This will throw a BadFunctionCallException if the extension is not loaded
-				$extensionPath = t3lib_extMgm::extPath($extensionKey);
-				$classFilePathAndName = $extensionPath . 'Classes/' . strtr($classNameParts[2], '_', '/') . '.php';
+				$extensionPath = t3lib_extMgm::extPath($extensionKey);				
+				$classFilePathAndName = $extensionPath . 'Classes/' . strtr($classNameParts[2], '_', '/') . '.php';				
 				self::addClassToCache($classFilePathAndName, $className);
 			} catch (BadFunctionCallException $exception) {
 					// Catch the exception and do nothing to give

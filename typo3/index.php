@@ -33,7 +33,6 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 define('TYPO3_PROCEED_IF_NO_USER', 1);
 require('init.php');
 

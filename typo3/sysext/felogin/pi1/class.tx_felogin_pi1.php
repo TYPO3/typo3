@@ -63,7 +63,8 @@ class tx_felogin_pi1 extends tslib_pibase {
 	 * @return string The content that is displayed on the website
 	 */
 	public function main($content, $conf) {
-
+		return "<h1>This would be a fancy form</h1>";
+		
 			// Loading TypoScript array into object variable:
 		$this->conf = $conf;
 		$this->uploadDir = 'uploads/tx_felogin/';
@@ -160,7 +161,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'])) {
 			$_params = array(
 				'content' => $content
-			);
+			);			
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['postProcContent'] as $_funcRef) {
 				$content = t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}

@@ -4510,7 +4510,7 @@ final class t3lib_div {
 		if (func_num_args() > 1) {
 			$constructorArguments = func_get_args();
 			array_shift($constructorArguments);
-
+			
 			$reflectedClass = new ReflectionClass($finalClassName);
 			$instance = $reflectedClass->newInstanceArgs($constructorArguments);
 		} else {

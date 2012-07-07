@@ -84,7 +84,7 @@ class t3lib_extMgm {
 	 * @throws BadFunctionCallException
 	 * @return string
 	 */
-	public static function extPath($key, $script = '') {
+	public static function extPath($key, $script = '') {		
 		if (isset($GLOBALS['TYPO3_LOADED_EXT'])) {
 			if (!isset($GLOBALS['TYPO3_LOADED_EXT'][$key])) {
 				throw new BadFunctionCallException(
@@ -92,7 +92,6 @@ class t3lib_extMgm {
 					1270853878
 				);
 			}
-
 			$extensionPath = PATH_site . $GLOBALS['TYPO3_LOADED_EXT'][$key]['siteRelPath'];
 		} else {
 			$extensionList = self::getRequiredExtensionList() . ',' . $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'];
@@ -1665,7 +1664,24 @@ tt_content.' . $key . $prefix . ' {
 			self::loadSingleExtLocalconfFiles();
 		}
 	}
+	
+	/**
+	 * Load ext_api.php config files from extensions
+	 *
+	 * @param boolean $allowCaching Whether to (not) create a cache file from ext_api.php files
+	 * @return void
+	 */
+	public static function loadExtApiConf() {
+		global $TYPO3_CONF_VARS;
 
+		foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $_EXTKEY => $extensionInformation) {
+			if (is_array($extensionInformation) && $extensionInformation['ext_api.php']) {
+				$_EXTCONF = $GLOBALS['TYPO3_CONF_VARS']['EXT']['extApi'][$_EXTKEY];
+				require($extensionInformation['ext_api.php']);
+			}
+		}
+	}
+	
 	/**
 	 * Execute ext_localconf.php files from extensions
 	 *

@@ -625,6 +625,8 @@ class Typo3_Bootstrap {
 	 *
 	 * The ext_localconf.php files in extensions are meant to make changes
 	 * to the global $TYPO3_CONF_VARS configuration array.
+	 * The ExtApiConf() method loads all the extensions' ext_api.php configs
+	 * and stores them in a cache file.
 	 *
 	 * @param boolean $allowCaching
 	 * @return Typo3_Bootstrap

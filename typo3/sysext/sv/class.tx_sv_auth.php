@@ -155,6 +155,7 @@ class tx_sv_auth extends tx_sv_authbase {
 				);
 			}
 		}
+
 		return $user;
 	}
 
