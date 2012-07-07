@@ -33,7 +33,6 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-
 class t3lib_utility_PathTest extends tx_phpunit_testcase {
 	/**
 	 * @param array $paths

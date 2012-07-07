@@ -30,7 +30,6 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-
 class t3lib_lockTest extends tx_phpunit_testcase {
 
 	/**
@@ -39,7 +38,7 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-	
+
 	/**
 	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
 	 * because resource types cannot be handled during serializing
