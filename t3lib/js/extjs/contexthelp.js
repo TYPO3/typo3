@@ -52,8 +52,12 @@ TYPO3.ContextHelp = function() {
 		}
 		var table = link.getAttribute('data-table');
 		var field = link.getAttribute('data-field');
-		var key = table + '.' + field;
-		var response = cshHelp.key(key);
+		if (link.getAttribute('data-description')) {
+			table = undefined;
+		} else {
+			var key = table + '.' + field;
+			var response = cshHelp.key(key);
+		}
 		tip.target = tip.triggerElement;
 		if (response) {
 			updateTip(response);

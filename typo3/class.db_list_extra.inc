@@ -77,7 +77,7 @@ class localRecordList extends recordList {
 	var $duplicateStack = array();
 
 	/**
-	 * [$tablename][$uid] = number of references to this record
+	 * [$tablename][$uid] = number of s to this record
 	 *
 	 * @var array
 	 */
@@ -1488,7 +1488,7 @@ class localRecordList extends recordList {
 	protected function createReferenceHtml($tableName, $uid) {
 		$referenceCount = $this->getReferenceCount($tableName, $uid);
 		if ($referenceCount == 0) {
-			return '';
+			return '-';
 		}
 
 		$queryResult = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -1503,26 +1503,41 @@ class localRecordList extends recordList {
 			'',
 			'0,20'
 		);
+		$localCalcPerms = $GLOBALS['BE_USER']->calcPerms($this->pageRow);
 
 		$referenceTitles = array();
-
+		static $recordCache = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($queryResult)) {
-			$referenceTitles[] = $row['tablename'] . ':' . $row['recuid'] .
-				':' . $row['field'];
-			if (strlen(implode(' / ', $referenceTitles)) >= 100) {
+			if (!isset($recordCache[$row['tablename']][$row['recuid']])) {
+				$record = t3lib_BEfunc::getRecord($row['tablename'], $row['recuid']);
+				$recordCache[$row['tablename']][$row['recuid']] =
+					t3lib_iconWorks::getSpriteIconForRecord($row['tablename'], $record) . ' ' .
+					$GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . ': ' .
+					t3lib_BEfunc::getRecordTitle($row['tablename'], $record);
+
+				if (($row['tablename'] == 'pages' && ($localCalcPerms & 2)) || ($row['tablename'] != 'pages' && ($this->calcPerms & 16))) {
+					$params = '&edit[' . $row['tablename'] . '][' . $row['recuid'] . ']=edit';
+					$recordCache[$row['tablename']][$row['recuid']] .= '<a href="#" style="float:right;" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath, -1 )) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-document-open') .
+						'</a>';
+				}
+			}
+
+			$referenceTitles[] = '<li>' . $recordCache[$row['tablename']][$row['recuid']] . '</li>';
+
+			if (count($referenceTitles) >= 50) {
+				$referenceTitles[] = '<li>...</li>';
 				break;
 			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($queryResult);
-
-		return '<a href="#" ' .
-			'onclick="' . htmlspecialchars(
-				'top.launchView(\'' . $tableName . '\', \'' . $uid .
-				'\'); return false;'
-			) . '" ' .
-			'title="' . htmlspecialchars(
-				t3lib_div::fixed_lgd_cs(implode(' / ', $referenceTitles), 100)
-			) . '">' . $referenceCount . '</a>';
+		$description = '<ul>' . implode('', $referenceTitles) . '</ul>';
+		$title = '[REF]';
+		return '<a href="#" ' . 'onclick="' . htmlspecialchars('top.launchView(\'' . $tableName . '\', \'' . $uid . '\'); return false;') . '">' .
+					'<span class="t3-help-link" data-description="' . htmlspecialchars($description) .'" data-title="' . htmlspecialchars($title) . '">' .
+						$referenceCount .
+					'</span>' .
+				'</a>';
 	}
 
 	/**
