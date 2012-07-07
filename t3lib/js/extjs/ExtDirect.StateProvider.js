@@ -262,7 +262,7 @@ Ext.extend(TYPO3.state.ExtDirectProvider, Ext.state.Provider, {
 				var name = item[this.paramNames.name];
 				var value = item[this.paramNames.value];
 
-				if (value === undefined  || value === null) {
+				if (value === undefined || value === null) {
 					TYPO3.state.ExtDirectProvider.superclass.clear.call(this, name);
 				} else {
 						// parent sets value and fires event

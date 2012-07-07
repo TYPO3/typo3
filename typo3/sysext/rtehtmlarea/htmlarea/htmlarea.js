@@ -883,7 +883,7 @@ HTMLArea.Iframe = Ext.extend(Ext.BoxComponent, {
 	 * In all browsers, it breaks the evaluation of the framework dimensions
 	 */
 	initStyleChangeEventListener: function () {
-		if (this.isNested  && Ext.isGecko) {
+		if (this.isNested && Ext.isGecko) {
 			var options = {
 				stopEvent: true,
 				delay: 50
@@ -4314,7 +4314,7 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 									break;
 								}
 								var m = selection.anchorNode.data.match(HTMLArea.RE_url);
-								if (m &&  a.href.match(selection.anchorNode.data.trim())) {
+								if (m && a.href.match(selection.anchorNode.data.trim())) {
 									var textNode = selection.anchorNode;
 									var fn = function() {
 										var m = textNode.data.match(HTMLArea.RE_url);

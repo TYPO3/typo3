@@ -6,11 +6,11 @@
 *
 *  Copyright notice
 *
-*  (c) 1998-2010 Kasper Skårhøj
+*  (c) 1998-2010 Kasper SkÃ¥rhÃ¸j
 *  All rights reserved
 *
 *  This script is part of the TYPO3 tslib/ library provided by
-*  Kasper Skårhøj <kasper@typo3.com> together with TYPO3
+*  Kasper SkÃ¥rhÃ¸j <kasper@typo3.com> together with TYPO3
 *
 *  Released under GNU/GPL (see license file in tslib/)
 *
@@ -27,15 +27,15 @@ function GF_makeMenu(obj,nest,adjustH){
 	this.el= bw.ie4?document.all[obj]:bw.ns4?eval(nest+'document.'+obj):document.getElementById(obj);
    	this.css= bw.ns4?this.el:this.el.style;
 	this.ref= bw.ns4?this.el.document:document;
-	this.x= (bw.ns4||bw.opera)?this.css.left:this.el.offsetLeft;
-	this.y= (bw.ns4||bw.opera)?this.css.top:this.el.offsetTop;
-	this.height= (bw.ie4||bw.ie5||bw.ns6)?this.el.offsetHeight:bw.ns4?this.ref.height:bw.opera?this.css.pixelHeight:0;
+	this.x= (bw.ns4 || bw.opera) ? this.css.left: this.el.offsetLeft;
+	this.y= (bw.ns4 || bw.opera) ? this.css.top: this.el.offsetTop;
+	this.height= (bw.ie4 || bw.ie5 || bw.ns6) ? this.el.offsetHeight: bw.ns4 ? this.ref.height: bw.opera ? this.css.pixelHeight: 0;
     this.vis= GF_visible;
 	this.hideIt= GF_hideIt;
     this.showIt= GF_showIt;
     this.moveIt= GF_moveIt;
     this.moveBy= GF_moveBy;
-		// Added by Kasper Skårhøj:
+		// Added by Kasper SkÃ¥rhÃ¸j:
 	if (adjustH)	this.height = this.height+adjustH;
 	return this
 }

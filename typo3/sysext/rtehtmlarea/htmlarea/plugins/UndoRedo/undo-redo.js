@@ -129,10 +129,10 @@ HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
 		}
 			// Get the html text
 		var text = this.editor.getInnerHTML();
-		
+
 		if (newSnapshot) {
 				// If previous slot contains the same text, a new one should not be used
-			if (this.undoPosition == 0  || this.undoQueue[this.undoPosition - 1].text != text) {
+			if (this.undoPosition == 0 || this.undoQueue[this.undoPosition - 1].text != text) {
 				this.undoQueue[this.undoPosition] = this.buildSnapshot();
 				this.undoQueue[this.undoPosition].time = currentTime;
 				this.undoQueue.length = this.undoPosition + 1;

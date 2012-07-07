@@ -6,11 +6,11 @@
 *
 *  Copyright notice
 *
-*  (c) 1998-2010 Kasper Skårhøj
+*  (c) 1998-2010 Kasper SkÃ¥rhÃ¸j
 *  All rights reserved
 *
 *  This script is part of the TYPO3 tslib/ library provided by
-*  Kasper Skårhøj <kasper@typo3.com> together with TYPO3
+*  Kasper SkÃ¥rhÃ¸j <kasper@typo3.com> together with TYPO3
 *
 *  Released under GNU/GPL (see license file in tslib/)
 *
@@ -96,10 +96,10 @@ function GL_getObj(obj){
 	this.el= bw.ie4?document.all[obj]:bw.ns4?eval(nest+"document."+obj):document.getElementById(obj);
 	this.css= bw.ns4?this.el:this.el.style;
 	this.ref= bw.ns4?this.el.document:document;
-	this.x= (bw.ns4||bw.op5)?this.css.left:this.el.offsetLeft;
-	this.y= (bw.ns4||bw.op5)?this.css.top:this.el.offsetTop;
-	this.height= (bw.ie4||bw.ie5||bw.ns6||bw.op7)?this.el.offsetHeight:bw.ns4?this.ref.height:bw.op4?this.css.pixelHeight:0;
-	this.width= (bw.ie4||bw.ie5||bw.ns6||bw.op7)?this.el.offsetWidth:bw.ns4?this.ref.width:bw.op4?this.css.pixelWidth:0;
+	this.x = (bw.ns4 || bw.op5) ? this.css.left: this.el.offsetLeft;
+	this.y = (bw.ns4 || bw.op5) ? this.css.top: this.el.offsetTop;
+	this.height = (bw.ie4 || bw.ie5 || bw.ns6 || bw.op7) ? this.el.offsetHeight: bw.ns4 ? this.ref.height: bw.op4 ? this.css.pixelHeight: 0;
+	this.width = (bw.ie4 || bw.ie5 || bw.ns6 || bw.op7) ? this.el.offsetWidth: bw.ns4 ? this.ref.width: bw.op4 ? this.css.pixelWidth: 0;
 
 	return this;
 }
@@ -170,8 +170,8 @@ function GL_doTop(WMid,id) {
 }
 	//Capturing mousemove
 function GL_getMouse(e) {
-	GLV_x= (bw.ns4||bw.ns5)?e.pageX:(bw.ie4||bw.op4)?event.x:(event.x-2)+document.body.scrollLeft;
-	GLV_y= (bw.ns4||bw.ns5)?e.pageY:(bw.ie4||bw.op4)?event.y:(event.y-2)+document.body.scrollTop;
+	GLV_x = (bw.ns4 || bw.ns5) ? e.pageX: (bw.ie4 || bw.op4) ? event.x: (event.x - 2) + document.body.scrollLeft;
+	GLV_y = (bw.ns4 || bw.ns5) ? e.pageY: (bw.ie4 || bw.op4) ? event.y: (event.y - 2) + document.body.scrollTop;
 }
 function GL_mouseMoveEvaluate(WMid)	{
 	if (GLV_gap[WMid] && GLV_currentLayer[WMid]!=null)	{
@@ -194,7 +194,7 @@ function GL_hideAll(WMid)	{
 }
 
 function GL_iframer(WMid,id,state)	{
-	if (bw.ie4||bw.ie5) {
+	if (bw.ie4 || bw.ie5) {
 		ifrmObj = bw.ie4?document.all["Iframe"+WMid]:document.getElementById("Iframe"+WMid);
 		if (state) {
 			parentObj = bw.ie4?document.all[id]:document.getElementById(id);
