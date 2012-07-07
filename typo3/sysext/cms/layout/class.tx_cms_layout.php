@@ -449,7 +449,7 @@ class tx_cms_layout extends recordList {
 							$singleElementHTML .= '</div>';
 
 							$statusHidden = ($this->isDisabled('tt_content', $row) ? ' t3-page-ce-hidden' : '');
-							$singleElementHTML = '<div class="t3-page-ce' . $statusHidden . '">' . $singleElementHTML . '</div>';
+							$singleElementHTML = '<div class="t3-page-ce' . $statusHidden . '" id="element-tt_content-' . $row['uid'] .'">' . $singleElementHTML . '</div>';
 
 								// Add icon "new content element below"
 							if (!$disableMoveAndNewButtons) {
@@ -1234,6 +1234,7 @@ class tx_cms_layout extends recordList {
 	 * @return string HTML table with the record header.
 	 */
 	function tt_content_drawHeader($row, $space = 0, $disableMoveAndNewButtons = FALSE, $langMode = FALSE) {
+		$out = '';
 
 			// Load full table description:
 		t3lib_div::loadTCA('tt_content');
@@ -1246,7 +1247,7 @@ class tx_cms_layout extends recordList {
 
 					// Edit content element:
 				$params = '&edit[tt_content][' . $this->tt_contentData['nextThree'][$row['uid']] . ']=edit';
-				$out .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath)) . '" title="' .
+				$out .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath, t3lib_div::getIndpEnv('REQUEST_URI') . '#element-tt_content-' . $row['uid'])) . '" title="' .
 						htmlspecialchars($this->nextThree > 1 ? sprintf($GLOBALS['LANG']->getLL('nextThree'), $this->nextThree) : $GLOBALS['LANG']->getLL('edit')) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-document-open') .
 						'</a>';
