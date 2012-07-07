@@ -742,6 +742,14 @@ class tslib_fe {
 	 */
 	function determineId() {
 
+			// Call pre processing function for id determination
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PreProcessing'])) {
+			foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['determineId-PreProcessing'] as $functionReference) {
+				$parameters = array('parentObject' => $this);
+				t3lib_div::callUserFunction($functionReference, $parameters, $this);
+			}
+		}
+
 			// Getting ARG-v values if some
 		$this->setIDfromArgV();
 
