@@ -2347,10 +2347,12 @@ class t3lib_TCEforms {
 				} elseif ($tempFT) {
 					$onlySingleTableAllowed = (count($tempFT) == 1);
 					foreach ($tempFT as $theT) {
-						$info .= '<span class="nobr">' .
+						$aOnClick = 'setFormValueOpenBrowser(\'db\', \'' . ($PA['itemFormElName'] . '|||' . $theT ) . '\'); return false;';
+						$info .= '<span class="nobr">
+									<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' .
 								t3lib_iconWorks::getSpriteIconForRecord($theT, array()) .
 								htmlspecialchars($this->sL($GLOBALS['TCA'][$theT]['ctrl']['title'])) .
-								'</span><br />';
+								'</a></span><br />';
 					}
 				}
 
