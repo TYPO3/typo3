@@ -933,8 +933,10 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-status-readonly',
 	'status-status-reference-hard',
 	'status-status-reference-soft',
-	'status-status-sort-asc',
-	'status-status-sort-desc',
+	'status-status-sorting-asc',
+	'status-status-sorting-desc',
+	'status-status-sorting-light-asc',
+	'status-status-sorting-light-desc',
 	'status-status-workspace-draft',
 	'status-system-extension-required',
 	'status-user-admin',
@@ -996,8 +998,6 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-in-use',
 	'status-warning-lock'
 );
-
-
 
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array(
 	'deleted',
