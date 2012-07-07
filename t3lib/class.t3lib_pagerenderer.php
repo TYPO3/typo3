@@ -49,6 +49,11 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		// jQuery Core version that is shipped with TYPO3
 	const JQUERY_VERSION_LATEST = '1.8b1';
 
+		// jQuery namespace options
+	const JQUERY_NAMESPACE_NONE = 'none';
+	const JQUERY_NAMESPACE_DEFAULT = 'jQuery';
+	const JQUERY_NAMESPACE_DEFAULT_NOCONFLICT = 'defaultNoConflict';
+
 	/**
 	 * @var boolean
 	 */
@@ -1495,11 +1500,11 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 *
 	 * @param null|string $version The jQuery version that should be included, either "latest" or any available version
 	 * @param null|string $source The location of the jQuery source, can be "local", "google", "msn", "jquery" or just an URL to your jQuery lib
-	 * @param null|string $namespace The namespace in which the jQuery object of the specific version should be stored. Can be FALSE to disable jQuery no conflict mode.
+	 * @param string $namespace The namespace in which the jQuery object of the specific version should be stored.
 	 * @return void
 	 * @throws UnexpectedValueException
 	 */
-	public function loadJquery($version = NULL, $source = NULL, $namespace = NULL) {
+	public function loadJquery($version = NULL, $source = NULL, $namespace = self::JQUERY_NAMESPACE_DEFAULT) {
 			// Set it to the version that is shipped with the TYPO3 core
 		if ($version === NULL || $version === 'latest') {
 			$version = self::JQUERY_VERSION_LATEST;
@@ -1508,12 +1513,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			// Check if the source is set, otherwise set it to "default"
 		if ($source === NULL) {
 			$source = 'local';
-		}
-
-		if ($namespace === NULL) {
-			$namespace = 'jQuery';
-		} elseif ($namespace === FALSE) {
-			$namespace = 'FALSE';
 		}
 
 		if ($source === 'local' && !in_array($version, $this->availableLocalJqueryVersions)) {
@@ -2136,10 +2135,21 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 		$scriptTag = '<script src="' . htmlspecialchars($jQueryFileName) . '" type="text/javascript"></script>' . LF;
 
 			// Set the noConflict mode to be available via "TYPO3.jQuery" in all installations
-		if ($namespace !== 'FALSE') {
-			$scriptTag .= t3lib_div::wrapJS(
-				'var TYPO3 = TYPO3 || {}; TYPO3.' . $namespace . ' = jQuery = jQuery.noConflict(true);'
-			);
+
+		switch ($namespace) {
+			case self::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT:
+				$scriptTag .= t3lib_div::wrapJS(
+					'jQuery.noConflict();'
+				);
+				break;
+			case self::JQUERY_NAMESPACE_NONE:
+				break;
+			case self::JQUERY_NAMESPACE_DEFAULT:
+			default:
+				$scriptTag .= t3lib_div::wrapJS(
+					'var TYPO3 = TYPO3 || {}; TYPO3.' . $namespace . ' = jQuery.noConflict(true);'
+				);
+				break;
 		}
 
 		return $scriptTag;

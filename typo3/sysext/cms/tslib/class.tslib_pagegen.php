@@ -626,13 +626,13 @@ class TSpagegen {
 					// Check if version / source is set, if not set variable to "NULL" to use the default of the page renderer
 				$version = isset($jQueryTS['version']) ? $jQueryTS['version'] : NULL;
 				$source = isset($jQueryTS['source']) ? $jQueryTS['source'] : NULL;
-					// When "noConflict" is not set or "1" use the default namespace of the page renderer, otherwise disable the namespace
+					// When "noConflict" is not set or "1" enable the default jQuery noConflict mode, otherwise disable the namespace
 				if (!isset($jQueryTS['noConflict']) || !empty($jQueryTS['noConflict'])) {
 						// Set namespace to the "noConflict.namespace" value if "noConflict.namespace" has a value
 					if (!empty($jQueryTS['noConflict.']['namespace'])) {
 						$namespace = $jQueryTS['noConflict.']['namespace'];
 					} else {
-						$namespace = NULL;
+						$namespace = t3lib_PageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT;
 					}
 				} else {
 					$namespace = FALSE;
