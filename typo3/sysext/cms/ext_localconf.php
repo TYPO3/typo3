@@ -7,7 +7,7 @@ t3lib_extMgm::addUserTSConfig('
 	options.saveDocView = 1
 	options.saveDocNew = 1
 	options.saveDocNew.pages = 0
-	options.saveDocNew.pages_language_overlay = 0
+	options.saveDocNew.pages_language_overlay = 1
 ');
 
 t3lib_extMgm::addPageTSConfig('
