@@ -30,7 +30,7 @@
 // *******************************
 // Set error reporting
 // *******************************
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
 
 
 // ***********************
