@@ -42,6 +42,14 @@ mod.wizards.newContentElement {
 					imagecols = 2
 				}
 			}
+			media {
+				icon = gfx/c_wiz/multimedia.gif
+				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_title
+				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_description
+				tt_content_defValues {
+					CType = media
+				}
+			}
 			bullets {
 				icon = gfx/c_wiz/bullet_list.gif
 				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_bulletList_title
@@ -60,7 +68,7 @@ mod.wizards.newContentElement {
 			}
 
 		}
-		common.show = text,textpic,image,bullets,table
+		common.show = text,textpic,image,media
 
 		special.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special
 		special.elements {
@@ -78,14 +86,6 @@ mod.wizards.newContentElement {
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_multimedia_description
 				tt_content_defValues {
 					CType = multimedia
-				}
-			}
-			media {
-				icon = gfx/c_wiz/multimedia.gif
-				title = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_title
-				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:special_media_description
-				tt_content_defValues {
-					CType = media
 				}
 			}
 			menu {
@@ -123,7 +123,7 @@ mod.wizards.newContentElement {
 			}
 
 		}
-		special.show = uploads,media,menu,html,div,shortcut
+		special.show = uploads,menu,html,div,shortcut
 
 		forms.header = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:forms
 		forms.elements {

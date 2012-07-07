@@ -62,6 +62,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @param string $content Content input. Not used, ignore.
 	 * @param array $conf TypoScript configuration
 	 * @return string HTML output.
+	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.2 - use RTE from now on
 	 * @access private
 	 */
 	function render_bullets($content, $conf) {
@@ -110,6 +111,7 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 	 * @param string $content Content input. Not used, ignore.
 	 * @param array $conf TypoScript configuration
 	 * @return string HTML output.
+	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.2 - use RTE from now on
 	 * @access private
 	 */
 	function render_table($content, $conf) {

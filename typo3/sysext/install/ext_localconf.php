@@ -28,6 +28,8 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['installNewSystemExtensi
 	// change tt_content.imagecols=0 to 1 for proper display in TCEforms since TYPO3 4.3
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['changeImagecolsValue'] = 'tx_coreupdates_imagecols';
 
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['convertTableAndBullets'] = 'tx_coreupdates_converttableandbullets';
+
 	// register eID script for install tool AJAX calls
 $TYPO3_CONF_VARS['FE']['eID_include']['tx_install_ajax'] = 'EXT:install/mod/class.tx_install_ajax.php';
 
