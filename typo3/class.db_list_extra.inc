@@ -1698,7 +1698,7 @@ class localRecordList extends recordList {
 
 			//	 Create the sort link:
 		$sortUrl = $this->listURL('', -1, 'sortField,sortRev,table,firstElementNumber') . '&table=' . $table . '&sortField=' . $field . '&sortRev=' . ($this->sortRev || ($this->sortField != $field) ? 0 : 1);
-		$sortArrow = $this->sortField === $field ? t3lib_iconWorks::getSpriteIcon('status-status-sort-' . ($this->sortRev ? 'desc' : 'asc')) : '';
+		$sortArrow = $this->sortField === $field ? t3lib_iconWorks::getSpriteIcon('status-status-sorting-' . ($this->sortRev ? 'desc' : 'asc')) : '';
 			// Return linked field:
 		return '<a href="' . htmlspecialchars($sortUrl) . '">' . $code . $sortArrow . '</a>';
 	}

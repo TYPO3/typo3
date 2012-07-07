@@ -599,7 +599,7 @@ class fileList extends t3lib_recordList {
 		if ($this->sort === $col) {
 				// Check reverse sorting
 			$params = '&SET[sort]=' . $col . '&SET[reverse]=' . ($this->sortRev ? '0' : '1');
-			$sortArrow = t3lib_iconWorks::getSpriteIcon('status-status-sort-' . ($this->sortRev ? 'desc' : 'asc'));
+			$sortArrow = t3lib_iconWorks::getSpriteIcon('status-status-sorting-light-' . ($this->sortRev ? 'desc' : 'asc'));
 		} else {
 			$params = '&SET[sort]=' . $col . '&SET[reverse]=0';
 			$sortArrow = '';
