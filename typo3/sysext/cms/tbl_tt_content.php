@@ -1790,7 +1790,7 @@ $TCA['tt_content'] = array(
 					bodytext;Text;;richtext:rte_transform[flag=rte_enabled|mode=ts_css],
 					rte_enabled;LLL:EXT:cms/locallang_ttc.xml:rte_enabled_formlabel,' // Only the following tab is relevant to be changed for FAL:
 				.'--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.images,
-					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.imagefiles;imagefiles,
+					image,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.imagelinks;imagelinks,' // This palette will only have the clickEnlarge option in the future, as the real link field is moved to the sys_file_reference inline table. Maybe the clickEnlarge link should be moved to the appearance tab of the content element instead?
 				.'--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames,
@@ -1806,7 +1806,7 @@ $TCA['tt_content'] = array(
 			'showitem' => '--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.header;header,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.images,
-					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.imagefiles;imagefiles,
+					image,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.imagelinks;imagelinks,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames,
@@ -2078,10 +2078,6 @@ $TCA['tt_content'] = array(
 		),
 		'headers' => array(
 			'showitem' => 'header;LLL:EXT:cms/locallang_ttc.xml:header_formlabel, --linebreak--, header_layout;LLL:EXT:cms/locallang_ttc.xml:header_layout_formlabel, header_position;LLL:EXT:cms/locallang_ttc.xml:header_position_formlabel, date;LLL:EXT:cms/locallang_ttc.xml:date_formlabel, --linebreak--, header_link;LLL:EXT:cms/locallang_ttc.xml:header_link_formlabel, --linebreak--, subheader;LLL:EXT:cms/locallang_ttc.xml:subheader_formlabel',
-			'canNotCollapse' => 1,
-		),
-		'imagefiles' => array(
-			'showitem' => 'image;LLL:EXT:cms/locallang_ttc.xml:image_formlabel',
 			'canNotCollapse' => 1,
 		),
 		'multimediafiles' => array(
