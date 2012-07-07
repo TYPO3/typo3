@@ -98,8 +98,8 @@ function evalFunc_caseSwitch(type,inVal) {
 		case "alphanum_x":
 			for (var a=0;a<theVal.length;a++) {
 				var theChar = theVal.substr(a,1);
-				var special = (theChar=='_'||theChar=='-');
-				var alpha = (theChar>='a'&&theChar<='z') || (theChar>='A'&&theChar<='Z');
+				var special = (theChar == '_' || theChar == '-');
+				var alpha = (theChar >= 'a' && theChar <= 'z') || (theChar >= 'A' && theChar <= 'Z');
 				var num = (theChar>='0' && theChar<='9');
 				switch(type) {
 					case "alphanum":	special=0;		break;
@@ -327,7 +327,7 @@ function evalFunc_input(type,inVal) {
 						add = this.pol(values.valPol[2],this.parseInt(values.values[2]));
 					}
 					var year = (values.values[1])?this.parseInt(values.values[1]):this.getYear(today);
-					if (  (year>=0&&year<38) || (year>=70&&year<100) || (year>=1902&&year<2038)	) {
+					if ((year >= 0 && year < 38) || (year >= 70 && year<100) || (year >= 1902 && year < 2038)) {
 						if (year<100) {
 							year = (year<38) ? year+=2000 : year+=1900;
 						}
@@ -369,7 +369,7 @@ function evalFunc_input(type,inVal) {
 					}
 
 					var year = (values.values[3])?this.parseInt(values.values[3]):this.getYear(today);
-					if ( (year>=0&&year<38) || (year>=70&&year<100) || (year>=1902&&year<2038) ) {
+					if ((year >= 0 && year < 38) || (year >= 70 && year < 100) || (year >= 1902 && year<2038)) {
 						if (year<100) {
 							year = (year<38) ? year+=2000 : year+=1900;
 						}

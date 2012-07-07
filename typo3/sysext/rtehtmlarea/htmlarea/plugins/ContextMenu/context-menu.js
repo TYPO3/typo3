@@ -111,7 +111,7 @@ HTMLArea.ContextMenu = Ext.extend(HTMLArea.Plugin, {
 					// Add each item
 				Ext.each(group, function (itemId) {
 					convertedItemId = this.editorConfiguration.convertButtonId[itemId];
-					if ((!this.showButtons  || this.showButtons.indexOf(convertedItemId) !== -1)
+					if ((!this.showButtons || this.showButtons.indexOf(convertedItemId) !== -1)
 						&& (!this.hideButtons || this.hideButtons.indexOf(convertedItemId) === -1)) {
 						var button = this.getButton(itemId);
 						if (button && button.getXType() === 'htmlareabutton' && !button.hideInContextMenu) {
