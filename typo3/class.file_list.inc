@@ -747,14 +747,43 @@ class fileList extends t3lib_recordList {
 		);
 
 			// Compile information for title tag:
-		$infoData = array();
+		$referenceTitles = array();
 		if (is_array($rows)) {
+			static $recordCache = array();
+
 			foreach ($rows as $row) {
-				$infoData[] = $row['tablename'] . ':' . $row['recuid'] . ':' . $row['field'];
+				if (!isset($recordCache[$row['tablename']][$row['recuid']])) {
+					$record = t3lib_BEfunc::getRecord($row['tablename'], $row['recuid']);
+					$recordCache[$row['tablename']][$row['recuid']] =
+						t3lib_iconWorks::getSpriteIconForRecord($row['tablename'], $record) . ' ' .
+						$GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . ': ' .
+						t3lib_BEfunc::getRecordTitle($row['tablename'], $record);
+
+					$pagePerms = $GLOBALS['BE_USER']->calcPerms(t3lib_BEfunc::getRecord('pages', $record['pid']));
+					$recordPerms = $GLOBALS['BE_USER']->calcPerms($record);
+					if (($row['tablename'] == 'pages' && ($pagePerms & 2)) || ($row['tablename'] != 'pages' && ($recordPerms & 16))) {
+						$params = '&edit[' . $row['tablename'] . '][' . $row['recuid'] . ']=edit';
+						$recordCache[$row['tablename']][$row['recuid']] .= '<a href="#" style="float:right;" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath, -1 )) . '">' .
+							t3lib_iconWorks::getSpriteIcon('actions-document-open') .
+							'</a>';
+					}
+				}
+				$referenceTitles[] = '<li>' . $recordCache[$row['tablename']][$row['recuid']] .	'</li>';
+
+				if (count($referenceTitles) >= 50) {
+					$referenceTitles[] = '<li>...</li>';
+					break;
+				}
 			}
 		}
 
-		return count($infoData) ? '<a href="#" onclick="' . htmlspecialchars('top.launchView( \'_FILE\', \'' . $fileOrFolderObject->getCombinedIdentifier() . '\'); return false;') . '" title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ', $infoData), 100)) . '">' . count($infoData) . '</a>' : '-';
+		$description = '<ul>' . implode('', $referenceTitles) . '</ul>';
+		$title = '[REF]';
+		return count($rows) ? '<a href="#" onclick="' . htmlspecialchars('top.launchView( \'_FILE\', \'' . $fileOrFolderObject->getCombinedIdentifier() . '\'); return false;') . '">' .
+			'<span class="t3-help-link" data-description="' . htmlspecialchars($description) .'" data-title="' . htmlspecialchars($title) . '">' .
+				count($rows) .
+			'</span>' .
+			'</a>' : '-';
 	}
 }
 ?>
