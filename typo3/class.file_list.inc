@@ -426,7 +426,7 @@ class fileList extends t3lib_recordList {
 	 * @return string HTML
 	 */
 	function linkWrapDir($title, t3lib_file_Folder $folderObject) {
-		$href = $this->backPath . $this->script . '?id=' . rawurlencode($folderObject->getCombinedIdentifier());
+		$href = $this->backPath . $this->script . '&id=' . rawurlencode($folderObject->getCombinedIdentifier());
 		$onclick = ' onclick="'.htmlspecialchars('top.content.nav_frame.hilight_row("file","folder' . t3lib_div::md5int($folderObject->getCombinedIdentifier()) . '_"+top.fsMod.currentBank)') . '"';
 
 			// Sometimes $code contains plain HTML tags. In such a case the string should not be modified!
@@ -596,14 +596,16 @@ class fileList extends t3lib_recordList {
 	 * @return string HTML
 	 */
 	function linkWrapSort($code, $folderIdentifier, $col) {
-			// reverse sorting
-		if ($this->sort == $col && !$this->sortRev) {
-			$params='&SET[sort]=' . $col . '&SET[reverse]=1';
+		if ($this->sort === $col) {
+				// Check reverse sorting
+			$params = '&SET[sort]=' . $col . '&SET[reverse]=' . ($this->sortRev ? '0' : '1');
+			$sortArrow = t3lib_iconWorks::getSpriteIcon('status-status-sort-' . ($this->sortRev ? 'desc' : 'asc'));
 		} else {
-			$params='&SET[sort]=' . $col . '&SET[reverse]=0';
+			$params = '&SET[sort]=' . $col . '&SET[reverse]=0';
+			$sortArrow = '';
 		}
-		$href = t3lib_div::resolveBackPath($GLOBALS['BACK_PATH'] . $this->script) . '?id=' . rawurlencode($folderIdentifier) . $params;
-		return '<a href="'.htmlspecialchars($href).'">'.$code.'</a>';
+		$href = t3lib_div::resolveBackPath($GLOBALS['BACK_PATH'] . $this->script) . '&id=' . rawurlencode($folderIdentifier) . $params;
+		return '<a href="'. htmlspecialchars($href) . '">' . $code . $sortArrow . '</a>';
 	}
 
 	/**
