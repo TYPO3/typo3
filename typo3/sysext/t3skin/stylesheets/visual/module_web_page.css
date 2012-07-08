@@ -91,10 +91,6 @@ table.t3-page-columns tr td span.exampleContent a {
 	text-decoration: none;
 }
 
-table#typo3-page-stdlist tr td.c-headLine {
-	background-color: #d7dbe2;
-}
-
 table.typo3-page-buttons td {
 	padding-right: 10px;
 }

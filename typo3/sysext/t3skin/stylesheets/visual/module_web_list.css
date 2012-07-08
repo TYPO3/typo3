@@ -3,8 +3,7 @@ Web > List
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-table.typo3-dblist,
-table.typo3-page-stdlist {
+table.typo3-dblist {
 	background: #fff;
 	border: 1px solid #a2aab8;
 }
@@ -13,8 +12,7 @@ table.typo3-dblist tr td.db_list_alt {
 	background-color: #e3dfd3;
 }
 
-table.typo3-dblist tr.db_list_alt td,
-table.typo3-page-stdlist tr.db_list_alt td {
+table.typo3-dblist tr.db_list_alt td {
 	background-color: #e4e5f0;
 }
 
@@ -25,13 +23,11 @@ tr.t3-row-header td {
 	line-height: 16px;
 }
 
-table.typo3-page-stdlist .bgColor4,
 table#typo3-dblist-top table.bgColor4 {
 	background-color: #efeff4;
 }
 
 table.typo3-dblist tr td.c-headLine,
-table.typo3-page-stdlist tr td.c-headLine,
 table.typo3-dblist tr.c-headLine td {
 	border-bottom: 1px solid #cdcdcd;
 }
