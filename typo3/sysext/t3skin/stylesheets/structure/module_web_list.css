@@ -16,6 +16,10 @@ table.typo3-dblist tr td {
 	padding: 3px 1px 3px 6px;
 }
 
+table.typo3-page-stdlist tr td {
+	padding: 1px 3px 1px 3px;
+}
+
 table.typo3-dblist tr.db_list_normal td {
 	padding-bottom: 5px;
 	padding-top: 5px;
