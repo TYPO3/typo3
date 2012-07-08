@@ -79,22 +79,6 @@ table.typo3-page-columnsMode img.c-divider {
 	margin: 10px 0px 5px 0px;
 }
 
-table.typo3-page-stdlist {
-	margin-top: 10px;
-}
-
-table.typo3-page-stdlist tr td.c-headLine {
-	height: 24px;
-}
-
-table.typo3-page-stdlist tr.c-table-row-spacer td {
-	display: none;
-}
-
-table.typo3-page-stdlist tr td div.typo3-DBctrl {
-	padding: 2px;
-}
-
 td.t3-gridCell div.t3-page-ce {
 	padding: 1px 5px 5px 5px;
 }
