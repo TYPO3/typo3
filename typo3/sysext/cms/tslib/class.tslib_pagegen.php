@@ -635,7 +635,7 @@ class TSpagegen {
 						$namespace = t3lib_PageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT;
 					}
 				} else {
-					$namespace = FALSE;
+					$namespace = t3lib_PageRenderer::JQUERY_NAMESPACE_NONE;
 				}
 				$pageRenderer->loadJQuery($version, $source, $namespace);
 			}
