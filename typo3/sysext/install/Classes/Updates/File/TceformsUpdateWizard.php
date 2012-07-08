@@ -255,11 +255,11 @@ class Tx_Install_Updates_File_TceformsUpdateWizard extends Tx_Install_Updates_Ba
 			}
 		}
 
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . $row['uid'], array($fieldname => ''));
+			// Update referencing table's original field to now contain the count of references.
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery($table, 'uid=' . $row['uid'], array($fieldname => $i));
 		$queries[] = str_replace(LF, ' ', $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery);
 
 		return $queries;
-		// TODO update original row
 	}
 }
 
