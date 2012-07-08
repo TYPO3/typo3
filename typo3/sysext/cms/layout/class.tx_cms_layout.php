@@ -845,78 +845,90 @@ class tx_cms_layout extends recordList {
 	 */
 	function makeOrdinaryList($table, $id, $fList, $icon = 0, $addWhere = '') {
 
-			// Initialize:
-		$out = '';
+			// Initialize
 		$queryParts = $this->makeQueryArray($table, $id, $addWhere);
 		$this->setTotalItems($queryParts);
 		$dbCount = 0;
 
-			// Make query for records if there were any records found in the count operation:
+			// Make query for records if there were any records found in the count operation
 		if ($this->totalItems) {
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 			$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 		}
 
-			// If records were found, render the list:
-		$out = '';
-		if ($dbCount) {
-
-				// Set fields
-			$this->fieldArray = t3lib_div::trimExplode(',', '__cmds__,' . $fList, TRUE);
-
-				// Header line is drawn
-			$theData = array();
-			$theData = $this->headerFields($this->fieldArray, $table, $theData);
-			if ($this->doEdit) {
-				$theData['__cmds__'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[' . $table . '][' . $this->id . ']=new', $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' .
-						t3lib_iconWorks::getSpriteIcon('actions-document-new') .
-						'</a>';
-			}
-			$out .= $this->addelement(1, '', $theData, ' class="c-headLine"', 15);
-
-				// Render Items
-			$this->eCounter = $this->firstElementNumber;
-			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-				t3lib_BEfunc::workspaceOL($table, $row);
-
-				if (is_array($row)) {
-					list($flag, $code) = $this->fwd_rwd_nav();
-					$out .= $code;
-					if ($flag) {
-						$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-						$Nrow = array();
-
-							// Setting icons/edit links:
-						if ($icon) {
-							$Nrow['__cmds__'] = $this->getIcon($table, $row);
-						}
-						if ($this->doEdit) {
-							$Nrow['__cmds__'] .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' .
-									t3lib_iconWorks::getSpriteIcon('actions-document-open') .
-									'</a>';
-						} else {
-							$Nrow['__cmds__'] .= $this->noEditIcon();
-						}
-
-							// Get values:
-						$Nrow = $this->dataFields($this->fieldArray, $table, $row, $Nrow);
-						$tdparams = $this->eCounter % 2 ? ' class="bgColor4"' : ' class="bgColor4-20"';
-						$out .= $this->addelement(1, '', $Nrow, $tdparams);
-					}
-					$this->eCounter++;
-				}
-			}
-
-				// Wrap it all in a table:
-			$out = '
-
-				<!--
-					STANDARD LIST OF "' . $table . '"
-				-->
-				<table border="0" cellpadding="1" cellspacing="2" width="480" class="typo3-page-stdlist">
-					' . $out . '
-				</table>';
+			// If records were found, render the list
+		if ($dbCount == 0) {
+			return '';
 		}
+
+			// Set fields
+		$out = '';
+		$this->fieldArray = t3lib_div::trimExplode(',', '__cmds__,' . $fList . ',__editIconLink__', TRUE);
+
+		$theData = array();
+		$theData = $this->headerFields($this->fieldArray, $table, $theData);
+
+			// Title row
+		$localizedTableTitle = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], 1);
+		$out .= '<tr class="t3-row-header">' .
+				'<td nowrap="nowrap" class="col-icon"></td>' .
+				'<td nowrap="nowrap" colspan="' . (count($theData) - 2) . '"><span class="c-table">' . $localizedTableTitle . '</span> (' . $dbCount . ')</td>' .
+				'<td nowrap="nowrap" class="col-icon"></td>' .
+				'</tr>';
+
+			// Column's titles
+		if ($this->doEdit) {
+			$theData['__cmds__'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[' . $table . '][' . $this->id . ']=new', $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' .
+					t3lib_iconWorks::getSpriteIcon('actions-document-new') .
+					'</a>';
+
+		}
+		$out .= $this->addelement(1, '', $theData, ' class="c-headLine"', 15);
+
+			// Render Items
+		$this->eCounter = $this->firstElementNumber;
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+			t3lib_BEfunc::workspaceOL($table, $row);
+
+			if (is_array($row)) {
+				list($flag, $code) = $this->fwd_rwd_nav();
+				$out .= $code;
+				if ($flag) {
+					$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
+					$Nrow = array();
+
+						// Setting icons links
+					if ($icon) {
+						$Nrow['__cmds__'] = $this->getIcon($table, $row);
+					}
+
+						// Get values:
+					$Nrow = $this->dataFields($this->fieldArray, $table, $row, $Nrow);
+
+						// Attach edit icon
+					if ($this->doEdit) {
+						$Nrow['__editIconLink__'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' .
+								t3lib_iconWorks::getSpriteIcon('actions-document-open') .
+								'</a>';
+					} else {
+						$Nrow['__editIconLink__'] = $this->noEditIcon();
+					}
+
+					$out .= $this->addelement(1, '', $Nrow, 'class="db_list_normal"');
+				}
+				$this->eCounter++;
+			}
+		}
+
+			// Wrap it all in a table:
+		$out = '
+			<!--
+				Standard list of table "' . $table . '"
+			-->
+			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
+				' . $out . '
+			</table>';
+
 		return $out;
 	}
 
@@ -989,7 +1001,7 @@ class tx_cms_layout extends recordList {
 
 		foreach ($fieldArr as $fieldName) {
 			$ll = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'], 1);
-			$out[$fieldName] = '<strong>' . ($ll ? $ll : '&nbsp;') . '</strong>';
+			$out[$fieldName] = ($ll ? $ll : '&nbsp;');
 		}
 		return $out;
 	}
