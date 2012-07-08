@@ -34,7 +34,7 @@ class Tx_Install_Updates_File_InitUpdateWizard extends Tx_Install_Updates_Base {
 	/**
 	 * @var string
 	 */
-	protected $title = 'Initialize FAL tables';
+	protected $title = 'Initialize database tables for the File Abstraction Layer (FAL)';
 
 	/**
 	 * @var t3lib_install_Sql
@@ -55,7 +55,7 @@ class Tx_Install_Updates_File_InitUpdateWizard extends Tx_Install_Updates_Base {
 	 * @return	boolean		TRUE if an update is needed, FALSE otherwise
 	 */
 	public function checkForUpdate(&$description) {
-		$description = 'Create the tables which are required for the file abstraction layer.';
+		$description = 'Create the database tables which are required for the File Abstraction Layer in order to work. Do this as the first step for all further wizards related to FAL.';
 		return count($this->getRequiredUpdates()) > 0;
 	}
 
@@ -91,7 +91,7 @@ class Tx_Install_Updates_File_InitUpdateWizard extends Tx_Install_Updates_Base {
 		$update_statements = $this->installerSql->getUpdateSuggestions($diff);
 
 		foreach ((array) $update_statements['create_table'] as $string) {
-			if (preg_match('/^CREATE TABLE sys_file($|_)/', $string)) {
+			if (preg_match('/^CREATE TABLE sys_file($|_)?/', $string)) {
 				$requiredUpdates[] = $string;
 			}
 		}
