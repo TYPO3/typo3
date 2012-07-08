@@ -493,3 +493,20 @@ TCEforms Sections
     right:3px;
     top:4px;
 }
+
+
+/* state: the form field was modified */
+/* use this for checkbox fields */
+.t3-state-changed label {
+	color: #ff8700;
+}
+
+/* regular input fields, date/time fields etc */
+input.t3-state-changed {
+	border: 2px inset #ff8700;
+}
+
+/* selects, groups, relations */
+select.t3-state-changed {
+	border-color: #ff8700;
+}
