@@ -316,10 +316,20 @@ class t3lib_pageSelect {
 
 			// Create output:
 		if (is_array($pageInput)) {
-				// If the input was an array, simply overlay the newfound array and return...
-			return is_array($row) ? array_merge($pageInput, $row) : $pageInput;
+			if (is_array($row)) {
+					// Overwrite the original field with the overlay
+				foreach ($row as $fN => $fV) {
+					if($fN !== 'uid' && $fN !== 'pid') {
+						if ($this->checkOverlayCondition('pages_language_overlay', $fN, $row[$fN])) {
+							$pageInput[$fN] = $row[$fN];
+						}
+					}
+				}
+			}
+
+			return $pageInput;
 		} else {
-				// Always an array in return
+			// Always an array in return
 			return is_array($row) ? $row : array();
 		}
 	}
@@ -387,8 +397,7 @@ class t3lib_pageSelect {
 								foreach ($row as $fN => $fV) {
 									if ($fN != 'uid' && $fN != 'pid' && isset($olrow[$fN])) {
 
-										if ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$fN] != 'exclude'
-											&& ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$fN] != 'mergeIfNotBlank' || strcmp(trim($olrow[$fN]), ''))) {
+										if ($this->checkOverlayCondition($table, $fN, $olrow[$fN])) {
 											$row[$fN] = $olrow[$fN];
 										}
 									} elseif ($fN == 'uid') {
@@ -1387,6 +1396,38 @@ class t3lib_pageSelect {
 		}
 		return ($ws['_ACCESS'] != '');
 	}
+
+	/**
+	 * Returns true if a given record field needs to be overlaid
+	 *
+	 * @param string $table TCA tablename
+	 * @param string $field TCA fieldname
+	 * @param mixed $value current value of the field
+	 * @return boolean
+	 */
+	protected function checkOverlayCondition($table, $field, $value) {
+
+		$isMergeIfNotBlank = FALSE;
+		$checkValue = $value;
+
+			// 0 values are considered blank when coming from a group field
+		if ($value == 0) {
+			t3lib_div::loadTCA($table);
+
+			if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] == 'group') {
+				$checkValue = '';
+			}
+		}
+
+		if ($GLOBALS['TSFE']->TCAcachedExtras['pages_language_overlay']['l10n_mode'][$field] != 'exclude'
+			&& ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$field] != 'mergeIfNotBlank'
+				|| strcmp(trim($checkValue), ''))) {
+			$isMergeIfNotBlank = TRUE;
+		}
+
+		return $isMergeIfNotBlank;
+	}
 }
+
 
 ?>
