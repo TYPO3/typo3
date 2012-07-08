@@ -1020,6 +1020,13 @@ class tslib_fe {
 		if ($this->register['SYS_LASTCHANGED'] < intval($this->page['SYS_LASTCHANGED'])) {
 			$this->register['SYS_LASTCHANGED'] = intval($this->page['SYS_LASTCHANGED']);
 		}
+
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['fetchPageId-PostProcessing'])) {
+			foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['fetchPageId-PostProcessing'] as $functionReference) {
+				$parameters = array('parentObject' => $this);
+				t3lib_div::callUserFunction($functionReference, $parameters, $this);
+			}
+		}
 	}
 
 	/**
