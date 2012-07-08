@@ -68,137 +68,7 @@ $LANG->includeLLFile('EXT:impexp/app/locallang.php');
 
 t3lib_extMgm::isLoaded('impexp', 1);
 
-/**
- * Extension of the page tree class. Used to get the tree of pages to export.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_impexp
- */
-class localPageTree extends t3lib_browseTree {
 
-	/**
-	 * Initialization
-	 */
-	function __construct() {
-		$this->init();
-	}
-
-	/**
-	 * Wrapping title from page tree.
-	 *
-	 * @param string $title Title to wrap
-	 * @param mixed $v (See parent class)
-	 * @return string Wrapped title
-	 */
-	function wrapTitle($title, $v) {
-		$title = (!strcmp(trim($title), '')) ? '<em>['.$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title', 1).']</em>' : htmlspecialchars($title);
-		return $title;
-	}
-
-	/**
-	 * Wrapping Plus/Minus icon
-	 *
-	 * @param string $icon Icon HTML
-	 * @param mixed $cmd (See parent class)
-	 * @param mixed $bMark (See parent class)
-	 * @return string Icon HTML
-	 */
-	function PM_ATagWrap($icon, $cmd, $bMark = '') {
-		return $icon;
-	}
-
-	/**
-	 * Wrapping Icon
-	 *
-	 * @param string $icon Icon HTML
-	 * @param array $row Record row (page)
-	 * @return string Icon HTML
-	 */
-	function wrapIcon($icon, $row) {
-		return $icon;
-	}
-
-	/**
-	 * Select permissions
-	 *
-	 * @return string SQL where clause
-	 */
-	function permsC() {
-		return $this->BE_USER->getPagePermsClause(1);
-	}
-
-	/**
-	 * Tree rendering
-	 *
-	 * @param integer $pid PID value
-	 * @param string $clause Additional where clause
-	 * @return array Array of tree elements
-	 */
-	function ext_tree($pid, $clause = '') {
-
-			// Initialize:
-		$this->init(' AND '.$this->permsC().$clause);
-
-			// Get stored tree structure:
-		$this->stored = unserialize($this->BE_USER->uc['browseTrees']['browsePages']);
-
-			// PM action:
-		$PM = t3lib_div::intExplode('_', t3lib_div::_GP('PM'));
-
-			// traverse mounts:
-		$titleLen = intval($this->BE_USER->uc['titleLen']);
-		$treeArr = array();
-
-		$idx = 0;
-
-			// Set first:
-		$this->bank = $idx;
-		$isOpen = $this->stored[$idx][$pid] || $this->expandFirst;
-			// save ids
-		$curIds = $this->ids;
-		$this->reset();
-		$this->ids = $curIds;
-
-			// Set PM icon:
-		$cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') .$pid;
-		$icon = '<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif', 'width="18" height="16"') . ' align="top" alt="" />';
-		$firstHtml = $this->PM_ATagWrap($icon, $cmd);
-
-		if ($pid>0) {
-			$rootRec = t3lib_befunc::getRecordWSOL('pages', $pid);
-			$firstHtml.= $this->wrapIcon(t3lib_iconWorks::getSpriteIconForRecord('pages', $rootRec), $rootRec);
-		} else {
-			$rootRec = array(
-				'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
-				'uid' => 0
-			);
-			$firstHtml .= $this->wrapIcon('<img' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/i/_icon_website.gif', 'width="18" height="16"') . ' align="top" alt="" />', $rootRec);
-		}
-		$this->tree[] = array('HTML'=>$firstHtml, 'row'=>$rootRec);
-		if ($isOpen) {
-				// Set depth:
-			$depthD = '<img'.t3lib_iconWorks::skinImg($this->backPath, 'gfx/ol/blank.gif', 'width="18" height="16"').' align="top" alt="" />';
-			if ($this->addSelfId) {
-				$this->ids[] = $pid;
-			}
-			$this->getTree($pid, 999, $depthD);
-
-			$idH = array();
-			$idH[$pid]['uid'] = $pid;
-			if (count($this->buffer_idH)) {
-				$idH[$pid]['subrow'] = $this->buffer_idH;
-			}
-			$this->buffer_idH = $idH;
-
-		}
-
-			// Add tree:
-		$treeArr = array_merge($treeArr, $this->tree);
-
-		return $treeArr;
-	}
-}
 
 /**
  * Main script class for the Import / Export facility
@@ -429,7 +299,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		if (isset($inData['pagetree']['id'])) {
 				// Based on click-expandable tree
 			if ($inData['pagetree']['levels'] == -1) {
-				$pagetree = t3lib_div::makeInstance('localPageTree');
+				$pagetree = t3lib_div::makeInstance('tx_impexp_localPageTree');
 
 				$tree = $pagetree->ext_tree($inData['pagetree']['id'], $this->filterPageIds($this->export->excludeMap));
 				$this->treeHTML = $pagetree->printTree($tree);
@@ -467,7 +337,7 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						$idH[$pid]['subrow'] = $tree->buffer_idH;
 					}
 
-					$pagetree = t3lib_div::makeInstance('localPageTree');
+					$pagetree = t3lib_div::makeInstance('tx_impexp_localPageTree');
 					$this->treeHTML = $pagetree->printTree($tree->tree);
 				}
 			}
