@@ -36,7 +36,6 @@
 
 $BACK_PATH = '';
 require('init.php');
-require('template.php');
 
 	// Include local language labels:
 $LANG->includeLLFile('EXT:lang/locallang_misc.xml');
