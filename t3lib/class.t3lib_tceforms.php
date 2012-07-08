@@ -5357,7 +5357,6 @@ class t3lib_TCEforms {
 								$content['NAME'] .
 								'</label>' .
 								'<span' . $fieldAttributes . '>' .
-									'<img name="cm_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-contentchanged" alt="" />' .
 									'<img name="req_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-required" alt="" />' .
 									$content['ITEM'] .
 								'</span>' .
@@ -5665,7 +5664,6 @@ class t3lib_TCEforms {
 			}
 
 			TBE_EDITOR.images.req.src = "' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/required_h.gif', '', 1) . '";
-			TBE_EDITOR.images.cm.src = "' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/content_client.gif', '', 1) . '";
 			TBE_EDITOR.images.sel.src = "' . t3lib_iconWorks::skinImg($this->backPath, 'gfx/content_selected.gif', '', 1) . '";
 			TBE_EDITOR.images.clear.src = "' . $this->backPath . 'clear.gif";
 
@@ -5686,6 +5684,12 @@ class t3lib_TCEforms {
 			TBE_EDITOR.backend_interface = "' . $GLOBALS['BE_USER']->uc['interfaceSetup'] . '";
 			';
 		}
+
+			// Load external jQuery TCEforms javascript file
+		$pageRenderer->loadjQuery();
+		$this->loadJavascriptLib('../t3lib/js/jquery.tceforms.js');
+
+
 
 			// Add JS required for inline fields
 		if (count($this->inline->inlineData)) {

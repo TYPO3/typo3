@@ -357,10 +357,6 @@ var TBE_EDITOR = {
 		var theRecord = TBE_EDITOR.prependFormFieldNames+'['+table+']['+uid+']';
 		TBE_EDITOR.isChanged = 1;
 
-			// Set change image:
-		var imgObjName = "cm_"+table+"_"+uid+"_"+field;
-		TBE_EDITOR.setImage(imgObjName,TBE_EDITOR.images.cm);
-
 			// Set change image
 		if (document[TBE_EDITOR.formname][theField] && document[TBE_EDITOR.formname][theField].type=="select-one" && document[TBE_EDITOR.formname][theField+"_selIconVal"]) {
 			var imgObjName = "selIcon_"+table+"_"+uid+"_"+field+"_";
