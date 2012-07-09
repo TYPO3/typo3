@@ -430,7 +430,6 @@ updateQryForm(\'' . $input['QUERY'] . '\');
 				// Printing direct joins:
 				$outStr .= '<h4>Direct joins:</h4>' . t3lib_utility_Debug::viewArray($tableIndex);
 
-
 				// Printing total dependencies:
 				foreach ($tableIndex as $priTable => $a) {
 					foreach ($tableIndex as $tableN => $v) {
