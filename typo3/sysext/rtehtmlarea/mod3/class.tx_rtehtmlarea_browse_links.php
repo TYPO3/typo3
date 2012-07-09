@@ -830,7 +830,6 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				$tree=$pagetree->getBrowsableTree();
 				$cElements = $this->expandPage();
 
-
 				// Outputting Temporary DB mount notice:
 				if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'))) {
 					$link = '<a href="' . htmlspecialchars(t3lib_div::linkThisScript(array('setTempDBmount' => 0))) . '">' .

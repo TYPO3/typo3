@@ -326,7 +326,6 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 			echo LF . LF;
 		}
 
-
 			// Processing performance statistics:
 		$this->performanceStatistics['genTree()'] = t3lib_div::milliseconds()-$pt;
 

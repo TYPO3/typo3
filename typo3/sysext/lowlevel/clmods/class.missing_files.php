@@ -93,7 +93,6 @@ This will show you missing files in the TYPO3 system and only report back if err
 			'softrefFilesMissing' => array(),
 		);
 
-
 			// Select all files in the reference table
 		$recs = $TYPO3_DB->exec_SELECTgetRows(
 			'*',

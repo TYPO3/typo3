@@ -90,7 +90,7 @@ HTMLArea.DefaultInline = Ext.extend(HTMLArea.Plugin, {
 		}
 		return false;
 	},
-	
+
 	/*
 	 * This function gets called when the toolbar is updated
 	 */

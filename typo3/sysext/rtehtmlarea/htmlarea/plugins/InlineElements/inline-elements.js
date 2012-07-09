@@ -61,7 +61,7 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-		
+
 		/*
 		 * Registering the dropdown list
 		 */
@@ -84,7 +84,7 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 		this.registerDropDown(dropDownConfiguration);
-		
+
 		/*
 		 * Registering the buttons
 		 */
@@ -332,7 +332,7 @@ HTMLArea.InlineElements = Ext.extend(HTMLArea.Plugin, {
 				newElement.removeAttribute("className");
 			}
 		}
-		
+
 		if (this.tags && this.tags[tagName] && this.tags[tagName].allowedClasses) {
 			if (newElement.className && /\S/.test(newElement.className)) {
 				var allowedClasses = this.tags[tagName].allowedClasses;

@@ -366,7 +366,6 @@ class SC_mod_web_perm_index {
 			// data of the first group, the user is member of
 		$firstGroup = $beGroupKeys[0] ? $beGroupArray[$beGroupKeys[0]] : '';
 
-
 			// Owner selector:
 		$options = '';
 			// flag: is set if the page-userid equals one from the user-list
@@ -389,7 +388,6 @@ class SC_mod_web_perm_index {
 			</select>';
 
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Owner') . ':', $selector);
-
 
 			// Group selector:
 		$options = '';

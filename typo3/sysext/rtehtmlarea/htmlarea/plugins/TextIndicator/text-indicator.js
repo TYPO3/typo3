@@ -45,7 +45,7 @@ HTMLArea.TextIndicator = Ext.extend(HTMLArea.Plugin, {
 			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-		
+
 		/*
 		 * Registering the indicator
 		 */

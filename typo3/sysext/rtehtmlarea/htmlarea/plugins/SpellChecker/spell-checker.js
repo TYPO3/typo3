@@ -436,7 +436,7 @@ HTMLArea.SpellChecker = Ext.extend(HTMLArea.Plugin, {
 			TYPO3.Dialog.QuestionDialog({
 				title: this.getButton('SpellCheck').tooltip.title,
 				msg: this.localize('QUIT_CONFIRMATION'),
-				fn: function (button) { 
+				fn: function (button) {
 					if (button == 'yes') {
 						this.close();
 					}

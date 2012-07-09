@@ -159,9 +159,7 @@ class  tx_recycler_module1 extends t3lib_SCbase {
 			$this->getJavaScriptLabels()
 		);
 
-
 			// Load Recycler JavaScript:
-
 			// Load Plugins
 		$uxPath = $this->doc->backpath . '../t3lib/js/extjs/ux/';
 		$this->pageRenderer->addJsFile($uxPath . 'Ext.grid.RowExpander.js');

@@ -149,7 +149,7 @@ HTMLArea.MicrodataSchema = Ext.extend(HTMLArea.Plugin, {
 				styleSheet.addRule(selector, style);
 			}
 			return true;
-		}, this);		
+		}, this);
 	},
 	/*
 	 * This function gets called when a button was pressed.
@@ -163,7 +163,7 @@ HTMLArea.MicrodataSchema = Ext.extend(HTMLArea.Plugin, {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
+
 		switch (buttonId) {
 			case 'ShowMicrodata':
 				this.toggleMicrodata();
@@ -346,7 +346,7 @@ HTMLArea.MicrodataSchema = Ext.extend(HTMLArea.Plugin, {
 				case 'itemprop':
 				case 'itemtype':
 					element.setAttribute(itemId, (value === 'none') ? '' : value);
-					break;	
+					break;
 			}
 		}, this);
 		var itemScopeField = this.fieldset.find('itemId', 'itemscope')[0];

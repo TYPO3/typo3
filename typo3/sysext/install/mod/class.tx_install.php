@@ -789,7 +789,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						</p>
 					');
 
-
 					$headCode='Header legend';
 					$this->message($headCode, 'Notice!', '
 						<p>
@@ -1340,7 +1339,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		$typo3conf_files = t3lib_div::getFilesInDir($EDIT_path, '', 1, 1);
 		$fileFound = 0;
 
-
 		foreach ($typo3conf_files as $k => $file) {
 				// Delete temp_CACHED files if option is set
 			if ( $this->INSTALL['delTempCached'] && preg_match('|/temp_CACHED_[a-z0-9_]+\.php|', $file)) {
@@ -1689,12 +1687,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Add the content to the message array
 		$this->message($headCode, 'Statistics', $content, 1);
 
-
-
-
-
-
-
 		$this->message($headCode, 'typo3temp/ folder', '
 			<p>
 				TYPO3 uses this directory for temporary files, mainly processed
@@ -1911,7 +1903,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 		);
 			// Add the content to the message array
 		$this->message($headCode, 'Statistics', $content, 1);
-
 
 			// Output the page
 		$this->output($this->outputWrapper($this->printAll()));
@@ -4560,9 +4551,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 		$this->message('Image Processing', 'Current configuration', $msg, $etype);
 
-
-
-
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['image_processing']) {
 			$this->message('Image Processing', 'Image Processing disabled!', '
 				<p>
@@ -4584,8 +4572,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			return;
 		}
 
-
-
 		$msg = '
 			<p>
 				<a id="testmenu"></a>
@@ -4596,7 +4582,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			</p>
 		' . $this->imagemenu();
 		$this->message('Image Processing', 'Testmenu', $msg, '');
-
 
 		$parseStart = t3lib_div::milliseconds();
 		$imageProc = t3lib_div::makeInstance('t3lib_stdGraphic');
@@ -4722,7 +4707,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					}
 					$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands, $note);
 					$this->message($headCode, 'Write GIF', $result[0], $result[1]);
-
 
 						// Writing PNG
 					$imageProc->IM_commands = array();
@@ -4896,7 +4880,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					</p>
 				');
 
-
 				if ($gdActive) {
 					// GD with box
 					$imageProc->IM_commands=array();
@@ -4914,7 +4897,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$fileInfo = $imageProc->getImageDimensions($output);
 					$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
 					$this->message($headCode, 'Create simple image', $result[0], $result[1]);
-
 
 						// GD from image with box
 					$imageProc->IM_commands=array();
@@ -4934,7 +4916,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					$GDWithBox_filesize = @filesize($output);
 					$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
 					$this->message($headCode, 'Create image from file', $result[0], $result[1]);
-
 
 						// GD with text
 					$imageProc->IM_commands=array();
@@ -5463,7 +5444,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 			// Getting current tables
 		$whichTables=$this->sqlHandler->getListOfTables();
 
-
 			// Getting number of static_template records
 		if ($whichTables['static_template']) {
 			$static_template_count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'static_template');
@@ -5504,7 +5484,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 				Has <strong>' . count($whichTables) . '</strong> tables.
 			</p>
 		', -1, 1);
-
 
 			// Menu
 		$sql_files = array_merge(
@@ -8523,7 +8502,6 @@ $out="
 				|| $privileges === 'ALL PRIVILEGES'
 				|| $privileges === 'CREATE'
 				|| strpos($privileges, 'CREATE,') !== FALSE) {
-
 
 					// and we need this privelege not on a specific DB, but on *
 				if ($dbName === '*') {
