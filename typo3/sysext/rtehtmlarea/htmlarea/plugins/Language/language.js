@@ -46,7 +46,7 @@ HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 			// Importing list of allowed attributes
 		if (this.getPluginInstance('TextStyle')) {
 			this.allowedAttributes = this.getPluginInstance('TextStyle').allowedAttributes;
-		}			
+		}
 		if (!this.allowedAttributes && this.getPluginInstance('InlineElements')) {
 			this.allowedAttributes = this.getPluginInstance('InlineElements').allowedAttributes;
 		}
@@ -179,7 +179,7 @@ HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 			// Could be a button or its hotkey
 		var buttonId = this.translateHotKey(id);
 		buttonId = buttonId ? buttonId : id;
-		
+
 		switch (buttonId) {
 			case 'RightToLeft':
 			case 'LeftToRight':

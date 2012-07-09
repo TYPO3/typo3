@@ -18,16 +18,16 @@ p, form, fieldset, h3, h4, h5, h6, dl {
 	margin: 1em 0 1em 0;
 }
 
-ol, ul { 
+ol, ul {
 	margin: 1em 0 1em 1.5em;
 	padding: 0 0 0 1em;
 }
 
-ul { 
+ul {
 	list-style: disc;
 }
 
-ol { 
+ol {
 	list-style: decimal;
 }
 
@@ -56,16 +56,16 @@ h4 {
 	margin: 0;
 }
 
-.clearfix:after { 
-	content: "."; 
-	display: block; 
-	height: 0; 
-	clear: both; 
+.clearfix:after {
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
 	visibility: hidden;
 }
 
-* html .clearfix { 
-	height: 1%; 
+* html .clearfix {
+	height: 1%;
 }
 
 legend {

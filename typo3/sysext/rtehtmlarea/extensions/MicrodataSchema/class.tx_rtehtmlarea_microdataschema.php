@@ -125,7 +125,7 @@ class tx_rtehtmlarea_microdataschema extends tx_rtehtmlarea_api {
 		$types = array();
 		$properties = array();
 			// Load the document
-		$document = new DOMDocument(); 
+		$document = new DOMDocument();
 		$document->loadXML($string);
 		if ($document) {
 				// Scan resource descriptions

@@ -157,7 +157,6 @@ Reports problems with RTE images';
 			}
 		}
 
-
 		ksort($resultArray['RTEmagicFilePairs']);
 		ksort($resultArray['completeFileList']);
 		ksort($resultArray['missingFiles']);
@@ -250,7 +249,6 @@ Reports problems with RTE images';
 				}
 			} else echo 'Bypassing fixing of double-usages since --AUTOFIX was not "doubleFiles"'.LF;
 		}
-
 
 		if (is_array($resultArray['lostFiles'])) {
 			if ($limitTo === 'lostFiles') {

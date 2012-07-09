@@ -263,8 +263,6 @@ class SC_db_list {
 			&& $dblist->clipObj->current == 'normal'
 			&& !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
 
-
-
 			// If there is access to the page, then render the list contents and set up the document template object:
 		if ($access) {
 

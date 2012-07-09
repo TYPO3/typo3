@@ -66,7 +66,6 @@ class tx_recycler_helper {
 			}
 		}
 
-
 		if (!$GLOBALS['BE_USER']->check('tables_modify', $table)) {
 			$hasAccess = 0;
 		}

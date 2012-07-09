@@ -261,7 +261,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 		}
 		this.close();
 	},
-	
+
 	/*
 	 * Unlink the selection.
 	 * This function is called from the TYPO3 link popup and from unlink button pressed in toolbar or context menu.
@@ -298,7 +298,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 			this.close();
 		}
 	},
-	
+
 	/*
 	* Set attributes of anchors intersecting a range in the given node
 	*
@@ -380,7 +380,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 			}
 		}
 	},
-	
+
 	/*
 	 * Clean up images in special anchor classes
 	 */
@@ -404,7 +404,7 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 			node.removeChild(nodeArray[i]);
 		}
 	},
-	
+
 	/*
 	 * Clean up all anchors intesecting with the range in the given node
 	 */

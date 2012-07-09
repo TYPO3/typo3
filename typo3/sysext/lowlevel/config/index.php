@@ -204,7 +204,6 @@ class SC_mod_tools_config_index {
 			break;
 		}
 
-
 			// Update node:
 		$update = 0;
 		$node = t3lib_div::_GET('node');
@@ -221,7 +220,6 @@ class SC_mod_tools_config_index {
 		$arrayBrowser->regexMode = $this->MOD_SETTINGS['regexsearch'];
 		$arrayBrowser->fixedLgd = $this->MOD_SETTINGS['fixedLgd'];
 		$arrayBrowser->searchKeysToo = TRUE;
-
 
 		$search_field = t3lib_div::_GP('search_field');
 			// If any POST-vars are send, update the condition array
@@ -292,7 +290,6 @@ class SC_mod_tools_config_index {
 			} else {
 				$this->content .= $GLOBALS['LANG']->getLL('copyPaste', TRUE) . LF . '</div>';
 			}
-
 		}
 
 		$this->content .= '<br /><table border="0" cellpadding="0" cellspacing="0" class="t3-tree t3-tree-config">';
@@ -304,7 +301,6 @@ class SC_mod_tools_config_index {
 				</tr>
 			</table>
 		';
-
 
 			// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();

@@ -60,7 +60,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		 * Regular expression to check if an element is an inline elment
 		 */
 		this.REInlineTags = /^(a|abbr|acronym|b|bdo|big|cite|code|del|dfn|em|i|img|ins|kbd|q|samp|small|span|strike|strong|sub|sup|tt|u|var)$/;
-		
+
 			// Allowed attributes on inline elements
 		this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'itemscope', 'itemtype', 'itemprop');
 		if (HTMLArea.isIEBeforeIE9) {
@@ -79,7 +79,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-		/* 
+		/*
 		 * Registering the dropdown list
 		 */
 		var buttonId = 'TextStyle';
@@ -135,7 +135,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		var parent = this.editor.getSelection().getParentElement();
 		var selectionEmpty = this.editor.getSelection().isEmpty();
 		var ancestors = this.editor.getSelection().getAllAncestors();
-		
+
 		if (!selectionEmpty) {
 				// The selection is not empty
 			for (var i = 0; i < ancestors.length; ++i) {

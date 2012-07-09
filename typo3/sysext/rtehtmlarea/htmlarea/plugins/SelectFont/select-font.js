@@ -134,7 +134,7 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 					this.onUpdateToolbar(select, this.getEditorMode(), selectionEmpty, ancestors, endPointsInSameBlock);
 				}, this);
 			}
-		}, this);	
+		}, this);
 	},
 	/*
 	 * This function gets called when some font style or font size was selected from the dropdown lists
