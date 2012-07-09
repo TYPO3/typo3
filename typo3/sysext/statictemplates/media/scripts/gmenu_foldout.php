@@ -138,7 +138,7 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared'] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('statictemplates') . 'media/scripts/jsfunc.layermenu.js"></script>';
 		$GLOBALS['TSFE']->additionalHeaderData['gmenu_foldout'] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('statictemplates') . 'media/scripts/jsfunc.foldout.js"></script>';
 
-		$GLOBALS["TSFE"]->additionalHeaderData[] .= '
+		$GLOBALS['TSFE']->additionalHeaderData[] .= '
 <style type="text/css">
 	/*<![CDATA[*/
 #divCont {

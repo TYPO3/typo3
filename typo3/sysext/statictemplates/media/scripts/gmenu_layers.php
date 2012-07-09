@@ -369,7 +369,7 @@ function GL' . $this->WMid . '_out(mitm_id) {
 }
 ';
 		}
-		$GLOBALS["TSFE"]->JSCode .= '
+		$GLOBALS['TSFE']->JSCode .= '
 function GL' . $this->WMid . '_getMouse(e) {
 	if (GLV_menuOn["' . $this->WMid . '"]!=null && !GLV_dontFollowMouse["' . $this->WMid . '"]){
 ' . implode(LF, $GLV_menuOn) . '

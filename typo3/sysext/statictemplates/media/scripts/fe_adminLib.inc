@@ -104,7 +104,7 @@ class user_feAdmin {
 		$this->preview = (string)t3lib_div::_GP('preview');
 			// backURL is a given URL to return to when login is performed
 		$this->backURL = t3lib_div::_GP('backURL');
-		if (strstr($this->backURL, '"') || strstr($this->backURL, "'") || preg_match('/(javascript|vbscript):/i', $this->backURL) || stristr($this->backURL, "fromcharcode") || strstr($this->backURL, "<") || strstr($this->backURL, ">")) {
+		if (strstr($this->backURL, '"') || strstr($this->backURL, "'") || preg_match('/(javascript|vbscript):/i', $this->backURL) || stristr($this->backURL, 'fromcharcode') || strstr($this->backURL, '<') || strstr($this->backURL, '>')) {
 				// Clear backURL if it seems to contain XSS code - only URLs are allowed
 			$this->backURL = '';
 		}
