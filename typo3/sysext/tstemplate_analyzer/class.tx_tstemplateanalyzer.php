@@ -152,7 +152,6 @@ class tx_tstemplateanalyzer extends t3lib_extobjbase {
 		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('completeTS', TRUE), $completeLink, 0, 1);
 		$theOutput.=$this->pObj->doc->spacer(15);
 
-
 			// Output options
 		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions', TRUE), '', FALSE, TRUE);
 		$addParams = t3lib_div::_GET('template') ? '&template=' . t3lib_div::_GET('template') : '';

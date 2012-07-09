@@ -43,7 +43,7 @@ TYPO3BackendLogin = {
 			'click',
 			TYPO3BackendLogin.showLoginProcess
 		);
-		
+
 			// The Interface selector is not always present, so this check is needed
 		if (Object.isElement($('t3-interfaceselector'))) {
 			TYPO3BackendLogin.observeEvents(
@@ -132,7 +132,7 @@ TYPO3BackendLogin = {
 		if ($('t3-login-interface-section')) {
 			$('t3-login-interface-section').hide();
 		}
-		
+
 		$('t3-username').activate();
 
 		TYPO3BackendLogin.setLogintypeCookie('openid');
@@ -155,7 +155,7 @@ TYPO3BackendLogin = {
 		}
 
 		$('t3-username').activate();
-		
+
 		TYPO3BackendLogin.setLogintypeCookie('username');
 	},
 
@@ -198,7 +198,7 @@ TYPO3BackendLogin = {
 		var expires = new Date(now.getTime() + 1000*60*60*24*365); // cookie expires in one year
 		document.cookie = 'typo3-login-method=' + type + '; expires=' + expires.toGMTString() + ';';
 	},
-	
+
 	/**
 	 * Check if a login type was stored in a cookie and change the Interface accordingly
 	 */
@@ -207,16 +207,16 @@ TYPO3BackendLogin = {
 			TYPO3BackendLogin.switchToOpenId();
 		}
 	},
-	
+
 	/**
 	 * Store the new selected Interface in a cookie to save it for future visits
 	 */
 	interfaceSelectorChanged: function(event) {
 		var now = new Date();
 		var expires = new Date(now.getTime() + 1000*60*60*24*365); // cookie expires in one year
-		document.cookie = 'typo3-login-interface=' + $('t3-interfaceselector').getValue() + '; expires=' + expires.toGMTString() + ';'; 
+		document.cookie = 'typo3-login-interface=' + $('t3-interfaceselector').getValue() + '; expires=' + expires.toGMTString() + ';';
 	},
-	
+
 	/**
 	 * Check if an interface was stored in a cookie and preselect it in the select box
 	 */
@@ -230,7 +230,7 @@ TYPO3BackendLogin = {
 			$('t3-interfaceselector').setValue(selectedInterface);
 		}
 	},
-	
+
 	/**
 	 * Hide all form fields and show a progress message and icon
 	 */
@@ -242,7 +242,7 @@ TYPO3BackendLogin = {
 		$('t3-login-form-fields').hide();
 		$('t3-nocookies-error').hide();
 
-		// setting a fixed height (based on the current, calculated height of the browser) for 
+		// setting a fixed height (based on the current, calculated height of the browser) for
 		// the box with the login form, so it doesn't jump around when the spinner is shown
 		var loginBoxHeight = $('t3-login-form-fields').getHeight();
 		$('t3-login-process').setStyle({height: loginBoxHeight + 'px'}).show();

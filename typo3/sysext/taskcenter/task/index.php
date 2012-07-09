@@ -291,7 +291,6 @@ class SC_mod_user_task_index extends t3lib_SCbase {
 					}
 				}
 
-
 				$description = (!empty($item['descriptionHtml'])) ? $item['descriptionHtml'] : '<p>' . nl2br(htmlspecialchars($item['description'])) . '</p>';
 
 				$id = $this->getUniqueKey($item['uid']);

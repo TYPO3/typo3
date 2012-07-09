@@ -146,7 +146,6 @@ var TsParser = function(tsRef,extTsObjTree){
 	var tsTree = new TreeNode("_L_");
 	var currentLine = "";
 
-
 	/**
 	 * build Tree of TsObjects from beginning of editor to actual cursorPos
 	 * and store it in tsTree.
@@ -284,20 +283,20 @@ var TsParser = function(tsRef,extTsObjTree){
 							str = str.strip();
 							switch(op) { // set a value or create a new object
 							case '=':
-								//ignore if path is empty or contains whitespace 
+								//ignore if path is empty or contains whitespace
 								if (path.search(/\s/g) == -1 && path.length > 0) {
 								setTreeNodeValue(path, str);
 								}
 								break;
 							case '=<': // reference to another object in the tree
-								 // resolve relative path		
+								 // resolve relative path
 								if(prefixes.length > 0 && str.substr(0, 1) == '.') {
 									str = prefixes.join('.') + str;
 								}
-								//ignore if either path or str is empty or contains whitespace 
-								if (path.search(/\s/g) == -1 
-								 && path.length > 0 
-								 && str.search(/\s/g) == -1 
+								//ignore if either path or str is empty or contains whitespace
+								if (path.search(/\s/g) == -1
+								 && path.length > 0
+								 && str.search(/\s/g) == -1
 								 && str.length > 0) {
 								setReference(path, str);
 								}
@@ -308,9 +307,9 @@ var TsParser = function(tsRef,extTsObjTree){
 									str = prefixes.join('.') + str;
 								}
 								//ignore if either path or str is empty or contains whitespace
-								if (path.search(/\s/g) == -1 
-								 && path.length > 0 
-								 && str.search(/\s/g) == -1 
+								if (path.search(/\s/g) == -1
+								 && path.length > 0
+								 && str.search(/\s/g) == -1
 								 && str.length > 0) {
 								setCopy(path, str);
 								}
@@ -367,7 +366,6 @@ var TsParser = function(tsRef,extTsObjTree){
 		return getTreeNode(path);
 	}
 
-
 	/**
 	 * check if there is an operator in the line and return it
 	 * if there is none, return -1
@@ -388,7 +386,6 @@ var TsParser = function(tsRef,extTsObjTree){
 		}
 		return -1;
 	}
-
 
 	/**
 	 * iterates through the object tree, and creates treenodes
@@ -428,7 +425,6 @@ var TsParser = function(tsRef,extTsObjTree){
 		}
 	}
 
-
 	/**
 	 * navigates to the respecting treenode,
 	 * create nodes in the path, if necessary, and sets the value
@@ -448,7 +444,6 @@ var TsParser = function(tsRef,extTsObjTree){
 		}
 	}
 
-
 	/**
 	 * navigates to the respecting treenode,
 	 * creates nodes if necessary, empties the value and childNodes-Array
@@ -461,7 +456,6 @@ var TsParser = function(tsRef,extTsObjTree){
 		treeNode.childNodes = null;
 		treeNode = null;
 	}
-
 
 	/**
 	 * copies a reference of the treeNode specified by path2

@@ -94,7 +94,6 @@ class tx_wizardsortpages_webfunc_2 extends t3lib_extobjbase {
 				}
 			}
 
-
 			$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', 0);
 			$lines = array();
 			$lines[]= '<tr class="t3-row-header">

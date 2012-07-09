@@ -345,4 +345,3 @@ if (!Prototype.Browser.MobileSafari) {
 		}
 	);
 }
-

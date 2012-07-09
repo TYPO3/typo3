@@ -28,7 +28,7 @@
  * @class Descriptionbox plugin for the t3editor-codecompletion which displays the datatype
  * and the desciption for each property displayed in the completionbox
  * @constructor
- * @return A new DescriptionPlugin instance	
+ * @return A new DescriptionPlugin instance
  **/
 
 var DescriptionPlugin = function() {
@@ -90,7 +90,7 @@ var DescriptionPlugin = function() {
 		descriptionBox.scrollTop = 0;
 		descriptionBox.style.overflowY = 'scroll';
 		descriptionBox.addClassName('descriptionBox');
-		
+
 		var addX = 5;
 		if (!Prototype.Browser.Gecko) { // not firefox
 			addX = 18;

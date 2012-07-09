@@ -124,7 +124,6 @@ class tslib_tmenu_layers extends tslib_tmenu {
 				$this->WMactiveHasSubMenu = $this->WMisSub;
 				$this->WMactiveKey = 'Menu' . $this->WMid . $key;
 
-
 				$this->WMrestoreVars = trim('
 GLV_restoreMenu["' . $this->WMid . '"] = "' . $this->WMactiveKey . '";
 				');
@@ -303,7 +302,6 @@ GLV_restoreMenu["' . $this->WMid . '"] = "' . $this->WMactiveKey . '";
 		$DoTop[] = $this->extCalcBorderWithin('bottom', $this->WMbordersWithin[3]);
 		$DoTop[] = $this->extCalcBorderWithin('left', $this->WMbordersWithin[4]);
 		$DoTop[] = $this->extCalcBorderWithin('top', $this->WMbordersWithin[5]);
-
 
 		if ($this->mconf['freezeMouseover'] && !$this->mconf['freezeMouseover.']['alwaysKeep']) {
 			$this->WMhideCode .= '

@@ -129,7 +129,6 @@ class tslib_gmenu_layers extends tslib_gmenu {
 				$this->WMactiveHasSubMenu = $this->WMisSub;
 				$this->WMactiveKey = 'Menu' . $this->WMid . $key;
 
-
 				$this->WMrestoreVars = trim('
 GLV_restoreMenu["' . $this->WMid . '"] = "' . $this->WMactiveKey . '";
 				');

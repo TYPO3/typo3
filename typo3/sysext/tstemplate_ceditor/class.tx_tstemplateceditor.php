@@ -166,7 +166,6 @@ class tx_tstemplateceditor extends t3lib_extobjbase {
 			}
 			$theOutput .= $this->pObj->doc->spacer(15);
 
-
 					// Category and constant editor config:
 			$category = $this->pObj->MOD_SETTINGS['constant_editor_cat'];
 			$tmpl->ext_getTSCE_config($category);
