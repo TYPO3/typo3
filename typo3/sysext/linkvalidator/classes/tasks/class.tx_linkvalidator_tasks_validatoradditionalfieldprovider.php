@@ -100,7 +100,6 @@ class tx_linkvalidator_tasks_ValidatorAdditionalFieldProvider implements tx_sche
 			}
 		}
 
-
 		$fieldID = 'task_page';
 		$fieldCode = '<input type="text" name="tx_scheduler[linkvalidator][page]"  id="' . $fieldID . '" value="'
 					. htmlspecialchars($taskInfo['page']) . '"/>';
