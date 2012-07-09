@@ -490,7 +490,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 						if ($accessibility) {
 							$accessibilityWrap = isset($conf['radioWrap.']['accessibilityWrap.'])
 								? $this->cObj->stdWrap($conf['radioWrap.']['accessibilityWrap'], $conf['radioWrap.']['accessibilityWrap.'])
-								: $conf['radioWrap.']['accessibilityWrap.'];
+								: $conf['radioWrap.']['accessibilityWrap'];
 
 							if($accessibilityWrap) {
 								$search = array(
