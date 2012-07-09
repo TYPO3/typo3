@@ -41,10 +41,10 @@ class tx_coreupdates_mediaFlexform extends Tx_Install_Updates_Base {
 	public function checkForUpdate(&$description, &$showUpdate = 0) {
 		$mediaElements = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $GLOBALS['TYPO3_CONF_VARS']['SYS']['contentTable'], 'CType = "media" AND pi_flexform LIKE "%<sheet index=\"sDEF\">%"');
 		if ($mediaElements > 0) {
-			$description = "You have media elements within your installation. As the structure of the flexform changed, your data needs to be migrated.";
+			$description = 'You have media elements within your installation. As the structure of the flexform changed, your data needs to be migrated.';
 			$showUpdate = 1;
 		} else {
-			$description = "You currently have no media elements within your installation. Therefore nothing to be migrated";
+			$description = 'You currently have no media elements within your installation. Therefore nothing to be migrated';
 			$showUpdate = 0;
 		}
 		return $showUpdate > 0;
