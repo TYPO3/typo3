@@ -462,7 +462,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('title'), $content, 0, 1);
 
-
 			// Create new:
 		$content='
 
@@ -570,8 +569,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 		$adminLink.= '<a href="'.htmlspecialchars($this->doc->issueCommand('&cmd['.$table.']['.$row['uid'].'][delete]=1')).'" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:cm.delete', TRUE) . '">' .
 							t3lib_iconWorks::getSpriteIcon('actions-edit-delete') .
 						'</a>';
-
-
 
 		if ($table == 'pages') {
 
@@ -898,7 +895,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 								</tr>
 							</table>';
 						}
-
 
 							// Create version cell:
 						$verCell = '
@@ -1474,7 +1470,6 @@ class tx_version_cm1 extends t3lib_SCbase {
 
 						// If there is a change of value:
 					if (strcmp(trim($diff_1_record[$fN]), trim($diff_2_record[$fN]))) {
-
 
 							// Get the best visual presentation of the value and present that:
 						$val1 = t3lib_BEfunc::getProcessedValue($table, $fN, $diff_2_record[$fN], 0, 1);

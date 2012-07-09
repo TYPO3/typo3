@@ -55,7 +55,7 @@ class Tx_Version_Preview implements t3lib_Singleton {
 	/**
 	 * hook to check if the preview is activated
 	 * right now, this hook is called at the end of "$TSFE->connectToDB"
-	 * 
+	 *
 	 * @param $params (not needed right now)
 	 * @param $pObj the instance of the tslib_fe object
 	 * @return void
@@ -81,7 +81,7 @@ class Tx_Version_Preview implements t3lib_Singleton {
 			);
 
 				// Configuration after initialization of TSFE object.
-				// Basically this unsets the BE cookie if any and forces 
+				// Basically this unsets the BE cookie if any and forces
 				// the BE user set according to the preview configuration.
 				// @previouslyknownas TSFE->ADMCMD_preview_postInit
 				// Clear cookies:
@@ -179,7 +179,7 @@ class Tx_Version_Preview implements t3lib_Singleton {
 			);
 
 				// Get: Backend login status, Frontend login status
-				// - Make sure to remove fe/be cookies (temporarily); 
+				// - Make sure to remove fe/be cookies (temporarily);
 				// BE already done in ADMCMD_preview_postInit()
 			if (is_array($previewData)) {
 				if (!count(t3lib_div::_POST())) {
@@ -187,9 +187,9 @@ class Tx_Version_Preview implements t3lib_Singleton {
 					$previewConfig = unserialize($previewData['config']);
 
 						// For full workspace preview we only ADD a get variable
-						// to set the preview of the workspace - so all other Get 
+						// to set the preview of the workspace - so all other Get
 						// vars are accepted. Hope this is not a security problem.
-						// Still posting is not allowed and even if a backend user 
+						// Still posting is not allowed and even if a backend user
 						// get initialized it shouldn't lead to situations where
 						// users can use those credentials.
 					if ($previewConfig['fullWorkspace']) {
@@ -197,11 +197,11 @@ class Tx_Version_Preview implements t3lib_Singleton {
 							// Set the workspace preview value:
 						t3lib_div::_GETset($previewConfig['fullWorkspace'], 'ADMCMD_previewWS');
 
-							// If ADMCMD_prev is set the $inputCode value cannot come 
+							// If ADMCMD_prev is set the $inputCode value cannot come
 							// from a cookie and we set that cookie here. Next time it will
 							// be found from the cookie if ADMCMD_prev is not set again...
 						if (t3lib_div::_GP($this->previewKey)) {
-								// Lifetime is 1 hour, does it matter much? 
+								// Lifetime is 1 hour, does it matter much?
 								// Requires the user to click the link from their email again if it expires.
 							SetCookie($this->previewKey, t3lib_div::_GP($this->previewKey), 0, t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
 						}
@@ -232,7 +232,7 @@ class Tx_Version_Preview implements t3lib_Singleton {
 
 	/**
 	 * returns the input code value from the admin command variable
-	 * 
+	 *
 	 * @param "input code"
 	 */
 	protected function getPreviewInputCode() {
@@ -257,7 +257,7 @@ class Tx_Version_Preview implements t3lib_Singleton {
 	 *
 	 * @param	string		Get variables to preview, eg. 'id=1150&L=0&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=8'
 	 * @param	string		32 byte MD5 hash keyword for the URL: "?ADMCMD_prev=[keyword]"
-	 * @param	integer		Time-To-Live for keyword 
+	 * @param	integer		Time-To-Live for keyword
 	 * @param	integer		Which workspace to preview. Workspace UID, -1 or >0. If set, the getVars is ignored in the frontend, so that string can be empty
 	 * @return	string		Returns keyword to use in URL for ADMCMD_prev=
 	 * @formallyknownas t3lib_BEfunc::compilePreviewKeyword
