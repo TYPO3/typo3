@@ -104,7 +104,6 @@ class tx_form_View_Wizard_Wizard extends tx_form_View_Wizard_Abstract {
 				// Localization
 			$this->loadLocalization();
 
-
 				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons();
 			$markers['CSH'] = $docHeaderButtons['csh'];

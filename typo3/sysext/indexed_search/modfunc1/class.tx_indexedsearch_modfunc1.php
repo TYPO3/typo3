@@ -138,7 +138,6 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 			TABLE.c-list TR TD { white-space: nowrap; vertical-align: top; }
 		', $this->pObj->content);
 
-
 			// Check if details for a phash record should be shown:
 		if (t3lib_div::_GET('phash')) {
 
@@ -389,8 +388,6 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 				$lines[] = '<td>'.($row['freeIndexUid'] ? $row['freeIndexUid'].($row['freeIndexSetId']?'/'.$row['freeIndexSetId']:'') : '&nbsp;').'</td>';
 				$lines[] = '<td>'.($row['recordUid'] ? $row['recordUid'] : '&nbsp;').'</td>';
 
-
-
 					// cHash parameters:
 				$arr = unserialize($row['cHashParams']);
 				if (!is_array($arr)) {
@@ -613,8 +610,6 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 						'</strong><hr/>';
 			}
 
-
-
 			$content.='<h3>Word statistics</h3>';
 
 				// Finding all words for this phash:
@@ -665,7 +660,6 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 						'20'
 					);
 			$content.= $this->listWords($ftrows, 'Top-20 words by count:', 2);
-
 
 			$content.='<h3>Section records for this phash</h3>';
 

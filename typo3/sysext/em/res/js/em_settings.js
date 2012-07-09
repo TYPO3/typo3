@@ -77,8 +77,6 @@ TYPO3.EM.Settings = Ext.extend(Ext.FormPanel, {
 			]
 		});
 
-
-
 		var mirrorSm  = new Ext.grid.CheckboxSelectionModel({
 			singleSelect: true,
 			header: '',
@@ -301,7 +299,6 @@ TYPO3.EM.Settings = Ext.extend(Ext.FormPanel, {
 					}]
 				}]
 		});
-
 
 		// call parent
 		TYPO3.EM.Settings.superclass.initComponent.apply(this, arguments);

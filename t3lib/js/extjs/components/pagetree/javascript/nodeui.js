@@ -80,7 +80,6 @@ TYPO3.Components.PageTree.PageTreeNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
             this.wrap = Ext.DomHelper.insertHtml("beforeEnd", targetNode, buf);
         }
 
-
         this.elNode = this.wrap.childNodes[0];
         this.ctNode = this.wrap.childNodes[1];
         var cs = this.elNode.childNodes;
@@ -117,24 +116,24 @@ TYPO3.Components.PageTree.PageTreeNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
 	 * @param {String} title
 	 * @return {void}
 	 */
-    onTipChange : function(node, tip, title) {
+	onTipChange : function(node, tip, title) {
 		TYPO3.Components.PageTree.PageTreeNodeUI.superclass.onTipChange.apply(this, arguments);
 
-        if(this.rendered){
-            var hasTitle = Ext.isDefined(title);
-            if(this.iconNode.setAttributeNS){
-                this.iconNode.setAttributeNS("ext", "qtip", tip);
-                if(hasTitle){
-                    this.iconNode.setAttributeNS("ext", "qtitle", title);
-                }
-            }else{
-                this.iconNode.setAttribute("ext:qtip", tip);
-                if(hasTitle){
-                    this.iconNode.setAttribute("ext:qtitle", title);
-                }
-            }
-        }
-    },
+	if(this.rendered){
+		var hasTitle = Ext.isDefined(title);
+		if(this.iconNode.setAttributeNS){
+			this.iconNode.setAttributeNS("ext", "qtip", tip);
+		if(hasTitle){
+			this.iconNode.setAttributeNS("ext", "qtitle", title);
+		}
+		}else{
+			this.iconNode.setAttribute("ext:qtip", tip);
+		if(hasTitle){
+			this.iconNode.setAttribute("ext:qtitle", title);
+		}
+	}
+	}
+	},
 
 	/**
 	 * Returns the drag and drop handles
@@ -144,7 +143,7 @@ TYPO3.Components.PageTree.PageTreeNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
 	getDDHandles: function() {
 		var ddHandles = [this.iconNode, this.textNode, this.elNode];
 		var handlesIndex = ddHandles.length;
-		
+
 		var textNode = Ext.get(this.textNode);
 		for (var i = 0; i < textNode.dom.childNodes.length; ++i) {
 			if (textNode.dom.childNodes[i].nodeName === 'SPAN') {
@@ -156,7 +155,7 @@ TYPO3.Components.PageTree.PageTreeNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
 		}
 
 		return ddHandles;
-    },
+	},
 
 	/**
 	 * Only set the onOver class if we are not in dragging mode

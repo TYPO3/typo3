@@ -567,24 +567,20 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 				$emConf[$key]
 			);
 
-
 				// Installation status
 			$techInfo = $this->install->makeDetailedExtensionAnalysis($extKey, $extInfo, TRUE, FALSE);
 			$lines[] = array('<tr><td colspan="2">&nbsp;</td></tr>');
 			$lines[] = array('<tr class="t3-row-header"><td colspan="2"><strong>' . $GLOBALS['LANG']->getLL('extInfoArray_inst_status') . '</strong></td></tr>');
-
 
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_inst_type');
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_type', $headerCol);
 			$dataCol = $this->api->typeLabels[$extInfo['type']] . ' - <em>' . $this->api->typeDescr[$extInfo['type']] . '</em>';
 			$lines[] = array($headerCol, $dataCol);
 
-
 			$headerCol = $GLOBALS['LANG']->getLL('extInfoArray_inst_twice');
 			$headerCol = t3lib_BEfunc::wrapInHelp($this->descrTable, 'emconf_doubleInstall', $headerCol);
 			$dataCol = $this->extInformationArray_dbInst($extInfo['doubleInstall'], $extInfo['type']);
 			$lines[] = array($headerCol, $dataCol);
-
 
 			if (is_array($extInfo['files'])) {
 				sort($extInfo['files']);
@@ -689,7 +685,6 @@ $EM_CONF[$_EXTKEY] = ' . tx_em_Tools::arrayToCode($EM_CONF, 0) . ';
 					</tr>';
 			}
 		}
-
 
 		return '<table border="0" cellpadding="1" cellspacing="2">
 					' . $output . '

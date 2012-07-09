@@ -187,7 +187,6 @@ TYPO3.Backend.t3Grid = Ext.extend(Ext.Component, {
 					continue;
 				}
 
-
 				var cellHtml = '<div class="cell_container"><a class="link_editor" id="e_'
 						+ col + '_' + row + '" title="' + TYPO3.l10n.localize('editCell') + '" href="#"><!-- --></a>';
 				if (this.cellCanSpanRight(col, row)) {
@@ -370,7 +369,6 @@ TYPO3.Backend.t3Grid = Ext.extend(Ext.Component, {
 					}
 				}
 			});
-
 
 			win = new Ext.Window({
 				layout: 'fit',

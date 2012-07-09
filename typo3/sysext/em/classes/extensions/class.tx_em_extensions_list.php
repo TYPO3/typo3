@@ -159,8 +159,6 @@ class tx_em_Extensions_List {
 	 * @see getInstalledExtensions()
 	 */
 	function getFlatInstExtList($path, &$list, $type) {
-
-
 		if (@is_dir($path)) {
 			$extList = t3lib_div::get_dirs($path);
 			if (is_array($extList)) {
@@ -196,8 +194,6 @@ class tx_em_Extensions_List {
 				$key = count($list);
 				$loaded = t3lib_extMgm::isLoaded($extKey);
 
-
-
 				$exist = $this->findIndex($extKey, $list);
 				if ($exist !== FALSE) {
 					$key = $exist;
@@ -223,7 +219,6 @@ class tx_em_Extensions_List {
 				$list[$key]['type'] = $this->types[$type];
 				$list[$key]['typeShort'] = $type;
 				$list[$key]['installed'] = $loaded ? 1 : 0;
-
 
 				$state = htmlspecialchars($emConf['state']);
 				$list[$key]['state'] = $this->states[$state];
@@ -260,7 +255,6 @@ class tx_em_Extensions_List {
 				$list[$key]['depends'] = $constraints['depends'];
 				$list[$key]['conflicts'] = $constraints['conflicts'];
 				$list[$key]['suggests'] = $constraints['suggests'];
-
 
 				unset($list[$key]['_md5_values_when_last_written']);
 			}

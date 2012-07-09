@@ -36,9 +36,6 @@ TYPO3.EM.TerUpload = Ext.extend(Ext.form.FormPanel, {
 	recordData: null,
 
 	initComponent:function() {
-
-
-
 		Ext.apply(this, {
 			itemId: 'extUploadForm',
 			height: 340,
@@ -116,7 +113,6 @@ TYPO3.EM.TerUpload = Ext.extend(Ext.form.FormPanel, {
 
 				activate: function(panel) {
 
-
 				}
 			},
 			scope: this
@@ -126,7 +122,6 @@ TYPO3.EM.TerUpload = Ext.extend(Ext.form.FormPanel, {
 	},
 
 	onRender: function() {
-
 
 		TYPO3.EM.TerUpload.superclass.onRender.apply(this, arguments);
 

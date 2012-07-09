@@ -223,7 +223,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 		$this->doc->bodyTagId = 'imp-exp-mod';
 		$this->doc->setModuleTemplate(t3lib_extMgm::extRelPath('impexp') . '/app/template.html');
 
-
 		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
 
 				// JavaScript
@@ -369,7 +368,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$inData['exclude'] = array();
 		}
 
-
 			// Saving/Loading/Deleting presets:
 		$this->processPresets($inData);
 
@@ -416,7 +414,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				}
 			}
 		}
-
 
 			// Configure which records to export
 		if (is_array($inData['record'])) {
@@ -817,7 +814,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				</tr>';
 		}
 
-
 		$row[] = '
 			<tr class="tableheader bgColor5">
 				<td colspan="2">'.$LANG->getLL('makeconfig_relationsAndExclusions', 1).'</td>
@@ -854,7 +850,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					</td>
 				</tr>';
 
-
 			// Add buttons:
 		$row[] = '
 				<tr class="bgColor4">
@@ -888,7 +883,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					<td><input type="checkbox" name="tx_impexp[excludeHTMLfileResources]" id="checkExcludeHTMLfileResources" value="1"'.($inData['excludeHTMLfileResources'] ? ' checked="checked"' : '').' /></td>
 				</tr>';
 
-
 			// Extensions
 		$row[] = '
 			<tr class="tableheader bgColor5">
@@ -900,8 +894,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					<td>'.$this->extensionSelector('tx_impexp[extension_dep]', $inData['extension_dep']).'</td>
 				</tr>';
 
-
-
 			// Add buttons:
 		$row[] = '
 				<tr class="bgColor4">
@@ -911,8 +903,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 						<input type="hidden" name="tx_impexp[download_export_name]" value="'.substr($nameSuggestion, 0, 30).'" />
 					</td>
 				</tr>';
-
-
 	}
 
 	/**
@@ -1021,7 +1011,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					</td>
 				</tr>';
 
-
 			// Add buttons:
 		$row[] = '
 				<tr class="bgColor4">
@@ -1068,7 +1057,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 			$import->showDiff = !$inData['notShowDiff'];
 			$import->allowPHPScripts = $inData['allowPHPScripts'];
 			$import->softrefInputValues = $inData['softrefInputValues'];
-
 
 				// OUTPUT creation:
 			$menuItems = array();
@@ -1217,7 +1205,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				);
 			}
 
-
 				// Perform import or preview depending:
 			$overviewContent = '';
 			$extensionInstallationMessage = '';
@@ -1342,7 +1329,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 				$content = '<div style="border: 1px black solid; margin: 10px 10px 10px 10px; padding: 10px 10px 10px 10px;">'.$this->doc->icons(1).htmlspecialchars($extensionInstallationMessage).'</div>'.$content;
 			}
 			$this->content.= $this->doc->section('', $content, 0, 1);
-
 
 				// Print overview:
 			if ($overviewContent) {

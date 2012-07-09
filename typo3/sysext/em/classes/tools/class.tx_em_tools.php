@@ -1074,7 +1074,6 @@ final class tx_em_Tools {
 			$folder .= '/';
 		}
 
-
 		$newFile = t3lib_div::resolveBackPath(PATH_site . $folder . $file);
 
 		if (!is_writable(dirname($newFile))) {

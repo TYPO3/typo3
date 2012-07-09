@@ -120,7 +120,6 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 			$searchData = array_merge($this->settings['defaultOptions'], $searchData);
 		}
 
-
 			// Indexer configuration from Extension Manager interface:
 		$this->indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
 		$this->enableMetaphoneSearch = $this->indexerConfig['enableMetaphoneSearch'] ? TRUE : FALSE;
@@ -139,7 +138,6 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 
 		$searchData['results'] = t3lib_utility_Math::forceIntegerInRange($searchData['results'], 1, 100000, $this->defaultResultNumber);
 
-
 			// This gets the search-words into the $searchWordArray
 		$this->sword = $searchData['sword'];
 
@@ -149,7 +147,6 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 		}
 
 		$this->searchWords = $this->getSearchWords($searchData['defaultOperand']);
-
 
 			// This is the id of the site root.
 			// This value may be a commalist of integer (prepared for this)
@@ -413,7 +410,6 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 		}
 		$title = $resultData['item_title'] . $resultData['titleaddition'];
 		$title = htmlspecialchars($title);
-
 
 			// If external media, link to the media-file instead.
 		if ($row['item_type']) {
@@ -986,7 +982,6 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 			$showTypeSearch = (count($allSearchTypes) || count($allDefaultOperands));
 			$this->view->assign('showTypeSearch', $showTypeSearch);
 
-
 				// "Search in"
 			$allMediaTypes = $this->getAllAvailableMediaTypesOptions();
 			$this->view->assign('allMediaTypes', $allMediaTypes);
@@ -996,7 +991,6 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 
 			$showMediaAndLanguageSearch = (count($allMediaTypes) || count($allLanguageUids));
 			$this->view->assign('showMediaAndLanguageSearch', $showMediaAndLanguageSearch);
-
 
 				// Sections
 			$allSections = $this->getAllAvailableSectionsOptions();
@@ -1393,7 +1387,6 @@ class Tx_IndexedSearch_Controller_SearchController extends Tx_Extbase_MVC_Contro
 		if (!is_array($this->domainRecords[$pageUid])) {
 			$this->getPathFromPageId($pageUid);
 		}
-
 
 			// If external domain, then link to that:
 		if (count($this->domainRecords[$pageUid])) {

@@ -753,7 +753,6 @@ class tx_em_Connection_ExtDirectServer {
 					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_md5') . ' ' . md5($backUpData) . ')
 				<br /></td></tr>';
 
-
 			if (is_array($techInfo['tables'])) {
 				$lines[] = '<tr class="bgColor4"><td><strong>' . $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extBackup_data_tables') .
 						'</strong></td><td>' .

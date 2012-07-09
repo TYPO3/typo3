@@ -168,7 +168,6 @@ Ext.extend(TYPO3.state.ExtDirectProvider, Ext.state.Provider, {
 		var i;
 		var found = false;
 
-
 		var lastValue = this.state[name];
 		for (i = 0; i < this.queue.length; i++) {
 			if (this.queue[i].name === name) {

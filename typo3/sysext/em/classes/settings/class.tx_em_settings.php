@@ -135,8 +135,6 @@ class tx_em_Settings implements t3lib_Singleton {
 			'display_files' => '',
 			'hide_shy' => 0,
 			'hide_obsolete' => 0,
-
-
 			'singleDetails' => array(
 				'info' => $GLOBALS['LANG']->getLL('details_info'),
 				'edit' => $GLOBALS['LANG']->getLL('details_edit'),
@@ -147,7 +145,6 @@ class tx_em_Settings implements t3lib_Singleton {
 			),
 			'fe_u' => '',
 			'fe_p' => '',
-
 			'mirrorListURL' => '',
 			'rep_url' => '',
 			'extMirrors' => '',

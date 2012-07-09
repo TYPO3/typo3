@@ -222,7 +222,6 @@ TYPO3.Dialog = function() {
 		fn: Ext.emptyFn
 	};
 
-
 	return {
 		/** @public functions */
 		InformationDialog: function(configuration) {
@@ -303,7 +302,6 @@ TYPO3.ContextHelpWindow = function() {
 	* @private
 	*/
 	var height;
-
 
 	return {
 		/**

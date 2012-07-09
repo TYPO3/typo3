@@ -107,7 +107,6 @@ TYPO3.ContextHelp = function() {
 		tip.doAutoWidth();
 	}
 
-
 	return {
 		/**
 		 * Constructor
