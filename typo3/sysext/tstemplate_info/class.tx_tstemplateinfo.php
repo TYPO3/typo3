@@ -371,7 +371,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				);
 				$outCode .= '<label for="checkIncludeTypoScriptFileContent">' . $GLOBALS['LANG']->getLL('includeTypoScriptFileContent') . '</label><br />';
 
-
 				$theOutput.= $this->pObj->doc->spacer(15);
 				$theOutput.= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants'), '', TRUE);
 				$theOutput.= $this->pObj->doc->sectionEnd().$outCode;
@@ -467,7 +466,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 				$GLOBALS['LANG']->getLL('editTemplateRecord') ))  . $GLOBALS['LANG']->getLL('editTemplateRecord') . '</strong></a>';
 			$theOutput.= $this->pObj->doc->section('', $outCode);
 
-
 				// hook	after compiling the output
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postOutputProcessingHook'])) {
 				$postOutputProcessingHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postOutputProcessingHook'];
@@ -488,7 +486,6 @@ class tx_tstemplateinfo extends t3lib_extobjbase {
 		} else {
 			$theOutput.= $this->pObj->noTemplate(1);
 		}
-
 
 		return $theOutput;
 	}

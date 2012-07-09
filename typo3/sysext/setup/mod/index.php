@@ -397,7 +397,6 @@ class SC_mod_user_setup_index {
 			$this->content .= $flashMessage->render();
 		}
 
-
 			// Render the menu items
 		$menuItems = $this->renderUserSetup();
 
@@ -691,7 +690,6 @@ class SC_mod_user_setup_index {
 				. ($GLOBALS['BE_USER']->isAdmin() ?
 					'You can use the Extension Manager to easily download and install new language packs.'
 				:	'Please ask your system administrator to do this.');
-
 
 			$languageUnavailableMessage = t3lib_div::makeInstance(
 				't3lib_FlashMessage',

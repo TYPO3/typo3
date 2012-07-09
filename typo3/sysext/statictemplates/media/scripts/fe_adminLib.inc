@@ -170,7 +170,6 @@ class user_feAdmin {
 			($this->authCode ? '<input type="hidden" name="aC" value="' . htmlspecialchars($this->authCode) . '" />' : '') .
 			($this->backURL ? '<input type="hidden" name="backURL" value="' . htmlspecialchars($this->backURL) . '" />' : '');
 
-
 			// Setting cmdKey which is either 'edit' or 'create'
 		switch($this->cmd) {
 			case 'edit':

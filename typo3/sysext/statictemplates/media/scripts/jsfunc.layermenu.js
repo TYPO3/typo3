@@ -209,4 +209,3 @@ function GL_iframer(WMid,id,state)	{
 		else ifrmObj.style.display = "none";
 	}
 }
-

@@ -155,7 +155,6 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 				.bgColor0 {background-color:#fff; color: #000; }
 			';
 
-
 				// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
 
@@ -384,7 +383,6 @@ class SC_mod_web_ts_index extends t3lib_SCbase {
 			t3lib_FlashMessage::INFO
 		);
 		$theOutput .= $flashMessage->render();
-
 
 			// New standard?
 		if ($newStandardTemplate) {

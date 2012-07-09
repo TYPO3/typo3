@@ -149,8 +149,3 @@ function GF_resizeForOpera()	{
 		}
 	}
 }
-
-
-
-
-

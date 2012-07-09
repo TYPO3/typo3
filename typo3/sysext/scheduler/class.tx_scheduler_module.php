@@ -1250,7 +1250,6 @@ class tx_scheduler_Module extends t3lib_SCbase {
 			$content .= $this->displayServerTime();
 		}
 
-
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
 		return $content;

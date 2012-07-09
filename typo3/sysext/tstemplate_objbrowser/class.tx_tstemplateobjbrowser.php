@@ -467,7 +467,6 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 			$tree = $tmpl->ext_getObjTree($theSetup, $theKey, '', '', $theSetupValue, $this->pObj->MOD_SETTINGS['ts_browser_alphaSort']);
 			$tree = $tmpl->substituteCMarkers($tree);
 
-
 			$urlParameters = array(
 					'id' => $this->pObj->id,
 				);
@@ -499,8 +498,6 @@ class tx_tstemplateobjbrowser extends t3lib_extobjbase {
 					);
 				$theOutput .= $flashMessage->render();
 			}
-
-
 
 			if (isset($this->pObj->MOD_SETTINGS['ts_browser_TLKeys_' . $bType][$theKey])) {
 				$remove = '<td width="1%" nowrap><a href="' . htmlspecialchars($aHref . '&addKey[' . $theKey . ']=0&SET[ts_browser_toplevel_' . $bType . ']=0') . '"><strong>' . $GLOBALS['LANG']->getLL('removeKey') . '</strong></a></td>';

@@ -95,7 +95,6 @@ class tx_wizardcrpages_webfunc_2 extends t3lib_extobjbase {
 		$this->tsConfig = t3lib_BEfunc::getPagesTSconfig($this->pObj->id);
 		$this->pagesTsConfig = isset($this->tsConfig['TCEFORM.']['pages.']) ? $this->tsConfig['TCEFORM.']['pages.'] : array();
 
-
 			// Create loremIpsum code:
 		if (t3lib_extMgm::isLoaded('lorem_ipsum')) {
 			$this->loremIpsumObject = t3lib_div::getUserObj('EXT:lorem_ipsum/class.tx_loremipsum_wiz.php:tx_loremipsum_wiz');

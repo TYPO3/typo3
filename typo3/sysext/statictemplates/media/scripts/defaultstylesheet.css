@@ -24,7 +24,6 @@ A:active {
 	text-decoration : none;
 }
 
-
 SELECT {
 	font-family: Verdana, Arial, Helvetica;
 	font-size: 10px
@@ -37,7 +36,6 @@ INPUT {
 	font-family: Verdana, Arial, Helvetica;
 	font-size: 10px
 }
-
 
 H1 {
 	font-family : Verdana, sans-serif;
@@ -89,12 +87,6 @@ H4 {
 	font-weight: normal;
 }
 
-
-
-
-
-
-
 P {
 	font-family : Verdana, sans-serif;
 	font-size : 11px;
@@ -120,12 +112,6 @@ P {
 	font-size : 11px;
 	color : #CC3366;
 }
-
-
-
-
-
-
 
 .searchform {
 	font-family : Verdana, sans-serif;
@@ -155,18 +141,12 @@ P {
 	color : #FF0066;
 }
 
-
-
-
 .loginform {
 	font-family : Verdana, sans-serif;
 	font-size : 14px;
 	color : #CC0000;
 	font-weight : normal;
 }
-
-
-
 
 .mailform {
 	font-family : Verdana, sans-serif;
@@ -193,11 +173,6 @@ P {
 	font-weight : normal;
 }
 
-
-
-
-
-
 .filelinks {
 	font-family : Verdana, sans-serif;
 	font-size : 14px;
@@ -208,8 +183,6 @@ P {
 	font-size : 14px;
 	color : Green;
 }
-
-
 
 .sitemap1 {
 	font-family : Verdana, sans-serif;
@@ -235,9 +208,6 @@ P {
 	margin-left : 60px;
 }
 
-
-
-
 .celmenu {
 	font-family : Verdana, sans-serif;
 	font-size : 12px;
@@ -251,6 +221,3 @@ P {
 	margin-left : 20px;
 	margin-top : 3px;
 }
-
-
-

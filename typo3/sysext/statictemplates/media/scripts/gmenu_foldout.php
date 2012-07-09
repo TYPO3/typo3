@@ -135,7 +135,6 @@ class tslib_gmenu_foldout extends tslib_gmenu {
 		$menuOffset = t3lib_div::intExplode(',', $this->mconf['menuOffset'] . ',');
 		$subOffset = t3lib_div::intExplode(',', $this->mconf['subMenuOffset'] . ',');
 
-
 		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared'] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('statictemplates') . 'media/scripts/jsfunc.layermenu.js"></script>';
 		$GLOBALS['TSFE']->additionalHeaderData['gmenu_foldout'] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('statictemplates') . 'media/scripts/jsfunc.foldout.js"></script>';
 

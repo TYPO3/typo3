@@ -64,7 +64,6 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 	var parser = new TsParser(tsRef, extTsObjTree);
 	loadExtTemplatesAsync();
 
-
 	// TODO port plugin to t3editor.js
 
 	// plugin-array will be retrieved through AJAX from the conf array
@@ -79,7 +78,6 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 	plugin.classname = 'DescriptionPlugin';
 
 	plugins.push(plugin);
-
 
 	var codeCompleteBox = new Element("DIV", {
 		"class": "t3e_codeCompleteBox"
@@ -102,7 +100,6 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 	//	should we use a pluginmanager so no for loops are required on each hook?
 	//	e.g. pluginmanager.call('afterKeyUp',....);
 	loadPluginArray();
-
 
 	/**
 	 * loads the array of registered codecompletion plugins
@@ -272,7 +269,6 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 		return cursorNode;
 	}
 
-
 	function getCurrentLine(cursor) {
 		var line = "";
 		var currentNode = cursor.start.node.parentNode;
@@ -425,7 +421,6 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 			codeCompleteBox.style.overflowY = 'scroll';
 			codeCompleteBox.style.height = (options.ccWords * ($("cc_word_0").offsetHeight)) + 'px';
 
-
 			var leftpos = (Position.cumulativeOffset($$('.t3e_iframe_wrap')[index])[0] + Position.cumulativeOffset(cursorNode)[0] + cursorNode.offsetWidth) + 'px';
 			var toppos = (Position.cumulativeOffset(cursorNode)[1] + cursorNode.offsetHeight - Element.cumulativeScrollOffset(cursorNode)[1]) + 'px';
 			codeCompleteBox.setStyle({left: leftpos, top: toppos});
@@ -438,15 +433,12 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 			for (var i=0;i<plugins.length;i++) {
 				if (plugins[i].obj && plugins[i].obj.afterCCRefresh) {
 					plugins[i].obj.afterCCRefresh(proposals[currWord],compResult);
-			}
+				}
 			}
 		} else {
 			endAutoCompletion();
 		}
 	}
-
-
-
 
 	/**
 	 * hides codecomplete box and resets completionResult
@@ -465,10 +457,9 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 		for (var i=0;i<plugins.length;i++) {
 			if (plugins[i].obj && plugins[i].obj.endCodeCompletion) {
 				plugins[i].obj.endCodeCompletion();
+			}
 		}
 	}
-	}
-
 
 	/**
 	 * move cursor in autcomplete box up
@@ -587,7 +578,6 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 		}
 	}
 
-
 	/**
 	 * retrieves the get-variable with the specified name
 	 */
@@ -631,7 +621,6 @@ document.observe('t3editor:init', function(event) {
 	that.tsCodeCompletion = new TsCodeCompletion(that.mirror, that.outerdiv);
 });
 
-
 document.observe('t3editor:keyup', function(event) {
 	that = event.memo.t3editor;
 	if (that.tsCodeCompletion) that.tsCodeCompletion.keyUp(event.memo.actualEvent);
@@ -646,4 +635,3 @@ document.observe('t3editor:click', function(event) {
 	that = event.memo.t3editor;
 	if (that.tsCodeCompletion) that.tsCodeCompletion.click(event.memo.actualEvent);
 });
-
