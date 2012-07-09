@@ -157,7 +157,6 @@ class t3lib_autoloader {
 			$classRegistry = self::lowerCaseClassRegistry(self::createCoreAndExtensionRegistry());
 		}
 
-
 		self::$classNameToFileMapping = $classRegistry;
 	}
 

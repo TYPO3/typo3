@@ -110,8 +110,6 @@ TYPO3.EM.LanguagesProgressBar = new Ext.ProgressBar ({
 	hidden: true
 });
 
-
-
 TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 	border:false,
 	layout: 'form',
@@ -314,7 +312,6 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 		progressBar.show();
 		languagegrid.disable();
 
-
 		if (button.id === 'lang-checkbutton') {
 				// check languages
 			this.startFetchLanguages(0, Ext.StoreMgr.get('em-languageext-store'), function(){
@@ -400,7 +397,6 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 		this.extCount = store.data.items.length;
 		this.cb = callback;
 
-
 			// fill arrays
 		this.extkeyArray = [];
 		for (var i = 0; i < this.extCount; i++) {
@@ -421,7 +417,6 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 		var record = grid.store.getAt(row);
 		var i;
 
-
 		if (response) {
 				// update fetched record
 			var fetchedRecord = grid.store.getAt(row - 1);
@@ -433,7 +428,6 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 
 		if(this.extkeyArray.length > 0 && !this.interruptProcess) {
 			var ext = this.extkeyArray.shift();
-
 
 			//update Grid
 			grid.getView().focusRow(row);
@@ -515,8 +509,6 @@ TYPO3.EM.Languages = Ext.extend(Ext.FormPanel, {
 			},
 			scope: this
 		});
-
-
 	}
 });
 Ext.reg('extlanguages', TYPO3.EM.Languages);

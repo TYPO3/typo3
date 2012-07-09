@@ -281,7 +281,6 @@ class tx_em_Install {
 												$content = $updateContent;
 											}
 
-
 											// Install / Uninstall:
 											if (!$this->parentObject->CMD['standAlone']) {
 												$content .= '<h3>' . $GLOBALS['LANG']->getLL('ext_import_install_uninstall') . '</h3>';

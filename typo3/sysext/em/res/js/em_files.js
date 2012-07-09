@@ -38,9 +38,6 @@ TYPO3.EM.ExtFilelist = Ext.extend(Ext.Panel, {
 			stylesheet: TYPO3.settings.EM.editorCss
 		});
 
-
-
-
 		this.fileTree = new Ext.tree.TreePanel ({
 			itemId: 'extfiletree',
 			cls: 'extfiletree',

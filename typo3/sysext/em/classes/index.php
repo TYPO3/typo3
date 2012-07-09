@@ -293,14 +293,12 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->xmlHandler = t3lib_div::makeInstance('tx_em_Tools_XmlHandler');
 		$this->xmlHandler->useObsolete = $this->MOD_SETTINGS['display_obsolete'];
 
-
 		// Initialize newListing
 		if (isset($this->MOD_MENU['function']['extensionmanager'])) {
 			$this->extensionmanager = t3lib_div::makeInstance('tx_em_ExtensionManager', $this);
 		} else {
 			$this->extensionmanager = &$this;
 		}
-
 
 		// Output classes
 		$this->extensionList = t3lib_div::makeInstance('tx_em_Extensions_List', $this);
@@ -329,7 +327,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 				}
 			');
 		}
-
 
 		// Descriptions:
 		$this->descrTable = '_MOD_' . $this->MCONF['name'];
@@ -393,7 +390,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 		$this->MOD_MENU['singleDetails'] = $this->mergeExternalItems($this->MCONF['name'], 'singleDetails', $this->MOD_MENU['singleDetails']);
 		$this->MOD_MENU['extensionInfo'] = $this->mergeExternalItems($this->MCONF['name'], 'singleDetails', array());
 
-
 			// page/be_user TSconfig settings and blinding of menu-items
 		if (!$GLOBALS['BE_USER']->getTSConfigVal('mod.' . $this->MCONF['name'] . '.allowTVlisting')) {
 			unset($this->MOD_MENU['display_details'][3]);
@@ -403,7 +399,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 
 			// CLEANSE SETTINGS
 		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
-
 
 		if ($this->MOD_SETTINGS['function'] == 2) {
 			// If listing from online repository, certain items are removed though:
@@ -427,7 +422,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 	 * @return	void
 	 */
 	public function main() {
-
 		$menu = '';
 
 		if (empty($this->MOD_SETTINGS['mirrorListURL'])) {
@@ -470,7 +464,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 			}
 
 			$this->content .= $menu ? $this->doc->section('', '<form action="' . $this->script . '" method="post" name="pageform"><span class="nobr">' . $menu . '</span></form>') : '';
-
 
 			$view = $this->MOD_SETTINGS['function'];
 			if (t3lib_div::_GP('view')) {
@@ -1854,7 +1847,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 						$headline = t3lib_BEfunc::wrapInHelp('_MOD_tools_em', 'info', $headline);
 						$content = $this->extensionDetails->extInformationarray($extKey, $list[$extKey]);
 
-
 						$this->content .= $this->doc->spacer(10);
 						$this->content .= $this->doc->section($headline, $content, FALSE, TRUE, FALSE, TRUE);
 						break;
@@ -2116,7 +2108,6 @@ class SC_mod_tools_em_index extends t3lib_SCbase {
 						<pre>' . htmlspecialchars($dump_tf) . '</pre>',
 					0, 1
 				);
-
 
 				$details = '							' . $GLOBALS['LANG']->getLL('extDumpTables_based_on') . '<br />
 				<ul>

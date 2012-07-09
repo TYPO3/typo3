@@ -689,7 +689,6 @@ class tx_impexp {
 				$fileRec['content_md5'] = md5($fileRec['content']);
 				$this->dat['files'][$fI['ID']] = $fileRec;
 
-
 					// For soft references, do further processing:
 				if ($recordRef === '_SOFTREF_') {
 
@@ -2768,7 +2767,6 @@ class tx_impexp {
 						$pInfo['msg'] = 'File will be attempted written to "'.$testDirPrefix2.'". ';
 					}
 				}
-
 
 					// Check if file exists:
 				if (file_exists(PATH_site.$fI['relFileName'])) {

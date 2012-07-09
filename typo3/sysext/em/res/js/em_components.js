@@ -279,7 +279,6 @@ TYPO3.EM.GridColumns.ImportExtension = {
 						+ '&nodoc=1&view=info&CMD[silentMode]=1&CMD[standAlone]=1&ter_connect=1&CMD[importExt]='
 						+ record.extkey  + '&CMD[extVersion]=' + record.version + '&CMD[loc]=L'
 
-
 				TYPO3.EM.ImportWindow = new TYPO3.EM.InstallWindow({
 				 	title: action + ': ' + record.title + ' (' + record.extkey + ') version ' + record.version,
 					record: record,
@@ -732,8 +731,6 @@ TYPO3.EM.TerUpload = Ext.extend(Ext.form.FormPanel, {
 
 	initComponent:function() {
 
-
-
 		Ext.apply(this, {
 			itemId: 'extUploadForm',
 			height: 340,
@@ -804,7 +801,6 @@ TYPO3.EM.TerUpload = Ext.extend(Ext.form.FormPanel, {
 
 				activate: function(panel) {
 
-
 				}
 			},
 			scope: this
@@ -814,7 +810,6 @@ TYPO3.EM.TerUpload = Ext.extend(Ext.form.FormPanel, {
 	},
 
 	onRender: function() {
-
 
 		TYPO3.EM.TerUpload.superclass.onRender.apply(this, arguments);
 

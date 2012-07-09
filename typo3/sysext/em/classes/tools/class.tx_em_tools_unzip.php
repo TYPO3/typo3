@@ -452,7 +452,6 @@ class tx_em_Tools_Unzip {
 			// Store the file position
 			$v_pos_entry = ftell($this->_zip_fd);
 
-
 			// Go to the file position
 			@rewind($this->_zip_fd);
 			if (@fseek($this->_zip_fd, $v_header['offset'])) {
@@ -505,7 +504,6 @@ class tx_em_Tools_Unzip {
 			// Return
 			return $v_result;
 		}
-
 
 		// Check that the file header is coherent with $p_entry info
 		// TBC
@@ -640,7 +638,6 @@ class tx_em_Tools_Unzip {
 						return $v_result;
 					}
 
-
 					// Read the file by ARCHIVE_ZIP_READ_BLOCK_SIZE octets blocks
 					$v_size = $p_entry['compressed_size'];
 					while ($v_size != 0) {
@@ -667,7 +664,6 @@ class tx_em_Tools_Unzip {
 
 						return $v_result;
 					}
-
 
 					// Read the compressed file in a buffer (one shot)
 					$v_buffer = @fread($this->_zip_fd, $p_entry['compressed_size']);
@@ -907,7 +903,6 @@ class tx_em_Tools_Unzip {
 		if (substr($p_header['filename'], -1) == '/') {
 			$p_header['external'] = 0x41FF0010;
 		}
-
 
 		// Return
 		return $v_result;

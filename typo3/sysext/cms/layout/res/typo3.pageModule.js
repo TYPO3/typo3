@@ -1,4 +1,3 @@
-
 var typo3pageModule = {
 	placeholder: null,
 	el: null,

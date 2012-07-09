@@ -652,7 +652,6 @@ class tx_indexedsearch_crawler {
 			// Load indexer if not yet.
 		$this->loadIndexerClass();
 
-
 			// Init:
 		$rl = is_array($rl) ? $rl : $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
 		$fieldList = t3lib_div::trimExplode(',', $cfgRec['fieldlist'], 1);

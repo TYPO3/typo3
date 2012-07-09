@@ -1190,7 +1190,6 @@ class SC_mod_tools_be_user_index {
 			$comparation=array();
 			$counter=0;
 
-
 			$offset=0;
 			$numberAtTime=1000;
 			$tooManyUsers='';

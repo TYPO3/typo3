@@ -396,13 +396,11 @@ class tx_em_Tools_XmlHandler {
 		}
 		$string = gzread($fp, 0xffff); // Read 64KB
 
-
 		$idx = 0;
 		$defaultCategories = tx_em_Tools::getDefaultCategory();
 		foreach ($defaultCategories as $catKey => $tmp) {
 			$this->revCatArr[$catKey] = $idx++;
 		}
-
 
 		$idx = 0;
 		$states = tx_em_Tools::getStates();
