@@ -156,7 +156,6 @@ class Tx_Workspaces_Controller_ReviewController extends Tx_Workspaces_Controller
 		$states = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces']['States'];
 		$this->pageRenderer->addInlineSetting('Workspaces', 'States', $states);
 
-
 			// Load  JavaScript:
 		$this->pageRenderer->addExtDirectCode(array(
 			'TYPO3.Workspaces'

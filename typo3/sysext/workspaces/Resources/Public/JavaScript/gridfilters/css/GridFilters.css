@@ -21,10 +21,10 @@
 	background-image: url(../images/hd-btn.gif);
 }
 */
-.x-grid3-hd-row td.ux-filtered-column {   
-	font-style: italic;  
+.x-grid3-hd-row td.ux-filtered-column {
+	font-style: italic;
 	font-weight: bold;
-}		
+}
 
 .ux-filtered-column.sort-asc .x-grid3-sort-icon {
 	background-image: url(../images/sort_filtered_asc.gif) !important;
@@ -51,4 +51,3 @@ li.x-menu-list-item-indent {
 li.x-menu-list-item div {
 	display: block;
 }
-

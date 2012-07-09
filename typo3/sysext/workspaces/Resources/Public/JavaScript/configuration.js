@@ -347,4 +347,3 @@ TYPO3.Workspaces.Configuration.SwapButton = {
 		}
 	]
 };
-

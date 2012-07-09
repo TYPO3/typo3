@@ -16,7 +16,6 @@
 	border: none;
 	padding-bottom: 0;
 	padding-top: 9px;
-
 }
 
 .x-tab-strip-wrap {
@@ -77,7 +76,6 @@ ul.x-tab-strip-top {
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(0, #888888), color-stop(0.85, #474747), color-stop(1, #363636));
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#888888', EndColorStr='#474747'); /* IE6, IE7 */
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#888888', EndColorStr='#474747')"; /* IE8 */
-
 }
 
 /* active tab */
@@ -129,7 +127,6 @@ ul.x-tab-strip-top {
 .x-slider-horz .x-slider-inner {
 	background-image: url('../Images/slider-bg.png');
 }
-
 
 #visual-mode-selector {
 	list-style: none;

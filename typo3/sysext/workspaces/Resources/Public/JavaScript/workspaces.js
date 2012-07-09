@@ -72,5 +72,4 @@ Ext.onReady(function() {
 	// fire grid
 	var WS = new TYPO3.Workspaces.App.init();
 
-
 });

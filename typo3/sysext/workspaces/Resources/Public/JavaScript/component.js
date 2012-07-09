@@ -278,6 +278,3 @@ TYPO3.Workspaces.RowExpander = new Ext.grid.RowExpander({
 		}
 	}
 });
-
-
-
