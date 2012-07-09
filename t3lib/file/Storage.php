@@ -92,6 +92,7 @@ class t3lib_file_Storage {
 	const SIGNAL_PostFolderRename = 'postFolderRename';
 	const SIGNAL_PreFileProcess = 'preFileProcess';
 	const SIGNAL_PostFileProcess = 'postFileProcess';
+	const SIGNAL_PreGeneratePublicUrl = 'preGeneratePublicUrl';
 
 	/**
 	 * The storage driver instance belonging to this storage.
@@ -799,7 +800,17 @@ class t3lib_file_Storage {
 	 * @return string
 	 */
 	public function getPublicUrl(t3lib_file_ResourceInterface $resourceObject, $relativeToCurrentScript = FALSE) {
-		return $this->driver->getPublicUrl($resourceObject, $relativeToCurrentScript);
+		$publicUrl = NULL;
+
+			// Pre-process the public URL by an accordant slot
+		$this->emitPreGeneratePublicUrl($resourceObject, $relativeToCurrentScript, array('publicUrl' => &$publicUrl));
+
+			// If slot did not handle the signal, use the default way to determine public URL
+		if ($publicUrl === NULL) {
+			$publicUrl = $this->driver->getPublicUrl($resourceObject, $relativeToCurrentScript);
+		}
+
+		return $publicUrl;
 	}
 
 	/**
@@ -2103,7 +2114,20 @@ class t3lib_file_Storage {
 		);
 	}
 
-
+	/**
+	 * Emits file pre-processing signal when generating a public url for a file or folder.
+	 *
+	 * @param t3lib_file_ResourceInterface $resourceObject
+	 * @param boolean $relativeToCurrentScript
+	 * @param array $urlData
+	 */
+	protected function emitPreGeneratePublicUrl(t3lib_file_ResourceInterface $resourceObject, $relativeToCurrentScript, array $urlData) {
+		$this->getSignalSlotDispatcher()->dispatch(
+			't3lib_file_Storage',
+			self::SIGNAL_PreGeneratePublicUrl,
+			array($this, $this->driver, $resourceObject, $relativeToCurrentScript, $urlData)
+		);
+	}
 
 	/**
 	 * Returns the destination path/fileName of a unique fileName/foldername in that path.
