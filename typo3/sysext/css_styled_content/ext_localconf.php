@@ -43,16 +43,23 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version']['tx_cssstyledcon
 );
 
 	// Register ourselves as "content rendering template" (providing the hooks of "static template 43" = content (default) )
-$TYPO3_CONF_VARS['FE']['contentRenderingTemplates'] = array(
-	'cssstyledcontent/static/',
-	'cssstyledcontent/static/v4.7/',
-	'cssstyledcontent/static/v4.6/',
-	'cssstyledcontent/static/v4.5/',
-	'cssstyledcontent/static/v4.4/',
-	'cssstyledcontent/static/v4.3/',
-	'cssstyledcontent/static/v4.2/',
-	'cssstyledcontent/static/v3.9/',
-	'cssstyledcontent/static/v3.8/',
+if (!is_array($GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'])) {
+	$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] = array();
+}
+
+$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'] = array_merge(
+	$GLOBALS['TYPO3_CONF_VARS']['FE']['contentRenderingTemplates'],
+	array(
+		'cssstyledcontent/static/',
+		'cssstyledcontent/static/v4.7/',
+		'cssstyledcontent/static/v4.6/',
+		'cssstyledcontent/static/v4.5/',
+		'cssstyledcontent/static/v4.4/',
+		'cssstyledcontent/static/v4.3/',
+		'cssstyledcontent/static/v4.2/',
+		'cssstyledcontent/static/v3.9/',
+		'cssstyledcontent/static/v3.8/',
+	)
 );
 
 ?>
