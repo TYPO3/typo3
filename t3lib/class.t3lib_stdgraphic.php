@@ -2233,6 +2233,11 @@ class t3lib_stdGraphic {
 	 */
 	function getImageDimensions($imageFile) {
 		preg_match('/([^\.]*)$/', $imageFile, $reg);
+
+		if($GLOBALS['TSFE']->tmpl->getFileName_backPath) {
+			$imageFile =  $GLOBALS['TSFE']->tmpl->getFileName_backPath . $imageFile;
+		}
+
 		if (file_exists($imageFile) && t3lib_div::inList($this->imageFileExt, strtolower($reg[0]))) {
 			if ($returnArr = $this->getCachedImageDimensions($imageFile)) {
 				return $returnArr;
