@@ -4014,9 +4014,12 @@ final class t3lib_div {
 	 * @see upload_to_tempfile(), tempnam()
 	 */
 	public static function unlink_tempfile($uploadedTempFileName) {
-		if ($uploadedTempFileName && self::validPathStr($uploadedTempFileName) && self::isFirstPartOfStr($uploadedTempFileName, PATH_site . 'typo3temp/') && @is_file($uploadedTempFileName)) {
-			if (unlink($uploadedTempFileName)) {
-				return TRUE;
+		if ($uploadedTempFileName) {
+			$uploadedTempFileName = self::fixWindowsFilePath($uploadedTempFileName);
+			if (self::validPathStr($uploadedTempFileName) && self::isFirstPartOfStr($uploadedTempFileName, PATH_site . 'typo3temp/') && @is_file($uploadedTempFileName)) {
+				if (unlink($uploadedTempFileName)) {
+					return TRUE;
+				}
 			}
 		}
 	}
