@@ -414,8 +414,8 @@ var inline = {
 
 		var elName = this.parseObjectId('full', objectId, 2, 0, true);
 
-		formObj = document.getElementsByName(elName + '[hidden]_0');
-		valueObj = document.getElementsByName(elName + '[hidden]');
+		formObj = $$('[name="' + elName + '[hidden]_0"]');
+		valueObj = $$('[name="' + elName + '[hidden]"]');
 
 			// It might be the case that a child record
 			// cannot be hidden at all (no hidden field)
