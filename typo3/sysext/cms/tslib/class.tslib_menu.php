@@ -1175,12 +1175,14 @@ class tslib_menu {
 		if ($this->menuArr[$key]['doktype'] == t3lib_pageSelect::DOKTYPE_SHORTCUT
 			&& $this->menuArr[$key]['shortcut_mode'] != t3lib_pageSelect::SHORTCUT_MODE_RANDOM_SUBPAGE) {
 
+			$menuItem = $this->determineOriginalShortcutPage($this->menuArr[$key]);
+
 			$shortcut = NULL;
 			try {
 				$shortcut = $GLOBALS['TSFE']->getPageShortcut(
-					$this->menuArr[$key]['shortcut'],
-					$this->menuArr[$key]['shortcut_mode'],
-					$this->menuArr[$key]['uid']
+					$menuItem['shortcut'],
+					$menuItem['shortcut_mode'],
+					$menuItem['uid']
 				);
 			} catch (Exception $ex) {
 				// shortcut configuration is wrong and Exception is thrown
@@ -1194,7 +1196,7 @@ class tslib_menu {
 				// Only setting url, not target
 			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array(
 				'parameter' => $shortcut['uid'],
-				'additionalParams' => $this->mconf['addParams'] . $MP_params . $this->I['val']['additionalParams'] . $this->menuArr[$key]['_ADD_GETVARS'],
+				'additionalParams' => $this->mconf['addParams'] . $MP_params . $this->I['val']['additionalParams'] . $menuItem['_ADD_GETVARS'],
 			));
 		}
 
@@ -1249,6 +1251,43 @@ class tslib_menu {
 		$list['onClick'] = $onClick;
 
 		return $list;
+	}
+
+	/**
+	 * Determines original shortcut destination in page overlays.
+	 *
+	 * Since the pages records used for menu rendering are overlayed by default,
+	 * the original 'shortcut' value is lost, if a translation did not define one.
+	 * The behaviour in TSFE can be compared to the 'mergeIfNotBlank' feature, but
+	 * it's hardcoded there and not related to the mentioned setting at all.
+	 *
+	 * This method is private since it serves as a bugfix and will be removed in TYPO3 6.x.
+	 *
+	 * @param array $page
+	 * @return array
+	 * @notice This method has been introduced as bugfix in TYPO3 4.6 & 4.7
+	 */
+	private function determineOriginalShortcutPage(array $page) {
+		$isModificationRequired = (
+			$GLOBALS['TSFE']->sys_language_uid > 0
+			&& empty($page['shortcut'])
+			&& !empty($page['uid'])
+			&& !empty($page['_PAGES_OVERLAY'])
+			&& !empty($page['_PAGES_OVERLAY_UID'])
+		);
+
+		if (!$isModificationRequired) {
+			return $page;
+		}
+
+			// Using raw record since the record was overlayed and correct already:
+		$originalPage = $this->sys_page->getRawRecord('pages', $page['uid']);
+
+		if (!empty($originalPage['shortcut'])) {
+			$page['shortcut'] = $originalPage['shortcut'];
+		}
+
+		return $page;
 	}
 
 	/**
