@@ -137,6 +137,7 @@ $t3libClasses = array(
 	't3lib_file_folder' => PATH_t3lib . 'file/Folder.php',
 	't3lib_file_mimetype' => PATH_t3lib . 'file/MimeType.php',
 	't3lib_file_processedfile' => PATH_t3lib . 'file/ProcessedFile.php',
+	't3lib_file_propertybag' => PATH_t3lib . 'file/PropertyBag.php',
 	't3lib_file_repository_abstractrepository' => PATH_t3lib . 'file/Repository/AbstractRepository.php',
 	't3lib_file_repository_filecollectionrepository' => PATH_t3lib . 'file/Repository/FileCollectionRepository.php',
 	't3lib_file_repository_filerepository' => PATH_t3lib . 'file/Repository/FileRepository.php',

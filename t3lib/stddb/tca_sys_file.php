@@ -121,7 +121,12 @@ $TCA['sys_file'] = array (
 				'size'     => '8',
 				'max'      => '30',
 				'eval'     => 'int',
-				'default' => 0
+				'default' => 0,
+			),
+			'fal' => array(
+				'propertyBag'  => 'someBag',
+				'propertyName' => 'size',
+				'extractionService' => 'tx_foobar_exifExtractionServiceInterface',
 			)
 		),
 	),

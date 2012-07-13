@@ -47,6 +47,13 @@ abstract class t3lib_file_AbstractFile implements t3lib_file_FileInterface {
 	protected $properties;
 
 	/**
+	 * The bags containing this file's properties.
+	 *
+	 * @var array
+	 */
+	protected $propertyBags = array();
+
+	/**
 	 * The storage this file is located in
 	 *
 	 * @var t3lib_file_Storage
