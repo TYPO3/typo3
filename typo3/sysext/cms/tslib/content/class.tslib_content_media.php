@@ -199,6 +199,13 @@ class tslib_content_Media extends tslib_content_Abstract {
 				$conf['installUrl'] = 'null';
 				$conf['forcePlayer'] = 0;
 				$renderType = 'swf';
+			} elseif (isset($conf['file']) && strpos($conf['file'], '://') !== FALSE) {
+				$mediaWizard = tslib_mediaWizardManager::getValidMediaWizardProvider($conf['file']);
+				if ($mediaWizard !== NULL) {
+					$conf['installUrl'] = 'null';
+					$conf['forcePlayer'] = 0;
+					$renderType = 'swf';
+				}
 			} elseif (isset($conf['file']) && !isset($conf['caption']) && !isset($conf['sources'])) {
 				$renderType = 'swf';
 				$conf['forcePlayer'] = 1;
