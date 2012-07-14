@@ -91,7 +91,7 @@ class SC_tslib_showpic {
 		$md5_value = t3lib_div::hmac(
 			implode(
 				'|',
-				array($this->file, $this->parametersEncoded)
+				array(rawurldecode($this->file), $this->parametersEncoded)
 			)
 		);
 
