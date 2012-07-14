@@ -45,3 +45,28 @@ div.typo3-fullDoc {
 	height: 100%;
 	width: 100%;
 }
+
+div#typo3-docbody {
+	bottom: 0;
+	overflow: auto;
+	position: absolute;
+	top: 49px;
+	width: 100%;
+	z-index: 2;
+}
+
+div#typo3-inner-docbody {
+	padding: 15px 12px;
+}
+
+/* Fix for IE 7 */
+* + html div#typo3-inner-docbody {
+	width: 95%;
+}
+
+* html div#typo3-docbody {
+	height: 90%;
+	padding-bottom: 0;
+	padding-top: 0;
+	top: 51px;
+}

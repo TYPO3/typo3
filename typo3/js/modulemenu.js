@@ -69,9 +69,7 @@ TYPO3.ModuleMenu.Store = new Ext.data.JsonStore({
 
 TYPO3.ModuleMenu.Template = new Ext.XTemplate(
 		'<div id="typo3-docheader">',
-		'	<div id="typo3-docheader-row1">',
-		'		<div class="buttonsleft"></div>',
-		'		<div class="buttonsright"></div>',
+		'	<div class="typo3-docheader-functions">',
 		'	</div>',
 		'</div>',
 		'<ul id="typo3-menu">',

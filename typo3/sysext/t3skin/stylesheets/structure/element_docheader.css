@@ -1,127 +1,85 @@
-/* - - - - - - - - - - - - - - - - - - - - -
-Docheader
+/**
+ * Docheader
+ */
 
-- - - - - - - - - - - - - - - - - - - - - */
-
-/* - - - - - - - - - - - - - - - - - - - - -
-Record editing (alt_doc.php)
-- - - - - - - - - - - - - - - - - - - - - */
-
-div#typo3-docheader {
-	left: 0;
-	min-width: 260px;
-	top: 0;
-	z-index: 5;
+.typo3-docheader-functions {
+	color: #dadada;
+	height: 27px;
+	line-height: 27px;
+	padding: 0 12px;
+	overflow: hidden;
+}
+.typo3-docheader-buttons {
+	color: #000;
+	height: 16px;
+	padding: 3px 12px;
+	overflow: hidden;
 }
 
-#typo3-pagetree #typo3-docheader,
-#typo3-alt-file-navframe-php #typo3-docheader {
-	min-width: 0;
-}
-
-div#typo3-docheader-row1 {
-	height: 22px;
-	padding-left: 12px;
-	padding-right: 12px;
-}
-
-div#typo3-docheader-row2 {
-	height: 21px;
-	padding-top: 6px;
-	padding-left: 12px;
-	padding-right: 12px;
-}
-
-div.docheader-row2-left {
-	margin-top: -3px;
-}
-
-div.docheader-row2-left div.docheader-funcmenu {
-	float: left;
-	padding-right: 4px;
-}
-
-div.docheader-row2-left div.docheader-csh {
-	float: left;
-	padding-top: 3px;
-}
-
-div#typo3-docheader div.buttonsleft {
-	float: left;
-	margin: 0 5px 0 0;
-}
-
-div#typo3-docheader div.buttonsright {
-	float: right;
-	margin: 0 0 0 5px;
-}
-
-div#typo3-docheader-row1 img,
-div#typo3-docheader-row1 input,
-div#typo3-docheader-row1 span.t3-icon {
-	margin: 2px 3px 0;
-	vertical-align: top;
-}
-
-div#typo3-docheader img.typo3-csh-icon {
-	margin: 2px 2px 0 2px;
-}
-
-div#typo3-docheader-row2 img {
-	margin-top: -1px !important;
-}
-
-div#typo3-docheader select {
-	margin: 2px 0 0;
-}
-
-div#typo3-docheader div.docheader-row2-left {
+#typo3-docheader .left {
 	float: left;
 }
-
-div#typo3-docheader div.docheader-row2-right {
+#typo3-docheader .right {
 	float: right;
 }
 
-div#typo3-docbody {
-	bottom: 0;
-	overflow: auto;
+/** Extra margin 6px added to it-icon margin, doubled spacing = 12px */
+#typo3-docheader .left .buttongroup {
+	float: left;
+	margin-right: 6px;
+}
+
+#typo3-docheader .t3-icon {
+	margin-bottom: 3px;
+}
+#typo3-docheader .left .t3-icon {
+	margin-right: 6px;
+}
+#typo3-docheader .right .t3-icon {
+	margin-left: 6px;
+}
+
+#typo3-docheader .left select {
+	margin-right: 12px;
+}
+
+/**
+ * Fail-safe for non-core legacy extensions
+ * @deprecated with TYPO3 version 6.0, will be removed in 6.2
+ */
+
+/** Behave like .typo3-docheader-functions */
+#typo3-docheader-row2 {
+	color: #dadada;
+	height: 27px;
+	line-height: 27px;
+	padding: 0 12px;
+	overflow: hidden;
+
+	/** Fake box width to 100%, excluding the padding */
 	position: absolute;
-	top: 49px;
-	width: 100%;
-	z-index: 2;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: auto;
 }
 
-div#typo3-inner-docbody {
-	padding: 15px 10px;
+/** Behave like .typo3-docheader-buttons */
+#typo3-docheader-row1 {
+	color: #000;
+	height: 16px;
+	padding: 3px 12px;
+	overflow: hidden;
+
+	margin-top: 27px;
 }
 
-/* Fix for IE 7 */
-* + html div#typo3-inner-docbody {
-	width: 95%;
-}
-
-* html div#typo3-docbody {
-	height: 90%;
-	padding-bottom: 0;
-	padding-top: 0;
-	top: 51px;
-}
-
-* html div#typo3-docbody table.typo3-TCEforms {
-	margin-top: 20px;
-}
-
-div#typo3-docheader div.buttonsleft div.buttongroup {
+#typo3-docheader .docheader-row2-left,
+#typo3-docheader .buttonsleft {
 	float: left;
-	height: 20px;
-	margin-right: 5px;
-	padding-right: 20px;
 }
 
-div#typo3-docheader div.buttonsright div.buttongroup {
-	float: left;
-	height: 20px;
-	margin-left: 5px;
-	padding-left: 20px;
+#typo3-docheader .docheader-row2-right,
+#typo3-docheader .buttonsright {
+	float: right;
 }

@@ -121,10 +121,12 @@ ul.tree div.treeLinkItem span.dragIcon {
 
 #treeFilterBox {
 	display: none;
-	height: 23px;
+	height: 25px;
 	position: absolute;
-	top: 22px;
-	width: 280px;
+	top: 49px;
+	left: 0;
+	right: 0;
+	width: auto;
 	z-index: 3;
 }
 
