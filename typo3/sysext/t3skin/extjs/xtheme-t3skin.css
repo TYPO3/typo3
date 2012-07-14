@@ -2272,14 +2272,22 @@ body.ext-chrome #typo3-navigationContainer-xsplit {
 #typo3-navigationContainer-xcollapsed,
 #typo3-navigationDummy {
 	background-color: #ebebeb;
-	-moz-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15),
-		inset 0 22px #585858;
-	-ms-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15),
-		inset 0 22px #585858;
-	-webkit-box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15),
-		inset 0 22px #585858;
-	box-shadow: inset -2px 0 1px rgba(0, 0, 0, 0.15),
-		inset 0 22px #585858;
+	-moz-box-shadow:
+		inset -2px 0 1px rgba(0, 0, 0, 0.15),
+		inset 0 27px #585858,
+		inset 0 49px #dadada;
+	-ms-box-shadow:
+		inset -2px 0 1px rgba(0, 0, 0, 0.15),
+		inset 0 27px #585858,
+		inset 0 49px #dadada;
+	-webkit-box-shadow:
+		inset -2px 0 1px rgba(0, 0, 0, 0.15),
+		inset 0 27px #585858,
+		inset 0 49px #dadada;
+	box-shadow:
+		inset -2px 0 1px rgba(0, 0, 0, 0.15),
+		inset 0 27px #585858,
+		inset 0 49px #dadada;
 	overflow: visible;
 }
 
