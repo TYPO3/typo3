@@ -201,7 +201,7 @@ Pagetree
 	-moz-box-shadow: inset 0 1px 1px #aeaeae;
 	-ms-box-shadow: inset 0 1px 1px #aeaeae;
 	-webkit-box-shadow: inset 0 1px 1px #aeaeae;
-	box-shadow: inset 0 2px 1px #aeaeae;
+	box-shadow: inset 0 1px 1px #aeaeae;
 }
 
 .typo3-pagetree-topPanel-filter-defaultText {
