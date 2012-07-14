@@ -84,8 +84,9 @@ TYPO3.Form.Wizard.Viewport = Ext.extend(Ext.Container, {
 	 * event listeners are added.
 	 */
 	addButtonsToDocHeader: function() {
-		var docHeaderRow1 = Ext.get('typo3-docheader-row1');
-		var docHeaderRow1ButtonsLeft = docHeaderRow1.first('.buttonsleft');
+		var docHeaderRow1 = Ext.get('typo3-docheader');
+		var docHeaderButtonsBar = docHeaderRow1.first('.typo3-docheader-buttons');
+		var docHeaderRow1ButtonsLeft = docHeaderButtonsBar.first('.left');
 
 		var saveButtonGroup = Ext.DomHelper.append(docHeaderRow1ButtonsLeft, {
 			tag: 'div',
