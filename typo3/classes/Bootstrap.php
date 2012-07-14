@@ -49,9 +49,17 @@ class Typo3_Bootstrap {
 	protected static $instance = NULL;
 
 	/**
+	 * Unique Request ID
+	 *
+	 * @var string
+	 */
+	protected $requestId;
+
+	/**
 	 * Disable direct creation of this object.
 	 */
 	protected function __construct() {
+		$this->requestId = uniqid();
 	}
 
 	/**
@@ -70,6 +78,15 @@ class Typo3_Bootstrap {
 			self::$instance = new Typo3_Bootstrap();
 		}
 		return self::$instance;
+	}
+
+	/**
+	 * Gets the request's unique ID
+	 *
+	 * @return string Unique request ID
+	 */
+	public function getRequestId() {
+		return $this->requestId;
 	}
 
 	/**
