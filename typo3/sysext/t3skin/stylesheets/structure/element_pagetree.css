@@ -36,7 +36,20 @@ Pagetree
 
 #typo3-pagetree .x-toolbar,
 .typo3-pagetree-topPanel-item .x-toolbar {
-	padding-bottom: 0;
+	padding: 0;
+}
+
+#typo3-pagetree .x-panel-tbar .x-toolbar {
+	padding-top: 7px;
+	height: 20px;
+}
+
+#typo3-pagetree .x-toolbar-ct {
+	height: 20px;
+}
+
+#typo3-pagetree-topPanel-item-newNode.x-toolbar {
+	padding-top: 2px;
 }
 
 #typo3-pagetree ul.x-tree-root-ct {
@@ -107,29 +120,30 @@ Pagetree
 }
 
 .typo3-pagetree-topPanel-item {
-	padding: 5px 3px 0 3px;
+	padding: 0 3px 0 3px;
 	height: 22px;
 }
 
 #typo3-pagetree-topPanel-filterWrap {
-	padding-top: 3px;
-	height: 24px;
+	height: 22px;
 }
 
 #typo3-pagetree-topPanel-filter {
-	height: 16px;
+	height: 15px;
 	width: 98% !important;
+	margin-top: 1px;
 	padding: 1px 0 1px 2px;
 }
 
 #typo3-pagetree-topPanel-filterWrap .t3-icon-input-clear {
-	right: 2%;
+	right: 2px;
 }
 
 #typo3-pagetree .typo3-pagetree-topPanel-button {
 	margin-right: 1px;
 	margin-top: -2px;
-	padding: 2px 3px;
+	margin-bottom: -2px;
+	padding: 2px 3px 4px 3px;
 }
 
 #typo3-pagetree-topPanel-defaultPanel {

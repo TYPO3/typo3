@@ -151,10 +151,10 @@ ul.tree ul li.active ul span a {
 }
 
 #treeFilterBox {
+	background-color: #dadada;
 	background-image: url('../../icons/gfx/filter_bg.gif');
 	background-repeat: no-repeat;
 	background-position: 0 -2px;
-	border-bottom: 1px solid #dadada;
 }
 
 #treeFilter {
