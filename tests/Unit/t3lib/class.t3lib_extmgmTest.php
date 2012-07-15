@@ -1122,10 +1122,6 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 		t3lib_div::setSingletonInstance('t3lib_category_Registry', $registryMock);
 
 		t3lib_extMgm::makeCategorizable($extensionKey, $tableName);
-
-		$this->assertNotEmpty(
-			$GLOBALS['TCA'][$tableName]['columns']['categories']
-		);
 	}
 
 	/**
@@ -1146,10 +1142,6 @@ class t3lib_extmgmTest extends tx_phpunit_testcase {
 		t3lib_div::setSingletonInstance('t3lib_category_Registry', $registryMock);
 
 		t3lib_extMgm::makeCategorizable($extensionKey, $tableName, $fieldName);
-
-		$this->assertNotEmpty(
-			$GLOBALS['TCA'][$tableName]['columns'][$fieldName]
-		);
 	}
 }
 ?>
