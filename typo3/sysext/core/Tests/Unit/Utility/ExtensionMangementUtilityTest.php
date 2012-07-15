@@ -1416,10 +1416,10 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			'ctrl' => array(),
 			'columns' => array()
 		);
-		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', array('add'));
-		$registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, 'categories');
+		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', array('dummy'));
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $registryMock);
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName);
+		$registryMock->applyTca();
 		$this->assertNotEmpty($GLOBALS['TCA'][$tableName]['columns']['categories']);
 	}
 
@@ -1434,10 +1434,10 @@ class ExtensionManagementUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 			'ctrl' => array(),
 			'columns' => array()
 		);
-		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', array('add'));
-		$registryMock->expects($this->once())->method('add')->with($extensionKey, $tableName, $fieldName);
+		$registryMock = $this->getMock('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', array('dummy'));
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Category\\CategoryRegistry', $registryMock);
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::makeCategorizable($extensionKey, $tableName, $fieldName);
+		$registryMock->applyTca();
 		$this->assertNotEmpty($GLOBALS['TCA'][$tableName]['columns'][$fieldName]);
 	}
 

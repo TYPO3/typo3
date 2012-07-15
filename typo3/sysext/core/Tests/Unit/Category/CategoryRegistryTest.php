@@ -28,6 +28,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category;
  * Testcase for CategoryRegistry
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
+ * @author Fabien Udriot <fabien.udriot@typo3.org>
  */
 class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -51,7 +52,7 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			'second' => uniqid('second')
 		);
 		foreach ($this->tables as $tableName) {
-			$GLOBALS['TCA'][$tableName] = array('ctrl' => array());
+			$GLOBALS['TCA'][$tableName] = array('ctrl' => array(), 'columns' => array());
 		}
 	}
 
@@ -81,7 +82,11 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * @test
 	 */
 	public function doesAddReturnFalseOnUndefinedTable() {
-		$this->assertFalse($this->fixture->add('test_extension_a', uniqid('undefined'), 'categories'));
+		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
+
+		$this->assertFalse(
+			$this->fixture->add('test_extension_a', $this->tables['first'], 'categories')
+		);
 	}
 
 	/**
@@ -92,8 +97,16 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
 		$registry = $this->fixture->get();
 		ob_flush();
-		$this->assertEquals('categories', $registry['test_extension_a'][$this->tables['first']]);
-		$this->assertEquals('categories', $registry['test_extension_b'][$this->tables['second']]);
+
+		$this->assertEquals(
+			'categories',
+			$registry['test_extension_a'][$this->tables['first']]['fieldName']
+		);
+
+		$this->assertEquals(
+			'categories',
+			$registry['test_extension_b'][$this->tables['second']]['fieldName']
+		);
 	}
 
 	/**
@@ -103,8 +116,16 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
 		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
 		$registry = $this->fixture->get();
-		$this->assertEquals('categories', $registry['test_extension_a'][$this->tables['first']]);
-		$this->assertEquals('categories', $registry['test_extension_b'][$this->tables['second']]);
+
+		$this->assertEquals(
+			'categories',
+			$registry['test_extension_a'][$this->tables['first']]['fieldName']
+		);
+
+		$this->assertEquals(
+			'categories',
+			$registry['test_extension_b'][$this->tables['second']]['fieldName']
+		);
 	}
 
 	/**
@@ -114,7 +135,11 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->fixture->add('test_extension_a', $this->tables['first'], $this->tables['first']);
 		$this->fixture->add('test_extension_b', $this->tables['second'], $this->tables['second']);
 		$registry = $this->fixture->get();
-		$this->assertEquals($this->tables['first'], $registry['test_extension_a'][$this->tables['first']]);
+
+		$this->assertEquals(
+			$this->tables['first'],
+			$registry['test_extension_a'][$this->tables['first']]['fieldName']
+		);
 	}
 
 	/**
@@ -148,6 +173,29 @@ class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals($matches[2][0], 'categories');
 	}
 
+	/**
+	 * @test
+	 */
+	public function areDefaultCategorizedTabledLoaded() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['defaultCategorizedTables'] = $this->tables['first'] . ',' . $this->tables['second'];
+		$this->fixture->applyTca();
+
+		$registry = $this->fixture->get();
+		$this->assertCount(2, $registry['core']);
+		$this->assertSame(key($registry['core']), $this->tables['first']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function canApplyTca() {
+		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
+		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
+		$this->fixture->applyTca();
+		foreach ($this->tables as $table) {
+			$this->assertNotEmpty($GLOBALS['TCA'][$table]['columns']['categories']);
+		}
+	}
 }
 
 ?>
