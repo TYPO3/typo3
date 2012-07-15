@@ -894,6 +894,9 @@ class Bootstrap {
 		if (file_exists($extTablesFile) && is_file($extTablesFile)) {
 			include $extTablesFile;
 		}
+
+		// Apply TCA onto tables to be categorized
+		\TYPO3\CMS\Core\Category\CategoryRegistry::getInstance()->applyTca();
 	}
 
 	/**
