@@ -690,6 +690,10 @@ class Bootstrap {
 		if (TYPO3_extTableDef_script) {
 			include PATH_typo3conf . TYPO3_extTableDef_script;
 		}
+
+		// Apply TCA onto tables to be categorized
+		\TYPO3\CMS\Core\Category\CategoryRegistry::getInstance()->applyTca();
+
 		// Run post hook for additional manipulation
 		$this->runExtTablesPostProcessingHooks();
 		return $this;
