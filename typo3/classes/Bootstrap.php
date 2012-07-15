@@ -929,6 +929,7 @@ class Typo3_Bootstrap {
 		global $T3_SERVICES, $T3_VAR, $TYPO3_CONF_VARS;
 		global $TBE_MODULES, $TBE_MODULES_EXT, $TCA;
 		global $PAGES_TYPES, $TBE_STYLES, $FILEICONS;
+		global $_EXTKEY;
 
 			// Include standard tables.php file
 		require(PATH_t3lib . 'stddb/tables.php');
