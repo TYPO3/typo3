@@ -188,6 +188,13 @@ class t3lib_transferData {
 	 * @see fetchRecord()
 	 */
 	function renderRecord($table, $id, $pid, $row) {
+		$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
+		foreach ($GLOBALS['TCA'][$table]['columns'] as $column => $config) {
+			if (isset($config['config']['dbType']) && t3lib_div::inList('date,datetime', $config['config']['dbType'])) {
+				$emptyValue = $dateTimeFormats[$config['config']['dbType']]['empty'];
+				$row[$column] = (!empty($row[$column]) && $row[$column] !== $emptyValue) ? strtotime($row[$column]) : 0;
+			}
+		}
 
 			// Init:
 		$uniqueItemRef = $table . '_' . $id;

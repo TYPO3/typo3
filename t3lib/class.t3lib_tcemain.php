@@ -519,6 +519,20 @@ class t3lib_TCEmain {
 					// $incomingFieldArray is the array of fields
 				foreach ($this->datamap[$table] as $id => $incomingFieldArray) {
 					if (is_array($incomingFieldArray)) {
+							// Handle native date/time fields
+						$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
+						if (!isset($GLOBALS['TCA'][$table]['columns'])) {
+							t3lib_div::loadTCA($table);
+						}
+						foreach ($GLOBALS['TCA'][$table]['columns'] as $column => $config) {
+							if (isset($incomingFieldArray[$column])) {
+								if (isset($config['config']['dbType']) && t3lib_div::inList('date,datetime', $config['config']['dbType'])) {
+									$emptyValue = $dateTimeFormats[$config['config']['dbType']]['empty'];
+									$format = $dateTimeFormats[$config['config']['dbType']]['format'];
+									$incomingFieldArray[$column] = $incomingFieldArray[$column] ? date($format, $incomingFieldArray[$column]) : $emptyValue;
+								}
+							}
+						}
 
 							// Hook: processDatamap_preProcessFieldArray
 						foreach ($hookObjectsArr as $hookObj) {
@@ -1257,6 +1271,15 @@ class t3lib_TCEmain {
 	function checkValue_input($res, $value, $tcaFieldConf, $PP, $field = '') {
 		list($table, $id, $curValue, $status, $realPid, $recFID) = $PP;
 
+			// Handle native date/time fields
+		$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
+		if (isset($tcaFieldConf['dbType']) && t3lib_div::inList('date,datetime', $tcaFieldConf['dbType'])) {
+				// Convert the date/time into a timestamp for the sake of the checks
+			$emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
+			$timeOffset = $tcaFieldConf['dbType'] === 'date' ? 3600 * $GLOBALS['TYPO3_CONF_VARS']['SYS']['serverTimeZone'] : 0;
+			$value = $value === $emptyValue ? 0 : strtotime($value) + $timeOffset;
+		}
+
 			// Secures the string-length to be less than max.
 		if (intval($tcaFieldConf['max']) > 0) {
 			$value = $GLOBALS['LANG']->csConvObj->substr($GLOBALS['LANG']->charSet, $value, 0, intval($tcaFieldConf['max']));
@@ -1285,6 +1308,14 @@ class t3lib_TCEmain {
 			if ($res['value'] && in_array('unique', $evalCodesArray)) {
 				$res['value'] = $this->getUnique($table, $field, $res['value'], $id);
 			}
+		}
+
+			// Handle native date/time fields
+		if (isset($tcaFieldConf['dbType']) && t3lib_div::inList('date,datetime', $tcaFieldConf['dbType'])) {
+				// Convert the timestamp back to a date/time
+			$emptyValue = $dateTimeFormats[$tcaFieldConf['dbType']]['empty'];
+			$format = $dateTimeFormats[$tcaFieldConf['dbType']]['format'];
+			$res['value'] = $res['value'] ? date($format, $res['value']) : $emptyValue;
 		}
 
 		return $res;
