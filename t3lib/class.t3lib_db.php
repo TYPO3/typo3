@@ -876,6 +876,25 @@ class t3lib_DB {
 		return $wgolParts;
 	}
 
+	/**
+	 * Returns the date and time formats compatible with the given database table.
+	 *
+	 * @param string $table Table name for which to return an empty date. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how date and time should be formatted).
+	 * @return array
+	 */
+	public function getDateTimeFormats($table) {
+		return array(
+			'date' => array(
+				'empty' => '0000-00-00',
+				'format' => 'Y-m-d',
+			),
+			'datetime' => array(
+				'empty' => '0000-00-00 00:00:00',
+				'format' => 'Y-m-d H:i:s',
+			),
+		);
+	}
+
 	/**************************************
 	 *
 	 * MySQL wrapper functions

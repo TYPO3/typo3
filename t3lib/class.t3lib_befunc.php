@@ -2164,6 +2164,12 @@ final class t3lib_BEfunc {
 						// Hide value 0 for dates, but show it for everything else
 					if (isset($value)) {
 						if (t3lib_div::inList($theColConf['eval'], 'date')) {
+								// Handle native date field
+							if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'date') {
+								$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
+								$emptyValue = $dateTimeFormats['date']['empty'];
+								$value = $value !== $emptyValue ? strtotime($value) : 0;
+							}
 							if (!empty($value)) {
 								$l = self::date($value) .
 									' (' .
@@ -2180,6 +2186,12 @@ final class t3lib_BEfunc {
 								$l = self::time($value);
 							}
 						} elseif (t3lib_div::inList($theColConf['eval'], 'datetime')) {
+								// Handle native date/time field
+							if (isset($theColConf['dbType']) && $theColConf['dbType'] === 'datetime') {
+								$dateTimeFormats = $GLOBALS['TYPO3_DB']->getDateTimeFormats($table);
+								$emptyValue = $dateTimeFormats['datetime']['empty'];
+								$value = $value !== $emptyValue ? strtotime($value) : 0;
+							}
 							if (!empty($value)) {
 								$l = self::datetime($value);
 							}
