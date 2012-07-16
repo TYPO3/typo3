@@ -2289,6 +2289,9 @@ class t3lib_stdGraphic {
 	 * @see imageMagickConvert(), tslib_cObj::getImgResource()
 	 */
 	function getImageDimensions($imageFile) {
+		if($GLOBALS['TSFE']->tmpl->getFileName_backPath) {
+			$imageFile =  $GLOBALS['TSFE']->tmpl->getFileName_backPath . $imageFile;
+		}
 		preg_match('/([^\.]*)$/', $imageFile, $reg);
 		if (file_exists($imageFile) && t3lib_div::inList($this->imageFileExt, strtolower($reg[0]))) {
 			if ($returnArr = $this->getCachedImageDimensions($imageFile)) {
