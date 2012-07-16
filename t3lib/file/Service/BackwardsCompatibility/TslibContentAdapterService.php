@@ -65,14 +65,14 @@ class t3lib_file_Service_BackwardsCompatibility_TslibContentAdapterService {
 	 *
 	 * This method is called by the render() method of tslib_content_Content.
 	 *
-	 * @param $row
-	 * @param $table
+	 * @param $row typically an array, but can also be null (in extensions or e.g. FLUID viewhelpers)
+	 * @param $table the database table where the record is from
 	 * @return	void
 	 */
-	public static function modifyDBRow(array &$row, $table) {
+	public static function modifyDBRow(&$row, $table) {
 		if (array_key_exists($table, static::$migrateFields)) {
 			foreach (static::$migrateFields[$table] as $migrateFieldName => $oldFieldNames) {
-				if (isset($row[$migrateFieldName])) {
+				if ($row !== NULL && isset($row[$migrateFieldName])) {
 					/** @var $fileRepository t3lib_file_Repository_FileRepository */
 					$fileRepository = t3lib_div::makeInstance('t3lib_file_Repository_FileRepository');
 					$files = $fileRepository->findByRelation($table, $migrateFieldName, $row['uid']);
