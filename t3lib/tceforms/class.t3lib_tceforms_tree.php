@@ -132,6 +132,11 @@ class t3lib_TCEforms_Tree {
 		if (isset($PA['fieldConf']['config']['autoSizeMax']) && intval($PA['fieldConf']['config']['autoSizeMax']) > 0) {
 			$autoSizeMax = intval($PA['fieldConf']['config']['autoSizeMax']) * 20;
 		}
+		if (isset($PA['fieldConf']['config']['width']) && intval($PA['fieldConf']['config']['width']) > 0) {
+			$width = intval($PA['fieldConf']['config']['width']);
+		} else {
+			$width = 280;
+		}
 
 		$header = FALSE;
 		$expanded = FALSE;
@@ -172,6 +177,7 @@ class t3lib_TCEforms_Tree {
 				showHeader: ' . intval($header) . ',
 				onChange: "' . $onChange . '",
 				countSelectedNodes: ' . count ($selectedNodes) . ',
+				width: ' . $width . ',
 				listeners: {
 					click: function(node, event) {
 						if (typeof(node.attributes.checked) == "boolean") {
