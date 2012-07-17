@@ -135,10 +135,14 @@ class t3lib_TCEforms_Tree {
 
 		$header = FALSE;
 		$expanded = FALSE;
+		$width = 280;
 		$appearance = $PA['fieldConf']['config']['treeConfig']['appearance'];
 		if (is_array($appearance)) {
 			$header = $appearance['showHeader'] ? TRUE : FALSE;
 			$expanded = ($appearance['expandAll'] === TRUE);
+			if (isset($appearance['width']) {
+				$width = intval($appearance['width']);
+			}
 		}
 
 		$onChange = '';
@@ -172,6 +176,7 @@ class t3lib_TCEforms_Tree {
 				showHeader: ' . intval($header) . ',
 				onChange: "' . $onChange . '",
 				countSelectedNodes: ' . count ($selectedNodes) . ',
+				width: ' . $width . ',
 				listeners: {
 					click: function(node, event) {
 						if (typeof(node.attributes.checked) == "boolean") {
