@@ -1719,6 +1719,19 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$this->assertEquals($expectedPort, t3lib_div::getIndpEnv('TYPO3_PORT'));
 	}
 
+	/**
+	 * @test
+	 */
+	public function isGetIndpEnvHookCalled() {
+		$classReference = uniqid('user_getIndpEnvHook');
+		$hookMock = $this->getMock($classReference, array('getIndpEnvCustom'), array());
+		$hookMock->expects($this->once())->method('getIndpEnvCustom');
+		t3lib_div::addInstance($classReference, $hookMock);
+
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['postIndpEnvValue'][$classReference] = $classReference . '->getIndpEnvCustom';
+
+		t3lib_div::getIndpEnv('TYPO3_SSL');
+	}
 
 	//////////////////////////////////
 	// Tests concerning underscoredToUpperCamelCase
