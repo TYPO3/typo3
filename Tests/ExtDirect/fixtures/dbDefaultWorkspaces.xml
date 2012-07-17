@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<sys_workspace>
+		<uid>90</uid>
+		<pid>0</pid>
+		<title>Empty Workspace</title>
+	</sys_workspace>
+	<sys_workspace>
+		<uid>91</uid>
+		<pid>0</pid>
+		<title>Filled Workspace #1</title>
+	</sys_workspace>
+	<sys_workspace>
+		<uid>92</uid>
+		<pid>0</pid>
+		<title>Filled Workspace #2</title>
+	</sys_workspace>
+</dataset>
