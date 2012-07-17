@@ -2079,6 +2079,12 @@
 			<trans-unit id="reports_ExtensionsNotUpToDate" xml:space="preserve">
 				<source>Extension list is not up to date!</source>
 			</trans-unit>
+			<trans-unit id="reports_ExtensionsNotProperlyConfiguredOrListOutdatedTitle" xml:space="preserve">
+				<source>Status unknown!</source>
+			</trans-unit>
+			<trans-unit id="reports_ExtensionsNotProperlyConfiguredOrListOutdated" xml:space="preserve">
+				<source>The status of the extensions is either outdated or was never fetched from the TER. Please update the list of extensions from TER for a current information on the security status of the extensions.</source>
+			</trans-unit>
 			<trans-unit id="wsdlUrl" xml:space="preserve">
 				<source>WSDL URL</source>
 			</trans-unit>
