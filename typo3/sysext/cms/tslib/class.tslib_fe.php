@@ -281,6 +281,11 @@ class tslib_fe {
 	var $anchorPrefix = '';
 
 	/**
+	 * IDs we already rendered for this page (to make sure they are unique)
+	 */
+	private $usedUniqueIds = array();
+
+	/**
 	 * Page content render object
 	 *
 	 * @var tslib_cObj
@@ -4558,6 +4563,38 @@ if (version == "n3") {
 			$charset
 		);
 	}
+
+	/**
+	 * Returns a unique id to be used as a XML ID (in HTML / XHTML mode)
+	 *
+	 * @param string $desired The desired id. If already used it is suffixed with a number
+	 * @return string The unique id
+	 */
+	function getUniqueId($desired = '') {
+		if (!$desired) {
+			$uniqueId = 'i' . $this->uniqueHash();
+		} else {
+			$uniqueId = $desired;
+			for ($i = 1; isset($this->usedUniqueIds[$uniqueId]); $i++) {
+				$uniqueId = $desired . '_' . $i;
+			}
+		}
+		$this->usedUniqueIds[$uniqueId] = TRUE;
+		debug($uniqueId);
+		return $uniqueId;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	/*********************************************
 	 *

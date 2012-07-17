@@ -143,7 +143,7 @@ class tslib_content_Form extends tslib_content_Abstract {
 			? $this->cObj->stdWrap($conf['formName'], $conf['formName.'])
 			: $conf['formName'];
 		if ($formName) {
-			$formName = $this->cObj->cleanFormName($formName);
+			$formName = $GLOBALS['TSFE']->getUniqueId($this->cObj->cleanFormName($formName));
 		} else {
 				// form name has to start with a letter to reach XHTML compliance
 			$formName = 'a' . $GLOBALS['TSFE']->uniqueHash();
