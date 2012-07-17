@@ -695,6 +695,8 @@
 			<label index="reports_MainRepositoryOldList">The Main Repository extension list is older than 7 days. Please update it in the Extension manager or Scheduler.</label>
 			<label index="reports_NoExtensionsFound">No extensions found!</label>
 			<label index="reports_ExtensionsNotUpToDate">Extension list is not up to date!</label>
+			<label index="reports_ExtensionsNotProperlyConfiguredOrListOutdatedTitle">Status unknown!</label>
+			<label index="reports_ExtensionsNotProperlyConfiguredOrListOutdated">The status of the extensions is either outdated or was never fetched from the TER. Please update the list of extensions from TER for a current information on the security status of the extensions.</label>
 			<label index="wsdlUrl">WSDL URL</label>
 			<label index="msg_items">Items</label>
 			<label index="msg_item">Item</label>
