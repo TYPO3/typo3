@@ -191,7 +191,16 @@ class t3lib_TCEforms_Tree {
 					},
 					expandnode: function(node) {
 						top.TYPO3.BackendUserSettings.ExtDirect.addToList("tcaTrees." + this.ucId, node.attributes.uid);
+					},
+					beforerender: function(treeCmp) {
+						// check if that tree element already rendered... It appends on the first tceforms_inline call.
+						if (Ext.fly(treeCmp.getId())) {
+							return false;
 					}
+					}' . ($expanded ? ',
+					afterrender: function(treeCmp) {
+						treeCmp.expandAll();
+					}' : '') . '
 				},
 				tcaMaxItems: ' . ($PA['fieldConf']['config']['maxitems'] ? intval($PA['fieldConf']['config']['maxitems']) : 99999) . ',
 				tcaSelectRecursiveAllowed: ' . ($appearance['allowRecursiveMode'] ? 'true' : 'false')  . ',
@@ -206,8 +215,9 @@ class t3lib_TCEforms_Tree {
 				? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'
 				: 'tree' . $id . '.height = ' . $height . ';'
 			) . LF .
-			'tree' . $id . '.render("tree_' . $id . '");' .
-			($expanded ? 'tree' . $id . '.expandAll();' : '') . '
+				'(function() {
+					tree' . $id . '.render("tree_' . $id . '");
+				}).defer( 20 );
 		');
 
 		$formField = '
