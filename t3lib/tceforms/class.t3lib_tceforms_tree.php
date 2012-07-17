@@ -132,6 +132,11 @@ class t3lib_TCEforms_Tree {
 		if (isset($PA['fieldConf']['config']['autoSizeMax']) && intval($PA['fieldConf']['config']['autoSizeMax']) > 0) {
 			$autoSizeMax = intval($PA['fieldConf']['config']['autoSizeMax']) * 20;
 		}
+		if (isset($PA['fieldConf']['config']['width']) && intval($PA['fieldConf']['config']['width']) > 0) {
+			$width = intval($PA['fieldConf']['config']['width']);
+		} else {
+			$width = 280;
+		}
 
 		$header = FALSE;
 		$expanded = FALSE;
@@ -172,6 +177,7 @@ class t3lib_TCEforms_Tree {
 				showHeader: ' . intval($header) . ',
 				onChange: "' . $onChange . '",
 				countSelectedNodes: ' . count ($selectedNodes) . ',
+				width: ' . $width . ',
 				listeners: {
 					click: function(node, event) {
 						if (typeof(node.attributes.checked) == "boolean") {
@@ -191,7 +197,16 @@ class t3lib_TCEforms_Tree {
 					},
 					expandnode: function(node) {
 						top.TYPO3.BackendUserSettings.ExtDirect.addToList("tcaTrees." + this.ucId, node.attributes.uid);
+					},
+					beforerender: function(treeCmp) {
+						// check if that tree element already rendered... It appends on the first tceforms_inline call.
+						if (Ext.fly(treeCmp.getId())) {
+							return false;
 					}
+					}' . ($expanded ? ',
+					afterrender: function(treeCmp) {
+						treeCmp.expandAll();
+					}' : '') . '
 				},
 				tcaMaxItems: ' . ($PA['fieldConf']['config']['maxitems'] ? intval($PA['fieldConf']['config']['maxitems']) : 99999) . ',
 				tcaSelectRecursiveAllowed: ' . ($appearance['allowRecursiveMode'] ? 'true' : 'false')  . ',
@@ -206,8 +221,9 @@ class t3lib_TCEforms_Tree {
 				? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";'
 				: 'tree' . $id . '.height = ' . $height . ';'
 			) . LF .
-			'tree' . $id . '.render("tree_' . $id . '");' .
-			($expanded ? 'tree' . $id . '.expandAll();' : '') . '
+				'(function() {
+					tree' . $id . '.render("tree_' . $id . '");
+				}).defer( 20 );
 		');
 
 		$formField = '
