@@ -100,7 +100,12 @@ class tslib_content_QuicktimeObject extends tslib_content_Abstract {
 			$height = $conf[$type . '.']['defaultHeight'];
 		}
 
-		$embed = 'var ' . $qtObject . ' = new QTObject("' . $prefix . $filename . '", "' .
+		$fullFilename = $filename;
+			// If the file name doesn't contain a scheme, prefix with appropriate data
+		if (strpos($filename, '://') === FALSE && !empty($prefix)) {
+			$fullFilename = $prefix . $filename;
+		}
+		$embed = 'var ' . $qtObject . ' = new QTObject("' . $fullFilename . '", "' .
 			$replaceElementIdString . '", "' . $width . '", "' . $height . '");';
 
 		$content = $layout . '
