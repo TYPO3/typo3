@@ -7669,7 +7669,9 @@ class tslib_cObj {
 		$necessaryFields = array('uid', 'pid');
 		$wsFields = array('t3ver_state');
 
-		if (isset($GLOBALS['TCA'][$table]) && strpos($selectPart, '*')!== FALSE) {
+		if (isset($GLOBALS['TCA'][$table])
+			&& !preg_match($matchStart . '\*' . $matchEnd, $selectPart)
+			&& !preg_match('/(count|max|min|avg|sum)\([^\)]+\)/i', $selectPart)) {
 			foreach ($necessaryFields as $field) {
 				$match = $matchStart . $field . $matchEnd;
 				if (!preg_match($match, $selectPart)) {
