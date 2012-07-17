@@ -193,6 +193,16 @@ class t3lib_formmail {
 				if (!isset($_FILES[$variableName])) {
 					continue;
 				}
+				if ($_FILES[$variableName]['error'] !== UPLOAD_ERR_OK) {
+					t3lib_div::sysLog(
+						'Error in uploaded file in t3lib_formmail: temporary file "' .
+							$_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") Error code: ' .
+							$_FILES[$variableName]['error'],
+						'Core',
+						t3lib_div::SYSLOG_SEVERITY_ERROR
+					);
+					continue;
+				}
 				if (!is_uploaded_file($_FILES[$variableName]['tmp_name'])) {
 					t3lib_div::sysLog(
 						'Possible abuse of t3lib_formmail: temporary file "' . $_FILES[$variableName]['tmp_name'] .
@@ -200,15 +210,7 @@ class t3lib_formmail {
 						'Core',
 						t3lib_div::SYSLOG_SEVERITY_ERROR
 					);
-				}
-				if ($_FILES[$variableName]['tmp_name']['error'] !== UPLOAD_ERR_OK) {
-					t3lib_div::sysLog(
-						'Error in uploaded file in t3lib_formmail: temporary file "' .
-							$_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") Error code: ' .
-							$_FILES[$variableName]['tmp_name']['error'],
-						'Core',
-						t3lib_div::SYSLOG_SEVERITY_ERROR
-					);
+					continue;
 				}
 				$theFile = t3lib_div::upload_to_tempfile($_FILES[$variableName]['tmp_name']);
 				$theName = $_FILES[$variableName]['name'];
