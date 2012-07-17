@@ -139,6 +139,7 @@ class t3lib_TCEforms_Tree {
 		if (is_array($appearance)) {
 			$header = $appearance['showHeader'] ? TRUE : FALSE;
 			$expanded = ($appearance['expandAll'] === TRUE);
+			$width = $appearance['width'] ? intval($appearance['width']) : 280;
 		}
 
 		$onChange = '';
@@ -172,6 +173,7 @@ class t3lib_TCEforms_Tree {
 				showHeader: ' . intval($header) . ',
 				onChange: "' . $onChange . '",
 				countSelectedNodes: ' . count ($selectedNodes) . ',
+				width: ' . $width . ',
 				listeners: {
 					click: function(node, event) {
 						if (typeof(node.attributes.checked) == "boolean") {
