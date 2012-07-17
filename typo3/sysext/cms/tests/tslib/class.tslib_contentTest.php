@@ -71,6 +71,8 @@ class tslib_contentTest extends tx_phpunit_testcase {
 		$this->tsfe = $this->getMock('tslib_fe', array(), array(), '', FALSE);
 		$this->tsfe->tmpl = $this->template;
 		$this->tsfe->config = array();
+		$sysPageMock = $this->getMock('t3lib_pageSelect');
+		$this->tsfe->sys_page = $sysPageMock;
 		$GLOBALS['TSFE'] = $this->tsfe;
 		$GLOBALS['TSFE']->csConvObj = new t3lib_cs();
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
@@ -917,6 +919,125 @@ class tslib_contentTest extends tx_phpunit_testcase {
 	public function replacement($input, $conf, $expected) {
 		$result = $this->cObj->stdWrap_replacement($input, $conf);
 		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * Data provider for the getQuery test
+	 *
+	 * @return array multi-dimensional array with the second level like this:
+	 *               0 => the $table
+	 *               1 => the $conf
+	 *               2 => the part to test for validity (sub-array of the result)
+	 *
+	 * @see getQuery
+	 */
+	public function getQueryDataProvider() {
+		$data = array(
+			'testing empty conf' => array(
+				'tt_content',
+				array(),
+				array(
+					'SELECT' => '*',
+				)
+			),
+			'testing #17284: adding uid/pid for workspaces' => array(
+				'tt_content',
+				array(
+					'selectFields' => 'header,bodytext',
+				),
+				array(
+					'SELECT' => 'header,bodytext, tt_content.uid as uid, tt_content.pid as pid, tt_content.t3ver_state as t3ver_state',
+				)
+			),
+			'testing #17284: no need to add' => array(
+				'tt_content',
+				array(
+					'selectFields' => 'tt_content.*',
+				),
+				array(
+					'SELECT' => 'tt_content.*',
+				)
+			),
+			'testing #17284: no need to add #2' => array(
+				'tt_content',
+				array(
+					'selectFields' => '*',
+				),
+				array(
+					'SELECT' => '*',
+				)
+			),
+			'testing #29783: joined tables, prefix tablename' => array(
+				'tt_content',
+				array(
+					'selectFields' => 'tt_content.header,be_users.username',
+					'join' => 'be_users ON tt_content.cruser_id = be_users.uid',
+				),
+				array(
+					'SELECT' => 'tt_content.header,be_users.username, tt_content.uid as uid, tt_content.pid as pid, tt_content.t3ver_state as t3ver_state',
+				)
+			),
+			'testing #34152: single count(*), add nothing' => array(
+				'tt_content',
+				array(
+					'selectFields' => 'count(*)',
+				),
+				array(
+					'SELECT' => 'count(*)',
+				)
+			),
+			'testing #34152: single max(crdate), add nothing' => array(
+				'tt_content',
+				array(
+					'selectFields' => 'max(crdate)',
+				),
+				array(
+					'SELECT' => 'max(crdate)',
+				)
+			),
+			'testing #34152: single min(crdate), add nothing' => array(
+				'tt_content',
+				array(
+					'selectFields' => 'min(crdate)',
+				),
+				array(
+					'SELECT' => 'min(crdate)',
+				)
+			),
+			'testing #34152: single sum(is_siteroot), add nothing' => array(
+				'tt_content',
+				array(
+					'selectFields' => 'sum(is_siteroot)',
+				),
+				array(
+					'SELECT' => 'sum(is_siteroot)',
+				)
+			),
+			'testing #34152: single avg(crdate), add nothing' => array(
+				'tt_content',
+				array(
+					'selectFields' => 'avg(crdate)',
+				),
+				array(
+					'SELECT' => 'avg(crdate)',
+				)
+			),
+		);
+		return $data;
+	}
+
+	/**
+	 * Check if sanitizeSelectPart works as expected
+	 *
+	 * @dataProvider getQueryDataProvider
+	 *
+	 * @test
+	 */
+	public function getQuery($table, $conf, $expected) {
+		$result = $this->cObj->getQuery($table, $conf, TRUE);
+		foreach ($expected as $field => $value) {
+			$this->assertEquals($value, $result[$field]);
+		}
 	}
 }
 ?>
