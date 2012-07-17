@@ -3602,6 +3602,15 @@ final class t3lib_div {
 				$retVal = $out;
 				break;
 		}
+
+		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['postIndpEnvValue'])) {
+			$_params = array('retVal' => $retVal, 'getEnvName' => $getEnvName);
+			$fakeThis = FALSE;
+			foreach($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['postIndpEnvValue'] as $_funcRef) {
+				t3lib_div::callUserFunction($_funcRef, $_params, $fakeThis);
+			}
+		}
+
 		return $retVal;
 	}
 
