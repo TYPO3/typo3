@@ -71,6 +71,8 @@ class tslib_contentTest extends tx_phpunit_testcase {
 		$this->tsfe = $this->getMock('tslib_fe', array(), array(), '', FALSE);
 		$this->tsfe->tmpl = $this->template;
 		$this->tsfe->config = array();
+		$sysPageMock = $this->getMock('t3lib_pageSelect');
+		$this->tsfe->sys_page = $sysPageMock;
 		$GLOBALS['TSFE'] = $this->tsfe;
 		$GLOBALS['TSFE']->csConvObj = new t3lib_cs();
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
@@ -916,6 +918,120 @@ class tslib_contentTest extends tx_phpunit_testcase {
 	 */
 	public function replacement($input, $conf, $expected) {
 		$result = $this->cObj->stdWrap_replacement($input, $conf);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * Data provider for the getQuery test
+	 *
+	 * @return array multi-dimensional array with the second level like this:
+	 *               0 => the $table
+	 *               1 => the $conf
+	 *               2 => the expected result
+	 *
+	 * @see getQuery
+	 */
+	public function getQueryDataProvider() {
+		$data = array(
+			'testing empty conf' => array(
+				'tt_content',
+				array(),
+				array(
+					'SELECT' => '*',
+					'FROM' => 'tt_content',
+					'WHERE' =>'tt_content.uid=0',
+					'GROUPBY' => '',
+					'ORDERBY' => '',
+					'LIMIT' => ''
+				)
+			),
+			'testing #17284: adding uid/pid for workspaces' => array(
+				'tt_content',
+				array(
+					'selectFields' => 'header,bodytext',
+					'pidInList' => '1',
+				),
+				array(
+					'SELECT' => 'header,bodytext, tt_content.uid as uid, tt_content.pid as pid, tt_content.t3ver_state as t3ver_state',
+					'FROM' => 'tt_content',
+					'WHERE' => 'tt_content.pid IN (1)',
+					'GROUPBY' => '',
+					'ORDERBY' => '',
+					'LIMIT' => ''
+				)
+			),
+			'testing #17284: no need to add' => array(
+				'tt_content',
+				array(
+					'selectFields' => 'tt_content.*',
+					'pidInList' => '1',
+				),
+				array(
+					'SELECT' => 'tt_content.*',
+					'FROM' => 'tt_content',
+					'WHERE' => 'tt_content.pid IN (1)',
+					'GROUPBY' => '',
+					'ORDERBY' => '',
+					'LIMIT' => ''
+				)
+			),
+			'testing #17284: no need to add #2' => array(
+				'tt_content',
+				array(
+					'selectFields' => '*',
+					'pidInList' => '1',
+				),
+				array(
+					'SELECT' => '*',
+					'FROM' => 'tt_content',
+					'WHERE' => 'tt_content.pid IN (1)',
+					'GROUPBY' => '',
+					'ORDERBY' => '',
+					'LIMIT' => ''
+				)
+			),
+			'testing #29783: joined tables, prefix tablename' => array(
+				'tt_content',
+				array(
+					'selectFields' => 'tt_content.header,be_users.username',
+					'join' => 'be_users ON tt_content.cruser_id = be_users.uid',
+				),
+				array(
+					'SELECT' => 'tt_content.header,be_users.username, tt_content.uid as uid, tt_content.pid as pid, tt_content.t3ver_state as t3ver_state',
+					'FROM' => 'tt_content JOIN be_users ON tt_content.cruser_id = be_users.uid',
+					'WHERE' => 'tt_content.uid=0',
+					'GROUPBY' => '',
+					'ORDERBY' => '',
+					'LIMIT' => ''
+				)
+			),
+			'testing #34152: single count(*), add nothing' => array(
+				'tt_content',
+				array(
+					'selectFields' => 'count(*)',
+				),
+				array(
+					'SELECT' => 'count(*)',
+					'FROM' => 'tt_content',
+					'WHERE' =>'tt_content.uid=0',
+					'GROUPBY' => '',
+					'ORDERBY' => '',
+					'LIMIT' => ''
+				)
+			),
+		);
+		return $data;
+	}
+
+	/**
+	 * Check if sanitizeSelectPart works as expected
+	 *
+	 * @dataProvider getQueryDataProvider
+	 *
+	 * @test
+	 */
+	public function getQuery($table, $conf, $expected) {
+		$result = $this->cObj->getQuery($table, $conf, TRUE);
 		$this->assertEquals($expected, $result);
 	}
 }
