@@ -506,7 +506,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 								if ($this->PHPFileFunctions) {
 									copy($theFile, $theDestFile);
 								} else {
-									$cmd = 'cp "' . $theFile . '" "' . $theDestFile . '"';
+									$cmd = 'cp ' . escapeshellarg($theFile) . ' ' . escapeshellarg($theDestFile);
 									t3lib_utility_Command::exec($cmd);
 								}
 								t3lib_div::fixPermissions($theDestFile);
@@ -550,7 +550,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 							if ($this->checkIfFullAccess($theDest) || $this->is_webPath($theDestFile) == $this->is_webPath($theFile)) { // no copy of folders between spaces
 								if ($this->checkPathAgainstMounts($theDestFile) && $this->checkPathAgainstMounts($theFile)) {
 									// No way to do this under windows!
-									$cmd = 'cp -R "' . $theFile . '" "' . $theDestFile . '"';
+									$cmd = 'cp -R ' . escapeshellarg($theFile) . ' ' . escapeshellarg($theDestFile);
 									t3lib_utility_Command::exec($cmd);
 									clearstatcache();
 									if (@is_dir($theDestFile)) {
@@ -625,7 +625,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 								if ($this->PHPFileFunctions) {
 									@rename($theFile, $theDestFile);
 								} else {
-									$cmd = 'mv "' . $theFile . '" "' . $theDestFile . '"';
+									$cmd = 'mv ' . escapeshellarg($theFile) . ' ' . escapeshellarg($theDestFile);
 									t3lib_utility_Command::exec($cmd);
 								}
 								clearstatcache();
@@ -670,7 +670,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 									if ($this->PHPFileFunctions) {
 										@rename($theFile, $theDestFile);
 									} else {
-										$cmd = 'mv "' . $theFile . '" "' . $theDestFile . '"';
+										$cmd = 'mv ' . escapeshellarg($theFile) . ' ' . escapeshellarg($theDestFile);
 										$errArr = array();
 										t3lib_utility_Command::exec($cmd, $errArr);
 									}
@@ -1000,7 +1000,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 						if ($this->checkIfFullAccess($theDest)) {
 							if ($this->checkPathAgainstMounts($theFile) && $this->checkPathAgainstMounts($theDest . '/')) {
 								// No way to do this under windows.
-								$unzipParameters = ' -qq "' . $theFile . '" -d "' . $theDest . '"';
+								$unzipParameters = ' -qq ' . escapeshellarg($theFile) . ' -d ' . escapeshellarg($theDest);
 									// for compatiblity reasons, we have to accept the full path of the unzip command
 									// or the directory containing the unzip binary
 								if (substr($this->unzipPath, -1) === '/') {
