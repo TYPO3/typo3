@@ -172,12 +172,28 @@ class DataSubmissionController {
 				if (!isset($_FILES[$variableName])) {
 					continue;
 				}
+
+				if ($_FILES[$variableName]['error'] !== UPLOAD_ERR_OK) {
+					Utility\GeneralUtility::sysLog(
+						'Error in uploaded file in DataSubmissionController: temporary file "' .
+							$_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") Error code: ' .
+							$_FILES[$variableName]['error'],
+						'Core',
+						Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR
+					);
+					continue;
+				}
+
 				if (!is_uploaded_file($_FILES[$variableName]['tmp_name'])) {
-					Utility\GeneralUtility::sysLog('Possible abuse of DataSubmissionController: temporary file "' . $_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") was not an uploaded file.', 'Core', Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+					Utility\GeneralUtility::sysLog(
+						'Possible abuse of DataSubmissionController: temporary file "' . $_FILES[$variableName]['tmp_name'] .
+							'" ("' . $_FILES[$variableName]['name'] . '") was not an uploaded file.',
+						'Core',
+						Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR
+					);
+					continue;
 				}
-				if ($_FILES[$variableName]['tmp_name']['error'] !== UPLOAD_ERR_OK) {
-					Utility\GeneralUtility::sysLog('Error in uploaded file in DataSubmissionController: temporary file "' . $_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") Error code: ' . $_FILES[$variableName]['tmp_name']['error'], 'Core', Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
-				}
+
 				$theFile = Utility\GeneralUtility::upload_to_tempfile($_FILES[$variableName]['tmp_name']);
 				$theName = $_FILES[$variableName]['name'];
 				if ($theFile && file_exists($theFile)) {
