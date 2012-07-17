@@ -52,19 +52,43 @@ class tx_em_reports_ExtensionStatus  implements tx_reports_StatusProvider {
 		$this->ok = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_ok');
 		$this->upToDate = $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:translation_status_uptodate');
 		$this->error = t3lib_div::strtoupper($GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:msg_error'));
-		$status = $this->getInsecuredExtensionsInSystem();
+		$terStatus =  $this->checkMainRepositoryCheck();
 
-		$statuses = array(
-			'mainRepositoryCheck' => $this->checkMainRepositoryCheck(),
-			'extensionsSecurityStatusNotInstalled' => $status[0],
-			'extensionsSecurityStatusInstalled' => $status[1],
-		);
+			// Generate a notice if the TER has never been fetched or is not up-to-date
+		if ($terStatus->getSeverity() != tx_reports_reports_status_Status::OK) {
+			$outdatedStatusExisting = t3lib_div::makeInstance(
+					'tx_reports_reports_status_Status',
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_StatusExistingExtensions'),
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_ExtensionsNotProperlyConfiguredOrListOutdatedTitle'),
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_ExtensionsNotProperlyConfiguredOrListOutdated'),
+					tx_reports_reports_status_Status::INFO
+			);
+			$outdatedStatusInstalled = t3lib_div::makeInstance(
+					'tx_reports_reports_status_Status',
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_StatusInstalledExtensions'),
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_ExtensionsNotProperlyConfiguredOrListOutdatedTitle'),
+					$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_ExtensionsNotProperlyConfiguredOrListOutdated'),
+					tx_reports_reports_status_Status::INFO
+			);
+			$statuses = array(
+				'mainRepositoryCheck' => $terStatus,
+				'extensionsSecurityStatusNotInstalled' => $outdatedStatusExisting,
+				'extensionsSecurityStatusInstalled' => $outdatedStatusInstalled,
+			);
+		} else {
+			$status = $this->getInsecuredExtensionsInSystem();
 
+			$statuses = array(
+				'mainRepositoryCheck' => $terStatus,
+				'extensionsSecurityStatusNotInstalled' => $status[0],
+				'extensionsSecurityStatusInstalled' => $status[1],
+			);
+		}
 		return $statuses;
 	}
 
 	/**
-	 * Checks main repository in sys_ter (existance, has extensions / update older tha 7 days
+	 * Checks main repository in sys_ter (existence, has extensions / update older than 7 days)
 	 *
 	 * @return	tx_reports_reports_status_Status	An tx_reports_reports_status_Status object representing whether
 	 */
@@ -113,21 +137,21 @@ class tx_em_reports_ExtensionStatus  implements tx_reports_StatusProvider {
 
 
 	/**
-	 * Checks if there are insecure extensions in system
+	 * Checks if there are insecure extensions in system.
 	 *
-	 * @return	tx_reports_reports_status_Status	An tx_reports_reports_status_Status object representing whether
+	 * @return tx_reports_reports_status_Status A status object representing whether any extensions are known to be insecure
 	 */
 	protected function getInsecuredExtensionsInSystem() {
-		$value    = array(
+		$value = array(
 			$this->ok,
 			$this->ok
 		);
 		$message  = array('', '');
 		$severity = array(tx_reports_reports_status_Status::OK, tx_reports_reports_status_Status::OK);
-	   $initialMessage = array(
-		   $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_insecureInstalledExtensions') . '<br><br>',
-		   $GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_insecureExistingExtensions') . '<br><br>',
-	   );
+		$initialMessage = array(
+			$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_insecureInstalledExtensions') . '<br><br>',
+			$GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:reports_insecureExistingExtensions') . '<br><br>',
+		);
 		$extensionList = array();
 		$installedExtensionList = array();
 		$extensionCompareList = array();
