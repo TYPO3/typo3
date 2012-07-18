@@ -610,7 +610,7 @@
 				<source>Description</source>
 			</trans-unit>
 			<trans-unit id="backend_layout.config" xml:space="preserve">
-				<source>Config</source>
+				<source>Configuration</source>
 			</trans-unit>
 			<trans-unit id="backend_layout.wizard" xml:space="preserve">
 				<source>Wizard</source>
