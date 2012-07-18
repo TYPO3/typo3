@@ -902,7 +902,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *						0 = page (deprecated)
 	 *						-1 = element
 	 *						>1 = branch (deprecated), indicating the "nesting" level
-	 * @return	boolean		TRUE if OK
+	 * @return boolean TRUE if OK
 	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 6.0 as only element versioning is supported now
 	 */
 	function workspaceVersioningTypeAccess($type) {
