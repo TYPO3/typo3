@@ -1095,7 +1095,7 @@ class tx_indexedsearch_modfunc1 extends t3lib_extobjbase {
 	 *
 	 * @param	string		String to convert (utf-8)
 	 * @return	string		Converted string (backend charset if different from utf-8)
-	 * @deprecated since 4.7, will be removed in 4.9
+	 * @deprecated since 4.7, will be removed in 6.1
 	 */
 	function utf8_to_currentCharset($string) {
 		t3lib_div::logDeprecatedFunction();

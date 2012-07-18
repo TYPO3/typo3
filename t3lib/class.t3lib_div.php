@@ -776,7 +776,7 @@ final class t3lib_div {
 	 *
 	 * @param string $verNumberStr Version number on format x.x.x
 	 * @return integer Integer version of version number (where each part can count to 999)
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.9 - Use t3lib_utility_VersionNumber::convertVersionNumberToInteger() instead
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.1 - Use t3lib_utility_VersionNumber::convertVersionNumberToInteger() instead
 	 */
 	public static function int_from_ver($verNumberStr) {
 			// Deprecation log is activated only for TYPO3 4.7 and above
@@ -3942,7 +3942,7 @@ final class t3lib_div {
 	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu"
 	 * @return array Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc.) and WITH a variable, encryptionKey, specific for this server/installation
 	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink(), t3lib_div::calculateCHash()
-	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 4.9 - use t3lib_cacheHash instead
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
 	 */
 	public static function cHashParams($addQueryParams) {
 		self::logDeprecatedFunction();
@@ -3991,7 +3991,7 @@ final class t3lib_div {
 	 *
 	 * @param array $params Array of key-value pairs
 	 * @return string Hash of all the values
-	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 4.9 - use t3lib_cacheHash instead
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
 	 */
 	public static function calculateCHash($params) {
 		self::logDeprecatedFunction();
