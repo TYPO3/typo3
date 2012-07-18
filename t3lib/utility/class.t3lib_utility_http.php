@@ -92,9 +92,29 @@ class t3lib_utility_Http {
 	 * @param	string	An optional HTTP status header. Default is 'HTTP/1.1 303 See Other'
 	 */
 	public static function redirect($url, $httpStatus = self::HTTP_STATUS_303) {
-		header($httpStatus);
+		self::setResponseCode($httpStatus);
 		header('Location: ' . t3lib_div::locationHeaderUrl($url));
+		exit;
+	}
 
+	/**
+	 * Set a specifc response code like 404.
+	 *
+	 * @param string $httpStatus One of the HTTP_STATUS_* class class constants, default to self::HTTP_STATUS_303
+	 * @return void
+	 */
+	public static function setResponseCode($httpStatus = self::HTTP_STATUS_303) {
+		header($httpStatus);
+	}
+
+	/**
+	 * Set a specific response code and exit script execution.
+	 *
+	 * @param string $httpStatus One of the HTTP_STATUS_* class class constants, default to self::HTTP_STATUS_303
+	 * @return void
+	 */
+	public static function setResponseCodeAndExit($httpStatus = self::HTTP_STATUS_303) {
+		self::setResponseCode($httpStatus);
 		exit;
 	}
 
