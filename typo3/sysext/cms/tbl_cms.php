@@ -1147,9 +1147,20 @@ $TCA['backend_layout'] = array(
 			)
 		),
 	),
+	'palettes' => array(
+		'general' => array('canNotCollapse' => 1, 'showitem' => 'title, --linebreak--, description',),
+		'appearance' => array('canNotCollapse' => 1, 'showitem' => 'icon',),
+		'visibility' => array('canNotCollapse' => 1, 'showitem' => 'hidden;LLL:EXT:cms/locallang_tca.xml:backend_layout',),
+	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden,title;;1;;2-2-2, icon, description, config')
-	)
+		'1' => array(
+			'showitem' =>
+				'--palette--;LLL:EXT:cms/locallang_tca.xml:backend_layout;general,
+				--palette--;LLL:EXT:cms/locallang_tca.xml:backend_layout.palette.appearance;appearance,
+				--div--;LLL:EXT:cms/locallang_tca.xml:backend_layout.tabs.configuartion, config,
+				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.visibility;visibility'
+		),
+	),
 );
 
 

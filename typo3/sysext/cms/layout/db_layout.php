@@ -491,10 +491,11 @@ class SC_db_layout {
 			$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED');
 			$this->colPosList = strcmp(trim($this->modTSconfig['properties']['tt_content.']['colPos_list']), '') ? trim($this->modTSconfig['properties']['tt_content.']['colPos_list']) : $modTSconfig_SHARED['properties']['colPos_list'];
 			if (!strcmp($this->colPosList, '')) {
-				$backendLayout = t3lib_div::callUserFunction( 'EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getSelectedBackendLayout', $this->id, $this );
+				$colPosList = t3lib_div::makeInstance('tx_cms_BackendLayout', $this->id)
+					->getSelectedBackendLayoutColPosList();
 
-				if (count($backendLayout['__colPosList'])) {
-					$this->colPosList = implode(',', $backendLayout['__colPosList']);
+				if ($colPosList !== NULL) {
+					$this->colPosList = implode(',', $colPosList);
 				}
 			}
 			if (!strcmp($this->colPosList, '')) {
@@ -1002,6 +1003,8 @@ class SC_db_layout {
 		$tableOutput = array();
 		$tableJSOutput = array();
 		$CMcounter = 0;
+		$tcaItems = t3lib_div::makeInstance('tx_cms_BackendLayout', $this->id)
+			->getColPosListItemsParsed();
 
 			// Traverse the list of table names which has records on this page (that array is populated
 			// by the $dblist object during the function getTableMenu()):
@@ -1037,7 +1040,6 @@ class SC_db_layout {
 					// Setting up the tt_content columns to show:
 				if (is_array($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'])) {
 					$colList = array();
-					$tcaItems = t3lib_div::callUserFunction( 'EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getColPosListItemsParsed', $this->id, $this );
 					foreach($tcaItems as $temp) {
 						$colList[] = $temp[1];
 					}
