@@ -2089,6 +2089,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			}
 		} else {
 			if ($inlineSettings) {
+				$inlineSettings = 'if (typeof TYPO3 === "undefined") var TYPO3 = {};' . CRLF . $inlineSettings;
 				$out .= $this->inlineJavascriptWrap[0] . $inlineSettings . $this->inlineJavascriptWrap[1];
 			}
 		}
