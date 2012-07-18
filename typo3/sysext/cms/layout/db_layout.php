@@ -488,15 +488,6 @@ class SC_db_layout {
 				// Removing duplicates, if any
 			$this->colPosList = implode(',', array_unique(t3lib_div::intExplode(',', $this->colPosList)));
 
-				// Render the primary module content:
-			if ($this->MOD_SETTINGS['function'] == 0) {
-					// QuickEdit
-				$body = $this->renderQuickEdit();
-			} else {
-					// All other listings
-				$body = $this->renderListContent();
-			}
-
 				// If page is a folder
 			if ($this->pageinfo['doktype'] == 254) {
 
@@ -506,21 +497,30 @@ class SC_db_layout {
 				$modules = $moduleLoader->modules;
 
 				if (is_array($modules['web']['sub']['list'])) {
-					$flashMessage = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						'<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>
-						<br />
-						<p>' .
-							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
-							'<a href="javascript:top.goToModule( \'web_list\',1);">' .
-								$GLOBALS['LANG']->getLL('goToListModule') . '
-							</a>
-						</p>',
-						'',
-						t3lib_FlashMessage::INFO
-					);
-					$body = $flashMessage->render() . $body;
+					if (isset($this->modSharedTSconfig['properties']['redirectSysfolderToList']) && $this->modSharedTSconfig['properties']['redirectSysfolderToList'] == 1) {
+							// Automatic redirect to list module
+						$body = $this->doc->wrapScriptTags('top.goToModule( \'web_list\',1,\'redirectSysfolderToList=1\');');
+					} else {
+							// Show flash message
+						$flashMessage = t3lib_div::makeInstance(
+							't3lib_FlashMessage',
+							'<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>
+							 <br />
+							 <p>' .
+								t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
+								'<a href="javascript:top.goToModule( \'web_list\',1);">' .
+									$GLOBALS['LANG']->getLL('goToListModule') . '
+								</a>
+							 </p>',
+							'',
+							t3lib_FlashMessage::INFO
+						);
+						$body = $flashMessage->render() . $this->renderBody();
+					}
 				}
+			} else {
+					// Render the primary module content:
+				$body = $this->renderBody();
 			}
 
 			if ($this->pageinfo['content_from_pid']) {
@@ -608,6 +608,21 @@ class SC_db_layout {
 				$this->content
 			);
 		}
+	}
+
+	/**
+	 * Render the current module body
+	 *
+	 * @return string
+	 */
+	function renderBody() {
+		if ($this->MOD_SETTINGS['function']==0)	{
+			$body = $this->renderQuickEdit();	// QuickEdit
+		} else {
+			$body = $this->renderListContent();	// All other listings
+		}
+
+		return $body;
 	}
 
 	/**

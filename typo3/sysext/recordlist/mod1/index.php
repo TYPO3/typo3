@@ -263,6 +263,20 @@ class SC_db_list {
 			&& $dblist->clipObj->current == 'normal'
 			&& !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
 
+			// Show flash message on redirect from page module
+		$redirectSysfolderToList = (int)t3lib_div::_GET('redirectSysfolderToList');
+		if ($redirectSysfolderToList === 1) {
+			/** @var $flashMessage t3lib_FlashMessage */
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				'<p>' . $GLOBALS['LANG']->getLL('redirectSysfolderToListMessage') . '</p>',
+				'',
+				t3lib_FlashMessage::INFO,
+				TRUE
+			);
+			t3lib_FlashMessageQueue::addMessage($flashMessage);
+		}
+
 			// If there is access to the page, then render the list contents and set up the document template object:
 		if ($access) {
 
