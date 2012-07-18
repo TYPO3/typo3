@@ -218,7 +218,7 @@ final class tx_em_Database {
 	 */
 	public static function insertLastVersion($repositoryUid = 1) {
 		$groupedRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'extkey, version, max(intversion) maxintversion',
+			'extkey, max(intversion) as maxintversion',
 			'cache_extensions',
 			'repository=' . intval($repositoryUid),
 			'extkey'
