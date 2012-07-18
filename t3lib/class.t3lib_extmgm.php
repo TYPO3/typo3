@@ -1413,7 +1413,7 @@ tt_content.' . $key . $prefix . ' {
 ###########################
 
 $_EXTKEY = \'' . $key . '\';
-$_EXTCONF = $TYPO3_CONF_VARS[\'EXT\'][\'extConf\'][$_EXTKEY];
+$_EXTCONF = $GLOBALS[\'TYPO3_CONF_VARS\'][\'EXT\'][\'extConf\'][$_EXTKEY];
 
 ?>';
 	}
