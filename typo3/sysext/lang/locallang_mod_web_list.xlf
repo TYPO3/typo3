@@ -102,6 +102,9 @@
 			<trans-unit id="permissions" xml:space="preserve">
 				<source>Set permissions for page</source>
 			</trans-unit>
+			<trans-unit id="redirectSysfolderToListMessage" xml:space="preserve">
+				<source>You have been redirected from the page module, because your are on a sysfolder.</source>
+			</trans-unit>
 			<trans-unit id="largeControl" xml:space="preserve">
 				<source>Extended view</source>
 			</trans-unit>
