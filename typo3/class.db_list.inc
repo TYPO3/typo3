@@ -201,8 +201,9 @@ class recordList extends t3lib_recordList {
 			// Save modified user uc
 			$GLOBALS['BE_USER']->uc['moduleData']['list'] = $this->tablesCollapsed;
 			$GLOBALS['BE_USER']->writeUC($GLOBALS['BE_USER']->uc);
-			if (t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'))) {
-				$location = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
+
+			$location = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('returnUrl'));
+			if ($location !== '') {
 				t3lib_utility_Http::redirect($location);
 			}
 		}
