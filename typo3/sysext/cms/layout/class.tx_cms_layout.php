@@ -318,40 +318,6 @@ class tx_cms_layout extends recordList {
 	}
 
 	/**
-	 * Returns the backend layout which should be used for this page.
-	 *
-	 * @param integer $id Uid of the current page
-	 * @return mixed Uid of the backend layout record or NULL if no layout should be used
-	 */
-	function getSelectedBackendLayoutUid($id) {
-			// uid, pid, t3ver_swapmode needed for workspaceOL()
-		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, t3ver_swapmode, backend_layout', 'pages', 'uid=' . $id);
-		t3lib_BEfunc::workspaceOL('pages', $page);
-
-		$backendLayoutUid = intval($page['backend_layout']);
-		if ($backendLayoutUid == -1) {
-				// If it is set to "none" - don't use any
-			$backendLayoutUid = NULL;
-		} elseif ($backendLayoutUid == 0) {
-				// If it not set check the rootline for a layout on next level and use this
-			$rootline = t3lib_BEfunc::BEgetRootLine($id, '', TRUE);
-			for ($i = count($rootline) - 2; $i > 0; $i--) {
-				$backendLayoutUid = intval($rootline[$i]['backend_layout_next_level']);
-				if ($backendLayoutUid > 0) {
-						// Stop searching if a layout for "next level" is set
-					break;
-				} elseif ($backendLayoutUid == -1){
-						// If layout for "next level" is set to "none" - don't use any and stop searching
-					$backendLayoutUid = NULL;
-					break;
-				}
-			}
-		}
-			// If it is set to a positive value use this
-		return $backendLayoutUid;
-	}
-
-	/**
 	 * Renders Content Elements from the tt_content table from page id
 	 *
 	 * @param integer $id Page id
@@ -395,6 +361,9 @@ class tx_cms_layout extends recordList {
 			$langListArr = explode(',', $langList);
 			$defLanguageCount = array();
 			$defLangBinding = array();
+
+			$backendLayout = t3lib_div::makeInstance('tx_cms_BackendLayout', $id);
+			$backendLayoutSetup = $backendLayout->getSelectedBackendLayoutSetup();
 
 				// For each languages... :
 				// If not languageMode, then we'll only be through this once.
@@ -480,7 +449,7 @@ class tx_cms_layout extends recordList {
 					$newP = $this->newContentElementOnClick($id, $key, $lP);
 					$colTitle = t3lib_BEfunc::getProcessedValue('tt_content', 'colPos', $key);
 
-					$tcaItems = t3lib_div::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getColPosListItemsParsed', $id, $this);
+					$tcaItems = $backendLayout->getColPosListItemsParsed();
 					foreach ($tcaItems as $item) {
 						if ($item[1] == $key) {
 							$colTitle = $GLOBALS['LANG']->sL($item[0]);
@@ -493,9 +462,7 @@ class tx_cms_layout extends recordList {
 					// For each column, fit the rendered content into a table cell:
 				$out = '';
 
-				$backendLayoutUid = $this->getSelectedBackendLayoutUid($id);
-				$backendLayoutRecord = t3lib_BEfunc::getRecord('backend_layout', intval($backendLayoutUid));
-				$this->tt_contentConfig['showAsGrid'] = !empty($backendLayoutRecord['config']) && !$this->tt_contentConfig['languageMode'];
+				$this->tt_contentConfig['showAsGrid'] = !empty($backendLayoutSetup['config']) && !$this->tt_contentConfig['languageMode'];
 
 				if (!$this->tt_contentConfig['showAsGrid']) {
 					foreach ($cList as $k => $key) {
@@ -531,15 +498,11 @@ class tx_cms_layout extends recordList {
 				} else {
 						// GRID VIEW:
 
-						// Initialize TS parser to parse config to array
-					$parser = t3lib_div::makeInstance('t3lib_TSparser');
-					$parser->parse($backendLayoutRecord['config']);
-
 					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="1" cellpadding="4" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
 
 						// Add colgroups
-					$colCount = intval($parser->setup['backend_layout.']['colCount']);
-					$rowCount = intval($parser->setup['backend_layout.']['rowCount']);
+					$colCount = intval($backendLayoutSetup['config']['colCount']);
+					$rowCount = intval($backendLayoutSetup['config']['rowCount']);
 
 					$grid .= '<colgroup>';
 					for ($i = 0; $i < $colCount; $i++) {
@@ -549,7 +512,7 @@ class tx_cms_layout extends recordList {
 
 						// Cycle through rows
 					for ($row = 1; $row <= $rowCount; $row++) {
-						$rowConfig = $parser->setup['backend_layout.']['rows.'][$row . '.'];
+						$rowConfig = $backendLayoutSetup['config']['rows.'][$row . '.'];
 						if (!isset($rowConfig)) {
 							continue;
 						}
