@@ -2790,9 +2790,9 @@ class t3lib_TCEforms {
 						// for whatever reason,
 						// now, only using <title> in an unnested way is fine.
 					$theTitle = $value['title'];
-						// Old syntax is deprecated and will be removed in TYPO3 4.9
+						// Old syntax is deprecated and will be removed in TYPO3 6.1
 					if (!$theTitle && isset($value['tx_templavoila']['title'])) {
-						t3lib_div::deprecationLog('The flexform XML, used in ' . htmlspecialchars($table) . ':' . htmlspecialchars($field) . ' is using legacy syntax, the <title> is wrapped in <tx_templavoila>, however should be moved outside of that XML tag container. This functionality will be removed in TYPO3 4.9.');
+						t3lib_div::deprecationLog('The flexform XML, used in ' . htmlspecialchars($table) . ':' . htmlspecialchars($field) . ' is using legacy syntax, the <title> is wrapped in <tx_templavoila>, however should be moved outside of that XML tag container. This functionality will be removed in TYPO3 6.1.');
 						$theTitle = $value['tx_templavoila']['title'];
 					}
 

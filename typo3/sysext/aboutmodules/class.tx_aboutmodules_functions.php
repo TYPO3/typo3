@@ -47,7 +47,7 @@ class tx_aboutmodules_Functions {
 	 * Default constructor throws deprecation warning
 	 */
 	public function __construct() {
-		t3lib_div::deprecationLog('class tx_aboutmodules_Functions is deprecated, unused in core since 4.3 and unmaintained. It will be removed in 4.9.');
+		t3lib_div::deprecationLog('class tx_aboutmodules_Functions is deprecated, unused in core since 4.3 and unmaintained. It will be removed in 6.1.');
 	}
 
 	/**
