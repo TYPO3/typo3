@@ -82,7 +82,7 @@ class SC_tslib_showpic {
 			// Check parameters
 			// If no file-param or parameters are given, we must exit
 		if (!$this->file || !isset($parametersArray) || !is_array($parametersArray)) {
-			throw new UnexpectedValueException('Parameter Error: No file or no parameters given.', 1299514081);
+			t3lib_utility_Http::setResponseCodeAndExit(t3lib_utility_Http::HTTP_STATUS_410);
 		}
 
 		$this->parametersEncoded = implode('', $parametersArray);
@@ -96,7 +96,7 @@ class SC_tslib_showpic {
 		);
 
 		if ($md5_value !== $this->md5) {
-			throw new UnexpectedValueException('Parameter Error: Wrong parameters sent.', 1299514082);
+			t3lib_utility_Http::setResponseCodeAndExit(t3lib_utility_Http::HTTP_STATUS_410);
 		}
 
 		$parameters = unserialize(base64_decode($this->parametersEncoded));
@@ -108,10 +108,10 @@ class SC_tslib_showpic {
 			// $this->file remains unchanged, because of the code in stdgraphic, but we do check if the file exists within the current path
 		$test_file = PATH_site . $this->file;
 		if (!t3lib_div::validPathStr($test_file)) {
-			throw new UnexpectedValueException('Parameter Error: No valid filepath', 1299514083);
+			t3lib_utility_Http::setResponseCodeAndExit(t3lib_utility_Http::HTTP_STATUS_410);
 		}
 		if (!@is_file($test_file)) {
-			throw new UnexpectedValueException('The given file was not found', 1299514084);
+			t3lib_utility_Http::setResponseCodeAndExit(t3lib_utility_Http::HTTP_STATUS_404);
 		}
 	}
 
