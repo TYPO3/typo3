@@ -427,7 +427,10 @@ class InlineElement {
 			} else {
 				// Set additional field for processing for saving
 				$fields .= '<input type="hidden" name="' . $this->prependCmdFieldNames . $appendFormFieldNames . '[delete]" value="1" disabled="disabled" />';
-				if (!$isExpanded && !empty($GLOBALS['TCA'][$foreign_table]['ctrl']['enablecolumns']['disabled'])) {
+				if (!$isExpanded
+					&& !empty($GLOBALS['TCA'][$foreign_table]['ctrl']['enablecolumns']['disabled'])
+					&& $ajaxLoad
+				) {
 					$checked = !empty($rec['hidden']) ? ' checked="checked"' : '';
 					$fields .= '<input type="checkbox" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]_0" value="1"' . $checked . ' />';
 					$fields .= '<input type="input" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]" value="' . $rec['hidden'] . '" />';
