@@ -121,18 +121,27 @@ final class t3lib_iconWorks {
 	 * @param string $backPath The backpath to the main TYPO3 directory (relative path back to PATH_typo3)
 	 * @param string $params Additional attributes for the image tag
 	 * @param boolean $shaded If set, the icon will be grayed/shaded
-	 * @return string <img>-tag
+	 * @return string <span>-tag
 	 * @see getIcon()
+	 * @deprecated since 6.0, will be removed in two versions
 	 */
 	public static function getIconImage($table, $row = array(), $backPath, $params = '', $shaded = FALSE) {
-		$str = '<img' .
-			self::skinImg($backPath, self::getIcon($table, $row, $shaded), 'width="18" height="16"') .
-			(trim($params) ? ' ' . trim($params) : '');
-		if (!stristr($str, 'alt="')) {
-			$str .= ' alt=""';
+		t3lib_div::logDeprecatedFunction();
+		$paramArray = array();
+		if ($shaded) {
+			$paramArray['class'] = 't3-icon-shaded';
 		}
-		$str .= ' />';
-		return $str;
+
+		if ($params !== NULL) {
+			if (preg_match('/title=("|\')(?P<search>.*?)(\1)/', $params, $matches) && $matches['search'] != '') {
+				$paramArray['title'] = $matches['search'];
+			}
+
+			if (preg_match('/alt=("|\')(?P<search>.*?)(\1)/', $params, $matches) && $matches['search'] != '') {
+				$paramArray['alt'] = $matches['search'];
+			}
+		}
+		return self::getSpriteIconForRecord($table, $row, $paramArray);
 	}
 
 	/**

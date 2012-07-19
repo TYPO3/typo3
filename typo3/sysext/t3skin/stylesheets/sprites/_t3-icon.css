@@ -15,3 +15,7 @@ span.t3-icon-overlay {
 .t3-icon-empty {
 	background-image: none;
 }
+
+.t3-icon-shaded {
+	opacity:0.5;
+}
