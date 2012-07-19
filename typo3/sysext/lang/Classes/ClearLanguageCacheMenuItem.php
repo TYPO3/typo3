@@ -41,9 +41,9 @@ class ClearLanguageCacheMenuItem implements \TYPO3\CMS\Backend\Toolbar\ClearCach
 	 * @return void
 	 */
 	public function manipulateCacheActions(&$cacheActions, &$optionValues) {
-		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.clearRTECache')) {
+		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.clearCache.clearLangCache')) {
 			// Add new cache menu item
-			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/hooks/clearcache/locallang.xml:title');
+			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/hooks/clearcache/locallang.xlf:title');
 			$cacheActions[] = array(
 				'id' => 'clearLangCache',
 				'title' => $title,
