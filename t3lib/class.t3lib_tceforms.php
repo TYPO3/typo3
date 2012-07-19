@@ -2288,7 +2288,7 @@ class t3lib_TCEforms {
 				);
 				$item .= $this->dbFileIcons($PA['itemFormElName'], 'file', implode(',', $tempFT), $itemArray, '', $params, $PA['onFocus'], '', '', '', $config);
 
-				if (!$disabled && !(isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'upload'))) {
+				if (!$disabled && $this->checkIfUploadControlIsAllowed($config)) {
 						// Adding the upload field:
 					if ($this->edit_docModuleUpload && $config['uploadfolder']) {
 
@@ -2420,6 +2420,27 @@ class t3lib_TCEforms {
 		}
 
 		return $item;
+	}
+
+	/**
+	 * Check if the Upload control is allowed
+	 * This will check the field configuration and the global TSConfig user configuration
+	 *
+	 * @param array $config
+	 * @return bool
+	 */
+	function checkIfUploadControlIsAllowed(array $config) {
+			// Check if the upload control is disabled by configuration
+		if (isset($config['disable_controls']) && t3lib_div::inList($config['disable_controls'], 'upload')) {
+			return FALSE;
+		}
+
+			// Check if the upload control is disabled globally
+		if ($GLOBALS['BE_USER']->getTSConfigVal('options.disableUploadControlInTcaForm') == TRUE) {
+			return FALSE;
+		}
+
+		return TRUE;
 	}
 
 	/**
