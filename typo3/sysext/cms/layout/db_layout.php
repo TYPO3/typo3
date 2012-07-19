@@ -582,7 +582,6 @@ class SC_db_layout {
 				'move_record' => '',
 				'new_page' => '',
 				'edit_page' => '',
-				'record_list' => '',
 				'csh' => '',
 				'shortcut' => '',
 				'cache' => '',
@@ -1165,7 +1164,6 @@ class SC_db_layout {
 			'move_record' => '',
 			'new_page' => '',
 			'edit_page' => '',
-			'record_list' => '',
 			'csh' => '',
 			'shortcut' => '',
 			'cache' => '',
@@ -1193,15 +1191,6 @@ class SC_db_layout {
 					t3lib_iconWorks::getSpriteIcon('actions-system-cache-clear') .
 				'</a>';
 		}
-
-			// If access to Web>List for user, then link to that module.
-		$buttons['record_list'] = t3lib_BEfunc::getListViewLink(
-			array(
-				'id' => $this->pageinfo['uid'],
-				'returnUrl' => t3lib_div::getIndpEnv('REQUEST_URI'),
-			),
-			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList')
-		);
 
 		if (!$this->modTSconfig['properties']['disableIconToolbar']) {
 
