@@ -1,0 +1,47 @@
+/**
+ * @group: Structure
+ */
+
+#compareUsers { margin-bottom: 10px; }
+
+div.collapsibleSection { background-color: #DADADA; padding: 7px; margin-bottom: 10px; }
+
+#tx_beuser_compare td { min-width: 170px; }
+
+/**
+ * @end
+ */
+
+/**
+ * @group: Form
+ */
+
+form label { float: left; height: 20px; line-height: 20px; margin-right: 10px; width: 90px; }
+form div { clear: both; margin-bottom: 5px; }
+
+	form .field-row,
+	form .button-row { clear: both; margin-bottom: 10px; }
+	form .indent { margin-left: 100px; }
+
+/**
+ * @end
+ */
+
+/**
+ * @group: Paginate
+ */
+
+.f3-widget-paginator { display: block; float: left; margin: 0 0 10px; }
+
+	.f3-widget-paginator li { font-weight: bold; display: block; float: left; width: 30px; text-align: center; margin: 0 2px 2px; }
+
+	.f3-widget-paginator li.current { border: 1px solid black; padding: 2px; }
+
+	.f3-widget-paginator li.next,
+	.f3-widget-paginator li.previous { width: auto; }
+
+	.f3-widget-paginator a { font-weight: normal; display: block; border: 1px solid black; padding: 2px; }
+
+/**
+ * @end
+ */
