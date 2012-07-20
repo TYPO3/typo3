@@ -115,7 +115,7 @@ abstract class t3lib_file_Driver_AbstractDriver {
 		if (strpos($fileName, '/') !== FALSE) {
 			return FALSE;
 		}
-		if (!preg_match('/^[[:alnum:][:blank:]\.-_]*$/iu', $fileName)) {
+		if (!preg_match('/^[\pL\d[:blank:]._-]*$/u', $fileName)) {
 			return FALSE;
 		}
 
