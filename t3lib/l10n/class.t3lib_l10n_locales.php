@@ -103,13 +103,6 @@ class t3lib_l10n_Locales implements t3lib_Singleton {
 	);
 
 	/**
-	 * Supported TYPO3 locales
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
-	 * @var array
-	 */
-	protected $locales = array();
-
-	/**
 	 * Mapping with codes used by TYPO3 4.5 and below
 	 * @var array
 	 */
@@ -176,16 +169,6 @@ class t3lib_l10n_Locales implements t3lib_Singleton {
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies'])) {
 			$instance->localeDependencies = t3lib_div::array_merge_recursive_overrule($instance->localeDependencies, $GLOBALS['TYPO3_CONF_VARS']['SYS']['localization']['locales']['dependencies']);
 		}
-
-		/**
-		 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
-		 */
-		$instance->locales = array_keys($instance->languages);
-
-		/**
-		 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
-		 */
-		define('TYPO3_languages', implode('|', $instance->getLocales()));
 	}
 
 	/**
