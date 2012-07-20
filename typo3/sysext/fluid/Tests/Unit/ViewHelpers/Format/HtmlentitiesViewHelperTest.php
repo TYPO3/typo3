@@ -61,8 +61,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_HtmlentitiesViewHelperTest extends 
 	 * @test
 	 */
 	public function renderDecodesSimpleString() {
-		$copyrightSymbol = chr(169);
-		$source = 'Some special characters: &' . $copyrightSymbol . '"\'';
+		$source = 'Some special characters: &'.chr(169).'"\'';
 		$expectedResult = 'Some special characters: &amp;&copy;&quot;\'';
 		$actualResult = $this->viewHelper->render($source);
 		$this->assertEquals($expectedResult, $actualResult);
@@ -72,8 +71,7 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_HtmlentitiesViewHelperTest extends 
 	 * @test
 	 */
 	public function renderRespectsKeepQuoteArgument() {
-		$copyrightSymbol = chr(169);
-		$source = 'Some special characters: &' . $copyrightSymbol . '"\'';
+		$source = 'Some special characters: &'.chr(169).'"\'';
 		$expectedResult = 'Some special characters: &amp;&copy;"\'';
 		$actualResult = $this->viewHelper->render($source, TRUE);
 		$this->assertEquals($expectedResult, $actualResult);
@@ -83,9 +81,8 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Format_HtmlentitiesViewHelperTest extends 
 	 * @test
 	 */
 	public function renderRespectsEncodingArgument() {
-		$copyrightSymbol = chr(169);
-		$source = utf8_decode('Some special characters: &' . $copyrightSymbol . '"\'');
-		$expectedResult = 'Some special characters: &amp;?&quot;\'';
+		$source = utf8_decode('Some special characters: &©"\'');
+		$expectedResult = 'Some special characters: &amp;&copy;&quot;\'';
 		$actualResult = $this->viewHelper->render($source, FALSE, 'ISO-8859-1');
 		$this->assertEquals($expectedResult, $actualResult);
 	}

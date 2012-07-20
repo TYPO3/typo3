@@ -18,6 +18,7 @@ require_once(dirname(__FILE__) . '/../Fixtures/TestViewHelper2.php');
  *
  */
 class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+
 	/**
 	 * @test
 	 */
@@ -33,8 +34,8 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$isRequired = TRUE;
 		$expected = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $type, $description, $isRequired);
 
-		$viewHelper->_call('registerArgument', $name, $type, $isRequired, $description);
-		$this->assertEquals($viewHelper->prepareArguments(), array($name => $expected), 'Argument definitions not returned correctly.');
+		$viewHelper->_call('registerArgument', $name, $type, $description, $isRequired);
+		$this->assertEquals(array($name => $expected), $viewHelper->prepareArguments(), 'Argument definitions not returned correctly.');
 	}
 
 	/**
@@ -49,8 +50,8 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$type = "string";
 		$isRequired = TRUE;
 
-		$viewHelper->_call('registerArgument', $name, $type, $isRequired, $description);
-		$viewHelper->_call('registerArgument', $name, "integer", $isRequired, $description);
+		$viewHelper->_call('registerArgument', $name, $type, $description, $isRequired);
+		$viewHelper->_call('registerArgument', $name, "integer", $description, $isRequired);
 	}
 
 	/**
@@ -70,8 +71,8 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$isRequired = TRUE;
 		$expected = new Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $overriddenType, $overriddenDescription, $isRequired);
 
-		$viewHelper->_call('registerArgument', $name, $type, $isRequired, $description);
-		$viewHelper->_call('overrideArgument', $name, $overriddenType, $isRequired, $overriddenDescription);
+		$viewHelper->_call('registerArgument', $name, $type, $description, $isRequired);
+		$viewHelper->_call('overrideArgument', $name, $overriddenType, $overriddenDescription, $isRequired);
 		$this->assertEquals($viewHelper->prepareArguments(), array($name => $expected), 'Argument definitions not returned correctly. The original ArgumentDefinition could not be overridden.');
 	}
 
@@ -85,7 +86,7 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$viewHelper = $this->getAccessibleMock('Tx_Fluid_Core_ViewHelper_AbstractViewHelper', array('render'), array(), '', FALSE);
 		$viewHelper->injectReflectionService($mockReflectionService);
 
-		$viewHelper->_call('overrideArgument', 'argumentName', 'string', TRUE, 'description');
+		$viewHelper->_call('overrideArgument', 'argumentName', 'string', 'description', TRUE);
 	}
 
 	/**
@@ -112,13 +113,13 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$availableClassNames = array(
 			array('Tx_Fluid_Core_Fixtures_TestViewHelper'),
 		);
-		$reflectionService = new Tx_Extbase_Reflection_Service();
-		// $reflectionService->setStatusCache($this->getMock('Tx_Fluid_Cache_Frontend_StringFrontend', array(), array(), '', FALSE));
 		$dataCacheMock = $this->getMock('t3lib_cache_frontend_VariableFrontend', array(), array(), '', FALSE);
 		$dataCacheMock->expects($this->any())->method('has')->will($this->returnValue(TRUE));
 		$dataCacheMock->expects($this->any())->method('get')->will($this->returnValue(array()));
+
+		$reflectionService = new Tx_Extbase_Reflection_Service();
 		$reflectionService->setDataCache($dataCacheMock);
-		// $reflectionService->buildReflectionData($availableClassNames);
+
 
 		$viewHelper = new Tx_Fluid_Core_Fixtures_TestViewHelper();
 		$viewHelper->injectReflectionService($reflectionService);
@@ -144,13 +145,13 @@ class Tx_Fluid_Tests_Unit_Core_ViewHelper_AbstractViewHelperTest extends Tx_Extb
 		$availableClassNames = array(
 			array('Tx_Fluid_Core_Fixtures_TestViewHelper2'),
 		);
-		$reflectionService = new Tx_Extbase_Reflection_Service();
-		// $reflectionService->setStatusCache($this->getMock('Tx_Fluid_Cache_Frontend_StringFrontend', array(), array(), '', FALSE));
 		$dataCacheMock = $this->getMock('t3lib_cache_frontend_VariableFrontend', array(), array(), '', FALSE);
 		$dataCacheMock->expects($this->any())->method('has')->will($this->returnValue(TRUE));
 		$dataCacheMock->expects($this->any())->method('get')->will($this->returnValue(array()));
+
+		$reflectionService = new Tx_Extbase_Reflection_Service();
 		$reflectionService->setDataCache($dataCacheMock);
-		// $reflectionService->buildReflectionData($availableClassNames);
+
 
 		$viewHelper = new Tx_Fluid_Core_Fixtures_TestViewHelper2();
 		$viewHelper->injectReflectionService($reflectionService);

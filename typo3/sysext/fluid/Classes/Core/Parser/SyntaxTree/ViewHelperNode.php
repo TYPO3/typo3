@@ -100,11 +100,9 @@ class Tx_Fluid_Core_Parser_SyntaxTree_ViewHelperNode extends Tx_Fluid_Core_Parse
 	 * @return object evaluated node after the view helper has been called.
 	 */
 	public function evaluate(Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
-		$objectManager = $renderingContext->getObjectManager();
-		$contextVariables = $renderingContext->getTemplateVariableContainer()->getAllIdentifiers();
-
 		if ($this->viewHelpersByContext->contains($renderingContext)) {
 			$viewHelper = $this->viewHelpersByContext[$renderingContext];
+			$viewHelper->resetState();
 		} else {
 			$viewHelper = clone $this->uninitializedViewHelper;
 			$this->viewHelpersByContext->attach($renderingContext, $viewHelper);

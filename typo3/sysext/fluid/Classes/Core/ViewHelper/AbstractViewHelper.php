@@ -458,6 +458,16 @@ abstract class Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 	static public function renderStatic(array $arguments, Closure $renderChildrenClosure, Tx_Fluid_Core_Rendering_RenderingContextInterface $renderingContext) {
 		return NULL;
 	}
+
+	/**
+	 * Resets the ViewHelper state.
+	 *
+	 * Overwrite this method if you need to get a clean state of your ViewHelper.
+	 *
+	 * @return void
+	 */
+	public function resetState() {
+	}
 }
 
 ?>

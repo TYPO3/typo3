@@ -50,15 +50,23 @@ abstract class Tx_Fluid_Core_Compiler_AbstractCompiledTemplate implements Tx_Flu
 		}
 		if (isset($this->viewHelpersByPositionAndContext[$uniqueCounter])) {
 			if ($this->viewHelpersByPositionAndContext[$uniqueCounter]->contains($renderingContext)) {
-				return $this->viewHelpersByPositionAndContext[$uniqueCounter][$renderingContext];
+				$viewHelper = $this->viewHelpersByPositionAndContext[$uniqueCounter][$renderingContext];
+				$viewHelper->resetState();
+				return $viewHelper;
 			} else {
 				$viewHelperInstance = self::$objectContainer->getInstance($viewHelperName);
+				if ($viewHelperInstance instanceof t3lib_Singleton) {
+					$viewHelperInstance->resetState();
+				}
 				$this->viewHelpersByPositionAndContext[$uniqueCounter]->attach($renderingContext, $viewHelperInstance);
 				return $viewHelperInstance;
 			}
 		} else {
 			$this->viewHelpersByPositionAndContext[$uniqueCounter] = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
 			$viewHelperInstance = self::$objectContainer->getInstance($viewHelperName);
+			if ($viewHelperInstance instanceof t3lib_Singleton) {
+				$viewHelperInstance->resetState();
+			}
 			$this->viewHelpersByPositionAndContext[$uniqueCounter]->attach($renderingContext, $viewHelperInstance);
 			return $viewHelperInstance;
 		}

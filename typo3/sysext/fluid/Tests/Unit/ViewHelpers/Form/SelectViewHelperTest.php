@@ -21,7 +21,7 @@ require_once(dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php');
 class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid_Tests_Unit_ViewHelpers_Form_FormFieldViewHelperBaseTestcase {
 
 	/**
-	 * var Tx_Fluid_ViewHelpers_Form_SelectViewHelper
+	 * @var Tx_Fluid_ViewHelpers_Form_SelectViewHelper
 	 */
 	protected $viewHelper;
 
@@ -228,6 +228,51 @@ class Tx_Fluid_Tests_Unit_ViewHelpers_Form_SelectViewHelperTest extends Tx_Fluid
 			'</select>';
 		$this->assertSame($expected, $actual);
 	}
+
+	/**
+	 * @test
+	 * @author Johannes Künsebeck <jk@hdnet.de>
+	 */
+	public function multipleSelectOnDomainObjectsCreatesExpectedOptionsWithoutOptionValueField() {
+		$mockPersistenceManager = $this->getMock('Tx_Extbase_Persistence_ManagerInterface');
+
+		$mockBackend = $this->getMock('Tx_Extbase_Persistence_Backend',array('getIdentifierByObject'),array(),'',false);
+		$mockBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnCallback(
+			function ($object) {
+				return $object->getId();
+			}
+		));
+		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockBackend));
+		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
+
+		$this->tagBuilder = new Tx_Fluid_Core_ViewHelper_TagBuilder();
+		$this->viewHelper->expects($this->exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
+
+		$user_is = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
+		$user_sk = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
+		$user_rl = new Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(3, 'Robert', 'Lemke');
+
+		$this->arguments['options'] = array($user_is,$user_sk,$user_rl);
+		$this->arguments['value'] = array($user_rl, $user_is);
+		$this->arguments['optionLabelField'] = 'lastName';
+		$this->arguments['name'] = 'myName';
+		$this->arguments['multiple'] = 'multiple';
+
+		$this->injectDependenciesIntoViewHelper($this->viewHelper);
+
+		$this->viewHelper->initializeArguments();
+		$this->viewHelper->initialize();
+		$actual = $this->viewHelper->render();
+
+		$expected = '<input type="hidden" name="myName" value="" />'.
+			'<select multiple="multiple" name="myName[]">' .
+			'<option value="1" selected="selected">Schlecht</option>' . chr(10) .
+			'<option value="2">Kurfuerst</option>' . chr(10) .
+			'<option value="3" selected="selected">Lemke</option>' . chr(10) .
+			'</select>';
+		$this->assertSame($expected, $actual);
+	}
+
 
 	/**
 	 * @test
