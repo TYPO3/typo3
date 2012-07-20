@@ -177,9 +177,9 @@ class t3lib_autoloader {
 
 			// to handle namespaced class names, get rid of the first backslash
 			// and replace the remaining ones with underscore
-		if(strpos($classNameLower, '\\') !== FALSE ) {
-			$classNameLower = str_replace('\\', '_', substr($classNameLower, 1));
-			$className = str_replace('\\', '_', substr($className, 1));
+		if(strpos($classNameLower, '\\') === 0 ) {
+			$classNameLower = str_replace('\\', '_', ltrim($classNameLower, '\\'));
+			$className = str_replace('\\', '_', ltrim($className, '\\'));
 		}
 
 			// Try to resolve extbase naming scheme if class is not already in cache file
