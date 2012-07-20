@@ -183,7 +183,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 		if (!isset($parameters['controller']) || strlen($parameters['controller']) === 0) {
 			if (strlen($this->defaultControllerName) === 0) {
 				throw new Tx_Extbase_MVC_Exception(
-					'The default controller can not be determined. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
+					'The default controller for extension "' . $this->extensionName . '" and plugin "' . $this->pluginName . '" can not be determined. Please check for Tx_Extbase_Utility_Extension::configurePlugin() in your ext_localconf.php.',
 					1316104317
 				);
 			}
