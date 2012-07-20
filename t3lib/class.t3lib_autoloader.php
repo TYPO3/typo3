@@ -173,6 +173,14 @@ class t3lib_autoloader {
 	 */
 	public static function getClassPathByRegistryLookup($className) {
 		$classPath = NULL;
+
+			// To handle namespaced class names, get rid of the first backslash
+			// and replace the remaining ones with underscore. This will simulate
+			// a 'usual' "extbase" structure like 'Tx_ExtensionName_Foo_bar'
+		if (strpos($className, '\\') === 0 ) {
+			$className = str_replace('\\', '_', ltrim($className, '\\'));
+		}
+
 		$classNameLower = t3lib_div::strtolower($className);
 
 			// Try to resolve extbase naming scheme if class is not already in cache file
