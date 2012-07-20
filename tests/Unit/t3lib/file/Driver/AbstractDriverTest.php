@@ -67,6 +67,30 @@ class t3lib_file_Driver_AbstractDriverTest extends t3lib_file_BaseTestCase {
 				'someCompressedFile.tar.gz',
 				TRUE
 			),
+			'filename with dash' => array(
+				'foo-bar',
+				TRUE
+			),
+			'filename with number' => array(
+				'some23Number',
+				TRUE
+			),
+			'filename with whitespace' => array(
+				'some whitespace',
+				TRUE
+			),
+			'filename with tab' => array(
+				'some' . TAB . 'tag',
+				TRUE
+			),
+			'filename with carriage return' => array(
+				'some' . CR . 'CarriageReturn',
+				FALSE
+			),
+			'filename with linefeed' => array(
+				'some' . LF . 'Linefeed',
+				FALSE
+			),
 			'filename with leading slash' => array(
 				'/invalidAsFilename',
 				FALSE
