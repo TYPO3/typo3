@@ -80,6 +80,10 @@ settings if you use it. If these paths are unavailable, TYPO3 will attempt to
 simulate random number generation. This is less secure, causes performance
 issues and warnings in the TYPO3 system log.
 
+TYPO3 relies on IPv6 support, which is by default enabled since PHP 5.3.
+Take care not to compile PHP 5.3 with the option "--disablr_ipv6", because
+this will break the IPv6 support and the according unit tests.
+
 ===============================================================================
 Obtaining TYPO3
 ===============================================================================
