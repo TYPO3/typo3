@@ -175,6 +175,13 @@ class t3lib_autoloader {
 		$classPath = NULL;
 		$classNameLower = t3lib_div::strtolower($className);
 
+			// to handle namespaced class names, get rid of the first backslash
+			// and replace the remaining ones with underscore
+		if(strpos($classNameLower, '\\') === 0 ) {
+			$classNameLower = str_replace('\\', '_', ltrim($classNameLower, '\\'));
+			$className = str_replace('\\', '_', ltrim($className, '\\'));
+		}
+
 			// Try to resolve extbase naming scheme if class is not already in cache file
 		if (!array_key_exists($classNameLower, self::$classNameToFileMapping)) {
 			self::attemptToLoadRegistryWithNamingConventionForGivenClassName($className);
