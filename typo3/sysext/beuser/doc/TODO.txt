@@ -1,5 +1,0 @@
-- Ability to create groups incl. filemounts in users/groups dirs.
-- Ability to compare groups
-- Show x number of users in the list + ability to browse/search for a user.
-- Compare only "checked" users.
-- Link to Web>List, id=0
