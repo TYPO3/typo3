@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2012-07-16T10:11:32Z" product-name="beuser">
+		<header/>
+		<body>
+			<trans-unit id="activeSessions" xml:space="preserve">
+				<source>Active Sessions</source>
+			</trans-unit>
+			<trans-unit id="userName" xml:space="preserve">
+				<source>Username</source>
+			</trans-unit>
+			<trans-unit id="realName" xml:space="preserve">
+				<source>Real Name</source>
+			</trans-unit>
+			<trans-unit id="lastAccess" xml:space="preserve">
+				<source>Last access</source>
+			</trans-unit>
+			<trans-unit id="ipAddress" xml:space="preserve">
+				<source>IP address</source>
+			</trans-unit>
+			<trans-unit id="backendUserListing" xml:space="preserve">
+				<source>Backend User Listing</source>
+			</trans-unit>
+			<trans-unit id="email" xml:space="preserve">
+				<source>Email</source>
+			</trans-unit>
+			<trans-unit id="admin" xml:space="preserve">
+				<source>Admin</source>
+			</trans-unit>
+			<trans-unit id="yes" xml:space="preserve">
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="no" xml:space="preserve">
+				<source>No</source>
+			</trans-unit>
+			<trans-unit id="never" xml:space="preserve">
+				<source>Never</source>
+			</trans-unit>
+			<trans-unit id="disable" xml:space="preserve">
+				<source>Disable</source>
+			</trans-unit>
+			<trans-unit id="startDateAndTime" xml:space="preserve">
+				<source>Start</source>
+			</trans-unit>
+			<trans-unit id="endDateAndTime" xml:space="preserve">
+				<source>Stop</source>
+			</trans-unit>
+			<trans-unit id="lastLogin" xml:space="preserve">
+				<source>Last login</source>
+			</trans-unit>
+			<trans-unit id="allowedLanguages" xml:space="preserve">
+				<source>Limit to languages</source>
+			</trans-unit>
+			<trans-unit id="dbMountPoints" xml:space="preserve">
+				<source>DB mountpoints</source>
+			</trans-unit>
+			<trans-unit id="fileMounts" xml:space="preserve">
+				<source>File mountpoints</source>
+			</trans-unit>
+			<trans-unit id="disableIpLock" xml:space="preserve">
+				<source>Disable IP lock</source>
+			</trans-unit>
+			<trans-unit id="compareBackendUsers" xml:space="preserve">
+				<source>Compare backend users</source>
+			</trans-unit>
+			<trans-unit id="status" xml:space="preserve">
+				<source>Status</source>
+			</trans-unit>
+			<trans-unit id="both" xml:space="preserve">
+				<source>Both</source>
+			</trans-unit>
+			<trans-unit id="any" xml:space="preserve">
+				<source>Any</source>
+			</trans-unit>
+			<trans-unit id="adminOnly" xml:space="preserve">
+				<source>Admin only</source>
+			</trans-unit>
+			<trans-unit id="normalUserOnly" xml:space="preserve">
+				<source>Normal users only</source>
+			</trans-unit>
+			<trans-unit id="activeOnly" xml:space="preserve">
+				<source>Active only</source>
+			</trans-unit>
+			<trans-unit id="inactiveOnly" xml:space="preserve">
+				<source>Inactive only</source>
+			</trans-unit>
+			<trans-unit id="loginBefore" xml:space="preserve">
+				<source>Login before</source>
+			</trans-unit>
+			<trans-unit id="neverLoggedIn" xml:space="preserve">
+				<source>Never logged in</source>
+			</trans-unit>
+			<trans-unit id="filter" xml:space="preserve">
+				<source>Filter</source>
+			</trans-unit>
+			<trans-unit id="reallyLogout" xml:space="preserve">
+				<source>Really logout</source>
+			</trans-unit>
+			<trans-unit id="endSession" xml:space="preserve">
+				<source>End session</source>
+			</trans-unit>
+			<trans-unit id="backendUsers" xml:space="preserve">
+				<source>Backend users</source>
+			</trans-unit>
+			<trans-unit id="onlineUsers" xml:space="preserve">
+				<source>Online users</source>
+			</trans-unit>
+			<trans-unit id="backendUserAdministration" xml:space="preserve">
+				<source>Backend User Administration</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroup" xml:space="preserve">
+				<source>User group</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroups" xml:space="preserve">
+				<source>Member of groups</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
