@@ -90,8 +90,8 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->will($this->returnValue(array()));
 
 		$request = $this->requestBuilder->build('some_extension_name:default:list');
-		$this->assertEquals('Tx_SomeExtensionName_Command_DefaultCommandController', $request->getControllerObjectName());
-		$this->assertEquals('list', $request->getControllerCommandName(), 'The CLI request specifying a package, controller and action name did not return a request object pointing to the expected action.');
+		$this->assertSame('Tx_SomeExtensionName_Command_DefaultCommandController', $request->getControllerObjectName());
+		$this->assertSame('list', $request->getControllerCommandName(), 'The CLI request specifying a package, controller and action name did not return a request object pointing to the expected action.');
 	}
 
 	/**
@@ -108,7 +108,21 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 		$this->requestBuilder->injectCommandManager($mockCommandManager);
 
 		$request = $this->requestBuilder->build('test:default:list');
-		$this->assertEquals('Tx_Extbase_Command_HelpCommandController', $request->getControllerObjectName());
+		$this->assertSame('Tx_Extbase_Command_HelpCommandController', $request->getControllerObjectName());
+	}
+
+	/**
+	 * @test
+	 */
+	public function argumentWithValueSeparatedByEqualSignBuildsCorrectRequest() {
+		$methodParameters = array(
+			'testArgument' => array('optional' => FALSE, 'type' => 'string')
+		);
+		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
+
+		$request = $this->requestBuilder->build('some_extension_name:default:list --test-argument=value');
+		$this->assertTrue($request->hasArgument('testArgument'), 'The given "testArgument" was not found in the built request.');
+		$this->assertSame($request->getArgument('testArgument'), 'value', 'The "testArgument" had not the given value.');
 	}
 
 	/**
@@ -151,10 +165,10 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 		$this->assertTrue($request->hasArgument('testArgument2'), 'The given "testArgument2" was not found in the built request.');
 		$this->assertTrue($request->hasArgument('testArgument3'), 'The given "testArgument3" was not found in the built request.');
 		$this->assertTrue($request->hasArgument('testArgument4'), 'The given "testArgument4" was not found in the built request.');
-		$this->assertEquals($request->getArgument('testArgument'), 'value', 'The "testArgument" had not the given value.');
-		$this->assertEquals($request->getArgument('testArgument2'), 'value2', 'The "testArgument2" had not the given value.');
-		$this->assertEquals($request->getArgument('testArgument3'), 'value3', 'The "testArgument3" had not the given value.');
-		$this->assertEquals($request->getArgument('testArgument4'), 'value4', 'The "testArgument4" had not the given value.');
+		$this->assertSame($request->getArgument('testArgument'), 'value', 'The "testArgument" had not the given value.');
+		$this->assertSame($request->getArgument('testArgument2'), 'value2', 'The "testArgument2" had not the given value.');
+		$this->assertSame($request->getArgument('testArgument3'), 'value3', 'The "testArgument3" had not the given value.');
+		$this->assertSame($request->getArgument('testArgument4'), 'value4', 'The "testArgument4" had not the given value.');
 	}
 
 	/**
@@ -175,9 +189,9 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 		$this->assertTrue($request->hasArgument('d'), 'The given "d" was not found in the built request.');
 		$this->assertTrue($request->hasArgument('f'), 'The given "f" was not found in the built request.');
 		$this->assertTrue($request->hasArgument('a'), 'The given "a" was not found in the built request.');
-		$this->assertEquals($request->getArgument('d'), 'valued', 'The "d" had not the given value.');
-		$this->assertEquals($request->getArgument('f'), 'valuef', 'The "f" had not the given value.');
-		$this->assertEquals($request->getArgument('a'), 'valuea', 'The "a" had not the given value.');
+		$this->assertSame($request->getArgument('d'), 'valued', 'The "d" had not the given value.');
+		$this->assertSame($request->getArgument('f'), 'valuef', 'The "f" had not the given value.');
+		$this->assertSame($request->getArgument('a'), 'valuea', 'The "a" had not the given value.');
 	}
 
 	/**
@@ -221,15 +235,15 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 		$this->assertTrue($request->hasArgument('testArgument6'), 'The given "testArgument6" was not found in the built request.');
 		$this->assertTrue($request->hasArgument('j'), 'The given "j" was not found in the built request.');
 		$this->assertTrue($request->hasArgument('m'), 'The given "m" was not found in the built request.');
-		$this->assertEquals($request->getArgument('testArgument'), 'value', 'The "testArgument" had not the given value.');
-		$this->assertEquals($request->getArgument('testArgument2'), 'value2', 'The "testArgument2" had not the given value.');
-		$this->assertEquals($request->getArgument('testArgument3'), 'value3', 'The "testArgument3" had not the given value.');
-		$this->assertEquals($request->getArgument('testArgument4'), 'value4', 'The "testArgument4" had not the given value.');
-		$this->assertEquals($request->getArgument('f'), 'valuef', 'The "f" had not the given value.');
-		$this->assertEquals($request->getArgument('d'), 'valued', 'The "d" had not the given value.');
-		$this->assertEquals($request->getArgument('a'), 'valuea', 'The "a" had not the given value.');
-		$this->assertEquals($request->getArgument('testArgument5'), '5', 'The "testArgument4" had not the given value.');
-		$this->assertEquals($request->getArgument('j'), 'kjk', 'The "j" had not the given value.');
+		$this->assertSame($request->getArgument('testArgument'), 'value', 'The "testArgument" had not the given value.');
+		$this->assertSame($request->getArgument('testArgument2'), 'value2', 'The "testArgument2" had not the given value.');
+		$this->assertSame($request->getArgument('testArgument3'), 'value3', 'The "testArgument3" had not the given value.');
+		$this->assertSame($request->getArgument('testArgument4'), 'value4', 'The "testArgument4" had not the given value.');
+		$this->assertSame($request->getArgument('f'), 'valuef', 'The "f" had not the given value.');
+		$this->assertSame($request->getArgument('d'), 'valued', 'The "d" had not the given value.');
+		$this->assertSame($request->getArgument('a'), 'valuea', 'The "a" had not the given value.');
+		$this->assertSame($request->getArgument('testArgument5'), '5', 'The "testArgument4" had not the given value.');
+		$this->assertSame($request->getArgument('j'), 'kjk', 'The "j" had not the given value.');
 	}
 
 	/**
@@ -244,12 +258,12 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 		$this->mockReflectionService->expects($this->exactly(2))->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
 
 		$request = $this->requestBuilder->build('some_extension_name:default:list --test-argument1 firstArgumentValue --test-argument2 secondArgumentValue');
-		$this->assertEquals('firstArgumentValue', $request->getArgument('testArgument1'));
-		$this->assertEquals('secondArgumentValue', $request->getArgument('testArgument2'));
+		$this->assertSame('firstArgumentValue', $request->getArgument('testArgument1'));
+		$this->assertSame('secondArgumentValue', $request->getArgument('testArgument2'));
 
 		$request = $this->requestBuilder->build('some_extension_name:default:list firstArgumentValue secondArgumentValue');
-		$this->assertEquals('firstArgumentValue', $request->getArgument('testArgument1'));
-		$this->assertEquals('secondArgumentValue', $request->getArgument('testArgument2'));
+		$this->assertSame('firstArgumentValue', $request->getArgument('testArgument1'));
+		$this->assertSame('secondArgumentValue', $request->getArgument('testArgument2'));
 	}
 
 	/**
@@ -266,10 +280,10 @@ class Tx_Extbase_Tests_Unit_MVC_CLI_RequestBuilderTest extends Tx_Extbase_Tests_
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('Tx_SomeExtensionName_Command_DefaultCommandController', 'listCommand')->will($this->returnValue($methodParameters));
 
 		$request = $this->requestBuilder->build('some_extension_name:default:list --some -option=value file1 file2');
-		$this->assertEquals('list', $request->getControllerCommandName());
+		$this->assertSame('list', $request->getControllerCommandName());
 		$this->assertTrue($request->getArgument('some'));
-		$this->assertEquals('file1', $request->getArgument('argument1'));
-		$this->assertEquals('file2', $request->getArgument('argument2'));
+		$this->assertSame('file1', $request->getArgument('argument1'));
+		$this->assertSame('file2', $request->getArgument('argument2'));
 	}
 
 	/**
