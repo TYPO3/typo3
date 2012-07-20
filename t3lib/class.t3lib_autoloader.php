@@ -174,13 +174,6 @@ class t3lib_autoloader {
 	public static function getClassPathByRegistryLookup($className) {
 		$classPath = NULL;
 
-			// To handle namespaced class names, get rid of the first backslash
-			// and replace the remaining ones with underscore. This will simulate
-			// a 'usual' "extbase" structure like 'Tx_ExtensionName_Foo_bar'
-		if (strpos($className, '\\') === 0 ) {
-			$className = str_replace('\\', '_', ltrim($className, '\\'));
-		}
-
 		$classNameLower = t3lib_div::strtolower($className);
 
 			// Try to resolve extbase naming scheme if class is not already in cache file
@@ -232,13 +225,24 @@ class t3lib_autoloader {
 	 * @return void
 	 */
 	protected static function attemptToLoadRegistryWithNamingConventionForGivenClassName($className) {
-		$classNameParts = explode('_', $className, 3);
+
+		$delimiter = '_';
+		$tempClassName = $className;
+
+			// To handle namespaced class names, get rid of the first backslash
+			// and replace the remaining ones with underscore. This will simulate
+			// a 'usual' "extbase" structure like 'Tx_ExtensionName_Foo_bar'
+		if(strpos($className, '\\') !== FALSE) {
+			$tempClassName = ltrim($className, '\\');
+			$delimiter = '\\';
+		}
+		$classNameParts = explode($delimiter, $tempClassName, 3);
 		$extensionKey = t3lib_div::camelCaseToLowerCaseUnderscored($classNameParts[1]);
 		if ($extensionKey) {
 			try {
 					// This will throw a BadFunctionCallException if the extension is not loaded
 				$extensionPath = t3lib_extMgm::extPath($extensionKey);
-				$classFilePathAndName = $extensionPath . 'Classes/' . strtr($classNameParts[2], '_', '/') . '.php';
+				$classFilePathAndName = $extensionPath . 'Classes/' . strtr($classNameParts[2], $delimiter, '/') . '.php';
 				self::addClassToCache($classFilePathAndName, $className);
 			} catch (BadFunctionCallException $exception) {
 					// Catch the exception and do nothing to give
