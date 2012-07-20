@@ -79,13 +79,12 @@ removed instead of deprecating it.
 * New XCLASS handling
 
 The old way of registering XCLASSes in $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS'] is
-deprecated. XCLASSES can now be registered by adding a 'ux_' prefixed entry of
-the base class to the ext_autoload.php file providing the XCLASS path. The
-deprecation layer for old class registration can potentially calculate a wrong
-path so the XCLASS registration can fail now. This can be fixed by addiononally
-using the new registration scheme through ext_autoload.
-Extension authors are advised to remove the three line XCLASS statement at the
-bottom of class files now for any extension with a compatibility for 6.0 and above.
+removed. XCLASSES must now be registered by adding a 'ux_' prefixed entry of
+the base class to the ext_autoload.php file providing the XCLASS path. To keep
+compatibility for 6.0 and 4.x, extension authors should add the ext_autoload
+entry and additionally keep the TYPO3_CONF_VARS registration.
+Extension authors should remove the three line XCLASS statement at the bottom
+of class files now for any extension with a compatibility for 6.0 and above.
 More information can be found at http://wiki.typo3.org/Autoload
 
 Removed Functionality
