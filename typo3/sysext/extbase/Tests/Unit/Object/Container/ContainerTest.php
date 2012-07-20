@@ -45,7 +45,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	 */
 	public function getInstanceReturnsInstanceOfSimpleClass() {
 		$object = $this->container->getInstance('t3lib_object_tests_c');
-		$this->isInstanceOf('t3lib_object_tests_c', $object);
+		$this->assertInstanceOf('t3lib_object_tests_c', $object);
 	}
 
 	/**
@@ -53,8 +53,8 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	 */
 	public function getInstanceReturnsInstanceOfAClassWithConstructorInjection() {
 		$object = $this->container->getInstance('t3lib_object_tests_b');
-		$this->isInstanceOf('t3lib_object_tests_b', $object);
-		$this->isInstanceOf('t3lib_object_tests_c', $object->c);
+		$this->assertInstanceOf('t3lib_object_tests_b', $object);
+		$this->assertInstanceOf('t3lib_object_tests_c', $object->c);
 	}
 
 	/**
@@ -62,8 +62,8 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	 */
 	public function getInstanceReturnsInstanceOfAClassWithTwoLevelDependency() {
 		$object = $this->container->getInstance('t3lib_object_tests_a');
-		$this->isInstanceOf('t3lib_object_tests_a', $object);
-		$this->isInstanceOf('t3lib_object_tests_c', $object->b->c);
+		$this->assertInstanceOf('t3lib_object_tests_a', $object);
+		$this->assertInstanceOf('t3lib_object_tests_c', $object->b->c);
 	}
 
 	/**
@@ -71,7 +71,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	 */
 	public function getInstanceReturnsInstanceOfAClassWithMixedSimpleTypeAndConstructorInjection() {
 		$object = $this->container->getInstance('t3lib_object_tests_amixed_array');
-		$this->isInstanceOf('t3lib_object_tests_amixed_array', $object);
+		$this->assertInstanceOf('t3lib_object_tests_amixed_array', $object);
 		$this->assertEquals(array('some' => 'default'), $object->myvalue);
 	}
 
@@ -80,7 +80,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	 */
 	public function getInstanceReturnsInstanceOfAClassWithMixedSimpleTypeAndConstructorInjectionWithNullDefaultValue() {
 		$object = $this->container->getInstance('t3lib_object_tests_amixed_null');
-		$this->isInstanceOf('t3lib_object_tests_amixed_null', $object);
+		$this->assertInstanceOf('t3lib_object_tests_amixed_null', $object);
 		$this->assertNull($object->myvalue);
 	}
 
@@ -97,8 +97,8 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	 */
 	public function getInstanceReturnsInstanceOfAClassWithConstructorInjectionAndDefaultConstructorParameters() {
 		$object = $this->container->getInstance('t3lib_object_tests_amixed_array');
-		$this->isInstanceOf('t3lib_object_tests_b', $object->b);
-		$this->isInstanceOf('t3lib_object_tests_c', $object->c);
+		$this->assertInstanceOf('t3lib_object_tests_b', $object->b);
+		$this->assertInstanceOf('t3lib_object_tests_c', $object->c);
 		$this->assertEquals(array('some' => 'default'), $object->myvalue);
 	}
 
@@ -109,7 +109,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$mockObject = $this->getMock('t3lib_object_tests_c');
 
 		$object = $this->container->getInstance('t3lib_object_tests_a', array($mockObject));
-		$this->isInstanceOf('t3lib_object_tests_a', $object);
+		$this->assertInstanceOf('t3lib_object_tests_a', $object);
 		$this->assertSame($mockObject, $object->c);
 	}
 
@@ -162,7 +162,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	 */
 	public function test_canGetChildClass() {
 		$object = $this->container->getInstance('t3lib_object_tests_b_child');
-		$this->isInstanceOf('t3lib_object_tests_b_child', $object);
+		$this->assertInstanceOf('t3lib_object_tests_b_child', $object);
 	}
 
 	/**
@@ -171,10 +171,10 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	public function test_canInjectInterfaceInClass() {
 		$this->container->registerImplementation('t3lib_object_tests_someinterface', 't3lib_object_tests_someimplementation');
 		$object = $this->container->getInstance('t3lib_object_tests_needsinterface');
-		$this->isInstanceOf('t3lib_object_tests_needsinterface', $object);
 
-		$this->isInstanceOf('t3lib_object_tests_someinterface', $object->dependency);
-		$this->isInstanceOf('t3lib_object_tests_someimplementation', $object->dependency);
+		$this->assertInstanceOf('t3lib_object_tests_needsinterface', $object);
+		$this->assertInstanceOf('t3lib_object_tests_someinterface', $object->dependency);
+		$this->assertInstanceOf('t3lib_object_tests_someimplementation', $object->dependency);
 	}
 
 	/**
@@ -182,8 +182,8 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 	 */
 	public function test_canBuildCyclicDependenciesOfSingletonsWithSetter() {
 		$object = $this->container->getInstance('t3lib_object_tests_resolveablecyclic1');
-		$this->isInstanceOf('t3lib_object_tests_resolveablecyclic1', $object);
-		$this->isInstanceOf('t3lib_object_tests_resolveablecyclic1', $object->o2->o3->o1);
+		$this->assertInstanceOf('t3lib_object_tests_resolveablecyclic1', $object);
+		$this->assertInstanceOf('t3lib_object_tests_resolveablecyclic1', $object->o2->o3->o1);
 	}
 
 	/**
@@ -193,7 +193,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$this->container->expects($this->once())->method('log')->with('The singleton "t3lib_object_singletonNeedsPrototype" needs a prototype in "injectDependency". This is often a bad code smell; often you rather want to inject a singleton.', 1);
 
 		$object = $this->container->getInstance('t3lib_object_singletonNeedsPrototype');
-		$this->isInstanceOf('t3lib_object_prototype', $object->dependency);
+		$this->assertInstanceOf('t3lib_object_prototype', $object->dependency);
 	}
 
 	/**
@@ -203,7 +203,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$this->container->expects($this->never())->method('log');
 
 		$object = $this->container->getInstance('t3lib_object_singletonNeedsSingleton');
-		$this->isInstanceOf('t3lib_object_singleton', $object->dependency);
+		$this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
 	}
 
 	/**
@@ -213,7 +213,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$this->container->expects($this->never())->method('log');
 
 		$object = $this->container->getInstance('t3lib_object_prototypeNeedsPrototype');
-		$this->isInstanceOf('t3lib_object_prototype', $object->dependency);
+		$this->assertInstanceOf('t3lib_object_prototype', $object->dependency);
 	}
 
 	/**
@@ -223,7 +223,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$this->container->expects($this->never())->method('log');
 
 		$object = $this->container->getInstance('t3lib_object_prototypeNeedsSingleton');
-		$this->isInstanceOf('t3lib_object_singleton', $object->dependency);
+		$this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
 	}
 
 	/**
@@ -233,7 +233,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$this->container->expects($this->once())->method('log')->with('The singleton "t3lib_object_singletonNeedsPrototypeInConstructor" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.', 1);
 
 		$object = $this->container->getInstance('t3lib_object_singletonNeedsPrototypeInConstructor');
-		$this->isInstanceOf('t3lib_object_prototype', $object->dependency);
+		$this->assertInstanceOf('t3lib_object_prototype', $object->dependency);
 	}
 
 	/**
@@ -243,7 +243,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$this->container->expects($this->never())->method('log');
 
 		$object = $this->container->getInstance('t3lib_object_singletonNeedsSingletonInConstructor');
-		$this->isInstanceOf('t3lib_object_singleton', $object->dependency);
+		$this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
 	}
 
 	/**
@@ -253,7 +253,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$this->container->expects($this->never())->method('log');
 
 		$object = $this->container->getInstance('t3lib_object_prototypeNeedsPrototypeInConstructor');
-		$this->isInstanceOf('t3lib_object_prototype', $object->dependency);
+		$this->assertInstanceOf('t3lib_object_prototype', $object->dependency);
 	}
 
 	/**
@@ -263,7 +263,7 @@ class Tx_Extbase_Tests_Unit_Object_Container_ContainerTest extends Tx_Extbase_Te
 		$this->container->expects($this->never())->method('log');
 
 		$object = $this->container->getInstance('t3lib_object_prototypeNeedsSingletonInConstructor');
-		$this->isInstanceOf('t3lib_object_singleton', $object->dependency);
+		$this->assertInstanceOf('t3lib_object_singleton', $object->dependency);
 	}
 }
 ?>
