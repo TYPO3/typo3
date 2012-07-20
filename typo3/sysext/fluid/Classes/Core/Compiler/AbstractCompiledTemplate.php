@@ -91,17 +91,10 @@ abstract class Tx_Fluid_Core_Compiler_AbstractCompiledTemplate implements Tx_Flu
 	 * @internal
 	 */
 	static public function resolveDefaultEncoding() {
-		if (self::$defaultEncoding === NULL) {
-			if (TYPO3_MODE === 'BE') {
-				self::$defaultEncoding = strtoupper($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']);
-			} else {
-				self::$defaultEncoding = strtoupper($GLOBALS['TSFE']->renderCharset);
-			}
-			if (self::$defaultEncoding === NULL) {
-				self::$defaultEncoding = 'UTF-8';
-			}
+		if (static::$defaultEncoding === NULL) {
+			static::$defaultEncoding = 'UTF-8';
 		}
-		return self::$defaultEncoding;
+		return static::$defaultEncoding;
 	}
 
 }
