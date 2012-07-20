@@ -183,9 +183,6 @@ class t3lib_autoloader {
 			// Look up class name in cache file
 		if (array_key_exists($classNameLower, self::$classNameToFileMapping)) {
 			$classPath = self::$classNameToFileMapping[$classNameLower];
-		} else {
-				// Handle deprecated XCLASS lookups
-			$classPath = self::classPathForDeprecatedXclassHandling($classPath, $classNameLower);
 		}
 
 		if (
@@ -197,93 +194,6 @@ class t3lib_autoloader {
 			self::$classNameToFileMapping[$classNameLower] = NULL;
 		}
 
-		return $classPath;
-	}
-
-	/**
-	 * Resolve 'old' XCLASS registrations from TYPO3_CONF_VARS
-	 *
-	 * @param string $classPath The current class path from previous lookup
-	 * @param string $classNameLower Lower cased class name to be looked up
-	 * @return string Class path
-	 * @deprecated since 6.0, deprecation log is handled in bootstrap deprecationLogForOldXclassRegistration().
-	 * 		This method and the call can be safely removed in two versions.
-	 */
-	protected static function classPathForDeprecatedXclassHandling($classPath, $classNameLower) {
-			// Start XCLASS handling if the requested class starts with 'ux_'
-			// If so, we need to resolve the base class first
-			// e.g. ux_t3lib_beuserauth => t3lib_beuserauth
-		$baseClassOfXClass = NULL;
-		$xClassRequested = FALSE;
-		if ($classPath === NULL && substr($classNameLower, 0, 3) === 'ux_') {
-			$baseClassOfXClass = substr($classNameLower, 3);
-			$xClassRequested = TRUE;
-		}
-
-			// If a XCLASS was requested for autoloading, the autoloader has to know which class will be extended.
-			// only with this information it is possible to get the "relative path" of the extended class.
-			// The "relative path" is needed to simulate the correct path for $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'][$relativePath]
-			// "relative path" is in quotes, because this is not every time the case.
-			// The old way to include an XCLASS is defined by such a piece of code at the end of a class:
-			//
-			// if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_beuserauth.php'])) {
-			// 		include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_beuserauth.php']);
-			// }
-		if ($classPath === NULL && array_key_exists($baseClassOfXClass, self::$classNameToFileMapping)) {
-			$classPath = self::$classNameToFileMapping[$baseClassOfXClass];
-		}
-
-			// Try to determine the relative class for the old XCLASS, if:
-			// - We got a physical path for the base class
-			// - An xclass was requested
-			// - The old way of xclassing is still used
-			// $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_beuserauth.php']
-		if ($classPath !== NULL && $xClassRequested === TRUE && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'])) {
-
-				// Check if the XCLASS for the requested path is set  a transformation for some paths needs to be done
-			$relativeClassPath = substr($classPath, strlen(PATH_site));
-
-				// Replacements for some special cases
-				// @TODO: This layer should be adapted / finished for further special core cases
-			$relativeClassPath = str_replace(
-				array(
-					'typo3/sysext/cms/tslib',
-					'typo3conf/ext',
-					'typo3/sysext',
-				),
-				array(
-					'tslib',
-					'ext',
-					'ext',
-				),
-				$relativeClassPath
-			);
-
-			if (isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'][$relativeClassPath])) {
-					// If a class path was found: Set it and add to cache file
-				$classPath = $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS'][$relativeClassPath];
-				self::addClassToCache(PATH_site . $classPath, $classNameLower);
-			} else {
-					// If an XCLASS was requested AND no XLASS was found,
-					// $classPath is filled with the path of the class which will be extended.
-					//
-					// If no XCLASS is defined, we set $classPath to NULL, because otherwise the autoloader will
-					// load the same class twice
-					//
-					// Example:
-					// Autoload ux_t3lib_l10n_locales. This class will be not find in the autoloader cache.
-					// After this, we try to determine the path of base class, in our case t3lib_l10n_locales
-					// (to determine the relative class for old XCLASS inclusion).
-					// So we determine the relative path ob the base class ('t3lib/l10n/class.t3lib_l10n_locales.php')
-					// and have a look up for defined XCLASSes of t3lib_l10n_locales
-					// ($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/l10n/class.t3lib_l10n_locales.php'])
-					// If we found one XCLASS, we will return the physical path of this class
-					// If no XCLASS was found, we MUST set $classPath to NULL
-					// Without this step the physical path of t3lib_l10n_locales will be returned and a
-					// "Cannot re-declare class t3lib_l10n_locales"-Error will occur
-				$classPath = NULL;
-			}
-		}
 		return $classPath;
 	}
 

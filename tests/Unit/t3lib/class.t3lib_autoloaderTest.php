@@ -357,37 +357,6 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 	/**
 	 * @test
 	 */
-	public function getClassPathByRegistryLookupFindsDeprecatedXclassFilePathRegisteredInTypo3ConfVars() {
-			// Create a fake extension
-		$extKey = $this->createFakeExtension();
-		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
-		$autoloaderFile = $extPath . "ext_autoload.php";
-
-			// Feed ext_autoload with a base file
-		$class = strtolower("tx_${extKey}_" . uniqid(''));
-		$fileName = uniqid('') . '.php';
-		$file = $extPath . $fileName;
-		file_put_contents($autoloaderFile, "<?php\n\nreturn array('" . $class . "' => '" . $file . "');\n\n?>");
-
-			// Register a xclass for the base file
-		$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3temp/' . $extKey . '/' . $fileName] = 'typo3temp/' . $extKey . '/xclassFile';
-
-			// Inject a dummy for the core_phpcode cache to force the autoloader
-			// to re calculate the registry
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
-		$GLOBALS['typo3CacheManager'] = $this->getMock('t3lib_cache_Manager', array('getCache'));
-		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-
-		t3lib_autoloader::unregisterAutoloader();
-		t3lib_autoloader::registerAutoloader();
-
-			// See if the xclass lookup is successful
-		$this->assertSame('typo3temp/' . $extKey . '/xclassFile', t3lib_autoloader::getClassPathByRegistryLookup('ux_' . $class));
-	}
-
-	/**
-	 * @test
-	 */
 	public function unregisterAutoloaderWritesNotExistingUxCLassLookupFromGetClassPathByRegistryLookupToCache() {
 		$uxClassName = 'ux_Tx_Foo' . uniqid();
 

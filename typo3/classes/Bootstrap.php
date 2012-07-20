@@ -643,24 +643,6 @@ class Typo3_Bootstrap {
 	}
 
 	/**
-	 * Write deprecation log if the TYPO3 instance uses deprecated XCLASS
-	 * registrations via $GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']
-	 *
-	 * @return Typo3_Bootstrap
-	 */
-	public function deprecationLogForOldXclassRegistration() {
-		if (count($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']) > 0) {
-			t3lib_div::deprecationLog(
-				'This installation runs with extensions that use XCLASSing by setting the XCLASS path in ext_localconf.php. ' .
-				'This is deprecated and will be removed in TYPO3 6.2 and later. It is preferred to define XCLASSes in ' .
-				'ext_autoload.php instead. See http://wiki.typo3.org/Autoload for more information.'
-			);
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Write deprecation log if deprecated extCache setting was set in the instance.
 	 *
 	 * @return Typo3_Bootstrap
