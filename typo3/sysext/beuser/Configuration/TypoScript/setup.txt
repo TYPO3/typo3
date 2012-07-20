@@ -1,0 +1,22 @@
+module.tx_beuser {
+	persistence {
+		storagePid = 0
+	}
+}
+
+config.tx_extbase {
+	persistence {
+		classes {
+			Tx_Beuser_Domain_Model_BackendUser {
+				mapping {
+					tableName = be_users
+					columns {
+						allowed_languages.mapOnProperty = allowedLanguages
+						file_mountpoints.mapOnProperty = fileMountPoints
+						db_mountpoints.mapOnProperty = dbMountPoints
+					}
+				}
+			}
+		}
+	}
+}
