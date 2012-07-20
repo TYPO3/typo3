@@ -81,7 +81,7 @@ simulate random number generation. This is less secure, causes performance
 issues and warnings in the TYPO3 system log.
 
 TYPO3 relies on IPv6 support, which is by default enabled since PHP 5.3.
-Take care not to compile PHP 5.3 with the option "--disablr_ipv6", because
+Take care not to compile PHP 5.3 with the option "--disable-ipv6", because
 this will break the IPv6 support and the according unit tests.
 
 ===============================================================================
