@@ -208,7 +208,7 @@ class Tx_Extbase_MVC_CLI_RequestBuilder {
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	protected function getValueOfCurrentCommandLineOption($currentArgument, array &$rawCommandLineArguments, $expectedArgumentType) {
-		if (!isset($rawCommandLineArguments[0]) || (isset($rawCommandLineArguments[0]) && $rawCommandLineArguments[0][0] === '-' && (strpos($currentArgument, '=') === FALSE))) {
+		if ((!isset($rawCommandLineArguments[0]) && (strpos($currentArgument, '=') === FALSE)) || (isset($rawCommandLineArguments[0]) && $rawCommandLineArguments[0][0] === '-' && (strpos($currentArgument, '=') === FALSE))) {
 			return TRUE;
 		}
 
