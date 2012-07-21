@@ -791,18 +791,14 @@ class SC_mod_user_setup_index {
 	*/
 	protected function checkAccess(array $config) {
 		$access = $config['access'];
+
 			// Check for hook
-		if (t3lib_div::hasValidClassPrefix($access)) {
-			$accessObject = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck'][$access] . ':&' . $access);
-			if (is_object($accessObject) && method_exists($accessObject, 'accessLevelCheck')) {
-					// Initialize vars. If method fails, $set will be set to FALSE
-				return $accessObject->accessLevelCheck($config);
-			}
-		} elseif ($access == 'admin') {
-			return $this->isAdmin;
+		$accessObject = t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck'][$access] . ':&' . $access);
+		if (is_object($accessObject) && method_exists($accessObject, 'accessLevelCheck')) {
+				// Initialize vars. If method fails, $set will be set to FALSE
+			return $accessObject->accessLevelCheck($config);
 		}
 	}
-
 
 	/**
 	 * Returns the label $str from getLL() and grays out the value if the $str/$key is found in $this->overrideConf array
