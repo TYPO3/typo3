@@ -19,6 +19,21 @@ config.tx_extbase {
 		enableAutomaticCacheClearing = 1
 		updateReferenceIndex = 0
 		classes {
+			Tx_Extbase_Domain_Model_BackendUser {
+				mapping {
+					tableName = be_users
+					columns {
+						username.mapOnProperty = userName
+						admin.mapOnProperty = isAdministrator
+						disable.mapOnProperty = isDisabled
+						realName.mapOnProperty = realName
+						starttime.mapOnProperty = startDateAndTime
+						endtime.mapOnProperty = endDateAndTime
+						disableIPlock.mapOnProperty = ipLockIsDisabled
+						lastlogin.mapOnProperty = lastLoginDateAndTime
+					}
+				}
+			}
 			Tx_Extbase_Domain_Model_FrontendUser {
 				mapping {
 					tableName = fe_users
