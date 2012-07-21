@@ -70,5 +70,14 @@ interface Tx_Extbase_Object_ObjectManagerInterface extends t3lib_Singleton {
 	 * @api
 	 */
 	public function create($objectName);
+
+	/**
+	 * Create an instance of $className without calling its constructor
+	 *
+	 * @param string $className
+	 * @return object
+	 * @api
+	 */
+	public function getEmptyObject($className);
 }
 ?>

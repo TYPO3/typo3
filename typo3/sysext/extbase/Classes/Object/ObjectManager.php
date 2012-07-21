@@ -138,5 +138,16 @@ class Tx_Extbase_Object_ObjectManager implements Tx_Extbase_Object_ObjectManager
 
 		return $instance;
 	}
+
+	/**
+	 * Create an instance of $className without calling its constructor
+	 *
+	 * @param string $className
+	 * @return object
+	 * @api
+	 */
+	public function getEmptyObject($className) {
+		return $this->objectContainer->getEmptyObject($className);
+	}
 }
 ?>
