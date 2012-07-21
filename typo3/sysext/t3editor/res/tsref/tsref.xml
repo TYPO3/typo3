@@ -849,11 +849,11 @@ config.removeDefaultJS = 1]]></description>
 ]]></default>
 		</property>
 		<property name="minifyJS" type="boolean">
-			<description><![CDATA[This setting is deprecated and will be removed with TYPO3 4.8! Use config.compressJs instead, which has the same effect.]]></description>
+			<description><![CDATA[This setting is deprecated and will be removed with TYPO3 6.0! Use config.compressJs instead, which has the same effect.]]></description>
 			<default><![CDATA[false]]></default>
 		</property>
 		<property name="minifyCSS" type="boolean">
-			<description><![CDATA[This setting is deprecated and will be removed with TYPO3 4.8! Use config.compressCss instead, which has the same effect.]]></description>
+			<description><![CDATA[This setting is deprecated and will be removed with TYPO3 6.0! Use config.compressCss instead, which has the same effect.]]></description>
 			<default><![CDATA[false]]></default>
 		</property>
 		<property name="compressJs" type="boolean">

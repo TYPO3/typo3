@@ -371,7 +371,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 
 			// Processing the classes configuration
 		$classSelected = array();
-			// $this->thisConfig['classesAnchor'], $this->thisConfig['classesLinks'] and $this->thisConfig['classesAnchor.'] are deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// $this->thisConfig['classesAnchor'], $this->thisConfig['classesLinks'] and $this->thisConfig['classesAnchor.'] are deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		if ($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesAnchor'] || $this->thisConfig['classesLinks']) {
 			$this->setClass = $this->curUrlArray['class'];
 			$classesAnchorArray = t3lib_div::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], 1);
@@ -380,7 +380,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 				$classesAnchorArray = t3lib_div::trimExplode(',', $this->thisConfig['classesLinks'], 1);
 			}
 			$classesAnchorConfigArray = array();
-			
+
 				// Collecting allowed classes and configured default values
 			$classesAnchor = array();
 			$classesAnchor['all'] = array();
@@ -436,13 +436,13 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 			// Initializing the target value
 			// Unset the target if it is set to a value different than default and if no class is selected and the target field is not displayed
 			// In other words, do not forward the target if we changed tab and the target field is not displayed
-			// Property $this->thisConfig['defaultLinkTarget'] is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// Property $this->thisConfig['defaultLinkTarget'] is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		$this->defaultLinkTarget = isset($this->buttonConfig['properties.']['target.']['default']) ? $this->buttonConfig['properties.']['target.']['default'] : (isset($this->thisConfig['defaultLinkTarget']) ? $this->thisConfig['defaultLinkTarget'] : '');
 		$this->setTarget = '';
 		if (isset($this->curUrlArray['target']) && !(
 				$this->curUrlArray['target'] != $this->defaultLinkTarget
 				&& !$classSelected[$this->act]
-				&& is_array($this->buttonConfig['targetSelector.']) && $this->buttonConfig['targetSelector.']['disabled'] 
+				&& is_array($this->buttonConfig['targetSelector.']) && $this->buttonConfig['targetSelector.']['disabled']
 				&& is_array($this->buttonConfig['popupSelector.']) && $this->buttonConfig['popupSelector.']['disabled']
 				)
 			) {
@@ -638,7 +638,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 		if (is_array($this->buttonConfig['options.']) && $this->buttonConfig['options.']['removeItems']) {
 			$this->allowedItems = array_diff($this->allowedItems,t3lib_div::trimExplode(',',$this->buttonConfig['options.']['removeItems'],1));
 		} else {
-				// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+				// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 			$this->allowedItems = array_diff($this->allowedItems,t3lib_div::trimExplode(',',$this->thisConfig['blindLinkOptions'],1));
 		}
 		reset($this->allowedItems);

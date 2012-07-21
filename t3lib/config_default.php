@@ -88,14 +88,14 @@ $TYPO3_CONF_VARS = array(
 		'loginCopyrightWarrantyURL' => '',		// String: Add the URL where you explain the extend of the warranty you provide. This URL is displayed in the login dialog as the place where people can learn more about the conditions of your warranty. Must be set (more than 10 chars) in addition with the 'loginCopyrightWarrantyProvider' message.
 		'loginCopyrightShowVersion' => FALSE,	// Boolean: If set, the current TYPO3 version is shown.
 		'curlUse' => FALSE,						// Boolean: If set, try to use cURL to fetch external URLs
-		/** @deprecated Deprecated since 4.6 - will be removed in 4.8. */
-		'curlProxyServer' => '',				// String: Proxyserver as http://proxy:port/. Deprecated since 4.6 - will be removed in 4.8. See below for http options.
-		/** @deprecated Deprecated since 4.6 - will be removed in 4.8. */
-		'curlProxyTunnel' => FALSE,				// Boolean: If set, use a tunneled connection through the proxy (usefull for websense etc.). Deprecated since 4.6 - will be removed in 4.8. See below for http options.
-		/** @deprecated Deprecated since 4.6 - will be removed in 4.8. */
-		'curlProxyUserPass' => '',				// String: Proxyserver authentication user:pass. Deprecated since 4.6 - will be removed in 4.8. See below for http options.
-		/** @deprecated Deprecated since 4.6 - will be removed in 4.8. */
-		'curlTimeout' => 0,						// Integer: Timeout value for cURL requests in seconds. 0 means to wait indefinitely. Deprecated since 4.6 - will be removed in 4.8. See below for http options.
+		/** @deprecated Deprecated since 4.6 - will be removed in 6.0. */
+		'curlProxyServer' => '',				// String: Proxyserver as http://proxy:port/. Deprecated since 4.6 - will be removed in 6.0. See below for http options.
+		/** @deprecated Deprecated since 4.6 - will be removed in 6.0. */
+		'curlProxyTunnel' => FALSE,				// Boolean: If set, use a tunneled connection through the proxy (usefull for websense etc.). Deprecated since 4.6 - will be removed in 6.0. See below for http options.
+		/** @deprecated Deprecated since 4.6 - will be removed in 6.0. */
+		'curlProxyUserPass' => '',				// String: Proxyserver authentication user:pass. Deprecated since 4.6 - will be removed in 6.0. See below for http options.
+		/** @deprecated Deprecated since 4.6 - will be removed in 6.0. */
+		'curlTimeout' => 0,						// Integer: Timeout value for cURL requests in seconds. 0 means to wait indefinitely. Deprecated since 4.6 - will be removed in 6.0. See below for http options.
 		'form_enctype' => 'multipart/form-data',	// String: This is the default form encoding type for most forms in TYPO3. It allows for file uploads to be in the form. However if file-upload is disabled for your PHP version even ordinary data sent with this encryption will not get to the server. So if you have file_upload disabled, you will have to change this to eg. 'application/x-www-form-urlencoded'
 		'textfile_ext' => 'txt,html,htm,css,tmpl,js,sql,xml,csv,' . PHP_EXTENSIONS_DEFAULT,	// Text file extensions. Those that can be edited. Executable PHP files may not be editable in webspace if disallowed!
 		'contentTable' => '',					// This is the page-content table (Normally 'tt_content')
@@ -726,7 +726,7 @@ if (TYPO3_MODE === 'BE') {
 $T3_VAR = array();	// Initialize.
 
 	// TYPO3 version
-$TYPO_VERSION = '4.7.3-dev';	// @deprecated: Will be removed in TYPO3 4.8. Use the constants defined below
+$TYPO_VERSION = '4.7.3-dev';	// @deprecated: Will be removed in TYPO3 6.0. Use the constants defined below
 define('TYPO3_version', $TYPO_VERSION);
 define('TYPO3_branch', '4.7');
 define('TYPO3_copyright_year', '1998-2012');
@@ -854,7 +854,7 @@ if (isset($TYPO3_CONF_VARS['SYS']['setDBinit']) &&
 
 	// If this value is not -1, then the setting has been modified in localconf.php
 if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] !== -1) {
-		// Deprecation log since 4.6, can be removed in 4.8. Checks if obsolete useCachingFramework is set
+		// Deprecation log since 4.6, can be removed in 6.0. Checks if obsolete useCachingFramework is set
 	t3lib_div::deprecationLog('Setting $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'useCachingFramework\'] is obsolete since TYPO3 4.6 and should be removed from localconf.php.');
 }
 
@@ -866,21 +866,21 @@ if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'])) {
 			$GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'] .= ',' . $GLOBALS['TYPO3_CONF_VARS']['FE']['userFuncClassPrefix'];
 		}
 	}
-		// Deprecation log since 4.6, can be removed in 4.8
+		// Deprecation log since 4.6, can be removed in 6.0
 	t3lib_div::deprecationLog('$GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'userFuncClassPrefix\'] is deprecated, use $GLOBALS[\'TYPO3_CONF_VARS\'][\'SYS\'][\'additionalAllowedClassPrefixes\'] instead');
 }
 
 	// Force enabled caching framework
-	// @deprecated, constant can be removed in 4.8
+	// @deprecated, constant can be removed in 6.0
 define('TYPO3_UseCachingFramework', TRUE);
-	// @deprecated, can be removed in 4.8
+	// @deprecated, can be removed in 6.0
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['useCachingFramework'] = TRUE;
 
 
 /**
  * Parse old curl options and set new http ones instead
  *
- * @deprecated Deprecated since 4.6 - will be removed in 4.8.
+ * @deprecated Deprecated since 4.6 - will be removed in 6.0.
  */
 if (!empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'])) {
 	$proxyParts = explode(':', $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer'], 2);
@@ -1100,7 +1100,7 @@ $GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS'
 
 require_once(t3lib_extMgm::extPath('lang') . 'lang.php');
 
-	// Deprecation log since 4.6, can be removed in 4.8. Checks if obsolete pageCacheToExternalFiles is set
+	// Deprecation log since 4.6, can be removed in 6.0. Checks if obsolete pageCacheToExternalFiles is set
 if (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['pageCacheToExternalFiles'])) {
 	t3lib_div::deprecationLog('Setting $GLOBALS[\'TYPO3_CONF_VARS\'][\'FE\'][\'pageCacheToExternalFiles\'] is deprecated since TYPO3 4.6 and should be removed.');
 }

@@ -37,7 +37,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
- * @deprecated since 4.7, will be removed in 4.9
+ * @deprecated since 4.7, will be removed in 6.1
  */
 class tx_aboutmodules_Functions {
 
@@ -48,7 +48,7 @@ class tx_aboutmodules_Functions {
 	 * Default constructor throws deprecation warning
 	 */
 	public function __construct() {
-		t3lib_div::deprecationLog('class tx_aboutmodules_Functions is deprecated, unused in core since 4.3 and unmaintained. It will be removed in 4.9.');
+		t3lib_div::deprecationLog('class tx_aboutmodules_Functions is deprecated, unused in core since 4.3 and unmaintained. It will be removed in 6.1.');
 	}
 
 	/**
