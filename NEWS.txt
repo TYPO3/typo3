@@ -147,7 +147,15 @@ extensions and always loaded.
 Other General Improvements
 -------------------------------------------------------------------------------
 
-...
+* Autoloader namespace aware
+
+The autoloader can now handle fully qualified namespaced class names.
+If you use the fully qualified namespaced class name like
+'\Tx\ExtName\Foo\Bar', the autoloader will find the containing class following
+the extbase naming scheme. The mentioned class will be found if it is located
+in file 'exttensionkey'/Classes/Foo/Bar.php.
+It is also possible to use class names not following the extbase naming scheme
+by providing the "name spaced class name -> file" mapping in ext_autoloader.php.
 
 -------------------------------------------------------------------------------
 Security
