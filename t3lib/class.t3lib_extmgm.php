@@ -1126,7 +1126,7 @@ class t3lib_extMgm {
 	 * @return void
 	 */
 	public static function addService($extKey, $serviceType, $serviceKey, $info) {
-		if ($serviceType && t3lib_div::hasValidClassPrefix($serviceKey) && is_array($info)) {
+		if ($serviceType && is_array($info)) {
 			$info['priority'] = max(0, min(100, $info['priority']));
 
 			$GLOBALS['T3_SERVICES'][$serviceType][$serviceKey] = $info;

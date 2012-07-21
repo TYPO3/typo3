@@ -6661,10 +6661,6 @@ class tslib_cObj {
 	 * @see USER(), stdWrap(), typoLink(), _parseFunc()
 	 */
 	function callUserFunction($funcName, $conf, $content) {
-		if (!t3lib_div::hasValidClassPrefix($funcName)) {
-			$GLOBALS['TT']->setTSlogMessage('Function "' . $funcName . '" was not prepended with one of "' . implode(', ', t3lib_div::getValidClassPrefixes()) . '"', 3);
-			return $content;
-		}
 			// Split parts
 		$parts = explode('->', $funcName);
 		if (count($parts) == 2) { // Class
