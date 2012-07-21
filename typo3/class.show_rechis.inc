@@ -74,7 +74,7 @@ class recordHistory {
 	/**
 	 * Compatibility constructor.
 	 *
-	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 6.0. Use __construct() instead.
 	 */
 	public function recordHistory() {
 		t3lib_div::logDeprecatedFunction();

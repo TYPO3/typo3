@@ -115,15 +115,15 @@ class tx_rtehtmlarea_selectfont extends tx_rtehtmlarea_api {
 		$configureRTEInJavascriptString = '';
 		$hideItems = '';
 		$addItems = array();
-			// These Page TSConfig properties are DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// These Page TSConfig properties are DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		$hideProperty = 'hideFont' .  (($buttonId == 'fontstyle') ? 'Faces' : 'Sizes');
 		if (isset($this->thisConfig[$hideProperty])) {
-			$this->htmlAreaRTE->logDeprecatedProperty($hideProperty, 'buttons.' . $buttonId . '.removeItems', '4.8');
+			$this->htmlAreaRTE->logDeprecatedProperty($hideProperty, 'buttons.' . $buttonId . '.removeItems', '6.0');
 		}
 		$hideItems = $this->htmlAreaRTE->cleanList($this->thisConfig[$hideProperty]);
 		$addProperty = ($buttonId == 'fontstyle') ? 'fontFace' : 'fontSize';
 		if (isset($this->thisConfig[$addProperty])) {
-			$this->htmlAreaRTE->logDeprecatedProperty($addProperty, 'buttons.' . $buttonId . '.addItems', '4.8');
+			$this->htmlAreaRTE->logDeprecatedProperty($addProperty, 'buttons.' . $buttonId . '.addItems', '6.0');
 		}
 		$addItems = t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($this->thisConfig[$addProperty]), 1);
 			// Getting removal and addition configuration

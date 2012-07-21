@@ -237,7 +237,7 @@ class tslib_search {
 	 * Local version of quotemeta. This is the same as the PHP function
 	 * but the vertical line, |, and minus, -, is also escaped with a slash.
 	 *
-	 * @deprecated This function is deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Please, use preg_quote() instead.
+	 * @deprecated This function is deprecated since TYPO3 4.6 and will be removed in TYPO3 6.0. Please, use preg_quote() instead.
 	 * @param	string		String to pass through quotemeta()
 	 * @return	string		Return value
 	 */

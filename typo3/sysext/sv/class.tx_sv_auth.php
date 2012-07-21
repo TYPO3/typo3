@@ -86,11 +86,11 @@ class tx_sv_auth extends tx_sv_authbase 	{
 	/**
 	 * This method ensures backwards compatibility of the processed loginData
 	 * with older TYPO3 versions.
-	 * Starting with TYPO3 4.9 $loginData['uident'] will always contain the raw
+	 * Starting with TYPO3 6.1 $loginData['uident'] will always contain the raw
 	 * value of the submitted password field and will not be processed any further.
 	 *
 	 * @param array $loginData
-	 * @deprecated will be removed with 4.9
+	 * @deprecated will be removed with 6.1
 	 */
 	protected function processOriginalPasswordValue(&$loginData) {
 		if ($this->authInfo['security_level'] === 'superchallenged') {

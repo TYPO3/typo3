@@ -207,7 +207,7 @@ class language {
 	 * @param  string $lStr The string to process
 	 * @param  boolean $hsc	If set, then the string is htmlspecialchars()'ed
 	 * @return string		The processed string
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use htmlspecialchars() instead.
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use htmlspecialchars() instead.
 	 * @see    init()
 	 * @access public
 	 */

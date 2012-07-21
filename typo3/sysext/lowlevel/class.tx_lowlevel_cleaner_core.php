@@ -88,7 +88,7 @@ class tx_lowlevel_cleaner_core extends t3lib_cli {
 	/**
 	 * Compatibility constructor.
 	 *
-	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 6.0. Use __construct() instead.
 	 */
 	public function tx_lowlevel_cleaner_core() {
 		t3lib_div::logDeprecatedFunction();

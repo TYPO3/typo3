@@ -993,7 +993,7 @@ class TSpagegen {
 
 			// compression and concatenate settings
 		if (isset($GLOBALS['TSFE']->config['config']['minifyCSS'])) {
-			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.minifyCSS = 1', 'It will be removed in TYPO3 4.8. Use config.compressCss instead.');
+			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.minifyCSS = 1', 'It will be removed in TYPO3 6.0. Use config.compressCss instead.');
 			if (!isset($GLOBALS['TSFE']->config['config']['compressCss'])) {
 				$GLOBALS['TSFE']->config['config']['compressCss'] = $GLOBALS['TSFE']->config['config']['minifyCSS'];
 			}
@@ -1002,7 +1002,7 @@ class TSpagegen {
 			$pageRenderer->enableCompressCss();
 		}
 		if (isset($GLOBALS['TSFE']->config['config']['minifyJS'])) {
-			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.minifyJS = 1', 'It will be removed in TYPO3 4.8. Use config.compressJs instead.');
+			$GLOBALS['TSFE']->logDeprecatedTyposcript('config.minifyJS = 1', 'It will be removed in TYPO3 6.0. Use config.compressJs instead.');
 			if (!isset($GLOBALS['TSFE']->config['config']['compressJs'])) {
 				$GLOBALS['TSFE']->config['config']['compressJs'] = $GLOBALS['TSFE']->config['config']['minifyJS'];
 			}

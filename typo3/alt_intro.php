@@ -40,7 +40,7 @@
 require ('init.php');
 require ('template.php');
 
-t3lib_div::deprecationLog('This script is not in use anymore and will be removed in TYPO3 4.8, it is moved into "aboutmodules" extension.');
+t3lib_div::deprecationLog('This script is not in use anymore and will be removed in TYPO3 6.0, it is moved into "aboutmodules" extension.');
 
 include(t3lib_extMgm::extPath('aboutmodules', 'mod/index.php'));
 

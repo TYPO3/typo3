@@ -903,7 +903,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *						-1 = element
 	 *						>1 = branch (deprecated), indicating the "nesting" level
 	 * @return	boolean		TRUE if OK
-	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 4.8 as only element versioning is supported now
+	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 6.0 as only element versioning is supported now
 	 */
 	function workspaceVersioningTypeAccess($type) {
 		t3lib_div::logDeprecatedFunction();
@@ -920,7 +920,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @see workspaceVersioningTypeAccess() for hints on $type
 	 * @param	integer		Versioning type to evaluation: -1, 0, >1
 	 * @return	integer		Returning versioning type
-	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 4.8 as only element versioning is supported now
+	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 6.0 as only element versioning is supported now
 	 */
 	function workspaceVersioningTypeGetClosest($type) {
 		t3lib_div::logDeprecatedFunction();
@@ -1010,7 +1010,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param	string		Comma list with items, no spaces between items!
 	 * @param	string		The string to find in the list of items
 	 * @return	string		Boolean
-	 * @deprecated since TYPO3 4.7, should be removed in TYPO3 4.9, use equivalent function t3lib_div::inList()
+	 * @deprecated since TYPO3 4.7, should be removed in TYPO3 6.1, use equivalent function t3lib_div::inList()
 	 */
 	function inList($in_list, $item) {
 		t3lib_div::logDeprecatedFunction();

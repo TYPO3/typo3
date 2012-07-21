@@ -29,7 +29,7 @@
  * It's deprecated since 4.5, use proper link generation.
  *
  * @author	Steffen Kamper <steffen@typo3.com>
- * @deprecated since 4.5 will be removed in 4.8.
+ * @deprecated since 4.5 will be removed in 6.0.
  *
  */
 
@@ -37,7 +37,7 @@
 require ('init.php');
 
 $query = t3lib_div::getIndpEnv('QUERY_STRING');
-t3lib_div::deprecationLog('db_list.php is deprecated since TYPO3 4.5, this file will be removed in TYPO3 4.8. The list module is a system extension now, do not link to this file.' .
+t3lib_div::deprecationLog('db_list.php is deprecated since TYPO3 4.5, this file will be removed in TYPO3 6.0. The list module is a system extension now, do not link to this file.' .
 	LF .
 	'Referer: ' . t3lib_div::getIndpEnv('HTTP_REFERER')
 );

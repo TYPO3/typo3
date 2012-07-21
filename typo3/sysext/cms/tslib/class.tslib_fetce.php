@@ -58,7 +58,7 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage tslib
- * @deprecated since TYPO3 3.6, will be removed in TYPO3 4.8
+ * @deprecated since TYPO3 3.6, will be removed in TYPO3 6.0
  */
 class tslib_feTCE	{
 

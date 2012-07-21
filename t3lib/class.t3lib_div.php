@@ -386,7 +386,7 @@ final class t3lib_div {
 	 * @param string $newlineChar The string to implode the broken lines with (default/typically \n)
 	 * @param integer $lineWidth The line width
 	 * @return string reformatted text
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Mail::breakLinesForEmail()
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use t3lib_utility_Mail::breakLinesForEmail()
 	 */
 	public static function breakLinesForEmail($str, $newlineChar = LF, $lineWidth = 76) {
 		self::logDeprecatedFunction();
@@ -856,7 +856,7 @@ final class t3lib_div {
 	 * @param integer $max Higher limit
 	 * @param integer $zeroValue Default value if input is FALSE.
 	 * @return integer The input value forced into the boundaries of $min and $max
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::forceIntegerInRange() instead
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use t3lib_utility_Math::forceIntegerInRange() instead
 	 */
 	public static function intInRange($theInt, $min, $max = 2000000000, $zeroValue = 0) {
 		self::logDeprecatedFunction();
@@ -868,7 +868,7 @@ final class t3lib_div {
 	 *
 	 * @param integer $theInt Integer string to process
 	 * @return integer
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::convertToPositiveInteger() instead
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use t3lib_utility_Math::convertToPositiveInteger() instead
 	 */
 	public static function intval_positive($theInt) {
 		self::logDeprecatedFunction();
@@ -880,7 +880,7 @@ final class t3lib_div {
 	 *
 	 * @param string $verNumberStr Version number on format x.x.x
 	 * @return integer Integer version of version number (where each part can count to 999)
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.9 - Use t3lib_utility_VersionNumber::convertVersionNumberToInteger() instead
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.1 - Use t3lib_utility_VersionNumber::convertVersionNumberToInteger() instead
 	 */
 	public static function int_from_ver($verNumberStr) {
 			// Deprecation log is activated only for TYPO3 4.7 and above
@@ -1071,7 +1071,7 @@ final class t3lib_div {
 	 *
 	 * @param mixed $var Any input variable to test
 	 * @return boolean Returns TRUE if string is an integer
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::canBeInterpretedAsInteger() instead
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use t3lib_utility_Math::canBeInterpretedAsInteger() instead
 	 */
 	public static function testInt($var) {
 		self::logDeprecatedFunction();
@@ -1164,7 +1164,7 @@ final class t3lib_div {
 	 * @param string $string Input string, eg "123 + 456 / 789 - 4"
 	 * @return integer Calculated value. Or error string.
 	 * @see calcParenthesis()
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::calculateWithPriorityToAdditionAndSubtraction() instead
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use t3lib_utility_Math::calculateWithPriorityToAdditionAndSubtraction() instead
 	 */
 	public static function calcPriority($string) {
 		self::logDeprecatedFunction();
@@ -1178,7 +1178,7 @@ final class t3lib_div {
 	 * @param string $string Input string, eg "(123 + 456) / 789 - 4"
 	 * @return integer Calculated value. Or error string.
 	 * @see calcPriority(), tslib_cObj::stdWrap()
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - Use t3lib_utility_Math::calculateWithParentheses() instead
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - Use t3lib_utility_Math::calculateWithParentheses() instead
 	 */
 	public static function calcParenthesis($string) {
 		self::logDeprecatedFunction();
@@ -4069,7 +4069,7 @@ final class t3lib_div {
 	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu"
 	 * @return array Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc.) and WITH a variable, encryptionKey, specific for this server/installation
 	 * @see tslib_fe::makeCacheHash(), tslib_cObj::typoLink(), t3lib_div::calculateCHash()
-	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 4.9 - use t3lib_cacheHash instead
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
 	 */
 	public static function cHashParams($addQueryParams) {
 		t3lib_div::logDeprecatedFunction();
@@ -4103,7 +4103,7 @@ final class t3lib_div {
 	 * @param string $addQueryParams Query-parameters: "&xxx=yyy&zzz=uuu"
 	 * @return string Hash of all the values
 	 * @see t3lib_div::cHashParams(), t3lib_div::calculateCHash()
-	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 4.9 - use t3lib_cacheHash instead
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
 	 */
 	public static function generateCHash($addQueryParams) {
 		t3lib_div::logDeprecatedFunction();
@@ -4117,7 +4117,7 @@ final class t3lib_div {
 	 *
 	 * @param array $params Array of key-value pairs
 	 * @return string Hash of all the values
-	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 4.9 - use t3lib_cacheHash instead
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
 	 */
 	public static function calculateCHash($params) {
 		t3lib_div::logDeprecatedFunction();
@@ -4175,7 +4175,7 @@ final class t3lib_div {
 	 * @param string $langKey TYPO3 language key, eg. "dk" or "de" or "default"
 	 * @param string $charset Character set (optional)
 	 * @return array LOCAL_LANG array in return.
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use t3lib_l10n_parser_Llphp::getParsedData() from now on
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - use t3lib_l10n_parser_Llphp::getParsedData() from now on
 	 */
 	public static function readLLPHPfile($fileRef, $langKey, $charset = '') {
 		t3lib_div::logDeprecatedFunction();
@@ -4259,7 +4259,7 @@ final class t3lib_div {
 	 * @param string $langKey TYPO3 language key, eg. "dk" or "de" or "default"
 	 * @param string $charset Character set (optional)
 	 * @return array LOCAL_LANG array in return.
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use t3lib_l10n_parser_Llxml::getParsedData() from now on
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - use t3lib_l10n_parser_Llxml::getParsedData() from now on
 	 */
 	public static function readLLXMLfile($fileRef, $langKey, $charset = '') {
 		t3lib_div::logDeprecatedFunction();

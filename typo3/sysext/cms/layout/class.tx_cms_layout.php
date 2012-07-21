@@ -816,7 +816,7 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0
 	 */
 	function getTable_fe_users($id) {
 		t3lib_div::logDeprecatedFunction();
@@ -843,7 +843,7 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0
 	 */
 	function getTable_sys_note($id) {
 		t3lib_div::logDeprecatedFunction();
@@ -942,7 +942,7 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0
 
 	 */
 	function getTable_tt_board($id) {
@@ -1028,7 +1028,7 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0
 	 */
 	function getTable_tt_address($id) {
 		t3lib_div::logDeprecatedFunction();
@@ -1060,7 +1060,7 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0
 	 */
 	function getTable_tt_links($id) {
 		t3lib_div::logDeprecatedFunction();
@@ -1088,7 +1088,7 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0
 	 */
 	function getTable_tt_guest($id) {
 		t3lib_div::logDeprecatedFunction();
@@ -1105,7 +1105,7 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0
 	 */
 	function getTable_tt_news($id) {
 		t3lib_div::logDeprecatedFunction();
@@ -1128,7 +1128,7 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0
 	 */
 	function getTable_tt_calender($id) {
 		t3lib_div::logDeprecatedFunction();
@@ -1180,7 +1180,7 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param	integer		Page id
 	 * @return	string		HTML for the listing
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0
 	 */
 	function getTable_tt_products($id) {
 		t3lib_div::logDeprecatedFunction();
@@ -2097,7 +2097,7 @@ class tx_cms_layout extends recordList {
 	 * @param	string		Additional query part.
 	 * @param	string		HTML content to prefix items with (to draw the proper tree-graphics)
 	 * @return	array		$theRows, but with added content
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0
 	 */
 	function tt_board_getTree($theRows, $parent, $pid, $qWhere, $treeIcons) {
 		t3lib_div::logDeprecatedFunction();
@@ -2134,7 +2134,7 @@ class tx_cms_layout extends recordList {
 	 * @param	array		The record row
 	 * @param	string		Reply count, if applicable.
 	 * @return	string		Return content of element (table row)
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0
 	 */
 	function tt_board_drawItem($table, $row, $re) {
 		t3lib_div::logDeprecatedFunction();
@@ -2642,7 +2642,7 @@ class tx_cms_layout extends recordList {
 	 * @param	string		Input string
 	 * @param	boolean		If TRUE, empty tags will be filled with the first attribute of the tag before.
 	 * @return	string		Input string with all HTML and PHP tags stripped
-	 * @deprecated since TYPO3 4.6, will be removed in 4.8 - using php-function strip_tags now
+	 * @deprecated since TYPO3 4.6, will be removed in 6.0 - using php-function strip_tags now
 	 */
 	function strip_tags($content, $fillEmptyContent = FALSE) {
 		if ($fillEmptyContent && strstr($content, '><')) {

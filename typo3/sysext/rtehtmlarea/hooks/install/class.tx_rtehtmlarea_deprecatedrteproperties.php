@@ -99,7 +99,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 			foreach ($this->doubleReplacementRteProperties as $deprecatedProperty => $replacementProperties) {
 				$deprecatedProperties .= '<tr><td>' . $deprecatedProperty . '</td><td>' . implode(' and ', $replacementProperties) . '</td></tr>' . LF;
 			}
-			$description = '<p>The following Page TSconfig RTE properties are deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8.</p>' . LF .
+			$description = '<p>The following Page TSconfig RTE properties are deprecated since TYPO3 4.6 and will be removed in TYPO3 6.0.</p>' . LF .
 				'<table><thead><tr><th>Deprecated property</th><th>Use instead</th></tr></thead>' . LF . '<tbody>' . $deprecatedProperties . '</tboby></table>' . LF .
 				'<p>You are currently using some of these properties on <strong>' . strval($pagesCount) . '&nbsp;pages</strong>  (including deleted and hidden pages).</p>' . LF;
 			if ($pagesCount) {
@@ -216,7 +216,7 @@ class tx_rtehtmlarea_deprecatedRteProperties extends Tx_Install_Updates_Base {
 	 */
 	protected function findUpdateablePagesWithDeprecatedRteProperties(&$pages) {
 		foreach ($pages as $index => $page) {
-			$deprecatedProperties = explode(',', '/' . implode('/,/((RTE\.(default\.|config\.[a-zA-Z0-9_\-]*\.[a-zA-Z0-9_\-]*\.))|\s)', array_keys($this->replacementRteProperties)) . '/');	
+			$deprecatedProperties = explode(',', '/' . implode('/,/((RTE\.(default\.|config\.[a-zA-Z0-9_\-]*\.[a-zA-Z0-9_\-]*\.))|\s)', array_keys($this->replacementRteProperties)) . '/');
 			$replacementProperties = explode(',', '$1' . implode(',$1', array_values($this->replacementRteProperties)));
 			$updatedPageTSConfig = preg_replace($deprecatedProperties, $replacementProperties, $page['TSconfig']);
 			if ($updatedPageTSConfig == $page['TSconfig']) {
