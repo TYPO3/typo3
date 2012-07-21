@@ -744,7 +744,7 @@ class template {
 		$this->pageRenderer->setCharSet($this->charset);
 		$this->pageRenderer->addMetaTag($this->generator());
 		$this->pageRenderer->addMetaTag('<meta name="robots" content="noindex,follow" />');
-		$this->pageRenderer->setFavIcon('gfx/favicon.ico');
+		$this->pageRenderer->setFavIcon($this->getBackendFavicon());
 		if ($this->useCompatibilityTag) {
 			$this->pageRenderer->addMetaTag($this->xUaCompatible($this->xUaCompatibilityVersion));
 		}
@@ -2054,6 +2054,15 @@ class template {
 		  <div' . $collapsedStyle  . '>' . $html . '</div>
 		';
 
+	}
+
+	/**
+	 * Retrieves configured favicon for backend (with fallback)
+	 *
+	 * @return string
+	 */
+	protected function getBackendFavicon(){
+		return $GLOBALS['TBE_STYLES']['favicon'] ? $GLOBALS['TBE_STYLES']['favicon'] : 'gfx/favicon.ico';
 	}
 }
 
