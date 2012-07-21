@@ -31,7 +31,7 @@
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
- * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8 - use TEXT from now on
+ * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0 - use TEXT from now on
  */
 class tslib_content_Html extends tslib_content_Abstract {
 

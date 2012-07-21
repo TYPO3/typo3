@@ -78,7 +78,7 @@ $BE_USER->modAccess($MCONF,1);
 	 *
 	 * @param object Local backend user (not the GLOBALS[] backend user!!)
 	 * @param array Webmounts for the backend user
-	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 6.0. Use __construct() instead.
 	 */
 	public function localPageTree($BE_USER, $WEBMOUNTS = '') {
 		t3lib_div::logDeprecatedFunction();
@@ -348,7 +348,7 @@ class printAllPageTree_perms extends printAllPageTree {
 	 *
 	 * @param object Local backend user (not the GLOBALS[] backend user!!)
 	 * @param array Filemounts for the backend user
-	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 6.0. Use __construct() instead.
 	 */
 	public function localFolderTree($BE_USER, $FILEMOUNTS = '') {
 		t3lib_div::logDeprecatedFunction();

@@ -751,7 +751,7 @@ class SC_index {
 	 * using the llxml extension
 	 *
 	 * @return	void
-	 * @deprecated since TYPO3 4.6, remove in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, remove in TYPO3 6.0
 	 */
 	protected function mergeOldLoginLabels() {
 			// Getting login labels

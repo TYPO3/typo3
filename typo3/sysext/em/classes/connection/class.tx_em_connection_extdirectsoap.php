@@ -70,7 +70,7 @@ class tx_em_Connection_ExtDirectSoap {
 	/**
 	 * Login test with user credentials
 	 *
-	 * @deprecated since 4.6, will be removed in 4.8
+	 * @deprecated since 4.6, will be removed in 6.0
 	 * @return array
 	 */
 	public function testUserLogin() {

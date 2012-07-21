@@ -70,7 +70,7 @@ class t3lib_install {
 	/**
 	 * Compatibility constructor.
 	 *
-	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 6.0. Use __construct() instead.
 	 */
 	public function t3lib_install() {
 		t3lib_div::logDeprecatedFunction();
@@ -435,7 +435,7 @@ class t3lib_install {
 	 *
 	 * @param $fileContent string Should be a string read from an SQL-file made with 'mysqldump [database_name] -d'
 	 * @return array Array with information about table.
-	 * @deprecated Since TYPO3 4.6, will be removed in 4.8, use method from t3lib_install_Sql instead
+	 * @deprecated Since TYPO3 4.6, will be removed in 6.0, use method from t3lib_install_Sql instead
 	 */
 	function getFieldDefinitions_fileContent($fileContent) {
 		t3lib_div::logDeprecatedFunction();
@@ -450,7 +450,7 @@ class t3lib_install {
 	 * @return	void
 	 * @access private
 	 * @see getFieldDefinitions_fileContent()
-	 * @deprecated Since TYPO3 4.6, will be removed in 4.8
+	 * @deprecated Since TYPO3 4.6, will be removed in 6.0
 	 */
 	function getFieldDefinitions_sqlContent_parseTypes(&$total) {
 			// This method is protected in t3lib_install_Sql
@@ -462,7 +462,7 @@ class t3lib_install {
 	 *
 	 * @param string $charset Character set
 	 * @return string Corresponding default collation
-	 * @deprecated Since TYPO3 4.6, will be removed in 4.8, use method from t3lib_install_Sql instead
+	 * @deprecated Since TYPO3 4.6, will be removed in 6.0, use method from t3lib_install_Sql instead
 	 */
 	function getCollationForCharset($charset) {
 		t3lib_div::logDeprecatedFunction();
@@ -473,7 +473,7 @@ class t3lib_install {
 	 * Reads the field definitions for the current database
 	 *
 	 * @return	array Array with information about table.
-	 * @deprecated Since TYPO3 4.6, will be removed in 4.8, use method from t3lib_install_Sql instead
+	 * @deprecated Since TYPO3 4.6, will be removed in 6.0, use method from t3lib_install_Sql instead
 	 */
 	function getFieldDefinitions_database() {
 		t3lib_div::logDeprecatedFunction();
@@ -489,7 +489,7 @@ class t3lib_install {
 	 * @param string $onlyTableList Table names (in list) which is the ONLY one observed.
 	 * @param boolean $ignoreNotNullWhenComparing If set, this function ignores NOT NULL statements of the SQL file field definition when comparing current field definition from database with field definition from SQL file. This way, NOT NULL statements will be executed when the field is initially created, but the SQL parser will never complain about missing NOT NULL statements afterwards.
 	 * @return array Returns an array with 1) all elements from $FDsrc that is not in $FDcomp (in key 'extra') and 2) all elements from $FDsrc that is different from the ones in $FDcomp
-	 * @deprecated Since TYPO3 4.6, will be removed in 4.8, use method from t3lib_install_Sql instead
+	 * @deprecated Since TYPO3 4.6, will be removed in 6.0, use method from t3lib_install_Sql instead
 	 */
 	function getDatabaseExtra($FDsrc, $FDcomp, $onlyTableList = '', $ignoreNotNullWhenComparing = TRUE) {
 		t3lib_div::logDeprecatedFunction();
@@ -502,7 +502,7 @@ class t3lib_install {
 	 * @param array $diffArr Array with differences of current and needed DB settings. (from getDatabaseExtra())
 	 * @param string $keyList List of fields in diff array to take notice of.
 	 * @return array Array of SQL statements (organized in keys depending on type)
-	 * @deprecated Since TYPO3 4.6, will be removed in 4.8, use method from t3lib_install_Sql instead
+	 * @deprecated Since TYPO3 4.6, will be removed in 6.0, use method from t3lib_install_Sql instead
 	 */
 	function getUpdateSuggestions($diffArr, $keyList = 'extra,diff') {
 		t3lib_div::logDeprecatedFunction();
@@ -514,7 +514,7 @@ class t3lib_install {
 	 *
 	 * @param array $row MySQL result row
 	 * @return string Field definition
-	 * @deprecated Since TYPO3 4.6, will be removed in 4.8, use method from t3lib_install_Sql instead
+	 * @deprecated Since TYPO3 4.6, will be removed in 6.0, use method from t3lib_install_Sql instead
 	 */
 	function assembleFieldDefinition($row) {
 		t3lib_div::logDeprecatedFunction();
@@ -528,7 +528,7 @@ class t3lib_install {
 	 * @param boolean $removeNonSQL If set, non-SQL content (like comments and blank lines) is not included in the final output
 	 * @param string $query_regex Regex to filter SQL lines to include
 	 * @return array Array of SQL statements
-	 * @deprecated Since TYPO3 4.6, will be removed in 4.8, use method from t3lib_install_Sql instead
+	 * @deprecated Since TYPO3 4.6, will be removed in 6.0, use method from t3lib_install_Sql instead
 	 */
 	function getStatementArray($sqlcode, $removeNonSQL = FALSE, $query_regex = '') {
 		t3lib_div::logDeprecatedFunction();
@@ -541,7 +541,7 @@ class t3lib_install {
 	 * @param array $statements Array of SQL statements to analyse.
 	 * @param boolean $insertCountFlag If set, will count number of INSERT INTO statements following that table definition
 	 * @return array Array with table definitions in index 0 and count in index 1
-	 * @deprecated Since TYPO3 4.6, will be removed in 4.8, use method from t3lib_install_Sql instead
+	 * @deprecated Since TYPO3 4.6, will be removed in 6.0, use method from t3lib_install_Sql instead
 	 */
 	function getCreateTables($statements, $insertCountFlag = FALSE) {
 		t3lib_div::logDeprecatedFunction();
@@ -554,7 +554,7 @@ class t3lib_install {
 	 * @param array $statements Array of SQL statements
 	 * @param string $table Table name
 	 * @return array Array of INSERT INTO statements where table match $table
-	 * @deprecated Since TYPO3 4.6, will be removed in 4.8, use method from t3lib_install_Sql instead
+	 * @deprecated Since TYPO3 4.6, will be removed in 6.0, use method from t3lib_install_Sql instead
 	 */
 	function getTableInsertStatements($statements, $table) {
 		t3lib_div::logDeprecatedFunction();
@@ -567,7 +567,7 @@ class t3lib_install {
 	 * @param array $arr Array of SQL queries to execute.
 	 * @param array $keyArr Array with keys that must match keys in $arr. Only where a key in this array is set and TRUE will the query be executed (meant to be passed from a form checkbox)
 	 * @return mixed Array with error message from database if any occured. Otherwise TRUE if everything was executed successfully.
-	 * @deprecated Since TYPO3 4.6, will be removed in 4.8, use method from t3lib_install_Sql instead
+	 * @deprecated Since TYPO3 4.6, will be removed in 6.0, use method from t3lib_install_Sql instead
 	 */
 	function performUpdateQueries($arr, $keyArr) {
 		t3lib_div::logDeprecatedFunction();
@@ -579,7 +579,7 @@ class t3lib_install {
 	 *
 	 * @return	array		List of tables.
 	 * @see t3lib_db::admin_get_tables()
-	 * @deprecated Since TYPO3 4.6, will be removed in 4.8, use method from t3lib_install_Sql instead
+	 * @deprecated Since TYPO3 4.6, will be removed in 6.0, use method from t3lib_install_Sql instead
 	 */
 	function getListOfTables() {
 		t3lib_div::logDeprecatedFunction();

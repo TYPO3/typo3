@@ -39,7 +39,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		this.classesUrl = this.editorConfiguration.classesUrl;
 		this.pageTSconfiguration = this.editorConfiguration.buttons.textstyle;
 		this.tags = (this.pageTSconfiguration && this.pageTSconfiguration.tags) ? this.pageTSconfiguration.tags : {};
-			// classesTag is DEPRECATED as of TYPO3 4.6 and will be removed#in TYPO3 4.8
+			// classesTag is DEPRECATED as of TYPO3 4.6 and will be removed#in TYPO3 6.0
 		if (typeof(this.editorConfiguration.classesTag) !== "undefined") {
 			if (this.editorConfiguration.classesTag.span) {
 				if (!this.tags.span) {
@@ -64,7 +64,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 				}
 			}
 		}
-			// Property this.editorConfiguration.showTagFreeClasses is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// Property this.editorConfiguration.showTagFreeClasses is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		this.showTagFreeClasses = (this.pageTSconfiguration ? this.pageTSconfiguration.showTagFreeClasses : false) || this.editorConfiguration.showTagFreeClasses;
 		this.prefixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.prefixLabelWithClassName : false;
 		this.postfixLabelWithClassName = this.pageTSconfiguration ? this.pageTSconfiguration.postfixLabelWithClassName : false;
@@ -72,7 +72,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		 * Regular expression to check if an element is an inline elment
 		 */
 		this.REInlineTags = /^(a|abbr|acronym|b|bdo|big|cite|code|del|dfn|em|i|img|ins|kbd|q|samp|small|span|strike|strong|sub|sup|tt|u|var)$/;
-		
+
 			// Allowed attributes on inline elements
 		this.allowedAttributes = new Array('id', 'title', 'lang', 'xml:lang', 'dir', 'class', 'itemscope', 'itemtype', 'itemprop');
 		if (Ext.isIE) {
@@ -91,7 +91,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 			license		: 'GPL'
 		};
 		this.registerPluginInformation(pluginInformation);
-		/* 
+		/*
 		 * Registering the dropdown list
 		 */
 		var buttonId = 'TextStyle';
@@ -147,7 +147,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 		var parent = this.editor.getSelection().getParentElement();
 		var selectionEmpty = this.editor.getSelection().isEmpty();
 		var ancestors = this.editor.getSelection().getAllAncestors();
-		
+
 		if (!selectionEmpty) {
 				// The selection is not empty
 			for (var i = 0; i < ancestors.length; ++i) {
@@ -342,7 +342,7 @@ HTMLArea.TextStyle = Ext.extend(HTMLArea.Plugin, {
 				store.add(new store.recordType({
 					text: value,
 					value: cssClass,
-						// this.editor.config.disablePCexamples is deprecated as of TYPO3 4.6 and will be removed in TYPO 4.8
+						// this.editor.config.disablePCexamples is deprecated as of TYPO3 4.6 and will be removed in TYPO 6.0
 					style: (!(this.pageTSconfiguration && this.pageTSconfiguration.disableStyleOnOptionLabel) && !this.editor.config.disablePCexamples && HTMLArea.classesValues && HTMLArea.classesValues[cssClass] && !HTMLArea.classesNoShow[cssClass]) ? HTMLArea.classesValues[cssClass] : null
 				}));
 			}, this);

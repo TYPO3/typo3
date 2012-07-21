@@ -45,17 +45,17 @@ class tx_rtehtmlarea_typo3image extends tx_rtehtmlarea_api {
 
 	public function main($parentObject) {
 		$enabled = parent::main($parentObject);
-			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		if (isset($this->thisConfig['blindImageOptions'])) {
-			$this->htmlAreaRTE->logDeprecatedProperty('blindImageOptions', 'buttons.image.options.removeItems', '4.8');
+			$this->htmlAreaRTE->logDeprecatedProperty('blindImageOptions', 'buttons.image.options.removeItems', '6.0');
 		}
-			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		if (isset($this->thisConfig['classesImage'])) {
-			$this->htmlAreaRTE->logDeprecatedProperty('classesImage', 'buttons.image.properties.class.allowedClasses', '4.8');
+			$this->htmlAreaRTE->logDeprecatedProperty('classesImage', 'buttons.image.properties.class.allowedClasses', '6.0');
 		}
-			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		if (isset($this->thisConfig['disableTYPO3Browsers'])) {
-			$this->htmlAreaRTE->logDeprecatedProperty('disableTYPO3Browsers', 'buttons.image.TYPO3Browser.disabled', '4.8');
+			$this->htmlAreaRTE->logDeprecatedProperty('disableTYPO3Browsers', 'buttons.image.TYPO3Browser.disabled', '6.0');
 		}
 			// Check if this should be enabled based on extension configuration and Page TSConfig
 			// The 'Minimal' and 'Typical' default configurations include Page TSConfig that removes images on the way to the database

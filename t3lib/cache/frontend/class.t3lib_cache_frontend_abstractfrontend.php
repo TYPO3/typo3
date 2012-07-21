@@ -151,11 +151,11 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * one of the specified tags.
 	 * @param array $tags Array of tags to search for
 	 * @return void
-	 * @deprecated since 4.6, will be removed in 4.8
+	 * @deprecated since 4.6, will be removed in 6.0
 	 * @api
 	 */
 	public function flushByTags(array $tags) {
-		t3lib_div::deprecationLog('flushByTags is deprecated since 4.6 and will be removed in 4.8');
+		t3lib_div::deprecationLog('flushByTags is deprecated since 4.6 and will be removed in 6.0');
 		foreach ($tags as $tag) {
 			$this->backend->flushByTag($tag);
 		}
