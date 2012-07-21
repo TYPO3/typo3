@@ -67,6 +67,12 @@ class t3lib_Registry implements t3lib_Singleton {
 
 	/**
 	 * Sets a persistent entry.
+	 *
+	 * This is the main method that can be used to store a key-value. It is name spaced with
+	 * a unique string. This name space should be chosen from extensions that it is unique.
+	 * It is advised to use something like 'tx_extensionname'. The prefix 'core' is reserved
+	 * for the TYPO3 core.
+	 *
 	 * Do not store binary data into the registry, it's not build to do that,
 	 * instead use the proper way to store binary data: The filesystem.
 	 *
@@ -170,22 +176,20 @@ class t3lib_Registry implements t3lib_Singleton {
 	}
 
 	/**
-	 * Checks the given namespace. If it does not have a valid format an
-	 * exception is thrown.
-	 * Allowed namespaces are 'core', 'tx_*', 'Tx_*' and 'user_*'
+	 * Checks the given namespace.
+	 * It must be at least two characters long. The word 'core' is reserved for
+	 * TYPO3 core usage.
 	 *
-	 * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
+	 * If it does not have a valid format an exception is thrown.
+	 *
+	 * @param string $namespace Namespace
 	 * @return void
 	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	protected function validateNamespace($namespace) {
-		if (t3lib_div::hasValidClassPrefix($namespace)) {
-			return;
-		}
-
-		if ($namespace !== 'core') {
+		if (strlen($namespace) < 2) {
 			throw new InvalidArgumentException(
-				'"' . $namespace . '" is no valid Namespace. The namespace has to be prefixed with "tx_", "Tx_", "user_" or must be equal to "core"',
+				'Given namespace must be longer than two characters.',
 				1249755131
 			);
 		}

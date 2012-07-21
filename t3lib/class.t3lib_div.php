@@ -4203,12 +4203,12 @@ final class t3lib_div {
 	 * @param string $funcName Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
 	 * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
 	 * @param mixed $ref Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
-	 * @param string $checkPrefix Alternative allowed prefix of class or function name
+	 * @param string $checkPrefix Not used anymore
 	 * @param integer $errorMode Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
 	 * @return mixed Content from method/function call or FALSE if the class/method/function was not found
 	 * @see getUserObj()
 	 */
-	public static function callUserFunction($funcName, &$params, &$ref, $checkPrefix = 'user_', $errorMode = 0) {
+	public static function callUserFunction($funcName, &$params, &$ref, $checkPrefix = '', $errorMode = 0) {
 		$content = FALSE;
 
 			// Check persistent object and if found, call directly and exit.
@@ -4237,17 +4237,6 @@ final class t3lib_div {
 			$storePersistentObject = TRUE;
 		} else {
 			$storePersistentObject = FALSE;
-		}
-
-			// Check prefix is valid:
-		if ($checkPrefix && !self::hasValidClassPrefix($funcRef, array($checkPrefix))) {
-			$errorMsg = 'Function/class \'' . $funcRef . '\' was not prepended with \'' . $checkPrefix . '\'';
-			if ($errorMode == 2) {
-				throw new InvalidArgumentException($errorMsg, 1294585864);
-			} elseif (!$errorMode) {
-				debug($errorMsg, 't3lib_div::callUserFunction');
-			}
-			return FALSE;
 		}
 
 			// Call function or method:
@@ -4317,12 +4306,12 @@ final class t3lib_div {
 	 * This function can return an object reference if you like. Just prefix the function call with "&": "$objRef = &t3lib_div::getUserObj('EXT:myext/class.tx_myext_myclass.php:&tx_myext_myclass');". This will work ONLY if you prefix the class name with "&" as well. See description of function arguments.
 	 *
 	 * @param string $classRef Class reference, '[file-reference":"]["&"]class-name'. You can prefix the class name with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl". Finally; for the class name you can prefix it with "&" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same $classRef later in another place in the code you will get a reference to the first created one!).
-	 * @param string $checkPrefix Required prefix of class name. By default "tx_" and "Tx_" are allowed.
+	 * @param string $checkPrefix Not used anymore
 	 * @param boolean $silent If set, no debug() error message is shown if class/function is not present.
 	 * @return object The instance of the class asked for. Instance is created with t3lib_div::makeInstance
 	 * @see callUserFunction()
 	 */
-	public static function getUserObj($classRef, $checkPrefix = 'user_', $silent = FALSE) {
+	public static function getUserObj($classRef, $checkPrefix = '', $silent = FALSE) {
 			// Check persistent object and if found, call directly and exit.
 		if (is_object($GLOBALS['T3_VAR']['getUserObj'][$classRef])) {
 			return $GLOBALS['T3_VAR']['getUserObj'][$classRef];
@@ -4345,14 +4334,6 @@ final class t3lib_div {
 				$storePersistentObject = TRUE;
 			} else {
 				$storePersistentObject = FALSE;
-			}
-
-				// Check prefix is valid:
-			if ($checkPrefix && !self::hasValidClassPrefix($class, array($checkPrefix))) {
-				if (!$silent) {
-					debug("Class '" . $class . "' was not prepended with '" . $checkPrefix . "'", 't3lib_div::getUserObj');
-				}
-				return FALSE;
 			}
 
 				// Check if class exists:
@@ -4379,47 +4360,22 @@ final class t3lib_div {
 	 * @param string $classRef The class or function to check
 	 * @param array $additionalPrefixes Additional allowed prefixes, mostly this will be user_
 	 * @return bool TRUE if name is allowed
+	 * @deprecated since 6.0, will be removed two versions later
 	 */
 	public static function hasValidClassPrefix($classRef, array $additionalPrefixes = array()) {
-		if (empty($classRef)) {
-			return FALSE;
-		}
-		if (!is_string($classRef)) {
-			throw new InvalidArgumentException('$classRef has to be of type string', 1313917992);
-		}
-		$hasValidPrefix = FALSE;
-		$validPrefixes = self::getValidClassPrefixes();
-		$classRef = trim($classRef);
-
-		if (count($additionalPrefixes)) {
-			$validPrefixes = array_merge($validPrefixes, $additionalPrefixes);
-		}
-		foreach ($validPrefixes as $prefixToCheck) {
-			if (self::isFirstPartOfStr($classRef, $prefixToCheck) || $prefixToCheck === '') {
-				$hasValidPrefix = TRUE;
-				break;
-			}
-		}
-
-		return $hasValidPrefix;
+		self::logDeprecatedFunction();
+		return TRUE;
 	}
 
 	/**
 	 * Returns all valid class prefixes.
 	 *
 	 * @return array Array of valid prefixed of class names
+	 * @deprecated since 6.0, will be removed two versions later
 	 */
 	public static function getValidClassPrefixes() {
-		$validPrefixes = array('tx_', 'Tx_', 'user_', 'User_', 't3lib_');
-		if (
-			isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])
-			&& is_string($GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])
-		) {
-			$validPrefixes = array_merge(
-				$validPrefixes,
-				self::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['additionalAllowedClassPrefixes'])
-			);
-		}
+		self::logDeprecatedFunction();
+		$validPrefixes = array('tx_', 'Tx_', 'user_', 'User_', 't3lib_', '');
 		return $validPrefixes;
 	}
 

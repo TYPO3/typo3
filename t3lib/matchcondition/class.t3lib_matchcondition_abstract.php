@@ -406,11 +406,6 @@ abstract class t3lib_matchCondition_abstract {
 				$values = preg_split('/\(|\)/', $value);
 				$funcName = trim($values[0]);
 				$funcValue = t3lib_div::trimExplode(',', $values[1]);
-				if (!t3lib_div::hasValidClassPrefix($funcName)
-				) {
-					$this->log('Match condition: Function "' . $funcName . '" was not prepended with one of "' . implode(', ', t3lib_div::getValidClassPrefixes()) . '"');
-					return FALSE;
-				}
 				if (function_exists($funcName) && call_user_func($funcName, $funcValue[0])) {
 					return TRUE;
 				}
