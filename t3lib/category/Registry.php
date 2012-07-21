@@ -147,6 +147,10 @@ class t3lib_category_Registry implements t3lib_Singleton {
 	public function getDatabaseTableDefinition($extensionKey) {
 		$sql = '';
 
+		if (empty($this->registry[$extensionKey])) {
+			return $sql;
+		}
+
 		foreach ($this->registry[$extensionKey] as $tableName => $fieldName) {
 			$sql .= sprintf($this->template, $tableName, $fieldName);
 		}
