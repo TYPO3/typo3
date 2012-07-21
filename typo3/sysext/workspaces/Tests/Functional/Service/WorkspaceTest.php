@@ -33,6 +33,26 @@
  * @subpackage Service
  */
 class Tx_Workspaces_Service_WorkspacesTest extends tx_phpunit_database_testcase {
+	/**
+	 *
+	 */
+	public function setUp() {
+		$GLOBALS['BE_USER']->user['admin'] = 1;
+		$this->createDatabase();
+		$db = $this->useTestDatabase();
+		$this->importStdDB();
+		$this->importExtensions(array('cms', 'version', 'workspaces'));
+	}
+
+	/**
+	 *
+	 */
+	public function tearDown() {
+		$this->cleanDatabase();
+		$this->dropDatabase();
+		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
+	}
+
 
 	/**
 	 * @test
@@ -186,25 +206,6 @@ class Tx_Workspaces_Service_WorkspacesTest extends tx_phpunit_database_testcase 
 		$this->assertEquals(1, sizeof($result), 'Wrong amount of versions found within workspace 91');
 		$this->assertEquals(1, sizeof($result['pages']), 'Wrong amount of page versions found within workspace 91');
 		$this->assertEquals(103, $result['pages'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');
-	}
-
-	/**
-	 *
-	 */
-	public function setUp() {
-		$this->createDatabase();
-		$db = $this->useTestDatabase();
-		$this->importStdDB();
-		$this->importExtensions(array('cms'));
-	}
-
-	/**
-	 *
-	 */
-	public function tearDown() {
-		$this->cleanDatabase();
-		$this->dropDatabase();
-		$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db);
 	}
 }
 
