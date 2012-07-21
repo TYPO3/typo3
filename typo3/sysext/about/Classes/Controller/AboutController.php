@@ -68,13 +68,13 @@ class Tx_About_Controller_AboutController extends Tx_Extbase_MVC_Controller_Acti
 	 * Hook to add custom content
 	 *
 	 * @return array with additional content sections
-	 * @deprecated Since 4.7; will be removed together with the call in indexAction and the fluid partial in 4.9
+	 * @deprecated Since 4.7; will be removed together with the call in indexAction and the fluid partial in 6.1
 	 */
 	protected function getCustomContent() {
 		$sections = array();
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['about/index.php']['addSection'])) {
 			t3lib_div::deprecationLog(
-				'Hook about/index.php addSection is deprecated and will be removed in TYPO3 4.9, use fluid overrides instead.'
+				'Hook about/index.php addSection is deprecated and will be removed in TYPO3 6.1, use fluid overrides instead.'
 			);
 
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['about/index.php']['addSection'] as $classRef) {

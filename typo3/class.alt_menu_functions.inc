@@ -33,12 +33,12 @@
  * XHTML compliant content
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @deprecated since TYPO3 4.6, this file will be removed in TYPO3 4.8.
+ * @deprecated since TYPO3 4.6, this file will be removed in TYPO3 6.0.
  * 		The TYPO3 backend is using typo3/backend.php with less frames,
  * 		which makes this file obsolete.
  */
 
-t3lib_div::deprecationLog('alt_menu_functions.inc is deprecated since TYPO3 4.6, this file will be removed in TYPO3 4.8. The TYPO3 backend is using typo3/backend.php with less frames, which makes this file obsolete.');
+t3lib_div::deprecationLog('alt_menu_functions.inc is deprecated since TYPO3 4.6, this file will be removed in TYPO3 6.0. The TYPO3 backend is using typo3/backend.php with less frames, which makes this file obsolete.');
 
 /**
  * Outdated class with menu functions
@@ -49,7 +49,7 @@ t3lib_div::deprecationLog('alt_menu_functions.inc is deprecated since TYPO3 4.6,
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage core
- * @deprecated since 4.6, well be removed in 4.8
+ * @deprecated since 4.6, well be removed in 6.0
  * @see tx_aboutmodules_Functions
  */
 class alt_menu_functions extends tx_aboutmodules_Functions {

@@ -143,7 +143,7 @@ class t3lib_beUserAuth extends t3lib_userAuthGroup {
 			// The TYPO3 standard login service relies on $this->security_level being set
 			// to 'superchallenged' because of the password in the database is stored as md5 hash.
 			// @deprecated since 4.7
-			// These lines are here for compatibility purpose only, can be removed in 4.9.
+			// These lines are here for compatibility purpose only, can be removed in 6.1.
 			// @see tx_sv_auth::processLoginData()
 		if (!empty($securityLevel) && !in_array($securityLevel, $standardSecurityLevels)) {
 			$this->security_level = $securityLevel;

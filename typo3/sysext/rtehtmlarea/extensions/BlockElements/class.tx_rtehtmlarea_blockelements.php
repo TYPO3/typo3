@@ -132,10 +132,10 @@ class tx_rtehtmlarea_blockelements extends tx_rtehtmlarea_api {
 				$postfixLabelWithTag = ($this->thisConfig['buttons.']['formatblock.']['postfixLabelWithTag']) ? TRUE : $postfixLabelWithTag;
 			}
 				// Processing old style configuration for hiding paragraphs
-				// DEPRECATED property will be removed in TYPO3 4.8
+				// DEPRECATED property will be removed in TYPO3 6.0
 			if (isset($this->thisConfig['hidePStyleItems'])) {
 				$hideItems = array_merge($hideItems, t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList(t3lib_div::strtolower($this->thisConfig['hidePStyleItems'])), 1));
-				$this->htmlAreaRTE->logDeprecatedProperty('hidePStyleItems', 'buttons.formatblock.removeItems', '4.8');
+				$this->htmlAreaRTE->logDeprecatedProperty('hidePStyleItems', 'buttons.formatblock.removeItems', '6.0');
 			}
 				// Adding custom items
 			$blockElementsOrder = array_merge(t3lib_div::trimExplode(',', $this->htmlAreaRTE->cleanList($blockElementsOrder), 1), $addItems);

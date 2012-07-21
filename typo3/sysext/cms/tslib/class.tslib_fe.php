@@ -320,7 +320,7 @@
 	 * @param string The value of t3lib_div::_GP('jumpurl')
 	 * @param string The value of t3lib_div::_GP('MP')
 	 * @param string The value of t3lib_div::_GP('RDCT')
-	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 4.8. Use __construct() instead.
+	 * @deprecated since TYPO3 4.6 and will be removed in TYPO3 6.0. Use __construct() instead.
 	 */
 	public function tslib_fe($TYPO3_CONF_VARS, $id, $type, $no_cache = '', $cHash = '', $jumpurl = '', $MP = '', $RDCT = '') {
 		t3lib_div::logDeprecatedFunction();
@@ -1613,7 +1613,7 @@
 	 *
 	 * @return	array		Preview configuration array from sys_preview record.
 	 * @see t3lib_BEfunc::compilePreviewKeyword()
-	 * @deprecated since TYPO3 4.6, should be removed in TYPO3 4.8, this is now in Tx_Version
+	 * @deprecated since TYPO3 4.6, should be removed in TYPO3 6.0, this is now in Tx_Version
 	 */
 	function ADMCMD_preview() {
 		t3lib_div::logDeprecatedFunction();
@@ -1692,7 +1692,7 @@
 	 * @param	array		Preview configuration, see ADMCMD_preview()
 	 * @return	void
 	 * @see ADMCMD_preview(), index_ts.php
-	 * @deprecated since TYPO3 4.6, should be removed in TYPO3 4.8, this is now in Tx_Version
+	 * @deprecated since TYPO3 4.6, should be removed in TYPO3 6.0, this is now in Tx_Version
 	 */
 	function ADMCMD_preview_postInit(array $previewConfig){
 			// Clear cookies:
@@ -1778,7 +1778,7 @@
 	 * @return	array		Array with key/value pairs of query-parameters WITHOUT a certain list of variable names (like id, type, no_cache etc) and WITH a variable, encryptionKey, specific for this server/installation
 	 * @access private
 	 * @see makeCacheHash(), tslib_cObj::typoLink()
-	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 4.9 - use t3lib_cacheHash instead
+	 * @deprecated since TYPO3 4.7 - will be removed in TYPO3 6.1 - use t3lib_cacheHash instead
 	 * @obsolete
 	 */
 	function cHashParams($addQueryParams) {
@@ -2054,7 +2054,7 @@
 							$this->config['config']['inlineStyle2TempFile'] = 1;
 						}
 						if (isset($this->config['config']['minifyJS'])) {
-							$this->logDeprecatedTyposcript('config.minifyJS = 1', 'It will be removed in TYPO3 4.8. Use config.compressJs instead.');
+							$this->logDeprecatedTyposcript('config.minifyJS = 1', 'It will be removed in TYPO3 6.0. Use config.compressJs instead.');
 							if (!isset($this->config['config']['compressJs'])) {
 								$this->config['config']['compressJs'] = $this->config['config']['minifyJS'];
 							}
@@ -2921,7 +2921,7 @@
 	 * @param	array		Input "cache_pages" row, passed by reference!
 	 * @param	string		Type of operation, either "get" or "set"
 	 * @return	void
-	 * @deprecated since 4.6, will be removed in 4.8
+	 * @deprecated since 4.6, will be removed in 6.0
 	 */
 	function pageCachePostProcess(&$row,$type)	{
 		t3lib_div::logDeprecatedFunction();
@@ -4317,7 +4317,7 @@ if (version == "n3") {
 	 * Initialize workspace preview
 	 *
 	 * @return	void
-	 * @deprecated since TYPO3 4.7, will be removed in TYPO3 4.9 as this is part of Tx_Version now
+	 * @deprecated since TYPO3 4.7, will be removed in TYPO3 6.1 as this is part of Tx_Version now
 	 */
 	public function workspacePreviewInit()	{
 		t3lib_div::logDeprecatedFunction();

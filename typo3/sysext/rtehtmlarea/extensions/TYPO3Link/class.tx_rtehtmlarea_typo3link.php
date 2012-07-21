@@ -46,26 +46,26 @@ class tx_rtehtmlarea_typo3link extends tx_rtehtmlarea_api {
 
 	public function main($parentObject) {
 		$enabled = parent::main($parentObject);
-			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		if (isset($this->thisConfig['blindLinkOptions'])) {
-			$this->htmlAreaRTE->logDeprecatedProperty('blindLinkOptions', 'buttons.link.options.removeItems', '4.8');
+			$this->htmlAreaRTE->logDeprecatedProperty('blindLinkOptions', 'buttons.link.options.removeItems', '6.0');
 		}
-			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		if (isset($this->thisConfig['disableTYPO3Browsers'])) {
 			$enabled = $enabled && !$this->thisConfig['disableTYPO3Browsers'];
-			$this->htmlAreaRTE->logDeprecatedProperty('disableTYPO3Browsers', 'buttons.link.TYPO3Browser.disabled', '4.8');
+			$this->htmlAreaRTE->logDeprecatedProperty('disableTYPO3Browsers', 'buttons.link.TYPO3Browser.disabled', '6.0');
 		}
-			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		if (isset($this->thisConfig['classesAnchor'])) {
-			$this->htmlAreaRTE->logDeprecatedProperty('RTE.default.classesAnchor', 'RTE.default.buttons.link.properties.class.allowedClasses', '4.8');
+			$this->htmlAreaRTE->logDeprecatedProperty('RTE.default.classesAnchor', 'RTE.default.buttons.link.properties.class.allowedClasses', '6.0');
 		}
-			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		if (isset($this->thisConfig['classesAnchor.'])) {
-			$this->htmlAreaRTE->logDeprecatedProperty('classesAnchor.default.[link-type]', 'buttons.link.[link-type].properties.class.default', '4.8');
+			$this->htmlAreaRTE->logDeprecatedProperty('classesAnchor.default.[link-type]', 'buttons.link.[link-type].properties.class.default', '6.0');
 		}
-			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// This PageTSConfig property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		if (isset($this->thisConfig['defaultLinkTarget'])) {
-			$this->htmlAreaRTE->logDeprecatedProperty('defaultLinkTarget', 'buttons.link.properties.target.default', '4.8');
+			$this->htmlAreaRTE->logDeprecatedProperty('defaultLinkTarget', 'buttons.link.properties.target.default', '6.0');
 		}
 			// Check if this should be enabled based on Page TSConfig
 		return $enabled && !$this->thisConfig['buttons.']['link.']['TYPO3Browser.']['disabled'];

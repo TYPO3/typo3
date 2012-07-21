@@ -39,7 +39,7 @@ class tslib_content_PhpScriptInternal extends tslib_content_Abstract {
 	 *
 	 * @param	array		Array of TypoScript properties
 	 * @return	string		Output
-	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 4.8
+	 * @deprecated since TYPO3 4.6, will be removed in TYPO3 6.0
 	 */
 	public function render($conf = array()) {
 		$GLOBALS['TSFE']->logDeprecatedTyposcript(

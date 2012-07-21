@@ -820,15 +820,15 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			RTEarea[editornumber].useHTTPS = ' . ((trim(stristr($this->siteURL, 'https')) || $this->thisConfig['forceHTTPS'])?'true':'false') . ';
 			RTEarea[editornumber].tceformsNested = ' . (is_object($this->TCEform) && method_exists($this->TCEform, 'getDynNestedStack') ? $this->TCEform->getDynNestedStack(TRUE) : '[]') . ';
 			RTEarea[editornumber].dialogueWindows = new Object();';
-			// The following property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// The following property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		if (isset($this->thisConfig['showTagFreeClasses'])) {
-			$this->logDeprecatedProperty('showTagFreeClasses', 'buttons.blockstyle.showTagFreeClasses', '4.8');
-			$this->logDeprecatedProperty('showTagFreeClasses', 'buttons.textstyle.showTagFreeClasses', '4.8');
+			$this->logDeprecatedProperty('showTagFreeClasses', 'buttons.blockstyle.showTagFreeClasses', '6.0');
+			$this->logDeprecatedProperty('showTagFreeClasses', 'buttons.textstyle.showTagFreeClasses', '6.0');
 		}
-			// The following property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// The following property is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		if (isset($this->thisConfig['disablePCexamples'])) {
-			$this->logDeprecatedProperty('disablePCexamples', 'buttons.blockstyle.disableStyleOnOptionLabel', '4.8');
-			$this->logDeprecatedProperty('disablePCexamples', 'buttons.textstyle.disableStyleOnOptionLabel', '4.8');
+			$this->logDeprecatedProperty('disablePCexamples', 'buttons.blockstyle.disableStyleOnOptionLabel', '6.0');
+			$this->logDeprecatedProperty('disablePCexamples', 'buttons.textstyle.disableStyleOnOptionLabel', '6.0');
 		}
 		if (isset($this->thisConfig['dialogueWindows.']['defaultPositionFromTop'])) {
 			$configureRTEInJavascriptString .= '
@@ -896,7 +896,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			}
 		}
 			// Process default style configuration
-			// This default configuration is deprecated as of TYPO3 4.6 and will be removed in TYPO3 4.8.
+			// This default configuration is deprecated as of TYPO3 4.6 and will be removed in TYPO3 6.0.
 			// Use contentCSS instead.
 		$configureRTEInJavascriptString .= '
 			RTEarea[editornumber].defaultPageStyle = "' . $this->writeTemporaryFile('', 'defaultPageStyle', 'css', $this->buildStyleSheet()) . '";';
@@ -946,23 +946,23 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * Build the default content style sheet
 	 *
 	 * @return string		Style sheet
-	 * @deprecated since TYPO3 4.8, will be removed in TYPO3 4.10
+	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.2
 	 */
 	function buildStyleSheet() {
-			// This function will be DEPRECATED as of TYPO3 4.8 and will be removed in TYPO3 4.10
+			// This function will be DEPRECATED as of TYPO3 6.0 and will be removed in TYPO3 6.2
 		//t3lib_div::logDeprecatedFunction();
-			// These PageTSConfig properties are DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// These PageTSConfig properties are DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		$properties = array('mainStyle_font', 'mainStyle_size', 'mainStyle_color', 'mainStyle_bgcolor', 'mainStyleOverride');
 		foreach ($properties as $property) {
 			if (isset($this->thisConfig[$property])) {
-				$this->logDeprecatedProperty($property, 'contentCSS', '4.8');
+				$this->logDeprecatedProperty($property, 'contentCSS', '6.0');
 			}
 		}
 		if (is_array($this->thisConfig['mainStyleOverride_add.'])) {
-			$this->logDeprecatedProperty('mainStyleOverride_add', 'contentCSS', '4.8');
+			$this->logDeprecatedProperty('mainStyleOverride_add', 'contentCSS', '6.0');
 		}
 		if (is_array($this->thisConfig['inlineStyle.']))        {
-			$this->logDeprecatedProperty('inlineStyle', 'contentCSS', '4.8');
+			$this->logDeprecatedProperty('inlineStyle', 'contentCSS', '6.0');
 		}
 		if (!trim($this->thisConfig['ignoreMainStyleOverride'])) {
 			$mainStyle_font = $this->thisConfig['mainStyle_font'] ? $this->thisConfig['mainStyle_font']: 'Verdana,sans-serif';
@@ -1012,7 +1012,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 */
 	function buildJSClassesConfig($RTEcounter) {
 			// Build JS array of lists of classes
-			// These PageTSConfig properties are DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 4.8
+			// These PageTSConfig properties are DEPRECATED as of TYPO3 4.6 and will be removed in TYPO3 6.0
 		$classesTagList = 'classesCharacter, classesParagraph, classesImage, classesTable, classesLinks, classesTD';
 		$classesTagConvert = array('classesCharacter' => 'span', 'classesParagraph' => 'div', 'classesImage' => 'img', 'classesTable' => 'table', 'classesLinks' => 'a', 'classesTD' => 'td');
 		$classesUseInstead = array('classesCharacter' => 'buttons.textstyle.tags.span.allowedClasses', 'classesParagraph' => 'buttons.blockstyle.tags.div.allowedClasses', 'classesImage' => 'buttons.image.properties.class.allowedClasses', 'classesTable' => 'buttons.blockstyle.tags.table.allowedClasses', 'classesLinks' => 'buttons.link.properties.class.allowedClasses', 'classesTD' => 'buttons.blockstyle.tags.td.allowedClasses');
@@ -1024,7 +1024,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 			$configureRTEInJavascriptString .= '
 			RTEarea[editornumber].classesTag.'. $classesTagConvert[$classesTagName] .' = '. $HTMLAreaJSClasses;
 			if (isset($this->thisConfig[$classesTagName])) {
-				$this->logDeprecatedProperty($classesTagName, $classesUseInstead[$classesTagName], '4.8');
+				$this->logDeprecatedProperty($classesTagName, $classesUseInstead[$classesTagName], '6.0');
 			}
 		}
 			// Include JS arrays of configured classes
