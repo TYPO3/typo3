@@ -43,13 +43,13 @@ class Tx_Extbase_Service_TypoScriptService implements t3lib_Singleton {
 	 */
 	public function convertTypoScriptArrayToPlainArray(array $typoScriptArray) {
 		foreach ($typoScriptArray as $key => &$value) {
-			if(substr($key, -1) === '.') {
+			if (substr($key, -1) === '.') {
 				$keyWithoutDot = substr($key, 0, -1);
 				$hasNodeWithoutDot = array_key_exists($keyWithoutDot, $typoScriptArray);
 				$typoScriptNodeValue = $hasNodeWithoutDot ? $typoScriptArray[$keyWithoutDot] : NULL;
-				if(is_array($value)) {
+				if (is_array($value)) {
 					$typoScriptArray[$keyWithoutDot] = $this->convertTypoScriptArrayToPlainArray($value);
-					if(!is_null($typoScriptNodeValue)) {
+					if (!is_null($typoScriptNodeValue)) {
 						$typoScriptArray[$keyWithoutDot]['_typoScriptNodeValue']  = $typoScriptNodeValue;
 					}
 					unset($typoScriptArray[$key]);

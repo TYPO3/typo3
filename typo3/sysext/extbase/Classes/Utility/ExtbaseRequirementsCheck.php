@@ -59,7 +59,7 @@ class Tx_Extbase_Utility_ExtbaseRequirementsCheck implements tx_reports_StatusPr
 
 		$method = new ReflectionMethod('Tx_Extbase_Core_Bootstrap', 'run');
 
-		if(strlen($method->getDocComment()) > 0) {
+		if (strlen($method->getDocComment()) > 0) {
 			$value = 'Preserved';
 			$message = '';
 			$status = tx_reports_reports_status_Status::OK;

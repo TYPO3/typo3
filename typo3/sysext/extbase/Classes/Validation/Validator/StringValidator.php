@@ -46,7 +46,7 @@ class Tx_Extbase_Validation_Validator_StringValidator extends Tx_Extbase_Validat
 	 * @api
 	 */
 	public function isValid($value) {
-		if(!is_string($value)) {
+		if (!is_string($value)) {
 			$this->addError('A valid string is expected.', 1238108067);
 			return FALSE;
 		}

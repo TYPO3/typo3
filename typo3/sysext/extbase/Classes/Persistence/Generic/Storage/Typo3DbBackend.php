@@ -238,7 +238,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 		$parameters = array();
 
 		$statement = $query->getStatement();
-		if($statement instanceof Tx_Extbase_Persistence_QOM_Statement) {
+		if ($statement instanceof Tx_Extbase_Persistence_QOM_Statement) {
 			$sql = $statement->getStatement();
 			$parameters = $statement->getBoundVariables();
 		} else {
@@ -265,7 +265,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	public function getObjectCountByQuery(Tx_Extbase_Persistence_QueryInterface $query) {
 		$constraint = $query->getConstraint();
-		if($constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) {
+		if ($constraint instanceof Tx_Extbase_Persistence_QOM_StatementInterface) {
 			throw new Tx_Extbase_Persistence_Storage_Exception_BadConstraint('Could not execute count on queries with a constraint of type Tx_Extbase_Persistence_QOM_StatementInterface', 1256661045);
 		}
 		$parameters = array();
@@ -811,7 +811,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 				$statement = t3lib_BEfunc::deleteClause($tableName);
 				$statement .= t3lib_BEfunc::BEenableFields($tableName);
 			}
-			if(!empty($statement)) {
+			if (!empty($statement)) {
 				$statement = substr($statement, 5);
 				$sql['additionalWhereClause'][] = $statement;
 			}
@@ -827,7 +827,7 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 	 */
 	protected function addSysLanguageStatement($tableName, array &$sql) {
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
-			if(isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== NULL) {
+			if (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== NULL) {
 				$sql['additionalWhereClause'][] = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (0,-1)';
 			}
 		}
@@ -979,9 +979,9 @@ class Tx_Extbase_Persistence_Storage_Typo3DbBackend implements Tx_Extbase_Persis
 			if ($this->pageSelectObject->versioningPreview && isset($row['_ORIG_uid'])) {
 				$row['uid'] = $row['_ORIG_uid'];
 			}
-			if($tableName == 'pages') {
+			if ($tableName == 'pages') {
 				$row = $this->pageSelectObject->getPageOverlay($row, $languageUid);
-			} elseif(isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== '') {
+			} elseif (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== '') {
 				if (in_array($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']], array(-1,0))) {
 					$overlayMode = ($languageMode === 'strict') ? 'hideNonTranslated' : '';
 					$row = $this->pageSelectObject->getRecordOverlay($tableName, $row, $languageUid, $overlayMode);

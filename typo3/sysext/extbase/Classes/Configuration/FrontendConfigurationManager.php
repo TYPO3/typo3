@@ -127,7 +127,7 @@ class Tx_Extbase_Configuration_FrontendConfigurationManager extends Tx_Extbase_C
 		$pages = $this->contentObject->data['pages'];
 		if (is_string($pages) && strlen($pages) > 0) {
 			$list = array();
-			if($this->contentObject->data['recursive'] > 0) {
+			if ($this->contentObject->data['recursive'] > 0) {
 				$explodedPages = t3lib_div::trimExplode(',', $pages);
 				foreach($explodedPages as $pid) {
 					$list[] = trim($this->contentObject->getTreeList($pid, $this->contentObject->data['recursive']), ',');

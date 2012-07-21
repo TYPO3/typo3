@@ -404,7 +404,7 @@ class Tx_Extbase_Persistence_Mapper_DataMapper implements t3lib_Singleton {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 		if ($columnMap->getParentKeyFieldName() !== NULL) {
 			$constraint = $query->equals($columnMap->getParentKeyFieldName(), $parentObject);
- 			if($columnMap->getParentTableFieldName() !== NULL) {
+ 			if ($columnMap->getParentTableFieldName() !== NULL) {
  				$constraint = $query->logicalAnd(
 					$constraint,
 					$query->equals($columnMap->getParentTableFieldName(), $this->getDataMap(get_class($parentObject))->getTableName())

@@ -34,7 +34,7 @@ class Tx_Extbase_Tests_Unit_Service_TypoScriptServiceTest extends Tx_Extbase_Tes
 	/**
 	 * @return array
 	 */
-	public function convertTypoScriptArrayToPlainArrayTestdata(){
+	public function convertTypoScriptArrayToPlainArrayTestdata() {
 		$testdata = array();
 		//convert TypoScript Array To Plain Array Removes Trailing Dots
 		$testdata[0] = array(

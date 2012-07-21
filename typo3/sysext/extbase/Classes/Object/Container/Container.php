@@ -84,7 +84,7 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	 * @return Tx_Extbase_Object_Container_ClassInfoFactory
 	 */
 	protected function getClassInfoFactory() {
-		if($this->classInfoFactory == NULL) {
+		if ($this->classInfoFactory == NULL) {
 			$this->classInfoFactory = t3lib_div::makeInstance('Tx_Extbase_Object_Container_ClassInfoFactory');
 		}
 
@@ -97,7 +97,7 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 	 * @return Tx_Extbase_Object_Container_ClassInfoCache
 	 */
 	protected function getClassInfoCache() {
-		if($this->cache == NULL) {
+		if ($this->cache == NULL) {
 			$this->cache = t3lib_div::makeInstance('Tx_Extbase_Object_Container_ClassInfoCache');
 		}
 

@@ -590,7 +590,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$row = array();
 		$this->addCommonFieldsToRow($object, $row);
-		if($dataMap->getLanguageIdColumnName() !== NULL) {
+		if ($dataMap->getLanguageIdColumnName() !== NULL) {
 			$row[$dataMap->getLanguageIdColumnName()] = -1;
 		}
 		$uid = $this->storageBackend->addRow(
@@ -722,7 +722,7 @@ class Tx_Extbase_Persistence_Backend implements Tx_Extbase_Persistence_BackendIn
 		$dataMap = $this->dataMapper->getDataMap(get_class($object));
 		$this->addCommonFieldsToRow($object, $row);
 		$row['uid'] = $object->getUid();
-		if($dataMap->getLanguageIdColumnName() !== NULL) {
+		if ($dataMap->getLanguageIdColumnName() !== NULL) {
 			$row[$dataMap->getLanguageIdColumnName()] = $object->_getProperty('_languageUid');
 			if ($object->_getProperty('_localizedUid') !== NULL) {
 				$row['uid'] = $object->_getProperty('_localizedUid');

@@ -486,7 +486,7 @@ class Tx_Extbase_Persistence_Query implements Tx_Extbase_Persistence_QueryInterf
 	 * @return Tx_Extbase_Persistence_QOM_ComparisonInterface
 	 * @api
 	 */
-	public function contains($propertyName, $operand){
+	public function contains($propertyName, $operand) {
 		return $this->qomFactory->comparison(
 			$this->qomFactory->propertyValue($propertyName, $this->getSelectorName()),
 			Tx_Extbase_Persistence_QueryInterface::OPERATOR_CONTAINS,
