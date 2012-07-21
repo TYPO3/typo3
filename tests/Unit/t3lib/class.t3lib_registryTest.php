@@ -66,8 +66,16 @@ class t3lib_RegistryTest extends tx_phpunit_testcase {
 	 * @test
 	 * @expectedException InvalidArgumentException
 	 */
-	public function getThrowsExceptionForInvalidNamespaces() {
-		$this->registry->get('invalidNamespace', 'someKey');
+	public function getThrowsExceptionForInvalidNamespacesUsingNoNamespace() {
+		$this->registry->get('', 'someKey');
+	}
+
+	/**
+	 * @test
+	 * @expectedException InvalidArgumentException
+	 */
+	public function getThrowsExceptionForInvalidNamespacesUsingTooShortNamespace() {
+		$this->registry->get('t', 'someKey');
 	}
 
 	/**
@@ -165,7 +173,7 @@ class t3lib_RegistryTest extends tx_phpunit_testcase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function setThrowsAnExceptionOnWrongNamespace() {
-		$this->registry->set('invalidNamespace', 'someKey', 'someValue');
+		$this->registry->set('t', 'someKey', 'someValue');
 	}
 
 	/**
@@ -173,6 +181,7 @@ class t3lib_RegistryTest extends tx_phpunit_testcase {
 	 */
 	public function setAllowsValidNamespaces() {
 		$this->registry->set('tx_thisIsValid', 'someKey', 'someValue');
+		$this->registry->set('thisIsValid', 'someKey', 'someValue');
 		$this->registry->set('user_soIsThis', 'someKey', 'someValue');
 		$this->registry->set('core', 'someKey', 'someValue');
 	}
@@ -255,7 +264,7 @@ class t3lib_RegistryTest extends tx_phpunit_testcase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function removeThrowsAnExceptionOnWrongNamespace() {
-		$this->registry->remove('coreInvalid', 'someKey');
+		$this->registry->remove('t', 'someKey');
 	}
 
 	/**
