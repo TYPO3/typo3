@@ -179,16 +179,16 @@ class t3lib_Registry implements t3lib_Singleton {
 	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	protected function validateNamespace($namespace) {
-		if (t3lib_div::hasValidClassPrefix($namespace)) {
-			return;
-		}
 
-		if ($namespace !== 'core') {
+		if (strlen($namespace) < 2) {
 			throw new InvalidArgumentException(
-				'"' . $namespace . '" is no valid Namespace. The namespace has to be prefixed with "tx_", "Tx_", "user_" or must be equal to "core"',
+				'You should always prefix your namespace with something like \'tx_extname\' to prevent naming '.
+				'collissions in the registry. Don\'t use \'core\' either, after it is reserved for internal use.',
 				1249755131
 			);
 		}
+
+
 	}
 }
 
