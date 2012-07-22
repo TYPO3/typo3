@@ -35,6 +35,11 @@
 class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 
 	/**
+	 * @var boolean
+	 */
+	protected $isInitialized = FALSE;
+
+	/**
 	 * @var Tx_Extbase_Object_ObjectManagerInterface
 	 */
 	protected $objectManager;
@@ -48,13 +53,21 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 	protected $slots = array();
 
 	/**
-	 * Injects the object manager
+	 * Initializes this object.
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
-	 * @return void
+	 * This methods needs to be used as alternative to inject aspects.
+	 * Since this dispatches is used very early when the ObjectManager
+	 * is not fully initialized (especially concerning caching framework),
+	 * this is the only way.
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
+	public function initializeObject() {
+		if ($this->isInitialized) {
+			return;
+		}
+
+		$this->objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+
+		$this->isInitialized = TRUE;
 	}
 
 	/**
@@ -105,6 +118,8 @@ class Tx_Extbase_SignalSlot_Dispatcher implements t3lib_Singleton {
 	 * @api
 	 */
 	public function dispatch($signalClassName, $signalName, array $signalArguments = array()) {
+		$this->initializeObject();
+
 		if (!isset($this->slots[$signalClassName][$signalName])) {
 			return;
 		}
