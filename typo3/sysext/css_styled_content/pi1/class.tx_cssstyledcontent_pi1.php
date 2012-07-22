@@ -276,12 +276,13 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				// See if the file path variable is set, this takes precedence
 			$filePathConf = $this->cObj->stdWrap($conf['filePath'], $conf['filePath.']);
 			if ($filePathConf) {
-				$fileList = $this->cObj->filelist($filePathConf);
+				$fileArray = $this->cObj->filelistArray($filePathConf);
 				list($path) = explode('|', $filePathConf);
 			} else {
 					// Get the list of files from the field
 				$field = (trim($conf['field']) ? trim($conf['field']) : 'media');
 				$fileList = $this->cObj->data[$field];
+				$fileArray = t3lib_div::trimExplode(',', $fileList, 1);
 				t3lib_div::loadTCA('tt_content');
 				$path = 'uploads/media/';
 				if (is_array($GLOBALS['TCA']['tt_content']['columns'][$field]) && !empty($GLOBALS['TCA']['tt_content']['columns'][$field]['config']['uploadfolder'])) {
@@ -290,9 +291,6 @@ class tx_cssstyledcontent_pi1 extends tslib_pibase {
 				}
 			}
 			$path = trim($path);
-
-				// Explode into an array:
-			$fileArray = t3lib_div::trimExplode(',', $fileList, 1);
 
 				// If there were files to list...:
 			if (count($fileArray)) {

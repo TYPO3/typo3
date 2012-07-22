@@ -3494,8 +3494,23 @@ class tslib_cObj {
 	 * @return string Comma list of files.
 	 * @access private
 	 * @see stdWrap()
+	 * @see filelistArray()
 	 */
 	function filelist($data) {
+		return implode(',', this::filelistArray($data));
+	}
+
+	/**
+	 * Reads a directory for files and returns the filepaths in an array.
+	 * Implements the stdWrap property "filelist"
+	 *
+	 * @param string $data The command which contains information about what files/directory listing to return. See the "filelist" property of stdWrap for details.
+	 * @return arraay Array of files.
+	 * @access private
+	 * @see stdWrap()
+	 */
+	function filelistArray($data) {
+		$list_arr = array();
 		$data = trim($data);
 		if ($data) {
 			$data_arr = explode('|', $data);
@@ -3566,14 +3581,13 @@ class tslib_cObj {
 						// Make list
 					reset($items['sorting']);
 					$fullPath = trim($data_arr[4]);
-					$list_arr = array();
 					foreach ($items['sorting'] as $key => $v) {
 						$list_arr[] = $fullPath ? $path . '/' . $items['files'][$key] : $items['files'][$key];
 					}
-					return implode(',', $list_arr);
 				}
 			}
 		}
+		return $list_arr;
 	}
 
 	/**
