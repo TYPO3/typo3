@@ -39,7 +39,8 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 	protected $signalSlotDispatcher;
 
 	public function setUp() {
-		$this->signalSlotDispatcher = new Tx_Extbase_SignalSlot_Dispatcher();
+		$accessibleClassName = $this->buildAccessibleProxy('Tx_Extbase_SignalSlot_Dispatcher');
+		$this->signalSlotDispatcher = new $accessibleClassName();
 	}
 
 	/**
@@ -94,10 +95,7 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 		$arguments = array();
 		$mockSlot = function() use (&$arguments) { $arguments =  func_get_args(); };
 
-		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-
 		$this->signalSlotDispatcher->connect('Foo', 'bar', $mockSlot, NULL, FALSE);
-		$this->signalSlotDispatcher->injectObjectManager($mockObjectManager);
 
 		$this->signalSlotDispatcher->dispatch('Foo', 'bar', array('foo' => 'bar', 'baz' => 'quux'));
 		$this->assertSame(array('bar', 'quux'), $arguments);
@@ -115,7 +113,8 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(TRUE));
 		$mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
 
-		$this->signalSlotDispatcher->injectObjectManager($mockObjectManager);
+		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
+		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
 		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'slot', FALSE);
 
 		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('foo' => 'bar', 'baz' => 'quux'));
@@ -130,7 +129,8 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with('NonExistingClassName')->will($this->returnValue(FALSE));
 
-		$this->signalSlotDispatcher->injectObjectManager($mockObjectManager);
+		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
+		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
 		$this->signalSlotDispatcher->connect('Foo', 'emitBar', 'NonExistingClassName', 'slot', TRUE);
 		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array());
 	}
@@ -148,7 +148,8 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(TRUE));
 		$mockObjectManager->expects($this->once())->method('get')->with($slotClassName)->will($this->returnValue($mockSlot));
 
-		$this->signalSlotDispatcher->injectObjectManager($mockObjectManager);
+		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
+		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
 		$this->signalSlotDispatcher->connect('Foo', 'emitBar', $slotClassName, 'unknownMethodName', TRUE);
 
 		$this->signalSlotDispatcher->dispatch('Foo', 'emitBar', array('foo' => 'bar', 'baz' => 'quux'));
@@ -165,7 +166,8 @@ class Tx_Extbase_Tests_Unit_SignalSlot_DispatcherTest extends Tx_Extbase_Tests_U
 		$mockObjectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
 
 		$this->signalSlotDispatcher->connect('SignalClassName', 'methodName', $mockSlot, NULL, TRUE);
-		$this->signalSlotDispatcher->injectObjectManager($mockObjectManager);
+		$this->signalSlotDispatcher->_set('objectManager', $mockObjectManager);
+		$this->signalSlotDispatcher->_set('isInitialized', TRUE);
 
 		$this->signalSlotDispatcher->dispatch('SignalClassName', 'methodName', array('foo' => 'bar', 'baz' => 'quux'));
 		$this->assertSame(array('bar', 'quux', 'SignalClassName::methodName'), $arguments);
