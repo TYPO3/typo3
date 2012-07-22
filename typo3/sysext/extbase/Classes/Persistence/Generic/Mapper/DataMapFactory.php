@@ -374,7 +374,24 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY);
 		$columnMap->setChildTableName($columnConfiguration['foreign_table']);
 		$columnMap->setChildTableWhereStatement($columnConfiguration['foreign_table_where']);
-		$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
+			// support both sorting fields to sort child object sorting in FE
+			// if both fields are there, foreign_sortby has the higher priority
+		if (isset($columnConfiguration['foreign_sortby'])) {
+			$columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby']);
+		} elseif ($columnConfiguration['type'] === 'inline' && isset($columnConfiguration['foreign_default_sortby'])) {
+				// explode foreign_default_sortby because it is used as the "ORDER BY" statement
+				// http://docs.typo3.org/typo3cms/TCAReference/Reference/Columns/Inline/Index.html
+			$orderingPairs = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $columnConfiguration['foreign_default_sortby']);
+			foreach ($orderingPairs as $orderingPair) {
+				list($field, $order) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $orderingPair);
+				if (strtoupper($order) === 'DESC') {
+					$fieldNamesAndOrders[$field] = \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING;
+				} else {
+					$fieldNamesAndOrders[$field] = \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING;
+				}
+			}
+			$columnMap->setChildSortByFieldNamesAndOrders($fieldNamesAndOrders);
+		}
 		$columnMap->setParentKeyFieldName($columnConfiguration['foreign_field']);
 		$columnMap->setParentTableFieldName($columnConfiguration['foreign_table_field']);
 		if (is_array($columnConfiguration['foreign_match_fields'])) {

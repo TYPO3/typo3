@@ -106,6 +106,13 @@ class ColumnMap {
 	protected $childSortByFieldName;
 
 	/**
+	 * An array of field name and order the results from the child's table are sorted by
+	 *
+	 * @var array
+	 */
+	protected $childSortByFieldNamesAndOrders;
+
+	/**
 	 * The name of the relation table
 	 *
 	 * @var string
@@ -265,6 +272,20 @@ class ColumnMap {
 	 */
 	public function getChildSortByFieldName() {
 		return $this->childSortByFieldName;
+	}
+
+	/**
+	 * @param array $childSortByFieldNamesAndOrders
+	 */
+	public function setChildSortByFieldNamesAndOrders($childSortByFieldNamesAndOrders) {
+		$this->childSortByFieldNamesAndOrders = $childSortByFieldNamesAndOrders;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getChildSortByFieldNamesAndOrders() {
+		return $this->childSortByFieldNamesAndOrders;
 	}
 
 	/**

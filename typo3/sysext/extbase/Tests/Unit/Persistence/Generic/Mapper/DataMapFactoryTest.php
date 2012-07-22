@@ -441,6 +441,106 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		);
 	}
 
+	/**
+	 * @test
+	 */
+	public function checkPriorityFindSortingFieldInOneToManyRelationWithBothOptionPresent() {
+		$mockColumnMap = $this->getMock(
+			'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap',
+			array(), array(), '', FALSE
+		);
+		$columnConfiguration = array(
+			'type' => 'inline',
+			'foreign_table' => 'tx_myextension_bar',
+			'foreign_field' => 'parentid',
+			'foreign_table_field' => 'parenttable',
+			'foreign_default_sortby' => 'testvalue_one',
+			'foreign_sortby' => 'testvalue_two'
+		);
+		$mockDataMapFactory = $this->getMock(
+			$this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory'),
+			array('getColumnsDefinition'), array(), '', FALSE
+		);
+		$mockColumnMap->expects($this->once())->method('setChildSortByFieldName')->with($this->equalTo('testvalue_two'));
+		$mockDataMapFactory->_callRef('setOneToManyRelation', $mockColumnMap, $columnConfiguration);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkFindSortingFieldInOneToManyRelationWithOptionForeignDefaultSortbyPresent() {
+		$mockColumnMap = $this->getMock(
+			'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap',
+			array(), array(), '', FALSE
+		);
+		$columnConfiguration = array(
+			'type' => 'inline',
+			'foreign_table' => 'tx_myextension_bar',
+			'foreign_field' => 'parentid',
+			'foreign_table_field' => 'parenttable',
+			'foreign_default_sortby' => 'testvalue_one',
+		);
+		$mockDataMapFactory = $this->getMock(
+			$this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory'),
+			array('getColumnsDefinition'), array(), '', FALSE
+		);
+		$mockColumnMap->expects($this->once())->method('setChildSortByFieldNamesAndOrders')->with(
+			$this->equalTo(array('testvalue_one' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING))
+		);
+		$mockDataMapFactory->_callRef('setOneToManyRelation', $mockColumnMap, $columnConfiguration);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkFindSortingFieldInOneToManyRelationWithOptionComplexForeignDefaultSortbyPresent() {
+		$mockColumnMap = $this->getMock(
+			'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap',
+			array(), array(), '', FALSE
+		);
+		$columnConfiguration = array(
+			'type' => 'inline',
+			'foreign_table' => 'tx_myextension_bar',
+			'foreign_field' => 'parentid',
+			'foreign_table_field' => 'parenttable',
+			'foreign_default_sortby' => 'testvalue_one, testvalue_two DESC, testvalue_three ASC',
+		);
+		$mockDataMapFactory = $this->getMock(
+			$this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory'),
+			array('getColumnsDefinition'), array(), '', FALSE
+		);
+		$mockColumnMap->expects($this->once())->method('setChildSortByFieldNamesAndOrders')->with(
+			$this->equalTo(array(
+				'testvalue_one' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
+				'testvalue_two' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_DESCENDING,
+				'testvalue_three' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING,
+			))
+		);
+		$mockDataMapFactory->_callRef('setOneToManyRelation', $mockColumnMap, $columnConfiguration);
+	}
+
+	/**
+	 * @test
+	 */
+	public function checkFindSortingFieldInOneToManyRelationWithOptionSortbyPresent() {
+		$mockColumnMap = $this->getMock(
+			'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap',
+			array(), array(), '', FALSE
+		);
+		$columnConfiguration = array(
+			'type' => 'inline',
+			'foreign_table' => 'tx_myextension_bar',
+			'foreign_field' => 'parentid',
+			'foreign_table_field' => 'parenttable',
+			'foreign_sortby' => 'testvalue_two',
+		);
+		$mockDataMapFactory = $this->getMock(
+			$this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory'),
+			array('getColumnsDefinition'), array(), '', FALSE
+		);
+		$mockColumnMap->expects($this->once())->method('setChildSortByFieldName')->with($this->equalTo('testvalue_two'));
+		$mockDataMapFactory->_callRef('setOneToManyRelation', $mockColumnMap, $columnConfiguration);
+	}
 }
 
 ?>

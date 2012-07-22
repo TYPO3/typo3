@@ -395,6 +395,8 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
 			if ($columnMap->getChildSortByFieldName() !== NULL) {
 				$query->setOrderings(array($columnMap->getChildSortByFieldName() => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING));
+			} elseif ($columnMap->getChildSortByFieldNamesAndOrders() !== NULL) {
+				$query->setOrderings($columnMap->getChildSortByFieldNamesAndOrders());
 			}
 		} elseif ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$query->setSource($this->getSource($parentObject, $propertyName));
