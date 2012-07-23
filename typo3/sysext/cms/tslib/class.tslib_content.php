@@ -5985,7 +5985,7 @@ class tslib_cObj {
 						if ($addQueryParams == '&' || substr($addQueryParams, 0, 1) != '&') {
 							$addQueryParams = '';
 						}
-						if ($conf['useCacheHash']) {
+						if ($conf['useCacheHash'] || $GLOBALS['TSFE']->config['config']['typolinkUseCacheHash']) {
 								// Mind the order below! See http://bugs.typo3.org/view.php?id=5117
 							$params = $GLOBALS['TSFE']->linkVars . $addQueryParams;
 							if (trim($params, '& ') != '') {
