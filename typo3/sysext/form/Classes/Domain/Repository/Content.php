@@ -48,9 +48,16 @@ class tx_form_Domain_Repository_Content {
 
 		$row = t3lib_BEfunc::getRecord($table, $recordId);
 		if (is_array($row)) {
+				// strip off the leading "[Translate to XY]" text after localizing the original record
+			if ($row['sys_language_uid'] > 0 && $row['l18n_parent'] > 0) {
+				$bodytext = preg_replace('/(\[).*(\])\s/', '', $row['bodytext'], 1);
+			} else {
+				$bodytext = $row['bodytext'];
+			}
+
 			/** @var $typoScriptParser t3lib_tsparser */
 			$typoScriptParser = t3lib_div::makeInstance('t3lib_tsparser');
-			$typoScriptParser->parse($row['bodytext']);
+			$typoScriptParser->parse($bodytext);
 
 			/** @var $record tx_form_Domain_Model_Content */
 			$record = t3lib_div::makeInstance('tx_form_Domain_Model_Content');
