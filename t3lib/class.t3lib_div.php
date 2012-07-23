@@ -4203,7 +4203,7 @@ final class t3lib_div {
 	 * @param string $funcName Function/Method reference, '[file-reference":"]["&"]class/function["->"method-name]'. You can prefix this reference with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl->encodeSpURL". Finally; you can prefix the class name with "&" if you want to reuse a former instance of the same object call ("singleton").
 	 * @param mixed $params Parameters to be pass along (typically an array) (REFERENCE!)
 	 * @param mixed $ref Reference to be passed along (typically "$this" - being a reference to the calling object) (REFERENCE!)
-	 * @param string $checkPrefix Not used anymore
+	 * @param string $checkPrefix Not used anymore since 6.0
 	 * @param integer $errorMode Error mode (when class/function could not be found): 0 - call debug(), 1 - do nothing, 2 - raise an exception (allows to call a user function that may return FALSE)
 	 * @return mixed Content from method/function call or FALSE if the class/method/function was not found
 	 * @see getUserObj()
@@ -4303,11 +4303,15 @@ final class t3lib_div {
 
 	/**
 	 * Creates and returns reference to a user defined object.
-	 * This function can return an object reference if you like. Just prefix the function call with "&": "$objRef = &t3lib_div::getUserObj('EXT:myext/class.tx_myext_myclass.php:&tx_myext_myclass');". This will work ONLY if you prefix the class name with "&" as well. See description of function arguments.
+	 * This function can return an object reference if you like.
+	 * Just prefix the function call with "&": "$objRef = &t3lib_div::getUserObj('EXT:myext/class.tx_myext_myclass.php:&tx_myext_myclass');".
+	 * This will work ONLY if you prefix the class name with "&" as well. See description of function arguments.
+	 *
+	 * @TODO: Deprecate the whole method in several steps: 1. Deprecated singleton pattern, 2. Deprecate file prefix/ require file, 3. Deprecate usage without valid class name. The last step should be to deprecate the method itslef.
 	 *
 	 * @param string $classRef Class reference, '[file-reference":"]["&"]class-name'. You can prefix the class name with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl". Finally; for the class name you can prefix it with "&" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same $classRef later in another place in the code you will get a reference to the first created one!).
-	 * @param string $checkPrefix Not used anymore
-	 * @param boolean $silent If set, no debug() error message is shown if class/function is not present.
+	 * @param string $checkPrefix Not used anymore since 6.0
+	 * @param boolean $silent Not used anymore since 6.0
 	 * @return object The instance of the class asked for. Instance is created with t3lib_div::makeInstance
 	 * @see callUserFunction()
 	 */
@@ -4346,10 +4350,6 @@ final class t3lib_div {
 				}
 
 				return $classObj;
-			} else {
-				if (!$silent) {
-					debug('<strong>ERROR:</strong> No class named: ' . $class, 't3lib_div::getUserObj');
-				}
 			}
 		}
 	}
