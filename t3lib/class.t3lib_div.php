@@ -4307,7 +4307,7 @@ final class t3lib_div {
 	 *
 	 * @param string $classRef Class reference, '[file-reference":"]["&"]class-name'. You can prefix the class name with "[file-reference]:" and t3lib_div::getFileAbsFileName() will then be used to resolve the filename and subsequently include it by "require_once()" which means you don't have to worry about including the class file either! Example: "EXT:realurl/class.tx_realurl.php:&tx_realurl". Finally; for the class name you can prefix it with "&" and you will reuse the previous instance of the object identified by the full reference string (meaning; if you ask for the same $classRef later in another place in the code you will get a reference to the first created one!).
 	 * @param string $checkPrefix Not used anymore
-	 * @param boolean $silent If set, no debug() error message is shown if class/function is not present.
+	 * @param boolean $silent Not used anymore
 	 * @return object The instance of the class asked for. Instance is created with t3lib_div::makeInstance
 	 * @see callUserFunction()
 	 */
@@ -4346,10 +4346,6 @@ final class t3lib_div {
 				}
 
 				return $classObj;
-			} else {
-				if (!$silent) {
-					debug('<strong>ERROR:</strong> No class named: ' . $class, 't3lib_div::getUserObj');
-				}
 			}
 		}
 	}
