@@ -60,7 +60,7 @@ class tx_dbal_autoloader {
 					}
 					break;
 				case 3:
-					$driver = $instObj->INSTALL['localconf.php']['typo_db_driver'];
+					$driver = $instObj->INSTALL['Database']['typo_db_driver'];
 					if ($driver === 'mysql') {
 						$this->deactivateDbal();
 					}
@@ -86,16 +86,12 @@ class tx_dbal_autoloader {
 	 * @return void
 	 */
 	protected function activateDbal() {
-		$extList = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);
-		if (!t3lib_div::inArray($extList, 'adodb')) {
-			$extList[] = 'adodb';
+		if (!t3lib_extMgm::isLoaded('adodb')) {
+			t3lib_extMgm::loadExtension('adodb');
 		}
-		if (!t3lib_div::inArray($extList, 'dbal')) {
-			$extList[] = 'dbal';
+		if (!t3lib_extMgm::isLoaded('dbal')) {
+			t3lib_extMgm::loadExtension('dbal');
 		}
-		$this->updateExtensionList(implode(',', $extList));
-		t3lib_extMgm::removeCacheFiles(t3lib_extMgm::getCacheFilePrefix());
-		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->flushByTag('t3lib_autoloader');
 	}
 
 	/**
@@ -104,56 +100,13 @@ class tx_dbal_autoloader {
 	 * @return void
 	 */
 	protected function deactivateDbal() {
-		$extList = t3lib_div::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']);
-		$extList = array_flip($extList);
-
-		// Remove sysext dbal and adodb
-		if (isset($extList['dbal'])) {
-			unset($extList['dbal']);
+		if (t3lib_extMgm::isLoaded('dbal')) {
+			t3lib_extMgm::unloadExtension('dbal');
 		}
-		if (isset($extList['adodb'])) {
-			unset($extList['adodb']);
-		}
-		$extList = array_flip($extList);
-
-		$this->updateExtensionList(implode(',', $extList));
-	}
-
-	/**
-	 * Updates the list of extensions.
-	 *
-	 * @param string $newExtList
-	 * @return void
-	 */
-	protected function updateExtensionList($newExtList) {
-		// Instance of install tool
-		$instObj = t3lib_div::makeInstance('t3lib_install');
-		$instObj->allowUpdateLocalConf = 1;
-		$instObj->updateIdentity = 'TYPO3 Core Update Manager';
-
-		try {
-			// Get lines from localconf file
-			$lines = $instObj->writeToLocalconf_control();
-			$instObj->setValueInLocalconfFile($lines, '$TYPO3_CONF_VARS[\'EXT\'][\'extList\']', $newExtList);
-			$result = $instObj->writeToLocalconf_control($lines);
-			if ($result === 'nochange') {
-				$message = 'DBAL was not loaded.';
-				if (!@is_writable(PATH_typo3conf)) {
-					$message .= ' ' . PATH_typo3conf . ' is not writable!';
-				}
-				throw new Exception($message);
-			}
-
-			$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $newExtList;
-			// Make sure to get cache file for backend, not frontend
-			$cacheFilePrefix = $GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'];
-			$GLOBALS['TYPO3_LOADED_EXT']['_CACHEFILE'] = str_replace('temp_CACHED_FE', 'temp_CACHED', $cacheFilePrefix);
-			t3lib_extMgm::removeCacheFiles();
-		} catch (Exception $e) {
-			throw new RuntimeException($e->getMessage(), 1322415256);
+		if (t3lib_extMgm::isLoaded('adodb')) {
+			t3lib_extMgm::unloadExtension('adodb');
 		}
 	}
-
 }
 
 // Make instance:
