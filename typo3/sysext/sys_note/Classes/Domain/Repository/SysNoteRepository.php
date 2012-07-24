@@ -23,39 +23,37 @@
  ***************************************************************/
 
 /**
- * Render sys_notes
+ * Sys_note repository
  *
  * @package TYPO3
  * @subpackage sys_note
  * @author Georg Ringer <typo3@ringerge.org>
  */
-class Tx_SysNote_SysNote {
+class Tx_SysNote_Domain_Repository_SysNoteRepository {
 
 	/**
-	 * Render sys_notes by pid
+	 * Find all sys_notes by a given pidlist
 	 *
-	 * @param string $pidList comma separated list of page ids
-	 * @return string
+	 * @param string $pidlist comma separated list of pids
+	 * @return array records
 	 */
-	public function renderByPid($pidList) {
-		/** @var $repository Tx_SysNote_Domain_Repository_SysNoteRepository */
-		$repository = t3lib_div::makeInstance('Tx_SysNote_Domain_Repository_SysNoteRepository');
+	public function findAllByPidList($pidlist) {
+		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'*',
+			'sys_note',
+			'pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($pidlist) . ')
+						AND (personal=0 OR cruser=' . intval($GLOBALS['BE_USER']->user['uid']) . ')' .
+				t3lib_BEfunc::deleteClause('sys_note'),
+			'',
+			'sorting'
+		);
 
-		$notes = $repository->findAllByPidList($pidList);
-
-		$out = '';
-		if (count($notes) > 0) {
-			/** @var $fluidView Tx_Fluid_View_StandaloneView */
-			$fluidView = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
-			$templatePathAndFilename = t3lib_extMgm::extPath('sys_note', 'Resources/Private/Template/List.html');
-
-			$fluidView->setTemplatePathAndFilename($templatePathAndFilename);
-			$fluidView->assign('notes', $notes);
-			$out = $fluidView->render();
+		foreach($records as $key => $record) {
+			$records[$key]['tstamp'] =  new DateTime('@' . $record['tstamp']);
+			$records[$key]['author'] = t3lib_BEfunc::getRecord('be_users', $record['cruser']);
 		}
 
-		return $out;
+		return $records;
 	}
-}
 
-?>
+}

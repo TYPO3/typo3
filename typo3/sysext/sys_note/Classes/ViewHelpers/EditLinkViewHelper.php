@@ -23,39 +23,22 @@
  ***************************************************************/
 
 /**
- * Render sys_notes
+ * ViewHelper to create a link to edit a note
  *
  * @package TYPO3
  * @subpackage sys_note
  * @author Georg Ringer <typo3@ringerge.org>
  */
-class Tx_SysNote_SysNote {
+class Tx_SysNote_ViewHelpers_EditLinkViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * Render sys_notes by pid
-	 *
-	 * @param string $pidList comma separated list of page ids
+	 * @param integer $id
 	 * @return string
 	 */
-	public function renderByPid($pidList) {
-		/** @var $repository Tx_SysNote_Domain_Repository_SysNoteRepository */
-		$repository = t3lib_div::makeInstance('Tx_SysNote_Domain_Repository_SysNoteRepository');
+	public function render($id) {
+		$returnUrl = t3lib_div::getIndpEnv('REQUEST_URI');
 
-		$notes = $repository->findAllByPidList($pidList);
-
-		$out = '';
-		if (count($notes) > 0) {
-			/** @var $fluidView Tx_Fluid_View_StandaloneView */
-			$fluidView = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
-			$templatePathAndFilename = t3lib_extMgm::extPath('sys_note', 'Resources/Private/Template/List.html');
-
-			$fluidView->setTemplatePathAndFilename($templatePathAndFilename);
-			$fluidView->assign('notes', $notes);
-			$out = $fluidView->render();
-		}
-
-		return $out;
+		return 'alt_doc.php?&edit[sys_note][' . $id . ']=edit&returnUrl=' . rawurlencode($returnUrl);
 	}
 }
-
 ?>
