@@ -57,10 +57,18 @@ class t3lib_l10n_parser_Xliff extends t3lib_l10n_parser_AbstractXml {
 						);
 					} else {
 							// @todo Support "approved" attribute
-						$parsedData[(string)$translationElement['id']][0] = array(
-							'source' => (string)$translationElement->source,
-							'target' => (string)$translationElement->target,
-						);
+						if ((string)$translationElement->target !== '') {
+							$parsedData[(string)$translationElement['id']][0] = array(
+								'source' => (string)$translationElement->source,
+								'target' => (string)$translationElement->target,
+							);
+						} else {
+								// No target element => not yet translated
+							$parsedData[(string)$translationElement['id']][0] = array(
+								'source' => (string)$translationElement->source,
+								'target' => (string)$translationElement->source,
+							);
+						}
 					}
 				} elseif ($translationElement->getName() === 'group' && isset($translationElement['restype']) && (string)$translationElement['restype'] === 'x-gettext-plurals') {
 						// This is a translation with plural forms
