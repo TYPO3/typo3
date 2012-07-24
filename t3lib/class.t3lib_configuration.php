@@ -66,7 +66,9 @@ class t3lib_Configuration {
 	 */
 	protected static $whiteListedLocalConfigurationPaths = array(
 		'EXT/extConf',
-		'INSTALL/wizardDone'
+		'EXTCONF',
+		'INSTALL/wizardDone',
+		'DB',
 	);
 
 	/**
