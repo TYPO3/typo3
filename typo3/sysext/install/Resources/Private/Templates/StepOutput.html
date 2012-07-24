@@ -47,20 +47,20 @@
 				<ol>
 					<li class="t3-install-hidden">
 						<input type="hidden" value="###STEP###" name="step" />
-						<input type="hidden" value="###ENCRYPTIONKEY###" name="TYPO3_INSTALL[localconf.php][encryptionKey]" />
-						<input type="hidden" value="###BRANCH###" name="TYPO3_INSTALL[localconf.php][compat_version]" />
+						<input type="hidden" value="###ENCRYPTIONKEY###" name="TYPO3_INSTALL[LocalConfiguration][encryptionKey]" />
+						<input type="hidden" value="###BRANCH###" name="TYPO3_INSTALL[LocalConfiguration][compat_version]" />
 					</li>
 					<li>
 						<label for="t3-install-form-username">###LABELUSERNAME###</label>
-						<input id="t3-install-form-username" class="t3-install-form-input-text" type="text" value="###USERNAME###" name="TYPO3_INSTALL[localconf.php][typo_db_username]" />
+						<input id="t3-install-form-username" class="t3-install-form-input-text" type="text" value="###USERNAME###" name="TYPO3_INSTALL[Database][typo_db_username]" />
 					</li>
 					<li>
 						<label for="t3-install-form-password">###LABELPASSWORD###</label>
-						<input id="t3-install-form-password" class="t3-install-form-input-text" type="password" value="###PASSWORD###" name="TYPO3_INSTALL[localconf.php][typo_db_password]" />
+						<input id="t3-install-form-password" class="t3-install-form-input-text" type="password" value="###PASSWORD###" name="TYPO3_INSTALL[Database][typo_db_password]" />
 					</li>
 					<li>
 						<label for="t3-install-form-host">###LABELHOST###</label>
-						<input id="t3-install-form-host" class="t3-install-form-input-text" type="text" value="###HOST###" name="TYPO3_INSTALL[localconf.php][typo_db_host]" />
+						<input id="t3-install-form-host" class="t3-install-form-input-text" type="text" value="###HOST###" name="TYPO3_INSTALL[Database][typo_db_host]" />
 					</li>
 				</ol>
 			</fieldset>
@@ -87,7 +87,7 @@
 						<div>
 							<label for="t3-install-123-newdatabase">###LLOPTION1###</label>
 							<p>###LLREMARK1###</p>
-							<input id="t3-install-123-newdatabase" class="t3-install-form-input-text" type="text" name="TYPO3_INSTALL[localconf.php][NEW_DATABASE_NAME]" ###FORMFIELDATTRIBUTESNEW### onfocus="document.getElementById('t3-install-form-db-select-new').checked=true" />
+							<input id="t3-install-123-newdatabase" class="t3-install-form-input-text" type="text" name="TYPO3_INSTALL[Database][NEW_DATABASE_NAME]" ###FORMFIELDATTRIBUTESNEW### onfocus="document.getElementById('t3-install-form-db-select-new').checked=true" />
 							<!-- ###DATABASE_NAME_PATTERNS### begin -->
 							<p>###LL_DB_PATTERN_REMARK### <ul style="list-style:disc;">###LL_DB_PATTERN_LIST###</ul></p>
 							<!-- ###DATABASE_NAME_PATTERNS### end -->
@@ -98,7 +98,7 @@
 						<div>
 							<label for="t3-install-123-database">###LLOPTION2###</label>
 							<p>###LLREMARK2###</p>
-							<select id="t3-install-123-database" name="TYPO3_INSTALL[localconf.php][typo_db]" onfocus="document.getElementById('t3-install-form-db-select-existing').checked=true">
+							<select id="t3-install-123-database" name="TYPO3_INSTALL[Database][typo_db]" onfocus="document.getElementById('t3-install-form-db-select-existing').checked=true">
 								<option value="">Select database</option>
 								<!-- ###DATABASEOPTIONS### begin -->
 								<option value="###DATABASEVALUE###" ###DATABASESELECTED###>###DATABASENAME###</option>
