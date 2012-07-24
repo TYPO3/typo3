@@ -331,6 +331,13 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'B');
 		$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'C');
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, $from, $where, '', 'A.uid');
+
+		if (is_array($res) && count($res) > 0) {
+			foreach ($res as $key => $row) {
+				$res[$key]['comments'] = $this->getComments($table, $row['uid']);
+			}
+		}
+
 		return is_array($res) ? $res : array();
 	}
 
