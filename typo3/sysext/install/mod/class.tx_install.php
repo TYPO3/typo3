@@ -3710,6 +3710,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 
 				if (is_array($this->INSTALL['Database'])) {
 
+					$databaseCofigurationValuePairs = array();
+
 						// New database?
 					if (trim($this->INSTALL['Database']['NEW_DATABASE_NAME'])) {
 						$newDatabaseName = trim($this->INSTALL['Database']['NEW_DATABASE_NAME']);
@@ -3745,8 +3747,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							case 'typo_db_username':
 								if (strlen($value) < 50) {
 									if (strcmp(TYPO3_db_username, $value)) {
-										// @TODO: This is currently disabled and must be fixed before 6.0 final
-										//$this->setValueInLocalconfFile($lines, '$typo_db_username', trim($value));
+										$databaseCofigurationValuePairs['DB/username'] = $value;
 									}
 								} else {
 									$this->errorMessages[] = '
@@ -3758,8 +3759,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							case 'typo_db_password':
 								if (strlen($value)<50) {
 									if (strcmp(TYPO3_db_password, $value)) {
-										// @TODO: This is currently disabled and must be fixed before 6.0 final
-										//$this->setValueInLocalconfFile($lines, '$typo_db_password', trim($value));
+										$databaseCofigurationValuePairs['DB/password'] = $value;
 									}
 								} else {
 									$this->errorMessages[] = '
@@ -3770,8 +3770,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							case 'typo_db_host':
 								if (preg_match('/^[a-zA-Z0-9_\.-]+(:.+)?$/', $value) && strlen($value)<50) {
 									if (strcmp(TYPO3_db_host, $value)) {
-										// @TODO: This is currently disabled and must be fixed before 6.0 final
-										//$this->setValueInLocalconfFile($lines, '$typo_db_host', $value);
+										$databaseCofigurationValuePairs['DB/host'] = $value;
 									}
 								} else {
 									$this->errorMessages[] = '
@@ -3784,8 +3783,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							case 'typo_db':
 								if (strlen($value)<50) {
 									if (strcmp(TYPO3_db, $value)) {
-										// @TODO: This is currently disabled and must be fixed before 6.0 final
-										//$this->setValueInLocalconfFile($lines, '$typo_db', trim($value));
+										$databaseCofigurationValuePairs['DB/database'] = $value;
 									}
 								} else {
 									$this->errorMessages[] = '
@@ -3796,6 +3794,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								break;
 						}
 					}
+					t3lib_Configuration::setLocalConfigurationValuesByPathValuePairs($databaseCofigurationValuePairs);
 				}
 
 				if (is_array($this->INSTALL['LocalConfiguration'])) {
@@ -3876,7 +3875,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						}
 					}
 
-					t3lib_Configuration::setLocalConfigurationValuesByPathValuePairs($localConfigurationPathValuePairs);
+					$this->setLocalConfigurationValues($localConfigurationPathValuePairs);
 				}
 			break;
 		}
