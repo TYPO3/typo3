@@ -12,7 +12,7 @@ $TCA['sys_note'] = array(
 		'cruser_id' => 'cruser',
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xlf:LGL.prependAtCopy',
 		'delete' => 'deleted',
-		'title' => 'LLL:EXT:sys_note/locallang_tca.xlf:sys_note',
+		'title' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note',
 		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'ext_icon.gif',
 		'sortby' => 'sorting',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/Tca/SysNote.php',
@@ -20,6 +20,6 @@ $TCA['sys_note'] = array(
 );
 
 t3lib_extMgm::allowTableOnStandardPages('sys_note');
-t3lib_extMgm::addLLrefForTCAdescr('sys_note', 'EXT:sys_note/locallang_csh_sysnote.xlf');
+t3lib_extMgm::addLLrefForTCAdescr('sys_note', 'EXT:sys_note/Resources/Private/Language/locallang_csh_sysnote.xlf');
 
 ?>

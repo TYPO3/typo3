@@ -16,16 +16,16 @@ $TCA['sys_note'] = array(
 				'type' => 'select',
 				'items' => array(
 					array('', '0'),
-					array('LLL:EXT:sys_note/locallang_tca.xlf:sys_note.category.I.1', '1', 'sysext/t3skin/icons/ext/sys_note/icon-instruction.png'),
-					array('LLL:EXT:sys_note/locallang_tca.xlf:sys_note.category.I.2', '3', 'sysext/t3skin/icons/ext/sys_note/icon-note.png'),
-					array('LLL:EXT:sys_note/locallang_tca.xlf:sys_note.category.I.3', '4', 'sysext/t3skin/icons/ext/sys_note/icon-todo.png'),
-					array('LLL:EXT:sys_note/locallang_tca.xlf:sys_note.category.I.4', '2', 'sysext/t3skin/icons/ext/sys_note/icon-template.png')
+					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.1', '1', 'sysext/t3skin/icons/ext/sys_note/icon-instruction.png'),
+					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.2', '3', 'sysext/t3skin/icons/ext/sys_note/icon-note.png'),
+					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.3', '4', 'sysext/t3skin/icons/ext/sys_note/icon-todo.png'),
+					array('LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.4', '2', 'sysext/t3skin/icons/ext/sys_note/icon-template.png')
 				),
 				'default' => '0'
 			)
 		),
 		'subject' => array(
-			'label' => 'LLL:EXT:sys_note/locallang_tca.xlf:sys_note.subject',
+			'label' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.subject',
 			'config' => array(
 				'type' => 'input',
 				'size' => '40',
@@ -33,7 +33,7 @@ $TCA['sys_note'] = array(
 			)
 		),
 		'message' => array(
-			'label' => 'LLL:EXT:sys_note/locallang_tca.xlf:sys_note.message',
+			'label' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.message',
 			'config' => array(
 				'type' => 'text',
 				'cols' => '40',
@@ -41,7 +41,7 @@ $TCA['sys_note'] = array(
 			)
 		),
 		'personal' => array(
-			'label' => 'LLL:EXT:sys_note/locallang_tca.xlf:sys_note.personal',
+			'label' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.personal',
 			'config' => array(
 				'type' => 'check'
 			)
