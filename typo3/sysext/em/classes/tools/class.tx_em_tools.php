@@ -135,6 +135,11 @@ final class tx_em_Tools {
 	 * @return void
 	 */
 	public static function refreshGlobalExtList() {
+			// Set new extlist / extlistArray for extension load changes at runtime
+		$localConfiguration = t3lib_Configuration::getLocalConfiguration();
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList'] = $localConfiguration['EXT']['extList'];
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'] = $localConfiguration['EXT']['extListArray'];
+
 		Typo3_Bootstrap::getInstance()
 			->populateTypo3LoadedExtGlobal(FALSE)
 			->loadAdditionalConfigurationFromExtensions(FALSE);
