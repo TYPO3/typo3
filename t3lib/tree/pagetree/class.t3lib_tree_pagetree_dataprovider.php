@@ -222,11 +222,16 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 
 		$isNumericSearchFilter = (is_numeric($searchFilter) && $searchFilter > 0);
 		$nodeId = intval($node->getId());
+		$processedRecordIds = array();
 		foreach ($records as $record) {
-			$record = t3lib_tree_pagetree_Commands::getNodeRecord($record['uid']);
-			if (intval($record['pid']) === -1 || in_array($record['uid'], $this->hiddenRecords)) {
+			if (($liveVersion = t3lib_BEfunc::getLiveVersionOfRecord('pages', $record['uid'], 'uid'))) {
+				$record = $liveVersion;
+			}
+			$record = t3lib_tree_pagetree_Commands::getNodeRecord($record['uid'], FALSE);
+			if (intval($record['pid']) === -1 || in_array($record['uid'], $this->hiddenRecords) || in_array($record['uid'], $processedRecordIds)) {
 				continue;
 			}
+			$processedRecordIds = $record['uid'];
 
 			$rootline = t3lib_BEfunc::BEgetRootLine(
 				$record['uid'], '', ($GLOBALS['BE_USER']->workspace != 0)
@@ -263,7 +268,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 					continue;
 				}
 
-				$rootlineElement = t3lib_tree_pagetree_Commands::getNodeRecord($rootlineElement['uid']);
+				$rootlineElement = t3lib_tree_pagetree_Commands::getNodeRecord($rootlineElement['uid'], FALSE);
 				$ident = intval($rootlineElement['sorting']) . intval($rootlineElement['uid']);
 				if ($reference && $reference->offsetExists($ident)) {
 					/** @var $refNode t3lib_tree_pagetree_Node */

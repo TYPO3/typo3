@@ -381,9 +381,14 @@ final class t3lib_BEfunc {
 			if ($row) {
 				if ($workspaceOL) {
 					self::workspaceOL('pages', $row);
+					$newLocation = self::getMovePlaceholder('pages', $row['uid'], 'pid');
 				}
 				if (is_array($row)) {
-					self::fixVersioningPid('pages', $row);
+					if ($newLocation) {
+						$row['pid'] = $newLocation['pid'];
+					} else {
+						self::fixVersioningPid('pages', $row);
+					}
 					$getPageForRootline_cache[$ident] = $row;
 				}
 			}
