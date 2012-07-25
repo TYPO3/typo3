@@ -1773,10 +1773,17 @@ class tslib_menu {
 			return array();
 		}
 
+		$configuration = $this->mconf['sectionIndex.'];
+		$useColPos = 0;
+		if (trim($configuration['useColPos']) !== '' || is_array($configuration['useColPos.'])) {
+			$useColPos = $GLOBALS['TSFE']->cObj->stdWrap($configuration['useColPos'], $configuration['useColPos.']);
+			$useColPos = intval($useColPos);
+		}
+
 		$selectSetup = array(
 			'pidInList' => $pid,
 			'orderBy' => $altSortField,
-			'where' => 'colPos=0 AND sys_language_uid IN (-1, 0)',
+			'where' => ($useColPos >= 0 ? 'colPos=' . $useColPos . ' AND ' : '') . 'sys_language_uid IN (-1, 0)',
 		);
 
 		$resource = $this->parent_cObj->exec_getQuery('tt_content', $selectSetup);
