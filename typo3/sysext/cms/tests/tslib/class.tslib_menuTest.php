@@ -50,6 +50,7 @@ class tslib_menuTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 		$backupGlobalVariables['TSFE'] = $GLOBALS['TSFE'];
 		$GLOBALS['TSFE'] = $this->getMock('tslib_fe');
+		$GLOBALS['TSFE']->cObj = new tslib_cObj();
 	}
 
 	public function tearDown() {
@@ -207,5 +208,61 @@ class tslib_menuTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 		$result = $this->fixture->_call('sectionIndex', 'field');
 		$this->assertCount($expectedAmount, $result);
 	}
+
+	/**
+	 * @return array
+	 */
+	public function sectionIndexQueriesWithDifferentColPosDataProvider() {
+		return array(
+			'no configuration' => array(
+				array(),
+				'colPos=0'
+			),
+			'with useColPos 2' => array(
+				array('useColPos' => 2),
+				'colPos=2'
+			),
+			'with useColPos -1' => array(
+				array('useColPos' => -1),
+				''
+			),
+			'with stdWrap useColPos' => array(
+				array(
+					'useColPos.' => array(
+						'wrap' => '2|',
+					),
+				),
+				'colPos=2'
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider sectionIndexQueriesWithDifferentColPosDataProvider
+	 * @param array $configuration
+	 * @param string $whereClausePrefix
+	 */
+	public function sectionIndexQueriesWithDifferentColPos($configuration, $whereClausePrefix) {
+		$this->prepareSectionIndexTest();
+
+		$this->fixture->sys_page->expects($this->once())->method('getPage')
+			->will($this->returnValue(array()));
+
+		$this->fixture->mconf['sectionIndex.'] = $configuration;
+		$queryConfiguration = array(
+			'pidInList' => 12,
+			'orderBy' => 'field',
+			'languageField' =>'sys_language_uid',
+			'where' => $whereClausePrefix,
+		);
+
+		$this->fixture->parent_cObj->expects($this->once())->method('exec_getQuery')
+			->with('tt_content', $queryConfiguration)
+			->will($this->returnValue(1));
+
+		$this->fixture->_call('sectionIndex', 'field', 12);
+	}
 }
+
 ?>
