@@ -2789,8 +2789,22 @@ class tslib_fe {
 		$cacheTimeout = $this->get_cache_timeout();
 		$timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
 		$this->tempContent = FALSE;
+		$usePageCache = TRUE;
 
-		$this->setPageCacheContent($this->content, $this->config, $timeOutTime);
+			// Hook for deciding whether page cache should be written to the cache backend or not
+			// NOTE: as hooks are called in a loop, the last hook will have the final word (however each
+			// hook receives the current status of the $usePageCache flag)
+		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache'])) {
+			foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['usePageCache'] as $_classRef) {
+				$_procObj = t3lib_div::getUserObj($_classRef);
+				$usePageCache = $_procObj->usePageCache($this, $usePageCache);
+			}
+		}
+
+			// Write the page to cache, if necessary
+		if ($usePageCache) {
+			$this->setPageCacheContent($this->content, $this->config, $timeOutTime);
+		}
 
 			// Hook for cache post processing (eg. writing static files!)
 		if (is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['insertPageIncache'])) {
