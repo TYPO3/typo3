@@ -723,7 +723,9 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 				$link_param = $tagCode[1];
 				$href = '';
 					// Parsing the typolink data. This parsing is roughly done like in tslib_content->typolink()
-				if (strstr($link_param, '@')) { // mailadr
+					// Parse URL:
+				$pU = parse_url($link_param);
+				if (strstr($link_param, '@') && (!$pU['scheme'] || $pU['scheme'] == 'mailto')) {
 					$href = 'mailto:' . preg_replace('/^mailto:/i', '', $link_param);
 				} elseif (substr($link_param, 0, 1) == '#') { // check if anchor
 					$href = $siteUrl . $link_param;
@@ -735,8 +737,6 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 					} else {
 						$fileChar = intval(strpos($link_param, '/'));
 						$urlChar = intval(strpos($link_param, '.'));
-							// Parse URL:
-						$pU = parse_url($link_param);
 							// Detects if a file is found in site-root.
 						list($rootFileDat) = explode('?', $link_param);
 						$rFD_fI = pathinfo($rootFileDat);
