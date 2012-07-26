@@ -2533,7 +2533,7 @@ class tslib_fe {
 	function checkJumpUrlReferer() {
 		if (strlen($this->jumpurl) && !$this->TYPO3_CONF_VARS['SYS']['doNotCheckReferer']) {
 			$referer = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
-			if (isset($referer['host']) && !($referer['host'] == t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'))) {
+			if (!isset($referer['host']) || strcasecmp($referer['host'], t3lib_div::getIndpEnv('TYPO3_HOST_ONLY')) != 0) {
 				unset($this->jumpurl);
 			}
 		}
