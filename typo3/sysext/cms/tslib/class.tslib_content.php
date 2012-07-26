@@ -7868,15 +7868,24 @@ class tslib_cObj {
 		}
 
 		if ($conf['languageField']) {
+			
+				// the sys_language record UID of the content of the page
+			$sys_language_content = intval($GLOBALS['TSFE']->sys_language_content);
+
 			if ($GLOBALS['TSFE']->sys_language_contentOL && $GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField']
 				&& $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
 					// Sys language content is set to zero/-1 - and it is expected that whatever routine processes the output will
 					// OVERLAY the records with localized versions!
-				$sys_language_content = '0,-1';
+				$languageQuery = $conf['languageField'] . ' IN (0,-1)';
+
+					// use this option to enable records that don't have a default translation (originalpointerfield is empty and the language field is < 0)
+				if ($conf['includeRecordsWithoutDefaultTranslation']) {
+					$languageQuery .= ' OR (' . $TCA[$table]['ctrl']['transOrigPointerField'] . ' = "" AND ' . $conf['languageField'] . ' IN (' . $sys_language_content . '))';
+				}
 			} else {
-				$sys_language_content = intval($GLOBALS['TSFE']->sys_language_content);
+				$languageQuery = $conf['languageField'] . '=' . $sys_language_content;
 			}
-			$query .= ' AND ' . $conf['languageField'] . ' IN (' . $sys_language_content . ')';
+			$query .= ' AND (' . $languageQuery . ')';
 		}
 
 		$andWhere = isset($conf['andWhere.'])
