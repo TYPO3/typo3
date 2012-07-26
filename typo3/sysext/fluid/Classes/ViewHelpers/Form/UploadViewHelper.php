@@ -63,7 +63,10 @@ class Tx_Fluid_ViewHelpers_Form_UploadViewHelper extends Tx_Fluid_ViewHelpers_Fo
 	 */
 	public function render() {
 		$name = $this->getName();
-		$this->registerFieldNameForFormTokenGeneration($name);
+		$allowedFields = array('name', 'type', 'tmp_name', 'error', 'size');
+		foreach ($allowedFields as $fieldName) {
+			$this->registerFieldNameForFormTokenGeneration($name . '[' . $fieldName . ']');
+		}
 
 		$this->tag->addAttribute('type', 'file');
 		$this->tag->addAttribute('name', $name);
