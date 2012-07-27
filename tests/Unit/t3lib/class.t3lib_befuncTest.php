@@ -184,5 +184,168 @@ class t3lib_befuncTest extends tx_phpunit_testcase {
 
 		$this->assertEquals($selectFields, $expectedFields);
 	}
+
+	////////////////////////////////////////////
+	// Tests concerning getLabelFromItemlist
+	////////////////////////////////////////////
+
+	/**
+	 * Data provider for getLabelFromItemlistReturnsCorrectFields
+	 *
+	 * @return array The test data with $table, $col, $key, $expectedLabel
+	 */
+	public function getLabelFromItemlistReturnsCorrectFieldsDataProvider() {
+		return array(
+			'item set' => array(
+				'table' => 'tt_content',
+				'col' => 'menu_type',
+				'key' => '1',
+				'tca' => array(
+					'columns' => array(
+						'menu_type'=> array(
+							'config' => array(
+								'items' => array(
+									array('Item 1', '0'),
+									array('Item 2', '1'),
+									array('Item 3', '3'),
+								)
+							)
+						)
+					)
+				),
+				'expectedLabel' => 'Item 2',
+			),
+			'item set twice' => array(
+				'table' => 'tt_content',
+				'col' => 'menu_type',
+				'key' => '1',
+				'tca' => array(
+					'columns' => array(
+						'menu_type'=> array(
+							'config' => array(
+								'items' => array(
+									array('Item 1', '0'),
+									array('Item 2a', '1'),
+									array('Item 2b', '1'),
+									array('Item 3', '3'),
+								)
+							)
+						)
+					)
+				),
+				'expectedLabel' => 'Item 2a',
+			),
+			'item not found' => array(
+				'table' => 'tt_content',
+				'col' => 'menu_type',
+				'key' => '5',
+				'tca' => array(
+					'columns' => array(
+						'menu_type'=> array(
+							'config' => array(
+								'items' => array(
+									array('Item 1', '0'),
+									array('Item 2', '1'),
+									array('Item 3', '2'),
+								)
+							)
+						)
+					)
+				),
+				'expectedLabel' => NULL,
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getLabelFromItemlistReturnsCorrectFieldsDataProvider
+	 */
+	public function getLabelFromItemlistReturnsCorrectFields($table, $col = '', $key = '', array $tca, $expectedLabel = '') {
+		t3lib_div::loadTCA($table);
+		$tcaBackup = $GLOBALS['TCA'][$table];
+		unset($GLOBALS['TCA'][$table]);
+		$GLOBALS['TCA'][$table] = $tca;
+
+		$label = $this->fixture->getLabelFromItemlist($table, $col, $key);
+
+		unset($GLOBALS['TCA'][$table]);
+		$GLOBALS['TCA'][$table] = $tcaBackup;
+
+		$this->assertEquals($label, $expectedLabel);
+	}
+
+
+	////////////////////////////////////////////
+	// Tests concerning getLabelFromItemListMerged
+	////////////////////////////////////////////
+
+	/**
+	 * Data provider for getLabelFromItemListMerged
+	 *
+	 * @return array The test data with $pageId, $table, $column, $key, $expectedLabel
+	 */
+	public function getLabelFromItemListMergedReturnsCorrectFieldsDataProvider() {
+		return array(
+			'no field found' => array(
+				'pageId' => '123',
+				'table' => 'tt_content',
+				'col' => 'menu_type',
+				'key' => '10',
+				'tca' => array(
+					'columns' => array(
+						'menu_type'=> array(
+							'config' => array(
+								'items' => array(
+									array('Item 1', '0'),
+									array('Item 2', '1'),
+									array('Item 3', '3'),
+								)
+							)
+						)
+					)
+				),
+				'expectedLabel' => '',
+			),
+			'no tsconfig set' => array(
+				'pageId' => '123',
+				'table' => 'tt_content',
+				'col' => 'menu_type',
+				'key' => '1',
+				'tca' => array(
+					'columns' => array(
+						'menu_type'=> array(
+							'config' => array(
+								'items' => array(
+									array('Item 1', '0'),
+									array('Item 2', '1'),
+									array('Item 3', '3'),
+								)
+							)
+						)
+					)
+				),
+				'expectedLabel' => 'Item 2',
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getLabelFromItemListMergedReturnsCorrectFieldsDataProvider
+	 */
+	public function getLabelFromItemListMergedReturnsCorrectFields($pageId, $table, $column = '', $key = '', array $tca, $expectedLabel = '') {
+		t3lib_div::loadTCA($table);
+		$tcaBackup = $GLOBALS['TCA'][$table];
+		unset($GLOBALS['TCA'][$table]);
+		$GLOBALS['TCA'][$table] = $tca;
+
+		$label = $this->fixture->getLabelFromItemListMerged($pageId, $table, $column, $key);
+
+		unset($GLOBALS['TCA'][$table]);
+		$GLOBALS['TCA'][$table] = $tcaBackup;
+
+		$this->assertEquals($label, $expectedLabel);
+	}
 }
 ?>
