@@ -406,6 +406,7 @@ class SC_mod_user_setup_index {
 		$this->content .= $this->doc->section('',
 			'<input type="hidden" name="simUser" value="'.$this->simUser.'" />
 			<input type="hidden" name="formToken" value="' . $formToken . '" />
+			<input type="hidden" value="1" name="data[save]" />
 			<input type="hidden" name="data[setValuesToDefault]" value="0" id="setValuesToDefault" />
 			<input type="hidden" name="data[clearSessionVars]" value="0" id="clearSessionVars" />'
 		);
