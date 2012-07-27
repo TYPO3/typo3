@@ -1878,6 +1878,36 @@ final class t3lib_BEfunc {
 	}
 
 	/**
+	 * Return the label of a field by additionally checking TsConfig values
+	 *
+	 * @param integer $pageId Page id
+	 * @param string $table Table name
+	 * @param string $columns Field Name
+	 * @param string $key item value
+	 * @return string Label for item entry
+	 */
+	public static function getLabelFromItemListMerged($pageId, $table, $columns, $key) {
+		$pageTsConfig = self::getPagesTSconfig($pageId);
+		$label = '';
+		if (is_array($pageTsConfig['TCEFORM.']) && is_array($pageTsConfig['TCEFORM.'][$table . '.']) && is_array($pageTsConfig['TCEFORM.'][$table . '.'][$columns . '.'])) {
+			if (is_array($pageTsConfig['TCEFORM.'][$table . '.'][$columns . '.']['addItems.']) && isset($pageTsConfig['TCEFORM.'][$table . '.'][$columns . '.']['addItems.'][$key])) {
+				$label = $pageTsConfig['TCEFORM.'][$table . '.'][$columns . '.']['addItems.'][$key];
+			} elseif(is_array($pageTsConfig['TCEFORM.'][$table . '.'][$columns . '.']['altLabels.']) && isset($pageTsConfig['TCEFORM.'][$table . '.'][$columns . '.']['altLabels.'][$key])) {
+				$label = $pageTsConfig['TCEFORM.'][$table . '.'][$columns . '.']['altLabels.'][$key];
+			}
+		}
+
+		if (empty($label)) {
+			$tcaValue =  self::getLabelFromItemlist($table, $columns, $key);
+			if (!empty($tcaValue)) {
+				$label = $tcaValue;
+			}
+		}
+
+		return $label;
+	}
+
+	/**
 	 * Splits the given key with commas and returns the list of all the localized items labels, separated by a comma.
 	 * NOTE: this does not take itemsProcFunc into account
 	 *
