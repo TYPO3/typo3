@@ -4108,17 +4108,16 @@ HTMLArea.DOM.Selection = Ext.extend(HTMLArea.DOM.Selection, {
 	 * @return	boolean		false
 	 */
 	execCommand: function (cmdID, UI, param) {
+		var success = true;
 		this.editor.focus();
-		switch (cmdID) {
-			default:
-				try {
-					this.document.execCommand(cmdID, UI, param);
-				} catch(e) {
-					this.editor.appendToLog('HTMLArea.DOM.Selection', 'execCommand', e + ' by execCommand(' + cmdID + ')', 'error');
-				}
+		try {
+			this.document.execCommand(cmdID, UI, param);
+		} catch (e) {
+			success = false;
+			this.editor.appendToLog('HTMLArea.DOM.Selection', 'execCommand', e + ' by execCommand(' + cmdID + ')', 'error');
 		}
 		this.editor.updateToolbar();
-		return false;
+		return success;
 	},
 	/*
 	 * Handle backspace event on the current selection
