@@ -420,8 +420,8 @@ class Tx_IndexedSearch_Domain_Repository_IndexSearchRepository {
 	 * @return	pointer		SQL result pointer
 	 */
 	protected function searchWord($sWord, $mode) {
-		$wildcard_left = ($mode & WILDCARD_LEFT) ? '%' : '';
-		$wildcard_right = ($mode & WILDCARD_RIGHT) ? '%' : '';
+		$wildcard_left = ($mode & self::WILDCARD_LEFT) ? '%' : '';
+		$wildcard_right = ($mode & self::WILDCARD_RIGHT) ? '%' : '';
 
 		$wSel = 'IW.baseword LIKE \'' . $wildcard_left . $GLOBALS['TYPO3_DB']->quoteStr($sWord, 'index_words') . $wildcard_right . '\'';
 		$res = $this->execPHashListQuery($wSel,' AND is_stopword=0');
