@@ -180,12 +180,9 @@ HTMLArea.CopyPaste = Ext.extend(HTMLArea.Plugin, {
 	 * In the case of hot key, the browser does it automatically
 	 */
 	applyBrowserCommand: function (buttonId) {
-		try {
-			this.editor.getSelection().execCommand(buttonId, false, null);
-		} catch (e) {
-			if (Ext.isGecko) {
-				this.mozillaClipboardAccessException();
-			}
+		var success = this.editor.getSelection().execCommand(buttonId, false, null);
+		if (!success && Ext.isGecko) {
+			this.mozillaClipboardAccessException();
 		}
 	},
 	/*
