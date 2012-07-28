@@ -214,6 +214,7 @@ $t3libClasses = array(
 	't3lib_recordlist' => PATH_t3lib . 'class.t3lib_recordlist.php',
 	't3lib_refindex' => PATH_t3lib . 'class.t3lib_refindex.php',
 	't3lib_registry' => PATH_t3lib . 'class.t3lib_registry.php',
+	't3lib_rootline' => PATH_t3lib . 'class.t3lib_rootline.php',
 	't3lib_rteapi' => PATH_t3lib . 'class.t3lib_rteapi.php',
 	't3lib_scbase' => PATH_t3lib . 'class.t3lib_scbase.php',
 	't3lib_search_livesearch' => PATH_t3lib . 'search/class.t3lib_search_livesearch.php',
