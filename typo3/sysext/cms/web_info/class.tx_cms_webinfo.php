@@ -73,7 +73,7 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 	}
 
 	/**
-	 * MAIN function for page information display (including hit statistics)
+	 * MAIN function for page information display
 	 *
 	 * @return string Output HTML for the module.
 	 */
@@ -165,19 +165,5 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 
 		return $theOutput;
 	}
-}
-
-/**
- * Extension class for hits display, basically using tx_cms_webinfo_page (internally this is detected).
- * This construction is due to the old "pre-extensions" structure
- *
- * IMPORTANT: This class is used by the extension "sys_stat" and will be added to the Info module only when "sys_stat" is installed.
- * The display of statistics goes on in "tx_cms_webinfo_page" though
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage tx_cms
- */
-class tx_cms_webinfo_hits extends tx_cms_webinfo_page {
 }
 ?>
