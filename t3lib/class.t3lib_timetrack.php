@@ -44,7 +44,7 @@
  * @subpackage t3lib
  * @see t3lib_tsfeBeUserAuth, tslib_fe, tslib_cObj, TSpagegen
  */
-final class t3lib_timeTrack {
+class t3lib_timeTrack {
 		// Is loaded with the millisecond time when this object is created
 	var $starttime = 0;
 

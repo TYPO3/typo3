@@ -31,7 +31,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-final class t3lib_TimeTrackNull {
+class t3lib_TimeTrackNull {
 	/**
 	 * "Constructor"
 	 * Sets the starting time
