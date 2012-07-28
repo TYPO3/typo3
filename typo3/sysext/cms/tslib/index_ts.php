@@ -279,8 +279,6 @@ $TSFE->setParseTime();
 if ($TSFE->isOutputting() && (!empty($TSFE->TYPO3_CONF_VARS['FE']['debug']) || !empty($TSFE->config['config']['debug']))) {
 	$TSFE->content .=  LF . '<!-- Parsetime: ' . $TSFE->scriptParseTime . 'ms -->';
 }
-$TSFE->statistics();
-
 	// Check JumpUrl
 $TSFE->jumpurl();
 

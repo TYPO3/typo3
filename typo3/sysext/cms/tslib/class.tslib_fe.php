@@ -2065,9 +2065,6 @@ class tslib_fe {
 					$this->config['rootLine'] = $this->tmpl->rootLine;
 					$this->config['mainScript'] = trim($this->config['config']['mainScript']) ? trim($this->config['config']['mainScript']) : 'index.php';
 
-						// Initialize statistics handling: Check filename and permissions
-					$setStatPageName = $this->statistics_init();
-
 						// Class for render Header and Footer parts
 					$template = '';
 					if ($this->pSetup['pageHeaderFooterTemplateFile']) {
@@ -2092,11 +2089,6 @@ class tslib_fe {
 
 			// Initialize charset settings etc.
 		$this->initLLvars();
-
-			// We want nice names, so we need to handle the charset
-		if ($setStatPageName) {
-			$this->statistics_init_pagename();
-		}
 
 			// No cache
 			// Set $this->no_cache TRUE if the config.no_cache value is set!
@@ -2544,7 +2536,6 @@ class tslib_fe {
 	 * Will exit if a location header is sent (for instance if jumpUrl was triggered)
 	 *
 	 * "jumpUrl" is a concept where external links are redirected from the index_ts.php script, which first logs the URL.
-	 * This feature is only interesting if config.sys_stat is used.
 	 *
 	 * @return void
 	 */
@@ -3550,118 +3541,14 @@ if (version == "n3") {
 	}
 
 	/**
-	 * Initialize file-based statistics handling: Check filename and permissions, and create the logfile if it does not exist yet.
-	 * This function should be called with care because it might overwrite existing settings otherwise.
-	 *
-	 * @return boolean TRUE if statistics are enabled (will require some more processing after charset handling is initialized)
-	 * @access private
-	 */
-	protected function statistics_init() {
-		$setStatPageName = FALSE;
-		$theLogFile = $this->TYPO3_CONF_VARS['FE']['logfile_dir'].strftime($this->config['config']['stat_apache_logfile']);
-
-			// Add PATH_site left to $theLogFile if the path is not absolute yet
-		if (!t3lib_div::isAbsPath($theLogFile)) {
-			$theLogFile = PATH_site.$theLogFile;
-		}
-
-		if ($this->config['config']['stat_apache'] && $this->config['config']['stat_apache_logfile'] && !strstr($this->config['config']['stat_apache_logfile'], '/')) {
-			if (t3lib_div::isAllowedAbsPath($theLogFile)) {
-				if (!@is_file($theLogFile)) {
-						// Try to create the logfile
-					touch($theLogFile);
-					t3lib_div::fixPermissions($theLogFile);
-				}
-
-				if (@is_file($theLogFile) && @is_writable($theLogFile)) {
-					$this->config['stat_vars']['logFile'] = $theLogFile;
-						// Set page name later on
-					$setStatPageName = TRUE;
-				} else {
-					$GLOBALS['TT']->setTSlogMessage('Could not set logfile path. Check filepath and permissions.', 3);
-				}
-			}
-		}
-
-		return $setStatPageName;
-	}
-
-	/**
-	 * Set the pagename for the logfile entry
-	 *
-	 * @return void
-	 * @access private
-	 */
-	protected function statistics_init_pagename() {
-			// Make life easier and accept variants for utf-8
-		if (preg_match('/utf-?8/i', $this->config['config']['stat_apache_niceTitle'])) {
-			$this->config['config']['stat_apache_niceTitle'] = 'utf-8';
-		}
-
-		if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8') {
-			$shortTitle = $this->csConvObj->utf8_encode($this->page['title'], $this->renderCharset);
-		} elseif ($this->config['config']['stat_apache_niceTitle']) {
-			$shortTitle = $this->csConvObj->specCharsToASCII($this->renderCharset, $this->page['title']);
-		} else {
-			$shortTitle = $this->page['title'];
-		}
-
-		$len = t3lib_utility_Math::forceIntegerInRange($this->config['config']['stat_apache_pageLen'], 1, 100, 30);
-		if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8') {
-			$shortTitle = rawurlencode($this->csConvObj->substr('utf-8', $shortTitle, 0, $len));
-		} else {
-			$shortTitle = substr(preg_replace('/[^.[:alnum:]_-]/', '_', $shortTitle), 0, $len);
-		}
-
-		$pageName = $this->config['config']['stat_apache_pagenames'] ? $this->config['config']['stat_apache_pagenames'] : '[path][title]--[uid].html';
-		$pageName = str_replace('[title]', $shortTitle, $pageName);
-		$pageName = str_replace('[uid]', $this->page['uid'], $pageName);
-		$pageName = str_replace('[alias]', $this->page['alias'], $pageName);
-		$pageName = str_replace('[type]', $this->type, $pageName);
-		$pageName = str_replace('[request_uri]', t3lib_div::getIndpEnv('REQUEST_URI'), $pageName);
-
-		$temp = $this->config['rootLine'];
-			// rootLine does not exist if this function is called at early stage (e.g. if DB connection failed)
-		if ($temp) {
-			array_pop($temp);
-			if ($this->config['config']['stat_apache_noRoot']) {
-				array_shift($temp);
-			}
-
-			$len = t3lib_utility_Math::forceIntegerInRange($this->config['config']['stat_titleLen'], 1, 100, 20);
-			if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8') {
-				$path = '';
-				$c = count($temp);
-				for ($i=0; $i<$c; $i++) {
-					if ($temp[$i]['uid']) {
-						$p = $this->csConvObj->crop('utf-8', $this->csConvObj->utf8_encode($temp[$i]['title'], $this->renderCharset), $len, "\xE2\x80\xA6");	// U+2026; HORIZONTAL ELLIPSIS
-						$path.= '/' . rawurlencode($p);
-					}
-				}
-			} elseif ($this->config['config']['stat_apache_niceTitle']) {
-				$path = $this->csConvObj->specCharsToASCII($this->renderCharset, $this->sys_page->getPathFromRootline($temp, $len));
-			} else {
-				$path = $this->sys_page->getPathFromRootline($temp, $len);
-			}
-		} else {
-				// If rootLine is missing, we just drop the path...
-			$path = '';
-		}
-
-		if ($this->config['config']['stat_apache_niceTitle'] == 'utf-8') {
-			$this->config['stat_vars']['pageName'] = str_replace('[path]', $path.'/', $pageName);
-		} else {
-			$this->config['stat_vars']['pageName'] = str_replace('[path]', preg_replace('/[^.[:alnum:]\/_-]/', '_', $path . '/'), $pageName);
-		}
-	}
-
-	/**
 	 * Get the (partially) anonymized IP address for the log file
-	 *  	configure: set set config.stat_IP_anonymize=1
+	 * Configure: set set config.stat_IP_anonymize=1
 	 *
-	 *  @return string the IP to log
+	 * @return string the IP to log
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public function getLogIPAddress() {
+		t3lib_div::logDeprecatedFunction();
 		$result = t3lib_div::getIndpEnv('REMOTE_ADDR');
 		if ($this->config['config']['stat_IP_anonymize']) {
 			if (strpos($result, ':')) {
@@ -3674,69 +3561,14 @@ if (version == "n3") {
 	}
 
 	/**
-	 * Strip parts from a IPv6 address
-	 *
-	 * configure: set config.stat_IP_anonymize_mask_ipv6 to a prefix-length (0 to 128)
-	 * 			  defaults to 64  if not set
-	 *
-	 * @param string $strIP Raw IPv6 address
-	 * @return string stripped address
-	 */
-	protected function stripIPv6($strIP) {
-		if (isset($this->config['config']['stat_IP_anonymize_mask_ipv6'])) {
-			$netPrefix = intval($this->config['config']['stat_IP_anonymize_mask_ipv6']);
-		} else {
-			$netPrefix = 64;
-		}
-		$bytesIP = t3lib_div::IPv6Hex2Bin($strIP);
-
-		$bitsToStrip = (128 - $netPrefix);
-
-		for($counter = 15; $counter >= 0; $counter--)
-		{
-			$bitsToStripPart = min($bitsToStrip, 8);
-				// TODO find a nicer solution for bindec and chr/ord below - but it works :-)
-			$mask = bindec(str_pad('', 8 - $bitsToStripPart, '1') . str_pad('', $bitsToStripPart, '0'));
-			$bytesIP[$counter] = chr(ord($bytesIP[$counter]) & $mask);
-			$bitsToStrip -= $bitsToStripPart;
-		}
-		$strIP = inet_ntop($bytesIP);
-		return $strIP;
-	}
-
-	/**
-	 * Strip parts from IPv4 addresses
-	 *
-	 * configure: set config.stat_IP_anonymize_mask_ipv4 to a prefix-length (0 to 32)
-	 * 			  defaults to 24, if not set
-	 *
-	 * @param string $strIP IPv4 address
-	 * @return string  stripped IP address
-	 */
-	protected function stripIPv4($strIP) {
-		if (isset($this->config['config']['stat_IP_anonymize_mask_ipv4'])) {
-			$netPrefix = intval($this->config['config']['stat_IP_anonymize_mask_ipv4']);
-		} else {
-			$netPrefix = 24;
-		}
-
-		$bitsToStrip = (32 - $netPrefix);
-		$ip = ip2long($strIP);
-			// Shift right
-		$ip = $ip >> $bitsToStrip;
-			// Shift left; last bytes will be zero now
-		$ip = $ip << $bitsToStrip;
-		$strIP = long2ip($ip);
-		return $strIP;
-	}
-
-	/**
 	 * Get the (possibly) anonymized host name for the log file
-	 *  	configure: set config.stat_IP_anonymize=1
+	 * Configure: set config.stat_IP_anonymize=1
 	 *
 	 * @return the host name to log
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public function getLogHostName() {
+		t3lib_div::logDeprecatedFunction();
 		if ($this->config['config']['stat_IP_anonymize']) {
 				// Ignore hostname if IP anonymized
 			$hostName = '<anonymized>';
@@ -3748,11 +3580,13 @@ if (version == "n3") {
 
 	/**
 	 * Get the (possibly) anonymized username or user id for the log file
-	 *      configure: set config.stat_IP_anonymize=1
+	 * Configure: set config.stat_IP_anonymize=1
 	 *
 	 * @return string The user name /uid to log
+	 * @deprecated since 6.0, will be removed with 6.2
 	 */
 	public function getLogUserName() {
+		t3lib_div::logDeprecatedFunction();
 		$logUser = (isset($this->config['config']['stat_logUser'])) ? $this->config['config']['stat_logUser'] : TRUE;
 		if ($this->loginUser && $logUser) {
 			$userName =  $this->fe_user->user['username'];
@@ -3760,113 +3594,6 @@ if (version == "n3") {
 			$userName = '-';
 		}
 		return $userName;
-	}
-
-	/**
-	 * Saves hit statistics
-	 *
-	 * @return void
-	 */
-	function statistics() {
-		if (!empty($this->config['config']['stat']) &&
-				(!strcmp('', $this->config['config']['stat_typeNumList']) || t3lib_div::inList(str_replace(' ', '', $this->config['config']['stat_typeNumList']), $this->type)) &&
-				(empty($this->config['config']['stat_excludeBEuserHits']) || !$this->beUserLogin) &&
-				(empty($this->config['config']['stat_excludeIPList']) || !t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), str_replace(' ', '', $this->config['config']['stat_excludeIPList'])))) {
-
-			$GLOBALS['TT']->push('Stat');
-				if (t3lib_extMgm::isLoaded('sys_stat') && !empty($this->config['config']['stat_mysql'])) {
-
-						// Jumpurl:
-					$sword = t3lib_div::_GP('sword');
-					if ($sword) {
-						$jumpurl_msg = 'sword:'.$sword;
-					} elseif ($this->jumpurl) {
-						$jumpurl_msg = 'jumpurl:'.$this->jumpurl;
-					} else {
-						$jumpurl_msg = '';
-					}
-
-						// Flags: bits: 0 = BE_user, 1=Cached page?
-					$flags=0;
-					if ($this->beUserLogin) {$flags|=1;}
-					if ($this->cacheContentFlag) {$flags|=2;}
-
-						// Ref url:
-					$refUrl = t3lib_div::getIndpEnv('HTTP_REFERER');
-					$thisUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_DIR');
-					if (t3lib_div::isFirstPartOfStr($refUrl, $thisUrl)) {
-						$refUrl='[LOCAL]';
-					}
-
-					$insertFields = array(
-						'page_id' => intval($this->id),							// id
-						'page_type' => intval($this->type),						// type
-						'jumpurl' => $jumpurl_msg,								// jumpurl message
-						'feuser_id' => $this->fe_user->user['uid'],				// fe_user id, integer
-						'cookie' => $this->fe_user->id,							// cookie as set or retrieve. If people has cookies disabled this will vary all the time...
-						'sureCookie' => hexdec(substr($this->fe_user->cookieId, 0, 8)),	// This is the cookie value IF the cookie WAS actually set. However the first hit where the cookie is set will thus NOT be logged here. So this lets you select for a session of at least two clicks...
-						'rl0' => $this->config['rootLine'][0]['uid'],			// RootLevel 0 uid
-						'rl1' => $this->config['rootLine'][1]['uid'],			// RootLevel 1 uid
-						'client_browser' => $GLOBALS['CLIENT']['BROWSER'],		// Client browser (net, msie, opera)
-						'client_version' => $GLOBALS['CLIENT']['VERSION'],		// Client version (double value)
-						'client_os' => $GLOBALS['CLIENT']['SYSTEM'],			// Client Operating system (win, mac, unix)
-						'parsetime' => intval($this->scriptParseTime),			// Parsetime for the page.
-						'flags' => $flags,										// Flags: Is be user logged in? Is page cached?
-						'IP' => $this->getLogIPAddress(),						// Remote IP address
-						'host' => $this->getLogHostName(),						// Remote Host Address
-						'referer' => $refUrl,									// Referer URL
-						'browser' => t3lib_div::getIndpEnv('HTTP_USER_AGENT'),	// User Agent Info.
-						'tstamp' => $GLOBALS['EXEC_TIME']						// Time stamp
-					);
-
-						// Hook for preprocessing the list of fields to insert into sys_stat:
-					if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass']) && is_array($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass'])) {
-						foreach ($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['sys_stat-PreProcClass'] as $_classRef)    {
-							$_procObj = t3lib_div::getUserObj($_classRef);
-							$insertFields = $_procObj->sysstat_preProcessFields($insertFields, $this);
-						}
-					}
-
-					$GLOBALS['TT']->push('Store SQL');
-					$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_stat', $insertFields);
-					$GLOBALS['TT']->pull();
-				}
-
-					// Apache:
-				if (!empty($this->config['config']['stat_apache']) && !empty($this->config['stat_vars']['pageName'])) {
-					if (@is_file($this->config['stat_vars']['logFile'])) {
-							// Build a log line (format is derived from the NCSA extended/combined log format)
-							// Log part 1: Remote hostname / address
-						$LogLine = (t3lib_div::getIndpEnv('REMOTE_HOST') && empty($this->config['config']['stat_apache_noHost'])) ? $this->getLogHostName() : $this->getLogIPAddress();
-							// Log part 2: Fake the remote logname
-						$LogLine .= ' -';
-							// Log part 3: Remote username
-						$LogLine .= ' ' . $this->getLogUserName();
-							// Log part 4: Time
-						$LogLine .= ' ' . date('[d/M/Y:H:i:s +0000]', $GLOBALS['EXEC_TIME']);
-							// Log part 5: First line of request (the request filename)
-						$LogLine .= ' "GET ' . $this->config['stat_vars']['pageName'].' HTTP/1.1"';
-							// Log part 6: Status and content length (ignores special content like admin panel!)
-						$LogLine .= ' 200 ' . strlen($this->content);
-
-						if (empty($this->config['config']['stat_apache_notExtended'])) {
-							$referer = t3lib_div::getIndpEnv('HTTP_REFERER');
-							$LogLine .= ' "' . ($referer ? $referer : '-') . '" "' . t3lib_div::getIndpEnv('HTTP_USER_AGENT') . '"';
-						}
-
-						$GLOBALS['TT']->push('Write to log file (fputs)');
-							$logfilehandle = fopen($this->config['stat_vars']['logFile'], 'a');
-							fputs($logfilehandle, $LogLine.LF);
-							@fclose($logfilehandle);
-						$GLOBALS['TT']->pull();
-
-						$GLOBALS['TT']->setTSlogMessage('Writing to logfile: OK', 0);
-					} else {
-						$GLOBALS['TT']->setTSlogMessage('Writing to logfile: Error - logFile did not exist!', 3);
-					}
-				}
-			$GLOBALS['TT']->pull();
-		}
 	}
 
 	/**
