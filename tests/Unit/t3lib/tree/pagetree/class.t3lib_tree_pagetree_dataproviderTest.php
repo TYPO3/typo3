@@ -26,31 +26,57 @@
  * Testcase for class t3lib_tree_pagetree_DataProvider.
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
+ * @author Oliver Klee <typo3-coding@oliverklee.de>
+ *
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_tree_pagetree_DataProviderTest extends tx_phpunit_testcase {
 	/**
-	 * @var PHPUnit_Framework_MockObject_MockObject|t3lib_tree_pagetree_DataProvider
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Excludes TYPO3_DB from backup/restore of $GLOBALS because resource types cannot be handled during serializing.
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
+	/**
+	 * @var t3lib_tree_pagetree_DataProvider|PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $fixture = NULL;
 
-	/**
-	 * @var array
-	 */
-	protected $backupGlobalVariables = array();
-
 	public function setUp() {
-		$this->backupGlobalVariables['TYPO3_CONF_VARS'] = $GLOBALS['TYPO3_CONF_VARS'];
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['pageTree']['preloadLimit'] = 0;
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'] = array();
+
+		$this->fixture = new t3lib_tree_pagetree_DataProvider();
 	}
 
 	public function tearDown() {
 		unset($this->fixture);
+	}
 
-		foreach ($this->backupGlobalVariables as $name => $value) {
-			$GLOBALS[$name] = $value;
-		}
+	/**
+	 * @test
+	 */
+	public function getRootNodeReturnsNodeWithRootId() {
+		$this->assertSame(
+			'root',
+			$this->fixture->getRoot()->getId()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getRootNodeReturnsExpandedNode() {
+		$this->assertTrue(
+			$this->fixture->getRoot()->isExpanded()
+		);
 	}
 
 	/**
@@ -86,24 +112,23 @@ class t3lib_tree_pagetree_DataProviderTest extends tx_phpunit_testcase {
 			),
 		);
 
-		$this->fixture = $this->getMock('t3lib_tree_pagetree_DataProvider', array('getSubpages', 'getRecordWithWorkspaceOverlay'));
-		$this->fixture->expects($this->once())->method('getSubpages')
-			->will($this->returnValue($subpages));
+		$fixture = $this->getMock('t3lib_tree_pagetree_DataProvider', array('getSubpages', 'getRecordWithWorkspaceOverlay'));
+		$fixture->expects($this->once())->method('getSubpages')->will($this->returnValue($subpages));
 
-		$this->fixture->expects($this->at(1))->method('getRecordWithWorkspaceOverlay')->with(1)
+		$fixture->expects($this->at(1))->method('getRecordWithWorkspaceOverlay')->with(1)
 			->will($this->returnValue($subpagesWithWorkspaceOverlay[0]));
-		$this->fixture->expects($this->at(2))->method('getRecordWithWorkspaceOverlay')->with(2)
+		$fixture->expects($this->at(2))->method('getRecordWithWorkspaceOverlay')->with(2)
 			->will($this->returnValue($subpagesWithWorkspaceOverlay[1]));
-		$this->fixture->expects($this->at(3))->method('getRecordWithWorkspaceOverlay')->with(3)
+		$fixture->expects($this->at(3))->method('getRecordWithWorkspaceOverlay')->with(3)
 			->will($this->returnValue($subpagesWithWorkspaceOverlay[2]));
 
 		$node = new t3lib_tree_Node();
 		$node->setId(12);
 
-		$nodeCollection = $this->fixture->getNodes($node);
+		$nodeCollection = $fixture->getNodes($node);
 
-		/** @var $node t3lib_tree_pagetree_Node */
 		$isMountPointResult = array();
+		/** @var $node t3lib_tree_pagetree_Node */
 		foreach ($nodeCollection as $node) {
 			$isMountPointResult[] = $node->isMountPoint();
 		}

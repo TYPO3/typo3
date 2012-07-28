@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010-2011 TYPO3 Tree Team <http://forge.typo3.org/projects/typo3v4-extjstrees>
+*  (c) 2010-2012 TYPO3 Tree Team <http://forge.typo3.org/projects/typo3v4-extjstrees>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,7 +26,7 @@
 ***************************************************************/
 
 /**
- * Abstract Tree Data Provider
+ * Page tree data provider.
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  * @package TYPO3
@@ -50,7 +50,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	/**
 	 * Hidden Records
 	 *
-	 * @var array
+	 * @var array<string>
 	 */
 	protected $hiddenRecords = array();
 
@@ -90,9 +90,9 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	}
 
 	/**
-	 * Returns the root node
+	 * Returns the root node.
 	 *
-	 * @return t3lib_tree_Node
+	 * @return t3lib_tree_Node the root node
 	 */
 	public function getRoot() {
 		/** @var $node t3lib_tree_pagetree_Node */
@@ -188,8 +188,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	 * @return array
 	 */
 	protected function getRecordWithWorkspaceOverlay($uid, $unsetMovePointers = FALSE) {
-		$subpage = t3lib_befunc::getRecordWSOL('pages', $uid, '*', '', TRUE, $unsetMovePointers);
-		return $subpage;
+		return t3lib_befunc::getRecordWSOL('pages', $uid, '*', '', TRUE, $unsetMovePointers);
 	}
 
 	/**
@@ -198,7 +197,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	 * @param t3lib_tree_Node $node
 	 * @param string $searchFilter
 	 * @param integer $mountPoint
-	 * @return void
+	 * @return t3lib_tree_pagetree_NodeCollection the filtered nodes
 	 */
 	public function getFilteredNodes(t3lib_tree_Node $node, $searchFilter, $mountPoint = 0) {
 		/** @var $nodeCollection t3lib_tree_pagetree_NodeCollection */
@@ -329,7 +328,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	 * Note: If you add the search filter parameter, the nodes will be filtered by this string.
 	 *
 	 * @param string $searchFilter
-	 * @return array
+	 * @return t3lib_tree_pagetree_NodeCollection
 	 */
 	public function getTreeMounts($searchFilter = '') {
 		/** @var $nodeCollection t3lib_tree_pagetree_NodeCollection */
@@ -440,20 +439,20 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 
 		if ($searchFilter !== '') {
 			if (is_numeric($searchFilter) && $searchFilter > 0) {
-				$seachWhere .= 'uid = ' . intval($searchFilter) . ' OR ';
+				$searchWhere .= 'uid = ' . intval($searchFilter) . ' OR ';
 			}
 
 			$searchFilter = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . $searchFilter . '%', 'pages');
 			$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 
 			if ($useNavTitle) {
-				$seachWhere .= '(nav_title LIKE ' . $searchFilter .
-					' OR (nav_title = "" && title LIKE ' . $searchFilter . '))';
+				$searchWhere .= '(nav_title LIKE ' . $searchFilter .
+					' OR (nav_title = "" AND title LIKE ' . $searchFilter . '))';
 			} else {
-				$seachWhere .= 'title LIKE ' . $searchFilter;
+				$searchWhere .= 'title LIKE ' . $searchFilter;
 			}
 
-			$where .= ' AND (' . $seachWhere . ')';
+			$where .= ' AND (' . $searchWhere . ')';
 		}
 
 		return $where;
@@ -468,11 +467,9 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	 */
 	protected function getSubpages($id, $searchFilter = '') {
 		$where = $this->getWhereClause($id, $searchFilter);
-		$subpages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+		return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'uid', 'pages', $where, '', 'sorting', '', 'uid'
 		);
-
-		return $subpages;
 	}
 
 	/**
@@ -495,5 +492,4 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 		return $returnValue;
 	}
 }
-
 ?>
