@@ -18,6 +18,7 @@ $t3libClasses = array(
 	't3lib_browselinkshook' => PATH_t3lib . 'interfaces/interface.t3lib_browselinkshook.php',
 	't3lib_browsetree' => PATH_t3lib . 'class.t3lib_browsetree.php',
 	't3lib_cache' => PATH_t3lib . 'class.t3lib_cache.php',
+	't3lib_rootline' => PATH_t3lib . 'class.t3lib_rootline.php',
 	't3lib_cache_backend_abstractbackend' => PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_abstractbackend.php',
 	't3lib_cache_backend_apcbackend' => PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_apcbackend.php',
 	't3lib_cache_backend_backend' => PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_backend.php',
