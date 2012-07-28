@@ -681,7 +681,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 			TAB . '\'foo\' => array(' . LF .
 				TAB . TAB . '\'bar\' => 42,' . LF .
 				TAB . TAB . '\'bar2\' => array(' . LF .
-				TAB . TAB . TAB . '\'baz\' => \'val\'ue\',' . LF .
+				TAB . TAB . TAB . '\'baz\' => \'val\\\'ue\',' . LF .
 				TAB . TAB . TAB . '\'baz2\' => TRUE,' . LF .
 				TAB . TAB . TAB . '\'baz3\' => FALSE,' . LF .
 				TAB . TAB . TAB . '\'baz4\' => array(),' . LF .
