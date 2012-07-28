@@ -93,8 +93,6 @@ class t3lib_TStemplate {
 		),
 		'config.' => array(
 			'extTarget' => '_top',
-			'stat' => 1,
-			'stat_typeNumList' => '0,1',
 			'uniqueLinkVars' => 1
 		)
 	);

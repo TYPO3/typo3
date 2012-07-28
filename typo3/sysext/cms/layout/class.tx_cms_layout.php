@@ -43,17 +43,9 @@
  */
 class tx_cms_layout extends recordList {
 
-		// External, static: For page statistics:
-		// fieldname from sys_stat to select on.
-	var $stat_select_field = 'page_id';
-		// eg. 	"HITS_days:-1"
-	var $stat_codes = array();
-
 		// External, static: Flags of various kinds:
 		// If TRUE, users/groups are shown in the page info box.
 	var $pI_showUser = 0;
-		// If TRUE, hit statistics are shown in the page info box.
-	var $pI_showStat = 1;
 		// The number of successive records to edit when showing content elements.
 	var $nextThree = 3;
 		// If TRUE, disables the edit-column icon for tt_content elements
@@ -193,11 +185,8 @@ class tx_cms_layout extends recordList {
 		if (is_array($row)) {
 
 				// Select which fields to show:
-			$pKey = $GLOBALS['SOBE']->MOD_SETTINGS['function'] == 'tx_cms_webinfo_hits' ? 'hits' : $GLOBALS['SOBE']->MOD_SETTINGS['pages'];
+			$pKey = $GLOBALS['SOBE']->MOD_SETTINGS['pages'];
 			switch ($pKey) {
-				case 'hits':
-					$this->fieldArray = explode(',', 'title,' . implode(',', $this->stat_codes));
-					break;
 				case 1:
 					$this->cleanTableNames();
 					$tableNames = $this->allowedTableNames;
@@ -281,17 +270,6 @@ class tx_cms_layout extends recordList {
 									array(),
 									array('title' => $GLOBALS['LANG']->sL($GLOBALS['TCA'][$f2]['ctrl']['title'], 1))
 								);
-							}
-						} elseif (substr($field, 0, 5) == 'HITS_') {
-							$fParts = explode(':', substr($field, 5));
-							switch ($fParts[0]) {
-								case 'days':
-									$timespan = mktime(0, 0, 0) + intval($fParts[1]) * 3600 * 24;
-									$theData[$field] = '&nbsp;' . date('d', $timespan);
-									break;
-								default:
-									$theData[$field] = '';
-									break;
 							}
 						} else {
 							$theData[$field] = '&nbsp;&nbsp;<strong>' .
@@ -1104,43 +1082,6 @@ class tx_cms_layout extends recordList {
 						if ($GLOBALS['TCA'][$f2]) {
 							$c = $this->numberOfRecords($f2, $row['uid']);
 							$theData[$field] = '&nbsp;&nbsp;' . ($c ? $c : '');
-						}
-					} elseif (substr($field, 0, 5) == 'HITS_') {
-						if (t3lib_extMgm::isLoaded('sys_stat')) {
-							$fParts = explode(':', substr($field, 5));
-							switch ($fParts[0]) {
-								case 'days':
-									$timespan = mktime(0, 0, 0) + intval($fParts[1]) * 3600 * 24;
-										// Page hits
-									$number = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows(
-										'*',
-										'sys_stat',
-											$this->stat_select_field . '=' . intval($row['uid']) .
-													' AND tstamp >=' . intval($timespan) .
-													' AND tstamp <' . intval($timespan + 3600 * 24)
-									);
-									if ($number) {
-											// Sessions
-										$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-											'count(*)',
-											'sys_stat',
-												$this->stat_select_field . '=' . intval($row['uid']) . '
-															AND tstamp>=' . intval($timespan) . '
-															AND tstamp<' . intval($timespan + 3600 * 24) . '
-															AND surecookie<>\'\'',
-											'surecookie'
-										);
-										$scnumber = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
-
-										$number .= '/' . $scnumber;
-									} else {
-										$number = '';
-									}
-									break;
-							}
-							$theData[$field] = '&nbsp;' . $number;
-						} else {
-							$theData[$field] = '&nbsp;';
 						}
 					} else {
 						$theData[$field] = '&nbsp;&nbsp;' . htmlspecialchars(t3lib_BEfunc::getProcessedValue('pages', $field, $row[$field]));
@@ -2040,77 +1981,6 @@ class tx_cms_layout extends recordList {
 		foreach ($dfields as $fV) {
 			if ($rec[$fV]) {
 				$lines[] = array($GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel('pages', $fV)), t3lib_BEfunc::getProcessedValue('pages', $fV, $rec[$fV]));
-			}
-		}
-
-			// Page hits (depends on "sys_stat" extension)
-		if ($this->pI_showStat && t3lib_extMgm::isLoaded('sys_stat')) {
-
-				// Counting total hits:
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_stat', 'page_id=' . intval($rec['uid']));
-			if ($count) {
-
-					// Get min/max
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('min(tstamp) AS min,max(tstamp) AS max', 'sys_stat', 'page_id=' . intval($rec['uid']));
-				$rrow2 = $GLOBALS['TYPO3_DB']->sql_fetch_row($res);
-
-				$lines[] = '';
-				$lines[] = array($GLOBALS['LANG']->getLL('pI_hitsPeriod') . ':', t3lib_BEfunc::date($rrow2[0]) . ' - ' .
-					t3lib_BEfunc::date($rrow2[1]) . ' (' . t3lib_BEfunc::calcAge($rrow2[1] - $rrow2[0], $this->agePrefixes) . ')');
-				$lines[] = array($GLOBALS['LANG']->getLL('pI_hitsTotal') . ':', $rrow2[0]);
-
-					// Last 10 days
-				$nextMidNight = mktime(0, 0, 0) + 1 * 3600 * 24;
-
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*), FLOOR((' . $nextMidNight . '-tstamp)/(24*3600)) AS day', 'sys_stat', 'page_id=' . intval($rec['uid']) . ' AND tstamp>' . ($nextMidNight - 10 * 24 * 3600), 'day');
-				$days = array();
-				while ($rrow = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
-					$days[$rrow[1]] = $rrow[0];
-				}
-
-				$headerH = array();
-				$contentH = array();
-				for ($a = 9; $a >= 0; $a--) {
-					$headerH[] = '
-							<td class="bgColor5" nowrap="nowrap">&nbsp;' . date('d', $nextMidNight - ($a + 1) * 24 * 3600) . '&nbsp;</td>';
-					$contentH[] = '
-							<td align="center">' . ($days[$a] ? intval($days[$a]) : '-') . '</td>';
-				}
-
-					// Compile first hit-table (last 10 days)
-				$hitTable = '
-					<table border="0" cellpadding="0" cellspacing="1" class="typo3-page-hits">
-						<tr>' . implode('', $headerH) . '</tr>
-						<tr>' . implode('', $contentH) . '</tr>
-					</table>';
-				$lines[] = array($GLOBALS['LANG']->getLL('pI_hits10days') . ':', $hitTable, 1);
-
-					// Last 24 hours
-				$nextHour = mktime(date('H'), 0, 0) + 3600;
-				$hours = 16;
-
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*), FLOOR((' . $nextHour . '-tstamp)/3600) AS hours', 'sys_stat', 'page_id=' . intval($rec['uid']) . ' AND tstamp>' . ($nextHour - $hours * 3600), 'hours');
-				$days = array();
-				while ($rrow = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
-					$days[$rrow[1]] = $rrow[0];
-				}
-
-				$headerH = array();
-				$contentH = array();
-				for ($a = ($hours - 1); $a >= 0; $a--) {
-					$headerH[] = '
-							<td class="bgColor5" nowrap="nowrap">&nbsp;' . intval(date('H', $nextHour - ($a + 1) * 3600)) . '&nbsp;</td>';
-					$contentH[] = '
-							<td align="center">' . ($days[$a] ? intval($days[$a]) : '-') . '</td>';
-				}
-
-					// Compile second hit-table (last 24 hours)
-				$hitTable = '
-					<table border="0" cellpadding="0" cellspacing="1" class="typo3-page-stat">
-						<tr>' . implode('', $headerH) . '</tr>
-						<tr>' . implode('', $contentH) . '</tr>
-					</table>';
-				$lines[] = array($GLOBALS['LANG']->getLL('pI_hits24hours') . ':', $hitTable, 1);
 			}
 		}
 

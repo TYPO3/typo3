@@ -127,6 +127,13 @@ resource field from table sys_template during upgrading, fix the using
 TypoScript to refer to resources located in fileadmin or similar directly,
 and afterwards to finally delete the resource field in the install tool.
 
+* Removed page hit logging functionality
+
+Writing log entries to some logfile during frontend page hit was removed.
+There are tons of solutions on the net and on server basis that can do a
+better job than the core implementation ever did. Therefor the complete
+code was dropped and all TypoScript config.stat* options are obsolete.
+
 ===============================================================================
 Changes and Improvements
 ===============================================================================
