@@ -44,7 +44,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-final class t3lib_iconWorks {
+class t3lib_iconWorks {
 
 	public static $fileSpriteIconNames = array(
 		'htm' => 'mimetypes-text-html',
