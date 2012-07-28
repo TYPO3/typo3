@@ -706,6 +706,59 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		);
 		t3lib_utility_Array::arrayExport($array);
 	}
+
+	/**
+	 * @test
+	 */
+	public function arrayExportReturnsNumericArrayKeys() {
+		$array = array(
+			'foo' => 'string key',
+			23 => 'integer key',
+			'42' => 'string key representing integer',
+		);
+		$expected = 'array(' . LF .
+			TAB . '\'foo\' => \'string key\',' . LF .
+			TAB . '23 => \'integer key\',' . LF .
+			TAB . '42 => \'string key representing integer\',' . LF .
+		')';
+		$this->assertSame($expected, t3lib_utility_Array::arrayExport($array));
+	}
+
+	/**
+	 * @test
+	 */
+	public function arrayExportReturnsNoKeyIndexForConsecutiveCountedArrays() {
+		$array = array(
+			0 => 'zero',
+			1 => 'one',
+			2 => 'two',
+		);
+		$expected = 'array(' . LF .
+			TAB . '\'zero\',' . LF .
+			TAB . '\'one\',' . LF .
+			TAB . '\'two\',' . LF .
+		')';
+		$this->assertSame($expected, t3lib_utility_Array::arrayExport($array));
+	}
+
+	/**
+	 * @test
+	 */
+	public function arrayExportReturnsKeyIndexForNonConsecutiveCountedArrays() {
+		$array = array(
+			0 => 'zero',
+			1 => 'one',
+			3 => 'three',
+			4 => 'four',
+		);
+		$expected = 'array(' . LF .
+			TAB . '0 => \'zero\',' . LF .
+			TAB . '1 => \'one\',' . LF .
+			TAB . '3 => \'three\',' . LF .
+			TAB . '4 => \'four\',' . LF .
+		')';
+		$this->assertSame($expected, t3lib_utility_Array::arrayExport($array));
+	}
 }
 
 ?>
