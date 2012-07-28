@@ -62,15 +62,6 @@ class tslib_feTest extends tx_phpunit_testcase {
 			'public function roundTripCryptString($string) {' .
 			'return parent::roundTripCryptString($string);' .
 			'}' .
-
-			'public function stripIPv4($strIP) {' .
-			'return parent::stripIPv4($strIP);' .
-			'}' .
-
-			'public function stripIPv6($strIP) {' .
-			'return parent::stripIPv6($strIP);' .
-			'}' .
-
 			'}'
 		);
 
@@ -221,88 +212,6 @@ class tslib_feTest extends tx_phpunit_testcase {
 				$this->fixture->roundTripCryptString($clearText)
 			)
 		);
-	}
-
-	//////////////////////////////////////
-	// Tests concerning stat-anonymization
-	//////////////////////////////////////
-
-	/**
-	 * Data provider for stripIPv6Correct
-	 *
-	 * @return array Data sets
-	 */
-	public static function stripIPv4DataProviderCorrect() {
-		return array(
-			'empty address, prefix-length 24' => array('0.0.0.0', '24', '0.0.0.0'),
-			'normal address 1, prefix-length 1' => array('1.2.3.4', '1', '0.0.0.0'),
-			'normal address 2, prefix-length 24' => array('192.168.5.79', '24', '192.168.5.0'),
-			'normal address 2, prefix-length 30' => array('192.168.5.79', '30', '192.168.5.76'),
-				// test for no anonymization; full prefix-length
-			'normal address 2, prefix-length 32' => array('192.168.5.79', '32', '192.168.5.79'),
-				// test for full anonymization; full prefix-length
-			'normal address 2, prefix-length 0' => array('192.168.5.79', '0', '0.0.0.0'),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider stripIPv4DataProviderCorrect
-	 */
-	public function stripIPv4Correct($address, $prefixLength, $anonymized) {
-		$oldConfig = $this->fixture->config;
-
-		$this->fixture->config = array('config' =>
-			array('stat_IP_anonymize' => '1',
-				'stat_IP_anonymize_mask_ipv4' => $prefixLength
-			)
-		);
-
-		$this->assertEquals(
-			$this->fixture->stripIPv4($address),
-			$anonymized
-		);
-		$this->fixture->config = $oldConfig;
-	}
-
-	/**
-	 * Data provider for stripIPv6Correct
-	 *
-	 * @return array Data sets
-	 */
-	public static function stripIPv6DataProviderCorrect() {
-		return array(
-			'empty address, prefix-length 96' => array('::', '96', '::'),
-			'normal address 1, prefix-length 1' => array('1:2:3::4', '1', '::'),
-			'normal address 2, prefix-length 4' => array('ffff::9876', '4', 'f000::'),
-			'normal address 2, prefix-length 1' => array('ffff::9876', '1', '8000::'),
-			'normal address 3, prefix-length 96' => array('abc:def::9876', '96', 'abc:def::'),
-			'normal address 3, prefix-length 120' => array('abc:def::9876', '120', 'abc:def::9800'),
-				// test for no anonymization; full prefix-length
-			'normal address 3, prefix-length 128' => array('abc:def::9876', '128', 'abc:def::9876'),
-				// test for full anonymization
-			'normal address 3, prefix-length 0' => array('abc:def::9876', '0', '::'),
-		);
-	}
-
-	/**
-	 * @test
-	 * @dataProvider stripIPv6DataProviderCorrect
-	 */
-	public function stripIPv6Correct($address, $prefixLength, $anonymized) {
-		$oldConfig = $this->fixture->config;
-
-		$this->fixture->config = array('config' =>
-			array('stat_IP_anonymize' => '1',
-				'stat_IP_anonymize_mask_ipv6' => $prefixLength
-			)
-		);
-
-		$this->assertEquals(
-			$this->fixture->stripIPv6($address),
-			$anonymized
-		);
-		$this->fixture->config = $oldConfig;
 	}
 }
 ?>
