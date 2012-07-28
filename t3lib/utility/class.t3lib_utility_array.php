@@ -274,8 +274,28 @@ class t3lib_utility_Array {
 	public static function arrayExport(array $array = array(), $level = 0) {
 		$lines = 'array(' . LF;
 		$level ++;
+
+		$writeKeyIndex = FALSE;
+		$expectedKeyIndex = 0;
 		foreach ($array as $key => $value) {
-			$lines .= str_repeat(TAB, $level) . '\'' . $key . '\' => ';
+			if ($key === $expectedKeyIndex) {
+				$expectedKeyIndex ++;
+			} else {
+					// Found a non integer or non consecutive key, so we can break here
+				$writeKeyIndex = TRUE;
+				break;
+			}
+		}
+
+		foreach ($array as $key => $value) {
+				// Indention
+			$lines .= str_repeat(TAB, $level);
+
+			if ($writeKeyIndex) {
+					// Numeric / string keys
+				$lines .= is_int($key) ? $key . ' => ' : '\'' . $key . '\' => ';
+			}
+
 			if (is_array($value)) {
 				if (count($value) > 0) {
 					$lines .= self::arrayExport($value, $level);
