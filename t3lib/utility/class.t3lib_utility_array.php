@@ -290,7 +290,11 @@ class t3lib_utility_Array {
 				$lines .= $value ? 'TRUE' : 'FALSE';
 				$lines .= ',' . LF;
 			} elseif (is_string($value)) {
-				$lines .= '\'' . str_replace('\\', '\\\\', $value) . '\'' . ',' . LF;
+					// Quote \ to \\
+				$stringContent = str_replace('\\', '\\\\', $value);
+					// Quote ' to \'
+				$stringContent = str_replace('\'', '\\\'', $stringContent);
+				$lines .= '\'' . $stringContent . '\'' . ',' . LF;
 			} else {
 				throw new RuntimeException(
 					'Objects are not supported',

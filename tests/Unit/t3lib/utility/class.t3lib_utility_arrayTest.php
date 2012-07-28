@@ -33,9 +33,9 @@
  */
 class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 
-	#######################
-	# Tests concerning filterByValueRecursive
-	#######################
+	///////////////////////
+	// Tests concerning filterByValueRecursive
+	///////////////////////
 
 	/**
 	 * Data provider for filterByValueRecursiveCorrectlyFiltersArray
@@ -189,9 +189,9 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$this->assertEquals(array(), t3lib_utility_Array::filterByValueRecursive(new stdClass(), array(new stdClass())));
 	}
 
-	#######################
-	# Tests concerning  isValidPath
-	#######################
+	///////////////////////
+	// Tests concerning isValidPath
+	///////////////////////
 
 	/**
 	 * Mock the class under test, isValidPath() (method under test), calls
@@ -228,9 +228,9 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$this->assertFalse($className::isValidPath(array('foo'), 'foo'));
 	}
 
-	#######################
-	# Tests concerning getValueByPath
-	#######################
+	///////////////////////
+	// Tests concerning getValueByPath
+	///////////////////////
 
 	/**
 	 * @test
@@ -422,9 +422,9 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$this->assertEquals($expected, t3lib_utility_Array::getValueByPath($input, $searchPath, $delimeter));
 	}
 
-	#######################
-	# Tests concerning setValueByPath
-	#######################
+	///////////////////////
+	// Tests concerning setValueByPath
+	///////////////////////
 
 	/**
 	 * @test
@@ -625,9 +625,9 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		);
 	}
 
-	#######################
-	# Tests concerning sortByKeyRecursive
-	#######################
+	///////////////////////
+	// Tests concerning sortByKeyRecursive
+	///////////////////////
 
 	/**
 	 * @test
@@ -656,9 +656,9 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$this->assertSame($expectedResult, t3lib_utility_Array::sortByKeyRecursive($unsortedArray));
 	}
 
-	#######################
-	# Tests concerning arrayExport
-	#######################
+	///////////////////////
+	// Tests concerning arrayExport
+	///////////////////////
 
 	/**
 	 * @test
@@ -681,7 +681,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 			TAB . '\'foo\' => array(' . LF .
 				TAB . TAB . '\'bar\' => 42,' . LF .
 				TAB . TAB . '\'bar2\' => array(' . LF .
-				TAB . TAB . TAB . '\'baz\' => \'val\'ue\',' . LF .
+				TAB . TAB . TAB . '\'baz\' => \'val\\\'ue\',' . LF .
 				TAB . TAB . TAB . '\'baz2\' => TRUE,' . LF .
 				TAB . TAB . TAB . '\'baz3\' => FALSE,' . LF .
 				TAB . TAB . TAB . '\'baz4\' => array(),' . LF .
