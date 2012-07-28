@@ -6337,7 +6337,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						(t3lib_extMgm::isLoaded('indexed_search') ? ',--div--,index_words,index_rel,index_phash,index_grlist,index_section,index_fulltext' : '').
 						(t3lib_extMgm::isLoaded('tt_products') ? ',--div--,sys_products_orders,sys_products_orders_mm_tt_products' : '').
 						(t3lib_extMgm::isLoaded('direct_mail') ? ',--div--,sys_dmail_maillog' : '').
-						(t3lib_extMgm::isLoaded('sys_stat') ? ',--div--,sys_stat' : '')
 					);
 
 					if (is_array($this->INSTALL['database_clearcache'])) {
@@ -6390,7 +6389,6 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						'cache_hash' => 'Multipurpose md5-hash cache',
 						'cache_imagesizes' => 'Cached image sizes',
 						'sys_log' => 'Backend action logging',
-						'sys_stat' => 'Page hit statistics',
 						'sys_history' => 'Addendum to the sys_log which tracks ALL changes to content through TCE. May become huge by time. Is used for rollback (undo) and the WorkFlow engine.',
 						'be_sessions' => 'Backend User sessions',
 						'fe_sessions' => 'Frontend User sessions',
