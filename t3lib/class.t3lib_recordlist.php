@@ -383,6 +383,41 @@ class t3lib_recordList {
 		}
 		return $this->translateTools;
 	}
+
+	/**
+	 * Generates HTML Code for a Reference Tooltip out of
+	 * sys_refindex records you hand over
+	 *
+	 * @param array $references
+	 * @param string $launchViewParam
+	 * @return string
+	 */
+	protected function generateReferenceToolTip(array $references, $launchViewParam = '') {
+		$result = array();
+
+		foreach ($references AS $reference) {
+			$result[] =
+				$reference['tablename'] . ':' .
+				$reference['recuid'] . ':' .
+				$reference['field'];
+			if (strlen(implode(' / ', $result)) >= 100) {
+				break;
+			}
+		}
+
+		if (count($result) == 0) {
+			return '-';
+		} else {
+			$HTMLCode = '<a href="#"';
+			if ($launchViewParam !== '') {
+				$HTMLCode .= ' onclick="' . htmlspecialchars('top.launchView(' . $launchViewParam . '); return false;') . '"';
+			}
+			$HTMLCode .= ' title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ', $result), 100)) . '">';
+			$HTMLCode .= count($result);
+			$HTMLCode .= '</a>';
+			return $HTMLCode;
+		}
+	}
 }
 
 ?>

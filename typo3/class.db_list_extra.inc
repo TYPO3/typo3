@@ -1486,12 +1486,7 @@ class localRecordList extends recordList {
 	 *                references to the corresponding record
 	 */
 	protected function createReferenceHtml($tableName, $uid) {
-		$referenceCount = $this->getReferenceCount($tableName, $uid);
-		if ($referenceCount == 0) {
-			return '';
-		}
-
-		$queryResult = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'tablename, recuid, field',
 			'sys_refindex',
 			'ref_table = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(
@@ -1504,25 +1499,7 @@ class localRecordList extends recordList {
 			'0,20'
 		);
 
-		$referenceTitles = array();
-
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($queryResult)) {
-			$referenceTitles[] = $row['tablename'] . ':' . $row['recuid'] .
-				':' . $row['field'];
-			if (strlen(implode(' / ', $referenceTitles)) >= 100) {
-				break;
-			}
-		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($queryResult);
-
-		return '<a href="#" ' .
-			'onclick="' . htmlspecialchars(
-				'top.launchView(\'' . $tableName . '\', \'' . $uid .
-				'\'); return false;'
-			) . '" ' .
-			'title="' . htmlspecialchars(
-				t3lib_div::fixed_lgd_cs(implode(' / ', $referenceTitles), 100)
-			) . '">' . $referenceCount . '</a>';
+		return $this->generateReferenceToolTip($rows, '\'' . $tableName . '\', \'' . $uid . '\'');
 	}
 
 	/**
