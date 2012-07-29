@@ -796,6 +796,8 @@ class SC_mod_user_setup_index {
 		if (is_object($accessObject) && method_exists($accessObject, 'accessLevelCheck')) {
 				// Initialize vars. If method fails, $set will be set to FALSE
 			return $accessObject->accessLevelCheck($config);
+		} elseif ($access == 'admin') {
+			return $this->isAdmin;
 		}
 	}
 
