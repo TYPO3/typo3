@@ -236,12 +236,12 @@ div.t3-view-help img.c-inlineimg  {
 }
 
 /** ExtJS based CSH tooltips */
-.x-tip.typo3-csh-tooltip .x-tip-tl,
-.x-tip.typo3-csh-tooltip .x-tip-cl {
+.x-tip.typo3-tooltip .x-tip-tl,
+.x-tip.typo3-tooltip .x-tip-cl {
 	padding-left: 8px;
 }
 
-.x-tip.typo3-csh-tooltip .x-tip-tr,
-.x-tip.typo3-csh-tooltip .x-tip-cr {
+.x-tip.typo3-tooltip .x-tip-tr,
+.x-tip.typo3-tooltip .x-tip-cr {
 	padding-right: 8px;
 }

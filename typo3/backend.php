@@ -122,6 +122,7 @@ class TYPO3backend {
 			'modulepanel'           => 'js/extjs/modulepanel.js',
 			'viewportConfiguration' => 'js/extjs/viewportConfiguration.js',
 			'util'					=> '../t3lib/js/extjs/util.js',
+			'tooltips'				=> '../t3lib/js/extjs/tooltip.js',
 		);
 
 		if ($this->debug) {

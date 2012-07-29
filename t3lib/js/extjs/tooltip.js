@@ -24,71 +24,29 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-Ext.ns('TYPO3', 'TYPO3.CSH.ExtDirect');
+Ext.ns('TYPO3');
 
 /**
- * Class to show tooltips for links that have the css t3-help-link
- * need the tags data-table and data-field (HTML5)
+ * Class to show tooltips for links that have the css t3-tooltip
  */
 
 
-TYPO3.ContextHelp = function() {
-
-	/**
-	 * Cache for CSH
-	 * @type {Ext.util.MixedCollection}
-	 */
-	var cshHelp = new Ext.util.MixedCollection(true),
-	tip;
+TYPO3.ToolTip = function() {
 
 	/**
 	 * Shows the tooltip, triggered from mouseover event handler
 	 *
 	 */
-	function showToolTipHelp() {
+	function showToolTip() {
 		var link = tip.triggerElement;
 		if (!link) {
 			return false;
 		}
-		var table = link.getAttribute('data-table');
-		var field = link.getAttribute('data-field');
-		var key = table + '.' + field;
-		var response = cshHelp.key(key);
 		tip.target = tip.triggerElement;
-		if (response) {
-			updateTip(response);
-		} else {
-				// If a table is defined, use ExtDirect call to get the tooltip's content
-			if (table) {
-					// Clear old tooltip contents
-				updateTip({
-					description: top.TYPO3.LLL.core.csh_tooltip_loading,
-					cshLink: '',
-					moreInfo: '',
-					title: ''
-				});
-					// Load content
-				TYPO3.CSH.ExtDirect.getTableContextHelp(table, function(response, options) {
-					Ext.iterate(response, function(key, value){
-						cshHelp.add(value);
-						if (key === field) {
-							updateTip(value);
-								// Need to re-position because the height may have increased
-							tip.show();
-						}
-					});
-				}, this);
-
-				// No table was given, use directly title and description
-			} else {
-				updateTip({
-					description: link.getAttribute('data-description'),
-					cshLink: '',
-					moreInfo: '',
-					title: link.getAttribute('data-title')
-				});
-			}
-		}
+		updateTip({
+			description: link.getAttribute('data-description'),
+			title: link.getAttribute('data-title')
+		});
 	}
 
 	/**
@@ -98,11 +56,6 @@ TYPO3.ContextHelp = function() {
 	 */
 	function updateTip(response) {
 		tip.body.dom.innerHTML = response.description;
-		tip.cshLink = response.id;
-		tip.moreInfo = response.moreInfo;
-		if (tip.moreInfo) {
-			tip.addClass('tipIsLinked');
-		}
 		tip.setTitle(response.title);
 		tip.doAutoWidth();
 	}
@@ -113,55 +66,36 @@ TYPO3.ContextHelp = function() {
 		 */
 		init: function() {
 			tip = new Ext.ToolTip({
-				title: 'CSH', // needs a title for init because of the markup
+				title: 'ToolTip', // needs a title for init because of the markup
 				html: '',
 					// The tooltip will appear above the label, if viewport allows
 				anchor: 'bottom',
 				minWidth: 160,
 				maxWidth: 240,
 				target: Ext.getBody(),
-				delegate: 'span.t3-help-link',
+				delegate: 'span.t3-tooltip',
 				renderTo: Ext.getBody(),
-				cls: 'typo3-tooltip',
+				cls: 'typo3-csh-tooltip',
 				shadow: false,
 				dismissDelay: 0, // tooltip stays while mouse is over target
 				autoHide: true,
-				showDelay: 1000, // show after 1 second
-				hideDelay: 300, // hide after 0.3 seconds
+				showDelay: 500, // show after 1 second
+				hideDelay: 500,
 				closable: true,
 				isMouseOver: false,
 				listeners: {
-					beforeshow: showToolTipHelp,
+					beforeshow: showToolTip,
 					render: function(tip) {
-						tip.body.on({
-							'click': {
-								fn: function(event) {
-									event.stopEvent();
-									if (tip.moreInfo) {
-										try {
-											top.TYPO3.ContextHelpWindow.open(tip.cshLink);
-										} catch(e) {
-											// do nothing
-										}
-									}
-									tip.hide();
-								}
-							}
-						});
 						tip.el.on({
 							'mouseover': {
 								fn: function() {
-									if (tip.moreInfo) {
-										tip.isMouseOver = true;
-									}
+									tip.isMouseOver = true;
 								}
 							},
 							'mouseout': {
 								fn: function() {
-									if (tip.moreInfo) {
-										tip.isMouseOver = false;
-										tip.hide.defer(tip.hideDelay, tip, []);
-									}
+									tip.isMouseOver = false;
+									tip.hide.defer(tip.hideDelay, tip, []);
 								}
 							}
 						});
@@ -191,7 +125,7 @@ TYPO3.ContextHelp = function() {
 			});
 
 			/**
-			 * Adds a sequence to Ext.TooltTip::showAt so as to increase vertical offset when anchor position is 'botton'
+			 * Adds a sequence to Ext.TooltTip::showAt so as to increase vertical offset when anchor position is 'bottom'
 			 * This positions the tip box closer to the target element when the anchor is on the bottom side of the box
 			 * When anchor position is 'top' or 'bottom', the anchor is pushed slightly to the left in order to align with the help icon, if any
 			 *
@@ -216,21 +150,10 @@ TYPO3.ContextHelp = function() {
 
 		},
 
-		/**
-		 * Opens the help window, triggered from click event handler
-		 *
-		 * @param {Event} event
-		 * @param {Node} link
-		 */
-		openHelpWindow: function(event, link) {
-			var id = link.getAttribute('data-table') + '.' + link.getAttribute('data-field');
-			event.stopEvent();
-			top.TYPO3.ContextHelpWindow.open(id);
-		}
 	}
 }();
 
 /**
  * Calls the init on Ext.onReady
  */
-Ext.onReady(TYPO3.ContextHelp.init, TYPO3.ContextHelp);
+Ext.onReady(TYPO3.ToolTip.init, TYPO3.ToolTip);

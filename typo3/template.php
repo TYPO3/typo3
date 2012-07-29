@@ -714,6 +714,8 @@ class template {
 		if ($includeCsh) {
 			$this->loadCshJavascript();
 		}
+		$this->pageRenderer->loadExtJS();
+		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/tooltip.js');
 
 			// Get the browser info
 		$browserInfo = t3lib_utility_Client::getBrowserInfo(t3lib_div::getIndpEnv('HTTP_USER_AGENT'));
