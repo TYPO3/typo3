@@ -5,7 +5,7 @@ if (!defined ('TYPO3_MODE')) {
 
 
 t3lib_div::loadTCA('fe_users');
-$GLOBALS['TCA']['fe_users']['columns']['password']['config']['max'] = 60;
+$GLOBALS['TCA']['fe_users']['columns']['password']['config']['max'] = 100;
 
 if (tx_saltedpasswords_div::isUsageEnabled('FE')) {
 
@@ -25,7 +25,7 @@ if (tx_saltedpasswords_div::isUsageEnabled('FE')) {
 
 
 t3lib_div::loadTCA('be_users');
-$GLOBALS['TCA']['be_users']['columns']['password']['config']['max'] = 60;
+$GLOBALS['TCA']['be_users']['columns']['password']['config']['max'] = 100;
 
 if (tx_saltedpasswords_div::isUsageEnabled('BE')) {
 
