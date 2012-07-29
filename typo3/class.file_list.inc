@@ -746,15 +746,7 @@ class fileList extends t3lib_recordList {
 				' AND ref_uid = ' . $fileOrFolderObject->getUid() . ' AND deleted=0'
 		);
 
-			// Compile information for title tag:
-		$infoData = array();
-		if (is_array($rows)) {
-			foreach ($rows as $row) {
-				$infoData[] = $row['tablename'] . ':' . $row['recuid'] . ':' . $row['field'];
-			}
-		}
-
-		return count($infoData) ? '<a href="#" onclick="' . htmlspecialchars('top.launchView( \'_FILE\', \'' . $fileOrFolderObject->getCombinedIdentifier() . '\'); return false;') . '" title="' . htmlspecialchars(t3lib_div::fixed_lgd_cs(implode(' / ', $infoData), 100)) . '">' . count($infoData) . '</a>' : '-';
+		return $this->generateReferenceToolTip($rows, '\'_FILE\', \'' . $fileOrFolderObject->getCombinedIdentifier() . '\'');
 	}
 }
 ?>
