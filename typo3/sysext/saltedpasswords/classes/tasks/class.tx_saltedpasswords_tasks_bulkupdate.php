@@ -77,6 +77,16 @@ class tx_saltedpasswords_Tasks_BulkUpdate extends tx_scheduler_Task {
 	 * @return void
 	 */
 	public function execute() {
+		$saltedpasswordsInstanceBE = tx_saltedpasswords_salts_factory::getSaltingInstance(NULL, 'BE');
+		$saltedpasswordsInstanceFE = tx_saltedpasswords_salts_factory::getSaltingInstance(NULL, 'FE');
+		if ($saltedpasswordsInstanceBE instanceof tx_saltedpasswords_salts_blowfish || $saltedpasswordsInstanceFE instanceof tx_saltedpasswords_salts_blowfish) {
+			$fieldInformationFE = $GLOBALS['TYPO3_DB']->admin_get_fields('fe_users');
+			$fieldInformationBE = $GLOBALS['TYPO3_DB']->admin_get_fields('be_users');
+			if ($fieldInformationBE['password']['Type'] === 'varchar(60)' || $fieldInformationFE['password']['Type'] === 'varchar(60)') {
+				throw new RuntimeException('You need to execute a database compare within the install tool or increase the size of the password fields to at least varchar(61).', 1343568853);
+			}
+		}
+
 		$processedAllRecords = TRUE;
 
 			// For frontend and backend
