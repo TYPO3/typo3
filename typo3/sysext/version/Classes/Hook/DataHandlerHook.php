@@ -346,6 +346,8 @@ class DataHandlerHook {
 		$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $stat['uid']);
 		// So, if $id is not set, then $table is taken to be the complete element name!
 		$elementName = $id ? $table . ':' . $id : $table;
+		$allElements = explode(',', $elementName);
+
 		if (is_array($workspaceRec)) {
 			// Get the new stage title from workspaces library, if workspaces extension is installed
 			if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
@@ -386,9 +388,7 @@ class DataHandlerHook {
 						$emails = $this->getEmailsForStageChangeNotification($workspaceRec['adminusers'], TRUE);
 						break;
 					case -1:
-						// List of elements to reject:
-						$allElements = explode(',', $elementName);
-						// Traverse them, and find the history of each
+						// Find the history of elements to reject
 						foreach ($allElements as $elRef) {
 							list($eTable, $eUid) = explode(':', $elRef);
 							$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('log_data,tstamp,userid', 'sys_log', 'action=6 and details_nr=30
@@ -423,17 +423,6 @@ class DataHandlerHook {
 			}
 			// prepare and then send the emails
 			if (count($emails)) {
-				// Path to record is found:
-				list($elementTable, $elementUid) = explode(':', $elementName);
-				$elementUid = intval($elementUid);
-				$elementRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($elementTable, $elementUid);
-				$recordTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($elementTable, $elementRecord);
-				if ($elementTable == 'pages') {
-					$pageUid = $elementUid;
-				} else {
-					\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($elementTable, $elementRecord);
-					$pageUid = ($elementUid = $elementRecord['pid']);
-				}
 				// fetch the TSconfig settings for the email
 				// old way, options are TCEMAIN.notificationEmail_body/subject
 				$TCEmainTSConfig = $tcemainObj->getTCEMAIN_TSconfig($pageUid);
@@ -442,9 +431,83 @@ class DataHandlerHook {
 				// userTSconfig: page.tx_version.workspaces.stageNotificationEmail.subject
 				$pageTsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pageUid);
 				$emailConfig = $pageTsConfig['tx_version.']['workspaces.']['stageNotificationEmail.'];
+
+				if ($emailConfig['cropPathTitlesAfter']) {
+					$cropPathTitlesAfter = $emailConfig['cropPathTitlesAfter'];
+				} else {
+					$cropPathTitlesAfter = 20;
+				}
+
+				foreach ($allElements as $multipleElementArrayKey => $multipleElementArrayValue) {
+					// Extract the element uid/table information
+					list($eTable,$eUid) = explode(':',trim($multipleElementArrayValue));
+					$eUid = intval($eUid);
+					$eRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($eTable,$eUid);
+					$eTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($eTable,$eRecord);
+					if ($eTable != 'pages') {
+						\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($eTable,$eRecord);
+						$eUid = $eRecord['pid'];
+					}
+					$ePath = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($eUid,'',$cropPathTitlesAfter);
+
+					$ePreview = '';
+					$eSplittedPreview = '';
+					if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
+						/** @var  \TYPO3\CMS\Workspaces\Service\WorkspaceService $workspaceService */
+						$workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+						if (method_exists($workspaceService, 'generateWorkspacePreviewLink')){
+							// Only generate the link if the marker is in the template - prevents database from getting to much entries
+							if (strpos($emailConfig['messageMultipleElementRow'], '###ELEMENT_PREVIEW###') !== FALSE) {
+								$ePreview = $workspaceService->generateWorkspacePreviewLink($eUid);
+							}
+							$eSplittedPreview = $workspaceService->generateWorkspaceSplittedPreviewLink($eUid, TRUE);
+						}
+					}
+
+					$elementRowMarkers = array(
+						'###ELEMENT_NUMBER###' => $multipleElementArrayKey + 1,
+						'###ELEMENT_TITLE###' => $eTitle,
+						'###ELEMENT_KEY###' => $multipleElementArrayValue,
+						'###ELEMENT_PATH###' => $ePath,
+						'###ELEMENT_PREVIEW###' => $ePreview,
+						'###ELEMENT_SPLITTED_PREVIEW###' => $eSplittedPreview
+					);
+
+					$recordTitle = $eTitle.", ";
+					$recordPath = $ePath.", ";
+					$recordPreview = $ePreview.", ";
+					$recordSplittedPreview = $eSplittedPreview.", ";
+
+					$emailMessageMultipleElementRow = $emailConfig['messageMultipleElementRow'];
+
+					// Check if the email needs to be localized
+					// in the users' language
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($emailMessageMultipleElementRow, 'LLL:')) {
+						$recipientLanguage = ($recipientData['lang'] ? $recipientData['lang'] : 'default');
+						if (!isset($languageObjects[$recipientLanguage])) {
+								// a LANG object in this language hasn't been
+								// instantiated yet, so this is done here
+							/** @var $languageObject \TYPO3\CMS\Lang\LanguageService */
+							$languageObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
+							$languageObject->init($recipientLanguage);
+							$languageObjects[$recipientLanguage] = $languageObject;
+						} else {
+							$languageObject = $languageObjects[$recipientLanguage];
+						}
+
+						if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($emailMessageMultipleElementRow, 'LLL:')) {
+							$emailMessageMultipleElementRow = $languageObject->sL($emailMessageMultipleElementRow);
+						}
+					}
+
+					$changedElements = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($emailMessageMultipleElementRow, $elementRowMarkers, '', TRUE, TRUE);
+				}
+
 				$markers = array(
-					'###RECORD_TITLE###' => $recordTitle,
-					'###RECORD_PATH###' => \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($elementUid, '', 20),
+					'###RECORD_TITLE###' => trim($recordTitle,", "),
+					'###RECORD_PATH###' => trim($recordPath,", "),
+					'###PREVIEW_LINK###' => trim($recordPreview,", "),
+					'###SPLITTED_PREVIEW_LINK###' => trim($recordSplittedPreview,", "),
 					'###SITE_NAME###' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
 					'###SITE_URL###' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir,
 					'###WORKSPACE_TITLE###' => $workspaceRec['title'],
@@ -452,26 +515,13 @@ class DataHandlerHook {
 					'###ELEMENT_NAME###' => $elementName,
 					'###NEXT_STAGE###' => $newStage,
 					'###COMMENT###' => $comment,
+					'###CHANGED_ELEMENTS###' => $changedElements,
 					// See: #30212 - keep both markers for compatibility
 					'###USER_REALNAME###' => $tcemainObj->BE_USER->user['realName'],
 					'###USER_FULLNAME###' => $tcemainObj->BE_USER->user['realName'],
 					'###USER_USERNAME###' => $tcemainObj->BE_USER->user['username']
 				);
-				// add marker for preview links if workspace extension is loaded
-				if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('workspaces')) {
-					$this->workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
-					// only generate the link if the marker is in the template - prevents database from getting to much entries
-					if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($emailConfig['message'], 'LLL:')) {
-						$tempEmailMessage = $GLOBALS['LANG']->sL($emailConfig['message']);
-					} else {
-						$tempEmailMessage = $emailConfig['message'];
-					}
-					if (strpos($tempEmailMessage, '###PREVIEW_LINK###') !== FALSE) {
-						$markers['###PREVIEW_LINK###'] = $this->workspaceService->generateWorkspacePreviewLink($elementUid);
-					}
-					unset($tempEmailMessage);
-					$markers['###SPLITTED_PREVIEW_LINK###'] = $this->workspaceService->generateWorkspaceSplittedPreviewLink($elementUid, TRUE);
-				}
+
 				// Hook for preprocessing of the content for formmails:
 				if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'])) {
 					foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/version/class.tx_version_tcemain.php']['notifyStageChange-postModifyMarkers'] as $_classRef) {
