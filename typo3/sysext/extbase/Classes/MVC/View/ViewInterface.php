@@ -48,7 +48,7 @@ interface Tx_Extbase_MVC_View_ViewInterface {
 	 * Can be chained, so $this->view->assign(..., ...)->assign(..., ...); is possible
 	 *
 	 * @param string $key Key of variable
-	 * @param object $value Value of object
+	 * @param mixed $value Value of object
 	 * @return Tx_Extbase_MVC_View_ViewInterface an instance of $this, to enable chaining
 	 * @api
 	 */
