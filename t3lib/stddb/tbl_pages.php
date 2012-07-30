@@ -651,29 +651,9 @@ $TCA['pages'] = array(
 						'',
 					),
 					array(
-						'LLL:EXT:cms/locallang_tca.xml:pages.module.I.1',
-						'shop',
-						'i/modules_shop.gif',
-					),
-					array(
-						'LLL:EXT:cms/locallang_tca.xml:pages.module.I.2',
-						'board',
-						'i/modules_board.gif',
-					),
-					array(
-						'LLL:EXT:cms/locallang_tca.xml:pages.module.I.3',
-						'news',
-						'i/modules_news.gif',
-					),
-					array(
 						'LLL:EXT:cms/locallang_tca.xml:pages.module.I.4',
 						'fe_users',
 						'i/fe_users.gif',
-					),
-					array(
-						'LLL:EXT:cms/locallang_tca.xml:pages.module.I.6',
-						'approve',
-						'state_checked.png',
 					),
 				),
 				'default' => '',
