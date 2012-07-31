@@ -32,7 +32,6 @@
  * @author Robert Lemke <robert@typo3.org>
  * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
- * @scope prototype
  */
 class t3lib_cache_frontend_VariableFrontend extends t3lib_cache_frontend_AbstractFrontend {
 

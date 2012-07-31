@@ -30,9 +30,8 @@
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @author Ingo Renner <ingo@typo3.org>
  * @api
- * @scope prototype
  */
-class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend {
+class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_TaggableBackend {
 
 	/**
 	 * @var integer Timestamp of 2038-01-01)
@@ -112,7 +111,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Initializes common references used in this backend.
 	 *
-	 * @return	void
+	 * @return void
 	 */
 	protected function initializeCommonReferences() {
 		$this->identifierField = $this->cacheTable . '.identifier';
@@ -127,19 +126,19 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Saves data in a cache file.
 	 *
-	 * @param string An identifier for this specific cache entry
-	 * @param string The data to be stored
-	 * @param array Tags to associate with this cache entry
-	 * @param integer Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+	 * @param string $entryIdentifier An identifier for this specific cache entry
+	 * @param string $data The data to be stored
+	 * @param array $tags Tags to associate with this cache entry
+	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
-	 * @throws t3lib_cache_Exception if no cache frontend has been set.
-	 * @throws t3lib_cache_exception_InvalidData if the data to be stored is not a string.
+	 * @throws \t3lib_cache_Exception if no cache frontend has been set.
+	 * @throws \t3lib_cache_exception_InvalidData if the data to be stored is not a string.
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		$this->throwExceptionIfFrontendDoesNotExist();
 
 		if (!is_string($data)) {
-			throw new t3lib_cache_exception_InvalidData(
+			throw new \t3lib_cache_exception_InvalidData(
 				'The specified data is of type "' . gettype($data) . '" but a string is expected.',
 				1236518298
 			);
@@ -274,7 +273,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Finds and returns all cache entries which are tagged by the specified tag.
 	 *
-	 * @param string The tag to search for
+	 * @param string $tag The tag to search for
 	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
 	 */
 	public function findIdentifiersByTag($tag) {
@@ -313,7 +312,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Removes all cache entries of this cache which are tagged by the specified tag.
 	 *
-	 * @param string The tag the entries must have
+	 * @param string $tag The tag the entries must have
 	 * @return void
 	 */
 	public function flushByTag($tag) {
@@ -371,7 +370,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Returns the table where the cache entries are stored.
 	 *
-	 * @return	string	The cache table.
+	 * @return string The cache table.
 	 */
 	public function getCacheTable() {
 		$this->throwExceptionIfFrontendDoesNotExist();
@@ -382,7 +381,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Gets the table where cache tags are stored.
 	 *
-	 * @return	string		Name of the table storing tags
+	 * @return string Name of the table storing tags
 	 */
 	public function getTagsTable() {
 		$this->throwExceptionIfFrontendDoesNotExist();
@@ -393,7 +392,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Enable data compression
 	 *
-	 * @param boolean TRUE to enable compression
+	 * @param boolean $compression TRUE to enable compression
 	 */
 	public function setCompression($compression) {
 		$this->compression = $compression;
@@ -415,12 +414,12 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Check if required frontend instance exists
 	 *
-	 * @throws t3lib_cache_Exception If there is no frontend instance in $this->cache
+	 * @throws \t3lib_cache_Exception If there is no frontend instance in $this->cache
 	 * @return void
 	 */
 	protected function throwExceptionIfFrontendDoesNotExist() {
 		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
+			throw new \t3lib_cache_Exception(
 				'No cache frontend has been set via setCache() yet.',
 				1236518288
 			);
@@ -445,7 +444,7 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	/**
 	 * Deletes rows in cache table found by where clause on tags table
 	 *
-	 * @param string The where clause for the tags table
+	 * @param string $tagsTableWhereClause The where clause for the tags table
 	 * @return void
 	 */
 	protected function deleteCacheTableRowsByTagsTableWhereClause($tagsTableWhereClause) {

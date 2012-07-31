@@ -28,7 +28,7 @@
  *
  * This file is a backport from FLOW3
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tests
  */
@@ -41,8 +41,6 @@ class t3lib_cache_backend_AbstractBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setUp() {
 		$className = 'ConcreteBackend_' . md5(uniqid(mt_rand(), TRUE));
@@ -69,7 +67,6 @@ class t3lib_cache_backend_AbstractBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function theConstructorCallsSetterMethodsForAllSpecifiedOptions() {
 		$className = get_class($this->backend);

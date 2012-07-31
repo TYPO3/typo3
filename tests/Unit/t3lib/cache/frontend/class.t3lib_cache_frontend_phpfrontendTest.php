@@ -35,7 +35,6 @@ class t3lib_cache_frontend_PhpFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @expectedException InvalidArgumentException
 	 */
 	public function setChecksIfTheIdentifierIsValid() {
@@ -46,7 +45,6 @@ class t3lib_cache_frontend_PhpFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setPassesPhpSourceCodeTagsAndLifetimeToBackend() {
 		$originalSourceCode = 'return "hello world!";';
@@ -61,7 +59,6 @@ class t3lib_cache_frontend_PhpFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 * @expectedException t3lib_cache_exception_InvalidData
 	 */
 	public function setThrowsInvalidDataExceptionOnNonStringValues() {
@@ -71,7 +68,6 @@ class t3lib_cache_frontend_PhpFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function requireOnceCallsTheBackendsRequireOnceMethod() {
 		$mockBackend = $this->getMock('t3lib_cache_backend_PhpCapableBackend', array(), array(), '', FALSE);

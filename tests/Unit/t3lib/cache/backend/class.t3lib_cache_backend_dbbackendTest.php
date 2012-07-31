@@ -75,8 +75,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	 * Sets up the backend used for testing
 	 *
 	 * @return void
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	protected function setUpBackend(array $backendOptions = array()) {
 		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingCacheTable . ' (
@@ -123,7 +121,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function tearDown() {
 		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
@@ -139,7 +136,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setCacheCalculatesCacheTableName() {
 		$backend = $this->setUpBackend();
@@ -169,7 +165,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @expectedException t3lib_cache_exception_InvalidData
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setThrowsExceptionIfDataIsNotAString() {
 		$backend = $this->setUpBackend();
@@ -183,7 +178,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setInsertsEntryInTable() {
 		$backend = $this->setUpBackend();
@@ -205,7 +199,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setRemovesAnAlreadyExistingCacheEntryForTheSameIdentifier() {
 		$backend = $this->setUpBackend();
@@ -229,7 +222,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setReallySavesSpecifiedTags() {
 		$backend = $this->setUpBackend();
@@ -259,7 +251,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesCompressedDataWithEnabledCompression() {
 		$backend = $this->setUpBackend(
@@ -285,7 +276,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesPlaintextDataWithEnabledCompressionAndCompressionLevel0() {
 		$backend = $this->setUpBackend(
@@ -321,7 +311,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getReturnsContentOfTheCorrectCacheEntry() {
 		$backend = $this->setUpBackend();
@@ -351,7 +340,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function hasReturnsTheCorrectResult() {
 		$backend = $this->setUpBackend();
@@ -377,7 +365,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function removeReallyRemovesACacheEntry() {
 		$backend = $this->setUpBackend();
@@ -410,7 +397,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbageReallyRemovesAnExpiredCacheEntry() {
 		$backend = $this->setUpBackend();
@@ -439,7 +425,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbageReallyRemovesAllExpiredCacheEntries() {
 		$backend = $this->setUpBackend();
@@ -470,7 +455,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
@@ -499,7 +483,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushRemovesAllCacheEntries() {
 		$backend = $this->setUpBackend();
@@ -532,7 +515,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
@@ -560,7 +542,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function hasReturnsTheCorrectResultForEntryWithExceededLifetime() {
 		$backend = $this->setUpBackend();
@@ -585,7 +566,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function hasReturnsTrueForEntryWithUnlimitedLifetime() {
 		$backend = $this->setUpBackend();
@@ -605,7 +585,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getReturnsFalseForEntryWithExceededLifetime() {
 		$backend = $this->setUpBackend();
@@ -640,7 +619,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function findIdentifiersByTagReturnsEmptyArrayForEntryWithExceededLifetime() {
 		$backend = $this->setUpBackend();
@@ -658,7 +636,6 @@ class t3lib_cache_backend_DbBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setWithUnlimitedLifetimeWritesCorrectEntry() {
 		$backend = $this->setUpBackend();

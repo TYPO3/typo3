@@ -48,8 +48,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Sets up this testcase
-	 *
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setUp() {
 		if (!extension_loaded('pdo_sqlite')) {
@@ -59,7 +57,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @expectedException t3lib_cache_Exception
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
@@ -71,7 +68,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
 		$backend = $this->setUpBackend();
@@ -83,7 +79,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToSetAndGetEntry() {
 		$backend = $this->setUpBackend();
@@ -96,7 +91,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToRemoveEntryFromCache() {
 		$backend = $this->setUpBackend();
@@ -109,7 +103,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToOverwriteAnEntryInTheCache() {
 		$backend = $this->setUpBackend();
@@ -124,7 +117,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function findIdentifiersByTagFindsSetEntries() {
 		$backend = $this->setUpBackend();
@@ -142,7 +134,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function setRemovesTagsFromPreviousSet() {
 		$backend = $this->setUpBackend();
@@ -158,7 +149,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
@@ -168,7 +158,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function removeReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
@@ -178,8 +167,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
@@ -198,7 +185,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function flushRemovesAllCacheEntries() {
 		$backend = $this->setUpBackend();
@@ -217,7 +203,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function flushRemovesOnlyOwnEntries() {
 		$thisCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
@@ -240,8 +225,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function collectGarbageReallyRemovesAnExpiredCacheEntry() {
 		$backend = $this->setUpBackend();
@@ -260,8 +243,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Ingo Renner <ingo@typo3.org>
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function collectGarbageReallyRemovesAllExpiredCacheEntries() {
 		$backend = $this->setUpBackend();
@@ -292,7 +273,6 @@ class t3lib_cache_backend_PdoBackendTest extends tx_phpunit_testcase {
 	 * Sets up the PDO backend used for testing
 	 *
 	 * @return t3lib_cache_backend_PdoBackend
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	protected function setUpBackend() {
 		$mockCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);

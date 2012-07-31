@@ -37,8 +37,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 * Sets up this testcase
 	 *
 	 * @return void
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setUp() {
 		if (!extension_loaded('apc')) {
@@ -52,8 +50,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 * @expectedException t3lib_cache_Exception
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
@@ -65,7 +61,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
 		$backend = $this->setUpBackend();
@@ -78,7 +73,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToSetAndGetEntry() {
 		$backend = $this->setUpBackend();
@@ -91,7 +85,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToRemoveEntryFromCache() {
 		$backend = $this->setUpBackend();
@@ -105,7 +98,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToOverwriteAnEntryInTheCache() {
 		$backend = $this->setUpBackend();
@@ -120,7 +112,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function findIdentifiersByTagFindsSetEntries() {
 		$backend = $this->setUpBackend();
@@ -138,7 +129,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function setRemovesTagsFromPreviousSet() {
 		$backend = $this->setUpBackend();
@@ -154,7 +144,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
@@ -165,7 +154,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function removeReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
@@ -176,8 +164,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
@@ -196,7 +182,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function flushRemovesAllCacheEntries() {
 		$backend = $this->setUpBackend();
@@ -215,8 +200,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushRemovesOnlyOwnEntries() {
 		$thisCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
@@ -241,7 +224,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 * Check if we can store ~5 MB of data
 	 *
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function largeDataIsStored() {
 		$backend = $this->setUpBackend();
@@ -258,8 +240,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 * Sets up the APC backend used for testing
 	 *
 	 * @return t3lib_cache_backend_ApcBackend
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	protected function setUpBackend() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);

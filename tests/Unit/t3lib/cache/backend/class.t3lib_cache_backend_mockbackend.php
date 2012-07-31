@@ -29,6 +29,7 @@
  *
  * This file is a backport from FLOW3
  *
+ * @author Robert Lemke <robert@typo3.org>
  * @package TYPO3
  * @subpackage tests
  */
@@ -44,7 +45,6 @@ class t3lib_cache_backend_MockBackend extends t3lib_cache_backend_NullBackend {
 	 *
 	 * @param mixed $value
 	 * @return void
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setSomeOption($value) {
 		$this->someOption = $value;
@@ -54,7 +54,6 @@ class t3lib_cache_backend_MockBackend extends t3lib_cache_backend_NullBackend {
 	 * Returns the option value
 	 *
 	 * @return mixed
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function getSomeOption() {
 		return $this->someOption;
