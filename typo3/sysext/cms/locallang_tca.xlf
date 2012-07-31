@@ -606,6 +606,9 @@
 			<trans-unit id="backend_layout.title" xml:space="preserve">
 				<source>Title</source>
 			</trans-unit>
+			<trans-unit id="backend_layout.identifier" xml:space="preserve">
+				<source>Identifier</source>
+			</trans-unit>
 			<trans-unit id="backend_layout.description" xml:space="preserve">
 				<source>Description</source>
 			</trans-unit>

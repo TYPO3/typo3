@@ -379,6 +379,7 @@ CREATE TABLE backend_layout (
   deleted tinyint(4) DEFAULT '0' NOT NULL,
   sorting int(11) unsigned DEFAULT '0' NOT NULL,
   title varchar(255) DEFAULT '' NOT NULL,
+  identifier varchar(255) DEFAULT '' NOT NULL,
   description text NOT NULL,
   config text NOT NULL,
   icon text NOT NULL,

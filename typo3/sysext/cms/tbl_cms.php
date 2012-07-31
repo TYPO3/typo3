@@ -1085,6 +1085,14 @@ $TCA['backend_layout'] = array(
 				'eval' => 'required'
 			)
 		),
+		'identifier' => array(
+			'label' => 'LLL:EXT:cms/locallang_tca.xlf:backend_layout.identifier',
+			'config' => array(
+				'type' => 'input',
+				'size' => '25',
+				'max' => '256',
+			)
+		),
 		'description' => array(
 			'label' => 'LLL:EXT:cms/locallang_tca.xml:backend_layout.description',
 			'config' => array(
@@ -1134,7 +1142,7 @@ $TCA['backend_layout'] = array(
 		),
 	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden,title;;1;;2-2-2, icon, description, config')
+		'1' => array('showitem' => 'hidden,title;;1;;2-2-2, identifier, icon, description, config')
 	)
 );
 
