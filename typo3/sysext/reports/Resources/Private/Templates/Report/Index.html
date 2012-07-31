@@ -1,0 +1,27 @@
+{namespace r=Tx_Reports_ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="iconButtons">
+	<f:render partial="Menu" arguments="{menu:menu}" />
+</f:section>
+
+<f:section name="content">
+	<h2><f:translate key="title" /></h2>
+
+	<h3 class="uppercase"><f:translate key="reports_overview" /></h3>
+
+	<dl class="t3-overview-list">
+		<f:for each="{reports}" as="reportOverview" key="extensionKey">
+			<f:for each="{reportOverview}" key="reportName" as="report">
+				<dt>
+					<f:link.action action="detail" arguments="{extension:extensionKey,report:reportName}">
+						<r:icon icon="{report.icon}" title="{f:translate(key:report.title)}" />
+						<f:translate key="{report.title}" />
+					</f:link.action>
+				</dt>
+				<dd><f:translate key="{report.description}" /></dd>
+			</f:for>
+		</f:for>
+	</dl>
+</f:section>
