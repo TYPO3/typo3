@@ -69,9 +69,8 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @api
- * @scope prototype
  */
-class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBackend {
+class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_TaggableBackend {
 
 	/**
 	 * Faked unlimited lifetime = 31536000 (1 Year).
@@ -113,7 +112,7 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 	protected $redis;
 
 	/**
-	 * Indicates wether the server is connected
+	 * Indicates whether the server is connected
 	 * @var boolean
 	 */
 	protected $connected = FALSE;
@@ -143,7 +142,7 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 	protected $password = '';
 
 	/**
-	 * Indicates wether data is compressed or not (requires php zlib)
+	 * Indicates whether data is compressed or not (requires php zlib)
 	 * @var boolean
 	 */
 	protected $compression = FALSE;
@@ -348,16 +347,15 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 			);
 		}
 
-		$lifetimeIsNull = is_null($lifetime);
-		$lifetimeIsInteger = is_integer($lifetime);
-
-		if (!$lifetimeIsNull && !$lifetimeIsInteger) {
+		$lifetime = $lifetime === NULL ? $this->defaultLifetime : $lifetime;
+		if (!is_integer($lifetime)) {
 			throw new \InvalidArgumentException(
-				'The specified lifetime is of type "' . gettype($lifetime) . '" but a string or NULL is expected.',
+				'The specified lifetime is of type "' . gettype($lifetime) . '" but an integer or NULL is expected.',
 				1279488008
 			);
 		}
-		if ($lifetimeIsInteger && $lifetime < 0) {
+
+		if ($lifetime < 0) {
 			throw new \InvalidArgumentException(
 				'The specified lifetime "' . $lifetime . '" must be greater or equal than zero.',
 				1279487573
@@ -365,8 +363,7 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 		}
 
 		if ($this->connected) {
-			$expiration = $lifetimeIsNull ? $this->defaultLifetime : $lifetime;
-			$expiration = $expiration === 0 ? self::FAKED_UNLIMITED_LIFETIME : $expiration;
+			$expiration = $lifetime === 0 ? self::FAKED_UNLIMITED_LIFETIME : $lifetime;
 
 			if ($this->compression) {
 				$data = gzcompress($data, $this->compressionLevel);

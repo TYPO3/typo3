@@ -77,7 +77,7 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	 */
 	public function __construct($context, array $options = array()) {
 		$this->context = $context;
-		if (is_array($options) || $options instanceof ArrayAccess) {
+		if (is_array($options) || $options instanceof \ArrayAccess) {
 			foreach ($options as $optionKey => $optionValue) {
 				$methodName = 'set' . ucfirst($optionKey);
 				if (method_exists($this, $methodName)) {
@@ -109,6 +109,7 @@ abstract class t3lib_cache_backend_AbstractBackend implements t3lib_cache_backen
 	 *
 	 * @param integer $defaultLifetime Default lifetime of this cache backend in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
+	 * @throws \InvalidArgumentException
 	 * @api
 	 */
 	public function setDefaultLifetime($defaultLifetime) {

@@ -72,8 +72,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Set up this testcase
-	 *
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setUp() {
 		if (!extension_loaded('redis')) {
@@ -93,7 +91,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 	 * Sets up the redis backend used for testing
 	 *
 	 * @param array $backendOptions Options for the redis backend
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	protected function setUpBackend(array $backendOptions = array()) {
 		$mockCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
@@ -106,8 +103,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Sets up an own redis instance for implementation tests
-	 *
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	protected function setUpRedis() {
 		$this->redis = new \Redis();
@@ -116,8 +111,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tear down this testcase
-	 *
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function tearDown() {
 		if ($this->backend instanceof t3lib_cache_backend_RedisBackend) {
@@ -127,7 +120,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function initializeObjectThrowsNoExceptionIfGivenDatabaseWasSuccessfullySelected() {
 		try {
@@ -139,7 +131,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function setDatabaseThrowsExceptionIfGivenDatabaseNumberIsNotAnInteger() {
@@ -148,7 +139,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function setDatabaseThrowsExceptionIfGivenDatabaseNumberIsNegative() {
@@ -157,7 +147,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function setCompressionThrowsExceptionIfCompressionParameterIsNotOfTypeBoolean() {
@@ -166,7 +155,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function setCompressionLevelThrowsExceptionIfCompressionLevelIsNotInteger() {
@@ -175,7 +163,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function setCompressionLevelThrowsExceptionIfCompressionLevelIsNotBetweenMinusOneAndNine() {
@@ -184,7 +171,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function setThrowsExceptionIfIdentifierIsNotAString() {
@@ -194,7 +180,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException t3lib_cache_Exception_InvalidData
 	 */
 	public function setThrowsExceptionIfDataIsNotAString() {
@@ -204,7 +189,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function setThrowsExceptionIfLifetimeIsNegative() {
@@ -214,7 +198,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function setThrowsExceptionIfLifetimeIsNotNullOrAnInteger() {
@@ -224,7 +207,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setStoresEntriesInSelectedDatabase() {
 		$this->setUpRedis();
@@ -239,7 +221,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesStringDataTypeForIdentifierToDataEntry() {
 		$this->setUpBackend();
@@ -253,7 +234,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesEntryWithDefaultLifeTime() {
 		$this->setUpBackend();
@@ -270,7 +250,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesEntryWithSpecifiedLifeTime() {
 		$this->setUpBackend();
@@ -286,7 +265,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesEntryWithUnlimitedLifeTime() {
 		$this->setUpBackend();
@@ -301,8 +279,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setOverwritesExistingEntryWithNewData() {
 		$this->setUpBackend();
@@ -317,7 +293,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setOverwritesExistingEntryWithSpecifiedLifetime() {
 		$this->setUpBackend();
@@ -335,7 +310,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setOverwritesExistingEntryWithNewDefaultLifetime() {
 		$this->setUpBackend();
@@ -355,7 +329,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setOverwritesExistingEntryWithNewUnlimitedLifetime() {
 		$this->setUpBackend();
@@ -373,7 +346,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesSetDataTypeForIdentifierToTagsSet() {
 		$this->setUpBackend();
@@ -387,7 +359,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesSpecifiedTagsInIdentifierToTagsSet() {
 		$this->setUpBackend();
@@ -404,7 +375,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setRemovesAllPreviouslySetTagsFromIdentifierToTagsSet() {
 		$this->setUpBackend();
@@ -420,7 +390,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setRemovesMultiplePreviouslySetTagsFromIdentifierToTagsSet() {
 		$this->setUpBackend();
@@ -439,7 +408,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesSetDataTypeForTagToIdentifiersSet() {
 		$this->setUpBackend();
@@ -454,7 +422,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesIdentifierInTagToIdentifiersSetOfSpecifiedTag() {
 		$this->setUpBackend();
@@ -470,7 +437,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setAppendsSecondIdentifierInTagToIdentifiersEntry() {
 		$this->setUpBackend();
@@ -491,7 +457,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setRemovesIdentifierFromTagToIdentifiersEntryIfTagIsOmittedOnConsecutiveSet() {
 		$this->setUpBackend();
@@ -508,7 +473,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setAddsIdentifierInTagToIdentifiersEntryIfTagIsAddedOnConsecutiveSet() {
 		$this->setUpBackend();
@@ -525,7 +489,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesCompressedDataWithEnabledCompression() {
 		$this->setUpBackend(
@@ -550,7 +513,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function setSavesPlaintextDataWithEnabledCompressionAndCompressionLevel0() {
 		$this->setUpBackend(
@@ -570,7 +532,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function hasThrowsExceptionIfIdentifierIsNotAString() {
@@ -580,7 +541,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function hasReturnsFalseForNotExistingEntry() {
 		$this->setUpBackend();
@@ -590,7 +550,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function hasReturnsTrueForPreviouslySetEntry() {
 		$this->setUpBackend();
@@ -601,7 +560,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function getThrowsExceptionIfIdentifierIsNotAString() {
@@ -611,7 +569,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function getReturnsPreviouslyCompressedSetEntry() {
 		$this->setUpBackend(
@@ -628,7 +585,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function getReturnsPreviouslySetEntry() {
 		$this->setUpBackend();
@@ -641,7 +597,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function removeThrowsExceptionIfIdentifierIsNotAString() {
@@ -651,7 +606,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function removeReturnsFalseIfNoEntryWasDeleted() {
 		$this->setUpBackend();
@@ -660,7 +614,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function removeReturnsTrueIfAnEntryWasDeleted() {
 		$this->setUpBackend();
@@ -671,8 +624,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function removeDeletesEntryFromCache() {
 		$this->setUpBackend();
@@ -684,7 +635,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function removeDeletesIdentifierToTagEntry() {
 		$this->setUpBackend();
@@ -700,7 +650,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function removeDeletesIdentifierFromTagToIdentifiersSet() {
 		$this->setUpBackend();
@@ -717,7 +666,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function removeDeletesIdentifierFromTagToIdentifiersSetWithMultipleEntries() {
 		$this->setUpBackend();
@@ -736,7 +684,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function findIdentifiersByTagThrowsExceptionIfTagIsNotAString() {
@@ -746,7 +693,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function findIdentifiersByTagReturnsEmptyArrayForNotExistingTag() {
 		$this->setUpBackend();
@@ -755,7 +701,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function findIdentifiersByTagReturnsAllIdentifiersTagedWithSpecifiedTag() {
 		$this->setUpBackend();
@@ -780,7 +725,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function flushRemovesAllEntriesFromCache() {
 		$this->setUpBackend();
@@ -795,7 +739,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function flushByTagThrowsExceptionIfTagIsNotAString() {
@@ -805,7 +748,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Functional
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function flushByTagRemovesEntriesTaggedWithSpecifiedTag() {
 		$this->setUpBackend();
@@ -827,7 +769,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function flushByTagRemovesTemporarySet() {
 		$this->setUpBackend();
@@ -843,7 +784,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function flushByTagRemovesIdentifierToTagsSetOfEntryTaggedWithGivenTag() {
 		$this->setUpBackend();
@@ -859,7 +799,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function flushByTagDoesNotRemoveIdentifierToTagsSetOfUnrelatedEntry() {
 		$this->setUpBackend();
@@ -880,7 +819,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function flushByTagRemovesTagToIdentifiersSetOfGivenTag() {
 		$this->setUpBackend();
@@ -896,7 +834,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function flushByTagRemovesIdentifiersTaggedWithGivenTagFromTagToIdentifiersSets() {
 		$this->setUpBackend();
@@ -914,7 +851,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function collectGarbageDoesNotRemoveNotExpiredIdentifierToDataEntry() {
 		$this->setUpBackend();
@@ -933,7 +869,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function collectGarbageRemovesLeftOverIdentifierToTagsSet() {
 		$this->setUpBackend();
@@ -957,7 +892,6 @@ class t3lib_cache_backend_RedisBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test Implementation
-	 * @author Christian Kuhn <lolli@schwarzbu.ch>
 	 */
 	public function collectGarbageRemovesExpiredIdentifierFromTagsToIdentifierSet() {
 		$this->setUpBackend();

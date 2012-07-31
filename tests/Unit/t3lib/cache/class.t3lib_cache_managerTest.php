@@ -27,7 +27,7 @@
  *
  * This file is a backport from FLOW3
  *
- * @author	Ingo Renner <ingo@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tests
  */
@@ -35,8 +35,6 @@ class t3lib_cache_ManagerTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 * @expectedException t3lib_cache_exception_DuplicateIdentifier
 	 */
 	public function managerThrowsExceptionOnCacheRegistrationWithAlreadyExistingIdentifier() {
@@ -54,8 +52,6 @@ class t3lib_cache_ManagerTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function managerReturnsThePreviouslyRegisteredCache() {
 		$manager = new t3lib_cache_Manager();
@@ -74,8 +70,6 @@ class t3lib_cache_ManagerTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 * @expectedException t3lib_cache_exception_NoSuchCache
 	 */
 	public function getCacheThrowsExceptionForNonExistingIdentifier() {
@@ -91,8 +85,6 @@ class t3lib_cache_ManagerTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function hasCacheReturnsCorrectResult() {
 		$manager = new t3lib_cache_Manager();
@@ -106,8 +98,6 @@ class t3lib_cache_ManagerTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushCachesByTagCallsTheFlushByTagMethodOfAllRegisteredCaches() {
 		$manager = new t3lib_cache_Manager();
@@ -126,8 +116,6 @@ class t3lib_cache_ManagerTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushCachesCallsTheFlushMethodOfAllRegisteredCaches() {
 		$manager = new t3lib_cache_Manager();

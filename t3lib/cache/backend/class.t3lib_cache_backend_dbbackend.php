@@ -30,9 +30,8 @@
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @author Ingo Renner <ingo@typo3.org>
  * @api
- * @scope prototype
  */
-class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend {
+class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_TaggableBackend {
 
 	/**
 	 * @var integer Timestamp of 2038-01-01)
