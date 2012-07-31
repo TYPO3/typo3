@@ -271,7 +271,7 @@ class t3lib_DB {
 	 * @param string $orderBy See exec_SELECTquery()
 	 * @param string $limit See exec_SELECTquery()
 	 * @param string $uidIndexField If set, the result array will carry this field names value as index. Requires that field to be selected of course!
-	 * @return array Array of rows.
+	 * @return array|NULL Array of rows, or NULL in case of SQL error
 	 */
 	function exec_SELECTgetRows($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', $uidIndexField = '') {
 		$res = $this->exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy, $orderBy, $limit);
@@ -281,7 +281,6 @@ class t3lib_DB {
 
 		if (!$this->sql_error()) {
 			$output = array();
-
 			if ($uidIndexField) {
 				while ($tempRow = $this->sql_fetch_assoc($res)) {
 					$output[$tempRow[$uidIndexField]] = $tempRow;
@@ -292,7 +291,10 @@ class t3lib_DB {
 				array_pop($output);
 			}
 			$this->sql_free_result($res);
+		} else {
+			$output = NULL;
 		}
+
 		return $output;
 	}
 
