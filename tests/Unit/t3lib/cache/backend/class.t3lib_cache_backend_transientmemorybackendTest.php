@@ -36,7 +36,6 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 	/**
 	 * @expectedException t3lib_cache_Exception
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
 		$backend = new t3lib_cache_backend_TransientMemoryBackend('Testing');
@@ -48,8 +47,6 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
@@ -65,8 +62,6 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function itIsPossibleToSetAndGetEntry() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
@@ -82,8 +77,6 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function itIsPossibleToRemoveEntryFromCache() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
@@ -100,8 +93,6 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function itIsPossibleToOverwriteAnEntryInTheCache() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
@@ -119,8 +110,6 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
@@ -140,8 +129,6 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
@@ -155,8 +142,6 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function removeReturnsFalseIfTheEntryDoesntExist() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
@@ -170,9 +155,6 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
@@ -193,8 +175,6 @@ class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushRemovesAllCacheEntries() {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);

@@ -36,8 +36,6 @@ class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
 	/**
 	 * @expectedException \InvalidArgumentException
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setChecksIfTheIdentifierIsValid() {
 		$cache = $this->getMock('t3lib_cache_frontend_StringFrontend', array('isValidEntryIdentifier'), array(), '', FALSE);
@@ -47,8 +45,6 @@ class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setPassesStringToBackend() {
 		$theString = 'Just some value';
@@ -61,8 +57,6 @@ class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setPassesLifetimeToBackend() {
 		$theString = 'Just some value';
@@ -76,8 +70,6 @@ class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 * @expectedException t3lib_cache_exception_InvalidData
 	 */
 	public function setThrowsInvalidDataExceptionOnNonStringValues() {
@@ -89,9 +81,6 @@ class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getFetchesStringValueFromBackend() {
 		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
@@ -103,8 +92,6 @@ class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function hasReturnsResultFromBackend() {
 		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
@@ -116,8 +103,6 @@ class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function removeCallsBackend() {
 		$cacheIdentifier = 'someCacheIdentifier';
@@ -132,8 +117,6 @@ class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @expectedException InvalidArgumentException
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getByTagRejectsInvalidTags() {
 		$backend = $this->getMock('t3lib_cache_backend_Backend', array(), array(), '', FALSE);
@@ -145,8 +128,6 @@ class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getByTagCallsBackend() {
 		$tag = 'sometag';

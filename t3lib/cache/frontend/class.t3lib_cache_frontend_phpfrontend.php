@@ -31,7 +31,6 @@
  * @subpackage t3lib_cache
  * @author Robert Lemke <robert@typo3.org>
  * @api
- * @scope prototype
  */
 class t3lib_cache_frontend_PhpFrontend extends t3lib_cache_frontend_StringFrontend {
 

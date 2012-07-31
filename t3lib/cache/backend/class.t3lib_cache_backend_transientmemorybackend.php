@@ -31,9 +31,8 @@
  * @subpackage t3lib_cache
  * @author Robert Lemke <robert@typo3.org>
  * @api
- * @scope prototype
  */
-class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_AbstractBackend {
+class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_TaggableBackend {
 
 	/**
 	 * @var array
@@ -54,6 +53,7 @@ class t3lib_cache_backend_TransientMemoryBackend extends t3lib_cache_backend_Abs
 	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @throws t3lib_cache_Exception if no cache frontend has been set.
+	 * @throws t3lib_cache_exception_InvalidData
 	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {

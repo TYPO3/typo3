@@ -51,9 +51,8 @@
  * @author Christian Jul Jensen <julle@typo3.org>
  * @author Dmitry Dulepov <dmitry@typo3.org>
  * @api
- * @scope prototype
  */
-class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend {
+class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_TaggableBackend {
 
 	/**
 	 * A prefix to seperate stored data from other data possible stored in the APC
@@ -66,6 +65,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $context FLOW3's application context
 	 * @param array $options Configuration options - unused here
+	 * @throws \t3lib_cache_Exception
 	 */
 	public function __construct($context, array $options = array()) {
 		if (!extension_loaded('apc')) {
@@ -100,7 +100,6 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @throws t3lib_cache_Exception if no cache frontend has been set.
-	 * @throws \InvalidArgumentException if the identifier is not valid
 	 * @throws t3lib_cache_exception_InvalidData if $data is not a string
 	 * @api
 	 */
@@ -210,6 +209,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 * Removes all cache entries of this cache.
 	 *
 	 * @return void
+	 * @throws t3lib_cache_Exception
 	 * @api
 	 */
 	public function flush() {
@@ -242,6 +242,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 *
 	 * @param string $entryIdentifier
 	 * @param array $tags
+	 * @return void
 	 */
 	protected function addIdentifierToTags($entryIdentifier, array $tags) {
 		foreach ($tags as $tag) {
@@ -265,7 +266,7 @@ class t3lib_cache_backend_ApcBackend extends t3lib_cache_backend_AbstractBackend
 	 * Removes association of the identifier with the given tags
 	 *
 	 * @param string $entryIdentifier
-	 * @param array $tags
+	 * @return void
 	 */
 	protected function removeIdentifierFromAllTags($entryIdentifier) {
 			// Get tags for this identifier
