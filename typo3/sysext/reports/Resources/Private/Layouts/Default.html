@@ -1,0 +1,27 @@
+<f:be.container addCssFile="{f:uri.resource(path:'styles.css')}">
+	<div class="typo3-fullDoc" id="ext-reports-mod-index-php">
+		<div id="typo3-docheader">
+			<div class="typo3-docheader-functions">
+				<div class="left">
+					<f:render section="iconButtons" />
+				</div>
+				<div class="right">
+				</div>
+			</div>
+			<div class="typo3-docheader-buttons">
+				<div class="left">
+				</div>
+				<div class="right">
+					<f:be.buttons.shortcut />
+				</div>
+			</div>
+		</div>
+		<div id="typo3-docbody">
+			<div id="typo3-inner-docbody">
+				<f:flashMessages class="tx-extbase-flash-message" />
+
+				<f:render section="content" />
+			</div>
+		</div>
+	</div>
+</f:be.container>
