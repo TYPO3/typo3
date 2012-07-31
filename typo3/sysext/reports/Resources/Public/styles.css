@@ -17,11 +17,11 @@ body#ext-reports-mod-index-php {
 	clear: left;
 }
 #ext-reports-mod-index-php h2.collapsed {
-	background-image:url(../../../gfx/arrowright.png);
+	background-image:url(../../../../gfx/arrowright.png);
 	background-repeat:no-repeat;
 }
 #ext-reports-mod-index-php h2.expanded {
-	background-image:url(../../../gfx/arrowdown.png);
+	background-image:url(../../../../gfx/arrowdown.png);
 	background-repeat:no-repeat;
 }
 #ext-reports-mod-index-php h2.section-header img {
