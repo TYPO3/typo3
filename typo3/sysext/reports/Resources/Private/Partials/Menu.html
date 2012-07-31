@@ -1,0 +1,6 @@
+<f:be.menus.actionMenu>
+	<f:be.menus.actionMenuItem label="{f:translate(key:'reports_overview')}" controller="Report" action="index" />
+	<f:for each="{menu}" as="item">
+		<f:be.menus.actionMenuItem label="{item.title}" controller="Report" action="detail" arguments="{extension:item.extension,report:item.report}" />
+	</f:for>
+</f:be.menus.actionMenu>
