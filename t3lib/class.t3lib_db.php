@@ -279,9 +279,8 @@ class t3lib_DB {
 			$this->debug('exec_SELECTquery');
 		}
 
+		$output = array();
 		if (!$this->sql_error()) {
-			$output = array();
-
 			if ($uidIndexField) {
 				while ($tempRow = $this->sql_fetch_assoc($res)) {
 					$output[$tempRow[$uidIndexField]] = $tempRow;
