@@ -30,9 +30,8 @@
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
- * @scope prototype
  */
-class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend {
+class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_TaggableBackend {
 
 	/**
 	 * @var string
@@ -318,6 +317,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 * Connect to the database
 	 *
 	 * @return void
+	 * @throws \RuntimeException if something goes wrong
 	 */
 	protected function connect() {
 		try {
@@ -337,6 +337,10 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 				$this->databaseHandle->exec('SET SESSION sql_mode=\'ANSI\';');
 			}
 		} catch (\PDOException $e) {
+			throw new \RuntimeException(
+				'Could not connect to cache table with DSN "' . $this->dataSourceName . '". PDO error: ' . $e->getMessage(),
+				1334736164
+			);
 		}
 	}
 

@@ -35,8 +35,6 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function theConstructorAcceptsValidIdentifiers() {
 		$mockBackend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
@@ -47,8 +45,6 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function theConstructorRejectsInvalidIdentifiers() {
 		$mockBackend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
@@ -63,8 +59,6 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushCallsBackend() {
 		$identifier = 'someCacheIdentifier';
@@ -79,8 +73,6 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 * @expectedException InvalidArgumentException
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushByTagRejectsInvalidTags() {
 		$identifier = 'someCacheIdentifier';
@@ -93,13 +85,11 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
-	public function flushByTagCallsBackend() {
+	public function flushByTagCallsBackendIfItIsATaggableBackend() {
 		$tag = 'sometag';
 		$identifier = 'someCacheIdentifier';
-		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
+		$backend = $this->getMock('t3lib_cache_backend_TaggableBackend', array('setCache', 'get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('flushByTag')->with($tag);
 
 		$cache = $this->getMock('t3lib_cache_frontend_StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
@@ -108,8 +98,6 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function collectGarbageCallsBackend() {
 		$identifier = 'someCacheIdentifier';
@@ -122,8 +110,6 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function getClassTagRendersTagWhichCanBeUsedToTagACacheEntryWithACertainClass() {
 		$identifier = 'someCacheIdentifier';
@@ -135,8 +121,6 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function invalidEntryIdentifiersAreRecognizedAsInvalid() {
 		$identifier = 'someCacheIdentifier';
@@ -149,8 +133,6 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function validEntryIdentifiersAreRecognizedAsValid() {
 		$identifier = 'someCacheIdentifier';
@@ -163,8 +145,6 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function invalidTagsAreRecognizedAsInvalid() {
 		$identifier = 'someCacheIdentifier';
@@ -177,8 +157,6 @@ class t3lib_cache_frontend_AbstractFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function validTagsAreRecognizedAsValid() {
 		$identifier = 'someCacheIdentifier';

@@ -46,7 +46,7 @@
  * @package TYPO3
  * @subpackage t3lib_cache
  */
-class t3lib_cache_backend_WincacheBackend extends t3lib_cache_backend_AbstractBackend {
+class t3lib_cache_backend_WincacheBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_TaggableBackend {
 
 	/**
 	 * A prefix to seperate stored data from other data possible stored in the wincache
@@ -59,6 +59,7 @@ class t3lib_cache_backend_WincacheBackend extends t3lib_cache_backend_AbstractBa
 	 * Constructs this backend
 	 *
 	 * @param mixed $options Configuration options - unused here
+	 * @throws t3lib_cache_Exception If wincache PHP extension is not loaded
 	 */
 	public function __construct($options = array()) {
 		if (!extension_loaded('wincache')) {
@@ -246,7 +247,7 @@ class t3lib_cache_backend_WincacheBackend extends t3lib_cache_backend_AbstractBa
 
 				// Update identifier-to-tag index
 			$existingTags = $this->findTagsByIdentifier($entryIdentifier);
-			if (array_search($entryIdentifier, $existingTags) === false) {
+			if (array_search($entryIdentifier, $existingTags) === FALSE) {
 				wincache_ucache_set($this->identifierPrefix . 'ident_' . $entryIdentifier, array_merge($existingTags, $tags));
 			}
 		}

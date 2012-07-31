@@ -37,8 +37,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	 * Sets up this testcase
 	 *
 	 * @return void
-	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function setUp() {
 		if (!extension_loaded('memcache')) {
@@ -56,8 +54,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 * @expectedException t3lib_cache_Exception
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
@@ -71,8 +67,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 * @expectedException t3lib_cache_Exception
 	 */
 	public function initializeObjectThrowsExceptionIfNoMemcacheServerIsConfigured() {
@@ -82,7 +76,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToSetAndCheckExistenceInCache() {
 		$backend = $this->setUpBackend();
@@ -95,7 +88,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToSetAndGetEntry() {
 		$backend = $this->setUpBackend();
@@ -108,7 +100,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToRemoveEntryFromCache() {
 		$backend = $this->setUpBackend();
@@ -122,7 +113,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function itIsPossibleToOverwriteAnEntryInTheCache() {
 		$backend = $this->setUpBackend();
@@ -137,7 +127,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
@@ -155,7 +144,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function setRemovesTagsFromPreviousSet() {
 		$backend = $this->setUpBackend();
@@ -171,7 +159,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function hasReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
@@ -182,7 +169,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Christian Jul Jensen <julle@typo3.org>
 	 */
 	public function removeReturnsFalseIfTheEntryDoesntExist() {
 		$backend = $this->setUpBackend();
@@ -193,8 +179,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Robert Lemke <robert@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
@@ -213,7 +197,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function flushRemovesAllCacheEntries() {
 		$backend = $this->setUpBackend();
@@ -232,8 +215,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	public function flushRemovesOnlyOwnEntries() {
 		$backendOptions = array('servers' => array('localhost:11211'));
@@ -263,7 +244,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	 * reflection data.
 	 *
 	 * @test
-	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function largeDataIsStored() {
 		$backend = $this->setUpBackend();
@@ -280,9 +260,6 @@ class t3lib_cache_backend_MemcachedBackendTest extends tx_phpunit_testcase {
 	 *
 	 * @param array $backendOptions Options for the memcache backend
 	 * @return t3lib_cache_backend_MemcachedBackend
-	 * @author Christian Jul Jensen <julle@typo3.org>
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 * @author Ingo Renner <ingo@typo3.org>
 	 */
 	protected function setUpBackend(array $backendOptions = array()) {
 		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);

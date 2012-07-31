@@ -54,9 +54,8 @@
  * @author Karsten Dambekalns <karsten@typo3.org>
  * @author Dmitry Dulepov <dmitry@typo3.org>
  * @api
- * @scope prototype
  */
-class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractBackend {
+class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_TaggableBackend {
 
 	/**
 	 * Max bucket size, (1024*1024)-42 bytes
@@ -87,7 +86,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	protected $flags;
 
 	/**
-	 * A prefix to seperate stored data from other data possibly stored in the memcache
+	 * A prefix to separate stored data from other data possibly stored in the memcache
 	 *
 	 * @var string
 	 */
@@ -164,7 +163,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 				if (substr($server, 0, 6) === 'tcp://') {
 					$server = substr($server, 6);
 				}
-				if (strstr($server, ':') !== FALSE) {
+				if (strpos($server, ':') !== FALSE) {
 					list($host, $port) = explode(':', $server, 2);
 				} else {
 					$host = $server;
@@ -193,7 +192,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 * @param string $entryIdentifier An identifier for this specific cache entry
 	 * @param string $data The data to be stored
 	 * @param array $tags Tags to associate with this cache entry
-	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
 	 * @return void
 	 * @throws t3lib_cache_Exception if no cache frontend has been set.
 	 * @throws \InvalidArgumentException if the identifier is not valid or the final memcached key is longer than 250 characters
@@ -344,11 +343,15 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 * Removes all cache entries of this cache.
 	 *
 	 * @return void
+	 * @throws t3lib_cache_Exception
 	 * @api
 	 */
 	public function flush() {
 		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception('No cache frontend has been set via setCache() yet.', 1204111376);
+			throw new t3lib_cache_Exception(
+				'No cache frontend has been set via setCache() yet.',
+				1204111376
+			);
 		}
 
 		$this->flushByTag('%MEMCACHEBE%' . $this->cacheIdentifier);
@@ -373,6 +376,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param string $entryIdentifier
 	 * @param array $tags
+	 * @return void
 	 */
 	protected function addIdentifierToTags($entryIdentifier, array $tags) {
 		foreach ($tags as $tag) {
@@ -402,6 +406,7 @@ class t3lib_cache_backend_MemcachedBackend extends t3lib_cache_backend_AbstractB
 	 *
 	 * @param string $entryIdentifier
 	 * @param array Array of tags
+	 * @return void
 	 */
 	protected function removeIdentifierFromAllTags($entryIdentifier) {
 			// Get tags for this identifier
