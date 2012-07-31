@@ -3,9 +3,22 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 
-if (TYPO3_MODE == 'BE') {
-	t3lib_extMgm::addModulePath('tools_txreportsM1', t3lib_extMgm::extPath($_EXTKEY) . 'mod/');
-	t3lib_extMgm::addModule('tools', 'txreportsM1', '', t3lib_extMgm::extPath($_EXTKEY) . 'mod/');
+if (TYPO3_MODE === 'BE') {
+
+	Tx_Extbase_Utility_Extension::registerModule(
+		$_EXTKEY,
+		'tools',
+		'txreportsM1',
+		'',
+		array(
+			'Report' => 'index,detail',
+		),
+		array(
+			'access' => 'admin',
+			'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/moduleicon.gif',
+			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf',
+		)
+	);
 
 	$statusReport = array(
 		'title'       => 'LLL:EXT:reports/reports/locallang.xml:status_report_title',

@@ -1,26 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2011 Francois Suter <francois@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2009-2011 Francois Suter <francois@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * This class provides a report displaying a list of all installed services
@@ -35,7 +35,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	/**
 	 * Back-reference to the calling reports module
 	 *
-	 * @var tx_reports_Module
+	 * @var Tx_Reports_Controller_ReportController
 	 */
 	protected $reportsModule;
 
@@ -44,7 +44,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	 *
 	 * @param tx_reports_Module $reportsModule Back-reference to the calling reports module
 	 */
-	public function __construct(tx_reports_Module $reportsModule) {
+	public function __construct(Tx_Reports_Controller_ReportController $reportsModule) {
 		$this->reportsModule = $reportsModule;
 		$GLOBALS['LANG']->includeLLFile('EXT:sv/reports/locallang.xml');
 	}
@@ -57,15 +57,8 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	public function getReport() {
 		$content = '';
 
-			// Add custom stylesheet
-		$this->reportsModule->doc->getPageRenderer()->addCssFile(
-			t3lib_extMgm::extRelPath('sv') . 'reports/tx_sv_report.css'
-		);
-
 		$content .= $this->renderHelp();
-		$content .= $this->reportsModule->doc->spacer(10);
 		$content .= $this->renderServicesList();
-		$content .= $this->reportsModule->doc->spacer(10);
 		$content .= $this->renderExecutablesSearchPathList();
 
 		return $content;
@@ -82,7 +75,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 			. '</p>';
 		$help .= '<p class="help">'
 			. $GLOBALS['LANG']->getLL('externals_explanation')
-			. '</p>';
+			. '</p><br />';
 
 		return $help;
 	}
@@ -136,7 +129,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 		</table>
 		';
 
-		return $header . $serviceList . $this->reportsModule->doc->spacer(10);
+		return $header . $serviceList;
 	}
 
 	/**
@@ -202,7 +195,7 @@ class tx_sv_reports_ServicesList implements tx_reports_Report {
 	protected function renderExecutablesSearchPathList() {
 		$searchPaths = t3lib_exec::getPaths(TRUE);
 
-		$content = '<h3 class="divider">' . $GLOBALS['LANG']->getLL('search_paths') . '</h3>';
+		$content = '<br /><h3 class="divider">' . $GLOBALS['LANG']->getLL('search_paths') . '</h3>';
 
 		if (count($searchPaths) == 0) {
 			$content .= '<p>' . $GLOBALS['LANG']->getLL('no_search_paths') . '</p>';
