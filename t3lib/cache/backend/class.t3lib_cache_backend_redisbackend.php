@@ -69,9 +69,8 @@
  * @author Christopher Hlubek <hlubek@networkteam.com>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @api
- * @scope prototype
  */
-class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBackend {
+class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_TaggableBackend {
 
 	/**
 	 * Faked unlimited lifetime = 31536000 (1 Year).
@@ -113,7 +112,7 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 	protected $redis;
 
 	/**
-	 * Indicates wether the server is connected
+	 * Indicates whether the server is connected
 	 * @var boolean
 	 */
 	protected $connected = FALSE;
@@ -143,7 +142,7 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 	protected $password = '';
 
 	/**
-	 * Indicates wether data is compressed or not (requires php zlib)
+	 * Indicates whether data is compressed or not (requires php zlib)
 	 * @var boolean
 	 */
 	protected $compression = FALSE;
@@ -176,14 +175,14 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 	 * Initializes the redis backend
 	 *
 	 * @return void
-	 * @throws t3lib_cache_Exception if access to redis with password is denied or if database selection fails
+	 * @throws \t3lib_cache_Exception if access to redis with password is denied or if database selection fails
 	 */
 	public function initializeObject() {
 		$this->redis = new \Redis();
 
 		try {
 			$this->connected = $this->redis->connect($this->hostname, $this->port);
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			t3lib_div::sysLog(
 				'Could not connect to redis server.',
 				'core',
@@ -195,7 +194,7 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 			if (strlen($this->password)) {
 				$success = $this->redis->auth($this->password);
 				if (!$success) {
-					throw new t3lib_cache_Exception(
+					throw new \t3lib_cache_Exception(
 						'The given password was not accepted by the redis server.',
 						1279765134
 					);
@@ -205,7 +204,7 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 			if ($this->database > 0) {
 				$success = $this->redis->select($this->database);
 				if (!$success) {
-					throw new t3lib_cache_Exception(
+					throw new \t3lib_cache_Exception(
 						'The given database "' . $this->database . '" could not be selected.',
 						1279765144
 					);
@@ -331,7 +330,7 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, default lifetime is used. "0" means unlimited lifetime.
 	 * @return void
 	 * @throws \InvalidArgumentException if identifier is not valid
-	 * @throws t3lib_cache_Exception_InvalidData if data is not a string
+	 * @throws \t3lib_cache_Exception_InvalidData if data is not a string
 	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
@@ -342,22 +341,21 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 			);
 		}
 		if (!is_string($data)) {
-			throw new t3lib_cache_Exception_InvalidData(
+			throw new \t3lib_cache_Exception_InvalidData(
 				'The specified data is of type "' . gettype($data) . '" but a string is expected.',
 				1279469941
 			);
 		}
 
-		$lifetimeIsNull = is_null($lifetime);
-		$lifetimeIsInteger = is_integer($lifetime);
-
-		if (!$lifetimeIsNull && !$lifetimeIsInteger) {
+		$lifetime = $lifetime === NULL ? $this->defaultLifetime : $lifetime;
+		if (!is_integer($lifetime)) {
 			throw new \InvalidArgumentException(
-				'The specified lifetime is of type "' . gettype($lifetime) . '" but a string or NULL is expected.',
+				'The specified lifetime is of type "' . gettype($lifetime) . '" but an integer or NULL is expected.',
 				1279488008
 			);
 		}
-		if ($lifetimeIsInteger && $lifetime < 0) {
+
+		if ($lifetime < 0) {
 			throw new \InvalidArgumentException(
 				'The specified lifetime "' . $lifetime . '" must be greater or equal than zero.',
 				1279487573
@@ -365,8 +363,7 @@ class t3lib_cache_backend_RedisBackend extends t3lib_cache_backend_AbstractBacke
 		}
 
 		if ($this->connected) {
-			$expiration = $lifetimeIsNull ? $this->defaultLifetime : $lifetime;
-			$expiration = $expiration === 0 ? self::FAKED_UNLIMITED_LIFETIME : $expiration;
+			$expiration = $lifetime === 0 ? self::FAKED_UNLIMITED_LIFETIME : $lifetime;
 
 			if ($this->compression) {
 				$data = gzcompress($data, $this->compressionLevel);

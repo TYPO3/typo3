@@ -33,9 +33,8 @@
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
- * @scope prototype
  */
-class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_PhpCapableBackend {
+class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_SimpleFileBackend implements t3lib_cache_backend_PhpCapableBackend, t3lib_cache_backend_FreezableBackend, t3lib_cache_backend_TaggableBackend {
 
 	const SEPARATOR = '^';
 
@@ -45,34 +44,81 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	const DATASIZE_DIGITS = 10;
 
 	/**
-	 * Directory where the files are stored
-	 *
-	 * @var string
-	 */
-	protected $cacheDirectory = '';
-
-	/**
-	 * TYPO3 v4 note: This variable is only available in v5
-	 * Temporary path to cache directory before setCache() was called. It is
-	 * set by setCacheDirectory() and used in setCache() method which calls
-	 * the directory creation if needed. The variable is not used afterwards,
-	 * the final cache directory path is stored in $this->cacheDirectory then.
-	 *
-	 * @var string Temporary path to cache directory
-	 */
-	protected $temporaryCacheDirectory = '';
-
-	/**
 	 * A file extension to use for each cache entry.
 	 *
 	 * @var string
 	 */
 	protected $cacheEntryFileExtension = '';
 
+	/**
+	 * @var array
+	 */
+	protected $cacheEntryIdentifiers = array();
+
+	/**
+	 * @var boolean
+	 */
+	protected $frozen = FALSE;
+
+	/**
+	 * Freezes this cache backend.
+	 *
+	 * All data in a frozen backend remains unchanged and methods which try to add
+	 * or modify data result in an exception thrown. Possible expiry times of
+	 * individual cache entries are ignored.
+	 *
+	 * On the positive side, a frozen cache backend is much faster on read access.
+	 * A frozen backend can only be thawed by calling the flush() method.
+	 *
+	 * @return void
+	 * @throws \RuntimeException
+	 */
+	public function freeze() {
+		if ($this->frozen === TRUE) {
+			throw new \RuntimeException(
+				sprintf('The cache "%s" is already frozen.', $this->cacheIdentifier),
+				1323353176
+			);
+		}
+
+		$cacheEntryFileExtensionLength = strlen($this->cacheEntryFileExtension);
+
+		for($directoryIterator = new \DirectoryIterator($this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
+			if ($directoryIterator->isDot()) {
+				continue;
+			}
+			if ($cacheEntryFileExtensionLength > 0) {
+				$entryIdentifier = substr($directoryIterator->getFilename(), 0, - $cacheEntryFileExtensionLength);
+			} else {
+				$entryIdentifier = $directoryIterator->getFilename();
+			}
+			$this->cacheEntryIdentifiers[$entryIdentifier] = TRUE;
+			file_put_contents($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension, $this->get($entryIdentifier));
+		}
+
+		if ($this->useIgBinary === TRUE) {
+			file_put_contents($this->cacheDirectory . 'FrozenCache.data', igbinary_serialize($this->cacheEntryIdentifiers));
+		} else {
+			file_put_contents($this->cacheDirectory . 'FrozenCache.data', serialize($this->cacheEntryIdentifiers));
+		}
+		$this->frozen = TRUE;
+	}
+
+	/**
+	 * Tells if this backend is frozen.
+	 *
+	 * @return boolean
+	 */
+	public function isFrozen() {
+		return $this->frozen;
+	}
 
 	/**
 	 * Sets a reference to the cache frontend which uses this backend and
 	 * initializes the default cache directory.
+	 *
+	 * This method also detects if this backend is frozen and sets the internal
+	 * flag accordingly.
 	 *
 	 * TYPO3 v4 note: This method is different between TYPO3 v4 and FLOW3
 	 * because the Environment class to get the path to a temporary directory
@@ -84,144 +130,14 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	public function setCache(t3lib_cache_frontend_Frontend $cache) {
 		parent::setCache($cache);
 
-		if (empty($this->temporaryCacheDirectory)) {
-				// If no cache directory was given with cacheDirectory
-				// configuration option, set it to a path below typo3temp/
-			$temporaryCacheDirectory = PATH_site . 'typo3temp/';
-		} else {
-			$temporaryCacheDirectory = $this->temporaryCacheDirectory;
-		}
-
-		$codeOrData = ($cache instanceof t3lib_cache_frontend_PhpFrontend) ? 'Code' : 'Data';
-		$finalCacheDirectory = $temporaryCacheDirectory . 'Cache/' . $codeOrData . '/' . $this->cacheIdentifier . '/';
-
-		if (!is_dir($finalCacheDirectory)) {
-			$this->createFinalCacheDirectory($finalCacheDirectory);
-		}
-		unset($this->temporaryCacheDirectory);
-		$this->cacheDirectory = $finalCacheDirectory;
-
-		$this->cacheEntryFileExtension = ($cache instanceof t3lib_cache_frontend_PhpFrontend) ? '.php' : '';
-	}
-
-	/**
-	 * Sets the directory where the cache files are stored. By default it is
-	 * assumed that the directory is below the TYPO3_DOCUMENT_ROOT. However, an
-	 * absolute path can be selected, too.
-	 *
-	 * This method does not exist in FLOW3 anymore, but it is needed in
-	 * TYPO3 v4 to enable a cache path outside of document root. The final
-	 * cache path is checked and created in createFinalCachDirectory(),
-	 * called by setCache() method, which is done _after_ the cacheDirectory
-	 * option was handled.
-	 *
-	 * @param string $cacheDirectory The cache base directory. If a relative path
-	 * 		is given, it is assumed it is in TYPO3_DOCUMENT_ROOT. If an absolute
-	 * 		path is given it is taken as is.
-	 * @return void
-	 * @throws t3lib_cache_Exception if the directory is not within allowed
-	 * 		open_basedir path.
-	 */
-	public function setCacheDirectory($cacheDirectory) {
-			// Skip handling if directory is a stream ressource
-			// This is used by unit tests with vfs:// directoryies
-		if (strpos($cacheDirectory, '://')) {
-			$this->temporaryCacheDirectory = $cacheDirectory;
-			return;
-		}
-
-		$documentRoot = PATH_site;
-
-		if (($open_basedir = ini_get('open_basedir'))) {
-			if (TYPO3_OS === 'WIN') {
-				$delimiter = ';';
-				$cacheDirectory = str_replace('\\', '/', $cacheDirectory);
-				if (!(preg_match('/[A-Z]:/', substr($cacheDirectory, 0, 2)))) {
-					$cacheDirectory = PATH_site . $cacheDirectory;
-				}
+		if (file_exists($this->cacheDirectory . 'FrozenCache.data')) {
+			$this->frozen = TRUE;
+			if ($this->useIgBinary === TRUE) {
+				$this->cacheEntryIdentifiers = igbinary_unserialize(file_get_contents($this->cacheDirectory . 'FrozenCache.data'));
 			} else {
-				$delimiter = ':';
-				if ($cacheDirectory[0] != '/') {
-						// relative path to cache directory.
-					$cacheDirectory = PATH_site . $cacheDirectory;
-				}
-			}
-
-			$basedirs = explode($delimiter, $open_basedir);
-			$cacheDirectoryInBaseDir = FALSE;
-			foreach ($basedirs as $basedir) {
-				if (TYPO3_OS === 'WIN') {
-					$basedir = str_replace('\\', '/', $basedir);
-				}
-				if ($basedir[strlen($basedir) - 1] !== '/') {
-					$basedir .= '/';
-				}
-				if (t3lib_div::isFirstPartOfStr($cacheDirectory, $basedir)) {
-					$documentRoot = $basedir;
-					$cacheDirectory = str_replace($basedir, '', $cacheDirectory);
-					$cacheDirectoryInBaseDir = TRUE;
-					break;
-				}
-			}
-			if (!$cacheDirectoryInBaseDir) {
-				throw new t3lib_cache_Exception(
-					'Open_basedir restriction in effect. The directory "' . $cacheDirectory . '" is not in an allowed path.'
-				);
-			}
-		} else {
-			if ($cacheDirectory[0] == '/') {
-					// Absolute path to cache directory.
-				$documentRoot = '/';
-			}
-			if (TYPO3_OS === 'WIN') {
-				if (substr($cacheDirectory, 0, strlen($documentRoot)) === $documentRoot) {
-					$documentRoot = '';
-				}
+				$this->cacheEntryIdentifiers = unserialize(file_get_contents($this->cacheDirectory . 'FrozenCache.data'));
 			}
 		}
-
-			// After this point all paths have '/' as directory seperator
-		if ($cacheDirectory[strlen($cacheDirectory) - 1] !== '/') {
-			$cacheDirectory .= '/';
-		}
-
-		$this->temporaryCacheDirectory = $documentRoot . $cacheDirectory . $this->cacheIdentifier . '/';
-	}
-
-	/**
-	 * Create the final cache directory if it does not exist. This method
-	 * exists in TYPO3 v4 only.
-	 *
-	 * @param string $finalCacheDirectory Absolute path to final cache directory
-	 * @return void
-	 * @throws \t3lib_cache_Exception If directory is not writable after creation
-	 */
-	protected function createFinalCacheDirectory($finalCacheDirectory) {
-		try {
-			t3lib_div::mkdir_deep($finalCacheDirectory);
-		} catch (\RuntimeException $e) {
-			throw new \t3lib_cache_Exception(
-				'The directory "' . $finalCacheDirectory . '" can not be created.',
-				1303669848,
-				$e
-			);
-		}
-		if (!is_writable($finalCacheDirectory)) {
-			throw new \t3lib_cache_Exception(
-				'The directory "' . $finalCacheDirectory . '" is not writable.',
-				1203965200
-			);
-		}
-	}
-
-	/**
-	 * Returns the directory where the cache files are stored
-	 *
-	 * @return string Full path of the cache directory
-	 * @api
-	 */
-	public function getCacheDirectory() {
-		return $this->cacheDirectory;
 	}
 
 	/**
@@ -232,13 +148,15 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @param array $tags Tags to associate with this cache entry
 	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
 	 * @return void
-	 * @throws t3lib_cache_Exception if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
-	 * @throws t3lib_cache_exception_InvalidData if the data to bes stored is not a string.
+	 * @throws \RuntimeException
+	 * @throws \t3lib_cache_Exception_InvalidData if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
+	 * @throws \t3lib_cache_Exception if the directory does not exist or is not writable or exceeds the maximum allowed path length, or if no cache frontend has been set.
+	 * @throws \InvalidArgumentException
 	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		if (!is_string($data)) {
-			throw new t3lib_cache_Exception_InvalidData(
+			throw new \t3lib_cache_Exception_InvalidData(
 				'The specified data is of type "' . gettype($data) . '" but a string is expected.',
 				1204481674
 			);
@@ -250,33 +168,30 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 				1282073032
 			);
 		}
-
 		if ($entryIdentifier === '') {
 			throw new \InvalidArgumentException(
 				'The specified entry identifier must not be empty.',
 				1298114280
 			);
 		}
+		if ($this->frozen === TRUE) {
+			throw new \RuntimeException(
+				sprintf('Cannot add or modify cache entry because the backend of cache "%s" is frozen.', $this->cacheIdentifier),
+				1323344192
+			);
+		}
 
 		$this->remove($entryIdentifier);
 
 		$temporaryCacheEntryPathAndFilename = $this->cacheDirectory . uniqid() . '.temp';
-		if (strlen($temporaryCacheEntryPathAndFilename) > t3lib_div::getMaximumPathLength()) {
-			throw new t3lib_cache_Exception(
-				'The length of the temporary cache file path "' . $temporaryCacheEntryPathAndFilename .
-				'" is ' . strlen($temporaryCacheEntryPathAndFilename) . ' characters long and exceeds the maximum path length of ' .
-				t3lib_div::getMaximumPathLength() . '. Please consider setting the temporaryDirectoryBase option to a shorter path. ',
-				1248710426
-			);
-		}
-
-		$expiryTime = ($lifetime === NULL) ? 0 : ($GLOBALS['EXEC_TIME'] + $lifetime);
+		$lifetime = $lifetime === NULL ? $this->defaultLifetime : $lifetime;
+		$expiryTime = ($lifetime === 0) ? 0 : ($GLOBALS['EXEC_TIME'] + $lifetime);
 		$metaData = str_pad($expiryTime, self::EXPIRYTIME_LENGTH) . implode(' ', $tags) . str_pad(strlen($data), self::DATASIZE_DIGITS);
 		$result = file_put_contents($temporaryCacheEntryPathAndFilename, $data . $metaData);
 		t3lib_div::fixPermissions($temporaryCacheEntryPathAndFilename);
 
 		if ($result === FALSE) {
-			throw new t3lib_cache_exception(
+			throw new \t3lib_cache_exception(
 				'The temporary cache file "' . $temporaryCacheEntryPathAndFilename . '" could not be written.',
 				1204026251
 			);
@@ -284,14 +199,12 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 
 		$i = 0;
 		$cacheEntryPathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-			// @TODO: Figure out why the heck this is done and maybe find a smarter solution, report to FLOW3
-		while (!rename($temporaryCacheEntryPathAndFilename, $cacheEntryPathAndFilename) && $i < 5) {
+		while (($result = rename($temporaryCacheEntryPathAndFilename, $cacheEntryPathAndFilename)) === FALSE && $i < 5) {
 			$i++;
 		}
 
-			// @FIXME: At least the result of rename() should be handled here, report to FLOW3
 		if ($result === FALSE) {
-			throw new t3lib_cache_exception(
+			throw new \t3lib_cache_exception(
 				'The cache file "' . $cacheEntryPathAndFilename . '" could not be written.',
 				1222361632
 			);
@@ -307,6 +220,10 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @api
 	 */
 	public function get($entryIdentifier) {
+		if ($this->frozen === TRUE) {
+			return (isset($this->cacheEntryIdentifiers[$entryIdentifier]) ? file_get_contents($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension) : FALSE);
+		}
+
 		if ($entryIdentifier !== basename($entryIdentifier)) {
 			throw new \InvalidArgumentException(
 				'The specified entry identifier must not contain a path segment.',
@@ -327,9 +244,13 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $entryIdentifier
 	 * @return boolean TRUE if such an entry exists, FALSE if not
+	 * @throws \InvalidArgumentException
 	 * @api
 	 */
 	public function has($entryIdentifier) {
+		if ($this->frozen === TRUE) {
+			return isset($this->cacheEntryIdentifiers[$entryIdentifier]);
+		}
 		if ($entryIdentifier !== basename($entryIdentifier)) {
 			throw new \InvalidArgumentException(
 				'The specified entry identifier must not contain a path segment.',
@@ -346,6 +267,8 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 *
 	 * @param string $entryIdentifier Specifies the cache entry to remove
 	 * @return boolean TRUE if (at least) an entry could be removed or FALSE if no entry was found
+	 * @throws \RuntimeException
+	 * @throws \InvalidArgumentException
 	 * @api
 	 */
 	public function remove($entryIdentifier) {
@@ -359,6 +282,12 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			throw new \InvalidArgumentException(
 				'The specified entry identifier must not be empty.',
 				1298114279
+			);
+		}
+		if ($this->frozen === TRUE) {
+			throw new \RuntimeException(
+				sprintf('Cannot remove cache entry because the backend of cache "%s" is frozen.', $this->cacheIdentifier),
+				1323344193
 			);
 		}
 
@@ -408,7 +337,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	}
 
 	/**
-	 * Removes all cache entries of this cache.
+	 * Removes all cache entries of this cache and sets the frozen flag to FALSE.
 	 *
 	 * @return void
 	 * @api
@@ -416,6 +345,9 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	public function flush() {
 		t3lib_div::rmdir($this->cacheDirectory, TRUE);
 		$this->createFinalCacheDirectory($this->cacheDirectory);
+		if ($this->frozen === TRUE) {
+			$this->frozen = FALSE;
+		}
 	}
 
 	/**
@@ -449,8 +381,8 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 			return TRUE;
 		}
 		$index = (integer) file_get_contents($cacheEntryPathAndFilename, NULL, NULL, filesize($cacheEntryPathAndFilename) - self::DATASIZE_DIGITS, self::DATASIZE_DIGITS);
-		$expiryTime = file_get_contents($cacheEntryPathAndFilename, NULL, NULL, $index, self::EXPIRYTIME_LENGTH);
-		return ($expiryTime != 0 && $expiryTime < $GLOBALS['EXEC_TIME']);
+		$expiryTime = intval(file_get_contents($cacheEntryPathAndFilename, NULL, NULL, $index, self::EXPIRYTIME_LENGTH));
+		return ($expiryTime !== 0 && $expiryTime < $GLOBALS['EXEC_TIME']);
 	}
 
 	/**
@@ -460,6 +392,10 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * @api
 	 */
 	public function collectGarbage() {
+		if ($this->frozen === TRUE) {
+			return;
+		}
+
 		for ($directoryIterator = new \DirectoryIterator($this->cacheDirectory); $directoryIterator->valid(); $directoryIterator->next()) {
 			if ($directoryIterator->isDot()) {
 				continue;
@@ -482,8 +418,7 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * is due to some error or crash.
 	 *
 	 * @param string $entryIdentifier The cache entry identifier
-	 * @return mixed The file names (including path) as an array if one or more entries could be found, otherwise FALSE
-	 * @internal
+	 * @return mixed The filenames (including path) as an array if one or more entries could be found, otherwise FALSE
 	 */
 	protected function findCacheFilesByIdentifier($entryIdentifier) {
 		$pattern = $this->cacheDirectory . $entryIdentifier;
@@ -499,19 +434,29 @@ class t3lib_cache_backend_FileBackend extends t3lib_cache_backend_AbstractBacken
 	 * Loads PHP code from the cache and require_onces it right away.
 	 *
 	 * @param string $entryIdentifier An identifier which describes the cache entry to load
+	 * @throws \InvalidArgumentException
 	 * @return mixed Potential return value from the include operation
 	 * @api
 	 */
 	public function requireOnce($entryIdentifier) {
-		if ($entryIdentifier !== basename($entryIdentifier)) {
-			throw new \InvalidArgumentException(
-				'The specified entry identifier must not contain a path segment.',
-				1282073036
-			);
-		}
+		if ($this->frozen === TRUE) {
+			if (isset($this->cacheEntryIdentifiers[$entryIdentifier])) {
+				return require_once($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension);
+			} else {
+				return FALSE;
+			}
+		} else {
+			$pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
+			if ($entryIdentifier !== basename($entryIdentifier)) {
+				throw new \InvalidArgumentException(
+					'The specified entry identifier must not contain a path segment.',
+					1282073036
+				);
+			}
 
-		$pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
-		return ($this->isCacheFileExpired($pathAndFilename)) ? FALSE : require_once($pathAndFilename);
+			$pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
+			return ($this->isCacheFileExpired($pathAndFilename)) ? FALSE : require_once($pathAndFilename);
+		}
 	}
 }
 ?>

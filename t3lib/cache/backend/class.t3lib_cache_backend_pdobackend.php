@@ -30,9 +30,8 @@
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
- * @scope prototype
  */
-class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend {
+class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_TaggableBackend {
 
 	/**
 	 * @var string
@@ -109,21 +108,21 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 * @param array $tags Tags to associate with this cache entry
 	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
-	 * @throws t3lib_cache_Exception if no cache frontend has been set.
+	 * @throws \t3lib_cache_Exception if no cache frontend has been set.
 	 * @throws \InvalidArgumentException if the identifier is not valid
-	 * @throws t3lib_cache_exception_InvalidData if $data is not a string
+	 * @throws \t3lib_cache_exception_InvalidData if $data is not a string
 	 * @api
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
+			throw new \t3lib_cache_Exception(
 				'No cache frontend has been set yet via setCache().',
 				1259515600
 			);
 		}
 
 		if (!is_string($data)) {
-			throw new t3lib_cache_exception_InvalidData(
+			throw new \t3lib_cache_exception_InvalidData(
 				'The specified data is of type "' . gettype($data) . '" but a string is expected.',
 				1259515601
 			);
@@ -143,7 +142,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 		);
 
 		if ($result === FALSE) {
-			throw new t3lib_cache_Exception(
+			throw new \t3lib_cache_Exception(
 				'The cache entry "' . $entryIdentifier . '" could not be written.',
 				1259530791
 			);
@@ -158,7 +157,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 				array($entryIdentifier, $this->context, $this->cacheIdentifier, $tag)
 			);
 			if ($result === FALSE) {
-				throw new t3lib_cache_Exception(
+				throw new \t3lib_cache_Exception(
 					'The tag "' . $tag . ' for cache entry "' . $entryIdentifier . '" could not be written.',
 					1259530751
 				);
@@ -318,6 +317,7 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 	 * Connect to the database
 	 *
 	 * @return void
+	 * @throws \RuntimeException if something goes wrong
 	 */
 	protected function connect() {
 		try {
@@ -337,6 +337,10 @@ class t3lib_cache_backend_PdoBackend extends t3lib_cache_backend_AbstractBackend
 				$this->databaseHandle->exec('SET SESSION sql_mode=\'ANSI\';');
 			}
 		} catch (\PDOException $e) {
+			throw new \RuntimeException(
+				'Could not connect to cache table with DSN "' . $this->dataSourceName . '". PDO error: ' . $e->getMessage(),
+				1334736164
+			);
 		}
 	}
 

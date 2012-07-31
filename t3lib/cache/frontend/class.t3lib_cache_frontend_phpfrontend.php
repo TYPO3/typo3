@@ -31,7 +31,6 @@
  * @subpackage t3lib_cache
  * @author Robert Lemke <robert@typo3.org>
  * @api
- * @scope prototype
  */
 class t3lib_cache_frontend_PhpFrontend extends t3lib_cache_frontend_StringFrontend {
 
@@ -54,7 +53,7 @@ class t3lib_cache_frontend_PhpFrontend extends t3lib_cache_frontend_StringFronte
 	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
 	 * @throws \InvalidArgumentException If $entryIdentifier or $tags is invalid
-	 * @throws t3lib_cache_exception_InvalidData If $sourceCode is not a string
+	 * @throws \t3lib_cache_exception_InvalidData If $sourceCode is not a string
 	 * @api
 	 */
 	public function set($entryIdentifier, $sourceCode, array $tags = array(), $lifetime = NULL) {
@@ -65,7 +64,7 @@ class t3lib_cache_frontend_PhpFrontend extends t3lib_cache_frontend_StringFronte
 			);
 		}
 		if (!is_string($sourceCode)) {
-			throw new t3lib_cache_exception_InvalidData(
+			throw new \t3lib_cache_exception_InvalidData(
 				'The given source code is not a valid string.',
 				1264023824
 			);

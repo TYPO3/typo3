@@ -49,11 +49,10 @@ interface t3lib_cache_backend_Backend {
 	 *
 	 * @param string $entryIdentifier An identifier for this specific cache entry
 	 * @param string $data The data to be stored
-	 * @param array $tags Tags to associate with this cache entry
-	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
+	 * @param array $tags Tags to associate with this cache entry. If the backend does not support tags, this option can be ignored.
+	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited lifetime.
 	 * @return void
 	 * @throws t3lib_cache_Exception if no cache frontend has been set.
-	 * @throws \InvalidArgumentException if the identifier is not valid
 	 * @throws t3lib_cache_Exception_InvalidData if the data is not a string
 	 * @api
 	 */
@@ -95,25 +94,6 @@ interface t3lib_cache_backend_Backend {
 	 * @api
 	 */
 	public function flush();
-
-	/**
-	 * Removes all cache entries of this cache which are tagged by the specified tag.
-	 *
-	 * @param string $tag The tag the entries must have
-	 * @return void
-	 * @api
-	 */
-	public function flushByTag($tag);
-
-	/**
-	 * Finds and returns all cache entry identifiers which are tagged by the
-	 * specified tag.
-	 *
-	 * @param string $tag The tag to search for
-	 * @return array An array with identifiers of all matching entries. An empty array if no entries matched
-	 * @api
-	 */
-	public function findIdentifiersByTag($tag);
 
 	/**
 	 * Does garbage collection

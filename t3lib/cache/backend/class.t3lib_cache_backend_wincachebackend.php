@@ -46,7 +46,7 @@
  * @package TYPO3
  * @subpackage t3lib_cache
  */
-class t3lib_cache_backend_WincacheBackend extends t3lib_cache_backend_AbstractBackend {
+class t3lib_cache_backend_WincacheBackend extends t3lib_cache_backend_AbstractBackend implements t3lib_cache_backend_TaggableBackend {
 
 	/**
 	 * A prefix to seperate stored data from other data possible stored in the wincache
@@ -59,10 +59,11 @@ class t3lib_cache_backend_WincacheBackend extends t3lib_cache_backend_AbstractBa
 	 * Constructs this backend
 	 *
 	 * @param mixed $options Configuration options - unused here
+	 * @throws \t3lib_cache_Exception If wincache PHP extension is not loaded
 	 */
 	public function __construct($options = array()) {
 		if (!extension_loaded('wincache')) {
-			throw new t3lib_cache_Exception(
+			throw new \t3lib_cache_Exception(
 				'The PHP extension "wincache" must be installed and loaded in order to use the wincache backend.',
 				1343331520
 			);
@@ -79,20 +80,20 @@ class t3lib_cache_backend_WincacheBackend extends t3lib_cache_backend_AbstractBa
 	 * @param array $tags Tags to associate with this cache entry
 	 * @param integer $lifetime Lifetime of this cache entry in seconds. If NULL is specified, the default lifetime is used. "0" means unlimited liftime.
 	 * @return void
-	 * @throws t3lib_cache_Exception if no cache frontend has been set
-	 * @throws InvalidArgumentException if the identifier is not valid
-	 * @throws t3lib_cache_exception_InvalidData if $data is not a string
+	 * @throws \t3lib_cache_Exception if no cache frontend has been set
+	 * @throws \InvalidArgumentException if the identifier is not valid
+	 * @throws \t3lib_cache_exception_InvalidData if $data is not a string
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		if (!$this->cache instanceof t3lib_cache_frontend_Frontend) {
-			throw new t3lib_cache_Exception(
+			throw new \t3lib_cache_Exception(
 				'No cache frontend has been set yet via setCache().',
 				1343331521
 			);
 		}
 
 		if (!is_string($data)) {
-			throw new t3lib_cache_exception_InvalidData(
+			throw new \t3lib_cache_exception_InvalidData(
 				'The specified data is of type "' . gettype($data) . '" but a string is expected.',
 				1343331522
 			);
@@ -246,7 +247,7 @@ class t3lib_cache_backend_WincacheBackend extends t3lib_cache_backend_AbstractBa
 
 				// Update identifier-to-tag index
 			$existingTags = $this->findTagsByIdentifier($entryIdentifier);
-			if (array_search($entryIdentifier, $existingTags) === false) {
+			if (array_search($entryIdentifier, $existingTags) === FALSE) {
 				wincache_ucache_set($this->identifierPrefix . 'ident_' . $entryIdentifier, array_merge($existingTags, $tags));
 			}
 		}

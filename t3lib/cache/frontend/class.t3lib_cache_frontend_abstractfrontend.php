@@ -32,7 +32,6 @@
  * @author Robert Lemke <robert@typo3.org>
  * @author Karsten Dambekalns <karsten@typo3.org>
  * @api
- * @scope prototype
  */
 abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_frontend_Frontend {
 
@@ -43,7 +42,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	protected $identifier;
 
 	/**
-	 * @var t3lib_cache_backend_AbstractBackend
+	 * @var t3lib_cache_backend_AbstractBackend|t3lib_cache_backend_TaggableBackend
 	 */
 	protected $backend;
 
@@ -55,8 +54,11 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 * @throws \InvalidArgumentException if the identifier doesn't match PATTERN_ENTRYIDENTIFIER
 	 */
 	public function __construct($identifier, t3lib_cache_backend_Backend $backend) {
-		if (!preg_match(self::PATTERN_ENTRYIDENTIFIER, $identifier)) {
-			throw new \InvalidArgumentException('"' . $identifier . '" is not a valid cache identifier.', 1203584729);
+		if (preg_match(self::PATTERN_ENTRYIDENTIFIER, $identifier) !== 1) {
+			throw new \InvalidArgumentException(
+				'"' . $identifier . '" is not a valid cache identifier.',
+				1203584729
+			);
 		}
 		$this->identifier = $identifier;
 		$this->backend = $backend;
@@ -106,6 +108,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @param string $entryIdentifier An identifier specifying the cache entry
 	 * @return boolean TRUE if such an entry exists, FALSE if not
+	 * @throws \InvalidArgumentException
 	 * @api
 	 */
 	public function remove($entryIdentifier) {
@@ -133,6 +136,7 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 	 *
 	 * @param string $tag The tag the entries must have
 	 * @return void
+	 * @throws \InvalidArgumentException
 	 * @api
 	 */
 	public function flushByTag($tag) {
@@ -150,7 +154,9 @@ abstract class t3lib_cache_frontend_AbstractFrontend implements t3lib_cache_fron
 			}
 		}
 
-		$this->backend->flushByTag($tag);
+		if ($this->backend instanceof t3lib_cache_backend_TaggableBackend) {
+			$this->backend->flushByTag($tag);
+		}
 	}
 
 	/**
