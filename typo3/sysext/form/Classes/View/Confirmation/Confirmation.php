@@ -92,7 +92,6 @@ class tx_form_View_Confirmation extends tx_form_View_Confirmation_Element_Contai
 	 * @return string XHTML string containing the whole form
 	 */
 	public function get() {
-		$this->setCss();
 		$message = $this->getMessage();
 
 		$node = $this->render('element', FALSE);
@@ -164,19 +163,6 @@ class tx_form_View_Confirmation extends tx_form_View_Confirmation_Element_Contai
 		';
 
 		return $confirmationButtons;
-	}
-
-	/**
-	 * Add the form CSS file as additional header data
-	 *
-	 * @return void
-	 */
-	protected function setCss() {
-		$GLOBALS['TSFE']->additionalHeaderData['tx_form_css'] =
-			'<link rel="stylesheet" type="text/css" href="' .
-			t3lib_extMgm::siteRelPath('form') .
-			'Resources/Public/CSS/Confirmation.css' .
-			'" media="all" />';
 	}
 }
 ?>

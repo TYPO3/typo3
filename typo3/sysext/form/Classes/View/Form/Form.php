@@ -63,24 +63,10 @@ class tx_form_View_Form extends tx_form_View_Form_Element_Container {
 	 * @return string XHTML string containing the whole form
 	 */
 	public function get() {
-		$this->setCss();
 		$node = $this->render('element', FALSE);
 		$content = chr(10) . html_entity_decode($node->saveXML($node->firstChild), ENT_QUOTES, 'UTF-8') . chr(10);
 
 		return $content;
-	}
-
-	/**
-	 * Add the form CSS file as additional header data
-	 *
-	 * @return void
-	 */
-	protected function setCss() {
-		$GLOBALS['TSFE']->additionalHeaderData['tx_form_css'] =
-			'<link rel="stylesheet" type="text/css" href="' .
-			t3lib_extMgm::siteRelPath('form') .
-			'Resources/Public/CSS/Form.css' .
-			'" media="all" />';
 	}
 }
 ?>
