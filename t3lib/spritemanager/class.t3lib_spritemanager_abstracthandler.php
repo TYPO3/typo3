@@ -64,7 +64,7 @@ abstract class t3lib_spritemanager_AbstractHandler implements t3lib_spritemanage
 
 	/**
 	 * Loads all stylesheet files registered through
-	 * t3lib_SpriteManager::::addIconSprite
+	 * t3lib_SpriteManager::addIconSprite
 	 *
 	 * In fact the stylesheet-files are copied to t3lib_SpriteManager::tempPath
 	 * where they automatically will be included from via template.php and

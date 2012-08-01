@@ -45,111 +45,87 @@ class t3lib_SpriteManager {
 	public static $tempPath = 'typo3temp/sprites/';
 
 	/**
-	 * @var t3lib_spritemanager_SpriteIconGenerator Handler class instance
-	 */
-	protected $handler = NULL;
-
-	/**
-	 * @var array Register of valid icons
-	 */
-	protected $iconNames = array();
-
-	/**
-	 * @var string Name of current cache file
-	 */
-	protected $tempFileName = '';
-
-	/**
-	 * Check if the icon cache has to be rebuild, instantiate and call the handler class if so.
+	 * Initialize sprite manager.
+	 * Loads registered sprite configuration from cache, or
+	 * rebuilds new cache before registration.
 	 *
-	 * @param boolean $allowRegeneration Suppress regeneration if FALSE (useful for feediting)
+	 * @return void
 	 */
-	function __construct($allowRegeneration = TRUE) {
+	public static function initialize() {
+		$cacheIdentifier = static::getCacheIdentifier();
+		/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
+		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
+		if ($phpCodeCache->has($cacheIdentifier)) {
+			$phpCodeCache->requireOnce($cacheIdentifier);
+		} else {
+			static::createSpriteCache();
+			$phpCodeCache->requireOnce($cacheIdentifier);
+		}
+	}
+
+	/**
+	 * Compile sprite icon cache by calling the registered generator.
+	 *
+	 * Stuff the compiled $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']
+	 * global into php code cache
+	 *
+	 * @throws RuntimeException
+	 * @return void
+	 */
+	protected static function createSpriteCache() {
+		$handlerClass = $GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'];
+		/** @var $handler t3lib_spritemanager_SpriteIconGenerator */
+		$handler = t3lib_div::makeInstance($handlerClass);
+
+			// Throw exception if handler class does not implement required interface
+		if (!$handler instanceof t3lib_spritemanager_SpriteIconGenerator) {
+			throw new RuntimeException(
+				'Class ' . $handlerClass . ' in $TYPO3_CONF_VARS[BE][spriteIconGenerator_handler] ' .
+				' does not implement t3lib_spritemanager_SpriteIconGenerator',
+				1294586333
+			);
+		}
+
 			// Create temp directory if missing
 		if (!is_dir(PATH_site . self::$tempPath)) {
 			t3lib_div::mkdir(PATH_site . self::$tempPath);
 		}
 
-			// Create cache filename, the hash includes all icons, registered CSS styles registered and the extension list
-		$this->tempFileName = PATH_site . self::$tempPath .
-							md5(serialize($GLOBALS['TBE_STYLES']['spritemanager']) .
-								md5(serialize($GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'])) .
-								$GLOBALS['TYPO3_CONF_VARS']['EXT']['extList']) . '.inc';
-
-			// Regenerate cache file if not already existing
-		if (!@file_exists($this->tempFileName)) {
-			if ($allowRegeneration) {
-				$handlerClass = (
-				$GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'] ?
-						$GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'] :
-						't3lib_spritemanager_SimpleHandler'
-				);
-				$this->handler = t3lib_div::makeInstance($handlerClass);
-
-					// Throw exception if handler class does not implement required interface
-				if (!$this->handler || !($this->handler instanceof t3lib_spritemanager_SpriteIconGenerator)) {
-					throw new RuntimeException(
-						'Class in $TYPO3_CONF_VARS[BE][spriteIconGenerator_handler] (' .
-						$GLOBALS['TYPO3_CONF_VARS']['BE']['spriteIconGenerator_handler'] .
-						') does not exist or does not implement t3lib_spritemanager_SpriteIconGenerator.',
-						1294586333
-					);
-				}
-
-				$this->rebuildCache();
-			} else {
-					// Set tempFileName to existing file if regeneration is not allowed
-				list($this->tempFileName) = t3lib_div::getFilesInDir(PATH_site . self::$tempPath, 'inc', TRUE);
-			}
-		}
-	}
-
-	/**
-	 * Call handler class, merge results with skin data and cache it.
-	 *
-	 * @return void
-	 */
-	protected function rebuildCache() {
 			// Generate CSS and TCA files, build icon set register
-		$this->handler->generate();
+		$handler->generate();
 
 			// Get all icons registered from skins, merge with core icon list
 		$availableSkinIcons = (array) $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'];
-		foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinName => $skinData) {
+		foreach ($GLOBALS['TBE_STYLES']['skins'] as $skinData) {
 			$availableSkinIcons = array_merge($availableSkinIcons, (array) $skinData['availableSpriteIcons']);
 		}
 
 			// Merge icon names provided by the skin, with
 			// registered "complete sprites" and the handler class
-		$this->iconNames = array_merge(
+		$iconNames = array_merge(
 			$availableSkinIcons,
 			(array) $GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'],
-			$this->handler->getAvailableIconNames()
+			$handler->getAvailableIconNames()
 		);
 
-			// Create serialized cache data
-		$cacheString = addslashes(serialize($this->iconNames));
-		$fileContent = '<?php $GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = unserialize(stripslashes(\'' . $cacheString . '\')); ?>';
+		$cacheString = addslashes(serialize($iconNames));
+		$cacheFileContent = '$GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = unserialize(stripslashes(\'' . $cacheString . '\'));';
 
-			// Clean up cache directory
-		$oldFiles = t3lib_div::getFilesInDir(PATH_site . self::$tempPath, 'inc', TRUE);
-		foreach ($oldFiles as $file) {
-			@unlink($file);
-		}
-
-			// Write new cache file
-		t3lib_div::writeFile($this->tempFileName, $fileContent);
+		/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
+		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
+			static::getCacheIdentifier(),
+			$cacheFileContent,
+			array('t3lib_cachemanager', 'core')
+		);
 	}
 
 	/**
-	 * Include cache file if exists
+	 * Get cache identifier for $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function loadCacheFile() {
-		if (@file_exists($this->tempFileName)) {
-			include_once($this->tempFileName);
-		}
+	protected static function getCacheIdentifier() {
+		return 'sprites_' . sha1(TYPO3_version . PATH_site . 'spriteManagement');
 	}
 
 	/**
@@ -163,8 +139,8 @@ class t3lib_SpriteManager {
 	 * - CSS class for loading the sprite: t3-icon-extensions-$extKey
 	 * - CSS class for single icons: t3-icon-$extKey-$iconName
 	 *
-	 * @param array Icon names
-	 * @param string Stylesheet filename relative to PATH_typo3. Skins do not need to supply the $styleSheetFile, if the CSS file is within the registered stylesheet folders
+	 * @param array $icons Icon names
+	 * @param string $styleSheetFile Stylesheet filename relative to PATH_typo3. Skins do not need to supply the $styleSheetFile, if the CSS file is within the registered stylesheet folders
 	 * @return void
 	 */
 	public static function addIconSprite(array $icons, $styleSheetFile = '') {
@@ -181,8 +157,8 @@ class t3lib_SpriteManager {
 	 * API for extensions to register new sprite images which can be used with
 	 * t3lib_iconWorks::getSpriteIcon('extensions-$extKey-iconName');
 	 *
-	 * @param array Icons to be registered, $iconname => $iconFile, $iconFile must be relative to PATH_site
-	 * @param string Extension key
+	 * @param array $icons Icons to be registered, $iconname => $iconFile, $iconFile must be relative to PATH_site
+	 * @param string $extKey Extension key
 	 * @return void
 	 */
 	public static function addSingleIcons(array $icons, $extKey = '') {
@@ -195,9 +171,9 @@ class t3lib_SpriteManager {
 	 * API to register new type icons for tables which use "typeicon_classes"
 	 * Can be used to provide icons for "modules" in pages table
 	 *
-	 * @param string Table name to which the type icon should be added
-	 * @param string Type column name of the table
-	 * @param string Icon filename, relative to PATH_typo3
+	 * @param string $table Table name to which the type icon should be added
+	 * @param string $type Type column name of the table
+	 * @param string $iconFile Icon filename, relative to PATH_typo3
 	 * @return void
 	 */
 	public static function addTcaTypeIcon($table, $type, $iconFile) {
@@ -207,5 +183,4 @@ class t3lib_SpriteManager {
 		}
 	}
 }
-
 ?>
