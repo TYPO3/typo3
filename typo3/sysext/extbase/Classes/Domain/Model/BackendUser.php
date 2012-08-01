@@ -78,7 +78,7 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 	/**
 	 * @var DateTime|NULL
 	 */
-	protected $lastloginDateAndTime;
+	protected $lastLoginDateAndTime;
 
 	/**
 	 * @var boolean
@@ -290,7 +290,7 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 	 * @return \DateTime|NULL this user's last login date and time, will be NULL if this user has never logged in before
 	 */
 	public function getLastLoginDateAndTime() {
-		return $this->lastloginDateAndTime;
+		return $this->lastLoginDateAndTime;
 	}
 
 	/**
@@ -301,7 +301,7 @@ class Tx_Extbase_Domain_Model_BackendUser extends Tx_Extbase_DomainObject_Abstra
 	 * @return void
 	 */
 	public function setLastLoginDateAndTime(\DateTime $dateAndTime = NULL) {
-		$this->lastloginDateAndTime = $dateAndTime;
+		$this->lastLoginDateAndTime = $dateAndTime;
 	}
 }
 ?>
