@@ -22,11 +22,6 @@ module.tx_belog {
 				tableName = sys_workspace
 			}
 		}
-		Tx_Belog_Domain_Model_BackendUser {
-			mapping {
-				tableName = be_users
-			}
-		}
 		Tx_Belog_Domain_Model_HistoryEntry {
 			mapping {
 				tableName = sys_history
