@@ -4118,6 +4118,7 @@ class t3lib_TCEmain {
 		$versions = t3lib_BEfunc::selectVersionsOfRecord($table, $uid, 'uid,pid');
 		if (is_array($versions)) {
 			foreach ($versions as $verRec) {
+				$this->deleteVersionMovePlaceHolder($table, $verRec['uid']);
 				if (!$verRec['_CURRENT_VERSION']) {
 					if ($table == 'pages') {
 						$this->deletePages($verRec['uid'], TRUE, $forceHardDelete);
@@ -4126,6 +4127,20 @@ class t3lib_TCEmain {
 					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * Delete move placeholder related to a version
+	 *
+	 * @param string $table Table name
+	 * @param integer $uid Record UID
+	 * @return void
+	 */
+	function deleteVersionMovePlaceHolder($table, $uid) {
+		$record = $this->recordInfo($table, $uid, "t3ver_wsid,t3ver_state,t3ver_oid");
+		if ($record["t3ver_state"] == 4) {
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, 't3ver_wsid=' . $record["t3ver_wsid"] . ' AND t3ver_state=3 AND t3ver_move_id=' .$record["t3ver_oid"]);
 		}
 	}
 

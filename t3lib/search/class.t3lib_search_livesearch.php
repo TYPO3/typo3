@@ -393,6 +393,9 @@ class t3lib_search_livesearch {
 				// And the relevant conditions for deleted and versioned records
 			$queryPart .= t3lib_BEfunc::deleteClause($tableName);
 			$queryPart .= t3lib_BEfunc::versioningPlaceholderClause($tableName);
+			if ($GLOBALS['TCA'][$tableName] && $GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'] == 2) {
+				$queryPart .= ' AND ' . $tableName . '.t3ver_move_id = 0';
+			}
 
 			// If there were no conditions, make sure that the query will fail for the given table
 		} else {
