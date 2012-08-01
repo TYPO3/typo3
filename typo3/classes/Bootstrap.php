@@ -941,15 +941,12 @@ class Typo3_Bootstrap {
 	}
 
 	/**
-	 * Initialize sprite manager global
+	 * Initialize sprite manager
 	 *
-	 * @param boolean $allowRegeneration
 	 * @return Typo3_Bootstrap
 	 */
-	public function initializeSpriteManager($allowRegeneration = TRUE) {
-			/** @var $spriteManager t3lib_SpriteManager */
-		$GLOBALS['spriteManager'] = t3lib_div::makeInstance('t3lib_SpriteManager', $allowRegeneration);
-		$GLOBALS['spriteManager']->loadCacheFile();
+	public function initializeSpriteManager() {
+		t3lib_SpriteManager::initialize();
 
 		return $this;
 	}

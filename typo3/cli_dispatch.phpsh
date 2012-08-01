@@ -78,7 +78,7 @@ Typo3_Bootstrap_Cli::initializeCliKeyOrDie();
 Typo3_Bootstrap::getInstance()
 	->loadExtensionTables(TRUE)
 		// TODO: Check if we really need the sprite manager on the command line
-	->initializeSpriteManager(TRUE)
+	->initializeSpriteManager()
 	->initializeBackendUser()
 	->initializeBackendUserMounts()
 	->initializeLanguageObject();
