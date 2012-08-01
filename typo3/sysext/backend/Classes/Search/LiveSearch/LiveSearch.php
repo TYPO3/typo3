@@ -353,6 +353,7 @@ class LiveSearch
             // And the relevant conditions for deleted and versioned records
             $queryPart .= BackendUtility::deleteClause($tableName);
             $queryPart .= BackendUtility::versioningPlaceholderClause($tableName);
+            $queryPart .= BackendUtility::getWorkspaceWhereClause($tableName);
         } else {
             $queryPart = ' AND 0 = 1';
         }
@@ -467,6 +468,8 @@ class LiveSearch
             $tree->getTree($id, $depth, '');
         }
         $tree->ids[] = $id;
+        // add workspace pid - workspace permissions are taken into account by where clause later
+        $tree->ids[] = -1;
         $idList = implode(',', $tree->ids);
         return $idList;
     }
