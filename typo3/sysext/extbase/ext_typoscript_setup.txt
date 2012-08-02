@@ -19,6 +19,16 @@ config.tx_extbase {
 		enableAutomaticCacheClearing = 1
 		updateReferenceIndex = 0
 		classes {
+			Tx_Extbase_Domain_Model_FileMount {
+				mapping {
+					tableName = sys_filemounts
+					columns {
+						title.mapOnProperty = title
+						path.mapOnProperty = path
+						base.mapOnProperty = isAbsolutePath
+					}
+				}
+			}
 			Tx_Extbase_Domain_Model_BackendUser {
 				mapping {
 					tableName = be_users
