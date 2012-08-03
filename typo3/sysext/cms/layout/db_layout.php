@@ -180,13 +180,13 @@ class SC_db_layout {
 		// Currently selected language for editing content elements
 	var $current_sys_language;
 		// Module configuration
-	var $MCONF=array();
+	var $MCONF = array();
 		// Menu configuration
-	var $MOD_MENU=array();
+	var $MOD_MENU = array();
 		// Module settings (session variable)
-	var $MOD_SETTINGS=array();
+	var $MOD_SETTINGS = array();
 		// Array, where files to include is accumulated in the init() function
-	var $include_once=array();
+	var $include_once = array();
 		// Array of tables to be listed by the Web > Page module in addition to the default tables
 	var $externalTables = array();
 
@@ -303,10 +303,6 @@ class SC_db_layout {
 		$this->modTSconfig = t3lib_BEfunc::getModTSconfig($this->id, 'mod.'.$this->MCONF['name']);
 		if ($this->modTSconfig['properties']['QEisDefault'])	ksort($this->MOD_MENU['function']);
 		$this->MOD_MENU['function'] = t3lib_BEfunc::unsetMenuItems($this->modTSconfig['properties'], $this->MOD_MENU['function'], 'menu.function');
-
-		if (!$this->modTSconfig['properties']['disablePageInformation']) {
-			$this->MOD_MENU['function'][3] = $GLOBALS['LANG']->getLL('pageInformation');
-		}
 
 			// Remove QuickEdit as option if page type is not...
 		if (!t3lib_div::inList($GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ',6', $this->pageinfo['doktype'])) {
@@ -1020,7 +1016,8 @@ class SC_db_layout {
 					foreach($tcaItems as $temp) {
 						$colList[] = $temp[1];
 					}
-				} else {	// ... should be impossible that colPos has no array. But this is the fallback should it make any sense:
+				} else {
+						// ... should be impossible that colPos has no array. But this is the fallback should it make any sense:
 					$colList = array('1', '0', '2', '3');
 				}
 				if (strcmp($this->colPosList, '')) {
@@ -1051,8 +1048,8 @@ class SC_db_layout {
 				if (isset($this->MOD_SETTINGS) && isset($this->MOD_MENU)) {
 					$h_func = t3lib_BEfunc::getFuncMenu($this->id, 'SET[' . $table . ']', $this->MOD_SETTINGS[$table], $this->MOD_MENU[$table], 'db_layout.php', '');
 				} else {
-				$h_func = '';
-			}
+					$h_func = '';
+				}
 			}
 
 				// Start the dblist object:
@@ -1068,7 +1065,7 @@ class SC_db_layout {
 			$dblist->generateList();
 
 				// Adding the list content to the tableOutput variable:
-			$tableOutput[$table]=
+			$tableOutput[$table] =
 							($h_func ? $h_func . '<br /><img src="clear.gif" width="1" height="4" alt="" /><br />' : '').
 							$dblist->HTMLcode.
 							($h_func_b ? '<img src="clear.gif" width="1" height="10" alt="" /><br />' . $h_func_b : '');
@@ -1091,45 +1088,32 @@ class SC_db_layout {
 
 		$content .= $this->doc->header($this->pageinfo['title']);
 
-			// Now, create listing based on which element is selected in the function menu:
-		if ($this->MOD_SETTINGS['function']==3) {
 
-				// Making page info:
-			$content .= $this->doc->section($GLOBALS['LANG']->getLL('pageInformation'), $dblist->getPageInfoBox($this->pageinfo, $this->CALC_PERMS&2), 0, 1);
-		} else {
-
-				// Add the content for each table we have rendered (traversing $tableOutput variable)
-			foreach ($tableOutput as $table => $output) {
-				$content .= $this->doc->section('', $output, TRUE, TRUE, 0, TRUE);
-				$content .= $this->doc->spacer(15);
-				$content .= $this->doc->sectionEnd();
-			}
-
-				// Making search form:
-			if (!$this->modTSconfig['properties']['disableSearchBox'] && count($tableOutput)) {
-				$sectionTitle = t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.search', TRUE));
-				$content .= $this->doc->section(
-					$sectionTitle,
-					$dblist->getSearchBox(0),
-					FALSE, TRUE, FALSE, TRUE
-				);
-			}
-
-				// Additional footer content
-			$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'];
-			if (is_array($footerContentHook)) {
-				foreach ($footerContentHook as $hook) {
-					$params = array();
-					$content .= t3lib_div::callUserFunction($hook, $params, $this);
-				}
-			}
-
-				// Add spacer in bottom of page:
-			$content.=$this->doc->spacer(10);
+			// Add the content for each table we have rendered (traversing $tableOutput variable)
+		foreach ($tableOutput as $table => $output) {
+			$content .= $this->doc->section('', $output, TRUE, TRUE, 0, TRUE);
+			$content .= $this->doc->spacer(15);
+			$content .= $this->doc->sectionEnd();
 		}
 
-			// Ending page:
-		$content .= $this->doc->spacer(10);
+			// Making search form:
+		if (!$this->modTSconfig['properties']['disableSearchBox'] && count($tableOutput)) {
+			$sectionTitle = t3lib_BEfunc::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.search', TRUE));
+			$content .= $this->doc->section(
+				$sectionTitle,
+				$dblist->getSearchBox(0),
+				FALSE, TRUE, FALSE, TRUE
+			);
+		}
+
+			// Additional footer content
+		$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/db_layout.php']['drawFooterHook'];
+		if (is_array($footerContentHook)) {
+			foreach ($footerContentHook as $hook) {
+				$params = array();
+				$content .= t3lib_div::callUserFunction($hook, $params, $this);
+			}
+		}
 
 		return $content;
 	}

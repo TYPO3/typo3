@@ -123,12 +123,6 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 			}
 		}
 
-			// PAGE INFORMATION
-		if ($this->pObj->pageinfo['uid']) {
-			$theOutput.=$this->pObj->doc->spacer(10);
-			$theOutput.=$this->pObj->doc->section($LANG->getLL('pageInformation'), $dblist->getPageInfoBox($this->pObj->pageinfo, $this->pObj->CALC_PERMS&2), 0, 1);
-		}
-
 		return $theOutput;
 	}
 }
