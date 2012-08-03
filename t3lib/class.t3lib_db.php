@@ -1384,7 +1384,7 @@ class t3lib_DB {
 	 * @return boolean <code>FALSE</code> if recordset is not valid
 	 */
 	function debug_check_recordset($res) {
-		if (!$res) {
+		if (!is_resource($res)) {
 			$trace = FALSE;
 			$msg = 'Invalid database result resource detected';
 			$trace = debug_backtrace();
