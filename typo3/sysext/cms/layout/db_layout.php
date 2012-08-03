@@ -338,6 +338,58 @@ class SC_db_layout {
 	}
 
 	/**
+	 * Generate the flashmessages for current pid
+	 *
+	 * @return string HTML content with flashmessages
+	 */
+	protected function getHeaderFlashMessagesForCurrentPid() {
+		$content = '';
+
+			// If page is a folder
+		if ($this->pageinfo['doktype'] == t3lib_pageSelect::DOKTYPE_SYSFOLDER) {
+
+				// Access to list module
+			$moduleLoader = t3lib_div::makeInstance('t3lib_loadModules');
+			$moduleLoader->load($GLOBALS['TBE_MODULES']);
+			$modules = $moduleLoader->modules;
+
+			if (is_array($modules['web']['sub']['list'])) {
+				$flashMessage = t3lib_div::makeInstance(
+					't3lib_FlashMessage',
+					'<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>
+					<br />
+					<p>' .
+						t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
+						'<a href="javascript:top.goToModule( \'web_list\',1);">' .
+							$GLOBALS['LANG']->getLL('goToListModule') . '
+						</a>
+					</p>',
+					'',
+					t3lib_FlashMessage::INFO
+				);
+				$content .= $flashMessage->render();
+			}
+		}
+
+			// If content from different pid is displayed
+		if ($this->pageinfo['content_from_pid']) {
+			$contentPage = t3lib_BEfunc::getRecord('pages', intval($this->pageinfo['content_from_pid']));
+			$title = t3lib_BEfunc::getRecordTitle('pages', $contentPage);
+			$linkToPid = $this->local_linkThisScript(array('id' => $this->pageinfo['content_from_pid']));
+			$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . intval($this->pageinfo['content_from_pid']) . ')</a>';
+			$flashMessage = t3lib_div::makeInstance(
+				't3lib_FlashMessage',
+				sprintf($GLOBALS['LANG']->getLL('content_from_pid_title'), $link),
+				'',
+				t3lib_FlashMessage::INFO
+			);
+			$content .= $flashMessage->render();
+		}
+
+		return $content;
+	}
+
+	/**
 	 * Main function.
 	 * Creates some general objects and calls other functions for the main rendering of module content.
 	 *
@@ -461,7 +513,7 @@ class SC_db_layout {
 			');
 
 				// Setting doc-header
-			$this->doc->form='<form action="'.htmlspecialchars('db_layout.php?id='.$this->id.'&imagemode='.$this->imagemode).'" method="post">';
+			$this->doc->form = '<form action="' . htmlspecialchars('db_layout.php?id=' . $this->id . '&imagemode=' . $this->imagemode) . '" method="post">';
 
 				// Creating the top function menu:
 			$this->topFuncMenu = t3lib_BEfunc::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'], 'db_layout.php', '');
@@ -484,53 +536,17 @@ class SC_db_layout {
 				// Removing duplicates, if any
 			$this->colPosList = implode(',', array_unique(t3lib_div::intExplode(',', $this->colPosList)));
 
+				// Page title
+			$body = $this->doc->header($this->pageinfo['title']);
+			$body .= $this->getHeaderFlashMessagesForCurrentPid();
+
 				// Render the primary module content:
 			if ($this->MOD_SETTINGS['function'] == 0) {
 					// QuickEdit
-				$body = $this->renderQuickEdit();
+				$body .= $this->renderQuickEdit();
 			} else {
 					// All other listings
-				$body = $this->renderListContent();
-			}
-
-				// If page is a folder
-			if ($this->pageinfo['doktype'] == 254) {
-
-					// access to list module
-				$moduleLoader = t3lib_div::makeInstance('t3lib_loadModules');
-				$moduleLoader->load($GLOBALS['TBE_MODULES']);
-				$modules = $moduleLoader->modules;
-
-				if (is_array($modules['web']['sub']['list'])) {
-					$flashMessage = t3lib_div::makeInstance(
-						't3lib_FlashMessage',
-						'<p>' . $GLOBALS['LANG']->getLL('goToListModuleMessage') . '</p>
-						<br />
-						<p>' .
-							t3lib_iconWorks::getSpriteIcon('actions-system-list-open') .
-							'<a href="javascript:top.goToModule( \'web_list\',1);">' .
-								$GLOBALS['LANG']->getLL('goToListModule') . '
-							</a>
-						</p>',
-						'',
-						t3lib_FlashMessage::INFO
-					);
-					$body = $flashMessage->render() . $body;
-				}
-			}
-
-			if ($this->pageinfo['content_from_pid']) {
-				$contentPage = t3lib_BEfunc::getRecord('pages', intval($this->pageinfo['content_from_pid']));
-				$title = t3lib_BEfunc::getRecordTitle('pages', $contentPage);
-				$linkToPid = $this->local_linkThisScript(array('id' => $this->pageinfo['content_from_pid']));
-				$link = '<a href="' . $linkToPid . '">' . htmlspecialchars($title) . ' (PID ' . intval($this->pageinfo['content_from_pid']) . ')</a>';
-				$flashMessage = t3lib_div::makeInstance(
-					't3lib_FlashMessage',
-					'',
-					sprintf($GLOBALS['LANG']->getLL('content_from_pid_title'), $link),
-					t3lib_FlashMessage::INFO
-				);
-				$body = $flashMessage->render() . $body;
+				$body .= $this->renderListContent();
 			}
 
 				// Setting up the buttons and markers for docheader
@@ -543,7 +559,7 @@ class SC_db_layout {
 			);
 
 				// Build the <body> for the module
-			$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+			$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 				// Renders the module page
 			$this->content = $this->doc->render(
 				$GLOBALS['LANG']->getLL('title'),
@@ -1085,9 +1101,6 @@ class SC_db_layout {
 
 			// For Context Sensitive Menus:
 		$this->doc->getContextMenuCode();
-
-		$content .= $this->doc->header($this->pageinfo['title']);
-
 
 			// Add the content for each table we have rendered (traversing $tableOutput variable)
 		foreach ($tableOutput as $table => $output) {
