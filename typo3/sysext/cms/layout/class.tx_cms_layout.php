@@ -1981,6 +1981,7 @@ class tx_cms_layout extends recordList {
 	 * @param array $rec Page record
 	 * @param boolean $edit If set, there will be shown an edit icon, linking to editing of the page properties.
 	 * @return string HTML for the box.
+	 * @deprecated and unused since 6.0, will be removed two versions later
 	 */
 	function getPageInfoBox($rec, $edit = 0) {
 			// If editing of the page properties is allowed:
