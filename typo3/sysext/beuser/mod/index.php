@@ -816,7 +816,10 @@ class local_beUserAuth extends t3lib_beUserAuth {
 
 			// Group List:
 		if ($renderAll || $filter['groupList']) {
-			$uInfo['groupList'] = $this->groupList;	// This gives a list that shows in which order the groups are processed. This may result in a list of groups which is similar to that of another user regarding which group but not the order of groups. For now, I believe it's most usefull to let separate orders of groups appear as different group settings for a user.
+				// This gives a list that shows in which order the groups are processed. This may result in a list of groups which is similar to
+				// that of another user regarding which group but not the order of groups. For now, I believe it's most useful to let separate
+				// orders of groups appear as different group settings for a user.
+			$uInfo['groupList'] = $this->groupList;
 		}
 
 			// Page Types:

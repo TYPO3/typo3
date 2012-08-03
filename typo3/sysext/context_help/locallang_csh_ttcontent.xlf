@@ -231,7 +231,7 @@ If you insert an URL or domain, eg. "www.typo3.org" or "http://www.my-domain.org
 			<trans-unit id="header_layout.details" xml:space="preserve">
 				<source>If you select "Default" the standard design (which is one of the layouts 1-5) will be used.
 Alternatively you can select from Layout 1 through 5 which are configured in the website template with individual visual designs.
-If you select "Hidden" the header will simply not appear. This is usefull if you wish a header for the content element (in order to identify it in the backend) but do not wish the header to be displayed on the website.</source>
+If you select "Hidden" the header will simply not appear. This is useful if you wish a header for the content element (in order to identify it in the backend) but do not wish the header to be displayed on the website.</source>
 			</trans-unit>
 			<trans-unit id="_header_layout.seeAlso" xml:space="preserve">
 				<source>tt_content:header</source>
