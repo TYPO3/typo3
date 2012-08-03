@@ -1736,7 +1736,7 @@ You can also use the marker ###COMMENT### which is ALSO the label value inserted
 			If this value is true, then a hidden-field called "locationData" is added to the form. This field wil be loaded with a value like this:
 [page id]:[current record table]:[current record id]
 For example, if a formfield is inserted on page with uid = "100", as a page-content item from the table "tt_content" with id "120", then the value would be "100:tt_content:120".
-The value is use by eg. the cObject SEARCHRESULT. If the value $GLOBALS["HTTP_POST_VARS"]["locationData"] is detected here, the search is done as if it was performed on this page! This is very usefull if you want a search functionality implemented on a page with the "stype" field set to "L1" which means that the search is carried out from the first level in the rootline.
+The value is use by eg. the cObject SEARCHRESULT. If the value $GLOBALS["HTTP_POST_VARS"]["locationData"] is detected here, the search is done as if it was performed on this page! This is very useful if you want a search functionality implemented on a page with the "stype" field set to "L1" which means that the search is carried out from the first level in the rootline.
 Suppose you want the search to submit to a dedicated searchpage where ever. This page will then know - because of locationData - that the search was submittet from another place on the website.
 If "locationData" is not only true but also set to "HTTP_POST_VARS" then the value will insert the content of $GLOBALS["HTTP_POST_VARS"]["locationData"] instead of the true location data of the page. This should be done with search-fields as this will carry the initial searching start point with.
 NOTE: May be overridden by the property override feature of the formdata (see above)]]></description>
@@ -3034,7 +3034,7 @@ Takes precedence over HMENU.begin]]></description>
 ]]></default>
 		</property>
 		<property name="imgNameNotRandom" type="boolean">
-			<description><![CDATA[If set, the image names of menuitems is not randomly assigned. Usefull switch if you're manipulating these images with some external JavaScript
+			<description><![CDATA[If set, the image names of menuitems is not randomly assigned. Useful switch if you're manipulating these images with some external JavaScript
 
 NOTE: Don't set this if you're working with a menu with sectionIndex! In that case you need special unique names of items based on something else than the uid of the parent page of course!]]></description>
 			<default><![CDATA[
@@ -3748,14 +3748,14 @@ Warning: If you are cascading GMENU_LAYER objects make sure that all elements be
 ]]></default>
 		</property>
 		<property name="dontFollowMouse" type="boolean">
-			<description><![CDATA[If set and lockPosition is blank (so that the menu layer follows the mouse) then the menu will NOT follow the mouse but still it will appear where the mouse cursor hit the trigger-element. Usefull if you don't know the exact positions of elements.
+			<description><![CDATA[If set and lockPosition is blank (so that the menu layer follows the mouse) then the menu will NOT follow the mouse but still it will appear where the mouse cursor hit the trigger-element. Useful if you don't know the exact positions of elements.
 
 Warning: You should not set displayActiveOnLoad for menus with this feature enabled (because the absolute position of the layer is not known).]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
 		<property name="dontHideOnMouseUp" type="boolean">
-			<description><![CDATA[If set, the menu will not hide it's layers when the mouse botton is clicked. Usefull if your menuitems loads the pages in another frame]]></description>
+			<description><![CDATA[If set, the menu will not hide it's layers when the mouse botton is clicked. Useful if your menuitems loads the pages in another frame]]></description>
 			<default><![CDATA[
 ]]></default>
 		</property>
@@ -7515,7 +7515,7 @@ Example where a timestamp is imported:
 ]]></default>
 		</property>
 		<property name="debug" type="boolean">
-			<description><![CDATA[Prints content with HTMLSpecialChars() and <PRE></PRE>: Usefull for debugging which value stdWrap actually ends up with, if you're constructing a website with TypoScript.
+			<description><![CDATA[Prints content with HTMLSpecialChars() and <PRE></PRE>: Useful for debugging which value stdWrap actually ends up with, if you're constructing a website with TypoScript.
 Should be used under construction only.]]></description>
 			<default><![CDATA[
 ]]></default>

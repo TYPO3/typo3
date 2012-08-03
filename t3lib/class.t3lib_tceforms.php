@@ -2489,7 +2489,7 @@ class t3lib_TCEforms {
 			}
 			$width = ceil($cols * $this->form_rowsToStylewidth);
 
-				// Overflow:auto crashes mozilla here. Title tag is usefull when text is longer than the div box (overflow:hidden).
+				// Overflow:auto crashes mozilla here. Title tag is useful when text is longer than the div box (overflow:hidden).
 			$item = '
 				<div style="overflow:hidden; width:' . $width . 'px;" class="t3-tceforms-fieldReadOnly" title="' . $itemValue . '">' .
 					'<span class="nobr">' . (strcmp($itemValue, '') ? $itemValue : '&nbsp;') . '</span>' .

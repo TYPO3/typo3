@@ -99,7 +99,7 @@ return array(
 		/** @deprecated Deprecated since 4.6 - will be removed in 6.0. */
 		'curlProxyServer' => '',				// String: Proxyserver as http://proxy:port/. Deprecated since 4.6 - will be removed in 6.0. See below for http options.
 		/** @deprecated Deprecated since 4.6 - will be removed in 6.0. */
-		'curlProxyTunnel' => FALSE,				// Boolean: If set, use a tunneled connection through the proxy (usefull for websense etc.). Deprecated since 4.6 - will be removed in 6.0. See below for http options.
+		'curlProxyTunnel' => FALSE,				// Boolean: If set, use a tunneled connection through the proxy (useful for websense etc.). Deprecated since 4.6 - will be removed in 6.0. See below for http options.
 		/** @deprecated Deprecated since 4.6 - will be removed in 6.0. */
 		'curlProxyUserPass' => '',				// String: Proxyserver authentication user:pass. Deprecated since 4.6 - will be removed in 6.0. See below for http options.
 		/** @deprecated Deprecated since 4.6 - will be removed in 6.0. */

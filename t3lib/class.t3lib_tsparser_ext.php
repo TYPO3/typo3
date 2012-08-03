@@ -1460,20 +1460,20 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 								$col = array();
 								if ($var && !t3lib_div::inList($this->HTMLcolorList, strtolower($var))) {
 									$var = preg_replace('/[^A-Fa-f0-9]*/', '', $var);
-									$useFullHex = strlen($var) > 3;
+									$useFulHex = strlen($var) > 3;
 
 									$col[] = HexDec(substr($var, 0, 1));
 									$col[] = HexDec(substr($var, 1, 1));
 									$col[] = HexDec(substr($var, 2, 1));
 
-									if ($useFullHex) {
+									if ($useFulHex) {
 										$col[] = HexDec(substr($var, 3, 1));
 										$col[] = HexDec(substr($var, 4, 1));
 										$col[] = HexDec(substr($var, 5, 1));
 									}
 
 									$var = substr('0' . DecHex($col[0]), -1) . substr('0' . DecHex($col[1]), -1) . substr('0' . DecHex($col[2]), -1);
-									if ($useFullHex) {
+									if ($useFulHex) {
 										$var .= substr('0' . DecHex($col[3]), -1) . substr('0' . DecHex($col[4]), -1) . substr('0' . DecHex($col[5]), -1);
 									}
 
