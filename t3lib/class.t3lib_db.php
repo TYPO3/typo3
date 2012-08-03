@@ -1380,47 +1380,47 @@ class t3lib_DB {
 	}
 
 	/**
-	 * Checks if recordset is valid and writes debugging inormation into devLog if not.
+	 * Checks if record set is valid and writes debugging information into devLog if not.
 	 *
-	 * @param resource $res	Recordset
-	 * @return boolean <code>FALSE</code> if recordset is not valid
+	 * @param resource|boolean $res record set
+	 * @return boolean TRUE if the  record set is valid, FALSE otherwise
 	 */
 	function debug_check_recordset($res) {
-		if (!$res) {
-			$trace = FALSE;
-			$msg = 'Invalid database result resource detected';
-			$trace = debug_backtrace();
-			array_shift($trace);
-			$cnt = count($trace);
-			for ($i = 0; $i < $cnt; $i++) {
-					// Complete objects are too large for the log
-				if (isset($trace['object'])) {
-					unset($trace['object']);
-				}
-			}
-			$msg .= ': function t3lib_DB->' . $trace[0]['function'] . ' called from file ' .
-					substr($trace[0]['file'], strlen(PATH_site) + 2) . ' in line ' .
-					$trace[0]['line'];
-			t3lib_div::sysLog(
-				$msg . '. Use a devLog extension to get more details.',
-				'Core/t3lib_db',
-				t3lib_div::SYSLOG_SEVERITY_ERROR
-			);
-				// Send to devLog if enabled
-			if (TYPO3_DLOG) {
-				$debugLogData = array(
-					'SQL Error' => $this->sql_error(),
-					'Backtrace' => $trace,
-				);
-				if ($this->debug_lastBuiltQuery) {
-					$debugLogData = array('SQL Query' => $this->debug_lastBuiltQuery) + $debugLogData;
-				}
-				t3lib_div::devLog($msg . '.', 'Core/t3lib_db', 3, $debugLogData);
-			}
-
-			return FALSE;
+		if (is_resource($res)) {
+			return TRUE;
 		}
-		return TRUE;
+
+		$msg = 'Invalid database result resource detected';
+		$trace = debug_backtrace();
+		array_shift($trace);
+		$cnt = count($trace);
+		for ($i = 0; $i < $cnt; $i++) {
+				// Complete objects are too large for the log
+			if (isset($trace['object'])) {
+				unset($trace['object']);
+			}
+		}
+		$msg .= ': function t3lib_DB->' . $trace[0]['function'] . ' called from file ' .
+				substr($trace[0]['file'], strlen(PATH_site) + 2) . ' in line ' .
+				$trace[0]['line'];
+		t3lib_div::sysLog(
+			$msg . '. Use a devLog extension to get more details.',
+			'Core/t3lib_db',
+			t3lib_div::SYSLOG_SEVERITY_ERROR
+		);
+			// Send to devLog if enabled
+		if (TYPO3_DLOG) {
+			$debugLogData = array(
+				'SQL Error' => $this->sql_error(),
+				'Backtrace' => $trace,
+			);
+			if ($this->debug_lastBuiltQuery) {
+				$debugLogData = array('SQL Query' => $this->debug_lastBuiltQuery) + $debugLogData;
+			}
+			t3lib_div::devLog($msg . '.', 'Core/t3lib_db', 3, $debugLogData);
+		}
+
+		return FALSE;
 	}
 
 	/**
