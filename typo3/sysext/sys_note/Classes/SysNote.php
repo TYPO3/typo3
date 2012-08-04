@@ -20,7 +20,7 @@
  *  GNU General Public License for more details.
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+ ****************************************************************/
 
 /**
  * Render sys_notes
@@ -44,7 +44,7 @@ class Tx_SysNote_SysNote {
 		$notes = $repository->findAllByPidList($pidList);
 
 		$out = '';
-		if ($this->notesAvailable($notes)) {
+		if (is_array($notes) && $this->notesAvailable($notes)) {
 			/** @var $fluidView Tx_Fluid_View_StandaloneView */
 			$fluidView = t3lib_div::makeInstance('Tx_Fluid_View_StandaloneView');
 			$templatePathAndFilename = t3lib_extMgm::extPath('sys_note', 'Resources/Private/Template/List.html');
