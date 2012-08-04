@@ -435,7 +435,7 @@ class t3lib_transferData {
 		if (is_array($currentValueArray)) {
 
 				// Get current value array:
-			$dataStructArray = t3lib_BEfunc::getFlexFormDS($fieldConfig['config'], $row, $table);
+			$dataStructArray = t3lib_BEfunc::getFlexFormDS($fieldConfig['config'], $row, $table, $field);
 
 				// Manipulate Flexform DS via TSConfig and group access lists
 			if (is_array($dataStructArray)) {
