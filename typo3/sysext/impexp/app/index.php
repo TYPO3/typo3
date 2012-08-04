@@ -305,7 +305,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 	protected function getButtons() {
 		$buttons = array(
 			'view' => '',
-			'record_list' => '',
 			'shortcut' => ''
 		);
 
@@ -322,16 +321,6 @@ class SC_mod_tools_log_index extends t3lib_SCbase {
 					$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $this->doc->backPath, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', TRUE) . '">' .
 						t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 						'</a>';
-
-						// Record list
-						// If access to Web>List for user, then link to that module.
-					$buttons['record_list'] = t3lib_BEfunc::getListViewLink(
-						array(
-							'id' => $this->pageinfo['uid'],
-							'returnUrl' => t3lib_div::getIndpEnv('REQUEST_URI'),
-						),
-						$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList')
-					);
 				}
 			}
 		}

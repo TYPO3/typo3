@@ -269,7 +269,6 @@ class SC_db_new {
 			'back' => '',
 			'view' => '',
 			'new_page' => '',
-			'record_list' => ''
 		);
 
 			// Regular new element:
@@ -299,16 +298,6 @@ class SC_db_new {
 			$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::viewOnClick($this->pageinfo['uid'], $this->backPath, t3lib_BEfunc::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '">' .
 					t3lib_iconWorks::getSpriteIcon('actions-document-view') .
 				'</a>';
-
-				// Record list
-				// If access to Web>List for user, then link to that module.
-			$buttons['record_list'] = t3lib_BEfunc::getListViewLink(
-				array(
-					'id' => $this->pageinfo['uid'],
-					'returnUrl' => t3lib_div::getIndpEnv('REQUEST_URI'),
-				),
-				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList')
-			);
 		}
 
 		return $buttons;

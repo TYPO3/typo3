@@ -300,7 +300,6 @@ class SC_mod_web_perm_index {
 		$buttons = array(
 			'csh' => '',
 			'view' => '',
-			'record_list' => '',
 			'shortcut' => '',
 		);
 			// CSH
@@ -316,14 +315,6 @@ class SC_mod_web_perm_index {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
 		}
 
-			// If access to Web>List for user, then link to that module.
-		$buttons['record_list'] = t3lib_BEfunc::getListViewLink(
-			array(
-				'id' => $this->pageinfo['uid'],
-				'returnUrl' => t3lib_div::getIndpEnv('REQUEST_URI'),
-			),
-			$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showList')
-		);
 		return $buttons;
 	}
 
