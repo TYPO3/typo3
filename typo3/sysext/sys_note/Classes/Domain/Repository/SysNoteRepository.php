@@ -48,6 +48,10 @@ class Tx_SysNote_Domain_Repository_SysNoteRepository {
 			'sorting'
 		);
 
+		if($records === NULL) {
+			return array();
+		}
+
 		foreach ($records as $key => $record) {
 			$records[$key]['tstamp'] = new DateTime('@' . $record['tstamp']);
 			$records[$key]['author'] = t3lib_BEfunc::getRecord('be_users', $record['cruser']);
