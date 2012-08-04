@@ -48,6 +48,12 @@ class Tx_SysNote_Domain_Repository_SysNoteRepository {
 			'sorting'
 		);
 
+			// exec_SELECTgetRows can return NULL if the query failed. This is
+			// transformed here to an empty array instead.
+		if ($records === NULL) {
+			$records = array();
+		}
+
 		foreach ($records as $key => $record) {
 			$records[$key]['tstamp'] = new DateTime('@' . $record['tstamp']);
 			$records[$key]['author'] = t3lib_BEfunc::getRecord('be_users', $record['cruser']);
