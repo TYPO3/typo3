@@ -23,6 +23,7 @@ $t3libClasses = array(
 	't3lib_cache_backend_backend' => PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_backend.php',
 	't3lib_cache_backend_dbbackend' => PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_dbbackend.php',
 	't3lib_cache_backend_filebackend' => PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_filebackend.php',
+	't3lib_cache_backend_freezablebackend' => PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_freezablebackend.php',
 	't3lib_cache_backend_memcachedbackend' => PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_memcachedbackend.php',
 	't3lib_cache_backend_nullbackend' => PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_nullbackend.php',
 	't3lib_cache_backend_pdobackend' => PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_pdobackend.php',

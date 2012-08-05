@@ -53,13 +53,13 @@ class t3lib_SpriteManager {
 	 */
 	public static function initialize() {
 		$cacheIdentifier = static::getCacheIdentifier();
-		/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
-		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
-		if ($phpCodeCache->has($cacheIdentifier)) {
-			$phpCodeCache->requireOnce($cacheIdentifier);
+		/** @var $codeCache t3lib_cache_frontend_PhpFrontend */
+		$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+		if ($codeCache->has($cacheIdentifier)) {
+			$codeCache->requireOnce($cacheIdentifier);
 		} else {
 			static::createSpriteCache();
-			$phpCodeCache->requireOnce($cacheIdentifier);
+			$codeCache->requireOnce($cacheIdentifier);
 		}
 	}
 
@@ -111,11 +111,10 @@ class t3lib_SpriteManager {
 		$cacheString = addslashes(serialize($iconNames));
 		$cacheFileContent = '$GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = unserialize(stripslashes(\'' . $cacheString . '\'));';
 
-		/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
-		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
+		/** @var $codeCache t3lib_cache_frontend_PhpFrontend */
+		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(
 			static::getCacheIdentifier(),
-			$cacheFileContent,
-			array('t3lib_cachemanager', 'core')
+			$cacheFileContent
 		);
 	}
 
