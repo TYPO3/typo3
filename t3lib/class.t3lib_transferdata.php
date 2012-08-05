@@ -450,7 +450,7 @@ class t3lib_transferData {
 				// Manipulate Flexform DS via TSConfig and group access lists
 			if (is_array($dataStructArray)) {
 				$flexFormHelper = t3lib_div::makeInstance('t3lib_TCEforms_Flexforms');
-				$dataStructArray = $flexFormHelper->modifyFlexFormDS($dataStructArray, $table, $field, $row, $fieldConfig);
+				$dataStructArray = $flexFormHelper->modifyFlexFormDS($dataStructArray, $table, $field, $row, $fieldConfig, $field);
 				unset($flexFormHelper);
 			}
 
