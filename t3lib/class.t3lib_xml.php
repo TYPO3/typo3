@@ -24,36 +24,28 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains class for creating XML output from records
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
 
 /**
  * XML class, Used to create XML output from input rows.
  * Doesn't contain a lot of advanced features - pretty straight forward, practical stuff
- * You are encouraged to use this class in your own applications.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
- * @see user_xmlversion, user_wapversion
+ * @deprecated since TYPO3 6.0. It will be removed with TYPO3 6.2, please use other xml helper solutions instead.
  */
 class t3lib_xml {
 		// Top element name
-	var $topLevelName = 'typo3_test';
+	public $topLevelName = 'typo3_test';
 		// Contains a list of fields for each table which should be presented in the XML output
-	var $XML_recFields = array();
+	public $XML_recFields = array();
 
-	var $XMLIndent = 0;
-	var $Icode = '';
-	var $XMLdebug = 0;
+	public $XMLIndent = 0;
+	public $Icode = '';
+	public $XMLdebug = 0;
 		// If set, all fields from records are rendered no matter their content. If not set, only 'true' (that is '' or zero) fields make it to the document.
-	var $includeNonEmptyValues = 0;
-	var $lines = array();
+	public $includeNonEmptyValues = 0;
+	public $lines = array();
 
 	/**
 	 * Constructor, setting topLevelName to the input var
@@ -61,7 +53,11 @@ class t3lib_xml {
 	 * @param string $topLevelName Top Level Name
 	 * @return void
 	 */
-	function __construct($topLevelName) {
+	public function __construct($topLevelName) {
+		t3lib_div::deprecationLog(
+			'Class t3lib_div is deprecated since TYPO3 6.0. ' .
+			'It will be removed with TYPO3 6.2, please use other xml helper solutions instead.'
+		);
 		$this->topLevelName = $topLevelName;
 	}
 
@@ -72,7 +68,7 @@ class t3lib_xml {
 	 * @param string $list Commalist of fields names from the table, $table, which is supposed to be rendered in the XML output. If a field is not in this list, it is not rendered.
 	 * @return void
 	 */
-	function setRecFields($table, $list) {
+	public function setRecFields($table, $list) {
 		$this->XML_recFields[$table] = $list;
 	}
 
@@ -81,7 +77,7 @@ class t3lib_xml {
 	 *
 	 * @return string
 	 */
-	function getResult() {
+	public function getResult() {
 		$content = implode(LF, $this->lines);
 		return $this->output($content);
 	}
@@ -91,7 +87,7 @@ class t3lib_xml {
 	 *
 	 * @return void
 	 */
-	function WAPHeader() {
+	public function WAPHeader() {
 		$this->lines[] = '<?xml version="1.0"?>';
 		$this->lines[] = '<!DOCTYPE ' . $this->topLevelName . ' PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml">';
 		$this->newLevel($this->topLevelName, 1);
@@ -103,7 +99,7 @@ class t3lib_xml {
 	 *
 	 * @return void
 	 */
-	function renderHeader() {
+	public function renderHeader() {
 		$this->lines[] = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
 		$this->lines[] = '<!DOCTYPE ' . $this->topLevelName . '>';
 		$this->newLevel($this->topLevelName, 1);
@@ -114,7 +110,7 @@ class t3lib_xml {
 	 *
 	 * @return void
 	 */
-	function renderFooter() {
+	public function renderFooter() {
 		$this->newLevel($this->topLevelName, 0);
 	}
 
@@ -126,7 +122,7 @@ class t3lib_xml {
 	 * @param array $params Array of attributes in key/value pairs which will be added to the element (tag), $name
 	 * @return void
 	 */
-	function newLevel($name, $beginEndFlag = 0, $params = array()) {
+	public function newLevel($name, $beginEndFlag = 0, $params = array()) {
 		if ($beginEndFlag) {
 			$pList = '';
 			if (count($params)) {
@@ -150,7 +146,7 @@ class t3lib_xml {
 	 * @param string The XML content to output
 	 * @return string Output
 	 */
-	function output($content) {
+	public function output($content) {
 		if ($this->XMLdebug) {
 			return '<pre>' . htmlspecialchars($content) . '</pre>
 			<hr /><font color="red">Size: ' . strlen($content) . '</font>';
@@ -166,7 +162,7 @@ class t3lib_xml {
 	 * @param boolean $b If TRUE the XMLIndent var is increased, otherwise decreased
 	 * @return string ->Icode - the prefix string with TAB-chars.
 	 */
-	function indent($b) {
+	public function indent($b) {
 		if ($b) {
 			$this->XMLIndent++;
 		} else {
@@ -186,7 +182,7 @@ class t3lib_xml {
 	 * @param pointer $res SQL resource pointer, should be reset
 	 * @return void
 	 */
-	function renderRecords($table, $res) {
+	public function renderRecords($table, $res) {
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$this->addRecord($table, $row);
 		}
@@ -200,7 +196,7 @@ class t3lib_xml {
 	 * @param array $row The row to add to XML structure from the table name
 	 * @return void
 	 */
-	function addRecord($table, $row) {
+	public function addRecord($table, $row) {
 		$this->lines[] = $this->Icode . '<' . $table . ' uid="' . $row['uid'] . '">';
 		$this->indent(1);
 		$this->getRowInXML($table, $row);
@@ -218,7 +214,7 @@ class t3lib_xml {
 	 * @return void
 	 * @access private
 	 */
-	function getRowInXML($table, $row) {
+	public function getRowInXML($table, $row) {
 		$fields = t3lib_div::trimExplode(',', $this->XML_recFields[$table], 1);
 		foreach ($fields as $field) {
 			if ($row[$field] || $this->includeNonEmptyValues) {
@@ -233,7 +229,7 @@ class t3lib_xml {
 	 * @param string $content String content to UTF-8 encode
 	 * @return string Encoded content.
 	 */
-	function utf8($content) {
+	public function utf8($content) {
 		return utf8_encode($content);
 	}
 
@@ -243,7 +239,7 @@ class t3lib_xml {
 	 * @param string $string Input value
 	 * @return string Processed input value
 	 */
-	function substNewline($string) {
+	public function substNewline($string) {
 		return str_replace(LF, '<newline/>', $string);
 	}
 
@@ -254,7 +250,7 @@ class t3lib_xml {
 	 * @param string $value Value from the field - will be wrapped in the elements.
 	 * @return string The wrapped string.
 	 */
-	function fieldWrap($field, $value) {
+	public function fieldWrap($field, $value) {
 		return '<' . $field . '>' . $value . '</' . $field . '>';
 	}
 
@@ -263,7 +259,7 @@ class t3lib_xml {
 	 *
 	 * @return void
 	 */
-	function WAPback() {
+	public function WAPback() {
 		$this->newLevel('template', 1);
 		$this->newLevel('do', 1, array('type' => 'accept', 'label' => 'Back'));
 		$this->addLine('<prev/>');
@@ -277,7 +273,7 @@ class t3lib_xml {
 	 * @param string Line to add to the $this->lines array
 	 * @return void
 	 */
-	function addLine($str) {
+	public function addLine($str) {
 		$this->lines[] = $this->Icode . $str;
 	}
 }
