@@ -1386,7 +1386,7 @@ abstract class t3lib_userAuth {
 	 * @param integer $recuid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
 	 * @param integer $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
 	 * @return void
-	 * @see t3lib_userauthgroup::writelog()
+	 * @see t3lib_beUserAuth::writelog()
 	 */
 	function writelog($type, $action, $error, $details_nr, $details, $data, $tablename, $recuid, $recpid) {
 	}

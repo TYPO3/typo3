@@ -24,13 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains an extension class specifically for authentication/initialization of backend users in TYPO3
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
 
 /**
  * Extension to class.t3lib_userauth.php; Authentication of users in TYPO3 Backend
@@ -41,6 +34,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
+ * @deprecated since 6.0, will be removed in 6.2. The functionality was merged wih t3lib_beUserAuth
  */
 abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		// Should be set to the usergroup-column (id-list) in the user-record
@@ -110,6 +104,16 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @var array
 	 */
 	protected $filePermissions;
+
+	/**
+	 * Constructor deprecates class.
+	 */
+	public function __construct() {
+		t3lib_div::logDeprecatedFunction(
+			'Class t3lib_userAuthGroup is deprecated and unused since TYPO3 6.0. ' .
+			'All methods are merged with t3lib_beUserAuth.'
+		);
+	}
 
 	/************************************
 	 *

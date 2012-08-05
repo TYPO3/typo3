@@ -261,8 +261,8 @@ class tx_sv_auth extends tx_sv_authbase {
 			}
 		} elseif ($this->mode == 'getGroupsBE') {
 
-			// Get the BE groups here
-			// still needs to be implemented in t3lib_userauthgroup
+			// Get the BE groups here.
+			// Still needs to be implemented in t3lib_beUserAuth
 		}
 
 		return $groupDataArr;
@@ -270,7 +270,7 @@ class tx_sv_auth extends tx_sv_authbase {
 
 	/**
 	 * Fetches subgroups of groups. Function is called recursively for each subgroup.
-	 * Function was previously copied from t3lib_userAuthGroup->fetchGroups and has been slightly modified.
+	 * Function was previously copied from t3lib_beUserAuth->fetchGroups and has been slightly modified.
 	 *
 	 * @param string $grList Commalist of fe_groups uid numbers
 	 * @param string $idList List of already processed fe_groups-uids so the function will not fall into a eternal recursion.

@@ -26,7 +26,7 @@
  ***************************************************************/
 /**
  * Service class for implementing the user filemounts,
- * used for BE_USER (t3lib_userAuthGroup) and TCEforms hooks
+ * used for BE_USER (t3lib_beUserAuth) and TCEforms hooks
  *
  * Note: This is now also used by sys_file_category table (fieldname "folder")! (Ingmar Schlecht, 19 November 2011)
  *
