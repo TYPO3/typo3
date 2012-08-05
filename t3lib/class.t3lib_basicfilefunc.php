@@ -90,7 +90,7 @@ class t3lib_basicFileFunctions {
 	 * @param	array		Contains the paths of the file mounts for the current BE user. Normally $GLOBALS['FILEMOUNTS'] is passed. This variable is set during backend user initialization; $FILEMOUNTS = $GLOBALS['BE_USER']->returnFilemounts(); (see typo3/init.php)
 	 * @param	array		Array with information about allowed and denied file extensions. Typically passed: $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']
 	 * @return	void
-	 * @see typo3/init.php, t3lib_userAuthGroup::returnFilemounts()
+	 * @see typo3/init.php, t3lib_beUserAuth::returnFilemounts()
 	 */
 	function init($mounts, $f_ext) {
 		t3lib_div::logDeprecatedFunction('All methods in this class should not be used anymore since TYPO3 6.0. Please use corresponding t3lib_file_Storage (fetched via BE_USERS->getFileStorages()), as all functions should be found there (in a cleaner manner).');

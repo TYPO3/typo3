@@ -7043,7 +7043,7 @@ class t3lib_TCEmain {
 	 * @param integer $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
 	 * @param string $NEWid NEW id for new records
 	 * @return integer Log entry UID
-	 * @see	class.t3lib_userauthgroup.php
+	 * @see	class.t3lib_beuserauth.php
 	 */
 	function log($table, $recuid, $action, $recpid, $error, $details, $details_nr = -1, $data = array(), $event_pid = -1, $NEWid = '') {
 		if ($this->enableLogging) {
