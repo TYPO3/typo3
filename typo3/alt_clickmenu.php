@@ -1744,7 +1744,8 @@ class SC_alt_clickmenu {
 			$this->content = $this->doc->insertStylesAndJS($this->content);
 			echo $this->content;
 		} else {
-			t3lib_ajax::outputXMLreply($this->content);
+			header('Content-Type: text/xml');
+			echo '<?xml version="1.0"?>' . LF . '<t3ajax>' . $this->content . '</t3ajax>';
 		}
 	}
 }
