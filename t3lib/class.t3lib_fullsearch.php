@@ -24,19 +24,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Class used in module tools/dbint (advanced search) and which may hold code specific for that module
- * However the class has a general principle in it which may be used in the web/export module.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor Jo Hasenau <info@cybercraft.de>
- */
 
 /**
  * Class used in module tools/dbint (advanced search) and which may hold code specific for that module
  * However the class has a general principle in it which may be used in the web/export module.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Jo Hasenau <info@cybercraft.de>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -449,47 +443,6 @@ class t3lib_fullsearch {
 						header('Content-Type: ' . $mimeType);
 						header('Content-Disposition: attachment; filename=' . $filename);
 						echo implode(CRLF, $rowArr);
-						exit;
-					}
-				}
-				if (!$out) {
-					$out = '<em>No rows selected!</em>';
-				}
-				$cPR['header'] = 'Result';
-				$cPR['content'] = $out;
-			break;
-			case 'xml':
-				$xmlObj = t3lib_div::makeInstance('t3lib_xml', 'typo3_export');
-				$xmlObj->includeNonEmptyValues = 1;
-				$xmlObj->renderHeader();
-				$first = 1;
-				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					if ($first) {
-						$xmlObj->setRecFields($table, implode(',', array_keys($row)));
-						$first = 0;
-					}
-					$valueArray = $row;
-					if ($GLOBALS['SOBE']->MOD_SETTINGS['search_result_labels']) {
-						foreach ($valueArray as $key => $val) {
-							$valueArray[$key] = $this->getProcessedValueExtra($table, $key, $val, array(), ',');
-						}
-					}
-					$xmlObj->addRecord($table, $valueArray);
-				}
-				$xmlObj->renderFooter();
-				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res)) {
-					$xmlData = $xmlObj->getResult();
-					$out .= '<textarea name="whatever" rows="20" wrap="off"' . $GLOBALS['SOBE']->doc->formWidthText($this->formW, '', 'off') . ' class="fixed-font">' . t3lib_div::formatForTextarea($xmlData) . '</textarea>';
-					if (!$this->noDownloadB) {
-						$out .= '<BR><input type="submit" name="download_file" value="Click to download file" onClick="window.location.href=\'' . $this->downloadScript . '\';">'; // document.forms[0].target=\'_blank\';
-					}
-						// Downloads file:
-					if (t3lib_div::_GP('download_file')) {
-						$filename = 'TYPO3_' . $table . '_export_' . date('dmy-Hi') . '.xml';
-						$mimeType = 'application/octet-stream';
-						header('Content-Type: ' . $mimeType);
-						header('Content-Disposition: attachment; filename=' . $filename);
-						echo $xmlData;
 						exit;
 					}
 				}

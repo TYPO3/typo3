@@ -152,7 +152,6 @@ class SC_mod_tools_dbint_index {
 				'count' => $GLOBALS['LANG']->getLL('countResults', TRUE),
 				'explain' => $GLOBALS['LANG']->getLL('explainQuery', TRUE),
 				'csv' => $GLOBALS['LANG']->getLL('csvExport', TRUE),
-				'xml' => $GLOBALS['LANG']->getLL('xmlExport', TRUE)
 			),
 
 			'sword' => ''
