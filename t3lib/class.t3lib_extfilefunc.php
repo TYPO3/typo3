@@ -348,7 +348,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 	 * @param string $details This is the default, raw error message in english
 	 * @param array $data Array with special information that may go into $details by "%s" marks / sprintf() when the log is shown
 	 * @return void
-	 * @see	class.t3lib_userauthgroup.php
+	 * @see	class.t3lib_beuserauth.php
 	 */
 	function writeLog($action, $error, $details_nr, $details, $data) {
 			// Type value for tce_file.php
