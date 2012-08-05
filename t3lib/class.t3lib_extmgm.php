@@ -1541,16 +1541,15 @@ tt_content.' . $key . $prefix . ' {
 	public static function loadTypo3LoadedExtensionInformation($allowCaching = TRUE) {
 		if ($allowCaching) {
 			$cacheIdentifier = self::getTypo3LoadedExtensionInformationCacheIdentifier();
-			/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
-			$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
-			if ($phpCodeCache->has($cacheIdentifier)) {
-				$typo3LoadedExtensionArray = $phpCodeCache->requireOnce($cacheIdentifier);
+			/** @var $codeCache t3lib_cache_frontend_PhpFrontend */
+			$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+			if ($codeCache->has($cacheIdentifier)) {
+				$typo3LoadedExtensionArray = $codeCache->requireOnce($cacheIdentifier);
 			} else {
 				$typo3LoadedExtensionArray = self::createTypo3LoadedExtensionInformationArray();
-				$phpCodeCache->set(
+				$codeCache->set(
 					$cacheIdentifier,
-					'return ' . var_export($typo3LoadedExtensionArray, TRUE) . ';',
-					array('typo3LoadedExtensionArray', 'core')
+					'return ' . var_export($typo3LoadedExtensionArray, TRUE) . ';'
 				);
 			}
 		} else {
@@ -1654,10 +1653,10 @@ tt_content.' . $key . $prefix . ' {
 	public static function loadExtLocalconf($allowCaching = TRUE) {
 		if ($allowCaching) {
 			$cacheIdentifier = self::getExtLocalconfCacheIdentifier();
-			/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
-			$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
-			if ($phpCodeCache->has($cacheIdentifier)) {
-				$phpCodeCache->requireOnce($cacheIdentifier);
+			/** @var $codeCache t3lib_cache_frontend_PhpFrontend */
+			$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+			if ($codeCache->has($cacheIdentifier)) {
+				$codeCache->requireOnce($cacheIdentifier);
 			} else {
 				self::loadSingleExtLocalconfFiles();
 				self::createExtLocalconfCacheEntry();
@@ -1736,10 +1735,9 @@ tt_content.' . $key . $prefix . ' {
 			// Remove all start and ending php tags from content
 		$phpCodeToCache = preg_replace('/<\?php|\?>/is', '', $phpCodeToCache);
 
-		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
+		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(
 			self::getExtLocalconfCacheIdentifier(),
-			$phpCodeToCache,
-			array('concatenatedExtLocalconf', 'core')
+			$phpCodeToCache
 		);
 	}
 
@@ -1768,10 +1766,10 @@ tt_content.' . $key . $prefix . ' {
 		if ($allowCaching && !self::$extTablesWasReadFromCacheOnce) {
 			self::$extTablesWasReadFromCacheOnce = TRUE;
 			$cacheIdentifier = self::getExtTablesCacheIdentifier();
-			/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
-			$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
-			if ($phpCodeCache->has($cacheIdentifier)) {
-				$phpCodeCache->requireOnce($cacheIdentifier);
+			/** @var $codeCache t3lib_cache_frontend_PhpFrontend */
+			$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+			if ($codeCache->has($cacheIdentifier)) {
+				$codeCache->requireOnce($cacheIdentifier);
 			} else {
 				self::loadSingleExtTablesFiles();
 				self::createExtTablesCacheEntry();
@@ -1849,10 +1847,9 @@ tt_content.' . $key . $prefix . ' {
 			// Remove all start and ending php tags from content
 		$phpCodeToCache = preg_replace('/<\?php|\?>/is', '', $phpCodeToCache);
 
-		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
+		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(
 			self::getExtTablesCacheIdentifier(),
-			$phpCodeToCache,
-			array('combinedExtTables', 'core')
+			$phpCodeToCache
 		);
 	}
 
@@ -1987,9 +1984,9 @@ tt_content.' . $key . $prefix . ' {
 	 * @return void
 	 */
 	public static function removeCacheFiles() {
-		/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
-		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
-		$phpCodeCache->flushByTag('core');
+		/** @var $codeCache t3lib_cache_frontend_PhpFrontend */
+		$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+		$codeCache->flush();
 	}
 
 	/**

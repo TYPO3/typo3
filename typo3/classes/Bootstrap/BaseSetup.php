@@ -222,12 +222,10 @@ class Typo3_Bootstrap_BaseSetup {
 		require_once(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_stringfrontend.php');
 		require_once(PATH_t3lib . 'cache/frontend/class.t3lib_cache_frontend_phpfrontend.php');
 		require_once(PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_backend.php');
+		require_once(PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_taggablebackend.php');
 		require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_abstractbackend.php');
 		require_once(PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_phpcapablebackend.php');
-		require_once(PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_freezablebackend.php');
-		require_once(PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_taggablebackend.php');
 		require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_simplefilebackend.php');
-		require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_filebackend.php');
 		require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_nullbackend.php');
 
 		require_once(PATH_t3lib . 'class.t3lib_autoloader.php');

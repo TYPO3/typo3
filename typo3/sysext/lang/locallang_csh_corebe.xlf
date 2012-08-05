@@ -64,7 +64,7 @@ For another backend user it might be different. This screen shot shows how anoth
 A very central cache is the database cache table, "cache_hash", which needs to be flushed after certain major changes in the system. You "clear all cache" by clicking the link with the blue icon. After this operation any website content should be re-generated from the sources rather than be delivered from caches. This operation clears &lt;i&gt;all&lt;/i&gt; database tables registered as flushable cache tables.
 
 &lt;b&gt;Cached PHP configuration files from Extensions&lt;/b&gt;
-TYPO3 also caches small configuration scripts from extensions, "ext_localconf.php" and "ext_tables.php". These files are simply read from all installed extensions and concatenated into temporary PHP scripts found in the typo3temp/Cache/Code/cache_phpcode/ folder. Sometimes you need to remove these files so TYPO3 re-writes them from the originals. This is done by the "Clear temp_CACHED" link.
+TYPO3 also caches small configuration scripts from extensions, "ext_localconf.php" and "ext_tables.php". These files are simply read from all installed extensions and concatenated into temporary PHP scripts found in the typo3temp/Cache/Code/cache_core/ folder. Sometimes you need to remove these files so TYPO3 re-writes them from the originals. This is done by the "Clear temp_CACHED" link.
 
 &lt;b&gt;Notice:&lt;/b&gt; You should not clear these caches without a second thought. Clearing caches may affect performance on your server negatively for a while. Obviously the cached content has to be regenerated which takes time and under heavy load it might make your server un-available for a while.</source>
 			</trans-unit>

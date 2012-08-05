@@ -136,7 +136,7 @@ class t3lib_autoloader {
 	 */
 	protected static function loadCoreAndExtensionRegistry() {
 		/** @var $phpCodeCache t3lib_cache_frontend_PhpFrontend */
-		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
+		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
 
 			// Create autoload cache file if it does not exist yet
 		if ($phpCodeCache->has(self::getAutoloadCacheIdentifier())) {
@@ -280,10 +280,9 @@ class t3lib_autoloader {
 			$cachedFileContent .= LF . '\'' . $className . '\' => ' . $nullOrLocation;
 		}
 		$cachedFileContent .= LF . ');';
-		$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set(
+		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(
 			self::getAutoloadCacheIdentifier(),
-			$cachedFileContent,
-			array('t3lib_autoloader', 'core')
+			$cachedFileContent
 		);
 	}
 

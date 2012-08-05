@@ -131,6 +131,13 @@ return array(
 		'reverseProxyPrefixSSL' => '',				// String: prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI) when accessing the server via an SSL proxy. This setting overrides <a href="#SYS-reverseProxyPrefix">[SYS][reverseProxyPrefix]</a>.
 		'caching' => array(
 			'cacheConfigurations' => array(
+					// The cache_core cache is is for core php code only and must
+					// not be abused by third party extensions.
+				'cache_core' => array(
+					'frontend' => 't3lib_cache_frontend_PhpFrontend',
+					'backend' => 't3lib_cache_backend_SimpleFileBackend',
+					'options' => array(),
+				),
 				'cache_hash' => array(
 					'frontend' => 't3lib_cache_frontend_VariableFrontend',
 					'backend' => 't3lib_cache_backend_DbBackend',

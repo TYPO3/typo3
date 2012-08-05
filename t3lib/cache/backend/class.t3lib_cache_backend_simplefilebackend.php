@@ -279,6 +279,7 @@ class t3lib_cache_backend_SimpleFileBackend extends t3lib_cache_backend_Abstract
 
 		$temporaryCacheEntryPathAndFilename = $this->cacheDirectory . uniqid() . '.temp';
 		$result = file_put_contents($temporaryCacheEntryPathAndFilename, $data);
+		t3lib_div::fixPermissions($temporaryCacheEntryPathAndFilename);
 		if ($result === FALSE) {
 			throw new t3lib_cache_Exception(
 				'The temporary cache file "' . $temporaryCacheEntryPathAndFilename . '" could not be written.',
