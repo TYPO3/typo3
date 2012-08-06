@@ -526,7 +526,7 @@ class t3lib_iconWorks {
 	 * @see t3lib_stdGraphic::imagecopyresized()
 	 */
 	public static function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight) {
-		imagecopyresized($dstImg, $srcImg, $Xstart, $Ystart, $cpImgCutX, $cpImgCutY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
+		imagecopyresized($dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
 	}
 
 	/**
