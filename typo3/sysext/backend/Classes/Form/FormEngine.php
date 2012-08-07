@@ -5921,135 +5921,203 @@ function ' . $evalData . '(value) {
 	}
 
 	/**
-	 * Returns TRUE, if the evaluation of the required-field code is OK.
+	 * Evaluates a display condition
 	 *
-	 * @param string $displayCond The required-field code
+	 * The condition may be an array of nested conditions with logical operators OR and AND
+	 *
+	 * @param mixed $displayCondition Condition(s) to evaluate
+	 * @param array $row Record to perform evaluations on
+	 * @param string $flexformValueKey Flexform value key, e.g. vDEF
+	 * @param integer $recursionLevel Level of recursion
+	 * @return boolean
+	 */
+	public function isDisplayCondition($displayCondition, array $row, $flexformValueKey = '', $recursionLevel = 0) {
+		if ($recursionLevel > 99) {
+			// this should not happen, treat as misconfiguration
+			return TRUE;
+		}
+		if (is_array($displayCondition)) {
+			// multiple conditions given as array ('AND|OR' => condition array)
+			$conditionEvaluations = array(
+				'AND' => array(),
+				'OR' => array(),
+			);
+			foreach ($displayCondition as $logicalOperator => $groupedDisplayConditions) {
+				if (($logicalOperator !== 'AND' && $logicalOperator !== 'OR') || !is_array($groupedDisplayConditions)) {
+					// invalid line. Skip it.
+					continue;
+				} else {
+					foreach ($groupedDisplayConditions as $key => $singleDisplayCondition) {
+						if (($key === 'AND' || $key === 'OR') && is_array($singleDisplayCondition)) {
+								// recursion statement: condition is 'AND' or 'OR' and is pointing to an array (should be conditions again)
+							$conditionEvaluations[$logicalOperator][] = $this->isDisplayCondition(
+								array($key => $singleDisplayCondition),
+								$row,
+								$flexformValueKey,
+								$recursionLevel + 1
+							);
+						} else {
+							// condition statement: collect evaluation of this single condition.
+							$conditionEvaluations[$logicalOperator][] = $this->isDisplaySingleCondition(
+								$singleDisplayCondition,
+								$row,
+								$flexformValueKey
+							);
+						}
+					}
+				}
+			}
+			if (count($conditionEvaluations['OR']) > 0 && in_array(TRUE, $conditionEvaluations['OR'], TRUE)) {
+				// there were OR conditions and at least one of them is TRUE
+				$result = TRUE;
+			} elseif (count($conditionEvaluations['AND']) > 0 && !in_array(FALSE, $conditionEvaluations['AND'], TRUE)) {
+				// there were AND conditions and none of them is FALSE
+				$result = TRUE;
+			} elseif (count($conditionEvaluations['OR']) > 0 || count($conditionEvaluations['AND']) > 0) {
+				// there were some conditions. But no OR was TRUE and at least one AND was FALSE
+				$result = FALSE;
+			} else {
+				// there were no proper conditions - misconfigured. Return TRUE.
+				$result = TRUE;
+			}
+
+		} else {
+			// displayCondition is not an array - just get its value
+			$result = $this->isDisplaySingleCondition($displayCondition, $row, $flexformValueKey);
+		}
+		return $result;
+	}
+
+	/**
+	 * Returns TRUE, if the evaluation of a single condition against the required-field code is OK.
+	 *
+	 * @param string $displayCondition The required-field code
 	 * @param array $row The record to evaluate
 	 * @param string $ffValueKey FlexForm value key, eg. vDEF
 	 * @return boolean
-	 * @todo Define visibility
 	 */
-	public function isDisplayCondition($displayCond, $row, $ffValueKey = '') {
+	public function isDisplaySingleCondition($displayCondition, array $row, $ffValueKey = '') {
 		$output = FALSE;
-		$parts = explode(':', $displayCond);
+
+		$parts = explode(':', $displayCondition);
 		// Type of condition:
 		switch ((string) $parts[0]) {
-		case 'FIELD':
-			if ($ffValueKey) {
-				if (strpos($parts[1], 'parentRec.') !== FALSE) {
-					$fParts = explode('.', $parts[1]);
-					$theFieldValue = $row['parentRec'][$fParts[1]];
-				} else {
-					$theFieldValue = $row[$parts[1]][$ffValueKey];
-				}
-			} else {
-				$theFieldValue = $row[$parts[1]];
-			}
-			switch ((string) $parts[2]) {
-			case 'REQ':
-				if (strtolower($parts[3]) == 'true') {
-					$output = $theFieldValue ? TRUE : FALSE;
-				} elseif (strtolower($parts[3]) == 'false') {
-					$output = !$theFieldValue ? TRUE : FALSE;
-				}
-				break;
-			case '>':
-				$output = $theFieldValue > $parts[3];
-				break;
-			case '<':
-				$output = $theFieldValue < $parts[3];
-				break;
-			case '>=':
-				$output = $theFieldValue >= $parts[3];
-				break;
-			case '<=':
-				$output = $theFieldValue <= $parts[3];
-				break;
-			case '-':
-
-			case '!-':
-				$cmpParts = explode('-', $parts[3]);
-				$output = $theFieldValue >= $cmpParts[0] && $theFieldValue <= $cmpParts[1];
-				if ($parts[2][0] == '!') {
-					$output = !$output;
-				}
-				break;
-			case 'IN':
-
-			case '!IN':
-				$output = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($parts[3], $theFieldValue);
-				if ($parts[2][0] == '!') {
-					$output = !$output;
-				}
-				break;
-			case '=':
-
-			case '!=':
-				$output = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($parts[3], $theFieldValue);
-				if ($parts[2][0] == '!') {
-					$output = !$output;
-				}
-				break;
-			}
-			break;
-		case 'EXT':
-			switch ((string) $parts[2]) {
-			case 'LOADED':
-				if (strtolower($parts[3]) == 'true') {
-					$output = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($parts[1]) ? TRUE : FALSE;
-				} elseif (strtolower($parts[3]) == 'false') {
-					$output = !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($parts[1]) ? TRUE : FALSE;
-				}
-				break;
-			}
-			break;
-		case 'REC':
-			switch ((string) $parts[1]) {
-			case 'NEW':
-				if (strtolower($parts[2]) == 'true') {
-					$output = !(intval($row['uid']) > 0) ? TRUE : FALSE;
-				} elseif (strtolower($parts[2]) == 'false') {
-					$output = intval($row['uid']) > 0 ? TRUE : FALSE;
-				}
-				break;
-			}
-			break;
-		case 'HIDE_L10N_SIBLINGS':
-			if ($ffValueKey === 'vDEF') {
-				$output = TRUE;
-			} elseif ($parts[1] === 'except_admin' && $GLOBALS['BE_USER']->isAdmin()) {
-				$output = TRUE;
-			}
-			break;
-		case 'HIDE_FOR_NON_ADMINS':
-			$output = $GLOBALS['BE_USER']->isAdmin() ? TRUE : FALSE;
-			break;
-		case 'VERSION':
-			switch ((string) $parts[1]) {
-			case 'IS':
-				$isNewRecord = intval($row['uid']) > 0 ? FALSE : TRUE;
-				// Detection of version can be done be detecting the workspace of the user
-				$isUserInWorkspace = $GLOBALS['BE_USER']->workspace > 0 ? TRUE : FALSE;
-				if (intval($row['pid']) == -1 || intval($row['_ORIG_pid']) == -1) {
-					$isRecordDetectedAsVersion = TRUE;
-				} else {
-					$isRecordDetectedAsVersion = FALSE;
-				}
-				// New records in a workspace are not handled as a version record
-				// if it's no new version, we detect versions like this:
-				// -- if user is in workspace: always TRUE
-				// -- if editor is in live ws: only TRUE if pid == -1
-				$isVersion = ($isUserInWorkspace || $isRecordDetectedAsVersion) && !$isNewRecord;
-				if (strtolower($parts[2]) == 'true') {
-					$output = $isVersion;
-				} else {
-					if (strtolower($parts[2]) == 'false') {
-						$output = !$isVersion;
+			case 'FIELD':
+				if ($ffValueKey) {
+					if (strpos($parts[1], 'parentRec.') !== FALSE) {
+						$fParts = explode('.', $parts[1]);
+						$theFieldValue = $row['parentRec'][$fParts[1]];
+					} else {
+						$theFieldValue = $row[$parts[1]][$ffValueKey];
 					}
+				} else {
+					$theFieldValue = $row[$parts[1]];
+				}
+				switch ((string) $parts[2]) {
+					case 'REQ':
+						if (strtolower($parts[3]) == 'true') {
+							$output = $theFieldValue ? TRUE : FALSE;
+						} elseif (strtolower($parts[3]) == 'false') {
+							$output = !$theFieldValue ? TRUE : FALSE;
+						}
+						break;
+					case '>':
+						$output = $theFieldValue > $parts[3];
+						break;
+					case '<':
+						$output = $theFieldValue < $parts[3];
+						break;
+					case '>=':
+						$output = $theFieldValue >= $parts[3];
+						break;
+					case '<=':
+						$output = $theFieldValue <= $parts[3];
+						break;
+					case '-':
+
+					case '!-':
+						$cmpParts = explode('-', $parts[3]);
+						$output = $theFieldValue >= $cmpParts[0] && $theFieldValue <= $cmpParts[1];
+						if ($parts[2][0] === '!') {
+							$output = !$output;
+						}
+						break;
+					case 'IN':
+
+					case '!IN':
+						$output = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($parts[3], $theFieldValue);
+						if ($parts[2][0] === '!') {
+							$output = !$output;
+						}
+						break;
+					case '=':
+
+					case '!=':
+						$output = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($parts[3], $theFieldValue);
+						if ($parts[2][0] === '!') {
+							$output = !$output;
+						}
+						break;
 				}
 				break;
-			}
-			break;
+			case 'EXT':
+				switch ((string) $parts[2]) {
+					case 'LOADED':
+						if (strtolower($parts[3]) === 'true') {
+							$output = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($parts[1]) ? TRUE : FALSE;
+						} elseif (strtolower($parts[3]) === 'false') {
+							$output = !\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($parts[1]) ? TRUE : FALSE;
+						}
+						break;
+				}
+				break;
+			case 'REC':
+				switch ((string) $parts[1]) {
+					case 'NEW':
+						if (strtolower($parts[2]) == 'true') {
+							$output = !(intval($row['uid']) > 0) ? TRUE : FALSE;
+						} elseif (strtolower($parts[2]) == 'false') {
+							$output = intval($row['uid']) > 0 ? TRUE : FALSE;
+						}
+						break;
+				}
+				break;
+			case 'HIDE_L10N_SIBLINGS':
+				if ($ffValueKey === 'vDEF') {
+					$output = TRUE;
+				} elseif ($parts[1] === 'except_admin' && $GLOBALS['BE_USER']->isAdmin()) {
+					$output = TRUE;
+				}
+				break;
+			case 'HIDE_FOR_NON_ADMINS':
+				$output = $GLOBALS['BE_USER']->isAdmin() ? TRUE : FALSE;
+				break;
+			case 'VERSION':
+				switch ((string) $parts[1]) {
+					case 'IS':
+						$isNewRecord = intval($row['uid']) > 0 ? FALSE : TRUE;
+						// Detection of version can be done be detecting the workspace of the user
+						$isUserInWorkspace = $GLOBALS['BE_USER']->workspace > 0 ? TRUE : FALSE;
+						if (intval($row['pid']) == -1 || intval($row['_ORIG_pid']) == -1) {
+							$isRecordDetectedAsVersion = TRUE;
+						} else {
+							$isRecordDetectedAsVersion = FALSE;
+						}
+						// New records in a workspace are not handled as a version record
+						// if it's no new version, we detect versions like this:
+						// -- if user is in workspace: always TRUE
+						// -- if editor is in live ws: only TRUE if pid == -1
+						$isVersion = ($isUserInWorkspace || $isRecordDetectedAsVersion) && !$isNewRecord;
+						if (strtolower($parts[2]) === 'true') {
+							$output = $isVersion;
+						} else {
+							if (strtolower($parts[2]) === 'false') {
+								$output = !$isVersion;
+							}
+						}
+						break;
+				}
+				break;
 		}
 		return $output;
 	}
