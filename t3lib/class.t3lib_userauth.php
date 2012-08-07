@@ -163,7 +163,7 @@ abstract class t3lib_userAuth {
 	var $get_URL_ID = '';
 		// Will be set to TRUE if a new session ID was created
 	var $newSessionID = FALSE;
-		// Will force the session cookie to be set everytime (lifetime must be 0)
+		// Will force the session cookie to be set every time (lifetime must be 0)
 	var $forceSetCookie = FALSE;
 		// Will prevent the setting of the session cookie (takes precedence over forceSetCookie)
 	var $dontSetCookie = FALSE;
@@ -262,7 +262,7 @@ abstract class t3lib_userAuth {
 			// Make certain that NO user is set initially
 		$this->user = '';
 
-			// Set all posible headers that could ensure that the script is not cached on the client-side
+			// Set all possible headers that could ensure that the script is not cached on the client-side
 		if ($this->sendNoCacheHeaders) {
 			header('Expires: 0');
 			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');

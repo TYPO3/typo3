@@ -160,7 +160,7 @@ class t3lib_search_livesearch {
 	/**
 	 * Find records from all registered TCA table & column values.
 	 *
-	 * @param string $pageIdList Comma seperated list of page IDs
+	 * @param string $pageIdList Comma separated list of page IDs
 	 * @return array Records found in the database matching the searchQuery
 	 */
 	protected function findByGlobalTableList($pageIdList) {
@@ -186,7 +186,7 @@ class t3lib_search_livesearch {
 	 * Find records by given table name.
 	 *
 	 * @param string $tableName Database table name
-	 * @param string $pageIdList Comma seperated list of page IDs
+	 * @param string $pageIdList Comma separated list of page IDs
 	 * @param string $limit MySql Limit notation
 	 * @return array Records found in the database matching the searchQuery
 	 *
@@ -301,7 +301,7 @@ class t3lib_search_livesearch {
 	}
 
 	/**
-	 * Crops a title string to a limited lenght and if it really was cropped,
+	 * Crops a title string to a limited length and if it really was cropped,
 	 * wrap it in a <span title="...">|</span>,
 	 * which offers a tooltip with the original title when moving mouse over it.
 	 *

@@ -275,7 +275,7 @@ class t3lib_cs {
 		'heb' => 'hebrew',
 		'hin' => 'unicode', // Hindi
 		'hun' => 'east_european', // Hungarian
-		'isl' => 'west_euorpean', // Icelandic
+		'isl' => 'west_european', // Icelandic
 		'ita' => 'west_european', // Italian
 		'its' => 'west_european', // Italian (Swiss)
 		'jpn' => 'japanese',

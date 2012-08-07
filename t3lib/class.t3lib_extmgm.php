@@ -437,7 +437,7 @@ class t3lib_extMgm {
 	 * - $relativeToField = mailform
 	 * - $relativePosition = after
 	 *
-	 * @throws InvalidArgumentException If given paramenters are not of correct
+	 * @throws InvalidArgumentException If given parameters are not of correct
 	 * 		type or out of bounds
 	 * @throws RuntimeException If reference to related position fields can not
 	 * 		be found or if select field is not defined

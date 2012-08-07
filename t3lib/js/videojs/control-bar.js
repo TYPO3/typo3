@@ -114,7 +114,7 @@ VideoJS.player.extend({
     this.timeControl.appendChild(this.durationDisplay);
     this.activateElement(this.durationDisplay, "durationDisplay");
 
-    // Create the volumne control
+    // Create the volume control
     this.volumeControl = _V_.createElement("div", {
       className: "vjs-volume-control",
       innerHTML: "<div><span></span><span></span><span></span><span></span><span></span><span></span></div>"
@@ -162,5 +162,5 @@ VideoJS.player.extend({
     });
     this.controls.appendChild(this.fullscreenControl);
     this.activateElement(this.fullscreenControl, "fullscreenToggle");
-  }	
+  }
 });

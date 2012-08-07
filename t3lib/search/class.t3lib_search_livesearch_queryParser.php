@@ -57,7 +57,7 @@ class t3lib_search_livesearch_queryParser {
 	const COMMAND_SPLIT_INDICATOR = ':';
 
 	/**
-	 * Retrive the validated command key
+	 * Retrieve the validated command key
 	 *
 	 * @param string $query
 	 * @return string Command name
@@ -80,7 +80,7 @@ class t3lib_search_livesearch_queryParser {
 	}
 
 	/**
-	 * Find the registerd table command and retrieve the matching table name.
+	 * Find the registered table command and retrieve the matching table name.
 	 *
 	 * @param string $query
 	 * @return string Database Table name

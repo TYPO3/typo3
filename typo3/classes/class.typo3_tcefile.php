@@ -117,14 +117,14 @@ class TYPO3_tcefile {
 		$this->fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
 		$this->fileProcessor->dontCheckForUnique = ($this->overwriteExistingFiles ? 1 : 0);
 
-			// Checking referer / executing:
+			// Checking referrer / executing:
 		$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
 		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
 		if ($httpHost != $refInfo['host']
 			&& $this->vC != $GLOBALS['BE_USER']->veriCode()
 			&& !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']
 			&& $GLOBALS['CLIENT']['BROWSER'] != 'flash') {
-			$this->fileProcessor->writeLog(0, 2, 1, 'Referer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
+			$this->fileProcessor->writeLog(0, 2, 1, 'Referrer host "%s" and server host "%s" did not match!', array($refInfo['host'], $httpHost));
 		} else {
 			$this->fileProcessor->start($this->file);
 			$this->fileData = $this->fileProcessor->processData();

@@ -83,7 +83,7 @@ class t3lib_utility_Http {
 	const SCHEME_HTTPS = 2;
 
 	/**
-	 * Sends a redirect header response and exits. Additionaly the URL is
+	 * Sends a redirect header response and exits. Additionally the URL is
 	 * checked and if needed corrected to match the format required for a
 	 * Location redirect header. By default the HTTP status code sent is
 	 * a 'HTTP/1.1 303 See Other'.
@@ -98,7 +98,7 @@ class t3lib_utility_Http {
 	}
 
 	/**
-	 * Set a specifc response code like 404.
+	 * Set a specific response code like 404.
 	 *
 	 * @param string $httpStatus One of the HTTP_STATUS_* class class constants, default to self::HTTP_STATUS_303
 	 * @return void

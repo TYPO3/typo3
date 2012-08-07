@@ -61,7 +61,7 @@ class t3lib_Compressor {
 	 * Constructor
 	 */
 	public function __construct() {
-			// we check for existance of our targetDirectory
+			// we check for existence of our targetDirectory
 		if (!is_dir(PATH_site . $this->targetDirectory)) {
 			t3lib_div::mkdir(PATH_site . $this->targetDirectory);
 		}

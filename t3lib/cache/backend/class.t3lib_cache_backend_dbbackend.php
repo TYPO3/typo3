@@ -448,20 +448,20 @@ class t3lib_cache_backend_DbBackend extends t3lib_cache_backend_AbstractBackend 
 	 * @return void
 	 */
 	protected function deleteCacheTableRowsByTagsTableWhereClause($tagsTableWhereClause) {
-		$cacheEntryIdentifierRowsRessource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+		$cacheEntryIdentifierRowsResource = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'DISTINCT identifier',
 			$this->tagsTable,
 			$tagsTableWhereClause
 		);
 
 		$cacheEntryIdentifiers = array();
-		while ($cacheEntryIdentifierRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($cacheEntryIdentifierRowsRessource)) {
+		while ($cacheEntryIdentifierRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($cacheEntryIdentifierRowsResource)) {
 			$cacheEntryIdentifiers[] = $GLOBALS['TYPO3_DB']->fullQuoteStr(
 				$cacheEntryIdentifierRow['identifier'],
 				$this->cacheTable
 			);
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($cacheEntryIdentifierRowsRessource);
+		$GLOBALS['TYPO3_DB']->sql_free_result($cacheEntryIdentifierRowsResource);
 
 		if (count($cacheEntryIdentifiers)) {
 			$GLOBALS['TYPO3_DB']->exec_DELETEquery(

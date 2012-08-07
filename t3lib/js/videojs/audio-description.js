@@ -27,7 +27,7 @@
 VideoJS.player.newBehavior("audioDescriptionToggle", function(element) {
 		_V_.addListener(element, "click", this.onAudioDescriptionToggleClick.context(this));
 	},{
-			// When the user clicks on the audioDesription button, update audioDesription state
+			// When the user clicks on the audioDescription button, update audioDescription state
 		onAudioDescriptionToggleClick: function(event) {
 			if (this.audioDescriptionEnabled) {
 				this.disableAudioDescription();
@@ -60,5 +60,5 @@ VideoJS.player.extend({
 			this.audioDescription.muted = true;
 			this.audioDescriptionEnabled = false;
 		}
-	}	
+	}
 });

@@ -35,7 +35,7 @@
  */
 abstract class t3lib_spritemanager_AbstractHandler implements t3lib_spritemanager_SpriteIconGenerator {
 	/**
-	 * all "registered" icons available through sprite API will cmmulated here
+	 * all "registered" icons available through sprite API will cumulated here
 	 * @var array
 	 */
 	protected $iconNames = array();
@@ -113,7 +113,7 @@ abstract class t3lib_spritemanager_AbstractHandler implements t3lib_spritemanage
 	/**
 	 * Returns the detected icon-names which may be used through t3lib_iconWorks::getSpriteIcon.
 	 *
-	 * @return array all generated and registred sprite-icon-names, will be empty if there are none
+	 * @return array all generated and registered sprite-icon-names, will be empty if there are none
 	 */
 	public function getAvailableIconNames() {
 		return $this->iconNames;

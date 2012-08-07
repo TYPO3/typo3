@@ -53,7 +53,7 @@ abstract class t3lib_file_Collection_AbstractFileCollection extends t3lib_collec
 
 	/**
 	 * The name of the field items are handled with
-	 * (ususally either criteria, items or folder)
+	 * (usually either criteria, items or folder)
 	 *
 	 * @var string
 	 */

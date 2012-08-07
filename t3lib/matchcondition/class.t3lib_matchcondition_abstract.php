@@ -441,7 +441,7 @@ abstract class t3lib_matchCondition_abstract {
 					case 'IENV':
 						$value = t3lib_div::getIndpEnv($k);
 					break;
-						// return litteral value:
+						// return literal value:
 					case 'LIT':
 						return trim($vars[1]);
 					break;

@@ -179,7 +179,7 @@ class t3lib_lock {
 					$filepointer = @fopen($this->resource, 'x');
 					if ($filepointer !== FALSE) {
 						fclose($filepointer);
-						$this->sysLog('Lock aquired');
+						$this->sysLog('Lock acquired');
 						$noWait = ($i === 0);
 						$isAcquired = TRUE;
 						break;

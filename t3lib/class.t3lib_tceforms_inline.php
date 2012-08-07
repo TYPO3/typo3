@@ -70,7 +70,7 @@ class t3lib_TCEforms_inline {
 	protected $hookObjects = array();
 
 	/**
-	 * Intialize an instance of t3lib_TCEforms_inline
+	 * Initialize an instance of t3lib_TCEforms_inline
 	 *
 	 * @param t3lib_TCEforms $tceForms Reference to an TCEforms instance
 	 * @return void

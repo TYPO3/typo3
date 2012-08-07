@@ -38,7 +38,7 @@
  */
 abstract class t3lib_contextmenu_extdirect_ContextMenu extends t3lib_contextmenu_AbstractContextMenu {
 	/**
-	 * Returns the actions for the given node informations
+	 * Returns the actions for the given node information
 	 *
 	 * Note: This method should be overriden to fit your specific needs.
 	 *

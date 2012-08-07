@@ -35,7 +35,7 @@
 class Typo3_Bootstrap_Install {
 	/**
 	 * Check ENABLE_INSTALL_TOOL and FIRST_INSTALL file in typo3conf
-	 * or exit the scipt if conditions to access the install tool are not met.
+	 * or exit the script if conditions to access the install tool are not met.
 	 *
 	 * @return void
 	 */

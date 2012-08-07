@@ -707,7 +707,7 @@ class t3lib_install_Sql {
 	 *
 	 * @param array $arr Array of SQL queries to execute.
 	 * @param array $keyArr Array with keys that must match keys in $arr. Only where a key in this array is set and TRUE will the query be executed (meant to be passed from a form checkbox)
-	 * @return mixed Array with error message from database if any occured. Otherwise TRUE if everything was executed successfully.
+	 * @return mixed Array with error message from database if any occurred. Otherwise TRUE if everything was executed successfully.
 	 */
 	public function performUpdateQueries($arr, $keyArr) {
 		$result = array();

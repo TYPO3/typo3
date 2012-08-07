@@ -52,8 +52,8 @@ class t3lib_timeTrack {
 	var $LR = 1;
 	var $printConf = array(
 		'showParentKeys' => 1,
-		'contentLength' => 10000, // Determines max lenght of displayed content before it gets cropped.
-		'contentLength_FILE' => 400, // Determines max lenght of displayed content FROM FILE cObjects before it gets cropped. Reason is that most FILE cObjects are huge and often used as template-code.
+		'contentLength' => 10000, // Determines max length of displayed content before it gets cropped.
+		'contentLength_FILE' => 400, // Determines max length of displayed content FROM FILE cObjects before it gets cropped. Reason is that most FILE cObjects are huge and often used as template-code.
 		'flag_tree' => 1,
 		'flag_messages' => 1,
 		'flag_queries' => 0,

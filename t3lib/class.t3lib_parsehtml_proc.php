@@ -462,7 +462,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 										if ($magicImage instanceof t3lib_file_FileInterface) {
 											$filePath = $magicImage->getForLocalProcessing(FALSE);
 											$imageInfo = @getimagesize($filePath);
-												// Removing width and heigth from any style attribute
+												// Removing width and height from any style attribute
 											$attribArray['style'] = preg_replace('/((?:^|)\s*(?:width|height)\s*:[^;]*(?:$|;))/si', '', $attribArray['style']);
 											$attribArray['width'] = $imageInfo[0];
 											$attribArray['height'] = $imageInfo[1];
@@ -769,7 +769,7 @@ class t3lib_parsehtml_proc extends t3lib_parsehtml {
 							$page = t3lib_BEfunc::getRecord('pages', $idPart);
 							if (is_array($page)) { // Page must exist...
 								$href = $siteUrl . '?id=' . $idPart . ($pairParts[2] ? $pairParts[2] : '') . ($sectionMark ? '#' . $sectionMark : '');
-									// linkHandler - allowing links to start with registerd linkHandler e.g.. "record:"
+									// linkHandler - allowing links to start with registered linkHandler e.g.. "record:"
 							} elseif (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['typolinkLinkHandler'][array_shift(explode(':', $link_param))])) {
 								$href = $link_param;
 							} else {

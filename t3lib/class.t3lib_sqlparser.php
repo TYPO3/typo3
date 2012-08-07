@@ -762,7 +762,7 @@ class t3lib_sqlparser {
 			// Parse any SQL hint / comments
 		$stack[$pnt]['comments'] = $this->nextPart($parseString, '^(\/\*.*\*\/)');
 
-			// $parseString is continously shortend by the process and we keep parsing it till it is zero:
+			// $parseString is continuously shortened by the process and we keep parsing it till it is zero:
 		while (strlen($parseString)) {
 
 				// Checking if we are inside / outside parenthesis (in case of a function like count(), max(), min() etc...):

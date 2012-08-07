@@ -140,7 +140,7 @@ class t3lib_utility_Array {
 	 * Will return: 42
 	 *
 	 * If a path segments contains a delimeter character, the path segment
-	 * must be enclodsed by " (doubletick), see unit tests for details
+	 * must be enclosed by " (double quote), see unit tests for details
 	 *
 	 * @param array $array Input array
 	 * @param string $path Path within the array

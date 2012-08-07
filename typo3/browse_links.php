@@ -121,7 +121,7 @@ class SC_browse_links {
 
 		$this->content = '';
 
-			// Look for alternativ mountpoints
+			// Look for alternative mountpoints
 		switch((string)$this->mode) {
 			case 'rte':
 			case 'db':

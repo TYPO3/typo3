@@ -69,7 +69,7 @@ class t3lib_DB {
 		// Default link identifier:
 	var $link = FALSE;
 
-		// Default character set, applies unless character set or collation are explicitely set
+		// Default character set, applies unless character set or collation are explicitly set
 	var $default_charset = 'utf8';
 
 	/**

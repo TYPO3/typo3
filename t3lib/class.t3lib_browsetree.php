@@ -55,15 +55,15 @@ class t3lib_browseTree extends t3lib_treeView {
 	function init($clause = '', $orderByFields = '') {
 
 			// This will hide records from display - it has nothing todo with user rights!!
-		$clauseExludePidList = '';
+		$clauseExcludePidList = '';
 		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
 			if ($pidList = $GLOBALS['TYPO3_DB']->cleanIntList($pidList)) {
-				$clauseExludePidList = ' AND pages.uid NOT IN (' . $pidList . ')';
+				$clauseExcludePidList = ' AND pages.uid NOT IN (' . $pidList . ')';
 			}
 		}
 
 			// This is very important for making trees of pages: Filtering out deleted pages, pages with no access to and sorting them correctly:
-		parent::init(' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1) . ' ' . $clause . $clauseExludePidList, 'sorting');
+		parent::init(' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1) . ' ' . $clause . $clauseExcludePidList, 'sorting');
 
 		$this->table = 'pages';
 		$this->setTreeName('browsePages');
@@ -73,7 +73,7 @@ class t3lib_browseTree extends t3lib_treeView {
 		$this->MOUNTS = $GLOBALS['WEBMOUNTS'];
 
 		if ($pidList) {
-				// Remove mountpoint if explicitely set in options.hideRecords.pages (see above)
+				// Remove mountpoint if explicitly set in options.hideRecords.pages (see above)
 			$hideList = explode(',', $pidList);
 			$this->MOUNTS = array_diff($this->MOUNTS, $hideList);
 		}

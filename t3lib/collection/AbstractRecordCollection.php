@@ -279,7 +279,7 @@ abstract class t3lib_collection_AbstractRecordCollection implements t3lib_collec
 	 * Moves the item within the collection
 	 *
 	 * the item at $currentPosition will be moved to
-	 * $newPosition. Ommiting $newPosition will move to top.
+	 * $newPosition. Omiting $newPosition will move to top.
 	 *
 	 * @param integer $currentPosition
 	 * @param integer $newPosition

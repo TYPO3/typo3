@@ -70,12 +70,12 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 		// If set, the uploaded files will overwrite existing files.
 	var $dontCheckForUnique = 0;
 
-		// This array is self-explaning (look in the class below).
+		// This array is self-explaining (look in the class below).
 		// It grants access to the functions. This could be set from outside in order to enabled functions to users.
 		// See also the function init_actionPerms() which takes input directly from the user-record
 	var $actionPerms = array(
 		'deleteFile' => 0, // Deleting files physically
-		'deleteFolder' => 0, // Deleting foldes physically
+		'deleteFolder' => 0, // Deleting folders physically
 		'deleteFolderRecursively' => 0, // normally folders are deleted by the PHP-function rmdir(), but with this option a user deletes with 'rm -Rf ....' which is pretty wild!
 		'moveFile' => 0,
 		'moveFolder' => 0,
@@ -823,7 +823,7 @@ class t3lib_extFileFunctions extends t3lib_basicFileFunctions {
 	 *	Array(
 	 *		[upload_1] => Array(
 	 *				[name] => Array(
-	 *						[0] => GData - Content-Elemente und Media-Gallery.pdf
+	 *						[0] => GData - Content-Elements and Media-Gallery.pdf
 	 *						[1] => CMS Expo 2011.txt
 	 *					)
 	 *				[type] => Array(

@@ -995,7 +995,7 @@ Ext.ux.elasticTextArea = function(){
             }
             this.div.setWidth(parseInt(el.getStyle('width')));
             //replace \n with <br>&nbsp; so that the enter key can trigger and height increase
-            //but first remove all previous entries, so that the height mesurement can be as accurate as possible
+            //but first remove all previous entries, so that the height measurement can be as accurate as possible
             this.div.update(
                     el.dom.value.replace(/<br \/>&nbsp;/, '<br />')
                                 .replace(/<|>/g, ' ')
