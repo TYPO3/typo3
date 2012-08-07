@@ -6202,17 +6202,85 @@ class t3lib_TCEforms {
 	}
 
 	/**
-	 * Returns TRUE, if the evaluation of the required-field code is OK.
+	 * Evaluates a display condition
 	 *
-	 * @param string $displayCond The required-field code
+	 * The condition may be an array of nested conditions with logical operators OR and AND
+	 *
+	 * @param mixed $displayCondition Condition(s) to evaluate
+	 * @param array $row Record to perform evaluations on
+	 * @param string $flexformValueKey Flexform value key, e.g. vDEF
+	 * @param int $recursionLevel Level of recursion
+	 * @return bool
+	 */
+	public function isDisplayCondition($displayCondition, array $row, $flexformValueKey = '', $recursionLevel = 0) {
+		if ($recursionLevel > 99) {
+				// this should not happen, treat as misconfiguration
+			return TRUE;
+		}
+		if (is_array($displayCondition)) {
+				// multiple conditions given as array ('AND|OR' => condition array)
+			$conditionEvaluations = array(
+				'AND' => array(),
+				'OR' => array(),
+			);
+			foreach ($displayCondition as $logicalOperator => $groupedDisplayConditions) {
+				if (($logicalOperator !== 'AND' && $logicalOperator !== 'OR') || !is_array($groupedDisplayConditions)) {
+						// invalid line. Skip it.
+					continue;
+				} else {
+					foreach ($groupedDisplayConditions as $key => $singleDisplayCondition) {
+						if (($key === 'AND' || $key === 'OR') && is_array($singleDisplayCondition)) {
+								// recursion statement: condition is 'AND' or 'OR' and is pointing to an array (should be conditions again)
+							$conditionEvaluations[$logicalOperator][] = $this->isDisplayCondition(
+								array($key => $singleDisplayCondition),
+								$row,
+								$flexformValueKey,
+								$recursionLevel + 1
+							);
+						} else {
+								// condition statement: collect evaluation of this single condition.
+							$conditionEvaluations[$logicalOperator][] = $this->isDisplaySingleCondition(
+								$singleDisplayCondition,
+								$row,
+								$flexformValueKey
+							);
+						}
+					}
+				}
+			}
+			if (count($conditionEvaluations['OR']) > 0 && in_array(TRUE, $conditionEvaluations['OR'], TRUE)) {
+					// there were OR conditions and at least one of them is true
+				$result = TRUE;
+			} elseif (count($conditionEvaluations['AND']) > 0 && !in_array(FALSE, $conditionEvaluations['AND'], TRUE)) {
+					// there were AND conditions and none of them is false
+				$result = TRUE;
+			} elseif (count($conditionEvaluations['OR']) > 0 || count($conditionEvaluations['AND']) > 0) {
+					// there were some conditions. But no OR was true and at least one AND was false
+				$result = FALSE;
+			} else {
+					// there were no proper conditions - misconfigured. Return true.
+				$result = TRUE;
+			}
+
+		} else {
+				 // displayCondition is not an array - just get its value
+			$result = $this->isDisplaySingleCondition($displayCondition, $row, $flexformValueKey);
+		}
+		return $result;
+	}
+
+	/**
+	 * Returns TRUE, if the evaluation of a single condition against the required-field code is OK.
+	 *
+	 * @param string $displayCondition The required-field code
 	 * @param array $row The record to evaluate
 	 * @param string $ffValueKey FlexForm value key, eg. vDEF
 	 * @return boolean
 	 */
-	function isDisplayCondition($displayCond, $row, $ffValueKey = '') {
+	public function isDisplaySingleCondition($displayCondition, array $row, $ffValueKey = '') {
 		$output = FALSE;
 
-		$parts = explode(':', $displayCond);
+		$parts = explode(':', $displayCondition);
 			// Type of condition:
 		switch ((string) $parts[0]) {
 			case 'FIELD':
@@ -6234,19 +6302,19 @@ class t3lib_TCEforms {
 						} elseif (strtolower($parts[3]) == 'false') {
 							$output = !$theFieldValue ? TRUE : FALSE;
 						}
-					break;
+						break;
 					case '>':
 						$output = $theFieldValue > $parts[3];
-					break;
+						break;
 					case '<':
 						$output = $theFieldValue < $parts[3];
-					break;
+						break;
 					case '>=':
 						$output = $theFieldValue >= $parts[3];
-					break;
+						break;
 					case '<=':
 						$output = $theFieldValue <= $parts[3];
-					break;
+						break;
 					case '-':
 					case '!-':
 						$cmpParts = explode('-', $parts[3]);
@@ -6254,23 +6322,23 @@ class t3lib_TCEforms {
 						if ($parts[2]{0} == '!') {
 							$output = !$output;
 						}
-					break;
+						break;
 					case 'IN':
 					case '!IN':
 						$output = t3lib_div::inList($parts[3], $theFieldValue);
 						if ($parts[2]{0} == '!') {
 							$output = !$output;
 						}
-					break;
+						break;
 					case '=':
 					case '!=':
 						$output = t3lib_div::inList($parts[3], $theFieldValue);
 						if ($parts[2]{0} == '!') {
 							$output = !$output;
 						}
-					break;
+						break;
 				}
-			break;
+				break;
 			case 'EXT':
 				switch ((string) $parts[2]) {
 					case 'LOADED':
@@ -6279,9 +6347,9 @@ class t3lib_TCEforms {
 						} elseif (strtolower($parts[3]) == 'false') {
 							$output = !t3lib_extMgm::isLoaded($parts[1]) ? TRUE : FALSE;
 						}
-					break;
+						break;
 				}
-			break;
+				break;
 			case 'REC':
 				switch ((string) $parts[1]) {
 					case 'NEW':
@@ -6290,19 +6358,19 @@ class t3lib_TCEforms {
 						} elseif (strtolower($parts[2]) == 'false') {
 							$output = (intval($row['uid']) > 0) ? TRUE : FALSE;
 						}
-					break;
+						break;
 				}
-			break;
+				break;
 			case 'HIDE_L10N_SIBLINGS':
 				if ($ffValueKey === 'vDEF') {
 					$output = TRUE;
 				} elseif ($parts[1] === 'except_admin' && $GLOBALS['BE_USER']->isAdmin()) {
 					$output = TRUE;
 				}
-			break;
+				break;
 			case 'HIDE_FOR_NON_ADMINS':
 				$output = $GLOBALS['BE_USER']->isAdmin() ? TRUE : FALSE;
-			break;
+				break;
 			case 'VERSION':
 				switch ((string) $parts[1]) {
 					case 'IS':
@@ -6329,9 +6397,9 @@ class t3lib_TCEforms {
 								$output = !$isVersion;
 							}
 						}
-					break;
+						break;
 				}
-			break;
+				break;
 		}
 
 		return $output;
