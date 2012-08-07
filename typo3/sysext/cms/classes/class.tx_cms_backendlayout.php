@@ -35,6 +35,41 @@
 class tx_cms_BackendLayout {
 
 	/**
+	 * Get default columns layout
+	 *
+	 * @return string
+	 */
+	public function getDefaultColumnLayout() {
+		return '
+		backend_layout {
+			colCount = 4
+			rowCount = 1
+			rows {
+				1 {
+					columns {
+						1 {
+							name = LLL:EXT:cms/locallang_ttc.xlf:colPos.I.0
+							colPos = 1
+						}
+						2 {
+							name = LLL:EXT:cms/locallang_ttc.xlf:colPos.I.1
+							colPos = 0
+						}
+						3 {
+							name = LLL:EXT:cms/locallang_ttc.xlf:colPos.I.2
+							colPos = 2
+						}
+						4 {
+							name = LLL:EXT:cms/locallang_ttc.xlf:colPos.I.3
+							colPos = 3
+						}
+					}
+				}
+			}
+		}
+		';
+	}
+	/**
 	 * ItemProcFunc for colpos items
 	 *
 	 * @param array $params
@@ -145,28 +180,30 @@ class tx_cms_BackendLayout {
 				'backend_layout',
 				'uid=' . $backendLayoutUid
 			);
+		} else {
+			$backendLayout['config'] = $this->getDefaultColumnLayout();
+		}
 
-			if ($backendLayout) {
-				/** @var $parser t3lib_TSparser */
-				$parser = t3lib_div::makeInstance('t3lib_TSparser');
-				$parser->parse($backendLayout['config']);
+		if ($backendLayout) {
+			/** @var $parser t3lib_TSparser */
+			$parser = t3lib_div::makeInstance('t3lib_TSparser');
+			$parser->parse($backendLayout['config']);
 
-				$backendLayout['__config']     = $parser->setup;
-				$backendLayout['__items']      = array();
-				$backendLayout['__colPosList'] = array();
+			$backendLayout['__config']     = $parser->setup;
+			$backendLayout['__items']      = array();
+			$backendLayout['__colPosList'] = array();
 
-					// create items and colPosList
-				if ($backendLayout['__config']['backend_layout.'] && $backendLayout['__config']['backend_layout.']['rows.']) {
-					foreach ($backendLayout['__config']['backend_layout.']['rows.'] as $row) {
-						if (isset($row['columns.']) && is_array($row['columns.'])) {
-							foreach ($row['columns.'] as $column) {
-								$backendLayout['__items'][] = array(
-									t3lib_div::isFirstPartOfStr($column['name'], 'LLL:') ? $GLOBALS['LANG']->sL($column['name']) : $column['name'],
-									$column['colPos'],
-									NULL
-								);
-								$backendLayout['__colPosList'][] = $column['colPos'];
-							}
+				// create items and colPosList
+			if ($backendLayout['__config']['backend_layout.'] && $backendLayout['__config']['backend_layout.']['rows.']) {
+				foreach ($backendLayout['__config']['backend_layout.']['rows.'] as $row) {
+					if (isset($row['columns.']) && is_array($row['columns.'])) {
+						foreach ($row['columns.'] as $column) {
+							$backendLayout['__items'][] = array(
+								t3lib_div::isFirstPartOfStr($column['name'], 'LLL:') ? $GLOBALS['LANG']->sL($column['name']) : $column['name'],
+								$column['colPos'],
+								NULL
+							);
+							$backendLayout['__colPosList'][] = $column['colPos'];
 						}
 					}
 				}
