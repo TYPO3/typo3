@@ -24,9 +24,23 @@ td.t3-page-column {
 	left: 4px;
 }
 
+.t3-page-ce-wrapper {
+        /*border-left: 1px dashed;
+        border-bottom: 1px dashed;
+        border-right: 1px dashed;*/
+	border-left: 2px solid #c8c8c8;
+	padding: 12px 0 5px 0;
+}
+
 .t3-page-ce {
 	margin-bottom: 5px;
 	min-width: 150px;
+	opacity: .70;
+}
+
+.t3-page-ce:hover {
+	opacity: 1;
+	cursor: move;
 }
 
 .t3-page-ce h4 {
