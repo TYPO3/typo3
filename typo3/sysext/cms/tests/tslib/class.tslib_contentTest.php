@@ -1039,5 +1039,31 @@ class tslib_contentTest extends tx_phpunit_testcase {
 			$this->assertEquals($value, $result[$field]);
 		}
 	}
+
+	/**
+	 * Check if stdWrap.stripHtml works with default setting and no whitespace additions
+	 *
+	 * @test
+	 */
+	public function stripHtmlWithWhitespace() {
+		$conf = array();
+		$inputText = '<li>This is an awesome text</li><li>but needs to be separated with whitespace</li>';
+		$expected = 'This is an awesome textbut needs to be separated with whitespace';
+		$result = $this->cObj->stdWrap_stripHtml($inputText, $conf);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * Check if stdWrap.stripHtml and adding whitespace work well
+	 *
+	 * @test
+	 */
+	public function stripHtmlWithoutWhitespace() {
+		$conf['stripHtml.']['addWhitespaceBetweenTags'] = 1;
+		$inputText = '<li>This is an awesome text</li><li>but needs to be separated with whitespace</li>';
+		$expected = 'This is an awesome text but needs to be separated with whitespace';
+		$result = $this->cObj->stdWrap_stripHtml($inputText, $conf);
+		$this->assertEquals($expected, $result);
+	}
 }
 ?>
