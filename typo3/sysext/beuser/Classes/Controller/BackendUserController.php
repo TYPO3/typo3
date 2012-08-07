@@ -84,6 +84,28 @@ class Tx_Beuser_Controller_BackendUserController extends Tx_Extbase_MVC_Controll
 	}
 
 	/**
+	 * Initialize actions
+	 *
+	 * @throws RuntimeException
+	 * @return void
+	 */
+	public function initializeAction() {
+			// @TODO: Extbase backend modules relies on frontend TypoScript for view, persistence
+			// and settings. Thus, we need a TypoScript root template, that then loads the
+			// ext_typoscript_setup.txt file of this module. This is nasty, but can not be
+			// circumvented until there is a better solution in extbase.
+			// For now we throw an exception if no settings are detected.
+		if (empty($this->settings)) {
+			throw new RuntimeException(
+				'No settings detected. This module can not work then. '.
+				'This usually happens if there is no frontend TypoScript template with root flag set. ' .
+				'Please create a frontend page with a TypoScript root template.',
+				1344375003
+			);
+		}
+	}
+
+	/**
 	 * Displays all BackendUsers
 	 * - Switch session to different user
 	 *
