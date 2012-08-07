@@ -2668,6 +2668,9 @@ class tslib_cObj {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_stripHtml($content = '', $conf = array()) {
+		if ($conf['stripHtml.']['addWhitespaceBetweenTags']) {
+			$content = preg_replace('/(<\/[^>]+?>)(<[^>\/][^>]*?>)/', '$1 $2', $content);
+		}
 		$content = strip_tags($content);
 		return $content;
 	}
