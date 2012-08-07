@@ -473,18 +473,15 @@ class SC_db_layout {
 
 				// Find columns
 				// SHARED page-TSconfig settings.
-			$modTSconfig_SHARED = t3lib_BEfunc::getModTSconfig($this->id, 'mod.SHARED');
-			$this->colPosList = strcmp(trim($this->modTSconfig['properties']['tt_content.']['colPos_list']), '') ? trim($this->modTSconfig['properties']['tt_content.']['colPos_list']) : $modTSconfig_SHARED['properties']['colPos_list'];
-			if (!strcmp($this->colPosList, '')) {
+
 				$backendLayout = t3lib_div::callUserFunction( 'EXT:cms/classes/class.tx_cms_backendlayout.php:tx_cms_BackendLayout->getSelectedBackendLayout', $this->id, $this );
 
 				if (count($backendLayout['__colPosList'])) {
 					$this->colPosList = implode(',', $backendLayout['__colPosList']);
 				}
-			}
-			if (!strcmp($this->colPosList, '')) {
-				$this->colPosList = '1,0,2,3';
-			}
+
+
+
 				// Removing duplicates, if any
 			$this->colPosList = implode(',', array_unique(t3lib_div::intExplode(',', $this->colPosList)));
 
