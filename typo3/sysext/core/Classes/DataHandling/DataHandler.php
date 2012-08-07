@@ -4181,8 +4181,26 @@ class DataHandler {
 					} else {
 						$this->deleteRecord($table, $verRec['uid'], TRUE, $forceHardDelete);
 					}
+
+					$this->deleteVersionMovePlaceHolder($table, $verRec['uid'], $forceHardDelete);
 				}
 			}
+		}
+	}
+
+	/**
+	 * Delete move placeholder related to a version
+	 *
+	 * @param string $table Table name
+	 * @param integer $uid Record UID
+	 * @param boolean $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
+	 * @return void
+	 */
+	function deleteVersionMovePlaceHolder($table, $uid, $forceHardDelete) {
+		$record = $this->recordInfo($table, $uid, 't3ver_wsid,t3ver_state,t3ver_oid');
+		if ($record['t3ver_state'] == 4) {
+			$placeHolder =\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 't3ver_wsid=' . intval($record['t3ver_wsid']) . ' AND t3ver_state=3 AND t3ver_move_id=' . intval($record['t3ver_oid']), 'uid');
+			$this->deleteEl($table, $placeHolder['uid'], TRUE, $forceHardDelete);
 		}
 	}
 
