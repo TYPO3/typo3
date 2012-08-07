@@ -4142,11 +4142,14 @@ class BackendUtility {
 	 * @param string $table Table name
 	 * @param integer $uid Record UID of online version
 	 * @param string $fields Field list, default is *
+	 * @param int|NULL $workspace The workspace to be used
 	 * @return array If found, the record, otherwise nothing.
 	 */
-	static public function getMovePlaceholder($table, $uid, $fields = '*') {
-		$workspace = $GLOBALS['BE_USER']->workspace;
-		if ($workspace !== 0 && $GLOBALS['TCA'][$table] && (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
+	static public function getMovePlaceholder($table, $uid, $fields = '*', $workspace = NULL) {
+		if ($workspace === NULL) {
+			$workspace = $GLOBALS['BE_USER']->workspace;
+		}
+		if ((int)$workspace !== 0 && $GLOBALS['TCA'][$table] && (int)$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) {
 			// Select workspace version of record:
 			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
 				$fields,

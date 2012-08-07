@@ -202,6 +202,11 @@ class DataHandlerHook {
 						} elseif ($record['t3ver_wsid'] == 0 || !$liveRecordVersionState->indicatesPlaceholder()) {
 							// Delete those in WS 0 + if their live records state was not "Placeholder".
 							$tcemainObj->deleteEl($table, $id);
+							// Delete move-placeholder if current version record is a move-to-pointer
+							if ($recordVersionState->equals(VersionState::MOVE_POINTER)) {
+								$movePlaceholder = BackendUtility::getMovePlaceholder($table, $liveRec['uid'], 'uid');
+								$tcemainObj->deleteEl($table, $movePlaceholder['uid']);
+							}
 						} else {
 							// If live record was placeholder (new/deleted), rather clear
 							// it from workspace (because it clears both version and placeholder).
