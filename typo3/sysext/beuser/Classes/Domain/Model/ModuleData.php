@@ -43,7 +43,7 @@ class Tx_Beuser_Domain_Model_ModuleData {
 	/**
 	 * @var array
 	 */
-	protected $compareUserList;
+	protected $compareUserList = array();
 
 	/**
 	 * @return Tx_Beuser_Domain_Model_Demand
