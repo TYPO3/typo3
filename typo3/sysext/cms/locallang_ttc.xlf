@@ -93,6 +93,9 @@
 			<trans-unit id="colPos.I.0" xml:space="preserve">
 				<source>Left</source>
 			</trans-unit>
+			<trans-unit id="colPos.I.1" xml:space="preserve">
+				<source>Normal</source>
+			</trans-unit>
 			<trans-unit id="colPos.I.2" xml:space="preserve">
 				<source>Right</source>
 			</trans-unit>
