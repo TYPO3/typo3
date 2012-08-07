@@ -2843,7 +2843,7 @@ final class t3lib_div {
 
 			$result = @mkdir($fullDirectoryPath, $permissionMask, TRUE);
 			if (!$result) {
-				throw new \RuntimeException('Could not create directory!', 1170251400);
+				throw new \RuntimeException('Could not create directory "' . $fullDirectoryPath . '"!', 1170251400);
 			}
 		}
 		return $firstCreatedPath;
