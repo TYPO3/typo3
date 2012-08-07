@@ -53,7 +53,7 @@ class t3lib_cacheHash implements t3lib_Singleton {
 	protected $excludedParametersIfEmpty = array();
 
 	/**
-	 * @var bool Wether to exclude all empty parameters for cacheHash calculation
+	 * @var bool Whether to exclude all empty parameters for cacheHash calculation
 	 */
 	protected $excludeAllEmptyParameters = FALSE;
 

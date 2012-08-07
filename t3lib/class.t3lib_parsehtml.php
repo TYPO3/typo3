@@ -769,7 +769,7 @@ class t3lib_parsehtml {
 		while (list(, $tok) = each($tokArr)) {
 			if ($inComment) {
 				if (($eocPos = strpos($tok, '-->')) === FALSE) {
-						// End of comment is not found in the token. Go futher until end of comment is found in other tokens.
+						// End of comment is not found in the token. Go further until end of comment is found in other tokens.
 					$newContent[$c++] = '<' . $tok;
 					continue;
 				}

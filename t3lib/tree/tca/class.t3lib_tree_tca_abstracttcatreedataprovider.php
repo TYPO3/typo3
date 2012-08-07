@@ -191,7 +191,7 @@ abstract class t3lib_tree_Tca_AbstractTcaTreeDataProvider extends t3lib_tree_Abs
 	}
 
 	/**
-	 * Sets the list for non selectabal tree levels
+	 * Sets the list for non selectable tree levels
 	 *
 	 * @param string $nonSelectableLevelList
 	 * @return void
@@ -201,7 +201,7 @@ abstract class t3lib_tree_Tca_AbstractTcaTreeDataProvider extends t3lib_tree_Abs
 	}
 
 	/**
-	 * Gets the list for non selectabal tree levels
+	 * Gets the list for non selectable tree levels
 	 *
 	 * @return string
 	 */

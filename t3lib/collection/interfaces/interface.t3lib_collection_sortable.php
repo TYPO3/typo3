@@ -56,7 +56,7 @@ interface t3lib_collection_Sortable {
 	 * Moves the item within the collection
 	 *
 	 * The item at $currentPosition will be moved to
-	 * $newPosition. Ommiting $newPosition will move to top.
+	 * $newPosition. Omiting $newPosition will move to top.
 	 *
 	 * @param integer $currentPosition
 	 * @param integer $newPosition

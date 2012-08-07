@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * Dynamic configuation of the system-related tables, typ. sys_* series
+ * Dynamic configuration of the system-related tables, typ. sys_* series
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */

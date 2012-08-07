@@ -157,7 +157,7 @@ class t3lib_xml {
 
 	/**
 	 * Increments/Decrements Indentation counter, ->XMLIndent
-	 * Sets and returns ->Icode variable which is a line prefix consisting of a number of tab-chars corresponding to the indent-levels of the current posision (->XMLindent)
+	 * Sets and returns ->Icode variable which is a line prefix consisting of a number of tab-chars corresponding to the indent-levels of the current position (->XMLindent)
 	 *
 	 * @param boolean $b If TRUE the XMLIndent var is increased, otherwise decreased
 	 * @return string ->Icode - the prefix string with TAB-chars.

@@ -204,7 +204,7 @@ class t3lib_TCEforms {
 	var $additionalJS_post = array();
 		// Additional JavaScript executed on submit; If you set "OK" variable it will raise an error about RTEs not being loaded and offer to block further submission.
 	var $additionalJS_submit = array();
-		// Additional JavaScript executed when section element is deleted. This is neceessary, for example, to correctly clean up HTMLArea RTE (bug #8232)
+		// Additional JavaScript executed when section element is deleted. This is necessary, for example, to correctly clean up HTMLArea RTE (bug #8232)
 	var $additionalJS_delete = array();
 
 	/**

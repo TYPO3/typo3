@@ -47,7 +47,7 @@ interface t3lib_spritemanager_SpriteIconGenerator {
 	 * The sprite manager will call this function after the call to "generate"
 	 * it should return an array of all sprite-icon-names generated through the run
 	 *
-	 * @retun array All generated/detected sprite-icon-names
+	 * @return array All generated/detected sprite-icon-names
 	 */
 	public function getAvailableIconNames();
 }

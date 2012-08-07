@@ -91,7 +91,7 @@ class Typo3_Bootstrap {
 
 	/**
 	 * Prevent any unwanted output that may corrupt AJAX/compression.
-	 * This does not interfeer with "die()" or "echo"+"exit()" messages!
+	 * This does not interfere with "die()" or "echo"+"exit()" messages!
 	 *
 	 * @return Typo3_Bootstrap
 	 */

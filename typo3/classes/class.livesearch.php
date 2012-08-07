@@ -100,7 +100,7 @@ class LiveSearch implements backend_toolbarItem {
 	/**
 	 * returns additional attributes for the list item in the toolbar
 	 *
-	 * @return string List item HTML attibutes
+	 * @return string List item HTML attributes
 	 */
 	public function getAdditionalAttributes() {
 		return ' id="live-search-menu"';

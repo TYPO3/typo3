@@ -275,7 +275,7 @@ class t3lib_basicFileFunctions {
 	function getUniqueName($theFile, $theDest, $dontCheckForUnique = 0) {
 			// @todo: should go into the LocalDriver in a protected way (not important to the outside world)
 		$theDest = $this->is_directory($theDest); // $theDest is cleaned up
-		$origFileInfo = t3lib_div::split_fileref($theFile); // Fetches info about path, name, extention of $theFile
+		$origFileInfo = t3lib_div::split_fileref($theFile); // Fetches info about path, name, extension of $theFile
 		if ($theDest) {
 			if ($this->getUniqueNamePrefix) { // Adds prefix
 				$origFileInfo['file'] = $this->getUniqueNamePrefix . $origFileInfo['file'];

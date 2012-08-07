@@ -62,7 +62,7 @@
  *		array (
  *			'any id' => array (
  *					'title' => 'title for saved settings',
- *					'desc' => 'descritpion text, not mandatory',
+ *					'desc' => 'description text, not mandatory',
  *					'data' => array(),	// data from MOD_SETTINGS
  *					'user' => NULL, // can be used for extra data used by the application to identify this entry
  *					'tstamp' => 12345, // $GLOBALS['EXEC_TIME']

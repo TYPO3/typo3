@@ -380,9 +380,9 @@ class t3lib_mail_Rfc822AddressesParser {
 	 *
 	 * @access private
 	 * @param string $string The string to check.
-	 * @param integer &$num	The number of occurences.
+	 * @param integer &$num	The number of occurrences.
 	 * @param string $char   The character to count.
-	 * @return integer The number of occurences of $char in $string, adjusted for backslashes.
+	 * @return integer The number of occurrences of $char in $string, adjusted for backslashes.
 	 */
 	protected function _hasUnclosedBracketsSub($string, &$num, $char) {
 		$parts = explode($char, $string);

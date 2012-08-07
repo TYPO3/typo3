@@ -168,7 +168,7 @@ class TYPO3AJAX {
 	}
 
 	/**
-	 * Checks whether an error occured during the execution or not
+	 * Checks whether an error occurred during the execution or not
 	 *
 	 * @return boolean Whether this AJAX call had errors
 	 */

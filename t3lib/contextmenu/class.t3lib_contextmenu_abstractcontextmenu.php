@@ -56,7 +56,7 @@ abstract class t3lib_contextmenu_AbstractContextMenu {
 	}
 
 	/**
-	 * Returns the actions for the given node informations
+	 * Returns the actions for the given node information
 	 *
 	 * @param t3lib_tree_Node $node
 	 * @return array

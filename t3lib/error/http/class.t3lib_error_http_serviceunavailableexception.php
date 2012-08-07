@@ -39,7 +39,7 @@ class t3lib_error_http_ServiceUnavailableException extends t3lib_error_http_Abst
 	/**
 	 * @var string Title of the message
 	 */
-	protected $title = 'Service Unvailable (503)';
+	protected $title = 'Service Unavailable (503)';
 
 	/**
 	 * @var string Error Message

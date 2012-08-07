@@ -678,7 +678,7 @@ class t3lib_tsparser_ext extends t3lib_TStemplate {
 	}
 
 	/**
-	 * Returns a new string of max. $chars lenght
+	 * Returns a new string of max. $chars length
 	 * If the string is longer, it will be truncated and prepended with '...'
 	 * $chars must be an integer of at least 4
 	 *

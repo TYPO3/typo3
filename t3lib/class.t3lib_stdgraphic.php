@@ -538,7 +538,7 @@ class t3lib_stdGraphic {
 				$Bcolor = ImageColorAllocate($maskImg, 255, 255, 255);
 				ImageFilledRectangle($maskImg, 0, 0, $newW, $newH, $Bcolor);
 				$Fcolor = ImageColorAllocate($maskImg, 0, 0, 0);
-					// If any kind of spacing applys, we use this function:
+					// If any kind of spacing applies, we use this function:
 				if ($spacing || $wordSpacing) {
 					$this->SpacedImageTTFText($maskImg, $conf['fontSize'], $conf['angle'], $txtPos[0], $txtPos[1], $Fcolor, self::prependAbsolutePath($conf['fontFile']), $theText, $spacing, $wordSpacing, $conf['splitRendering.'], $sF);
 				} else {

@@ -31,7 +31,7 @@
  * This class contains all code that must be executed by every
  * entry script without exceptions.
  *
- * It sets up all basic pathes, constants, global variables and checks
+ * It sets up all basic paths, constants, global variables and checks
  * the basic environment TYPO3 runs in.
  *
  * This class does not use any TYPO3 instance specific configuration, it only

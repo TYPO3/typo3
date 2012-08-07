@@ -119,7 +119,7 @@ class SC_alt_doc_nodoc {
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 		$pageModule = t3lib_BEfunc::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
 
-			// Perform some acccess checks:
+			// Perform some access checks:
 		$a_wl = $GLOBALS['BE_USER']->check('modules', 'web_list');
 		$a_wp = t3lib_extMgm::isLoaded('cms') && $GLOBALS['BE_USER']->check('modules', $pageModule);
 

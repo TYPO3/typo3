@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * Dynamic configuation of the tt_content table
+ * Dynamic configuration of the tt_content table
  * This gets it's own file because it's so huge and central to typical TYPO3 use.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
