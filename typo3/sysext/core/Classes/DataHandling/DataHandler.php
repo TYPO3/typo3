@@ -4729,7 +4729,7 @@ class DataHandler {
 	 * @return void
 	 */
 	public function deleteVersionsForRecord($table, $uid, $forceHardDelete) {
-		$versions = BackendUtility::selectVersionsOfRecord($table, $uid, 'uid,pid', $this->BE_USER->workspace);
+		$versions = BackendUtility::selectVersionsOfRecord($table, $uid, 'uid,pid,t3ver_wsid,t3ver_state', $this->BE_USER->workspace ?: NULL);
 		if (is_array($versions)) {
 			foreach ($versions as $verRec) {
 				if (!$verRec['_CURRENT_VERSION']) {
@@ -4737,6 +4737,13 @@ class DataHandler {
 						$this->deletePages($verRec['uid'], TRUE, $forceHardDelete);
 					} else {
 						$this->deleteRecord($table, $verRec['uid'], TRUE, $forceHardDelete);
+					}
+
+					// Delete move-placeholder
+					$versionState = VersionState::cast($verRec['t3ver_state']);
+					if ($versionState->equals(VersionState::MOVE_POINTER)) {
+						$versionMovePlaceholder = BackendUtility::getMovePlaceholder($table, $uid, 'uid', $verRec['t3ver_wsid']);
+						$this->deleteEl($table, $versionMovePlaceholder['uid'], TRUE, $forceHardDelete);
 					}
 				}
 			}
