@@ -66,7 +66,7 @@ class Tx_Beuser_Domain_Model_ModuleData {
 	 * @return array
 	 */
 	public function getCompareUserList() {
-		return array_keys($this->compareUserList);
+		return is_array($this->compareUserList) ? array_keys($this->compareUserList) : array();
 	}
 
 	/**
