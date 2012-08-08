@@ -235,6 +235,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 						if (!$cObj->checkIf($conf['if.'])) {
 							unset($this->setup[$theKey]);
 							unset($this->setup[$theKey . '.']);
+							unset($this->objBB[$theKey]);
 						}
 					}
 				}
