@@ -212,6 +212,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 						if (!$cObj->checkIf($conf['if.'])) {
 							unset($this->setup[$theKey]);
 							unset($this->setup[$theKey.'.']);
+							unset($this->objBB[$theKey]);
 						}
 					}
 				}
