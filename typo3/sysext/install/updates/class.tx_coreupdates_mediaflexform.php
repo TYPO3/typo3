@@ -32,7 +32,7 @@ class tx_coreupdates_mediaFlexform extends Tx_Install_Updates_Base {
 	protected $title = 'FlexForm Data from Media Element';
 
 	/**
-	 * Checks wether updates need to be performed
+	 * Checks whether updates need to be performed
 	 *
 	 * @param string &$description The description for the update
 	 * @param integer &$showUpdate 0=dont show update; 1=show update and next button; 2=only show description

@@ -2,14 +2,14 @@ INTRODUCTION
 For various reasons your TYPO3 installation may over time accumulate data with integrity problems or data you wish to delete completely.
 For instance, why keep old versions of published content? Keep that in your backup - don't load your running website with that overhead!
 Or what about deleted records? Why not flush them - they also fill up your database and filesystem and most likely you can rely on your backups in case of an emergency recovery?
-Also, relations between records and files inside TYPO3 may be lost over time for various reasons. If your website runs as it should such "integrity problems" are mostly easy to automatically repair by simply removing the references pointing to a missing record or file. 
+Also, relations between records and files inside TYPO3 may be lost over time for various reasons. If your website runs as it should such "integrity problems" are mostly easy to automatically repair by simply removing the references pointing to a missing record or file.
 However, it might also be "soft references" from eg. typolinks (<link 123>...</link>) or a file references in a TypoScript template (something.file = fileadmin/template/miss_me.jpg) which are missing. Those cannot be automatically repaired but the cleanup script incorporates warnings that will tell you about these problems if they exist and you can manually fix them.
 This script provides solutions to these problems by offering an array of tools that can analyze your TYPO3 installation for various problems and in some cases offer fixes for them. Also third party extensions can plug additional functionality into the script.
 
 
 
 PREPARATIONS:
-THERE IS ABSOLUTELY NO WARRANTY associated with this script! It is completely on your OWN RISK that you run it. It may cause accidential data loss due to software bugs or circumstances that it does not know about yet - or data loss might happen due to misuse!
+THERE IS ABSOLUTELY NO WARRANTY associated with this script! It is completely on your OWN RISK that you run it. It may cause accidental data loss due to software bugs or circumstances that it does not know about yet - or data loss might happen due to misuse!
 
 ALWAYS make a complete backup of your website! That means:
 * Dump the complete database to an SQL file. This can usually be done from the command line like this:
@@ -49,7 +49,7 @@ The suggested order below assumes that you are interested in running all these t
 
 [base command] versions -r --AUTOFIX
 	- Flush all published versions now if you like. Published versions may also keep references to records which could affect other tests, hence do it now if you want to.
-	
+
 [base command] tx_templavoila_unusedce -r --AUTOFIX
 	- (Assumes usage of "TemplaVoila" extension!)
 	- This should be done AFTER flushing published versions (since versions could reference elements that might be safe to remove)
@@ -61,7 +61,7 @@ The suggested order below assumes that you are interested in running all these t
 
 [base command] deleted -r --AUTOFIX
 	- Flush deleted records. As a rule of thumb, tools that create deleted records should be run before this one so the deleted records they create are also flushed (if you like to of course)
-	
+
 [base command] missing_relations -r --AUTOFIX
 	- Remove missing relations at this point.
 	- If you get an error like this; "t3lib_refindex::setReferenceValue(): ERROR: No reference record with hash="132ddb399c0b15593f0d95a58159439f" was found!" just run the test again until no errors occur. The reason is that another fixed reference in the same record and field changed the reference index hash. Running the test again will find the new hash string which will then work for you.
@@ -71,7 +71,7 @@ The suggested order below assumes that you are interested in running all these t
 
 [base command] rte_images -r --AUTOFIX
 	- Will be affected by flushed deleted records, versions and orphans so must be run after any of those tests.
-	
+
 
 
 EXECUTED ANYTIME:
@@ -94,8 +94,8 @@ If you wish to scan your TYPO3 installations for problems with a cronjob or so, 
 	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner missing_relations -r --refindex update -v 2 -s
 	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner cleanflexform -r -v 2 -s
 	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner rte_images -r --refindex update -v 2 -s
-	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner missing_files -r --refindex update -v 2 -s 
-	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner lost_files -r --refindex update -v 2 -s	
+	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner missing_files -r --refindex update -v 2 -s
+	/[WEBROOT_ABS_PATH]/typo3/dummy_4.0/typo3/cli_dispatch.phpsh lowlevel_cleaner lost_files -r --refindex update -v 2 -s
 
 You may wish to set the verbosity level (-v) to "3" instead of "2" as in the case above, depending on how important you consider the warnings.
 You might also wish to disable tests like "deleted" which would report deleted records - something that might not warrant a warning, frankly speaking...
@@ -112,7 +112,7 @@ In the steps below, substitute these strings with corresponding values:
 STEP1: Set up your class as a tool for the cleaner:
 - In the "ext_localconf.php" file of your extension, add this:
 
-	$TYPO3_CONF_VARS['EXTCONF']['lowlevel']['cleanerModules']['tx_YOUREXTKEYNOUS_CLEANERTOOL'] = 
+	$TYPO3_CONF_VARS['EXTCONF']['lowlevel']['cleanerModules']['tx_YOUREXTKEYNOUS_CLEANERTOOL'] =
 		array('EXT:YOUREXTKEY/class.YOUREXTKEYNOUS_CLEANERTOOL.php:tx_YOUREXTKEYNOUS_CLEANERTOOL');
 
 - In your extension, create this PHP file:
@@ -161,7 +161,7 @@ STEP2: Build your cleaner class:
 				'SOME_ANALYSIS_...' => array(),
 			);
 
-				// HERE you run your analysis and put result into 
+				// HERE you run your analysis and put result into
 				// $resultArray['SOME_ANALYSIS_1']
 				// $resultArray['SOME_ANALYSIS_2']
 				// $resultArray['SOME_ANALYSIS_...']

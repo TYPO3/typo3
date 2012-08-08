@@ -12,9 +12,9 @@
 <h2>Markers</h2>
 <ul>
 	<li>###ACTION_URI###     - URI of the request for the login/logout form</li>
-	<li>###EXTRA_HIDDEN###   - Hook required (additionnal hidden field used by kb_md5fepw extension by Kraft Bernhard)</li>
+	<li>###EXTRA_HIDDEN###   - Hook required (additional hidden field used by kb_md5fepw extension by Kraft Bernhard)</li>
 	<li>###ON_SUBMIT###      - Hook required (used by kb_md5fepw extension by Kraft Bernhard)</li>
-	<li>###PREFIXID###       - Same as class name ('tx_felogin_pi1') usefull to get a unique classname prefix</li>
+	<li>###PREFIXID###       - Same as class name ('tx_felogin_pi1') useful to get a unique classname prefix</li>
 	<li>###REDIRECT_URL###   - URL of redirection upon login</li>
 	<li>###NOREDIRECT###     - if set, no redirect will be done</li>
 	<li>###STORAGE_PID###    - explicit enough I guess (if not : id of the page where user are stored)</li>
@@ -24,10 +24,10 @@
 
 <h2>Wrap parts</h2>
 <ul>
-	<li>###HEADER_VALID###  - usefull to define what to show/hide</li>
-	<li>###MESSAGE_VALID### - usefull to define what to show/hide</li>
-	<li>###FORGOTP_VALID### - usefull to define what to show/hide</li>
-	<li>###PERMALOGIN_VALID### - usefull to define what to show/hide</li>
+	<li>###HEADER_VALID###  - useful to define what to show/hide</li>
+	<li>###MESSAGE_VALID### - useful to define what to show/hide</li>
+	<li>###FORGOTP_VALID### - useful to define what to show/hide</li>
+	<li>###PERMALOGIN_VALID### - useful to define what to show/hide</li>
 </ul>
 
 <h2>felogin Language Markers (see pi/locallang.xml)</h2>
@@ -62,7 +62,7 @@
 		<label for="pass">###PASSWORD_LABEL###</label>
 		<input type="password" id="pass" name="pass" value="" />
 	</div>
-	
+
 	<!--###PERMALOGIN_VALID###-->
 		<div>
 			<label for="permalogin">###PERMALOGIN###</label>
@@ -70,8 +70,8 @@
 			<input name="permalogin" value="1" type="checkbox" ###PERMALOGIN_CHECKBOX_ATTRIBUTES### id="permalogin"  onclick="document.getElementById('permaloginHiddenField').disabled = this.checked;" />
 		</div>
 	<!--###PERMALOGIN_VALID###-->
-	
-	<div>	
+
+	<div>
 		<input type="submit" name="submit" value="###LOGIN_LABEL###" />
 	</div>
 
@@ -119,8 +119,8 @@
 	<div>
 		<input type="submit" name="submit" value="###LOGOUT_LABEL###" />
 	 </div>
-	
-	<div class="felogin-hidden"> 
+
+	<div class="felogin-hidden">
 		<input type="hidden" name="logintype" value="logout" />
 		<input type="hidden" name="pid" value="###STORAGE_PID###" />
 		<input type="hidden" name="###PREFIXID###[noredirect]" value="###NOREDIRECT###" />
@@ -190,6 +190,6 @@
 </form>
 <!-- ###CHANGEPASSWORD_FORM### -->
 ###BACKLINK_LOGIN###
-<!--###TEMPLATE_CHANGEPASSWORD###--> 
+<!--###TEMPLATE_CHANGEPASSWORD###-->
 
 

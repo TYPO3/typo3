@@ -195,7 +195,7 @@ abstract class Tx_Belog_Controller_AbstractController extends Tx_Extbase_MVC_Con
 	 * [pid][dayTimestamp][items]
 	 *
 	 * @param Tx_Extbase_Persistence_QueryResult<Tx_Belog_Domain_Model_LogEntry> $logEntries
-	 * @param boolean $groupByPage Wether or not log entries should be grouped by page
+	 * @param boolean $groupByPage Whether or not log entries should be grouped by page
 	 * @return array
 	 */
 	protected function groupLogEntriesByPageAndDay(Tx_Extbase_Persistence_QueryResult $logEntries, $groupByPage = FALSE) {

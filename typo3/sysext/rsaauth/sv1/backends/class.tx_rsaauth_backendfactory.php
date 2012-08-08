@@ -65,7 +65,7 @@ class tx_rsaauth_backendfactory {
 	/**
 	 * Obtains a backend. This function will return a non-abstract class, which
 	 * is derieved from the tx_rsaauth_abstract_backend. Applications should
-	 * not use anoy methods that are not declared in the tx_rsaauth_abstract_backend.
+	 * not use any methods that are not declared in the tx_rsaauth_abstract_backend.
 	 *
 	 * @return tx_rsaauth_abstract_backend A backend
 	 */

@@ -638,7 +638,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 						case 'referer':
 								// Avoid redirect when logging in after changing password
 							if ($this->piVars['redirectReferrer'] !== 'off') {
-									// Avoid forced logout, when trying to login immediatly after a logout
+									// Avoid forced logout, when trying to login immediately after a logout
 								$redirect_url[] = preg_replace('/[&?]logintype=[a-z]+/', '', $this->referer);
 							}
 						break;
@@ -666,7 +666,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 									}
 								}
 
-									// Avoid forced logout, when trying to login immediatly after a logout
+									// Avoid forced logout, when trying to login immediately after a logout
 								if ($url) {
 									$redirect_url[] = preg_replace('/[&?]logintype=[a-z]+/', '', $url);
 								}
@@ -966,7 +966,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 
 	/**
 	 * Determines whether the URL matches a domain
-	 * in the sys_domain databse table.
+	 * in the sys_domain database table.
 	 *
 	 * @param string $url Absolute URL which needs to be checked
 	 * @return boolean Whether the URL is considered to be local
@@ -1002,7 +1002,7 @@ class tx_felogin_pi1 extends tslib_pibase {
 	}
 
 	/**
-	 * Determines wether the URL is relative to the
+	 * Determines whether the URL is relative to the
 	 * current TYPO3 installation.
 	 *
 	 * @param string $url URL which needs to be checked

@@ -65,7 +65,7 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 	/**
 	 * Checks the current PHP version against a minimum required version.
 	 *
-	 * @return tx_reports_reports_status_Status A status of whether a minimum PHP version requirment is met
+	 * @return tx_reports_reports_status_Status A status of whether a minimum PHP version requirement is met
 	 */
 	protected function getPhpStatus() {
 		$message  = '';
@@ -87,7 +87,7 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 	/**
 	 * Checks the current memory limit against a minimum required version.
 	 *
-	 * @return tx_reports_reports_status_Status A status of whether a minimum memory limit requirment is met
+	 * @return tx_reports_reports_status_Status A status of whether a minimum memory limit requirement is met
 	 */
 	protected function getPhpMemoryLimitStatus() {
 		$memoryLimit = ini_get('memory_limit');
