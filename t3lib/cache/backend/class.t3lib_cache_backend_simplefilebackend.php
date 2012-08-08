@@ -224,7 +224,7 @@ class t3lib_cache_backend_SimpleFileBackend extends t3lib_cache_backend_Abstract
 				$e
 			);
 		}
-		if (!is_writable($finalCacheDirectory)) {
+		if (!is_writable($finalCacheDirectory) && strpos($finalCacheDirectory, '://') === FALSE) {
 			throw new \t3lib_cache_Exception(
 				'The directory "' . $finalCacheDirectory . '" is not writable.',
 				1203965200
