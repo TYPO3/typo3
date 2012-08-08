@@ -66,7 +66,7 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 			'deprecationLog'        => $this->getDeprecationLogStatus()
 		);
 
-			// Do not show status about non-existant features
+			// Do not show status about non-existent features
 		if (version_compare(phpversion(), '5.4', '<')) {
 			$statuses['safeModeEnabled'] = $this->getPhpSafeModeStatus();
 			$statuses['magicQuotesGpcEnabled'] = $this->getPhpMagicQuotesGpcStatus();

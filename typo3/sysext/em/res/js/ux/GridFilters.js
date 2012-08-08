@@ -18,7 +18,7 @@ Ext.ux.grid.GridFilters = function(config){
 Ext.extend(Ext.ux.grid.GridFilters, Ext.util.Observable, {
 	/**
 	 * @cfg {Integer} updateBuffer
-	 * Number of milisecond to defer store updates since the last filter change.
+	 * Number of millisecond to defer store updates since the last filter change.
 	 */
 	updateBuffer: 500,
 	/**

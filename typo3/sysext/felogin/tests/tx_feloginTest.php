@@ -176,11 +176,11 @@ class tx_feloginTest extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * Data provider for malicousUrlsWillBeCleared
+	 * Data provider for maliciousUrlsWillBeCleared
 	 *
-	 * @see malicousUrlsWillBeCleared
+	 * @see maliciousUrlsWillBeCleared
 	 */
-	public function variousUrlsDataProviderForMalicousUrlsWillBeCleared() {
+	public function variousUrlsDataProviderForMaliciousUrlsWillBeCleared() {
 		return array(
 			'absolute URL, hostname not in sys_domain, trailing slash' => array('http://badhost.tld/'),
 			'absolute URL, hostname not in sys_domain, no trailing slash' => array('http://badhost.tld'),
@@ -203,9 +203,9 @@ class tx_feloginTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @dataProvider variousUrlsDataProviderForMalicousUrlsWillBeCleared
+	 * @dataProvider variousUrlsDataProviderForMaliciousUrlsWillBeCleared
 	 */
-	public function malicousUrlsWillBeCleared($url) {
+	public function maliciousUrlsWillBeCleared($url) {
 		$this->setUpDatabaseMock();
 		$this->assertEquals('', $this->txFelogin->validateRedirectUrl($url));
 	}
@@ -248,11 +248,11 @@ class tx_feloginTest extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * Data provider for malicousUrlsWillBeClearedTypo3InSubdirectory
+	 * Data provider for maliciousUrlsWillBeClearedTypo3InSubdirectory
 	 *
-	 * @see malicousUrlsWillBeClearedTypo3InSubdirectory
+	 * @see maliciousUrlsWillBeClearedTypo3InSubdirectory
 	 */
-	public function variousUrlsDataProviderForMalicousUrlsWillBeClearedTypo3InSubdirectory() {
+	public function variousUrlsDataProviderForMaliciousUrlsWillBeClearedTypo3InSubdirectory() {
 		return array(
 			'absolute URL, missing subdirectory' => array('http://hostname.tld/'),
 			'absolute URL, wrong subdirectory' => array('http://hostname.tld/hacker/index.php'),
@@ -268,9 +268,9 @@ class tx_feloginTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @dataProvider variousUrlsDataProviderForMalicousUrlsWillBeClearedTypo3InSubdirectory
+	 * @dataProvider variousUrlsDataProviderForMaliciousUrlsWillBeClearedTypo3InSubdirectory
 	 */
-	public function malicousUrlsWillBeClearedTypo3InSubdirectory($url) {
+	public function maliciousUrlsWillBeClearedTypo3InSubdirectory($url) {
 		$this->testSitePath = '/subdir/';
 		$this->setUpFakeSitePathAndHost();
 

@@ -2890,7 +2890,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 					if ($descr[1] == 0 || $descr[1] == 2) {
 						$msg = 'The directory '.$relpath.' must be writable!';
 					} elseif ($descr[1] == -1 || $descr[1] == 1) {
-						$msg = 'The directory '.$relpath.' does not neccesarily have to be writable.';
+						$msg = 'The directory '.$relpath.' does not necessarily have to be writable.';
 					}
 					$this->message($ext, $relpath .' directory not writable', '
 						<p>
@@ -5758,7 +5758,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							$formContent = $this->generateUpdateDatabaseForm('get_form', $update_statements, $remove_statements, $action_type);
 							$this->message($tLabel, 'Table and field definitions should be updated', '
 								<p>
-									There seems to be a number of differencies
+									There seems to be a number of differences
 									between the database and the selected
 									SQL-file.
 									<br />
@@ -6862,7 +6862,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 	 *
 	 * @param string $className The class name
 	 * @param string $identifier The identifier of upgrade object - needed to fetch user input
-	 * @return object Newly instanciated upgrade object
+	 * @return object Newly instantiated upgrade object
 	 */
 	function getUpgradeObjInstance($className, $identifier) {
 		$tmpObj = t3lib_div::getUserObj($className);
@@ -8279,7 +8279,7 @@ $out="
 					$iconMarkers['backPath'] = $this->backPath;
 					if (preg_match('/^TRUNCATE/i', $string)) {
 						$iconMarkers['iconText'] = '';
-						$warnings['clear_table_info'] = 'Clearing the table is sometimes neccessary when adding new keys. In case of cache_* tables this should not hurt at all. However, use it with care.';
+						$warnings['clear_table_info'] = 'Clearing the table is sometimes necessary when adding new keys. In case of cache_* tables this should not hurt at all. However, use it with care.';
 					} elseif (stristr($string, ' user_')) {
 						$iconMarkers['iconText'] = '(USER)';
 					} elseif (stristr($string, ' app_')) {
@@ -8516,7 +8516,7 @@ $out="
 
 			// we get one or more lines like this
 
-			// insufficent rights:
+			// insufficient rights:
 			// GRANT USAGE ON *.* TO 'test'@'localhost' IDENTIFIED BY ...
 			// GRANT ALL PRIVILEGES ON `test`.* TO 'test'@'localhost'
 
@@ -8536,7 +8536,7 @@ $out="
 				|| $privileges === 'CREATE'
 				|| strpos($privileges, 'CREATE,') !== FALSE) {
 
-					// and we need this privelege not on a specific DB, but on *
+					// And we need this privilege not on a specific DB, but on *
 				if ($dbName === '*') {
 						// user has permissions to create new databases
 					$createAllowed = TRUE;

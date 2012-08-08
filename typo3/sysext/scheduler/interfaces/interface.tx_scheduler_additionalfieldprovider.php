@@ -36,7 +36,7 @@ interface tx_scheduler_AdditionalFieldProvider {
 	 * Gets additional fields to render in the form to add/edit a task
 	 *
 	 * @param array $taskInfo Values of the fields from the add/edit task form
-	 * @param tx_scheduler_Task $task The task object being eddited. Null when adding a task!
+	 * @param tx_scheduler_Task $task The task object being edited. Null when adding a task!
 	 * @param tx_scheduler_Module $schedulerModule Reference to the scheduler backend module
 	 * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
 	 */

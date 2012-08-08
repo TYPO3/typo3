@@ -215,7 +215,7 @@ class tx_opendocs implements backend_toolbarItem {
 	}
 
 	/**
-	 * Adds the neccessary CSS to the backend
+	 * Adds the necessary CSS to the backend
 	 *
 	 * @return void
 	 */

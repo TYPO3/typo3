@@ -66,10 +66,10 @@ class tx_rsaauth_storagefactory {
 	}
 
 	/**
-	 * Sets the preffered storage to the factory. This method can be called from
+	 * Sets the preferred storage to the factory. This method can be called from
 	 * another extension or ext_localconf.php
 	 *
-	 * @param string $preferredStorage Preffered storage
+	 * @param string $preferredStorage Preferred storage
 	 * @return void
 	 */
 	static public function setPreferredStorage($preferredStorage) {
