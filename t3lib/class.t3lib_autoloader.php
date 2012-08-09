@@ -164,13 +164,18 @@ class t3lib_autoloader {
 	 */
 	protected static function createCoreAndExtensionRegistry() {
 		$classRegistry = require(PATH_t3lib . 'core_autoload.php');
+
 			// At this point localconf.php was already initialized
 			// we have a current extList and extMgm is also known
 		$loadedExtensions = array_unique(t3lib_div::trimExplode(',', t3lib_extMgm::getEnabledExtensionList(), TRUE));
 		foreach ($loadedExtensions as $extensionKey) {
-			$extensionAutoloadFile = t3lib_extMgm::extPath($extensionKey, 'ext_autoload.php');
-			if (file_exists($extensionAutoloadFile)) {
-				$classRegistry = array_merge($classRegistry, require($extensionAutoloadFile));
+			try {
+				$extensionAutoloadFile = t3lib_extMgm::extPath($extensionKey, 'ext_autoload.php');
+				if (@file_exists($extensionAutoloadFile)) {
+					$classRegistry = array_merge($classRegistry, require($extensionAutoloadFile));
+				}
+			} catch (BadFunctionCallException $e) {
+				// The extension is not available, therefore ignore it
 			}
 		}
 		return $classRegistry;
