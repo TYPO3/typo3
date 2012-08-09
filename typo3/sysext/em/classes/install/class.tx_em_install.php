@@ -705,7 +705,7 @@ class tx_em_Install {
 				$this->api->typeLabels[$extInfo['type']]
 			);
 		} elseif (t3lib_div::inList('G,L', $extInfo['type'])) {
-			if ($command['doDelete'] && !strcmp($absPath, urldecode($command['absPath']))) {
+			if (!empty($command['doDelete']) && !strcmp($absPath, urldecode($command['absPath']))) {
 				$res = $this->removeExtDirectory($absPath);
 				if ($res) {
 					if (!$this->silentMode) {
