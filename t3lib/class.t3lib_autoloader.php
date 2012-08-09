@@ -208,9 +208,13 @@ class t3lib_autoloader {
 			// At this point during bootstrap the local configuration is initialized,
 			// extMgm is ready to get the list of enabled extensions
 		foreach (t3lib_extMgm::getLoadedExtensionListArray() as $extensionKey) {
-			$extensionAutoloadFile = t3lib_extMgm::extPath($extensionKey, 'ext_autoload.php');
-			if (file_exists($extensionAutoloadFile)) {
-				$classRegistry = array_merge($classRegistry, require($extensionAutoloadFile));
+			try {
+				$extensionAutoloadFile = t3lib_extMgm::extPath($extensionKey, 'ext_autoload.php');
+				if (file_exists($extensionAutoloadFile)) {
+					$classRegistry = array_merge($classRegistry, require($extensionAutoloadFile));
+				}
+			} catch (BadFunctionCallException $e) {
+				// The extension is not available, therefore ignore it
 			}
 		}
 		return $classRegistry;
