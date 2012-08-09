@@ -209,8 +209,12 @@ class t3lib_autoloader {
 			// extMgm is ready to get the list of enabled extensions
 		foreach (t3lib_extMgm::getLoadedExtensionListArray() as $extensionKey) {
 			$extensionAutoloadFile = t3lib_extMgm::extPath($extensionKey, 'ext_autoload.php');
-			if (file_exists($extensionAutoloadFile)) {
-				$classRegistry = array_merge($classRegistry, require($extensionAutoloadFile));
+			try {
+				if (file_exists($extensionAutoloadFile)) {
+					$classRegistry = array_merge($classRegistry, require($extensionAutoloadFile));
+				}
+			} catch (BadFunctionCallException $e) {
+				// The extension is not available, therefore ignore it
 			}
 		}
 		return $classRegistry;
