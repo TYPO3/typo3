@@ -174,7 +174,13 @@ Security
 Backend
 -------------------------------------------------------------------------------
 
-...
+* New backend user administration module
+
+The backend user administration module was created from scratch again. The
+interface changed a lot, it is now possible to filter large groups of users
+with certain criteria and to compare specific user information. The code was
+made more flexible to easily cope with different use cases and to be more
+open for future enhancements.
 
 htmlArea RTE
 -------------------------------------------------------------------------------
