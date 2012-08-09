@@ -203,6 +203,13 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 								unset($this->setup[$theKey.'.']);
 							}
 						break;
+						case 'BOX':
+							$dimensions = explode(',', $conf['dimensions']);
+							if (is_array($dimensions) && count($dimensions) == 4) {
+								list(, , $boxWidth, $boxHeight) = $dimensions;
+								$this->objBB[$theKey] = explode(',', $this->calcOffset($boxWidth . ',' . $boxHeight));
+							}
+							break;
 					}
 						// Checks if disabled is set... (this is also done in menu.php / imgmenu!!)
 					if ($conf['if.']) {
