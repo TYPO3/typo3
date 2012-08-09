@@ -28,7 +28,7 @@
 /**
  * Secure session handling for the install tool.
  *
- * @author	Ernesto Baschny <ernst@cron-it.de>
+ * @author Ernesto Baschny <ernst@cron-it.de>
  *
  * @package TYPO3
  * @subpackage tx_install
@@ -45,11 +45,11 @@ class tx_install_session {
 
 	/**
 	 * Path where to store our session files in typo3temp. %s will be
-	 * non-guesseable.
+	 * non-guessable.
 	 *
 	 * @var string
 	 */
-	private $sessionPath = 'sessions%s';
+	private $sessionPath = 'InstallToolSessions/%s';
 
 	/**
 	 * the cookie to store the session ID of the install tool
@@ -90,7 +90,9 @@ class tx_install_session {
 		// Start our PHP session early so that hasSession() works
 		$sessionSavePath = $this->getSessionSavePath();
 		if (!is_dir($sessionSavePath)) {
-			if (!t3lib_div::mkdir($sessionSavePath)) {
+			try {
+				t3lib_div::mkdir_deep($sessionSavePath);
+			} catch (RuntimeException $exception) {
 				throw new RuntimeException('Could not create session folder in typo3temp/. Make sure it is writeable!', 1294587484);
 			}
 			t3lib_div::writeFile($sessionSavePath.'/.htaccess', 'Order deny, allow'."\n".'Deny from all'."\n");
@@ -137,7 +139,7 @@ class tx_install_session {
 	private function getSessionSavePath() {
 		return sprintf(
 			$this->typo3tempPath . $this->sessionPath,
-			md5(
+			t3lib_div::hmac(
 				'session:' .
 					$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']
 			)
@@ -202,7 +204,7 @@ class tx_install_session {
 	 * Returns a session hash, which can only be calculated by the server.
 	 * Used to store our session files without exposing the session ID.
 	 *
-	 * @param string An alternative session ID. Defaults to our current session ID
+	 * @param string $sessionId An alternative session ID. Defaults to our current session ID
 	 *
 	 * @return string the session hash
 	 */
@@ -293,6 +295,7 @@ class tx_install_session {
 	/**
 	 * Returns the file where to store our session data
 	 *
+	 * @param string $id
 	 * @return string A filename
 	 */
 	private function getSessionFile($id) {
@@ -305,6 +308,7 @@ class tx_install_session {
 	 *
 	 * @param string $savePath
 	 * @param string $sessionName
+	 *
 	 * @return boolean
 	 */
 	public function open($savePath, $sessionName) {
@@ -323,7 +327,7 @@ class tx_install_session {
 	/**
 	 * Read session data. See @session_set_save_handler
 	 *
-	 * @param string The session id
+	 * @param string $id The session id
 	 *
 	 * @return string
 	 */
@@ -335,8 +339,8 @@ class tx_install_session {
 	/**
 	 * Write session data. See @session_set_save_handler
 	 *
-	 * @param string The session id
-	 * @param string The data to be stored
+	 * @param string $id The session id
+	 * @param string $sessionData The data to be stored
 	 *
 	 * @return boolean
 	 */
@@ -348,7 +352,7 @@ class tx_install_session {
 	/**
 	 * Destroys one session. See @session_set_save_handler
 	 *
-	 * @param string The session id
+	 * @param string $id The session id
 	 *
 	 * @return string
 	 */
@@ -360,7 +364,7 @@ class tx_install_session {
 	/**
 	 * Garbage collect session info. See @session_set_save_handler
 	 *
-	 * @param integer The setting of session.gc_maxlifetime
+	 * @param integer $maxLifeTime The setting of session.gc_maxlifetime
 	 *
 	 * @return boolean
 	 */
@@ -387,7 +391,7 @@ class tx_install_session {
 	 * This behaviour was introduced in #17511, where self::write() made use of t3lib_div
 	 * which due to the APC bug throws a "Fatal error: Class 't3lib_div' not found"
 	 * (and the session data is not saved). Calling session_write_close() at this point
-	 * seems to be the most easy solution, acording to PHP author.
+	 * seems to be the most easy solution, according to PHP author.
 	 *
 	 * @return void
 	 */
