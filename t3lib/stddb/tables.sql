@@ -570,7 +570,7 @@ CREATE TABLE sys_log (
   type tinyint(3) unsigned DEFAULT '0' NOT NULL,
   details_nr tinyint(3) unsigned DEFAULT '0' NOT NULL,
   IP varchar(39) DEFAULT '' NOT NULL,
-  log_data varchar(255) DEFAULT '' NOT NULL,
+  log_data text,
   event_pid int(11) DEFAULT '-1' NOT NULL,
   workspace int(11) DEFAULT '0' NOT NULL,
   NEWid varchar(20) DEFAULT '' NOT NULL,
