@@ -205,6 +205,7 @@ class SC_db_list {
 		}
 
 			// Initialize the dblist object:
+		/** @var $dblist localRecordList */
 		$dblist = t3lib_div::makeInstance('localRecordList');
 		$dblist->backPath = $GLOBALS['BACK_PATH'];
 		$dblist->script = t3lib_BEfunc::getModuleUrl('web_list', array(), '');
