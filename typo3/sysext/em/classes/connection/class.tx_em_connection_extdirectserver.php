@@ -794,7 +794,7 @@ class tx_em_Connection_ExtDirectServer {
 					'<a class="t3-link emconfLink" href="#"><strong>' . $updateEMConf . '</strong> ' .
 					sprintf($GLOBALS['LANG']->sL('LLL:EXT:em/language/locallang.xml:extDelete_from_location'),
 						$api->typeLabels[$list[$extKey]['type']],
-						substr(tx_em_Tools::getExtPath($extKey, $list[$extKey]['type']['type']), strlen(PATH_site))
+						substr(tx_em_Tools::getExtPath($extKey, $list[$extKey]['type']), strlen(PATH_site))
 					) . '</a>'
 					. '</td></tr>';
 
