@@ -867,6 +867,16 @@ class t3lib_extMgm {
 	}
 
 	/**
+	 * This method is used to add another path to the requirejs configuration JSON object
+	 *
+	 * @param string $pathName e.g. "jquery" or "jquerytipsy"
+	 * @param string $location the location to the directory
+	 */
+	public static function addRequirejsModulePath($pathName, $location) {
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['RequireJS'][$pathName] = $location;
+	}
+
+	/**
 	 * This method is called from t3lib_loadModules::checkMod and it replaces old conf.php.
 	 *
 	 * The original function for is called
