@@ -87,21 +87,10 @@ class tx_install_session {
 	public function __construct() {
 		$this->typo3tempPath = PATH_site . 'typo3temp/';
 
-		// Start our PHP session early so that hasSession() works
+			// Start our PHP session early so that hasSession() works
 		$sessionSavePath = $this->getSessionSavePath();
-		if (!is_dir($sessionSavePath)) {
-			try {
-				t3lib_div::mkdir_deep($sessionSavePath);
-			} catch (RuntimeException $exception) {
-				throw new RuntimeException('Could not create session folder in typo3temp/. Make sure it is writeable!', 1294587484);
-			}
-			t3lib_div::writeFile($sessionSavePath.'/.htaccess', 'Order deny, allow'."\n".'Deny from all'."\n");
-			$indexContent = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
-			$indexContent .= '<HTML><HEAD<TITLE></TITLE><META http-equiv=Refresh Content="0; Url=../../">';
-			$indexContent .= '</HEAD></HTML>';
-			t3lib_div::writeFile($sessionSavePath.'/index.html', $indexContent);
-		}
-		// Register our "save" session handler
+
+			// Register our "save" session handler
 		session_set_save_handler(
 			array($this, 'open'),
 			array($this, 'close'),
@@ -113,7 +102,7 @@ class tx_install_session {
 		session_save_path($sessionSavePath);
 		session_name($this->cookieName);
 		ini_set('session.cookie_path', t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
-		// Always call the garbage collector to clean up stale session files
+			// Always call the garbage collector to clean up stale session files
 		ini_set('session.gc_probability', 100);
 		ini_set('session.gc_divisor', 100);
 		ini_set('session.gc_maxlifetime', $this->expireTimeInMinutes*2*60);
@@ -137,13 +126,39 @@ class tx_install_session {
 	 * Returns the path where to store our session files
 	 */
 	private function getSessionSavePath() {
-		return sprintf(
+		$sessionSavePath = sprintf(
 			$this->typo3tempPath . $this->sessionPath,
 			t3lib_div::hmac(
 				'session:' .
 					$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']
 			)
 		);
+		$this->ensureSessionSavePathExists($sessionSavePath);
+
+		return $sessionSavePath;
+	}
+
+	/**
+	 * Create directories for the session save path
+	 * and throw an exception if that fails.
+	 *
+	 * @param string $sessionSavePath The absolute path to the session files
+	 * @throws RuntimeException
+	 */
+	private function ensureSessionSavePathExists($sessionSavePath) {
+		if (!is_dir($sessionSavePath)) {
+			try {
+				t3lib_div::mkdir_deep($sessionSavePath);
+			}
+			catch (RuntimeException $exception) {
+				throw new RuntimeException('Could not create session folder in typo3temp/. Make sure it is writeable!', 1294587484);
+			}
+			t3lib_div::writeFile($sessionSavePath . '/.htaccess', 'Order deny, allow' . "\n" . 'Deny from all' . "\n");
+			$indexContent = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
+			$indexContent .= '<HTML><HEAD<TITLE></TITLE><META http-equiv=Refresh Content="0; Url=../../">';
+			$indexContent .= '</HEAD></HTML>';
+			t3lib_div::writeFile($sessionSavePath . '/index.html', $indexContent);
+		}
 	}
 
 	/**

@@ -3812,6 +3812,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 							case 'encryptionKey':
 								if (strcmp(t3lib_Configuration::getConfigurationValueByPath('SYS/encryptionKey'), $value)) {
 									$localConfigurationPathValuePairs['SYS/encryptionKey'] = $value;
+										// The session object in this request must use the new encryption key to write to the right session folder
+									$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $value;
 								}
 								break;
 							case 'compat_version':
