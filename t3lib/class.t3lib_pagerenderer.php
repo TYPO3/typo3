@@ -274,6 +274,11 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	/**
 	 * @var string
 	 */
+	protected $requirejsPath = 'contrib/requirejs/';
+
+	/**
+	 * @var string
+	 */
 	protected $prototypePath = 'contrib/prototype/';
 
 	/**
@@ -1931,6 +1936,17 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	 */
 	protected function renderMainJavaScriptLibraries() {
 		$out = '';
+
+			// always add require.js in the TYPO3 Backend
+		if (TYPO3_MODE === 'BE') {
+			$out .= '
+			<!-- main configuration file for requirejs -->
+			<script src="' . t3lib_div::getIndpEnv('TYPO3_SITE_PATH') . TYPO3_mainDir . 'ajax.php?ajaxID=Typo3_Requirejs::configuration"></script>
+			<script src="' . $this->processJsFile($this->backPath . $this->requirejsPath . 'require.js') . '"></script>
+			<script>
+			require(["jquery/jquery-1.8b1", "core/modernizr/modernizr.min", "core/prototype/prototype"]);
+			</script>';
+		}
 
 		if ($this->addSvg) {
 			$out .= '<script src="' . $this->processJsFile($this->backPath . $this->svgPath . 'svg.js') .
