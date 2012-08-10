@@ -2639,7 +2639,17 @@ class BackendUtility {
 			$mainParams .= \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('M') ? '&M=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('M')) : '';
 		}
 		$onClick = 'jumpToUrl(\'' . $script . '?' . $mainParams . $addparams . '&' . $elementName . '=\'+(this.checked?1:0),this);';
-		return '<input type="checkbox" class="checkbox" name="' . $elementName . '"' . ($currentValue ? ' checked="checked"' : '') . ' onclick="' . htmlspecialchars($onClick) . '"' . ($tagParams ? ' ' . $tagParams : '') . ' />';
+
+		return
+		'<input' .
+			' type="checkbox"' .
+			' class="checkbox"' .
+			' name="' . $elementName . '"' .
+			($currentValue ? ' checked="checked"' : '') .
+			' onclick="' . htmlspecialchars($onClick) . '"' .
+			($tagParams ? ' ' . $tagParams : '') .
+			' value="1"' .
+		' />';
 	}
 
 	/**
