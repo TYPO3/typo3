@@ -353,6 +353,7 @@ $typo3Classes = array(
 	'typo3_domain_repository_backendmodulerepository' => PATH_typo3 . 'classes/Domain/Repository/BackendModuleRepository.php',
 	'typo3_utility_backendmoduleutility' => PATH_typo3 . 'classes/Utility/BackendModuleUtility.php',
 	'modulemenu' => PATH_typo3 . 'classes/class.modulemenu.php',
+	'typo3_requirejs' => PATH_typo3 . 'classes/Requirejs.php',
 );
 
 $tslibClasses = require(PATH_typo3 . 'sysext/cms/ext_autoload.php');
