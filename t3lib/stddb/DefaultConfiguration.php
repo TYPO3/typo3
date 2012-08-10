@@ -579,6 +579,7 @@ return array(
 			'BackendLogin::refreshTokens'	 	=> 'typo3/classes/class.ajaxlogin.php:AjaxLogin->refreshTokens',
 			'ExtDirect::getAPI' => 't3lib/extjs/class.t3lib_extjs_extdirectapi.php:t3lib_extjs_ExtDirectApi->getAPI',
 			'ExtDirect::route' => 't3lib/extjs/class.t3lib_extjs_extdirectrouter.php:t3lib_extjs_ExtDirectRouter->route',
+			'Typo3_Requirejs::configuration'                            => 'typo3/classes/Requirejs.php:Typo3_Requirejs->getConfigurationForAjaxRequest',
 		),
 		'XCLASS' => array(),					// Deprecated XCLASS register. See http://wiki.typo3.org/Autoload for more information
 	),
@@ -696,6 +697,15 @@ return array(
 			'frontendEditingController' => array(
 				'default' => 't3lib/class.t3lib_frontendedit.php:t3lib_frontendedit'
 			)
+		),
+			// All paths always available
+		'RequireJS' => array(
+			'core' => 'contrib',
+			'jquery' => 'contrib/jquery',
+				// Direct path to latest jQuery Version will be set in typo3/classes/Requirejs.php
+			'jqueryLatest' => '',
+			'modernizr' => 'contrib/modernizr',
+			'requirejsPlugins' => 'contrib/requirejs/plugins',
 		),
 	),
 	'EXTCONF' => array(		// Here you may add manually set configuration options for your extensions. Eg. $TYPO3_CONF_VARS['EXTCONF']['my_extension_key']['my_option'] = 'my_value';
