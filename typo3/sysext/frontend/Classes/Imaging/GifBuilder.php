@@ -199,39 +199,46 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 				if (intval($theKey) && ($conf = $this->setup[$theKey . '.'])) {
 					// Swipes through TEXT and IMAGE-objects
 					switch ($theValue) {
-					case 'TEXT':
-						if ($this->setup[$theKey . '.'] = $this->checkTextObj($conf)) {
-							// Adjust font width if max size is set:
-							$maxWidth = isset($this->setup[$theKey . '.']['maxWidth.']) ? $this->cObj->stdWrap($this->setup[$theKey . '.']['maxWidth'], $this->setup[$theKey . '.']['maxWidth.']) : $this->setup[$theKey . '.']['maxWidth'];
-							if ($maxWidth) {
-								$this->setup[$theKey . '.']['fontSize'] = $this->fontResize($this->setup[$theKey . '.']);
-							}
-							// Calculate bounding box:
-							$txtInfo = $this->calcBBox($this->setup[$theKey . '.']);
-							$this->setup[$theKey . '.']['BBOX'] = $txtInfo;
-							$this->objBB[$theKey] = $txtInfo;
-							$this->setup[$theKey . '.']['imgMap'] = 0;
-						}
-						break;
-					case 'IMAGE':
-						$fileInfo = $this->getResource($conf['file'], $conf['file.']);
-						if ($fileInfo) {
-							$this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', basename($fileInfo[3]));
-							$this->setup[$theKey . '.']['file'] = $fileInfo[3];
-							$this->setup[$theKey . '.']['BBOX'] = $fileInfo;
-							$this->objBB[$theKey] = $fileInfo;
-							if ($conf['mask']) {
-								$maskInfo = $this->getResource($conf['mask'], $conf['mask.']);
-								if ($maskInfo) {
-									$this->setup[$theKey . '.']['mask'] = $maskInfo[3];
-								} else {
-									$this->setup[$theKey . '.']['mask'] = '';
+						case 'TEXT':
+							if ($this->setup[$theKey . '.'] = $this->checkTextObj($conf)) {
+								// Adjust font width if max size is set:
+								$maxWidth = isset($this->setup[$theKey . '.']['maxWidth.']) ? $this->cObj->stdWrap($this->setup[$theKey . '.']['maxWidth'], $this->setup[$theKey . '.']['maxWidth.']) : $this->setup[$theKey . '.']['maxWidth'];
+								if ($maxWidth) {
+									$this->setup[$theKey . '.']['fontSize'] = $this->fontResize($this->setup[$theKey . '.']);
 								}
+								// Calculate bounding box:
+								$txtInfo = $this->calcBBox($this->setup[$theKey . '.']);
+								$this->setup[$theKey . '.']['BBOX'] = $txtInfo;
+								$this->objBB[$theKey] = $txtInfo;
+								$this->setup[$theKey . '.']['imgMap'] = 0;
 							}
-						} else {
-							unset($this->setup[$theKey . '.']);
-						}
-						break;
+							break;
+						case 'IMAGE':
+							$fileInfo = $this->getResource($conf['file'], $conf['file.']);
+							if ($fileInfo) {
+								$this->combinedFileNames[] = preg_replace('/\\.[[:alnum:]]+$/', '', basename($fileInfo[3]));
+								$this->setup[$theKey . '.']['file'] = $fileInfo[3];
+								$this->setup[$theKey . '.']['BBOX'] = $fileInfo;
+								$this->objBB[$theKey] = $fileInfo;
+								if ($conf['mask']) {
+									$maskInfo = $this->getResource($conf['mask'], $conf['mask.']);
+									if ($maskInfo) {
+										$this->setup[$theKey . '.']['mask'] = $maskInfo[3];
+									} else {
+										$this->setup[$theKey . '.']['mask'] = '';
+									}
+								}
+							} else {
+								unset($this->setup[$theKey . '.']);
+							}
+							break;
+						case 'BOX':
+							$dimensions = explode(',', $conf['dimensions']);
+							if (is_array($dimensions) && count($dimensions) == 4) {
+								list(, ,$boxWidth, $boxHeight) = $dimensions;
+								$this->objBB[$theKey] = explode(',', $this->calcOffset($boxWidth . ',' . $boxHeight));
+							}
+							break;
 					}
 					// Checks if disabled is set... (this is also done in menu.php / imgmenu!!)
 					if ($conf['if.']) {
