@@ -381,9 +381,34 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	 * Tests whether numerical comparison matches.
 	 * @test
 	 */
+	public function globalVarConditionMatchesOnEqualExpressionWithMultipleValues() {
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 = 10|20|30]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 = 10.1|20.2|30.3]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:20 = 10|20|30]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:20.2 = 10.1|20.2|30.3]'));
+
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 == 10|20|30]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 == 10.1|20.2|30.3]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:20 == 10|20|30]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:20.2 == 10.1|20.2|30.3]'));
+	}
+
+	/**
+	 * Tests whether numerical comparison matches.
+	 * @test
+	 */
 	public function globalVarConditionMatchesOnNotEqualExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 != 20]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 != 10.2]'));
+	}
+
+	/**
+	 * Tests whether numerical comparison matches.
+	 * @test
+	 */
+	public function globalVarConditionMatchesOnNotEqualExpressionWithMultipleValues() {
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 != 20|30]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 != 10.2|20.3]'));
 	}
 
 	/**
