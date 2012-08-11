@@ -47,7 +47,7 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 	const EXTJS_ADAPTER_YUI = 'yui';
 
 		// jQuery Core version that is shipped with TYPO3
-	const JQUERY_VERSION_LATEST = '1.8b1';
+	const JQUERY_VERSION_LATEST = '1.8.0';
 
 		// jQuery namespace options
 	const JQUERY_NAMESPACE_NONE = 'none';
