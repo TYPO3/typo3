@@ -482,7 +482,16 @@ abstract class t3lib_matchCondition_abstract {
 					return ($leftValue <= doubleval($rightValue));
 				break;
 				case '!=':
-					return ($leftValue != doubleval($rightValue));
+						// multiple values may be split with '|'
+						// see if none matches ("not in list")
+					$rightValueParts = t3lib_div::trimExplode('|', $rightValue);
+					$found = FALSE;
+					foreach($rightValueParts as $rightValueSingle) {
+						if ($leftValue === doubleval($rightValueSingle)) {
+							$found = TRUE;
+						}
+					}
+					return ($found === FALSE);
 				break;
 				case '<':
 					return ($leftValue < doubleval($rightValue));
@@ -492,7 +501,17 @@ abstract class t3lib_matchCondition_abstract {
 				break;
 				default:
 						// nothing valid found except '=', use '='
-					return ($leftValue == trim($rightValue));
+
+						// multiple values may be split with '|'
+						// see if one matches ("in list")
+					$rightValueParts = t3lib_div::trimExplode('|', $rightValue);
+					$found = FALSE;
+					foreach($rightValueParts as $rightValueSingle) {
+						if ($leftValue == $rightValueSingle) {
+							$found = TRUE;
+						}
+					}
+					return $found;
 				break;
 			}
 		}
