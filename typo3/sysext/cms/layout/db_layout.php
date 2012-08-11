@@ -390,6 +390,31 @@ class SC_db_layout {
 	}
 
 	/**
+	 * Gets the title of current page considering localization
+	 *
+	 * @return string $title
+	 */
+	protected function getLocalizedPageTitle() {
+		if ($this->current_sys_language > 0) {
+			$overlayRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+				'*',
+				'pages_language_overlay',
+				'pid = ' . intval($this->id) .
+					' AND sys_language_uid = ' . intval($this->current_sys_language) .
+					t3lib_BEfunc::deleteClause('pages_language_overlay') .
+					t3lib_BEfunc::versioningPlaceholderClause('pages_language_overlay'),
+				'',
+				'',
+				'',
+				'sys_language_uid'
+			);
+			return $overlayRecord['title'];
+		} else {
+			return $this->pageinfo['title'];
+		}
+	}
+
+	/**
 	 * Main function.
 	 * Creates some general objects and calls other functions for the main rendering of module content.
 	 *
@@ -537,7 +562,7 @@ class SC_db_layout {
 			$this->colPosList = implode(',', array_unique(t3lib_div::intExplode(',', $this->colPosList)));
 
 				// Page title
-			$body = $this->doc->header($this->pageinfo['title']);
+			$body = $this->doc->header($this->getLocalizedPageTitle());
 			$body .= $this->getHeaderFlashMessagesForCurrentPid();
 
 				// Render the primary module content:
