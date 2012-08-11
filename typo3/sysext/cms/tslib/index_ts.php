@@ -182,8 +182,6 @@ $TT->pull();
 
 	// Admin Panel & Frontend editing
 if ($TSFE->isBackendUserLoggedIn()) {
-	Typo3_Bootstrap::getInstance()->initializeSpriteManager();
-
 	$BE_USER->initializeFrontendEdit();
 	if ($BE_USER->adminPanel instanceof tslib_AdminPanel) {
 		Typo3_Bootstrap::getInstance()->initializeLanguageObject();
