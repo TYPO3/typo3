@@ -492,7 +492,16 @@ abstract class t3lib_matchCondition_abstract {
 				break;
 				default:
 						// nothing valid found except '=', use '='
-					return ($leftValue == trim($rightValue));
+
+						// multiple values may be split with '|'
+					$rightValueParts = t3lib_div::trimExplode('|', $rightValue);
+					$found = FALSE;
+					foreach($rightValueParts as $rightValueSingle) {
+						if ($leftValue == $rightValueSingle) {
+							$found = TRUE;
+						}
+					}
+					return $found;
 				break;
 			}
 		}
