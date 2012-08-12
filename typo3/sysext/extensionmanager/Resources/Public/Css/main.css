@@ -1,0 +1,222 @@
+#typo3-extension-manager {
+	margin: 30px;
+}
+
+.contentWrapper .ui-corner-tl {
+	-moz-border-radius-topleft: 0;
+	-webkit-border-top-left-radius: 0;
+	-khtml-border-top-left-radius: 0;
+	border-top-left-radius: 0;
+}
+
+.contentWrapper .ui-widget-header {
+	background: none;
+	border: none;
+	font-weight: normal;
+}
+
+.dataTables_info {
+	font-size: 10px;
+	color: #444;
+	float: left;
+}
+
+.paging_two_button .ui-button {
+	float: left;
+	cursor: pointer;
+}
+
+.paging_full_numbers .ui-button {
+	padding: 2px 6px;
+	margin: 0;
+	cursor: pointer;
+	color: #333 !important;
+}
+
+.dataTables_paginate .ui-button {
+	margin-right: -0.1em !important;
+}
+
+.paging_full_numbers {
+	float: right;
+}
+
+.contentWrapper .ui-toolbar {
+	padding: 5px;
+}
+
+.dataTables_paginate {
+	width: auto;
+}
+
+.typo3-extension-list tr.odd td {
+	background-color: #eee;
+}
+
+.typo3-extension-list tr:hover td,
+.typo3-extension-list tr.odd:hover td,
+.ui-state-default:hover {
+	background: #f6af23;
+	font-weight: normal;
+	color: #212121;
+}
+
+.typo3-extension-list {
+	width: 100%;
+}
+
+.typo3-extension-list td {
+	padding: 10px;
+}
+
+#typo3-extension-configuration-forms  {
+	margin: 20px;
+	max-width: 900px;
+}
+
+
+
+#typo3-extension-configuration-forms h3 {
+	margin-bottom: 0;
+	margin-top: 15px;
+}
+
+#typo3-extension-configuration-forms #typo3-docheader-row2 .back {
+	float: right;
+}
+
+/* root element for tabs  */
+#typo3-extension-main-menu .tabs ul,
+#typo3-extension-configuration-forms .tabs ul {
+	list-style:none;
+	padding:0;
+	height: 25px;
+}
+
+
+#typo3-extension-main-menu .tabs ul li a,
+#typo3-extension-configuration-forms .tabs ul li a {
+	padding: 5px 15px;
+	height: 15px;
+	float: left;
+	display: block;
+	margin-right: 2px;
+	background: #dadada;
+	border: 1px solid #adadad;
+	border-bottom: none;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	color: #606060;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+}
+
+#typo3-extension-main-menu .tabs ul li a:hover,
+#typo3-extension-configuration-forms .tabs ul li a:hover {
+	background-color: #eeeeee;
+	border-color: #adadad;
+	color: #606060;
+}
+
+#typo3-extension-main-menu .tabs ul li a.current,
+#typo3-extension-configuration-forms .tabs ul li a.current {
+	background: #ffffff;
+	color: #000;
+}
+.contentWrapper,
+#typo3-extension-configuration-forms .category {
+	background-color: #ececec;
+	background-image: linear-gradient(bottom, rgb(236,236,236) 36%, rgb(255,255,255) 100%);
+	background-image: -o-linear-gradient(bottom, rgb(236,236,236) 36%, rgb(255,255,255) 100%);
+	background-image: -moz-linear-gradient(bottom, rgb(236,236,236) 36%, rgb(255,255,255) 100%);
+	background-image: -webkit-linear-gradient(bottom, rgb(236,236,236) 36%, rgb(255,255,255) 100%);
+	background-image: -ms-linear-gradient(bottom, rgb(236,236,236) 36%, rgb(255,255,255) 100%);
+
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.36, rgb(236,236,236)),
+		color-stop(1, rgb(255,255,255))
+	);
+	background-repeat: repeat-x;
+	border: 1px solid #adadad;
+	padding: 15px;
+}
+
+#typo3-extension-configuration-forms .error,
+#typo3-extension-configuration-forms .invalid {
+	/* supply height to ensure consistent positioning for every browser */
+	height:15px;
+	background-color:#ff2262;
+	border:1px solid #E1E16D;
+	font-size:11px;
+	color:#000;
+	padding:3px 10px;
+	margin-left:-2px;
+
+
+	/* CSS3 spicing for mozilla and webkit */
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	-moz-border-radius-bottomleft:0;
+	-moz-border-radius-topleft:0;
+	-webkit-border-bottom-left-radius:0;
+	-webkit-border-top-left-radius:0;
+
+	-moz-box-shadow:0 0 6px #ddd;
+	-webkit-box-shadow:0 0 6px #ddd;
+}
+
+.obsolete, .test, .experimental {
+	background-color: #a3a3a3;
+}
+
+.stable {
+	background-color: #b7ff97 !important;
+}
+
+.alpha {
+	background-color: #ffb1e0 !important;
+}
+
+.beta {
+	background-color: #aaffcb !important;
+}
+
+#typo3-extension-configuration-forms .info {
+	font-size: 9px;
+	color: #666;
+	font-weight: normal;
+}
+
+.typo3-extension-list tr.installed td {
+	background-color: #c8ffaa;
+}
+
+.typo3-extension-list tr.available td {
+	background-color: #E1E1aa;
+}
+
+#typo3-extension-manager .insecure {
+	color: #ff2262;
+}
+
+.headerTooltip,
+.tooltip {
+	display:none;
+	width: 400px;
+	background-color:#ffa;
+	border:1px solid #cc9;
+	padding:3px;
+	font-size:13px;
+	-moz-box-shadow: 2px 2px 11px #666;
+	-webkit-box-shadow: 2px 2px 11px #666;
+	z-index: 1000;
+}
+
+.headerTooltip {
+	width: 150px;
+}

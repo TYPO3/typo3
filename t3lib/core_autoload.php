@@ -288,6 +288,7 @@ $t3libClasses = array(
 	't3lib_userauth' => PATH_t3lib . 'class.t3lib_userauth.php',
 	't3lib_userauthgroup' => PATH_t3lib . 'class.t3lib_userauthgroup.php',
 	't3lib_utility_array' => PATH_t3lib . 'utility/class.t3lib_utility_array.php',
+	't3lib_utility_string' => PATH_t3lib . 'utility/class.t3lib_utility_string.php',
 	't3lib_utility_client' => PATH_t3lib . 'utility/class.t3lib_utility_client.php',
 	't3lib_utility_command' => PATH_t3lib . 'utility/class.t3lib_utility_command.php',
 	't3lib_utility_debug' => PATH_t3lib . 'utility/class.t3lib_utility_debug.php',

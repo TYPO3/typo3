@@ -1,0 +1,56 @@
+{namespace em=Tx_Extensionmanager_ViewHelpers}
+<em:be.container pageTitle="Extension Manager" enableJumpToUrl="true" enableClickMenu="false" loadPrototype="false" loadScriptaculous="false" loadExtJs="false" loadExtJsTheme="true"
+	addCssFiles="{
+		0:'{f:uri.resource(path:\'Css/jquery-ui-1.8.17.custom.css\')}',
+		1:'{f:uri.resource(path:\'Css/main.css\')}',
+		2:'{f:uri.resource(path:\'Contrib/LoadMask/jquery.loadmask.css\')}'
+	}"
+	addJsFiles="{
+		0:'{f:uri.resource(path:\'JavaScript/jquery.js\')}',
+		1:'{f:uri.resource(path:\'JavaScript/jquery-ui-1.8.17.custom.min.js\')}',
+		2:'{f:uri.resource(path:\'JavaScript/jquery.tools.min.js\')}',
+		3:'{f:uri.resource(path:\'Contrib/LoadMask/jquery.loadmask.js\')}',
+		5:'{f:uri.resource(path:\'JavaScript/main.js\')}',
+		6:'{f:uri.resource(path:\'JavaScript/ter.js\')}',
+		7:'{f:uri.resource(path:\'JavaScript/configuration.js\')}'
+		8:'{f:uri.resource(path:\'JavaScript/update.js\')}',
+		9:'{f:uri.resource(path:\'JavaScript/upload.js\')}'
+		}">
+
+<div id="typo3-docheader">
+	<div id="typo3-docheader-row1">
+		&nbsp;
+	</div>
+	<div id="typo3-docheader-row2">
+		<f:render section="docHeaderRow2" />
+	</div>
+</div>
+<div id="typo3-docbody">
+	<div id="typo3-extension-manager">
+		<div id="typo3-extension-main-menu">
+			<div class="tabs">
+				<ul>
+					<li>
+						<f:link.action action="index" controller="List" class="{f:if(condition:'{0: actionName} == {0: \'index\'}', then:'current', else: '')}">
+							<f:translate key="manageExtensions" />
+						</f:link.action>
+					</li>
+					<li>
+						<f:link.action action="ter" controller="List" class="{f:if(condition:'{0: actionName} == {0: \'ter\'}', then:'current', else: '')}">
+							<f:translate key="getExtensions" />
+						</f:link.action>
+					</li>
+					<f:if condition="{0: actionName} == {0: 'showAllVersions'}">
+						<li>
+							<f:link.action action="showAllVersions" controller="List" class="current">
+								<f:translate key="showAllVersions" /> "{extensionKey}"
+							</f:link.action>
+						</li>
+					</f:if>
+				</ul>
+			</div>
+		</div>
+		<div class="contentWrapper"><f:render section="Content" /></div>
+	</div>
+</div>
+</em:be.container>
