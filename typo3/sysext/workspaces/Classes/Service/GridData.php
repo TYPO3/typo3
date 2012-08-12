@@ -252,7 +252,11 @@ class Tx_Workspaces_Service_GridData {
 	 */
 	protected function setDataArrayIntoCache(array $versions, $filterTxt) {
 		$hash = $this->calculateHash($versions, $filterTxt);
-		$this->workspacesCache->set($hash, $this->dataArray, array($this->currentWorkspace));
+		$this->workspacesCache->set(
+			$hash,
+			$this->dataArray,
+			array($this->currentWorkspace, 'user_' . $GLOBALS['BE_USER']->user['uid'])
+		);
 	}
 
 	/**
