@@ -1,0 +1,8 @@
+{namespace em=Tx_Extensionmanager_ViewHelpers}
+<em:format.jsonEncode
+	additionalAttributes="{
+		updated: updated,
+		message: 'last update: {repository.lastUpdate -> f:format.date()} ({repository.extensionCount} extensions)',
+		errorMessage: errorMessage
+	}"
+/>

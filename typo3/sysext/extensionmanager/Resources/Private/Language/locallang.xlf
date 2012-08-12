@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="workspaces">
+		<header/>
+		<body>
+			<trans-unit id="manageExtensions" xml:space="preserve">
+				<source>Manage Extensions</source>
+			</trans-unit>
+			<trans-unit id="getExtensions" xml:space="preserve">
+				<source>Get Extensions</source>
+			</trans-unit>
+			<trans-unit id="showAllVersions" xml:space="preserve">
+				<source>Show all versions of</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.headline" xml:space="preserve">
+				<source>Configure Extension</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.type.int+" xml:space="preserve">
+				<source>positive integer</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.type.int" xml:space="preserve">
+				<source>integer</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.type.integer" xml:space="preserve">
+				<source>integer</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.type.color" xml:space="preserve">
+				<source>color</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.type.wrap" xml:space="preserve">
+				<source>wrap</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.type.offset" xml:space="preserve">
+				<source>offset</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.type.options" xml:space="preserve">
+				<source>options</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.type.boolean" xml:space="preserve">
+				<source>boolean</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.type.user" xml:space="preserve">
+				<source>user</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.type.small" xml:space="preserve">
+				<source>small</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.type.string" xml:space="preserve">
+				<source>string</source>
+			</trans-unit>
+			<trans-unit id="extConfTemplate.backToList" xml:space="preserve">
+				<source>Back to list</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

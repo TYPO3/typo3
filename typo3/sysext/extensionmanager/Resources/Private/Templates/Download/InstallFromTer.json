@@ -1,0 +1,2 @@
+{namespace em=Tx_Extensionmanager_ViewHelpers}
+<em:format.jsonEncode additionalAttributes="{result:result, extension:extension.extensionKey, errorMessage: errorMessage}" />

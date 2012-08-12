@@ -1,0 +1,51 @@
+config.tx_extbase {
+	persistence{
+		classes {
+			Tx_Extensionmanager_Domain_Model_Extension {
+				mapping {
+					tableName = cache_extensions
+					columns {
+						extkey.mapOnProperty = extensionKey
+						version.mapOnProperty = version
+						title.mapOnProperty = title
+						description.mapOnProperty = description
+						state.mapOnProperty = state
+						category.mapOnProperty = category
+						lastuploaddate.mapOnProperty = lastUpdated
+						uploadcomment.mapOnProperty = updateComment
+						authorname.mapOnProperty = authorName
+						authoremail.mapOnProperty = authorEmail
+						lastversion.mapOnProperty = currentVersion
+						t3xfilemd5.mapOnProperty = md5hash
+						dependencies.mapOnProperty = serializedDependencies
+						intversion.mapOnProperty = integerVersion
+						reviewstate.mapOnProperty = reviewState
+					}
+				}
+			}
+			Tx_Extensionmanager_Domain_Model_Repository {
+				mapping {
+					tableName = sys_ter
+					columns {
+						title.mapOnProperty = title
+						description.mapOnProperty = description
+						mirror_url.mapOnProperty = mirrorListUrl
+						wsdl_url.mapOnProperty = wsdlUrl
+						lastUpdated.mapOnProperty = lastUpdate
+						extCount.mapOnProperty = extensionCount
+					}
+				}
+			}
+		}
+	}
+	features {
+		 # this enables/disables the reworked property mapper (see http://forge.typo3.org/projects/typo3v4-mvc/wiki/PropertyMapper_rework)
+		rewrittenPropertyMapper = 1
+		 # if enabled, default controller and/or action is skipped when creating URIs through the URI Builder (see http://forge.typo3.org/projects/typo3v4-mvc/wiki/Skip_default_arguments_in_URIs)
+		skipDefaultArguments = 0
+	}
+}
+
+module.tx_extensionmanager.settings {
+	repositoryUid = 1
+}
