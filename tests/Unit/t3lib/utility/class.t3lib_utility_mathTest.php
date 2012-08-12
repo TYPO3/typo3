@@ -222,6 +222,62 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	public function calculateWithParenthesesCorrectlyCalculatesExpression($expected, $expression) {
 		$this->assertEquals($expected, t3lib_utility_Math::calculateWithParentheses($expression));
 	}
+
+	//////////////////////////////////
+	// Tests concerning isIntegerInRange
+	//////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function isIntegerInRangeIncludesLowerBoundary() {
+		$this->assertTrue(t3lib_utility_Math::isIntegerInRange(1, 1, 2));
+	}
+
+	/**
+	 * @test
+	 */
+	public function isIntegerInRangeIncludesUpperBoundary() {
+		$this->assertTrue(t3lib_utility_Math::isIntegerInRange(2, 1, 2));
+	}
+
+	/**
+	 * @test
+	 */
+	public function isIntegerInRangeAcceptsValueInRange() {
+		$this->assertTrue(t3lib_utility_Math::isIntegerInRange(10, 1, 100));
+	}
+
+	/**
+	 * @test
+	 */
+	public function isIntegerInRangeRejectsValueOutsideOfRange() {
+		$this->assertFalse(t3lib_utility_Math::isIntegerInRange(10, 1, 2));
+	}
+
+	/**
+	 * Data provider or isIntegerInRangeRejectsOtherDataTypes
+	 */
+	public function isIntegerInRangeRejectsOtherDataTypesDataProvider() {
+		return array(
+			'negative integer' => array(-1),
+			'float' => array(1.5),
+			'string' => array('string'),
+			'array' => array(array()),
+			'object' => array(new stdClass()),
+			'boolean FALSE' => array(FALSE),
+			'NULL' => array(NULL),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider isIntegerInRangeRejectsOtherDataTypesDataProvider
+	 */
+	public function isIntegerInRangeRejectsOtherDataTypes($inputValue) {
+		$this->assertFalse(t3lib_utility_Math::isIntegerInRange($invalidValue, 0, 10));
+	}
+
 }
 
 ?>
