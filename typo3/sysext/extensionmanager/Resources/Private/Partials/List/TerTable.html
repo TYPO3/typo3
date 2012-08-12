@@ -1,0 +1,20 @@
+{namespace em=Tx_Extensionmanager_ViewHelpers}
+<thead>
+	<tr>
+		<th>Title</th>
+		<th>Key</th>
+		<th>Description</th>
+		<th>Author</th>
+		<th>State</th>
+		<th>Actions</th>
+	</tr>
+</thead>
+<tbody>
+<f:for each="{paginatedExtensions}" as="extension">
+	<f:cycle values="{0: 'odd', 1: 'even'}" as="zebraClass">
+		<tr class="{zebraClass} {em:installationStateCssClass(needle:extension.extensionKey, haystack:availableAndInstalled)}">
+	</f:cycle>
+	<f:render partial="List/TerSingleLine.html" arguments="{extension:extension}" />
+	</tr>
+</f:for>
+</tbody>

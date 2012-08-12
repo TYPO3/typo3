@@ -1,0 +1,19 @@
+{namespace em=Tx_Extensionmanager_ViewHelpers}
+<thead>
+<tr>
+	<th>Title</th>
+	<th>Upload Comment</th>
+	<th>Last Updated</th>
+	<th>State</th>
+	<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<f:for each="{paginatedExtensions}" as="extension">
+	<f:cycle values="{0: 'odd', 1: 'even'}" as="zebraClass">
+		<tr class="{zebraClass}">
+	</f:cycle>
+	<f:render partial="List/TerShowVersionsSingleLine" arguments="{extension:extension}" />
+	</tr>
+</f:for>
+</tbody>

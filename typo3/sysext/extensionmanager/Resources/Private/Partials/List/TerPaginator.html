@@ -1,0 +1,14 @@
+<div id="terTableWrapper">
+<f:widget.paginate objects="{extensions}" as="paginatedExtensions" configuration="{itemsPerPage: 10, maximumNumberOfLinks: 2}">
+	<table id="terTable" class="typo3-extension-list">
+		<f:if condition="{showVersionList}">
+			<f:then>
+				<f:render partial="List/TerShowVersionsTable.html" arguments="{paginatedExtensions:paginatedExtensions}" />
+			</f:then>
+			<f:else>
+				<f:render partial="List/TerTable.html" arguments="{paginatedExtensions:paginatedExtensions, availableAndInstalled:availableAndInstalled}" />
+			</f:else>
+		</f:if>
+	</table>
+</f:widget.paginate>
+</div>

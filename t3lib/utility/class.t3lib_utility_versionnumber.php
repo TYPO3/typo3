@@ -32,7 +32,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-final class t3lib_utility_VersionNumber {
+class t3lib_utility_VersionNumber {
 
 	/**
 	 * Returns an integer from a three part version number, eg '4.12.3' -> 4012003
@@ -68,6 +68,145 @@ final class t3lib_utility_VersionNumber {
 		);
 		return intval($parts[0]) . '.' . intval($parts[1]) . '.' . intval($parts[2]);
 	}
+
+	/**
+	 * Splits a version range into an array.
+	 *
+	 * If a single version number is given, it is considered a minimum value.
+	 * If a dash is found, the numbers left and right are considered as minimum and maximum. Empty values are allowed.
+	 *
+	 * @param	string		$ver A string with a version range.
+	 * @return	array
+	 */
+	public static function splitVersionRange($ver) {
+		$versionRange = array();
+		if (strstr($ver, '-')) {
+			$versionRange = explode('-', $ver, 2);
+		} else {
+			$versionRange[0] = $ver;
+			$versionRange[1] = '';
+		}
+
+		if (!$versionRange[0]) {
+			$versionRange[0] = '0.0.0';
+		}
+		if (!$versionRange[1]) {
+			$versionRange[1] = '0.0.0';
+		}
+
+		return $versionRange;
+	}
+
+	/**
+	 * Removes -dev -alpha -beta -RC states from a version number
+	 * and replaces them by .0
+	 *
+	 * @static
+	 * @return string
+	 */
+	public static function getNumericTypo3Version() {
+		$t3version = static::getTypo3Version();
+		if (stripos($t3version, '-dev')
+			|| stripos($t3version, '-alpha')
+			|| stripos($t3version, '-beta')
+			|| stripos($t3version, '-RC')) {
+				// find the last occurence of "-" and replace that part with a ".0"
+			$t3version = substr($t3version, 0, strrpos($t3version, '-')) . '.0';
+		}
+		return $t3version;
+	}
+
+	/**
+	 * Wrapper function for TYPO3_version constant to make functions using
+	 * the constant unit testable
+	 *
+	 * @static
+	 * @return string
+	 */
+	protected static function getTypo3Version() {
+		return TYPO3_version;
+	}
+
+	/**
+	 * This function converts version range strings (like '4.2.0-4.4.99') to an array
+	 * (like array('4.2.0', '4.4.99'). It also forces each version part to be between
+	 * 0 and 999
+	 *
+	 * @param string $versionsString
+	 * @return array
+	 */
+	public static function convertVersionsStringToVersionNumbers($versionsString) {
+		$versions = t3lib_div::trimExplode('-', $versionsString);
+		for ($i = 0; $i < count($versions); $i++) {
+			$cleanedVersion = t3lib_div::trimExplode('.', $versions[$i]);
+			for ($j = 0; $j < count($cleanedVersion); $j++) {
+				$cleanedVersion[$j] = t3lib_utility_Math::forceIntegerInRange($cleanedVersion[$j], 0, 999);
+			}
+			$cleanedVersionString = implode('.', $cleanedVersion);
+			if (t3lib_utility_VersionNumber::convertVersionNumberToInteger($cleanedVersionString) === 0) {
+				$cleanedVersionString = '';
+			}
+			$versions[$i] = $cleanedVersionString;
+		}
+		return $versions;
+	}
+
+	/**
+	 * Parses the version number x.x.x and returns an array with the various parts.
+	 *
+	 * @param string $version Version code, x.x.x
+	 * @return string
+	 */
+	public static function convertVersionStringToArray($version) {
+		$parts = t3lib_div::intExplode('.', $version . '..');
+		$parts[0] = t3lib_utility_Math::forceIntegerInRange($parts[0], 0, 999);
+		$parts[1] = t3lib_utility_Math::forceIntegerInRange($parts[1], 0, 999);
+		$parts[2] = t3lib_utility_Math::forceIntegerInRange($parts[2], 0, 999);
+
+		$result = array();
+		$result['version'] = $parts[0] . '.' . $parts[1] . '.' . $parts[2];
+		$result['version_int'] = intval($parts[0] * 1000000 + $parts[1] * 1000 + $parts[2]);
+		$result['version_main'] = $parts[0];
+		$result['version_sub'] = $parts[1];
+		$result['version_dev'] = $parts[2];
+
+		return $result;
+	}
+
+	/**
+	 * Method to raise a version number
+	 *
+	 * @param string $raise one of "main", "sub", "dev" - the version part to raise
+	 * @param string $version (like 4.1.20)
+	 * @return string
+	 * @throws t3lib_exception
+	 */
+	public static function raiseVersionNumber($raise, $version) {
+		if (!in_array($raise, array('main', 'sub', 'dev'))) {
+			throw new t3lib_exception('RaiseVersionNumber expects one of "main", "sub" or "dev".', 1342639555);
+		}
+		$parts = t3lib_div::intExplode('.', $version . '..');
+		$parts[0] = t3lib_utility_Math::forceIntegerInRange($parts[0], 0, 999);
+		$parts[1] = t3lib_utility_Math::forceIntegerInRange($parts[1], 0, 999);
+		$parts[2] = t3lib_utility_Math::forceIntegerInRange($parts[2], 0, 999);
+
+		switch ((string)$raise) {
+			case 'main':
+				$parts[0]++;
+				$parts[1] = 0;
+				$parts[2] = 0;
+				break;
+			case 'sub':
+				$parts[1]++;
+				$parts[2] = 0;
+				break;
+			case 'dev':
+				$parts[2]++;
+				break;
+		}
+		return $parts[0] . '.' . $parts[1] . '.' . $parts[2];
+	}
+
 }
 
 ?>
