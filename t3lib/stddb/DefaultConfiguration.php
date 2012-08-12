@@ -670,6 +670,23 @@ return array(
 		'ssl_passphrase' => '',				// String: Passphrase with which local certificate was encoded.
 		'userAgent' => 'TYPO3/' . TYPO3_version,	// String: Default user agent. If empty, this will be "TYPO3/4.x", while x is the current branch version. This overrides the constant <em>TYPO3_user_agent</em>.
 	),
+	'LOG' => array(
+		'writerConfiguration' => array(
+			t3lib_log_Level::DEBUG => array(
+				't3lib_log_writer_File' => array(
+				),
+			)
+		),
+		'deprecated' => array(
+			'writerConfiguration' => array(
+				t3lib_log_Level::WARNING => array(
+					't3lib_log_writer_File' => array(
+						'logFile' => 'typo3conf/deprecation.log'
+					)
+				)
+			)
+		),
+	),
 	'MODS' => array(		// Backend Module Configuration (obsolete, make extension instead)
 	),
 	'USER' => array(		// Here you may define your own setup-vars for use in your include-scripts. (obsolete, make extension instead)
