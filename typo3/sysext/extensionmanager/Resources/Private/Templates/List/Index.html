@@ -1,0 +1,75 @@
+{namespace em=Tx_Extensionmanager_ViewHelpers}
+
+<f:layout name="main" />
+<f:section name="docHeaderRow2">
+</f:section>
+<f:section name="Content">
+	<div class="headerRow">
+		<div class="typo3-extensionmanager-headerRowLeft">
+		</div>
+		<div class="typo3-extensionmanager-headerRowRight">
+			<f:link.action action="form" controller="UploadExtensionFile" class="uploadExtension">Upload Extension .t3x/.zip</f:link.action>
+			<div class="uploadForm" style="display:none;">Loading form...<span class="spinner"></span></div>
+		</div>
+	</div>
+	<table id="typo3-extension-list" class="typo3-extension-list">
+		<thead>
+			<tr>
+				<th title="Update">Upd.</th>
+				<th title="Activate / Deactivate">A/D</th>
+				<th>Extension</th>
+				<th>Key</th>
+				<th>Version</th>
+				<th>Actions</th>
+				<th>State</th>
+			</tr>
+		</thead>
+		<tbody>
+			<f:for each="{extensions}" as="extension" key="extensionKey">
+				<f:if condition="{extension.terObject}">
+					<f:then>
+						<tr id="{extensionKey}" class="{f:if(condition:'{extension.terObject.reviewState} >= 0', then:'', else:'insecure')}">
+					</f:then>
+					<f:else>
+						<tr id="{extensionKey}">
+					</f:else>
+				</f:if>
+				<td>
+					<f:if condition="{extension.updateAvailable}">
+						<f:link.action
+							action="updateCommentForUpdatableVersions"
+							controller="Download"
+							arguments="{extension:extension.key, integerVersion: extension.terObject.integerVersion}"
+							class="updateAvailable"
+							format="json"
+						>Update</f:link.action>
+					</f:if>
+				</td>
+				<td>
+					<em:toggleExtensionInstallationState extension="{extension}" />
+				</td>
+				<td title="{extension.description}">
+					<em:image src="../{extension.siteRelPath}/ext_icon.gif" alt="{extension.title}" />{extension.title}
+				</td>
+				<td>
+					{extensionKey}
+				</td>
+				<td>
+					{extension.version}
+				</td>
+				<td>
+					<em:configureExtension extension="{extension}" />
+					<em:removeExtension extension="{extension}" />
+					<f:link.action action="downloadExtensionZip" controller="Action" arguments="{extension:extension.key}" class="zipDownload">Download as zip</f:link.action>
+					<em:downloadExtensionData extension="{extension}" />
+				</td>
+				<td class="{extension.state}">
+					{extension.state}
+				</td>
+				</tr>
+			</f:for>
+		</tbody>
+	</table>
+</f:section>
+
+

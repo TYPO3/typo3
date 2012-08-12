@@ -1,0 +1,36 @@
+{namespace em=Tx_Extensionmanager_ViewHelpers}
+
+<f:layout name="main"/>
+<f:section name="docHeaderRow2">
+</f:section>
+<f:section name="Content">
+	<f:if condition="{search}">
+		<f:then>
+			<div class="headerRow">
+				<div class="typo3-extensionmanager-headerRowLeft">
+					Your search: <f:link.action action="ter" controller="List"><span class="pill">x {search}</span></f:link.action>
+				</div>
+			</div>
+			<table id="terSearchTable" class="typo3-extension-list">
+				<f:render partial="List/TerTable" arguments="{paginatedExtensions:extensions, availableAndInstalled:availableAndInstalled}" />
+			</table>
+		</f:then>
+		<f:else>
+			<div class="headerRow">
+				<div class="typo3-extensionmanager-headerRowLeft">
+					<f:form action="ter">
+						<f:form.textfield name="search" value="{search}" />
+						<f:form.submit value="Submit"/>
+					</f:form>
+				</div>
+				<div class="typo3-extensionmanager-headerRowRight">
+					<em:updateFromTer />
+				</div>
+			</div>
+			<f:render partial="List/TerPaginator" arguments="{extensions:extensions, showVersionList:showVersionList,  availableAndInstalled:availableAndInstalled}" />
+		</f:else>
+	</f:if>
+
+</f:section>
+
+

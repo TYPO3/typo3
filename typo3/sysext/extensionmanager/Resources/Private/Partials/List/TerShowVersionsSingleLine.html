@@ -1,0 +1,16 @@
+{namespace em=Tx_Extensionmanager_ViewHelpers}
+<td>
+	{extension.title} ({extension.version})
+</td>
+<td>
+	{extension.updateComment}
+</td>
+<td>
+	<f:format.date>{extension.lastUpdated}</f:format.date>
+</td>
+<td class="{extension.stateString}">
+	{extension.stateString}
+</td>
+<td>
+	<em:downloadExtension extension="{extension}" />
+</td>

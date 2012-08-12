@@ -34,7 +34,7 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 	/**
 	 * Data Provider for convertVersionNumberToIntegerConvertsVersionNumbersToIntegers
 	 *
-	 * return array
+	 * @return array
 	 */
 	public function validVersionNumberDataProvider() {
 		return array(
@@ -50,7 +50,7 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 	 * Data Provider for convertIntegerToVersionNumberConvertsOtherTypesAsIntegerToVersionNumber
 	 *
 	 * @see http://php.net/manual/en/language.types.php
-	 * return array
+	 * @return array
 	 */
 	public function invalidVersionNumberDataProvider() {
 		return array(
@@ -89,6 +89,95 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 	public function convertIntegerToVersionNumberConvertsOtherTypesAsIntegerToVersionNumber($version) {
 		$this->setExpectedException('\InvalidArgumentException', '', 1334072223);
 		t3lib_utility_VersionNumber::convertIntegerToVersionNumber($version);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getNumericTypo3VersionNumberDataProvider() {
+		return array(
+			array(
+				'6.0-dev',
+				'6.0.0'
+			),
+			array(
+				'4.5-alpha',
+				'4.5.0'
+			),
+			array(
+				'4.5-beta',
+				'4.5.0'
+			),
+			array(
+				'4.5-RC',
+				'4.5.0'
+			),
+			array(
+				'6.0.1',
+				'6.0.1'
+			),
+		);
+	}
+
+	/**
+	 * Check whether getNumericTypo3Version handles all kinds of valid
+	 * version strings
+	 *
+	 * @dataProvider getNumericTypo3VersionNumberDataProvider
+	 * @test
+	 * @param string $currentVersion
+	 * @param string $expectedVersion
+	 */
+	public function getNumericTypo3VersionNumber($currentVersion, $expectedVersion) {
+		$className = uniqid('t3lib_utility_VersionNumber');
+		eval(
+			'class ' . $className . ' extends t3lib_utility_VersionNumber {' .
+			'  protected static function getTypo3Version() {' .
+			'    return \'' . $currentVersion . '\';' .
+			'  }' .
+			'}'
+		);
+		$version = $className::getNumericTypo3Version();
+		$this->assertEquals($expectedVersion, $version);
+	}
+
+	/**
+	 * Data provider for convertVersionsStringToVersionNumbersForcesVersionNumberInRange
+	 * @return array
+	 */
+	public function convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider() {
+		return array(
+			'everything ok' => array(
+				'4.2.0-4.4.99',
+				array(
+					'4.2.0',
+					'4.4.99'
+				),
+			),
+			'too high value' => array(
+				'4.2.0-4.4.2990',
+				array(
+					'4.2.0',
+					'4.4.999'
+				),
+			),
+			'empty high value' => array(
+				'4.2.0-0.0.0',
+				array(
+					'4.2.0',
+					''
+				),
+			),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider
+	 */
+	public function convertVersionsStringToVersionNumbersForcesVersionNumberInRange($versionString, $expectedResult) {
+		$versions = t3lib_utility_VersionNumber::convertVersionsStringToVersionNumbers($versionString);
+		$this->assertEquals($expectedResult, $versions);
 	}
 }
 
