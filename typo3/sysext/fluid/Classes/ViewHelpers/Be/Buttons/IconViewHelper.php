@@ -20,7 +20,7 @@
  *                                                                        */
 
 /**
- * View helper which returns save button with icon
+ * View helper which returns button with icon
  * Note: This view helper is experimental!
  *
  * = Examples =
@@ -34,10 +34,10 @@
  * </output>
  *
  * <code title="Default">
- * <f:be.buttons.icon uri="{f:uri.action(action:'new')}" icon="new_el" title="Create new Foo" />
+ * <f:be.buttons.icon uri="{f:uri.action(action:'new')}" icon="actions-document-new" title="Create new Foo" />
  * </code>
  * <output>
- * This time the "new_el" icon is returned, the button has the title attribute set and links to the "new" action of the current controller.
+ * This time the "actions-document-new" icon is returned, the button has the title attribute set and links to the "new" action of the current controller.
  * </output>
  *
  * @author Steffen Kamper <info@sk-typo3.de>
@@ -47,11 +47,6 @@
 class Tx_Fluid_ViewHelpers_Be_Buttons_IconViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
 
 	/**
-	 * @var array allowed icons to be used with this view helper
-	 */
-	protected $allowedIcons = array('add', 'add_workspace', 'button_down', 'button_hide', 'button_left', 'button_unhide', 'button_right', 'button_up', 'clear_cache', 'clip_copy', 'clip_cut', 'clip_pasteafter', 'closedok', 'datepicker', 'deletedok', 'edit2', 'helpbubble', 'icon_fatalerror', 'icon_note', 'icon_ok', 'icon_warning', 'new_el', 'options', 'perm', 'refresh_n', 'saveandclosedok', 'savedok', 'savedoknew', 'savedokshow', 'viewdok', 'zoom');
-
-	/**
 	 * Renders an icon link as known from the TYPO3 backend
 	 *
 	 * @param string $uri the target URI for the link. If you want to execute JavaScript here, prefix the URI with "javascript:"
@@ -59,11 +54,7 @@ class Tx_Fluid_ViewHelpers_Be_Buttons_IconViewHelper extends Tx_Fluid_ViewHelper
 	 * @param string $title Title attribte of the resulting link
 	 * @return string the rendered icon link
 	 */
-	public function render($uri, $icon = 'closedok', $title = '') {
-		if (!in_array($icon, $this->allowedIcons)) {
-			throw new Tx_Fluid_Core_ViewHelper_Exception('"' . $icon . '" is no valid icon. Allowed are "' . implode('", "', $this->allowedIcons) .'".', 1253208523);
-		}
-
+	public function render($uri, $icon = 'actions-document-close', $title = '') {
 		return '<a href="' . $uri . '">' . t3lib_iconWorks::getSpriteIcon($icon, array('title' => $title)) . '</a>';
 	}
 }
