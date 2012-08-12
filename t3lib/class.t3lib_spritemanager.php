@@ -39,10 +39,16 @@
  * @subpackage t3lib
  */
 class t3lib_SpriteManager {
+
 	/**
 	 * @var string Directory for cached sprite informations
 	 */
 	public static $tempPath = 'typo3temp/sprites/';
+
+	/**
+	 * Is sprite manager initialized
+	 */
+	protected static $isInitialized = FALSE;
 
 	/**
 	 * Initialize sprite manager.
@@ -52,15 +58,27 @@ class t3lib_SpriteManager {
 	 * @return void
 	 */
 	public static function initialize() {
-		$cacheIdentifier = static::getCacheIdentifier();
-		/** @var $codeCache t3lib_cache_frontend_PhpFrontend */
-		$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
-		if ($codeCache->has($cacheIdentifier)) {
-			$codeCache->requireOnce($cacheIdentifier);
-		} else {
-			static::createSpriteCache();
-			$codeCache->requireOnce($cacheIdentifier);
+		if (!static::isInitialized()) {
+			$cacheIdentifier = static::getCacheIdentifier();
+			/** @var $codeCache t3lib_cache_frontend_PhpFrontend */
+			$codeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
+			if ($codeCache->has($cacheIdentifier)) {
+				$codeCache->requireOnce($cacheIdentifier);
+			} else {
+				static::createSpriteCache();
+				$codeCache->requireOnce($cacheIdentifier);
+			}
+			self::$isInitialized = TRUE;
 		}
+	}
+
+	/**
+	 * Whether the sprite manager is initialized.
+	 *
+	 * @return bool TRUE if sprite manager is initialized
+	 */
+	public static function isInitialized() {
+		return self::$isInitialized;
 	}
 
 	/**
