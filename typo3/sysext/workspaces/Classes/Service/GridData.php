@@ -252,7 +252,11 @@ class Tx_Workspaces_Service_GridData {
 	protected function setDataArrayIntoCache(array $versions, $filterTxt) {
 		if (TYPO3_UseCachingFramework === TRUE) {
 			$hash = $this->calculateHash($versions, $filterTxt);
-			$this->workspacesCache->set($hash, $this->dataArray, array($this->currentWorkspace));
+			$this->workspacesCache->set(
+				$hash,
+				$this->dataArray,
+				array($this->currentWorkspace, 'user_' . $GLOBALS['BE_USER']->user['uid'])
+			);
 		}
 	}
 
@@ -403,8 +407,10 @@ class Tx_Workspaces_Service_GridData {
 	 * @return boolean
 	 */
 	protected function isFilterTextInVisibleColumns($filterText, array $versionArray) {
-		if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
-			foreach ($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'] as $column => $value) {
+		$visibleColumns = $this->getVisibleColumns();
+
+		if ($visibleColumns !== NULL) {
+			foreach ($visibleColumns as $column => $value) {
 				if (isset($value['hidden']) && isset($column) && isset($versionArray[$column])) {
 					if ($value['hidden'] == 0) {
 						switch ($column) {
@@ -428,6 +434,122 @@ class Tx_Workspaces_Service_GridData {
 			}
 		}
 		return FALSE;
+	}
+
+	/**
+	 * Gets the visible/used columns of the grid view.
+	 *
+	 * @return array|NULL Visible/used columns, NULL if never written to BE_USER->uc
+	 */
+	protected function getVisibleColumns() {
+		$visibleColumns = NULL;
+
+		if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
+			$visibleColumns = array();
+
+			foreach ($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'] as $column => $value) {
+				$visibleColumns[$column] = $value;
+			}
+		}
+
+		return $visibleColumns;
+	}
+
+	/**
+	 * Calculates the percentage of changes between two records.
+	 *
+	 * @param string $table
+	 * @param array $diffRecordOne
+	 * @param array $diffRecordTwo
+	 * @return integer
+	 */
+	public function calculateChangePercentage($table, array $diffRecordOne, array $diffRecordTwo) {
+
+			// Initialize:
+		$processed = FALSE;
+		$changePercentage = 0;
+		$changePercentageArray = array();
+		$visibleColumns = $this->getVisibleColumns();
+
+			// No processing if visbile columns are not written or change column is hidden:
+		if ($visibleColumns === NULL || !empty($visibleColumns['change']['hidden'])) {
+			return $changePercentage;
+		} else {
+		}
+
+
+			// Suggested slot method:
+			// methodName(Tx_Workspaces_Service_GridData $gridData, &$changePercentage, array $firstRecord, array $secondRecord, &$processed)
+		$this->emitSignal(
+			self::SIGNAL_CalcChangePercentage_PreProcess,
+			$changePercentage, $diffRecordOne, $diffRecordTwo, $processed
+		);
+
+			// Check that records are arrays:
+		if ($processed === FALSE && is_array($diffRecordOne) && is_array($diffRecordTwo)) {
+
+				// Load full table description
+			t3lib_div::loadTCA($table);
+
+			$similarityPercentage = 0;
+
+				// Traversing the first record and process all fields which are editable:
+			foreach ($diffRecordOne as $fieldName => $fieldValue) {
+				if ($GLOBALS['TCA'][$table]['columns'][$fieldName] && $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['type'] != 'passthrough' && !t3lib_div::inList('t3ver_label', $fieldName)) {
+
+					if (strcmp(trim($diffRecordOne[$fieldName]), trim($diffRecordTwo[$fieldName]))
+							&& $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['type'] == 'group'
+							&& $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['internal_type'] == 'file'
+					) {
+
+							// Initialize:
+						$uploadFolder = $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['uploadfolder'];
+						$files1 = array_flip(t3lib_div::trimExplode(',', $diffRecordOne[$fieldName], 1));
+						$files2 = array_flip(t3lib_div::trimExplode(',', $diffRecordTwo[$fieldName], 1));
+
+							// Traverse filenames and read their md5 sum:
+						foreach ($files1 as $filename => $tmp) {
+							$files1[$filename] = @is_file(PATH_site . $uploadFolder . '/' . $filename) ? md5(t3lib_div::getUrl(PATH_site . $uploadFolder . '/' . $filename)) : $filename;
+						}
+						foreach ($files2 as $filename => $tmp) {
+							$files2[$filename] = @is_file(PATH_site . $uploadFolder . '/' . $filename) ? md5(t3lib_div::getUrl(PATH_site . $uploadFolder . '/' . $filename)) : $filename;
+						}
+
+							// Implode MD5 sums and set flag:
+						$diffRecordOne[$fieldName] = implode(' ', $files1);
+						$diffRecordTwo[$fieldName] = implode(' ', $files2);
+					}
+
+						// If there is a change of value:
+					if (strcmp(trim($diffRecordOne[$fieldName]), trim($diffRecordTwo[$fieldName]))) {
+							// Get the best visual presentation of the value to calculate differences:
+						$val1 = t3lib_BEfunc::getProcessedValue($table, $fieldName, $diffRecordOne[$fieldName], 0, 1);
+						$val2 = t3lib_BEfunc::getProcessedValue($table, $fieldName, $diffRecordTwo[$fieldName], 0, 1);
+
+						similar_text($val1, $val2, $similarityPercentage);
+						$changePercentageArray[] = $similarityPercentage > 0 ? abs($similarityPercentage - 100) : 0;
+					}
+				}
+			}
+
+				// Calculate final change percentage:
+			if (is_array($changePercentageArray)) {
+				$sumPctChange = 0;
+				foreach ($changePercentageArray as $singlePctChange) {
+					$sumPctChange += $singlePctChange;
+				}
+				count($changePercentageArray) > 0 ? $changePercentage = round($sumPctChange / count($changePercentageArray)) : $changePercentage = 0;
+			}
+
+				// Suggested slot method:
+				// methodName(Tx_Workspaces_Service_GridData $gridData, &$changePercentage, array $firstRecord, array $secondRecord, array $changePercentageArray)
+			$this->emitSignal(
+				self::SIGNAL_CalcChangePercentage_PostProcess,
+				$changePercentage, $diffRecordOne, $diffRecordTwo, $changePercentageArray
+			);
+		}
+
+		return $changePercentage;
 	}
 
 	/**

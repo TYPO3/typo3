@@ -180,7 +180,12 @@ TYPO3.Workspaces.Actions = {
 				});
 			}
 		}
-		TYPO3.Workspaces.ExtDirectActions.saveColumnModel(dataArray);
+			// Reload store if change column has been activated:
+		TYPO3.Workspaces.ExtDirectActions.saveColumnModel(dataArray, function(response) {
+			if (response && response.refresh) {
+				TYPO3.Workspaces.MainStore.load();
+			}
+		});
 	},
 	loadColModel: function(grid) {
 		TYPO3.Workspaces.ExtDirectActions.loadColumnModel(function(response) {

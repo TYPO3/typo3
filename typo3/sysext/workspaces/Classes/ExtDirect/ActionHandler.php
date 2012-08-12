@@ -106,20 +106,36 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 	 * Saves the selected columns to be shown to the preferences of the current backend user.
 	 *
 	 * @param object $model
-	 * @return void
+	 * @return array
 	 */
 	public function saveColumnModel($model) {
 		$data = array();
+		$response = array();
+
 		foreach ($model as $column) {
 			$data[$column->column] = array(
 				'position'  => $column->position,
 				'hidden'   => $column->hidden
 			);
+
+				// If change column is enabled, flush workspaces cache of backend user:
+			if ($column->column === 'change' && !$column->hidden) {
+				$this->getWorkspacesCache()->flushByTag('user_' . $GLOBALS['BE_USER']->user['uid']);
+				$response['refresh'] = TRUE;
+			}
 		}
 		$GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'] = $data;
 		$GLOBALS['BE_USER']->writeUC();
+
+		return $response;
 	}
 
+	/**
+	 * Loads the selected columns to be shown from
+	 * the preferences of the current backend user.
+	 *
+	 * @return array
+	 */
 	public function loadColumnModel() {
 		if(is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
 			return $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'];
@@ -743,6 +759,15 @@ class Tx_Workspaces_ExtDirect_ActionHandler extends Tx_Workspaces_ExtDirect_Abst
 		);
 
 		return $toolbarButtons;
+	}
+
+	/**
+	 * Initializes the workspace cache
+	 *
+	 * @return t3lib_cache_frontend_AbstractFrontend
+	 */
+	protected function getWorkspacesCache() {
+		return $GLOBALS['typo3CacheManager']->getCache('workspaces_cache');
 	}
 }
 
