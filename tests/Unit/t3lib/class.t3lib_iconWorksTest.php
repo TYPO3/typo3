@@ -47,14 +47,24 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 	 *
 	 * @var array
 	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+	protected $backupGlobalsBlacklist = array('TYPO3_DB', 'TBE_STYLES');
 
 	/**
 	 * @var array
 	 */
 	protected $mockRecord;
 
+	/**
+	 * Set up test case
+	 *
+	 * @return void
+	 */
 	public function setUp() {
+
+		if (!t3lib_SpriteManager::isInitialized()) {
+			t3lib_SpriteManager::initialize();
+		}
+
 			// Simulate a tt_content record
 		$this->mockRecord = array();
 		$this->mockRecord['header'] = 'dummy content header';
