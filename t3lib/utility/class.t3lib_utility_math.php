@@ -177,6 +177,26 @@ final class t3lib_utility_Math {
 		} while ($valueLenO < strlen($string));
 		return $string;
 	}
+
+	/**
+	 * Checks whether the given number $value is an integer in the range [$minimum;$maximum]
+	 *
+	 * @param $value integer Integer value to check
+	 * @param $minimum integer Lower boundary of the range
+	 * @param $maximum integer Upper boundary of the range
+	 * @return bool
+	 */
+	public static function isIntegerInRange($value, $minimum, $maximum) {
+		$value = filter_var($value, FILTER_VALIDATE_INT, array(
+			'options' => array(
+				'min_range' => $minimum,
+				'max_range' => $maximum
+			)
+		));
+
+		$isInRange = is_int($value);
+		return $isInRange;
+	}
 }
 
 ?>
