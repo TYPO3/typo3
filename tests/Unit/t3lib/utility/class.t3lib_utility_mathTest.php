@@ -222,6 +222,45 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	public function calculateWithParenthesesCorrectlyCalculatesExpression($expected, $expression) {
 		$this->assertEquals($expected, t3lib_utility_Math::calculateWithParentheses($expression));
 	}
+
+	/**
+	 * @test
+	 */
+	public function isIntegerInRangeIncludesLowerBoundary() {
+		$this->assertTrue(t3lib_utility_Math::isIntegerInRange(1, 1, 2));
+	}
+
+	/**
+	 * @test
+	 */
+	public function isIntegerInRangeIncludesUpperBoundary() {
+		$this->assertTrue(t3lib_utility_Math::isIntegerInRange(2, 1, 2));
+	}
+
+	/**
+	 * @test
+	 */
+	public function isIntegerInRangeAcceptsValueInRange() {
+		$this->assertTrue(t3lib_utility_Math::isIntegerInRange(10, 1, 100));
+	}
+
+	/**
+	 * @test
+	 */
+	public function isIntegerInRangeRejectsValueOutsideOfRange() {
+		$this->assertFalse(t3lib_utility_Math::isIntegerInRange(10, 1, 2));
+	}
+
+	/**
+	 * @test
+	 */
+	public function isIntegerInRangeRejectsOtherDataTypes() {
+		$invalidValues = array(-1, 1.5, 'string', array(), new stdClass(), FALSE, NULL);
+
+		foreach ($invalidValues as $invalidValue) {
+			$this->assertFalse(t3lib_utility_Math::isIntegerInRange($invalidValue, 0, 10));
+		}
+	}
 }
 
 ?>
