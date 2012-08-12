@@ -821,6 +821,10 @@ pageRendererTemplateFile = fileadmin/test_pagerender.html
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="pageTitleSeparator" type="string">
+			<description><![CDATA[The signs which should be printed in the title tag between the website name and the page title.]]></description>
+			<default><![CDATA[:]]></default>
+		</property>
 		<property name="prefixLocalAnchors" type="string">
 			<description><![CDATA[If set to one of the keywords, the content will have all local anchors in links prefixed with the path of the script. Basically this means that <a href="#"> will be transformed to <a href="path/path/script?params#">. This procedure is necessary if the <base> tag is set in the script (eg. if "realurl" extension is used to produce Speaking URLs).
 
