@@ -227,6 +227,7 @@ class Typo3_Bootstrap_BaseSetup {
 		require_once(PATH_t3lib . 'cache/backend/interfaces/interface.t3lib_cache_backend_phpcapablebackend.php');
 		require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_simplefilebackend.php');
 		require_once(PATH_t3lib . 'cache/backend/class.t3lib_cache_backend_nullbackend.php');
+		require_once(PATH_t3lib . 'log/class.t3lib_log_level.php');
 
 		require_once(PATH_t3lib . 'class.t3lib_autoloader.php');
 	}

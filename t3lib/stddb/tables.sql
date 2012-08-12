@@ -574,11 +574,18 @@ CREATE TABLE sys_log (
   event_pid int(11) DEFAULT '-1' NOT NULL,
   workspace int(11) DEFAULT '0' NOT NULL,
   NEWid varchar(20) DEFAULT '' NOT NULL,
+  request_id varchar(13) DEFAULT '' NOT NULL,
+  time_micro float DEFAULT '0' NOT NULL,
+  component varchar(255) DEFAULT '' NOT NULL,
+  level tinyint(1) unsigned DEFAULT '0' NOT NULL,
+  message text,
+  data text,
   PRIMARY KEY (uid),
   KEY parent (pid),
   KEY event (userid,event_pid),
   KEY recuidIdx (recuid,uid),
-  KEY user_auth (type,action,tstamp)
+  KEY user_auth (type,action,tstamp),
+  KEY request (request_id)
 ) ENGINE=InnoDB;
 
 #
