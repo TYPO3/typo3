@@ -44,6 +44,27 @@ config.tx_extbase {
 					}
 				}
 			}
+			Tx_Extbase_Domain_Model_BackendUserGroup {
+				mapping {
+					tableName = be_groups
+					columns {
+						subgroup.mapOnProperty = subGroups
+						groupMods.mapOnProperty = modules
+						tables_select.mapOnProperty = tablesListening
+						tables_modify.mapOnProperty = tablesModify
+						pagetypes_select.mapOnProperty = pageTypes
+						non_exclude_fields.mapOnProperty = allowedExcludeFields
+						explicit_allowdeny.mapOnProperty = explicitlyAllowAndDeny
+						allowed_languages.mapOnProperty = allowedLanguages
+						workspace_perms.mapOnProperty = workspacePermission
+						db_mountpoints.mapOnProperty = databaseMounts
+						fileoper_perms.mapOnProperty = fileOperationPermissions
+						lockToDomain.mapOnProperty = lockToDomain
+						hide_in_lists.mapOnProperty = hideInList
+						TSconfig.mapOnProperty = tsConfig
+					}
+				}
+			}
 			Tx_Extbase_Domain_Model_FrontendUser {
 				mapping {
 					tableName = fe_users
