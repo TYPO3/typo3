@@ -181,10 +181,10 @@ final class t3lib_utility_Math {
 	/**
 	 * Checks whether the given number $value is an integer in the range [$minimum;$maximum]
 	 *
-	 * @param $value integer Integer value to check
-	 * @param $minimum integer Lower boundary of the range
-	 * @param $maximum integer Upper boundary of the range
-	 * @return bool
+	 * @param integer $value Integer value to check
+	 * @param integer $minimum Lower boundary of the range
+	 * @param integer $maximum Upper boundary of the range
+	 * @return boolean
 	 */
 	public static function isIntegerInRange($value, $minimum, $maximum) {
 		$value = filter_var($value, FILTER_VALIDATE_INT, array(
