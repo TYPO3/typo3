@@ -675,8 +675,10 @@ class SC_alt_doc {
 								$calcPRec = t3lib_BEfunc::getRecord($table, $theUid);
 								t3lib_BEfunc::fixVersioningPid($table, $calcPRec);
 								if (is_array($calcPRec)) {
-										// If pages:
-									if ($table == 'pages') {
+									if ($table == 'sys_file') { // for files we do not need to check page access to pid 0
+										$hasAccess = TRUE;
+										$deleteAccess = FALSE;
+									} elseif ($table == 'pages') { // If pages:
 										$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
 										$hasAccess = $CALC_PERMS&2 ? 1 : 0;
 										$deleteAccess = $CALC_PERMS&4 ? 1 : 0;
@@ -703,6 +705,7 @@ class SC_alt_doc {
 									$hasAccess = 0;
 								}
 							}
+
 
 							if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'])) {
 								foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/alt_doc.php']['makeEditForm_accessCheck'] as $_funcRef) {

@@ -665,7 +665,7 @@ class fileList extends t3lib_recordList {
 
 			// Edit metadata of file
 		try {
-			if (is_a($fileOrFolderObject, 't3lib_file_File') && $fileOrFolderObject->isIndexed() && $fileOrFolderObject->checkActionPermission('edit')) {
+			if (is_a($fileOrFolderObject, 't3lib_file_File') && $fileOrFolderObject->isIndexed() && $GLOBALS['BE_USER']->check('tables_modify', 'sys_file')) {
 				$data = array(
 					'sys_file' => array($fileOrFolderObject->getUid() => 'edit')
 				);
