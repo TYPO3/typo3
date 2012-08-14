@@ -16,7 +16,6 @@
  *  A copy is found in the textfile GPL.txt and important notices to the license
  *  from the author is found in LICENSE.txt distributed with these scripts.
  *
- *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,94 +23,116 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains the base class for 'Extension Objects' in backend modules.
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-
-/**
- * EXAMPLE: One level.
- *
- * This can be seen in the extension 'cms' where the info module have a function added. In 'ext_tables.php' this is done by this function call:
- *
- *	 t3lib_extMgm::insertModuleFunction(
- *		 'web_info',
- *		 'tx_cms_webinfo_page',
- *		 t3lib_extMgm::extPath($_EXTKEY).'web_info/class.tx_cms_webinfo.php',
- *		 'LLL:EXT:cms/locallang_tca.php:mod_tx_cms_webinfo_page'
- *	 );
- *
- * EXAMPLE: Two levels.
- * This is the advanced example. You can see it with the extension 'func_wizards' which is the first layer but then providing another layer for extensions to connect by.
- * The key used in TBE_MODULES_EXT is normally 'function' (for the 'function menu') but the 'func_wizards' extension uses an alternative key for its configuration: 'wiz'.
- * In the 'ext_tables.php' file of an extension ('wizard_crpages') which uses the framework provided by 'func_wizards' this looks like this:
- *
- *	 t3lib_extMgm::insertModuleFunction(
- *		 'web_func',
- *		 'tx_wizardcrpages_webfunc_2',
- *		 t3lib_extMgm::extPath($_EXTKEY).'class.tx_wizardcrpages_webfunc_2.php',
- *		 'LLL:EXT:wizard_crpages/locallang.php:wiz_crMany',
- *		 'wiz'
- *	 );
- *
- * But for this two-level thing to work it also requires that the parent module (the real backend module) supports it.
- * This is the case for the modules web_func and web_info since they have two times inclusion sections in their index.php scripts. For example (from web_func):
- *
- *	 // Make instance:
- *	 $SOBE = t3lib_div::makeInstance("SC_mod_web_func_index");
- *	 $SOBE->init();
- *
- *	 // Include files?
- *	 foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
- *	 $SOBE->checkExtObj();	// Checking for first level external objects
- *
- *	 // Repeat Include files! - if any files has been added by second-level extensions
- *	 foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
- *	 $SOBE->checkSubExtObj();	// Checking second level external objects
- *
- *	 $SOBE->main();
- *	 $SOBE->printContent();
- *
- * Notice that the first part is as usual: Include classes and call $SOBE->checkExtObj() to initialize any level-1 sub-modules
- * But then again ->include_once is traversed IF the initialization of the level-1 modules might have added more files!!
- * And after that $SOBE->checkSubExtObj() is called to initialize the second level.
- * In this way even a third level could be supported - but most likely that is a too layered model to be practical.
- *
- * Anyways, the final interesting thing is to see what the framework "func_wizard" actually does:
- *
- *	 class tx_funcwizards_webfunc extends t3lib_extobjbase {
- *		 var $localLangFile = "locallang.php";
- *		 var $function_key = "wiz";
- *		 function init(&$pObj, $conf) {
- *				 // OK, handles ordinary init. This includes setting up the menu array with ->modMenu
- *			 parent::init($pObj,$conf);
- *				 // Making sure that any further external classes are added to the include_once array. Notice that inclusion happens twice in the main script because of this!!!
- *			 $this->handleExternalFunctionValue();
- *		 }
- *	 }
- *
- * Notice that the handleExternalFunctionValue of this class (t3lib_extobjbase) is called and that the ->function_key internal var is set!
- *
- * The two level-2 sub-module "wizard_crpages" and "wizard_sortpages" are totally normal "submodules".
- */
 
 /**
  * Parent class for 'Extension Objects' in backend modules.
- * Used for 'submodules' to other modules. Also called 'Function menu modules' in t3lib_extMgm. And now its even called 'Extension Objects'. Or 'Module functions'. Wish we had just one name. Or a name at all...(?) Thank God its not so advanced when it works...
- * In other words this class is used for backend modules which is not true backend modules appearing in the menu but rather adds themselves as a new entry in the function menu which typically exists for a backend module (like Web>Functions, Web>Info or Tools etc...)
- * The magic that binds this together is stored in the global variable $TBE_MODULES_EXT where extensions wanting to connect a module based on this class to an existing backend module store configuration which consists of the classname, script-path and a label (title/name)
- * For more information about this, please see the large example comment for the class t3lib_SCbase. This will show the principle of a 'level-1' connection.
- * The more advanced example - having two layers as it is done by the 'func_wizards' extension with the 'web_info' module - can be seen in the comment above.
+ *
+ * Used for 'submodules' to other modules. Also called 'Function menu modules'
+ * in t3lib_extMgm. And now its even called 'Extension Objects'. Or
+ * 'Module functions'. Wish we had just one name. Or a name at all...(?)
+ * Thank God its not so advanced when it works...
+ *
+ * In other words this class is used for backend modules which is not true
+ * backend modules appearing in the menu but rather adds themselves as a new
+ * entry in the function menu which typically exists for a backend
+ * module (like Web>Functions, Web>Info or Tools etc...)
+ * The magic that binds this together is stored in the global variable
+ * $TBE_MODULES_EXT where extensions wanting to connect a module based on
+ * this class to an existing backend module store configuration which consists
+ * of the classname, script-path and a label (title/name).
+ *
+ * For more information about this, please see the large example comment for the
+ * class t3lib_SCbase. This will show the principle of a 'level-1' connection.
+ * The more advanced example - having two layers as it is done by the 'func_wizards'
+ * extension with the 'web_info' module - can be seen in the comment above.
+ *
+ * EXAMPLE: One level.
+ * This can be seen in the extension 'cms' where the info module have a
+ * function added. In 'ext_tables.php' this is done by this function call:
+ *
+ *	t3lib_extMgm::insertModuleFunction(
+ *		'web_info',
+ *		'tx_cms_webinfo_page',
+ *		t3lib_extMgm::extPath($_EXTKEY).'web_info/class.tx_cms_webinfo.php',
+ *		'LLL:EXT:cms/locallang_tca.php:mod_tx_cms_webinfo_page'
+ *	);
+ *
+ * EXAMPLE: Two levels.
+ * This is the advanced example. You can see it with the extension 'func_wizards'
+ * which is the first layer but then providing another layer for extensions to connect by.
+ * The key used in TBE_MODULES_EXT is normally 'function' (for the 'function menu')
+ * but the 'func_wizards' extension uses an alternative key for its configuration: 'wiz'.
+ * In the 'ext_tables.php' file of an extension ('wizard_crpages') which uses the
+ * framework provided by 'func_wizards' this looks like this:
+ *
+ *	t3lib_extMgm::insertModuleFunction(
+ *		'web_func',
+ *		'tx_wizardcrpages_webfunc_2',
+ *		t3lib_extMgm::extPath($_EXTKEY).'class.tx_wizardcrpages_webfunc_2.php',
+ *		'LLL:EXT:wizard_crpages/locallang.php:wiz_crMany',
+ *		'wiz'
+ *	);
+ *
+ * But for this two-level thing to work it also requires that the parent
+ * module (the real backend module) supports it.
+ * This is the case for the modules web_func and web_info since they have two
+ * times inclusion sections in their index.php scripts. For example (from web_func):
+ *
+ *		// Make instance:
+ *	$SOBE = t3lib_div::makeInstance("SC_mod_web_func_index");
+ *	$SOBE->init();
+ *
+ *		// Include files?
+ *	foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
+ *	$SOBE->checkExtObj();	// Checking for first level external objects
+ *
+ *		// Repeat Include files! - if any files has been added by second-level extensions
+ *	foreach($SOBE->include_once as $INC_FILE)	include_once($INC_FILE);
+ *	$SOBE->checkSubExtObj(); // Checking second level external objects
+ *
+ *	$SOBE->main();
+ *	$SOBE->printContent();
+ *
+ * Notice that the first part is as usual: Include classes and call
+ * $SOBE->checkExtObj() to initialize any level-1 sub-modules.
+ * But then again ->include_once is traversed IF the initialization of
+ * the level-1 modules might have added more files!!
+ * And after that $SOBE->checkSubExtObj() is called to initialize the second level.
+ * In this way even a third level could be supported - but most likely that is
+ * a too layered model to be practical.
+ *
+ * Anyways, the final interesting thing is to see what the framework
+ * "func_wizard" actually does:
+ *
+ *	class tx_funcwizards_webfunc extends t3lib_extobjbase {
+ *		var $localLangFile = "locallang.php";
+ *		var $function_key = "wiz";
+ *		function init(&$pObj, $conf) {
+ *				// OK, handles ordinary init. This includes setting up the
+ *				// menu array with ->modMenu
+ *			parent::init($pObj,$conf);
+ *				// Making sure that any further external classes are added to the
+ *				// include_once array. Notice that inclusion happens twice
+ *				// in the main script because of this!!!
+ *			$this->handleExternalFunctionValue();
+ *		 }
+ *	 }
+ *
+ * Notice that the handleExternalFunctionValue of this class (t3lib_extobjbase)
+ * is called and that the ->function_key internal var is set!
+ *
+ * The two level-2 sub-module "wizard_crpages" and "wizard_sortpages"
+ * are totally normal "submodules".
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
- * @see t3lib_SCbase,tx_funcwizards_webfunc::init(), tx_funcwizards_webfunc, tx_wizardsortpages_webfunc_2
+ * @see t3lib_SCbase
+ * @see tx_funcwizards_webfunc::init()
+ * @see tx_funcwizards_webfunc
+ * @see tx_wizardsortpages_webfunc_2
  */
-class t3lib_extobjbase {
+abstract class t3lib_extobjbase {
 
 	/**
 	 * Contains a reference to the parent (calling) object (which is probably an instance of an extension class to t3lib_SCbase)
