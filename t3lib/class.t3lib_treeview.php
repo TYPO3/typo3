@@ -24,25 +24,19 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains base class for creating a browsable array/page/folder tree in HTML
- *
- * Revised for TYPO3 3.6 November/2003 by Kasper Skårhøj
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor René Fritz <r.fritz@colorcube.de>
- */
 
 /**
  * Base class for creating a browsable array/page/folder tree in HTML
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @coauthor René Fritz <r.fritz@colorcube.de>
+ * @author René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib
- * @see t3lib_browsetree, t3lib_pagetree, t3lib_foldertree
+ * @see t3lib_browsetree
+ * @see t3lib_pagetree
+ * @see t3lib_foldertree
  */
-class t3lib_treeView {
+abstract class t3lib_treeView {
 
 		// EXTERNAL, static:
 		// If set, the first element in the tree is always expanded.
