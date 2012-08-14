@@ -16,7 +16,6 @@
  *  A copy is found in the textfile GPL.txt and important notices to the license
  *  from the author is found in LICENSE.txt distributed with these scripts.
  *
- *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -24,24 +23,21 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Library with a single function addElement that returns tablerows based on some input.
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
 
 /**
- * This class is the base for listing of database records and files in the modules Web>List and File>Filelist
+ * Library with a single function addElement that returns table
+ * rows based on some input.
+ *
+ * Base for class listing of database records and files in the
+ * modules Web>List and File>Filelist
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
- * @see typo3/db_list.php, typo3/sysext/filelist/mod1/index.php
+ * @see typo3/db_list.php
+ * @see typo3/sysext/filelist/mod1/index.php
  */
-class t3lib_recordList {
+abstract class t3lib_recordList {
 
 		// Used in this class:
 		// default Max items shown
