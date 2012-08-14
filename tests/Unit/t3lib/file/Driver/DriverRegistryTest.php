@@ -119,6 +119,32 @@ class t3lib_file_Driver_DriverRegistryTest extends Tx_Phpunit_TestCase {
 		$this->assertEquals($className, $this->fixture->getDriverClass($shortName));
 	}
 
+	/**
+	 * @test
+	 */
+	public function driverExistsReturnsTrueForAllExistingDrivers() {
+		$className = $this->getMockClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver');
+		$shortName = uniqid();
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = array(
+			$shortName => array(
+				'class' => $className
+			)
+		);
+		$this->initializeFixture();
+		$this->assertTrue($this->fixture->driverExists($shortName));
+		$this->assertFalse($this->fixture->driverExists(uniqid()));
+	}
+
+	/**
+	 * @test
+	 */
+	public function driverExistsReturnsFalseIfDriverDoesNotExist() {
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = array(
+		);
+		$this->initializeFixture();
+		$this->assertFalse($this->fixture->driverExists(uniqid()));
+	}
+
 }
 
 ?>
