@@ -22,14 +22,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  * An exception when something is wrong with the file handling
  *
  * @package TYPO3
  * @subpackage t3lib_file
  */
-class t3lib_file_exception_AbstractFileOperationException extends t3lib_file_exception_AbstractFileException {
+abstract class t3lib_file_exception_AbstractFileOperationException extends t3lib_file_exception_AbstractFileException {
 
 }
 ?>
