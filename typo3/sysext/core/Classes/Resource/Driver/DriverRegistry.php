@@ -127,6 +127,15 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 		return $this->drivers[$shortName];
 	}
 
+	/**
+	 * Checks if the given driver exists
+	 *
+	 * @param string $shortName Name of the driver
+	 * @return boolean TRUE if the driver exists, FALSE otherwise
+	 */
+	public function driverExists($shortName) {
+		return array_key_exists($shortName, $this->drivers);
+	}
 }
 
 

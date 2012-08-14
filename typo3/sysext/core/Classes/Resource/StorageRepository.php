@@ -52,12 +52,27 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	protected $typeField = 'type';
 
 	/**
+	 * @var \TYPO3\CMS\Core\Log\Logger
+	 */
+	protected $logger;
+
+	public function __construct() {
+		parent::__construct();
+
+		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
+		$logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager');
+		$this->logger = $logManager->getLogger(__CLASS__);
+	}
+
+	/**
 	 * Finds storages by type.
 	 *
 	 * @param string $storageType
 	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage[]
 	 */
 	public function findByStorageType($storageType) {
+		/** @var $driverRegistry \TYPO3\CMS\Core\Resource\Driver\DriverRegistry */
+		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\Driver\DriverRegistry');
 		$storageObjects = array();
 		$whereClause = $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($storageType, $this->table);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
@@ -66,7 +81,14 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 			$whereClause . $this->getWhereClauseForEnabledFields()
 		);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$storageObjects[] = $this->createDomainObject($row);
+			if ($driverRegistry->driverExists($row['driver'])) {
+				$storageObjects[] = $this->createDomainObject($row);
+			} else {
+				$this->logger->warning(
+					sprintf('Could not instantiate storage "%s" because of missing driver.', array($row['name'])),
+					$row
+				);
+			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $storageObjects;
@@ -101,8 +123,19 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 			$this->table,
 			($whereClause ? $whereClause : '1=1') . $this->getWhereClauseForEnabledFields()
 		);
+
+		/** @var $driverRegistry \TYPO3\CMS\Core\Resource\Driver\DriverRegistry */
+		$driverRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\Driver\DriverRegistry');
+
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$storageObjects[] = $this->createDomainObject($row);
+			if ($driverRegistry->driverExists($row['driver'])) {
+				$storageObjects[] = $this->createDomainObject($row);
+			} else {
+				$this->logger->warning(
+					sprintf('Could not instantiate storage "%s" because of missing driver.', array($row['name'])),
+					$row
+				);
+			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $storageObjects;
