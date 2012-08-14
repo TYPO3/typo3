@@ -968,7 +968,7 @@ class t3lib_clipboard {
 
 			// Traverse elements and make CMD array
 		foreach ($elements as $tP => $path) {
-			$FILE[$mode][] = array('data' => $path, 'target' => $pUid, 'altName' => 1);
+			$FILE[$mode][] = array('data' => $path, 'target' => $pUid);
 			if ($mode == 'move') {
 				$this->removeElement($tP);
 			}
