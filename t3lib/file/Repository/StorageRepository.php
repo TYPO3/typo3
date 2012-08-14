@@ -58,6 +58,8 @@ class t3lib_file_Repository_StorageRepository extends t3lib_file_Repository_Abst
 	 * @return t3lib_file_Storage[]
 	 */
 	public function findByStorageType($storageType) {
+		/** @var $driverRegistry t3lib_file_Driver_DriverRegistry */
+		$driverRegistry = t3lib_div::makeInstance('t3lib_file_Driver_DriverRegistry');
 		$storageObjects = array();
 
 		$whereClause = 'deleted=0 AND hidden=0';
@@ -66,7 +68,9 @@ class t3lib_file_Repository_StorageRepository extends t3lib_file_Repository_Abst
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $whereClause);
 
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$storageObjects[] = $this->createDomainObject($row);
+			if ($driverRegistry->driverExists($row['driver'])) {
+				$storageObjects[] = $this->createDomainObject($row);
+			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
@@ -80,6 +84,8 @@ class t3lib_file_Repository_StorageRepository extends t3lib_file_Repository_Abst
 	 * @return t3lib_file_Storage[]
 	 */
 	public function findAll() {
+		/** @var $driverRegistry t3lib_file_Driver_DriverRegistry */
+		$driverRegistry = t3lib_div::makeInstance('t3lib_file_Driver_DriverRegistry');
 		$storageObjects = array();
 
 		$whereClause = 'deleted=0 AND hidden=0';
@@ -90,7 +96,9 @@ class t3lib_file_Repository_StorageRepository extends t3lib_file_Repository_Abst
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $whereClause);
 
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$storageObjects[] = $this->createDomainObject($row);
+			if ($driverRegistry->driverExists($row['driver'])) {
+				$storageObjects[] = $this->createDomainObject($row);
+			}
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 
