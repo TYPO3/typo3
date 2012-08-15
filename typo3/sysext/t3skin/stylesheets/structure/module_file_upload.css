@@ -4,6 +4,7 @@ File Upload Window
 - - - - - - - - - - - - - - - - - - - - - */
 
 .swfupload {
+	bottom: 3px;
 	display: block;
 	height: 22px;
 	position: absolute;
