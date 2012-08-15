@@ -1,3 +1,18 @@
+2012-08-15  a1e439e                  [RELEASE] Release of TYPO3 4.6.12 (TYPO3 Release Team)
+2012-08-15  7a839a3  #21634          [SECURITY] XSS in install tool (Mario Rimann)
+2012-08-15  2ae69c8  #32653          [SECURITY] Page Link Target vulnerable to XSS (Markus Bucher)
+2012-08-15  1eaebd3  #25052          [SECURITY] XSS in validateForm (Markus Bucher)
+2012-08-15  9b2b8fb  #25356          [SECURITY] XSS in TCE forms (Christian Kuhn)
+2012-08-15  6376643  #30967          [SECURITY] XSS in Scheduler Example Task (Mario Rimann)
+2012-08-15  a4a20e9  #37127          [SECURITY] HTML5 support in RemoveXSS (Franz G. Jahn)
+2012-08-15  829e391  #39345          [SECURITY] Information Disclosure in the Configuration Module (Mario Rimann)
+2012-08-15  dc6529c  #33520          [SECURITY] Untrusted GP data is unserialized in old CSH handling (Helmut Hummel)
+2012-08-15  8c0b4dc  #31927          [SECURITY] XSS in Indexed Search statistics (Steffen Gebert)
+2012-08-15  4c8c0fd  #23226          [SECURITY] t3lib_div::quoteJSvalue allows XSS (Helmut Hummel)
+2012-08-08  d53a590                  [TASK] Set TYPO3 version to 4.6.12-dev (TYPO3 Release Team)
+2012-08-08  56973db                  [RELEASE] Release of TYPO3 4.6.11 (TYPO3 Release Team)
+
+
 2012-08-08  74fd6bb                  [RELEASE] Release of TYPO3 4.6.11 (TYPO3 Release Team)
 2012-08-08  e809cd3                  [TASK] Raise submodule pointer (TYPO3 Release Team)
 2012-08-07  a5cd4df  #39583          [BUGFIX] Exception "Could not create directory" (Michael Klapper)
