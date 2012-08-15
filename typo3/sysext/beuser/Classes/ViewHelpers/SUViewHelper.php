@@ -34,11 +34,11 @@
 class Tx_Beuser_ViewHelpers_SUViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * @param Tx_Beuser_Domain_Model_BackendUser $backendUser Target backendUser to switch active session to
+	 * @param Tx_Extbase_Domain_Model_BackendUser $backendUser Target backendUser to switch active session to
 	 * @param boolean $emulate Return to current session or logout after target session termination?
 	 * @return string
 	 */
-	public function render(Tx_Beuser_Domain_Model_BackendUser $backendUser, $emulate = FALSE) {
+	public function render(Tx_Extbase_Domain_Model_BackendUser $backendUser, $emulate = FALSE) {
 		if ($backendUser->getIsAdministrator()) {
 			return '';
 		}
