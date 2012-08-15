@@ -59,6 +59,7 @@ $t3libClasses = array(
 	't3lib_collection_sortable' => PATH_t3lib . 'collection/interfaces/interface.t3lib_collection_sortable.php',
 	't3lib_collection_staticrecordcollection' => PATH_t3lib . 'collection/StaticRecordCollection.php',
 	't3lib_compressor' => PATH_t3lib . 'class.t3lib_compressor.php',
+	't3lib_codec_javascriptencoder' => PATH_t3lib . 'codec/class.t3lib_codec_javascriptencoder.php',
 	't3lib_contextmenu_abstractcontextmenu' => PATH_t3lib . 'contextmenu/class.t3lib_contextmenu_abstractcontextmenu.php',
 	't3lib_contextmenu_abstractdataprovider' => PATH_t3lib . 'contextmenu/class.t3lib_contextmenu_abstractdataprovider.php',
 	't3lib_contextmenu_action' => PATH_t3lib . 'contextmenu/class.t3lib_contextmenu_action.php',

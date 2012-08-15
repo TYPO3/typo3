@@ -5666,25 +5666,15 @@ final class t3lib_div {
 
 
 	/**
-	 * Quotes a string for usage as JS parameter. Depends whether the value is
-	 * used in script tags (it doesn't need/must not get htmlspecialchar'ed in
-	 * this case).
+	 * Quotes a string for usage as JS parameter.
 	 *
 	 * @param string $value the string to encode, may be empty
-	 * @param boolean $withinCData
-	 *		whether the escaped data is expected to be used as CDATA and thus
-	 *		does not need to be htmlspecialchared
 	 *
 	 * @return string the encoded value already quoted (with single quotes),
 	 *				will not be empty
 	 */
-	static public function quoteJSvalue($value, $withinCData = FALSE) {
-		$escapedValue = addcslashes(
-			$value, '\'' . '"' . '\\' . TAB . LF . CR
-		);
-		if (!$withinCData) {
-			$escapedValue = htmlspecialchars($escapedValue);
-		}
+	public static function quoteJSvalue($value) {
+		$escapedValue = t3lib_div::makeInstance('t3lib_codec_JavaScriptEncoder')->encode($value);
 		return '\'' . $escapedValue . '\'';
 	}
 
