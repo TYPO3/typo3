@@ -119,7 +119,7 @@ class SC_view_help {
 		}
 		if (!$this->tfID) {
 			if (($this->ffID = t3lib_div::_GP('ffID'))) {
-				$this->ffID = unserialize(base64_decode($this->ffID));
+				throw new RuntimeException('Invalid parameter: Requests with ffID parameter won\'t be processed.', 1343486350);
 			}
 		}
 		$this->back = t3lib_div::_GP('back');
