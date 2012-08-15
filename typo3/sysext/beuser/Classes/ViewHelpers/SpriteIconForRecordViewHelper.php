@@ -56,7 +56,7 @@ class Tx_Beuser_ViewHelpers_SpriteIconForRecordViewHelper extends Tx_Fluid_ViewH
 			$row['disable'] = $object->getIsDisabled();
 		}
 
-		if ($table === 'be_users' && get_class($object) === 'Tx_Beuser_Domain_Model_BackendUser') {
+		if ($table === 'be_users' && get_class($object) === 'Tx_Extbase_Domain_Model_BackendUser') {
 			$row['admin'] = $object->getIsAdministrator();
 		}
 

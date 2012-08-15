@@ -86,7 +86,7 @@ class Tx_Beuser_Domain_Model_Demand extends Tx_Extbase_DomainObject_AbstractEnti
 	protected $logins = 0;
 
 	/**
-	 * @var Tx_Beuser_Domain_Model_BackendUserGroup
+	 * @var Tx_Extbase_Domain_Model_BackendUserGroup
 	 */
 	protected $backendUserGroup;
 
@@ -151,14 +151,14 @@ class Tx_Beuser_Domain_Model_Demand extends Tx_Extbase_DomainObject_AbstractEnti
 	}
 
 	/**
-	 * @param \Tx_Beuser_Domain_Model_BackendUserGroup $backendUserGroup
+	 * @param \Tx_Extbase_Domain_Model_BackendUserGroup $backendUserGroup
 	 */
 	public function setBackendUserGroup($backendUserGroup) {
 		$this->backendUserGroup = $backendUserGroup;
 	}
 
 	/**
-	 * @return \Tx_Beuser_Domain_Model_BackendUserGroup
+	 * @return \Tx_Extbase_Domain_Model_BackendUserGroup
 	 */
 	public function getBackendUserGroup() {
 		return $this->backendUserGroup;

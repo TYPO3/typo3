@@ -25,7 +25,7 @@
  ***************************************************************/
 
 /**
- * Repository for Tx_Beuser_Domain_Model_BackendUser
+ * Repository for Tx_Extbase_Domain_Model_BackendUser
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @package TYPO3
@@ -33,12 +33,23 @@
  */
 class Tx_Beuser_Domain_Repository_BackendUserRepository extends Tx_Extbase_Domain_Repository_BackendUserRepository {
 
+	/**
+	 * We need to overwrite the objectType in the construct, because we want to
+	 * build Tx_Extbase_Domain_Model_BackendUser and not the
+	 * Tx_Beuser_Domain_Model_BackendUser objects.
+	 *
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 */
+	public function __construct() {
+		parent::__construct();
+		$this->objectType = 'Tx_Extbase_Domain_Model_BackendUser';
+	}
 
 	/**
 	 * Finds Backend Users on a given list of uids
 	 *
 	 * @param array $uidList
-	 * @return Tx_Extbase_Persistence_QueryResult<Tx_Beuser_Domain_Model_BackendUser>
+	 * @return Tx_Extbase_Persistence_QueryResult<Tx_Extbase_Domain_Model_BackendUser>
 	 */
 	public function findByUidList($uidList) {
 		$query = $this->createQuery();
@@ -51,7 +62,7 @@ class Tx_Beuser_Domain_Repository_BackendUserRepository extends Tx_Extbase_Domai
 	 * Find Backend Users matching to Demand object properties
 	 *
 	 * @param Tx_Beuser_Domain_Model_Demand $demand
-	 * @return Tx_Extbase_Persistence_QueryResult<Tx_Beuser_Domain_Model_BackendUser>
+	 * @return Tx_Extbase_Persistence_QueryResult<Tx_Extbase_Domain_Model_BackendUser>
 	 */
 	public function findDemanded(Tx_Beuser_Domain_Model_Demand $demand) {
 		$constraints = array();
@@ -121,7 +132,7 @@ class Tx_Beuser_Domain_Repository_BackendUserRepository extends Tx_Extbase_Domai
 	/**
 	 * Find Backend Users currently online
 	 *
-	 * @return Tx_Extbase_Persistence_QueryResult<Tx_Beuser_Domain_Model_BackendUser>
+	 * @return Tx_Extbase_Persistence_QueryResult<Tx_Extbase_Domain_Model_BackendUser>
 	 */
 	public function findOnline() {
 		$uids = array();
