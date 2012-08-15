@@ -273,7 +273,7 @@ class t3lib_TCEforms_Flexforms extends t3lib_TCEforms {
 						// Rename
 					foreach ($renameItems as $renameKey => $renameValue) {
 						if (strcasecmp($renameKey, $itemConf[1]) == 0) {
-							$selItems[$itemKey][0] = $renameValue;
+							$selItems[$itemKey][0] = htmlspecialchars($renameValue);
 							unset($renameItems[$renameKey]);
 						}
 					}
