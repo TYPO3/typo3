@@ -2046,9 +2046,8 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								$textAreaMarkers = array(
 									'id' => $k . '-' . $vk,
 									'name' => 'TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']',
-									'value' => str_replace(array("'.chr(10).'", "' . LF . '"), array(LF, LF), $value)
-								);
-								$value = str_replace(array("'.chr(10).'", "' . LF . '"), array(' | ', ' | '), $value);
+									'value' => htmlspecialchars(str_replace(array("'.chr(10).'", "' . LF . '"), array(LF, LF), $value)
+								));
 									// Fill the markers in the subpart
 								$textAreaSubpart = t3lib_parsehtml::substituteMarkerArray(
 									$textAreaSubpart,
@@ -2082,7 +2081,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								$textLineMarkers = array(
 									'id' => $k . '-' . $vk,
 									'name' => 'TYPO3_INSTALL[extConfig]['.$k.']['.$vk.']',
-									'value' => $value
+									'value' => htmlspecialchars($value)
 								);
 									// Fill the markers in the subpart
 								$textLineSubpart = t3lib_parsehtml::substituteMarkerArray(
@@ -3566,9 +3565,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$imCombineFileNameSubpart = t3lib_parsehtml::getSubpart($regularModeSubpart, '###IMCOMBINEFILENAMESUBPART###');
 							// Define the markers content
 						$regularModeMarkers['labelImCombineFilename'] = '[GFX][im_combine_filename]';
-						$regularModeMarkers['strongImCombineFilename'] = (string) current($fA['im_combine_filename']);
-						$regularModeMarkers['defaultImCombineFilename'] = (string) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename'];
-						$regularModeMarkers['imCombineFilename'] = (string) ($fA['im_combine_filename'] ? current($fA['im_combine_filename']) : 'combine');
+						$regularModeMarkers['strongImCombineFilename'] = htmlspecialchars((string) current($fA['im_combine_filename']));
+						$regularModeMarkers['defaultImCombineFilename'] = htmlspecialchars((string) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_combine_filename']);
+						$regularModeMarkers['imCombineFilename'] = htmlspecialchars((string) ($fA['im_combine_filename'] ? current($fA['im_combine_filename']) : 'combine'));
 							// Fill the markers in the subpart
 						$imCombineFileNameSubpart = t3lib_parsehtml::substituteMarkerArray(
 							$imCombineFileNameSubpart,
@@ -3583,9 +3582,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						$imVersion5Subpart = t3lib_parsehtml::getSubpart($regularModeSubpart, '###IMVERSION5SUBPART###');
 							// Define the markers content
 						$regularModeMarkers['labelImVersion5'] = '[GFX][im_version_5]=';
-						$regularModeMarkers['strongImVersion5'] = (string) current($fA['im_version_5']);
-						$regularModeMarkers['defaultImVersion5'] = (string) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'];
-						$regularModeMarkers['imVersion5'] = (string) ($fA['im_version_5'] ? current($fA['im_version_5']) : '');
+						$regularModeMarkers['strongImVersion5'] = htmlspecialchars((string) current($fA['im_version_5']));
+						$regularModeMarkers['defaultImVersion5'] = htmlspecialchars((string) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']);
+						$regularModeMarkers['imVersion5'] = htmlspecialchars((string) ($fA['im_version_5'] ? current($fA['im_version_5']) : ''));
 							// Fill the markers in the subpart
 						$imVersion5Subpart = t3lib_parsehtml::substituteMarkerArray(
 							$imVersion5Subpart,
@@ -3607,9 +3606,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								reset($imPath);
 									// Define the markers content
 								$regularModeMarkers['labelImPath'] = '[GFX][im_path]=';
-								$regularModeMarkers['strongImPath'] = (string) current($labelImPath);
-								$regularModeMarkers['defaultImPath'] = (string) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path'];
-								$regularModeMarkers['ImPath'] = (string) current($imPath);
+								$regularModeMarkers['strongImPath'] = htmlspecialchars((string) current($labelImPath));
+								$regularModeMarkers['defaultImPath'] = htmlspecialchars((string) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']);
+								$regularModeMarkers['ImPath'] = htmlspecialchars((string) current($imPath));
 									// Fill the markers in the subpart
 								$imPathSubpart = t3lib_parsehtml::substituteMarkerArray(
 									$imPathSubpart,
@@ -3632,9 +3631,9 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 								reset($imPathLzw);
 									// Define the markers content
 								$regularModeMarkers['labelImPathLzw'] = '[GFX][im_path_lzw]=';
-								$regularModeMarkers['strongImPathLzw'] = (string) current($labelImPathLzw);
-								$regularModeMarkers['defaultImPathLzw'] = (string) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'];
-								$regularModeMarkers['ImPathLzw'] = (string) current($imPathLzw);
+								$regularModeMarkers['strongImPathLzw'] = htmlspecialchars((string) current($labelImPathLzw));
+								$regularModeMarkers['defaultImPathLzw'] = htmlspecialchars((string) $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']);
+								$regularModeMarkers['ImPathLzw'] = htmlspecialchars((string) current($imPathLzw));
 
 								$imPathLzwOptions = array();
 								foreach ($labelImPathLzw as $k => $v) {
