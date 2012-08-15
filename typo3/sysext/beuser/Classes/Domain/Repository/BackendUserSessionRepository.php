@@ -25,7 +25,7 @@
  ***************************************************************/
 
 /**
- * Repository for Tx_Beuser_Domain_Model_BackendUser
+ * Repository for Tx_Extbase_Domain_Model_BackendUser
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @package TYPO3
@@ -37,10 +37,10 @@ class Tx_Beuser_Domain_Repository_BackendUserSessionRepository extends Tx_Extbas
 	 * Find Sessions for specific BackendUser
 	 * Delivers Array, not ObjectStorage!
 	 *
-	 * @param Tx_Beuser_Domain_Model_BackendUser $backendUser
+	 * @param Tx_Extbase_Domain_Model_BackendUser $backendUser
 	 * @return array
 	 */
-	public function findByBackendUser(Tx_Beuser_Domain_Model_BackendUser $backendUser) {
+	public function findByBackendUser(Tx_Extbase_Domain_Model_BackendUser $backendUser) {
 		$sessions = array();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
 			'ses_id AS id, ses_iplock AS ip, ses_tstamp AS timestamp',
