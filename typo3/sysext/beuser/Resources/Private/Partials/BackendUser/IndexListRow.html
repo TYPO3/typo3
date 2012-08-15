@@ -43,7 +43,7 @@
 			SU does not work with admin users and current user must always be admin.
 			Only admin users may use the backend user administration.
 		</f:comment>
-		<f:if condition="{backendUser.active} == 1">
+		<f:if condition="{backendUser.isActivated} == 1">
 			<bu:SU backendUser="{backendUser}" emulate="TRUE" />
 			<bu:SU backendUser="{backendUser}" emulate="FALSE" />
 		</f:if>
