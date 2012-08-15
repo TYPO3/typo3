@@ -5321,6 +5321,8 @@ class t3lib_TCEforms {
 													   'field' => $field,
 													   'title' => $fieldTitle
 												  )));
+				$hash = t3lib_div::hmac($params);
+				$params .= $hash;
 				$aOnClick = 'vHWin=window.open(\'' . $this->backPath . 'view_help.php?ffID=' . $params . '\',\'viewFieldHelp\',\'height=400,width=600,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;';
 				return '<a href="#" class="typo3-csh-link" onclick="' . htmlspecialchars($aOnClick) . '">' .
 					   t3lib_iconWorks::getSpriteIcon('actions-system-help-open') . $hoverText .
