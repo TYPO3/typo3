@@ -32,6 +32,7 @@
  * @subpackage t3lib
  */
 class t3lib_divTest extends tx_phpunit_testcase {
+
 	/**
 	 * Enable backup of global and system variables
 	 *
@@ -2442,124 +2443,66 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	//////////////////////////////////
 
 	/**
-	 * @test
+	 * Data provider for quoteJSvalueTest.
+	 *
+	 * @return array
 	 */
-	public function quoteJSvalueHtmlspecialcharsDataByDefault() {
-		$this->assertContains(
-			'&gt;',
-			t3lib_div::quoteJSvalue('>')
+	public function quoteJsValueDataProvider() {
+		return array(
+			'Immune characters are returned as is' => array(
+				'._,',
+				'._,',
+			),
+			'Alphanumerical characters are returned as is' => array(
+				'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+				'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+			),
+			'Angel brackets and ampersand are encoded' => array(
+				'<>&',
+				'\x3C\x3E\x26',
+			),
+			'Quotes and slashes are encoded' => array(
+				'"\'\\/',
+				'\x22\x27\x5C\x2F',
+			),
+			'Empty string stays empty' => array(
+				'',
+				'',
+			),
+			'Exclamation mark and space are properly encoded' => array(
+				'Hello World!',
+				'Hello\x20World\x21',
+			),
+			'Whitespaces are properly encoded' => array(
+				TAB . LF . CR . ' ',
+				'\x09\x0A\x0D\x20',
+			),
+			'Null byte is properly encoded' => array(
+				chr(0),
+				'\x00',
+			),
+			'Umlauts are properly encoded' => array(
+				'ÜüÖöÄä',
+				'\xDC\xFC\xD6\xF6\xC4\xE4',
+			),
 		);
 	}
 
 	/**
 	 * @test
+	 *
+	 * @param string $input
+	 * @param string $expected
+	 *
+	 * @dataProvider quoteJsValueDataProvider
 	 */
-	public function quoteJSvaluetHtmlspecialcharsDataWithinCDataSetToFalse() {
-		$this->assertContains(
-			'&gt;',
-			t3lib_div::quoteJSvalue('>', FALSE)
+	public function quoteJsValueTest($input, $expected) {
+		$this->assertSame(
+			'\'' . $expected . '\'',
+			t3lib_div::quoteJSvalue($input)
 		);
 	}
 
-	/**
-	 * @test
-	 */
-	public function quoteJSvaluetNotHtmlspecialcharsDataWithinCDataSetToTrue() {
-		$this->assertContains(
-			'>',
-			t3lib_div::quoteJSvalue('>', TRUE)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function quoteJSvalueReturnsEmptyStringQuotedInSingleQuotes() {
-		$this->assertEquals(
-			"''",
-			t3lib_div::quoteJSvalue("", TRUE)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function quoteJSvalueNotModifiesStringWithoutSpecialCharacters() {
-		$this->assertEquals(
-			"'Hello world!'",
-			t3lib_div::quoteJSvalue("Hello world!", TRUE)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function quoteJSvalueEscapesSingleQuote() {
-		$this->assertEquals(
-			"'\\''",
-			t3lib_div::quoteJSvalue("'", TRUE)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function quoteJSvalueEscapesDoubleQuoteWithinCDataSetToTrue() {
-		$this->assertEquals(
-			"'\\\"'",
-			t3lib_div::quoteJSvalue('"', TRUE)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function quoteJSvalueEscapesAndHtmlspecialcharsDoubleQuoteWithinCDataSetToFalse() {
-		$this->assertEquals(
-			"'\\&quot;'",
-			t3lib_div::quoteJSvalue('"', FALSE)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function quoteJSvalueEscapesTab() {
-		$this->assertEquals(
-			"'" . '\t' . "'",
-			t3lib_div::quoteJSvalue(TAB)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function quoteJSvalueEscapesLinefeed() {
-		$this->assertEquals(
-			"'" . '\n' . "'",
-			t3lib_div::quoteJSvalue(LF)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function quoteJSvalueEscapesCarriageReturn() {
-		$this->assertEquals(
-			"'" . '\r' . "'",
-			t3lib_div::quoteJSvalue(CR)
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function quoteJSvalueEscapesBackslah() {
-		$this->assertEquals(
-			"'\\\\'",
-			t3lib_div::quoteJSvalue('\\')
-		);
-	}
 
 	//////////////////////////////////
 	// Tests concerning readLLfile
