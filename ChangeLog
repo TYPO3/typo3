@@ -1,3 +1,18 @@
+2012-08-15  9bcf5eb                  [RELEASE] Release of TYPO3 4.5.19 (TYPO3 Release Team)
+2012-08-15  76748b7  #21634          [SECURITY] XSS in install tool (Mario Rimann)
+2012-08-15  85df0e4  #32653          [SECURITY] Page Link Target vulnerable to XSS (Markus Bucher)
+2012-08-15  605d05f  #25052          [SECURITY] XSS in validateForm (Markus Bucher)
+2012-08-15  6840097  #25356          [SECURITY] XSS in TCE forms (Christian Kuhn)
+2012-08-15  fb1e204  #30967          [SECURITY] XSS in Scheduler Example Task (Mario Rimann)
+2012-08-15  6fd6768  #37127          [SECURITY] HTML5 support in RemoveXSS (Franz G. Jahn)
+2012-08-15  11abbaa  #39345          [SECURITY] Information Disclosure in the Configuration Module (Mario Rimann)
+2012-08-15  a3293a7  #33520          [SECURITY] Untrusted GP data is unserialized in old CSH handling (Helmut Hummel)
+2012-08-15  ccbbfc3  #31927          [SECURITY] XSS in Indexed Search statistics (Steffen Gebert)
+2012-08-15  f046457  #23226          [SECURITY] t3lib_div::quoteJSvalue allows XSS (Helmut Hummel)
+2012-08-08  7f17bf6                  [TASK] Set TYPO3 version to 4.5.19-dev (TYPO3 Release Team)
+2012-08-08  2d73b5d                  [RELEASE] Release of TYPO3 4.5.18 (TYPO3 Release Team)
+
+
 2012-08-08  c9ae56c                  [RELEASE] Release of TYPO3 4.5.18 (TYPO3 Release Team)
 2012-08-05  2bb16e8  #39527          [BUGFIX] Pass $fieldName when processing FlexForm DS in t3lib_transferData (Claus Due)
 2012-08-03  83af91c  #39509          [BUGFIX] t3lib_db - expects parameter 1 to be resource, boolean given (Michael Klapper)
