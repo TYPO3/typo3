@@ -5,10 +5,14 @@ $Id$
 - - - - - - - - - - - - - - - - - - - - - */
 
 .swfupload {
+	bottom: 3px;
 	display: block;
-	height: 22px;
+	height: 25px;
+	left: 3px;
 	position: absolute;
+	top: 2px;
 	z-index: 2000;
+	width: 90px;
 }
 
 #t3-upload-window-infopanel div div {
