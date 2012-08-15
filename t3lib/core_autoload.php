@@ -67,6 +67,7 @@ $t3libClasses = array(
 	't3lib_contextmenu_pagetree_dataprovider' => PATH_t3lib . 'contextmenu/pagetree/class.t3lib_contextmenu_pagetree_dataprovider.php',
 	't3lib_contextmenu_pagetree_extdirect_contextmenu' => PATH_t3lib . 'contextmenu/pagetree/extdirect/class.t3lib_contextmenu_pagetree_extdirect_contextmenu.php',
 	't3lib_contextmenu_renderer_abstract' => PATH_t3lib . 'contextmenu/renderer/class.t3lib_contextmenu_renderer_abstract.php',
+	't3lib_codec_javascriptencoder' => PATH_t3lib . 'codec/class.t3lib_codec_javascriptencoder.php',
 	't3lib_cs' => PATH_t3lib . 'class.t3lib_cs.php',
 	't3lib_db' => PATH_t3lib . 'class.t3lib_db.php',
 	't3lib_db_postprocessqueryhook' => PATH_t3lib . 'interfaces/interface.t3lib_db_postprocessqueryhook.php',
