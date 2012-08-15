@@ -256,6 +256,12 @@ class SC_mod_tools_config_index {
 			$arrayBrowser->depthKeys=$arrayBrowser->getSearchKeys($theVar, '',	$search_field, array());
 		}
 
+			// mask the encryption key to not show it as plaintext in the configuration module
+		if ($theVar == $GLOBALS['TYPO3_CONF_VARS']) {
+			$theVar['SYS']['encryptionKey'] = '***** (length: ' .
+				strlen($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . ' characters)';
+		}
+
 		$tree = $arrayBrowser->tree($theVar, '', '');
 
 		$label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
