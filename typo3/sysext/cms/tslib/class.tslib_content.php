@@ -6042,7 +6042,7 @@ class tslib_cObj {
 						}
 
 						$this->lastTypoLinkTarget = $LD['target'];
-						$targetPart = $LD['target'] ? ' target="' . $LD['target'] . '"' : '';
+						$targetPart = $LD['target'] ? ' target="' . htmlspecialchars($LD['target']) . '"' : '';
 
 							// If sectionMark is set, there is no baseURL AND the current page is the page the link is to, check if there are any additional parameters or addQueryString parameters and if not, drop the url.
 						if ($sectionMark && !$GLOBALS['TSFE']->config['config']['baseURL']
