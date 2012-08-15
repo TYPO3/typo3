@@ -17,6 +17,7 @@ $t3libClasses = array(
 	't3lib_cli' => PATH_t3lib . 'class.t3lib_cli.php',
 	't3lib_clipboard' => PATH_t3lib . 'class.t3lib_clipboard.php',
 	't3lib_compressor' => PATH_t3lib . 'class.t3lib_compressor.php',
+	't3lib_codec_javascriptencoder' => PATH_t3lib . 'codec/class.t3lib_codec_javascriptencoder.php',
 	't3lib_cs' => PATH_t3lib . 'class.t3lib_cs.php',
 	't3lib_db' => PATH_t3lib . 'class.t3lib_db.php',
 	't3lib_db_preparedstatement' => PATH_t3lib . 'db/class.t3lib_db_preparedstatement.php',
