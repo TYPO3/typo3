@@ -78,8 +78,6 @@ class SC_view_help {
 	// Internal, static: GPvar:
 	// Table/FIeld id.
 	var $tfID;
-	// Flexform file/field information
-	var $ffID;
 	// Back (previous tfID)
 	var $back;
 	// If set, then in TOC mode the FULL manual will be printed as well!
@@ -103,11 +101,6 @@ class SC_view_help {
 		// Sanitizes the tfID using whitelisting.
 		if (!preg_match('/^[a-zA-Z0-9_\-\.\*]*$/', $this->tfID)) {
 			$this->tfID = '';
-		}
-		if (!$this->tfID) {
-			if (($this->ffID = t3lib_div::_GP('ffID'))) {
-				$this->ffID = unserialize(base64_decode($this->ffID));
-			}
 		}
 		$this->back = t3lib_div::_GP('back');
 		$this->renderALL = t3lib_div::_GP('renderALL');
@@ -167,9 +160,6 @@ class SC_view_help {
 		} elseif ($this->tfID) {
 				// ... otherwise show only single field:
 			$this->createGlossaryIndex();
-			$this->content .= $this->render_Single($this->mainKey, $this->field);
-
-		} elseif (is_array($this->ffID)) {
 			$this->content .= $this->render_Single($this->mainKey, $this->field);
 
 		} else {
