@@ -159,8 +159,9 @@ class SC_view_help {
 			$this->tfID = '';
 		}
 		if (!$this->tfID) {
-			if (($this->ffID = t3lib_div::_GP('ffID'))) {
-				$this->ffID = unserialize(base64_decode($this->ffID));
+			$ffID = t3lib_div::_GP('ffID');
+			if (!empty($ffID)) {
+				$this->ffID = unserialize(base64_decode($this->validateAndStripHmac($ffID)));
 			}
 		}
 		$this->back = t3lib_div::_GP('back');
@@ -199,6 +200,26 @@ class SC_view_help {
 			// limitAccess is checked if the $this->table really IS a table (and if the user is NOT a translator who should see all!)
 		$showAllToUser = t3lib_BEfunc::isModuleSetInTBE_MODULES('txllxmltranslateM1') && $GLOBALS['BE_USER']->check('modules','txllxmltranslateM1');
 		$this->limitAccess = isset($TCA[$this->table]) ? !$showAllToUser : FALSE;
+	}
+
+	/**
+	 * @param $string
+	 * @return string
+	 * @throws InvalidArgumentException
+	 */
+	protected function validateAndStripHmac($string) {
+		if (!is_string($string)) {
+			throw new InvalidArgumentException('A hash can only be validated for a string, but "' . gettype($string) . '" was given.', 1320829762);
+		}
+		if (strlen($string) < 40) {
+			throw new InvalidArgumentException('A hashed string must contain at least 40 characters, the given string was only ' . strlen($string) . ' characters long.', 1320830276);
+		}
+		$stringWithoutHmac = substr($string, 0, -40);
+		if (t3lib_div::hmac($stringWithoutHmac) !== substr($string, -40)) {
+			throw new InvalidArgumentException('The given string was not appended with a valid HMAC.', 1320830018);
+		}
+		return $stringWithoutHmac;
+
 	}
 
 	/**
