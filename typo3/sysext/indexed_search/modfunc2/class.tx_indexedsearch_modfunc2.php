@@ -164,7 +164,7 @@ class tx_indexedsearch_modfunc2 extends t3lib_extobjbase {
 		if ($res)	{
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
 				$i++;
-				$table1.='<tr class="bgColor4"><td>'.$i.'.</td><td>'.$row['word'].'</td><td>&nbsp;&nbsp;'.$row['c'].'</td></tr>';
+				$table1 .= '<tr class="bgColor4"><td>' . $i . '.</td><td>' . htmlspecialchars($row['word']) . '</td><td>&nbsp;&nbsp;' . $row['c'] . '</td></tr>';
 			}
 		}
 
