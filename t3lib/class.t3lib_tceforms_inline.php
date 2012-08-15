@@ -1636,7 +1636,7 @@ class t3lib_TCEforms_inline {
 				if (in_array($p[1], $removeItems) || $languageDeny || $authModeDeny) {
 					unset($selItems[$tk]);
 				} elseif (isset($PA['fieldTSConfig']['altLabels.'][$p[1]])) {
-					$selItems[$tk][0] = $this->fObj->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]);
+					$selItems[$tk][0] = htmlspecialchars($this->fObj->sL($PA['fieldTSConfig']['altLabels.'][$p[1]]));
 				}
 
 					// Removing doktypes with no access:
