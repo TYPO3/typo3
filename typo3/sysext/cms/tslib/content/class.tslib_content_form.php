@@ -839,8 +839,8 @@ class tslib_content_Form extends tslib_content_Abstract {
 			$emailMess = isset($conf['emailMess.'])
 				? $this->cObj->stdWrap($conf['emailMess'], $conf['emailMess.'])
 				: $conf['emailMess'];
-			$validateForm = ' onsubmit="return validateForm(\'' . $formName . '\',\'' . implode(',', $fieldlist)
-				. '\',' . t3lib_div::quoteJSvalue($goodMess) . ',' .
+			$validateForm = ' onsubmit="return validateForm(' . t3lib_div::quoteJSvalue($formName) . ',' . t3lib_div::quoteJSvalue(implode(',', $fieldlist))
+				. ',' . t3lib_div::quoteJSvalue($goodMess) . ',' .
 				t3lib_div::quoteJSvalue($badMess) . ',' .
 				t3lib_div::quoteJSvalue($emailMess) . ')"';
 			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="' .
