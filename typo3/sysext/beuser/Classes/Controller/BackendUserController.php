@@ -51,7 +51,7 @@ class Tx_Beuser_Controller_BackendUserController extends Tx_Extbase_MVC_Controll
 	protected $backendUserRepository;
 
 	/**
-	 * @var Tx_Beuser_Domain_Repository_BackendUserGroupRepository
+	 * @var Tx_Extbase_Domain_Repository_BackendUserGroupRepository
 	 * @inject
 	 */
 	protected $backendUserGroupRepository;
@@ -195,11 +195,11 @@ class Tx_Beuser_Controller_BackendUserController extends Tx_Extbase_MVC_Controll
 	 * Terminate BackendUser session and logout corresponding client
 	 * Redirects to onlineAction with message
 	 *
-	 * @param Tx_Beuser_Domain_Model_BackendUser $backendUser
+	 * @param Tx_Extbase_Domain_Model_BackendUser $backendUser
 	 * @param string $sessionId
 	 * @return void
 	 */
-	protected function terminateBackendUserSessionAction(Tx_Beuser_Domain_Model_BackendUser $backendUser, $sessionId) {
+	protected function terminateBackendUserSessionAction(Tx_Extbase_Domain_Model_BackendUser $backendUser, $sessionId) {
 		$GLOBALS['TYPO3_DB']->exec_DELETEquery(
 			'be_sessions',
 			'ses_userid = "' . $backendUser->getUid() . '"' .
