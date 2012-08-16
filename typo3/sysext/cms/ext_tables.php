@@ -251,6 +251,8 @@ $TCA['backend_layout'] = array (
 	'ctrl' => array (
 		'title'     => 'LLL:EXT:cms/locallang_tca.xml:backend_layout',
 		'label'     => 'title',
+		'label_alt_force' => 1,
+		'label_userFunc' => 'EXT:cms/classes/hooks/class.tx_cms_hooks_backendlayoutlabel.php:tx_cms_Hooks_BackendLayoutLabel->translateLabel',
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',
 		'cruser_id' => 'cruser_id',
@@ -268,5 +270,4 @@ $TCA['backend_layout'] = array (
 		'thumbnail' => 'resources',
 	)
 );
-
 ?>
