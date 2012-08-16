@@ -27,7 +27,7 @@
  *
  * @package Extbase
  * @subpackage Domain\Model
- * @version $Id$
+ *
  * @scope prototype
  * @entity
  * @api
@@ -37,17 +37,17 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	/**
 	 * @var string
 	 */
-	protected $title;
+	protected $title = '';
 
 	/**
 	 * @var string
 	 */
-	protected $lockToDomain;
+	protected $lockToDomain = '';
 
 	/**
 	 * @var string
 	 */
-	protected $description;
+	protected $description = '';
 
 	/**
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
@@ -59,7 +59,7 @@ class Tx_Extbase_Domain_Model_FrontendUserGroup extends Tx_Extbase_DomainObject_
 	 *
 	 * @param string $title
 	 */
-	public function __construct($title) {
+	public function __construct($title = '') {
 		$this->setTitle($title);
 		$this->subgroup = new Tx_Extbase_Persistence_ObjectStorage();
 	}
