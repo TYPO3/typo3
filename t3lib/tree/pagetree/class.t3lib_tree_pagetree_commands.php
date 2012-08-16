@@ -134,7 +134,8 @@ final class t3lib_tree_pagetree_Commands {
 	 */
 	public static function createNode(t3lib_tree_pagetree_Node $parentNode, $targetId, $pageType) {
 		$placeholder = 'NEW12345';
-		$pid = $parentNode->getWorkspaceId();
+		$pid = intval($parentNode->getWorkspaceId());
+		$targetId = intval($targetId);
 
 			// Use page TsConfig as default page initialization
 		$pageTs = t3lib_BEfunc::getPagesTSconfig($pid);
@@ -151,7 +152,7 @@ final class t3lib_tree_pagetree_Commands {
 		$newPageId = self::processTceCmdAndDataMap(array(), $data);
 		$node = self::getNode($newPageId[$placeholder]);
 
-		if ($parentNode->getWorkspaceId() !== $targetId) {
+		if ($pid !== $targetId) {
 			self::moveNode($node, $targetId);
 		}
 
