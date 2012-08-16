@@ -159,7 +159,9 @@ class Commands {
 	 */
 	static public function createNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $parentNode, $targetId, $pageType) {
 		$placeholder = 'NEW12345';
-		$pid = $parentNode->getWorkspaceId();
+		$pid = intval($parentNode->getWorkspaceId());
+		$targetId = intval($targetId);
+
 		// Use page TsConfig as default page initialization
 		$pageTs = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pid);
 		if (array_key_exists('TCAdefaults.', $pageTs) && array_key_exists('pages.', $pageTs['TCAdefaults.'])) {
@@ -167,14 +169,16 @@ class Commands {
 		} else {
 			$data['pages'][$placeholder] = array();
 		}
+
 		$data['pages'][$placeholder]['pid'] = $pid;
 		$data['pages'][$placeholder]['doktype'] = $pageType;
 		$data['pages'][$placeholder]['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tree.defaultPageTitle', TRUE);
 		$newPageId = self::processTceCmdAndDataMap(array(), $data);
 		$node = self::getNode($newPageId[$placeholder]);
-		if ($parentNode->getWorkspaceId() !== $targetId) {
+		if ($pid !== $targetId) {
 			self::moveNode($node, $targetId);
 		}
+
 		return $newPageId[$placeholder];
 	}
 
