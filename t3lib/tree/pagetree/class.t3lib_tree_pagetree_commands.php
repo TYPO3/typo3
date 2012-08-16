@@ -148,10 +148,13 @@ final class t3lib_tree_pagetree_Commands {
 		$data['pages'][$placeholder]['doktype'] = $pageType;
 		$data['pages'][$placeholder]['title'] = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:tree.defaultPageTitle', TRUE);
 
+		$pid = intval($parentNode->getWorkspaceId());
+		$targetId = intval($targetId);
+
 		$newPageId = self::processTceCmdAndDataMap(array(), $data);
 		$node = self::getNode($newPageId[$placeholder]);
 
-		if ($parentNode->getWorkspaceId() !== $targetId) {
+		if ($pid !== $targetId) {
 			self::moveNode($node, $targetId);
 		}
 
