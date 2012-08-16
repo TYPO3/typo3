@@ -955,7 +955,7 @@ class localRecordList extends recordList {
 									'</a>';
 						}
 					}
-					$theData[$fCol] .= $this->addSortLink($GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($table, $fCol, '<i>[|]</i>')), $fCol, $table);
+					$theData[$fCol] .= $this->addSortLink($GLOBALS['LANG']->sL(t3lib_BEfunc::getItemLabel($table, $fCol, '<i>[|]</i>'), TRUE), $fCol, $table);
 					break;
 			}
 
