@@ -176,7 +176,7 @@ final class t3lib_tree_pagetree_Commands {
 		$newPageId = self::processTceCmdAndDataMap(array(), $data);
 		$node = self::getNode($newPageId[$placeholder]);
 
-		if ($parentNode->getWorkspaceId() !== $targetId) {
+		if ($parentNode->getWorkspaceId() != $targetId) {
 			self::moveNode($node, $targetId);
 		}
 
