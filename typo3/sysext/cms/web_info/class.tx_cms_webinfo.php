@@ -109,17 +109,12 @@ class tx_cms_webinfo_page extends t3lib_extobjbase {
 			1
 		);
 
-			// SYS_NOTES:
-		if (t3lib_extMgm::isLoaded('sys_note')) {
-			$dblist->start($this->pObj->id, 'sys_note', 0);
-			$dblist->generateList();
-			if ($dblist->HTMLcode) {
-				$theOutput.=$this->pObj->doc->spacer(10);
-				$theOutput.=$this->pObj->doc->section($LANG->getLL('page_sysnote'),
-					$dblist->HTMLcode,
-					0,
-					1
-				);
+			// Additional footer content
+		$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/web_info/class.tx_cms_webinfo.php']['drawFooterHook'];
+		if (is_array($footerContentHook)) {
+			foreach ($footerContentHook as $hook) {
+				$params = array();
+				$theOutput .= t3lib_div::callUserFunction($hook, $params, $this);
 			}
 		}
 
