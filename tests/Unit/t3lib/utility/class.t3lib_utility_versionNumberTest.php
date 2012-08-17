@@ -132,7 +132,7 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 		$className = uniqid('t3lib_utility_VersionNumber');
 		eval(
 			'class ' . $className . ' extends t3lib_utility_VersionNumber {' .
-			'  protected static function getTypo3Version() {' .
+			'  protected static function getCurrentTypo3Version() {' .
 			'    return \'' . $currentVersion . '\';' .
 			'  }' .
 			'}'

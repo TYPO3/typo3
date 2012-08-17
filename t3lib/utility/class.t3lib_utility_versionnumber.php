@@ -106,7 +106,7 @@ class t3lib_utility_VersionNumber {
 	 * @return string
 	 */
 	public static function getNumericTypo3Version() {
-		$t3version = static::getTypo3Version();
+		$t3version = static::getCurrentTypo3Version();
 		if (stripos($t3version, '-dev')
 			|| stripos($t3version, '-alpha')
 			|| stripos($t3version, '-beta')
@@ -124,7 +124,7 @@ class t3lib_utility_VersionNumber {
 	 * @static
 	 * @return string
 	 */
-	protected static function getTypo3Version() {
+	protected static function getCurrentTypo3Version() {
 		return TYPO3_version;
 	}
 
