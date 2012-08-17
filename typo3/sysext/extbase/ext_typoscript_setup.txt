@@ -44,6 +44,7 @@ config.tx_extbase {
 					columns {
 						username.mapOnProperty = userName
 						admin.mapOnProperty = isAdministrator
+						usergroup.mapOnProperty = backendUserGroups
 						disable.mapOnProperty = isDisabled
 						realName.mapOnProperty = realName
 						starttime.mapOnProperty = startDateAndTime
