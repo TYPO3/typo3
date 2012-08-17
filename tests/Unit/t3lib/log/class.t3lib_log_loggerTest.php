@@ -202,14 +202,16 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function addWriterAddsWriter() {
+	public function addWriterAddsWriterToTheLevelSpecifiedAndHigherLevels() {
 		$logger = new t3lib_log_Logger('test.core.log');
 
 		$writer = new t3lib_log_writer_Fixture();
 		$logger->addWriter(t3lib_log_Level::NOTICE, $writer);
 
-		$this->markTestSkipped("writers attribute is multi-dimensional - how to test this?");
-		$this->assertAttributeContains($writer, 'writers', $logger);
+		$writers = $logger->getWriters();
+
+		$this->assertContains($writer, $writers[t3lib_log_Level::NOTICE]);
+		$this->assertContains($writer, $writers[t3lib_log_Level::EMERGENCY]);
 	}
 }
 
