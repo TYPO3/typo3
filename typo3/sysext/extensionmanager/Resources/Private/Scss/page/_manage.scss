@@ -1,0 +1,120 @@
+
+// Upload extension
+.typo3-extensionmanager-headerRowRight {
+	float: right;
+}
+
+
+// Search
+.contentWrapper {
+	@include linear-gradient(#ececec, rgb(255,255,255) 0, rgb(236,236,236) 36%);
+	padding: 15px;
+	border: 1px solid #adadad;
+
+	.ui-toolbar {
+		margin-bottom: 5px;
+
+		.dataTables_filter {
+			float: left;
+		}
+	}
+}
+
+
+
+// Table
+.typo3-extension-list {
+
+	border-spacing: 0;
+
+	thead {
+		@include linear-gradient(#5b5b5b, #7f7f7f 10%, #5b5b5b 100%);
+	}
+
+	th {
+		background: none;
+		border: 0;
+		padding: 8px 10px;
+
+		vertical-align: middle;
+
+		font-weight: bold;
+		color: #fff;
+
+		.DataTables_sort_icon {
+			display: none;
+		}
+	}
+
+	tr {
+
+		&.odd,
+		&.even {
+			td {
+				background: none;
+			}
+
+			&:hover {
+				td {
+					background: none;
+
+					&.stable {
+						@include stable;
+					}
+
+					&.beta {
+						@include beta;
+					}
+				}
+			}
+		}
+
+		td {
+			background: none;
+			padding: 8px 10px;
+			vertical-align: middle;
+			border-bottom: 1px solid #fff;
+
+			&.stable {
+				@include stable;
+			}
+
+			&.beta {
+				@include beta;
+			}
+
+			img {
+				vertical-align: middle;
+				margin-right: 5px;
+			}
+		}
+
+		&:hover {
+			background: #ececec;
+		}
+	}
+
+	.odd {
+		background: #fff;
+	}
+
+	.even {
+		background: #f7f7f7;
+	}
+}
+
+
+
+// Paginator
+.dataTables_info {
+	display: none;
+}
+
+.dataTables_paginate {
+	float: left;
+	margin: 10px 0 0;
+}
+
+
+
+
