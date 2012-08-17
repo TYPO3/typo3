@@ -45,7 +45,6 @@ require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_no
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_mergeadvanced.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_installsysexts.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_imagescols.php');
-require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_installnewsysexts.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_statictemplates.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_t3skin.php');
 require_once(t3lib_extMgm::extPath('install') . 'updates/class.tx_coreupdates_compressionlevel.php');
