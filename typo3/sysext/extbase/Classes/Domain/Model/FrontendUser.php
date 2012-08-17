@@ -37,12 +37,12 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	/**
 	 * @var string
 	 */
-	protected $username;
+	protected $username = '';
 
 	/**
 	 * @var string
 	 */
-	protected $password;
+	protected $password = '';
 
 	/**
 	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
@@ -52,22 +52,22 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	/**
 	 * @var string
 	 */
-	protected $name;
+	protected $name = '';
 
 	/**
 	 * @var string
 	 */
-	protected $firstName;
+	protected $firstName = '';
 
 	/**
 	 * @var string
 	 */
-	protected $middleName;
+	protected $middleName = '';
 
 	/**
 	 * @var string
 	 */
-	protected $lastName;
+	protected $lastName = '';
 
 	/**
 	 * @var string
@@ -130,14 +130,14 @@ class Tx_Extbase_Domain_Model_FrontendUser extends Tx_Extbase_DomainObject_Abstr
 	protected $image = '';
 
 	/**
-	 * @var DateTime
+	 * @var DateTime|NULL
 	 */
-	protected $lastlogin = '';
+	protected $lastlogin = NULL;
 
 	/**
-	 * @var DateTime
+	 * @var DateTime|NULL
 	 */
-	protected $isOnline = '';
+	protected $isOnline = NULL;
 
 	/**
 	 * Constructs a new Front-End User
