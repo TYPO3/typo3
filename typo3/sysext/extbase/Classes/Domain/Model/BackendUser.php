@@ -76,9 +76,30 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $lastLoginDateAndTime;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FileMount>
+	 */
+	protected $fileMounts = NULL;
+
+	/**
 	 * @var boolean
 	 */
 	protected $ipLockIsDisabled = FALSE;
+
+	/**
+	 * Constructs this backend user
+	 */
+	public function __construct() {
+		$this->fileMounts = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+	}
+
+	/**
+	 * Initialize object
+	 *
+	 * @return void
+	 */
+	public function initializeObject() {
+		$this->fileMounts = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+	}
 
 	/**
 	 * Gets the user name.
@@ -285,6 +306,54 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setLastLoginDateAndTime(\DateTime $dateAndTime = NULL) {
 		$this->lastLoginDateAndTime = $dateAndTime;
+	}
+
+	/**
+	 * Setter for the file mounts
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $fileMounts
+	 * @return void
+	 */
+	public function setFileMounts(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $fileMounts) {
+		$this->fileMounts = $fileMounts;
+	}
+
+	/**
+	 * Adds a file mount to this backend user
+	 *
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FileMount $fileMount
+	 * @return void
+	 */
+	public function addFileMount(\TYPO3\CMS\Extbase\Domain\Model\FileMount $fileMount) {
+		$this->fileMounts->attach($fileMount);
+	}
+
+	/**
+	 * Removes file mount from this backend user
+	 *
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FileMount $fileMount
+	 * @return void
+	 */
+	public function removeFileMount(\TYPO3\CMS\Extbase\Domain\Model\FileMount $fileMount) {
+		$this->fileMounts->detach($fileMount);
+	}
+
+	/**
+	 * Remove all file mounts from this backend user
+	 *
+	 * @return void
+	 */
+	public function removeAllFileMounts() {
+		$this->fileMounts = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+	}
+
+	/**
+	 * Getter of file mounts
+	 *
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+	 */
+	public function getFileMounts() {
+		return $this->fileMounts;
 	}
 }
 

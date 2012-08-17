@@ -269,6 +269,62 @@ class BackendUserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->fixture->setLastLoginDateAndTime($date);
 		$this->assertSame($date, $this->fixture->getLastLoginDateAndTime());
 	}
+
+	/**
+	 * @test
+	 */
+	public function getFileMountsInitiallyReturnsEmpty() {
+		$this->assertSame(0, $this->fixture->getFileMounts()->count());
+	}
+
+	/**
+	 * @test
+	 */
+	public function setFileMountsSetsFileMounts() {
+		$fileMounts = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->fixture->setFileMounts($fileMounts);
+
+		$this->assertSame(
+			$fileMounts,
+			$this->fixture->getFileMounts()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function addFileMountAddsFileMount() {
+		$fileMount = new \TYPO3\CMS\Extbase\Domain\Model\FileMount();
+
+		$this->fixture->addFileMount($fileMount);
+		$this->assertTrue($this->fixture->getFileMounts()->contains($fileMount));
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeFileMountRemovesFileMount() {
+		$fileMount = new \TYPO3\CMS\Extbase\Domain\Model\FileMount();
+
+		$this->fixture->addFileMount($fileMount);
+		$this->fixture->removeFileMount($fileMount);
+		$this->assertFalse($this->fixture->getFileMounts()->contains($fileMount));
+	}
+
+	/**
+	 * @test
+	 */
+	public function removeAllFileMountsRemovesAllFileMounts() {
+		$fileMount = new \TYPO3\CMS\Extbase\Domain\Model\FileMount();
+		$fileMount2 = new \TYPO3\CMS\Extbase\Domain\Model\FileMount();
+
+		$this->fixture->addFileMount($fileMount);
+		$this->fixture->addFileMount($fileMount2);
+		$this->fixture->removeAllFileMounts();
+
+		$this->assertFalse($this->fixture->getFileMounts()->contains($fileMount));
+		$this->assertFalse($this->fixture->getFileMounts()->contains($fileMount2));
+	}
 }
 
 ?>

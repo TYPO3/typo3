@@ -50,6 +50,7 @@ config.tx_extbase {
 						endtime.mapOnProperty = endDateAndTime
 						disableIPlock.mapOnProperty = ipLockIsDisabled
 						lastlogin.mapOnProperty = lastLoginDateAndTime
+						file_mountpoints.mapOnProperty = fileMounts
 					}
 				}
 			}
