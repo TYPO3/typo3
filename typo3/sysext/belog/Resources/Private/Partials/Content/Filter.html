@@ -26,18 +26,19 @@
 		<tbody>
 			<tr>
 				<th>
-					<f:translate key="users" />
+					<label for="belog-users"><f:translate key="users" /></label>
 				</th>
 				<td>
 					<f:form.select
 						property="userOrGroup"
 						options="{userGroups}"
 						additionalAttributes="{onchange : 'submit()'}"
+						id="belog-users"
 					/>
 				</td>
 
 				<th>
-					<f:translate key="max" />
+					<label for="belog-max"><f:translate key="max" /></label>
 				</th>
 				<td>
 					<belog:form.translateLabelSelect
@@ -45,6 +46,7 @@
 						options="{settings.selectableNumberOfLogEntries}"
 						optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
 						additionalAttributes="{onchange : 'submit()'}"
+						id="belog-max"
 					/>
 				</td>
 
@@ -53,13 +55,14 @@
 						<f:if condition="{showWorkspaceSelector}">
 							<f:then>
 								<th>
-									<f:translate key="workspace" />
+									<label for="belog-workspaces"><f:translate key="workspace" /></label>
 								</th>
 								<td>
 									<f:form.select
 										property="workspaceUid"
 										options="{workspaces}"
 										additionalAttributes="{onchange : 'submit()'}"
+										id="belog-workspaces"
 									/>
 								</td>
 							</f:then>
@@ -76,13 +79,14 @@
 				<f:if condition="{constraint.isInPageContext}">
 					<f:then>
 						<th>
-							<f:translate key="chLog_menuDepth" />
+							<label for="belog-depth"><f:translate key="chLog_menuDepth" /></label>
 						</th>
 						<td>
 							<f:form.select
 								property="depth"
 								options="{pageDepths}"
 								additionalAttributes="{onchange : 'submit()'}"
+								id="belog-depth"
 							/>
 						</td>
 					</f:then>
@@ -94,7 +98,7 @@
 
 			<tr>
 				<th>
-					<f:translate key="time" />
+					<label for="belog-time"><f:translate key="time" /></label>
 				</th>
 				<td>
 					<belog:form.translateLabelSelect
@@ -102,6 +106,7 @@
 						options="{settings.selectableTimeFrames}"
 						optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
 						additionalAttributes="{onchange : 'submit()'}"
+						id="belog-time"
 					/>
 
 					<f:comment>
@@ -110,7 +115,7 @@
 					<f:if condition="{constraint.timeFrame} == 30">
 						<br />
 
-						<f:translate key="LLL:EXT:lang/locallang_common.xml:from" />&nbsp;
+						<label for="tceforms-datetimefield-manualDateStart"><f:translate key="LLL:EXT:lang/locallang_common.xml:from" /></label>&nbsp;
 						<f:form.textfield
 							property="manualDateStart"
 							value="{constraint.manualDateStart -> f:format.date(format:'{settings.dateFormat} {settings.timeFormat}')}"
@@ -125,7 +130,7 @@
 							&nbsp;
 						</span>
 
-						<f:translate key="LLL:EXT:lang/locallang_common.xml:to" />&nbsp;
+						<label for="tceforms-datetimefield-manualDateStop"><f:translate key="LLL:EXT:lang/locallang_common.xml:to" /></label>&nbsp;
 						<f:form.textfield
 							property="manualDateStop"
 							value="{constraint.manualDateStop -> f:format.date(format:'{settings.dateFormat} {settings.timeFormat}')}"
@@ -145,7 +150,7 @@
 				</td>
 
 				<th>
-					<f:translate key="action" />
+					<label for="belog-action"><f:translate key="action" /></label>
 				</th>
 				<td>
 					<belog:form.translateLabelSelect
@@ -153,17 +158,19 @@
 						options="{settings.selectableActions}"
 						optionLabelPrefix="LLL:EXT:belog/Resources/Private/Language/locallang.xlf:"
 						additionalAttributes="{onchange : 'submit()'}"
+						id="belog-action"
 					/>
 				</td>
 
 				<th>
-					<f:translate key="groupByPage" />
+					<label for="belog-group"><f:translate key="groupByPage" /></label>
 				</th>
 				<td>
 					<f:form.checkbox
 						property="groupByPage"
 						value="1"
 						additionalAttributes="{onchange : 'submit()'}"
+						id="belog-group"
 					/>
 				</td>
 
