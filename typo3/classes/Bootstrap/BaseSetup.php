@@ -126,7 +126,7 @@ class Typo3_Bootstrap_BaseSetup {
 		define('PHP_EXTENSIONS_DEFAULT', 'php,php3,php4,php5,php6,phpsh,inc,phtml');
 
 			// List of extensions required to run the core
-		define('REQUIRED_EXTENSIONS', 'cms,lang,sv,em,recordlist,extbase,fluid');
+		define('REQUIRED_EXTENSIONS', 'cms,lang,sv,extensionmanager,recordlist,extbase,fluid');
 
 			// Operating system identifier
 			// Either "WIN" or empty string
