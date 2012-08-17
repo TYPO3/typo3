@@ -22,6 +22,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+require_once(dirname(__FILE__) . '/class.t3lib_log_processor_test.php');
+
 
 /**
  * Testcase for t3lib_log_processor_Abstract
