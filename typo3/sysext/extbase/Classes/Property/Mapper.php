@@ -296,7 +296,7 @@ class Tx_Extbase_Property_Mapper implements t3lib_Singleton {
 			} elseif (is_array($propertyValue)) {
 				if (isset($propertyValue['__identity'])) {
 					$existingObject = $this->findObjectByUid($targetType, $propertyValue['__identity']);
-					if ($existingObject === FALSE) throw new Tx_Extbase_Property_Exception_TargetNotFound('Querying the repository for the specified object was not successful.', 1237305720);
+					if ($existingObject === NULL) throw new Tx_Extbase_Property_Exception_InvalidTarget('Querying the repository for the specified object was not successful.', 1237305720);
 					unset($propertyValue['__identity']);
 					if (count($propertyValue) === 0) {
 						$propertyValue = $existingObject;
