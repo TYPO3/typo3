@@ -2,7 +2,7 @@
 /***************************************************************
  * Copyright notice
  *
- * (c) 2011-2012 Ingo Renner (ingo@typo3.org)
+ * (c) 2012 Steffen Müller (typo3@t3node.com)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,19 +24,20 @@
 
 
 /**
- * A writer dedicated for testing
+ * A processor dedicated for testing
  *
- * @author Ingo Renner <ingo@typo3.org>
+ * @author Steffen Müller <typo3@t3node.com>
  */
-class t3lib_log_writer_Test extends t3lib_log_writer_Abstract {
+class t3lib_log_processor_Fixture extends t3lib_log_processor_Abstract {
 
 	/**
-	 * @var array
+	 * Processing the record
+	 *
+	 * @param t3lib_log_Record $record
+	 * @return t3lib_log_Record
 	 */
-	protected $records = array();
-
-	public function writeLog(t3lib_log_Record $record) {
-		$this->records[] = $record;
+	public function processLogRecord(t3lib_log_Record $record) {
+		return $record;
 	}
 
 }

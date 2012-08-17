@@ -23,8 +23,8 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once('writer/class.t3lib_log_writer_test.php');
-require_once('writer/class.t3lib_log_writer_failing.php');
+require_once('fixtures/class.t3lib_log_writer_fixture.php');
+require_once('fixtures/class.t3lib_log_writer_failing.php');
 
 /**
  * Testcase for t3lib_log_Logger.
@@ -50,7 +50,7 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	public function loggerDoesNotLogRecordsLessCriticalThanLogLevel() {
 		$logger = new t3lib_log_Logger('test.core.log');
 
-		$writer = new t3lib_log_writer_Test();
+		$writer = new t3lib_log_writer_Fixture();
 		$logger->addWriter(t3lib_log_Level::ERROR, $writer);
 
 			// warning < error, thus must not be logged
@@ -65,7 +65,7 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	public function loggerReturnsItselfAfterLogging() {
 		$logger = new t3lib_log_Logger('test.core.log');
 
-		$writer = new t3lib_log_writer_Test();
+		$writer = new t3lib_log_writer_Fixture();
 		$logger->addWriter(t3lib_log_Level::DEBUG, $writer);
 
 		$returnValue = $logger->log(t3lib_log_Level::WARNING, 'test message');
@@ -90,7 +90,7 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	public function loggerReturnsItselfAfterLoggingLessCritical() {
 		$logger = new t3lib_log_Logger('test.core.log');
 
-		$writer = new t3lib_log_writer_Test();
+		$writer = new t3lib_log_writer_Fixture();
 		$logger->addWriter(t3lib_log_Level::EMERGENCY, $writer);
 
 		$returnValue = $logger->log(t3lib_log_Level::WARNING, 'test message');
@@ -143,7 +143,7 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	public function loggerLogsRecordsAtLeastAsCriticalAsLogLevel() {
 		$logger = new t3lib_log_Logger('test.core.log');
 
-		$writer = new t3lib_log_writer_Test();
+		$writer = new t3lib_log_writer_Fixture();
 		$logger->addWriter(t3lib_log_Level::NOTICE, $writer);
 
 			// notice == notice, thus must be logged
@@ -176,7 +176,7 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	public function loggerLogsRecordsThroughShorthandMethod($shorthandMethod) {
 		$logger = new t3lib_log_Logger('test.core.log');
 
-		$writer = new t3lib_log_writer_Test();
+		$writer = new t3lib_log_writer_Fixture();
 		$logger->addWriter(t3lib_log_Level::DEBUG, $writer);
 
 		call_user_func(array($logger, $shorthandMethod), 'test message');
@@ -190,7 +190,7 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	public function loggerLogsRecordsMoreCriticalThanLogLevel() {
 		$logger = new t3lib_log_Logger('test.core.log');
 
-		$writer = new t3lib_log_writer_Test();
+		$writer = new t3lib_log_writer_Fixture();
 		$logger->addWriter(t3lib_log_Level::NOTICE, $writer);
 
 			// warning > notice, thus must be logged
@@ -205,7 +205,7 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	public function addWriterAddsWriter() {
 		$logger = new t3lib_log_Logger('test.core.log');
 
-		$writer = new t3lib_log_writer_Test();
+		$writer = new t3lib_log_writer_Fixture();
 		$logger->addWriter(t3lib_log_Level::NOTICE, $writer);
 
 		$this->markTestSkipped("writers attribute is multi-dimensional - how to test this?");
