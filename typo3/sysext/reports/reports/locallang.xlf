@@ -72,6 +72,18 @@
 			<trans-unit id="status_PhpMagicQuotesGpc" xml:space="preserve">
 				<source>PHP magic_quotes_gpc</source>
 			</trans-unit>
+			<trans-unit id="status_CreatedFilesWorldWritable" xml:space="preserve">
+				<source>Created files not world writable</source>
+			</trans-unit>
+			<trans-unit id="status_CreatedFilesWorldWritable.writable" xml:space="preserve">
+				<source>Files created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask']. This can be set in the install tool.</source>
+			</trans-unit>
+			<trans-unit id="status_CreatedDirectoriesWorldWritable" xml:space="preserve">
+				<source>Created directories not world writable</source>
+			</trans-unit>
+			<trans-unit id="status_CreatedDirectoriesWorldWritable.writable" xml:space="preserve">
+				<source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']. This can be set in the install tool.</source>
+			</trans-unit>
 			<trans-unit id="status_adminUserAccount" xml:space="preserve">
 				<source>Admin User Account</source>
 			</trans-unit>

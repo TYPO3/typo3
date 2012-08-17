@@ -62,8 +62,8 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 		$this->executeAdminCommand();
 
 		$statuses = array(
-			'emptyReferenceIndex'   => $this->getReferenceIndexStatus(),
-			'deprecationLog'        => $this->getDeprecationLogStatus()
+			'emptyReferenceIndex' => $this->getReferenceIndexStatus(),
+			'deprecationLog' => $this->getDeprecationLogStatus(),
 		);
 
 			// Do not show status about non-existent features
@@ -74,6 +74,11 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 
 		if ($this->isMemcachedUsed()) {
 			$statuses['memcachedConnection'] = $this->getMemcachedConnectionStatus();
+		}
+
+		if (TYPO3_OS !== 'WIN') {
+			$statuses['createdFilesWorldWritable'] = $this->getCreatedFilesWorldWritableStatus();
+			$statuses['createdDirectoriesWorldWritable'] = $this->getCreatedDirectoriesWorldWritableStatus();
 		}
 
 		return $statuses;
@@ -295,6 +300,56 @@ class tx_reports_reports_status_ConfigurationStatus implements tx_reports_Status
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
 			$title, $value, $message, $severity
+		);
+	}
+
+	/**
+	 * Warning, if fileCreateMask has write bit for 'others' set.
+	 *
+	 * @return tx_reports_reports_status_Status The writable status for 'others'
+	 */
+	protected function getCreatedFilesWorldWritableStatus() {
+		$value = $GLOBALS['LANG']->getLL('status_ok');
+		$message = '';
+		$severity = tx_reports_reports_status_Status::OK;
+
+		if (((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] % 10) & 2) {
+			$value = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'];
+			$severity = tx_reports_reports_status_Status::WARNING;
+			$message = $GLOBALS['LANG']->getLL('status_CreatedFilesWorldWritable.writable');
+		}
+
+		return t3lib_div::makeInstance(
+			'tx_reports_reports_status_Status',
+			$GLOBALS['LANG']->getLL('status_CreatedFilesWorldWritable'),
+			$value,
+			$message,
+			$severity
+		);
+	}
+
+	/**
+	 * Warning, if folderCreateMask has write bit for 'others' set.
+	 *
+	 * @return tx_reports_reports_status_Status The writable status for 'others'
+	 */
+	protected function getCreatedDirectoriesWorldWritableStatus() {
+		$value = $GLOBALS['LANG']->getLL('status_ok');
+		$message = '';
+		$severity = tx_reports_reports_status_Status::OK;
+
+		if (((int)$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] %10) & 2) {
+			$value = $GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'];
+			$severity = tx_reports_reports_status_Status::WARNING;
+			$message = $GLOBALS['LANG']->getLL('status_CreatedDirectoriesWorldWritable.writable');
+		}
+
+		return t3lib_div::makeInstance(
+			'tx_reports_reports_status_Status',
+			$GLOBALS['LANG']->getLL('status_CreatedDirectoriesWorldWritable'),
+			$value,
+			$message,
+			$severity
 		);
 	}
 
