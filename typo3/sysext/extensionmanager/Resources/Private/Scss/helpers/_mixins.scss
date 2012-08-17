@@ -1,0 +1,87 @@
+// SASS MIXINS
+$useIEFilters: 0;
+
+@mixin border-radius ($values) {
+	-webkit-border-radius: $values;
+	   -moz-border-radius: $values;
+	        border-radius: $values;
+}
+
+@mixin box-shadow ($values) {
+	-webkit-box-shadow: $values;
+	        box-shadow: $values;
+}
+
+
+@mixin linear-gradient($preset, $from, $to, $ie: $useIEFilters) {
+	background-color: $preset;
+	background-image: -webkit-gradient(linear, left top, left bottom, from($from), to($to));
+	background-image: -webkit-linear-gradient(top, $from, $to);
+	background-image:    -moz-linear-gradient(top, $from, $to);
+	background-image:     -ms-linear-gradient(top, $from, $to);
+	background-image:      -o-linear-gradient(top, $from, $to);
+	background-image:         linear-gradient(to bottom, $from, $to);
+
+	@if $ie == 1 {
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{$from}', endColorstr='#{$to}');
+	}
+}
+
+@mixin rotate ($deg) {
+	-webkit-transform: rotate(#{$deg}deg);
+	   -moz-transform: rotate(#{$deg}deg);
+	     -o-transform: rotate(#{$deg}deg);
+	    -ms-transform: rotate(#{$deg}deg);
+	        transform: rotate(#{$deg}deg);
+}
+
+@mixin scale ($size) {
+	-webkit-transform: scale(#{$size});
+	   -moz-transform: scale(#{$size});
+	     -o-transform: scale(#{$size});
+	    -ms-transform: scale(#{$size});
+	        transform: scale(#{$size});
+}
+
+@mixin transform ($values) {
+	-webkit-transform: #{$values};
+	   -moz-transform: #{$values};
+	     -o-transform: #{$values};
+	    -ms-transform: #{$values};
+	        transform: #{$values};
+}
+
+@mixin transition ($value) {
+	-webkit-transition: $value;
+	   -moz-transition: $value;
+	     -o-transition: $value;
+	    -ms-transition: $value;
+	        transition: $value;
+}
+
+
+// box-sizing
+@mixin box-sizing ($type: border-box) {
+	-webkit-box-sizing: $type;
+	   -moz-box-sizing: $type;
+	        box-sizing: $type;
+}
+
+
+// Hardware Xalleration
+@mixin xallerate ($values: '') {
+	@include transform(translate3d(0,0,0) #{$values});
+}
+
+
+
+@mixin stable {
+	@include linear-gradient(#87b374, #87b374 0%, #5f8d4b 100%);
+}
+
+
+@mixin beta {
+	@include linear-gradient(#f39300, #f39300 0%, #d15e00 100%);
+}
+
+
