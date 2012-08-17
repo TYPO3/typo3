@@ -224,7 +224,9 @@ class Tx_Extbase_Object_Container_Container implements t3lib_Singleton {
 				$this->log('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectMethodName . '". This is often a bad code smell; often you rather want to inject a singleton.', 1);
 			}
 
-			$instance->$injectMethodName($instanceToInject);
+			if (is_callable(array($instance, $injectMethodName))) {
+				$instance->$injectMethodName($instanceToInject);
+			}
 		}
 
 		foreach ($classInfo->getInjectProperties() as $injectPropertyName => $classNameToInject) {
