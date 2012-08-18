@@ -1315,7 +1315,8 @@ class t3lib_extMgm {
 	public static function addPlugin($itemArray, $type = 'list_type') {
 		$_EXTKEY = $GLOBALS['_EXTKEY'];
 		if ($_EXTKEY && !$itemArray[2]) {
-			$itemArray[2] = self::extRelPath($_EXTKEY) . 'ext_icon.gif';
+			$itemArray[2] = self::extRelPath($_EXTKEY) .
+				$GLOBALS['TYPO3_LOADED_EXT'][$_EXTKEY]['ext_icon'];
 		}
 
 		t3lib_div::loadTCA('tt_content');
@@ -1624,9 +1625,36 @@ tt_content.' . $key . $prefix . ' {
 					}
 				}
 			}
+				// Register found extension icon
+			$loadedExtensionInformation[$extensionKey]['ext_icon'] = self::getExtensionIcon(PATH_site . $loadedExtensionInformation[$extensionKey]['siteRelPath']);
 		}
 
 		return $loadedExtensionInformation;
+	}
+
+	/**
+	 * Find extension icon
+	 *
+	 * @param string $extensionPath Path to extension directory.
+	 * @param string $full$ReturnFullPath Return full path of file.
+	 * @return string
+	 * @throws BadFunctionCallException
+	 */
+	public static function getExtensionIcon($extensionPath, $ReturnFullPath = FALSE){
+		$icon = '';
+		$iconFileTypesToCheckFor = array(
+			'png',
+			'gif',
+		);
+
+		foreach ($iconFileTypesToCheckFor as $fileType){
+			if (@is_file($extensionPath . 'ext_icon.' . $fileType)) {
+				$icon = 'ext_icon.' . $fileType;
+				break;
+			}
+		}
+
+		return $ReturnFullPath ? $extensionPath . $icon : $icon;
 	}
 
 	/**
