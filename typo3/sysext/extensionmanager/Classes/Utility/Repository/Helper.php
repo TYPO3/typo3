@@ -317,7 +317,10 @@ class Tx_Extensionmanager_Utility_Repository_Helper implements t3lib_Singleton {
 				$updateNecessity &= ~self::PROBLEM_NO_VERSIONS_IN_DATABASE;
 			} else {
 					// using straight sql here as extbases "remove" runs into memory problems
-				$GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_extensions', 'repository=' . $this->repository->getUid());
+				$GLOBALS['TYPO3_DB']->exec_DELETEquery(
+					'tx_extensionmanager_domain_model_extension',
+					'repository=' . $this->repository->getUid()
+				);
 			}
 
 				// no further problems - start of import process

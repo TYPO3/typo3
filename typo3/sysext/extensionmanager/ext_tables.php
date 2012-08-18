@@ -3,13 +3,13 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 
-$TCA['tx_extensionmanager_extension'] = array(
+$TCA['tx_extensionmanager_domain_model_extension'] = array(
 	'ctrl' => array(
-		'title' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xml:tx_extensionmanager_extension',
+		'title' => 'LLL:EXT:extensionmanager/Resources/Private/Language/locallang_db.xml:tx_extensionmanager_domain_model_extension',
 		'label' => 'uid',
 		'default_sortby' => '',
 		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Extension.php',
-		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'icon_tx_extensionmanager_extension.gif',
+		'hideTable' => TRUE,
 	),
 );
 

@@ -6951,9 +6951,6 @@ class t3lib_TCEmain {
 	 * - cache_imagesizes:	Clearing this table would cause a lot of unneeded
 	 *						 Imagemagick calls because the size informations have
 	 *						 to be fetched again after clearing.
-	 * - cache_extensions:	Clearing this table would make the extension manager
-	 *						 unusable until a new extension list is fetched from
-	 *						 the TER.
 	 *
 	 * @param string $cacheCmd The cache command, see above description
 	 * @return void

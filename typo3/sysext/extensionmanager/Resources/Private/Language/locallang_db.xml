@@ -6,17 +6,17 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="tx_extensionmanager_extension">Extension</label>
-			<label index="tx_extensionmanager_extension.extensionkey">Extension Key</label>
-			<label index="tx_extensionmanager_extension.version">Version</label>
-			<label index="tx_extensionmanager_extension.title">Title</label>
-			<label index="tx_extensionmanager_extension.description">Description</label>
-			<label index="tx_extensionmanager_extension.state">State</label>
-			<label index="tx_extensionmanager_extension.category">Category</label>
-			<label index="tx_extensionmanager_extension.lastupdated">Last Updated</label>
-			<label index="tx_extensionmanager_extension.updatecomment">Update Comment</label>
-			<label index="tx_extensionmanager_extension.authorname">Author Name</label>
-			<label index="tx_extensionmanager_extension.authoremail">Author Email</label>
+			<label index="tx_extensionmanager_domain_model_extension">Extension</label>
+			<label index="tx_extensionmanager_domain_model_extension.extensionkey">Extension Key</label>
+			<label index="tx_extensionmanager_domain_model_extension.version">Version</label>
+			<label index="tx_extensionmanager_domain_model_extension.title">Title</label>
+			<label index="tx_extensionmanager_domain_model_extension.description">Description</label>
+			<label index="tx_extensionmanager_domain_model_extension.state">State</label>
+			<label index="tx_extensionmanager_domain_model_extension.category">Category</label>
+			<label index="tx_extensionmanager_domain_model_extension.lastupdated">Last Updated</label>
+			<label index="tx_extensionmanager_domain_model_extension.updatecomment">Update Comment</label>
+			<label index="tx_extensionmanager_domain_model_extension.authorname">Author Name</label>
+			<label index="tx_extensionmanager_domain_model_extension.authoremail">Author Email</label>
 		</languageKey>
 	</data>
 </T3locallang>
