@@ -503,8 +503,11 @@ class SC_db_new {
 											include(t3lib_extMgm::extPath($_EXTKEY) . 'ext_emconf.php');
 											$thisTitle = $EM_CONF[$_EXTKEY]['title'];
 										}
-										$iconFile[$_EXTKEY] = '<img alt="" src="' . t3lib_extMgm::extRelPath($_EXTKEY) .
-											$GLOBALS['TYPO3_LOADED_EXT'][$_EXTKEY]['ext_icon'] . '" height="16" />';
+										$iconFile[$_EXTKEY] = '<img ' .
+											'src="' . t3lib_extMgm::extRelPath($_EXTKEY) .
+												$GLOBALS['TYPO3_LOADED_EXT'][$_EXTKEY]['ext_icon'] . '" ' .
+											'width="16" height="16" ' .
+											'alt="' . $thisTitle . '" />';
 									} else {
 										$thisTitle = $nameParts[1];
 										$iconFile[$_EXTKEY] = '';
