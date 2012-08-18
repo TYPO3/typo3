@@ -112,27 +112,32 @@ class Tx_Extensionmanager_Domain_Repository_ExtensionRepository extends Tx_Extba
 	 * scoring for the matches to sort the extension with an
 	 * exact key match on top
 	 *
-	 * @param $searchString the string to search for
+	 * @param string $searchString The string to search for extensions
 	 * @return mixed
 	 */
 	public function findByTitleOrAuthorNameOrExtensionKey($searchString) {
-		$searchStringForLike = '%' . $searchString . '%';
+		$quotedSearchString = $GLOBALS['TYPO3_DB']->escapeStrForLike(
+			$GLOBALS['TYPO3_DB']->quoteStr($searchString, 'tx_extensionmanager_domain_model_extension'),
+			'tx_extensionmanager_domain_model_extension'
+		);
+		$quotedSearchStringForLike = '\'%' . $quotedSearchString . '%\'';
+		$quotedSearchString = '\'' . $quotedSearchString .  '\'';
 		$select = 'tx_extensionmanager_domain_model_extension.*,
 			(
-				(extkey like "' . $searchString . '") * 8 +
-				(extkey like "' . $searchStringForLike . '") * 4 +
-				(title like "' . $searchStringForLike . '") * 2 +
-				(authorname like "' . $searchStringForLike . '")
+				(extkey like ' . $quotedSearchString . ') * 8 +
+				(extkey like ' . $quotedSearchStringForLike . ') * 4 +
+				(title like ' . $quotedSearchStringForLike . ') * 2 +
+				(authorname like ' . $quotedSearchStringForLike . ')
 			) as position';
 		$from = 'tx_extensionmanager_domain_model_extension';
 		$where = '(
-					extkey = "' . $searchString . '"
+					extkey = ' . $quotedSearchString . '
 					OR
-					extkey LIKE "' . $searchStringForLike . '"
+					extkey LIKE ' . $quotedSearchStringForLike . '
 					OR
-					description LIKE "' . $searchStringForLike . '"
+					description LIKE ' . $quotedSearchStringForLike . '
 					OR
-					title LIKE "' . $searchStringForLike . '"
+					title LIKE ' . $quotedSearchStringForLike . '
 				)
 				AND lastversion=1
 				HAVING position > 0';
@@ -254,7 +259,7 @@ class Tx_Extensionmanager_Domain_Repository_ExtensionRepository extends Tx_Extba
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 					'tx_extensionmanager_domain_model_extension',
 					'extkey=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row['extkey'], 'tx_extensionmanager_domain_model_extension') .
-						' AND intversion=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row['maxintversion'], 'tx_extensionmanager_domain_model_extension') .
+						' AND intversion=' . intval($row['maxintversion']) .
 						' AND repository=' . intval($repositoryUid),
 					array('lastversion' => 1)
 				);
