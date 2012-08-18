@@ -1484,7 +1484,7 @@ button.ui-button::-moz-focus-inner {
   height: 100%; }
 
 #typo3-extension-manager {
-  margin: 30px; }
+}
 
 .contentWrapper .ui-widget-header {
   background: none;

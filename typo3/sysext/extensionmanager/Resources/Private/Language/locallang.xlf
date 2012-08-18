@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2011-10-17T20:22:37Z" product-name="workspaces">
 		<header/>
 		<body>
+			<trans-unit id="extensionManager" xml:space="preserve">
+				<source>Extension Manager</source>
+			</trans-unit>
 			<trans-unit id="manageExtensions" xml:space="preserve">
 				<source>Manage Extensions</source>
 			</trans-unit>
