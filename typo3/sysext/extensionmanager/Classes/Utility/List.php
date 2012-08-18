@@ -107,7 +107,8 @@ class Tx_Extensionmanager_Utility_List implements t3lib_Singleton {
 							$extensions[$extKey] = array(
 								'siteRelPath' => str_replace(PATH_site, '', $path . $extKey),
 								'type' => $installationType,
-								'key' => $extKey
+								'key' => $extKey,
+								'ext_icon' => t3lib_extMgm::getExtensionIcon( $path . $extKey . '/'),
 							);
 						}
 					}
@@ -120,7 +121,7 @@ class Tx_Extensionmanager_Utility_List implements t3lib_Singleton {
 	}
 
 	/**
-	 * Reduce the available extensions list to only installed extensions
+	 * Reduce the available extensions list to only loaded extensions
 	 *
 	 * @param array $availableExtensions
 	 * @return array
