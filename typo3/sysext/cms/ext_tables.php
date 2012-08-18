@@ -226,7 +226,6 @@ $TCA['sys_template'] = array (
 		'delete' => 'deleted',
 		'adminOnly' => 1,	// Only admin, if any
 		'iconfile' => 'template.gif',
-		'thumbnail' => 'resources',
 		'enablecolumns' => array (
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
