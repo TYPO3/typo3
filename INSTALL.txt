@@ -38,6 +38,7 @@ The following configuration is the minimum required:
 	Some extensions can be optionally compiled into PHP. A list of loaded
 	extensions can be checked using the phpinfo() function.
 - memory_limit set to at least 64M in php.ini
+- register_globals is disabled in php.ini
 - MySQL 5.0 or newer
 - 200 MB of disk space
 - AllowOverride in the Apache configuration includes "Indexes" and "FileInfo"
