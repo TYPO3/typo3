@@ -3,8 +3,8 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 
-$TCA['tx_extensionmanager_extension'] = array(
-	'ctrl' => $TCA['tx_extensionmanager_extension']['ctrl'],
+$TCA['tx_extensionmanager_domain_model_extension'] = array(
+	'ctrl' => $TCA['tx_extensionmanager_domain_model_extension']['ctrl'],
 	'interface' => array(
 		'showRecordFieldList' => 'extensionkey,version,title,description,state,category,lastupdated,updatecomment,authorname,authoremail'
 	),

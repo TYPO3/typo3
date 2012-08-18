@@ -40,7 +40,7 @@ class Tx_Extensionmanager_Domain_Repository_RepositoryRepository extends Tx_Extb
 	 */
 	public function updateRepositoryCount($extCount, $uid = 1) {
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-			'sys_ter',
+			'tx_extensionmanager_domain_model_repository',
 			'uid=' . intval($uid),
 			array (
 				'lastUpdated' => time(),

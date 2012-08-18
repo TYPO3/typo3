@@ -3,7 +3,6 @@ config.tx_extbase {
 		classes {
 			Tx_Extensionmanager_Domain_Model_Extension {
 				mapping {
-					tableName = cache_extensions
 					columns {
 						extkey.mapOnProperty = extensionKey
 						version.mapOnProperty = version
@@ -25,7 +24,6 @@ config.tx_extbase {
 			}
 			Tx_Extensionmanager_Domain_Model_Repository {
 				mapping {
-					tableName = sys_ter
 					columns {
 						title.mapOnProperty = title
 						description.mapOnProperty = description

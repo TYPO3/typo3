@@ -1,7 +1,7 @@
 #
-# Table structure for table 'sys_ter'
+# Table structure for table 'tx_extensionmanager_domain_model_repository'
 #
-CREATE TABLE sys_ter (
+CREATE TABLE tx_extensionmanager_domain_model_repository (
   uid int(11) unsigned NOT NULL auto_increment,
   title varchar(150) NOT NULL default '',
   description mediumtext,
@@ -13,9 +13,9 @@ CREATE TABLE sys_ter (
 );
 
 #
-# Table structure for table 'cache_extensions'
+# Table structure for table 'tx_extensionmanager_domain_model_extension'
 #
-CREATE TABLE cache_extensions (
+CREATE TABLE tx_extensionmanager_domain_model_extension (
   uid int(11) NOT NULL auto_increment,
   extkey varchar(60) NOT NULL default '',
   repository int(11) unsigned NOT NULL default '1',
