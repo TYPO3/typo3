@@ -59,8 +59,19 @@ class Tx_Workspaces_Controller_AbstractController extends Tx_Extbase_MVC_Control
 		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
 		$this->pageId = intval(t3lib_div::_GP('id'));
 
+		$icons = array(
+			'language' => t3lib_iconWorks::getSpriteIconClasses('flags-multiple'),
+			'integrity' => t3lib_iconWorks::getSpriteIconClasses('status-dialog-information'),
+			'success' => t3lib_iconWorks::getSpriteIconClasses('status-dialog-ok'),
+			'info' => t3lib_iconWorks::getSpriteIconClasses('status-dialog-information'),
+			'warning' => t3lib_iconWorks::getSpriteIconClasses('status-dialog-warning'),
+			'error' => t3lib_iconWorks::getSpriteIconClasses('status-dialog-error'),
+		);
+
+		$this->pageRenderer->addInlineSetting('Workspaces', 'icons', $icons);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'depth', ($this->pageId === 0 ? 999 : 1));
+		$this->pageRenderer->addInlineSetting('Workspaces', 'language', $this->getLanguageSelection());
 
 		$this->pageRenderer->addCssFile(t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/StyleSheet/module.css');
 
@@ -103,6 +114,21 @@ class Tx_Workspaces_Controller_AbstractController extends Tx_Extbase_MVC_Control
 		$pageEnd = $this->template->endPage();
 
 		$response->setContent($pageHeader . $response->getContent() . $pageEnd);
+	}
+
+	/**
+	 * Gets the selected language.
+	 *
+	 * @return string
+	 */
+	protected function getLanguageSelection() {
+		$language = 'all';
+
+		if (isset($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['language'])) {
+			$language = $GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['language'];
+		}
+
+		return $language;
 	}
 }
 ?>

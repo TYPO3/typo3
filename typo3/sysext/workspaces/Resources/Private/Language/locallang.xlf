@@ -276,6 +276,33 @@
 			<trans-unit id="comments" xml:space="preserve">
 				<source><![CDATA[User comments for <b>step {0} of stage</b> "{1}"]]></source>
 			</trans-unit>
+			<trans-unit id="language.allLanguages" xml:space="preserve">
+				<source>all languages</source>
+			</trans-unit>
+			<trans-unit id="language.selectLanguage" xml:space="preserve">
+				<source>all languages</source>
+			</trans-unit>
+			<trans-unit id="integrity.dependsOnDefaultLanguageRecord" xml:space="preserve">
+				<source><![CDATA[Record "%s" depends on default language record]]></source>
+			</trans-unit>
+			<trans-unit id="integrity.isDefaultLanguageRecord" xml:space="preserve">
+				<source><![CDATA[Default language record for record "%s"]]></source>
+			</trans-unit>
+			<trans-unit id="integrity.hasIssuesDescription" xml:space="preserve">
+				<source>The integrity check discovered several issues, see status icons infront of each record for further details.</source>
+			</trans-unit>
+			<trans-unit id="integrity.hasIssuesQuestion" xml:space="preserve">
+				<source>Do you want to continue?</source>
+			</trans-unit>
+			<trans-unit id="status.info" xml:space="preserve">
+				<source>Information</source>
+			</trans-unit>
+			<trans-unit id="status.warning" xml:space="preserve">
+				<source>Warning</source>
+			</trans-unit>
+			<trans-unit id="status.error" xml:space="preserve">
+				<source>Error</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

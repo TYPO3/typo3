@@ -31,8 +31,40 @@ TYPO3.Workspaces.Actions = {
 
 	runningMassAction: null,
 	currentSendToMode: 'next',
-	triggerMassAction: function(action) {
 
+	checkIntegrity: function(parameters, callbackFunction, callbackArguments) {
+		TYPO3.Workspaces.ExtDirect.checkIntegrity(
+				parameters,
+				function (response) {
+					switch (response.result) {
+						case 'error':
+							top.TYPO3.Dialog.ErrorDialog({
+								minWidth: 400,
+								title: 'Error',
+								msg: '<div class="scope">' + TYPO3.l10n.localize('integrity.hasIssuesDescription') + '</div>'
+							});
+							break;
+						case 'warning':
+							top.TYPO3.Dialog.QuestionDialog({
+								minWidth: 400,
+								title: 'Warning',
+								msg: '<div class="scope">' + TYPO3.l10n.localize('integrity.hasIssuesDescription') + '</div>' +
+									'<div class="question">' + TYPO3.l10n.localize('integrity.hasIssuesQuestion') + '</div>',
+								fn: function(result) {
+									if (result == 'yes') {
+										callbackFunction.call(this, callbackArguments)
+									}
+								}
+							});
+							break;
+						default:
+							callbackFunction.call(this, callbackArguments);
+					}
+				}
+		)
+	},
+
+	triggerMassAction: function(action, language) {
 		switch (action) {
 			case 'publish':
 			case 'swap':
@@ -47,6 +79,7 @@ TYPO3.Workspaces.Actions = {
 			init: true,
 			total:0,
 			processed:0,
+			language: language,
 			swap: (action == 'swap')
 		});
 	},

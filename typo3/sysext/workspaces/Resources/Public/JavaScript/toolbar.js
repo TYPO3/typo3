@@ -74,7 +74,21 @@ TYPO3.Workspaces.Toolbar.selectStateActionCombo = new Ext.form.ComboBox({
 	listeners: {
 		'select' : function () {
 			var selection = TYPO3.Workspaces.WorkspaceGrid.getSelectionModel().getSelections();
-			TYPO3.Workspaces.Actions.sendToSpecificStageWindow(selection, this.getValue());
+			var nextStage = this.getValue();
+
+			// Use integrity check since "publish execute" stage is effective
+			if (nextStage == -20) {
+				var parameters = {
+					type: 'selection',
+					selection: TYPO3.Workspaces.Helpers.getElementsArrayOfSelectionForIntegrityCheck(selection)
+				};
+
+				TYPO3.Workspaces.Actions.checkIntegrity(parameters, function() {
+					TYPO3.Workspaces.Actions.sendToSpecificStageWindow(selection, nextStage);
+				});
+			} else {
+				TYPO3.Workspaces.Actions.sendToSpecificStageWindow(selection, nextStage);
+			}
 		}
 	}
 });
@@ -116,19 +130,25 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 		'select' : function (combo, record) {
 			var label = '';
 			var affectWholeWorkspaceWarning = TYPO3.l10n.localize('tooltip.affectWholeWorkspace');
+			var language = TYPO3.Workspaces.MainStore.baseParams.language;
+			var checkIntegrity = false;
+
 			switch (record.data.action) {
 				case 'publish':
 					label = TYPO3.l10n.localize('tooltip.publishAll');
+					checkIntegrity = true;
 					break;
 				case 'swap':
 					label = TYPO3.l10n.localize('tooltip.swapAll');
+					checkIntegrity = true;
 					break;
 				case 'discard':
 					label = TYPO3.l10n.localize('tooltip.discardAll');
 					break;
 			}
 			top.TYPO3.Windows.close('executeMassActionWindow');
-			var dialog = top.TYPO3.Windows.showWindow({
+
+			var configuration = {
 				id: 'executeMassActionWindow',
 				title: TYPO3.l10n.localize('window.massAction.title'),
 				items: [
@@ -156,7 +176,10 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 						text: TYPO3.l10n.localize('ok'),
 						disabled:false,
 						handler: function(event) {
-							TYPO3.Workspaces.Actions.triggerMassAction(event.data.action);
+							TYPO3.Workspaces.Actions.triggerMassAction(
+								event.data.action,
+								language
+							);
 						}
 					},
 					{
@@ -170,7 +193,19 @@ TYPO3.Workspaces.Toolbar.selectStateMassActionCombo = new Ext.form.ComboBox({
 						}
 					}
 				]
-			});
+			};
+
+			if (checkIntegrity && language != 'all') {
+				var parameters = {
+					type: 'all',
+					language: language
+				};
+				TYPO3.Workspaces.Actions.checkIntegrity(parameters, function() {
+					top.TYPO3.Windows.showWindow(configuration);
+				});
+			} else {
+				top.TYPO3.Windows.showWindow(configuration);
+			}
 		}
 	}
 });
@@ -226,8 +261,48 @@ TYPO3.Workspaces.Toolbar.depthFilter = new Ext.form.ComboBox({
 	}
 });
 
+TYPO3.Workspaces.Toolbar.LanguageSelector = new Ext.form.ComboBox({
+	width: 150,
+	listWidth: 350,
+	lazyRender: true,
+	valueField: 'uid',
+	displayField: 'title',
+	mode: 'local',
+	emptyText: TYPO3.l10n.localize('language.selectLanguage'),
+	selectOnFocus: true,
+	triggerAction: 'all',
+	editable: false,
+	forceSelection: true,
+	tpl: '<tpl for="."><div class="x-combo-list-item"><span class="{cls}">&nbsp;</span> {title}</div></tpl>',
+	store: new Ext.data.DirectStore({
+		storeId: 'languages',
+		root: 'data',
+		totalProperty: 'total',
+		idProperty: 'uid',
+		fields: [
+			{name : 'uid'},
+			{name : 'title'},
+			{name : 'cls'}
+		],
+		listeners: {
+			load: function() {
+				TYPO3.Workspaces.Toolbar.LanguageSelector.setValue(TYPO3.settings.Workspaces.language);
+			}
+		}
+	}),
+	listeners: {
+		select: function (comboBox, record, index) {
+			TYPO3.Workspaces.ExtDirectActions.saveLanguageSelection(this.getValue());
+			TYPO3.Workspaces.MainStore.setBaseParam('language', this.getValue());
+			TYPO3.Workspaces.MainStore.load();
+		}
+	}
+});
+
 TYPO3.Workspaces.Toolbar.FullTopToolbar = [
 	TYPO3.Workspaces.Toolbar.depthFilter,
+	'-',
+	TYPO3.Workspaces.Toolbar.LanguageSelector,
 	{xtype: 'tbfill'},
 	TYPO3.Workspaces.Toolbar.search
 ];

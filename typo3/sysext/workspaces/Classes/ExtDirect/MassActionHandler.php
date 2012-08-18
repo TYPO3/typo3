@@ -94,7 +94,8 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 
 		try {
 			if ($parameters->init) {
-				$cnt = $this->initPublishData($this->getCurrentWorkspace(), $parameters->swap);
+				$language = $this->validateLanguageParameter($parameters);
+				$cnt = $this->initPublishData($this->getCurrentWorkspace(), $parameters->swap, $language);
 				$result['total'] = $cnt;
 			} else {
 				$result['processed'] = $this->processData($this->getCurrentWorkspace());
@@ -122,7 +123,8 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 
 		try {
 			if ($parameters->init) {
-				$cnt = $this->initFlushData($this->getCurrentWorkspace());
+				$language = $this->validateLanguageParameter($parameters);
+				$cnt = $this->initFlushData($this->getCurrentWorkspace(), $language);
 				$result['total'] = $cnt;
 			} else {
 				$result['processed'] = $this->processData($this->getCurrentWorkspace());
@@ -139,12 +141,12 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 	 *
 	 * @param integer $workspace
 	 * @param boolean $swap
+	 * @param integer $language
 	 * @return integer
 	 */
-	protected function initPublishData($workspace, $swap) {
-		$workspaceService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
+	protected function initPublishData($workspace, $swap, $language = NULL) {
 			// workspace might be -98 a.k.a "All Workspaces but that's save here
-		$publishData = $workspaceService->getCmdArrayForPublishWS($workspace, $swap);
+		$publishData = $this->getWorkspaceService()->getCmdArrayForPublishWS($workspace, $swap, 0, $language);
 		$recordCount = 0;
 		foreach ($publishData as $table => $recs) {
 			$recordCount += count($recs);
@@ -161,12 +163,12 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 	 * Initializes the command map to be used for flushing.
 	 *
 	 * @param integer $workspace
+	 * @param integer $language
 	 * @return integer
 	 */
-	protected function initFlushData($workspace) {
-		$workspaceService = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
+	protected function initFlushData($workspace, $language = NULL) {
 			// workspace might be -98 a.k.a "All Workspaces but that's save here
-		$flushData = $workspaceService->getCmdArrayForFlushWS($workspace);
+		$flushData = $this->getWorkspaceService()->getCmdArrayForFlushWS($workspace, TRUE, 0, $language);
 		$recordCount = 0;
 		foreach ($flushData as $table => $recs) {
 			$recordCount += count($recs);
@@ -209,9 +211,10 @@ class Tx_Workspaces_ExtDirect_MassActionHandler extends Tx_Workspaces_ExtDirect_
 			$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction', NULL);
 			$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_total', 0);
 		} else {
-				// Execute the commands:
+			/** @var $tce t3lib_TCEmain */
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values = 0;
+				// Execute the commands:
 			$tce->start(array(), $limitedCmd);
 			$tce->process_cmdmap();
 

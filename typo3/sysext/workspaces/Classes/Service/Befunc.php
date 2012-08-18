@@ -32,7 +32,15 @@
  * @package Workspaces
  * @subpackage Service
  */
-class Tx_Workspaces_Service_Befunc {
+class Tx_Workspaces_Service_Befunc implements t3lib_Singleton {
+	/**
+	 * Gets a singleton instance of this object.
+	 *
+	 * @return Tx_Workspaces_Service_Befunc
+	 */
+	public static function getInstance() {
+		return t3lib_div::makeInstance('Tx_Workspaces_Service_Befunc');
+	}
 
 	/**
 	 * Hooks into the t3lib_beFunc::viewOnClick and redirects to the workspace preview

@@ -72,6 +72,16 @@ class Tx_Workspaces_Service_GridData {
 	protected $workspacesCache = NULL;
 
 	/**
+	 * @var array
+	 */
+	protected $systemLanguages;
+
+	/**
+	 * @var Tx_Workspaces_Service_Integrity
+	 */
+	protected $integrityService;
+
+	/**
 	 * Generates grid list array from given versions.
 	 *
 	 * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid"
@@ -130,9 +140,14 @@ class Tx_Workspaces_Service_GridData {
 				$isRecordTypeAllowedToModify = $GLOBALS['BE_USER']->check('tables_modify', $table);
 
 				foreach ($records as $record) {
-
 					$origRecord = t3lib_BEFunc::getRecord($table, $record['t3ver_oid']);
 					$versionRecord = t3lib_BEFunc::getRecord($table, $record['uid']);
+
+					$combinedRecord = Tx_Workspaces_Domain_Model_CombinedRecord::createFromArrays(
+						$table, $origRecord, $versionRecord
+					);
+
+					$this->getIntegrityService()->checkElement($combinedRecord);
 
 					if (isset($GLOBALS['TCA'][$table]['columns']['hidden'])) {
 						$recordState = $this->workspaceState($versionRecord['t3ver_state'], $origRecord['hidden'], $versionRecord['hidden']);
@@ -165,6 +180,13 @@ class Tx_Workspaces_Service_GridData {
 					$versionArray['icon_Live'] = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($table, $origRecord);
 					$versionArray['icon_Workspace'] = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($table, $versionRecord);
 
+					$languageValue = $this->getLanguageValue($table, $versionRecord);
+					$versionArray['languageValue'] = $languageValue;
+					$versionArray['language'] = array(
+						'cls' => t3lib_iconWorks::getSpriteIconClasses($this->getSystemLanguageValue($languageValue, 'flagIcon')),
+						'title' => htmlspecialchars($this->getSystemLanguageValue($languageValue, 'title')),
+					);
+
 					$versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
 					$versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
 
@@ -196,6 +218,16 @@ class Tx_Workspaces_Service_GridData {
 				self::SIGNAL_GenerateDataArray_BeforeCaching,
 				$this->dataArray, $versions
 			);
+
+				// Enrich elements after everything has been processed:
+			foreach ($this->dataArray as &$element) {
+				$identifier = $element['table'] . ':' . $element['t3ver_oid'];
+
+				$element['integrity'] = array(
+					'status' => $this->getIntegrityService()->getStatusRepresentation($identifier),
+					'messages' => htmlspecialchars($this->getIntegrityService()->getIssueMessages($identifier, TRUE)),
+				);
+			}
 
 			$this->setDataArrayIntoCache($versions, $filterTxt);
 		}
@@ -317,6 +349,7 @@ class Tx_Workspaces_Service_GridData {
 				case 't3ver_oid';
 				case 'liveid';
 				case 'livepid':
+				case 'languageValue';
 					usort($this->dataArray, array($this, 'intSort'));
 					break;
 				case 'label_Workspace';
@@ -462,6 +495,76 @@ class Tx_Workspaces_Service_GridData {
 		}
 
 		return $state;
+	}
+
+	/**
+	 * Gets the used language value (sys_language.uid) of
+	 * a given database record.
+	 *
+	 * @param string $table Name of the table
+	 * @param array $record Database record
+	 * @return integer
+	 */
+	protected function getLanguageValue($table, array $record) {
+		$languageValue = 0;
+
+		if (t3lib_BEfunc::isTableLocalizable($table)) {
+			$languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+
+			if (!empty($record[$languageField])) {
+				$languageValue = $record[$languageField];
+			}
+		}
+
+		return $languageValue;
+	}
+
+	/**
+	 * Gets a named value of the available sys_language elements.
+	 *
+	 * @param integer $id sys_language uid
+	 * @param string $key Name of the value to be fetched (e.g. title)
+	 * @return string|NULL
+	 * @see getSystemLanguages
+	 */
+	protected function getSystemLanguageValue($id, $key) {
+		$value = NULL;
+
+		$systemLanguages = $this->getSystemLanguages();
+		if (!empty($systemLanguages[$id][$key])) {
+			$value = $systemLanguages[$id][$key];
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Gets all available system languages.
+	 *
+	 * @return array
+	 * @see t3lib_transl8tools::getSystemLanguages
+	 */
+	public function getSystemLanguages() {
+		if (!isset($this->systemLanguages)) {
+			/** @var $translateTools t3lib_transl8tools */
+			$translateTools = t3lib_div::makeInstance('t3lib_transl8tools');
+			$this->systemLanguages = $translateTools->getSystemLanguages();
+		}
+
+		return $this->systemLanguages;
+	}
+
+	/**
+	 * Gets an instance of the integrity service.
+	 *
+	 * @return Tx_Workspaces_Service_Integrity
+	 */
+	protected function getIntegrityService() {
+		if (!isset($this->integrityService)) {
+			$this->integrityService = t3lib_div::makeInstance('Tx_Workspaces_Service_Integrity');
+		}
+
+		return $this->integrityService;
 	}
 
 	/**

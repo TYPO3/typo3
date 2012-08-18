@@ -34,6 +34,36 @@
  */
 class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHandler {
 	/**
+	 * @var Tx_Workspaces_Service_GridData
+	 */
+	protected $gridDataService;
+
+	/**
+	 * @var Tx_Workspaces_Service_Stages
+	 */
+	protected $stagesService;
+
+	/**
+	 * Checks integrity of elements before peforming actions on them.
+	 *
+	 * @param stdClass $parameters
+	 * @return array
+	 */
+	public function checkIntegrity(stdClass $parameters) {
+		$integrity = $this->createIntegrityService(
+			$this->getAffectedElements($parameters)
+		);
+
+		$integrity->check();
+
+		$response = array(
+			'result' => $integrity->getStatusRepresentation(),
+		);
+
+		return $response;
+	}
+
+	/**
 	 * Get List of workspace changes
 	 *
 	 * @param object $parameter
@@ -43,11 +73,21 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 			// To avoid too much work we use -1 to indicate that every page is relevant
 		$pageId = $parameter->id > 0 ? $parameter->id : -1;
 
-		$wslibObj = t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
-		$versions = $wslibObj->selectVersionsInWorkspace($this->getCurrentWorkspace(), 0, -99, $pageId, $parameter->depth);
+		if (!isset($parameter->language) || !t3lib_utility_Math::canBeInterpretedAsInteger($parameter->language)) {
+			$parameter->language = NULL;
+		}
 
-		$workspacesService = t3lib_div::makeInstance('Tx_Workspaces_Service_GridData');
-		$data = $workspacesService->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace());
+		$versions = $this->getWorkspaceService()->selectVersionsInWorkspace(
+			$this->getCurrentWorkspace(),
+			0,
+			-99,
+			$pageId,
+			$parameter->depth,
+			'tables_select',
+			$parameter->language
+		);
+
+		$data = $this->getGridDataService()->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace());
 		return $data;
 	}
 
@@ -61,8 +101,7 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 		$currentWorkspace = $this->getCurrentWorkspace();
 		$stages = array();
 		if ($currentWorkspace != Tx_Workspaces_Service_Workspaces::SELECT_ALL_WORKSPACES) {
-			$stagesService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
-			$stages = $stagesService->getStagesForWSUser();
+			$stages = $this->getStagesService()->getStagesForWSUser();
 		}
 
 		$data = array(
@@ -84,15 +123,15 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 
 		/** @var $t3lib_diff t3lib_diff */
 		$t3lib_diff = t3lib_div::makeInstance('t3lib_diff');
-		/** @var $stagesService Tx_Workspaces_Service_Stages */
-		$stagesService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
+
+		/** @var $parseObj t3lib_parsehtml_proc */
 		$parseObj = t3lib_div::makeInstance('t3lib_parsehtml_proc');
 
 		$liveRecord = t3lib_BEfunc::getRecord($parameter->table, $parameter->t3ver_oid);
 		$versionRecord = t3lib_BEfunc::getRecord($parameter->table, $parameter->uid);
 		$icon_Live = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($parameter->table, $liveRecord);
 		$icon_Workspace = t3lib_iconWorks::mapRecordTypeToSpriteIconClass($parameter->table, $versionRecord);
-		$stagePosition = $stagesService->getPositionOfCurrentStage($parameter->stage);
+		$stagePosition = $this->getStagesService()->getPositionOfCurrentStage($parameter->stage);
 
 		$fieldsOfRecords = array_keys($liveRecord);
 
@@ -182,11 +221,10 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 	 * Gets an array with all sys_log entries and their comments for the given record uid and table
 	 *
 	 * @param integer $uid uid of changed element to search for in log
-	 * @param string $table table name
+	 * @param string $table Name of the record's table
 	 * @return array
 	 */
 	public function getCommentsForRecord($uid, $table) {
-		$stagesService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
 		$sysLogReturnArray = array();
 
 		$sysLogRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
@@ -204,7 +242,7 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 			$data = unserialize($sysLogRow['log_data']);
 			$beUserRecord = t3lib_BEfunc::getRecord('be_users', $sysLogRow['userid']);
 
-			$sysLogEntry['stage_title'] = $stagesService->getStageTitle($data['stage']);
+			$sysLogEntry['stage_title'] = $this->getStagesService()->getStageTitle($data['stage']);
 			$sysLogEntry['user_uid'] = $sysLogRow['userid'];
 			$sysLogEntry['user_username'] = is_array($beUserRecord) ? $beUserRecord['username'] : '';
 			$sysLogEntry['tstamp'] = t3lib_BEfunc::datetime($sysLogRow['tstamp']);
@@ -214,6 +252,64 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 		}
 
 		return $sysLogReturnArray;
+	}
+
+	/**
+	 * Gets all available system languages.
+	 *
+	 * @return array
+	 */
+	public function getSystemLanguages() {
+		$systemLanguages = array(
+			array(
+				'uid' => 'all',
+				'title' => Tx_Extbase_Utility_Localization::translate('language.allLanguages', 'workspaces'),
+				'cls' => t3lib_iconWorks::getSpriteIconClasses('empty-empty'),
+			)
+		);
+
+		foreach ($this->getGridDataService()->getSystemLanguages() as $id => $systemLanguage) {
+			if ($id < 0) {
+				continue;
+			}
+
+			$systemLanguages[] = array(
+				'uid' => $id,
+				'title' => htmlspecialchars($systemLanguage['title']),
+				'cls' => t3lib_iconWorks::getSpriteIconClasses($systemLanguage['flagIcon']),
+			);
+		}
+
+		$result = array(
+			'total' => count($systemLanguages),
+			'data' => $systemLanguages,
+		);
+
+		return $result;
+	}
+
+	/**
+	 * Gets the Grid Data Service.
+	 *
+	 * @return Tx_Workspaces_Service_GridData
+	 */
+	protected function getGridDataService() {
+		if (!isset($this->gridDataService)) {
+			$this->gridDataService = t3lib_div::makeInstance('Tx_Workspaces_Service_GridData');
+		}
+		return $this->gridDataService;
+	}
+
+	/**
+	 * Gets the Stages Service.
+	 *
+	 * @return Tx_Workspaces_Service_Stages
+	 */
+	protected function getStagesService() {
+		if (!isset($this->stagesService)) {
+			$this->stagesService = t3lib_div::makeInstance('Tx_Workspaces_Service_Stages');
+		}
+		return $this->stagesService;
 	}
 }
 ?>

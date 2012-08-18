@@ -72,5 +72,81 @@ abstract class Tx_Workspaces_ExtDirect_AbstractHandler {
 	protected function getWorkspaceService() {
 		return t3lib_div::makeInstance('Tx_Workspaces_Service_Workspaces');
 	}
+
+	/**
+	 * Validates whether the submitted language parameter can be
+	 * interpreted as integer value.
+	 *
+	 * @param stdClass $parameters
+	 * @return integer|NULL
+	 */
+	protected function validateLanguageParameter(stdClass $parameters) {
+		$language = NULL;
+
+		if (isset($parameters->language) && t3lib_utility_Math::canBeInterpretedAsInteger($parameters->language)) {
+			$language = $parameters->language;
+		}
+
+		return $language;
+	}
+
+	/**
+	 * Gets affected elements on publishing/swapping actions.
+	 * Affected elements have a dependency, e.g. translation overlay
+	 * and the default origin record - thus, the default record would be
+	 * affected if the translation overlay shall be published.
+	 *
+	 * @param stdClass $parameters
+	 * @return array
+	 */
+	protected function getAffectedElements(stdClass $parameters) {
+		$affectedElements = array();
+
+		if ($parameters->type === 'selection') {
+			foreach ((array) $parameters->selection as $element) {
+				$affectedElements[] = Tx_Workspaces_Domain_Model_CombinedRecord::create(
+					$element->table,
+					$element->liveId,
+					$element->versionId
+				);
+			}
+		} elseif ($parameters->type === 'all') {
+			$versions = $this->getWorkspaceService()->selectVersionsInWorkspace(
+				$this->getCurrentWorkspace(),
+				0, -99, -1, 0, 'tables_select',
+				$this->validateLanguageParameter($parameters)
+			);
+
+			foreach ($versions as $table => $tableElements) {
+				foreach ($tableElements as $element) {
+					$affectedElement = Tx_Workspaces_Domain_Model_CombinedRecord::create(
+						$table,
+						$element['t3ver_oid'],
+						$element['uid']
+					);
+
+					$affectedElement->getVersionRecord()->setRow($element);
+					$affectedElements[] = $affectedElement;
+				}
+			}
+		}
+
+		return $affectedElements;
+	}
+
+	/**
+	 * Creates a new instance of the integrity service for the
+	 * given set of affected elements.
+	 *
+	 * @param Tx_Workspaces_Domain_Model_CombinedRecord[] $affectedElements
+	 * @return Tx_Workspaces_Service_Integrity
+	 * @see getAffectedElements
+	 */
+	protected function createIntegrityService(array $affectedElements) {
+		/** @var $integrityService Tx_Workspaces_Service_Integrity */
+		$integrityService = t3lib_div::makeInstance('Tx_Workspaces_Service_Integrity');
+		$integrityService->setAffectedElements($affectedElements);
+		return $integrityService;
+	}
 }
 ?>

@@ -90,5 +90,20 @@ TYPO3.Workspaces.Helpers = {
 		});
 
 		return elements;
+	},
+
+	getElementsArrayOfSelectionForIntegrityCheck: function(selection) {
+		var elements = [];
+
+		Ext.each(selection, function(item) {
+			var element = {
+				table: item.data.table,
+				liveId: item.data.t3ver_oid,
+				versionId: item.data.uid
+			}
+			elements.push(element);
+		});
+
+		return elements;
 	}
 };

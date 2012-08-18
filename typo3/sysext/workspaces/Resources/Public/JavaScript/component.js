@@ -48,7 +48,9 @@ TYPO3.Workspaces.RowDetail.rowDataStore = new Ext.data.DirectStore({
 		{name : 'live_record'},
 		{name : 'comments'},
 		{name : 'icon_Live'},
-		{name : 'icon_Workspace'}
+		{name : 'icon_Workspace'},
+		{name : 'languageValue'},
+		{name : 'integrity'}
 	]
 });
 
