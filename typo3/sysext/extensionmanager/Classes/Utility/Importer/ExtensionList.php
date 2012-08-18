@@ -63,7 +63,7 @@ class Tx_Extensionmanager_Utility_Importer_ExtensionList implements SplObserver 
 	protected $arrRows = array();
 
 	/**
-	 * Keeps fieldnames of cache_extension table.
+	 * Keeps fieldnames of tx_extensionmanager_domain_model_extension table.
 	 *
 	 * @var array
 	 */
@@ -162,7 +162,7 @@ class Tx_Extensionmanager_Utility_Importer_ExtensionList implements SplObserver 
 			// flush last rows to database if existing
 		if (count($this->arrRows)) {
 			$GLOBALS['TYPO3_DB']->exec_INSERTmultipleRows(
-				'cache_extensions',
+				'tx_extensionmanager_domain_model_extension',
 				self::$fieldNames,
 				$this->arrRows,
 				self::$fieldIndicesNoQuote
@@ -184,7 +184,7 @@ class Tx_Extensionmanager_Utility_Importer_ExtensionList implements SplObserver 
 			// flush every 50 rows to database
 		if ($this->sumRecords !== 0 && $this->sumRecords % 50 === 0) {
 			$GLOBALS['TYPO3_DB']->exec_INSERTmultipleRows(
-				'cache_extensions',
+				'tx_extensionmanager_domain_model_extension',
 				self::$fieldNames,
 				$this->arrRows,
 				self::$fieldIndicesNoQuote
