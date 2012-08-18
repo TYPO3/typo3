@@ -39,6 +39,14 @@ Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeCon
 Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_ObjectStorageConverter');
 Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_PersistentObjectConverter');
 Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_StringConverter');
+
+	// Experimental FAL<->extbase converters
+Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_FileConverter');
+Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_FileReferenceConverter');
+Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_FolderBasedFileCollectionConverter');
+Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_StaticFileCollectionConverter');
+Tx_Extbase_Utility_Extension::registerTypeConverter('Tx_Extbase_Property_TypeConverter_FolderConverter');
+
 # $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:extbase/Classes/Persistence/Hook/TCEMainValueObjectUpdater.php:tx_Extbase_Persistence_Hook_TCEMainValueObjectUpdater';
 
 if (TYPO3_MODE === 'BE') {

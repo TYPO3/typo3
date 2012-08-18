@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dataset>
+	<sys_file_storage>
+		<uid>9999</uid>
+		<pid>0</pid>
+		<name>fileadmin/ (auto-created)</name>
+		<driver>Local</driver>
+		<configuration><![CDATA[<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+			<T3FlexForms>
+				<data>
+					<sheet index="sDEF">
+						<language index="lDEF">
+							<field index="basePath">
+								<value index="vDEF">fileadmin/</value>
+							</field>
+							<field index="pathType">
+								<value index="vDEF">relative</value>
+							</field>
+						</language>
+					</sheet>
+				</data>
+			</T3FlexForms>]]>
+		</configuration>
+		<is_browsable>1</is_browsable>
+		<is_public>1</is_public>
+		<is_writable>1</is_writable>
+		<is_online>1</is_online>
+		<processingfolder></processingfolder>
+	</sys_file_storage>
+</dataset>

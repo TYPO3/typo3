@@ -4,6 +4,7 @@ $extensionClassesPath = $extensionPath . 'Classes/';
 
 return array(
 	'tx_extbase_tests_unit_basetestcase' => $extensionPath . 'Tests/Unit/BaseTestCase.php',
+	'tx_extbase_tests_functional_basetestcase' => $extensionPath . 'Tests/Functional/BaseTestCase.php',
 
 		// for the autoloader to find the old persistence classes
 	'tx_extbase_persistence_backend' => $extensionClassesPath . 'Persistence/Generic/Backend.php',

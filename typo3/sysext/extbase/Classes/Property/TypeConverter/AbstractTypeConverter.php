@@ -58,6 +58,20 @@ abstract class Tx_Extbase_Property_TypeConverter_AbstractTypeConverter implement
 	protected $priority;
 
 	/**
+	 * @var Tx_Extbase_Object_ObjectManager
+	 */
+	protected $objectManager;
+
+	/**
+	 * Injects the object manager.
+	 *
+	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
 	 * Returns the list of source types the TypeConverter can handle.
 	 * Must be PHP simple types, classes or object is not allowed.
 	 *
