@@ -188,7 +188,7 @@ class Tx_Extensionmanager_Domain_Model_Repository extends Tx_Extbase_DomainObjec
 	 * Method returns LastUpdate.
 	 *
 	 * @access public
-	 * @return int timestamp of last update
+	 * @return DateTime timestamp of last update
 	 */
 	public function getLastUpdate() {
 		return $this->lastUpdate;
@@ -198,10 +198,10 @@ class Tx_Extensionmanager_Domain_Model_Repository extends Tx_Extbase_DomainObjec
 	 * Method sets LastUpdate.
 	 *
 	 * @access public
-	 * @param int $time URL of repository WSDL
+	 * @param DateTime $time URL of repository WSDL
 	 * @return void
 	 */
-	public function setLastUpdate($time) {
+	public function setLastUpdate(DateTime $time) {
 		$this->lastUpdate = $time;
 	}
 
