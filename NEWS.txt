@@ -87,6 +87,11 @@ Extension authors should remove the three line XCLASS statement at the bottom
 of class files now for any extension with a compatibility for 6.0 and above.
 More information can be found at http://wiki.typo3.org/Autoload
 
+* PHP setting register_globals must be off
+
+The bootstrap now verifies the PHP setting register_globals is disabled for
+security reasons. The script dies otherwise.
+
 Removed Functionality
 -------------------------------------------------------------------------------
 

@@ -54,7 +54,6 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 			'Php'                 => $this->getPhpStatus(),
 			'PhpMemoryLimit'      => $this->getPhpMemoryLimitStatus(),
 			'PhpPeakMemory'       => $this->getPhpPeakMemoryStatus(),
-			'PhpRegisterGlobals'  => $this->getPhpRegisterGlobalsStatus(),
 			'Webserver'           => $this->getWebserverStatus(),
 			'PhpModules'          => $this->getMissingPhpModules(),
 		);
@@ -177,35 +176,6 @@ class tx_reports_reports_status_SystemStatus implements tx_reports_StatusProvide
 
 		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
 			$GLOBALS['LANG']->getLL('status_phpPeakMemory'), $value, $message, $severity
-		);
-	}
-
-	/**
-	 * Checks whether register globals is on or off.
-	 *
-	 * @return tx_reports_reports_status_Status A status of whether register globals is on or off
-	 */
-	protected function getPhpRegisterGlobalsStatus() {
-		$value    = $GLOBALS['LANG']->getLL('status_disabled');
-		$message  = '';
-		$severity = tx_reports_reports_status_Status::OK;
-
-		$registerGlobals = trim(ini_get('register_globals'));
-
-			// Can't reliably check for 'on', therefore checking for the opposite 'off', '', or 0
-		if (!empty($registerGlobals) && strtolower($registerGlobals) != 'off') {
-			$registerGlobalsHighlight = '<em>register_globals</em>';
-			$phpManualLink .= '<a href="http://php.net/configuration.changes">' . $GLOBALS['LANG']->getLL('status_phpRegisterGlobalsHowToChange') . '</a>';
-			$message  = sprintf($GLOBALS['LANG']->getLL('status_phpRegisterGlobalsEnabled'), $registerGlobalsHighlight);
-			$message .= ' ' . sprintf($GLOBALS['LANG']->getLL('status_phpRegisterGlobalsSecurity'), $registerGlobalsHighlight);
-			$message .= ' ' . sprintf($GLOBALS['LANG']->getLL('status_phpRegisterGlobalsPHPManual'), $phpManualLink);
-			$severity = tx_reports_reports_status_Status::ERROR;
-			$value = $GLOBALS['LANG']->getLL('status_enabled')
-				. ' (\'' . $registerGlobals . '\')';
-		}
-
-		return t3lib_div::makeInstance('tx_reports_reports_status_Status',
-			$GLOBALS['LANG']->getLL('status_phpRegisterGlobals'), $value, $message, $severity
 		);
 	}
 
