@@ -1642,13 +1642,10 @@ tt_content.' . $key . $prefix . ' {
 	 */
 	public static function getExtensionIcon($extensionPath, $returnFullPath = FALSE){
 		$icon = '';
-		$iconFileTypesToCheckFor = array(
-			'png',
-			'gif',
-		);
+		$iconFileTypesToCheckFor = array('png', 'gif');
 
 		foreach ($iconFileTypesToCheckFor as $fileType){
-			if (@is_file($extensionPath . 'ext_icon.' . $fileType)) {
+			if (file_exists($extensionPath . 'ext_icon.' . $fileType)) {
 				$icon = 'ext_icon.' . $fileType;
 				break;
 			}
