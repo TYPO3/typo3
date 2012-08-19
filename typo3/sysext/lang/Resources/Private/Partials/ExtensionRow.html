@@ -1,0 +1,37 @@
+<f:for each="{extensions}" as="extension">
+	<div class="x-grid3-row x-grid3-row-first" style="width:370px;">
+		<table class="x-grid3-row-table" border="0" cellspacing="0" cellpadding="0" style="width:370px;">
+			<tbody>
+			<tr>
+				<td class="x-grid3-col x-grid3-cell x-grid3-td-0 x-grid3-cell-first  extLangTitleWithIcon" style="width: 200px;" tabindex="0">
+					<div class="x-grid3-cell-inner x-grid3-col-0" unselectable="on">
+						<f:format.html parseFuncTSPath="">
+							<f:image src="{extension.icon}" alt="{extension.key}"/> <strong>{extension.key}</strong>
+						</f:format.html>
+					</div>
+				</td>
+				<f:for each="{selectedLanguages}" as="language">
+				<td class="x-grid3-col x-grid3-cell x-grid3-td-de x-grid3-cell-last "
+					style="cursor:pointer;width: 170px;" tabindex="0">
+					<div class="x-grid3-cell-inner x-grid3-col-de" unselectable="on">
+						<f:if condition="{extension.updateResult}">
+							<f:then>
+								<f:for each="{extension.updateResult}" as="result" key="key">
+									<f:if condition="{0: language.locale} == {0: key}">
+										<f:format.html parseFuncTSPath="">{result.icon}</f:format.html>
+										<f:translate key="{result.message}"/>
+									</f:if>
+								</f:for>
+							</f:then>
+							<f:else>
+								<f:translate key="not_checked"/>
+							</f:else>
+						</f:if>
+					</div>
+				</td>
+				</f:for>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</f:for>
