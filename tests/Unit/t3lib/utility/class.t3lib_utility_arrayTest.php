@@ -759,6 +759,111 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		')';
 		$this->assertSame($expected, t3lib_utility_Array::arrayExport($array));
 	}
+
+	/**
+	 * @param array $array
+	 * @param array $expected
+	 * @test
+	 * @dataProvider arrayIsFlatDataProvider
+	 */
+	public function arrayIsFlat(array $array, array $expected) {
+		$this->assertEquals(
+			$expected,
+			t3lib_utility_Array::flatten($array)
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function arrayIsFlatDataProvider() {
+		return array(
+			'plain array' => array(
+				array(
+					'first' => 1,
+					'second' => 2,
+				),
+				array(
+					'first' => 1,
+					'second' => 2,
+				),
+			),
+			'plain array with faulty dots' => array(
+				array(
+					'first.' => 1,
+					'second.' => 2,
+				),
+				array(
+					'first' => 1,
+					'second' => 2,
+				),
+			),
+			'nested array of 2 levels' => array(
+				array(
+					'first.' => array(
+						'firstSub' => 1,
+					),
+					'second.' => array(
+						'secondSub' => 2,
+					),
+				),
+				array(
+					'first.firstSub' => 1,
+					'second.secondSub' => 2,
+				),
+			),
+			'nested array of 2 levels with faulty dots' => array(
+				array(
+					'first.' => array(
+						'firstSub.' => 1,
+					),
+					'second.' => array(
+						'secondSub.' => 2,
+					),
+				),
+				array(
+					'first.firstSub' => 1,
+					'second.secondSub' => 2,
+				),
+			),
+			'nested array of 3 levels' => array(
+				array(
+					'first.' => array(
+						'firstSub.' => array(
+							'firstSubSub' => 1,
+						),
+					),
+					'second.' => array(
+						'secondSub.' => array(
+							'secondSubSub' => 2,
+						),
+					),
+				),
+				array(
+					'first.firstSub.firstSubSub' => 1,
+					'second.secondSub.secondSubSub' => 2,
+				),
+			),
+			'nested array of 3 levels with faulty dots' => array(
+				array(
+					'first.' => array(
+						'firstSub.' => array(
+							'firstSubSub.' => 1,
+						),
+					),
+					'second.' => array(
+						'secondSub.' => array(
+							'secondSubSub.' => 2,
+						),
+					),
+				),
+				array(
+					'first.firstSub.firstSubSub' => 1,
+					'second.secondSub.secondSubSub' => 2,
+				),
+			),
+		);
+	}
 }
 
 ?>

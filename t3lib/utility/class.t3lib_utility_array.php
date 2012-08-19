@@ -325,6 +325,37 @@ class t3lib_utility_Array {
 		$lines .= str_repeat(TAB, $level - 1) . ')' . ($level - 1 == 0 ? '' : ',' . LF);
 		return $lines;
 	}
+
+	/**
+	 * Converts a multidimensional array to a flat representation.
+	 *
+	 * array('first.' => array('second' => 1)) and array('first' => array('second' => 1))
+	 * will become
+	 * array('first.second' => 1)
+	 *
+	 * @param array $array The (relative) array to be converted
+	 * @param string $prefix The (relative) prefix to be used (e.g. 'section.')
+	 * @return array
+	 */
+	public static function flatten(array $array, $prefix = '') {
+		$flatArray = array();
+
+		foreach ($array as $key => $value) {
+				// Ensure there is no trailling dot:
+			$key = rtrim($key, '.');
+
+			if (!is_array($value)) {
+				$flatArray[$prefix . $key] = $value;
+			} else {
+				$flatArray = array_merge(
+					$flatArray,
+					self::flatten($value, $prefix . $key . '.')
+				);
+			}
+		}
+
+		return $flatArray;
+	}
 }
 
 ?>
