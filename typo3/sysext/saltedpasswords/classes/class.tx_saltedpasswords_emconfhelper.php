@@ -401,8 +401,8 @@ EOT;
 	 */
 	protected function buildHashMethodSelector(array $params, $pObj, $disposal) {
 		$this->init();
-		$fieldName = substr($params['fieldName'], 5, -1);
-		$unknownVariablePleaseRenameMe = '\'' . substr(md5($fieldName), 0, 10) . '\'';
+		$propertyName = $params['propertyName'];
+		$unknownVariablePleaseRenameMe = '\'' . substr(md5($propertyName), 0, 10) . '\'';
 
 		$p_field = '';
 
@@ -416,7 +416,7 @@ EOT;
 			}
 		}
 
-		$p_field = '<select id="' . $fieldName . '" name="' . $params['fieldName'] . '" onChange="uFormUrl(' . $unknownVariablePleaseRenameMe . ')">' . $p_field . '</select>';
+		$p_field = '<select id="' . $propertyName . '" name="' . $params['fieldName'] . '" onChange="uFormUrl(' . $unknownVariablePleaseRenameMe . ')">' . $p_field . '</select>';
 
 		return $p_field;
 	}
