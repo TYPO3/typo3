@@ -6,6 +6,7 @@ Web > Page
 td.t3-page-column {
 	min-width: 150px;
 	max-width: 300px;
+	padding: 0px 4px;
 }
 
 .t3-page-colHeader {
@@ -25,7 +26,7 @@ td.t3-page-column {
 }
 
 .t3-page-ce-wrapper {
-	padding: 12px 0 5px 0;
+
 }
 
 .t3-page-ce-wrapper-new-ce {

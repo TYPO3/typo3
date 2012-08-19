@@ -11,6 +11,14 @@ Web > Page
 	width: 100%;
 }
 
+td.t3-page-column {
+	border-right: 1px solid #c8c8c8;
+}
+
+td.t3-page-column:last-child {
+	border-right: none
+}
+
 .t3-page-colHeader {
 	font-weight: bold;
 	text-align: left;
@@ -27,7 +35,7 @@ Web > Page
 }
 
 .t3-page-ce-wrapper {
-	border-left: 2px solid #c8c8c8;
+
 }
 
 .t3-page-ce-droptarget {
