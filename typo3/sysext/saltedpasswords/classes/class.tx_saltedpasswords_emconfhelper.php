@@ -401,7 +401,7 @@ EOT;
 	 */
 	protected function buildHashMethodSelector(array $params, $pObj, $disposal) {
 		$this->init();
-		$fieldName = substr($params['fieldName'], 5, -1);
+		$fieldName = $params['propertyName'];
 		$unknownVariablePleaseRenameMe = '\'' . substr(md5($fieldName), 0, 10) . '\'';
 
 		$p_field = '';
