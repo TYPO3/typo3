@@ -14,13 +14,13 @@
 
 	<testsuites>
 		<testsuite name="Core Tests">
-			<directory>../../tests/</directory>
+			<directory>../../tests/Unit/</directory>
 		</testsuite>
 		<testsuite name="Extbase Tests">
-			<directory>../../typo3/sysext/extbase/[Tt]ests/</directory>
+			<directory>../../typo3/sysext/extbase/Tests/Unit/</directory>
 		</testsuite>
 		<testsuite name="Fluid Tests">
-			<directory>../../typo3/sysext/fluid/[Tt]ests/</directory>
+			<directory>../../typo3/sysext/fluid/Tests/Unit/</directory>
 		</testsuite>
 	</testsuites>
 
