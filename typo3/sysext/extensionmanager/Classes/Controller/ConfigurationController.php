@@ -79,12 +79,10 @@ class Tx_Extensionmanager_Controller_ConfigurationController extends Tx_Extensio
 		$currentFullConfiguration = $configurationUtility->getCurrentConfiguration($extensionKey);
 		$newConfiguration = t3lib_div::array_merge_recursive_overrule($currentFullConfiguration, $config);
 
-		$strippedConfiguration = array();
-		foreach ($newConfiguration as $configurationKey => $configurationValue) {
-			$strippedConfiguration[$configurationKey]['value'] = $configurationValue['value'];
-		}
-
-		$configurationUtility->writeConfiguration($strippedConfiguration, $extensionKey);
+		$configurationUtility->writeConfiguration(
+			$configurationUtility->convertValuedToNestedConfiguration($newConfiguration),
+			$extensionKey
+		);
 		$this->redirect('showConfigurationForm', NULL, NULL, array('extension' => array('key' => $extensionKey)));
 	}
 
