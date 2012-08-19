@@ -382,8 +382,12 @@ class TSpagegen {
 					$docTypeParts[] = $doctype;
 			}
 		} else {
-			$docTypeParts[] = '<!DOCTYPE html
-	PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">';
+			$docTypeParts[] = '<!DOCTYPE html>';
+			if ($xmlDocument){
+				$pageRenderer->setMetaCharsetTag('<meta charset="|" />');
+			} else {
+				$pageRenderer->setMetaCharsetTag('<meta charset="|">');
+			}
 		}
 
 		if ($GLOBALS['TSFE']->xhtmlVersion) {
