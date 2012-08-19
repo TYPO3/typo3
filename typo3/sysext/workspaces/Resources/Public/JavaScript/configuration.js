@@ -331,6 +331,17 @@ TYPO3.Workspaces.Configuration.RowButtons = {
 					return '';
 				}
 			}
+		},
+		{
+			iconCls: 't3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-history-open',
+			tooltip: TYPO3.l10n.localize('tooltip.showHistory'),
+			handler: function(grid, rowIndex, colIndex) {
+				var record = TYPO3.Workspaces.MainStore.getAt(rowIndex);
+				TYPO3.Workspaces.Helpers.getHistoryWindow({
+					table: record.json.table,
+					versionId: record.json.uid
+				});
+			}
 		}
 	]
 };

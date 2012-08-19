@@ -105,5 +105,77 @@ TYPO3.Workspaces.Helpers = {
 		});
 
 		return elements;
+	},
+
+	getHistoryWindow: function(configuration) {
+		top.TYPO3.Windows.close('historyWindow');
+		return top.TYPO3.Windows.showWindow({
+			id: 'historyWindow',
+			title: 'Record History',
+			stateful: false,
+			modal: false,
+
+			autoHeight: true,
+			boxMaxHeight: 500,
+			width: 700,
+
+			buttons: [
+				{
+					text: TYPO3.l10n.localize('ok'),
+					handler: function(event) {
+						top.TYPO3.Windows.close('historyWindow');
+					}
+				}
+			],
+
+			items: [
+				{
+					xtype: 'grid',
+
+					border : false,
+					loadMask : true,
+					stripeRows: true,
+					autoHeight: true,
+					style: 'min-height: 100px',
+
+					viewConfig: {
+						forceFit: true
+					},
+
+					store: {
+						xtype: 'directstore',
+						autoLoad: true,
+						autoDestroy: true,
+						reader: new Ext.data.JsonReader({
+							idProperty : 'id',
+							root : 'data',
+							totalProperty : 'total',
+							fields: [
+								{ name: 'datetime' },
+								{ name: 'user' },
+								{ name: 'differences' }
+							]
+						}),
+						proxy: new Ext.data.DirectProxy({
+							directFn : TYPO3.Workspaces.ExtDirect.getHistory
+						}),
+						listeners: {
+							beforeload: function(store, options) {
+								store.setBaseParam('table', configuration.table);
+								store.setBaseParam('versionId', configuration.versionId);
+							}
+						}
+					},
+
+					colModel: new Ext.grid.ColumnModel({
+						columns: [
+							{ width: 30, id: 'datetime', header: 'Date' },
+							{ width: 20, id: 'user', header: 'User', dataIndex: 'user' },
+							{ id: 'differences', header: 'Differences', dataIndex: 'differences' }
+						]
+					})
+				}
+			]
+		});
 	}
 };

@@ -20,6 +20,7 @@ return array(
 	'tx_workspaces_service_cleanuppreviewlinktask' => $extensionPath . 'Classes/Service/CleanupPreviewLinkTask.php',
 	'tx_workspaces_service_befunc' => $extensionPath . 'Classes/Service/Befunc.php',
 	'tx_workspaces_service_griddata' => $extensionPath . 'Classes/Service/GridData.php',
+	'tx_workspaces_service_history' => $extensionPath . 'Classes/Service/History.php',
 	'tx_workspaces_service_integrity' => $extensionPath . 'Classes/Service/Integrity.php',
 	'tx_workspaces_service_stages' => $extensionPath . 'Classes/Service/Stages.php',
 	'tx_workspaces_service_tcemain' => $extensionPath . 'Classes/Service/Tcemain.php',

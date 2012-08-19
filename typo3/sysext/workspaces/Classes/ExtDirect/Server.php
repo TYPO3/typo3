@@ -92,6 +92,23 @@ class Tx_Workspaces_ExtDirect_Server extends Tx_Workspaces_ExtDirect_AbstractHan
 	}
 
 	/**
+	 * Gets the editing history of a record.
+	 *
+	 * @param stdClass $parameters
+	 * @return array
+	 */
+	public function getHistory($parameters) {
+		/** @var $historyService Tx_Workspaces_Service_History */
+		$historyService = t3lib_div::makeInstance('Tx_Workspaces_Service_History');
+		$history = $historyService->getHistory($parameters->table, $parameters->versionId);
+
+		return array(
+			'data' => $history,
+			'total' => count($history),
+		);
+	}
+
+	/**
 	 * Get List of available workspace actions
 	 *
 	 * @param object $parameter

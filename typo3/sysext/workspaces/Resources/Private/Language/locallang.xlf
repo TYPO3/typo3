@@ -154,6 +154,9 @@
 			<trans-unit id="tooltip.swap" xml:space="preserve">
 				<source>Swap live and workspace versions of record</source>
 			</trans-unit>
+			<trans-unit id="tooltip.showHistory" xml:space="preserve">
+				<source>Show history of workspace version</source>
+			</trans-unit>
 			<trans-unit id="window.discard.title" xml:space="preserve">
 				<source>Discard workspace version of record.</source>
 			</trans-unit>
