@@ -263,7 +263,11 @@ class Tx_Extensionmanager_ViewHelpers_Form_TypoScriptConstantsViewHelper
 	 */
 	protected function renderUserFunction(Tx_Extensionmanager_Domain_Model_ConfigurationItem $configuration) {
 		$userFunction = $configuration->getGeneric();
-		$userFunctionParams = array('fieldName' => $configuration->getName(), 'fieldValue' => $configuration->getValue());
+		$userFunctionParams = array(
+			'fieldName' => $this->getName($configuration),
+			'fieldValue' => $configuration->getValue(),
+			'propertyName' => $configuration->getName(),
+		);
 		return t3lib_div::callUserFunction($userFunction, $userFunctionParams, $this, '');
 	}
 
