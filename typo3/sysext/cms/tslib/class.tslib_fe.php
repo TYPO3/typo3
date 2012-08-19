@@ -3119,9 +3119,9 @@ class tslib_fe {
 		$this->divSection='';
 
 		if (!empty($this->config['INTincScript_ext']['pageRenderer'])) {
-			/** @var $pageRenderer t3lib_PageRenderer */
-			$pageRenderer = unserialize($this->config['INTincScript_ext']['pageRenderer']);
-			$this->setPageRenderer($pageRenderer);
+			$this->setPageRenderer(
+				unserialize($this->config['INTincScript_ext']['pageRenderer'])
+			);
 		}
 
 		do {
@@ -3139,9 +3139,7 @@ class tslib_fe {
 		$this->content = str_replace('<!--FD_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'), $this->content);
 		$this->content = str_replace('<!--TDS_'.$this->config['INTincScript_ext']['divKey'].'-->', $this->convOutputCharset($this->divSection, 'TDS'), $this->content);
 
-		if (isset($pageRenderer)) {
-			$this->content = $pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey']);
-		}
+		$this->content = $this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey']);
 
 		$this->setAbsRefPrefix();
 		$GLOBALS['TT']->pull();
