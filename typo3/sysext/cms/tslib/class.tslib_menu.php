@@ -1274,11 +1274,14 @@ class tslib_menu {
 			$LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, '', '', $overrideArray, $this->mconf['addParams'].$MP_params.$this->I['val']['additionalParams'].$this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		}
 
-			// Override URL if using "External URL" as doktype with a valid e-mail address:
-		if ($this->menuArr[$key]['doktype'] == t3lib_pageSelect::DOKTYPE_LINK && $this->menuArr[$key]['urltype'] == 3 && t3lib_div::validEmail($this->menuArr[$key]['url'])) {
-				// Create mailto-link using tslib_cObj::typolink (concerning spamProtectEmailAddresses):
+			// Override URL if using "External URL" as doktype
+		if ($this->menuArr[$key]['doktype'] == t3lib_pageSelect::DOKTYPE_LINK) {
 			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array('parameter' => $this->menuArr[$key]['url']));
-			$LD['target'] = '';
+
+				// Override URL if using "External URL" as doktype with a valid e-mail address:
+			if ($this->menuArr[$key]['urltype'] == 3 && t3lib_div::validEmail($this->menuArr[$key]['url'])) {
+				$LD['target'] = '';
+			}
 		}
 
 			// Override url if current page is a shortcut
