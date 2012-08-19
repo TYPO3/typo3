@@ -1,0 +1,228 @@
+<f:layout name="DocHeader"/>
+
+<f:section name="Content">
+	<!-- values needed to be replaced by javascript 415px, 401px, 390px 361px 337px -->
+
+	<div id="em-translations" class=" x-panel x-panel-noborder">
+		<div class="x-panel-bwrap" id="ext-gen40">
+			<div class="x-box-inner" id="ext-gen42" style="width: 1299px; height: 415px; ">
+				<div id="ext-comp-1098" class=" x-panel x-panel-noborder x-box-item" style="width: 250px; left: 0px; top: 0px; ">
+					<div class="x-panel-bwrap" id="ext-gen43">
+						<div class="x-panel-body x-panel-body-noheader x-panel-body-noborder" id="ext-gen44"
+							 style="width: 250px; height: 415px; ">
+							<div id="em-languagegrid" class="x-panel x-grid-panel" style="width: 250px; ">
+								<div class="x-panel-bwrap" id="ext-gen49">
+									<div class="x-panel-body x-panel-body-noheader" id="ext-gen50"
+										 style="width: 250px; height: 415px; ">
+										<div class="x-grid3" hidefocus="true" id="ext-gen52"
+											 style="width: 250px; height: 415px; ">
+											<div class="x-grid3-viewport" id="ext-gen53">
+												<div class="x-grid3-header" id="ext-gen54">
+													<div class="x-grid3-header-inner" id="ext-gen56" style="width: 250px; ">
+														<div class="x-grid3-header-offset" style="width: 249px; ">
+															<table border="0" cellspacing="0" cellpadding="0"
+																   style="width: 232px; ">
+																<thead>
+																<tr class="x-grid3-hd-row">
+																	<td class="x-grid3-hd x-grid3-cell x-grid3-td-checker x-grid3-cell-first"
+																		style="width: 20px;">
+																		<div class="x-grid3-hd-inner x-grid3-hd-checker"
+																			 unselectable="on" style=""><a
+																				class="x-grid3-hd-btn" href="#"></a><img
+																				alt="" class="x-grid3-sort-icon"
+																				src="clear.gif">
+																		</div>
+																	</td>
+																	<td class="x-grid3-hd x-grid3-cell x-grid3-td-lang-label sort-asc"
+																		style="width: 106px;">
+																		<div class="x-grid3-hd-inner x-grid3-hd-lang-label"
+																			 unselectable="on" style=""><a
+																				class="x-grid3-hd-btn"
+																				href="#"></a>Language<img alt=""
+																					class="x-grid3-sort-icon"
+																					src="clear.gif">
+																		</div>
+																	</td>
+																	<td class="x-grid3-hd x-grid3-cell x-grid3-td-lang-key x-grid3-cell-last"
+																		style="width: 106px;">
+																		<div class="x-grid3-hd-inner x-grid3-hd-lang-key"
+																			 unselectable="on" style=""><a
+																				class="x-grid3-hd-btn" href="#"></a>Short<img
+																				alt="" class="x-grid3-sort-icon"
+																				src="clear.gif">
+																		</div>
+																	</td>
+																</tr>
+																</thead>
+															</table>
+														</div>
+													</div>
+													<div class="x-clear"></div>
+												</div>
+												<div class="x-grid3-scroller" id="ext-gen55"
+													 style="overflow-x: hidden; width: 250px; height: 390px; ">
+													<div class="x-grid3-body" style="width: 232px; " id="ext-gen57">
+
+<f:form action="saveSelectedLocale" name="form" object="{form}">
+	<f:form.submit value="ab dafuer"/>
+	<f:for each="{languages}" as="language" iteration="iteration">
+		<div class="x-grid3-row x-grid3-row-first" style="width: 232px;">
+			<table class="x-grid3-row-table" border="0" cellspacing="0" cellpadding="0" style="width:232px;">
+				<tbody>
+				<tr>
+					<td class="x-grid3-col x-grid3-cell x-grid3-td-checker x-grid3-cell-first " style="width: 20px;" tabindex="0">
+						<f:form.checkbox name="form[locale][{language.locale}]" value="1" checked="{language.selected}" />
+					</td>
+					<td class="x-grid3-col x-grid3-cell x-grid3-td-lang-label" style="width: 106px;" tabindex="0">
+						<div class="x-grid3-cell-inner x-grid3-col-lang-label" unselectable="on">
+							<span class="">&nbsp;</span>{language.language}
+						</div>
+					</td>
+					<td class="x-grid3-col x-grid3-cell x-grid3-td-lang-key x-grid3-cell-last" style="width: 106px;" tabindex="0">
+						<div class="x-grid3-cell-inner x-grid3-col-lang-key" unselectable="on">{language.locale}</div>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</f:for>
+</f:form>
+
+														</div>
+														<a href="#" class="x-grid3-focus" tabindex="-1" id="ext-gen58"
+														   style="left: 0px; top: 0px; "></a></div>
+												</div>
+												<div class="x-grid3-resize-marker" id="ext-gen59">&nbsp;</div>
+												<div class="x-grid3-resize-proxy" id="ext-gen60">&nbsp;</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="ext-comp-1099" class=" x-panel x-panel-noborder x-box-item" style="width: 1049px; left: 250px; top: 0px; ">
+						<div class="x-panel-bwrap" id="ext-gen46">
+							<div class="x-panel-body x-panel-body-noheader x-panel-body-noborder" id="ext-gen47" style="width: 1049px; height: 415px; ">
+
+<f:form action="updateTranslation" name="form" object="{form}">
+	<fieldset style="display: none;">
+		<f:for each="{selectedLanguages}" as="language">
+		<f:form.hidden name="form[selectedLanguages][]" value="{language.locale}"/>
+		</f:for>
+	</fieldset>
+
+	<fieldset style="display: none;">
+		<f:for each="{extensions}" as="extension">
+		<f:form.hidden name="form[extensions][]" value="{extension.key}"/>
+		</f:for>
+	</fieldset>
+
+								<fieldset id="ext-comp-1100" class=" x-fieldset x-form-label-left" style="width: 1029px; ">
+									<div class="x-fieldset-bwrap" id="ext-gen62">
+										<div class="x-fieldset-body x-fieldset-body-noheader" id="ext-gen63"
+											 style="width: 1029px; height: 401px; ">
+											<div id="LanguagesActionPanel" style="height: 40px; width: 1029px; "
+												 class=" x-box-layout-ct">
+												<div class="x-box-inner" id="ext-gen84" style="width: 1029px; height: 40px; ">
+													<table id="lang-updatebutton" cellspacing="0"
+														   class="x-btn x-btn-noicon x-box-item"
+														   style="width: 200px; height: 28px; left: 0px; top: 0px; ">
+														<tbody class="x-btn-small x-btn-icon-small-left">
+														<tr>
+															<td class="x-btn-tl"><i>&nbsp;</i></td>
+															<td class="x-btn-tc"></td>
+															<td class="x-btn-tr"><i>&nbsp;</i></td>
+														</tr>
+														<tr>
+															<td class="x-btn-ml"><i>&nbsp;</i></td>
+															<td class="x-btn-mc"><em class="" unselectable="on">
+																<f:form.submit value="Update from repository"/>
+															</em></td>
+															<td class="x-btn-mr"><i>&nbsp;</i></td>
+														</tr>
+														<tr>
+															<td class="x-btn-bl"><i>&nbsp;</i></td>
+															<td class="x-btn-bc"></td>
+															<td class="x-btn-br"><i>&nbsp;</i></td>
+														</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+
+											<div class="x-progress-wrap left-align x-hide-display" id="langpb"
+												 style="margin-top: 0px; margin-right: 0px; margin-bottom: 20px; margin-left: 0px; width: auto; height: 18px; ">
+												<div class="x-progress-inner">
+													<div class="x-progress-bar" id="ext-gen67" style="height: 16px; ">
+														<div class="x-progress-text x-hidden" id="ext-gen68" style="z-index: 99; ">
+															<div id="ext-gen70" style="width: 522px; height: 18px; ">&nbsp;</div>
+														</div>
+													</div>
+													<div class="x-progress-text x-progress-text-back" id="ext-gen69">
+														<div id="ext-gen71" style="width: 522px; height: 18px; ">&nbsp;</div>
+													</div>
+												</div>
+											</div>
+
+											<div id="em-extlanguagegrid" class=" x-panel x-grid-panel" style="width: 1029px; ">
+												<div class="x-panel-bwrap" id="ext-gen72">
+													<div class="x-panel-body x-panel-body-noheader" id="ext-gen73"
+														 style="width: 1029px; height: 361px; ">
+														<div class="x-grid3" hidefocus="true" id="ext-gen74"
+															 style="width: 1029px; height: 361px; ">
+															<div class="x-grid3-viewport" id="ext-gen75">
+																<div class="x-grid3-header" id="ext-gen76">
+																	<div class="x-grid3-header-inner" id="ext-gen78"
+																		 style="width: 1029px; ">
+																		<div class="x-grid3-header-offset" style="width: 387px; ">
+																			<table border="0" cellspacing="0" cellpadding="0" style="width: 370px; ">
+																				<thead>
+																				<tr class="x-grid3-hd-row">
+																					<td class="x-grid3-hd x-grid3-cell x-grid3-td-0 x-grid3-cell-first"
+																						style="width: 200px;">
+																						<div class="x-grid3-hd-inner x-grid3-hd-0" unselectable="on" style="">
+																							Extension<img alt=""
+																										  class="x-grid3-sort-icon"
+																										  src="clear.gif">
+																						</div>
+																					</td>
+
+	<f:render partial="TranslationHeaders" arguments="{languages: languages}"/>
+																				</tr>
+																				</thead>
+																			</table>
+																		</div>
+																	</div>
+																	<div class="x-clear"></div>
+																</div>
+
+																<div class="x-grid3-scroller" id="ext-gen77" style="width: 1029px; height: 337px; ">
+																	<div class="x-grid3-body" style="width: 370px; " id="ext-gen79">
+
+	<f:render partial="ExtensionRow" arguments="{languages: languages, selectedLanguages: selectedLanguages, extensions: extensions}"/>
+
+																</div>
+																<a href="#" class="x-grid3-focus" tabindex="-1" id="ext-gen80" style="left: 0px; top: 0px; "></a></div>
+														</div>
+														<div class="x-grid3-resize-marker" id="ext-gen81">&nbsp;</div>
+														<div class="x-grid3-resize-proxy" id="ext-gen82">&nbsp;</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+
+</f:form>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</f:section>
