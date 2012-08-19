@@ -98,7 +98,7 @@ class Tx_Extensionmanager_Controller_UpdateFromTerController extends Tx_Extensio
 	 * @param boolean $forceUpdateCheck
 	 * @return void
 	 */
-	public function updateExtensionListFromTerAction($forceUpdateCheck) {
+	public function updateExtensionListFromTerAction($forceUpdateCheck = FALSE) {
 		$updated = FALSE;
 		$errorMessage = '';
 
