@@ -204,26 +204,34 @@ class Tx_Extensionmanager_Repository_ConfigurationItemRepositoryTest extends Tx_
 			)
 		));
 		$defaultConfiguration = array(
-			'FE.' => array(
-				'enabled' => '0',
-				'saltedPWHashingMethod' => 'tx_saltedpasswords_salts_md5',
+			'FE.enabled' => array(
+				'value' => '0',
 			),
-			'BE.' => array(
-				'enabled' => '1',
-				'saltedPWHashingMethod' => 'tx_saltedpasswords_salts_md5',
+			'FE.saltedPWHashingMethod' => array(
+				'value' => 'tx_saltedpasswords_salts_md5',
+			),
+			'BE.enabled' => array(
+				'value' => '1',
+			),
+			'BE.saltedPWHashingMethod' => array(
+				'value' => 'tx_saltedpasswords_salts_md5',
 			),
 		);
 		$expectedResult = array(
-			'FE.' => array(
-				'enabled' => '1',
-				'saltedPWHashingMethod' => 'tx_saltedpasswords_salts_sha1',
+			'FE.enabled' => array(
+				'value' => '1',
 			),
-			'BE.' => array(
-				'enabled' => '1',
-				'saltedPWHashingMethod' => 'tx_saltedpasswords_salts_md5',
+			'FE.saltedPWHashingMethod' => array(
+				'value' => 'tx_saltedpasswords_salts_sha1',
 			),
-			'CLI.' => array(
-				'enabled' => '0',
+			'BE.enabled' => array(
+				'value' => '1',
+			),
+			'BE.saltedPWHashingMethod' => array(
+				'value' => 'tx_saltedpasswords_salts_md5',
+			),
+			'CLI.enabled' => array(
+				'value' => '0',
 			)
 		);
 		$result = $this->configurationItemRepository->mergeWithExistingConfiguration(

@@ -104,5 +104,26 @@ class Tx_Extensionmanager_Utility_Configuration implements t3lib_Singleton {
 
 		return $currentFullConfiguration;
 	}
+
+	/**
+	 * Converts a valued configuration to a nested configuration.
+	 *
+	 * array('first.second' => array('value' => 1))
+	 * will become
+	 * array('first.' => array('second' => ))
+	 *
+	 * @param array $valuedConfiguration
+	 * @return array
+	 */
+	public function convertValuedToNestedConfiguration(array $valuedConfiguration) {
+		$nestedConfiguration = array();
+
+		foreach ($valuedConfiguration as $name => $section) {
+			$path = str_replace('.', './', $name);
+			$nestedConfiguration = t3lib_utility_Array::setValueByPath($nestedConfiguration, $path, $section['value'], '/');
+		}
+
+		return $nestedConfiguration;
+	}
 }
 ?>
