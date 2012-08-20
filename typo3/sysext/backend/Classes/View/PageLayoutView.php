@@ -1316,6 +1316,18 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			default:
 				if ($row['bodytext']) {
 					$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
+				} else {
+						// Render at least the CType name
+					$out .= $GLOBALS['LANG']->sL($GLOBALS['TCA']['tt_content']['columns']['CType']['label']);
+					$CType = '';
+					foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $item) {
+						if (is_array($item) && isset($item[1]) && $item[1] === $row['CType']) {
+							$CType = $GLOBALS['LANG']->sL($item[0]);
+							break;
+						}
+					}
+					$CType = ($CType === '') ? $row['CType'] : $CType;
+					$out .= ' <strong>' . $this->linkEditContent($this->renderText($CType), $row) . '</strong><br />';
 				}
 				break;
 			}
