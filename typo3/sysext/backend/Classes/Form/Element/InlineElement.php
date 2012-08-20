@@ -34,6 +34,7 @@ namespace TYPO3\CMS\Backend\Form\Element;
 class InlineElement {
 
 	const Structure_Separator = '-';
+	const Dot_Separator = '__';
 	const Disposal_AttributeName = 'Disposal_AttributeName';
 	const Disposal_AttributeId = 'Disposal_AttributeId';
 	/**
@@ -178,6 +179,8 @@ class InlineElement {
 		$this->inlineCount++;
 		// Init:
 		$config = $PA['fieldConf']['config'];
+		$config['fullConfiguration'] = $PA;
+		$config['deletedRecords'] = '';
 		$foreign_table = $config['foreign_table'];
 		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($foreign_table);
 		if (\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table)) {
@@ -235,7 +238,8 @@ class InlineElement {
 			'top' => array(
 				'table' => $top['table'],
 				'uid' => $top['uid']
-			)
+			),
+			'fieldConfiguration' => $config,
 		);
 		// Set a hint for nested IRRE and tab elements:
 		$this->inlineData['nested'][$nameObject] = $this->fObj->getDynNestedStack(FALSE, $this->isAjaxCall);
@@ -420,7 +424,8 @@ class InlineElement {
 				$fields .= '<input type="hidden" name="' . $ucFieldName . '" value="' . $isExpanded . '" />';
 			} else {
 				// Set additional field for processing for saving
-				$fields .= '<input type="hidden" name="' . $this->prependCmdFieldNames . $appendFormFieldNames . '[delete]" value="1" disabled="disabled" />';
+				$disabled = (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($config['deletedRecords'], $rec['uid']) ? ' disabled="disabled"' : '');
+				$fields .= '<input type="hidden" name="' . $this->prependCmdFieldNames . $appendFormFieldNames . '[delete]" value="1"' . $disabled . ' />';
 				if (!$isExpanded && !empty($GLOBALS['TCA'][$foreign_table]['ctrl']['enablecolumns']['disabled'])) {
 					$checked = !empty($rec['hidden']) ? ' checked="checked"' : '';
 					$fields .= '<input type="checkbox" name="' . $this->prependFormFieldNames . $appendFormFieldNames . '[hidden]_0" value="1"' . $checked . ' />';
@@ -905,6 +910,13 @@ class InlineElement {
 	public function processAjaxRequest($params, $ajaxObj) {
 		$ajaxArguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('ajax');
 		$ajaxIdParts = explode('::', $GLOBALS['ajaxID'], 2);
+		// Get field configuration
+		$fieldConfiguration = array();
+		if (count($ajaxArguments) > 1 && strpos(end($ajaxArguments), '{') !== FALSE) {
+			$jsonArray = json_decode(array_pop($ajaxArguments), TRUE);
+			$fieldConfiguration = (is_array($jsonArray) ? $jsonArray : array());
+		}
+		// Process ajax method
 		if (isset($ajaxArguments) && is_array($ajaxArguments) && count($ajaxArguments)) {
 			$ajaxMethod = $ajaxIdParts[1];
 			switch ($ajaxMethod) {
@@ -917,7 +929,7 @@ class InlineElement {
 				// Construct runtime environment for Inline Relational Record Editing:
 				$this->processAjaxRequestConstruct($ajaxArguments);
 				// Parse the DOM identifier (string), add the levels to the structure stack (array) and load the TCA config:
-				$this->parseStructureString($ajaxArguments[0], TRUE);
+				$this->parseStructureString($ajaxArguments[0], TRUE, $fieldConfiguration);
 				// Render content:
 				$ajaxObj->setContentFormat('jsonbody');
 				$ajaxObj->setContent(call_user_func_array(array(&$this, $ajaxMethod), $ajaxArguments));
@@ -1629,11 +1641,20 @@ class InlineElement {
 			if (isset($levelData['field'])) {
 				$parts[] = $levelData['field'];
 			}
+			// Check if the field is in a FlexForm
+			if (!empty($levelData['field']) && !empty($levelData['config']['fullConfiguration']['itemFormElID'])) {
+				$fieldConfiguration = \TYPO3\CMS\Backend\Utility\BackendUtility::getTcaFieldConfiguration($levelData['table'], $levelData['field']);
+				$elementId = $levelData['config']['fullConfiguration']['itemFormElID'];
+				if (!empty($fieldConfiguration['type']) && $fieldConfiguration['type'] === 'flex') {
+					$partsString = str_replace(array('data[', ']'), array('', ''), $elementId);
+					$parts = explode('[', $partsString);
+				}
+			}
 			// Use in name attributes:
 			if ($disposal === self::Disposal_AttributeName) {
 				$name = '[' . implode('][', $parts) . ']';
 			} else {
-				$name = implode(self::Structure_Separator, $parts);
+				$name = str_replace('.', self::Dot_Separator, implode(self::Structure_Separator, $parts));
 			}
 		}
 		return $name;
@@ -1690,39 +1711,59 @@ class InlineElement {
 	 *
 	 * @param string $domObjectId The DOM object-id
 	 * @param boolean $loadConfig Load the TCA configuration for that level (default: TRUE)
+	 * @param array $forceConfiguration Force this field configuration if not empty
 	 * @return void
 	 * @todo Define visibility
 	 */
-	public function parseStructureString($string, $loadConfig = TRUE) {
-		$unstable = array();
-		$vector = array('table', 'uid', 'field');
+	public function parseStructureString($string, $loadConfig = TRUE, array $forceConfiguration = array()) {
 		$pattern = '/^' . $this->prependNaming . self::Structure_Separator . '(.+?)' . self::Structure_Separator . '(.+)$/';
-		if (preg_match($pattern, $string, $match)) {
-			$this->inlineFirstPid = $match[1];
-			$parts = explode(self::Structure_Separator, $match[2]);
-			$partsCnt = count($parts);
-			for ($i = 0; $i < $partsCnt; $i++) {
-				if ($i > 0 && $i % 3 == 0) {
-					// Load the TCA configuration of the table field and store it in the stack
-					if ($loadConfig) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($unstable['table']);
-						$unstable['config'] = $GLOBALS['TCA'][$unstable['table']]['columns'][$unstable['field']]['config'];
-						// Fetch TSconfig:
-						$TSconfig = $this->fObj->setTSconfig($unstable['table'], array('uid' => $unstable['uid'], 'pid' => $this->inlineFirstPid), $unstable['field']);
-						// Override TCA field config by TSconfig:
-						if (!$TSconfig['disabled']) {
-							$unstable['config'] = $this->fObj->overrideFieldConf($unstable['config'], $TSconfig);
-						}
-						$unstable['localizationMode'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode($unstable['table'], $unstable['config']);
-					}
-					$this->inlineStructure['stable'][] = $unstable;
-					$unstable = array();
-				}
-				$unstable[$vector[$i % 3]] = $parts[$i];
+		if (!preg_match($pattern, $string, $match)) {
+			return;
+		}
+		$this->inlineFirstPid = $match[1];
+		$vector = array('table', 'uid', 'field');
+		$tableNames = array_keys($GLOBALS['TCA']);
+		$parts = explode(self::Structure_Separator, str_replace(self::Dot_Separator, '.', $match[2]));
+		$tempArray = array();
+		// Stable parts
+		while (count($parts) > 2) {
+			$stable['table'] = array_shift($parts);
+			$stable['uid']   = array_shift($parts);
+			$stable['field'] = array_shift($parts);
+			$stable['additionalParts'] = array();
+			while (!in_array(reset($parts), $tableNames)) {
+				$stable['additionalParts'][] = array_shift($parts);
 			}
-			$this->updateStructureNames();
-			if (count($unstable)) {
-				$this->inlineStructure['unstable'] = $unstable;
+			// Load the configuration of the table field
+			if (!empty($loadConfig)) {
+				// Default TCA configuration
+				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($stable['table']);
+				$stable['config'] = $GLOBALS['TCA'][$stable['table']]['columns'][$stable['field']]['config'];
+				// Override configuration
+				if (!empty($forceConfiguration)) {
+					$stable['config'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($stable['config'], $forceConfiguration);
+				}
+				// Override with TSConfig configuration
+				$TSconfig = $this->fObj->setTSconfig(
+					$stable['table'],
+					array('uid' => $stable['uid'], 'pid' => $this->inlineFirstPid),
+					$stable['field']
+				);
+				if (empty($TSconfig['disabled'])) {
+					$stable['config'] = $this->fObj->overrideFieldConf($stable['config'], $TSconfig);
+				}
+				// Add localization mode
+				$stable['localizationMode'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getInlineLocalizationMode($stable['table'], $stable['config']);
+			}
+			$this->inlineStructure['stable'][] = $stable;
+		}
+		$this->updateStructureNames();
+		// Unstable parts
+		if (!empty($parts)) {
+			foreach ($vector as $key) {
+				if (!empty($parts)) {
+					$this->inlineStructure['unstable'][$key] = array_shift($parts);
+				}
 			}
 		}
 	}

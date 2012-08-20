@@ -5465,6 +5465,8 @@ class DataHandler {
 		if (is_array($fieldArray) && is_array($GLOBALS['TCA'][$table]) && intval($id)) {
 			// Do NOT update the UID field, ever!
 			unset($fieldArray['uid']);
+			// Cleanup empty field names
+			unset($fieldArray['']);
 			if (count($fieldArray)) {
 				$fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
 				// Execute the UPDATE query:
@@ -5511,6 +5513,8 @@ class DataHandler {
 		if (is_array($fieldArray) && is_array($GLOBALS['TCA'][$table]) && isset($fieldArray['pid'])) {
 			// Do NOT insert the UID field, ever!
 			unset($fieldArray['uid']);
+			// Cleanup empty field names
+			unset($fieldArray['']);
 			if (count($fieldArray)) {
 				// Check for "suggestedUid".
 				// This feature is used by the import functionality to force a new record to have a certain UID value.
