@@ -374,7 +374,7 @@ class t3lib_rootline {
 	 *
 	 * @return boolean
 	 */
-	protected function isMountedPage() {
+	public function isMountedPage() {
 		return in_array($this->pageUid, array_keys($this->parsedMountPointParameters));
 	}
 
