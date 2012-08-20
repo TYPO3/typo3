@@ -71,7 +71,6 @@ class t3lib_tree_NodeTest extends tx_phpunit_testcase {
 		}
 		$fixture->setChildNodes($nodeCollection);
 
-
 		return $fixture;
 	}
 

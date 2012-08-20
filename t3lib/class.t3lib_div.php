@@ -5285,7 +5285,7 @@ class t3lib_div {
 	 *				will not be empty
 	 */
 	public static function quoteJSvalue($value) {
-		$escapedValue = t3lib_div::makeInstance('t3lib_codec_JavaScriptEncoder')->encode($value);
+		$escapedValue = self::makeInstance('t3lib_codec_JavaScriptEncoder')->encode($value);
 		return '\'' . $escapedValue . '\'';
 	}
 

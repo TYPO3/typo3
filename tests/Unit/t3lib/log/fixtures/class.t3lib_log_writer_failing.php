@@ -38,7 +38,7 @@ class t3lib_log_writer_Failing implements t3lib_log_writer_Writer {
 	 * @throws RuntimeException
 	 */
 	public function writeLog(t3lib_log_Record $record) {
-		throw new RuntimeException("t3lib_log_writer_Failing failed");
+		throw new RuntimeException('t3lib_log_writer_Failing failed');
 	}
 
 }

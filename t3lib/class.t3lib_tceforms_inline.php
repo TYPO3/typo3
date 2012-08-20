@@ -646,7 +646,6 @@ class t3lib_TCEforms_inline {
 				}
 			}
 
-
 				// "Up/Down" links
 			if ($enabledControls['sort'] && $permsEdit && $enableManualSorting) {
 				$onClick = "return inline.changeSorting('" . $nameObjectFtId . "', '1')"; // Up

@@ -1640,7 +1640,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @return string
 	 * @throws BadFunctionCallException
 	 */
-	public static function getExtensionIcon($extensionPath, $returnFullPath = FALSE){
+	public static function getExtensionIcon($extensionPath, $returnFullPath = FALSE) {
 		$icon = '';
 		$iconFileTypesToCheckFor = array('png', 'gif');
 
@@ -2207,10 +2207,11 @@ tt_content.' . $key . $prefix . ' {
 	 *              + typesList: list of types that shall visualize the categories field
 	 *              + position: insert position of the categories field
 	 *              + fieldConfiguration: TCA field config array to override defaults
+	 * @return void
 	 * @see addTCAcolumns
 	 * @see addToAllTCAtypes
 	 */
-	public static function makeCategorizable($extensionKey, $tableName, $fieldName = 'categories', array $options = array())  {
+	public static function makeCategorizable($extensionKey, $tableName, $fieldName = 'categories', array $options = array()) {
 			// Load TCA first
 		t3lib_div::loadTCA($tableName);
 

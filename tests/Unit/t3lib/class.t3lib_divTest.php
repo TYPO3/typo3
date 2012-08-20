@@ -1036,7 +1036,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function rawUrlEncodeJsPreservesWhitespaces() {
 		$input = "Encode 'me', but leave my spaces √";
-		$expected = "Encode %27me%27%2C but leave my spaces %E2%88%9A";
+		$expected = 'Encode %27me%27%2C but leave my spaces %E2%88%9A';
 		$this->assertEquals($expected, t3lib_div::rawUrlEncodeJS($input));
 	}
 
@@ -1049,7 +1049,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function rawUrlEncodeFpPreservesSlashes() {
 		$input = "Encode 'me', but leave my / √";
-		$expected = "Encode%20%27me%27%2C%20but%20leave%20my%20/%20%E2%88%9A";
+		$expected = 'Encode%20%27me%27%2C%20but%20leave%20my%20/%20%E2%88%9A';
 		$this->assertEquals($expected, t3lib_div::rawUrlEncodeFP($input));
 	}
 
@@ -4204,7 +4204,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @return string
 	 */
 	public function user_calledUserFunction() {
-		return "Worked fine";
+		return 'Worked fine';
 	}
 
 	/**
