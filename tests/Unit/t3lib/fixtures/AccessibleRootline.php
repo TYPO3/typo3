@@ -32,10 +32,6 @@
  */
 class Tests_unit_t3lib_AccessibleRootline extends t3lib_rootline {
 
-	public function isMountedPage() {
-		return parent::isMountedPage();
-	}
-
 	public function processMountedPage($mountedPageData, $mountPointPageData) {
 		return parent::processMountedPage($mountedPageData, $mountPointPageData);
 	}
@@ -46,3 +42,6 @@ class Tests_unit_t3lib_AccessibleRootline extends t3lib_rootline {
 
 
 }
+
+
+?>
