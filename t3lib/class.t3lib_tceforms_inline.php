@@ -3,6 +3,7 @@
  *  Copyright notice
  *
  *  (c) 2006-2011 Oliver Hader <oliver@typo3.org>
+ *  (c) 2012 Kai Vogel <kai.vogel@speedprogs.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,9 +30,11 @@
  * The Inline-Relational-Record-Editing (IRRE) functions as part of the TCEforms.
  *
  * @author Oliver Hader <oliver@typo3.org>
+ * @author Kai Vogel <kai.vogel@speedprogs.de>
  */
 class t3lib_TCEforms_inline {
 	const Structure_Separator = '-';
+	const Dot_Separator = '__';
 	const Disposal_AttributeName = 'Disposal_AttributeName';
 	const Disposal_AttributeId = 'Disposal_AttributeId';
 
@@ -132,6 +135,7 @@ class t3lib_TCEforms_inline {
 
 			// Init:
 		$config = $PA['fieldConf']['config'];
+		$config['fullConfiguration'] = $PA;
 		$foreign_table = $config['foreign_table'];
 		t3lib_div::loadTCA($foreign_table);
 
@@ -1780,12 +1784,22 @@ class t3lib_TCEforms_inline {
 				$parts[] = $levelData['field'];
 			}
 
+				// Check if the field is in a FlexForm
+			if (!empty($levelData['field']) && !empty($levelData['config']['fullConfiguration']['itemFormElID'])) {
+				$fieldConfiguration = t3lib_BEfunc::getTcaFieldConfiguration($levelData['table'], $levelData['field']);
+				$elementId = $levelData['config']['fullConfiguration']['itemFormElID'];
+				if (!empty($fieldConfiguration['type']) && $fieldConfiguration['type'] === 'flex') {
+					$partsString = str_replace(array('data[', ']'), array('', ''), $elementId);
+					$parts = explode('[', $partsString);
+				}
+			}
+
 				// Use in name attributes:
 			if ($disposal === self::Disposal_AttributeName) {
 				$name = '[' . implode('][', $parts) . ']';
 					// Use in id attributes:
 			} else {
-				$name = implode(self::Structure_Separator, $parts);
+				$name = str_replace('.', self::Dot_Separator, implode(self::Structure_Separator, $parts));
 			}
 		}
 		return $name;
@@ -1854,39 +1868,71 @@ class t3lib_TCEforms_inline {
 	 * @return void
 	 */
 	function parseStructureString($string, $loadConfig = TRUE) {
-		$unstable = array();
-		$vector = array('table', 'uid', 'field');
 		$pattern = '/^' . $this->prependNaming . self::Structure_Separator . '(.+?)' . self::Structure_Separator . '(.+)$/';
-		if (preg_match($pattern, $string, $match)) {
-			$this->inlineFirstPid = $match[1];
-			$parts = explode(self::Structure_Separator, $match[2]);
-			$partsCnt = count($parts);
-			for ($i = 0; $i < $partsCnt; $i++) {
-				if ($i > 0 && $i % 3 == 0) {
-						// Load the TCA configuration of the table field and store it in the stack
-					if ($loadConfig) {
-						t3lib_div::loadTCA($unstable['table']);
-						$unstable['config'] = $GLOBALS['TCA'][$unstable['table']]['columns'][$unstable['field']]['config'];
-							// Fetch TSconfig:
-						$TSconfig = $this->fObj->setTSconfig(
-							$unstable['table'],
-							array('uid' => $unstable['uid'], 'pid' => $this->inlineFirstPid),
-							$unstable['field']
-						);
-							// Override TCA field config by TSconfig:
-						if (!$TSconfig['disabled']) {
-							$unstable['config'] = $this->fObj->overrideFieldConf($unstable['config'], $TSconfig);
-						}
-						$unstable['localizationMode'] = t3lib_BEfunc::getInlineLocalizationMode($unstable['table'], $unstable['config']);
-					}
-					$this->inlineStructure['stable'][] = $unstable;
-					$unstable = array();
-				}
-				$unstable[$vector[$i % 3]] = $parts[$i];
+		if (!preg_match($pattern, $string, $match)) {
+			return;
+		}
+
+		$this->inlineFirstPid = $match[1];
+		$vector = array('table', 'uid', 'field');
+		$tableNames = array_keys($GLOBALS['TCA']);
+		$parts = explode(self::Structure_Separator, str_replace(self::Dot_Separator, '.', $match[2]));
+		$tempArray = array();
+
+			// Stable parts
+		while (count($parts) > 2) {
+			$stable['table'] = array_shift($parts);
+			$stable['uid']   = array_shift($parts);
+			$stable['field'] = array_shift($parts);
+			$stable['additionalParts'] = array();
+			while (!in_array(reset($parts), $tableNames)) {
+				$stable['additionalParts'][] = array_shift($parts);
 			}
-			$this->updateStructureNames();
-			if (count($unstable)) {
-				$this->inlineStructure['unstable'] = $unstable;
+
+				// Load the configuration of the table field
+			if (!empty($loadConfig)) {
+					// Default TCA configuration
+				t3lib_div::loadTCA($stable['table']);
+				$stable['config'] = $GLOBALS['TCA'][$stable['table']]['columns'][$stable['field']]['config'];
+
+					// Override with FlexForm configuration
+				if (!empty($stable['additionalParts']) && in_array('data', $stable['additionalParts'])) {
+					$stable['config'] = t3lib_BEfunc::getFlexFormFieldConfiguration(
+						$stable['table'],
+						$stable['uid'],
+						$stable['field'],
+						$stable['additionalParts'][3],
+						$stable['additionalParts'][1]
+					);
+					$elementId = $stable['table'] . '-' . $stable['uid'] . '-' . $stable['field'] . '-' . implode('-', $stable['additionalParts']);
+					$stable['config']['fullConfiguration']['itemFormElID'] = trim($elementId, '-');
+				}
+
+					// Override with TSConfig configuration
+				$TSconfig = $this->fObj->setTSconfig(
+					$stable['table'],
+					array('uid' => $stable['uid'], 'pid' => $this->inlineFirstPid),
+					$stable['field']
+				);
+				if (empty($TSconfig['disabled'])) {
+					$stable['config'] = $this->fObj->overrideFieldConf($stable['config'], $TSconfig);
+				}
+
+					// Add localization mode
+				$stable['localizationMode'] = t3lib_BEfunc::getInlineLocalizationMode($stable['table'], $stable['config']);
+			}
+
+			$this->inlineStructure['stable'][] = $stable;
+		}
+
+		$this->updateStructureNames();
+
+			// Unstable parts
+		if (!empty($parts)) {
+			foreach ($vector as $key) {
+				if (!empty($parts)) {
+					$this->inlineStructure['unstable'][$key] = array_shift($parts);
+				}
 			}
 		}
 	}
