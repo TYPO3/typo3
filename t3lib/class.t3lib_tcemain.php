@@ -5765,6 +5765,9 @@ class t3lib_TCEmain {
 				// Do NOT update the UID field, ever!
 			unset($fieldArray['uid']);
 
+				// Cleanup empty field names (e.g. default case in t3lib_TCEmain::checkValue_flex_procInData_travDS)
+			unset($fieldArray['']);
+
 			if (count($fieldArray)) {
 
 				$fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
