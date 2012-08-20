@@ -139,7 +139,7 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 	public function autoloadFindsClassFileDefinedInExtAutoloadFile() {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
-		$autoloaderFile = $extPath . "ext_autoload.php";
+		$autoloaderFile = $extPath . 'ext_autoload.php';
 
 		$class = strtolower("tx_${extKey}_" . uniqid(''));
 		$file = $extPath . uniqid('') . '.php';
@@ -168,7 +168,7 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 	public function unregisterAutoloaderWritesLowerCasedClassFileToCache() {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
-		$autoloaderFile = $extPath . "ext_autoload.php";
+		$autoloaderFile = $extPath . 'ext_autoload.php';
 
 			// A case sensitive key (FooBar) in ext_autoload file
 		$class = "tx_${extKey}_" . uniqid('FooBar');
@@ -334,7 +334,7 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 			// Create a dummy extension with a path to a 'ux_' prefixed php file
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
-		$autoloaderFile = $extPath . "ext_autoload.php";
+		$autoloaderFile = $extPath . 'ext_autoload.php';
 
 		$class = strtolower("ux_tx_${extKey}_" . uniqid(''));
 		$file = $extPath . uniqid('') . '.php';
@@ -385,7 +385,7 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 			// Create a fake extension
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
-		$autoloaderFile = $extPath . "ext_autoload.php";
+		$autoloaderFile = $extPath . 'ext_autoload.php';
 
 			// Feed ext_autoload with a base file and the class file
 		$class = strtolower("tx_${extKey}_" . uniqid(''));
@@ -491,7 +491,7 @@ class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
 		$pathSegment = 'Foo' . uniqid();
 		$fileName = 'Bar' . uniqid();
 
-		$autoloaderFile = $extPath . "ext_autoload.php";
+		$autoloaderFile = $extPath . 'ext_autoload.php';
 
 			// A case sensitive key (FooBar) in ext_autoload file
 		$namespacedClass = '\Tx\\' . $extKey . '\\' . $pathSegment . '\\' . $fileName;

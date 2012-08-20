@@ -853,9 +853,9 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	 * @test
 	 */
 	public function hashReturnsCorrectHashes() {
-		$contents = "68b329da9893e34099c7d8ad5cb9c940";
-		$expectedMd5Hash = "8c67dbaf0ba22f2e7fbc26413b86051b";
-		$expectedSha1Hash = "a60cd808ba7a0bcfa37fa7f3fb5998e1b8dbcd9d";
+		$contents = '68b329da9893e34099c7d8ad5cb9c940';
+		$expectedMd5Hash = '8c67dbaf0ba22f2e7fbc26413b86051b';
+		$expectedSha1Hash = 'a60cd808ba7a0bcfa37fa7f3fb5998e1b8dbcd9d';
 
 		$mockedFile = $this->getSimpleFileMock('/hashFile');
 		$this->addToMount(array('hashFile' => $contents));

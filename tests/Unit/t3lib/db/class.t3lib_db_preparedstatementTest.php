@@ -141,9 +141,9 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 			'string parameter is wrapped in quotes' => array('SELECT * FROM pages WHERE title=?', array('Foo bar'), "SELECT * FROM pages WHERE title='Foo bar'"),
 			'number as string parameter is wrapped in quotes' => array('SELECT * FROM pages WHERE title=?', array('12'), "SELECT * FROM pages WHERE title='12'"),
 			'string single quotes in parameter are properly escaped' => array('SELECT * FROM pages WHERE title=?', array("'Foo'"), "SELECT * FROM pages WHERE title='\\'Foo\\''"),
-			'question mark as values with unnamed parameters are properly escaped' => array('SELECT * FROM foo WHERE title=? AND name=?', array("?", "fancy title"), "SELECT * FROM foo WHERE title='?' AND name='fancy title'"),
-			'parameter name as value is properly escaped' => array('SELECT * FROM foo WHERE title=:name AND name=:title', array(':name'=>":title", ':title'=>"fancy title"), "SELECT * FROM foo WHERE title=':title' AND name='fancy title'"),
-			'question mark as value of a parameter with a name is properly escaped' => array('SELECT * FROM foo WHERE title=:name AND name=?', array(':name'=>"?", "cool name"), "SELECT * FROM foo WHERE title='?' AND name='cool name'"),
+			'question mark as values with unnamed parameters are properly escaped' => array('SELECT * FROM foo WHERE title=? AND name=?', array('?', 'fancy title'), "SELECT * FROM foo WHERE title='?' AND name='fancy title'"),
+			'parameter name as value is properly escaped' => array('SELECT * FROM foo WHERE title=:name AND name=:title', array(':name'=>':title', ':title'=>'fancy title'), "SELECT * FROM foo WHERE title=':title' AND name='fancy title'"),
+			'question mark as value of a parameter with a name is properly escaped' => array('SELECT * FROM foo WHERE title=:name AND name=?', array(':name'=>'?', 'cool name'), "SELECT * FROM foo WHERE title='?' AND name='cool name'"),
 			'regular expression back references as values are left untouched' => array('SELECT * FROM foo WHERE title=:name AND name=?', array(':name'=>'\1', '${1}'), "SELECT * FROM foo WHERE title='\\\\1' AND name='\${1}'"),
 			'unsubstituted question marks do not contain the token wrap' => array('SELECT * FROM foo WHERE title=:name AND question LIKE "%what?" AND name=:title', array(':name'=>'Title', ':title' => 'Name'), "SELECT * FROM foo WHERE title='Title' AND question LIKE \"%what?\" AND name='Name'"),
 		);

@@ -87,8 +87,6 @@ class Tx_Extensionmanager_Controller_UpdateFromTerControllerTest extends Tx_Extb
 			->method('getLastUpdate')
 			->will($this->returnValue($lastUpdateDate));
 
-
-
 		$repositoryRepositoryMock
 			->expects($this->once())
 			->method('findOneByUid')
@@ -149,8 +147,6 @@ class Tx_Extensionmanager_Controller_UpdateFromTerControllerTest extends Tx_Extb
 		$repositoryModelMock->expects($this->once())
 			->method('getLastUpdate')
 			->will($this->returnValue($lastUpdateDate));
-
-
 
 		$repositoryRepositoryMock
 			->expects($this->once())

@@ -1854,7 +1854,6 @@ class t3lib_PageRenderer implements t3lib_Singleton {
 			$cachedPageContent = str_replace($placeHolder, $content, $cachedPageContent);
 		}
 
-
 		$this->reset();
 
 		return $cachedPageContent;

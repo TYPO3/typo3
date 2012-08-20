@@ -78,7 +78,7 @@ class t3lib_file_Repository_AbstractRepositoryTest extends Tx_Phpunit_TestCase {
 			->with($this->anything(), $this->anything(), $this->stringContains('uid=' . 123))
 			->will($this->returnValue(array('uid' => 123)));
 
-		$this->fixture->findByUid("123");
+		$this->fixture->findByUid('123');
 	}
 }
 ?>
