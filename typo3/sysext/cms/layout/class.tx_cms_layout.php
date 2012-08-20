@@ -388,33 +388,21 @@ class tx_cms_layout extends recordList {
 						$defLanguageCount[$key] = array();
 					}
 
-						// Start wrapping div
-					$content[$key] .= '<div class="t3-page-ce-wrapper">';
-
-						// Add new content at the top most position
-					$content[$key] .= '
-						<div class="t3-page-ce-wrapper-new-ce">
-							<a href="#" onclick="' . htmlspecialchars($this->newContentElementOnClick($id, $key, $lP)) . '" title="' . $GLOBALS['LANG']->getLL('newRecordHere', TRUE) . '">' .
-								t3lib_iconWorks::getSpriteIcon('actions-document-new') .
-							'</a>
-						</div>
-					';
-
 						// Select content elements from this column/language:
 					$queryParts = $this->makeQueryArray('tt_content', $id, 'AND colPos=' . intval($key) . $showHidden . $showLanguage);
 					$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
+
+						// If it turns out that there are not content elements in the column, then display a big button which links directly to the wizard script:
+					if ($this->doEdit && $this->option_showBigButtons && !intval($key) && !$GLOBALS['TYPO3_DB']->sql_num_rows($result)) {
+						$onClick = "window.location.href='db_new_content_el.php?id=" . $id . '&colPos=' . intval($key) . '&sys_language_uid=' . $lP . '&uid_pid=' . $id . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI')) . "';";
+						$theNewButton = $GLOBALS['SOBE']->doc->t3Button($onClick, $GLOBALS['LANG']->getLL('newPageContent'));
+						$content[$key] .= '<img src="clear.gif" width="1" height="5" alt="" /><br />' . $theNewButton;
+					}
 
 						// Traverse any selected elements and render their display code:
 					$rowArr = $this->getResult($result);
 
 					foreach ($rowArr as $rKey => $row) {
-
-						if ($this->tt_contentConfig['languageMode']) {
-							$languageColumn[$key][$lP] = $head[$key] . $content[$key];
-							if (!$this->defLangBinding) {
-								$languageColumn[$key][$lP] .= '<br /><br />' . $this->newLanguageButton($this->getNonTranslatedTTcontentUids($defLanguageCount[$key], $id, $lP), $lP);
-							}
-						}
 
 						if (is_array($row) && (int) $row['t3ver_state'] != 2) {
 							$singleElementHTML = '';
@@ -463,10 +451,7 @@ class tx_cms_layout extends recordList {
 						} else {
 							unset($rowArr[$rKey]);
 						}
-
 					}
-
-					$content[$key] .= '</div>';
 
 						// Add new-icon link, header:
 					$newP = $this->newContentElementOnClick($id, $key, $lP);
@@ -485,27 +470,49 @@ class tx_cms_layout extends recordList {
 					// For each column, fit the rendered content into a table cell:
 				$out = '';
 
-				if ($this->tt_contentConfig['languageMode']) {
-						// in language mode process the content elements, but only fill $languageColumn. output will be generated later
+				$backendLayoutUid = $this->getSelectedBackendLayoutUid($id);
+				$backendLayoutRecord = t3lib_BEfunc::getRecord('backend_layout', intval($backendLayoutUid));
+				$this->tt_contentConfig['showAsGrid'] = !empty($backendLayoutRecord['config']) && !$this->tt_contentConfig['languageMode'];
+
+				if (!$this->tt_contentConfig['showAsGrid']) {
 					foreach ($cList as $k => $key) {
-						$languageColumn[$key][$lP] = $head[$key] . $content[$key];
-						if (!$this->defLangBinding) {
-							$languageColumn[$key][$lP] .= '<br /><br />' .
-								$this->newLanguageButton($this->getNonTranslatedTTcontentUids($defLanguageCount[$key], $id, $lP), $lP);
+
+						if (!$k) {
+							$out .= '
+								<td><img src="clear.gif" width="' . $lMarg . '" height="1" alt="" /></td>';
+						} else {
+							$out .= '
+								<td><img src="clear.gif" width="4" height="1" alt="" /></td>
+								<td class="t3-page-border"><img src="clear.gif" width="1" height="1" alt="" /></td>
+								<td><img src="clear.gif" width="4" height="1" alt="" /></td>';
+						}
+						$out .= '
+								<td class="t3-page-column t3-page-column-' . $key . '">' . $head[$key] . $content[$key] . '</td>';
+
+							// Storing content for use if languageMode is set:
+						if ($this->tt_contentConfig['languageMode']) {
+							$languageColumn[$key][$lP] = $head[$key] . $content[$key];
+							if (!$this->defLangBinding) {
+								$languageColumn[$key][$lP] .= '<br /><br />' . $this->newLanguageButton($this->getNonTranslatedTTcontentUids($defLanguageCount[$key], $id, $lP), $lP);
+							}
 						}
 					}
 
+						// Wrap the cells into a table row:
+					$out = '
+					<table border="0" cellpadding="0" cellspacing="0" class="t3-page-columns">
+						<tr>' . $out . '
+						</tr>
+					</table>';
+
 				} else {
-
-					$backendLayoutRecord = $this->getBackendLayoutConfiguration();
-
 						// GRID VIEW:
 
 						// Initialize TS parser to parse config to array
 					$parser = t3lib_div::makeInstance('t3lib_TSparser');
 					$parser->parse($backendLayoutRecord['config']);
 
-					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="6" cellpadding="7" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
+					$grid .= '<div class="t3-gridContainer"><table border="0" cellspacing="1" cellpadding="4" width="100%" height="100%" class="t3-page-columns t3-gridTable">';
 
 						// Add colgroups
 					$colCount = intval($parser->setup['backend_layout.']['colCount']);
@@ -570,7 +577,7 @@ class tx_cms_layout extends recordList {
 				$out .= t3lib_BEfunc::cshItem($this->descrTable, 'columns_multi', $GLOBALS['BACK_PATH']);
 			}
 
-			// If language mode, then make another presentation:
+				// If language mode, then make another presentation:
 				// Notice that THIS presentation will override the value of $out! But it needs the code above to execute since $languageColumn is filled with content we need!
 			if ($this->tt_contentConfig['languageMode']) {
 
@@ -579,7 +586,6 @@ class tx_cms_layout extends recordList {
 
 					// Reset out - we will make new content here:
 				$out = '';
-
 					// Separator between language columns (black thin line)
 				$midSep = '
 						<td><img src="clear.gif" width="4" height="1" alt="" /></td>
@@ -627,7 +633,7 @@ class tx_cms_layout extends recordList {
 				foreach ($languageColumn as $cKey => $cCont) {
 					$out .= '
 					<tr>
-						<td valign="top" class="t3-gridCell">' . implode('</td>' . $midSep . '
+						<td valign="top">' . implode('</td>' . $midSep . '
 						<td valign="top">', $cCont) . '</td>
 					</tr>';
 
@@ -821,23 +827,6 @@ class tx_cms_layout extends recordList {
 		return $out;
 	}
 
-	/**
-	 * Get backend layout configuration
-	 *
-	 * @return array
-	 */
-	public function getBackendLayoutConfiguration() {
-		$backendLayoutUid = $this->getSelectedBackendLayoutUid($this->id);
-
-		if (!$backendLayoutUid) {
-			return array(
-				'config' => tx_cms_BackendLayout::getDefaultColumnLayout()
-			);
-		}
-
-		return t3lib_BEfunc::getRecord('backend_layout', intval($backendLayoutUid));
-	}
-
 	/**********************************
 	 *
 	 * Generic listing of items
@@ -856,90 +845,78 @@ class tx_cms_layout extends recordList {
 	 */
 	function makeOrdinaryList($table, $id, $fList, $icon = 0, $addWhere = '') {
 
-			// Initialize
+			// Initialize:
+		$out = '';
 		$queryParts = $this->makeQueryArray($table, $id, $addWhere);
 		$this->setTotalItems($queryParts);
 		$dbCount = 0;
 
-			// Make query for records if there were any records found in the count operation
+			// Make query for records if there were any records found in the count operation:
 		if ($this->totalItems) {
 			$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($queryParts);
 			$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 		}
 
-			// If records were found, render the list
-		if ($dbCount == 0) {
-			return '';
-		}
-
-			// Set fields
+			// If records were found, render the list:
 		$out = '';
-		$this->fieldArray = t3lib_div::trimExplode(',', '__cmds__,' . $fList . ',__editIconLink__', TRUE);
+		if ($dbCount) {
 
-		$theData = array();
-		$theData = $this->headerFields($this->fieldArray, $table, $theData);
+				// Set fields
+			$this->fieldArray = t3lib_div::trimExplode(',', '__cmds__,' . $fList, TRUE);
 
-			// Title row
-		$localizedTableTitle = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['ctrl']['title'], 1);
-		$out .= '<tr class="t3-row-header">' .
-				'<td nowrap="nowrap" class="col-icon"></td>' .
-				'<td nowrap="nowrap" colspan="' . (count($theData) - 2) . '"><span class="c-table">' . $localizedTableTitle . '</span> (' . $dbCount . ')</td>' .
-				'<td nowrap="nowrap" class="col-icon"></td>' .
-				'</tr>';
-
-			// Column's titles
-		if ($this->doEdit) {
-			$theData['__cmds__'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[' . $table . '][' . $this->id . ']=new', $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' .
-					t3lib_iconWorks::getSpriteIcon('actions-document-new') .
-					'</a>';
-
-		}
-		$out .= $this->addelement(1, '', $theData, ' class="c-headLine"', 15);
-
-			// Render Items
-		$this->eCounter = $this->firstElementNumber;
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
-			t3lib_BEfunc::workspaceOL($table, $row);
-
-			if (is_array($row)) {
-				list($flag, $code) = $this->fwd_rwd_nav();
-				$out .= $code;
-				if ($flag) {
-					$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
-					$Nrow = array();
-
-						// Setting icons links
-					if ($icon) {
-						$Nrow['__cmds__'] = $this->getIcon($table, $row);
-					}
-
-						// Get values:
-					$Nrow = $this->dataFields($this->fieldArray, $table, $row, $Nrow);
-
-						// Attach edit icon
-					if ($this->doEdit) {
-						$Nrow['__editIconLink__'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' .
-								t3lib_iconWorks::getSpriteIcon('actions-document-open') .
-								'</a>';
-					} else {
-						$Nrow['__editIconLink__'] = $this->noEditIcon();
-					}
-
-					$out .= $this->addelement(1, '', $Nrow, 'class="db_list_normal"');
-				}
-				$this->eCounter++;
+				// Header line is drawn
+			$theData = array();
+			$theData = $this->headerFields($this->fieldArray, $table, $theData);
+			if ($this->doEdit) {
+				$theData['__cmds__'] = '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick('&edit[' . $table . '][' . $this->id . ']=new', $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('new', TRUE) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-document-new') .
+						'</a>';
 			}
+			$out .= $this->addelement(1, '', $theData, ' class="c-headLine"', 15);
+
+				// Render Items
+			$this->eCounter = $this->firstElementNumber;
+			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
+				t3lib_BEfunc::workspaceOL($table, $row);
+
+				if (is_array($row)) {
+					list($flag, $code) = $this->fwd_rwd_nav();
+					$out .= $code;
+					if ($flag) {
+						$params = '&edit[' . $table . '][' . $row['uid'] . ']=edit';
+						$Nrow = array();
+
+							// Setting icons/edit links:
+						if ($icon) {
+							$Nrow['__cmds__'] = $this->getIcon($table, $row);
+						}
+						if ($this->doEdit) {
+							$Nrow['__cmds__'] .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($params, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('edit', TRUE) . '">' .
+									t3lib_iconWorks::getSpriteIcon('actions-document-open') .
+									'</a>';
+						} else {
+							$Nrow['__cmds__'] .= $this->noEditIcon();
+						}
+
+							// Get values:
+						$Nrow = $this->dataFields($this->fieldArray, $table, $row, $Nrow);
+						$tdparams = $this->eCounter % 2 ? ' class="bgColor4"' : ' class="bgColor4-20"';
+						$out .= $this->addelement(1, '', $Nrow, $tdparams);
+					}
+					$this->eCounter++;
+				}
+			}
+
+				// Wrap it all in a table:
+			$out = '
+
+				<!--
+					STANDARD LIST OF "' . $table . '"
+				-->
+				<table border="0" cellpadding="1" cellspacing="2" width="480" class="typo3-page-stdlist">
+					' . $out . '
+				</table>';
 		}
-
-			// Wrap it all in a table:
-		$out = '
-			<!--
-				Standard list of table "' . $table . '"
-			-->
-			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">
-				' . $out . '
-			</table>';
-
 		return $out;
 	}
 
@@ -1012,7 +989,7 @@ class tx_cms_layout extends recordList {
 
 		foreach ($fieldArr as $fieldName) {
 			$ll = $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'], 1);
-			$out[$fieldName] = ($ll ? $ll : '&nbsp;');
+			$out[$fieldName] = '<strong>' . ($ll ? $ll : '&nbsp;') . '</strong>';
 		}
 		return $out;
 	}
@@ -1127,7 +1104,7 @@ class tx_cms_layout extends recordList {
 	 *
 	 * @param string $colName Column name
 	 * @param string $editParams Edit params (Syntax: &edit[...] for alt_doc.php)
-	 * @param string $newParams New element params (Syntax: &edit[...] for alt_doc.php) OBSOLETE
+	 * @param string $newParams New element params (Syntax: &edit[...] for alt_doc.php)
 	 * @return string HTML table
 	 */
 	function tt_content_drawColHeader($colName, $editParams, $newParams) {
@@ -1135,6 +1112,12 @@ class tx_cms_layout extends recordList {
 		$icons = '';
 			// Create command links:
 		if ($this->tt_contentConfig['showCommands']) {
+				// New record:
+			if ($newParams) {
+				$icons .= '<a href="#" onclick="' . htmlspecialchars($newParams) . '" title="' . $GLOBALS['LANG']->getLL('newInColumn', TRUE) . '">' .
+						t3lib_iconWorks::getSpriteIcon('actions-document-new') .
+						'</a>';
+			}
 				// Edit whole of column:
 			if ($editParams) {
 				$icons .= '<a href="#" onclick="' . htmlspecialchars(t3lib_BEfunc::editOnClick($editParams, $this->backPath)) . '" title="' . $GLOBALS['LANG']->getLL('editColumn', TRUE) . '">' .
@@ -1458,6 +1441,18 @@ class tx_cms_layout extends recordList {
 				default:
 					if ($row['bodytext']) {
 						$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
+					} else {
+							// Render at least the CType name
+						$out .= $GLOBALS['LANG']->sL($GLOBALS['TCA']['tt_content']['columns']['CType']['label']);
+						$CType = '';
+						foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] as $item) {
+							if (is_array($item) && isset($item[1]) && $item[1] === $row['CType']) {
+								$CType = $GLOBALS['LANG']->sL($item[0]);
+								break;
+							}
+						}
+						$CType = ($CType === '') ? $row['CType'] : $CType;
+						$out .= ' <strong>' . $this->linkEditContent($this->renderText($CType), $row) . '</strong><br />';
 					}
 					break;
 			}
