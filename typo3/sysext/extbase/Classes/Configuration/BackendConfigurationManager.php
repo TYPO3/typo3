@@ -47,10 +47,17 @@ class Tx_Extbase_Configuration_BackendConfigurationManager extends Tx_Extbase_Co
 				// do not log time-performance information
 			$template->tt_track = 0;
 			$template->init();
+
 				// Get the root line
-			$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
-				// get the rootline for the current page
-			$rootline = $sysPage->getRootLine($this->getCurrentPageId());
+			$rootline = array();
+			$pageId = $this->getCurrentPageId();
+			if ($pageId > 0) {
+				/** @var $sysPage t3lib_pageSelect */
+				$sysPage = t3lib_div::makeInstance('t3lib_pageSelect');
+					// Get the rootline for the current page
+				$rootline = $sysPage->getRootLine($this->getCurrentPageId(), '', TRUE);
+			}
+
 				// This generates the constants/config + hierarchy info for the template.
 			$template->runThroughTemplates($rootline, 0);
 			$template->generateConfig();
