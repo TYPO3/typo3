@@ -3,6 +3,7 @@
  *  Copyright notice
  *
  *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2011-2012 Kai Vogel <kai.vogel@speedprogs.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -34,6 +35,7 @@
  * Eg. to get a page-record 51 do this: 't3lib_BEfunc::getRecord('pages',51)'
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author Kai Vogel <kai.vogel@speedprogs.de>
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -1115,6 +1117,52 @@ class t3lib_BEfunc {
 		}
 
 		return $flexForms;
+	}
+
+	/**
+	 * Returns the configuration of a FlexForm field
+	 * 
+	 * @param string $table TCA table name
+	 * @param integer $uid UID if the record
+	 * @param string $tcaField TCA field name
+	 * @param string $flexFormField FlexForm field name
+	 * @param string $sheet Optional sheet name
+	 * @return array The configuration
+	 * @see t3lib_TCEforms_inline::parseStructureString()
+	 */
+	public static function getFlexFormFieldConfiguration($table, $uid, $tcaField, $flexFormField, $sheet = 'sDEF') {
+		if (empty($table) || empty($uid) || empty($tcaField) || empty($flexFormField)) {
+			return array();
+		}
+
+			// Get table row
+		$row = t3lib_BEfunc::getRecord($table, $uid);
+		if (empty($row)) {
+			return array();
+		}
+
+			// Get FlexForm identifier
+		$tcaConfiguration = t3lib_BEfunc::getTcaFieldConfiguration($table, $tcaField);
+		$pointerFields = (!empty($tcaConfiguration['ds_pointerField']) ? $tcaConfiguration['ds_pointerField'] : 'list_type,CType');
+		$pointerFields = t3lib_div::trimExplode(',', $pointerFields);
+		$flexformIdentifier = (!empty($row[$pointerFields[0]]) ? $row[$pointerFields[0]] : '');
+		if (!empty($row[$pointerFields[1]]) && $row[$pointerFields[1]] != 'list' && $row[$pointerFields[1]] != '*') {
+			$flexformIdentifier = $row[$pointerFields[1]];
+		}
+
+			// Get FlexForm sheets
+		$flexForms = self::getRegisteredFlexForms($table);
+		if (empty($flexForms[$tcaField][$flexformIdentifier]['ds']['sheets'])) {
+			return array();
+		}
+		$sheets = $flexForms[$tcaField][$flexformIdentifier]['ds']['sheets'];
+
+			// Get field configuration
+		if (empty($sheets[$sheet]['ROOT']['el'][$flexFormField]['TCEforms']['config'])) {
+			return array();
+		}
+
+		return $sheets[$sheet]['ROOT']['el'][$flexFormField]['TCEforms']['config'];
 	}
 
 	/*******************************************
