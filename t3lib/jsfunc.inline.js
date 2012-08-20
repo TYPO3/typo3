@@ -31,6 +31,7 @@ var inline = {
 	classVisible: 't3-form-field-container-inline-visible',
 	classCollapsed: 't3-form-field-container-inline-collapsed',
 	structureSeparator: '-',
+	dotSeparator: '__',
 	prependFormFieldNames: 'data',
 	noTitleString: '[No title]',
 	lockedAjaxMethod: {},
@@ -147,16 +148,19 @@ var inline = {
 	},
 
 	getRecordDetails: function(objectId, returnURL) {
-		inline.makeAjaxCall('getRecordDetails', [inline.getNumberOfRTE(), objectId, returnURL], true);
+		var configuration = inline.getConfigurationForObjectId(this.parseObjectId('full', objectId, 0, 1));
+		var forceDeleted = this.isDeleted(objectId);
+		inline.makeAjaxCall('getRecordDetails', [inline.getNumberOfRTE(), objectId, returnURL, forceDeleted], true, configuration);
 		return false;
 	},
 
 	createNewRecord: function(objectId, recordUid) {
 		if (this.isBelowMax(objectId)) {
+			var configuration = inline.getConfigurationForObjectId(objectId);
 			if (recordUid) {
 				objectId += this.structureSeparator + recordUid;
 			}
-			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId], true);
+			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId], true, configuration);
 		} else {
 			alert('There are no more relations possible at this moment!');
 		}
@@ -164,16 +168,21 @@ var inline = {
 	},
 
 	synchronizeLocalizeRecords: function(objectId, type) {
+		var configuration = inline.getConfigurationForObjectId(objectId);
 		var parameters = [this.getNumberOfRTE(), objectId, type];
-		this.makeAjaxCall('synchronizeLocalizeRecords', parameters, true);
+		this.makeAjaxCall('synchronizeLocalizeRecords', parameters, true, configuration);
 	},
 
 	setExpandedCollapsedState: function(objectId, expand, collapse) {
-		this.makeAjaxCall('setExpandedCollapsedState', [objectId, expand, collapse]);
+		var configuration = inline.getConfigurationForObjectId(objectId);
+		this.makeAjaxCall('setExpandedCollapsedState', [objectId, expand, collapse], false, configuration);
 	},
 
-	makeAjaxCall: function(method, params, lock) {
+	makeAjaxCall: function(method, params, lock, configuration) {
 		var max, url='', urlParams='', options={};
+		if (configuration) {
+			params.push(Object.toJSON(configuration));
+		}
 		if (method && params && params.length && this.lockAjaxMethod(method, lock)) {
 			url = TBE_EDITOR.getBackendPath() + 'ajax.php';
 			urlParams = '&ajaxID=t3lib_TCEforms_inline::'+method;
@@ -290,19 +299,21 @@ var inline = {
 		// foreign_selector: used by selector box (type='select')
 	importNewRecord: function(objectId) {
 		var selector = $(objectId+'_selector');
+		var configuration = inline.getConfigurationForObjectId(objectId);
 		if (selector.selectedIndex != -1) {
 			var selectedValue = selector.options[selector.selectedIndex].value;
 			if (!this.data.unique || !this.data.unique[objectId]) {
 				selector.options[selector.selectedIndex].selected = false;
 			}
-			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId, selectedValue], true);
+			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId, selectedValue], true, configuration);
 		}
 		return false;
 	},
 
 		// foreign_selector: used by element browser (type='group/db')
 	importElement: function(objectId, table, uid, type) {
-		inline.makeAjaxCall('createNewRecord', [inline.getNumberOfRTE(), objectId, uid], true);
+		var configuration = inline.getConfigurationForObjectId(objectId);
+		inline.makeAjaxCall('createNewRecord', [inline.getNumberOfRTE(), objectId, uid], true, configuration);
 	},
 
 	importElementMultiple: function(objectId, table, uidArray, type) {
@@ -541,7 +552,7 @@ var inline = {
 	},
 
 	changeSorting: function(objectId, direction) {
-		var objectName = this.prependFormFieldNames+this.parseObjectId('parts', objectId, 3, 2, true);
+		var objectName = this.parseObjectId('full', objectId, -1, 2, true);
 		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
 		var formObj = document.getElementsByName(objectName);
 
@@ -581,7 +592,7 @@ var inline = {
 
 	dragAndDropSorting: function(element) {
 		var objectId = element.getAttribute('id').replace(/_records$/, '');
-		var objectName = inline.prependFormFieldNames+inline.parseObjectId('parts', objectId, 3, 0, true);
+		var objectName = inline.parseObjectId('full', objectId, -1, 0, true);
 		var formObj = document.getElementsByName(objectName);
 
 		if (formObj.length) {
@@ -660,7 +671,7 @@ var inline = {
 
 	memorizeAddRecord: function(objectPrefix, newUid, afterUid, selectedValue) {
 		if (this.isBelowMax(objectPrefix)) {
-			var objectName = this.prependFormFieldNames+this.parseObjectId('parts', objectPrefix, 3, 1, true);
+			var objectName = this.parseObjectId('full', objectPrefix, -1, 1, true);
 			var formObj = document.getElementsByName(objectName);
 
 			if (formObj.length) {
@@ -822,6 +833,7 @@ var inline = {
 	deleteRecord: function(objectId, options) {
 		var i, j, inlineRecords, records, childObjectId, childTable;
 		var objectPrefix = this.parseObjectId('full', objectId, 0 , 1);
+		var objectName = this.parseObjectId('full', objectId, -1, 2, true);
 		var elName = this.parseObjectId('full', objectId, 2, 0, true);
 		var shortName = this.parseObjectId('parts', objectId, 2, 0, true);
 		var recordUid = this.parseObjectId('none', objectId, 1);
@@ -864,11 +876,7 @@ var inline = {
 			new Effect.Fade(objectId+'_div');
 		}
 
-		var recordCount = this.memorizeRemoveRecord(
-			this.prependFormFieldNames+this.parseObjectId('parts', objectId, 3, 2, true),
-			recordUid
-		);
-
+		var recordCount = this.memorizeRemoveRecord(objectName, recordUid);
 		if (recordCount <= 1) {
 			this.destroyDragAndDropSorting(this.parseObjectId('full', objectId, 0 , 2)+'_records');
 		}
@@ -932,7 +940,7 @@ var inline = {
 	splitFormElementName: function(formElementName) {
 		// remove left and right side "data[...|...]" -> '...|...'
 		formElementName = formElementName.substr(0, formElementName.lastIndexOf(']')).substr(formElementName.indexOf('[')+1);
-		var parts = objectId.split('][');
+		var parts = formElementName.split('][');
 
 		return parts;
 	},
@@ -954,6 +962,8 @@ var inline = {
 		} else if (wrap == 'none') {
 			elReturn = parts.length > 1 ? parts : parts.join('');
 		}
+
+		elReturn = elReturn.split(this.dotSeparator).join('.');
 
 		return elReturn;
 	},
@@ -1007,6 +1017,15 @@ var inline = {
 		return elReturn;
 	},
 
+	getConfigurationForObjectId: function(objectId) {
+		if (objectId !== ''
+		 && typeof inline.data.config[objectId] !== 'undefined'
+		 && typeof inline.data.config[objectId].fieldConfiguration !== 'undefined') {
+			return inline.data.config[objectId].fieldConfiguration;
+		}
+		return '';
+	},
+
 	handleChangedField: function(formField, objectId) {
 		var formObj;
 		if (typeof formField == 'object') {
@@ -1044,7 +1063,7 @@ var inline = {
 
 	isBelowMax: function(objectPrefix) {
 		var isBelowMax = true;
-		var objectName = this.prependFormFieldNames+this.parseObjectId('parts', objectPrefix, 3, 1, true);
+		var objectName = this.parseObjectId('full', objectPrefix, -1, 1, true);
 		var formObj = document.getElementsByName(objectName);
 
 		if (this.data.config && this.data.config[objectPrefix] && formObj.length) {
@@ -1134,6 +1153,11 @@ var inline = {
 		return $(objectId+'_div') && $(objectId+'_div').hasClassName('inlineIsNewRecord')
 			? true
 			: false;
+	},
+
+	isDeleted: function(objectId) {
+		var shortName = this.parseObjectId('parts', objectId, 2, 0, true);
+		return document.getElementsByName('cmd'+shortName+'[delete]')[0].disabled ? false : true;
 	},
 
 		// Find and fix nested of inline and tab levels if a new element was created dynamically (it doesn't know about its nesting):
