@@ -30,7 +30,7 @@
  * @package TYPO3
  * @subpackage test
  */
-class Tests_unit_t3lib_AccessibleRootline extends t3lib_rootline {
+class Tests_unit_t3lib_AccessibleRootline extends t3lib_Rootline {
 
 	public function isMountedPage() {
 		return parent::isMountedPage();
@@ -44,5 +44,5 @@ class Tests_unit_t3lib_AccessibleRootline extends t3lib_rootline {
 		return parent::columnHasRelationToResolve($configuration);
 	}
 
-
 }
+?>

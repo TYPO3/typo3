@@ -30,7 +30,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_rootline {
+class t3lib_Rootline {
 
 	/**
 	 * @var integer
@@ -342,8 +342,8 @@ class t3lib_rootline {
 		if ($parentUid > 0) {
 				// Get rootline of (and including) parent page
 			$mountPointParameter = count($this->parsedMountPointParameters) > 0 ? $this->mountPointParameter : '';
-			/** @var $rootline t3lib_rootline */
-			$rootline = t3lib_div::makeInstance('t3lib_rootline', $parentUid, $mountPointParameter, $this->pageContext);
+			/** @var $rootline t3lib_Rootline */
+			$rootline = t3lib_div::makeInstance('t3lib_Rootline', $parentUid, $mountPointParameter, $this->pageContext);
 			$rootline = $rootline->get();
 
 				// retrieve cache tags of parent rootline
