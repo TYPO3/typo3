@@ -31,6 +31,7 @@ var inline = {
 	classVisible: 't3-form-field-container-inline-visible',
 	classCollapsed: 't3-form-field-container-inline-collapsed',
 	structureSeparator: '-',
+	dotSeparator: '__',
 	prependFormFieldNames: 'data',
 	noTitleString: '[No title]',
 	lockedAjaxMethod: {},
@@ -147,16 +148,18 @@ var inline = {
 	},
 
 	getRecordDetails: function(objectId, returnURL) {
-		inline.makeAjaxCall('getRecordDetails', [inline.getNumberOfRTE(), objectId, returnURL], true);
+		var configuration = this.getFieldConfiguration(this.parseObjectId('full', objectId, 0, 1));
+		inline.makeAjaxCall('getRecordDetails', [inline.getNumberOfRTE(), objectId, returnURL], true, configuration);
 		return false;
 	},
 
 	createNewRecord: function(objectId, recordUid) {
 		if (this.isBelowMax(objectId)) {
+			var configuration = this.getFieldConfiguration(objectId);
 			if (recordUid) {
 				objectId += this.structureSeparator + recordUid;
 			}
-			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId], true);
+			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId], true, configuration);
 		} else {
 			alert('There are no more relations possible at this moment!');
 		}
@@ -164,16 +167,21 @@ var inline = {
 	},
 
 	synchronizeLocalizeRecords: function(objectId, type) {
+		var configuration = this.getFieldConfiguration(objectId);
 		var parameters = [this.getNumberOfRTE(), objectId, type];
-		this.makeAjaxCall('synchronizeLocalizeRecords', parameters, true);
+		this.makeAjaxCall('synchronizeLocalizeRecords', parameters, true, configuration);
 	},
 
 	setExpandedCollapsedState: function(objectId, expand, collapse) {
-		this.makeAjaxCall('setExpandedCollapsedState', [objectId, expand, collapse]);
+		var configuration = this.getFieldConfiguration(objectId);
+		this.makeAjaxCall('setExpandedCollapsedState', [objectId, expand, collapse], false, configuration);
 	},
 
-	makeAjaxCall: function(method, params, lock) {
+	makeAjaxCall: function(method, params, lock, configuration) {
 		var max, url='', urlParams='', options={};
+		if (configuration) {
+			params.push(Object.toJSON(configuration));
+		}
 		if (method && params && params.length && this.lockAjaxMethod(method, lock)) {
 			url = TBE_EDITOR.getBackendPath() + 'ajax.php';
 			urlParams = '&ajaxID=t3lib_TCEforms_inline::'+method;
@@ -290,19 +298,21 @@ var inline = {
 		// foreign_selector: used by selector box (type='select')
 	importNewRecord: function(objectId) {
 		var selector = $(objectId+'_selector');
+		var configuration = this.getFieldConfiguration(objectId);
 		if (selector.selectedIndex != -1) {
 			var selectedValue = selector.options[selector.selectedIndex].value;
 			if (!this.data.unique || !this.data.unique[objectId]) {
 				selector.options[selector.selectedIndex].selected = false;
 			}
-			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId, selectedValue], true);
+			this.makeAjaxCall('createNewRecord', [this.getNumberOfRTE(), objectId, selectedValue], true, configuration);
 		}
 		return false;
 	},
 
 		// foreign_selector: used by element browser (type='group/db')
 	importElement: function(objectId, table, uid, type) {
-		inline.makeAjaxCall('createNewRecord', [inline.getNumberOfRTE(), objectId, uid], true);
+		var configuration = this.getFieldConfiguration(objectId);
+		inline.makeAjaxCall('createNewRecord', [inline.getNumberOfRTE(), objectId, uid], true, configuration);
 	},
 
 	importElementMultiple: function(objectId, table, uidArray, type) {
@@ -541,7 +551,7 @@ var inline = {
 	},
 
 	changeSorting: function(objectId, direction) {
-		var objectName = this.prependFormFieldNames+this.parseObjectId('parts', objectId, 3, 2, true);
+		var objectName = this.parseObjectId('full', objectId, -1, 2, true);
 		var objectPrefix = this.parseObjectId('full', objectId, 0, 1);
 		var formObj = document.getElementsByName(objectName);
 
@@ -581,7 +591,7 @@ var inline = {
 
 	dragAndDropSorting: function(element) {
 		var objectId = element.getAttribute('id').replace(/_records$/, '');
-		var objectName = inline.prependFormFieldNames+inline.parseObjectId('parts', objectId, 3, 0, true);
+		var objectName = inline.parseObjectId('full', objectId, -1, 0, true);
 		var formObj = document.getElementsByName(objectName);
 
 		if (formObj.length) {
@@ -660,7 +670,7 @@ var inline = {
 
 	memorizeAddRecord: function(objectPrefix, newUid, afterUid, selectedValue) {
 		if (this.isBelowMax(objectPrefix)) {
-			var objectName = this.prependFormFieldNames+this.parseObjectId('parts', objectPrefix, 3, 1, true);
+			var objectName = this.parseObjectId('full', objectPrefix, -1, 1, true);
 			var formObj = document.getElementsByName(objectName);
 
 			if (formObj.length) {
@@ -822,6 +832,7 @@ var inline = {
 	deleteRecord: function(objectId, options) {
 		var i, j, inlineRecords, records, childObjectId, childTable;
 		var objectPrefix = this.parseObjectId('full', objectId, 0 , 1);
+		var objectName = this.parseObjectId('full', objectId, -1, 2, true);
 		var elName = this.parseObjectId('full', objectId, 2, 0, true);
 		var shortName = this.parseObjectId('parts', objectId, 2, 0, true);
 		var recordUid = this.parseObjectId('none', objectId, 1);
@@ -855,6 +866,11 @@ var inline = {
 			deletedRecordContainer.addClassName('inlineIsDeletedRecord');
 		}
 
+			// Mark as deleted in field configuration
+		var deletedRecords = this.getFieldConfigurationValue(objectPrefix, 'deletedRecords');
+		deletedRecords += (deletedRecords.length ? ',' + recordUid : recordUid);
+		this.setFieldConfigurationValue(objectPrefix, 'deletedRecords', deletedRecords);
+
 			// If the record is new and was never saved before, just remove it from DOM:
 		if (this.isNewRecord(objectId) || options && options.forceDirectRemoval) {
 			this.fadeAndRemove(objectId+'_div');
@@ -864,11 +880,7 @@ var inline = {
 			new Effect.Fade(objectId+'_div');
 		}
 
-		var recordCount = this.memorizeRemoveRecord(
-			this.prependFormFieldNames+this.parseObjectId('parts', objectId, 3, 2, true),
-			recordUid
-		);
-
+		var recordCount = this.memorizeRemoveRecord(objectName, recordUid);
 		if (recordCount <= 1) {
 			this.destroyDragAndDropSorting(this.parseObjectId('full', objectId, 0 , 2)+'_records');
 		}
@@ -932,7 +944,7 @@ var inline = {
 	splitFormElementName: function(formElementName) {
 		// remove left and right side "data[...|...]" -> '...|...'
 		formElementName = formElementName.substr(0, formElementName.lastIndexOf(']')).substr(formElementName.indexOf('[')+1);
-		var parts = objectId.split('][');
+		var parts = formElementName.split('][');
 
 		return parts;
 	},
@@ -954,6 +966,8 @@ var inline = {
 		} else if (wrap == 'none') {
 			elReturn = parts.length > 1 ? parts : parts.join('');
 		}
+
+		elReturn = elReturn.split(this.dotSeparator).join('.');
 
 		return elReturn;
 	},
@@ -1044,7 +1058,7 @@ var inline = {
 
 	isBelowMax: function(objectPrefix) {
 		var isBelowMax = true;
-		var objectName = this.prependFormFieldNames+this.parseObjectId('parts', objectPrefix, 3, 1, true);
+		var objectName = this.parseObjectId('full', objectPrefix, -1, 1, true);
 		var formObj = document.getElementsByName(objectName);
 
 		if (this.data.config && this.data.config[objectPrefix] && formObj.length) {
@@ -1154,21 +1168,54 @@ var inline = {
 			number = RTEarea.length-1;
 		}
 		return number;
-  	},
+	},
 
-  	getObjectMD5: function(objectPrefix) {
-  		var md5 = false;
-  		if (this.data.config && this.data.config[objectPrefix] && this.data.config[objectPrefix].md5) {
-  			md5 = this.data.config[objectPrefix].md5;
-  		}
-  		return md5
-  	},
+	getObjectMD5: function(objectPrefix) {
+		var md5 = false;
+		if (this.data.config && this.data.config[objectPrefix] && this.data.config[objectPrefix].md5) {
+			md5 = this.data.config[objectPrefix].md5;
+		}
+		return md5
+	},
 
-  	fadeAndRemove: function(element) {
-  		if ($(element)) {
+	fadeAndRemove: function(element) {
+		if ($(element)) {
 			new Effect.Fade(element, { afterFinish: function() { Element.remove(element); }	});
 		}
-  	}
+  },
+
+	setFieldConfiguration: function(objectId, fieldConfiguration) {
+		if (objectId !== '' && typeof this.data.config[objectId] !== 'undefined') {
+			this.data.config[objectId].fieldConfiguration = fieldConfiguration;
+			return true;
+		}
+		return false;
+	},
+
+	getFieldConfiguration: function(objectId) {
+		if (objectId !== ''
+		 && typeof this.data.config[objectId] !== 'undefined'
+		 && typeof this.data.config[objectId].fieldConfiguration !== 'undefined') {
+			return this.data.config[objectId].fieldConfiguration;
+		}
+		return '';
+	},
+
+	setFieldConfigurationValue: function(objectId, key, value) {
+		var fieldConfiguration = this.getFieldConfiguration(objectId);
+		if (typeof fieldConfiguration !== 'undefined') {
+			fieldConfiguration[key] = value;
+		}
+		this.setFieldConfiguration(objectId, fieldConfiguration);
+	},
+
+	getFieldConfigurationValue: function(objectId, key) {
+		var fieldConfiguration = this.getFieldConfiguration(objectId);
+		if (typeof fieldConfiguration !== 'undefined' && typeof fieldConfiguration[key] !== 'undefined') {
+			return fieldConfiguration[key];
+		}
+		return null;
+	}
 }
 
 Object.extend(Array.prototype, {
