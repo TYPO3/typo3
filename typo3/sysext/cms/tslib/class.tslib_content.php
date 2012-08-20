@@ -84,6 +84,7 @@ class tslib_cObj {
 		'listNum.' => 'array',
 		'trim' => 'boolean',
 		'trim.' => 'array',
+		'strPad.' => 'array',
 		'stdWrap' => 'stdWrap',
 		'stdWrap.' => 'array',
 		'stdWrapProcess' => 'hook', // this is a placeholder for the third Hook
@@ -2288,6 +2289,38 @@ class tslib_cObj {
 	 */
 	public function stdWrap_trim($content = '', $conf = array()) {
 		$content = trim($content);
+		return $content;
+	}
+
+	/**
+	 * strPad
+	 * Will return a string padded left/right/on both sides, based on configuration given as stdWrap properties
+	 *
+	 * @param string $content Input value undergoing processing in this function.
+	 * @param array $conf stdWrap properties for strPad.
+	 * @return string The processed input value
+	 */
+	public function stdWrap_strPad($content = '', $conf = array()) {
+			// Must specify a length in conf for this to make sense
+		$length = 0;
+			// Padding with space is PHP-default
+		$padWith = ' ';
+			// Padding on the right side is PHP-default
+		$padType = STR_PAD_RIGHT;
+		if (!empty($conf['strPad.']['length'])) {
+			$length = intval($conf['strPad.']['length']);
+		}
+		if (!empty($conf['strPad.']['padWith'])) {
+			$padWith = $conf['strPad.']['padWith'];
+		}
+		if (!empty($conf['strPad.']['type'])) {
+			if (strtolower($conf['strPad.']['type']) === 'left') {
+				$padType = STR_PAD_LEFT;
+			} elseif (strtolower($conf['strPad.']['type']) === 'both') {
+				$padType = STR_PAD_BOTH;
+			}
+		}
+		$content = str_pad($content, $length, $padWith, $padType);
 		return $content;
 	}
 

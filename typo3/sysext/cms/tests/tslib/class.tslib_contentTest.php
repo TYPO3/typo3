@@ -742,6 +742,66 @@ class tslib_contentTest extends tx_phpunit_testcase {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function stdWrap_strPadDataProvider() {
+		return array(
+			'pad string with default settings and length 10' => array(
+				'Alien',
+				array(
+					'length' => '10',
+				),
+				'Alien     ',
+			),
+			'pad string with padWith -= and type left and length 10' => array(
+				'Alien',
+				array(
+					'length' => '10',
+					'padWith' => '-=',
+					'type' => 'left',
+				),
+				'-=-=-Alien',
+			),
+			'pad string with padWith _ and type both and length 10' => array(
+				'Alien',
+				array(
+					'length' => '10',
+					'padWith' => '_',
+					'type' => 'both',
+				),
+				'__Alien___',
+			),
+			'pad string with padWith _ and type both and length 6' => array(
+				'Alien',
+				array(
+					'length' => '6',
+					'padWith' => '___',
+					'type' => 'both',
+				),
+				'Alien_',
+			),
+		);
+	}
+
+	/**
+	 * Test for the stdWrap function "strPad"
+	 *
+	 * @param string $content
+	 * @param array $conf
+	 * @param string $expected
+	 *
+	 * @dataProvider stdWrap_strPadDataProvider
+	 * @test
+	 */
+	public function stdWrap_strPad($content, $conf, $expected) {
+		$conf = array(
+			'strPad.' => $conf
+		);
+		$result = $this->cObj->stdWrap_strPad($content, $conf);
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
 	 * Data provider for the hash test
 	 *
 	 * @return array multi-dimensional array with the second level like this:
