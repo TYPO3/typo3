@@ -24,14 +24,14 @@
 
 require_once(__DIR__ . '/fixtures/AccessibleRootline.php');
 /**
- * Testcase for class t3lib_rootline
+ * Testcase for class t3lib_Rootline
  *
  * @author Steffen Ritter <steffen.ritter@typo3.org>
  *
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_rootlineTest extends tx_phpunit_testcase {
+class t3lib_RootlineTest extends tx_phpunit_testcase {
 
 	/***
 	 *

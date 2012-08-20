@@ -579,7 +579,7 @@ class t3lib_pageSelect {
 	 * @see tslib_fe::getPageAndRootline()
 	 */
 	function getRootLine($uid, $MP = '', $ignoreMPerrors = FALSE) {
-		$rootline = t3lib_div::makeInstance('t3lib_rootline', $uid, $MP, $this);
+		$rootline = t3lib_div::makeInstance('t3lib_Rootline', $uid, $MP, $this);
 		if ($ignoreMPerrors) {
 			try {
 				return $rootline->get();
