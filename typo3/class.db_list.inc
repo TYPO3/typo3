@@ -525,11 +525,17 @@ class recordList extends t3lib_recordList {
 					foreach ($searchableFields as $fieldName) {
 						if (isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
 							$fieldConfig = &$GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
+							$condition = $fieldName . '=' . $this->searchString;
 							if ($fieldConfig['type'] == 'input' && $fieldConfig['eval'] && t3lib_div::inList($fieldConfig['eval'], 'int')) {
-								$condition = $fieldName . '=' . $this->searchString;
 								if (is_array($fieldConfig['search']) && in_array('pidonly', $fieldConfig['search']) && $currentPid > 0) {
 									$condition = '(' . $condition . ' AND ' . $tablePidField . '=' . $currentPid . ')';
 								}
+								$whereParts[] = $condition;
+							} elseif ($fieldConfig['type'] == 'text' ||
+								$fieldConfig['type'] == 'flex' ||
+								($fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] || !preg_match('/date|time|int/', $fieldConfig['eval'])))) {
+									// Otherwise and if the field makes sense to be searched, assemble a like condition
+								$condition = $fieldName . ' LIKE \'%' . $this->searchString . '%\'';
 								$whereParts[] = $condition;
 							}
 						}
