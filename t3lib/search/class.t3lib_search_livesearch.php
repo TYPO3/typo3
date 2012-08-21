@@ -350,10 +350,17 @@ class t3lib_search_livesearch {
 			foreach ($fieldsToSearchWithin as $fieldName) {
 				if (($fieldName == 'uid' || $fieldName == 'pid') || isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
 					$fieldConfig = &$GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
-						// Assemble the search condition only if the field is an integer, or is uid or pid
+
 					if (($fieldName == 'uid' || $fieldName == 'pid') ||
 						($fieldConfig['type'] == 'input' && $fieldConfig['eval'] && t3lib_div::inList($fieldConfig['eval'], 'int'))) {
+							// If the field is an integer, or is uid or pid, assemble equality condition
 						$whereParts[] = $fieldName . '=' . $this->queryString;
+
+					} elseif ($fieldConfig['type'] == 'text' ||
+						$fieldConfig['type'] == 'flex' ||
+						($fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] || !preg_match('/date|time|int/', $fieldConfig['eval'])))) {
+							// Otherwise and if the field makes sense to be searched, assemble a like condition
+						$whereParts[] = $fieldName . ' LIKE \'%' . $this->queryString . '%\'';
 					}
 				}
 			}
