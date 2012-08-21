@@ -2,7 +2,8 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  (c) 2011 Francois Suter (francois.suter@typo3.org)
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,27 +25,25 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-// Initialize module:
-unset($MCONF);
-require 'conf.php';
-require $GLOBALS['BACK_PATH'] . 'init.php';
-require $GLOBALS['BACK_PATH'] . 'template.php';
-$GLOBALS['BE_USER']->modAccess($MCONF, 1);
-// Include libraries of various kinds used inside:
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_mod_user_ws.xml');
-$GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_misc.xml');
-require_once 'class.wslib.php';
-require_once 'class.wslib_gui.php';
-/*
- * @deprecated since 6.0, the classname SC_mod_user_ws_index and this file is obsolete
- * and will be removed by 7.0. The class was renamed and is now located at:
- * typo3/sysext/version/Classes/Controller/WorkspaceModuleController.php
+/**
+ * Implements a hook for t3lib_iconworks
  */
-require_once t3lib_extMgm::extPath('version') . 'Classes/Controller/WorkspaceModuleController.php';
-// Make instance:
-$SOBE = t3lib_div::makeInstance('SC_mod_user_ws_index');
-$SOBE->execute();
-$SOBE->init();
-$SOBE->main();
-$SOBE->printContent();
+class tx_version_iconworks {
+
+	/**
+	 * Visualizes the deleted status for a versionized record.
+	 *
+	 * @param string $table Name of the table
+	 * @param array $row Record row containing the field values
+	 * @param array $status Status to be used for rendering the icon
+	 * @return void
+	 */
+	public function overrideIconOverlay($table, array $row, array &$status) {
+		if (isset($row['t3ver_state']) && $row['t3ver_state'] == 2) {
+			$status['deleted'] = TRUE;
+		}
+	}
+
+}
+
 ?>
