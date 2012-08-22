@@ -2339,7 +2339,8 @@ class t3lib_stdGraphic {
 					}
 					$offsetX = intval(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
 					$offsetY = intval(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
-					$params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . ' ';
+					// option to remove empty canvas for transparent graphics is inverted in im6 vs. im4 (gm always crops)
+					$params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . ($this->im_version_4 ? ' ' : '! ');
 				}
 
 				$command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
