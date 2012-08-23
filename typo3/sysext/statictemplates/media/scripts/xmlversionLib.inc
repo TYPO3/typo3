@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Example class showing how one could make XML export of page
  * content elements in TYPO3
@@ -40,18 +39,18 @@
  * alt_xml >
  * alt_xml = PAGE
  * alt_xml {
- *   typeNum=96
- *   config.disableAllHeaderCode = 1
- *   config.additionalHeaders = Content-type: text/xml
+ * typeNum=96
+ * config.disableAllHeaderCode = 1
+ * config.additionalHeaders = Content-type: text/xml
  *
- *   ## Includes the newsLib:
- *   includeLibs.alt_xml = media/scripts/xmlversionLib.inc
+ * ## Includes the newsLib:
+ * includeLibs.alt_xml = media/scripts/xmlversionLib.inc
  *
- *   ## Inserting the USER cObject for XML rendering
- *   10 = USER
- *   10 {
- *     userFunc = user_xmlversion->main_xmlversion
- *   }
+ * ## Inserting the USER cObject for XML rendering
+ * 10 = USER
+ * 10 {
+ * userFunc = user_xmlversion->main_xmlversion
+ * }
  * }
  *
  * @package TYPO3
@@ -59,9 +58,12 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 class user_xmlversion {
-		// The backReference to the mother cObj object set at call time
-	var $cObj;
 
+	// The backReference to the mother cObj object set at call time
+	/**
+	 * @todo Define visibility
+	 */
+	public $cObj;
 
 	/**
 	 * Main function, called from TypoScript
@@ -69,27 +71,23 @@ class user_xmlversion {
 	 * @param string $content Empty, ignore.
 	 * @param array $conf TypoScript properties for this content object/function call
 	 * @return string XML content
+	 * @todo Define visibility
 	 */
-	function main_xmlversion($content, $conf) {
+	public function main_xmlversion($content, $conf) {
 		$xmlObj = t3lib_div::makeInstance('t3lib_xml', 'typo3_page');
 		$xmlObj->XMLdebug = 0;
 		$xmlObj->setRecFields('pages', 'doktype,title,alias,hidden,starttime,endtime,fe_group,url,target,no_cache,shortcut,keywords,description,abstract,author,author_email,newUntil,lastUpdated,cache_timeout');
 		$xmlObj->setRecFields('tt_content', 'CType,header,header_link,bodytext,image,imagewidth,imageorient,media,records,colPos,starttime,endtime,fe_group');
-
-			// Creating top level object
+		// Creating top level object
 		$xmlObj->renderHeader();
-
-			// Add page information
+		// Add page information
 		$xmlObj->addRecord('pages', $GLOBALS['TSFE']->page);
-
-			// Add page content information
+		// Add page content information
 		$xmlObj->newLevel('content_records', 1);
 		$xmlObj->renderRecords('pages', $this->getContentResult('pages'));
 		$xmlObj->renderRecords('tt_content', $this->getContentResult('tt_content'));
 		$xmlObj->newLevel('content_records');
-
 		$xmlObj->renderFooter();
-
 		return $xmlObj->getResult();
 	}
 
@@ -99,16 +97,16 @@ class user_xmlversion {
 	 *
 	 * @param string $table A tablename found in $GLOBALS['TCA']
 	 * @return pointer A database resource pointer
+	 * @todo Define visibility
 	 */
-	function getContentResult($table) {
+	public function getContentResult($table) {
 		if ($GLOBALS['TCA'][$table]) {
-			$orderBy = ($GLOBALS['TCA'][$table]['ctrl']['sortby']
-				? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby']
-				: $GLOBALS['TCA'][$table]['ctrl']['default_sortby']);
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid=' . intval($GLOBALS['TSFE']->id) . $this->cObj->enableFields($table), '', $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy));
+			$orderBy = $GLOBALS['TCA'][$table]['ctrl']['sortby'] ? 'ORDER BY ' . $GLOBALS['TCA'][$table]['ctrl']['sortby'] : $GLOBALS['TCA'][$table]['ctrl']['default_sortby'];
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, ('pid=' . intval($GLOBALS['TSFE']->id)) . $this->cObj->enableFields($table), '', $GLOBALS['TYPO3_DB']->stripOrderBy($orderBy));
 			return $res;
 		}
 	}
+
 }
 
 ?>

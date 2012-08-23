@@ -1,21 +1,20 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
-	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
 }
-
-$TCA['sys_file'] = array (
+$TCA['sys_file'] = array(
 	'ctrl' => $TCA['sys_file']['ctrl'],
-	'interface' => array (
+	'interface' => array(
 		'showRecordFieldList' => 'storage, name, description, alternative, type, mime_type, size, sha1'
 	),
 	'feInterface' => $TCA['sys_file']['feInterface'],
-	'columns' => array (
-		't3ver_label' => array (
-			'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
-			'config' => array (
+	'columns' => array(
+		't3ver_label' => array(
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
+			'config' => array(
 				'type' => 'input',
 				'size' => '30',
-				'max'  => '30',
+				'max' => '30'
 			)
 		),
 		'fileinfo' => array(
@@ -27,32 +26,32 @@ $TCA['sys_file'] = array (
 		'storage' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.storage',
-			'config' => array (
+			'config' => array(
 				'readOnly' => 1,
 				'type' => 'select',
-				'items' => array (
-					array('',0),
+				'items' => array(
+					array('', 0)
 				),
 				'foreign_table' => 'sys_file_storage',
 				'foreign_table_where' => 'ORDER BY sys_file_storage.name',
 				'size' => 1,
 				'minitems' => 0,
-				'maxitems' => 1,
+				'maxitems' => 1
 			)
 		),
-		'identifier' => array (
+		'identifier' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.identifier',
-			'config' => array (
+			'config' => array(
 				'readOnly' => 1,
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
-		'name' => array (
+		'name' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.name',
-			'config' => array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '30',
 				'eval' => 'required'
@@ -76,10 +75,10 @@ $TCA['sys_file'] = array (
 				'rows' => '3'
 			)
 		),
-		'type' => array (
+		'type' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.type',
-			'config' => array (
+			'config' => array(
 				'readOnly' => 1,
 				'type' => 'select',
 				'size' => '1',
@@ -89,46 +88,45 @@ $TCA['sys_file'] = array (
 					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.image', 2),
 					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.audio', 3),
 					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.video', 4),
-					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.software', 5),
-				),
+					array('LLL:EXT:lang/locallang_tca.xlf:sys_file.type.software', 5)
+				)
 			)
 		),
-		'mime_type' => array (
+		'mime_type' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.mime_type',
-			'config' => array (
+			'config' => array(
 				'readOnly' => 1,
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
-		'sha1' => array (
+		'sha1' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.sha1',
-			'config' => array (
+			'config' => array(
 				'readOnly' => 1,
 				'type' => 'input',
 				'size' => '30',
-				'readOnly' => 1,
+				'readOnly' => 1
 			)
 		),
-		'size' => array (
+		'size' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.size',
-			'config' => array (
+			'config' => array(
 				'readOnly' => 1,
-				'type'     => 'input',
-				'size'     => '8',
-				'max'      => '30',
-				'eval'     => 'int',
+				'type' => 'input',
+				'size' => '8',
+				'max' => '30',
+				'eval' => 'int',
 				'default' => 0
 			)
-		),
+		)
 	),
-	'types' => array (
+	'types' => array(
 		'1' => array('showitem' => 'fileinfo, name, description, alternative, storage')
 	),
 	'palettes' => array()
 );
-
 ?>

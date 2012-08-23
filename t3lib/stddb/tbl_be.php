@@ -33,7 +33,6 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @see tables.php, tables.sql
  */
-
 /**
  * Backend users - Those who login into the TYPO3 administration backend
  */
@@ -79,7 +78,7 @@ $TCA['be_users'] = array(
 						'script' => 'wizard_edit.php',
 						'popup_onlyOpenIfSelected' => 1,
 						'icon' => 'edit2.gif',
-						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
 					),
 					'add' => array(
 						'type' => 'script',
@@ -90,7 +89,7 @@ $TCA['be_users'] = array(
 							'pid' => '0',
 							'setValue' => 'prepend'
 						),
-						'script' => 'wizard_add.php',
+						'script' => 'wizard_add.php'
 					),
 					'list' => array(
 						'type' => 'script',
@@ -98,9 +97,9 @@ $TCA['be_users'] = array(
 						'icon' => 'list.gif',
 						'params' => array(
 							'table' => 'be_groups',
-							'pid' => '0',
+							'pid' => '0'
 						),
-						'script' => 'wizard_list.php',
+						'script' => 'wizard_list.php'
 					)
 				)
 			)
@@ -127,9 +126,9 @@ $TCA['be_users'] = array(
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
-					),
-				),
+						'type' => 'suggest'
+					)
+				)
 			)
 		),
 		'file_mountpoints' => array(
@@ -151,7 +150,7 @@ $TCA['be_users'] = array(
 						'script' => 'wizard_edit.php',
 						'icon' => 'edit2.gif',
 						'popup_onlyOpenIfSelected' => 1,
-						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
 					),
 					'add' => array(
 						'type' => 'script',
@@ -162,7 +161,7 @@ $TCA['be_users'] = array(
 							'pid' => '0',
 							'setValue' => 'prepend'
 						),
-						'script' => 'wizard_add.php',
+						'script' => 'wizard_add.php'
 					),
 					'list' => array(
 						'type' => 'script',
@@ -170,9 +169,9 @@ $TCA['be_users'] = array(
 						'icon' => 'list.gif',
 						'params' => array(
 							'table' => 'sys_filemounts',
-							'pid' => '0',
+							'pid' => '0'
 						),
-						'script' => 'wizard_list.php',
+						'script' => 'wizard_list.php'
 					)
 				)
 			)
@@ -235,7 +234,7 @@ $TCA['be_users'] = array(
 					array('LLL:EXT:lang/locallang_tca.xml:be_users.fileoper_perms_unzip', 0),
 					array('LLL:EXT:lang/locallang_tca.xml:be_users.fileoper_perms_diroper_perms', 0),
 					array('LLL:EXT:lang/locallang_tca.xml:be_users.fileoper_perms_diroper_perms_copy', 0),
-					array('LLL:EXT:lang/locallang_tca.xml:be_users.fileoper_perms_diroper_perms_delete', 0),
+					array('LLL:EXT:lang/locallang_tca.xml:be_users.fileoper_perms_diroper_perms_delete', 0)
 				),
 				'default' => '0'
 			)
@@ -245,7 +244,7 @@ $TCA['be_users'] = array(
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
-					array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_live', 0),
+					array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_live', 0)
 				),
 				'default' => 1
 			)
@@ -257,7 +256,7 @@ $TCA['be_users'] = array(
 				'size' => '13',
 				'max' => '20',
 				'eval' => 'datetime',
-				'default' => '0',
+				'default' => '0'
 			)
 		),
 		'endtime' => array(
@@ -269,7 +268,7 @@ $TCA['be_users'] = array(
 				'eval' => 'datetime',
 				'default' => '0',
 				'range' => array(
-					'upper' => mktime(0, 0, 0, 12, 31, 2020),
+					'upper' => mktime(0, 0, 0, 12, 31, 2020)
 				)
 			)
 		),
@@ -278,8 +277,7 @@ $TCA['be_users'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('English', ''),
-					// Other languages are dynamically populated below
+					array('English', '')
 				)
 			)
 		),
@@ -292,7 +290,7 @@ $TCA['be_users'] = array(
 				'autoSizeMax' => 50,
 				'maxitems' => '100',
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
-				'iconsInOptionTags' => 1,
+				'iconsInOptionTags' => 1
 			)
 		),
 		'allowed_languages' => array(
@@ -301,7 +299,7 @@ $TCA['be_users'] = array(
 				'type' => 'select',
 				'special' => 'languages',
 				'maxitems' => '1000',
-				'renderMode' => 'checkbox',
+				'renderMode' => 'checkbox'
 			)
 		),
 		'TSconfig' => array(
@@ -313,16 +311,16 @@ $TCA['be_users'] = array(
 				'wizards' => array(
 					'_PADDING' => 4,
 					'0' => array(
-						'type' => t3lib_extMgm::isLoaded('tsconfig_help') ? 'popup' : '',
+						'type' => \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('tsconfig_help') ? 'popup' : '',
 						'title' => 'LLL:EXT:lang/locallang_tca.xml:TSconfig_title',
 						'script' => 'wizard_tsconfig.php?mode=beuser',
 						'icon' => 'wizard_tsconfig.gif',
-						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1',
+						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1'
 					)
 				),
 				'softref' => 'TSconfig'
 			),
-			'defaultExtras' => 'fixed-font : enable-tab',
+			'defaultExtras' => 'fixed-font : enable-tab'
 		),
 		'createdByAction' => array(
 			'config' => array(
@@ -336,7 +334,7 @@ $TCA['be_users'] = array(
 				'readOnly' => '1',
 				'size' => '12',
 				'eval' => 'datetime',
-				'default' => 0,
+				'default' => 0
 			)
 		)
 	),
@@ -346,28 +344,24 @@ $TCA['be_users'] = array(
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.mounts_and_workspaces, workspace_perms;;;;1-1-1, db_mountpoints;;;;2-2-2, options, file_mountpoints;;;;3-3-3, fileoper_perms,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.options, lockToDomain;;;;1-1-1, disableIPlock, TSconfig;;;;2-2-2,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.access, starttime;;;;1-1-1,endtime,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.extended'
-		),
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.extended'),
 		'1' => array('showitem' => 'disable;;;;1-1-1, username;;;;2-2-2, password, usergroup;;;;3-3-3, admin;;;;1-1-1, realName;;;;3-3-3, email, lang, lastlogin;;;;1-1-1,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.options, disableIPlock;;;;1-1-1, TSconfig;;;;2-2-2, db_mountpoints;;;;3-3-3, options, file_mountpoints;;;;4-4-4,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.access, starttime;;;;1-1-1,endtime,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.extended'
-		)
-	),
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_users.tabs.extended')
+	)
 );
-
-	// Populate available languages
-/** @var $locales t3lib_l10n_locales */
-$locales = t3lib_div::makeInstance('t3lib_l10n_Locales');
+// Populate available languages
+/**
+ * @var $locales t3lib_l10n_locales
+ */
+$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
 $languageItems = $locales->getLanguages();
-
 unset($languageItems['default']);
 asort($languageItems);
-
 foreach ($languageItems as $locale => $name) {
 	$TCA['be_users']['columns']['lang']['config']['items'][] = array($name, $locale);
 }
-
 /**
  * Backend usergroups - Much permission criterias are based on membership
  * of backend groups.
@@ -399,9 +393,9 @@ $TCA['be_groups'] = array(
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
-					),
-				),
+						'type' => 'suggest'
+					)
+				)
 			)
 		),
 		'file_mountpoints' => array(
@@ -423,7 +417,7 @@ $TCA['be_groups'] = array(
 						'script' => 'wizard_edit.php',
 						'popup_onlyOpenIfSelected' => 1,
 						'icon' => 'edit2.gif',
-						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1',
+						'JSopenParams' => 'height=350,width=580,status=0,menubar=0,scrollbars=1'
 					),
 					'add' => array(
 						'type' => 'script',
@@ -434,7 +428,7 @@ $TCA['be_groups'] = array(
 							'pid' => '0',
 							'setValue' => 'prepend'
 						),
-						'script' => 'wizard_add.php',
+						'script' => 'wizard_add.php'
 					),
 					'list' => array(
 						'type' => 'script',
@@ -442,9 +436,9 @@ $TCA['be_groups'] = array(
 						'icon' => 'list.gif',
 						'params' => array(
 							'table' => 'sys_filemounts',
-							'pid' => '0',
+							'pid' => '0'
 						),
-						'script' => 'wizard_list.php',
+						'script' => 'wizard_list.php'
 					)
 				)
 			)
@@ -458,7 +452,7 @@ $TCA['be_groups'] = array(
 					array('LLL:EXT:lang/locallang_tca.xml:be_groups.fileoper_perms_unzip', 0),
 					array('LLL:EXT:lang/locallang_tca.xml:be_groups.fileoper_perms_diroper_perms', 0),
 					array('LLL:EXT:lang/locallang_tca.xml:be_groups.fileoper_perms_diroper_perms_copy', 0),
-					array('LLL:EXT:lang/locallang_tca.xml:be_groups.fileoper_perms_diroper_perms_delete', 0),
+					array('LLL:EXT:lang/locallang_tca.xml:be_groups.fileoper_perms_diroper_perms_delete', 0)
 				),
 				'default' => '7'
 			)
@@ -468,7 +462,7 @@ $TCA['be_groups'] = array(
 			'config' => array(
 				'type' => 'check',
 				'items' => array(
-					array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_live', 0),
+					array('LLL:EXT:lang/locallang_tca.xml:workspace_perms_live', 0)
 				),
 				'default' => 0
 			)
@@ -482,7 +476,7 @@ $TCA['be_groups'] = array(
 				'autoSizeMax' => 50,
 				'maxitems' => 20,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
-				'iconsInOptionTags' => 1,
+				'iconsInOptionTags' => 1
 			)
 		),
 		'tables_modify' => array(
@@ -494,7 +488,7 @@ $TCA['be_groups'] = array(
 				'autoSizeMax' => 50,
 				'maxitems' => 100,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
-				'iconsInOptionTags' => 1,
+				'iconsInOptionTags' => 1
 			)
 		),
 		'tables_select' => array(
@@ -506,7 +500,7 @@ $TCA['be_groups'] = array(
 				'autoSizeMax' => 50,
 				'maxitems' => 100,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
-				'iconsInOptionTags' => 1,
+				'iconsInOptionTags' => 1
 			)
 		),
 		'non_exclude_fields' => array(
@@ -518,7 +512,7 @@ $TCA['be_groups'] = array(
 				'maxitems' => 1000,
 				'autoSizeMax' => 50,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
-				'itemListStyle' => 'width:500px',
+				'itemListStyle' => 'width:500px'
 			)
 		),
 		'explicit_allowdeny' => array(
@@ -527,7 +521,7 @@ $TCA['be_groups'] = array(
 				'type' => 'select',
 				'special' => 'explicitValues',
 				'maxitems' => 1000,
-				'renderMode' => 'checkbox',
+				'renderMode' => 'checkbox'
 			)
 		),
 		'allowed_languages' => array(
@@ -536,7 +530,7 @@ $TCA['be_groups'] = array(
 				'type' => 'select',
 				'special' => 'languages',
 				'maxitems' => 1000,
-				'renderMode' => 'checkbox',
+				'renderMode' => 'checkbox'
 			)
 		),
 		'custom_options' => array(
@@ -545,7 +539,7 @@ $TCA['be_groups'] = array(
 				'type' => 'select',
 				'special' => 'custom',
 				'maxitems' => 1000,
-				'renderMode' => 'checkbox',
+				'renderMode' => 'checkbox'
 			)
 		),
 		'hidden' => array(
@@ -574,7 +568,7 @@ $TCA['be_groups'] = array(
 				'autoSizeMax' => 50,
 				'maxitems' => 100,
 				'renderMode' => $GLOBALS['TYPO3_CONF_VARS']['BE']['accessListRenderMode'],
-				'iconsInOptionTags' => 1,
+				'iconsInOptionTags' => 1
 			)
 		),
 		'inc_access_lists' => array(
@@ -601,16 +595,16 @@ $TCA['be_groups'] = array(
 				'wizards' => array(
 					'_PADDING' => 4,
 					'0' => array(
-						'type' => t3lib_extMgm::isLoaded('tsconfig_help') ? 'popup' : '',
+						'type' => \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('tsconfig_help') ? 'popup' : '',
 						'title' => 'LLL:EXT:lang/locallang_tca.xml:TSconfig_title',
 						'script' => 'wizard_tsconfig.php?mode=beuser',
 						'icon' => 'wizard_tsconfig.gif',
-						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1',
+						'JSopenParams' => 'height=500,width=780,status=0,menubar=0,scrollbars=1'
 					)
 				),
 				'softref' => 'TSconfig'
 			),
-			'defaultExtras' => 'fixed-font : enable-tab',
+			'defaultExtras' => 'fixed-font : enable-tab'
 		),
 		'hide_in_lists' => array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xml:be_groups.hide_in_lists',
@@ -628,7 +622,7 @@ $TCA['be_groups'] = array(
 				'size' => '5',
 				'autoSizeMax' => 50,
 				'maxitems' => 20,
-				'iconsInOptionTags' => 1,
+				'iconsInOptionTags' => 1
 			)
 		)
 	),
@@ -637,17 +631,14 @@ $TCA['be_groups'] = array(
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.base_rights, inc_access_lists;;;;1-1-1,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.mounts_and_workspaces, workspace_perms;;;;1-1-1, db_mountpoints;;;;2-2-2, file_mountpoints;;;;3-3-3, fileoper_perms,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.options, lockToDomain;;;;1-1-1, hide_in_lists;;;;2-2-2, TSconfig;;;;3-3-3,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.extended'
-		),
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.extended'),
 		'1' => array('showitem' => 'hidden;;;;1-1-1, title;;;;2-2-2, description, subgroup;;;;3-3-3,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.base_rights, inc_access_lists;;;;1-1-1, groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny , allowed_languages;;;;2-2-2, custom_options;;;;3-3-3,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.mounts_and_workspaces, workspace_perms;;;;1-1-1, db_mountpoints;;;;2-2-2, file_mountpoints;;;;3-3-3, fileoper_perms,
 			--div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.options, lockToDomain;;;;1-1-1, hide_in_lists;;;;2-2-2, TSconfig;;;;3-3-3,
-			--div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.extended'
-		)
+			--div--;LLL:EXT:lang/locallang_tca.xml:be_groups.tabs.extended')
 	)
 );
-
 /**
  * System filemounts - Defines filepaths on the server which can be mounted for users so they can upload and manage files online by eg. the Filelist module
  */
@@ -678,7 +669,7 @@ $TCA['sys_filemounts'] = array(
 				'type' => 'select',
 				'foreign_table' => 'sys_file_storage',
 				'size' => 1,
-				'maxitems' => 1,
+				'maxitems' => 1
 			)
 		),
 		'path' => array(
@@ -686,18 +677,17 @@ $TCA['sys_filemounts'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(),
-				'itemsProcFunc' => 't3lib/file/Service/UserfilemountService.php:t3lib_file_Service_UserfilemountService->renderTceformsSelectDropdown'
+				'itemsProcFunc' => 't3lib/file/Service/UserfilemountService.php:TYPO3\\CMS\\Core\\Resource\\Service\\UserFileMountService->renderTceformsSelectDropdown'
 			)
-		),
+		)
 	),
 	'types' => array(
-		'0' => array('showitem' => '--palette--;;mount, base, path'),
+		'0' => array('showitem' => '--palette--;;mount, base, path')
 	),
 	'palettes' => array(
 		'mount' => array('showitem' => 'title,hidden', 'canNotCollapse' => 1)
 	)
 );
-
 /**
  * tca-record collections
  */
@@ -709,19 +699,19 @@ $TCA['sys_collection'] = array(
 	'feInterface' => $TCA['sys_collection']['feInterface'],
 	'columns' => array(
 		't3ver_label' => array(
-			'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
-				'max'  => '30',
+				'max' => '30'
 			)
 		),
 		'sys_language_uid' => array(
 			'exclude' => 1,
-			'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
 			'config' => array(
-				'type'                => 'select',
-				'foreign_table'       => 'sys_language',
+				'type' => 'select',
+				'foreign_table' => 'sys_language',
 				'foreign_table_where' => 'ORDER BY sys_language.title',
 				'items' => array(
 					array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1),
@@ -731,15 +721,15 @@ $TCA['sys_collection'] = array(
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude'     => 1,
-			'label'       => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
-			'config'      => array(
-				'type'  => 'select',
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
+			'config' => array(
+				'type' => 'select',
 				'items' => array(
-					array('', 0),
+					array('', 0)
 				),
-				'foreign_table'       => 'sys_file_collection',
-				'foreign_table_where' => 'AND sys_file_collection.pid=###CURRENT_PID### AND sys_file_collection.sys_language_uid IN (-1,0)',
+				'foreign_table' => 'sys_file_collection',
+				'foreign_table_where' => 'AND sys_file_collection.pid=###CURRENT_PID### AND sys_file_collection.sys_language_uid IN (-1,0)'
 			)
 		),
 		'l10n_diffsource' => array(
@@ -749,45 +739,45 @@ $TCA['sys_collection'] = array(
 		),
 		'hidden' => array(
 			'exclude' => 1,
-			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-			'config'  => array(
-				'type'    => 'check',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+			'config' => array(
+				'type' => 'check',
 				'default' => '0'
 			)
 		),
 		'starttime' => array(
 			'exclude' => 1,
-			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
-			'config'  => array(
-				'type'     => 'input',
-				'size'     => '8',
-				'max'      => '20',
-				'eval'     => 'date',
-				'default'  => '0',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.starttime',
+			'config' => array(
+				'type' => 'input',
+				'size' => '8',
+				'max' => '20',
+				'eval' => 'date',
+				'default' => '0',
 				'checkbox' => '0'
 			)
 		),
 		'endtime' => array(
 			'exclude' => 1,
-			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
-			'config'  => array(
-				'type'     => 'input',
-				'size'     => '8',
-				'max'      => '20',
-				'eval'     => 'date',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.endtime',
+			'config' => array(
+				'type' => 'input',
+				'size' => '8',
+				'max' => '20',
+				'eval' => 'date',
 				'checkbox' => '0',
-				'default'  => '0',
-				'range'    => array(
+				'default' => '0',
+				'range' => array(
 					'upper' => mktime(3, 14, 7, 1, 19, 2038),
-					'lower' => mktime(0, 0, 0, date('m')-1, date('d'), date('Y'))
+					'lower' => mktime(0, 0, 0, date('m') - 1, date('d'), date('Y'))
 				)
 			)
 		),
 		'fe_group' => array(
 			'exclude' => 1,
-			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.fe_group',
-			'config'  => array(
-				'type'  => 'select',
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.fe_group',
+			'config' => array(
+				'type' => 'select',
 				'items' => array(
 					array('', 0),
 					array('LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login', -1),
@@ -815,7 +805,7 @@ $TCA['sys_collection'] = array(
 				'allowed' => '*',
 				'MM' => 'sys_collection_entries',
 				'MM_hasUidField' => TRUE,
-				'multiple' => TRUE,
+				'multiple' => TRUE
 			)
 		),
 		'title' => array(
@@ -842,20 +832,19 @@ $TCA['sys_collection'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('LLL:EXT:lang/locallang_tca.xlf:sys_collection.type.static', 'static'),
+					array('LLL:EXT:lang/locallang_tca.xlf:sys_collection.type.static', 'static')
 				),
 				'default' => 'static'
 			)
-		),
+		)
 	),
 	'types' => array(
-		'static' => array('showitem' => 'title;;1,type, description,table_name, items'),
+		'static' => array('showitem' => 'title;;1,type, description,table_name, items')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'starttime, endtime, fe_group, sys_language_uid, l10n_parent, l10n_diffsource, hidden')
 	)
 );
-
 /**
  * System log history - keeps a trail of record edits
  */
@@ -865,59 +854,58 @@ $TCA['sys_history'] = array(
 		'sys_log_uid' => array(
 			'label' => 'sys_log_uid',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'history_data' => array(
 			'label' => 'history_data',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'fieldlist' => array(
 			'label' => 'fieldlist',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'recuid' => array(
 			'label' => 'recuid',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'tablename' => array(
 			'label' => 'tablename',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'tstamp' => array(
 			'label' => 'tstamp',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'history_files' => array(
 			'label' => 'history_files',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'snapshot' => array(
 			'label' => 'snapshot',
 			'config' => array(
-				'type' => 'input',
-			),
-		),
+				'type' => 'input'
+			)
+		)
 	),
 	'types' => array(
 		'1' => array(
-			'showitem' => 'sys_log_uid, history_data, fieldlist, recuid, tablename, tstamp, history_files, snapshot',
-		),
-	),
+			'showitem' => 'sys_log_uid, history_data, fieldlist, recuid, tablename, tstamp, history_files, snapshot'
+		)
+	)
 );
-
 /**
  * System languages - Defines possible languages used for translation of records in the system
  */
@@ -951,13 +939,13 @@ $TCA['sys_language'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('', 0),
+					array('', 0)
 				),
 				'foreign_table' => 'static_languages',
 				'foreign_table_where' => 'AND static_languages.pid=0 ORDER BY static_languages.lg_name_en',
 				'size' => 1,
 				'minitems' => 0,
-				'maxitems' => 1,
+				'maxitems' => 1
 			)
 		),
 		'flag' => array(
@@ -965,12 +953,12 @@ $TCA['sys_language'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('', 0, ''),
+					array('', 0, '')
 				),
 				'selicon_cols' => 16,
 				'size' => 1,
 				'minitems' => 0,
-				'maxitems' => 1,
+				'maxitems' => 1
 			)
 		)
 	),
@@ -978,7 +966,6 @@ $TCA['sys_language'] = array(
 		'1' => array('showitem' => 'hidden;;;;1-1-1,title;;;;2-2-2,static_lang_isocode,flag')
 	)
 );
-
 /**
  * System log
  */
@@ -988,101 +975,100 @@ $TCA['sys_log'] = array(
 		'tstamp' => array(
 			'label' => 'tstamp',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'userid' => array(
 			'label' => 'userid',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'action' => array(
 			'label' => 'action',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'recuid' => array(
 			'label' => 'recuid',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'tablename' => array(
 			'label' => 'tablename',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'recpid' => array(
 			'label' => 'recpid',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'error' => array(
 			'label' => 'error',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'details' => array(
 			'label' => 'details',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'type' => array(
 			'label' => 'type',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'detail_nr' => array(
 			'label' => 'detail_nr',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'IP' => array(
 			'label' => 'IP',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'log_data' => array(
 			'label' => 'log_data',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'event_pid' => array(
 			'label' => 'event_pid',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'workspace' => array(
 			'label' => 'workspace',
 			'config' => array(
-				'type' => 'input',
-			),
+				'type' => 'input'
+			)
 		),
 		'NEWid' => array(
 			'label' => 'NEWid',
 			'config' => array(
-				'type' => 'input',
-			),
-		),
+				'type' => 'input'
+			)
+		)
 	),
 	'types' => array(
 		'1' => array(
-			'showitem' => 'tstamp, userid, action, recuid, tablename, recpid, error, details, type, details_nr, IP, log_data, event_pid, workspace, NEWid',
-		),
-	),
+			'showitem' => 'tstamp, userid, action, recuid, tablename, recpid, error, details, type, details_nr, IP, log_data, event_pid, workspace, NEWid'
+		)
+	)
 );
-
 /**
  * System News (displayed on Login screen)
  */
@@ -1147,17 +1133,15 @@ $TCA['sys_news'] = array(
 						'title' => 'LLL:EXT:cms/locallang_ttc.php:bodytext.W.RTE',
 						'icon' => 'wizard_rte2.gif',
 						'script' => 'wizard_rte.php'
-					),
-				),
-			),
-		),
+					)
+				)
+			)
+		)
 	),
 	'types' => array(
 		'1' => array('showitem' => '
 			hidden, title, content;;9;richtext:rte_transform[flag=rte_enabled|mode=ts_css];3-3-3,
-			--div--;LLL:EXT:lang/locallang_tca.xml:sys_news.tabs.access, starttime, endtime'
-		)
+			--div--;LLL:EXT:lang/locallang_tca.xml:sys_news.tabs.access, starttime, endtime')
 	)
 );
-
 ?>

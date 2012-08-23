@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Belog\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Get history entry from for log entry
  *
@@ -31,20 +32,20 @@
  * @package TYPO3
  * @subpackage belog
  */
-class Tx_Belog_ViewHelpers_HistoryEntryViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class HistoryEntryViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @var Tx_Belog_Domain_Repository_HistoryEntryRepository
+	 * @var \TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository
 	 */
 	protected $historyEntryRepository;
 
 	/**
 	 * Inject the system history entry repository.
 	 *
-	 * @param Tx_Belog_Domain_Repository_HistoryEntryRepository $historyEntryRepository
+	 * @param \TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository $historyEntryRepository
 	 * @return void
 	 */
-	public function injectHistoryEntryRepository(Tx_Belog_Domain_Repository_HistoryEntryRepository $historyEntryRepository) {
+	public function injectHistoryEntryRepository(\TYPO3\CMS\Belog\Domain\Repository\HistoryEntryRepository $historyEntryRepository) {
 		$this->historyEntryRepository = $historyEntryRepository;
 	}
 
@@ -55,31 +56,21 @@ class Tx_Belog_ViewHelpers_HistoryEntryViewHelper extends Tx_Fluid_Core_ViewHelp
 	 * @return string Formatted history entry if one exists, else empty string
 	 */
 	public function render($uid) {
-		/** @var $historyEntry Tx_Belog_Domain_Model_HistoryEntry */
+		/** @var $historyEntry \TYPO3\CMS\Belog\Domain\Model\HistoryEntry */
 		$historyEntry = $this->historyEntryRepository->findOneBySysLogUid($uid);
-
-		if (!($historyEntry instanceof Tx_Belog_Domain_Model_HistoryEntry)) {
+		if (!$historyEntry instanceof \TYPO3\CMS\Belog\Domain\Model\HistoryEntry) {
 			return '';
 		}
-
-		$historyLabel = Tx_Extbase_Utility_Localization::translate(
-			'changesInFields',
-			$this->controllerContext->getRequest()->getControllerExtensionName(),
-			array($historyEntry->getFieldlist())
-		);
-		$historyIcon = t3lib_iconWorks::getSpriteIcon(
-			'actions-document-history-open',
-			array(
-				'title' => Tx_Extbase_Utility_Localization::translate(
-					'showHistory',
-					$this->controllerContext->getRequest()->getControllerExtensionName()
-				)
-			)
-		);
-		$historyHref = 'show_rechis.php?sh_uid=' . $historyEntry->getUid() . '&returnUrl=' . rawurlencode(t3lib_div::getIndpEnv('REQUEST_URI'));
-		$historyLink = '<a href="' . htmlspecialchars($historyHref) . '">' . $historyIcon . '</a>';
-
-		return $historyLabel . '&nbsp;' . $historyLink;
+		$historyLabel = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('changesInFields', $this->controllerContext->getRequest()->getControllerExtensionName(), array($historyEntry->getFieldlist()));
+		$historyIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-history-open', array(
+			'title' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('showHistory', $this->controllerContext->getRequest()->getControllerExtensionName())
+		));
+		$historyHref = (('show_rechis.php?sh_uid=' . $historyEntry->getUid()) . '&returnUrl=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
+		$historyLink = ((('<a href="' . htmlspecialchars($historyHref)) . '">') . $historyIcon) . '</a>';
+		return ($historyLabel . '&nbsp;') . $historyLink;
 	}
+
 }
+
+
 ?>

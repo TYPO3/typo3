@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Beuser\Service;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Module data storage service.
  * Used to store and retrieve module state (eg. checkboxes, selections).
@@ -33,15 +34,14 @@
  * @package TYPO3
  * @subpackage beuser
  */
-class Tx_Beuser_Service_ModuleDataStorageService implements t3lib_Singleton {
+class ModuleDataStorageService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var string
 	 */
 	const KEY = 'tx_beuser';
-
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 * @inject
 	 */
 	protected $objectManager;
@@ -49,28 +49,29 @@ class Tx_Beuser_Service_ModuleDataStorageService implements t3lib_Singleton {
 	/**
 	 * Loads module data for user settings or returns a fresh object initially
 	 *
-	 * @return Tx_Beuser_Domain_Model_ModuleData
+	 * @return \TYPO3\CMS\Beuser\Domain\Model\ModuleData
 	 */
 	public function loadModuleData() {
 		$moduleData = $GLOBALS['BE_USER']->getModuleData(self::KEY);
-
 		if (empty($moduleData) || !$moduleData) {
-			$moduleData = $this->objectManager->create('Tx_Beuser_Domain_Model_ModuleData');
+			$moduleData = $this->objectManager->create('TYPO3\\CMS\\Beuser\\Domain\\Model\\ModuleData');
 		} else {
 			$moduleData = @unserialize($moduleData);
 		}
-
 		return $moduleData;
 	}
 
 	/**
 	 * Persists serialized module data to user settings
 	 *
-	 * @param Tx_Beuser_Domain_Model_ModuleData $moduleData
+	 * @param \TYPO3\CMS\Beuser\Domain\Model\ModuleData $moduleData
 	 * @return void
 	 */
-	public function persistModuleData(Tx_Beuser_Domain_Model_ModuleData $moduleData) {
+	public function persistModuleData(\TYPO3\CMS\Beuser\Domain\Model\ModuleData $moduleData) {
 		$GLOBALS['BE_USER']->pushModuleData(self::KEY, serialize($moduleData));
 	}
+
 }
+
+
 ?>

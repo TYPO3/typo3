@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,7 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Controller for handling extension related actions like
  * installing, removing, downloading of data or files
@@ -33,44 +34,41 @@
  * @package Extension Manager
  * @subpackage Controller
  */
-class Tx_Extensionmanager_Controller_ActionController extends Tx_Extensionmanager_Controller_AbstractController {
+class ActionController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
 
 	/**
-	 * @var Tx_Extensionmanager_Utility_Install
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
 	 */
 	protected $installUtility;
 
 	/**
-	 * @param Tx_Extensionmanager_Utility_Install $installUtility
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
 	 * @return void
 	 */
-	public function injectInstallUtility(Tx_Extensionmanager_Utility_Install $installUtility) {
+	public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility) {
 		$this->installUtility = $installUtility;
 	}
 
 	/**
-	 * @var Tx_Extensionmanager_Utility_FileHandling
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
 	 */
 	protected $fileHandlingUtility;
 
 	/**
-	 * @param Tx_Extensionmanager_Utility_FileHandling $fileHandlingUtility
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility
 	 * @return void
 	 */
-	public function injectFileHandlingUtility(Tx_Extensionmanager_Utility_FileHandling $fileHandlingUtility) {
+	public function injectFileHandlingUtility(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility) {
 		$this->fileHandlingUtility = $fileHandlingUtility;
 	}
 
 	/**
-	 * @throws Tx_Extensionmanager_Exception_ExtensionManager
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 * @return void
 	 */
 	public function initializeAction() {
 		if (!$this->request->hasArgument('extension')) {
-			throw new Tx_Extensionmanager_Exception_ExtensionManager(
-				'Required argument extension not set!',
-				1342874433
-			);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Required argument extension not set!', 1342874433);
 		}
 	}
 
@@ -80,13 +78,13 @@ class Tx_Extensionmanager_Controller_ActionController extends Tx_Extensionmanage
 	 * @return void
 	 */
 	protected function toggleExtensionInstallationStateAction() {
-		$installedExtensions = t3lib_extMgm::getLoadedExtensionListArray();
+		$installedExtensions = \TYPO3\CMS\Core\Extension\ExtensionManager::getLoadedExtensionListArray();
 		$extension = $this->request->getArgument('extension');
 		if (in_array($extension, $installedExtensions)) {
-				// uninstall
+			// uninstall
 			$this->installUtility->uninstall($extension);
 		} else {
-				// install
+			// install
 			$this->installUtility->install($extension);
 		}
 		$this->redirect('index', 'List');
@@ -102,18 +100,15 @@ class Tx_Extensionmanager_Controller_ActionController extends Tx_Extensionmanage
 		$message = '';
 		$extension = $this->request->getArgument('extension');
 		try {
-			if (t3lib_extMgm::isLoaded($extension)) {
+			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extension)) {
 				$this->installUtility->uninstall($extension);
 			}
 			$this->installUtility->removeExtension($extension);
-		} catch (Tx_Extensionmanager_Exception_ExtensionManager $e) {
+		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
 			$message = $e->getMessage();
 			$success = FALSE;
 		}
-		$this->view->assign('success', $success)
-			->assign('message', $message)
-			->assign('extension', $extension);
-
+		$this->view->assign('success', $success)->assign('message', $message)->assign('extension', $extension);
 	}
 
 	/**
@@ -130,7 +125,7 @@ class Tx_Extensionmanager_Controller_ActionController extends Tx_Extensionmanage
 	/**
 	 * Download data of an extension as sql statements
 	 *
-	 * @throws Tx_Extensionmanager_Exception_ExtensionManager
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 * @return void
 	 */
 	protected function downloadExtensionDataAction() {
@@ -139,15 +134,15 @@ class Tx_Extensionmanager_Controller_ActionController extends Tx_Extensionmanage
 		$sqlData = $this->installUtility->getExtensionSqlDataDump($extension);
 		$dump = $sqlData['extTables'] . $sqlData['staticSql'];
 		$fileName = $extension . '_sqlDump.sql';
-		$filePath = PATH_site . 'typo3temp/' . $fileName;
-		$error = t3lib_div::writeFileToTypo3tempDir($filePath, $dump);
+		$filePath = (PATH_site . 'typo3temp/') . $fileName;
+		$error = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($filePath, $dump);
 		if (is_string($error)) {
-			throw new Tx_Extensionmanager_Exception_ExtensionManager($error, 1343048718);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($error, 1343048718);
 		}
-
 		$this->fileHandlingUtility->sendSqlDumpFileToBrowserAndDelete($filePath, $fileName);
 	}
 
 }
+
 
 ?>

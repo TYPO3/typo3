@@ -1,9 +1,7 @@
 <?php
-
 if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
+	die('Access denied.');
 }
-
 $TCA['sys_note'] = array(
 	'ctrl' => $TCA['sys_note']['ctrl'],
 	'interface' => array(
@@ -51,5 +49,4 @@ $TCA['sys_note'] = array(
 		'0' => array('showitem' => 'category;;;;2-2-2, personal, subject;;;;3-3-3, message')
 	)
 );
-
 ?>

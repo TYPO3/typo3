@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Aboutmodules\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,7 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * 'About modules' script - the default start-up module.
  * Will display the list of main- and sub-modules available to the user.
@@ -35,7 +36,7 @@
  * @package TYPO3
  * @subpackage aboutmodules
  */
-class Tx_Aboutmodules_Controller_ModulesController  extends Tx_Extbase_MVC_Controller_ActionController {
+class ModulesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
 	 * Show general information and the installed modules
@@ -43,11 +44,7 @@ class Tx_Aboutmodules_Controller_ModulesController  extends Tx_Extbase_MVC_Contr
 	 * @return void
 	 */
 	public function indexAction() {
-		$this->view
-			->assign('TYPO3Version', TYPO3_version)
-			->assign('copyRightNotice', t3lib_BEfunc::TYPO3_copyRightNotice())
-			->assign('warningMessages', t3lib_BEfunc::displayWarningMessages())
-			->assign('modules', $this->getModulesData());
+		$this->view->assign('TYPO3Version', TYPO3_version)->assign('copyRightNotice', \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice())->assign('warningMessages', \TYPO3\CMS\Backend\Utility\BackendUtility::displayWarningMessages())->assign('modules', $this->getModulesData());
 	}
 
 	/**
@@ -57,11 +54,10 @@ class Tx_Aboutmodules_Controller_ModulesController  extends Tx_Extbase_MVC_Contr
 	 * @return array
 	 */
 	protected function getModulesData() {
-			/** @var $loadedModules t3lib_loadModules */
-		$loadedModules = t3lib_div::makeInstance('t3lib_loadModules');
+		/** @var $loadedModules \TYPO3\CMS\Backend\Module\ModuleLoader */
+		$loadedModules = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Module\\ModuleLoader');
 		$loadedModules->observeWorkspaces = TRUE;
 		$loadedModules->load($GLOBALS['TBE_MODULES']);
-
 		$mainModulesData = array();
 		foreach ($loadedModules->modules as $moduleName => $moduleInfo) {
 			$mainModuleData = array();
@@ -74,7 +70,6 @@ class Tx_Aboutmodules_Controller_ModulesController  extends Tx_Extbase_MVC_Contr
 			}
 			$mainModulesData[] = $mainModuleData;
 		}
-
 		return $mainModulesData;
 	}
 
@@ -87,9 +82,8 @@ class Tx_Aboutmodules_Controller_ModulesController  extends Tx_Extbase_MVC_Contr
 	 */
 	protected function getSubModuleData($moduleName, array $subModulesInfo = array()) {
 		$subModulesData = array();
-
 		foreach ($subModulesInfo as $subModuleName => $subModuleInfo) {
-			$subModuleKey = $moduleName . '_' . $subModuleName . '_tab';
+			$subModuleKey = (($moduleName . '_') . $subModuleName) . '_tab';
 			$subModuleData = array();
 			$subModuleData['name'] = $subModuleName;
 			$subModuleData['icon'] = substr($GLOBALS['LANG']->moduleLabels['tabs_images'][$subModuleKey], strlen(PATH_site));
@@ -98,8 +92,10 @@ class Tx_Aboutmodules_Controller_ModulesController  extends Tx_Extbase_MVC_Contr
 			$subModuleData['longDescription'] = $GLOBALS['LANG']->moduleLabels['labels'][$subModuleKey . 'descr'];
 			$subModulesData[] = $subModuleData;
 		}
-
 		return $subModulesData;
 	}
+
 }
+
+
 ?>

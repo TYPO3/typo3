@@ -1,4 +1,4 @@
-{namespace em=Tx_Extensionmanager_ViewHelpers}
+{namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 <em:format.jsonEncode additionalAttributes="{dependencies:dependencies,
 url:'{f:uri.action(action:\"installFromTer\", controller:\"Download\", arguments:\"{extension:extension.uid, format:\'json\'}\")}',
 message: '{message}'

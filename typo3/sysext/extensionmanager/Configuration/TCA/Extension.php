@@ -2,7 +2,6 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
-
 $TCA['tx_extensionmanager_domain_model_extension'] = array(
 	'ctrl' => $TCA['tx_extensionmanager_domain_model_extension']['ctrl'],
 	'interface' => array(
@@ -15,7 +14,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.extensionkey',
 			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
 		'version' => array(
@@ -23,7 +22,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.version',
 			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
 		'title' => array(
@@ -31,7 +30,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.title',
 			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
 		'description' => array(
@@ -40,7 +39,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 			'config' => array(
 				'type' => 'text',
 				'cols' => '30',
-				'rows' => '5',
+				'rows' => '5'
 			)
 		),
 		'state' => array(
@@ -50,7 +49,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 				'type' => 'input',
 				'size' => '30',
 				'range' => array('lower' => 0, 'upper' => 1000),
-				'eval' => 'int',
+				'eval' => 'int'
 			)
 		),
 		'category' => array(
@@ -60,7 +59,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 				'type' => 'input',
 				'size' => '30',
 				'range' => array('lower' => 0, 'upper' => 1000),
-				'eval' => 'int',
+				'eval' => 'int'
 			)
 		),
 		'last_updated' => array(
@@ -69,7 +68,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
-				'eval' => 'datetime',
+				'eval' => 'datetime'
 			)
 		),
 		'update_comment' => array(
@@ -78,7 +77,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 			'config' => array(
 				'type' => 'text',
 				'cols' => '30',
-				'rows' => '5',
+				'rows' => '5'
 			)
 		),
 		'author_name' => array(
@@ -86,7 +85,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.authorname',
 			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
 		'author_email' => array(
@@ -94,7 +93,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.authoremail',
 			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
 		'lastversion' => array(
@@ -102,7 +101,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.lastversion',
 			'config' => array(
 				'type' => 'check',
-				'size' => '1',
+				'size' => '1'
 			)
 		),
 		'position' => array(
@@ -113,7 +112,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 				'size' => '10',
 				'eval' => 'int'
 			)
-		),
+		)
 	),
 	'types' => array(
 		'0' => array('showitem' => 'extensionkey;;;;1-1-1, version, title;;;;2-2-2, description;;;;3-3-3, state, category, lastupdated, updatecomment, authorname, authoremail')

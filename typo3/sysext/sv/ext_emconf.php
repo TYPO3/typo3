@@ -1,15 +1,13 @@
 <?php
-
 /***************************************************************
-* Extension Manager/Repository config file for ext "sv".
-*
-* Auto generated 25-10-2011 13:11
-*
-* Manual updates:
-* Only the data in the array - everything else is removed by next
-* writing. "version" and "dependencies" must not be touched!
-***************************************************************/
-
+ * Extension Manager/Repository config file for ext "sv".
+ *
+ * Auto generated 25-10-2011 13:11
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'TYPO3 System Services',
 	'description' => 'The core/default sevices. This includes the default authentication services for now.',
@@ -34,15 +32,11 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
-			'typo3' => '4.6.0-0.0.0',
+			'typo3' => '4.6.0-0.0.0'
 		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
+		'conflicts' => array(),
+		'suggests' => array()
 	),
-	'suggests' => array(
-	),
+	'suggests' => array()
 );
-
 ?>

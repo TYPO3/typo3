@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,7 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A repository for extension configuration items
  *
@@ -29,20 +30,20 @@
  * @package Extension Manager
  * @subpackage Repository
  */
-class Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository {
+class ConfigurationItemRepository {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
 	 * Injects the object manager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface $objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -53,7 +54,7 @@ class Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository {
 	 * @return null|SplObjectStorage
 	 */
 	public function findByExtension(array $extension) {
-		$configRaw = t3lib_div::getUrl(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt');
+		$configRaw = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl((PATH_site . $extension['siteRelPath']) . '/ext_conf_template.txt');
 		$configurationObjectStorage = NULL;
 		if ($configRaw) {
 			$configurationObjectStorage = $this->convertRawConfigurationToObject($configRaw, $extension);
@@ -73,19 +74,10 @@ class Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository {
 		$metaInformation = $this->addMetaInformation($defaultConfiguration);
 		$configuration = $this->mergeWithExistingConfiguration($defaultConfiguration, $extension);
 		$hierarchicConfiguration = array();
-
 		foreach ($configuration as $configurationOption) {
-			$hierarchicConfiguration = t3lib_div::array_merge_recursive_overrule(
-				$this->buildConfigurationArray($configurationOption, $extension),
-				$hierarchicConfiguration
-			);
+			$hierarchicConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->buildConfigurationArray($configurationOption, $extension), $hierarchicConfiguration);
 		}
-		$configurationObjectStorage = $this->convertHierarchicArrayToObject(
-			t3lib_div::array_merge_recursive_overrule(
-				$hierarchicConfiguration,
-				$metaInformation
-			)
-		);
+		$configurationObjectStorage = $this->convertHierarchicArrayToObject(\TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($hierarchicConfiguration, $metaInformation));
 		return $configurationObjectStorage;
 	}
 
@@ -98,20 +90,15 @@ class Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository {
 	 */
 	protected function buildConfigurationArray($configurationOption, $extension) {
 		$hierarchicConfiguration = array();
-		if (t3lib_div::isFirstPartOfStr($configurationOption['type'], 'user')) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'user')) {
 			$configurationOption = $this->extractInformationForConfigFieldsOfTypeUser($configurationOption);
-		} elseif (t3lib_div::isFirstPartOfStr($configurationOption['type'], 'options')) {
+		} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($configurationOption['type'], 'options')) {
 			$configurationOption = $this->extractInformationForConfigFieldsOfTypeOptions($configurationOption);
 		}
-		if (Tx_Extbase_Utility_Localization::translate($configurationOption['label'], $extension['key'])) {
-			$configurationOption['label'] = Tx_Extbase_Utility_Localization::translate($configurationOption['label'], $extension['key']);
+		if (\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($configurationOption['label'], $extension['key'])) {
+			$configurationOption['label'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($configurationOption['label'], $extension['key']);
 		}
-		$configurationOption['labels'] = t3lib_div::trimExplode(
-			':',
-			$configurationOption['label'],
-			FALSE,
-			2
-		);
+		$configurationOption['labels'] = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $configurationOption['label'], FALSE, 2);
 		$configurationOption['subcat_name'] = $configurationOption['subcat_name'] ? $configurationOption['subcat_name'] : '__default';
 		$hierarchicConfiguration[$configurationOption['cat']][$configurationOption['subcat_name']][$configurationOption['name']] = $configurationOption;
 		return $hierarchicConfiguration;
@@ -125,8 +112,8 @@ class Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository {
 	 * @return array
 	 */
 	protected function extractInformationForConfigFieldsOfTypeOptions(array $configurationOption) {
-		preg_match('/options\[(.*)\]/is', $configurationOption['type'], $typeMatches);
-		preg_match('/options\[(.*)\]/is', $configurationOption['label'], $labelMatches);
+		preg_match('/options\\[(.*)\\]/is', $configurationOption['type'], $typeMatches);
+		preg_match('/options\\[(.*)\\]/is', $configurationOption['label'], $labelMatches);
 		$optionValues = explode(',', $typeMatches[1]);
 		$optionLabels = explode(',', $labelMatches[1]);
 		$configurationOption['generic'] = $labelMatches ? array_combine($optionLabels, $optionValues) : array_combine($optionValues, $optionValues);
@@ -143,7 +130,7 @@ class Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository {
 	 * @return array
 	 */
 	protected function extractInformationForConfigFieldsOfTypeUser(array $configurationOption) {
-		preg_match('/user\[(.*)\]/is', $configurationOption['type'], $matches);
+		preg_match('/user\\[(.*)\\]/is', $configurationOption['type'], $matches);
 		$configurationOption['generic'] = $matches[1];
 		$configurationOption['type'] = 'user';
 		return $configurationOption;
@@ -173,12 +160,7 @@ class Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository {
 	public function createArrayFromConstants($configRaw, array $extension) {
 		$tsStyleConfig = $this->getT3libTsStyleConfig();
 		$tsStyleConfig->doNotSortCategoriesBeforeMakingForm = TRUE;
-		$theConstants = $tsStyleConfig->ext_initTSstyleConfig(
-			$configRaw,
-			$extension['siteRelPath'],
-			PATH_site . $extension['siteRelPath'],
-			$GLOBALS['BACK_PATH']
-		);
+		$theConstants = $tsStyleConfig->ext_initTSstyleConfig($configRaw, $extension['siteRelPath'], PATH_site . $extension['siteRelPath'], $GLOBALS['BACK_PATH']);
 		if (isset($tsStyleConfig->setup['constants']['TSConstantEditor.'])) {
 			foreach ($tsStyleConfig->setup['constants']['TSConstantEditor.'] as $category => $highlights) {
 				$theConstants['__meta__'][rtrim($category, '.')]['highlightText'] = $highlights['description'];
@@ -196,10 +178,10 @@ class Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository {
 	 * Wrapper for makeInstance to make it possible to mock
 	 * the class
 	 *
-	 * @return t3lib_tsStyleConfig
+	 * @return \TYPO3\CMS\Core\TypoScript\ConfigurationForm
 	 */
 	protected function getT3libTsStyleConfig() {
-		return t3lib_div::makeInstance('t3lib_tsStyleConfig');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ConfigurationForm');
 	}
 
 	/**
@@ -211,17 +193,14 @@ class Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository {
 	 */
 	protected function mergeWithExistingConfiguration(array $configuration, array $extension) {
 		$currentExtensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extension['key']]);
-		$flatExtensionConfig = t3lib_utility_Array::flatten($currentExtensionConfig);
+		$flatExtensionConfig = \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($currentExtensionConfig);
 		$valuedCurrentExtensionConfig = array();
-
 		foreach ($flatExtensionConfig as $key => $value) {
 			$valuedCurrentExtensionConfig[$key]['value'] = $value;
 		}
-
 		if (is_array($currentExtensionConfig)) {
-			$configuration =  t3lib_div::array_merge_recursive_overrule($configuration, $valuedCurrentExtensionConfig);
+			$configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($configuration, $valuedCurrentExtensionConfig);
 		}
-
 		return $configuration;
 	}
 
@@ -233,22 +212,22 @@ class Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository {
 	 * @return SplObjectStorage
 	 */
 	protected function convertHierarchicArrayToObject(array $configuration) {
-		$configurationObjectStorage = new SplObjectStorage();
+		$configurationObjectStorage = new \SplObjectStorage();
 		foreach ($configuration as $category => $subcategory) {
-			/** @var $configurationCategoryObject Tx_Extensionmanager_Domain_Model_ConfigurationCategory */
-			$configurationCategoryObject = $this->objectManager->get('Tx_Extensionmanager_Domain_Model_ConfigurationCategory');
+			/** @var $configurationCategoryObject \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationCategory */
+			$configurationCategoryObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\ConfigurationCategory');
 			$configurationCategoryObject->setName($category);
 			if ($subcategory['highlightText']) {
 				$configurationCategoryObject->setHighlightText($subcategory['highlightText']);
 				unset($subcategory['highlightText']);
 			}
 			foreach ($subcategory as $subcatName => $configurationItems) {
-				/** @var $configurationSubcategoryObject Tx_Extensionmanager_Domain_Model_ConfigurationSubcategory */
-				$configurationSubcategoryObject = $this->objectManager->get('Tx_Extensionmanager_Domain_Model_ConfigurationSubcategory');
+				/** @var $configurationSubcategoryObject \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationSubcategory */
+				$configurationSubcategoryObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\ConfigurationSubcategory');
 				$configurationSubcategoryObject->setName($subcatName);
 				foreach ($configurationItems as $configurationItem) {
-					/** @var $configurationObject Tx_Extensionmanager_Domain_Model_ConfigurationItem */
-					$configurationObject = $this->objectManager->get('Tx_Extensionmanager_Domain_Model_ConfigurationItem');
+					/** @var $configurationObject \TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem */
+					$configurationObject = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\ConfigurationItem');
 					if (isset($configurationItem['generic'])) {
 						$configurationObject->setGeneric($configurationItem['generic']);
 					}
@@ -284,5 +263,8 @@ class Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository {
 		}
 		return $configurationObjectStorage;
 	}
+
 }
+
+
 ?>

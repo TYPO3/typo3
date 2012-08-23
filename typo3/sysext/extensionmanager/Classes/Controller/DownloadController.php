@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Controller for actions related to the TER download of an extension
  *
@@ -33,73 +33,72 @@
  * @package Extension Manager
  * @subpackage Controller
  */
-class Tx_Extensionmanager_Controller_DownloadController extends Tx_Extensionmanager_Controller_AbstractController {
+class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
 
 	/**
-	 * @var Tx_Extensionmanager_Domain_Repository_ExtensionRepository
+	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
 	 */
 	protected $extensionRepository;
 
 	/**
-	 * @var Tx_Extensionmanager_Utility_FileHandling
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility
 	 */
 	protected $fileHandlingUtility;
 
-
 	/**
-	 * @var Tx_Extensionmanager_Service_Management
+	 * @var \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService
 	 */
 	protected $managementService;
 
 	/**
-	 * @var Tx_Extensionmanager_Utility_Install
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
 	 */
 	protected $installUtility;
 
 	/**
-	 * @param Tx_Extensionmanager_Utility_Install $installUtility
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility
 	 * @return void
 	 */
-	public function injectInstallUtility(Tx_Extensionmanager_Utility_Install $installUtility) {
+	public function injectInstallUtility(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility $installUtility) {
 		$this->installUtility = $installUtility;
 	}
 
 	/**
 	 * Dependency injection of the Extension Repository
 	 *
-	 * @param Tx_Extensionmanager_Domain_Repository_ExtensionRepository $extensionRepository
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
 	 * @return void
 	 */
-	public function injectExtensionRepository(Tx_Extensionmanager_Domain_Repository_ExtensionRepository $extensionRepository) {
+	public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository) {
 		$this->extensionRepository = $extensionRepository;
 	}
 
 	/**
-	 * @param Tx_Extensionmanager_Utility_FileHandling $fileHandlingUtility
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility
 	 * @return void
 	 */
-	public function injectFileHandlingUtility(Tx_Extensionmanager_Utility_FileHandling $fileHandlingUtility) {
+	public function injectFileHandlingUtility(\TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility $fileHandlingUtility) {
 		$this->fileHandlingUtility = $fileHandlingUtility;
 	}
 
 	/**
-	 * @param Tx_Extensionmanager_Service_Management $managementService
+	 * @param \TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService
 	 * @return void
 	 */
-	public function injectManagementService(Tx_Extensionmanager_Service_Management $managementService) {
+	public function injectManagementService(\TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService $managementService) {
 		$this->managementService = $managementService;
 	}
 
 	/**
-	 * @var Tx_Extensionmanager_Utility_Download
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility
 	 */
 	protected $downloadUtility;
 
 	/**
-	 * @param Tx_Extensionmanager_Utility_Download $downloadUtility
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\DownloadUtility $downloadUtility
 	 * @return void
 	 */
-	public function injectDownloadUtility(Tx_Extensionmanager_Utility_Download $downloadUtility) {
+	public function injectDownloadUtility(\TYPO3\CMS\Extensionmanager\Utility\DownloadUtility $downloadUtility) {
 		$this->downloadUtility = $downloadUtility;
 	}
 
@@ -111,34 +110,31 @@ class Tx_Extensionmanager_Controller_DownloadController extends Tx_Extensionmana
 	 */
 	public function checkDependenciesAction() {
 		if (!$this->request->hasArgument('extension')) {
-			throw new Exception('Required argument extension not set.', 1334433342);
+			throw new \Exception('Required argument extension not set.', 1334433342);
 		}
 		$extensionUid = $this->request->getArgument('extension');
-		/** @var $extension Tx_Extensionmanager_Domain_Model_Extension */
+		/** @var $extension \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
 		$extension = $this->extensionRepository->findByUid(intval($extensionUid));
-
 		$dependencyTypes = $this->managementService->getAndResolveDependencies($extension);
 		$message = '';
 		if (count($dependencyTypes) > 0) {
-				// @todo translate and beautify
+			// @todo translate and beautify
 			$message = 'The following dependencies have to be resolved before installation:<br /><br />';
 			foreach ($dependencyTypes as $dependencyType => $dependencies) {
-				$message .= '<h3>Extensions marked for ' . $dependencyType . ':</h3>';
+				$message .= ('<h3>Extensions marked for ' . $dependencyType) . ':</h3>';
 				foreach ($dependencies as $extensionKey => $dependency) {
 					$message .= $extensionKey . '<br />';
 				}
 				$message .= 'Shall these dependencies be resolved automatically?';
 			}
 		}
-		$this->view->assign('dependencies', $dependencyTypes)
-			->assign('extension', $extension)
-			->assign('message', $message);
+		$this->view->assign('dependencies', $dependencyTypes)->assign('extension', $extension)->assign('message', $message);
 	}
 
 	/**
 	 * Install an extension from TER
 	 *
-	 * @throws Tx_Extensionmanager_Exception_ExtensionManager
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 * @return void
 	 */
 	public function installFromTerAction() {
@@ -146,24 +142,20 @@ class Tx_Extensionmanager_Controller_DownloadController extends Tx_Extensionmana
 		$errorMessage = '';
 		try {
 			if (!$this->request->hasArgument('extension')) {
-				throw new Tx_Extensionmanager_Exception_ExtensionManager('Required argument extension not set.', 1334433342);
+				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Required argument extension not set.', 1334433342);
 			}
 			$extensionUid = $this->request->getArgument('extension');
-
 			if ($this->request->hasArgument('downloadPath')) {
 				$this->downloadUtility->setDownloadPath($this->request->getArgument('downloadPath'));
 			}
-
-			/** @var $extension Tx_Extensionmanager_Domain_Model_Extension */
+			/** @var $extension \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
 			$extension = $this->extensionRepository->findByUid(intval($extensionUid));
 			$this->prepareExtensionForImport($extension);
 			$result = $this->managementService->resolveDependenciesAndInstall($extension);
-		} catch (Tx_Extensionmanager_Exception_ExtensionManager $e) {
+		} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
 			$errorMessage = $e->getMessage();
 		}
-		$this->view->assign('result', $result)
-			->assign('extension', $extension)
-			->assign('errorMessage', $errorMessage);
+		$this->view->assign('result', $result)->assign('extension', $extension)->assign('errorMessage', $errorMessage);
 	}
 
 	/**
@@ -171,12 +163,12 @@ class Tx_Extensionmanager_Controller_DownloadController extends Tx_Extensionmana
 	 * Uninstalls the extension if it is already loaded (case: update)
 	 * and reloads the caches.
 	 *
-	 * @param Tx_Extensionmanager_Domain_Model_Extension $extension
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
 	 * @return void
 	 */
-	protected function prepareExtensionForImport(Tx_Extensionmanager_Domain_Model_Extension $extension) {
-		if (t3lib_extMgm::isLoaded($extension->getExtensionKey())) {
-			t3lib_extMgm::unloadExtension($extension->getExtensionKey());
+	protected function prepareExtensionForImport(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extension->getExtensionKey())) {
+			\TYPO3\CMS\Core\Extension\ExtensionManager::unloadExtension($extension->getExtensionKey());
 			$this->installUtility->reloadCaches();
 		}
 	}
@@ -191,12 +183,11 @@ class Tx_Extensionmanager_Controller_DownloadController extends Tx_Extensionmana
 	 */
 	protected function updateExtensionAction() {
 		$extensionKey = $this->request->getArgument('extension');
-		/** @var $highestTerVersionExtension Tx_Extensionmanager_Domain_Model_Extension */
+		/** @var $highestTerVersionExtension \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
 		$highestTerVersionExtension = $this->extensionRepository->findHighestAvailableVersion($extensionKey);
 		$this->prepareExtensionForImport($highestTerVersionExtension);
 		$result = $this->managementService->resolveDependenciesAndInstall($highestTerVersionExtension);
-		$this->view->assign('result', $result)
-			->assign('extension', $highestTerVersionExtension);
+		$this->view->assign('result', $result)->assign('extension', $highestTerVersionExtension);
 	}
 
 	/**
@@ -210,15 +201,15 @@ class Tx_Extensionmanager_Controller_DownloadController extends Tx_Extensionmana
 		$extensionKey = $this->request->getArgument('extension');
 		$version = $this->request->getArgument('integerVersion');
 		$updateComments = array();
-		/** @var $updatableVersion Tx_Extensionmanager_Domain_Model_Extension */
+		/** @var $updatableVersion \TYPO3\CMS\Extensionmanager\Domain\Model\Extension */
 		$updatableVersions = $this->extensionRepository->findByVersionRangeAndExtensionKeyOrderedByVersion($extensionKey, $version);
 		foreach ($updatableVersions as $updatableVersion) {
 			$updateComments[$updatableVersion->getVersion()] = $updatableVersion->getUpdateComment();
 		}
-		$this->view
-			->assign('updateComments', $updateComments)
-			->assign('extensionKey', $extensionKey);
+		$this->view->assign('updateComments', $updateComments)->assign('extensionKey', $extensionKey);
 	}
 
 }
+
+
 ?>
