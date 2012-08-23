@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Beuser\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Views sprite icon for a record (object)
  *
@@ -31,7 +32,7 @@
  * @package TYPO3
  * @subpackage beuser
  */
-class Tx_Beuser_ViewHelpers_SpriteIconForRecordViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
+class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 
 	/**
 	 * Displays spriteIcon for database table and object
@@ -45,32 +46,27 @@ class Tx_Beuser_ViewHelpers_SpriteIconForRecordViewHelper extends Tx_Fluid_ViewH
 		if (!is_object($object) || !method_exists($object, 'getUid')) {
 			return '';
 		}
-
 		$row = array(
 			'uid' => $object->getUid(),
 			'startTime' => FALSE,
-			'endTime' => FALSE,
+			'endTime' => FALSE
 		);
-
 		if (method_exists($object, 'getIsDisabled')) {
 			$row['disable'] = $object->getIsDisabled();
 		}
-
-		if ($table === 'be_users' && get_class($object) === 'Tx_Beuser_Domain_Model_BackendUser') {
+		if ($table === 'be_users' && get_class($object) === 'TYPO3\\CMS\\Beuser\\Domain\\Model\\BackendUser') {
 			$row['admin'] = $object->getIsAdministrator();
 		}
-
 		if (method_exists($object, 'getStartDateAndTime')) {
 			$row['startTime'] = $object->getStartDateAndTime();
 		}
-
 		if (method_exists($object, 'getEndDateAndTime')) {
 			$row['endTime'] = $object->getEndDateAndTime();
 		}
-
-		return t3lib_iconWorks::getSpriteIconForRecord($table, $row);
+		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row);
 	}
 
 }
+
 
 ?>

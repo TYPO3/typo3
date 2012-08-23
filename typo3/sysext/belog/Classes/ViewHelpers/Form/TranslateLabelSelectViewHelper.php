@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Belog\ViewHelpers\Form;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Extends the usual select view helper, but additionally translates
  * the select option labels
@@ -37,7 +38,8 @@
  * @package TYPO3
  * @subpackage belog
  */
-class Tx_Belog_ViewHelpers_Form_TranslateLabelSelectViewHelper extends Tx_Fluid_ViewHelpers_Form_SelectViewHelper {
+class TranslateLabelSelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper {
+
 	/**
 	 * Initialize arguments.
 	 *
@@ -59,7 +61,6 @@ class Tx_Belog_ViewHelpers_Form_TranslateLabelSelectViewHelper extends Tx_Fluid_
 	 */
 	protected function getOptions() {
 		$options = parent::getOptions();
-
 		foreach ($options as $value => $label) {
 			$options[$value] = $this->translateLabel($label);
 		}
@@ -76,13 +77,12 @@ class Tx_Belog_ViewHelpers_Form_TranslateLabelSelectViewHelper extends Tx_Fluid_
 		if ($label === '') {
 			return '';
 		}
-
 		$labelKey = $this->hasArgument('optionLabelPrefix') ? $this->arguments['optionLabelPrefix'] . $label : $label;
-		$translatedLabel = Tx_Extbase_Utility_Localization::translate(
-			$labelKey,
-			$this->controllerContext->getRequest()->getControllerExtensionName()
-		);
+		$translatedLabel = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($labelKey, $this->controllerContext->getRequest()->getControllerExtensionName());
 		return $translatedLabel ? $translatedLabel : $label;
 	}
+
 }
+
+
 ?>

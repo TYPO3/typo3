@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Beuser\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Displays sprite icon identified by iconName key
  *
@@ -31,7 +32,7 @@
  * @package TYPO3
  * @subpackage beuser
  */
-class Tx_Beuser_ViewHelpers_SpriteManagerIconViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
+class SpriteManagerIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 
 	/**
 	 * Prints sprite icon html for $iconName key
@@ -41,9 +42,10 @@ class Tx_Beuser_ViewHelpers_SpriteManagerIconViewHelper extends Tx_Fluid_ViewHel
 	 * @return string
 	 */
 	public function render($iconName, $options = array()) {
-		return t3lib_iconWorks::getSpriteIcon($iconName, $options);
+		return \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon($iconName, $options);
 	}
 
 }
+
 
 ?>

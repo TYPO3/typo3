@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,7 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Download Queue - storage for extensions to be downloaded
  *
@@ -32,7 +33,7 @@
  * @package Extension Manager
  * @subpackage Model
  */
-class Tx_Extensionmanager_Domain_Model_DownloadQueue implements t3lib_Singleton {
+class DownloadQueue implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Storage for extensions to be downloaded
@@ -49,15 +50,15 @@ class Tx_Extensionmanager_Domain_Model_DownloadQueue implements t3lib_Singleton 
 	protected $extensionInstallStorage = array();
 
 	/**
-	 * @var Tx_Extensionmanager_Utility_List
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
 	 */
 	protected $listUtility;
 
 	/**
-	 * @param Tx_Extensionmanager_Utility_List $listUtility
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
 	 * @return void
 	 */
-	public function injectListUtility(Tx_Extensionmanager_Utility_List $listUtility) {
+	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
 		$this->listUtility = $listUtility;
 	}
 
@@ -66,24 +67,18 @@ class Tx_Extensionmanager_Domain_Model_DownloadQueue implements t3lib_Singleton 
 	 * If the extension was already requested in a different version
 	 * an exception is thrown.
 	 *
-	 * @param Tx_Extensionmanager_Domain_Model_Extension $extension
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
 	 * @param string $stack
-	 * @throws Tx_Extensionmanager_Exception_ExtensionManager
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 * @return void
 	 */
-	public function addExtensionToQueue(Tx_Extensionmanager_Domain_Model_Extension $extension, $stack = 'download') {
+	public function addExtensionToQueue(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $stack = 'download') {
 		if (!is_string($stack) || !in_array($stack, array('download', 'update'))) {
-			throw new Tx_Extensionmanager_Exception_ExtensionManager(
-				'Stack has to be either "download" or "update"',
-				1342432103
-			);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Stack has to be either "download" or "update"', 1342432103);
 		}
 		if (array_key_exists($extension->getExtensionKey(), $this->extensionStorage)) {
 			if (!($this->extensionStorage[$extension->getExtensionKey()] === $extension)) {
-				throw new Tx_Extensionmanager_Exception_ExtensionManager(
-					$extension->getExtensionKey() . ' was requested to be downloaded in different versions.',
-					1342432101
-				);
+				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($extension->getExtensionKey() . ' was requested to be downloaded in different versions.', 1342432101);
 			}
 		}
 		$this->extensionStorage[$stack][$extension->getExtensionKey()] = $extension;
@@ -99,17 +94,14 @@ class Tx_Extensionmanager_Domain_Model_DownloadQueue implements t3lib_Singleton 
 	/**
 	 * Remove an extension from download queue
 	 *
-	 * @param Tx_Extensionmanager_Domain_Model_Extension $extension
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
 	 * @param string $stack Stack to remove extension from (download, update or install)
-	 * @throws Tx_Extensionmanager_Exception_ExtensionManager
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 * @return void
 	 */
-	public function removeExtensionFromQueue(Tx_Extensionmanager_Domain_Model_Extension $extension, $stack = 'download') {
+	public function removeExtensionFromQueue(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension, $stack = 'download') {
 		if (!is_string($stack) || !in_array($stack, array('download', 'update'))) {
-			throw new Tx_Extensionmanager_Exception_ExtensionManager(
-				'Stack has to be either "download" or "update"',
-				1342432103
-			);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Stack has to be either "download" or "update"', 1342432103);
 		}
 		if (array_key_exists($stack, $this->extensionStorage) && is_array($this->extensionStorage[$stack])) {
 			if (array_key_exists($extension->getExtensionKey(), $this->extensionStorage[$stack])) {
@@ -148,6 +140,8 @@ class Tx_Extensionmanager_Domain_Model_DownloadQueue implements t3lib_Singleton 
 	public function getExtensionInstallStorage() {
 		return $this->extensionInstallStorage;
 	}
+
 }
+
 
 ?>

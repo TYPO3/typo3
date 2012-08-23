@@ -2,7 +2,7 @@
 /*
  * Register necessary class names with autoloader
  */
-$extensionPath = t3lib_extMgm::extPath('scheduler');
+$extensionPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('scheduler');
 return array(
 	'tx_scheduler' => $extensionPath . 'class.tx_scheduler.php',
 	'tx_scheduler_croncmd' => $extensionPath . 'class.tx_scheduler_croncmd.php',
@@ -24,6 +24,6 @@ return array(
 	'tx_scheduler_tablegarbagecollection' => $extensionPath . 'tasks/class.tx_scheduler_tablegarbagecollection.php',
 	'tx_scheduler_tablegarbagecollection_additionalfieldprovider' => $extensionPath . 'tasks/class.tx_scheduler_tablegarbagecollection_additionalfieldprovider.php',
 	'tx_scheduler_recyclergarbagecollection' => $extensionPath . 'tasks/class.tx_scheduler_recyclergarbagecollection.php',
-	'tx_scheduler_recyclergarbagecollection_additionalfieldprovider' => $extensionPath . 'tasks/class.tx_scheduler_recyclergarbagecollection_additionalfieldprovider.php',
+	'tx_scheduler_recyclergarbagecollection_additionalfieldprovider' => $extensionPath . 'tasks/class.tx_scheduler_recyclergarbagecollection_additionalfieldprovider.php'
 );
 ?>

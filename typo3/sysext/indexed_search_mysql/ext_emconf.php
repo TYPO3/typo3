@@ -1,15 +1,13 @@
 <?php
-
 /***************************************************************
-* Extension Manager/Repository config file for ext: "indexed_search_mysql"
-*
-* Auto generated 18-03-2008 20:13
-*
-* Manual updates:
-* Only the data in the array - anything else is removed by next write.
-* "version" and "dependencies" must not be touched!
-***************************************************************/
-
+ * Extension Manager/Repository config file for ext: "indexed_search_mysql"
+ *
+ * Auto generated 18-03-2008 20:13
+ *
+ * Manual updates:
+ * Only the data in the array - anything else is removed by next write.
+ * "version" and "dependencies" must not be touched!
+ ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'MySQL driver for Indexed Search Engine',
 	'description' => 'MySQL specific driver for Indexed Search Engine. Allows usage of MySQL-only features like FULLTEXT indexes.',
@@ -40,13 +38,9 @@ $EM_CONF[$_EXTKEY] = array(
 			'typo3' => '4.6.0-',
 			'indexed_search' => '2.13.0-'
 		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
+		'conflicts' => array(),
+		'suggests' => array()
 	),
-	'suggests' => array(
-	),
+	'suggests' => array()
 );
-
 ?>

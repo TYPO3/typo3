@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,7 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A repository for extension repositories
  *
@@ -29,7 +30,7 @@
  * @package Extension Manager
  * @subpackage Repository
  */
-class Tx_Extensionmanager_Domain_Repository_RepositoryRepository extends Tx_Extbase_Persistence_Repository {
+class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 	/**
 	 * Updates ExtCount and lastUpdated in Repository eg after import
@@ -39,14 +40,13 @@ class Tx_Extensionmanager_Domain_Repository_RepositoryRepository extends Tx_Extb
 	 * @return void
 	 */
 	public function updateRepositoryCount($extCount, $uid = 1) {
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-			'sys_ter',
-			'uid=' . intval($uid),
-			array (
-				'lastUpdated' => time(),
-				'extCount' => intval($extCount)
-			));
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_ter', 'uid=' . intval($uid), array(
+			'lastUpdated' => time(),
+			'extCount' => intval($extCount)
+		));
 	}
 
 }
+
+
 ?>

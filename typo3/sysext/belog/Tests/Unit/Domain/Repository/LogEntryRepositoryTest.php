@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,7 +23,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for the Tx_Belog_Domain_Repository_LogEntryRepository class.
  *
@@ -29,19 +30,17 @@
  * @package TYPO3
  * @subpackage belog
  */
-class Tx_Belog_Domain_Repository_LogEntryRepositoryTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class LogEntryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
 	/**
-	 * @var Tx_Extbase_Persistence_Typo3QuerySettings
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings
 	 */
 	private $querySettings = NULL;
 
 	public function setUp() {
-		$this->querySettings = $this->getMock('Tx_Extbase_Persistence_QuerySettingsInterface');
-
-		$this->objectManager = $this->getMock('Tx_Extbase_Object_ObjectManagerInterface');
-		$this->objectManager->expects($this->any())->method('create')
-			->with('Tx_Extbase_Persistence_QuerySettingsInterface')
-			->will($this->returnValue($this->querySettings));
+		$this->querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
+		$this->objectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
+		$this->objectManager->expects($this->any())->method('create')->with('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface')->will($this->returnValue($this->querySettings));
 	}
 
 	public function tearDown() {
@@ -53,14 +52,12 @@ class Tx_Belog_Domain_Repository_LogEntryRepositoryTest extends Tx_Extbase_Tests
 	 */
 	public function initializeObjectSetsRespectStoragePidToFalse() {
 		$this->querySettings->expects($this->atLeastOnce())->method('setRespectStoragePage')->with(FALSE);
-
-		$fixture = $this->getMock(
-			'Tx_Belog_Domain_Repository_LogEntryRepository',
-			array('setDefaultQuerySettings'), array($this->objectManager)
-		);
+		$fixture = $this->getMock('TYPO3\\CMS\\Belog\\Domain\\Repository\\LogEntryRepository', array('setDefaultQuerySettings'), array($this->objectManager));
 		$fixture->expects($this->once())->method('setDefaultQuerySettings')->with($this->querySettings);
-
 		$fixture->initializeObject();
 	}
+
 }
+
+
 ?>

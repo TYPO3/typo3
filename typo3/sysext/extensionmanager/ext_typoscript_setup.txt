@@ -1,7 +1,7 @@
 config.tx_extbase {
 	persistence{
 		classes {
-			Tx_Extensionmanager_Domain_Model_Extension {
+			TYPO3\CMS\Extensionmanager\Domain\Model\Extension {
 				mapping {
 					columns {
 						extkey.mapOnProperty = extensionKey
@@ -22,7 +22,7 @@ config.tx_extbase {
 					}
 				}
 			}
-			Tx_Extensionmanager_Domain_Model_Repository {
+			TYPO3\CMS\Extensionmanager\Domain\Model\Repository {
 				mapping {
 					tableName = sys_ter
 					columns {

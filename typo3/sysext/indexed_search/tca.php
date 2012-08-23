@@ -2,24 +2,23 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
-
-$TCA['index_config'] = Array (
+$TCA['index_config'] = array(
 	'ctrl' => $TCA['index_config']['ctrl'],
-	'interface' => Array (
+	'interface' => array(
 		'showRecordFieldList' => 'hidden,starttime,title,description,type,depth,table2index,alternative_source_pid,get_params,chashcalc,filepath,extensions'
 	),
 	'feInterface' => $TCA['index_config']['feInterface'],
-	'columns' => Array (
-		'hidden' => Array (
+	'columns' => array(
+		'hidden' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.disable',
-			'config' => Array (
+			'config' => array(
 				'type' => 'check',
 				'default' => '1'
 			)
 		),
-		'starttime' => Array (
+		'starttime' => array(
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.starttime',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
@@ -28,67 +27,67 @@ $TCA['index_config'] = Array (
 				'checkbox' => '0'
 			)
 		),
-		'title' => Array (
+		'title' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.title',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '30',
-				'eval' => 'required',
+				'eval' => 'required'
 			)
 		),
-		'description' => Array (
+		'description' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.description',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '30',
-				'rows' => '2',
+				'rows' => '2'
 			)
 		),
-		'type' => Array (
+		'type' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.type',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
-				'items' => Array (
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.0', '0'),
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.1', '1'),
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.2', '2'),
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.3', '3'),
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.4', '4'),
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.5', '5'),
+				'items' => array(
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.0', '0'),
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.1', '1'),
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.2', '2'),
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.3', '3'),
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.4', '4'),
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.type.I.5', '5')
 				),
 				'size' => 1,
-				'maxitems' => 1,
+				'maxitems' => 1
 			)
 		),
-		'depth' => Array (
+		'depth' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.depth',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
-				'items' => Array (
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.depth.I.0', '0'),
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.depth.I.1', '1'),
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.depth.I.2', '2'),
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.depth.I.3', '3'),
+				'items' => array(
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.depth.I.0', '0'),
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.depth.I.1', '1'),
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.depth.I.2', '2'),
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.depth.I.3', '3')
 				),
 				'size' => 1,
-				'maxitems' => 1,
+				'maxitems' => 1
 			)
 		),
-		'table2index' => Array (
+		'table2index' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.table2index',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
-				'items' => Array (
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.table2index.I.0', '0'),
+				'items' => array(
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.table2index.I.0', '0')
 				),
 				'special' => 'tables',
 				'size' => 1,
-				'maxitems' => 1,
+				'maxitems' => 1
 			)
 		),
-		'alternative_source_pid' => Array (
+		'alternative_source_pid' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.alternative_source_pid',
-			'config' => Array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'pages',
@@ -97,14 +96,14 @@ $TCA['index_config'] = Array (
 				'maxitems' => 1,
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
+						'type' => 'suggest'
 					)
 				)
 			)
 		),
-		'indexcfgs' => Array (
+		'indexcfgs' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.indexcfgs',
-			'config' => Array (
+			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
 				'allowed' => 'index_config,pages',
@@ -113,70 +112,70 @@ $TCA['index_config'] = Array (
 				'maxitems' => 200,
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
+						'type' => 'suggest'
 					)
 				)
 			)
 		),
-		'get_params' => Array (
+		'get_params' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.get_params',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
-		'fieldlist' => Array (
+		'fieldlist' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.fields',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
-		'externalUrl' => Array (
+		'externalUrl' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.externalUrl',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
-		'chashcalc' => Array (
+		'chashcalc' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.chashcalc',
-			'config' => Array (
-				'type' => 'check',
+			'config' => array(
+				'type' => 'check'
 			)
 		),
-		'filepath' => Array (
+		'filepath' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.filepath',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
-		'extensions' => Array (
+		'extensions' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.extensions',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
-		'url_deny' => Array (
+		'url_deny' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.url_deny',
-			'config' => Array (
+			'config' => array(
 				'type' => 'text',
 				'cols' => '30',
-				'rows' => '2',
+				'rows' => '2'
 			)
 		),
-		'records_indexonchange' => Array (
+		'records_indexonchange' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.records_indexonchange',
-			'config' => Array (
+			'config' => array(
 				'type' => 'check',
-				'default' => '0',
+				'default' => '0'
 			)
 		),
-		'timer_next_indexing' => Array (
+		'timer_next_indexing' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.timer_next_indexing',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '12',
 				'max' => '20',
@@ -185,33 +184,33 @@ $TCA['index_config'] = Array (
 				'checkbox' => '0'
 			)
 		),
-		'timer_offset' => Array (
+		'timer_offset' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.timer_offset',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
 				'eval' => 'time',
-				'default' => 3600,
+				'default' => 3600
 			)
 		),
-		'timer_frequency' => Array (
+		'timer_frequency' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.timer_frequency',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
-				'items' => Array (
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.timer_frequency.I.0', '3600'),
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.timer_frequency.I.1', '86400'),
-					Array('LLL:EXT:indexed_search/locallang_db.php:index_config.timer_frequency.I.2', '604800'),
+				'items' => array(
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.timer_frequency.I.0', '3600'),
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.timer_frequency.I.1', '86400'),
+					array('LLL:EXT:indexed_search/locallang_db.php:index_config.timer_frequency.I.2', '604800')
 				),
 				'size' => 1,
 				'maxitems' => 1,
-				'default' => 86400,
+				'default' => 86400
 			)
 		),
-		'recordsbatch' => Array (
+		'recordsbatch' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.recordsbatch',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '20',
@@ -220,23 +219,23 @@ $TCA['index_config'] = Array (
 				'checkbox' => '0'
 			)
 		),
-		'set_id' => Array (
+		'set_id' => array(
 			'label' => 'LLL:EXT:indexed_search/locallang_db.php:index_config.set_id',
-			'config' => Array (
-				'type' => 'none',
+			'config' => array(
+				'type' => 'none'
 			)
-		),
+		)
 	),
-	'types' => Array (
-		'0' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3'),
-		'1' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, table2index;;;;3-3-3, alternative_source_pid, fieldlist, get_params, chashcalc,recordsbatch,records_indexonchange'),
-		'2' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, filepath;;;;3-3-3, extensions, depth'),
-		'3' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, externalUrl;;;;3-3-3, depth, url_deny'),
-		'4' => Array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, alternative_source_pid;LLL:EXT:indexed_search/locallang_db.php:index_config.rootpage;;;3-3-3, depth'),
-		'5' => Array('showitem' => 'title;;;;2-2-2, description, type;;;;3-3-3, indexcfgs;;;;3-3-3'),
+	'types' => array(
+		'0' => array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3'),
+		'1' => array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, table2index;;;;3-3-3, alternative_source_pid, fieldlist, get_params, chashcalc,recordsbatch,records_indexonchange'),
+		'2' => array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, filepath;;;;3-3-3, extensions, depth'),
+		'3' => array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, externalUrl;;;;3-3-3, depth, url_deny'),
+		'4' => array('showitem' => 'title;;1;;2-2-2, description, timer_next_indexing, timer_offset, timer_frequency, set_id, type;;;;3-3-3, alternative_source_pid;LLL:EXT:indexed_search/locallang_db.php:index_config.rootpage;;;3-3-3, depth'),
+		'5' => array('showitem' => 'title;;;;2-2-2, description, type;;;;3-3-3, indexcfgs;;;;3-3-3')
 	),
-	'palettes' => Array (
-		'1' => Array('showitem' => 'starttime,hidden')
+	'palettes' => array(
+		'1' => array('showitem' => 'starttime,hidden')
 	)
 );
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,7 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Abstract action controller.
  *
@@ -32,22 +33,25 @@
  * @package Extension Manager
  * @subpackage controller
  */
-class Tx_Extensionmanager_Controller_AbstractController extends Tx_Extbase_MVC_Controller_ActionController {
+class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
 	 * Resolve view and initialize the general view-variables extensionName,
 	 * controllerName and actionName based on the request object
 	 *
-	 * @return Tx_Fluid_View_TemplateView
+	 * @return \TYPO3\CMS\Fluid\View\TemplateView
 	 */
 	protected function resolveView() {
 		$view = parent::resolveView();
 		$view->assignMultiple(array(
 			'extensionName' => $this->request->getControllerExtensionName(),
 			'controllerName' => $this->request->getControllerName(),
-			'actionName' => $this->request->getControllerActionName(),
+			'actionName' => $this->request->getControllerActionName()
 		));
 		return $view;
 	}
+
 }
+
+
 ?>

@@ -24,80 +24,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-require_once(PATH_typo3 . 'contrib/swiftmailer/swift_required.php');
-
-/**
- * Adapter for Swift_Mailer to be used by TYPO3 extensions
- *
- * @author Ernesto Baschny <ernst@cron-it.de>
- * @package TYPO3
- * @subpackage t3lib
+require_once PATH_typo3 . 'contrib/swiftmailer/swift_required.php';
+/*
+ * @deprecated since 6.0, the classname t3lib_mail_Message and this file is obsolete
+ * and will be removed by 7.0. The class was renamed and is now located at:
+ * typo3/sysext/core/Classes/Mail/MailMessage.php
  */
-class t3lib_mail_Message extends Swift_Message {
-
-	/**
-	 * @var t3lib_mail_Mailer
-	 */
-	protected $mailer;
-
-	/**
-	 * @var string This will be added as X-Mailer to all outgoing mails
-	 */
-	protected $mailerHeader = 'TYPO3';
-
-	/**
-	 * TRUE if the message has been sent.
-	 * @var boolean
-	 */
-	protected $sent = FALSE;
-
-	/**
-	 * Holds the failed recipients after the message has been sent
-	 * @var array
-	 */
-	protected $failedRecipients = array();
-
-	/**
-	 *
-	 * @return void
-	 */
-	private function initializeMailer() {
-		$this->mailer = t3lib_div::makeInstance('t3lib_mail_Mailer');
-	}
-
-	/**
-	 * Sends the message.
-	 *
-	 * @return integer the number of recipients who were accepted for delivery
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function send() {
-		$this->initializeMailer();
-		$this->sent = TRUE;
-		$this->getHeaders()->addTextHeader('X-Mailer', $this->mailerHeader);
-		return $this->mailer->send($this, $this->failedRecipients);
-	}
-
-	/**
-	 * Checks whether the message has been sent.
-	 *
-	 * @return boolean
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function isSent() {
-		return $this->sent;
-	}
-
-	/**
-	 * Returns the recipients for which the mail was not accepted for delivery.
-	 *
-	 * @return array the recipients who were not accepted for delivery
-	 * @author Karsten Dambekalns <karsten@typo3.org>
-	 */
-	public function getFailedRecipients() {
-		return $this->failedRecipients;
-	}
-}
-
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('core') . 'Classes/Mail/MailMessage.php';
 ?>
