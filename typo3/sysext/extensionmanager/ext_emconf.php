@@ -1,5 +1,4 @@
 <?php
-
 /**********************************************************************
  * Extension Manager/Repository config file for ext "extensionmanager".
  *
@@ -9,7 +8,6 @@
  * Only the data in the array - everything else is removed by next
  * writing. "version" and "dependencies" must not be touched!
  ********************************************************************/
-
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Extension Manager',
 	'description' => 'TYPO3 Extension Manager',
@@ -39,15 +37,11 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'cms' => '',
 			'php' => '5.3.0-0.0.0',
-			'typo3' => '6.0.0-0.0.0',
+			'typo3' => '6.0.0-0.0.0'
 		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
+		'conflicts' => array(),
+		'suggests' => array()
 	),
-	'suggests' => array(
-	),
+	'suggests' => array()
 );
-
 ?>

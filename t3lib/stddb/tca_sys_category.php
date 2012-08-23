@@ -1,18 +1,17 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
+if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
-
 $TCA['sys_category'] = array(
 	'ctrl' => $TCA['sys_category']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'title,description',
+		'showRecordFieldList' => 'title,description'
 	),
 	'types' => array(
-		'1' => array('showitem' => 'title;;1, parent,description,--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.items,items,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime'),
+		'1' => array('showitem' => 'title;;1, parent,description,--div--;LLL:EXT:lang/locallang_tca.xlf:sys_category.tabs.items,items,--div--;LLL:EXT:cms/locallang_ttc.xlf:tabs.access,starttime, endtime')
 	),
 	'palettes' => array(
-		'1' => array('showitem' => 'sys_language_uid, l10n_parent, hidden'),
+		'1' => array('showitem' => 'sys_language_uid, l10n_parent, hidden')
 	),
 	'columns' => array(
 		't3ver_label' => array(
@@ -20,7 +19,7 @@ $TCA['sys_category'] = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
-				'max' => '30',
+				'max' => '30'
 			)
 		),
 		'sys_language_uid' => array(
@@ -33,8 +32,8 @@ $TCA['sys_category'] = array(
 				'items' => array(
 					array('LLL:EXT:lang/locallang_general.php:LGL.allLanguages', -1),
 					array('LLL:EXT:lang/locallang_general.php:LGL.default_value', 0)
-				),
-			),
+				)
+			)
 		),
 		'l10n_parent' => array(
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
@@ -43,31 +42,31 @@ $TCA['sys_category'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(
-					array('', 0),
+					array('', 0)
 				),
 				'foreign_table' => 'tx_taxonomy_domain_model_concept',
-				'foreign_table_where' => 'AND tx_taxonomy_domain_model_concept.uid=###REC_FIELD_l10n_parent### AND tx_taxonomy_domain_model_concept.sys_language_uid IN (-1,0)',
-			),
+				'foreign_table_where' => 'AND tx_taxonomy_domain_model_concept.uid=###REC_FIELD_l10n_parent### AND tx_taxonomy_domain_model_concept.sys_language_uid IN (-1,0)'
+			)
 		),
 		'l10n_diffsource' => array(
 			'config' => array(
-				'type' => 'passthrough',
-			),
+				'type' => 'passthrough'
+			)
 		),
 		't3ver_label' => array(
 			'displayCond' => 'FIELD:t3ver_label:REQ:true',
 			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.versionLabel',
 			'config' => array(
 				'type' => 'none',
-				'cols' => 27,
-			),
+				'cols' => 27
+			)
 		),
 		'hidden' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
 			'config' => array(
-				'type' => 'check',
-			),
+				'type' => 'check'
+			)
 		),
 		'starttime' => array(
 			'exclude' => 1,
@@ -79,8 +78,8 @@ $TCA['sys_category'] = array(
 				'max' => '20',
 				'eval' => 'datetime',
 				'checkbox' => '0',
-				'default' => '0',
-			),
+				'default' => '0'
+			)
 		),
 		'endtime' => array(
 			'exclude' => 1,
@@ -96,8 +95,8 @@ $TCA['sys_category'] = array(
 				'range' => array(
 					'upper' => mktime(0, 0, 0, 12, 31, date('Y') + 10),
 					'lower' => mktime(0, 0, 0, date('m') - 1, date('d'), date('Y'))
-				),
-			),
+				)
+			)
 		),
 		'title' => array(
 			'exclude' => 0,
@@ -106,14 +105,14 @@ $TCA['sys_category'] = array(
 				'type' => 'input',
 				'width' => '200',
 				'eval' => 'trim,required'
-			),
+			)
 		),
 		'description' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_category.description',
 			'config' => array(
-				'type' => 'text',
-			),
+				'type' => 'text'
+			)
 		),
 		'parent' => array(
 			'exclude' => 0,
@@ -127,8 +126,8 @@ $TCA['sys_category'] = array(
 				'foreign_table_where' => ' ORDER BY sys_category.title ASC',
 				'treeConfig' => array(
 					'parentField' => 'parent'
-				),
-			),
+				)
+			)
 		),
 		'items' => array(
 			'exclude' => 0,
@@ -138,10 +137,9 @@ $TCA['sys_category'] = array(
 				'internal_type' => 'db',
 				'allowed' => '*',
 				'MM' => 'sys_category_record_mm',
-				'show_thumbs' => false,
-			),
-		),
-	),
+				'show_thumbs' => false
+			)
+		)
+	)
 );
-
 ?>

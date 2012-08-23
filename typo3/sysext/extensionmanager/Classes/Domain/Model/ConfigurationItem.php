@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Model for extension configuration items
  *
@@ -33,7 +33,7 @@
  * @package Extension Manager
  * @subpackage Model
  */
-class Tx_Extensionmanager_Domain_Model_ConfigurationItem extends Tx_Extbase_DomainObject_AbstractEntity {
+class ConfigurationItem extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @var string
@@ -214,5 +214,8 @@ class Tx_Extensionmanager_Domain_Model_ConfigurationItem extends Tx_Extbase_Doma
 	public function getHighlight() {
 		return $this->highlight;
 	}
+
 }
+
+
 ?>

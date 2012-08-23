@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,7 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * View helper for configure extension link
  *
@@ -32,7 +33,7 @@
  * @package Extension Manager
  * @subpackage ViewHelpers
  */
-class Tx_Extensionmanager_ViewHelpers_ConfigureExtensionViewHelper extends Tx_Fluid_ViewHelpers_Link_ActionViewHelper {
+class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 
 	/**
 	 * @var string
@@ -47,16 +48,14 @@ class Tx_Extensionmanager_ViewHelpers_ConfigureExtensionViewHelper extends Tx_Fl
 	 */
 	public function render($extension) {
 		$tag = '';
-		if ($extension['installed'] && file_exists(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt')) {
+		if ($extension['installed'] && file_exists((PATH_site . $extension['siteRelPath']) . '/ext_conf_template.txt')) {
 			$uriBuilder = $this->controllerContext->getUriBuilder();
 			$action = 'showConfigurationForm';
-			$uri = $uriBuilder
-				->reset()
-				->uriFor($action, array(
-					'extension' => array (
-						'key' => $extension['key']
-					)
-				), 'Configuration');
+			$uri = $uriBuilder->reset()->uriFor($action, array(
+				'extension' => array(
+					'key' => $extension['key']
+				)
+			), 'Configuration');
 			$this->tag->addAttribute('href', $uri);
 			$label = 'Configure';
 			$this->tag->setContent($label);
@@ -64,5 +63,8 @@ class Tx_Extensionmanager_ViewHelpers_ConfigureExtensionViewHelper extends Tx_Fl
 		}
 		return $tag;
 	}
+
 }
+
+
 ?>

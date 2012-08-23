@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * view helper for displaying a download extension data link
  *
@@ -33,7 +33,7 @@
  * @package Extension Manager
  * @subpackage ViewHelpers
  */
-class Tx_Extensionmanager_ViewHelpers_DownloadExtensionDataViewHelper extends Tx_Fluid_ViewHelpers_Link_ActionViewHelper {
+class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 
 	/**
 	 * @var string
@@ -48,7 +48,7 @@ class Tx_Extensionmanager_ViewHelpers_DownloadExtensionDataViewHelper extends Tx
 	 */
 	public function render($extension) {
 		$filePrefix = PATH_site . $extension['siteRelPath'];
-		if (!file_exists($filePrefix . '/ext_tables.sql') && !file_exists($filePrefix . '/ext_tables_static+adt.sql')) {
+		if (!file_exists(($filePrefix . '/ext_tables.sql')) && !file_exists(($filePrefix . '/ext_tables_static+adt.sql'))) {
 			return '';
 		}
 		$uriBuilder = $this->controllerContext->getUriBuilder();
@@ -61,9 +61,10 @@ class Tx_Extensionmanager_ViewHelpers_DownloadExtensionDataViewHelper extends Tx
 		$this->tag->addAttribute('class', $cssClass);
 		$label = 'Download SQL Dump';
 		$this->tag->setContent($label);
-
 		return $this->tag->render();
 	}
+
 }
+
 
 ?>

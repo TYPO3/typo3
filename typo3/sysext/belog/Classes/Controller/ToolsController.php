@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Belog\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Show log entries from table sys_log
  *
@@ -31,6 +32,10 @@
  * @package TYPO3
  * @subpackage belog
  */
-class Tx_Belog_Controller_ToolsController extends Tx_Belog_Controller_AbstractController {
+class ToolsController extends \TYPO3\CMS\Belog\Controller\AbstractController {
+
+
 }
+
+
 ?>

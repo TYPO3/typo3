@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Beuser\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Repository for Tx_Beuser_Domain_Model_BackendUser
  *
@@ -31,34 +32,29 @@
  * @package TYPO3
  * @subpackage beuser
  */
-class Tx_Beuser_Domain_Repository_BackendUserSessionRepository extends Tx_Extbase_Persistence_Repository {
+class BackendUserSessionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 	/**
 	 * Find Sessions for specific BackendUser
 	 * Delivers Array, not ObjectStorage!
 	 *
-	 * @param Tx_Beuser_Domain_Model_BackendUser $backendUser
+	 * @param \TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser
 	 * @return array
 	 */
-	public function findByBackendUser(Tx_Beuser_Domain_Model_BackendUser $backendUser) {
+	public function findByBackendUser(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser) {
 		$sessions = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-			'ses_id AS id, ses_iplock AS ip, ses_tstamp AS timestamp',
-			'be_sessions',
-			'ses_userid = "' . $backendUser->getUid() . '"',
-			'',
-			'ses_tstamp ASC'
-		);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ses_id AS id, ses_iplock AS ip, ses_tstamp AS timestamp', 'be_sessions', ('ses_userid = "' . $backendUser->getUid()) . '"', '', 'ses_tstamp ASC');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$sessions[] = array(
 				'id' => $row['id'],
 				'ip' => $row['ip'],
-				'timestamp' => new DateTime('@' . $row['timestamp'])
+				'timestamp' => new \DateTime('@' . $row['timestamp'])
 			);
 		}
-
 		return $sessions;
 	}
+
 }
+
 
 ?>

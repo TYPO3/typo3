@@ -31,7 +31,7 @@
  * @package TYPO3
  * @subpackage tests
  */
-class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
+class t3lib_Cache\Frontend\VariableFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @expectedException \InvalidArgumentException
@@ -51,7 +51,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theString)));
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$cache->set('VariableCacheTest', $theString);
 	}
 
@@ -63,7 +63,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theArray)));
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$cache->set('VariableCacheTest', $theArray);
 	}
 
@@ -76,7 +76,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(serialize($theString)), $this->equalTo(array()), $this->equalTo($theLifetime));
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$cache->set('VariableCacheTest', $theString, array(), $theLifetime);
 	}
 
@@ -92,7 +92,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('set')->with($this->equalTo('VariableCacheTest'), $this->equalTo(igbinary_serialize($theString)));
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$cache->initializeObject();
 		$cache->set('VariableCacheTest', $theString);
 	}
@@ -104,7 +104,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('get')->will($this->returnValue(serialize('Just some value')));
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$this->assertEquals('Just some value', $cache->get('VariableCacheTest'), 'The returned value was not the expected string.');
 	}
 
@@ -116,7 +116,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('get')->will($this->returnValue(serialize($theArray)));
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$this->assertEquals($theArray, $cache->get('VariableCacheTest'), 'The returned value was not the expected unserialized array.');
 	}
 
@@ -127,7 +127,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('get')->will($this->returnValue(serialize(FALSE)));
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$this->assertFalse($cache->get('VariableCacheTest'), 'The returned value was not the FALSE.');
 	}
 
@@ -143,7 +143,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('get')->will($this->returnValue(igbinary_serialize($theArray)));
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$cache->initializeObject();
 
 		$this->assertEquals($theArray, $cache->get('VariableCacheTest'), 'The returned value was not the expected unserialized array.');
@@ -156,7 +156,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend = $this->getMock('t3lib_cache_backend_AbstractBackend', array('get', 'set', 'has', 'remove', 'findIdentifiersByTag', 'flush', 'flushByTag', 'collectGarbage'), array(), '', FALSE);
 		$backend->expects($this->once())->method('has')->with($this->equalTo('VariableCacheTest'))->will($this->returnValue(TRUE));
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$this->assertTrue($cache->has('VariableCacheTest'), 'has() did not return TRUE.');
 	}
 
@@ -169,7 +169,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 
 		$backend->expects($this->once())->method('remove')->with($this->equalTo($cacheIdentifier))->will($this->returnValue(TRUE));
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$this->assertTrue($cache->remove($cacheIdentifier), 'remove() did not return TRUE');
 	}
 
@@ -181,7 +181,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend = $this->getMock('t3lib_cache_backend_Backend', array(), array(), '', FALSE);
 		$backend->expects($this->never())->method('getByTag');
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$cache->getByTag('SomeInvalid\Tag');
 	}
 
@@ -197,7 +197,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend->expects($this->once())->method('findIdentifiersByTag')->with($this->equalTo($tag))->will($this->returnValue($identifiers));
 		$backend->expects($this->exactly(2))->method('get')->will($this->onConsecutiveCalls(serialize('one value'), serialize('two value')));
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
 	}
 
@@ -217,7 +217,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 		$backend->expects($this->once())->method('findIdentifiersByTag')->with($this->equalTo($tag))->will($this->returnValue($identifiers));
 		$backend->expects($this->exactly(2))->method('get')->will($this->onConsecutiveCalls(igbinary_serialize('one value'), igbinary_serialize('two value')));
 
-		$cache = new t3lib_cache_frontend_VariableFrontend('VariableFrontend', $backend);
+		$cache = new t3lib_Cache\Frontend\VariableFrontend('VariableFrontend', $backend);
 		$cache->initializeObject();
 		$this->assertEquals($entries, $cache->getByTag($tag), 'Did not receive the expected entries');
 	}

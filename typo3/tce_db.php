@@ -1,30 +1,29 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 1999-2011 Kasper Skårhøj (kasperYYYY@typo3.com)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  A copy is found in the textfile GPL.txt and important notices to the license
+ *  from the author is found in LICENSE.txt distributed with these scripts.
+ *
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * TCE gateway (TYPO3 Core Engine) for database handling
  * This script is a gateway for POST forms to class.t3lib_TCEmain that manipulates all information in the database!!
@@ -34,195 +33,24 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
-require('init.php');
-
-/**
- * Script Class, creating object of t3lib_TCEmain and sending the posted data to the object.
- * Used by many smaller forms/links in TYPO3, including the QuickEdit module.
- * Is not used by alt_doc.php though (main form rendering script) - that uses the same class (TCEmain) but makes its own initialization (to save the redirect request).
- * For all other cases than alt_doc.php it is recommended to use this script for submitting your editing forms - but the best solution in any case would probably be to link your application to alt_doc.php, that will give you easy form-rendering as well.
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- * @package TYPO3
- * @subpackage core
+require 'init.php';
+/*
+ * @deprecated since 6.0, the classname SC_tce_db and this file is obsolete
+ * and will be removed by 7.0. The class was renamed and is now located at:
+ * typo3/sysext/backend/Classes/Controller/SimpleDataHandlerController.php
  */
-class SC_tce_db {
-
-		// Internal, static: GPvar
-		// Array. Accepts options to be set in TCE object. Currently it supports "reverseOrder" (boolean).
-	var $flags;
-		// Data array on the form [tablename][uid][fieldname] = value
-	var $data;
-		// Command array on the form [tablename][uid][command] = value. This array may get additional data set internally based on clipboard commands send in CB var!
-	var $cmd;
-		// Array passed to ->setMirror.
-	var $mirror;
-		// Cache command sent to ->clear_cacheCmd
-	var $cacheCmd;
-		// Redirect URL. Script will redirect to this location after performing operations (unless errors has occured)
-	var $redirect;
-		// Boolean. If set, errors will be printed on screen instead of redirection. Should always be used, otherwise you will see no errors if they happen.
-	var $prErr;
-		// Clipboard command array. May trigger changes in "cmd"
-	var $CB;
-		// Verification code
-	var $vC;
-		// Boolean. Update Page Tree Trigger. If set and the manipulated records are pages then the update page tree signal will be set.
-	var $uPT;
-		// String, general comment (for raising stages of workspace versions)
-	var $generalComment;
-
-		// Internal, dynamic:
-		// Files to include after init() function is called:
-	var $include_once = array();
-
-	/**
-	 * TYPO3 Core Engine
-	 *
-	 * @var t3lib_TCEmain
-	 */
-	var $tce;
-
-	/**
-	 * Initialization of the class
-	 *
-	 * @return void
-	 */
-	function init() {
-
-			// GPvars:
-		$this->flags = t3lib_div::_GP('flags');
-		$this->data = t3lib_div::_GP('data');
-		$this->cmd = t3lib_div::_GP('cmd');
-		$this->mirror = t3lib_div::_GP('mirror');
-		$this->cacheCmd = t3lib_div::_GP('cacheCmd');
-		$this->redirect = t3lib_div::sanitizeLocalUrl(t3lib_div::_GP('redirect'));
-		$this->prErr = t3lib_div::_GP('prErr');
-		$this->_disableRTE = t3lib_div::_GP('_disableRTE');
-		$this->CB = t3lib_div::_GP('CB');
-		$this->vC = t3lib_div::_GP('vC');
-		$this->uPT = t3lib_div::_GP('uPT');
-		$this->generalComment = t3lib_div::_GP('generalComment');
-
-			// Creating TCEmain object
-		$this->tce = t3lib_div::makeInstance('t3lib_TCEmain');
-		$this->tce->stripslashes_values = 0;
-		$this->tce->generalComment = $this->generalComment;
-
-			// Configuring based on user prefs.
-		if ($GLOBALS['BE_USER']->uc['recursiveDelete']) {
-				// TRUE if the delete Recursive flag is set.
-			$this->tce->deleteTree = 1;
-		}
-		if ($GLOBALS['BE_USER']->uc['copyLevels']) {
-				// Set to number of page-levels to copy.
-			$this->tce->copyTree = t3lib_utility_Math::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);
-		}
-		if ($GLOBALS['BE_USER']->uc['neverHideAtCopy']) {
-			$this->tce->neverHideAtCopy = 1;
-		}
-
-		$TCAdefaultOverride = $GLOBALS['BE_USER']->getTSConfigProp('TCAdefaults');
-		if (is_array($TCAdefaultOverride)) {
-			$this->tce->setDefaultsFromUserTS($TCAdefaultOverride);
-		}
-
-			// Reverse order.
-		if ($this->flags['reverseOrder']) {
-			$this->tce->reverseOrder=1;
-		}
-	}
-
-	/**
-	 * Clipboard pasting and deleting.
-	 *
-	 * @return void
-	 */
-	function initClipboard() {
-		if (is_array($this->CB)) {
-			$clipObj = t3lib_div::makeInstance('t3lib_clipboard');
-			$clipObj->initializeClipboard();
-			if ($this->CB['paste']) {
-				$clipObj->setCurrentPad($this->CB['pad']);
-				$this->cmd = $clipObj->makePasteCmdArray($this->CB['paste'], $this->cmd);
-			}
-			if ($this->CB['delete']) {
-				$clipObj->setCurrentPad($this->CB['pad']);
-				$this->cmd = $clipObj->makeDeleteCmdArray($this->cmd);
-			}
-		}
-	}
-
-	/**
-	 * Executing the posted actions ...
-	 *
-	 * @return void
-	 */
-	function main() {
-
-			// LOAD TCEmain with data and cmd arrays:
-		$this->tce->start($this->data, $this->cmd);
-		if (is_array($this->mirror)) {
-			$this->tce->setMirror($this->mirror);
-		}
-
-			// Checking referer / executing
-		$refInfo = parse_url(t3lib_div::getIndpEnv('HTTP_REFERER'));
-		$httpHost = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY');
-		if ($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
-			$this->tce->log('', 0, 0, 0, 1, 'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!', 1, array($refInfo['host'], $httpHost));
-		} else {
-				// Register uploaded files
-			$this->tce->process_uploads($_FILES);
-
-				// Execute actions:
-			$this->tce->process_datamap();
-			$this->tce->process_cmdmap();
-
-				// Clearing cache:
-			$this->tce->clear_cacheCmd($this->cacheCmd);
-
-				// Update page tree?
-			if ($this->uPT && (isset($this->data['pages']) || isset($this->cmd['pages']))) {
-				t3lib_BEfunc::setUpdateSignal('updatePageTree');
-			}
-		}
-	}
-
-	/**
-	 * Redirecting the user after the processing has been done.
-	 * Might also display error messages directly, if any.
-	 *
-	 * @return void
-	 */
-	function finish() {
-			// Prints errors, if...
-		if ($this->prErr) {
-			$this->tce->printLogErrorMessages($this->redirect);
-		}
-
-		if ($this->redirect && !$this->tce->debug) {
-			t3lib_utility_Http::redirect($this->redirect);
-		}
-	}
-}
-
-	// Make instance:
+require_once t3lib_extMgm::extPath('backend') . 'Classes/Controller/SimpleDataHandlerController.php';
+// Make instance:
 $SOBE = t3lib_div::makeInstance('SC_tce_db');
 $SOBE->init();
-
-	// Include files?
+// Include files?
 foreach ($SOBE->include_once as $INC_FILE) {
-	include_once($INC_FILE);
+	include_once $INC_FILE;
 }
-
 $formprotection = t3lib_formprotection_Factory::get();
-
 if ($formprotection->validateToken(t3lib_div::_GP('formToken'), 'tceAction')) {
 	$SOBE->initClipboard();
 	$SOBE->main();
 }
 $SOBE->finish();
-
 ?>

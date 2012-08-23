@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Belog\ViewHelpers\Be;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * View helper to add a additional javascript file to the backend header
  *
@@ -31,7 +32,8 @@
  * @package TYPO3
  * @subpackage belog
  */
-class Tx_Belog_ViewHelpers_Be_AddJsFileViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
+class AddJsFileViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+
 	/**
 	 * Includes a JavaScript file into the to-be-rendered page
 	 *
@@ -45,5 +47,8 @@ class Tx_Belog_ViewHelpers_Be_AddJsFileViewHelper extends Tx_Fluid_ViewHelpers_B
 		$pageRenderer = $doc->getPageRenderer();
 		$pageRenderer->addJsFile($file);
 	}
+
 }
+
+
 ?>

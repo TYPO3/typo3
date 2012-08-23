@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\Domain\Model;
+
 /***************************************************************
  * Copyright notice
  *
@@ -22,18 +24,16 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Repository object for extension manager.
  *
  * @author Marcus Krause <marcus#exp2010@t3sec.info>
  * @author Steffen Kamper <info@sk-typo3.de>
- *
  * @since 2010-02-11
  * @package Extension Manager
  * @subpackage Model
  */
-class Tx_Extensionmanager_Domain_Model_Repository extends Tx_Extbase_DomainObject_AbstractEntity {
+class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * Keeps repository title.
@@ -59,7 +59,7 @@ class Tx_Extensionmanager_Domain_Model_Repository extends Tx_Extbase_DomainObjec
 	/**
 	 * Keeps repository mirrors object.
 	 *
-	 * @var Tx_Extensionmanager_Domain_Model_Mirrors
+	 * @var \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors
 	 */
 	protected $mirrors;
 
@@ -155,7 +155,7 @@ class Tx_Extensionmanager_Domain_Model_Repository extends Tx_Extbase_DomainObjec
 	 * @see $mirrorListUrl, getMirrorListUrl()
 	 */
 	public function setMirrorListUrl($url) {
-		if (empty($url) || (!empty($url) && t3lib_div::isValidUrl($url))) {
+		if (empty($url) || !empty($url) && \TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl($url)) {
 			$this->mirrorListUrl = $url;
 		}
 	}
@@ -179,7 +179,7 @@ class Tx_Extensionmanager_Domain_Model_Repository extends Tx_Extbase_DomainObjec
 	 * @see $wsdlUrl, getWsdlUrl()
 	 */
 	public function setWsdlUrl($url) {
-		if (!empty($url) && t3lib_div::isValidUrl($url)) {
+		if (!empty($url) && \TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl($url)) {
 			$this->wsdlUrl = $url;
 		}
 	}
@@ -201,7 +201,7 @@ class Tx_Extensionmanager_Domain_Model_Repository extends Tx_Extbase_DomainObjec
 	 * @param DateTime $time URL of repository WSDL
 	 * @return void
 	 */
-	public function setLastUpdate(DateTime $time) {
+	public function setLastUpdate(\DateTime $time) {
 		$this->lastUpdate = $time;
 	}
 
@@ -232,11 +232,11 @@ class Tx_Extensionmanager_Domain_Model_Repository extends Tx_Extbase_DomainObjec
 	 * Repository mirrors object is passed by reference.
 	 *
 	 * @access public
-	 * @param Tx_Extensionmanager_Domain_Model_Mirrors $mirrors mirror list
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors $mirrors mirror list
 	 * @return void
 	 * @see $mirrors, getMirrors(), hasMirrors(), removeMirrors()
 	 */
-	public function addMirrors(Tx_Extensionmanager_Domain_Model_Mirrors $mirrors) {
+	public function addMirrors(\TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors $mirrors) {
 		$this->mirrors = $mirrors;
 	}
 
@@ -260,7 +260,7 @@ class Tx_Extensionmanager_Domain_Model_Repository extends Tx_Extbase_DomainObjec
 	 * Method returns a repository mirrors object.
 	 *
 	 * @access public
-	 * @return Tx_Extensionmanager_Domain_Model_Mirrors mirrors for repository
+	 * @return \TYPO3\CMS\Extensionmanager\Domain\Model\Mirrors mirrors for repository
 	 * @see $mirrors, addMirrors(), hasMirrors(), removeMirrors()
 	 */
 	public function getMirrors() {
@@ -277,6 +277,8 @@ class Tx_Extensionmanager_Domain_Model_Repository extends Tx_Extbase_DomainObjec
 	public function removeMirrors() {
 		unset($this->mirrors);
 	}
+
 }
+
 
 ?>

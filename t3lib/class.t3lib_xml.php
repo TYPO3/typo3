@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * XML class, Used to create XML output from input rows.
  * Doesn't contain a lot of advanced features - pretty straight forward, practical stuff
@@ -35,16 +34,22 @@
  * @deprecated since TYPO3 6.0. It will be removed with TYPO3 6.2, please use other xml helper solutions instead.
  */
 class t3lib_xml {
-		// Top element name
+
+	// Top element name
 	public $topLevelName = 'typo3_test';
-		// Contains a list of fields for each table which should be presented in the XML output
+
+	// Contains a list of fields for each table which should be presented in the XML output
 	public $XML_recFields = array();
 
 	public $XMLIndent = 0;
+
 	public $Icode = '';
+
 	public $XMLdebug = 0;
-		// If set, all fields from records are rendered no matter their content. If not set, only 'true' (that is '' or zero) fields make it to the document.
+
+	// If set, all fields from records are rendered no matter their content. If not set, only 'true' (that is '' or zero) fields make it to the document.
 	public $includeNonEmptyValues = 0;
+
 	public $lines = array();
 
 	/**
@@ -54,10 +59,7 @@ class t3lib_xml {
 	 * @return void
 	 */
 	public function __construct($topLevelName) {
-		t3lib_div::deprecationLog(
-			'Class t3lib_div is deprecated since TYPO3 6.0. ' .
-			'It will be removed with TYPO3 6.2, please use other xml helper solutions instead.'
-		);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Class TYPO3\\CMS\\Core\\Utility\\GeneralUtility is deprecated since TYPO3 6.0. ' . 'It will be removed with TYPO3 6.2, please use other xml helper solutions instead.');
 		$this->topLevelName = $topLevelName;
 	}
 
@@ -89,7 +91,7 @@ class t3lib_xml {
 	 */
 	public function WAPHeader() {
 		$this->lines[] = '<?xml version="1.0"?>';
-		$this->lines[] = '<!DOCTYPE ' . $this->topLevelName . ' PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml">';
+		$this->lines[] = ('<!DOCTYPE ' . $this->topLevelName) . ' PUBLIC "-//WAPFORUM//DTD WML 1.1//EN" "http://www.wapforum.org/DTD/wml_1.1.xml">';
 		$this->newLevel($this->topLevelName, 1);
 	}
 
@@ -101,7 +103,7 @@ class t3lib_xml {
 	 */
 	public function renderHeader() {
 		$this->lines[] = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
-		$this->lines[] = '<!DOCTYPE ' . $this->topLevelName . '>';
+		$this->lines[] = ('<!DOCTYPE ' . $this->topLevelName) . '>';
 		$this->newLevel($this->topLevelName, 1);
 	}
 
@@ -128,15 +130,15 @@ class t3lib_xml {
 			if (count($params)) {
 				$par = array();
 				foreach ($params as $key => $val) {
-					$par[] = $key . '="' . htmlspecialchars($val) . '"';
+					$par[] = (($key . '="') . htmlspecialchars($val)) . '"';
 				}
 				$pList = ' ' . implode(' ', $par);
 			}
-			$this->lines[] = $this->Icode . '<' . $name . $pList . '>';
+			$this->lines[] = ((($this->Icode . '<') . $name) . $pList) . '>';
 			$this->indent(1);
 		} else {
 			$this->indent(0);
-			$this->lines[] = $this->Icode . '</' . $name . '>';
+			$this->lines[] = (($this->Icode . '</') . $name) . '>';
 		}
 	}
 
@@ -148,8 +150,8 @@ class t3lib_xml {
 	 */
 	public function output($content) {
 		if ($this->XMLdebug) {
-			return '<pre>' . htmlspecialchars($content) . '</pre>
-			<hr /><font color="red">Size: ' . strlen($content) . '</font>';
+			return ((('<pre>' . htmlspecialchars($content)) . '</pre>
+			<hr /><font color="red">Size: ') . strlen($content)) . '</font>';
 		} else {
 			return $content;
 		}
@@ -197,11 +199,11 @@ class t3lib_xml {
 	 * @return void
 	 */
 	public function addRecord($table, $row) {
-		$this->lines[] = $this->Icode . '<' . $table . ' uid="' . $row['uid'] . '">';
+		$this->lines[] = (((($this->Icode . '<') . $table) . ' uid="') . $row['uid']) . '">';
 		$this->indent(1);
 		$this->getRowInXML($table, $row);
 		$this->indent(0);
-		$this->lines[] = $this->Icode . '</' . $table . '>';
+		$this->lines[] = (($this->Icode . '</') . $table) . '>';
 	}
 
 	/**
@@ -215,7 +217,7 @@ class t3lib_xml {
 	 * @access private
 	 */
 	public function getRowInXML($table, $row) {
-		$fields = t3lib_div::trimExplode(',', $this->XML_recFields[$table], 1);
+		$fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->XML_recFields[$table], 1);
 		foreach ($fields as $field) {
 			if ($row[$field] || $this->includeNonEmptyValues) {
 				$this->lines[] = $this->Icode . $this->fieldWrap($field, $this->substNewline($this->utf8(htmlspecialchars($row[$field]))));
@@ -251,7 +253,7 @@ class t3lib_xml {
 	 * @return string The wrapped string.
 	 */
 	public function fieldWrap($field, $value) {
-		return '<' . $field . '>' . $value . '</' . $field . '>';
+		return ((((('<' . $field) . '>') . $value) . '</') . $field) . '>';
 	}
 
 	/**
@@ -276,6 +278,7 @@ class t3lib_xml {
 	public function addLine($str) {
 		$this->lines[] = $this->Icode . $str;
 	}
+
 }
 
 ?>
