@@ -1,15 +1,13 @@
 <?php
-
 /***************************************************************
-* Extension Manager/Repository config file for ext "viewpage".
-*
-* Auto generated 25-10-2011 13:11
-*
-* Manual updates:
-* Only the data in the array - everything else is removed by next
-* writing. "version" and "dependencies" must not be touched!
-***************************************************************/
-
+ * Extension Manager/Repository config file for ext "viewpage".
+ *
+ * Auto generated 25-10-2011 13:11
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Web>View',
 	'description' => 'Shows the frontend webpage inside the backend frameset.',
@@ -39,15 +37,11 @@ $EM_CONF[$_EXTKEY] = array(
 			'php' => '5.3.0-0.0.0',
 			'typo3' => '6.0.0-0.0.0',
 			'extbase' => '1.4.0-0.0.0',
-			'fluid' => '1.5.0-0.0.0',
+			'fluid' => '1.5.0-0.0.0'
 		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
+		'conflicts' => array(),
+		'suggests' => array()
 	),
-	'suggests' => array(
-	),
+	'suggests' => array()
 );
-
 ?>

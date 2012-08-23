@@ -42,8 +42,8 @@ class t3lib_cache_FactoryTest extends tx_phpunit_testcase {
 		$mockCacheManager = $this->getMock('t3lib_cache_Manager', array('registerCache'), array(), '', FALSE);
 		$factory = new t3lib_cache_Factory('Testing', $mockCacheManager);
 
-		$cache = $factory->create('TYPO3_Cache_FactoryTest_Cache', 't3lib_cache_frontend_VariableFrontend', 't3lib_cache_backend_NullBackend');
-		$this->assertInstanceOf('t3lib_cache_frontend_VariableFrontend', $cache);
+		$cache = $factory->create('TYPO3_Cache_FactoryTest_Cache', 't3lib_Cache\Frontend\VariableFrontend', 't3lib_cache_backend_NullBackend');
+		$this->assertInstanceOf('t3lib_Cache\Frontend\VariableFrontend', $cache);
 	}
 
 	/**
@@ -53,7 +53,7 @@ class t3lib_cache_FactoryTest extends tx_phpunit_testcase {
 		$mockCacheManager = $this->getMock('t3lib_cache_Manager', array('registerCache'), array(), '', FALSE);
 
 		$factory = new t3lib_cache_Factory('Testing', $mockCacheManager);
-		$cache = $factory->create('TYPO3_Cache_FactoryTest_Cache', 't3lib_cache_frontend_VariableFrontend', 't3lib_cache_backend_FileBackend');
+		$cache = $factory->create('TYPO3_Cache_FactoryTest_Cache', 't3lib_Cache\Frontend\VariableFrontend', 't3lib_cache_backend_FileBackend');
 		$this->assertInstanceOf('t3lib_cache_backend_FileBackend', $cache->getBackend());
 	}
 
@@ -66,7 +66,7 @@ class t3lib_cache_FactoryTest extends tx_phpunit_testcase {
 		$mockCacheManager->expects($this->once())->method('registerCache');
 
 		$factory = new t3lib_cache_Factory('Testing', $mockCacheManager);
-		$factory->create('TYPO3_Cache_FactoryTest_Cache', 't3lib_cache_frontend_VariableFrontend', 't3lib_cache_backend_FileBackend');
+		$factory->create('TYPO3_Cache_FactoryTest_Cache', 't3lib_Cache\Frontend\VariableFrontend', 't3lib_cache_backend_FileBackend');
 	}
 }
 

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Display a deactivate / activate link
  *
@@ -33,8 +33,7 @@
  * @package Extension Manager
  * @subpackage ViewHelpers
  */
-class Tx_Extensionmanager_ViewHelpers_ToggleExtensionInstallationStateViewHelper
-	extends Tx_Fluid_ViewHelpers_Link_ActionViewHelper {
+class ToggleExtensionInstallationStateViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 
 	/**
 	 * @var string
@@ -50,17 +49,16 @@ class Tx_Extensionmanager_ViewHelpers_ToggleExtensionInstallationStateViewHelper
 	public function render($extension) {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$action = 'toggleExtensionInstallationState';
-		$uri = $uriBuilder
-			->reset()
-			->uriFor($action, array(
-				'extension' => $extension['key']
-			), 'Action');
+		$uri = $uriBuilder->reset()->uriFor($action, array(
+			'extension' => $extension['key']
+		), 'Action');
 		$this->tag->addAttribute('href', $uri);
 		$label = $extension['installed'] ? 'Deactivate' : 'Activate';
 		$this->tag->setContent($label);
-
 		return $this->tag->render();
 	}
+
 }
+
 
 ?>

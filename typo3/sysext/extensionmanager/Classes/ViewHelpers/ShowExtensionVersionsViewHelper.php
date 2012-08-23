@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Display a link to show all versions of an extension
  *
@@ -33,7 +33,7 @@
  * @package Extension Manager
  * @subpackage ViewHelpers
  */
-class Tx_Extensionmanager_ViewHelpers_ShowExtensionVersionsViewHelper extends Tx_Fluid_ViewHelpers_Link_ActionViewHelper {
+class ShowExtensionVersionsViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 
 	/**
 	 * @var string
@@ -43,22 +43,23 @@ class Tx_Extensionmanager_ViewHelpers_ShowExtensionVersionsViewHelper extends Tx
 	/**
 	 * Renders an install link
 	 *
-	 * @param Tx_Extensionmanager_Domain_Model_Extension $extension
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
 	 * @return string the rendered a tag
 	 */
 	public function render($extension) {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$action = 'showAllVersions';
-		$uri = $uriBuilder
-			->reset()
-			->uriFor($action, array(
+		$uri = $uriBuilder->reset()->uriFor($action, array(
 			'extensionKey' => $extension->getExtensionKey(),
 			'allVersions' => TRUE
 		), 'List');
 		$this->tag->addAttribute('href', $uri);
 		$label = 'Show all versions';
 		$this->tag->setContent($label);
-
 		return $this->tag->render();
 	}
+
 }
+
+
+?>

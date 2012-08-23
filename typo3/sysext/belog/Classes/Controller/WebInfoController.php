@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Belog\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Controller for log entry listings in Web->Info module
  *
@@ -31,7 +32,8 @@
  * @package TYPO3
  * @subpackage belog
  */
-class Tx_Belog_Controller_WebInfoController extends Tx_Belog_Controller_AbstractController {
+class WebInfoController extends \TYPO3\CMS\Belog\Controller\AbstractController {
+
 	/**
 	 * Set context to 'in page mode'
 	 *
@@ -39,7 +41,10 @@ class Tx_Belog_Controller_WebInfoController extends Tx_Belog_Controller_Abstract
 	 */
 	public function initializeAction() {
 		$this->isInPageContext = TRUE;
-		$this->pageId = intval(t3lib_div::_GP('id'));
+		$this->pageId = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
 	}
+
 }
+
+
 ?>

@@ -22,15 +22,12 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 if (!defined('PATH_typo3conf')) {
 	die('Could not access this script directly!');
 }
-
-$extDirectEidInstance = t3lib_div::makeInstance('tslib_ExtDirectEid');
+$extDirectEidInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\ExtDirectEidController');
 if ($extDirectEidInstance->actionIsAllowed()) {
 	$extDirectEidInstance->routeAction();
 	$extDirectEidInstance->render();
 }
-
 ?>

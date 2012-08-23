@@ -1,6 +1,5 @@
 <?php
-
-	// sys_action
+// sys_action
 $TCA['sys_action'] = array(
 	'ctrl' => $TCA['sys_action']['ctrl'],
 	'interface' => array(
@@ -58,7 +57,7 @@ $TCA['sys_action'] = array(
 			)
 		),
 		't1_userprefix' => array(
-			'label' =>  'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_userprefix',
+			'label' => 'LLL:EXT:sys_action/locallang_tca.php:sys_action.t1_userprefix',
 			'config' => array(
 				'type' => 'input',
 				'size' => '25',
@@ -95,7 +94,7 @@ $TCA['sys_action'] = array(
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
+						'type' => 'suggest'
 					)
 				)
 			)
@@ -112,7 +111,7 @@ $TCA['sys_action'] = array(
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
+						'type' => 'suggest'
 					)
 				)
 			)
@@ -140,12 +139,11 @@ $TCA['sys_action'] = array(
 				'show_thumbs' => '1',
 				'wizards' => array(
 					'suggest' => array(
-						'type' => 'suggest',
+						'type' => 'suggest'
 					)
 				)
 			)
-		),
-
+		)
 	),
 	'types' => array(
 		'0' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,'),
@@ -153,7 +151,7 @@ $TCA['sys_action'] = array(
 		'2' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,'),
 		'3' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,t3_listPid;;;;5-5-5,t3_tables;'),
 		'4' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,t4_recordsToEdit;;;;5-5-5'),
-		'5' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,t3_listPid;Where to create records:;;;5-5-5,t3_tables;Create records in table:'),
+		'5' => array('showitem' => 'hidden;;;;1-1-1,type,title;;;;2-2-2,description;;;;3-3-3,assign_to_groups,--div--,t3_listPid;Where to create records:;;;5-5-5,t3_tables;Create records in table:')
 	)
 );
 ?>

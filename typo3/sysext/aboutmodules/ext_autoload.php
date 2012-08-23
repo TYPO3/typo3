@@ -1,6 +1,6 @@
 <?php
-$extensionPath = t3lib_extMgm::extPath('aboutmodules');
+$extensionPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('aboutmodules');
 return array(
-	'tx_aboutmodules_functions' => $extensionPath . 'class.tx_aboutmodules_functions.php',
+	'tx_aboutmodules_functions' => $extensionPath . 'class.tx_aboutmodules_functions.php'
 );
 ?>

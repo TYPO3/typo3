@@ -2,23 +2,14 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
-
-	// Avoid that this block is loaded in frontend or within upgrade wizards
+// Avoid that this block is loaded in frontend or within upgrade wizards
 if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
-	Tx_Extbase_Utility_Extension::registerModule(
-		$_EXTKEY,
-		'help',
-		'aboutmodules',
-		'after:about',
-		array(
-			'Modules' => 'index',
-		),
-		array(
-			'access' => 'user,group',
-			'icon' => 'EXT:aboutmodules/ext_icon.gif',
-			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf',
-		)
-	);
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule($_EXTKEY, 'help', 'aboutmodules', 'after:about', array(
+		'Modules' => 'index'
+	), array(
+		'access' => 'user,group',
+		'icon' => 'EXT:aboutmodules/ext_icon.gif',
+		'labels' => ('LLL:EXT:' . $_EXTKEY) . '/Resources/Private/Language/locallang_mod.xlf'
+	));
 }
-
 ?>
