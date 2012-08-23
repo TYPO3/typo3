@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Belog\ViewHelpers\Be;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * View helper to add a additional javascript settings to the backend header
  *
@@ -31,7 +32,8 @@
  * @package TYPO3
  * @subpackage belog
  */
-class Tx_Belog_ViewHelpers_Be_InlineSettingsArrayViewHelper extends Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper {
+class InlineSettingsArrayViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
+
 	/**
 	 * Render additional javascript to page
 	 *
@@ -45,5 +47,8 @@ class Tx_Belog_ViewHelpers_Be_InlineSettingsArrayViewHelper extends Tx_Fluid_Vie
 		$pageRenderer = $doc->getPageRenderer();
 		$pageRenderer->addInlineSettingArray('', $settings);
 	}
+
 }
+
+
 ?>

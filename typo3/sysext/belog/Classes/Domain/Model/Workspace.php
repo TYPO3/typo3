@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Belog\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,17 +25,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Stub model for workspaces - only properties required for belog module are added currently
  *
- * @TODO: This should be extended and put at some more central place
- *
+ * @TODO : This should be extended and put at some more central place
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @package TYPO3
  * @subpackage belog
  */
-class Tx_Belog_Domain_Model_Workspace extends Tx_Extbase_DomainObject_AbstractEntity {
+class Workspace extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+
 	/**
 	 * @var integer
 	 */
@@ -42,7 +43,6 @@ class Tx_Belog_Domain_Model_Workspace extends Tx_Extbase_DomainObject_AbstractEn
 	 * @var integer
 	 */
 	const UID_ANY_WORKSPACE = -99;
-
 	/**
 	 * title of the workspace
 	 *
@@ -68,5 +68,8 @@ class Tx_Belog_Domain_Model_Workspace extends Tx_Extbase_DomainObject_AbstractEn
 	public function getTitle() {
 		return $this->title;
 	}
+
 }
+
+
 ?>

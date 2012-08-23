@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * view helper
  *
@@ -33,8 +33,7 @@
  * @package Extension Manager
  * @subpackage ViewHelpers
  */
-class Tx_Extensionmanager_ViewHelpers_DownloadExtensionViewHelper
-	extends Tx_Fluid_ViewHelpers_FormViewHelper {
+class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewHelper {
 
 	/**
 	 * @var string
@@ -44,17 +43,16 @@ class Tx_Extensionmanager_ViewHelpers_DownloadExtensionViewHelper
 	/**
 	 * Renders a download link
 	 *
-	 * @param Tx_Extensionmanager_Domain_Model_Extension $extension
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension
 	 * @return string the rendered a tag
 	 */
-	public function render(Tx_Extensionmanager_Domain_Model_Extension $extension) {
-		$installPaths = Tx_Extensionmanager_Domain_Model_Extension::returnAllowedInstallPaths();
+	public function render(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
+		$installPaths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallPaths();
 		$pathSelector = '<ul>';
 		foreach ($installPaths as $installPathType => $installPath) {
-			$pathSelector .= '<li>
-				<input type="radio" id="' . $extension->getExtensionKey() .'-downloadPath-' . $installPathType . '" name="' . $this->getFieldNamePrefix('downloadPath') . '[downloadPath]" class="downloadPath" value="' . $installPathType . '"' .
-				($installPathType == 'Local' ? 'checked="checked"' : '') . '/>
-				<label for="' . $extension->getExtensionKey() .'-downloadPath-' . $installPathType . '">' . $installPathType . '</label>
+			$pathSelector .= ((((((((((((((('<li>
+				<input type="radio" id="' . $extension->getExtensionKey()) . '-downloadPath-') . $installPathType) . '" name="') . $this->getFieldNamePrefix('downloadPath')) . '[downloadPath]" class="downloadPath" value="') . $installPathType) . '"') . ($installPathType == 'Local' ? 'checked="checked"' : '')) . '/>
+				<label for="') . $extension->getExtensionKey()) . '-downloadPath-') . $installPathType) . '">') . $installPathType) . '</label>
 			</li>';
 		}
 		$pathSelector .= '</ul>';
@@ -69,7 +67,10 @@ class Tx_Extensionmanager_ViewHelpers_DownloadExtensionViewHelper
 		$label = '<input type="submit" value="Import and Install" />';
 		$this->tag->setContent($label . $pathSelector);
 		$this->tag->addAttribute('class', 'download');
-
-		return '<div id="' . $extension->getExtensionKey() . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';
+		return ((('<div id="' . $extension->getExtensionKey()) . '-downloadFromTer" class="downloadFromTer">') . $this->tag->render()) . '</div>';
 	}
+
 }
+
+
+?>

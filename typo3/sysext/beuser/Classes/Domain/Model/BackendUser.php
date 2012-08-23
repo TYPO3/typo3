@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Beuser\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Model for backend user
  *
@@ -31,7 +32,7 @@
  * @package TYPO3
  * @subpackage beuser
  */
-class Tx_Beuser_Domain_Model_BackendUser extends Tx_Extbase_Domain_Model_BackendUser {
+class BackendUser extends \TYPO3\CMS\Extbase\Domain\Model\BackendUser {
 
 	/**
 	 * Comma separated list of uids in multi-select
@@ -61,7 +62,7 @@ class Tx_Beuser_Domain_Model_BackendUser extends Tx_Extbase_Domain_Model_Backend
 	 * @return void
 	 */
 	public function setAllowedLanguages($allowedLanguages) {
-		$this->allowedLanguages= $allowedLanguages;
+		$this->allowedLanguages = $allowedLanguages;
 	}
 
 	/**
@@ -110,26 +111,25 @@ class Tx_Beuser_Domain_Model_BackendUser extends Tx_Extbase_Domain_Model_Backend
 		if ($this->getIsDisabled()) {
 			return FALSE;
 		}
-
-		$now = new DateTime('now');
-		return (!$this->getStartDateAndTime() && !$this->getEndDateAndTime()) ||
-				($this->getStartDateAndTime() <= $now && (!$this->getEndDateAndTime() || $this->getEndDateAndTime() > $now));
+		$now = new \DateTime('now');
+		return !$this->getStartDateAndTime() && !$this->getEndDateAndTime() || $this->getStartDateAndTime() <= $now && (!$this->getEndDateAndTime() || $this->getEndDateAndTime() > $now);
 	}
 
 	/**
-	 * @param \Tx_Extbase_Persistence_ObjectStorage $backendUserGroups
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $backendUserGroups
 	 */
 	public function setBackendUserGroups($backendUserGroups) {
 		$this->backendUserGroups = $backendUserGroups;
 	}
 
 	/**
-	 * @return \Tx_Extbase_Persistence_ObjectStorage
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
 	 */
 	public function getBackendUserGroups() {
 		return $this->backendUserGroups;
 	}
 
 }
+
 
 ?>

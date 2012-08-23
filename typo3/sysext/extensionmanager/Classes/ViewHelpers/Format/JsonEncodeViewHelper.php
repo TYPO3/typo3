@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\ViewHelpers\Format;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,20 +26,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Wrapper for PHPs json_encode function.
  *
  * @see http://www.php.net/manual/en/function.json-encode.php
- *
- * = Examples =
- *
- * <code title="Example">
- * <f:format.jsonEncode>{someArray}</f:format.jsonEncode>
- * </code>
- *
  */
-class Tx_Extensionmanager_ViewHelpers_Format_JsonEncodeViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class JsonEncodeViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Constructor
@@ -45,12 +39,7 @@ class Tx_Extensionmanager_ViewHelpers_Format_JsonEncodeViewHelper extends Tx_Flu
 	 * @api
 	 */
 	public function __construct() {
-		$this->registerArgument(
-			'additionalAttributes',
-			'array',
-			'Additional tag attributes. They will be added directly to the resulting HTML tag.',
-			FALSE
-		);
+		$this->registerArgument('additionalAttributes', 'array', 'Additional tag attributes. They will be added directly to the resulting HTML tag.', FALSE);
 	}
 
 	/**
@@ -66,5 +55,8 @@ class Tx_Extensionmanager_ViewHelpers_Format_JsonEncodeViewHelper extends Tx_Flu
 		$content = $this->renderChildren();
 		return json_encode($content);
 	}
+
 }
+
+
 ?>

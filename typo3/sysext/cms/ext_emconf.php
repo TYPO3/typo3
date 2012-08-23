@@ -1,15 +1,13 @@
 <?php
-
 /***************************************************************
-* Extension Manager/Repository config file for ext "cms".
-*
-* Auto generated 25-10-2011 13:10
-*
-* Manual updates:
-* Only the data in the array - everything else is removed by next
-* writing. "version" and "dependencies" must not be touched!
-***************************************************************/
-
+ * Extension Manager/Repository config file for ext "cms".
+ *
+ * Auto generated 25-10-2011 13:10
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'TYPO3 CMS Frontend (TypoScript)',
 	'description' => 'The core TypoScript Content Management engine in TYPO3.
@@ -38,15 +36,11 @@ This should probably not be disabled. But the point is that Typo3 is able to wor
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
-			'typo3' => '4.6.0-0.0.0',
+			'typo3' => '4.6.0-0.0.0'
 		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
+		'conflicts' => array(),
+		'suggests' => array()
 	),
-	'suggests' => array(
-	),
+	'suggests' => array()
 );
-
 ?>

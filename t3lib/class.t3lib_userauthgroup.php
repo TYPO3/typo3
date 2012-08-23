@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Extension to class.t3lib_userauth.php; Authentication of users in TYPO3 Backend
  *
@@ -37,28 +36,63 @@
  * @deprecated since 6.0, will be removed in 6.2. The functionality was merged wih t3lib_beUserAuth
  */
 abstract class t3lib_userAuthGroup extends t3lib_userAuth {
-		// Should be set to the usergroup-column (id-list) in the user-record
-	var $usergroup_column = 'usergroup';
-		// The name of the group-table
-	var $usergroup_table = 'be_groups';
 
-		// Internal
-		// This array holds lists of eg. tables, fields and other values related to the permission-system. See fetchGroupData
-	var $groupData = array(
-		'filemounts' => array() // Filemounts are loaded here
+	// Should be set to the usergroup-column (id-list) in the user-record
+	/**
+	 * @todo Define visibility
+	 */
+	public $usergroup_column = 'usergroup';
+
+	// The name of the group-table
+	/**
+	 * @todo Define visibility
+	 */
+	public $usergroup_table = 'be_groups';
+
+	// Internal
+	// This array holds lists of eg. tables, fields and other values related to the permission-system. See fetchGroupData
+	/**
+	 * @todo Define visibility
+	 */
+	public $groupData = array(
+		'filemounts' => array()
 	);
-		// User workspace. -99 is ERROR (none available), -1 is offline, 0 is online, >0 is custom workspaces.
-	var $workspace = -99;
-		// Custom workspace record if any
-	var $workspaceRec = array();
-		// This array will hold the groups that the user is a member of
-	var $userGroups = array();
-		// This array holds the uid's of the groups in the listed order
-	var $userGroupsUID = array();
-		// This is $this->userGroupsUID imploded to a comma list... Will correspond to the 'usergroup_cached_list'
-	var $groupList = '';
-		// Used internally to accumulate data for the user-group. DONT USE THIS EXTERNALLY! Use $this->groupData instead
-	var $dataLists = array(
+
+	// User workspace. -99 is ERROR (none available), -1 is offline, 0 is online, >0 is custom workspaces.
+	/**
+	 * @todo Define visibility
+	 */
+	public $workspace = -99;
+
+	// Custom workspace record if any
+	/**
+	 * @todo Define visibility
+	 */
+	public $workspaceRec = array();
+
+	// This array will hold the groups that the user is a member of
+	/**
+	 * @todo Define visibility
+	 */
+	public $userGroups = array();
+
+	// This array holds the uid's of the groups in the listed order
+	/**
+	 * @todo Define visibility
+	 */
+	public $userGroupsUID = array();
+
+	// This is $this->userGroupsUID imploded to a comma list... Will correspond to the 'usergroup_cached_list'
+	/**
+	 * @todo Define visibility
+	 */
+	public $groupList = '';
+
+	// Used internally to accumulate data for the user-group. DONT USE THIS EXTERNALLY! Use $this->groupData instead
+	/**
+	 * @todo Define visibility
+	 */
+	public $dataLists = array(
 		'webmount_list' => '',
 		'filemount_list' => '',
 		'fileoper_perms' => 0,
@@ -70,30 +104,74 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		'explicit_allowdeny' => '',
 		'allowed_languages' => '',
 		'workspace_perms' => '',
-		'custom_options' => '',
+		'custom_options' => ''
 	);
-		// For debugging/display of order in which subgroups are included.
-	var $includeHierarchy = array();
-		// List of group_id's in the order they are processed.
-	var $includeGroupArray = array();
-		// Set to 'WIN', if windows
-	var $OS = '';
-		// Used to accumulate the TSconfig data of the user
-	var $TSdataArray = array();
-		// Contains the non-parsed user TSconfig
-	var $userTS_text = '';
-		// Contains the parsed user TSconfig
-	var $userTS = array();
-		// Set internally if the user TSconfig was parsed and needs to be cached.
-	var $userTSUpdated = 0;
-		// Set this from outside if you want the user TSconfig to ALWAYS be parsed and not fetched from cache.
-	var $userTS_dontGetCached = 0;
-		// RTE availability errors collected.
-	var $RTE_errors = array();
-		// Contains last error message
-	var $errorMsg = '';
-		// Cache for checkWorkspaceCurrent()
-	var $checkWorkspaceCurrent_cache = NULL;
+
+	// For debugging/display of order in which subgroups are included.
+	/**
+	 * @todo Define visibility
+	 */
+	public $includeHierarchy = array();
+
+	// List of group_id's in the order they are processed.
+	/**
+	 * @todo Define visibility
+	 */
+	public $includeGroupArray = array();
+
+	// Set to 'WIN', if windows
+	/**
+	 * @todo Define visibility
+	 */
+	public $OS = '';
+
+	// Used to accumulate the TSconfig data of the user
+	/**
+	 * @todo Define visibility
+	 */
+	public $TSdataArray = array();
+
+	// Contains the non-parsed user TSconfig
+	/**
+	 * @todo Define visibility
+	 */
+	public $userTS_text = '';
+
+	// Contains the parsed user TSconfig
+	/**
+	 * @todo Define visibility
+	 */
+	public $userTS = array();
+
+	// Set internally if the user TSconfig was parsed and needs to be cached.
+	/**
+	 * @todo Define visibility
+	 */
+	public $userTSUpdated = 0;
+
+	// Set this from outside if you want the user TSconfig to ALWAYS be parsed and not fetched from cache.
+	/**
+	 * @todo Define visibility
+	 */
+	public $userTS_dontGetCached = 0;
+
+	// RTE availability errors collected.
+	/**
+	 * @todo Define visibility
+	 */
+	public $RTE_errors = array();
+
+	// Contains last error message
+	/**
+	 * @todo Define visibility
+	 */
+	public $errorMsg = '';
+
+	// Cache for checkWorkspaceCurrent()
+	/**
+	 * @todo Define visibility
+	 */
+	public $checkWorkspaceCurrent_cache = NULL;
 
 	/**
 	 * @var t3lib_file_Storage[]
@@ -109,10 +187,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Constructor deprecates class.
 	 */
 	public function __construct() {
-		t3lib_div::logDeprecatedFunction(
-			'Class t3lib_userAuthGroup is deprecated and unused since TYPO3 6.0. ' .
-			'All methods are merged with t3lib_beUserAuth.'
-		);
+		t3lib_div::logDeprecatedFunction('Class t3lib_userAuthGroup is deprecated and unused since TYPO3 6.0. ' . 'All methods are merged with t3lib_beUserAuth.');
 	}
 
 	/************************************
@@ -120,15 +195,15 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Permission checking functions:
 	 *
 	 ************************************/
-
 	/**
 	 * Returns TRUE if user is admin
 	 * Basically this function evaluates if the ->user[admin] field has bit 0 set. If so, user is admin.
 	 *
 	 * @return boolean
+	 * @todo Define visibility
 	 */
-	function isAdmin() {
-		return (($this->user['admin'] & 1) == 1);
+	public function isAdmin() {
+		return ($this->user['admin'] & 1) == 1;
 	}
 
 	/**
@@ -138,8 +213,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @param integer $groupId Group ID to look for in $this->groupList
 	 * @return boolean
+	 * @todo Define visibility
 	 */
-	function isMemberOfGroup($groupId) {
+	public function isMemberOfGroup($groupId) {
 		$groupId = intval($groupId);
 		if ($this->groupList && $groupId) {
 			return t3lib_div::inList($this->groupList, $groupId);
@@ -151,17 +227,18 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * Bits for permissions, see $perms variable:
 	 *
-	 *		 1 - Show:	See/Copy page and the pagecontent.
-	 *		 16- Edit pagecontent: Change/Add/Delete/Move pagecontent.
-	 *		 2- Edit page: Change/Move the page, eg. change title, startdate, hidden.
-	 *		 4- Delete page: Delete the page and pagecontent.
-	 *		 8- New pages: Create new pages under the page.
+	 * 1 - Show:	See/Copy page and the pagecontent.
+	 * 16- Edit pagecontent: Change/Add/Delete/Move pagecontent.
+	 * 2- Edit page: Change/Move the page, eg. change title, startdate, hidden.
+	 * 4- Delete page: Delete the page and pagecontent.
+	 * 8- New pages: Create new pages under the page.
 	 *
 	 * @param array $row Is the pagerow for which the permissions is checked
 	 * @param integer $perms Is the binary representation of the permission we are going to check. Every bit in this number represents a permission that must be set. See function explanation.
 	 * @return boolean TRUE or False upon evaluation
+	 * @todo Define visibility
 	 */
-	function doesUserHaveAccess($row, $perms) {
+	public function doesUserHaveAccess($row, $perms) {
 		$userPerms = $this->calcPerms($row);
 		return ($userPerms & $perms) == $perms;
 	}
@@ -177,26 +254,24 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param string $readPerms Content of "->getPagePermsClause(1)" (read-permissions). If not set, they will be internally calculated (but if you have the correct value right away you can save that database lookup!)
 	 * @param boolean $exitOnError If set, then the function will exit with an error message.
 	 * @return integer The page UID of a page in the rootline that matched a mount point
+	 * @todo Define visibility
 	 */
-	function isInWebMount($id, $readPerms = '', $exitOnError = 0) {
+	public function isInWebMount($id, $readPerms = '', $exitOnError = 0) {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] || $this->isAdmin()) {
 			return 1;
 		}
 		$id = intval($id);
-
-			// Check if input id is an offline version page in which case we will map id to the online version:
+		// Check if input id is an offline version page in which case we will map id to the online version:
 		$checkRec = t3lib_beFUnc::getRecord('pages', $id, 'pid,t3ver_oid');
 		if ($checkRec['pid'] == -1) {
 			$id = intval($checkRec['t3ver_oid']);
 		}
-
 		if (!$readPerms) {
 			$readPerms = $this->getPagePermsClause(1);
 		}
 		if ($id > 0) {
 			$wM = $this->returnWebmounts();
 			$rL = t3lib_BEfunc::BEgetRootLine($id, ' AND ' . $readPerms);
-
 			foreach ($rL as $v) {
 				if ($v['uid'] && in_array($v['uid'], $wM)) {
 					return $v['uid'];
@@ -214,35 +289,31 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param array $conf $MCONF array of a backend module!
 	 * @param boolean $exitOnError If set, an array will issue an error message and exit.
 	 * @return boolean Will return TRUE if $MCONF['access'] is not set at all, if the BE_USER is admin or if the module is enabled in the be_users/be_groups records of the user (specifically enabled). Will return FALSE if the module name is not even found in $TBE_MODULES
+	 * @todo Define visibility
 	 */
-	function modAccess($conf, $exitOnError) {
+	public function modAccess($conf, $exitOnError) {
 		if (!t3lib_BEfunc::isModuleSetInTBE_MODULES($conf['name'])) {
 			if ($exitOnError) {
-				throw new RuntimeException('Fatal Error: This module "' . $conf['name'] . '" is not enabled in TBE_MODULES', 1294586446);
+				throw new RuntimeException(('Fatal Error: This module "' . $conf['name']) . '" is not enabled in TBE_MODULES', 1294586446);
 			}
 			return FALSE;
 		}
-
-			// Workspaces check:
+		// Workspaces check:
 		if (t3lib_extMgm::isLoaded('workspaces') && $conf['workspaces']) {
-			if (($this->workspace === 0 && t3lib_div::inList($conf['workspaces'], 'online')) ||
-				($this->workspace === -1 && t3lib_div::inList($conf['workspaces'], 'offline')) ||
-				($this->workspace > 0 && t3lib_div::inList($conf['workspaces'], 'custom'))) {
-				// ok, go on...
+			if (($this->workspace === 0 && t3lib_div::inList($conf['workspaces'], 'online') || $this->workspace === -1 && t3lib_div::inList($conf['workspaces'], 'offline')) || $this->workspace > 0 && t3lib_div::inList($conf['workspaces'], 'custom')) {
+
 			} else {
 				if ($exitOnError) {
-					throw new RuntimeException('Workspace Error: This module "' . $conf['name'] . '" is not available under the current workspace', 1294586447);
+					throw new RuntimeException(('Workspace Error: This module "' . $conf['name']) . '" is not available under the current workspace', 1294586447);
 				}
 				return FALSE;
 			}
 		}
-
-			// Returns TRUE if conf[access] is not set at all or if the user is admin
+		// Returns TRUE if conf[access] is not set at all or if the user is admin
 		if (!$conf['access'] || $this->isAdmin()) {
 			return TRUE;
 		}
-
-			// If $conf['access'] is set but not with 'admin' then we return TRUE, if the module is found in the modList
+		// If $conf['access'] is set but not with 'admin' then we return TRUE, if the module is found in the modList
 		if (!strstr($conf['access'], 'admin') && $conf['name']) {
 			$acs = $this->check('modules', $conf['name']);
 		}
@@ -256,44 +327,41 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	/**
 	 * Returns a WHERE-clause for the pages-table where user permissions according to input argument, $perms, is validated.
 	 * $perms is the "mask" used to select. Fx. if $perms is 1 then you'll get all pages that a user can actually see!
-	 *		  2^0 = show (1)
-	 *		 2^1 = edit (2)
-	 *		 2^2 = delete (4)
-	 *		 2^3 = new (8)
+	 * 2^0 = show (1)
+	 * 2^1 = edit (2)
+	 * 2^2 = delete (4)
+	 * 2^3 = new (8)
 	 * If the user is 'admin' " 1=1" is returned (no effect)
 	 * If the user is not set at all (->user is not an array), then " 1=0" is returned (will cause no selection results at all)
 	 * The 95% use of this function is "->getPagePermsClause(1)" which will return WHERE clauses for *selecting* pages in backend listings - in other words this will check read permissions.
 	 *
 	 * @param integer $perms Permission mask to use, see function description
 	 * @return string Part of where clause. Prefix " AND " to this.
+	 * @todo Define visibility
 	 */
-	function getPagePermsClause($perms) {
+	public function getPagePermsClause($perms) {
 		if (is_array($this->user)) {
 			if ($this->isAdmin()) {
 				return ' 1=1';
 			}
-
-			$perms = intval($perms); // Make sure it's integer.
-			$str = ' (' .
-				'(pages.perms_everybody & ' . $perms . ' = ' . $perms . ')' . // Everybody
-				' OR (pages.perms_userid = ' . $this->user['uid'] . ' AND pages.perms_user & ' . $perms . ' = ' . $perms . ')'; // User
+			$perms = intval($perms);
+			// Make sure it's integer.
+			$str = (((((((((((' (' . '(pages.perms_everybody & ') . $perms) . ' = ') . $perms) . ')') . ' OR (pages.perms_userid = ') . $this->user['uid']) . ' AND pages.perms_user & ') . $perms) . ' = ') . $perms) . ')';
+			// User
 			if ($this->groupList) {
-					// Group (if any is set)
-				$str .= ' OR (pages.perms_groupid in (' . $this->groupList . ') AND pages.perms_group & ' . $perms . ' = ' . $perms . ')';
+				// Group (if any is set)
+				$str .= (((((' OR (pages.perms_groupid in (' . $this->groupList) . ') AND pages.perms_group & ') . $perms) . ' = ') . $perms) . ')';
 			}
 			$str .= ')';
-
-				// ****************
-				// getPagePermsClause-HOOK
-				// ****************
+			// ****************
+			// getPagePermsClause-HOOK
+			// ****************
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'])) {
-
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['getPagePermsClause'] as $_funcRef) {
 					$_params = array('currentClause' => $str, 'perms' => $perms);
 					$str = t3lib_div::callUserFunction($_funcRef, $_params, $this);
 				}
 			}
-
 			return $str;
 		} else {
 			return ' 1=0';
@@ -307,16 +375,15 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @param array $row Input page row with all perms_* fields available.
 	 * @return integer Bitwise representation of the users permissions in relation to input page row, $row
+	 * @todo Define visibility
 	 */
-	function calcPerms($row) {
-			// Return 31 for admin users.
-
+	public function calcPerms($row) {
+		// Return 31 for admin users.
 		if ($this->isAdmin()) {
 			return 31;
 		}
-
 		$out = 0;
-		if (isset($row['perms_userid']) && isset($row['perms_user']) && isset($row['perms_groupid']) && isset($row['perms_group']) && isset($row['perms_everybody']) && isset($this->groupList)) {
+		if (((((isset($row['perms_userid']) && isset($row['perms_user'])) && isset($row['perms_groupid'])) && isset($row['perms_group'])) && isset($row['perms_everybody'])) && isset($this->groupList)) {
 			if ($this->user['uid'] == $row['perms_userid']) {
 				$out |= $row['perms_user'];
 			}
@@ -325,10 +392,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			}
 			$out |= $row['perms_everybody'];
 		}
-
-			// ****************
-			// CALCPERMS hook
-			// ****************
+		// ****************
+		// CALCPERMS hook
+		// ****************
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['calcPerms'] as $_funcRef) {
 				$_params = array(
@@ -338,7 +404,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				$out = t3lib_div::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
-
 		return $out;
 	}
 
@@ -348,9 +413,10 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * The reasons for a FALSE return can be found in $this->RTE_errors
 	 *
 	 * @return boolean
+	 * @todo Define visibility
 	 */
-	function isRTE() {
-			// Start:
+	public function isRTE() {
+		// Start:
 		$this->RTE_errors = array();
 		if (!$this->uc['edit_RTE']) {
 			$this->RTE_errors[] = 'RTE is not enabled for user!';
@@ -358,13 +424,11 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['RTEenabled']) {
 			$this->RTE_errors[] = 'RTE is not enabled in $TYPO3_CONF_VARS["BE"]["RTEenabled"]';
 		}
-
-			// Acquire RTE object:
+		// Acquire RTE object:
 		$RTE = t3lib_BEfunc::RTEgetObj();
 		if (!is_object($RTE)) {
 			$this->RTE_errors = array_merge($this->RTE_errors, $RTE);
 		}
-
 		if (!count($this->RTE_errors)) {
 			return TRUE;
 		} else {
@@ -378,11 +442,12 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * If user is admin TRUE is also returned
 	 * Please see the document Inside TYPO3 for examples.
 	 *
-	 * @param string $type The type value; "webmounts", "filemounts", "pagetypes_select", "tables_select", "tables_modify", "non_exclude_fields", "modules"
+	 * @param string $type The type value; "webmounts", "filemounts", "pagetypes_select", "tables_select", "tables_modify", "non_exclude_fields", "modules
 	 * @param string $value String to search for in the groupData-list
 	 * @return boolean TRUE if permission is granted (that is, the value was found in the groupData list - or the BE_USER is "admin")
+	 * @todo Define visibility
 	 */
-	function check($type, $value) {
+	public function check($type, $value) {
 		if (isset($this->groupData[$type])) {
 			if ($this->isAdmin() || t3lib_div::inList($this->groupData[$type], $value)) {
 				return TRUE;
@@ -399,67 +464,62 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param string $value Value to evaluation (single value, must not contain any of the chars ":,|")
 	 * @param string $authMode Auth mode keyword (explicitAllow, explicitDeny, individual)
 	 * @return boolean TRUE or FALSE whether access is granted or not.
+	 * @todo Define visibility
 	 */
-	function checkAuthMode($table, $field, $value, $authMode) {
-
-			// Admin users can do anything:
+	public function checkAuthMode($table, $field, $value, $authMode) {
+		// Admin users can do anything:
 		if ($this->isAdmin()) {
 			return TRUE;
 		}
-
-			// Allow all blank values:
+		// Allow all blank values:
 		if (!strcmp($value, '')) {
 			return TRUE;
 		}
-
-			// Certain characters are not allowed in the value
+		// Certain characters are not allowed in the value
 		if (preg_match('/[:|,]/', $value)) {
 			return FALSE;
 		}
-
-			// Initialize:
-		$testValue = $table . ':' . $field . ':' . $value;
+		// Initialize:
+		$testValue = ((($table . ':') . $field) . ':') . $value;
 		$out = TRUE;
-
-			// Checking value:
+		// Checking value:
 		switch ((string) $authMode) {
-			case 'explicitAllow':
-				if (!t3lib_div::inList($this->groupData['explicit_allowdeny'], $testValue . ':ALLOW')) {
-					$out = FALSE;
-				}
+		case 'explicitAllow':
+			if (!t3lib_div::inList($this->groupData['explicit_allowdeny'], ($testValue . ':ALLOW'))) {
+				$out = FALSE;
+			}
 			break;
-			case 'explicitDeny':
-				if (t3lib_div::inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
-					$out = FALSE;
-				}
+		case 'explicitDeny':
+			if (t3lib_div::inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
+				$out = FALSE;
+			}
 			break;
-			case 'individual':
-				t3lib_div::loadTCA($table);
-				if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
-					$items = $GLOBALS['TCA'][$table]['columns'][$field]['config']['items'];
-					if (is_array($items)) {
-						foreach ($items as $iCfg) {
-							if (!strcmp($iCfg[1], $value) && $iCfg[4]) {
-								switch ((string) $iCfg[4]) {
-									case 'EXPL_ALLOW':
-										if (!t3lib_div::inList($this->groupData['explicit_allowdeny'], $testValue . ':ALLOW')) {
-											$out = FALSE;
-										}
-									break;
-									case 'EXPL_DENY':
-										if (t3lib_div::inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
-											$out = FALSE;
-										}
-									break;
+		case 'individual':
+			t3lib_div::loadTCA($table);
+			if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
+				$items = $GLOBALS['TCA'][$table]['columns'][$field]['config']['items'];
+				if (is_array($items)) {
+					foreach ($items as $iCfg) {
+						if (!strcmp($iCfg[1], $value) && $iCfg[4]) {
+							switch ((string) $iCfg[4]) {
+							case 'EXPL_ALLOW':
+								if (!t3lib_div::inList($this->groupData['explicit_allowdeny'], ($testValue . ':ALLOW'))) {
+									$out = FALSE;
 								}
-							break;
+								break;
+							case 'EXPL_DENY':
+								if (t3lib_div::inList($this->groupData['explicit_allowdeny'], $testValue . ':DENY')) {
+									$out = FALSE;
+								}
+								break;
 							}
+							break;
 						}
 					}
 				}
+			}
 			break;
 		}
-
 		return $out;
 	}
 
@@ -468,12 +528,13 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @param integer $langValue Language value to evaluate
 	 * @return boolean Returns TRUE if the language value is allowed, otherwise FALSE.
+	 * @todo Define visibility
 	 */
-	function checkLanguageAccess($langValue) {
-			// The users language list must be non-blank - otherwise all languages are allowed.
+	public function checkLanguageAccess($langValue) {
+		// The users language list must be non-blank - otherwise all languages are allowed.
 		if (strcmp(trim($this->groupData['allowed_languages']), '')) {
 			$langValue = intval($langValue);
-				// Language must either be explicitly allowed OR the lang Value be "-1" (all languages)
+			// Language must either be explicitly allowed OR the lang Value be "-1" (all languages)
 			if ($langValue != -1 && !$this->check('allowed_languages', $langValue)) {
 				return FALSE;
 			}
@@ -487,16 +548,11 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param string $table The table
 	 * @param array $record The current record
 	 * @return boolean
+	 * @todo Define visibility
 	 */
-	function checkFullLanguagesAccess($table, $record) {
+	public function checkFullLanguagesAccess($table, $record) {
 		$recordLocalizationAccess = $this->checkLanguageAccess(0);
-		if ($recordLocalizationAccess
-			&& (
-						t3lib_BEfunc::isTableLocalizable($table)
-						|| isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])
-				)
-		) {
-
+		if ($recordLocalizationAccess && (t3lib_BEfunc::isTableLocalizable($table) || isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']))) {
 			if (isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
 				$l10nTable = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'];
 				$pointerField = $GLOBALS['TCA'][$l10nTable]['ctrl']['transOrigPointerField'];
@@ -506,27 +562,15 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				$pointerField = $GLOBALS['TCA'][$l10nTable]['ctrl']['transOrigPointerField'];
 				$pointerValue = $record[$pointerField] > 0 ? $record[$pointerField] : $record['uid'];
 			}
-
-			$recordLocalizations = t3lib_BEfunc::getRecordsByField(
-				$l10nTable,
-				$pointerField,
-				$pointerValue,
-				'',
-				'',
-				'',
-				'1'
-			);
-
+			$recordLocalizations = t3lib_BEfunc::getRecordsByField($l10nTable, $pointerField, $pointerValue, '', '', '', '1');
 			if (is_array($recordLocalizations)) {
 				foreach ($recordLocalizations as $localization) {
-					$recordLocalizationAccess = $recordLocalizationAccess
-												&& $this->checkLanguageAccess($localization[$GLOBALS['TCA'][$l10nTable]['ctrl']['languageField']]);
+					$recordLocalizationAccess = $recordLocalizationAccess && $this->checkLanguageAccess($localization[$GLOBALS['TCA'][$l10nTable]['ctrl']['languageField']]);
 					if (!$recordLocalizationAccess) {
 						break;
 					}
 				}
 			}
-
 		}
 		return $recordLocalizationAccess;
 	}
@@ -544,17 +588,16 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param boolean $deletedRecord Set, if testing a deleted record array.
 	 * @param boolean $checkFullLanguageAccess Set, whenever access to all translations of the record is required
 	 * @return boolean TRUE if OK, otherwise FALSE
+	 * @todo Define visibility
 	 */
-	function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE, $checkFullLanguageAccess = FALSE) {
+	public function recordEditAccessInternals($table, $idOrRow, $newRecord = FALSE, $deletedRecord = FALSE, $checkFullLanguageAccess = FALSE) {
 		if (isset($GLOBALS['TCA'][$table])) {
 			t3lib_div::loadTCA($table);
-
-				// Always return TRUE for Admin users.
+			// Always return TRUE for Admin users.
 			if ($this->isAdmin()) {
 				return TRUE;
 			}
-
-				// Fetching the record if the $idOrRow variable was not an array on input:
+			// Fetching the record if the $idOrRow variable was not an array on input:
 			if (!is_array($idOrRow)) {
 				if ($deletedRecord) {
 					$idOrRow = t3lib_BEfunc::getRecord($table, $idOrRow, '*', '', FALSE);
@@ -566,43 +609,38 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 					return FALSE;
 				}
 			}
-
-				// Checking languages:
+			// Checking languages:
 			if ($GLOBALS['TCA'][$table]['ctrl']['languageField']) {
-					// Language field must be found in input row - otherwise it does not make sense.
+				// Language field must be found in input row - otherwise it does not make sense.
 				if (isset($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
 					if (!$this->checkLanguageAccess($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
 						$this->errorMsg = 'ERROR: Language was not allowed.';
 						return FALSE;
-					} elseif ($checkFullLanguageAccess && $idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']] == 0 && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
+					} elseif (($checkFullLanguageAccess && $idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']] == 0) && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
 						$this->errorMsg = 'ERROR: Related/affected language was not allowed.';
 						return FALSE;
 					}
 				} else {
-					$this->errorMsg = 'ERROR: The "languageField" field named "' .
-						$GLOBALS['TCA'][$table]['ctrl']['languageField'] .
-						'" was not found in testing record!';
+					$this->errorMsg = ('ERROR: The "languageField" field named "' . $GLOBALS['TCA'][$table]['ctrl']['languageField']) . '" was not found in testing record!';
 					return FALSE;
 				}
-			} elseif (isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
+			} elseif ((isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) && $checkFullLanguageAccess) && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
 				return FALSE;
 			}
-
-				// Checking authMode fields:
+			// Checking authMode fields:
 			if (is_array($GLOBALS['TCA'][$table]['columns'])) {
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldValue) {
 					if (isset($idOrRow[$fieldName])) {
-						if ($fieldValue['config']['type'] == 'select' && $fieldValue['config']['authMode'] && !strcmp($fieldValue['config']['authMode_enforce'], 'strict')) {
+						if (($fieldValue['config']['type'] == 'select' && $fieldValue['config']['authMode']) && !strcmp($fieldValue['config']['authMode_enforce'], 'strict')) {
 							if (!$this->checkAuthMode($table, $fieldName, $idOrRow[$fieldName], $fieldValue['config']['authMode'])) {
-								$this->errorMsg = 'ERROR: authMode "' . $fieldValue['config']['authMode'] . '" failed for field "' . $fieldName . '" with value "' . $idOrRow[$fieldName] . '" evaluated';
+								$this->errorMsg = ((((('ERROR: authMode "' . $fieldValue['config']['authMode']) . '" failed for field "') . $fieldName) . '" with value "') . $idOrRow[$fieldName]) . '" evaluated';
 								return FALSE;
 							}
 						}
 					}
 				}
 			}
-
-				// Checking "editlock" feature (doesn't apply to new records)
+			// Checking "editlock" feature (doesn't apply to new records)
 			if (!$newRecord && $GLOBALS['TCA'][$table]['ctrl']['editlock']) {
 				if (isset($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['editlock']])) {
 					if ($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['editlock']]) {
@@ -610,17 +648,13 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 						return FALSE;
 					}
 				} else {
-					$this->errorMsg = 'ERROR: The "editLock" field named "' .
-						$GLOBALS['TCA'][$table]['ctrl']['editlock'] .
-						'" was not found in testing record!';
+					$this->errorMsg = ('ERROR: The "editLock" field named "' . $GLOBALS['TCA'][$table]['ctrl']['editlock']) . '" was not found in testing record!';
 					return FALSE;
 				}
 			}
-
-				// Checking record permissions
-				// THIS is where we can include a check for "perms_" fields for other records than pages...
-
-				// Process any hooks
+			// Checking record permissions
+			// THIS is where we can include a check for "perms_" fields for other records than pages...
+			// Process any hooks
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals'] as $funcRef) {
 					$params = array(
@@ -633,8 +667,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 					}
 				}
 			}
-
-				// Finally, return TRUE if all is well.
+			// Finally, return TRUE if all is well.
 			return TRUE;
 		}
 	}
@@ -651,24 +684,23 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	public function isPSet($compiledPermissions, $tableName, $actionType = '') {
 		if ($this->isAdmin()) {
 			$result = TRUE;
-		}
-		elseif ($tableName == 'pages') {
+		} elseif ($tableName == 'pages') {
 			switch ($actionType) {
-				case 'edit':
-					$result = ($compiledPermissions & 2) !== 0;
+			case 'edit':
+				$result = ($compiledPermissions & 2) !== 0;
 				break;
-				case 'new':
-						// Create new page OR page content
-					$result = ($compiledPermissions & (8 + 16)) !== 0;
+			case 'new':
+				// Create new page OR page content
+				$result = ($compiledPermissions & 8 + 16) !== 0;
 				break;
-				case 'delete':
-					$result = ($compiledPermissions & 4) !== 0;
+			case 'delete':
+				$result = ($compiledPermissions & 4) !== 0;
 				break;
-				case 'editcontent':
-					$result = ($compiledPermissions & 16) !== 0;
+			case 'editcontent':
+				$result = ($compiledPermissions & 16) !== 0;
 				break;
-				default:
-					$result = FALSE;
+			default:
+				$result = FALSE;
 			}
 		} else {
 			$result = ($compiledPermissions & 16) !== 0;
@@ -680,49 +712,51 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Returns TRUE if the BE_USER is allowed to *create* shortcuts in the backend modules
 	 *
 	 * @return boolean
+	 * @todo Define visibility
 	 */
-	function mayMakeShortcut() {
+	public function mayMakeShortcut() {
 		return $this->getTSConfigVal('options.enableBookmarks') && !$this->getTSConfigVal('options.mayNotCreateEditBookmarks');
 	}
 
 	/**
 	 * Checking if editing of an existing record is allowed in current workspace if that is offline.
 	 * Rules for editing in offline mode:
-	 *		 - record supports versioning and is an offline version from workspace and has the corrent stage
-	 *		 - or record (any) is in a branch where there is a page which is a version from the workspace and where the stage is not preventing records
+	 * - record supports versioning and is an offline version from workspace and has the corrent stage
+	 * - or record (any) is in a branch where there is a page which is a version from the workspace and where the stage is not preventing records
 	 *
 	 * @param string $table Table of record
 	 * @param array $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
 	 * @return string String error code, telling the failure state. FALSE=All ok
+	 * @todo Define visibility
 	 */
-	function workspaceCannotEditRecord($table, $recData) {
-			// Only test offline spaces:
+	public function workspaceCannotEditRecord($table, $recData) {
+		// Only test offline spaces:
 		if ($this->workspace !== 0) {
-
 			if (!is_array($recData)) {
 				$recData = t3lib_BEfunc::getRecord($table, $recData, 'pid' . ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ? ',t3ver_wsid,t3ver_stage' : ''));
 			}
-
 			if (is_array($recData)) {
-					// We are testing a "version" (identified by a pid of -1): it can be edited provided that workspace matches and versioning is enabled for the table.
+				// We are testing a "version" (identified by a pid of -1): it can be edited provided that workspace matches and versioning is enabled for the table.
 				if ((int) $recData['pid'] === -1) {
-						// No versioning, basic error, inconsistency even! Such records should not have a pid of -1!
+					// No versioning, basic error, inconsistency even! Such records should not have a pid of -1!
 					if (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 						return 'Versioning disabled for table';
-					} elseif ((int) $recData['t3ver_wsid'] !== $this->workspace) { // So does workspace match?
+					} elseif ((int) $recData['t3ver_wsid'] !== $this->workspace) {
+						// So does workspace match?
 						return 'Workspace ID of record didn\'t match current workspace';
 					} else {
-							// So is the user allowed to "use" the edit stage within the workspace?
+						// So is the user allowed to "use" the edit stage within the workspace?
 						return $this->workspaceCheckStageForCurrent(0) ? FALSE : 'User\'s access level did not allow for editing';
 					}
-				} else { // We are testing a "live" record:
-						// For "Live" records, check that PID for table allows editing
+				} else {
+					// We are testing a "live" record:
+					// For "Live" records, check that PID for table allows editing
 					if ($res = $this->workspaceAllowLiveRecordsInPID($recData['pid'], $table)) {
-							// Live records are OK in this branch, but what about the stage of branch point, if any:
-							// OK
+						// Live records are OK in this branch, but what about the stage of branch point, if any:
+						// OK
 						return $res > 0 ? FALSE : 'Stage for versioning root point and users access level did not allow for editing';
 					} else {
-							// If not offline and not in versionized branch, output error:
+						// If not offline and not in versionized branch, output error:
 						return 'Online record was not in versionized branch!';
 					}
 				}
@@ -730,7 +764,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				return 'No record';
 			}
 		} else {
-				// OK because workspace is 0
+			// OK because workspace is 0
 			return FALSE;
 		}
 	}
@@ -742,10 +776,10 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param array $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
 	 * @return string String error code, telling the failure state. FALSE=All ok
 	 * @see workspaceCannotEditRecord()
+	 * @todo Define visibility
 	 */
-	function workspaceCannotEditOfflineVersion($table, $recData) {
+	public function workspaceCannotEditOfflineVersion($table, $recData) {
 		if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-
 			if (!is_array($recData)) {
 				$recData = t3lib_BEfunc::getRecord($table, $recData, 'uid,pid,t3ver_wsid,t3ver_stage');
 			}
@@ -771,15 +805,15 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param integer $pid PID value to check for.
 	 * @param string $table Table name
 	 * @return mixed Returns FALSE if a live record cannot be created and must be versionized in order to do so. 2 means a) Workspace is "Live" or workspace allows "live edit" of records from non-versionized tables (and the $table is not versionizable). 1 and -1 means the pid is inside a versionized branch where -1 means that the branch-point did NOT allow a new record according to its state.
+	 * @todo Define visibility
 	 */
-	function workspaceAllowLiveRecordsInPID($pid, $table) {
-
-			// Always for Live workspace AND if live-edit is enabled and tables are completely without versioning it is ok as well.
-		if ($this->workspace === 0 || ($this->workspaceRec['live_edit'] && !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) || $GLOBALS['TCA'][$table]['ctrl']['versioningWS_alwaysAllowLiveEdit']) {
-				// OK to create for this table.
+	public function workspaceAllowLiveRecordsInPID($pid, $table) {
+		// Always for Live workspace AND if live-edit is enabled and tables are completely without versioning it is ok as well.
+		if (($this->workspace === 0 || $this->workspaceRec['live_edit'] && !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) || $GLOBALS['TCA'][$table]['ctrl']['versioningWS_alwaysAllowLiveEdit']) {
+			// OK to create for this table.
 			return 2;
 		} else {
-				// If the answer is FALSE it means the only valid way to create or edit records in the PID is by versioning
+			// If the answer is FALSE it means the only valid way to create or edit records in the PID is by versioning
 			return FALSE;
 		}
 	}
@@ -790,16 +824,17 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param integer $pid Page id. This value must be the _ORIG_uid if available: So when you have pages versionized as "page" or "element" you must supply the id of the page version in the workspace!
 	 * @param string $table Table name
 	 * @return boolean TRUE if OK.
+	 * @todo Define visibility
 	 */
-	function workspaceCreateNewRecord($pid, $table) {
+	public function workspaceCreateNewRecord($pid, $table) {
 		if ($res = $this->workspaceAllowLiveRecordsInPID($pid, $table)) {
-				// If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
+			// If LIVE records cannot be created in the current PID due to workspace restrictions, prepare creation of placeholder-record
 			if ($res < 0) {
-					// Stage for versioning root point and users access level did not allow for editing
+				// Stage for versioning root point and users access level did not allow for editing
 				return FALSE;
 			}
 		} elseif (!$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-				// So, if no live records were allowed, we have to create a new version of this record:
+			// So, if no live records were allowed, we have to create a new version of this record:
 			return FALSE;
 		}
 		return TRUE;
@@ -812,16 +847,14 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param integer $id UID of record
 	 * @param integer $recpid PID of record
 	 * @return boolean TRUE if ok.
+	 * @todo Define visibility
 	 */
-	function workspaceAllowAutoCreation($table, $id, $recpid) {
-			// Auto-creation of version: In offline workspace, test if versioning is
-			// enabled and look for workspace version of input record.
-			// If there is no versionized record found we will create one and save to that.
-		if ($this->workspace !== 0 // Only in draft workspaces
-			&& !$this->workspaceRec['disable_autocreate'] // Auto-creation must not be disabled.
-			&& $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] // Table must be versionizable
-			&& $recpid >= 0 // The PID of the record must NOT be -1 or less (would indicate that it already was a version!)
-			&& !t3lib_BEfunc::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid')) { // There must be no existing version of this record in workspace.
+	public function workspaceAllowAutoCreation($table, $id, $recpid) {
+		// Auto-creation of version: In offline workspace, test if versioning is
+		// enabled and look for workspace version of input record.
+		// If there is no versionized record found we will create one and save to that.
+		if (((($this->workspace !== 0 && !$this->workspaceRec['disable_autocreate']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $recpid >= 0) && !t3lib_BEfunc::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid')) {
+			// There must be no existing version of this record in workspace.
 			return TRUE;
 		} elseif ($this->workspaceRec['disable_autocreate']) {
 			t3lib_div::deprecationLog('Usage of disable_autocreate feature is deprecated since 4.5.');
@@ -836,39 +869,31 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @param integer $stage Stage id from an element: -1,0 = editing, 1 = reviewer, >1 = owner
 	 * @return boolean TRUE if user is allowed access
+	 * @todo Define visibility
 	 */
-	function workspaceCheckStageForCurrent($stage) {
-			// Always allow for admins
+	public function workspaceCheckStageForCurrent($stage) {
+		// Always allow for admins
 		if ($this->isAdmin()) {
 			return TRUE;
 		}
-
 		if ($this->workspace !== 0 && t3lib_extMgm::isLoaded('workspaces')) {
 			$stage = intval($stage);
 			$stat = $this->checkWorkspaceCurrent();
-
-				// Check if custom staging is activated
+			// Check if custom staging is activated
 			$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $stat['uid']);
-			if ($workspaceRec['custom_stages'] > 0 && $stage !== 0 && $stage !== -10) {
-
-					// Get custom stage record
+			if (($workspaceRec['custom_stages'] > 0 && $stage !== 0) && $stage !== -10) {
+				// Get custom stage record
 				$workspaceStageRec = t3lib_BEfunc::getRecord('sys_workspace_stage', $stage);
-					// Check if the user is responsible for the current stage
-				if ((t3lib_div::inList($workspaceStageRec['responsible_persons'], 'be_users_' . $this->user['uid'])
-					&& $stat['_ACCESS'] === 'member')
-					|| $stat['_ACCESS'] === 'owner') {
+				// Check if the user is responsible for the current stage
+				if (t3lib_div::inList($workspaceStageRec['responsible_persons'], 'be_users_' . $this->user['uid']) && $stat['_ACCESS'] === 'member' || $stat['_ACCESS'] === 'owner') {
 					return TRUE;
 				}
-
-					// Check if the user is in a group which is responsible for the current stage
+				// Check if the user is in a group which is responsible for the current stage
 				foreach ($this->userGroupsUID as $groupUid) {
-					if ((t3lib_div::inList($workspaceStageRec['responsible_persons'], 'be_groups_' . $groupUid)
-						&& $stat['_ACCESS'] === 'member')
-						|| $stat['_ACCESS'] === 'owner') {
+					if (t3lib_div::inList($workspaceStageRec['responsible_persons'], 'be_groups_' . $groupUid) && $stat['_ACCESS'] === 'member' || $stat['_ACCESS'] === 'owner') {
 						return TRUE;
 					}
 				}
-				// Only owner is allowed to change records which are "ready to publish"
 			} elseif ($stage == -10 || $stage == -20) {
 				if ($stat['_ACCESS'] === 'owner') {
 					return TRUE;
@@ -877,14 +902,12 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				}
 			} else {
 				$memberStageLimit = $this->workspaceRec['review_stage_edit'] ? 1 : 0;
-				if (($stage <= $memberStageLimit && $stat['_ACCESS'] === 'member')
-					|| ($stage <= 1 && $stat['_ACCESS'] === 'reviewer')
-					|| $stat['_ACCESS'] === 'owner') {
+				if (($stage <= $memberStageLimit && $stat['_ACCESS'] === 'member' || $stage <= 1 && $stat['_ACCESS'] === 'reviewer') || $stat['_ACCESS'] === 'owner') {
 					return TRUE;
 				}
 			}
 		} else {
-				// Always OK for live workspace.
+			// Always OK for live workspace.
 			return TRUE;
 		}
 	}
@@ -897,24 +920,26 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @param integer $wsid Workspace UID; 0,1+
 	 * @return boolean Returns TRUE if the user has access to publish content from the workspace ID given.
+	 * @todo Define visibility
 	 */
-	function workspacePublishAccess($wsid) {
+	public function workspacePublishAccess($wsid) {
 		if ($this->isAdmin()) {
 			return TRUE;
 		}
-
-			// If no access to workspace, of course you cannot publish!
+		// If no access to workspace, of course you cannot publish!
 		$retVal = FALSE;
-
 		$wsAccess = $this->checkWorkspace($wsid);
 		if ($wsAccess) {
 			switch ($wsAccess['uid']) {
-				case 0: // Live workspace
-						// If access to Live workspace, no problem.
-					$retVal = TRUE;
+			case 0:
+				// Live workspace
+				// If access to Live workspace, no problem.
+				$retVal = TRUE;
 				break;
-				default: // Custom workspace
-					$retVal = $wsAccess['_ACCESS'] === 'owner' || ($this->checkWorkspace(0) && !($wsAccess['publish_access'] & 2)); // Either be an adminuser OR have access to online workspace which is OK as well as long as publishing access is not limited by workspace option.
+			default:
+				// Custom workspace
+				$retVal = $wsAccess['_ACCESS'] === 'owner' || $this->checkWorkspace(0) && !($wsAccess['publish_access'] & 2);
+				// Either be an adminuser OR have access to online workspace which is OK as well as long as publishing access is not limited by workspace option.
 				break;
 			}
 		}
@@ -925,8 +950,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Workspace swap-mode access?
 	 *
 	 * @return boolean Returns TRUE if records can be swapped in the current workspace, otherwise FALSE
+	 * @todo Define visibility
 	 */
-	function workspaceSwapAccess() {
+	public function workspaceSwapAccess() {
 		if ($this->workspace > 0 && (int) $this->workspaceRec['swap_modes'] === 2) {
 			return FALSE;
 		} else {
@@ -936,22 +962,18 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 
 	/**
 	 * Workspace Versioning type access. Check wether the requsted type of versioning (element/page/branch) is allowd in current workspace
-	 *   (element/pages/branches type of versioning can/could be set on custom workspaces on filed "vtype")
+	 * (element/pages/branches type of versioning can/could be set on custom workspaces on filed "vtype")
 	 *
 	 * @todo workspacecleanup: this seems mostly obsolete and should be removed
 	 * @param integer $type Versioning type to evaluation: -1, 0, >1
-	 *						0 = page (deprecated)
-	 *						-1 = element
-	 *						>1 = branch (deprecated), indicating the "nesting" level
 	 * @return boolean TRUE if OK
 	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 6.0 as only element versioning is supported now
+	 * @todo Define visibility
 	 */
-	function workspaceVersioningTypeAccess($type) {
+	public function workspaceVersioningTypeAccess($type) {
 		t3lib_div::logDeprecatedFunction();
-
 		$type = t3lib_utility_Math::forceIntegerInRange($type, -1);
-
-			// only element versioning is allowed now
+		// only element versioning is allowed now
 		return $type == -1;
 	}
 
@@ -962,22 +984,21 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param integer $type Versioning type to evaluation: -1, 0, >1
 	 * @return integer Returning versioning type
 	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 6.0 as only element versioning is supported now
+	 * @todo Define visibility
 	 */
-	function workspaceVersioningTypeGetClosest($type) {
+	public function workspaceVersioningTypeGetClosest($type) {
 		t3lib_div::logDeprecatedFunction();
-
 		$type = t3lib_utility_Math::forceIntegerInRange($type, -1);
-
 		if ($this->workspace > 0) {
 			switch ((int) $type) {
-				case -1:
-					$type = -1;
+			case -1:
+				$type = -1;
 				break;
-				case 0:
-					$type = $this->workspaceVersioningTypeAccess($type) ? $type : -1;
+			case 0:
+				$type = $this->workspaceVersioningTypeAccess($type) ? $type : -1;
 				break;
-				default:
-					$type = $this->workspaceVersioningTypeAccess($type) ? $type : ($this->workspaceVersioningTypeAccess(0) ? 0 : -1);
+			default:
+				$type = $this->workspaceVersioningTypeAccess($type) ? $type : ($this->workspaceVersioningTypeAccess(0) ? 0 : -1);
 				break;
 			}
 		}
@@ -989,7 +1010,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Miscellaneous functions
 	 *
 	 *************************************/
-
 	/**
 	 * Returns the value/properties of a TS-object as given by $objectString, eg. 'options.dontMountAdminMounts'
 	 * Nice (general!) function for returning a part of a TypoScript array!
@@ -997,10 +1017,11 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param string $objectString Pointer to an "object" in the TypoScript array, fx. 'options.dontMountAdminMounts'
 	 * @param array $config Optional TSconfig array: If array, then this is used and not $this->userTS. If not array, $this->userTS is used.
 	 * @return array An array with two keys, "value" and "properties" where "value" is a string with the value of the objectsting and "properties" is an array with the properties of the objectstring.
+	 * @todo Define visibility
 	 */
-	function getTSConfig($objectString, $config = '') {
+	public function getTSConfig($objectString, $config = '') {
 		if (!is_array($config)) {
-				// Getting Root-ts if not sent
+			// Getting Root-ts if not sent
 			$config = $this->userTS;
 		}
 		$TSConf = array();
@@ -1008,7 +1029,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		$key = $parts[0];
 		if (trim($key)) {
 			if (count($parts) > 1 && trim($parts[1])) {
-					// Go on, get the next level
+				// Go on, get the next level
 				if (is_array($config[$key . '.'])) {
 					$TSConf = $this->getTSConfig($parts[1], $config[$key . '.']);
 				}
@@ -1023,11 +1044,12 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	/**
 	 * Returns the "value" of the $objectString from the BE_USERS "User TSconfig" array
 	 *
-	 * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty"
+	 * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty
 	 * @return string The value for that object string (object path)
-	 * @see	getTSConfig()
+	 * @see 	getTSConfig()
+	 * @todo Define visibility
 	 */
-	function getTSConfigVal($objectString) {
+	public function getTSConfigVal($objectString) {
 		$TSConf = $this->getTSConfig($objectString);
 		return $TSConf['value'];
 	}
@@ -1035,11 +1057,12 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	/**
 	 * Returns the "properties" of the $objectString from the BE_USERS "User TSconfig" array
 	 *
-	 * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty"
+	 * @param string $objectString Object string, eg. "somestring.someproperty.somesubproperty
 	 * @return array The properties for that object string (object path) - if any
-	 * @see	getTSConfig()
+	 * @see 	getTSConfig()
+	 * @todo Define visibility
 	 */
-	function getTSConfigProp($objectString) {
+	public function getTSConfigProp($objectString) {
 		$TSConf = $this->getTSConfig($objectString);
 		return $TSConf['properties'];
 	}
@@ -1051,8 +1074,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param string $item The string to find in the list of items
 	 * @return string Boolean
 	 * @deprecated since TYPO3 4.7, should be removed in TYPO3 6.1, use equivalent function t3lib_div::inList()
+	 * @todo Define visibility
 	 */
-	function inList($in_list, $item) {
+	public function inList($in_list, $item) {
 		t3lib_div::logDeprecatedFunction();
 		return t3lib_div::inList($in_list, $item);
 	}
@@ -1063,37 +1087,39 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * NOTICE: Deleted pages WILL NOT be filtered out! So if a mounted page has been deleted it is STILL coming out as a webmount. This is not checked due to performance.
 	 *
 	 * @return array
+	 * @todo Define visibility
 	 */
-	function returnWebmounts() {
-		return (string) ($this->groupData['webmounts']) != '' ? explode(',', $this->groupData['webmounts']) : array();
+	public function returnWebmounts() {
+		return (string) $this->groupData['webmounts'] != '' ? explode(',', $this->groupData['webmounts']) : array();
 	}
-
 
 	/**
 	 * Returns TRUE or FALSE, depending if an alert popup (a javascript confirmation) should be shown
 	 * call like $GLOBALS['BE_USER']->jsConfirmation($BITMASK)
 	 *
-	 *	1 - typeChange
-	 *	2 - copy/move/paste
-	 *	4 - delete
-	 *	8 - frontend editing
-	 *	128 - other (not used yet)
+	 * 1 - typeChange
+	 * 2 - copy/move/paste
+	 * 4 - delete
+	 * 8 - frontend editing
+	 * 128 - other (not used yet)
 	 *
 	 * @param integer $bitmask Bitmask
 	 * @return boolean TRUE if the confirmation should be shown
+	 * @todo Define visibility
 	 */
-	function jsConfirmation($bitmask) {
+	public function jsConfirmation($bitmask) {
 		$alertPopup = $GLOBALS['BE_USER']->getTSConfig('options.alertPopups');
 		if (empty($alertPopup['value'])) {
-				// Default: show all warnings
+			// Default: show all warnings
 			$alertPopup = 255;
 		} else {
 			$alertPopup = (int) $alertPopup['value'];
 		}
-			// Show confirmation
+		// Show confirmation
 		if (($alertPopup & $bitmask) == $bitmask) {
 			return 1;
-		} else { // don't show confirmation
+		} else {
+			// don't show confirmation
 			return 0;
 		}
 	}
@@ -1103,7 +1129,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Authentication methods
 	 *
 	 *************************************/
-
 	/**
 	 * Initializes a lot of stuff like the access-lists, database-mountpoints and filemountpoints
 	 * This method is called by ->backendCheckLogin() (from extending class t3lib_beuserauth) if the backend user login has verified OK.
@@ -1112,69 +1137,63 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return void
 	 * @access private
 	 * @see t3lib_TSparser
+	 * @todo Define visibility
 	 */
-	function fetchGroupData() {
+	public function fetchGroupData() {
 		if ($this->user['uid']) {
-
-				// Get lists for the be_user record and set them as default/primary values.
-				// Enabled Backend Modules
+			// Get lists for the be_user record and set them as default/primary values.
+			// Enabled Backend Modules
 			$this->dataLists['modList'] = $this->user['userMods'];
-				// Add Allowed Languages
+			// Add Allowed Languages
 			$this->dataLists['allowed_languages'] = $this->user['allowed_languages'];
-				// Set user value for workspace permissions.
+			// Set user value for workspace permissions.
 			$this->dataLists['workspace_perms'] = $this->user['workspace_perms'];
-				// Database mountpoints
+			// Database mountpoints
 			$this->dataLists['webmount_list'] = $this->user['db_mountpoints'];
-				// File mountpoints
+			// File mountpoints
 			$this->dataLists['filemount_list'] = $this->user['file_mountpoints'];
-				// Fileoperation permissions
+			// Fileoperation permissions
 			$this->dataLists['fileoper_perms'] = (int) $this->user['fileoper_perms'];
-
-				// Setting default User TSconfig:
-			$this->TSdataArray[] = $this->addTScomment('From $GLOBALS["TYPO3_CONF_VARS"]["BE"]["defaultUserTSconfig"]:') .
-								$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'];
-
-				// Default TSconfig for admin-users
+			// Setting default User TSconfig:
+			$this->TSdataArray[] = $this->addTScomment('From $GLOBALS["TYPO3_CONF_VARS"]["BE"]["defaultUserTSconfig"]:') . $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'];
+			// Default TSconfig for admin-users
 			if ($this->isAdmin()) {
 				$this->TSdataArray[] = $this->addTScomment('"admin" user presets:') . '
 					admPanel.enable.all = 1
 				';
 				if (t3lib_extMgm::isLoaded('sys_note')) {
-					$this->TSdataArray[] = '
+					$this->TSdataArray[] = ((('
 							// Setting defaults for sys_note author / email...
-						TCAdefaults.sys_note.author = ' . $this->user['realName'] . '
-						TCAdefaults.sys_note.email = ' . $this->user['email'] . '
+						TCAdefaults.sys_note.author = ' . $this->user['realName']) . '
+						TCAdefaults.sys_note.email = ') . $this->user['email']) . '
 					';
 				}
 			}
-
-				// BE_GROUPS:
-				// Get the groups...
-				// 240203: Since the group-field never contains any references to groups with a prepended table name
-				// we think it's safe to just intExplode and re-implode - which should be much faster than the other function call.
+			// BE_GROUPS:
+			// Get the groups...
+			// 240203: Since the group-field never contains any references to groups with a prepended table name
+			// we think it's safe to just intExplode and re-implode - which should be much faster than the other function call.
 			$grList = $GLOBALS['TYPO3_DB']->cleanIntList($this->user[$this->usergroup_column]);
 			if ($grList) {
-					// Fetch groups will add a lot of information to the internal arrays: modules, accesslists, TSconfig etc. Refer to fetchGroups() function.
+				// Fetch groups will add a lot of information to the internal arrays: modules, accesslists, TSconfig etc. Refer to fetchGroups() function.
 				$this->fetchGroups($grList);
 			}
-
-				// Add the TSconfig for this specific user:
+			// Add the TSconfig for this specific user:
 			$this->TSdataArray[] = $this->addTScomment('USER TSconfig field') . $this->user['TSconfig'];
-				// Check include lines.
+			// Check include lines.
 			$this->TSdataArray = t3lib_TSparser::checkIncludeLines_array($this->TSdataArray);
-				// Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
-			$this->userTS_text = implode(LF . '[GLOBAL]' . LF, $this->TSdataArray);
-
+			// Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
+			$this->userTS_text = implode((LF . '[GLOBAL]') . LF, $this->TSdataArray);
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['TSconfigConditions'] && !$this->userTS_dontGetCached) {
-					// Perform TS-Config parsing with condition matching
+				// Perform TS-Config parsing with condition matching
 				$parseObj = t3lib_div::makeInstance('t3lib_TSparser_TSconfig');
 				$res = $parseObj->parseTSconfig($this->userTS_text, 'userTS');
 				if ($res) {
 					$this->userTS = $res['TSconfig'];
-					$this->userTSUpdated = ($res['cached'] ? 0 : 1);
+					$this->userTSUpdated = $res['cached'] ? 0 : 1;
 				}
 			} else {
-					// Parsing the user TSconfig (or getting from cache)
+				// Parsing the user TSconfig (or getting from cache)
 				$hash = md5('userTS:' . $this->userTS_text);
 				$cachedContent = t3lib_BEfunc::getHash($hash);
 				if (isset($cachedContent) && !$this->userTS_dontGetCached) {
@@ -1184,21 +1203,19 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 					$parseObj->parse($this->userTS_text);
 					$this->userTS = $parseObj->setup;
 					t3lib_BEfunc::storeHash($hash, serialize($this->userTS), 'BE_USER_TSconfig');
-						// Update UC:
+					// Update UC:
 					$this->userTSUpdated = 1;
 				}
 			}
-
-				// Processing webmounts
-				// Admin's always have the root mounted
+			// Processing webmounts
+			// Admin's always have the root mounted
 			if ($this->isAdmin() && !$this->getTSConfigVal('options.dontMountAdminMounts')) {
 				$this->dataLists['webmount_list'] = '0,' . $this->dataLists['webmount_list'];
 			}
-
-				// The lists are cleaned for duplicates
+			// The lists are cleaned for duplicates
 			$this->groupData['webmounts'] = t3lib_div::uniqueList($this->dataLists['webmount_list']);
 			$this->groupData['pagetypes_select'] = t3lib_div::uniqueList($this->dataLists['pagetypes_select']);
-			$this->groupData['tables_select'] = t3lib_div::uniqueList($this->dataLists['tables_modify'] . ',' . $this->dataLists['tables_select']);
+			$this->groupData['tables_select'] = t3lib_div::uniqueList(($this->dataLists['tables_modify'] . ',') . $this->dataLists['tables_select']);
 			$this->groupData['tables_modify'] = t3lib_div::uniqueList($this->dataLists['tables_modify']);
 			$this->groupData['non_exclude_fields'] = t3lib_div::uniqueList($this->dataLists['non_exclude_fields']);
 			$this->groupData['explicit_allowdeny'] = t3lib_div::uniqueList($this->dataLists['explicit_allowdeny']);
@@ -1207,30 +1224,27 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			$this->groupData['modules'] = t3lib_div::uniqueList($this->dataLists['modList']);
 			$this->groupData['fileoper_perms'] = $this->dataLists['fileoper_perms'];
 			$this->groupData['workspace_perms'] = $this->dataLists['workspace_perms'];
-
-				// Populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
+			// Populating the $this->userGroupsUID -array with the groups in the order in which they were LAST included.!!
 			$this->userGroupsUID = array_reverse(array_unique(array_reverse($this->includeGroupArray)));
-
-				// Finally this is the list of group_uid's in the order they are parsed (including subgroups!) and without duplicates (duplicates are presented with their last entrance in the list, which thus reflects the order of the TypoScript in TSconfig)
+			// Finally this is the list of group_uid's in the order they are parsed (including subgroups!) and without duplicates (duplicates are presented with their last entrance in the list, which thus reflects the order of the TypoScript in TSconfig)
 			$this->groupList = implode(',', $this->userGroupsUID);
 			$this->setCachedList($this->groupList);
-
-				// Checking read access to webmounts:
+			// Checking read access to webmounts:
 			if (trim($this->groupData['webmounts']) !== '') {
-				$webmounts = explode(',', $this->groupData['webmounts']); // Explode mounts
-					// Selecting all webmounts with permission clause for reading
-				$MProws = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', 'deleted=0 AND uid IN (' . $this->groupData['webmounts'] . ') AND ' . $this->getPagePermsClause(1), '', '', '', 'uid');
+				$webmounts = explode(',', $this->groupData['webmounts']);
+				// Explode mounts
+				// Selecting all webmounts with permission clause for reading
+				$MProws = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', (('deleted=0 AND uid IN (' . $this->groupData['webmounts']) . ') AND ') . $this->getPagePermsClause(1), '', '', '', 'uid');
 				foreach ($webmounts as $idx => $mountPointUid) {
-						// If the mount ID is NOT found among selected pages, unset it:
+					// If the mount ID is NOT found among selected pages, unset it:
 					if ($mountPointUid > 0 && !isset($MProws[$mountPointUid])) {
 						unset($webmounts[$idx]);
 					}
 				}
-					// Implode mounts in the end.
+				// Implode mounts in the end.
 				$this->groupData['webmounts'] = implode(',', $webmounts);
 			}
-
-				// Setting up workspace situation (after webmounts are processed!):
+			// Setting up workspace situation (after webmounts are processed!):
 			$this->workspaceInit();
 		}
 	}
@@ -1243,13 +1257,13 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param string $idList List of already processed be_groups-uids so the function will not fall into a eternal recursion.
 	 * @return void
 	 * @access private
+	 * @todo Define visibility
 	 */
-	function fetchGroups($grList, $idList = '') {
-			// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
-		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . t3lib_div::getIndpEnv('HTTP_HOST') . '\')';
-		$whereSQL = 'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $grList . ')' . $lockToDomain_SQL;
-
-			// Hook for manipulation of the WHERE sql sentence which controls which BE-groups are included
+	public function fetchGroups($grList, $idList = '') {
+		// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
+		$lockToDomain_SQL = (' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . t3lib_div::getIndpEnv('HTTP_HOST')) . '\')';
+		$whereSQL = (('deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $grList) . ')') . $lockToDomain_SQL;
+		// Hook for manipulation of the WHERE sql sentence which controls which BE-groups are included
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'] as $classRef) {
 				$hookObj = t3lib_div::getUserObj($classRef);
@@ -1258,48 +1272,40 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				}
 			}
 		}
-
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->usergroup_table, $whereSQL);
-
-			// The userGroups array is filled
+		// The userGroups array is filled
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$this->userGroups[$row['uid']] = $row;
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-
-			// Traversing records in the correct order
+		// Traversing records in the correct order
 		$include_staticArr = t3lib_div::intExplode(',', $grList);
-			// Traversing list
+		// Traversing list
 		foreach ($include_staticArr as $key => $uid) {
-
-				// Get row:
+			// Get row:
 			$row = $this->userGroups[$uid];
-				// Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
+			// Must be an array and $uid should not be in the idList, because then it is somewhere previously in the grouplist
 			if (is_array($row) && !t3lib_div::inList($idList, $uid)) {
-
-					// Include sub groups
+				// Include sub groups
 				if (trim($row['subgroup'])) {
-						// Make integer list
+					// Make integer list
 					$theList = implode(',', t3lib_div::intExplode(',', $row['subgroup']));
-						// Call recursively, pass along list of already processed groups so they are not recursed again.
-					$this->fetchGroups($theList, $idList . ',' . $uid);
+					// Call recursively, pass along list of already processed groups so they are not recursed again.
+					$this->fetchGroups($theList, ($idList . ',') . $uid);
 				}
-					// Add the group uid, current list, TSconfig to the internal arrays.
+				// Add the group uid, current list, TSconfig to the internal arrays.
 				$this->includeGroupArray[] = $uid;
 				$this->includeHierarchy[] = $idList;
-				$this->TSdataArray[] = $this->addTScomment('Group "' . $row['title'] . '" [' . $row['uid'] . '] TSconfig field:') . $row['TSconfig'];
-
-					// Mount group database-mounts
+				$this->TSdataArray[] = $this->addTScomment((((('Group "' . $row['title']) . '" [') . $row['uid']) . '] TSconfig field:')) . $row['TSconfig'];
+				// Mount group database-mounts
 				if (($this->user['options'] & 1) == 1) {
 					$this->dataLists['webmount_list'] .= ',' . $row['db_mountpoints'];
 				}
-
-					// Mount group file-mounts
+				// Mount group file-mounts
 				if (($this->user['options'] & 2) == 2) {
 					$this->dataLists['filemount_list'] .= ',' . $row['file_mountpoints'];
 				}
-
-					// The lists are made: groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options
+				// The lists are made: groupMods, tables_select, tables_modify, pagetypes_select, non_exclude_fields, explicit_allowdeny, allowed_languages, custom_options
 				if ($row['inc_access_lists'] == 1) {
 					$this->dataLists['modList'] .= ',' . $row['groupMods'];
 					$this->dataLists['tables_select'] .= ',' . $row['tables_select'];
@@ -1310,23 +1316,19 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 					$this->dataLists['allowed_languages'] .= ',' . $row['allowed_languages'];
 					$this->dataLists['custom_options'] .= ',' . $row['custom_options'];
 				}
-
-					// Setting fileoperation permissions
+				// Setting fileoperation permissions
 				$this->dataLists['fileoper_perms'] |= (int) $row['fileoper_perms'];
-
-					// Setting workspace permissions:
+				// Setting workspace permissions:
 				$this->dataLists['workspace_perms'] |= $row['workspace_perms'];
-
-					// If this function is processing the users OWN group-list (not subgroups) AND if the ->firstMainGroup is not set, then the ->firstMainGroup will be set.
+				// If this function is processing the users OWN group-list (not subgroups) AND if the ->firstMainGroup is not set, then the ->firstMainGroup will be set.
 				if (!strcmp($idList, '') && !$this->firstMainGroup) {
 					$this->firstMainGroup = $uid;
 				}
 			}
 		}
-
-			// ****************
-			// HOOK: fetchGroups_postProcessing
-			// ****************
+		// ****************
+		// HOOK: fetchGroups_postProcessing
+		// ****************
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroups_postProcessing'] as $_funcRef) {
 				$_params = array();
@@ -1342,8 +1344,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param string $cList The newly compiled group-list which must be compared with the current list in the user record and possibly stored if a difference is detected.
 	 * @return void
 	 * @access private
+	 * @todo Define visibility
 	 */
-	function setCachedList($cList) {
+	public function setCachedList($cList) {
 		if ((string) $cList != (string) $this->user['usergroup_cached_list']) {
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', 'uid=' . intval($this->user['uid']), array('usergroup_cached_list' => $cList));
 		}
@@ -1352,7 +1355,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	/***********************
 	 * FILE MOUNT FUNCTIONS
 	 **********************/
-
 	/**
 	 * Sets up all file storages for a user.
 	 * Needs to be called AFTER the groups have been loaded.
@@ -1363,35 +1365,33 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		$this->fileStorages = array();
 		/** @var $storageRepository t3lib_file_Repository_StorageRepository */
 		$storageRepository = t3lib_div::makeInstance('t3lib_file_Repository_StorageRepository');
-
-			// Admin users have all file storages visible, without any filters
+		// Admin users have all file storages visible, without any filters
 		if ($this->isAdmin()) {
 			$storageObjects = $storageRepository->findAll();
 			foreach ($storageObjects as $storageObject) {
 				$this->fileStorages[$storageObject->getUid()] = $storageObject;
 			}
 		} else {
-				// If userHomePath is set, we attempt to mount it
+			// If userHomePath is set, we attempt to mount it
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath']) {
 				list($userHomeStorageUid, $userHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'], 2);
 				$userHomeStorageUid = intval($userHomeStorageUid);
 				if ($userHomeStorageUid > 0) {
 					$storageObject = $storageRepository->findByUid($userHomeStorageUid);
-						// First try and mount with [uid]_[username]
-					$userHomeFilterIdentifier = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
+					// First try and mount with [uid]_[username]
+					$userHomeFilterIdentifier = ((($userHomeFilter . $this->user['uid']) . '_') . $this->user['username']) . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
 					$didMount = $storageObject->injectFileMount($userHomeFilterIdentifier);
-						// If that failed, try and mount with only [uid]
+					// If that failed, try and mount with only [uid]
 					if (!$didMount) {
-						$userHomeFilterIdentifier = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
+						$userHomeFilterIdentifier = ((($userHomeFilter . $this->user['uid']) . '_') . $this->user['username']) . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
 						$storageObject->injectFileMount($userHomeFilterIdentifier);
 					}
 					$this->fileStorages[$storageObject->getUid()] = $storageObject;
 				}
 			}
-
-				// Mount group home-dirs
+			// Mount group home-dirs
 			if (($this->user['options'] & 2) == 2 && $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'] != '') {
-						// If groupHomePath is set, we attempt to mount it
+				// If groupHomePath is set, we attempt to mount it
 				list($groupHomeStorageUid, $groupHomeFilter) = explode(':', $GLOBALS['TYPO3_CONF_VARS']['BE']['groupHomePath'], 2);
 				$groupHomeStorageUid = intval($groupHomeStorageUid);
 				if ($groupHomeStorageUid > 0) {
@@ -1403,19 +1403,11 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 					$this->fileStorages[$storageObject->getUid()] = $storageObject;
 				}
 			}
-
-				// Processing filemounts (both from the user and the groups)
+			// Processing filemounts (both from the user and the groups)
 			$this->dataLists['filemount_list'] = t3lib_div::uniqueList($this->dataLists['filemount_list']);
 			if ($this->dataLists['filemount_list']) {
 				$orderBy = $GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby'] ? $GLOBALS['TYPO3_DB']->stripOrderBy($GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby']) : 'sorting';
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'*',
-					'sys_filemounts',
-					'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $this->dataLists['filemount_list'] . ')',
-					'',
-					$orderBy
-				);
-
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', ('deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $this->dataLists['filemount_list']) . ')', '', $orderBy);
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$storageObject = $storageRepository->findByUid($row['base']);
 					$storageObject->injectFileMount($row['path'], $row);
@@ -1424,18 +1416,15 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			}
 		}
-
-			// Injects the users' permissions to each storage
+		// Injects the users' permissions to each storage
 		foreach ($this->fileStorages as $storageObject) {
 			$storagePermissions = $this->getFilePermissionsForStorage($storageObject);
 			$storageObject->injectUserPermissions($storagePermissions);
 		}
-
-			// more narrowing down through the workspace
+		// more narrowing down through the workspace
 		$this->initializeFileStoragesForWorkspace();
-
-			// this has to be called always in order to set certain filters
-			// @todo Should be in BE_USER object then
+		// this has to be called always in order to set certain filters
+		// @todo Should be in BE_USER object then
 		$GLOBALS['BE_USER']->evaluateUserSpecificFileFilterSettings();
 	}
 
@@ -1448,11 +1437,10 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return t3lib_file_Storage[]
 	 */
 	public function getFileStorages() {
-			// Initializing file mounts after the groups are fetched
+		// Initializing file mounts after the groups are fetched
 		if ($this->fileStorages === NULL) {
 			$this->initializeFileStorages();
 		}
-
 		return $this->fileStorages;
 	}
 
@@ -1465,7 +1453,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @todo Should be in BE_USER object then
 	 */
 	public function evaluateUserSpecificFileFilterSettings() {
-			// Add the option for also displaying the non-hidden files
+		// Add the option for also displaying the non-hidden files
 		if ($this->uc['showHiddenFilesAndFolders']) {
 			t3lib_file_Utility_FilenameFilters::setShowHiddenFilesAndFolders(TRUE);
 		}
@@ -1477,30 +1465,30 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * but is now handled via userTSconfig
 	 *
 	 * permissions.file.default {
-	 * 		addFile = 1
-	 * 		readFile = 1
-	 * 		editFile = 1
-	 * 		writeFile = 1
-	 * 		uploadFile = 1
-	 * 		copyFile = 1
-	 * 		moveFile = 1
-	 * 		renameFile = 1
-	 * 		unzipFile = 1
-	 * 		removeFile = 1
+	 * addFile = 1
+	 * readFile = 1
+	 * editFile = 1
+	 * writeFile = 1
+	 * uploadFile = 1
+	 * copyFile = 1
+	 * moveFile = 1
+	 * renameFile = 1
+	 * unzipFile = 1
+	 * removeFile = 1
 	 *
-	 * 		addFolder = 1
-	 * 		browseFolder = 1
-	 * 		moveFolder = 1
-	 * 		writeFolder = 1
-	 * 		renameFolder = 1
-	 * 		removeFolder = 1
-	 * 		removeSubfolders = 1
+	 * addFolder = 1
+	 * browseFolder = 1
+	 * moveFolder = 1
+	 * writeFolder = 1
+	 * renameFolder = 1
+	 * removeFolder = 1
+	 * removeSubfolders = 1
 	 * }
 	 *
 	 * # overwrite settings for a specific storageObject
 	 * permissions.file.storage.StorageUid {
-	 * 		readFile = 0
-	 * 		removeSubfolders = 1
+	 * readFile = 0
+	 * removeSubfolders = 1
 	 * }
 	 *
 	 * Please note that these permissions only apply, if the storage has the
@@ -1512,10 +1500,14 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	public function getFilePermissions() {
 		if (!isset($this->filePermissions)) {
 			$defaultOptions = array(
-				'addFile'  => TRUE,	// new option
-				'readFile' => TRUE,	// new option, generic check of the user rights
-				'editFile' => TRUE,	// new option
-				'writeFile' => TRUE,	// new option, generic check of the user rights
+				'addFile' => TRUE,
+				// new option
+				'readFile' => TRUE,
+				// new option, generic check of the user rights
+				'editFile' => TRUE,
+				// new option
+				'writeFile' => TRUE,
+				// new option, generic check of the user rights
 				'uploadFile' => TRUE,
 				'copyFile' => TRUE,
 				'moveFile' => TRUE,
@@ -1523,20 +1515,20 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				'unzipFile' => TRUE,
 				'removeFile' => TRUE,
 				'addFolder' => TRUE,
-				'browseFolder' => TRUE, // new option,, generic check of the user rights
+				'browseFolder' => TRUE,
+				// new option,, generic check of the user rights
 				'moveFolder' => TRUE,
 				'renameFolder' => TRUE,
-				'writeFolder' => TRUE,	// new option, generic check of the user rights
+				'writeFolder' => TRUE,
+				// new option, generic check of the user rights
 				'removeFolder' => TRUE,
-				'removeSubfolders' => TRUE	// was "delete recursively" previously
+				'removeSubfolders' => TRUE
 			);
-
 			if (!$this->isAdmin()) {
 				$this->filePermissions = $this->getTSConfig('permissions.file.default');
 				if (!is_array($this->filePermissions)) {
 					$oldFileOperationPermissions = $this->getFileoperationPermissions();
-
-						// Lower permissions if the old file operation permissions are not set
+					// Lower permissions if the old file operation permissions are not set
 					if ($oldFileOperationPermissions ^ 1) {
 						$defaultOptions['addFile'] = FALSE;
 						$defaultOptions['uploadFile'] = FALSE;
@@ -1562,10 +1554,8 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 					}
 				}
 			}
-
 			$this->filePermissions = $defaultOptions;
 		}
-
 		return $this->filePermissions;
 	}
 
@@ -1581,7 +1571,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	public function getFilePermissionsForStorage(t3lib_file_Storage $storageObject) {
 		$defaultFilePermissions = $this->getFilePermissions();
 		$storageFilePermissions = $this->getTSConfig('permissions.file.storage.' . $storageObject->getUid());
-
 		if (is_array($storageFilePermissions) && count($storageFilePermissions)) {
 			return array_merge($storageFilePermissions, $defaultFilePermissions);
 		} else {
@@ -1599,7 +1588,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * filestorage/filemount that the user can access
 	 * however, you can set the users' upload folder like this:
 	 *
-	 *     options.defaultUploadFolder = 3:myfolder/yourfolder/
+	 * options.defaultUploadFolder = 3:myfolder/yourfolder/
 	 *
 	 * @return t3lib_file_Folder|boolean The default upload folder for this user
 	 */
@@ -1615,7 +1604,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				$uploadFolder = $firstStorage->getDefaultFolder();
 			}
 		}
-
 		if ($uploadFolder instanceof t3lib_file_Folder) {
 			return $uploadFolder;
 		} else {
@@ -1628,18 +1616,17 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Permissions of the user and groups the user is a member of were combined by a logical OR.
 	 *
 	 * Meaning of each bit:
-	 *	 1 - Files: Upload,Copy,Move,Delete,Rename
-	 *	 2 - Files: Unzip
-	 *	 4 - Directory: Move,Delete,Rename,New
-	 *	 8 - Directory: Copy
-	 *	 16 - Directory: Delete recursively (rm -Rf)
+	 * 1 - Files: Upload,Copy,Move,Delete,Rename
+	 * 2 - Files: Unzip
+	 * 4 - Directory: Move,Delete,Rename,New
+	 * 8 - Directory: Copy
+	 * 16 - Directory: Delete recursively (rm -Rf)
 	 *
 	 * @return integer File operation permission bitmask
 	 * @deprecated since TYPO3 6.0, use the TSconfig settings instead
 	 */
 	public function getFileoperationPermissions() {
 		t3lib_div::logDeprecatedFunction();
-
 		if ($this->isAdmin()) {
 			return 31;
 		} else {
@@ -1661,56 +1648,51 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return boolean Returns "1" if the requested filemount was mounted, otherwise no return value.
 	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.1, all data is stored in $this->fileStorages now, see initializeFileStorages()
 	 * @access private
+	 * @todo Define visibility
 	 */
-	function addFileMount($title, $altTitle, $path, $webspace, $type) {
+	public function addFileMount($title, $altTitle, $path, $webspace, $type) {
 		t3lib_div::logDeprecatedFunction();
-
-			// Return FALSE if fileadminDir is not set and we try to mount a relative path
+		// Return FALSE if fileadminDir is not set and we try to mount a relative path
 		if ($webspace && !$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) {
 			return FALSE;
 		}
-
-			// Trimming and pre-processing
+		// Trimming and pre-processing
 		$path = trim($path);
-			// with WINDOWS convert backslash to slash!!
+		// with WINDOWS convert backslash to slash!!
 		if ($this->OS == 'WIN') {
 			$path = str_replace('\\', '/', $path);
 		}
-			// If the path is TRUE and validates as a valid path string:
+		// If the path is TRUE and validates as a valid path string:
 		if ($path && t3lib_div::validPathStr($path)) {
-				// normalize path: remove leading '/' and './', and trailing '/' and '/.'
+			// normalize path: remove leading '/' and './', and trailing '/' and '/.'
 			$path = trim($path);
-			$path = preg_replace('#^\.?/|/\.?$#', '', $path);
-
-				// There must be some chars in the path
+			$path = preg_replace('#^\\.?/|/\\.?$#', '', $path);
+			// There must be some chars in the path
 			if ($path) {
-					// Fileadmin dir, absolute
+				// Fileadmin dir, absolute
 				$fdir = PATH_site . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'];
 				if ($webspace) {
-					$path = $fdir . $path; // PATH_site + fileadmin dir is prepended
+					$path = $fdir . $path;
 				} else {
-						// With WINDOWS no prepending!!
+					// With WINDOWS no prepending!!
 					if ($this->OS != 'WIN') {
-							// With WINDOWS no prepending!!
+						// With WINDOWS no prepending!!
 						$path = '/' . $path;
 					}
 				}
 				$path .= '/';
-
-					// We now have a path with slash after and slash before (if unix)
-				if (@is_dir($path) &&
-					(($GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] && t3lib_div::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'])) || t3lib_div::isFirstPartOfStr($path, $fdir))) {
-						// Alternative title?
+				// We now have a path with slash after and slash before (if unix)
+				if (@is_dir($path) && ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] && t3lib_div::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath']) || t3lib_div::isFirstPartOfStr($path, $fdir))) {
+					// Alternative title?
 					$name = $title ? $title : $altTitle;
-						// Adds the filemount. The same filemount with same name, type and path cannot be set up twice because of the hash string used as key.
-					$this->groupData['filemounts'][md5($name . '|' . $path . '|' . $type)] = array('name' => $name, 'path' => $path, 'type' => $type);
-						// Return TRUE - went well, success!
+					// Adds the filemount. The same filemount with same name, type and path cannot be set up twice because of the hash string used as key.
+					$this->groupData['filemounts'][md5(((($name . '|') . $path) . '|') . $type)] = array('name' => $name, 'path' => $path, 'type' => $type);
+					// Return TRUE - went well, success!
 					return 1;
 				}
 			}
 		}
 	}
-
 
 	/**
 	 * Returns an array with the filemounts for the user. Each filemount is represented with an array of a "name", "path" and "type".
@@ -1718,13 +1700,12 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @return array
 	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.1 as getFileStorages() should be the one to be used
+	 * @todo Define visibility
 	 */
-	function returnFilemounts() {
+	public function returnFilemounts() {
 		t3lib_div::logDeprecatedFunction();
-
-			// initialize the file storages in order to set some default settings in any time
+		// initialize the file storages in order to set some default settings in any time
 		$this->getFileStorages();
-
 		return $this->groupData['filemounts'];
 	}
 
@@ -1733,14 +1714,14 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @param string $str The text to wrap in comment prefixes and delimiters.
 	 * @return string TypoScript comment with the string text inside.
+	 * @todo Define visibility
 	 */
-	function addTScomment($str) {
+	public function addTScomment($str) {
 		$delimiter = '# ***********************************************';
-
 		$out = $delimiter . LF;
 		$lines = t3lib_div::trimExplode(LF, $str);
 		foreach ($lines as $v) {
-			$out .= '# ' . $v . LF;
+			$out .= ('# ' . $v) . LF;
 		}
 		$out .= $delimiter . LF;
 		return $out;
@@ -1751,22 +1732,19 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Workspaces
 	 *
 	 ************************************/
-
 	/**
 	 * Initializing workspace.
 	 * Called from within this function, see fetchGroupData()
 	 *
 	 * @return void
 	 * @see fetchGroupData()
+	 * @todo Define visibility
 	 */
-	function workspaceInit() {
-
-			// Initializing workspace by evaluating and setting the workspace, possibly updating it in the user record!
+	public function workspaceInit() {
+		// Initializing workspace by evaluating and setting the workspace, possibly updating it in the user record!
 		$this->setWorkspace($this->user['workspace_id']);
-
-			// Limiting the DB mountpoints if there any selected in the workspace record
+		// Limiting the DB mountpoints if there any selected in the workspace record
 		$this->initializeDbMountpointsInWorkspace();
-
 		if ($allowed_languages = $this->getTSConfigVal('options.workspaces.allowed_languages.' . $this->workspace)) {
 			$this->groupData['allowed_languages'] = $allowed_languages;
 			$this->groupData['allowed_languages'] = t3lib_div::uniqueList($this->groupData['allowed_languages']);
@@ -1782,19 +1760,17 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		$dbMountpoints = trim($this->workspaceRec['db_mountpoints']);
 		if ($this->workspace > 0 && $dbMountpoints != '') {
 			$filteredDbMountpoints = array();
-				// Notice: We cannot call $this->getPagePermsClause(1); as usual because the group-list is not available at this point. But bypassing is fine because all we want here is check if the workspace mounts are inside the current webmounts rootline.
-				// The actual permission checking on page level is done elsewhere as usual anyway before the page tree is rendered.
+			// Notice: We cannot call $this->getPagePermsClause(1); as usual because the group-list is not available at this point. But bypassing is fine because all we want here is check if the workspace mounts are inside the current webmounts rootline.
+			// The actual permission checking on page level is done elsewhere as usual anyway before the page tree is rendered.
 			$readPerms = '1=1';
-
-				// Traverse mount points of the
+			// Traverse mount points of the
 			$dbMountpoints = t3lib_div::intExplode(',', $dbMountpoints);
 			foreach ($dbMountpoints as $mpId) {
 				if ($this->isInWebMount($mpId, $readPerms)) {
 					$filteredDbMountpoints[] = $mpId;
 				}
 			}
-
-				// Re-insert webmounts:
+			// Re-insert webmounts:
 			$filteredDbMountpoints = array_unique($filteredDbMountpoints);
 			$this->groupData['webmounts'] = implode(',', $filteredDbMountpoints);
 		}
@@ -1807,34 +1783,25 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @return void
 	 */
 	protected function initializeFileStoragesForWorkspace() {
-			// Filtering the file mountpoints
-			// if there some selected in the workspace record
+		// Filtering the file mountpoints
+		// if there some selected in the workspace record
 		if ($this->workspace > 0) {
 			$storageFiltersInWorkspace = trim($this->workspaceRec['file_mountpoints']);
-
-				// no custom filemounts that should serve as filter or user is admin
-				// so all user mountpoints are re-applied
+			// no custom filemounts that should serve as filter or user is admin
+			// so all user mountpoints are re-applied
 			if (!$this->isAdmin() && $storageFiltersInWorkspace !== '') {
-					// empty the fileStorages (will be re-applied later)
+				// empty the fileStorages (will be re-applied later)
 				$existingFileStoragesOfUser = $this->fileStorages;
 				$this->fileStorages = array();
-
 				$storageRepository = t3lib_div::makeInstance('t3lib_file_Repository_StorageRepository');
-
-					// Fetching all filemounts from the workspace
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-					'*',
-					'sys_filemounts',
-					'deleted = 0 AND hidden = 0 AND pid = 0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($storageFiltersInWorkspace) . ')'
-				);
-
-					// add every filemount of this workspace record
+				// Fetching all filemounts from the workspace
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', ('deleted = 0 AND hidden = 0 AND pid = 0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($storageFiltersInWorkspace)) . ')');
+				// add every filemount of this workspace record
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-						// get the added entry, and check if it was in the users' original filemounts
-						// if not, remove it from the new filemount list again
-						// see self::addFileMount
-
-						// TODO: check if the filter is narrowing down the existing user
+					// get the added entry, and check if it was in the users' original filemounts
+					// if not, remove it from the new filemount list again
+					// see self::addFileMount
+					// TODO: check if the filter is narrowing down the existing user
 					$storageObject = $storageRepository->findByUid($row['base']);
 					if (isset($existingFileStoragesOfUser[$storageObject->getUid()])) {
 						$storageObject->injectFileMount($row['path']);
@@ -1852,77 +1819,67 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param mixed $wsRec If integer, workspace record is looked up, if array it is seen as a Workspace record with at least uid, title, members and adminusers columns. Can be faked for workspaces uid 0 and -1 (online and offline)
 	 * @param string $fields List of fields to select. Default fields are: uid,title,adminusers,members,reviewers,publish_access,stagechg_notification
 	 * @return array TRUE if access. Output will also show how access was granted. Admin users will have a true output regardless of input.
+	 * @todo Define visibility
 	 */
-	function checkWorkspace($wsRec, $fields = 'uid,title,adminusers,members,reviewers,publish_access,stagechg_notification') {
+	public function checkWorkspace($wsRec, $fields = 'uid,title,adminusers,members,reviewers,publish_access,stagechg_notification') {
 		$retVal = FALSE;
-
-			// If not array, look up workspace record:
+		// If not array, look up workspace record:
 		if (!is_array($wsRec)) {
 			switch ((string) $wsRec) {
-				case '0':
-					$wsRec = array('uid' => $wsRec);
+			case '0':
+				$wsRec = array('uid' => $wsRec);
 				break;
-				default:
-					if (t3lib_extMgm::isLoaded('workspaces')) {
-						$wsRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
-							$fields,
-							'sys_workspace',
-							'pid=0 AND uid=' . intval($wsRec) .
-							t3lib_BEfunc::deleteClause('sys_workspace'),
-							'',
-							'title'
-						);
-					}
+			default:
+				if (t3lib_extMgm::isLoaded('workspaces')) {
+					$wsRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, 'sys_workspace', ('pid=0 AND uid=' . intval($wsRec)) . t3lib_BEfunc::deleteClause('sys_workspace'), '', 'title');
+				}
 				break;
 			}
 		}
-
-			// If wsRec is set to an array, evaluate it:
+		// If wsRec is set to an array, evaluate it:
 		if (is_array($wsRec)) {
 			if ($this->isAdmin()) {
 				return array_merge($wsRec, array('_ACCESS' => 'admin'));
 			} else {
-
 				switch ((string) $wsRec['uid']) {
-					case '0':
-						$retVal = ($this->groupData['workspace_perms'] & 1) ? array_merge($wsRec, array('_ACCESS' => 'online')) : FALSE;
+				case '0':
+					$retVal = $this->groupData['workspace_perms'] & 1 ? array_merge($wsRec, array('_ACCESS' => 'online')) : FALSE;
 					break;
-					default:
-							// Checking if the guy is admin:
-						if (t3lib_div::inList($wsRec['adminusers'], 'be_users_' . $this->user['uid'])) {
+				default:
+					// Checking if the guy is admin:
+					if (t3lib_div::inList($wsRec['adminusers'], 'be_users_' . $this->user['uid'])) {
+						return array_merge($wsRec, array('_ACCESS' => 'owner'));
+					}
+					// Checking if he is owner through a user group of his:
+					foreach ($this->userGroupsUID as $groupUid) {
+						if (t3lib_div::inList($wsRec['adminusers'], 'be_groups_' . $groupUid)) {
 							return array_merge($wsRec, array('_ACCESS' => 'owner'));
 						}
-							// Checking if he is owner through a user group of his:
-						foreach ($this->userGroupsUID as $groupUid) {
-							if (t3lib_div::inList($wsRec['adminusers'], 'be_groups_' . $groupUid)) {
-								return array_merge($wsRec, array('_ACCESS' => 'owner'));
-							}
-						}
-							// Checking if he is reviewer user:
-						if (t3lib_div::inList($wsRec['reviewers'], 'be_users_' . $this->user['uid'])) {
+					}
+					// Checking if he is reviewer user:
+					if (t3lib_div::inList($wsRec['reviewers'], 'be_users_' . $this->user['uid'])) {
+						return array_merge($wsRec, array('_ACCESS' => 'reviewer'));
+					}
+					// Checking if he is reviewer through a user group of his:
+					foreach ($this->userGroupsUID as $groupUid) {
+						if (t3lib_div::inList($wsRec['reviewers'], 'be_groups_' . $groupUid)) {
 							return array_merge($wsRec, array('_ACCESS' => 'reviewer'));
 						}
-							// Checking if he is reviewer through a user group of his:
-						foreach ($this->userGroupsUID as $groupUid) {
-							if (t3lib_div::inList($wsRec['reviewers'], 'be_groups_' . $groupUid)) {
-								return array_merge($wsRec, array('_ACCESS' => 'reviewer'));
-							}
-						}
-							// Checking if he is member as user:
-						if (t3lib_div::inList($wsRec['members'], 'be_users_' . $this->user['uid'])) {
+					}
+					// Checking if he is member as user:
+					if (t3lib_div::inList($wsRec['members'], 'be_users_' . $this->user['uid'])) {
+						return array_merge($wsRec, array('_ACCESS' => 'member'));
+					}
+					// Checking if he is member through a user group of his:
+					foreach ($this->userGroupsUID as $groupUid) {
+						if (t3lib_div::inList($wsRec['members'], 'be_groups_' . $groupUid)) {
 							return array_merge($wsRec, array('_ACCESS' => 'member'));
 						}
-							// Checking if he is member through a user group of his:
-						foreach ($this->userGroupsUID as $groupUid) {
-							if (t3lib_div::inList($wsRec['members'], 'be_groups_' . $groupUid)) {
-								return array_merge($wsRec, array('_ACCESS' => 'member'));
-							}
-						}
+					}
 					break;
 				}
 			}
 		}
-
 		return $retVal;
 	}
 
@@ -1931,8 +1888,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @return array See checkWorkspace()
 	 * @see checkWorkspace()
+	 * @todo Define visibility
 	 */
-	function checkWorkspaceCurrent() {
+	public function checkWorkspaceCurrent() {
 		if (!isset($this->checkWorkspaceCurrent_cache)) {
 			$this->checkWorkspaceCurrent_cache = $this->checkWorkspace($this->workspace);
 		}
@@ -1944,26 +1902,24 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @param integer $workspaceId ID of workspace to set for backend user. If not valid the default workspace for BE user is found and set.
 	 * @return void
+	 * @todo Define visibility
 	 */
-	function setWorkspace($workspaceId) {
-
-			// Check workspace validity and if not found, revert to default workspace.
+	public function setWorkspace($workspaceId) {
+		// Check workspace validity and if not found, revert to default workspace.
 		if ($this->workspaceRec = $this->checkWorkspace($workspaceId, '*')) {
-				// Set workspace ID internally
+			// Set workspace ID internally
 			$this->workspace = (int) $workspaceId;
 		} else {
 			$this->workspace = (int) $this->getDefaultWorkspace();
 			$this->workspaceRec = $this->checkWorkspace($this->workspace, '*');
 		}
-
-			// Unset access cache:
+		// Unset access cache:
 		unset($this->checkWorkspaceCurrent_cache);
-
-			// If ID is different from the stored one, change it:
+		// If ID is different from the stored one, change it:
 		if (strcmp($this->workspace, $this->user['workspace_id'])) {
 			$this->user['workspace_id'] = $this->workspace;
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', 'uid=' . intval($this->user['uid']), array('workspace_id' => $this->user['workspace_id']));
-			$this->simplelog('User changed workspace to "' . $this->workspace . '"');
+			$this->simplelog(('User changed workspace to "' . $this->workspace) . '"');
 		}
 	}
 
@@ -1972,8 +1928,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * @param boolean $previewState State of user preview.
 	 * @return void
+	 * @todo Define visibility
 	 */
-	function setWorkspacePreview($previewState) {
+	public function setWorkspacePreview($previewState) {
 		$this->user['workspace_preview'] = $previewState;
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', 'uid=' . intval($this->user['uid']), array('workspace_preview' => $this->user['workspace_preview']));
 	}
@@ -1983,17 +1940,19 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * If EXT:workspaces is not installed the user will be pushed the the
 	 * Live workspace
 	 *
-	 * @return integer Default workspace id. If no workspace is available it will be "-99"
+	 * @return integer Default workspace id. If no workspace is available it will be "-99
+	 * @todo Define visibility
 	 */
-	function getDefaultWorkspace() {
-
+	public function getDefaultWorkspace() {
 		$defaultWorkspace = -99;
-
-		if (!t3lib_extMgm::isLoaded('workspaces') || $this->checkWorkspace(0)) { // Check online
+		if (!t3lib_extMgm::isLoaded('workspaces') || $this->checkWorkspace(0)) {
+			// Check online
 			$defaultWorkspace = 0;
-		} elseif ($this->checkWorkspace(-1)) { // Check offline
+		} elseif ($this->checkWorkspace(-1)) {
+			// Check offline
 			$defaultWorkspace = -1;
-		} elseif (t3lib_extMgm::isLoaded('workspaces')) { // Traverse custom workspaces:
+		} elseif (t3lib_extMgm::isLoaded('workspaces')) {
+			// Traverse custom workspaces:
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers', 'sys_workspace', 'pid=0' . t3lib_BEfunc::deleteClause('sys_workspace'), '', 'title');
 			foreach ($workspaces as $rec) {
 				if ($this->checkWorkspace($rec)) {
@@ -2010,7 +1969,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * Logging
 	 *
 	 ************************************/
-
 	/**
 	 * Writes an entry in the logfile/table
 	 * Documentation in "TYPO3 Core API"
@@ -2028,9 +1986,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param string $NEWid Special field used by tce_main.php. NEWid string of newly created records.
 	 * @param integer $userId Alternative Backend User ID (used for logging login actions where this is not yet known).
 	 * @return integer Log entry ID.
+	 * @todo Define visibility
 	 */
-	function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0) {
-
+	public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0) {
 		$fields_values = array(
 			'userid' => $userId ? $userId : intval($this->user['uid']),
 			'type' => intval($type),
@@ -2047,7 +2005,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			'NEWid' => $NEWid,
 			'workspace' => $this->workspace
 		);
-
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_log', $fields_values);
 		return $GLOBALS['TYPO3_DB']->sql_insert_id();
 	}
@@ -2059,16 +2016,10 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param string $extKey Option extension key / module name
 	 * @param integer $error Error level. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
 	 * @return integer Log entry UID
+	 * @todo Define visibility
 	 */
-	function simplelog($message, $extKey = '', $error = 0) {
-		return $this->writelog(
-			4,
-			0,
-			$error,
-			0,
-			($extKey ? '[' . $extKey . '] ' : '') . $message,
-			array()
-		);
+	public function simplelog($message, $extKey = '', $error = 0) {
+		return $this->writelog(4, 0, $error, 0, ($extKey ? ('[' . $extKey) . '] ' : '') . $message, array());
 	}
 
 	/**
@@ -2080,63 +2031,45 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @param integer $max Max allowed failures before a warning mail is sent
 	 * @return void
 	 * @access private
+	 * @todo Define visibility
 	 */
-	function checkLogFailures($email, $secondsBack = 3600, $max = 3) {
-
+	public function checkLogFailures($email, $secondsBack = 3600, $max = 3) {
 		if ($email) {
-
-				// Get last flag set in the log for sending
+			// Get last flag set in the log for sending
 			$theTimeBack = $GLOBALS['EXEC_TIME'] - $secondsBack;
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'tstamp',
-				'sys_log',
-				'type=255 AND action=4 AND tstamp>' . intval($theTimeBack),
-				'',
-				'tstamp DESC',
-				'1'
-			);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_log', 'type=255 AND action=4 AND tstamp>' . intval($theTimeBack), '', 'tstamp DESC', '1');
 			if ($testRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$theTimeBack = $testRow['tstamp'];
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-
-				// Check for more than $max number of error failures with the last period.
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
-				'*',
-				'sys_log',
-				'type=255 AND action=3 AND error<>0 AND tstamp>' . intval($theTimeBack),
-				'',
-				'tstamp'
-			);
+			// Check for more than $max number of error failures with the last period.
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'type=255 AND action=3 AND error<>0 AND tstamp>' . intval($theTimeBack), '', 'tstamp');
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) > $max) {
-					// OK, so there were more than the max allowed number of login failures - so we will send an email then.
-				$subject = 'TYPO3 Login Failure Warning (at ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
-				$email_body = 'There have been some attempts (' . $GLOBALS['TYPO3_DB']->sql_num_rows($res) . ') to login at the TYPO3
-site "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" (' . t3lib_div::getIndpEnv('HTTP_HOST') . ').
+				// OK, so there were more than the max allowed number of login failures - so we will send an email then.
+				$subject = ('TYPO3 Login Failure Warning (at ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . ')';
+				$email_body = ((((('There have been some attempts (' . $GLOBALS['TYPO3_DB']->sql_num_rows($res)) . ') to login at the TYPO3
+site "') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '" (') . t3lib_div::getIndpEnv('HTTP_HOST')) . ').
 
 This is a dump of the failures:
 
 ';
 				while ($testRows = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$theData = unserialize($testRows['log_data']);
-					$email_body .= date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $testRows['tstamp']) . ':  ' . @sprintf($testRows['details'], '' . $theData[0], '' . $theData[1], '' . $theData[2]);
+					$email_body .= (date((($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']), $testRows['tstamp']) . ':  ') . @sprintf($testRows['details'], ('' . $theData[0]), ('' . $theData[1]), ('' . $theData[2]));
 					$email_body .= LF;
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-
 				$from = t3lib_utility_Mail::getSystemFrom();
 				/** @var $mail t3lib_mail_Message */
 				$mail = t3lib_div::makeInstance('t3lib_mail_Message');
-				$mail->setTo($email)
-						->setFrom($from)
-						->setSubject($subject)
-						->setBody($email_body);
+				$mail->setTo($email)->setFrom($from)->setSubject($subject)->setBody($email_body);
 				$mail->send();
-					// Logout written to log
+				// Logout written to log
 				$this->writelog(255, 4, 0, 3, 'Failure warning (%s failures within %s seconds) sent by email to %s', array($GLOBALS['TYPO3_DB']->sql_num_rows($res), $secondsBack, $email));
 			}
 		}
 	}
+
 }
 
 ?>

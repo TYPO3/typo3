@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Belog\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,18 +25,17 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * A sys log entry
  * This model is 'complete': All current database properties are in there.
  *
- * @TODO: This should be stuffed to some more central place
- *
+ * @TODO : This should be stuffed to some more central place
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @package TYPO3
  * @subpackage belog
  */
-class Tx_Belog_Domain_Model_LogEntry extends Tx_Extbase_DomainObject_AbstractEntity {
+class LogEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+
 	/**
 	 * storage page ID of the log entry
 	 *
@@ -398,12 +399,10 @@ class Tx_Belog_Domain_Model_LogEntry extends Tx_Extbase_DomainObject_AbstractEnt
 		if ($this->logData === '') {
 			return array();
 		}
-
 		$logData = @unserialize($this->logData);
 		if (!is_array($logData)) {
 			$logData = array();
 		}
-
 		return $logData;
 	}
 
@@ -463,5 +462,8 @@ class Tx_Belog_Domain_Model_LogEntry extends Tx_Extbase_DomainObject_AbstractEnt
 	public function getNewId() {
 		return $this->newId;
 	}
+
 }
+
+
 ?>
