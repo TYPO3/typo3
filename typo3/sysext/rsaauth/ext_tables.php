@@ -2,11 +2,10 @@
 if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
-
-	// Define the table for keys. Make sure that it cannot be edited or seen by
-	// any user in any way.
-$TCA['tx_rsaauth_keys'] = array (
-	'ctrl' => array (
+// Define the table for keys. Make sure that it cannot be edited or seen by
+// any user in any way.
+$TCA['tx_rsaauth_keys'] = array(
+	'ctrl' => array(
 		'adminOnly' => TRUE,
 		'hideTable' => TRUE,
 		'is_static' => TRUE,
@@ -15,13 +14,11 @@ $TCA['tx_rsaauth_keys'] = array (
 		'rootLevel' => 1,
 		'title' => 'Oops! You should not see this!'
 	),
-	'columns' => array(
-	),
+	'columns' => array(),
 	'types' => array(
 		'0' => array(
 			'showitem' => ''
 		)
 	)
 );
-
 ?>

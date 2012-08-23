@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Renders a link to update the extension list from TER
  *
@@ -33,7 +33,7 @@
  * @package Extension Manager
  * @subpackage ViewHelpers
  */
-class Tx_Extensionmanager_ViewHelpers_UpdateFromTerViewHelper extends Tx_Fluid_ViewHelpers_Link_ActionViewHelper {
+class UpdateFromTerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionViewHelper {
 
 	/**
 	 * @var string
@@ -55,9 +55,10 @@ class Tx_Extensionmanager_ViewHelpers_UpdateFromTerViewHelper extends Tx_Fluid_V
 		$label = 'Update Extension List';
 		$this->tag->setContent($label);
 		$this->tag->addAttribute('class', 'text');
-
-		return '<div class="updateFromTer">' . $this->tag->render() . '<span class="spinner"></span></div>';
+		return ('<div class="updateFromTer">' . $this->tag->render()) . '<span class="spinner"></span></div>';
 	}
+
 }
+
 
 ?>

@@ -1,70 +1,8 @@
 <?php
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2008-2011 Dominique Feyer <dominique.feyer@reelpeek.net>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
-*
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-/**
- * Class to clear temp files of htmlArea RTE
- *
- * @author Dominique Feyer <dominique.feyer@reelpeek.net>
- * @package TYPO3
- * @subpackage tx_Lang
+/*
+ * @deprecated since 6.0, the classname tx_lang_clearcache and this file is obsolete
+ * and will be removed by 7.0. The class was renamed and is now located at:
+ * typo3/sysext/lang/Classes/LanguageCacheClearer.php
  */
-class tx_lang_clearcache {
-
-	/**
-	 * @var t3lib_cache_frontend_StringFrontend
-	 */
-	protected $cacheInstance;
-
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		$this->initializeCache();
-	}
-
-	/**
-	 * Initialize cache instance to be ready to use
-	 *
-	 * @return void
-	 */
-	protected function initializeCache() {
-		$this->cacheInstance = $GLOBALS['typo3CacheManager']->getCache('t3lib_l10n');
-	}
-
-	/**
-	 * Flush the l10n cache
-	 *
-	 * @return void
-	 */
-	public function clearCache() {
-		if (isset($GLOBALS['BE_USER'])) {
-			$GLOBALS['BE_USER']->writelog(3, 1, 0, 0, '[lang]: User %s has cleared the language cache', array($GLOBALS['BE_USER']->user['username']));
-		}
-		$this->cacheInstance->flush();
-	}
-}
-
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('lang') . 'Classes/LanguageCacheClearer.php';
 ?>

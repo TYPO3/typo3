@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Belog\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Repository for workspaces
  *
@@ -34,17 +35,21 @@
  * @package TYPO3
  * @subpackage belog
  */
-class Tx_Belog_Domain_Repository_WorkspaceRepository extends Tx_Extbase_Persistence_Repository {
+class WorkspaceRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+
 	/**
 	 * Initializes the repository.
 	 *
 	 * @return void
 	 */
 	public function initializeObject() {
-		/** @var $querySettings Tx_Extbase_Persistence_QuerySettingsInterface */
-		$querySettings = $this->objectManager->create('Tx_Extbase_Persistence_QuerySettingsInterface');
+		/** @var $querySettings \TYPO3\CMS\Extbase\Persistence\QuerySettingsInterface */
+		$querySettings = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\QuerySettingsInterface');
 		$querySettings->setRespectStoragePage(FALSE);
 		$this->setDefaultQuerySettings($querySettings);
 	}
+
 }
+
+
 ?>

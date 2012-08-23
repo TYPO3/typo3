@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\SysNote\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,7 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * ViewHelper to create a link to edit a note
  *
@@ -29,16 +30,18 @@
  * @subpackage sys_note
  * @author Georg Ringer <typo3@ringerge.org>
  */
-class Tx_SysNote_ViewHelpers_EditLinkViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class EditLinkViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * @param integer $id
 	 * @return string
 	 */
 	public function render($id) {
-		$returnUrl = t3lib_div::getIndpEnv('REQUEST_URI');
-
-		return $GLOBALS['BACK_PATH'] . 'alt_doc.php?&edit[sys_note][' . $id . ']=edit&returnUrl=' . rawurlencode($returnUrl);
+		$returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI');
+		return ((($GLOBALS['BACK_PATH'] . 'alt_doc.php?&edit[sys_note][') . $id) . ']=edit&returnUrl=') . rawurlencode($returnUrl);
 	}
+
 }
+
+
 ?>

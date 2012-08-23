@@ -43,7 +43,7 @@ return array(
 	'tslib_mediawizardprovider' => PATH_tslib . 'interfaces/interface.tslib_mediawizardprovider.php',
 	'tslib_mediawizardcoreprovider' => PATH_tslib . 'class.tslib_mediawizardcoreprovider.php',
 	'tslib_mediawizardmanager' => PATH_tslib . 'class.tslib_mediawizardmanager.php',
-		//content objects
+	//content objects
 	'tslib_content_abstract' => PATH_tslib . 'content/class.tslib_content_abstract.php',
 	'tslib_content_case' => PATH_tslib . 'content/class.tslib_content_case.php',
 	'tslib_content_cleargif' => PATH_tslib . 'content/class.tslib_content_cleargif.php',
@@ -76,6 +76,6 @@ return array(
 	'tslib_content_text' => PATH_tslib . 'content/class.tslib_content_text.php',
 	'tslib_content_userinternal' => PATH_tslib . 'content/class.tslib_content_userinternal.php',
 	'tslib_content_user' => PATH_tslib . 'content/class.tslib_content_user.php',
-	'tslib_content_editpanel' => PATH_tslib . 'content/class.tslib_content_editpanel.php',
+	'tslib_content_editpanel' => PATH_tslib . 'content/class.tslib_content_editpanel.php'
 );
 ?>

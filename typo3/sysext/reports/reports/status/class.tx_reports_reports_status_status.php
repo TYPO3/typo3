@@ -1,28 +1,28 @@
 <?php
+namespace TYPO3\CMS\Reports\Report\Status;
+
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2011 Ingo Renner <ingo@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
-
+ *  Copyright notice
+ *
+ *  (c) 2009-2011 Ingo Renner <ingo@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * A class representing a certain status
  *
@@ -30,14 +30,13 @@
  * @package TYPO3
  * @subpackage reports
  */
-class tx_reports_reports_status_Status {
+class Status {
 
-	const NOTICE  = -2;
-	const INFO    = -1;
-	const OK      = 0;
+	const NOTICE = -2;
+	const INFO = -1;
+	const OK = 0;
 	const WARNING = 1;
-	const ERROR   = 2;
-
+	const ERROR = 2;
 	/**
 	 * @var string
 	 */
@@ -67,14 +66,10 @@ class tx_reports_reports_status_Status {
 	 * @param integer $severity A severity level, one of
 	 */
 	public function __construct($title, $value, $message = '', $severity = self::OK) {
-		$this->title    = (string) $title;
-		$this->value    = (string) $value;
-		$this->message  = (string) $message;
-
-		$this->severity = t3lib_utility_Math::forceIntegerInRange(
-			$severity,
-			self::NOTICE, self::ERROR, self::OK
-		);
+		$this->title = (string) $title;
+		$this->value = (string) $value;
+		$this->message = (string) $message;
+		$this->severity = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($severity, self::NOTICE, self::ERROR, self::OK);
 	}
 
 	/**
@@ -120,20 +115,18 @@ class tx_reports_reports_status_Status {
 	 */
 	public function __toString() {
 		$severity = array(
-			self::NOTICE  => 'NOTE',
-			self::INFO    => 'INFO',
-			self::OK      => 'OK',
+			self::NOTICE => 'NOTE',
+			self::INFO => 'INFO',
+			self::OK => 'OK',
 			self::WARNING => 'WARN',
-			self::ERROR   => 'ERR',
+			self::ERROR => 'ERR'
 		);
-
-			// Max length 80 characters
-		$stringRepresentation =
-			str_pad('[' . $severity[$this->severity] . ']', 7) .
-			str_pad($this->title, 40) . ' - ' .
-			substr($this->value, 0, 30);
-
+		// Max length 80 characters
+		$stringRepresentation = ((str_pad((('[' . $severity[$this->severity]) . ']'), 7) . str_pad($this->title, 40)) . ' - ') . substr($this->value, 0, 30);
 		return $stringRepresentation;
 	}
+
 }
+
+
 ?>

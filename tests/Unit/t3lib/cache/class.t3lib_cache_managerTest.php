@@ -177,7 +177,7 @@ class t3lib_cache_ManagerTest extends tx_phpunit_testcase {
 		);
 
 		$factory = $this->getMock('t3lib_cache_Factory', array('create'), array(), '', FALSE);
-		$factory->expects($this->once())->method('create')->with($cacheIdentifier, 't3lib_cache_frontend_VariableFrontend', $backendObjectName, $backendOptions);
+		$factory->expects($this->once())->method('create')->with($cacheIdentifier, 't3lib_Cache\Frontend\VariableFrontend', $backendObjectName, $backendOptions);
 
 		$manager->injectCacheFactory($factory);
 		$manager->setCacheConfigurations($configuration);

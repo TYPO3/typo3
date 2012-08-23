@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
+
 /***************************************************************
  * Copyright notice
  *
@@ -23,25 +25,21 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- *
  * Module: Extension manager - Extension.xml abstract parser
  *
  * @author Marcus Krause <marcus#exp2010@t3sec.info>
  * @author Steffen Kamper <info@sk-typo3.de>
  */
-
 /**
  * Abstract parser for TYPO3's extension.xml file.
  *
  * @author Marcus Krause <marcus#exp2010@t3sec.info>
  * @author Steffen Kamper <info@sk-typo3.de>
- *
  * @since 2010-02-09
  * @package TYPO3
  * @subpackage EM
  */
-abstract class Tx_Extensionmanager_Utility_Parser_ExtensionXmlAbstractParser
-	extends Tx_Extensionmanager_Utility_Parser_XmlAbstractParser {
+abstract class ExtensionXmlAbstractParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\XmlAbstractParser {
 
 	/**
 	 * Keeps current author company of an extension's version.
@@ -162,7 +160,6 @@ abstract class Tx_Extensionmanager_Utility_Parser_ExtensionXmlAbstractParser
 	 */
 	protected $versionDownloadCounter = NULL;
 
-
 	/**
 	 * Returns an assoziative array of all extension version properties.
 	 *
@@ -173,10 +170,6 @@ abstract class Tx_Extensionmanager_Utility_Parser_ExtensionXmlAbstractParser
 	 *
 	 * @access public
 	 * @see $extensionKey, $version, $extensionDownloadCounter,
-	 *   $versionDownloadCounter, $title, $description, $state,
-	 *   $reviewstate, $category, $lastuploaddate, $uploadcomment,
-	 *   $dependencies, $authorname, $authoremail, $authorcompany,
-	 *   $ownerusername, $t3xfilemd5
 	 * @return array assoziative array of an extension version's properties
 	 */
 	public function getAll() {
@@ -228,7 +221,7 @@ abstract class Tx_Extensionmanager_Utility_Parser_ExtensionXmlAbstractParser
 	 *
 	 * @access public
 	 * @return string e-mail address of extension author
-	 * @see	 $authoremail, getAll()
+	 * @see 	 $authoremail, getAll()
 	 */
 	public function getAuthoremail() {
 		return $this->authoremail;
@@ -394,21 +387,14 @@ abstract class Tx_Extensionmanager_Utility_Parser_ExtensionXmlAbstractParser
 	 * @param $resetAll $all if TRUE, additionally extension properties are reset
 	 * @return void
 	 * @see $extensionKey, $version, $extensionDLCounter, $versionDLCounter,
-	 * 	 $title, $description, $state, $reviewstate, $category,
-	 * 	 $lastuploaddate, $uploadcomment, $dependencies, $authorname,
-	 * 	 $authoremail, $authorcompany, $ownerusername, $t3xfilemd5
 	 */
 	protected function resetProperties($resetAll = FALSE) {
-			// resetting at least class property "version" is mandatory
-			// as we need to do some magic in regards to
-			// an extension's and version's child node "downloadcounter"
-		$this->version = $this->title = $this->versionDownloadCounter =
-				$this->description = $this->state = $this->reviewstate =
-						$this->category = $this->lastuploaddate = $this->uploadcomment =
-								$this->dependencies = $this->authorname = $this->authoremail =
-										$this->authorcompany = $this->ownerusername = $this->t3xfilemd5 = NULL;
+		// resetting at least class property "version" is mandatory
+		// as we need to do some magic in regards to
+		// an extension's and version's child node "downloadcounter"
+		$this->version = ($this->title = ($this->versionDownloadCounter = ($this->description = ($this->state = ($this->reviewstate = ($this->category = ($this->lastuploaddate = ($this->uploadcomment = ($this->dependencies = ($this->authorname = ($this->authoremail = ($this->authorcompany = ($this->ownerusername = ($this->t3xfilemd5 = NULL))))))))))))));
 		if ($resetAll) {
-			$this->extensionKey = $this->extensionDownloadCounter = NULL;
+			$this->extensionKey = ($this->extensionDownloadCounter = NULL);
 		}
 	}
 
@@ -428,5 +414,8 @@ abstract class Tx_Extensionmanager_Utility_Parser_ExtensionXmlAbstractParser
 		}
 		return serialize($newDependencies);
 	}
+
 }
+
+
 ?>

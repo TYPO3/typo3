@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Beuser\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Displays 'SU' link with sprite icon to change current backend user to target (non-admin) backendUser
  *
@@ -31,25 +32,22 @@
  * @package TYPO3
  * @subpackage beuser
  */
-class Tx_Beuser_ViewHelpers_SUViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class SuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @param Tx_Beuser_Domain_Model_BackendUser $backendUser Target backendUser to switch active session to
+	 * @param \TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser Target backendUser to switch active session to
 	 * @param boolean $emulate Return to current session or logout after target session termination?
 	 * @return string
 	 */
-	public function render(Tx_Beuser_Domain_Model_BackendUser $backendUser, $emulate = FALSE) {
+	public function render(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $emulate = FALSE) {
 		if ($backendUser->getIsAdministrator()) {
 			return '';
 		}
-
-		$title = $GLOBALS['LANG']->getLL('switchUserTo', TRUE) . ' ' . $backendUser->getUserName() . ' ' . $GLOBALS['LANG']->getLL('switchBackMode', TRUE);
-
-		return '<a href="' . t3lib_div::linkThisScript(array('SwitchUser' => $backendUser->getUid(), 'switchBackUser' => $emulate)) .
-			'" target="_top" title="' . htmlspecialchars($title) . '">' .
-			t3lib_iconWorks::getSpriteIcon('actions-system-backend-user-' . ($emulate ? 'emulate' : 'switch')) .
-			'</a>';
+		$title = ((($GLOBALS['LANG']->getLL('switchUserTo', TRUE) . ' ') . $backendUser->getUserName()) . ' ') . $GLOBALS['LANG']->getLL('switchBackMode', TRUE);
+		return ((((('<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('SwitchUser' => $backendUser->getUid(), 'switchBackUser' => $emulate))) . '" target="_top" title="') . htmlspecialchars($title)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-system-backend-user-' . ($emulate ? 'emulate' : 'switch')))) . '</a>';
 	}
+
 }
+
 
 ?>

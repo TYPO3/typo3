@@ -1,16 +1,14 @@
 <?php
 if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
+	die('Access denied.');
 }
-
-t3lib_extMgm::addUserTSConfig('
+\TYPO3\CMS\Core\Extension\ExtensionManager::addUserTSConfig('
 	options.saveDocView = 1
 	options.saveDocNew = 1
 	options.saveDocNew.pages = 0
 	options.saveDocNew.pages_language_overlay = 1
 ');
-
-t3lib_extMgm::addPageTSConfig('
+\TYPO3\CMS\Core\Extension\ExtensionManager::addPageTSConfig('
 mod.wizards.newContentElement {
 	renderMode = tabs
 	wizardItems {
@@ -171,37 +169,26 @@ mod.wizards.newContentElement {
 }
 
 ');
-
 $TYPO3_CONF_VARS['SYS']['contentTable'] = 'tt_content';
 $TYPO3_CONF_VARS['FE']['eID_include']['tx_cms_showpic'] = 'EXT:cms/tslib/showpic.php';
-
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['compat_version']['cms'] = array(
 	'title' => 'CMS Frontend',
 	'version' => 4000000,
-	'description' => '<ul>' .
-					'<li><p>The extention simluatestatic has been removed in TYPO3 6.0</p></li>'.
-					'<li><p>CSS Stylesheets and JavaScript are put into an external file by default.</p>'.
-					'<p>Technically, that means that the default value of "config.inlineStyle2TempFile" is now set to "1" and that of "config.removeDefaultJS" to "external"</p></li>'.
-					'</ul>',
+	'description' => ((('<ul>' . '<li><p>The extention simluatestatic has been removed in TYPO3 6.0</p></li>') . '<li><p>CSS Stylesheets and JavaScript are put into an external file by default.</p>') . '<p>Technically, that means that the default value of "config.inlineStyle2TempFile" is now set to "1" and that of "config.removeDefaultJS" to "external"</p></li>') . '</ul>'
 );
-
-	// Registering hooks for the treelist cache
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:cms/tslib/hooks/class.tx_cms_treelistcacheupdate.php:&tx_cms_treelistCacheUpdate';
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][]  = 'EXT:cms/tslib/hooks/class.tx_cms_treelistcacheupdate.php:&tx_cms_treelistCacheUpdate';
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'][]     = 'EXT:cms/tslib/hooks/class.tx_cms_treelistcacheupdate.php:&tx_cms_treelistCacheUpdate';
-
+// Registering hooks for the treelist cache
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = 'EXT:cms/tslib/hooks/class.tx_cms_treelistcacheupdate.php:&TYPO3\\CMS\\Frontend\\Hooks\\TreelistCacheUpdateHooks';
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'][] = 'EXT:cms/tslib/hooks/class.tx_cms_treelistcacheupdate.php:&TYPO3\\CMS\\Frontend\\Hooks\\TreelistCacheUpdateHooks';
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'][] = 'EXT:cms/tslib/hooks/class.tx_cms_treelistcacheupdate.php:&TYPO3\\CMS\\Frontend\\Hooks\\TreelistCacheUpdateHooks';
 if (TYPO3_MODE === 'FE') {
-		// Register the core media wizard provider
-	tslib_mediaWizardManager::registerMediaWizardProvider('tslib_mediaWizardCoreProvider');
-		// Register eID provider for ExtDirect for the frontend
+	// Register the core media wizard provider
+	\TYPO3\CMS\Frontend\MediaWizard\MediaWizardProviderManager::registerMediaWizardProvider('TYPO3\\CMS\\Frontend\\MediaWizard\\MediaWizardProvider');
+	// Register eID provider for ExtDirect for the frontend
 	$GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['ExtDirect'] = PATH_tslib . 'extdirecteid.php';
 }
-
-	// Register search keys
+// Register search keys
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['page'] = 'pages';
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['livesearch']['content'] = 'tt_content';
-
-	// Register hook to show preview info
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo']['cms'] = 'EXT:cms/tslib/hooks/class.tx_cms_fehooks.php:tx_cms_fehooks->hook_previewInfo';
-
+// Register hook to show preview info
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['hook_previewInfo']['cms'] = 'EXT:cms/tslib/hooks/class.tx_cms_fehooks.php:TYPO3\\CMS\\Frontend\\Hooks\\FrontendHooks->hook_previewInfo';
 ?>

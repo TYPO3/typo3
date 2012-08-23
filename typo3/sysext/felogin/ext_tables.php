@@ -3,27 +3,17 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['felogin']);
-
-t3lib_div::loadTCA('tt_content');
-
-if (t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 4002000) {
-	t3lib_extMgm::addPiFlexFormValue('*', 'FILE:EXT:' . $_EXTKEY . '/flexform.xml', 'login');
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
+if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 4002000) {
+	\TYPO3\CMS\Core\Extension\ExtensionManager::addPiFlexFormValue('*', ('FILE:EXT:' . $_EXTKEY) . '/flexform.xml', 'login');
 } else {
-	t3lib_extMgm::addPiFlexFormValue('default', 'FILE:EXT:' . $_EXTKEY . '/flexform.xml');
+	\TYPO3\CMS\Core\Extension\ExtensionManager::addPiFlexFormValue('default', ('FILE:EXT:' . $_EXTKEY) . '/flexform.xml');
 }
-
-t3lib_extMgm::addTcaSelectItem(
-	'tt_content',
-	'CType',
-	array(
-		'LLL:EXT:cms/locallang_ttc.xml:CType.I.10',
-		'login',
-		'i/tt_content_login.gif',
-	),
-	'mailform',
-	'after'
-);
-
+\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem('tt_content', 'CType', array(
+	'LLL:EXT:cms/locallang_ttc.xml:CType.I.10',
+	'login',
+	'i/tt_content_login.gif'
+), 'mailform', 'after');
 $TCA['tt_content']['types']['login']['showitem'] = '--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
 													--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.header;header,
 													--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.plugin,
@@ -35,33 +25,7 @@ $TCA['tt_content']['types']['login']['showitem'] = '--palette--;LLL:EXT:cms/loca
 													--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames,
 													--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.behaviour,
 													--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended';
-
-	// Adds the redirect field to the fe_groups table
-$tempColumns = array(
-	'felogin_redirectPid' => array(
-		'exclude' => 1,
-		'label'  => 'LLL:EXT:felogin/locallang_db.xml:felogin_redirectPid',
-		'config' => array(
-			'type' => 'group',
-			'internal_type' => 'db',
-			'allowed' => 'pages',
-			'size' => 1,
-			'minitems' => 0,
-			'maxitems' => 1,
-			'wizards' => array(
-				'suggest' => array(
-					'type' => 'suggest',
-				),
-			),
-		)
-	),
-);
-
-t3lib_div::loadTCA('fe_groups');
-t3lib_extMgm::addTCAcolumns('fe_groups', $tempColumns, 1);
-t3lib_extMgm::addToAllTCAtypes('fe_groups', 'felogin_redirectPid;;;;1-1-1', '', 'after:TSconfig');
-
-	// Adds the redirect field and the forgotHash field to the fe_users-table
+// Adds the redirect field to the fe_groups table
 $tempColumns = array(
 	'felogin_redirectPid' => array(
 		'exclude' => 1,
@@ -75,22 +39,43 @@ $tempColumns = array(
 			'maxitems' => 1,
 			'wizards' => array(
 				'suggest' => array(
-					'type' => 'suggest',
-				),
-			),
+					'type' => 'suggest'
+				)
+			)
+		)
+	)
+);
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('fe_groups');
+\TYPO3\CMS\Core\Extension\ExtensionManager::addTCAcolumns('fe_groups', $tempColumns, 1);
+\TYPO3\CMS\Core\Extension\ExtensionManager::addToAllTCAtypes('fe_groups', 'felogin_redirectPid;;;;1-1-1', '', 'after:TSconfig');
+// Adds the redirect field and the forgotHash field to the fe_users-table
+$tempColumns = array(
+	'felogin_redirectPid' => array(
+		'exclude' => 1,
+		'label' => 'LLL:EXT:felogin/locallang_db.xml:felogin_redirectPid',
+		'config' => array(
+			'type' => 'group',
+			'internal_type' => 'db',
+			'allowed' => 'pages',
+			'size' => 1,
+			'minitems' => 0,
+			'maxitems' => 1,
+			'wizards' => array(
+				'suggest' => array(
+					'type' => 'suggest'
+				)
+			)
 		)
 	),
 	'felogin_forgotHash' => array(
 		'exclude' => 1,
 		'label' => 'LLL:EXT:felogin/locallang_db.xml:felogin_forgotHash',
 		'config' => array(
-			'type' => 'passthrough',
+			'type' => 'passthrough'
 		)
-	),
+	)
 );
-
-t3lib_div::loadTCA('fe_users');
-t3lib_extMgm::addTCAcolumns('fe_users', $tempColumns, 1);
-t3lib_extMgm::addToAllTCAtypes('fe_users', 'felogin_redirectPid;;;;1-1-1', '', 'after:TSconfig');
-
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('fe_users');
+\TYPO3\CMS\Core\Extension\ExtensionManager::addTCAcolumns('fe_users', $tempColumns, 1);
+\TYPO3\CMS\Core\Extension\ExtensionManager::addToAllTCAtypes('fe_users', 'felogin_redirectPid;;;;1-1-1', '', 'after:TSconfig');
 ?>

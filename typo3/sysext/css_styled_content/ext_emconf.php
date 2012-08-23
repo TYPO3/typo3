@@ -1,15 +1,13 @@
 <?php
-
 /***************************************************************
-* Extension Manager/Repository config file for ext "css_styled_content".
-*
-* Auto generated 25-10-2011 13:10
-*
-* Manual updates:
-* Only the data in the array - everything else is removed by next
-* writing. "version" and "dependencies" must not be touched!
-***************************************************************/
-
+ * Extension Manager/Repository config file for ext "css_styled_content".
+ *
+ * Auto generated 25-10-2011 13:10
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'CSS styled content',
 	'description' => 'Contains configuration for CSS content-rendering of the table "tt_content". This is meant as a modern substitute for the classic "content (default)" template which was based more on <font>-tags, while this is pure CSS. It is intended to work with all modern browsers (which excludes the NS4 series).',
@@ -38,15 +36,11 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'cms' => '',
 			'php' => '5.3.0-0.0.0',
-			'typo3' => '4.6.0-0.0.0',
+			'typo3' => '4.6.0-0.0.0'
 		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
+		'conflicts' => array(),
+		'suggests' => array()
 	),
-	'suggests' => array(
-	),
+	'suggests' => array()
 );
-
 ?>
