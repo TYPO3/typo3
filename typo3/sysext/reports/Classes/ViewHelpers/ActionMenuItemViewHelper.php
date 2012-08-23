@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Reports\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,14 +23,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Render an item of the menu
  *
  * @package TYPO3
  * @subpackage tx_reports
  */
-class Tx_Reports_ViewHelpers_ActionMenuItemViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
+class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper {
 
 	/**
 	 * @var string
@@ -47,25 +48,22 @@ class Tx_Reports_ViewHelpers_ActionMenuItemViewHelper extends Tx_Fluid_Core_View
 	 */
 	public function render($label, $controller, $action, array $arguments = array()) {
 		$uriBuilder = $this->controllerContext->getUriBuilder();
-		$uri = $uriBuilder
-			->reset()
-			->uriFor($action, $arguments, $controller);
+		$uri = $uriBuilder->reset()->uriFor($action, $arguments, $controller);
 		$this->tag->addAttribute('value', $uri);
-
 		$currentRequest = $this->controllerContext->getRequest();
 		$currentController = $currentRequest->getControllerName();
 		$currentAction = $currentRequest->getControllerActionName();
 		$currentArguments = $currentRequest->getArguments();
-
 		unset($currentArguments['action']);
 		unset($currentArguments['controller']);
-		if ($action === $currentAction && $controller === $currentController && $currentArguments === $arguments) {
+		if (($action === $currentAction && $controller === $currentController) && $currentArguments === $arguments) {
 			$this->tag->addAttribute('selected', 'selected');
 		}
-
 		$this->tag->setContent($label);
-
 		return $this->tag->render();
 	}
+
 }
+
+
 ?>

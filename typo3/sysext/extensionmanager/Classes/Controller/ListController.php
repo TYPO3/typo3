@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Controller for extension listings (TER or local extensions)
  *
@@ -33,47 +33,46 @@
  * @package Extension Manager
  * @subpackage Controller
  */
-class Tx_Extensionmanager_Controller_ListController extends Tx_Extensionmanager_Controller_AbstractController {
-
+class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
 
 	/**
-	 * @var Tx_Extensionmanager_Domain_Repository_ExtensionRepository
+	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository
 	 */
 	protected $extensionRepository;
 
 	/**
-	 * @var Tx_Extensionmanager_Utility_List
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\ListUtility
 	 */
 	protected $listUtility;
 
 	/**
 	 * Dependency injection of the Extension Repository
 	 *
-	 * @param Tx_Extensionmanager_Domain_Repository_ExtensionRepository $extensionRepository
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository
 	 * @return void
 	 */
-	public function injectExtensionRepository(Tx_Extensionmanager_Domain_Repository_ExtensionRepository $extensionRepository) {
+	public function injectExtensionRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ExtensionRepository $extensionRepository) {
 		$this->extensionRepository = $extensionRepository;
 	}
 
 	/**
-	 * @param Tx_Extensionmanager_Utility_List $listUtility
+	 * @param \TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility
 	 * @return void
 	 */
-	public function injectListUtility(Tx_Extensionmanager_Utility_List $listUtility) {
+	public function injectListUtility(\TYPO3\CMS\Extensionmanager\Utility\ListUtility $listUtility) {
 		$this->listUtility = $listUtility;
 	}
 
 	/**
-	 * @var t3lib_PageRenderer
+	 * @var \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	protected $pageRenderer;
 
 	/**
-	 * @param t3lib_PageRenderer $pageRenderer
+	 * @param \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer
 	 * @return void
 	 */
-	public function injectPageRenderer(t3lib_PageRenderer $pageRenderer) {
+	public function injectPageRenderer(\TYPO3\CMS\Core\Page\PageRenderer $pageRenderer) {
 		$this->pageRenderer = $pageRenderer;
 	}
 
@@ -86,9 +85,7 @@ class Tx_Extensionmanager_Controller_ListController extends Tx_Extensionmanager_
 		$this->pageRenderer->addJsFile('../t3lib/js/extjs/notifications.js');
 		$availableExtensions = $this->listUtility->getAvailableExtensions();
 		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensions($availableExtensions);
-		$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation(
-			$availableAndInstalledExtensions
-		);
+		$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation($availableAndInstalledExtensions);
 		$this->view->assign('extensions', $availableAndInstalledExtensions);
 	}
 
@@ -101,18 +98,13 @@ class Tx_Extensionmanager_Controller_ListController extends Tx_Extensionmanager_
 	public function terAction() {
 		$this->pageRenderer->addJsFile('../t3lib/js/extjs/notifications.js');
 		$search = $this->getSearchParam();
-
 		$availableAndInstalledExtensions = $this->listUtility->getAvailableAndInstalledExtensionsWithAdditionalInformation();
-
 		if (is_string($search) && !empty($search)) {
 			$extensions = $this->extensionRepository->findByTitleOrAuthorNameOrExtensionKey($search);
 		} else {
 			$extensions = $this->extensionRepository->findAll();
 		}
-		$this->view
-			->assign('extensions', $extensions)
-			->assign('search', $search)
-			->assign('availableAndInstalled', $availableAndInstalledExtensions);
+		$this->view->assign('extensions', $extensions)->assign('search', $search)->assign('availableAndInstalled', $availableAndInstalledExtensions);
 	}
 
 	/**
@@ -124,20 +116,13 @@ class Tx_Extensionmanager_Controller_ListController extends Tx_Extensionmanager_
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/notifications.js');
 		$extensions = array();
 		$extensionKey = '';
-		if (
-			$this->request->hasArgument('allVersions') &&
-			$this->request->getArgument('allVersions') == 1 &&
-			$this->request->hasArgument('extensionKey') &&
-			is_string($this->request->getArgument('extensionKey'))
-		) {
+		if ((($this->request->hasArgument('allVersions') && $this->request->getArgument('allVersions') == 1) && $this->request->hasArgument('extensionKey')) && is_string($this->request->getArgument('extensionKey'))) {
 			$extensionKey = $this->request->getArgument('extensionKey');
 			$extensions = $this->extensionRepository->findByExtensionKeyOrderedByVersion($extensionKey);
 		} else {
 			$this->redirect('ter');
 		}
-		$this->view
-			->assign('extensions', $extensions)
-			->assign('extensionKey', $extensionKey);
+		$this->view->assign('extensions', $extensions)->assign('extensionKey', $extensionKey);
 	}
 
 	/**
@@ -155,17 +140,20 @@ class Tx_Extensionmanager_Controller_ListController extends Tx_Extensionmanager_
 	}
 
 	/**
-	* Gets instance of template if exists or create a new one.
-	* Saves instance in viewHelperVariableContainer
-	*
-	* @return template $doc
-	*/
+	 * Gets instance of template if exists or create a new one.
+	 * Saves instance in viewHelperVariableContainer
+	 *
+	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate $doc
+	 */
 	public function getDocInstance() {
 		if (!isset($GLOBALS['SOBE']->doc)) {
-			$GLOBALS['SOBE']->doc = t3lib_div::makeInstance('template');
+			$GLOBALS['SOBE']->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 			$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
 		}
 		return $GLOBALS['SOBE']->doc;
 	}
+
 }
+
+
 ?>

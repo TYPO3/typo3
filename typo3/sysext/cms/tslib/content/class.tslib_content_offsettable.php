@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Frontend\ContentObject;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,14 +27,13 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Contains OTABLE class object.
  *
  * @author Xavier Perseguers <typo3@perseguers.ch>
  * @author Steffen Kamper <steffen@typo3.org>
  */
-class tslib_content_OffsetTable extends tslib_content_Abstract {
+class OffsetTableContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractContentObject {
 
 	/**
 	 * Rendering the cObject, OTABLE
@@ -41,27 +42,21 @@ class tslib_content_OffsetTable extends tslib_content_Abstract {
 	 * @return string Output
 	 */
 	public function render($conf = array()) {
-		/** @var $controlTable tslib_tableOffset */
-		$controlTable = t3lib_div::makeInstance('tslib_tableOffset');
-
-		$tableParams = isset($conf['tableParams.'])
-			? $this->cObj->stdWrap($conf['tableParams'], $conf['tableParams.'])
-			: $conf['tableParams'];
+		/** @var $controlTable \TYPO3\CMS\Frontend\ContentObject\OffsetTableContentObject */
+		$controlTable = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\OffsetTableContentObject');
+		$tableParams = isset($conf['tableParams.']) ? $this->cObj->stdWrap($conf['tableParams'], $conf['tableParams.']) : $conf['tableParams'];
 		if ($tableParams) {
 			$controlTable->tableParams = $tableParams;
 		}
-
-		$offset = isset($conf['offset.'])
-			? $this->cObj->stdWrap($conf['offset'], $conf['offset.'])
-			: $conf['offset'];
-
+		$offset = isset($conf['offset.']) ? $this->cObj->stdWrap($conf['offset'], $conf['offset.']) : $conf['offset'];
 		$content = $controlTable->start($this->cObj->cObjGet($conf), $offset);
-
 		if (isset($conf['stdWrap.'])) {
 			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);
 		}
-
 		return $content;
 	}
+
 }
+
+
 ?>

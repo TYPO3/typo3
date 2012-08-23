@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Belog\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Stub model for sys history - only properties required for belog module are added currently
  *
@@ -31,7 +32,8 @@
  * @package TYPO3
  * @subpackage belog
  */
-class Tx_Belog_Domain_Model_HistoryEntry extends Tx_Extbase_DomainObject_AbstractEntity {
+class HistoryEntry extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+
 	/**
 	 * list of changed fields
 	 *
@@ -58,5 +60,8 @@ class Tx_Belog_Domain_Model_HistoryEntry extends Tx_Extbase_DomainObject_Abstrac
 	public function getFieldlist() {
 		return $this->fieldlist;
 	}
+
 }
+
+
 ?>

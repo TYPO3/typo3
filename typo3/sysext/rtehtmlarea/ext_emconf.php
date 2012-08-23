@@ -1,15 +1,13 @@
 <?php
-
 /***************************************************************
-* Extension Manager/Repository config file for ext "rtehtmlarea".
-*
-* Auto generated 12-03-2012 13:43
-*
-* Manual updates:
-* Only the data in the array - everything else is removed by next
-* writing. "version" and "dependencies" must not be touched!
-***************************************************************/
-
+ * Extension Manager/Repository config file for ext "rtehtmlarea".
+ *
+ * Auto generated 12-03-2012 13:43
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'htmlArea RTE',
 	'description' => 'Rich Text Editor.',
@@ -38,22 +36,21 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'cms' => '',
 			'php' => '5.3.0-0.0.0',
-			'typo3' => '4.7.0-4.7.99',
+			'typo3' => '4.7.0-4.7.99'
 		),
 		'conflicts' => array(
 			'rte_conf' => '',
 			'tkr_rteanchors' => '',
 			'ad_rtepasteplain' => '',
-			'rtehtmlarea_definitionlist' => '',
+			'rtehtmlarea_definitionlist' => ''
 		),
 		'suggests' => array(
 			'rtehtmlarea_api_manual' => '',
-			'setup' => '',
-		),
+			'setup' => ''
+		)
 	),
 	'suggests' => array(
-		'rtehtmlarea_api_manual' => '',
-	),
+		'rtehtmlarea_api_manual' => ''
+	)
 );
-
 ?>

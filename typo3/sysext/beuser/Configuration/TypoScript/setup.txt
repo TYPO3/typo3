@@ -3,7 +3,7 @@ module.tx_beuser {
 		storagePid = 0
 
 		classes {
-			Tx_Beuser_Domain_Model_BackendUser {
+			TYPO3\CMS\Beuser\Domain\Model\BackendUser {
 				mapping {
 					tableName = be_users
 					columns {
@@ -14,7 +14,7 @@ module.tx_beuser {
 					}
 				}
 			}
-			Tx_Beuser_Domain_Model_BackendUserGroup {
+			TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup {
 				mapping {
 					tableName = be_groups
 					columns {

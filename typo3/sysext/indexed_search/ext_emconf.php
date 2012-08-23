@@ -1,15 +1,13 @@
 <?php
-
 /***************************************************************
-* Extension Manager/Repository config file for ext "indexed_search".
-*
-* Auto generated 30-11-2011 14:26
-*
-* Manual updates:
-* Only the data in the array - everything else is removed by next
-* writing. "version" and "dependencies" must not be touched!
-***************************************************************/
-
+ * Extension Manager/Repository config file for ext "indexed_search".
+ *
+ * Auto generated 30-11-2011 14:26
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Indexed Search Engine',
 	'description' => 'Indexed Search Engine for TYPO3 pages, PDF-files, Word-files, HTML and text files. Provides a backend module for statistics of the indexer and a frontend plugin. Documentation can be found in the extension "doc_indexed_search".',
@@ -37,17 +35,14 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.1.0-0.0.0',
-			'typo3' => '4.4.0-0.0.0',
+			'typo3' => '4.4.0-0.0.0'
 		),
-		'conflicts' => array(
-		),
+		'conflicts' => array(),
 		'suggests' => array(
 			'extbase' => '',
 			'fluid' => ''
-		),
+		)
 	),
-	'suggests' => array(
-	),
+	'suggests' => array()
 );
-
 ?>
