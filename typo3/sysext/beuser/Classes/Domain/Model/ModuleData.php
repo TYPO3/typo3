@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Beuser\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Module data object
  *
@@ -32,10 +33,10 @@
  * @package TYPO3
  * @subpackage beuser
  */
-class Tx_Beuser_Domain_Model_ModuleData {
+class ModuleData {
 
 	/**
-	 * @var Tx_Beuser_Domain_Model_Demand
+	 * @var \TYPO3\CMS\Beuser\Domain\Model\Demand
 	 * @inject
 	 */
 	protected $demand;
@@ -46,17 +47,17 @@ class Tx_Beuser_Domain_Model_ModuleData {
 	protected $compareUserList = array();
 
 	/**
-	 * @return Tx_Beuser_Domain_Model_Demand
+	 * @return \TYPO3\CMS\Beuser\Domain\Model\Demand
 	 */
 	public function getDemand() {
 		return $this->demand;
 	}
 
 	/**
-	 * @param Tx_Beuser_Domain_Model_Demand $demand
+	 * @param \TYPO3\CMS\Beuser\Domain\Model\Demand $demand
 	 * @return void
 	 */
-	public function setDemand(Tx_Beuser_Domain_Model_Demand $demand) {
+	public function setDemand(\TYPO3\CMS\Beuser\Domain\Model\Demand $demand) {
 		$this->demand = $demand;
 	}
 
@@ -91,5 +92,6 @@ class Tx_Beuser_Domain_Model_ModuleData {
 	}
 
 }
+
 
 ?>

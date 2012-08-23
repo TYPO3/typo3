@@ -2,7 +2,7 @@ module.tx_belog {
 	features.rewrittenPropertyMapper = 1
 
 	persistence.classes {
-		Tx_Belog_Domain_Model_LogEntry {
+		TYPO3\CMS\Belog\Domain\Model\LogEntry {
 			mapping {
 				tableName = sys_log
 				columns {
@@ -17,12 +17,12 @@ module.tx_belog {
 				}
 			}
 		}
-		Tx_Belog_Domain_Model_Workspace {
+		TYPO3\CMS\Belog\Domain\Model\Workspace {
 			mapping {
 				tableName = sys_workspace
 			}
 		}
-		Tx_Belog_Domain_Model_HistoryEntry {
+		TYPO3\CMS\Belog\Domain\Model\HistoryEntry {
 			mapping {
 				tableName = sys_history
 			}

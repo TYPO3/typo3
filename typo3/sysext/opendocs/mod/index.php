@@ -24,5 +24,5 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-t3lib_utility_Http::redirect('alt_doc.php');
+\TYPO3\CMS\Core\Utility\HttpUtility::redirect('alt_doc.php');
 ?>

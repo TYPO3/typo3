@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Controller for configuration related actions.
  *
@@ -33,20 +33,18 @@
  * @package Extension Manager
  * @subpackage Controller
  */
-class Tx_Extensionmanager_Controller_ConfigurationController extends Tx_Extensionmanager_Controller_AbstractController {
+class ConfigurationController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractController {
 
 	/**
-	 * @var Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository
+	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository
 	 */
 	protected $configurationItemRepository;
 
 	/**
-	 * @param Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository $configurationItemRepository
+	 * @param \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository $configurationItemRepository
 	 * @return void
 	 */
-	public function injectConfigurationItemRepository(
-		Tx_Extensionmanager_Domain_Repository_ConfigurationItemRepository $configurationItemRepository
-	) {
+	public function injectConfigurationItemRepository(\TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository $configurationItemRepository) {
 		$this->configurationItemRepository = $configurationItemRepository;
 	}
 
@@ -60,9 +58,7 @@ class Tx_Extensionmanager_Controller_ConfigurationController extends Tx_Extensio
 		$extension = $this->request->getArgument('extension');
 		$extension = array_merge($extension, $GLOBALS['TYPO3_LOADED_EXT'][$extension['key']]);
 		$configuration = $this->configurationItemRepository->findByExtension($extension);
-		$this->view
-			->assign('configuration', $configuration)
-			->assign('extension', $extension);
+		$this->view->assign('configuration', $configuration)->assign('extension', $extension);
 	}
 
 	/**
@@ -74,18 +70,15 @@ class Tx_Extensionmanager_Controller_ConfigurationController extends Tx_Extensio
 	 * @return void
 	 */
 	public function saveAction(array $config, $extensionKey) {
-		/** @var $configurationUtility Tx_Extensionmanager_Utility_Configuration */
-		$configurationUtility = $this->objectManager->get('Tx_Extensionmanager_Utility_Configuration');
+		/** @var $configurationUtility \TYPO3\CMS\Extensionmanager\Utility\ConfigurationUtility */
+		$configurationUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\ConfigurationUtility');
 		$currentFullConfiguration = $configurationUtility->getCurrentConfiguration($extensionKey);
-		$newConfiguration = t3lib_div::array_merge_recursive_overrule($currentFullConfiguration, $config);
-
-		$configurationUtility->writeConfiguration(
-			$configurationUtility->convertValuedToNestedConfiguration($newConfiguration),
-			$extensionKey
-		);
+		$newConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($currentFullConfiguration, $config);
+		$configurationUtility->writeConfiguration($configurationUtility->convertValuedToNestedConfiguration($newConfiguration), $extensionKey);
 		$this->redirect('showConfigurationForm', NULL, NULL, array('extension' => array('key' => $extensionKey)));
 	}
 
-
 }
+
+
 ?>

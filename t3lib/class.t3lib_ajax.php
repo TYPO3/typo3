@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Contains the class "t3lib_ajax" containing functions for doing XMLHTTP requests
  * to the TYPO3 backend and as well for generating replys. This technology is also known as ajax.
@@ -49,10 +48,7 @@ class t3lib_ajax {
 	 * Default constructor writes deprecation log.
 	 */
 	public function __construct() {
-		t3lib_div::deprecationLog(
-			'Class t3lib_ajax is deprecated and unused since TYPO3 6.0. ' .
-			'It will be removed with version 6.2.'
-		);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('Class t3lib_ajax is deprecated and unused since TYPO3 6.0. ' . 'It will be removed with version 6.2.');
 	}
 
 	/**
@@ -68,9 +64,8 @@ class t3lib_ajax {
 	 * @deprecated since 6.0, class will be removed with 6.2
 	 */
 	public function getJScode($handlerFunction, $fallback = '', $debug = 0) {
-		t3lib_div::logDeprecatedFunction();
-
-			// Init the XMLHTTP request object
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		// Init the XMLHTTP request object
 		$code = '
 		function ajax_initObject() {
 			var A;
@@ -88,19 +83,19 @@ class t3lib_ajax {
 			}
 			return A;
 		}';
-			// In case AJAX is not available, fallback function
+		// In case AJAX is not available, fallback function
 		if ($fallback) {
 			$fallback .= '(url)';
 		} else {
 			$fallback = 'return';
 		}
-		$code .= '
+		$code .= ((((('
 		function ajax_doRequest(url) {
 			var x;
 
 			x = ajax_initObject();
 			if (!x) {
-				' . $fallback . ';
+				' . $fallback) . ';
 			}
 			x.open("GET", url, true);
 
@@ -108,16 +103,15 @@ class t3lib_ajax {
 				if (x.readyState != 4) {
 					return;
 				}
-				' . ($debug ? 'alert(x.responseText)' : '') . '
+				') . ($debug ? 'alert(x.responseText)' : '')) . '
 				var xmldoc = x.responseXML;
 				var t3ajax = xmldoc.getElementsByTagName("t3ajax")[0];
-				' . $handlerFunction . '(t3ajax);
+				') . $handlerFunction) . '(t3ajax);
 			}
 			x.send("");
 
 			delete x;
 		}';
-
 		return $code;
 	}
 
@@ -129,14 +123,15 @@ class t3lib_ajax {
 	 * @deprecated since 6.0, class will be removed with 6.2
 	 */
 	public function outputXMLreply($innerXML) {
-		t3lib_div::logDeprecatedFunction();
-
-			// AJAX needs some XML data
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		// AJAX needs some XML data
 		header('Content-Type: text/xml');
-		$xml = '<?xml version="1.0"?>
-<t3ajax>' . $innerXML . '</t3ajax>';
+		$xml = ('<?xml version="1.0"?>
+<t3ajax>' . $innerXML) . '</t3ajax>';
 		echo $xml;
 	}
+
 }
+
 
 ?>

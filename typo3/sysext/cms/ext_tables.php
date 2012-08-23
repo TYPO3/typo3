@@ -1,33 +1,19 @@
 <?php
 if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
+	die('Access denied.');
 }
-
 if (TYPO3_MODE == 'BE') {
-	t3lib_extMgm::addModule('web', 'layout', 'top', t3lib_extMgm::extPath($_EXTKEY).'layout/');
-	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:cms/locallang_csh_weblayout.xml');
-	t3lib_extMgm::addLLrefForTCAdescr('_MOD_web_info', 'EXT:cms/locallang_csh_webinfo.xml');
-
-	t3lib_extMgm::insertModuleFunction(
-		'web_info',
-		'tx_cms_webinfo_page',
-		t3lib_extMgm::extPath($_EXTKEY).'web_info/class.tx_cms_webinfo.php',
-		'LLL:EXT:cms/locallang_tca.xml:mod_tx_cms_webinfo_page'
-	);
-	t3lib_extMgm::insertModuleFunction(
-		'web_info',
-		'tx_cms_webinfo_lang',
-		t3lib_extMgm::extPath($_EXTKEY).'web_info/class.tx_cms_webinfo_lang.php',
-		'LLL:EXT:cms/locallang_tca.xml:mod_tx_cms_webinfo_lang'
-	);
+	\TYPO3\CMS\Core\Extension\ExtensionManager::addModule('web', 'layout', 'top', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'layout/');
+	\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('_MOD_web_layout', 'EXT:cms/locallang_csh_weblayout.xml');
+	\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('_MOD_web_info', 'EXT:cms/locallang_csh_webinfo.xml');
+	\TYPO3\CMS\Core\Extension\ExtensionManager::insertModuleFunction('web_info', 'tx_cms_webinfo_page', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'web_info/class.tx_cms_webinfo.php', 'LLL:EXT:cms/locallang_tca.xml:mod_tx_cms_webinfo_page');
+	\TYPO3\CMS\Core\Extension\ExtensionManager::insertModuleFunction('web_info', 'tx_cms_webinfo_lang', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'web_info/class.tx_cms_webinfo_lang.php', 'LLL:EXT:cms/locallang_tca.xml:mod_tx_cms_webinfo_lang');
 }
-
-	// Add allowed records to pages:
-t3lib_extMgm::allowTableOnStandardPages('pages_language_overlay,tt_content,sys_template,sys_domain,backend_layout');
-
-	// This is the standard TypoScript content table, tt_content
-$TCA['tt_content'] = array (
-	'ctrl' => array (
+// Add allowed records to pages:
+\TYPO3\CMS\Core\Extension\ExtensionManager::allowTableOnStandardPages('pages_language_overlay,tt_content,sys_template,sys_domain,backend_layout');
+// This is the standard TypoScript content table, tt_content
+$TCA['tt_content'] = array(
+	'ctrl' => array(
 		'label' => 'header',
 		'label_alt' => 'subheader,bodytext',
 		'sortby' => 'sorting',
@@ -48,11 +34,11 @@ $TCA['tt_content'] = array (
 		'transOrigPointerField' => 'l18n_parent',
 		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'languageField' => 'sys_language_uid',
-		'enablecolumns' => array (
+		'enablecolumns' => array(
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
-			'fe_group' => 'fe_group',
+			'fe_group' => 'fe_group'
 		),
 		'typeicon_column' => 'CType',
 		'typeicon_classes' => array(
@@ -75,9 +61,9 @@ $TCA['tt_content'] = array (
 			'div' => 'mimetypes-x-content-divider',
 			'html' => 'mimetypes-x-content-html',
 			'text' => 'mimetypes-x-content-text',
-			'default' => 'mimetypes-x-content-text',
+			'default' => 'mimetypes-x-content-text'
 		),
-		'typeicons' => array (
+		'typeicons' => array(
 			'header' => 'tt_content_header.gif',
 			'textpic' => 'tt_content_textpic.gif',
 			'image' => 'tt_content_image.gif',
@@ -99,15 +85,14 @@ $TCA['tt_content'] = array (
 		),
 		'thumbnail' => 'image',
 		'requestUpdate' => 'list_type,rte_enabled,menu_type',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_tt_content.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_tt_content.php',
 		'dividers2tabs' => 1,
-		'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform',
+		'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform'
 	)
 );
-
-	// fe_users
-$TCA['fe_users'] = array (
-	'ctrl' => array (
+// fe_users
+$TCA['fe_users'] = array(
+	'ctrl' => array(
 		'label' => 'username',
 		'default_sortby' => 'ORDER BY username',
 		'tstamp' => 'tstamp',
@@ -116,50 +101,48 @@ $TCA['fe_users'] = array (
 		'fe_cruser_id' => 'fe_cruser_id',
 		'title' => 'LLL:EXT:cms/locallang_tca.xml:fe_users',
 		'delete' => 'deleted',
-		'enablecolumns' => array (
+		'enablecolumns' => array(
 			'disabled' => 'disable',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime'
 		),
 		'typeicon_classes' => array(
-			'default' => 'status-user-frontend',
+			'default' => 'status-user-frontend'
 		),
 		'useColumnsForDefaultValues' => 'usergroup,lockToDomain,disable,starttime,endtime',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_cms.php',
 		'dividers2tabs' => 1,
-		'searchFields' => 'username,name,first_name,last_name,middle_name,address,telephone,fax,email,title,zip,city,country,company',
+		'searchFields' => 'username,name,first_name,last_name,middle_name,address,telephone,fax,email,title,zip,city,country,company'
 	),
-	'feInterface' => array (
-		'fe_admin_fieldList' => 'username,password,usergroup,name,address,telephone,fax,email,title,zip,city,country,www,company',
+	'feInterface' => array(
+		'fe_admin_fieldList' => 'username,password,usergroup,name,address,telephone,fax,email,title,zip,city,country,www,company'
 	)
 );
-
-	// fe_groups
-$TCA['fe_groups'] = array (
-	'ctrl' => array (
+// fe_groups
+$TCA['fe_groups'] = array(
+	'ctrl' => array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'delete' => 'deleted',
 		'prependAtCopy' => 'LLL:EXT:lang/locallang_general.xml:LGL.prependAtCopy',
-		'enablecolumns' => array (
+		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
 		'title' => 'LLL:EXT:cms/locallang_tca.xml:fe_groups',
 		'typeicon_classes' => array(
-			'default' => 'status-user-group-frontend',
+			'default' => 'status-user-group-frontend'
 		),
 		'useColumnsForDefaultValues' => 'lockToDomain',
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_cms.php',
 		'dividers2tabs' => 1,
-		'searchFields' => 'title,description',
+		'searchFields' => 'title,description'
 	)
 );
-
-	// sys_domain
-$TCA['sys_domain'] = array (
-	'ctrl' => array (
+// sys_domain
+$TCA['sys_domain'] = array(
+	'ctrl' => array(
 		'label' => 'domainName',
 		'tstamp' => 'tstamp',
 		'crdate' => 'crdate',
@@ -167,53 +150,51 @@ $TCA['sys_domain'] = array (
 		'sortby' => 'sorting',
 		'title' => 'LLL:EXT:cms/locallang_tca.xml:sys_domain',
 		'iconfile' => 'domain.gif',
-		'enablecolumns' => array (
+		'enablecolumns' => array(
 			'disabled' => 'hidden'
 		),
 		'typeicon_classes' => array(
-			'default' => 'mimetypes-x-content-domain',
+			'default' => 'mimetypes-x-content-domain'
 		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
-		'searchFields' => 'domainName,redirectTo',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_cms.php',
+		'searchFields' => 'domainName,redirectTo'
 	)
 );
-
-	// pages_language_overlay
-$TCA['pages_language_overlay'] = array (
-	'ctrl' => array (
-		'label'                           => 'title',
-		'tstamp'                          => 'tstamp',
-		'title'                           => 'LLL:EXT:cms/locallang_tca.xml:pages_language_overlay',
-		'versioningWS'                    => TRUE,
-		'versioning_followPages'          => TRUE,
-		'origUid'                         => 't3_origuid',
-		'crdate'                          => 'crdate',
-		'cruser_id'                       => 'cruser_id',
-		'delete'                          => 'deleted',
-		'enablecolumns'                   => array (
-			'disabled'  => 'hidden',
+// pages_language_overlay
+$TCA['pages_language_overlay'] = array(
+	'ctrl' => array(
+		'label' => 'title',
+		'tstamp' => 'tstamp',
+		'title' => 'LLL:EXT:cms/locallang_tca.xml:pages_language_overlay',
+		'versioningWS' => TRUE,
+		'versioning_followPages' => TRUE,
+		'origUid' => 't3_origuid',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'delete' => 'deleted',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
 			'starttime' => 'starttime',
-			'endtime'   => 'endtime'
+			'endtime' => 'endtime'
 		),
-		'transOrigPointerField'           => 'pid',
-		'transOrigPointerTable'           => 'pages',
-		'transOrigDiffSourceField'        => 'l18n_diffsource',
+		'transOrigPointerField' => 'pid',
+		'transOrigPointerTable' => 'pages',
+		'transOrigDiffSourceField' => 'l18n_diffsource',
 		'shadowColumnsForNewPlaceholders' => 'title',
-		'languageField'                   => 'sys_language_uid',
-		'mainpalette'                     => 1,
-		'dynamicConfigFile'               => t3lib_extMgm::extPath($_EXTKEY) . 'tbl_cms.php',
-		'type'                            => 'doktype',
+		'languageField' => 'sys_language_uid',
+		'mainpalette' => 1,
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_cms.php',
+		'type' => 'doktype',
 		'typeicon_classes' => array(
-			'default' => 'mimetypes-x-content-page-language-overlay',
+			'default' => 'mimetypes-x-content-page-language-overlay'
 		),
-		'dividers2tabs'                   => TRUE,
-		'searchFields' => 'title,subtitle,nav_title,keywords,description,abstract,author,author_email,url',
+		'dividers2tabs' => TRUE,
+		'searchFields' => 'title,subtitle,nav_title,keywords,description,abstract,author,author_email,url'
 	)
 );
-
-	// sys_template
-$TCA['sys_template'] = array (
-	'ctrl' => array (
+// sys_template
+$TCA['sys_template'] = array(
+	'ctrl' => array(
 		'label' => 'title',
 		'tstamp' => 'tstamp',
 		'sortby' => 'sorting',
@@ -224,9 +205,10 @@ $TCA['sys_template'] = array (
 		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'delete' => 'deleted',
-		'adminOnly' => 1,	// Only admin, if any
+		'adminOnly' => 1,
+		// Only admin, if any
 		'iconfile' => 'template.gif',
-		'enablecolumns' => array (
+		'enablecolumns' => array(
 			'disabled' => 'hidden',
 			'starttime' => 'starttime',
 			'endtime' => 'endtime'
@@ -234,38 +216,36 @@ $TCA['sys_template'] = array (
 		'typeicon_column' => 'root',
 		'typeicon_classes' => array(
 			'default' => 'mimetypes-x-content-template-extension',
-			'1' => 'mimetypes-x-content-template',
+			'1' => 'mimetypes-x-content-template'
 		),
-		'typeicons' => array (
+		'typeicons' => array(
 			'0' => 'template_add.gif'
 		),
 		'dividers2tabs' => 1,
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
-		'searchFields' => 'title,constants,config',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_cms.php',
+		'searchFields' => 'title,constants,config'
 	)
 );
-
-	// layouts
-$TCA['backend_layout'] = array (
-	'ctrl' => array (
-		'title'     => 'LLL:EXT:cms/locallang_tca.xml:backend_layout',
-		'label'     => 'title',
-		'tstamp'    => 'tstamp',
-		'crdate'    => 'crdate',
+// layouts
+$TCA['backend_layout'] = array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:cms/locallang_tca.xml:backend_layout',
+		'label' => 'title',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
 		'cruser_id' => 'cruser_id',
 		'versioningWS' => TRUE,
 		'origUid' => 't3_origuid',
 		'sortby' => 'sorting',
 		'delete' => 'deleted',
-		'enablecolumns' => array (
-			'disabled' => 'hidden',
+		'enablecolumns' => array(
+			'disabled' => 'hidden'
 		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY).'tbl_cms.php',
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'tbl_cms.php',
 		'iconfile' => 'backend_layout.gif',
 		'selicon_field' => 'icon',
 		'selicon_field_path' => 'uploads/media',
-		'thumbnail' => 'resources',
+		'thumbnail' => 'resources'
 	)
 );
-
 ?>

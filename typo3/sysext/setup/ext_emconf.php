@@ -1,18 +1,16 @@
 <?php
-
 /***************************************************************
-* Extension Manager/Repository config file for ext "setup".
-*
-* Auto generated 25-10-2011 13:11
-*
-* Manual updates:
-* Only the data in the array - everything else is removed by next
-* writing. "version" and "dependencies" must not be touched!
-***************************************************************/
-
+ * Extension Manager/Repository config file for ext "setup".
+ *
+ * Auto generated 25-10-2011 13:11
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'User>User Settings',
-	'description' => 'Allows users to edit a limited set of options for their user profile, eg. preferred language and their name and email address.',
+	'description' => 'Allows users to edit a limited set of options for their user profile, eg. preferred TYPO3\\CMS\\Lang\\LanguageService and their name and email address.',
 	'category' => 'module',
 	'shy' => 1,
 	'dependencies' => '',
@@ -37,15 +35,11 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
-			'typo3' => '4.6.0-0.0.0',
+			'typo3' => '4.6.0-0.0.0'
 		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
+		'conflicts' => array(),
+		'suggests' => array()
 	),
-	'suggests' => array(
-	),
+	'suggests' => array()
 );
-
 ?>

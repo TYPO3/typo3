@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Beuser\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +25,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Displays a section in backend module template, similar to template::section()
  *
@@ -31,7 +32,7 @@
  * @package TYPO3
  * @subpackage beuser
  */
-class Tx_Beuser_ViewHelpers_SectionViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class SectionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Display section with title and content
@@ -43,14 +44,13 @@ class Tx_Beuser_ViewHelpers_SectionViewHelper extends Tx_Fluid_Core_ViewHelper_A
 	 */
 	public function render($title, $collapsible = FALSE) {
 		if ($collapsible) {
-			$uniqueId = 'section_' . md5(microtime() . rand());
-
-			return '<h3 class="collapsibleSection"><a href="#" onClick="$(\'' . $uniqueId . '\').toggle(); return false;">' . $title . '</a></h3>' .
-				'<div id="' . $uniqueId . '" class="collapsibleSection">' . $this->renderChildren() . '</div>';
+			$uniqueId = 'section_' . md5((microtime() . rand()));
+			return (((((((('<h3 class="collapsibleSection"><a href="#" onClick="$(\'' . $uniqueId) . '\').toggle(); return false;">') . $title) . '</a></h3>') . '<div id="') . $uniqueId) . '" class="collapsibleSection">') . $this->renderChildren()) . '</div>';
 		}
-
-		return '<h3>' . $title . '</h3>' . $this->renderChildren();
+		return (('<h3>' . $title) . '</h3>') . $this->renderChildren();
 	}
+
 }
+
 
 ?>

@@ -1,8 +1,7 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
-	die ('Access denied.');
+if (!defined('TYPO3_MODE')) {
+	die('Access denied.');
 }
-
 /**
  * File storages
  */
@@ -15,9 +14,9 @@ $TCA['sys_file_storage'] = array(
 	'columns' => array(
 		'hidden' => array(
 			'exclude' => 1,
-			'label'   => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.hidden',
-			'config'  => array(
-				'type'    => 'check',
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.hidden',
+			'config' => array(
+				'type' => 'check',
 				'default' => '0'
 			)
 		),
@@ -26,7 +25,7 @@ $TCA['sys_file_storage'] = array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.name',
 			'config' => array(
 				'type' => 'input',
-				'size' => '30',
+				'size' => '30'
 			)
 		),
 		'description' => array(
@@ -35,7 +34,7 @@ $TCA['sys_file_storage'] = array(
 			'config' => array(
 				'type' => 'text',
 				'cols' => '30',
-				'rows' => '5',
+				'rows' => '5'
 			)
 		),
 		'is_browsable' => array(
@@ -75,8 +74,8 @@ $TCA['sys_file_storage'] = array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.processingfolder',
 			'config' => array(
 				'type' => 'input',
-				'placeholder' => t3lib_file_Storage::DEFAULT_ProcessingFolder,
-				'size' => '20',
+				'placeholder' => \TYPO3\CMS\Core\Resource\ResourceStorage::DEFAULT_ProcessingFolder,
+				'size' => '20'
 			)
 		),
 		'driver' => array(
@@ -85,7 +84,7 @@ $TCA['sys_file_storage'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(),
-				'default' => '',
+				'default' => ''
 			)
 		),
 		'configuration' => array(
@@ -94,21 +93,21 @@ $TCA['sys_file_storage'] = array(
 			'config' => array(
 				'type' => 'flex',
 				'ds_pointerField' => 'driver',
-				'ds' => array(),
+				'ds' => array()
 			),
 			'displayCond' => 'REC:NEW:false'
-		),
+		)
 	),
 	'types' => array(
-		'0' => array('showitem' => 'name, description, hidden, --div--;Configuration, driver, configuration, processingfolder, --div--;Access, --palette--;Capabilities;capabilities, is_online'),
+		'0' => array('showitem' => 'name, description, hidden, --div--;Configuration, driver, configuration, processingfolder, --div--;Access, --palette--;Capabilities;capabilities, is_online')
 	),
 	'palettes' => array(
 		'capabilities' => array('showitem' => 'is_browsable, is_public, is_writable', 'canNotCollapse' => TRUE)
 	)
 );
-
-/** @var t3lib_file_Driver_DriverRegistry $registry */
-$registry = t3lib_div::makeInstance('t3lib_file_Driver_DriverRegistry');
+/**
+ * @var \TYPO3\CMS\Core\Resource\Driver\DriverRegistry $registry
+ */
+$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverRegistry');
 $registry->addDriversToTCA();
-
 ?>

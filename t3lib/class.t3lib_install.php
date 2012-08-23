@@ -29,7 +29,6 @@
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
-
 /**
  * Class to setup values in localconf.php and verify the TYPO3 DB tables/fields
  *
@@ -39,32 +38,63 @@
  */
 class t3lib_install {
 
-		// External, Static
-		// Set to string which identifies the script using this class.
-	var $updateIdentity = '';
+	// External, Static
+	// Set to string which identifies the script using this class.
+	/**
+	 * @todo Define visibility
+	 */
+	public $updateIdentity = '';
 
-		// Prefix for checkbox fields when updating database.
-	var $dbUpdateCheckboxPrefix = 'TYPO3_INSTALL[database_update]';
-		// If this is set, modifications to localconf.php is done by adding new lines to the array only. If unset, existing values are recognized and changed.
-	var $localconf_addLinesOnly = 0;
-		// If set and addLinesOnly is disabled, lines will be change only if they are after this token (on a single line!) in the file
+	// Prefix for checkbox fields when updating database.
+	/**
+	 * @todo Define visibility
+	 */
+	public $dbUpdateCheckboxPrefix = 'TYPO3_INSTALL[database_update]';
+
+	// If this is set, modifications to localconf.php is done by adding new lines to the array only. If unset, existing values are recognized and changed.
+	/**
+	 * @todo Define visibility
+	 */
+	public $localconf_addLinesOnly = 0;
+
+	// If set and addLinesOnly is disabled, lines will be change only if they are after this token (on a single line!) in the file
 	protected $localconf_startEditPointToken = '## INSTALL SCRIPT EDIT POINT TOKEN - all lines after this points may be changed by the install script!';
-	protected $localconf_endEditPointToken = '## INSTALL SCRIPT EDIT END POINT TOKEN - all lines before this points may be changed by the install script!';
-		// If TRUE, this class will allow the user to update the localconf.php file. Is set TRUE in the init.php file.
-	var $allowUpdateLocalConf = 0;
-		// Backpath (used for icons etc.)
-	var $backPath = '../';
 
-		// Internal, dynamic:
-		// Used to indicate that a value is change in the line-array of localconf and that it should be written.
-	var $setLocalconf = 0;
-		// Used to set (error)messages from the executing functions like mail-sending, writing Localconf and such
-	var $messages = array();
-		// Updated with line in localconf.php file that was changed.
-	var $touchedLine = 0;
+	protected $localconf_endEditPointToken = '## INSTALL SCRIPT EDIT END POINT TOKEN - all lines before this points may be changed by the install script!';
+
+	// If TRUE, this class will allow the user to update the localconf.php file. Is set TRUE in the init.php file.
+	/**
+	 * @todo Define visibility
+	 */
+	public $allowUpdateLocalConf = 0;
+
+	// Backpath (used for icons etc.)
+	/**
+	 * @todo Define visibility
+	 */
+	public $backPath = '../';
+
+	// Internal, dynamic:
+	// Used to indicate that a value is change in the line-array of localconf and that it should be written.
+	/**
+	 * @todo Define visibility
+	 */
+	public $setLocalconf = 0;
+
+	// Used to set (error)messages from the executing functions like mail-sending, writing Localconf and such
+	/**
+	 * @todo Define visibility
+	 */
+	public $messages = array();
+
+	// Updated with line in localconf.php file that was changed.
+	/**
+	 * @todo Define visibility
+	 */
+	public $touchedLine = 0;
 
 	/**
-	 * @var t3lib_install_Sql Instance of SQL handler
+	 * @var \TYPO3\CMS\Install\Sql\SchemaMigrator Instance of SQL handler
 	 */
 	protected $sqlHandler = NULL;
 
@@ -72,16 +102,13 @@ class t3lib_install {
 	 * Constructor function
 	 */
 	public function __construct() {
-		$this->sqlHandler = t3lib_div::makeInstance('t3lib_install_Sql');
+		$this->sqlHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Sql\\SchemaMigrator');
 	}
 
 	/**************************************
 	 *
 	 * Writing to localconf.php
-	 *
-
-	 **************************************/
-
+	 ***************************************/
 	/**
 	 * This functions takes an array with lines from localconf.php, finds a variable and inserts the new value.
 	 *
@@ -96,22 +123,20 @@ class t3lib_install {
 		if (!$this->checkForBadString($value)) {
 			return 0;
 		}
-
-			// Initialize
+		// Initialize
 		$found = 0;
 		$this->touchedLine = '';
 		$inArray = in_array($this->localconf_startEditPointToken, $line_array);
-			// Flag is set if the token should be set but is not yet.
-		$tokenSet = ($this->localconf_startEditPointToken && !$inArray);
-		$stopAtToken = ($this->localconf_startEditPointToken && $inArray);
+		// Flag is set if the token should be set but is not yet.
+		$tokenSet = $this->localconf_startEditPointToken && !$inArray;
+		$stopAtToken = $this->localconf_startEditPointToken && $inArray;
 		$hasEndToken = in_array($this->localconf_endEditPointToken, $line_array);
 		$respectEndToken = $hasEndToken;
-		$comment = ' Modified or inserted by ' . $this->updateIdentity . '.';
+		$comment = (' Modified or inserted by ' . $this->updateIdentity) . '.';
 		$replace = array('["', '"]');
 		$search = array('[\'', '\']');
 		$varDoubleQuotes = str_replace($search, $replace, $variable);
-
-			// Search for variable name
+		// Search for variable name
 		if (!$this->localconf_addLinesOnly && !$tokenSet) {
 			$line_array = array_reverse($line_array);
 			foreach ($line_array as $k => $v) {
@@ -125,35 +150,36 @@ class t3lib_install {
 				}
 				if ($stopAtToken && !strcmp($v2, $this->localconf_startEditPointToken)) {
 					break;
-				} // If stopAtToken and token found, break out of the loop..
-				if (!strcmp(substr($v2, 0, strlen($variable . ' ')), $variable . ' ')) {
+				}
+				// If stopAtToken and token found, break out of the loop..
+				if (!strcmp(substr($v2, 0, strlen(($variable . ' '))), ($variable . ' '))) {
 					$mainparts = explode($variable, $v, 2);
-						// Should ALWAYS be.
+					// Should ALWAYS be.
 					if (count($mainparts) == 2) {
 						$subparts = explode('//', $mainparts[1], 2);
 						if ($quoteValue) {
-							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
+							$value = ('\'' . $this->slashValueForSingleDashes($value)) . '\'';
 						}
-						$line_array[$k] = $mainparts[0] . $variable . ' = ' . $value . ';	' . ('//' . $comment . str_replace($comment, '', $subparts[1]));
-						$this->touchedLine = count($line_array) - $k - 1;
+						$line_array[$k] = (((($mainparts[0] . $variable) . ' = ') . $value) . ';	') . (('//' . $comment) . str_replace($comment, '', $subparts[1]));
+						$this->touchedLine = (count($line_array) - $k) - 1;
 						$found = 1;
 						break;
 					}
-				} elseif (!strcmp(substr($v2, 0, strlen($varDoubleQuotes . ' ')), $varDoubleQuotes . ' ')) {
-						// Due to a bug in the update wizard (fixed in TYPO3 4.1.7) it is possible
-						// that $TYPO3_CONF_VARS['SYS']['compat_version'] was enclosed by "" (double
-						// quotes) instead of the expected '' (single quotes) when is was written to
-						// localconf.php. The following code was added to make sure that values with
-						// double quotes are updated, too.
+				} elseif (!strcmp(substr($v2, 0, strlen(($varDoubleQuotes . ' '))), ($varDoubleQuotes . ' '))) {
+					// Due to a bug in the update wizard (fixed in TYPO3 4.1.7) it is possible
+					// that $TYPO3_CONF_VARS['SYS']['compat_version'] was enclosed by "" (double
+					// quotes) instead of the expected '' (single quotes) when is was written to
+					// localconf.php. The following code was added to make sure that values with
+					// double quotes are updated, too.
 					$mainparts = explode($varDoubleQuotes, $v, 2);
-						// Should ALWAYS be.
+					// Should ALWAYS be.
 					if (count($mainparts) == 2) {
 						$subparts = explode('//', $mainparts[1], 2);
 						if ($quoteValue) {
-							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
+							$value = ('\'' . $this->slashValueForSingleDashes($value)) . '\'';
 						}
-						$line_array[$k] = $mainparts[0] . $variable . ' = ' . $value . ';	' . ('//' . $comment . str_replace($comment, '', $subparts[1]));
-						$this->touchedLine = count($line_array) - $k - 1;
+						$line_array[$k] = (((($mainparts[0] . $variable) . ' = ') . $value) . ';	') . (('//' . $comment) . str_replace($comment, '', $subparts[1]));
+						$this->touchedLine = (count($line_array) - $k) - 1;
 						$found = 1;
 						break;
 					}
@@ -167,9 +193,9 @@ class t3lib_install {
 				$line_array[] = '';
 			}
 			if ($quoteValue) {
-				$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
+				$value = ('\'' . $this->slashValueForSingleDashes($value)) . '\'';
 			}
-			$line_array[] = $variable . ' = ' . $value . ';	// ' . $comment;
+			$line_array[] = ((($variable . ' = ') . $value) . ';	// ') . $comment;
 			if (!$hasEndToken) {
 				$line_array[] = '';
 				$line_array[] = $this->localconf_endEditPointToken;
@@ -179,7 +205,7 @@ class t3lib_install {
 		if ($variable == '$typo_db_password') {
 			$this->messages[] = 'Updated ' . $variable;
 		} else {
-			$this->messages[] = $variable . ' = ' . htmlspecialchars($value);
+			$this->messages[] = ($variable . ' = ') . htmlspecialchars($value);
 		}
 		$this->setLocalconf = 1;
 	}
@@ -196,23 +222,23 @@ class t3lib_install {
 	public function setArrayValueInLocalconfFile(array &$lines, $variable, array $value) {
 		$commentKey = '## ';
 		$inArray = in_array($commentKey . $this->localconf_startEditPointToken, $lines);
-		$tokenSet = $this->localconf_startEditPointToken && !$inArray; // Flag is set if the token should be set but is not yet
+		$tokenSet = $this->localconf_startEditPointToken && !$inArray;
+		// Flag is set if the token should be set but is not yet
 		$stopAtToken = $this->localconf_startEditPointToken && $inArray;
-		$comment = 'Modified or inserted by ' . $this->updateIdentity . '.';
-		$format = "%s = %s;\t// " . $comment;
-
+		$comment = ('Modified or inserted by ' . $this->updateIdentity) . '.';
+		$format = '%s = %s;	// ' . $comment;
 		$insertPos = count($lines);
 		$startPos = 0;
 		if (!($this->localconf_addLinesOnly || $tokenSet)) {
 			for ($i = count($lines) - 1; $i > 0; $i--) {
 				$line = trim($lines[$i]);
-				if ($stopAtToken && t3lib_div::isFirstPartOfStr($line, $this->localconf_startEditPointToken)) {
+				if ($stopAtToken && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($line, $this->localconf_startEditPointToken)) {
 					break;
 				}
-				if (t3lib_div::isFirstPartOfStr($line, '?>')) {
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($line, '?>')) {
 					$insertPos = $i;
 				}
-				if (t3lib_div::isFirstPartOfStr($line, $variable)) {
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($line, $variable)) {
 					$startPos = $i;
 					break;
 				}
@@ -223,15 +249,13 @@ class t3lib_install {
 			$endPos = $startPos;
 			for ($i = $startPos; $i < count($lines); $i++) {
 				$line = trim($lines[$i]);
-				if (t3lib_div::isFirstPartOfStr($line, ');')) {
+				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($line, ');')) {
 					$endPos = $i;
 					break;
 				}
 			}
-
 			$startLines = array_slice($lines, 0, $startPos);
 			$endLines = array_slice($lines, $endPos + 1);
-
 			$lines = $startLines;
 			$definition = $this->array_export($value);
 			$lines[] = sprintf($format, $variable, $definition);
@@ -253,25 +277,25 @@ class t3lib_install {
 	 * @return string
 	 */
 	protected function array_export(array $variable) {
-		$lines = explode("\n", var_export($variable, TRUE));
+		$lines = explode('
+', var_export($variable, TRUE));
 		$out = 'array(';
-
 		for ($i = 1; $i < count($lines); $i++) {
-			$out .= "\n";
-				// Make the space-indented declaration tab-indented instead
+			$out .= '
+';
+			// Make the space-indented declaration tab-indented instead
 			while (substr($lines[$i], 0, 2) === '  ') {
-				$out .= "\t";
+				$out .= '	';
 				$lines[$i] = substr($lines[$i], 2);
 			}
 			$out .= $lines[$i];
-				// Array declaration should be next to the assignment and no space between
-				// "array" and its opening parenthesis should exist
-			if (preg_match('/\s=>\s$/', $lines[$i])) {
-				$out .= preg_replace('/^\s*array \(/', 'array(', $lines[$i + 1]);
+			// Array declaration should be next to the assignment and no space between
+			// "array" and its opening parenthesis should exist
+			if (preg_match('/\\s=>\\s$/', $lines[$i])) {
+				$out .= preg_replace('/^\\s*array \\(/', 'array(', $lines[$i + 1]);
 				$i++;
 			}
 		}
-
 		return $out;
 	}
 
@@ -282,49 +306,38 @@ class t3lib_install {
 	 * @param string $absFullPath Absolute path of alternative file to use (Notice: this path is not validated in terms of being inside 'TYPO3 space')
 	 * @return mixed If $inlines is not an array it will return an array with the lines from localconf.php. Otherwise it will return a status string, either "continue" (updated) or "nochange" (not updated)
 	 * @see setValueInLocalconfFile()
+	 * @todo Define visibility
 	 */
-	function writeToLocalconf_control($inlines = '', $absFullPath = '') {
+	public function writeToLocalconf_control($inlines = '', $absFullPath = '') {
 		$tmpExt = '.TMP.php';
 		$writeToLocalconf_dat = array();
 		$writeToLocalconf_dat['file'] = $absFullPath ? $absFullPath : PATH_typo3conf . 'localconf.php';
 		$writeToLocalconf_dat['tmpfile'] = $writeToLocalconf_dat['file'] . $tmpExt;
-
-			// Checking write state of localconf.php
+		// Checking write state of localconf.php
 		if (!$this->allowUpdateLocalConf) {
-			throw new RuntimeException(
-				'TYPO3 Fatal Error: ->allowUpdateLocalConf flag in the install object is not set and therefore "localconf.php" cannot be altered.',
-				1270853915
-			);
+			throw new RuntimeException('TYPO3 Fatal Error: ->allowUpdateLocalConf flag in the install object is not set and therefore "localconf.php" cannot be altered.', 1270853915);
 		}
 		if (!@is_writable($writeToLocalconf_dat['file'])) {
-			throw new RuntimeException(
-				'TYPO3 Fatal Error: ' . $writeToLocalconf_dat['file'] . ' is not writable!',
-				1270853916
-			);
+			throw new RuntimeException(('TYPO3 Fatal Error: ' . $writeToLocalconf_dat['file']) . ' is not writable!', 1270853916);
 		}
-
-			// Splitting localconf.php file into lines
-		$lines = explode(LF, str_replace(CR, '', trim(t3lib_div::getUrl($writeToLocalconf_dat['file']))));
-		$writeToLocalconf_dat['endLine'] = array_pop($lines); // Getting "? >" ending.
-
-			// Checking if "updated" line was set by this tool - if so remove old line.
+		// Splitting localconf.php file into lines
+		$lines = explode(LF, str_replace(CR, '', trim(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($writeToLocalconf_dat['file']))));
+		$writeToLocalconf_dat['endLine'] = array_pop($lines);
+		// Getting "? >" ending.
+		// Checking if "updated" line was set by this tool - if so remove old line.
 		$updatedLine = array_pop($lines);
-		$writeToLocalconf_dat['updatedText'] = '// Updated by ' . $this->updateIdentity . ' ';
-
+		$writeToLocalconf_dat['updatedText'] = ('// Updated by ' . $this->updateIdentity) . ' ';
 		if (!strstr($updatedLine, $writeToLocalconf_dat['updatedText'])) {
 			array_push($lines, $updatedLine);
 		}
-
-			// Setting a line and write
+		// Setting a line and write
 		if (is_array($inlines)) {
-				// Setting configuration
-			$updatedLine = $writeToLocalconf_dat['updatedText'] . date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' H:i:s');
+			// Setting configuration
+			$updatedLine = $writeToLocalconf_dat['updatedText'] . date(($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' H:i:s'));
 			array_push($inlines, $updatedLine);
 			array_push($inlines, $writeToLocalconf_dat['endLine']);
-
 			if ($this->setLocalconf) {
 				$success = $this->writeToLocalconf($inlines, $absFullPath);
-
 				if ($success) {
 					return 'continue';
 				} else {
@@ -333,7 +346,8 @@ class t3lib_install {
 			} else {
 				return 'nochange';
 			}
-		} else { // Return lines found in localconf.php
+		} else {
+			// Return lines found in localconf.php
 			return $lines;
 		}
 	}
@@ -350,57 +364,45 @@ class t3lib_install {
 		$writeToLocalconf_dat = array();
 		$writeToLocalconf_dat['file'] = $absFullPath ? $absFullPath : PATH_typo3conf . 'localconf.php';
 		$writeToLocalconf_dat['tmpfile'] = $writeToLocalconf_dat['file'] . $tmpExt;
-
-			// Checking write state of localconf.php:
+		// Checking write state of localconf.php:
 		if (!$this->allowUpdateLocalConf) {
-			throw new RuntimeException(
-				'TYPO3 Fatal Error: ->allowUpdateLocalConf flag in the install object is not set and therefore "localconf.php" cannot be altered.',
-				1270853915
-			);
+			throw new RuntimeException('TYPO3 Fatal Error: ->allowUpdateLocalConf flag in the install object is not set and therefore "localconf.php" cannot be altered.', 1270853915);
 		}
 		if (!@is_writable($writeToLocalconf_dat['file'])) {
-			throw new RuntimeException(
-				'TYPO3 Fatal Error: ' . $writeToLocalconf_dat['file'] . ' is not writable!',
-				1270853916
-			);
+			throw new RuntimeException(('TYPO3 Fatal Error: ' . $writeToLocalconf_dat['file']) . ' is not writable!', 1270853916);
 		}
-
-		$writeToLocalconf_dat['endLine'] = array_pop($lines); // Getting "? >" ending.
-		if (!strstr('?' . '>', $writeToLocalconf_dat['endLine'])) {
+		$writeToLocalconf_dat['endLine'] = array_pop($lines);
+		// Getting "? >" ending.
+		if (!strstr(('?' . '>'), $writeToLocalconf_dat['endLine'])) {
 			$lines[] = $writeToLocalconf_dat['endLine'];
 			$writeToLocalconf_dat['endLine'] = '?' . '>';
 		}
-			// Checking if "updated" line was set by this tool - if so remove old line.
+		// Checking if "updated" line was set by this tool - if so remove old line.
 		$updatedLine = array_pop($lines);
-		$writeToLocalconf_dat['updatedText'] = '// Updated by ' . $this->updateIdentity . ' ';
-
+		$writeToLocalconf_dat['updatedText'] = ('// Updated by ' . $this->updateIdentity) . ' ';
 		if (!strstr($updatedLine, $writeToLocalconf_dat['updatedText'])) {
 			$lines[] = $updatedLine;
 		}
-
-		$updatedLine = $writeToLocalconf_dat['updatedText'] . date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' H:i:s');
+		$updatedLine = $writeToLocalconf_dat['updatedText'] . date(($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' H:i:s'));
 		$lines[] = $updatedLine;
 		$lines[] = $writeToLocalconf_dat['endLine'];
-
 		$success = FALSE;
-		if (!t3lib_div::writeFile($writeToLocalconf_dat['tmpfile'], implode(LF, $lines))) {
-			$msg = 'typo3conf/localconf.php' . $tmpExt . ' could not be written - maybe a write access problem?';
-		} elseif (strcmp(t3lib_div::getUrl($writeToLocalconf_dat['tmpfile']), implode(LF, $lines))) {
+		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($writeToLocalconf_dat['tmpfile'], implode(LF, $lines))) {
+			$msg = ('typo3conf/localconf.php' . $tmpExt) . ' could not be written - maybe a write access problem?';
+		} elseif (strcmp(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($writeToLocalconf_dat['tmpfile']), implode(LF, $lines))) {
 			@unlink($writeToLocalconf_dat['tmpfile']);
-			$msg = 'typo3conf/localconf.php' . $tmpExt . ' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
+			$msg = ('typo3conf/localconf.php' . $tmpExt) . ' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
 		} elseif (!@copy($writeToLocalconf_dat['tmpfile'], $writeToLocalconf_dat['file'])) {
-			$msg = 'typo3conf/localconf.php could not be replaced by typo3conf/localconf.php' . $tmpExt . ' - maybe a write access problem?';
+			$msg = ('typo3conf/localconf.php could not be replaced by typo3conf/localconf.php' . $tmpExt) . ' - maybe a write access problem?';
 		} else {
 			@unlink($writeToLocalconf_dat['tmpfile']);
 			$success = TRUE;
 			$msg = 'Configuration written to typo3conf/localconf.php';
 		}
 		$this->messages[] = $msg;
-
 		if (!$success) {
-			t3lib_div::sysLog($msg, 'Core', t3lib_div::SYSLOG_SEVERITY_ERROR);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($msg, 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 		}
-
 		return $success;
 	}
 
@@ -410,9 +412,10 @@ class t3lib_install {
 	 * @param string $string String to test
 	 * @return boolean Returns TRUE if string is OK
 	 * @see setValueInLocalconfFile()
+	 * @todo Define visibility
 	 */
-	function checkForBadString($string) {
-		return preg_match('/[' . LF . CR . ']/', $string) ? FALSE : TRUE;
+	public function checkForBadString($string) {
+		return preg_match((('/[' . LF) . CR) . ']/', $string) ? FALSE : TRUE;
 	}
 
 	/**
@@ -421,12 +424,12 @@ class t3lib_install {
 	 * @param string $value Input value
 	 * @return string Output value
 	 * @see setValueInLocalconfFile()
+	 * @todo Define visibility
 	 */
-	function slashValueForSingleDashes($value) {
-		$value = str_replace("'.LF.'", '###INSTALL_TOOL_LINEBREAK###', $value);
-		$value = str_replace("'", "\'", str_replace('\\', '\\\\', $value));
-		$value = str_replace('###INSTALL_TOOL_LINEBREAK###', "'.LF.'", $value);
-
+	public function slashValueForSingleDashes($value) {
+		$value = str_replace('\'.LF.\'', '###INSTALL_TOOL_LINEBREAK###', $value);
+		$value = str_replace('\'', '\\\'', str_replace('\\', '\\\\', $value));
+		$value = str_replace('###INSTALL_TOOL_LINEBREAK###', '\'.LF.\'', $value);
 		return $value;
 	}
 
@@ -440,67 +443,67 @@ class t3lib_install {
 	 * @param array $currentValue Array of "current values" for each key/value pair in $arr. Shown if given.
 	 * @param boolean $cVfullMsg If set, will show the prefix "Current value" if $currentValue is given.
 	 * @return string HTML table with checkboxes for update. Must be wrapped in a form.
+	 * @todo Define visibility
 	 */
-	function generateUpdateDatabaseForm_checkboxes($arr, $label, $checked = TRUE, $iconDis = FALSE, $currentValue = array(), $cVfullMsg = FALSE) {
+	public function generateUpdateDatabaseForm_checkboxes($arr, $label, $checked = TRUE, $iconDis = FALSE, $currentValue = array(), $cVfullMsg = FALSE) {
 		$out = array();
 		if (is_array($arr)) {
 			$tableId = uniqid('table');
 			if (count($arr) > 1) {
-				$out[] = '
+				$out[] = ((((((('
 					<tr class="update-db-fields-batch">
 						<td valign="top">
-							<input type="checkbox" id="' . $tableId . '-checkbox"' . ($checked ? ' checked="checked"' : '') . '
-							onclick="$(\'' . $tableId . '\').select(\'input[type=checkbox]\').invoke(\'setValue\', $(this).checked);" />
+							<input type="checkbox" id="' . $tableId) . '-checkbox"') . ($checked ? ' checked="checked"' : '')) . '
+							onclick="$(\'') . $tableId) . '\').select(\'input[type=checkbox]\').invoke(\'setValue\', $(this).checked);" />
 						</td>
-						<td nowrap="nowrap"><label for="' . $tableId . '-checkbox" style="cursor:pointer"><strong>select/deselect all</strong></label></td>
+						<td nowrap="nowrap"><label for="') . $tableId) . '-checkbox" style="cursor:pointer"><strong>select/deselect all</strong></label></td>
 					</tr>';
 			}
 			foreach ($arr as $key => $string) {
 				$ico = '';
 				$warnings = array();
-
 				if ($iconDis) {
 					if (preg_match('/^TRUNCATE/i', $string)) {
-						$ico .= '<img src="' . $this->backPath . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong> </strong>';
+						$ico .= ('<img src="' . $this->backPath) . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong> </strong>';
 						$warnings['clear_table_info'] = 'Clearing the table is sometimes neccessary when adding new keys. In case of cache_* tables this should not hurt at all. However, use it with care.';
 					} elseif (stristr($string, ' user_')) {
-						$ico .= '<img src="' . $this->backPath . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(USER) </strong>';
+						$ico .= ('<img src="' . $this->backPath) . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(USER) </strong>';
 					} elseif (stristr($string, ' app_')) {
-						$ico .= '<img src="' . $this->backPath . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(APP) </strong>';
+						$ico .= ('<img src="' . $this->backPath) . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(APP) </strong>';
 					} elseif (stristr($string, ' ttx_') || stristr($string, ' tx_')) {
-						$ico .= '<img src="' . $this->backPath . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(EXT) </strong>';
+						$ico .= ('<img src="' . $this->backPath) . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(EXT) </strong>';
 					}
 				}
-				$out[] = '
+				$out[] = ((((((((((('
 					<tr>
-						<td valign="top"><input type="checkbox" id="db-' . $key . '" name="' . $this->dbUpdateCheckboxPrefix . '[' . $key . ']" value="1"' . ($checked ? ' checked="checked"' : '') . ' /></td>
-						<td nowrap="nowrap"><label for="db-' . $key . '">' . nl2br($ico . htmlspecialchars($string)) . '</label></td>
+						<td valign="top"><input type="checkbox" id="db-' . $key) . '" name="') . $this->dbUpdateCheckboxPrefix) . '[') . $key) . ']" value="1"') . ($checked ? ' checked="checked"' : '')) . ' /></td>
+						<td nowrap="nowrap"><label for="db-') . $key) . '">') . nl2br(($ico . htmlspecialchars($string)))) . '</label></td>
 					</tr>';
 				if (isset($currentValue[$key])) {
-					$out[] = '
+					$out[] = ('
 					<tr>
 						<td valign="top"></td>
-						<td nowrap="nowrap" style="color:#666666;">' . nl2br((!$cVfullMsg ? 'Current value: ' : '') . '<em>' . $currentValue[$key] . '</em>') . '</td>
+						<td nowrap="nowrap" style="color:#666666;">' . nl2br(((((!$cVfullMsg ? 'Current value: ' : '') . '<em>') . $currentValue[$key]) . '</em>'))) . '</td>
 					</tr>';
 				}
 			}
 			if (count($warnings)) {
-				$out[] = '
+				$out[] = ('
 					<tr>
 						<td valign="top"></td>
-						<td style="color:#666666;"><em>' . implode('<br />', $warnings) . '</em></td>
+						<td style="color:#666666;"><em>' . implode('<br />', $warnings)) . '</em></td>
 					</tr>';
 			}
-
-				// Compile rows:
-			$content = '
+			// Compile rows:
+			$content = ((((('
 				<!-- Update database fields / tables -->
-				<h3>' . $label . '</h3>
-				<table border="0" cellpadding="2" cellspacing="2" id="' . $tableId . '" class="update-db-fields">' . implode('', $out) . '
+				<h3>' . $label) . '</h3>
+				<table border="0" cellpadding="2" cellspacing="2" id="') . $tableId) . '" class="update-db-fields">') . implode('', $out)) . '
 				</table>';
 		}
-
 		return $content;
 	}
+
 }
+
 ?>
