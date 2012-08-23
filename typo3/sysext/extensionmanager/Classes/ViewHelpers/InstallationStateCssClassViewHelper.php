@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Returns a string meant to be used as css class stating whether an extension is
  * available or installed
@@ -34,8 +34,7 @@
  * @package Extension Manager
  * @subpackage ViewHelpers
  */
-class Tx_Extensionmanager_ViewHelpers_InstallationStateCssClassViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
-
+class InstallationStateCssClassViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
 	 * Returns string meant to be used as css class
@@ -57,4 +56,8 @@ class Tx_Extensionmanager_ViewHelpers_InstallationStateCssClassViewHelper extend
 		}
 		return '';
 	}
+
 }
+
+
+?>

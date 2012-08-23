@@ -36,11 +36,9 @@
 if (!is_object($this)) {
 	die('Error: No parent object present.');
 }
-
 $day = $conf['day'];
 $name = $conf['name'];
 $menuItemsArray = array();
-
 if ($day == -1) {
 	$day = date('w');
 }
@@ -52,29 +50,25 @@ if ($day == date('w')) {
 		if ($day == date('w', $son)) {
 			break;
 		}
-			// Security that it's not an eternal loop.
+		// Security that it's not an eternal loop.
 		if ($i > 100) {
 			break;
 		}
 	}
 }
-
 $date = date('Y-m-d', $son);
 // get the uid of the page
-$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'title LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($name . $date, 'pages'));
+$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'title LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(($name . $date), 'pages'));
 $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-
 $value = $row['uid'];
-
 if ($value == '') {
 	$value = $GLOBALS['TSFE']->page['uid'];
 }
 $items = t3lib_div::intExplode(',', $value);
 foreach ($items as $id) {
-	$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages', Array('pidInList' => $id, 'orderBy' => $altSortField));
+	$res = $GLOBALS['TSFE']->cObj->exec_getQuery('pages', array('pidInList' => $id, 'orderBy' => $altSortField));
 	while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 		$menuItemsArray[] = $row;
 	}
 }
-
 ?>

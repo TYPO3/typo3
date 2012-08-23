@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\SysNote\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,7 +23,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Sys_note repository
  *
@@ -29,7 +30,7 @@
  * @subpackage sys_note
  * @author Georg Ringer <typo3@ringerge.org>
  */
-class Tx_SysNote_Domain_Repository_SysNoteRepository {
+class SysNoteRepository {
 
 	/**
 	 * Find all sys_notes by a given pidlist
@@ -38,29 +39,21 @@ class Tx_SysNote_Domain_Repository_SysNoteRepository {
 	 * @return array records
 	 */
 	public function findAllByPidList($pidlist) {
-		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
-			'*',
-			'sys_note',
-			'pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($pidlist) . ')
-					AND (personal=0 OR cruser=' . intval($GLOBALS['BE_USER']->user['uid']) . ')' .
-				t3lib_BEfunc::deleteClause('sys_note'),
-			'',
-			'sorting'
-		);
-
-			// exec_SELECTgetRows can return NULL if the query failed. This is
-			// transformed here to an empty array instead.
+		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_note', (((('pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($pidlist)) . ')
+					AND (personal=0 OR cruser=') . intval($GLOBALS['BE_USER']->user['uid'])) . ')') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_note'), '', 'sorting');
+		// exec_SELECTgetRows can return NULL if the query failed. This is
+		// transformed here to an empty array instead.
 		if ($records === NULL) {
 			$records = array();
 		}
-
 		foreach ($records as $key => $record) {
-			$records[$key]['tstamp'] = new DateTime('@' . $record['tstamp']);
-			$records[$key]['author'] = t3lib_BEfunc::getRecord('be_users', $record['cruser']);
+			$records[$key]['tstamp'] = new \DateTime('@' . $record['tstamp']);
+			$records[$key]['author'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', $record['cruser']);
 		}
-
 		return $records;
 	}
 
 }
+
+
 ?>

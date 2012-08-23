@@ -1,18 +1,16 @@
 <?php
-
 /***************************************************************
-* Extension Manager/Repository config file for ext "tstemplate_info".
-*
-* Auto generated 25-10-2011 13:11
-*
-* Manual updates:
-* Only the data in the array - everything else is removed by next
-* writing. "version" and "dependencies" must not be touched!
-***************************************************************/
-
+ * Extension Manager/Repository config file for ext "tstemplate_info".
+ *
+ * Auto generated 25-10-2011 13:11
+ *
+ * Manual updates:
+ * Only the data in the array - everything else is removed by next
+ * writing. "version" and "dependencies" must not be touched!
+ ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Web>Template, Info/Modify',
-	'description' => 'Quick and easy editing of template record Setup and Constants fields. Allows editing of attached txt-resource files.',
+	'description' => 'Quick and easy editing of TYPO3\\CMS\\Backend\\Template\\DocumentTemplate record Setup and Constants fields. Allows editing of attached txt-resource files.',
 	'category' => 'module',
 	'shy' => 1,
 	'dependencies' => 'tstemplate',
@@ -38,15 +36,11 @@ $EM_CONF[$_EXTKEY] = array(
 		'depends' => array(
 			'php' => '5.3.0-0.0.0',
 			'typo3' => '4.6.0-0.0.0',
-			'tstemplate' => '',
+			'tstemplate' => ''
 		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
+		'conflicts' => array(),
+		'suggests' => array()
 	),
-	'suggests' => array(
-	),
+	'suggests' => array()
 );
-
 ?>

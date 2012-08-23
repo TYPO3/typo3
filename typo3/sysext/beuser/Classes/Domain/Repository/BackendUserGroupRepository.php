@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Beuser\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -23,17 +25,17 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
- * Repository for Tx_Beuser_Domain_Model_BackendUserGroup
+ * Repository for \TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup
  *
  * @author Felix Kopp <felix-source@phorax.com>
  * @package TYPO3
  * @subpackage beuser
  */
-class Tx_Beuser_Domain_Repository_BackendUserGroupRepository extends Tx_Extbase_Persistence_Repository {
+class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 
 }
+
 
 ?>

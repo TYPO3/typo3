@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extensionmanager\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Main extension model
  *
@@ -33,7 +33,7 @@
  * @package Extension Manager
  * @subpackage Model
  */
-class Tx_Extensionmanager_Domain_Model_Dependency extends Tx_Extbase_DomainObject_AbstractEntity {
+class Dependency extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @var string
@@ -58,7 +58,7 @@ class Tx_Extensionmanager_Domain_Model_Dependency extends Tx_Extbase_DomainObjec
 	/**
 	 * @var array
 	 */
-	protected static $dependencyTypes = array(
+	static protected $dependencyTypes = array(
 		'depends',
 		'conflicts'
 	);
@@ -66,7 +66,7 @@ class Tx_Extensionmanager_Domain_Model_Dependency extends Tx_Extbase_DomainObjec
 	/**
 	 * @var array
 	 */
-	public static $specialDependencies = array(
+	static public $specialDependencies = array(
 		'typo3',
 		'php'
 	);
@@ -118,14 +118,14 @@ class Tx_Extensionmanager_Domain_Model_Dependency extends Tx_Extbase_DomainObjec
 
 	/**
 	 * @param string $type
-	 * @throws Tx_Extensionmanager_Exception_ExtensionManager if no valid dependency type was given
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException if no valid dependency type was given
 	 * @return void
 	 */
 	public function setType($type) {
 		if (in_array($type, self::$dependencyTypes)) {
 			$this->type = $type;
 		} else {
-			throw new Tx_Extensionmanager_Exception_ExtensionManager($type . 'was not a valid dependency type.');
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException($type . 'was not a valid dependency type.');
 		}
 	}
 
@@ -135,6 +135,8 @@ class Tx_Extensionmanager_Domain_Model_Dependency extends Tx_Extbase_DomainObjec
 	public function getType() {
 		return $this->type;
 	}
+
 }
+
 
 ?>
