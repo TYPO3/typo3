@@ -50,6 +50,11 @@ class Autoloader {
 	static protected $classNameToFileMapping = array();
 
 	/**
+	 * @var boolean TRUE, if old to new and new to old mapping was populated to PHP
+	 */
+	static protected $mappingLoaded = FALSE;
+
+	/**
 	 * Old class name to new class name mapping
 	 *
 	 * @var array
@@ -81,6 +86,8 @@ class Autoloader {
 	 */
 	static protected $cacheUpdateRequired = FALSE;
 
+
+
 	/**
 	 * The autoloader is static, thus we do not allow instances of this class.
 	 */
@@ -94,7 +101,10 @@ class Autoloader {
 	 * @return boolean TRUE in case of success
 	 */
 	static public function registerAutoloader() {
-		self::loadCoreClassAliasMapping();
+		if (!self::$mappingLoaded) {
+			self::loadCoreClassAliasMapping();
+			self::$mappingLoaded = TRUE;
+		}
 		self::loadCoreAndExtensionRegistry();
 		return spl_autoload_register('TYPO3\\CMS\\Core\\Autoloader::autoload', TRUE, TRUE);
 	}
@@ -113,8 +123,6 @@ class Autoloader {
 			self::$cacheUpdateRequired = FALSE;
 		}
 		self::$classNameToFileMapping = array();
-		self::$aliasToClassNameMapping = array();
-		self::$classNameToAliasMapping = array();
 		return spl_autoload_unregister('TYPO3\\CMS\\Core\\Autoloader::autoload');
 	}
 
@@ -182,7 +190,7 @@ class Autoloader {
 	}
 
 	static public function loadCoreClassAliasMapping() {
-		self::$aliasToClassNameMapping = require_once __DIR__ . '/../Migrations/Code/ClassAliasMap201208221700.php';
+		self::$aliasToClassNameMapping = require __DIR__ . '/../Migrations/Code/ClassAliasMap201208221700.php';
 		// Create aliases for early loaded classes
 		$classedLoadedPriorToAutoloader = array_intersect(self::$aliasToClassNameMapping, get_declared_classes());
 		if (!empty($classedLoadedPriorToAutoloader)) {

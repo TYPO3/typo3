@@ -205,7 +205,6 @@ class SystemEnvironmentBuilder {
 	 * @return void
 	 */
 	static protected function requireBaseClasses() {
-		/** @define PATH_t3lib" "../../../t3lib/ */
 		require_once __DIR__ . '/../Utility/GeneralUtility.php';
 		require_once __DIR__ . '/../Utility/ArrayUtility.php';
 		require_once __DIR__ . '/../Configuration/ConfigurationManager.php';
@@ -228,6 +227,7 @@ class SystemEnvironmentBuilder {
 		require_once __DIR__ . '/../Cache/Backend/SimpleFileBackend.php';
 		require_once __DIR__ . '/../Cache/Backend/NullBackend.php';
 		require_once __DIR__ . '/../Log/LogLevel.php';
+		require_once __DIR__ . '/../Utility/MathUtility.php';
 		require_once __DIR__ . '/../Autoloader.php';
 	}
 
