@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Functional\Domain\Model;
+
 /***************************************************************
  * Copyright notice
  *
@@ -22,12 +24,11 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Functional/Domain/Model/Fixture/FileContext.php';
-namespace TYPO3\CMS\Extbase\Tests\Functional\Domain\Model;
 
 /**
  * Test case to check functionality type converters on FAL domain objects.
  */
-class FileContextTest extends Tx_Extbase_Tests_Functional_BaseTestCase {
+class FileContextTest extends \Tx_Extbase_Tests_Functional_BaseTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Property\PropertyMapper
