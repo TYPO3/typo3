@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for class Typo3_Bootstrap_BaseSetup
  *
@@ -64,33 +63,10 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 * @return void
 	 */
 	protected function createAccessibleProxyClass() {
-		$className = 'Typo3_Bootstrap_BaseSetupAccessibleProxy';
-		if (!class_exists($className, FALSE)) {
-			eval(
-				'class ' . $className . ' extends Typo3_Bootstrap_BaseSetup {' .
-				'  public static function getPathThisScriptCli() {' .
-				'    return parent::getPathThisScriptCli();' .
-				'  }' .
-				'  public static function getUnifiedDirectoryNameWithTrailingSlash($absolutePath) {' .
-				'    return parent::getUnifiedDirectoryNameWithTrailingSlash($absolutePath);' .
-				'  }' .
-				'  public static function addCorePearPathToIncludePath() {' .
-				'    return parent::addCorePearPathToIncludePath();' .
-				'  }' .
-				'  public static function initializeGlobalVariables() {' .
-				'    return parent::initializeGlobalVariables();' .
-				'  }' .
-				'  public static function loadDefaultConfiguration() {' .
-				'    return parent::loadDefaultConfiguration();' .
-				'  }' .
-				'  public static function initializeGlobalTimeTrackingVariables() {' .
-				'    return parent::initializeGlobalTimeTrackingVariables();' .
-				'  }' .
-				'  public static function initializeBasicErrorReporting() {' .
-				'    return parent::initializeBasicErrorReporting();' .
-				'  }' .
-				'}'
-			);
+		$namespace = 'TYPO3\\CMS\\Core\\Core';
+		$className = 'SystemEnvironmentBuilderAccessibleProxy';
+		if (!class_exists($namespace . '\\' .$className, FALSE)) {
+			eval(((((((((((((((((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Core\\SystemEnvironmentBuilder {') . '  public static function getPathThisScriptCli() {') . '    return parent::getPathThisScriptCli();') . '  }') . '  public static function getUnifiedDirectoryNameWithTrailingSlash($absolutePath) {') . '    return parent::getUnifiedDirectoryNameWithTrailingSlash($absolutePath);') . '  }') . '  public static function addCorePearPathToIncludePath() {') . '    return parent::addCorePearPathToIncludePath();') . '  }') . '  public static function initializeGlobalVariables() {') . '    return parent::initializeGlobalVariables();') . '  }') . '  public static function loadDefaultConfiguration() {') . '    return parent::loadDefaultConfiguration();') . '  }') . '  public static function initializeGlobalTimeTrackingVariables() {') . '    return parent::initializeGlobalTimeTrackingVariables();') . '  }') . '  public static function initializeBasicErrorReporting() {') . '    return parent::initializeBasicErrorReporting();') . '  }') . '}');
 		}
 	}
 
@@ -100,7 +76,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	public function getPathThisScriptCliReadsLocalPartFromArgv() {
 		$fakedLocalPart = uniqid('Test');
 		$GLOBALS['_SERVER']['argv'][0] = $fakedLocalPart;
-		$this->assertStringEndsWith($fakedLocalPart, Typo3_Bootstrap_BaseSetupAccessibleProxy::getPathThisScriptCli());
+		$this->assertStringEndsWith($fakedLocalPart, \TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::getPathThisScriptCli());
 	}
 
 	/**
@@ -110,7 +86,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 		$fakedLocalPart = uniqid('Test');
 		unset($GLOBALS['_SERVER']['argv']);
 		$GLOBALS['_ENV']['_'] = $fakedLocalPart;
-		$this->assertStringEndsWith($fakedLocalPart, Typo3_Bootstrap_BaseSetupAccessibleProxy::getPathThisScriptCli());
+		$this->assertStringEndsWith($fakedLocalPart, \TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::getPathThisScriptCli());
 	}
 
 	/**
@@ -121,7 +97,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 		unset($GLOBALS['_SERVER']['argv']);
 		unset($GLOBALS['_ENV']['_']);
 		$GLOBALS['_SERVER']['_'] = $fakedLocalPart;
-		$this->assertStringEndsWith($fakedLocalPart, Typo3_Bootstrap_BaseSetupAccessibleProxy::getPathThisScriptCli());
+		$this->assertStringEndsWith($fakedLocalPart, \TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::getPathThisScriptCli());
 	}
 
 	/**
@@ -131,11 +107,10 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
-
 		$GLOBALS['_SERVER']['argv'][0] = 'foo';
-		$fakedAbsolutePart = '/' . uniqid('Absolute') . '/';
+		$fakedAbsolutePart = ('/' . uniqid('Absolute')) . '/';
 		$_SERVER['PWD'] = $fakedAbsolutePart;
-		$this->assertStringStartsWith($fakedAbsolutePart, Typo3_Bootstrap_BaseSetupAccessibleProxy::getPathThisScriptCli());
+		$this->assertStringStartsWith($fakedAbsolutePart, \TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::getPathThisScriptCli());
 	}
 
 	/**
@@ -147,7 +122,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 		}
 		$input = '/foo/bar/test.php';
 		$expected = '/foo/bar/';
-		$actual = Typo3_Bootstrap_BaseSetupAccessibleProxy::getUnifiedDirectoryNameWithTrailingSlash($input);
+		$actual = \TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::getUnifiedDirectoryNameWithTrailingSlash($input);
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -156,10 +131,10 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 */
 	public function addCorePearPathToIncludePathAddsTypo3ContribPearToPathAsFirstEntry() {
 		$backupPath = get_include_path();
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::addCorePearPathToIncludePath();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::addCorePearPathToIncludePath();
 		$actualValue = get_include_path();
 		set_include_path($backupPath);
-		$this->assertStringStartsWith(PATH_typo3 . 'contrib/pear/' . PATH_SEPARATOR, $actualValue);
+		$this->assertStringStartsWith((PATH_typo3 . 'contrib/pear/') . PATH_SEPARATOR, $actualValue);
 	}
 
 	/**
@@ -167,7 +142,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 */
 	public function initializeGlobalVariablesUnsetsGlobalErrorArray() {
 		$GLOBALS['error'] = 'foo';
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::initializeGlobalVariables();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::initializeGlobalVariables();
 		$this->assertFalse(isset($GLOBALS['error']));
 	}
 
@@ -176,7 +151,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 */
 	public function initializeGlobalVariablesSetsGlobalClientArray() {
 		unset($GLOBALS['CLIENT']);
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::initializeGlobalVariables();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::initializeGlobalVariables();
 		$this->assertArrayHasKey('CLIENT', $GLOBALS);
 	}
 
@@ -185,7 +160,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 */
 	public function initializeGlobalVariablesSetsGlobalTypo3MiscArray() {
 		unset($GLOBALS['TYPO3_MISC']);
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::initializeGlobalVariables();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::initializeGlobalVariables();
 		$this->assertInternalType('array', $GLOBALS['TYPO3_MISC']);
 	}
 
@@ -194,7 +169,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 */
 	public function initializeGlobalVariablesSetsGlobalT3VarArray() {
 		unset($GLOBALS['T3_VAR']);
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::initializeGlobalVariables();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::initializeGlobalVariables();
 		$this->assertInternalType('array', $GLOBALS['T3_VAR']);
 	}
 
@@ -203,7 +178,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 */
 	public function initializeGlobalVariablesSetsGlobalT3ServicesArray() {
 		unset($GLOBALS['T3_SERVICES']);
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::initializeGlobalVariables();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::initializeGlobalVariables();
 		$this->assertInternalType('array', $GLOBALS['T3_SERVICES']);
 	}
 
@@ -212,7 +187,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 */
 	public function loadDefaultConfigurationPopulatesTypo3ConfVarsArray() {
 		unset($GLOBALS['TYPO3_CONF_VARS']);
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::loadDefaultConfiguration();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::loadDefaultConfiguration();
 		$this->assertInternalType('array', $GLOBALS['TYPO3_CONF_VARS']);
 	}
 
@@ -227,7 +202,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 			'EXEC_TIME' => array('EXEC_TIME'),
 			'ACCESS_TIME' => array('ACCESS_TIME'),
 			'SIM_EXEC_TIME' => array('SIM_EXEC_TIME'),
-			'SIM_ACCESS_TIME' => array('SIM_ACCESS_TIME'),
+			'SIM_ACCESS_TIME' => array('SIM_ACCESS_TIME')
 		);
 	}
 
@@ -238,7 +213,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 */
 	public function initializeGlobalTimeTrackingVariablesSetsGlobalVariables($variable) {
 		unset($GLOBALS[$variable]);
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::initializeGlobalTimeTrackingVariables();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::initializeGlobalTimeTrackingVariables();
 		$this->assertTrue(isset($GLOBALS[$variable]));
 	}
 
@@ -247,7 +222,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 */
 	public function initializeGlobalTimeTrackingVariablesSetsGlobalTypo3MiscMicrotimeStart() {
 		unset($GLOBALS['TYPO3_MISC']['microtime_start']);
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::initializeGlobalTimeTrackingVariables();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::initializeGlobalTimeTrackingVariables();
 		$this->assertTrue(isset($GLOBALS['TYPO3_MISC']['microtime_start']));
 	}
 
@@ -255,7 +230,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function initializeGlobalTimeTrackingVariablesRoundsAccessTimeToSixtySeconds() {
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::initializeGlobalTimeTrackingVariables();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::initializeGlobalTimeTrackingVariables();
 		$this->assertEquals(0, $GLOBALS['ACCESS_TIME'] % 60);
 	}
 
@@ -263,7 +238,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function initializeGlobalTimeTrackingVariablesRoundsSimAccessTimeToSixtySeconds() {
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::initializeGlobalTimeTrackingVariables();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::initializeGlobalTimeTrackingVariables();
 		$this->assertEquals(0, $GLOBALS['SIM_ACCESS_TIME'] % 60);
 	}
 
@@ -272,7 +247,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 */
 	public function initializeBasicErrorReportingExcludesStrict() {
 		$backupReporting = error_reporting();
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::initializeBasicErrorReporting();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::initializeBasicErrorReporting();
 		$actualReporting = error_reporting();
 		error_reporting($backupReporting);
 		$this->assertEquals(0, $actualReporting & E_STRICT);
@@ -283,7 +258,7 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 */
 	public function initializeBasicErrorReportingExcludesNotice() {
 		$backupReporting = error_reporting();
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::initializeBasicErrorReporting();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::initializeBasicErrorReporting();
 		$actualReporting = error_reporting();
 		error_reporting($backupReporting);
 		$this->assertEquals(0, $actualReporting & E_NOTICE);
@@ -294,10 +269,12 @@ class Typo3_Bootstrap_BaseSetupTest extends tx_phpunit_testcase {
 	 */
 	public function initializeBasicErrorReportingExcludesDeprecated() {
 		$backupReporting = error_reporting();
-		Typo3_Bootstrap_BaseSetupAccessibleProxy::initializeBasicErrorReporting();
+		\TYPO3\CMS\Core\Core\SystemEnvironmentBuilderAccessibleProxy::initializeBasicErrorReporting();
 		$actualReporting = error_reporting();
 		error_reporting($backupReporting);
 		$this->assertEquals(0, $actualReporting & E_DEPRECATED);
 	}
+
 }
+
 ?>

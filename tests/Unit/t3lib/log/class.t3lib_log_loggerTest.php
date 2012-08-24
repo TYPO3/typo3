@@ -22,10 +22,8 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-require_once('fixtures/class.t3lib_log_writer_fixture.php');
-require_once('fixtures/class.t3lib_log_writer_failing.php');
-
+require_once 'fixtures/class.t3lib_log_writer_fixture.php';
+require_once 'fixtures/class.t3lib_log_writer_failing.php';
 /**
  * Testcase for t3lib_log_Logger.
  *
@@ -40,7 +38,7 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getNameGetsLoggerName() {
-		$logger = new t3lib_log_Logger('test.core.log');
+		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
 		$this->assertSame('test.core.log', $logger->getName());
 	}
 
@@ -48,14 +46,11 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function loggerDoesNotLogRecordsLessCriticalThanLogLevel() {
-		$logger = new t3lib_log_Logger('test.core.log');
-
+		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
 		$writer = new t3lib_log_writer_Fixture();
-		$logger->addWriter(t3lib_log_Level::ERROR, $writer);
-
-			// warning < error, thus must not be logged
-		$logger->log(t3lib_log_Level::WARNING, 'test message');
-
+		$logger->addWriter(\TYPO3\CMS\Core\Log\LogLevel::ERROR, $writer);
+		// warning < error, thus must not be logged
+		$logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'test message');
 		$this->assertAttributeEmpty('records', $writer);
 	}
 
@@ -63,39 +58,31 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function loggerReturnsItselfAfterLogging() {
-		$logger = new t3lib_log_Logger('test.core.log');
-
+		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
 		$writer = new t3lib_log_writer_Fixture();
-		$logger->addWriter(t3lib_log_Level::DEBUG, $writer);
-
-		$returnValue = $logger->log(t3lib_log_Level::WARNING, 'test message');
-
-		$this->assertInstanceOf('t3lib_log_Logger', $returnValue);
+		$logger->addWriter(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, $writer);
+		$returnValue = $logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'test message');
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Log\\Logger', $returnValue);
 	}
 
 	/**
 	 * @test
 	 */
 	public function loggerReturnsItselfAfterLoggingWithoutWriter() {
-		$logger = new t3lib_log_Logger('test.core.log');
-
-		$returnValue = $logger->log(t3lib_log_Level::WARNING, 'test message');
-
-		$this->assertInstanceOf('t3lib_log_Logger', $returnValue);
+		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
+		$returnValue = $logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'test message');
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Log\\Logger', $returnValue);
 	}
 
 	/**
 	 * @test
 	 */
 	public function loggerReturnsItselfAfterLoggingLessCritical() {
-		$logger = new t3lib_log_Logger('test.core.log');
-
+		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
 		$writer = new t3lib_log_writer_Fixture();
-		$logger->addWriter(t3lib_log_Level::EMERGENCY, $writer);
-
-		$returnValue = $logger->log(t3lib_log_Level::WARNING, 'test message');
-
-		$this->assertInstanceOf('t3lib_log_Logger', $returnValue);
+		$logger->addWriter(\TYPO3\CMS\Core\Log\LogLevel::EMERGENCY, $writer);
+		$returnValue = $logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'test message');
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Log\\Logger', $returnValue);
 	}
 
 	/**
@@ -103,22 +90,15 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	 */
 	public function loggerCallsProcessor() {
 		$component = 'test.core.log';
-		$level     = t3lib_log_Level::DEBUG;
-		$message   = 'test';
-
-		$logger = new t3lib_log_Logger($component);
-
-		/** @var $processor t3lib_log_processor_Processor */
-		$processor = $this->getMock('t3lib_log_processor_Null', array('processLogRecord'));
-		$processor->expects($this->once())
-			->method('processLogRecord')
-			->will($this->returnValue(new t3lib_log_Record($component, $level, $message)));
-
+		$level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
+		$message = 'test';
+		$logger = new \TYPO3\CMS\Core\Log\Logger($component);
+		/** @var $processor \TYPO3\CMS\Core\Log\Processor\Processor */
+		$processor = $this->getMock('TYPO3\\CMS\\Core\\Log\\Processor\\NullProcessor', array('processLogRecord'));
+		$processor->expects($this->once())->method('processLogRecord')->will($this->returnValue(new \TYPO3\CMS\Core\Log\LogRecord($component, $level, $message)));
 		$logger->addProcessor($level, $processor);
-
-			// we need a writer, otherwise we will not process log records
-		$logger->addWriter($level, new t3lib_log_writer_Null());
-
+		// we need a writer, otherwise we will not process log records
+		$logger->addWriter($level, new \TYPO3\CMS\Core\Log\Writer\NullWriter());
 		$logger->warning($message);
 	}
 
@@ -126,14 +106,10 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function loggerLogsRecord() {
-		$logger = new t3lib_log_Logger('test.core.log');
-
-		$writer = $this->getMock('t3lib_log_writer_Null', array('writeLog'));
-		$writer->expects($this->once())
-			->method('writeLog');
-
-		$logger->addWriter(t3lib_log_Level::DEBUG, $writer);
-
+		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
+		$writer = $this->getMock('TYPO3\\CMS\\Core\\Log\\Writer\\NullWriter', array('writeLog'));
+		$writer->expects($this->once())->method('writeLog');
+		$logger->addWriter(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, $writer);
 		$logger->warning('test');
 	}
 
@@ -141,14 +117,11 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function loggerLogsRecordsAtLeastAsCriticalAsLogLevel() {
-		$logger = new t3lib_log_Logger('test.core.log');
-
+		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
 		$writer = new t3lib_log_writer_Fixture();
-		$logger->addWriter(t3lib_log_Level::NOTICE, $writer);
-
-			// notice == notice, thus must be logged
-		$logger->log(t3lib_log_Level::NOTICE, 'test message');
-
+		$logger->addWriter(\TYPO3\CMS\Core\Log\LogLevel::NOTICE, $writer);
+		// notice == notice, thus must be logged
+		$logger->log(\TYPO3\CMS\Core\Log\LogLevel::NOTICE, 'test message');
 		$this->assertAttributeNotEmpty('records', $writer);
 	}
 
@@ -164,7 +137,7 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 			array('warning'),
 			array('notice'),
 			array('info'),
-			array('debug'),
+			array('debug')
 		);
 	}
 
@@ -174,13 +147,10 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	 * @dataProvider loggerLogsRecordsThroughShorthandMethodDataProvider
 	 */
 	public function loggerLogsRecordsThroughShorthandMethod($shorthandMethod) {
-		$logger = new t3lib_log_Logger('test.core.log');
-
+		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
 		$writer = new t3lib_log_writer_Fixture();
-		$logger->addWriter(t3lib_log_Level::DEBUG, $writer);
-
+		$logger->addWriter(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, $writer);
 		call_user_func(array($logger, $shorthandMethod), 'test message');
-
 		$this->assertAttributeNotEmpty('records', $writer);
 	}
 
@@ -188,14 +158,11 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function loggerLogsRecordsMoreCriticalThanLogLevel() {
-		$logger = new t3lib_log_Logger('test.core.log');
-
+		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
 		$writer = new t3lib_log_writer_Fixture();
-		$logger->addWriter(t3lib_log_Level::NOTICE, $writer);
-
-			// warning > notice, thus must be logged
-		$logger->log(t3lib_log_Level::WARNING, 'test message');
-
+		$logger->addWriter(\TYPO3\CMS\Core\Log\LogLevel::NOTICE, $writer);
+		// warning > notice, thus must be logged
+		$logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'test message');
 		$this->assertAttributeNotEmpty('records', $writer);
 	}
 
@@ -203,28 +170,24 @@ class t3lib_log_LoggerTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function addWriterAddsWriterToTheSpecifiedLevel() {
-		$logger = new t3lib_log_Logger('test.core.log');
-
+		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
 		$writer = new t3lib_log_writer_Fixture();
-		$logger->addWriter(t3lib_log_Level::NOTICE, $writer);
-
+		$logger->addWriter(\TYPO3\CMS\Core\Log\LogLevel::NOTICE, $writer);
 		$writers = $logger->getWriters();
-
-		$this->assertContains($writer, $writers[t3lib_log_Level::NOTICE]);
+		$this->assertContains($writer, $writers[\TYPO3\CMS\Core\Log\LogLevel::NOTICE]);
 	}
+
 	/**
 	 * @test
 	 */
 	public function addWriterAddsWriterAlsoToHigherLevelsThanSpecified() {
-		$logger = new t3lib_log_Logger('test.core.log');
-
+		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
 		$writer = new t3lib_log_writer_Fixture();
-		$logger->addWriter(t3lib_log_Level::NOTICE, $writer);
-
+		$logger->addWriter(\TYPO3\CMS\Core\Log\LogLevel::NOTICE, $writer);
 		$writers = $logger->getWriters();
-
-		$this->assertContains($writer, $writers[t3lib_log_Level::EMERGENCY]);
+		$this->assertContains($writer, $writers[\TYPO3\CMS\Core\Log\LogLevel::EMERGENCY]);
 	}
+
 }
 
 ?>

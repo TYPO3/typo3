@@ -9,7 +9,7 @@
 class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 
 	/**
-	 * @var t3lib_category_Collection_CategoryCollection
+	 * @var \TYPO3\CMS\Core\Category\Collection\CategoryCollection
 	 */
 	private $fixture;
 
@@ -39,7 +39,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	private $testingFramework;
 
 	/**
-	 * @var t3lib_DB
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	private $database;
 
@@ -49,21 +49,16 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	public function setUp() {
-
 		$this->database = $GLOBALS['TYPO3_DB'];
-
-		$this->fixture = new t3lib_category_Collection_CategoryCollection($this->tableName);
-
+		$this->fixture = new \TYPO3\CMS\Core\Category\Collection\CategoryCollection($this->tableName);
 		$this->collectionRecord = array(
 			'uid' => 0,
 			'title' => uniqid('title'),
 			'description' => uniqid('description'),
 			'table_name' => 'content'
 		);
-
 		$GLOBALS['TCA'][$this->tableName] = array('ctrl' => array());
-
-			// prepare environment
+		// prepare environment
 		$this->createDummyTable();
 		$this->testingFramework = new Tx_Phpunit_Framework('sys_category', array('tx_foo'));
 		$this->populateDummyTable();
@@ -77,13 +72,10 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	public function tearDown() {
-
 		$this->testingFramework->cleanUp();
-
-			// clean up environment
+		// clean up environment
 		$this->dropDummyTable();
 		$this->dropDummyField();
-
 		unset($this->testingFramework);
 		unset($this->collectionRecord);
 		unset($this->fixture);
@@ -97,7 +89,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	public function missingTableNameArgumentForObjectCategoryCollection() {
-		new t3lib_category_Collection_CategoryCollection();
+		new \TYPO3\CMS\Core\Category\Collection\CategoryCollection();
 	}
 
 	/**
@@ -107,7 +99,6 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 */
 	public function checkIfFromArrayMethodSetCorrectProperties() {
 		$this->fixture->fromArray($this->collectionRecord);
-
 		$this->assertEquals($this->collectionRecord['uid'], $this->fixture->getIdentifier());
 		$this->assertEquals($this->collectionRecord['uid'], $this->fixture->getUid());
 		$this->assertEquals($this->collectionRecord['title'], $this->fixture->getTitle());
@@ -121,7 +112,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	public function canCreateDummyCollection() {
-		$collection = t3lib_category_Collection_CategoryCollection::create($this->collectionRecord);
+		$collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create($this->collectionRecord);
 		$this->assertInstanceOf('t3lib_category_collection_categorycollection', $collection);
 	}
 
@@ -131,7 +122,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	public function canCreateDummyCollectionAndFillItems() {
-		$collection = t3lib_category_Collection_CategoryCollection::create($this->collectionRecord, TRUE);
+		$collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create($this->collectionRecord, TRUE);
 		$this->assertInstanceOf('t3lib_category_collection_categorycollection', $collection);
 	}
 
@@ -141,10 +132,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	public function getCollectedRecordsReturnsEmptyRecordSet() {
-		$method = new ReflectionMethod(
-			't3lib_category_Collection_CategoryCollection', 'getCollectedRecords'
-		);
-
+		$method = new ReflectionMethod('TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection', 'getCollectedRecords');
 		$method->setAccessible(TRUE);
 		$records = $method->invoke($this->fixture);
 		$this->assertInternalType('array', $records);
@@ -157,7 +145,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	public function isStorageTableNameEqualsToSysCategory() {
-		$this->assertEquals('sys_category', t3lib_category_Collection_CategoryCollection::getStorageTableName());
+		$this->assertEquals('sys_category', \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getStorageTableName());
 	}
 
 	/**
@@ -166,7 +154,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	public function isStorageItemsFieldEqualsToItems() {
-		$this->assertEquals('items', t3lib_category_Collection_CategoryCollection::getStorageItemsField());
+		$this->assertEquals('items', \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getStorageItemsField());
 	}
 
 	/**
@@ -174,27 +162,22 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	public function canLoadADummyCollectionFromDatabase() {
-
-		/** @var $collection t3lib_category_Collection_CategoryCollection */
-		$collection = t3lib_category_Collection_CategoryCollection::load($this->categoryUid, TRUE, $this->tableName);
-
-			// Check the number of record
+		/** @var $collection \TYPO3\CMS\Core\Category\Collection\CategoryCollection */
+		$collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::load($this->categoryUid, TRUE, $this->tableName);
+		// Check the number of record
 		$this->assertEquals($this->numberOfRecords, $collection->count());
-
-			// Check that the first record is the one expected
+		// Check that the first record is the one expected
 		$record = $this->database->exec_SELECTgetSingleRow('*', $this->tableName, 'uid=1');
 		$collection->rewind();
 		$this->assertEquals($record, $collection->current());
-
-			// Add a new record
+		// Add a new record
 		$fakeRecord = array(
 			'uid' => $this->numberOfRecords + 1,
 			'pid' => 0,
 			'title' => uniqid('title'),
 			'categories' => 0
 		);
-
-			// Check the number of records
+		// Check the number of records
 		$collection->add($fakeRecord);
 		$this->assertEquals($this->numberOfRecords + 1, $collection->count());
 	}
@@ -204,17 +187,15 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	public function canLoadADummyCollectionFromDatabaseAndAddRecord() {
-		$collection = t3lib_category_Collection_CategoryCollection::load($this->categoryUid, TRUE, $this->tableName);
-
-			// Add a new record
+		$collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::load($this->categoryUid, TRUE, $this->tableName);
+		// Add a new record
 		$fakeRecord = array(
 			'uid' => $this->numberOfRecords + 1,
 			'pid' => 0,
 			'title' => uniqid('title'),
 			'categories' => 0
 		);
-
-			// Check the number of records
+		// Check the number of records
 		$collection->add($fakeRecord);
 		$this->assertEquals($this->numberOfRecords + 1, $collection->count());
 	}
@@ -224,18 +205,15 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	public function canLoadADummyCollectionWithoutContentFromDatabase() {
-
-		/** @var $collection t3lib_category_Collection_CategoryCollection */
-		$collection = t3lib_category_Collection_CategoryCollection::load($this->categoryUid, FALSE, $this->tableName);
-
-			// Check the number of record
+		/** @var $collection \TYPO3\CMS\Core\Category\Collection\CategoryCollection */
+		$collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::load($this->categoryUid, FALSE, $this->tableName);
+		// Check the number of record
 		$this->assertEquals(0, $collection->count());
 	}
 
 	/********************/
 	/* INTERNAL METHODS */
 	/********************/
-
 	/**
 	 * Create dummy table for testing purpose
 	 *
@@ -245,7 +223,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 		$this->numberOfRecords = 5;
 		for ($index = 1; $index <= $this->numberOfRecords; $index++) {
 			$values = array(
-				'title' => uniqid('title'),
+				'title' => uniqid('title')
 			);
 			$this->testingFramework->createRecord($this->tableName, $values);
 		}
@@ -257,15 +235,12 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	private function makeRelationBetweenCategoryAndDummyTable() {
-
 		for ($index = 1; $index <= $this->numberOfRecords; $index++) {
-
 			$values = array(
 				'uid_local' => $this->categoryUid,
 				'uid_foreign' => $index,
 				'tablenames' => $this->tableName
 			);
-
 			$this->testingFramework->createRecord('sys_category_record_mm', $values);
 		}
 	}
@@ -276,27 +251,17 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	private function createDummyTable() {
-		$sql = <<<EOF
-CREATE TABLE {$this->tableName} (
-	uid int(11) auto_increment,
-	pid int(11) unsigned DEFAULT '0' NOT NULL,
-    title tinytext,
-	categories int(11) unsigned DEFAULT '0' NOT NULL,
-	sys_category_is_dummy_record int(11) unsigned DEFAULT '0' NOT NULL,
-
-    PRIMARY KEY (uid)
-);
-EOF;
+		$sql = "CREATE TABLE {$this->tableName} (\n\tuid int(11) auto_increment,\n\tpid int(11) unsigned DEFAULT '0' NOT NULL,\n    title tinytext,\n\tcategories int(11) unsigned DEFAULT '0' NOT NULL,\n\tsys_category_is_dummy_record int(11) unsigned DEFAULT '0' NOT NULL,\n\n    PRIMARY KEY (uid)\n);";
 		$this->database->sql_query($sql);
 	}
 
 	/**
-     * Drop dummy table
+	 * Drop dummy table
 	 *
 	 * @return void
 	 */
 	private function dropDummyTable() {
-		$sql = 'DROP TABLE ' . $this->tableName . ';';
+		$sql = ('DROP TABLE ' . $this->tableName) . ';';
 		$this->database->sql_query($sql);
 	}
 
@@ -307,15 +272,13 @@ EOF;
 	 */
 	private function prepareTables() {
 		$sql = 'ALTER TABLE %s ADD is_dummy_record tinyint(1) unsigned DEFAULT \'0\' NOT NULL';
-
 		foreach ($this->tables as $table) {
 			$_sql = sprintf($sql, $table);
 			$this->database->sql_query($_sql);
 		}
-
 		$values = array(
 			'title' => uniqid('title'),
-			'is_dummy_record' => 1,
+			'is_dummy_record' => 1
 		);
 		$this->categoryUid = $this->testingFramework->createRecord('sys_category', $values);
 	}
@@ -332,6 +295,7 @@ EOF;
 			$this->database->sql_query($_sql);
 		}
 	}
+
 }
 
 ?>

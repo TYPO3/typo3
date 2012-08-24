@@ -21,10 +21,7 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-require_once(__DIR__ . DIRECTORY_SEPARATOR . '../fixtures/class.t3lib_log_processor_fixture.php');
-
-
+require_once (__DIR__ . DIRECTORY_SEPARATOR) . '../fixtures/class.t3lib_log_processor_fixture.php';
 /**
  * Testcase for t3lib_log_processor_Abstract
  *
@@ -40,8 +37,7 @@ class t3lib_log_processor_AbstractTest extends tx_phpunit_testcase {
 		$invalidConfiguration = array(
 			'foo' => 'bar'
 		);
-
-		$processor = t3lib_div::makeInstance('t3lib_log_processor_Fixture', $invalidConfiguration);
+		$processor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_log_processor_Fixture', $invalidConfiguration);
 	}
 
 }

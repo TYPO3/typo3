@@ -24,8 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Testcase for the file indexing service
  *
@@ -47,15 +45,13 @@ class t3lib_file_Service_IndexerServiceTest extends Tx_Phpunit_TestCase {
 			'size' => 1234,
 			'uid' => rand(1, 100)
 		);
-		/** @var $fixture t3lib_file_Service_IndexerService */
-		$fixture = $this->getMock('t3lib_file_Service_IndexerService', array('gatherFileInformation'));
+		/** @var $fixture \TYPO3\CMS\Core\Resource\Service\IndexerService */
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array('gatherFileInformation'));
 		$fixture->expects($this->any())->method('gatherFileInformation')->will($this->returnValue($fileInfo));
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
 		$GLOBALS['TYPO3_DB']->expects($this->atLeastOnce())->method('sql_insert_id')->will($this->returnValue($fileInfo['uid']));
-
-		$mockedFile = $this->getMock('t3lib_file_File', array(), array(), '', FALSE);
+		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
 		$mockedFile->expects($this->once())->method('updateProperties')->with($this->equalTo($fileInfo));
-
 		$fixture->indexFile($mockedFile);
 	}
 
@@ -63,25 +59,19 @@ class t3lib_file_Service_IndexerServiceTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function indexFileSetsCreationdateAndTimestampPropertiesOfRecordToCurrentExecutionTime() {
-		$fileInfo = array(
-		);
-		/** @var $fixture t3lib_file_Service_IndexerService */
-		$fixture = $this->getMock('t3lib_file_Service_IndexerService', array('gatherFileInformation'));
+		$fileInfo = array();
+		/** @var $fixture \TYPO3\CMS\Core\Resource\Service\IndexerService */
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Service\\IndexerService', array('gatherFileInformation'));
 		$fixture->expects($this->any())->method('gatherFileInformation')->will($this->returnValue($fileInfo));
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array(), array(), '', FALSE);
-		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->with(
-			$this->anything(),
-			$this->equalTo(
-				array(
-					'crdate' => $GLOBALS['EXEC_TIME'],
-					'tstamp' => $GLOBALS['EXEC_TIME'],
-				)
-			)
-		);
-
-		$mockedFile = $this->getMock('t3lib_file_File', array(), array(), '', FALSE);
-
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array(), array(), '', FALSE);
+		$GLOBALS['TYPO3_DB']->expects($this->once())->method('exec_INSERTquery')->with($this->anything(), $this->equalTo(array(
+			'crdate' => $GLOBALS['EXEC_TIME'],
+			'tstamp' => $GLOBALS['EXEC_TIME']
+		)));
+		$mockedFile = $this->getMock('TYPO3\\CMS\\Core\\Resource\\File', array(), array(), '', FALSE);
 		$fixture->indexFile($mockedFile);
 	}
+
 }
+
 ?>

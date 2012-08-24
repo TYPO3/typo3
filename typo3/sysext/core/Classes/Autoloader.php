@@ -113,6 +113,8 @@ class Autoloader {
 			self::$cacheUpdateRequired = FALSE;
 		}
 		self::$classNameToFileMapping = array();
+		self::$aliasToClassNameMapping = array();
+		self::$classNameToAliasMapping = array();
 		return spl_autoload_unregister('TYPO3\\CMS\\Core\\Autoloader::autoload');
 	}
 
@@ -281,6 +283,7 @@ class Autoloader {
 			$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[1]);
 			$classNameWithoutVendorAndProduct = $classNameParts[2];
 		}
+
 		if ($extensionKey) {
 			try {
 				// This will throw a BadFunctionCallException if the extension is not loaded

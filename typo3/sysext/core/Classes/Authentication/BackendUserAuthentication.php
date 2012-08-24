@@ -2453,7 +2453,7 @@ This is a dump of the failures:
 	 */
 	public function logoff() {
 		if (isset($GLOBALS['BE_USER'])) {
-			\t3lib_formProtection_Factory::get()->clean();
+			\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get()->clean();
 		}
 		parent::logoff();
 	}

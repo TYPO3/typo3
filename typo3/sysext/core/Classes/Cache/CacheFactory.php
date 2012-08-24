@@ -83,6 +83,7 @@ class CacheFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	public function create($cacheIdentifier, $cacheObjectName, $backendObjectName, array $backendOptions = array()) {
 		// New operator used on purpose: This class is required early during
 		// bootstrap before makeInstance() is propely set up
+		$backendObjectName = '\\' . ltrim($backendObjectName, '\\');
 		$backend = new $backendObjectName($this->context, $backendOptions);
 		if (!$backend instanceof \TYPO3\CMS\Core\Cache\Backend\BackendInterface) {
 			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidBackendException(('"' . $backendObjectName) . '" is not a valid cache backend object.', 1216304301);

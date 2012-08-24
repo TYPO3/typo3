@@ -21,14 +21,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-require_once('fixture/t3lib_utility_math_fixture_classWithStringRepresentation.php');
-
+require_once 'fixture/t3lib_utility_math_fixture_classWithStringRepresentation.php';
 /**
  * Testcase for class t3lib_utility_Math
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
- *
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -57,14 +54,14 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	 * @dataProvider forceIntegerInRangeForcesIntegerIntoDefaultBoundariesDataProvider
 	 */
 	public function forceIntegerInRangeForcesIntegerIntoDefaultBoundaries($expected, $value) {
-		$this->assertEquals($expected, t3lib_utility_Math::forceIntegerInRange($value, 0));
+		$this->assertEquals($expected, \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, 0));
 	}
 
 	/**
 	 * @test
 	 */
 	public function forceIntegerInRangeSetsDefaultValueIfZeroValueIsGiven() {
-		$this->assertEquals(42, t3lib_utility_Math::forceIntegerInRange('', 0, 2000000000, 42));
+		$this->assertEquals(42, \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange('', 0, 2000000000, 42));
 	}
 
 	//////////////////////////////////
@@ -74,20 +71,19 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function convertToPositiveIntegerReturnsZeroForNegativeValues() {
-		$this->assertEquals(0, t3lib_utility_Math::convertToPositiveInteger(-123));
+		$this->assertEquals(0, \TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger(-123));
 	}
 
 	/**
 	 * @test
 	 */
 	public function convertToPositiveIntegerReturnsTheInputValueForPositiveValues() {
-		$this->assertEquals(123, t3lib_utility_Math::convertToPositiveInteger(123));
+		$this->assertEquals(123, \TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger(123));
 	}
 
 	///////////////////////////////
 	// Tests concerning testInt
 	///////////////////////////////
-
 	/**
 	 * Data provider for canBeInterpretedAsIntegerReturnsTrue
 	 *
@@ -101,7 +97,7 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 			'int as string' => array('32425'),
 			'negative int as string' => array('-32425'),
 			'zero' => array(0),
-			'zero as string' => array('0'),
+			'zero as string' => array('0')
 		);
 	}
 
@@ -110,7 +106,7 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	 * @dataProvider functionCanBeInterpretedAsIntegerValidDataProvider
 	 */
 	public function testIntReturnsTrue($int) {
-		$this->assertTrue(t3lib_utility_Math::canBeInterpretedAsInteger($int));
+		$this->assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($int));
 	}
 
 	/**
@@ -148,7 +144,7 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 			'object without string representation' => array(new stdClass()),
 			'object with numerical string representation' => array($objectWithNumericalStringRepresentation),
 			'object without numerical string representation' => array($objectWithNonNumericalStringRepresentation),
-			'object with empty string representation' => array($objectWithEmptyStringRepresentation),
+			'object with empty string representation' => array($objectWithEmptyStringRepresentation)
 		);
 	}
 
@@ -157,13 +153,12 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	 * @dataProvider functionCanBeInterpretedAsIntegerInvalidDataProvider
 	 */
 	public function canBeInterpretedAsIntegerReturnsFalse($int) {
-		$this->assertFalse(t3lib_utility_Math::canBeInterpretedAsInteger($int));
+		$this->assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($int));
 	}
 
 	//////////////////////////////////
 	// Tests concerning calculateWithPriorityToAdditionAndSubtraction
 	//////////////////////////////////
-
 	/**
 	 * Data provider for calculateWithPriorityToAdditionAndSubtraction
 	 *
@@ -192,14 +187,12 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	 * @dataProvider calculateWithPriorityToAdditionAndSubtractionDataProvider
 	 */
 	public function calculateWithPriorityToAdditionAndSubtractionCorrectlyCalculatesExpression($expected, $expression) {
-		$this->assertEquals($expected, t3lib_utility_Math::calculateWithPriorityToAdditionAndSubtraction($expression));
+		$this->assertEquals($expected, \TYPO3\CMS\Core\Utility\MathUtility::calculateWithPriorityToAdditionAndSubtraction($expression));
 	}
-
 
 	//////////////////////////////////
 	// Tests concerning calcParenthesis
 	//////////////////////////////////
-
 	/**
 	 * Data provider for calcParenthesis
 	 *
@@ -211,7 +204,7 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 			'ends with parenthesis' => array(6, '2 * (6 - 3)'),
 			'multiple parentheses' => array(-6, '(3 - 6) * (4 - 2)'),
 			'nested parentheses' => array(22, '2 * (3 + 2 + (3 * 2))'),
-			'parenthesis with division' => array(15, '5 / 2 * (3 * 2)'),
+			'parenthesis with division' => array(15, '5 / 2 * (3 * 2)')
 		);
 	}
 
@@ -220,39 +213,38 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	 * @dataProvider calculateWithParenthesesDataProvider
 	 */
 	public function calculateWithParenthesesCorrectlyCalculatesExpression($expected, $expression) {
-		$this->assertEquals($expected, t3lib_utility_Math::calculateWithParentheses($expression));
+		$this->assertEquals($expected, \TYPO3\CMS\Core\Utility\MathUtility::calculateWithParentheses($expression));
 	}
 
 	//////////////////////////////////
 	// Tests concerning isIntegerInRange
 	//////////////////////////////////
-
 	/**
 	 * @test
 	 */
 	public function isIntegerInRangeIncludesLowerBoundary() {
-		$this->assertTrue(t3lib_utility_Math::isIntegerInRange(1, 1, 2));
+		$this->assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange(1, 1, 2));
 	}
 
 	/**
 	 * @test
 	 */
 	public function isIntegerInRangeIncludesUpperBoundary() {
-		$this->assertTrue(t3lib_utility_Math::isIntegerInRange(2, 1, 2));
+		$this->assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange(2, 1, 2));
 	}
 
 	/**
 	 * @test
 	 */
 	public function isIntegerInRangeAcceptsValueInRange() {
-		$this->assertTrue(t3lib_utility_Math::isIntegerInRange(10, 1, 100));
+		$this->assertTrue(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange(10, 1, 100));
 	}
 
 	/**
 	 * @test
 	 */
 	public function isIntegerInRangeRejectsValueOutsideOfRange() {
-		$this->assertFalse(t3lib_utility_Math::isIntegerInRange(10, 1, 2));
+		$this->assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange(10, 1, 2));
 	}
 
 	/**
@@ -266,7 +258,7 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 			'array' => array(array()),
 			'object' => array(new stdClass()),
 			'boolean FALSE' => array(FALSE),
-			'NULL' => array(NULL),
+			'NULL' => array(NULL)
 		);
 	}
 
@@ -275,7 +267,7 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	 * @dataProvider isIntegerInRangeRejectsOtherDataTypesDataProvider
 	 */
 	public function isIntegerInRangeRejectsOtherDataTypes($inputValue) {
-		$this->assertFalse(t3lib_utility_Math::isIntegerInRange($invalidValue, 0, 10));
+		$this->assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange($invalidValue, 0, 10));
 	}
 
 }

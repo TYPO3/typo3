@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for class t3lib_utility_VersionNumber
  *
@@ -60,7 +59,9 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 			'string' => array('300ABCD'),
 			'object' => array(new stdClass()),
 			'NULL' => array(NULL),
-			'function' => array(function(){}),
+			'function' => array(function () {
+
+			})
 		);
 	}
 
@@ -69,7 +70,7 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 	 * @dataProvider validVersionNumberDataProvider
 	 */
 	public function convertVersionNumberToIntegerConvertsVersionNumbersToIntegers($expected, $version) {
-		$this->assertEquals($expected, t3lib_utility_VersionNumber::convertVersionNumberToInteger($version));
+		$this->assertEquals($expected, \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger($version));
 	}
 
 	/**
@@ -77,9 +78,9 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 	 * @dataProvider validVersionNumberDataProvider
 	 */
 	public function convertIntegerToVersionNumberConvertsIntegerToVersionNumber($versionNumber, $expected) {
-			// Make sure incoming value is an integer
+		// Make sure incoming value is an integer
 		$versionNumber = (int) $versionNumber;
-		$this->assertEquals($expected, t3lib_utility_VersionNumber::convertIntegerToVersionNumber($versionNumber));
+		$this->assertEquals($expected, \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertIntegerToVersionNumber($versionNumber));
 	}
 
 	/**
@@ -87,8 +88,8 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 	 * @dataProvider invalidVersionNumberDataProvider
 	 */
 	public function convertIntegerToVersionNumberConvertsOtherTypesAsIntegerToVersionNumber($version) {
-		$this->setExpectedException('\InvalidArgumentException', '', 1334072223);
-		t3lib_utility_VersionNumber::convertIntegerToVersionNumber($version);
+		$this->setExpectedException('\\InvalidArgumentException', '', 1334072223);
+		\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertIntegerToVersionNumber($version);
 	}
 
 	/**
@@ -115,7 +116,7 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 			array(
 				'6.0.1',
 				'6.0.1'
-			),
+			)
 		);
 	}
 
@@ -129,20 +130,17 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 	 * @param string $expectedVersion
 	 */
 	public function getNumericTypo3VersionNumber($currentVersion, $expectedVersion) {
-		$className = uniqid('t3lib_utility_VersionNumber');
-		eval(
-			'class ' . $className . ' extends t3lib_utility_VersionNumber {' .
-			'  protected static function getCurrentTypo3Version() {' .
-			'    return \'' . $currentVersion . '\';' .
-			'  }' .
-			'}'
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Utility';
+		$className = uniqid('VersionNumberUtility');
+		eval(((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Utility\\VersionNumberUtility {') . '  protected static function getCurrentTypo3Version() {') . '    return \'') . $currentVersion) . '\';') . '  }') . '}');
+		$className = $namespace . '\\' . $className;
 		$version = $className::getNumericTypo3Version();
 		$this->assertEquals($expectedVersion, $version);
 	}
 
 	/**
 	 * Data provider for convertVersionsStringToVersionNumbersForcesVersionNumberInRange
+	 *
 	 * @return array
 	 */
 	public function convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider() {
@@ -152,22 +150,22 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 				array(
 					'4.2.0',
 					'4.4.99'
-				),
+				)
 			),
 			'too high value' => array(
 				'4.2.0-4.4.2990',
 				array(
 					'4.2.0',
 					'4.4.999'
-				),
+				)
 			),
 			'empty high value' => array(
 				'4.2.0-0.0.0',
 				array(
 					'4.2.0',
 					''
-				),
-			),
+				)
+			)
 		);
 	}
 
@@ -176,9 +174,10 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 	 * @dataProvider convertVersionsStringToVersionNumbersForcesVersionNumberInRangeDataProvider
 	 */
 	public function convertVersionsStringToVersionNumbersForcesVersionNumberInRange($versionString, $expectedResult) {
-		$versions = t3lib_utility_VersionNumber::convertVersionsStringToVersionNumbers($versionString);
+		$versions = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionsStringToVersionNumbers($versionString);
 		$this->assertEquals($expectedResult, $versions);
 	}
+
 }
 
 ?>

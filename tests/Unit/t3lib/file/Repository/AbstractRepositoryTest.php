@@ -24,8 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Testcase for the abstract repository base class
  *
@@ -36,7 +34,7 @@
 class t3lib_file_Repository_AbstractRepositoryTest extends Tx_Phpunit_TestCase {
 
 	/**
-	 * @var t3lib_file_Repository_AbstractRepository
+	 * @var \TYPO3\CMS\Core\Resource\AbstractRepository
 	 */
 	private $fixture;
 
@@ -45,13 +43,13 @@ class t3lib_file_Repository_AbstractRepositoryTest extends Tx_Phpunit_TestCase {
 	private $Typo3DbBackup;
 
 	protected function createDatabaseMock() {
-		$this->mockedDb = $this->getMock('t3lib_DB');
+		$this->mockedDb = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
 		$this->Typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->mockedDb;
 	}
 
 	public function setUp() {
-		$this->fixture = $this->getMockForAbstractClass('t3lib_file_Repository_AbstractRepository', array(), '', FALSE);
+		$this->fixture = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\AbstractRepository', array(), '', FALSE);
 	}
 
 	public function tearDown() {
@@ -65,7 +63,6 @@ class t3lib_file_Repository_AbstractRepositoryTest extends Tx_Phpunit_TestCase {
 	 */
 	public function findByUidFailsIfUidIsString() {
 		$this->setExpectedException('InvalidArgumentException', '', 1316779798);
-
 		$this->fixture->findByUid('asdf');
 	}
 
@@ -74,11 +71,10 @@ class t3lib_file_Repository_AbstractRepositoryTest extends Tx_Phpunit_TestCase {
 	 */
 	public function findByUidAcceptsNumericUidInString() {
 		$this->createDatabaseMock();
-		$this->mockedDb->expects($this->once())->method('exec_SELECTgetSingleRow')
-			->with($this->anything(), $this->anything(), $this->stringContains('uid=' . 123))
-			->will($this->returnValue(array('uid' => 123)));
-
-		$this->fixture->findByUid("123");
+		$this->mockedDb->expects($this->once())->method('exec_SELECTgetSingleRow')->with($this->anything(), $this->anything(), $this->stringContains('uid=' . 123))->will($this->returnValue(array('uid' => 123)));
+		$this->fixture->findByUid('123');
 	}
+
 }
+
 ?>

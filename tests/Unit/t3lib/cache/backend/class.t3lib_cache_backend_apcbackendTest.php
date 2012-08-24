@@ -1,27 +1,26 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2011 Ingo Renner <ingo@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009-2011 Ingo Renner <ingo@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Testcase for the APC cache backend
  *
@@ -42,7 +41,6 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 		if (!extension_loaded('apc')) {
 			$this->markTestSkipped('APC extension was not available');
 		}
-
 		if (ini_get('apc.slam_defense') == 1) {
 			$this->markTestSkipped('This testcase can only be executed with apc.slam_defense = Off');
 		}
@@ -50,10 +48,10 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @expectedException t3lib_cache_Exception
+	 * @expectedException \TYPO3\CMS\Core\Cache\Exception
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
-		$backend = new t3lib_cache_backend_ApcBackend('Testing');
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\ApcBackend('Testing');
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
@@ -115,14 +113,11 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 */
 	public function findIdentifiersByTagFindsSetEntries() {
 		$backend = $this->setUpBackend();
-
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
-
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
 		$this->assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
-
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
 		$this->assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
 	}
@@ -132,12 +127,10 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 */
 	public function setRemovesTagsFromPreviousSet() {
 		$backend = $this->setUpBackend();
-
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tagX'));
 		$backend->set($identifier, $data, array('UnitTestTag%tag3'));
-
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
 		$this->assertEquals(array(), $retrieved, 'Found entry which should no longer exist.');
 	}
@@ -167,14 +160,11 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
-
 		$data = 'some data' . microtime();
 		$backend->set('BackendAPCTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
 		$backend->set('BackendAPCTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
 		$backend->set('BackendAPCTest3', $data, array('UnitTestTag%test'));
-
 		$backend->flushByTag('UnitTestTag%special');
-
 		$this->assertTrue($backend->has('BackendAPCTest1'), 'BackendAPCTest1');
 		$this->assertFalse($backend->has('BackendAPCTest2'), 'BackendAPCTest2');
 		$this->assertTrue($backend->has('BackendAPCTest3'), 'BackendAPCTest3');
@@ -185,14 +175,11 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 */
 	public function flushRemovesAllCacheEntries() {
 		$backend = $this->setUpBackend();
-
 		$data = 'some data' . microtime();
 		$backend->set('BackendAPCTest1', $data);
 		$backend->set('BackendAPCTest2', $data);
 		$backend->set('BackendAPCTest3', $data);
-
 		$backend->flush();
-
 		$this->assertFalse($backend->has('BackendAPCTest1'), 'BackendAPCTest1');
 		$this->assertFalse($backend->has('BackendAPCTest2'), 'BackendAPCTest2');
 		$this->assertFalse($backend->has('BackendAPCTest3'), 'BackendAPCTest3');
@@ -202,20 +189,17 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function flushRemovesOnlyOwnEntries() {
-		$thisCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
+		$thisCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
-		$thisBackend = new t3lib_cache_backend_ApcBackend('Testing');
+		$thisBackend = new \TYPO3\CMS\Core\Cache\Backend\ApcBackend('Testing');
 		$thisBackend->setCache($thisCache);
-
-		$thatCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
+		$thatCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
-		$thatBackend = new t3lib_cache_backend_ApcBackend('Testing');
+		$thatBackend = new \TYPO3\CMS\Core\Cache\Backend\ApcBackend('Testing');
 		$thatBackend->setCache($thatCache);
-
 		$thisBackend->set('thisEntry', 'Hello');
 		$thatBackend->set('thatEntry', 'World!');
 		$thatBackend->flush();
-
 		$this->assertEquals('Hello', $thisBackend->get('thisEntry'));
 		$this->assertFalse($thatBackend->has('thatEntry'));
 	}
@@ -227,11 +211,9 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 */
 	public function largeDataIsStored() {
 		$backend = $this->setUpBackend();
-
 		$data = str_repeat('abcde', 1024 * 1024);
 		$identifier = 'tooLargeData' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
-
 		$this->assertTrue($backend->has($identifier));
 		$this->assertEquals($backend->get($identifier), $data);
 	}
@@ -239,15 +221,15 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	/**
 	 * Sets up the APC backend used for testing
 	 *
-	 * @return t3lib_cache_backend_ApcBackend
+	 * @return \TYPO3\CMS\Core\Cache\Backend\ApcBackend
 	 */
 	protected function setUpBackend() {
-		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		$backend = new t3lib_cache_backend_ApcBackend('Testing');
+		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\ApcBackend('Testing');
 		$backend->setCache($cache);
-
 		return $backend;
 	}
+
 }
 
 ?>

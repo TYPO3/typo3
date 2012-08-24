@@ -21,24 +21,22 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * A log writer that always fails to write (for testing purposes ;-))
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class t3lib_log_writer_Failing implements t3lib_log_writer_Writer {
+class t3lib_log_writer_Failing implements \TYPO3\CMS\Core\Log\Writer\Writer {
 
 	/**
 	 * Try to write the log entry - but throw an exception in our case
 	 *
-	 * @param t3lib_log_Record $record
+	 * @param \TYPO3\CMS\Core\Log\LogRecord $record
 	 * @return t3lib_log_writer_Writer|void
 	 * @throws RuntimeException
 	 */
-	public function writeLog(t3lib_log_Record $record) {
-		throw new RuntimeException("t3lib_log_writer_Failing failed");
+	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
+		throw new RuntimeException('t3lib_log_writer_Failing failed');
 	}
 
 }

@@ -23,7 +23,7 @@
 ***************************************************************/
 
 /**
- * Testcase for the t3lib_formprotection_BackendFormProtection class.
+ * Testcase for the \TYPO3\CMS\Core\FormProtection\BackendFormProtection class.
  *
  * @package TYPO3
  * @subpackage t3lib
@@ -48,7 +48,7 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 
 
 	/**
-	 * @var t3lib_formprotection_BackendFormProtection
+	 * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
 	 */
 	private $fixture;
 
@@ -66,7 +66,7 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 	public function tearDown() {
 		$this->fixture->__destruct();
 		unset($this->fixture);
-		t3lib_FlashMessageQueue::getAllMessagesAndFlush();
+		\TYPO3\CMS\Core\Messaging\FlashMessageQueue::getAllMessagesAndFlush();
 	}
 
 
@@ -75,16 +75,18 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 	//////////////////////
 
 	/**
-	 * Creates a subclass t3lib_formprotection_BackendFormProtection with retrieveTokens made
+	 * Creates a subclass \TYPO3\CMS\Core\FormProtection\BackendFormProtection with retrieveTokens made
 	 * public.
 	 *
 	 * @return string the name of the created class, will not be empty
 	 */
 	private function createAccessibleProxyClass() {
-		$className = 't3lib_formprotection_BackendFormProtectionAccessibleProxy';
-		if (!class_exists($className)) {
+		$namespace = 'TYPO3\\CMS\\Core\\FormProtection';
+		$className = 'BackendFormProtectionAccessibleProxy';
+		if (!class_exists($namespace . '\\' .$className)) {
 			eval(
-				'class ' . $className . ' extends t3lib_formprotection_BackendFormProtection {' .
+				'namespace ' . $namespace . ';' .
+				'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection {' .
 				'  public function createValidationErrorMessage() {' .
 				'    parent::createValidationErrorMessage();' .
 				'  }' .
@@ -97,20 +99,22 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 				'}'
 			);
 		}
-
+		$className = $namespace . '\\' . $className;
 		return $className;
 	}
 
 	/**
 	 * Mock session methods in t3lib_beUserAuth
 	 *
-	 * @return t3lib_beUserAuth Instance of BE_USER object with mocked session storage methods
+	 * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication Instance of BE_USER object with mocked session storage methods
 	 */
 	private function createBackendUserSessionStorageStub() {
-		$className = 't3lib_beUserAuthMocked';
-		if (!class_exists($className)) {
+		$namespace = 'TYPO3\\CMS\\Core\\Authentication';
+		$className = 'BackendUserAuthenticationMocked';
+		if (!class_exists($namespace . '\\' .$className)) {
 			eval(
-				'class ' . $className . ' extends t3lib_beUserAuth {' .
+				'namespace ' . $namespace . ';' .
+				'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication {' .
 				'  protected $session=array();' .
 				'  public function getSessionData($key) {' .
 				'    return $this->session[$key];' .
@@ -121,7 +125,7 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 				'}'
 			);
 		}
-
+		$className = $namespace . '\\' . $className;
 		return $this->getMock($className, array('foo'));// $className;
 	}
 
@@ -136,7 +140,7 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 		$className = $this->createAccessibleProxyClass();
 
 		$this->assertTrue(
-			(new $className()) instanceof t3lib_formprotection_BackendFormProtection
+			(new $className()) instanceof \TYPO3\CMS\Core\FormProtection\BackendFormProtection
 		);
 	}
 
@@ -183,7 +187,7 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 		$action = 'edit';
 		$formInstanceName = '42';
 
-		$tokenId = t3lib_div::hmac($formName . $action . $formInstanceName . $sessionToken);
+		$tokenId = \t3lib_div::hmac($formName . $action . $formInstanceName . $sessionToken);
 
 		$GLOBALS['BE_USER']->expects($this->atLeastOnce())->method('getSessionData')
 			->with('formSessionToken')
@@ -232,7 +236,7 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 		$GLOBALS['BE_USER'] = $this->createBackendUserSessionStorageStub();
 		$this->fixture->createValidationErrorMessage();
 
-		$messages = t3lib_FlashMessageQueue::getAllMessagesAndFlush();
+		$messages = \TYPO3\CMS\Core\Messaging\FlashMessageQueue::getAllMessagesAndFlush();
 
 		$this->assertNotEmpty($messages);
 		$this->assertContains(
@@ -251,7 +255,7 @@ class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase
 		$GLOBALS['TYPO3_AJAX'] = TRUE;
 		$this->fixture->createValidationErrorMessage();
 
-		$messages = t3lib_FlashMessageQueue::$messages;
+		$messages = \TYPO3\CMS\Core\Messaging\FlashMessageQueue::$messages;
 
 		$this->assertNotEmpty($messages);
 		$this->assertContains(

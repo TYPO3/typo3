@@ -1,29 +1,27 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2011 Ingo Renner <ingo@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
+ *  Copyright notice
+ *
+ *  (c) 2009-2011 Ingo Renner <ingo@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 require_once 'backend/class.t3lib_cache_backend_mockbackend.php';
-
 /**
  * Testcase for the Cache Factory
  *
@@ -39,35 +37,32 @@ class t3lib_cache_FactoryTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function createReturnsInstanceOfTheSpecifiedCacheFrontend() {
-		$mockCacheManager = $this->getMock('t3lib_cache_Manager', array('registerCache'), array(), '', FALSE);
-		$factory = new t3lib_cache_Factory('Testing', $mockCacheManager);
-
-		$cache = $factory->create('TYPO3_Cache_FactoryTest_Cache', 't3lib_Cache\Frontend\VariableFrontend', 't3lib_cache_backend_NullBackend');
-		$this->assertInstanceOf('t3lib_Cache\Frontend\VariableFrontend', $cache);
+		$mockCacheManager = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('registerCache'), array(), '', FALSE);
+		$factory = new \TYPO3\CMS\Core\Cache\CacheFactory('Testing', $mockCacheManager);
+		$cache = $factory->create('TYPO3_Cache_FactoryTest_Cache', 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend', 'TYPO3\\CMS\\Core\\Cache\\Backend\\NullBackend');
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend', $cache);
 	}
 
 	/**
 	 * @test
 	 */
 	public function createInjectsAnInstanceOfTheSpecifiedBackendIntoTheCacheFrontend() {
-		$mockCacheManager = $this->getMock('t3lib_cache_Manager', array('registerCache'), array(), '', FALSE);
-
-		$factory = new t3lib_cache_Factory('Testing', $mockCacheManager);
-		$cache = $factory->create('TYPO3_Cache_FactoryTest_Cache', 't3lib_Cache\Frontend\VariableFrontend', 't3lib_cache_backend_FileBackend');
-		$this->assertInstanceOf('t3lib_cache_backend_FileBackend', $cache->getBackend());
+		$mockCacheManager = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('registerCache'), array(), '', FALSE);
+		$factory = new \TYPO3\CMS\Core\Cache\CacheFactory('Testing', $mockCacheManager);
+		$cache = $factory->create('TYPO3_Cache_FactoryTest_Cache', 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend', 'TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend');
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', $cache->getBackend());
 	}
 
 	/**
 	 * @test
 	 */
 	public function createRegistersTheCacheAtTheCacheManager() {
-		$mockCacheManager = $this->getMock('t3lib_cache_Manager', array('registerCache'), array(), '', FALSE);
-
+		$mockCacheManager = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('registerCache'), array(), '', FALSE);
 		$mockCacheManager->expects($this->once())->method('registerCache');
-
-		$factory = new t3lib_cache_Factory('Testing', $mockCacheManager);
-		$factory->create('TYPO3_Cache_FactoryTest_Cache', 't3lib_Cache\Frontend\VariableFrontend', 't3lib_cache_backend_FileBackend');
+		$factory = new \TYPO3\CMS\Core\Cache\CacheFactory('Testing', $mockCacheManager);
+		$factory->create('TYPO3_Cache_FactoryTest_Cache', 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend', 'TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend');
 	}
+
 }
 
 ?>
