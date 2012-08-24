@@ -42,11 +42,12 @@ define('TYPO3_cliMode', TRUE);
 
 	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap.php is accidentally included twice
 	// (which would indicate a clear bug).
-require('classes/Bootstrap/Cli.php');
-Typo3_Bootstrap_Cli::checkEnvironmentOrDie();
+require __DIR__ . '/sysext/cli/Classes/CliBootstrap.php';
+\TYPO3\CMS\Cli\CliBootstrap::checkEnvironmentOrDie();
 
-require('classes/Bootstrap.php');
-Typo3_Bootstrap::getInstance()
+require __DIR__ . '/sysext/core/Classes/Core/SystemEnvironmentBuilder.php';
+require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup('typo3/')
 	->registerExtDirectComponents()
 	->populateLocalConfiguration()
@@ -74,22 +75,22 @@ Typo3_Bootstrap::getInstance()
 	->defineLoggingAndExceptionConstants()
 	->unsetReservedGlobalVariables()
 	->initializeTypo3DbGlobal(TRUE);
-Typo3_Bootstrap_Cli::initializeCliKeyOrDie();
-Typo3_Bootstrap::getInstance()
+\TYPO3\CMS\Cli\CliBootstrap::initializeCliKeyOrDie();
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->loadExtensionTables(TRUE)
 	->initializeBackendUser()
 	->initializeBackendUserMounts()
 	->initializeLanguageObject();
 
 	// Make sure output is not buffered, so command-line output and interaction can take place
-t3lib_div::flushOutputBuffers();
+\TYPO3\CMS\Core\Utility\GeneralUtility::flushOutputBuffers();
 
 try {
 	include(TYPO3_cliInclude);
-} catch (Exception $e) {
+} catch (\Exception $e) {
 	fwrite(STDERR, $e->getMessage() . LF);
 	exit(99);
 }
 
-Typo3_Bootstrap::getInstance()->shutdown();
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->shutdown();
 ?>
