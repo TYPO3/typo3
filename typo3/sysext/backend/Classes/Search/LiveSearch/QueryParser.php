@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Search\Livesearch;
+namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
 /***************************************************************
  *  Copyright notice

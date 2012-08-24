@@ -46,12 +46,12 @@ class LiveSearchDataProvider {
 	);
 
 	/**
-	 * @var \TYPO3\CMS\Backend\Search\Livesearch\Livesearch
+	 * @var \TYPO3\CMS\Backend\Search\LiveSearch\LiveSearch
 	 */
 	protected $liveSearch = NULL;
 
 	/**
-	 * @var \TYPO3\CMS\Backend\Search\Livesearch\QueryParser
+	 * @var \TYPO3\CMS\Backend\Search\LiveSearch\QueryParser
 	 */
 	protected $queryParser = NULL;
 
@@ -61,8 +61,8 @@ class LiveSearchDataProvider {
 	public function __construct() {
 		// @todo Use the autoloader for this. Not sure why its not working.
 		require_once PATH_t3lib . 'search/class.t3lib_search_livesearch_queryParser.php';
-		$this->liveSearch = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Search\\Livesearch\\Livesearch');
-		$this->queryParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Search\\Livesearch\\QueryParser');
+		$this->liveSearch = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Search\\LiveSearch\\LiveSearch');
+		$this->queryParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Search\\LiveSearch\\QueryParser');
 	}
 
 	/**

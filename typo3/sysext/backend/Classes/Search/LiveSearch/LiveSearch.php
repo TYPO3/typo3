@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Search\Livesearch;
+namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
 /***************************************************************
  *  Copyright notice
@@ -35,7 +35,7 @@ namespace TYPO3\CMS\Backend\Search\Livesearch;
  * @package TYPO3
  * @subpackage t3lib
  */
-class Livesearch {
+class LiveSearch {
 
 	/**
 	 * @var string
@@ -74,7 +74,7 @@ class Livesearch {
 	protected $userPermissions = '';
 
 	/**
-	 * @var \TYPO3\CMS\Backend\Search\Livesearch\QueryParser
+	 * @var \TYPO3\CMS\Backend\Search\LiveSearch\QueryParser
 	 */
 	protected $queryParser = NULL;
 
@@ -85,7 +85,7 @@ class Livesearch {
 	 */
 	public function __construct() {
 		$this->userPermissions = $GLOBALS['BE_USER']->getPagePermsClause(1);
-		$this->queryParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Search\\Livesearch\\QueryParser');
+		$this->queryParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Search\\LiveSearch\\QueryParser');
 	}
 
 	/**
