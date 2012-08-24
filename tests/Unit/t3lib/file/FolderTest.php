@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -25,16 +24,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 require_once 'vfsStream/vfsStream.php';
-
 /**
  * Testcase for the storage collection class of the TYPO3 FAL
  *
  * @package TYPO3
  * @subpackage t3lib
- *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class t3lib_file_FolderTest extends Tx_Phpunit_TestCase {
@@ -46,25 +41,24 @@ class t3lib_file_FolderTest extends Tx_Phpunit_TestCase {
 	}
 
 	protected function tearDown() {
-		t3lib_div::purgeInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
 	}
 
 	protected function createFolderFixture($path, $name, $mockedStorage = NULL) {
 		if ($mockedStorage === NULL) {
-			$mockedStorage = $this->getMock('t3lib_file_Storage', array(), array(), '', FALSE);
+			$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		}
-
-		return new t3lib_file_Folder($mockedStorage, $path, $name, 0);
+		return new \TYPO3\CMS\Core\Resource\Folder($mockedStorage, $path, $name, 0);
 	}
+
 	/**
 	 * @test
 	 */
 	public function constructorArgumentsAreAvailableAtRuntime() {
 		$path = uniqid();
 		$name = uniqid();
-		$mockedStorage = $this->getMock('t3lib_file_Storage', array(), array(), '', FALSE);
+		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		$fixture = $this->createFolderFixture($path, $name, $mockedStorage);
-
 		$this->assertSame($mockedStorage, $fixture->getStorage());
 		$this->assertStringStartsWith($path, $fixture->getIdentifier());
 		$this->assertEquals($name, $fixture->getName());
@@ -76,7 +70,6 @@ class t3lib_file_FolderTest extends Tx_Phpunit_TestCase {
 	public function propertiesCanBeUpdated() {
 		$fixture = $this->createFolderFixture('/somePath', 'someName');
 		$fixture->updateProperties(array('identifier' => '/someOtherPath', 'name' => 'someNewName'));
-
 		$this->assertEquals('someNewName', $fixture->getName());
 		$this->assertEquals('/someOtherPath', $fixture->getIdentifier());
 	}
@@ -87,7 +80,6 @@ class t3lib_file_FolderTest extends Tx_Phpunit_TestCase {
 	public function propertiesAreNotUpdatedIfNotSetInInput() {
 		$fixture = $this->createFolderFixture('/somePath/someName/', 'someName');
 		$fixture->updateProperties(array('identifier' => '/someOtherPath'));
-
 		$this->assertEquals('someName', $fixture->getName());
 	}
 
@@ -95,17 +87,15 @@ class t3lib_file_FolderTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function getSubfolderCallsFactoryWithCorrectArguments() {
-		$mockedStorage = $this->getMock('t3lib_file_Storage', array(), array(), '', FALSE);
-		$mockedStorage->expects($this->once())->method('hasFolderInFolder')->with($this->equalTo('someSubfolder'))
-			->will($this->returnValue(TRUE));
-
-		$mockedFactory = $this->getMock('t3lib_file_Factory');
-		$mockedFactory->expects($this->once())->method('createFolderObject')->with($mockedStorage,
-			'/somePath/someFolder/someSubfolder/', 'someSubfolder');
-		t3lib_div::setSingletonInstance('t3lib_file_Factory', $mockedFactory);
-
+		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$mockedStorage->expects($this->once())->method('hasFolderInFolder')->with($this->equalTo('someSubfolder'))->will($this->returnValue(TRUE));
+		$mockedFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+		$mockedFactory->expects($this->once())->method('createFolderObject')->with($mockedStorage, '/somePath/someFolder/someSubfolder/', 'someSubfolder');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', $mockedFactory);
 		$fixture = $this->createFolderFixture('/somePath/someFolder/', 'someFolder', $mockedStorage);
 		$fixture->getSubfolder('someSubfolder');
 	}
+
 }
+
 ?>

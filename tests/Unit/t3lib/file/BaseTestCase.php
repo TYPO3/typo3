@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Basic test case for the t3lib_file tests
  *
@@ -44,7 +43,7 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 		$this->mountDir = uniqid('mount-');
 		$this->basedir = uniqid('base-');
 		vfsStream::setup($this->basedir);
-			// Add an entry for the mount directory to the VFS contents
+		// Add an entry for the mount directory to the VFS contents
 		$this->vfsContents = array($this->mountDir => array());
 	}
 
@@ -53,14 +52,13 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 	}
 
 	protected function mergeToVfsContents($contents) {
-		$this->vfsContents = t3lib_div::array_merge_recursive_overrule($this->vfsContents, $contents);
+		$this->vfsContents = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->vfsContents, $contents);
 	}
 
 	protected function initializeVfs() {
 		if (is_callable('vfsStream::create') === FALSE) {
 			$this->markTestSkipped('vfsStream::create() does not exist');
 		}
-
 		vfsStream::create($this->vfsContents);
 	}
 
@@ -81,7 +79,7 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 	 * @return string
 	 */
 	protected function getUrlInMount($path) {
-		return vfsStream::url($this->basedir . '/' . $this->mountDir . '/' . ltrim($path, '/'));
+		return vfsStream::url(((($this->basedir . '/') . $this->mountDir) . '/') . ltrim($path, '/'));
 	}
 
 	/**
@@ -101,9 +99,8 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 	 * @return string
 	 */
 	protected function getUrl($path) {
-		return vfsStream::url($this->basedir . '/' . ltrim($path, '/'));
+		return vfsStream::url(($this->basedir . '/') . ltrim($path, '/'));
 	}
-
 
 	/**
 	 * Creates a file or folder mock. This should not be called directly, but only through getSimple{File,Folder}Mock()
@@ -122,7 +119,6 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 				$mockedMethods[] = 'getName';
 			}
 		}
-
 		$mock = $this->getMock($type, $mockedMethods, array(), '', FALSE);
 		$mock->expects($this->any())->method('getIdentifier')->will($this->returnValue($identifier));
 		$mock->expects($this->any())->method('getName')->will($this->returnValue(basename($identifier)));
@@ -134,10 +130,10 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 	 *
 	 * @param string $identifier
 	 * @param array $mockedMethods the methods to mock
-	 * @return t3lib_file_File
+	 * @return \TYPO3\CMS\Core\Resource\File
 	 */
 	protected function getSimpleFileMock($identifier, $mockedMethods = array()) {
-		return $this->_createFileFolderMock('t3lib_file_File', $identifier, $mockedMethods);
+		return $this->_createFileFolderMock('TYPO3\\CMS\\Core\\Resource\\File', $identifier, $mockedMethods);
 	}
 
 	/**
@@ -145,10 +141,10 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 	 *
 	 * @param string $identifier
 	 * @param array $mockedMethods the methods to mock
-	 * @return t3lib_file_Folder
+	 * @return \TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected function getSimpleFolderMock($identifier, $mockedMethods = array()) {
-		return $this->_createFileFolderMock('t3lib_file_Folder', $identifier, $mockedMethods);
+		return $this->_createFileFolderMock('TYPO3\\CMS\\Core\\Resource\\Folder', $identifier, $mockedMethods);
 	}
 
 	/**
@@ -161,11 +157,12 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 	 * @return t3lib_file_File|t3lib_File_Folder
 	 */
 	protected function getFolderMock($identifier, $mockedMethods = array(), $subfolders = array(), $files = array()) {
-		$folder = $this->_createFileFolderMock('t3lib_file_Folder', $identifier, array_merge($mockedMethods, array('getFiles', 'getSubfolders')));
+		$folder = $this->_createFileFolderMock('TYPO3\\CMS\\Core\\Resource\\Folder', $identifier, array_merge($mockedMethods, array('getFiles', 'getSubfolders')));
 		$folder->expects($this->any())->method('getSubfolders')->will($this->returnValue($subfolders));
 		$folder->expects($this->any())->method('getFiles')->will($this->returnValue($files));
-
 		return $folder;
 	}
+
 }
+
 ?>

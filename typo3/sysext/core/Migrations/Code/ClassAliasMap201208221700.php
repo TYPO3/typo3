@@ -226,7 +226,7 @@ return array(
 	't3lib_cache_frontend_Frontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface',
 	't3lib_cache_frontend_PhpFrontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\PhpFrontend',
 	't3lib_cache_frontend_StringFrontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\StringFrontend',
-	't3lib_Cache\Frontend\VariableFrontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend',
+	't3lib_cache_frontend_VariableFrontend' => 'TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend',
 	't3lib_category_Registry' => 'TYPO3\\CMS\\Core\\Category\\CategoryRegistry',
 	't3lib_category_Collection_CategoryCollection' => 'TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection',
 	't3lib_cs' => 'TYPO3\\CMS\\Core\\Charset\\CharsetConverter',

@@ -24,16 +24,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for class t3lib_utility_Http
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
- *
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_utility_HttpTest extends tx_phpunit_testcase {
+
 	/**
 	 * @param array $urlParts
 	 * @param string $expected
@@ -41,7 +40,7 @@ class t3lib_utility_HttpTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isUrlBuiltCorrectly(array $urlParts, $expected) {
-		$url = t3lib_utility_Http::buildUrl($urlParts);
+		$url = \TYPO3\CMS\Core\Utility\HttpUtility::buildUrl($urlParts);
 		$this->assertEquals($expected, $url);
 	}
 
@@ -52,15 +51,15 @@ class t3lib_utility_HttpTest extends tx_phpunit_testcase {
 		return array(
 			'rebuild url withouth scheme' => array(
 				parse_url('typo3.org/path/index.php'),
-				'typo3.org/path/index.php',
+				'typo3.org/path/index.php'
 			),
 			'rebuild url with scheme' => array(
 				parse_url('http://typo3.org/path/index.php'),
-				'http://typo3.org/path/index.php',
+				'http://typo3.org/path/index.php'
 			),
 			'rebuild url with all properties' => array(
 				parse_url('http://editor:secret@typo3.org/path/index.php?query=data#fragment'),
-				'http://editor:secret@typo3.org/path/index.php?query=data#fragment',
+				'http://editor:secret@typo3.org/path/index.php?query=data#fragment'
 			),
 			'url without username, but password' => array(
 				array(
@@ -68,10 +67,11 @@ class t3lib_utility_HttpTest extends tx_phpunit_testcase {
 					'pass' => 'secrept',
 					'host' => 'typo3.org'
 				),
-				'http://typo3.org',
+				'http://typo3.org'
 			)
 		);
 	}
+
 }
 
 ?>

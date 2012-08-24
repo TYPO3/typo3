@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Category\Collection;
+
 /***************************************************************
  * Copyright notice
  *
@@ -31,7 +33,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_category_Collection_CategoryCollection extends t3lib_collection_AbstractRecordCollection implements t3lib_collection_Editable {
+class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\EditableCollectionInterface {
 
 	/**
 	 * The table name collections are stored to
@@ -44,14 +46,14 @@ class t3lib_category_Collection_CategoryCollection extends t3lib_collection_Abst
 	 * Creates this object.
 	 *
 	 * @param string $tableName Name of the table to be working on
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function __construct($tableName = NULL) {
 		parent::__construct();
 		if (!empty($tableName)) {
 			$this->setItemTableName($tableName);
 		} elseif (empty($this->itemTableName)) {
-			throw new RuntimeException('t3lib_category_Collection_CategoryCollection needs a valid itemTableName.', 1341826168);
+			throw new \RuntimeException('TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection needs a valid itemTableName.', 1341826168);
 		}
 	}
 
@@ -61,11 +63,11 @@ class t3lib_category_Collection_CategoryCollection extends t3lib_collection_Abst
 	 *
 	 * @param array $collectionRecord Database record
 	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
-	 * @return t3lib_category_Collection_CategoryCollection
+	 * @return \TYPO3\CMS\Core\Category\Collection\CategoryCollection
 	 */
 	static public function create(array $collectionRecord, $fillItems = FALSE) {
-		/** @var $collection t3lib_category_Collection_CategoryCollection */
-		$collection = t3lib_div::makeInstance('t3lib_category_Collection_CategoryCollection', $collectionRecord['table_name']);
+		/** @var $collection \TYPO3\CMS\Core\Category\Collection\CategoryCollection */
+		$collection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection', $collectionRecord['table_name']);
 		$collection->fromArray($collectionRecord);
 		if ($fillItems) {
 			$collection->loadContents();
@@ -82,11 +84,11 @@ class t3lib_category_Collection_CategoryCollection extends t3lib_collection_Abst
 	 * @param integer $id Id of database record to be loaded
 	 * @param boolean $fillItems Populates the entries directly on load, might be bad for memory on large collections
 	 * @param string $tableName the table name
-	 * @return t3lib_collection_Collection
+	 * @return \TYPO3\CMS\Core\Collection\CollectionInterface
 	 */
 	static public function load($id, $fillItems = FALSE, $tableName = '') {
-		t3lib_div::loadTCA(static::$storageTableName);
-		$collectionRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', static::$storageTableName, ('uid=' . intval($id)) . t3lib_BEfunc::deleteClause(static::$storageTableName));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA(static::$storageTableName);
+		$collectionRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', static::$storageTableName, ('uid=' . intval($id)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause(static::$storageTableName));
 		$collectionRecord['table_name'] = $tableName;
 		return self::create($collectionRecord, $fillItems);
 	}
@@ -100,7 +102,7 @@ class t3lib_category_Collection_CategoryCollection extends t3lib_collection_Abst
 	 */
 	protected function getCollectedRecords() {
 		$relatedRecords = array();
-		/** @var $GLOBALS['TYPO3_DB'] t3lib_DB */
+		/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
 		$resource = $this->getDatabase()->exec_SELECT_mm_query($this->getItemTableName() . '.*', self::$storageTableName, 'sys_category_record_mm', $this->getItemTableName(), (('AND ' . self::$storageTableName) . '.uid=') . intval($this->getIdentifier()));
 		if ($resource) {
 			while ($record = $this->getDatabase()->sql_fetch_assoc($resource)) {
@@ -157,10 +159,10 @@ class t3lib_category_Collection_CategoryCollection extends t3lib_collection_Abst
 	/**
 	 * Adds a set of entries to the collection
 	 *
-	 * @param t3lib_collection_Collection $other
+	 * @param \TYPO3\CMS\Core\Collection\CollectionInterface $other
 	 * @return void
 	 */
-	public function addAll(t3lib_collection_Collection $other) {
+	public function addAll(\TYPO3\CMS\Core\Collection\CollectionInterface $other) {
 		foreach ($other as $value) {
 			$this->add($value);
 		}
@@ -191,7 +193,7 @@ class t3lib_category_Collection_CategoryCollection extends t3lib_collection_Abst
 	 * @return void
 	 */
 	public function removeAll() {
-		$this->storage = new SplDoublyLinkedList();
+		$this->storage = new \SplDoublyLinkedList();
 	}
 
 	/**
@@ -201,7 +203,7 @@ class t3lib_category_Collection_CategoryCollection extends t3lib_collection_Abst
 	 */
 	public function getItems() {
 		$itemArray = array();
-		/** @var $item t3lib_file_File */
+		/** @var $item \TYPO3\CMS\Core\Resource\File */
 		foreach ($this->storage as $item) {
 			$itemArray[] = $item;
 		}
@@ -229,12 +231,13 @@ class t3lib_category_Collection_CategoryCollection extends t3lib_collection_Abst
 	/**
 	 * Gets the database object.
 	 *
-	 * @return t3lib_DB
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected function getDatabase() {
 		return $GLOBALS['TYPO3_DB'];
 	}
 
 }
+
 
 ?>

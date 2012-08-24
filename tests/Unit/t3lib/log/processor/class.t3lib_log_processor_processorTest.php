@@ -21,8 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Testcase for log processors.
  *
@@ -30,7 +28,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_log_processor_ProcessorTest extends tx_phpunit_testcase implements t3lib_log_processor_Processor {
+class t3lib_log_processor_ProcessorTest extends tx_phpunit_testcase implements \TYPO3\CMS\Core\Log\Processor\Processor {
 
 	/**
 	 * @var bool
@@ -40,12 +38,11 @@ class t3lib_log_processor_ProcessorTest extends tx_phpunit_testcase implements t
 	/**
 	 * Processes a log record and adds server data.
 	 *
-	 * @param t3lib_log_Record $logRecord The log record to process
-	 * @return t3lib_log_Record The processed log record with addtional data
+	 * @param \TYPO3\CMS\Core\Log\LogRecord $logRecord The log record to process
+	 * @return \TYPO3\CMS\Core\Log\LogRecord The processed log record with addtional data
 	 */
-	public function processLogRecord(t3lib_log_Record $logRecord) {
+	public function processLogRecord(\TYPO3\CMS\Core\Log\LogRecord $logRecord) {
 		$this->processorCalled = TRUE;
-
 		return $logRecord;
 	}
 
@@ -53,15 +50,12 @@ class t3lib_log_processor_ProcessorTest extends tx_phpunit_testcase implements t
 	 * @test
 	 */
 	public function loggerExecutesProcessors() {
-		$logger = new t3lib_log_Logger('test.core.log');
-		$writer = new t3lib_log_writer_Null();
-		$level = t3lib_log_Level::DEBUG;
-
+		$logger = new \TYPO3\CMS\Core\Log\Logger('test.core.log');
+		$writer = new \TYPO3\CMS\Core\Log\Writer\NullWriter();
+		$level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
 		$logger->addWriter($level, $writer);
 		$logger->addProcessor($level, $this);
-
 		$logger->warning('test');
-
 		$this->assertTrue($this->processorCalled);
 	}
 

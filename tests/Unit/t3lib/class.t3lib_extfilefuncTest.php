@@ -1,5 +1,4 @@
 <?php
-
 /* * *************************************************************
  *  Copyright notice
  *
@@ -22,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
-
 /**
  * Testcase for class t3lib_extFileFunctions
  *
@@ -38,7 +36,7 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 	protected $fileProcessor;
 
 	/**
-	 * @var t3lib_file_Repository_StorageRepository
+	 * @var \TYPO3\CMS\Core\Resource\StorageRepository
 	 */
 	protected $storageRepository;
 
@@ -81,19 +79,13 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 	 * Sets up this testcase
 	 */
 	public function setUp() {
-
-		$this->storageRepository = t3lib_div::makeInstance('t3lib_file_Repository_StorageRepository');
-
+		$this->storageRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 		// Initializing file processor
-		$GLOBALS['BE_USER'] = $this->getMock(
-			't3lib_beUserAuth', array('getSessionData', 'setAndSaveSessionData')
-		);
+		$GLOBALS['BE_USER'] = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication', array('getSessionData', 'setAndSaveSessionData'));
 		$GLOBALS['BE_USER']->user['uid'] = 1;
-
 		$GLOBALS['FILEMOUNTS'] = array();
-
 		// Initializing:
-		$this->fileProcessor = t3lib_div::makeInstance('t3lib_extFileFunctions');
+		$this->fileProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\ExtendedFileUtility');
 		$this->fileProcessor->init($GLOBALS['FILEMOUNTS'], $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']);
 		$this->fileProcessor->init_actionPerms($GLOBALS['BE_USER']->getFileoperationPermissions());
 		$this->fileProcessor->dontCheckForUnique = 1;
@@ -104,7 +96,7 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 	 */
 	public function tearDown() {
 		foreach ($this->objectsToTearDown as $object) {
-			if ($object instanceof t3lib_file_File || $object instanceof t3lib_file_Folder) {
+			if ($object instanceof \TYPO3\CMS\Core\Resource\File || $object instanceof \TYPO3\CMS\Core\Resource\Folder) {
 				$object->delete();
 			}
 		}
@@ -112,30 +104,28 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * @return t3lib_file_Storage
+	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage
 	 */
 	protected function getDefaultStorage() {
-
 		// Get the first storage available.
 		// Notice if no storage is found, a storage is created on the fly.
 		$storages = $this->storageRepository->findAll();
-
 		// Makes sure to return a storage having a local driver
 		foreach ($storages as $storage) {
-			// @todo how to retrieve information about the driver since @driver@ and @storageRecord@ are private
-		}
 
+		}
 		//* @var $storage t3lib_file_Storage */
 		return $storages[0];
 	}
+
 	/**
 	 * @return string
 	 */
 	protected function getRootFolderIdentifier() {
 		$storage = $this->getDefaultStorage();
-
-		$folderIdentifier = '/'; // the root of the storage
-		$folderCombinedIdentifier = $storage->getUid() . ':' . $folderIdentifier;
+		$folderIdentifier = '/';
+		// the root of the storage
+		$folderCombinedIdentifier = ($storage->getUid() . ':') . $folderIdentifier;
 		return $folderCombinedIdentifier;
 	}
 
@@ -146,54 +136,46 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function createNewFileInLocalStorage() {
-
 		// Defines values
 		$fileValues = array(
 			'newfile' => array(
 				array(
 					'data' => $this->newFileNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				)
 			)
 		);
-
 		$this->fileProcessor->start($fileValues);
 		$results = $this->fileProcessor->processData();
-
 		$fileObject = NULL;
-		if (!empty ($results['newfile'][0])) {
+		if (!empty($results['newfile'][0])) {
 			$fileObject = $results['newfile'][0];
 		}
-
 		$this->objectsToTearDown[] = $fileObject;
-		$this->assertEquals(TRUE, $fileObject instanceof t3lib_file_File);
+		$this->assertEquals(TRUE, $fileObject instanceof \TYPO3\CMS\Core\Resource\File);
 	}
 
 	/**
 	 * @test
 	 */
 	public function createNewFolderInLocalStorage() {
-
 		// Defines values
 		$fileValues = array(
 			'newfolder' => array(
 				array(
 					'data' => $this->newFolderNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				)
 			)
 		);
-
 		$this->fileProcessor->start($fileValues);
 		$results = $this->fileProcessor->processData();
-
 		$folderObject = NULL;
-		if (!empty ($results['newfolder'][0])) {
+		if (!empty($results['newfolder'][0])) {
 			$folderObject = $results['newfolder'][0];
 		}
-
 		$this->objectsToTearDown[] = $folderObject;
-		$this->assertEquals(TRUE, $folderObject instanceof t3lib_file_Folder);
+		$this->assertEquals(TRUE, $folderObject instanceof \TYPO3\CMS\Core\Resource\Folder);
 	}
 
 	/*********************************
@@ -203,59 +185,51 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function deleteFileInLocalStorage() {
-
 		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$fileIdentifier = $storage->getUid() . ':/' . $this->newFileNameInput;
-
+		$fileIdentifier = ($storage->getUid() . ':/') . $this->newFileNameInput;
 		// Defines values
 		$fileValues = array(
 			'newfile' => array(
 				array(
 					'data' => $this->newFileNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				)
 			),
 			'delete' => array(
 				array(
-					'data' => $fileIdentifier,
+					'data' => $fileIdentifier
 				)
 			)
 		);
-
 		$this->fileProcessor->start($fileValues);
 		$results = $this->fileProcessor->processData();
-
-		$this->assertEquals(TRUE, empty ($results['delete'][1]));
+		$this->assertEquals(TRUE, empty($results['delete'][1]));
 	}
 
 	/**
 	 * @test
 	 */
 	public function deleteFolderInLocalStorage() {
-
 		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$folderIdentifier = $storage->getUid() . ':/' . $this->newFolderNameInput;
-
+		$folderIdentifier = ($storage->getUid() . ':/') . $this->newFolderNameInput;
 		// Defines values
 		$fileValues = array(
 			'newfolder' => array(
 				array(
 					'data' => $this->newFolderNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				)
 			),
 			'delete' => array(
 				array(
-					'data' => $folderIdentifier,
+					'data' => $folderIdentifier
 				)
 			)
 		);
-
 		$this->fileProcessor->start($fileValues);
 		$results = $this->fileProcessor->processData();
-
 		$this->assertEquals(TRUE, $results['delete'][0]);
 	}
 
@@ -266,74 +240,64 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function renameFileInLocalStorage() {
-
 		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$fileIdentifier = $storage->getUid() . ':/' . $this->newFileNameInput;
-
+		$fileIdentifier = ($storage->getUid() . ':/') . $this->newFileNameInput;
 		// Defines values
 		$fileValues = array(
 			'newfile' => array(
 				array(
 					'data' => $this->newFileNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				)
 			),
 			'rename' => array(
 				array(
 					'data' => $fileIdentifier,
-					'target' => $this->renameFileNameInput,
+					'target' => $this->renameFileNameInput
 				)
 			)
 		);
-
 		$this->fileProcessor->start($fileValues);
 		$results = $this->fileProcessor->processData();
-
 		$fileObject = NULL;
-		if (!empty ($results['rename'][0])) {
+		if (!empty($results['rename'][0])) {
 			$fileObject = $results['rename'][0];
 		}
-
 		$this->objectsToTearDown[] = $fileObject;
-		$this->assertEquals(TRUE, $fileObject instanceof t3lib_file_File);
+		$this->assertEquals(TRUE, $fileObject instanceof \TYPO3\CMS\Core\Resource\File);
 	}
 
 	/**
 	 * @test
 	 */
 	public function renameFolderInLocalStorage() {
-
 		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$folderIdentifier = $storage->getUid() . ':/' . $this->newFolderNameInput;
-
+		$folderIdentifier = ($storage->getUid() . ':/') . $this->newFolderNameInput;
 		// Defines values
 		$fileValues = array(
 			'newfolder' => array(
 				array(
 					'data' => $this->newFolderNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				)
 			),
 			'rename' => array(
 				array(
 					'data' => $folderIdentifier,
-					'target' => $this->renameFolderNameInput,
+					'target' => $this->renameFolderNameInput
 				)
 			)
 		);
-
 		$this->fileProcessor->start($fileValues);
 		$results = $this->fileProcessor->processData();
-
 		$folderObject = NULL;
-		if (!empty ($results['rename'][0])) {
+		if (!empty($results['rename'][0])) {
 			$folderObject = $results['rename'][0];
 		}
-
 		$this->objectsToTearDown[] = $folderObject;
-		$this->assertEquals(TRUE, $folderObject instanceof t3lib_file_Folder);
+		$this->assertEquals(TRUE, $folderObject instanceof \TYPO3\CMS\Core\Resource\Folder);
 	}
 
 	/*********************************
@@ -343,94 +307,82 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function moveFileInLocalStorage() {
-
 		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$fileIdentifier = $storage->getUid() . ':/' . $this->newFileNameInput;
+		$fileIdentifier = ($storage->getUid() . ':/') . $this->newFileNameInput;
 		$targetFolder = $this->getRootFolderIdentifier() . $this->newFolderNameInput;
-
 		// Defines values
 		$fileValues = array(
 			'newfile' => array(
 				array(
 					'data' => $this->newFileNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				)
 			),
 			'newfolder' => array(
 				array(
 					'data' => $this->newFolderNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				)
 			),
 			'move' => array(
 				array(
 					'data' => $fileIdentifier,
-					'target' => $targetFolder,
+					'target' => $targetFolder
 				)
 			)
 		);
-
 		$this->fileProcessor->start($fileValues);
 		$results = $this->fileProcessor->processData();
-
 		$fileObject = NULL;
-		if (!empty ($results['move'][0])) {
+		if (!empty($results['move'][0])) {
 			$fileObject = $results['move'][0];
 		}
-
 		// remove parent folder
-		if (!empty ($results['newfolder'][0])) {
+		if (!empty($results['newfolder'][0])) {
 			$this->objectsToTearDown[] = $results['newfolder'][0];
 		}
-
-		$this->assertEquals(TRUE, $fileObject instanceof t3lib_file_File);
+		$this->assertEquals(TRUE, $fileObject instanceof \TYPO3\CMS\Core\Resource\File);
 	}
 
 	/**
 	 * @test
 	 */
 	public function moveFolderInLocalStorage() {
-
 		// Computes a $folderIdentifier which looks like 8:/folderName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$folderIdentifier = $storage->getUid() . ':/' . $this->moveFolderNameInput;
+		$folderIdentifier = ($storage->getUid() . ':/') . $this->moveFolderNameInput;
 		$targetFolder = $this->getRootFolderIdentifier() . $this->newFolderNameInput;
-
 		// Defines values
 		$fileValues = array(
 			'newfolder' => array(
 				array(
 					'data' => $this->newFolderNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				),
 				array(
 					'data' => $this->moveFolderNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				)
 			),
 			'move' => array(
 				array(
 					'data' => $folderIdentifier,
-					'target' => $targetFolder,
+					'target' => $targetFolder
 				)
 			)
 		);
-
 		$this->fileProcessor->start($fileValues);
 		$results = $this->fileProcessor->processData();
-
 		$folderObject = NULL;
-		if (!empty ($results['move'][0])) {
+		if (!empty($results['move'][0])) {
 			$folderObject = $results['move'][0];
 		}
-
 		// remove parent folder
-		if (!empty ($results['newfolder'][0])) {
+		if (!empty($results['newfolder'][0])) {
 			$this->objectsToTearDown[] = $results['newfolder'][0];
 		}
-
-		$this->assertEquals(TRUE, $folderObject instanceof t3lib_file_Folder);
+		$this->assertEquals(TRUE, $folderObject instanceof \TYPO3\CMS\Core\Resource\Folder);
 	}
 
 	/*********************************
@@ -440,101 +392,90 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function copyFileInLocalStorage() {
-
 		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$fileIdentifier = $storage->getUid() . ':/' . $this->newFileNameInput;
+		$fileIdentifier = ($storage->getUid() . ':/') . $this->newFileNameInput;
 		$targetFolder = $this->getRootFolderIdentifier() . $this->newFolderNameInput;
-
 		// Defines values
 		$fileValues = array(
 			'newfile' => array(
 				array(
 					'data' => $this->newFileNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				)
 			),
 			'newfolder' => array(
 				array(
 					'data' => $this->newFolderNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				)
 			),
 			'copy' => array(
 				array(
 					'data' => $fileIdentifier,
-					'target' => $targetFolder,
+					'target' => $targetFolder
 				)
 			)
 		);
-
 		$this->fileProcessor->start($fileValues);
 		$results = $this->fileProcessor->processData();
-
 		$fileObject = NULL;
-		if (!empty ($results['copy'][0])) {
+		if (!empty($results['copy'][0])) {
 			$fileObject = $results['copy'][0];
 		}
-
 		// remove parent folder
-		if (!empty ($results['newfolder'][0])) {
+		if (!empty($results['newfolder'][0])) {
 			$this->objectsToTearDown[] = $results['newfolder'][0];
 		}
-		if (!empty ($results['newfile'][0])) {
+		if (!empty($results['newfile'][0])) {
 			$this->objectsToTearDown[] = $results['newfile'][0];
 		}
-
-		$this->assertEquals(TRUE, $fileObject instanceof t3lib_file_File);
+		$this->assertEquals(TRUE, $fileObject instanceof \TYPO3\CMS\Core\Resource\File);
 	}
 
 	/**
 	 * @test
 	 */
 	public function copyFolderInLocalStorage() {
-
-			// Computes a $folderIdentifier which looks like 8:/folderName.txt where 8 is the storage Uid
+		// Computes a $folderIdentifier which looks like 8:/folderName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$folderIdentifier = $storage->getUid() . ':/' . $this->copyFolderNameInput;
+		$folderIdentifier = ($storage->getUid() . ':/') . $this->copyFolderNameInput;
 		$targetFolder = $this->getRootFolderIdentifier() . $this->newFolderNameInput;
-
-			// Defines values
+		// Defines values
 		$fileValues = array(
 			'newfolder' => array(
 				array(
 					'data' => $this->newFolderNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				),
 				array(
 					'data' => $this->copyFolderNameInput,
-					'target' => $this->getRootFolderIdentifier(),
+					'target' => $this->getRootFolderIdentifier()
 				)
 			),
 			'copy' => array(
 				array(
 					'data' => $folderIdentifier,
-					'target' => $targetFolder,
+					'target' => $targetFolder
 				)
 			)
 		);
-
 		$this->fileProcessor->start($fileValues);
 		$results = $this->fileProcessor->processData();
-
 		$folderObject = NULL;
-		if (!empty ($results['copy'][0])) {
+		if (!empty($results['copy'][0])) {
 			$folderObject = $results['copy'][0];
 		}
-
-			// remove parent folder
-		if (!empty ($results['newfolder'][0])) {
+		// remove parent folder
+		if (!empty($results['newfolder'][0])) {
 			$this->objectsToTearDown[] = $results['newfolder'][0];
 		}
-		if (!empty ($results['newfolder'][1])) {
+		if (!empty($results['newfolder'][1])) {
 			$this->objectsToTearDown[] = $results['newfolder'][1];
 		}
-
-		$this->assertEquals(TRUE, $folderObject instanceof t3lib_file_Folder);
+		$this->assertEquals(TRUE, $folderObject instanceof \TYPO3\CMS\Core\Resource\Folder);
 	}
+
 }
 
 ?>

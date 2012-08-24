@@ -24,16 +24,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for class t3lib_utility_Path
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
- *
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_utility_PathTest extends tx_phpunit_testcase {
+
 	/**
 	 * @param array $paths
 	 * @param string $expected
@@ -41,7 +40,7 @@ class t3lib_utility_PathTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isCommonPrefixResolvedCorrectly(array $paths, $expected) {
-		$commonPrefix = t3lib_utility_Path::getCommonPrefix($paths);
+		$commonPrefix = \TYPO3\CMS\Core\Utility\PathUtility::getCommonPrefix($paths);
 		$this->assertEquals($expected, $commonPrefix);
 	}
 
@@ -52,21 +51,21 @@ class t3lib_utility_PathTest extends tx_phpunit_testcase {
 		return array(
 			array(
 				array(
-					'/var/www/myhost.com/t3lib/',
+					'/var/www/myhost.com/t3lib/'
 				),
 				'/var/www/myhost.com/t3lib/'
 			),
 			array(
 				array(
 					'/var/www/myhost.com/t3lib/',
-					'/var/www/myhost.com/t3lib/',
+					'/var/www/myhost.com/t3lib/'
 				),
 				'/var/www/myhost.com/t3lib/'
 			),
 			array(
 				array(
 					'/var/www/myhost.com/typo3/',
-					'/var/www/myhost.com/t3lib/',
+					'/var/www/myhost.com/t3lib/'
 				),
 				'/var/www/myhost.com/'
 			),
@@ -74,7 +73,7 @@ class t3lib_utility_PathTest extends tx_phpunit_testcase {
 				array(
 					'/var/www/myhost.com/uploads/',
 					'/var/www/myhost.com/typo3/',
-					'/var/www/myhost.com/t3lib/',
+					'/var/www/myhost.com/t3lib/'
 				),
 				'/var/www/myhost.com/'
 			),
@@ -83,10 +82,10 @@ class t3lib_utility_PathTest extends tx_phpunit_testcase {
 					'/var/www/myhost.com/uploads/directory/',
 					'/var/www/myhost.com/typo3/sysext/',
 					'/var/www/myhost.com/typo3/contrib/',
-					'/var/www/myhost.com/t3lib/utility/',
+					'/var/www/myhost.com/t3lib/utility/'
 				),
 				'/var/www/myhost.com/'
-			),
+			)
 		);
 	}
 
@@ -98,7 +97,7 @@ class t3lib_utility_PathTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isRelativePathResolvedCorrectly($source, $target, $expected) {
-		$relativePath = t3lib_utility_Path::getRelativePath($source, $target);
+		$relativePath = \TYPO3\CMS\Core\Utility\PathUtility::getRelativePath($source, $target);
 		$this->assertEquals($expected, $relativePath);
 	}
 
@@ -128,7 +127,7 @@ class t3lib_utility_PathTest extends tx_phpunit_testcase {
 				't3lib/'
 			),
 			array(
-				PATH_site.'t3lib/',
+				PATH_site . 't3lib/',
 				PATH_site . 't3lib/stddb/',
 				'stddb/'
 			),
@@ -136,7 +135,7 @@ class t3lib_utility_PathTest extends tx_phpunit_testcase {
 				PATH_site . 'typo3/sysext/cms/',
 				PATH_site . 't3lib/utility/',
 				'../../../t3lib/utility/'
-			),
+			)
 		);
 	}
 
@@ -148,7 +147,7 @@ class t3lib_utility_PathTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isTrailingSeparatorSanitizedCorrectly($path, $separator, $expected) {
-		$sanitizedPath = t3lib_utility_Path::sanitizeTrailingSeparator($path, $separator);
+		$sanitizedPath = \TYPO3\CMS\Core\Utility\PathUtility::sanitizeTrailingSeparator($path, $separator);
 		$this->assertEquals($expected, $sanitizedPath);
 	}
 
@@ -159,9 +158,10 @@ class t3lib_utility_PathTest extends tx_phpunit_testcase {
 		return array(
 			array('/var/www//', '/', '/var/www/'),
 			array('/var/www/', '/', '/var/www/'),
-			array('/var/www', '/', '/var/www/'),
+			array('/var/www', '/', '/var/www/')
 		);
 	}
+
 }
 
 ?>

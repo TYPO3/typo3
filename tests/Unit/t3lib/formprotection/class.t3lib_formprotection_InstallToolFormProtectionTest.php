@@ -34,7 +34,7 @@ require_once(t3lib_extMgm::extPath('install') . 'mod/class.tx_install.php');
  */
 class t3lib_formprotection_InstallToolFormProtectionTest extends tx_phpunit_testcase {
 	/**
-	 * @var t3lib_formprotection_InstallToolFormProtection
+	 * @var \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection
 	 */
 	private $fixture;
 
@@ -56,7 +56,7 @@ class t3lib_formprotection_InstallToolFormProtectionTest extends tx_phpunit_test
 		$this->fixture->__destruct();
 		unset($this->fixture);
 
-		t3lib_FlashMessageQueue::getAllMessagesAndFlush();
+		\TYPO3\CMS\Core\Messaging\FlashMessageQueue::getAllMessagesAndFlush();
 
 		$_SESSION = $this->sessionBackup;
 	}
@@ -67,7 +67,7 @@ class t3lib_formprotection_InstallToolFormProtectionTest extends tx_phpunit_test
 	//////////////////////
 
 	/**
-	 * Creates a subclass t3lib_formprotection_InstallToolFormProtection with retrieveTokens made
+	 * Creates a subclass \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection with retrieveTokens made
 	 * public.
 	 *
 	 * @return string the name of the created class, will not be empty
@@ -76,7 +76,7 @@ class t3lib_formprotection_InstallToolFormProtectionTest extends tx_phpunit_test
 		$className = 't3lib_formprotection_InstallToolFormProtectionAccessibleProxy';
 		if (!class_exists($className)) {
 			eval(
-				'class ' . $className . ' extends t3lib_formprotection_InstallToolFormProtection {' .
+				'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection {' .
 				'  public $sessionToken;' .
 				'  public function createValidationErrorMessage() {' .
 				'    parent::createValidationErrorMessage();' .
@@ -103,7 +103,7 @@ class t3lib_formprotection_InstallToolFormProtectionTest extends tx_phpunit_test
 		$className = $this->createAccessibleProxyClass();
 
 		$this->assertTrue(
-			(new $className()) instanceof t3lib_formprotection_InstallToolFormProtection
+			(new $className()) instanceof \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection
 		);
 	}
 
@@ -121,7 +121,7 @@ class t3lib_formprotection_InstallToolFormProtectionTest extends tx_phpunit_test
 		$action = 'edit';
 		$formInstanceName = '42';
 
-		$tokenId = t3lib_div::hmac($formName . $action . $formInstanceName . $sessionToken);
+		$tokenId = \t3lib_div::hmac($formName . $action . $formInstanceName . $sessionToken);
 
 		$_SESSION['installToolFormToken'] = $sessionToken;
 
@@ -158,7 +158,7 @@ class t3lib_formprotection_InstallToolFormProtectionTest extends tx_phpunit_test
 	 */
 	public function createValidationErrorMessageAddsErrorMessage() {
 		$installTool = $this->getMock(
-			'tx_install', array('addErrorMessage'), array(), '', FALSE
+			'TYPO3\\CMS\\Install\\Installer', array('addErrorMessage'), array(), '', FALSE
 		);
 		$installTool->expects($this->once())->method('addErrorMessage')
 			->with(

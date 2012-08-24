@@ -24,25 +24,26 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Fixture class for the filename filters in the local driver.
  */
 class t3lib_file_Tests_Driver_Fixtures_LocalDriverFilenameFilter {
+
 	/**
 	 * @param string $itemName
 	 * @param string $itemIdentifier
 	 * @param string $parentIdentifier
-	 * @param t3lib_file_Driver_AbstractDriver $driverInstance
+	 * @param \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driverInstance
 	 * @return boolean|integer
 	 */
-	public static function filterFilename($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, t3lib_file_Driver_AbstractDriver $driverInstance) {
+	static public function filterFilename($itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation, \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driverInstance) {
 		if ($itemName == 'fileA' || $itemName == 'folderA/') {
 			return -1;
 		} else {
 			return TRUE;
 		}
 	}
+
 }
 
 ?>

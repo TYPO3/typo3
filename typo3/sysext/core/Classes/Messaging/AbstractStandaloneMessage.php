@@ -140,7 +140,7 @@ abstract class AbstractStandaloneMessage extends \TYPO3\CMS\Core\Messaging\Abstr
 	public function render() {
 		$markers = array_merge($this->getDefaultMarkers(), $this->markers);
 		$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($this->htmlTemplate);
-		$content = \t3lib_parseHtml::substituteMarkerArray($content, $markers, '', FALSE, TRUE);
+		$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($content, $markers, '', FALSE, TRUE);
 		return $content;
 	}
 

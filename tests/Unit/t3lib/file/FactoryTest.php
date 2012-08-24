@@ -21,22 +21,18 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 require_once 'vfsStream/vfsStream.php';
-
 /**
  * Testcase for the factory of FAL
  *
  * @package TYPO3
  * @subpackage t3lib
- *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
 class t3lib_file_FactoryTest extends Tx_Phpunit_TestCase {
 
 	/**
-	 * @var t3lib_file_Factory
+	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
 	 */
 	private $fixture;
 
@@ -46,27 +42,24 @@ class t3lib_file_FactoryTest extends Tx_Phpunit_TestCase {
 	private $objectCreated = FALSE;
 
 	public function setUp() {
-		$this->fixture = new t3lib_file_Factory();
+		$this->fixture = new \TYPO3\CMS\Core\Resource\ResourceFactory();
 	}
 
 	protected function tearDown() {
-		t3lib_div::purgeInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
 	}
 
 	/**********************************
 	 * Storage Collections
 	 **********************************/
-
 	/**
 	 * @test
 	 */
 	public function createStorageCollectionObjectCreatesCollectionWithCorrectArguments() {
-		$mockedMount = $this->getMock('t3lib_file_Storage', array(), array(), '', FALSE);
+		$mockedMount = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		$path = uniqid();
 		$name = uniqid();
-
 		$storageCollection = $this->fixture->createFolderObject($mockedMount, $path, $name, 0);
-
 		$this->assertSame($mockedMount, $storageCollection->getStorage());
 		$this->assertEquals($path . '/', $storageCollection->getIdentifier());
 		$this->assertEquals($name, $storageCollection->getName());
@@ -75,22 +68,21 @@ class t3lib_file_FactoryTest extends Tx_Phpunit_TestCase {
 	/**********************************
 	 * Drivers
 	 **********************************/
-
 	/**
 	 * @test
 	 */
 	public function getDriverObjectAcceptsDriverClassName() {
-		$mockedDriver = $this->getMock('t3lib_file_Driver_AbstractDriver', array(), array(), '', FALSE);
+		$mockedDriver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', array(), array(), '', FALSE);
 		$driverFixtureClass = get_class($mockedDriver);
-		t3lib_div::addInstance($driverFixtureClass, $mockedDriver);
-		$mockedMount = $this->getMock('t3lib_file_Storage', array(), array(), '', FALSE);
-		$mockedRegistry = $this->getMock('t3lib_file_Driver_DriverRegistry');
-		$mockedRegistry->expects($this->once())->method('getDriverClass')->with($this->equalTo($driverFixtureClass))
-			->will($this->returnValue($driverFixtureClass));
-		t3lib_div::setSingletonInstance('t3lib_file_Driver_DriverRegistry', $mockedRegistry);
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance($driverFixtureClass, $mockedDriver);
+		$mockedMount = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$mockedRegistry = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverRegistry');
+		$mockedRegistry->expects($this->once())->method('getDriverClass')->with($this->equalTo($driverFixtureClass))->will($this->returnValue($driverFixtureClass));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\Driver\\DriverRegistry', $mockedRegistry);
 		$obj = $this->fixture->getDriverObject($driverFixtureClass, array());
-		$this->assertInstanceOf('t3lib_file_Driver_AbstractDriver', $obj);
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', $obj);
 	}
+
 }
+
 ?>

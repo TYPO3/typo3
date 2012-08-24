@@ -21,38 +21,36 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for class t3lib_sqlparser.
  *
  * @author Patrick Schriner <patrick.schriner@diemedialen.de>
- *
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_sqlparserTest extends tx_phpunit_testcase {
+
 	/**
-	 * @var t3lib_sqlparser
+	 * @var \TYPO3\CMS\Core\Database\SqlParser
 	 */
 	private $fixture;
 
 	public function setUp() {
-		$this->fixture = new t3lib_sqlparser();
+		$this->fixture = new \TYPO3\CMS\Core\Database\SqlParser();
 	}
 
 	public function tearDown() {
-		unset(
-			$this->fixture
-		);
+		unset($this->fixture);
 	}
 
 	/**
 	 * Regression test
 	 *
 	 * @test
+	 * @todo Define visibility
 	 */
-	function compileWhereClauseDoesNotDropClauses() {
-		$clauses = 	array(
+	public function compileWhereClauseDoesNotDropClauses() {
+		$clauses = array(
 			0 => array(
 				'modifier' => '',
 				'table' => 'pages',
@@ -61,8 +59,8 @@ class t3lib_sqlparserTest extends tx_phpunit_testcase {
 				'comparator' => '=',
 				'value' => array(
 					0 => '',
-					1 => '\'',
-				),
+					1 => '\''
+				)
 			),
 			1 => array(
 				'operator' => 'OR',
@@ -71,11 +69,11 @@ class t3lib_sqlparserTest extends tx_phpunit_testcase {
 					'type' => 'IFNULL',
 					'default' => array(
 						0 => '1',
-						1 => '\'',
+						1 => '\''
 					),
 					'table' => 'pages',
-					'field' => 'fe_group',
-				),
+					'field' => 'fe_group'
+				)
 			),
 			2 => array(
 				'operator' => 'OR',
@@ -86,43 +84,44 @@ class t3lib_sqlparserTest extends tx_phpunit_testcase {
 				'comparator' => '=',
 				'value' => array(
 					0 => '0',
-					1 => '\'',
-				),
+					1 => '\''
+				)
 			),
 			3 => array(
 				'operator' => 'OR',
 				'modifier' => '',
-				'func' => array (
+				'func' => array(
 					'type' => 'FIND_IN_SET',
 					'str' => array(
 						0 => '0',
-						1 => '\'',
+						1 => '\''
 					),
 					'table' => 'pages',
-					'field' => 'fe_group',
+					'field' => 'fe_group'
 				),
-				'comparator' => '',
+				'comparator' => ''
 			),
 			4 => array(
 				'operator' => 'OR',
 				'modifier' => '',
 				'func' => array(
 					'type' => 'FIND_IN_SET',
-					'str' => array (
+					'str' => array(
 						0 => '-1',
-						1 => '\'',
+						1 => '\''
 					),
 					'table' => 'pages',
-					'field' => 'fe_group',
+					'field' => 'fe_group'
 				),
-				'comparator' => '',
-			),
+				'comparator' => ''
+			)
 		);
 		$output = $this->fixture->compileWhereClause($clauses);
 		$parts = explode(' OR ', $output);
 		$this->assertSame(count($clauses), count($parts));
 		$this->assertContains('IFNULL', $output);
 	}
+
 }
 
 ?>

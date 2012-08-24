@@ -241,7 +241,7 @@ return array(
 				),
 				'cache_runtime' => array(
 					'frontend' => 'TYPO3\CMS\Core\Cache\Frontend\VariableFrontend',
-					'backend' => 't3lib_cache_backend_TransientMemoryBackend',
+					'backend' => 'TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend',
 					'options' => array()
 				),
 				'cache_rootline' => array(

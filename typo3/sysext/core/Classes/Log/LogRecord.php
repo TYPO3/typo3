@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Core\Log;
  * @package TYPO3
  * @subpackage t3lib
  */
-class LogRecord implements ArrayAccess {
+class LogRecord implements \ArrayAccess {
 
 	/**
 	 * Unique ID of the request

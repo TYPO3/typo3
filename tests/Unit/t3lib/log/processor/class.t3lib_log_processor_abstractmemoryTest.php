@@ -21,8 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Testcase for t3lib_log_processor_AbstractMemory
  *
@@ -30,44 +28,48 @@
  */
 class t3lib_log_processor_AbstractMemoryTest extends tx_phpunit_testcase {
 
-
 	/**
 	 * @test
+	 * @todo Define visibility
 	 */
-	function getRealMemoryUsageGetsRealMemoryUsage() {
-			/** @var $processor t3lib_log_processor_AbstractMemory */
-		$processor = $this->getMockForAbstractClass('t3lib_log_processor_AbstractMemory');
+	public function getRealMemoryUsageGetsRealMemoryUsage() {
+		/** @var $processor \TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor */
+		$processor = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Log\\Processor\\AbstractMemoryProcessor');
 		$this->assertAttributeEquals($processor->getRealMemoryUsage(), 'realMemoryUsage', $processor);
 	}
 
 	/**
 	 * @test
+	 * @todo Define visibility
 	 */
-	function setRealMemoryUsageSetsRealMemoryUsage() {
-			/** @var $processor t3lib_log_processor_AbstractMemory */
-		$processor = $this->getMockForAbstractClass('t3lib_log_processor_AbstractMemory');
+	public function setRealMemoryUsageSetsRealMemoryUsage() {
+		/** @var $processor \TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor */
+		$processor = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Log\\Processor\\AbstractMemoryProcessor');
 		$processor->setRealMemoryUsage(FALSE);
 		$this->assertAttributeEquals(FALSE, 'realMemoryUsage', $processor);
 	}
 
 	/**
 	 * @test
+	 * @todo Define visibility
 	 */
-	function getFormatSizeGetsFormatSize() {
-			/** @var $processor t3lib_log_processor_AbstractMemory */
-		$processor = $this->getMockForAbstractClass('t3lib_log_processor_AbstractMemory');
+	public function getFormatSizeGetsFormatSize() {
+		/** @var $processor \TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor */
+		$processor = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Log\\Processor\\AbstractMemoryProcessor');
 		$this->assertAttributeEquals($processor->getFormatSize(), 'formatSize', $processor);
 	}
 
 	/**
 	 * @test
+	 * @todo Define visibility
 	 */
-	function setFormatSizeSetsFormatSize() {
-			/** @var $processor t3lib_log_processor_AbstractMemory */
-		$processor = $this->getMockForAbstractClass('t3lib_log_processor_AbstractMemory');
+	public function setFormatSizeSetsFormatSize() {
+		/** @var $processor \TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor */
+		$processor = $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Log\\Processor\\AbstractMemoryProcessor');
 		$processor->setFormatSize(FALSE);
 		$this->assertAttributeEquals(FALSE, 'formatSize', $processor);
 	}
+
 }
 
 ?>

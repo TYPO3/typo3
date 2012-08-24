@@ -21,12 +21,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for class t3lib_Configuration
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- *
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -43,30 +41,28 @@ class t3lib_ConfigurationTest extends tx_phpunit_testcase {
 	 */
 	public function tearDown() {
 		foreach ($this->testFilesToDelete as $absoluteFileName) {
-			t3lib_div::unlink_tempfile($absoluteFileName);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($absoluteFileName);
 		}
 	}
 
 	#######################
 	# Tests concerning getDefaultConfiguration
 	#######################
-
 	/**
 	 * @test
 	 * @expectedException RuntimeException
 	 */
 	public function getDefaultConfigurationExecutesDefinedDefaultConfigurationFile() {
 		$defaultConfigurationFile = 'typo3temp/' . uniqid('defaultConfiguration');
-		$className = uniqid('t3lib_Configuration');
-		eval(
-			'class ' . $className . ' extends t3lib_Configuration {' .
-			'  const DEFAULT_CONFIGURATION_FILE = \'' . $defaultConfigurationFile . '\';' .
-			'}'
-		);
-		file_put_contents(
-			PATH_site . $defaultConfigurationFile,
-			"<?php\n\nthrow new RuntimeException('foo', 1310203814);\n\n?>"
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+		$className = uniqid('ConfigurationManager');
+		eval(((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  const DEFAULT_CONFIGURATION_FILE = \'') . $defaultConfigurationFile) . '\';') . '}');
+		$className = $namespace . '\\' . $className;
+		file_put_contents(PATH_site . $defaultConfigurationFile, '<?php
+
+throw new RuntimeException(\'foo\', 1310203814);
+
+?>');
 		$this->testFilesToDelete[] = PATH_site . $defaultConfigurationFile;
 		$className::getDefaultConfiguration();
 	}
@@ -74,23 +70,21 @@ class t3lib_ConfigurationTest extends tx_phpunit_testcase {
 	#######################
 	# Tests concerning getLocalConfiguration
 	#######################
-
 	/**
 	 * @test
 	 * @expectedException RuntimeException
 	 */
 	public function getLocalConfigurationExecutesDefinedConfigurationFile() {
 		$configurationFile = 'typo3temp/' . uniqid('localConfiguration');
-		$className = uniqid('t3lib_Configuration');
-		eval(
-			'class ' . $className . ' extends t3lib_Configuration {' .
-			'  const LOCAL_CONFIGURATION_FILE = \'' . $configurationFile . '\';' .
-			'}'
-		);
-		file_put_contents(
-			PATH_site . $configurationFile,
-			"<?php\n\nthrow new RuntimeException('foo', 1310203815);\n\n?>"
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+		$className = uniqid('ConfigurationManager');
+		eval(((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  const LOCAL_CONFIGURATION_FILE = \'') . $configurationFile) . '\';') . '}');
+		$className = $namespace . '\\' . $className;
+		file_put_contents(PATH_site . $configurationFile, '<?php
+
+throw new RuntimeException(\'foo\', 1310203815);
+
+?>');
 		$this->testFilesToDelete[] = PATH_site . $configurationFile;
 		$className::getLocalConfiguration();
 	}
@@ -98,36 +92,17 @@ class t3lib_ConfigurationTest extends tx_phpunit_testcase {
 	#######################
 	# Tests concerning updateLocalConfiguration
 	#######################
-
 	/**
 	 * @test
 	 */
 	public function updateLocalConfigurationWritesNewMergedLocalConfigurationArray() {
-		$className = uniqid('t3lib_Configuration');
-		eval(
-			'class ' . $className . ' extends t3lib_Configuration {' .
-			'  public static function getLocalConfiguration() {' .
-			'    $currentLocalConfiguration = array(' .
-			'      \'notChanged\' => 23,' .
-			'      \'changed\' => \'unChanged\',' .
-			'    );' .
-			'    return $currentLocalConfiguration;' .
-			'  }' .
-			'  public static function writeLocalConfiguration($conf) {' .
-			'    $expectedConfiguration = array(' .
-			'      \'notChanged\' => 23,' .
-			'      \'changed\' => \'changed\',' .
-			'      \'new\' => \'new\',' .
-			'    );' .
-			'    if (!($conf === $expectedConfiguration)) {' .
-			'      throw new Exception(\'broken\');' .
-			'    }' .
-			'  }' .
-			'}'
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+		$className = uniqid('ConfigurationManager');
+		eval(((((((((((((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  public static function getLocalConfiguration() {') . '    $currentLocalConfiguration = array(') . '      \'notChanged\' => 23,') . '      \'changed\' => \'unChanged\',') . '    );') . '    return $currentLocalConfiguration;') . '  }') . '  public static function writeLocalConfiguration($conf) {') . '    $expectedConfiguration = array(') . '      \'notChanged\' => 23,') . '      \'changed\' => \'changed\',') . '      \'new\' => \'new\',') . '    );') . '    if (!($conf === $expectedConfiguration)) {') . '      throw new Exception(\'broken\');') . '    }') . '  }') . '}');
+		$className = $namespace . '\\' . $className;
 		$overrideConfiguration = array(
 			'changed' => 'changed',
-			'new' => 'new',
+			'new' => 'new'
 		);
 		$className::updateLocalConfiguration($overrideConfiguration);
 	}
@@ -135,79 +110,56 @@ class t3lib_ConfigurationTest extends tx_phpunit_testcase {
 	#######################
 	# Tests concerning getDefaultConfigurationValueByPath
 	#######################
-
 	/**
 	 * @test
 	 */
 	public function getDefaultConfigurationValueByPathReturnsCorrectValue() {
-		$className = uniqid('t3lib_Configuration');
-		eval(
-			'class ' . $className . ' extends t3lib_Configuration {' .
-			'  public static function getDefaultConfiguration() {' .
-			'    return array(\'path\' => \'value\');' .
-			'  }' .
-			'}'
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+		$className = uniqid('ConfigurationManager');
+		eval(((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  public static function getDefaultConfiguration() {') . '    return array(\'path\' => \'value\');') . '  }') . '}');
+		$className = $namespace . '\\' . $className;
 		$this->assertSame('value', $className::getDefaultConfigurationValueByPath('path'));
 	}
 
 	#######################
 	# Tests concerning getLocalConfigurationValueByPath
 	#######################
-
 	/**
 	 * @test
 	 */
 	public function getLocalConfigurationValueByPathReturnsCorrectValue() {
-		$className = uniqid('t3lib_Configuration');
-		eval(
-			'class ' . $className . ' extends t3lib_Configuration {' .
-			'  public static function getLocalConfiguration() {' .
-			'    return array(\'path\' => \'value\');' .
-			'  }' .
-			'}'
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+		$className = uniqid('ConfigurationManager');
+		eval(((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  public static function getLocalConfiguration() {') . '    return array(\'path\' => \'value\');') . '  }') . '}');
+		$className = $namespace . '\\' . $className;
 		$this->assertSame('value', $className::getLocalConfigurationValueByPath('path'));
 	}
 
 	#######################
 	# Tests concerning getConfigurationValueByPath
 	#######################
-
 	/**
 	 * @test
 	 */
 	public function getConfigurationValueByPathReturnsCorrectValue() {
-		$className = uniqid('t3lib_Configuration');
-		eval(
-			'class ' . $className . ' extends t3lib_Configuration {' .
-			'  public static function getDefaultConfiguration() {' .
-			'    return array(\'path\' => \'value\');' .
-			'  }' .
-			'  public static function getLocalConfiguration() {' .
-			'    return array(\'path\' => \'valueOverride\');' .
-			'  }' .
-			'}'
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+		$className = uniqid('ConfigurationManager');
+		eval((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  public static function getDefaultConfiguration() {') . '    return array(\'path\' => \'value\');') . '  }') . '  public static function getLocalConfiguration() {') . '    return array(\'path\' => \'valueOverride\');') . '  }') . '}');
+		$className = $namespace . '\\' . $className;
 		$this->assertSame('valueOverride', $className::getConfigurationValueByPath('path'));
 	}
 
 	#######################
 	# Tests concerning setLocalConfigurationValueByPath
 	#######################
-
 	/**
 	 * @test
 	 */
 	public function setLocalConfigurationValueByPathReturnFalseIfPathIsNotValid() {
-		$className = uniqid('t3lib_Configuration');
-		eval(
-			'class ' . $className . ' extends t3lib_Configuration {' .
-			'  public static function isValidLocalConfigurationPath() {' .
-			'    return FALSE;' .
-			'  }' .
-			'}'
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+		$className = uniqid('ConfigurationManager');
+		eval(((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  public static function isValidLocalConfigurationPath() {') . '    return FALSE;') . '  }') . '}');
+		$className = $namespace . '\\' . $className;
 		$this->assertFalse($className::setLocalConfigurationValueByPath('path'));
 	}
 
@@ -215,31 +167,10 @@ class t3lib_ConfigurationTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function setLocalConfigurationValueByPathUpdatesValueDefinedByPath() {
-		$className = uniqid('t3lib_Configuration');
-		eval(
-			'class ' . $className . ' extends t3lib_Configuration {' .
-			'  public static function isValidLocalConfigurationPath() {' .
-			'    return TRUE;' .
-			'  }' .
-			'  public static function getLocalConfiguration() {' .
-			'    $currentLocalConfiguration = array(' .
-			'      \'notChanged\' => 23,' .
-			'      \'toUpdate\' => \'notUpdated\',' .
-			'    );' .
-			'    return $currentLocalConfiguration;' .
-			'  }' .
-			'  public static function writeLocalConfiguration($conf) {' .
-			'    $expectedConfiguration = array(' .
-			'      \'notChanged\' => 23,' .
-			'      \'toUpdate\' => \'updated\',' .
-			'    );' .
-			'    if (!($conf === $expectedConfiguration)) {' .
-			'      throw new Exception(\'broken\');' .
-			'    }' .
-			'    return TRUE;' .
-			'  }' .
-			'}'
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+		$className = uniqid('ConfigurationManager');
+		eval((((((((((((((((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  public static function isValidLocalConfigurationPath() {') . '    return TRUE;') . '  }') . '  public static function getLocalConfiguration() {') . '    $currentLocalConfiguration = array(') . '      \'notChanged\' => 23,') . '      \'toUpdate\' => \'notUpdated\',') . '    );') . '    return $currentLocalConfiguration;') . '  }') . '  public static function writeLocalConfiguration($conf) {') . '    $expectedConfiguration = array(') . '      \'notChanged\' => 23,') . '      \'toUpdate\' => \'updated\',') . '    );') . '    if (!($conf === $expectedConfiguration)) {') . '      throw new Exception(\'broken\');') . '    }') . '    return TRUE;') . '  }') . '}');
+		$className = $namespace . '\\' . $className;
 		$pathToUpdate = 'toUpdate';
 		$valueToUpdate = 'updated';
 		$this->assertTrue($className::setLocalConfigurationValueByPath($pathToUpdate, $valueToUpdate));
@@ -248,40 +179,17 @@ class t3lib_ConfigurationTest extends tx_phpunit_testcase {
 	#######################
 	# Tests concerning setLocalConfigurationValuesByPathValuePairs
 	#######################
-
 	/**
 	 * @test
 	 */
 	public function setLocalConfigurationValuesByPathValuePairsSetsPathValuePairs() {
-		$className = uniqid('t3lib_Configuration');
-		eval(
-			'class ' . $className . ' extends t3lib_Configuration {' .
-			'  public static function isValidLocalConfigurationPath() {' .
-			'    return TRUE;' .
-			'  }' .
-			'  public static function getLocalConfiguration() {' .
-			'    $currentLocalConfiguration = array(' .
-			'      \'notChanged\' => 23,' .
-			'      \'toUpdate\' => \'notUpdated\',' .
-			'    );' .
-			'    return $currentLocalConfiguration;' .
-			'  }' .
-			'  public static function writeLocalConfiguration($conf) {' .
-			'    $expectedConfiguration = array(' .
-			'      \'notChanged\' => 23,' .
-			'      \'toUpdate\' => \'updated\',' .
-			'      \'new\' => \'new\',' .
-			'    );' .
-			'    if (!($conf === $expectedConfiguration)) {' .
-			'      throw new Exception(\'broken\');' .
-			'    }' .
-			'    return TRUE;' .
-			'  }' .
-			'}'
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+		$className = uniqid('ConfigurationManager');
+		eval(((((((((((((((((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  public static function isValidLocalConfigurationPath() {') . '    return TRUE;') . '  }') . '  public static function getLocalConfiguration() {') . '    $currentLocalConfiguration = array(') . '      \'notChanged\' => 23,') . '      \'toUpdate\' => \'notUpdated\',') . '    );') . '    return $currentLocalConfiguration;') . '  }') . '  public static function writeLocalConfiguration($conf) {') . '    $expectedConfiguration = array(') . '      \'notChanged\' => 23,') . '      \'toUpdate\' => \'updated\',') . '      \'new\' => \'new\',') . '    );') . '    if (!($conf === $expectedConfiguration)) {') . '      throw new Exception(\'broken\');') . '    }') . '    return TRUE;') . '  }') . '}');
+		$className = $namespace . '\\' . $className;
 		$pairs = array(
 			'toUpdate' => 'updated',
-			'new' => 'new',
+			'new' => 'new'
 		);
 		$this->assertTrue($className::setLocalConfigurationValuesByPathValuePairs($pairs));
 	}
@@ -289,33 +197,21 @@ class t3lib_ConfigurationTest extends tx_phpunit_testcase {
 	#######################
 	# Tests concerning writeLocalConfiguration
 	#######################
-
 	/**
 	 * @test
 	 */
 	public function writeLocalConfigurationWritesSortedContentToConfigurationFile() {
 		$configurationFile = 'typo3temp/' . uniqid('localConfiguration');
-		$className = uniqid('t3lib_Configuration');
-		eval(
-			'class ' . $className . ' extends t3lib_Configuration {' .
-			'  const LOCAL_CONFIGURATION_FILE = \'' . $configurationFile . '\';' .
-			'  public static function writeLocalConfiguration($conf) {' .
-			'    return parent::writeLocalConfiguration($conf);' .
-			'  }' .
-			'}'
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+		$className = uniqid('ConfigurationManager');
+		eval((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  const LOCAL_CONFIGURATION_FILE = \'') . $configurationFile) . '\';') . '  public static function writeLocalConfiguration($conf) {') . '    return parent::writeLocalConfiguration($conf);') . '  }') . '}');
+		$className = $namespace . '\\' . $className;
 		$this->testFilesToDelete[] = PATH_site . $configurationFile;
 		$pairs = array(
 			'foo' => 42,
 			'bar' => 23
 		);
-		$expectedContent =
-		'<?php' . LF .
-			'return array(' . LF .
-			TAB . '\'bar\' => 23,' . LF .
-			TAB . '\'foo\' => 42,' . LF .
-			');' . LF .
-		'?>';
+		$expectedContent = ((((((((((('<?php' . LF) . 'return array(') . LF) . TAB) . '\'bar\' => 23,') . LF) . TAB) . '\'foo\' => 42,') . LF) . ');') . LF) . '?>';
 		$this->assertTrue($className::writeLocalConfiguration($pairs));
 		$this->assertEquals($expectedContent, file_get_contents(PATH_site . $configurationFile));
 	}
@@ -323,24 +219,17 @@ class t3lib_ConfigurationTest extends tx_phpunit_testcase {
 	#######################
 	# Tests concerning isValidLocalConfigurationPath
 	#######################
-
 	/**
 	 * @test
 	 */
 	public function isValidLocalConfigurationPathAcceptsWhitelistedPath() {
-		$className = uniqid('t3lib_Configuration');
-		eval(
-			'class ' . $className . ' extends t3lib_Configuration {' .
-			'  protected static $whiteListedLocalConfigurationPaths = array(' .
-			'    \'foo\',' .
-			'  );' .
-			'  public static function isValidLocalConfigurationPath($path) {' .
-			'    return parent::isValidLocalConfigurationPath($path);' .
-			'  }' .
-			'}'
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+		$className = uniqid('ConfigurationManager');
+		eval((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  protected static $whiteListedLocalConfigurationPaths = array(') . '    \'foo\',') . '  );') . '  public static function isValidLocalConfigurationPath($path) {') . '    return parent::isValidLocalConfigurationPath($path);') . '  }') . '}');
+		$className = $namespace . '\\' . $className;
 		$this->assertTrue($className::isValidLocalConfigurationPath('foo'));
 	}
+
 }
 
 ?>

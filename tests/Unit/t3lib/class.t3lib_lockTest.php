@@ -21,12 +21,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for t3lib_lock
  *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- *
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -50,12 +48,11 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	///////////////////////////////
 	// tests concerning __construct
 	///////////////////////////////
-
 	/**
 	 * @test
 	 */
 	public function constructorUsesDefaultLockingMethodSimple() {
-		$instance = new t3lib_lock('999999999');
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999');
 		$this->assertSame('simple', $instance->getMethod());
 	}
 
@@ -63,7 +60,7 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function constructorSetsMethodToGivenParameter() {
-		$instance = new t3lib_lock('999999999', 'flock');
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'flock');
 		$this->assertSame('flock', $instance->getMethod());
 	}
 
@@ -71,7 +68,7 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function constructorDoesNotThrowExceptionIfUsingDisableMethod() {
-		$instance = new t3lib_lock('999999999', 'disable');
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'disable');
 	}
 
 	/**
@@ -79,16 +76,16 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function constructorThrowsExceptionForNotExistingLockingMethod() {
-		$instance = new t3lib_lock('999999999', 'foo');
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'foo');
 	}
 
 	/**
 	 * @test
 	 */
 	public function constructorUsesDefaultValueForLoops() {
-		$instance = new t3lib_lock('999999999');
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999');
 		$instance->setEnableLogging(FALSE);
-		$t3libLockReflection = new ReflectionClass('t3lib_lock');
+		$t3libLockReflection = new ReflectionClass('TYPO3\\CMS\\Core\\Locking\\Locker');
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('loops');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
 		$this->assertSame(150, $t3libLockReflectionResourceProperty->getValue($instance));
@@ -98,9 +95,9 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function constructorSetsLoopsToGivenNumberOfLoops() {
-		$instance = new t3lib_lock('999999999', 'simple', 10);
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'simple', 10);
 		$instance->setEnableLogging(FALSE);
-		$t3libLockReflection = new ReflectionClass('t3lib_lock');
+		$t3libLockReflection = new ReflectionClass('TYPO3\\CMS\\Core\\Locking\\Locker');
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('loops');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
 		$this->assertSame(10, $t3libLockReflectionResourceProperty->getValue($instance));
@@ -110,9 +107,9 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function constructorUsesDefaultValueForSteps() {
-		$instance = new t3lib_lock('999999999');
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999');
 		$instance->setEnableLogging(FALSE);
-		$t3libLockReflection = new ReflectionClass('t3lib_lock');
+		$t3libLockReflection = new ReflectionClass('TYPO3\\CMS\\Core\\Locking\\Locker');
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('step');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
 		$this->assertSame(200, $t3libLockReflectionResourceProperty->getValue($instance));
@@ -122,9 +119,9 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function constructorSetsStepToGivenNumberOfStep() {
-		$instance = new t3lib_lock('999999999', 'simple', 0, 10);
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'simple', 0, 10);
 		$instance->setEnableLogging(FALSE);
-		$t3libLockReflection = new ReflectionClass('t3lib_lock');
+		$t3libLockReflection = new ReflectionClass('TYPO3\\CMS\\Core\\Locking\\Locker');
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('step');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
 		$this->assertSame(10, $t3libLockReflectionResourceProperty->getValue($instance));
@@ -134,8 +131,8 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function constructorCreatesLockDirectoryIfNotExisting() {
-		t3lib_div::rmdir(PATH_site . 'typo3temp/locks/', TRUE);
-		$instance = new t3lib_lock('999999999', 'simple');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3temp/locks/', TRUE);
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'simple');
 		$this->assertTrue(is_dir(PATH_site . 'typo3temp/locks/'));
 	}
 
@@ -143,7 +140,7 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function constructorSetsIdToMd5OfStringIfUsingSimleLocking() {
-		$instance = new t3lib_lock('999999999', 'simple');
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'simple');
 		$this->assertSame(md5('999999999'), $instance->getId());
 	}
 
@@ -151,8 +148,8 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function constructorSetsResourceToPathWithIdIfUsingSimpleLocking() {
-		$instance = new t3lib_lock('999999999', 'simple');
-		$this->assertSame(PATH_site . 'typo3temp/locks/' . md5('999999999'), $instance->getResource());
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'simple');
+		$this->assertSame((PATH_site . 'typo3temp/locks/') . md5('999999999'), $instance->getResource());
 	}
 
 	/**
@@ -162,7 +159,7 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 		if (!function_exists('sem_get')) {
 			$this->markTestSkipped('The system does not support semaphore base locking.');
 		}
-		$instance = new t3lib_lock('999999999', 'semaphore');
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'semaphore');
 		$this->assertSame(abs(crc32('999999999')), $instance->getId());
 	}
 
@@ -173,14 +170,13 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 		if (!function_exists('sem_get')) {
 			$this->markTestSkipped('The system does not support semaphore base locking.');
 		}
-		$instance = new t3lib_lock('999999999', 'semaphore');
+		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'semaphore');
 		$this->assertTrue(is_resource($instance->getResource()));
 	}
 
 	///////////////////////////////
 	// tests concerning acquire
 	///////////////////////////////
-
 	/**
 	 * @test
 	 */
@@ -188,33 +184,28 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('acquireFixesPermissionsOnLockFileIfUsingSimpleLogging() test not available on Windows.');
 		}
-
-			// Use a very high id to be unique
-		$instance = new t3lib_lock(999999999, 'simple');
+		// Use a very high id to be unique
+		$instance = new \TYPO3\CMS\Core\Locking\Locker(999999999, 'simple');
 		$pathOfLockFile = $instance->getResource();
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
-
-			// Acquire lock, get actual file permissions and clean up
+		// Acquire lock, get actual file permissions and clean up
 		$instance->acquire();
 		clearstatcache();
 		$resultFilePermissions = substr(decoct(fileperms($pathOfLockFile)), 2);
 		$instance->__destruct();
-
 		$this->assertEquals($resultFilePermissions, '0777');
 	}
-
 
 	///////////////////////////////
 	// tests concerning release
 	///////////////////////////////
-
 	/**
 	 * Dataprovider for releaseRemovesLockfileInTypo3TempLocks
 	 */
 	public function fileBasedLockMethods() {
 		return array(
 			'simple' => array('simple'),
-			'flock' => array('flock'),
+			'flock' => array('flock')
 		);
 	}
 
@@ -223,16 +214,14 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 	 * @dataProvider fileBasedLockMethods
 	 */
 	public function releaseRemovesLockfileInTypo3TempLocks($lockMethod) {
-			// Use a very high id to be unique
-		$instance = new t3lib_lock(999999999, 'simple');
-			// Disable logging
+		// Use a very high id to be unique
+		$instance = new \TYPO3\CMS\Core\Locking\Locker(999999999, 'simple');
+		// Disable logging
 		$instance->setEnableLogging(FALSE);
-			// File pointer to current lock file
+		// File pointer to current lock file
 		$lockFile = $instance->getResource();
 		$instance->acquire();
-
 		$instance->release();
-
 		$this->assertFalse(is_file($lockFile));
 	}
 
@@ -248,7 +237,7 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 			'simple directory traversal 2' => array('simple', PATH_site . 'typo3temp/locks/../locks/foo'),
 			'flock directory traversal 2' => array('flock', PATH_site . 'typo3temp/locks/../locks/foo'),
 			'simple within uploads' => array('simple', PATH_site . 'uploads/TYPO3-Lock-Test'),
-			'flock within uploads' => array('flock', PATH_site . 'uploads/TYPO3-Lock-Test'),
+			'flock within uploads' => array('flock', PATH_site . 'uploads/TYPO3-Lock-Test')
 		);
 	}
 
@@ -260,38 +249,35 @@ class t3lib_lockTest extends tx_phpunit_testcase {
 		if (TYPO3_OS === 'WIN') {
 			$this->markTestSkipped('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory() test not available on Windows.');
 		}
-			// Reflection needs php 5.3.2 or above
+		// Reflection needs php 5.3.2 or above
 		if (version_compare(phpversion(), '5.3.2', '<')) {
 			$this->markTestSkipped('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory() test not available with php version smaller than 5.3.2');
 		}
-
-			// Create test file
+		// Create test file
 		touch($file);
 		if (!is_file($file)) {
 			$this->markTestSkipped('releaseDoesNotRemoveFilesNotWithinTypo3TempLocksDirectory() skipped: Test file could not be created');
 		}
-
-			// Create t3lib_lock instance, set lockfile to invalid path
-		$instance = new t3lib_lock(999999999, $lockMethod);
+		// Create t3lib_lock instance, set lockfile to invalid path
+		$instance = new \TYPO3\CMS\Core\Locking\Locker(999999999, $lockMethod);
 		$instance->setEnableLogging(FALSE);
-		$t3libLockReflection = new ReflectionClass('t3lib_lock');
+		$t3libLockReflection = new ReflectionClass('TYPO3\\CMS\\Core\\Locking\\Locker');
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('resource');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
 		$t3libLockReflectionResourceProperty->setValue($instance, $file);
 		$t3libLockReflectionAcquiredProperty = $t3libLockReflection->getProperty('isAcquired');
 		$t3libLockReflectionAcquiredProperty->setAccessible(TRUE);
 		$t3libLockReflectionAcquiredProperty->setValue($instance, TRUE);
-
-			// Call release method
+		// Call release method
 		$instance->release();
-
-			// Check if file is still there and clean up
+		// Check if file is still there and clean up
 		$fileExists = is_file($file);
 		if (is_file($file)) {
 			unlink($file);
 		}
-
 		$this->assertTrue($fileExists);
 	}
+
 }
+
 ?>

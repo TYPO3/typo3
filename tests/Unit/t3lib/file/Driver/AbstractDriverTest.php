@@ -37,17 +37,16 @@ require_once dirname(__FILE__) . '/../BaseTestCase.php';
 class t3lib_file_Driver_AbstractDriverTest extends t3lib_file_BaseTestCase {
 
 	/**
-	 * @var t3lib_file_Driver_AbstractDriver
+	 * @var \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
 	 */
 	protected $fixture;
 
 	/**
-	 * @return t3lib_file_Driver_AbstractDriver
+	 * @return \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
 	 */
 	protected function createDriverFixture() {
-		return $this->getMockForAbstractClass('t3lib_file_Driver_AbstractDriver', array(), '', FALSE);
+		return $this->getMockForAbstractClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver', array(), '', FALSE);
 	}
-
 
 	public function filenameValidationDataProvider() {
 		return array(
@@ -80,15 +79,15 @@ class t3lib_file_Driver_AbstractDriverTest extends t3lib_file_BaseTestCase {
 				TRUE
 			),
 			'filename with tab' => array(
-				'some' . TAB . 'tag',
+				('some' . TAB) . 'tag',
 				TRUE
 			),
 			'filename with carriage return' => array(
-				'some' . CR . 'CarriageReturn',
+				('some' . CR) . 'CarriageReturn',
 				FALSE
 			),
 			'filename with linefeed' => array(
-				'some' . LF . 'Linefeed',
+				('some' . LF) . 'Linefeed',
 				FALSE
 			),
 			'filename with leading slash' => array(
@@ -96,9 +95,9 @@ class t3lib_file_Driver_AbstractDriverTest extends t3lib_file_BaseTestCase {
 				FALSE
 			),
 			'filename with null character' => array(
-				'someFile' . chr(0) . 'name',
+				('someFile' . chr(0)) . 'name',
 				FALSE
-			),
+			)
 		);
 	}
 
@@ -109,7 +108,6 @@ class t3lib_file_Driver_AbstractDriverTest extends t3lib_file_BaseTestCase {
 	public function filenamesAreCorrectlyValidated($filename, $expectedResult) {
 		$fixture = $this->createDriverFixture(array());
 		$result = $fixture->isValidFilename($filename);
-
 		$this->assertEquals($expectedResult, $result);
 	}
 
@@ -118,16 +116,14 @@ class t3lib_file_Driver_AbstractDriverTest extends t3lib_file_BaseTestCase {
 	 */
 	public function getFolderCorrectlySetsFolderName() {
 		$identifier = '/someFolder/someSubfolder/';
-
 		$fixture = $this->createDriverFixture(array());
-		$fixture->setStorage($this->getMock('t3lib_file_Storage', array(), array(), '', FALSE));
-
-		$mockedFactory = $this->getMock('t3lib_file_Factory');
+		$fixture->setStorage($this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE));
+		$mockedFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 		$mockedFactory->expects($this->once())->method('createFolderObject')->with($this->anything(), $this->anything(), 'someSubfolder');
-		t3lib_div::setSingletonInstance('t3lib_file_Factory', $mockedFactory);
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', $mockedFactory);
 		$fixture->getFolder($identifier);
 	}
+
 }
 
 ?>

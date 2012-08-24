@@ -1,6 +1,9 @@
 <?php
 namespace TYPO3\CMS\Core\Mail;
 
+// Make sure Swift's auto-loader is registered
+require_once PATH_typo3 . 'contrib/swiftmailer/swift_required.php';
+
 /**
  * Adapter for Swift_Mailer to be used by TYPO3 extensions.
  *
@@ -11,10 +14,10 @@ namespace TYPO3\CMS\Core\Mail;
  * @package TYPO3
  * @subpackage t3lib
  */
-class Mailer extends Swift_Mailer {
+class Mailer extends \Swift_Mailer {
 
 	/**
-	 * @var Swift_Transport
+	 * @var \Swift_Transport
 	 */
 	protected $transport;
 
@@ -24,9 +27,9 @@ class Mailer extends Swift_Mailer {
 	protected $mailSettings = array();
 
 	/**
-	 * When constructing, also initializes the Swift_Transport like configured
+	 * When constructing, also initializes the \Swift_Transport like configured
 	 *
-	 * @param null|Swift_Transport $transport optionally pass a transport to the constructor.
+	 * @param null|\Swift_Transport $transport optionally pass a transport to the constructor.
 	 * @throws \TYPO3\CMS\Core\Exception
 	 */
 	public function __construct(\Swift_Transport $transport = NULL) {
@@ -100,7 +103,7 @@ class Mailer extends Swift_Mailer {
 				throw new \TYPO3\CMS\Core\Exception('$TYPO3_CONF_VARS[\'MAIL\'][\'transport_mbox_file\'] needs to be set when transport is set to "mbox"', 1294586645);
 			}
 			// Create our transport
-			$this->transport = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_mail_mboxtransport', $mboxFile);
+			$this->transport = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MboxTransport', $mboxFile);
 			break;
 		case 'mail':
 			// Create the transport, no configuration required
@@ -112,7 +115,7 @@ class Mailer extends Swift_Mailer {
 			if ($customTransport instanceof \Swift_Transport) {
 				$this->transport = $customTransport;
 			} else {
-				throw new \RuntimeException($this->mailSettings['transport'] . ' is not an implementation of Swift_Transport,
+				throw new \RuntimeException($this->mailSettings['transport'] . ' is not an implementation of \\Swift_Transport,
 						but must implement that interface to be used as a mail transport.', 1323006478);
 			}
 		}

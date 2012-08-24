@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -25,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for the FAL driver registry.
  *
@@ -49,7 +47,7 @@ class t3lib_file_Driver_DriverRegistryTest extends Tx_Phpunit_TestCase {
 	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
-	 * @var t3lib_file_Driver_DriverRegistry
+	 * @var \TYPO3\CMS\Core\Resource\Driver\DriverRegistry
 	 */
 	private $fixture;
 
@@ -58,16 +56,15 @@ class t3lib_file_Driver_DriverRegistryTest extends Tx_Phpunit_TestCase {
 	}
 
 	protected function initializeFixture() {
-		$this->fixture = new t3lib_file_Driver_DriverRegistry();
+		$this->fixture = new \TYPO3\CMS\Core\Resource\Driver\DriverRegistry();
 	}
 
 	/**
 	 * @test
 	 */
 	public function registeredDriverClassesCanBeRetrieved() {
-		$className = $this->getMockClass('t3lib_file_Driver_AbstractDriver');
+		$className = $this->getMockClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver');
 		$this->fixture->registerDriverClass($className, 'foobar');
-
 		$returnedClassName = $this->fixture->getDriverClass('foobar');
 		$this->assertEquals($className, $returnedClassName);
 	}
@@ -77,7 +74,6 @@ class t3lib_file_Driver_DriverRegistryTest extends Tx_Phpunit_TestCase {
 	 */
 	public function registerDriverClassThrowsExceptionIfClassDoesNotExist() {
 		$this->setExpectedException('InvalidArgumentException', '', 1314979197);
-
 		$this->fixture->registerDriverClass(uniqid());
 	}
 
@@ -86,8 +82,7 @@ class t3lib_file_Driver_DriverRegistryTest extends Tx_Phpunit_TestCase {
 	 */
 	public function registerDriverClassThrowsExceptionIfShortnameIsAlreadyTaken() {
 		$this->setExpectedException('InvalidArgumentException', '', 1314979451);
-
-		$className = $this->getMockClass('t3lib_file_Driver_AbstractDriver');
+		$className = $this->getMockClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver');
 		$this->fixture->registerDriverClass($className, 'foobar');
 		$this->fixture->registerDriverClass($className, 'foobar');
 	}
@@ -97,7 +92,6 @@ class t3lib_file_Driver_DriverRegistryTest extends Tx_Phpunit_TestCase {
 	 */
 	public function getDriverClassThrowsExceptionIfClassIsNotRegistered() {
 		$this->setExpectedException('InvalidArgumentException', '', 1314085990);
-
 		$this->fixture->getDriverClass(uniqid());
 	}
 
@@ -105,9 +99,8 @@ class t3lib_file_Driver_DriverRegistryTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function getDriverClassAcceptsClassNameIfClassIsRegistered() {
-		$className = $this->getMockClass('t3lib_file_Driver_AbstractDriver');
+		$className = $this->getMockClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver');
 		$this->fixture->registerDriverClass($className, 'foobar');
-
 		$this->assertEquals($className, $this->fixture->getDriverClass($className));
 	}
 
@@ -115,17 +108,17 @@ class t3lib_file_Driver_DriverRegistryTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function driverRegistryIsInitializedWithPreconfiguredDrivers() {
-		$className = $this->getMockClass('t3lib_file_Driver_AbstractDriver');
+		$className = $this->getMockClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver');
 		$shortName = uniqid();
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['registeredDrivers'] = array(
 			$shortName => array(
 				'class' => $className
 			)
 		);
-
 		$this->initializeFixture();
-
 		$this->assertEquals($className, $this->fixture->getDriverClass($shortName));
 	}
+
 }
+
 ?>

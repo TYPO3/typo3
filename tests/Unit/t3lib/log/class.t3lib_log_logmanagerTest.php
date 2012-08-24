@@ -22,8 +22,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Testcase for t3lib_log_LogManager.
  *
@@ -50,23 +48,23 @@ class t3lib_log_LogManagerTest extends tx_phpunit_testcase {
 	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
-	 * @var t3lib_log_LogManager
-	*/
+	 * @var \TYPO3\CMS\Core\Log\LogManager
+	 */
 	protected $logManagerInstance = NULL;
 
 	public function setUp() {
-		$this->logManagerInstance = t3lib_div::makeInstance('t3lib_log_LogManager');
+		$this->logManagerInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager');
 	}
 
 	public function tearDown() {
-		t3lib_div::makeInstance('t3lib_log_LogManager')->reset();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\LogManager')->reset();
 	}
 
 	/**
 	 * @test
 	 */
 	public function logManagerReturnsLoggerWhenRequestedWithGetLogger() {
-		$this->assertInstanceOf('t3lib_log_Logger', $this->logManagerInstance->getLogger('test'));
+		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Log\\Logger', $this->logManagerInstance->getLogger('test'));
 	}
 
 	/**
@@ -82,10 +80,8 @@ class t3lib_log_LogManagerTest extends tx_phpunit_testcase {
 	public function managerReturnsSameLoggerOnRepeatedRequest() {
 		$loggerName = uniqid('test.core.log');
 		$this->logManagerInstance->registerLogger($loggerName);
-
 		$logger1 = $this->logManagerInstance->getLogger($loggerName);
 		$logger2 = $this->logManagerInstance->getLogger($loggerName);
-
 		$this->assertSame($logger1, $logger2);
 	}
 
@@ -94,19 +90,16 @@ class t3lib_log_LogManagerTest extends tx_phpunit_testcase {
 	 */
 	public function configuresLoggerWithConfiguredWriter() {
 		$component = 'test';
-		$writer    = 't3lib_log_writer_Null';
-		$level     = t3lib_log_Level::DEBUG;
-
+		$writer = 'TYPO3\\CMS\\Core\\Log\\Writer\\NullWriter';
+		$level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
 		$GLOBALS['TYPO3_CONF_VARS']['LOG'][$component]['writerConfiguration'] = array(
 			$level => array(
 				$writer => array()
 			)
 		);
-
-		/** @var $logger t3lib_log_Logger */
-		$logger  = $this->logManagerInstance->getLogger($component);
+		/** @var $logger \TYPO3\CMS\Core\Log\Logger */
+		$logger = $this->logManagerInstance->getLogger($component);
 		$writers = $logger->getWriters();
-
 		$this->assertInstanceOf($writer, $writers[$level][0]);
 	}
 
@@ -115,21 +108,19 @@ class t3lib_log_LogManagerTest extends tx_phpunit_testcase {
 	 */
 	public function configuresLoggerWithConfiguredProcessor() {
 		$component = 'test';
-		$processor = 't3lib_log_processor_Null';
-		$level     = t3lib_log_Level::DEBUG;
-
+		$processor = 'TYPO3\\CMS\\Core\\Log\\Processor\\NullProcessor';
+		$level = \TYPO3\CMS\Core\Log\LogLevel::DEBUG;
 		$GLOBALS['TYPO3_CONF_VARS']['LOG'][$component]['processorConfiguration'] = array(
 			$level => array(
 				$processor => array()
 			)
 		);
-
-		/** @var $logger t3lib_log_Logger */
+		/** @var $logger \TYPO3\CMS\Core\Log\Logger */
 		$logger = $this->logManagerInstance->getLogger($component);
 		$processors = $logger->getProcessors();
-
 		$this->assertInstanceOf($processor, $processors[$level][0]);
 	}
+
 }
 
 ?>

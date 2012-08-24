@@ -21,30 +21,26 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 require_once 'vfsStream/vfsStream.php';
-
 /**
  * Testcase for the file class of the TYPO3 FAL
  *
  * @package TYPO3
  * @subpackage t3lib
- *
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @todo Many, many, many tests are skipped in this test case...
  */
 class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
+
 	protected function tearDown() {
-		t3lib_div::purgeInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
 	}
 
 	/**
-	 * @return t3lib_file_File
+	 * @return \TYPO3\CMS\Core\Resource\File
 	 */
 	protected function prepareFixture() {
-		$fixture = new t3lib_file_File('testfile');
-
+		$fixture = new \TYPO3\CMS\Core\Resource\File('testfile');
 		return $fixture;
 	}
 
@@ -53,23 +49,21 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @todo Old code getAvailableProperties() needs to be replaced by current behaviour
 	 */
 	public function propertiesPassedToConstructorAreAvailableViaGenericGetter() {
-		$this->markTestSkipped('t3lib_file_File::getAvailableProperties() does not exist');
-
+		$this->markTestSkipped('TYPO3\\CMS\\Core\\Resource\\File::getAvailableProperties() does not exist');
 		$properties = array(
-			uniqid() => uniqid(), uniqid() => uniqid(), 'uid' => 1
+			uniqid() => uniqid(),
+			uniqid() => uniqid(),
+			'uid' => 1
 		);
-		$fixture = new t3lib_file_File($properties);
-		$availablePropertiesBackup = t3lib_file_File::getAvailableProperties();
-		t3lib_file_File::setAvailableProperties(array_keys($properties));
-
+		$fixture = new \TYPO3\CMS\Core\Resource\File($properties);
+		$availablePropertiesBackup = \TYPO3\CMS\Core\Resource\File::getAvailableProperties();
+		\TYPO3\CMS\Core\Resource\File::setAvailableProperties(array_keys($properties));
 		foreach ($properties as $key => $value) {
 			$this->assertTrue($fixture->hasProperty($key));
 			$this->assertEquals($value, $fixture->getProperty($key));
 		}
 		$this->assertFalse($fixture->hasProperty(uniqid()));
-
-		t3lib_file_File::setAvailableProperties($availablePropertiesBackup);
-
+		\TYPO3\CMS\Core\Resource\File::setAvailableProperties($availablePropertiesBackup);
 		$this->setExpectedException('InvalidArgumentException', '', 1314226805);
 		$fixture->getProperty(uniqid());
 	}
@@ -80,11 +74,10 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	public function commonPropertiesAreAvailableWithOwnGetters() {
 		$properties = array(
 			'name' => uniqid(),
-			'storage' => $this->getMock('t3lib_file_Storage', array(), array(), '', FALSE),
+			'storage' => $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE),
 			'size' => 1024
 		);
-
-		$fixture = new t3lib_file_File($properties);
+		$fixture = new \TYPO3\CMS\Core\Resource\File($properties);
 		foreach ($properties as $key => $value) {
 			$this->assertEquals($value, call_user_func(array($fixture, 'get' . $key)));
 		}
@@ -94,11 +87,10 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function fileAsksRepositoryForIndexStatus() {
-		$mockedRepository = $this->getMock('t3lib_file_Repository_FileRepository');
+		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		$mockedRepository->expects($this->once())->method('getFileIndexRecord')->will($this->returnValue(array()));
-		t3lib_div::setSingletonInstance('t3lib_file_Repository_FileRepository', $mockedRepository);
-
-		$fixture = new t3lib_file_File(array());
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository', $mockedRepository);
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array());
 		$this->assertTrue($fixture->isIndexed());
 	}
 
@@ -108,7 +100,7 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function fileIndexStatusIsTrueIfUidIsSet() {
-		$fixture = new t3lib_file_File(array('uid' => 1));
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1));
 		$this->assertTrue($fixture->isIndexed());
 	}
 
@@ -117,9 +109,8 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 */
 	public function updatePropertiesUpdatesFileProperties() {
 		$identifier = '/' . uniqid();
-		$fixture = new t3lib_file_File(array('uid' => 1, 'identifier' => '/test'));
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1, 'identifier' => '/test'));
 		$fixture->updateProperties(array('identifier' => $identifier));
-
 		$this->assertEquals($identifier, $fixture->getIdentifier());
 	}
 
@@ -127,9 +118,8 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function updatePropertiesLeavesPropertiesUntouchedIfNotSetInNewProperties() {
-		$fixture = new t3lib_file_File(array('uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'));
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'));
 		$fixture->updateProperties(array('foo' => 'foobar'));
-
 		$this->assertEquals('/test', $fixture->getIdentifier());
 		$this->assertEquals('/test', $fixture->getProperty('identifier'));
 	}
@@ -138,9 +128,8 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function updatePropertiesDiscardsUidIfAlreadySet() {
-		$fixture = new t3lib_file_File(array('uid' => 1, 'identifier' => '/test'));
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1, 'identifier' => '/test'));
 		$fixture->updateProperties(array('uid' => 3));
-
 		$this->assertEquals(1, $fixture->getUid());
 	}
 
@@ -148,9 +137,8 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function updatePropertiesRecordsNamesOfChangedProperties() {
-		$fixture = new t3lib_file_File(array('uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'));
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'));
 		$fixture->updateProperties(array('foo' => 'foobar', 'baz' => 'foobaz'));
-
 		$this->assertEquals(array('foo', 'baz'), $fixture->getUpdatedProperties());
 	}
 
@@ -158,9 +146,8 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function updatePropertiesDoesNotRecordPropertyNameIfSameValueIsProvided() {
-		$fixture = new t3lib_file_File(array('uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'));
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1, 'foo' => 'asdf', 'identifier' => '/test'));
 		$fixture->updateProperties(array('foo' => 'asdf'));
-
 		$this->assertEmpty($fixture->getUpdatedProperties());
 	}
 
@@ -168,10 +155,9 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function updatePropertiesMarksPropertyAsChangedOnlyOnce() {
-		$fixture = new t3lib_file_File(array('uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'));
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test'));
 		$fixture->updateProperties(array('foo' => 'foobar', 'baz' => 'foobaz'));
 		$fixture->updateProperties(array('foo' => 'fdsw', 'baz' => 'asdf'));
-
 		$this->assertEquals(array('foo', 'baz'), $fixture->getUpdatedProperties());
 	}
 
@@ -179,14 +165,12 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function updatePropertiesReloadsStorageObjectIfStorageChanges() {
-		$mockedNewStorage = $this->getMock('t3lib_file_Storage', array(), array(), '', FALSE);
-		$mockedOldStorage = $this->getMock('t3lib_file_Storage', array(), array(), '', FALSE);
-		$fixture = new t3lib_file_File(array('uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test', 'storage' => $mockedOldStorage));
-
-		$mockedRepository = $this->getMock('t3lib_file_Repository_StorageRepository');
+		$mockedNewStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$mockedOldStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array('uid' => 1, 'foo' => 'asdf', 'baz' => 'fdsw', 'identifier' => '/test', 'storage' => $mockedOldStorage));
+		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\StorageRepository');
 		$mockedRepository->expects($this->once())->method('findByUid')->with(2)->will($this->returnValue($mockedNewStorage));
-		t3lib_div::setSingletonInstance('t3lib_file_Repository_StorageRepository', $mockedRepository);
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\StorageRepository', $mockedRepository);
 		$fixture->updateProperties(array('storage' => 2));
 		$this->assertSame($mockedNewStorage, $fixture->getStorage());
 	}
@@ -195,12 +179,10 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function fetchingIndexedPropertyCausesFileObjectToLoadIndexRecord() {
-		$fixture = new t3lib_file_File(array('identifier' => '/test', 'storage' => 1));
-
-		$mockedRepository = $this->getMock('t3lib_file_Repository_FileRepository');
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array('identifier' => '/test', 'storage' => 1));
+		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		$mockedRepository->expects($this->once())->method('getFileIndexRecord')->will($this->returnValue(array('uid' => 10)));
-		t3lib_div::setSingletonInstance('t3lib_file_Repository_FileRepository', $mockedRepository);
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository', $mockedRepository);
 		$this->assertEquals(10, $fixture->getProperty('uid'));
 	}
 
@@ -208,13 +190,11 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function isIndexedTriggersIndexingIfFileIsNotIndexedAlready() {
-		$fixture = new t3lib_file_File(array('identifier' => '/test', 'storage' => 1));
-
-		$mockedRepository = $this->getMock('t3lib_file_Repository_FileRepository');
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array('identifier' => '/test', 'storage' => 1));
+		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		$mockedRepository->expects($this->once())->method('getFileIndexRecord')->will($this->returnValue(FALSE));
 		$mockedRepository->expects($this->once())->method('addToIndex')->will($this->returnValue(array('uid' => 10)));
-		t3lib_div::setSingletonInstance('t3lib_file_Repository_FileRepository', $mockedRepository);
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository', $mockedRepository);
 		$fixture->isIndexed();
 	}
 
@@ -222,13 +202,11 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function fileIsAutomaticallyIndexedOnPropertyAccessIfNotAlreadyIndexed() {
-		$fixture = new t3lib_file_File(array('identifier' => '/test', 'storage' => 1));
-
-		$mockedRepository = $this->getMock('t3lib_file_Repository_FileRepository');
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array('identifier' => '/test', 'storage' => 1));
+		$mockedRepository = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileRepository');
 		$mockedRepository->expects($this->once())->method('getFileIndexRecord')->will($this->returnValue(FALSE));
 		$mockedRepository->expects($this->once())->method('addToIndex')->will($this->returnValue(array('uid' => 10)));
-		t3lib_div::setSingletonInstance('t3lib_file_Repository_FileRepository', $mockedRepository);
-
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository', $mockedRepository);
 		$this->assertEquals(10, $fixture->getProperty('uid'));
 	}
 
@@ -236,12 +214,10 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function copyToCallsCopyOperationOnTargetFolderStorage() {
-		$targetStorage = $this->getMock('t3lib_file_Storage', array(), array(), '', FALSE);
-		$targetFolder = $this->getMock('t3lib_file_Folder', array(), array(), '', FALSE);
+		$targetStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$targetFolder = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Folder', array(), array(), '', FALSE);
 		$targetFolder->expects($this->any())->method('getStorage')->will($this->returnValue($targetStorage));
-
-		$fixture = new t3lib_file_File(array());
-
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array());
 		$targetStorage->expects($this->once())->method('copyFile')->with($this->equalTo($fixture), $this->equalTo($targetFolder));
 		$fixture->copyTo($targetFolder);
 	}
@@ -250,12 +226,10 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function moveToCallsMoveOperationOnTargetFolderStorage() {
-		$targetStorage = $this->getMock('t3lib_file_Storage', array(), array(), '', FALSE);
-		$targetFolder = $this->getMock('t3lib_file_Folder', array(), array(), '', FALSE);
+		$targetStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$targetFolder = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Folder', array(), array(), '', FALSE);
 		$targetFolder->expects($this->any())->method('getStorage')->will($this->returnValue($targetStorage));
-
-		$fixture = new t3lib_file_File(array());
-
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array());
 		$targetStorage->expects($this->once())->method('moveFile')->with($this->equalTo($fixture), $this->equalTo($targetFolder));
 		$fixture->moveTo($targetFolder);
 	}
@@ -267,10 +241,8 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 		$this->markTestSkipped();
 		$fixture = $this->prepareFixture();
 		$fileMode = 'invalidMode';
-
 		$mockDriver = $this->getMockForAbstractClass('t3lib_file_driver_Abstract');
 		$mockDriver->expects($this->atLeastOnce())->method('getFileHandle')->with($this->equalTo($fixture), $this->equalTo($fileMode));
-
 		$fixture->setStorageDriver($mockDriver);
 		$fixture->open($fileMode);
 	}
@@ -282,14 +254,11 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 		$this->markTestSkipped();
 		$fixture = $this->prepareFixture();
 		$fileMode = 'r';
-
-		$mockFileHandle = $this->getMock('t3lib_file_FileHandle', array(), array(), '', FALSE);
+		$mockFileHandle = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileHandle', array(), array(), '', FALSE);
 		$mockFileHandle->expects($this->any())->method('isOpen')->will($this->returnValue(TRUE));
 		$mockDriver = $this->getMockForAbstractClass('t3lib_file_driver_Abstract');
 		$mockDriver->expects($this->any())->method('getFileHandle')->will($this->returnValue($mockFileHandle));
-
 		$fixture->setStorageDriver($mockDriver);
-
 		$this->assertFalse($fixture->isOpen());
 		$fixture->open($fileMode);
 		$this->assertTrue($fixture->isOpen());
@@ -302,14 +271,11 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 		$this->markTestSkipped();
 		$fixture = $this->prepareFixture();
 		$fileMode = 'r';
-
-		$mockFileHandle = $this->getMock('t3lib_file_FileHandle', array(), array(), '', FALSE);
+		$mockFileHandle = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileHandle', array(), array(), '', FALSE);
 		$mockFileHandle->expects($this->once())->method('close');
 		$mockDriver = $this->getMockForAbstractClass('t3lib_file_driver_Abstract');
 		$mockDriver->expects($this->any())->method('getFileHandle')->will($this->returnValue($mockFileHandle));
-
 		$fixture->setStorageDriver($mockDriver);
-
 		$fixture->open($fileMode);
 		$fixture->close();
 		$this->assertFalse($fixture->isOpen());
@@ -324,16 +290,12 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 		$fileMode = 'r';
 		$fileContents = 'Some random file contents.';
 		$bytesToRead = 10;
-
-		$mockFileHandle = $this->getMock('t3lib_file_FileHandle', array(), array(), '', FALSE);
+		$mockFileHandle = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileHandle', array(), array(), '', FALSE);
 		$mockFileHandle->expects($this->any())->method('isOpen')->will($this->returnValue(TRUE));
 		$mockDriver = $this->getMockForAbstractClass('t3lib_file_driver_Abstract');
 		$mockDriver->expects($this->any())->method('getFileHandle')->will($this->returnValue($mockFileHandle));
-		$mockDriver->expects($this->once())->method('readFromFile')->with($this->anything(), $this->equalTo($bytesToRead))
-			->will($this->returnValue(substr($fileContents, 0, $bytesToRead)));
-
+		$mockDriver->expects($this->once())->method('readFromFile')->with($this->anything(), $this->equalTo($bytesToRead))->will($this->returnValue(substr($fileContents, 0, $bytesToRead)));
 		$fixture->setStorageDriver($mockDriver);
-
 		$fixture->open($fileMode);
 		$this->assertEquals(substr($fileContents, 0, $bytesToRead), $fixture->read($bytesToRead));
 	}
@@ -344,15 +306,11 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	public function readFailsIfFileIsClosed() {
 		$this->markTestSkipped();
 		$this->setExpectedException('RuntimeException', '', 1299863431);
-
 		$fixture = $this->prepareFixture();
-
-		$mockFileHandle = $this->getMock('t3lib_file_FileHandle', array(), array(), '', FALSE);
+		$mockFileHandle = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileHandle', array(), array(), '', FALSE);
 		$mockDriver = $this->getMockForAbstractClass('t3lib_file_driver_Abstract');
 		$mockDriver->expects($this->any())->method('getFileHandle')->will($this->returnValue($mockFileHandle));
-
 		$fixture->setStorageDriver($mockDriver);
-
 		$fixture->read(1);
 	}
 
@@ -364,16 +322,12 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 		$fixture = $this->prepareFixture();
 		$fileMode = 'r+';
 		$fileContents = 'Some random file contents.';
-
-		$mockFileHandle = $this->getMock('t3lib_file_FileHandle', array(), array(), '', FALSE);
+		$mockFileHandle = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileHandle', array(), array(), '', FALSE);
 		$mockFileHandle->expects($this->any())->method('isOpen')->will($this->returnValue(TRUE));
 		$mockDriver = $this->getMockForAbstractClass('t3lib_file_driver_Abstract');
 		$mockDriver->expects($this->any())->method('getFileHandle')->will($this->returnValue($mockFileHandle));
-		$mockDriver->expects($this->once())->method('writeToFile')->with($this->anything(), $this->equalTo($fileContents))
-			->will($this->returnValue(TRUE));
-
+		$mockDriver->expects($this->once())->method('writeToFile')->with($this->anything(), $this->equalTo($fileContents))->will($this->returnValue(TRUE));
 		$fixture->setStorageDriver($mockDriver);
-
 		$fixture->open($fileMode);
 		$this->assertTrue($fixture->write($fileContents));
 	}
@@ -384,16 +338,14 @@ class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
 	public function writeFailsIfFileIsClosed() {
 		$this->markTestSkipped();
 		$this->setExpectedException('RuntimeException', '', 1299863432);
-
 		$fixture = $this->prepareFixture();
-
-		$mockFileHandle = $this->getMock('t3lib_file_FileHandle', array(), array(), '', FALSE);
+		$mockFileHandle = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileHandle', array(), array(), '', FALSE);
 		$mockDriver = $this->getMockForAbstractClass('t3lib_file_driver_Abstract');
 		$mockDriver->expects($this->any())->method('getFileHandle')->will($this->returnValue($mockFileHandle));
-
 		$fixture->setStorageDriver($mockDriver);
-
 		$fixture->write('asdf');
 	}
+
 }
+
 ?>
