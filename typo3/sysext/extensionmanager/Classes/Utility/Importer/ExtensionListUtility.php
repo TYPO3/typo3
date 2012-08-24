@@ -39,7 +39,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Importer;
  * @package Extension Manager
  * @subpackage Utility/Importer
  */
-class ExtensionListUtility implements SplObserver {
+class ExtensionListUtility implements \SplObserver {
 
 	/**
 	 * Keeps instance of a XML parser.

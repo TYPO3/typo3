@@ -43,7 +43,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @package TYPO3
  * @subpackage EM
  */
-class ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\ExtensionXmlAbstractParser implements SplSubject {
+class ExtensionXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\ExtensionXmlAbstractParser implements \SplSubject {
 
 	/**
 	 * Keeps current element to process.

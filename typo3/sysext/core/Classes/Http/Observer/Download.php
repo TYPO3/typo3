@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Core\Http\Observer;
  * @see http://pear.php.net/manual/en/package.http.http-request2.observers.php
  * @author Philipp Gampe
  */
-class Download implements SplObserver {
+class Download implements \SplObserver {
 
 	/**
 	 * @var resource A file pointer resource
