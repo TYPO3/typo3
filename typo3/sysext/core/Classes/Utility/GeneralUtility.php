@@ -4152,7 +4152,7 @@ Connection: close
 		}
 		// Create alias if not present
 		$alias = \TYPO3\CMS\Core\Autoloader::getAliasForClassName($finalClassName);
-		if (substr($finalClassName, 0, 3) !== 'ux_' && $finalClassName !== $alias && !class_exists($alias, false)) {
+		if (substr($finalClassName, 0, 3) !== 'ux_' && $finalClassName !== $alias && !class_exists($alias, FALSE)) {
 			class_alias($finalClassName, $alias);
 		}
 		// Register new singleton instance
@@ -4918,8 +4918,8 @@ Connection: close
 	 */
 	static public function flushOutputBuffers() {
 		$obContent = '';
-		while ($obContent .= ob_get_clean()) {
-
+		while ($content = ob_get_clean()) {
+			$obContent .= $content;
 		}
 		// If previously a "Content-Encoding: whatever" has been set, we have to unset it
 		if (!headers_sent()) {
