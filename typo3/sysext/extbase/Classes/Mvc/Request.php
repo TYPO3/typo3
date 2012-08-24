@@ -171,17 +171,20 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 */
 	public function setControllerObjectName($controllerObjectName) {
 		$matches = array();
-		preg_match('/
-			^Tx
-			_(?P<extensionName>[^_]+)
-			_
-			(
-				Controller
-			|
-				(?P<subpackageKey>.+)_Controller
-			)
-			_(?P<controllerName>[a-z_]+)Controller
-			$/ix', $controllerObjectName, $matches);
+		if (strpos($controllerObjectName, '\\') !== FALSE) {
+			if (substr($controllerObjectName, 0, 9) === 'TYPO3\CMS') {
+				$extensionName = '^[^\\\]+\\\[^\\\]+\\\(?P<extensionName>[^\\\]+)';
+			} else {
+				$extensionName = '^[^\\\]+\\\(?P<extensionName>[^\\\]+)';
+			}
+			preg_match('/' .
+				$extensionName.'\\\(Controller|(?P<subpackageKey>.+)\\\Controller)\\\(?P<controllerName>[a-z\\\]+)Controller
+				$/ix', $controllerObjectName, $matches);
+		} else {
+			preg_match('/
+				^Tx_(?P<extensionName>[^_]+)_(Controller|(?P<subpackageKey>.+)_Controller)_(?P<controllerName>[a-z_]+)Controller
+				$/ix', $controllerObjectName, $matches);
+		}
 		$this->controllerExtensionName = $matches['extensionName'];
 		$this->controllerSubpackageKey = isset($matches['subpackageKey']) ? $matches['subpackageKey'] : NULL;
 		$this->controllerName = $matches['controllerName'];
