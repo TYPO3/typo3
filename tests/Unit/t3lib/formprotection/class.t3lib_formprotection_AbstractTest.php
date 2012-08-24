@@ -1,38 +1,36 @@
 <?php
 /***************************************************************
-* Copyright notice
-*
-* (c) 2010-2011 Oliver Klee (typo3-coding@oliverklee.de)
-* All rights reserved
-*
-* This script is part of the TYPO3 project. The TYPO3 project is
-* free software; you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation; either version 2 of the License, or
-* (at your option) any later version.
-*
-* The GNU General Public License can be found at
-* http://www.gnu.org/copyleft/gpl.html.
-*
-* This script is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
-require_once('fixtures/class.t3lib_formprotection_testing.php');
-
+ * Copyright notice
+ *
+ * (c) 2010-2011 Oliver Klee (typo3-coding@oliverklee.de)
+ * All rights reserved
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+require_once 'fixtures/class.t3lib_formprotection_testing.php';
 /**
  * Testcase for the t3lib_formprotection_Abstract class.
  *
  * @package TYPO3
  * @subpackage t3lib
- *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
 class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
+
 	/**
 	 * @var t3lib_formProtection_Testing
 	 */
@@ -47,30 +45,17 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 		unset($this->fixture);
 	}
 
-
 	/////////////////////////////////////////
 	// Tests concerning the basic functions
 	/////////////////////////////////////////
-
 	/**
 	 * @test
 	 */
 	public function constructionRetrievesToken() {
 		$className = uniqid('t3lib_formProtection');
-		eval(
-			'class ' . $className . ' extends t3lib_formProtection_Testing {' .
-				'public $tokenHasBeenRetrieved = FALSE; ' .
-				'protected function retrieveSessionToken() {' .
-				'$this->tokenHasBeenRetrieved = TRUE;' .
-				'}' .
-			'}'
-		);
-
+		eval((((((('class ' . $className) . ' extends t3lib_formProtection_Testing {') . 'public $tokenHasBeenRetrieved = FALSE; ') . 'protected function retrieveSessionToken() {') . '$this->tokenHasBeenRetrieved = TRUE;') . '}') . '}');
 		$fixture = new $className();
-
-		$this->assertTrue(
-			$fixture->tokenHasBeenRetrieved
-		);
+		$this->assertTrue($fixture->tokenHasBeenRetrieved);
 	}
 
 	/**
@@ -79,39 +64,27 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 	public function cleanMakesTokenInvalid() {
 		$formName = 'foo';
 		$tokenId = $this->fixture->generateToken($formName);
-
 		$this->fixture->clean();
-
-		$this->assertFalse(
-			$this->fixture->validateToken($tokenId, $formName)
-		);
+		$this->assertFalse($this->fixture->validateToken($tokenId, $formName));
 	}
 
 	/**
 	 * @test
 	 */
 	public function cleanPersistsToken() {
-		$fixture = $this->getMock(
-			't3lib_formProtection_Testing', array('persistSessionToken')
-		);
+		$fixture = $this->getMock('t3lib_formProtection_Testing', array('persistSessionToken'));
 		$fixture->expects($this->once())->method('persistSessionToken');
-
 		$fixture->clean();
 	}
-
 
 	///////////////////////////////////
 	// Tests concerning generateToken
 	///////////////////////////////////
-
 	/**
 	 * @test
 	 */
 	public function generateTokenFormForEmptyFormNameThrowsException() {
-		$this->setExpectedException(
-			'InvalidArgumentException', '$formName must not be empty.'
-		);
-
+		$this->setExpectedException('InvalidArgumentException', '$formName must not be empty.');
 		$this->fixture->generateToken('', 'edit', 'bar');
 	}
 
@@ -140,27 +113,19 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function generateTokenReturns32CharacterHexToken() {
-		$this->assertRegexp(
-			'/^[0-9a-f]{40}$/',
-			$this->fixture->generateToken('foo')
-		);
+		$this->assertRegexp('/^[0-9a-f]{40}$/', $this->fixture->generateToken('foo'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function generateTokenCalledTwoTimesWithSameParametersReturnsSameTokens() {
-		$this->assertEquals(
-			$this->fixture->generateToken('foo', 'edit', 'bar'),
-			$this->fixture->generateToken('foo', 'edit', 'bar')
-		);
+		$this->assertEquals($this->fixture->generateToken('foo', 'edit', 'bar'), $this->fixture->generateToken('foo', 'edit', 'bar'));
 	}
-
 
 	///////////////////////////////////
 	// Tests concerning validateToken
 	///////////////////////////////////
-
 	/**
 	 * @test
 	 */
@@ -182,15 +147,7 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 		$formName = 'foo';
 		$action = 'edit';
 		$formInstanceName = 'bar';
-
-		$this->assertTrue(
-			$this->fixture->validateToken(
-				$this->fixture->generateToken($formName, $action, $formInstanceName),
-				$formName,
-				$action,
-				$formInstanceName
-			)
-		);
+		$this->assertTrue($this->fixture->validateToken($this->fixture->generateToken($formName, $action, $formInstanceName), $formName, $action, $formInstanceName));
 	}
 
 	/**
@@ -198,12 +155,7 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 	 */
 	public function validateTokenWithDataFromGenerateTokenWithMissingActionAndFormInstanceNameReturnsTrue() {
 		$formName = 'foo';
-
-		$this->assertTrue(
-			$this->fixture->validateToken(
-				$this->fixture->generateToken($formName), $formName
-			)
-		);
+		$this->assertTrue($this->fixture->validateToken($this->fixture->generateToken($formName), $formName));
 	}
 
 	/**
@@ -213,14 +165,9 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 		$formName = 'foo';
 		$action = 'edit';
 		$formInstanceName = 'bar';
-
 		$tokenId = $this->fixture->generateToken($formName, $action, $formInstanceName);
-
 		$this->fixture->validateToken($tokenId, $formName, $action, $formInstanceName);
-
-		$this->assertTrue(
-			$this->fixture->validateToken($tokenId, $formName, $action, $formInstanceName)
-		);
+		$this->assertTrue($this->fixture->validateToken($tokenId, $formName, $action, $formInstanceName));
 	}
 
 	/**
@@ -230,14 +177,8 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 		$formName = 'foo';
 		$action = 'edit';
 		$formInstanceName = 'bar';
-
 		$this->fixture->generateToken($formName, $action, $formInstanceName);
-
-		$this->assertFalse(
-			$this->fixture->validateToken(
-				'Hello world!', $formName, $action, $formInstanceName
-			)
-		);
+		$this->assertFalse($this->fixture->validateToken('Hello world!', $formName, $action, $formInstanceName));
 	}
 
 	/**
@@ -247,14 +188,8 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 		$formName = 'foo';
 		$action = 'edit';
 		$formInstanceName = 'bar';
-
 		$tokenId = $this->fixture->generateToken($formName, $action, $formInstanceName);
-
-		$this->assertFalse(
-			$this->fixture->validateToken(
-				$tokenId, 'espresso', $action, $formInstanceName
-			)
-		);
+		$this->assertFalse($this->fixture->validateToken($tokenId, 'espresso', $action, $formInstanceName));
 	}
 
 	/**
@@ -264,14 +199,8 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 		$formName = 'foo';
 		$action = 'edit';
 		$formInstanceName = 'bar';
-
 		$tokenId = $this->fixture->generateToken($formName, $action, $formInstanceName);
-
-		$this->assertFalse(
-			$this->fixture->validateToken(
-				$tokenId, $formName, 'delete', $formInstanceName
-			)
-		);
+		$this->assertFalse($this->fixture->validateToken($tokenId, $formName, 'delete', $formInstanceName));
 	}
 
 	/**
@@ -281,34 +210,21 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 		$formName = 'foo';
 		$action = 'edit';
 		$formInstanceName = 'bar';
-
 		$tokenId = $this->fixture->generateToken($formName, $action, $formInstanceName);
-
-		$this->assertFalse(
-			$this->fixture->validateToken(
-				$tokenId, $formName, $action, 'beer'
-			)
-		);
+		$this->assertFalse($this->fixture->validateToken($tokenId, $formName, $action, 'beer'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function validateTokenForValidTokenNotCallsCreateValidationErrorMessage() {
-		$fixture = $this->getMock(
-			't3lib_formProtection_Testing', array('createValidationErrorMessage')
-		);
+		$fixture = $this->getMock('t3lib_formProtection_Testing', array('createValidationErrorMessage'));
 		$fixture->expects($this->never())->method('createValidationErrorMessage');
-
 		$formName = 'foo';
 		$action = 'edit';
 		$formInstanceName = 'bar';
-
 		$token = $fixture->generateToken($formName, $action, $formInstanceName);
-		$fixture->validateToken(
-			$token, $formName, $action, $formInstanceName
-		);
-
+		$fixture->validateToken($token, $formName, $action, $formInstanceName);
 		$fixture->__destruct();
 	}
 
@@ -316,20 +232,13 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function validateTokenForInvalidTokenCallsCreateValidationErrorMessage() {
-		$fixture = $this->getMock(
-			't3lib_formProtection_Testing', array('createValidationErrorMessage')
-		);
+		$fixture = $this->getMock('t3lib_formProtection_Testing', array('createValidationErrorMessage'));
 		$fixture->expects($this->once())->method('createValidationErrorMessage');
-
 		$formName = 'foo';
 		$action = 'edit';
 		$formInstanceName = 'bar';
-
 		$fixture->generateToken($formName, $action, $formInstanceName);
-		$fixture->validateToken(
-			'an invalid token ...', $formName, $action, $formInstanceName
-		);
-
+		$fixture->validateToken('an invalid token ...', $formName, $action, $formInstanceName);
 		$fixture->__destruct();
 	}
 
@@ -337,21 +246,16 @@ class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function validateTokenForInvalidFormNameCallsCreateValidationErrorMessage() {
-		$fixture = $this->getMock(
-			't3lib_formProtection_Testing', array('createValidationErrorMessage')
-		);
+		$fixture = $this->getMock('t3lib_formProtection_Testing', array('createValidationErrorMessage'));
 		$fixture->expects($this->once())->method('createValidationErrorMessage');
-
 		$formName = 'foo';
 		$action = 'edit';
 		$formInstanceName = 'bar';
-
 		$token = $fixture->generateToken($formName, $action, $formInstanceName);
-		$fixture->validateToken(
-			$token, 'another form name', $action, $formInstanceName
-		);
-
+		$fixture->validateToken($token, 'another form name', $action, $formInstanceName);
 		$fixture->__destruct();
 	}
+
 }
+
 ?>

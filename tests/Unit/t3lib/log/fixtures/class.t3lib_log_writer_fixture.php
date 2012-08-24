@@ -21,25 +21,22 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * A writer dedicated for testing
  *
  * @author Ingo Renner <ingo@typo3.org>
  */
-class t3lib_log_writer_Fixture extends t3lib_log_writer_Abstract {
+class t3lib_log_writer_Fixture extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 
 	/**
 	 * @var array
 	 */
 	protected $records = array();
 
-	public function writeLog(t3lib_log_Record $record) {
+	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
 		$this->records[] = $record;
 	}
 
 }
-
 
 ?>

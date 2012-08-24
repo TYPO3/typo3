@@ -21,8 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Testcase for the web introspection processor.
  *
@@ -40,11 +38,9 @@ class t3lib_log_processor_IntrospectionTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function introspectionProcessorAddsIntrospectionDataToLogRecord() {
-		$logRecord = new t3lib_log_Record('test.core.log', t3lib_log_Level::DEBUG, 'test');
-		$processor = new t3lib_log_processor_Introspection();
-
+		$logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
+		$processor = new \TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor();
 		$logRecord = $processor->processLogRecord($logRecord);
-
 		$this->assertNotEmpty($logRecord['data']['file'], 'Asserting that file name in debug_backtrace() is not empty');
 		$this->assertGreaterThan(0, $logRecord['data']['line'], 'Asserting that line numer in debug_backtrace() is greater than 0');
 		$this->assertNotEmpty($logRecord['data']['class'], 'Asserting that class in debug_backtrace() is not empty');

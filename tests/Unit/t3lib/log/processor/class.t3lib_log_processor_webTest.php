@@ -22,8 +22,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Testcase for the web log processor.
  *
@@ -38,13 +36,10 @@ class t3lib_log_processor_WebTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function webProcessorAddsWebDataToLogRecord() {
-		$environmentVariables = t3lib_div::getIndpEnv('_ARRAY');
-
-		$logRecord = new t3lib_log_Record('test.core.log', t3lib_log_Level::DEBUG, 'test');
-		$processor = new t3lib_log_processor_Web();
-
+		$environmentVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('_ARRAY');
+		$logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
+		$processor = new \TYPO3\CMS\Core\Log\Processor\WebProcessor();
 		$logRecord = $processor->processLogRecord($logRecord);
-
 		foreach ($environmentVariables as $key => $value) {
 			$this->assertEquals($value, $logRecord['data'][$key]);
 		}

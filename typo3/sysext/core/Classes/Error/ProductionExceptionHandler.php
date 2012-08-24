@@ -66,7 +66,7 @@ class ProductionExceptionHandler extends \TYPO3\CMS\Core\Error\AbstractException
 	public function echoExceptionWeb(\Exception $exception) {
 		$this->sendStatusHeaders($exception);
 		$this->writeLogEntries($exception, self::CONTEXT_WEB);
-		$messageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_message_ErrorPageMessage', $this->getMessage($exception), $this->getTitle($exception));
+		$messageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\ErrorpageMessage', $this->getMessage($exception), $this->getTitle($exception));
 		$messageObj->output();
 	}
 

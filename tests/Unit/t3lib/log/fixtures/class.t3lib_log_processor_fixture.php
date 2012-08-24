@@ -21,26 +21,23 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * A processor dedicated for testing
  *
  * @author Steffen Müller <typo3@t3node.com>
  */
-class t3lib_log_processor_Fixture extends t3lib_log_processor_Abstract {
+class t3lib_log_processor_Fixture extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
 
 	/**
 	 * Processing the record
 	 *
-	 * @param t3lib_log_Record $record
-	 * @return t3lib_log_Record
+	 * @param \TYPO3\CMS\Core\Log\LogRecord $record
+	 * @return \TYPO3\CMS\Core\Log\LogRecord
 	 */
-	public function processLogRecord(t3lib_log_Record $record) {
+	public function processLogRecord(\TYPO3\CMS\Core\Log\LogRecord $record) {
 		return $record;
 	}
 
 }
-
 
 ?>

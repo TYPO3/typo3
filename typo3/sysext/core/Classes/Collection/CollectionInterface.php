@@ -38,7 +38,7 @@ namespace TYPO3\CMS\Core\Collection;
  * @package TYPO3
  * @subpackage t3lib
  */
-interface CollectionInterface extends Iterator, Serializable, Countable
+interface CollectionInterface extends \Iterator, \Serializable, \Countable
 {
 
 }

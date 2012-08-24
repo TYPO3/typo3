@@ -36,7 +36,7 @@ namespace TYPO3\CMS\Core\Mail;
  * @package TYPO3
  * @subpackage t3lib
  */
-class MboxTransport implements Swift_Transport {
+class MboxTransport implements \Swift_Transport {
 
 	/**
 	 * @var string The file to write our mails into

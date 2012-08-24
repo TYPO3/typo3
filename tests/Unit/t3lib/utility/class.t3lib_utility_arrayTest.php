@@ -21,13 +21,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for class t3lib_utility_array
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
- *
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -36,7 +34,6 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	///////////////////////
 	// Tests concerning filterByValueRecursive
 	///////////////////////
-
 	/**
 	 * Data provider for filterByValueRecursiveCorrectlyFiltersArray
 	 *
@@ -50,39 +47,39 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 			'empty search array' => array(
 				'banana',
 				array(),
-				array(),
+				array()
 			),
 			'empty string as needle' => array(
 				'',
 				array(
 					'',
-					'apple',
+					'apple'
 				),
 				array(
-					'',
-				),
+					''
+				)
 			),
 			'flat array searching for string' => array(
 				'banana',
 				array(
 					'apple',
-					'banana',
+					'banana'
 				),
 				array(
-					1 => 'banana',
-				),
+					1 => 'banana'
+				)
 			),
 			'flat array searching for string with two matches' => array(
 				'banana',
 				array(
 					'foo' => 'apple',
 					'firstbanana' => 'banana',
-					'secondbanana' => 'banana',
+					'secondbanana' => 'banana'
 				),
 				array(
 					'firstbanana' => 'banana',
-					'secondbanana' => 'banana',
-				),
+					'secondbanana' => 'banana'
+				)
 			),
 			'multi dimensional array searching for string with multiple matches' => array(
 				'banana',
@@ -92,16 +89,16 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 					'grape' => array(
 						'foo2' => 'apple2',
 						'secondbanana' => 'banana',
-						'foo3' => array(),
+						'foo3' => array()
 					),
-					'bar' => 'orange',
+					'bar' => 'orange'
 				),
 				array(
 					'firstbanana' => 'banana',
 					'grape' => array(
-						'secondbanana' => 'banana',
-					),
-				),
+						'secondbanana' => 'banana'
+					)
+				)
 			),
 			'multi dimensional array searching for integer with multiple matches' => array(
 				42,
@@ -110,25 +107,25 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 					'bar' => 42,
 					array(
 						'foo' => 23,
-						'bar' => 42,
-					),
+						'bar' => 42
+					)
 				),
 				array(
 					'bar' => 42,
 					array(
-						'bar' => 42,
-					),
-				),
+						'bar' => 42
+					)
+				)
 			),
 			'flat array searching for boolean TRUE' => array(
 				TRUE,
 				array(
 					23 => FALSE,
-					42 => TRUE,
+					42 => TRUE
 				),
 				array(
-					42 => TRUE,
-				),
+					42 => TRUE
+				)
 			),
 			'multi dimensional array searching for boolean FALSE' => array(
 				FALSE,
@@ -137,32 +134,32 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 					42 => TRUE,
 					'foo' => array(
 						23 => FALSE,
-						42 => TRUE,
-					),
+						42 => TRUE
+					)
 				),
 				array(
 					23 => FALSE,
 					'foo' => array(
-						23 => FALSE,
-					),
-				),
+						23 => FALSE
+					)
+				)
 			),
 			'flat array searching for array' => array(
 				array(
-					'foo' => 'bar',
+					'foo' => 'bar'
 				),
 				array(
 					'foo' => 'bar',
 					'foobar' => array(
-						'foo' => 'bar',
-					),
+						'foo' => 'bar'
+					)
 				),
 				array(
 					'foobar' => array(
-						'foo' => 'bar',
-					),
-				),
-			),
+						'foo' => 'bar'
+					)
+				)
+			)
 		);
 	}
 
@@ -171,7 +168,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 * @dataProvider filterByValueRecursive
 	 */
 	public function filterByValueRecursiveCorrectlyFiltersArray($needle, $haystack, $expectedResult) {
-		$this->assertEquals($expectedResult, t3lib_utility_Array::filterByValueRecursive($needle, $haystack));
+		$this->assertEquals($expectedResult, \TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive($needle, $haystack));
 	}
 
 	/**
@@ -179,20 +176,19 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 */
 	public function filterByValueRecursiveMatchesReferencesToSameObject() {
 		$instance = new stdClass();
-		$this->assertEquals(array($instance), t3lib_utility_Array::filterByValueRecursive($instance, array($instance)));
+		$this->assertEquals(array($instance), \TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive($instance, array($instance)));
 	}
 
 	/**
 	 * @test
 	 */
 	public function filterByValueRecursiveDoesNotMatchDifferentInstancesOfSameClass() {
-		$this->assertEquals(array(), t3lib_utility_Array::filterByValueRecursive(new stdClass(), array(new stdClass())));
+		$this->assertEquals(array(), \TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive(new stdClass(), array(new stdClass())));
 	}
 
 	///////////////////////
 	// Tests concerning isValidPath
 	///////////////////////
-
 	/**
 	 * Mock the class under test, isValidPath() (method under test), calls
 	 * static getValuePath() internally, which is mocked here to return a specific
@@ -202,14 +198,10 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isValidPathReturnsTrueIfPathExists() {
-		$className = uniqid('t3lib_utility_Array');
-		eval(
-			'class ' . $className . ' extends t3lib_utility_Array {' .
-			'  public static function getValueByPath() {' .
-			'    return 42;' .
-			'  }' .
-			'}'
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Utility';
+		$className = uniqid('ArrayUtility');
+		eval(((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Utility\\ArrayUtility {') . '  public static function getValueByPath() {') . '    return 42;') . '  }') . '}');
+		$className = $namespace . '\\' . $className;
 		$this->assertTrue($className::isValidPath(array('foo'), 'foo'));
 	}
 
@@ -217,27 +209,22 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isValidPathReturnsFalseIfPathDoesNotExist() {
-		$className = uniqid('t3lib_utility_Array');
-		eval(
-			'class ' . $className . ' extends t3lib_utility_Array {' .
-			'  public static function getValueByPath() {' .
-			'    throw new RuntimeException(\'foo\', 123);' .
-			'  }' .
-			'}'
-		);
+		$namespace = 'TYPO3\\CMS\\Core\\Utility';
+		$className = uniqid('ArrayUtility');
+		eval(((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Utility\\ArrayUtility {') . '  public static function getValueByPath() {') . '    throw new \RuntimeException(\'foo\', 123);') . '  }') . '}');
+		$className = $namespace . '\\' . $className;
 		$this->assertFalse($className::isValidPath(array('foo'), 'foo'));
 	}
 
 	///////////////////////
 	// Tests concerning getValueByPath
 	///////////////////////
-
 	/**
 	 * @test
 	 * @expectedException RuntimeException
 	 */
 	public function getValueByPathThrowsExceptionIfPathIsEmpty() {
-		t3lib_utility_Array::getValueByPath(array(), '');
+		\TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath(array(), '');
 	}
 
 	/**
@@ -261,43 +248,43 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 					'foo' => array(
 						'baz' => 42
 					),
-					'bar' => array(),
+					'bar' => array()
 				),
 				'foo/bar/baz',
 				FALSE
 			),
-				// Negative test: This could be improved and the test moved to
-				// the valid data provider if the method supports this
+			// Negative test: This could be improved and the test moved to
+			// the valid data provider if the method supports this
 			'doubletick encapsulated quoted doubletick does not work' => array(
 				array(
 					'"foo"bar"' => array(
 						'baz' => 42
 					),
-					'bar' => array(),
+					'bar' => array()
 				),
-				'"foo\"bar"/baz',
+				'"foo\\"bar"/baz',
 				42
 			),
-				// Negative test: Method could be improved here
+			// Negative test: Method could be improved here
 			'path with doubletick does not work' => array(
 				array(
 					'fo"o' => array(
-						'bar' => 42,
-					),
+						'bar' => 42
+					)
 				),
 				'fo"o/foobar',
-				42,
-			),
+				42
+			)
 		);
 	}
 
 	/**
 	 * @test
 	 * @dataProvider getValueByPathInvalidPathDataProvider
- 	 * @expectedException RuntimeException
+	 * @expectedException RuntimeException
 	 */
 	public function getValueByPathThrowsExceptionIfPathNotExists(array $array, $path) {
-		t3lib_utility_Array::getValueByPath($array, $path);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath($array, $path);
 	}
 
 	/**
@@ -311,85 +298,84 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$testObject = new StdClass();
 		$testObject->foo = 'foo';
 		$testObject->bar = 'bar';
-
 		return array(
 			'integer in multi level array' => array(
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => 42,
+							'baz' => 42
 						),
-						'bar2' => array(),
-					),
+						'bar2' => array()
+					)
 				),
 				'foo/bar/baz',
-				42,
+				42
 			),
 			'zero integer in multi level array' => array(
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => 0,
-						),
-					),
+							'baz' => 0
+						)
+					)
 				),
 				'foo/bar/baz',
-				0,
+				0
 			),
 			'NULL value in multi level array' => array(
 				array(
 					'foo' => array(
-						'baz' => NULL,
-					),
+						'baz' => NULL
+					)
 				),
 				'foo/baz',
-				NULL,
+				NULL
 			),
 			'get string value' => array(
 				array(
 					'foo' => array(
-						'baz' => 'this is a test string',
-					),
+						'baz' => 'this is a test string'
+					)
 				),
 				'foo/baz',
-				'this is a test string',
+				'this is a test string'
 			),
 			'get boolean value: FALSE' => array(
 				array(
 					'foo' => array(
-						'baz' => FALSE,
-					),
+						'baz' => FALSE
+					)
 				),
 				'foo/baz',
-				FALSE,
+				FALSE
 			),
 			'get boolean value: TRUE' => array(
 				array(
 					'foo' => array(
-						'baz' => TRUE,
-					),
+						'baz' => TRUE
+					)
 				),
 				'foo/baz',
-				TRUE,
+				TRUE
 			),
 			'get object value' => array(
 				array(
 					'foo' => array(
-						'baz' => $testObject,
-					),
+						'baz' => $testObject
+					)
 				),
 				'foo/baz',
-				$testObject,
+				$testObject
 			),
 			'enclosed path' => array(
 				array(
 					'foo/bar' => array(
-						'foobar' => 42,
-					),
+						'foobar' => 42
+					)
 				),
 				'"foo/bar"/foobar',
-				42,
-			),
+				42
+			)
 		);
 	}
 
@@ -398,10 +384,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 * @dataProvider getValueByPathValidDataProvider
 	 */
 	public function getValueByPathGetsCorrectValue(array $array, $path, $expectedResult) {
-		$this->assertEquals(
-			$expectedResult,
-			t3lib_utility_Array::getValueByPath($array, $path)
-		);
+		$this->assertEquals($expectedResult, \TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath($array, $path));
 	}
 
 	/**
@@ -411,27 +394,26 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$input = array(
 			'foo' => array(
 				'bar' => array(
-					'baz' => 42,
+					'baz' => 42
 				),
-				'bar2' => array(),
-			),
+				'bar2' => array()
+			)
 		);
 		$searchPath = 'foo%bar%baz';
 		$expected = 42;
 		$delimeter = '%';
-		$this->assertEquals($expected, t3lib_utility_Array::getValueByPath($input, $searchPath, $delimeter));
+		$this->assertEquals($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath($input, $searchPath, $delimeter));
 	}
 
 	///////////////////////
 	// Tests concerning setValueByPath
 	///////////////////////
-
 	/**
 	 * @test
 	 * @expectedException RuntimeException
 	 */
 	public function setValueByPathThrowsExceptionIfPathIsEmpty() {
-		t3lib_utility_Array::setValueByPath(array(), '', NULL);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath(array(), '', NULL);
 	}
 
 	/**
@@ -439,7 +421,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 * @expectedException RuntimeException
 	 */
 	public function setValueByPathThrowsExceptionIfPathIsNotAString() {
-		t3lib_utility_Array::setValueByPath(array(), array('foo'), NULL);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath(array(), array('foo'), NULL);
 	}
 
 	/**
@@ -455,162 +437,161 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$testObject = new StdClass();
 		$testObject->foo = 'foo';
 		$testObject->bar = 'bar';
-
 		return array(
 			'set integer value: 42' => array(
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => 0,
-						),
-					),
+							'baz' => 0
+						)
+					)
 				),
 				'foo/bar/baz',
 				42,
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => 42,
-						),
-					),
-				),
+							'baz' => 42
+						)
+					)
+				)
 			),
 			'set integer value: 0' => array(
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => 42,
-						),
-					),
+							'baz' => 42
+						)
+					)
 				),
 				'foo/bar/baz',
 				0,
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => 0,
-						),
-					),
-				),
+							'baz' => 0
+						)
+					)
+				)
 			),
 			'set null value' => array(
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => 42,
-						),
-					),
+							'baz' => 42
+						)
+					)
 				),
 				'foo/bar/baz',
 				NULL,
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => NULL,
-						),
-					),
-				),
+							'baz' => NULL
+						)
+					)
+				)
 			),
 			'set array value' => array(
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => 42,
-						),
-					),
+							'baz' => 42
+						)
+					)
 				),
 				'foo/bar/baz',
 				array(
-					'foo' => 123,
+					'foo' => 123
 				),
 				array(
 					'foo' => array(
 						'bar' => array(
 							'baz' => array(
-								'foo' => 123,
-							),
-						),
-					),
-				),
+								'foo' => 123
+							)
+						)
+					)
+				)
 			),
 			'set boolean value: FALSE' => array(
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => TRUE,
-						),
-					),
+							'baz' => TRUE
+						)
+					)
 				),
 				'foo/bar/baz',
 				FALSE,
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => FALSE,
-						),
-					),
-				),
+							'baz' => FALSE
+						)
+					)
+				)
 			),
 			'set boolean value: TRUE' => array(
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => NULL,
-						),
-					),
+							'baz' => NULL
+						)
+					)
 				),
 				'foo/bar/baz',
 				TRUE,
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => TRUE,
-						),
-					),
-				),
+							'baz' => TRUE
+						)
+					)
+				)
 			),
 			'set object value' => array(
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => NULL,
-						),
-					),
+							'baz' => NULL
+						)
+					)
 				),
 				'foo/bar/baz',
 				$testObject,
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => $testObject,
-						),
-					),
-				),
+							'baz' => $testObject
+						)
+					)
+				)
 			),
 			'multi keys in array' => array(
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => 'value',
+							'baz' => 'value'
 						),
 						'bar2' => array(
-							'baz' => 'value',
-						),
-					),
+							'baz' => 'value'
+						)
+					)
 				),
 				'foo/bar2/baz',
 				'newValue',
 				array(
 					'foo' => array(
 						'bar' => array(
-							'baz' => 'value',
+							'baz' => 'value'
 						),
 						'bar2' => array(
-							'baz' => 'newValue',
-						),
-					),
-				),
-			),
+							'baz' => 'newValue'
+						)
+					)
+				)
+			)
 		);
 	}
 
@@ -619,16 +600,12 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 * @dataProvider setValueByPathSetsCorrectValueDataProvider
 	 */
 	public function setValueByPathSetsCorrectValue(array $array, $path, $value, $expectedResult) {
-		$this->assertEquals(
-			$expectedResult,
-			t3lib_utility_Array::setValueByPath($array, $path, $value)
-		);
+		$this->assertEquals($expectedResult, \TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath($array, $path, $value));
 	}
 
 	///////////////////////
 	// Tests concerning sortByKeyRecursive
 	///////////////////////
-
 	/**
 	 * @test
 	 */
@@ -640,8 +617,8 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 				'c' => NULL,
 				'b' => NULL,
 				'd' => NULL,
-				'a' => NULL,
-			),
+				'a' => NULL
+			)
 		);
 		$expectedResult = array(
 			'a' => NULL,
@@ -649,17 +626,16 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 				'a' => NULL,
 				'b' => NULL,
 				'c' => NULL,
-				'd' => NULL,
+				'd' => NULL
 			),
-			'z' => NULL,
+			'z' => NULL
 		);
-		$this->assertSame($expectedResult, t3lib_utility_Array::sortByKeyRecursive($unsortedArray));
+		$this->assertSame($expectedResult, \TYPO3\CMS\Core\Utility\ArrayUtility::sortByKeyRecursive($unsortedArray));
 	}
 
 	///////////////////////
 	// Tests concerning arrayExport
 	///////////////////////
-
 	/**
 	 * @test
 	 */
@@ -671,27 +647,14 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 					'baz' => 'val\'ue',
 					'baz2' => TRUE,
 					'baz3' => FALSE,
-					'baz4' => array(),
-				),
+					'baz4' => array()
+				)
 			),
 			'baz' => 23,
-			'foobar' => NULL,
+			'foobar' => NULL
 		);
-		$expected = 'array(' . LF .
-			TAB . '\'foo\' => array(' . LF .
-				TAB . TAB . '\'bar\' => 42,' . LF .
-				TAB . TAB . '\'bar2\' => array(' . LF .
-				TAB . TAB . TAB . '\'baz\' => \'val\\\'ue\',' . LF .
-				TAB . TAB . TAB . '\'baz2\' => TRUE,' . LF .
-				TAB . TAB . TAB . '\'baz3\' => FALSE,' . LF .
-				TAB . TAB . TAB . '\'baz4\' => array(),' . LF .
-				TAB . TAB . '),' . LF .
-			TAB . '),' . LF .
-			TAB . '\'baz\' => 23,' . LF .
-			TAB . '\'foobar\' => NULL,' . LF .
-		')';
-
-		$this->assertSame($expected, t3lib_utility_Array::arrayExport($array));
+		$expected = ((((((((((((((((((((((((((((((((((((((((((((('array(' . LF) . TAB) . '\'foo\' => array(') . LF) . TAB) . TAB) . '\'bar\' => 42,') . LF) . TAB) . TAB) . '\'bar2\' => array(') . LF) . TAB) . TAB) . TAB) . '\'baz\' => \'val\\\'ue\',') . LF) . TAB) . TAB) . TAB) . '\'baz2\' => TRUE,') . LF) . TAB) . TAB) . TAB) . '\'baz3\' => FALSE,') . LF) . TAB) . TAB) . TAB) . '\'baz4\' => array(),') . LF) . TAB) . TAB) . '),') . LF) . TAB) . '),') . LF) . TAB) . '\'baz\' => 23,') . LF) . TAB) . '\'foobar\' => NULL,') . LF) . ')';
+		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
 	}
 
 	/**
@@ -701,10 +664,10 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	public function arrayExportThrowsExceptionIfObjectShouldBeExported() {
 		$array = array(
 			'foo' => array(
-				'bar' => new stdClass(),
-			),
+				'bar' => new stdClass()
+			)
 		);
-		t3lib_utility_Array::arrayExport($array);
+		\TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array);
 	}
 
 	/**
@@ -714,14 +677,10 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$array = array(
 			'foo' => 'string key',
 			23 => 'integer key',
-			'42' => 'string key representing integer',
+			'42' => 'string key representing integer'
 		);
-		$expected = 'array(' . LF .
-			TAB . '\'foo\' => \'string key\',' . LF .
-			TAB . '23 => \'integer key\',' . LF .
-			TAB . '42 => \'string key representing integer\',' . LF .
-		')';
-		$this->assertSame($expected, t3lib_utility_Array::arrayExport($array));
+		$expected = (((((((((('array(' . LF) . TAB) . '\'foo\' => \'string key\',') . LF) . TAB) . '23 => \'integer key\',') . LF) . TAB) . '42 => \'string key representing integer\',') . LF) . ')';
+		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
 	}
 
 	/**
@@ -731,14 +690,10 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 		$array = array(
 			0 => 'zero',
 			1 => 'one',
-			2 => 'two',
+			2 => 'two'
 		);
-		$expected = 'array(' . LF .
-			TAB . '\'zero\',' . LF .
-			TAB . '\'one\',' . LF .
-			TAB . '\'two\',' . LF .
-		')';
-		$this->assertSame($expected, t3lib_utility_Array::arrayExport($array));
+		$expected = (((((((((('array(' . LF) . TAB) . '\'zero\',') . LF) . TAB) . '\'one\',') . LF) . TAB) . '\'two\',') . LF) . ')';
+		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
 	}
 
 	/**
@@ -749,15 +704,10 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 			0 => 'zero',
 			1 => 'one',
 			3 => 'three',
-			4 => 'four',
+			4 => 'four'
 		);
-		$expected = 'array(' . LF .
-			TAB . '0 => \'zero\',' . LF .
-			TAB . '1 => \'one\',' . LF .
-			TAB . '3 => \'three\',' . LF .
-			TAB . '4 => \'four\',' . LF .
-		')';
-		$this->assertSame($expected, t3lib_utility_Array::arrayExport($array));
+		$expected = ((((((((((((('array(' . LF) . TAB) . '0 => \'zero\',') . LF) . TAB) . '1 => \'one\',') . LF) . TAB) . '3 => \'three\',') . LF) . TAB) . '4 => \'four\',') . LF) . ')';
+		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
 	}
 
 	/**
@@ -767,10 +717,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 * @dataProvider arrayIsFlatDataProvider
 	 */
 	public function arrayIsFlat(array $array, array $expected) {
-		$this->assertEquals(
-			$expected,
-			t3lib_utility_Array::flatten($array)
-		);
+		$this->assertEquals($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($array));
 	}
 
 	/**
@@ -781,89 +728,90 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 			'plain array' => array(
 				array(
 					'first' => 1,
-					'second' => 2,
+					'second' => 2
 				),
 				array(
 					'first' => 1,
-					'second' => 2,
-				),
+					'second' => 2
+				)
 			),
 			'plain array with faulty dots' => array(
 				array(
 					'first.' => 1,
-					'second.' => 2,
+					'second.' => 2
 				),
 				array(
 					'first' => 1,
-					'second' => 2,
-				),
+					'second' => 2
+				)
 			),
 			'nested array of 2 levels' => array(
 				array(
 					'first.' => array(
-						'firstSub' => 1,
+						'firstSub' => 1
 					),
 					'second.' => array(
-						'secondSub' => 2,
-					),
+						'secondSub' => 2
+					)
 				),
 				array(
 					'first.firstSub' => 1,
-					'second.secondSub' => 2,
-				),
+					'second.secondSub' => 2
+				)
 			),
 			'nested array of 2 levels with faulty dots' => array(
 				array(
 					'first.' => array(
-						'firstSub.' => 1,
+						'firstSub.' => 1
 					),
 					'second.' => array(
-						'secondSub.' => 2,
-					),
+						'secondSub.' => 2
+					)
 				),
 				array(
 					'first.firstSub' => 1,
-					'second.secondSub' => 2,
-				),
+					'second.secondSub' => 2
+				)
 			),
 			'nested array of 3 levels' => array(
 				array(
 					'first.' => array(
 						'firstSub.' => array(
-							'firstSubSub' => 1,
-						),
+							'firstSubSub' => 1
+						)
 					),
 					'second.' => array(
 						'secondSub.' => array(
-							'secondSubSub' => 2,
-						),
-					),
+							'secondSubSub' => 2
+						)
+					)
 				),
 				array(
 					'first.firstSub.firstSubSub' => 1,
-					'second.secondSub.secondSubSub' => 2,
-				),
+					'second.secondSub.secondSubSub' => 2
+				)
 			),
 			'nested array of 3 levels with faulty dots' => array(
 				array(
 					'first.' => array(
 						'firstSub.' => array(
-							'firstSubSub.' => 1,
-						),
+							'firstSubSub.' => 1
+						)
 					),
 					'second.' => array(
 						'secondSub.' => array(
-							'secondSubSub.' => 2,
-						),
-					),
+							'secondSubSub.' => 2
+						)
+					)
 				),
 				array(
 					'first.firstSub.firstSubSub' => 1,
-					'second.secondSub.secondSubSub' => 2,
-				),
-			),
+					'second.secondSub.secondSubSub' => 2
+				)
+			)
 		);
 	}
+
 }
 
 ?>

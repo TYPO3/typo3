@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Test class for module menu utilities
  *
@@ -49,7 +48,7 @@ class Typo3_Utility_BackendModuleUtilityTest extends Tx_PhpUnit_TestCase {
 	 */
 	public function callInaccessibleMethod($className, $name, $argument) {
 		$class = new \ReflectionClass($className);
-		$object = new $className;
+		$object = new $className();
 		$method = $class->getMethod($name);
 		$method->setAccessible(TRUE);
 		return $method->invoke($object, $argument);
@@ -59,8 +58,8 @@ class Typo3_Utility_BackendModuleUtilityTest extends Tx_PhpUnit_TestCase {
 	 * @test
 	 */
 	public function createEntryFromRawDataGeneratesMenuEntry() {
-		$entry = $this->callInaccessibleMethod('Typo3_Utility_BackendModuleUtility', 'createEntryFromRawData', array());
-		$this->assertInstanceOf('Typo3_Domain_Model_BackendModule', $entry);
+		$entry = $this->callInaccessibleMethod('TYPO3\\CMS\\Backend\\Module\\ModuleController', 'createEntryFromRawData', array());
+		$this->assertInstanceOf('TYPO3\\CMS\\Backend\\Domain\\Model\\Module\\BackendModule', $entry);
 	}
 
 	/**
@@ -78,7 +77,7 @@ class Typo3_Utility_BackendModuleUtilityTest extends Tx_PhpUnit_TestCase {
 			'description' => 'descriptionTest',
 			'navigationComponentId' => 'navigationComponentIdTest'
 		);
-		$entry = $this->callInaccessibleMethod('Typo3_Utility_BackendModuleUtility', 'createEntryFromRawData', $rawModule);
+		$entry = $this->callInaccessibleMethod('TYPO3\\CMS\\Backend\\Module\\ModuleController', 'createEntryFromRawData', $rawModule);
 		$this->assertEquals('nameTest', $entry->getName());
 		$this->assertEquals('titleTest', $entry->getTitle());
 		$this->assertEquals('linkTest', $entry->getLink());
@@ -93,11 +92,12 @@ class Typo3_Utility_BackendModuleUtilityTest extends Tx_PhpUnit_TestCase {
 	 */
 	public function createEntryFromRawDataSetsLinkIfPathIsGivenInEntryObject() {
 		$rawModule = array(
-			'path' => 'pathTest',
+			'path' => 'pathTest'
 		);
-		$entry = $this->callInaccessibleMethod('Typo3_Utility_BackendModuleUtility', 'createEntryFromRawData', $rawModule);
+		$entry = $this->callInaccessibleMethod('TYPO3\\CMS\\Backend\\Module\\ModuleController', 'createEntryFromRawData', $rawModule);
 		$this->assertEquals('pathTest', $entry->getLink());
 	}
+
 }
 
 ?>

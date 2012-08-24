@@ -1,53 +1,52 @@
 <?php
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2009-2011 Oliver Hader <oliver@typo3.org>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
-
-
+ *  Copyright notice
+ *
+ *  (c) 2009-2011 Oliver Hader <oliver@typo3.org>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 /**
  * Testcase for class t3lib_matchCondition_frontend.
  *
- * @author	Oliver Hader <oliver@typo3.org>
+ * @author 	Oliver Hader <oliver@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
 class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
+
 	/**
-	 * @var	array
+	 * @var 	array
 	 */
 	private $backupGlobalVariables;
 
 	/**
-	 * @var	array
+	 * @var 	array
 	 */
 	private $rootline;
 
 	/**
-	 * @var	t3lib_matchCondition_backend
+	 * @var 	t3lib_matchCondition_backend
 	 */
 	private $matchCondition;
 
 	/**
-	 * @var	string
+	 * @var 	string
 	 */
 	private $testTableName;
 
@@ -62,25 +61,20 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 			'TYPO3_CONF_VARS' => $GLOBALS['TYPO3_CONF_VARS'],
 			'T3_VAR' => $GLOBALS['T3_VAR'],
 			'BE_USER' => $GLOBALS['BE_USER'],
-			'SOBE' => $GLOBALS['SOBE'],
+			'SOBE' => $GLOBALS['SOBE']
 		);
-
-		$this->testTableName = 't3lib_matchCondition_backend_testTable';
+		$this->testTableName = 'TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher_testTable';
 		$this->testGlobalNamespace = uniqid('TEST');
-
 		$GLOBALS['TCA'][$this->testTableName] = array('ctrl' => array());
 		$GLOBALS[$this->testGlobalNamespace] = array();
-
 		$this->setUpBackend();
-
-		$this->matchCondition = t3lib_div::makeInstance('t3lib_matchCondition_backend');
+		$this->matchCondition = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TypoScript\\ConditionMatching\\ConditionMatcher');
 	}
 
 	public function tearDown() {
 		foreach ($this->backupGlobalVariables as $key => $data) {
 			$GLOBALS[$key] = $data;
 		}
-
 		unset($this->matchCondition);
 		unset($this->backupGlobalVariables);
 		unset($GLOBALS[$this->testGlobalNamespace]);
@@ -89,25 +83,21 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	private function setUpBackend() {
 		$this->rootline = array(
 			2 => array('uid' => 121, 'pid' => 111),
-			1 => array('uid' => 111, 'pid' => 101,),
-			0 => array('uid' => 101, 'pid' => 0,),
+			1 => array('uid' => 111, 'pid' => 101),
+			0 => array('uid' => 101, 'pid' => 0)
 		);
-
 		$GLOBALS['BE_USER'] = $this->getMock('beUserAuth', array(), array(), '', FALSE);
 	}
 
 	private function setUpDatabaseMockForDeterminePageId() {
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result'));
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->will(
-			$this->returnCallback(array($this, 'determinePageIdByRecordDatabaseExecuteCallback'))
-		);
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->will(
-			$this->returnCallback(array($this, 'determinePageIdByRecordDatabaseFetchCallback'))
-		);
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTquery', 'sql_fetch_assoc', 'sql_free_result'));
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTquery')->will($this->returnCallback(array($this, 'determinePageIdByRecordDatabaseExecuteCallback')));
+		$GLOBALS['TYPO3_DB']->expects($this->any())->method('sql_fetch_assoc')->will($this->returnCallback(array($this, 'determinePageIdByRecordDatabaseFetchCallback')));
 	}
 
 	/**
 	 * Tests whether a faulty expression fails.
+	 *
 	 * @test
 	 */
 	public function simulateDisabledMatchAllConditionsFailsOnFaultyExpression() {
@@ -117,6 +107,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether simulating positive matches for all conditions succeeds.
+	 *
 	 * @test
 	 */
 	public function simulateEnabledMatchAllConditionsSucceeds() {
@@ -126,10 +117,11 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether simulating positive matches for specific conditions succeeds.
+	 *
 	 * @test
 	 */
 	public function simulateEnabledMatchSpecificConditionsSucceeds() {
-		$testCondition = '[' . uniqid('test') . ' = Any condition to simulate a positive match]';
+		$testCondition = ('[' . uniqid('test')) . ' = Any condition to simulate a positive match]';
 		$this->matchCondition->setSimulateMatchConditions(array($testCondition));
 		$this->assertTrue($this->matchCondition->match($testCondition));
 	}
@@ -137,7 +129,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	/**
 	 * Tests whether a condition matches Internet Explorer 7 on Windows.
 	 *
-	 * @return	void
+	 * @return 	void
 	 * @test
 	 */
 	public function conditionMatchesInternetExplorer7Windows() {
@@ -149,7 +141,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	/**
 	 * Tests whether a condition does not match Internet Explorer 7 on Windows.
 	 *
-	 * @return	void
+	 * @return 	void
 	 * @test
 	 */
 	public function conditionDoesNotMatchInternetExplorer7Windows() {
@@ -158,9 +150,9 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 		$this->assertFalse($result);
 	}
 
-
 	/**
 	 * Tests whether a condition does match the iOS with the correct and more recent 'iOS'
+	 *
 	 * @test
 	 */
 	public function conditionDoesMatchIosWithCorrectSystemKey() {
@@ -171,6 +163,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a condition does match the iOS with the old 'mac'
+	 *
 	 * @test
 	 */
 	public function conditionDoesMatchIosWithOldSystemKey() {
@@ -181,6 +174,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a condition does match Windows 2000 with the correct and more recent 'win2k'
+	 *
 	 * @test
 	 */
 	public function conditionDoesMatchWindows2kWithNewSystemKey() {
@@ -191,6 +185,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a condition does match Windows 2000 with the old 'winNT'
+	 *
 	 * @test
 	 */
 	public function conditionDoesMatchWindows2kWithOldSystemKey() {
@@ -201,6 +196,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a condition does match Windows NT with 'winNT'
+	 *
 	 * @test
 	 */
 	public function conditionDoesMatchWindowsNtWithSystemKey() {
@@ -209,9 +205,9 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 		$this->assertTrue($result);
 	}
 
-
 	/**
 	 * Tests whether a condition does match Android with the correct and more recent 'android'
+	 *
 	 * @test
 	 */
 	public function conditionDoesMatchAndroidWithNewSystemKey() {
@@ -222,6 +218,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a condition does match Android with the old 'linux'
+	 *
 	 * @test
 	 */
 	public function conditionDoesMatchAndroidWithOldSystemKey() {
@@ -232,6 +229,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a device type condition matches a crawler.
+	 *
 	 * @test
 	 */
 	public function deviceConditionMatchesRobot() {
@@ -242,6 +240,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a device type condition does not match a crawler.
+	 *
 	 * @test
 	 */
 	public function deviceConditionDoesNotMatchRobot() {
@@ -252,37 +251,40 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether the language comparison matches.
+	 *
 	 * @test
 	 */
 	public function languageConditionMatchesSingleLanguageExpression() {
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
-		$this->assertTrue($this->matchCondition->match('[language = *de*]'));
-		$this->assertTrue($this->matchCondition->match('[language = *de-de*]'));
+		$this->assertTrue($this->matchCondition->match('[TYPO3\\CMS\\Lang\\LanguageService = *de*]'));
+		$this->assertTrue($this->matchCondition->match('[TYPO3\\CMS\\Lang\\LanguageService = *de-de*]'));
 	}
 
 	/**
 	 * Tests whether the language comparison matches.
+	 *
 	 * @test
 	 */
 	public function languageConditionMatchesMultipleLanguagesExpression() {
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
-		$this->assertTrue($this->matchCondition->match('[language = *en*,*de*]'));
-		$this->assertTrue($this->matchCondition->match('[language = *en-us*,*de-de*]'));
+		$this->assertTrue($this->matchCondition->match('[TYPO3\\CMS\\Lang\\LanguageService = *en*,*de*]'));
+		$this->assertTrue($this->matchCondition->match('[TYPO3\\CMS\\Lang\\LanguageService = *en-us*,*de-de*]'));
 	}
 
 	/**
 	 * Tests whether the language comparison matches.
+	 *
 	 * @test
 	 */
 	public function languageConditionMatchesCompleteLanguagesExpression() {
 		$this->markTestSkipped('This comparison seems to be incomplete in t3lib_matchCondition.');
-
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
-		$this->assertTrue($this->matchCondition->match('[language = de-de,de;q=0.8]'));
+		$this->assertTrue($this->matchCondition->match('[TYPO3\\CMS\\Lang\\LanguageService = de-de,de;q=0.8]'));
 	}
 
 	/**
 	 * Tests whether usergroup comparison matches.
+	 *
 	 * @test
 	 */
 	public function usergroupConditionMatchesSingleGroupId() {
@@ -292,6 +294,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether usergroup comparison matches.
+	 *
 	 * @test
 	 */
 	public function usergroupConditionMatchesMultipleUserGroupId() {
@@ -301,6 +304,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether user comparison matches.
+	 *
 	 * @test
 	 */
 	public function loginUserConditionMatchesAnyLoggedInUser() {
@@ -310,6 +314,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether user comparison matches.
+	 *
 	 * @test
 	 */
 	public function loginUserConditionMatchesSingleLoggedInUser() {
@@ -319,6 +324,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether user comparison matches.
+	 *
 	 * @test
 	 */
 	public function loginUserConditionDoesNotMatchSingleLoggedInUser() {
@@ -328,6 +334,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether user comparison matches.
+	 *
 	 * @test
 	 */
 	public function loginUserConditionMatchesMultipleLoggedInUsers() {
@@ -337,6 +344,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether checkinf for an admin user matches
+	 *
 	 * @test
 	 */
 	public function adminUserConditionMatchesAdminUser() {
@@ -347,6 +355,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether checkinf for an admin user matches
+	 *
 	 * @test
 	 */
 	public function adminUserConditionMatchesRegularUser() {
@@ -357,6 +366,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether checkinf for an admin user matches
+	 *
 	 * @test
 	 */
 	public function adminUserConditionDoesNotMatchRegularUser() {
@@ -367,18 +377,19 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether numerical comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnEqualExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 = 10]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 = 10.1]'));
-
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 == 10]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 == 10.1]'));
 	}
 
 	/**
 	 * Tests whether numerical comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnEqualExpressionWithMultipleValues() {
@@ -386,7 +397,6 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 = 10.1|20.2|30.3]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:20 = 10|20|30]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:20.2 = 10.1|20.2|30.3]'));
-
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 == 10|20|30]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 == 10.1|20.2|30.3]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:20 == 10|20|30]'));
@@ -395,6 +405,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether numerical comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnNotEqualExpression() {
@@ -404,6 +415,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether numerical comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnNotEqualExpressionWithMultipleValues() {
@@ -413,6 +425,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether numerical comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnLowerThanExpression() {
@@ -422,18 +435,19 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether numerical comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnLowerThanOrEqualExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 <= 10]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 <= 20]'));
-
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 <= 10.1]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 <= 10.2]'));
 	}
 
 	/**
 	 * Tests whether numerical comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnGreaterThanExpression() {
@@ -443,42 +457,43 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether numerical comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnGreaterThanOrEqualExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10 >= 10]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:20 >= 10]'));
-
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.1 >= 10.1]'));
 		$this->assertTrue($this->matchCondition->match('[globalVar = LIT:10.2 >= 10.1]'));
 	}
 
 	/**
 	 * Tests whether numerical comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalVarConditionMatchesOnEmptyExpressionWithNoValueSet() {
 		$testKey = uniqid('test');
-		$this->assertTrue($this->matchCondition->match('[globalVar = GP:' . $testKey . '=]'));
-		$this->assertTrue($this->matchCondition->match('[globalVar = GP:' . $testKey . ' = ]'));
+		$this->assertTrue($this->matchCondition->match(('[globalVar = GP:' . $testKey) . '=]'));
+		$this->assertTrue($this->matchCondition->match(('[globalVar = GP:' . $testKey) . ' = ]'));
 	}
 
 	/**
 	 * Tests whether numerical comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalVarConditionDoesNotMatchOnEmptyExpressionWithValueSetToZero() {
 		$testKey = uniqid('test');
-
 		$_GET = array();
 		$_POST = array($testKey => 0);
-
-		$this->assertFalse($this->matchCondition->match('[globalVar = GP:' . $testKey . '=]'));
-		$this->assertFalse($this->matchCondition->match('[globalVar = GP:' . $testKey . ' = ]'));
+		$this->assertFalse($this->matchCondition->match(('[globalVar = GP:' . $testKey) . '=]'));
+		$this->assertFalse($this->matchCondition->match(('[globalVar = GP:' . $testKey) . ' = ]'));
 	}
 
 	/**
 	 * Tests whether string comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalStringConditionMatchesOnEqualExpression() {
@@ -488,6 +503,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether string comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalStringConditionMatchesWildcardExpression() {
@@ -498,26 +514,29 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether string comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalStringConditionMatchesRegularExpression() {
 		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = /^[A-Za-z3.]+$/]'));
-		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = /^TYPO3\..+Condition$/]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = /^TYPO3\\..+Condition$/]'));
 		$this->assertFalse($this->matchCondition->match('[globalString = LIT:TYPO3.Test.Condition = /^FALSE/]'));
 	}
 
 	/**
 	 * Tests whether string comparison matches.
+	 *
 	 * @test
 	 */
 	public function globalStringConditionMatchesEmptyRegularExpression() {
 		$testKey = uniqid('test');
 		$_SERVER[$testKey] = '';
-		$this->assertTrue($this->matchCondition->match('[globalString = _SERVER|' . $testKey . ' = /^$/]'));
+		$this->assertTrue($this->matchCondition->match(('[globalString = _SERVER|' . $testKey) . ' = /^$/]'));
 	}
 
 	/**
 	 * Tests whether treeLevel comparison matches.
+	 *
 	 * @test
 	 */
 	public function treeLevelConditionMatchesSingleValue() {
@@ -527,6 +546,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether treeLevel comparison matches.
+	 *
 	 * @test
 	 */
 	public function treeLevelConditionMatchesMultipleValues() {
@@ -536,6 +556,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether treeLevel comparison matches.
+	 *
 	 * @test
 	 */
 	public function treeLevelConditionDoesNotMatchFaultyValue() {
@@ -545,21 +566,21 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether treeLevel comparison matches when creating new pages.
+	 *
 	 * @test
 	 */
 	public function treeLevelConditionMatchesCurrentPageIdWhileEditingNewPage() {
-		$GLOBALS['SOBE'] = $this->getMock('SC_alt_doc', array());
+		$GLOBALS['SOBE'] = $this->getMock('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController', array());
 		$GLOBALS['SOBE']->elementsData = array(
 			array(
 				'table' => 'pages',
 				'uid' => 'NEW4adc6021e37e7',
 				'pid' => 121,
 				'cmd' => 'new',
-				'deleteAccess' => 0,
-			),
+				'deleteAccess' => 0
+			)
 		);
 		$GLOBALS['SOBE']->data = array();
-
 		$this->matchCondition->setRootline($this->rootline);
 		$this->matchCondition->setPageId(121);
 		$this->assertTrue($this->matchCondition->match('[treeLevel = 3]'));
@@ -567,10 +588,11 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether treeLevel comparison matches when creating new pages.
+	 *
 	 * @test
 	 */
 	public function treeLevelConditionMatchesCurrentPageIdWhileSavingNewPage() {
-		$GLOBALS['SOBE'] = $this->getMock('SC_alt_doc', array());
+		$GLOBALS['SOBE'] = $this->getMock('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController', array());
 		$GLOBALS['SOBE']->elementsData = array(
 			array(
 				'table' => 'pages',
@@ -578,17 +600,16 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 				'uid' => 999,
 				'pid' => 121,
 				'cmd' => 'edit',
-				'deleteAccess' => 1,
-			),
+				'deleteAccess' => 1
+			)
 		);
 		$GLOBALS['SOBE']->data = array(
 			'pages' => array(
 				'NEW4adc6021e37e7' => array(
-					'pid' => 121,
-				),
-			),
+					'pid' => 121
+				)
+			)
 		);
-
 		$this->matchCondition->setRootline($this->rootline);
 		$this->matchCondition->setPageId(121);
 		$this->assertTrue($this->matchCondition->match('[treeLevel = 3]'));
@@ -596,6 +617,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a page Id is found in the previous rootline entries.
+	 *
 	 * @test
 	 */
 	public function PIDupinRootlineConditionMatchesSinglePageIdInRootline() {
@@ -606,6 +628,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a page Id is found in the previous rootline entries.
+	 *
 	 * @test
 	 */
 	public function PIDupinRootlineConditionMatchesMultiplePageIdsInRootline() {
@@ -616,6 +639,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a page Id is found in the previous rootline entries.
+	 *
 	 * @test
 	 */
 	public function PIDupinRootlineConditionDoesNotMatchPageIdNotInRootline() {
@@ -626,6 +650,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a page Id is found in the previous rootline entries.
+	 *
 	 * @test
 	 */
 	public function PIDupinRootlineConditionDoesNotMatchLastPageIdInRootline() {
@@ -636,21 +661,21 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a page Id is found in the previous rootline entries.
+	 *
 	 * @test
 	 */
 	public function PIDupinRootlineConditionMatchesCurrentPageIdWhileEditingNewPage() {
-		$GLOBALS['SOBE'] = $this->getMock('SC_alt_doc', array());
+		$GLOBALS['SOBE'] = $this->getMock('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController', array());
 		$GLOBALS['SOBE']->elementsData = array(
 			array(
 				'table' => 'pages',
 				'uid' => 'NEW4adc6021e37e7',
 				'pid' => 121,
 				'cmd' => 'new',
-				'deleteAccess' => 0,
-			),
+				'deleteAccess' => 0
+			)
 		);
 		$GLOBALS['SOBE']->data = array();
-
 		$this->matchCondition->setRootline($this->rootline);
 		$this->matchCondition->setPageId(121);
 		$this->assertTrue($this->matchCondition->match('[PIDupinRootline = 121]'));
@@ -658,10 +683,11 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a page Id is found in the previous rootline entries.
+	 *
 	 * @test
 	 */
 	public function PIDupinRootlineConditionMatchesCurrentPageIdWhileSavingNewPage() {
-		$GLOBALS['SOBE'] = $this->getMock('SC_alt_doc', array());
+		$GLOBALS['SOBE'] = $this->getMock('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController', array());
 		$GLOBALS['SOBE']->elementsData = array(
 			array(
 				'table' => 'pages',
@@ -669,17 +695,16 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 				'uid' => 999,
 				'pid' => 121,
 				'cmd' => 'edit',
-				'deleteAccess' => 1,
-			),
+				'deleteAccess' => 1
+			)
 		);
 		$GLOBALS['SOBE']->data = array(
 			'pages' => array(
 				'NEW4adc6021e37e7' => array(
-					'pid' => 121,
-				),
-			),
+					'pid' => 121
+				)
+			)
 		);
-
 		$this->matchCondition->setRootline($this->rootline);
 		$this->matchCondition->setPageId(121);
 		$this->assertTrue($this->matchCondition->match('[PIDupinRootline = 121]'));
@@ -687,6 +712,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a page Id is found in all rootline entries.
+	 *
 	 * @test
 	 */
 	public function PIDinRootlineConditionMatchesSinglePageIdInRootline() {
@@ -697,6 +723,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a page Id is found in all rootline entries.
+	 *
 	 * @test
 	 */
 	public function PIDinRootlineConditionMatchesMultiplePageIdsInRootline() {
@@ -707,6 +734,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a page Id is found in all rootline entries.
+	 *
 	 * @test
 	 */
 	public function PIDinRootlineConditionMatchesLastPageIdInRootline() {
@@ -717,6 +745,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether a page Id is found in all rootline entries.
+	 *
 	 * @test
 	 */
 	public function PIDinRootlineConditionDoesNotMatchPageIdNotInRootline() {
@@ -728,6 +757,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	/**
 	 * Tests whether the compatibility version can be evaluated.
 	 * (e.g. 4.9 is compatible to 4.0 but not to 5.0)
+	 *
 	 * @test
 	 */
 	public function compatVersionConditionMatchesOlderRelease() {
@@ -738,6 +768,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	/**
 	 * Tests whether the compatibility version can be evaluated.
 	 * (e.g. 4.9 is compatible to 4.0 but not to 5.0)
+	 *
 	 * @test
 	 */
 	public function compatVersionConditionMatchesSameRelease() {
@@ -748,6 +779,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	/**
 	 * Tests whether the compatibility version can be evaluated.
 	 * (e.g. 4.9 is compatible to 4.0 but not to 5.0)
+	 *
 	 * @test
 	 */
 	public function compatVersionConditionDoesNotMatchNewerRelease() {
@@ -757,12 +789,12 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests whether the generic fetching of variables works with the namespace 'GP'.
+	 *
 	 * @test
 	 */
 	public function genericGetVariablesSucceedsWithNamespaceGP() {
 		$_GET = array('testGet' => 'getTest');
 		$_POST = array('testPost' => 'postTest');
-
 		$this->assertTrue($this->matchCondition->match('[globalString = GP:testGet = getTest]'));
 		$this->assertTrue($this->matchCondition->match('[globalString = GP:testPost = postTest]'));
 	}
@@ -770,154 +802,148 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	/**
 	 * Tests whether the generic fetching of variables does not work with the namespace 'TSFE',
 	 * since we are in the backend context here.
+	 *
 	 * @test
 	 */
 	public function genericGetVariablesFailsWithNamespaceTSFE() {
 		$GLOBALS['TSFE'] = new stdClass();
 		$GLOBALS['TSFE']->id = 1234567;
-
 		$this->assertFalse($this->matchCondition->match('[globalString = TSFE:id = 1234567]'));
 	}
 
 	/**
 	 * Tests whether the generic fetching of variables works with the namespace 'ENV'.
+	 *
 	 * @test
 	 */
 	public function genericGetVariablesSucceedsWithNamespaceENV() {
 		$testKey = uniqid('test');
-		putenv($testKey .'=testValue');
-
-		$this->assertTrue($this->matchCondition->match('[globalString = ENV:' . $testKey . ' = testValue]'));
+		putenv($testKey . '=testValue');
+		$this->assertTrue($this->matchCondition->match(('[globalString = ENV:' . $testKey) . ' = testValue]'));
 	}
 
 	/**
 	 * Tests whether the generic fetching of variables works with the namespace 'IENV'.
+	 *
 	 * @test
 	 */
 	public function genericGetVariablesSucceedsWithNamespaceIENV() {
-		$_SERVER['HTTP_HOST'] = t3lib_div::getIndpEnv('TYPO3_HOST_ONLY') . ':1234567';
+		$_SERVER['HTTP_HOST'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') . ':1234567';
 		$this->assertTrue($this->matchCondition->match('[globalString = IENV:TYPO3_PORT = 1234567]'));
 	}
 
 	/**
 	 * Tests whether the generic fetching of variables works with any global namespace.
+	 *
 	 * @test
 	 */
 	public function genericGetVariablesSucceedsWithAnyGlobalNamespace() {
 		$GLOBALS[$this->testGlobalNamespace] = array(
 			'first' => 'testFirst',
-			'second' => array('third' => 'testThird'),
+			'second' => array('third' => 'testThird')
 		);
-
-		$this->assertTrue($this->matchCondition->match(
-			'[globalString = ' . $this->testGlobalNamespace . '|first = testFirst]'
-		));
-		$this->assertTrue($this->matchCondition->match(
-			'[globalString = ' . $this->testGlobalNamespace . '|second|third = testThird]'
-		));
+		$this->assertTrue($this->matchCondition->match(('[globalString = ' . $this->testGlobalNamespace) . '|first = testFirst]'));
+		$this->assertTrue($this->matchCondition->match(('[globalString = ' . $this->testGlobalNamespace) . '|second|third = testThird]'));
 	}
 
 	/**
 	 * Tests whether determining a pageId works.
+	 *
 	 * @test
 	 */
 	public function pageIdCanBeDeterminedWhileCallingModuleWithPageTree() {
 		$_GET['id'] = 999;
-
 		$this->matchCondition->match('[globalVar = LIT:10 = 10]');
 		$this->assertEquals(999, $this->matchCondition->getPageId());
 	}
 
 	/**
 	 * Tests whether determining a pageId works.
+	 *
 	 * @test
 	 */
 	public function pageIdCanBeDeterminedWhileEditingAPageRecord() {
 		$_GET['edit']['pages'][999] = 'edit';
-
 		$this->matchCondition->match('[globalVar = LIT:10 = 10]');
 		$this->assertEquals(999, $this->matchCondition->getPageId());
 	}
 
 	/**
 	 * Tests whether determining a pageId works.
+	 *
 	 * @test
 	 */
 	public function pageIdCanBeDeterminedWhileEditingARegularRecord() {
 		$this->setUpDatabaseMockForDeterminePageId();
-
 		$_GET['edit'][$this->testTableName][13] = 'edit';
-
 		$this->matchCondition->match('[globalVar = LIT:10 = 10]');
 		$this->assertEquals(999, $this->matchCondition->getPageId());
 	}
 
 	/**
 	 * Tests whether determining a pageId works.
+	 *
 	 * @test
 	 */
 	public function pageIdCanBeDeterminedWhileCreatingARecord() {
 		$_GET['edit']['pages'][999] = 'new';
-
 		$this->matchCondition->match('[globalVar = LIT:10 = 10]');
 		$this->assertEquals(999, $this->matchCondition->getPageId());
 	}
 
 	/**
 	 * Tests whether determining a pageId works.
+	 *
 	 * @test
 	 */
 	public function pageIdCanBeDeterminedWhileCreatingARecordAfterAnExistingRecord() {
 		$this->setUpDatabaseMockForDeterminePageId();
-
 		$_GET['edit'][$this->testTableName][-13] = 'new';
-
 		$this->matchCondition->match('[globalVar = LIT:10 = 10]');
 		$this->assertEquals(999, $this->matchCondition->getPageId());
 	}
 
 	/**
 	 * Tests whether determining a pageId works.
+	 *
 	 * @test
 	 */
 	public function pageIdCanBeDeterminedWhileDeletingAPageRecord() {
 		$_GET['cmd']['pages'][999]['delete'] = 1;
-
 		$this->matchCondition->match('[globalVar = LIT:10 = 10]');
 		$this->assertEquals(999, $this->matchCondition->getPageId());
 	}
 
 	/**
 	 * Tests whether determining a pageId works.
+	 *
 	 * @test
 	 */
 	public function pageIdCanBeDeterminedWhileCopyingARecordToAnotherPage() {
 		$_GET['cmd']['pages'][121]['copy'] = 999;
-
 		$this->matchCondition->match('[globalVar = LIT:10 = 10]');
 		$this->assertEquals(999, $this->matchCondition->getPageId());
 	}
 
 	/**
 	 * Tests whether determining a pageId works.
+	 *
 	 * @test
 	 */
 	public function pageIdCanBeDeterminedWhileCopyingARecordAfterAnExistingRecord() {
 		$this->setUpDatabaseMockForDeterminePageId();
-
 		$_GET['cmd'][$this->testTableName][121]['copy'] = -13;
-
 		$this->matchCondition->match('[globalVar = LIT:10 = 10]');
 		$this->assertEquals(999, $this->matchCondition->getPageId());
 	}
 
 	/**
 	 * Tests whether determining a pageId works.
+	 *
 	 * @test
 	 */
 	public function pageIdCanBeDeterminedWhileMovingARecordToAnotherPage() {
 		$_GET['cmd']['pages'][121]['move'] = 999;
-
 		$this->matchCondition->match('[globalVar = LIT:10 = 10]');
 		$this->assertEquals(999, $this->matchCondition->getPageId());
 	}
@@ -926,18 +952,18 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	 * Callback method for pageIdCanBeDetermined test cases.
 	 * Simulates TYPO3_DB->exec_SELECTquery().
 	 *
-	 * @param	string		$fields
-	 * @param	string		$table
-	 * @param	string		$where
-	 * @return	mixed
+	 * @param 	string		$fields
+	 * @param 	string		$table
+	 * @param 	string		$where
+	 * @return 	mixed
 	 */
 	public function determinePageIdByRecordDatabaseExecuteCallback($fields, $table, $where) {
 		if ($table === $this->testTableName) {
 			return array(
 				'scope' => $this->testTableName,
 				'data' => array(
-					'pid' => 999,
-				),
+					'pid' => 999
+				)
 			);
 		} else {
 			return FALSE;
@@ -948,15 +974,17 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	 * Callback method for pageIdCanBeDetermined test cases.
 	 * Simulates TYPO3_DB->sql_fetch_assoc().
 	 *
-	 * @param	mixed		$resource
-	 * @return	mixed
+	 * @param 	mixed		$resource
+	 * @return 	mixed
 	 */
 	public function determinePageIdByRecordDatabaseFetchCallback($resource) {
-		if (is_array($resource) && ($resource['scope'] === $this->testTableName)) {
+		if (is_array($resource) && $resource['scope'] === $this->testTableName) {
 			return $resource['data'];
 		} else {
 			return FALSE;
 		}
 	}
+
 }
+
 ?>

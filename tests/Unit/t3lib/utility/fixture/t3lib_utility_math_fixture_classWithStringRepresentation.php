@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Class t3lib_utility_math_fixture_classWithStringRepresentation.
  *
@@ -50,4 +49,5 @@ class t3lib_utility_math_fixture_classWithStringRepresentation {
 	}
 
 }
+
 ?>

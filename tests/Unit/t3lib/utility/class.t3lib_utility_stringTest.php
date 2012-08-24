@@ -21,12 +21,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for class t3lib_utility_string
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
- *
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -44,7 +42,7 @@ class t3lib_utility_StringTest extends tx_phpunit_testcase {
 			'match whole string' => array('hello', 'hello'),
 			'integer is part of string with same number' => array('24', 24),
 			'string is part of integer with same number' => array(24, '24'),
-			'integer is part of string starting with same number' => array('please gimme beer, 24', 24),
+			'integer is part of string starting with same number' => array('please gimme beer, 24', 24)
 		);
 	}
 
@@ -53,7 +51,7 @@ class t3lib_utility_StringTest extends tx_phpunit_testcase {
 	 * @dataProvider isLastPartOfStringReturnsTrueForMatchingFirstPartDataProvider
 	 */
 	public function isLastPartOfStringReturnsTrueForMatchingFirstPart($string, $part) {
-		$this->assertTrue(t3lib_utility_String::isLastPartOfString($string, $part));
+		$this->assertTrue(\TYPO3\CMS\Core\Utility\StringUtility::isLastPartOfString($string, $part));
 	}
 
 	/**
@@ -77,7 +75,7 @@ class t3lib_utility_StringTest extends tx_phpunit_testcase {
 			'empty string is not part of false' => array(FALSE, ''),
 			'empty string is not part of zero integer' => array(0, ''),
 			'zero integer is not part of NULL' => array(NULL, 0),
-			'zero integer is not part of empty string' => array('', 0),
+			'zero integer is not part of empty string' => array('', 0)
 		);
 	}
 
@@ -86,7 +84,7 @@ class t3lib_utility_StringTest extends tx_phpunit_testcase {
 	 * @dataProvider isLastPartOfStringReturnsFalseForNotMatchingFirstPartDataProvider
 	 */
 	public function isLastPartOfStringReturnsFalseForNotMatchingFirstPart($string, $part) {
-		$this->assertFalse(t3lib_utility_String::isLastPartOfString($string, $part));
+		$this->assertFalse(\TYPO3\CMS\Core\Utility\StringUtility::isLastPartOfString($string, $part));
 	}
 
 }

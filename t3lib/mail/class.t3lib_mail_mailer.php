@@ -24,8 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-// Make sure Swift's auto-loader is registered
-require_once PATH_typo3 . 'contrib/swiftmailer/swift_required.php';
 /*
  * @deprecated since 6.0, the classname t3lib_mail_Mailer and this file is obsolete
  * and will be removed by 7.0. The class was renamed and is now located at:

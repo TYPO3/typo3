@@ -21,12 +21,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Testcase for the prepared statement database class
  *
- * @author	Helmut Hummel <helmut@typo3.org>
+ * @author 	Helmut Hummel <helmut@typo3.org>
  * @package TYPO3
  * @subpackage tests
  */
@@ -69,7 +67,6 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 	//////////////////////
 	// Utility functions
 	//////////////////////
-
 	/**
 	 * Set up the stub to be able to get the result of the prepared statement.
 	 *
@@ -77,7 +74,7 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 	 */
 	private function setUpAndReturnDatabaseStub() {
 		$databaseLink = $GLOBALS['TYPO3_DB']->link;
-		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_DB', array('exec_PREPAREDquery'), array(), '', FALSE, FALSE);
+		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_PREPAREDquery'), array(), '', FALSE, FALSE);
 		$GLOBALS['TYPO3_DB']->link = $databaseLink;
 		return $GLOBALS['TYPO3_DB'];
 	}
@@ -86,16 +83,15 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 	 * Create a object fo the subject to be tested.
 	 *
 	 * @param string $query
-	 * @return t3lib_db_PreparedStatement
+	 * @return \TYPO3\CMS\Core\Database\PreparedStatement
 	 */
 	private function createPreparedStatement($query) {
-		return new t3lib_db_PreparedStatement($query, 'pages');
+		return new \TYPO3\CMS\Core\Database\PreparedStatement($query, 'pages');
 	}
 
 	////////////////////////////////////
 	// Tests for the utility functions
 	////////////////////////////////////
-
 	/**
 	 * Checks if setUpAndReturnDatabaseStub() really returns
 	 * a mock of t3lib_DB.
@@ -104,7 +100,7 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function setUpAndReturnDatabaseStubReturnsMockObjectOf_t3lib_DB() {
-		$this->assertTrue($this->setUpAndReturnDatabaseStub() instanceof t3lib_DB);
+		$this->assertTrue($this->setUpAndReturnDatabaseStub() instanceof \TYPO3\CMS\Core\Database\DatabaseConnection);
 	}
 
 	/**
@@ -114,13 +110,12 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function createPreparedStatementReturnsInstanceOfPreparedStatementClass() {
-		$this->assertTrue($this->createPreparedStatement('dummy') instanceof t3lib_db_PreparedStatement);
+		$this->assertTrue($this->createPreparedStatement('dummy') instanceof \TYPO3\CMS\Core\Database\PreparedStatement);
 	}
 
 	///////////////////////////////////////
 	// Tests for t3lib_db_PreparedStatement
 	///////////////////////////////////////
-
 	/**
 	 * Data Provider for two tests, providing sample queries, parameters and expected result queries.
 	 *
@@ -134,18 +129,18 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 			'one unnamed integer parameter' => array('SELECT * FROM pages WHERE pid=?', array(1), 'SELECT * FROM pages WHERE pid=1'),
 			'one named integer parameter is replaced multiple times' => array('SELECT * FROM pages WHERE pid=:pid OR uid=:pid', array(':pid' => 1), 'SELECT * FROM pages WHERE pid=1 OR uid=1'),
 			'two named integer parameters are replaced' => array('SELECT * FROM pages WHERE pid=:pid OR uid=:uid', array(':pid' => 1, ':uid' => 10), 'SELECT * FROM pages WHERE pid=1 OR uid=10'),
-			'two unnamed integer parameters are replaced' => array('SELECT * FROM pages WHERE pid=? OR uid=?', array(1,1), 'SELECT * FROM pages WHERE pid=1 OR uid=1'),
+			'two unnamed integer parameters are replaced' => array('SELECT * FROM pages WHERE pid=? OR uid=?', array(1, 1), 'SELECT * FROM pages WHERE pid=1 OR uid=1'),
 			'php bool TRUE parameter is replaced with 1' => array('SELECT * FROM pages WHERE deleted=?', array(TRUE), 'SELECT * FROM pages WHERE deleted=1'),
 			'php bool FALSE parameter is replaced with 0' => array('SELECT * FROM pages WHERE deleted=?', array(FALSE), 'SELECT * FROM pages WHERE deleted=0'),
 			'php null parameter is replaced with NULL' => array('SELECT * FROM pages WHERE deleted=?', array(NULL), 'SELECT * FROM pages WHERE deleted=NULL'),
-			'string parameter is wrapped in quotes' => array('SELECT * FROM pages WHERE title=?', array('Foo bar'), "SELECT * FROM pages WHERE title='Foo bar'"),
-			'number as string parameter is wrapped in quotes' => array('SELECT * FROM pages WHERE title=?', array('12'), "SELECT * FROM pages WHERE title='12'"),
-			'string single quotes in parameter are properly escaped' => array('SELECT * FROM pages WHERE title=?', array("'Foo'"), "SELECT * FROM pages WHERE title='\\'Foo\\''"),
-			'question mark as values with unnamed parameters are properly escaped' => array('SELECT * FROM foo WHERE title=? AND name=?', array("?", "fancy title"), "SELECT * FROM foo WHERE title='?' AND name='fancy title'"),
-			'parameter name as value is properly escaped' => array('SELECT * FROM foo WHERE title=:name AND name=:title', array(':name'=>":title", ':title'=>"fancy title"), "SELECT * FROM foo WHERE title=':title' AND name='fancy title'"),
-			'question mark as value of a parameter with a name is properly escaped' => array('SELECT * FROM foo WHERE title=:name AND name=?', array(':name'=>"?", "cool name"), "SELECT * FROM foo WHERE title='?' AND name='cool name'"),
-			'regular expression back references as values are left untouched' => array('SELECT * FROM foo WHERE title=:name AND name=?', array(':name'=>'\1', '${1}'), "SELECT * FROM foo WHERE title='\\\\1' AND name='\${1}'"),
-			'unsubstituted question marks do not contain the token wrap' => array('SELECT * FROM foo WHERE title=:name AND question LIKE "%what?" AND name=:title', array(':name'=>'Title', ':title' => 'Name'), "SELECT * FROM foo WHERE title='Title' AND question LIKE \"%what?\" AND name='Name'"),
+			'string parameter is wrapped in quotes' => array('SELECT * FROM pages WHERE title=?', array('Foo bar'), 'SELECT * FROM pages WHERE title=\'Foo bar\''),
+			'number as string parameter is wrapped in quotes' => array('SELECT * FROM pages WHERE title=?', array('12'), 'SELECT * FROM pages WHERE title=\'12\''),
+			'string single quotes in parameter are properly escaped' => array('SELECT * FROM pages WHERE title=?', array('\'Foo\''), 'SELECT * FROM pages WHERE title=\'\\\'Foo\\\'\''),
+			'question mark as values with unnamed parameters are properly escaped' => array('SELECT * FROM foo WHERE title=? AND name=?', array('?', 'fancy title'), 'SELECT * FROM foo WHERE title=\'?\' AND name=\'fancy title\''),
+			'parameter name as value is properly escaped' => array('SELECT * FROM foo WHERE title=:name AND name=:title', array(':name' => ':title', ':title' => 'fancy title'), 'SELECT * FROM foo WHERE title=\':title\' AND name=\'fancy title\''),
+			'question mark as value of a parameter with a name is properly escaped' => array('SELECT * FROM foo WHERE title=:name AND name=?', array(':name' => '?', 'cool name'), 'SELECT * FROM foo WHERE title=\'?\' AND name=\'cool name\''),
+			'regular expression back references as values are left untouched' => array('SELECT * FROM foo WHERE title=:name AND name=?', array(':name' => '\\1', '${1}'), 'SELECT * FROM foo WHERE title=\'\\\\1\' AND name=\'${1}\''),
+			'unsubstituted question marks do not contain the token wrap' => array('SELECT * FROM foo WHERE title=:name AND question LIKE "%what?" AND name=:title', array(':name' => 'Title', ':title' => 'Name'), 'SELECT * FROM foo WHERE title=\'Title\' AND question LIKE "%what?" AND name=\'Name\'')
 		);
 	}
 
@@ -162,11 +157,7 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 	 */
 	public function parametersAreReplacedInQueryByCallingExecute($query, $parameters, $expectedResult) {
 		$statement = $this->createPreparedStatement($query);
-		$this->databaseStub->expects($this->any())
-			->method('exec_PREPAREDquery')
-			->with(
-				$this->equalTo($expectedResult)
-			);
+		$this->databaseStub->expects($this->any())->method('exec_PREPAREDquery')->with($this->equalTo($expectedResult));
 		$statement->execute($parameters);
 	}
 
@@ -183,11 +174,7 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 	 */
 	public function parametersAreReplacedInQueryWhenBoundWithBindValues($query, $parameters, $expectedResult) {
 		$statement = $this->createPreparedStatement($query);
-		$this->databaseStub->expects($this->any())
-			->method('exec_PREPAREDquery')
-			->with(
-				$this->equalTo($expectedResult)
-			);
+		$this->databaseStub->expects($this->any())->method('exec_PREPAREDquery')->with($this->equalTo($expectedResult));
 		$statement->bindValues($parameters);
 		$statement->execute();
 	}
@@ -200,15 +187,15 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 	 */
 	public function invalidParameterTypesPassedToBindValueThrowsExceptionDataProvider() {
 		return array(
-			'integer passed with param type NULL' => array(1, t3lib_db_PreparedStatement::PARAM_NULL),
-			'string passed with param type NULL' => array('1', t3lib_db_PreparedStatement::PARAM_NULL),
-			'bool passed with param type NULL' => array(TRUE, t3lib_db_PreparedStatement::PARAM_NULL),
-			'NULL passed with param type INT' => array(NULL, t3lib_db_PreparedStatement::PARAM_INT),
-			'string passed with param type INT' => array('1', t3lib_db_PreparedStatement::PARAM_INT),
-			'bool passed with param type INT' => array(TRUE, t3lib_db_PreparedStatement::PARAM_INT),
-			'NULL passed with param type BOOL' => array(NULL, t3lib_db_PreparedStatement::PARAM_BOOL),
-			'string passed with param type BOOL' => array('1', t3lib_db_PreparedStatement::PARAM_BOOL),
-			'integer passed with param type BOOL' => array(1, t3lib_db_PreparedStatement::PARAM_BOOL),
+			'integer passed with param type NULL' => array(1, \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_NULL),
+			'string passed with param type NULL' => array('1', \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_NULL),
+			'bool passed with param type NULL' => array(TRUE, \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_NULL),
+			'NULL passed with param type INT' => array(NULL, \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_INT),
+			'string passed with param type INT' => array('1', \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_INT),
+			'bool passed with param type INT' => array(TRUE, \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_INT),
+			'NULL passed with param type BOOL' => array(NULL, \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_BOOL),
+			'string passed with param type BOOL' => array('1', \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_BOOL),
+			'integer passed with param type BOOL' => array(1, \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_BOOL)
 		);
 	}
 
@@ -237,12 +224,7 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 	public function parametersPassedToExecuteOverrulesFormerlyBoundValues() {
 		$query = 'SELECT * FROM pages WHERE pid=? OR uid=?';
 		$expectedResult = 'SELECT * FROM pages WHERE pid=30 OR uid=40';
-		$this->databaseStub->expects($this->any())
-			->method('exec_PREPAREDquery')
-			->with(
-				$this->equalTo($expectedResult)
-			);
-
+		$this->databaseStub->expects($this->any())->method('exec_PREPAREDquery')->with($this->equalTo($expectedResult));
 		$statement = $this->createPreparedStatement($query);
 		$statement->bindValues(array(10, 20));
 		$statement->execute(array(30, 40));
@@ -260,7 +242,7 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 			'using non alphanumerical character' => array('SELECT * FROM pages WHERE title=:stra≠e', array(':stra≠e' => 1)),
 			'no colon used' => array('SELECT * FROM pages WHERE pid=pid', array('pid' => 1)),
 			'colon at the end' => array('SELECT * FROM pages WHERE pid=pid:', array('pid:' => 1)),
-			'colon without alphanumerical character' => array('SELECT * FROM pages WHERE pid=:', array(':' => 1)),
+			'colon without alphanumerical character' => array('SELECT * FROM pages WHERE pid=:', array(':' => 1))
 		);
 	}
 
@@ -278,6 +260,7 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 		$statement = $this->createPreparedStatement($query);
 		$statement->execute($parameters);
 	}
+
 }
 
 ?>

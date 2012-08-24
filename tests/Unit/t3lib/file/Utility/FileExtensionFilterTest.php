@@ -24,7 +24,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Test suite for filtering files by their extensions.
  *
@@ -33,8 +32,9 @@
  * @subpackage t3lib
  */
 class t3lib_file_Utility_FileExtensionFilterTest extends Tx_Phpunit_TestCase {
+
 	/**
-	 * @var t3lib_file_Utility_FileExtensionFilter
+	 * @var \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter
 	 */
 	protected $filter;
 
@@ -57,11 +57,10 @@ class t3lib_file_Utility_FileExtensionFilterTest extends Tx_Phpunit_TestCase {
 	 * Sets up this test suite.
 	 */
 	protected function setUp() {
-		$this->filter = new t3lib_file_Utility_FileExtensionFilter();
-		$this->tceMainMock = $this->getMock('t3lib_TCEmain', array('deleteAction'), array());
-		$this->fileFactoryMock = $this->getMock('t3lib_file_Factory', array('getFileReferenceObject'), array());
-
-		t3lib_div::setSingletonInstance('t3lib_file_Factory', $this->fileFactoryMock);
+		$this->filter = new \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter();
+		$this->tceMainMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandler\\DataHandler', array('deleteAction'), array());
+		$this->fileFactoryMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array('getFileReferenceObject'), array());
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', $this->fileFactoryMock);
 	}
 
 	/**
@@ -72,15 +71,13 @@ class t3lib_file_Utility_FileExtensionFilterTest extends Tx_Phpunit_TestCase {
 		unset($this->tceMainMock);
 		unset($this->parameters);
 		unset($this->filter);
-
-		t3lib_div::purgeInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
 	}
 
 	/**
 	 * @param array|string $allowed
 	 * @param array|string $disallowed
 	 * @param array|string $values
-	 *
 	 * @test
 	 * @dataProvider invalidInlineChildrenFilterParametersDataProvider
 	 */
@@ -88,11 +85,10 @@ class t3lib_file_Utility_FileExtensionFilterTest extends Tx_Phpunit_TestCase {
 		$this->parameters = array(
 			'allowedFileExtensions' => $allowed,
 			'disallowedFileExtensions' => $disallowed,
-			'values' => $values,
+			'values' => $values
 		);
-
 		$this->tceMainMock->expects($this->never())->method('deleteAction');
-		$this->fileFactoryMock->expects(($this->never()))->method(('getFileReferenceObject'));
+		$this->fileFactoryMock->expects($this->never())->method('getFileReferenceObject');
 		$this->filter->filterInlineChildren($this->parameters, $this->tceMainMock);
 	}
 
@@ -103,9 +99,10 @@ class t3lib_file_Utility_FileExtensionFilterTest extends Tx_Phpunit_TestCase {
 		return array(
 			array(NULL, NULL, NULL),
 			array('', '', array(0, '', NULL, FALSE)),
-			array(NULL, NULL, array(0, '', NULL, FALSE)),
+			array(NULL, NULL, array(0, '', NULL, FALSE))
 		);
 	}
+
 }
 
 ?>

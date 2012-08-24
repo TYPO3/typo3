@@ -21,23 +21,22 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Test cases for t3lib_codec_JavaScriptEncoder.
  *
  * @package TYPO3
  * @subpackage t3lib
- *
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
 class t3lib_codec_JavaScriptEncoderTest extends Tx_Phpunit_TestCase {
+
 	/**
-	 * @var t3lib_codec_JavaScriptEncoder
+	 * @var \TYPO3\CMS\Core\Encoder\JavaScriptEncoder
 	 */
 	protected $fixture = NULL;
 
 	public function setUp() {
-		$this->fixture = new t3lib_codec_JavaScriptEncoder();
+		$this->fixture = new \TYPO3\CMS\Core\Encoder\JavaScriptEncoder();
 	}
 
 	public function tearDown() {
@@ -57,52 +56,49 @@ class t3lib_codec_JavaScriptEncoderTest extends Tx_Phpunit_TestCase {
 			),
 			'Alphanumerical characters are returned as is' => array(
 				'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-				'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+				'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 			),
 			'Angel brackets and ampersand are encoded' => array(
 				'<>&',
-				'\x3C\x3E\x26',
+				'\\x3C\\x3E\\x26'
 			),
 			'Quotes and slashes are encoded' => array(
 				'"\'\\/',
-				'\x22\x27\x5C\x2F',
+				'\\x22\\x27\\x5C\\x2F'
 			),
 			'Empty string stays empty' => array(
 				'',
-				'',
+				''
 			),
 			'Exclamation mark and space are properly encoded' => array(
 				'Hello World!',
-				'Hello\x20World\x21',
+				'Hello\\x20World\\x21'
 			),
 			'Whitespaces are properly encoded' => array(
-				TAB . LF . CR . ' ',
-				'\x09\x0A\x0D\x20',
+				((TAB . LF) . CR) . ' ',
+				'\\x09\\x0A\\x0D\\x20'
 			),
 			'Null byte is properly encoded' => array(
 				chr(0),
-				'\x00',
+				'\\x00'
 			),
 			'Umlauts are properly encoded' => array(
 				'ÜüÖöÄä',
-				'\xDC\xFC\xD6\xF6\xC4\xE4',
-			),
+				'\\xDC\\xFC\\xD6\\xF6\\xC4\\xE4'
+			)
 		);
 	}
 
 	/**
 	 * @test
-	 *
 	 * @param string $input
 	 * @param string  $expected
-	 *
 	 * @dataProvider encodeEncodesCorrectlyDataProvider
 	 */
 	public function encodeEncodesCorrectly($input, $expected) {
-		$this->assertSame(
-			$expected,
-			$this->fixture->encode($input)
-		);
+		$this->assertSame($expected, $this->fixture->encode($input));
 	}
+
 }
+
 ?>

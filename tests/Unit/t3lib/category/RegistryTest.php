@@ -21,16 +21,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for t3lib_category_Registry
  *
  * @package TYPO3
  * @subpackage t3lib
- *
  * @author Oliver Hader <oliver.hader@typo3.org>
  */
 class t3lib_category_RegistryTest extends Tx_Phpunit_TestCase {
+
 	/**
 	 * Enable backup of global and system variables
 	 *
@@ -39,7 +38,7 @@ class t3lib_category_RegistryTest extends Tx_Phpunit_TestCase {
 	protected $backupGlobals = TRUE;
 
 	/**
-	 * @var t3lib_category_Registry
+	 * @var \TYPO3\CMS\Core\Category\CategoryRegistry
 	 */
 	protected $fixture;
 
@@ -52,13 +51,11 @@ class t3lib_category_RegistryTest extends Tx_Phpunit_TestCase {
 	 * Sets up this test suite.
 	 */
 	protected function setUp() {
-		$this->fixture = new t3lib_category_Registry();
-
+		$this->fixture = new \TYPO3\CMS\Core\Category\CategoryRegistry();
 		$this->tables = array(
 			'first' => uniqid('first'),
-			'second' => uniqid('second'),
+			'second' => uniqid('second')
 		);
-
 		foreach ($this->tables as $tableName) {
 			$GLOBALS['TCA'][$tableName] = array('ctrl' => array());
 		}
@@ -76,28 +73,21 @@ class t3lib_category_RegistryTest extends Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function isRegistryEmptyByDefault() {
-		$this->assertEquals(
-			array(),
-			$this->fixture->get()
-		);
+		$this->assertEquals(array(), $this->fixture->get());
 	}
 
 	/**
 	 * @test
 	 */
 	public function doesAddReturnTrueOnDefinedTable() {
-		$this->assertTrue(
-			$this->fixture->add('test_extension_a', $this->tables['first'], 'categories')
-		);
+		$this->assertTrue($this->fixture->add('test_extension_a', $this->tables['first'], 'categories'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function doesAddReturnFalseOnUndefinedTable() {
-		$this->assertFalse(
-			$this->fixture->add('test_extension_a', uniqid('undefined'), 'categories')
-		);
+		$this->assertFalse($this->fixture->add('test_extension_a', uniqid('undefined'), 'categories'));
 	}
 
 	/**
@@ -106,19 +96,10 @@ class t3lib_category_RegistryTest extends Tx_Phpunit_TestCase {
 	public function areMultipleElementsOfSameExtensionRegistered() {
 		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
 		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
-
 		$registry = $this->fixture->get();
 		ob_flush();
-
-		$this->assertEquals(
-			'categories',
-			$registry['test_extension_a'][$this->tables['first']]
-		);
-
-		$this->assertEquals(
-			'categories',
-			$registry['test_extension_b'][$this->tables['second']]
-		);
+		$this->assertEquals('categories', $registry['test_extension_a'][$this->tables['first']]);
+		$this->assertEquals('categories', $registry['test_extension_b'][$this->tables['second']]);
 	}
 
 	/**
@@ -127,18 +108,9 @@ class t3lib_category_RegistryTest extends Tx_Phpunit_TestCase {
 	public function areElementsOfDifferentExtensionsRegistered() {
 		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
 		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
-
 		$registry = $this->fixture->get();
-
-		$this->assertEquals(
-			'categories',
-			$registry['test_extension_a'][$this->tables['first']]
-		);
-
-		$this->assertEquals(
-			'categories',
-			$registry['test_extension_b'][$this->tables['second']]
-		);
+		$this->assertEquals('categories', $registry['test_extension_a'][$this->tables['first']]);
+		$this->assertEquals('categories', $registry['test_extension_b'][$this->tables['second']]);
 	}
 
 	/**
@@ -147,13 +119,8 @@ class t3lib_category_RegistryTest extends Tx_Phpunit_TestCase {
 	public function areElementsOnSameTableOverridden() {
 		$this->fixture->add('test_extension_a', $this->tables['first'], $this->tables['first']);
 		$this->fixture->add('test_extension_b', $this->tables['second'], $this->tables['second']);
-
 		$registry = $this->fixture->get();
-
-		$this->assertEquals(
-			$this->tables['first'],
-			$registry['test_extension_a'][$this->tables['first']]
-		);
+		$this->assertEquals($this->tables['first'], $registry['test_extension_a'][$this->tables['first']]);
 	}
 
 	/**
@@ -163,16 +130,9 @@ class t3lib_category_RegistryTest extends Tx_Phpunit_TestCase {
 		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
 		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
 		$this->fixture->add('test_extension_c', $this->tables['first'], 'categories');
-
 		$definitions = $this->fixture->getDatabaseTableDefinitions();
 		$matches = array();
-
-		preg_match_all(
-			'#CREATE TABLE\s*([^ (]+)\s*\(\s*([^ )]+)\s+int\(11\)[^)]+\);#mis',
-			$definitions,
-			$matches
-		);
-
+		preg_match_all('#CREATE TABLE\\s*([^ (]+)\\s*\\(\\s*([^ )]+)\\s+int\\(11\\)[^)]+\\);#mis', $definitions, $matches);
 		$this->assertEquals(2, count($matches[0]));
 		$this->assertEquals($matches[1][0], $this->tables['first']);
 		$this->assertEquals($matches[2][0], 'categories');
@@ -186,19 +146,14 @@ class t3lib_category_RegistryTest extends Tx_Phpunit_TestCase {
 	public function areDatabaseDefinitionsOfParticularExtensionAvailable() {
 		$this->fixture->add('test_extension_a', $this->tables['first'], 'categories');
 		$this->fixture->add('test_extension_b', $this->tables['second'], 'categories');
-
 		$definitions = $this->fixture->getDatabaseTableDefinition('test_extension_a');
 		$matches = array();
-
-		preg_match_all(
-			'#CREATE TABLE\s*([^ (]+)\s*\(\s*([^ )]+)\s+int\(11\)[^)]+\);#mis',
-			$definitions,
-			$matches
-		);
-
+		preg_match_all('#CREATE TABLE\\s*([^ (]+)\\s*\\(\\s*([^ )]+)\\s+int\\(11\\)[^)]+\\);#mis', $definitions, $matches);
 		$this->assertEquals(1, count($matches[0]));
 		$this->assertEquals($matches[1][0], $this->tables['first']);
 		$this->assertEquals($matches[2][0], 'categories');
 	}
+
 }
+
 ?>

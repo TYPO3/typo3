@@ -21,8 +21,6 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-
 /**
  * Testcase for t3lib_log_Level.
  *
@@ -37,9 +35,8 @@ class t3lib_log_LevelTest extends tx_phpunit_testcase {
 	 */
 	public function isValidLevelValidatesValidLevels() {
 		$validLevels = array(0, 1, 2, 3, 4, 5, 6, 7);
-
 		foreach ($validLevels as $validLevel) {
-			$this->assertTrue(t3lib_log_Level::isValidLevel($validLevel));
+			$this->assertTrue(\TYPO3\CMS\Core\Log\LogLevel::isValidLevel($validLevel));
 		}
 	}
 
@@ -48,9 +45,8 @@ class t3lib_log_LevelTest extends tx_phpunit_testcase {
 	 */
 	public function isValidLevelDoesNotValidateInvalidLevels() {
 		$invalidLevels = array(-1, 8, 1.5, 'string', array(), new stdClass(), FALSE, NULL);
-
 		foreach ($invalidLevels as $invalidLevel) {
-			$this->assertFalse(t3lib_log_Level::isValidLevel($invalidLevel));
+			$this->assertFalse(\TYPO3\CMS\Core\Log\LogLevel::isValidLevel($invalidLevel));
 		}
 	}
 
@@ -59,14 +55,14 @@ class t3lib_log_LevelTest extends tx_phpunit_testcase {
 	 */
 	public function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider() {
 		return array(
-			'negative integer'           => array(-1),
+			'negative integer' => array(-1),
 			'higher level than expected' => array(8),
-			'float'                      => array(1.5),
-			'string'                     => array('string'),
-			'array'                      => array(array()),
-			'object'                     => array(new stdClass()),
-			'boolean FALSE'              => array(FALSE),
-			'NULL'                       => array(NULL),
+			'float' => array(1.5),
+			'string' => array('string'),
+			'array' => array(array()),
+			'object' => array(new stdClass()),
+			'boolean FALSE' => array(FALSE),
+			'NULL' => array(NULL)
 		);
 	}
 
@@ -76,8 +72,7 @@ class t3lib_log_LevelTest extends tx_phpunit_testcase {
 	 */
 	public function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSo($inputValue) {
 		$this->setExpectedException('RangeException');
-
-		t3lib_log_Level::validateLevel($inputValue);
+		\TYPO3\CMS\Core\Log\LogLevel::validateLevel($inputValue);
 	}
 
 }

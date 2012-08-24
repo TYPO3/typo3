@@ -21,7 +21,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for the WinCache cache backend
  *
@@ -44,10 +43,10 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @expectedException t3lib_cache_Exception
+	 * @expectedException \TYPO3\CMS\Core\Cache\Exception
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
-		$backend = new t3lib_cache_backend_WincacheBackend();
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
@@ -109,14 +108,11 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 	 */
 	public function findIdentifiersByTagFindsSetEntries() {
 		$backend = $this->setUpBackend();
-
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
-
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag1');
 		$this->assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
-
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tag2');
 		$this->assertEquals($identifier, $retrieved[0], 'Could not retrieve expected entry by tag.');
 	}
@@ -126,12 +122,10 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 	 */
 	public function setRemovesTagsFromPreviousSet() {
 		$backend = $this->setUpBackend();
-
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tagX'));
 		$backend->set($identifier, $data, array('UnitTestTag%tag3'));
-
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
 		$this->assertEquals(array(), $retrieved, 'Found entry which should no longer exist.');
 	}
@@ -143,7 +137,7 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 		$identifier = 'NonExistingIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$inCache = $backend->has($identifier);
-		$this->assertFalse($inCache,'"has" did not return FALSE when checking on non existing identifier');
+		$this->assertFalse($inCache, '"has" did not return FALSE when checking on non existing identifier');
 	}
 
 	/**
@@ -153,7 +147,7 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 		$identifier = 'NonExistingIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$inCache = $backend->remove($identifier);
-		$this->assertFalse($inCache,'"remove" did not return FALSE when checking on non existing identifier');
+		$this->assertFalse($inCache, '"remove" did not return FALSE when checking on non existing identifier');
 	}
 
 	/**
@@ -161,14 +155,11 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
-
 		$data = 'some data' . microtime();
 		$backend->set('BackendWincacheTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
 		$backend->set('BackendWincacheTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
 		$backend->set('BackendWincacheTest3', $data, array('UnitTestTag%test'));
-
 		$backend->flushByTag('UnitTestTag%special');
-
 		$this->assertTrue($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
 		$this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
 		$this->assertTrue($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
@@ -179,14 +170,11 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 	 */
 	public function flushRemovesAllCacheEntries() {
 		$backend = $this->setUpBackend();
-
 		$data = 'some data' . microtime();
 		$backend->set('BackendWincacheTest1', $data);
 		$backend->set('BackendWincacheTest2', $data);
 		$backend->set('BackendWincacheTest3', $data);
-
 		$backend->flush();
-
 		$this->assertFalse($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
 		$this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
 		$this->assertFalse($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
@@ -196,20 +184,17 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function flushRemovesOnlyOwnEntries() {
-		$thisCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
+		$thisCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
-		$thisBackend = new t3lib_cache_backend_WincacheBackend();
+		$thisBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
 		$thisBackend->setCache($thisCache);
-
-		$thatCache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
+		$thatCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
-		$thatBackend = new t3lib_cache_backend_WincacheBackend();
+		$thatBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
 		$thatBackend->setCache($thatCache);
-
 		$thisBackend->set('thisEntry', 'Hello');
 		$thatBackend->set('thatEntry', 'World!');
 		$thatBackend->flush();
-
 		$this->assertEquals('Hello', $thisBackend->get('thisEntry'));
 		$this->assertFalse($thatBackend->has('thatEntry'));
 	}
@@ -221,11 +206,9 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 	 */
 	public function largeDataIsStored() {
 		$backend = $this->setUpBackend();
-
 		$data = str_repeat('abcde', 1024 * 1024);
 		$identifier = 'tooLargeData' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
-
 		$this->assertTrue($backend->has($identifier));
 		$this->assertEquals($backend->get($identifier), $data);
 	}
@@ -233,15 +216,15 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 	/**
 	 * Sets up the WinCache backend used for testing
 	 *
-	 * @return t3lib_cache_backend_WincacheBackend
+	 * @return \TYPO3\CMS\Core\Cache\Backend\WincacheBackend
 	 */
 	protected function setUpBackend() {
-		$cache = $this->getMock('t3lib_cache_frontend_Frontend', array(), array(), '', FALSE);
-		$backend = new t3lib_cache_backend_WincacheBackend();
+		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
 		$backend->setCache($cache);
-
 		return $backend;
 	}
+
 }
 
 ?>
