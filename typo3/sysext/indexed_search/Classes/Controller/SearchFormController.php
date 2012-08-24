@@ -811,7 +811,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				 * @var \TYPO3\CMS\IndexedSearch\Indexer
 				 */
 				// Initialize the indexer-class
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController_indexer');
+				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 				// Perform metaphone search
 				$res = $this->searchMetaphone($indexerObj->metaphone($sWord, $this->storeMetaphoneInfoAsWords));
 				unset($indexerObj);
