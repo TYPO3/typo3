@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -10,7 +12,6 @@
  *                                                                        */
 include_once dirname(__FILE__) . '/Fixtures/ConstraintSyntaxTreeNode.php';
 require_once dirname(__FILE__) . '/ViewHelperBaseTestcase.php';
-namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 
 /**
  * Testcase for ForViewHelper

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,7 +13,6 @@
 require_once dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php';
 require_once dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php';
 require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
-namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 
 /**
  * Test for the "Upload" Form view helper

@@ -1,4 +1,5 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -11,7 +12,6 @@
 require_once dirname(__FILE__) . '/Fixtures/EmptySyntaxTreeNode.php';
 require_once dirname(__FILE__) . '/Fixtures/Fixture_UserDomainClass.php';
 require_once dirname(__FILE__) . '/FormFieldViewHelperBaseTestcase.php';
-namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form;
 
 /**
  * Test for the "Select" Form view helper
@@ -200,7 +200,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	 */
 	public function multipleSelectOnDomainObjectsCreatesExpectedOptionsWithoutOptionValueField() {
 		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
-		$mockBackend = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend', array('getIdentifierByObject'), array(), '', false);
+		$mockBackend = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend', array('getIdentifierByObject'), array(), '', FALSE);
 		$mockBackend->expects($this->any())->method('getIdentifierByObject')->will($this->returnCallback(function ($object) {
 			return $object->getId();
 		}));

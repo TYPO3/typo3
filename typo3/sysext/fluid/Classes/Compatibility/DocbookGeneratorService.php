@@ -56,7 +56,7 @@ class DocbookGeneratorService extends \TYPO3\CMS\Fluid\Service\DocbookGenerator 
 
 	private function recursiveClassNameSearch($namespace, $directory, &$classNames) {
 		$dh = opendir($directory);
-		while (($file = readdir($dh)) !== false) {
+		while (($file = readdir($dh)) !== FALSE) {
 			if (($file == '.' || $file == '..') || $file == '.svn') {
 				continue;
 			}

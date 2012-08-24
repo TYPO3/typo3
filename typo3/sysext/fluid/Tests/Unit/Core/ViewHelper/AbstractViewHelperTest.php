@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -10,7 +12,6 @@
  *                                                                        */
 require_once dirname(__FILE__) . '/../Fixtures/TestViewHelper.php';
 require_once dirname(__FILE__) . '/../Fixtures/TestViewHelper2.php';
-namespace TYPO3\CMS\Fluid\Tests\Unit\Core\ViewHelper;
 
 /**
  * Testcase for AbstractViewHelper

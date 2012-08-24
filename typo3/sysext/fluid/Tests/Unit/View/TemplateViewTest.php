@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\View;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -14,7 +16,6 @@ include_once dirname(__FILE__) . '/Fixtures/TemplateViewFixture.php';
  * Testcase for the TemplateView
  */
 @require_once 'vfsStream/vfsStream.php';
-namespace TYPO3\CMS\Fluid\Tests\Unit\View;
 
 // include vfs stream wrapper
 class TemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {

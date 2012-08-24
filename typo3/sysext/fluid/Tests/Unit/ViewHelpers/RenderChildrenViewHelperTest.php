@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -19,7 +21,6 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once dirname(__FILE__) . '/ViewHelperBaseTestcase.php';
-namespace TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers;
 
 /**
  * Testcase for RenderChildren ViewHelper

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -9,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once dirname(__FILE__) . '/Fixtures/PostParseFacetViewHelper.php';
-namespace TYPO3\CMS\Fluid\Tests\Unit\Core\Parser;
 
 /**
  * Testcase for TemplateParser.
