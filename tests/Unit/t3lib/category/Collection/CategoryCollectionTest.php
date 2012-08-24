@@ -55,7 +55,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 			'uid' => 0,
 			'title' => uniqid('title'),
 			'description' => uniqid('description'),
-			'table_name' => 'content'
+			'table_name' => $this->tableName,
 		);
 		$GLOBALS['TCA'][$this->tableName] = array('ctrl' => array());
 		// prepare environment
