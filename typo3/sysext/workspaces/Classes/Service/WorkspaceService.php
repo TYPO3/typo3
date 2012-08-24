@@ -95,7 +95,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			break;
 		default:
 			$labelField = $GLOBALS['TCA']['sys_workspace']['ctrl']['label'];
-			$wsRecord = \t3lib_beFunc::getRecord('sys_workspace', $wsId, 'uid,' . $labelField);
+			$wsRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $wsId, 'uid,' . $labelField);
 			if (is_array($wsRecord)) {
 				$title = $wsRecord[$labelField];
 			}
@@ -415,7 +415,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		$permittedElements = array();
 		if (is_array($recs)) {
 			foreach ($recs as $rec) {
-				$page = \t3lib_beFunc::getRecord('pages', $rec[$checkField], 'uid,pid,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody');
+				$page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $rec[$checkField], 'uid,pid,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody');
 				if ($GLOBALS['BE_USER']->doesUserHaveAccess($page, 1) && $this->isLanguageAccessibleForCurrentUser($table, $rec)) {
 					$permittedElements[] = $rec;
 				}
@@ -597,7 +597,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getLivePageUid($uid) {
 		if (!isset($this->pageCache[$uid])) {
-			$pageRecord = \t3lib_beFunc::getRecord('pages', $uid);
+			$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $uid);
 			if (is_array($pageRecord)) {
 				$this->pageCache[$uid] = $pageRecord['t3ver_oid'] ? $pageRecord['t3ver_oid'] : $uid;
 			} else {

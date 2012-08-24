@@ -520,7 +520,7 @@ class StagesService {
 			}
 		}
 		if (!empty($begroupUidArray)) {
-			$allBeUserArray = \t3lib_befunc::getUserNames();
+			$allBeUserArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
 			$begroupUidList = implode(',', $begroupUidArray);
 			$this->userGroups = array();
 			$begroupUidArray = $this->fetchGroups($begroupUidList);

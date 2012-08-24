@@ -61,9 +61,9 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	 */
 	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
-		$this->changeWorkspace = \t3lib_div::_GP('changeWorkspace');
-		$this->changeWorkspacePreview = \t3lib_div::_GP('changeWorkspacePreview');
-		$pageRenderer = \t3lib_div::makeInstance('t3lib_pageRenderer');
+		$this->changeWorkspace = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('changeWorkspace');
+		$this->changeWorkspacePreview = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('changeWorkspacePreview');
+		$pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_pageRenderer');
 		$this->backendReference->addJavaScript(('TYPO3.Workspaces = { workspaceTitle : \'' . addslashes(\Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace))) . '\'};
 ');
 	}
@@ -99,11 +99,11 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 		$this->addJavascriptToBackend();
 		$availableWorkspaces = \Tx_Workspaces_Service_Workspaces::getAvailableWorkspaces();
 		$workspaceMenu = array();
-		$stateCheckedIcon = \t3lib_iconWorks::getSpriteIcon('status-status-checked');
-		$stateUncheckedIcon = \t3lib_iconWorks::getSpriteIcon('empty-empty', array(
+		$stateCheckedIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked');
+		$stateUncheckedIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('empty-empty', array(
 			'title' => $GLOBALS['LANG']->getLL('bookmark_inactive')
 		));
-		$workspaceMenu[] = ('<a href="#" class="toolbar-item">' . \t3lib_iconWorks::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title))) . '</a>';
+		$workspaceMenu[] = ('<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title))) . '</a>';
 		$workspaceMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 		if (count($availableWorkspaces)) {
 			foreach ($availableWorkspaces as $workspaceId => $label) {
@@ -132,7 +132,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	 * @return 	void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(\t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/JavaScript/workspacemenu.js');
+		$this->backendReference->addJavascriptFile(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('workspaces') . 'Resources/Public/JavaScript/workspacemenu.js');
 	}
 
 	/**

@@ -131,8 +131,8 @@ class GridDataService {
 				$versionArray = array('table' => $table);
 				$isRecordTypeAllowedToModify = $GLOBALS['BE_USER']->check('tables_modify', $table);
 				foreach ($records as $record) {
-					$origRecord = \t3lib_BEFunc::getRecord($table, $record['t3ver_oid']);
-					$versionRecord = \t3lib_BEFunc::getRecord($table, $record['uid']);
+					$origRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $record['t3ver_oid']);
+					$versionRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $record['uid']);
 					$combinedRecord = \TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
 					$this->getIntegrityService()->checkElement($combinedRecord);
 					if (isset($GLOBALS['TCA'][$table]['columns']['hidden'])) {
@@ -145,8 +145,8 @@ class GridDataService {
 					$versionArray['id'] = ($table . ':') . $record['uid'];
 					$versionArray['uid'] = $record['uid'];
 					$versionArray['workspace'] = $versionRecord['t3ver_id'];
-					$versionArray['label_Workspace'] = htmlspecialchars(\t3lib_befunc::getRecordTitle($table, $versionRecord));
-					$versionArray['label_Live'] = htmlspecialchars(\t3lib_befunc::getRecordTitle($table, $origRecord));
+					$versionArray['label_Workspace'] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $versionRecord));
+					$versionArray['label_Live'] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $origRecord));
 					$versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle($versionRecord['t3ver_stage']));
 					$tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
 					$versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle($tempStage['uid']));

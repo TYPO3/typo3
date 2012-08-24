@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Workspaces\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,6 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once (PATH_site . TYPO3_mainDir) . 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate.php';
-namespace TYPO3\CMS\Workspaces\Controller;
 
 /**
  * Abstract action controller.
@@ -58,20 +58,20 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 */
 	protected function initializeAction() {
 		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
-		$this->pageId = intval(\t3lib_div::_GP('id'));
+		$this->pageId = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id'));
 		$icons = array(
-			'language' => \t3lib_iconWorks::getSpriteIconClasses('flags-multiple'),
-			'integrity' => \t3lib_iconWorks::getSpriteIconClasses('status-dialog-information'),
-			'success' => \t3lib_iconWorks::getSpriteIconClasses('status-dialog-ok'),
-			'info' => \t3lib_iconWorks::getSpriteIconClasses('status-dialog-information'),
-			'warning' => \t3lib_iconWorks::getSpriteIconClasses('status-dialog-warning'),
-			'error' => \t3lib_iconWorks::getSpriteIconClasses('status-dialog-error')
+			'language' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('flags-multiple'),
+			'integrity' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-information'),
+			'success' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-ok'),
+			'info' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-information'),
+			'warning' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-warning'),
+			'error' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-dialog-error')
 		);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'icons', $icons);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'id', $this->pageId);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'depth', $this->pageId === 0 ? 999 : 1);
 		$this->pageRenderer->addInlineSetting('Workspaces', 'language', $this->getLanguageSelection());
-		$this->pageRenderer->addCssFile(\t3lib_extMgm::extRelPath('workspaces') . 'Resources/Public/StyleSheet/module.css');
+		$this->pageRenderer->addCssFile(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('workspaces') . 'Resources/Public/StyleSheet/module.css');
 		$this->pageRenderer->addInlineLanguageLabelArray(array(
 			'title' => $GLOBALS['LANG']->getLL('title'),
 			'path' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path'),
@@ -95,8 +95,8 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException if the controller doesn't support the current request type
 	 * @return void
 	 */
-	public function processRequest(\Tx_Extbase_MVC_RequestInterface $request, \Tx_Extbase_MVC_ResponseInterface $response) {
-		$this->template = \t3lib_div::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
+		$this->template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->pageRenderer = $this->template->getPageRenderer();
 		$GLOBALS['SOBE'] = new \stdClass();
 		$GLOBALS['SOBE']->doc = $this->template;

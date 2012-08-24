@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Workspaces\Service;
  * @package Workspaces
  * @subpackage Service
  */
-class WorkspacesServiceTest extends tx_phpunit_database_testcase {
+class WorkspacesServiceTest extends \tx_phpunit_database_testcase {
 
 	/**
 
