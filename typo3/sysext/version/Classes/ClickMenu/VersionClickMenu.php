@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Version\ClickMenu;
  * @package TYPO3
  * @subpackage core
  */
-class VersionModuleController {
+class VersionClickMenu {
 
 	/**
 	 * Main function, adding the item to input menuItems array

@@ -891,7 +891,7 @@ class CommandMap {
 	 * @return \TYPO3\CMS\Version\Dependency\EventCallback
 	 */
 	protected function getDependencyCallback($method, array $targetArguments = array()) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Callback', $this, $method, $targetArguments);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\EventCallback', $this, $method, $targetArguments);
 	}
 
 	/**
