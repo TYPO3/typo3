@@ -288,7 +288,8 @@ class Autoloader {
 			try {
 				// This will throw a BadFunctionCallException if the extension is not loaded
 				$extensionPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extensionKey);
-				$classFilePathAndName = (($extensionPath . 'Classes/') . strtr($classNameWithoutVendorAndProduct, $delimiter, '/')) . '.php';
+				$classPath = (substr(strtolower($classNameWithoutVendorAndProduct), 0, 5) === 'tests') ? '' : 'Classes/';
+				$classFilePathAndName = (($extensionPath . $classPath) . strtr($classNameWithoutVendorAndProduct, $delimiter, '/')) . '.php';
 				self::addClassToCache($classFilePathAndName, $className);
 			} catch (\BadFunctionCallException $exception) {
 
