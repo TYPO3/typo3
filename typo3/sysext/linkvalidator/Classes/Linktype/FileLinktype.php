@@ -70,8 +70,5 @@ class FileLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 		$brokenUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $row['url'];
 		return $brokenUrl;
 	}
-
 }
-
-
 ?>

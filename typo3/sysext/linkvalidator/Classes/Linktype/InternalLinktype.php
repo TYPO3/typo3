@@ -258,8 +258,5 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 		}
 		return ($domain . '/index.php?id=') . $row['url'];
 	}
-
 }
-
-
 ?>

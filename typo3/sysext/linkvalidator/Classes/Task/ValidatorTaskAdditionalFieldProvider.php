@@ -118,7 +118,9 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 		);
 		$fieldCode = ('<select name="tx_scheduler[linkvalidator][depth]" id="' . $fieldID) . '">';
 		foreach ($fieldValueArray as $depth => $label) {
-			$fieldCode .= (((((('	' . '<option value="') . htmlspecialchars($depth)) . '"') . ($depth == $taskInfo['depth'] ? ' selected="selected"' : '')) . '>') . $label) . '</option>';
+			$fieldCode .= "\t" . '<option value="' . htmlspecialchars($depth) . '"'
+						. (($depth == $taskInfo['depth']) ? ' selected="selected"' : '')
+						. '>' . $label . '</option>';
 		}
 		$fieldCode .= '</select>';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.depth');
@@ -128,7 +130,8 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 			'label' => $label
 		);
 		$fieldID = 'task_configuration';
-		$fieldCode = ((('<textarea  name="tx_scheduler[linkvalidator][configuration]" id="' . $fieldID) . '" >') . htmlspecialchars($taskInfo['configuration'])) . '</textarea>';
+		$fieldCode = '<textarea  name="tx_scheduler[linkvalidator][configuration]" id="' . $fieldID . '" >'
+					. htmlspecialchars($taskInfo['configuration']) . '</textarea>';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.conf');
 		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldID, $label);
 		$additionalFields[$fieldID] = array(
@@ -136,7 +139,8 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 			'label' => $label
 		);
 		$fieldID = 'task_email';
-		$fieldCode = ((('<input type="text"  name="tx_scheduler[linkvalidator][email]" id="' . $fieldID) . '" value="') . htmlspecialchars($taskInfo['email'])) . '" />';
+		$fieldCode = '<input type="text"  name="tx_scheduler[linkvalidator][email]" id="' . $fieldID . '" value="'
+					. htmlspecialchars($taskInfo['email']) . '" />';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.email');
 		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldID, $label);
 		$additionalFields[$fieldID] = array(
@@ -144,7 +148,8 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 			'label' => $label
 		);
 		$fieldID = 'task_emailOnBrokenLinkOnly';
-		$fieldCode = ((('<input type="checkbox"  name="tx_scheduler[linkvalidator][emailOnBrokenLinkOnly]" id="' . $fieldID) . '" ') . (htmlspecialchars($taskInfo['emailOnBrokenLinkOnly']) ? 'checked="checked"' : '')) . ' />';
+		$fieldCode = '<input type="checkbox"  name="tx_scheduler[linkvalidator][emailOnBrokenLinkOnly]" id="' . $fieldID . '" '
+					. (htmlspecialchars($taskInfo['emailOnBrokenLinkOnly']) ? 'checked="checked"' : '') . ' />';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.emailOnBrokenLinkOnly');
 		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldID, $label);
 		$additionalFields[$fieldID] = array(
@@ -152,7 +157,8 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 			'label' => $label
 		);
 		$fieldID = 'task_emailTemplateFile';
-		$fieldCode = ((('<input type="text"  name="tx_scheduler[linkvalidator][emailTemplateFile]" id="' . $fieldID) . '" value="') . htmlspecialchars($taskInfo['emailTemplateFile'])) . '" />';
+		$fieldCode = '<input type="text"  name="tx_scheduler[linkvalidator][emailTemplateFile]" id="' . $fieldID
+					. '" value="' . htmlspecialchars($taskInfo['emailTemplateFile']) . '" />';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.emailTemplateFile');
 		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldID, $label);
 		$additionalFields[$fieldID] = array(
@@ -238,6 +244,4 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 	}
 
 }
-
-
 ?>

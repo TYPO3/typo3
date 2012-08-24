@@ -278,7 +278,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 		$modTS = $this->loadModTSconfig($page);
 		$searchFields = $this->getSearchField($modTS);
 		$linkTypes = $this->getLinkTypes($modTS);
-		/** @var tx_linkvalidator_processor $processor */
+		/** @var \TYPO3\CMS\Linkvalidator\LinkAnalyzer $processor */
 		$processor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Linkvalidator\\LinkAnalyzer');
 		if ($page === 0) {
 			$rootLineHidden = FALSE;
@@ -514,8 +514,5 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 			$this->countInARun
 		);
 	}
-
 }
-
-
 ?>

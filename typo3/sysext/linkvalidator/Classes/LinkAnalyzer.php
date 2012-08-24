@@ -1,6 +1,31 @@
 <?php
 namespace TYPO3\CMS\Linkvalidator;
 
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
+$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfuncreport/locallang.xml');
+
 /**
  * This class provides Processing plugin implementation
  *
@@ -258,11 +283,11 @@ class LinkAnalyzer {
 						$r['type'] = $type;
 					}
 				}
-				$results[$type][((((($table . ':') . $field) . ':') . $idRecord) . ':') . $r['tokenID']]['substr'] = $r;
-				$results[$type][((((($table . ':') . $field) . ':') . $idRecord) . ':') . $r['tokenID']]['row'] = $record;
-				$results[$type][((((($table . ':') . $field) . ':') . $idRecord) . ':') . $r['tokenID']]['table'] = $table;
-				$results[$type][((((($table . ':') . $field) . ':') . $idRecord) . ':') . $r['tokenID']]['field'] = $field;
-				$results[$type][((((($table . ':') . $field) . ':') . $idRecord) . ':') . $r['tokenID']]['uid'] = $idRecord;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['substr'] = $r;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['row'] = $record;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['table'] = $table;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['field'] = $field;
+				$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $r['tokenID']]['uid'] = $idRecord;
 			}
 		}
 	}
@@ -316,13 +341,13 @@ class LinkAnalyzer {
 					$currentR['type'] = $type;
 				}
 			}
-			$results[$type][((((($table . ':') . $field) . ':') . $idRecord) . ':') . $currentR['tokenID']]['substr'] = $currentR;
-			$results[$type][((((($table . ':') . $field) . ':') . $idRecord) . ':') . $currentR['tokenID']]['row'] = $record;
-			$results[$type][((((($table . ':') . $field) . ':') . $idRecord) . ':') . $currentR['tokenID']]['table'] = $table;
-			$results[$type][((((($table . ':') . $field) . ':') . $idRecord) . ':') . $currentR['tokenID']]['field'] = $field;
-			$results[$type][((((($table . ':') . $field) . ':') . $idRecord) . ':') . $currentR['tokenID']]['uid'] = $idRecord;
-			$results[$type][((((($table . ':') . $field) . ':') . $idRecord) . ':') . $currentR['tokenID']]['link_title'] = $title;
-			$results[$type][((((($table . ':') . $field) . ':') . $idRecord) . ':') . $currentR['tokenID']]['pageAndAnchor'] = $referencedRecordType;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['substr'] = $currentR;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['row'] = $record;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['table'] = $table;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['field'] = $field;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['uid'] = $idRecord;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['link_title'] = $title;
+			$results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID']]['pageAndAnchor'] = $referencedRecordType;
 		}
 	}
 
@@ -406,6 +431,4 @@ class LinkAnalyzer {
 	}
 
 }
-
-
 ?>

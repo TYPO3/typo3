@@ -80,6 +80,7 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 				$response = FALSE;
 			}
 		}
+
 		if (!$response) {
 			$this->setErrorParams();
 		}
@@ -127,8 +128,5 @@ class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 		}
 		return $response;
 	}
-
 }
-
-
 ?>
