@@ -1,6 +1,9 @@
 <?php
 namespace TYPO3\CMS\Core\Mail;
 
+// Make sure Swift's auto-loader is registered
+require_once PATH_typo3 . 'contrib/swiftmailer/swift_required.php';
+
 /**
  * Adapter for Swift_Mailer to be used by TYPO3 extensions
  *
@@ -8,7 +11,7 @@ namespace TYPO3\CMS\Core\Mail;
  * @package TYPO3
  * @subpackage t3lib
  */
-class MailMessage extends Swift_Message {
+class MailMessage extends \Swift_Message {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Mail\Mailer
