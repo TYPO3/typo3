@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Extbase\Scheduler;
  * @package Extbase
  * @subpackage Scheduler
  */
-class FieldProvider implements Tx_Scheduler_AdditionalFieldProvider {
+class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager
@@ -68,12 +68,12 @@ class FieldProvider implements Tx_Scheduler_AdditionalFieldProvider {
 	 * Render additional information fields within the scheduler backend.
 	 *
 	 * @param array $taskInfo Array information of task to return
-	 * @param mixed $task Tx_Extbase_Scheduler_Task or tx_scheduler_Execution instance
-	 * @param Tx_Scheduler_Module $schedulerModule Reference to the calling object (BE module of the Scheduler)
+	 * @param mixed $task \TYPO3\CMS\Scheduler\Task or tx_scheduler_Execution instance
+	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule Reference to the calling object (BE module of the Scheduler)
 	 * @return array Additional fields
-	 * @see interfaces/tx_scheduler_AdditionalFieldProvider#getAdditionalFields($taskInfo, $task, $schedulerModule)
+	 * @see \TYPO3\CMS\Scheduler\AdditionalFieldProvider#getAdditionalFields($taskInfo, $task, $schedulerModule)
 	 */
-	public function getAdditionalFields(array &$taskInfo, $task, \Tx_Scheduler_Module $schedulerModule) {
+	public function getAdditionalFields(array &$taskInfo, $task, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule) {
 		$this->task = $task;
 		if ($this->task !== NULL) {
 			$this->task->setScheduler();
@@ -94,10 +94,10 @@ class FieldProvider implements Tx_Scheduler_AdditionalFieldProvider {
 	 * Validates additional selected fields
 	 *
 	 * @param array $submittedData
-	 * @param Tx_Scheduler_Module $schedulerModule
+	 * @param \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule
 	 * @return boolean
 	 */
-	public function validateAdditionalFields(array &$submittedData, \Tx_Scheduler_Module $schedulerModule) {
+	public function validateAdditionalFields(array &$submittedData, \TYPO3\CMS\Scheduler\Controller\SchedulerModuleController $schedulerModule) {
 		return TRUE;
 	}
 
@@ -105,10 +105,10 @@ class FieldProvider implements Tx_Scheduler_AdditionalFieldProvider {
 	 * Saves additional field values
 	 *
 	 * @param array $submittedData
-	 * @param Tx_Scheduler_Task $task
+	 * @param \TYPO3\CMS\Scheduler\Task $task
 	 * @return boolean
 	 */
-	public function saveAdditionalFields(array $submittedData, \Tx_Scheduler_Task $task) {
+	public function saveAdditionalFields(array $submittedData, \TYPO3\CMS\Scheduler\Task $task) {
 		$task->setCommandIdentifier($submittedData['task_extbase']['action']);
 		$task->setArguments($submittedData['task_extbase']['arguments']);
 		return TRUE;

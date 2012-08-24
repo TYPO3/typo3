@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Extbase\Scheduler;
  * @package Extbase
  * @subpackage Scheduler
  */
-class Task extends Tx_Scheduler_Task {
+class Task extends \TYPO3\CMS\Scheduler\Task {
 
 	/**
 	 * @var string
