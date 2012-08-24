@@ -133,7 +133,7 @@ class Autoloader {
 		$lookUpClassName = ($hasRealClassName = $className !== $realClassName) ? $realClassName : $className;
 		// Use core and extension registry
 		$classPath = self::getClassPathByRegistryLookup($lookUpClassName);
-		if ($classPath && !class_exists($realClassName, false)) {
+		if ($classPath && !class_exists($realClassName, FALSE)) {
 			// Include the required file that holds the class
 			\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($classPath);
 		} else {
@@ -147,7 +147,7 @@ class Autoloader {
 
 			}
 		}
-		if ($hasRealClassName && !class_exists($className, false)) {
+		if ($hasRealClassName && !class_exists($className, FALSE)) {
 			class_alias($realClassName, $className);
 		}
 	}
@@ -240,8 +240,7 @@ class Autoloader {
 	 * @return array
 	 */
 	static protected function createCoreAndExtensionRegistry() {
-		// TODO reenable
-		$classRegistry = array();
+		$classRegistry = require(PATH_t3lib . 'core_autoload.php');
 		// At this point during bootstrap the local configuration is initialized,
 		// extMgm is ready to get the list of enabled extensions
 		foreach (\TYPO3\CMS\Core\Extension\ExtensionManager::getLoadedExtensionListArray() as $extensionKey) {
