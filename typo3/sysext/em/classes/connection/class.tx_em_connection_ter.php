@@ -139,7 +139,7 @@ class tx_em_Connection_Ter {
 
 		if ($remote !== false) {
 			$parsed = $this->emObj->xmlHandler->parseL10nXML($remote);
-			return $parsed['languagePackIndex'];
+			return is_array($parsed['languagePackIndex']) ? $parsed['languagePackIndex'] : FALSE;
 		}
 
 		return FALSE;
