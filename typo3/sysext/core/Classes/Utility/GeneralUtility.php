@@ -4918,8 +4918,8 @@ Connection: close
 	 */
 	static public function flushOutputBuffers() {
 		$obContent = '';
-		while ($obContent .= ob_get_clean()) {
-
+		while ($content = ob_get_clean()) {
+			$obContent .= $content;
 		}
 		// If previously a "Content-Encoding: whatever" has been set, we have to unset it
 		if (!headers_sent()) {
