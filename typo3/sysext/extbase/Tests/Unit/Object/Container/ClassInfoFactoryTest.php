@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
+
 /***************************************************************
  *  Copyright notice
  *  (c) 2010 Daniel Pötzinger
@@ -25,7 +27,6 @@ require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'T
 require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Fixtures/ClassWithInjectProperties.php';
 require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Fixtures/DummyClass.php';
 require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Fixtures/SecondDummyClass.php';
-namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
 
 /**
  * Testcase for class t3lib_object_ClassInfoFactory.

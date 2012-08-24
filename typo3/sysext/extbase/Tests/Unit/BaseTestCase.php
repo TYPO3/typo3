@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dbal\Tests;
+namespace TYPO3\CMS\Extbase\Tests\Unit;
 
 /***************************************************************
  *  Copyright notice
@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Dbal\Tests;
 /**
  * Base testcase for the Extbase extension.
  */
-abstract class BaseTestCase extends tx_phpunit_testcase {
+abstract class BaseTestCase extends \tx_phpunit_testcase {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface The object manager

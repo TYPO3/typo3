@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,7 +27,6 @@
  ***************************************************************/
 require_once 'Fixture/DummyClassWithGettersAndSetters.php';
 require_once 'Fixture/ArrayAccessClass.php';
-namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
 /**
  * Test Unit Test Base Class

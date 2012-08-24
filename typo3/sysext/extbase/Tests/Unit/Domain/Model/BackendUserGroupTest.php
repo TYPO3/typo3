@@ -1,5 +1,4 @@
 <?php
-?> <?php
 namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
 
 /***************************************************************

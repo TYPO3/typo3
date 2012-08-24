@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
+
 /***************************************************************
  *  Copyright notice
  *  (c) 2010 Daniel Pötzinger
@@ -23,7 +25,6 @@
  ***************************************************************/
 require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Object/Container/Fixtures/Testclasses.php';
 require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Object/Container/Fixtures/NamespaceTestclasses.php';
-namespace TYPO3\CMS\Extbase\Tests\Unit\Object\Container;
 
 /**
  * Testcase for class t3lib_object_Container.

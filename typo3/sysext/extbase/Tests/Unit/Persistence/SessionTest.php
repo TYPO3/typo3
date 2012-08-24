@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-class SessionTest extends tx_phpunit_testcase {
+class SessionTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @test

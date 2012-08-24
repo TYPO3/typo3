@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *
  *                                                                        *
@@ -20,7 +22,6 @@
  *                                                                        */
 require_once __DIR__ . '/../../Fixtures/ClassWithSetters.php';
 require_once __DIR__ . '/../../Fixtures/ClassWithSettersAndConstructor.php';
-namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
 
 /**
  * Testcase for the String to String converter

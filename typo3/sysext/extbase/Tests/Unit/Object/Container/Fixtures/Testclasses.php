@@ -1,6 +1,4 @@
 <?php
-namespace ;
-
 /**
  * a  singleton class
  */
@@ -10,7 +8,6 @@ class t3lib_object_tests_singleton implements \TYPO3\CMS\Core\SingletonInterface
 }
 
 
-namespace ;
 
 /**
  * test class A that depends on B and C
@@ -33,7 +30,6 @@ class t3lib_object_tests_a {
 }
 
 
-namespace ;
 
 /**
  * test class A that depends on B and C and has a third default parameter in constructor
@@ -60,7 +56,6 @@ class t3lib_object_tests_amixed_array {
 }
 
 
-namespace ;
 
 /**
  * test class A that depends on B and C and has a third default parameter in constructor that defaults to NULL
@@ -87,7 +82,6 @@ class t3lib_object_tests_amixed_null {
 }
 
 
-namespace ;
 
 /**
  * test class A that depends on B and C and has a third default parameter in constructor
@@ -114,7 +108,6 @@ class t3lib_object_tests_amixed_array_singleton implements \TYPO3\CMS\Core\Singl
 }
 
 
-namespace ;
 
 /**
  * test class B that depends on C
@@ -133,7 +126,6 @@ class t3lib_object_tests_b implements \TYPO3\CMS\Core\SingletonInterface {
 }
 
 
-namespace ;
 
 /**
  * test class C without dependencys
@@ -144,7 +136,6 @@ class t3lib_object_tests_c implements \TYPO3\CMS\Core\SingletonInterface {
 }
 
 
-namespace ;
 
 /**
  * test class B-Child that extends Class B (therfore depends also on Class C)
@@ -155,7 +146,6 @@ class t3lib_object_tests_b_child extends \t3lib_object_tests_b {
 }
 
 
-namespace ;
 
 /**
 
@@ -165,7 +155,6 @@ interface t3lib_object_tests_someinterface extends \TYPO3\CMS\Core\SingletonInte
 
 }
 
-namespace ;
 
 /**
  * class which implements a Interface
@@ -176,7 +165,6 @@ class t3lib_object_tests_someimplementation implements \t3lib_object_tests_somei
 }
 
 
-namespace ;
 
 /**
  * test class B-Child that extends Class B (therfore depends also on Class C)
@@ -187,7 +175,6 @@ class t3lib_object_tests_b_child_someimplementation extends \t3lib_object_tests_
 }
 
 
-namespace ;
 
 /**
  * class which depends on a Interface
@@ -204,7 +191,6 @@ class t3lib_object_tests_needsinterface {
 }
 
 
-namespace ;
 
 /**
  * Prototype classes that depend on each other
@@ -221,7 +207,6 @@ class t3lib_object_tests_cyclic1 {
 }
 
 
-namespace ;
 
 /**
 
@@ -238,7 +223,6 @@ class t3lib_object_tests_cyclic2 {
 }
 
 
-namespace ;
 
 /**
 
@@ -255,7 +239,6 @@ class t3lib_object_tests_cyclic1WithSetterDependency {
 }
 
 
-namespace ;
 
 /**
 
@@ -272,7 +255,6 @@ class t3lib_object_tests_cyclic2WithSetterDependency {
 }
 
 
-namespace ;
 
 /**
  * class which has setter injections defined
@@ -301,7 +283,6 @@ class t3lib_object_tests_injectmethods {
 }
 
 
-namespace ;
 
 /**
  * class which needs extenson settings injected
@@ -320,7 +301,6 @@ class t3lib_object_tests_injectsettings {
 }
 
 
-namespace ;
 
 /**
 
@@ -339,7 +319,6 @@ class t3lib_object_tests_resolveablecyclic1 implements \TYPO3\CMS\Core\Singleton
 }
 
 
-namespace ;
 
 /**
 
@@ -367,7 +346,6 @@ class t3lib_object_tests_resolveablecyclic2 implements \TYPO3\CMS\Core\Singleton
 }
 
 
-namespace ;
 
 /**
 
@@ -386,7 +364,6 @@ class t3lib_object_tests_resolveablecyclic3 implements \TYPO3\CMS\Core\Singleton
 }
 
 
-namespace ;
 
 /**
 
@@ -410,7 +387,6 @@ class t3lib_object_tests_class_with_injectsettings {
 }
 
 
-namespace ;
 
 /*
  *  a Singleton requires a Prototype for Injection -> allowed, autowiring active, but in development context we write a log message, as it is bad practice and most likely points to some logic error.
@@ -427,7 +403,6 @@ class t3lib_object_singleton implements \TYPO3\CMS\Core\SingletonInterface {
 }
 
 
-namespace ;
 
 /**
 
@@ -438,7 +413,6 @@ class t3lib_object_prototype {
 }
 
 
-namespace ;
 
 /**
 
@@ -460,7 +434,6 @@ class t3lib_object_singletonNeedsPrototype implements \TYPO3\CMS\Core\SingletonI
 }
 
 
-namespace ;
 
 /**
 
@@ -482,7 +455,6 @@ class t3lib_object_singletonNeedsSingleton implements \TYPO3\CMS\Core\SingletonI
 }
 
 
-namespace ;
 
 /**
 
@@ -504,7 +476,6 @@ class t3lib_object_prototypeNeedsPrototype {
 }
 
 
-namespace ;
 
 /**
 
@@ -526,7 +497,6 @@ class t3lib_object_prototypeNeedsSingleton {
 }
 
 
-namespace ;
 
 /**
 
@@ -543,7 +513,6 @@ class t3lib_object_singletonNeedsPrototypeInConstructor implements \TYPO3\CMS\Co
 }
 
 
-namespace ;
 
 /**
 
@@ -560,7 +529,6 @@ class t3lib_object_singletonNeedsSingletonInConstructor implements \TYPO3\CMS\Co
 }
 
 
-namespace ;
 
 /**
 
@@ -577,7 +545,6 @@ class t3lib_object_prototypeNeedsPrototypeInConstructor {
 }
 
 
-namespace ;
 
 /**
 

@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  * @package Extbase
  * @subpackage extbase
  */
-class ExtensionUtilityTest extends tx_phpunit_testcase {
+class ExtensionUtilityTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Contains backup of $TYPO3_CONF_VARS

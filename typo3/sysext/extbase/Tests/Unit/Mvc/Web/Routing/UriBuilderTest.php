@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -25,7 +27,6 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Tests/Unit/Fixtures/Entity.php';
-namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web\Routing;
 
 /**
  * Uri Builder Test Class

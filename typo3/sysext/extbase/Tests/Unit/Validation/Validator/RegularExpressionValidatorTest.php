@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
+
 /*                                                                        *
  * This script belongs to the Extbase framework.                            *
  *                                                                        *
@@ -19,7 +21,6 @@
  * The TYPO3 project - inspiring people to share!                         *
  *                                                                        */
 require_once 'AbstractValidatorTestcase.php';
-namespace TYPO3\CMS\Extbase\Tests\Unit\Validation\Validator;
 
 /**
  * Testcase for the regular expression validator
