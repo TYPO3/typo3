@@ -107,7 +107,7 @@ class IndexSearchRepository {
 	 */
 	public function initialize($settings, $searchData, $externalParsers, $searchRootPageIdList) {
 		// Initialize the indexer-class - just to use a few function (for making hashes)
-		$this->indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController_indexer');
+		$this->indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 		$this->externalParsers = $externalParsers;
 		$this->searchRootPageIdList = $searchRootPageIdList;
 		$this->frontendUserGroupList = $GLOBALS['TSFE']->gr_list;
@@ -296,7 +296,7 @@ class IndexSearchRepository {
 				 *
 				 * @var \TYPO3\CMS\IndexedSearch\Indexer
 				 */
-				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController_indexer');
+				$indexerObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 				// Perform metaphone search
 				$storeMetaphoneInfoAsWords = $this->isTableUsed('index_words') ? FALSE : TRUE;
 				$res = $this->searchMetaphone($indexerObj->metaphone($sWord, $storeMetaphoneInfoAsWords));
