@@ -534,10 +534,10 @@ class GridDataService {
 	}
 
 	/**
-	 * @return \TYPO3\CMS\Extbase\Object\ObjectManager
+	 * @return \TYPO3\CMS\Extbase\Object\ObjectManagerException
 	 */
 	protected function getObjectManager() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerException');
 	}
 
 }

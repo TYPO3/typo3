@@ -27,6 +27,7 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
 	require_once PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php';
 }
@@ -47,7 +48,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	/**
 	 * reference back to the backend object
 	 *
-	 * @var 	TYPO3backend
+	 * @var \TYPO3\CMS\Backend\Controller\BackendController
 	 */
 	protected $backendReference;
 
@@ -56,9 +57,9 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 	/**
 	 * constructor
 	 *
-	 * @param 	TYPO3backend	TYPO3 backend object reference
+	 * @param \TYPO3\CMS\Backend\Controller\BackendController TYPO3 backend object reference
 	 */
-	public function __construct(\TYPO3backend &$backendReference = NULL) {
+	public function __construct(\TYPO3\CMS\Backend\Controller\BackendController &$backendReference = NULL) {
 		$this->backendReference = $backendReference;
 		$this->changeWorkspace = \t3lib_div::_GP('changeWorkspace');
 		$this->changeWorkspacePreview = \t3lib_div::_GP('changeWorkspacePreview');

@@ -568,7 +568,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($uid > 0) {
 			$uid = $this->getLivePageUid($uid);
 		}
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerException');
 		/** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
 		$uriBuilder = $objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
 		/** This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
