@@ -1748,7 +1748,7 @@ return array(
 	'wslib' => 'TYPO3\\CMS\\Version\\Utility\\WorkspacesUtility',
 	'tx_version_gui' => 'TYPO3\\CMS\\Version\\View\\VersionView',
 	'Tx_Viewpage_Controller_ViewController' => 'TYPO3\\CMS\\ViewPage\\Controller\\ViewModuleController',
-	'tx_wizardcrpages_webfunc_2' => 'TYPO3\\CMS\\WizardCreatePages\\Controller\\CreatePagesWizardModuleFunctionController',
+	'tx_wizardcrpages_webfunc_2' => 'TYPO3\\CMS\\WizardCrpages\\Controller\\CreatePagesWizardModuleFunctionController',
 	'tx_wizardsortpages_webfunc_2' => 'TYPO3\\CMS\\WizardSortPages\\View\\SortPagesWizardModuleFunction',
 	'Tx_Workspaces_Controller_AbstractController' => 'TYPO3\\CMS\\Workspaces\\Controller\\AbstractController',
 	'Tx_Workspaces_Controller_PreviewController' => 'TYPO3\\CMS\\Workspaces\\Controller\\PreviewController',

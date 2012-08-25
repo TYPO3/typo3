@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\WizardCreatePages\Controller;
+namespace TYPO3\CMS\WizardCrpages\Controller;
 
 /***************************************************************
  *  Copyright notice
@@ -26,20 +26,13 @@ namespace TYPO3\CMS\WizardCreatePages\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/**
- * Contains class for "Create pages" wizard
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
+
 /**
  * Creates the "Create pages" wizard
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
- * @subpackage tx_wizardcrpages
+ * @subpackage wizard_crpages
  */
 class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
