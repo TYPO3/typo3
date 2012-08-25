@@ -179,7 +179,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				$pageRenderer = $GLOBALS['TBE_TEMPLATE']->getPageRenderer();
 				$pageRenderer->loadExtJS();
 				$pageRenderer->addExtOnReadyCode($extCode);
-				$pageRenderer->addCssInlineBlock('TYPO3\\CMS\\WizardCreatePages\\Controller\\CreatePagesWizardModuleFunctionController', '
+				$pageRenderer->addCssInlineBlock('TYPO3\CMS\\WizardCrpages\\Controller\\CreatePagesWizardModuleFunctionController', '
 				#formFieldContainer {float: left; margin: 0 0 10px 0;}
 				.clearLeft {clear: left;}
 				#formFieldContainer label {width: 70px; display: inline-block;}
