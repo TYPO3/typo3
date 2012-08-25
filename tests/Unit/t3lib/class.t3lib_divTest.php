@@ -307,7 +307,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			'/32 subnet (match only name)' => array('127.0.0.1', '127.0.0.1/32'),
 			'/30 subnet' => array('10.10.3.1', '10.10.3.3/30'),
 			'host with wildcard in list with IPv4/IPv6 addresses' => array('192.168.1.1', '127.0.0.1, 1234:5678::/126, 192.168.*'),
-			'host in list with IPv4/IPv6 addresses' => array('192.168.1.1', '::1, 1234:5678::/126, 192.168.1.1')
+			'host in list with IPv4/IPv6 addresses' => array('192.168.1.1', '::1, 1234:5678::/126, 192.168.1.1'),
 		);
 	}
 
@@ -410,11 +410,11 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	static public function IPv6Hex2BinDataProviderCorrect() {
 		return array(
-			'empty 1' => array('::', str_pad('', 16, ' ')),
-			'empty 2, already normalized' => array('0000:0000:0000:0000:0000:0000:0000:0000', str_pad('', 16, ' ')),
-			'already normalized' => array('0102:0304:0000:0000:0000:0000:0506:0078', ('' . str_pad('', 8, ' ')) . ' x'),
-			'expansion in middle 1' => array('1::2', (' ' . str_pad('', 12, ' ')) . ' '),
-			'expansion in middle 2' => array('beef::fefa', ('��' . str_pad('', 12, ' ')) . '��')
+			'empty 1' => array('::', str_pad('', 16, "\x00")),
+			'empty 2, already normalized' => array('0000:0000:0000:0000:0000:0000:0000:0000', str_pad('', 16, "\x00")),
+			'already normalized' => array('0102:0304:0000:0000:0000:0000:0506:0078', "\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78"),
+			'expansion in middle 1' => array('1::2', "\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02"),
+			'expansion in middle 2' => array('beef::fefa', "\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa"),
 		);
 	}
 
@@ -436,12 +436,12 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	static public function IPv6Bin2HexDataProviderCorrect() {
 		return array(
-			'empty' => array(str_pad('', 16, ' '), '::'),
-			'non-empty front' => array('' . str_pad('', 15, ' '), '100::'),
-			'non-empty back' => array(str_pad('', 15, ' ') . '', '::1'),
-			'normalized' => array(('' . str_pad('', 8, ' ')) . ' x', '102:304::506:78'),
-			'expansion in middle 1' => array((' ' . str_pad('', 12, ' ')) . ' ', '1::2'),
-			'expansion in middle 2' => array(('��' . str_pad('', 12, ' ')) . '��', 'beef::fefa')
+			'empty' => array(str_pad('', 16, "\x00"), '::'),
+			'non-empty front' => array("\x01" . str_pad('', 15, "\x00"), '100::'),
+			'non-empty back' => array(str_pad('', 15, "\x00") . "\x01", '::1'),
+			'normalized' => array("\x01\x02\x03\x04" . str_pad('', 8, "\x00") . "\x05\x06\x00\x78", '102:304::506:78'),
+			'expansion in middle 1' => array("\x00\x01" . str_pad('', 12, "\x00") . "\x00\x02", '1::2'),
+			'expansion in middle 2' => array("\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa", 'beef::fefa'),
 		);
 	}
 
@@ -3609,7 +3609,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function validPathStrWorksWithUnicodeFileNames() {
-		$this->assertTrue(\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr('fileadmin/TYPO3\\CMS\\Backend\\Template\\DocumentTemplates/Ссылка (fce).xml'));
+		$this->assertTrue(\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr('fileadmin/templates/Ссылка (fce).xml'));
 	}
 
 	/**
