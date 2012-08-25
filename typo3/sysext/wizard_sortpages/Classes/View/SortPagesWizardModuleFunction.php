@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\WizardSortPages\View;
+namespace TYPO3\CMS\WizardSortpages\View;
 
 /***************************************************************
  *  Copyright notice
@@ -27,19 +27,11 @@ namespace TYPO3\CMS\WizardSortPages\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Contains class for "Sort pages" wizard
- *
- * Revised for TYPO3 3.6 July/2003 by Kasper Skårhøj
- * XHTML compliant
- *
- * @author Kasper Skårhøj <kasperYYYY@typo3.com>
- */
-/**
  * Creates the "Sort pages" wizard
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
- * @subpackage tx_wizardsortpages
+ * @subpackage wizard_sortpages
  */
 class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
@@ -146,6 +138,5 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 	}
 
 }
-
 
 ?>
