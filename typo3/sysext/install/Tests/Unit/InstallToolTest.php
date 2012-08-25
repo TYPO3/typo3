@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Install\Tests\Unit;
  * @subpackage tx_install
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class InstallToolTest extends tx_phpunit_testcase {
+class InstallToolTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var boolean Enable backup of global and system variables
