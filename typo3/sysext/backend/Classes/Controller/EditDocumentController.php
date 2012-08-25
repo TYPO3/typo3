@@ -628,7 +628,7 @@ class EditDocumentController {
 				if ((strcmp($this->docDat[1], $this->storeUrlMd5) || !isset($this->docHandler[$this->storeUrlMd5])) && !$this->dontStoreDocumentRef) {
 					$this->docHandler[$this->storeUrlMd5] = array($this->storeTitle, $this->storeArray, $this->storeUrl, $this->firstEl);
 					$GLOBALS['BE_USER']->pushModuleData('alt_doc.php', array($this->docHandler, $this->storeUrlMd5));
-					\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('TYPO3\\CMS\\Opendocs\\Controller\\OpendocsController::updateNumber', count($this->docHandler));
+					\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
 				}
 				// Module configuration
 				$this->modTSconfig = $this->viewId ? \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->viewId, 'mod.xMOD_alt_doc') : array();
@@ -1358,7 +1358,7 @@ class EditDocumentController {
 			}
 			$GLOBALS['BE_USER']->pushModuleData('opendocs::recent', $recentDocs);
 			$GLOBALS['BE_USER']->pushModuleData('alt_doc.php', array($this->docHandler, $this->docDat[1]));
-			\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('TYPO3\\CMS\\Opendocs\\Controller\\OpendocsController::updateNumber', count($this->docHandler));
+			\TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal('OpendocsController::updateNumber', count($this->docHandler));
 		}
 		// If ->returnEditConf is set, then add the current content of editconf to the ->retUrl variable: (used by other scripts, like wizard_add, to know which records was created or so...)
 		if ($this->returnEditConf && $this->retUrl != 'dummy.php') {
