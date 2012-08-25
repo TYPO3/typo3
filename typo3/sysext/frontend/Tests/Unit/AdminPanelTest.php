@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit;
  * @subpackage tslib
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class AdminPanelTest extends tx_phpunit_testcase {
+class AdminPanelTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables
