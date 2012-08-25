@@ -24,13 +24,13 @@ namespace TYPO3\CMS\Frontend\Tests\Unit;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for the "tslib_AdminPanel" class in the TYPO3 Core.
+ * Testcase for the TYPO3\CMS\Frontend\View\AdminPanelView class in the TYPO3 Core.
  *
  * @package TYPO3
  * @subpackage tslib
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class AdminPanelTest extends tx_phpunit_testcase {
+class AdminPanelTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -56,8 +56,9 @@ class AdminPanelTest extends tx_phpunit_testcase {
 	 */
 	public function extendAdminPanelHookThrowsExceptionIfHookClassDoesNotImplementInterface() {
 		$hookClass = uniqid('tx_coretest');
-		eval(('class ' . $hookClass) . ' {}');
+		eval('class ' . $hookClass . ' {}');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'][] = $hookClass;
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\View\AdminPanelView $adminPanelMock */
 		$adminPanelMock = $this->getMock('TYPO3\\CMS\\Frontend\\View\\AdminPanelView', array('dummy'), array(), '', FALSE);
 		$adminPanelMock->display();
 	}
@@ -70,12 +71,12 @@ class AdminPanelTest extends tx_phpunit_testcase {
 		$hookMock = $this->getMock('TYPO3\\CMS\\Frontend\\View\\AdminPanelViewHookInterface', array(), array(), $hookClass);
 		$GLOBALS['T3_VAR']['getUserObj'][$hookClass] = $hookMock;
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_adminpanel.php']['extendAdminPanel'][] = $hookClass;
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\View\AdminPanelView $adminPanelMock */
 		$adminPanelMock = $this->getMock('TYPO3\\CMS\\Frontend\\View\\AdminPanelView', array('dummy'), array(), '', FALSE);
 		$hookMock->expects($this->once())->method('extendAdminPanel')->with($this->isType('string'), $this->isInstanceOf('TYPO3\\CMS\\Frontend\\View\\AdminPanelView'));
 		$adminPanelMock->display();
 	}
 
 }
-
 
 ?>
