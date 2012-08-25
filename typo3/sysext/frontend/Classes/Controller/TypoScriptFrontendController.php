@@ -3389,7 +3389,7 @@ class TypoScriptFrontendController {
 		$this->content = str_replace(('<!--HD_' . $this->config['INTincScript_ext']['divKey']) . '-->', $this->convOutputCharset(implode(LF, $this->additionalHeaderData), 'HD'), $this->content);
 		$this->content = str_replace(('<!--FD_' . $this->config['INTincScript_ext']['divKey']) . '-->', $this->convOutputCharset(implode(LF, $this->additionalFooterData), 'FD'), $this->content);
 		$this->content = str_replace(('<!--TDS_' . $this->config['INTincScript_ext']['divKey']) . '-->', $this->convOutputCharset($this->divSection, 'TDS'), $this->content);
-		$this->content = $this->pageRenderer->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey']);
+		$this->content = $this->getPageRenderer()->renderJavaScriptAndCssForProcessingOfUncachedContentObjects($this->content, $this->config['INTincScript_ext']['divKey']);
 		$this->setAbsRefPrefix();
 		$GLOBALS['TT']->pull();
 	}
