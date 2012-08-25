@@ -21,7 +21,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once PATH_typo3 . 'contrib/openid/Auth/OpenID/Interface.php';
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('openid') . 'lib/php-openid/Auth/OpenID/Interface.php';
 /*
  * @deprecated since 6.0, the classname tx_openid_store and this file is obsolete
  * and will be removed by 7.0. The class was renamed and is now located at:
