@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Frontend\Tests\Unit;
+namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject;
 
 /***************************************************************
  *  Copyright notice
@@ -24,37 +24,52 @@ namespace TYPO3\CMS\Frontend\Tests\Unit;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for the "tslib_cObj" class in the TYPO3 Core.
+ * Testcase for TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
  *
  * @package TYPO3
  * @subpackage tslib
  * @author Oliver Hader <oliver@typo3.org>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class ContentTest extends tx_phpunit_testcase {
+class ContentObjectRendererTest extends \tx_phpunit_testcase {
 
 	/**
-	 * @var 	array
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
+	/**
+	 * @var array
 	 */
 	private $backupGlobalVariables;
 
 	/**
-	 * @var 	tslib_cObj
+	 * @var \PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject|\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
 	private $cObj;
 
 	/**
-	 * @var 	tslib_fe
+	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
 	 */
 	private $tsfe;
 
 	/**
-	 * @var 	t3lib_TStemplate
+	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\TypoScript\TemplateService
 	 */
 	private $template;
 
 	/**
-	 * @var 	array
+	 * @var array
 	 */
 	private $typoScriptImage;
 
@@ -75,14 +90,7 @@ class ContentTest extends tx_phpunit_testcase {
 		$GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['TYPO3\\CMS\\Core\\Charset\\CharsetConverter_utils'] = 'mbstring';
-		$className = 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer_' . uniqid('test');
-		eval(('
-			class ' . $className) . ' extends TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer {
-				public $stdWrapHookObjects = array();
-				public $getImgResourceHookObjects;
-			}
-		');
-		$this->cObj = new $className();
+		$this->cObj = $this->getAccessibleMock('\\TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array('dummy'));
 		$this->cObj->start(array(), 'tt_content');
 		$this->typoScriptImage = array(
 			'file' => 'typo3/clear.gif'
@@ -94,7 +102,7 @@ class ContentTest extends tx_phpunit_testcase {
 			$GLOBALS[$key] = $data;
 		}
 		$GLOBALS['TSFE'] = NULL;
-		unset($this->cObj, $this->tsfe, $this->template, $this->typoScriptImage);
+		unset($this->backupGlobalVariables, $this->cObj, $this->tsfe, $this->template, $this->typoScriptImage);
 	}
 
 	////////////////////////
@@ -124,7 +132,8 @@ class ContentTest extends tx_phpunit_testcase {
 		$className = uniqid('tx_coretest');
 		$getImgResourceHookMock = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectGetImageResourceHookInterface', array('getImgResourcePostProcess'), array(), $className);
 		$getImgResourceHookMock->expects($this->once())->method('getImgResourcePostProcess')->will($this->returnCallback(array($this, 'isGetImgResourceHookCalledCallback')));
-		$this->cObj->getImgResourceHookObjects = array($getImgResourceHookMock);
+		$getImgResourceHookObjects = array($getImgResourceHookMock);
+		$this->cObj->_setRef('getImgResourceHookObjects', $getImgResourceHookObjects);
 		$this->cObj->IMAGE($this->typoScriptImage);
 	}
 
@@ -169,7 +178,7 @@ class ContentTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getQueryArgumentsExcludesParameters() {
-		$_SERVER['QUERY_STRING'] = ((('key1=value1' . '&key2=value2') . '&key3[key31]=value31') . '&key3[key32][key321]=value321') . '&key3[key32][key322]=value322';
+		$_SERVER['QUERY_STRING'] = 'key1=value1' . '&key2=value2' . '&key3[key31]=value31' . '&key3[key32][key321]=value321' . '&key3[key32][key322]=value322';
 		$getQueryArgumentsConfiguration = array();
 		$getQueryArgumentsConfiguration['exclude'] = array();
 		$getQueryArgumentsConfiguration['exclude'][] = 'key1';
@@ -270,7 +279,7 @@ class ContentTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getQueryArgumentsOverrulesMultiDimensionalForcedParameters() {
-		$_SERVER['QUERY_STRING'] = ((('key1=value1' . '&key2=value2') . '&key3[key31]=value31') . '&key3[key32][key321]=value321') . '&key3[key32][key322]=value322';
+		$_SERVER['QUERY_STRING'] = 'key1=value1' . '&key2=value2' . '&key3[key31]=value31' . '&key3[key32][key321]=value321' . '&key3[key32][key322]=value322';
 		$_POST = array(
 			'key1' => 'value1',
 			'key2' => 'value2',
@@ -340,8 +349,8 @@ class ContentTest extends tx_phpunit_testcase {
 	 * @see cropHtmlWithDataProvider
 	 */
 	public function cropHtmlDataProvider() {
-		$plainText = ((('Kasper Sk' . chr(229)) . 'rh') . chr(248)) . 'j implemented the original version of the crop function.';
-		$textWithMarkup = (((('<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229)) . 'rh') . chr(248)) . 'j</a>') . ' implemented</strong> the original version of the crop function.';
+		$plainText = 'Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j implemented the original version of the crop function.';
+		$textWithMarkup = '<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>' . ' implemented</strong> the original version of the crop function.';
 		$textWithEntities = 'Kasper Sk&aring;rh&oslash;j implemented the; original ' . 'version of the crop function.';
 		$charsets = array('iso-8859-1', 'utf-8', 'ascii', 'big5');
 		$data = array();
@@ -368,7 +377,7 @@ class ContentTest extends tx_phpunit_testcase {
 				$charset . ' plain text; 20|...|1' => array(
 					'20|...|1',
 					$plainText,
-					((('Kasper Sk' . chr(229)) . 'rh') . chr(248)) . 'j...',
+					'Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j...',
 					$charset
 				),
 				$charset . ' plain text; -5|...|1' => array(
@@ -392,25 +401,25 @@ class ContentTest extends tx_phpunit_testcase {
 				$charset . ' text with markup; 13|...' => array(
 					'13|...',
 					$textWithMarkup,
-					((('<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229)) . 'rh') . chr(248)) . '...</a></strong>',
+					'<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . '...</a></strong>',
 					$charset
 				),
 				$charset . ' text with markup; 14|...' => array(
 					'14|...',
 					$textWithMarkup,
-					((('<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229)) . 'rh') . chr(248)) . 'j</a>...</strong>',
+					'<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>',
 					$charset
 				),
 				$charset . ' text with markup; 15|...' => array(
 					'15|...',
 					$textWithMarkup,
-					((('<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229)) . 'rh') . chr(248)) . 'j</a> ...</strong>',
+					'<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> ...</strong>',
 					$charset
 				),
 				$charset . ' text with markup; 29|...' => array(
 					'29|...',
 					$textWithMarkup,
-					((('<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229)) . 'rh') . chr(248)) . 'j</a> implemented</strong> th...',
+					'<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong> th...',
 					$charset
 				),
 				$charset . ' text with markup; -58|...' => array(
@@ -440,25 +449,25 @@ class ContentTest extends tx_phpunit_testcase {
 				$charset . ' text with markup; 14|...|1' => array(
 					'14|...|1',
 					$textWithMarkup,
-					((('<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229)) . 'rh') . chr(248)) . 'j</a>...</strong>',
+					'<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>',
 					$charset
 				),
 				$charset . ' text with markup; 15|...|1' => array(
 					'15|...|1',
 					$textWithMarkup,
-					((('<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229)) . 'rh') . chr(248)) . 'j</a>...</strong>',
+					'<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a>...</strong>',
 					$charset
 				),
 				$charset . ' text with markup; 29|...|1' => array(
 					'29|...|1',
 					$textWithMarkup,
-					((('<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229)) . 'rh') . chr(248)) . 'j</a> implemented</strong>...',
+					'<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong>...',
 					$charset
 				),
 				$charset . ' text with markup; -66|...|1' => array(
 					'-66|...|1',
 					$textWithMarkup,
-					((('<strong><a href="mailto:kasper@typo3.org">...Sk' . chr(229)) . 'rh') . chr(248)) . 'j</a> implemented</strong> the original version of the crop function.',
+					'<strong><a href="mailto:kasper@typo3.org">...Sk' . chr(229) . 'rh' . chr(248) . 'j</a> implemented</strong> the original version of the crop function.',
 					$charset
 				),
 				$charset . ' text with entities 9|...' => array(
@@ -610,7 +619,7 @@ class ContentTest extends tx_phpunit_testcase {
 	 */
 	public function cropHtmlWithDataProvider($settings, $subject, $expected, $charset) {
 		$this->handleCharset($charset, $subject, $expected);
-		$this->assertEquals($expected, $this->cObj->cropHTML($subject, $settings), ((('cropHTML failed with settings: "' . $settings) . '" and charset "') . $charset) . '"');
+		$this->assertEquals($expected, $this->cObj->cropHTML($subject, $settings), 'cropHTML failed with settings: "' . $settings . '" and charset "' . $charset . '"');
 	}
 
 	/**
@@ -1043,6 +1052,5 @@ class ContentTest extends tx_phpunit_testcase {
 	}
 
 }
-
 
 ?>

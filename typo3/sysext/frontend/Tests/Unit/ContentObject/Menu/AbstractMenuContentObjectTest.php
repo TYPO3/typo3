@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for the "tslib_menu" class in the TYPO3 Core.
+ * Testcase for TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
  *
  * @package TYPO3
  * @subpackage tslib
@@ -33,30 +33,49 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 class AbstractMenuContentObjectTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
 	 */
-	private $fixture = NULL;
+	protected $backupGlobals = TRUE;
 
 	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
 	 * @var array
 	 */
-	private $backupGlobalVariables = array();
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
+	/**
+	 * A backup of the global database
+	 *
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected $databaseBackup = NULL;
+
+	/**
+	 * @var \TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject
+	 */
+	protected $fixture = NULL;
+
+	/**
+	 * Set up this testcase
+	 */
 	public function setUp() {
 		$proxy = $this->buildAccessibleProxy('TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\AbstractMenuContentObject');
 		$this->fixture = new $proxy();
-		$backupGlobalVariables['TYPO3_DB'] = $GLOBALS['TYPO3_DB'];
+		$this->databaseBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('t3lib_db');
-		$backupGlobalVariables['TSFE'] = $GLOBALS['TSFE'];
 		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController');
 		$GLOBALS['TSFE']->cObj = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
 	}
 
+	/**
+	 * Tear down this testcase
+	 */
 	public function tearDown() {
-		foreach ($this->backupGlobalVariables as $key => $data) {
-			$GLOBALS[$key] = $data;
-		}
-		unset($this->fixture);
+		$GLOBALS['TYPO3_DB'] = $this->databaseBackup;
 	}
 
 	////////////////////////////////
