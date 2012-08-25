@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
  * @subpackage tx_scheduler
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class CachingFrameworkGarbageCollectionTest extends tx_phpunit_testcase {
+class CachingFrameworkGarbageCollectionTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -51,14 +51,14 @@ class CachingFrameworkGarbageCollectionTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function executeCallsCollectGarbageOfConfiguredBackend() {
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Cache_frontend_StringFrontend', array(), array(), '', FALSE);
+		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\StringFrontend', array(), array(), '', FALSE);
 		$cache->expects($this->any())->method('getIdentifier')->will($this->returnValue('cache'));
 		$cache->expects($this->atLeastOnce())->method('collectGarbage');
 		$GLOBALS['typo3CacheManager'] = new \TYPO3\CMS\Core\Cache\CacheManager();
 		$GLOBALS['typo3CacheManager']->registerCache($cache);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = array(
 			'cache' => array(
-				'frontend' => 'TYPO3\\CMS\\Core\\Cache\\Cache_frontend_StringFrontend',
+				'frontend' => 'TYPO3\\CMS\\Core\\Cache\\StringFrontend',
 				'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend'
 			)
 		);
@@ -71,14 +71,14 @@ class CachingFrameworkGarbageCollectionTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function executeDoesNotCallCollectGarbageOfNotConfiguredBackend() {
-		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Cache_frontend_StringFrontend', array(), array(), '', FALSE);
+		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\StringFrontend', array(), array(), '', FALSE);
 		$cache->expects($this->any())->method('getIdentifier')->will($this->returnValue('cache'));
 		$cache->expects($this->never())->method('collectGarbage');
 		$GLOBALS['typo3CacheManager'] = new \TYPO3\CMS\Core\Cache\CacheManager();
 		$GLOBALS['typo3CacheManager']->registerCache($cache);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] = array(
 			'cache' => array(
-				'frontend' => 'TYPO3\\CMS\\Core\\Cache\\Cache_frontend_StringFrontend',
+				'frontend' => 'TYPO3\\CMS\\Core\\Cache\\StringFrontend',
 				'backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend'
 			)
 		);
