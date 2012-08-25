@@ -306,40 +306,40 @@
 			<trans-unit id="filters_dummy_description" xml:space="preserve">
 				<source>To add a filter, select one from the dropdown</source>
 			</trans-unit>
-			<trans-unit id="filters_alphabetic" xml:space="preserve">
+			<trans-unit id="filters_Alphabetic" xml:space="preserve">
 				<source>Alphabetic</source>
 			</trans-unit>
-			<trans-unit id="filters_alphanumeric" xml:space="preserve">
+			<trans-unit id="filters_Alphanumeric" xml:space="preserve">
 				<source>Alphanumeric</source>
 			</trans-unit>
-			<trans-unit id="filters_currency" xml:space="preserve">
+			<trans-unit id="filters_Currency" xml:space="preserve">
 				<source>Currency</source>
 			</trans-unit>
-			<trans-unit id="filters_digit" xml:space="preserve">
+			<trans-unit id="filters_Digit" xml:space="preserve">
 				<source>Digit</source>
 			</trans-unit>
-			<trans-unit id="filters_integer" xml:space="preserve">
+			<trans-unit id="filters_Integer" xml:space="preserve">
 				<source>Integer</source>
 			</trans-unit>
-			<trans-unit id="filters_lowercase" xml:space="preserve">
+			<trans-unit id="filters_LowerCase" xml:space="preserve">
 				<source>Lowercase</source>
 			</trans-unit>
-			<trans-unit id="filters_regexp" xml:space="preserve">
+			<trans-unit id="filters_RegExp" xml:space="preserve">
 				<source>Regular Expression</source>
 			</trans-unit>
-			<trans-unit id="filters_removexss" xml:space="preserve">
+			<trans-unit id="filters_RemoveXss" xml:space="preserve">
 				<source>Remove XSS</source>
 			</trans-unit>
-			<trans-unit id="filters_stripnewlines" xml:space="preserve">
+			<trans-unit id="filters_StripNewLines" xml:space="preserve">
 				<source>Strip New Lines</source>
 			</trans-unit>
-			<trans-unit id="filters_titlecase" xml:space="preserve">
+			<trans-unit id="filters_TitleCase" xml:space="preserve">
 				<source>Titlecase</source>
 			</trans-unit>
-			<trans-unit id="filters_trim" xml:space="preserve">
+			<trans-unit id="filters_Trim" xml:space="preserve">
 				<source>Trim</source>
 			</trans-unit>
-			<trans-unit id="filters_uppercase" xml:space="preserve">
+			<trans-unit id="filters_UpperCase" xml:space="preserve">
 				<source>Uppercase</source>
 			</trans-unit>
 			<trans-unit id="filters_properties_allowwhitespace" xml:space="preserve">

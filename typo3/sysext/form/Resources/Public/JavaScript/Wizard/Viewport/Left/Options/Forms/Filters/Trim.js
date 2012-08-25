@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Trim = Ext.extend(TYPO3.Fo
 	 *
 	 * The name of this filter
 	 */
-	filter: 'trim',
+	filter: 'Trim',
 
 	/**
 	 * Constructor
@@ -30,4 +30,4 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Trim = Ext.extend(TYPO3.Fo
 	}
 });
 
-Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-trim', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Trim);
+Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-Trim', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Trim);

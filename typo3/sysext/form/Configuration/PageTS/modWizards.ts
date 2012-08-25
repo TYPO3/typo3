@@ -105,42 +105,42 @@ prefix = tx_form
 							}
 						}
 						filtering {
-							showFilters = alphabetic, alphanumeric, currency, digit, integer, lowercase, regexp, removexss, stripnewlines, titlecase, trim, uppercase
+							showFilters = Alphabetic, Alphanumeric, Currency, Digit, Integer, LowerCase, RegExp, RemoveXss, StripNewLines, TitleCase, Trim, UpperCase
 							filters {
-								alphabetic {
+								Alphabetic {
 									showProperties = allowWhiteSpace
 								}
-								alphanumeric {
+								Alphanumeric {
 									showProperties = allowWhiteSpace
 								}
-								currency {
+								Currency {
 									showProperties = decimalPoint, thousandSeparator
 								}
-								digit {
+								Digit {
 									showProperties =
 								}
-								integer {
+								Integer {
 									showProperties =
 								}
-								lowercase {
+								LowerCase {
 									showProperties =
 								}
-								regexp {
+								RegExp {
 									showProperties = expression
 								}
-								removexss {
+								RemoveXss {
 									showProperties =
 								}
-								stripnewlines {
+								StripNewLines {
 									showProperties =
 								}
-								titlecase {
+								TitleCase {
 									showProperties =
 								}
-								trim {
+								Trim {
 									showProperties = characterList
 								}
-								uppercase {
+								UpperCase {
 									showProperties =
 								}
 							}
@@ -236,7 +236,7 @@ prefix = tx_form
 						showProperties = name, cols, rows
 					}
 					filtering {
-						showFilters = alphabetic, alphanumeric, lowercase, regexp, stripnewlines, titlecase, trim, uppercase
+						showFilters = Alphabetic, Alphanumeric, LowerCase, RegExp, StripNewLines, TitleCase, Trim, UpperCase
 					}
 					validation {
 						showRules = alphabetic, alphanumeric, length, regexp, required
@@ -253,7 +253,7 @@ prefix = tx_form
 						showRules = alphabetic, alphanumeric, between, date, digit, email, equals, float, greaterthan, inarray, integer, ip, length, lessthan, regexp, required, uri
 					}
 					filtering {
-						showFilters = alphabetic, alphanumeric, currency, digit, integer, lowercase, regexp, titlecase, trim, uppercase
+						showFilters = Alphabetic, Alphanumeric, Currency, Digit, Integer, LowerCase, RegExp, TitleCase, Trim, UpperCase
 					}
 				}
 			}

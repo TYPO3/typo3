@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Alphabetic = Ext.extend(TY
 	 *
 	 * The name of this filter
 	 */
-	filter: 'alphabetic',
+	filter: 'Alphabetic',
 
 	/**
 	 * Constructor
@@ -30,4 +30,4 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Alphabetic = Ext.extend(TY
 	}
 });
 
-Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-alphabetic', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Alphabetic);
+Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-Alphabetic', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Alphabetic);

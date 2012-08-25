@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.StripNewLines = Ext.extend
 	 *
 	 * The name of this filter
 	 */
-	filter: 'stripnewlines'
+	filter: 'StripNewLines'
 });
 
-Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-stripnewlines', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.StripNewLines);
+Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-StripNewLines', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.StripNewLines);

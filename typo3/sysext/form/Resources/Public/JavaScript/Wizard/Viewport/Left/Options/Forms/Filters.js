@@ -22,18 +22,18 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters = Ext.extend(Ext.Panel, {
 	 * values
 	 */
 	validFilters: {
-		alphabetic: true,
-		alphanumeric: true,
-		currency: true,
-		digit: true,
-		integer: true,
-		lowercase: true,
-		regexp: true,
-		removexss: true,
-		stripnewlines: true,
-		titlecase: true,
-		trim: true,
-		uppercase: true
+		Alphabetic: true,
+		Alphanumeric: true,
+		Currency: true,
+		Digit: true,
+		Integer: true,
+		LowerCase: true,
+		RegExp: true,
+		RemoveXss: true,
+		StripNewLines: true,
+		TitleCase: true,
+		Trim: true,
+		UpperCase: true
 	},
 
 	/**
@@ -182,18 +182,18 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters = Ext.extend(Ext.Panel, {
 		} catch (error) {
 			// The object has not been found
 			allowedDefaultFilters = [
-				'alphabetic',
-				'alphanumeric',
-				'currency',
-				'digit',
-				'integer',
-				'lowercase',
-				'regexp',
-				'removexss',
-				'stripnewlines',
-				'titlecase',
-				'trim',
-				'uppercase'
+				'Alphabetic',
+				'Alphanumeric',
+				'Currency',
+				'Digit',
+				'Integer',
+				'LowerCase',
+				'RegExp',
+				'RemoveXss',
+				'StripNewLines',
+				'TitleCase',
+				'Trim',
+				'UpperCase'
 			];
 		}
 

@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.RemoveXSS = Ext.extend(TYP
 	 *
 	 * The name of this filter
 	 */
-	filter: 'removexss'
+	filter: 'RemoveXss'
 });
 
-Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-removexss', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.RemoveXSS);
+Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-RemoveXss', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.RemoveXSS);

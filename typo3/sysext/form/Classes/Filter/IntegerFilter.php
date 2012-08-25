@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Form\Filter;
  * @package TYPO3
  * @subpackage form
  */
-class Integer Filter implements \TYPO3\CMS\Form\Filter\FilterInterface {
+class IntegerFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 
 	/**
 	 * Cast to integer

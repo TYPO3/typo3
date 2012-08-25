@@ -7,7 +7,7 @@ return array(
 	'tx_form_common' => $extensionClassesPath . 'Common.php',
 	'tx_form_controller_form' => $extensionClassesPath . 'Controller/Form.php',
 	'tx_form_controller_wizard' => $extensionClassesPath . 'Controller/Wizard.php',
-	'tx_form_domain_factory_jsontotyposcript' => $extensionClassesPath . 'Domain/Factory/JsonToTyposcript.php',
+	'tx_form_domain_factory_jsontotyposcript' => $extensionClassesPath . 'Domain/Factory/JsonToTypoScript.php',
 	'tx_form_domain_factory_typoscript' => $extensionClassesPath . 'Domain/Factory/Typoscript.php',
 	'tx_form_domain_factory_typoscripttojson' => $extensionClassesPath . 'Domain/Factory/TyposcriptToJson.php',
 	'tx_form_domain_model_content' => $extensionClassesPath . 'Domain/Model/Content.php',

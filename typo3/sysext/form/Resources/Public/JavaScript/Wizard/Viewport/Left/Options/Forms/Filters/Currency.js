@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Currency = Ext.extend(TYPO
 	 *
 	 * The name of this filter
 	 */
-	filter: 'currency',
+	filter: 'Currency',
 
 	/**
 	 * Constructor
@@ -31,4 +31,4 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Currency = Ext.extend(TYPO
 	}
 });
 
-Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-currency', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Currency);
+Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-Currency', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Currency);

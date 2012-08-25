@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Alphanumeric = Ext.extend(
 	 *
 	 * The name of this filter
 	 */
-	filter: 'alphanumeric',
+	filter: 'Alphanumeric',
 
 	/**
 	 * Constructor
@@ -30,4 +30,4 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Alphanumeric = Ext.extend(
 	}
 });
 
-Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-alphanumeric', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Alphanumeric);
+Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-Alphanumeric', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Alphanumeric);
