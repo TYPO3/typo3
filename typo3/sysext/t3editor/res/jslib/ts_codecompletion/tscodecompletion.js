@@ -111,7 +111,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 	 * );
 	 */
 	function loadPluginArray() {
-		var urlParameters = '&ajaxID=tx_t3editor::getPlugins';
+		var urlParameters = '&ajaxID=T3Editor::getPlugins';
 		new Ajax.Request(
 			T3editor.URL_typo3 + 'ajax.php',
 				{
@@ -160,7 +160,7 @@ var TsCodeCompletion = function(codeMirror, outerdiv) {
 	 * this function retrieves the JSON code by comitting a AJAX request
 	 */
 	function loadExtTemplatesAsync() {
-		var urlParameters = '&ajaxID=tx_t3editor_codecompletion::loadTemplates&pageId=' + getGetVar('id');
+		var urlParameters = '&ajaxID=CodeCompletion::loadTemplates&pageId=' + getGetVar('id');
 		new Ajax.Request(
 			T3editor.URL_typo3 + 'ajax.php',
 			{

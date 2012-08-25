@@ -7,8 +7,8 @@ if (TYPO3_MODE == 'BE') {
 	// Register toolbar item
 	$GLOBALS['TYPO3_CONF_VARS']['typo3/backend.php']['additionalBackendItems'][] = $opendocsPath . 'registerToolbarItem.php';
 	// Register AJAX calls
-	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['TYPO3\\CMS\\Opendocs\\Controller\\OpendocsController::renderMenu'] = $opendocsPath . 'class.tx_opendocs.php:TYPO3\\CMS\\Opendocs\\Controller\\OpendocsController->renderAjax';
-	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['TYPO3\\CMS\\Opendocs\\Controller\\OpendocsController::closeDocument'] = $opendocsPath . 'class.tx_opendocs.php:TYPO3\\CMS\\Opendocs\\Controller\\OpendocsController->closeDocument';
+	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['OpendocsController::renderMenu'] = $opendocsPath . 'class.tx_opendocs.php:TYPO3\\CMS\\Opendocs\\Controller\\OpendocsController->renderAjax';
+	$GLOBALS['TYPO3_CONF_VARS']['BE']['AJAX']['OpendocsController::closeDocument'] = $opendocsPath . 'class.tx_opendocs.php:TYPO3\\CMS\\Opendocs\\Controller\\OpendocsController->closeDocument';
 	// Register update signal to update the number of open documents
 	$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['updateSignalHook']['TYPO3\\CMS\\Opendocs\\Controller\\OpendocsController::updateNumber'] = $opendocsPath . 'class.tx_opendocs.php:TYPO3\\CMS\\Opendocs\\Controller\\OpendocsController->updateNumberOfOpenDocsHook';
 	// Register menu module if option is wanted
