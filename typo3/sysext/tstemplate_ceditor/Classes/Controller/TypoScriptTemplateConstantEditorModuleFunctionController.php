@@ -82,7 +82,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 		$manyTemplatesMenu = $this->pObj->templateMenu();
 		$template_uid = 0;
 		if ($manyTemplatesMenu) {
-			$template_uid = $this->pObj->MOD_SETTINGS['TYPO3\\CMS\\Backend\\Template\\DocumentTemplatesOnPage'];
+			$template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
 		}
 		// BUGBUG: Should we check if the uset may at all read and write template-records???
 		// initialize

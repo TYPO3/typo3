@@ -163,7 +163,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 			// Include editor-js-lib
 			$doc->loadJavascriptLib($path_codemirror . 'codemirror.js');
 			$doc->loadJavascriptLib($path_t3e . 'res/jslib/t3editor.js');
-			$content .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS(((((((((((((((((((((((((('T3editor = T3editor || {};' . 'T3editor.lang = ') . json_encode($this->getJavaScriptLabels())) . ';') . LF) . 'T3editor.PATH_t3e = "') . $GLOBALS['BACK_PATH']) . $path_t3e) . '"; ') . LF) . 'T3editor.PATH_codemirror = "') . $GLOBALS['BACK_PATH']) . $path_codemirror) . '"; ') . LF) . 'T3editor.URL_typo3 = "') . htmlspecialchars((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir))) . '"; ') . LF) . 'T3editor.TYPO3\\CMS\\Backend\\Template\\DocumentTemplate = ') . $this->getPreparedTemplate()) . ';') . LF) . 'T3editor.ajaxSavetype = "') . $this->ajaxSaveType) . '";') . LF);
+			$content .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS(((((((((((((((((((((((((('T3editor = T3editor || {};' . 'T3editor.lang = ') . json_encode($this->getJavaScriptLabels())) . ';') . LF) . 'T3editor.PATH_t3e = "') . $GLOBALS['BACK_PATH']) . $path_t3e) . '"; ') . LF) . 'T3editor.PATH_codemirror = "') . $GLOBALS['BACK_PATH']) . $path_codemirror) . '"; ') . LF) . 'T3editor.URL_typo3 = "') . htmlspecialchars((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir))) . '"; ') . LF) . 'T3editor.template = ') . $this->getPreparedTemplate()) . ';') . LF) . 'T3editor.ajaxSavetype = "') . $this->ajaxSaveType) . '";') . LF);
 			$content .= $this->getModeSpecificJavascriptCode();
 		}
 		return $content;

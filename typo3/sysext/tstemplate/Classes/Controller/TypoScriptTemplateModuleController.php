@@ -317,7 +317,7 @@ class TypoScriptTemplateModuleController extends \TYPO3\CMS\Backend\Module\BaseS
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title,uid', 'static_template', '', '', 'title');
 				$opt = '';
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					if (substr(trim($row['title']), 0, 8) == 'TYPO3\\CMS\\Backend\\Template\\DocumentTemplate') {
+					if (substr(trim($row['title']), 0, 8) == 'template') {
 						$opt .= ((('<option value="' . $row['uid']) . '">') . htmlspecialchars($row['title'])) . '</option>';
 					}
 				}

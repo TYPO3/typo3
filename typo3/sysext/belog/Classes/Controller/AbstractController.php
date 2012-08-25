@@ -103,7 +103,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		// circumvented until there is a better solution in extbase.
 		// For now we throw an exception if no settings are detected.
 		if (empty($this->settings)) {
-			throw new \RuntimeException('No settings detected. This usually happens if there is no frontend TypoScript TYPO3\\CMS\\Backend\\Template\\DocumentTemplate with root flag set. ' . 'Please create one.', 1333650506);
+			throw new \RuntimeException('No settings detected. This usually happens if there is no frontend TypoScript template with root flag set. ' . 'Please create one.', 1333650506);
 		}
 		if (!isset($this->settings['dateFormat'])) {
 			$this->settings['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'];

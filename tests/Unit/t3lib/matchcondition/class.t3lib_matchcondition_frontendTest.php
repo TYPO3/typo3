@@ -76,7 +76,7 @@ class t3lib_matchCondition_frontendTest extends tx_phpunit_testcase {
 			0 => array('uid' => 101, 'pid' => 0)
 		);
 		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
-		$GLOBALS['TSFE']->tmpl = $this->getMock('t3lib_TSTYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+		$GLOBALS['TSFE']->tmpl = $this->getMock('t3lib_TStemplate');
 	}
 
 	/**
