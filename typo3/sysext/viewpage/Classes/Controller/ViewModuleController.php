@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\ViewPage\Controller;
+namespace TYPO3\CMS\Viewpage\Controller;
 
 /***************************************************************
  *  Copyright notice
