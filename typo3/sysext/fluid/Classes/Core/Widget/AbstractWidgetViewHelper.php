@@ -1,7 +1,4 @@
 <?php
-declare (ENCODING = 'utf-8') {
-
-}
 namespace TYPO3\CMS\Fluid\Core\Widget;
 
 /*                                                                        *
