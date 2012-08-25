@@ -236,7 +236,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 				$interfaceName2 => array(2 => $this->getMockTypeConverter('Interface2Converter')),
 				$interfaceName3 => array(2 => $this->getMockTypeConverter('Interface3Converter'))
 			),
-			'shouldFailWithException' => 'TYPO3\\CMS\\Extbase\\Property\\Exception_DuplicateTypeConverterException'
+			'shouldFailWithException' => 'TYPO3\\CMS\\Extbase\\Property\\Exception\\DuplicateTypeConverterException'
 		);
 		// If no interface converter wants to handle it, a converter for "object" is looked up.
 		$data[] = array(
@@ -255,21 +255,21 @@ class PropertyMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'target' => 'SomeNotExistingClassName',
 			'expectedConverter' => 'GenericObjectConverter-HighPriority',
 			'typeConverters' => array(),
-			'shouldFailWithException' => 'TYPO3\\CMS\\Extbase\\Property\\Exception_InvalidTargetException'
+			'shouldFailWithException' => 'TYPO3\\CMS\\Extbase\\Property\\Exception\\InvalidTargetException'
 		);
 		// if the type converter is not found, we expect an exception
 		$data[] = array(
 			'target' => $className3,
 			'expectedConverter' => 'Class3Converter',
 			'typeConverters' => array(),
-			'shouldFailWithException' => 'TYPO3\\CMS\\Extbase\\Property\\Exception_TypeConverterException'
+			'shouldFailWithException' => 'TYPO3\\CMS\\Extbase\\Property\\Exception\\TypeConverterException'
 		);
 		// If The target type is no string, we expect an exception.
 		$data[] = array(
 			'target' => new \stdClass(),
 			'expectedConverter' => '',
 			'typeConverters' => array(),
-			'shouldFailWithException' => 'TYPO3\\CMS\\Extbase\\Property\\Exception_InvalidTargetException'
+			'shouldFailWithException' => 'TYPO3\\CMS\\Extbase\\Property\\Exception\\InvalidTargetException'
 		);
 		return $data;
 	}

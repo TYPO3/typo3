@@ -201,7 +201,7 @@ class ContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @param \TYPO3\CMS\Extbase\Object\Container\ClassInfo $value
 	 * @return void
 	 */
-	public function setClassInfoCacheCallback($id, \Tx_Extbase_Object_Container_ClassInfo $value) {
+	public function setClassInfoCacheCallback($id, \TYPO3\CMS\Extbase\Object\Container\ClassInfo $value) {
 		$this->cachedClassInfo = $value;
 	}
 

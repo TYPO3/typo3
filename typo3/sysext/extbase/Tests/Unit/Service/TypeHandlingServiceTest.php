@@ -42,8 +42,7 @@ class TypeHandlingServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
-	 * @author Karsten Dambekalns <karsten@typo3.org>
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function parseTypeThrowsExceptionOnInvalidType() {
 		$this->typeHandlingService->parseType('something not a type');

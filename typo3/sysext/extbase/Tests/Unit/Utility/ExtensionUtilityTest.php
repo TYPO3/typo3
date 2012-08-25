@@ -123,7 +123,7 @@ plugin.tx_myextension {
 		}
 	}
 	view {
-		TYPO3\\CMS\\Backend\\Template\\DocumentTemplateRootPath =
+		templateRootPath =
 		layoutRootPath =
 		partialRootPath =
 		 # with defaultPid you can specify the default page uid of this plugin. If you set this to the string "auto" the target page will be determined automatically. Defaults to an empty string that expects the target page to be the current page.

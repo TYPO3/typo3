@@ -34,7 +34,8 @@ class TypeHandlingService implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * A property type parse pattern.
 	 */
-	const PARSE_TYPE_PATTERN = '/^\\\\?(?P<type>integer|int|float|double|boolean|bool|string|DateTime|Tx_[a-zA-Z0-9_]+|[a-zA-Z0-9\\\\_]+|array|ArrayObject|SplObjectStorage)(?:<(?P<elementType>[a-zA-Z0-9\\\\_]+)>)?/';
+	const PARSE_TYPE_PATTERN = '/^\\\\?(?P<type>integer|int|float|double|boolean|bool|string|DateTime|Tx_[a-zA-Z0-9_]+|[A-Z][a-zA-Z0-9\\\\_]+|array|ArrayObject|SplObjectStorage)(?:<(?P<elementType>[a-zA-Z0-9\\\\_]+)>)?/';
+
 	/**
 	 * A type pattern to detect literal types.
 	 */
@@ -51,14 +52,20 @@ class TypeHandlingService implements \TYPO3\CMS\Core\SingletonInterface {
 			$type = self::normalizeType($matches['type']);
 			$elementType = isset($matches['elementType']) ? self::normalizeType($matches['elementType']) : NULL;
 			if ($elementType !== NULL && !in_array($type, array('array', 'ArrayObject', 'SplObjectStorage', 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', 'Tx_Extbase_Persistence_ObjectStorage'))) {
-				throw new \InvalidArgumentException(((('Type "' . $type) . '" must not have an element type hint (') . $elementType) . ').', 1309255650);
+				throw new \InvalidArgumentException(
+					'Type "' . $type . '" must not have an element type hint (' . $elementType . ').',
+					1309255650
+				);
 			}
 			return array(
 				'type' => $type,
 				'elementType' => $elementType
 			);
 		} else {
-			throw new \InvalidArgumentException('Invalid type encountered: ' . var_export($type, TRUE), 1309255651);
+			throw new \InvalidArgumentException(
+				'Invalid type encountered: ' . var_export($type, TRUE),
+				1309255651
+			);
 		}
 	}
 
