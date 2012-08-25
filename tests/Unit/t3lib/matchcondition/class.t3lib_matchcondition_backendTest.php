@@ -256,8 +256,8 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	 */
 	public function languageConditionMatchesSingleLanguageExpression() {
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
-		$this->assertTrue($this->matchCondition->match('[TYPO3\\CMS\\Lang\\LanguageService = *de*]'));
-		$this->assertTrue($this->matchCondition->match('[TYPO3\\CMS\\Lang\\LanguageService = *de-de*]'));
+		$this->assertTrue($this->matchCondition->match('[language = *de*]'));
+		$this->assertTrue($this->matchCondition->match('[language = *de-de*]'));
 	}
 
 	/**
@@ -267,8 +267,8 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	 */
 	public function languageConditionMatchesMultipleLanguagesExpression() {
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
-		$this->assertTrue($this->matchCondition->match('[TYPO3\\CMS\\Lang\\LanguageService = *en*,*de*]'));
-		$this->assertTrue($this->matchCondition->match('[TYPO3\\CMS\\Lang\\LanguageService = *en-us*,*de-de*]'));
+		$this->assertTrue($this->matchCondition->match('[language = *en*,*de*]'));
+		$this->assertTrue($this->matchCondition->match('[language = *en-us*,*de-de*]'));
 	}
 
 	/**
@@ -279,7 +279,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	public function languageConditionMatchesCompleteLanguagesExpression() {
 		$this->markTestSkipped('This comparison seems to be incomplete in t3lib_matchCondition.');
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
-		$this->assertTrue($this->matchCondition->match('[TYPO3\\CMS\\Lang\\LanguageService = de-de,de;q=0.8]'));
+		$this->assertTrue($this->matchCondition->match('[language = de-de,de;q=0.8]'));
 	}
 
 	/**

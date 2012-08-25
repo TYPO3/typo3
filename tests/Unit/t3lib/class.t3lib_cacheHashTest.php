@@ -44,7 +44,7 @@ class t3lib_cacheHashTest extends tx_phpunit_testcase {
 		$this->confCache = array(
 			'encryptionKey' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']
 		);
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 'TYPO3\\CMS\\Core\\Cache\\CacheHashTest';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = 't3lib_cacheHashTest';
 		$this->fixture = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator', array('foo'));
 		$this->fixture->setConfiguration(array(
 			'excludedParameters' => array('exclude1', 'exclude2'),
@@ -77,11 +77,11 @@ class t3lib_cacheHashTest extends tx_phpunit_testcase {
 		return array(
 			'Empty parameters should not return a hash' => array(array(), ''),
 			'Trivial key value combination should generate hash' => array(
-				array('encryptionKey' => 'TYPO3\\CMS\\Core\\Cache\\CacheHashTest', 'key' => 'value'),
+				array('encryptionKey' => 't3lib_cacheHashTest', 'key' => 'value'),
 				'5cfdcf826275558b3613dd51714a0a17'
 			),
 			'Multiple parameters should generate hash' => array(
-				array('a' => 'v', 'b' => 'v', 'encryptionKey' => 'TYPO3\\CMS\\Core\\Cache\\CacheHashTest'),
+				array('a' => 'v', 'b' => 'v', 'encryptionKey' => 't3lib_cacheHashTest'),
 				'0f40b089cdad149aea99e9bf4badaa93'
 			)
 		);
