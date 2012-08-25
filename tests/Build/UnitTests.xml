@@ -16,6 +16,9 @@
 		<testsuite name="Core Tests">
 			<directory>../../tests/Unit/</directory>
 		</testsuite>
+		<testsuite name="Beuser Tests">
+			<directory>../../typo3/sysext/beuser/Tests/Unit/</directory>
+		</testsuite>
 		<testsuite name="Extbase Tests">
 			<directory>../../typo3/sysext/extbase/Tests/Unit/</directory>
 		</testsuite>
