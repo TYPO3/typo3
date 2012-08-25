@@ -318,7 +318,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	public function replaceObject($existingObject, $newObject) {
 		$existingUid = $this->getIdentifierByObject($existingObject);
 		if ($existingUid === NULL) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnknownObjectException('The given object is unknown to this persistence backend.', 1238070163);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException('The given object is unknown to this persistence backend.', 1238070163);
 		}
 		$this->identityMap->unregisterObject($existingObject);
 		$this->identityMap->registerObject($newObject, $existingUid);

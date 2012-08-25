@@ -50,7 +50,7 @@ class CacheServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
 		$this->cacheManagerBackup = $GLOBALS['typo3CacheManager'];
-		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Cache_Manager');
+		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager');
 		$this->cacheService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Service\\CacheService', array('dummy'));
 	}
 
@@ -93,7 +93,7 @@ class CacheServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function flushPageCacheUsesCacheManagerToFlushCacheOfSpecifiedPages() {
-		$mockCacheFrontend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Cache_frontend_Frontend');
+		$mockCacheFrontend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface');
 		$mockCacheFrontend->expects($this->at(0))->method('flushByTag')->with('pageId_1');
 		$mockCacheFrontend->expects($this->at(1))->method('flushByTag')->with('pageId_2');
 		$mockCacheFrontend->expects($this->at(2))->method('flushByTag')->with('pageId_3');
@@ -105,7 +105,7 @@ class CacheServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function flushPageCacheUsesCacheManagerToFlushCacheOfAllPagesIfPageIdsIsNull() {
-		$mockCacheFrontend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Cache_frontend_Frontend');
+		$mockCacheFrontend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface');
 		$mockCacheFrontend->expects($this->once())->method('flush');
 		$GLOBALS['typo3CacheManager']->expects($this->once())->method('getCache')->with('cache_pages')->will($this->returnValue($mockCacheFrontend));
 		$this->cacheService->_call('flushPageCache');
@@ -115,7 +115,7 @@ class CacheServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function flushPageSectionCacheUsesCacheManagerToFlushCacheOfSpecifiedPageSections() {
-		$mockCacheFrontend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Cache_frontend_Frontend');
+		$mockCacheFrontend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface');
 		$mockCacheFrontend->expects($this->at(0))->method('flushByTag')->with('pageId_1');
 		$mockCacheFrontend->expects($this->at(1))->method('flushByTag')->with('pageId_2');
 		$mockCacheFrontend->expects($this->at(2))->method('flushByTag')->with('pageId_3');
@@ -127,7 +127,7 @@ class CacheServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function flushPageSectionCacheUsesCacheManagerToFlushCacheOfAllPageSectionsIfPageIdsIsNull() {
-		$mockCacheFrontend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Cache_frontend_Frontend');
+		$mockCacheFrontend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface');
 		$mockCacheFrontend->expects($this->once())->method('flush');
 		$GLOBALS['typo3CacheManager']->expects($this->once())->method('getCache')->with('cache_pagesection')->will($this->returnValue($mockCacheFrontend));
 		$this->cacheService->_call('flushPageSectionCache');

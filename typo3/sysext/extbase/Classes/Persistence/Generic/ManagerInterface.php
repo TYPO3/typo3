@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Persistence;
+namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *
@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Extbase\Persistence;
  * @subpackage Persistence
  * @deprecated since Extbase 6.0, will be removed in Extbase 7.0
  */
-interface PersistenceManagerInterface extends \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
+interface ManagerInterface extends \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 {
 	/**
 	 * Returns the current persistence session

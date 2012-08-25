@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Persistence;
+namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 /***************************************************************
  *  Copyright notice

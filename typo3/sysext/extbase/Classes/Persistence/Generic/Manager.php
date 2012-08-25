@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Persistence;
+namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 /***************************************************************
  *  Copyright notice
@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Extbase\Persistence;
  * @version $Id$
  * @api
  */
-class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface, \TYPO3\CMS\Core\SingletonInterface {
+class Manager implements \TYPO3\CMS\Extbase\Persistence\Generic\ManagerInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\BackendInterface

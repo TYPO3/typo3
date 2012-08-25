@@ -127,7 +127,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 */
 	public function add($object) {
 		if (!$object instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\IllegalObjectTypeException(('The object given to add() was not of the type (' . $this->objectType) . ') this repository manages.', 1248363335);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException(('The object given to add() was not of the type (' . $this->objectType) . ') this repository manages.', 1248363335);
 		}
 		$this->addedObjects->attach($object);
 		if ($this->removedObjects->contains($object)) {
@@ -144,7 +144,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 */
 	public function remove($object) {
 		if (!$object instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\IllegalObjectTypeException(('The object given to remove() was not of the type (' . $this->objectType) . ') this repository manages.', 1248363335);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException(('The object given to remove() was not of the type (' . $this->objectType) . ') this repository manages.', 1248363335);
 		}
 		if ($this->addedObjects->contains($object)) {
 			$this->addedObjects->detach($object);
@@ -164,10 +164,10 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 */
 	public function replace($existingObject, $newObject) {
 		if (!$existingObject instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\IllegalObjectTypeException(('The existing object given to replace was not of the type (' . $this->objectType) . ') this repository manages.', 1248363434);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException(('The existing object given to replace was not of the type (' . $this->objectType) . ') this repository manages.', 1248363434);
 		}
 		if (!$newObject instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\IllegalObjectTypeException(('The new object given to replace was not of the type (' . $this->objectType) . ') this repository manages.', 1248363439);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException(('The new object given to replace was not of the type (' . $this->objectType) . ') this repository manages.', 1248363439);
 		}
 		$backend = $this->persistenceManager->getBackend();
 		$session = $this->persistenceManager->getSession();
@@ -187,7 +187,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 			$this->addedObjects->detach($existingObject);
 			$this->addedObjects->attach($newObject);
 		} else {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnknownObjectException('The "existing object" is unknown to the persistence backend.', 1238068475);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException('The "existing object" is unknown to the persistence backend.', 1238068475);
 		}
 	}
 
@@ -199,14 +199,14 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 */
 	public function update($modifiedObject) {
 		if (!$modifiedObject instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\IllegalObjectTypeException(('The modified object given to update() was not of the type (' . $this->objectType) . ') this repository manages.', 1249479625);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException(('The modified object given to update() was not of the type (' . $this->objectType) . ') this repository manages.', 1249479625);
 		}
 		$uid = $modifiedObject->getUid();
 		if ($uid !== NULL) {
 			$existingObject = $this->findByUid($uid);
 			$this->replace($existingObject, $modifiedObject);
 		} else {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnknownObjectException('The "modified object" is does not have an existing counterpart in this repository.', 1249479819);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException('The "modified object" is does not have an existing counterpart in this repository.', 1249479819);
 		}
 	}
 

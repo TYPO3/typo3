@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
+namespace TYPO3\CMS\Extbase\Persistence\Exception;
 
 /*                                                                        *
  * This script belongs to the Extbase framework.                          *
@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Exception;
  * @package Extbase
  * @subpackage Persistence\Exception
  */
-class UnknownObjectException extends \TYPO3\CMS\Extbase\Persistence\Generic\Exception {
+class UnknownObjectException extends \TYPO3\CMS\Extbase\Persistence\Exception {
 
 
 }
