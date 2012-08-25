@@ -39,9 +39,15 @@ class AbstractCompilerTemplateTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTes
 	 * @test
 	 */
 	public function isDefaultEncodingIsSetThanDefaultEncodingWillReturned() {
-		$className = uniqid('TYPO3\\CMS\\Fluid\\Core\\Compiler\\AbstractCompiledTemplate');
-		eval(((('abstract class ' . $className) . ' extends TYPO3\\CMS\\Fluid\\Core\\Compiler\\AbstractCompiledTemplate {') . '  static protected $defaultEncoding = \'ISO-8859-1\';') . '}');
-		$this->assertSame('ISO-8859-1', $className::resolveDefaultEncoding());
+		$className = 'AbstractCompiledTemplate' . uniqid();
+		$fullClassName = 'TYPO3\\CMS\\Fluid\\Core\\Compiler\\' . $className;
+		eval(
+			'namespace TYPO3\\CMS\\Fluid\\Core\\Compiler;' .
+			'abstract class ' . $className . ' extends AbstractCompiledTemplate {' .
+			'  static protected $defaultEncoding = \'ISO-8859-1\';' .
+			'}'
+		);
+		$this->assertSame('ISO-8859-1', $fullClassName::resolveDefaultEncoding());
 	}
 
 }
