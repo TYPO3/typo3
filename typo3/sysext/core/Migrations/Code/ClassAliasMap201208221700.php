@@ -937,7 +937,7 @@ return array(
 	'Tx_Extensionmanager_ViewHelpers_ToggleExtensionInstallationStateViewHelper' => 'TYPO3\\CMS\\Extensionmanager\\ViewHelpers\\ToggleExtensionInstallationStateViewHelper',
 	'Tx_Extensionmanager_ViewHelpers_UpdateFromTerViewHelper' => 'TYPO3\\CMS\\Extensionmanager\\ViewHelpers\\UpdateFromTerViewHelper',
 	'tx_extrapagecmoptions' => 'TYPO3\\CMS\\ExtraPageCmOptions\\ExtraPageContextMenuOptions',
-	'tx_feedit_editpanel' => 'TYPO3\\CMS\\FeEdit\\FrontendEditPanel',
+	'tx_feedit_editpanel' => 'TYPO3\\CMS\\Feedit\\FrontendEditPanel',
 	'tx_felogin_pi1' => 'TYPO3\\CMS\\Felogin\\Controller\\FrontendLoginController',
 	'SC_file_list' => 'TYPO3\\CMS\\Filelist\\Controller\\FileListController',
 	'fileList' => 'TYPO3\\CMS\\Filelist\\FileList',
