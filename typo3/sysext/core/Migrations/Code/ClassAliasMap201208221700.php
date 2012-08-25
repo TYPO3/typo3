@@ -1747,7 +1747,7 @@ return array(
 	'tx_version_tasks_AutoPublish' => 'TYPO3\\CMS\\Version\\Task\\AutoPublishTask',
 	'wslib' => 'TYPO3\\CMS\\Version\\Utility\\WorkspacesUtility',
 	'tx_version_gui' => 'TYPO3\\CMS\\Version\\View\\VersionView',
-	'Tx_Viewpage_Controller_ViewController' => 'TYPO3\\CMS\\ViewPage\\Controller\\ViewModuleController',
+	'Tx_Viewpage_Controller_ViewController' => 'TYPO3\\CMS\\Viewpage\\Controller\\ViewModuleController',
 	'tx_wizardcrpages_webfunc_2' => 'TYPO3\\CMS\\WizardCrpages\\Controller\\CreatePagesWizardModuleFunctionController',
 	'tx_wizardsortpages_webfunc_2' => 'TYPO3\\CMS\\WizardSortPages\\View\\SortPagesWizardModuleFunction',
 	'Tx_Workspaces_Controller_AbstractController' => 'TYPO3\\CMS\\Workspaces\\Controller\\AbstractController',
