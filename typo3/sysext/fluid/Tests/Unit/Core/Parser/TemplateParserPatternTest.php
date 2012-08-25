@@ -18,13 +18,25 @@ class TemplateParserPatternTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	/**
 	 * @test
 	 */
-	public function testSCAN_PATTERN_NAMESPACEDECLARATION() {
-		$pattern = str_replace('FLUID_NAMESPACE_SEPARATOR', preg_quote(\TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR), \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_NAMESPACEDECLARATION);
+	public function testSCAN_PATTERN_LEGACYNAMESPACEDECLARATION() {
+		$pattern = str_replace('FLUID_NAMESPACE_SEPARATOR', preg_quote(\TYPO3\CMS\Fluid\Fluid::LEGACY_NAMESPACE_SEPARATOR), \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_NAMESPACEDECLARATION);
 		$this->assertEquals(preg_match($pattern, '{namespace acme=Tx_AcmeMyPackage_Bla_blubb}'), 1, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did not match a namespace declaration (1).');
 		$this->assertEquals(preg_match($pattern, '{namespace acme=Tx_AcmeMyPackage_Bla_Blubb }'), 1, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did not match a namespace declaration (2).');
 		$this->assertEquals(preg_match($pattern, '    {namespace foo = Tx_Foo_Bla3_Blubb }    '), 1, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did not match a namespace declaration (3).');
 		$this->assertEquals(preg_match($pattern, ' \\{namespace fblubb = Tx_Fluid_Bla3_Blubb }'), 0, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did match a namespace declaration even if it was escaped. (1)');
 		$this->assertEquals(preg_match($pattern, '\\{namespace typo3 = Tx_TYPO3_Bla3_Blubb }'), 0, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did match a namespace declaration even if it was escaped. (2)');
+	}
+
+	/**
+	 * @test
+	 */
+	public function testSCAN_PATTERN_NAMESPACEDECLARATION() {
+		$pattern = str_replace('FLUID_NAMESPACE_SEPARATOR', preg_quote(\TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR), \TYPO3\CMS\Fluid\Core\Parser\TemplateParser::$SCAN_PATTERN_NAMESPACEDECLARATION);
+		$this->assertEquals(preg_match($pattern, '{namespace acme=Acme.MyPackage\Bla\blubb}'), 1, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did not match a namespace declaration (1).');
+		$this->assertEquals(preg_match($pattern, '{namespace acme=Acme.MyPackage\Bla\Blubb }'), 1, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did not match a namespace declaration (2).');
+		$this->assertEquals(preg_match($pattern, '    {namespace foo = Foo\Bla3\Blubb }    '), 1, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did not match a namespace declaration (3).');
+		$this->assertEquals(preg_match($pattern, ' \\{namespace fblubb = TYPO3.Fluid\Bla3\Blubb }'), 0, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did match a namespace declaration even if it was escaped. (1)');
+		$this->assertEquals(preg_match($pattern, '\\{namespace typo3 = TYPO3.TYPO3\Bla3\Blubb }'), 0, 'The SCAN_PATTERN_NAMESPACEDECLARATION pattern did match a namespace declaration even if it was escaped. (2)');
 	}
 
 	/**

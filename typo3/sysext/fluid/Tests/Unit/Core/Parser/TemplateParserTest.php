@@ -36,10 +36,10 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('dummy'));
 		$templateParser->_call('extractNamespaceDefinitions', ' \\{namespace f4=F7\\Rocks} {namespace f4=Tx_Fluid_Really}');
 		$expected = array(
-			'f' => 'Tx_Fluid_ViewHelpers',
+			'f' => 'TYPO3\CMS\Fluid\ViewHelpers',
 			'f4' => 'Tx_Fluid_Really'
 		);
-		$this->assertEquals($templateParser->getNamespaces(), $expected, 'Namespaces do not match.');
+		$this->assertEquals($expected, $templateParser->getNamespaces(), 'Namespaces do not match.');
 	}
 
 	/**
@@ -57,8 +57,8 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function viewHelperNameWithMultipleLevelsCanBeResolvedByResolveViewHelperName() {
 		$mockTemplateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('dummy'), array(), '', FALSE);
 		$result = $mockTemplateParser->_call('resolveViewHelperName', 'f', 'foo.bar.baz');
-		$expected = 'Tx_Fluid_ViewHelpers_Foo_Bar_BazViewHelper';
-		$this->assertEquals($result, $expected, 'The name of the View Helper Name could not be resolved.');
+		$expected = 'TYPO3\CMS\Fluid\ViewHelpers\Foo\Bar\BazViewHelper';
+		$this->assertEquals($expected, $result, 'The name of the View Helper Name could not be resolved.');
 	}
 
 	/**
@@ -67,7 +67,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function viewHelperNameWithOneLevelCanBeResolvedByResolveViewHelperName() {
 		$mockTemplateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('dummy'), array(), '', FALSE);
 		$actual = $mockTemplateParser->_call('resolveViewHelperName', 'f', 'myown');
-		$expected = 'Tx_Fluid_ViewHelpers_MyownViewHelper';
+		$expected = 'TYPO3\CMS\Fluid\ViewHelpers\MyownViewHelper';
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -201,7 +201,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockNodeOnStack = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\NodeInterface');
 		$mockNodeOnStack->expects($this->once())->method('addChildNode')->with($mockViewHelperNode);
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$mockObjectManager->expects($this->at(0))->method('get')->with('Tx_Fluid_ViewHelpers_MyownViewHelper')->will($this->returnValue($mockViewHelper));
+		$mockObjectManager->expects($this->at(0))->method('get')->with('TYPO3\CMS\Fluid\ViewHelpers\MyownViewHelper')->will($this->returnValue($mockViewHelper));
 		$mockObjectManager->expects($this->at(1))->method('create')->with('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode')->will($this->returnValue($mockViewHelperNode));
 		$mockState = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\ParsingState');
 		$mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
@@ -222,7 +222,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockViewHelperNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', array(), array(), '', FALSE);
 		$mockNodeOnStack = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\NodeInterface');
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$mockObjectManager->expects($this->at(0))->method('get')->with('Tx_Fluid_ViewHelpers_MyownViewHelper')->will($this->returnValue($mockViewHelper));
+		$mockObjectManager->expects($this->at(0))->method('get')->with('TYPO3\CMS\Fluid\ViewHelpers\MyownViewHelper')->will($this->returnValue($mockViewHelper));
 		$mockObjectManager->expects($this->at(1))->method('create')->with('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode')->will($this->returnValue($mockViewHelperNode));
 		$mockState = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\ParsingState');
 		$mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
@@ -242,7 +242,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$mockNodeOnStack = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\NodeInterface');
 		$mockNodeOnStack->expects($this->once())->method('addChildNode')->with($mockViewHelperNode);
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
-		$mockObjectManager->expects($this->at(0))->method('get')->with('Tx_Fluid_ViewHelpers_MyownViewHelper')->will($this->returnValue($mockViewHelper));
+		$mockObjectManager->expects($this->at(0))->method('get')->with('TYPO3\CMS\Fluid\ViewHelpers\MyownViewHelper')->will($this->returnValue($mockViewHelper));
 		$mockObjectManager->expects($this->at(1))->method('create')->with('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode')->will($this->returnValue($mockViewHelperNode));
 		$mockState = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\ParsingState');
 		$mockState->expects($this->once())->method('getNodeFromStack')->will($this->returnValue($mockNodeOnStack));
