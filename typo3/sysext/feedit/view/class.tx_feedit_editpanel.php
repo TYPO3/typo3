@@ -2,7 +2,7 @@
 /*
  * @deprecated since 6.0, the classname tx_feedit_editpanel and this file is obsolete
  * and will be removed by 7.0. The class was renamed and is now located at:
- * typo3/sysext/fe_edit/Classes/FrontendEditPanel.php
+ * typo3/sysext/feedit/Classes/FrontendEditPanel.php
  */
-require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('fe_edit') . 'Classes/FrontendEditPanel.php';
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('feedit') . 'Classes/FrontendEditPanel.php';
 ?>
