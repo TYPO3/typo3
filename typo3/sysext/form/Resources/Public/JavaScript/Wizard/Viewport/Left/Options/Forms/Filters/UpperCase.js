@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.UpperCase = Ext.extend(TYP
 	 *
 	 * The name of this filter
 	 */
-	filter: 'uppercase'
+	filter: 'UpperCase'
 });
 
-Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-uppercase', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.UpperCase);
+Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-UpperCase', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.UpperCase);

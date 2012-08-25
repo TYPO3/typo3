@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.TitleCase = Ext.extend(TYP
 	 *
 	 * The name of this filter
 	 */
-	filter: 'titlecase'
+	filter: 'TitleCase'
 });
 
-Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-titlecase', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.TitleCase);
+Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-TitleCase', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.TitleCase);

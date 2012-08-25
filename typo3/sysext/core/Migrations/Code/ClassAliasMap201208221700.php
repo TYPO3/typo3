@@ -1170,7 +1170,7 @@ return array(
 	'Tx_Fluid_ViewHelpers_Widget_UriViewHelper' => 'TYPO3\\CMS\\Fluid\\ViewHelpers\\Widget\\UriViewHelper',
 	'tx_form_Controller_Form' => 'TYPO3\\CMS\\Form\\Controller\\FormController',
 	'tx_form_Controller_Wizard' => 'TYPO3\\CMS\\Form\\Controller\\WizardController',
-	'tx_form_Domain_Factory_JsonToTyposcript' => 'TYPO3\\CMS\\Form\\Domain\\Factory\\JsonToTypoScript',
+	'tx_form_Domain_Factory_JsonToTypoScript' => 'TYPO3\\CMS\\Form\\Domain\\Factory\\JsonToTypoScript',
 	'tx_form_Domain_Factory_Typoscript' => 'TYPO3\\CMS\\Form\\Domain\\Factory\\TypoScriptFactory',
 	'tx_form_Domain_Model_Additional_Abstract' => 'TYPO3\\CMS\\Form\\Domain\\Model\\Additional\\AbstractAdditionalElement',
 	'tx_form_Domain_Model_Additional_Additional' => 'TYPO3\\CMS\\Form\\Domain\\Model\\Additional\\AdditionalAdditionalElement',

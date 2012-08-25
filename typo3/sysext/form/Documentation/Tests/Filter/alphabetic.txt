@@ -1,5 +1,5 @@
-form.filter.alphabetic = FORM
-form.filter.alphabetic {
+form.filter.Alphabetic = FORM
+form.filter.Alphabetic {
 	method = post
 
 	rules {
@@ -18,7 +18,7 @@ form.filter.alphabetic {
 			label = no settings
 			value = John Doe 3
 			filters {
-				1 = alphabetic
+				1 = Alphabetic
 			}
 		}
 		20 = TEXTLINE
@@ -26,7 +26,7 @@ form.filter.alphabetic {
 			label = allowWhiteSpace=1
 			value = John Doe 3
 			filters {
-				1 = alphabetic
+				1 = Alphabetic
 				1 {
 					allowWhiteSpace = 1
 				}

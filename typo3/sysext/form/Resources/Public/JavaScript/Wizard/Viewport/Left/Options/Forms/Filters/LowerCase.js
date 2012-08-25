@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.LowerCase = Ext.extend(TYP
 	 *
 	 * The name of this filter
 	 */
-	filter: 'lowercase'
+	filter: 'LowerCase'
 });
 
-Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-lowercase', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.LowerCase);
+Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-LowerCase', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.LowerCase);

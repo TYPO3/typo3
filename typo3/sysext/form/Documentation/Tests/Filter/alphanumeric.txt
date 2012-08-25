@@ -1,5 +1,5 @@
-form.filter.alphanumeric = FORM
-form.filter.alphanumeric {
+form.filter.Alphanumeric = FORM
+form.filter.Alphanumeric {
 	method = post
 
 	rules {
@@ -18,7 +18,7 @@ form.filter.alphanumeric {
 			label = no settings
 			value = John Doe 3 #$
 			filters {
-				1 = alphanumeric
+				1 = Alphanumeric
 			}
 		}
 		20 = TEXTLINE
@@ -26,7 +26,7 @@ form.filter.alphanumeric {
 			label = allowWhiteSpace=1
 			value = John Doe 3 #$
 			filters {
-				1 = alphanumeric
+				1 = Alphanumeric
 				1 {
 					allowWhiteSpace = 1
 				}

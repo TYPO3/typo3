@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Digit = Ext.extend(TYPO3.F
 	 *
 	 * The name of this filter
 	 */
-	filter: 'digit'
+	filter: 'Digit'
 });
 
-Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-digit', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Digit);
+Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-Digit', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Digit);

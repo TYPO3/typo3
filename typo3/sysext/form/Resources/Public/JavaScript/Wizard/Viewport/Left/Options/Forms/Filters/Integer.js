@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Integer = Ext.extend(TYPO3
 	 *
 	 * The name of this filter
 	 */
-	filter: 'integer'
+	filter: 'Integer'
 });
 
-Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-integer', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Integer);
+Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-Integer', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.Integer);

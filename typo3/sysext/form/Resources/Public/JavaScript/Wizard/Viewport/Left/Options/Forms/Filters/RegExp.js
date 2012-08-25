@@ -12,7 +12,7 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.RegExp = Ext.extend(TYPO3.
 	 *
 	 * The name of this filter
 	 */
-	filter: 'regexp',
+	filter: 'RegExp',
 
 	/**
 	 * Constructor
@@ -30,4 +30,4 @@ TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.RegExp = Ext.extend(TYPO3.
 	}
 });
 
-Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-regexp', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.RegExp);
+Ext.reg('typo3-form-wizard-viewport-left-options-forms-filters-RegExp', TYPO3.Form.Wizard.Viewport.Left.Options.Forms.Filters.RegExp);
