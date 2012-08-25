@@ -78,11 +78,11 @@ class t3lib_cacheHashTest extends tx_phpunit_testcase {
 			'Empty parameters should not return a hash' => array(array(), ''),
 			'Trivial key value combination should generate hash' => array(
 				array('encryptionKey' => 'TYPO3\\CMS\\Core\\Cache\\CacheHashTest', 'key' => 'value'),
-				'5cfdcf826275558b3613dd51714a0a17'
+				'e3598de966ed35213d4a5e47ffb7455e'
 			),
 			'Multiple parameters should generate hash' => array(
 				array('a' => 'v', 'b' => 'v', 'encryptionKey' => 'TYPO3\\CMS\\Core\\Cache\\CacheHashTest'),
-				'0f40b089cdad149aea99e9bf4badaa93'
+				'b9d2a31b02352038f216bcfb074fe73f'
 			)
 		);
 	}
@@ -136,7 +136,7 @@ class t3lib_cacheHashTest extends tx_phpunit_testcase {
 	 * @return array
 	 */
 	public function canGenerateForParametersDataprovider() {
-		$knowHash = '5cfdcf826275558b3613dd51714a0a17';
+		$knowHash = 'e3598de966ed35213d4a5e47ffb7455e';
 		return array(
 			'Empty parameters should not return an hash' => array('', ''),
 			'Querystring has no relevant parameters so we should not have a cacheHash' => array('&exclude1=val', ''),
@@ -146,8 +146,8 @@ class t3lib_cacheHashTest extends tx_phpunit_testcase {
 			'Only the relevant parts should be taken into account' => array('&exclude2=val&key=value', $knowHash),
 			'System parameters should not be taken into account' => array('&id=1&key=value', $knowHash),
 			'Admin panel parameters should not be taken into account' => array('&TSFE_ADMIN_PANEL[display]=7&key=value', $knowHash),
-			'Trivial hash for sorted parameters should be right' => array('a=v&b=v', '0f40b089cdad149aea99e9bf4badaa93'),
-			'Parameters should be sorted before  is created' => array('b=v&a=v', '0f40b089cdad149aea99e9bf4badaa93')
+			'Trivial hash for sorted parameters should be right' => array('a=v&b=v', 'b9d2a31b02352038f216bcfb074fe73f'),
+			'Parameters should be sorted before  is created' => array('b=v&a=v', 'b9d2a31b02352038f216bcfb074fe73f')
 		);
 	}
 
@@ -193,8 +193,8 @@ class t3lib_cacheHashTest extends tx_phpunit_testcase {
 	 * @return array
 	 */
 	public function canWhitelistParametersDataprovider() {
-		$oneParamHash = 'e2c0f2edf08be18bcff2f4272e11f66b';
-		$twoParamHash = 'f6f08c2e10a97d91b6ec61a6e2ddd0e7';
+		$oneParamHash = '50200d9cdf774ad02c615579d69a3316';
+		$twoParamHash = '834136bb1daa97136944bc067ac54daa';
 		return array(
 			'Even with the whitelist enabled, empty parameters should not return an hash.' => array('', ''),
 			'Whitelisted parameters should have a hash.' => array('whitep1=value', $oneParamHash),

@@ -175,7 +175,7 @@ class t3lib_cache_frontend_VariableFrontendTest extends tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException TYPO3\CMS\Core\Error\Exception
 	 */
 	public function getByTagRejectsInvalidTags() {
 		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\Backend', array(), array(), '', FALSE);

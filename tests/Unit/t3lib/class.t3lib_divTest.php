@@ -441,7 +441,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 			'non-empty back' => array(str_pad('', 15, ' ') . '', '::1'),
 			'normalized' => array(('' . str_pad('', 8, ' ')) . ' x', '102:304::506:78'),
 			'expansion in middle 1' => array((' ' . str_pad('', 12, ' ')) . ' ', '1::2'),
-			'expansion in middle 2' => array(('��' . str_pad('', 12, ' ')) . '��', 'beef::fefa')
+			'expansion in middle 2' => array('beef::fefa', "\xbe\xef" . str_pad('', 12, "\x00") . "\xfe\xfa")
 		);
 	}
 
@@ -3609,7 +3609,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function validPathStrWorksWithUnicodeFileNames() {
-		$this->assertTrue(\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr('fileadmin/TYPO3\\CMS\\Backend\\Template\\DocumentTemplates/Ссылка (fce).xml'));
+		$this->assertTrue(\TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr('fileadmin/templates/Ссылка (fce).xml'));
 	}
 
 	/**
