@@ -183,7 +183,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 		$manyTemplatesMenu = $this->pObj->templateMenu();
 		$template_uid = 0;
 		if ($manyTemplatesMenu) {
-			$template_uid = $this->pObj->MOD_SETTINGS['TYPO3\\CMS\\Backend\\Template\\DocumentTemplatesOnPage'];
+			$template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
 		}
 		// BUGBUG: Should we check if the uset may at all read and write template-records???
 		$bType = $this->pObj->MOD_SETTINGS['ts_browser_type'];
@@ -392,7 +392,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 				foreach ($tmpl->parserErrors[$pEkey] as $inf) {
 					$errorLink = '';
 					if ($templateAnalyzerInstalled) {
-						$errorLink = (((' <a href="' . htmlspecialchars((($aHref . '&SET[function]=tx_tstemplateanalyzer&TYPO3\\CMS\\Backend\\Template\\DocumentTemplate=all&SET[ts_analyzer_checkLinenum]=1#line-') . $inf[2]))) . '">') . $GLOBALS['LANG']->getLL('errorShowDetails')) . '</a>';
+						$errorLink = (((' <a href="' . htmlspecialchars((($aHref . '&SET[function]=tx_tstemplateanalyzer&template=all&SET[ts_analyzer_checkLinenum]=1#line-') . $inf[2]))) . '">') . $GLOBALS['LANG']->getLL('errorShowDetails')) . '</a>';
 					}
 					$errMsg[] = (($inf[1] . ': &nbsp; &nbsp;') . $inf[0]) . $errorLink;
 				}

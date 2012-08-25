@@ -183,7 +183,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 		$manyTemplatesMenu = $this->pObj->templateMenu();
 		$template_uid = 0;
 		if ($manyTemplatesMenu) {
-			$template_uid = $this->pObj->MOD_SETTINGS['TYPO3\\CMS\\Backend\\Template\\DocumentTemplatesOnPage'];
+			$template_uid = $this->pObj->MOD_SETTINGS['templatesOnPage'];
 		}
 		// Initialize
 		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
@@ -196,7 +196,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 			// Switch to new template
 			$urlParameters = array(
 				'id' => $this->pObj->id,
-				'SET[TYPO3\\CMS\\Backend\\Template\\DocumentTemplatesOnPage]' => $newId
+				'SET[templatesOnPage]' => $newId
 			);
 			$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($aHref);
@@ -285,7 +285,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 				}
 			}
 			$content = (((\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_template', $tplRow) . '<strong>') . htmlspecialchars($tplRow['title'])) . '</strong>') . htmlspecialchars((trim($tplRow['sitetitle']) ? (' (' . $tplRow['sitetitle']) . ')' : ''));
-			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('TYPO3\\CMS\\Backend\\Template\\DocumentTemplateInformation'), $content, 0, 1);
+			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateInformation'), $content, 0, 1);
 			if ($manyTemplatesMenu) {
 				$theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
 			}
