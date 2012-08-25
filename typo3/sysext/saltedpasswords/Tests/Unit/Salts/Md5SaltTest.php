@@ -37,7 +37,7 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salts;
  * @package TYPO3
  * @subpackage tx_saltedpasswords
  */
-class Md5SaltTest extends tx_phpunit_testcase {
+class Md5SaltTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Keeps instance of object to test.
