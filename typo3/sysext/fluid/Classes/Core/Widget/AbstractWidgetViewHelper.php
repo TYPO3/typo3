@@ -1,6 +1,4 @@
 <?php
-declare(ENCODING = 'utf-8') ;
-
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
