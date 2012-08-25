@@ -106,7 +106,7 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 		$hierar = implode(array_reverse($GLOBALS['tmpl']->ext_getTemplateHierarchyArr($GLOBALS['tmpl']->hierarchyInfoArr, '', array(), 1)), '');
 		$hierar = (('<table id="ts-analyzer" cellpadding="0" cellspacing="0">' . $head) . $hierar) . '</table>';
 		$theOutput .= $this->pObj->doc->spacer(5);
-		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('TYPO3\\CMS\\Backend\\Template\\DocumentTemplateHierarchy', TRUE), $hierar, 0, 1);
+		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateHierarchy', TRUE), $hierar, 0, 1);
 		$urlParameters = array(
 			'id' => $GLOBALS['SOBE']->id,
 			'template' => 'all'

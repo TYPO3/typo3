@@ -10,7 +10,7 @@
  ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Web>Template, Info/Modify',
-	'description' => 'Quick and easy editing of TYPO3\\CMS\\Backend\\Template\\DocumentTemplate record Setup and Constants fields. Allows editing of attached txt-resource files.',
+	'description' => 'Quick and easy editing of template record Setup and Constants fields. Allows editing of attached txt-resource files.',
 	'category' => 'module',
 	'shy' => 1,
 	'dependencies' => 'tstemplate',
