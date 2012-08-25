@@ -19,6 +19,9 @@
 		<testsuite name="EXT:backend Tests">
 			<directory>../../typo3/sysext/backend/Tests/Unit/</directory>
 		</testsuite>
+		<testsuite name="EXT:frontend Tests">
+			<directory>../../typo3/sysext/frontend/Tests/Unit/</directory>
+		</testsuite>
 		<testsuite name="Core Tests">
 			<directory>../../tests/Unit/</directory>
 		</testsuite>
