@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\FeEdit;
+namespace TYPO3\CMS\Feedit;
 
 /***************************************************************
  *  Copyright notice
@@ -186,7 +186,7 @@ class FrontendEditPanel {
 	 * @return string The input content string, possibly with edit icons added (not necessarily in the end but just after the last string of normal content.
 	 */
 	public function editIcons($content, $params, array $conf = array(), $currentRecord = '', array $dataArr = array(), $addUrlParamStr = '', $table, $editUid, $fieldList) {
-		// Special content is about to be shown, so the cache must be disabled.
+			// Special content is about to be shown, so the cache must be disabled.
 		$GLOBALS['TSFE']->set_no_cache();
 		$style = $conf['styleAttribute'] ? (' style="' . htmlspecialchars($conf['styleAttribute'])) . '"' : '';
 		$iconTitle = $this->cObj->stdWrap($conf['iconTitle'], $conf['iconTitle.']);
