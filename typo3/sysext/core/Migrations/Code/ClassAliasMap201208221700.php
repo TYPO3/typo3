@@ -1704,7 +1704,7 @@ return array(
 	'tx_scheduler_CronCmd_NormalizeTest' => 'TYPO3\\CMS\\Scheduler\\Tests\\Unit\\CrondCommand\\NormalizeCommandTest',
 	'tx_scheduler_CachingFrameworkGarbageCollectionTest' => 'TYPO3\\CMS\\Scheduler\\Tests\\Unit\\Task\\CachingFrameworkGarbageCollectionTest',
 	'SC_mod_user_setup_index' => 'TYPO3\\CMS\\Setup\\Controller\\SetupModuleController',
-	'tx_statictemplates' => 'TYPO3\\CMS\\StaticTemplates\\StaticTemplatesHook',
+	'tx_statictemplates' => 'TYPO3\\CMS\\Statictemplates\\StaticTemplatesHook',
 	'tx_sv_authbase' => 'TYPO3\\CMS\\Sv\\AbstractAuthenticationService',
 	'tx_sv_auth' => 'TYPO3\\CMS\\Sv\\AuthenticationService',
 	'tx_sv_loginformhook' => 'TYPO3\\CMS\\Sv\\LoginFormHook',
