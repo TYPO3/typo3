@@ -37,7 +37,7 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Utility;
  * @package TYPO3
  * @subpackage tx_saltedpasswords
  */
-class SaltedPasswordsUtilityTest extends tx_phpunit_testcase {
+class SaltedPasswordsUtilityTest extends \tx_phpunit_testcase {
 
 	protected $backupGlobals = TRUE;
 
