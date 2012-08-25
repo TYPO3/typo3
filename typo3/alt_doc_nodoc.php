@@ -44,7 +44,7 @@ require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('opendocs') . '
  */
 require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('backend') . 'Classes/Controller/NoDocumentsOpenController.php';
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Controller\\EditDocumentController_nodoc');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Backend\Controller\NoDocumentsOpenController');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
