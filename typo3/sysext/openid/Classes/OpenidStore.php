@@ -8,7 +8,7 @@ namespace TYPO3\CMS\Openid;
  * @package TYPO3
  * @subpackage tx_openid
  */
-class OpenidStore extends Auth_OpenID_OpenIDStore {
+class OpenidStore extends \Auth_OpenID_OpenIDStore {
 
 	const ASSOCIATION_TABLE_NAME = 'tx_openid_assoc_store';
 	const ASSOCIATION_EXPIRATION_SAFETY_INTERVAL = 120;
@@ -20,11 +20,11 @@ class OpenidStore extends Auth_OpenID_OpenIDStore {
 	 * Sores the association for future use
 	 *
 	 * @param string $serverUrl Server URL
-	 * @param Auth_OpenID_Association $association OpenID association
+	 * @param \Auth_OpenID_Association $association OpenID association
 	 * @return void
 	 */
 	public function storeAssociation($serverUrl, $association) {
-		/* @var $association Auth_OpenID_Association */
+		/* @var $association \Auth_OpenID_Association */
 		$GLOBALS['TYPO3_DB']->sql_query('START TRANSACTION');
 		if ($this->doesAssociationExist($serverUrl, $association->handle)) {
 			$this->updateExistingAssociation($serverUrl, $association);
@@ -50,7 +50,7 @@ class OpenidStore extends Auth_OpenID_OpenIDStore {
 	 *
 	 * @param string $serverUrl Server URL
 	 * @param string $handle Association handle (optional)
-	 * @return Auth_OpenID_Association
+	 * @return \Auth_OpenID_Association
 	 */
 	public function getAssociation($serverUrl, $handle = NULL) {
 		$this->cleanupAssociations();
@@ -102,9 +102,9 @@ class OpenidStore extends Auth_OpenID_OpenIDStore {
 	/**
 	 * Checks if this nonce was already used
 	 *
-	 * @param $serverUrl Server URL
-	 * @param $timestamp Time stamp
-	 * @param $salt Nonce value
+	 * @param string $serverUrl Server URL
+	 * @param integer $timestamp Time stamp
+	 * @param string $salt Nonce value
 	 * @return boolean TRUE if nonce was not used before anc can be used now
 	 */
 	public function useNonce($serverUrl, $timestamp, $salt) {
@@ -137,7 +137,7 @@ class OpenidStore extends Auth_OpenID_OpenIDStore {
 	 * Checks if such association exists.
 	 *
 	 * @param string $serverUrl Server URL
-	 * @param Auth_OpenID_Association $association OpenID association
+	 * @param \Auth_OpenID_Association $association OpenID association
 	 * @return boolean
 	 */
 	protected function doesAssociationExist($serverUrl, $association) {
@@ -150,7 +150,7 @@ class OpenidStore extends Auth_OpenID_OpenIDStore {
 	 * Updates existing association.
 	 *
 	 * @param string $serverUrl Server URL
-	 * @param Auth_OpenID_Association $association OpenID association
+	 * @param \Auth_OpenID_Association $association OpenID association
 	 * @return void
 	 */
 	protected function updateExistingAssociation($serverUrl, \Auth_OpenID_Association $association) {
@@ -166,8 +166,8 @@ class OpenidStore extends Auth_OpenID_OpenIDStore {
 	/**
 	 * Stores new association to the database.
 	 *
-	 * @param $serverUrl Server URL
-	 * @param $association OpenID association
+	 * @param string $serverUrl Server URL
+	 * @param \Auth_OpenID_Association $association OpenID association
 	 * @return void
 	 */
 	protected function storeNewAssociation($serverUrl, $association) {
@@ -188,7 +188,7 @@ class OpenidStore extends Auth_OpenID_OpenIDStore {
 	/**
 	 * Updates association time stamp.
 	 *
-	 * @param $recordId Association record id in the database
+	 * @param integer $recordId Association record id in the database
 	 * @return void
 	 */
 	protected function updateAssociationTimeStamp($recordId) {
