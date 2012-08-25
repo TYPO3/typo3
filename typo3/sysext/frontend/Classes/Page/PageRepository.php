@@ -315,11 +315,11 @@ class PageRepository {
 				// Currently the showHiddenRecords of TSFE set will allow pages_language_overlay records to be selected as they are child-records of a page.
 				// However you may argue that the showHiddenField flag should determine this. But that's not how it's done right now.
 				// Selecting overlay record:
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fieldArr), 'sys_language_overlay', ((('pid=' . intval($page_id)) . '
-								AND sys_language_uid=') . intval($lUid)) . $this->enableFields('sys_language_overlay'), '', '', '1');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fieldArr), 'pages_language_overlay', ((('pid=' . intval($page_id)) . '
+								AND sys_language_uid=') . intval($lUid)) . $this->enableFields('pages_language_overlay'), '', '', '1');
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				$this->versionOL('sys_language_overlay', $row);
+				$this->versionOL('pages_language_overlay', $row);
 				if (is_array($row)) {
 					$row['_PAGES_OVERLAY'] = TRUE;
 					$row['_PAGES_OVERLAY_UID'] = $row['uid'];
