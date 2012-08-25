@@ -68,7 +68,7 @@ class ModuleController {
 				'defCol' => array(('<td><img src="' . $this->doc->backPath) . 'clear.gif" width=10 height=1></td><td valign="top" nowrap>', '</td>')
 			)
 		);
-		$indexer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController_indexer');
+		$indexer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
 		$indexer->initializeExternalParsers();
 	}
 
