@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\FeLogin\Controller;
+namespace TYPO3\CMS\Felogin\Controller;
 
 /***************************************************************
  *  Copyright notice
@@ -31,8 +31,8 @@ namespace TYPO3\CMS\FeLogin\Controller;
  * Plugin 'Website User Login' for the 'felogin' extension.
  *
  * @author Steffen Kamper <info@sk-typo3.de>
- * @package 	TYPO3
- * @subpackage tx_felogin
+ * @package TYPO3
+ * @subpackage felogin
  */
 class FrontendLoginController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 

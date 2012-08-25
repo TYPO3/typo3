@@ -82,10 +82,10 @@ class SaltedPasswordsUtility {
 	 * encrypts the new password before storing in database
 	 *
 	 * @param array $params Parameter the hook delivers
-	 * @param \TYPO3\CMS\FeLogin\Controller\FrontendLoginController $pObj Parent Object from which the hook is called
+	 * @param \TYPO3\CMS\Felogin\Controller\FrontendLoginController $pObj Parent Object from which the hook is called
 	 * @return void
 	 */
-	public function feloginForgotPasswordHook(array &$params, \TYPO3\CMS\FeLogin\Controller\FrontendLoginController $pObj) {
+	public function feloginForgotPasswordHook(array &$params, \TYPO3\CMS\Felogin\Controller\FrontendLoginController $pObj) {
 		if (self::isUsageEnabled('FE')) {
 			$this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance();
 			$params['newPassword'] = $this->objInstanceSaltedPW->getHashedPassword($params['newPassword']);
