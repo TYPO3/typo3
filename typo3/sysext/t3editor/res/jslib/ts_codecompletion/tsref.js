@@ -40,7 +40,7 @@ var TsRefProperty = function(parentType,name,value) {
 	var descriptionCache = null;
 	this.getDescription = function(callBack) {
 		if(descriptionCache == null){
-			var urlParameters = '&ajaxID=tx_t3editor_TSrefLoader::getDescription' +
+			var urlParameters = '&ajaxID=T3Editor_TSrefLoader::getDescription' +
 				'&typeId=' + this.parentType +
 				'&parameterName=' + this.name;
 
@@ -89,7 +89,7 @@ var TsRef = function() {
 	var doc;
 
 	this.loadTsrefAsync = function() {
-		var urlParameters = '&ajaxID=tx_t3editor_TSrefLoader::getTypes';
+		var urlParameters = '&ajaxID=T3Editor_TSrefLoader::getTypes';
 		new Ajax.Request(
 			T3editor.URL_typo3 + 'ajax.php',
 			{

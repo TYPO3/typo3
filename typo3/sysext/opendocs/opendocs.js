@@ -85,7 +85,7 @@ var OpenDocs = Class.create({
 			this.menu,
 			this.ajaxScript, {
 				parameters: {
-					ajaxID: 'tx_opendocs::renderMenu'
+					ajaxID: 'OpendocsController::renderMenu'
 				},
 				onComplete: function(xhr) {
 					this.toolbarItemIcon.src = origToolbarItemIcon;
@@ -123,7 +123,7 @@ var OpenDocs = Class.create({
 			this.menu,
 			this.ajaxScript, {
 				parameters: {
-					ajaxID: 'tx_opendocs::closeDocument',
+					ajaxID: 'OpendocsController::closeDocument',
 					md5sum: md5sum
 				},
 				onComplete: function() {

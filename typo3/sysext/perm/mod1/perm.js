@@ -62,7 +62,7 @@ function jumpToUrl(URL)	{ window.location.href = URL; }
 var WebPermissions = {
 
     thisScript: 'ajax.php',
-	ajaxID: 'SC_mod_web_perm_ajax::dispatch',
+	ajaxID: 'PermissionAjaxController::dispatch',
 
 		// set the permission bits through an ajax call
 	setPermissions: function(page, bits, mode, who, permissions) {
