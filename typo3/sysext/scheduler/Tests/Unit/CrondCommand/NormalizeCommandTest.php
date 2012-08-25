@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CrondCommand;
  * @package TYPO3
  * @subpackage tx_scheduler
  */
-class NormalizeCommandTest extends tx_phpunit_testcase {
+class NormalizeCommandTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Create a subclass of tx_scheduler_CronCmd_Normalize with
@@ -39,11 +39,46 @@ class NormalizeCommandTest extends tx_phpunit_testcase {
 	 * @return string Name of the accessible proxy class
 	 */
 	protected function getAccessibleProxy() {
-		$className = 'TYPO3\\CMS\\Scheduler\\CronCommand\\CronCommand_NormalizeAccessibleProxy';
+		$className = 'NormalizeCommand' . uniqid();
+		$fullClassName = 'TYPO3\\CMS\\Scheduler\\CronCommand\\' . $className;
 		if (!class_exists($className, FALSE)) {
-			eval((((((((((((((((((((((((((((((((('class ' . $className) . ' extends TYPO3\\CMS\\Scheduler\\CronCommand\\CronCommand_Normalize {') . '  public static function convertKeywordsToCronCommand($cronCommand) {') . '    return parent::convertKeywordsToCronCommand($cronCommand);') . '  }') . '  public static function normalizeFields($cronCommand) {') . '    return parent::normalizeFields($cronCommand);') . '  }') . '  public static function normalizeMonthAndWeekdayField($expression, $isMonthField = TRUE) {') . '    return parent::normalizeMonthAndWeekdayField($expression, $isMonthField);') . '  }') . '  public static function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59) {') . '    return parent::normalizeIntegerField($expression, $lowerBound, $upperBound);') . '  }') . '  public static function splitFields($cronCommand) {') . '    return parent::splitFields($cronCommand);') . '  }') . '  public static function convertRangeToListOfValues($range) {') . '    return parent::convertRangeToListOfValues($range);') . '  }') . '  public static function reduceListOfValuesByStepValue($stepExpression) {') . '    return parent::reduceListOfValuesByStepValue($stepExpression);') . '  }') . '  public static function normalizeMonthAndWeekday($expression, $isMonth = TRUE) {') . '    return parent::normalizeMonthAndWeekday($expression, $isMonth);') . '  }') . '  public static function normalizeMonth($month) {') . '    return parent::normalizeMonth($month);') . '  }') . '  public static function normalizeWeekday($weekday) {') . '    return parent::normalizeWeekday($weekday);') . '  }') . '}');
+			eval(
+				'namespace TYPO3\CMS\Scheduler\CronCommand;' .
+				'class ' . $className . ' extends NormalizeCommand {' .
+				'  public static function convertKeywordsToCronCommand($cronCommand) {' .
+				'    return parent::convertKeywordsToCronCommand($cronCommand);' .
+				'  }' .
+				'  public static function normalizeFields($cronCommand) {' .
+				'    return parent::normalizeFields($cronCommand);' .
+				'  }' .
+				'  public static function normalizeMonthAndWeekdayField($expression, $isMonthField = TRUE) {' .
+				'    return parent::normalizeMonthAndWeekdayField($expression, $isMonthField);' .
+				'  }' .
+				'  public static function normalizeIntegerField($expression, $lowerBound = 0, $upperBound = 59) {' .
+				'    return parent::normalizeIntegerField($expression, $lowerBound, $upperBound);' .
+				'  }' .
+				'  public static function splitFields($cronCommand) {' .
+				'    return parent::splitFields($cronCommand);' .
+				'  }' .
+				'  public static function convertRangeToListOfValues($range) {' .
+				'    return parent::convertRangeToListOfValues($range);' .
+				'  }' .
+				'  public static function reduceListOfValuesByStepValue($stepExpression) {' .
+				'    return parent::reduceListOfValuesByStepValue($stepExpression);' .
+				'  }' .
+				'  public static function normalizeMonthAndWeekday($expression, $isMonth = TRUE) {' .
+				'    return parent::normalizeMonthAndWeekday($expression, $isMonth);' .
+				'  }' .
+				'  public static function normalizeMonth($month) {' .
+				'    return parent::normalizeMonth($month);' .
+				'  }' .
+				'  public static function normalizeWeekday($weekday) {' .
+				'    return parent::normalizeWeekday($weekday);' .
+				'  }' .
+				'}'
+			);
 		}
-		return $className;
+		return $fullClassName;
 	}
 
 	/**
