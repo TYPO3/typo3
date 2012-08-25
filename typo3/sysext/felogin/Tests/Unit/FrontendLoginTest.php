@@ -1,37 +1,37 @@
 <?php
-namespace TYPO3\CMS\FeLogin\Tests\Unit;
+namespace TYPO3\CMS\Felogin\Tests\Unit;
 
 /**
- * Testcase for URL validation in class tx_felogin_pi1
+ * Testcase for URL validation in class FrontendLoginController
  *
  * @author Helmut Hummel <helmut@typo3.org>
  * @package TYPO3
- * @subpackage tests/typo3/sysext/felogin
+ * @subpackage felogin
  */
-class FrontendLoginTest extends tx_phpunit_testcase {
+class FrontendLoginTest extends \tx_phpunit_testcase {
 
 	/**
-	 * @var 	array
+	 * @var array
 	 */
 	private $backupGlobalVariables;
 
 	/**
-	 * @var 	tx_felogin_pi1
+	 * @var FrontendLoginController
 	 */
 	private $txFelogin;
 
 	/**
-	 * @var 	string
+	 * @var string
 	 */
 	private $testHostName;
 
 	/**
-	 * @var 	string
+	 * @var string
 	 */
 	private $testSitePath;
 
 	/**
-	 * @var 	string
+	 * @var string
 	 */
 	private $testTableName;
 
@@ -47,7 +47,7 @@ class FrontendLoginTest extends tx_phpunit_testcase {
 		// We need to subclass because the method we want to test is protected
 		$className = uniqid('FeLogin_');
 		eval(('
-			class ' . $className) . ' extends TYPO3\\CMS\\FeLogin\\Controller\\FrontendLoginController {
+			class ' . $className) . ' extends TYPO3\\CMS\\Felogin\\Controller\\FrontendLoginController {
 				public function validateRedirectUrl($url) {
 					return parent::validateRedirectUrl($url);
 				}
@@ -263,6 +263,5 @@ class FrontendLoginTest extends tx_phpunit_testcase {
 	}
 
 }
-
 
 ?>
