@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\StaticTemplates;
+namespace TYPO3\CMS\Statictemplates;
 
 /***************************************************************
  *  Copyright notice
@@ -31,7 +31,7 @@ namespace TYPO3\CMS\StaticTemplates;
  * Statictemplates
  *
  * @author Kasper Skårhøj (kasperYYYY@typo3.com)
- * @author Benjamin Mack (benn@typo3.org)
+ * @author Benjamin Mack (benni@typo3.org)
  */
 class StaticTemplatesHook {
 
@@ -43,16 +43,15 @@ class StaticTemplatesHook {
 	 * @return void
 	 */
 	public function includeStaticTypoScriptSources(&$params, &$pObj) {
-		// Static Template Records (static_template): include_static is a
-		// list of static templates to include
+			// Static Template Records (static_template): include_static is a list of static templates to include
 		if (trim($params['row']['include_static'])) {
 			$includeStaticArr = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $params['row']['include_static']);
-			// traversing list
+				// Traversing list
 			foreach ($includeStaticArr as $id) {
-				// if $id is not already included ...
+					// If $id is not already included ...
 				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($params['idList'], ('static_' . $id))) {
 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'static_template', 'uid = ' . intval($id));
-					// there was a template, then we fetch that
+						// ... there was a template, then we fetch that
 					if ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 						$subrow = $pObj->prependStaticExtra($subrow);
 						$pObj->processTemplate($subrow, ($params['idList'] . ',static_') . $id, $params['pid'], 'static_' . $id, $params['templateId']);
@@ -64,6 +63,5 @@ class StaticTemplatesHook {
 	}
 
 }
-
 
 ?>
