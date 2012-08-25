@@ -382,7 +382,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 * @return string Hyperlink with icon and appropriate JavaScript
 	 */
 	protected function openInNewWindow() {
-		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT');
+		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 		$onClick = ('devlogWin=window.open(\'' . $url) . '\',\'taskcenter\',\'width=790,status=0,menubar=1,resizable=1,location=0,scrollbars=1,toolbar=0\');return false;';
 		$content = ((((((('<a href="#" onclick="' . htmlspecialchars($onClick)) . '">') . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/open_in_new_window.gif', 'width="19" height="14"')) . ' title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.openInNewWindow', 1)) . '" class="absmiddle" alt="" />') . '</a>';
 		return $content;
