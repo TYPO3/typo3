@@ -74,7 +74,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				'disable' => $task->isDisabled(),
 				'serialized_task_object' => 'RESERVED'
 			);
-			$result = $GLOBALS['TYPO3_DB']->exec_INSERTquery('TYPO3\\CMS\\Scheduler\\Scheduler_task', $fields);
+			$result = $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_scheduler_task', $fields);
 			if ($result) {
 				$task->setTaskUid($GLOBALS['TYPO3_DB']->sql_insert_id());
 				$task->save();
@@ -257,7 +257,6 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Scheduler\Task The fetched task object
 	 */
 	public function fetchTask($uid = 0) {
-		$whereClause = '';
 		// Define where clause
 		// If no uid is given, take any non-disabled task which has a next execution time in the past
 		if (empty($uid)) {
@@ -337,7 +336,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('serialized_task_object', 'tx_scheduler_task', $whereClause);
 		if ($res) {
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				/** @var $task tx_scheduler_task */
+				/** @var $task Task */
 				$task = unserialize($row['serialized_task_object']);
 				// Add the task to the list only if it is valid
 				if ($this->isValidTaskObject($task)) {
