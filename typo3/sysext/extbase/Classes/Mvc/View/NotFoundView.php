@@ -70,7 +70,7 @@ class NotFoundView extends \TYPO3\CMS\Extbase\Mvc\View\AbstractView {
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	protected function getTemplatePathAndFilename() {
-		return \t3lib_extmgm::extPath('extbase') . 'Resources/Private/MVC/NotFoundView_Template.html';
+		return \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('extbase') . 'Resources/Private/MVC/NotFoundView_Template.html';
 	}
 
 	/**

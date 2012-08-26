@@ -53,7 +53,7 @@ class TypeHandlingService implements \TYPO3\CMS\Core\SingletonInterface {
 		if (preg_match(self::PARSE_TYPE_PATTERN, $type, $matches)) {
 			$type = self::normalizeType($matches['type']);
 			$elementType = isset($matches['elementType']) ? self::normalizeType($matches['elementType']) : NULL;
-			if ($elementType !== NULL && !in_array($type, array('array', 'ArrayObject', 'SplObjectStorage', 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', 'Tx_Extbase_Persistence_ObjectStorage'))) {
+			if ($elementType !== NULL && !in_array($type, array('array', 'ArrayObject', 'SplObjectStorage', 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', '\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage'))) {
 				throw new \InvalidArgumentException(
 					'Type "' . $type . '" must not have an element type hint (' . $elementType . ').',
 					1309255650

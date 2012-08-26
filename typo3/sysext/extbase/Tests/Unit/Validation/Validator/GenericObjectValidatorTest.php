@@ -51,13 +51,13 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 	 * @return array
 	 */
 	public function dataProviderForValidator() {
-		$error1 = new \Tx_Extbase_Error_Error('error1', 1);
-		$error2 = new \Tx_Extbase_Error_Error('error2', 2);
-		$emptyResult1 = new \Tx_Extbase_Error_Result();
-		$emptyResult2 = new \Tx_Extbase_Error_Result();
-		$resultWithError1 = new \Tx_Extbase_Error_Result();
+		$error1 = new \TYPO3\CMS\Extbase\Error\Error('error1', 1);
+		$error2 = new \TYPO3\CMS\Extbase\Error\Error('error2', 2);
+		$emptyResult1 = new \TYPO3\CMS\Extbase\Error\Result();
+		$emptyResult2 = new \TYPO3\CMS\Extbase\Error\Result();
+		$resultWithError1 = new \TYPO3\CMS\Extbase\Error\Result();
 		$resultWithError1->addError($error1);
-		$resultWithError2 = new \Tx_Extbase_Error_Result();
+		$resultWithError2 = new \TYPO3\CMS\Extbase\Error\Result();
 		$resultWithError2->addError($error2);
 		$classNameForObjectWithPrivateProperties = 'B' . md5(uniqid(mt_rand(), TRUE));
 		eval(('class ' . $classNameForObjectWithPrivateProperties) . '{ protected $foo = \'foovalue\'; protected $bar = \'barvalue\'; }');
@@ -102,8 +102,8 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 		$B = new $classNameB();
 		$A->b = $B;
 		$B->a = $A;
-		$aValidator = new \Tx_Extbase_Validation_Validator_GenericObjectValidator(array());
-		$bValidator = new \Tx_Extbase_Validation_Validator_GenericObjectValidator(array());
+		$aValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator(array());
+		$bValidator = new \TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator(array());
 		$aValidator->addPropertyValidator('b', $bValidator);
 		$bValidator->addPropertyValidator('a', $aValidator);
 		$this->assertFalse($aValidator->validate($A)->hasErrors());
@@ -126,8 +126,8 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 		$bValidator = $this->getValidator();
 		$aValidator->addPropertyValidator('b', $bValidator);
 		$bValidator->addPropertyValidator('a', $aValidator);
-		$error = new \Tx_Extbase_Error_Error('error1', 123);
-		$result = new \Tx_Extbase_Error_Result();
+		$error = new \TYPO3\CMS\Extbase\Error\Error('error1', 123);
+		$result = new \TYPO3\CMS\Extbase\Error\Result();
 		$result->addError($error);
 		$mockUuidValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
 		$mockUuidValidator->expects($this->any())->method('validate')->with(15)->will($this->returnValue($result));
@@ -152,8 +152,8 @@ class GenericObjectValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validatio
 		$bValidator = $this->getValidator();
 		$aValidator->addPropertyValidator('b', $bValidator);
 		$bValidator->addPropertyValidator('a', $aValidator);
-		$error1 = new \Tx_Extbase_Error_Error('error1', 123);
-		$result1 = new \Tx_Extbase_Error_Result();
+		$error1 = new \TYPO3\CMS\Extbase\Error\Error('error1', 123);
+		$result1 = new \TYPO3\CMS\Extbase\Error\Result();
 		$result1->addError($error1);
 		$mockUuidValidator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface', array('validate'));
 		$mockUuidValidator->expects($this->any())->method('validate')->with(15)->will($this->returnValue($result1));

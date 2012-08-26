@@ -571,7 +571,7 @@ class Argument {
 	}
 
 	/**
-	 * @return array<Tx_Extbase_Error_Result> Validation errors which have occured.
+	 * @return array<\TYPO3\CMS\Extbase\Error\Result> Validation errors which have occured.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
 	 */

@@ -73,7 +73,7 @@ class FrontendRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestH
 			$contentObject = $this->configurationManager->getContentObject();
 			if ($contentObject->getUserObjectType() === \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER) {
 				$contentObject->convertToUserIntObject();
-				// tslib_cObj::convertToUserIntObject() will recreate the object, so we have to stop the request here
+				// \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::convertToUserIntObject() will recreate the object, so we have to stop the request here
 				return NULL;
 			}
 			$request->setIsCached(FALSE);

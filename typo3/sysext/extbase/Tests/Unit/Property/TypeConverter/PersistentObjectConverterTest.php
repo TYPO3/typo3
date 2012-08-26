@@ -43,7 +43,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 	protected $mockObjectManager;
 
 	public function setUp() {
-		$this->converter = new \Tx_Extbase_Property_TypeConverter_PersistentObjectConverter();
+		$this->converter = new \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter();
 		$this->mockReflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service');
 		$this->converter->injectReflectionService($this->mockReflectionService);
 		$this->mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
@@ -144,7 +144,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 	public function getTypeOfChildPropertyShouldUseConfiguredTypeIfItWasSet() {
 		$this->mockReflectionService->expects($this->never())->method('getClassSchema');
 		$configuration = $this->buildConfiguration(array());
-		$configuration->forProperty('thePropertyName')->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, 'Foo\\Bar');
+		$configuration->forProperty('thePropertyName')->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_TARGET_TYPE, 'Foo\\Bar');
 		$this->assertEquals('Foo\\Bar', $this->converter->getTypeOfChildProperty('foo', 'thePropertyName', $configuration));
 	}
 
@@ -195,7 +195,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
 	 */
 	protected function buildConfiguration($typeConverterOptions) {
-		$configuration = new \Tx_Extbase_Property_PropertyMappingConfiguration();
+		$configuration = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
 		$configuration->setTypeConverterOptions('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\PersistentObjectConverter', $typeConverterOptions);
 		return $configuration;
 	}
@@ -206,7 +206,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 	 */
 	public function convertFromShouldCloneTheFetchedObjectIfObjectNeedsToBeModified() {
 		$identifier = '12345';
-		$object = new \Tx_Extbase_Fixtures_ClassWithSetters();
+		$object = new \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSetters();
 		$object->someProperty = 'asdf';
 		$source = array(
 			'__identity' => $identifier,
@@ -216,7 +216,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 			'property1' => 'someConvertedValue'
 		);
 		$this->mockPersistenceManager->expects($this->once())->method('getObjectByIdentifier')->with($identifier)->will($this->returnValue($object));
-		$configuration = $this->buildConfiguration(array(\Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => TRUE));
+		$configuration = $this->buildConfiguration(array(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED => TRUE));
 		$actual = $this->converter->convertFrom($source, 'MySpecialType', $convertedChildProperties, $configuration);
 		$this->assertNotSame($object, $actual, 'The object has not been cloned.');
 		$this->assertEquals('asdf', $actual->someProperty, 'The object somehow lost its current state.');
@@ -226,7 +226,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 	/**
 	 * @param integer $numberOfResults
 	 * @param Matcher $howOftenIsGetFirstCalled
-	 * @return stdClass
+	 * @return \stdClass
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -267,13 +267,13 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$source = array(
 			'propertyX' => 'bar'
 		);
-		$object = new \Tx_Extbase_Fixtures_ClassWithSetters();
+		$object = new \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSetters();
 		$convertedChildProperties = array(
 			'property1' => 'bar'
 		);
 		$this->mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters')->will($this->returnValue($object));
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters', '__construct')->will($this->returnValue(array()));
-		$configuration = $this->buildConfiguration(array(\Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
+		$configuration = $this->buildConfiguration(array(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
 		$result = $this->converter->convertFrom($source, 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters', $convertedChildProperties, $configuration);
 		$this->assertSame($object, $result);
 	}
@@ -287,7 +287,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$model = new $className();
 		$convertedChildProperties = array('property1' => 'bar');
 		$this->mockObjectManager->expects($this->once())->method('create')->with($className)->will($this->returnValue($model));
-		$configuration = $this->buildConfiguration(array(\Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
+		$configuration = $this->buildConfiguration(array(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
 		$reflectionException = new \ReflectionException(('Method ' . $className) . '::__construct() does not exist');
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with($className, '__construct')->will($this->throwException($reflectionException));
 		$result = $this->converter->convertFrom($source, $className, $convertedChildProperties, $configuration);
@@ -303,13 +303,13 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$source = array(
 			'propertyX' => 'bar'
 		);
-		$object = new \Tx_Extbase_Fixtures_ClassWithSetters();
+		$object = new \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSetters();
 		$convertedChildProperties = array(
 			'propertyNotExisting' => 'bar'
 		);
 		$this->mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters')->will($this->returnValue($object));
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters', '__construct')->will($this->returnValue(array()));
-		$configuration = $this->buildConfiguration(array(\Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
+		$configuration = $this->buildConfiguration(array(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
 		$result = $this->converter->convertFrom($source, 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSetters', $convertedChildProperties, $configuration);
 		$this->assertSame($object, $result);
 	}
@@ -322,7 +322,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$source = array(
 			'propertyX' => 'bar'
 		);
-		$object = new \Tx_Extbase_Fixtures_ClassWithSettersAndConstructor('param1');
+		$object = new \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor('param1');
 		$convertedChildProperties = array(
 			'property1' => 'param1',
 			'property2' => 'bar'
@@ -331,7 +331,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', '__construct')->will($this->returnValue(array(
 			'property1' => array('optional' => FALSE)
 		)));
-		$configuration = $this->buildConfiguration(array(\Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
+		$configuration = $this->buildConfiguration(array(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
 		$result = $this->converter->convertFrom($source, 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', $convertedChildProperties, $configuration);
 		$this->assertSame($object, $result);
 		$this->assertEquals('bar', $object->getProperty2());
@@ -345,12 +345,12 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$source = array(
 			'propertyX' => 'bar'
 		);
-		$object = new \Tx_Extbase_Fixtures_ClassWithSettersAndConstructor('param1');
+		$object = new \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor('param1');
 		$this->mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', 'thisIsTheDefaultValue')->will($this->returnValue($object));
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', '__construct')->will($this->returnValue(array(
 			'property1' => array('optional' => TRUE, 'defaultValue' => 'thisIsTheDefaultValue')
 		)));
-		$configuration = $this->buildConfiguration(array(\Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
+		$configuration = $this->buildConfiguration(array(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
 		$result = $this->converter->convertFrom($source, 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', array(), $configuration);
 		$this->assertSame($object, $result);
 	}
@@ -364,14 +364,14 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$source = array(
 			'propertyX' => 'bar'
 		);
-		$object = new \Tx_Extbase_Fixtures_ClassWithSettersAndConstructor('param1');
+		$object = new \TYPO3\CMS\Extbase\Tests\Fixture\ClassWithSettersAndConstructor('param1');
 		$convertedChildProperties = array(
 			'property2' => 'bar'
 		);
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with('TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', '__construct')->will($this->returnValue(array(
 			'property1' => array('optional' => FALSE)
 		)));
-		$configuration = $this->buildConfiguration(array(\Tx_Extbase_Property_TypeConverter_PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
+		$configuration = $this->buildConfiguration(array(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
 		$result = $this->converter->convertFrom($source, 'TYPO3\\CMS\\Extbase\\Tests\\Fixture\\ClassWithSettersAndConstructor', $convertedChildProperties, $configuration);
 		$this->assertSame($object, $result);
 	}

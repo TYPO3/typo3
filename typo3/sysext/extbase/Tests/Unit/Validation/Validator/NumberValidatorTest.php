@@ -35,7 +35,7 @@ class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valid
 	 * @test
 	 */
 	public function numberValidatorReturnsTrueForASimpleInteger() {
-		$numberValidator = new \Tx_Extbase_Validation_Validator_NumberValidator();
+		$numberValidator = new \TYPO3\CMS\Extbase\Validation\Validator\NumberValidator();
 		$this->assertFalse($numberValidator->validate(1029437)->hasErrors());
 	}
 
@@ -43,9 +43,9 @@ class NumberValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valid
 	 * @test
 	 */
 	public function numberValidatorReturnsFalseForAString() {
-		$expectedResult = new \Tx_Extbase_Error_Result();
-		$expectedResult->addError(new \Tx_Extbase_Validation_Error('The given subject was not a valid number.', 1221563685));
-		$numberValidator = new \Tx_Extbase_Validation_Validator_NumberValidator();
+		$expectedResult = new \TYPO3\CMS\Extbase\Error\Result();
+		$expectedResult->addError(new \TYPO3\CMS\Extbase\Validation\Error('The given subject was not a valid number.', 1221563685));
+		$numberValidator = new \TYPO3\CMS\Extbase\Validation\Validator\NumberValidator();
 		$this->assertEquals($expectedResult, $numberValidator->validate('not a number'));
 	}
 

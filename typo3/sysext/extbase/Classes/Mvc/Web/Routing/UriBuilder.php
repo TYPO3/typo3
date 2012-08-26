@@ -34,7 +34,7 @@ class UriBuilder {
 	protected $extensionService;
 
 	/**
-	 * An instance of tslib_cObj
+	 * An instance of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 *
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
 	 */
@@ -514,7 +514,7 @@ class UriBuilder {
 	 * if they are equal to the default controller/action of the target plugin.
 	 * Note: This is only active in FE mode and if feature "skipDefaultArguments" is enabled
 	 *
-	 * @see Tx_Extbase_Configuration_ConfigurationManagerInterface::isFeatureEnabled()
+	 * @see \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::isFeatureEnabled()
 	 * @param array $controllerArguments the current controller arguments to be modified
 	 * @param string $extensionName target extension name
 	 * @param string $pluginName target plugin name

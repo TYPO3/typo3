@@ -231,7 +231,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	}
 
 	/**
-	 * Returns an Tx_Extbase_Persistence_ObjectStorage with objects remove()d from the repository
+	 * Returns an \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage with objects remove()d from the repository
 	 * that had been persisted to the storage layer before.
 	 *
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage the objects
@@ -243,7 +243,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	/**
 	 * Returns all objects of this repository.
 	 *
-	 * @return Tx_Extbase_Persistence_QueryResultInterface|array
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array
 	 * @api
 	 */
 	public function findAll() {

@@ -46,7 +46,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $password = '';
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup>
 	 */
 	protected $usergroup;
 
@@ -199,7 +199,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Sets the usergroups. Keep in mind that the property is called "usergroup"
 	 * although it can hold several usergroups.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup> $usergroup An object storage containing the usergroups to add
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $usergroup
 	 * @return void
 	 * @api
 	 */

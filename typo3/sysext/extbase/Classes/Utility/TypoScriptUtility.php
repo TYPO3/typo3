@@ -38,7 +38,7 @@ class TypoScriptUtility {
 	static protected $typoScriptService = NULL;
 
 	/**
-	 * @return Tx_Extbase_Service_TypoScriptService|NULL
+	 * @return \TYPO3\CMS\Extbase\Service\TypoScriptService|NULL
 	 */
 	static protected function getTypoScriptService() {
 		if (self::$typoScriptService === NULL) {

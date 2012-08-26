@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for Tx_Extbase_Domain_Model_FrontendUserGroup.
+ * Testcase for \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup.
  *
  * @author Markus Günther <mail@markus-guenther.de>
  * @package Extbase
@@ -42,7 +42,7 @@ class FrontendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $fixture = NULL;
 
 	public function setUp() {
-		$this->fixture = new \Tx_Extbase_Domain_Model_FrontendUserGroup();
+		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup();
 	}
 
 	public function tearDown() {
@@ -53,7 +53,7 @@ class FrontendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getTitleInitiallyReturnsEmptyString() {
-		$this->fixture = new \Tx_Extbase_Domain_Model_FrontendUserGroup();
+		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup();
 		$this->assertSame('', $this->fixture->getTitle());
 	}
 
@@ -62,7 +62,7 @@ class FrontendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getTitleInitiallyReturnsGivenTitleFromConstruct() {
 		$title = 'foo bar';
-		$this->fixture = new \Tx_Extbase_Domain_Model_FrontendUserGroup($title);
+		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup($title);
 		$this->assertSame($title, $this->fixture->getTitle());
 	}
 
@@ -111,7 +111,7 @@ class FrontendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function addSubgroupAddsSubgroup() {
-		$group1 = new \Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
+		$group1 = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
 		$this->assertEquals(count($this->fixture->getSubgroup()), 0);
 		$this->fixture->addSubgroup($group1);
 		$this->assertEquals(count($this->fixture->getSubgroup()), 1);
@@ -121,8 +121,8 @@ class FrontendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function removeSubgroupRemovesSubgroup() {
-		$group1 = new \Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
-		$group2 = new \Tx_Extbase_Domain_Model_FrontendUserGroup('bar');
+		$group1 = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
+		$group2 = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('bar');
 		$this->fixture->addSubgroup($group1);
 		$this->fixture->addSubgroup($group2);
 		$this->assertEquals(count($this->fixture->getSubgroup()), 2);
@@ -136,8 +136,8 @@ class FrontendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function setSubgroupSetsSubgroups() {
-		$subgroup = new \Tx_Extbase_Persistence_ObjectStorage();
-		$group = new \Tx_Extbase_Domain_Model_FrontendUserGroup('foo');
+		$subgroup = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$group = new \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup('foo');
 		$subgroup->attach($group);
 		$this->fixture->setSubgroup($subgroup);
 		$this->assertSame($subgroup, $this->fixture->getSubgroup());

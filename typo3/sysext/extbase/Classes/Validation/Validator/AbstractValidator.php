@@ -98,7 +98,7 @@ abstract class AbstractValidator implements \TYPO3\CMS\Extbase\Validation\Valida
 	/**
 	 * Returns an array of errors which occurred during the last isValid() call.
 	 *
-	 * @return array An array of Tx_Extbase_Validation_Error objects or an empty array if no errors occurred.
+	 * @return array An array of \TYPO3\CMS\Extbase\Validation\Error objects or an empty array if no errors occurred.
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0. use validate() instead.
 	 */
 	public function getErrors() {

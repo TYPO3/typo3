@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Extbase\Mvc\Exception;
 class AmbiguousCommandIdentifierException extends \TYPO3\CMS\Extbase\Mvc\Exception\CommandException {
 
 	/**
-	 * @var array<Tx_Extbase_MVC_CLI_Command>
+	 * @var array<\TYPO3\CMS\Extbase\Mvc\Cli\Command>
 	 */
 	protected $matchingCommands = array();
 
@@ -44,7 +44,7 @@ class AmbiguousCommandIdentifierException extends \TYPO3\CMS\Extbase\Mvc\Excepti
 	 * @param string $message
 	 * @param integer $code
 	 * @param \Exception|NULL $previousException
-	 * @param array $matchingCommands <Tx_Extbase_MVC_CLI_Command> $matchingCommands Commands that matched the command identifier
+	 * @param array $matchingCommands <\TYPO3\CMS\Extbase\Mvc\Cli\Command> $matchingCommands Commands that matched the command identifier
 	 * @see Exception
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
@@ -54,7 +54,7 @@ class AmbiguousCommandIdentifierException extends \TYPO3\CMS\Extbase\Mvc\Excepti
 	}
 
 	/**
-	 * @return array<Tx_Extbase_MVC_CLI_Command>
+	 * @return array<\TYPO3\CMS\Extbase\Mvc\Cli\Command>
 	 */
 	public function getMatchingCommands() {
 		return $this->matchingCommands;

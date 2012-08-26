@@ -59,7 +59,7 @@ class RequestTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @expectedException Tx_Extbase_MVC_Exception_InvalidArgumentTypeException
+	 * @expectedException \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function setArgumentThrowsExceptionIfTheGivenArgumentValueIsAnObject() {

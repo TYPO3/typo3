@@ -317,7 +317,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 * @param bool $enableLazyLoading A flag indication if the related objects should be lazy loaded
-	 * @return Tx_Extbase_Persistence_LazyObjectStorage|Tx_Extbase_Persistence_QueryResultInterface The result
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface The result
 	 */
 	public function fetchRelated(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {
 		$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
@@ -364,7 +364,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
 	 * @param string $propertyName
 	 * @param string $fieldValue
-	 * @return Tx_Extbase_Persistence_QueryResultInterfaces
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	 */
 	protected function getNonEmptyRelationValue(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue) {
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);
@@ -491,6 +491,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
+	 * @return integer
 	 */
 	public function countRelated(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
 		$query = $this->getPreparedQuery($parentObject, $propertyName, $fieldValue);

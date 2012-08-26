@@ -47,7 +47,7 @@ class ClassInfoFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	 */
 	public function setUp() {
-		$this->classInfoFactory = new \Tx_Extbase_Object_Container_ClassInfoFactory();
+		$this->classInfoFactory = new \TYPO3\CMS\Extbase\Object\Container\ClassInfoFactory();
 	}
 
 	/**

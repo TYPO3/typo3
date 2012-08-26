@@ -67,7 +67,7 @@ interface ObjectManagerInterfaceException extends \TYPO3\CMS\Core\SingletonInter
 	 *
 	 * @param string $objectName The name of the object to create
 	 * @return object The new object instance
-	 * @throws Tx_Extbase_Object_Exception_WrongScropeException if the created object is not of scope prototype
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception\WrongScopeException if the created object is not of scope prototype
 	 * @api
 	 */
 	public function create($objectName);

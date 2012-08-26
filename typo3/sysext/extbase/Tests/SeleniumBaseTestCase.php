@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Extbase\Tests;
 /**
  * Base Selenium testcase for the Extbase extension.
  */
-abstract class SeleniumBaseTestCase extends tx_phpunit_selenium_testcase {
+abstract class SeleniumBaseTestCase extends \tx_phpunit_selenium_testcase {
 
 
 }

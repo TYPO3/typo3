@@ -99,7 +99,7 @@ class QueryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setLimitAcceptsOnlyIntegers() {
 		$this->query->setLimit(1.5);
@@ -107,7 +107,7 @@ class QueryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setLimitRejectsIntegersLessThanOne() {
 		$this->query->setLimit(0);
@@ -115,7 +115,7 @@ class QueryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setOffsetAcceptsOnlyIntegers() {
 		$this->query->setOffset(1.5);
@@ -123,7 +123,7 @@ class QueryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setOffsetRejectsIntegersLessThanZero() {
 		$this->query->setOffset(-1);

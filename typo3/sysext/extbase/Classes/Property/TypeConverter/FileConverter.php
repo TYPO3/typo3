@@ -47,7 +47,7 @@ class FileConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\AbstractFi
 
 	/**
 	 * @param string|integer $source
-	 * @return t3lib_file_FileInterface|t3lib_file_Folder
+	 * @return \TYPO3\CMS\Core\Resource\FileInterface|\TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected function getObject($source) {
 		return $this->fileFactory->retrieveFileOrFolderObject($source);

@@ -43,7 +43,7 @@ class BackendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $fixture = NULL;
 
 	public function setUp() {
-		$this->fixture = new \Tx_Extbase_Domain_Model_BackendUserGroup();
+		$this->fixture = new \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup();
 	}
 
 	public function tearDown() {
@@ -86,7 +86,7 @@ class BackendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function setSubGroupsSetsSubgroups() {
-		$subGroups = new \Tx_Extbase_Persistence_ObjectStorage();
+		$subGroups = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 		$this->fixture->setSubGroups($subGroups);
 		$this->assertSame($subGroups, $this->fixture->getSubGroups());
 	}
@@ -95,9 +95,9 @@ class BackendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function anSubGroupCanBeRemoved() {
-		$group1 = new \Tx_Extbase_Domain_Model_BackendUserGroup();
+		$group1 = new \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup();
 		$group1->setTitle('foo');
-		$group2 = new \Tx_Extbase_Domain_Model_BackendUserGroup();
+		$group2 = new \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup();
 		$group2->setTitle('bar');
 		$this->fixture->addSubGroup($group1);
 		$this->fixture->addSubGroup($group2);
@@ -112,9 +112,9 @@ class BackendUserGroupTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function allSubGroupsCanBeRemoved() {
-		$group1 = new \Tx_Extbase_Domain_Model_BackendUserGroup();
+		$group1 = new \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup();
 		$group1->setTitle('foo');
-		$group2 = new \Tx_Extbase_Domain_Model_BackendUserGroup();
+		$group2 = new \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup();
 		$group2->setTitle('bar');
 		$this->fixture->addSubGroup($group1);
 		$this->fixture->addSubGroup($group2);

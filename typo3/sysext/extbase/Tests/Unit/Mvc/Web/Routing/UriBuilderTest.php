@@ -71,7 +71,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function setUp() {
 		$this->tsfeBackup = $GLOBALS['TSFE'];
 		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
-		$this->getBackup = \t3lib_div::_GET();
+		$this->getBackup = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
 		$this->mockContentObject = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
 		$this->mockExtensionService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\ExtensionService');
@@ -85,7 +85,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	public function tearDown() {
 		$GLOBALS['TSFE'] = $this->tsfeBackup;
-		\t3lib_div::_GETset($this->getBackup);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($this->getBackup);
 	}
 
 	/**
@@ -188,7 +188,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function buildBackendUriKeepsQueryParametersIfAddQueryStringIsSet() {
-		\t3lib_div::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
 		$this->uriBuilder->setAddQueryString(TRUE);
 		$expectedResult = 'mod.php?M=moduleKey&id=pageId&foo=bar';
 		$actualResult = $this->uriBuilder->buildBackendUri();
@@ -199,7 +199,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSet() {
-		\t3lib_div::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
 		$this->uriBuilder->setAddQueryString(TRUE);
 		$this->uriBuilder->setArgumentsToBeExcludedFromQueryString(array('M', 'id'));
 		$expectedResult = 'mod.php?foo=bar';
@@ -211,7 +211,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function buildBackendUriKeepsModuleQueryParametersIfAddQueryStringIsNotSet() {
-		\t3lib_div::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
 		$expectedResult = 'mod.php?M=moduleKey&id=pageId';
 		$actualResult = $this->uriBuilder->buildBackendUri();
 		$this->assertEquals($expectedResult, $actualResult);
@@ -221,7 +221,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function buildBackendUriMergesAndOverrulesQueryParametersWithArguments() {
-		\t3lib_div::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
 		$this->uriBuilder->setArguments(array('M' => 'overwrittenModuleKey', 'somePrefix' => array('bar' => 'baz')));
 		$expectedResult = 'mod.php?M=overwrittenModuleKey&id=pageId&somePrefix%5Bbar%5D=baz';
 		$actualResult = $this->uriBuilder->buildBackendUri();
@@ -232,7 +232,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function buildBackendUriConvertsDomainObjectsAfterArgumentsHaveBeenMerged() {
-		\t3lib_div::_GETset(array('M' => 'moduleKey'));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey'));
 		$mockDomainObject = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity'), array('dummy'));
 		$mockDomainObject->_set('uid', '123');
 		$this->uriBuilder->setArguments(array('somePrefix' => array('someDomainObject' => $mockDomainObject)));
@@ -245,7 +245,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function buildBackendUriRespectsSection() {
-		\t3lib_div::_GETset(array('M' => 'moduleKey'));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey'));
 		$this->uriBuilder->setSection('someSection');
 		$expectedResult = 'mod.php?M=moduleKey#someSection';
 		$actualResult = $this->uriBuilder->buildBackendUri();
@@ -256,7 +256,7 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function buildBackendUriCreatesAbsoluteUrisIfSpecified() {
-		\t3lib_div::_GETset(array('M' => 'moduleKey'));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey'));
 		$this->mockRequest->expects($this->any())->method('getBaseUri')->will($this->returnValue('http://baseuri/' . TYPO3_mainDir));
 		$this->uriBuilder->setCreateAbsoluteUri(TRUE);
 		$expectedResult = ('http://baseuri/' . TYPO3_mainDir) . 'mod.php?M=moduleKey';

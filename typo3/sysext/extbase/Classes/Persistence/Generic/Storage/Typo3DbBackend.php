@@ -288,7 +288,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 */
 	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
 		$constraint = $query->getConstraint();
-		if ($constraint instanceof \Tx_Extbase_Persistence_QOM_StatementInterface) {
+		if ($constraint instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement) {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException('Could not execute count on queries with a constraint of type TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\StatementInterface', 1256661045);
 		}
 		$parameters = array();
@@ -882,7 +882,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$statement = '';
 		if ($ignoreEnableFields && !$includeDeleted) {
 			if (count($enableFieldsToBeIgnored)) {
-				// array_combine() is necessary because of the way t3lib_pageSelect::enableFields() is implemented
+				// array_combine() is necessary because of the way \TYPO3\CMS\Frontend\Page\PageRepository::enableFields() is implemented
 				$statement .= $GLOBALS['TSFE']->sys_page->enableFields($tableName, -1, array_combine($enableFieldsToBeIgnored, $enableFieldsToBeIgnored));
 			} else {
 				$statement .= $GLOBALS['TSFE']->sys_page->deleteClause($tableName);

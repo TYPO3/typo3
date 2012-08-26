@@ -35,7 +35,7 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function constructingArgumentWithoutNameThrowsException() {
 		new \TYPO3\CMS\Extbase\Mvc\Controller\Argument(NULL, 'Text');
@@ -43,7 +43,7 @@ class ArgumentBehaviorBeforeExtbase14Test extends \TYPO3\CMS\Extbase\Tests\Unit\
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function constructingArgumentWithInvalidNameThrowsException() {
 		new \TYPO3\CMS\Extbase\Mvc\Controller\Argument(new \ArrayObject(), 'Text');

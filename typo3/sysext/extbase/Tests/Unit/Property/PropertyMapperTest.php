@@ -98,7 +98,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @param boolean $canConvertFrom
 	 * @param array $properties
 	 * @param string $typeOfSubObject
-	 * @return PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function getMockTypeConverter($name = '', $canConvertFrom = TRUE, $properties = array(), $typeOfSubObject = '') {
 		$mockTypeConverter = $this->getMock('TYPO3\\CMS\\Extbase\\Property\\TypeConverterInterface');
@@ -282,6 +282,8 @@ class PropertyMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @param mixed $expectedTypeConverter
 	 * @param mixed $typeConverters
 	 * @param boolean $shouldFailWithException
+	 * @throws \Exception
+	 * @return void
 	 */
 	public function findTypeConverterShouldReturnConverterForTargetObjectIfItExists($targetClass, $expectedTypeConverter, $typeConverters, $shouldFailWithException = FALSE) {
 		$mockTypeHandlingService = $this->getMock('TYPO3\\CMS\\Extbase\\Service\\TypeHandlingService');

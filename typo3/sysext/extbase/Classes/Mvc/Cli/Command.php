@@ -173,7 +173,7 @@ class Command {
 	 * information about required/optional arguments of this command.
 	 * If the command does not expect any arguments, an empty array is returned
 	 *
-	 * @return array<Tx_Extbase_MVC_CLI_CommandArgumentDefinition>
+	 * @return array<\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getArgumentDefinitions() {

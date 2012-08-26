@@ -41,7 +41,7 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	/**
 	 * Stores the configuration for specific child properties.
 	 *
-	 * @var array<Tx_Extbase_Property_PropertyMappingConfigurationInterface>
+	 * @var array<\TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface>
 	 */
 	protected $subConfigurationForProperty = array();
 

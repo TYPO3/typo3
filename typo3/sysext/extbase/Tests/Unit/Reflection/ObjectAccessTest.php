@@ -36,7 +36,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $dummyObject;
 
 	public function setUp() {
-		$this->dummyObject = new \Tx_Extbase_Tests_Unit_Reflection_Fixture_DummyClassWithGettersAndSetters();
+		$this->dummyObject = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithGettersAndSetters();
 		$this->dummyObject->setProperty('string1');
 		$this->dummyObject->setAnotherProperty(42);
 		$this->dummyObject->shouldNotBePickedUp = TRUE;
@@ -46,7 +46,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getPropertyReturnsExpectedValueForGetterProperty() {
-		$property = \Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, 'property');
+		$property = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'property');
 		$this->assertEquals($property, 'string1');
 	}
 
@@ -54,7 +54,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getPropertyReturnsExpectedValueForPublicProperty() {
-		$property = \Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, 'publicProperty2');
+		$property = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'publicProperty2');
 		$this->assertEquals($property, 42, 'A property of a given object was not returned correctly.');
 	}
 
@@ -62,7 +62,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getPropertyReturnsExpectedValueForUnexposedPropertyIfForceDirectAccessIsTrue() {
-		$property = \Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, 'unexposedProperty', TRUE);
+		$property = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'unexposedProperty', TRUE);
 		$this->assertEquals($property, 'unexposed', 'A property of a given object was not returned correctly.');
 	}
 
@@ -71,7 +71,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getPropertyReturnsExpectedValueForUnknownPropertyIfForceDirectAccessIsTrue() {
 		$this->dummyObject->unknownProperty = 'unknown';
-		$property = \Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, 'unknownProperty', TRUE);
+		$property = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'unknownProperty', TRUE);
 		$this->assertEquals($property, 'unknown', 'A property of a given object was not returned correctly.');
 	}
 
@@ -80,7 +80,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @expectedException \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
 	 */
 	public function getPropertyReturnsPropertyNotAccessibleExceptionForNotExistingPropertyIfForceDirectAccessIsTrue() {
-		$property = \Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty', TRUE);
+		$property = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty', TRUE);
 	}
 
 	/**
@@ -88,7 +88,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @expectedException \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
 	 */
 	public function getPropertyReturnsThrowsExceptionIfPropertyDoesNotExist() {
-		\Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty');
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'notExistingProperty');
 	}
 
 	/**
@@ -96,45 +96,45 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @expectedException \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException
 	 */
 	public function getPropertyReturnsThrowsExceptionIfArrayKeyDoesNotExist() {
-		\Tx_Extbase_Reflection_ObjectAccess::getProperty(array(), 'notExistingProperty');
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty(array(), 'notExistingProperty');
 	}
 
 	/**
 	 * @test
 	 */
 	public function getPropertyTriesToCallABooleanGetterMethodIfItExists() {
-		$property = \Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, 'booleanProperty');
+		$property = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, 'booleanProperty');
 		$this->assertTrue($property);
 	}
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function getPropertyThrowsExceptionIfThePropertyNameIsNotAString() {
-		\Tx_Extbase_Reflection_ObjectAccess::getProperty($this->dummyObject, new \ArrayObject());
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($this->dummyObject, new \ArrayObject());
 	}
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setPropertyThrowsExceptionIfThePropertyNameIsNotAString() {
-		\Tx_Extbase_Reflection_ObjectAccess::setProperty($this->dummyObject, new \ArrayObject(), 42);
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($this->dummyObject, new \ArrayObject(), 42);
 	}
 
 	/**
 	 * @test
 	 */
 	public function setPropertyReturnsFalseIfPropertyIsNotAccessible() {
-		$this->assertFalse(\Tx_Extbase_Reflection_ObjectAccess::setProperty($this->dummyObject, 'protectedProperty', 42));
+		$this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($this->dummyObject, 'protectedProperty', 42));
 	}
 
 	/**
 	 * @test
 	 */
 	public function setPropertySetsValueIfPropertyIsNotAccessibleWhenForceDirectAccessIsTrue() {
-		$this->assertTrue(\Tx_Extbase_Reflection_ObjectAccess::setProperty($this->dummyObject, 'unexposedProperty', 'was set anyway', TRUE));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($this->dummyObject, 'unexposedProperty', 'was set anyway', TRUE));
 		$this->assertAttributeEquals('was set anyway', 'unexposedProperty', $this->dummyObject);
 	}
 
@@ -142,7 +142,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function setPropertySetsValueIfPropertyDoesNotExistWhenForceDirectAccessIsTrue() {
-		$this->assertTrue(\Tx_Extbase_Reflection_ObjectAccess::setProperty($this->dummyObject, 'unknownProperty', 'was set anyway', TRUE));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($this->dummyObject, 'unknownProperty', 'was set anyway', TRUE));
 		$this->assertAttributeEquals('was set anyway', 'unknownProperty', $this->dummyObject);
 	}
 
@@ -150,7 +150,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function setPropertyCallsASetterMethodToSetThePropertyValueIfOneIsAvailable() {
-		\Tx_Extbase_Reflection_ObjectAccess::setProperty($this->dummyObject, 'property', 4242);
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($this->dummyObject, 'property', 4242);
 		$this->assertEquals($this->dummyObject->getProperty(), 4242, 'setProperty does not work with setter.');
 	}
 
@@ -158,7 +158,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function setPropertyWorksWithPublicProperty() {
-		\Tx_Extbase_Reflection_ObjectAccess::setProperty($this->dummyObject, 'publicProperty', 4242);
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($this->dummyObject, 'publicProperty', 4242);
 		$this->assertEquals($this->dummyObject->publicProperty, 4242, 'setProperty does not work with public property.');
 	}
 
@@ -168,8 +168,8 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function setPropertyCanDirectlySetValuesInAnArrayObjectOrArray() {
 		$arrayObject = new \ArrayObject();
 		$array = array();
-		\Tx_Extbase_Reflection_ObjectAccess::setProperty($arrayObject, 'publicProperty', 4242);
-		\Tx_Extbase_Reflection_ObjectAccess::setProperty($array, 'key', 'value');
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($arrayObject, 'publicProperty', 4242);
+		\TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($array, 'key', 'value');
 		$this->assertEquals(4242, $arrayObject['publicProperty']);
 		$this->assertEquals('value', $array['key']);
 	}
@@ -179,7 +179,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getPropertyCanAccessPropertiesOfAnArrayObject() {
 		$arrayObject = new \ArrayObject(array('key' => 'value'));
-		$expected = \Tx_Extbase_Reflection_ObjectAccess::getProperty($arrayObject, 'key');
+		$expected = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($arrayObject, 'key');
 		$this->assertEquals($expected, 'value', 'getProperty does not work with ArrayObject property.');
 	}
 
@@ -187,8 +187,8 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getPropertyCanAccessPropertiesOfAnObjectImplementingArrayAccess() {
-		$arrayAccessInstance = new \Tx_Extbase_Tests_Unit_Reflection_Fixture_ArrayAccessClass(array('key' => 'value'));
-		$expected = \Tx_Extbase_Reflection_ObjectAccess::getProperty($arrayAccessInstance, 'key');
+		$arrayAccessInstance = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\ArrayAccessClass(array('key' => 'value'));
+		$expected = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($arrayAccessInstance, 'key');
 		$this->assertEquals($expected, 'value', 'getPropertyPath does not work with Array Access property.');
 	}
 
@@ -197,7 +197,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getPropertyCanAccessPropertiesOfAnArray() {
 		$array = array('key' => 'value');
-		$expected = \Tx_Extbase_Reflection_ObjectAccess::getProperty($array, 'key');
+		$expected = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getProperty($array, 'key');
 		$this->assertEquals($expected, 'value', 'getProperty does not work with Array property.');
 	}
 
@@ -206,7 +206,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getPropertyPathCanAccessPropertiesOfAnArray() {
 		$array = array('parent' => array('key' => 'value'));
-		$expected = \Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($array, 'parent.key');
+		$expected = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.key');
 		$this->assertEquals($expected, 'value', 'getPropertyPath does not work with Array property.');
 	}
 
@@ -215,7 +215,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getPropertyPathCanAccessPropertiesOfAnObjectImplementingArrayAccess() {
 		$array = array('parent' => new \ArrayObject(array('key' => 'value')));
-		$expected = \Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($array, 'parent.key');
+		$expected = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($array, 'parent.key');
 		$this->assertEquals($expected, 'value', 'getPropertyPath does not work with Array Access property.');
 	}
 
@@ -223,7 +223,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getGettablePropertyNamesReturnsAllPropertiesWhichAreAvailable() {
-		$gettablePropertyNames = \Tx_Extbase_Reflection_ObjectAccess::getGettablePropertyNames($this->dummyObject);
+		$gettablePropertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettablePropertyNames($this->dummyObject);
 		$expectedPropertyNames = array('anotherProperty', 'booleanProperty', 'property', 'property2', 'publicProperty', 'publicProperty2');
 		$this->assertEquals($gettablePropertyNames, $expectedPropertyNames, 'getGettablePropertyNames returns not all gettable properties.');
 	}
@@ -232,7 +232,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getSettablePropertyNamesReturnsAllPropertiesWhichAreAvailable() {
-		$settablePropertyNames = \Tx_Extbase_Reflection_ObjectAccess::getSettablePropertyNames($this->dummyObject);
+		$settablePropertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getSettablePropertyNames($this->dummyObject);
 		$expectedPropertyNames = array('anotherProperty', 'property', 'property2', 'publicProperty', 'publicProperty2', 'writeOnlyMagicProperty');
 		$this->assertEquals($settablePropertyNames, $expectedPropertyNames, 'getSettablePropertyNames returns not all settable properties.');
 	}
@@ -244,7 +244,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$stdClassObject = new \stdClass();
 		$stdClassObject->property = 'string1';
 		$stdClassObject->property2 = NULL;
-		$settablePropertyNames = \Tx_Extbase_Reflection_ObjectAccess::getSettablePropertyNames($stdClassObject);
+		$settablePropertyNames = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getSettablePropertyNames($stdClassObject);
 		$expectedPropertyNames = array('property', 'property2');
 		$this->assertEquals($expectedPropertyNames, $settablePropertyNames, 'getSettablePropertyNames returns not all settable properties.');
 	}
@@ -253,7 +253,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getGettablePropertiesReturnsTheCorrectValuesForAllProperties() {
-		$allProperties = \Tx_Extbase_Reflection_ObjectAccess::getGettableProperties($this->dummyObject);
+		$allProperties = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($this->dummyObject);
 		$expectedProperties = array(
 			'anotherProperty' => 42,
 			'booleanProperty' => TRUE,
@@ -273,7 +273,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$stdClassObject->property = 'string1';
 		$stdClassObject->property2 = NULL;
 		$stdClassObject->publicProperty2 = 42;
-		$allProperties = \Tx_Extbase_Reflection_ObjectAccess::getGettableProperties($stdClassObject);
+		$allProperties = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getGettableProperties($stdClassObject);
 		$expectedProperties = array(
 			'property' => 'string1',
 			'property2' => NULL,
@@ -286,11 +286,11 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function isPropertySettableTellsIfAPropertyCanBeSet() {
-		$this->assertTrue(\Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($this->dummyObject, 'writeOnlyMagicProperty'));
-		$this->assertTrue(\Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($this->dummyObject, 'publicProperty'));
-		$this->assertTrue(\Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($this->dummyObject, 'property'));
-		$this->assertFalse(\Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($this->dummyObject, 'privateProperty'));
-		$this->assertFalse(\Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($this->dummyObject, 'shouldNotBePickedUp'));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertySettable($this->dummyObject, 'writeOnlyMagicProperty'));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertySettable($this->dummyObject, 'publicProperty'));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertySettable($this->dummyObject, 'property'));
+		$this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertySettable($this->dummyObject, 'privateProperty'));
+		$this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertySettable($this->dummyObject, 'shouldNotBePickedUp'));
 	}
 
 	/**
@@ -299,20 +299,20 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function isPropertySettableWorksOnStdClass() {
 		$stdClassObject = new \stdClass();
 		$stdClassObject->property = 'foo';
-		$this->assertTrue(\Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($stdClassObject, 'property'));
-		$this->assertFalse(\Tx_Extbase_Reflection_ObjectAccess::isPropertySettable($stdClassObject, 'undefinedProperty'));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertySettable($stdClassObject, 'property'));
+		$this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertySettable($stdClassObject, 'undefinedProperty'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function isPropertyGettableTellsIfAPropertyCanBeRetrieved() {
-		$this->assertTrue(\Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($this->dummyObject, 'publicProperty'));
-		$this->assertTrue(\Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($this->dummyObject, 'property'));
-		$this->assertTrue(\Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($this->dummyObject, 'booleanProperty'));
-		$this->assertFalse(\Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($this->dummyObject, 'privateProperty'));
-		$this->assertFalse(\Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($this->dummyObject, 'writeOnlyMagicProperty'));
-		$this->assertFalse(\Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($this->dummyObject, 'shouldNotBePickedUp'));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'publicProperty'));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'property'));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'booleanProperty'));
+		$this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'privateProperty'));
+		$this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'writeOnlyMagicProperty'));
+		$this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($this->dummyObject, 'shouldNotBePickedUp'));
 	}
 
 	/**
@@ -321,8 +321,8 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function isPropertyGettableWorksOnArrayAccessObjects() {
 		$arrayObject = new \ArrayObject();
 		$arrayObject['key'] = 'v';
-		$this->assertTrue(\Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($arrayObject, 'key'));
-		$this->assertFalse(\Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($arrayObject, 'undefinedKey'));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($arrayObject, 'key'));
+		$this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($arrayObject, 'undefinedKey'));
 	}
 
 	/**
@@ -331,19 +331,19 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function isPropertyGettableWorksOnStdClass() {
 		$stdClassObject = new \stdClass();
 		$stdClassObject->property = 'foo';
-		$this->assertTrue(\Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($stdClassObject, 'property'));
-		$this->assertFalse(\Tx_Extbase_Reflection_ObjectAccess::isPropertyGettable($stdClassObject, 'undefinedProperty'));
+		$this->assertTrue(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($stdClassObject, 'property'));
+		$this->assertFalse(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::isPropertyGettable($stdClassObject, 'undefinedProperty'));
 	}
 
 	/**
 	 * @test
 	 */
 	public function getPropertyPathCanRecursivelyGetPropertiesOfAnObject() {
-		$alternativeObject = new \Tx_Extbase_Tests_Unit_Reflection_Fixture_DummyClassWithGettersAndSetters();
+		$alternativeObject = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithGettersAndSetters();
 		$alternativeObject->setProperty('test');
 		$this->dummyObject->setProperty2($alternativeObject);
 		$expected = 'test';
-		$actual = \Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($this->dummyObject, 'property2.property');
+		$actual = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($this->dummyObject, 'property2.property');
 		$this->assertEquals($expected, $actual);
 	}
 
@@ -351,10 +351,10 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function getPropertyPathReturnsNullForNonExistingPropertyPath() {
-		$alternativeObject = new \Tx_Extbase_Tests_Unit_Reflection_Fixture_DummyClassWithGettersAndSetters();
+		$alternativeObject = new \TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyClassWithGettersAndSetters();
 		$alternativeObject->setProperty(new \stdClass());
 		$this->dummyObject->setProperty2($alternativeObject);
-		$this->assertNull(\Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($this->dummyObject, 'property2.property.not.existing'));
+		$this->assertNull(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($this->dummyObject, 'property2.property.not.existing'));
 	}
 
 	/**
@@ -362,7 +362,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function getPropertyPathReturnsNullIfSubjectIsNoObject() {
 		$string = 'Hello world';
-		$this->assertNull(\Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($string, 'property2'));
+		$this->assertNull(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($string, 'property2'));
 	}
 
 	/**
@@ -371,7 +371,7 @@ class ObjectAccessTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function getPropertyPathReturnsNullIfSubjectOnPathIsNoObject() {
 		$object = new \stdClass();
 		$object->foo = 'Hello World';
-		$this->assertNull(\Tx_Extbase_Reflection_ObjectAccess::getPropertyPath($object, 'foo.bar'));
+		$this->assertNull(\TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($object, 'foo.bar'));
 	}
 
 }

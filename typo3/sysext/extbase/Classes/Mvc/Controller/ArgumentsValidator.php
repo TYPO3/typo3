@@ -107,7 +107,7 @@ class ArgumentsValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstrac
 	 * Adds the given errors to $this->errors and creates an ArgumentError
 	 * instance if needed.
 	 *
-	 * @param array $errors Array of Tx_Extbase_Validation_Error
+	 * @param array $errors Array of \TYPO3\CMS\Extbase\Validation\Error
 	 * @param string $argumentName Name of the argument to add errors for
 	 * @return void
 	 */

@@ -36,7 +36,7 @@ class RawValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validato
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function theRawValidatorAlwaysReturnsNoErrors() {
-		$rawValidator = new \Tx_Extbase_Validation_Validator_RawValidator(array());
+		$rawValidator = new \TYPO3\CMS\Extbase\Validation\Validator\RawValidator(array());
 		$this->assertFalse($rawValidator->validate('simple1expression')->hasErrors());
 		$this->assertFalse($rawValidator->validate('')->hasErrors());
 		$this->assertFalse($rawValidator->validate(NULL)->hasErrors());

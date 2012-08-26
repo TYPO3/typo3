@@ -50,7 +50,7 @@ class TypeHandlingServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function parseTypeThrowsExceptionOnInvalidElementTypeHint() {

@@ -43,7 +43,7 @@ abstract class BaseTestCase extends \tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function runBare() {
-		$objectManager = \t3lib_div::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		$this->objectManager = clone $objectManager;
 		parent::runBare();
 	}
@@ -71,7 +71,7 @@ abstract class BaseTestCase extends \tx_phpunit_testcase {
 	 * Creates a proxy class of the specified class which allows
 	 * for calling even protected methods and access of protected properties.
 	 *
-	 * @param $className Full qualified name of the original class
+	 * @param string $className Full qualified name of the original class
 	 * @return string Full qualified name of the built class
 	 */
 	protected function buildAccessibleProxy($className) {

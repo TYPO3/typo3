@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for the Tx_Extbase_Domain_Model_Category class.
+ * Testcase for the \TYPO3\CMS\Extbase\Domain\Model\Category class.
  *
  * @package Extbase
  * @subpackage Domain\Model

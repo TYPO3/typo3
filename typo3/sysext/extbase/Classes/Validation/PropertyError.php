@@ -54,7 +54,7 @@ class PropertyError extends \TYPO3\CMS\Extbase\Validation\Error {
 	protected $propertyName;
 
 	/**
-	 * @var array An array of Tx_Extbase_Validation_Error for the property
+	 * @var array An array of \TYPO3\CMS\Extbase\Validation\Error for the property
 	 */
 	protected $errors = array();
 
@@ -71,7 +71,7 @@ class PropertyError extends \TYPO3\CMS\Extbase\Validation\Error {
 	/**
 	 * Add errors
 	 *
-	 * @param array $errors Array of Tx_Extbase_Validation_Error for the property
+	 * @param array $errors Array of \TYPO3\CMS\Extbase\Validation\Error for the property
 	 * @return void
 	 */
 	public function addErrors($errors) {
@@ -81,7 +81,7 @@ class PropertyError extends \TYPO3\CMS\Extbase\Validation\Error {
 	/**
 	 * Get all errors for the property
 	 *
-	 * @return array An array of Tx_Extbase_Validation_Error objects or an empty array if no errors occured for the property
+	 * @return array An array of \TYPO3\CMS\Extbase\Validation\Error objects or an empty array if no errors occured for the property
 	 */
 	public function getErrors() {
 		return $this->errors;

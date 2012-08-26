@@ -48,7 +48,7 @@ class RegularExpressionValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Valid
 	public function regularExpressionValidatorCreatesTheCorrectErrorIfTheExpressionDidNotMatch() {
 		$this->validatorOptions(array('regularExpression' => '/^simple[0-9]expression$/'));
 		$errors = $this->validator->validate('some subject that will not match')->getErrors();
-		$this->assertEquals(array(new \Tx_Extbase_Validation_Error('The given subject did not match the pattern.', 1221565130)), $errors);
+		$this->assertEquals(array(new \TYPO3\CMS\Extbase\Validation\Error('The given subject did not match the pattern.', 1221565130)), $errors);
 	}
 
 }

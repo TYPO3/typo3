@@ -50,7 +50,7 @@ class FrontendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $description = '';
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup>
 	 */
 	protected $subgroup;
 
@@ -131,7 +131,7 @@ class FrontendUserGroup extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Sets the subgroups. Keep in mind that the property is called "subgroup"
 	 * although it can hold several subgroups.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup> $subgroup An object storage containing the subgroups to add
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $subgroup An object storage containing the subgroups to add
 	 * @return void
 	 * @api
 	 */

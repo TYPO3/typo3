@@ -47,13 +47,13 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $description = '';
 
 	/**
-	 * @var Tx_Extbase_Domain_Model_Category|NULL
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\Category|NULL
 	 * @lazy
 	 */
 	protected $parent = NULL;
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_DomainObject_AbstractEntity>
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\AbstractEntity>
 	 * @lazy
 	 */
 	protected $items = NULL;
@@ -66,7 +66,7 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Initializes all Tx_Extbase_Persistence_ObjectStorage properties.
+	 * Initializes all \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage properties.
 	 *
 	 * @return void
 	 * @api
@@ -120,7 +120,7 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Gets the parent category.
 	 *
-	 * @return Tx_Extbase_Domain_Model_Category|NULL the parent category
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\Category|NULL the parent category
 	 * @api
 	 */
 	public function getParent() {

@@ -29,24 +29,24 @@ namespace TYPO3\CMS\Extbase\Error;
 class Result {
 
 	/**
-	 * @var array<Tx_Extbase_Error_Error>
+	 * @var array<\TYPO3\CMS\Extbase\Error\Error>
 	 */
 	protected $errors = array();
 
 	/**
-	 * @var array<Tx_Extbase_Error_Warning>
+	 * @var array<\TYPO3\CMS\Extbase\Error\Warning>
 	 */
 	protected $warnings = array();
 
 	/**
-	 * @var array<Tx_Extbase_Error_Notice>
+	 * @var array<\TYPO3\CMS\Extbase\Error\Notice>
 	 */
 	protected $notices = array();
 
 	/**
 	 * The result objects for the sub properties
 	 *
-	 * @var array<Tx_Extbase_Error_Result>
+	 * @var array<\TYPO3\CMS\Extbase\Error\Result>
 	 */
 	protected $propertyResults = array();
 
@@ -86,7 +86,7 @@ class Result {
 	/**
 	 * Get all errors in the current Result object (non-recursive)
 	 *
-	 * @return array<Tx_Extbase_Error_Error>
+	 * @return array<\TYPO3\CMS\Extbase\Error\Error>
 	 * @api
 	 */
 	public function getErrors() {
@@ -96,7 +96,7 @@ class Result {
 	/**
 	 * Get all warnings in the current Result object (non-recursive)
 	 *
-	 * @return array<Tx_Extbase_Error_Warning>
+	 * @return array<\TYPO3\CMS\Extbase\Error\Warning>
 	 * @api
 	 */
 	public function getWarnings() {
@@ -106,7 +106,7 @@ class Result {
 	/**
 	 * Get all notices in the current Result object (non-recursive)
 	 *
-	 * @return array<Tx_Extbase_Error_Notice>
+	 * @return array<\TYPO3\CMS\Extbase\Error\Notice>
 	 * @api
 	 */
 	public function getNotices() {
@@ -238,7 +238,7 @@ class Result {
 	 * where the key is the property path where the error occured, and the
 	 * value is a list of all errors (stored as array)
 	 *
-	 * @return array<Tx_Extbase_Error_Error>
+	 * @return array<\TYPO3\CMS\Extbase\Error\Error>
 	 * @api
 	 */
 	public function getFlattenedErrors() {
@@ -252,7 +252,7 @@ class Result {
 	 * where the key is the property path where the warning occured, and the
 	 * value is a list of all warnings (stored as array)
 	 *
-	 * @return array<Tx_Extbase_Error_Warning>
+	 * @return array<\TYPO3\CMS\Extbase\Error\Warning>
 	 * @api
 	 */
 	public function getFlattenedWarnings() {
@@ -266,7 +266,7 @@ class Result {
 	 * where the key is the property path where the notice occured, and the
 	 * value is a list of all notices (stored as array)
 	 *
-	 * @return array<Tx_Extbase_Error_Notice>
+	 * @return array<\TYPO3\CMS\Extbase\Error\Notice>
 	 * @api
 	 */
 	public function getFlattenedNotices() {
@@ -331,7 +331,7 @@ class Result {
 	/**
 	 * Get a list of all sub Result objects available.
 	 *
-	 * @return array<Tx_Extbase_Erro_Result>
+	 * @return array<\TYPO3\CMS\Extbase\Error\Result>
 	 */
 	public function getSubResults() {
 		return $this->propertyResults;

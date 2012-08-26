@@ -58,7 +58,7 @@ class CommandManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function getAvailableCommandsReturnsAllAvailableCommands() {
-		$commandManager = new \Tx_Extbase_MVC_CLI_CommandManager();
+		$commandManager = new \TYPO3\CMS\Extbase\Mvc\Cli\CommandManager();
 		$commandManager->injectObjectManager($this->mockObjectManager);
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['extbase']['commandControllers'] = array(
 			'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Mvc\\Cli\\Fixture\\Command\\MockACommandController',

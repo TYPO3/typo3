@@ -221,7 +221,7 @@ class ArgumentsTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @expectedException LogicException
+	 * @expectedException \LogicException
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function callingInvalidMethodThrowsException() {

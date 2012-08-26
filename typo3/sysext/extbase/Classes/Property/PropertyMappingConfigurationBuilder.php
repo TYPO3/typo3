@@ -30,7 +30,7 @@ class PropertyMappingConfigurationBuilder implements \TYPO3\CMS\Core\SingletonIn
 	/**
 	 * Builds the default property mapping configuration.
 	 *
-	 * @param string $type the implementation class name of the PropertyMappingConfiguration to instanciate; must be a subclass of Tx_Extbase_Property_PropertyMappingConfiguration
+	 * @param string $type the implementation class name of the PropertyMappingConfiguration to instanciate; must be a subclass of \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
 	 * @return \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration
 	 */
 	public function build($type = 'TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration') {

@@ -35,7 +35,7 @@ namespace TYPO3\CMS\Extbase\Domain\Model;
 abstract class AbstractFileFolder extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
-	 * @var t3lib_file_ResourceInterface|t3lib_file_Folder|t3lib_file_AbstractFile
+	 * @var \TYPO3\CMS\Core\Resource\ResourceInterface|\TYPO3\CMS\Core\Resource\Folder|\TYPO3\CMS\Core\Resource\AbstractFile
 	 */
 	protected $object;
 
@@ -47,7 +47,7 @@ abstract class AbstractFileFolder extends \TYPO3\CMS\Extbase\DomainObject\Abstra
 	}
 
 	/**
-	 * @return t3lib_file_ResourceInterface|t3lib_file_Folder|t3lib_file_AbstractFile
+	 * @return \TYPO3\CMS\Core\Resource\ResourceInterface|\TYPO3\CMS\Core\Resource\Folder|\TYPO3\CMS\Core\Resource\AbstractFile
 	 */
 	public function getObject() {
 		return $this->object;

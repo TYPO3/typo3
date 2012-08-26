@@ -37,7 +37,7 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $objectManager;
 
 	/**
-	 * @var array<Tx_Extbase_MVC_CLI_Command>
+	 * @var array<\TYPO3\CMS\Extbase\Mvc\Cli\Command>
 	 */
 	protected $availableCommands = NULL;
 
@@ -57,7 +57,7 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns an array of all commands
 	 *
-	 * @return array<Tx_Extbase_MVC_CLI_Command>
+	 * @return array<\TYPO3\CMS\Extbase\Mvc\Cli\Command>
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @api

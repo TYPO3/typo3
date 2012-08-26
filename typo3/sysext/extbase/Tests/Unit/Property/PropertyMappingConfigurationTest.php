@@ -36,13 +36,13 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 	protected $propertyMappingConfiguration;
 
 	public function setUp() {
-		$this->propertyMappingConfiguration = new \Tx_Extbase_Property_PropertyMappingConfiguration();
+		$this->propertyMappingConfiguration = new \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration();
 	}
 
 	/**
 	 * @test
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
-	 * @covers Tx_Extbase_Property_PropertyMappingConfiguration::getTargetPropertyName
+	 * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::getTargetPropertyName
 	 */
 	public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration() {
 		$this->assertEquals('someSourceProperty', $this->propertyMappingConfiguration->getTargetPropertyName('someSourceProperty'));
@@ -51,7 +51,7 @@ class PropertyMappingConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 
 	/**
 	 * @test
-	 * @covers Tx_Extbase_Property_PropertyMappingConfiguration::shouldMap
+	 * @covers \TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration::shouldMap
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
 	public function shouldMapReturnsTrue() {

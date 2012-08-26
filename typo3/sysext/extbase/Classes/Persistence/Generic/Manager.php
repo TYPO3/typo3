@@ -37,12 +37,12 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 class Manager implements \TYPO3\CMS\Extbase\Persistence\Generic\ManagerInterface, \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\BackendInterface
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 */
 	protected $backend;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Session
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
 	 */
 	protected $session;
 
@@ -61,20 +61,20 @@ class Manager implements \TYPO3\CMS\Extbase\Persistence\Generic\ManagerInterface
 	/**
 	 * Injects the Persistence Backend
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\BackendInterface $backend The persistence backend
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend The persistence backend
 	 * @return void
 	 */
-	public function injectBackend(\TYPO3\CMS\Extbase\Persistence\BackendInterface $backend) {
+	public function injectBackend(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend) {
 		$this->backend = $backend;
 	}
 
 	/**
 	 * Injects the Persistence Session
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Session $session The persistence session
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $session The persistence session
 	 * @return void
 	 */
-	public function injectSession(\TYPO3\CMS\Extbase\Persistence\Session $session) {
+	public function injectSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $session) {
 		$this->session = $session;
 	}
 
@@ -91,7 +91,7 @@ class Manager implements \TYPO3\CMS\Extbase\Persistence\Generic\ManagerInterface
 	/**
 	 * Returns the current persistence session
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Session
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Session
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function getSession() {
@@ -101,7 +101,7 @@ class Manager implements \TYPO3\CMS\Extbase\Persistence\Generic\ManagerInterface
 	/**
 	 * Returns the persistence backend
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\BackendInterface
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0
 	 */
 	public function getBackend() {
@@ -177,8 +177,8 @@ class Manager implements \TYPO3\CMS\Extbase\Persistence\Generic\ManagerInterface
 	 * @api
 	 */
 	public function persistAll() {
-		$aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		$removedObjects = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$aggregateRootObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
+		$removedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 		// fetch and inspect objects from all known repositories
 		foreach ($this->repositoryClassNames as $repositoryClassName) {
 			$repository = $this->objectManager->get($repositoryClassName);

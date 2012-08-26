@@ -381,7 +381,7 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$languageUid = 2;
 		$workspaceUid = 2;
 		$sourceMock = new \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Selector('tx_foo', 'Tx_Foo');
-		/** @var $pageSelectMock t3lib_pageSelect|PHPUnit_Framework_MockObject_MockObject */
+		/** @var $pageSelectMock \TYPO3\CMS\Frontend\Page\PageRepository|\PHPUnit_Framework_MockObject_MockObject */
 		$pageSelectMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository', array('movePlhOL', 'getWorkspaceVersionOfRecord'));
 		$pageSelectMock->versioningPreview = TRUE;
 		$pageSelectMock->expects($this->once())->method('getWorkspaceVersionOfRecord')->with($workspaceUid, 'tx_foo', '42')->will($this->returnValue($workspaceVersion));

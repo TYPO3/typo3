@@ -179,7 +179,7 @@ class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 	}
 
 	/**
-	 * @param array $errors Array of Tx_Extbase_Validation_Error
+	 * @param array $errors Array of \TYPO3\CMS\Extbase\Validation\Error
 	 * @param string $propertyName Name of the property to add errors
 	 * @return void
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0

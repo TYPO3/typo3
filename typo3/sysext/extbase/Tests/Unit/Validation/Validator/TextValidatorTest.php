@@ -70,7 +70,7 @@ class TextValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Validat
 	 * @author Andreas Förthner <andreas.foerthner@netlogix.de>
 	 */
 	public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities() {
-		$expected = array(new \Tx_Extbase_Validation_Error('The given subject was not a valid text (e.g. contained XML tags).', 1221565786));
+		$expected = array(new \TYPO3\CMS\Extbase\Validation\Error('The given subject was not a valid text (e.g. contained XML tags).', 1221565786));
 		$this->assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
 	}
 

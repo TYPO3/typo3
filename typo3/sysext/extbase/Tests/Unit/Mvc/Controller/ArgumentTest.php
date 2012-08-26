@@ -65,7 +65,7 @@ class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 * @author Robert Lemke <robert@typo3.org>
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function constructingArgumentWithoutNameThrowsException() {
 		new \TYPO3\CMS\Extbase\Mvc\Controller\Argument('', 'Text');
@@ -73,7 +73,7 @@ class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function constructingArgumentWithInvalidNameThrowsException() {
@@ -112,7 +112,7 @@ class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 * @dataProvider invalidShortNames
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @param string $invalidShortName
 	 */

@@ -367,7 +367,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'Tx_SampleExt_Domain_Model_LevelTwo2',
 			'Tx_SampleExt_Domain_Model_LevelOne2'
 		);
-		/** @var $configurationManager Tx_Extbase_Configuration_ConfigurationManager|PHPUnit_Framework_MockObject_MockObject */
+		/** @var $configurationManager \TYPO3\CMS\Extbase\Configuration\ConfigurationManager|\PHPUnit_Framework_MockObject_MockObject */
 		$configurationManager = $this->getMock('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$configurationManager->expects($this->once())->method('getConfiguration')->with('Framework')->will($this->returnValue($configuration));
 		$dataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('test'));

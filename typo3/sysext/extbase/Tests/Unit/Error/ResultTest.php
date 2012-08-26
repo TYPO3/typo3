@@ -49,7 +49,7 @@ class ResultTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @param string $type
-	 * @return PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function getMockMessage($type) {
 		return $this->getMock('Tx_Extbase_Error_' . $type, array(), array(), '', FALSE);

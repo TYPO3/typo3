@@ -44,7 +44,7 @@ class ExtensionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $typo3DbBackup;
 
 	/**
-	 * @var t3lib_fe contains a backup of the current $GLOBALS['TSFE']
+	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE']
 	 */
 	protected $tsfeBackup;
 

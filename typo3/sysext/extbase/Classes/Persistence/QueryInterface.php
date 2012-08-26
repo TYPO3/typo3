@@ -107,7 +107,7 @@ interface QueryInterface
 	/**
 	 * Executes the query against the backend and returns the result
 	 *
-	 * @return Tx_Extbase_Persistence_QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array The query result object or an array if $this->getQuerySettings()->getReturnRawQueryResult() is TRUE
 	 * @api
 	 */
 	public function execute();

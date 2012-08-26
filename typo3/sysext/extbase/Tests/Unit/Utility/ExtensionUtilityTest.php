@@ -39,7 +39,7 @@ class ExtensionUtilityTest extends \tx_phpunit_testcase {
 	protected $typo3ConfVars = array();
 
 	/**
-	 * @var t3lib_fe contains a backup of the current $GLOBALS['TSFE']
+	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE']
 	 */
 	protected $tsfeBackup;
 
@@ -159,7 +159,7 @@ plugin.tx_myextension {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function configurePluginThrowsExceptionIfExtensionNameIsEmpty() {
@@ -170,7 +170,7 @@ plugin.tx_myextension {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 * @see Tx_Extbase_Utility_Extension::registerPlugin
 	 */
 	public function configurePluginThrowsExceptionIfPluginNameIsEmpty() {
