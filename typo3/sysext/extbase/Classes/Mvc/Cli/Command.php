@@ -73,7 +73,13 @@ class Command {
 	public function __construct($controllerClassName, $controllerCommandName) {
 		$this->controllerClassName = $controllerClassName;
 		$this->controllerCommandName = $controllerCommandName;
-		$classNameParts = explode('_', $controllerClassName);
+		$delimiter = strpos($controllerClassName, '\\') !== FALSE ? '\\' : '_';
+		$classNameParts = explode($delimiter, $controllerClassName);
+		if (isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3' && isset($classNameParts[1]) && $classNameParts[1] === 'CMS') {
+			$classNameParts[0] .= '\\' . $classNameParts[1];
+			unset($classNameParts[1]);
+			$classNameParts = array_values($classNameParts);
+		}
 		if (count($classNameParts) !== 4 || strpos($classNameParts[3], 'CommandController') === FALSE) {
 			throw new \InvalidArgumentException(('Invalid controller class name "' . $controllerClassName) . '"', 1305100019);
 		}
