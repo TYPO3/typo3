@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Utility\File;
+
 /* * *************************************************************
  *  Copyright notice
  *
@@ -22,16 +24,16 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  * ************************************************************* */
 /**
- * Testcase for class t3lib_extFileFunctions
+ * Testcase for TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
  *
  * @author Fabien Udriot <fabien.udriot@ecodev.ch>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
+class ExtendedFileUtilityTest extends \tx_phpunit_testcase {
 
 	/**
-	 * @var fileProcessor
+	 * @var \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility
 	 */
 	protected $fileProcessor;
 

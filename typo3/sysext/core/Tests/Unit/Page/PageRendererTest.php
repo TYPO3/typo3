@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Page;
+
 /***************************************************************
  * Copyright notice
  *
@@ -22,13 +24,13 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for the t3lib_PageRenderer class in the TYPO3 core.
+ * Testcase for \TYPO3\CMS\Core\Page\PageRenderer
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Steffen Kamper (info@sk-typo3.de)
  */
-class t3lib_PageRendererTest extends tx_phpunit_testcase {
+class PageRendererTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -537,7 +539,7 @@ class t3lib_PageRendererTest extends tx_phpunit_testcase {
 		$expectedReturnValue = 'TYPO3.lang = {"myKey":"myValue"}';
 		$this->fixture->loadExtJS();
 		$this->fixture->addInlineLanguageLabel('myKey', 'myValue');
-		$out = $this->fixture->enableMoveJsFromHeaderToFooter();
+		$this->fixture->enableMoveJsFromHeaderToFooter();
 		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
 		$this->assertContains($expectedReturnValue, $out);
 	}
@@ -549,7 +551,7 @@ class t3lib_PageRendererTest extends tx_phpunit_testcase {
 		$expectedReturnValue = 'TYPO3.lang = {"myKey1":"myValue1","myKey2":"myValue2"}';
 		$this->fixture->loadExtJS();
 		$this->fixture->addInlineLanguageLabelArray(array('myKey1' => 'myValue1', 'myKey2' => 'myValue2'));
-		$out = $this->fixture->enableMoveJsFromHeaderToFooter();
+		$this->fixture->enableMoveJsFromHeaderToFooter();
 		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
 		$this->assertContains($expectedReturnValue, $out);
 	}
@@ -562,7 +564,7 @@ class t3lib_PageRendererTest extends tx_phpunit_testcase {
 		$this->fixture->loadExtJS();
 		$this->fixture->addInlineLanguageLabelArray(array('myKey1' => 'myValue1'));
 		$this->fixture->addInlineLanguageLabelArray(array('myKey2' => 'myValue2'));
-		$out = $this->fixture->enableMoveJsFromHeaderToFooter();
+		$this->fixture->enableMoveJsFromHeaderToFooter();
 		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
 		$this->assertContains($expectedReturnValue, $out);
 	}
@@ -574,7 +576,7 @@ class t3lib_PageRendererTest extends tx_phpunit_testcase {
 		$expectedReturnValue = 'TYPO3.settings = {"myApp":{"myKey":"myValue"}};';
 		$this->fixture->loadExtJS();
 		$this->fixture->addInlineSetting('myApp', 'myKey', 'myValue');
-		$out = $this->fixture->enableMoveJsFromHeaderToFooter();
+		$this->fixture->enableMoveJsFromHeaderToFooter();
 		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
 		$this->assertContains($expectedReturnValue, $out);
 	}
@@ -586,7 +588,7 @@ class t3lib_PageRendererTest extends tx_phpunit_testcase {
 		$expectedReturnValue = 'TYPO3.settings = {"myApp":{"myKey1":"myValue1","myKey2":"myValue2"}};';
 		$this->fixture->loadExtJS();
 		$this->fixture->addInlineSettingArray('myApp', array('myKey1' => 'myValue1', 'myKey2' => 'myValue2'));
-		$out = $this->fixture->enableMoveJsFromHeaderToFooter();
+		$this->fixture->enableMoveJsFromHeaderToFooter();
 		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
 		$this->assertContains($expectedReturnValue, $out);
 	}
@@ -599,7 +601,7 @@ class t3lib_PageRendererTest extends tx_phpunit_testcase {
 		$this->fixture->loadExtJS();
 		$this->fixture->addInlineSettingArray('myApp', array('myKey1' => 'myValue1'));
 		$this->fixture->addInlineSettingArray('myApp', array('myKey2' => 'myValue2'));
-		$out = $this->fixture->enableMoveJsFromHeaderToFooter();
+		$this->fixture->enableMoveJsFromHeaderToFooter();
 		$out = $this->fixture->render(\TYPO3\CMS\Core\Page\PageRenderer::PART_FOOTER);
 		$this->assertContains($expectedReturnValue, $out);
 	}

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,15 +23,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class t3lib_div
+ * Testcase for class \TYPO3\CMS\Core\Utility\GeneralUtility
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_divTest extends tx_phpunit_testcase {
+class GeneralUtilityTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -2200,7 +2203,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	public function getDirsReturnsArrayOfDirectoriesFromGivenDirectory() {
 		$path = PATH_t3lib;
 		$directories = \TYPO3\CMS\Core\Utility\GeneralUtility::get_dirs($path);
-		$this->assertInternalType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $directories);
+		$this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $directories);
 	}
 
 	/**
@@ -2523,10 +2526,10 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * minifyJavaScriptReturnsErrorStringOfHookException and
 	 * minifyJavaScriptWritesExceptionMessageToDevLog
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function minifyJavaScriptErroneousCallback() {
-		throw new RuntimeException('foo', 1344888548);
+		throw new \RuntimeException('foo', 1344888548);
 	}
 
 	///////////////////////////
@@ -3273,7 +3276,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 		$directoryCreated = is_dir($directory);
 		rmdir($directory);
 		$this->assertTrue($directoryCreated);
-		$this->assertInternalType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $fileInfo);
+		$this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $fileInfo);
 		$this->assertEquals($directoryPath, $fileInfo['path']);
 		$this->assertEquals($directoryName, $fileInfo['file']);
 		$this->assertEquals($directoryName, $fileInfo['filebody']);
@@ -3287,7 +3290,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	public function splitFileRefReturnsFileTypeForFilesWithoutPathSite() {
 		$testFile = 'fileadmin/media/someFile.png';
 		$fileInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($testFile);
-		$this->assertInternalType(PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $fileInfo);
+		$this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_ARRAY, $fileInfo);
 		$this->assertEquals('fileadmin/media/', $fileInfo['path']);
 		$this->assertEquals('someFile.png', $fileInfo['file']);
 		$this->assertEquals('someFile', $fileInfo['filebody']);
@@ -3367,7 +3370,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 * @test
 	 * @dataProvider resolveBackPathDataProvider
 	 * @param string $input the input for resolveBackPath
-	 * @param $expectedValue the expected return value from resolveBackPath
+	 * @param $expectedValue Expected return value from resolveBackPath
 	 */
 	public function resolveBackPathWithDataProvider($input, $expectedValue) {
 		$this->assertEquals($expectedValue, \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($input));
@@ -3727,7 +3730,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function callUserFunctionCanCallMethod() {
 		$inputData = array('foo' => 'bar');
-		$result = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('t3lib_divTest->user_calledUserFunction', $inputData, $this);
+		$result = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('TYPO3\CMS\Core\Tests\Unit\Utility\GeneralUtilityTest->user_calledUserFunction', $inputData, $this);
 		$this->assertEquals('Worked fine', $result);
 	}
 
@@ -3743,7 +3746,7 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function callUserFunctionCanPrefixFuncNameWithFilePath() {
 		$inputData = array('foo' => 'bar');
-		$result = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('t3lib/class.t3lib_div.php:t3lib_divTest->user_calledUserFunction', $inputData, $this);
+		$result = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('typo3/sysext/core/Tests/Unit/Utility/GeneralUtilityTest.php:TYPO3\CMS\Core\Tests\Unit\Utility\GeneralUtilityTest->user_calledUserFunction', $inputData, $this);
 		$this->assertEquals('Worked fine', $result);
 	}
 
@@ -3752,8 +3755,8 @@ class t3lib_divTest extends tx_phpunit_testcase {
 	 */
 	public function callUserFunctionCanPersistObjectsBetweenCalls() {
 		$inputData = array('called' => array());
-		\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('&t3lib_divTest->user_calledUserFunctionCountCallers', $inputData, $this);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('&t3lib_divTest->user_calledUserFunctionCountCallers', $inputData, $this);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('&TYPO3\CMS\Core\Tests\Unit\Utility\GeneralUtilityTest->user_calledUserFunctionCountCallers', $inputData, $this);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('&TYPO3\CMS\Core\Tests\Unit\Utility\GeneralUtilityTest->user_calledUserFunctionCountCallers', $inputData, $this);
 		$this->assertEquals(1, sizeof($inputData['called']));
 	}
 

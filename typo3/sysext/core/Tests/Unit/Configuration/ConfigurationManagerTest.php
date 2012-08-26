@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase for class \TYPO3\CMS\Core\Configuration\ConfigurationManager
  *
@@ -28,7 +31,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_ConfigurationTest extends tx_phpunit_testcase {
+class ConfigurationManagerTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Absolute path to files that must be removed

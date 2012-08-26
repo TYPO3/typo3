@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Extension;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,15 +23,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class t3lib_extMgm
+ * Testcase for \TYPO3\CMS\Core\Extension
  *
  * @author Oliver Hader <oliver@typo3.org>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_extmgmTest extends tx_phpunit_testcase {
+class ExtensionManagerTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -883,7 +886,7 @@ throw new RuntimeException(\'\', 1340559079);
 		return array(
 			array(''),
 			array(0),
-			array(new stdClass()),
+			array(new \stdClass()),
 			array(TRUE)
 		);
 	}

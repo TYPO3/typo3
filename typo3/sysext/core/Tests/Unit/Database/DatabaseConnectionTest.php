@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Database;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,17 +23,18 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the t3lib_db class in the TYPO3 Core.
+ * Testcase for TYPO3\CMS\Core\Database\DatabaseConnection
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Ernesto Baschny <ernst@cron-it.de>
  */
-class t3lib_dbTest extends tx_phpunit_testcase {
+class DatabaseConnectionTest extends \tx_phpunit_testcase {
 
 	/**
-	 * @var t3lib_db
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	private $fixture = NULL;
 

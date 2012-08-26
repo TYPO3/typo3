@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Database;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,13 +24,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for class t3lib_sqlparser.
+ * Testcase for TYPO3\CMS\Core\Database\SqlParser
  *
  * @author Patrick Schriner <patrick.schriner@diemedialen.de>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_sqlparserTest extends tx_phpunit_testcase {
+class SqlParserTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Database\SqlParser

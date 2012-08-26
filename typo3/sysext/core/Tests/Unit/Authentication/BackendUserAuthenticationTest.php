@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the t3lib_beUserAuth class in the TYPO3 Core extension.
+ * Testcase for \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class t3lib_beUserAuthTest extends tx_phpunit_testcase {
+class BackendUserAuthenticationTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
