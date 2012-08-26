@@ -9,7 +9,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
  * @package TYPO3
  * @subpackage core
  */
-class FolderTree extends rteFolderTree {
+class FolderTree extends \rteFolderTree {
 
 	/**
 	 * Wrapping the title in a link, if applicable.

@@ -48,7 +48,7 @@ $LANG->includeLLFile('EXT:rtehtmlarea/htmlarea/locallang_dialogs.xml');
  */
 require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('rtehtmlarea') . 'Classes/Controller/BrowseLinksController.php';
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_rtehtmlarea_SC_TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowser');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\Controller\\BrowseLinksController');
 $SOBE->main();
 $SOBE->printContent();
 ?>

@@ -135,7 +135,7 @@ class LanguageService {
 	 * $LANG = t3lib_div::makeInstance('language');
 	 * $LANG->init($GLOBALS['BE_USER']->uc['lang']);
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @param string $lang The language key (two character string from backend users profile)
 	 * @return void
 	 */
