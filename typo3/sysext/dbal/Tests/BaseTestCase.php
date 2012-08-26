@@ -34,13 +34,13 @@ namespace TYPO3\CMS\Dbal\Tests;
  * @package TYPO3
  * @subpackage dbal
  */
-abstract class BaseTestCase extends tx_phpunit_testcase {
+abstract class BaseTestCase extends \tx_phpunit_testcase {
 
 	/**
 	 * Creates a proxy class of the specified class which allows
 	 * for calling even protected methods and access of protected properties.
 	 *
-	 * @param protected $className Full qualified name of the original class
+	 * @param string $className Full qualified name of the original class
 	 * @return string Full qualified name of the built class
 	 * @api
 	 */

@@ -2,13 +2,13 @@
 namespace TYPO3\CMS\Dbal\Tests;
 
 /**
- * Testcase for class ux_t3lib_db.
+ * Testcase for class DatabaseConnection.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  * @package TYPO3
  * @subpackage dbal
  */
-class DatabaseGeneralTest extends \TYPO3\CMS\Dbal\Tests\BaseTestCase {
+class DatabaseGeneralTest extends BaseTestCase {
 
 	/**
 	 * @var t3lib_db
@@ -34,7 +34,7 @@ class DatabaseGeneralTest extends \TYPO3\CMS\Dbal\Tests\BaseTestCase {
 		// Backup database connection
 		$this->db = $GLOBALS['TYPO3_DB'];
 		$this->temporaryFiles = array();
-		$className = self::buildAccessibleProxy('ux_t3lib_db');
+		$className = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
 		$GLOBALS['TYPO3_DB'] = new $className();
 		$GLOBALS['TYPO3_DB']->lastHandlerKey = '_DEFAULT';
 	}

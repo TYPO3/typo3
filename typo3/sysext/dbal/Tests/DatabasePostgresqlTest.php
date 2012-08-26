@@ -30,7 +30,7 @@ class DatabasePostgresqlTest extends BaseTestCase {
 		$this->db = $GLOBALS['TYPO3_DB'];
 		// Reconfigure DBAL to use PostgreSQL
 		require 'fixtures/postgresql.config.php';
-		$className = self::buildAccessibleProxy('ux_t3lib_db');
+		$className = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
 		$GLOBALS['TYPO3_DB'] = new $className();
 		$parserClassName = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\SqlParser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName();

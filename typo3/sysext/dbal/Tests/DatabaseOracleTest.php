@@ -8,7 +8,7 @@ namespace TYPO3\CMS\Dbal\Tests;
  * @package TYPO3
  * @subpackage dbal
  */
-class DatabaseOracleTest extends \TYPO3\CMS\Dbal\Tests\BaseTestCase {
+class DatabaseOracleTest extends BaseTestCase {
 
 	/**
 	 * @var t3lib_db
@@ -30,7 +30,7 @@ class DatabaseOracleTest extends \TYPO3\CMS\Dbal\Tests\BaseTestCase {
 		$this->db = $GLOBALS['TYPO3_DB'];
 		// Reconfigure DBAL to use Oracle
 		require 'fixtures/oci8.config.php';
-		$className = self::buildAccessibleProxy('ux_t3lib_db');
+		$className = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
 		$GLOBALS['TYPO3_DB'] = new $className();
 		$parserClassName = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\SqlParser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName();

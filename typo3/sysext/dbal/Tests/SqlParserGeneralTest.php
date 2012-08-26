@@ -24,8 +24,6 @@ namespace TYPO3\CMS\Dbal\Tests;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once 'TYPO3\\CMS\\Dbal\\Tests\\BaseTestCase.php';
-
 /**
  * Testcase for class ux_t3lib_sqlparser
  *
@@ -33,10 +31,10 @@ require_once 'TYPO3\\CMS\\Dbal\\Tests\\BaseTestCase.php';
  * @package TYPO3
  * @subpackage dbal
  */
-class SqlParserGeneralTest extends \TYPO3\CMS\Dbal\Tests\BaseTestCase {
+class SqlParserGeneralTest extends BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Dbal\Database\SqlParserOverride (extended to make protected methods public)
+	 * @var ux_TYPO3\CMS\Core\Database\SqlParser (extended to make protected methods public)
 	 */
 	protected $fixture;
 

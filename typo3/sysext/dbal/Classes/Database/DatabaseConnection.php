@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dbal\Database;
+namespace ux_TYPO3\CMS\Core\Database;
 
 /***************************************************************
  *  Copyright notice
@@ -43,7 +43,7 @@ namespace TYPO3\CMS\Dbal\Database;
  * @package TYPO3
  * @subpackage tx_dbal
  */
-class DatabaseConntectionOverride extends \TYPO3\CMS\Core\Database\DatabaseConnection {
+class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 
 	// Internal, static:
 	/**
@@ -1342,7 +1342,7 @@ class DatabaseConntectionOverride extends \TYPO3\CMS\Core\Database\DatabaseConne
 			}
 		}
 		$preparedStatement = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\PreparedStatement', '', $from_table, $precompiledParts);
-		/* @var $preparedStatement t3lib_db_PreparedStatement */
+		/* @var $preparedStatement TYPO3\CMS\Core\Database\PreparedStatement */
 		// Bind values to parameters
 		foreach ($input_parameters as $key => $value) {
 			$preparedStatement->bindValue($key, $value, \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_AUTOTYPE);

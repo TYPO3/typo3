@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Dbal\Database;
+namespace ux_TYPO3\CMS\Core\Database;
 
 /***************************************************************
  *  Copyright notice
@@ -37,7 +37,7 @@ namespace TYPO3\CMS\Dbal\Database;
  * @package TYPO3
  * @subpackage dbal
  */
-class SqlParserOverride extends \TYPO3\CMS\Core\Database\SqlParser {
+class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 
 	/**
 	 * Gets value in quotes from $parseString.
@@ -338,8 +338,7 @@ class SqlParserOverride extends \TYPO3\CMS\Core\Database\SqlParser {
 		case 'adodb':
 			$tableName = $GLOBALS['TYPO3_DB']->quoteName($components['TABLE'], NULL, TRUE);
 			$fieldName = $GLOBALS['TYPO3_DB']->quoteName($components['FIELD'], NULL, TRUE);
-			switch (strtoupper(str_replace(array(' ', '
-', '', '	'), '', $components['action']))) {
+			switch (strtoupper(str_replace(array(' ', "\n", "\r", "\t"), '', $components['action']))) {
 			case 'ADD':
 				$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AddColumnSQL($tableName, ($fieldName . ' ') . $this->compileFieldCfg($components['definition']));
 				break;

@@ -35,12 +35,11 @@ class FakeDatabaseConnection {
 	/**
 	 * Creates a fake database connection.
 	 *
-	 * @param ux_t3lib_db $db
-	 * @param string $databaseType Type of the database (e.g., 'oracle')
+	 * @param \ux_TYPO3\CMS\Core\Database\DatabaseConnection $db
 	 * @param string $driver Driver to use (e.g., 'oci8')
-	 * @return ADOConnection
+	 * @return \ADOConnection
 	 */
-	static public function connect(\ux_t3lib_db $db, $driver) {
+	static public function connect(\ux_TYPO3\CMS\Core\Database\DatabaseConnection $db, $driver) {
 		// Make sure to have a clean configuration
 		$db->clearCachedFieldInfo();
 		$db->_call('initInternalVariables');
