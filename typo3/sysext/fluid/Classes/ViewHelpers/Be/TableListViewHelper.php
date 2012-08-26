@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
+
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
  *                                                                        *
@@ -44,7 +46,6 @@
  */
 require_once PATH_typo3 . 'class.db_list.inc';
 require_once PATH_typo3 . 'class.db_list_extra.inc';
-namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
 
 class TableListViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 
