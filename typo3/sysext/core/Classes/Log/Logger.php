@@ -211,7 +211,7 @@ class Logger {
 	}
 
 	/**
-	 * Passes the t3lib_log_Record to all registered writers.
+	 * Passes the \TYPO3\CMS\Core\Log\LogRecord to all registered writers.
 	 *
 	 * @param \TYPO3\CMS\Core\Log\LogRecord $record
 	 * @return void

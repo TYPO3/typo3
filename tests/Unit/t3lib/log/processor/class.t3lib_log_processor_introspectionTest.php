@@ -32,7 +32,7 @@ class t3lib_log_processor_IntrospectionTest extends tx_phpunit_testcase {
 
 	/**
 	 * Tests if debug_backtrace values are added to LogRecord
-	 * The debug_backtrace in t3lib_log_processor_Introspection will always process a phpunit class.
+	 * The debug_backtrace in \TYPO3\CMS\Core\Log\Processor\IntrospectionProcessor will always process a phpunit class.
 	 * The result is unpredictable values. So we only test if values are not empty/0
 	 *
 	 * @test

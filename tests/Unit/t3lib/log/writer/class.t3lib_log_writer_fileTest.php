@@ -22,7 +22,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for t3lib_log_writer_File
+ * Testcase for \TYPO3\CMS\Core\Log\Writer\FileWriter
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */

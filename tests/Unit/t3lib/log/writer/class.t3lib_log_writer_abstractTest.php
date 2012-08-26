@@ -23,7 +23,7 @@
  ***************************************************************/
 require_once (__DIR__ . DIRECTORY_SEPARATOR) . '../fixtures/class.t3lib_log_writer_fixture.php';
 /**
- * Testcase for t3lib_log_writer_Abstract
+ * Testcase for \TYPO3\CMS\Core\Log\Writer\AbstractWriter
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */

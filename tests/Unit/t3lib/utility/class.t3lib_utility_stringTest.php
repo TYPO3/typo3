@@ -22,7 +22,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for class t3lib_utility_string
+ * Testcase for class \TYPO3\CMS\Core\Utility\StringUtility
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
  * @package TYPO3
