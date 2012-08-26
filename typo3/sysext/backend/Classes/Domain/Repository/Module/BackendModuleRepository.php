@@ -51,7 +51,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Finds a module menu entry by name
 	 *
 	 * @param string $name
-	 * @return Typo3_Domain_Model_BackendModule|boolean
+	 * @return \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule|boolean
 	 */
 	public function findByModuleName($name) {
 		$entries = $this->moduleMenu->getEntries();
@@ -64,7 +64,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $name
 	 * @param SplObjectStorage $entries
-	 * @return Typo3_Domain_Model_BackendModule|bool
+	 * @return \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule|bool
 	 */
 	public function findByModuleNameInGivenEntries($name, \SplObjectStorage $entries) {
 		foreach ($entries as $entry) {
