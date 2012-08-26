@@ -20,7 +20,7 @@ $TCA['sys_file'] = array(
 		'fileinfo' => array(
 			'config' => array(
 				'type' => 'user',
-				'userFunc' => 't3lib/file/Utility/FileInfo.php:t3lib_file_utility_fileinfo->renderFileInfo'
+				'userFunc' => 'typo3/sysext/core/Classes/Resource/Hook/FileInfoHook.php:TYPO3\CMS\Core\Resource\Hook\FileInfoHook->renderFileInfo'
 			)
 		),
 		'storage' => array(

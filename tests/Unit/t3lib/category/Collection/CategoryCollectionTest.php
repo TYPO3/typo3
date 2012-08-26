@@ -85,7 +85,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	/**
 	 * @test
 	 * @expectedException RuntimeException
-	 * @covers t3lib_category_Collection_CategoryCollection::__construct
+	 * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::__construct
 	 * @return void
 	 */
 	public function missingTableNameArgumentForObjectCategoryCollection() {
@@ -94,7 +94,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 
 	/**
 	 * @test
-	 * @covers t3lib_category_Collection_CategoryCollection::fromArray
+	 * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::fromArray
 	 * @return void
 	 */
 	public function checkIfFromArrayMethodSetCorrectProperties() {
@@ -108,27 +108,27 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 
 	/**
 	 * @test
-	 * @covers t3lib_category_Collection_CategoryCollection::create
+	 * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create
 	 * @return void
 	 */
 	public function canCreateDummyCollection() {
 		$collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create($this->collectionRecord);
-		$this->assertInstanceOf('t3lib_category_collection_categorycollection', $collection);
+		$this->assertInstanceOf('\TYPO3\CMS\Core\Category\Collection\CategoryCollection', $collection);
 	}
 
 	/**
 	 * @test
-	 * @covers t3lib_category_Collection_CategoryCollection::create
+	 * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create
 	 * @return void
 	 */
 	public function canCreateDummyCollectionAndFillItems() {
 		$collection = \TYPO3\CMS\Core\Category\Collection\CategoryCollection::create($this->collectionRecord, TRUE);
-		$this->assertInstanceOf('t3lib_category_collection_categorycollection', $collection);
+		$this->assertInstanceOf('\TYPO3\CMS\Core\Category\Collection\CategoryCollection', $collection);
 	}
 
 	/**
 	 * @test
-	 * @covers t3lib_category_Collection_CategoryCollection::getCollectedRecords
+	 * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getCollectedRecords
 	 * @return void
 	 */
 	public function getCollectedRecordsReturnsEmptyRecordSet() {
@@ -141,7 +141,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 
 	/**
 	 * @test
-	 * @covers t3lib_category_Collection_CategoryCollection::getStorageTableName
+	 * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getStorageTableName
 	 * @return void
 	 */
 	public function isStorageTableNameEqualsToSysCategory() {
@@ -150,7 +150,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 
 	/**
 	 * @test
-	 * @covers t3lib_category_Collection_CategoryCollection::getStorageItemsField
+	 * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::getStorageItemsField
 	 * @return void
 	 */
 	public function isStorageItemsFieldEqualsToItems() {

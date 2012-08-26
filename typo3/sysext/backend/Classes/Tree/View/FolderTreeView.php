@@ -48,7 +48,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	/**
 	 * The users' file Storages
 	 *
-	 * @var t3lib_file_storage[]
+	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage[]
 	 */
 	protected $storages = NULL;
 
@@ -144,7 +144,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * Wrapping $title in a-tags.
 	 *
 	 * @param string $title Title string
-	 * @param t3lib_file_Folder	$folderObject the folder record
+	 * @param \TYPO3\CMS\Core\Resource\Folder	$folderObject the folder record
 	 * @param integer $bank Bank pointer (which mount point number)
 	 * @return string
 	 * @internal

@@ -48,7 +48,7 @@ class FileListController {
 	 */
 	public $id;
 
-	/* @var t3lib_file_Folder $folderObject */
+	/* @var \TYPO3\CMS\Core\Resource\Folder $folderObject */
 	protected $folderObject;
 
 	/* @var t3lib_FlashMessage $errorMessage */

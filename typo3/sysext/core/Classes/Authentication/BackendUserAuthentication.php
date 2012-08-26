@@ -176,7 +176,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	public $checkWorkspaceCurrent_cache = NULL;
 
 	/**
-	 * @var t3lib_file_Storage[]
+	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage[]
 	 */
 	protected $fileStorages;
 
@@ -1578,7 +1578,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 * If no filemounts an empty array is returned.
 	 *
 	 * @api
-	 * @return t3lib_file_Storage[]
+	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage[]
 	 */
 	public function getFileStorages() {
 		// Initializing file mounts after the groups are fetched
@@ -1723,7 +1723,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
-	 * Returns a t3lib_file_Folder object that is used for uploading
+	 * Returns a \TYPO3\CMS\Core\Resource\Folder object that is used for uploading
 	 * files by default.
 	 * This is used for RTE and its magic images, as well as uploads
 	 * in the TCEforms fields, unless otherwise configured (will be added in the future)
@@ -1734,7 +1734,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 *
 	 * options.defaultUploadFolder = 3:myfolder/yourfolder/
 	 *
-	 * @return t3lib_file_Folder|boolean The default upload folder for this user
+	 * @return \TYPO3\CMS\Core\Resource\Folder|boolean The default upload folder for this user
 	 */
 	public function getDefaultUploadFolder() {
 		$uploadFolder = $this->getTSConfigVal('options.defaultUploadFolder');

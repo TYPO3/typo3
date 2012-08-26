@@ -319,7 +319,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 * @return string Returns the path (without trailing slash) of the closest recycle-folder if found. Else FALSE.
 	 * @todo To be put in Storage with a better concept
 	 * @todo Define visibility
-	 * @deprecated since TYPO3 6.0, use t3lib_file_Storage method instead
+	 * @deprecated since TYPO3 6.0, use \TYPO3\CMS\Core\Resource\ResourceStorage method instead
 	 */
 	public function findRecycler($theFile) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
@@ -435,7 +435,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 * Gets a File or a Folder object from an identifier [storage]:[fileId]
 	 *
 	 * @param string $identifier
-	 * @return t3lib_file_Folder|t3lib_file_File
+	 * @return \TYPO3\CMS\Core\Resource\Folder|\TYPO3\CMS\Core\Resource\File
 	 */
 	protected function getFileObject($identifier) {
 		$object = $this->fileFactory->retrieveFileOrFolderObject($identifier);

@@ -982,8 +982,8 @@ class ResourceStorage {
 	 * copies a source file (from any location) in to the target
 	 * folder, the latter has to be part of this storage
 	 *
-	 * @param 	t3lib_file_FileInterface	$file
-	 * @param 	t3lib_file_Folder $targetFolder
+	 * @param 	\TYPO3\CMS\Core\Resource\FileInterface	$file
+	 * @param 	\TYPO3\CMS\Core\Resource\Folder $targetFolder
 	 * @param 	string	$conflictMode	"overrideExistingFile", "renameNewFile", "cancel
 	 * @param 	string	$targetFileName	an optional destination fileName
 	 * @return \TYPO3\CMS\Core\Resource\FileInterface
@@ -1203,7 +1203,7 @@ class ResourceStorage {
 	/**
 	 * Previously in t3lib_extFileFunc::func_rename()
 	 *
-	 * @param 	t3lib_file_FileInterface	$file
+	 * @param 	\TYPO3\CMS\Core\Resource\FileInterface	$file
 	 * @param 	string	$targetFileName
 	 * @return \TYPO3\CMS\Core\Resource\FileInterface
 	 */
@@ -1287,7 +1287,7 @@ class ResourceStorage {
 	 * Returns an array with all file objects in a folder and its subfolders, with the file identifiers as keys.
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
-	 * @return t3lib_file_File[]
+	 * @return \TYPO3\CMS\Core\Resource\File[]
 	 */
 	protected function getAllFileObjectsInFolder(\TYPO3\CMS\Core\Resource\Folder $folder) {
 		$files = array();
@@ -1718,91 +1718,91 @@ class ResourceStorage {
 	/**
 	 * Emits the folder pre-copy signal
 	 *
-	 * @param t3lib_File_Folder $folder
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
 	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
 	 * @param $newName
 	 * @return void
 	 */
-	protected function emitPreFolderCopySignal(\t3lib_File_Folder $folder, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('t3lib_File_Storage', self::SIGNAL_PreFolderCopy, array($folder, $targetFolder));
+	protected function emitPreFolderCopySignal(\TYPO3\CMS\Core\Resource\Folder $folder, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newName) {
+		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PreFolderCopy, array($folder, $targetFolder));
 	}
 
 	/**
 	 * Emits the folder post-copy signal
 	 *
-	 * @param t3lib_File_Folder $folder
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
 	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
 	 * @param $newName
 	 * @return void
 	 */
-	protected function emitPostFolderCopySignal(\t3lib_File_Folder $folder, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('t3lib_File_Storage', self::SIGNAL_PostFolderCopy, array($folder, $targetFolder));
+	protected function emitPostFolderCopySignal(\TYPO3\CMS\Core\Resource\Folder $folder, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newName) {
+		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PostFolderCopy, array($folder, $targetFolder));
 	}
 
 	/**
 	 * Emits the folder pre-move signal
 	 *
-	 * @param t3lib_File_Folder $folder
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
 	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
 	 * @param $newName
 	 * @return void
 	 */
-	protected function emitPreFolderMoveSignal(\t3lib_File_Folder $folder, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('t3lib_File_Storage', self::SIGNAL_PreFolderMove, array($folder, $targetFolder));
+	protected function emitPreFolderMoveSignal(\TYPO3\CMS\Core\Resource\Folder $folder, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newName) {
+		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PreFolderMove, array($folder, $targetFolder));
 	}
 
 	/**
 	 * Emits the folder post-move signal
 	 *
-	 * @param t3lib_File_Folder $folder
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
 	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
 	 * @param $newName
 	 * @return void
 	 */
-	protected function emitPostFolderMoveSignal(\t3lib_File_Folder $folder, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('t3lib_File_Storage', self::SIGNAL_PostFolderMove, array($folder, $targetFolder));
+	protected function emitPostFolderMoveSignal(\TYPO3\CMS\Core\Resource\Folder $folder, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newName) {
+		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PostFolderMove, array($folder, $targetFolder));
 	}
 
 	/**
 	 * Emits the folder pre-rename signal
 	 *
-	 * @param t3lib_File_Folder $folder
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
 	 * @param $newName
 	 * @return void
 	 */
-	protected function emitPreFolderRenameSignal(\t3lib_File_Folder $folder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('t3lib_File_Storage', self::SIGNAL_PreFolderRename, array($folder, $newName));
+	protected function emitPreFolderRenameSignal(\TYPO3\CMS\Core\Resource\Folder $folder, $newName) {
+		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PreFolderRename, array($folder, $newName));
 	}
 
 	/**
 	 * Emits the folder post-rename signal
 	 *
-	 * @param t3lib_File_Folder $folder
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
 	 * @param $newName
 	 * @return void
 	 */
-	protected function emitPostFolderRenameSignal(\t3lib_File_Folder $folder, $newName) {
-		$this->getSignalSlotDispatcher()->dispatch('t3lib_File_Storage', self::SIGNAL_PostFolderRename, array($folder, $newName));
+	protected function emitPostFolderRenameSignal(\TYPO3\CMS\Core\Resource\Folder $folder, $newName) {
+		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PostFolderRename, array($folder, $newName));
 	}
 
 	/**
 	 * Emits the folder pre-deletion signal
 	 *
-	 * @param t3lib_File_Folder $folder
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
 	 * @return void
 	 */
-	protected function emitPreFolderDeleteSignal(\t3lib_File_Folder $folder) {
-		$this->getSignalSlotDispatcher()->dispatch('t3lib_File_Storage', self::SIGNAL_PreFolderDelete, array($folder));
+	protected function emitPreFolderDeleteSignal(\TYPO3\CMS\Core\Resource\Folder $folder) {
+		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PreFolderDelete, array($folder));
 	}
 
 	/**
 	 * Emits folder postdeletion signal.
 	 *
-	 * @param t3lib_File_Folder $folder
+	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
 	 * @return void
 	 */
-	protected function emitPostFolderDeleteSignal(\t3lib_File_Folder $folder) {
-		$this->getSignalSlotDispatcher()->dispatch('t3lib_File_Storage', self::SIGNAL_PostFolderDelete, array($folder));
+	protected function emitPostFolderDeleteSignal(\TYPO3\CMS\Core\Resource\Folder $folder) {
+		$this->getSignalSlotDispatcher()->dispatch('\TYPO3\CMS\Core\Resource\ResourceStorage', self::SIGNAL_PostFolderDelete, array($folder));
 	}
 
 	/**
@@ -1851,7 +1851,7 @@ class ResourceStorage {
 	 * @return 	string		A unique fileName inside $folder, based on $theFile.
 	 * @see t3lib_basicFileFunc::getUniqueName()
 	 */
-	// TODO check if this should be moved back to t3lib_file_Folder
+	// TODO check if this should be moved back to \TYPO3\CMS\Core\Resource\Folder
 	protected function getUniqueName(\TYPO3\CMS\Core\Resource\Folder $folder, $theFile, $dontCheckForUnique = FALSE) {
 		static $maxNumber = 99, $uniqueNamePrefix = '';
 		// Fetches info about path, name, extention of $theFile

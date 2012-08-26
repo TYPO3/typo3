@@ -114,7 +114,7 @@ class t3lib_extFileFunctionsTest extends tx_phpunit_testcase {
 		foreach ($storages as $storage) {
 
 		}
-		//* @var $storage t3lib_file_Storage */
+		/** @var $storage \TYPO3\CMS\Core\Resource\ResourceStorage */
 		return $storages[0];
 	}
 

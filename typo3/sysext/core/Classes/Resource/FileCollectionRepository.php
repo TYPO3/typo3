@@ -51,7 +51,8 @@ class FileCollectionRepository extends \TYPO3\CMS\Core\Collection\RecordCollecti
 	 *
 	 * @todo the parent function throws already an exception if not found
 	 * @param integer $uid The uid to be looked up
-	 * @return NULL|t3lib_file_Collection_AbstractFileCollection
+	 * @return NULL|\TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection
+	 * @throws \RuntimeException
 	 */
 	public function findByUid($uid) {
 		$object = parent::findByUid($uid);

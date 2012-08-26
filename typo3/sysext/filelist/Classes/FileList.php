@@ -397,7 +397,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	/**
 	 * This returns tablerows for the directories in the array $items['sorting'].
 	 *
-	 * @param t3lib_file_Folder[] $folders Folders of t3lib_file_Folder
+	 * @param \TYPO3\CMS\Core\Resource\Folder[] $folders Folders of \TYPO3\CMS\Core\Resource\Folder
 	 * @return string HTML table rows.
 	 * @todo Define visibility
 	 */
@@ -539,7 +539,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	/**
 	 * This returns tablerows for the files in the array $items['sorting'].
 	 *
-	 * @param t3lib_file_File[] $files File items
+	 * @param \TYPO3\CMS\Core\Resource\File[] $files File items
 	 * @return string HTML table rows.
 	 * @todo Define visibility
 	 */
@@ -647,7 +647,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	/**
 	 * Creates the clipboard control pad
 	 *
-	 * @param t3lib_file_File|t3lib_file_Folder $fileOrFolderObject Array with information about the file/directory for which to make the clipboard panel for the listing.
+	 * @param \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder $fileOrFolderObject Array with information about the file/directory for which to make the clipboard panel for the listing.
 	 * @return string HTML-table
 	 * @todo Define visibility
 	 */
@@ -683,7 +683,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	/**
 	 * Creates the edit control section
 	 *
-	 * @param t3lib_file_File|t3lib_file_Folder $fileOrFolderObject Array with information about the file/directory for which to make the edit control section for the listing.
+	 * @param \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder $fileOrFolderObject Array with information about the file/directory for which to make the edit control section for the listing.
 	 * @return string HTML-table
 	 * @todo Define visibility
 	 */
@@ -745,7 +745,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 	/**
 	 * Make reference count
 	 *
-	 * @param t3lib_file_File|t3lib_file_Folder $fileOrFolderObject Array with information about the file/directory for which to make the clipboard panel for the listing.
+	 * @param \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder $fileOrFolderObject Array with information about the file/directory for which to make the clipboard panel for the listing.
 	 * @return string HTML
 	 * @todo Define visibility
 	 */

@@ -414,7 +414,7 @@ class ElementInformationController {
 	 * Make reference display
 	 *
 	 * @param string $table Table name
-	 * @param string|t3lib_file_File $ref Filename or uid
+	 * @param string|\TYPO3\CMS\Core\Resource\File $ref Filename or uid
 	 * @return string HTML
 	 * @todo Define visibility
 	 */

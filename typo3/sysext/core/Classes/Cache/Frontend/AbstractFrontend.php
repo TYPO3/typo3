@@ -44,7 +44,7 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	protected $identifier;
 
 	/**
-	 * @var t3lib_cache_backend_AbstractBackend|t3lib_cache_backend_TaggableBackend
+	 * @var \TYPO3\CMS\Core\Cache\Backend\AbstractBackend|\TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface
 	 */
 	protected $backend;
 

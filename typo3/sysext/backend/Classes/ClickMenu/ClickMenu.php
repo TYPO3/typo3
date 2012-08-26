@@ -708,7 +708,7 @@ class ClickMenu {
 	 *
 	 * @param string $combinedIdentifier The combined identifier
 	 * @return string HTML content
-	 * @see t3lib_file_Factory::retrieveFileOrFolderObject()
+	 * @see \TYPO3\CMS\Core\Resource\ResourceFactory::retrieveFileOrFolderObject()
 	 * @todo Define visibility
 	 */
 	public function printFileClickMenu($combinedIdentifier) {

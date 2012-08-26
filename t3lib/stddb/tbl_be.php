@@ -677,7 +677,7 @@ $TCA['sys_filemounts'] = array(
 			'config' => array(
 				'type' => 'select',
 				'items' => array(),
-				'itemsProcFunc' => 't3lib/file/Service/UserfilemountService.php:TYPO3\\CMS\\Core\\Resource\\Service\\UserFileMountService->renderTceformsSelectDropdown'
+				'itemsProcFunc' => 'typo3/sysext/core/Classes/Resource/Service/UserFileMountService.php:TYPO3\CMS\Core\Resource\Service\UserFileMountService->renderTceformsSelectDropdown',
 			)
 		)
 	),

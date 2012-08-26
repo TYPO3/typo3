@@ -49,7 +49,7 @@ class t3lib_file_Utility_FileExtensionFilterTest extends Tx_Phpunit_TestCase {
 	protected $tceMainMock;
 
 	/**
-	 * @var t3lib_file_Factory|PHPUnit_Framework_MockObject_MockObject
+	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory|PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $fileFactoryMock;
 

@@ -83,7 +83,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\File $fileObject
 	 * @param bool $updateObject Set this to FALSE to get the indexed values. You have to take care of updating the object yourself then!
-	 * @return t3lib_file_File|array the indexed $fileObject or an array of indexed properties.
+	 * @return \TYPO3\CMS\Core\Resource\File|array the indexed $fileObject or an array of indexed properties.
 	 */
 	public function indexFile(\TYPO3\CMS\Core\Resource\File $fileObject, $updateObject = TRUE) {
 		// Get the file information of this object
@@ -151,7 +151,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Indexes an array of file objects
 	 * currently this is done in a simple way, however could be changed to be more performant
 	 *
-	 * @param t3lib_file_File[] $fileObjects
+	 * @param \TYPO3\CMS\Core\Resource\File[] $fileObjects
 	 * @return void
 	 */
 	public function indexFiles(array $fileObjects) {
