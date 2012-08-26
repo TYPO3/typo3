@@ -801,7 +801,7 @@ class ElementBrowser {
 				$files = $this->expandFolder($selectedFolder, $this->P['params']['allowedExtensions']);
 			}
 			$this->doc->JScode .= $this->doc->wrapScriptTags('
-			Tree.ajaxID = "TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController::expandCollapse";
+			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 		');
 			$content .= (((('
 			<!--
@@ -1082,7 +1082,7 @@ class ElementBrowser {
 		// include JS files and set prefs for foldertree
 		$this->doc->getDragDropCode('folders');
 		$this->doc->JScode .= $this->doc->wrapScriptTags('
-			Tree.ajaxID = "TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController::expandCollapse";
+			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 		');
 		// Starting content:
 		$content = $this->doc->startPage('TBE file selector');
@@ -1184,7 +1184,7 @@ class ElementBrowser {
 		$this->doc->getDragDropCode('folders');
 		// Setting prefs for foldertree
 		$this->doc->JScode .= $this->doc->wrapScriptTags('
-			Tree.ajaxID = "TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController::expandCollapse";
+			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 		');
 		// Starting content:
 		$content = $this->doc->startPage('TBE folder selector');

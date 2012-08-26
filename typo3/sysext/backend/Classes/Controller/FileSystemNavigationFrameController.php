@@ -135,7 +135,7 @@ class FileSystemNavigationFrameController {
 
 
 		// setting prefs for foldertree
-		Tree.ajaxID = "TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController::expandCollapse";
+		Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 
 		// Function, loading the list frame from navigation tree:
 		function jumpTo(id, linkObj, highlightID, bank) {
