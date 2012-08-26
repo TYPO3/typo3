@@ -44,7 +44,7 @@ namespace TYPO3\CMS\Rtehtmlarea;
  * @package TYPO3
  * @subpackage core
  */
-class PageTree extends rtePageTree {
+class PageTree extends \rtePageTree {
 
 	/**
 	 * Create the page navigation tree in HTML

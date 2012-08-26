@@ -36,7 +36,7 @@
  */
 $BACK_PATH = '';
 require 'init.php';
-$LANG->includeLLFile('EXT:lang/locallang_TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowser.xml');
+$LANG->includeLLFile('EXT:lang/locallang_browse_links.xml');
 /*
  * @deprecated since 6.0, the classname SC_browse_links and this file is obsolete
  * and will be removed by 7.0. The class was renamed and is now located at:
@@ -44,7 +44,7 @@ $LANG->includeLLFile('EXT:lang/locallang_TYPO3\\CMS\\Recordlist\\Browser\\Elemen
  */
 require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('recordlist') . 'Classes/Controller/ElementBrowserController.php';
 // Make instance:
-$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('SC_TYPO3\\CMS\\Recordlist\\Browser\\ElementBrowser');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recordlist\\Controller\\ElementBrowserController');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();
