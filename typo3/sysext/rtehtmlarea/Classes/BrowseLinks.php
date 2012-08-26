@@ -533,7 +533,7 @@ class BrowseLinks extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$content .= $this->addAttributesForm();
 			// Create folder tree:
 			$this->doc->JScode .= $this->doc->wrapScriptTags('
-					Tree.ajaxID = "TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController::expandCollapse";
+					Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 				');
 			$foldertree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Rtehtmlarea\\FolderTree');
 			$foldertree->thisScript = $this->thisScript;

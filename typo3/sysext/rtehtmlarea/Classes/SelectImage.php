@@ -75,7 +75,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		$this->doc->loadJavascriptLib('js/tree.js');
 		$this->doc->loadJavascriptLib('js/browse_links.js');
 		$this->doc->JScode .= $this->doc->wrapScriptTags('
-			Tree.ajaxID = "TYPO3\\CMS\\Backend\\Controller\\FileSystemNavigationFrameController::expandCollapse";
+			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 		');
 		$this->doc->getContextMenuCode();
 	}
