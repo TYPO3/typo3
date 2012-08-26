@@ -15,7 +15,7 @@ class FolderTree extends \rteFolderTree {
 	 * Wrapping the title in a link, if applicable.
 	 *
 	 * @param 	string			Title, ready for output.
-	 * @param 	t3lib_file_Folder	The "record
+	 * @param 	\TYPO3\CMS\Core\Resource\Folder	The "record
 	 * @return 	string			Wrapping title string.
 	 * @todo Define visibility
 	 */

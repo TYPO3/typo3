@@ -108,7 +108,7 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 	 * @param $type
 	 * @param $identifier
 	 * @param $mockedMethods
-	 * @return t3lib_file_File|t3lib_File_Folder
+	 * @return \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected function _createFileFolderMock($type, $identifier, $mockedMethods) {
 		if (!empty($mockedMethods)) {
@@ -152,9 +152,9 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 	 *
 	 * @param $identifier
 	 * @param array $mockedMethods Methods to mock, in addition to getFiles and getSubfolders
-	 * @param t3lib_file_Folder[] $subfolders
-	 * @param t3lib_file_File[] $files
-	 * @return t3lib_file_File|t3lib_File_Folder
+	 * @param \TYPO3\CMS\Core\Resource\Folder[] $subfolders
+	 * @param \TYPO3\CMS\Core\Resource\File[] $files
+	 * @return \TYPO3\CMS\Core\Resource\File|\TYPO3\CMS\Core\Resource\Folder
 	 */
 	protected function getFolderMock($identifier, $mockedMethods = array(), $subfolders = array(), $files = array()) {
 		$folder = $this->_createFileFolderMock('TYPO3\\CMS\\Core\\Resource\\Folder', $identifier, array_merge($mockedMethods, array('getFiles', 'getSubfolders')));

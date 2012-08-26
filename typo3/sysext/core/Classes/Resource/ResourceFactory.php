@@ -48,7 +48,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * @var t3lib_file_Storage[]
+	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage[]
 	 */
 	protected $storageInstances = array();
 
@@ -58,12 +58,12 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $collectionInstances = array();
 
 	/**
-	 * @var t3lib_file_File[]
+	 * @var \TYPO3\CMS\Core\Resource\File[]
 	 */
 	protected $fileInstances = array();
 
 	/**
-	 * @var t3lib_file_FileReference[]
+	 * @var \TYPO3\CMS\Core\Resource\FileReference[]
 	 */
 	protected $fileReferenceInstances = array();
 
@@ -301,7 +301,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * - "file:23"
 	 *
 	 * @param string $input
-	 * @return t3lib_file_FileInterface|t3lib_file_Folder
+	 * @return \TYPO3\CMS\Core\Resource\FileInterface|\TYPO3\CMS\Core\Resource\Folder
 	 */
 	public function retrieveFileOrFolderObject($input) {
 		// Easy function to deal with that, could be dropped in the future
@@ -352,7 +352,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Gets a file or folder object.
 	 *
 	 * @param string $identifier
-	 * @return t3lib_file_FileInterface|t3lib_file_Folder
+	 * @return \TYPO3\CMS\Core\Resource\FileInterface|\TYPO3\CMS\Core\Resource\Folder
 	 */
 	public function getObjectFromCombinedIdentifier($identifier) {
 		list($storageId, $objectIdentifier) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $identifier);
@@ -431,7 +431,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Generates a new object of the type t3lib_file_ProcessedFile
+	 * Generates a new object of the type \TYPO3\CMS\Core\Resource\ProcessedFile
 	 * additionally checks if this processed file already exists in the DB
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $originalFileObject
@@ -442,7 +442,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getProcessedFileObject(\TYPO3\CMS\Core\Resource\FileInterface $originalFileObject, $context, array $configuration) {
 		/** @var \TYPO3\CMS\Core\Resource\ProcessedFile $processedFileObject */
 		$processedFileObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFile', $originalFileObject, $context, $configuration);
-		/* @var t3lib_file_Repository_ProcessedFileRepository $repository */
+		/* @var \TYPO3\CMS\Core\Resource\ProcessedFileRepository $repository */
 		$repository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
 		// Check if this file already exists in the DB
 		$repository->populateDataOfProcessedFileObject($processedFileObject);

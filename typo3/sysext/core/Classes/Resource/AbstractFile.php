@@ -351,7 +351,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * t3lib/file/-internal usage; don't use it to move files.
 	 *
 	 * @internal Should only be used by other parts of the File API (e.g. drivers after moving a file)
-	 * @param integer|t3lib_file_Storage $storage
+	 * @param integer|\TYPO3\CMS\Core\Resource\ResourceStorage $storage
 	 * @return \TYPO3\CMS\Core\Resource\File
 	 */
 	public function setStorage($storage) {

@@ -55,7 +55,7 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * Finds storages by type.
 	 *
 	 * @param string $storageType
-	 * @return t3lib_file_Storage[]
+	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage[]
 	 */
 	public function findByStorageType($storageType) {
 		$storageObjects = array();
@@ -73,7 +73,7 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * Returns a list of mountpoints that are available in the VFS.
 	 * In case no storage exists this automatically created a storage for fileadmin/
 	 *
-	 * @return t3lib_file_Storage[]
+	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage[]
 	 */
 	public function findAll() {
 		$storageObjects = array();

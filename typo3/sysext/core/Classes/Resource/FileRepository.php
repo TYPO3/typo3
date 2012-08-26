@@ -192,7 +192,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * Find FileReference objects by uid
 	 *
 	 * @param integer $uid The UID of the sys_file_reference record
-	 * @return t3lib_file_FileReference|boolean
+	 * @return \TYPO3\CMS\Core\Resource\FileReference|boolean
 	 * @api
 	 */
 	public function findFileReferenceByUid($uid) {
@@ -214,7 +214,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * @return void
 	 */
 	public function update($modifiedObject) {
-		// TODO check if $modifiedObject is an instance of t3lib_file_File
+		// TODO check if $modifiedObject is an instance of \TYPO3\CMS\Core\Resource\File
 		// TODO check if $modifiedObject is indexed
 		$changedProperties = $modifiedObject->getUpdatedProperties();
 		$properties = $modifiedObject->getProperties();

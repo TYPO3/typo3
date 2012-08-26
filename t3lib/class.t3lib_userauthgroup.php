@@ -174,7 +174,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	public $checkWorkspaceCurrent_cache = NULL;
 
 	/**
-	 * @var t3lib_file_Storage[]
+	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage[]
 	 */
 	protected $fileStorages;
 
@@ -1363,8 +1363,8 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	protected function initializeFileStorages() {
 		$this->fileStorages = array();
-		/** @var $storageRepository t3lib_file_Repository_StorageRepository */
-		$storageRepository = t3lib_div::makeInstance('t3lib_file_Repository_StorageRepository');
+		/** @var $storageRepository \TYPO3\CMS\Core\Resource\StorageRepository */
+		$storageRepository = t3lib_div::makeInstance('\TYPO3\CMS\Core\Resource\StorageRepository');
 		// Admin users have all file storages visible, without any filters
 		if ($this->isAdmin()) {
 			$storageObjects = $storageRepository->findAll();
@@ -1434,7 +1434,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * If no filemounts an empty array is returned.
 	 *
 	 * @api
-	 * @return t3lib_file_Storage[]
+	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage[]
 	 */
 	public function getFileStorages() {
 		// Initializing file mounts after the groups are fetched
@@ -1455,7 +1455,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	public function evaluateUserSpecificFileFilterSettings() {
 		// Add the option for also displaying the non-hidden files
 		if ($this->uc['showHiddenFilesAndFolders']) {
-			t3lib_file_Utility_FilenameFilters::setShowHiddenFilesAndFolders(TRUE);
+			\TYPO3\CMS\Core\Resource\Filter\FileNameFilter::setShowHiddenFilesAndFolders(TRUE);
 		}
 	}
 
@@ -1565,10 +1565,10 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * storage with the default settings
 	 *
 	 * @api
-	 * @param t3lib_file_Storage $storageObject
+	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storageObject
 	 * @return array
 	 */
-	public function getFilePermissionsForStorage(t3lib_file_Storage $storageObject) {
+	public function getFilePermissionsForStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storageObject) {
 		$defaultFilePermissions = $this->getFilePermissions();
 		$storageFilePermissions = $this->getTSConfig('permissions.file.storage.' . $storageObject->getUid());
 		if (is_array($storageFilePermissions) && count($storageFilePermissions)) {
@@ -1579,7 +1579,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	}
 
 	/**
-	 * Returns a t3lib_file_Folder object that is used for uploading
+	 * Returns a \TYPO3\CMS\Core\Resource\Folder object that is used for uploading
 	 * files by default.
 	 * This is used for RTE and its magic images, as well as uploads
 	 * in the TCEforms fields, unless otherwise configured (will be added in the future)
@@ -1590,21 +1590,21 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 *
 	 * options.defaultUploadFolder = 3:myfolder/yourfolder/
 	 *
-	 * @return t3lib_file_Folder|boolean The default upload folder for this user
+	 * @return \TYPO3\CMS\Core\Resource\Folder|boolean The default upload folder for this user
 	 */
 	public function getDefaultUploadFolder() {
 		$uploadFolder = $this->getTSConfigVal('options.defaultUploadFolder');
 		if ($uploadFolder) {
-			$uploadFolder = t3lib_file_Factory::getInstance()->getFolderObjectFromCombinedIdentifier($uploadFolder);
+			$uploadFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($uploadFolder);
 		} else {
 			$storages = $this->getFileStorages();
 			if (count($storages) > 0) {
-				/** @var $firstStorage t3lib_file_Storage */
+				/** @var $firstStorage \TYPO3\CMS\Core\Resource\ResourceStorage */
 				$firstStorage = reset($storages);
 				$uploadFolder = $firstStorage->getDefaultFolder();
 			}
 		}
-		if ($uploadFolder instanceof t3lib_file_Folder) {
+		if ($uploadFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
 			return $uploadFolder;
 		} else {
 			return FALSE;
@@ -1793,7 +1793,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				// empty the fileStorages (will be re-applied later)
 				$existingFileStoragesOfUser = $this->fileStorages;
 				$this->fileStorages = array();
-				$storageRepository = t3lib_div::makeInstance('t3lib_file_Repository_StorageRepository');
+				$storageRepository = t3lib_div::makeInstance('\TYPO3\CMS\Core\Resource\StorageRepository');
 				// Fetching all filemounts from the workspace
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', ('deleted = 0 AND hidden = 0 AND pid = 0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($storageFiltersInWorkspace)) . ')');
 				// add every filemount of this workspace record

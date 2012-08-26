@@ -78,7 +78,7 @@ class UserFileMountService {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $parentFolder
 	 * @param integer $level a limiter
-	 * @return t3lib_file_Folder[]
+	 * @return \TYPO3\CMS\Core\Resource\Folder[]
 	 */
 	protected function getSubfoldersForOptionList(\TYPO3\CMS\Core\Resource\Folder $parentFolder, $level = 0) {
 		$level++;

@@ -473,7 +473,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	/**
 	 * Returns the absolute path of a file or folder.
 	 *
-	 * @param t3lib_file_FileInterface|t3lib_file_Folder|string $file
+	 * @param \TYPO3\CMS\Core\Resource\FileInterface|\TYPO3\CMS\Core\Resource\Folder|string $file
 	 * @return string
 	 */
 	public function getAbsolutePath($file) {
@@ -548,7 +548,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * @param \TYPO3\CMS\Core\Resource\Folder $targetFolder
 	 * @param string $fileName The name to add the file under
 	 * @param \TYPO3\CMS\Core\Resource\AbstractFile $updateFileObject File object to update (instead of creating a new object). With this parameter, this function can be used to "populate" a dummy file object with a real file underneath.
-	 * @todo t3lib_file_File $updateFileObject should be t3lib_file_FileInterface, but indexer logic is only in t3lib_file_File
+	 * @todo \TYPO3\CMS\Core\Resource\File $updateFileObject should be \TYPO3\CMS\Core\Resource\FileInterface, but indexer logic is only in \TYPO3\CMS\Core\Resource\File
 	 * @return \TYPO3\CMS\Core\Resource\FileInterface
 	 */
 	public function addFile($localFilePath, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $fileName, \TYPO3\CMS\Core\Resource\AbstractFile $updateFileObject = NULL) {

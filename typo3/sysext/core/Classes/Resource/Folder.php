@@ -157,7 +157,7 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 	 * @param integer $start The item to start at
 	 * @param integer $numberOfItems The number of items to return
 	 * @param boolean $useFilters
-	 * @return t3lib_file_File[]
+	 * @return \TYPO3\CMS\Core\Resource\File[]
 	 */
 	public function getFiles($start = 0, $numberOfItems = 0, $useFilters = TRUE) {
 		// TODO fetch
@@ -204,7 +204,7 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 	/**
 	 * Returns a list of all subfolders
 	 *
-	 * @return t3lib_file_Folder[]
+	 * @return \TYPO3\CMS\Core\Resource\Folder[]
 	 */
 	public function getSubfolders() {
 		$folderObjects = array();

@@ -58,7 +58,7 @@ class ImageProcessingService {
 			$theImage = $file->getForLocalProcessing(FALSE);
 		} else {
 			// clean ../ sections of the path and resolve to proper string.
-			// This is necessary for the t3lib_file_Service_BackwardsCompatibility_TslibContentAdapterService to work.
+			// This is necessary for the \TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService to work.
 			$file = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($file);
 			$theImage = $GLOBALS['TSFE']->tmpl->getFileName($file);
 			if (!$theImage) {
@@ -76,7 +76,7 @@ class ImageProcessingService {
 			$maskImages['m_bottomImg'] = $this->getImgResource($contentObject, $maskArray['bottomImg'], $maskArray['bottomImg.']);
 			$maskImages['m_bottomImg_mask'] = $this->getImgResource($contentObject, $maskArray['bottomImg_mask'], $maskArray['bottomImg_mask.']);
 		}
-		// TODO use t3lib_file_FileInterface here
+		// TODO use \TYPO3\CMS\Core\Resource\FileInterface here
 		if ($file instanceof \TYPO3\CMS\Core\Resource\FileReference) {
 			$hash = $file->getOriginalFile()->calculateChecksum();
 		} else {

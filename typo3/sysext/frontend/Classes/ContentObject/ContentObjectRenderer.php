@@ -5314,7 +5314,7 @@ class ContentObjectRenderer {
 			$fileObject = NULL;
 		}
 		if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-			// All properties of the t3lib_file_FileInterface are available here:
+			// All properties of the \TYPO3\CMS\Core\Resource\FileInterface are available here:
 			switch ($requestedFileInformationKey) {
 			case 'name':
 				return $fileObject->getName();

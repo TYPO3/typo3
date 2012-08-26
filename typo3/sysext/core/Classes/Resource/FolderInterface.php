@@ -38,7 +38,7 @@ interface FolderInterface extends \TYPO3\CMS\Core\Resource\ResourceInterface
 	/**
 	 * Returns a list of all subfolders
 	 *
-	 * @return t3lib_file_Folder[]
+	 * @return \TYPO3\CMS\Core\Resource\Folder[]
 	 */
 	public function getSubfolders();
 

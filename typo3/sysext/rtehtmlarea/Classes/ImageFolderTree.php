@@ -51,7 +51,7 @@ class ImageFolderTree extends TBE_FolderTree {
 	 * Wrapping the title in a link, if applicable.
 	 *
 	 * @param 	string			Title, ready for output.
-	 * @param 	t3lib_file_Folder	The "record
+	 * @param 	\TYPO3\CMS\Core\Resource\Folder	The "record
 	 * @return 	string			Wrapping title string.
 	 * @todo Define visibility
 	 */
@@ -67,7 +67,7 @@ class ImageFolderTree extends TBE_FolderTree {
 	/**
 	 * Returns TRUE if the input "record" contains a folder which can be linked.
 	 *
-	 * @param 	t3lib_file_Folder	Object with information about the folder element. Contains keys like title, uid, path, _title
+	 * @param 	\TYPO3\CMS\Core\Resource\Folder	Object with information about the folder element. Contains keys like title, uid, path, _title
 	 * @return 	boolean			TRUE is returned if the path is found in the web-part of the the server and is NOT a recycler or temp folder
 	 * @todo Define visibility
 	 */
