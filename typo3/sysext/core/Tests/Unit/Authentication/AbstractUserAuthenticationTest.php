@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,13 +23,14 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class t3lib_userauth
+ * Testcase for class \TYPO3\CMS\Core\Authentication\AbstractUserAuthentication
  *
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_userauthTest extends tx_phpunit_testcase {
+class AbstractUserAuthenticationTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables

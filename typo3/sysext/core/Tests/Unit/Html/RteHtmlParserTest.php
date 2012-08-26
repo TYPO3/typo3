@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Html;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class t3lib_parsehtml_proc
+ * Testcase for \TYPO3\CMS\Core\Html\RteHtmlParser
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Stanislas Rolland <typo3@sjbr.ca>
  */
-class t3lib_parsehtml_procTest extends tx_phpunit_testcase {
+class RteHtmlParserTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Html\RteHtmlParser
@@ -117,8 +120,7 @@ class t3lib_parsehtml_procTest extends tx_phpunit_testcase {
 	 * @dataProvider hrTagCorrectlyTransformedOnWayToDataBaseDataProvider
 	 */
 	public function hrTagCorrectlyTransformedOnWayToDataBase($content, $expectedResult) {
-		//die(htmlspecialchars($expectedResult) . '-' . htmlspecialchars($this->fixture->TS_transform_db($content)));
-		// Assume the transformation is ts_css
+			// Assume the transformation is ts_css
 		$this->assertEquals($expectedResult, $this->fixture->TS_transform_db($content, TRUE));
 	}
 
