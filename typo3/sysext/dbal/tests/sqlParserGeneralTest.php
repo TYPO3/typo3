@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Tests;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,8 +23,8 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 require_once 'TYPO3\\CMS\\Dbal\\Tests\\BaseTestCase.php';
-namespace TYPO3\CMS\Dbal\Tests;
 
 /**
  * Testcase for class ux_t3lib_sqlparser

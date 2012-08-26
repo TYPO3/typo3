@@ -1334,7 +1334,7 @@ class DatabaseConntectionOverride extends \TYPO3\CMS\Core\Database\DatabaseConne
 			if ($this->queryCache) {
 				try {
 					$this->queryCache->set($cacheKey, $precompiledParts);
-				} catch (\TYPO3\CMS\Core\Cache\\Exception $e) {
+				} catch (\TYPO3\CMS\Core\Cache\Exception $e) {
 					if ($this->debug) {
 						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($e->getMessage(), 'dbal', 1);
 					}
