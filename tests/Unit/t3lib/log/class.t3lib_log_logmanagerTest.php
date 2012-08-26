@@ -23,7 +23,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for t3lib_log_LogManager.
+ * Testcase for \TYPO3\CMS\Core\Log\LogManager.
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @author Steffen Gebert <steffen.gebert@typo3.org>

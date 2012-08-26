@@ -65,8 +65,8 @@ class SyslogWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 * Constructor, adds facilities on *nix environments.
 	 *
 	 * @param array $options Configuration options
-	 * @throws RuntimeException if connection to syslog cannot be opened
-	 * @see t3lib_log_writer_Abstract
+	 * @throws \RuntimeException if connection to syslog cannot be opened
+	 * @see \TYPO3\CMS\Core\Log\Writer\AbstractWriter
 	 */
 	public function __construct(array $options = array()) {
 		// additional facilities for *nix environments

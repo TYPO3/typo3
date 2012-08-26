@@ -47,9 +47,10 @@ class IntrospectionProcessor extends \TYPO3\CMS\Core\Log\Processor\AbstractProce
 		array_shift($trace);
 		// the call_user_func call is also skipped
 		array_shift($trace);
-		// skip t3lib_log classes
+		// skip TYPO3\CMS\Core\Log classes
+		// @TODO: Check, if this still works. This was 't3lib_log_' before namespace switch.
 		$i = 0;
-		while (isset($trace[$i]['class']) && FALSE !== strpos($trace[$i]['class'], 't3lib_log_')) {
+		while (isset($trace[$i]['class']) && FALSE !== strpos($trace[$i]['class'], 'TYPO3\CMS\Core\Log')) {
 			$i++;
 		}
 		// we should have the call source now

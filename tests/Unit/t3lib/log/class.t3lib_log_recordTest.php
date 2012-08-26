@@ -22,7 +22,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for t3lib_log_Record.
+ * Testcase for \TYPO3\CMS\Core\Log\LogRecord.
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  * @package TYPO3
@@ -31,9 +31,9 @@
 class t3lib_log_RecordTest extends tx_phpunit_testcase {
 
 	/**
-	 * Returns a t3lib_log_Record
+	 * Returns a \TYPO3\CMS\Core\Log\LogRecord
 	 *
-	 * @param array $parameters Parameters to set in t3lib_log_Record constructor.
+	 * @param array $parameters Parameters to set in \TYPO3\CMS\Core\Log\LogRecord constructor.
 	 * @return \TYPO3\CMS\Core\Log\LogRecord
 	 */
 	protected function getRecord(array $parameters = array()) {

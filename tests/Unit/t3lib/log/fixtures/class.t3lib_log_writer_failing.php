@@ -32,7 +32,7 @@ class t3lib_log_writer_Failing implements \TYPO3\CMS\Core\Log\Writer\Writer {
 	 * Try to write the log entry - but throw an exception in our case
 	 *
 	 * @param \TYPO3\CMS\Core\Log\LogRecord $record
-	 * @return t3lib_log_writer_Writer|void
+	 * @return \TYPO3\CMS\Core\Log\Writer\Writer|void
 	 * @throws RuntimeException
 	 */
 	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {

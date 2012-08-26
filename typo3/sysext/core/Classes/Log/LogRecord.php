@@ -105,7 +105,7 @@ class LogRecord implements \ArrayAccess {
 	 * Constructor.
 	 *
 	 * @param string $component Affected component
-	 * @param integer $level Severity level (see t3lib_log_Level)
+	 * @param integer $level Severity level (see \TYPO3\CMS\Core\Log\Level)
 	 * @param string $message Log message
 	 * @param array $data Additional data
 	 */
@@ -159,7 +159,7 @@ class LogRecord implements \ArrayAccess {
 	 * @param integer $level Severity level
 	 * @return \TYPO3\CMS\Core\Log\LogRecord
 	 * @throws RangeException if the given log level is invalid
-	 * @see t3lib_log_Level
+	 * @see \TYPO3\CMS\Core\Log\Level
 	 */
 	public function setLevel($level) {
 		\TYPO3\CMS\Core\Log\LogLevel::validateLevel($level);
@@ -170,7 +170,7 @@ class LogRecord implements \ArrayAccess {
 	/**
 	 * Returns the severity level
 	 *
-	 * @see t3lib_log_Level
+	 * @see \TYPO3\CMS\Core\Log\Level
 	 * @return int Severity level
 	 */
 	public function getLevel() {

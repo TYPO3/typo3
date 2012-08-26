@@ -25,7 +25,7 @@
 require_once 'fixtures/class.t3lib_log_writer_fixture.php';
 require_once 'fixtures/class.t3lib_log_writer_failing.php';
 /**
- * Testcase for t3lib_log_Logger.
+ * Testcase for \TYPO3\CMS\Core\Log\Logger.
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @author Steffen Gebert <steffen.gebert@typo3.org>

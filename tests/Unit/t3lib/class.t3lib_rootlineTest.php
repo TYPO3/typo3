@@ -23,7 +23,7 @@
  ***************************************************************/
 require_once __DIR__ . '/fixtures/AccessibleRootline.php';
 /**
- * Testcase for class t3lib_rootline
+ * Testcase for class \TYPO3\CMS\Core\Utility\RootlineUtility
  *
  * @author Steffen Ritter <steffen.ritter@typo3.org>
  * @package TYPO3

@@ -22,7 +22,7 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for t3lib_log_processor_AbstractMemory
+ * Testcase for \TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor
  *
  * @author Steffen Müller <typo3@t3node.com>
  */
