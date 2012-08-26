@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class t3lib_Registry
+ * Testcase for TYPO3\CMS\Core\Registry
  *
  * @author 	Bastian Waidelich <bastian@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_RegistryTest extends tx_phpunit_testcase {
+class RegistryTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Registry

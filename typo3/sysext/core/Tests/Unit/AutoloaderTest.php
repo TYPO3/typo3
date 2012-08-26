@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the t3lib_autoloader class in the TYPO3 Core.
+ * Testcase for TYPO3\CMS\Core\Autoloader
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
-class t3lib_autoloaderTest extends Tx_Phpunit_TestCase {
+class AutoloaderTest extends \Tx_Phpunit_TestCase {
 
 	/**
 	 * @var boolean Enable backup of global and system variables

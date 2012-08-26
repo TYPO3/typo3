@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the t3lib_BEfunc class in the TYPO3 core.
+ * Testcase for \TYPO3\CMS\Core\Utility\BackendUtility
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class t3lib_befuncTest extends tx_phpunit_testcase {
+class BackendUtilityTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Utility\BackendUtility

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Backend\Tests\Unit\Sprite;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,13 +24,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for class t3lib_SpriteManager.
+ * Testcase for TYPO3\CMS\Backend\Sprite\SpriteManager
  *
  * @author Fabien Udriot <fabien.udriot@ecodev.ch>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_SpriteManagerTest extends tx_phpunit_testcase {
+class SpriteManagerTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables

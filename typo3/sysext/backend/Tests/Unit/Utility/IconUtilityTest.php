@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,15 +24,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class t3lib_iconWorks.
+ * Testcase for TYPO3\CMS\Backend\Utility\IconUtility
  *
  * @author Fabien Udriot <fabien.udriot@ecodev.ch>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_iconWorksTest extends tx_phpunit_testcase {
+class IconUtilityTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -386,7 +389,7 @@ class t3lib_iconWorksTest extends tx_phpunit_testcase {
 	public function isFaultyOverrideIconOverlayHookNotCalled() {
 		$classReference = uniqid('user_overrideIconOverlayHook');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][$classReference] = $classReference;
-		$GLOBALS['T3_VAR']['getUserObj'][$classReference] = new stdClass();
+		$GLOBALS['T3_VAR']['getUserObj'][$classReference] = new \stdClass();
 		\TYPO3\CMS\Backend\Utility\IconUtility::mapRecordOverlayToSpriteIconName('tt_content', array());
 	}
 

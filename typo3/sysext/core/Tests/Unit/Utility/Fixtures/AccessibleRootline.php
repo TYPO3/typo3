@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Make method public
  *
@@ -28,7 +31,7 @@
  * @package TYPO3
  * @subpackage test
  */
-class Tests_unit_t3lib_AccessibleRootline extends \TYPO3\CMS\Core\Utility\RootlineUtility {
+class AccessibleRootlineUtility extends \TYPO3\CMS\Core\Utility\RootlineUtility {
 
 	public function processMountedPage($mountedPageData, $mountPointPageData) {
 		return parent::processMountedPage($mountedPageData, $mountPointPageData);

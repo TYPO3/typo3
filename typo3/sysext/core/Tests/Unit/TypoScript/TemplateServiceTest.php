@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the t3lib_tstemplate class in the TYPO3 core.
+ * Testcase for \TYPO3\CMS\Core\TypoScript\TemplateService
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class t3lib_tstemplateTest extends tx_phpunit_testcase {
+class TemplateServiceTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -50,7 +53,7 @@ class t3lib_tstemplateTest extends tx_phpunit_testcase {
 	 */
 	public function versionOlCallsVersionOlOfPageSelectClassWithGivenRow() {
 		$row = array('foo');
-		$GLOBALS['TSFE'] = new stdClass();
+		$GLOBALS['TSFE'] = new \stdClass();
 		$sysPageMock = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 		$sysPageMock->expects($this->once())->method('versionOL')->with('sys_template', $row);
 		$GLOBALS['TSFE']->sys_page = $sysPageMock;

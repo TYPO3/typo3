@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
+
 /***************************************************************
  * Copyright notice
  *
@@ -22,14 +24,14 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for the t3lib_TCEmain class in the TYPO3 core.
+ * Testcase for TYPO3\CMS\Core\DataHandler\DataHandler
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Tolleiv Nietsch <info@tolleiv.de>
  */
-class t3lib_tcemainTest extends tx_phpunit_testcase {
+class DataHandlerTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables
