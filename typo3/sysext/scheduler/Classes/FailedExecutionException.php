@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Scheduler;
  * @package TYPO3
  * @subpackage scheduler
  */
-class FailedExecutionException extends RuntimeException {
+class FailedExecutionException extends \RuntimeException {
 
 
 }
