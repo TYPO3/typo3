@@ -41,7 +41,7 @@ interface BackendInterface
 	 * @param string $tableName The database table name
 	 * @param array $row The row to insert
 	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
-	 * @return void
+	 * @return mixed|void
 	 */
 	public function addRow($tableName, array $row, $isRelation = FALSE);
 
@@ -51,7 +51,7 @@ interface BackendInterface
 	 * @param string $tableName The database table name
 	 * @param array $row The row to update
 	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
-	 * @return void
+	 * @return mixed|void
 	 */
 	public function updateRow($tableName, array $row, $isRelation = FALSE);
 
@@ -61,7 +61,7 @@ interface BackendInterface
 	 * @param string $tableName The database table name
 	 * @param array $identifier An array of identifier array('fieldname' => value). This array will be transformed to a WHERE clause
 	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
-	 * @return void
+	 * @return mixed|void
 	 */
 	public function removeRow($tableName, array $identifier, $isRelation = FALSE);
 

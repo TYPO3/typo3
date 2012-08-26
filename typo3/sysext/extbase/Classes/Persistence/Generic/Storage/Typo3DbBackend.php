@@ -170,6 +170,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param string $tableName The database table name
 	 * @param array $row The row to be updated
 	 * @param boolean $isRelation TRUE if we are currently inserting into a relation table, FALSE by default
+	 * @throws \InvalidArgumentException
 	 * @return bool
 	 */
 	public function updateRow($tableName, array $row, $isRelation = FALSE) {
@@ -219,9 +220,9 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	/**
 	 * Fetches row data from the database
 	 *
-	 * @param string $identifier The Identifier of the row to fetch
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap $dataMap The Data Map
-	 * @return array|FALSE
+	 * @param string $tableName
+	 * @param array $identifier The Identifier of the row to fetch
+	 * @return array|boolean
 	 */
 	public function getRowByIdentifier($tableName, array $identifier) {
 		$statement = (('SELECT * FROM ' . $tableName) . ' WHERE ') . $this->parseIdentifier($identifier);
@@ -237,6 +238,10 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		}
 	}
 
+	/**
+	 * @param array $identifier
+	 * @return string
+	 */
 	protected function parseIdentifier(array $identifier) {
 		$fieldNames = array_keys($identifier);
 		$suffixedFieldNames = array();
@@ -254,7 +259,6 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
 	public function getObjectDataByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
-		$parameters = array();
 		$statement = $query->getStatement();
 		if ($statement instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement) {
 			$sql = $statement->getStatement();
@@ -278,7 +282,8 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	/**
 	 * Returns the number of tuples matching the query.
 	 *
-	 * @param Tx_Extbase_Persistence_QOM_QueryObjectModelInterface $query
+	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
+	 * @throws Exception\BadConstraintException
 	 * @return integer The number of matching tuples
 	 */
 	public function getObjectCountByQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query) {
@@ -316,6 +321,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * Parses the query and returns the SQL statement parts.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query The query
+	 * @param array $parameters
 	 * @return array The SQL statement parts
 	 */
 	public function parseQuery(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query, array &$parameters) {
@@ -504,7 +510,6 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source The source
 	 * @param array &$sql The query parts
 	 * @param array &$parameters The parameters that will replace the markers
-	 * @param array $boundVariableValues The bound variables in the query (key) and their values (value)
 	 * @return void
 	 */
 	protected function parseConstraint(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface $constraint = NULL, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array &$sql, array &$parameters) {
@@ -536,7 +541,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source The source
 	 * @param array &$sql SQL query parts to add to
 	 * @param array &$parameters Parameters to bind to the SQL
-	 * @param array $boundVariableValues The bound variables in the query and their values
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException
 	 * @return void
 	 */
 	protected function parseComparison(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface $comparison, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array &$sql, array &$parameters) {
@@ -606,6 +611,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * Returns a plain value, i.e. objects are flattened out if possible.
 	 *
 	 * @param mixed $input
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException
 	 * @return mixed
 	 */
 	protected function getPlainValue($input) {
@@ -636,6 +642,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param array &$sql The query parts
 	 * @param array &$parameters The parameters that will replace the markers
 	 * @param string $valueFunction an optional SQL function to apply to the operand value
+	 * @param null $operand2
 	 * @return void
 	 */
 	protected function parseDynamicOperand(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand, $operator, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array &$sql, array &$parameters, $valueFunction = NULL, $operand2 = NULL) {
@@ -667,6 +674,13 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		}
 	}
 
+	/**
+	 * @param $className
+	 * @param $tableName
+	 * @param $propertyPath
+	 * @param array $sql
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
+	 */
 	protected function addUnionStatement(&$className, &$tableName, &$propertyPath, array &$sql) {
 		$explodedPropertyPath = explode('.', $propertyPath, 2);
 		$propertyName = $explodedPropertyPath[0];
@@ -708,6 +722,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * Returns the SQL operator for the given JCR operator type.
 	 *
 	 * @param string $operator One of the JCR_OPERATOR_* constants
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
 	 * @return string an SQL operator
 	 */
 	protected function resolveOperator($operator) {
@@ -754,6 +769,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 *
 	 * @param string $sqlString The query part with placeholders
 	 * @param array $parameters The parameters
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
 	 * @return string The query part with replaced placeholders
 	 */
 	protected function replacePlaceholders(&$sqlString, array $parameters) {
@@ -950,6 +966,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @param array $orderings An array of orderings (Tx_Extbase_Persistence_QOM_Ordering)
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source The source
 	 * @param array &$sql The query parts
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException
 	 * @return void
 	 */
 	protected function parseOrderings(array $orderings, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array &$sql) {
@@ -1029,10 +1046,10 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * detected (depending on FE or BE context). You can also explicitly set the language/workspace id.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source The source (selector od join)
-	 * @param array $row The row array (as reference)
-	 * @param string $languageUid The language id
-	 * @param string $workspaceUidUid The workspace id
-	 * @return void
+	 * @param array $rows
+	 * @param null|integer $languageUid
+	 * @param null|integer $workspaceUid
+	 * @return array
 	 */
 	protected function doLanguageAndWorkspaceOverlay(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $source, array $rows, $languageUid = NULL, $workspaceUid = NULL) {
 		$overlayedRows = array();
@@ -1118,8 +1135,8 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 *
 	 * Much of this functionality is taken from t3lib_tcemain::clear_cache() which unfortunately only works with logged-in BE user.
 	 *
-	 * @param $tableName Table name of the record
-	 * @param $uid UID of the record
+	 * @param string $tableName Table name of the record
+	 * @param integer $uid UID of the record
 	 * @return void
 	 */
 	protected function clearPageCache($tableName, $uid) {

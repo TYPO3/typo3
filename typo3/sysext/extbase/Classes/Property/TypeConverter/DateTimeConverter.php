@@ -102,7 +102,8 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	 * @param string $targetType must be "DateTime
 	 * @param array $convertedChildProperties not used currently
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
-	 * @return DateTime
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
+	 * @return \DateTime
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
@@ -137,6 +138,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	 * If no format is specified in the mapping configuration DEFAULT_DATE_FORMAT is used.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
 	 * @return string
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
@@ -156,7 +158,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	/**
 	 * Overrides hour, minute & second of the given date with the values in the $source array
 	 *
-	 * @param DateTime $date
+	 * @param \DateTime $date
 	 * @param array $source
 	 * @return void
 	 */
@@ -173,8 +175,9 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	/**
 	 * Overrides timezone of the given date with $source['timezone']
 	 *
-	 * @param DateTime $date
+	 * @param \DateTime $date
 	 * @param array $source
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException
 	 * @return void
 	 */
 	protected function overrideTimezoneIfSpecified(\DateTime $date, array $source) {

@@ -85,6 +85,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request to dispatch
 	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, to be modified by the controller
+	 * @throws Exception\InfiniteLoopException
 	 * @return void
 	 */
 	public function dispatch(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
@@ -108,6 +109,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 	 * If no controller can be found, an instance of NotFoundControllerInterface is returned.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request to dispatch
+	 * @throws Exception\InvalidControllerException
 	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 * @author Robert Lemke <robert@typo3.org>

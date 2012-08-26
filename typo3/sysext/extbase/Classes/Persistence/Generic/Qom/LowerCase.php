@@ -50,7 +50,7 @@ class LowerCase implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\LowerCaseI
 	/**
 	 * Constructs this LowerCase instance
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $constraint
+	 * @param DynamicOperandInterface $operand
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand) {
 		$this->operand = $operand;

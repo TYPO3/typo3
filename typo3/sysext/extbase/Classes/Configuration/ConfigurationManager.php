@@ -100,6 +100,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	 * @param string $configurationType The kind of configuration to fetch - must be one of the CONFIGURATION_TYPE_* constants
 	 * @param string $extensionName if specified, the configuration for the given extension will be returned.
 	 * @param string $pluginName if specified, the configuration for the given plugin will be returned.
+	 * @throws Exception\InvalidConfigurationType
 	 * @return array The configuration
 	 */
 	public function getConfiguration($configurationType, $extensionName = NULL, $pluginName = NULL) {

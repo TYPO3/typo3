@@ -216,6 +216,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Creates a skeleton of the specified object
 	 *
 	 * @param string $className Name of the class to create a skeleton for
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException
 	 * @return object The object skeleton
 	 */
 	protected function createEmptyObject($className) {
@@ -298,7 +299,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * NULL is returned.
 	 *
 	 * @param integer $timestamp
-	 * @return DateTime
+	 * @return \DateTime
 	 */
 	protected function mapDateTime($timestamp) {
 		if (empty($timestamp)) {
@@ -316,7 +317,6 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
 	 * @param bool $enableLazyLoading A flag indication if the related objects should be lazy loaded
-	 * @param bool $performLanguageOverlay A flag indication if the related objects should be localized
 	 * @return Tx_Extbase_Persistence_LazyObjectStorage|Tx_Extbase_Persistence_QueryResultInterface The result
 	 */
 	public function fetchRelated(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '', $enableLazyLoading = TRUE) {
@@ -343,7 +343,6 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject The object instance this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
 	 * @param mixed $fieldValue The raw field value.
-	 * @param bool $performLanguageOverlay A flag indication if the related objects should be localized
 	 * @return mixed
 	 */
 	protected function fetchRelatedEager(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
@@ -378,7 +377,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
 	 * @param string $propertyName
 	 * @param string $fieldValue
-	 * @return void
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 */
 	protected function getPreparedQuery(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $fieldValue = '') {
 		$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
@@ -448,19 +447,18 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns the given result as property value of the specified property type.
 	 *
-	 * @param mixed $result The result could be an object or an ObjectStorage
-	 * @param array $propertyMetaData The property meta data
-	 * @param Tx_Extbase_Persistence_QueryResultInterface|Tx_Extbase_Persistence_LoadingStrategyInterface $result The result
-	 * @return void
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
+	 * @param $propertyName
+	 * @param $result
+	 * @param mixed $result The result
+	 * @return mixed
 	 */
 	public function mapResultToPropertyValue(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, $result) {
 		if ($result instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LoadingStrategyInterface) {
 			$propertyValue = $result;
 		} else {
 			$propertyMetaData = $this->reflectionService->getClassSchema(get_class($parentObject))->getProperty($propertyName);
-			$columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
 			if (in_array($propertyMetaData['type'], array('array', 'ArrayObject', 'SplObjectStorage', 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage'))) {
-				$elementType = $this->getType(get_class($parentObject), $propertyName);
 				$objects = array();
 				foreach ($result as $value) {
 					$objects[] = $value;
@@ -516,6 +514,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns a data map for a given class name
 	 *
 	 * @param string $className The class name you want to fetch the Data Map for
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap The data map
 	 */
 	public function getDataMap($className) {
@@ -568,6 +567,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $parentClassName The class name of the object this proxy is part of
 	 * @param string $propertyName The name of the proxied property in it's parent
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException
 	 * @return string The class name of the child object
 	 */
 	public function getType($parentClassName, $propertyName) {

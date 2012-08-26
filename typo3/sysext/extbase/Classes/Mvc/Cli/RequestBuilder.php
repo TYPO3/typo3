@@ -114,6 +114,7 @@ class RequestBuilder {
 	 * @param array $rawCommandLineArguments The unparsed command parts (such as "--foo") as an array
 	 * @param string $controllerObjectName Object name of the designated command controller
 	 * @param string $controllerCommandName Command name of the recognized command (ie. method name without "Command" suffix)
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentMixingException
 	 * @return array All and exceeding command line arguments
 	 * @author Robert Lemke <robert@typo3.org>
 	 */

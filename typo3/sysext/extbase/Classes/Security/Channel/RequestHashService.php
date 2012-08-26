@@ -65,6 +65,7 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param array $formFieldNames Array of form fields
 	 * @param string $fieldNamePrefix
+	 * @throws \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForRequestHashGenerationException
 	 * @return string request hash
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @todo might need to become public API lateron, as we need to call it from Fluid
@@ -128,6 +129,7 @@ class RequestHashService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * In the end, $request->setHmacVerified is set depending on the value.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\Web\Request $request The request to verify
+	 * @throws \TYPO3\CMS\Extbase\Security\Exception\SyntacticallyWrongRequestHashException
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */

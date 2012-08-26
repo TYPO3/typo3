@@ -37,7 +37,7 @@ class RequestHandlerResolver {
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_Reflection_ReflectionService
+	 * @var \TYPO3\CMS\Extbase\Reflection\Service
 	 */
 	protected $reflectionService;
 
@@ -80,7 +80,7 @@ class RequestHandlerResolver {
 	 * Analyzes the raw request and tries to find a request handler which can handle
 	 * it. If none is found, an exception is thrown.
 	 *
-	 * @return Tx_Extbase_MVC_RequestHandler A request handler
+	 * @return \TYPO3\CMS\Extbase\Mvc\RequestHandlerInterface A request handler
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception
 	 */
 	public function resolveRequestHandler() {

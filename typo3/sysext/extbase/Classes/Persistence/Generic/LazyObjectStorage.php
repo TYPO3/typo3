@@ -54,7 +54,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\Generic\ObjectSto
 	/**
 	 * The object this property is contained in.
 	 *
-	 * @var object
+	 * @var \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface
 	 */
 	protected $parentObject;
 
@@ -80,7 +80,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\Generic\ObjectSto
 	/**
 	 * Returns the state of the initialization
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	public function isInitialized() {
 		return $this->isInitialized;
@@ -155,6 +155,7 @@ class LazyObjectStorage extends \TYPO3\CMS\Extbase\Persistence\Generic\ObjectSto
 	/**
 	 * Counts the elements in the storage array
 	 *
+	 * @throws Exception
 	 * @return int The number of elements in the ObjectStorage
 	 */
 	public function count() {

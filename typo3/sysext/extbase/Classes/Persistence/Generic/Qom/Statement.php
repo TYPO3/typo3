@@ -71,7 +71,7 @@ class Statement {
 	/**
 	 * Gets the statement.
 	 *
-	 * @return the statement; non-null
+	 * @return string the statement; non-null
 	 */
 	public function getStatement() {
 		return $this->statement;

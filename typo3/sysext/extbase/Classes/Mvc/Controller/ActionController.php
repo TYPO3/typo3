@@ -134,6 +134,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
 	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this handler
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
 	 * @return void
 	 */
 	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
@@ -172,6 +173,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 *
 	 * Don't override this method - use initializeAction() instead.
 	 *
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException
 	 * @return void
 	 * @see initializeArguments()
 	 */
@@ -287,7 +289,6 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			}
 		} else {
 			// @deprecated since Extbase 1.4.0, will be removed with Extbase 6.0
-			$argumentsAreValid = TRUE;
 			$preparedArguments = array();
 			foreach ($this->arguments as $argument) {
 				$preparedArguments[] = $argument->getValue();
@@ -318,6 +319,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	protected function resolveView() {
 		$viewObjectName = $this->resolveViewObjectName();
 		if ($viewObjectName !== FALSE) {
+			/** @var $view \TYPO3\CMS\Extbase\Mvc\View\ViewInterface */
 			$view = $this->objectManager->create($viewObjectName);
 			$this->setViewConfiguration($view);
 			if ($view->canRender($this->controllerContext) === FALSE) {
@@ -325,6 +327,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			}
 		}
 		if (!isset($view) && $this->defaultViewObjectName != '') {
+			/** @var $view \TYPO3\CMS\Extbase\Mvc\View\ViewInterface */
 			$view = $this->objectManager->create($this->defaultViewObjectName);
 			$this->setViewConfiguration($view);
 			if ($view->canRender($this->controllerContext) === FALSE) {

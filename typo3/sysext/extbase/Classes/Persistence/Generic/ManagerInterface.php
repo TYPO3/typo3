@@ -25,7 +25,7 @@ interface ManagerInterface extends \TYPO3\CMS\Extbase\Persistence\PersistenceMan
 	/**
 	 * Returns the current persistence session
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\Session
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Session
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 7.0
 	 */
 	public function getSession();
@@ -33,7 +33,7 @@ interface ManagerInterface extends \TYPO3\CMS\Extbase\Persistence\PersistenceMan
 	/**
 	 * Returns the persistence backend
 	 *
-	 * @return \TYPO3\CMS\Extbase\Persistence\BackendInterface
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 7.0
 	 */
 	public function getBackend();

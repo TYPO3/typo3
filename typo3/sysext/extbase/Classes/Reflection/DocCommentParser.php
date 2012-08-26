@@ -79,6 +79,7 @@ class DocCommentParser {
 	 * available.
 	 *
 	 * @param string $tagName The tag name to retrieve the values for
+	 * @throws \RuntimeException
 	 * @return array The tag's values
 	 */
 	public function getTagValues($tagName) {

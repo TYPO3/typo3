@@ -40,10 +40,12 @@ class TypeHandlingService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * A type pattern to detect literal types.
 	 */
 	const LITERAL_TYPE_PATTERN = '/^(?:integer|int|float|double|boolean|bool|string)$/';
+
 	/**
 	 * Adds (defines) a specific property and its type.
 	 *
 	 * @param string $type Type of the property (see PARSE_TYPE_PATTERN)
+	 * @throws \InvalidArgumentException
 	 * @return array An array with information about the type
 	 */
 	public function parseType($type) {

@@ -78,7 +78,7 @@ class Selector implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInt
 	 * Gets the selector name.
 	 * A selector's name can be used elsewhere in the query to identify the selector.
 	 *
-	 * @return the selector name; non-null
+	 * @return string the selector name; non-null
 	 */
 	public function getSelectorName() {
 		return $this->selectorName;

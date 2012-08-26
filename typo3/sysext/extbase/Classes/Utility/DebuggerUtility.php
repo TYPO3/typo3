@@ -120,7 +120,7 @@ class DebuggerUtility {
 	/**
 	 * Renders a dump of the given array
 	 *
-	 * @param array $array
+	 * @param array|\Traversable $array
 	 * @param integer $level
 	 * @param boolean $plainText
 	 * @param boolean $ansiColors
@@ -387,9 +387,9 @@ class DebuggerUtility {
 			echo '
 				<style type=\'text/css\'>
 					.debug-tree{position:relative;}
-					.debug-tree input{position:absolute;top:0px;left:0px;cursor:pointer;opacity:0;z-index:2;}
+					.debug-tree input{position:absolute;top:0;left:0;cursor:pointer;opacity:0;z-index:2;}
 					.debug-tree input ~ .debug-content{display:none;}
-					.debug-tree .debug-header:before{content:"+";padding:0px 2px 0px 2px;margin:0 3px 0 3px;font-size:1em;font-weight:bold;color:#004fb0;border:1px #004fb0 solid;}
+					.debug-tree .debug-header:before{content:"+";padding:0 2px 0 2px;margin:0 3px 0 3px;font-size:1em;font-weight:bold;color:#004fb0;border:1px #004fb0 solid;}
 					.debug-tree input:checked ~ .debug-content{display:inline;}
 					.debug-tree input:checked ~ .debug-header:before{content:"-";}
 					.Extbase-Utility-Debugger-VarDump{display:block;text-align:left;background:#b9b9b9;border:10px solid #b9b9b9;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;-moz-box-shadow:0 0 20px #333;-webkit-box-shadow:0 0 20px #333;box-shadow:0 0 20px #333;z-index:999;color:#000;margin:20px 0 0;}

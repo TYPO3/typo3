@@ -179,7 +179,7 @@ class Argument {
 	 *
 	 * @param string $name Name of this argument
 	 * @param string $dataType The data type of this argument
-	 * @throws InvalidArgumentException if $name is not a string or empty
+	 * @throws \InvalidArgumentException if $name is not a string or empty
 	 * @api
 	 */
 	public function __construct($name, $dataType) {
@@ -296,8 +296,8 @@ class Argument {
 	 * Sets the short name of this argument.
 	 *
 	 * @param string $shortName A "short name" - a single character
+	 * @throws \InvalidArgumentException if $shortName is not a character
 	 * @return \TYPO3\CMS\Extbase\Mvc\Controller\Argument $this
-	 * @throws InvalidArgumentException if $shortName is not a character
 	 * @api
 	 */
 	public function setShortName($shortName) {
@@ -482,6 +482,7 @@ class Argument {
 	 * Additionally, it maps arrays to objects in case it is a normal object.
 	 *
 	 * @param mixed $value The value of an argument
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException
 	 * @return mixed
 	 * @deprecated since Extbase 1.4, will be removed in Extbase 6.0
 	 */

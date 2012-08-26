@@ -145,6 +145,7 @@ class DataMap {
 	/**
 	 * Sets the name of the class the colum map represents
 	 *
+	 * @param $className
 	 * @return void
 	 */
 	public function setClassName($className) {
@@ -163,6 +164,7 @@ class DataMap {
 	/**
 	 * Sets the name of the table the colum map represents
 	 *
+	 * @param $tableName
 	 * @return void
 	 */
 	public function setTableName($tableName) {
@@ -249,7 +251,7 @@ class DataMap {
 	/**
 	 * Sets the name of a column holding the page id
 	 *
-	 * @param string The field name
+	 * @param string $pageIdColumnName The field name
 	 * @return void
 	 */
 	public function setPageIdColumnName($pageIdColumnName) {
@@ -306,7 +308,7 @@ class DataMap {
 	/**
 	 * Sets the name of a column holding the timestamp the record was modified
 	 *
-	 * @param string The field name
+	 * @param string $modificationDateColumnName The field name
 	 * @return void
 	 */
 	public function setModificationDateColumnName($modificationDateColumnName) {
@@ -325,7 +327,7 @@ class DataMap {
 	/**
 	 * Sets the name of a column holding the creation date timestamp
 	 *
-	 * @param string The field name
+	 * @param string $creationDateColumnName The field name
 	 * @return void
 	 */
 	public function setCreationDateColumnName($creationDateColumnName) {
@@ -344,7 +346,7 @@ class DataMap {
 	/**
 	 * Sets the name of a column holding the uid of the back-end user who created this record
 	 *
-	 * @param string The field name
+	 * @param string $creatorColumnName The field name
 	 * @return void
 	 */
 	public function setCreatorColumnName($creatorColumnName) {
@@ -363,7 +365,7 @@ class DataMap {
 	/**
 	 * Sets the name of a column indicating the 'deleted' state of the row
 	 *
-	 * @param string The field name
+	 * @param string $deletedFlagColumnName The field name
 	 * @return void
 	 */
 	public function setDeletedFlagColumnName($deletedFlagColumnName) {
@@ -382,7 +384,7 @@ class DataMap {
 	/**
 	 * Sets the name of a column indicating the 'hidden' state of the row
 	 *
-	 * @param string The field name
+	 * @param string $disabledFlagColumnName The field name
 	 * @return void
 	 */
 	public function setDisabledFlagColumnName($disabledFlagColumnName) {
@@ -401,7 +403,7 @@ class DataMap {
 	/**
 	 * Sets the name of a column holding the timestamp the record should not displayed before
 	 *
-	 * @param string The field name
+	 * @param string $startTimeColumnName The field name
 	 * @return void
 	 */
 	public function setStartTimeColumnName($startTimeColumnName) {
@@ -420,7 +422,7 @@ class DataMap {
 	/**
 	 * Sets the name of a column holding the timestamp the record should not displayed afterwards
 	 *
-	 * @param string The field name
+	 * @param string $endTimeColumnName The field name
 	 * @return void
 	 */
 	public function setEndTimeColumnName($endTimeColumnName) {
@@ -439,7 +441,7 @@ class DataMap {
 	/**
 	 * Sets the name of a column holding the uid of the front-end user group which is allowed to edit this record
 	 *
-	 * @param string The field name
+	 * @param string $frontendUserGroupColumnName The field name
 	 * @return void
 	 */
 	public function setFrontEndUserGroupColumnName($frontendUserGroupColumnName) {

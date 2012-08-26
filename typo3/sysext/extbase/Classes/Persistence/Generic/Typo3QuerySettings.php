@@ -127,7 +127,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Sets the pid(s) of the storage page(s) that should be respected for the query.
 	 *
-	 * @param array $respectStoragePage If TRUE the storage page ID will be determined and the statement will be extended accordingly.
+	 * @param array $storagePageIds If TRUE the storage page ID will be determined and the statement will be extended accordingly.
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface instance of $this to allow method chaining
 	 * @api
 	 */
@@ -147,7 +147,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Sets the flag if a  and language overlay should be performed.
 	 *
-	 * @param boolean $respectEnableFields TRUE if a  and language overlay should be performed.
+	 * @param boolean $respectSysLanguage TRUE if a  and language overlay should be performed.
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface (fluent interface)
 	 * @api
 	 */

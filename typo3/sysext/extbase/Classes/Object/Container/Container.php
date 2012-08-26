@@ -138,6 +138,8 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $className
 	 * @param array $givenConstructorArguments the list of constructor arguments as array
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException
 	 * @return object the built object
 	 */
 	protected function getInstanceInternal($className, $givenConstructorArguments = array()) {
@@ -181,6 +183,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo
 	 * @param array $givenConstructorArguments
+	 * @throws \TYPO3\CMS\Extbase\Object\Exception
 	 * @return object the new instance
 	 */
 	protected function instanciateObject(\TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo, array $givenConstructorArguments) {
@@ -232,9 +235,9 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Wrapper for dev log, in order to ease testing
 	 *
-	 * @param 	string		Message (in english).
-	 * @param 	integer		Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
-	 * @return 	void
+	 * @param string $message Message (in english).
+	 * @param integer $severity Severity: 0 is info, 1 is notice, 2 is warning, 3 is fatal error, -1 is "OK" message
+	 * @return void
 	 */
 	protected function log($message, $severity) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($message, 'extbase', $severity);
@@ -257,13 +260,13 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $className
 	 * @param \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo
 	 * @param array $givenConstructorArguments
+	 * @throws \InvalidArgumentException
 	 * @return array
 	 */
 	private function getConstructorArguments($className, \TYPO3\CMS\Extbase\Object\Container\ClassInfo $classInfo, array $givenConstructorArguments) {
 		$parameters = array();
 		$constructorArgumentInformation = $classInfo->getConstructorArguments();
 		foreach ($constructorArgumentInformation as $argumentInformation) {
-			$argumentName = $argumentInformation['name'];
 			// We have a dependency we can automatically wire,
 			// AND the class has NOT been explicitely passed in
 			if (isset($argumentInformation['dependency']) && !(count($givenConstructorArguments) && is_a($givenConstructorArguments[0], $argumentInformation['dependency']))) {
@@ -296,8 +299,8 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns the class name for a new instance, taking into account the
 	 * class-extension API.
 	 *
-	 * @param 	string		Base class name to evaluate
-	 * @return 	string		Final class name to instantiate with "new [classname]
+	 * @param string $className Base class name to evaluate
+	 * @return string Final class name to instantiate with "new [classname]
 	 */
 	protected function getImplementationClassName($className) {
 		if (isset($this->alternativeImplementation[$className])) {

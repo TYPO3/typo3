@@ -211,7 +211,8 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	/**
 	 * Associates data, or info, with the object currently pointed to by the iterator.
 	 *
-	 * @param mixed $information The data associated with the current iterator entry.
+	 * @param mixed $data
+	 * @return void
 	 */
 	public function setInfo($data) {
 		$this->isModified = TRUE;
@@ -260,8 +261,8 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	/**
 	 * Dummy method to avoid serialization.
 	 *
+	 * @throws \RuntimeException
 	 * @return void
-	 * @throws RuntimeException
 	 */
 	public function serialize() {
 		throw new \RuntimeException('An ObjectStorage instance cannot be serialized.', 1267700868);
@@ -270,8 +271,9 @@ class ObjectStorage implements \Countable, \Iterator, \ArrayAccess, \TYPO3\CMS\E
 	/**
 	 * Dummy method to avoid unserialization.
 	 *
+	 * @param $serialized
+	 * @throws \RuntimeException
 	 * @return void
-	 * @throws RuntimeException
 	 */
 	public function unserialize($serialized) {
 		throw new \RuntimeException('A ObjectStorage instance cannot be unserialized.', 1267700870);

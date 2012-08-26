@@ -49,6 +49,7 @@ class FlashMessages implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $message
 	 * @param string $title optional message title
 	 * @param integer $severity optional severity code. One of the t3lib_FlashMessage constants
+	 * @throws \InvalidArgumentException
 	 * @return void
 	 * @api
 	 */

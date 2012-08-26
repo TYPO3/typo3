@@ -194,6 +194,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 *
 	 * @param string $argumentName Name of the argument to set
 	 * @param mixed $value The new value
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException
 	 * @return void
 	 */
 	public function setArgument($argumentName, $value) {

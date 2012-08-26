@@ -68,6 +68,7 @@ class Command {
 	 *
 	 * @param string $controllerClassName Class name of the controller providing the command
 	 * @param string $controllerCommandName Command name, i.e. the method name of the command, without the "Command" suffix
+	 * @throws \InvalidArgumentException
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
 	public function __construct($controllerClassName, $controllerCommandName) {

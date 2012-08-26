@@ -51,7 +51,7 @@ class ClassReflection extends \ReflectionClass {
 	 * that Tx_Extbase_Reflection_MethodReflection objects are returned instead of the
 	 * orginal ReflectionMethod instances.
 	 *
-	 * @param long $filter: A filter mask
+	 * @param integer|NULL $filter A filter mask
 	 * @return \TYPO3\CMS\Extbase\Reflection\MethodReflection Method reflection objects of the methods in this class
 	 */
 	public function getMethods($filter = NULL) {
@@ -99,7 +99,7 @@ class ClassReflection extends \ReflectionClass {
 	 * that Tx_Extbase_Reflection_PropertyReflection objects are returned instead of the
 	 * orginal ReflectionProperty instances.
 	 *
-	 * @param long $filter: A filter mask
+	 * @param integer|NULL $filter A filter mask
 	 * @return array of Tx_Extbase_Reflection_PropertyReflection Property reflection objects of the properties in this class
 	 */
 	public function getProperties($filter = NULL) {

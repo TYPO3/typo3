@@ -164,7 +164,7 @@ class ColumnMap {
 	 *
 	 * @param string $columnName The column name
 	 * @param string $propertyName The property name
-	 * @return void
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap
 	 */
 	public function __construct($columnName, $propertyName) {
 		// TODO Enable aliases (tx_anotherextension_addedcolumn -> theAddedColumn)
@@ -172,114 +172,198 @@ class ColumnMap {
 		$this->setPropertyName($propertyName);
 	}
 
+	/**
+	 * @param $typeOfRelation
+	 */
 	public function setTypeOfRelation($typeOfRelation) {
 		$this->typeOfRelation = $typeOfRelation;
 	}
 
+	/**
+	 * @return int
+	 */
 	public function getTypeOfRelation() {
 		return $this->typeOfRelation;
 	}
 
+	/**
+	 * @param $propertyName
+	 */
 	public function setPropertyName($propertyName) {
 		$this->propertyName = $propertyName;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getPropertyName() {
 		return $this->propertyName;
 	}
 
+	/**
+	 * @param $columnName
+	 */
 	public function setColumnName($columnName) {
 		$this->columnName = $columnName;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getColumnName() {
 		return $this->columnName;
 	}
 
+	/**
+	 * @param $childTableName
+	 */
 	public function setChildTableName($childTableName) {
 		$this->childTableName = $childTableName;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getChildTableName() {
 		return $this->childTableName;
 	}
 
+	/**
+	 * @param $childTableWhereStatement
+	 */
 	public function setChildTableWhereStatement($childTableWhereStatement) {
 		$this->childTableWhereStatement = $childTableWhereStatement;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getChildTableWhereStatement() {
 		return $this->childTableWhereStatement;
 	}
 
+	/**
+	 * @param $childSortByFieldName
+	 */
 	public function setChildSortByFieldName($childSortByFieldName) {
 		$this->childSortByFieldName = $childSortByFieldName;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getChildSortByFieldName() {
 		return $this->childSortByFieldName;
 	}
 
+	/**
+	 * @param $relationTableName
+	 */
 	public function setRelationTableName($relationTableName) {
 		$this->relationTableName = $relationTableName;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getRelationTableName() {
 		return $this->relationTableName;
 	}
 
+	/**
+	 * @param $relationTablePageIdColumnName
+	 */
 	public function setRelationTablePageIdColumnName($relationTablePageIdColumnName) {
 		$this->relationTablePageIdColumnName = $relationTablePageIdColumnName;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getRelationTablePageIdColumnName() {
 		return $this->relationTablePageIdColumnName;
 	}
 
+	/**
+	 * @param array $relationTableMatchFields
+	 */
 	public function setRelationTableMatchFields(array $relationTableMatchFields) {
 		$this->relationTableMatchFields = $relationTableMatchFields;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getRelationTableMatchFields() {
 		return $this->relationTableMatchFields;
 	}
 
+	/**
+	 * @param array $relationTableInsertFields
+	 */
 	public function setRelationTableInsertFields(array $relationTableInsertFields) {
 		$this->relationTableInsertFields = $relationTableInsertFields;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getRelationTableInsertFields() {
 		return $this->relationTableInsertFields;
 	}
 
+	/**
+	 * @param $relationTableWhereStatement
+	 */
 	public function setRelationTableWhereStatement($relationTableWhereStatement) {
 		$this->relationTableWhereStatement = $relationTableWhereStatement;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getRelationTableWhereStatement() {
 		return $this->relationTableWhereStatement;
 	}
 
+	/**
+	 * @param $parentKeyFieldName
+	 */
 	public function setParentKeyFieldName($parentKeyFieldName) {
 		$this->parentKeyFieldName = $parentKeyFieldName;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getParentKeyFieldName() {
 		return $this->parentKeyFieldName;
 	}
 
+	/**
+	 * @param $parentTableFieldName
+	 */
 	public function setParentTableFieldName($parentTableFieldName) {
 		$this->parentTableFieldName = $parentTableFieldName;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getParentTableFieldName() {
 		return $this->parentTableFieldName;
 	}
 
+	/**
+	 * @param $childKeyFieldName
+	 */
 	public function setChildKeyFieldName($childKeyFieldName) {
 		$this->childKeyFieldName = $childKeyFieldName;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getChildKeyFieldName() {
 		return $this->childKeyFieldName;
 	}

@@ -158,7 +158,8 @@ class ClassSchema {
 	/**
 	 * Sets the model type of the class this schema is referring to.
 	 *
-	 * @param integer The model type, one of the MODELTYPE_* constants.
+	 * @param integer $modelType The model type, one of the MODELTYPE_* constants.
+	 * @throws \InvalidArgumentException
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
@@ -217,6 +218,7 @@ class ClassSchema {
 	 * Sets the property marked as uuid of an object with @uuid
 	 *
 	 * @param string $propertyName
+	 * @throws \InvalidArgumentException
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
@@ -243,6 +245,7 @@ class ClassSchema {
 	 * schema.
 	 *
 	 * @param string $propertyName
+	 * @throws \InvalidArgumentException
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */

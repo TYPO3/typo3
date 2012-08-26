@@ -250,7 +250,7 @@ class QueryResult implements \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	}
 
 	/**
-	 * @return void
+	 * @return boolean
 	 * @see Iterator::valid()
 	 */
 	public function valid() {

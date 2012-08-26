@@ -62,7 +62,7 @@ class Join implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface {
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $left the left node-tuple source; non-null
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $right the right node-tuple source; non-null
 	 * @param string $joinType one of QueryObjectModelConstants.JCR_JOIN_TYPE_*
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface $join Condition the join condition; non-null
+	 * @param JoinConditionInterface $joinCondition
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $left, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $right, $joinType, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface $joinCondition) {
 		$this->left = $left;
@@ -101,7 +101,7 @@ class Join implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface {
 	/**
 	 * Gets the join condition.
 	 *
-	 * @return JoinCondition the join condition; non-null
+	 * @return JoinConditionInterface the join condition; non-null
 	 */
 	public function getJoinCondition() {
 		return $this->joinCondition;

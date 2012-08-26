@@ -44,7 +44,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	/**
 	 * The object this property is contained in.
 	 *
-	 * @var object
+	 * @var \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface
 	 */
 	private $parentObject;
 
@@ -168,7 +168,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	/**
 	 * Magic toString call implementation.
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function __toString() {
 		$realInstance = $this->_loadRealInstance();
@@ -178,7 +178,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	/**
 	 * Returns the current value of the storage array
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function current() {
 		$realInstance = $this->_loadRealInstance();
@@ -188,7 +188,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	/**
 	 * Returns the current key storage array
 	 *
-	 * @return void
+	 * @return integer
 	 */
 	public function key() {
 		$realInstance = $this->_loadRealInstance();
@@ -198,7 +198,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	/**
 	 * Returns the next position of the storage array
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function next() {
 		$realInstance = $this->_loadRealInstance();
@@ -218,7 +218,7 @@ class LazyLoadingProxy implements \Iterator, \TYPO3\CMS\Extbase\Persistence\Gene
 	/**
 	 * Checks if the array pointer of the storage points to a valid position
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 	public function valid() {
 		return $this->current() !== FALSE;

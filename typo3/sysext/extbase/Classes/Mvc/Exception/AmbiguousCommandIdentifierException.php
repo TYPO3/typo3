@@ -43,8 +43,8 @@ class AmbiguousCommandIdentifierException extends \TYPO3\CMS\Extbase\Mvc\Excepti
 	 *
 	 * @param string $message
 	 * @param integer $code
-	 * @param Exception $previousException
-	 * @param array<Tx_Extbase_MVC_CLI_Command> $matchingCommands Commands that matched the command identifier
+	 * @param \Exception|NULL $previousException
+	 * @param array $matchingCommands <Tx_Extbase_MVC_CLI_Command> $matchingCommands Commands that matched the command identifier
 	 * @see Exception
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */

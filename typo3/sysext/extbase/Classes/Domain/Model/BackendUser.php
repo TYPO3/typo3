@@ -55,12 +55,12 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $isDisabled = FALSE;
 
 	/**
-	 * @var DateTime|NULL
+	 * @var \DateTime|NULL
 	 */
 	protected $startDateAndTime = NULL;
 
 	/**
-	 * @var DateTime|NULL
+	 * @var \DateTime|NULL
 	 */
 	protected $endDateAndTime = NULL;
 
@@ -75,7 +75,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $realName = '';
 
 	/**
-	 * @var DateTime|NULL
+	 * @var \DateTime|NULL
 	 */
 	protected $lastLoginDateAndTime;
 

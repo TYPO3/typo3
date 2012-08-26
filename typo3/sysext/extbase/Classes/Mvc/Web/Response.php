@@ -115,8 +115,8 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	 *
 	 * @param integer $code The status code
 	 * @param string $message If specified, this message is sent instead of the standard message
+	 * @throws \InvalidArgumentException if the specified status code is not valid
 	 * @return void
-	 * @throws InvalidArgumentException if the specified status code is not valid
 	 * @api
 	 */
 	public function setStatus($code, $message = NULL) {
@@ -146,6 +146,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	 * @param string $name Name of the header, for example "Location", "Content-Description" etc.
 	 * @param mixed $value The value of the given header
 	 * @param boolean $replaceExistingHeader If a header with the same name should be replaced. Default is TRUE.
+	 * @throws \InvalidArgumentException
 	 * @return void
 	 * @api
 	 */
@@ -218,6 +219,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	 *
 	 * @TODO The workround and the $request member should be removed again, once the PageRender does support non-cached USER_INTs
 	 * @param string $additionalHeaderData The value additonal header
+	 * @throws \InvalidArgumentException
 	 * @return void
 	 * @api
 	 */

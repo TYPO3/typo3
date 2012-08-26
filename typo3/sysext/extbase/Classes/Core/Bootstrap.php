@@ -81,6 +81,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	 * the initialization and request handling process. Most other applications just call the run() method.
 	 *
 	 * @param array $configuration The TS configuration array
+	 * @throws \RuntimeException
 	 * @return void
 	 * @see run()
 	 * @api
@@ -254,6 +255,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 	 * function of TYPO3.
 	 *
 	 * @param string $moduleSignature
+	 * @throws \RuntimeException
 	 * @return boolean TRUE, if the request request could be dispatched
 	 * @see run()
 	 */

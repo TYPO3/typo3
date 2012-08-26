@@ -188,6 +188,7 @@ final class PropertyType {
 	 * String constant for type name as used in serialization.
 	 */
 	const TYPENAME_INTEGER = 'Integer';
+
 	/**
 	 * Make instantiation impossible...
 	 *
@@ -205,6 +206,7 @@ final class PropertyType {
 	 */
 	static public function nameFromValue($type) {
 		switch (intval($type)) {
+		default:
 		case self::UNDEFINED:
 			return self::TYPENAME_UNDEFINED;
 			break;
@@ -258,6 +260,7 @@ final class PropertyType {
 	 */
 	static public function valueFromName($name) {
 		switch ($name) {
+		default:
 		case self::TYPENAME_UNDEFINED:
 			return self::UNDEFINED;
 			break;

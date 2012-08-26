@@ -88,6 +88,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $extensionName name of the target extension (UpperCamelCase)
 	 * @param string $controllerName name of the target controller (UpperCamelCase)
 	 * @param string $actionName name of the target action (lowerCamelCase)
+	 * @throws \TYPO3\CMS\Extbase\Exception
 	 * @return string name of the target plugin (UpperCamelCase) or NULL if no matching plugin configuration was found
 	 */
 	public function getPluginNameByAction($extensionName, $controllerName, $actionName) {
@@ -147,6 +148,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $extensionName name of the extension to retrieve the target PID for
 	 * @param string $pluginName name of the plugin to retrieve the target PID for
+	 * @throws \TYPO3\CMS\Extbase\Exception
 	 * @return integer uid of the target page or NULL if target page could not be determined
 	 */
 	public function getTargetPidByPlugin($extensionName, $pluginName) {

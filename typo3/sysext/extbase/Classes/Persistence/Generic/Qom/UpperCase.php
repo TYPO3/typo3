@@ -51,7 +51,7 @@ class UpperCase implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseI
 	/**
 	 * Constructs this UpperCase instance
 	 *
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $constraint
+	 * @param DynamicOperandInterface $operand
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand) {
 		$this->operand = $operand;

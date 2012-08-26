@@ -60,6 +60,7 @@ abstract class AbstractFileCollectionConverter extends \TYPO3\CMS\Extbase\Proper
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception
 	 * @return \TYPO3\CMS\Extbase\Domain\Model\AbstractFileCollection
 	 * @api
 	 */

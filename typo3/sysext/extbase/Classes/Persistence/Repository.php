@@ -122,6 +122,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * Adds an object to this repository
 	 *
 	 * @param object $object The object to add
+	 * @throws Exception\IllegalObjectTypeException
 	 * @return void
 	 * @api
 	 */
@@ -139,6 +140,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * Removes an object from this repository.
 	 *
 	 * @param object $object The object to remove
+	 * @throws Exception\IllegalObjectTypeException
 	 * @return void
 	 * @api
 	 */
@@ -159,6 +161,8 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 *
 	 * @param object $existingObject The existing object
 	 * @param object $newObject The new object
+	 * @throws Exception\UnknownObjectException
+	 * @throws Exception\IllegalObjectTypeException
 	 * @return void
 	 * @api
 	 */
@@ -195,6 +199,9 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 * Replaces an existing object with the same identifier by the given object
 	 *
 	 * @param object $modifiedObject The modified object
+	 * @throws Exception\UnknownObjectException
+	 * @throws Exception\IllegalObjectTypeException
+	 * @return void
 	 * @api
 	 */
 	public function update($modifiedObject) {

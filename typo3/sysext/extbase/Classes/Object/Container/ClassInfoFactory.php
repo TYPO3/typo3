@@ -37,6 +37,7 @@ class ClassInfoFactory {
 	 * Factory metod that builds a ClassInfo Object for the given classname - using reflection
 	 *
 	 * @param string $className The class name to build the class info for
+	 * @throws Exception\UnknownObjectException
 	 * @return \TYPO3\CMS\Extbase\Object\Container\ClassInfo the class info
 	 */
 	public function buildClassInfoFromClassName($className) {
@@ -56,7 +57,7 @@ class ClassInfoFactory {
 	/**
 	 * Build a list of constructor arguments
 	 *
-	 * @param ReflectionClass $reflectedClass
+	 * @param \ReflectionClass $reflectedClass
 	 * @return array of parameter infos for constructor
 	 */
 	private function getConstructorArguments(\ReflectionClass $reflectedClass) {
@@ -84,6 +85,7 @@ class ClassInfoFactory {
 	 * Build a list of inject methods for the given class.
 	 *
 	 * @param \ReflectionClass $reflectedClass
+	 * @throws \Exception
 	 * @return array (nameOfInjectMethod => nameOfClassToBeInjected)
 	 */
 	private function getInjectMethods(\ReflectionClass $reflectedClass) {
@@ -108,7 +110,7 @@ class ClassInfoFactory {
 	/**
 	 * Build a list of properties to be injected for the given class.
 	 *
-	 * @param ReflectionClass $reflectedClass
+	 * @param \ReflectionClass $reflectedClass
 	 * @return array (nameOfInjectProperty => nameOfClassToBeInjected)
 	 */
 	private function getInjectProperties(\ReflectionClass $reflectedClass) {

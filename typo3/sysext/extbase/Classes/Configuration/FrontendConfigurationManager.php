@@ -145,7 +145,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 	/**
 	 * Overrides configuration settings from the plugin typoscript (plugin.tx_myext_pi1.)
 	 *
-	 * @param array the framework configuration
+	 * @param array $frameworkConfiguration the framework configuration
 	 * @return array the framework configuration with overridden data from typoscript
 	 */
 	protected function overrideConfigurationFromPlugin(array $frameworkConfiguration) {
@@ -165,7 +165,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 	 * Overrides configuration settings from flexForms.
 	 * This merges the whole flexForm data, and overrides switchable controller actions.
 	 *
-	 * @param array the framework configuration
+	 * @param array $frameworkConfiguration the framework configuration
 	 * @return array the framework configuration with overridden data from flexForm
 	 */
 	protected function overrideConfigurationFromFlexForm(array $frameworkConfiguration) {
@@ -228,6 +228,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 	 *
 	 * @param array $frameworkConfiguration The original framework configuration
 	 * @param array $flexFormConfiguration The full flexForm configuration
+	 * @throws Exception\ParseError
 	 * @return array the modified framework configuration, if needed
 	 */
 	protected function overrideSwitchableControllerActionsFromFlexForm(array $frameworkConfiguration, array $flexFormConfiguration) {

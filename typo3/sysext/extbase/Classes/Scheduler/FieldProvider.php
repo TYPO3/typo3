@@ -161,7 +161,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	protected function getCommandControllerActionArgumentFields(array $argumentDefinitions) {
 		$fields = array();
 		$argumentValues = $this->task->getArguments();
-		foreach ($argumentDefinitions as $index => $argument) {
+		foreach ($argumentDefinitions as $argument) {
 			$name = $argument->getName();
 			$defaultValue = $this->getDefaultArgumentValue($argument);
 			$this->task->addDefaultValue($name, $defaultValue);

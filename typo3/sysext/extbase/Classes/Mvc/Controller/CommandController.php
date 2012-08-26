@@ -97,8 +97,8 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\RequestInterface $request The request object
 	 * @param \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response The response, modified by this controller
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException
 	 * @return void
-	 * @throws Tx_Extbase_MVC_Exception_UnsupportedRequestTypeException if the controller doesn't support the current request type
 	 * @author Robert Lemke <robert@typo3.org>
 	 * @api
 	 */
@@ -121,6 +121,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 * Note: The resulting command method name might not have the correct case, which isn't a problem because PHP is
 	 * case insensitive regarding method names.
 	 *
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException
 	 * @return string Method name of the current command
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
@@ -136,6 +137,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 * Initializes the arguments array of this controller by creating an empty argument object for each of the
 	 * method arguments found in the designated command method.
 	 *
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
@@ -184,6 +186,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 * @param string $commandName
 	 * @param string $controllerObjectName
 	 * @param array $arguments
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 * @return void
 	 */
 	protected function forward($commandName, $controllerObjectName = NULL, array $arguments = array()) {
@@ -227,7 +230,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 * @see http://www.php.net/sprintf
 	 * @param string $text Text to output
 	 * @param array $arguments Optional arguments to use for sprintf
-	 * @return void
+	 * @return string
 	 */
 	protected function output($text, array $arguments = array()) {
 		if ($arguments !== array()) {
@@ -253,6 +256,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 * An exit status code can be specified @see http://www.php.net/exit
 	 *
 	 * @param integer $exitCode Exit code to return on exit
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
 	 * @return void
 	 */
 	protected function quit($exitCode = 0) {

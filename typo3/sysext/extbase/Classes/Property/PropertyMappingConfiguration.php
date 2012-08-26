@@ -76,8 +76,10 @@ class PropertyMappingConfiguration implements \TYPO3\CMS\Extbase\Property\Proper
 	}
 
 	/**
+	 * returns TRUE if the given propertyName should be mapped, FALSE otherwise.
+	 *
 	 * @param string $propertyName
-	 * @return TRUE if the given propertyName should be mapped, FALSE otherwise.
+	 * @return boolean
 	 * @todo : extend to enable whitelisting / blacklisting of properties.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api

@@ -91,6 +91,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Lifecycle method, called after all dependencies have been injected.
 	 * Here, the typeConverter array gets initialized.
 	 *
+	 * @throws Exception\DuplicateTypeConverterException
 	 * @return void
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -112,6 +113,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param mixed $source the source data to map. MUST be a simple type, NO object allowed!
 	 * @param string $targetType The type of the target; can be either a class name or a simple type.
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration Configuration for the property mapping. If NULL, the PropertyMappingConfigurationBuilder will create a default configuration.
+	 * @throws Exception
 	 * @return mixed an instance of $targetType
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @api
@@ -147,6 +149,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $targetType The type of the target; can be either a class name or a simple type.
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration Configuration for the property mapping.
 	 * @param array $currentPropertyPath The property path currently being mapped; used for knowing the context in case an exception is thrown.
+	 * @throws Exception\TypeConverterException
 	 * @return mixed an instance of $targetType
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -187,6 +190,8 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param mixed $source
 	 * @param string $targetType
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+	 * @throws Exception\TypeConverterException
+	 * @throws Exception\InvalidTargetException
 	 * @return \TYPO3\CMS\Extbase\Property\TypeConverterInterface Type Converter which should be used to convert between $source and $targetType.
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -304,6 +309,7 @@ class PropertyMapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Determine the type of the source data, or throw an exception if source was an unsupported format.
 	 *
 	 * @param mixed $source
+	 * @throws Exception\InvalidSourceException
 	 * @return string the type of $source
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */

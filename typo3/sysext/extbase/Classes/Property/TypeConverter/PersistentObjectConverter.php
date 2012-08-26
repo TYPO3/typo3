@@ -46,7 +46,7 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	protected $sourceTypes = array('string', 'array');
 
 	/**
-	 * @var strng
+	 * @var string
 	 */
 	protected $targetType = 'object';
 
@@ -131,6 +131,7 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @param string $targetType
 	 * @param string $propertyName
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
 	 * @return string
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -154,6 +155,8 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+	 * @throws \InvalidArgumentException
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException
 	 * @return object the target type
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -181,6 +184,7 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 * @param string $targetType
 	 * @param array $convertedChildProperties
 	 * @param \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException
 	 * @return object
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 */
@@ -207,6 +211,8 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 	 *
 	 * @param mixed $identity
 	 * @param string $targetType
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException
+	 * @throws \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException
 	 * @return object
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Bastian Waidelich <bastian@typo3.org>

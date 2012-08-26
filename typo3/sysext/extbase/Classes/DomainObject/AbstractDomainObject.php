@@ -62,7 +62,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	private $_isClone = FALSE;
 
 	/**
-	 * @var An array holding the clean property values. Set right after reconstitution of the object
+	 * @var array An array holding the clean property values. Set right after reconstitution of the object
 	 */
 	private $_cleanProperties;
 
@@ -259,6 +259,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	 * Returns TRUE if the properties were modified after reconstitution
 	 *
 	 * @param string $propertyName An optional name of a property to be checked if its value is dirty
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\TooDirtyException
 	 * @return boolean
 	 */
 	public function _isDirty($propertyName = NULL) {
@@ -284,10 +285,9 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	 *
 	 * @param mixed $previousValue
 	 * @param mixed $currentValue
-	 * @return boolan
+	 * @return boolean
 	 */
 	protected function isPropertyDirty($previousValue, $currentValue) {
-		$result = FALSE;
 		// In case it is an object and it implements the ObjectMonitoringInterface, we call _isDirty() instead of a simple comparison of objects.
 		// We do this, because if the object itself contains a lazy loaded property, the comparison of the objects might fail even if the object didn't change
 		if (is_object($currentValue)) {

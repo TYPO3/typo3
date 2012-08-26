@@ -50,7 +50,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Registers a reconstituted object
 	 *
-	 * @param object $object
+	 * @param object|\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object $object
 	 * @return void
 	 */
 	public function registerReconstitutedObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object) {
@@ -70,7 +70,6 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Returns all objects which have been registered as reconstituted objects
 	 *
-	 * @param string $objectClassName The class name of objects to be returned
 	 * @return array All reconstituted objects
 	 */
 	public function getReconstitutedObjects() {

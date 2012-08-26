@@ -29,8 +29,10 @@ namespace TYPO3\CMS\Extbase\Property;
 interface PropertyMappingConfigurationInterface
 {
 	/**
+	 * returns TRUE if the given propertyName should be mapped, FALSE otherwise.
+	 *
 	 * @param string $propertyName
-	 * @return TRUE if the given propertyName should be mapped, FALSE otherwise.
+	 * @return boolean
 	 * @api
 	 */
 	public function shouldMap($propertyName);

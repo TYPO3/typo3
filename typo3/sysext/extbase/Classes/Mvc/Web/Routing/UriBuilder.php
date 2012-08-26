@@ -646,6 +646,7 @@ class UriBuilder {
 	 * into an arrays containing the uid of the domain object.
 	 *
 	 * @param array $arguments The arguments to be iterated
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException
 	 * @return array The modified arguments array
 	 */
 	protected function convertDomainObjectsToIdentityArrays(array $arguments) {

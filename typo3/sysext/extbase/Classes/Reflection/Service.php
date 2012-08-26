@@ -181,6 +181,7 @@ class Service implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Initializes this service
 	 *
+	 * @throws Exception
 	 * @return void
 	 */
 	public function initialize() {
@@ -420,6 +421,7 @@ class Service implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Builds class schemata from classes annotated as entities or value objects
 	 *
 	 * @param string $className
+	 * @throws Exception\UnknownClassException
 	 * @return \TYPO3\CMS\Extbase\Reflection\ClassSchema The class schema
 	 */
 	protected function buildClassSchema($className) {
@@ -458,9 +460,9 @@ class Service implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Converts the given parameter reflection into an information array
 	 *
-	 * @param ReflectionParameter $parameter The parameter to reflect
+	 * @param \ReflectionParameter $parameter The parameter to reflect
 	 * @param integer $parameterPosition
-	 * @param ReflectionMethod|NULL $method
+	 * @param \ReflectionMethod|NULL $method
 	 * @return array Parameter information array
 	 */
 	protected function convertParameterReflectionToArray(\ReflectionParameter $parameter, $parameterPosition, \ReflectionMethod $method = NULL) {
@@ -525,6 +527,7 @@ class Service implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Exports the internal reflection data into the ReflectionData cache.
 	 *
+	 * @throws Exception
 	 * @return void
 	 */
 	protected function saveToCache() {

@@ -144,7 +144,7 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the items within this category.
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_DomainObject_AbstractEntity> the items, might be empty
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage the items, might be empty
 	 * @api
 	 */
 	public function getItems() {
@@ -154,7 +154,7 @@ class Category extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the items within this category.
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_DomainObject_AbstractEntity> $items the items, may be empty
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $items
 	 * @return void
 	 * @api
 	 */

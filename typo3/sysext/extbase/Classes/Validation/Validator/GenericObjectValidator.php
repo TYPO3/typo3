@@ -156,6 +156,7 @@ class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 	 *
 	 * @param object $object The object containing the property to validate
 	 * @param string $propertyName Name of the property to validate
+	 * @throws \InvalidArgumentException
 	 * @return boolean TRUE if the property value is valid, FALSE if an error occured
 	 * @api
 	 * @deprecated since Extbase 1.4.0, will be removed in Extbase 6.0

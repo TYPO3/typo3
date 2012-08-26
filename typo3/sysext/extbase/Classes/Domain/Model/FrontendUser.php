@@ -131,12 +131,12 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $image = '';
 
 	/**
-	 * @var DateTime|NULL
+	 * @var \DateTime|NULL
 	 */
 	protected $lastlogin = NULL;
 
 	/**
-	 * @var DateTime|NULL
+	 * @var \DateTime|NULL
 	 */
 	protected $isOnline = NULL;
 
@@ -579,7 +579,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the lastlogin value
 	 *
-	 * @param DateTime $lastlogin
+	 * @param \DateTime $lastlogin
 	 * @return void
 	 * @api
 	 */
@@ -590,7 +590,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the lastlogin value
 	 *
-	 * @return DateTime
+	 * @return \DateTime
 	 * @api
 	 */
 	public function getLastlogin() {
@@ -600,7 +600,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the isOnline value
 	 *
-	 * @param DateTime $isOnline
+	 * @param \DateTime $isOnline
 	 * @return void
 	 * @api
 	 */
@@ -611,7 +611,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the isOnline value
 	 *
-	 * @return DateTime
+	 * @return \DateTime
 	 * @api
 	 */
 	public function getIsOnline() {

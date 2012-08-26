@@ -69,7 +69,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $statement The statement
 	 * @param array $boundVariables An array of variables to bind to the statement
-	 * @param object $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelFactory::TYPO3_*
+	 * @param object|string $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelFactory::TYPO3_*
 	 * @return Tx_Extbase_Persistence_QOM_StatementInterface
 	 */
 	public function statement($statement, array $boundVariables = array(), $language = \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement::TYPO3_SQL_MYSQL) {
@@ -82,9 +82,8 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $left the left node-tuple source; non-null
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $right the right node-tuple source; non-null
 	 * @param string $joinType one of QueryObjectModelConstants.JCR_JOIN_TYPE_*
-	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface $join Condition the join condition; non-null
+	 * @param JoinConditionInterface $joinCondition
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface the join; non-null
-	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException if the operation otherwise fails
 	 */
 	public function join(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $left, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\SourceInterface $right, $joinType, \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinConditionInterface $joinCondition) {
 		return $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\Join', $left, $right, $joinType, $joinCondition);

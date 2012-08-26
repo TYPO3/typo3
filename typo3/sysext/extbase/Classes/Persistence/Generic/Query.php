@@ -161,6 +161,7 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 	/**
 	 * Returns the Query Settings.
 	 *
+	 * @throws Exception
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings The Query Settings
 	 * @api This method is not part of FLOW3 API
 	 */
@@ -266,6 +267,7 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 	 * for chaining (fluid interface)
 	 *
 	 * @param integer $limit
+	 * @throws \InvalidArgumentException
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */
@@ -292,7 +294,7 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 	/**
 	 * Returns the maximum size of the result set to limit.
 	 *
-	 * @param integer
+	 * @return integer
 	 * @api
 	 */
 	public function getLimit() {
@@ -304,6 +306,7 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 	 * allow for chaining (fluid interface)
 	 *
 	 * @param integer $offset
+	 * @throws \InvalidArgumentException
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 * @api
 	 */
@@ -343,7 +346,7 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 	 * backend (database).
 	 *
 	 * @param string $statement The statement
-	 * @param array $paramerters An array of parameters. These will be bound to placeholders '?' in the $statement.
+	 * @param array $parameters An array of parameters. These will be bound to placeholders '?' in the $statement.
 	 * @return \TYPO3\CMS\Extbase\Persistence\QueryInterface
 	 */
 	public function statement($statement, array $parameters = array()) {
@@ -375,6 +378,7 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 	 * It also scepts a single array of constraints to be concatenated.
 	 *
 	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
+	 * @throws Exception\InvalidNumberOfConstraintsException
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface
 	 * @api
 	 */
@@ -399,6 +403,7 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 	 * Performs a logical disjunction of the two given constraints
 	 *
 	 * @param mixed $constraint1 The first of multiple constraints or an array of constraints.
+	 * @throws Exception\InvalidNumberOfConstraintsException
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\OrInterface
 	 * @api
 	 */
@@ -479,6 +484,7 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 	 *
 	 * @param string $propertyName The name of the property to compare against
 	 * @param mixed $operand The value to compare with, multivalued
+	 * @throws Exception\UnexpectedTypeException
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface
 	 * @api
 	 */

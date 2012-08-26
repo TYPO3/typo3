@@ -40,6 +40,7 @@ class ObjectAccess {
 	const ACCESS_GET = 0;
 	const ACCESS_SET = 1;
 	const ACCESS_PUBLIC = 2;
+
 	/**
 	 * Get a property of a given object.
 	 * Tries to get the property the following ways:
@@ -54,9 +55,9 @@ class ObjectAccess {
 	 * @param mixed $subject Object or array to get the property from
 	 * @param string $propertyName name of the property to retrieve
 	 * @param boolean $forceDirectAccess directly access property using reflection(!)
+	 * @throws Exception\PropertyNotAccessibleException
+	 * @throws \InvalidArgumentException in case $subject was not an object or $propertyName was not a string
 	 * @return mixed Value of the property
-	 * @throws InvalidArgumentException in case $subject was not an object or $propertyName was not a string
-	 * @throws RuntimeException if the property was not accessible
 	 */
 	static public function getProperty($subject, $propertyName, $forceDirectAccess = FALSE) {
 		if (!is_object($subject) && !is_array($subject)) {
@@ -83,6 +84,7 @@ class ObjectAccess {
 	 * @param string $propertyName name of the property to retrieve
 	 * @param boolean $forceDirectAccess directly access property using reflection(!)
 	 * @param boolean $propertyExists (by reference) will be set to TRUE if the specified property exists and is gettable
+	 * @throws Exception\PropertyNotAccessibleException
 	 * @return mixed Value of the property
 	 * @internal
 	 */
@@ -167,8 +169,8 @@ class ObjectAccess {
 	 * @param string $propertyName Name of the property to set
 	 * @param mixed $propertyValue Value of the property
 	 * @param boolean $forceDirectAccess directly access property using reflection(!)
+	 * @throws \InvalidArgumentException in case $object was not an object or $propertyName was not a string
 	 * @return boolean TRUE if the property could be set, FALSE otherwise
-	 * @throws InvalidArgumentException in case $object was not an object or $propertyName was not a string
 	 */
 	static public function setProperty(&$subject, $propertyName, $propertyValue, $forceDirectAccess = FALSE) {
 		if (is_array($subject)) {
@@ -209,6 +211,7 @@ class ObjectAccess {
 	 * - public properties which can be directly get.
 	 *
 	 * @param object $object Object to receive property names for
+	 * @throws \InvalidArgumentException
 	 * @return array Array of all gettable property names
 	 * @author Sebastian Kurfürst <sebastian@typo3.org>
 	 * @author Karsten Dambekalns <karsten@typo3.org>
@@ -245,6 +248,7 @@ class ObjectAccess {
 	 * - public properties which can be directly set.
 	 *
 	 * @param object $object Object to receive property names for
+	 * @throws \InvalidArgumentException
 	 * @return array Array of all settable property names
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
@@ -272,6 +276,7 @@ class ObjectAccess {
 	 *
 	 * @param object $object Object containting the property
 	 * @param string $propertyName Name of the property to check
+	 * @throws \InvalidArgumentException
 	 * @return boolean
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
@@ -292,6 +297,7 @@ class ObjectAccess {
 	 *
 	 * @param object $object Object containting the property
 	 * @param string $propertyName Name of the property to check
+	 * @throws \InvalidArgumentException
 	 * @return boolean
 	 */
 	static public function isPropertyGettable($object, $propertyName) {
@@ -319,6 +325,7 @@ class ObjectAccess {
 	 * $object that are accessible through this class.
 	 *
 	 * @param object $object Object to get all properties from.
+	 * @throws \InvalidArgumentException
 	 * @return array Associative array of all properties.
 	 * @todo What to do with ArrayAccess
 	 */

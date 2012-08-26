@@ -171,6 +171,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				}
 			}
 		}
+		/** @var $dataMap \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap */
 		$dataMap = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', $className, $tableName, $recordType, $subclasses);
 		$dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
 		// $classPropertyNames = $this->reflectionService->getClassPropertyNames($className);
@@ -197,7 +198,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Resolves all subclasses for the given set of (sub-)classes.
 	 * The whole classes configuration is used to determine all subclasses recursively.
 	 *
-	 * @param array $classes The framework configuration part [persistence][classes].
+	 * @param array $classesConfiguration The framework configuration part [persistence][classes].
 	 * @param array $subclasses An array of subclasses defined via TypoScript
 	 * @return array An numeric array that contains all available subclasses-strings as values.
 	 */
@@ -248,6 +249,11 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 	}
 
+	/**
+	 * @param DataMap $dataMap
+	 * @param $tableName
+	 * @return DataMap
+	 */
 	protected function addMetaDataColumnNames(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap $dataMap, $tableName) {
 		$controlSection = $GLOBALS['TCA'][$tableName]['ctrl'];
 		$dataMap->setPageIdColumnName('pid');
@@ -294,7 +300,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap The column map
 	 * @param string $columnConfiguration The column configuration from $TCA
 	 * @param array $propertyMetaData The property metadata as delivered by the reflection service
-	 * @return void
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap
 	 */
 	protected function setRelations(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap, $columnConfiguration, $propertyMetaData) {
 		if (isset($columnConfiguration)) {
@@ -317,9 +323,9 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * This method sets the configuration for a 1:1 relation based on
 	 * the $TCA column configuration
 	 *
-	 * @param string $columnMap The column map
+	 * @param string|\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap The column map
 	 * @param string $columnConfiguration The column configuration from $TCA
-	 * @return void
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap
 	 */
 	protected function setOneToOneRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap, $columnConfiguration) {
 		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_ONE);
@@ -335,9 +341,9 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * This method sets the configuration for a 1:n relation based on
 	 * the $TCA column configuration
 	 *
-	 * @param string $columnMap The column map
+	 * @param string|\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap The column map
 	 * @param string $columnConfiguration The column configuration from $TCA
-	 * @return void
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap
 	 */
 	protected function setOneToManyRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap, $columnConfiguration) {
 		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY);
@@ -353,9 +359,10 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * This method sets the configuration for a m:n relation based on
 	 * the $TCA column configuration
 	 *
-	 * @param string $columnMap The column map
+	 * @param string|\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap The column map
 	 * @param string $columnConfiguration The column configuration from $TCA
-	 * @return void
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedRelationException
+	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap
 	 */
 	protected function setManyToManyRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap $columnMap, $columnConfiguration) {
 		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY);

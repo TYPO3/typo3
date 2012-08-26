@@ -111,6 +111,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception
 	 * @return void
 	 */
 	protected function loadDefaultValues() {
@@ -173,8 +174,10 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 * If that's not available, an exception is thrown.
 	 *
 	 * @param array $parameters
-	 * @return string
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception if the controller could not be resolved
+	 * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
+	 * @return string
 	 */
 	protected function resolveControllerName(array $parameters) {
 		if (!isset($parameters['controller']) || strlen($parameters['controller']) === 0) {
@@ -203,8 +206,10 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param $controllerName
 	 * @param array $parameters
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException
+	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception
+	 * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
 	 * @return string
-	 * @throws t3lib_error_http_PageNotFoundException|Tx_Extbase_MVC_Exception|Tx_Extbase_MVC_Exception_InvalidActionName if the action could not be resolved
 	 */
 	protected function resolveActionName($controllerName, array $parameters) {
 		$defaultActionName = is_array($this->allowedControllerActions[$controllerName]) ? current($this->allowedControllerActions[$controllerName]) : '';

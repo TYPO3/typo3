@@ -74,8 +74,8 @@ class Arguments extends \ArrayObject {
 	 *
 	 * @param mixed $offset Offset - not used here
 	 * @param mixed $value The argument
+	 * @throws \InvalidArgumentException if the argument is not a valid Controller Argument object
 	 * @return void
-	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
 	 */
 	public function offsetSet($offset, $value) {
 		if (!$value instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Argument) {
@@ -90,8 +90,8 @@ class Arguments extends \ArrayObject {
 	 * Sets an argument, aliased to offsetSet()
 	 *
 	 * @param mixed $value The value
+	 * @throws \InvalidArgumentException if the argument is not a valid Controller Argument object
 	 * @return void
-	 * @throws InvalidArgumentException if the argument is not a valid Controller Argument object
 	 */
 	public function append($value) {
 		if (!$value instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Argument) {
@@ -228,6 +228,7 @@ class Arguments extends \ArrayObject {
 	 *
 	 * @param string $methodName Name of the method
 	 * @param array $arguments Method arguments
+	 * @throws \LogicException
 	 * @return void
 	 */
 	public function __call($methodName, array $arguments) {

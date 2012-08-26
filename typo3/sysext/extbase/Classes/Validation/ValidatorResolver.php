@@ -149,6 +149,8 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $className
 	 * @param string $methodName
+	 * @throws Exception\NoSuchValidatorException
+	 * @throws Exception\InvalidValidationConfigurationException
 	 * @return array An Array of ValidatorConjunctions for each method parameters.
 	 */
 	public function buildMethodArgumentsValidatorConjunctions($className, $methodName) {
@@ -200,6 +202,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 * name F3\Foo\Domain\Validator\QuuxValidator
 	 *
 	 * @param string $dataType The data type to build the validation conjunction for. Needs to be the fully qualified object name.
+	 * @throws Exception\NoSuchValidatorException
 	 * @return \TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator The validator conjunction or NULL
 	 */
 	protected function buildBaseValidatorConjunction($dataType) {

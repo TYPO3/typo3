@@ -118,8 +118,8 @@ class ObjectManagerException implements \TYPO3\CMS\Extbase\Object\ObjectManagerI
 	 * Object Manager
 	 *
 	 * @param string $objectName The name of the object to create
+	 * @throws Exception\WrongScopeException
 	 * @return object The new object instance
-	 * @throws Tx_Extbase_Object_Exception_WrongScropeException if the created object is not of scope prototype
 	 * @api
 	 */
 	public function create($objectName) {

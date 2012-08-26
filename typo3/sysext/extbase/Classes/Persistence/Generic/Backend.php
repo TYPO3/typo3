@@ -99,8 +99,14 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	protected $signalSlotDispatcher;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage
+	 */
+	protected $deletedObjects;
+
+	/**
 	 * Constructs the backend
 	 *
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
 	 * @return void
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
@@ -109,6 +115,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 		if ($frameworkConfiguration['persistence']['updateReferenceIndex'] === '1') {
 			$this->referenceIndex = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 		}
+		$this->deletedObjects = new \TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage();
 	}
 
 	/**
@@ -313,6 +320,7 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 *
 	 * @param object $existingObject The existing object
 	 * @param object $newObject The new object
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
 	 * @return void
 	 */
 	public function replaceObject($existingObject, $newObject) {
@@ -453,7 +461,6 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	protected function persistObjectStorage(\TYPO3\CMS\Extbase\Persistence\Generic\ObjectStorage $objectStorage, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $propertyName, array &$row) {
 		$className = get_class($parentObject);
 		$columnMap = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
-		$columnName = $columnMap->getColumnName();
 		$propertyMetaData = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
 		foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
 			if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY && $propertyMetaData['cascade'] === 'remove') {
@@ -486,11 +493,11 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * Returns the removed objects determined by a comparison of the clean property value
 	 * with the actual property value.
 	 *
-	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $object The object
-	 * @param string $parentPropertyName The name of the property
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object The object
+	 * @param string $propertyName
 	 * @return array An array of removed objects
 	 */
-	protected function getRemovedChildObjects(\TYPO3\CMS\Extbase\DomainObject\AbstractEntity $object, $propertyName) {
+	protected function getRemovedChildObjects(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, $propertyName) {
 		$removedObjects = array();
 		$cleanPropertyValue = $object->_getCleanProperty($propertyName);
 		if (is_array($cleanPropertyValue) || $cleanPropertyValue instanceof \Iterator) {
@@ -508,11 +515,12 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * Updates the fields defining the relation between the object and the parent object.
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
-	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
 	 * @param string $parentPropertyName
+	 * @param int $sortingPosition
 	 * @return void
 	 */
-	protected function attachObjectToParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject, $parentPropertyName, $sortingPosition = 0) {
+	protected function attachObjectToParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $parentPropertyName, $sortingPosition = 0) {
 		$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
 		if ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
@@ -541,11 +549,11 @@ class Backend implements \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
 	 * Updates the fields defining the relation between the object and the parent object.
 	 *
 	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object
-	 * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject
+	 * @param \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject
 	 * @param string $parentPropertyName
 	 * @return void
 	 */
-	protected function detachObjectFromParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $parentObject, $parentPropertyName) {
+	protected function detachObjectFromParentObject(\TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $object, \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface $parentObject, $parentPropertyName) {
 		$parentDataMap = $this->dataMapper->getDataMap(get_class($parentObject));
 		$parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
 		if ($parentColumnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {

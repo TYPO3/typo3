@@ -94,6 +94,8 @@ abstract class AbstractCompositeValidator implements \TYPO3\CMS\Extbase\Validati
 	 * Removes the specified validator.
 	 *
 	 * @param \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator The validator to remove
+	 * @throws \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException
+	 * @return void
 	 */
 	public function removeValidator(\TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface $validator) {
 		if (!$this->validators->contains($validator)) {

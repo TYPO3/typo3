@@ -397,6 +397,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	/**
 	 * Maps arguments delivered by the request object to the local controller arguments.
 	 *
+	 * @throws Exception\RequiredArgumentMissingException
 	 * @return void
 	 */
 	protected function mapRequestArgumentsToControllerArguments() {
@@ -418,6 +419,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 					$optionalPropertyNames[] = $propertyName;
 				}
 			}
+			/** @var $validator ArgumentsValidator */
 			$validator = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ArgumentsValidator');
 			$this->deprecatedPropertyMapper->mapAndValidate($allPropertyNames, $this->request->getArguments(), $this->arguments, $optionalPropertyNames, $validator);
 			$this->argumentsMappingResults = $this->deprecatedPropertyMapper->getMappingResults();

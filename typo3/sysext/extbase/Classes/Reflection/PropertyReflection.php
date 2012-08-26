@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Extbase\Reflection;
 class PropertyReflection extends \ReflectionProperty {
 
 	/**
-	 * @var Tx_Extbase_Reflection_DocCommentParser: An instance of the doc comment parser
+	 * @var \TYPO3\CMS\Extbase\Reflection\DocCommentParser An instance of the doc comment parser
 	 */
 	protected $docCommentParser;
 

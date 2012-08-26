@@ -44,6 +44,8 @@ class StringLengthValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
 	 * If at least one error occurred, the result is FALSE.
 	 *
 	 * @param mixed $value The value that should be validated
+	 * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidSubjectException
+	 * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException
 	 * @return boolean TRUE if the value is valid, FALSE if an error occured
 	 */
 	public function isValid($value) {

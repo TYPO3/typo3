@@ -60,7 +60,7 @@ class FrontendRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestH
 	/**
 	 * Handles the web request. The response will automatically be sent to the client.
 	 *
-	 * @return Tx_Extbase_MVC_Web_Response|NULL
+	 * @return \TYPO3\CMS\Extbase\Mvc\ResponseInterface|NULL
 	 */
 	public function handleRequest() {
 		$request = $this->requestBuilder->build();
@@ -78,6 +78,7 @@ class FrontendRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestH
 			}
 			$request->setIsCached(FALSE);
 		}
+		/** @var $response \TYPO3\CMS\Extbase\Mvc\ResponseInterface */
 		$response = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response');
 		$this->dispatcher->dispatch($request, $response);
 		return $response;

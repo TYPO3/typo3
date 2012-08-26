@@ -41,6 +41,7 @@ class BackendRequestHandler extends \TYPO3\CMS\Extbase\Mvc\Web\AbstractRequestHa
 		/** @var $requestHashService \TYPO3\CMS\Extbase\Security\Channel\RequestHashService */
 		$requestHashService = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Security\\Channel\\RequestHashService');
 		$requestHashService->verifyRequest($request);
+		/** @var $response \TYPO3\CMS\Extbase\Mvc\ResponseInterface */
 		$response = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Response');
 		$this->dispatcher->dispatch($request, $response);
 		return $response;

@@ -95,6 +95,8 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Returns the node identifier for the given object
 	 *
 	 * @param object $object
+	 * @throws \InvalidArgumentException
+	 * @throws \TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException
 	 * @return string
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
@@ -123,7 +125,7 @@ class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Unregister an object
 	 *
-	 * @param string $object
+	 * @param object $object
 	 * @return void
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */

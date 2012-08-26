@@ -138,7 +138,7 @@ class ArrayUtility {
 	 */
 	static public function containsMultipleTypes(array $array) {
 		if (count($array) > 0) {
-			foreach ($array as $key => $value) {
+			foreach ($array as $value) {
 				if (!isset($previousType)) {
 					$previousType = gettype($value);
 				} elseif ($previousType !== gettype($value)) {
@@ -172,6 +172,7 @@ class ArrayUtility {
 	 *
 	 * @param array &$array The array to traverse as a reference
 	 * @param array|string $path The path to follow. Either a simple array of keys or a string in the format 'foo.bar.baz'
+	 * @throws \InvalidArgumentException
 	 * @return mixed The value found, NULL if the path didn't exist
 	 * @api
 	 */
@@ -199,6 +200,7 @@ class ArrayUtility {
 	 * @param array|\ArrayAccess $subject The array or ArrayAccess instance to work on
 	 * @param array|string $path The path to follow. Either a simple array of keys or a string in the format 'foo.bar.baz'
 	 * @param mixed $value The value to set
+	 * @throws \InvalidArgumentException
 	 * @return array The modified array or object
 	 */
 	static public function setValueByPath($subject, $path, $value) {
@@ -227,6 +229,7 @@ class ArrayUtility {
 	 *
 	 * @param array $array The array
 	 * @param array|string $path The path to follow. Either a simple array of keys or a string in the format 'foo.bar.baz'
+	 * @throws \InvalidArgumentException
 	 * @return array The modified array
 	 */
 	static public function unsetValueByPath(array $array, $path) {
@@ -271,6 +274,7 @@ class ArrayUtility {
 	 * Recursively convert an object hierarchy into an associative array.
 	 *
 	 * @param mixed $subject An object or array of objects
+	 * @throws \InvalidArgumentException
 	 * @return array The subject represented as an array
 	 */
 	static public function convertObjectToArray($subject) {
