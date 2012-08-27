@@ -1671,11 +1671,18 @@ $GLOBALS[\'TYPO3_LOADED_EXT\'] = unserialize(stripslashes(\'' . addslashes(seria
 			if (is_array($conf)) {
 				if ($conf['ext_localconf.php']) {
 					$cFiles['ext_localconf'] .= self::_makeIncludeHeader($key, $conf['ext_localconf.php']);
-					$cFiles['ext_localconf'] .= trim(t3lib_div::getUrl($conf['ext_localconf.php']));
+					$cFiles['ext_localconf'] .= preg_replace(
+					    '/declare\s*\(\s*encoding[^;]*/u',
+					    '',
+					    trim(t3lib_div::getUrl($conf['ext_localconf.php']))
+					);
 				}
 				if ($conf['ext_tables.php']) {
 					$cFiles['ext_tables'] .= self::_makeIncludeHeader($key, $conf['ext_tables.php']);
-					$cFiles['ext_tables'] .= trim(t3lib_div::getUrl($conf['ext_tables.php']));
+					$cFiles['ext_tables'] .= preg_replace(
+					    '/declare\s*\(\s*encoding[^;]*/u',
+					    '',trim(t3lib_div::getUrl($conf['ext_tables.php']))
+					);
 				}
 			}
 		}
