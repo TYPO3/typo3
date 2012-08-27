@@ -199,7 +199,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!is_object($source) && !is_array($source)) {
 			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidSource(('The source object must be a valid object or array, ' . gettype($target)) . ' given.', 1187807099);
 		}
-		if (is_string($target) && strpos($target, '_') !== FALSE) {
+		if (is_string($target) && strpbrk($target, '_\\') !== FALSE) {
 			return $this->transformToObject($source, $target, '--none--');
 		}
 		if (!is_object($target) && !is_array($target)) {
