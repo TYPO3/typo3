@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Backend\Tests\Unit\Module;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,14 +31,14 @@
  *
  * @author Susanne Moog <typo3@susannemoog.de>
  * @package TYPO3
- * @subpackage tests
+ * @subpackage backend
  */
-class Typo3_Utility_BackendModuleUtilityTest extends Tx_PhpUnit_TestCase {
+class ModuleControllerTest extends \Tx_PhpUnit_TestCase {
 
 	/**
-	 * @var Typo3_BackendModule_Utility
+	 * @var TYPO3\CMS\Backend\Module\ModuleController
 	 */
-	protected $moduleMenuUtility;
+	protected $moduleController;
 
 	/**
 	 * Helper function to call protected or private methods
