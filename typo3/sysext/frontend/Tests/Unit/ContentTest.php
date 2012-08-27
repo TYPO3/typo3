@@ -31,30 +31,30 @@ namespace TYPO3\CMS\Frontend\Tests\Unit;
  * @author Oliver Hader <oliver@typo3.org>
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class ContentTest extends tx_phpunit_testcase {
+class ContentTest extends \tx_phpunit_testcase {
 
 	/**
-	 * @var 	array
+	 * @var array
 	 */
 	private $backupGlobalVariables;
 
 	/**
-	 * @var 	tslib_cObj
+	 * @var tslib_cObj
 	 */
 	private $cObj;
 
 	/**
-	 * @var 	tslib_fe
+	 * @var tslib_fe
 	 */
 	private $tsfe;
 
 	/**
-	 * @var 	t3lib_TStemplate
+	 * @var t3lib_TStemplate
 	 */
 	private $template;
 
 	/**
-	 * @var 	array
+	 * @var array
 	 */
 	private $typoScriptImage;
 
@@ -75,14 +75,18 @@ class ContentTest extends tx_phpunit_testcase {
 		$GLOBALS['TSFE']->csConvObj = new \TYPO3\CMS\Core\Charset\CharsetConverter();
 		$GLOBALS['TSFE']->renderCharset = 'utf-8';
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['TYPO3\\CMS\\Core\\Charset\\CharsetConverter_utils'] = 'mbstring';
-		$className = 'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer_' . uniqid('test');
-		eval(('
-			class ' . $className) . ' extends TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer {
-				public $stdWrapHookObjects = array();
-				public $getImgResourceHookObjects;
-			}
-		');
-		$this->cObj = new $className();
+
+		$namespace = 'TYPO3\\CMS\\Frontend\\ContentObject';
+		$className = 'ContentObjectRenderer_' . uniqid('test');
+		$fullClassName = $namespace . '\\' . $className;
+		eval(
+			'namespace ' . $namespace . ';' .
+			'class ' . $className . ' extends ContentObjectRenderer {' .
+				'public $stdWrapHookObjects = array();' .
+				'public $getImgResourceHookObjects;' .
+			'}'
+		);
+		$this->cObj = new $fullClassName();
 		$this->cObj->start(array(), 'tt_content');
 		$this->typoScriptImage = array(
 			'file' => 'typo3/clear.gif'

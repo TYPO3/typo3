@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit;
  * @subpackage tslib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class FrontendTest extends tx_phpunit_testcase {
+class FrontendTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -53,11 +53,22 @@ class FrontendTest extends tx_phpunit_testcase {
 	private $fixture;
 
 	public function setUp() {
-		// This creates an instance of the class without calling the
-		// original constructor.
-		$className = uniqid('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController');
-		eval((((((((('class ' . $className) . ' extends TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController {') . 'public function ') . $className) . '() {}') . 'public function roundTripCryptString($string) {') . 'return parent::roundTripCryptString($string);') . '}') . '}');
-		$this->fixture = new $className();
+		$namespace = 'TYPO3\CMS\Frontend\Controller';
+		$className = 'TypoScriptFrontendController_' . uniqid('test');
+		$fullClassName = $namespace . '\\' . $className;
+
+		eval(
+			'namespace ' . $namespace . ';' .
+			'class ' . $className . ' extends TypoScriptFrontendController {' .
+					'public function __construct() {}' .
+					'public function roundTripCryptString($string) {' .
+						'return paretn::roundTripCryptString($string);' .
+					'}' .
+			'}'
+		);
+
+		$this->fixture = new $fullClassName();
+
 		$this->fixture->TYPO3_CONF_VARS = $GLOBALS['TYPO3_CONF_VARS'];
 		$this->fixture->TYPO3_CONF_VARS['SYS']['encryptionKey'] = '170928423746123078941623042360abceb12341234231';
 	}
@@ -94,12 +105,18 @@ class FrontendTest extends tx_phpunit_testcase {
 	 * @return PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function setupTsfeMockForHeaderFooterReplacementCheck() {
-		$tsfe = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(
-			'INTincScript_process',
-			'INTincScript_includeLibs',
-			'INTincScript_loadJSCode',
-			'setAbsRefPrefix'
-		), array(), '', FALSE);
+		$tsfe = $this->getMock(
+			'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController',
+			array(
+				'INTincScript_process',
+				'INTincScript_includeLibs',
+				'INTincScript_loadJSCode',
+				'setAbsRefPrefix'
+			),
+			array(),
+			'',
+			FALSE
+		);
 		$tsfe->expects($this->once())->method('INTincScript_process')->will($this->returnCallback(array($this, 'INTincScript_processCallback')));
 		$tsfe->content = file_get_contents(__DIR__ . '/../fixtures/renderedPage.html');
 		$tsfe->config['INTincScript_ext']['divKey'] = '679b52796e75d474ccbbed486b6837ab';
