@@ -41,6 +41,13 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $objectManager;
 
 	/**
+	 * This is the vendor name of the extension
+	 *
+	 * @var string
+	 */
+	protected $vendorName;
+
+	/**
 	 * This is a unique key for a plugin (not the extension key!)
 	 *
 	 * @var string
@@ -122,6 +129,9 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		if (empty($configuration['pluginName'])) {
 			throw new \TYPO3\CMS\Extbase\Mvc\Exception('"pluginName" is not properly configured. Request can\'t be dispatched!', 1289843277);
 		}
+		if (NULL !== $configuration['vendorName']) {
+			$this->vendorName = $configuration['vendorName'];
+		}
 		$this->extensionName = $configuration['extensionName'];
 		$this->pluginName = $configuration['pluginName'];
 		$this->defaultControllerName = current(array_keys($configuration['controllerConfiguration']));
@@ -149,7 +159,11 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$controllerName = $this->resolveControllerName($parameters);
 		$actionName = $this->resolveActionName($controllerName, $parameters);
+		/** @var $request \TYPO3\CMS\Extbase\Mvc\Web\Request */
 		$request = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
+		if (NULL !== $this->vendorName) {
+			$request->setControllerVendorName($this->vendorName);
+		}
 		$request->setPluginName($this->pluginName);
 		$request->setControllerExtensionName($this->extensionName);
 		$request->setControllerName($controllerName);

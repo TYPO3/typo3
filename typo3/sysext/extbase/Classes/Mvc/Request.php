@@ -1,6 +1,5 @@
 <?php
 namespace TYPO3\CMS\Extbase\Mvc;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -38,12 +37,20 @@ namespace TYPO3\CMS\Extbase\Mvc;
 class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 
 	const PATTERN_MATCH_FORMAT = '/^[a-z0-9]{1,5}$/';
+
 	/**
 	 * Pattern after which the controller object name is built
 	 *
 	 * @var string
 	 */
 	protected $controllerObjectNamePattern = 'Tx_@extension_@subpackage_Controller_@controllerController';
+
+	/**
+	 * Pattern after which the namespaced controller object name is built
+	 *
+	 * @var string
+	 */
+	protected $namespacedControllerObjectNamePattern = '@vendor\@extension\@subpackage\Controller\@controllerController';
 
 	/**
 	 * @var string Key of the plugin which identifies the plugin. It must be a string containing [a-z0-9]
@@ -54,6 +61,11 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * @var string Name of the extension which is supposed to handle this request. This is the extension name converted to UpperCamelCase
 	 */
 	protected $controllerExtensionName = NULL;
+
+	/**
+	 * @var string vendor prefix
+	 */
+	protected $controllerVendorName = NULL;
 
 	/**
 	 * Subpackage key of the controller which is supposed to handle this request.
@@ -121,6 +133,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Sets the dispatched flag
 	 *
 	 * @param boolean $flag If this request has been dispatched
+	 *
 	 * @return void
 	 * @api
 	 */
@@ -151,11 +164,20 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * @api
 	 */
 	public function getControllerObjectName() {
-		$lowercaseObjectName = str_replace('@extension', $this->controllerExtensionName, $this->controllerObjectNamePattern);
-		$lowercaseObjectName = str_replace('@subpackage', $this->controllerSubpackageKey, $lowercaseObjectName);
-		$lowercaseObjectName = str_replace('@controller', $this->controllerName, $lowercaseObjectName);
-		$lowercaseObjectName = str_replace('__', '_', $lowercaseObjectName);
-		// TODO implement getCaseSensitiveObjectName()
+		if (NULL !== $this->controllerVendorName) {
+				// It's safe to assume a namespaced name as namespaced names have to follow PSR-0
+			$lowercaseObjectName = str_replace('@extension', $this->controllerExtensionName, $this->namespacedControllerObjectNamePattern);
+			$lowercaseObjectName = str_replace('@subpackage', $this->controllerSubpackageKey, $lowercaseObjectName);
+			$lowercaseObjectName = str_replace('@controller', $this->controllerName, $lowercaseObjectName);
+			$lowercaseObjectName = str_replace('@vendor', $this->controllerVendorName, $lowercaseObjectName);
+			$lowercaseObjectName = str_replace('\\\\', '\\', $lowercaseObjectName);
+		} else {
+			$lowercaseObjectName = str_replace('@extension', $this->controllerExtensionName, $this->controllerObjectNamePattern);
+			$lowercaseObjectName = str_replace('@subpackage', $this->controllerSubpackageKey, $lowercaseObjectName);
+			$lowercaseObjectName = str_replace('@controller', $this->controllerName, $lowercaseObjectName);
+			$lowercaseObjectName = str_replace('__', '_', $lowercaseObjectName);
+		}
+			// TODO implement getCaseSensitiveObjectName()
 		$objectName = $lowercaseObjectName;
 		if ($objectName === FALSE) {
 			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchControllerException(('The controller object "' . $lowercaseObjectName) . '" does not exist.', 1220884009);
@@ -167,24 +189,26 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Explicitly sets the object name of the controller
 	 *
 	 * @param string $controllerObjectName The fully qualified controller object name
+	 *
 	 * @return void
 	 */
 	public function setControllerObjectName($controllerObjectName) {
 		$matches = array();
 		if (strpos($controllerObjectName, '\\') !== FALSE) {
 			if (substr($controllerObjectName, 0, 9) === 'TYPO3\CMS') {
-				$extensionName = '^[^\\\]+\\\[^\\\]+\\\(?P<extensionName>[^\\\]+)';
+				$extensionName = '^(?P<vendorName>[^\\\]+\\\[^\\\]+)\\\(?P<extensionName>[^\\\]+)';
 			} else {
-				$extensionName = '^[^\\\]+\\\(?P<extensionName>[^\\\]+)';
+				$extensionName = '^(?P<vendorName>[^\\\]+)\\\(?P<extensionName>[^\\\]+)';
 			}
 			preg_match('/' .
-				$extensionName.'\\\(Controller|(?P<subpackageKey>.+)\\\Controller)\\\(?P<controllerName>[a-z\\\]+)Controller
+				$extensionName . '\\\(Controller|(?P<subpackageKey>.+)\\\Controller)\\\(?P<controllerName>[a-z\\\]+)Controller
 				$/ix', $controllerObjectName, $matches);
 		} else {
 			preg_match('/
 				^Tx_(?P<extensionName>[^_]+)_(Controller|(?P<subpackageKey>.+)_Controller)_(?P<controllerName>[a-z_]+)Controller
 				$/ix', $controllerObjectName, $matches);
 		}
+		$this->controllerVendorName = isset($matches['vendorName']) ? $matches['vendorName'] : NULL;
 		$this->controllerExtensionName = $matches['extensionName'];
 		$this->controllerSubpackageKey = isset($matches['subpackageKey']) ? $matches['subpackageKey'] : NULL;
 		$this->controllerName = $matches['controllerName'];
@@ -194,6 +218,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Sets the plugin name.
 	 *
 	 * @param string|NULL $pluginName
+	 *
 	 * @return void
 	 */
 	public function setPluginName($pluginName = NULL) {
@@ -216,6 +241,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Sets the extension name of the controller.
 	 *
 	 * @param string $controllerExtensionName The extension name.
+	 *
 	 * @return void
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException if the extension name is not valid
 	 */
@@ -249,6 +275,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Sets the subpackage key of the controller.
 	 *
 	 * @param string $subpackageKey The subpackage key.
+	 *
 	 * @return void
 	 */
 	public function setControllerSubpackageKey($subpackageKey) {
@@ -270,6 +297,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Note: This is not the object name of the controller!
 	 *
 	 * @param string $controllerName Name of the controller
+	 *
 	 * @throws Exception\InvalidControllerNameException
 	 * @return void
 	 */
@@ -302,6 +330,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Note that the action name must start with a lower case letter and is case sensitive.
 	 *
 	 * @param string $actionName: Name of the action to execute by the controller
+	 *
 	 * @return void
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException if the action name is not valid
 	 */
@@ -342,6 +371,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 *
 	 * @param string $argumentName Name of the argument to set
 	 * @param mixed $value The new value
+	 *
 	 * @throws Exception\InvalidArgumentNameException
 	 * @return void
 	 */
@@ -354,24 +384,47 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 			return;
 		}
 		switch ($argumentName) {
-		case '@extension':
-			$this->setControllerExtensionName($value);
-			break;
-		case '@subpackage':
-			$this->setControllerSubpackageKey($value);
-			break;
-		case '@controller':
-			$this->setControllerName($value);
-			break;
-		case '@action':
-			$this->setControllerActionName($value);
-			break;
-		case '@format':
-			$this->setFormat($value);
-			break;
-		default:
-			$this->arguments[$argumentName] = $value;
+			case '@extension':
+				$this->setControllerExtensionName($value);
+				break;
+			case '@subpackage':
+				$this->setControllerSubpackageKey($value);
+				break;
+			case '@controller':
+				$this->setControllerName($value);
+				break;
+			case '@action':
+				$this->setControllerActionName($value);
+				break;
+			case '@format':
+				$this->setFormat($value);
+				break;
+			case '@vendor':
+				$this->setControllerVendorName($value);
+				break;
+			default:
+				$this->arguments[$argumentName] = $value;
 		}
+	}
+
+	/**
+	 * sets the VendorName
+	 *
+	 * @param string $vendorName
+	 *
+	 * @return void
+	 */
+	public function setControllerVendorName($vendorName) {
+		$this->controllerVendorName = $vendorName;
+	}
+
+	/**
+	 * get the VendorName
+	 *
+	 * @return string
+	 */
+	public function getControllerVendorName() {
+		return $this->controllerVendorName;
 	}
 
 	/**
@@ -379,6 +432,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * which existed before.
 	 *
 	 * @param array $arguments An array of argument names and their values
+	 *
 	 * @return void
 	 */
 	public function setArguments(array $arguments) {
@@ -402,6 +456,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Returns the value of the specified argument
 	 *
 	 * @param string $argumentName Name of the argument
+	 *
 	 * @return string Value of the argument
 	 * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException if such an argument does not exist
 	 * @api
@@ -417,6 +472,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Checks if an argument of the given name exists (is set)
 	 *
 	 * @param string $argumentName Name of the argument to check
+	 *
 	 * @return boolean TRUE if the argument is set, otherwise FALSE
 	 * @api
 	 */
@@ -428,6 +484,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Sets the requested representation format
 	 *
 	 * @param string $format The desired format, something like "html", "xml", "png", "json" or the like. Can even be something like "rss.xml".
+	 *
 	 * @return void
 	 * @author Robert Lemke <robert@typo3.org>
 	 */
@@ -450,6 +507,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Set errors that occured during the request (e.g. argument mapping errors)
 	 *
 	 * @param array $errors An array of Tx_Extbase_Error_Error objects
+	 *
 	 * @return void
 	 * @deprecated since Extbase 1.4.0, will be removed with Extbase 6.0
 	 */
@@ -478,6 +536,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 
 	/**
 	 * @param \TYPO3\CMS\Extbase\Mvc\Request $originalRequest
+	 *
 	 * @return void
 	 */
 	public function setOriginalRequest(\TYPO3\CMS\Extbase\Mvc\Request $originalRequest) {
@@ -517,6 +576,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 * Returns the value of the specified argument
 	 *
 	 * @param string $argumentName Name of the argument
+	 *
 	 * @return string Value of the argument, or NULL if not set.
 	 */
 	public function getInternalArgument($argumentName) {
@@ -525,8 +585,6 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 		}
 		return $this->internalArguments[$argumentName];
 	}
-
 }
-
 
 ?>

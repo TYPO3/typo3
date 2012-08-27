@@ -282,6 +282,9 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 			'extensionName' => $moduleConfiguration['extensionName'],
 			'pluginName' => $moduleSignature
 		);
+		if (isset($moduleConfiguration['vendorName'])) {
+			$configuration['vendorName'] = $moduleConfiguration['vendorName'];
+		}
 		$content = $this->run('', $configuration);
 		print $content;
 		return TRUE;

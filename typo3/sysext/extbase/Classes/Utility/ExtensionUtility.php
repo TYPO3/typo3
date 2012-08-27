@@ -78,6 +78,12 @@ class ExtensionUtility {
 		if (empty($extensionName)) {
 			throw new \InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
 		}
+			// Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
+		$vendorName = NULL;
+		if (FALSE !== $delimiterPosition = strrpos($extensionName, '.')) {
+			$vendorName = str_replace('.', '\\', substr($extensionName, 0, $delimiterPosition));
+			$extensionName = substr($extensionName, $delimiterPosition + 1);
+		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = (strtolower($extensionName) . '_') . strtolower($pluginName);
 		if (!is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName])) {
@@ -110,24 +116,24 @@ class ExtensionUtility {
 ') . $pluginTemplate);
 		switch ($pluginType) {
 		case self::PLUGIN_TYPE_PLUGIN:
-			$pluginContent = trim(((((((('
-tt_content.list.20.' . $pluginSignature) . ' = USER
-tt_content.list.20.') . $pluginSignature) . ' {
+			$pluginContent = trim('
+tt_content.list.20.' . $pluginSignature . ' = USER
+tt_content.list.20.' . $pluginSignature . ' {
 	userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
-	extensionName = ') . $extensionName) . '
-	pluginName = ') . $pluginName) . '
+	extensionName = ' . $extensionName . '
+	pluginName = ' . $pluginName . (NULL !== $vendorName ? ("\n\t" . 'vendorName = ' . $vendorName) : '') . '
 }');
 			break;
 		case self::PLUGIN_TYPE_CONTENT_ELEMENT:
-			$pluginContent = trim(((((((('
-tt_content.' . $pluginSignature) . ' = COA
-tt_content.') . $pluginSignature) . ' {
+			$pluginContent = trim('
+tt_content.' . $pluginSignature . ' = COA
+tt_content.' . $pluginSignature . ' {
 	10 = < lib.stdheader
 	20 = USER
 	20 {
 		userFunc = TYPO3\\CMS\\Extbase\\Core\\Bootstrap->run
-		extensionName = ') . $extensionName) . '
-		pluginName = ') . $pluginName) . '
+		extensionName = ' . $extensionName . '
+		pluginName = ' . $pluginName . (NULL !== $vendorName ? ("\n\t\t" . 'vendorName = ' . $vendorName) : '') . '
 	}
 }');
 			break;
@@ -211,6 +217,12 @@ tt_content.') . $pluginSignature) . ' {
 		if (empty($extensionName)) {
 			throw new \InvalidArgumentException('The extension name must not be empty', 1239891989);
 		}
+			// Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
+		$vendorName = NULL;
+		if (FALSE !== $delimiterPosition = strrpos($extensionName, '.')) {
+			$vendorName = str_replace('.', '\\', substr($extensionName, 0, $delimiterPosition));
+			$extensionName = substr($extensionName, $delimiterPosition + 1);
+		}
 		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$defaultModuleConfiguration = array(
@@ -236,6 +248,9 @@ tt_content.') . $pluginSignature) . ' {
 		}
 		$moduleConfiguration['name'] = $moduleSignature;
 		$moduleConfiguration['script'] = 'mod.php?M=' . rawurlencode($moduleSignature);
+		if (NULL !== $vendorName) {
+			$moduleConfiguration['vendorName'] = $vendorName;
+		}
 		$moduleConfiguration['extensionName'] = $extensionName;
 		$moduleConfiguration['configureModuleFunction'] = array('TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility', 'configureModule');
 		$GLOBALS['TBE_MODULES']['_configuration'][$moduleSignature] = $moduleConfiguration;
