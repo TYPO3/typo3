@@ -45,7 +45,7 @@ abstract class AbstractTree {
 	/**
 	 * Tree Node Decorator
 	 *
-	 * @var t3lib_tree_renderer_Abstract
+	 * @var \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer
 	 */
 	protected $nodeRenderer = NULL;
 
@@ -65,7 +65,7 @@ abstract class AbstractTree {
 	}
 
 	/**
-	 * @param t3lib_tree_renderer_Abstract $dataProvider
+	 * @param \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer $dataProvider
 	 * @return void
 	 */
 	public function setNodeRenderer(\TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer $nodeRenderer) {
@@ -73,7 +73,7 @@ abstract class AbstractTree {
 	}
 
 	/**
-	 * @return t3lib_tree_renderer_Abstract
+	 * @return \TYPO3\CMS\Backend\Tree\Renderer\AbstractTreeRenderer
 	 */
 	public function getNodeRenderer() {
 		return $this->nodeRenderer;
