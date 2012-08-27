@@ -9,7 +9,7 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
  * @package TYPO3
  * @subpackage tx_indexedsearch
  */
-class IndexerTest extends tx_phpunit_testcase {
+class IndexerTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Indexer instance
