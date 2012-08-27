@@ -9,7 +9,7 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
  * @package TYPO3
  * @subpackage tx_indexedsearch
  */
-class IndexerTest extends tx_phpunit_testcase {
+class IndexerTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Indexer instance
@@ -123,6 +123,9 @@ class IndexerTest extends tx_phpunit_testcase {
 		$absRefPrefix = '/' . md5(uniqid(''));
 		$html = ('test <a href="' . $absRefPrefix) . 'index.php">test</a> test';
 		$savedPrefix = $GLOBALS['TSFE']->config['config']['absRefPrefix'];
+		if (!($GLOBALS['TSFE'] instanceof \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController)) {
+			$GLOBALS['TSFE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController');
+		}
 		$GLOBALS['TSFE']->config['config']['absRefPrefix'] = $absRefPrefix;
 		$result = $this->indexer->extractHyperLinks($html);
 		$GLOBALS['TSFE']->config['config']['absRefPrefix'] = $savedPrefix;
