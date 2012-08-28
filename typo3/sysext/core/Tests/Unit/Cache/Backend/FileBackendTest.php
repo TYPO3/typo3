@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -32,7 +34,7 @@
  * @package TYPO3
  * @subpackage tests
  */
-class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
+class FileBackendTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -68,9 +70,9 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @expectedException \t3lib_cache_Exception
 	 */
 	public function setCacheDirectoryThrowsExceptionOnNonWritableDirectory() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('http://localhost/');
 
 		$backend->setCache($mockCache);
@@ -80,10 +82,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getCacheDirectoryReturnsTheCurrentCacheDirectory() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('SomeCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -97,7 +99,7 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 		$mockCache = $this->getMock('t3lib_cache_frontend_PhpFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('SomeCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -109,9 +111,9 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @expectedException t3lib_cache_exception_InvalidData
 	 */
 	public function setThrowsExceptionIfDataIsNotAString() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -122,14 +124,14 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function setReallySavesToTheSpecifiedDirectory() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendFileTest';
 		$pathAndFilename = 'vfs://Foo/Cache/Data/UnitTestCache/' . $entryIdentifier;
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -144,14 +146,14 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function setOverwritesAnAlreadyExistingCacheEntryForTheSameIdentifier() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
 		$data1 = 'some data' . microtime();
 		$data2 = 'some data' . microtime();
 		$entryIdentifier = 'BackendFileRemoveBeforeSetTest';
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -168,13 +170,13 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function setAlsoSavesSpecifiedTags() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendFileRemoveBeforeSetTest';
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -182,7 +184,7 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 
 		$pathAndFilename = 'vfs://Foo/Cache/Data/UnitTestCache/' . $entryIdentifier;
 		$this->assertFileExists($pathAndFilename);
-		$retrievedData = file_get_contents($pathAndFilename, NULL, NULL, (strlen($data) + t3lib_cache_backend_FileBackend::EXPIRYTIME_LENGTH), 9);
+		$retrievedData = file_get_contents($pathAndFilename, NULL, NULL, (strlen($data) + \TYPO3\CMS\Core\Cache\Backend\FileBackend::EXPIRYTIME_LENGTH), 9);
 		$this->assertEquals('Tag1 Tag2', $retrievedData);
 	}
 
@@ -190,13 +192,13 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function setCacheDetectsAndLoadsAFrozenCache() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendFileTest';
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -206,7 +208,7 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 
 		unset($backend);
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -218,10 +220,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getReturnsContentOfTheCorrectCacheFile() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('setTag'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('setTag'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -241,10 +243,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getReturnsFalseForExpiredEntries() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
 		$backend->expects($this->once())->method('isCacheFileExpired')->with('vfs://Foo/Cache/Data/UnitTestCache/ExpiredEntry')->will($this->returnValue(TRUE));
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
@@ -256,10 +258,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getDoesNotCheckIfAnEntryIsExpiredIfTheCacheIsFrozen() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -275,10 +277,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function hasReturnsTrueIfAnEntryExists() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -295,7 +297,7 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function hasReturnsFalseForExpiredEntries() {
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
 		$backend->expects($this->exactly(2))->method('isCacheFileExpired')->will($this->onConsecutiveCalls(TRUE, FALSE));
 
 		$this->assertFalse($backend->has('foo'));
@@ -306,10 +308,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function hasDoesNotCheckIfAnEntryIsExpiredIfTheCacheIsFrozen() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -325,14 +327,14 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function removeReallyRemovesACacheEntry() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendFileTest';
 		$pathAndFilename = 'vfs://Foo/Cache/Data/UnitTestCache/' . $entryIdentifier;
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -368,10 +370,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function setThrowsExceptionForInvalidIdentifier($identifier) {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array('test'), '', TRUE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array('test'), '', TRUE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -384,10 +386,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function getThrowsExceptionForInvalidIdentifier($identifier) {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -400,7 +402,7 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function hasThrowsExceptionForInvalidIdentifier($identifier) {
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 
 		$backend->has($identifier);
 	}
@@ -411,10 +413,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function removeThrowsExceptionForInvalidIdentifier($identifier) {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -427,10 +429,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function requireOnceThrowsExceptionForInvalidIdentifier($identifier) {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -441,10 +443,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function requireOnceIncludesAndReturnsResultOfIncludedPhpFile() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -461,10 +463,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function requireOnceDoesNotCheckExpiryTimeIfBackendIsFrozen() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-				$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
+				$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -483,10 +485,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -506,10 +508,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function findIdentifiersByTagDoesNotReturnExpiredEntries() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -526,10 +528,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function flushRemovesAllCacheEntries() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -550,10 +552,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function flushCreatesCacheDirectoryAgain() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 
@@ -565,7 +567,7 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('findIdentifiersByTag', 'remove'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('findIdentifiersByTag', 'remove'), array(), '', FALSE);
 
 		$backend->expects($this->once())->method('findIdentifiersByTag')->with('UnitTestTag%special')->will($this->returnValue(array('foo', 'bar', 'baz')));
 		$backend->expects($this->at(1))->method('remove')->with('foo');
@@ -579,10 +581,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function collectGarbageRemovesExpiredCacheEntries() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('isCacheFileExpired'), array(), '', FALSE);
 		$backend->expects($this->exactly(2))->method('isCacheFileExpired')->will($this->onConsecutiveCalls(TRUE, FALSE));
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
@@ -603,10 +605,10 @@ class t3lib_cache_backend_FileBackendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function flushUnfreezesTheCache() {
-		$mockCache = $this->getMock('t3lib_cache_frontend_AbstractFrontend', array(), array(), '', FALSE);
+		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$mockCache->expects($this->atLeastOnce())->method('getIdentifier')->will($this->returnValue('UnitTestCache'));
 
-		$backend = $this->getMock('t3lib_cache_backend_FileBackend', array('dummy'), array(), '', FALSE);
+		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend', array('dummy'), array(), '', FALSE);
 		$backend->setCacheDirectory('vfs://Foo/');
 		$backend->setCache($mockCache);
 

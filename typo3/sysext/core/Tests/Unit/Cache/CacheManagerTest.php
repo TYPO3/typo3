@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Cache;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,8 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the Cache Manager
+ * Testcase for the TYPO3\CMS\Core\Cache\CacheManager
  *
  * This file is a backport from FLOW3
  *
@@ -30,7 +33,7 @@
  * @package TYPO3
  * @subpackage tests
  */
-class t3lib_cache_ManagerTest extends tx_phpunit_testcase {
+class CacheManagerTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @test

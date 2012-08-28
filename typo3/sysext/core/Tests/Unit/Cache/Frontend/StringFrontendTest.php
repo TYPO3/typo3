@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase for the string cache frontend
  *
@@ -30,7 +33,7 @@
  * @package TYPO3
  * @subpackage tests
  */
-class t3lib_cache_frontend_StringFrontendTest extends tx_phpunit_testcase {
+class StringFrontendTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @expectedException \InvalidArgumentException
