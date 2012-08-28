@@ -249,7 +249,7 @@ class RootlineUtility {
 					$whereClauseParts = array((('`' . $field) . '` = ') . intval($uid));
 					if (isset($configuration['foreign_match_fields']) && is_array($configuration['foreign_match_fields'])) {
 						foreach ($configuration['foreign_match_fields'] as $field => $value) {
-							$whereClauseParts[] = (('`' . $field) . '` = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr($value);
+							$whereClauseParts[] = (('`' . $field) . '` = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
 						}
 					}
 					if (isset($configuration['foreign_table_field'])) {
