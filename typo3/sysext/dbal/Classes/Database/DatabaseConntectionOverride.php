@@ -209,7 +209,7 @@ class DatabaseConntectionOverride extends \TYPO3\CMS\Core\Database\DatabaseConne
 		$this->SQLparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\SqlParser');
 		$this->Installer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_install');
 		$this->installerSql = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Sql\\SchemaMigrator');
-		$this->queryCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\Cache_Manager')->getCache('dbal');
+		$this->queryCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('dbal');
 		// Set internal variables with configuration:
 		$this->conf = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'];
 		$this->initInternalVariables();
@@ -243,7 +243,7 @@ class DatabaseConntectionOverride extends \TYPO3\CMS\Core\Database\DatabaseConne
 	 * @return void
 	 */
 	public function clearCachedFieldInfo() {
-		$phpCodeCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\Cache_Manager')->getCache('cache_phpcode');
+		$phpCodeCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_phpcode');
 		$phpCodeCache->flushByTag('t3lib_db');
 	}
 
@@ -253,7 +253,7 @@ class DatabaseConntectionOverride extends \TYPO3\CMS\Core\Database\DatabaseConne
 	 * @return void
 	 */
 	public function cacheFieldInfo() {
-		$phpCodeCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\Cache_Manager')->getCache('cache_phpcode');
+		$phpCodeCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\CacheManager')->getCache('cache_phpcode');
 		// try to fetch cache
 		// cache is flushed when admin_query() is called
 		if ($phpCodeCache->has($this->cacheIdentifier)) {
