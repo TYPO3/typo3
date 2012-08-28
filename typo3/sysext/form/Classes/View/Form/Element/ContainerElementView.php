@@ -76,7 +76,7 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Form\Element\AbstractEle
 	public function createChildElementFromModel($modelChild) {
 		$childElement = NULL;
 		$class = \TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($modelChild);
-		$className = 'TYPO3\\CMS\\Form\\View\\Form\\FormView_Element_' . ucfirst($class);
+		$className = 'TYPO3\\CMS\\Form\\View\\Form\\Element\\' . ucfirst($class) . 'ElementView';
 		if (class_exists($className)) {
 			$childElement = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $modelChild);
 		}

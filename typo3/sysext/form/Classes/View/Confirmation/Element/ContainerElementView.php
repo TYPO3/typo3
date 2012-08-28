@@ -85,7 +85,7 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Confirmation\Element\Abs
 	public function createChildElementFromModel($modelChild) {
 		$childElement = NULL;
 		$class = \TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($modelChild);
-		$className = 'TYPO3\\CMS\\Form\\View\\Confirmation\\ConfirmationView_Element_' . ucfirst($class);
+		$className = 'TYPO3\\CMS\\Form\\View\\Confirmation\\Element\\' . ucfirst($class) . 'ElementView';
 		if (class_exists($className)) {
 			$childElement = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $modelChild);
 		}

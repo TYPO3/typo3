@@ -98,8 +98,8 @@ class FormController {
 		if ($typoScriptObjectName === 'FORM') {
 			if ($contentObject->data['CType'] === 'mailform') {
 				$bodytext = $contentObject->data['bodytext'];
-				/** @var $typoScriptParser t3lib_tsparser */
-				$typoScriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_tsparser');
+				/** @var $typoScriptParser \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
+				$typoScriptParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 				$typoScriptParser->parse($bodytext);
 				$mergedTypoScript = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule((array) $typoScriptParser->setup, (array) $typoScript);
 				// Disables content elements since TypoScript is handled that could contain insecure settings:

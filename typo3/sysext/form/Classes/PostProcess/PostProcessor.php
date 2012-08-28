@@ -67,7 +67,7 @@ class PostProcessor {
 				if (class_exists($this->typoScript[$key], TRUE)) {
 					$className = $this->typoScript[$key];
 				} else {
-					$classNameExpanded = 'TYPO3\\CMS\\Form\\PostProcess\\PostProcessor_' . ucfirst(strtolower($this->typoScript[$key]));
+					$classNameExpanded = 'TYPO3\\CMS\\Form\\PostProcess\\' . ucfirst(strtolower($this->typoScript[$key])) . 'PostProcessor';
 					if (class_exists($classNameExpanded, TRUE)) {
 						$className = $classNameExpanded;
 					}

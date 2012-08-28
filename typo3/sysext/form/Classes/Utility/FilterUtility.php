@@ -111,7 +111,7 @@ class FilterUtility implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 */
 	static public function createFilter($class, array $arguments = NULL) {
 		$class = strtolower((string) $class);
-		$className = 'TYPO3\\CMS\\Form\\Utility\\FilterUtility_' . ucfirst($class);
+		$className = 'TYPO3\\CMS\\Form\\Filter\\' . ucfirst($class) . 'Filter';
 		if (is_null($arguments)) {
 			$filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
 		} else {

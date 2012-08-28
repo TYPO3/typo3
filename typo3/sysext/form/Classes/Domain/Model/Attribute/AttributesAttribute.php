@@ -75,7 +75,7 @@ class AttributesAttribute {
 	 */
 	public function addAttribute($class, $value) {
 		$class = strtolower((string) $class);
-		$className = 'tx_form_Domain_Model_Attributes_' . ucfirst($class);
+		$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Attribute\\' . ucfirst($class) . 'Attribute';
 		$this->attributes[$class] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $value, $this->elementId);
 		return $this;
 	}

@@ -54,7 +54,7 @@ class ContainerElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstr
 	protected function renderChild(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $modelChild, $spaces) {
 		$content = '';
 		$class = \TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($modelChild);
-		$className = 'TYPO3\\CMS\\Form\\View\\Mail\\MailView_Plain_Element_' . ucfirst($class);
+		$className = 'TYPO3\\CMS\\Form\\View\\Mail\\Plain\\Element\\' . ucfirst($class) . 'ElementView';
 		if (class_exists($className)) {
 			/** @var $childElement \TYPO3\CMS\Form\View\Mail\Plain\Element\AbstractElementView */
 			$childElement = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $modelChild, $spaces);

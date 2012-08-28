@@ -163,9 +163,9 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	public function createElement($class, array $arguments = array()) {
 		$class = strtolower((string) $class);
 		if ($class === 'form') {
-			$className = 'tx_form_Domain_Model_' . ucfirst($class);
+			$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\' . ucfirst($class);
 		} else {
-			$className = 'tx_form_Domain_Model_Element_' . ucfirst($class);
+			$className = 'TYPO3\\CMS\\Form\\Domain\\Model\\Element\\' . ucfirst($class) . 'Element';
 		}
 		/** @var $object \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement */
 		$object = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);

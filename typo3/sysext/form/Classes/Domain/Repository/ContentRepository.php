@@ -108,7 +108,7 @@ class ContentRepository {
 		if ($record) {
 			$typoscript = $record->getTyposcript();
 			/** @var $converter \TYPO3\CMS\Form\Utility\TypoScriptToJsonConverter */
-			$converter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Domain\\Factory\\TypoScriptFactoryToJson');
+			$converter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Utility\\TypoScriptToJsonConverter');
 			$json = $converter->convert($typoscript);
 		}
 		return $json;

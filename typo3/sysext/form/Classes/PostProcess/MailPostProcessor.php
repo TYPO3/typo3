@@ -246,7 +246,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 	 */
 	protected function setPlainContent() {
 		/** @var $view \TYPO3\CMS\Form\View\Mail\Plain\PlainView */
-		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\View\\Mail\\MailView_Plain', $this->form);
+		$view = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\View\\Mail\\Plain\\PlainView', $this->form);
 		$plainContent = $view->render();
 		$this->mailMessage->addPart($plainContent, 'text/plain');
 	}

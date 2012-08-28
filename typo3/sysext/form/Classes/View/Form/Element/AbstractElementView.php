@@ -95,7 +95,7 @@ abstract class AbstractElementView {
 	protected function getExpectedModelName(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $model) {
 		if (!isset($this->expectedModelName)) {
 			$specificName = \TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this);
-			$this->expectedModelName = 'tx_form_Domain_Model_Element_' . $specificName;
+			$this->expectedModelName = 'TYPO3\\CMS\\Form\\Domain\\Model\\Element\\' . $specificName . 'Element';
 		}
 		return $this->expectedModelName;
 	}
@@ -143,7 +143,7 @@ abstract class AbstractElementView {
 					$this->setAttributes($node);
 					break;
 				case 'label':
-					if (!strstr(get_class($this), '_Additional_')) {
+					if (!strrchr(get_class($this), 'AdditionalElement')) {
 						if ($this->model->additionalIsSet($nodeName)) {
 							$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('label'));
 						}
@@ -157,7 +157,7 @@ abstract class AbstractElementView {
 					}
 					break;
 				case 'legend':
-					if (!strstr(get_class($this), '_Additional_')) {
+					if (!strrchr(get_class($this), 'AdditionalElement')) {
 						if ($this->model->additionalIsSet($nodeName)) {
 							$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('legend'));
 						}
@@ -248,27 +248,27 @@ abstract class AbstractElementView {
 		/** @var $layoutHandler \TYPO3\CMS\Form\Layout */
 		$layoutHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Layout');
 		switch ($type) {
-		case 'element':
-			$layoutDefault = $this->layout;
-			$objectClass = get_class($this);
-			$type = \TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this, TRUE);
-			if (strstr($objectClass, '_Additional_')) {
-				$additionalModel = $this->model->getAdditionalObjectByKey($type);
-				$layoutOverride = $additionalModel->getLayout();
-			} else {
-				$layoutOverride = $this->model->getLayout();
-			}
-			$layout = $layoutHandler->getLayoutByObject($type, $layoutDefault, $layoutOverride);
-			break;
-		case 'elementWrap':
-			$layoutDefault = $this->elementWrap;
-			$elementWrap = $layoutHandler->getLayoutByObject($type, $layoutDefault, $layoutOverride);
-			$layout = str_replace('<element />', $this->getLayout('element'), $elementWrap);
-			break;
-		case 'containerWrap':
-			$layoutDefault = $this->containerWrap;
-			$layout = $layoutHandler->getLayoutByObject($type, $layoutDefault, $layoutOverride);
-			break;
+			case 'element':
+				$layoutDefault = $this->layout;
+				$objectClass = get_class($this);
+				$type = \TYPO3\CMS\Form\Utility\FormUtility::getInstance()->getLastPartOfClassName($this, TRUE);
+				if (strrchr($objectClass, 'AdditionalElement')) {
+					$additionalModel = $this->model->getAdditionalObjectByKey($type);
+					$layoutOverride = $additionalModel->getLayout();
+				} else {
+					$layoutOverride = $this->model->getLayout();
+				}
+				$layout = $layoutHandler->getLayoutByObject($type, $layoutDefault, $layoutOverride);
+				break;
+			case 'elementWrap':
+				$layoutDefault = $this->elementWrap;
+				$elementWrap = $layoutHandler->getLayoutByObject($type, $layoutDefault, $layoutOverride);
+				$layout = str_replace('<element />', $this->getLayout('element'), $elementWrap);
+				break;
+			case 'containerWrap':
+				$layoutDefault = $this->containerWrap;
+				$layout = $layoutHandler->getLayoutByObject($type, $layoutDefault, $layoutOverride);
+				break;
 		}
 		return $layout;
 	}
@@ -345,7 +345,7 @@ abstract class AbstractElementView {
 	 */
 	protected function createAdditional($class) {
 		$class = strtolower((string) $class);
-		$className = 'TYPO3\\CMS\\Form\\View\\Form\\Additional\\AdditionalElementView_' . ucfirst($class);
+		$className = 'TYPO3\\CMS\\Form\\View\\Form\\Additional\\' . ucfirst($class) . 'AdditionalElementView';
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $this->model);
 	}
 
