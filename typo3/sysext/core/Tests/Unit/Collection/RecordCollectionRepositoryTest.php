@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Collection;
+
 /***************************************************************
  * Copyright notice
  *
@@ -24,14 +26,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Test case for t3lib_collection_RecordCollectionRepository
+ * Test case for \TYPO3\CMS\Core\Collection\RecordCollectionRepository
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_collection_RecordCollectionRepositoryTest extends Tx_Phpunit_TestCase {
+class RecordCollectionRepositoryTest extends \Tx_Phpunit_TestCase {
 
 	/**
 	 * @var PHPUnit_Framework_MockObject_MockObject|t3lib_collection_RecordCollectionRepository
