@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,7 +23,9 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once 'fixtures/class.t3lib_formprotection_testing.php';
+
+require_once 'Fixtures/FormProtectionTesting.php';
+
 /**
  * Testcase for the t3lib_formprotection_Factory class.
  *
@@ -30,7 +34,7 @@ require_once 'fixtures/class.t3lib_formprotection_testing.php';
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Ernesto Baschny <ernst@cron-it.de>
  */
-class t3lib_formprotection_FactoryTest extends tx_phpunit_testcase {
+class FormprotectionFactoryTest extends \tx_phpunit_testcase {
 
 	public function setUp() {
 
@@ -101,7 +105,7 @@ class t3lib_formprotection_FactoryTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function setSetsInstanceForType() {
-		$instance = new t3lib_formProtection_Testing();
+		$instance = new \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting();
 		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::set('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection', $instance);
 		$this->assertSame($instance, \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'));
 	}
@@ -110,7 +114,7 @@ class t3lib_formprotection_FactoryTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function setNotSetsInstanceForOtherType() {
-		$instance = new t3lib_formProtection_Testing();
+		$instance = new \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting();
 		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::set('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection', $instance);
 		$this->assertNotSame($instance, \TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\InstallToolFormProtection'));
 	}
