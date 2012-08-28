@@ -283,12 +283,16 @@ class Autoloader {
 			$delimiter = '\\';
 		}
 		$classNameParts = explode($delimiter, $tempClassName, 4);
-		if (((isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3') && isset($classNameParts[1])) && $classNameParts[1] === 'CMS') {
+		if ((isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3') && (isset($classNameParts[1]) && $classNameParts[1] === 'CMS')) {
 			$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[2]);
 			$classNameWithoutVendorAndProduct = $classNameParts[3];
 		} else {
 			$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[1]);
 			$classNameWithoutVendorAndProduct = $classNameParts[2];
+
+			if (isset($classNameParts[3])) {
+				$classNameWithoutVendorAndProduct .= $delimiter . $classNameParts[3];
+			}
 		}
 
 		if ($extensionKey) {
@@ -296,7 +300,7 @@ class Autoloader {
 				// This will throw a BadFunctionCallException if the extension is not loaded
 				$extensionPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extensionKey);
 				$classPath = (substr(strtolower($classNameWithoutVendorAndProduct), 0, 5) === 'tests') ? '' : 'Classes/';
-				$classFilePathAndName = (($extensionPath . $classPath) . strtr($classNameWithoutVendorAndProduct, $delimiter, '/')) . '.php';
+				$classFilePathAndName = $extensionPath . $classPath . strtr($classNameWithoutVendorAndProduct, $delimiter, '/') . '.php';
 				self::addClassToCache($classFilePathAndName, $className);
 			} catch (\BadFunctionCallException $exception) {
 

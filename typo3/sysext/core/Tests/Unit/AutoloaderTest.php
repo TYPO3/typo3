@@ -131,6 +131,7 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 
 	/**
 	 * @test
+	 * @expectedException \RuntimeException
 	 */
 	public function autoloadFindsClassFileDefinedInExtAutoloadFile() {
 		$extKey = $this->createFakeExtension();
@@ -157,7 +158,6 @@ return array(\'' . $class) . '\' => \'') . $file) . '\');
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
 		// Expect the exception of the file to be thrown
-		$this->setExpectedException('\\RuntimeException', '', 1310203812);
 		\TYPO3\CMS\Core\Autoloader::autoload($class);
 	}
 
@@ -250,19 +250,19 @@ throw new \RuntimeException(\'\', 1336756850);
 
 	/**
 	 * @test
+	 * @expectedException \RuntimeException
 	 */
 	public function autoloadFindsClassFileThatRespectsExtbaseNamingSchemeWithoutExtAutoloadFile() {
-		$this->markTestSkipped('This test was a blocker for other namespaced tests.');
 		$extKey = $this->createFakeExtension();
 		$extPath = ((PATH_site . 'typo3temp/') . $extKey) . '/';
 		// Create a class named Tx_Extension_Foo123_Bar456
 		// to find file extension/Classes/Foo123/Bar456.php
 		$pathSegment = 'Foo' . uniqid();
 		$fileName = 'Bar' . uniqid();
-		$class = (((('Tx_' . $extKey) . '_') . $pathSegment) . '_') . $fileName;
+		$class = 'Tx_' . ucfirst($extKey) . '_' . $pathSegment . '_' . $fileName;
 
-		$file = (((($extPath . 'Classes/') . $pathSegment) . '/') . $fileName) . '.php';
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(($extPath . 'Classes/') . $pathSegment);
+		$file = $extPath . 'Classes/' . $pathSegment . '/' . $fileName . '.php';
+		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($extPath . 'Classes/' . $pathSegment);
 		file_put_contents($file, '<?php
 
 throw new \\RuntimeException(\'\', 1310203813);
@@ -274,7 +274,6 @@ throw new \\RuntimeException(\'\', 1310203813);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		// Expect the exception of the file to be thrown
-		$this->setExpectedException('RuntimeException', '', 1310203813);
 		\TYPO3\CMS\Core\Autoloader::autoload($class);
 	}
 
@@ -415,24 +414,23 @@ die();
 
 	/**
 	 * @test
+	 * @expectedException \RuntimeException
 	 */
 	public function autoloadFindsClassFileThatRespectsExtbaseNamingSchemeWithNamespace() {
-		$this->markTestSkipped('This test was a blocker for other namespaced tests.');
 		$extKey = $this->createFakeExtension();
 		$extPath = ((PATH_site . 'typo3temp/') . $extKey) . '/';
 		// Create a class named \Tx\Extension\Foo123\Bar456
 		// to find file extension/Classes/Foo123/Bar456.php
 		$pathSegment = 'Foo' . uniqid();
 		$fileName = 'Bar' . uniqid();
-		$namespacedClass = (((('\\Vendor\\' . $extKey) . '\\') . $pathSegment) . '\\') . $fileName;
-		$file = (((($extPath . 'Classes/') . $pathSegment) . '/') . $fileName) . '.php';
+		$namespacedClass = '\\Vendor\\' . ucfirst($extKey) . '\\' . $pathSegment . '\\' . $fileName;
+		$file = $extPath . 'Classes/' . $pathSegment . '/' . $fileName . '.php';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(($extPath . 'Classes/') . $pathSegment);
-		file_put_contents($file, ((('<?php' . LF) . 'throw new RuntimeException(\'\', 1342800577);') . LF) . '?>');
+		file_put_contents($file, '<?php' . LF . 'throw new \\RuntimeException(\'\', 1342800577);' . LF . '?>');
 		// Re-initialize autoloader registry to force it to recognize the new extension
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
 		// Expect the exception of the file to be thrown
-		$this->setExpectedException('\\RuntimeException', '', 1342800577);
 		\TYPO3\CMS\Core\Autoloader::autoload($namespacedClass);
 	}
 
