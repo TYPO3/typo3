@@ -357,7 +357,7 @@ return array(
 	'dbGeneralTest' => 'TYPO3\\CMS\\Dbal\\Tests\\DatabaseGeneralTest',
 	'dbMssqlTest' => 'TYPO3\\CMS\\Dbal\\Tests\\DatabaseMssqlTest',
 	'dbOracleTest' => 'TYPO3\\CMS\\Dbal\\Tests\\DatabaseOracleTest',
-	'dbPostgresqlTest' => 'TYPO3\\CMS\\Dbal\\Tests\\DatabasePostgreesqlTest',
+	'dbPostgresqlTest' => 'TYPO3\\CMS\\Dbal\\Tests\\DatabasePostgresqlTest',
 	'FakeDbConnection' => 'TYPO3\\CMS\\Dbal\\Tests\\FakeDatabaseConnection',
 	'sqlParserGeneralTest' => 'TYPO3\\CMS\\Dbal\\Tests\\SqlParserGeneralTest',
 	'Tx_Extbase_Command_HelpCommandController' => 'TYPO3\\CMS\\Extbase\\Command\\HelpCommandController',
