@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,9 +23,10 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * A caching backend which forgets everything immediately
- * Used in t3lib_cache_FactoryTestCase
+ * Used in FactoryTest
  *
  * This file is a backport from FLOW3
  *
@@ -31,7 +34,7 @@
  * @package TYPO3
  * @subpackage tests
  */
-class t3lib_cache_backend_MockBackend extends \TYPO3\CMS\Core\Cache\Backend\NullBackend {
+class MockBackend extends \TYPO3\CMS\Core\Cache\Backend\NullBackend {
 
 	/**
 	 * @var mixed

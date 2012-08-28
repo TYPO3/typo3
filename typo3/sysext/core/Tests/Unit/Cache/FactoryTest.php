@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Cache;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,9 +23,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once 'backend/class.t3lib_cache_backend_mockbackend.php';
+
+require_once 'Backend/MockBackend.php';
+
 /**
- * Testcase for the Cache Factory
+ * Testcase for the TYPO3\CMS\Core\Cache\CacheFactory
  *
  * This file is a backport from FLOW3
  *
@@ -31,7 +35,7 @@ require_once 'backend/class.t3lib_cache_backend_mockbackend.php';
  * @package TYPO3
  * @subpackage tests
  */
-class t3lib_cache_FactoryTest extends tx_phpunit_testcase {
+class FactoryTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @test

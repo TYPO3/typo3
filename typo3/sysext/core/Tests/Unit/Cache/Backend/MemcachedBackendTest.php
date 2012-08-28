@@ -1,8 +1,10 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2012 Tobias Burger <tobias_burger@hotmail.com>
+ *  (c) 2009-2011 Ingo Renner <ingo@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,14 +23,17 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the WinCache cache backend
+ * Testcase for the cache to memcached backend
  *
- * @author Tobias Burger <tobias_burger@hotmail.com>
+ * This file is a backport from FLOW3
+ *
+ * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage tests
  */
-class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
+class MemcachedBackendTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Sets up this testcase
@@ -36,8 +41,15 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function setUp() {
-		if (!extension_loaded('wincache')) {
-			$this->markTestSkipped('WinCache extension was not available');
+		if (!extension_loaded('memcache')) {
+			$this->markTestSkipped('memcache extension was not available');
+		}
+		try {
+			if (!fsockopen('localhost', 11211)) {
+				$this->markTestSkipped('memcached not reachable');
+			}
+		} catch (\Exception $e) {
+			$this->markTestSkipped('memcached not reachable');
 		}
 	}
 
@@ -46,10 +58,21 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 	 * @expectedException \TYPO3\CMS\Core\Cache\Exception
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
+		$backendOptions = array('servers' => array('localhost:11211'));
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend('Testing', $backendOptions);
+		$backend->initializeObject();
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
+	}
+
+	/**
+	 * @test
+	 * @expectedException \TYPO3\CMS\Core\Cache\Exception
+	 */
+	public function initializeObjectThrowsExceptionIfNoMemcacheServerIsConfigured() {
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend('Testing');
+		$backend->initializeObject();
 	}
 
 	/**
@@ -61,7 +84,7 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$inCache = $backend->has($identifier);
-		$this->assertTrue($inCache, 'WinCache backend failed to set and check entry');
+		$this->assertTrue($inCache, 'Memcache failed to set and check entry');
 	}
 
 	/**
@@ -73,7 +96,7 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$fetchedData = $backend->get($identifier);
-		$this->assertEquals($data, $fetchedData, 'Winache backend failed to set and retrieve data');
+		$this->assertEquals($data, $fetchedData, 'Memcache failed to set and retrieve data');
 	}
 
 	/**
@@ -86,7 +109,7 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 		$backend->set($identifier, $data);
 		$backend->remove($identifier);
 		$inCache = $backend->has($identifier);
-		$this->assertFalse($inCache, 'Failed to set and remove data from WinCache backend');
+		$this->assertFalse($inCache, 'Failed to set and remove data from Memcache');
 	}
 
 	/**
@@ -100,13 +123,13 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 		$otherData = 'some other data';
 		$backend->set($identifier, $otherData);
 		$fetchedData = $backend->get($identifier);
-		$this->assertEquals($otherData, $fetchedData, 'WinCache backend failed to overwrite and retrieve data');
+		$this->assertEquals($otherData, $fetchedData, 'Memcache failed to overwrite and retrieve data');
 	}
 
 	/**
 	 * @test
 	 */
-	public function findIdentifiersByTagFindsSetEntries() {
+	public function findIdentifiersByTagFindsCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
@@ -124,7 +147,7 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 		$backend = $this->setUpBackend();
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
-		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tagX'));
+		$backend->set($identifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
 		$backend->set($identifier, $data, array('UnitTestTag%tag3'));
 		$retrieved = $backend->findIdentifiersByTag('UnitTestTag%tagX');
 		$this->assertEquals(array(), $retrieved, 'Found entry which should no longer exist.');
@@ -156,13 +179,13 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
 		$data = 'some data' . microtime();
-		$backend->set('BackendWincacheTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
-		$backend->set('BackendWincacheTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
-		$backend->set('BackendWincacheTest3', $data, array('UnitTestTag%test'));
+		$backend->set('BackendMemcacheTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
+		$backend->set('BackendMemcacheTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
+		$backend->set('BackendMemcacheTest3', $data, array('UnitTestTag%test'));
 		$backend->flushByTag('UnitTestTag%special');
-		$this->assertTrue($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
-		$this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
-		$this->assertTrue($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
+		$this->assertTrue($backend->has('BackendMemcacheTest1'), 'BackendMemcacheTest1');
+		$this->assertFalse($backend->has('BackendMemcacheTest2'), 'BackendMemcacheTest2');
+		$this->assertTrue($backend->has('BackendMemcacheTest3'), 'BackendMemcacheTest3');
 	}
 
 	/**
@@ -171,27 +194,30 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 	public function flushRemovesAllCacheEntries() {
 		$backend = $this->setUpBackend();
 		$data = 'some data' . microtime();
-		$backend->set('BackendWincacheTest1', $data);
-		$backend->set('BackendWincacheTest2', $data);
-		$backend->set('BackendWincacheTest3', $data);
+		$backend->set('BackendMemcacheTest1', $data);
+		$backend->set('BackendMemcacheTest2', $data);
+		$backend->set('BackendMemcacheTest3', $data);
 		$backend->flush();
-		$this->assertFalse($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
-		$this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
-		$this->assertFalse($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
+		$this->assertFalse($backend->has('BackendMemcacheTest1'), 'BackendMemcacheTest1');
+		$this->assertFalse($backend->has('BackendMemcacheTest2'), 'BackendMemcacheTest2');
+		$this->assertFalse($backend->has('BackendMemcacheTest3'), 'BackendMemcacheTest3');
 	}
 
 	/**
 	 * @test
 	 */
 	public function flushRemovesOnlyOwnEntries() {
-		$thisCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$backendOptions = array('servers' => array('localhost:11211'));
+		$thisCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
-		$thisBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
+		$thisBackend = new \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend('Testing', $backendOptions);
 		$thisBackend->setCache($thisCache);
-		$thatCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
+		$thisBackend->initializeObject();
+		$thatCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array(), array(), '', FALSE);
 		$thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
-		$thatBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
+		$thatBackend = new \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend('Testing', $backendOptions);
 		$thatBackend->setCache($thatCache);
+		$thatBackend->initializeObject();
 		$thisBackend->set('thisEntry', 'Hello');
 		$thatBackend->set('thatEntry', 'World!');
 		$thatBackend->flush();
@@ -200,28 +226,33 @@ class t3lib_cache_backend_WincacheBackendTest extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * Check if we can store ~5 MB of data
+	 * Check if we can store ~5 MB of data, this gives some headroom for the
+	 * reflection data.
 	 *
 	 * @test
 	 */
 	public function largeDataIsStored() {
 		$backend = $this->setUpBackend();
 		$data = str_repeat('abcde', 1024 * 1024);
-		$identifier = 'tooLargeData' . md5(uniqid(mt_rand(), TRUE));
-		$backend->set($identifier, $data);
-		$this->assertTrue($backend->has($identifier));
-		$this->assertEquals($backend->get($identifier), $data);
+		$backend->set('tooLargeData', $data);
+		$this->assertTrue($backend->has('tooLargeData'));
+		$this->assertEquals($backend->get('tooLargeData'), $data);
 	}
 
 	/**
-	 * Sets up the WinCache backend used for testing
+	 * Sets up the memcached backend used for testing
 	 *
-	 * @return \TYPO3\CMS\Core\Cache\Backend\WincacheBackend
+	 * @param array $backendOptions Options for the memcache backend
+	 * @return \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend
 	 */
-	protected function setUpBackend() {
+	protected function setUpBackend(array $backendOptions = array()) {
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
+		if ($backendOptions == array()) {
+			$backendOptions = array('servers' => array('localhost:11211'));
+		}
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\MemcachedBackend('Testing', $backendOptions);
 		$backend->setCache($cache);
+		$backend->initializeObject();
 		return $backend;
 	}
 
