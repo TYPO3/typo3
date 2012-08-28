@@ -1,6 +1,4 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
-
 /***************************************************************
 * Copyright notice
 *
@@ -32,7 +30,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class BackendFormProtectionTest extends \tx_phpunit_testcase {
+class t3lib_formprotection_BackendFormProtectionTest extends tx_phpunit_testcase {
 	/**
 	 * Enable backup of global and system variables
 	 *
@@ -189,7 +187,7 @@ class BackendFormProtectionTest extends \tx_phpunit_testcase {
 		$action = 'edit';
 		$formInstanceName = '42';
 
-		$tokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($formName . $action . $formInstanceName . $sessionToken);
+		$tokenId = \t3lib_div::hmac($formName . $action . $formInstanceName . $sessionToken);
 
 		$GLOBALS['BE_USER']->expects($this->atLeastOnce())->method('getSessionData')
 			->with('formSessionToken')
