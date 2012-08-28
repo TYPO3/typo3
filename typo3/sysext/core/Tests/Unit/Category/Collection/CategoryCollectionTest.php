@@ -1,12 +1,37 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Category\Collection;
+
+/***************************************************************
+ * Copyright notice
+ *
+ * (c) 2012 Fabien Udriot <fabien.udriot@typo3.org>
+ * All rights reserved
+ *
+ * This script is part of the TYPO3 project. The TYPO3 project is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ *
+ * This script is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+
 /**
  * Test case for t3lib_category_CategoryCollection
  *
  * @package TYPO3
  * @subpackage t3lib
- * @author Fabine Udriot <fabien.udriot@typo3.org>
+ * @author Fabien Udriot <fabien.udriot@typo3.org>
  */
-class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
+class CategoryCollectionTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Category\Collection\CategoryCollection
@@ -34,7 +59,12 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	private $collectionRecord = array();
 
 	/**
-	 * @var Tx_Phpunit_Framework
+	 * @var integer
+	 */
+	private $numberOfRecords = 5;
+
+	/**
+	 * @var \Tx_Phpunit_Framework
 	 */
 	private $testingFramework;
 
@@ -60,7 +90,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 		$GLOBALS['TCA'][$this->tableName] = array('ctrl' => array());
 		// prepare environment
 		$this->createDummyTable();
-		$this->testingFramework = new Tx_Phpunit_Framework('sys_category', array('tx_foo'));
+		$this->testingFramework = new \Tx_Phpunit_Framework('sys_category', array('tx_foo'));
 		$this->populateDummyTable();
 		$this->prepareTables();
 		$this->makeRelationBetweenCategoryAndDummyTable();
@@ -132,7 +162,7 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	public function getCollectedRecordsReturnsEmptyRecordSet() {
-		$method = new ReflectionMethod('TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection', 'getCollectedRecords');
+		$method = new \ReflectionMethod('TYPO3\\CMS\\Core\\Category\\Collection\\CategoryCollection', 'getCollectedRecords');
 		$method->setAccessible(TRUE);
 		$records = $method->invoke($this->fixture);
 		$this->assertInternalType('array', $records);
@@ -220,7 +250,6 @@ class t3lib_category_CategoryCollectionTest extends Tx_Phpunit_TestCase {
 	 * @return void
 	 */
 	private function populateDummyTable() {
-		$this->numberOfRecords = 5;
 		for ($index = 1; $index <= $this->numberOfRecords; $index++) {
 			$values = array(
 				'title' => uniqid('title')
