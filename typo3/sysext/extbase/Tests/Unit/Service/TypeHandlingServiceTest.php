@@ -73,7 +73,8 @@ class TypeHandlingServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 			array('array<integer>', array('type' => 'array', 'elementType' => 'integer')),
 			array('ArrayObject<string>', array('type' => 'ArrayObject', 'elementType' => 'string')),
 			array('SplObjectStorage<Tx_Extbase_Bar>', array('type' => 'SplObjectStorage', 'elementType' => 'Tx_Extbase_Bar')),
-			array('SplObjectStorage<Tx_Extbase_Bar>', array('type' => 'SplObjectStorage', 'elementType' => 'Tx_Extbase_Bar'))
+			array('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage<Tx_Extbase_Bar>', array('type' => 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\ObjectStorage', 'elementType' => 'Tx_Extbase_Bar')),
+			array('Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Bar>', array('type' => 'Tx_Extbase_Persistence_ObjectStorage', 'elementType' => 'Tx_Extbase_Bar'))
 		);
 	}
 
