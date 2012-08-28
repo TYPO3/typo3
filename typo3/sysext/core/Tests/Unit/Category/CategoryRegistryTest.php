@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Category;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for t3lib_category_Registry
+ * Testcase for CategoryRegistry
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Oliver Hader <oliver.hader@typo3.org>
  */
-class t3lib_category_RegistryTest extends Tx_Phpunit_TestCase {
+class CategoryRegistryTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Enable backup of global and system variables

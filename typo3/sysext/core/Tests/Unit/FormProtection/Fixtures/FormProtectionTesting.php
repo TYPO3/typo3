@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,17 +23,18 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Class t3lib_formProtection_Testing.
+ * Class \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting.
  *
- * This is a testing subclass of the abstract t3lib_formprotection_Abstract
+ * This is a testing subclass of the abstract \TYPO3\CMS\Core\FormProtection\AbstractFormProtection
  * class.
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class t3lib_formProtection_Testing extends \TYPO3\CMS\Core\FormProtection\AbstractFormProtection {
+class FormProtectionTesting extends \TYPO3\CMS\Core\FormProtection\AbstractFormProtection {
 
 	/**
 	 * Creates or displayes an error message telling the user that the submitted
