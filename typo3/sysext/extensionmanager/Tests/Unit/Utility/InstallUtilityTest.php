@@ -114,7 +114,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function installCallsFlushCachesIfClearCacheOnLoadIsSet() {
 		$this->installMock->expects($this->once())->method('enrichExtensionWithDetails')->with($this->extension)->will($this->returnValue(array('key' => $this->extension, 'clearcacheonload' => TRUE)));
 		$backupCacheManager = $GLOBALS['typo3CacheManager'];
-		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Cache_manager');
+		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager');
 		$GLOBALS['typo3CacheManager']->expects($this->once())->method('flushCaches');
 		$this->installMock->install($this->extension);
 		$GLOBALS['typo3CacheManager'] = $backupCacheManager;
