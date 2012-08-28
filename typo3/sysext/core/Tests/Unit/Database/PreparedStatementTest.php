@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Database;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase for the prepared statement database class
  *
@@ -28,7 +31,7 @@
  * @package TYPO3
  * @subpackage tests
  */
-class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
+class PreparedStatementTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Backup and restore of the $GLOBALS array.
@@ -40,7 +43,7 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 	/**
 	 * Mock object of t3lib_db
 	 *
-	 * @var PHPUnit_Framework_MockObject_MockObject
+	 * @var \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $databaseStub;
 
@@ -70,7 +73,7 @@ class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 	/**
 	 * Set up the stub to be able to get the result of the prepared statement.
 	 *
-	 * @return PHPUnit_Framework_MockObject_MockObject
+	 * @return \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private function setUpAndReturnDatabaseStub() {
 		$databaseLink = $GLOBALS['TYPO3_DB']->link;

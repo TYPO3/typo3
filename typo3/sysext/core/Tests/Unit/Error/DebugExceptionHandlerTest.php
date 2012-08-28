@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Error;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,17 +23,18 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * testcase for the t3lib_error_DebugExceptionHandler class.
+ * testcase for the DebugExceptionHandler class.
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @package TYPO3
  * @subpackage t3lib_error
  */
-class t3lib_error_DebugExceptionHandlerTest extends Tx_Phpunit_TestCase {
+class DebugExceptionHandlerTest extends \Tx_Phpunit_TestCase {
 
 	/**
-	 * @var t3lib_error_DebugExceptionHandler|PHPUnit_Framework_MockObject_MockObject
+	 * @var \TYPO3\CMS\Core\Error\DebugExceptionHandler|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $fixture = NULL;
 
@@ -55,7 +58,7 @@ class t3lib_error_DebugExceptionHandlerTest extends Tx_Phpunit_TestCase {
 	 */
 	public function echoExceptionWebEscapesExceptionMessage() {
 		$message = '<b>b</b><script>alert(1);</script>';
-		$exception = new Exception($message);
+		$exception = new \Exception($message);
 		ob_start();
 		$this->fixture->echoExceptionWeb($exception);
 		$output = ob_get_contents();
