@@ -365,12 +365,12 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * new Ajax.Request('/dev/t3e/dummy/typo3/ajax.php', {
 	 * parameters: {
-	 * ajaxID: 'T3Editor::saveCode::saveCode',
+	 * ajaxID: 'T3Editor::saveCode',
 	 * t3editor_savetype: 'tx_tstemplateinfo'
 	 * }
 	 * });
 	 *
-	 * @param array	params Parameters (not used yet)
+	 * @param array $params Parameters (not used yet)
 	 * @param \TYPO3\CMS\Core\Http\AjaxRequestHandler ajaxObj AjaxObject to handle response
 	 */
 	public function ajaxSaveCode($params, $ajaxObj) {
