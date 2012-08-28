@@ -108,7 +108,7 @@ abstract class AbstractElementView {
 					}
 					break;
 				case 'label':
-					if (!strstr(get_class($this), '_Additional_')) {
+					if (!strrchr(get_class($this), 'AdditionalElement')) {
 						if ($this->model->additionalIsSet($nodeName)) {
 							$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('label'));
 						}
@@ -120,7 +120,7 @@ abstract class AbstractElementView {
 					}
 					break;
 				case 'legend':
-					if (!strstr(get_class($this), '_Additional_')) {
+					if (!strrchr(get_class($this), 'AdditionalElement')) {
 						if ($this->model->additionalIsSet($nodeName)) {
 							$this->replaceNodeWithFragment($dom, $node, $this->getAdditional('legend'));
 						}
@@ -293,7 +293,7 @@ abstract class AbstractElementView {
 	 */
 	protected function createAdditional($class) {
 		$class = strtolower((string) $class);
-		$className = 'TYPO3\\CMS\\Form\\View\\Confirmation\\Additional\\AdditionalElementView_' . ucfirst($class);
+		$className = 'TYPO3\\CMS\\Form\\View\\Confirmation\\Additional\\' . ucfirst($class) . 'AdditionalElementView';
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $this->model);
 	}
 

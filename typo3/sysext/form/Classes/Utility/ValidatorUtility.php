@@ -82,7 +82,7 @@ class ValidatorUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function createRule($class, $arguments = array()) {
 		$class = strtolower((string) $class);
-		$className = 'TYPO3\\CMS\\Form\\Utility\\ValidatorUtility_' . ucfirst($class);
+		$className = 'TYPO3\\CMS\\Form\\Validation\\' . ucfirst($class) . 'Validator';
 		$rule = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, $arguments);
 		return $rule;
 	}

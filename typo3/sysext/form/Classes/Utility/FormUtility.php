@@ -129,7 +129,7 @@ class FormUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string
 	 */
 	public function getLastPartOfClassName($object, $lowercase = FALSE) {
-		$lastPart = preg_replace('/.*_([^_]*)$/', '${1}', get_class($object), 1);
+		$lastPart = preg_replace('/^.*\\\\([^\\\\]+?)(Additional|Attribute|Json|Element|View)+$/', '${1}', get_class($object), 1);
 		if ($lowercase) {
 			$lastPart = strtolower($lastPart);
 		}

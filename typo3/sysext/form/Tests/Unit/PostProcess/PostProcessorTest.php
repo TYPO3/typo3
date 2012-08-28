@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\PostProcess;
 class PostProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var PHPUnit_Framework_MockObject_MockObject
+	 * @var \PHPUnit_Framework_MockObject_MockObject
 	 */
 	public $postprocessor;
 
@@ -63,34 +63,36 @@ class PostProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function setUp() {
 		$this->form = new \TYPO3\CMS\Form\Domain\Model\Form();
-		$this->postprocessor = $this->getMock('TYPO3\\CMS\\Form\\PostProcess\\PostProcessor', array('sortTypoScriptKeyList'), array(
+		$this->postprocessor = $this->getMock('TYPO3\CMS\Form\PostProcess\PostProcessor', array('sortTypoScriptKeyList'), array(
 			$this->form,
 			array()
 		));
 		$this->classNameWithoutPrefix = uniqid('postprocess');
 		$this->classNameWithPrefix = uniqid('postprocess');
 		$this->classNameWithoutInterface = uniqid('postprocess');
-		eval(((((((('class ' . $this->classNameWithoutPrefix) . ' implements TYPO3\\CMS\\Form\\PostProcess\\PostProcessor_Interface {
+		eval('
+			namespace TYPO3\CMS\Form\PostProcess;
+			class ' . $this->classNameWithoutPrefix . 'PostProcessor implements PostProcessorInterface {
 
-				public function __construct(TYPO3\\CMS\\Form\\Domain\\Model\\Form $form, array $typoScript) {
+				public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
 
 				}
 
 				public function process() {
 					return \'processedWithoutPrefix\';
 				}
-			}') . 'class TYPO3\\CMS\\Form\\PostProcess\\PostProcessor_') . $this->classNameWithPrefix) . ' implements TYPO3\\CMS\\Form\\PostProcess\\PostProcessor_Interface {
+			}' . 'class ' . $this->classNameWithPrefix . 'PostProcessor implements PostProcessorInterface {
 
-				public function __construct(TYPO3\\CMS\\Form\\Domain\\Model\\Form $form, array $typoScript) {
+				public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
 
 				}
 
 				public function process() {
 					return \'processedWithPrefix\';
 				}
-			}') . 'class ') . $this->classNameWithoutInterface) . '{
+			}' . 'class ' . $this->classNameWithoutInterface . 'PostProcessor{
 
-				public function __construct(TYPO3\\CMS\\Form\\Domain\\Model\\Form $form, array $typoScript) {
+				public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
 
 				}
 
