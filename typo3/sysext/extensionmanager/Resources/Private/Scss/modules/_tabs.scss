@@ -1,0 +1,45 @@
+// Tabs
+#typo3-extension-main-menu .tabs ul,
+#typo3-extension-configuration-forms .tabs ul {
+	list-style: none;
+	padding: 0;
+	margin-bottom: -1px;
+
+	// Clearfix
+	&:after {
+		display: table;
+		content: "";
+		clear: both;
+	}
+
+	// Each tab
+	a {
+		@include border-radius(4px 4px 0 0);
+
+		float: left;
+		height: 15px;
+		background: #dadada;
+
+		padding: 7px 15px;
+		margin-top: -1px;
+		margin-right: 2px;
+		border: 1px solid #adadad;
+
+		color: #606060;
+
+		&:hover {
+			background-color: #eee;
+			border-color: #adadad;
+			color: #606060;
+		}
+
+		&.current {
+			background: #fff;
+			color: #000;
+			border-bottom: 0;
+
+			padding-top: 8px;
+		}
+	}
+
+}

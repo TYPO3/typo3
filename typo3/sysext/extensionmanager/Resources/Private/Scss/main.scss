@@ -11,9 +11,11 @@
 @import "helpers/mixins";
 
 // Import Modules
-@import "modules/jquery-ui.custom.scss";
+@import "modules/jquery-ui.custom.scss",
+		"modules/tabs";
 
 // Appearance of the page
-@import "page/base";
-@import "page/manage";
+@import "page/base",
+		"page/manage",
+		"page/get"
 

@@ -27,8 +27,17 @@
 
 	border-spacing: 0;
 
+	// Header
 	thead {
 		@include linear-gradient(#5b5b5b, #7f7f7f 10%, #5b5b5b 100%);
+
+		tr {
+			background: none !important;
+
+			&:hover {
+				background: none;
+			}
+		}
 	}
 
 	th {
@@ -36,18 +45,35 @@
 		border: 0;
 		padding: 8px 10px;
 
+		min-width: 53px;
+
 		vertical-align: middle;
 
 		font-weight: bold;
 		color: #fff;
 
+		cursor: pointer;
+
+
+		&:hover {
+			background: rgba(200,200,200,.3);
+		}
+
 		.DataTables_sort_icon {
-			display: none;
+			display: inline-block;
+			vertical-align: middle;
+			margin-left: 5px;
+
+			&.ui-icon-carat-2-n-s {
+				background: none;
+			}
 		}
 	}
 
+	// All lines
 	tr {
 
+		// Reset some values that get applied by jQuery UI styling
 		&.odd,
 		&.even {
 			td {
@@ -69,6 +95,7 @@
 			}
 		}
 
+		// Add some stuff to match corporate design
 		td {
 			background: none;
 			padding: 8px 10px;
@@ -89,17 +116,20 @@
 			}
 		}
 
+		// Zebra-look
+		&:nth-child(2n) {
+			background: #fff;
+		}
+
+		&:nth-child(2n + 1) {
+			background: #f7f7f7;
+		}
+
+		// Hovering lines
 		&:hover {
 			background: #ececec;
 		}
-	}
 
-	.odd {
-		background: #fff;
-	}
-
-	.even {
-		background: #f7f7f7;
 	}
 }
 
