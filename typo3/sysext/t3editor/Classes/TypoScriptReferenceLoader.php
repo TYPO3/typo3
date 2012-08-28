@@ -11,7 +11,7 @@ namespace TYPO3\CMS\T3Editor;
 class TypoScriptReferenceLoader {
 
 	/**
-	 * @var DOMDocument
+	 * @var \DOMDocument
 	 */
 	protected $xmlDoc;
 
@@ -128,7 +128,7 @@ class TypoScriptReferenceLoader {
 	 * Get type
 	 *
 	 * @param string $typeId
-	 * @return DOMNode
+	 * @return \DOMNode
 	 */
 	protected function getType($typeId) {
 		$types = $this->xmlDoc->getElementsByTagName('type');
