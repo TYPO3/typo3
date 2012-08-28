@@ -40,18 +40,6 @@
 	width: auto;
 }
 
-.typo3-extension-list tr.odd td {
-	background-color: #eee;
-}
-
-.typo3-extension-list tr:hover td,
-.typo3-extension-list tr.odd:hover td,
-.ui-state-default:hover {
-	background: #f6af23;
-	font-weight: normal;
-	color: #212121;
-}
-
 .typo3-extension-list {
 	width: 100%;
 }
@@ -76,49 +64,7 @@
 	float: right;
 }
 
-/* root element for tabs  */
-#typo3-extension-main-menu .tabs ul,
-#typo3-extension-configuration-forms .tabs ul {
-	list-style: none;
-	padding: 0;
-	margin-bottom: -1px;
 
-	&:after {
-		display: table;
-		content: "";
-		clear: both;
-	}
-}
-
-
-#typo3-extension-main-menu .tabs ul li a,
-#typo3-extension-configuration-forms .tabs ul li a {
-	@include border-radius(4px 4px 0 0);
-
-	float: left;
-	height: 15px;
-	background: #dadada;
-
-	padding: 7px 15px;
-	margin-right: 2px;
-	border: 1px solid #adadad;
-	border-bottom: 0;
-
-	color: #606060;
-}
-
-#typo3-extension-main-menu .tabs ul li a:hover,
-#typo3-extension-configuration-forms .tabs ul li a:hover {
-	background-color: #eee;
-	border-color: #adadad;
-	color: #606060;
-}
-
-#typo3-extension-main-menu .tabs ul li a.current,
-#typo3-extension-configuration-forms .tabs ul li a.current {
-	background: #fff;
-	color: #000;
-}
 #typo3-extension-configuration-forms .category {
 	background-repeat: repeat-x;
 	border: 1px solid #adadad;

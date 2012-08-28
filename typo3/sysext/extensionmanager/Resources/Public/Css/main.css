@@ -104,7 +104,7 @@
 
 .ui-widget-content {
   border: 1px solid #aaaaaa;
-  background: white url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
+  background: white url(../Images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
   color: #222222; }
 
 .ui-widget-content a {
@@ -112,7 +112,7 @@
 
 .ui-widget-header {
   border: 1px solid #aaa;
-  background: #cccccc url(images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;
+  background: #cccccc url(../Images/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;
   color: #222222;
   font-weight: bold; }
 
@@ -123,7 +123,7 @@
 ----------------------------------*/
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
   border: 1px solid #d3d3d3;
-  background: #e6e6e6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
+  background: #e6e6e6 url(../Images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x;
   font-weight: normal;
   color: #555555; }
 
@@ -133,7 +133,7 @@
 
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
   border: 1px solid #999999;
-  background: #f6af23 url(images/ui-bg_glass_75_f6af23_1x400.png) 50% 50% repeat-x;
+  background: #f6af23 url(../Images/ui-bg_glass_75_f6af23_1x400.png) 50% 50% repeat-x;
   font-weight: normal;
   color: #212121; }
 
@@ -143,7 +143,7 @@
 
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
   border: 1px solid #aaaaaa;
-  background: white url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
+  background: white url(../Images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
   font-weight: normal;
   color: #212121; }
 
@@ -158,7 +158,7 @@
 ----------------------------------*/
 .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
   border: 1px solid #fcefa1;
-  background: #fdd66d url(images/ui-bg_highlight-soft_55_fdd66d_1x100.png) 50% top repeat-x;
+  background: #fdd66d url(../Images/ui-bg_highlight-soft_55_fdd66d_1x100.png) 50% top repeat-x;
   color: #363636; }
 
 .ui-state-highlight a, .ui-widget-content .ui-state-highlight a, .ui-widget-header .ui-state-highlight a {
@@ -166,7 +166,7 @@
 
 .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
   border: 1px solid #cd0a0a;
-  background: #fef1ec url(images/ui-bg_inset-soft_95_fef1ec_1x100.png) 50% bottom repeat-x;
+  background: #fef1ec url(../Images/ui-bg_inset-soft_95_fef1ec_1x100.png) 50% bottom repeat-x;
   color: #cd0a0a; }
 
 .ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a {
@@ -194,28 +194,28 @@
 .ui-icon {
   width: 16px;
   height: 16px;
-  background-image: url(images/ui-icons_222222_256x240.png); }
+  background-image: url(../Images/ui-icons_222222_256x240.png); }
 
 .ui-widget-content .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png); }
+  background-image: url(../Images/ui-icons_222222_256x240.png); }
 
 .ui-widget-header .ui-icon {
-  background-image: url(images/ui-icons_222222_256x240.png); }
+  background-image: url(../Images/ui-icons_222222_256x240.png); }
 
 .ui-state-default .ui-icon {
-  background-image: url(images/ui-icons_888888_256x240.png); }
+  background-image: url(../Images/ui-icons_ffffff_256x240.png); }
 
 .ui-state-hover .ui-icon, .ui-state-focus .ui-icon {
-  background-image: url(images/ui-icons_454545_256x240.png); }
+  background-image: url(../Images/ui-icons_454545_256x240.png); }
 
 .ui-state-active .ui-icon {
-  background-image: url(images/ui-icons_454545_256x240.png); }
+  background-image: url(../Images/ui-icons_454545_256x240.png); }
 
 .ui-state-highlight .ui-icon {
-  background-image: url(images/ui-icons_2e83ff_256x240.png); }
+  background-image: url(../Images/ui-icons_2e83ff_256x240.png); }
 
 .ui-state-error .ui-icon, .ui-state-error-text .ui-icon {
-  background-image: url(images/ui-icons_cd0a0a_256x240.png); }
+  background-image: url(../Images/ui-icons_cd0a0a_256x240.png); }
 
 /* positioning */
 .ui-icon-carat-1-n {
@@ -770,14 +770,14 @@
 
 /* Overlays */
 .ui-widget-overlay {
-  background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
+  background: #aaaaaa url(../Images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
   opacity: .30;
   filter: Alpha(Opacity=30); }
 
 .ui-widget-shadow {
   margin: -8px 0 0 -8px;
   padding: 8px;
-  background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
+  background: #aaaaaa url(../Images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x;
   opacity: .30;
   filter: Alpha(Opacity=30);
   -moz-border-radius: 8px;
@@ -785,7 +785,7 @@
   -webkit-border-radius: 8px;
   border-radius: 8px; }
 
-                                                                                                                                                                                                                                                                                     /*
+                                                                                                                                                                                                                                                                                        /*
 * jQuery UI Resizable 1.8.17
 *
 * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
@@ -1483,6 +1483,36 @@ button.ui-button::-moz-focus-inner {
   margin: -1px;
   height: 100%; }
 
+#typo3-extension-main-menu .tabs ul, #typo3-extension-configuration-forms .tabs ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: -1px; }
+#typo3-extension-main-menu .tabs ul:after, #typo3-extension-configuration-forms .tabs ul:after {
+  display: table;
+  content: "";
+  clear: both; }
+#typo3-extension-main-menu .tabs ul a, #typo3-extension-configuration-forms .tabs ul a {
+  -webkit-border-radius: 4px 4px 0 0;
+  -moz-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
+  float: left;
+  height: 15px;
+  background: #dadada;
+  padding: 7px 15px;
+  margin-top: -1px;
+  margin-right: 2px;
+  border: 1px solid #adadad;
+  color: #606060; }
+#typo3-extension-main-menu .tabs ul a:hover, #typo3-extension-configuration-forms .tabs ul a:hover {
+  background-color: #eee;
+  border-color: #adadad;
+  color: #606060; }
+#typo3-extension-main-menu .tabs ul a.current, #typo3-extension-configuration-forms .tabs ul a.current {
+  background: #fff;
+  color: #000;
+  border-bottom: 0;
+  padding-top: 8px; }
+
 #typo3-extension-manager {
   margin: 30px; }
 
@@ -1515,14 +1545,6 @@ button.ui-button::-moz-focus-inner {
 .dataTables_paginate {
   width: auto; }
 
-.typo3-extension-list tr.odd td {
-  background-color: #eee; }
-
-.typo3-extension-list tr:hover td, .typo3-extension-list tr.odd:hover td, .ui-state-default:hover {
-  background: #f6af23;
-  font-weight: normal;
-  color: #212121; }
-
 .typo3-extension-list {
   width: 100%; }
 
@@ -1539,38 +1561,6 @@ button.ui-button::-moz-focus-inner {
 
 #typo3-extension-configuration-forms #typo3-docheader-row2 .back {
   float: right; }
-
-/* root element for tabs  */
-#typo3-extension-main-menu .tabs ul, #typo3-extension-configuration-forms .tabs ul {
-  list-style: none;
-  padding: 0;
-  margin-bottom: -1px; }
-#typo3-extension-main-menu .tabs ul:after, #typo3-extension-configuration-forms .tabs ul:after {
-  display: table;
-  content: "";
-  clear: both; }
-
-#typo3-extension-main-menu .tabs ul li a, #typo3-extension-configuration-forms .tabs ul li a {
-  -webkit-border-radius: 4px 4px 0 0;
-  -moz-border-radius: 4px 4px 0 0;
-  border-radius: 4px 4px 0 0;
-  float: left;
-  height: 15px;
-  background: #dadada;
-  padding: 7px 15px;
-  margin-right: 2px;
-  border: 1px solid #adadad;
-  border-bottom: 0;
-  color: #606060; }
-
-#typo3-extension-main-menu .tabs ul li a:hover, #typo3-extension-configuration-forms .tabs ul li a:hover {
-  background-color: #eee;
-  border-color: #adadad;
-  color: #606060; }
-
-#typo3-extension-main-menu .tabs ul li a.current, #typo3-extension-configuration-forms .tabs ul li a.current {
-  background: #fff;
-  color: #000; }
 
 #typo3-extension-configuration-forms .category {
   background-repeat: repeat-x;
@@ -1660,15 +1650,27 @@ button.ui-button::-moz-focus-inner {
   background-image: -ms-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
   background-image: -o-linear-gradient(top, #7f7f7f 10%, #5b5b5b 100%);
   background-image: linear-gradient(to bottom, #7f7f7f 10%, #5b5b5b 100%); }
+.typo3-extension-list thead tr {
+  background: none !important; }
+.typo3-extension-list thead tr:hover {
+  background: none; }
 .typo3-extension-list th {
   background: none;
   border: 0;
   padding: 8px 10px;
+  min-width: 53px;
   vertical-align: middle;
   font-weight: bold;
-  color: #fff; }
+  color: #fff;
+  cursor: pointer; }
+.typo3-extension-list th:hover {
+  background: rgba(200, 200, 200, 0.3); }
 .typo3-extension-list th .DataTables_sort_icon {
-  display: none; }
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 5px; }
+.typo3-extension-list th .DataTables_sort_icon.ui-icon-carat-2-n-s {
+  background: none; }
 .typo3-extension-list tr.odd td, .typo3-extension-list tr.even td {
   background: none; }
 .typo3-extension-list tr.odd:hover td, .typo3-extension-list tr.even:hover td {
@@ -1713,12 +1715,12 @@ button.ui-button::-moz-focus-inner {
 .typo3-extension-list tr td img {
   vertical-align: middle;
   margin-right: 5px; }
+.typo3-extension-list tr:nth-child(2n) {
+  background: #fff; }
+.typo3-extension-list tr:nth-child(2n + 1) {
+  background: #f7f7f7; }
 .typo3-extension-list tr:hover {
   background: #ececec; }
-.typo3-extension-list .odd {
-  background: #fff; }
-.typo3-extension-list .even {
-  background: #f7f7f7; }
 
 .dataTables_info {
   display: none; }
