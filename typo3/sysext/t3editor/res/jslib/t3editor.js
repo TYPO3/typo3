@@ -325,7 +325,7 @@ if (!Prototype.Browser.MobileSafari) {
 				Event.observe(document, 't3editor:save',
 					function(event) {
 						var params = Object.extend({
-							ajaxID: "T3Editor::saveCode::saveCode",
+							ajaxID: "T3Editor::saveCode",
 							t3editor_savetype: T3editor.ajaxSavetype
 						}, event.memo.parameters);
 
