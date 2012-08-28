@@ -10,7 +10,7 @@
 					<label>LLL:EXT:adodb/locallang_datasource_config.xml:dbtype</label>
 					<config>
 						<type>select</type>
-						<itemsProcFunc>tx_adodb_tceforms->itemsProcFunc_dbtype</itemsProcFunc>
+						<itemsProcFunc>TYPO3\CMS\Adodb\DataHandling\DatabaseTypeItemsFunction->itemsProcFunc_dbtype</itemsProcFunc>
 						<wizards>
 							<_PADDING>4</_PADDING>
 							<_POSITION>right</_POSITION>
