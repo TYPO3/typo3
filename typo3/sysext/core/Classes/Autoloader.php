@@ -285,10 +285,10 @@ class Autoloader {
 		$classNameParts = explode($delimiter, $tempClassName, 4);
 		if (((isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3') && isset($classNameParts[1])) && $classNameParts[1] === 'CMS') {
 			$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[2]);
-			$classNameWithoutVendorAndProduct = $classNameParts[3];
+			$classNameWithoutVendorAndProduct = implode($delimiter, array_slice($classNameParts, 3));
 		} else {
 			$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[1]);
-			$classNameWithoutVendorAndProduct = $classNameParts[2];
+			$classNameWithoutVendorAndProduct = implode($delimiter, array_slice($classNameParts, 2));
 		}
 
 		if ($extensionKey) {
