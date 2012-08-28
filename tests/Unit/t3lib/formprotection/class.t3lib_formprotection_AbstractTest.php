@@ -1,6 +1,4 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
-
 /***************************************************************
  * Copyright notice
  *
@@ -23,9 +21,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
-require_once 'Fixtures/FormProtectionTesting.php';
-
+require_once 'fixtures/class.t3lib_formprotection_testing.php';
 /**
  * Testcase for the t3lib_formprotection_Abstract class.
  *
@@ -33,7 +29,7 @@ require_once 'Fixtures/FormProtectionTesting.php';
  * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class AbstractFormProtectionTest extends \tx_phpunit_testcase {
+class t3lib_formprotection_AbstractTest extends tx_phpunit_testcase {
 
 	/**
 	 * @var t3lib_formProtection_Testing
@@ -41,7 +37,7 @@ class AbstractFormProtectionTest extends \tx_phpunit_testcase {
 	private $fixture;
 
 	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting();
+		$this->fixture = new t3lib_formProtection_Testing();
 	}
 
 	public function tearDown() {
@@ -57,7 +53,7 @@ class AbstractFormProtectionTest extends \tx_phpunit_testcase {
 	 */
 	public function constructionRetrievesToken() {
 		$className = uniqid('t3lib_formProtection');
-		eval((((((('class ' . $className) . ' extends \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting {') . 'public $tokenHasBeenRetrieved = FALSE; ') . 'protected function retrieveSessionToken() {') . '$this->tokenHasBeenRetrieved = TRUE;') . '}') . '}');
+		eval((((((('class ' . $className) . ' extends t3lib_formProtection_Testing {') . 'public $tokenHasBeenRetrieved = FALSE; ') . 'protected function retrieveSessionToken() {') . '$this->tokenHasBeenRetrieved = TRUE;') . '}') . '}');
 		$fixture = new $className();
 		$this->assertTrue($fixture->tokenHasBeenRetrieved);
 	}
@@ -76,7 +72,7 @@ class AbstractFormProtectionTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function cleanPersistsToken() {
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Tests\\Unit\\FormProtection\\Fixtures\\FormProtectionTesting', array('persistSessionToken'));
+		$fixture = $this->getMock('t3lib_formProtection_Testing', array('persistSessionToken'));
 		$fixture->expects($this->once())->method('persistSessionToken');
 		$fixture->clean();
 	}
@@ -222,7 +218,7 @@ class AbstractFormProtectionTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function validateTokenForValidTokenNotCallsCreateValidationErrorMessage() {
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Tests\\Unit\\FormProtection\\Fixtures\\FormProtectionTesting', array('createValidationErrorMessage'));
+		$fixture = $this->getMock('t3lib_formProtection_Testing', array('createValidationErrorMessage'));
 		$fixture->expects($this->never())->method('createValidationErrorMessage');
 		$formName = 'foo';
 		$action = 'edit';
@@ -236,7 +232,7 @@ class AbstractFormProtectionTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function validateTokenForInvalidTokenCallsCreateValidationErrorMessage() {
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Tests\\Unit\\FormProtection\\Fixtures\\FormProtectionTesting', array('createValidationErrorMessage'));
+		$fixture = $this->getMock('t3lib_formProtection_Testing', array('createValidationErrorMessage'));
 		$fixture->expects($this->once())->method('createValidationErrorMessage');
 		$formName = 'foo';
 		$action = 'edit';
@@ -250,7 +246,7 @@ class AbstractFormProtectionTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function validateTokenForInvalidFormNameCallsCreateValidationErrorMessage() {
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Tests\\Unit\\FormProtection\\Fixtures\\FormProtectionTesting', array('createValidationErrorMessage'));
+		$fixture = $this->getMock('t3lib_formProtection_Testing', array('createValidationErrorMessage'));
 		$fixture->expects($this->once())->method('createValidationErrorMessage');
 		$formName = 'foo';
 		$action = 'edit';

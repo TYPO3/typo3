@@ -1,6 +1,4 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Database;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -23,7 +21,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
  * Testcase for the prepared statement database class
  *
@@ -31,7 +28,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  * @package TYPO3
  * @subpackage tests
  */
-class PreparedStatementTest extends \tx_phpunit_testcase {
+class t3lib_db_PreparedStatementTest extends tx_phpunit_testcase {
 
 	/**
 	 * Backup and restore of the $GLOBALS array.

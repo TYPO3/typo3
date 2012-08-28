@@ -1,6 +1,4 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Encoder;
-
 /***************************************************************
  * Copyright notice
  *
@@ -23,15 +21,14 @@ namespace TYPO3\CMS\Core\Tests\Unit\Encoder;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
 /**
- * Test cases for TYPO3\CMS\Core\Encoder\JavaScriptEncoder.
+ * Test cases for t3lib_codec_JavaScriptEncoder.
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
-class JavaScriptEncoderTest extends \Tx_Phpunit_TestCase {
+class t3lib_codec_JavaScriptEncoderTest extends Tx_Phpunit_TestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Encoder\JavaScriptEncoder
