@@ -1265,6 +1265,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 *
 	 * @param string $string String to check
 	 * @return integer Unix timestamp
+	 * @throws \InvalidArgumentException
 	 */
 	public function checkDate($string) {
 		// Try with strtotime
