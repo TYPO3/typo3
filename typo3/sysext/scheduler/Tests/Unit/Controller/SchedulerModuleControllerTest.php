@@ -58,40 +58,33 @@ class SchedulerModuleControllerTest extends \tx_phpunit_testcase {
 	}
 
 	/**
-	 * Provide dates in strtotime format
+	 * Data provider for checkDateWithStrtotimeValues
 	 *
 	 * @see checkDateWithStrtotimeValues
-	 * @return 	array	Testdata for "checkDateWithStrtotimeValues".
+	 * @return array Testdata for "checkDateWithStrtotimeValues".
 	 */
 	public function checkDateWithStrtotimeValuesDataProvider() {
 		return array(
 			'now' => array(
 				'now',
-				strtotime('now')
 			),
 			'10 September 2000' => array(
 				'10 September 2000',
-				strtotime('10 September 2000')
 			),
 			'+1 day' => array(
 				'+1 day',
-				strtotime('+1 day')
 			),
 			'+1 week' => array(
 				'+1 week',
-				strtotime('+1 week')
 			),
 			'+1 week 2 days 4 hours 2 seconds' => array(
 				'+1 week 2 days 4 hours 2 seconds',
-				strtotime('+1 week 2 days 4 hours 2 seconds')
 			),
 			'next Thursday' => array(
 				'next Thursday',
-				strtotime('next Thursday')
 			),
 			'last Monday' => array(
 				'last Monday',
-				strtotime('last Monday')
 			)
 		);
 	}
@@ -103,11 +96,12 @@ class SchedulerModuleControllerTest extends \tx_phpunit_testcase {
 	 * @param string $strToTimeValue Test value which will be passed to $this->testObject->checkDate
 	 * @param integer $expectedTimestamp Expected value to compare with result from operation
 	 */
-	public function checkDateWithStrtotimeValues($strToTimeValue, $expectedTimestamp) {
+	public function checkDateWithStrtotimeValues($strToTimeValue) {
+		$expectedTimestamp = strtotime($strToTimeValue);
 		$checkDateResult = $this->testObject->checkDate($strToTimeValue);
-		// We use assertLessThan here, because we test with relative values (eg. next Thursday, now, ..)
-		// If this tests runs over 1 seconds the test will fail if we use assertSame / assertEquals
-		// With assertLessThan the tests could run 0 till 3 seconds ($delta = 4)
+			// We use assertLessThan here, because we test with relative values (eg. next Thursday, now, ..)
+			// If this tests runs over 1 seconds the test will fail if we use assertSame / assertEquals
+			// With assertLessThan the tests could run 0 till 3 seconds ($delta = 4)
 		$delta = 4;
 		$this->assertLessThan($delta, $checkDateResult - $expectedTimestamp, ('assertLessThan fails with value "' . $strToTimeValue) . '"');
 		$this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT, $checkDateResult, ('assertType fails with value "' . $strToTimeValue) . '"');

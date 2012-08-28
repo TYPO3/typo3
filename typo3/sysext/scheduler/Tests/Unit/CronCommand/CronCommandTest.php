@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Scheduler\Tests\Unit\CrondCommand;
+namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
 
 /***************************************************************
  *  Copyright notice
@@ -57,7 +57,9 @@ class CronCommandTest extends \tx_phpunit_testcase {
 	 */
 	public function constructorSetsTimestampToNowPlusOneMinuteRoundedDownToSixtySeconds() {
 		$instance = new \TYPO3\CMS\Scheduler\CronCommand\CronCommand('* * * * *');
-		$this->assertSame($instance->getTimestamp(), $GLOBALS['ACCESS_TIME'] + 60);
+		$currentTime = time();
+		$expectedTime = $currentTime - ($currentTime % 60) + 60;
+		$this->assertSame($expectedTime, $instance->getTimestamp());
 	}
 
 	/**

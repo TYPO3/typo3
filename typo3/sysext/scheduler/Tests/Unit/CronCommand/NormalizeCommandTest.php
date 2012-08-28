@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Scheduler\Tests\Unit\CrondCommand;
+namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
 
 /***************************************************************
  *  Copyright notice
