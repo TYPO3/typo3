@@ -8,7 +8,7 @@ namespace TYPO3\CMS\Dbal\Tests;
  * @package TYPO3
  * @subpackage dbal
  */
-class DatabasePostgreesqlTest extends \TYPO3\CMS\Dbal\Tests\BaseTestCase {
+class DatabasePostgresqlTest extends BaseTestCase {
 
 	/**
 	 * @var t3lib_db
