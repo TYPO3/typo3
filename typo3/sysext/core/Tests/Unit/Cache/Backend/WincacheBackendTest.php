@@ -1,8 +1,10 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2009-2011 Ingo Renner <ingo@typo3.org>
+ *  (c) 2009-2012 Tobias Burger <tobias_burger@hotmail.com>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,16 +23,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the APC cache backend
+ * Testcase for the WinCache cache backend
  *
- * This file is a backport from FLOW3
- *
- * @author Ingo Renner <ingo@typo3.org>
+ * @author Tobias Burger <tobias_burger@hotmail.com>
  * @package TYPO3
  * @subpackage tests
  */
-class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
+class WincacheBackendTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Sets up this testcase
@@ -38,11 +39,8 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function setUp() {
-		if (!extension_loaded('apc')) {
-			$this->markTestSkipped('APC extension was not available');
-		}
-		if (ini_get('apc.slam_defense') == 1) {
-			$this->markTestSkipped('This testcase can only be executed with apc.slam_defense = Off');
+		if (!extension_loaded('wincache')) {
+			$this->markTestSkipped('WinCache extension was not available');
 		}
 	}
 
@@ -51,7 +49,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	 * @expectedException \TYPO3\CMS\Core\Cache\Exception
 	 */
 	public function setThrowsExceptionIfNoFrontEndHasBeenSet() {
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\ApcBackend('Testing');
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
 		$data = 'Some data';
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
@@ -66,7 +64,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$inCache = $backend->has($identifier);
-		$this->assertTrue($inCache, 'APC backend failed to set and check entry');
+		$this->assertTrue($inCache, 'WinCache backend failed to set and check entry');
 	}
 
 	/**
@@ -78,7 +76,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 		$identifier = 'MyIdentifier' . md5(uniqid(mt_rand(), TRUE));
 		$backend->set($identifier, $data);
 		$fetchedData = $backend->get($identifier);
-		$this->assertEquals($data, $fetchedData, 'APC backend failed to set and retrieve data');
+		$this->assertEquals($data, $fetchedData, 'Winache backend failed to set and retrieve data');
 	}
 
 	/**
@@ -91,7 +89,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 		$backend->set($identifier, $data);
 		$backend->remove($identifier);
 		$inCache = $backend->has($identifier);
-		$this->assertFalse($inCache, 'Failed to set and remove data from APC backend');
+		$this->assertFalse($inCache, 'Failed to set and remove data from WinCache backend');
 	}
 
 	/**
@@ -105,7 +103,7 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 		$otherData = 'some other data';
 		$backend->set($identifier, $otherData);
 		$fetchedData = $backend->get($identifier);
-		$this->assertEquals($otherData, $fetchedData, 'APC backend failed to overwrite and retrieve data');
+		$this->assertEquals($otherData, $fetchedData, 'WinCache backend failed to overwrite and retrieve data');
 	}
 
 	/**
@@ -161,13 +159,13 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	public function flushByTagRemovesCacheEntriesWithSpecifiedTag() {
 		$backend = $this->setUpBackend();
 		$data = 'some data' . microtime();
-		$backend->set('BackendAPCTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
-		$backend->set('BackendAPCTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
-		$backend->set('BackendAPCTest3', $data, array('UnitTestTag%test'));
+		$backend->set('BackendWincacheTest1', $data, array('UnitTestTag%test', 'UnitTestTag%boring'));
+		$backend->set('BackendWincacheTest2', $data, array('UnitTestTag%test', 'UnitTestTag%special'));
+		$backend->set('BackendWincacheTest3', $data, array('UnitTestTag%test'));
 		$backend->flushByTag('UnitTestTag%special');
-		$this->assertTrue($backend->has('BackendAPCTest1'), 'BackendAPCTest1');
-		$this->assertFalse($backend->has('BackendAPCTest2'), 'BackendAPCTest2');
-		$this->assertTrue($backend->has('BackendAPCTest3'), 'BackendAPCTest3');
+		$this->assertTrue($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
+		$this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
+		$this->assertTrue($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
 	}
 
 	/**
@@ -176,13 +174,13 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	public function flushRemovesAllCacheEntries() {
 		$backend = $this->setUpBackend();
 		$data = 'some data' . microtime();
-		$backend->set('BackendAPCTest1', $data);
-		$backend->set('BackendAPCTest2', $data);
-		$backend->set('BackendAPCTest3', $data);
+		$backend->set('BackendWincacheTest1', $data);
+		$backend->set('BackendWincacheTest2', $data);
+		$backend->set('BackendWincacheTest3', $data);
 		$backend->flush();
-		$this->assertFalse($backend->has('BackendAPCTest1'), 'BackendAPCTest1');
-		$this->assertFalse($backend->has('BackendAPCTest2'), 'BackendAPCTest2');
-		$this->assertFalse($backend->has('BackendAPCTest3'), 'BackendAPCTest3');
+		$this->assertFalse($backend->has('BackendWincacheTest1'), 'BackendWincacheTest1');
+		$this->assertFalse($backend->has('BackendWincacheTest2'), 'BackendWincacheTest2');
+		$this->assertFalse($backend->has('BackendWincacheTest3'), 'BackendWincacheTest3');
 	}
 
 	/**
@@ -191,11 +189,11 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	public function flushRemovesOnlyOwnEntries() {
 		$thisCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$thisCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thisCache'));
-		$thisBackend = new \TYPO3\CMS\Core\Cache\Backend\ApcBackend('Testing');
+		$thisBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
 		$thisBackend->setCache($thisCache);
 		$thatCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
 		$thatCache->expects($this->any())->method('getIdentifier')->will($this->returnValue('thatCache'));
-		$thatBackend = new \TYPO3\CMS\Core\Cache\Backend\ApcBackend('Testing');
+		$thatBackend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
 		$thatBackend->setCache($thatCache);
 		$thisBackend->set('thisEntry', 'Hello');
 		$thatBackend->set('thatEntry', 'World!');
@@ -219,13 +217,13 @@ class t3lib_cache_backend_ApcBackendTest extends tx_phpunit_testcase {
 	}
 
 	/**
-	 * Sets up the APC backend used for testing
+	 * Sets up the WinCache backend used for testing
 	 *
-	 * @return \TYPO3\CMS\Core\Cache\Backend\ApcBackend
+	 * @return \TYPO3\CMS\Core\Cache\Backend\WincacheBackend
 	 */
 	protected function setUpBackend() {
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\FrontendInterface', array(), array(), '', FALSE);
-		$backend = new \TYPO3\CMS\Core\Cache\Backend\ApcBackend('Testing');
+		$backend = new \TYPO3\CMS\Core\Cache\Backend\WincacheBackend();
 		$backend->setCache($cache);
 		return $backend;
 	}

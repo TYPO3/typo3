@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,6 +23,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase for the TransientMemory cache backend
  *
@@ -30,7 +33,7 @@
  * @package TYPO3
  * @subpackage tests
  */
-class t3lib_cache_backend_TransientMemoryBackendTest extends tx_phpunit_testcase {
+class TransientMemoryBackendTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @expectedException \TYPO3\CMS\Core\Cache\Exception
