@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,12 +23,13 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase for \TYPO3\CMS\Core\Log\Writer\DatabaseWriter
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class t3lib_log_writer_DatabaseTest extends tx_phpunit_testcase {
+class DatabaseTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Backup and restore of the $GLOBALS array.

@@ -1,8 +1,10 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Fixtures;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2011-2012 Steffen Gebert (steffen.gebert@typo3.org)
+ * (c) 2012 Steffen Müller (typo3@t3node.com)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,23 +23,22 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once (__DIR__ . DIRECTORY_SEPARATOR) . '../fixtures/class.t3lib_log_writer_fixture.php';
+
 /**
- * Testcase for \TYPO3\CMS\Core\Log\Writer\AbstractWriter
+ * A processor dedicated for testing
  *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
+ * @author Steffen Müller <typo3@t3node.com>
  */
-class t3lib_log_writer_AbstractTest extends tx_phpunit_testcase {
+class ProcessorFixture extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
 
 	/**
-	 * @test
-	 * @expectedException InvalidArgumentException
+	 * Processing the record
+	 *
+	 * @param \TYPO3\CMS\Core\Log\LogRecord $record
+	 * @return \TYPO3\CMS\Core\Log\LogRecord
 	 */
-	public function refusesInvalidConfigurationOptions() {
-		$invalidConfiguration = array(
-			'foo' => 'bar'
-		);
-		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_log_writer_Fixture', $invalidConfiguration);
+	public function processLogRecord(\TYPO3\CMS\Core\Log\LogRecord $record) {
+		return $record;
 	}
 
 }

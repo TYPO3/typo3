@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Localization\Parser;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,16 +23,17 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class t3lib_l10n_parser_llxml.
+ * Testcase for class \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  * @package TYPO3
  */
-class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
+class LocallangXmlParserTest extends \tx_phpunit_testcase {
 
 	/**
-	 * @var t3lib_l10n_parser_llxml
+	 * @var \TYPO3\CMS\Core\Localization\Parser\LocallangXmlParser
 	 */
 	protected $parser;
 
@@ -53,12 +56,12 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 	 * Prepares the environment before running a test.
 	 */
 	public function setUp() {
-		// Backup locallangXMLOverride and localization format priority
+			// Backup locallangXMLOverride and localization format priority
 		$this->locallangXMLOverride = $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'];
 		$this->l10nPriority = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'];
 		$this->parser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Parser\\LocallangXmlParser');
-		$testFinder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Phpunit_Service_TestFinder');
-		$fixturePath = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/l10n/parser/fixtures/';
+
+		$fixturePath = __DIR__ . '/Fixtures/';
 		$this->llxmlFileNames = array(
 			'locallang' => $fixturePath . 'locallang.xml',
 			'locallang_override' => $fixturePath . 'locallang_override.xml',
@@ -66,7 +69,7 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 		);
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = 'xml';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LanguageStore')->initialize();
-		// Clear localization cache
+			// Clear localization cache
 		$GLOBALS['typo3CacheManager']->getCache('t3lib_l10n')->flush();
 	}
 
@@ -75,7 +78,7 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 	 */
 	public function tearDown() {
 		unset($this->parser);
-		// Restore locallangXMLOverride and localization format priority
+			// Restore locallangXMLOverride and localization format priority
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'] = $this->locallangXMLOverride;
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['format']['priority'] = $this->l10nPriority;
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LanguageStore')->initialize();

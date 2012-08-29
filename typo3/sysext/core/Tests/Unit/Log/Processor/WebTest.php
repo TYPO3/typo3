@@ -1,8 +1,11 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2011-2012 Ingo Renner (ingo@typo3.org)
+ * (c) 2012 Ingo Renner (ingo@typo3.org)
+ * (c) 2012 Steffen Müller (typo3@t3node.com)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,20 +24,28 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * A writer dedicated for testing
+ * Testcase for the web log processor.
  *
  * @author Ingo Renner <ingo@typo3.org>
+ * @author Steffen Müller <typo3@t3node.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
-class t3lib_log_writer_Fixture extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
+class WebTest extends \tx_phpunit_testcase {
 
 	/**
-	 * @var array
+	 * @test
 	 */
-	protected $records = array();
-
-	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
-		$this->records[] = $record;
+	public function webProcessorAddsWebDataToLogRecord() {
+		$environmentVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('_ARRAY');
+		$logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
+		$processor = new \TYPO3\CMS\Core\Log\Processor\WebProcessor();
+		$logRecord = $processor->processLogRecord($logRecord);
+		foreach ($environmentVariables as $key => $value) {
+			$this->assertEquals($value, $logRecord['data'][$key]);
+		}
 	}
 
 }
