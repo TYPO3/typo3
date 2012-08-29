@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Backend\Toolbar;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Interface for classes which hook into ClearCacheMenu and manipulate CacheMenuItems array
+ * Interface for classes which hook into TYPO3\CMS\Backend\Toolbar\ClearCacheToolbarItem and manipulate CacheMenuItems array
  *
  * @author Steffen Kamper <info@sk-typo3.de>
  * @package TYPO3

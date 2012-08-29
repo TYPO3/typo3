@@ -39,7 +39,7 @@ namespace TYPO3\CMS\Backend\Tree\View;
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor René Fritz <r.fritz@colorcube.de>
- * @see t3lib_treeView, t3lib_browseTree
+ * @see TYPO3\CMS\Backend\Tree\View\AbstractTreeView, TYPO3\CMS\Backend\Tree\View\BrowseTreeView
  * @package TYPO3
  * @subpackage t3lib
  */
@@ -115,7 +115,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @param boolean $exp The element was expanded to render subelements if this flag is set.
 	 * @return string Image tag with the plus/minus icon.
 	 * @access private
-	 * @see t3lib_treeView::PMicon()
+	 * @see TYPO3\CMS\Backend\Tree\View\AbstractTreeView::PMicon()
 	 * @todo Define visibility
 	 */
 	public function PMicon($row, $a, $c, $nextCount, $exp) {

@@ -205,7 +205,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 							$icon = ((((('<img src="' . $icon) . '" title="') . $title) . '" alt="') . $title) . '" />';
 						}
 						if (@is_file($icon)) {
-							$icon = ((((('<img' . \t3lib_iconworks::skinImg($GLOBALS['BACK_PATH'], $icon, 'width="16" height="16"')) . ' title="') . $title) . '" alt="') . $title) . '" />';
+							$icon = ((((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], $icon, 'width="16" height="16"')) . ' title="') . $title) . '" alt="') . $title) . '" />';
 						}
 					} else {
 						$icon = $item['icon'];

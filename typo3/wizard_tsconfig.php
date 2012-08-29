@@ -64,7 +64,7 @@ class ext_TSparser extends t3lib_tsparser_ext {
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Wizard/TsconfigWizard.php';
 // Make instance:
-$SOBE = t3lib_div::makeInstance('SC_wizard_tsconfig');
+$SOBE = t3lib_div::makeInstance('TYPO3\\CMS\\Backend\\Wizard\\TsconfigWizard');
 $SOBE->init();
 $SOBE->main();
 $SOBE->printContent();

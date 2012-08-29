@@ -837,7 +837,7 @@ class PageLayoutController {
 				// Setting up the tt_content columns to show:
 				if (is_array($GLOBALS['TCA']['tt_content']['columns']['colPos']['config']['items'])) {
 					$colList = array();
-					$tcaItems = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $this->id, $this);
+					$tcaItems = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:backend/Classes/View/BackendLayoutView.php:TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $this->id, $this);
 					foreach ($tcaItems as $temp) {
 						$colList[] = $temp[1];
 					}

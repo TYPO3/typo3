@@ -42,7 +42,7 @@ $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Controller/Wizard/ListController.php';
 // Make instance:
-$SOBE = t3lib_div::makeInstance('SC_wizard_list');
+$SOBE = t3lib_div::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\ListController');
 $SOBE->init();
 $SOBE->main();
 ?>

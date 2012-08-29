@@ -421,7 +421,7 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 		}
 		$id = intval($id);
 		// Check if input id is an offline version page in which case we will map id to the online version:
-		$checkRec = \t3lib_beFUnc::getRecord('pages', $id, 'pid,t3ver_oid');
+		$checkRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $id, 'pid,t3ver_oid');
 		if ($checkRec['pid'] == -1) {
 			$id = intval($checkRec['t3ver_oid']);
 		}

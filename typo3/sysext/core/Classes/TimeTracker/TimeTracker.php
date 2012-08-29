@@ -43,7 +43,7 @@ namespace TYPO3\CMS\Core\TimeTracker;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
- * @see t3lib_tsfeBeUserAuth, tslib_fe, tslib_cObj, TSpagegen
+ * @see \TYPO3\CMS\Backend\FrontendBackendUserAuthentication, tslib_fe, tslib_cObj, TSpagegen
  */
 class TimeTracker {
 
@@ -282,7 +282,7 @@ class TimeTracker {
 	 * Print TypoScript parsing log
 	 *
 	 * @return string HTML table with the information about parsing times.
-	 * @see t3lib_tsfeBeUserAuth::extGetCategory_tsdebug()
+	 * @see \TYPO3\CMS\Backend\FrontendBackendUserAuthentication::extGetCategory_tsdebug()
 	 */
 	public function printTSlog() {
 		// Calculate times and keys for the tsStackLog

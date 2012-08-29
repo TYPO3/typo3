@@ -88,7 +88,7 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 				$actions[] = array(
 					$actionRow['title'],
 					'mod.php?M=user_task&SET[mode]=tasks&SET[function]=sys_action.TYPO3\\CMS\\SysAction\\ActionTask&show=' . $actionRow['uid'],
-					\t3lib_iconworks::getSpriteIconForRecord('sys_action', $actionRow)
+					\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_action', $actionRow)
 				);
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($queryResource);

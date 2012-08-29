@@ -36,7 +36,7 @@ namespace TYPO3\CMS\Backend\Module;
 /**
  * EXAMPLE PROTOTYPE
  *
- * As for examples there are lots of them if you search for classes which extends 't3lib_SCbase'.
+ * As for examples there are lots of them if you search for classes which extends 'TYPO3\CMS\Backend\Module\BaseScriptClass'.
  * However you can see a prototype example of how a module might use this class in an index.php file typically hosting a backend module.
  * NOTICE: This example only outlines the basic structure of how this class is used. You should consult the documentation and other real-world examples for some actual things to do when building modules.
  *
@@ -48,12 +48,12 @@ namespace TYPO3\CMS\Backend\Module;
  * $GLOBALS['LANG']->includeLLFile('EXT:prototype/locallang.php');
  * $GLOBALS['BE_USER']->modAccess($MCONF,1);
  *
- * SC_mod_prototype EXTENDS THE CLASS t3lib_SCbase with a main() and printContent() function:
- * class SC_mod_prototype extends t3lib_SCbase {
+ * SC_mod_prototype EXTENDS THE CLASS TYPO3\CMS\Backend\Module\BaseScriptClass with a main() and printContent() function:
+ * class SC_mod_prototype extends TYPO3\CMS\Backend\Module\BaseScriptClass {
  * MAIN FUNCTION - HERE YOU CREATE THE MODULE CONTENT IN $this->content
  * function main() {
  * TYPICALLY THE INTERNAL VAR, $this->doc is instantiated like this:
- * $this->doc = t3lib_div::makeInstance('mediumDoc');
+ * $this->doc = t3lib_div::makeInstance('TYPO3\\CMS\\Backend\\Template\\MediumDocumentTemplate');
  * TYPICALLY THE INTERNAL VAR, $this->backPath is set like this:
  * $this->backPath = $this->doc->backPath = $GLOBALS['BACK_PATH'];
  * ... AND OF COURSE A LOT OF OTHER THINGS GOES ON - LIKE PUTTING CONTENT INTO $this->content
@@ -87,7 +87,7 @@ namespace TYPO3\CMS\Backend\Module;
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
  * @subpackage t3lib
- * @see t3lib_extobjbase
+ * @see \TYPO3\CMS\Backend\Module\AbstractFunctionModule
  */
 class BaseScriptClass {
 
@@ -153,7 +153,7 @@ class BaseScriptClass {
 	 * If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
 	 * Can be set from extension classes of this class before the init() function is called.
 	 *
-	 * @see menuConfig(), t3lib_BEfunc::getModuleData()
+	 * @see menuConfig(), TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
 	 * @todo Define visibility
 	 */
 	public $modMenu_type = '';
@@ -162,7 +162,7 @@ class BaseScriptClass {
 	 * dontValidateList can be used to list variables that should not be checked if their value is found in the MOD_MENU array. Used for dynamically generated menus.
 	 * Can be set from extension classes of this class before the init() function is called.
 	 *
-	 * @see menuConfig(), t3lib_BEfunc::getModuleData()
+	 * @see menuConfig(), TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
 	 * @todo Define visibility
 	 */
 	public $modMenu_dontValidateList = '';
@@ -171,7 +171,7 @@ class BaseScriptClass {
 	 * List of default values from $MOD_MENU to set in the output array (only if the values from MOD_MENU are not arrays)
 	 * Can be set from extension classes of this class before the init() function is called.
 	 *
-	 * @see menuConfig(), t3lib_BEfunc::getModuleData()
+	 * @see menuConfig(), TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
 	 * @todo Define visibility
 	 */
 	public $modMenu_setDefaultList = '';
@@ -200,7 +200,7 @@ class BaseScriptClass {
 	public $content = '';
 
 	/**
-	 * Generally used to hold an instance of the 'template' class from typo3/template.php
+	 * Generally used to hold an instance of TYPO3\CMS\Backend\Template\DocumentTemplate
 	 *
 	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 * @todo Define visibility
@@ -236,11 +236,11 @@ class BaseScriptClass {
 
 	/**
 	 * Initializes the internal MOD_MENU array setting and unsetting items based on various conditions. It also merges in external menu items from the global array TBE_MODULES_EXT (see mergeExternalItems())
-	 * Then MOD_SETTINGS array is cleaned up (see t3lib_BEfunc::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
+	 * Then MOD_SETTINGS array is cleaned up (see TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
 	 * Also loads the modTSconfig internal variable.
 	 *
 	 * @return void
-	 * @see init(), $MOD_MENU, $MOD_SETTINGS, t3lib_BEfunc::getModuleData(), mergeExternalItems()
+	 * @see init(), $MOD_MENU, $MOD_SETTINGS, TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(), mergeExternalItems()
 	 * @todo Define visibility
 	 */
 	public function menuConfig() {

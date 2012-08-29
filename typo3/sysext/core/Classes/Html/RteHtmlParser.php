@@ -158,7 +158,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param array $pArr Parameters for the current field as found in types-config
 	 * @param array $currentRecord Current record we are editing.
 	 * @return mixed On success an array with various information is returned, otherwise a string with an error message
-	 * @see t3lib_TCEmain, t3lib_transferData
+	 * @see t3lib_TCEmain, \TYPO3\CMS\Backend\Form\DataPreprocessor
 	 */
 	static public function evalWriteFile($pArr, $currentRecord) {
 		// Write file configuration:
@@ -205,7 +205,7 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 	 * @param string Direction of the transformation. Two keywords are allowed; "db" or "rte". If "db" it means the transformation will clean up content coming from the Rich Text Editor and goes into the database. The other direction, "rte", is of course when content is coming from database and must be transformed to fit the RTE.
 	 * @param array Parsed TypoScript content configuring the RTE, probably coming from Page TSconfig.
 	 * @return string Output value
-	 * @see t3lib_TCEmain::fillInFieldArray(), t3lib_transferData::renderRecord_typesProc()
+	 * @see t3lib_TCEmain::fillInFieldArray(), \TYPO3\CMS\Backend\Form\DataPreprocessor::renderRecord_typesProc()
 	 * @todo Define visibility
 	 */
 	public function RTE_transform($value, $specConf, $direction = 'rte', $thisConfig = array()) {

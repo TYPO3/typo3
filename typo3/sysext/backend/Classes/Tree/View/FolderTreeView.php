@@ -35,13 +35,13 @@ namespace TYPO3\CMS\Backend\Tree\View;
  * @coauthor René Fritz <r.fritz@colorcube.de>
  */
 /**
- * Extension class for the t3lib_treeView class, specially made for browsing folders in the File module
+ * Extension class for the TYPO3\CMS\Backend\Tree\View\AbstractTreeView class, specially made for browsing folders in the File module
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @coauthor René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib
- * @see class t3lib_treeView
+ * @see class TYPO3\CMS\Backend\Tree\View\AbstractTreeView
  */
 class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 
@@ -87,7 +87,7 @@ class FolderTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 * @param boolean $isExpanded The element was expanded to render subelements if this flag is set.
 	 * @return string Image tag with the plus/minus icon.
 	 * @internal
-	 * @see t3lib_pageTree::PMicon()
+	 * @see TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
 	 */
 	public function PMicon(\TYPO3\CMS\Core\Resource\Folder $folderObject, $subFolderCounter, $totalSubFolders, $nextCount, $isExpanded) {
 		$PM = $nextCount ? ($isExpanded ? 'minus' : 'plus') : 'join';

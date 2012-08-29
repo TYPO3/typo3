@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Backend\Sprite;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * An abstract class implementing t3lib_spritemanager_SpriteIconGenerator.
+ * An abstract class implementing TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface.
  * Provides base functionality for all handlers.
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
@@ -70,9 +70,9 @@ abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\Sprite
 
 	/**
 	 * Loads all stylesheet files registered through
-	 * t3lib_SpriteManager::addIconSprite
+	 * TYPO3\CMS\Backend\Sprite\SpriteManager::addIconSprite
 	 *
-	 * In fact the stylesheet-files are copied to t3lib_SpriteManager::tempPath
+	 * In fact the stylesheet-files are copied to TYPO3\CMS\Backend\Sprite\SpriteManager::tempPath
 	 * where they automatically will be included from via template.php and
 	 * t3lib_compressor.
 	 *
@@ -116,7 +116,7 @@ abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\Sprite
 	}
 
 	/**
-	 * Returns the detected icon-names which may be used through t3lib_iconWorks::getSpriteIcon.
+	 * Returns the detected icon-names which may be used through TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon.
 	 *
 	 * @return array all generated and registered sprite-icon-names, will be empty if there are none
 	 */
@@ -126,7 +126,7 @@ abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\Sprite
 
 	/**
 	 * this method creates sprite icon names for all tables in TCA (including their possible type-icons)
-	 * where there is no "typeicon_classes" of this TCA table ctrl section (moved form t3lib_iconWorks)
+	 * where there is no "typeicon_classes" of this TCA table ctrl section (moved form TYPO3\CMS\Backend\Utility\IconUtility)
 	 *
 	 * @return array Array as $iconName => $fileName
 	 */

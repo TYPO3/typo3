@@ -69,10 +69,10 @@ class Clickmenu {
 				$url .= '&tx_impexp[record][]=' . rawurlencode((($table . ':') . $uid));
 				$url .= '&tx_impexp[external_ref][tables][]=_ALL';
 			}
-			$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('export', $LL)), $backRef->excludeIcon(\t3lib_iconWorks::getSpriteIcon('actions-document-export-t3d')), $backRef->urlRefForCM($url), 1);
+			$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('export', $LL)), $backRef->excludeIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-export-t3d')), $backRef->urlRefForCM($url), 1);
 			if ($table == 'pages') {
 				$url = (((($modUrl . '?id=') . $uid) . '&table=') . $table) . '&tx_impexp[action]=import';
-				$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import', $LL)), $backRef->excludeIcon(\t3lib_iconWorks::getSpriteIcon('actions-document-import-t3d')), $backRef->urlRefForCM($url), 1);
+				$localItems[] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('import', $LL)), $backRef->excludeIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-import-t3d')), $backRef->urlRefForCM($url), 1);
 			}
 		}
 		return array_merge($menuItems, $localItems);

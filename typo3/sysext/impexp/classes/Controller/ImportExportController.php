@@ -458,7 +458,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$row[] = (((((('
 				<tr class="bgColor4">
 					<td><strong>' . $LANG->getLL('makeconfig_record', 1)) . '</strong></td>
-					<td>') . \t3lib_iconworks::getSpriteIconForRecord($tName, $rec)) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($tName, $rec, TRUE)) . '<input type="hidden" name="tx_impexp[record][]" value="') . htmlspecialchars((($tName . ':') . $rUid))) . '" /></td>
+					<td>') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($tName, $rec)) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($tName, $rec, TRUE)) . '<input type="hidden" name="tx_impexp[record][]" value="') . htmlspecialchars((($tName . ':') . $rUid))) . '" /></td>
 				</tr>';
 			}
 		}
@@ -480,7 +480,7 @@ class ImportExportController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$iconAndTitle = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-pagetree-root') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 					} else {
 						$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $referenceParts[1]);
-						$iconAndTitle = \t3lib_iconworks::getSpriteIconForRecord('pages', $record) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $record, TRUE);
+						$iconAndTitle = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $record) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $record, TRUE);
 					}
 					$tblList .= ((((('Table "' . $tableName) . '" from ') . $iconAndTitle) . '<input type="hidden" name="tx_impexp[list][]" value="') . htmlspecialchars($reference)) . '" /><br/>';
 				}

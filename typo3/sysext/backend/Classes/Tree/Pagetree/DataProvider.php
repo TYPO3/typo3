@@ -59,7 +59,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	/**
 	 * Process collection hook objects
 	 *
-	 * @var array<t3lib_tree_pagetree_interfaces_collectionprocessor>
+	 * @var array<\TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface>
 	 */
 	protected $processCollectionHookObjects = array();
 
@@ -77,9 +77,9 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 		$hookElements = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'];
 		if (is_array($hookElements)) {
 			foreach ($hookElements as $classRef) {
-				/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
+				/** @var $hookObject \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface */
 				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
-				if ($hookObject instanceof \t3lib_tree_pagetree_interfaces_collectionprocessor) {
+				if ($hookObject instanceof \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface) {
 					$this->processCollectionHookObjects[] = $hookObject;
 				}
 			}
@@ -159,21 +159,21 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			}
 		}
 		foreach ($this->processCollectionHookObjects as $hookObject) {
-			/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
+			/** @var $hookObject \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface */
 			$hookObject->postProcessGetNodes($node, $mountPoint, $level, $nodeCollection);
 		}
 		return $nodeCollection;
 	}
 
 	/**
-	 * Wrapper method for t3lib_befunc::getRecordWSOL
+	 * Wrapper method for TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL
 	 *
 	 * @param integer $uid The page id
 	 * @param boolean $unsetMovePointers Whether to unset move pointers
 	 * @return array
 	 */
 	protected function getRecordWithWorkspaceOverlay($uid, $unsetMovePointers = FALSE) {
-		return \t3lib_befunc::getRecordWSOL('pages', $uid, '*', '', TRUE, $unsetMovePointers);
+		return \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $uid, '*', '', TRUE, $unsetMovePointers);
 	}
 
 	/**
@@ -277,7 +277,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			}
 		}
 		foreach ($this->processCollectionHookObjects as $hookObject) {
-			/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
+			/** @var $hookObject \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface */
 			$hookObject->postProcessFilteredNodes($node, $searchFilter, $mountPoint, $nodeCollection);
 		}
 		return $nodeCollection;
@@ -364,7 +364,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			$nodeCollection->append($subNode);
 		}
 		foreach ($this->processCollectionHookObjects as $hookObject) {
-			/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
+			/** @var $hookObject \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface */
 			$hookObject->postProcessGetTreeMounts($searchFilter, $nodeCollection);
 		}
 		return $nodeCollection;

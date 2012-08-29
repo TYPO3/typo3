@@ -30,7 +30,7 @@ class FileEditHook {
 
 	/**
 	 * Hook-function: inject t3editor JavaScript code before the page is compiled
-	 * called in file_edit.php:SC_file_edit->main
+	 * called in TYPO3\CMS\Backend\Controller\File\EditFileController->main
 	 *
 	 * @param array $parameters
 	 * @param \TYPO3\CMS\Backend\Controller\File\EditFileController $pObj
@@ -64,7 +64,7 @@ class FileEditHook {
 
 	/**
 	 * Hook-function:
-	 * called in file_edit.php:SC_file_edit->main
+	 * called in TYPO3\CMS\Backend\Controller\File\EditFileController->main
 	 *
 	 * @param array $parameters
 	 * @param \TYPO3\CMS\Backend\Controller\File\EditFileController $pObj

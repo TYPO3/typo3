@@ -410,7 +410,7 @@ class ClickMenu {
 	 * @param string $type Type: "into" or "after
 	 * @param array $elInfo Contains instructions about whether to copy or cut an element.
 	 * @return array Item array, element in $menuItems
-	 * @see t3lib_clipboard::pasteUrl()
+	 * @see \TYPO3\CMS\Backend\Clipboard\Clipboard::pasteUrl()
 	 * @internal
 	 * @todo Define visibility
 	 */

@@ -37,7 +37,7 @@
  */
 require_once 'init.php';
 // Make instance:
-$SOBE = t3lib_div::makeInstance('TYPO3_tcefile');
+$SOBE = t3lib_div::makeInstance('TYPO3\\CMS\\Backend\\Controller\\File\\FileController');
 $SOBE->init();
 $SOBE->main();
 $SOBE->finish();

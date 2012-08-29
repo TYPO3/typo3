@@ -55,7 +55,7 @@ class ModuleController {
 
 	/**
 	 * This method creates the module menu if necessary
-	 * afterwards you only need an instance of Typo3_ModuleStorage
+	 * afterwards you only need an instance of TYPO3\CMS\Backend\Module\ModuleStorage
 	 * to get the menu
 	 *
 	 * @return void
@@ -74,7 +74,7 @@ class ModuleController {
 	 * Creates the module menu object structure from the raw data array
 	 *
 	 * @param array $rawModuleData
-	 * @see class.modulemenu.php getRawModuleData()
+	 * @see \TYPO3\CMS\Backend\View\ModuleMenuView::getRawModuleData()
 	 * @return void
 	 */
 	protected function convertRawModuleDataToModuleMenuObject(array $rawModuleData) {

@@ -41,7 +41,7 @@ require 'init.php';
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Controller/SimpleDataHandlerController.php';
 // Make instance:
-$SOBE = t3lib_div::makeInstance('SC_tce_db');
+$SOBE = t3lib_div::makeInstance('TYPO3\\CMS\\Backend\\Controller\\SimpleDataHandlerController');
 $SOBE->init();
 // Include files?
 foreach ($SOBE->include_once as $INC_FILE) {
