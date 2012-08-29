@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,23 +23,24 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the memoryUsage log processor.
+ * Testcase for the memoryPeakUsage log processor.
  *
  * @author Steffen Müller <typo3@t3node.com>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_log_processor_memoryUsageTest extends tx_phpunit_testcase {
+class MemoryPeakUsageTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @test
 	 */
-	public function memoryUsagePRocessorAddsMemoryUsageDataToLogRecord() {
+	public function memoryPeakUsagePRocessorAddsMemoryPeakUsageDataToLogRecord() {
 		$logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
-		$processor = new \TYPO3\CMS\Core\Log\Processor\MemoryUsageProcessor();
+		$processor = new \TYPO3\CMS\Core\Log\Processor\MemoryPeakUsageProcessor();
 		$logRecord = $processor->processLogRecord($logRecord);
-		$this->assertArrayHasKey('memoryUsage', $logRecord['data']);
+		$this->assertArrayHasKey('memoryPeakUsage', $logRecord['data']);
 	}
 
 }

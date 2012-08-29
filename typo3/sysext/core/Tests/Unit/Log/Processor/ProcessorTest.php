@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,6 +23,7 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase for log processors.
  *
@@ -28,7 +31,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_log_processor_ProcessorTest extends tx_phpunit_testcase implements \TYPO3\CMS\Core\Log\Processor\Processor {
+class ProcessorTest extends \tx_phpunit_testcase implements \TYPO3\CMS\Core\Log\Processor\Processor {
 
 	/**
 	 * @var bool

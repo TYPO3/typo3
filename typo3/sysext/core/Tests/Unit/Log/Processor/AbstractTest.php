@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,21 +23,25 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+require_once (__DIR__ . DIRECTORY_SEPARATOR) . '../Fixtures/ProcessorFixture.php';
+
 /**
- * A processor dedicated for testing
+ * Testcase for t3lib_log_processor_Abstract
  *
  * @author Steffen Müller <typo3@t3node.com>
  */
-class t3lib_log_processor_Fixture extends \TYPO3\CMS\Core\Log\Processor\AbstractProcessor {
+class AbstractTest extends \tx_phpunit_testcase {
 
 	/**
-	 * Processing the record
-	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $record
-	 * @return \TYPO3\CMS\Core\Log\LogRecord
+	 * @test
+	 * @expectedException InvalidArgumentException
 	 */
-	public function processLogRecord(\TYPO3\CMS\Core\Log\LogRecord $record) {
-		return $record;
+	public function processorRefusesInvalidConfigurationOptions() {
+		$invalidConfiguration = array(
+			'foo' => 'bar'
+		);
+		$processor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tests\\Unit\\Log\\Fixtures\\ProcessorFixture', $invalidConfiguration);
 	}
 
 }
