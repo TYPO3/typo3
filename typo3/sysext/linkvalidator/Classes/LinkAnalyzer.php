@@ -373,8 +373,8 @@ class LinkAnalyzer {
 	}
 
 	/**
-	 * Calls t3lib_tsfeBeUserAuth::extGetTreeList.
-	 * Although this duplicates the function t3lib_tsfeBeUserAuth::extGetTreeList
+	 * Calls TYPO3\CMS\Backend\FrontendBackendUserAuthentication::extGetTreeList.
+	 * Although this duplicates the function TYPO3\CMS\Backend\FrontendBackendUserAuthentication::extGetTreeList
 	 * this is necessary to create the object that is used recursively by the original function.
 	 *
 	 * Generates a list of page uids from $id. List does not include $id itself.
