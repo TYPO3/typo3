@@ -117,7 +117,7 @@ class DocumentTemplate {
 	 */
 	public $form_rowsToStylewidth = 9.58;
 
-	// Compensation for large documents (used in class.t3lib_tceforms.php)
+	// Compensation for large documents (used in TYPO3\CMS\Backend\Form\FormEngine)
 	/**
 	 * @todo Define visibility
 	 */
@@ -466,7 +466,7 @@ class DocumentTemplate {
 	 * @param string $params is a set of GET params to send to tce_db.php. Example: "&cmd[tt_content][123][move]=456" or "&data[tt_content][123][hidden]=1&data[tt_content][123][title]=Hello%20World
 	 * @param string $redirectUrl Redirect URL if any other that t3lib_div::getIndpEnv('REQUEST_URI') is wished
 	 * @return string URL to tce_db.php + parameters (backpath is taken from $this->backPath)
-	 * @see t3lib_BEfunc::editOnClick()
+	 * @see TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick()
 	 * @todo Define visibility
 	 */
 	public function issueCommand($params, $redirectUrl = '') {
@@ -560,7 +560,7 @@ class DocumentTemplate {
 			$mMN = '';
 		}
 		$onClick = (((((((((((('top.ShortcutManager.createShortcut(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeBookmark'))) . ', ') . '\'') . $backPath) . '\', ') . '\'') . rawurlencode($modName)) . '\', ') . '\'') . rawurlencode((($pathInfo['path'] . '?') . $storeUrl))) . $mMN) . '\'') . ');return false;';
-		$sIcon = ((((('<a href="#" onclick="' . htmlspecialchars($onClick)) . '" title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeBookmark', TRUE)) . '">') . \t3lib_iconworks::getSpriteIcon('actions-system-shortcut-new')) . '</a>';
+		$sIcon = ((((('<a href="#" onclick="' . htmlspecialchars($onClick)) . '" title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.makeBookmark', TRUE)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-shortcut-new')) . '</a>';
 		return $sIcon;
 	}
 

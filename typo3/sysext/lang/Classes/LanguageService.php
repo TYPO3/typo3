@@ -85,7 +85,7 @@ class LanguageService {
 
 	/**
 	 * Can contain labels and image references from the backend modules.
-	 * Relies on t3lib_loadmodules to initialize modules after a global instance of $LANG has been created.
+	 * Relies on TYPO3\CMS\Backend\Module\ModuleLoader to initialize modules after a global instance of $LANG has been created.
 	 *
 	 * @var array
 	 */
@@ -178,7 +178,7 @@ class LanguageService {
 	 * @param array $arr Array with references to module labels, keys: ['labels']['tablabel'],
 	 * @param string $prefix Module name prefix
 	 * @return void
-	 * @see t3lib_loadModules
+	 * @see \TYPO3\CMS\Backend\Module\ModuleLoader
 	 */
 	public function addModuleLabels($arr, $prefix) {
 		if (is_array($arr)) {

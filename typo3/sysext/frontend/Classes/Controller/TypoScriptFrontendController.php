@@ -1077,7 +1077,7 @@ class TypoScriptFrontendController {
 			$GLOBALS['TYPO3_MISC']['microtime_BE_USER_start'] = microtime(TRUE);
 			$GLOBALS['TT']->push('Back End user initialized', '');
 			// TODO: validate the comment below: is this necessary? if so,
-			// formfield_status should be set to "" in t3lib_tsfeBeUserAuth
+			// formfield_status should be set to "" in TYPO3\CMS\Backend\FrontendBackendUserAuthentication
 			// which is a subclass of t3lib_beUserAuth
 			// ----
 			// the value this->formfield_status is set to empty in order to

@@ -41,7 +41,7 @@ $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Controller/Wizard/AddController.php';
 // Make instance:
-$SOBE = t3lib_div::makeInstance('SC_wizard_add');
+$SOBE = t3lib_div::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\AddController');
 $SOBE->init();
 // Include files?
 foreach ($SOBE->include_once as $INC_FILE) {

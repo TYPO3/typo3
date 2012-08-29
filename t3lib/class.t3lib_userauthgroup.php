@@ -262,7 +262,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		}
 		$id = intval($id);
 		// Check if input id is an offline version page in which case we will map id to the online version:
-		$checkRec = t3lib_beFUnc::getRecord('pages', $id, 'pid,t3ver_oid');
+		$checkRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $id, 'pid,t3ver_oid');
 		if ($checkRec['pid'] == -1) {
 			$id = intval($checkRec['t3ver_oid']);
 		}
@@ -271,7 +271,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		}
 		if ($id > 0) {
 			$wM = $this->returnWebmounts();
-			$rL = t3lib_BEfunc::BEgetRootLine($id, ' AND ' . $readPerms);
+			$rL = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($id, ' AND ' . $readPerms);
 			foreach ($rL as $v) {
 				if ($v['uid'] && in_array($v['uid'], $wM)) {
 					return $v['uid'];
@@ -292,7 +292,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @todo Define visibility
 	 */
 	public function modAccess($conf, $exitOnError) {
-		if (!t3lib_BEfunc::isModuleSetInTBE_MODULES($conf['name'])) {
+		if (!\TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES($conf['name'])) {
 			if ($exitOnError) {
 				throw new RuntimeException(('Fatal Error: This module "' . $conf['name']) . '" is not enabled in TBE_MODULES', 1294586446);
 			}
@@ -425,7 +425,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			$this->RTE_errors[] = 'RTE is not enabled in $TYPO3_CONF_VARS["BE"]["RTEenabled"]';
 		}
 		// Acquire RTE object:
-		$RTE = t3lib_BEfunc::RTEgetObj();
+		$RTE = \TYPO3\CMS\Backend\Utility\BackendUtility::RTEgetObj();
 		if (!is_object($RTE)) {
 			$this->RTE_errors = array_merge($this->RTE_errors, $RTE);
 		}
@@ -552,7 +552,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	public function checkFullLanguagesAccess($table, $record) {
 		$recordLocalizationAccess = $this->checkLanguageAccess(0);
-		if ($recordLocalizationAccess && (t3lib_BEfunc::isTableLocalizable($table) || isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']))) {
+		if ($recordLocalizationAccess && (\TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table) || isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']))) {
 			if (isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable'])) {
 				$l10nTable = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'];
 				$pointerField = $GLOBALS['TCA'][$l10nTable]['ctrl']['transOrigPointerField'];
@@ -562,7 +562,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				$pointerField = $GLOBALS['TCA'][$l10nTable]['ctrl']['transOrigPointerField'];
 				$pointerValue = $record[$pointerField] > 0 ? $record[$pointerField] : $record['uid'];
 			}
-			$recordLocalizations = t3lib_BEfunc::getRecordsByField($l10nTable, $pointerField, $pointerValue, '', '', '', '1');
+			$recordLocalizations = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField($l10nTable, $pointerField, $pointerValue, '', '', '', '1');
 			if (is_array($recordLocalizations)) {
 				foreach ($recordLocalizations as $localization) {
 					$recordLocalizationAccess = $recordLocalizationAccess && $this->checkLanguageAccess($localization[$GLOBALS['TCA'][$l10nTable]['ctrl']['languageField']]);
@@ -600,9 +600,9 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			// Fetching the record if the $idOrRow variable was not an array on input:
 			if (!is_array($idOrRow)) {
 				if ($deletedRecord) {
-					$idOrRow = t3lib_BEfunc::getRecord($table, $idOrRow, '*', '', FALSE);
+					$idOrRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $idOrRow, '*', '', FALSE);
 				} else {
-					$idOrRow = t3lib_BEfunc::getRecord($table, $idOrRow);
+					$idOrRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $idOrRow);
 				}
 				if (!is_array($idOrRow)) {
 					$this->errorMsg = 'ERROR: Record could not be fetched.';
@@ -733,7 +733,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		// Only test offline spaces:
 		if ($this->workspace !== 0) {
 			if (!is_array($recData)) {
-				$recData = t3lib_BEfunc::getRecord($table, $recData, 'pid' . ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ? ',t3ver_wsid,t3ver_stage' : ''));
+				$recData = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $recData, 'pid' . ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ? ',t3ver_wsid,t3ver_stage' : ''));
 			}
 			if (is_array($recData)) {
 				// We are testing a "version" (identified by a pid of -1): it can be edited provided that workspace matches and versioning is enabled for the table.
@@ -781,7 +781,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	public function workspaceCannotEditOfflineVersion($table, $recData) {
 		if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 			if (!is_array($recData)) {
-				$recData = t3lib_BEfunc::getRecord($table, $recData, 'uid,pid,t3ver_wsid,t3ver_stage');
+				$recData = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $recData, 'uid,pid,t3ver_wsid,t3ver_stage');
 			}
 			if (is_array($recData)) {
 				if ((int) $recData['pid'] === -1) {
@@ -853,7 +853,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		// Auto-creation of version: In offline workspace, test if versioning is
 		// enabled and look for workspace version of input record.
 		// If there is no versionized record found we will create one and save to that.
-		if (((($this->workspace !== 0 && !$this->workspaceRec['disable_autocreate']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $recpid >= 0) && !t3lib_BEfunc::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid')) {
+		if (((($this->workspace !== 0 && !$this->workspaceRec['disable_autocreate']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $recpid >= 0) && !\TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid')) {
 			// There must be no existing version of this record in workspace.
 			return TRUE;
 		} elseif ($this->workspaceRec['disable_autocreate']) {
@@ -880,10 +880,10 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			$stage = intval($stage);
 			$stat = $this->checkWorkspaceCurrent();
 			// Check if custom staging is activated
-			$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $stat['uid']);
+			$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $stat['uid']);
 			if (($workspaceRec['custom_stages'] > 0 && $stage !== 0) && $stage !== -10) {
 				// Get custom stage record
-				$workspaceStageRec = t3lib_BEfunc::getRecord('sys_workspace_stage', $stage);
+				$workspaceStageRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace_stage', $stage);
 				// Check if the user is responsible for the current stage
 				if (t3lib_div::inList($workspaceStageRec['responsible_persons'], 'be_users_' . $this->user['uid']) && $stat['_ACCESS'] === 'member' || $stat['_ACCESS'] === 'owner') {
 					return TRUE;
@@ -1186,7 +1186,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			$this->userTS_text = implode((LF . '[GLOBAL]') . LF, $this->TSdataArray);
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['TSconfigConditions'] && !$this->userTS_dontGetCached) {
 				// Perform TS-Config parsing with condition matching
-				$parseObj = t3lib_div::makeInstance('t3lib_TSparser_TSconfig');
+				$parseObj = t3lib_div::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser');
 				$res = $parseObj->parseTSconfig($this->userTS_text, 'userTS');
 				if ($res) {
 					$this->userTS = $res['TSconfig'];
@@ -1195,14 +1195,14 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			} else {
 				// Parsing the user TSconfig (or getting from cache)
 				$hash = md5('userTS:' . $this->userTS_text);
-				$cachedContent = t3lib_BEfunc::getHash($hash);
+				$cachedContent = \TYPO3\CMS\Backend\Utility\BackendUtility::getHash($hash);
 				if (isset($cachedContent) && !$this->userTS_dontGetCached) {
 					$this->userTS = unserialize($cachedContent);
 				} else {
 					$parseObj = t3lib_div::makeInstance('t3lib_TSparser');
 					$parseObj->parse($this->userTS_text);
 					$this->userTS = $parseObj->setup;
-					t3lib_BEfunc::storeHash($hash, serialize($this->userTS), 'BE_USER_TSconfig');
+					\TYPO3\CMS\Backend\Utility\BackendUtility::storeHash($hash, serialize($this->userTS), 'BE_USER_TSconfig');
 					// Update UC:
 					$this->userTSUpdated = 1;
 				}
@@ -1831,7 +1831,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				break;
 			default:
 				if (t3lib_extMgm::isLoaded('workspaces')) {
-					$wsRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, 'sys_workspace', ('pid=0 AND uid=' . intval($wsRec)) . t3lib_BEfunc::deleteClause('sys_workspace'), '', 'title');
+					$wsRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, 'sys_workspace', ('pid=0 AND uid=' . intval($wsRec)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'), '', 'title');
 				}
 				break;
 			}
@@ -1953,7 +1953,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			$defaultWorkspace = -1;
 		} elseif (t3lib_extMgm::isLoaded('workspaces')) {
 			// Traverse custom workspaces:
-			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers', 'sys_workspace', 'pid=0' . t3lib_BEfunc::deleteClause('sys_workspace'), '', 'title');
+			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers', 'sys_workspace', 'pid=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'), '', 'title');
 			foreach ($workspaces as $rec) {
 				if ($this->checkWorkspace($rec)) {
 					$defaultWorkspace = $rec['uid'];

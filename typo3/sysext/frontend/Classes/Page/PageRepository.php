@@ -951,7 +951,7 @@ class PageRepository {
 	 * @param string $table Table name
 	 * @param array $rr Record array passed by reference. As minimum, "pid" and "uid" fields must exist! "t3ver_oid" and "t3ver_wsid" is nice and will save you a DB query.
 	 * @return void (Passed by ref).
-	 * @see t3lib_BEfunc::fixVersioningPid(), versionOL(), getRootLine()
+	 * @see TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid(), versionOL(), getRootLine()
 	 * @todo Define visibility
 	 */
 	public function fixVersioningPid($table, &$rr) {
@@ -998,7 +998,7 @@ class PageRepository {
 	 * @param boolean $unsetMovePointers If set, the $row is cleared in case it is a move-pointer. This is only for preview of moved records (to remove the record from the original location so it appears only in the new location)
 	 * @param boolean $bypassEnableFieldsCheck Unless this option is TRUE, the $row is unset if enablefields for BOTH the version AND the online record deselects it. This is because when versionOL() is called it is assumed that the online record is already selected with no regards to it's enablefields. However, after looking for a new version the online record enablefields must ALSO be evaluated of course. This is done all by this function!
 	 * @return void (Passed by ref).
-	 * @see fixVersioningPid(), t3lib_BEfunc::workspaceOL()
+	 * @see fixVersioningPid(), TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL()
 	 * @todo Define visibility
 	 */
 	public function versionOL($table, &$row, $unsetMovePointers = FALSE, $bypassEnableFieldsCheck = FALSE) {
@@ -1053,7 +1053,7 @@ class PageRepository {
 	 * @param string $table Table name
 	 * @param array $row Row (passed by reference) - only online records...
 	 * @return boolean TRUE if overlay is made.
-	 * @see t3lib_BEfunc::movePlhOl()
+	 * @see TYPO3\CMS\Backend\Utility\BackendUtility::movePlhOl()
 	 * @todo Define visibility
 	 */
 	public function movePlhOL($table, &$row) {
@@ -1087,7 +1087,7 @@ class PageRepository {
 	 * @param integer $uid Record UID of online version
 	 * @param string $fields Field list, default is *
 	 * @return array If found, the record, otherwise nothing.
-	 * @see t3lib_BEfunc::getMovePlaceholder()
+	 * @see TYPO3\CMS\Backend\Utility\BackendUtility::getMovePlaceholder()
 	 * @todo Define visibility
 	 */
 	public function getMovePlaceholder($table, $uid, $fields = '*') {
@@ -1116,7 +1116,7 @@ class PageRepository {
 	 * @param string $fields Field list to select
 	 * @param boolean $bypassEnableFieldsCheck If TRUE, enablefields are not checked for.
 	 * @return mixed If found, return record, otherwise other value: Returns 1 if version was sought for but not found, returns -1/-2 if record (offline/online) existed but had enableFields that would disable it. Returns FALSE if not in workspace or no versioning for record. Notice, that the enablefields of the online record is also tested.
-	 * @see t3lib_befunc::getWorkspaceVersionOfRecord()
+	 * @see TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord()
 	 * @todo Define visibility
 	 */
 	public function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*', $bypassEnableFieldsCheck = FALSE) {

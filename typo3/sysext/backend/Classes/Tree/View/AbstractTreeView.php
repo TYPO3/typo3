@@ -33,9 +33,9 @@ namespace TYPO3\CMS\Backend\Tree\View;
  * @author René Fritz <r.fritz@colorcube.de>
  * @package TYPO3
  * @subpackage t3lib
- * @see t3lib_browsetree
- * @see t3lib_pagetree
- * @see t3lib_foldertree
+ * @see TYPO3\CMS\Backend\Tree\View\BrowseTreeView
+ * @see TYPO3\CMS\Backend\Tree\View\PageTreeView
+ * @see TYPO3\CMS\Backend\Tree\View\FolderTreeView
  */
 abstract class AbstractTreeView {
 
@@ -498,7 +498,7 @@ abstract class AbstractTreeView {
 	 * @param boolean $exp The element was expanded to render subelements if this flag is set.
 	 * @return string Image tag with the plus/minus icon.
 	 * @access private
-	 * @see t3lib_pageTree::PMicon()
+	 * @see TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
 	 * @todo Define visibility
 	 */
 	public function PMicon($row, $a, $c, $nextCount, $exp) {
@@ -605,7 +605,7 @@ abstract class AbstractTreeView {
 	 * @param integer $id Record id/key
 	 * @return boolean
 	 * @access private
-	 * @see t3lib_pageTree::expandNext()
+	 * @see TYPO3\CMS\Backend\Tree\View\PageTreeView::expandNext()
 	 * @todo Define visibility
 	 */
 	public function expandNext($id) {

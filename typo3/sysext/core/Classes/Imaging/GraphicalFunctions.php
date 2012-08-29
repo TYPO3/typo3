@@ -569,7 +569,7 @@ class GraphicalFunctions {
 	 * @param integer $srcHeight Source height
 	 * @return void
 	 * @access private
-	 * @see t3lib_iconWorks::imagecopyresized()
+	 * @see TYPO3\CMS\Backend\Utility\IconUtility::imagecopyresized()
 	 * @todo Define visibility
 	 */
 	public function imagecopyresized(&$dstImg, $srcImg, $dstX, $dstY, $srcX, $srcY, $dstWidth, $dstHeight, $srcWidth, $srcHeight) {

@@ -125,7 +125,7 @@ class PagePositionMap {
 	 **************************************/
 	/**
 	 * Creates a "position tree" based on the page tree.
-	 * Notice: A class, "localPageTree" must exist and probably it is an extension class of the t3lib_pageTree class. See "db_new.php" in the core for an example.
+	 * Notice: A class, "localPageTree" must exist and probably it is an extension class of the TYPO3\CMS\Backend\Tree\View\PageTreeView class. See "db_new.php" in the core for an example.
 	 *
 	 * @param integer $id Current page id
 	 * @param array $pageinfo Current page record.
@@ -404,7 +404,7 @@ class PagePositionMap {
 		$row1 = '';
 		$row2 = '';
 		$count = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(count($colPosArray), 1);
-		$backendLayout = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getSelectedBackendLayout', $pid, $this);
+		$backendLayout = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:backend/Classes/View/BackendLayoutView.php:TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getSelectedBackendLayout', $pid, $this);
 		if (isset($backendLayout['__config']['backend_layout.'])) {
 			$table = '<div class="t3-gridContainer"><table border="0" cellspacing="0" cellpadding="0" id="typo3-ttContentList">';
 			$colCount = intval($backendLayout['__config']['backend_layout.']['colCount']);
@@ -414,7 +414,7 @@ class PagePositionMap {
 				$table .= ('<col style="width:' . 100 / $colCount) . '%"></col>';
 			}
 			$table .= '</colgroup>';
-			$tcaItems = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:cms/classes/class.tx_cms_backendlayout.php:TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $pid, $this);
+			$tcaItems = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('EXT:backend/Classes/View/BackendLayoutView.php:TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getColPosListItemsParsed', $pid, $this);
 			// Cycle through rows
 			for ($row = 1; $row <= $rowCount; $row++) {
 				$rowConfig = $backendLayout['__config']['backend_layout.']['rows.'][$row . '.'];

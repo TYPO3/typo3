@@ -41,7 +41,7 @@ $LANG->includeLLFile('EXT:lang/locallang_wizards.xml');
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Controller/Wizard/EditController.php';
 // Make instance:
-$SOBE = t3lib_div::makeInstance('SC_wizard_edit');
+$SOBE = t3lib_div::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\EditController');
 $SOBE->init();
 $SOBE->main();
 ?>

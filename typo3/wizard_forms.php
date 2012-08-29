@@ -42,7 +42,7 @@ $GLOBALS['LANG']->includeLLFile('EXT:lang/locallang_wizards.xml');
  */
 require_once t3lib_extMgm::extPath('backend') . 'Classes/Controller/Wizard/FormsController.php';
 // Make instance:
-$SOBE = t3lib_div::makeInstance('SC_wizard_forms');
+$SOBE = t3lib_div::makeInstance('TYPO3\\CMS\\Backend\\Controller\\Wizard\\FormsController');
 $SOBE->init();
 // Include files?
 foreach ($SOBE->include_once as $INC_FILE) {

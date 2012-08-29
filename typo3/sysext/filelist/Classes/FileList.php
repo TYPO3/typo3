@@ -312,7 +312,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 			$titleCol = 'file';
 			// @todo: fix this: go up one level with FAL
 			// $upLevelDir = dirname(substr($files['files'][0]['path'], 0, -1)) . '/';
-			// $levelUp = $GLOBALS['SOBE']->basicFF->checkPathAgainstMounts($upLevelDir) ? $this->linkWrapDir(t3lib_iconWorks::getSpriteIcon('actions-view-go-up', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel', TRUE))), $upLevelDir) : '';
+			// $levelUp = $GLOBALS['SOBE']->basicFF->checkPathAgainstMounts($upLevelDir) ? $this->linkWrapDir(TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-up', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.upOneLevel', TRUE))), $upLevelDir) : '';
 			// Cleaning rowlist for duplicates and place the $titleCol as the first column always!
 			$rowlist = \TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList($titleCol, $rowlist);
 			$rowlist = \TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList($rowlist);
@@ -430,7 +430,7 @@ class FileList extends \TYPO3\CMS\Backend\RecordList\AbstractRecordList {
 						$theData[$field] = $GLOBALS['LANG']->getLL('folder', TRUE);
 						break;
 					case 'tstamp':
-						// @todo: FAL: how to get the mtime info -- $theData[$field] = t3lib_BEfunc::date($theFile['tstamp']);
+						// @todo: FAL: how to get the mtime info -- $theData[$field] = \TYPO3\CMS\Backend\Utility\BackendUtility::date($theFile['tstamp']);
 						$theData[$field] = '-';
 						break;
 					case 'file':

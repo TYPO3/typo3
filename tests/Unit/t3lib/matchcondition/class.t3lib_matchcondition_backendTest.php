@@ -41,7 +41,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	private $rootline;
 
 	/**
-	 * @var 	t3lib_matchCondition_backend
+	 * @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher
 	 */
 	private $matchCondition;
 

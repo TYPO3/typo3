@@ -111,13 +111,13 @@ class Bootstrap {
 	 */
 	public function registerExtDirectComponents() {
 		if (TYPO3_MODE === 'BE') {
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.DataProvider', PATH_t3lib . 'tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php:TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeDataProvide', 'web', 'user,group');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.Commands', PATH_t3lib . 'tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php:TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeCommands', 'web', 'user,group');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.ContextMenuDataProvider', PATH_t3lib . 'contextmenu/pagetree/extdirect/class.t3lib_contextmenu_pagetree_extdirect_contextmenu.php:TYPO3\\CMS\\Backend\\ContextMenu\\Pagetree\\Extdirect\\ContextMenuConfiguration', 'web', 'user,group');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.LiveSearchActions.ExtDirect', PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_backendlivesearch.php:extDirect_DataProvider_BackendLiveSearch', 'web_list', 'user,group');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.DataProvider', PATH_site . 'typo3/sysext/backend/Classes/Tree/Pagetree/ExtdirectTreeDataProvide.php:TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeDataProvide', 'web', 'user,group');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.Commands', PATH_site . 'typo3/sysext/backend/Classes/Tree/Pagetree/ExtdirectTreeCommands.php:TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeCommands', 'web', 'user,group');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.ContextMenuDataProvider', PATH_site . 'typo3/sysext/backend/Classes/ContextMenu/Pagetree/Extdirect/ContextMenuConfiguration.php:TYPO3\\CMS\\Backend\\ContextMenu\\Pagetree\\Extdirect\\ContextMenuConfiguration', 'web', 'user,group');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.LiveSearchActions.ExtDirect', PATH_site . 'typo3/sysext/backend/Classes/Search/LiveSearch/ExtDirect/LiveSearchDataProvider.php:LiveSearchDataProvider', 'web_list', 'user,group');
 			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.BackendUserSettings.ExtDirect', PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_beusersettings.php:TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
 			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.CSH.ExtDirect', PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_contexthelp.php:TYPO3\\CMS\\ContextHelp\\ExtDirect\\ContextHelpDataProvider');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.ExtDirectStateProvider.ExtDirect', PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_state.php:TYPO3\\CMS\\Backend\\InterfaceState\\ExtDirect\\DataProvider');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.ExtDirectStateProvider.ExtDirect', PATH_site . 'typo3/sysext/backend/Classes/InterfaceState/ExtDirect/DataProvider.php:TYPO3\\CMS\\Backend\\InterfaceState\\ExtDirect\\DataProvider');
 		}
 		return $this;
 	}

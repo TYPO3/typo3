@@ -140,7 +140,7 @@ class RelationHandler {
 	 */
 	public $currentTable;
 
-	// If a record should be undeleted (so do not use the $useDeleteClause on t3lib_BEfunc)
+	// If a record should be undeleted (so do not use the $useDeleteClause on TYPO3\CMS\Backend\Utility\BackendUtility)
 	/**
 	 * @todo Define visibility
 	 */
@@ -851,7 +851,7 @@ class RelationHandler {
 	 * Prepare items from itemArray to be transferred to the TCEforms interface (as a comma list)
 	 *
 	 * @return string
-	 * @see t3lib_transferdata::renderRecord()
+	 * @see \TYPO3\CMS\Backend\Form\DataPreprocessor::renderRecord()
 	 * @todo Define visibility
 	 */
 	public function readyForInterface() {

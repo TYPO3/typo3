@@ -44,7 +44,7 @@ class UserFileMountService {
 	 * of a selected mount
 	 *
 	 * @param array $PA the array with additional configuration options.
-	 * @param t3lib_tceforms $tceformsObj the TCEforms parent object
+	 * @param \TYPO3\CMS\Backend\Form\FormEngine $tceformsObj the TCEforms parent object
 	 * @return string The HTML code for the TCEform field
 	 */
 	public function renderTceformsSelectDropdown(&$PA, &$tceformsObj) {

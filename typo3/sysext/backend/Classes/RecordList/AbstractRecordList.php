@@ -158,7 +158,7 @@ abstract class AbstractRecordList {
 	public $translateTools;
 
 	/**
-	 * Constructor for t3lib_recordList
+	 * Constructor for TYPO3\CMS\Backend\RecordList\AbstractRecordList
 	 */
 	public function __construct() {
 		if (isset($GLOBALS['BE_USER']->uc['titleLen']) && $GLOBALS['BE_USER']->uc['titleLen'] > 0) {
@@ -422,7 +422,7 @@ abstract class AbstractRecordList {
 	}
 
 	/**
-	 * Gets an instance of t3lib_transl8tools.
+	 * Gets an instance of TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider.
 	 *
 	 * @return \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider
 	 */

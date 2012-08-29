@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Filelist;
  * @author Benjamin Mack   <bmack@xnos.org>
  * @package TYPO3
  * @subpackage core
- * @see class t3lib_browseTree
+ * @see class TYPO3\CMS\Backend\Tree\View\BrowseTreeView
  */
 class FileListFolderTree extends \TYPO3\CMS\Backend\Tree\View\FolderTreeView {
 

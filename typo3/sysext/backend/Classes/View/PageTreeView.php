@@ -27,14 +27,14 @@ namespace TYPO3\CMS\Backend\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Extension class for the t3lib_browsetree class, specially made
+ * Extension class for the TYPO3\CMS\Backend\Tree\View\BrowseTreeView class, specially made
  * for browsing pages in the Web module
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Benjamin Mack <bmack@xnos.org>
  * @package TYPO3
  * @subpackage core
- * @see class t3lib_browseTree
+ * @see class TYPO3\CMS\Backend\Tree\View\BrowseTreeView
  */
 class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 
@@ -268,7 +268,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @param boolean $exp The element was expanded to render subelements if this flag is set.
 	 * @return string Image tag with the plus/minus icon.
 	 * @access private
-	 * @see t3lib_pageTree::PMicon()
+	 * @see TYPO3\CMS\Backend\Tree\View\PageTreeView::PMicon()
 	 * @todo Define visibility
 	 */
 	public function PMicon($row, $a, $c, $nextCount, $exp) {

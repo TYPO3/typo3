@@ -40,7 +40,7 @@ class SpriteIconForRecordViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\Abst
 	 * @param string $table
 	 * @param object $object
 	 * @return string
-	 * @see t3lib_iconWorks::getSpriteIconForRecord($table, $row)
+	 * @see TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row)
 	 */
 	public function render($table, $object) {
 		if (!is_object($object) || !method_exists($object, 'getUid')) {
