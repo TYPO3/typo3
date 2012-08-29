@@ -135,7 +135,7 @@ class LocalizationUtility {
 	 * @see tslib_fe::sL()
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected function translateFileReference($key) {
+	static protected function translateFileReference($key) {
 		if (TYPO3_MODE === 'FE') {
 			$value = $GLOBALS['TSFE']->sL($key);
 			return $value !== FALSE ? $value : NULL;
