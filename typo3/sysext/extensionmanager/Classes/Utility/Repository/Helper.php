@@ -294,7 +294,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 			// no further problems - start of import process
 			if ($updateNecessity === 0) {
 				$uid = $this->repository->getUid();
-				/* @var $objExtListImporter Tx_Extensionmanager_Utility_Importer_ExtensionList */
+				/* @var $objExtListImporter \TYPO3\CMS\Extensionmanager\Utility\Importer\ExtensionListUtility */
 				$objExtListImporter = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\Importer\\ExtensionListUtility');
 				$objExtListImporter->import($this->getLocalExtListFile(), $uid);
 				$updated = TRUE;

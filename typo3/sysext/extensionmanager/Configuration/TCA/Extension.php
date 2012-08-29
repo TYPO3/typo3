@@ -7,7 +7,6 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 	'interface' => array(
 		'showRecordFieldList' => 'extensionkey,version,title,description,state,category,lastupdated,updatecomment,authorname,authoremail'
 	),
-	'feInterface' => $TCA['tx_extensionmanager_domain_model_extension']['feInterface'],
 	'columns' => array(
 		'extension_key' => array(
 			'exclude' => 0,
@@ -96,23 +95,14 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 				'size' => '30'
 			)
 		),
-		'lastversion' => array(
+		'current_version' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.lastversion',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.currentversion',
 			'config' => array(
 				'type' => 'check',
 				'size' => '1'
 			)
 		),
-		'position' => array(
-			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.lastversion',
-			'config' => array(
-				'type' => 'input',
-				'size' => '10',
-				'eval' => 'int'
-			)
-		)
 	),
 	'types' => array(
 		'0' => array('showitem' => 'extensionkey;;;;1-1-1, version, title;;;;2-2-2, description;;;;3-3-3, state, category, lastupdated, updatecomment, authorname, authoremail')
