@@ -5,9 +5,8 @@ if (!defined('TYPO3_MODE')) {
 $TCA['tx_extensionmanager_domain_model_extension'] = array(
 	'ctrl' => $TCA['tx_extensionmanager_domain_model_extension']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'extensionkey,version,title,description,state,category,lastupdated,updatecomment,authorname,authoremail'
+		'showRecordFieldList' => 'extensionkey,version,title,description,state,category,lastupdated,updatecomment,authorname,authoremail,md5hash'
 	),
-	'feInterface' => $TCA['tx_extensionmanager_domain_model_extension']['feInterface'],
 	'columns' => array(
 		'extension_key' => array(
 			'exclude' => 0,
@@ -96,26 +95,25 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 				'size' => '30'
 			)
 		),
-		'lastversion' => array(
+		'current_version' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.lastversion',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.currentversion',
 			'config' => array(
 				'type' => 'check',
 				'size' => '1'
 			)
 		),
-		'position' => array(
+		'md5hash' => array(
 			'exclude' => 0,
-			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.lastversion',
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.md5hash',
 			'config' => array(
 				'type' => 'input',
-				'size' => '10',
-				'eval' => 'int'
-			)
-		)
+				'size' => '1',
+			),
+		),
 	),
 	'types' => array(
-		'0' => array('showitem' => 'extensionkey;;;;1-1-1, version, title;;;;2-2-2, description;;;;3-3-3, state, category, lastupdated, updatecomment, authorname, authoremail')
+		'0' => array('showitem' => 'extensionkey;;;;1-1-1, version, title;;;;2-2-2, description;;;;3-3-3, state, category, lastupdated, updatecomment, authorname, authoremail, md5hash')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')

@@ -1,14 +1,14 @@
 #
-# Table structure for table 'sys_ter'
+# Table structure for table 'tx_extensionmanager_domain_model_repository'
 #
-CREATE TABLE sys_ter (
+CREATE TABLE tx_extensionmanager_domain_model_repository (
   uid int(11) unsigned NOT NULL auto_increment,
   title varchar(150) NOT NULL default '',
   description mediumtext,
   wsdl_url varchar(100) NOT NULL default '',
-  mirror_url varchar(100) NOT NULL default '',
-  lastUpdated int(11) unsigned DEFAULT '0' NOT NULL,
-  extCount int(11) DEFAULT '0' NOT NULL,
+  mirror_list_url varchar(100) NOT NULL default '',
+  last_update int(11) unsigned DEFAULT '0' NOT NULL,
+  extension_count int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid)
 );
 
@@ -17,7 +17,7 @@ CREATE TABLE sys_ter (
 #
 CREATE TABLE tx_extensionmanager_domain_model_extension (
   uid int(11) NOT NULL auto_increment,
-  extkey varchar(60) NOT NULL default '',
+  extension_key varchar(60) NOT NULL default '',
   repository int(11) unsigned NOT NULL default '1',
   version varchar(10) NOT NULL default '',
   alldownloadcounter int(11) unsigned NOT NULL default '0',
@@ -25,19 +25,19 @@ CREATE TABLE tx_extensionmanager_domain_model_extension (
   title varchar(150) NOT NULL default '',
   description mediumtext,
   state int(4) NOT NULL default '0',
-  reviewstate int(4) NOT NULL default '0',
+  review_state int(4) NOT NULL default '0',
   category int(4) NOT NULL default '0',
-  lastuploaddate int(11) unsigned NOT NULL default '0',
-  dependencies mediumtext,
-  authorname varchar(100) NOT NULL default '',
-  authoremail varchar(100) NOT NULL default '',
+  last_updated int(11) unsigned NOT NULL default '0',
+  serialized_dependencies mediumtext,
+  author_name varchar(100) NOT NULL default '',
+  author_email varchar(100) NOT NULL default '',
   ownerusername varchar(50) NOT NULL default '',
-  t3xfilemd5 varchar(35) NOT NULL default '',
-  uploadcomment mediumtext,
+  md5hash varchar(35) NOT NULL default '',
+  update_comment mediumtext,
   authorcompany varchar(100) NOT NULL default '',
-  intversion int(11) NOT NULL default '0',
-  lastversion int(3) NOT NULL default '0',
+  integer_version int(11) NOT NULL default '0',
+  current_version int(3) NOT NULL default '0',
   lastreviewedversion int(3) NOT NULL default '0',
   PRIMARY KEY (uid),
-  UNIQUE versionextrepo (extkey,version,repository)
+  UNIQUE versionextrepo (extension_key,version,repository)
 );
