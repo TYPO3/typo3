@@ -422,7 +422,7 @@ abstract class AbstractRecordList {
 	}
 
 	/**
-	 * Gets an instance of t3lib_transl8tools.
+	 * Gets an instance of TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider.
 	 *
 	 * @return \TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider
 	 */

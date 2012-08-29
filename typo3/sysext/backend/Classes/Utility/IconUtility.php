@@ -39,7 +39,7 @@ namespace TYPO3\CMS\Backend\Utility;
  * Notes:
  * These functions are strongly related to the interface of TYPO3.
  * The class is included in eg. init.php
- * ALL functions called without making a class instance, eg. "t3lib_iconWorks::getIconImage()"
+ * ALL functions called without making a class instance, eg. "TYPO3\CMS\Backend\Utility\IconUtility::getIconImage()"
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
@@ -552,13 +552,13 @@ class IconUtility {
 	 * There are three ways to use this API:
 	 *
 	 * 1) for any given TCA record
-	 *	$spriteIconHtml = t3lib_iconWorks::getSpriteIconForRecord('pages', $row);
+	 *	$spriteIconHtml = TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $row);
 	 *
 	 * 2) for any given file
-	 *	$spriteIconHtml = t3lib_iconWorks::getSpriteIconForFile('myimage.png');
+	 *	$spriteIconHtml = TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('myimage.png');
 	 *
 	 * 3) for any other icon you know the name
-	 *	$spriteIconHtml = t3lib_iconWorks::getSpriteIcon('actions-document-open');
+	 *	$spriteIconHtml = TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open');
 	 *
 	 **********************************************/
 	/**
@@ -622,7 +622,7 @@ class IconUtility {
 	 * usually called from getSpriteIconForFile or ExtJs Provider
 	 *
 	 * @param string $fileExtension FileExtension can be jpg, gif etc, but also be 'mount' or 'folder', but can also be a full path which will be resolved then
-	 * @return string The string of the CSS class, see t3lib_iconworks::$fileSpriteIconNames
+	 * @return string The string of the CSS class, see TYPO3\CMS\Backend\Utility\IconUtility::$fileSpriteIconNames
 	 * @access private
 	 */
 	static public function mapFileExtensionToSpriteIconClass($fileExtension) {
@@ -634,7 +634,7 @@ class IconUtility {
 	 * usually called from mapFileExtensionToSpriteIconClass and tceforms
 	 *
 	 * @param string $fileExtension FileExtension can be jpg, gif etc, but also be 'mount' or 'folder', but can also be a full path which will be resolved then
-	 * @return string The string of the CSS class, see t3lib_iconworks::$fileSpriteIconNames
+	 * @return string The string of the CSS class, see TYPO3\CMS\Backend\Utility\IconUtility::$fileSpriteIconNames
 	 * @access private
 	 */
 	static public function mapFileExtensionToSpriteIconName($fileExtension) {

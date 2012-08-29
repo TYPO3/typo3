@@ -42,11 +42,11 @@ namespace TYPO3\CMS\Impexp;
  *
  * Adding records:
  * $this->export->export_addRecord("pages", $this->pageinfo);
- * $this->export->export_addRecord("pages", t3lib_BEfunc::getRecord("pages", 38));
- * $this->export->export_addRecord("pages", t3lib_BEfunc::getRecord("pages", 39));
- * $this->export->export_addRecord("tt_content", t3lib_BEfunc::getRecord("tt_content", 12));
- * $this->export->export_addRecord("tt_content", t3lib_BEfunc::getRecord("tt_content", 74));
- * $this->export->export_addRecord("sys_template", t3lib_BEfunc::getRecord("sys_template", 20));
+ * $this->export->export_addRecord("pages", \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord("pages", 38));
+ * $this->export->export_addRecord("pages", \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord("pages", 39));
+ * $this->export->export_addRecord("tt_content", \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord("tt_content", 12));
+ * $this->export->export_addRecord("tt_content", \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord("tt_content", 74));
+ * $this->export->export_addRecord("sys_template", \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord("sys_template", 20));
  *
  * Adding all the relations (recursively in 5 levels so relations has THEIR relations registered as well)
  * for($a=0;$a<5;$a++) {
@@ -2562,7 +2562,7 @@ class ImportExport {
 					}
 				}
 			}
-			$pInfo['preCode'] = $preCode . \t3lib_iconworks::getSpriteIconForRecord($table, (array) $this->dat['records'][(($table . ':') . $uid)]['data'], array('title' => htmlspecialchars((($table . ':') . $uid))));
+			$pInfo['preCode'] = $preCode . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, (array) $this->dat['records'][(($table . ':') . $uid)]['data'], array('title' => htmlspecialchars((($table . ':') . $uid))));
 			$pInfo['title'] = htmlspecialchars($record['title']);
 			// View page:
 			if ($table === 'pages') {
@@ -2974,7 +2974,7 @@ class ImportExport {
 	 * @param string $table Table name
 	 * @param integer $uid UID of record
 	 * @param string $fields Field list to select. Default is "uid,pid
-	 * @return array Result of t3lib_BEfunc::getRecord() which means the record if found, otherwise FALSE
+	 * @return array Result of TYPO3\CMS\Backend\Utility\BackendUtility::getRecord() which means the record if found, otherwise FALSE
 	 * @todo Define visibility
 	 */
 	public function doesRecordExist($table, $uid, $fields = '') {

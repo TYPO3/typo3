@@ -912,7 +912,7 @@ Check also the following points:\n
 				<source>Extension "%s" is not installed.</source>
 			</trans-unit>
 			<trans-unit id="link.to.dblist.correctly" xml:space="preserve">
-				<source>Please, do not link to this page. Use t3lib_BEfunc::getListViewLink() for link generation.</source>
+				<source>Please, do not link to this page. Use TYPO3\CMS\Backend\Utility\BackendUtility::getListViewLink() for link generation.</source>
 			</trans-unit>
 			<trans-unit id="link.to.filefile.correctly" xml:space="preserve">
 				<source>Please, do not link to this page.</source>

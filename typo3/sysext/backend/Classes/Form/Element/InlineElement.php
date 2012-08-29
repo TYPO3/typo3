@@ -521,7 +521,7 @@ class InlineElement {
 				// $recTitle could be something like: "tx_table_123|...",
 				$valueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $rec[$titleCol]);
 				$itemParts = \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('_', $valueParts[0], 2);
-				$recTemp = \t3lib_befunc::getRecordWSOL($itemParts[0], $itemParts[1]);
+				$recTemp = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($itemParts[0], $itemParts[1]);
 				$recTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($itemParts[0], $recTemp, FALSE);
 			}
 			$recTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitlePrep($recTitle);
@@ -932,7 +932,7 @@ class InlineElement {
 
 	/**
 	 * Construct runtime environment for Inline Relational Record Editing.
-	 * - creates an anoymous SC_alt_doc in $GLOBALS['SOBE']
+	 * - creates an anoymous TYPO3\CMS\Backend\Controller\EditDocumentController in $GLOBALS['SOBE']
 	 * - creates a t3lib_TCEforms in $GLOBALS['SOBE']->tceforms
 	 * - sets ourself as reference to $GLOBALS['SOBE']->tceforms->inline
 	 * - sets $GLOBALS['SOBE']->tceforms->RTEcounter to the current situation on client-side
@@ -1502,7 +1502,7 @@ class InlineElement {
 	 */
 	protected function getNewRecordPid($table, $parentPid = NULL) {
 		$newRecordPid = $this->inlineFirstPid;
-		$pageTS = \t3lib_beFunc::getPagesTSconfig($parentPid, TRUE);
+		$pageTS = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($parentPid, TRUE);
 		if (isset($pageTS['TCAdefaults.'][$table . '.']['pid']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($pageTS['TCAdefaults.'][$table . '.']['pid'])) {
 			$newRecordPid = $pageTS['TCAdefaults.'][$table . '.']['pid'];
 		} elseif (isset($parentPid) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($parentPid)) {

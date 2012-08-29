@@ -74,7 +74,7 @@ class ModuleController {
 	 * Creates the module menu object structure from the raw data array
 	 *
 	 * @param array $rawModuleData
-	 * @see class.modulemenu.php getRawModuleData()
+	 * @see \TYPO3\CMS\Backend\View\ModuleMenuView::getRawModuleData()
 	 * @return void
 	 */
 	protected function convertRawModuleDataToModuleMenuObject(array $rawModuleData) {

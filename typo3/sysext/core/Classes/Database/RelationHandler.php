@@ -140,7 +140,7 @@ class RelationHandler {
 	 */
 	public $currentTable;
 
-	// If a record should be undeleted (so do not use the $useDeleteClause on t3lib_BEfunc)
+	// If a record should be undeleted (so do not use the $useDeleteClause on TYPO3\CMS\Backend\Utility\BackendUtility)
 	/**
 	 * @todo Define visibility
 	 */

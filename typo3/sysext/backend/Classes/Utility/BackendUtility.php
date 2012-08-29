@@ -29,10 +29,10 @@ namespace TYPO3\CMS\Backend\Utility;
 /**
  * Standard functions available for the TYPO3 backend.
  * You are encouraged to use this class in your own applications (Backend Modules)
- * Don't instantiate - call functions with "t3lib_BEfunc::" prefixed the function name.
+ * Don't instantiate - call functions with "TYPO3\CMS\Backend\Utility\BackendUtility::" prefixed the function name.
  *
  * Call ALL methods without making an object!
- * Eg. to get a page-record 51 do this: 't3lib_BEfunc::getRecord('pages',51)'
+ * Eg. to get a page-record 51 do this: 'TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages',51)'
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @package TYPO3
@@ -555,7 +555,7 @@ class BackendUtility {
 	 *
 	 * Since TYPO3 4.5 the flagIcon is not returned as a filename in "gfx/flags/*" anymore,
 	 * but as a string <flags-xx>. The calling party should call
-	 * t3lib_iconWorks::getSpriteIcon(<flags-xx>) to get an HTML which will represent
+	 * TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(<flags-xx>) to get an HTML which will represent
 	 * the flag of this language.
 	 *
 	 * @return array Array with languages (title, uid, flagIcon)
@@ -955,7 +955,7 @@ class BackendUtility {
 	 *
 	 * @param string $table The content table
 	 * @return array The data structures with speaking extension title
-	 * @see t3lib_BEfunc::getExcludeFields()
+	 * @see TYPO3\CMS\Backend\Utility\BackendUtility::getExcludeFields()
 	 */
 	static public function getRegisteredFlexForms($table = 'tt_content') {
 		if (empty($table) || empty($GLOBALS['TCA'][$table]['columns'])) {
@@ -1096,7 +1096,7 @@ class BackendUtility {
 		// Parsing the page TS-Config (or getting from cache)
 		$pageTS = implode((LF . '[GLOBAL]') . LF, $TSdataArray);
 		if ($GLOBALS['TYPO3_CONF_VARS']['BE']['TSconfigConditions']) {
-			/* @var $parseObj t3lib_TSparser_TSconfig */
+			/* @var \TYPO3\CMS\Backend\Configuration\TsConfigParser $parseObj */
 			$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Configuration\\TsConfigParser');
 			$res = $parseObj->parseTSconfig($pageTS, 'PAGES', $id, $rootLine);
 			if ($res) {
@@ -1260,7 +1260,7 @@ class BackendUtility {
 	/**
 	 * Returns the array $usernames with the names of all users NOT IN $groupArray changed to the uid (hides the usernames!).
 	 * If $excludeBlindedFlag is set, then these records are unset from the array $usernames
-	 * Takes $usernames (array made by t3lib_BEfunc::getUserNames()) and a $groupArray (array with the groups a certain user is member of) as input
+	 * Takes $usernames (array made by TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames()) and a $groupArray (array with the groups a certain user is member of) as input
 	 *
 	 * @param array $usernames User names
 	 * @param array $groupArray Group names
@@ -1906,7 +1906,7 @@ class BackendUtility {
 	 * @param boolean $defaultPassthrough Flag means that values for columns that has no conversion will just be pass through directly (otherwise cropped to 200 chars or returned as "N/A")
 	 * @param boolean $noRecordLookup If set, no records will be looked up, UIDs are just shown.
 	 * @param integer $uid Uid of the current record
-	 * @param boolean $forceResult If t3lib_BEfunc::getRecordTitle is used to process the value, this parameter is forwarded.
+	 * @param boolean $forceResult If TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
 	 * @return string
 	 */
 	static public function getProcessedValue($table, $col, $value, $fixed_lgd_chars = 0, $defaultPassthrough = 0, $noRecordLookup = FALSE, $uid = 0, $forceResult = TRUE) {
@@ -2099,7 +2099,7 @@ class BackendUtility {
 	 * @param string $fV Field value
 	 * @param integer $fixed_lgd_chars The max amount of characters the value may occupy
 	 * @param integer $uid Uid of the current record
-	 * @param boolean $forceResult If t3lib_BEfunc::getRecordTitle is used to process the value, this parameter is forwarded.
+	 * @param boolean $forceResult If TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle is used to process the value, this parameter is forwarded.
 	 * @return string
 	 * @see getProcessedValue()
 	 */
@@ -2683,7 +2683,7 @@ class BackendUtility {
 	 * @param string $set Key to set the update signal. When setting, this value contains strings telling WHAT to set. At this point it seems that the value "updatePageTree" is the only one it makes sense to set. If empty, all update signals will be removed.
 	 * @param mixed $params Additional information for the update signal, used to only refresh a branch of the tree
 	 * @return void
-	 * @see 	t3lib_BEfunc::getUpdateSignalCode()
+	 * @see TYPO3\CMS\Backend\Utility\BackendUtility::getUpdateSignalCode()
 	 */
 	static public function setUpdateSignal($set = '', $params = '') {
 		$modData = $GLOBALS['BE_USER']->getModuleData('TYPO3\\CMS\\Backend\\Utility\\BackendUtility::getUpdateSignal', 'ses');
@@ -2704,7 +2704,7 @@ class BackendUtility {
 	 * setUpdateSignal(). It will return some JavaScript that does the update (called in the typo3/template.php file, end() function)
 	 *
 	 * @return string HTML javascript code
-	 * @see 	t3lib_BEfunc::setUpdateSignal()
+	 * @see TYPO3\CMS\Backend\Utility\BackendUtility::setUpdateSignal()
 	 */
 	static public function getUpdateSignalCode() {
 		$signals = array();
@@ -3114,7 +3114,7 @@ class BackendUtility {
 	 * Find the real PID of the record (with $uid from $table).
 	 * This MAY be impossible if the pid is set as a reference to the former record or a page (if two records are created at one time).
 	 * NOTICE: Make sure that the input PID is never negative because the record was an offline version!
-	 * Therefore, you should always use t3lib_BEfunc::fixVersioningPid($table,$row); on the data you input before calling this function!
+	 * Therefore, you should always use TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($table,$row); on the data you input before calling this function!
 	 *
 	 * @param string $table Table name
 	 * @param integer $uid Record uid
@@ -3256,7 +3256,7 @@ class BackendUtility {
 
 	/**
 	 * Returns first possible RTE object if available.
-	 * Usage: $RTEobj = &t3lib_BEfunc::RTEgetObj();
+	 * Usage: $RTEobj = &TYPO3\CMS\Backend\Utility\BackendUtility::RTEgetObj();
 	 *
 	 * @return mixed If available, returns RTE object, otherwise an array of messages from possible RTEs
 	 */
@@ -3289,7 +3289,7 @@ class BackendUtility {
 
 	/**
 	 * Returns soft-reference parser for the softRef processing type
-	 * Usage: $softRefObj = &t3lib_BEfunc::softRefParserObj('[parser key]');
+	 * Usage: $softRefObj = &TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj('[parser key]');
 	 *
 	 * @param string $spKey softRef parser key
 	 * @return mixed If available, returns Soft link parser object.

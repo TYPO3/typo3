@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -22,13 +24,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for class t3lib_tree_Node.
+ * Testcase for class TYPO3\CMS\Backend\Tree\TreeNode.
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_tree_NodeTest extends tx_phpunit_testcase {
+class TreeNodeTest extends \tx_phpunit_testcase {
 
 	//////////////////////
 	// Utility functions

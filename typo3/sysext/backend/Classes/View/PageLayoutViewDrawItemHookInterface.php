@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Backend\View;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Interface for classes which hook into tx_cms_layout and do additional
+ * Interface for classes which hook into TYPO3\CMS\Backend\View\PageLayoutView and do additional
  * tt_content_drawItem processing.
  *
  * @author Oliver Hader <oliver@typo3.org>

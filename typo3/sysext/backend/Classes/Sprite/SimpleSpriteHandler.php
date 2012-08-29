@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Backend\Sprite;
  * A class with an concrete implementation of t3lib_spritemanager_SpriteIconGenerator.
  * It is the standard / fallback handler of the sprite manager.
  * This implementation won't generate sprites at all. It will just render css-definitions
- * for all registered icons so that they may be used through t3lib_iconWorks::getSpriteIcon*
+ * for all registered icons so that they may be used through TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon*
  * Without the css classes generated here, icons of for example tca records would be empty.
  *
  * @author Steffen Ritter <info@steffen-ritter.net>
@@ -65,8 +65,8 @@ class SimpleSpriteHandler extends \TYPO3\CMS\Backend\Sprite\AbstractSpriteHandle
 
 	/**
 	 * This function builds an css class for every single icon registered via
-	 * t3lib_SpriteManager::addSingleIcons to use them via t3lib_iconWorks::getSpriteIcon
-	 * and TCA-Icons for "classic" record Icons to be uses via t3lib_iconWorks::getSpriteIconForRecord
+	 * t3lib_SpriteManager::addSingleIcons to use them via TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon
+	 * and TCA-Icons for "classic" record Icons to be uses via TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord
 	 * In the simpleHandler the icon just will be added as css-background-image.
 	 *
 	 * @return void

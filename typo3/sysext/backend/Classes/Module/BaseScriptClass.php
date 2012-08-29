@@ -153,7 +153,7 @@ class BaseScriptClass {
 	 * If type is 'ses' then the data is stored as session-lasting data. This means that it'll be wiped out the next time the user logs in.
 	 * Can be set from extension classes of this class before the init() function is called.
 	 *
-	 * @see menuConfig(), t3lib_BEfunc::getModuleData()
+	 * @see menuConfig(), TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
 	 * @todo Define visibility
 	 */
 	public $modMenu_type = '';
@@ -162,7 +162,7 @@ class BaseScriptClass {
 	 * dontValidateList can be used to list variables that should not be checked if their value is found in the MOD_MENU array. Used for dynamically generated menus.
 	 * Can be set from extension classes of this class before the init() function is called.
 	 *
-	 * @see menuConfig(), t3lib_BEfunc::getModuleData()
+	 * @see menuConfig(), TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
 	 * @todo Define visibility
 	 */
 	public $modMenu_dontValidateList = '';
@@ -171,7 +171,7 @@ class BaseScriptClass {
 	 * List of default values from $MOD_MENU to set in the output array (only if the values from MOD_MENU are not arrays)
 	 * Can be set from extension classes of this class before the init() function is called.
 	 *
-	 * @see menuConfig(), t3lib_BEfunc::getModuleData()
+	 * @see menuConfig(), TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()
 	 * @todo Define visibility
 	 */
 	public $modMenu_setDefaultList = '';
@@ -236,11 +236,11 @@ class BaseScriptClass {
 
 	/**
 	 * Initializes the internal MOD_MENU array setting and unsetting items based on various conditions. It also merges in external menu items from the global array TBE_MODULES_EXT (see mergeExternalItems())
-	 * Then MOD_SETTINGS array is cleaned up (see t3lib_BEfunc::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
+	 * Then MOD_SETTINGS array is cleaned up (see TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData()) so it contains only valid values. It's also updated with any SET[] values submitted.
 	 * Also loads the modTSconfig internal variable.
 	 *
 	 * @return void
-	 * @see init(), $MOD_MENU, $MOD_SETTINGS, t3lib_BEfunc::getModuleData(), mergeExternalItems()
+	 * @see init(), $MOD_MENU, $MOD_SETTINGS, TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData(), mergeExternalItems()
 	 * @todo Define visibility
 	 */
 	public function menuConfig() {

@@ -116,7 +116,7 @@ abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\Sprite
 	}
 
 	/**
-	 * Returns the detected icon-names which may be used through t3lib_iconWorks::getSpriteIcon.
+	 * Returns the detected icon-names which may be used through TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon.
 	 *
 	 * @return array all generated and registered sprite-icon-names, will be empty if there are none
 	 */
@@ -126,7 +126,7 @@ abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\Sprite
 
 	/**
 	 * this method creates sprite icon names for all tables in TCA (including their possible type-icons)
-	 * where there is no "typeicon_classes" of this TCA table ctrl section (moved form t3lib_iconWorks)
+	 * where there is no "typeicon_classes" of this TCA table ctrl section (moved form TYPO3\CMS\Backend\Utility\IconUtility)
 	 *
 	 * @return array Array as $iconName => $fileName
 	 */
