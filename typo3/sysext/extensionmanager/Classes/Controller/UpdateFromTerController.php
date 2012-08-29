@@ -103,7 +103,7 @@ class UpdateFromTerController extends \TYPO3\CMS\Extensionmanager\Controller\Abs
 		$updated = FALSE;
 		$errorMessage = '';
 		/** @var $repository \TYPO3\CMS\Extensionmanager\Domain\Model\Repository */
-		$repository = $this->repositoryRepository->findOneByUid((int) $this->settings['repositoryUid']);
+		$repository = $this->repositoryRepository->findOneByUid((int)$this->settings['repositoryUid']);
 		if ($repository->getLastUpdate()->getTimestamp() < $GLOBALS['EXEC_TIME'] - (24 * 60) * 60 || $forceUpdateCheck) {
 			try {
 				$updated = $this->repositoryHelper->updateExtList();

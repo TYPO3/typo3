@@ -207,6 +207,8 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$extTablesSqlFile = (PATH_site . $extension['siteRelPath']) . '/ext_tables.sql';
 		if (file_exists($extTablesSqlFile)) {
 			$extTablesSqlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extTablesSqlFile);
+				// @TODO: This should probably moved to TYPO3\CMS\Core\Cache\Cache->getDatabaseTableDefinitions ?!
+			$GLOBALS['typo3CacheManager']->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
 			$extTablesSqlContent .= \TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions();
 			$this->updateDbWithExtTablesSql($extTablesSqlContent);
 		}

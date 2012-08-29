@@ -1,42 +1,4 @@
 config.tx_extbase {
-	persistence{
-		classes {
-			TYPO3\CMS\Extensionmanager\Domain\Model\Extension {
-				mapping {
-					columns {
-						extkey.mapOnProperty = extensionKey
-						version.mapOnProperty = version
-						title.mapOnProperty = title
-						description.mapOnProperty = description
-						state.mapOnProperty = state
-						category.mapOnProperty = category
-						lastuploaddate.mapOnProperty = lastUpdated
-						uploadcomment.mapOnProperty = updateComment
-						authorname.mapOnProperty = authorName
-						authoremail.mapOnProperty = authorEmail
-						lastversion.mapOnProperty = currentVersion
-						t3xfilemd5.mapOnProperty = md5hash
-						dependencies.mapOnProperty = serializedDependencies
-						intversion.mapOnProperty = integerVersion
-						reviewstate.mapOnProperty = reviewState
-					}
-				}
-			}
-			TYPO3\CMS\Extensionmanager\Domain\Model\Repository {
-				mapping {
-					tableName = sys_ter
-					columns {
-						title.mapOnProperty = title
-						description.mapOnProperty = description
-						mirror_url.mapOnProperty = mirrorListUrl
-						wsdl_url.mapOnProperty = wsdlUrl
-						lastUpdated.mapOnProperty = lastUpdate
-						extCount.mapOnProperty = extensionCount
-					}
-				}
-			}
-		}
-	}
 	features {
 		 # this enables/disables the reworked property mapper (see http://forge.typo3.org/projects/typo3v4-mvc/wiki/PropertyMapper_rework)
 		rewrittenPropertyMapper = 1

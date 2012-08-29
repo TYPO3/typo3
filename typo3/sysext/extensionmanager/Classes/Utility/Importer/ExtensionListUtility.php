@@ -68,25 +68,25 @@ class ExtensionListUtility implements \SplObserver {
 	 * @var array
 	 */
 	static protected $fieldNames = array(
-		'extkey',
+		'extension_key',
 		'version',
-		'intversion',
+		'integer_version',
 		'alldownloadcounter',
 		'downloadcounter',
 		'title',
 		'ownerusername',
-		'authorname',
-		'authoremail',
+		'author_name',
+		'author_email',
 		'authorcompany',
-		'lastuploaddate',
-		't3xfilemd5',
+		'last_updated',
+		'md5hash',
 		'repository',
 		'state',
-		'reviewstate',
+		'review_state',
 		'category',
 		'description',
-		'dependencies',
-		'uploadcomment'
+		'serialized_dependencies',
+		'update_comment'
 	);
 
 	/**
