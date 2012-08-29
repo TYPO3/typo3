@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Workspaces\ExtDirect;
  ***************************************************************/
 
 if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX) {
-	require_once PATH_typo3 . 'interfaces/interface.backend_toolbaritem.php';
+	require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('backend') . 'Classes/Toolbar/ToolbarItemHookInterface.php';
 }
 
 /**

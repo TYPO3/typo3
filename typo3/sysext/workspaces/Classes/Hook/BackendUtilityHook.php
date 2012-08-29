@@ -43,7 +43,7 @@ class BackendUtilityHook implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Hooks into the t3lib_beFunc::viewOnClick and redirects to the workspace preview
+	 * Hooks into the TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick and redirects to the workspace preview
 	 * only if we're in a workspace and if the frontend-preview is disabled.
 	 *
 	 * @param $pageUid
