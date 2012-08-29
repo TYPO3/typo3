@@ -110,22 +110,22 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$quotedSearchString = ('\'' . $quotedSearchString) . '\'';
 		$select = ((((((('tx_extensionmanager_domain_model_extension.*,
 			(
-				(extkey like ' . $quotedSearchString) . ') * 8 +
-				(extkey like ') . $quotedSearchStringForLike) . ') * 4 +
+				(extension_key like ' . $quotedSearchString) . ') * 8 +
+				(extension_key like ') . $quotedSearchStringForLike) . ') * 4 +
 				(title like ') . $quotedSearchStringForLike) . ') * 2 +
-				(authorname like ') . $quotedSearchStringForLike) . ')
+				(author_name like ') . $quotedSearchStringForLike) . ')
 			) as position';
 		$from = 'tx_extensionmanager_domain_model_extension';
 		$where = ((((((('(
-					extkey = ' . $quotedSearchString) . '
+					extension_key = ' . $quotedSearchString) . '
 					OR
-					extkey LIKE ') . $quotedSearchStringForLike) . '
+					extension_key LIKE ') . $quotedSearchStringForLike) . '
 					OR
 					description LIKE ') . $quotedSearchStringForLike) . '
 					OR
 					title LIKE ') . $quotedSearchStringForLike) . '
 				)
-				AND lastversion=1
+				AND current_version=1
 				HAVING position > 0';
 		$order = 'position desc';
 		$result = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select, $from, $where, '', $order);
@@ -189,7 +189,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 
 	/**
-	 * Update the lastversion field after update
+	 * Update the current_version field after update
 	 * For performance reason "native" TYPO3_DB is
 	 * used here directly.
 	 *
@@ -197,14 +197,14 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * @return integer
 	 */
 	public function insertLastVersion($repositoryUid = 1) {
-		$groupedRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('extkey, version, max(intversion) maxintversion', 'tx_extensionmanager_domain_model_extension', 'repository=' . intval($repositoryUid), 'extkey');
+		$groupedRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('extension_key, version, max(integer_version) maxintversion', 'tx_extensionmanager_domain_model_extension', 'repository=' . intval($repositoryUid), 'extension_key');
 		$extensions = count($groupedRows);
 		if ($extensions > 0) {
 			// set all to 0
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_extensionmanager_domain_model_extension', 'lastversion=1 AND repository=' . intval($repositoryUid), array('lastversion' => 0));
-			// Find latest version of extensions and set lastversion to 1 for these
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_extensionmanager_domain_model_extension', 'current_version=1 AND repository=' . intval($repositoryUid), array('current_version' => 0));
+			// Find latest version of extensions and set current_version to 1 for these
 			foreach ($groupedRows as $row) {
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_extensionmanager_domain_model_extension', (((('extkey=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row['extkey'], 'tx_extensionmanager_domain_model_extension')) . ' AND intversion=') . intval($row['maxintversion'])) . ' AND repository=') . intval($repositoryUid), array('lastversion' => 1));
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_extensionmanager_domain_model_extension', (((('extension_key=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row['extension_key'], 'tx_extensionmanager_domain_model_extension')) . ' AND integer_version=') . intval($row['maxintversion'])) . ' AND repository=') . intval($repositoryUid), array('current_version' => 1));
 			}
 		}
 		return $extensions;
@@ -219,9 +219,9 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 */
 	protected function addDefaultConstraints(\TYPO3\CMS\Extbase\Persistence\Generic\Query $query) {
 		if ($query->getConstraint()) {
-			$query->matching($query->logicalAnd($query->getConstraint(), $query->equals('lastversion', TRUE)));
+			$query->matching($query->logicalAnd($query->getConstraint(), $query->equals('current_version', TRUE)));
 		} else {
-			$query->matching($query->equals('lastversion', TRUE));
+			$query->matching($query->equals('current_version', TRUE));
 		}
 		return $query;
 	}
