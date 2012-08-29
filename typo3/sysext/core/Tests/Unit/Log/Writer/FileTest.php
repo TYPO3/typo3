@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,12 +23,13 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase for \TYPO3\CMS\Core\Log\Writer\FileWriter
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class t3lib_log_writer_FileTest extends tx_phpunit_testcase {
+class FileTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var string
@@ -42,7 +45,7 @@ class t3lib_log_writer_FileTest extends tx_phpunit_testcase {
 		if (!class_exists('vfsStream')) {
 			$this->markTestSkipped('File backend tests are not available with this phpunit version.');
 		}
-		vfsStream::setup('LogRoot');
+		\vfsStream::setup('LogRoot');
 	}
 
 	/**
@@ -84,7 +87,7 @@ class t3lib_log_writer_FileTest extends tx_phpunit_testcase {
 	 */
 	public function setLogFileSetsLogFile() {
 		$this->setUpVfsStream();
-		vfsStream::newFile($this->logFileName)->at(vfsStreamWrapper::getRoot());
+		\vfsStream::newFile($this->logFileName)->at(\vfsStreamWrapper::getRoot());
 		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter');
 		$writer->setLogFile($this->getDefaultFileName());
 		$this->assertAttributeEquals($this->getDefaultFileName(), 'logFile', $writer);
@@ -105,7 +108,7 @@ class t3lib_log_writer_FileTest extends tx_phpunit_testcase {
 	public function createsLogFileDirectory() {
 		$this->setUpVfsStream();
 		$this->createWriter();
-		$this->assertTrue(vfsStreamWrapper::getRoot()->hasChild($this->logFileDirectory));
+		$this->assertTrue(\vfsStreamWrapper::getRoot()->hasChild($this->logFileDirectory));
 	}
 
 	/**
@@ -114,7 +117,7 @@ class t3lib_log_writer_FileTest extends tx_phpunit_testcase {
 	public function createsLogFile() {
 		$this->setUpVfsStream();
 		$this->createWriter();
-		$this->assertTrue(vfsStreamWrapper::getRoot()->getChild($this->logFileDirectory)->hasChild($this->logFileName));
+		$this->assertTrue(\vfsStreamWrapper::getRoot()->getChild($this->logFileDirectory)->hasChild($this->logFileName));
 	}
 
 	/**
@@ -161,8 +164,8 @@ class t3lib_log_writer_FileTest extends tx_phpunit_testcase {
 	public function createsNoHtaccessForExistingDirectory() {
 		$this->setUpVfsStream();
 		$directory = uniqid('Log');
-		// create a directory
-		vfsStreamWrapper::getRoot()->addChild(new vfsStreamDirectory($directory));
+			// create a directory
+		\vfsStreamWrapper::getRoot()->addChild(new \vfsStreamDirectory($directory));
 		$logFile = (('vfs://LogRoot/' . $directory) . '/') . $this->logFileName;
 		$this->assertTrue(is_dir('vfs://LogRoot/' . $directory));
 		$this->createWriter()->setLogFile($logFile);

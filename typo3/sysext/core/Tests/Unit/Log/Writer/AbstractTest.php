@@ -1,8 +1,10 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2012 Steffen Müller (typo3@t3node.com)
+ * (c) 2011-2012 Steffen Gebert (steffen.gebert@typo3.org)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,23 +23,25 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
+require_once (__DIR__ . DIRECTORY_SEPARATOR) . '../Fixtures/WriterFixture.php';
+
 /**
- * Testcase for the memoryPeakUsage log processor.
+ * Testcase for \TYPO3\CMS\Core\Log\Writer\AbstractWriter
  *
- * @author Steffen Müller <typo3@t3node.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class t3lib_log_processor_memoryPeakUsageTest extends tx_phpunit_testcase {
+class AbstractTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @test
+	 * @expectedException InvalidArgumentException
 	 */
-	public function memoryPeakUsagePRocessorAddsMemoryPeakUsageDataToLogRecord() {
-		$logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
-		$processor = new \TYPO3\CMS\Core\Log\Processor\MemoryPeakUsageProcessor();
-		$logRecord = $processor->processLogRecord($logRecord);
-		$this->assertArrayHasKey('memoryPeakUsage', $logRecord['data']);
+	public function refusesInvalidConfigurationOptions() {
+		$invalidConfiguration = array(
+			'foo' => 'bar'
+		);
+		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tests\\Unit\\Log\\Fixtures\\WriterFixture', $invalidConfiguration);
 	}
 
 }

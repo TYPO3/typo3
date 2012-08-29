@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,6 +23,7 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase for \TYPO3\CMS\Core\Log\Level.
  *
@@ -28,7 +31,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_log_LevelTest extends tx_phpunit_testcase {
+class LevelTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @test
@@ -44,7 +47,7 @@ class t3lib_log_LevelTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isValidLevelDoesNotValidateInvalidLevels() {
-		$invalidLevels = array(-1, 8, 1.5, 'string', array(), new stdClass(), FALSE, NULL);
+		$invalidLevels = array(-1, 8, 1.5, 'string', array(), new \stdClass(), FALSE, NULL);
 		foreach ($invalidLevels as $invalidLevel) {
 			$this->assertFalse(\TYPO3\CMS\Core\Log\LogLevel::isValidLevel($invalidLevel));
 		}

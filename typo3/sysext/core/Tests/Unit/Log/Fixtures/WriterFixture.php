@@ -1,8 +1,10 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Fixtures;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2012 Steffen Gebert (steffen.gebert@typo3.org)
+ * (c) 2011-2012 Ingo Renner (ingo@typo3.org)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,22 +23,21 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * A log writer that always fails to write (for testing purposes ;-))
+ * A writer dedicated for testing
  *
- * @author Steffen Gebert <steffen.gebert@typo3.org>
+ * @author Ingo Renner <ingo@typo3.org>
  */
-class t3lib_log_writer_Failing implements \TYPO3\CMS\Core\Log\Writer\Writer {
+class WriterFixture extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 
 	/**
-	 * Try to write the log entry - but throw an exception in our case
-	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $record
-	 * @return \TYPO3\CMS\Core\Log\Writer\Writer|void
-	 * @throws RuntimeException
+	 * @var array
 	 */
+	protected $records = array();
+
 	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
-		throw new RuntimeException('t3lib_log_writer_Failing failed');
+		$this->records[] = $record;
 	}
 
 }

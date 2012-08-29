@@ -1,9 +1,10 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Fixtures;
+
 /***************************************************************
  * Copyright notice
  *
- * (c) 2012 Ingo Renner (ingo@typo3.org)
- * (c) 2012 Steffen Müller (typo3@t3node.com)
+ * (c) 2012 Steffen Gebert (steffen.gebert@typo3.org)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -22,27 +23,23 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the web log processor.
+ * A log writer that always fails to write (for testing purposes ;-))
  *
- * @author Ingo Renner <ingo@typo3.org>
- * @author Steffen Müller <typo3@t3node.com>
- * @package TYPO3
- * @subpackage t3lib
+ * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class t3lib_log_processor_WebTest extends tx_phpunit_testcase {
+class WriterFailing implements \TYPO3\CMS\Core\Log\Writer\Writer {
 
 	/**
-	 * @test
+	 * Try to write the log entry - but throw an exception in our case
+	 *
+	 * @param \TYPO3\CMS\Core\Log\LogRecord $record
+	 * @return \TYPO3\CMS\Core\Log\Writer\Writer|void
+	 * @throws RuntimeException
 	 */
-	public function webProcessorAddsWebDataToLogRecord() {
-		$environmentVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('_ARRAY');
-		$logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
-		$processor = new \TYPO3\CMS\Core\Log\Processor\WebProcessor();
-		$logRecord = $processor->processLogRecord($logRecord);
-		foreach ($environmentVariables as $key => $value) {
-			$this->assertEquals($value, $logRecord['data'][$key]);
-		}
+	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
+		throw new RuntimeException('t3lib_log_writer_Failing failed');
 	}
 
 }
