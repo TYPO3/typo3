@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,12 +23,13 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase for \TYPO3\CMS\Core\Log\Processor\AbstractMemoryProcessor
  *
  * @author Steffen Müller <typo3@t3node.com>
  */
-class t3lib_log_processor_AbstractMemoryTest extends tx_phpunit_testcase {
+class AbstractMemoryTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @test

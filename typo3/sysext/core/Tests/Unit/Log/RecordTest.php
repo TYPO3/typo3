@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,6 +23,7 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase for \TYPO3\CMS\Core\Log\LogRecord.
  *
@@ -28,7 +31,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_log_RecordTest extends tx_phpunit_testcase {
+class RecordTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Returns a \TYPO3\CMS\Core\Log\LogRecord

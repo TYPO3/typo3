@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,23 +23,24 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once (__DIR__ . DIRECTORY_SEPARATOR) . '../fixtures/class.t3lib_log_processor_fixture.php';
+
 /**
- * Testcase for t3lib_log_processor_Abstract
+ * Testcase for the memoryUsage log processor.
  *
  * @author Steffen Müller <typo3@t3node.com>
+ * @package TYPO3
+ * @subpackage t3lib
  */
-class t3lib_log_processor_AbstractTest extends tx_phpunit_testcase {
+class MemoryUsageTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
 	 */
-	public function processorRefusesInvalidConfigurationOptions() {
-		$invalidConfiguration = array(
-			'foo' => 'bar'
-		);
-		$processor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_log_processor_Fixture', $invalidConfiguration);
+	public function memoryUsagePRocessorAddsMemoryUsageDataToLogRecord() {
+		$logRecord = new \TYPO3\CMS\Core\Log\LogRecord('test.core.log', \TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'test');
+		$processor = new \TYPO3\CMS\Core\Log\Processor\MemoryUsageProcessor();
+		$logRecord = $processor->processLogRecord($logRecord);
+		$this->assertArrayHasKey('memoryUsage', $logRecord['data']);
 	}
 
 }
