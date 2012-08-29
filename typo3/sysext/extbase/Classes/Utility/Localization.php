@@ -114,7 +114,7 @@ class Tx_Extbase_Utility_Localization {
 	 * @see tslib_fe::sL()
 	 * @author Bastian Waidelich <bastian@typo3.org>
 	 */
-	protected function translateFileReference($key) {
+	static protected function translateFileReference($key) {
 		if (TYPO3_MODE === 'FE') {
 			return $GLOBALS['TSFE']->sL($key);
 		} elseif (is_object($GLOBALS['LANG'])) {
