@@ -233,7 +233,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		}
 		$recipients = array();
 		foreach ($uidOfRecipients as $userUid) {
-			$beUserRecord = \t3lib_befunc::getRecord('be_users', intval($userUid));
+			$beUserRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', intval($userUid));
 			if (is_array($beUserRecord) && $beUserRecord['email'] !== '') {
 				$uc = $beUserRecord['uc'] ? unserialize($beUserRecord['uc']) : array();
 				$recipients[$beUserRecord['email']] = array(
