@@ -3,7 +3,7 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 if (TYPO3_MODE === 'BE') {
-	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule($_EXTKEY, 'tools', 'txreportsM1', '', array(
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule('TYPO3.CMS.' . $_EXTKEY, 'tools', 'txreportsM1', '', array(
 		'Report' => 'index,detail'
 	), array(
 		'access' => 'admin',
