@@ -38,14 +38,14 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	/**
 	 * Back path to typo3 main dir
 	 *
-	 * @var 	string		$backPath
+	 * @var string $backPath
 	 */
 	public $backPath;
 
 	/**
 	 * Array containing submitted data when editing or adding a task
 	 *
-	 * @var 	array		$submittedData
+	 * @var array $submittedData
 	 */
 	protected $submittedData = array();
 
@@ -53,17 +53,17 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * Array containing all messages issued by the application logic
 	 * Contains the error's severity and the message itself
 	 *
-	 * @var 	array	$messages
+	 * @var array $messages
 	 */
 	protected $messages = array();
 
 	/**
-	 * @var 	string	Key of the CSH file
+	 * @var string Key of the CSH file
 	 */
 	protected $cshKey;
 
 	/**
-	 * @var 	tx_scheduler	Local scheduler instance
+	 * @var \TYPO3\CMS\Scheduler\Scheduler Local scheduler instance
 	 */
 	protected $scheduler;
 
@@ -157,7 +157,10 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$content = '';
 		$sectionTitle = '';
 		// Get submitted data
-		$this->submittedData = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged('tx_scheduler');
+		$this->submittedData = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(
+			\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged('tx_scheduler'),
+			\TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged('TYPO3\\CMS\\Scheduler\\Scheduler')
+		);
 		$this->submittedData['uid'] = intval($this->submittedData['uid']);
 		// If a save command was submitted, handle saving now
 		if ($this->CMD == 'save') {
@@ -177,7 +180,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		switch ((string) $this->MOD_SETTINGS['function']) {
 		case 'scheduler':
 			// Scheduler's main screen
-			$content .= $this->executeTasks();
+			$this->executeTasks();
 			// Execute chosen action
 			switch ($this->CMD) {
 			case 'add':
@@ -274,7 +277,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			// Prepare necessary data for _cli_scheduler user creation
 			$password = md5(uniqid('scheduler', TRUE));
 			$data = array('be_users' => array('NEW' => array('username' => '_cli_scheduler', 'password' => $password, 'pid' => 0)));
-			/** @var \TYPO3\CMS\Core\DataHandler\DataHandler $tcemain */
+			/** @var $tcemain \TYPO3\CMS\Core\DataHandler\DataHandler */
 			$tcemain = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
 			$tcemain->stripslashes_values = 0;
 			$tcemain->start($data, array());
@@ -309,7 +312,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		// Start generating the content
 		$content = $GLOBALS['LANG']->getLL('msg.schedulerSetupCheck');
 		// Display information about last automated run, as stored in the system registry
-		/** @var \TYPO3\CMS\Core\Registry $registry */
+		/** @var $registry \TYPO3\CMS\Core\Registry */
 		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
 		$lastRun = $registry->get('TYPO3\\CMS\\Scheduler\\Scheduler', 'lastRun');
 		if (!is_array($lastRun)) {
@@ -392,7 +395,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$registeredClasses = self::getRegisteredClasses();
 		// No classes available, display information message
 		if (count($registeredClasses) == 0) {
-			/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+			/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('msg.noTasksDefined'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$content .= $flashMessage->render();
 		} else {
@@ -457,7 +460,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * @return string Progress bar markup
 	 */
 	protected function renderTaskProgressBar($progress) {
-		$progressText .= (($GLOBALS['LANG']->getLL('status.progress') . ':&nbsp;') . $progress) . '%';
+		$progressText = (($GLOBALS['LANG']->getLL('status.progress') . ':&nbsp;') . $progress) . '%';
 		$progressBar = ((('<div class="progress"> <div class="bar" style="width: ' . $progress) . '%;">') . $progressText) . '</div> </div>';
 		return $progressBar;
 	}
@@ -484,7 +487,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			}
 		} catch (\UnexpectedValueException $e) {
 			// The task could not be unserialized properly, simply delete the database record
-			$result = $GLOBALS['TYPO3_DB']->exec_DELETEquery('TYPO3\\CMS\\Scheduler\\Scheduler_task', 'uid = ' . intval($this->submittedData['uid']));
+			$result = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_scheduler_task', 'uid = ' . intval($this->submittedData['uid']));
 			if ($result) {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.deleteSuccess'));
 			} else {
@@ -550,12 +553,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				/** @var $task \TYPO3\CMS\Scheduler\Task */
 				$task = unserialize($taskRecord['serialized_task_object']);
 				// Set some task information
-				$class = $taskRecord['classname'];
 				$taskInfo['disable'] = $taskRecord['disable'];
 				// Check that the task object is valid
 				if ($this->scheduler->isValidTaskObject($task)) {
 					// The task object is valid, process with fetching current data
-					$taskInfo['class'] = $class;
+					$taskInfo['class'] = get_class($task);
 					// Get execution information
 					$taskInfo['start'] = $task->getExecution()->getStart();
 					$taskInfo['end'] = $task->getExecution()->getEnd();
@@ -578,7 +580,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				} else {
 					// The task object is not valid
 					// Issue error message
-					$this->addMessage(sprintf($GLOBALS['LANG']->getLL('msg.invalidTaskClassEdit'), $class), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$this->addMessage(sprintf($GLOBALS['LANG']->getLL('msg.invalidTaskClassEdit'), get_class($task)), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 					// Initialize empty values
 					$taskInfo['start'] = 0;
 					$taskInfo['end'] = 0;
@@ -831,7 +833,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				} catch (\OutOfBoundsException $e) {
 					$this->addMessage(sprintf($GLOBALS['LANG']->getLL('msg.taskNotFound'), $uid), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				} catch (\UnexpectedValueException $e) {
-					$this->addMessage(sprintf($GLOBALS['LANG']->getLL('msg.executionFailed'), $name, $e->getMessage()), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$this->addMessage(sprintf($GLOBALS['LANG']->getLL('msg.executionFailed'), $uid, $e->getMessage()), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				}
 			}
 			// Record the run in the system registry
@@ -863,7 +865,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$numRows = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 		// No tasks defined, display information message
 		if ($numRows == 0) {
-			/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+			/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('msg.noTasks'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$content .= $flashMessage->render();
 		} else {
@@ -935,8 +937,12 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				$multiple = '-';
 				$startExecutionElement = '&nbsp;';
 				// Restore the serialized task and pass it a reference to the scheduler object
-				/** @var $task \TYPO3\CMS\Scheduler\Task */
+				/** @var $task \TYPO3\CMS\Scheduler\Task|\TYPO3\CMS\Scheduler\ProgressProviderInterface */
 				$task = unserialize($schedulerRecord['serialized_task_object']);
+				$class = get_class($task);
+				if ($class === '__PHP_Incomplete_Class' && preg_match('/^O:[0-9]+:"(?P<classname>.+?)"/', $schedulerRecord['serialized_task_object'], $matches) === 1) {
+					$class = $matches['classname'];
+				}
 				// Assemble information about last execution
 				$context = '';
 				if (!empty($schedulerRecord['lastexecution_time'])) {
@@ -950,7 +956,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				}
 				if ($this->scheduler->isValidTaskObject($task)) {
 					// The task object is valid
-					$name = htmlspecialchars((($registeredClasses[$schedulerRecord['classname']]['title'] . ' (') . $registeredClasses[$schedulerRecord['classname']]['extension']) . ')');
+					$name = htmlspecialchars((($registeredClasses[$class]['title'] . ' (') . $registeredClasses[$class]['extension']) . ')');
 					$name .= '<br /> ';
 					$additionalInformation = $task->getAdditionalInformation();
 					if ($task instanceof \TYPO3\CMS\Scheduler\ProgressProviderInterface) {
@@ -999,7 +1005,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						$multiple = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
 					}
 					// Define checkbox
-					$startExecutionElement = ((('<input type="checkbox" name="TYPO3\\CMS\\Scheduler\\Scheduler[execute][]" value="' . $schedulerRecord['uid']) . '" id="task_') . $schedulerRecord['uid']) . '" class="checkboxes" />';
+					$startExecutionElement = ((('<input type="checkbox" name="tx_scheduler[execute][]" value="' . $schedulerRecord['uid']) . '" id="task_') . $schedulerRecord['uid']) . '" class="checkboxes" />';
 					// Show no action links (edit, delete) if task is running
 					$actions = $editAction . $deleteAction;
 					if ($isRunning) {
@@ -1015,7 +1021,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					$failureOutput = '';
 					if (!empty($schedulerRecord['lastexecution_failure'])) {
 						// Try to get the stored exception object
-						/** @var $exception Exception */
+						/** @var $exception \Exception */
 						$exception = unserialize($schedulerRecord['lastexecution_failure']);
 						// If the exception could not be unserialized, issue a default error message
 						if ($exception === FALSE || $exception instanceof \__PHP_Incomplete_Class) {
@@ -1041,8 +1047,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				} else {
 					// The task object is not valid
 					// Prepare to issue an error
-					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('msg.invalidTaskClass'), $schedulerRecord['classname']), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('msg.invalidTaskClass'), $class), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 					$executionStatusOutput = $flashMessage->render();
 					$tableLayout[$tr] = $rowWithSpan;
 					$table[$tr][] = $startExecutionElement;
@@ -1057,7 +1063,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$content .= ('<input type="submit" class="button" name="go" id="scheduler_executeselected" value="' . $GLOBALS['LANG']->getLL('label.executeSelected')) . '" />';
 		}
 		if (!count($registeredClasses) > 0) {
-			/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+			/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('msg.noTasksDefined'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$content .= $flashMessage->render();
 		}
@@ -1090,7 +1096,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		if (!empty($this->submittedData['uid'])) {
 			try {
 				$taskRecord = $this->scheduler->fetchTaskRecord($this->submittedData['uid']);
-				/** @var \TYPO3\CMS\Scheduler\Task $task */
+				/** @var $task \TYPO3\CMS\Scheduler\Task */
 				$task = unserialize($taskRecord['serialized_task_object']);
 			} catch (\OutOfBoundsException $e) {
 				// If the task could not be fetched, issue an error message
@@ -1246,6 +1252,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		}
 		// Validate additional input fields
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields'])) {
+			/** @var $providerObject \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface */
 			$providerObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$this->submittedData['class']]['additionalFields']);
 			if ($providerObject instanceof \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface) {
 				// The validate method will return TRUE if all went well, but that must not

@@ -38,7 +38,7 @@ abstract class Task {
 	/**
 	 * Reference to a scheduler object
 	 *
-	 * @var 	tx_scheduler
+	 * @var \TYPO3\CMS\Scheduler\Scheduler
 	 */
 	protected $scheduler;
 
@@ -66,7 +66,7 @@ abstract class Task {
 	/**
 	 * This variable contains the time of next execution of the task
 	 *
-	 * @var timestamp
+	 * @var integer
 	 */
 	protected $executionTime = 0;
 
@@ -359,7 +359,7 @@ abstract class Task {
 	 * Removes given execution from list
 	 *
 	 * @param integer $executionID Id of the execution to remove.
-	 * @param Exception $failure An exception to signal a failed execution
+	 * @param \Exception $failure An exception to signal a failed execution
 	 * @return 	void
 	 */
 	public function unmarkExecution($executionID, \Exception $failure = NULL) {
