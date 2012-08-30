@@ -126,6 +126,11 @@ class Installer extends \t3lib_install {
 	 */
 	public $totalSteps = 4;
 
+	/**
+	 * @var boolean
+	 */
+	protected $hasAdditionalSteps = FALSE;
+
 	// Can be changed by hook to define the total steps in 123 mode
 	// internal
 	/**
@@ -304,7 +309,13 @@ class Installer extends \t3lib_install {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['additionalSteps'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install/mod/class.tx_install.php']['additionalSteps'] as $classData) {
 				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
-				$this->totalSteps += (int) $hookObject->executeAdditionalSteps($this);
+				$additionalSteps = (int) $hookObject->executeAdditionalSteps($this);
+
+				if ($additionalSteps > 0) {
+					$this->hasAdditionalSteps = TRUE;
+				}
+
+				$this->totalSteps += $additionalSteps;
 			}
 		}
 		if ($this->mode == '123') {
@@ -5120,7 +5131,12 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 								);
 								$GLOBALS['TYPO3_DB']->exec_INSERTquery('be_users', $insertFields);
 							}
+
+							if (!$this->hasAdditionalSteps) {
+								$this->dispatchInitializeUpdates();
+							}
 						}
+
 						$this->message($tLabel, 'Imported ALL', ('
 								<p>
 									Queries: ' . $r) . '
@@ -5500,6 +5516,18 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			}
 		}
 		$this->output($this->outputWrapper($this->printAll()));
+	}
+
+	/**
+	 * Dispatches updates that shall be executed
+	 * during initialization of a fresh TYPO3 instance.
+	 *
+	 * @return void
+	 */
+	public function dispatchInitializeUpdates() {
+		/** @var $dispatcher \TYPO3\CMS\Install\Service\UpdateDispatcherService */
+		$dispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Install\Service\UpdateDispatcherService', $this);
+		$dispatcher->dispatchInitializeUpdates();
 	}
 
 	/**

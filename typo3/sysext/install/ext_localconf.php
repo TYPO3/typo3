@@ -4,6 +4,8 @@ if (!defined('TYPO3_MODE')) {
 }
 // TYPO3 6.0 - Update localconf.php to LocalConfiguration.php
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['localConfiguration'] = 'tx_coreupdates_localconfiguration';
+// TYPO3 6.0 - Create page and TypoScript root template (automatically executed in 123-mode)
+$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['rootTemplate'] = 'TYPO3\CMS\Install\CoreUpdates\RootTemplateUpdate';
 // TYPO3 4.5 - Check the database to be utf-8 compliant
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['charsetDefaults'] = 'tx_coreupdates_charsetdefaults';
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['changeCompatibilityVersion'] = 'TYPO3\\CMS\\Install\\CoreUpdates\\CompatVersionUpdate';
