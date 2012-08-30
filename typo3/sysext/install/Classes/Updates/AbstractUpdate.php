@@ -151,6 +151,23 @@ abstract class AbstractUpdate {
 	}
 
 	/**
+	 * Checks whether updates are required.
+	 *
+	 * @param string &$description: The description for the update
+	 * @return boolean Whether an update is required (TRUE) or not (FALSE)
+	 */
+	abstract public function checkForUpdate(&$description);
+
+	/**
+	 * Performs the accordant updates.
+	 *
+	 * @param array &$dbQueries: queries done in this update
+	 * @param mixed &$customMessages: custom messages
+	 * @return boolean Whether everything went smoothly or not
+	 */
+	abstract public function performUpdate(array &$dbQueries, &$customMessages);
+
+	/**
 	 * This method can be called to install extensions following all proper processes
 	 * (e.g. installing in extList, respecting priority, etc.)
 	 *
