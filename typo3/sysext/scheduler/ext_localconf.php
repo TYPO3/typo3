@@ -26,7 +26,7 @@ if (!empty($extConf['showSampleTasks'])) {
 	);
 }
 // Add caching framework garbage collection task
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Scheduler\\Task\\CachingFrameworkGarbageCollectionTask'] = array(
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\\CMS\\Scheduler\\Task\\CachingFrameworkGarbageCollectionTask'] = array(
 	'extension' => $_EXTKEY,
 	'title' => ('LLL:EXT:' . $_EXTKEY) . '/locallang.xml:cachingFrameworkGarbageCollection.name',
 	'description' => ('LLL:EXT:' . $_EXTKEY) . '/locallang.xml:cachingFrameworkGarbageCollection.description',

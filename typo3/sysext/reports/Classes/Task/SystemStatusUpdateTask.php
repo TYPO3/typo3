@@ -49,7 +49,8 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task {
 	 */
 	public function execute() {
 		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
-		$statusReport = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status');
+		/** @var $statusReport \TYPO3\CMS\Reports\Report\Status\Status */
+		$statusReport = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Report\\Status\\Status');
 		$systemStatus = $statusReport->getSystemStatus();
 		$highestSeverity = $statusReport->getHighestSeverity($systemStatus);
 		$registry->set('tx_reports', 'status.highestSeverity', $highestSeverity);
