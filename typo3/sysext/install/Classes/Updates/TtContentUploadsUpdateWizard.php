@@ -113,7 +113,7 @@ class TtContentUploadsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUp
 	 * @param 	mixed		&$customMessages: custom messages
 	 * @return 	boolean		TRUE on success, FALSE on error
 	 */
-	public function performUpdate(&$dbQueries, &$customMessages) {
+	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$this->init();
 		$records = $this->getRecordsFromTable('tt_content');
 		$this->checkPrerequisites();

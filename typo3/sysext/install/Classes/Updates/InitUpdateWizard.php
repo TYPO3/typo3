@@ -68,7 +68,7 @@ class InitUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @param 	mixed		&$customMessages: custom messages
 	 * @return 	boolean		TRUE on success, FALSE on error
 	 */
-	public function performUpdate(&$dbQueries, &$customMessages) {
+	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$updates = $this->getRequiredUpdates();
 		foreach ($updates as $update) {
 			$GLOBALS['TYPO3_DB']->admin_query($update);

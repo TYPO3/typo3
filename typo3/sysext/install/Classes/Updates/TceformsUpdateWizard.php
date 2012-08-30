@@ -72,7 +72,7 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @param 	mixed		&$customMessages: custom messages
 	 * @return 	boolean		TRUE on success, FALSE on error
 	 */
-	public function performUpdate(&$dbQueries, &$customMessages) {
+	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$this->init();
 		// Function below copied from sysext/install/updates/class.tx_coreupdates_imagelink.php
 		$tables = array(

@@ -60,7 +60,7 @@ class CscSplitUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @return 	boolean		TRUE if update succeeded, FALSE otherwise
 	 * @todo Define visibility
 	 */
-	public function performUpdate(&$dbQueries, &$customMessages) {
+	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$templates = $this->getTemplatesWithCsc($dbQueries, $customMessages);
 		$templates = $this->findUpdateableTemplatesWithCsc($templates);
 		$this->updateCscTemplates($templates, $dbQueries, $customMessages);
