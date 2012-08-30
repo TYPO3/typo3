@@ -32,6 +32,12 @@ namespace TYPO3\CMS\Reports\Report\Status;
  */
 class Status implements \TYPO3\CMS\Reports\ReportInterface {
 
+	const NOTICE = -2;
+	const INFO = -1;
+	const OK = 0;
+	const WARNING = 1;
+	const ERROR = 2;
+
 	/**
 	 * @var array
 	 */
