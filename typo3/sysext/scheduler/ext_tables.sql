@@ -5,7 +5,6 @@ CREATE TABLE tx_scheduler_task (
 	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
 	disable tinyint(4) unsigned DEFAULT '0' NOT NULL,
-	classname varchar(255) DEFAULT '' NOT NULL,
 	nextexecution int(11) unsigned DEFAULT '0' NOT NULL,
 	lastexecution_time int(11) unsigned DEFAULT '0' NOT NULL,
 	lastexecution_failure text NOT NULL,
