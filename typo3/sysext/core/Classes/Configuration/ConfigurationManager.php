@@ -165,11 +165,19 @@ class ConfigurationManager {
 	 * Write local configuration array to typo3conf/LocalConfiguration.php
 	 *
 	 * @param array $configuration The local configuration to be written
+	 * @throws \RuntimeException
 	 * @return boolean TRUE on success
 	 */
 	static protected function writeLocalConfiguration(array $configuration) {
+		$localConfigurationFile = PATH_site . static::LOCAL_CONFIGURATION_FILE;
+		if (!@is_file($localConfigurationFile) || !@is_writable($localConfigurationFile)) {
+			throw new \RuntimeException($localConfigurationFile . ' does not exist or is not writable.', 1346323822);
+		}
 		$configuration = \TYPO3\CMS\Core\Utility\ArrayUtility::sortByKeyRecursive($configuration);
-		$result = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . static::LOCAL_CONFIGURATION_FILE, '<?php' . LF . 'return ' . \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($configuration) . ';' . LF . '?>');
+		$result = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(
+			$localConfigurationFile,
+			'<?php' . LF . 'return ' . \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($configuration) . ';' . LF . '?>'
+		);
 		return $result === FALSE ? FALSE : TRUE;
 	}
 
