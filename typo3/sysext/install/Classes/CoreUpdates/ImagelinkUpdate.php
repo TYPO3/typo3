@@ -62,7 +62,7 @@ class ImagelinkUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @param 	mixed		&$customMessages: custom messages
 	 * @return 	boolean		TRUE on success, FALSE on error
 	 */
-	public function performUpdate(&$dbQueries, &$customMessages) {
+	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$result = TRUE;
 		if ($this->versionNumber >= 4005000) {
 			$affectedRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, image_link', 'tt_content', 'image_link<>\'\' AND image_link LIKE \'%,%\' AND image_link NOT LIKE \'%\\n%\'');

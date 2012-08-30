@@ -61,7 +61,7 @@ class MergeAdvancedUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @param 	mixed		&$customMessages: custom messages
 	 * @return 	boolean		whether it worked (TRUE) or not (FALSE)
 	 */
-	public function performUpdate(&$dbQueries, &$customMessages) {
+	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$result = FALSE;
 		if ($this->versionNumber >= 4002000) {
 			$updateArray = array(

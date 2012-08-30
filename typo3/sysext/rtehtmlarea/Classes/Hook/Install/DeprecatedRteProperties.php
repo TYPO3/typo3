@@ -151,7 +151,7 @@ class DeprecatedRteProperties extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 	 * @param 	string		pointer to output custom messages
 	 * @return 	boolean		TRUE if update succeeded, FALSE otherwise
 	 */
-	public function performUpdate(&$dbQueries, &$customMessages) {
+	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$success = FALSE;
 		$pages = $this->getPagesWithDeprecatedRteProperties($dbQueries, $customMessages);
 		if (empty($customMessages)) {

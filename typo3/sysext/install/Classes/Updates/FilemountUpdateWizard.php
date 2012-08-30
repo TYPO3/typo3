@@ -96,7 +96,7 @@ class FilemountUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @param 	mixed		&$customMessages: custom messages
 	 * @return 	boolean		TRUE on success, FALSE on error
 	 */
-	public function performUpdate(&$dbQueries, &$customMessages) {
+	public function performUpdate(array &$dbQueries, &$customMessages) {
 		$this->init();
 		$this->migrateAbsoluteFilemounts();
 		$this->migrateRelativeFilemounts();
