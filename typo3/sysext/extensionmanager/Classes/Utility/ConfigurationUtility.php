@@ -69,7 +69,8 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function saveDefaultConfiguration($extensionKey) {
 		$currentConfiguration = $this->getCurrentConfiguration($extensionKey);
-		$this->writeConfiguration($currentConfiguration, $extensionKey);
+		$nestedConfiguration = $this->convertValuedToNestedConfiguration($currentConfiguration);
+		$this->writeConfiguration($nestedConfiguration, $extensionKey);
 	}
 
 	/**
