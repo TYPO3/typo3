@@ -55,7 +55,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
 				$taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends'] = $task->selectedBackends;
 			}
 		}
-		$fieldName = 'TYPO3\\CMS\\Scheduler\\Scheduler[scheduler_cachingFrameworkGarbageCollection_selectedBackends][]';
+		$fieldName = 'tx_scheduler[scheduler_cachingFrameworkGarbageCollection_selectedBackends][]';
 		$fieldId = 'task_cachingFrameworkGarbageCollection_selectedBackends';
 		$fieldOptions = $this->getCacheBackendOptions($taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends']);
 		$fieldHtml = ((((('<select name="' . $fieldName) . '" id="') . $fieldId) . '" class="wide" size="10" multiple="multiple">') . $fieldOptions) . '</select>';

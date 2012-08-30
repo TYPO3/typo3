@@ -38,14 +38,14 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	/**
 	 * Back path to typo3 main dir
 	 *
-	 * @var 	string		$backPath
+	 * @var string $backPath
 	 */
 	public $backPath;
 
 	/**
 	 * Array containing submitted data when editing or adding a task
 	 *
-	 * @var 	array		$submittedData
+	 * @var array $submittedData
 	 */
 	protected $submittedData = array();
 
@@ -53,17 +53,17 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * Array containing all messages issued by the application logic
 	 * Contains the error's severity and the message itself
 	 *
-	 * @var 	array	$messages
+	 * @var array $messages
 	 */
 	protected $messages = array();
 
 	/**
-	 * @var 	string	Key of the CSH file
+	 * @var string Key of the CSH file
 	 */
 	protected $cshKey;
 
 	/**
-	 * @var 	tx_scheduler	Local scheduler instance
+	 * @var \TYPO3\CMS\Scheduler\Scheduler Local scheduler instance
 	 */
 	protected $scheduler;
 
@@ -484,7 +484,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			}
 		} catch (\UnexpectedValueException $e) {
 			// The task could not be unserialized properly, simply delete the database record
-			$result = $GLOBALS['TYPO3_DB']->exec_DELETEquery('TYPO3\\CMS\\Scheduler\\Scheduler_task', 'uid = ' . intval($this->submittedData['uid']));
+			$result = $GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_scheduler_task', 'uid = ' . intval($this->submittedData['uid']));
 			if ($result) {
 				$this->addMessage($GLOBALS['LANG']->getLL('msg.deleteSuccess'));
 			} else {
@@ -550,12 +550,11 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				/** @var $task \TYPO3\CMS\Scheduler\Task */
 				$task = unserialize($taskRecord['serialized_task_object']);
 				// Set some task information
-				$class = $taskRecord['classname'];
 				$taskInfo['disable'] = $taskRecord['disable'];
 				// Check that the task object is valid
 				if ($this->scheduler->isValidTaskObject($task)) {
 					// The task object is valid, process with fetching current data
-					$taskInfo['class'] = $class;
+					$taskInfo['class'] = get_class($task);
 					// Get execution information
 					$taskInfo['start'] = $task->getExecution()->getStart();
 					$taskInfo['end'] = $task->getExecution()->getEnd();
@@ -937,6 +936,10 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				// Restore the serialized task and pass it a reference to the scheduler object
 				/** @var $task \TYPO3\CMS\Scheduler\Task */
 				$task = unserialize($schedulerRecord['serialized_task_object']);
+				$class = get_class($task);
+				if ($class === '__PHP_Incomplete_Class' && preg_match('/^O:[0-9]+:"(?P<classname>.+?)"/', $schedulerRecord['serialized_task_object'], $matches) === 1) {
+					$class = $matches['classname'];
+				}
 				// Assemble information about last execution
 				$context = '';
 				if (!empty($schedulerRecord['lastexecution_time'])) {
@@ -950,7 +953,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				}
 				if ($this->scheduler->isValidTaskObject($task)) {
 					// The task object is valid
-					$name = htmlspecialchars((($registeredClasses[$schedulerRecord['classname']]['title'] . ' (') . $registeredClasses[$schedulerRecord['classname']]['extension']) . ')');
+					$name = htmlspecialchars((($registeredClasses[$class]['title'] . ' (') . $registeredClasses[$class]['extension']) . ')');
 					$name .= '<br /> ';
 					$additionalInformation = $task->getAdditionalInformation();
 					if ($task instanceof \TYPO3\CMS\Scheduler\ProgressProviderInterface) {
@@ -999,7 +1002,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						$multiple = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:no');
 					}
 					// Define checkbox
-					$startExecutionElement = ((('<input type="checkbox" name="TYPO3\\CMS\\Scheduler\\Scheduler[execute][]" value="' . $schedulerRecord['uid']) . '" id="task_') . $schedulerRecord['uid']) . '" class="checkboxes" />';
+					$startExecutionElement = ((('<input type="checkbox" name="tx_scheduler[execute][]" value="' . $schedulerRecord['uid']) . '" id="task_') . $schedulerRecord['uid']) . '" class="checkboxes" />';
 					// Show no action links (edit, delete) if task is running
 					$actions = $editAction . $deleteAction;
 					if ($isRunning) {
@@ -1015,7 +1018,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					$failureOutput = '';
 					if (!empty($schedulerRecord['lastexecution_failure'])) {
 						// Try to get the stored exception object
-						/** @var $exception Exception */
+						/** @var $exception \Exception */
 						$exception = unserialize($schedulerRecord['lastexecution_failure']);
 						// If the exception could not be unserialized, issue a default error message
 						if ($exception === FALSE || $exception instanceof \__PHP_Incomplete_Class) {
@@ -1042,7 +1045,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					// The task object is not valid
 					// Prepare to issue an error
 					/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('msg.invalidTaskClass'), $schedulerRecord['classname']), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', sprintf($GLOBALS['LANG']->getLL('msg.invalidTaskClass'), $class), '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 					$executionStatusOutput = $flashMessage->render();
 					$tableLayout[$tr] = $rowWithSpan;
 					$table[$tr][] = $startExecutionElement;

@@ -99,7 +99,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		// Select all tasks with executions
 		// NOTE: this cleanup is done for disabled tasks too,
 		// to avoid leaving old executions lying around
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, classname, serialized_executions', 'tx_scheduler_task', 'serialized_executions <> \'\'');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, serialized_executions, serialized_task_object', 'tx_scheduler_task', 'serialized_executions <> \'\'');
 		$maxDuration = $this->extConf['maxLifetime'] * 60;
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			if ($serialized_executions = unserialize($row['serialized_executions'])) {
@@ -108,7 +108,8 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 					if ($tstamp - $task < $maxDuration) {
 						$executions[] = $task;
 					} else {
-						$logMessage = (((('Removing logged execution, assuming that the process is dead. Execution of \'' . $row['classname']) . '\' (UID: ') . $row['uid']) . ') was started at ') . date('Y-m-d H:i:s', $task);
+						$task = unserialize($row['serialized_task_object']);
+						$logMessage = (((('Removing logged execution, assuming that the process is dead. Execution of \'' . get_class($task)) . '\' (UID: ') . $row['uid']) . ') was started at ') . date('Y-m-d H:i:s', $task);
 						$this->log($logMessage);
 					}
 				}
@@ -234,7 +235,6 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			$task->unsetScheduler();
 			$fields = array(
 				'nextexecution' => $executionTime,
-				'classname' => get_class($task),
 				'disable' => $task->isDisabled(),
 				'serialized_task_object' => serialize($task)
 			);
