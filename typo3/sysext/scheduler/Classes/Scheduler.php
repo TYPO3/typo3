@@ -99,16 +99,17 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		// Select all tasks with executions
 		// NOTE: this cleanup is done for disabled tasks too,
 		// to avoid leaving old executions lying around
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, classname, serialized_executions', 'tx_scheduler_task', 'serialized_executions <> \'\'');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, serialized_executions, serialized_task_object', 'tx_scheduler_task', 'serialized_executions <> \'\'');
 		$maxDuration = $this->extConf['maxLifetime'] * 60;
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			$executions = array();
 			if ($serialized_executions = unserialize($row['serialized_executions'])) {
-				$executions = array();
 				foreach ($serialized_executions as $task) {
 					if ($tstamp - $task < $maxDuration) {
 						$executions[] = $task;
 					} else {
-						$logMessage = (((('Removing logged execution, assuming that the process is dead. Execution of \'' . $row['classname']) . '\' (UID: ') . $row['uid']) . ') was started at ') . date('Y-m-d H:i:s', $task);
+						$task = unserialize($row['serialized_task_object']);
+						$logMessage = (((('Removing logged execution, assuming that the process is dead. Execution of \'' . get_class($task)) . '\' (UID: ') . $row['uid']) . ') was started at ') . date('Y-m-d H:i:s', $task);
 						$this->log($logMessage);
 					}
 				}
@@ -189,7 +190,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($type !== 'manual' && $type !== 'cli-by-id') {
 			$type = 'cron';
 		}
-		/** @var \TYPO3\CMS\Core\Registry $registry */
+		/** @var $registry \TYPO3\CMS\Core\Registry */
 		$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
 		$runInformation = array('start' => $GLOBALS['EXEC_TIME'], 'end' => time(), 'type' => $type);
 		$registry->set('tx_scheduler', 'lastRun', $runInformation);
@@ -234,7 +235,6 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			$task->unsetScheduler();
 			$fields = array(
 				'nextexecution' => $executionTime,
-				'classname' => get_class($task),
 				'disable' => $task->isDisabled(),
 				'serialized_task_object' => serialize($task)
 			);
@@ -417,8 +417,8 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				$startTime = 'now+1minute';
 			}
 			$cliDispatchPath = PATH_site . 'typo3/cli_dispatch.phpsh';
+			$currentLocale = setlocale(LC_CTYPE, 0);
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
-				$currentLocale = setlocale(LC_CTYPE, 0);
 				setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
 			}
 			$cmd = ((('echo ' . escapeshellarg($cliDispatchPath)) . ' scheduler | at ') . escapeshellarg($startTime)) . ' 2>&1';
