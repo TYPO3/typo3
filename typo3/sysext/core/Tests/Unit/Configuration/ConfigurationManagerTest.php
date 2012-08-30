@@ -205,18 +205,29 @@ throw new RuntimeException(\'foo\', 1310203815);
 	 */
 	public function writeLocalConfigurationWritesSortedContentToConfigurationFile() {
 		$configurationFile = 'typo3temp/' . uniqid('localConfiguration');
-		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
-		$className = uniqid('ConfigurationManager');
-		eval((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  const LOCAL_CONFIGURATION_FILE = \'') . $configurationFile) . '\';') . '  public static function writeLocalConfiguration($conf) {') . '    return parent::writeLocalConfiguration($conf);') . '  }') . '}');
-		$className = $namespace . '\\' . $className;
-		$this->testFilesToDelete[] = PATH_site . $configurationFile;
-		$pairs = array(
-			'foo' => 42,
-			'bar' => 23
-		);
-		$expectedContent = ((((((((((('<?php' . LF) . 'return array(') . LF) . TAB) . '\'bar\' => 23,') . LF) . TAB) . '\'foo\' => 42,') . LF) . ');') . LF) . '?>';
-		$this->assertTrue($className::writeLocalConfiguration($pairs));
-		$this->assertEquals($expectedContent, file_get_contents(PATH_site . $configurationFile));
+		if (!is_file($configurationFile)) {
+			if (!$fh = fopen(PATH_site . $configurationFile, 'wb')) {
+				$this->markTestSkipped('Can not write file ' . $configurationFile . '. Please check write permissions.');
+			} else {
+				fclose($fh);
+			}
+		}
+
+		if (@is_file($configurationFile)) {
+			$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+			$className = uniqid('ConfigurationManager');
+			eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {' . '  const LOCAL_CONFIGURATION_FILE = \'' . $configurationFile . '\';' . '  public static function writeLocalConfiguration($conf) {' . '    return parent::writeLocalConfiguration($conf);' . '  }' . '}');
+			$className = $namespace . '\\' . $className;
+			$pairs = array(
+				'foo' => 42,
+				'bar' => 23
+			);
+			$expectedContent = '<?php' . LF . 'return array(' . LF . TAB . '\'bar\' => 23,' . LF . TAB . '\'foo\' => 42,' . LF . ');' . LF . '?>';
+			$className::writeLocalConfiguration($pairs);
+			$actualContent = file_get_contents(PATH_site . $configurationFile);
+			unlink(PATH_site . $configurationFile);
+			$this->assertSame($expectedContent, $actualContent);
+		}
 	}
 
 	#######################
