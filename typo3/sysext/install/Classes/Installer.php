@@ -5120,7 +5120,10 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 								);
 								$GLOBALS['TYPO3_DB']->exec_INSERTquery('be_users', $insertFields);
 							}
+
+							$this->dispatchInitializeUpdates();
 						}
+
 						$this->message($tLabel, 'Imported ALL', ('
 								<p>
 									Queries: ' . $r) . '
@@ -5500,6 +5503,18 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			}
 		}
 		$this->output($this->outputWrapper($this->printAll()));
+	}
+
+	/**
+	 * Dispatches updates that shall be executed
+	 * during initialization of a fresh TYPO3 instance.
+	 *
+	 * @return void
+	 */
+	public function dispatchInitializeUpdates() {
+		/** @var $dispatcher \TYPO3\CMS\Install\Service\UpdateDispatcherService */
+		$dispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Install\Service\UpdateDispatcherService', $this);
+		$dispatcher->dispatchInitializeUpdates();
 	}
 
 	/**
