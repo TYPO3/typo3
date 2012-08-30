@@ -48,10 +48,9 @@ class ConfigurationManagerTest extends \tx_phpunit_testcase {
 		}
 	}
 
-	#######################
-	# Tests concerning getDefaultConfiguration
-	#######################
 	/**
+	 * Tests concerning getDefaultConfiguration
+	 *
 	 * @test
 	 * @expectedException RuntimeException
 	 */
@@ -70,10 +69,9 @@ throw new RuntimeException(\'foo\', 1310203814);
 		$className::getDefaultConfiguration();
 	}
 
-	#######################
-	# Tests concerning getLocalConfiguration
-	#######################
 	/**
+	 * Tests concerning getLocalConfiguration
+	 *
 	 * @test
 	 * @expectedException RuntimeException
 	 */
@@ -92,10 +90,9 @@ throw new RuntimeException(\'foo\', 1310203815);
 		$className::getLocalConfiguration();
 	}
 
-	#######################
-	# Tests concerning updateLocalConfiguration
-	#######################
 	/**
+	 * Tests concerning updateLocalConfiguration
+	 *
 	 * @test
 	 */
 	public function updateLocalConfigurationWritesNewMergedLocalConfigurationArray() {
@@ -110,10 +107,9 @@ throw new RuntimeException(\'foo\', 1310203815);
 		$className::updateLocalConfiguration($overrideConfiguration);
 	}
 
-	#######################
-	# Tests concerning getDefaultConfigurationValueByPath
-	#######################
 	/**
+	 * Tests concerning getDefaultConfigurationValueByPath
+	 *
 	 * @test
 	 */
 	public function getDefaultConfigurationValueByPathReturnsCorrectValue() {
@@ -124,10 +120,9 @@ throw new RuntimeException(\'foo\', 1310203815);
 		$this->assertSame('value', $className::getDefaultConfigurationValueByPath('path'));
 	}
 
-	#######################
-	# Tests concerning getLocalConfigurationValueByPath
-	#######################
 	/**
+	 * Tests concerning getLocalConfigurationValueByPath
+	 *
 	 * @test
 	 */
 	public function getLocalConfigurationValueByPathReturnsCorrectValue() {
@@ -138,10 +133,9 @@ throw new RuntimeException(\'foo\', 1310203815);
 		$this->assertSame('value', $className::getLocalConfigurationValueByPath('path'));
 	}
 
-	#######################
-	# Tests concerning getConfigurationValueByPath
-	#######################
 	/**
+	 * Tests concerning getConfigurationValueByPath
+	 *
 	 * @test
 	 */
 	public function getConfigurationValueByPathReturnsCorrectValue() {
@@ -152,10 +146,9 @@ throw new RuntimeException(\'foo\', 1310203815);
 		$this->assertSame('valueOverride', $className::getConfigurationValueByPath('path'));
 	}
 
-	#######################
-	# Tests concerning setLocalConfigurationValueByPath
-	#######################
 	/**
+	 * Tests concerning setLocalConfigurationValueByPath
+	 *
 	 * @test
 	 */
 	public function setLocalConfigurationValueByPathReturnFalseIfPathIsNotValid() {
@@ -179,10 +172,9 @@ throw new RuntimeException(\'foo\', 1310203815);
 		$this->assertTrue($className::setLocalConfigurationValueByPath($pathToUpdate, $valueToUpdate));
 	}
 
-	#######################
-	# Tests concerning setLocalConfigurationValuesByPathValuePairs
-	#######################
 	/**
+	 * Tests concerning setLocalConfigurationValuesByPathValuePairs
+	 *
 	 * @test
 	 */
 	public function setLocalConfigurationValuesByPathValuePairsSetsPathValuePairs() {
@@ -197,32 +189,41 @@ throw new RuntimeException(\'foo\', 1310203815);
 		$this->assertTrue($className::setLocalConfigurationValuesByPathValuePairs($pairs));
 	}
 
-	#######################
-	# Tests concerning writeLocalConfiguration
-	#######################
 	/**
+	 * Tests concerning writeLocalConfiguration
+	 *
 	 * @test
 	 */
 	public function writeLocalConfigurationWritesSortedContentToConfigurationFile() {
 		$configurationFile = 'typo3temp/' . uniqid('localConfiguration');
-		$namespace = 'TYPO3\\CMS\\Core\\Configuration';
-		$className = uniqid('ConfigurationManager');
-		eval((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {') . '  const LOCAL_CONFIGURATION_FILE = \'') . $configurationFile) . '\';') . '  public static function writeLocalConfiguration($conf) {') . '    return parent::writeLocalConfiguration($conf);') . '  }') . '}');
-		$className = $namespace . '\\' . $className;
-		$this->testFilesToDelete[] = PATH_site . $configurationFile;
-		$pairs = array(
-			'foo' => 42,
-			'bar' => 23
-		);
-		$expectedContent = ((((((((((('<?php' . LF) . 'return array(') . LF) . TAB) . '\'bar\' => 23,') . LF) . TAB) . '\'foo\' => 42,') . LF) . ');') . LF) . '?>';
-		$this->assertTrue($className::writeLocalConfiguration($pairs));
-		$this->assertEquals($expectedContent, file_get_contents(PATH_site . $configurationFile));
+		if (!is_file($configurationFile)) {
+			if (!$fh = fopen(PATH_site . $configurationFile, 'wb')) {
+				$this->markTestSkipped('Can not write file ' . $configurationFile . '. Please check write permissions.');
+			} else {
+				fclose($fh);
+			}
+		}
+
+		if (@is_file($configurationFile)) {
+			$namespace = 'TYPO3\\CMS\\Core\\Configuration';
+			$className = uniqid('ConfigurationManager');
+			eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager {' . '  const LOCAL_CONFIGURATION_FILE = \'' . $configurationFile . '\';' . '  public static function writeLocalConfiguration($conf) {' . '    return parent::writeLocalConfiguration($conf);' . '  }' . '}');
+			$className = $namespace . '\\' . $className;
+			$pairs = array(
+				'foo' => 42,
+				'bar' => 23
+			);
+			$expectedContent = '<?php' . LF . 'return array(' . LF . TAB . '\'bar\' => 23,' . LF . TAB . '\'foo\' => 42,' . LF . ');' . LF . '?>';
+			$className::writeLocalConfiguration($pairs);
+			$actualContent = file_get_contents(PATH_site . $configurationFile);
+			unlink(PATH_site . $configurationFile);
+			$this->assertSame($expectedContent, $actualContent);
+		}
 	}
 
-	#######################
-	# Tests concerning isValidLocalConfigurationPath
-	#######################
 	/**
+	 * Tests concerning isValidLocalConfigurationPath
+	 *
 	 * @test
 	 */
 	public function isValidLocalConfigurationPathAcceptsWhitelistedPath() {
