@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2012-08-31T17:54:12Z" product-name="lang">
+		<header/>
+		<body>
+			<trans-unit id="not_checked" xml:space="preserve">
+				<source>not checked</source>
+			</trans-unit>
+			<trans-unit id="translation_n_a" xml:space="preserve">
+				<source>translation not available</source>
+			</trans-unit>
+			<trans-unit id="translation_msg_failed" xml:space="preserve">
+				<source>Failed</source>
+			</trans-unit>
+			<trans-unit id="translation_msg_updated" xml:space="preserve">
+				<source>Updated</source>
+			</trans-unit>
+			<trans-unit id="translation_status_uptodate" xml:space="preserve">
+				<source>up to date</source>
+			</trans-unit>
+			<trans-unit id="button_save" xml:space="preserve">
+				<source>Save</source>
+			</trans-unit>
+			<trans-unit id="button_update" xml:space="preserve">
+				<source>Update from repository</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
