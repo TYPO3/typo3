@@ -50,7 +50,8 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		'openssl',
 		'xml',
 		'zlib',
-		'soap'
+		'soap',
+		'zip'
 	);
 
 	/**
