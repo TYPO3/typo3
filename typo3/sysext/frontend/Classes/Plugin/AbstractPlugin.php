@@ -229,7 +229,17 @@ class AbstractPlugin {
 		}
 		if (!empty($GLOBALS['TSFE']->config['config']['language'])) {
 			$this->LLkey = $GLOBALS['TSFE']->config['config']['language'];
-			if (!empty($GLOBALS['TSFE']->config['config']['language_alt'])) {
+			if (empty($GLOBALS['TSFE']->config['config']['language_alt'])) {
+				/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
+				$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+				if (in_array($this->LLkey, $locales->getLocales())) {
+					$this->altLLkey = '';
+					foreach ($locales->getLocaleDependencies($this->LLkey) as $language) {
+						$this->altLLkey .= $language . ',';
+					}
+					$this->altLLkey = rtrim($this->altLLkey, ',');
+				}
+			} else {
 				$this->altLLkey = $GLOBALS['TSFE']->config['config']['language_alt'];
 			}
 		}
@@ -856,26 +866,40 @@ class AbstractPlugin {
 	 * @return string The value from LOCAL_LANG.
 	 */
 	public function pi_getLL($key, $alternativeLabel = '', $hsc = FALSE) {
-		if (isset($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])) {
+		$word = NULL;
+		if (!empty($this->LOCAL_LANG[$this->LLkey][$key][0]['target'])) {
 			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
 			if (isset($this->LOCAL_LANG_charset[$this->LLkey][$key])) {
 				$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->LLkey][$key][0]['target'], $this->LOCAL_LANG_charset[$this->LLkey][$key]);
 			} else {
 				$word = $this->LOCAL_LANG[$this->LLkey][$key][0]['target'];
 			}
-		} elseif ($this->altLLkey && isset($this->LOCAL_LANG[$this->altLLkey][$key][0]['target'])) {
-			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
-			if (isset($this->LOCAL_LANG_charset[$this->altLLkey][$key])) {
-				$word = $GLOBALS['TSFE']->csConv($this->LOCAL_LANG[$this->altLLkey][$key][0]['target'], $this->LOCAL_LANG_charset[$this->altLLkey][$key]);
-			} else {
-				$word = $this->LOCAL_LANG[$this->altLLkey][$key][0]['target'];
+		} elseif ($this->altLLkey) {
+			$alternativeLanguageKeys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->altLLkey, TRUE);
+			$alternativeLanguageKeys = array_reverse($alternativeLanguageKeys);
+			foreach ($alternativeLanguageKeys as $languageKey) {
+				if (!empty($this->LOCAL_LANG[$languageKey][$key][0]['target'])) {
+					// Alternative language translation for key exists
+					$word = $this->LOCAL_LANG[$languageKey][$key][0]['target'];
+					// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
+					if (isset($this->LOCAL_LANG_charset[$languageKey][$key])) {
+						$word = $GLOBALS['TSFE']->csConv(
+							$word,
+							$this->LOCAL_LANG_charset[$this->altLLkey][$key]
+						);
+					}
+					break;
+				}
 			}
-		} elseif (isset($this->LOCAL_LANG['default'][$key][0]['target'])) {
-			// Get default translation (without charset conversion, english)
-			$word = $this->LOCAL_LANG['default'][$key][0]['target'];
-		} else {
-			// Return alternative string or empty
-			$word = isset($this->LLtestPrefixAlt) ? $this->LLtestPrefixAlt . $alternativeLabel : $alternativeLabel;
+		}
+		if ($word === NULL) {
+			if (!empty($this->LOCAL_LANG['default'][$key][0]['target'])) {
+				// Get default translation (without charset conversion, english)
+				$word = $this->LOCAL_LANG['default'][$key][0]['target'];
+			} else {
+				// Return alternative string or empty
+				$word = isset($this->LLtestPrefixAlt) ? $this->LLtestPrefixAlt . $alternativeLabel : $alternativeLabel;
+			}
 		}
 		$output = isset($this->LLtestPrefix) ? $this->LLtestPrefix . $word : $word;
 		if ($hsc) {
@@ -898,8 +922,12 @@ class AbstractPlugin {
 			$basePath = 'EXT:' . $this->extKey . '/' . dirname($this->scriptRelPath) . '/locallang.xml';
 			// Read the strings in the required charset (since TYPO3 4.2)
 			$this->LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
-			if ($this->altLLkey) {
-				$this->LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($basePath, $this->altLLkey);
+			$alternativeLanguageKeys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->altLLkey, TRUE);
+			foreach ($alternativeLanguageKeys as $languageKey) {
+				$tempLL = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($basePath, $languageKey);
+				if ($this->LLkey !== 'default' && isset($tempLL[$languageKey])) {
+					$this->LOCAL_LANG[$languageKey] = $tempLL[$languageKey];
+				}
 			}
 			// Overlaying labels from TypoScript (including fictitious language keys for non-system languages!):
 			$confLL = $this->conf['_LOCAL_LANG.'];
