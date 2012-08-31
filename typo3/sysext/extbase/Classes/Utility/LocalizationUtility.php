@@ -62,9 +62,9 @@ class LocalizationUtility {
 	/**
 	 * Pointer to alternative fall-back language to use
 	 *
-	 * @var string
+	 * @var array
 	 */
-	static protected $alternativeLanguageKey = '';
+	static protected $alternativeLanguageKeys = array();
 
 	/**
 	 * Returns the localized label of the LOCAL_LANG key, $key.
@@ -85,38 +85,30 @@ class LocalizationUtility {
 			$value = self::translateFileReference($key);
 		} else {
 			self::initializeLocalization($extensionName);
-			// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
-			if (isset(self::$LOCAL_LANG[$extensionName][self::$languageKey][$key])) {
-				if (is_array(self::$LOCAL_LANG[$extensionName][self::$languageKey][$key])) {
-					// TYPO3 >= 4.6
-					$value = self::$LOCAL_LANG[$extensionName][self::$languageKey][$key][0]['target'];
-				} else {
-					// TYPO3 < 4.6
-					$value = self::$LOCAL_LANG[$extensionName][self::$languageKey][$key];
-				}
-				if (isset(self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key])) {
+				// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG
+			if (!empty(self::$LOCAL_LANG[$extensionName][self::$languageKey][$key][0]['target'])) {
+					// Local language translation for key exists
+				$value = self::$LOCAL_LANG[$extensionName][self::$languageKey][$key][0]['target'];
+				if (!empty(self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key])) {
 					$value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][self::$languageKey][$key]);
 				}
-			} elseif (self::$alternativeLanguageKey !== '' && isset(self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key])) {
-				if (is_array(self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key])) {
-					// TYPO3 >= 4.6
-					$value = self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key][0]['target'];
-				} else {
-					// TYPO3 < 4.6
-					$value = self::$LOCAL_LANG[$extensionName][self::$alternativeLanguageKey][$key];
+			} elseif (count(self::$alternativeLanguageKeys)) {
+				$languages = array_reverse(self::$alternativeLanguageKeys);
+				foreach ($languages as $language) {
+					if (!empty(self::$LOCAL_LANG[$extensionName][$language][$key][0]['target'])) {
+							// Alternative language translation for key exists
+						$value = self::$LOCAL_LANG[$extensionName][$language][$key][0]['target'];
+						if (!empty(self::$LOCAL_LANG_charset[$extensionName][$language][$key])) {
+							$value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][$language][$key]);
+						}
+						break;
+					}
 				}
-				if (isset(self::$LOCAL_LANG_charset[$extensionName][self::$alternativeLanguageKey][$key])) {
-					$value = self::convertCharset($value, self::$LOCAL_LANG_charset[$extensionName][self::$alternativeLanguageKey][$key]);
-				}
-			} elseif (isset(self::$LOCAL_LANG[$extensionName]['default'][$key])) {
-				// No charset conversion because default is English and thereby ASCII
-				if (is_array(self::$LOCAL_LANG[$extensionName]['default'][$key])) {
-					// TYPO3 >= 4.6
-					$value = self::$LOCAL_LANG[$extensionName]['default'][$key][0]['target'];
-				} else {
-					// TYPO3 < 4.6
-					$value = self::$LOCAL_LANG[$extensionName]['default'][$key];
-				}
+			}
+			if ($value === NULL && !empty(self::$LOCAL_LANG[$extensionName]['default'][$key][0]['target'])) {
+					// Default language translation for key exists
+					// No charset conversion because default is English and thereby ASCII
+				$value = self::$LOCAL_LANG[$extensionName]['default'][$key][0]['target'];
 			}
 		}
 		if (is_array($arguments) && $value !== NULL) {
@@ -164,9 +156,11 @@ class LocalizationUtility {
 		self::setLanguageKeys();
 		$renderCharset = TYPO3_MODE === 'FE' ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['LANG']->charSet;
 		self::$LOCAL_LANG[$extensionName] = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($locallangPathAndFilename, self::$languageKey, $renderCharset);
-		if (self::$alternativeLanguageKey !== '') {
-			$alternativeLocalLang = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($locallangPathAndFilename, self::$alternativeLanguageKey);
-			self::$LOCAL_LANG[$extensionName] = array_merge(self::$LOCAL_LANG[$extensionName], $alternativeLocalLang);
+		foreach (self::$alternativeLanguageKeys as $language) {
+			$tempLL = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($locallangPathAndFilename, $language, $renderCharset);
+			if (self::$languageKey !== 'default' && isset($tempLL[$language])) {
+				self::$LOCAL_LANG[$extensionName][$language] = $tempLL[$language];
+			}
 		}
 		self::loadTypoScriptLabels($extensionName);
 	}
@@ -181,12 +175,20 @@ class LocalizationUtility {
 	 */
 	protected function setLanguageKeys() {
 		self::$languageKey = 'default';
-		self::$alternativeLanguageKey = '';
+		self::$alternativeLanguageKeys = array();
 		if (TYPO3_MODE === 'FE') {
 			if (isset($GLOBALS['TSFE']->config['config']['language'])) {
 				self::$languageKey = $GLOBALS['TSFE']->config['config']['language'];
 				if (isset($GLOBALS['TSFE']->config['config']['language_alt'])) {
-					self::$alternativeLanguageKey = $GLOBALS['TSFE']->config['config']['language_alt'];
+					self::$alternativeLanguageKeys[] = $GLOBALS['TSFE']->config['config']['language_alt'];
+				} else {
+					/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
+					$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
+					if (in_array(self::$languageKey, $locales->getLocales())) {
+						foreach ($locales->getLocaleDependencies(self::$languageKey) as $language) {
+							self::$alternativeLanguageKeys[] = $language;
+						}
+					}
 				}
 			}
 		} elseif (strlen($GLOBALS['BE_USER']->uc['lang']) > 0) {
@@ -218,7 +220,7 @@ class LocalizationUtility {
 			foreach ($labels as $labelKey => $labelValue) {
 				if (is_string($labelValue)) {
 					self::$LOCAL_LANG[$extensionName][$languageKey][$labelKey] = $labelValue;
-					// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
+						// For labels coming from the TypoScript (database) the charset is assumed to be "forceCharset" and if that is not set, assumed to be that of the individual system languages
 					if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) && strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) > 0) {
 						self::$LOCAL_LANG_charset[$extensionName][$languageKey][$labelKey] = $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'];
 					} elseif (is_object($GLOBALS['LANG'])) {
