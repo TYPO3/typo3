@@ -23,9 +23,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the Tx_Extensionmanager_Utility_Configuration class in the TYPO3 Core.
- *
  * @package Extension Manager
  * @subpackage Tests
  */
