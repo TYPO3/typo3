@@ -1714,7 +1714,8 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	 */
 	public function getFilePermissionsForStorage(\TYPO3\CMS\Core\Resource\ResourceStorage $storageObject) {
 		$defaultFilePermissions = $this->getFilePermissions();
-		$storageFilePermissions = $this->getTSConfig('permissions.file.storage.' . $storageObject->getUid());
+		$storagePermissionsArray = $this->getTSConfig('permissions.file.storage.' . $storageObject->getUid());
+		$storageFilePermissions = $storagePermissionsArray['properties'];
 		if (is_array($storageFilePermissions) && count($storageFilePermissions)) {
 			return array_merge($storageFilePermissions, $defaultFilePermissions);
 		} else {
