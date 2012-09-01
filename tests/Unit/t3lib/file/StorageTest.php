@@ -96,6 +96,11 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 		if ($storageObject == NULL) {
 			$storageObject = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		}
+
+		if (!isset($driverConfiguration['basePath'])) {
+			$driverConfiguration['basePath'] = $this->getMountRootUrl();
+		}
+
 		if ($mockedDriverMethods === NULL) {
 			$driver = new \TYPO3\CMS\Core\Resource\Driver\LocalDriver($driverConfiguration);
 		} else {
