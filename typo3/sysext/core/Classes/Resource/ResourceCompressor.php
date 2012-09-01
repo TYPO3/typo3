@@ -185,23 +185,25 @@ class ResourceCompressor {
 			// we remove BACK_PATH from $filename, so make it relative to root path
 			$filenameFromMainDir = $this->getFilenameFromMainDir($fileOptions['file']);
 			// if $options['baseDirectories'] set, we only include files below these directories
-			if ((!isset($options['baseDirectories']) || $this->checkBaseDirectory($filenameFromMainDir, array_merge($options['baseDirectories'], array($this->targetDirectory)))) && $fileOptions['media'] === 'all') {
-				$filesToInclude[] = $filenameFromMainDir;
+			if ((!isset($options['baseDirectories']) || $this->checkBaseDirectory($filenameFromMainDir, array_merge($options['baseDirectories'], array($this->targetDirectory))))) {
+				$filesToInclude[$fileOptions['media']][] = $filenameFromMainDir;
 				// remove the file from the incoming file array
 				unset($cssFiles[$key]);
 			}
 		}
 		if (count($filesToInclude)) {
-			$targetFile = $this->createMergedCssFile($filesToInclude);
-			$targetFileRelative = $this->relativePath . $targetFile;
-			$concatenatedOptions = array(
-				'file' => $targetFileRelative,
-				'rel' => 'stylesheet',
-				'media' => 'all',
-				'compress' => TRUE
-			);
-			// place the merged stylesheet on top of the stylesheets
-			$cssFiles = array_merge(array($targetFileRelative => $concatenatedOptions), $cssFiles);
+			foreach ($filesToInclude as $media => $cssFilesToInclude) {
+				$targetFile = $this->createMergedCssFile($cssFilesToInclude);
+				$targetFileRelative = $this->relativePath . $targetFile;
+				$concatenatedOptions = array(
+					'file' => $targetFileRelative,
+					'rel' => 'stylesheet',
+					'media' => $media,
+					'compress' => TRUE
+				);
+					// place the merged stylesheet on top of the stylesheets
+				$cssFiles = array_merge(array($targetFileRelative => $concatenatedOptions), $cssFiles);
+			}
 		}
 		return $cssFiles;
 	}
