@@ -116,7 +116,20 @@ class ConfigurationItemRepository {
 		preg_match('/options\\[(.*)\\]/is', $configurationOption['label'], $labelMatches);
 		$optionValues = explode(',', $typeMatches[1]);
 		$optionLabels = explode(',', $labelMatches[1]);
-		$configurationOption['generic'] = $labelMatches ? array_combine($optionLabels, $optionValues) : array_combine($optionValues, $optionValues);
+
+		if ($labelMatches) {
+			$configurationOption['generic'] = array_combine($optionLabels, $optionValues);
+		} else {
+			$optionWithLabels = array();
+			foreach ($optionValues as $optionValue) {
+				list($label, $value, ) = explode('=', $optionValue);
+				$optionWithLabels = array_merge($optionWithLabels, array(
+					$label => $value ? $value : $label
+				));
+			}
+			$configurationOption['generic'] = $optionWithLabels;
+		}
+
 		$configurationOption['type'] = 'options';
 		$configurationOption['label'] = str_replace($labelMatches[0], '', $configurationOption['label']);
 		return $configurationOption;
