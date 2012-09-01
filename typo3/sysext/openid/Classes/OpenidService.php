@@ -482,7 +482,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	protected function getAdjustedOpenIDIdentifier($openIDIdentifier) {
 		$result = '';
 		$claimedOpenIDIdentifier = $this->getSignedClaimedOpenIDIdentifier();
-		$pattern = ('#^' . preg_quote($claimedOpenIDIdentifier, '#')) . '/?$#';
+		$pattern = ('#^' . preg_quote($claimedOpenIDIdentifier, '#')) . '/?.*$#';
 		if (preg_match($pattern, $openIDIdentifier)) {
 			$result = $claimedOpenIDIdentifier;
 		}
