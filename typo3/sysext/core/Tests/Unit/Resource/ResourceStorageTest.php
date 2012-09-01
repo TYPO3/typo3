@@ -118,6 +118,11 @@ class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCa
 		if ($storageObject == NULL) {
 			$storageObject = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		}
+
+		if (!isset($driverConfiguration['basePath'])) {
+			$driverConfiguration['basePath'] = $this->getMountRootUrl();
+		}
+
 		if ($mockedDriverMethods === NULL) {
 			$driver = new \TYPO3\CMS\Core\Resource\Driver\LocalDriver($driverConfiguration);
 		} else {

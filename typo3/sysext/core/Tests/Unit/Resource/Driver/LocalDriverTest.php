@@ -131,7 +131,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 */
 	public function rootLevelFolderIsCreatedWithCorrectArguments() {
 		$mockedMount = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
-		$fixture = $this->createDriverFixture(array(), $mockedMount);
+		$fixture = $this->createDriverFixture(array('basePath' => $this->getMountRootUrl()), $mockedMount);
 		$mockedFactory = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 		$mockedFactory->expects($this->once())->method('createFolderObject')->with($this->equalTo($mockedMount), $this->equalTo('/'), $this->equalTo(''));
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', $mockedFactory);
