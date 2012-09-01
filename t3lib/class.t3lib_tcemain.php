@@ -4348,8 +4348,10 @@ class t3lib_TCEmain {
 				if ($table != 'pages') {
 					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'pid=' . intval($uid) . $this->deleteClause($table));
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
-						$this->deleteVersionsForRecord($table, $row['uid'], $forceHardDelete);
-						$this->deleteRecord($table, $row['uid'], TRUE, $forceHardDelete);
+						if (t3lib_BEfunc::getRecord($table, $row['uid'])) {
+							$this->deleteVersionsForRecord($table, $row['uid'], $forceHardDelete);
+							$this->deleteRecord($table, $row['uid'], TRUE, $forceHardDelete);					
+						}
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 				}
