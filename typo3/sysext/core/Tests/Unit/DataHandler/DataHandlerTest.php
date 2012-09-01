@@ -226,7 +226,11 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function processDatamapWhenEditingRecordInWorkspaceCreatesNewRecordInWorkspace() {
+			// Unset possible hooks on method under test
+		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] = array();
+
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
+		/** @var $fixture \TYPO3\CMS\Core\DataHandler\DataHandler|\tx_phpunit_testcase */
 		$fixture = $this->getMock('TYPO3\\CMS\\Core\\DataHandler\\DataHandler', array('newlog', 'checkModifyAccessList', 'tableReadOnly', 'checkRecordUpdateAccess'));
 		$fixture->bypassWorkspaceRestrictions = FALSE;
 		$fixture->datamap = array(
