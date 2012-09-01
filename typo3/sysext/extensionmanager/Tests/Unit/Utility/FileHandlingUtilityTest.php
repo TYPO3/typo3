@@ -110,17 +110,6 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 
 	/**
 	 * @test
-	 * @expectedException \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-	 * @return void
-	 */
-	public function addDirectoryThrowsExceptionOnError() {
-		$extDirPath = '/etc/test123/';
-		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('dummy'));
-		$fileHandlerMock->_call('addDirectory', $extDirPath);
-	}
-
-	/**
-	 * @test
 	 * @return void
 	 */
 	public function removeDirectoryRemovesDirectory() {
@@ -129,17 +118,6 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 		$this->assertTrue(is_dir($extDirPath));
 		$fileHandlerMock->_call('removeDirectory', $extDirPath);
 		$this->assertFalse(is_dir($extDirPath));
-	}
-
-	/**
-	 * @test
-	 * @expectedException \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-	 * @return void
-	 */
-	public function removeDirectoryThrowsExceptionOnError() {
-		$extDirPath = '/etc/test123/';
-		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('dummy'));
-		$fileHandlerMock->_call('removeDirectory', $extDirPath);
 	}
 
 	/**
