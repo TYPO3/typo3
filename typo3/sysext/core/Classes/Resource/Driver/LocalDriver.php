@@ -115,11 +115,15 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	/**
 	 * Calculates the absolute path to this drivers storage location.
 	 *
-	 * @throws \RuntimeException
+	 * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException
 	 * @param array $configuration
 	 * @return string
 	 */
 	protected function calculateBasePath(array $configuration) {
+		if (!array_key_exists('basePath', $configuration) || empty($configuration['basePath'])) {
+			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException('Configuration must contain base path.', 1346510477);
+		}
+
 		if ($configuration['pathType'] === 'relative') {
 			$relativeBasePath = $configuration['basePath'];
 			$absoluteBasePath = PATH_site . $relativeBasePath;
