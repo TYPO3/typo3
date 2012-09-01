@@ -358,6 +358,9 @@
 				<source>Identifier</source>
 			</trans-unit>
 			<trans-unit id="sys_file.name" xml:space="preserve">
+				<source>Filename</source>
+			</trans-unit>
+			<trans-unit id="sys_file.title" xml:space="preserve">
 				<source>Title</source>
 			</trans-unit>
 			<trans-unit id="sys_file.type" xml:space="preserve">

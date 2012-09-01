@@ -54,7 +54,17 @@ $TCA['sys_file'] = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '30',
-				'eval' => 'required'
+				'eval' => 'required',
+				'readOnly' => TRUE
+			)
+		),
+		'title' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.title',
+			'config' => array(
+				'type' => 'input',
+				'size' => '30',
+				'placeholder' => '__row|name'
 			)
 		),
 		'description' => array(
@@ -125,7 +135,7 @@ $TCA['sys_file'] = array(
 		)
 	),
 	'types' => array(
-		'1' => array('showitem' => 'fileinfo, name, description, alternative, storage')
+		'1' => array('showitem' => 'fileinfo, name, title, description, alternative, storage')
 	),
 	'palettes' => array()
 );
