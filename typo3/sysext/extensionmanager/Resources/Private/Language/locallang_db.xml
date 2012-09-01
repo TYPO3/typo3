@@ -18,6 +18,8 @@
 			<label index="tx_extensionmanager_domain_model_extension.authorname">Author Name</label>
 			<label index="tx_extensionmanager_domain_model_extension.authoremail">Author Email</label>
 			<label index="tx_extensionmanager_domain_model_extension.md5hash">Md5 hash</label>
+			<label index="tx_extensionmanager_domain_model_extension.reviewstate">Review State</label>
+			<label index="tx_extensionmanager_domain_model_extension.integerversion">Integer Version</label>
 
 			<label index="tx_extensionmanager_domain_model_repository">Repository</label>
 			<label index="tx_extensionmanager_domain_model_repository.title">Titel</label>

@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 $TCA['tx_extensionmanager_domain_model_extension'] = array(
 	'ctrl' => $TCA['tx_extensionmanager_domain_model_extension']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'extensionkey,version,title,description,state,category,lastupdated,updatecomment,authorname,authoremail,md5hash'
+		'showRecordFieldList' => 'extension_key,version,integer_version,title,description,state,category,last_updated,update_comment,author_name,author_email,md5hash'
 	),
 	'columns' => array(
 		'extension_key' => array(
@@ -19,6 +19,14 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 		'version' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.version',
+			'config' => array(
+				'type' => 'input',
+				'size' => '30'
+			)
+		),
+		'integer_version' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.integerversion',
 			'config' => array(
 				'type' => 'input',
 				'size' => '30'
@@ -103,6 +111,14 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 				'size' => '1'
 			)
 		),
+		'review_state' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.reviewstate',
+			'config' => array(
+				'type' => 'check',
+				'size' => '1'
+			)
+		),
 		'md5hash' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.md5hash',
@@ -113,7 +129,7 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 		),
 	),
 	'types' => array(
-		'0' => array('showitem' => 'extensionkey;;;;1-1-1, version, title;;;;2-2-2, description;;;;3-3-3, state, category, lastupdated, updatecomment, authorname, authoremail, md5hash')
+		'0' => array('showitem' => 'extensionkey;;;;1-1-1, version, integer_version, title;;;;2-2-2, description;;;;3-3-3, state, category, last_updated, update_comment, author_name, author_email, review_state, md5hash')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')
