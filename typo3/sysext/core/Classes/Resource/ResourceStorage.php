@@ -920,17 +920,20 @@ class ResourceStorage {
 	 * @param \TYPO3\CMS\Core\Resource\AbstractFile $file
 	 * @param string $contents
 	 * @return integer The number of bytes written to the file
+	 * @throws \RuntimeException
+	 * @throws Exception\InsufficientFileWritePermissionsException
+	 * @throws Exception\InsufficientUserPermissionsException
 	 */
 	public function setFileContents(\TYPO3\CMS\Core\Resource\AbstractFile $file, $contents) {
-		// Check if user is allowed to update
-		if (!$this->checkUserActionPermission('update', 'File')) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException('Updating file "' . $file->getIdentifier() . '" not allowed for user.', 1330121117);
+			// Check if user is allowed to edit
+		if (!$this->checkUserActionPermission('edit', 'File')) {
+			throw new Exception\InsufficientUserPermissionsException(('Updating file "' . $file->getIdentifier()) . '" not allowed for user.', 1330121117);
 		}
-		// Check if $file is writable
+			// Check if $file is writable
 		if (!$this->checkFileActionPermission('write', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException('Writing to file "' . $file->getIdentifier() . '" is not allowed.', 1330121088);
+			throw new Exception\InsufficientFileWritePermissionsException('Writing to file "' . $file->getIdentifier() . '" is not allowed.', 1330121088);
 		}
-		// Call driver method to update the file and update file properties afterwards
+			// Call driver method to update the file and update file properties afterwards
 		try {
 			$result = $this->driver->setFileContents($file, $contents);
 			$fileInfo = $this->driver->getFileInfo($file);
@@ -1153,7 +1156,6 @@ class ResourceStorage {
 			'crdate' => $fileInfo['ctime'],
 			'mime_type' => $fileInfo['mimetype'],
 			'size' => $fileInfo['size'],
-			'tstamp' => $fileInfo['mtime'],
 			'name' => $fileInfo['name']
 		);
 		if ($storage !== NULL) {
