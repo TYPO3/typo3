@@ -94,7 +94,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 			$responseHeaders = t3lib_div::trimExplode(chr(10), $content, TRUE);
 			foreach ($responseHeaders as $line) {
 					// construct new URL
-				if ((preg_match('/Location: ([^\r\n]+)/', $line, $location))) {
+				if ((preg_match('/location: ([^\r\n]+)/i', $line, $location))) {
 					if (isset($location[1])) {
 						$parsedUrl = parse_url($location[1]);
 						if (!isset($parsedUrl['host'])) {
