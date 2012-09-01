@@ -922,8 +922,8 @@ class ResourceStorage {
 	 * @return integer The number of bytes written to the file
 	 */
 	public function setFileContents(\TYPO3\CMS\Core\Resource\AbstractFile $file, $contents) {
-		// Check if user is allowed to update
-		if (!$this->checkUserActionPermission('update', 'File')) {
+		// Check if user is allowed to edit
+		if (!$this->checkUserActionPermission('edit', 'File')) {
 			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException(('Updating file "' . $file->getIdentifier()) . '" not allowed for user.', 1330121117);
 		}
 		// Check if $file is writable
@@ -1153,7 +1153,6 @@ class ResourceStorage {
 			'crdate' => $fileInfo['ctime'],
 			'mime_type' => $fileInfo['mimetype'],
 			'size' => $fileInfo['size'],
-			'tstamp' => $fileInfo['mtime'],
 			'name' => $fileInfo['name']
 		);
 		if ($storage !== NULL) {
