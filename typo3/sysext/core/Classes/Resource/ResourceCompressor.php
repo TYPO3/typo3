@@ -352,7 +352,8 @@ class ResourceCompressor {
 		if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists(((PATH_site . $targetFile) . '.gzip'))) {
 			$contents = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($filenameAbsolute);
 			// Perform some safe CSS optimizations.
-			$contents = str_replace('', '', $contents);
+			$contents = str_replace('
+', '', $contents);
 			// Strip any and all carriage returns.
 			// Match and process strings, comments and everything else, one chunk at a time.
 			// To understand this regex, read: "Mastering Regular Expressions 3rd Edition" chapter 6.
@@ -661,7 +662,11 @@ class ResourceCompressor {
 	protected function retrieveExternalFile($url) {
 		$externalContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
 		$filename = ($this->targetDirectory . 'external-') . md5($url);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $externalContent);
+
+		//write only if file not exists and md5 of the content is not the same with fetched one
+		if (!file_exists(PATH_site . $filename) && (md5($externalContent) != md5(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . $filename)))) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $externalContent);
+		}
 		return $filename;
 	}
 
