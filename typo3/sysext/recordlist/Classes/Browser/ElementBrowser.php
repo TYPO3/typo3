@@ -1472,7 +1472,11 @@ class ElementBrowser {
 			if ($renderFolders) {
 				$items = $folder->getSubfolders();
 			} else {
-				$items = $folder->getFiles($extensionList);
+				$filter = new \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter();
+				$filter->setAllowedFileExtensions($extensionList);
+				$folder->getStorage()->setFileAndFolderNameFilters(array(array($filter, 'filterFileList')));
+
+				$items = $folder->getFiles();
 			}
 			$c = 0;
 			$totalItems = count($items);
