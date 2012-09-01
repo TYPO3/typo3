@@ -34,9 +34,6 @@
 		<testsuite name="EXT:fluid Tests">
 			<directory>../../typo3/sysext/fluid/Tests/Unit/</directory>
 		</testsuite>
-		<testsuite name="EXT:scheduler Tests">
-			<directory>../../typo3/sysext/scheduler/Tests/Unit/</directory>
-		</testsuite>
 	</testsuites>
 
 </phpunit>
