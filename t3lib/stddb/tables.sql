@@ -301,6 +301,7 @@ CREATE TABLE sys_file (
 	extension varchar(255) DEFAULT '' NOT NULL,
 	mime_type varchar(255) DEFAULT '' NOT NULL,
 	name tinytext,
+	title tinytext,
 	sha1 tinytext,
 	size int(11) DEFAULT '0' NOT NULL,
 	creation_date int(11) DEFAULT '0' NOT NULL,
