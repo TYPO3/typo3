@@ -112,11 +112,23 @@ class ConfigurationItemRepository {
 	 * @return array
 	 */
 	protected function extractInformationForConfigFieldsOfTypeOptions(array $configurationOption) {
+		//regEx cuts "options[" from the start and "]" from the end of the string
 		preg_match('/options\\[(.*)\\]/is', $configurationOption['type'], $typeMatches);
 		preg_match('/options\\[(.*)\\]/is', $configurationOption['label'], $labelMatches);
 		$optionValues = explode(',', $typeMatches[1]);
 		$optionLabels = explode(',', $labelMatches[1]);
-		$configurationOption['generic'] = $labelMatches ? array_combine($optionLabels, $optionValues) : array_combine($optionValues, $optionValues);
+
+		if (count($labelMatches) !== 0) {
+			$configurationOption['generic'] = array_combine($optionLabels, $optionValues);
+		} else {
+			$optionWithLabels = array();
+			foreach ($optionValues as $optionValue) {
+				list($label, $value) = explode('=', $optionValue);
+				$optionWithLabels[$label] = ($value !== NULL) ? $value : $label;
+			}
+			$configurationOption['generic'] = $optionWithLabels;
+		}
+
 		$configurationOption['type'] = 'options';
 		$configurationOption['label'] = str_replace($labelMatches[0], '', $configurationOption['label']);
 		return $configurationOption;
