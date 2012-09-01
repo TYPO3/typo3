@@ -192,15 +192,20 @@ class ConfigurationItemRepository {
 	 * @return array
 	 */
 	protected function mergeWithExistingConfiguration(array $configuration, array $extension) {
-		$currentExtensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extension['key']]);
-		$flatExtensionConfig = \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($currentExtensionConfig);
-		$valuedCurrentExtensionConfig = array();
-		foreach ($flatExtensionConfig as $key => $value) {
-			$valuedCurrentExtensionConfig[$key]['value'] = $value;
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extension['key']]) &&
+			is_string($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extension['key']])
+		) {
+			$currentExtensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extension['key']]);
+			if (is_array($currentExtensionConfig)) {
+				$flatExtensionConfig = \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($currentExtensionConfig);
+				$valuedCurrentExtensionConfig = array();
+				foreach ($flatExtensionConfig as $key => $value) {
+					$valuedCurrentExtensionConfig[$key]['value'] = $value;
+				}
+				$configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($configuration, $valuedCurrentExtensionConfig);
+			}
 		}
-		if (is_array($currentExtensionConfig)) {
-			$configuration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($configuration, $valuedCurrentExtensionConfig);
-		}
+
 		return $configuration;
 	}
 
