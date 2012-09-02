@@ -40,10 +40,15 @@ abstract class Tx_Fluid_ViewHelpers_Be_AbstractBackendViewHelper extends Tx_Flui
 	*/
 	public function getDocInstance() {
 		if (!isset($GLOBALS['SOBE']->doc)) {
-			$GLOBALS['SOBE']->doc = t3lib_div::makeInstance('template');
-			$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
+			$doc = t3lib_div::makeInstance('template');
+			$doc->backPath = $GLOBALS['BACK_PATH'];
+			if (is_object($GLOBALS['SOBE'])) {
+				$GLOBALS['SOBE']->doc = $doc;
+			}
+		} else {
+			$doc = $GLOBALS['SOBE']->doc;
 		}
-		return $GLOBALS['SOBE']->doc;
+		return $doc;
 	}
 
 }
