@@ -1,8 +1,10 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures;
+
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Philipp Gampe (forge.typo3.org@philippgampe.info)
+ *  (c) 2012 Steffen Ritter <steffen.ritter@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -13,9 +15,6 @@
  *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
- *  A copy is found in the textfile GPL.txt and important notices to the license
- *  from the author is found in LICENSE.txt distributed with these scripts.
- *
  *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,28 +23,22 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Class t3lib_utility_math_fixture_classWithStringRepresentation.
+ * Make method public
  *
- * This is a fixture subclass for t3lib_utility_math
- *
+ * @author Steffen Ritter <steffen.ritter@typo3.org>
  * @package TYPO3
- * @subpackage t3lib
+ * @subpackage test
  */
-class t3lib_utility_math_fixture_classWithStringRepresentation {
+class RootlineUtilityTestAccessibleFixture extends \TYPO3\CMS\Core\Utility\RootlineUtility {
 
-	protected $string = '';
-
-	public function __toString() {
-		return $this->getString();
+	public function processMountedPage($mountedPageData, $mountPointPageData) {
+		return parent::processMountedPage($mountedPageData, $mountPointPageData);
 	}
 
-	public function setString($string) {
-		$this->string = $string;
-	}
-
-	public function getString() {
-		return $this->string;
+	public function columnHasRelationToResolve($configuration) {
+		return parent::columnHasRelationToResolve($configuration);
 	}
 
 }

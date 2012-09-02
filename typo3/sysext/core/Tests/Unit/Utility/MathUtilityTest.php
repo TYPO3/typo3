@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,7 +23,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once 'fixture/t3lib_utility_math_fixture_classWithStringRepresentation.php';
+
+require_once 'Fixtures/MathUtilityTestClassWithStringRepresentationFixture.php';
+
 /**
  * Testcase for class t3lib_utility_Math
  *
@@ -29,7 +33,7 @@ require_once 'fixture/t3lib_utility_math_fixture_classWithStringRepresentation.p
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_utility_MathTest extends tx_phpunit_testcase {
+class t3lib_utility_MathTest extends \tx_phpunit_testcase {
 
 	//////////////////////////////////
 	// Tests concerning forceIntegerInRange
@@ -115,11 +119,11 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	 * @return array Data sets
 	 */
 	public function functionCanBeInterpretedAsIntegerInvalidDataProvider() {
-		$objectWithNumericalStringRepresentation = new t3lib_utility_math_fixture_classWithStringRepresentation();
+		$objectWithNumericalStringRepresentation = new \TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\MathUtilityTestClassWithStringRepresentationFixture();
 		$objectWithNumericalStringRepresentation->setString('1234');
-		$objectWithNonNumericalStringRepresentation = new t3lib_utility_math_fixture_classWithStringRepresentation();
+		$objectWithNonNumericalStringRepresentation = new \TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\MathUtilityTestClassWithStringRepresentationFixture();
 		$objectWithNonNumericalStringRepresentation->setString('foo');
-		$objectWithEmptyStringRepresentation = new t3lib_utility_math_fixture_classWithStringRepresentation();
+		$objectWithEmptyStringRepresentation = new \TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\MathUtilityTestClassWithStringRepresentationFixture();
 		$objectWithEmptyStringRepresentation->setString('');
 		return array(
 			'int as string with leading zero' => array('01234'),
@@ -141,7 +145,7 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 			'empty array' => array(array()),
 			'int in array' => array(array(32425)),
 			'int as string in array' => array(array('32425')),
-			'object without string representation' => array(new stdClass()),
+			'object without string representation' => array(new \stdClass()),
 			'object with numerical string representation' => array($objectWithNumericalStringRepresentation),
 			'object without numerical string representation' => array($objectWithNonNumericalStringRepresentation),
 			'object with empty string representation' => array($objectWithEmptyStringRepresentation)
@@ -256,7 +260,7 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 			'float' => array(1.5),
 			'string' => array('string'),
 			'array' => array(array()),
-			'object' => array(new stdClass()),
+			'object' => array(new \stdClass()),
 			'boolean FALSE' => array(FALSE),
 			'NULL' => array(NULL)
 		);
@@ -267,7 +271,7 @@ class t3lib_utility_MathTest extends tx_phpunit_testcase {
 	 * @dataProvider isIntegerInRangeRejectsOtherDataTypesDataProvider
 	 */
 	public function isIntegerInRangeRejectsOtherDataTypes($inputValue) {
-		$this->assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange($invalidValue, 0, 10));
+		$this->assertFalse(\TYPO3\CMS\Core\Utility\MathUtility::isIntegerInRange($inputValue, 0, 10));
 	}
 
 }
