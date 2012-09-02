@@ -796,24 +796,23 @@ class ResourceStorage {
 	}
 
 	/**
-	 * Get file by identifier
+	 * Get information about a file
 	 *
-	 * @param \TYPO3\CMS\Core\Resource\FileInterface $identifier
+	 * @param \TYPO3\CMS\Core\Resource\FileInterface $fileObject
 	 * @return array
 	 */
-	public function getFileInfo($identifier) {
-		return $this->driver->getFileInfo($identifier);
+	public function getFileInfo(FileInterface $fileObject) {
+		return $this->driver->getFileInfo($fileObject);
 	}
 
 	/**
-	 * Get file by identifier
+	 * Get information about a file by its identifier
 	 *
-	 * @deprecated To be removed before final release of FAL. Use combination of getFileInfoByIdentifier() with a file object as argument instead.
 	 * @param string $identifier
-	 * @return \TYPO3\CMS\Core\Resource\FileInterface
+	 * @return array
 	 */
 	public function getFileInfoByIdentifier($identifier) {
-		return $this->driver->getFileInfoByIdentifier($identifier);
+		throw new \BadMethodCallException("The method ResourceStorage::getFileInfoByIdentifier() has been deprecated. Please fix your method call and use getFileInfo with the file object instead.", 1346577887);
 	}
 
 	/**
