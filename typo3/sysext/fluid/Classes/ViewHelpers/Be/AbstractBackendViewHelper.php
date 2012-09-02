@@ -34,10 +34,16 @@ abstract class AbstractBackendViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelpe
 	 */
 	public function getDocInstance() {
 		if (!isset($GLOBALS['SOBE']->doc)) {
-			$GLOBALS['SOBE']->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-			$GLOBALS['SOBE']->doc->backPath = $GLOBALS['BACK_PATH'];
+			/** @var $doc \TYPO3\CMS\Backend\Template\DocumentTemplate */
+			$doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+			$doc->backPath = $GLOBALS['BACK_PATH'];
+			if (is_object($GLOBALS['SOBE'])) {
+				$GLOBALS['SOBE']->doc = $doc;
+			}
+		} else {
+			$doc = $GLOBALS['SOBE']->doc;
 		}
-		return $GLOBALS['SOBE']->doc;
+		return $doc;
 	}
 
 }
