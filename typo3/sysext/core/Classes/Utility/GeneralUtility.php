@@ -1,6 +1,8 @@
 <?php
 namespace TYPO3\CMS\Core\Utility;
 
+require_once 'DebugUtility.php';
+
 /***************************************************************
  *  Copyright notice
  *
