@@ -63,7 +63,7 @@ class LevelTest extends \tx_phpunit_testcase {
 			'float' => array(1.5),
 			'string' => array('string'),
 			'array' => array(array()),
-			'object' => array(new stdClass()),
+			'object' => array(new \stdClass()),
 			'boolean FALSE' => array(FALSE),
 			'NULL' => array(NULL)
 		);
@@ -71,10 +71,10 @@ class LevelTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @dataprovider isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider
+	 * @dataProvider isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSoDataProvider
+	 * @expectedException \RangeException
 	 */
 	public function isValidLevelThrowsExceptionOnInvalidLevelIfAskedToDoSo($inputValue) {
-		$this->setExpectedException('RangeException');
 		\TYPO3\CMS\Core\Log\LogLevel::validateLevel($inputValue);
 	}
 

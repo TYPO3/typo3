@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once __DIR__ . '/Fixtures/AccessibleRootline.php';
+require_once __DIR__ . '/Fixtures/RootlineUtilityTestAccessibleFixture.php';
 
 /**
  * Testcase for class \TYPO3\CMS\Core\Utility\RootlineUtility
@@ -61,7 +61,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isMountedPageWithoutMountPointsReturnsFalse() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1);
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1);
 		$this->assertFalse($fixture->isMountedPage());
 	}
 
@@ -69,7 +69,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isMountedPageWithMatchingMountPointParameterReturnsTrue() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1, '1-99');
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1, '1-99');
 		$this->assertTrue($fixture->isMountedPage());
 	}
 
@@ -77,7 +77,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function isMountedPageWithNonMatchingMountPointParameterReturnsFalse() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1, '99-99');
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1, '99-99');
 		$this->assertFalse($fixture->isMountedPage());
 	}
 
@@ -86,7 +86,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @expectedException RuntimeException
 	 */
 	public function processMountedPageWithNonMountedPageThrowsException() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1, '1-99');
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1, '1-99');
 		$fixture->processMountedPage(array('uid' => 1), array('uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT));
 	}
 
@@ -94,7 +94,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function processMountedPageWithMountedPageNotThrowsException() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1, '1-99');
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1, '1-99');
 		$fixture->processMountedPage(array('uid' => 1), array('uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1));
 	}
 
@@ -102,7 +102,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function processMountedPageWithMountedPageAddsMountedFromParameter() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1, '1-99');
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1, '1-99');
 		$result = $fixture->processMountedPage(array('uid' => 1), array('uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1));
 		$this->assertTrue(isset($result['_MOUNTED_FROM']));
 		$this->assertSame(1, $result['_MOUNTED_FROM']);
@@ -112,7 +112,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function processMountedPageWithMountedPageAddsMountPointParameterToReturnValue() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1, '1-99');
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1, '1-99');
 		$result = $fixture->processMountedPage(array('uid' => 1), array('uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1));
 		$this->assertTrue(isset($result['_MP_PARAM']));
 		$this->assertSame('1-99', $result['_MP_PARAM']);
@@ -122,7 +122,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function processMountedPageForMountPageIsOverlayAddsMountOLParameter() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1, '1-99');
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1, '1-99');
 		$result = $fixture->processMountedPage(array('uid' => 1), array('uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 1));
 		$this->assertTrue(isset($result['_MOUNT_OL']));
 		$this->assertSame(TRUE, $result['_MOUNT_OL']);
@@ -132,7 +132,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function processMountedPageForMountPageIsOverlayAddsDataInformationAboutMountPage() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1, '1-99');
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1, '1-99');
 		$result = $fixture->processMountedPage(array('uid' => 1), array('uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 1, 'pid' => 5, 'title' => 'TestCase'));
 		$this->assertTrue(isset($result['_MOUNT_PAGE']));
 		$this->assertSame(array('uid' => 99, 'pid' => 5, 'title' => 'TestCase'), $result['_MOUNT_PAGE']);
@@ -143,7 +143,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 */
 	public function processMountedPageForMountPageWithoutOverlayReplacesMountedPageWithMountPage() {
 		$a = array('uid' => 99, 'doktype' => \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, 'mount_pid' => 1, 'mount_pid_ol' => 0);
-		$fixture = new Fixtures\AccessibleRootlineUtility(1, '1-99');
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1, '1-99');
 		$result = $fixture->processMountedPage(array('uid' => 1), $a);
 		$this->assertIsSubset($a, $result);
 	}
@@ -152,7 +152,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function columnHasRelationToResolveDetectsGroupFieldAsLocal() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1);
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1);
 		$this->assertFalse($fixture->columnHasRelationToResolve(array(
 			'type' => 'group'
 		)));
@@ -162,7 +162,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function columnHasRelationToResolveDetectsGroupFieldWithMMAsRemote() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1);
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1);
 		$this->assertTrue($fixture->columnHasRelationToResolve(array(
 			'config' => array(
 				'type' => 'group',
@@ -175,7 +175,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function columnHasRelationToResolveDetectsInlineFieldAsLocal() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1);
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1);
 		$this->assertFalse($fixture->columnHasRelationToResolve(array(
 			'config' => array(
 				'type' => 'inline'
@@ -187,7 +187,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function columnHasRelationToResolveDetectsInlineFieldWithForeignKeyAsRemote() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1);
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1);
 		$this->assertTrue($fixture->columnHasRelationToResolve(array(
 			'config' => array(
 				'type' => 'inline',
@@ -200,7 +200,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function columnHasRelationToResolveDetectsInlineFieldWithFMMAsRemote() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1);
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1);
 		$this->assertTrue($fixture->columnHasRelationToResolve(array(
 			'config' => array(
 				'type' => 'inline',
@@ -213,7 +213,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function columnHasRelationToResolveDetectsSelectFieldAsLocal() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1);
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1);
 		$this->assertFalse($fixture->columnHasRelationToResolve(array(
 			'config' => array(
 				'type' => 'select'
@@ -225,7 +225,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function columnHasRelationToResolveDetectsSelectFieldWithMMAsRemote() {
-		$fixture = new Fixtures\AccessibleRootlineUtility(1);
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1);
 		$this->assertTrue($fixture->columnHasRelationToResolve(array(
 			'config' => array(
 				'type' => 'select',
@@ -242,13 +242,13 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 		$pageContext->sys_language_uid = 8;
 		$pageContext->versioningWorkspaceId = 15;
 		$pageContext->versioningPreview = TRUE;
-		$fixture = new Fixtures\AccessibleRootlineUtility(42, '47-11', $pageContext);
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(42, '47-11', $pageContext);
 		$this->assertSame('42_47-11_8_15_1', $fixture->getCacheIdentifier());
 		$pageContext->versioningPreview = FALSE;
-		$fixture = new Fixtures\AccessibleRootlineUtility(42, '47-11', $pageContext);
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(42, '47-11', $pageContext);
 		$this->assertSame('42_47-11_8_15_0', $fixture->getCacheIdentifier());
 		$pageContext->versioningWorkspaceId = 0;
-		$fixture = new Fixtures\AccessibleRootlineUtility(42, '47-11', $pageContext);
+		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(42, '47-11', $pageContext);
 		$this->assertSame('42_47-11_8_0_0', $fixture->getCacheIdentifier());
 	}
 
