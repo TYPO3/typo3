@@ -253,6 +253,16 @@ class AbstractPlugin {
 	 */
 	public function pi_setPiVarDefaults() {
 		if (is_array($this->conf['_DEFAULT_PI_VARS.'])) {
+			foreach ($this->conf['_DEFAULT_PI_VARS.'] as $defaultPiVarsKey => $defaultPiVarsVal) {
+				if (strpos($defaultPiVarsKey, '.') !== FALSE) {
+					$defaultPiVarsKey = substr($defaultPiVarsKey, 0, -1);
+				}
+				if (is_array($this->conf['_DEFAULT_PI_VARS.'][$defaultPiVarsKey . '.']['stdWrap.'])) {
+					$defaultPiVarsVal = $defaultPiVarsVal ? $defaultPiVarsVal : '';
+					$this->conf['_DEFAULT_PI_VARS.'][$defaultPiVarsKey] = $this->cObj->stdWrap($$defaultPiVarsVal, $this->conf['_DEFAULT_PI_VARS.'][$defaultPiVarsKey.'.']['stdWrap.']);
+					unset($this->conf['_DEFAULT_PI_VARS.'][$defaultPiVarsKey . '.']['stdWrap.']);
+				}
+			}
 			$this->piVars = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->conf['_DEFAULT_PI_VARS.'], is_array($this->piVars) ? $this->piVars : array());
 		}
 	}
