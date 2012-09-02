@@ -2581,7 +2581,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		clearstatcache();
 		$resultFileGroup = filegroup($filename);
 		unlink($filename);
-		$this->assertEquals($resultFileGroup, $currentGroupId);
+		$this->assertEquals($currentGroupId, $resultFileGroup);
 	}
 
 	/**
