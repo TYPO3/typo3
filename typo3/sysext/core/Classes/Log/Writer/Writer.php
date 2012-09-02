@@ -37,7 +37,7 @@ interface Writer
 	 *
 	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
 	 * @return \TYPO3\CMS\Core\Log\Writer\Writer $this
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record);
 

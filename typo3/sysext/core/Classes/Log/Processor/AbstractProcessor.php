@@ -36,7 +36,7 @@ abstract class AbstractProcessor implements \TYPO3\CMS\Core\Log\Processor\Proces
 	 * Constructs this log processor
 	 *
 	 * @param array $options Configuration options - depends on the actual processor
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	public function __construct(array $options = array()) {
 		foreach ($options as $optionKey => $optionValue) {

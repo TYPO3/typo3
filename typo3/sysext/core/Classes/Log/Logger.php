@@ -194,7 +194,7 @@ class Logger {
 	 * Calls all processors and returns log record
 	 *
 	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Record to process
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return \TYPO3\CMS\Core\Log\LogRecord Processed log record
 	 */
 	protected function callProcessors(\TYPO3\CMS\Core\Log\LogRecord $record) {

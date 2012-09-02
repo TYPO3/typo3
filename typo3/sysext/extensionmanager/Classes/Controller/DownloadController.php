@@ -105,7 +105,7 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 	/**
 	 * Check extension dependencies
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return void
 	 */
 	public function checkDependenciesAction() {

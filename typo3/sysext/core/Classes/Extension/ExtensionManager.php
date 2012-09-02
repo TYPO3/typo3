@@ -63,7 +63,7 @@ class ExtensionManager {
 	 * @param string $key Extension key to test
 	 * @param boolean $exitOnError If $exitOnError is TRUE and the extension is not loaded the function will die with an error message
 	 * @return boolean
-	 * @throws BadFunctionCallException
+	 * @throws \BadFunctionCallException
 	 */
 	static public function isLoaded($key, $exitOnError = FALSE) {
 		$isLoaded = in_array($key, static::getLoadedExtensionListArray());
@@ -80,7 +80,7 @@ class ExtensionManager {
 	 *
 	 * @param $key string Extension key
 	 * @param $script string $script is appended to the output if set.
-	 * @throws BadFunctionCallException
+	 * @throws \BadFunctionCallException
 	 * @return string
 	 */
 	static public function extPath($key, $script = '') {
@@ -714,7 +714,7 @@ class ExtensionManager {
 	 * @param string $subModuleName Is the submodule key, if blank a plain main module is generated
 	 * @param string $position Passed to t3lib_extMgm::addModule, see reference there
 	 * @param array $moduleConfiguration Icon with array keys: access, icon, labels to configure the module
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	static public function addExtJSModule($extensionName, $mainModuleName, $subModuleName = '', $position = '', array $moduleConfiguration = array()) {
 		if (empty($extensionName)) {
@@ -1478,7 +1478,7 @@ tt_content.') . $key) . $prefix) . ' {
 	 * @param string $extensionPath Path to extension directory.
 	 * @param string $returnFullPath Return full path of file.
 	 * @return string
-	 * @throws BadFunctionCallException
+	 * @throws \BadFunctionCallException
 	 */
 	static public function getExtensionIcon($extensionPath, $returnFullPath = FALSE) {
 		$icon = '';
@@ -1930,7 +1930,7 @@ tt_content.') . $key) . $prefix) . ' {
 	 *
 	 * @param string $extensionKey Extension key to load
 	 * @return void
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	static public function loadExtension($extensionKey) {
 		if (static::isLoaded($extensionKey)) {
@@ -1949,7 +1949,7 @@ tt_content.') . $key) . $prefix) . ' {
 	 *
 	 * @param string $extensionKey Extension key to remove
 	 * @return void
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	static public function unloadExtension($extensionKey) {
 		if (!static::isLoaded($extensionKey)) {

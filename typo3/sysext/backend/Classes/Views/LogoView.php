@@ -70,7 +70,7 @@ class LogoView {
 	 * Sets the logo
 	 *
 	 * @param string $logo Path to logo file as seen from typo3/
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	public function setLogo($logo) {
 		if (!is_string($logo)) {

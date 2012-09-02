@@ -1495,7 +1495,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param null|string $source The location of the jQuery source, can be "local", "google", "msn", "jquery" or just an URL to your jQuery lib
 	 * @param string $namespace The namespace in which the jQuery object of the specific version should be stored.
 	 * @return void
-	 * @throws UnexpectedValueException
+	 * @throws \UnexpectedValueException
 	 */
 	public function loadJquery($version = NULL, $source = NULL, $namespace = self::JQUERY_NAMESPACE_DEFAULT) {
 		// Set it to the version that is shipped with the TYPO3 core
@@ -2308,7 +2308,7 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $stripFromSelectionName
 	 * @param integer $errorMode
 	 * @return void
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	protected function includeLanguageFileForInline($fileRef, $selectionPrefix = '', $stripFromSelectionName = '', $errorMode = 0) {
 		if (!isset($this->lang) || !isset($this->charSet)) {

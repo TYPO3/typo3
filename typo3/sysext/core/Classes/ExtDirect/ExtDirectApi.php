@@ -73,7 +73,7 @@ class ExtDirectApi {
 	 *
 	 * @param array $filterNamespaces
 	 * @return string
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	public function getApiPhp(array $filterNamespaces) {
 		$javascriptNamespaces = $this->getExtDirectApi($filterNamespaces);

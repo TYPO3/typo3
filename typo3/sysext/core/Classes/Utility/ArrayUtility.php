@@ -139,7 +139,7 @@ class ArrayUtility {
 	 * @param string $path Path within the array
 	 * @param string $delimiter Defined path delimeter, default /
 	 * @return mixed
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	static public function getValueByPath(array $array, $path, $delimiter = '/') {
 		if (empty($path)) {
@@ -184,7 +184,7 @@ class ArrayUtility {
 	 * @param mixed $value Value to set at path location in array
 	 * @param string $delimiter Path delimeter
 	 * @return array Modified array
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	static public function setValueByPath(array $array, $path, $value, $delimiter = '/') {
 		if (empty($path)) {

@@ -62,7 +62,7 @@ class TtContentUploadsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUp
 	/**
 	 * Initialize all required repository and factory objects.
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	protected function init() {
 		$fileadminDirectory = rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/';

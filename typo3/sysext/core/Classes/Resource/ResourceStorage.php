@@ -1168,7 +1168,7 @@ class ResourceStorage {
 	/**
 	 * Checks for permissions to move a file.
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException
@@ -1313,7 +1313,7 @@ class ResourceStorage {
 	 * @param string $newFolderName
 	 * @param string $conflictMode  How to handle conflicts; one of "overrideExistingFile", "renameNewFolder", "cancel
 	 * @throws \TYPO3\CMS\Core\Exception
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 * @return \TYPO3\CMS\Core\Resource\Folder
 	 */
 	// TODO add tests
@@ -1411,8 +1411,8 @@ class ResourceStorage {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folderObject
 	 * @param string $newName
-	 * @throws Exception
-	 * @throws InvalidArgumentException
+	 * @throws \Exception
+	 * @throws \InvalidArgumentException
 	 * @return \TYPO3\CMS\Core\Resource\Folder
 	 */
 	public function renameFolder($folderObject, $newName) {
@@ -1444,7 +1444,7 @@ class ResourceStorage {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder    $folderObject
 	 * @param bool $deleteRecursively
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @throws \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException
 	 * @return bool
 	 */

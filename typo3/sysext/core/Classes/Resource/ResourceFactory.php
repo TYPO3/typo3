@@ -73,7 +73,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $driverIdentificationString The driver class (or identifier) to use.
 	 * @param array $driverConfiguration The configuration of the storage
 	 * @return \TYPO3\CMS\Core\Resource\Driver\AbstractDriver
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	public function getDriverObject($driverIdentificationString, array $driverConfiguration) {
 		/** @var $driverRegistry \TYPO3\CMS\Core\Resource\Driver\DriverRegistry */

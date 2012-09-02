@@ -77,7 +77,7 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $parentElement Parent model object
 	 * @param array $arguments Configuration array
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 * @return void
 	 */
 	public function getChildElementsByIntegerKey(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $parentElement, array $typoscript) {

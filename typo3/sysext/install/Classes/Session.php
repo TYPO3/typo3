@@ -127,7 +127,7 @@ class Session {
 	 * and throw an exception if that fails.
 	 *
 	 * @param string $sessionSavePath The absolute path to the session files
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	private function ensureSessionSavePathExists($sessionSavePath) {
 		if (!is_dir($sessionSavePath)) {

@@ -87,7 +87,7 @@ class SpriteManager {
 	 * Stuff the compiled $GLOBALS['TBE_STYLES']['spriteIconApi']['iconsAvailable']
 	 * global into php code cache
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return void
 	 */
 	static protected function createSpriteCache() {

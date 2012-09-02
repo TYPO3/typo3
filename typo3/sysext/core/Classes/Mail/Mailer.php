@@ -63,7 +63,7 @@ class Mailer extends \Swift_Mailer {
 	 * $TYPO3_CONF_VARS['MAIL']['transport_sendmail_command'] = '/usr/sbin/sendmail -bs'
 	 *
 	 * @throws \TYPO3\CMS\Core\Exception
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	private function initializeTransport() {
 		switch ($this->mailSettings['transport']) {
