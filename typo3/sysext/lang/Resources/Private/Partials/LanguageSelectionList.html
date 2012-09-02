@@ -1,82 +1,13 @@
-<div id="ext-comp-1098" class=" x-panel x-panel-noborder x-box-item" style="width: 250px; left: 0px; top: 0px;">
-	<div class="x-panel-bwrap" id="ext-gen43">
-		<div class="x-panel-body x-panel-body-noheader x-panel-body-noborder" id="ext-gen44" style="width: 250px; height: 415px;">
+{namespace lang=TYPO3\CMS\Lang\ViewHelpers}
 
-			<div id="em-languagegrid" class="x-panel x-grid-panel" style="width: 250px;">
-				<div class="x-panel-bwrap" id="ext-gen49">
-					<div class="x-panel-body x-panel-body-noheader" id="ext-gen50" style="width: 250px; height: 415px;">
-						<div class="x-grid3" hidefocus="true" id="ext-gen52" style="width: 250px; height: 415px;">
-							<div class="x-grid3-viewport" id="ext-gen53">
-								<div class="x-grid3-header" id="ext-gen54">
-									<div class="x-grid3-header-inner" id="ext-gen56" style="width: 250px;">
-										<div class="x-grid3-header-offset" style="width: 249px;">
-											<table border="0" cellspacing="0" cellpadding="0" style="width: 232px;">
-												<thead>
-												<tr class="x-grid3-hd-row">
-													<td class="x-grid3-hd x-grid3-cell x-grid3-td-checker x-grid3-cell-first"
-														style="width: 20px;">
-														<div class="x-grid3-hd-inner x-grid3-hd-checker" unselectable="on" style="">
-															<a class="x-grid3-hd-btn" href="#"></a><img alt="" class="x-grid3-sort-icon" src="clear.gif">
-														</div>
-													</td>
-													<td class="x-grid3-hd x-grid3-cell x-grid3-td-lang-label sort-asc"
-														style="width: 106px;">
-														<div class="x-grid3-hd-inner x-grid3-hd-lang-label" unselectable="on" style="">
-															<a class="x-grid3-hd-btn" href="#"></a>Language<img alt="" class="x-grid3-sort-icon" src="clear.gif">
-														</div>
-													</td>
-													<td class="x-grid3-hd x-grid3-cell x-grid3-td-lang-key x-grid3-cell-last"
-														style="width: 106px;">
-														<div class="x-grid3-hd-inner x-grid3-hd-lang-key" unselectable="on" style="">
-															<a class="x-grid3-hd-btn" href="#"></a>Short<img alt="" class="x-grid3-sort-icon" src="clear.gif">
-														</div>
-													</td>
-												</tr>
-												</thead>
-											</table>
-										</div>
-									</div>
-									<div class="x-clear"></div>
-								</div>
-								<div class="x-grid3-scroller" id="ext-gen55" style="overflow-x: hidden; width: 250px; height: 390px;">
-									<div class="x-grid3-body" style="width: 232px; " id="ext-gen57">
-
-										<f:form action="saveSelectedLocale" name="form" object="{form}">
-											<f:form.submit value="{f:translate(key:'button_save')}"/>
-											<f:for each="{languages}" as="language" iteration="iteration">
-												<div class="x-grid3-row x-grid3-row-first" style="width: 232px;">
-													<table class="x-grid3-row-table" border="0" cellspacing="0" cellpadding="0" style="width:232px;">
-														<tbody>
-														<tr>
-															<td class="x-grid3-col x-grid3-cell x-grid3-td-checker x-grid3-cell-first " style="width: 20px;" tabindex="0">
-																<f:form.checkbox name="form[locale][{language.locale}]" value="1" checked="{language.selected}"/>
-															</td>
-															<td class="x-grid3-col x-grid3-cell x-grid3-td-lang-label" style="width: 106px;" tabindex="0">
-																<div class="x-grid3-cell-inner x-grid3-col-lang-label" unselectable="on">
-																	<span class="">&nbsp;</span>{language.language}
-																</div>
-															</td>
-															<td class="x-grid3-col x-grid3-cell x-grid3-td-lang-key x-grid3-cell-last" style="width: 106px;" tabindex="0">
-																<div class="x-grid3-cell-inner x-grid3-col-lang-key" unselectable="on">{language.locale}
-																</div>
-															</td>
-														</tr>
-														</tbody>
-													</table>
-												</div>
-											</f:for>
-										</f:form>
-
-									</div>
-									<a href="#" class="x-grid3-focus" tabindex="-1" id="ext-gen58" style="left: 0px; top: 0px;"></a></div>
-							</div>
-							<div class="x-grid3-resize-marker" id="ext-gen59">&nbsp;</div>
-							<div class="x-grid3-resize-proxy" id="ext-gen60">&nbsp;</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
-</div>
+<f:form action="updateLanguageSelection" name="languageSelectionForm" object="{languageSelectionForm}">
+	<lang:be.formEngineBasedCheckboxGroup
+		property="selectedLanguages"
+		icon="EXT:t3skin/images/flags/###VALUE###.png"
+		defaultIcon="EXT:t3skin/images/flags/multiple.png"
+		options="{languageSelectionForm.languages}"
+		optionValueField="locale"
+		optionLabelField="language"
+		class="languageSelection"
+	/>
+</f:form>

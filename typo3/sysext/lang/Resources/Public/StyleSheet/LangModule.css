@@ -1,0 +1,89 @@
+/**
+ * Style definitions for the language selection field
+ */
+div.languageSelection table.typo3-TCEforms-select-checkbox {
+	margin-bottom: 10px;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox tbody {
+	display: block;
+	height: 390px;
+	overflow-y: scroll;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox tr td {
+	vertical-align: middle;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox tr.c-header td,
+div.languageSelection table.typo3-TCEforms-select-checkbox tr td.c-checkbox,
+div.languageSelection table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
+	padding: 1px 3px;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
+	width: 140px;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox tr td.c-labelCell img {
+	margin-right: 5px;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox td.c-descr {
+	width: 40px;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox td.c-descr img {
+	float: right;
+}
+
+div.languageSelection table.typo3-TCEforms-select-singlebox {
+	margin-bottom: 10px;
+	margin-top: 4px;
+}
+
+div.languageSelection span.t3-icon-edit-undo {
+	display: none;
+}
+
+div.languageSelection tr.c-header-checkbox-controls input.checkbox {
+	display: none;
+}
+
+div.languageSelection tr.c-header-checkbox-controls td {
+	padding: 0;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox {
+	background-color: #ffffff;
+	border: 1px solid #aaa;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox tr.c-header td {
+	background-color: #fff;
+	font-weight: bold;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox tr:nth-child(2n) {
+	background-color: #f7f7f7;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox tr.c-selectedItem {
+	background-color: #d8ecd0;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox tr.c-invalidItem {
+	color: #dddddd;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox tr:hover {
+	background-color: #dedede;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox tr.c-selectedItem:hover {
+	background-color: #abd99a;
+}
+
+div.languageSelection table.typo3-TCEforms-select-checkbox tr.c-invalidItem:hover {
+	background-color: transparent;
+}

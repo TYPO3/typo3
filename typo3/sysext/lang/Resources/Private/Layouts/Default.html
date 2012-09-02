@@ -1,4 +1,10 @@
-<f:be.container loadExtJs="1">
+{namespace lang=TYPO3\CMS\Lang\ViewHelpers}
+
+<lang:be.container
+	loadJQuery="1"
+	addCssFile="{f:uri.resource(path:'StyleSheet/LangModule.css')}"
+	addJsFile="{f:uri.resource(path:'JavaScript/LangModule.js')}"
+>
 	<div class="typo3-fullDoc">
 
 		<div id="typo3-docheader">
@@ -25,4 +31,4 @@
 		</div>
 
 	</div>
-</f:be.container>
+</lang:be.container>

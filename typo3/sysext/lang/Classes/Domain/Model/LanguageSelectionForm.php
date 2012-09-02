@@ -35,26 +35,50 @@ class LanguageSelectionForm extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 	/**
 	 * @var array
 	 */
-	protected $locale = array();
+	protected $languages = array();
 
 	/**
-	 * Setter for the choosen locale
+	 * @var array
+	 */
+	protected $selectedLanguages = array();
+
+	/**
+	 * Setter for the languages
 	 *
-	 * @param array $locale all locale that were selected in the form
+	 * @param array $locale Selected languages
 	 * @return void
 	 */
-	public function setLocale(array $locale) {
-		$this->locale = $locale;
+	public function setLanguages(array $languages) {
+		$this->languages = $languages;
 	}
 
 	/**
-	 * Getter for the choosen locale
+	 * Getter for the languages
 	 *
 	 * @return array
 	 */
-	public function getLocale() {
-		return $this->locale;
+	public function getLanguages() {
+		return $this->languages;
 	}
-}
 
+	/**
+	 * Setter for the selected languages
+	 *
+	 * @param array $locale Selected languages
+	 * @return void
+	 */
+	public function setSelectedLanguages(array $selectedLanguages) {
+		$this->selectedLanguages = $selectedLanguages;
+	}
+
+	/**
+	 * Getter for the selected languages
+	 *
+	 * @return array
+	 */
+	public function getSelectedLanguages() {
+		return $this->selectedLanguages;
+	}
+
+}
 ?>
