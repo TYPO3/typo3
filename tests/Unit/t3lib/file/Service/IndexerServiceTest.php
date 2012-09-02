@@ -33,7 +33,36 @@
  */
 class t3lib_file_Service_IndexerServiceTest extends Tx_Phpunit_TestCase {
 
+	/**
+	 * @var bool Backup all $GLOBALS
+	 */
 	protected $backupGlobals = TRUE;
+
+	/**
+	 * @var array Do not backup TYPO3_DB, it destroys the db resource
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
+	/**
+	 * @var Store backup of TYPO3_DB
+	 */
+	protected $dbBackup;
+
+	/**
+	 * Set up this test case
+	 */
+	public function setUp() {
+			// Store TYPO3_DB in local var, it is substituted with a mock in this test
+		$this->dbBackup = $GLOBALS['TYPO3_DB'];
+	}
+
+	/**
+	 * Tear down this test case
+	 */
+	public function tearDown() {
+			// Re constitute TYPO3_DB from backup
+		$GLOBALS['TYPO3_DB'] = $this->dbBackup;
+	}
 
 	/**
 	 * @test
