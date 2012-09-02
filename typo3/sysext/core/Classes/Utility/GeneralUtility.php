@@ -4794,6 +4794,9 @@ Connection: close
 		if (!$GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
 			return;
 		}
+
+		require_once 'DebugUtility.php';
+
 		$trail = debug_backtrace();
 		if ($trail[1]['type']) {
 			$function = new \ReflectionMethod($trail[1]['class'], $trail[1]['function']);
