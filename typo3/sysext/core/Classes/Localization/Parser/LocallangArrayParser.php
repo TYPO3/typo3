@@ -77,7 +77,7 @@ class LocallangArrayParser implements \TYPO3\CMS\Core\Localization\Parser\Locali
 	 * @param string $languageKey Language key
 	 * @param string $charset Charset
 	 * @return array
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function getParsedData($sourcePath, $languageKey, $charset = '') {
 		$this->validateParameters($sourcePath, $languageKey);
@@ -133,7 +133,7 @@ class LocallangArrayParser implements \TYPO3\CMS\Core\Localization\Parser\Locali
 	 * @param string $sourcePath
 	 * @param string $languageKey
 	 * @return array
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	protected function generateCacheFile($sourcePath, $languageKey) {
 		$LOCAL_LANG = array();
@@ -221,7 +221,7 @@ class LocallangArrayParser implements \TYPO3\CMS\Core\Localization\Parser\Locali
 	 * @param string $sourcePath
 	 * @param string $languageKey
 	 * @return void
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	protected function validateParameters($sourcePath, $languageKey) {
 		if ((!$this->isWithinWebRoot($sourcePath) || !@is_file($sourcePath)) || !$languageKey) {

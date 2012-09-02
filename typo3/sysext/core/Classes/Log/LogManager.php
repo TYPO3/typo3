@@ -131,7 +131,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \TYPO3\CMS\Core\Log\Logger $logger Logger to configure
 	 * @return void
-	 * @throws RangeException
+	 * @throws \RangeException
 	 */
 	protected function setWritersForLogger(\TYPO3\CMS\Core\Log\Logger $logger) {
 		$configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_WRITER, $logger->getName());
@@ -154,7 +154,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param \TYPO3\CMS\Core\Log\Logger $logger Logger to configure
 	 * @return void
-	 * @throws RangeException
+	 * @throws \RangeException
 	 */
 	protected function setProcessorsForLogger(\TYPO3\CMS\Core\Log\Logger $logger) {
 		$configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_PROCESSOR, $logger->getName());
@@ -178,7 +178,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $configurationType Type of config to return (writer, processor)
 	 * @param string $loggerName Logger name
-	 * @throws RangeException
+	 * @throws \RangeException
 	 * @return array
 	 */
 	protected function getConfigurationForLogger($configurationType, $loggerName) {

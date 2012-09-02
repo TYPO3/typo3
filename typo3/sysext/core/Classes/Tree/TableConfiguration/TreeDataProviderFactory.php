@@ -40,7 +40,7 @@ class TreeDataProviderFactory {
 	 *
 	 * @param array $tcaConfiguration
 	 * @return \TYPO3\CMS\Core\Tree\TableConfiguration\DatabaseTreeDataProvider
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	static public function getDataProvider(array $tcaConfiguration, $table, $field, $currentValue) {
 		$dataProvider = NULL;

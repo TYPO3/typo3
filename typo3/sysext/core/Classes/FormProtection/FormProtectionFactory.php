@@ -140,7 +140,7 @@ final class FormProtectionFactory {
 	 * and stores it internally.
 	 *
 	 * @param string $className
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	static protected function createAndStoreInstance($className) {
 		if (!class_exists($className, TRUE)) {

@@ -86,7 +86,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	/**
 	 * Initialize actions
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return void
 	 */
 	public function initializeAction() {

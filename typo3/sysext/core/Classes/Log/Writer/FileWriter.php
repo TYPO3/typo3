@@ -84,7 +84,7 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 *
 	 * @param string $logFile path to the log file, relative to PATH_site
 	 * @return \TYPO3\CMS\Core\Log\Writer\Writer
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	public function setLogFile($logFile) {
 		if (is_resource(self::$logFileHandle)) {
@@ -117,7 +117,7 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 *
 	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
 	 * @return \TYPO3\CMS\Core\Log\Writer\Writer $this
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
 		if (FALSE === fwrite(self::$logFileHandle, $record . LF)) {

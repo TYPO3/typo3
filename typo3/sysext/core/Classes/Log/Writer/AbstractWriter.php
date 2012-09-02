@@ -36,7 +36,7 @@ abstract class AbstractWriter implements \TYPO3\CMS\Core\Log\Writer\Writer {
 	 * Constructs this log writer
 	 *
 	 * @param array $options Configuration options - depends on the actual log writer
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	public function __construct(array $options = array()) {
 		foreach ($options as $optionKey => $optionValue) {

@@ -119,7 +119,7 @@ class RootlineUtility {
 	 * @param int $uid
 	 * @param string $mountPointParameter
 	 * @param \TYPO3\CMS\Frontend\Page\PageRepository $context
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function __construct($uid, $mountPointParameter = '', \TYPO3\CMS\Frontend\Page\PageRepository $context = NULL) {
 		$this->pageUid = intval($uid);
@@ -139,7 +139,7 @@ class RootlineUtility {
 	/**
 	 * Initialize a state to work with
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return void
 	 */
 	protected function initializeObject() {
@@ -197,7 +197,7 @@ class RootlineUtility {
 	 * Queries the database for the page record and returns it.
 	 *
 	 * @param integer $uid Page id
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return array
 	 */
 	protected function getRecordArray($uid) {
@@ -231,7 +231,7 @@ class RootlineUtility {
 	 *
 	 * @param integer $uid Page id
 	 * @param array $pageRecord Array with page data to add relation data to.
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return array $pageRecord with additional relations
 	 */
 	protected function enrichWithRelationFields($uid, array $pageRecord) {
@@ -292,7 +292,7 @@ class RootlineUtility {
 	/**
 	 * Actual function to generate the rootline and cache it
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return void
 	 */
 	protected function generateRootlineCache() {
@@ -345,7 +345,7 @@ class RootlineUtility {
 	 *
 	 * @param array $mountedPageData page record array of mounted page
 	 * @param array $mountPointPageData page record array of mount point page
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return array
 	 */
 	protected function processMountedPage(array $mountedPageData, array $mountPointPageData) {

@@ -640,7 +640,7 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	 * As it is static we are using an exception to test if it is really called and works
 	 *
 	 * @static
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 * @see getFileListCallsConfiguredCallbackFunction
 	 */
 	static public function callbackStaticTestFunction() {

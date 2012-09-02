@@ -94,7 +94,7 @@ class Bootstrap {
 	 * Throws an exception if no browser could be identified
 	 *
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function checkValidBrowserOrDie() {
 		// Checks for proper browser
@@ -585,7 +585,7 @@ class Bootstrap {
 	 * Check adminOnly configuration variable and redirects
 	 * to an URL in file typo3conf/LOCK_BACKEND or exit the script
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	public function checkLockedBackendAndRedirectOrDie() {
@@ -718,7 +718,7 @@ class Bootstrap {
 	/**
 	 * Check for registered ext tables hooks and run them
 	 *
-	 * @throws UnexpectedValueException
+	 * @throws \UnexpectedValueException
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	protected function runExtTablesPostProcessingHooks() {

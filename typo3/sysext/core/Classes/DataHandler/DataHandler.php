@@ -1645,7 +1645,7 @@ class DataHandler {
 	 * @param array $tcaFieldConfiguration
 	 * @param array $values
 	 * @return array|mixed
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	protected function applyFiltersToValues(array $tcaFieldConfiguration, array $values) {
 		if (empty($tcaFieldConfiguration['filter']) || !is_array($tcaFieldConfiguration['filter'])) {

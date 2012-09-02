@@ -40,7 +40,7 @@ class ModuleMenuView {
 	 * sets the path back to /typo3/
 	 *
 	 * @param string $backPath Path back to /typo3/
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 * @return void
 	 */
 	public function setBackPath($backPath) {
@@ -292,7 +292,7 @@ class ModuleMenuView {
 	 * turns linking of modules on or off
 	 *
 	 * @param boolean $linkModules Status for linking modules with a-tags, set to FALSE to turn lining off
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 * @return void
 	 */
 	public function setLinkModules($linkModules) {

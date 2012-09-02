@@ -84,7 +84,7 @@ class HTTP_Request2_Adapter_Mock extends HTTP_Request2_Adapter
     *
     * @param    HTTP_Request2
     * @return   HTTP_Request2_Response
-    * @throws   Exception
+    * @throws \Exception
     */
     public function sendRequest(HTTP_Request2 $request)
     {

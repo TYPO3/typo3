@@ -124,7 +124,7 @@ class SyslogWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 *
 	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
 	 * @return \TYPO3\CMS\Core\Log\Writer\Writer
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
 		if (FALSE === syslog($record->getLevel(), $this->getMessageForSyslog($record))) {

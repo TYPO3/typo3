@@ -84,7 +84,7 @@ class InstallToolTest extends \tx_phpunit_testcase {
 	 * generateConfigFormThrowsNoWarningHandlingContentOfTypo3ConfVarsExtensionAdded
 	 *
 	 * @param $errorNumber
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function errorHandlerCallback($errorNumber) {
 		throw new \Exception('Error thrown');

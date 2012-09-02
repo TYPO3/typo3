@@ -484,7 +484,7 @@ class PreparedStatement {
 	 * @param string $query
 	 * @param array $parameterValues
 	 * @return string
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	protected function tokenizeQueryParameterMarkers($query, array $parameterValues) {
 		$unnamedParameterCount = 0;

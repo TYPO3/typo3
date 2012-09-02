@@ -214,7 +214,7 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $fileReference
 	 * @return string
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	public function getAbsoluteFileReference($fileReference) {
 		if (isset($this->configuration[$fileReference]['fileReference']) && trim($this->configuration[$fileReference]['fileReference']) !== '') {
