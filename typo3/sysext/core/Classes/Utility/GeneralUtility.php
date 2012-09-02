@@ -2507,7 +2507,10 @@ Connection: close
 					$result = @chmod($path, octdec($GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask']));
 				}
 				// Set createGroup if not empty
-				if ($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']) {
+				if (
+					isset($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'])
+					&& strlen($GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']) > 0
+				) {
 					// "@" is there because file is not necessarily OWNED by the user
 					$changeGroupResult = @chgrp($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup']);
 					$result = $changeGroupResult ? $result : FALSE;
