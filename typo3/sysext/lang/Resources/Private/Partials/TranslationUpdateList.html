@@ -2,18 +2,7 @@
 	<div class="x-panel-bwrap" id="ext-gen46">
 		<div class="x-panel-body x-panel-body-noheader x-panel-body-noborder" id="ext-gen47" style="width: 1049px; height: 415px;">
 
-			<f:form action="updateTranslation" name="form" object="{form}">
-				<fieldset style="display: none;">
-					<f:for each="{selectedLanguages}" as="language">
-						<f:form.hidden name="form[selectedLanguages][]" value="{language.locale}"/>
-					</f:for>
-				</fieldset>
-
-				<fieldset style="display: none;">
-					<f:for each="{extensions}" as="extension">
-						<f:form.hidden name="form[extensions][]" value="{extension.key}"/>
-					</f:for>
-				</fieldset>
+			<f:form action="updateTranslation" name="form">
 
 				<fieldset id="ext-comp-1100" class=" x-fieldset x-form-label-left" style="width: 1029px;">
 					<div class="x-fieldset-bwrap" id="ext-gen62">
@@ -74,7 +63,7 @@
 																		</div>
 																	</td>
 
-																	<f:render partial="TranslationHeaders" arguments="{languages: languages}"/>
+																	<f:render partial="TranslationHeaders" arguments="{languages: languageSelectionForm.languages}"/>
 																</tr>
 																</thead>
 															</table>
@@ -87,7 +76,7 @@
 													 style="width: 1029px; height: 337px;">
 													<div class="x-grid3-body" style="width: 370px;" id="ext-gen79">
 
-														<f:render partial="ExtensionRow" arguments="{languages: languages, selectedLanguages: selectedLanguages, extensions: extensions}"/>
+														<f:render partial="ExtensionRow" arguments="{languages: languageSelectionForm.languages, selectedLanguages: languageSelectionForm.selectedLanguages, extensions: extensions}"/>
 
 													</div>
 													<a href="#" class="x-grid3-focus" tabindex="-1" id="ext-gen80" style="left: 0px; top: 0px;"></a></div>

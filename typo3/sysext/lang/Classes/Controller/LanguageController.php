@@ -95,54 +95,39 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	/**
 	 * Index action
 	 *
+	 * @param \TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm
+	 * @param mixed $extensions Extensions to show in form
 	 * @return void
+	 * @dontvalidate $languageSelectionForm
+	 * @dontvalidate $extensions
 	 */
-	public function indexAction() {
-		$languages = $this->languageRepository->findAll();
-		$selectedLanguages = $this->languageRepository->findSelected();
-		$extensions = $this->extensionRepository->findAll();
-
-		if ($this->request->hasArgument('updateResult')) {
-			$extensions = $this->mergeUpdateResult($extensions, $this->request->getArgument('updateResult'));
+	public function indexAction(\TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm = NULL, $extensions = NULL) {
+		if ($languageSelectionForm === NULL) {
+			$languageSelectionForm = $this->objectManager->create('TYPO3\\CMS\\Lang\\Domain\\Model\\LanguageSelectionForm');
+			$languageSelectionForm->setLanguages($this->languageRepository->findAll());
+			$languageSelectionForm->setSelectedLanguages($this->languageRepository->findSelected());
 		}
 
-		$this->view->assign('languages', $languages);
-		$this->view->assign('selectedLanguages', $selectedLanguages);
+		if (empty($extensions)) {
+			$extensions = $this->extensionRepository->findAll();
+		}
+
+		$this->view->assign('languageSelectionForm', $languageSelectionForm);
 		$this->view->assign('extensions', $extensions);
 	}
 
 	/**
-	 * Merge update results after translation update into extension models for rendering
+	 * Update the language selection form
 	 *
-	 * @param array $extensions
-	 * @param array $updateResult
-	 * @return array
-	 */
-	protected function mergeUpdateResult(array $extensions, array $updateResult) {
-		foreach ($updateResult as $key => $messages) {
-			$extensions[$key]->setUpdateResult($messages);
-		}
-
-		return $extensions;
-	}
-
-	/**
-	 * Save selected locale(s)
-	 *
-	 * @param \TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $form
+	 * @param \TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm
 	 * @return void
+	 * @dontvalidate $languageSelectionForm
 	 */
-	public function saveSelectedLocaleAction(\TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $form) {
-		$selectedLanguages = array();
-		foreach ($form->getLocale() as $locale => $value) {
-			if ($value) {
-				$selectedLanguages[] = $locale;
-			}
+	public function updateLanguageSelectionAction(\TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm) {
+		if ($languageSelectionForm !== NULL) {
+			$this->languageRepository->updateSelectedLanguages($languageSelectionForm->getSelectedLanguages());
 		}
-
-		$this->languageRepository->updateSelectedLanguages($selectedLanguages);
-
-		$this->forward('index');
+		$this->redirect('index');
 	}
 
 	/**
@@ -150,7 +135,7 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 *
 	 * @return void
 	 */
-	protected function initializeUpdateTranslationAction() {
+	public function initializeUpdateTranslationAction() {
 		$this->icons = array(
 			'ok' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked'),
 			'unavailable' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-info'),
@@ -159,19 +144,22 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	}
 
 	/**
-	 * Update translation(s)
+	 * Update translations
 	 *
-	 * @param \TYPO3\CMS\Lang\Domain\Model\UpdateTranslationForm $form
 	 * @return void
 	 */
-	public function updateTranslationAction(\TYPO3\CMS\Lang\Domain\Model\UpdateTranslationForm $form) {
-		$result = array();
+	public function updateTranslationAction() {
+		$selectedLanguages = $this->languageRepository->findSelected();
+		$extensions = $this->extensionRepository->findAll();
+
+		if (empty($selectedLanguages)) {
+			$this->forward('index');
+		}
 
 		try {
-			if (count($form->getSelectedLanguages())) {
-				foreach ($form->getExtensions() as $extension) {
-					$result[$extension] = $this->checkTranslationForExtension($form->getSelectedLanguages(), $extension);
-				}
+			foreach ($extensions as $key => $extension) {
+				$updateResult = $this->checkTranslationForExtension($selectedLanguages, $key);
+				$extensions[$key]->setUpdateResult($updateResult);
 			}
 		} catch (\Exception $exception) {
 			$flashMessage = $this->objectManager->create(
@@ -183,7 +171,7 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
 		}
 
-		$this->forward('index', NULL, NULL, array('updateResult' => $result));
+		$this->forward('index', NULL, NULL, array('extensions' => $extensions));
 	}
 
 	/**
@@ -193,7 +181,7 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	 * @param string $extensionKey
 	 * @return array
 	 */
-	public function checkTranslationForExtension($languages, $extensionKey) {
+	protected function checkTranslationForExtension($languages, $extensionKey) {
 		$result = array();
 
 		/** @var $terConnection \TYPO3\CMS\Lang\Utility\Connection\Ter */
@@ -201,24 +189,26 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$mirrorUrl = $this->repositoryHelper->getMirrors()->getMirrorUrl();
 
 		$fetch = $terConnection->fetchTranslationStatus($extensionKey, $mirrorUrl);
-		foreach ($languages as $lang) {
-			if (!isset($fetch[$lang])) {
+		foreach ($languages as $language) {
+			$locale = $language->getLocale();
+
+			if (!isset($fetch[$locale])) {
 					// No translation available
-				$result[$lang] = array(
+				$result[$locale] = array(
 					'icon' => $this->icons['unavailable'],
 					'message' => 'translation_n_a'
 				);
 			} else {
-				$zip = PATH_site . 'typo3temp' . DIRECTORY_SEPARATOR . $extensionKey . '-l10n-' . $lang . '.zip';
+				$zip = PATH_site . 'typo3temp' . DIRECTORY_SEPARATOR . $extensionKey . '-l10n-' . $locale . '.zip';
 				$md5OfTranslationFile = '';
 				if (is_file($zip)) {
 					$md5OfTranslationFile = md5_file($zip);
 				}
 
-				if ($md5OfTranslationFile !== $fetch[$lang]['md5']) {
-					$update = $terConnection->updateTranslation($extensionKey, $lang, $mirrorUrl);
+				if ($md5OfTranslationFile !== $fetch[$locale]['md5']) {
+					$update = $terConnection->updateTranslation($extensionKey, $locale, $mirrorUrl);
 
-					$result[$lang] = $update ?
+					$result[$locale] = $update ?
 						array(
 							'icon' => $this->icons['ok'],
 							'message' => 'translation_msg_updated'
@@ -229,7 +219,7 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 						);
 				} else {
 						// Translation is up to date
-					$result[$lang] = array(
+					$result[$locale] = array(
 						'icon' => $this->icons['ok'],
 						'message' => 'translation_status_uptodate'
 					);
@@ -239,6 +229,6 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 
 		return $result;
 	}
-}
 
+}
 ?>
