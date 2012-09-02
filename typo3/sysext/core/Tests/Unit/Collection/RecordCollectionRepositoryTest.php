@@ -65,7 +65,10 @@ class RecordCollectionRepositoryTest extends \Tx_Phpunit_TestCase {
 	 * Sets up this test case.
 	 */
 	protected function setUp() {
-		$this->databaseMock = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_UPDATEquery', 'exec_SELECTgetSingleRow', 'exec_SELECTgetRows'));
+		$this->databaseMock = $this->getMock(
+			'TYPO3\\CMS\\Core\\Database\\DatabaseConnection',
+			array('exec_UPDATEquery', 'exec_SELECTgetSingleRow', 'exec_SELECTgetRows', 'fullQuoteStr')
+		);
 		$this->fixture = $this->getMock('TYPO3\\CMS\\Core\\Collection\\RecordCollectionRepository', array('getDatabase'));
 		$this->fixture->expects($this->any())->method('getDatabase')->will($this->returnValue($this->databaseMock));
 		$this->testTableName = uniqid('tx_testtable');
