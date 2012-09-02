@@ -231,10 +231,12 @@ class Locker {
 			}
 			break;
 		case 'flock':
-			if (flock($this->filepointer, LOCK_UN) == FALSE) {
-				$success = FALSE;
+			if (is_resource($this->filepointer)) {
+				if (flock($this->filepointer, LOCK_UN) == FALSE) {
+					$success = FALSE;
+				}
+				fclose($this->filepointer);
 			}
-			fclose($this->filepointer);
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($this->resource) && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($this->resource, PATH_site . 'typo3temp/locks/')) {
 				@unlink($this->resource);
 			}
