@@ -254,13 +254,51 @@ class AbstractPlugin {
 	}
 
 	/**
+	 * Recursively looks for stdWrap and executes it
+	 *
+	 * @param array $conf Current section of configuration to work on
+	 * @param integer $level Current level being processed (currently just for tracking; no limit enforced)
+	 * @return array Current section of configuration after stdWrap applied
+	 */
+	protected function applyStdWrapRecursive($conf, $level = 0) {
+		if (!is_array($conf)) {
+			return $conf;
+		}
+		foreach($conf as $key => $confNextLevel) {
+			if (strpos($key, '.') !== FALSE) {
+				$key = substr($key, 0, -1);
+
+				// descend into all non-stdWrap-subelements first
+				foreach($confNextLevel as $subKey => $subConfNextLevel) {
+					if (is_array($subConfNextLevel) && (strpos($subKey, '.') !== FALSE) && ($subKey !== 'stdWrap')) {
+						$subKey = substr($subKey, 0, -1);
+						$conf[$key . '.'] = $this->applyStdWrapRecursive($confNextLevel, $level + 1);
+					}
+				}
+
+				// now for stdWrap
+				foreach($confNextLevel as $subKey => $subConfNextLevel) {
+					if (is_array($subConfNextLevel) && ($subKey === 'stdWrap.')) {
+						$conf[$key] = $this->cObj->stdWrap($conf[$key], $conf[$key . '.']['stdWrap.']);
+						unset($conf[$key . '.']['stdWrap.']);
+						if(empty($conf[$key . '.'])) {
+							unset($conf[$key . '.']);
+						}
+					}
+				}
+			}
+		}
+		return $conf;
+	}
+
+	/**
 	 * If internal TypoScript property "_DEFAULT_PI_VARS." is set then it will merge the current $this->piVars array onto these default values.
 	 *
 	 * @return void
-	 * @todo Define visibility
 	 */
 	public function pi_setPiVarDefaults() {
-		if (is_array($this->conf['_DEFAULT_PI_VARS.'])) {
+		if (is_array($this->conf['_DEFAULT_PI_VARS.']) && !empty($this->conf['_DEFAULT_PI_VARS.'])) {
+			$this->conf['_DEFAULT_PI_VARS.'] = $this->applyStdWrapRecursive($this->conf['_DEFAULT_PI_VARS.']);
 			$this->piVars = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->conf['_DEFAULT_PI_VARS.'], is_array($this->piVars) ? $this->piVars : array());
 		}
 	}
