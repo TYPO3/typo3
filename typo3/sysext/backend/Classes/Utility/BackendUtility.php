@@ -4065,6 +4065,30 @@ class BackendUtility {
 		return $configuration;
 	}
 
+	/**
+	 * Whether to ignore permissions on a web-mount of a table.
+	 * The regular behaviour is that records to be accessed need to be
+	 * in a valid user's web-mount.
+	 *
+	 * @param string $table Name of the table
+	 * @return boolean
+	 */
+	static public function isWebMountPermissionIgnored($table) {
+		return !empty($GLOBALS['TCA'][$table]['ctrl']['permission']['ignoreWebMount']);
+	}
+
+	/**
+	 * Whether to ignore permissions on root-level records.
+	 * The regular behaviour is that records on the root-level (page-id 0)
+	 * only can be accessed by admin users.
+	 *
+	 * @param string $table Name of the table
+	 * @return boolean
+	 */
+	static public function isRootLevelPermissionIgnored($table) {
+		return !empty($GLOBALS['TCA'][$table]['ctrl']['permission']['ignoreRootLevel']);
+	}
+
 }
 
 
