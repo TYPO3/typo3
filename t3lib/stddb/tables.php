@@ -415,6 +415,10 @@ $TCA['sys_file'] = array(
 			'5' => 'mimetypes-application',
 			'default' => 'mimetypes-other-other'
 		),
+		'security' => array(
+			'ignoreWebMountRestriction' => TRUE,
+			'ignoreRootLevelRestriction' => TRUE,
+		),
 		'dynamicConfigFile' => 'T3LIB:tca_sys_file.php'
 	)
 );
@@ -445,6 +449,10 @@ $TCA['sys_file_reference'] = array(
 		'shadowColumnsForNewPlaceholders' => 'tablenames,fieldname,uid_local,uid_foreign',
 		'enablecolumns' => array(
 			'disabled' => 'hidden'
+		),
+		'security' => array(
+			'ignoreWebMountRestriction' => TRUE,
+			'ignoreRootLevelRestriction' => TRUE,
 		),
 		'dynamicConfigFile' => 'T3LIB:tca_sys_file_reference.php'
 	)
