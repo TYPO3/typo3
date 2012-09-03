@@ -4065,6 +4065,30 @@ class BackendUtility {
 		return $configuration;
 	}
 
+	/**
+	 * Whether to ignore restrictions on a web-mount of a table.
+	 * The regular behaviour is that records to be accessed need to be
+	 * in a valid user's web-mount.
+	 *
+	 * @param string $table Name of the table
+	 * @return boolean
+	 */
+	static public function isWebMountRestrictionIgnored($table) {
+		return !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreWebMountRestriction']);
+	}
+
+	/**
+	 * Whether to ignore restrictions on root-level records.
+	 * The regular behaviour is that records on the root-level (page-id 0)
+	 * only can be accessed by admin users.
+	 *
+	 * @param string $table Name of the table
+	 * @return boolean
+	 */
+	static public function isRootLevelRestrictionIgnored($table) {
+		return !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']);
+	}
+
 }
 
 

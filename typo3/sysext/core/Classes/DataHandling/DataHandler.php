@@ -5154,7 +5154,8 @@ class DataHandler {
 			throw new \RuntimeException('Internal ERROR: no permissions to check for non-admin user', 1270853920);
 		}
 		// For all tables: Check if record exists:
-		if (is_array($GLOBALS['TCA'][$table]) && $id > 0 && ($this->isRecordInWebMount($table, $id) || $this->admin)) {
+		$isWebMountRestrictionIgnored = \TYPO3\CMS\Backend\Utility\BackendUtility::isWebMountRestrictionIgnored($table);
+		if (is_array($GLOBALS['TCA'][$table]) && $id > 0 && ($isWebMountRestrictionIgnored || $this->isRecordInWebMount($table, $id) || $this->admin)) {
 			if ($table != 'pages') {
 				// Find record without checking page:
 				$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid', $table, 'uid=' . intval($id) . $this->deleteClause($table));
@@ -5167,7 +5168,8 @@ class DataHandler {
 					$mres = $this->doesRecordExist_pageLookUp($output['pid'], $perms);
 					$pageRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres);
 					// Return TRUE if either a page was found OR if the PID is zero AND the user is ADMIN (in which case the record is at root-level):
-					if (is_array($pageRec) || !$output['pid'] && $this->admin) {
+					$isRootLevelRestrictionIgnored = \TYPO3\CMS\Backend\Utility\BackendUtility::isRootLevelRestrictionIgnored($table);
+					if (is_array($pageRec) || !$output['pid'] && ($isRootLevelRestrictionIgnored || $this->admin)) {
 						return TRUE;
 					}
 				}
