@@ -741,8 +741,10 @@ class EditDocumentController {
 								$calcPRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $theUid);
 								\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($table, $calcPRec);
 								if (is_array($calcPRec)) {
-									// If pages:
-									if ($table == 'pages') {
+									if ($table == 'sys_file') {
+										$hasAccess = TRUE;
+										$deleteAccess = FALSE;
+									} elseif ($table == 'pages') { // If pages:
 										$CALC_PERMS = $GLOBALS['BE_USER']->calcPerms($calcPRec);
 										$hasAccess = $CALC_PERMS & 2 ? 1 : 0;
 										$deleteAccess = $CALC_PERMS & 4 ? 1 : 0;

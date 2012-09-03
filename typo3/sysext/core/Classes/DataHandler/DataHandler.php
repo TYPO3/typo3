@@ -4989,8 +4989,12 @@ class DataHandler {
 	 */
 	public function isRecordInWebMount($table, $id) {
 		if (!isset($this->isRecordInWebMount_Cache[($table . ':' . $id)])) {
-			$recP = $this->getRecordProperties($table, $id);
-			$this->isRecordInWebMount_Cache[$table . ':' . $id] = $this->isInWebMount($recP['event_pid']);
+			if (in_array($table, array('sys_file', 'sys_file_references'))) {
+				$this->isRecordInWebMount_Cache[($table . ':') . $id] = TRUE;
+			} else {
+				$recP = $this->getRecordProperties($table, $id);
+				$this->isRecordInWebMount_Cache[$table . ':' . $id] = $this->isInWebMount($recP['event_pid']);
+			}
 		}
 		return $this->isRecordInWebMount_Cache[$table . ':' . $id];
 	}
@@ -5153,7 +5157,10 @@ class DataHandler {
 		}
 		// For all tables: Check if record exists:
 		if (is_array($GLOBALS['TCA'][$table]) && $id > 0 && ($this->isRecordInWebMount($table, $id) || $this->admin)) {
-			if ($table != 'pages') {
+			if ($table == 'sys_file') { // Page access does not matter for files
+				$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', $table, 'uid=' . intval($id) . $this->deleteClause($table));
+				return is_array($record);
+			} elseif ($table != 'pages') {
 				// Find record without checking page:
 				$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid', $table, 'uid=' . intval($id) . $this->deleteClause($table));
 				// THIS SHOULD CHECK FOR editlock I think!
