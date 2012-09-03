@@ -1451,7 +1451,10 @@ $TCA['tt_content'] = array(
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
-				'allowed' => 'sys_file_collection'
+				'allowed' => 'sys_file_collection',
+				'maxitems' => 999,
+				'minitems' => 0,
+				'size' => 5
 			)
 		),
 		'multimedia' => array(
