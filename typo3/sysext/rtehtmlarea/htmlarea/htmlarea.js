@@ -141,7 +141,7 @@ Ext.apply(HTMLArea, {
 				if (type === 'error') {
 					console[type](str);
 				}
-			} else {
+			} else if(typeof(console[type]) !== 'undefined') {
 				console[type](str);
 			}
 		}
