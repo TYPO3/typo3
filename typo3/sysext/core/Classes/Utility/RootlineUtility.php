@@ -256,6 +256,7 @@ class RootlineUtility {
 						$whereClauseParts[] = '`' . trim($configuration['foreign_table_field']) . '` = \'pages\'';
 					}
 					$whereClause = implode(' AND ', $whereClauseParts);
+					$whereClause .= $this->pageContext->deleteClause($table);
 					$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $table, $whereClause);
 					if (!is_array($rows)) {
 						throw new \RuntimeException('Could to resolve related records for page ' . $uid . ' and foreign_table ' . htmlspecialchars($configuration['foreign_table']), 1343589452);
