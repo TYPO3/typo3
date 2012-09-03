@@ -183,7 +183,7 @@ $TCA['sys_file_reference'] = array(
 		),
 		// file palette, hidden but needs to be included all the time
 		'filePalette' => array(
-			'showitem' => 'uid_local',
+			'showitem' => 'uid_local,hidden',
 			'isHiddenPalette' => TRUE
 		)
 	)
