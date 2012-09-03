@@ -142,12 +142,13 @@ Ext.apply(HTMLArea, {
 			var type = 'info';
 		}
 		if (typeof(console) !== 'undefined' && typeof(console) === 'object') {
-				// If console is TYPO3.Backend.DebugConsole, write only error messages
+			// If console is TYPO3.Backend.DebugConsole, write only error messages
 			if (Ext.isFunction(console.addTab)) {
 				if (type === 'error') {
 					console[type](str);
 				}
-			} else {
+			// IE may not have any console
+			} else if (typeof(console[type]) !== 'undefined') {
 				console[type](str);
 			}
 		}
