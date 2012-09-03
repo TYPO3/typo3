@@ -55,9 +55,11 @@ class FilesContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			references = 27
 			 */
 			$referencesUid = $this->stdWrapValue('references', $conf);
-			if ($referencesUid) {
-				$this->addToArray($fileRepository->findFileReferenceByUid($referencesUid), $fileObjects);
+			$referencesUidArray = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $referencesUid, TRUE);
+			foreach ($referencesUidArray as $referenceUid) {
+				$this->addToArray($fileRepository->findFileReferenceByUid($referenceUid), $fileObjects);
 			}
+
 			// It's important that this always stays "fieldName" and not be renamed to "field" as it would otherwise collide with the stdWrap key of that name
 			$referencesFieldName = $this->stdWrapValue('fieldName', $conf['references.']);
 			if ($referencesFieldName) {
