@@ -408,6 +408,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 						if(!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
 							$conf[$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter.'.']);
 							$isStdWrapped[$parameter] = 1;
+							unset($conf[$parameter . '.']);
 						}
 					}
 					switch($theValue)	{
@@ -577,6 +578,7 @@ class tslib_gifBuilder extends t3lib_stdGraphic {
 			if(!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
 				$conf[$parameter] = $cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
 				$isStdWrapped[$parameter] = 1;
+				unset($conf[$parameter . '.']);
 			}
 		}
 		$conf['fontFile']=$this->checkFile($conf['fontFile']);
