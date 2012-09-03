@@ -219,12 +219,12 @@ class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray($forPersistence = FALSE) {
 		// @todo: define what we need here
 		return array(
 			'storage' => $this->getStorage()->getUid(),
-			'identifier' => $this->getIdentifier(),
-			'name' => $this->getName(),
+			'identifier' => $forPersistence ? $this->identifier : $this->getIdentifier(),
+			'name' => $forPersistence ? $this->name : $this->getName(),
 			'is_processed' => intval($this->processed),
 			'checksum' => $this->calculateChecksum(),
 			'context' => $this->context,

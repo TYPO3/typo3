@@ -89,7 +89,7 @@ class ProcessedFileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepositor
 	 * @return void
 	 */
 	public function add($processedFile) {
-		$insertFields = $processedFile->toArray();
+		$insertFields = $processedFile->toArray(TRUE);
 		$insertFields['crdate'] = ($insertFields['tstamp'] = time());
 		// @todo: make sure that the toArray method only
 		// contains fields that actually *exist* in the table
@@ -107,7 +107,7 @@ class ProcessedFileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepositor
 		if ($uid > 0) {
 			// @todo: make sure that the toArray method only
 			// contains fields that actually *exist* in the table
-			$updateFields = $processedFile->toArray();
+			$updateFields = $processedFile->toArray(TRUE);
 			$updateFields['tstamp'] = time();
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->table, 'uid=' . $uid, $updateFields);
 		}

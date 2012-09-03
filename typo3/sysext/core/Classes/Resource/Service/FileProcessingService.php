@@ -77,6 +77,9 @@ class FileProcessingService {
 			throw new \RuntimeException(('Unknown processing context "' . $context) . '"');
 		}
 		if ($processedFile->isProcessed()) {
+			if ($processedFile->getName() == $processedFile->getOriginalFile()->getName()) {
+				$processedFile->updateProperties(array('name' => NULL, 'identifier' => NULL));
+			}
 			// DB-query to update all info
 			/** @var $processedFileRepository \TYPO3\CMS\Core\Resource\ProcessedFileRepository */
 			$processedFileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
