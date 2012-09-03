@@ -3,9 +3,9 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 // Form evaluation function for fe_users
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['TYPO3\\CMS\\Saltedpasswords\\Evaluation\\Evaluator_fe'] = 'EXT:saltedpasswords/Classes/eval/class.tx_saltedpasswords_eval_fe.php';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_saltedpasswords_eval_fe'] = 'EXT:saltedpasswords/Classes/Evaluation/FrontendEvaluator.php';
 // Form evaluation function for be_users
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['TYPO3\\CMS\\Saltedpasswords\\Evaluation\\BackendEvaluator'] = 'EXT:saltedpasswords/Classes/eval/class.tx_saltedpasswords_eval_be.php';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['tx_saltedpasswords_eval_be'] = 'EXT:saltedpasswords/Classes/Evaluation/BackendEvaluator.php';
 // Hook for processing "forgotPassword" in felogin
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['password_changed'][] = 'EXT:saltedpasswords/Classes/class.tx_saltedpasswords_div.php:TYPO3\\CMS\\Saltedpasswords\\Utility\\SaltedPasswordsUtility->feloginForgotPasswordHook';
 // Registering all available hashes to factory
