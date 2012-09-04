@@ -3,6 +3,9 @@
 # Use "lib." for persisting storage of objects.
 # ***************************************************************************
 
+# Since images are records now, multi-lang content elements only work with overlay enabled
+config.sys_language_overlay = true
+
 # Clear out any constants in this reserved room!
 styles.content >
 
@@ -133,7 +136,7 @@ lib.parseFunc_RTE {
 			# Recursive call to self but without wrapping non-wrapped cell content
 			default.stdWrap {
 				parseFunc =< lib.parseFunc_RTE
-				parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag = 
+				parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag =
 			}
 			addChr10BetweenParagraphs=1
 		}
