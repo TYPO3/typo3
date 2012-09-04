@@ -171,20 +171,34 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 *
 	 * @param int $tableName Table name of the related record
 	 * @param int $fieldName Field name of the related record
-	 * @param int $uid The UID of the related record
+	 * @param int $uid The UID of the related record in language 0,-1
+	 * @param int $localizedUid id of the translated record, optional
+	 * @param int $language requested language, optional
 	 * @return array An array of objects, empty if no objects found
 	 * @api
 	 */
-	public function findByRelation($tableName, $fieldName, $uid) {
+	public function findByRelation($tableName, $fieldName, $uid, $localizedUid = 0, $language = 0) {
 		$itemList = array();
 		if (!is_numeric($uid)) {
 			throw new \InvalidArgumentException('Uid of related record has to be numeric.', 1316789798);
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_file_reference', (((((('tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_file_reference')) . ' AND deleted=0') . ' AND hidden=0') . ' AND uid_foreign=') . intval($uid)) . ' AND fieldname=') . $GLOBALS['TYPO3_DB']->fullQuoteStr($fieldName, 'sys_file_reference'), '', 'sorting_foreign');
-		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$itemList[] = $this->createFileReferenceObject($row);
+
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+			'uid',
+			'sys_file_reference',
+			'tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_file_reference') .
+				' AND (' .
+					' ( sys_language_uid IN (0,-1) AND uid_foreign=' . intval($uid) . ') ' .
+					($localizedUid > 0 && $language > 0 ? ' OR ( uid_foreign=' . intval($localizedUid) .  ' AND sys_language_uid = 0 AND l10n_parent = 0)' : '') .
+				') AND deleted=0' .
+				' AND hidden=0' .
+				' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($fieldName, 'sys_file_reference'),
+			'',
+			'sorting_foreign'
+		);
+		foreach ($rows as $row) {
+			$itemList[] = $this->factory->getFileReferenceObject($row['uid'], array(), $language);
 		}
-		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		return $itemList;
 	}
 

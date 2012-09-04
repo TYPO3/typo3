@@ -9,7 +9,39 @@ $TCA['sys_file_reference'] = array(
 	),
 	'feInterface' => $TCA['sys_file_reference']['feInterface'],
 	'columns' => array(
+		'sys_language_uid' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'sys_language',
+				'foreign_table_where' => 'ORDER BY sys_language.title',
+				'items' => array(
+					array('LLL:EXT:lang/locallang_general.php:LGL.allLanguages', -1),
+					array('LLL:EXT:lang/locallang_general.php:LGL.default_value', 0)
+				)
+			)
+		),
+		'l10n_parent' => array(
+			'displayCond' => 'FIELD:sys_language_uid:>:0',
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l18n_parent',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('', 0)
+				),
+				'foreign_table' => 'sys_file_reference',
+				'foreign_table_where' => 'AND sys_file_reference.uid=###REC_FIELD_l10n_parent### AND sys_file_reference.sys_language_uid IN (-1,0)'
+			)
+		),
+		'l10n_diffsource' => array(
+			'config' => array(
+				'type' => 'passthrough'
+			)
+		),
 		'hidden' => array(
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
 			'config' => array(
@@ -18,6 +50,7 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'uid_local' => array(
+			'l10n_mode' => 'exclude',
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.uid_local',
 			'config' => array(
@@ -30,6 +63,7 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'uid_foreign' => array(
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.uid_foreign',
 			'config' => array(
@@ -45,6 +79,7 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'tablenames' => array(
+			'l10n_mode' => 'exclude',
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.tablenames',
 			'config' => array(
@@ -54,6 +89,7 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'fieldname' => array(
+			'l10n_mode' => 'exclude',
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.fieldname',
 			'config' => array(
@@ -62,6 +98,7 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'sorting_foreign' => array(
+			'l10n_mode' => 'exclude',
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.sorting_foreign',
 			'config' => array(
@@ -78,6 +115,7 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'table_local' => array(
+			'l10n_mode' => 'exclude',
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.table_local',
 			'config' => array(
@@ -87,6 +125,7 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'title' => array(
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.title',
 			'config' => array(
@@ -96,6 +135,7 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'link' => array(
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.link',
 			'config' => array(
@@ -115,6 +155,7 @@ $TCA['sys_file_reference'] = array(
 		),
 		'description' => array(
 			// This is used for captions in the frontend
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.description',
 			'config' => array(
@@ -129,7 +170,7 @@ $TCA['sys_file_reference'] = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '22',
-				'placeholder' => '__row|uid_local|name'
+				'placeholder' => '__row|uid_local|alternative'
 			)
 		)
 	),
@@ -183,7 +224,7 @@ $TCA['sys_file_reference'] = array(
 		),
 		// file palette, hidden but needs to be included all the time
 		'filePalette' => array(
-			'showitem' => 'uid_local,hidden',
+			'showitem' => 'uid_local, hidden, sys_language_uid, l10n_parent',
 			'isHiddenPalette' => TRUE
 		)
 	)
