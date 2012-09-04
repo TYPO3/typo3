@@ -48,7 +48,6 @@ class FrontendContentAdapterService {
 			),
 			'media' => array(
 				'paths' => 'media',
-				'captions' => 'imagecaption'
 			)
 		),
 		'pages' => array(
@@ -71,12 +70,16 @@ class FrontendContentAdapterService {
 	 * @return void
 	 */
 	static public function modifyDBRow(&$row, $table) {
+		if (isset($row['_MIGRATED']) && $row['_MIGRATED'] === TRUE) {
+			return;
+		}
+
 		if (array_key_exists($table, static::$migrateFields)) {
 			foreach (static::$migrateFields[$table] as $migrateFieldName => $oldFieldNames) {
 				if ($row !== NULL && isset($row[$migrateFieldName])) {
 					/** @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
 					$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-					$files = $fileRepository->findByRelation($table, $migrateFieldName, $row['uid']);
+					$files = $fileRepository->findByRelation($table, $migrateFieldName, $row['uid'], $row['_LOCALIZED_UID'] ?: 0, $GLOBALS['TSFE']->sys_language_content);
 					$fileFieldContents = array(
 						'paths' => array(),
 						'titleTexts' => array(),
@@ -108,8 +111,14 @@ class FrontendContentAdapterService {
 							$row[$oldFieldName] = $fieldContents;
 						}
 					}
+					if (count($files) > 0) {
+
+					} elseif ($row[$migrateFieldName]) {
+						throw new \RuntimeException('inconsistent count field in "' . $table . '.' . $migrateFieldName . '".', 1333754565);
+					}
 				}
 			}
+			$row['_MIGRATED'] = TRUE;
 		}
 	}
 
