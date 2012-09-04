@@ -172,15 +172,16 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * @param int $tableName Table name of the related record
 	 * @param int $fieldName Field name of the related record
 	 * @param int $uid The UID of the related record
+	 * @param int $languageId The UID of the sys_language record to use
 	 * @return array An array of objects, empty if no objects found
 	 * @api
 	 */
-	public function findByRelation($tableName, $fieldName, $uid) {
+	public function findByRelation($tableName, $fieldName, $uid, $languageId = 0) {
 		$itemList = array();
 		if (!is_numeric($uid)) {
 			throw new \InvalidArgumentException('Uid of related record has to be numeric.', 1316789798);
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_file_reference', 'tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_file_reference') . ' AND deleted=0' . ' AND hidden=0' . ' AND uid_foreign=' . intval($uid) . ' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($fieldName, 'sys_file_reference'), '', 'sorting_foreign');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_file_reference', 'tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_file_reference') . ' AND deleted=0' . ' AND hidden=0' . ' AND uid_foreign=' . intval($uid) . ' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($fieldName, 'sys_file_reference') . ' AND sys_language_uid = ' . $languageId, '', 'sorting_foreign');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$itemList[] = $this->createFileReferenceObject($row);
 		}
