@@ -389,7 +389,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param integer $uid The uid of the file usage (sys_file_reference) to instantiate.
 	 * @param array $fileReferenceData The record row from database.
-	 * @param integer $language the system language uid
+	 * @param integer $language the system language uid, optional
 	 * @return \TYPO3\CMS\Core\Resource\FileReference
 	 */
 	public function getFileReferenceObject($uid, array $fileReferenceData = array(), $language = 0) {

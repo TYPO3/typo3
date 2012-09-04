@@ -172,7 +172,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * @param int $tableName Table name of the related record
 	 * @param int $fieldName Field name of the related record
 	 * @param int $uid The UID of the related record
-	 * @param int $language requested language
+	 * @param int $language requested language, optional
 	 * @return array An array of objects, empty if no objects found
 	 * @api
 	 */
