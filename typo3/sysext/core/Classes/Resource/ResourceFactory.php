@@ -389,31 +389,63 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param integer $uid The uid of the file usage (sys_file_reference) to instantiate.
 	 * @param array $fileReferenceData The record row from database.
+	 * @param integer $language the system language uid, optional
 	 * @return \TYPO3\CMS\Core\Resource\FileReference
 	 */
-	public function getFileReferenceObject($uid, array $fileReferenceData = array()) {
+	public function getFileReferenceObject($uid, array $fileReferenceData = array(), $language = 0) {
 		if (!is_numeric($uid)) {
 			throw new \InvalidArgumentException('uid of fileusage (sys_file_reference) has to be numeric.', 1300086584);
 		}
-		if (!$this->fileReferenceInstances[$uid]) {
+		if (!is_integer($language) || $language < 0) {
+			$language = 0;
+		}
+		if (!isset($this->fileReferenceInstances[$uid . '|' . $language])) {
 			// Fetches data in case $fileData is empty
 			if (empty($fileReferenceData)) {
 				// fetch the reference record of the current workspace
 				if (TYPO3_MODE === 'BE') {
 					$fileReferenceData = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('sys_file_reference', $uid);
+					$languageOverlay = NULL;
+					if ($fileReferenceData['sys_language_uid'] > 0 && $fileReferenceData['l10n_parent'] > 0) {
+						$languageOverlay = $fileReferenceData;
+						$fileReferenceData = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('sys_file_reference', $fileReferenceData['l10n_parent']);
+					} elseif ($language > 0 && $fileReferenceData['sys_language_uid'] == 0) {
+						$languageOverlay = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization('sys_file_reference', $uid, $language);
+					}
+
+					if ($language > 0 && $languageOverlay !== FALSE && $languageOverlay !== NULL && is_array($languageOverlay)) {
+						\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('sys_file_reference');
+						foreach ($fileReferenceData as $fieldName => $value) {
+							if (($fieldName != 'uid' && $fieldName != 'pid') && isset($languageOverlay[$fieldName])) {
+								if ($GLOBALS['TCA']['sys_file_reference']['columns'][$fieldName]['l10n_mode'] != 'exclude'
+									&& ($GLOBALS['TCA']['sys_file_reference']['columns'][$fieldName]['l10n_mode'] != 'mergeIfNotBlank' || strcmp(trim($languageOverlay[$fieldName]), ''))) {
+									$fileReferenceData[$fieldName] = $languageOverlay[$fieldName];
+								}
+							} elseif ($fieldName == 'uid') {
+								$fileReferenceData['_LOCALIZED_UID'] = $languageOverlay['uid'];
+							}
+						}
+					}
 				} elseif (is_object($GLOBALS['TSFE'])) {
 					$fileReferenceData = $GLOBALS['TSFE']->sys_page->checkRecord('sys_file_reference', $uid);
+					if ($fileReferenceData['sys_language_uid'] !== $language) {
+						$overlay = $GLOBALS['TSFE']->sys_page->getRecordOverlay('sys_file_reference', $fileReferenceData, $language);
+						$fileReferenceData = $overlay ?: $fileReferenceData;
+					}
 				} else {
 					/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-					$fileReferenceData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . intval($uid) . ' AND deleted=0');
+					$fileReferenceData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', ('uid=' . intval($uid)) . ' AND deleted=0');
+					if ($language > 0) {
+						throw new \InvalidArgumentException('No Language overlay possible in this context', 1317178798);
+					}
 				}
 				if (!is_array($fileReferenceData)) {
 					throw new \InvalidArgumentException('No fileusage (sys_file_reference) found for given UID.', 1317178794);
 				}
 			}
-			$this->fileReferenceInstances[$uid] = $this->createFileReferenceObject($fileReferenceData);
+			$this->fileReferenceInstances[$uid . '|' . $language] = $this->createFileReferenceObject($fileReferenceData);
 		}
-		return $this->fileReferenceInstances[$uid];
+		return $this->fileReferenceInstances[$uid . '|' . $language];
 	}
 
 	/**

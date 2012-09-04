@@ -92,7 +92,7 @@ class FileReference implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 */
 	public function __construct(array $fileReferenceData, $factory = NULL) {
 		$this->propertiesOfFileReference = $fileReferenceData;
-		if (!$fileReferenceData['uid_local']) {
+		if (!$fileReferenceData['uid_local'] && intval($fileReferenceData['sys_language_uid']) == 0) {
 			throw new \InvalidArgumentException('Incorrect reference to original file given for FileReference.', 1300098528);
 		}
 		if (!$factory) {

@@ -482,14 +482,22 @@ class ExtensionManager {
 			'appearance' => array(
 				'useSortable' => TRUE,
 				'headerThumbnail' => 'uid_local',
+				'showPossibleLocalizationRecords' => TRUE,
+				'showRemovedLocalizationRecords' => TRUE,
+
 				'enabledControls' => array(
 					'info' => FALSE,
 					'new' => FALSE,
 					'dragdrop' => TRUE,
 					'sort' => FALSE,
 					'hide' => TRUE,
-					'delete' => TRUE
+					'delete' => TRUE,
+					'localize' => TRUE
 				)
+			),
+			'behaviour' => array(
+				'localizationMode' => 'select',
+				'localizeChildrenAtParentLocalization' => FALSE
 			)
 		);
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($fileFieldTCAConfig, $customSettingOverride);
