@@ -65,9 +65,10 @@ class FrontendContentAdapterService {
 	 *
 	 * This method is called by the render() method of tslib_content_Content.
 	 *
-	 * @param $row typically an array, but can also be null (in extensions or e.g. FLUID viewhelpers)
-	 * @param $table the database table where the record is from
-	 * @return 	void
+	 * @param array $row typically an array, but can also be null (in extensions or e.g. FLUID viewhelpers)
+	 * @param string $table the database table where the record is from
+	 * @throws \RuntimeException
+	 * @return void
 	 */
 	static public function modifyDBRow(&$row, $table) {
 		if (array_key_exists($table, static::$migrateFields)) {
