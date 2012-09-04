@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatching;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,32 +23,33 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class t3lib_matchCondition_frontend.
+ * Testcase for class \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher.
  *
  * @author 	Oliver Hader <oliver@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
+class ConditionMatcherTest extends \tx_phpunit_testcase {
 
 	/**
-	 * @var 	array
+	 * @var array
 	 */
 	private $backupGlobalVariables;
 
 	/**
-	 * @var 	array
+	 * @var array
 	 */
 	private $rootline;
 
 	/**
-	 * @var 	t3lib_matchCondition_backend
+	 * @var \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher
 	 */
 	private $matchCondition;
 
 	/**
-	 * @var 	string
+	 * @var string
 	 */
 	private $testTableName;
 
@@ -277,7 +280,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function languageConditionMatchesCompleteLanguagesExpression() {
-		$this->markTestSkipped('This comparison seems to be incomplete in t3lib_matchCondition.');
+		$this->markTestSkipped('This comparison seems to be incomplete in \TYPO3\CMS\Backend\Configuration\TypoScript\ConditionMatching\ConditionMatcher.');
 		$_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'de-de,de;q=0.8,en-us;q=0.5,en;q=0.3';
 		$this->assertTrue($this->matchCondition->match('[language = de-de,de;q=0.8]'));
 	}
@@ -806,7 +809,7 @@ class t3lib_matchCondition_backendTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function genericGetVariablesFailsWithNamespaceTSFE() {
-		$GLOBALS['TSFE'] = new stdClass();
+		$GLOBALS['TSFE'] = new \stdClass();
 		$GLOBALS['TSFE']->id = 1234567;
 		$this->assertFalse($this->matchCondition->match('[globalString = TSFE:id = 1234567]'));
 	}

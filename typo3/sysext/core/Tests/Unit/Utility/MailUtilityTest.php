@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Utility;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the t3lib_utility_Mail class.
+ * Testcase for the \TYPO3\CMS\Core\Utility\MailUtility class.
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class t3lib_utility_MailTest extends tx_phpunit_testcase {
+class MailUtilityTest extends \tx_phpunit_testcase {
 
 	/**
 	 * backed-up TYPO3_CONF_VARS SC_OPTIONS

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Backend\Tests\Unit\Tree\Pagetree;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +31,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_tree_pagetree_DataProviderTest extends tx_phpunit_testcase {
+class DataProviderTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var boolean
@@ -44,7 +46,7 @@ class t3lib_tree_pagetree_DataProviderTest extends tx_phpunit_testcase {
 	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
-	 * @var t3lib_tree_pagetree_DataProvider|PHPUnit_Framework_MockObject_MockObject
+	 * @var \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider|\PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected $fixture = NULL;
 

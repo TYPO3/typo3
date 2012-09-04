@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class t3lib_tree_Node.
+ * Testcase for class \TYPO3\CMS\Backend\Tree\TreeNode.
  *
  * @author Stefan Galinski <stefan.galinski@gmail.com>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_tree_NodeTest extends tx_phpunit_testcase {
+class TreeNodeTest extends \tx_phpunit_testcase {
 
 	//////////////////////
 	// Utility functions
@@ -39,7 +42,8 @@ class t3lib_tree_NodeTest extends tx_phpunit_testcase {
 	 * @return string the absolute fixtures path for this testcase, will not be empty
 	 */
 	private function determineFixturesPath() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Phpunit_Service_TestFinder')->getAbsoluteCoreTestsPath() . 'Unit/t3lib/tree/fixtures/';
+			// We have to take the whole relative path as otherwise this test fails on Windows systems
+		return PATH_site . 'typo3/sysext/backend/Tests/Unit/Tree/Fixtures/';
 	}
 
 	protected function setUpNodeTestData() {
