@@ -1458,9 +1458,13 @@ class BackendUtility {
 		$thumbData = '';
 		// FAL references
 		if ($tcaConfig['type'] === 'inline') {
-			$referenceUids = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'sys_file_reference', 'tablenames = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_file_reference') . ' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($field, 'sys_file_reference') . ' AND uid_foreign=' . intval($row['uid']) . self::deleteClause('sys_file_reference') . self::versioningPlaceholderClause('sys_file_reference'));
-			foreach ($referenceUids as $referenceUid) {
-				$fileReferenceObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($referenceUid['uid']);
+			$language = isset($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]) && $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0  ? $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] : 0;
+			$uid = $language > 0 && $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] > 0  ? $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] : $row['uid'];
+			$languageUid = $language > 0 ? $row['uid'] : 0;
+
+			$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Resource\FileRepository');
+			$references = $fileRepository->findByRelation($table, $field, $uid, $languageUid, $language);
+			foreach ($references as $fileReferenceObject) {
 				$fileObject = $fileReferenceObject->getOriginalFile();
 				// Web image
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileReferenceObject->getExtension())) {

@@ -521,7 +521,7 @@ class InlineElement {
 				// $recTitle could be something like: "tx_table_123|...",
 				$valueParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('|', $rec[$titleCol]);
 				$itemParts = \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('_', $valueParts[0], 2);
-				$recTemp = \t3lib_befunc::getRecordWSOL($itemParts[0], $itemParts[1]);
+				$recTemp = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($itemParts[0], $itemParts[1]);
 				$recTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($itemParts[0], $recTemp, FALSE);
 			}
 			$recTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitlePrep($recTitle);
@@ -535,6 +535,9 @@ class InlineElement {
 		if (!empty($config['appearance']['headerThumbnail'])) {
 			$originalRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($foreign_table, $rec['uid']);
 			if (is_array($originalRecord)) {
+				if (!$originalRecord[$config['appearance']['headerThumbnail']] && $originalRecord[$GLOBALS['TCA'][$foreign_table]['ctrl']['languageField']] > 0 && $originalRecord[$GLOBALS['TCA'][$foreign_table]['ctrl']['transOrigPointerField']] > 0) {
+					$originalRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($foreign_table, $originalRecord['l10n_parent']);
+				}
 				$fileUid = $originalRecord[$config['appearance']['headerThumbnail']];
 				list($fileUid) = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $fileUid);
 				if ($fileUid) {
