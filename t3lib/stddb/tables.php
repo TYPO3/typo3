@@ -438,6 +438,9 @@ $TCA['sys_file_reference'] = array(
 		'sortby' => 'sorting',
 		'delete' => 'deleted',
 		'versioningWS' => TRUE,
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
 		// records can and should be edited in workspaces
 		'shadowColumnsForNewPlaceholders' => 'tablenames,fieldname,uid_local,uid_foreign',
 		'enablecolumns' => array(

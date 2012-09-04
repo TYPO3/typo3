@@ -33,8 +33,7 @@ namespace TYPO3\CMS\Core\Resource;
  * @package TYPO3
  * @subpackage t3lib
  */
-interface FileInterface extends \TYPO3\CMS\Core\Resource\ResourceInterface
-{
+interface FileInterface extends \TYPO3\CMS\Core\Resource\ResourceInterface {
 	/*******************************
 	 * VARIOUS FILE PROPERTY GETTERS
 	 *******************************/
