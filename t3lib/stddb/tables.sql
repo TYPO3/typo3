@@ -283,6 +283,9 @@ CREATE TABLE sys_file (
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+
+	# Versioning fields
 	t3ver_oid int(11) DEFAULT '0' NOT NULL,
 	t3ver_id int(11) DEFAULT '0' NOT NULL,
 	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
@@ -293,7 +296,6 @@ CREATE TABLE sys_file (
 	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
-	deleted tinyint(4) DEFAULT '0' NOT NULL,
 
 	type varchar(10) DEFAULT '' NOT NULL,
 	storage int(11) DEFAULT '0' NOT NULL,
@@ -301,15 +303,55 @@ CREATE TABLE sys_file (
 	extension varchar(255) DEFAULT '' NOT NULL,
 	mime_type varchar(255) DEFAULT '' NOT NULL,
 	name tinytext,
-	title tinytext,
 	sha1 tinytext,
 	size int(11) DEFAULT '0' NOT NULL,
 	creation_date int(11) DEFAULT '0' NOT NULL,
 	modification_date int(11) DEFAULT '0' NOT NULL,
 	width int(11) DEFAULT '0' NOT NULL,
 	height int(11) DEFAULT '0' NOT NULL,
+
+	# Reference field for the meta data
+	sys_file_data int(11) DEFAULT '0' NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid),
+	KEY t3ver_oid (t3ver_oid,t3ver_wsid)
+);
+
+#
+# Table structure for table 'sys_file_data'
+#
+CREATE TABLE sys_file_data (
+	uid int(11) NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+	tstamp int(11) DEFAULT '0' NOT NULL,
+	crdate int(11) DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) DEFAULT '0' NOT NULL,
+
+	# Versioning fields
+	t3ver_oid int(11) DEFAULT '0' NOT NULL,
+	t3ver_id int(11) DEFAULT '0' NOT NULL,
+	t3ver_wsid int(11) DEFAULT '0' NOT NULL,
+	t3ver_label varchar(30) DEFAULT '' NOT NULL,
+	t3ver_state tinyint(4) DEFAULT '0' NOT NULL,
+	t3ver_stage int(11) DEFAULT '0' NOT NULL,
+	t3ver_count int(11) DEFAULT '0' NOT NULL,
+	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
+	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
+	t3_origuid int(11) DEFAULT '0' NOT NULL,
+
+	# Language fields
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumblob NOT NULL,
+
+	# Data fields
+	title tinytext,
 	description text,
 	alternative text,
+	link tinytext,
+	downloadname tinytext,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
@@ -373,6 +415,11 @@ CREATE TABLE sys_file_reference (
 	t3ver_tstamp int(11) DEFAULT '0' NOT NULL,
 	t3ver_move_id int(11) DEFAULT '0' NOT NULL,
 	t3_origuid int(11) DEFAULT '0' NOT NULL,
+
+	# Language fields
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l10n_parent int(11) DEFAULT '0' NOT NULL,
+	l10n_diffsource mediumblob NOT NULL,
 
 	# Reference fields (basically same as MM table)
 	uid_local int(11) DEFAULT '0' NOT NULL,

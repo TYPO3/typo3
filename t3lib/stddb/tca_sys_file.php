@@ -58,33 +58,6 @@ $TCA['sys_file'] = array(
 				'readOnly' => TRUE
 			)
 		),
-		'title' => array(
-			'exclude' => 1,
-			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.title',
-			'config' => array(
-				'type' => 'input',
-				'size' => '30',
-				'placeholder' => '__row|name'
-			)
-		),
-		'description' => array(
-			'exclude' => 0,
-			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.description',
-			'config' => array(
-				'type' => 'text',
-				'cols' => '40',
-				'rows' => '3'
-			)
-		),
-		'alternative' => array(
-			'exclude' => 0,
-			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.alternative',
-			'config' => array(
-				'type' => 'text',
-				'cols' => '40',
-				'rows' => '3'
-			)
-		),
 		'type' => array(
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.type',
@@ -118,7 +91,6 @@ $TCA['sys_file'] = array(
 				'readOnly' => 1,
 				'type' => 'input',
 				'size' => '30',
-				'readOnly' => 1
 			)
 		),
 		'size' => array(
@@ -132,10 +104,22 @@ $TCA['sys_file'] = array(
 				'eval' => 'int',
 				'default' => 0
 			)
-		)
+		),
+		'sys_file_data' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file.sys_file_data',
+			'config' => array(
+				'type' => 'inline',
+				'size' => 1,
+				'maxitems' => 1,
+				'minitems' => 1,
+				'foreign_table' => 'sys_file_data',
+			)
+		),
+
 	),
 	'types' => array(
-		'1' => array('showitem' => 'fileinfo, name, title, description, alternative, storage')
+		'1' => array('showitem' => 'fileinfo, name, sys_file_data, storage')
 	),
 	'palettes' => array()
 );

@@ -208,7 +208,7 @@ class DatabaseConnection {
 	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
 	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return pointer MySQL result pointer / DBAL object
+	 * @return resource MySQL result pointer / DBAL object
 	 * @todo Define visibility
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
@@ -237,7 +237,7 @@ class DatabaseConnection {
 	 * @param string $groupBy Optional GROUP BY field(s), if none, supply blank string.
 	 * @param string $orderBy Optional ORDER BY field(s), if none, supply blank string.
 	 * @param string $limit Optional LIMIT value ([begin,]max), if none, supply blank string.
-	 * @return pointer MySQL result pointer / DBAL object
+	 * @return resource MySQL result pointer / DBAL object
 	 * @see exec_SELECTquery()
 	 * @todo Define visibility
 	 */
@@ -259,7 +259,7 @@ class DatabaseConnection {
 	 * Executes a select based on input query parts array
 	 *
 	 * @param array $queryParts Query parts array
-	 * @return pointer MySQL select result pointer / DBAL object
+	 * @return resource MySQL select result pointer / DBAL object
 	 * @see exec_SELECTquery()
 	 * @todo Define visibility
 	 */
