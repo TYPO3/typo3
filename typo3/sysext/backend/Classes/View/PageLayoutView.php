@@ -1225,12 +1225,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					}
 				}
 				if ($row['CType'] == 'textpic' || $row['CType'] == 'image') {
-					if ($row['image']) {
-						$out .= $this->thumbCode($row, 'tt_content', 'image') . '<br />';
-						if ($row['imagecaption']) {
-							$out .= $this->linkEditContent($this->renderText($row['imagecaption']), $row) . '<br />';
-						}
-					}
+					$out .= $this->thumbCode($row, 'tt_content', 'image');
 				}
 				break;
 			case 'bullets':

@@ -1458,9 +1458,21 @@ class BackendUtility {
 		$thumbData = '';
 		// FAL references
 		if ($tcaConfig['type'] === 'inline') {
-			$referenceUids = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'sys_file_reference', (((((('tablenames = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_file_reference')) . ' AND fieldname=') . $GLOBALS['TYPO3_DB']->fullQuoteStr($field, 'sys_file_reference')) . ' AND uid_foreign=') . intval($row['uid'])) . self::deleteClause('sys_file_reference')) . self::versioningPlaceholderClause('sys_file_reference'));
+			$language = isset($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]) && $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] > 0  ? $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] : 0;
+			$referenceUids = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'uid',
+				'sys_file_reference',
+				'tablenames = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_file_reference') .
+					' AND sys_language_uid IN (0, -1) ' .
+					' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($field, 'sys_file_reference') .
+					' AND uid_foreign=' . ($language > 0 ? intval($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) : intval($row['uid'])) .
+					self::deleteClause('sys_file_reference') .
+					self::versioningPlaceholderClause('sys_file_reference')
+			);
+
 			foreach ($referenceUids as $referenceUid) {
-				$fileReferenceObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($referenceUid['uid']);
+
+				$fileReferenceObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($referenceUid['uid'], array(), $language);
 				$fileObject = $fileReferenceObject->getOriginalFile();
 				// Web image
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileReferenceObject->getExtension())) {
