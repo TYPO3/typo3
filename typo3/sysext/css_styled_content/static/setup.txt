@@ -3,6 +3,9 @@
 # Use "lib." for persisting storage of objects.
 # ***************************************************************************
 
+# Since images are records now, multi-lang content elements only work with overlay enabled
+config.sys_language_overlay = true
+
 # Clear out any constants in this reserved room!
 styles.content >
 
