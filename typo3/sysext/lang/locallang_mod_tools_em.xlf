@@ -643,7 +643,7 @@
 				<source>Write access error</source>
 			</trans-unit>
 			<trans-unit id="ext_details_write_error_localconf" xml:space="preserve">
-				<source>typo3conf/localconf.php seems not to be writable, so the extension cannot be installed automatically!</source>
+				<source>typo3conf/LocalConfiguration.php seems not to be writable, so the extension cannot be installed automatically!</source>
 			</trans-unit>
 			<trans-unit id="ext_details_error_downloading" xml:space="preserve">
 				<source>Error while trying to download the extension file...</source>
