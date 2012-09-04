@@ -60,6 +60,24 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	protected $indexerService = NULL;
 
 	/**
+	 * @var Property\PropertyBagRepository
+	 */
+	protected $propertyBagRepository;
+
+
+	public function injectPropertyBagRepository(Property\PropertyBagRepository $propertyBagRepository = NULL) {
+		if (!is_null($propertyBagRepository)) {
+			$this->propertyBagRepository = $propertyBagRepository;
+		} else {
+			$this->propertyBagRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\Property\\PropertyBagRepository');
+		}
+	}
+
+	public function __construct() {
+		$this->injectPropertyBagRepository();
+	}
+
+	/**
 	 * Internal function to retrieve the indexer service,
 	 * if it does not exist, an instance will be created
 	 *
@@ -222,7 +240,8 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 		foreach ($changedProperties as $propertyName) {
 			$updateFields[$propertyName] = $properties[$propertyName];
 		}
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file', 'uid=' . $modifiedObject->getUid(), $updateFields);
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file', 'uid=' . intval($modifiedObject->getUid()), $updateFields);
+		$this->propertyBagRepository->update($modifiedObject->getPropertyBags());
 	}
 
 	/**
