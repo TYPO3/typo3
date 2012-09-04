@@ -165,6 +165,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * Returns the size of this file
 	 *
 	 * @return integer
+	 * @throws \RuntimeException
 	 */
 	public function getSize() {
 		if ($this->deleted) {
@@ -186,6 +187,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * Returns the Sha1 of this file
 	 *
 	 * @return string
+	 * @throws \RuntimeException
 	 */
 	public function getSha1() {
 		if ($this->deleted) {
@@ -198,6 +200,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * Returns the creation time of the file as Unix timestamp
 	 *
 	 * @return integer
+	 * @throws \RuntimeException
 	 */
 	public function getCreationTime() {
 		if ($this->deleted) {
@@ -210,6 +213,7 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * Returns the date (as UNIX timestamp) the file was last modified.
 	 *
 	 * @return integer
+	 * @throws \RuntimeException
 	 */
 	public function getModificationTime() {
 		if ($this->deleted) {

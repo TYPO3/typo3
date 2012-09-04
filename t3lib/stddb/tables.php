@@ -419,6 +419,32 @@ $TCA['sys_file'] = array(
 	)
 );
 /**
+ * Table "sys_file_properties":
+ * Represents all files that are tracked by TYPO3
+ * which are assets, single entries of files with additional metadata
+ */
+$TCA['sys_file_properties'] = array(
+	'ctrl' => array(
+		'title' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_properties',
+		'label' => 'title',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'type' => 'type',
+		'hideTable' => TRUE,
+		'rootLevel' => TRUE,
+		'versioningWS' => TRUE,
+		'origUid' => 't3_origuid',
+		'default_sortby' => 'ORDER BY crdate DESC',
+		'delete' => 'deleted',
+		'dividers2tabs' => TRUE,
+		'dynamicConfigFile' => 'T3LIB:tca_sys_file_properties.php',
+		'typeicon_classes' => array(
+			'default' => 'mimetypes-x-sys_category'
+		)
+	),
+);
+/**
  * Table "sys_file_reference":
  * Is a single usage of a sys_file record somewhere in the installation
  * Is kind of like a MM-table between sys_file and e.g. tt_content:image that

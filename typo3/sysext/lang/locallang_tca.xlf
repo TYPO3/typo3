@@ -393,6 +393,9 @@
 			<trans-unit id="sys_file.size" xml:space="preserve">
 				<source>Size</source>
 			</trans-unit>
+			<trans-unit id="sys_file.properties" xml:space="preserve">
+				<source>Properties</source>
+			</trans-unit>
 			<trans-unit id="sys_file.identifier" xml:space="preserve">
 				<source>Identifier</source>
 			</trans-unit>
@@ -443,6 +446,9 @@
 			</trans-unit>
 			<trans-unit id="sys_file_reference.link" xml:space="preserve">
 				<source>Link</source>
+			</trans-unit>
+			<trans-unit id="sys_file_properties.file" xml:space="preserve">
+				<source>File</source>
 			</trans-unit>
 			<trans-unit id="sys_file_collection" xml:space="preserve">
 				<source>File collection</source>

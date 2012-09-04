@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Resource;
  * @package TYPO3
  * @subpackage t3lib
  */
-class File extends \TYPO3\CMS\Core\Resource\AbstractFile {
+class File extends AbstractFile {
 
 	/**
 	 * File indexing status. True, if the file is indexed in the database;
