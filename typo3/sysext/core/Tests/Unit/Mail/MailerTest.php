@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Mail;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the t3lib_mail_Mailer class.
+ * Testcase for the TYPO3\CMS\Core\Mail\Mailer class.
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
-class t3lib_mail_MailerTest extends tx_phpunit_testcase {
+class MailerTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Mail\Mailer
@@ -103,7 +106,7 @@ class t3lib_mail_MailerTest extends tx_phpunit_testcase {
 	 */
 	public function providingCorrectClassnameDoesNotThrowException() {
 		if (!class_exists('t3lib_mail_SwiftMailerFakeTransport')) {
-			// Create fake custom transport class
+				// Create fake custom transport class
 			eval('class t3lib_mail_SwiftMailerFakeTransport extends \\TYPO3\\CMS\\Core\\Mail\\MboxTransport {
 				public function __construct($settings) {}
 			}');

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class t3lib_utility_VersionNumber
+ * Testcase for class \TYPO3\CMS\Core\Utility\VersionNumberUtility
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
+class VersionNumberUtilityTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Data Provider for convertVersionNumberToIntegerConvertsVersionNumbersToIntegers
@@ -57,7 +60,7 @@ class t3lib_utility_VersionNumberTest extends tx_phpunit_testcase {
 			'float' => array(5.4),
 			'array' => array(array()),
 			'string' => array('300ABCD'),
-			'object' => array(new stdClass()),
+			'object' => array(new \stdClass()),
 			'NULL' => array(NULL),
 			'function' => array(function () {
 

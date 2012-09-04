@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -21,15 +23,16 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for class t3lib_utility_array
+ * Testcase for class \TYPO3\CMS\Core\Utility\ArrayUtility
  *
  * @author Susanne Moog <typo3@susanne-moog.de>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
+class ArrayUtilityTest extends \tx_phpunit_testcase {
 
 	///////////////////////
 	// Tests concerning filterByValueRecursive
@@ -175,7 +178,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function filterByValueRecursiveMatchesReferencesToSameObject() {
-		$instance = new stdClass();
+		$instance = new \stdClass();
 		$this->assertEquals(array($instance), \TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive($instance, array($instance)));
 	}
 
@@ -183,7 +186,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 * @test
 	 */
 	public function filterByValueRecursiveDoesNotMatchDifferentInstancesOfSameClass() {
-		$this->assertEquals(array(), \TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive(new stdClass(), array(new stdClass())));
+		$this->assertEquals(array(), \TYPO3\CMS\Core\Utility\ArrayUtility::filterByValueRecursive(new \stdClass(), array(new \stdClass())));
 	}
 
 	///////////////////////
@@ -295,7 +298,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 * - Expected result
 	 */
 	public function getValueByPathValidDataProvider() {
-		$testObject = new StdClass();
+		$testObject = new \StdClass();
 		$testObject->foo = 'foo';
 		$testObject->bar = 'bar';
 		return array(
@@ -434,7 +437,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	 * - Expected result
 	 */
 	public function setValueByPathSetsCorrectValueDataProvider() {
-		$testObject = new StdClass();
+		$testObject = new \StdClass();
 		$testObject->foo = 'foo';
 		$testObject->bar = 'bar';
 		return array(
@@ -653,7 +656,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 			'baz' => 23,
 			'foobar' => NULL
 		);
-		$expected = ((((((((((((((((((((((((((((((((((((((((((((('array(' . LF) . TAB) . '\'foo\' => array(') . LF) . TAB) . TAB) . '\'bar\' => 42,') . LF) . TAB) . TAB) . '\'bar2\' => array(') . LF) . TAB) . TAB) . TAB) . '\'baz\' => \'val\\\'ue\',') . LF) . TAB) . TAB) . TAB) . '\'baz2\' => TRUE,') . LF) . TAB) . TAB) . TAB) . '\'baz3\' => FALSE,') . LF) . TAB) . TAB) . TAB) . '\'baz4\' => array(),') . LF) . TAB) . TAB) . '),') . LF) . TAB) . '),') . LF) . TAB) . '\'baz\' => 23,') . LF) . TAB) . '\'foobar\' => NULL,') . LF) . ')';
+		$expected = 'array(' . LF . TAB . '\'foo\' => array(' . LF . TAB . TAB . '\'bar\' => 42,' . LF . TAB . TAB . '\'bar2\' => array(' . LF . TAB . TAB . TAB . '\'baz\' => \'val\\\'ue\',' . LF . TAB . TAB . TAB . '\'baz2\' => TRUE,' . LF . TAB . TAB . TAB . '\'baz3\' => FALSE,' . LF . TAB . TAB . TAB . '\'baz4\' => array(),' . LF . TAB . TAB . '),' . LF . TAB . '),' . LF . TAB . '\'baz\' => 23,' . LF . TAB . '\'foobar\' => NULL,' . LF . ')';
 		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
 	}
 
@@ -664,7 +667,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 	public function arrayExportThrowsExceptionIfObjectShouldBeExported() {
 		$array = array(
 			'foo' => array(
-				'bar' => new stdClass()
+				'bar' => new \stdClass()
 			)
 		);
 		\TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array);
@@ -679,7 +682,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 			23 => 'integer key',
 			'42' => 'string key representing integer'
 		);
-		$expected = (((((((((('array(' . LF) . TAB) . '\'foo\' => \'string key\',') . LF) . TAB) . '23 => \'integer key\',') . LF) . TAB) . '42 => \'string key representing integer\',') . LF) . ')';
+		$expected = 'array(' . LF . TAB . '\'foo\' => \'string key\',' . LF . TAB . '23 => \'integer key\',' . LF . TAB . '42 => \'string key representing integer\',' . LF . ')';
 		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
 	}
 
@@ -692,7 +695,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 			1 => 'one',
 			2 => 'two'
 		);
-		$expected = (((((((((('array(' . LF) . TAB) . '\'zero\',') . LF) . TAB) . '\'one\',') . LF) . TAB) . '\'two\',') . LF) . ')';
+		$expected = 'array(' . LF . TAB . '\'zero\',' . LF . TAB . '\'one\',' . LF . TAB . '\'two\',' . LF . ')';
 		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
 	}
 
@@ -706,7 +709,7 @@ class t3lib_utility_ArrayTest extends tx_phpunit_testcase {
 			3 => 'three',
 			4 => 'four'
 		);
-		$expected = ((((((((((((('array(' . LF) . TAB) . '0 => \'zero\',') . LF) . TAB) . '1 => \'one\',') . LF) . TAB) . '3 => \'three\',') . LF) . TAB) . '4 => \'four\',') . LF) . ')';
+		$expected = 'array(' . LF . TAB . '0 => \'zero\',' . LF . TAB . '1 => \'one\',' . LF . TAB . '3 => \'three\',' . LF . TAB . '4 => \'four\',' . LF . ')';
 		$this->assertSame($expected, \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($array));
 	}
 
