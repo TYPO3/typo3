@@ -9,6 +9,45 @@ $TCA['sys_file_reference'] = array(
 	),
 	'feInterface' => $TCA['sys_file_reference']['feInterface'],
 	'columns' => array(
+		't3ver_label' => array(
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel',
+			'config' => array(
+				'type' => 'input',
+				'size' => '30',
+				'max' => '30'
+			)
+		),
+		'sys_language_uid' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
+			'config' => array(
+				'type' => 'select',
+				'foreign_table' => 'sys_language',
+				'foreign_table_where' => 'ORDER BY sys_language.title',
+				'items' => array(
+					array('LLL:EXT:lang/locallang_general.php:LGL.allLanguages', -1),
+					array('LLL:EXT:lang/locallang_general.php:LGL.default_value', 0)
+				)
+			)
+		),
+		'l10n_parent' => array(
+			'displayCond' => 'FIELD:sys_language_uid:>:0',
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l18n_parent',
+			'config' => array(
+				'type' => 'select',
+				'items' => array(
+					array('', 0)
+				),
+				'foreign_table' => 'sys_file_reference',
+				'foreign_table_where' => 'AND sys_file_reference.uid=###REC_FIELD_l10n_parent### AND sys_file_reference.sys_language_uid IN (-1,0)'
+			)
+		),
+		'l10n_diffsource' => array(
+			'config' => array(
+				'type' => 'passthrough'
+			)
+		),
 		'hidden' => array(
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
@@ -87,6 +126,7 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'title' => array(
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.title',
 			'config' => array(
@@ -96,6 +136,7 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'link' => array(
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 1,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.link',
 			'config' => array(
@@ -115,6 +156,7 @@ $TCA['sys_file_reference'] = array(
 		),
 		'description' => array(
 			// This is used for captions in the frontend
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.description',
 			'config' => array(
@@ -124,14 +166,15 @@ $TCA['sys_file_reference'] = array(
 			)
 		),
 		'alternative' => array(
+			'l10n_mode' => 'mergeIfNotBlank',
 			'exclude' => 0,
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_reference.alternative',
 			'config' => array(
 				'type' => 'input',
 				'size' => '22',
-				'placeholder' => '__row|uid_local|name'
-			)
-		)
+				'placeholder' => '__row|uid_local|alternative'
+			),
+		),
 	),
 	'types' => array(
 		// Note that at the moment we define the same fields for every media type.
@@ -183,7 +226,7 @@ $TCA['sys_file_reference'] = array(
 		),
 		// file palette, hidden but needs to be included all the time
 		'filePalette' => array(
-			'showitem' => 'uid_local,hidden',
+			'showitem' => 'uid_local, hidden, sys_language_uid, l10n_parent',
 			'isHiddenPalette' => TRUE
 		)
 	)

@@ -185,8 +185,8 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 	 * @api
 	 */
 	public function findByUid($uid) {
-		if (!is_numeric($uid)) {
-			throw new \InvalidArgumentException('uid has to be numeric.', 1316779798);
+		if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($uid)) {
+			throw new \InvalidArgumentException('uid has to be integer.', 1316779798);
 		}
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->table, 'uid=' . intval($uid) . ' AND deleted=0');
 		if (count($row) === 0) {

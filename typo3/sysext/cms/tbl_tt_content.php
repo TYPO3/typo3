@@ -665,7 +665,6 @@ $TCA['tt_content'] = array(
 			)
 		),
 		'image' => array(
-			'l10n_mode' => 'mergeIfNotBlank',
 			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.images',
 			'config' => \TYPO3\CMS\Core\Extension\ExtensionManager::getFileFieldTCAConfig('image', array(
 				'appearance' => array(
@@ -1440,10 +1439,12 @@ $TCA['tt_content'] = array(
 			'config' => array(
 				'type' => 'group',
 				'internal_type' => 'db',
+				'localizeReferencesAtParentLocalization' => TRUE,
 				'allowed' => 'sys_file_collection',
+				'foreign_table' => 'sys_file_collection',
 				'maxitems' => 999,
 				'minitems' => 0,
-				'size' => 5
+				'size' => 5,
 			)
 		),
 		'multimedia' => array(
