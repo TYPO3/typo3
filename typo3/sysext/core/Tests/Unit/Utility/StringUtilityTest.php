@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Utility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_utility_StringTest extends tx_phpunit_testcase {
+class StringUtilityTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Data provider for isLastPartOfStrReturnsTrueForMatchingLastParts

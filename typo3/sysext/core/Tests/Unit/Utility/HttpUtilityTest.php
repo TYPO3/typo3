@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Utility;
+
 /***************************************************************
  * Copyright notice
  *
@@ -25,13 +27,13 @@
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for class t3lib_utility_Http
+ * Testcase for class \TYPO3\CMS\Core\Utility\HttpUtility
  *
  * @author Oliver Hader <oliver.hader@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_utility_HttpTest extends tx_phpunit_testcase {
+class HttpUtilityTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @param array $urlParts

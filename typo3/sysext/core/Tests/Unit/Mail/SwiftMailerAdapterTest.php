@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Mail;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the t3lib_mail_SwiftMailerAdapter class.
+ * Testcase for the \TYPO3\CMS\Core\Mail\SwiftMailerAdapter class.
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Ernesto Baschny <ernst@cron-it.de>
  */
-class t3lib_mail_SwiftMailerAdapterTest extends tx_phpunit_testcase {
+class SwiftMailerAdapterTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Mail\SwiftMailerAdapter
@@ -36,15 +39,7 @@ class t3lib_mail_SwiftMailerAdapterTest extends tx_phpunit_testcase {
 	protected $fixture;
 
 	public function setUp() {
-		if (!class_exists('t3lib_mail_SwiftMailerAdapterExposed')) {
-			// Make protected methods accessible so that they can be tested:
-			eval('class t3lib_mail_SwiftMailerAdapterExposed extends \\TYPO3\\CMS\\Core\\Mail\\SwiftMailerAdapter {
-				public function parseAddressesExposed($args) {
-					return $this->parseAddresses($args);
-				}
-			}');
-		}
-		$this->fixture = new t3lib_mail_SwiftMailerAdapterExposed();
+		$this->fixture = $this->getAccessibleMock('\\TYPO3\\CMS\\Core\\Mail\\SwiftMailerAdapter', array('dummy'));
 	}
 
 	public function tearDown() {
@@ -83,7 +78,7 @@ class t3lib_mail_SwiftMailerAdapterTest extends tx_phpunit_testcase {
 	 * @dataProvider parseAddressesProvider
 	 */
 	public function parseAddressesTest($source, $addressList) {
-		$this->assertEquals($addressList, $this->fixture->parseAddressesExposed($source));
+		$this->assertEquals($addressList, $this->fixture->_callRef('parseAddresses', $source));
 	}
 
 }
