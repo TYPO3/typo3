@@ -388,16 +388,16 @@ class t3lib_install {
 		$lines[] = $writeToLocalconf_dat['endLine'];
 		$success = FALSE;
 		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($writeToLocalconf_dat['tmpfile'], implode(LF, $lines))) {
-			$msg = ('typo3conf/localconf.php' . $tmpExt) . ' could not be written - maybe a write access problem?';
+			$msg = ('typo3conf/LocalConfiguration.php' . $tmpExt) . ' could not be written - maybe a write access problem?';
 		} elseif (strcmp(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($writeToLocalconf_dat['tmpfile']), implode(LF, $lines))) {
 			@unlink($writeToLocalconf_dat['tmpfile']);
-			$msg = ('typo3conf/localconf.php' . $tmpExt) . ' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
+			$msg = ('typo3conf/LocalConfiguration.php' . $tmpExt) . ' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
 		} elseif (!@copy($writeToLocalconf_dat['tmpfile'], $writeToLocalconf_dat['file'])) {
-			$msg = ('typo3conf/localconf.php could not be replaced by typo3conf/localconf.php' . $tmpExt) . ' - maybe a write access problem?';
+			$msg = ('typo3conf/LocalConfiguration.php could not be replaced by typo3conf/LocalConfiguration.php' . $tmpExt) . ' - maybe a write access problem?';
 		} else {
 			@unlink($writeToLocalconf_dat['tmpfile']);
 			$success = TRUE;
-			$msg = 'Configuration written to typo3conf/localconf.php';
+			$msg = 'Configuration written to typo3conf/LocalConfiguration.php';
 		}
 		$this->messages[] = $msg;
 		if (!$success) {
