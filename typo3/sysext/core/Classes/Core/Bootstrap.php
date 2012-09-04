@@ -169,7 +169,7 @@ class Bootstrap {
 			unset($GLOBALS['typo_db_host']);
 			unset($GLOBALS['typo_db_extTableDef_script']);
 		} else {
-			die(\TYPO3\CMS\Core\Configuration\ConfigurationManager::LOCALCONF_FILE . ' not found!');
+			die('Neither ' . \TYPO3\CMS\Core\Configuration\ConfigurationManager::LOCAL_CONFIGURATION_FILE . ' (recommended) nor ' . \TYPO3\CMS\Core\Configuration\ConfigurationManager::LOCALCONF_FILE . ' (obsolete) could be found!');
 		}
 		define('TYPO3_user_agent', 'User-Agent: ' . $GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent']);
 		return $this;

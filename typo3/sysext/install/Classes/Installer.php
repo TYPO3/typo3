@@ -464,7 +464,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					If you don\'t know the current password, you can set a new
 					one by setting the value of
 					$TYPO3_CONF_VARS[\'BE\'][\'installToolPassword\'] in
-					typo3conf/localconf.php to the md5() hash value of the
+					typo3conf/LocalConfiguration.php to the md5() hash value of the
 					password you desire.
 				</p>
 			'
@@ -7159,6 +7159,4 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	}
 
 }
-
-
 ?>
