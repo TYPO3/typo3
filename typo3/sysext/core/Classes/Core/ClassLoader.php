@@ -1,5 +1,6 @@
 <?php
-namespace TYPO3\CMS\Core;
+namespace TYPO3\CMS\Core\Core;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -26,6 +27,7 @@ namespace TYPO3\CMS\Core;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * This class contains TYPO3 autoloader for classes.
  * It handles:
@@ -40,7 +42,14 @@ namespace TYPO3\CMS\Core;
  * @author Sebastian Kurfürst <sebastian@typo3.org>
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class Autoloader {
+class ClassLoader {
+
+	/**
+	 * Contains the class loaders class name
+	 *
+	 * @var string
+	 */
+	static protected $className = __CLASS__;
 
 	/**
 	 * Class name to file mapping. Key: class name. Value: fully qualified file name.
@@ -86,8 +95,6 @@ class Autoloader {
 	 */
 	static protected $cacheUpdateRequired = FALSE;
 
-
-
 	/**
 	 * The autoloader is static, thus we do not allow instances of this class.
 	 */
@@ -101,12 +108,12 @@ class Autoloader {
 	 * @return boolean TRUE in case of success
 	 */
 	static public function registerAutoloader() {
-		if (!self::$mappingLoaded) {
-			self::loadCoreClassAliasMapping();
-			self::$mappingLoaded = TRUE;
+		if (!static::$mappingLoaded) {
+			static::loadCoreClassAliasMapping();
+			static::$mappingLoaded = TRUE;
 		}
-		self::loadCoreAndExtensionRegistry();
-		return spl_autoload_register('TYPO3\\CMS\\Core\\Autoloader::autoload', TRUE, TRUE);
+		static::loadCoreAndExtensionRegistry();
+		return spl_autoload_register(static::$className . '::autoload', TRUE, TRUE);
 	}
 
 	/**
@@ -118,12 +125,12 @@ class Autoloader {
 	 * @return boolean TRUE in case of success
 	 */
 	static public function unregisterAutoloader() {
-		if (self::$cacheUpdateRequired) {
-			self::updateRegistryCacheEntry(self::$classNameToFileMapping);
-			self::$cacheUpdateRequired = FALSE;
+		if (static::$cacheUpdateRequired) {
+			static::updateRegistryCacheEntry(static::$classNameToFileMapping);
+			static::$cacheUpdateRequired = FALSE;
 		}
-		self::$classNameToFileMapping = array();
-		return spl_autoload_unregister('TYPO3\\CMS\\Core\\Autoloader::autoload');
+		static::$classNameToFileMapping = array();
+		return spl_autoload_unregister(static::$className . '::autoload');
 	}
 
 	/**
@@ -137,14 +144,13 @@ class Autoloader {
 	 */
 	static public function autoload($className) {
 		$className = ltrim($className, '\\');
-		$realClassName = self::getClassNameForAlias($className);
+		$realClassName = static::getClassNameForAlias($className);
 		$lookUpClassName = ($hasRealClassName = $className !== $realClassName) ? $realClassName : $className;
 		// Use core and extension registry
-		$classPath = self::getClassPathByRegistryLookup($lookUpClassName);
+		$classPath = static::getClassPathByRegistryLookup($lookUpClassName);
 		if ($classPath && !class_exists($realClassName, FALSE)) {
 			// Include the required file that holds the class
-			\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($classPath);
-		} else {
+			static::requireClassFileOnce($classPath);
 			try {
 				// Regular expression for a valid classname taken from
 				// http://www.php.net/manual/en/language.oop5.basic.php
@@ -161,6 +167,16 @@ class Autoloader {
 	}
 
 	/**
+	 * Require the class file
+	 *
+	 * @static
+	 * @param string $classPath
+	 */
+	static protected function requireClassFileOnce($classPath) {
+		GeneralUtility::requireOnce($classPath);
+	}
+
+	/**
 	 * Load registry from cache file if available or search
 	 * for all loaded extensions and create a cache file
 	 *
@@ -170,11 +186,11 @@ class Autoloader {
 		/** @var $phpCodeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
 		$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
 		// Create autoload cache file if it does not exist yet
-		if ($phpCodeCache->has(self::getAutoloadCacheIdentifier())) {
-			$classRegistry = $phpCodeCache->requireOnce(self::getAutoloadCacheIdentifier());
+		if ($phpCodeCache->has(static::getAutoloadCacheIdentifier())) {
+			$classRegistry = $phpCodeCache->requireOnce(static::getAutoloadCacheIdentifier());
 		} else {
-			self::$cacheUpdateRequired = TRUE;
-			$classRegistry = self::lowerCaseClassRegistry(self::createCoreAndExtensionRegistry());
+			static::$cacheUpdateRequired = TRUE;
+			$classRegistry = static::lowerCaseClassRegistry(static::createCoreAndExtensionRegistry());
 		}
 		// This can only happen if the autoloader was already registered
 		// in the same call once, the requireOnce of the cache file then
@@ -183,34 +199,34 @@ class Autoloader {
 		// This can happen in unit tests and if the cache backend was
 		// switched to NullBackend for example to simplify development
 		if (!is_array($classRegistry)) {
-			self::$cacheUpdateRequired = TRUE;
-			$classRegistry = self::lowerCaseClassRegistry(self::createCoreAndExtensionRegistry());
+			static::$cacheUpdateRequired = TRUE;
+			$classRegistry = static::lowerCaseClassRegistry(static::createCoreAndExtensionRegistry());
 		}
-		self::$classNameToFileMapping = $classRegistry;
+		static::$classNameToFileMapping = $classRegistry;
 	}
 
 	static public function loadCoreClassAliasMapping() {
-		self::$aliasToClassNameMapping = require __DIR__ . '/../Migrations/Code/ClassAliasMap201208221700.php';
+		static::$aliasToClassNameMapping = require __DIR__ . '/../../Migrations/Code/ClassAliasMap201208221700.php';
 		// Create aliases for early loaded classes
-		$classedLoadedPriorToAutoloader = array_intersect(self::$aliasToClassNameMapping, get_declared_classes());
+		$classedLoadedPriorToAutoloader = array_intersect(static::$aliasToClassNameMapping, get_declared_classes());
 		if (!empty($classedLoadedPriorToAutoloader)) {
 			foreach ($classedLoadedPriorToAutoloader as $oldClassName => $newClassName) {
 				class_alias($newClassName, $oldClassName);
 			}
 		}
-		foreach (self::$aliasToClassNameMapping as $oldClassName => $newClassName) {
-			self::$aliasToClassNameMapping[strtolower($oldClassName)] = $newClassName;
+		foreach (static::$aliasToClassNameMapping as $oldClassName => $newClassName) {
+			static::$aliasToClassNameMapping[strtolower($oldClassName)] = $newClassName;
 		}
-		self::$classNameToAliasMapping = array_flip(self::$aliasToClassNameMapping);
+		static::$classNameToAliasMapping = array_flip(static::$aliasToClassNameMapping);
 	}
 
 	static public function getClassNameForAlias($className) {
 		$lookUpClassName = strtolower($className);
-		return isset(self::$aliasToClassNameMapping[$lookUpClassName]) ? self::$aliasToClassNameMapping[$lookUpClassName] : $className;
+		return isset(static::$aliasToClassNameMapping[$lookUpClassName]) ? static::$aliasToClassNameMapping[$lookUpClassName] : $className;
 	}
 
 	static public function getAliasForClassName($alias) {
-		return isset(self::$classNameToAliasMapping[$alias]) ? self::$classNameToAliasMapping[$alias] : $alias;
+		return isset(static::$classNameToAliasMapping[$alias]) ? static::$classNameToAliasMapping[$alias] : $alias;
 	}
 
 	/**
@@ -226,18 +242,18 @@ class Autoloader {
 	 */
 	static public function getClassPathByRegistryLookup($className) {
 		$classPath = NULL;
-		$classNameLower = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($className);
+		$classNameLower = GeneralUtility::strtolower($className);
 		// Try to resolve extbase naming scheme if class is not already in cache file
-		if (substr($classNameLower, 0, 3) !== 'ux_' && !array_key_exists($classNameLower, self::$classNameToFileMapping)) {
-			self::attemptToLoadRegistryWithNamingConventionForGivenClassName($className);
+		if (substr($classNameLower, 0, 3) !== 'ux_' && !array_key_exists($classNameLower, static::$classNameToFileMapping)) {
+			static::attemptToLoadRegistryWithNamingConventionForGivenClassName($className);
 		}
 		// Look up class name in cache file
-		if (array_key_exists($classNameLower, self::$classNameToFileMapping)) {
-			$classPath = self::$classNameToFileMapping[$classNameLower];
+		if (array_key_exists($classNameLower, static::$classNameToFileMapping)) {
+			$classPath = static::$classNameToFileMapping[$classNameLower];
 		}
-		if ($classPath === NULL && substr($classNameLower, 0, 3) === 'ux_' && !array_key_exists($classNameLower, self::$classNameToFileMapping)) {
-			self::$cacheUpdateRequired = TRUE;
-			self::$classNameToFileMapping[$classNameLower] = NULL;
+		if ($classPath === NULL && substr($classNameLower, 0, 3) === 'ux_' && !array_key_exists($classNameLower, static::$classNameToFileMapping)) {
+			static::$cacheUpdateRequired = TRUE;
+			static::$classNameToFileMapping[$classNameLower] = NULL;
 		}
 		return $classPath;
 	}
@@ -284,10 +300,10 @@ class Autoloader {
 		}
 		$classNameParts = explode($delimiter, $tempClassName, 4);
 		if (isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3' && (isset($classNameParts[1]) && $classNameParts[1] === 'CMS')) {
-			$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[2]);
+			$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[2]);
 			$classNameWithoutVendorAndProduct = $classNameParts[3];
 		} else {
-			$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[1]);
+			$extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[1]);
 			$classNameWithoutVendorAndProduct = $classNameParts[2];
 
 			if (isset($classNameParts[3])) {
@@ -301,7 +317,7 @@ class Autoloader {
 				$extensionPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extensionKey);
 				$classPath = (substr(strtolower($classNameWithoutVendorAndProduct), 0, 5) === 'tests') ? '' : 'Classes/';
 				$classFilePathAndName = $extensionPath . $classPath . strtr($classNameWithoutVendorAndProduct, $delimiter, '/') . '.php';
-				self::addClassToCache($classFilePathAndName, $className);
+				static::addClassToCache($classFilePathAndName, $className);
 			} catch (\BadFunctionCallException $exception) {
 
 			}
@@ -318,8 +334,8 @@ class Autoloader {
 	 */
 	static protected function addClassToCache($classFilePathAndName, $className) {
 		if (file_exists($classFilePathAndName)) {
-			self::$cacheUpdateRequired = TRUE;
-			self::$classNameToFileMapping[\TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($className)] = $classFilePathAndName;
+			static::$cacheUpdateRequired = TRUE;
+			static::$classNameToFileMapping[GeneralUtility::strtolower($className)] = $classFilePathAndName;
 		}
 	}
 
@@ -337,7 +353,7 @@ class Autoloader {
 			$cachedFileContent .= LF . '\'' . $className . '\' => ' . $nullOrLocation;
 		}
 		$cachedFileContent .= LF . ');';
-		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(self::getAutoloadCacheIdentifier(), $cachedFileContent);
+		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(static::getAutoloadCacheIdentifier(), $cachedFileContent);
 	}
 
 	/**
@@ -352,10 +368,10 @@ class Autoloader {
 	 * @return string identifier
 	 */
 	static protected function getAutoloadCacheIdentifier() {
-		if (is_null(self::$autoloadCacheIdentifier)) {
-			self::$autoloadCacheIdentifier = 'autoload_' . sha1((TYPO3_version . PATH_site . 'autoload'));
+		if (is_null(static::$autoloadCacheIdentifier)) {
+			static::$autoloadCacheIdentifier = 'autoload_' . sha1((TYPO3_version . PATH_site . 'autoload'));
 		}
-		return self::$autoloadCacheIdentifier;
+		return static::$autoloadCacheIdentifier;
 	}
 
 	/**
@@ -370,7 +386,7 @@ class Autoloader {
 	static protected function lowerCaseClassRegistry($registry) {
 		$lowerCasedClassRegistry = array();
 		foreach ($registry as $className => $classFile) {
-			$lowerCasedClassRegistry[\TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($className)] = $classFile;
+			$lowerCasedClassRegistry[GeneralUtility::strtolower($className)] = $classFile;
 		}
 		return $lowerCasedClassRegistry;
 	}
