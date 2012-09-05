@@ -158,7 +158,11 @@ class LocallangArrayParser implements \TYPO3\CMS\Core\Localization\Parser\Locali
 			unset($labelValue);
 		}
 		// Cache the content now:
-		$serContent = array('origFile' => $this->hashSource, 'LOCAL_LANG' => array('default' => $LOCAL_LANG['default'], $languageKey => $LOCAL_LANG[$languageKey]));
+		if (isset($LOCAL_LANG[$languageKey])) {
+			$serContent = array('origFile' => $this->hashSource, 'LOCAL_LANG' => array('default' => $LOCAL_LANG['default'], $languageKey => $LOCAL_LANG[$languageKey]));
+		} else {
+			$serContent = array('origFile' => $this->hashSource, 'LOCAL_LANG' => array('default' => $LOCAL_LANG['default']));
+		}
 		$res = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($this->cacheFileName, serialize($serContent));
 		if ($res) {
 			throw new \RuntimeException('TYPO3 Fatal Error: "' . $res, 1308898501);
