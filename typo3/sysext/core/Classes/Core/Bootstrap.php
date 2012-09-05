@@ -203,7 +203,11 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	public function registerAutoloader() {
-		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
+		if (PHP_VERSION_ID < 50307) {
+			\TYPO3\CMS\Core\Compatibility\CompatbilityClassLoaderPhpBelow50307::registerAutoloader();
+		} else {
+			\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
+		}
 		return $this;
 	}
 
@@ -838,7 +842,11 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	public function shutdown() {
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
+		if (PHP_VERSION_ID < 50307) {
+			\TYPO3\CMS\Core\Compatibility\CompatbilityClassLoaderPhpBelow50307::unregisterAutoloader();
+		} else {
+			\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+		}
 		return $this;
 	}
 
