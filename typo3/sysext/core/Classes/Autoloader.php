@@ -144,6 +144,41 @@ class Autoloader {
 		if ($classPath && !class_exists($realClassName, FALSE)) {
 			// Include the required file that holds the class
 			\TYPO3\CMS\Core\Utility\GeneralUtility::requireOnce($classPath);
+
+				// Rewrite interfaces for PHP < 5.3.7 as there are problems with Type-Hinting in interface functions
+			if (PHP_VERSION_ID < 50307 && $hasRealClassName && !class_exists($className)) {
+				if (interface_exists($realClassName)) {
+					$cacheIdentifier = $className . '_' . sha1(TYPO3_version . PATH_site . $className);
+					if (!$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->has($cacheIdentifier)) {
+							// Prepare source code
+						$sourceCode = file_get_contents($classPath);
+						$sourceCode = trim(preg_replace('/<\?php|\?>|namespace[^;]*;/i', '', $sourceCode));
+
+							// Replace interface name
+						$interfaceName = substr($realClassName, strrpos($realClassName, '\\') + 1);
+						$sourceCode = str_replace('interface ' . $interfaceName, 'interface ' . $className, $sourceCode);
+
+							// Replace all namespaced type-hints in defined functions
+						$absoluteClassNames = array_map(function($class) {
+							return (substr($class, 0, 1) === '\\') ? $class : '\\' . $class;
+						}, self::$aliasToClassNameMapping);
+
+						preg_match_all('/function[^\)]*\)/i', $sourceCode, $matches);
+						foreach($matches[0] as $function) {
+							$sourceCode = str_replace($absoluteClassNames, array_keys(self::$aliasToClassNameMapping), $sourceCode);
+						}
+						unset($function);
+
+						$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->set($cacheIdentifier, $sourceCode, array(), 0);
+					}
+
+						// Include new interface
+					$GLOBALS['typo3CacheManager']->getCache('cache_phpcode')->requireOnce($cacheIdentifier);
+
+						// Disable class_alias
+					$hasRealClassName = FALSE;
+				}
+			}
 		} else {
 			try {
 				// Regular expression for a valid classname taken from
