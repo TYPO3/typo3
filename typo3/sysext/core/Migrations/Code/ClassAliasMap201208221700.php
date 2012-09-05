@@ -167,7 +167,7 @@ return array(
 	'extDirect_DataProvider_ContextHelp' => 'TYPO3\\CMS\\ContextHelp\\ExtDirect\\ContextHelpDataProvider',
 	't3lib_userAuth' => 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication',
 	't3lib_beUserAuth' => 'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication',
-	't3lib_autoloader' => 'TYPO3\\CMS\\Core\\Autoloader',
+	't3lib_autoloader' => 'TYPO3\\CMS\\Core\\Core\\ClassLoader',
 	't3lib_cache_backend_AbstractBackend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend',
 	't3lib_cache_backend_ApcBackend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\ApcBackend',
 	't3lib_cache_backend_Backend' => 'TYPO3\\CMS\\Core\\Cache\\Backend\\BackendInterface',

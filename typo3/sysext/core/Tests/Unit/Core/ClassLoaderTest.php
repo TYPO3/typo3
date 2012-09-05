@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit;
+namespace TYPO3\CMS\Core\Tests\Unit\Core;
 
 /***************************************************************
  * Copyright notice
@@ -25,13 +25,13 @@ namespace TYPO3\CMS\Core\Tests\Unit;
  ***************************************************************/
 
 /**
- * Testcase for TYPO3\CMS\Core\Autoloader
+ * Testcase for TYPO3\CMS\Core\Core\ClassLoader
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
-class AutoloaderTest extends \Tx_Phpunit_TestCase {
+class ClassLoaderTest extends \Tx_Phpunit_TestCase {
 
 	/**
 	 * @var boolean Enable backup of global and system variables
@@ -79,8 +79,8 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 	 */
 	public function tearDown() {
 		$GLOBALS['typo3CacheManager'] = $this->typo3CacheManager;
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
-		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
 		foreach ($this->fakedExtensions as $extension) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3temp/' . $extension, TRUE);
 		}
@@ -110,8 +110,8 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 	 * @test
 	 */
 	public function unregisterAndRegisterAgainDoesNotFatal() {
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
-		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
 			// If this fatals the autoload re registering went wrong
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
 	}
@@ -126,7 +126,7 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), array());
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 	}
 
 	/**
@@ -147,10 +147,10 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 			// Re-initialize autoloader registry to force it to recognize the new extension
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
-		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
 			// Expect the exception of the file to be thrown
-		\TYPO3\CMS\Core\Autoloader::autoload($class);
+		\TYPO3\CMS\Core\Core\ClassLoader::autoload($class);
 	}
 
 	/**
@@ -172,9 +172,9 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 			// Expect that the lower case version of the class name is written to cache
 		$mockCache->expects($this->at(2))->method('set')->with($this->anything(), $this->stringContains(strtolower($class), FALSE));
 			// Re-initialize autoloader registry to force it to recognize the new extension
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
-		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 	}
 
 	/**
@@ -196,9 +196,9 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->any())->method('has')->will($this->returnValue(FALSE));
 			// Re-initialize autoloader registry to force it to recognize the new extension
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
-		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
-		\TYPO3\CMS\Core\Autoloader::autoload($class);
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::autoload($class);
 	}
 
 	/**
@@ -219,9 +219,9 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$mockCache->expects($this->any())->method('has')->will($this->returnValue(TRUE));
 		$mockCache->expects($this->once())->method('requireOnce')->will($this->returnValue(array(strtolower($class) => $file)));
 			// Re-initialize autoloader registry to force it to recognize the new extension
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
-		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
-		\TYPO3\CMS\Core\Autoloader::autoload($class);
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::autoload($class);
 	}
 
 	/**
@@ -246,7 +246,7 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 			// Expect the exception of the file to be thrown
-		\TYPO3\CMS\Core\Autoloader::autoload($class);
+		\TYPO3\CMS\Core\Core\ClassLoader::autoload($class);
 	}
 
 	/**
@@ -266,8 +266,8 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 			// Expect that an entry to the cache is written containing the newly found class
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains(strtolower($class), $this->anything()));
-		\TYPO3\CMS\Core\Autoloader::autoload($class);
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::autoload($class);
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 	}
 
 	/**
@@ -287,8 +287,8 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 			// Expect that an entry to the cache is written containing the newly found class
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains(strtolower($file), $this->anything()));
-		\TYPO3\CMS\Core\Autoloader::autoload($class);
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::autoload($class);
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 	}
 
 	/**
@@ -308,9 +308,9 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 			// Re-initialize autoloader registry to force it to recognize the new extension with the ux_ autoload definition
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
-		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
-		$this->assertSame($file, \TYPO3\CMS\Core\Autoloader::getClassPathByRegistryLookup($class));
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
+		$this->assertSame($file, \TYPO3\CMS\Core\Core\ClassLoader::getClassPathByRegistryLookup($class));
 	}
 
 	/**
@@ -321,15 +321,15 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
-		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
 			// Class is not found by returning NULL
-		$this->assertSame(NULL, \TYPO3\CMS\Core\Autoloader::getClassPathByRegistryLookup($uxClassName));
+		$this->assertSame(NULL, \TYPO3\CMS\Core\Core\ClassLoader::getClassPathByRegistryLookup($uxClassName));
 		// Expect NULL lookup is cached
 		$expectedCacheString = '\'' . strtolower($uxClassName) . '\' => NULL,';
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains($expectedCacheString));
 			// Trigger writing new cache file
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 	}
 
 	/**
@@ -356,10 +356,10 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 			// Excpect the cache entry to be called once with the new class name
 		$mockCache->expects($this->at(2))->method('set')->with($this->anything(), $this->stringContains('ux_' . $class));
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
-		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
-		\TYPO3\CMS\Core\Autoloader::getClassPathByRegistryLookup('ux_' . $class);
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::getClassPathByRegistryLookup('ux_' . $class);
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 	}
 
 	/**
@@ -378,10 +378,10 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($extPath . 'Classes/' . $pathSegment);
 		file_put_contents($file, '<?php' . LF . 'throw new \\RuntimeException(\'\', 1342800577);' . LF . '?>');
 			// Re-initialize autoloader registry to force it to recognize the new extension
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
-		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
 			// Expect the exception of the file to be thrown
-		\TYPO3\CMS\Core\Autoloader::autoload($namespacedClass);
+		\TYPO3\CMS\Core\Core\ClassLoader::autoload($namespacedClass);
 	}
 
 	/**
@@ -401,8 +401,8 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 			// Expect that an entry to the cache is written containing the newly found class
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains(strtolower($file), $this->anything()));
-		\TYPO3\CMS\Core\Autoloader::autoload($namespacedClass);
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::autoload($namespacedClass);
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 	}
 
 	/**
@@ -410,7 +410,7 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 	 */
 	public function checkClassNamesNotExtbaseSchemePassAutoloaderUntouched() {
 		$class = '\\Symfony\\Foo\\Bar';
-		$this->assertNull(\TYPO3\CMS\Core\Autoloader::getClassPathByRegistryLookup($class));
+		$this->assertNull(\TYPO3\CMS\Core\Core\ClassLoader::getClassPathByRegistryLookup($class));
 	}
 
 	/**
@@ -433,9 +433,9 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 			// Expect that the lower case version of the class name is written to cache
 		$mockCache->expects($this->at(2))->method('set')->with($this->anything(), $this->stringContains(strtolower($namespacedClass), FALSE));
 			// Re-initialize autoloader registry to force it to recognize the new extension
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
-		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
-		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
+		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 	}
 
 }
