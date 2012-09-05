@@ -43,7 +43,7 @@ interface LocalizationParserInterface
 	 * @param string $charset Charset
 	 * @return array
 	 */
-	public function getParsedData($sourcePath, $languageKey, $charset);
+	public function getParsedData($sourcePath, $languageKey, $charset = '');
 
 }
 
