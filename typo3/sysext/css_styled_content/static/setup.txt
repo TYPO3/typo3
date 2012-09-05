@@ -133,7 +133,7 @@ lib.parseFunc_RTE {
 			# Recursive call to self but without wrapping non-wrapped cell content
 			default.stdWrap {
 				parseFunc =< lib.parseFunc_RTE
-				parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag = 
+				parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag =
 			}
 			addChr10BetweenParagraphs=1
 		}
@@ -454,7 +454,7 @@ tt_content.stdWrap {
 					userFunc = tx_cssstyledcontent_pi1->renderSpace
 					space = before
 					constant = {$content.spaceBefore}
-					stdWrap {
+					classStdWrap {
 						noTrimWrap = |csc-space-before-| |
 					}
 				}
@@ -464,7 +464,7 @@ tt_content.stdWrap {
 					userFunc = tx_cssstyledcontent_pi1->renderSpace
 					space = after
 					constant = {$content.spaceAfter}
-					stdWrap {
+					classStdWrap {
 						noTrimWrap = |csc-space-after-| |
 					}
 				}

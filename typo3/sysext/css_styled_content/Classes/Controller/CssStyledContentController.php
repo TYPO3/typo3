@@ -1054,8 +1054,8 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$declaration = 'margin-bottom: ' . $value . 'px;';
 			}
 			if (!empty($value)) {
-				if ($configuration['stdWrap.']) {
-					$className = $this->cObj->stdWrap($value, $configuration['stdWrap.']);
+				if ($configuration['classStdWrap.']) {
+					$className = $this->cObj->stdWrap($value, $configuration['classStdWrap.']);
 				} else {
 					$className = $value;
 				}
