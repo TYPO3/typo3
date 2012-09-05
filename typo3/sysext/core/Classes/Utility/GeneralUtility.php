@@ -4154,7 +4154,7 @@ Connection: close
 			$instance = new $fullyQualifiedClassName();
 		}
 		// Create alias if not present
-		$alias = \TYPO3\CMS\Core\Autoloader::getAliasForClassName($finalClassName);
+		$alias = \TYPO3\CMS\Core\Core\ClassLoader::getAliasForClassName($finalClassName);
 		if (substr($finalClassName, 0, 3) !== 'ux_' && $finalClassName !== $alias && !class_exists($alias, FALSE)) {
 			class_alias($finalClassName, $alias);
 		}
@@ -4174,11 +4174,11 @@ Connection: close
 	 */
 	static protected function getClassName($className) {
 		if (class_exists($className)) {
-			while (\TYPO3\CMS\Core\Autoloader::getClassPathByRegistryLookup('ux_' . $className) !== NULL) {
+			while (\TYPO3\CMS\Core\Core\ClassLoader::getClassPathByRegistryLookup('ux_' . $className) !== NULL) {
 				$className = 'ux_' . $className;
 			}
 		}
-		return \TYPO3\CMS\Core\Autoloader::getClassNameForAlias($className);
+		return \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($className);
 	}
 
 	/**
