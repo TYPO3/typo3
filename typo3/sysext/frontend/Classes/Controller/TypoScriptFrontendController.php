@@ -1246,7 +1246,7 @@ class TypoScriptFrontendController {
 		$pageSelectCondition = ($field . '=') . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, 'pages');
 		$page = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid,hidden,starttime,endtime', 'pages', $pageSelectCondition . ' AND pid>=0 AND deleted=0');
 		$workspace = $this->whichWorkspace();
-		if ($workspace !== 0 || $workspace !== FALSE) {
+		if ($workspace !== 0 && $workspace !== FALSE) {
 			// Fetch overlay of page if in workspace and check if it is hidden
 			$pageSelectObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 			$pageSelectObject->versioningPreview = TRUE;
