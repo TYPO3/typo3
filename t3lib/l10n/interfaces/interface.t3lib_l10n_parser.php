@@ -42,7 +42,7 @@ interface t3lib_l10n_parser {
 	 * @param string $charset Charset
 	 * @return array
 	 */
-	public function getParsedData($sourcePath, $languageKey, $charset);
+	public function getParsedData($sourcePath, $languageKey, $charset = '');
 
 }
 
