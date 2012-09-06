@@ -280,6 +280,7 @@ CREATE TABLE sys_file_storage (
 CREATE TABLE sys_file (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
+	# update timestamp of the database record, not the file!
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
 	cruser_id int(11) DEFAULT '0' NOT NULL,
@@ -304,6 +305,7 @@ CREATE TABLE sys_file (
 	title tinytext,
 	sha1 tinytext,
 	size int(11) DEFAULT '0' NOT NULL,
+	# creation/modification date of the file (not the record!)
 	creation_date int(11) DEFAULT '0' NOT NULL,
 	modification_date int(11) DEFAULT '0' NOT NULL,
 	width int(11) DEFAULT '0' NOT NULL,
@@ -323,11 +325,8 @@ CREATE TABLE sys_file (
 #
 CREATE TABLE sys_file_processedfile (
 	uid int(11) NOT NULL auto_increment,
-	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
 	crdate int(11) DEFAULT '0' NOT NULL,
-	cruser_id int(11) DEFAULT '0' NOT NULL,
-	deleted tinyint(4) DEFAULT '0' NOT NULL,
 
 	storage int(11) DEFAULT '0' NOT NULL,
 	original int(11) DEFAULT '0' NOT NULL,
@@ -336,16 +335,11 @@ CREATE TABLE sys_file_processedfile (
 	configuration text,
 	context varchar(200) DEFAULT '' NOT NULL,
 	checksum varchar(255) DEFAULT '' NOT NULL,
-	is_processed varchar(200) DEFAULT '' NOT NULL,
-	extension varchar(255) DEFAULT '' NOT NULL,
-	mime_type varchar(255) DEFAULT '' NOT NULL,
-	sha1 tinytext,
-	size int(11) DEFAULT '0' NOT NULL,
-	width int(11) DEFAULT '0' NOT NULL,
-	height int(11) DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid)
+	KEY configuration (configuration),
+	KEY context (context)
+	KEY original (original)
 );
 
 #

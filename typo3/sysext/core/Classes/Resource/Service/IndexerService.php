@@ -132,13 +132,16 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 				$fileInfo['uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
 			}
 		}
+
 		// Check for an error during the execution and throw an exception
 		$error = $GLOBALS['TYPO3_DB']->sql_error();
 		if ($error) {
 			throw new \RuntimeException('Error during file indexing: "' . $error . '"', 1314455642);
 		}
-		// Signal slot AFTER the file was indexed
+
+		// Signal AFTER the file was indexed
 		$this->emitPostFileIndexSignal($fileObject, $fileInfo);
+
 		if ($updateObject) {
 			$fileObject->updateProperties($fileInfo);
 			return $fileObject;
@@ -203,9 +206,11 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function gatherFileInformation(\TYPO3\CMS\Core\Resource\File $file) {
 		$fileInfo = new \ArrayObject(array());
 		$gatherDefaultInformation = new \stdClass();
-		$gatherDefaultInformation->getDefaultFileInfo = 1;
+		$gatherDefaultInformation->getDefaultFileInfo = TRUE;
+
 		// signal before the files are modified
 		$this->emitPreGatherFileInformationSignal($file, $fileInfo, $gatherDefaultInformation);
+
 		// the check helps you to disable the regular file fetching,
 		// so a signal could actually remotely access the service
 		if ($gatherDefaultInformation->getDefaultFileInfo) {

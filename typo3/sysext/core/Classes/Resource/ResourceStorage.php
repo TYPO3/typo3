@@ -751,19 +751,26 @@ class ResourceStorage {
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $fileObject The file object
 	 * @param string $context
 	 * @param array $configuration
+	 *
 	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile
+	 * @throws \InvalidArgumentException
 	 */
 	public function processFile(\TYPO3\CMS\Core\Resource\FileInterface $fileObject, $context, array $configuration) {
-		$processedFile = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getProcessedFileObject($fileObject, $context, $configuration);
+		if ($fileObject->getStorage() != $this) {
+			throw new \InvalidArgumentException('Cannot process files of foreign storage');
+		}
+		/** @var $processedFileRepository \TYPO3\CMS\Core\Resource\ProcessedFileRepository */
+		$processedFileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
+
+		$processedFile = $processedFileRepository->findOneByOriginalFileContextAndConfiguration($fileObject, $context, $configuration);
 		// set the storage of the processed file
-		$processedFile->setStorage($this);
 		// Pre-process the file by an accordant slot
 		$this->emitPreFileProcess($processedFile, $fileObject, $context, $configuration);
 		// Only handle the file is not processed yet
 		// (maybe modified or already processed by a signal)
 		// or (in case of preview images) already in the DB/in the processing folder
 		if (!$processedFile->isProcessed()) {
-			$processedFile = $this->getFileProcessingService()->process($processedFile, $fileObject, $context, $configuration);
+			$this->getFileProcessingService()->process($processedFile);
 		}
 		// Post-process (enrich) the file by an accordant slot
 		$this->emitPostFileProcess($processedFile, $fileObject, $context, $configuration);
