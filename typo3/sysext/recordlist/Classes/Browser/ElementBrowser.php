@@ -1937,26 +1937,25 @@ class ElementBrowser {
 					}
 				} else {
 					// URL is a page (id parameter)
-					$uP = parse_url($rel);
-					if (!trim($uP['path'])) {
-						$pp = preg_split('/^id=/', $uP['query']);
-						$pp[1] = preg_replace('/&id=[^&]*/', '', $pp[1]);
-						$parameters = explode('&', $pp[1]);
-						$id = array_shift($parameters);
-						if ($id) {
-							// Checking if the id-parameter is an alias.
-							if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($id)) {
-								list($idPartR) = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages', 'alias', $id);
-								$id = intval($idPartR['uid']);
-							}
-							$pageRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $id);
-							$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
-							$info['value'] = $GLOBALS['LANG']->getLL('page', 1) . ' \'' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($pageRow['title'], $titleLen)) . '\' (ID:' . $id . ($uP['fragment'] ? ', #' . $uP['fragment'] : '') . ')';
-							$info['pageid'] = $id;
-							$info['cElement'] = $uP['fragment'];
-							$info['act'] = 'page';
-							$info['query'] = $parameters[0] ? '&' . implode('&', $parameters) : '';
+					$uP = parse_url($href);
+
+					$pp = preg_split('/^id=/', $uP['query']);
+					$pp[1] = preg_replace('/&id=[^&]*/', '', $pp[1]);
+					$parameters = explode('&', $pp[1]);
+					$id = array_shift($parameters);
+					if ($id) {
+						// Checking if the id-parameter is an alias.
+						if (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($id)) {
+							list($idPartR) = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField('pages', 'alias', $id);
+							$id = intval($idPartR['uid']);
 						}
+						$pageRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $id);
+						$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
+						$info['value'] = ((((($GLOBALS['LANG']->getLL('page', 1) . ' \'') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($pageRow['title'], $titleLen))) . '\' (ID:') . $id) . ($uP['fragment'] ? ', #' . $uP['fragment'] : '')) . ')';
+						$info['pageid'] = $id;
+						$info['cElement'] = $uP['fragment'];
+						$info['act'] = 'page';
+						$info['query'] = $parameters[0] ? '&' . implode('&', $parameters) : '';
 					}
 				}
 			} else {
