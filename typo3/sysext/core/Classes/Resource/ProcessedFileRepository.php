@@ -58,28 +58,10 @@ class ProcessedFileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepositor
 	 * Creates an object managed by this repository.
 	 *
 	 * @param array $databaseRow
-	 * @return \TYPO3\CMS\Core\Resource\File
+	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile
 	 */
 	protected function createDomainObject(array $databaseRow) {
-		return $this->factory->getFileObject($databaseRow['uid'], $databaseRow);
-	}
-
-	/**
-	 * Loads index-data into processedFileObject
-	 *
-	 * @param \TYPO3\CMS\Core\Resource\ProcessedFile $processedFileObject
-	 * @return boolean
-	 */
-	public function populateDataOfProcessedFileObject(\TYPO3\CMS\Core\Resource\ProcessedFile $processedFileObject) {
-		/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-		$recordData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->table, ((('original=' . intval($processedFileObject->getOriginalFile()->getUid())) . ' AND checksum=') . $GLOBALS['TYPO3_DB']->fullQuoteStr($processedFileObject->calculateChecksum(), $this->table)) . ' AND deleted=0');
-		// Update the properties if the data was found
-		if (is_array($recordData)) {
-			$processedFileObject->updateProperties($recordData);
-			return TRUE;
-		} else {
-			return FALSE;
-		}
+		return $this->factory->createProcessedFileObjectFromDatabase($databaseRow);
 	}
 
 	/**
@@ -89,11 +71,14 @@ class ProcessedFileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepositor
 	 * @return void
 	 */
 	public function add($processedFile) {
-		$insertFields = $processedFile->toArray();
-		$insertFields['crdate'] = ($insertFields['tstamp'] = time());
-		// @todo: make sure that the toArray method only
-		// contains fields that actually *exist* in the table
-		$GLOBALS['TYPO3_DB']->exec_INSERTquery($this->table, $insertFields);
+		if ($processedFile->isIndexed()) {
+			$this->update($processedFile);
+		} else {
+			$insertFields = $processedFile->toArray();
+			$insertFields['crdate'] = $insertFields['tstamp'] = time();
+			$insertFields = $this->cleanUnailableColumns($insertFields);
+			$GLOBALS['TYPO3_DB']->exec_INSERTquery($this->table, $insertFields);
+		}
 	}
 
 	/**
@@ -103,16 +88,55 @@ class ProcessedFileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepositor
 	 * @return void
 	 */
 	public function update($processedFile) {
-		$uid = intval($processedFile->getProperty('uid'));
-		if ($uid > 0) {
-			// @todo: make sure that the toArray method only
-			// contains fields that actually *exist* in the table
-			$updateFields = $processedFile->toArray();
-			$updateFields['tstamp'] = time();
+		if ($processedFile->isIndexed()) {
+			$uid = intval($processedFile->getProperty('uid'));
+			$updateFields = $this->cleanUnailableColumns($processedFile->toArray());
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->table, 'uid=' . $uid, $updateFields);
 		}
 	}
 
+	/**
+	 * @param File $file
+	 * @param $context
+	 * @param array $configuration
+	 *
+	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile
+	 */
+	public function findOneByOriginalFileContextAndConfiguration(File $file, $context, array $configuration) {
+		/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+			'*',
+			$this->table,
+			'original = ' . $file->getUid() .
+				' AND context = \'' . $GLOBALS['TYPO3_DB']->escapeStrForLike($context, $this->table) . '\'' .
+				' AND configuration = \'' . serialize($configuration) . '\''
+		);
+
+		if (is_array($row)) {
+			$processedFile = $this->createDomainObject($row);
+		} else {
+			$processedFile = $this->factory->createNewProcessedFileObject($file, $context, $configuration);
+		}
+		return $processedFile;
+	}
+
+	/**
+	 * Removes all array keys which cannot be persisted
+	 *
+	 * @param array $data
+	 *
+	 * @return array
+	 */
+	protected function cleanUnailableColumns(array $data) {
+		$possibleFields = array_keys($GLOBALS['TYPO3_DB']->admin_get_fields($this->table));
+
+		$fieldsToBeRemoved = array_diff(array_keys($data), $possibleFields);
+		foreach ($fieldsToBeRemoved as $columnName) {
+			unset($data[$columnName]);
+		}
+
+		return $data;
+	}
 }
 
 

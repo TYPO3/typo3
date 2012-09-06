@@ -133,7 +133,7 @@ lib.parseFunc_RTE {
 			# Recursive call to self but without wrapping non-wrapped cell content
 			default.stdWrap {
 				parseFunc =< lib.parseFunc_RTE
-				parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag = 
+				parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag =
 			}
 			addChr10BetweenParagraphs=1
 		}
@@ -659,6 +659,7 @@ tt_content.image.20 {
 
 	# Image source
 	imgList.field = image
+	imgList.override.field = image_fileUids
 	imgPath = uploads/pics/
 
 	# Single image rendering
