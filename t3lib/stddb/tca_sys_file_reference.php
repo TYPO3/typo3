@@ -92,7 +92,7 @@ $TCA['sys_file_reference'] = array(
 			'config' => array(
 				'type' => 'input',
 				'size' => '22',
-				'placeholder' => '__row|uid_local|name'
+				'placeholder' => '__row|uid_local|title'
 			)
 		),
 		'link' => array(
