@@ -610,7 +610,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		$rowIdx = 0;
 		for ($a = 0; $a < $imgCount; $a++) {
 			$imgKey = $a + $imgStart;
-			$totalImagePath = $imgPath . $imgs[$imgKey];
+			$totalImagePath = intval($imgs[$imgKey]) ?: $imgPath . $imgs[$imgKey];
 			// register IMG_NUM is kept for backwards compatibility
 			$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgKey;
 			$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgKey;

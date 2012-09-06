@@ -57,13 +57,6 @@ class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	protected $context;
 
 	/**
-	 * check if the file is processed
-	 *
-	 * @var boolean
-	 */
-	protected $processed;
-
-	/**
 	 * Processing configuration
 	 *
 	 * @var array
@@ -87,6 +80,7 @@ class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 */
 	public function __construct(\TYPO3\CMS\Core\Resource\File $originalFile, $context, array $processingConfiguration) {
 		$this->originalFile = $originalFile;
+		$this->storage = $originalFile->getStorage();
 		$this->context = $context;
 		$this->processingConfiguration = $processingConfiguration;
 	}
@@ -102,7 +96,12 @@ class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 * @return string
 	 */
 	public function calculateChecksum() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(((($this->originalFile->getUid() . $this->originalFile->getModificationTime()) . $this->context) . serialize($GLOBALS['TYPO3_CONF_VARS']['GFX'])) . serialize($this->processingConfiguration));
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(
+			$this->getOriginalFile()->getUid() . '|' .
+			$this->context . '|' .
+			serialize($GLOBALS['TYPO3_CONF_VARS']['GFX']) . '|' .
+			serialize($this->processingConfiguration)
+		);
 	}
 
 	/******************
@@ -127,7 +126,7 @@ class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 * @return boolean
 	 */
 	public function isIndexed() {
-		return FALSE;
+		return $this->hasProperty('uid') && intval($this->getProperty('uid')) > 0;
 	}
 
 	/*****************
@@ -139,17 +138,7 @@ class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 * @return boolean
 	 */
 	public function isProcessed() {
-		return (bool) $this->processed;
-	}
-
-	/**
-	 * Called when the processed file is processed
-	 *
-	 * @param boolean $isProcessed
-	 * @return void
-	 */
-	public function setProcessed($isProcessed) {
-		$this->processed = (bool) $isProcessed;
+		return !$this->needsReprocessing();
 	}
 
 	/**
@@ -168,11 +157,7 @@ class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 * @return string
 	 */
 	public function getIdentifier() {
-		if ($this->identifier) {
-			return $this->identifier;
-		} else {
-			return $this->originalFile->getIdentifier();
-		}
+		return $this->identifier;
 	}
 
 	/**
@@ -184,10 +169,10 @@ class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 * @return string
 	 */
 	public function getName() {
-		if ($this->name) {
-			return $this->name;
-		} else {
+		if ($this->isOriginal()) {
 			return $this->originalFile->getName();
+		} else {
+			return $this->name;
 		}
 	}
 
@@ -199,19 +184,31 @@ class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 * @param array $properties
 	 */
 	public function updateProperties(array $properties) {
+		if (!is_array($this->properties)) {
+			$this->properties = array();
+		}
+
 		if ($properties['name']) {
 			$this->name = $properties['name'];
 		}
+
 		if ($properties['identifier']) {
 			$this->identifier = $properties['identifier'];
 		}
-		if (isset($properties['is_processed']) && $properties['is_processed'] > 0) {
-			$this->processed = TRUE;
+
+		if ($properties['tstamp']) {
+			$properties['modification_date'] = $properties['tstamp'];
 		}
-		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($properties['storage'])) {
-			$this->setStorage($properties['storage']);
+
+		if ($properties['configuration']) {
+			$this->processingConfiguration = unserialize($properties['configuration']);
 		}
+
 		$this->properties = array_merge($this->properties, $properties);
+		if (!$this->isOriginal() && $this->exists()) {
+			$this->properties = array_merge($this->properties, $this->storage->getFileInfo($this));
+		}
+
 	}
 
 	/**
@@ -220,19 +217,94 @@ class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 * @return array
 	 */
 	public function toArray() {
-		// @todo: define what we need here
 		return array(
 			'storage' => $this->getStorage()->getUid(),
 			'identifier' => $this->getIdentifier(),
 			'name' => $this->getName(),
-			'is_processed' => intval($this->processed),
 			'checksum' => $this->calculateChecksum(),
 			'context' => $this->context,
 			'configuration' => serialize($this->processingConfiguration),
 			'original' => $this->originalFile->getUid(),
-			'width' => $this->getProperty('width'),
-			'height' => $this->getProperty('height')
 		);
+	}
+
+	/**
+	 * @return bool
+	 */
+	protected function isOriginal() {
+		return $this->identifier == $this->originalFile->getIdentifier();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function delete() {
+		if (!$this->isOriginal()) {
+			return parent::delete();
+		}
+		return FALSE;
+	}
+
+
+	/**
+	 * Checks if the ProcessedFile needs reprocessing
+	 *
+	 * @return bool
+	 */
+	public function needsReprocessing() {
+		$updateNeeded = FALSE;
+
+			// processedFile does not exist
+		if (!$this->isOriginal() && !$this->exists()) {
+			$updateNeeded = TRUE;
+		}
+
+			// hash does not match
+		if ($this->hasProperty('checksum') && $this->calculateChecksum() !== $this->getProperty('checksum'))  {
+			$updateNeeded = TRUE;
+		}
+
+			// original file changed
+		if ($this->getModificationTime() !== NULL && $this->getModificationTime() < $this->getOriginalFile()->getModificationTime()) {
+			var_dump($this->getModificationTime());
+			$updateNeeded = TRUE;
+		}
+
+			// remove outdated file
+		if ($updateNeeded && $this->exists()) {
+			$this->delete();
+		}
+		return $updateNeeded;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getProcessingConfiguration() {
+		return $this->processingConfiguration;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getContext() {
+		return $this->context;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function generateProcessedFileNameWithoutExtension() {
+		$name = '';
+		if ($this->context == self::CONTEXT_IMAGEPREVIEW) {
+			$name .= 'thumbnail_';
+		}
+
+		$name .= str_replace('.' . $this->originalFile->getExtension(), '', $this->originalFile->getName());
+		$name .= '_' . $this->originalFile->getUid();
+		$name .= '_' . $this->calculateChecksum();
+
+		return $name;
 	}
 
 }
