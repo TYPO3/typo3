@@ -455,15 +455,51 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile
 	 */
 	public function getProcessedFileObject(\TYPO3\CMS\Core\Resource\FileInterface $originalFileObject, $context, array $configuration) {
-		/** @var \TYPO3\CMS\Core\Resource\ProcessedFile $processedFileObject */
-		$processedFileObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFile', $originalFileObject, $context, $configuration);
 		/* @var \TYPO3\CMS\Core\Resource\ProcessedFileRepository $repository */
 		$repository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ProcessedFileRepository');
 		// Check if this file already exists in the DB
-		$repository->populateDataOfProcessedFileObject($processedFileObject);
+		$processedFileObject = $repository->findOneByOriginalFileContextAndConfiguration($originalFileObject, $context, $configuration);
 		return $processedFileObject;
 	}
 
+	/**
+	 * Create ProcessedFileObject from Raw database data
+	 * @param array $data
+	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile
+	 */
+	public function createProcessedFileObjectFromDatabase(array $data) {
+		$originalFile = $this->getFileObject(intval($data['original']));
+		$originalFile->setStorage($this->getStorageObject($originalFile->getProperty('storage')));
+		$context = $data['context'];
+		$processingConfiguration = unserialize($data['configuration']);
+		/** @var \TYPO3\CMS\Core\Resource\ProcessedFile $processedFileObject */
+		$processedFileObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Resource\\ProcessedFile',
+			$originalFile,
+			$context,
+			$processingConfiguration
+		);
+		$processedFileObject->updateProperties($data);
+
+		return $processedFileObject;
+	}
+
+	/**
+	 * @param FileInterface $originalFileObject
+	 * @param $context
+	 * @param array $configuration
+	 *
+	 * @return \TYPO3\CMS\Core\Resource\ProcessedFile
+	 */
+	public function createNewProcessedFileObject(\TYPO3\CMS\Core\Resource\FileInterface $originalFileObject, $context, array $configuration) {
+		$processedFileObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Resource\\ProcessedFile',
+			$originalFileObject,
+			$context,
+			$configuration
+		);
+		return $processedFileObject;
+	}
 }
 
 
