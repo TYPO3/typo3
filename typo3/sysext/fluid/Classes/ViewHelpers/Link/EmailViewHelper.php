@@ -73,12 +73,12 @@ class EmailViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBasedV
 			$linkText = $tagContent;
 		}
 		$this->tag->setContent($linkText);
-		$this->tag->addAttribute('href', $linkHref);
+		$escapeSpecialCharacters = !isset($GLOBALS['TSFE']->spamProtectEmailAddresses) || $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii';
+		$this->tag->addAttribute('href', $linkHref, $escapeSpecialCharacters);
 		$this->tag->forceClosingTag(TRUE);
 		return $this->tag->render();
 	}
 
 }
-
 
 ?>
