@@ -95,7 +95,16 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 							if ($conf['table'] == 'pages') {
 								$row = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
 							} else {
-								$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'], $row, $GLOBALS['TSFE']->sys_language_content, $GLOBALS['TSFE']->sys_language_contentOL);
+								$oldRow = $row;
+								reset($GLOBALS['TSFE']->sys_language_content_list);
+								do {
+									if (current($GLOBALS['TSFE']->sys_language_content_list) !== 0) {
+										$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay($conf['table'], $row, current($GLOBALS['TSFE']->sys_language_content_list), $GLOBALS['TSFE']->sys_language_contentOL);
+									}
+								} while (($oldRow == $row) && (current($GLOBALS['TSFE']->sys_language_content_list) !== 0) && (next($GLOBALS['TSFE']->sys_language_content_list) !== FALSE));
+								if (current($GLOBALS['TSFE']->sys_language_content_list) === FALSE) {
+									unset($row);
+								}
 							}
 						}
 						// Might be unset in the sys_language_contentOL
