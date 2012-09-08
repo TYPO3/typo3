@@ -91,6 +91,11 @@ class Locker {
 	protected $isLoggingEnabled = TRUE;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Log\Logger
+	 */
+	protected $logger;
+
+	/**
 	 * Constructor:
 	 * initializes locking, check input parameters and set variables accordingly.
 	 *
@@ -100,6 +105,10 @@ class Locker {
 	 * @param integer step Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used in manual lock method "simple".
 	 */
 	public function __construct($id, $method = 'simple', $loops = 0, $step = 0) {
+		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
+		$logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager');
+		$this->logger = $logManager->getLogger(__CLASS__);
+
 		// Force ID to be string
 		$id = (string) $id;
 		if (intval($loops)) {
@@ -321,7 +330,9 @@ class Locker {
 	 */
 	public function sysLog($message, $severity = 0) {
 		if ($this->isLoggingEnabled) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog((((('Locking [' . $this->method) . '::') . $this->id) . ']: ') . trim($message), $this->syslogFacility, $severity);
+				// map the old severity to the new one
+			$severity = 6 - $severity;
+			$this->logger->log($severity, 'Locking [' . $this->method . '::' . $this->id . ']: ' . trim($message));
 		}
 	}
 
