@@ -208,7 +208,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function buildBaseValidatorConjunction($dataType) {
 		$validatorConjunction = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator');
 		// Model based validator
-		if (strpos($dataType, '_') !== FALSE && class_exists($dataType)) {
+		if (class_exists($dataType)) {
 			$validatorCount = 0;
 			$objectValidator = $this->createValidator('GenericObject');
 			foreach ($this->reflectionService->getClassPropertyNames($dataType) as $classPropertyName) {
