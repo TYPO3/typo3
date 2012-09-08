@@ -237,11 +237,16 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 		$this->fixture->addFile($this->getUrlInMount('file.ext'), $mockedFolder);
 	}
 
-	public function checkFolderPermissionsFilesystemPermissions_dataProvider() {
+	/**
+	 * Data provider for checkFolderPermissionsRespectsFilesystemPermissions
+	 *
+	 * @return array
+	 */
+	public function checkFolderPermissionsFilesystemPermissionsDataProvider() {
 		return array(
 			'read action on readable/writable folder' => array(
 				'read',
-				array('r' => TRUE, 'w' => TRUE)
+				array('r' => TRUE, 'w' => TRUE),
 			),
 			'read action on unreadable folder' => array(
 				'read',
@@ -258,12 +263,12 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 
 	/**
 	 * @test
-	 * @dataProvider checkFolderPermissionsFilesystemPermissions_dataProvider
+	 * @dataProvider checkFolderPermissionsFilesystemPermissionsDataProvider
 	 * @param string $action 'read' or 'write'
 	 * @param array $permissionsFromDriver The permissions as returned from the driver
 	 * @param bool $expectedException
 	 */
-	public function checkFolderPermissionsRespectsFilesystemPermissions($action, $permissionsFromDriver, $expectedException) {
+	public function checkFolderPermissionsRespectsFilesystemPermissions($action, $permissionsFromDriver, $expectedException = '') {
 		$mockedDriver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver');
 		$mockedDriver->expects($this->any())->method('getFolderPermissions')->will($this->returnValue($permissionsFromDriver));
 		$mockedFolder = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Folder', array(), array(), '', FALSE);
