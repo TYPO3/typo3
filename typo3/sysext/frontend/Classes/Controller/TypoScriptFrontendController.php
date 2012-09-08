@@ -520,6 +520,12 @@ class TypoScriptFrontendController {
 	 */
 	public $sys_language_content = 0;
 
+	// Like $sys_language_content but in case of multiple fallbacks contains a list of further fallbacks to traverse
+	/**
+	 * @todo Define visibility
+	 */
+	public $sys_language_content_list = array(0);
+
 	// Site content overlay flag; If set - and sys_language_content is > 0 - , records selected will try to look for a translation pointing to their uid. (If configured in [ctrl][languageField] / [ctrl][transOrigP...]
 	/**
 	 * @todo Define visibility
@@ -2480,12 +2486,30 @@ class TypoScriptFrontendController {
 		$this->sys_language_uid = ($this->sys_language_content = intval($this->config['config']['sys_language_uid']));
 		list($this->sys_language_mode, $sys_language_content) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(';', $this->config['config']['sys_language_mode']);
 		$this->sys_language_contentOL = $this->config['config']['sys_language_overlay'];
+
+		// initialise list to one element for compatibility
+		$this->sys_language_content_list = array($this->sys_language_uid);
+
 		// If sys_language_uid is set to another language than default:
 		if ($this->sys_language_uid > 0) {
 			// check whether a shortcut is overwritten by a translated page
 			// we can only do this now, as this is the place where we get
 			// to know about translations
 			$this->checkTranslatedShortcut();
+
+			// find fallback-records which are valid (for which a page-overlay exists)
+			if ($this->sys_language_mode === 'content_fallback') {
+				$this->sys_language_content_list = array();
+				$fallBackOrder = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $sys_language_content);
+					// also take current sys_language_uid into account when checking for page-overlays
+				array_unshift($fallBackOrder, $this->sys_language_uid);
+				foreach($fallBackOrder as $orderValue)	{
+					if (!strcmp($orderValue, '0') || count($this->sys_page->getPageOverlay($this->id, $orderValue)))	{
+						$this->sys_language_content_list[] = $orderValue;
+					}
+				}
+			}
+
 			// Request the overlay record for the sys_language_uid:
 			$olRec = $this->sys_page->getPageOverlay($this->id, $this->sys_language_uid);
 			if (!count($olRec)) {
@@ -2500,21 +2524,17 @@ class TypoScriptFrontendController {
 							$this->pageNotFoundAndExit('Page is not available in the requested language (strict).');
 							break;
 						case 'content_fallback':
-							$fallBackOrder = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $sys_language_content);
-							foreach ($fallBackOrder as $orderValue) {
-								if (!strcmp($orderValue, '0') || count($this->sys_page->getPageOverlay($this->id, $orderValue))) {
-									$this->sys_language_content = $orderValue;
-									// Setting content uid (but leaving the sys_language_uid)
-									break;
-								}
-							}
+							$this->sys_language_content = $this->sys_language_content_list[0];
+							// Setting content uid (but leaving the sys_language_uid)
 							break;
 						case 'ignore':
 							$this->sys_language_content = $this->sys_language_uid;
+							$this->sys_language_content_list = array($this->sys_language_content);
 							break;
 						default:
 							// Default is that everything defaults to the default language...
 							$this->sys_language_uid = ($this->sys_language_content = 0);
+							$this->sys_language_content_list = array($this->sys_language_content);
 							break;
 						}
 					}
