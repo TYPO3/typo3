@@ -67,10 +67,24 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	 * @return string
 	 */
 	protected function createRealTestdir() {
-		$basedir = (PATH_site . 'typo3temp/fal-test-') . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(microtime(TRUE));
+		$basedir = PATH_site . 'typo3temp/' . uniqid('fal-test-');
 		mkdir($basedir);
 		self::$testDirs[] = $basedir;
 		return $basedir;
+	}
+
+	/**
+	 * Create a "real" directory together with a driverFixture configured
+	 * for this directory.
+	 *
+	 * @return array With path to base directory and driver fixture
+	 */
+	protected function prepareRealTestEnvironment() {
+		$basedir = $this->createRealTestdir();
+		$fixture = $this->createDriverFixture(array(
+			'basePath' => $basedir
+		));
+		return array($basedir, $fixture);
 	}
 
 	/**
@@ -131,7 +145,7 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		$fixture = $this->createDriverFixture(array(
 			'basePath' => $this->getMountRootUrl()
 		));
-		$storageFolder = $fixture->getDefaultFolder();
+		$fixture->getDefaultFolder();
 		$this->assertFileExists($this->getUrlInMount('/_temp_/'));
 	}
 
@@ -179,7 +193,7 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		$this->assertEquals('/some/folder/path/', $createdFolder->getIdentifier());
 	}
 
-	public function createFolderSanitizesFolderNameBeforeCreation_dataProvider() {
+	public function createFolderSanitizesFolderNameBeforeCreationDataProvider() {
 		return array(
 			'folder name with NULL character' => array(
 				'some' . chr(0) . 'Folder',
@@ -194,7 +208,7 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 
 	/**
 	 * @test
-	 * @dataProvider createFolderSanitizesFolderNameBeforeCreation_dataProvider
+	 * @dataProvider createFolderSanitizesFolderNameBeforeCreationDataProvider
 	 */
 	public function createFolderSanitizesFolderNameBeforeCreation($newFolderName, $expectedFolderName) {
 		$this->addToMount(array('some' => array('folder' => array())));
@@ -261,19 +275,86 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function statReturnsCorrectFileInfo() {
-		$contents = 'asdfg';
+	public function getLowLevelFileInfoReturnsCorrectFileSize() {
+		$contents = uniqid('foo');
 		$this->addToMount(array('file1.ext' => $contents));
 		$mockedFile = $this->getSimpleFileMock('file1.ext');
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $this->getMountRootUrl()
-		));
-		$path = $fixture->getAbsolutePath($mockedFile);
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
 		$stat = $fixture->getLowLevelFileInfo($mockedFile);
 		$this->assertEquals(strlen($contents), $stat['size']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getLowLevelFileInfoReturnsCorrectFileCtime() {
+		$contents = uniqid('foo');
+		$this->addToMount(array('file1.ext' => $contents));
+		$mockedFile = $this->getSimpleFileMock('file1.ext');
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
+		$path = $fixture->getAbsolutePath($mockedFile);
+		$stat = $fixture->getLowLevelFileInfo($mockedFile);
 		$this->assertEquals(filectime($path), $stat['ctime']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getLowLevelFileInfoReturnsCorrectFileMtime() {
+		$contents = uniqid('foo');
+		$this->addToMount(array('file1.ext' => $contents));
+		$mockedFile = $this->getSimpleFileMock('file1.ext');
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
+		$path = $fixture->getAbsolutePath($mockedFile);
+		$stat = $fixture->getLowLevelFileInfo($mockedFile);
 		$this->assertEquals(fileatime($path), $stat['mtime']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getLowLevelFileInfoReturnsCorrectFileAtime() {
+		$contents = uniqid('foo');
+		$this->addToMount(array('file1.ext' => $contents));
+		$mockedFile = $this->getSimpleFileMock('file1.ext');
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
+		$path = $fixture->getAbsolutePath($mockedFile);
+		$stat = $fixture->getLowLevelFileInfo($mockedFile);
 		$this->assertEquals(filemtime($path), $stat['atime']);
+	}
+
+	/**
+	 * @test
+	 */
+	public function getLowLevelFileInfoReturnsCorrectFileMimeType() {
+		$baseDir = $this->createRealTestdir();
+		/** @var $driverFixture \TYPO3\CMS\Core\Resource\Driver\LocalDriver */
+		$driverFixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', array('getAbsolutePath'), array());
+		$fileMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\FileInterface');
+		copy(__DIR__ . '/Fixtures/Dummy.html', $baseDir . '/Dummy.html');
+		$driverFixture->expects($this->once())->method('getAbsolutePath')->will($this->returnValue($baseDir . '/Dummy.html'));
+		$stats = $driverFixture->getLowLevelFileInfo($fileMock);
+		$this->assertEquals('text/html', $stats['mimetype']);
 	}
 
 	/**
@@ -287,9 +368,12 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 				'file' => 'asdf'
 			)
 		));
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $this->getMountRootUrl()
-		));
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
 		$this->assertTrue(file_exists($this->getUrl('sourceFolder/file')));
 		$fixture->addFile($this->getUrl('sourceFolder/file'), $mockedFolder, 'file');
 		$this->assertTrue(file_exists($this->getUrlInMount('/targetFolder/file')));
@@ -306,9 +390,12 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 				'file' => 'asdf'
 			)
 		));
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $this->getMountRootUrl()
-		));
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
 		$this->assertTrue(file_exists($this->getUrl('sourceFolder/file')));
 		$fixture->addFile($this->getUrl('sourceFolder/file'), $mockedFolder, 'targetFile');
 		$this->assertTrue(file_exists($this->getUrlInMount('/targetFolder/targetFile')));
@@ -328,9 +415,10 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		));
 		$storageObject = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		$storageObject->expects($this->any())->method('getUid')->will($this->returnValue('1'));
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $this->getMountRootUrl()
-		), $storageObject);
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			$storageObject
+		);
 		$fixture->addFile($this->getUrlInMount('/targetFolder/file'), $mockedFolder, 'file');
 	}
 
@@ -346,9 +434,12 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 				'file' => 'asdf'
 			)
 		));
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $this->getMountRootUrl()
-		));
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
 		$this->assertTrue(file_exists($this->getUrl('sourceFolder/file')));
 		$fileObject = $fixture->addFile($this->getUrl('sourceFolder/file'), $mockedFolder, 'file');
 		$this->assertInstanceOf('TYPO3\\CMS\\Core\\Resource\\File', $fileObject);
@@ -407,9 +498,12 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 				'file' => 'asjdalks'
 			)
 		));
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $this->getMountRootUrl()
-		));
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
 		$mockedFile = $this->getSimpleFileMock('/targetFolder/file', array('updateProperties'));
 		$mockedFile->expects($this->once())->method('updateProperties');
 		$fixture->replaceFile($mockedFile, $this->getUrl('sourceFolder/file'));
@@ -554,9 +648,12 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 			),
 			'someFileAtRootLevel' => 'foobar'
 		));
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $this->getMountRootUrl()
-		));
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
 		$subdirFileInfo = $fixture->getFileInfoByIdentifier('/someDir/someFile');
 		$this->assertEquals('/someDir/someFile', $subdirFileInfo['identifier']);
 		$rootFileInfo = $fixture->getFileInfoByIdentifier('/someFileAtRootLevel');
@@ -595,9 +692,12 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 			'file2' => 'fdsa'
 		);
 		$this->addToMount($dirStructure);
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $this->getMountRootUrl()
-		));
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
 		$fileList = $fixture->getFileList('/');
 		$this->assertEquals(array('file1', 'file2'), array_keys($fileList));
 	}
@@ -661,9 +761,12 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 			'fileB' => 'fdsa'
 		);
 		$this->addToMount($dirStructure);
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $this->getMountRootUrl()
-		));
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
 		$filterCallbacks = array(
 			array('t3lib_file_Tests_Driver_Fixtures_LocalDriverFilenameFilter', 'filterFilename')
 		);
@@ -855,14 +958,6 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		$filePath = $fixture->copyFileToTemporaryPath($mockedFile);
 		$this->assertContains('/typo3temp/', $filePath);
 		$this->assertEquals($fileContents, file_get_contents($filePath));
-	}
-
-	protected function prepareRealTestEnvironment() {
-		$basedir = $this->createRealTestdir();
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $basedir
-		));
-		return array($basedir, $fixture);
 	}
 
 	/**
@@ -1093,9 +1188,12 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 			'someFile' => $fileContents,
 			'targetFolder' => array()
 		));
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $this->getMountRootUrl()
-		));
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
 		$storage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		$sourceFile = $this->mockFileForCopyingAndMoving('/someFile', $storage);
 		$targetFolder = $this->mockFolderForCopyingAndMoving('/targetFolder/', $storage);
@@ -1136,9 +1234,12 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 			'targetFolder' => array(),
 			'someFile' => $fileContents
 		));
-		$fixture = $this->createDriverFixture(array(
-			'basePath' => $this->getMountRootUrl()
-		));
+		$fixture = $this->createDriverFixture(
+			array('basePath' => $this->getMountRootUrl()),
+			NULL,
+				// Mocked because finfo() can not deal with vfs streams and throws warnings
+			array('getMimeTypeOfFile')
+		);
 		$newIdentifier = $fixture->moveFileWithinStorage($sourceFile, $mockedFolder, 'file');
 		$fileMetadata = $fixture->getFileInfoByIdentifier($newIdentifier);
 		$this->assertEquals($newIdentifier, $fileMetadata['identifier']);

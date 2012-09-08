@@ -428,13 +428,12 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 */
 	protected function extractFileInformation($filePath, $containerPath) {
 		$fileName = basename($filePath);
-		$fileMimeInformation = new \finfo(FILEINFO_MIME_TYPE);
 		$fileInformation = array(
 			'size' => filesize($filePath),
 			'atime' => fileatime($filePath),
 			'mtime' => filemtime($filePath),
 			'ctime' => filectime($filePath),
-			'mimetype' => $fileMimeInformation->file($filePath),
+			'mimetype' => $this->getMimeTypeOfFile($filePath),
 			'name' => $fileName,
 			'identifier' => $containerPath . $fileName,
 			'storage' => $this->storage->getUid()
@@ -500,19 +499,31 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		// TODO define which data should be returned
 		// TODO write unit test
 		// TODO cache this info. Registry?
+		// TODO merge with extractFolderInformation() above?!
 		$filePath = $this->getAbsolutePath($file);
 		$fileStat = stat($filePath);
-		$fileInfo = new \finfo();
+		$mimeType = $this->getMimeTypeOfFile($filePath);
 		$stat = array(
 			'size' => filesize($filePath),
 			'atime' => $fileStat['atime'],
 			'mtime' => $fileStat['mtime'],
 			'ctime' => $fileStat['ctime'],
 			'nlink' => $fileStat['nlink'],
-			'type' => $fileInfo->file($filePath, FILEINFO_MIME_TYPE),
-			'mimetype' => $fileInfo->file($filePath, FILEINFO_MIME_TYPE)
+			'type' => $mimeType,
+			'mimetype' => $mimeType
 		);
 		return $stat;
+	}
+
+	/**
+	 * Get mime type of file.
+	 *
+	 * @param string $absoluteFilePath Absolute path to file
+	 * @return string Mime type. eg, text/html
+	 */
+	protected function getMimeTypeOfFile($absoluteFilePath) {
+		$fileInfo = new \finfo();
+		return $fileInfo->file($absoluteFilePath, FILEINFO_MIME_TYPE);
 	}
 
 	/**
