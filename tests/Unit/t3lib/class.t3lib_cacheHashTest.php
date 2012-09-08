@@ -63,11 +63,11 @@ class t3lib_cacheHashTest extends tx_phpunit_testcase {
 	 * @dataProvider cacheHashCalculationDataprovider
 	 * @test
 	 */
-	public function cacheHashCalculationWorks($params, $expected, $message) {
+	public function cacheHashCalculationWorks($params, $expected) {
 		if (!class_exists('t3lib_diff')) {
 			$this->markTestSkipped('The current version of phpunit relies on t3lib_diff which is removed in 6.0 and thus this test fails. Move t3lib_diff to phpunit and reenable this test.');
 		}
-		$this->assertEquals($expected, $this->fixture->calculateCacheHash($params), $message);
+		$this->assertEquals($expected, $this->fixture->calculateCacheHash($params));
 	}
 
 	/**
@@ -75,13 +75,23 @@ class t3lib_cacheHashTest extends tx_phpunit_testcase {
 	 */
 	public function cacheHashCalculationDataprovider() {
 		return array(
-			'Empty parameters should not return a hash' => array(array(), ''),
+			'Empty parameters should not return a hash' => array(
+				array(),
+				''
+			),
 			'Trivial key value combination should generate hash' => array(
-				array('encryptionKey' => 't3lib_cacheHashTest', 'key' => 'value'),
+				array(
+					'encryptionKey' => 't3lib_cacheHashTest',
+					'key' => 'value'
+				),
 				'5cfdcf826275558b3613dd51714a0a17'
 			),
 			'Multiple parameters should generate hash' => array(
-				array('a' => 'v', 'b' => 'v', 'encryptionKey' => 't3lib_cacheHashTest'),
+				array(
+					'a' => 'v',
+					'b' => 'v',
+					'encryptionKey' => 't3lib_cacheHashTest'
+				),
 				'0f40b089cdad149aea99e9bf4badaa93'
 			)
 		);
