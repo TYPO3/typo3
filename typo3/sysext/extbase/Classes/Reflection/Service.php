@@ -431,7 +431,11 @@ class Service implements \TYPO3\CMS\Core\SingletonInterface {
 		$classSchema = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Reflection\\ClassSchema', $className);
 		if (is_subclass_of($className, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity')) {
 			$classSchema->setModelType(\TYPO3\CMS\Extbase\Reflection\ClassSchema::MODELTYPE_ENTITY);
-			$possibleRepositoryClassName = str_replace('_Model_', '_Repository_', $className) . 'Repository';
+			if (strpos($className, '\\') !== FALSE) {
+				$possibleRepositoryClassName = str_replace('\\Model\\', '\\Repository\\', $className) . 'Repository';
+			} else {
+				$possibleRepositoryClassName = str_replace('_Model_', '_Repository_', $className) . 'Repository';
+			}
 			if (class_exists($possibleRepositoryClassName)) {
 				$classSchema->setAggregateRoot(TRUE);
 			}

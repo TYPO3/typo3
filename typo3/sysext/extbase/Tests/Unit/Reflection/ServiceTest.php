@@ -30,7 +30,7 @@ class ServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @param array $foo The foo parameter
-	 * @return nothing
+	 * @return void
 	 */
 	public function fixtureMethodForMethodTagsValues(array $foo) {
 
@@ -44,7 +44,7 @@ class ServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$tagsValues = $service->getMethodTagsValues('TYPO3\\CMS\\Extbase\\Tests\\Unit\\Reflection\\ServiceTest', 'fixtureMethodForMethodTagsValues');
 		$this->assertEquals(array(
 			'param' => array('array $foo The foo parameter'),
-			'return' => array('nothing')
+			'return' => array('void')
 		), $tagsValues);
 	}
 
@@ -65,6 +65,42 @@ class ServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 				'type' => 'array'
 			)
 		), $parameters);
+	}
+
+	/**
+	 * @test
+	 */
+	public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNamespacedClasses() {
+		eval ('
+			namespace Foo\\Bar\\Domain\\Model;
+			class BazFixture extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
+		');
+		eval ('
+			namespace Foo\\Bar\\Domain\\Repository;
+			class BazFixtureRepository {}
+		');
+
+		$service = new \TYPO3\CMS\Extbase\Reflection\Service();
+		$service->injectObjectManager($this->objectManager);
+		$classSchema = $service->getClassSchema('Foo\\Bar\\Domain\\Model\\BazFixture');
+		$this->assertTrue($classSchema->isAggregateRoot());
+	}
+
+	/**
+	 * @test
+	 */
+	public function classSchemaForModelIsSetAggregateRootIfRepositoryClassIsFoundForNotNamespacedClasses() {
+		eval ('
+			class Foo_Bar_Domain_Model_BazFixture extends \\TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {}
+		');
+		eval ('
+			class Foo_Bar_Domain_Repository_BazFixtureRepository {}
+		');
+
+		$service = new \TYPO3\CMS\Extbase\Reflection\Service();
+		$service->injectObjectManager($this->objectManager);
+		$classSchema = $service->getClassSchema('Foo_Bar_Domain_Model_BazFixture');
+		$this->assertTrue($classSchema->isAggregateRoot());
 	}
 
 }
