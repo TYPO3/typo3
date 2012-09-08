@@ -307,6 +307,8 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$count = $this->databaseHandle->sql_num_rows($result);
 		} else {
 			$statementParts['fields'] = array('COUNT(*)');
+			// having orderings without grouping is not compatible with non-MySQL DBMS
+			$statementParts['orderings'] = array();
 			if (isset($statementParts['keywords']['distinct'])) {
 				unset($statementParts['keywords']['distinct']);
 				$statementParts['fields'] = array('COUNT(DISTINCT ' . reset($statementParts['tables']) . '.uid)');
