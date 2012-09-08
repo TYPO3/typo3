@@ -63,19 +63,6 @@ class t3lib_utility_StringTest extends tx_phpunit_testcase {
 		return array(
 			'no string match' => array('hello', 'bye'),
 			'no case sensitive string match' => array('hello world', 'World'),
-			'array is not part of string' => array('string', array()),
-			'string is not part of array' => array(array(), 'string'),
-			'NULL is not part of string' => array('string', NULL),
-			'string is not part of array' => array(NULL, 'string'),
-			'NULL is not part of array' => array(array(), NULL),
-			'array is not part of string' => array(NULL, array()),
-			'NULL is not part of empty string' => array('', NULL),
-			'false is not part of empty string' => array('', FALSE),
-			'empty string is not part of NULL' => array(NULL, ''),
-			'empty string is not part of false' => array(FALSE, ''),
-			'empty string is not part of zero integer' => array(0, ''),
-			'zero integer is not part of NULL' => array(NULL, 0),
-			'zero integer is not part of empty string' => array('', 0)
 		);
 	}
 
@@ -87,6 +74,39 @@ class t3lib_utility_StringTest extends tx_phpunit_testcase {
 		$this->assertFalse(\TYPO3\CMS\Core\Utility\StringUtility::isLastPartOfString($string, $part));
 	}
 
+	/**
+	 * Data provider for isLastPartOfStringReturnsThrowsExceptionWithInvalidArguments
+	 *
+	 * @return array
+	 */
+	public function isLastPartOfStringReturnsInvalidArgumentDataProvider() {
+		return array(
+			'array is not part of string' => array('string', array()),
+			'string is not part of array' => array(array(), 'string'),
+			'NULL is not part of string' => array('string', NULL),
+			'null is not part of array' => array(NULL, 'string'),
+			'NULL is not part of array' => array(array(), NULL),
+			'array is not part of null' => array(NULL, array()),
+			'NULL is not part of empty string' => array('', NULL),
+			'false is not part of empty string' => array('', FALSE),
+			'empty string is not part of NULL' => array(NULL, ''),
+			'empty string is not part of false' => array(FALSE, ''),
+			'empty string is not part of zero integer' => array(0, ''),
+			'zero integer is not part of NULL' => array(NULL, 0),
+			'zero integer is not part of empty string' => array('', 0),
+			'string is not part of object' => array(new \stdClass(), 'foo'),
+			'object is not part of string' => array('foo', new \stdClass()),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider isLastPartOfStringReturnsInvalidArgumentDataProvider
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function isLastPartOfStringReturnsThrowsExceptionWithInvalidArguments($string, $part) {
+		$this->assertFalse(\TYPO3\CMS\Core\Utility\StringUtility::isLastPartOfString($string, $part));
+	}
 }
 
 ?>

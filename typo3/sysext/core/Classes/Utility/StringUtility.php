@@ -45,6 +45,19 @@ final class StringUtility {
 	 * @return boolean TRUE if $needle was found to be equal to the last part of $str
 	 */
 	static public function isLastPartOfString($haystack, $needle) {
+			// Sanitize $haystack and $needle
+		if (is_object($haystack) || (string)$haystack != $haystack || strlen($haystack) < 1) {
+			throw new \InvalidArgumentException(
+				'$haystack can not be interpreted as string or has no length',
+				1347135544
+			);
+		}
+		if (is_object($needle) || (string)$needle != $needle || strlen($needle) < 1) {
+			throw new \InvalidArgumentException(
+				'$needle can not be interpreted as string or has no length',
+				1347135545
+			);
+		}
 		$stringLength = strlen($haystack);
 		$needleLength = strlen($needle);
 		return strrpos((string) $haystack, (string) $needle, 0) === $stringLength - $needleLength;
