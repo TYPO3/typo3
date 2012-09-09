@@ -258,7 +258,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 		if ($this->totalBrokenLink != $this->oldTotalBrokenLink) {
 			$this->dif = TRUE;
 		}
-		if (($this->totalBrokenLink > 0 && (!$this->emailOnBrokenLinkOnly || $this->dif)) && !empty($this->email)) {
+		if ($this->totalBrokenLink > 0 && (!$this->emailOnBrokenLinkOnly || $this->dif) && !empty($this->email)) {
 			$successfullyExecuted = $this->reportEmail($pageSections, $modTS);
 		}
 		return $successfullyExecuted;

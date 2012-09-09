@@ -99,7 +99,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 			}
 		}
 		$fieldID = 'task_page';
-		$fieldCode = ((('<input type="text" name="tx_scheduler[linkvalidator][page]"  id="' . $fieldID) . '" value="') . htmlspecialchars($taskInfo['page'])) . '"/>';
+		$fieldCode = '<input type="text" name="tx_scheduler[linkvalidator][page]"  id="' . $fieldID . '" value="' . htmlspecialchars($taskInfo['page']) . '"/>';
 		$label = $GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.validate.page');
 		$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $fieldID, $label);
 		$additionalFields[$fieldID] = array(
@@ -116,7 +116,7 @@ class ValidatorTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 			'4' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_4'),
 			'999' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.depth_infi')
 		);
-		$fieldCode = ('<select name="tx_scheduler[linkvalidator][depth]" id="' . $fieldID) . '">';
+		$fieldCode = '<select name="tx_scheduler[linkvalidator][depth]" id="' . $fieldID . '">';
 		foreach ($fieldValueArray as $depth => $label) {
 			$fieldCode .= "\t" . '<option value="' . htmlspecialchars($depth) . '"'
 						. (($depth == $taskInfo['depth']) ? ' selected="selected"' : '')

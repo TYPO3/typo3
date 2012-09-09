@@ -115,7 +115,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 				$this->errorParams['page']['title'] = $row['title'];
 				$this->errorParams['page']['uid'] = $row['uid'];
 				$this->responsePage = FALSE;
-			} elseif (($row['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < intval($row['starttime'])) || $row['endtime'] && intval($row['endtime']) < $GLOBALS['EXEC_TIME']) {
+			} elseif ($row['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < intval($row['starttime']) || $row['endtime'] && intval($row['endtime']) < $GLOBALS['EXEC_TIME']) {
 				$this->errorParams['errorType']['page'] = self::HIDDEN;
 				$this->errorParams['page']['title'] = $row['title'];
 				$this->errorParams['page']['uid'] = $row['uid'];
@@ -161,7 +161,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 					$this->errorParams['content']['title'] = $res['header'];
 					$this->errorParams['content']['uid'] = $res['uid'];
 					$this->responseContent = FALSE;
-				} elseif (($res['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < intval($res['starttime'])) || $res['endtime'] && intval($res['endtime']) < $GLOBALS['EXEC_TIME']) {
+				} elseif ($res['hidden'] == '1' || $GLOBALS['EXEC_TIME'] < intval($res['starttime']) || $res['endtime'] && intval($res['endtime']) < $GLOBALS['EXEC_TIME']) {
 					$this->errorParams['errorType']['content'] = self::HIDDEN;
 					$this->errorParams['content']['title'] = $res['header'];
 					$this->errorParams['content']['uid'] = $res['uid'];
@@ -227,7 +227,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			}
 		}
 		if (isset($errorPage) && isset($errorContent)) {
-			$response = ($errorPage . '<br />') . $errorContent;
+			$response = $errorPage . '<br />' . $errorContent;
 		} elseif (isset($errorPage)) {
 			$response = $errorPage;
 		} elseif (isset($errorContent)) {
@@ -256,7 +256,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 				$domain = $protocol . $domainRecord;
 			}
 		}
-		return ($domain . '/index.php?id=') . $row['url'];
+		return $domain . '/index.php?id=' . $row['url'];
 	}
 }
 ?>

@@ -7,8 +7,8 @@ if (!defined('TYPO3_MODE')) {
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_linkvalidator_tasks_Validator'] = array(
 	'extension' => $_EXTKEY,
-	'title' => ('LLL:EXT:' . $_EXTKEY) . '/locallang.xml:tasks.validate.name',
-	'description' => ('LLL:EXT:' . $_EXTKEY) . '/locallang.xml:tasks.validate.description',
+	'title' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:tasks.validate.name',
+	'description' => 'LLL:EXT:' . $_EXTKEY . '/locallang.xml:tasks.validate.description',
 	'additionalFields' => 'TYPO3\\CMS\\Linkvalidator\\Task\\ValidatorTaskAdditionalFieldProvider'
 );
 

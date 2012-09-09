@@ -137,14 +137,14 @@ class LinkAnalyzer {
 		$results = array();
 		if (count($checkOptions) > 0) {
 			$checkKeys = array_keys($checkOptions);
-			$checkLinkTypeCondition = (' and link_type in (\'' . implode('\',\'', $checkKeys)) . '\')';
-			$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', ((((('(record_pid in (' . $this->pidList) . ')') . ' or ( record_uid IN (') . $this->pidList) . ') and table_name like \'pages\')) ') . $checkLinkTypeCondition);
+			$checkLinkTypeCondition = ' and link_type in (\'' . implode('\',\'', $checkKeys) . '\')';
+			$GLOBALS['TYPO3_DB']->exec_DELETEquery('tx_linkvalidator_link', '(record_pid in (' . $this->pidList . ')' . ' or ( record_uid IN (' . $this->pidList . ') and table_name like \'pages\')) ' . $checkLinkTypeCondition);
 			// Traverse all configured tables
 			foreach ($this->searchFields as $table => $fields) {
 				if ($table === 'pages') {
-					$where = ('deleted = 0 AND uid IN (' . $this->pidList) . ')';
+					$where = 'deleted = 0 AND uid IN (' . $this->pidList . ')';
 				} else {
-					$where = ('deleted = 0 AND pid IN (' . $this->pidList) . ')';
+					$where = 'deleted = 0 AND pid IN (' . $this->pidList . ')';
 				}
 				if (!$considerHidden) {
 					$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($table);
@@ -155,7 +155,7 @@ class LinkAnalyzer {
 				}
 				// Re-init selectFields for table
 				$selectFields = 'uid, pid';
-				$selectFields .= ((', ' . $GLOBALS['TCA'][$table]['ctrl']['label']) . ', ') . implode(', ', $fields);
+				$selectFields .= ', ' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ', ' . implode(', ', $fields);
 				// TODO: only select rows that have content in at least one of the relevant fields (via OR)
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($selectFields, $table, $where);
 				// Get record rows of table
@@ -323,7 +323,7 @@ class LinkAnalyzer {
 							$referencedRecordType = $r['tokenValue'];
 							$wasPage = TRUE;
 						} elseif (strpos($r['recordRef'], 'tt_content') !== FALSE && (isset($wasPage) && $wasPage === TRUE)) {
-							$referencedRecordType = ($referencedRecordType . '#c') . $r['tokenValue'];
+							$referencedRecordType = $referencedRecordType . '#c' . $r['tokenValue'];
 							$wasPage = FALSE;
 						} else {
 							$currentR = $r;
@@ -362,7 +362,7 @@ class LinkAnalyzer {
 		if (empty($this->pidList)) {
 			$this->pidList = $curPage;
 		}
-		if ($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(uid) as nbBrokenLinks,link_type', 'tx_linkvalidator_link', ('record_pid in (' . $this->pidList) . ')', 'link_type')) {
+		if ($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(uid) as nbBrokenLinks,link_type', 'tx_linkvalidator_link', 'record_pid in (' . $this->pidList . ')', 'link_type')) {
 			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
 				$markerArray[$row['link_type']] = $row['nbBrokenLinks'];
 				$markerArray['brokenlinkCount'] += $row['nbBrokenLinks'];
@@ -393,7 +393,7 @@ class LinkAnalyzer {
 		$id = intval($id);
 		$theList = '';
 		if ($depth > 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,hidden,extendToSubpages', 'pages', (('pid=' . $id) . ' AND deleted=0 AND ') . $permsClause);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,hidden,extendToSubpages', 'pages', 'pid=' . $id . ' AND deleted=0 AND ' . $permsClause);
 			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
 				if ($begin <= 0 && ($row['hidden'] == 0 || $considerHidden == 1)) {
 					$theList .= $row['uid'] . ',';
