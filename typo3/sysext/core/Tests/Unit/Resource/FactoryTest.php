@@ -36,6 +36,11 @@ require_once 'vfsStream/vfsStream.php';
 class FactoryTest extends \Tx_Phpunit_TestCase {
 
 	/**
+	 * @var array A backup of registered singleton instances
+	 */
+	protected $singletonInstances = array();
+
+	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
 	 */
 	private $fixture;
@@ -46,11 +51,12 @@ class FactoryTest extends \Tx_Phpunit_TestCase {
 	private $objectCreated = FALSE;
 
 	public function setUp() {
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->fixture = new \TYPO3\CMS\Core\Resource\ResourceFactory();
 	}
 
 	protected function tearDown() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 	}
 
 	/**********************************

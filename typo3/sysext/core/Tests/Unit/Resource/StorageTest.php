@@ -36,9 +36,25 @@ require_once 'vfsStream/vfsStream.php';
 class StorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 
 	/**
+	 * @var array A backup of registered singleton instances
+	 */
+	protected $singletonInstances = array();
+
+	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage
 	 */
 	private $fixture;
+
+	public function setUp() {
+		parent::setUp();
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
+	}
 
 	/**
 	 * Prepare fixture

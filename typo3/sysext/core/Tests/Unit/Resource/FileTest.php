@@ -36,8 +36,18 @@ require_once 'vfsStream/vfsStream.php';
  */
 class FileTest extends \Tx_Phpunit_TestCase {
 
-	protected function tearDown() {
+	/**
+	 * @var array A backup of registered singleton instances
+	 */
+	protected $singletonInstances = array();
+
+	public function setUp() {
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
+	}
+
+	public function tearDown() {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 	}
 
 	/**
