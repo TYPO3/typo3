@@ -116,19 +116,19 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		$wsSettingsPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'typo3/';
 		$wsSettingsUri = $uriBuilder->uriFor('singleIndex', array(), 'TYPO3\\CMS\\Workspaces\\Controller\\ReviewController', 'workspaces', 'web_workspacesworkspaces');
 		$wsSettingsParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Review';
-		$wsSettingsUrl = ($wsSettingsPath . $wsSettingsUri) . $wsSettingsParams;
+		$wsSettingsUrl = $wsSettingsPath . $wsSettingsUri . $wsSettingsParams;
 		$viewDomain = \TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($this->pageId);
-		$wsBaseUrl = ((($viewDomain . '/index.php?id=') . $this->pageId) . '&L=') . $language;
+		$wsBaseUrl = $viewDomain . '/index.php?id=' . $this->pageId . '&L=' . $language;
 		// @todo - handle new pages here
 		// branchpoints are not handled anymore because this feature is not supposed anymore
 		if (\TYPO3\CMS\Workspaces\Service\WorkspaceService::isNewPage($this->pageId)) {
 			$wsNewPageUri = $uriBuilder->uriFor('newPage', array(), 'TYPO3\\CMS\\Workspaces\\Controller\\PreviewController', 'workspaces', 'web_workspacesworkspaces');
 			$wsNewPageParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Preview';
-			$this->view->assign('liveUrl', ($wsSettingsPath . $wsNewPageUri) . $wsNewPageParams);
+			$this->view->assign('liveUrl', $wsSettingsPath . $wsNewPageUri . $wsNewPageParams);
 		} else {
 			$this->view->assign('liveUrl', $wsBaseUrl . '&ADMCMD_noBeUser=1');
 		}
-		$this->view->assign('wsUrl', ($wsBaseUrl . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=') . $GLOBALS['BE_USER']->workspace);
+		$this->view->assign('wsUrl', $wsBaseUrl . '&ADMCMD_view=1&ADMCMD_editIcons=1&ADMCMD_previewWS=' . $GLOBALS['BE_USER']->workspace);
 		$this->view->assign('wsSettingsUrl', $wsSettingsUrl);
 		$this->view->assign('backendDomain', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'));
 		$splitPreviewTsConfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pageId, 'workspaces.splitPreviewModes');
@@ -144,20 +144,20 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		$this->pageRenderer->addInlineSetting('Workspaces', 'disableDiscardStageButton', $this->isInvalidStage($nextStage) && $this->isInvalidStage($previousStage));
 		$resourcePath = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('lang') . 'res/js/be/';
 		$this->pageRenderer->addJsFile($resourcePath . 'typo3lang.js');
-		$this->pageRenderer->addJsInlineCode('workspaces.preview.lll', ((((((((((((((((((((((('
+		$this->pageRenderer->addJsInlineCode('workspaces.preview.lll', '
 		TYPO3.lang = {
-			visualPreview: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.visualPreview', TRUE)) . '\',
-			listView: \'') . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.listView', TRUE)) . '\',
-			livePreview: \'') . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreview', TRUE)) . '\',
-			livePreviewDetail: \'') . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreviewDetail', TRUE)) . '\',
-			workspacePreview: \'') . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreview', TRUE)) . '\',
-			workspacePreviewDetail: \'') . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreviewDetail', TRUE)) . '\',
-			modeSlider: \'') . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeSlider', TRUE)) . '\',
-			modeVbox: \'') . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeVbox', TRUE)) . '\',
-			modeHbox: \'') . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeHbox', TRUE)) . '\',
-			discard: \'') . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:label_doaction_discard', TRUE)) . '\',
-			nextStage: \'') . $nextStage['title']) . '\',
-			previousStage: \'') . $previousStage['title']) . '\'
+			visualPreview: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.visualPreview', TRUE) . '\',
+			listView: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.listView', TRUE) . '\',
+			livePreview: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreview', TRUE) . '\',
+			livePreviewDetail: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreviewDetail', TRUE) . '\',
+			workspacePreview: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreview', TRUE) . '\',
+			workspacePreviewDetail: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreviewDetail', TRUE) . '\',
+			modeSlider: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeSlider', TRUE) . '\',
+			modeVbox: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeVbox', TRUE) . '\',
+			modeHbox: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeHbox', TRUE) . '\',
+			discard: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:label_doaction_discard', TRUE) . '\',
+			nextStage: \'' . $nextStage['title'] . '\',
+			previousStage: \'' . $previousStage['title'] . '\'
 		};TYPO3.l10n.initialize();
 ');
 		$resourcePath = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('workspaces') . 'Resources/Public/';
@@ -262,10 +262,10 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 			'donateWindow_button_disable' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:donateWindow.button_disable'),
 			'donateWindow_button_postpone' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:donateWindow.button_postpone')
 		);
-		$js = ((('
-		TYPO3.configuration = ' . json_encode($t3Configuration)) . ';
+		$js = '
+		TYPO3.configuration = ' . json_encode($t3Configuration) . ';
 		TYPO3.LLL = {
-			core : ') . json_encode($t3LLLcore)) . '
+			core : ' . json_encode($t3LLLcore) . '
 		};
 
 		/**

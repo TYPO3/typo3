@@ -144,7 +144,7 @@ class IntegrityService {
 					// Add warning for current versionized record:
 					$this->addIssue($element->getLiveRecord()->getIdentifier(), self::STATUS_Warning, sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('integrity.dependsOnDefaultLanguageRecord', 'workspaces'), $title));
 					// Add info for related localization parent record:
-					$this->addIssue(($table . ':') . $languageParentRecord['uid'], self::STATUS_Info, sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('integrity.isDefaultLanguageRecord', 'workspaces'), $title));
+					$this->addIssue($table . ':' . $languageParentRecord['uid'], self::STATUS_Info, sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('integrity.isDefaultLanguageRecord', 'workspaces'), $title));
 				}
 			}
 		}

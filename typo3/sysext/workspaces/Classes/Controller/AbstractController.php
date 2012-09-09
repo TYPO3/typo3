@@ -103,7 +103,7 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		parent::processRequest($request, $response);
 		$pageHeader = $this->template->startpage($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:module.title'));
 		$pageEnd = $this->template->endPage();
-		$response->setContent(($pageHeader . $response->getContent()) . $pageEnd);
+		$response->setContent($pageHeader . $response->getContent() . $pageEnd);
 	}
 
 	/**

@@ -64,7 +64,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 		$this->changeWorkspace = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('changeWorkspace');
 		$this->changeWorkspacePreview = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('changeWorkspacePreview');
 		$pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_pageRenderer');
-		$this->backendReference->addJavaScript(('TYPO3.Workspaces = { workspaceTitle : \'' . addslashes(\Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace))) . '\'};
+		$this->backendReference->addJavaScript('TYPO3.Workspaces = { workspaceTitle : \'' . addslashes(\Tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace)) . '\'};
 ');
 	}
 
@@ -103,7 +103,7 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 		$stateUncheckedIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('empty-empty', array(
 			'title' => $GLOBALS['LANG']->getLL('bookmark_inactive')
 		));
-		$workspaceMenu[] = ('<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title))) . '</a>';
+		$workspaceMenu[] = '<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array('title' => $title)) . '</a>';
 		$workspaceMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 		if (count($availableWorkspaces)) {
 			foreach ($availableWorkspaces as $workspaceId => $label) {
@@ -113,14 +113,14 @@ class WorkspaceSelectorToolbarItem implements \TYPO3\CMS\Backend\Toolbar\Toolbar
 					$selected = ' class="selected"';
 					$icon = $stateCheckedIcon;
 				}
-				$workspaceMenu[] = (((((((((('<li' . $selected) . '>') . '<a href="backend.php?changeWorkspace=') . intval($workspaceId)) . '" id="ws-') . intval($workspaceId)) . '" class="ws">') . $icon) . ' ') . htmlspecialchars($label)) . '</a></li>';
+				$workspaceMenu[] = '<li' . $selected . '>' . '<a href="backend.php?changeWorkspace=' . intval($workspaceId) . '" id="ws-' . intval($workspaceId) . '" class="ws">' . $icon . ' ' . htmlspecialchars($label) . '</a></li>';
 			}
 		} else {
-			$workspaceMenu[] = ((('<li>' . $stateUncheckedIcon) . ' ') . $GLOBALS['LANG']->getLL('bookmark_noWSfound', TRUE)) . '</li>';
+			$workspaceMenu[] = '<li>' . $stateUncheckedIcon . ' ' . $GLOBALS['LANG']->getLL('bookmark_noWSfound', TRUE) . '</li>';
 		}
 		if ($GLOBALS['BE_USER']->check('modules', 'web_WorkspacesWorkspaces')) {
 			// go to workspace module link
-			$workspaceMenu[] = ((((('<li class="divider">' . $stateUncheckedIcon) . ' ') . '<a href="javascript:top.goToModule(\'web_WorkspacesWorkspaces\');" target="content" id="goToWsModule">') . ' ') . $GLOBALS['LANG']->getLL('bookmark_workspace', TRUE)) . '</a></li>';
+			$workspaceMenu[] = '<li class="divider">' . $stateUncheckedIcon . ' ' . '<a href="javascript:top.goToModule(\'web_WorkspacesWorkspaces\');" target="content" id="goToWsModule">' . ' ' . $GLOBALS['LANG']->getLL('bookmark_workspace', TRUE) . '</a></li>';
 		}
 		$workspaceMenu[] = '</ul>';
 		return implode(LF, $workspaceMenu);

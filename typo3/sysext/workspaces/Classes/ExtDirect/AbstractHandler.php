@@ -57,7 +57,7 @@ abstract class AbstractHandler {
 		$response = array(
 			'error' => array(
 				'code' => $errorCode,
-				'message' => $GLOBALS['LANG']->sL(($localLangFile . ':') . $errorLabel)
+				'message' => $GLOBALS['LANG']->sL($localLangFile . ':' . $errorLabel)
 			),
 			'success' => $successFlagValue
 		);

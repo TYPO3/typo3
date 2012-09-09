@@ -244,22 +244,22 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($isTableLocalizable === FALSE && $language > 0) {
 			return array();
 		} elseif ($isTableLocalizable) {
-			$languageParentField = ('A.' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) . ', ';
+			$languageParentField = 'A.' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . ', ';
 		}
-		$fields = ('A.uid, A.t3ver_oid, A.t3ver_stage, ' . $languageParentField) . 'B.pid AS wspid, B.pid AS livepid';
+		$fields = 'A.uid, A.t3ver_oid, A.t3ver_stage, ' . $languageParentField . 'B.pid AS wspid, B.pid AS livepid';
 		if ($isTableLocalizable) {
 			$fields .= ', A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
 		}
-		$from = (($table . ' A,') . $table) . ' B';
+		$from = $table . ' A,' . $table . ' B';
 		// Table A is the offline version and pid=-1 defines offline
 		$where = 'A.pid=-1 AND A.t3ver_state!=4';
 		if ($pageList) {
 			$pidField = $table === 'pages' ? 'uid' : 'pid';
-			$pidConstraint = strstr($pageList, ',') ? (' IN (' . $pageList) . ')' : '=' . $pageList;
-			$where .= (' AND B.' . $pidField) . $pidConstraint;
+			$pidConstraint = strstr($pageList, ',') ? ' IN (' . $pageList . ')' : '=' . $pageList;
+			$where .= ' AND B.' . $pidField . $pidConstraint;
 		}
 		if ($isTableLocalizable && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($language)) {
-			$where .= ((' AND A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField']) . '=') . $language;
+			$where .= ' AND A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . $language;
 		}
 		/** For "real" workspace numbers, select by that.
 		If = -98, select all that are NOT online (zero).
@@ -307,10 +307,10 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		B - online record
 		C - moveFrom placeholder */
 		$fields = 'A.pid AS wspid, B.uid AS t3ver_oid, C.uid AS uid, B.pid AS livepid';
-		$from = (((($table . ' A, ') . $table) . ' B,') . $table) . ' C';
+		$from = $table . ' A, ' . $table . ' B,' . $table . ' C';
 		$where = 'A.t3ver_state=3 AND B.pid>0 AND B.t3ver_state=0 AND B.t3ver_wsid=0 AND C.pid=-1 AND C.t3ver_state=4';
 		if ($wsid > self::SELECT_ALL_WORKSPACES) {
-			$where .= ((' AND A.t3ver_wsid=' . $wsid) . ' AND C.t3ver_wsid=') . $wsid;
+			$where .= ' AND A.t3ver_wsid=' . $wsid . ' AND C.t3ver_wsid=' . $wsid;
 		} elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid!=0 AND C.t3ver_wsid!=0 ';
 		}
@@ -325,8 +325,8 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		if ($pageList) {
 			$pidField = $table === 'pages' ? 'B.uid' : 'A.pid';
-			$pidConstraint = strstr($pageList, ',') ? (' IN (' . $pageList) . ')' : '=' . $pageList;
-			$where .= (' AND ' . $pidField) . $pidConstraint;
+			$pidConstraint = strstr($pageList, ',') ? ' IN (' . $pageList . ')' : '=' . $pageList;
+			$where .= ' AND ' . $pidField . $pidConstraint;
 		}
 		$where .= ' AND A.t3ver_move_id = B.uid AND B.uid = C.t3ver_oid';
 		$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'A');
@@ -367,7 +367,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		unset($searchObj);
 		if (intval($GLOBALS['TCA']['pages']['ctrl']['versioningWS']) === 2 && $pageList) {
 			// Remove the "subbranch" if a page was moved away
-			$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', ((('t3ver_move_id IN (' . $pageList) . ') AND t3ver_wsid=') . intval($wsid)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages'), '', 'uid', '', 't3ver_move_id');
+			$movedAwayPages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, pid, t3ver_move_id', 'pages', 't3ver_move_id IN (' . $pageList . ') AND t3ver_wsid=' . intval($wsid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages'), '', 'uid', '', 't3ver_move_id');
 			$pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $pageList, TRUE);
 			// move all pages away
 			$newList = array_diff($pageIds, array_keys($movedAwayPages));
@@ -385,7 +385,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			} while ($changed);
 			$pageList = implode(',', $newList);
 			// In case moving pages is enabled we need to replace all move-to pointer with their origin
-			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, t3ver_move_id', 'pages', (('uid IN (' . $pageList) . ')') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages'), '', 'uid', '', 'uid');
+			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, t3ver_move_id', 'pages', 'uid IN (' . $pageList . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages'), '', 'uid', '', 'uid');
 			$newList = array();
 			$pageIds = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $pageList, TRUE);
 			if (!in_array($pageId, $pageIds)) {
@@ -475,7 +475,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		// If the language is not default, check state of overlay
 		if ($language > 0) {
 			$whereClause = 'pid = ' . $id;
-			$whereClause .= ((' AND ' . $GLOBALS['TCA']['sys_language_overlay']['ctrl']['languageField']) . ' = ') . $language;
+			$whereClause .= ' AND ' . $GLOBALS['TCA']['sys_language_overlay']['ctrl']['languageField'] . ' = ' . $language;
 			$whereClause .= ' AND t3ver_wsid = ' . $GLOBALS['BE_USER']->workspace;
 			$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_language_overlay');
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('t3ver_state', 'sys_language_overlay', $whereClause);
@@ -553,7 +553,7 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 			'ADMCMD_prev' => $previewKeyword,
 			'id' => $uid
 		);
-		return (\TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($uid) . '/index.php?') . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $linkParams);
+		return \TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($uid) . '/index.php?' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $linkParams);
 	}
 
 	/**
@@ -579,9 +579,9 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		$redirect = $backPath . 'index.php?redirect_url=';
 		// @todo why do we need these additional params? the URIBuilder should add the controller, but he doesn't :(
 		$additionalParams = '&tx_workspaces_web_workspacesworkspaces%5Bcontroller%5D=Preview&M=web_WorkspacesWorkspaces&id=';
-		$viewScript = ($backPath . $uriBuilder->setArguments(array('tx_workspaces_web_workspacesworkspaces' => array('previewWS' => $GLOBALS['BE_USER']->workspace)))->uriFor('index', array(), 'TYPO3\\CMS\\Workspaces\\Controller\\PreviewController', 'workspaces', 'web_workspacesworkspaces')) . $additionalParams;
+		$viewScript = $backPath . $uriBuilder->setArguments(array('tx_workspaces_web_workspacesworkspaces' => array('previewWS' => $GLOBALS['BE_USER']->workspace)))->uriFor('index', array(), 'TYPO3\\CMS\\Workspaces\\Controller\\PreviewController', 'workspaces', 'web_workspacesworkspaces') . $additionalParams;
 		if ($addDomain === TRUE) {
-			return ((\TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($uid) . $redirect) . urlencode($viewScript)) . $uid;
+			return \TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($uid) . $redirect . urlencode($viewScript) . $uid;
 		} else {
 			return $viewScript;
 		}

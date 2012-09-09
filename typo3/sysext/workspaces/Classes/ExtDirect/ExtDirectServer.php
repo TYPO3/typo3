@@ -141,7 +141,7 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		}
 		foreach ($fieldsOfRecords as $fieldName) {
 			// check for exclude fields
-			if (($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] == 0) || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'], ($parameter->table . ':') . $fieldName)) {
+			if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] == 0 || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['BE_USER']->groupData['non_exclude_fields'], $parameter->table . ':' . $fieldName)) {
 				// call diff class only if there is a difference
 				if (strcmp($liveRecord[$fieldName], $versionRecord[$fieldName]) !== 0) {
 					// Select the human readable values before diff
@@ -216,9 +216,9 @@ class ExtDirectServer extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 */
 	public function getCommentsForRecord($uid, $table) {
 		$sysLogReturnArray = array();
-		$sysLogRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('log_data,tstamp,userid', 'sys_log', (('action=6 and details_nr=30
-				AND tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_log')) . '
-				AND recuid=') . intval($uid), '', 'tstamp DESC');
+		$sysLogRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('log_data,tstamp,userid', 'sys_log', 'action=6 and details_nr=30
+				AND tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_log') . '
+				AND recuid=' . intval($uid), '', 'tstamp DESC');
 		foreach ($sysLogRows as $sysLogRow) {
 			$sysLogEntry = array();
 			$data = unserialize($sysLogRow['log_data']);

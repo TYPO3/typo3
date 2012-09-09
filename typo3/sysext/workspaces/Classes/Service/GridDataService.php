@@ -142,7 +142,7 @@ class GridDataService {
 					}
 					$isDeletedPage = $table == 'pages' && $recordState == 'deleted';
 					$viewUrl = \TYPO3\CMS\Workspaces\Service\WorkspaceService::viewSingleRecord($table, $record['t3ver_oid'], $origRecord);
-					$versionArray['id'] = ($table . ':') . $record['uid'];
+					$versionArray['id'] = $table . ':' . $record['uid'];
 					$versionArray['uid'] = $record['uid'];
 					$versionArray['workspace'] = $versionRecord['t3ver_id'];
 					$versionArray['label_Workspace'] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $versionRecord));
@@ -170,7 +170,7 @@ class GridDataService {
 					);
 					$versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
 					$versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
-					if (($swapAccess && $swapStage != 0) && $versionRecord['t3ver_stage'] == $swapStage) {
+					if ($swapAccess && $swapStage != 0 && $versionRecord['t3ver_stage'] == $swapStage) {
 						$versionArray['allowedAction_swap'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($swapStage);
 					} elseif ($swapAccess && $swapStage == 0) {
 						$versionArray['allowedAction_swap'] = $isRecordTypeAllowedToModify;
@@ -193,7 +193,7 @@ class GridDataService {
 			$this->emitSignal(self::SIGNAL_GenerateDataArray_BeforeCaching, $this->dataArray, $versions);
 			// Enrich elements after everything has been processed:
 			foreach ($this->dataArray as &$element) {
-				$identifier = ($element['table'] . ':') . $element['t3ver_oid'];
+				$identifier = $element['table'] . ':' . $element['t3ver_oid'];
 				$element['integrity'] = array(
 					'status' => $this->getIntegrityService()->getStatusRepresentation($identifier),
 					'messages' => htmlspecialchars($this->getIntegrityService()->getIssueMessages($identifier, TRUE))
@@ -323,7 +323,7 @@ class GridDataService {
 				break;
 			}
 		} else {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(('Try to sort "' . $this->sort) . '" in "TYPO3\\CMS\\Workspaces\\Service\\GridDataService::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.', 3);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Try to sort "' . $this->sort . '" in "TYPO3\\CMS\\Workspaces\\Service\\GridDataService::sortDataArray" but $this->dataArray is empty! This might be the Bug #26422 which could not reproduced yet.', 3);
 		}
 		// Suggested slot method:
 		// methodName(Tx_Workspaces_Service_GridData $gridData, array &$dataArray, $sortColumn, $sortDirection)
@@ -394,7 +394,7 @@ class GridDataService {
 	protected function isFilterTextInVisibleColumns($filterText, array $versionArray) {
 		if (is_array($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'])) {
 			foreach ($GLOBALS['BE_USER']->uc['moduleData']['Workspaces'][$GLOBALS['BE_USER']->workspace]['columns'] as $column => $value) {
-				if ((isset($value['hidden']) && isset($column)) && isset($versionArray[$column])) {
+				if (isset($value['hidden']) && isset($column) && isset($versionArray[$column])) {
 					if ($value['hidden'] == 0) {
 						switch ($column) {
 						case 'workspace_Tstamp':

@@ -506,7 +506,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 				array(
 					'xtype' => 'panel',
 					'bodyStyle' => 'margin-bottom: 7px; border: none;',
-					'html' => ($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.itemsWillBeSentTo') . ' ') . $stageTitle
+					'html' => $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.sendToNextStageWindow.itemsWillBeSentTo') . ' ' . $stageTitle
 				)
 			)
 		);
@@ -640,7 +640,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		// get only the relevant items for processing
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), $currentStage['uid'], $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		return array(
-			'title' => (('Status message: Page send to next stage - ID: ' . $id) . ' - Next stage title: ') . $previousStage['title'],
+			'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $previousStage['title'],
 			'items' => $this->getSentToStageWindow($previousStage['uid']),
 			'affects' => $workspaceItemsArray,
 			'stageId' => $previousStage['uid']
@@ -659,7 +659,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 		// get only the relevant items for processing
 		$workspaceItemsArray = $workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), $currentStage['uid'], $id, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		return array(
-			'title' => (('Status message: Page send to next stage - ID: ' . $id) . ' - Next stage title: ') . $nextStage['title'],
+			'title' => 'Status message: Page send to next stage - ID: ' . $id . ' - Next stage title: ' . $nextStage['title'],
 			'items' => $this->getSentToStageWindow($nextStage['uid']),
 			'affects' => $workspaceItemsArray,
 			'stageId' => $nextStage['uid']

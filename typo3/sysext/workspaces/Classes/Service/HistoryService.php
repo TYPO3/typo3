@@ -145,7 +145,7 @@ class HistoryService implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!isset($this->historyObjects[$table][$id])) {
 			/** @var $historyObject \TYPO3\CMS\Backend\History\RecordHistory */
 			$historyObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\History\\RecordHistory');
-			$historyObject->element = ($table . ':') . $id;
+			$historyObject->element = $table . ':' . $id;
 			$historyObject->createChangeLog();
 			$this->historyObjects[$table][$id] = $historyObject;
 		}

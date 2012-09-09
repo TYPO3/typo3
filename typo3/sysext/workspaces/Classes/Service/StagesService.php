@@ -214,20 +214,20 @@ class StagesService {
 		} else {
 			$stages[] = array(
 				'uid' => self::STAGE_EDIT_ID,
-				'title' => (($GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_editing')) . '"'
+				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_editing') . '"'
 			);
 			$workspaceRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_workspace', $this->getWorkspaceId());
 			if ($workspaceRec['custom_stages'] > 0) {
 				// Get all stage records for this workspace
-				$workspaceStageRecs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', self::TABLE_STAGE, ((('parentid=' . $this->getWorkspaceId()) . ' AND parenttable=') . $GLOBALS['TYPO3_DB']->fullQuoteStr('sys_workspace', self::TABLE_STAGE)) . ' AND deleted=0', '', 'sorting', '', 'uid');
+				$workspaceStageRecs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', self::TABLE_STAGE, 'parentid=' . $this->getWorkspaceId() . ' AND parenttable=' . $GLOBALS['TYPO3_DB']->fullQuoteStr('sys_workspace', self::TABLE_STAGE) . ' AND deleted=0', '', 'sorting', '', 'uid');
 				foreach ($workspaceStageRecs as $stage) {
-					$stage['title'] = (($GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "') . $stage['title']) . '"';
+					$stage['title'] = $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $stage['title'] . '"';
 					$stages[] = $stage;
 				}
 			}
 			$stages[] = array(
 				'uid' => self::STAGE_PUBLISH_ID,
-				'title' => (($GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "') . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xml:stage_ready_to_publish')) . '"'
+				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang_mod.xml:stage_ready_to_publish') . '"'
 			);
 			$stages[] = array(
 				'uid' => self::STAGE_PUBLISH_EXECUTE_ID,
@@ -353,7 +353,7 @@ class StagesService {
 		if ($nextStage === FALSE) {
 			$nextStage[] = array(
 				'uid' => self::STAGE_EDIT_ID,
-				'title' => (($GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_editing')) . '"'
+				'title' => $GLOBALS['LANG']->sL(($this->pathToLocallang . ':actionSendToStage')) . ' "' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_user_ws.xml:stage_editing') . '"'
 			);
 		}
 		return $nextStage;
@@ -486,7 +486,7 @@ class StagesService {
 			break;
 		}
 		if (!empty($userList)) {
-			$userRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames('username, uid, email, realName', ('AND uid IN (' . $userList) . ')');
+			$userRecords = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames('username, uid, email, realName', 'AND uid IN (' . $userList . ')');
 		}
 		if (!empty($userRecords) && is_array($userRecords)) {
 			foreach ($userRecords as $userUid => $userRecord) {
@@ -562,7 +562,7 @@ class StagesService {
 	 * @return void
 	 */
 	private function fetchGroupsFromDB(array $groups) {
-		$whereSQL = ('deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . implode(',', $groups)) . ') ';
+		$whereSQL = 'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . implode(',', $groups) . ') ';
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'be_groups', $whereSQL);
 		// The userGroups array is filled
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -598,7 +598,7 @@ class StagesService {
 						// Make integer list
 						$theList = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $row['subgroup']));
 						// Get the subarray
-						$subbarray = $this->fetchGroups($theList, ($idList . ',') . $uid);
+						$subbarray = $this->fetchGroups($theList, $idList . ',' . $uid);
 						list($subUid, $subArray) = each($subbarray);
 						// Merge the subarray to the already existing userGroups array
 						$this->userGroups[$subUid] = $subArray;
@@ -706,7 +706,7 @@ class StagesService {
 	 * @return bool
 	 */
 	protected function isStageAllowedForUser($stageId) {
-		$cacheKey = ($this->getWorkspaceId() . '_') . $stageId;
+		$cacheKey = $this->getWorkspaceId() . '_' . $stageId;
 		$isAllowed = FALSE;
 		if (isset($this->workspaceStageAllowedCache[$cacheKey])) {
 			$isAllowed = $this->workspaceStageAllowedCache[$cacheKey];
