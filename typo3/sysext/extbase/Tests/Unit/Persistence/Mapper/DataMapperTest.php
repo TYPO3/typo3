@@ -113,7 +113,7 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function fetchRelatedEagerReturnsNullForEmptyRelationHasOne() {
 		$columnMap = new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('columnName', 'propertyName');
 		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_ONE);
-		$dataMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', array('getColumnMap'));
+		$dataMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', array('getColumnMap'), array(), '', FALSE);
 		$dataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($columnMap));
 		$dataMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('getDataMap'));
 		$dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($dataMap));
@@ -129,7 +129,7 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function fetchRelatedEagerReturnsEmptyArrayForEmptyRelationNotHasOne() {
 		$columnMap = new \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap('columnName', 'propertyName');
 		$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_BELONGS_TO_MANY);
-		$dataMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', array('getColumnMap'));
+		$dataMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap', array('getColumnMap'), array(), '', FALSE);
 		$dataMap->expects($this->any())->method('getColumnMap')->will($this->returnValue($columnMap));
 		$dataMapper = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper', array('getDataMap'));
 		$dataMapper->expects($this->any())->method('getDataMap')->will($this->returnValue($dataMap));

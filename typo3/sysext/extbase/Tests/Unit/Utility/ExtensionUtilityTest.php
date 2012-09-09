@@ -32,21 +32,30 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 class ExtensionUtilityTest extends \tx_phpunit_testcase {
 
 	/**
-	 * Contains backup of $TYPO3_CONF_VARS
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
 	 *
 	 * @var array
 	 */
-	protected $typo3ConfVars = array();
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
-	 * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE']
+	 * A backup of the global database
+	 *
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	protected $tsfeBackup;
+	protected $databaseBackup = NULL;
 
 	public function setUp() {
-		$this->typo3ConfVars = $GLOBALS['TYPO3_CONF_VARS'];
+		$this->databaseBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('fullQuoteStr', 'exec_SELECTgetRows'));
-		$this->tsfeBackup = $GLOBALS['TSFE'];
 		if (!isset($GLOBALS['TSFE']->tmpl)) {
 			$GLOBALS['TSFE']->tmpl = new \stdClass();
 		}
@@ -83,8 +92,7 @@ class ExtensionUtilityTest extends \tx_phpunit_testcase {
 	}
 
 	public function tearDown() {
-		$GLOBALS['TYPO3_CONF_VARS'] = $this->typo3ConfVars;
-		$GLOBALS['TSFE'] = $this->tsfeBackup;
+		$GLOBALS['TYPO3_DB'] = $this->databaseBackup;
 	}
 
 	/**
