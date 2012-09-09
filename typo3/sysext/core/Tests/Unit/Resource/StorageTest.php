@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Resource;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,8 +23,9 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 require_once 'vfsStream/vfsStream.php';
-require_once dirname(__FILE__) . '/BaseTestCase.php';
+
 /**
  * Testcase for the VFS mount class
  *
@@ -30,7 +33,7 @@ require_once dirname(__FILE__) . '/BaseTestCase.php';
  * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
-class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
+class StorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage
@@ -38,8 +41,11 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 	private $fixture;
 
 	/**
+	 * Prepare fixture
+	 *
 	 * @param array $configuration
-	 * @param bool $mockPermissionChecks
+	 * @param boolean $mockPermissionChecks
+	 * @return void
 	 */
 	protected function prepareFixture($configuration, $mockPermissionChecks = FALSE, $driverObject = NULL, array $storageRecord = array()) {
 		$permissionMethods = array('isFileActionAllowed', 'isFolderActionAllowed', 'checkFileActionPermission', 'checkUserActionPermission');
@@ -99,8 +105,8 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 		if ($mockedDriverMethods === NULL) {
 			$driver = new \TYPO3\CMS\Core\Resource\Driver\LocalDriver($driverConfiguration);
 		} else {
-			// we are using the LocalDriver here because PHPUnit can't mock concrete methods in abstract classes, so
-			// when using the AbstractDriver we would be in trouble when wanting to mock away some concrete method
+				// We are using the LocalDriver here because PHPUnit can't mock concrete methods in abstract classes, so
+				// when using the AbstractDriver we would be in trouble when wanting to mock away some concrete method
 			$driver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver', $mockedDriverMethods, array($driverConfiguration));
 		}
 		$storageObject->setDriver($driver);
@@ -261,13 +267,13 @@ class t3lib_file_StorageTest extends t3lib_file_BaseTestCase {
 	 * @dataProvider checkFolderPermissionsFilesystemPermissions_dataProvider
 	 * @param string $action 'read' or 'write'
 	 * @param array $permissionsFromDriver The permissions as returned from the driver
-	 * @param bool $expectedException
+	 * @param boolean $expectedException
 	 */
 	public function checkFolderPermissionsRespectsFilesystemPermissions($action, $permissionsFromDriver, $expectedException) {
 		$mockedDriver = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver');
 		$mockedDriver->expects($this->any())->method('getFolderPermissions')->will($this->returnValue($permissionsFromDriver));
 		$mockedFolder = $this->getMock('TYPO3\\CMS\\Core\\Resource\\Folder', array(), array(), '', FALSE);
-		// let all other checks pass
+			// Let all other checks pass
 		/** @var $fixture \TYPO3\CMS\Core\Resource\ResourceStorage */
 		$fixture = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array('isWritable', 'isBrowsable', 'checkUserActionPermission'), array($mockedDriver, array()), '', FALSE);
 		$fixture->expects($this->any())->method('isWritable')->will($this->returnValue(TRUE));

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Resource;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,6 +26,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Basic test case for the t3lib_file tests
  *
@@ -31,8 +34,11 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
+abstract class BaseTestCase extends \Tx_Phpunit_TestCase {
 
+	/**
+	 * @var string
+	 */
 	protected $basedir = 'basedir';
 
 	protected $mountDir;
@@ -42,7 +48,7 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 	public function setUp() {
 		$this->mountDir = uniqid('mount-');
 		$this->basedir = uniqid('base-');
-		vfsStream::setup($this->basedir);
+		\vfsStream::setup($this->basedir);
 		// Add an entry for the mount directory to the VFS contents
 		$this->vfsContents = array($this->mountDir => array());
 	}
@@ -59,7 +65,7 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 		if (is_callable('vfsStream::create') === FALSE) {
 			$this->markTestSkipped('vfsStream::create() does not exist');
 		}
-		vfsStream::create($this->vfsContents);
+		\vfsStream::create($this->vfsContents);
 	}
 
 	/**
@@ -79,7 +85,7 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 	 * @return string
 	 */
 	protected function getUrlInMount($path) {
-		return vfsStream::url(((($this->basedir . '/') . $this->mountDir) . '/') . ltrim($path, '/'));
+		return \vfsStream::url(((($this->basedir . '/') . $this->mountDir) . '/') . ltrim($path, '/'));
 	}
 
 	/**
@@ -99,7 +105,7 @@ abstract class t3lib_file_BaseTestCase extends Tx_Phpunit_TestCase {
 	 * @return string
 	 */
 	protected function getUrl($path) {
-		return vfsStream::url(($this->basedir . '/') . ltrim($path, '/'));
+		return \vfsStream::url(($this->basedir . '/') . ltrim($path, '/'));
 	}
 
 	/**

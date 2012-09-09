@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +31,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_pageselectTest extends tx_phpunit_testcase {
+class PageRepositoryTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
