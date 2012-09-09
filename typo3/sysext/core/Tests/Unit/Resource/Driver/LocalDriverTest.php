@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -36,8 +38,11 @@ require_once dirname(__FILE__) . '/Fixtures/LocalDriverFilenameFilter.php';
  * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
-class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
+class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 
+	/**
+	 * @var array
+	 */
 	static private $testDirs = array();
 
 	public function setUp() {
@@ -226,7 +231,7 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	public function driverConfigVerificationFailsIfConfiguredBasePathDoesNotExist() {
 		$this->setExpectedException('TYPO3\\CMS\\Core\\Resource\\Exception\\InvalidConfigurationException', '', 1299233097);
 		$driverConfiguration = array(
-			'basePath' => vfsStream::url($this->basedir . 'doesntexist/')
+			'basePath' => \vfsStream::url($this->basedir . 'doesntexist/')
 		);
 		$this->assertFalse(file_exists($driverConfiguration['basePath']));
 		\TYPO3\CMS\Core\Resource\Driver\LocalDriver::verifyConfiguration($driverConfiguration);
@@ -748,7 +753,7 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 	static public function callbackStaticTestFunction() {
 		list($itemName) = func_get_args();
 		if ($itemName === 'file2') {
-			throw new InvalidArgumentException('$itemName', 1336159604);
+			throw new \InvalidArgumentException('$itemName', 1336159604);
 		}
 	}
 
@@ -768,7 +773,10 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 			array('getMimeTypeOfFile')
 		);
 		$filterCallbacks = array(
-			array('t3lib_file_Tests_Driver_Fixtures_LocalDriverFilenameFilter', 'filterFilename')
+			array(
+				'TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\LocalDriverFilenameFilter',
+				'filterFilename',
+			),
 		);
 		$fileList = $fixture->getFileList('/', 0, 0, $filterCallbacks);
 		$this->assertNotContains('fileA', array_keys($fileList));
@@ -858,7 +866,10 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 			'basePath' => $this->getMountRootUrl()
 		));
 		$filterCallbacks = array(
-			array('t3lib_file_Tests_Driver_Fixtures_LocalDriverFilenameFilter', 'filterFilename')
+			array(
+				'TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures\LocalDriverFilenameFilter',
+				'filterFilename',
+			),
 		);
 		$folderList = $fixture->getFolderList('/', 0, 0, $filterCallbacks);
 		$this->assertNotContains('folderA', array_keys($folderList));
@@ -872,7 +883,7 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		$fixture = $this->createDriverFixture(array(
 			'basePath' => $this->getMountRootUrl()
 		));
-		vfsStream::create(array($this->basedir => array('somefile' => '')));
+		\vfsStream::create(array($this->basedir => array('somefile' => '')));
 		$fixture->getFolderList('somedir/');
 	}
 
@@ -1043,17 +1054,17 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 		}
 		$data = array_merge_recursive($data, array(
 			'arbitrary group, readable/writable' => array(
-				vfsStream::GROUP_USER_1,
+				\vfsStream::GROUP_USER_1,
 				6,
 				array('r' => TRUE, 'w' => TRUE)
 			),
 			'arbitrary group, readable/not writable' => array(
-				vfsStream::GROUP_USER_1,
+				\vfsStream::GROUP_USER_1,
 				436,
 				array('r' => TRUE, 'w' => FALSE)
 			),
 			'arbitrary group, not readable/not writable' => array(
-				vfsStream::GROUP_USER_1,
+				\vfsStream::GROUP_USER_1,
 				432,
 				array('r' => FALSE, 'w' => FALSE)
 			)
@@ -1073,9 +1084,9 @@ class t3lib_file_Driver_LocalDriverTest extends t3lib_file_BaseTestCase {
 			'basePath' => $this->getMountRootUrl()
 		));
 		/** @var $fileObject vfsStreamContent */
-		$fileObject = vfsStreamWrapper::getRoot()->getChild($this->mountDir)->getChild('testfile');
+		$fileObject = \vfsStreamWrapper::getRoot()->getChild($this->mountDir)->getChild('testfile');
 		// just use an "arbitrary" user here - it is only important that
-		$fileObject->chown(vfsStream::OWNER_USER_1);
+		$fileObject->chown(\vfsStream::OWNER_USER_1);
 		$fileObject->chgrp($group);
 		$fileObject->chmod($permissions);
 		$this->assertEquals($expectedResult, $fixture->getFilePermissions($this->getSimpleFileMock('/testfile')));

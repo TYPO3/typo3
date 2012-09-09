@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Resource;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,7 +26,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 require_once 'vfsStream/vfsStream.php';
+
 /**
  * Testcase for the storage collection class of the TYPO3 FAL
  *
@@ -32,12 +36,12 @@ require_once 'vfsStream/vfsStream.php';
  * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
-class t3lib_file_FolderTest extends Tx_Phpunit_TestCase {
+class FolderTest extends \Tx_Phpunit_TestCase {
 
 	private $basedir = 'basedir';
 
 	public function setUp() {
-		vfsStream::setup($this->basedir);
+		\vfsStream::setup($this->basedir);
 	}
 
 	protected function tearDown() {
