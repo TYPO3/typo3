@@ -155,7 +155,11 @@ class t3lib_l10n_parser_Llphp implements t3lib_l10n_parser {
 		}
 
 		// Cache the content now:
-		$serContent = array('origFile' => $this->hashSource, 'LOCAL_LANG' => array('default' => $LOCAL_LANG['default'], $languageKey => $LOCAL_LANG[$languageKey]));
+		if (isset($LOCAL_LANG[$languageKey])) {
+			$serContent = array('origFile' => $this->hashSource, 'LOCAL_LANG' => array('default' => $LOCAL_LANG['default'], $languageKey => $LOCAL_LANG[$languageKey]));
+		} else {
+			$serContent = array('origFile' => $this->hashSource, 'LOCAL_LANG' => array('default' => $LOCAL_LANG['default']));
+		}
 		$res = t3lib_div::writeFileToTypo3tempDir($this->cacheFileName, serialize($serContent));
 		if ($res) {
 			throw new RuntimeException(
