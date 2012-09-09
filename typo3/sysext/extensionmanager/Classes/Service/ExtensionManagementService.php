@@ -179,9 +179,12 @@ class ExtensionManagementService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function installDependencies(array $installQueue) {
 		$resolvedDependencies = array();
-		foreach ($installQueue as $extensionToInstall) {
-			$this->installUtility->install($extensionToInstall);
-			$resolvedDependencies['installed'][$extensionToInstall] = $extensionToInstall;
+		foreach ($installQueue as $extensionKey => $extensionDetails) {
+			$this->installUtility->install($extensionDetails);
+			if (!is_array($resolvedDependencies['installed'])) {
+				$resolvedDependencies['installed'] = array();
+			}
+			$resolvedDependencies['installed'][$extensionKey] = $extensionDetails;
 		}
 		return $resolvedDependencies;
 	}
