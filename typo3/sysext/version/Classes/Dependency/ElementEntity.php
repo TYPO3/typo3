@@ -191,7 +191,7 @@ class ElementEntity {
 	public function getChildren() {
 		if (!isset($this->children)) {
 			$this->children = array();
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', (('tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex')) . ' AND recuid=') . $this->id);
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') . ' AND recuid=' . $this->id);
 			if (is_array($rows)) {
 				foreach ($rows as $row) {
 					$reference = $this->getDependency()->getFactory()->getReferencedElement($row['ref_table'], $row['ref_uid'], $row['field'], array(), $this->getDependency());
@@ -213,7 +213,7 @@ class ElementEntity {
 	public function getParents() {
 		if (!isset($this->parents)) {
 			$this->parents = array();
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', (('ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex')) . ' AND deleted=0 AND ref_uid=') . $this->id);
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->table, 'sys_refindex') . ' AND deleted=0 AND ref_uid=' . $this->id);
 			if (is_array($rows)) {
 				foreach ($rows as $row) {
 					$reference = $this->getDependency()->getFactory()->getReferencedElement($row['tablename'], $row['recuid'], $row['field'], array(), $this->getDependency());
@@ -288,7 +288,7 @@ class ElementEntity {
 	 * @return string
 	 */
 	static public function getIdentifier($table, $id) {
-		return ($table . ':') . $id;
+		return $table . ':' . $id;
 	}
 
 	/**

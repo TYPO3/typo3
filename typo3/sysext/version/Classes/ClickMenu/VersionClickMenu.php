@@ -44,16 +44,16 @@ class VersionClickMenu {
 	 */
 	public function main(&$backRef, $menuItems, $table, $uid) {
 		$localItems = array();
-		if ((!$backRef->cmLevel && $uid > 0) && $GLOBALS['BE_USER']->check('modules', 'web_txversionM1')) {
+		if (!$backRef->cmLevel && $uid > 0 && $GLOBALS['BE_USER']->check('modules', 'web_txversionM1')) {
 			// Returns directly, because the clicked item was not from the pages table
-			if ((in_array('versioning', $backRef->disabledItems) || !$GLOBALS['TCA'][$table]) || !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
+			if (in_array('versioning', $backRef->disabledItems) || !$GLOBALS['TCA'][$table] || !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 				return $menuItems;
 			}
 			// Adds the regular item
 			$LL = $this->includeLL();
 			// "Versioning" element added:
-			$url = (((\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('version') . 'cm1/index.php?table=') . rawurlencode($table)) . '&uid=') . $uid;
-			$localItems[] = $backRef->linkItem($GLOBALS['LANG']->getLLL('title', $LL), $backRef->excludeIcon((('<img src="' . $backRef->backPath) . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('version')) . 'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'), $backRef->urlRefForCM($url), 1);
+			$url = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('version') . 'cm1/index.php?table=' . rawurlencode($table) . '&uid=' . $uid;
+			$localItems[] = $backRef->linkItem($GLOBALS['LANG']->getLLL('title', $LL), $backRef->excludeIcon('<img src="' . $backRef->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('version') . 'cm1/cm_icon.gif" width="15" height="12" border="0" align="top" alt="" />'), $backRef->urlRefForCM($url), 1);
 			// "Send to review" element added:
 			/*
 			$url = t3lib_extMgm::extRelPath('version').'cm1/index.php?id='.($table=='pages'?$uid:$backRef->rec['pid']).'&table='.rawurlencode($table).'&uid='.$uid.'&sendToReview=1';

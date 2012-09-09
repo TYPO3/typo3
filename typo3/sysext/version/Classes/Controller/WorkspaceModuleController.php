@@ -93,7 +93,7 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				0 => $GLOBALS['LANG']->getLL('filter_all')
 			),
 			'display' => array(
-				0 => ('[' . $GLOBALS['LANG']->getLL('shortcut_onlineWS')) . ']',
+				0 => '[' . $GLOBALS['LANG']->getLL('shortcut_onlineWS') . ']',
 				-98 => $GLOBALS['LANG']->getLL('label_offlineWSes'),
 				-99 => $GLOBALS['LANG']->getLL('label_allWSes')
 			),
@@ -106,7 +106,7 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		);
 		// check if draft workspace was enabled, and if the user has access to it
 		if ($this->showDraftWorkspace === TRUE && $GLOBALS['BE_USER']->checkWorkspace(array('uid' => -1))) {
-			$this->MOD_MENU['display'][-1] = ('[' . $GLOBALS['LANG']->getLL('shortcut_offlineWS')) . ']';
+			$this->MOD_MENU['display'][-1] = '[' . $GLOBALS['LANG']->getLL('shortcut_offlineWS') . ']';
 		}
 		// Add workspaces:
 		if ($GLOBALS['BE_USER']->workspace === 0) {
@@ -114,7 +114,7 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$workspaces = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title,adminusers,members,reviewers', 'sys_workspace', 'pid = 0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_workspace'), '', 'title');
 			foreach ($workspaces as $rec) {
 				if ($GLOBALS['BE_USER']->checkWorkspace($rec)) {
-					$this->MOD_MENU['display'][$rec['uid']] = (('[' . $rec['uid']) . '] ') . htmlspecialchars($rec['title']);
+					$this->MOD_MENU['display'][$rec['uid']] = '[' . $rec['uid'] . '] ' . htmlspecialchars($rec['title']);
 				}
 			}
 		}
@@ -239,7 +239,7 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$changeWorkspace = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('changeWorkspace');
 		if ($changeWorkspace != '') {
 			$GLOBALS['BE_USER']->setWorkspace($changeWorkspace);
-			$this->content .= $this->doc->wrapScriptTags((('top.location.href="' . $GLOBALS['BACK_PATH']) . \TYPO3\CMS\Backend\Utility\BackendUtility::getBackendScript()) . '";');
+			$this->content .= $this->doc->wrapScriptTags('top.location.href="' . $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Backend\Utility\BackendUtility::getBackendScript() . '";');
 		} else {
 			// Starting page:
 			$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
@@ -298,7 +298,7 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$newWkspUrl = 'workspaceforms.php?action=new';
 		// workspace creation link
 		if ($GLOBALS['BE_USER']->isAdmin() || 0 != ($GLOBALS['BE_USER']->groupData['workspace_perms'] & 4)) {
-			$buttons['new_record'] = ((((((('<a href="' . $newWkspUrl) . '">') . '<img ') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/add_workspaces.gif')) . ' alt="') . $GLOBALS['LANG']->getLL('img_title_create_new_workspace')) . '" id="ver-wl-new-workspace-icon" />') . '</a>';
+			$buttons['new_record'] = '<a href="' . $newWkspUrl . '">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/add_workspaces.gif') . ' alt="' . $GLOBALS['LANG']->getLL('img_title_create_new_workspace') . '" id="ver-wl-new-workspace-icon" />' . '</a>';
 		}
 		return $buttons;
 	}
@@ -326,26 +326,26 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		}
 		$menu .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(0, 'SET[diff]', $this->MOD_SETTINGS['diff'], $this->MOD_MENU['diff']);
 		if ($GLOBALS['BE_USER']->workspace !== 0) {
-			$menu .= ((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck(0, 'SET[expandSubElements]', $this->MOD_SETTINGS['expandSubElements'], '', '', 'id="checkExpandSubElements"') . ' <label for="checkExpandSubElements">') . $GLOBALS['LANG']->getLL('label_showsubelements')) . '</label> ';
+			$menu .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck(0, 'SET[expandSubElements]', $this->MOD_SETTINGS['expandSubElements'], '', '', 'id="checkExpandSubElements"') . ' <label for="checkExpandSubElements">' . $GLOBALS['LANG']->getLL('label_showsubelements') . '</label> ';
 		}
 		// Create header:
 		$title = '';
 		$description = '';
 		switch ($GLOBALS['BE_USER']->workspace) {
 		case 0:
-			$title = ((\TYPO3\CMS\Backend\Utility\IconUtility::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"') . '[') . $GLOBALS['LANG']->getLL('shortcut_onlineWS')) . ']';
+			$title = \TYPO3\CMS\Backend\Utility\IconUtility::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"') . '[' . $GLOBALS['LANG']->getLL('shortcut_onlineWS') . ']';
 			$description = $GLOBALS['LANG']->getLL('workspace_description_live');
 			break;
 		case -1:
-			$title = ((\TYPO3\CMS\Backend\Utility\IconUtility::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"') . '[') . $GLOBALS['LANG']->getLL('shortcut_offlineWS')) . ']';
+			$title = \TYPO3\CMS\Backend\Utility\IconUtility::getIconImage('sys_workspace', array(), $this->doc->backPath, ' align="top"') . '[' . $GLOBALS['LANG']->getLL('shortcut_offlineWS') . ']';
 			$description = $GLOBALS['LANG']->getLL('workspace_description_draft');
 			break;
 		case -99:
-			$title = (($this->doc->icons(3) . '[') . $GLOBALS['LANG']->getLL('shortcut_noWSfound')) . ']';
+			$title = $this->doc->icons(3) . '[' . $GLOBALS['LANG']->getLL('shortcut_noWSfound') . ']';
 			$description = $GLOBALS['LANG']->getLL('workspace_description_no_access');
 			break;
 		default:
-			$title = (((\TYPO3\CMS\Backend\Utility\IconUtility::getIconImage('sys_workspace', $GLOBALS['BE_USER']->workspaceRec, $this->doc->backPath, ' align="top"') . '[') . $GLOBALS['BE_USER']->workspace) . '] ') . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('sys_workspace', $GLOBALS['BE_USER']->workspaceRec, TRUE);
+			$title = \TYPO3\CMS\Backend\Utility\IconUtility::getIconImage('sys_workspace', $GLOBALS['BE_USER']->workspaceRec, $this->doc->backPath, ' align="top"') . '[' . $GLOBALS['BE_USER']->workspace . '] ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('sys_workspace', $GLOBALS['BE_USER']->workspaceRec, TRUE);
 			$description = $GLOBALS['BE_USER']->workspaceRec['description'];
 			break;
 		}
@@ -354,10 +354,10 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		if ($GLOBALS['BE_USER']->workspace !== 0) {
 			if ($this->publishAccess) {
 				$confirmation = $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1 ? 'submit_publish_workspace_confirmation_1' : 'submit_publish_workspace_confirmation_2'));
-				$actionLinks .= ((('<input type="submit" name="_publish" value="' . $GLOBALS['LANG']->getLL('submit_publish_workspace')) . '" onclick="if (confirm(') . $confirmation) . ')) window.location.href=\'publish.php?swap=0\';return false"/>';
+				$actionLinks .= '<input type="submit" name="_publish" value="' . $GLOBALS['LANG']->getLL('submit_publish_workspace') . '" onclick="if (confirm(' . $confirmation . ')) window.location.href=\'publish.php?swap=0\';return false"/>';
 				if ($GLOBALS['BE_USER']->workspaceSwapAccess()) {
 					$confirmation = $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL($GLOBALS['BE_USER']->workspaceRec['publish_access'] & 1 ? 'submit_swap_workspace_confirmation_1' : 'submit_swap_workspace_confirmation_2'));
-					$actionLinks .= ((('<input type="submit" name="_swap" value="' . $GLOBALS['LANG']->getLL('submit_swap_workspace')) . '" onclick="if (confirm(') . $confirmation) . ')) window.location.href=\'publish.php?swap=1\';return false ;" />';
+					$actionLinks .= '<input type="submit" name="_swap" value="' . $GLOBALS['LANG']->getLL('submit_swap_workspace') . '" onclick="if (confirm(' . $confirmation . ')) window.location.href=\'publish.php?swap=1\';return false ;" />';
 				}
 			} else {
 				$actionLinks .= $this->doc->icons(1) . $GLOBALS['LANG']->getLL('no_publish_permission');
@@ -366,32 +366,32 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('_previewLink')) {
 				$ttlHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));
 				$ttlHours = $ttlHours ? $ttlHours : 24 * 2;
-				$previewUrl = (((\TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($this->id) . '/index.php?ADMCMD_prev=') . \TYPO3\CMS\Backend\Utility\BackendUtility::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], (60 * 60) * $ttlHours, $GLOBALS['BE_USER']->workspace)) . '&id=') . intval($GLOBALS['BE_USER']->workspaceRec['db_mountpoints']);
-				$actionLinks .= ((((('<br />Any user can browse the workspace frontend using this link for the next ' . $ttlHours) . ' hours (does not require backend login):<br /><br /><a target="_blank" href="') . htmlspecialchars($previewUrl)) . '">') . $previewUrl) . '</a>';
+				$previewUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($this->id) . '/index.php?ADMCMD_prev=' . \TYPO3\CMS\Backend\Utility\BackendUtility::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], 60 * 60 * $ttlHours, $GLOBALS['BE_USER']->workspace) . '&id=' . intval($GLOBALS['BE_USER']->workspaceRec['db_mountpoints']);
+				$actionLinks .= '<br />Any user can browse the workspace frontend using this link for the next ' . $ttlHours . ' hours (does not require backend login):<br /><br /><a target="_blank" href="' . htmlspecialchars($previewUrl) . '">' . $previewUrl . '</a>';
 			} else {
 				$actionLinks .= '<input type="submit" name="_previewLink" value="Generate Workspace Preview Link" />';
 			}
 		}
 		$wsAccess = $GLOBALS['BE_USER']->checkWorkspace($GLOBALS['BE_USER']->workspaceRec);
 		// Add header to content variable:
-		$content = (((((('
+		$content = '
 		<table border="0" cellpadding="0" cellspacing="0" id="t3-user-ws-wsinfotable" class="t3-table t3-table-info">
 			<tr>
-				<td class="t3-col-header" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('label_workspace')) . '&nbsp;</th>
-				<td nowrap="nowrap">') . $title) . '</td>
+				<td class="t3-col-header" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('label_workspace') . '&nbsp;</th>
+				<td nowrap="nowrap">' . $title . '</td>
 			</tr>
-			<tr>') . ($description ? ((('
-				<td class="t3-col-header" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('label_description')) . '&nbsp;</td>
-				<td>') . $description) . '</td>
-			</tr>' : '')) . ($GLOBALS['BE_USER']->workspace != -99 && !$details ? (((((((((('
+			<tr>' . ($description ? '
+				<td class="t3-col-header" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('label_description') . '&nbsp;</td>
+				<td>' . $description . '</td>
+			</tr>' : '') . ($GLOBALS['BE_USER']->workspace != -99 && !$details ? '
 			<tr>
-				<td class="t3-col-header" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('label_options')) . '&nbsp;</td>
-				<td>') . $menu) . $actionLinks) . '</td>
+				<td class="t3-col-header" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('label_options') . '&nbsp;</td>
+				<td>' . $menu . $actionLinks . '</td>
 			</tr>
 			<tr>
-				<td class="t3-col-header" nowrap="nowrap">') . $GLOBALS['LANG']->getLL('label_status')) . '&nbsp;</td>
-				<td>') . $GLOBALS['LANG']->getLL('label_access_level')) . ' ') . $GLOBALS['LANG']->getLL(('workspace_list_access_' . $wsAccess['_ACCESS']))) . '</td>
-			</tr>' : '')) . '
+				<td class="t3-col-header" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('label_status') . '&nbsp;</td>
+				<td>' . $GLOBALS['LANG']->getLL('label_access_level') . ' ' . $GLOBALS['LANG']->getLL(('workspace_list_access_' . $wsAccess['_ACCESS'])) . '</td>
+			</tr>' : '') . '
 		</table>
 		<br />
 		';
@@ -416,7 +416,7 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * @todo Define visibility
 	 */
 	public function displayVersionDetails($details) {
-		return ('TODO: Show details for version "' . $details) . '"<hr/><a href="index.php">BACK</a>';
+		return 'TODO: Show details for version "' . $details . '"<hr/><a href="index.php">BACK</a>';
 	}
 
 	/**
@@ -483,12 +483,12 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			// (2) Information about workspace (initially hidden)
 			$cssClass = $currentWksp ? 't3-row t3-row-active bgColor3' : 't3-row bgColor4';
 			// Start first row
-			$content .= ('<tr class="' . $cssClass) . '">';
+			$content .= '<tr class="' . $cssClass . '">';
 			// row #1, column #1: expand icon
-			$content .= (((('<td>' . '<a href="javascript:expandCollapse(') . $rowNum) . ')">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-table-expand', array(
+			$content .= '<td>' . '<a href="javascript:expandCollapse(' . $rowNum . ')">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-table-expand', array(
 				'title' => $GLOBALS['LANG']->getLL('img_title_show_more'),
 				'id' => ('spanw1_' . $rowNum)
-			))) . '</a></td>';
+			)) . '</a></td>';
 			// row #1, column #2: icon panel
 			$content .= '<td nowrap="nowrap">';
 			// Mozilla Firefox will attempt wrap due to `width="1"` on topmost column
@@ -497,16 +497,16 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			// row #1, column #3: current workspace indicator
 			$content .= '<td nowrap="nowrap" style="text-align: center">';
 			// Mozilla Firefox will attempt wrap due to `width="1"` on topmost column
-			$content .= !$currentWksp ? '&nbsp;' : ((((('<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_ok.gif', 'width="18" height="16"')) . ' id="wl_') . $rowNum) . 'i" border="0" hspace="1" alt="') . $GLOBALS['LANG']->getLL('img_title_current_workspace')) . '" />';
+			$content .= !$currentWksp ? '&nbsp;' : '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_ok.gif', 'width="18" height="16"') . ' id="wl_' . $rowNum . 'i" border="0" hspace="1" alt="' . $GLOBALS['LANG']->getLL('img_title_current_workspace') . '" />';
 			$content .= '</td>';
 			// row #1, column #4 and 5: title and description
-			$content .= (((('<td nowrap="nowrap">' . htmlspecialchars($wksp['title'])) . '</td>') . '<td>') . nl2br(htmlspecialchars($wksp['description']))) . '</td>';
+			$content .= '<td nowrap="nowrap">' . htmlspecialchars($wksp['title']) . '</td>' . '<td>' . nl2br(htmlspecialchars($wksp['description'])) . '</td>';
 			$content .= '</tr>';
 			// row #2, column #1 and #2
-			$content .= ('<tr id="wl_' . $rowNum) . '" class="bgColor" style="display: none">';
+			$content .= '<tr id="wl_' . $rowNum . '" class="bgColor" style="display: none">';
 			$content .= '<td colspan="2" style="border-right: none;">&nbsp;</td>';
 			// row #2, column #3, #4 and #4
-			$content .= ('<td colspan="3" style="border-left: none;">' . $this->workspaceList_formatWorkspaceData($wksp)) . '</td>';
+			$content .= '<td colspan="3" style="border-left: none;">' . $this->workspaceList_formatWorkspaceData($wksp) . '</td>';
 			$content .= '</tr>';
 			$rowNum++;
 		}
@@ -557,13 +557,13 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 * @todo Define visibility
 	 */
 	public function workspaceList_formatWorkspaceData(&$wksp) {
-		$content = ((((((((((('<table cellspacing="0" cellpadding="0" width="100%" class="ver-wl-details-table">' . '<tr><td class="ver-wl-details-label"><strong>') . $GLOBALS['LANG']->getLL('workspace_list_label_file_mountpoints')) . '</strong></td>') . '<td class="ver-wl-details">') . $this->workspaceList_getFileMountPoints($wksp)) . '</td></tr>') . '<tr><td class="ver-wl-details-label"><strong>') . $GLOBALS['LANG']->getLL('workspace_list_label_db_mountpoints')) . '</strong></td>') . '<td class="ver-wl-details">') . $this->workspaceList_getWebMountPoints($wksp)) . '</td></tr>';
+		$content = '<table cellspacing="0" cellpadding="0" width="100%" class="ver-wl-details-table">' . '<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_file_mountpoints') . '</strong></td>' . '<td class="ver-wl-details">' . $this->workspaceList_getFileMountPoints($wksp) . '</td></tr>' . '<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_db_mountpoints') . '</strong></td>' . '<td class="ver-wl-details">' . $this->workspaceList_getWebMountPoints($wksp) . '</td></tr>';
 		if ($wksp['uid'] > 0) {
 			// Displaying information below makes sence only for custom workspaces
-			$content .= (((((((((((((((((((((((((((('<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_frozen')) . '</strong></td>') . '<td class="ver-wl-details">') . $GLOBALS['LANG']->getLL(($wksp['freeze'] ? 'workspace_list_label_frozen_yes' : 'workspace_list_label_frozen_no'))) . '</td></tr>') . '<tr><td class="ver-wl-details-label"><strong>') . $GLOBALS['LANG']->getLL('workspace_list_label_publish_date')) . '</strong></td>') . '<td class="ver-wl-details">') . ($wksp['publish_time'] == 0 ? '&nbsp;&ndash;' : \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($wksp['publish_time']))) . '</td></tr>') . '<tr><td class="ver-wl-details-label"><strong>') . $GLOBALS['LANG']->getLL('workspace_list_label_unpublish_date')) . '</strong></td>') . '<td class="ver-wl-details">') . ($wksp['unpublish_time'] == 0 ? '&nbsp;&ndash;' : \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($wksp['unpublish_time']))) . '</td></tr>') . '<tr><td class="ver-wl-details-label"><strong>') . $GLOBALS['LANG']->getLL('workspace_list_label_your_access')) . '</strong></td>') . '<td class="ver-wl-details">') . $GLOBALS['LANG']->getLL(('workspace_list_access_' . $wksp['_ACCESS']))) . '</td></tr>') . '<tr><td class="ver-wl-details-label"><strong>') . $GLOBALS['LANG']->getLL('workspace_list_label_workspace_users')) . '</strong></td>') . '<td class="ver-wl-details">') . $this->workspaceList_getUserList($wksp)) . '</td></tr>';
+			$content .= '<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_frozen') . '</strong></td>' . '<td class="ver-wl-details">' . $GLOBALS['LANG']->getLL(($wksp['freeze'] ? 'workspace_list_label_frozen_yes' : 'workspace_list_label_frozen_no')) . '</td></tr>' . '<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_publish_date') . '</strong></td>' . '<td class="ver-wl-details">' . ($wksp['publish_time'] == 0 ? '&nbsp;&ndash;' : \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($wksp['publish_time'])) . '</td></tr>' . '<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_unpublish_date') . '</strong></td>' . '<td class="ver-wl-details">' . ($wksp['unpublish_time'] == 0 ? '&nbsp;&ndash;' : \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($wksp['unpublish_time'])) . '</td></tr>' . '<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_your_access') . '</strong></td>' . '<td class="ver-wl-details">' . $GLOBALS['LANG']->getLL(('workspace_list_access_' . $wksp['_ACCESS'])) . '</td></tr>' . '<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_workspace_users') . '</strong></td>' . '<td class="ver-wl-details">' . $this->workspaceList_getUserList($wksp) . '</td></tr>';
 		} elseif ($GLOBALS['BE_USER']->isAdmin()) {
 			// show users for draft/live workspace only to admin users
-			$content .= (((('<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_workspace_users')) . '</strong></td>') . '<td class="ver-wl-details">') . $this->workspaceList_getUserList($wksp)) . '</td></tr>';
+			$content .= '<tr><td class="ver-wl-details-label"><strong>' . $GLOBALS['LANG']->getLL('workspace_list_label_workspace_users') . '</strong></td>' . '<td class="ver-wl-details">' . $this->workspaceList_getUserList($wksp) . '</td></tr>';
 		}
 		$content .= '</table>';
 		return $content;
@@ -599,11 +599,11 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$filteredMountpoints = array_intersect($userMountpoints, $workspaceMountpoints);
 			$mountpointList = implode(',', $filteredMountpoints);
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', ('deleted = 0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($mountpointList)) . ')', '', 'title');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'deleted = 0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($mountpointList) . ')', '', 'title');
 		$content = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			// will show UID on hover. Just convinient to user.
-			$content[] = ((((\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $row) . '<span title="UID: ') . $row['uid']) . '">') . $row['title']) . '</span>';
+			$content[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $row) . '<span title="UID: ' . $row['uid'] . '">' . $row['title'] . '</span>';
 		}
 		if (count($content)) {
 			return implode('<br />', $content);
@@ -643,11 +643,11 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$filteredMountpoints = array_intersect($userMountpoints, $workspaceMountpoints);
 			$mountpointList = implode(',', $filteredMountpoints);
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', ('deleted = 0 AND hidden=0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($mountpointList)) . ')', '', 'title');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', 'deleted = 0 AND hidden=0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($mountpointList) . ')', '', 'title');
 		$content = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			// will show UID on hover. Just convinient to user.
-			$content[] = ((((\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_filemounts', $row) . '<span title="UID: ') . $row['uid']) . '">') . $row['title']) . '</span>';
+			$content[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_filemounts', $row) . '<span title="UID: ' . $row['uid'] . '">' . $row['title'] . '</span>';
 		}
 		if (count($content)) {
 			return implode('<br />', $content);
@@ -666,13 +666,13 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	 */
 	public function workspaceList_displayUserWorkspaceListHeader() {
 		// TODO CSH lables?
-		return ((((('<table border="0" cellpadding="0" cellspacing="0" class="workspace-overview">
+		return '<table border="0" cellpadding="0" cellspacing="0" class="workspace-overview">
 			<tr class="t3-row-header">
 				<td width="1">&nbsp;</td>
 				<td width="1">&nbsp;</td>
-				<td nowrap="nowrap">' . $GLOBALS['LANG']->getLL('workspace_list_label_current_workspace')) . '</td>
-				<td nowrap="nowrap">') . $GLOBALS['LANG']->getLL('workspace_list_label_workspace_title')) . '</td>
-				<td nowrap="nowrap">') . $GLOBALS['LANG']->getLL('workspace_list_label_workspace_description')) . '</td>
+				<td nowrap="nowrap">' . $GLOBALS['LANG']->getLL('workspace_list_label_current_workspace') . '</td>
+				<td nowrap="nowrap">' . $GLOBALS['LANG']->getLL('workspace_list_label_workspace_title') . '</td>
+				<td nowrap="nowrap">' . $GLOBALS['LANG']->getLL('workspace_list_label_workspace_description') . '</td>
 			</tr>';
 	}
 
@@ -693,7 +693,7 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			$content .= $this->workspaceList_getUserListWithAccess($wksp['reviewers'], $GLOBALS['LANG']->getLL('workspace_list_label_reviewers'));
 			// reviewers
 			if ($content != '') {
-				$content = ('<table cellpadding="0" cellspacing="1" width="100%" class="lrPadding workspace-overview">' . $content) . '</table>';
+				$content = '<table cellpadding="0" cellspacing="1" width="100%" class="lrPadding workspace-overview">' . $content . '</table>';
 			} else {
 				$content = $GLOBALS['LANG']->getLL($wksp['uid'] > 0 ? 'workspace_list_access_admins_only' : 'workspace_list_access_anyone');
 			}
@@ -723,7 +723,7 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 				} else {
 					$tag0 = ($tag1 = '');
 				}
-				$content_array[] = (($this->doc->wrapClickMenuOnIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getIconImage('be_users', $uid, $GLOBALS['BACK_PATH'], ((' align="middle" alt="UID: ' . $uid) . '"')), 'be_users', $uid, 2) . $tag0) . htmlspecialchars($user['username'])) . $tag1;
+				$content_array[] = $this->doc->wrapClickMenuOnIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getIconImage('be_users', $uid, $GLOBALS['BACK_PATH'], (' align="middle" alt="UID: ' . $uid . '"')), 'be_users', $uid, 2) . $tag0 . htmlspecialchars($user['username']) . $tag1;
 			}
 		}
 		return implode('<br />', $content_array);
@@ -759,13 +759,13 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						} else {
 							$tag0 = ($tag1 = '');
 						}
-						$content_array[] = (($this->doc->wrapClickMenuOnIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getIconImage($table, $this->be_user_Array[$id], $GLOBALS['BACK_PATH'], ((' align="middle" alt="UID: ' . $id) . '"')), $table, $id, 2) . $tag0) . htmlspecialchars($this->be_user_Array_full[$id]['username'])) . $tag1;
+						$content_array[] = $this->doc->wrapClickMenuOnIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getIconImage($table, $this->be_user_Array[$id], $GLOBALS['BACK_PATH'], (' align="middle" alt="UID: ' . $id . '"')), $table, $id, 2) . $tag0 . htmlspecialchars($this->be_user_Array_full[$id]['username']) . $tag1;
 					} else {
 						// group
 						if (FALSE === $groups) {
 							$groups = \TYPO3\CMS\Backend\Utility\BackendUtility::getGroupNames();
 						}
-						$content_array[] = $this->doc->wrapClickMenuOnIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getIconImage($table, $groups[$id], $GLOBALS['BACK_PATH'], ((' align="middle" alt="UID: ' . $id) . '"')), $table, $id, 2) . $groups[$id]['title'];
+						$content_array[] = $this->doc->wrapClickMenuOnIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getIconImage($table, $groups[$id], $GLOBALS['BACK_PATH'], (' align="middle" alt="UID: ' . $id . '"')), $table, $id, 2) . $groups[$id]['title'];
 					}
 				} else {
 					// user id
@@ -776,7 +776,7 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					} else {
 						$tag0 = ($tag1 = '');
 					}
-					$content_array[] = ((\TYPO3\CMS\Backend\Utility\IconUtility::getIconImage('be_users', $this->be_user_Array[$id], $GLOBALS['BACK_PATH'], ((' align="middle" alt="UID: ' . $id) . '"')) . $tag0) . htmlspecialchars($this->be_user_Array_full[$userUID]['username'])) . $tag1;
+					$content_array[] = \TYPO3\CMS\Backend\Utility\IconUtility::getIconImage('be_users', $this->be_user_Array[$id], $GLOBALS['BACK_PATH'], (' align="middle" alt="UID: ' . $id . '"')) . $tag0 . htmlspecialchars($this->be_user_Array_full[$userUID]['username']) . $tag1;
 				}
 			}
 			sort($content_array);
@@ -785,8 +785,8 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		}
 		$content = '<tr><td class="ver-wl-details-label ver-wl-details-user-list-label">';
 		// TODO CSH lable explaining access here?
-		$content .= ('<strong>' . $access) . '</strong></td>';
-		$content .= ('<td class="ver-wl-details">' . implode('<br />', $content_array)) . '</td></tr>';
+		$content .= '<strong>' . $access . '</strong></td>';
+		$content .= '<td class="ver-wl-details">' . implode('<br />', $content_array) . '</td></tr>';
 		return $content;
 	}
 
@@ -804,21 +804,21 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		if ($this->workspaceList_hasEditAccess($wksp)) {
 			// User can modify workspace parameters, display corresponding link and icon
 			$editUrl = 'workspaceforms.php?action=edit&amp;wkspId=' . $wksp['uid'];
-			$content .= ((((('<a href="' . $editUrl) . '" title="') . $GLOBALS['LANG']->getLL('workspace_list_icon_title_edit_workspace')) . '"/>') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open')) . '</a>';
+			$content .= '<a href="' . $editUrl . '" title="' . $GLOBALS['LANG']->getLL('workspace_list_icon_title_edit_workspace') . '"/>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 		} else {
 			// User can NOT modify workspace parameters, display space
 			// Get only withdth and height from skinning API
-			$content .= ('<img src="clear.gif" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"', 2)) . ' border="0" alt="" hspace="1" align="middle" />';
+			$content .= '<img src="clear.gif" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif', 'width="11" height="12"', 2) . ' border="0" alt="" hspace="1" align="middle" />';
 		}
 		// `switch workspace` button
 		if (!$currentWorkspace) {
 			// Workspace switching button
-			$content .= ((((((('<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '?changeWorkspace=') . $wksp['uid']) . '" title="') . $GLOBALS['LANG']->getLL('workspace_list_icon_title_switch_workspace')) . '"/>') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-version-swap-workspace')) . '</a>';
+			$content .= '<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME') . '?changeWorkspace=' . $wksp['uid'] . '" title="' . $GLOBALS['LANG']->getLL('workspace_list_icon_title_switch_workspace') . '"/>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-version-swap-workspace') . '</a>';
 		} else {
 			// Current workspace: empty space instead of workspace switching button
 			//
 			// Here get only width and height from skinning API
-			$content .= ('<img src="clear.gif" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/switch.png', 'width="18" height="16"', 2)) . ' border="0" alt="" hspace="1" align="middle" alt="" />';
+			$content .= '<img src="clear.gif" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/switch.png', 'width="18" height="16"', 2) . ' border="0" alt="" hspace="1" align="middle" alt="" />';
 		}
 		return $content;
 	}
@@ -855,7 +855,7 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			'tstamp' => 0,
 			// does not really matter
 			'deleted' => 0,
-			'title' => $uid == 0 ? ('[' . $GLOBALS['LANG']->getLL('shortcut_onlineWS')) . ']' : ('[' . $GLOBALS['LANG']->getLL('shortcut_offlineWS')) . ']',
+			'title' => $uid == 0 ? '[' . $GLOBALS['LANG']->getLL('shortcut_onlineWS') . ']' : '[' . $GLOBALS['LANG']->getLL('shortcut_offlineWS') . ']',
 			'description' => $uid == 0 ? $GLOBALS['LANG']->getLL('shortcut_onlineWS') : $GLOBALS['LANG']->getLL('shortcut_offlineWS'),
 			'adminusers' => '',
 			'members' => '',

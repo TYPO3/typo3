@@ -76,7 +76,7 @@ class ReferenceEntity {
 	 * @return string
 	 */
 	public function __toString() {
-		return ($this->element . '.') . $this->field;
+		return $this->element . '.' . $this->field;
 	}
 
 }

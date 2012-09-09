@@ -92,7 +92,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function initializePreviewUser(&$params, &$pObj) {
-		if (((is_null($params['BE_USER']) || $params['BE_USER'] === FALSE) && $this->previewConfiguration !== FALSE) && $this->previewConfiguration['BEUSER_uid'] > 0) {
+		if ((is_null($params['BE_USER']) || $params['BE_USER'] === FALSE) && $this->previewConfiguration !== FALSE && $this->previewConfiguration['BEUSER_uid'] > 0) {
 			// New backend user object
 			$BE_USER = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\FrontendBackendUserAuthentication');
 			$BE_USER->userTS_dontGetCached = 1;
@@ -113,7 +113,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 		// if there is a valid BE user, and the full workspace should be
 		// previewed, the workspacePreview option shouldbe set
 		$workspaceUid = $this->previewConfiguration['fullWorkspace'];
-		if (($pObj->beUserLogin && is_object($params['BE_USER'])) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($workspaceUid)) {
+		if ($pObj->beUserLogin && is_object($params['BE_USER']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($workspaceUid)) {
 			if ($workspaceUid == 0 || $workspaceUid >= -1 && $params['BE_USER']->checkWorkspace($workspaceUid)) {
 				// Check Access to workspace. Live (0) is OK to preview for all.
 				$pObj->workspacePreview = intval($workspaceUid);
@@ -146,16 +146,16 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 					if (@is_file($templateFile)) {
 						$message = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']);
 					} else {
-						$message = ('<strong>ERROR!</strong><br>Template File "' . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate']) . '" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.';
+						$message = '<strong>ERROR!</strong><br>Template File "' . $this->tsfeObj->TYPO3_CONF_VARS['FE']['workspacePreviewLogoutTemplate'] . '" configured with $TYPO3_CONF_VARS["FE"]["workspacePreviewLogoutTemplate"] not found. Please contact webmaster about this problem.';
 					}
 				} else {
 					$message = 'You logged out from Workspace preview mode. Click this link to <a href="%1$s">go back to the website</a>';
 				}
 				$returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('returnUrl'));
-				die(sprintf($message, htmlspecialchars(preg_replace(('/\\&?' . $this->previewKey) . '=[[:alnum:]]+/', '', $returnUrl))));
+				die(sprintf($message, htmlspecialchars(preg_replace('/\\&?' . $this->previewKey . '=[[:alnum:]]+/', '', $returnUrl))));
 			}
 			// Look for keyword configuration record:
-			$previewData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_preview', (('keyword=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($inputCode, 'sys_preview')) . ' AND endtime>') . $GLOBALS['EXEC_TIME']);
+			$previewData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_preview', 'keyword=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($inputCode, 'sys_preview') . ' AND endtime>' . $GLOBALS['EXEC_TIME']);
 			// Get: Backend login status, Frontend login status
 			// - Make sure to remove fe/be cookies (temporarily);
 			// BE already done in ADMCMD_preview_postInit()
@@ -181,7 +181,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 							SetCookie($this->previewKey, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($this->previewKey), 0, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
 						}
 						return $previewConfig;
-					} elseif ((((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?') . $this->previewKey) . '=') . $inputCode === \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) {
+					} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?' . $this->previewKey . '=' . $inputCode === \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) {
 						// Set GET variables
 						$GET_VARS = '';
 						parse_str($previewConfig['getVars'], $GET_VARS);
@@ -191,7 +191,7 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 					} else {
 						// This check is to prevent people from setting additional
 						// GET vars via realurl or other URL path based ways of passing parameters.
-						throw new \Exception(htmlspecialchars(((((('Request URL did not match "' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')) . 'index.php?') . $this->previewKey) . '=') . $inputCode) . '"', 1294585190));
+						throw new \Exception(htmlspecialchars('Request URL did not match "' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . 'index.php?' . $this->previewKey . '=' . $inputCode . '"', 1294585190));
 					}
 				} else {
 					throw new \Exception('POST requests are incompatible with keyword preview.', 1294585191);

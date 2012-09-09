@@ -215,7 +215,7 @@ class CommandMap {
 		foreach ($this->commandMap as $table => $liveIdCollection) {
 			foreach ($liveIdCollection as $liveId => $commandCollection) {
 				foreach ($commandCollection as $command => $properties) {
-					if (($command === 'version' && isset($properties['action'])) && $properties['action'] === 'swap') {
+					if ($command === 'version' && isset($properties['action']) && $properties['action'] === 'swap') {
 						if (isset($properties['swapWith']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($properties['swapWith'])) {
 							call_user_func_array(array($this, $callbackMethod), array_merge($arguments, array($table, $liveId, $properties)));
 						}
@@ -306,7 +306,7 @@ class CommandMap {
 		foreach ($this->commandMap as $table => $liveIdCollection) {
 			foreach ($liveIdCollection as $liveIdList => $commandCollection) {
 				foreach ($commandCollection as $command => $properties) {
-					if (($command === 'version' && isset($properties['action'])) && $properties['action'] === 'setStage') {
+					if ($command === 'version' && isset($properties['action']) && $properties['action'] === 'setStage') {
 						if (isset($properties['stageId']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($properties['stageId'])) {
 							call_user_func_array(array($this, $callbackMethod), array_merge($arguments, array($table, $liveIdList, $properties)));
 						}
@@ -401,7 +401,7 @@ class CommandMap {
 		foreach ($this->commandMap as $table => $liveIdCollection) {
 			foreach ($liveIdCollection as $liveId => $commandCollection) {
 				foreach ($commandCollection as $command => $properties) {
-					if (($command === 'version' && isset($properties['action'])) && ($properties['action'] === 'clearWSID' || $properties['action'] === 'flush')) {
+					if ($command === 'version' && isset($properties['action']) && ($properties['action'] === 'clearWSID' || $properties['action'] === 'flush')) {
 						$dependency->addElement($table, $liveId, array('properties' => $properties));
 					}
 				}
@@ -425,7 +425,7 @@ class CommandMap {
 		if (count($liveIds) > 1) {
 			foreach ($liveIds as $liveId) {
 				if (isset($this->commandMap[$table][$liveId]['version'])) {
-					throw new \RuntimeException(((('Command map for [' . $table) . '][') . $liveId) . '][version] was already set.', 1289391048);
+					throw new \RuntimeException('Command map for [' . $table . '][' . $liveId . '][version] was already set.', 1289391048);
 				}
 				$extractedCommandMap[$table][$liveId]['version'] = $properties;
 			}
@@ -878,7 +878,7 @@ class CommandMap {
 	 */
 	protected function getScopeData($scope, $key) {
 		if (!isset($this->scopes[$scope])) {
-			throw new \RuntimeException(('Scope "' . $scope) . '" is not defined.', 1289342187);
+			throw new \RuntimeException('Scope "' . $scope . '" is not defined.', 1289342187);
 		}
 		return $this->scopes[$scope][$key];
 	}

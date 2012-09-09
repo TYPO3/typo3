@@ -154,7 +154,7 @@ class DependencyResolver {
 	public function getNestedElements(\TYPO3\CMS\Version\Dependency\ElementEntity $outerMostParent) {
 		$outerMostParentName = $outerMostParent->__toString();
 		if (!isset($this->outerMostParents[$outerMostParentName])) {
-			throw new \RuntimeException(('Element "' . $outerMostParentName) . '" was detected as outermost parent.', 1289318609);
+			throw new \RuntimeException('Element "' . $outerMostParentName . '" was detected as outermost parent.', 1289318609);
 		}
 		$nestedStructure = array_merge(array($outerMostParentName => $outerMostParent), $outerMostParent->getNestedChildren());
 		return $nestedStructure;

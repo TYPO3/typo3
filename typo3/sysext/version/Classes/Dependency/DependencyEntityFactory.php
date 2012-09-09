@@ -51,7 +51,7 @@ class DependencyEntityFactory {
 	 * @return \TYPO3\CMS\Version\Dependency\ElementEntity
 	 */
 	public function getElement($table, $id, array $data = array(), \TYPO3\CMS\Version\Dependency\DependencyResolver $dependency) {
-		$elementName = ($table . ':') . $id;
+		$elementName = $table . ':' . $id;
 		if (!isset($this->elements[$elementName])) {
 			$this->elements[$elementName] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Element', $table, $id, $data, $dependency);
 		}
@@ -66,7 +66,7 @@ class DependencyEntityFactory {
 	 * @return \TYPO3\CMS\Version\Dependency\ReferenceEntity
 	 */
 	public function getReference(\TYPO3\CMS\Version\Dependency\ElementEntity $element, $field) {
-		$referenceName = ($element->__toString() . '.') . $field;
+		$referenceName = $element->__toString() . '.' . $field;
 		if (!isset($this->references[$referenceName][$field])) {
 			$this->references[$referenceName][$field] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Reference', $element, $field);
 		}
