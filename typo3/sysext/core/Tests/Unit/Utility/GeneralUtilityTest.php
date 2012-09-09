@@ -49,8 +49,17 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	 */
 	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
+	/**
+	 * @var array A backup of registered singleton instances
+	 */
+	protected $singletonInstances = array();
+
+	public function setUp() {
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+	}
+
 	public function tearDown() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 	}
 
 	///////////////////////////
@@ -3505,6 +3514,44 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance($singletonClassName, $instance1);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance($singletonClassName, $instance2);
 		$this->assertSame($instance2, \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($singletonClassName));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getSingletonInstancesContainsPreviouslySetSingletonInstance() {
+		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface');
+		$instanceClassName = get_class($instance);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance($instanceClassName, $instance);
+		$registeredSingletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+		$this->assertArrayHasKey($instanceClassName, $registeredSingletonInstances);
+		$this->assertSame($registeredSingletonInstances[$instanceClassName], $instance);
+	}
+
+	/**
+	 * @test
+	 */
+	public function resetSingletonInstancesResetsPreviouslySetInstance() {
+		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface');
+		$instanceClassName = get_class($instance);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance($instanceClassName, $instance);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances(array());
+		$registeredSingletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+		$this->assertArrayNotHasKey($instanceClassName, $registeredSingletonInstances);
+	}
+
+	/**
+	 * @test
+	 */
+	public function resetSingletonInstancesSetsGivenInstance() {
+		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface');
+		$instanceClassName = get_class($instance);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances(
+			array($instanceClassName => $instance)
+		);
+		$registeredSingletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
+		$this->assertArrayHasKey($instanceClassName, $registeredSingletonInstances);
+		$this->assertSame($registeredSingletonInstances[$instanceClassName], $instance);
 	}
 
 	/**

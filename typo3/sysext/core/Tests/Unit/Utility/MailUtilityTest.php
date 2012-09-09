@@ -34,6 +34,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 class MailUtilityTest extends \tx_phpunit_testcase {
 
 	/**
+	 * @var array A backup of registered singleton instances
+	 */
+	protected $singletonInstances = array();
+
+	/**
 	 * backed-up TYPO3_CONF_VARS SC_OPTIONS
 	 *
 	 * @var array
@@ -48,12 +53,13 @@ class MailUtilityTest extends \tx_phpunit_testcase {
 	private $callUserFunctionBackup = array();
 
 	public function setUp() {
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->scOptionsBackup = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'];
 		$this->callUserFunctionBackup = $GLOBALS['T3_VAR']['callUserFunction'];
 	}
 
 	public function tearDown() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = $this->scOptionsBackup;
 		$GLOBALS['T3_VAR']['callUserFunction'] = $this->callUserFunctionBackup;
 	}

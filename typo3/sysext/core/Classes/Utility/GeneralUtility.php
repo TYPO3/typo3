@@ -4187,7 +4187,11 @@ Connection: close
 	 * If this function is called multiple times for the same $className,
 	 * makeInstance will return the last set instance.
 	 *
-	 * Warning: This is _not_ a public API method and must not be used in own extensions!
+	 * Warning:
+	 * This is NOT a public API method and must not be used in own extensions!
+	 * This methods exists mostly for unit tests to inject a mock of a singleton class.
+	 * If you use this, make sure to always combine this with getSingletonInstances()
+	 * and resetSingletonInstances() in setUp() and tearDown() of the test class.
 	 *
 	 * @see makeInstance
 	 * @param string $className
@@ -4201,6 +4205,43 @@ Connection: close
 	}
 
 	/**
+	 * Set a group of singleton instances. Similar to setSingletonInstance(),
+	 * but multiple instances can be set.
+	 *
+	 * Warning:
+	 * This is NOT a public API method and must not be used in own extensions!
+	 * This method is usually only used in tests to restore the list of singletons in
+	 * tearDown(), that was backed up with getSingletonInstances() in setUp() and
+	 * manipulated in tests with setSingletonInstance()
+	 *
+	 * @internal
+	 * @param array $newSingletonInstances $className => $object
+	 * @return void
+	 */
+	static public function resetSingletonInstances(array $newSingletonInstances) {
+		static::$singletonInstances = array();
+		foreach ($newSingletonInstances as $className => $instance) {
+			static::setSingletonInstance($className, $instance);
+		}
+	}
+
+	/**
+	 * Get all currently registered singletons
+	 *
+	 * Warning:
+	 * This is NOT a public API method and must not be used in own extensions!
+	 * This method is usually only used in tests in setUp() to fetch the list of
+	 * currently registered singletons, if this list is manipulated with
+	 * setSingletonInstance() in tests.
+	 *
+	 * @internal
+	 * @return array $className => $object
+	 */
+	static public function getSingletonInstances() {
+		return static::$singletonInstances;
+	}
+
+	/**
 	 * Sets the instance of a non-singleton class to be returned by makeInstance.
 	 *
 	 * If this function is called multiple times for the same $className,
@@ -4210,7 +4251,7 @@ Connection: close
 	 * Warning: This is a helper method for unit tests. Do not call this directly in production code!
 	 *
 	 * @see makeInstance
-	 * @throws InvalidArgumentException if class extends t3lib_Singleton
+	 * @throws \InvalidArgumentException if class extends t3lib_Singleton
 	 * @param string $className
 	 * @param object $instance
 	 * @return void
@@ -4230,7 +4271,7 @@ Connection: close
 	 * Checks that $className is non-empty and that $instance is an instance of
 	 * $className.
 	 *
-	 * @throws InvalidArgumentException if $className is empty or if $instance is no instance of $className
+	 * @throws \InvalidArgumentException if $className is empty or if $instance is no instance of $className
 	 * @param string $className a class name
 	 * @param object $instance an object
 	 * @return void

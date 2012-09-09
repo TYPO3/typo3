@@ -37,6 +37,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Utility;
 class FileExtensionFilterTest extends \Tx_Phpunit_TestCase {
 
 	/**
+	 * @var array A backup of registered singleton instances
+	 */
+	protected $singletonInstances = array();
+
+	/**
 	 * @var \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter
 	 */
 	protected $filter;
@@ -63,6 +68,7 @@ class FileExtensionFilterTest extends \Tx_Phpunit_TestCase {
 		$this->filter = new \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter();
 		$this->tceMainMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandler\\DataHandler', array('deleteAction'), array());
 		$this->fileFactoryMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array('getFileReferenceObject'), array());
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', $this->fileFactoryMock);
 	}
 
@@ -74,7 +80,7 @@ class FileExtensionFilterTest extends \Tx_Phpunit_TestCase {
 		unset($this->tceMainMock);
 		unset($this->parameters);
 		unset($this->filter);
-		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 	}
 
 	/**

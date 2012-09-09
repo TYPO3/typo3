@@ -35,6 +35,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Extension;
 class ExtensionManagerTest extends \tx_phpunit_testcase {
 
 	/**
+	 * @var array A backup of registered singleton instances
+	 */
+	protected $singletonInstances = array();
+
+	/**
 	 * Enable backup of global and system variables
 	 *
 	 * @var boolean
@@ -72,6 +77,7 @@ class ExtensionManagerTest extends \tx_phpunit_testcase {
 			'TYPO3_LOADED_EXT' => serialize($GLOBALS['TYPO3_LOADED_EXT'])
 		);
 		$this->testFilesToDelete = array();
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 	}
 
 	public function tearDown() {
@@ -82,7 +88,7 @@ class ExtensionManagerTest extends \tx_phpunit_testcase {
 		foreach ($this->testFilesToDelete as $absoluteFileName) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($absoluteFileName);
 		}
-		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 	}
 
 	/**

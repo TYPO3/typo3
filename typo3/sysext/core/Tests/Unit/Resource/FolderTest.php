@@ -38,14 +38,20 @@ require_once 'vfsStream/vfsStream.php';
  */
 class FolderTest extends \Tx_Phpunit_TestCase {
 
+	/**
+	 * @var array A backup of registered singleton instances
+	 */
+	protected $singletonInstances = array();
+
 	private $basedir = 'basedir';
 
 	public function setUp() {
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		\vfsStream::setup($this->basedir);
 	}
 
 	protected function tearDown() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 	}
 
 	protected function createFolderFixture($path, $name, $mockedStorage = NULL) {
