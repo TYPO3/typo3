@@ -30,7 +30,10 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  */
 class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
-	public $fakedExtensions;
+	/**
+	 * @var array List of created fake extensions to be deleted in tearDown() again
+	 */
+	protected $fakedExtensions = array();
 
 	/**
 	 * @return void

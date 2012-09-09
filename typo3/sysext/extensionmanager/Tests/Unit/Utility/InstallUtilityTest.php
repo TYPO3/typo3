@@ -36,7 +36,10 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	public $extension;
 
-	public $fakedExtensions;
+	/**
+	 * @var array List of created fake extensions to be deleted in tearDown() again
+	 */
+	protected $fakedExtensions = array();
 
 	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility
