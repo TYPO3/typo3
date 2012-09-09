@@ -361,7 +361,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					if (isset($fdef['featureIndex']['DEFAULT'])) {
 						$default = $fdef['featureIndex']['DEFAULT']['value'][0];
 						if (isset($fdef['featureIndex']['DEFAULT']['value'][1])) {
-							$default = ($fdef['featureIndex']['DEFAULT']['value'][1] . $default) . $fdef['featureIndex']['DEFAULT']['value'][1];
+							$default = $fdef['featureIndex']['DEFAULT']['value'][1] . $default . $fdef['featureIndex']['DEFAULT']['value'][1];
 						}
 						$this->cache_fieldType[$table][$field]['default'] = $default;
 					}
@@ -456,9 +456,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			} else {
 				$sqlResult = mysql_query($this->lastQuery[0], $this->handlerInstance[$this->lastHandlerKey]['link']);
 				$new_id = $this->sql_insert_id();
-				$where = ($this->cache_autoIncFields[$table] . '=') . $new_id;
+				$where = $this->cache_autoIncFields[$table] . '=' . $new_id;
 				foreach ($this->lastQuery[1] as $field => $content) {
-					mysql_query((((((('UPDATE ' . $this->quoteFromTables($table)) . ' SET ') . $this->quoteFromTables($field)) . '=') . $this->fullQuoteStr($content, $table)) . ' WHERE ') . $this->quoteWhereClause($where), $this->handlerInstance[$this->lastHandlerKey]['link']);
+					mysql_query('UPDATE ' . $this->quoteFromTables($table) . ' SET ' . $this->quoteFromTables($field) . '=' . $this->fullQuoteStr($content, $table) . ' WHERE ' . $this->quoteWhereClause($where), $this->handlerInstance[$this->lastHandlerKey]['link']);
 				}
 			}
 			break;
@@ -472,7 +472,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
 					}
 				} else {
-					$new_id = $this->handlerInstance[$this->lastHandlerKey]->GenID(($table . '_') . $this->cache_autoIncFields[$table], $this->handlerInstance[$this->lastHandlerKey]->sequenceStart);
+					$new_id = $this->handlerInstance[$this->lastHandlerKey]->GenID($table . '_' . $this->cache_autoIncFields[$table], $this->handlerInstance[$this->lastHandlerKey]->sequenceStart);
 					$fields_values[$this->cache_autoIncFields[$table]] = $new_id;
 					if ($table != 'tx_dbal_debuglog') {
 						$this->handlerInstance[$this->lastHandlerKey]->last_insert_id = $new_id;
@@ -493,13 +493,13 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 							continue;
 						}
 						if (isset($this->cache_autoIncFields[$table]) && isset($new_id)) {
-							$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table), $field, $content, $this->quoteWhereClause(($this->cache_autoIncFields[$table] . '=') . $new_id));
+							$this->handlerInstance[$this->lastHandlerKey]->UpdateBlob($this->quoteFromTables($table), $field, $content, $this->quoteWhereClause($this->cache_autoIncFields[$table] . '=' . $new_id));
 						} elseif (isset($this->cache_primaryKeys[$table])) {
 							$where = '';
 							$pks = explode(',', $this->cache_primaryKeys[$table]);
 							foreach ($pks as $pk) {
 								if (isset($fields_values[$pk])) {
-									$where .= (($pk . '=') . $this->fullQuoteStr($fields_values[$pk], $table)) . ' AND ';
+									$where .= $pk . '=' . $this->fullQuoteStr($fields_values[$pk], $table) . ' AND ';
 								}
 							}
 							$where = $this->quoteWhereClause($where . '1=1');
@@ -517,13 +517,13 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 							continue;
 						}
 						if (isset($this->cache_autoIncFields[$table]) && isset($new_id)) {
-							$this->handlerInstance[$this->lastHandlerKey]->UpdateClob($this->quoteFromTables($table), $field, $content, $this->quoteWhereClause(($this->cache_autoIncFields[$table] . '=') . $new_id));
+							$this->handlerInstance[$this->lastHandlerKey]->UpdateClob($this->quoteFromTables($table), $field, $content, $this->quoteWhereClause($this->cache_autoIncFields[$table] . '=' . $new_id));
 						} elseif (isset($this->cache_primaryKeys[$table])) {
 							$where = '';
 							$pks = explode(',', $this->cache_primaryKeys[$table]);
 							foreach ($pks as $pk) {
 								if (isset($fields_values[$pk])) {
-									$where .= (($pk . '=') . $this->fullQuoteStr($fields_values[$pk], $table)) . ' AND ';
+									$where .= $pk . '=' . $this->fullQuoteStr($fields_values[$pk], $table) . ' AND ';
 								}
 							}
 							$where = $this->quoteWhereClause($where . '1=1');
@@ -624,7 +624,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			} else {
 				$sqlResult = mysql_query($this->lastQuery[0], $this->handlerInstance[$this->lastHandlerKey]['link']);
 				foreach ($this->lastQuery[1] as $field => $content) {
-					mysql_query((((((('UPDATE ' . $this->quoteFromTables($table)) . ' SET ') . $this->quoteFromTables($field)) . '=') . $this->fullQuoteStr($content, $table)) . ' WHERE ') . $this->quoteWhereClause($where), $this->handlerInstance[$this->lastHandlerKey]['link']);
+					mysql_query('UPDATE ' . $this->quoteFromTables($table) . ' SET ' . $this->quoteFromTables($field) . '=' . $this->fullQuoteStr($content, $table) . ' WHERE ' . $this->quoteWhereClause($where), $this->handlerInstance[$this->lastHandlerKey]['link']);
 				}
 			}
 			break;
@@ -981,13 +981,13 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			}
 			if (count($blobfields) || count($clobfields)) {
 				if (count($nArr)) {
-					$query[0] = ((((('INSERT INTO ' . $this->quoteFromTables($table)) . '
+					$query[0] = 'INSERT INTO ' . $this->quoteFromTables($table) . '
 					(
-						') . implode(',
-						', array_keys($nArr))) . '
+						' . implode(',
+						', array_keys($nArr)) . '
 					) VALUES (
-						') . implode(',
-						', $nArr)) . '
+						' . implode(',
+						', $nArr) . '
 					)';
 				}
 				if (count($blobfields)) {
@@ -1000,13 +1000,13 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$this->debug_lastBuiltQuery = $query[0];
 				}
 			} else {
-				$query = ((((('INSERT INTO ' . $this->quoteFromTables($table)) . '
+				$query = 'INSERT INTO ' . $this->quoteFromTables($table) . '
 				(
-					') . implode(',
-					', array_keys($nArr))) . '
+					' . implode(',
+					', array_keys($nArr)) . '
 				) VALUES (
-					') . implode(',
-					', $nArr)) . '
+					' . implode(',
+					', $nArr) . '
 				)';
 				if ($this->debugOutput || $this->store_lastBuiltQuery) {
 					$this->debug_lastBuiltQuery = $query;
@@ -1090,16 +1090,16 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 						} elseif ($mt[0] == 'F') {
 							$v = (double) $v;
 						}
-						$nArr[] = ($this->quoteFieldNames($k) . '=') . (!in_array($k, $no_quote_fields) ? $this->fullQuoteStr($v, $table) : $v);
+						$nArr[] = $this->quoteFieldNames($k) . '=' . (!in_array($k, $no_quote_fields) ? $this->fullQuoteStr($v, $table) : $v);
 					}
 				}
 			}
 			if (count($blobfields) || count($clobfields)) {
 				if (count($nArr)) {
-					$query[0] = ((('UPDATE ' . $this->quoteFromTables($table)) . '
+					$query[0] = 'UPDATE ' . $this->quoteFromTables($table) . '
 						SET
-							') . implode(',
-							', $nArr)) . (strlen($where) > 0 ? '
+							' . implode(',
+							', $nArr) . (strlen($where) > 0 ? '
 						WHERE
 							' . $this->quoteWhereClause($where) : '');
 				}
@@ -1113,10 +1113,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$this->debug_lastBuiltQuery = $query[0];
 				}
 			} else {
-				$query = ((('UPDATE ' . $this->quoteFromTables($table)) . '
+				$query = 'UPDATE ' . $this->quoteFromTables($table) . '
 					SET
-						') . implode(',
-						', $nArr)) . (strlen($where) > 0 ? '
+						' . implode(',
+						', $nArr) . (strlen($where) > 0 ? '
 					WHERE
 						' . $this->quoteWhereClause($where) : '');
 				if ($this->debugOutput || $this->store_lastBuiltQuery) {
@@ -1144,7 +1144,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			}
 			$table = $this->quoteFromTables($table);
 			$where = $this->quoteWhereClause($where);
-			$query = ('DELETE FROM ' . $table) . (strlen($where) > 0 ? ' WHERE ' . $where : '');
+			$query = 'DELETE FROM ' . $table . (strlen($where) > 0 ? ' WHERE ' . $where : '');
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
 			}
@@ -1177,7 +1177,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				// If there are two parameters, do mapping differently than otherwise:
 				$numrows = $splitLimit[1];
 				$offset = $splitLimit[0];
-				$limit = ($numrows . ' OFFSET ') . $offset;
+				$limit = $numrows . ' OFFSET ' . $offset;
 			}
 		}
 		$select_fields = $this->quoteFieldNames($select_fields);
@@ -1389,7 +1389,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				// If there are two parameters, do mapping differently than otherwise:
 				$numrows = $splitLimit[1];
 				$offset = $splitLimit[0];
-				$limit = ($numrows . ' OFFSET ') . $offset;
+				$limit = $numrows . ' OFFSET ' . $offset;
 			}
 		}
 		$queryComponents['LIMIT'] = $limit;
@@ -1415,14 +1415,14 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return array Precompiled SQL statement
 	 */
 	protected function precompileSELECTquery(array $components) {
-		$parameterWrap = ('__' . dechex(time())) . '__';
+		$parameterWrap = '__' . dechex(time()) . '__';
 		foreach ($components['parameters'] as $key => $params) {
 			if ($key === '?') {
 				foreach ($params as $index => $param) {
-					$components['parameters'][$key][$index][0] = ($parameterWrap . $param[0]) . $parameterWrap;
+					$components['parameters'][$key][$index][0] = $parameterWrap . $param[0] . $parameterWrap;
 				}
 			} else {
-				$components['parameters'][$key][0] = ($parameterWrap . $params[0]) . $parameterWrap;
+				$components['parameters'][$key][0] = $parameterWrap . $params[0] . $parameterWrap;
 			}
 		}
 		$select_fields = $this->SQLparser->compileFieldList($components['SELECT']);
@@ -1489,7 +1489,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					// If there are two parameters, do mapping differently than otherwise:
 					$numrows = $splitLimit[1];
 					$offset = $splitLimit[0];
-					$limit = ($numrows . ' OFFSET ') . $offset;
+					$limit = $numrows . ' OFFSET ' . $offset;
 				}
 			}
 			if ($limit != '') {
@@ -1589,7 +1589,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	protected function _quoteFieldNames(array $select_fields) {
 		foreach ($select_fields as $k => $v) {
-			if (($select_fields[$k]['field'] != '' && $select_fields[$k]['field'] != '*') && !is_numeric($select_fields[$k]['field'])) {
+			if ($select_fields[$k]['field'] != '' && $select_fields[$k]['field'] != '*' && !is_numeric($select_fields[$k]['field'])) {
 				$select_fields[$k]['field'] = $this->quoteName($select_fields[$k]['field']);
 			}
 			if ($select_fields[$k]['table'] != '' && !is_numeric($select_fields[$k]['table'])) {
@@ -1750,7 +1750,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 							$where_clause[$k]['subquery'] = $this->quoteSELECTsubquery($v['subquery']);
 						}
 					} else {
-						if (((!isset($where_clause[$k]['value'][1]) || $where_clause[$k]['value'][1] == '') && is_string($where_clause[$k]['value'][0])) && strstr($where_clause[$k]['value'][0], '.')) {
+						if ((!isset($where_clause[$k]['value'][1]) || $where_clause[$k]['value'][1] == '') && is_string($where_clause[$k]['value'][0]) && strstr($where_clause[$k]['value'][0], '.')) {
 							$where_clause[$k]['value'][0] = $this->quoteFieldNames($where_clause[$k]['value'][0]);
 						}
 					}
@@ -1824,7 +1824,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 */
 	protected function _quoteOrderBy(array $orderBy) {
 		foreach ($orderBy as $k => $v) {
-			if (($orderBy[$k]['table'] === '' && $v['field'] !== '') && ctype_digit($v['field'])) {
+			if ($orderBy[$k]['table'] === '' && $v['field'] !== '' && ctype_digit($v['field'])) {
 				continue;
 			}
 			$orderBy[$k]['field'] = $this->quoteName($orderBy[$k]['field']);
@@ -1849,7 +1849,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @see quoteStr()
 	 */
 	public function fullQuoteStr($str, $table) {
-		return ('\'' . $this->quoteStr($str, $table)) . '\'';
+		return '\'' . $this->quoteStr($str, $table) . '\'';
 	}
 
 	/**
@@ -1904,7 +1904,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			return $this->handlerInstance[$handlerKey]->DataDictionary->NameQuote($name);
 		} else {
 			$quote = $useBackticks ? '`' : $this->handlerInstance[$handlerKey]->nameQuote;
-			return ($quote . $name) . $quote;
+			return $quote . $name . $quote;
 		}
 	}
 
@@ -2532,7 +2532,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		// Getting real list of tables:
 		switch ($this->handlerCfg['_DEFAULT']['type']) {
 		case 'native':
-			$tables_result = mysql_query(('SHOW TABLE STATUS FROM `' . TYPO3_db) . '`', $this->handlerInstance['_DEFAULT']['link']);
+			$tables_result = mysql_query('SHOW TABLE STATUS FROM `' . TYPO3_db . '`', $this->handlerInstance['_DEFAULT']['link']);
 			if (!$this->sql_error()) {
 				while ($theTable = $this->sql_fetch_assoc($tables_result)) {
 					$whichTables[$theTable['Name']] = $theTable;
@@ -2619,7 +2619,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					settype($fieldRow, 'array');
 					$fieldRow['Field'] = $fieldRow['name'];
 					$ntype = $this->MySQLActualType($this->MetaType($fieldRow['type'], $tableName));
-					$ntype .= $fieldRow['max_length'] != -1 ? ($ntype == 'INT' ? '(11)' : ('(' . $fieldRow['max_length']) . ')') : '';
+					$ntype .= $fieldRow['max_length'] != -1 ? ($ntype == 'INT' ? '(11)' : '(' . $fieldRow['max_length'] . ')') : '';
 					$fieldRow['Type'] = strtolower($ntype);
 					$fieldRow['Null'] = '';
 					$fieldRow['Key'] = '';
@@ -2782,7 +2782,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				throw new \InvalidArgumentException('Creating a database with DBAL is not supported. Did you really read the manual?', 1310027716);
 				break;
 			default:
-				throw new \InvalidArgumentException(((('ERROR: Invalid Query type (' . $parsedQuery['type']) . ') for ->admin_query() function!: "') . htmlspecialchars($query)) . '"', 1310027740);
+				throw new \InvalidArgumentException('ERROR: Invalid Query type (' . $parsedQuery['type'] . ') for ->admin_query() function!: "' . htmlspecialchars($query) . '"', 1310027740);
 				break;
 			}
 			// Setting query array (for other applications to access if needed)
@@ -2816,7 +2816,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				break;
 			}
 		} else {
-			throw new \InvalidArgumentException(((('ERROR: Query could not be parsed: "' . htmlspecialchars($parsedQuery)) . '". Query: "') . htmlspecialchars($query)) . '"', 1310027793);
+			throw new \InvalidArgumentException('ERROR: Query could not be parsed: "' . htmlspecialchars($parsedQuery) . '". Query: "' . htmlspecialchars($query) . '"', 1310027793);
 		}
 	}
 
@@ -2846,7 +2846,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$handlerKey = $this->table2handlerKeys[$vArray['table']] ? $this->table2handlerKeys[$vArray['table']] : '_DEFAULT';
 					// In case of separate handler keys for joined tables:
 					if ($outputHandlerKey && $handlerKey != $outputHandlerKey) {
-						throw new \RuntimeException(('DBAL fatal error: Tables in this list "' . $tableList) . '" didn\'t use the same DB handler!', 1310027833);
+						throw new \RuntimeException('DBAL fatal error: Tables in this list "' . $tableList . '" didn\'t use the same DB handler!', 1310027833);
 					}
 					$outputHandlerKey = $handlerKey;
 				}
@@ -2857,7 +2857,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				// Return handler key:
 				$this->cache_handlerKeyFromTableList[$key] = $outputHandlerKey;
 			} else {
-				throw new \RuntimeException(((('DBAL fatal error: No handler found in handler_getFromTableList() for: "' . $tableList) . '" (') . $tableArray) . ')', 1310027933);
+				throw new \RuntimeException('DBAL fatal error: No handler found in handler_getFromTableList() for: "' . $tableList . '" (' . $tableArray . ')', 1310027933);
 			}
 		}
 		return $this->cache_handlerKeyFromTableList[$key];
@@ -2902,11 +2902,11 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$setDBinit = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, str_replace('\' . LF . \'', LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']), TRUE);
 					foreach ($setDBinit as $v) {
 						if (mysql_query($v, $link) === FALSE) {
-							\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(('Could not initialize DB connection with query "' . $v) . '".', 'Core', 3);
+							\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not initialize DB connection with query "' . $v . '".', 'Core', 3);
 						}
 					}
 				} else {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(((('Could not connect to MySQL server ' . $cfgArray['config']['host']) . ' with user ') . $cfgArray['config']['username']) . '.', 'Core', 4);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not connect to MySQL server ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
 				}
 				break;
 			case 'adodb':
@@ -2935,9 +2935,9 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$this->handlerInstance[$handlerKey]->PConnect($cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : ''), $cfgArray['config']['username'], $cfgArray['config']['password'], $cfgArray['config']['database']);
 				}
 				if (!$this->handlerInstance[$handlerKey]->isConnected()) {
-					$dsn = ((((((($cfgArray['config']['driver'] . '://') . $cfgArray['config']['username']) . (strlen($cfgArray['config']['password']) ? ':XXXX@' : '')) . $cfgArray['config']['host']) . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : '')) . '/') . $cfgArray['config']['database']) . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'] ? '' : '?persistent=1');
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(((('Could not connect to DB server using ADOdb on ' . $cfgArray['config']['host']) . ' with user ') . $cfgArray['config']['username']) . '.', 'Core', 4);
-					error_log(('DBAL error: Connection to ' . $dsn) . ' failed. Maybe PHP doesn\'t support the database?');
+					$dsn = $cfgArray['config']['driver'] . '://' . $cfgArray['config']['username'] . (strlen($cfgArray['config']['password']) ? ':XXXX@' : '') . $cfgArray['config']['host'] . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : '') . '/' . $cfgArray['config']['database'] . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'] ? '' : '?persistent=1');
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not connect to DB server using ADOdb on ' . $cfgArray['config']['host'] . ' with user ' . $cfgArray['config']['username'] . '.', 'Core', 4);
+					error_log('DBAL error: Connection to ' . $dsn . ' failed. Maybe PHP doesn\'t support the database?');
 					$output = FALSE;
 				} else {
 					$this->handlerInstance[$handlerKey]->DataDictionary = NewDataDictionary($this->handlerInstance[$handlerKey]);
@@ -2955,7 +2955,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				if (@is_file($fileName)) {
 					require_once $fileName;
 				} else {
-					throw new \RuntimeException(('DBAL error: "' . $fileName) . '" was not a file to include.', 1310027975);
+					throw new \RuntimeException('DBAL error: "' . $fileName . '" was not a file to include.', 1310027975);
 				}
 				// Initialize:
 				$this->handlerInstance[$handlerKey] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($cfgArray['config']['class']);
@@ -2965,12 +2965,12 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 				}
 				break;
 			default:
-				throw new \RuntimeException(('ERROR: Invalid handler type: "' . $cfgArray['type']) . '"', 1310027995);
+				throw new \RuntimeException('ERROR: Invalid handler type: "' . $cfgArray['type'] . '"', 1310027995);
 				break;
 			}
 			return $output;
 		} else {
-			throw new \RuntimeException(('ERROR: No handler for key "' . $handlerKey) . '"', 1310028018);
+			throw new \RuntimeException('ERROR: No handler for key "' . $handlerKey . '"', 1310028018);
 		}
 	}
 
@@ -3027,7 +3027,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 	 * @return 	mixed		Returns an array of table names (parsed version of input table) if mapping is needed, otherwise just FALSE.
 	 */
 	protected function map_needMapping($tableList, $fieldMappingOnly = FALSE, array &$parsedTableList = array()) {
-		$key = ($tableList . '|') . $fieldMappingOnly;
+		$key = $tableList . '|' . $fieldMappingOnly;
 		if (!isset($this->cache_mappingFromTableList[$key])) {
 			$this->cache_mappingFromTableList[$key] = FALSE;
 			// Default:
@@ -3250,7 +3250,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					case 'CASE':
 						if (isset($sqlPartArray[$k]['case_field'])) {
 							$fieldArray = explode('.', $sqlPartArray[$k]['case_field']);
-							if ((count($fieldArray) == 1 && is_array($this->mapping[$defaultTableKey]['mapFieldNames'])) && isset($this->mapping[$defaultTableKey]['mapFieldNames'][$fieldArray[0]])) {
+							if (count($fieldArray) == 1 && is_array($this->mapping[$defaultTableKey]['mapFieldNames']) && isset($this->mapping[$defaultTableKey]['mapFieldNames'][$fieldArray[0]])) {
 								$sqlPartArray[$k]['case_field'] = $this->mapping[$defaultTableKey]['mapFieldNames'][$fieldArray[0]];
 							} elseif (count($fieldArray) == 2) {
 								// Map the external table
@@ -3264,7 +3264,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 								if (is_array($this->mapping[$tableKey]['mapFieldNames']) && isset($this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]])) {
 									$field = $this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]];
 								}
-								$sqlPartArray[$k]['case_field'] = ($table . '.') . $field;
+								$sqlPartArray[$k]['case_field'] = $table . '.' . $field;
 							}
 						}
 						foreach ($sqlPartArray[$k]['when'] as $key => $when) {
@@ -3308,7 +3308,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					// Mapping field name in SQL-functions like MIN(), MAX() or SUM()
 					if ($this->mapping[$t]['mapFieldNames']) {
 						$fieldArray = explode('.', $sqlPartArray[$k]['func_content']);
-						if ((count($fieldArray) == 1 && is_array($this->mapping[$t]['mapFieldNames'])) && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
+						if (count($fieldArray) == 1 && is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
 							$sqlPartArray[$k]['func_content.'][0]['func_content'] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
 							$sqlPartArray[$k]['func_content'] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
 						} elseif (count($fieldArray) == 2) {
@@ -3323,8 +3323,8 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 							if (is_array($this->mapping[$tableKey]['mapFieldNames']) && isset($this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]])) {
 								$field = $this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]];
 							}
-							$sqlPartArray[$k]['func_content.'][0]['func_content'] = ($table . '.') . $field;
-							$sqlPartArray[$k]['func_content'] = ($table . '.') . $field;
+							$sqlPartArray[$k]['func_content.'][0]['func_content'] = $table . '.' . $field;
+							$sqlPartArray[$k]['func_content'] = $table . '.' . $field;
 						}
 						// Mapping flow-control statements
 						if (isset($sqlPartArray[$k]['flow-control'])) {
@@ -3356,7 +3356,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					// this is a very simplistic check, beware
 					if (!is_numeric($sqlPartArray[$k]['value'][0]) && !isset($sqlPartArray[$k]['value'][1])) {
 						$fieldArray = explode('.', $sqlPartArray[$k]['value'][0]);
-						if ((count($fieldArray) == 1 && is_array($this->mapping[$t]['mapFieldNames'])) && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
+						if (count($fieldArray) == 1 && is_array($this->mapping[$t]['mapFieldNames']) && isset($this->mapping[$t]['mapFieldNames'][$fieldArray[0]])) {
 							$sqlPartArray[$k]['value'][0] = $this->mapping[$t]['mapFieldNames'][$fieldArray[0]];
 						} elseif (count($fieldArray) == 2) {
 							// Map the external table
@@ -3370,7 +3370,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 							if (is_array($this->mapping[$tableKey]['mapFieldNames']) && isset($this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]])) {
 								$field = $this->mapping[$tableKey]['mapFieldNames'][$fieldArray[1]];
 							}
-							$sqlPartArray[$k]['value'][0] = ($table . '.') . $field;
+							$sqlPartArray[$k]['value'][0] = $table . '.' . $field;
 						}
 					}
 					// Map table?
@@ -3630,10 +3630,10 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		if (is_array($query)) {
 			$queryToLog = $query[0] . ' --  ';
 			if (count($query[1])) {
-				$queryToLog .= (count($query[1]) . ' BLOB FIELDS: ') . implode(', ', array_keys($query[1]));
+				$queryToLog .= count($query[1]) . ' BLOB FIELDS: ' . implode(', ', array_keys($query[1]));
 			}
 			if (count($query[2])) {
-				$queryToLog .= (count($query[2]) . ' CLOB FIELDS: ') . implode(', ', array_keys($query[2]));
+				$queryToLog .= count($query[2]) . ' CLOB FIELDS: ' . implode(', ', array_keys($query[2]));
 			}
 		} else {
 			$queryToLog = $query;

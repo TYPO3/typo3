@@ -150,7 +150,7 @@ class ExtensionManagerHooks implements tx_em_Index_CheckDatabaseUpdatesHook {
 		} elseif (!$isKeyField) {
 			$needsRemapping = strlen($field) > $this->maxIdentifierLength;
 		} else {
-			$needsRemapping = strlen(($table . '_') . $field) > $this->maxIdentifierLength;
+			$needsRemapping = strlen($table . '_' . $field) > $this->maxIdentifierLength;
 		}
 		return $needsRemapping;
 	}
@@ -231,18 +231,18 @@ class ExtensionManagerHooks implements tx_em_Index_CheckDatabaseUpdatesHook {
 		$out = array();
 		$tableId = uniqid('table');
 		$label = 'DBAL Mapping';
-		$description = sprintf(((((('Some table names are longer than %s characters and/or some field names are longer than %s characters.' . ' This is incompatible with your database:') . ' <ul style="list-style: square; margin: 3px 1em; padding: 3px 1em;">') . '		<li>Table names should be short enough to let ADOdb generates a sequence of the form {table}_uid for the') . '			auto-increment "uid" field within %s characters;</li>') . '		<li>Field names may not contain more than %s characters.</li>') . ' </ul>', $this->maxIdentifierLength - $this->tableNameCharacterReservation, $this->maxIdentifierLength, $this->maxIdentifierLength, $this->maxIdentifierLength);
+		$description = sprintf('Some table names are longer than %s characters and/or some field names are longer than %s characters.' . ' This is incompatible with your database:' . ' <ul style="list-style: square; margin: 3px 1em; padding: 3px 1em;">' . '		<li>Table names should be short enough to let ADOdb generates a sequence of the form {table}_uid for the' . '			auto-increment "uid" field within %s characters;</li>' . '		<li>Field names may not contain more than %s characters.</li>' . ' </ul>', $this->maxIdentifierLength - $this->tableNameCharacterReservation, $this->maxIdentifierLength, $this->maxIdentifierLength, $this->maxIdentifierLength);
 		$tables = array_unique(array_merge($tables, array_keys($fields)));
 		foreach ($tables as $table) {
 			$newTableName = $table;
 			if (isset($suggestions[$table]) && isset($suggestions[$table]['mapTableName'])) {
 				$newTableName = $suggestions[$table]['mapTableName'];
 			}
-			$out[] = (((((((((((('
+			$out[] = '
 				<tr>
-					<td style="padding-top: 1em;"><label for="table-' . $table) . '">') . $table) . '</label></td>
+					<td style="padding-top: 1em;"><label for="table-' . $table . '">' . $table . '</label></td>
 					<td style="padding-top: 1em;">=&gt;</td>
-					<td style="padding-top: 1em;"><input type="text" size="35" id="table-') . $table) . '" name="dbal[tables][') . $table) . ']" value="') . $newTableName) . '" /> ') . strlen($newTableName)) . ' characters') . '</td>
+					<td style="padding-top: 1em;"><input type="text" size="35" id="table-' . $table . '" name="dbal[tables][' . $table . ']" value="' . $newTableName . '" /> ' . strlen($newTableName) . ' characters' . '</td>
 				</tr>';
 			if (isset($fields[$table])) {
 				foreach ($fields[$table] as $field => $info) {
@@ -252,23 +252,23 @@ class ExtensionManagerHooks implements tx_em_Index_CheckDatabaseUpdatesHook {
 							$newFieldName = $suggestions[$table]['mapFieldNames'][$field];
 						}
 					}
-					$newFieldFullName = preg_replace(('/^' . $table) . '/', $newTableName, $info['fullName']);
-					$newFieldFullName = preg_replace(('/' . $field) . '$/', $newFieldName, $newFieldFullName);
-					$out[] = ((((((((((((((((('
+					$newFieldFullName = preg_replace('/^' . $table . '/', $newTableName, $info['fullName']);
+					$newFieldFullName = preg_replace('/' . $field . '$/', $newFieldName, $newFieldFullName);
+					$out[] = '
 						<tr>
-							<td>&nbsp;&nbsp;&nbsp;&nbsp;<label for="field-' . $table) . '_') . $field) . '">') . $field) . '</label></td>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;<label for="field-' . $table . '_' . $field . '">' . $field . '</label></td>
 							<td>=&gt;</td>
-							<td><input type="text" size="35" id="field-') . $table) . '_') . $field) . '" name="dbal[fields][') . $table) . '][') . $field) . ']" value="') . $newFieldName) . '" /> ') . ($info['fullname'] !== $field ? (strlen($newFieldFullName) . ' characters: ') . $newFieldFullName : '')) . '</td>
+							<td><input type="text" size="35" id="field-' . $table . '_' . $field . '" name="dbal[fields][' . $table . '][' . $field . ']" value="' . $newFieldName . '" /> ' . ($info['fullname'] !== $field ? strlen($newFieldFullName) . ' characters: ' . $newFieldFullName : '') . '</td>
 						</tr>';
 				}
 			}
 		}
 		// Compile rows:
-		$content = ((((((('
+		$content = '
 			<!-- Remapping database fields / tables -->
-			<h3>' . $label) . '</h3>
-			<p>') . $description) . '</p>
-			<table border="0" cellpadding="2" cellspacing="2" id="') . $tableId) . '" class="remap-db-table-fields">') . implode('', $out)) . '
+			<h3>' . $label . '</h3>
+			<p>' . $description . '</p>
+			<table border="0" cellpadding="2" cellspacing="2" id="' . $tableId . '" class="remap-db-table-fields">' . implode('', $out) . '
 			</table>';
 		return $content;
 	}

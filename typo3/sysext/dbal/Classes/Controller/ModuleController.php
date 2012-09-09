@@ -93,8 +93,8 @@ class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function printSqlCheck() {
 		$input = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_dbal');
-		$out = ((((((((((((((((((((((((((((((((('
-			<form name="sql_check" action="' . $this->thisScript) . '" method="post" enctype="') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype']) . '">
+		$out = '
+			<form name="sql_check" action="' . $this->thisScript . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">
 			<script type="text/javascript">
 /*<![CDATA[*/
 function updateQryForm(s) {
@@ -157,26 +157,26 @@ function updateQryForm(s) {
 	    <tr class="tableheader bgColor5"><th colspan="2">Easy SQL check</th></tr>
 	    <tr><td colspan="2">
 	    <select name="tx_dbal[QUERY]"size="1" onchange="updateQryForm(this.options[this.selectedIndex].value)">
-	     <option value="SELECT" ') . ($input['QUERY'] === 'SELECT' ? 'selected="selected"' : '')) . '>SELECT</option>
-	     <option value="INSERT" ') . ($input['QUERY'] === 'INSERT' ? 'selected="selected"' : '')) . '>INSERT</option>
-	     <option value="UPDATE" ') . ($input['QUERY'] === 'UPDATE' ? 'selected="selected"' : '')) . '>UPDATE</option>
-	     <option value="DELETE" ') . ($input['QUERY'] === 'DELETE' ? 'selected="selected"' : '')) . '>DELETE</option>
+	     <option value="SELECT" ' . ($input['QUERY'] === 'SELECT' ? 'selected="selected"' : '') . '>SELECT</option>
+	     <option value="INSERT" ' . ($input['QUERY'] === 'INSERT' ? 'selected="selected"' : '') . '>INSERT</option>
+	     <option value="UPDATE" ' . ($input['QUERY'] === 'UPDATE' ? 'selected="selected"' : '') . '>UPDATE</option>
+	     <option value="DELETE" ' . ($input['QUERY'] === 'DELETE' ? 'selected="selected"' : '') . '>DELETE</option>
 	    </select>
 	    </td></tr>
- 	    <tr id="tx-dbal-qryupdate" style="display:none;"><td></td><td><input name="tx_dbal[UPDATE]" value="') . $input['UPDATE']) . '" type="text" size="30" maxsize="100" /></td></tr>
-	    <tr id="tx-dbal-qryfields"><td></td><td><input name="tx_dbal[FIELDS]" value="') . $input['FIELDS']) . '" type="text" size="30" maxsize="100" /></td></tr>
-	    <tr id="tx-dbal-qryinsertvalues" style="display:none;"><td></td><td><textarea name="tx_dbal[INSERTVALUES]" cols="30" rows="4">') . $input['INSERTVALUES']) . '</textarea></td></tr>
-	    <tr id="tx-dbal-qryupdatevalues" style="display:none;"><th>SET</th><td><textarea name="tx_dbal[UPDATEVALUES]" cols="30" rows="4">') . $input['UPDATEVALUES']) . '</textarea></td></tr>
- 	    <tr id="tx-dbal-qryfrom"><th>FROM</th><td><input name="tx_dbal[FROM]" value="') . $input['FROM']) . '" type="text" size="30" maxsize="100" /></td></tr>
- 	    <tr id="tx-dbal-qryinto" style="display:none;"><th>INTO</th><td><input name="tx_dbal[INTO]" value="') . $input['INTO']) . '" type="text" size="30" maxsize="100" /></td></tr>
-	    <tr id="tx-dbal-qrywhere"><th>WHERE</th><td><input name="tx_dbal[WHERE]" value="') . $input['WHERE']) . '" type="text" size="30" maxsize="100" /></td></tr>
-	    <tr id="tx-dbal-qrygroup"><th>GROUP BY</th><td><input name="tx_dbal[GROUP]" value="') . $input['GROUP']) . '" type="text" size="30" maxsize="100" /></td></tr>
-	    <tr id="tx-dbal-qryorder"><th>ORDER BY</th><td><input name="tx_dbal[ORDER]" value="') . $input['ORDER']) . '" type="text" size="30" maxsize="100" /></td></tr>
-	    <tr id="tx-dbal-qrylimit"><th>LIMIT</th><td><input name="tx_dbal[LIMIT]" value="') . $input['LIMIT']) . '" type="text" size="30" maxsize="100" /></td></tr>
+ 	    <tr id="tx-dbal-qryupdate" style="display:none;"><td></td><td><input name="tx_dbal[UPDATE]" value="' . $input['UPDATE'] . '" type="text" size="30" maxsize="100" /></td></tr>
+	    <tr id="tx-dbal-qryfields"><td></td><td><input name="tx_dbal[FIELDS]" value="' . $input['FIELDS'] . '" type="text" size="30" maxsize="100" /></td></tr>
+	    <tr id="tx-dbal-qryinsertvalues" style="display:none;"><td></td><td><textarea name="tx_dbal[INSERTVALUES]" cols="30" rows="4">' . $input['INSERTVALUES'] . '</textarea></td></tr>
+	    <tr id="tx-dbal-qryupdatevalues" style="display:none;"><th>SET</th><td><textarea name="tx_dbal[UPDATEVALUES]" cols="30" rows="4">' . $input['UPDATEVALUES'] . '</textarea></td></tr>
+ 	    <tr id="tx-dbal-qryfrom"><th>FROM</th><td><input name="tx_dbal[FROM]" value="' . $input['FROM'] . '" type="text" size="30" maxsize="100" /></td></tr>
+ 	    <tr id="tx-dbal-qryinto" style="display:none;"><th>INTO</th><td><input name="tx_dbal[INTO]" value="' . $input['INTO'] . '" type="text" size="30" maxsize="100" /></td></tr>
+	    <tr id="tx-dbal-qrywhere"><th>WHERE</th><td><input name="tx_dbal[WHERE]" value="' . $input['WHERE'] . '" type="text" size="30" maxsize="100" /></td></tr>
+	    <tr id="tx-dbal-qrygroup"><th>GROUP BY</th><td><input name="tx_dbal[GROUP]" value="' . $input['GROUP'] . '" type="text" size="30" maxsize="100" /></td></tr>
+	    <tr id="tx-dbal-qryorder"><th>ORDER BY</th><td><input name="tx_dbal[ORDER]" value="' . $input['ORDER'] . '" type="text" size="30" maxsize="100" /></td></tr>
+	    <tr id="tx-dbal-qrylimit"><th>LIMIT</th><td><input name="tx_dbal[LIMIT]" value="' . $input['LIMIT'] . '" type="text" size="30" maxsize="100" /></td></tr>
 			<tr><td></td><td style="text-align:right;"><input type="submit" value="CHECK" /></td></tr>
 			<script type="text/javascript">
 /*<![CDATA[*/
-updateQryForm(\'') . $input['QUERY']) . '\');
+updateQryForm(\'' . $input['QUERY'] . '\');
 /*]]>*/
 				</script>
 			';
@@ -195,10 +195,10 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 			$qry = $GLOBALS['TYPO3_DB']->DELETEquery($input['FROM'], $input['WHERE']);
 			break;
 		}
-		$out .= ('<pre>' . htmlspecialchars($qry)) . '</pre></td></tr>';
-		$out .= ('
+		$out .= '<pre>' . htmlspecialchars($qry) . '</pre></td></tr>';
+		$out .= '
 			<tr class="tableheader bgColor5"><th colspan="2">RAW SQL check</th></tr>
-			<tr><td colspan="2" style="text-align:right;"><textarea name="tx_dbal[RAWSQL]" cols="60" rows="5">' . $input['RAWSQL']) . '</textarea><br /><input type="submit" value="CHECK" /></td></tr>';
+			<tr><td colspan="2" style="text-align:right;"><textarea name="tx_dbal[RAWSQL]" cols="60" rows="5">' . $input['RAWSQL'] . '</textarea><br /><input type="submit" value="CHECK" /></td></tr>';
 		if (!empty($input['RAWSQL'])) {
 			$out .= '<tr class="bgColor4">';
 			$parseResult = $GLOBALS['TYPO3_DB']->SQLparser->parseSQL($input['RAWSQL']);
@@ -208,8 +208,8 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 				if (!is_array($testResult)) {
 					$out .= '<td colspan="2">' . $newQuery;
 				} else {
-					$out .= (('<td colspan="2">' . htmlspecialchars($testResult[0])) . '</td></tr>
-					<tr><th>Error:</th><td style="border:2px solid #f00;">Input query did not match the parsed and recompiled query exactly (not observing whitespace):<br />') . htmlspecialchars($testResult[1]);
+					$out .= '<td colspan="2">' . htmlspecialchars($testResult[0]) . '</td></tr>
+					<tr><th>Error:</th><td style="border:2px solid #f00;">Input query did not match the parsed and recompiled query exactly (not observing whitespace):<br />' . htmlspecialchars($testResult[1]);
 				}
 			} else {
 				$out .= '<th>Result:</th><td style="border:2px solid #f00;">' . $parseResult;
@@ -259,8 +259,8 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 		ksort($GLOBALS['TYPO3_DB']->cache_autoIncFields);
 		foreach ($GLOBALS['TYPO3_DB']->cache_autoIncFields as $table => $field) {
 			$out .= '<tr>';
-			$out .= ('<td>' . $table) . '</td>';
-			$out .= ('<td>' . $field) . '</td>';
+			$out .= '<td>' . $table . '</td>';
+			$out .= '<td>' . $field . '</td>';
 			$out .= '</tr>';
 		}
 		$out .= '</tbody></table>';
@@ -270,8 +270,8 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 		ksort($GLOBALS['TYPO3_DB']->cache_primaryKeys);
 		foreach ($GLOBALS['TYPO3_DB']->cache_primaryKeys as $table => $field) {
 			$out .= '<tr>';
-			$out .= ('<td>' . $table) . '</td>';
-			$out .= ('<td>' . $field) . '</td>';
+			$out .= '<td>' . $table . '</td>';
+			$out .= '<td>' . $field . '</td>';
 			$out .= '</tr>';
 		}
 		$out .= '</tbody></table>';
@@ -280,14 +280,14 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 		$out .= '<table border="1" cellspacing="0"><tbody><tr><th colspan="5">Table</th></tr><tr><th>Field</th><th>Type</th><th><a href="#metatypes">Metatype</a></th><th>NOT NULL</th><th>Default</th></th></tr>';
 		ksort($GLOBALS['TYPO3_DB']->cache_fieldType);
 		foreach ($GLOBALS['TYPO3_DB']->cache_fieldType as $table => $fields) {
-			$out .= ('<th colspan="5">' . $table) . '</th>';
+			$out .= '<th colspan="5">' . $table . '</th>';
 			foreach ($fields as $field => $data) {
 				$out .= '<tr>';
-				$out .= ('<td>' . $field) . '</td>';
-				$out .= ('<td>' . $data['type']) . '</td>';
-				$out .= ('<td>' . $data['metaType']) . '</td>';
-				$out .= ('<td>' . ($data['notnull'] ? 'NOT NULL' : '')) . '</td>';
-				$out .= ('<td>' . $data['default']) . '</td>';
+				$out .= '<td>' . $field . '</td>';
+				$out .= '<td>' . $data['type'] . '</td>';
+				$out .= '<td>' . $data['metaType'] . '</td>';
+				$out .= '<td>' . ($data['notnull'] ? 'NOT NULL' : '') . '</td>';
+				$out .= '<td>' . $data['default'] . '</td>';
 				$out .= '</tr>';
 			}
 		}
@@ -314,7 +314,7 @@ updateQryForm(\'') . $input['QUERY']) . '\');
   I8: 8-byte integer
   F:  Floating point number
   N:  Numeric or decimal number</pre>';
-		$menu = ('<a href="' . $this->thisScript) . '&amp;cmd=clear">CLEAR DATA</a><hr />';
+		$menu = '<a href="' . $this->thisScript . '&amp;cmd=clear">CLEAR DATA</a><hr />';
 		$menu .= '<a href="#autoincrement">auto_increment</a> | <a href="#primarykeys">Primary keys</a> | <a href="#fieldtypes">Field types</a> | <a href="#metatypes">Metatype explanation</a><hr />';
 		return $menu . $out;
 	}
@@ -360,12 +360,12 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 					}
 				}
 				// Create output row
-				$tRows[] = ((((((('
+				$tRows[] = '
 						<tr>
-							<td>' . htmlspecialchars($row['exec_time'])) . '</td>
-							<td>') . htmlspecialchars($row['table_join'])) . '</td>
-							<td>') . htmlspecialchars($row['script'])) . '</td>
-							<td>') . htmlspecialchars($row['query'])) . '</td>
+							<td>' . htmlspecialchars($row['exec_time']) . '</td>
+							<td>' . htmlspecialchars($row['table_join']) . '</td>
+							<td>' . htmlspecialchars($row['script']) . '</td>
+							<td>' . htmlspecialchars($row['query']) . '</td>
 						</tr>';
 			}
 			// Printing direct joins:
@@ -382,8 +382,8 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 			}
 			$outStr .= '<h4>Total dependencies:</h4>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($tableIndex);
 			// Printing data rows:
-			$outStr .= ('
-					<table border="1" cellspacing="0">' . implode('', $tRows)) . '
+			$outStr .= '
+					<table border="1" cellspacing="0">' . implode('', $tRows) . '
 					</table>';
 			break;
 		case 'errors':
@@ -399,17 +399,17 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 					</tr>';
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				// Create output row
-				$tRows[] = ((((((('
+				$tRows[] = '
 						<tr>
-							<td>' . htmlspecialchars($row['exec_time'])) . '</td>
-							<td>') . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray(unserialize($row['serdata']))) . '</td>
-							<td>') . htmlspecialchars($row['script'])) . '</td>
-							<td>') . htmlspecialchars($row['query'])) . '</td>
+							<td>' . htmlspecialchars($row['exec_time']) . '</td>
+							<td>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray(unserialize($row['serdata'])) . '</td>
+							<td>' . htmlspecialchars($row['script']) . '</td>
+							<td>' . htmlspecialchars($row['query']) . '</td>
 						</tr>';
 			}
 			// Printing data rows:
-			$outStr .= ('
-					<table border="1" cellspacing="0">' . implode('', $tRows)) . '
+			$outStr .= '
+					<table border="1" cellspacing="0">' . implode('', $tRows) . '
 					</table>';
 			break;
 		case 'parsing':
@@ -417,14 +417,14 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 			$tRows = array();
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				// Create output row
-				$tRows[] = ('
+				$tRows[] = '
 						<tr>
-							<td>' . htmlspecialchars($row['query'])) . '</td>
+							<td>' . htmlspecialchars($row['query']) . '</td>
 						</tr>';
 			}
 			// Printing data rows:
-			$outStr .= ('
-					<table border="1" cellspacing="0">' . implode('', $tRows)) . '
+			$outStr .= '
+					<table border="1" cellspacing="0">' . implode('', $tRows) . '
 					</table>';
 			break;
 		case 'where':
@@ -438,16 +438,16 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 						<td>WHERE clause</td>
 					</tr>';
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-				$tRows[] = ((((((('
+				$tRows[] = '
 						<tr>
-							<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp'])) . '</td>
-							<td>') . htmlspecialchars($row['script'])) . '</td>
-							<td>') . htmlspecialchars($row['tablename'])) . '</td>
-								<td>') . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['whereclause']))) . '</td>
+							<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp']) . '</td>
+							<td>' . htmlspecialchars($row['script']) . '</td>
+							<td>' . htmlspecialchars($row['tablename']) . '</td>
+								<td>' . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['whereclause'])) . '</td>
 						</tr>';
 			}
-			$outStr = ('
-					<table border="1" cellspacing="0">' . implode('', $tRows)) . '
+			$outStr = '
+					<table border="1" cellspacing="0">' . implode('', $tRows) . '
 					</table>';
 			break;
 		default:
@@ -465,13 +465,13 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 							<td>Query</td>
 						</tr>';
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					$tRows[] = ((((((((('
+					$tRows[] = '
 							<tr>
-								<td>' . htmlspecialchars($row['exec_time'])) . '</td>
-								<td>') . ($row['errorFlag'] ? 1 : 0)) . '</td>
-								<td>') . htmlspecialchars($row['table_join'])) . '</td>
-								<td>') . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray(unserialize($row['serdata']))) . '</td>
-								<td>') . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['query']))) . '</td>
+								<td>' . htmlspecialchars($row['exec_time']) . '</td>
+								<td>' . ($row['errorFlag'] ? 1 : 0) . '</td>
+								<td>' . htmlspecialchars($row['table_join']) . '</td>
+								<td>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray(unserialize($row['serdata'])) . '</td>
+								<td>' . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['query'])) . '</td>
 							</tr>';
 				}
 			} else {
@@ -486,30 +486,30 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 							<td>Script</td>
 						</tr>';
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-					$tRows[] = ((((((((((((('
+					$tRows[] = '
 							<tr>
-								<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp'])) . '</td>
-								<td>') . htmlspecialchars($row['qrycount'])) . '</td>
-								<td>') . ($row['error'] ? '<strong style="color:#f00">ERR</strong>' : '')) . '</td>
-								<td>') . htmlspecialchars($row['calc_sum'])) . '</td>
-								<td><a href="') . $this->thisScript) . '&amp;specTime=') . intval($row['tstamp'])) . '">') . htmlspecialchars($row['script'])) . '</a></td>
+								<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp']) . '</td>
+								<td>' . htmlspecialchars($row['qrycount']) . '</td>
+								<td>' . ($row['error'] ? '<strong style="color:#f00">ERR</strong>' : '') . '</td>
+								<td>' . htmlspecialchars($row['calc_sum']) . '</td>
+								<td><a href="' . $this->thisScript . '&amp;specTime=' . intval($row['tstamp']) . '">' . htmlspecialchars($row['script']) . '</a></td>
 							</tr>';
 				}
 			}
-			$outStr = ('
-					<table border="1" cellspacing="0">' . implode('', $tRows)) . '
+			$outStr = '
+					<table border="1" cellspacing="0">' . implode('', $tRows) . '
 					</table>';
 			break;
 		}
-		$menu = ((((((((((((('
-					<a href="' . $this->thisScript) . '&amp;cmd=flush">FLUSH LOG</a> -
-					<a href="') . $this->thisScript) . '&amp;cmd=joins">JOINS</a> -
-					<a href="') . $this->thisScript) . '&amp;cmd=errors">ERRORS</a> -
-					<a href="') . $this->thisScript) . '&amp;cmd=parsing">PARSING</a> -
-					<a href="') . $this->thisScript) . '">LOG</a> -
-					<a href="') . $this->thisScript) . '&amp;cmd=where">WHERE</a> -
+		$menu = '
+					<a href="' . $this->thisScript . '&amp;cmd=flush">FLUSH LOG</a> -
+					<a href="' . $this->thisScript . '&amp;cmd=joins">JOINS</a> -
+					<a href="' . $this->thisScript . '&amp;cmd=errors">ERRORS</a> -
+					<a href="' . $this->thisScript . '&amp;cmd=parsing">PARSING</a> -
+					<a href="' . $this->thisScript . '">LOG</a> -
+					<a href="' . $this->thisScript . '&amp;cmd=where">WHERE</a> -
 
-					<a href="') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript())) . '" target="tx_debuglog">[New window]</a>
+					<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript()) . '" target="tx_debuglog">[New window]</a>
 					<hr />
 		';
 		return $menu . $outStr;

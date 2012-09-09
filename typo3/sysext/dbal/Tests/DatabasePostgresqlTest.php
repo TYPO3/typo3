@@ -86,9 +86,9 @@ class DatabasePostgresqlTest extends BaseTestCase {
 		foreach ($GLOBALS['TYPO3_DB']->cache_fieldType as $table => $fieldTypes) {
 			$tableDef = $GLOBALS['TYPO3_DB']->_call('map_needMapping', $table);
 			if (in_array($table, $tablesWithMapping)) {
-				self::assertTrue(is_array($tableDef), ('Table ' . $table) . ' was expected to need mapping');
+				self::assertTrue(is_array($tableDef), 'Table ' . $table . ' was expected to need mapping');
 			} else {
-				self::assertFalse($tableDef, ('Table ' . $table) . ' was not expected to need mapping');
+				self::assertFalse($tableDef, 'Table ' . $table . ' was not expected to need mapping');
 			}
 		}
 	}

@@ -86,9 +86,9 @@ class DatabaseMssqlTest extends BaseTestCase {
 		foreach ($GLOBALS['TYPO3_DB']->cache_fieldType as $table => $fieldTypes) {
 			$tableDef = $GLOBALS['TYPO3_DB']->_call('map_needMapping', $table);
 			if (in_array($table, $tablesWithMapping)) {
-				self::assertTrue(is_array($tableDef), ('Table ' . $table) . ' was expected to need mapping');
+				self::assertTrue(is_array($tableDef), 'Table ' . $table . ' was expected to need mapping');
 			} else {
-				self::assertFalse($tableDef, ('Table ' . $table) . ' was not expected to need mapping');
+				self::assertFalse($tableDef, 'Table ' . $table . ' was not expected to need mapping');
 			}
 		}
 	}
@@ -142,7 +142,7 @@ class DatabaseMssqlTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=13134
 	 */
 	public function locateStatementIsProperlyQuoted() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery((((('*, CASE WHEN' . ' LOCATE(') . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj')) . ', datastructure)>0 THEN 2') . ' ELSE 1') . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2' . ' ELSE 1' . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
 		$expected = 'SELECT *, CASE WHEN CHARINDEX(\'(fce)\', "datastructure") > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
 		$this->assertEquals($expected, $query);
 	}
@@ -152,7 +152,7 @@ class DatabaseMssqlTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=13134
 	 */
 	public function locateStatementWithPositionIsProperlyQuoted() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery((((('*, CASE WHEN' . ' LOCATE(') . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj')) . ', datastructure, 4)>0 THEN 2') . ' ELSE 1') . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
 		$expected = 'SELECT *, CASE WHEN CHARINDEX(\'(fce)\', "datastructure", 4) > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
 		$this->assertEquals($expected, $query);
 	}
@@ -162,7 +162,7 @@ class DatabaseMssqlTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=13134
 	 */
 	public function locateStatementIsProperlyRemapped() {
-		$selectFields = (((('*, CASE WHEN' . ' LOCATE(') . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj')) . ', datastructure, 4)>0 THEN 2') . ' ELSE 1') . ' END AS scope';
+		$selectFields = '*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope';
 		$fromTables = 'tx_templavoila_tmplobj';
 		$whereClause = '1=1';
 		$groupBy = '';
@@ -178,7 +178,7 @@ class DatabaseMssqlTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=13134
 	 */
 	public function locateStatementWithExternalTableIsProperlyRemapped() {
-		$selectFields = (((('*, CASE WHEN' . ' LOCATE(') . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj')) . ', tx_templavoila_tmplobj.datastructure, 4)>0 THEN 2') . ' ELSE 1') . ' END AS scope';
+		$selectFields = '*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', tx_templavoila_tmplobj.datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope';
 		$fromTables = 'tx_templavoila_tmplobj';
 		$whereClause = '1=1';
 		$groupBy = '';

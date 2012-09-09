@@ -86,9 +86,9 @@ class DatabaseOracleTest extends BaseTestCase {
 		foreach ($GLOBALS['TYPO3_DB']->cache_fieldType as $table => $fieldTypes) {
 			$tableDef = $GLOBALS['TYPO3_DB']->_call('map_needMapping', $table);
 			if (in_array($table, $tablesWithMapping)) {
-				self::assertTrue(is_array($tableDef), ('Table ' . $table) . ' was expected to need mapping');
+				self::assertTrue(is_array($tableDef), 'Table ' . $table . ' was expected to need mapping');
 			} else {
-				self::assertFalse($tableDef, ('Table ' . $table) . ' was not expected to need mapping');
+				self::assertFalse($tableDef, 'Table ' . $table . ' was not expected to need mapping');
 			}
 		}
 	}
@@ -133,7 +133,7 @@ class DatabaseOracleTest extends BaseTestCase {
 		$this->assertEquals(4, count($insert));
 		for ($i = 0; $i < count($insert); $i++) {
 			foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', 'uid,pid,tr_iso_nr,tr_parent_iso_nr,tr_name_en') as $field) {
-				$this->assertTrue(isset($insert[$i][$field]), ('Could not find ' . $field) . ' column');
+				$this->assertTrue(isset($insert[$i][$field]), 'Could not find ' . $field . ' column');
 			}
 		}
 	}
@@ -165,8 +165,8 @@ class DatabaseOracleTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=15535
 	 */
 	public function groupConditionsAreProperlyTransformed() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'pages', (('pid=0 AND pages.deleted=0 AND pages.hidden=0 AND pages.starttime<=1281620460 ' . 'AND (pages.endtime=0 OR pages.endtime>1281620460) AND NOT pages.t3ver_state>0 ') . 'AND pages.doktype<200 AND (pages.fe_group=\'\' OR pages.fe_group IS NULL OR ') . 'pages.fe_group=\'0\' OR FIND_IN_SET(\'0\',pages.fe_group) OR FIND_IN_SET(\'-1\',pages.fe_group))'));
-		$expected = ((('SELECT * FROM "pages" WHERE "pid" = 0 AND "pages"."deleted" = 0 AND "pages"."hidden" = 0 ' . 'AND "pages"."starttime" <= 1281620460 AND ("pages"."endtime" = 0 OR "pages"."endtime" > 1281620460) ') . 'AND NOT "pages"."t3ver_state" > 0 AND "pages"."doktype" < 200 AND ("pages"."fe_group" = \'\' ') . 'OR "pages"."fe_group" IS NULL OR "pages"."fe_group" = \'0\' OR \',\'||"pages"."fe_group"||\',\' LIKE \'%,0,%\' ') . 'OR \',\'||"pages"."fe_group"||\',\' LIKE \'%,-1,%\')';
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'pages', 'pid=0 AND pages.deleted=0 AND pages.hidden=0 AND pages.starttime<=1281620460 ' . 'AND (pages.endtime=0 OR pages.endtime>1281620460) AND NOT pages.t3ver_state>0 ' . 'AND pages.doktype<200 AND (pages.fe_group=\'\' OR pages.fe_group IS NULL OR ' . 'pages.fe_group=\'0\' OR FIND_IN_SET(\'0\',pages.fe_group) OR FIND_IN_SET(\'-1\',pages.fe_group))'));
+		$expected = 'SELECT * FROM "pages" WHERE "pid" = 0 AND "pages"."deleted" = 0 AND "pages"."hidden" = 0 ' . 'AND "pages"."starttime" <= 1281620460 AND ("pages"."endtime" = 0 OR "pages"."endtime" > 1281620460) ' . 'AND NOT "pages"."t3ver_state" > 0 AND "pages"."doktype" < 200 AND ("pages"."fe_group" = \'\' ' . 'OR "pages"."fe_group" IS NULL OR "pages"."fe_group" = \'0\' OR \',\'||"pages"."fe_group"||\',\' LIKE \'%,0,%\' ' . 'OR \',\'||"pages"."fe_group"||\',\' LIKE \'%,-1,%\')';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -244,8 +244,8 @@ class DatabaseOracleTest extends BaseTestCase {
 	 */
 	public function cachingFrameworkQueryIsProperlyQuoted() {
 		$currentTime = time();
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('content', 'cache_hash', ((('identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('abbbabaf2d4b3f9a63e8dde781f1c106', 'cache_hash')) . ' AND (crdate + lifetime >= ') . $currentTime) . ' OR lifetime = 0)'));
-		$expected = ('SELECT "content" FROM "cache_hash" WHERE "identifier" = \'abbbabaf2d4b3f9a63e8dde781f1c106\' AND ("crdate"+"lifetime" >= ' . $currentTime) . ' OR "lifetime" = 0)';
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('content', 'cache_hash', 'identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('abbbabaf2d4b3f9a63e8dde781f1c106', 'cache_hash') . ' AND (crdate + lifetime >= ' . $currentTime . ' OR lifetime = 0)'));
+		$expected = 'SELECT "content" FROM "cache_hash" WHERE "identifier" = \'abbbabaf2d4b3f9a63e8dde781f1c106\' AND ("crdate"+"lifetime" >= ' . $currentTime . ' OR "lifetime" = 0)';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -255,8 +255,8 @@ class DatabaseOracleTest extends BaseTestCase {
 	 */
 	public function calculatedFieldsAreProperlyQuoted() {
 		$currentTime = time();
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('identifier', 'cachingframework_cache_pages', ('crdate + lifetime < ' . $currentTime) . ' AND lifetime > 0'));
-		$expected = ('SELECT "identifier" FROM "cachingframework_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime) . ' AND "lifetime" > 0';
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('identifier', 'cachingframework_cache_pages', 'crdate + lifetime < ' . $currentTime . ' AND lifetime > 0'));
+		$expected = 'SELECT "identifier" FROM "cachingframework_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
 		$this->assertEquals($expected, $query);
 	}
 
@@ -425,7 +425,7 @@ class DatabaseOracleTest extends BaseTestCase {
 	 */
 	public function fieldFromAliasInJoinIsRemapped() {
 		$selectFields = 'cat.uid, cat_mm.uid_local, news.uid';
-		$fromTables = ('tt_news_cat AS cat' . ' INNER JOIN tt_news_cat_mm AS cat_mm ON cat.uid = cat_mm.uid_foreign') . ' INNER JOIN tt_news AS news ON news.uid = cat_mm.uid_local';
+		$fromTables = 'tt_news_cat AS cat' . ' INNER JOIN tt_news_cat_mm AS cat_mm ON cat.uid = cat_mm.uid_foreign' . ' INNER JOIN tt_news AS news ON news.uid = cat_mm.uid_local';
 		$whereClause = '1=1';
 		$groupBy = '';
 		$orderBy = '';
@@ -488,7 +488,7 @@ class DatabaseOracleTest extends BaseTestCase {
 	public function aliasRemappingSupportsNestedSubqueries() {
 		$selectFields = 'foo.uid';
 		$fromTables = 'tt_news AS foo';
-		$whereClause = (('uid IN (' . 'SELECT foobar.uid_local FROM tt_news_cat_mm AS foobar WHERE uid_foreign IN (') . 'SELECT uid FROM tt_news_cat WHERE deleted = 0') . '))';
+		$whereClause = 'uid IN (' . 'SELECT foobar.uid_local FROM tt_news_cat_mm AS foobar WHERE uid_foreign IN (' . 'SELECT uid FROM tt_news_cat WHERE deleted = 0' . '))';
 		$groupBy = '';
 		$orderBy = '';
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
@@ -554,7 +554,7 @@ class DatabaseOracleTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=14479
 	 */
 	public function instrIsUsedForCEOnPages() {
-		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_content', (((((('uid IN (62) AND tt_content.deleted=0 AND tt_content.t3ver_state<=0' . ' AND tt_content.hidden=0 AND (tt_content.starttime<=1264487640)') . ' AND (tt_content.endtime=0 OR tt_content.endtime>1264487640)') . ' AND (tt_content.fe_group=\'\' OR tt_content.fe_group IS NULL OR tt_content.fe_group=\'0\'') . ' OR (tt_content.fe_group LIKE \'%,0,%\' OR tt_content.fe_group LIKE \'0,%\' OR tt_content.fe_group LIKE \'%,0\'') . ' OR tt_content.fe_group=\'0\')') . ' OR (tt_content.fe_group LIKE\'%,-1,%\' OR tt_content.fe_group LIKE \'-1,%\' OR tt_content.fe_group LIKE \'%,-1\'') . ' OR tt_content.fe_group=\'-1\'))'));
+		$select = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tt_content', 'uid IN (62) AND tt_content.deleted=0 AND tt_content.t3ver_state<=0' . ' AND tt_content.hidden=0 AND (tt_content.starttime<=1264487640)' . ' AND (tt_content.endtime=0 OR tt_content.endtime>1264487640)' . ' AND (tt_content.fe_group=\'\' OR tt_content.fe_group IS NULL OR tt_content.fe_group=\'0\'' . ' OR (tt_content.fe_group LIKE \'%,0,%\' OR tt_content.fe_group LIKE \'0,%\' OR tt_content.fe_group LIKE \'%,0\'' . ' OR tt_content.fe_group=\'0\')' . ' OR (tt_content.fe_group LIKE\'%,-1,%\' OR tt_content.fe_group LIKE \'-1,%\' OR tt_content.fe_group LIKE \'%,-1\'' . ' OR tt_content.fe_group=\'-1\'))'));
 		$expected = 'SELECT * FROM "tt_content"';
 		$expected .= ' WHERE "uid" IN (62) AND "tt_content"."deleted" = 0 AND "tt_content"."t3ver_state" <= 0';
 		$expected .= ' AND "tt_content"."hidden" = 0 AND ("tt_content"."starttime" <= 1264487640)';
@@ -690,9 +690,9 @@ class DatabaseOracleTest extends BaseTestCase {
 	 */
 	public function cachingFrameworkQueryIsSupported() {
 		$currentTime = time();
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->DELETEquery('cachingframework_cache_hash_tags', ('identifier IN (' . $GLOBALS['TYPO3_DB']->SELECTsubquery('identifier', 'cachingframework_cache_pages', (('crdate + lifetime < ' . $currentTime) . ' AND lifetime > 0'))) . ')'));
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->DELETEquery('cachingframework_cache_hash_tags', 'identifier IN (' . $GLOBALS['TYPO3_DB']->SELECTsubquery('identifier', 'cachingframework_cache_pages', ('crdate + lifetime < ' . $currentTime . ' AND lifetime > 0')) . ')'));
 		$expected = 'DELETE FROM "cachingframework_cache_hash_tags" WHERE "identifier" IN (';
-		$expected .= ('SELECT "identifier" FROM "cachingframework_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime) . ' AND "lifetime" > 0';
+		$expected .= 'SELECT "identifier" FROM "cachingframework_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
 		$expected .= ')';
 		$this->assertEquals($expected, $query);
 	}
@@ -704,7 +704,7 @@ class DatabaseOracleTest extends BaseTestCase {
 	public function cachingFrameworkQueryIsRemapped() {
 		$currentTime = time();
 		$table = 'cachingframework_cache_hash_tags';
-		$where = ('identifier IN (' . $GLOBALS['TYPO3_DB']->SELECTsubquery('identifier', 'cachingframework_cache_pages', (('crdate + lifetime < ' . $currentTime) . ' AND lifetime > 0'))) . ')';
+		$where = 'identifier IN (' . $GLOBALS['TYPO3_DB']->SELECTsubquery('identifier', 'cachingframework_cache_pages', ('crdate + lifetime < ' . $currentTime . ' AND lifetime > 0')) . ')';
 		// Perform remapping (as in method exec_DELETEquery)
 		if ($tableArray = $GLOBALS['TYPO3_DB']->_call('map_needMapping', $table)) {
 			// Where clause:
@@ -718,7 +718,7 @@ class DatabaseOracleTest extends BaseTestCase {
 		}
 		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->DELETEquery($table, $where));
 		$expected = 'DELETE FROM "cf_cache_hash_tags" WHERE "identifier" IN (';
-		$expected .= ('SELECT "identifier" FROM "cf_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime) . ' AND "lifetime" > 0';
+		$expected .= 'SELECT "identifier" FROM "cf_cache_pages" WHERE "crdate"+"lifetime" < ' . $currentTime . ' AND "lifetime" > 0';
 		$expected .= ')';
 		$this->assertEquals($expected, $query);
 	}
@@ -728,7 +728,7 @@ class DatabaseOracleTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=12758
 	 */
 	public function existsWhereClauseIsProperlyQuoted() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tx_crawler_process', ('active = 0 AND NOT EXISTS (' . $GLOBALS['TYPO3_DB']->SELECTsubquery('*', 'tx_crawler_queue', 'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)')) . ')'));
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*', 'tx_crawler_process', 'active = 0 AND NOT EXISTS (' . $GLOBALS['TYPO3_DB']->SELECTsubquery('*', 'tx_crawler_queue', 'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0)') . ')'));
 		$expected = 'SELECT * FROM "tx_crawler_process" WHERE "active" = 0 AND NOT EXISTS (';
 		$expected .= 'SELECT * FROM "tx_crawler_queue" WHERE "tx_crawler_queue"."process_id" = "tx_crawler_process"."process_id" AND "tx_crawler_queue"."exec_time" = 0';
 		$expected .= ')';
@@ -742,7 +742,7 @@ class DatabaseOracleTest extends BaseTestCase {
 	public function subqueryIsRemappedForExistsWhereClause() {
 		$selectFields = '*';
 		$fromTables = 'tx_crawler_process';
-		$whereClause = ('active = 0 AND NOT EXISTS (' . $GLOBALS['TYPO3_DB']->SELECTsubquery('*', 'tx_crawler_queue', 'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0')) . ')';
+		$whereClause = 'active = 0 AND NOT EXISTS (' . $GLOBALS['TYPO3_DB']->SELECTsubquery('*', 'tx_crawler_queue', 'tx_crawler_queue.process_id = tx_crawler_process.process_id AND tx_crawler_queue.exec_time = 0') . ')';
 		$groupBy = '';
 		$orderBy = '';
 		$remappedParameters = $GLOBALS['TYPO3_DB']->_call('map_remapSELECTQueryParts', $selectFields, $fromTables, $whereClause, $groupBy, $orderBy);
@@ -761,7 +761,7 @@ class DatabaseOracleTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=13135
 	 */
 	public function caseStatementIsProperlyQuoted() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery((((((('process_id, CASE active' . ' WHEN 1 THEN ') . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process')) . ' WHEN 2 THEN ') . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process')) . ' ELSE ') . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process')) . ' END AS number', 'tx_crawler_process', '1=1'));
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('process_id, CASE active' . ' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') . ' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') . ' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') . ' END AS number', 'tx_crawler_process', '1=1'));
 		$expected = 'SELECT "process_id", CASE "active" WHEN 1 THEN \'one\' WHEN 2 THEN \'two\' ELSE \'out of range\' END AS "number" FROM "tx_crawler_process" WHERE 1 = 1';
 		$this->assertEquals($expected, $query);
 	}
@@ -771,7 +771,7 @@ class DatabaseOracleTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=13135
 	 */
 	public function caseStatementIsProperlyRemapped() {
-		$selectFields = (((((('process_id, CASE active' . ' WHEN 1 THEN ') . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process')) . ' WHEN 2 THEN ') . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process')) . ' ELSE ') . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process')) . ' END AS number';
+		$selectFields = 'process_id, CASE active' . ' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tx_crawler_process') . ' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tx_crawler_process') . ' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tx_crawler_process') . ' END AS number';
 		$fromTables = 'tx_crawler_process';
 		$whereClause = '1=1';
 		$groupBy = '';
@@ -788,7 +788,7 @@ class DatabaseOracleTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=13135
 	 */
 	public function caseStatementWithExternalTableIsProperlyRemapped() {
-		$selectFields = (((((('process_id, CASE tt_news.uid' . ' WHEN 1 THEN ') . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tt_news')) . ' WHEN 2 THEN ') . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tt_news')) . ' ELSE ') . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tt_news')) . ' END AS number';
+		$selectFields = 'process_id, CASE tt_news.uid' . ' WHEN 1 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('one', 'tt_news') . ' WHEN 2 THEN ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('two', 'tt_news') . ' ELSE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('out of range', 'tt_news') . ' END AS number';
 		$fromTables = 'tx_crawler_process, tt_news';
 		$whereClause = '1=1';
 		$groupBy = '';
@@ -805,7 +805,7 @@ class DatabaseOracleTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=13134
 	 */
 	public function locateStatementIsProperlyQuoted() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery((((('*, CASE WHEN' . ' LOCATE(') . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj')) . ', datastructure)>0 THEN 2') . ' ELSE 1') . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure)>0 THEN 2' . ' ELSE 1' . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
 		$expected = 'SELECT *, CASE WHEN INSTR("datastructure", \'(fce)\') > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
 		$this->assertEquals($expected, $query);
 	}
@@ -815,7 +815,7 @@ class DatabaseOracleTest extends BaseTestCase {
 	 * @see http://bugs.typo3.org/view.php?id=13134
 	 */
 	public function locateStatementWithPositionIsProperlyQuoted() {
-		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery((((('*, CASE WHEN' . ' LOCATE(') . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj')) . ', datastructure, 4)>0 THEN 2') . ' ELSE 1') . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
+		$query = $this->cleanSql($GLOBALS['TYPO3_DB']->SELECTquery('*, CASE WHEN' . ' LOCATE(' . $GLOBALS['TYPO3_DB']->fullQuoteStr('(fce)', 'tx_templavoila_tmplobj') . ', datastructure, 4)>0 THEN 2' . ' ELSE 1' . ' END AS scope', 'tx_templavoila_tmplobj', '1=1'));
 		$expected = 'SELECT *, CASE WHEN INSTR("datastructure", \'(fce)\', 4) > 0 THEN 2 ELSE 1 END AS "scope" FROM "tx_templavoila_tmplobj" WHERE 1 = 1';
 		$this->assertEquals($expected, $query);
 	}

@@ -44,13 +44,13 @@ class MessageDisplay {
 	 * @todo Define visibility
 	 */
 	public function displayMessage(array &$params, \TYPO3\CMS\Core\TypoScript\ConfigurationForm $tsObj) {
-		$out = ('
+		$out = '
 			<div>
 				<div class="typo3-message message-information">
 					<div class="message-header">PostgreSQL</div>
 					<div class="message-body">
 						If you use a PostgreSQL database, make sure to run SQL scripts located in<br />
-						<tt>' . \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal')) . 'res/postgresql/</tt><br />
+						<tt>' . \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal') . 'res/postgresql/</tt><br />
 						to ensure best compatibility with TYPO3.
 					</div>
 				</div>

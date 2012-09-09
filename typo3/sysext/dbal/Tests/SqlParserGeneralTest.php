@@ -149,7 +149,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 	 * @test
 	 */
 	public function parseWhereClauseReturnsArray() {
-		$parseString = ('uid IN (1,2) AND (starttime < ' . time()) . ' OR cruser_id + 10 < 20)';
+		$parseString = 'uid IN (1,2) AND (starttime < ' . time() . ' OR cruser_id + 10 < 20)';
 		$where = $this->fixture->parseWhereClause($parseString);
 		$this->assertTrue(is_array($where), $where);
 		$this->assertTrue(empty($parseString), 'parseString is not empty');
@@ -710,7 +710,7 @@ FROM pages WHERE pid IN (1,2,3,4)';
 		$components = $this->fixture->_callRef('parseSELECT', $sql);
 		$components['parameters'][':pid'][0] = $pid;
 		$query = $this->cleanSql($this->fixture->_callRef('compileSELECT', $components));
-		$expected = ('SELECT * FROM pages WHERE pid = ' . $pid) . ' AND title NOT LIKE \':pid\'';
+		$expected = 'SELECT * FROM pages WHERE pid = ' . $pid . ' AND title NOT LIKE \':pid\'';
 		$this->assertEquals($expected, $query);
 	}
 

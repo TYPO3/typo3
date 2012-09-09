@@ -174,7 +174,7 @@ class InstallToolHooks {
 			$this->driver = $this->getDefaultDriver();
 		}
 		// Get the template file
-		$templateFile = @file_get_contents(((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal') . $this->templateFilePath) . 'install.html'));
+		$templateFile = @file_get_contents((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal') . $this->templateFilePath . 'install.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Get the subpart for the connection form
@@ -193,7 +193,7 @@ class InstallToolHooks {
 		if ($this->driver === '' || $this->driver === 'mysql') {
 			$driverOptionsSubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###DRIVER_MYSQL###');
 		} else {
-			$driverOptionsSubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, ('###DRIVER_' . \TYPO3\CMS\Core\Utility\GeneralUtility::strtoupper($this->driver)) . '###');
+			$driverOptionsSubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###DRIVER_' . \TYPO3\CMS\Core\Utility\GeneralUtility::strtoupper($this->driver) . '###');
 			if ($driverOptionsSubPart === '') {
 				$driverOptionsSubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###DRIVER_DEFAULT###');
 			}
@@ -305,7 +305,7 @@ class InstallToolHooks {
 				$markers = array(
 					'driver' => $driver,
 					'labelvendor' => $label,
-					'onclick' => ('document.location=\'index.php?TYPO3_INSTALL[type]=config&mode=123&step=2&driver=' . $driver) . '\';',
+					'onclick' => 'document.location=\'index.php?TYPO3_INSTALL[type]=config&mode=123&step=2&driver=' . $driver . '\';',
 					'selected' => ''
 				);
 				if ($driver === $this->driver) {
@@ -428,14 +428,14 @@ class InstallToolHooks {
 	 * @param \TYPO3\CMS\Install\Installer $instObj
 	 */
 	protected function createDatabaseForm(array &$markers, \TYPO3\CMS\Install\Installer $instObj) {
-		$error_missingConnect = ((('
+		$error_missingConnect = '
 			<p class="typo3-message message-error">
 				<strong>
 					There is no connection to the database!
 				</strong>
 				<br />
-				(Username: <em>' . TYPO3_db_username) . '</em>,
-				Host: <em>') . TYPO3_db_host) . '</em>,
+				(Username: <em>' . TYPO3_db_username . '</em>,
+				Host: <em>' . TYPO3_db_host . '</em>,
 				Using Password: YES)
 				<br />
 				Go to Step 1 and enter a valid username and password!
@@ -446,7 +446,7 @@ class InstallToolHooks {
 		// There should be a database host connection at this point
 		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
 			// Get the template file
-			$templateFile = @file_get_contents(((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal') . $this->templateFilePath) . 'install.html'));
+			$templateFile = @file_get_contents((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal') . $this->templateFilePath . 'install.html'));
 			// Get the template part from the file
 			$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 			// Get the subpart for the database choice step

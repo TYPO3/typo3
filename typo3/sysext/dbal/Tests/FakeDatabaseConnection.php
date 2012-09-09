@@ -44,7 +44,7 @@ class FakeDatabaseConnection {
 		$db->clearCachedFieldInfo();
 		$db->_call('initInternalVariables');
 		require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('adodb') . 'adodb/adodb.inc.php';
-		require_once ((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('adodb') . 'adodb/drivers/adodb-') . $driver) . '.inc.php';
+		require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('adodb') . 'adodb/drivers/adodb-' . $driver . '.inc.php';
 		$handlerKey = '_DEFAULT';
 		$db->lastHandlerKey = $handlerKey;
 		$db->handlerInstance[$handlerKey] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('ADODB_' . $driver);

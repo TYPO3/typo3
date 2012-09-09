@@ -135,7 +135,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 					// Detecting type:
 					switch ($v['type']) {
 					case 'function':
-						$outputParts[$k] = (($v['function'] . '(') . $v['func_content']) . ')';
+						$outputParts[$k] = $v['function'] . '(' . $v['func_content'] . ')';
 						break;
 					case 'flow-control':
 						if ($v['flow-control']['type'] === 'CASE') {
@@ -143,12 +143,12 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 						}
 						break;
 					case 'field':
-						$outputParts[$k] = (($v['distinct'] ? $v['distinct'] : '') . ($v['table'] ? $v['table'] . '.' : '')) . $v['field'];
+						$outputParts[$k] = ($v['distinct'] ? $v['distinct'] : '') . ($v['table'] ? $v['table'] . '.' : '') . $v['field'];
 						break;
 					}
 					// Alias:
 					if ($v['as']) {
-						$outputParts[$k] .= ((' ' . $v['as_keyword']) . ' ') . $v['as'];
+						$outputParts[$k] .= ' ' . $v['as_keyword'] . ' ' . $v['as'];
 					}
 					// Specifically for ORDER BY and GROUP BY field lists:
 					if ($v['sortDir']) {
@@ -184,17 +184,17 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 			if (isset($components['case_field'])) {
 				$statement .= ' ' . $components['case_field'];
 			} elseif (isset($components['case_value'])) {
-				$statement .= ((' ' . $components['case_value'][1]) . $components['case_value'][0]) . $components['case_value'][1];
+				$statement .= ' ' . $components['case_value'][1] . $components['case_value'][0] . $components['case_value'][1];
 			}
 			foreach ($components['when'] as $when) {
 				$statement .= ' WHEN ';
 				$statement .= $this->compileWhereClause($when['when_value'], $functionMapping);
 				$statement .= ' THEN ';
-				$statement .= ($when['then_value'][1] . $when['then_value'][0]) . $when['then_value'][1];
+				$statement .= $when['then_value'][1] . $when['then_value'][0] . $when['then_value'][1];
 			}
 			if (isset($components['else'])) {
 				$statement .= ' ELSE ';
-				$statement .= ($components['else'][1] . $components['else'][0]) . $components['else'][1];
+				$statement .= $components['else'][1] . $components['else'][0] . $components['else'][1];
 			}
 			$statement .= ' END';
 			$output = $statement;
@@ -265,7 +265,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 	private function compileDROPTABLE($components) {
 		switch ((string) $GLOBALS['TYPO3_DB']->handlerCfg[$GLOBALS['TYPO3_DB']->lastHandlerKey]['type']) {
 		case 'native':
-			$query = (('DROP TABLE' . ($components['ifExists'] ? ' IF EXISTS' : '')) . ' ') . $components['TABLE'];
+			$query = 'DROP TABLE' . ($components['ifExists'] ? ' IF EXISTS' : '') . ' ' . $components['TABLE'];
 			break;
 		case 'adodb':
 			$handlerKey = $GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE']);
@@ -295,7 +295,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 			$indexKeys = array();
 			foreach ($components['FIELDS'] as $fN => $fCfg) {
 				$handlerKey = $GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE']);
-				$fieldsKeys[$fN] = ($GLOBALS['TYPO3_DB']->quoteName($fN, $handlerKey, TRUE) . ' ') . $this->compileFieldCfg($fCfg['definition']);
+				$fieldsKeys[$fN] = $GLOBALS['TYPO3_DB']->quoteName($fN, $handlerKey, TRUE) . ' ' . $this->compileFieldCfg($fCfg['definition']);
 			}
 			if (isset($components['KEYS']) && is_array($components['KEYS'])) {
 				foreach ($components['KEYS'] as $kN => $kCfg) {
@@ -308,7 +308,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 							$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($n, $components['TABLE'], $field, array('UNIQUE')));
 						}
 					} else {
-						$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL(($components['TABLE'] . '_') . $kN, $components['TABLE'], $kCfg));
+						$indexKeys = array_merge($indexKeys, $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->handler_getFromTableList($components['TABLE'])]->DataDictionary->CreateIndexSQL($components['TABLE'] . '_' . $kN, $components['TABLE'], $kCfg));
 					}
 				}
 			}
@@ -340,10 +340,10 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 			$fieldName = $GLOBALS['TYPO3_DB']->quoteName($components['FIELD'], NULL, TRUE);
 			switch (strtoupper(str_replace(array(' ', "\n", "\r", "\t"), '', $components['action']))) {
 			case 'ADD':
-				$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AddColumnSQL($tableName, ($fieldName . ' ') . $this->compileFieldCfg($components['definition']));
+				$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AddColumnSQL($tableName, $fieldName . ' ' . $this->compileFieldCfg($components['definition']));
 				break;
 			case 'CHANGE':
-				$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AlterColumnSQL($tableName, ($fieldName . ' ') . $this->compileFieldCfg($components['definition']));
+				$query = $GLOBALS['TYPO3_DB']->handlerInstance[$GLOBALS['TYPO3_DB']->lastHandlerKey]->DataDictionary->AlterColumnSQL($tableName, $fieldName . ' ' . $this->compileFieldCfg($components['definition']));
 				break;
 			case 'DROP':
 
@@ -354,7 +354,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 			case 'ADDPRIMARYKEY':
 
 			case 'ADDUNIQUE':
-				$query .= (' (' . implode(',', $components['fields'])) . ')';
+				$query .= ' (' . implode(',', $components['fields']) . ')';
 				break;
 			case 'DEFAULTCHARACTERSET':
 
@@ -393,7 +393,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 			if (is_array($fieldCfg['featureIndex'])) {
 				// MySQL assigns DEFAULT value automatically if NOT NULL, fake this here
 				// numeric fields get 0 as default, other fields an empty string
-				if ((isset($fieldCfg['featureIndex']['NOTNULL']) && !isset($fieldCfg['featureIndex']['DEFAULT'])) && !isset($fieldCfg['featureIndex']['AUTO_INCREMENT'])) {
+				if (isset($fieldCfg['featureIndex']['NOTNULL']) && !isset($fieldCfg['featureIndex']['DEFAULT']) && !isset($fieldCfg['featureIndex']['AUTO_INCREMENT'])) {
 					switch ($type) {
 					case 'I8':
 
@@ -425,7 +425,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 						if ($featureDef['value'][0] === '') {
 							$cfg .= ' "\'\'"';
 						} else {
-							$cfg .= ((' ' . $featureDef['value'][1]) . $this->compileAddslashes($featureDef['value'][0])) . $featureDef['value'][1];
+							$cfg .= ' ' . $featureDef['value'][1] . $this->compileAddslashes($featureDef['value'][0]) . $featureDef['value'][1];
 							if (!is_numeric($featureDef['value'][0])) {
 								$noQuote = FALSE;
 							}
@@ -490,37 +490,37 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 					$output .= $v['operator'] ? ' ' . $v['operator'] : '';
 					// Look for sublevel:
 					if (is_array($v['sub'])) {
-						$output .= (' (' . trim($this->compileWhereClause($v['sub'], $functionMapping))) . ')';
+						$output .= ' (' . trim($this->compileWhereClause($v['sub'], $functionMapping)) . ')';
 					} elseif (isset($v['func']) && $v['func']['type'] === 'EXISTS') {
-						$output .= (((' ' . trim($v['modifier'])) . ' EXISTS (') . $this->compileSELECT($v['func']['subquery'])) . ')';
+						$output .= ' ' . trim($v['modifier']) . ' EXISTS (' . $this->compileSELECT($v['func']['subquery']) . ')';
 					} else {
 						if (isset($v['func']) && $v['func']['type'] === 'LOCATE') {
 							$output .= ' ' . trim($v['modifier']);
 							switch (TRUE) {
 							case $GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql') && $functionMapping:
 								$output .= ' CHARINDEX(';
-								$output .= ($v['func']['substr'][1] . $v['func']['substr'][0]) . $v['func']['substr'][1];
-								$output .= (', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '')) . $v['func']['field'];
+								$output .= $v['func']['substr'][1] . $v['func']['substr'][0] . $v['func']['substr'][1];
+								$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 								$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
 								$output .= ')';
 								break;
 							case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $functionMapping:
 								$output .= ' INSTR(';
 								$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
-								$output .= ((', ' . $v['func']['substr'][1]) . $v['func']['substr'][0]) . $v['func']['substr'][1];
+								$output .= ', ' . $v['func']['substr'][1] . $v['func']['substr'][0] . $v['func']['substr'][1];
 								$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
 								$output .= ')';
 								break;
 							default:
 								$output .= ' LOCATE(';
-								$output .= ($v['func']['substr'][1] . $v['func']['substr'][0]) . $v['func']['substr'][1];
-								$output .= (', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '')) . $v['func']['field'];
+								$output .= $v['func']['substr'][1] . $v['func']['substr'][0] . $v['func']['substr'][1];
+								$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 								$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
 								$output .= ')';
 								break;
 							}
 						} elseif (isset($v['func']) && $v['func']['type'] === 'IFNULL') {
-							$output .= (' ' . trim($v['modifier'])) . ' ';
+							$output .= ' ' . trim($v['modifier']) . ' ';
 							switch (TRUE) {
 							case $GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql') && $functionMapping:
 								$output .= 'ISNULL';
@@ -534,10 +534,10 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 							}
 							$output .= '(';
 							$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
-							$output .= ((', ' . $v['func']['default'][1]) . $this->compileAddslashes($v['func']['default'][0])) . $v['func']['default'][1];
+							$output .= ', ' . $v['func']['default'][1] . $this->compileAddslashes($v['func']['default'][0]) . $v['func']['default'][1];
 							$output .= ')';
 						} elseif (isset($v['func']) && $v['func']['type'] === 'FIND_IN_SET') {
-							$output .= (' ' . trim($v['modifier'])) . ' ';
+							$output .= ' ' . trim($v['modifier']) . ' ';
 							if ($functionMapping) {
 								switch (TRUE) {
 								case $GLOBALS['TYPO3_DB']->runningADOdbDriver('mssql'):
@@ -545,19 +545,19 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 									if (!isset($v['func']['str_like'])) {
 										$v['func']['str_like'] = $v['func']['str'][0];
 									}
-									$output .= ((('\',\'+' . $field) . '+\',\' LIKE \'%,') . $v['func']['str_like']) . ',%\'';
+									$output .= '\',\'+' . $field . '+\',\' LIKE \'%,' . $v['func']['str_like'] . ',%\'';
 									break;
 								case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8'):
 									$field = ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 									if (!isset($v['func']['str_like'])) {
 										$v['func']['str_like'] = $v['func']['str'][0];
 									}
-									$output .= ((('\',\'||' . $field) . '||\',\' LIKE \'%,') . $v['func']['str_like']) . ',%\'';
+									$output .= '\',\'||' . $field . '||\',\' LIKE \'%,' . $v['func']['str_like'] . ',%\'';
 									break;
 								case $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres'):
 									$output .= ' FIND_IN_SET(';
-									$output .= ($v['func']['str'][1] . $v['func']['str'][0]) . $v['func']['str'][1];
-									$output .= (', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '')) . $v['func']['field'];
+									$output .= $v['func']['str'][1] . $v['func']['str'][0] . $v['func']['str'][1];
+									$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 									$output .= ') != 0';
 									break;
 								default:
@@ -565,7 +565,7 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 									if (!isset($v['func']['str_like'])) {
 										$v['func']['str_like'] = $v['func']['str'][0];
 									}
-									$output .= (((((((((((((((((((('(' . $field) . ' LIKE \'%,') . $v['func']['str_like']) . ',%\'') . ' OR ') . $field) . ' LIKE \'') . $v['func']['str_like']) . ',%\'') . ' OR ') . $field) . ' LIKE \'%,') . $v['func']['str_like']) . '\'') . ' OR ') . $field) . '= ') . $v['func']['str'][1]) . $v['func']['str'][0]) . $v['func']['str'][1]) . ')';
+									$output .= '(' . $field . ' LIKE \'%,' . $v['func']['str_like'] . ',%\'' . ' OR ' . $field . ' LIKE \'' . $v['func']['str_like'] . ',%\'' . ' OR ' . $field . ' LIKE \'%,' . $v['func']['str_like'] . '\'' . ' OR ' . $field . '= ' . $v['func']['str'][1] . $v['func']['str'][0] . $v['func']['str'][1] . ')';
 									break;
 								}
 							} else {
@@ -576,8 +576,8 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 
 								case $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres'):
 									$output .= ' FIND_IN_SET(';
-									$output .= ($v['func']['str'][1] . $v['func']['str'][0]) . $v['func']['str'][1];
-									$output .= (', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '')) . $v['func']['field'];
+									$output .= $v['func']['str'][1] . $v['func']['str'][0] . $v['func']['str'][1];
+									$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 									$output .= ')';
 									break;
 								default:
@@ -585,23 +585,23 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 									if (!isset($v['func']['str_like'])) {
 										$v['func']['str_like'] = $v['func']['str'][0];
 									}
-									$output .= (((((((((((((((((((('(' . $field) . ' LIKE \'%,') . $v['func']['str_like']) . ',%\'') . ' OR ') . $field) . ' LIKE \'') . $v['func']['str_like']) . ',%\'') . ' OR ') . $field) . ' LIKE \'%,') . $v['func']['str_like']) . '\'') . ' OR ') . $field) . '= ') . $v['func']['str'][1]) . $v['func']['str'][0]) . $v['func']['str'][1]) . ')';
+									$output .= '(' . $field . ' LIKE \'%,' . $v['func']['str_like'] . ',%\'' . ' OR ' . $field . ' LIKE \'' . $v['func']['str_like'] . ',%\'' . ' OR ' . $field . ' LIKE \'%,' . $v['func']['str_like'] . '\'' . ' OR ' . $field . '= ' . $v['func']['str'][1] . $v['func']['str'][0] . $v['func']['str'][1] . ')';
 									break;
 								}
 							}
 						} else {
 							// Set field/table with modifying prefix if any:
-							$output .= (' ' . trim($v['modifier'])) . ' ';
+							$output .= ' ' . trim($v['modifier']) . ' ';
 							// DBAL-specific: Set calculation, if any:
 							if ($v['calc'] === '&' && $functionMapping) {
 								switch (TRUE) {
 								case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8'):
 									// Oracle only knows BITAND(x,y) - sigh
-									$output .= ((((('BITAND(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field']))) . ',') . $v['calc_value'][1]) . $this->compileAddslashes($v['calc_value'][0])) . $v['calc_value'][1]) . ')';
+									$output .= 'BITAND(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . ',' . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1] . ')';
 									break;
 								default:
 									// MySQL, MS SQL Server, PostgreSQL support the &-syntax
-									$output .= (((trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . $v['calc']) . $v['calc_value'][1]) . $this->compileAddslashes($v['calc_value'][0])) . $v['calc_value'][1];
+									$output .= trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
 									break;
 								}
 							} elseif ($v['calc']) {
@@ -609,9 +609,9 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 								if (isset($v['calc_table'])) {
 									$output .= trim(($v['calc_table'] ? $v['calc_table'] . '.' : '') . $v['calc_field']);
 								} else {
-									$output .= ($v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0])) . $v['calc_value'][1];
+									$output .= $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
 								}
-							} elseif (!(($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && preg_match('/(NOT )?LIKE( BINARY)?/', $v['comparator'])) && $functionMapping)) {
+							} elseif (!($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && preg_match('/(NOT )?LIKE( BINARY)?/', $v['comparator']) && $functionMapping)) {
 								$output .= trim(($v['table'] ? $v['table'] . '.' : '') . $v['field']);
 							}
 						}
@@ -619,16 +619,16 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 						if ($v['comparator']) {
 							$isLikeOperator = preg_match('/(NOT )?LIKE( BINARY)?/', $v['comparator']);
 							switch (TRUE) {
-							case ($GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $isLikeOperator) && $functionMapping:
+							case $GLOBALS['TYPO3_DB']->runningADOdbDriver('oci8') && $isLikeOperator && $functionMapping:
 								// Oracle cannot handle LIKE on CLOB fields - sigh
 								if (isset($v['value']['operator'])) {
 									$values = array();
 									foreach ($v['value']['args'] as $fieldDef) {
 										$values[] = ($fieldDef['table'] ? $fieldDef['table'] . '.' : '') . $fieldDef['field'];
 									}
-									$compareValue = (((' ' . $v['value']['operator']) . '(') . implode(',', $values)) . ')';
+									$compareValue = ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
 								} else {
-									$compareValue = ($v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%'))) . $v['value'][1];
+									$compareValue = $v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%')) . $v['value'][1];
 								}
 								if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($v['comparator'], 'NOT')) {
 									$output .= 'NOT ';
@@ -644,21 +644,21 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 								}
 								if (strtoupper(substr($v['comparator'], -6)) === 'BINARY') {
 									if ($isLob) {
-										$output .= ((('(dbms_lob.instr(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field']))) . ', ') . $compareValue) . ',1,1) > 0)';
+										$output .= '(dbms_lob.instr(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . ', ' . $compareValue . ',1,1) > 0)';
 									} else {
-										$output .= ((('(instr(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field']))) . ', ') . $compareValue) . ',1,1) > 0)';
+										$output .= '(instr(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . ', ' . $compareValue . ',1,1) > 0)';
 									}
 								} else {
 									if ($isLob) {
-										$output .= ((('(dbms_lob.instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field']))) . '), ') . \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($compareValue)) . ',1,1) > 0)';
+										$output .= '(dbms_lob.instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . '), ' . \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($compareValue) . ',1,1) > 0)';
 									} else {
-										$output .= ((('(instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field']))) . '), ') . \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($compareValue)) . ',1,1) > 0)';
+										$output .= '(instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field'])) . '), ' . \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($compareValue) . ',1,1) > 0)';
 									}
 								}
 								break;
 							default:
 								if ($isLikeOperator && $functionMapping) {
-									if ((($GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres') || $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres64')) || $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres7')) || $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres8')) {
+									if ($GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres') || $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres64') || $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres7') || $GLOBALS['TYPO3_DB']->runningADOdbDriver('postgres8')) {
 										// Remap (NOT)? LIKE to (NOT)? ILIKE
 										// and (NOT)? LIKE BINARY to (NOT)? LIKE
 										switch ($v['comparator']) {
@@ -681,28 +681,28 @@ class SqlParser extends \TYPO3\CMS\Core\Database\SqlParser {
 								// Detecting value type; list or plain:
 								if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('NOTIN,IN', strtoupper(str_replace(array(' ', TAB, CR, LF), '', $v['comparator'])))) {
 									if (isset($v['subquery'])) {
-										$output .= (' (' . $this->compileSELECT($v['subquery'])) . ')';
+										$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
 									} else {
 										$valueBuffer = array();
 										foreach ($v['value'] as $realValue) {
-											$valueBuffer[] = ($realValue[1] . $this->compileAddslashes($realValue[0])) . $realValue[1];
+											$valueBuffer[] = $realValue[1] . $this->compileAddslashes($realValue[0]) . $realValue[1];
 										}
-										$output .= (' (' . trim(implode(',', $valueBuffer))) . ')';
+										$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
 									}
 								} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
 									$lbound = $v['values'][0];
 									$ubound = $v['values'][1];
-									$output .= ((' ' . $lbound[1]) . $this->compileAddslashes($lbound[0])) . $lbound[1];
+									$output .= ' ' . $lbound[1] . $this->compileAddslashes($lbound[0]) . $lbound[1];
 									$output .= ' AND ';
-									$output .= ($ubound[1] . $this->compileAddslashes($ubound[0])) . $ubound[1];
+									$output .= $ubound[1] . $this->compileAddslashes($ubound[0]) . $ubound[1];
 								} elseif (isset($v['value']['operator'])) {
 									$values = array();
 									foreach ($v['value']['args'] as $fieldDef) {
 										$values[] = ($fieldDef['table'] ? $fieldDef['table'] . '.' : '') . $fieldDef['field'];
 									}
-									$output .= (((' ' . $v['value']['operator']) . '(') . implode(',', $values)) . ')';
+									$output .= ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
 								} else {
-									$output .= ((' ' . $v['value'][1]) . $this->compileAddslashes($v['value'][0])) . $v['value'][1];
+									$output .= ' ' . $v['value'][1] . $this->compileAddslashes($v['value'][0]) . $v['value'][1];
 								}
 								break;
 							}

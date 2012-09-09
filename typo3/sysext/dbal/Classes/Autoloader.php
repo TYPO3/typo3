@@ -74,7 +74,7 @@ class Autoloader {
 	 * @return boolean
 	 */
 	protected function isDbalSupported() {
-		return (extension_loaded('odbc') || extension_loaded('pdo')) || extension_loaded('oci8');
+		return extension_loaded('odbc') || extension_loaded('pdo') || extension_loaded('oci8');
 	}
 
 	/**

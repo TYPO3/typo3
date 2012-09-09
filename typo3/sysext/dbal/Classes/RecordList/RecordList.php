@@ -63,7 +63,7 @@ class RecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 			$or = '';
 			// add the uid only if input is numeric, cast to int
 			if (is_numeric($this->searchString)) {
-				$queryPart = (' AND (uid=' . (int) $this->searchString) . ' OR ';
+				$queryPart = ' AND (uid=' . (int) $this->searchString . ' OR ';
 			} else {
 				$queryPart = ' AND (';
 			}
@@ -72,7 +72,7 @@ class RecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 					if ($GLOBALS['TYPO3_DB']->cache_fieldType[$table][$fieldName]['metaType'] === 'B') {
 
 					} elseif ($info['config']['type'] === 'text' || $info['config']['type'] === 'input' && !preg_match('/date|time|int/', $info['config']['eval'])) {
-						$queryPart .= ((($or . $fieldName) . ' LIKE \'%') . $GLOBALS['TYPO3_DB']->quoteStr($this->searchString, $table)) . '%\'';
+						$queryPart .= $or . $fieldName . ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($this->searchString, $table) . '%\'';
 						$or = ' OR ';
 					}
 				}
@@ -85,7 +85,7 @@ class RecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 				}
 				// If search-fields were defined (and there always are) we create the query:
 				if (count($sfields)) {
-					$like = (' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($this->searchString, $table)) . '%\'';
+					$like = ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($this->searchString, $table) . '%\'';
 					// Free-text
 					$queryPart .= implode(($like . ' OR '), $sfields) . $like;
 				}
