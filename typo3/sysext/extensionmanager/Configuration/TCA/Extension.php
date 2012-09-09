@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 $TCA['tx_extensionmanager_domain_model_extension'] = array(
 	'ctrl' => $TCA['tx_extensionmanager_domain_model_extension']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'extension_key,version,integer_version,title,description,state,category,last_updated,update_comment,author_name,author_email,md5hash'
+		'showRecordFieldList' => 'extension_key,version,integer_version,title,description,state,category,last_updated,update_comment,author_name,author_email,md5hash,serialized_dependencies'
 	),
 	'columns' => array(
 		'extension_key' => array(
@@ -127,9 +127,17 @@ $TCA['tx_extensionmanager_domain_model_extension'] = array(
 				'size' => '1',
 			),
 		),
+		'serialized_dependencies' => array(
+			'exclude' => 0,
+			'label' => 'LLL:EXT:extensionmanager/Resources/Private/locallang_db.xml:tx_extensionmanager_domain_model_extension.serializedDependencies',
+			'config' => array(
+				'type' => 'input',
+				'size' => '30',
+			),
+		),
 	),
 	'types' => array(
-		'0' => array('showitem' => 'extensionkey;;;;1-1-1, version, integer_version, title;;;;2-2-2, description;;;;3-3-3, state, category, last_updated, update_comment, author_name, author_email, review_state, md5hash')
+		'0' => array('showitem' => 'extensionkey;;;;1-1-1, version, integer_version, title;;;;2-2-2, description;;;;3-3-3, state, category, last_updated, update_comment, author_name, author_email, review_state, md5hash, serialized_dependencies')
 	),
 	'palettes' => array(
 		'1' => array('showitem' => '')
