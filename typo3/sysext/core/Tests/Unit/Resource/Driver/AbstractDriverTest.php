@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,7 +36,7 @@ require_once dirname(__FILE__) . '/../BaseTestCase.php';
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_file_Driver_AbstractDriverTest extends t3lib_file_BaseTestCase {
+class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\Driver\AbstractDriver

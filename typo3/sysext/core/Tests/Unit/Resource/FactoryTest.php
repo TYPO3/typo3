@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Resource;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,7 +23,9 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 require_once 'vfsStream/vfsStream.php';
+
 /**
  * Testcase for the factory of FAL
  *
@@ -29,7 +33,7 @@ require_once 'vfsStream/vfsStream.php';
  * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
-class t3lib_file_FactoryTest extends Tx_Phpunit_TestCase {
+class FactoryTest extends \Tx_Phpunit_TestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceFactory
@@ -37,7 +41,7 @@ class t3lib_file_FactoryTest extends Tx_Phpunit_TestCase {
 	private $fixture;
 
 	/**
-	 * @var bool
+	 * @var boolean
 	 */
 	private $objectCreated = FALSE;
 

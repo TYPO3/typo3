@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver\Fixtures;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,15 +26,19 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Fixture class for the filename filters in the local driver.
  */
-class t3lib_file_Tests_Driver_Fixtures_LocalDriverFilenameFilter {
+class LocalDriverFilenameFilter {
 
 	/**
+	 * Filter filename
+	 *
 	 * @param string $itemName
 	 * @param string $itemIdentifier
 	 * @param string $parentIdentifier
+	 * @param array $additionalInformation
 	 * @param \TYPO3\CMS\Core\Resource\Driver\AbstractDriver $driverInstance
 	 * @return boolean|integer
 	 */

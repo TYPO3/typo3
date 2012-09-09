@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Resource;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,7 +23,9 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 require_once 'vfsStream/vfsStream.php';
+
 /**
  * Testcase for the file class of the TYPO3 FAL
  *
@@ -30,7 +34,7 @@ require_once 'vfsStream/vfsStream.php';
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @todo Many, many, many tests are skipped in this test case...
  */
-class t3lib_file_FileTest extends Tx_Phpunit_TestCase {
+class FileTest extends \Tx_Phpunit_TestCase {
 
 	protected function tearDown() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();

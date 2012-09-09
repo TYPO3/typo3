@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,6 +26,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
  * Testcase for the abstract repository base class
  *
@@ -31,7 +34,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_file_Repository_AbstractRepositoryTest extends Tx_Phpunit_TestCase {
+class AbstractRepositoryTest extends \Tx_Phpunit_TestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\AbstractRepository

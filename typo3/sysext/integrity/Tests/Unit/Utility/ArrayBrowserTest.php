@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Integrity\Tests\Unit\Utility;
+
 /***************************************************************
  * Copyright notice
  *
@@ -21,14 +23,15 @@
  *
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Testcase for the t3lib_arrayBrowser class in the TYPO3 Core.
+ * Testcase for the \TYPO3\CMS\Integrity\Utility\ArrayBrowser class in the TYPO3 Core.
  *
  * @package TYPO3
  * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class t3lib_arrayBrowserTest extends tx_phpunit_testcase {
+class ArrayBrowserTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @var \TYPO3\CMS\Integrity\Utility\ArrayBrowser
