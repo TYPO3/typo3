@@ -50,7 +50,7 @@ class tx_Workspaces_Service_GridData {
 			// Read the given parameters from grid. If the parameter is not set use default values.
 		$filterTxt = isset($parameter->filterTxt) ? $parameter->filterTxt : '';
 		$start = isset($parameter->start) ? intval($parameter->start) : 0;
-		$limit = isset($parameter->limit) ? intval($parameter->limit) : 10;
+		$limit = isset($parameter->limit) ? intval($parameter->limit) : 30;
 		$this->sort = isset($parameter->sort) ? $parameter->sort : 't3ver_oid';
 		$this->sortDir = isset($parameter->dir) ? $parameter->dir : 'ASC';
 
