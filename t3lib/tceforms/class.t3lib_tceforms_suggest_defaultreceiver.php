@@ -197,6 +197,11 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 				}
 
 				$label = $this->getLabel($row);
+				if ($row['sys_language_uid'] > 0) {
+					$languageIcon = $this->getLanguageIcon($row['sys_language_uid']);
+				} else {
+					$languageIcon = '';
+				}
 				$entry = array(
 					'text' => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">[' . $uid . ']</span><br />
 								<span class="suggest-path">' . $croppedPath . '</span>',
@@ -207,6 +212,7 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 					'icon' => $iconPath,
 					'style' => 'background-image:url(' . $iconPath . ');',
 					'class' => (isset($this->config['cssClass']) ? $this->config['cssClass'] : ''),
+					'icon-language' => ($languageIcon?'<span style="suggest-flag" style="float:right;">'.$languageIcon.'</span>':'')
 				);
 
 				$rows[$this->table . '_' . $uid] = $this->renderRecord($row, $entry);
@@ -425,6 +431,12 @@ class t3lib_TCEforms_Suggest_DefaultReceiver {
 		}
 
 		return $entry;
+	}
+
+	protected function getLanguageIcon($sys_language_uid) {
+		$recordList = t3lib_div::makeInstance('t3lib_recordList');
+		$recordList->initializeLanguages();
+		return $recordList->languageFlag($sys_language_uid);
 	}
 }
 
