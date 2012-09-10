@@ -13,6 +13,7 @@ class RecordList {
 	// Internal, GPvars:
 	// Page Id for which to make the listing
 	/**
+	 * @var integer
 	 * @todo Define visibility
 	 */
 	public $id;
@@ -146,7 +147,7 @@ class RecordList {
 		$this->MCONF = $GLOBALS['MCONF'];
 		$this->perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		// GPvars:
-		$this->id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+		$this->id = (int) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 		$this->pointer = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pointer');
 		$this->imagemode = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('imagemode');
 		$this->table = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('table');
