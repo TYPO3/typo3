@@ -26,6 +26,11 @@ namespace TYPO3\CMS\Fluid\Tests\Unit\View;
 class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
+	 * @var array A backup of registered singleton instances
+	 */
+	protected $singletonInstances = array();
+
+	/**
 	 * @var \TYPO3\CMS\Fluid\View\StandaloneView
 	 */
 	protected $view;
@@ -119,6 +124,7 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->view->setRenderingContext($this->mockRenderingContext);
 		$this->mockTemplateCompiler = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Compiler\\TemplateCompiler');
 		$this->view->_set('templateCompiler', $this->mockTemplateCompiler);
+		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager', $this->mockObjectManager);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', $this->mockContentObject);
 	}
@@ -127,7 +133,7 @@ class StandaloneViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @return void
 	 */
 	public function tearDown() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::purgeInstances();
+		\TYPO3\CMS\Core\Utility\GeneralUtility::resetSingletonInstances($this->singletonInstances);
 	}
 
 	/**
