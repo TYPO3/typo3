@@ -31,6 +31,9 @@
 		<testsuite name="EXT:extbase Tests">
 			<directory>../../typo3/sysext/extbase/Tests/Unit/</directory>
 		</testsuite>
+		<testsuite name="EXT:extensionmanager Tests">
+			<directory>../../typo3/sysext/extensionmanager/Tests/Unit/</directory>
+		</testsuite>
 		<testsuite name="EXT:fluid Tests">
 			<directory>../../typo3/sysext/fluid/Tests/Unit/</directory>
 		</testsuite>
