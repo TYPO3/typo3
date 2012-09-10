@@ -29,24 +29,24 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Configuration;
 class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var array
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
 	 */
-	protected $getBackup;
+	protected $backupGlobals = TRUE;
 
 	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
 	 * @var array
 	 */
-	protected $postBackup;
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $typo3DbBackup;
-
-	/**
-	 * @var array
-	 */
-	protected $extConfBackup;
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager
@@ -62,11 +62,8 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	 * Sets up this testcase
 	 */
 	public function setUp() {
-		$this->getBackup = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
-		$this->postBackup = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
 		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array());
-		$this->extConfBackup = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'];
 		$this->backendConfigurationManager = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Configuration\\BackendConfigurationManager', array('getTypoScriptSetup'));
 		$this->mockTypoScriptService = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Service\\TypoScriptService');
 		$this->backendConfigurationManager->injectTypoScriptService($this->mockTypoScriptService);
@@ -76,9 +73,7 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	 * Tears down this testcase
 	 */
 	public function tearDown() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($this->getBackup);
-		$_POST = $this->postBackup;
-		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase'] = $this->extConfBackup;
+		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
 	}
 
 	/**
