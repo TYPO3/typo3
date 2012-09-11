@@ -33,7 +33,7 @@ require_once 'vfsStream/vfsStream.php';
  * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
-class StorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
+class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 
 	/**
 	 * @var array A backup of registered singleton instances

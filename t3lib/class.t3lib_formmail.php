@@ -38,6 +38,7 @@
  * @package TYPO3
  * @subpackage t3lib
  * @see tslib_fe::sendFormmail(), t3lib/formmail.php
+ * @TODO: Deprecate this class
  */
 class t3lib_formmail {
 
