@@ -212,15 +212,6 @@ class ExtensionManagerTest extends \tx_phpunit_testcase {
 		return $tca;
 	}
 
-	/**
-	 * Returns the fixtures path for this testcase relative to PATH_site.
-	 *
-	 * @return string the fixtures path for this testcase, will not be empty
-	 */
-	private function determineFixturesPath() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Phpunit_Service_TestFinder')->getRelativeCoreTestsPath() . 'Unit/t3lib/fixtures/';
-	}
-
 	/////////////////////////////////////////////
 	// Tests concerning getExtensionKeyByPrefix
 	/////////////////////////////////////////////
@@ -922,13 +913,20 @@ throw new RuntimeException(\'\', 1340559079);
 	public function getExtensionVersionForLoadedExtensionReturnsExtensionVersion() {
 		$namespace = 'TYPO3\\CMS\\Core\\Extension';
 		$className = uniqid('ExtensionManager');
-		eval(((((('namespace ' . $namespace .'; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {') . '  public static function isLoaded() {') . '    return TRUE;') . '  }') . '}');
+		eval(
+			'namespace ' . $namespace .';' .
+			'class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' .
+			'  public static function isLoaded() {' .
+			'    return TRUE;' .
+			'  }' .
+			'}'
+		);
 		$className = $namespace . '\\' . $className;
 		\TYPO3\CMS\Core\Extension\ExtensionManager::clearExtensionKeyMap();
 		$uniqueSuffix = uniqid('test');
 		$extensionKey = 'unloadedextension' . $uniqueSuffix;
 		$GLOBALS['TYPO3_LOADED_EXT'][$extensionKey] = array(
-			'siteRelPath' => $this->determineFixturesPath()
+			'siteRelPath' => 'typo3/sysext/core/Tests/Unit/Extension/Fixtures/',
 		);
 		$this->assertEquals('1.2.3', $className::getExtensionVersion($extensionKey));
 	}
