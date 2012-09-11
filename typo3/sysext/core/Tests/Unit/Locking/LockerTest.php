@@ -87,7 +87,6 @@ class LockerTest extends \tx_phpunit_testcase {
 	 */
 	public function constructorUsesDefaultValueForLoops() {
 		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999');
-		$instance->setEnableLogging(FALSE);
 		$t3libLockReflection = new \ReflectionClass('TYPO3\\CMS\\Core\\Locking\\Locker');
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('loops');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
@@ -99,7 +98,6 @@ class LockerTest extends \tx_phpunit_testcase {
 	 */
 	public function constructorSetsLoopsToGivenNumberOfLoops() {
 		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'simple', 10);
-		$instance->setEnableLogging(FALSE);
 		$t3libLockReflection = new \ReflectionClass('TYPO3\\CMS\\Core\\Locking\\Locker');
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('loops');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
@@ -111,7 +109,6 @@ class LockerTest extends \tx_phpunit_testcase {
 	 */
 	public function constructorUsesDefaultValueForSteps() {
 		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999');
-		$instance->setEnableLogging(FALSE);
 		$t3libLockReflection = new \ReflectionClass('TYPO3\\CMS\\Core\\Locking\\Locker');
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('step');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
@@ -123,7 +120,6 @@ class LockerTest extends \tx_phpunit_testcase {
 	 */
 	public function constructorSetsStepToGivenNumberOfStep() {
 		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'simple', 0, 10);
-		$instance->setEnableLogging(FALSE);
 		$t3libLockReflection = new \ReflectionClass('TYPO3\\CMS\\Core\\Locking\\Locker');
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('step');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);
@@ -220,7 +216,6 @@ class LockerTest extends \tx_phpunit_testcase {
 		// Use a very high id to be unique
 		$instance = new \TYPO3\CMS\Core\Locking\Locker(999999999, $lockMethod);
 		// Disable logging
-		$instance->setEnableLogging(FALSE);
 		// File pointer to current lock file
 		$lockFile = $instance->getResource();
 		$instance->acquire();
@@ -263,7 +258,6 @@ class LockerTest extends \tx_phpunit_testcase {
 		}
 		// Create t3lib_lock instance, set lockfile to invalid path
 		$instance = new \TYPO3\CMS\Core\Locking\Locker(999999999, $lockMethod);
-		$instance->setEnableLogging(FALSE);
 		$t3libLockReflection = new \ReflectionClass('TYPO3\\CMS\\Core\\Locking\\Locker');
 		$t3libLockReflectionResourceProperty = $t3libLockReflection->getProperty('resource');
 		$t3libLockReflectionResourceProperty->setAccessible(TRUE);

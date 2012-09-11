@@ -4723,7 +4723,6 @@ Connection: close
 			if ($type == 'file') {
 				$lockObject = self::makeInstance('TYPO3\\CMS\\Core\\Locking\\Locker', $destination, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
 				/** @var \TYPO3\CMS\Core\Locking\Locker $lockObject */
-				$lockObject->setEnableLogging(FALSE);
 				$lockObject->acquire();
 				$file = fopen($destination, 'a');
 				if ($file) {
@@ -4799,7 +4798,6 @@ Connection: close
 			$destination = self::getDeprecationLogFileName();
 			$lockObject = self::makeInstance('TYPO3\\CMS\\Core\\Locking\\Locker', $destination, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
 			/** @var \TYPO3\CMS\Core\Locking\Locker $lockObject */
-			$lockObject->setEnableLogging(FALSE);
 			$lockObject->acquire();
 			$file = @fopen($destination, 'a');
 			if ($file) {

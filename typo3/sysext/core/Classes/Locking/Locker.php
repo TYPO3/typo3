@@ -81,14 +81,9 @@ class Locker {
 	protected $step = 200;
 
 	/**
-	 * @var string Logging facility
+	 * @var \TYPO3\CMS\Core\Log\Logger
 	 */
-	protected $syslogFacility = 'cms';
-
-	/**
-	 * @var boolean True if locking should be logged
-	 */
-	protected $isLoggingEnabled = TRUE;
+	protected $logger;
 
 	/**
 	 * Constructor:
@@ -100,6 +95,10 @@ class Locker {
 	 * @param integer step Milliseconds after lock acquire is retried. $loops * $step results in the maximum delay of a lock. Only used in manual lock method "simple".
 	 */
 	public function __construct($id, $method = 'simple', $loops = 0, $step = 0) {
+		/** @var $logManager \TYPO3\CMS\Core\Log\LogManager */
+		$logManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager');
+		$this->logger = $logManager->getLogger(__CLASS__);
+
 		// Force ID to be string
 		$id = (string) $id;
 		if (intval($loops)) {
@@ -297,22 +296,24 @@ class Locker {
 	 * Sets the facility (extension name) for the syslog entry.
 	 *
 	 * @param string $syslogFacility
+	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.2 - The method is not used/needed anymore, logging is configured centrally
 	 */
 	public function setSyslogFacility($syslogFacility) {
-		$this->syslogFacility = $syslogFacility;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
 	 * Enable/ disable logging
 	 *
 	 * @param boolean $isLoggingEnabled
+	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.2 - The method is not used/needed anymore, logging is configured centrally
 	 */
 	public function setEnableLogging($isLoggingEnabled) {
-		$this->isLoggingEnabled = $isLoggingEnabled;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 	}
 
 	/**
-	 * Adds a common log entry for this locking API using t3lib_div::sysLog().
+	 * Adds a common log entry for this locking API
 	 * Example: 25-02-08 17:58 - cms: Locking [simple::0aeafd2a67a6bb8b9543fb9ea25ecbe2]: Acquired
 	 *
 	 * @param string $message The message to be logged
@@ -320,9 +321,13 @@ class Locker {
 	 * @return void
 	 */
 	public function sysLog($message, $severity = 0) {
-		if ($this->isLoggingEnabled) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog((((('Locking [' . $this->method) . '::') . $this->id) . ']: ') . trim($message), $this->syslogFacility, $severity);
-		}
+			// map the old severity to the new one
+		$logLevel = 6 - $severity;
+		$this->logger->log(
+			$logLevel,
+			$message,
+			array('lockingMethod' => $this->method, 'id' => $this->id)
+		);
 	}
 
 }
