@@ -9,8 +9,7 @@ if (!is_object($TSFE)) {
  * @param array $conf TypoScript configuration passed
  * @return string Current time wrapped in <font> tags with red color
  */
-function user_printTimeExt($content, $conf)
-{
+function user_printTimeExt($content, $conf) {
 	return ('<font color="red">Dynamic time: ' . date('H:i:s')) . '</font><br />';
 }
 ?>

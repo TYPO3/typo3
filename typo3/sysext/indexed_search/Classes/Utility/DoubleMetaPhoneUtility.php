@@ -77,7 +77,6 @@ class DoubleMetaPhoneUtility {
 	 */
 	public function metaphone($string, $sys_language_uid = 0) {
 		$res = $this->DoubleMetaPhone($string);
-		#debug(array($string,$res['primary']));
 		return $res['primary'];
 	}
 

@@ -137,7 +137,7 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$extKey = $this->createFakeExtension();
 		$extPath = ((PATH_site . 'typo3temp/') . $extKey) . '/';
 		$autoloaderFile = $extPath . 'ext_autoload.php';
-		$class = strtolower("tx_{$extKey}_" . uniqid(''));
+		$class = strtolower('tx_{' . $extKey . '}_' . uniqid(''));
 		$file = ($extPath . uniqid('')) . '.php';
 		file_put_contents($file, '<?php
 
@@ -169,7 +169,7 @@ return array(\'' . $class) . '\' => \'') . $file) . '\');
 		$extPath = ((PATH_site . 'typo3temp/') . $extKey) . '/';
 		$autoloaderFile = $extPath . 'ext_autoload.php';
 		// A case sensitive key (FooBar) in ext_autoload file
-		$class = "tx_{$extKey}_" . uniqid('FooBar');
+		$class = 'tx_{' . $extKey . '}_' . uniqid('FooBar');
 		$file = ($extPath . uniqid('')) . '.php';
 		file_put_contents($autoloaderFile, ((('<?php
 
@@ -197,7 +197,7 @@ return array(\'' . $class) . '\' => \'') . $file) . '\');
 		$extKey = $this->createFakeExtension();
 		$extPath = ((PATH_site . 'typo3temp/') . $extKey) . '/';
 		// A case sensitive key (FooBar) in ext_autoload file
-		$class = "tx_{$extKey}_" . uniqid('FooBar');
+		$class = 'tx_{' . $extKey . '}_' . uniqid('FooBar');
 		$file = ($extPath . uniqid('')) . '.php';
 		file_put_contents($file, '<?php
 
@@ -229,7 +229,7 @@ return array(\'' . $class) . '\' => \'') . $file) . '\');
 		$extKey = $this->createFakeExtension();
 		$extPath = ((PATH_site . 'typo3temp/') . $extKey) . '/';
 		// A case sensitive key (FooBar) in ext_autoload file
-		$class = "tx_{$extKey}_" . uniqid('FooBar');
+		$class = 'tx_{' . $extKey . '}_' . uniqid('FooBar');
 		$file = ($extPath . uniqid('')) . '.php';
 		file_put_contents($file, '<?php
 
@@ -337,7 +337,7 @@ $foo = \'bar\';
 		$extKey = $this->createFakeExtension();
 		$extPath = ((PATH_site . 'typo3temp/') . $extKey) . '/';
 		$autoloaderFile = $extPath . 'ext_autoload.php';
-		$class = strtolower("ux_tx_{$extKey}_" . uniqid(''));
+		$class = strtolower('ux_tx_{' . $extKey . '}_' . uniqid(''));
 		$file = ($extPath . uniqid('')) . '.php';
 		file_put_contents($autoloaderFile, ((('<?php
 
@@ -383,7 +383,7 @@ return array(\'' . $class) . '\' => \'') . $file) . '\');
 		$extPath = ((PATH_site . 'typo3temp/') . $extKey) . '/';
 		$autoloaderFile = $extPath . 'ext_autoload.php';
 		// Feed ext_autoload with a base file and the class file
-		$class = strtolower("tx_{$extKey}_" . uniqid(''));
+		$class = strtolower('tx_{' . $extKey . '}_' . uniqid(''));
 		$fileName = uniqid('') . '.php';
 		$file = $extPath . $fileName;
 		$xClassFile = ('typo3temp/' . $extKey) . '/xclassFile';
