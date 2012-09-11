@@ -150,7 +150,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($className === 'TYPO3\\CMS\\Core\\Cache\\CacheManager') {
 			return $GLOBALS['typo3CacheManager'];
 		}
-		$className = \TYPO3\CMS\Core\Autoloader::getClassNameForAlias($className);
+		$className = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($className);
 		if (isset($this->singletonInstances[$className])) {
 			if (count($givenConstructorArguments) > 0) {
 				throw new \TYPO3\CMS\Extbase\Object\Exception(('Object "' . $className) . '" fetched from singleton cache, thus, explicit constructor arguments are not allowed.', 1292857934);
