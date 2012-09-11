@@ -208,6 +208,10 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		// Makes sure the Path given as parameter is valid
 		$this->checkFilePath($fileIdentifier);
 		$dirPath = dirname($fileIdentifier);
+			// Replace backslashes on Windows systems
+		if (TYPO3_OS === 'WIN' && strpos($dirPath, '\\') !== FALSE) {
+			$dirPath = str_replace('\\', '/', $dirPath);
+		}
 		if ($dirPath !== '' && $dirPath !== '/') {
 			$dirPath = ('/' . trim($dirPath, '/')) . '/';
 		}
