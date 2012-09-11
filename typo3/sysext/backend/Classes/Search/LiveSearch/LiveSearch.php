@@ -371,7 +371,9 @@ class LiveSearch {
 	protected function makeOrderByTable($tableName) {
 		$orderBy = '';
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && array_key_exists('sortby', $GLOBALS['TCA'][$tableName]['ctrl'])) {
-			$orderBy = 'ORDER BY ' . $GLOBALS['TCA'][$tableName]['ctrl']['sortby'];
+			if (strlen($GLOBALS['TCA'][$tableName]['ctrl']['sortby']) > 0) {
+				$orderBy = 'ORDER BY ' . $GLOBALS['TCA'][$tableName]['ctrl']['sortby'];
+			}
 		} else {
 			$orderBy = $GLOBALS['TCA'][$tableName]['ctrl']['default_sortby'];
 		}
