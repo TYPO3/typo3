@@ -13,29 +13,32 @@
 	verbose="false">
 
 	<testsuites>
-		<testsuite name="EXT:core Tests">
+		<testsuite name="EXT:core tests">
 			<directory>../../typo3/sysext/core/Tests/Unit/</directory>
 		</testsuite>
-		<testsuite name="EXT:backend Tests">
+		<testsuite name="EXT:backend tests">
 			<directory>../../typo3/sysext/backend/Tests/Unit/</directory>
 		</testsuite>
-		<testsuite name="EXT:frontend Tests">
+		<testsuite name="EXT:frontend tests">
 			<directory>../../typo3/sysext/frontend/Tests/Unit/</directory>
 		</testsuite>
-		<testsuite name="Core Tests">
+		<testsuite name="Core tests">
 			<directory>../../tests/Unit/</directory>
 		</testsuite>
-		<testsuite name="EXT:beuser Tests">
+		<testsuite name="EXT:beuser tests">
 			<directory>../../typo3/sysext/beuser/Tests/Unit/</directory>
 		</testsuite>
-		<testsuite name="EXT:extbase Tests">
+		<testsuite name="EXT:extbase tests">
 			<directory>../../typo3/sysext/extbase/Tests/Unit/</directory>
 		</testsuite>
-		<testsuite name="EXT:extensionmanager Tests">
+		<testsuite name="EXT:extensionmanager tests">
 			<directory>../../typo3/sysext/extensionmanager/Tests/Unit/</directory>
 		</testsuite>
-		<testsuite name="EXT:fluid Tests">
+		<testsuite name="EXT:fluid tests">
 			<directory>../../typo3/sysext/fluid/Tests/Unit/</directory>
+		</testsuite>
+		<testsuite name="Suite integrity tests">
+			<directory>../../typo3/sysext/core/Tests/Integrity/</directory>
 		</testsuite>
 	</testsuites>
 
