@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Core\Tests\Functional\Resource;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -24,8 +26,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 require_once 'vfsStream/vfsStream.php';
-require_once realpath(dirname(__FILE__) . '/../../../Unit/t3lib/file/BaseTestCase.php');
+
 /**
  * Functional test case for the FAL Storage.
  *
@@ -33,7 +36,7 @@ require_once realpath(dirname(__FILE__) . '/../../../Unit/t3lib/file/BaseTestCas
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_Tests_Functional_file_StorageTest extends t3lib_file_BaseTestCase {
+class ResourceStorageTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\ResourceStorage

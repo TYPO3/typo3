@@ -25,6 +25,8 @@
 /**
  * Testcase for t3lib_formmail
  *
+ * This legacy test will be removed if t3lib_formmail is removed
+ *
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  *
  * @package TYPO3

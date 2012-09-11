@@ -22,8 +22,8 @@
 		<testsuite name="EXT:frontend tests">
 			<directory>../../../../typo3/sysext/frontend/Tests/Unit/</directory>
 		</testsuite>
-		<testsuite name="Core tests">
-			<directory>../../../../tests/Unit/</directory>
+		<testsuite name="Core legacy tests">
+			<directory>../../../../typo3/sysext/core/Tests/Legacy/</directory>
 		</testsuite>
 		<testsuite name="EXT:beuser tests">
 			<directory>../../../../typo3/sysext/beuser/Tests/Unit/</directory>
