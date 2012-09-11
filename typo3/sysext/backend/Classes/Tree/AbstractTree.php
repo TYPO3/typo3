@@ -68,7 +68,7 @@ abstract class AbstractTree {
 	 * @param t3lib_tree_renderer_Abstract $dataProvider
 	 * @return void
 	 */
-	public function setNodeRenderer(\t3lib_tree_renderer_Abstract $nodeRenderer) {
+	public function setNodeRenderer(\TYPO3\CMS\Backend\Tree\Renderer\AbstractTree $nodeRenderer) {
 		$this->nodeRenderer = $nodeRenderer;
 	}
 
