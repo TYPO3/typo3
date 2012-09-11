@@ -98,8 +98,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('imagemakeFixesPermissionsOnNewFiles() test not available on Windows.');
 		}
-		$testFinder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Phpunit_Service_TestFinder');
-		$fixtureGifFile = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/fixtures/clear.gif';
+		$fixtureGifFile = __DIR__ . '/Fixtures/clear.gif';
 		// Create image ressource, determine target filename, fake target permission, run method and clean up
 		$fixtureGifRessource = imagecreatefromgif($fixtureGifFile);
 		$targetFilename = ((PATH_site . 'typo3temp/') . uniqid('test_')) . '.gif';
