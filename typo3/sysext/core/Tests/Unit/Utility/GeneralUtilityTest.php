@@ -209,8 +209,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] || !$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']) {
 			$this->markTestSkipped('gifCompressFixesPermissionOfConvertedFileIfUsingImagemagick() test not available without imagemagick setup.');
 		}
-		$testFinder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Phpunit_Service_TestFinder');
-		$fixtureGifFile = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/fixtures/clear.gif';
+		$fixtureGifFile = __DIR__ . '/Fixtures/clear.gif';
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress'] = TRUE;
 		// Copy file to unique filename in typo3temp, set target permissions and run method
 		$testFilename = ((PATH_site . 'typo3temp/') . uniqid('test_')) . '.gif';
@@ -231,8 +230,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('gifCompressFixesPermissionOfConvertedFileIfUsingImagemagick() test not available on Windows.');
 		}
-		$testFinder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Phpunit_Service_TestFinder');
-		$fixtureGifFile = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/fixtures/clear.gif';
+		$fixtureGifFile = __DIR__ . '/Fixtures/clear.gif';
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] = TRUE;
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] = FALSE;
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress'] = TRUE;
@@ -261,8 +259,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] || !$GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']) {
 			$this->markTestSkipped('pngToGifByImagemagickFixesPermissionsOfConvertedFile() test not available without imagemagick setup.');
 		}
-		$testFinder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Phpunit_Service_TestFinder');
-		$fixturePngFile = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/fixtures/clear.png';
+		$fixturePngFile = __DIR__ . '/Fixtures/clear.png';
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] = TRUE;
 		// Copy file to unique filename in typo3temp, set target permissions and run method
 		$testFilename = ((PATH_site . 'typo3temp/') . uniqid('test_')) . '.png';
@@ -289,8 +286,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
 			$this->markTestSkipped('readPngGifFixesPermissionsOfConvertedFile() test not available without imagemagick setup.');
 		}
-		$testFinder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_Phpunit_Service_TestFinder');
-		$testGifFile = $testFinder->getAbsoluteCoreTestsPath() . 'Unit/t3lib/fixtures/clear.gif';
+		$testGifFile = __DIR__ . '/Fixtures/clear.gif';
 		// Set target permissions and run method
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
 		$newPngFile = \TYPO3\CMS\Core\Utility\GeneralUtility::read_png_gif($testGifFile, TRUE);
