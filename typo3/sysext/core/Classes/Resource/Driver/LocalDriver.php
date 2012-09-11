@@ -207,7 +207,9 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	public function getFileInfoByIdentifier($fileIdentifier) {
 		// Makes sure the Path given as parameter is valid
 		$this->checkFilePath($fileIdentifier);
-		$dirPath = dirname($fileIdentifier);
+		$dirPath = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(
+			dirname($fileIdentifier)
+		);
 		if ($dirPath !== '' && $dirPath !== '/') {
 			$dirPath = '/' . trim($dirPath, '/') . '/';
 		}
