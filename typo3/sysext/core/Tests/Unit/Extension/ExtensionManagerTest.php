@@ -1119,6 +1119,50 @@ throw new RuntimeException(\'\', 1340559079);
 		$this->assertNotEmpty($GLOBALS['TCA'][$tableName]['columns'][$fieldName]);
 	}
 
+	/////////////////////////////////////////
+	// Tests concerning getClassNameWithoutVendorAndProduct
+	/////////////////////////////////////////
+	/**
+	 * @return array
+	 */
+	public function getClassNameWithoutVendorAndProductDataProvider() {
+		return array(
+			'Underscored' => array('Tx_MyExtension_Folder1_Folder2_ClassName', 'Folder1_Folder2_ClassName'),
+			'Namespaced' => array('\\Vendor\\ExtensionName\\Folder1\\Folder2\\ClassName', 'Folder1\\Folder2\\ClassName'),
+			'Namespaced Core' => array('\\TYPO3\\CMS\\ExtensionName\\Folder1\\Folder2\\ClassName', 'Folder1\\Folder2\\ClassName'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getClassNameWithoutVendorAndProductDataProvider
+	 */
+	public function getClassNameWithoutVendorAndProduct($className, $expectedContent) {
+		$this->assertEquals($expectedContent, \TYPO3\CMS\Core\Extension\ExtensionManager::getClassNameWithoutVendorAndProduct($className));
+	}
+
+	/////////////////////////////////////////
+	// Tests concerning getExtensionKeyFromClassName
+	/////////////////////////////////////////
+	/**
+	 * @return array
+	 */
+	public function getExtensionKeyFromClassNameDataProvider() {
+		return array(
+			'Underscored' => array('Tx_MyExtension_Folder1_Folder2_ClassName', 'my_extension'),
+			'Namespaced' => array('\\Vendor\\MyExtension\\Folder1\\Folder2\\ClassName', 'my_extension'),
+			'Namespaced Core' => array('\\TYPO3\\CMS\\SysExtension\\Folder1\\Folder2\\ClassName', 'sys_extension'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider getExtensionKeyFromClassNameDataProvider
+	 */
+	public function getExtensionKeyFromClassName($className, $expectedExtensionKey) {
+		$this->assertEquals($expectedExtensionKey, \TYPO3\CMS\Core\Extension\ExtensionManager::getExtensionKeyFromClassName($className));
+	}
+
 }
 
 ?>

@@ -179,6 +179,52 @@ class ExtensionManager {
 	}
 
 	/**
+	 * Removes the vendor prefix and package name from a given Class Name
+	 *
+	 * @param $className
+	 * @return string
+	 */
+	static public function getClassNameWithoutVendorAndProduct($className) {
+		if (strpos($className, '\\') === FALSE) {
+			$delimiter = '_';
+		} else {
+			$className = ltrim($className, '\\');
+			$delimiter = '\\';
+		}
+		$classNameParts = explode($delimiter, $className, 4);
+		if ((isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3') && (isset($classNameParts[1]) && $classNameParts[1] === 'CMS')) {
+			$classNamePartsWthoutVendorAndProduct = array_slice($classNameParts, 3);
+		} else {
+			$classNamePartsWthoutVendorAndProduct = array_slice($classNameParts, 2);
+		}
+		$classNameWithoutVendorAndProduct = join($delimiter, $classNamePartsWthoutVendorAndProduct);
+		return $classNameWithoutVendorAndProduct;
+	}
+
+	/**
+	 * Extracts the Extension Key from a given class name without any validation if the extension is loaded
+	 *
+	 * @param $className
+	 * @return string
+	 */
+	public static function getExtensionKeyFromClassName($className) {
+		if (strpos($className, '\\') === FALSE) {
+			$delimiter = '_';
+		} else {
+			$className = ltrim($className, '\\');
+			$delimiter = '\\';
+		}
+		$classNameParts = explode($delimiter, $className);
+		if ((isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3') && (isset($classNameParts[1]) && $classNameParts[1] === 'CMS')) {
+			$extensionName = $classNameParts[2];
+		} else {
+			$extensionName = $classNameParts[1];
+		}
+		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
+		return $extensionKey;
+	}
+
+	/**
 	 * Retrieves the version of an installed extension.
 	 * If the extension is not installed, this function returns an empty string.
 	 *
