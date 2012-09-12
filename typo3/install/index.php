@@ -34,14 +34,46 @@
 ob_start();
 define('TYPO3_MODE', 'BE');
 define('TYPO3_enterInstallScript', '1');
-// We use require instead of require_once here so we get a fatal error if classes/Bootstrap.php is accidentally included twice
-// (which would indicate a clear bug).
-require '../classes/Bootstrap.php';
+
+	// We use require instead of require_once here so we get a fatal error if classes/Bootstrap.php is accidentally included twice
+	// (which would indicate a clear bug).
+require '../sysext/core/Classes/Core/Bootstrap.php';
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()->baseSetup('typo3/install/');
-require '../classes/Bootstrap/Install.php';
+
+require '../sysext/install/Classes/InstallBootstrap.php';
 \TYPO3\CMS\Install\InstallBootstrap::checkEnabledInstallToolOrDie();
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->registerExtDirectComponents()->populateLocalConfiguration()->initializeCachingFramework()->registerAutoloader()->checkUtf8DatabaseSettingsOrDie()->transferDeprecatedCurlSettings()->setCacheHashOptions()->enforceCorrectProxyAuthScheme()->setDefaultTimezone()->initializeL10nLocales()->configureImageProcessingOptions()->convertPageNotFoundHandlingToBoolean()->registerGlobalDebugFunctions()->registerSwiftMailer()->configureExceptionHandling()->setMemoryLimit()->defineTypo3RequestTypes()->populateTypo3LoadedExtGlobal(FALSE)->loadAdditionalConfigurationFromExtensions(FALSE)->deprecationLogForOldExtCacheSetting()->initializeExceptionHandling()->requireAdditionalExtensionFiles()->setFinalCachingFrameworkCacheConfiguration()->defineLoggingAndExceptionConstants()->unsetReservedGlobalVariables()->initializeTypo3DbGlobal(FALSE)->checkLockedBackendAndRedirectOrDie()->checkBackendIpOrDie()->checkSslBackendAndRedirectIfNeeded();
-// Run install script
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
+	->registerExtDirectComponents()
+	->populateLocalConfiguration()
+	->initializeCachingFramework()
+	->registerAutoloader()
+	->checkUtf8DatabaseSettingsOrDie()
+	->transferDeprecatedCurlSettings()
+	->setCacheHashOptions()
+	->enforceCorrectProxyAuthScheme()
+	->setDefaultTimezone()
+	->initializeL10nLocales()
+	->configureImageProcessingOptions()
+	->convertPageNotFoundHandlingToBoolean()
+	->registerGlobalDebugFunctions()
+	->registerSwiftMailer()
+	->configureExceptionHandling()
+	->setMemoryLimit()
+	->defineTypo3RequestTypes()
+	->populateTypo3LoadedExtGlobal(FALSE)
+	->loadAdditionalConfigurationFromExtensions(FALSE)
+	->deprecationLogForOldExtCacheSetting()
+	->initializeExceptionHandling()
+	->requireAdditionalExtensionFiles()
+	->setFinalCachingFrameworkCacheConfiguration()
+	->defineLoggingAndExceptionConstants()
+	->unsetReservedGlobalVariables()
+	->initializeTypo3DbGlobal(FALSE)
+	->checkLockedBackendAndRedirectOrDie()
+	->checkBackendIpOrDie()
+	->checkSslBackendAndRedirectIfNeeded();
+
+	// Run install script
 if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('install')) {
 	die('Install Tool is not loaded as an extension.<br />You must add the key "install" to the list of installed extensions in typo3conf/localconf.php, $TYPO3_CONF_VARS[\'EXT\'][\'extList\'].');
 }

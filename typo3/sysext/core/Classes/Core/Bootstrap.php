@@ -1,6 +1,8 @@
 <?php
 namespace TYPO3\CMS\Core\Core;
 
+require 'SystemEnvironmentBuilder.php';
+
 /**
  * This class encapsulates bootstrap related methods.
  * It is required directly as the very first thing in entry scripts and
