@@ -148,7 +148,7 @@ class ExtendedFileUtilityTest extends \tx_phpunit_testcase {
 		$storage = $this->getDefaultStorage();
 		$folderIdentifier = '/';
 		// the root of the storage
-		$folderCombinedIdentifier = ($storage->getUid() . ':') . $folderIdentifier;
+		$folderCombinedIdentifier = $storage->getUid() . ':' . $folderIdentifier;
 		return $folderCombinedIdentifier;
 	}
 
@@ -210,7 +210,7 @@ class ExtendedFileUtilityTest extends \tx_phpunit_testcase {
 	public function deleteFileInLocalStorage() {
 		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$fileIdentifier = ($storage->getUid() . ':/') . $this->newFileNameInput;
+		$fileIdentifier = $storage->getUid() . ':/' . $this->newFileNameInput;
 		// Defines values
 		$fileValues = array(
 			'newfile' => array(
@@ -236,7 +236,7 @@ class ExtendedFileUtilityTest extends \tx_phpunit_testcase {
 	public function deleteFolderInLocalStorage() {
 		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$folderIdentifier = ($storage->getUid() . ':/') . $this->newFolderNameInput;
+		$folderIdentifier = $storage->getUid() . ':/' . $this->newFolderNameInput;
 		// Defines values
 		$fileValues = array(
 			'newfolder' => array(
@@ -265,7 +265,7 @@ class ExtendedFileUtilityTest extends \tx_phpunit_testcase {
 	public function renameFileInLocalStorage() {
 		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$fileIdentifier = ($storage->getUid() . ':/') . $this->newFileNameInput;
+		$fileIdentifier = $storage->getUid() . ':/' . $this->newFileNameInput;
 		// Defines values
 		$fileValues = array(
 			'newfile' => array(
@@ -297,7 +297,7 @@ class ExtendedFileUtilityTest extends \tx_phpunit_testcase {
 	public function renameFolderInLocalStorage() {
 		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$folderIdentifier = ($storage->getUid() . ':/') . $this->newFolderNameInput;
+		$folderIdentifier = $storage->getUid() . ':/' . $this->newFolderNameInput;
 		// Defines values
 		$fileValues = array(
 			'newfolder' => array(
@@ -332,7 +332,7 @@ class ExtendedFileUtilityTest extends \tx_phpunit_testcase {
 	public function moveFileInLocalStorage() {
 		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$fileIdentifier = ($storage->getUid() . ':/') . $this->newFileNameInput;
+		$fileIdentifier = $storage->getUid() . ':/' . $this->newFileNameInput;
 		$targetFolder = $this->getRootFolderIdentifier() . $this->newFolderNameInput;
 		// Defines values
 		$fileValues = array(
@@ -374,7 +374,7 @@ class ExtendedFileUtilityTest extends \tx_phpunit_testcase {
 	public function moveFolderInLocalStorage() {
 		// Computes a $folderIdentifier which looks like 8:/folderName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$folderIdentifier = ($storage->getUid() . ':/') . $this->moveFolderNameInput;
+		$folderIdentifier = $storage->getUid() . ':/' . $this->moveFolderNameInput;
 		$targetFolder = $this->getRootFolderIdentifier() . $this->newFolderNameInput;
 		// Defines values
 		$fileValues = array(
@@ -417,7 +417,7 @@ class ExtendedFileUtilityTest extends \tx_phpunit_testcase {
 	public function copyFileInLocalStorage() {
 		// Computes a $fileIdentifier which looks like 8:/fileName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$fileIdentifier = ($storage->getUid() . ':/') . $this->newFileNameInput;
+		$fileIdentifier = $storage->getUid() . ':/' . $this->newFileNameInput;
 		$targetFolder = $this->getRootFolderIdentifier() . $this->newFolderNameInput;
 		// Defines values
 		$fileValues = array(
@@ -462,7 +462,7 @@ class ExtendedFileUtilityTest extends \tx_phpunit_testcase {
 	public function copyFolderInLocalStorage() {
 		// Computes a $folderIdentifier which looks like 8:/folderName.txt where 8 is the storage Uid
 		$storage = $this->getDefaultStorage();
-		$folderIdentifier = ($storage->getUid() . ':/') . $this->copyFolderNameInput;
+		$folderIdentifier = $storage->getUid() . ':/' . $this->copyFolderNameInput;
 		$targetFolder = $this->getRootFolderIdentifier() . $this->newFolderNameInput;
 		// Defines values
 		$fileValues = array(

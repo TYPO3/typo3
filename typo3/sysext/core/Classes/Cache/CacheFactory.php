@@ -86,7 +86,7 @@ class CacheFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		$backendObjectName = '\\' . ltrim($backendObjectName, '\\');
 		$backend = new $backendObjectName($this->context, $backendOptions);
 		if (!$backend instanceof \TYPO3\CMS\Core\Cache\Backend\BackendInterface) {
-			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidBackendException(('"' . $backendObjectName) . '" is not a valid cache backend object.', 1216304301);
+			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidBackendException('"' . $backendObjectName . '" is not a valid cache backend object.', 1216304301);
 		}
 		if (is_callable(array($backend, 'initializeObject'))) {
 			$backend->initializeObject();
@@ -94,7 +94,7 @@ class CacheFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		// New used on purpose, see comment above
 		$cache = new $cacheObjectName($cacheIdentifier, $backend);
 		if (!$cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
-			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidCacheException(('"' . $cacheObjectName) . '" is not a valid cache frontend object.', 1216304300);
+			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidCacheException('"' . $cacheObjectName . '" is not a valid cache frontend object.', 1216304300);
 		}
 		if (is_callable(array($cache, 'initializeObject'))) {
 			$cache->initializeObject();

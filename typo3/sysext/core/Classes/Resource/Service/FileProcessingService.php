@@ -74,7 +74,7 @@ class FileProcessingService {
 			$this->processImageCropResizeMask($processedFile, $file, $configuration);
 			break;
 		default:
-			throw new \RuntimeException(('Unknown processing context "' . $context) . '"');
+			throw new \RuntimeException('Unknown processing context "' . $context . '"');
 		}
 		if ($processedFile->isProcessed()) {
 			// DB-query to update all info
@@ -115,7 +115,7 @@ class FileProcessingService {
 			$targetFileExtension = '.png';
 		}
 		$targetFolder = $this->storage->getProcessingFolder();
-		$targetFileName = ('preview_' . $processedFile->calculateChecksum()) . $targetFileExtension;
+		$targetFileName = 'preview_' . $processedFile->calculateChecksum() . $targetFileExtension;
 		// Do the actual processing
 		if (!$targetFolder->hasFile($targetFileName)) {
 			// Create the thumb filename in typo3temp/preview_....jpg
@@ -127,7 +127,7 @@ class FileProcessingService {
 			} else {
 				// Create the temporary file
 				if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
-					$parameters = (((((('-sample ' . $configuration['width']) . 'x') . $configuration['height']) . ' ') . $this->wrapFileName($originalFileName)) . '[0] ') . $this->wrapFileName($temporaryFileName);
+					$parameters = '-sample ' . $configuration['width'] . 'x' . $configuration['height'] . ' ' . $this->wrapFileName($originalFileName) . '[0] ' . $this->wrapFileName($temporaryFileName);
 					$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('convert', $parameters);
 					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 					if (!file_exists($temporaryFileName)) {
@@ -192,7 +192,7 @@ class FileProcessingService {
 	 */
 	protected function getTemporaryImageWithText($filename, $textline1, $textline2, $textline3) {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
-			throw new \RuntimeException((((('TYPO3 Fatal Error: No gdlib. ' . $textline1) . ' ') . $textline2) . ' ') . $textline3, 1270853952);
+			throw new \RuntimeException('TYPO3 Fatal Error: No gdlib. ' . $textline1 . ' ' . $textline2 . ' ' . $textline3, 1270853952);
 		}
 		// Creates the basis for the error image
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {
@@ -257,7 +257,7 @@ class FileProcessingService {
 		}
 		$originalFileName = $file->getForLocalProcessing(FALSE);
 		$targetFolder = $this->storage->getProcessingFolder();
-		$targetFileName = (('previewcrm_' . $processedFile->calculateChecksum()) . '.') . $targetFileExtension;
+		$targetFileName = 'previewcrm_' . $processedFile->calculateChecksum() . '.' . $targetFileExtension;
 		// @todo: implement meaningful TempFileIndex
 		if ($configuration['useSample']) {
 			$gifBuilder->scalecmd = '-sample';
@@ -302,20 +302,20 @@ class FileProcessingService {
 						}
 						//	Scaling:	****
 						$tempScale = array();
-						$command = ((('-geometry ' . $tempFileInfo[0]) . 'x') . $tempFileInfo[1]) . '!';
+						$command = '-geometry ' . $tempFileInfo[0] . 'x' . $tempFileInfo[1] . '!';
 						$command = $this->modifyImageMagickStripProfileParameters($command, $configuration);
 						$tmpStr = $gifBuilder->randomName();
 						//	m_mask
-						$tempScale['m_mask'] = ($tmpStr . '_mask.') . $temporaryExtension;
+						$tempScale['m_mask'] = $tmpStr . '_mask.' . $temporaryExtension;
 						$gifBuilder->imageMagickExec($maskImage->getForLocalProcessing(TRUE), $tempScale['m_mask'], $command . $negate);
 						//	m_bgImg
-						$tempScale['m_bgImg'] = ($tmpStr . '_bgImg.') . trim($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_noloss']);
+						$tempScale['m_bgImg'] = $tmpStr . '_bgImg.' . trim($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_noloss']);
 						$gifBuilder->imageMagickExec($maskBackgroundImage->getForLocalProcessing(), $tempScale['m_bgImg'], $command);
 						//	m_bottomImg / m_bottomImg_mask
 						if ($maskBottomImage instanceof \TYPO3\CMS\Core\Resource\FileInterface && $maskBottomImageMask instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
-							$tempScale['m_bottomImg'] = ($tmpStr . '_bottomImg.') . $temporaryExtension;
+							$tempScale['m_bottomImg'] = $tmpStr . '_bottomImg.' . $temporaryExtension;
 							$gifBuilder->imageMagickExec($maskBottomImage->getForLocalProcessing(), $tempScale['m_bottomImg'], $command);
-							$tempScale['m_bottomImg_mask'] = ($tmpStr . '_bottomImg_mask.') . $temporaryExtension;
+							$tempScale['m_bottomImg_mask'] = $tmpStr . '_bottomImg_mask.' . $temporaryExtension;
 							$gifBuilder->imageMagickExec($maskBottomImageMask->getForLocalProcessing(), $tempScale['m_bottomImg_mask'], $command . $negate);
 							// BEGIN combining:
 							// The image onto the background

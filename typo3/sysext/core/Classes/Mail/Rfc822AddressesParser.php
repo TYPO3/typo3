@@ -300,9 +300,9 @@ class Rfc822AddressesParser {
 	protected function _splitCheck($parts, $char) {
 		$string = $parts[0];
 		for ($i = 0; $i < count($parts); $i++) {
-			if (((($this->_hasUnclosedQuotes($string) || $this->_hasUnclosedBrackets($string, '<>')) || $this->_hasUnclosedBrackets($string, '[]')) || $this->_hasUnclosedBrackets($string, '()')) || substr($string, -1) == '\\') {
+			if ($this->_hasUnclosedQuotes($string) || $this->_hasUnclosedBrackets($string, '<>') || $this->_hasUnclosedBrackets($string, '[]') || $this->_hasUnclosedBrackets($string, '()') || substr($string, -1) == '\\') {
 				if (isset($parts[$i + 1])) {
-					$string = ($string . $char) . $parts[($i + 1)];
+					$string = $string . $char . $parts[($i + 1)];
 				} else {
 					$this->error = 'Invalid address spec. Unclosed bracket or quotes';
 					return FALSE;
@@ -359,7 +359,7 @@ class Rfc822AddressesParser {
 		$this->_hasUnclosedBracketsSub($string, $num_angle_start, $chars[0]);
 		$this->_hasUnclosedBracketsSub($string, $num_angle_end, $chars[1]);
 		if ($num_angle_start < $num_angle_end) {
-			$this->error = ('Invalid address spec. Unmatched quote or bracket (' . $chars) . ')';
+			$this->error = 'Invalid address spec. Unmatched quote or bracket (' . $chars . ')';
 			return FALSE;
 		} else {
 			return $num_angle_start > $num_angle_end;
@@ -382,7 +382,7 @@ class Rfc822AddressesParser {
 				$num--;
 			}
 			if (isset($parts[$i + 1])) {
-				$parts[$i + 1] = ($parts[$i] . $char) . $parts[($i + 1)];
+				$parts[$i + 1] = $parts[$i] . $char . $parts[($i + 1)];
 			}
 		}
 		return $num;
@@ -559,13 +559,13 @@ class Rfc822AddressesParser {
 				$comment = $this->_splitCheck($parts, ')');
 				$comments[] = $comment;
 				// +2 is for the brackets
-				$_mailbox = substr($_mailbox, (strpos($_mailbox, ('(' . $comment)) + strlen($comment)) + 2);
+				$_mailbox = substr($_mailbox, strpos($_mailbox, ('(' . $comment)) + strlen($comment) + 2);
 			} else {
 				break;
 			}
 		}
 		foreach ($comments as $comment) {
-			$mailbox = str_replace(('(' . $comment) . ')', '', $mailbox);
+			$mailbox = str_replace('(' . $comment . ')', '', $mailbox);
 		}
 		$mailbox = trim($mailbox);
 		// Check for name + route-addr

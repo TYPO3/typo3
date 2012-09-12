@@ -208,9 +208,9 @@ class RootlineUtility {
 				}
 				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('pages');
 			}
-			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(implode(',', self::$rootlineFields), 'pages', (('uid = ' . intval($uid)) . ' AND pages.deleted = 0 AND pages.doktype <> ') . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER);
+			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(implode(',', self::$rootlineFields), 'pages', 'uid = ' . intval($uid) . ' AND pages.deleted = 0 AND pages.doktype <> ' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER);
 			if (empty($row)) {
-				throw new \RuntimeException(('Could not fetch page data for uid ' . $uid) . '.', 1343589451);
+				throw new \RuntimeException('Could not fetch page data for uid ' . $uid . '.', 1343589451);
 			}
 			$this->pageContext->versionOL('pages', $row, FALSE, TRUE);
 			$this->pageContext->fixVersioningPid('pages', $row);
@@ -221,7 +221,7 @@ class RootlineUtility {
 			}
 		}
 		if (!is_array(self::$pageRecordCache[$this->getCacheIdentifier($uid)])) {
-			throw new \RuntimeException(('Broken rootline. Could not resolve page with uid ' . $uid) . '.', 1343464101);
+			throw new \RuntimeException('Broken rootline. Could not resolve page with uid ' . $uid . '.', 1343464101);
 		}
 		return self::$pageRecordCache[$this->getCacheIdentifier($uid)];
 	}
@@ -246,19 +246,19 @@ class RootlineUtility {
 				} elseif ($configuration['foreign_field']) {
 					$table = $configuration['foreign_table'];
 					$field = $configuration['foreign_field'];
-					$whereClauseParts = array((('`' . $field) . '` = ') . intval($uid));
+					$whereClauseParts = array('`' . $field . '` = ' . intval($uid));
 					if (isset($configuration['foreign_match_fields']) && is_array($configuration['foreign_match_fields'])) {
 						foreach ($configuration['foreign_match_fields'] as $field => $value) {
-							$whereClauseParts[] = (('`' . $field) . '` = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
+							$whereClauseParts[] = '`' . $field . '` = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $table);
 						}
 					}
 					if (isset($configuration['foreign_table_field'])) {
-						$whereClauseParts[] = ('`' . trim($configuration['foreign_table_field'])) . '` = \'pages\'';
+						$whereClauseParts[] = '`' . trim($configuration['foreign_table_field']) . '` = \'pages\'';
 					}
 					$whereClause = implode(' AND ', $whereClauseParts);
 					$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $table, $whereClause);
 					if (!is_array($rows)) {
-						throw new \RuntimeException((('Could to resolve related records for page ' . $uid) . ' and foreign_table ') . htmlspecialchars($configuration['foreign_table']), 1343589452);
+						throw new \RuntimeException('Could to resolve related records for page ' . $uid . ' and foreign_table ' . htmlspecialchars($configuration['foreign_table']), 1343589452);
 					}
 					$relatedUids = array();
 					foreach ($rows as $row) {
@@ -280,10 +280,10 @@ class RootlineUtility {
 	 */
 	protected function columnHasRelationToResolve(array $configuration) {
 		$configuration = $configuration['config'];
-		if ((isset($configuration['MM']) && isset($configuration['type'])) && in_array($configuration['type'], array('select', 'inline', 'group'))) {
+		if (isset($configuration['MM']) && isset($configuration['type']) && in_array($configuration['type'], array('select', 'inline', 'group'))) {
 			return TRUE;
 		}
-		if ((isset($configuration['foreign_field']) && isset($configuration['type'])) && in_array($configuration['type'], array('select', 'inline'))) {
+		if (isset($configuration['foreign_field']) && isset($configuration['type']) && in_array($configuration['type'], array('select', 'inline'))) {
 			return TRUE;
 		}
 		return FALSE;
@@ -318,7 +318,7 @@ class RootlineUtility {
 			foreach ($rootline as $entry) {
 				$cacheTags[] = 'pageId_' . $entry['uid'];
 				if ($entry['uid'] == $this->pageUid) {
-					throw new \RuntimeException(('Circular connection in rootline for page with uid ' . $this->pageUid) . ' found. Check your mountpoint configuration.', 1343464103);
+					throw new \RuntimeException('Circular connection in rootline for page with uid ' . $this->pageUid . ' found. Check your mountpoint configuration.', 1343464103);
 				}
 			}
 		} else {
@@ -350,7 +350,7 @@ class RootlineUtility {
 	 */
 	protected function processMountedPage(array $mountedPageData, array $mountPointPageData) {
 		if ($mountPointPageData['mount_pid'] != $mountedPageData['uid']) {
-			throw new \RuntimeException(((('Broken rootline. Mountpoint parameter does not match the actual rootline. mount_pid (' . $mountPointPageData['mount_pid']) . ') does not match page uid (') . $mountedPageData['uid']) . ').', 1343464100);
+			throw new \RuntimeException('Broken rootline. Mountpoint parameter does not match the actual rootline. mount_pid (' . $mountPointPageData['mount_pid'] . ') does not match page uid (' . $mountedPageData['uid'] . ').', 1343464100);
 		}
 		// Current page replaces the original mount-page
 		if ($mountPointPageData['mount_pid_ol']) {
@@ -365,7 +365,7 @@ class RootlineUtility {
 			$mountedPageData = $mountPointPageData;
 		}
 		$mountedPageData['_MOUNTED_FROM'] = $this->pageUid;
-		$mountedPageData['_MP_PARAM'] = ($this->pageUid . '-') . $mountPointPageData['uid'];
+		$mountedPageData['_MP_PARAM'] = $this->pageUid . '-' . $mountPointPageData['uid'];
 		return $mountedPageData;
 	}
 

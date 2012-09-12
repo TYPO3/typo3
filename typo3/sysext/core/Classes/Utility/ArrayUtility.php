@@ -258,7 +258,7 @@ class ArrayUtility {
 			$lines .= str_repeat(TAB, $level);
 			if ($writeKeyIndex) {
 				// Numeric / string keys
-				$lines .= is_int($key) ? $key . ' => ' : ('\'' . $key) . '\' => ';
+				$lines .= is_int($key) ? $key . ' => ' : '\'' . $key . '\' => ';
 			}
 			if (is_array($value)) {
 				if (count($value) > 0) {
@@ -267,9 +267,9 @@ class ArrayUtility {
 					$lines .= 'array(),' . LF;
 				}
 			} elseif (is_int($value)) {
-				$lines .= ($value . ',') . LF;
+				$lines .= $value . ',' . LF;
 			} elseif (is_null($value)) {
-				$lines .= ('NULL' . ',') . LF;
+				$lines .= 'NULL' . ',' . LF;
 			} elseif (is_bool($value)) {
 				$lines .= $value ? 'TRUE' : 'FALSE';
 				$lines .= ',' . LF;
@@ -278,12 +278,12 @@ class ArrayUtility {
 				$stringContent = str_replace('\\', '\\\\', $value);
 				// Quote ' to \'
 				$stringContent = str_replace('\'', '\\\'', $stringContent);
-				$lines .= ((('\'' . $stringContent) . '\'') . ',') . LF;
+				$lines .= '\'' . $stringContent . '\'' . ',' . LF;
 			} else {
 				throw new \RuntimeException('Objects are not supported', 1342294986);
 			}
 		}
-		$lines .= (str_repeat(TAB, ($level - 1)) . ')') . ($level - 1 == 0 ? '' : ',' . LF);
+		$lines .= str_repeat(TAB, ($level - 1)) . ')' . ($level - 1 == 0 ? '' : ',' . LF);
 		return $lines;
 	}
 
@@ -306,7 +306,7 @@ class ArrayUtility {
 			if (!is_array($value)) {
 				$flatArray[$prefix . $key] = $value;
 			} else {
-				$flatArray = array_merge($flatArray, self::flatten($value, ($prefix . $key) . '.'));
+				$flatArray = array_merge($flatArray, self::flatten($value, $prefix . $key . '.'));
 			}
 		}
 		return $flatArray;

@@ -367,7 +367,7 @@ abstract class AbstractUserAuthentication {
 			$id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($this->name);
 		}
 		// If fallback to get mode....
-		if ((!$id && $this->getFallBack) && $this->get_name) {
+		if (!$id && $this->getFallBack && $this->get_name) {
 			$id = isset($_GET[$this->get_name]) ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GET($this->get_name) : '';
 			if (strlen($id) != $this->hash_length) {
 				$id = '';
@@ -385,8 +385,8 @@ abstract class AbstractUserAuthentication {
 		// Internal var 'id' is set
 		$this->id = $id;
 		// If fallback to get mode....
-		if (($mode == 'get' && $this->getFallBack) && $this->get_name) {
-			$this->get_URL_ID = (('&' . $this->get_name) . '=') . $id;
+		if ($mode == 'get' && $this->getFallBack && $this->get_name) {
+			$this->get_URL_ID = '&' . $this->get_name . '=' . $id;
 		}
 		// Set session hashKey lock keywords from configuration; currently only 'useragent' can be used.
 		$this->lockHashKeyWords = $GLOBALS['TYPO3_CONF_VARS'][$this->loginType]['lockHashKeyWords'];
@@ -395,7 +395,7 @@ abstract class AbstractUserAuthentication {
 		// Set all possible headers that could ensure that the script is not cached on the client-side
 		if ($this->sendNoCacheHeaders) {
 			header('Expires: 0');
-			header(('Last-Modified: ' . gmdate('D, d M Y H:i:s')) . ' GMT');
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 			$cacheControlHeader = 'no-cache, must-revalidate';
 			$pragmaHeader = 'no-cache';
 			// Prevent error message in IE when using a https connection
@@ -509,7 +509,7 @@ abstract class AbstractUserAuthentication {
 				$match = array();
 				$matchCnt = @preg_match($cookieDomain, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
 				if ($matchCnt === FALSE) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(('The regular expression for the cookie domain (' . $cookieDomain) . ') contains errors. The session is not shared across sub-domains.', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				} elseif ($matchCnt) {
 					$result = $match[0];
 				}
@@ -618,10 +618,10 @@ abstract class AbstractUserAuthentication {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Active login (eg. with login form)', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
 			}
 			// check referer for submitted login values
-			if (($this->formfield_status && $loginData['uident']) && $loginData['uname']) {
+			if ($this->formfield_status && $loginData['uident'] && $loginData['uname']) {
 				$httpHost = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
 				if (!$this->getMethodEnabled && ($httpHost != $authInfo['refInfo']['host'] && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer'])) {
-					throw new \RuntimeException(((('TYPO3 Fatal Error: Error: This host address ("' . $httpHost) . '") and the referer host ("') . $authInfo['refInfo']['host']) . '") mismatches!<br />
+					throw new \RuntimeException('TYPO3 Fatal Error: Error: This host address ("' . $httpHost . '") and the referer host ("' . $authInfo['refInfo']['host'] . '") mismatches!<br />
 						It\'s possible that the environment variable HTTP_REFERER is not passed to the script because of a proxy.<br />
 						The site administrator can disable this check in the "All Configuration" section of the Install Tool (flag: TYPO3_CONF_VARS[SYS][doNotCheckReferer]).', 1270853930);
 				}
@@ -655,7 +655,7 @@ abstract class AbstractUserAuthentication {
 			}
 		}
 		// Fetch user if ...
-		if (($activeLogin || !$haveSession && $this->svConfig['setup'][$this->loginType . '_fetchUserIfNoSession']) || $this->svConfig['setup'][$this->loginType . '_alwaysFetchUser']) {
+		if ($activeLogin || !$haveSession && $this->svConfig['setup'][$this->loginType . '_fetchUserIfNoSession'] || $this->svConfig['setup'][$this->loginType . '_alwaysFetchUser']) {
 			// Use 'auth' service to find the user
 			// First found user will be used
 			$serviceChain = '';
@@ -680,7 +680,7 @@ abstract class AbstractUserAuthentication {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($this->loginType . '_alwaysFetchUser option is enabled', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
 			}
 			if ($this->writeDevLog && $serviceChain) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(($subType . ' auth services called: ') . $serviceChain, 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
 			}
 			if ($this->writeDevLog && !count($tempuserArr)) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('No user found by services', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
@@ -738,7 +738,7 @@ abstract class AbstractUserAuthentication {
 				}
 				unset($serviceObj);
 				if ($this->writeDevLog && $serviceChain) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(($subType . ' auth services called: ') . $serviceChain, 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
+					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
 				}
 				if ($authenticated) {
 					// Leave foreach() because a user is authenticated
@@ -761,10 +761,10 @@ abstract class AbstractUserAuthentication {
 				$this->writelog(255, 1, 0, 1, 'User %s logged in from %s (%s)', array($tempuser[$this->username_column], \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'), \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_HOST')), '', '', '', -1, '', $tempuser['uid']);
 			}
 			if ($this->writeDevLog && $activeLogin) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(((((('User ' . $tempuser[$this->username_column]) . ' logged in from ') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR')) . ' (') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_HOST')) . ')', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', -1);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' logged in from ' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', -1);
 			}
 			if ($this->writeDevLog && !$activeLogin) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(((((('User ' . $tempuser[$this->username_column]) . ' authenticated from ') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR')) . ' (') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_HOST')) . ')', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', -1);
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('User ' . $tempuser[$this->username_column] . ' authenticated from ' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR') . ' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_HOST') . ')', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', -1);
 			}
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL'] == 3 && $this->user_table == 'be_users') {
 				$requestStr = substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'), strlen(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir));
@@ -777,12 +777,12 @@ abstract class AbstractUserAuthentication {
 						// strip port from server
 						$server = str_replace($sslPortSuffix, '', $server);
 					}
-					\TYPO3\CMS\Core\Utility\HttpUtility::redirect((((('http://' . $server) . '/') . $address) . TYPO3_mainDir) . $backendScript);
+					\TYPO3\CMS\Core\Utility\HttpUtility::redirect('http://' . $server . '/' . $address . TYPO3_mainDir . $backendScript);
 				}
 			}
 		} elseif ($activeLogin || count($tempuserArr)) {
 			$this->loginFailure = TRUE;
-			if (($this->writeDevLog && !count($tempuserArr)) && $activeLogin) {
+			if ($this->writeDevLog && !count($tempuserArr) && $activeLogin) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Login failed: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($loginData), 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 2);
 			}
 			if ($this->writeDevLog && count($tempuserArr)) {
@@ -824,14 +824,14 @@ abstract class AbstractUserAuthentication {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Create session ses_id = ' . $this->id, 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
 		}
 		// Delete session entry first
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->session_table, (('ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table)) . '
-						AND ses_name = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table));
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->session_table, 'ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table) . '
+						AND ses_name = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table));
 		// Re-create session entry
 		$insertFields = $this->getNewSessionRecord($tempuser);
 		$GLOBALS['TYPO3_DB']->exec_INSERTquery($this->session_table, $insertFields);
 		// Updating lastLogin_column carrying information about last login.
 		if ($this->lastLogin_column) {
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->user_table, ($this->userid_column . '=') . $GLOBALS['TYPO3_DB']->fullQuoteStr($tempuser[$this->userid_column], $this->user_table), array($this->lastLogin_column => $GLOBALS['EXEC_TIME']));
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->user_table, $this->userid_column . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tempuser[$this->userid_column], $this->user_table), array($this->lastLogin_column => $GLOBALS['EXEC_TIME']));
 		}
 	}
 
@@ -887,8 +887,8 @@ abstract class AbstractUserAuthentication {
 			// Option later on: We could check that last update was at least x seconds ago in order not to update twice in a row if one script redirects to another...
 			if ($timeout > 0 && $GLOBALS['EXEC_TIME'] < $user['ses_tstamp'] + $timeout) {
 				if (!$skipSessionUpdate) {
-					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->session_table, (('ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table)) . '
-												AND ses_name=') . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table), array('ses_tstamp' => $GLOBALS['EXEC_TIME']));
+					$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->session_table, 'ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table) . '
+												AND ses_name=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table), array('ses_tstamp' => $GLOBALS['EXEC_TIME']));
 					// Make sure that the timestamp is also updated in the array
 					$user['ses_tstamp'] = $GLOBALS['EXEC_TIME'];
 				}
@@ -925,8 +925,8 @@ abstract class AbstractUserAuthentication {
 				}
 			}
 		}
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->session_table, (('ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table)) . '
-						AND ses_name = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table));
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->session_table, 'ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->id, $this->session_table) . '
+						AND ses_name = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table));
 		$this->user = '';
 		// Hook for post-processing the logoff() method, requested and implemented by andreas.otto@dkd.de:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_post_processing'])) {
@@ -977,11 +977,11 @@ abstract class AbstractUserAuthentication {
 			// If on the flash client, the veri code is valid, then the user session is fetched
 			// from the DB without the hashLock clause
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('vC') == $this->veriCode()) {
-				$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery('*', ($this->session_table . ',') . $this->user_table, ((((((((((($this->session_table . '.ses_id = :ses_id
-						AND ') . $this->session_table) . '.ses_name = :ses_name
-						AND ') . $this->session_table) . '.ses_userid = ') . $this->user_table) . '.') . $this->userid_column) . '
-						') . $ipLockClause['where']) . '
-						') . $this->user_where_clause());
+				$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery('*', $this->session_table . ',' . $this->user_table, $this->session_table . '.ses_id = :ses_id
+						AND ' . $this->session_table . '.ses_name = :ses_name
+						AND ' . $this->session_table . '.ses_userid = ' . $this->user_table . '.' . $this->userid_column . '
+						' . $ipLockClause['where'] . '
+						' . $this->user_where_clause());
 				$statement->bindValues(array(
 					':ses_id' => $this->id,
 					':ses_name' => $this->name
@@ -989,12 +989,12 @@ abstract class AbstractUserAuthentication {
 				$statement->bindValues($ipLockClause['parameters']);
 			}
 		} else {
-			$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery('*', ($this->session_table . ',') . $this->user_table, ((((((((((((($this->session_table . '.ses_id = :ses_id
-					AND ') . $this->session_table) . '.ses_name = :ses_name
-					AND ') . $this->session_table) . '.ses_userid = ') . $this->user_table) . '.') . $this->userid_column) . '
-					') . $ipLockClause['where']) . '
-					') . $this->hashLockClause()) . '
-					') . $this->user_where_clause());
+			$statement = $GLOBALS['TYPO3_DB']->prepare_SELECTquery('*', $this->session_table . ',' . $this->user_table, $this->session_table . '.ses_id = :ses_id
+					AND ' . $this->session_table . '.ses_name = :ses_name
+					AND ' . $this->session_table . '.ses_userid = ' . $this->user_table . '.' . $this->userid_column . '
+					' . $ipLockClause['where'] . '
+					' . $this->hashLockClause() . '
+					' . $this->user_where_clause());
 			$statement->bindValues(array(
 				':ses_id' => $this->id,
 				':ses_name' => $this->name
@@ -1011,7 +1011,7 @@ abstract class AbstractUserAuthentication {
 	 * @access private
 	 */
 	protected function user_where_clause() {
-		return (((($this->enablecolumns['rootLevel'] ? ('AND ' . $this->user_table) . '.pid=0 ' : '') . ($this->enablecolumns['disabled'] ? (((' AND ' . $this->user_table) . '.') . $this->enablecolumns['disabled']) . '=0' : '')) . ($this->enablecolumns['deleted'] ? (((' AND ' . $this->user_table) . '.') . $this->enablecolumns['deleted']) . '=0' : '')) . ($this->enablecolumns['starttime'] ? (((((' AND (' . $this->user_table) . '.') . $this->enablecolumns['starttime']) . '<=') . $GLOBALS['EXEC_TIME']) . ')' : '')) . ($this->enablecolumns['endtime'] ? (((((((((' AND (' . $this->user_table) . '.') . $this->enablecolumns['endtime']) . '=0 OR ') . $this->user_table) . '.') . $this->enablecolumns['endtime']) . '>') . $GLOBALS['EXEC_TIME']) . ')' : '');
+		return ($this->enablecolumns['rootLevel'] ? 'AND ' . $this->user_table . '.pid=0 ' : '') . ($this->enablecolumns['disabled'] ? ' AND ' . $this->user_table . '.' . $this->enablecolumns['disabled'] . '=0' : '') . ($this->enablecolumns['deleted'] ? ' AND ' . $this->user_table . '.' . $this->enablecolumns['deleted'] . '=0' : '') . ($this->enablecolumns['starttime'] ? ' AND (' . $this->user_table . '.' . $this->enablecolumns['starttime'] . '<=' . $GLOBALS['EXEC_TIME'] . ')' : '') . ($this->enablecolumns['endtime'] ? ' AND (' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '=0 OR ' . $this->user_table . '.' . $this->enablecolumns['endtime'] . '>' . $GLOBALS['EXEC_TIME'] . ')' : '');
 	}
 
 	/**
@@ -1026,9 +1026,9 @@ abstract class AbstractUserAuthentication {
 			'parameters' => array()
 		);
 		if ($this->lockIP) {
-			$statementClause['where'] = ((('AND (
-				' . $this->session_table) . '.ses_iplock = :ses_iplock
-				OR ') . $this->session_table) . '.ses_iplock=\'[DISABLED]\'
+			$statementClause['where'] = 'AND (
+				' . $this->session_table . '.ses_iplock = :ses_iplock
+				OR ' . $this->session_table . '.ses_iplock=\'[DISABLED]\'
 				)';
 			$statementClause['parameters'] = array(
 				':ses_iplock' => $this->ipLockClause_remoteIPNumber($this->lockIP)
@@ -1076,7 +1076,7 @@ abstract class AbstractUserAuthentication {
 	 * @access private
 	 */
 	protected function hashLockClause() {
-		$wherePart = (('AND ' . $this->session_table) . '.ses_hashlock=') . intval($this->hashLockClause_getHashInt());
+		$wherePart = 'AND ' . $this->session_table . '.ses_hashlock=' . intval($this->hashLockClause_getHashInt());
 		return $wherePart;
 	}
 
@@ -1114,9 +1114,9 @@ abstract class AbstractUserAuthentication {
 				$variable = $this->uc;
 			}
 			if ($this->writeDevLog) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog((('writeUC: ' . $this->userid_column) . '=') . intval($this->user[$this->userid_column]), 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('writeUC: ' . $this->userid_column . '=' . intval($this->user[$this->userid_column]), 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
 			}
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->user_table, ($this->userid_column . '=') . intval($this->user[$this->userid_column]), array('uc' => serialize($variable)));
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery($this->user_table, $this->userid_column . '=' . intval($this->user[$this->userid_column]), array('uc' => serialize($variable)));
 		}
 	}
 
@@ -1300,7 +1300,7 @@ abstract class AbstractUserAuthentication {
 		$authInfo['db_user']['usergroup_column'] = $this->usergroup_column;
 		$authInfo['db_user']['enable_clause'] = $this->user_where_clause();
 		$authInfo['db_user']['checkPidList'] = $this->checkPid ? $this->checkPid_value : '';
-		$authInfo['db_user']['check_pid_clause'] = $this->checkPid ? (' AND pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($authInfo['db_user']['checkPidList'])) . ')' : '';
+		$authInfo['db_user']['check_pid_clause'] = $this->checkPid ? ' AND pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($authInfo['db_user']['checkPidList']) . ')' : '';
 		$authInfo['db_groups']['table'] = $this->usergroup_table;
 		return $authInfo;
 	}
@@ -1326,13 +1326,13 @@ abstract class AbstractUserAuthentication {
 				session_start();
 				if ($_SESSION['login_challenge'] !== $loginData['chalvalue']) {
 					if ($this->writeDevLog) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(((('PHP Session stored challenge "' . $_SESSION['login_challenge']) . '" and submitted challenge "') . $loginData['chalvalue']) . '" did not match, so authentication failed!', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 2);
+						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('PHP Session stored challenge "' . $_SESSION['login_challenge'] . '" and submitted challenge "' . $loginData['chalvalue'] . '" did not match, so authentication failed!', 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication', 2);
 					}
 					$this->logoff();
 					return FALSE;
 				}
 			}
-			if ((string) $loginData[('uident_' . $passwordCompareStrategy)] === (string) md5((((($user[$this->username_column] . ':') . $user[$this->userident_column]) . ':') . $loginData['chalvalue']))) {
+			if ((string) $loginData[('uident_' . $passwordCompareStrategy)] === (string) md5(($user[$this->username_column] . ':' . $user[$this->userident_column] . ':' . $loginData['chalvalue']))) {
 				$OK = TRUE;
 			}
 			break;
@@ -1354,7 +1354,7 @@ abstract class AbstractUserAuthentication {
 	 * @todo Define visibility
 	 */
 	public function gc() {
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->session_table, (('ses_tstamp < ' . intval(($GLOBALS['EXEC_TIME'] - $this->gc_time))) . ' AND ses_name = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table));
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery($this->session_table, 'ses_tstamp < ' . intval(($GLOBALS['EXEC_TIME'] - $this->gc_time)) . ' AND ses_name = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->name, $this->session_table));
 	}
 
 	/**
@@ -1432,7 +1432,7 @@ abstract class AbstractUserAuthentication {
 	 */
 	public function getRawUserByUid($uid) {
 		$user = FALSE;
-		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->user_table, (('uid=' . intval($uid)) . ' ') . $this->user_where_clause());
+		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->user_table, 'uid=' . intval($uid) . ' ' . $this->user_where_clause());
 		if ($dbres) {
 			$user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres);
 			$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
@@ -1451,7 +1451,7 @@ abstract class AbstractUserAuthentication {
 	 */
 	public function getRawUserByName($name) {
 		$user = FALSE;
-		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->user_table, (('username=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($name, $this->user_table)) . ' ') . $this->user_where_clause());
+		$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->user_table, 'username=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($name, $this->user_table) . ' ' . $this->user_where_clause());
 		if ($dbres) {
 			$user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres);
 			$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
@@ -1476,10 +1476,10 @@ abstract class AbstractUserAuthentication {
 	 */
 	public function fetchUserRecord($dbUser, $username, $extraWhere = '') {
 		$user = FALSE;
-		$usernameClause = $username ? ($dbUser['username_column'] . '=') . $GLOBALS['TYPO3_DB']->fullQuoteStr($username, $dbUser['table']) : '';
+		$usernameClause = $username ? $dbUser['username_column'] . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($username, $dbUser['table']) : '';
 		if ($username || $extraWhere) {
 			// Look up the user by the username and/or extraWhere:
-			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $dbUser['table'], (($usernameClause . $dbUser['check_pid_clause']) . $dbUser['enable_clause']) . $extraWhere);
+			$dbres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $dbUser['table'], $usernameClause . $dbUser['check_pid_clause'] . $dbUser['enable_clause'] . $extraWhere);
 			if ($dbres) {
 				$user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres);
 				$GLOBALS['TYPO3_DB']->sql_free_result($dbres);

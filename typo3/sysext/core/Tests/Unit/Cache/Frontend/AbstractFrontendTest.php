@@ -53,7 +53,7 @@ class AbstractFrontendTest extends \tx_phpunit_testcase {
 		foreach (array('', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#') as $identifier) {
 			try {
 				$abstractCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag', 'flush', 'flushByTag', 'collectGarbage'), array($identifier, $mockBackend));
-				$this->fail(('Identifier "' . $identifier) . '" was not rejected.');
+				$this->fail('Identifier "' . $identifier . '" was not rejected.');
 			} catch (\InvalidArgumentException $exception) {
 
 			}
@@ -124,7 +124,7 @@ class AbstractFrontendTest extends \tx_phpunit_testcase {
 		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend', array(), array(), '', FALSE);
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
 		foreach (array('', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#') as $entryIdentifier) {
-			$this->assertFalse($cache->isValidEntryIdentifier($entryIdentifier), ('Invalid identifier "' . $entryIdentifier) . '" was not rejected.');
+			$this->assertFalse($cache->isValidEntryIdentifier($entryIdentifier), 'Invalid identifier "' . $entryIdentifier . '" was not rejected.');
 		}
 	}
 
@@ -136,7 +136,7 @@ class AbstractFrontendTest extends \tx_phpunit_testcase {
 		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend', array(), array(), '', FALSE);
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
 		foreach (array('_', 'abcdef', 'foo', 'bar123', '3some', '_bl_a', 'some&', 'one%TWO', str_repeat('x', 250)) as $entryIdentifier) {
-			$this->assertTrue($cache->isValidEntryIdentifier($entryIdentifier), ('Valid identifier "' . $entryIdentifier) . '" was not accepted.');
+			$this->assertTrue($cache->isValidEntryIdentifier($entryIdentifier), 'Valid identifier "' . $entryIdentifier . '" was not accepted.');
 		}
 	}
 
@@ -148,7 +148,7 @@ class AbstractFrontendTest extends \tx_phpunit_testcase {
 		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend', array(), array(), '', FALSE);
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
 		foreach (array('', 'abc def', 'foo!', 'bar:', 'some/', 'bla*', 'one+', 'äöü', str_repeat('x', 251), 'x$', '\\a', 'b#') as $tag) {
-			$this->assertFalse($cache->isValidTag($tag), ('Invalid tag "' . $tag) . '" was not rejected.');
+			$this->assertFalse($cache->isValidTag($tag), 'Invalid tag "' . $tag . '" was not rejected.');
 		}
 	}
 
@@ -160,7 +160,7 @@ class AbstractFrontendTest extends \tx_phpunit_testcase {
 		$backend = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend', array(), array(), '', FALSE);
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\StringFrontend', array('__construct', 'get', 'set', 'has', 'remove', 'getByTag'), array($identifier, $backend));
 		foreach (array('abcdef', 'foo-bar', 'foo_baar', 'bar123', '3some', 'file%Thing', 'some&', '%x%', str_repeat('x', 250)) as $tag) {
-			$this->assertTrue($cache->isValidTag($tag), ('Valid tag "' . $tag) . '" was not accepted.');
+			$this->assertTrue($cache->isValidTag($tag), 'Valid tag "' . $tag . '" was not accepted.');
 		}
 	}
 

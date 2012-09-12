@@ -98,7 +98,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 			$temporaryCacheDirectory = $this->temporaryCacheDirectory;
 		}
 		$codeOrData = $cache instanceof \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend ? 'Code' : 'Data';
-		$finalCacheDirectory = (((($temporaryCacheDirectory . 'Cache/') . $codeOrData) . '/') . $this->cacheIdentifier) . '/';
+		$finalCacheDirectory = $temporaryCacheDirectory . 'Cache/' . $codeOrData . '/' . $this->cacheIdentifier . '/';
 		if (!is_dir($finalCacheDirectory)) {
 			$this->createFinalCacheDirectory($finalCacheDirectory);
 		}
@@ -106,7 +106,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 		$this->cacheDirectory = $finalCacheDirectory;
 		$this->cacheEntryFileExtension = $cache instanceof \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend ? '.php' : '';
 		if (strlen($this->cacheDirectory) + 23 > \TYPO3\CMS\Core\Utility\GeneralUtility::getMaximumPathLength()) {
-			throw new \TYPO3\CMS\Core\Cache\Exception(((((('The length of the temporary cache file path "' . $this->cacheDirectory) . '" exceeds the ') . 'maximum path length of ') . (\TYPO3\CMS\Core\Utility\GeneralUtility::getMaximumPathLength() - 23)) . '. Please consider ') . 'setting the temporaryDirectoryBase option to a shorter path.', 1248710426);
+			throw new \TYPO3\CMS\Core\Cache\Exception('The length of the temporary cache file path "' . $this->cacheDirectory . '" exceeds the ' . 'maximum path length of ' . (\TYPO3\CMS\Core\Utility\GeneralUtility::getMaximumPathLength() - 23) . '. Please consider ' . 'setting the temporaryDirectoryBase option to a shorter path.', 1248710426);
 		}
 	}
 
@@ -164,7 +164,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 				}
 			}
 			if (!$cacheDirectoryInBaseDir) {
-				throw new \TYPO3\CMS\Core\Cache\Exception(('Open_basedir restriction in effect. The directory "' . $cacheDirectory) . '" is not in an allowed path.');
+				throw new \TYPO3\CMS\Core\Cache\Exception('Open_basedir restriction in effect. The directory "' . $cacheDirectory . '" is not in an allowed path.');
 			}
 		} else {
 			if ($cacheDirectory[0] == '/') {
@@ -181,7 +181,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 		if ($cacheDirectory[strlen($cacheDirectory) - 1] !== '/') {
 			$cacheDirectory .= '/';
 		}
-		$this->temporaryCacheDirectory = (($documentRoot . $cacheDirectory) . $this->cacheIdentifier) . '/';
+		$this->temporaryCacheDirectory = $documentRoot . $cacheDirectory . $this->cacheIdentifier . '/';
 	}
 
 	/**
@@ -196,10 +196,10 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 		try {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($finalCacheDirectory);
 		} catch (\RuntimeException $e) {
-			throw new \TYPO3\CMS\Core\Cache\Exception(('The directory "' . $finalCacheDirectory) . '" can not be created.', 1303669848, $e);
+			throw new \TYPO3\CMS\Core\Cache\Exception('The directory "' . $finalCacheDirectory . '" can not be created.', 1303669848, $e);
 		}
 		if (!is_writable($finalCacheDirectory)) {
-			throw new \TYPO3\CMS\Core\Cache\Exception(('The directory "' . $finalCacheDirectory) . '" is not writable.', 1203965200);
+			throw new \TYPO3\CMS\Core\Cache\Exception('The directory "' . $finalCacheDirectory . '" is not writable.', 1203965200);
 		}
 	}
 
@@ -228,7 +228,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		if (!is_string($data)) {
-			throw new \t3lib_cache_Exception_InvalidData(('The specified data is of type "' . gettype($data)) . '" but a string is expected.', 1334756734);
+			throw new \t3lib_cache_Exception_InvalidData('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1334756734);
 		}
 		if ($entryIdentifier !== basename($entryIdentifier)) {
 			throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756735);
@@ -236,13 +236,13 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 		if ($entryIdentifier === '') {
 			throw new \InvalidArgumentException('The specified entry identifier must not be empty.', 1334756736);
 		}
-		$temporaryCacheEntryPathAndFilename = ($this->cacheDirectory . uniqid()) . '.temp';
+		$temporaryCacheEntryPathAndFilename = $this->cacheDirectory . uniqid() . '.temp';
 		$result = file_put_contents($temporaryCacheEntryPathAndFilename, $data);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::fixPermissions($temporaryCacheEntryPathAndFilename);
 		if ($result === FALSE) {
-			throw new \TYPO3\CMS\Core\Cache\Exception(('The temporary cache file "' . $temporaryCacheEntryPathAndFilename) . '" could not be written.', 1334756737);
+			throw new \TYPO3\CMS\Core\Cache\Exception('The temporary cache file "' . $temporaryCacheEntryPathAndFilename . '" could not be written.', 1334756737);
 		}
-		$cacheEntryPathAndFilename = ($this->cacheDirectory . $entryIdentifier) . $this->cacheEntryFileExtension;
+		$cacheEntryPathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
 		rename($temporaryCacheEntryPathAndFilename, $cacheEntryPathAndFilename);
 	}
 
@@ -258,7 +258,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 		if ($entryIdentifier !== basename($entryIdentifier)) {
 			throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756877);
 		}
-		$pathAndFilename = ($this->cacheDirectory . $entryIdentifier) . $this->cacheEntryFileExtension;
+		$pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
 		if (!file_exists($pathAndFilename)) {
 			return FALSE;
 		}
@@ -277,7 +277,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 		if ($entryIdentifier !== basename($entryIdentifier)) {
 			throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1334756878);
 		}
-		return file_exists(($this->cacheDirectory . $entryIdentifier) . $this->cacheEntryFileExtension);
+		return file_exists($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension);
 	}
 
 	/**
@@ -297,7 +297,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 			throw new \InvalidArgumentException('The specified entry identifier must not be empty.', 1334756961);
 		}
 		try {
-			unlink(($this->cacheDirectory . $entryIdentifier) . $this->cacheEntryFileExtension);
+			unlink($this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension);
 		} catch (\Exception $e) {
 			return FALSE;
 		}
@@ -344,7 +344,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 	 * @return mixed The file names (including path) as an array if one or more entries could be found, otherwise FALSE
 	 */
 	protected function findCacheFilesByIdentifier($entryIdentifier) {
-		$pathAndFilename = ($this->cacheDirectory . $entryIdentifier) . $this->cacheEntryFileExtension;
+		$pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
 		return file_exists($pathAndFilename) ? array($pathAndFilename) : FALSE;
 	}
 
@@ -357,7 +357,7 @@ class SimpleFileBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend im
 	 * @api
 	 */
 	public function requireOnce($entryIdentifier) {
-		$pathAndFilename = ($this->cacheDirectory . $entryIdentifier) . $this->cacheEntryFileExtension;
+		$pathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
 		if ($entryIdentifier !== basename($entryIdentifier)) {
 			throw new \InvalidArgumentException('The specified entry identifier must not contain a path segment.', 1282073036);
 		}

@@ -85,7 +85,7 @@ abstract class BaseTestCase extends \Tx_Phpunit_TestCase {
 	 * @return string
 	 */
 	protected function getUrlInMount($path) {
-		return \vfsStream::url(((($this->basedir . '/') . $this->mountDir) . '/') . ltrim($path, '/'));
+		return \vfsStream::url($this->basedir . '/' . $this->mountDir . '/' . ltrim($path, '/'));
 	}
 
 	/**
@@ -105,7 +105,7 @@ abstract class BaseTestCase extends \Tx_Phpunit_TestCase {
 	 * @return string
 	 */
 	protected function getUrl($path) {
-		return \vfsStream::url(($this->basedir . '/') . ltrim($path, '/'));
+		return \vfsStream::url($this->basedir . '/' . ltrim($path, '/'));
 	}
 
 	/**

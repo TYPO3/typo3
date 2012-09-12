@@ -117,11 +117,11 @@ class HtmlParser {
 			if (preg_match('/^([^\\<]*\\-\\-\\>)(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $between, $matches) === 1) {
 				$before .= $marker . $matches[1];
 				$between = $matches[2];
-				$after = ($matches[3] . $marker) . $after;
+				$after = $matches[3] . $marker . $after;
 			} elseif (preg_match('/^(.*)(\\<\\!\\-\\-[^\\>]*)$/s', $between, $matches) === 1) {
 				$before .= $marker;
 				$between = $matches[1];
-				$after = ($matches[2] . $marker) . $after;
+				$after = $matches[2] . $marker . $after;
 			} elseif (preg_match('/^([^\\<]*\\-\\-\\>)(.*)$/s', $between, $matches) === 1) {
 				$before .= $marker . $matches[1];
 				$between = $matches[2];
@@ -152,11 +152,11 @@ class HtmlParser {
 			}
 		}
 		if (is_array($subpartContent)) {
-			$between = ($subpartContent[0] . $between) . $subpartContent[1];
+			$between = $subpartContent[0] . $between . $subpartContent[1];
 		} else {
 			$between = $subpartContent;
 		}
-		return ($before . $between) . $after;
+		return $before . $between . $after;
 	}
 
 	/**
@@ -214,7 +214,7 @@ class HtmlParser {
 					$marker = strtr($marker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 				}
 				if (count($wrapArr) > 0) {
-					$marker = ($wrapArr[0] . $marker) . $wrapArr[1];
+					$marker = $wrapArr[0] . $marker . $wrapArr[1];
 				}
 				$content = str_replace($marker, $markContent, $content);
 			}
@@ -222,7 +222,7 @@ class HtmlParser {
 				if (empty($wrap)) {
 					$wrapArr = array('###', '###');
 				}
-				$content = preg_replace(((('/' . preg_quote($wrapArr[0])) . '([A-Z0-9_|\\-]*)') . preg_quote($wrapArr[1])) . '/is', '', $content);
+				$content = preg_replace('/' . preg_quote($wrapArr[0]) . '([A-Z0-9_|\\-]*)' . preg_quote($wrapArr[1]) . '/is', '', $content);
 			}
 		}
 		return $content;
@@ -281,7 +281,7 @@ class HtmlParser {
 				$subpartMarker = strtr($subpartMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 			}
 			if (count($wraps) > 0) {
-				$subpartMarker = ($wraps[0] . $subpartMarker) . $wraps[1];
+				$subpartMarker = $wraps[0] . $subpartMarker . $wraps[1];
 			}
 			$subTemplates[$subpartMarker] = self::getSubpart($content, $subpartMarker);
 		}
@@ -294,7 +294,7 @@ class HtmlParser {
 					$completeMarker = strtr($completeMarker, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 				}
 				if (count($wraps) > 0) {
-					$completeMarker = ($wraps[0] . $completeMarker) . $wraps[1];
+					$completeMarker = $wraps[0] . $completeMarker . $wraps[1];
 				}
 				$subpartSubstitutes[$completeMarker] .= self::substituteMarkerAndSubpartArrayRecursive($subTemplates[$completeMarker], $partialMarkersAndSubparts, $wrap, $uppercase, $deleteUnused);
 			}
@@ -324,7 +324,7 @@ class HtmlParser {
 	 */
 	public function splitIntoBlock($tag, $content, $eliminateExtraEndTags = FALSE) {
 		$tags = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tag, 1));
-		$regexStr = ('/\\<\\/?(' . implode('|', $tags)) . ')(\\s*\\>|\\s[^\\>]*\\>)/si';
+		$regexStr = '/\\<\\/?(' . implode('|', $tags) . ')(\\s*\\>|\\s[^\\>]*\\>)/si';
 		$parts = preg_split($regexStr, $content);
 		$newParts = array();
 		$pointer = strlen($parts[0]);
@@ -397,14 +397,14 @@ class HtmlParser {
 				$firstTagName = $this->getFirstTagName($v, TRUE);
 				$tagsArray = array();
 				$tagsArray['tag_start'] = $this->getFirstTag($v);
-				$tagsArray['tag_end'] = ('</' . $firstTagName) . '>';
+				$tagsArray['tag_end'] = '</' . $firstTagName . '>';
 				$tagsArray['tag_name'] = strtolower($firstTagName);
 				$tagsArray['add_level'] = 1;
 				$tagsArray['content'] = $this->splitIntoBlockRecursiveProc($tag, $this->removeFirstAndLastTag($v), $procObj, $callBackContent, $callBackTags, $level + $tagsArray['add_level']);
 				if ($callBackTags) {
 					$tagsArray = $procObj->{$callBackTags}($tagsArray, $level);
 				}
-				$parts[$k] = ($tagsArray['tag_start'] . $tagsArray['content']) . $tagsArray['tag_end'];
+				$parts[$k] = $tagsArray['tag_start'] . $tagsArray['content'] . $tagsArray['tag_end'];
 			} else {
 				if ($callBackContent) {
 					$parts[$k] = $procObj->{$callBackContent}($parts[$k], $level);
@@ -427,7 +427,7 @@ class HtmlParser {
 	 */
 	public function splitTags($tag, $content) {
 		$tags = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tag, 1);
-		$regexStr = ('/\\<(' . implode('|', $tags)) . ')(\\s[^>]*)?\\/?>/si';
+		$regexStr = '/\\<(' . implode('|', $tags) . ')(\\s[^>]*)?\\/?>/si';
 		$parts = preg_split($regexStr, $content);
 		$pointer = strlen($parts[0]);
 		$newParts = array();
@@ -485,7 +485,7 @@ class HtmlParser {
 		// Begin of last tag:
 		$end = strrpos($str, '<');
 		// Return
-		return substr($str, $start + 1, ($end - $start) - 1);
+		return substr($str, $start + 1, $end - $start - 1);
 	}
 
 	/**
@@ -629,31 +629,31 @@ class HtmlParser {
 		// Block tags, must have endings...
 		$blockTags = explode(',', $blockTags);
 		foreach ($blockTags as $tagName) {
-			$countBegin = count(preg_split((('/\\<' . $tagName) . '(\\s|\\>)/s'), $content)) - 1;
-			$countEnd = count(preg_split((('/\\<\\/' . $tagName) . '(\\s|\\>)/s'), $content)) - 1;
+			$countBegin = count(preg_split(('/\\<' . $tagName . '(\\s|\\>)/s'), $content)) - 1;
+			$countEnd = count(preg_split(('/\\<\\/' . $tagName . '(\\s|\\>)/s'), $content)) - 1;
 			$analyzedOutput['blocks'][$tagName] = array($countBegin, $countEnd, $countBegin - $countEnd);
 			if ($countBegin) {
 				$analyzedOutput['counts'][$tagName] = $countBegin;
 			}
 			if ($countBegin - $countEnd) {
 				if ($countBegin - $countEnd > 0) {
-					$analyzedOutput['errors'][$tagName] = ((((('There were more start-tags (' . $countBegin) . ') than end-tags (') . $countEnd) . ') for the element "') . $tagName) . '". There should be an equal amount!';
+					$analyzedOutput['errors'][$tagName] = 'There were more start-tags (' . $countBegin . ') than end-tags (' . $countEnd . ') for the element "' . $tagName . '". There should be an equal amount!';
 				} else {
-					$analyzedOutput['warnings'][$tagName] = ((((('There were more end-tags (' . $countEnd) . ') than start-tags (') . $countBegin) . ') for the element "') . $tagName) . '". There should be an equal amount! However the problem is not fatal.';
+					$analyzedOutput['warnings'][$tagName] = 'There were more end-tags (' . $countEnd . ') than start-tags (' . $countBegin . ') for the element "' . $tagName . '". There should be an equal amount! However the problem is not fatal.';
 				}
 			}
 		}
 		// Solo tags, must NOT have endings...
 		$soloTags = explode(',', $soloTags);
 		foreach ($soloTags as $tagName) {
-			$countBegin = count(preg_split((('/\\<' . $tagName) . '(\\s|\\>)/s'), $content)) - 1;
-			$countEnd = count(preg_split((('/\\<\\/' . $tagName) . '(\\s|\\>)/s'), $content)) - 1;
+			$countBegin = count(preg_split(('/\\<' . $tagName . '(\\s|\\>)/s'), $content)) - 1;
+			$countEnd = count(preg_split(('/\\<\\/' . $tagName . '(\\s|\\>)/s'), $content)) - 1;
 			$analyzedOutput['solo'][$tagName] = array($countBegin, $countEnd);
 			if ($countBegin) {
 				$analyzedOutput['counts'][$tagName] = $countBegin;
 			}
 			if ($countEnd) {
-				$analyzedOutput['warnings'][$tagName] = ((('There were end-tags found (' . $countEnd) . ') for the element "') . $tagName) . '". This was not expected (although XHTML technically allows it).';
+				$analyzedOutput['warnings'][$tagName] = 'There were end-tags found (' . $countEnd . ') for the element "' . $tagName . '". This was not expected (although XHTML technically allows it).';
 			}
 		}
 		return $analyzedOutput;
@@ -749,7 +749,7 @@ class HtmlParser {
 					if (isset($tags[$tagName])) {
 						// If there is processing to do for the tag:
 						if (is_array($tags[$tagName])) {
-							if (preg_match(('/^(' . self::VOID_ELEMENTS) . ' )$/i', $tagName)) {
+							if (preg_match('/^(' . self::VOID_ELEMENTS . ' )$/i', $tagName)) {
 								$emptyTag = 1;
 							}
 							// If NOT an endtag, do attribute processing (added dec. 2003)
@@ -835,7 +835,7 @@ class HtmlParser {
 													}
 												}
 											}
-											if (($params['removeIfFalse'] && $params['removeIfFalse'] != 'blank') && !$tagAttrib[0][$attr] || $params['removeIfFalse'] == 'blank' && !strcmp($tagAttrib[0][$attr], '')) {
+											if ($params['removeIfFalse'] && $params['removeIfFalse'] != 'blank' && !$tagAttrib[0][$attr] || $params['removeIfFalse'] == 'blank' && !strcmp($tagAttrib[0][$attr], '')) {
 												unset($tagAttrib[0][$attr]);
 											}
 											if (strcmp($params['removeIfEquals'], '') && !strcmp($this->caseShift($tagAttrib[0][$attr], $params['casesensitiveComp']), $this->caseShift($params['removeIfEquals'], $params['casesensitiveComp']))) {
@@ -881,10 +881,10 @@ class HtmlParser {
 								$tagParts[0] = $tags[$tagName]['remap'];
 							}
 							// rmTagIfNoAttrib
-							if (($endTag || trim($tagParts[1])) || !$tags[$tagName]['rmTagIfNoAttrib']) {
+							if ($endTag || trim($tagParts[1]) || !$tags[$tagName]['rmTagIfNoAttrib']) {
 								$setTag = 1;
 								// Remove this closing tag if $tagName was among $TSconfig['removeTags']
-								if (($endTag && $tags[$tagName]['allowedAttribs'] === 0) && $tags[$tagName]['rmTagIfNoAttrib'] === 1) {
+								if ($endTag && $tags[$tagName]['allowedAttribs'] === 0 && $tags[$tagName]['rmTagIfNoAttrib'] === 1) {
 									$setTag = 0;
 								}
 								if ($tags[$tagName]['nesting']) {
@@ -927,11 +927,11 @@ class HtmlParser {
 								}
 								if ($setTag) {
 									// Setting the tag
-									$newContent[$c++] = $this->processTag(((($lt . ($endTag ? '/' : '')) . trim((($tagParts[0] . ' ') . $tagParts[1]))) . ($emptyTag ? ' /' : '')) . $gt, $addConfig, $endTag, $lt == '&lt;');
+									$newContent[$c++] = $this->processTag($lt . ($endTag ? '/' : '') . trim(($tagParts[0] . ' ' . $tagParts[1])) . ($emptyTag ? ' /' : '') . $gt, $addConfig, $endTag, $lt == '&lt;');
 								}
 							}
 						} else {
-							$newContent[$c++] = $this->processTag((('<' . ($endTag ? '/' : '')) . $tagContent) . '>', $addConfig, $endTag);
+							$newContent[$c++] = $this->processTag('<' . ($endTag ? '/' : '') . $tagContent . '>', $addConfig, $endTag);
 						}
 					} elseif ($keepAll) {
 						// This is if the tag was not defined in the array for processing:
@@ -942,7 +942,7 @@ class HtmlParser {
 							$lt = '<';
 							$gt = '>';
 						}
-						$newContent[$c++] = $this->processTag((($lt . ($endTag ? '/' : '')) . $tagContent) . $gt, $addConfig, $endTag, $lt == '&lt;');
+						$newContent[$c++] = $this->processTag($lt . ($endTag ? '/' : '') . $tagContent . $gt, $addConfig, $endTag, $lt == '&lt;');
 					}
 					$newContent[$c++] = $this->processContent(substr($tok, $tagEnd + 1), $hSC, $addConfig);
 				} else {
@@ -1060,7 +1060,7 @@ class HtmlParser {
 				if ($somethingDone) {
 					$tagParts = preg_split('/\\s+/s', $v, 2);
 					$tagParts[1] = $this->compileTagAttribs($params[0], $params[1]);
-					$parts[$k] = ('<' . trim(((strtolower($firstTagName) . ' ') . $tagParts[1]))) . $tagEnd;
+					$parts[$k] = '<' . trim((strtolower($firstTagName) . ' ' . $tagParts[1])) . $tagEnd;
 				}
 			}
 		}
@@ -1071,7 +1071,7 @@ class HtmlParser {
 			$parts = $this->splitIntoBlock('style', $content);
 			foreach ($parts as $k => &$part) {
 				if ($k % 2) {
-					$part = preg_replace('/(url[[:space:]]*\\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\\))/i', ((('\\1' . $prefix) . '\\2') . $suffix) . '\\3', $part);
+					$part = preg_replace('/(url[[:space:]]*\\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\\))/i', '\\1' . $prefix . '\\2' . $suffix . '\\3', $part);
 				}
 			}
 			unset($part);
@@ -1097,7 +1097,7 @@ class HtmlParser {
 			$urlParts = parse_url($srcVal);
 			// Only prefix URLs without a scheme
 			if (!$urlParts['scheme']) {
-				$srcVal = ($prefix . $srcVal) . $suffix;
+				$srcVal = $prefix . $srcVal . $suffix;
 			}
 		}
 		return $srcVal;
@@ -1123,17 +1123,17 @@ class HtmlParser {
 				$attribArray = $this->get_tag_attributes_classic($this->getFirstTag($v));
 				$newAttribs = array();
 				if ($keepFace && $attribArray['face']) {
-					$newAttribs[] = ('face="' . $attribArray['face']) . '"';
+					$newAttribs[] = 'face="' . $attribArray['face'] . '"';
 				}
 				if ($keepSize && $attribArray['size']) {
-					$newAttribs[] = ('size="' . $attribArray['size']) . '"';
+					$newAttribs[] = 'size="' . $attribArray['size'] . '"';
 				}
 				if ($keepColor && $attribArray['color']) {
-					$newAttribs[] = ('color="' . $attribArray['color']) . '"';
+					$newAttribs[] = 'color="' . $attribArray['color'] . '"';
 				}
 				$innerContent = $this->cleanFontTags($this->removeFirstAndLastTag($v), $keepFace, $keepSize, $keepColor);
 				if (count($newAttribs)) {
-					$fontSplit[$k] = ((('<font ' . implode(' ', $newAttribs)) . '>') . $innerContent) . '</font>';
+					$fontSplit[$k] = '<font ' . implode(' ', $newAttribs) . '>' . $innerContent . '</font>';
 				} else {
 					$fontSplit[$k] = $innerContent;
 				}
@@ -1154,7 +1154,7 @@ class HtmlParser {
 	 */
 	public function mapTags($value, $tags = array(), $ltChar = '<', $ltChar2 = '<') {
 		foreach ($tags as $from => $to) {
-			$value = preg_replace(((('/' . preg_quote($ltChar)) . '(\\/)?') . $from) . '\\s([^\\>])*(\\/)?\\>/', (($ltChar2 . '$1') . $to) . ' $2$3>', $value);
+			$value = preg_replace('/' . preg_quote($ltChar) . '(\\/)?' . $from . '\\s([^\\>])*(\\/)?\\>/', $ltChar2 . '$1' . $to . ' $2$3>', $value);
 		}
 		return $value;
 	}
@@ -1183,7 +1183,7 @@ class HtmlParser {
 					$tagParts = preg_split('/\\s+/s', $tagContent, 2);
 					$tagName = strtolower($tagParts[0]);
 					if (!strcmp($tagList, '') || in_array($tagName, $tagsArray)) {
-						$contentParts[$k] = (('<' . $subparts[0]) . '>') . $subparts[1];
+						$contentParts[$k] = '<' . $subparts[0] . '>' . $subparts[1];
 					} else {
 						$contentParts[$k] = '&lt;' . $tok;
 					}
@@ -1270,13 +1270,13 @@ class HtmlParser {
 			if ($xhtmlClean) {
 				$attr = strtolower($k);
 				if (strcmp($v, '') || isset($meta[$k]['dashType'])) {
-					$attr .= ('="' . htmlspecialchars($v)) . '"';
+					$attr .= '="' . htmlspecialchars($v) . '"';
 				}
 			} else {
 				$attr = $meta[$k]['origTag'] ? $meta[$k]['origTag'] : $k;
 				if (strcmp($v, '') || isset($meta[$k]['dashType'])) {
 					$dash = $meta[$k]['dashType'] ? $meta[$k]['dashType'] : (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($v) ? '' : '"');
-					$attr .= (('=' . $dash) . $v) . $dash;
+					$attr .= '=' . $dash . $v . $dash;
 				}
 			}
 			$accu[] = $attr;
@@ -1510,9 +1510,9 @@ class HtmlParser {
 				$outA = array();
 				foreach ($tagAttrib[0] as $attrib_name => $attrib_value) {
 					// Set attributes: lowercase, always in quotes, with htmlspecialchars converted.
-					$outA[] = (($attrib_name . '="') . $this->bidir_htmlspecialchars($attrib_value, 2)) . '"';
+					$outA[] = $attrib_name . '="' . $this->bidir_htmlspecialchars($attrib_value, 2) . '"';
 				}
-				$newTag = '<' . trim((($tagName . ' ') . implode(' ', $outA)));
+				$newTag = '<' . trim(($tagName . ' ' . implode(' ', $outA)));
 				// All tags that are standalone (not wrapping, not having endtags) should be ended with '/>'
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('img,br,hr,meta,link,base,area,input,param,col', $tagName) || substr($value, -2) == '/>') {
 					$newTag .= ' />';

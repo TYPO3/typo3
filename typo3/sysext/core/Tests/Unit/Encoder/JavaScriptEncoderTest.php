@@ -78,7 +78,7 @@ class JavaScriptEncoderTest extends \Tx_Phpunit_TestCase {
 				'Hello\\x20World\\x21'
 			),
 			'Whitespaces are properly encoded' => array(
-				((TAB . LF) . CR) . ' ',
+				TAB . LF . CR . ' ',
 				'\\x09\\x0A\\x0D\\x20'
 			),
 			'Null byte is properly encoded' => array(

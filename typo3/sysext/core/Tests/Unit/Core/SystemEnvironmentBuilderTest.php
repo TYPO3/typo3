@@ -96,7 +96,7 @@ class SystemEnvironmentBuilderTest extends \tx_phpunit_testcase {
 	 * @param string $phpExtension
 	 */
 	public function fileDenyPatternMatchesPhpExtension($phpExtension) {
-		$this->assertGreaterThan(0, preg_match(('/' . FILE_DENY_PATTERN_DEFAULT) . '/', $phpExtension), $phpExtension);
+		$this->assertGreaterThan(0, preg_match('/' . FILE_DENY_PATTERN_DEFAULT . '/', $phpExtension), $phpExtension);
 	}
 
 	/**
@@ -137,7 +137,7 @@ class SystemEnvironmentBuilderTest extends \tx_phpunit_testcase {
 			$this->markTestSkipped('Test not available on Windows OS.');
 		}
 		$GLOBALS['_SERVER']['argv'][0] = 'foo';
-		$fakedAbsolutePart = ('/' . uniqid('Absolute')) . '/';
+		$fakedAbsolutePart = '/' . uniqid('Absolute') . '/';
 		$_SERVER['PWD'] = $fakedAbsolutePart;
 		$this->assertStringStartsWith($fakedAbsolutePart, $this->fixture->_call('getPathThisScriptCli'));
 	}
@@ -163,7 +163,7 @@ class SystemEnvironmentBuilderTest extends \tx_phpunit_testcase {
 		$this->fixture->_call('addCorePearPathToIncludePath');
 		$actualValue = get_include_path();
 		set_include_path($backupPath);
-		$this->assertStringStartsWith((PATH_typo3 . 'contrib/pear/') . PATH_SEPARATOR, $actualValue);
+		$this->assertStringStartsWith(PATH_typo3 . 'contrib/pear/' . PATH_SEPARATOR, $actualValue);
 	}
 
 	/**

@@ -77,11 +77,11 @@ final class DebugUtility {
 			} else {
 				$tabHeader = 'Debug';
 			}
-			$script = ((((('
+			$script = '
 				(function debug() {
-					var debugMessage = "' . $debugString) . '";
-					var header = "') . $tabHeader) . '";
-					var group = "') . $group) . '";
+					var debugMessage = "' . $debugString . '";
+					var header = "' . $tabHeader . '";
+					var group = "' . $group . '";
 
 					if (typeof Ext !== "object" && (top && typeof top.Ext !== "object")) {
 						document.write(debugMessage);
@@ -172,7 +172,7 @@ final class DebugUtility {
 			$string .= print_r($variable, TRUE);
 			$string .= '</pre>|</strong>';
 		} elseif ((string) $variable !== '') {
-			$string = ('<strong>|' . htmlspecialchars((string) $variable)) . '|</strong>';
+			$string = '<strong>|' . htmlspecialchars((string) $variable) . '|</strong>';
 		} else {
 			$string = '<strong>| debug |</strong>';
 		}
@@ -188,11 +188,11 @@ final class DebugUtility {
 	 */
 	static public function debugInPopUpWindow($debugVariable, $header = 'Debug', $group = 'Debug') {
 		$debugString = self::prepareVariableForJavascript(self::convertVariableToString($debugVariable), is_object($debugVariable));
-		$script = ((((('
+		$script = '
 			(function debug() {
-				var debugMessage = "' . $debugString) . '",
-					header = "') . htmlspecialchars($header)) . '",
-					group = "') . htmlspecialchars($group)) . '",
+				var debugMessage = "' . $debugString . '",
+					header = "' . htmlspecialchars($header) . '",
+					group = "' . htmlspecialchars($group) . '",
 
 					browserWindow = function(debug, header, group) {
 						var newWindow = window.open("", "TYPO3DebugWindow_" + group,
@@ -238,12 +238,12 @@ final class DebugUtility {
 		array_pop($trail);
 		$path = array();
 		foreach ($trail as $dat) {
-			$pathFragment = ($dat['class'] . $dat['type']) . $dat['function'];
+			$pathFragment = $dat['class'] . $dat['type'] . $dat['function'];
 			// add the path of the included file
 			if (in_array($dat['function'], array('require', 'include', 'require_once', 'include_once'))) {
-				$pathFragment .= (('(' . substr($dat['args'][0], strlen(PATH_site))) . '),') . substr($dat['file'], strlen(PATH_site));
+				$pathFragment .= '(' . substr($dat['args'][0], strlen(PATH_site)) . '),' . substr($dat['file'], strlen(PATH_site));
 			}
-			$path[] = ($pathFragment . '#') . $dat['line'];
+			$path[] = $pathFragment . '#' . $dat['line'];
 		}
 		return implode(' // ', $path);
 	}
@@ -263,28 +263,28 @@ final class DebugUtility {
 				$headerColumns = array_keys($firstEl);
 				$tRows = array();
 				// Header:
-				$tRows[] = ((('<tr><td colspan="' . count($headerColumns)) . '" style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;"><strong>') . htmlspecialchars($header)) . '</strong></td></tr>';
+				$tRows[] = '<tr><td colspan="' . count($headerColumns) . '" style="background-color:#bbbbbb; font-family: verdana,arial; font-weight: bold; font-size: 10px;"><strong>' . htmlspecialchars($header) . '</strong></td></tr>';
 				$tCells = array();
 				foreach ($headerColumns as $key) {
-					$tCells[] = ('
-							<td><font face="Verdana,Arial" size="1"><strong>' . htmlspecialchars($key)) . '</strong></font></td>';
+					$tCells[] = '
+							<td><font face="Verdana,Arial" size="1"><strong>' . htmlspecialchars($key) . '</strong></font></td>';
 				}
-				$tRows[] = ('
-						<tr>' . implode('', $tCells)) . '
+				$tRows[] = '
+						<tr>' . implode('', $tCells) . '
 						</tr>';
 				// Rows:
 				foreach ($rows as $singleRow) {
 					$tCells = array();
 					foreach ($headerColumns as $key) {
-						$tCells[] = ('
-							<td><font face="Verdana,Arial" size="1">' . (is_array($singleRow[$key]) ? self::debugRows($singleRow[$key], '', TRUE) : htmlspecialchars($singleRow[$key]))) . '</font></td>';
+						$tCells[] = '
+							<td><font face="Verdana,Arial" size="1">' . (is_array($singleRow[$key]) ? self::debugRows($singleRow[$key], '', TRUE) : htmlspecialchars($singleRow[$key])) . '</font></td>';
 					}
-					$tRows[] = ('
-						<tr>' . implode('', $tCells)) . '
+					$tRows[] = '
+						<tr>' . implode('', $tCells) . '
 						</tr>';
 				}
-				$table = ('
-					<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">' . implode('', $tRows)) . '
+				$table = '
+					<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">' . implode('', $tRows) . '
 					</table>';
 				if ($returnHTML) {
 					return $table;
@@ -332,26 +332,26 @@ final class DebugUtility {
 				$result .= '<tr><td><font face="Verdana,Arial" size="1"><strong>EMPTY!</strong></font></td></tr>';
 			} else {
 				foreach ($array_in as $key => $val) {
-					$result .= ('<tr>
-						<td valign="top"><font face="Verdana,Arial" size="1">' . htmlspecialchars((string) $key)) . '</font></td>
+					$result .= '<tr>
+						<td valign="top"><font face="Verdana,Arial" size="1">' . htmlspecialchars((string) $key) . '</font></td>
 						<td>';
 					if (is_array($val)) {
 						$result .= self::viewArray($val);
 					} elseif (is_object($val)) {
 						$string = '';
 						if (method_exists($val, '__toString')) {
-							$string .= (get_class($val) . ': ') . (string) $val;
+							$string .= get_class($val) . ': ' . (string) $val;
 						} else {
 							$string .= print_r($val, TRUE);
 						}
-						$result .= ('<font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars($string))) . '<br /></font>';
+						$result .= '<font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars($string)) . '<br /></font>';
 					} else {
 						if (gettype($val) == 'object') {
 							$string = 'Unknown object';
 						} else {
 							$string = (string) $val;
 						}
-						$result .= ('<font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars($string))) . '<br /></font>';
+						$result .= '<font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars($string)) . '<br /></font>';
 					}
 					$result .= '</td>
 					</tr>';
@@ -359,9 +359,9 @@ final class DebugUtility {
 			}
 			$result .= '</table>';
 		} else {
-			$result = ('<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
+			$result = '<table border="1" cellpadding="1" cellspacing="0" bgcolor="white">
 				<tr>
-					<td><font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars((string) $array_in))) . '<br /></font></td>
+					<td><font face="Verdana,Arial" size="1" color="red">' . nl2br(htmlspecialchars((string) $array_in)) . '<br /></font></td>
 				</tr>
 			</table>';
 		}

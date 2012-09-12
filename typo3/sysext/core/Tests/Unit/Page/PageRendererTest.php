@@ -263,7 +263,7 @@ class PageRendererTest extends \tx_phpunit_testcase {
 	 * test add CSS inline and force on top
 	 */
 	public function testAddCssInlineBlockForceOnTop() {
-		$expectedReturnValue = ((((('/*general1*/' . LF) . 'h1 {margin:20px;}') . LF) . '/*general*/') . LF) . 'body {margin:20px;}';
+		$expectedReturnValue = '/*general1*/' . LF . 'h1 {margin:20px;}' . LF . '/*general*/' . LF . 'body {margin:20px;}';
 		$this->fixture->addCssInlineBlock('general', 'body {margin:20px;}');
 		$this->fixture->addCssInlineBlock('general1', 'h1 {margin:20px;}', NULL, TRUE);
 		$out = $this->fixture->render();
@@ -351,7 +351,7 @@ class PageRendererTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function loadJqueryLoadsTheLatestJqueryMinifiedVersionInNoConflictMode() {
-		$expectedRegExp = ('#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST) . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery.noConflict(true);';
 		$this->fixture->loadJquery();
 		$out = $this->fixture->render();
@@ -365,7 +365,7 @@ class PageRendererTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function loadJqueryRespectsGivenNamespace() {
-		$expectedRegExp = ('#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST) . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.MyNameSpace = jQuery.noConflict(true);';
 		$this->fixture->loadJquery(NULL, NULL, 'MyNameSpace');
 		$out = $this->fixture->render();
@@ -379,7 +379,7 @@ class PageRendererTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function loadJqueryWithDefaultNoConflictModeDoesNotSetNamespace() {
-		$expectedRegExp = ('#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST) . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$expectedStatement = 'jQuery.noConflict();';
 		$this->fixture->loadJquery(NULL, NULL, \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_DEFAULT_NOCONFLICT);
 		$out = $this->fixture->render();
@@ -394,7 +394,7 @@ class PageRendererTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function loadJqueryWithNamespaceNoneDoesNotIncludeNoConflictHandling() {
-		$expectedRegExp = ('#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST) . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.min\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$this->fixture->loadJquery(NULL, NULL, \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_NAMESPACE_NONE);
 		$out = $this->fixture->render();
 		$this->assertRegExp($expectedRegExp, $out);
@@ -407,7 +407,7 @@ class PageRendererTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function loadJqueryLoadsTheLatestJqueryVersionInNoConflictModeUncompressedInDebugMode() {
-		$expectedRegExp = ('#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST) . '\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
+		$expectedRegExp = '#<script src="contrib/jquery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#';
 		$expectedStatement = 'var TYPO3 = TYPO3 || {}; TYPO3.jQuery = jQuery.noConflict(true);';
 		$this->fixture->loadJquery();
 		$this->fixture->enableDebugMode();
@@ -440,12 +440,12 @@ class PageRendererTest extends \tx_phpunit_testcase {
 	public function loadJqueryFromSourceDataProvider() {
 		$specificVersion = '1.6.3';
 		return array(
-			'google with no version number' => array(NULL, 'google', ('#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST) . '/jquery.js" type="text/javascript"></script>#'),
-			'google with version number' => array($specificVersion, 'google', ('#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . $specificVersion) . '/jquery.js" type="text/javascript"></script>#'),
-			'msn with no version number' => array(NULL, 'msn', ('#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST) . '.js" type="text/javascript"></script>#'),
-			'msn with version number' => array($specificVersion, 'msn', ('#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . $specificVersion) . '.js" type="text/javascript"></script>#'),
-			'jquery with no version number' => array(NULL, 'jquery', ('#<script src="http://code.jquery.com/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST) . '.js" type="text/javascript"></script>#'),
-			'jquery with version number' => array($specificVersion, 'jquery', ('#<script src="http://code.jquery.com/jquery-' . $specificVersion) . '.js" type="text/javascript"></script>#'),
+			'google with no version number' => array(NULL, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '/jquery.js" type="text/javascript"></script>#'),
+			'google with version number' => array($specificVersion, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . $specificVersion . '/jquery.js" type="text/javascript"></script>#'),
+			'msn with no version number' => array(NULL, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '.js" type="text/javascript"></script>#'),
+			'msn with version number' => array($specificVersion, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . $specificVersion . '.js" type="text/javascript"></script>#'),
+			'jquery with no version number' => array(NULL, 'jquery', '#<script src="http://code.jquery.com/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '.js" type="text/javascript"></script>#'),
+			'jquery with version number' => array($specificVersion, 'jquery', '#<script src="http://code.jquery.com/jquery-' . $specificVersion . '.js" type="text/javascript"></script>#'),
 			'jquery with custom URL' => array($specificVersion, 'http://my.cool.cdn/foo/jquery.js', '#<script src="http://my.cool.cdn/foo/jquery.js" type="text/javascript"></script>#')
 		);
 	}
@@ -469,12 +469,12 @@ class PageRendererTest extends \tx_phpunit_testcase {
 	public function loadJqueryMinifiedFromSourceDataProvider() {
 		$specificVersion = '1.6.3';
 		return array(
-			'google with no version number' => array(NULL, 'google', ('#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST) . '/jquery.min.js" type="text/javascript"></script>#'),
-			'google with version number' => array($specificVersion, 'google', ('#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . $specificVersion) . '/jquery.min.js" type="text/javascript"></script>#'),
-			'msn with no version number' => array(NULL, 'msn', ('#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST) . '.min.js" type="text/javascript"></script>#'),
-			'msn with version number' => array($specificVersion, 'msn', ('#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . $specificVersion) . '.min.js" type="text/javascript"></script>#'),
-			'jquery with no version number' => array(NULL, 'jquery', ('#<script src="http://code.jquery.com/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST) . '.min.js" type="text/javascript"></script>#'),
-			'jquery with version number' => array($specificVersion, 'jquery', ('#<script src="http://code.jquery.com/jquery-' . $specificVersion) . '.min.js" type="text/javascript"></script>#')
+			'google with no version number' => array(NULL, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '/jquery.min.js" type="text/javascript"></script>#'),
+			'google with version number' => array($specificVersion, 'google', '#<script src="//ajax.googleapis.com/ajax/libs/jquery/' . $specificVersion . '/jquery.min.js" type="text/javascript"></script>#'),
+			'msn with no version number' => array(NULL, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '.min.js" type="text/javascript"></script>#'),
+			'msn with version number' => array($specificVersion, 'msn', '#<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-' . $specificVersion . '.min.js" type="text/javascript"></script>#'),
+			'jquery with no version number' => array(NULL, 'jquery', '#<script src="http://code.jquery.com/jquery-' . \TYPO3\CMS\Core\Page\PageRenderer::JQUERY_VERSION_LATEST . '.min.js" type="text/javascript"></script>#'),
+			'jquery with version number' => array($specificVersion, 'jquery', '#<script src="http://code.jquery.com/jquery-' . $specificVersion . '.min.js" type="text/javascript"></script>#')
 		);
 	}
 
@@ -494,7 +494,7 @@ class PageRendererTest extends \tx_phpunit_testcase {
 	 * test load ExtJS
 	 */
 	public function testLoadExtJS() {
-		$expectedRegExp = ('#<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>' . LF) . '<script src="contrib/extjs/ext-all\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#m';
+		$expectedRegExp = '#<script src="contrib/extjs/adapter/jquery/ext-jquery-adapter\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>' . LF . '<script src="contrib/extjs/ext-all\\.(js|\\d+\\.js|js\\?\\d+)" type="text/javascript"></script>#m';
 		$this->fixture->loadExtJS(TRUE, TRUE, 'jquery');
 		$out = $this->fixture->render();
 		$this->assertRegExp($expectedRegExp, $out);

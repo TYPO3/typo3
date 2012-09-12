@@ -57,7 +57,7 @@ final class MailUtility {
 				$additionalHeaders .= LF;
 			}
 			if ($GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']) {
-				$additionalHeaders .= ((('From: "' . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName']) . '" <') . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']) . '>';
+				$additionalHeaders .= 'From: "' . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromName'] . '" <' . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'] . '>';
 			} else {
 				$additionalHeaders .= 'From: ' . $GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress'];
 			}
@@ -93,7 +93,7 @@ final class MailUtility {
 			}
 		}
 		if (!$success) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(((('Mail to "' . $to) . '" could not be sent (Subject: "') . $subject) . '").', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Mail to "' . $to . '" could not be sent (Subject: "' . $subject . '").', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 		}
 		return $success;
 	}

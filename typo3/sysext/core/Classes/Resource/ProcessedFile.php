@@ -102,7 +102,7 @@ class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 * @return string
 	 */
 	public function calculateChecksum() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(((($this->originalFile->getUid() . $this->originalFile->getModificationTime()) . $this->context) . serialize($GLOBALS['TYPO3_CONF_VARS']['GFX'])) . serialize($this->processingConfiguration));
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($this->originalFile->getUid() . $this->originalFile->getModificationTime() . $this->context . serialize($GLOBALS['TYPO3_CONF_VARS']['GFX']) . serialize($this->processingConfiguration));
 	}
 
 	/******************

@@ -123,7 +123,7 @@ final class FormProtectionFactory {
 	 * @return boolean
 	 */
 	static protected function isBackendSession() {
-		return ((isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication) && isset($GLOBALS['BE_USER']->user['uid'])) && !(TYPO3_MODE === 'FE');
+		return isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication && isset($GLOBALS['BE_USER']->user['uid']) && !(TYPO3_MODE === 'FE');
 	}
 
 	/**
@@ -132,7 +132,7 @@ final class FormProtectionFactory {
 	 * @return boolean
 	 */
 	static protected function isFrontendSession() {
-		return ((is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->fe_user instanceof \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthtenication) && isset($GLOBALS['TSFE']->fe_user->user['uid'])) && TYPO3_MODE === 'FE';
+		return is_object($GLOBALS['TSFE']) && $GLOBALS['TSFE']->fe_user instanceof \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthtenication && isset($GLOBALS['TSFE']->fe_user->user['uid']) && TYPO3_MODE === 'FE';
 	}
 
 	/**
@@ -144,11 +144,11 @@ final class FormProtectionFactory {
 	 */
 	static protected function createAndStoreInstance($className) {
 		if (!class_exists($className, TRUE)) {
-			throw new \InvalidArgumentException((('$className must be the name of an existing class, but ' . 'actually was "') . $className) . '".', 1285352962);
+			throw new \InvalidArgumentException('$className must be the name of an existing class, but ' . 'actually was "' . $className . '".', 1285352962);
 		}
 		$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
 		if (!$instance instanceof \TYPO3\CMS\Core\FormProtection\AbstractFormProtection) {
-			throw new \InvalidArgumentException((('$className must be a subclass of ' . 'TYPO3\\CMS\\Core\\FormProtection\\AbstractFormProtection, but actually was "') . $className) . '".', 1285353026);
+			throw new \InvalidArgumentException('$className must be a subclass of ' . 'TYPO3\\CMS\\Core\\FormProtection\\AbstractFormProtection, but actually was "' . $className . '".', 1285353026);
 		}
 		self::$instances[$className] = $instance;
 	}

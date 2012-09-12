@@ -71,7 +71,7 @@ class JavaScriptEncoder implements \TYPO3\CMS\Core\SingletonInterface {
 	public function __construct() {
 		$this->charsetConversion = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
 		for ($i = 0; $i < 256; $i++) {
-			if (($i >= ord('0') && $i <= ord('9') || $i >= ord('A') && $i <= ord('Z')) || $i >= ord('a') && $i <= ord('z')) {
+			if ($i >= ord('0') && $i <= ord('9') || $i >= ord('A') && $i <= ord('Z') || $i >= ord('a') && $i <= ord('z')) {
 				$this->hexMatrix[$i] = NULL;
 			} else {
 				$this->hexMatrix[$i] = dechex($i);
@@ -118,11 +118,11 @@ class JavaScriptEncoder implements \TYPO3\CMS\Core\SingletonInterface {
 		// Encode up to 256 with \\xHH
 		if ($ordinalValue < 256) {
 			$pad = substr('00', strlen($hex));
-			return ('\\x' . $pad) . strtoupper($hex);
+			return '\\x' . $pad . strtoupper($hex);
 		}
 		// Otherwise encode with \\uHHHH
 		$pad = substr('0000', strlen($hex));
-		return ('\\u' . $pad) . strtoupper($hex);
+		return '\\u' . $pad . strtoupper($hex);
 	}
 
 	/**

@@ -147,9 +147,9 @@ class TimeTracker {
 		);
 		$this->wrapIcon = array(
 			0 => '',
-			1 => ('<img src="' . TYPO3_mainDir) . 'gfx/icon_note.gif" width="18" height="16" align="absmiddle" alt="" />',
-			2 => ('<img src="' . TYPO3_mainDir) . 'gfx/icon_warning.gif" width="18" height="16" align="absmiddle" alt="" />',
-			3 => ('<img src="' . TYPO3_mainDir) . 'gfx/icon_fatalerror.gif" width="18" height="16" align="absmiddle" alt="" />'
+			1 => '<img src="' . TYPO3_mainDir . 'gfx/icon_note.gif" width="18" height="16" align="absmiddle" alt="" />',
+			2 => '<img src="' . TYPO3_mainDir . 'gfx/icon_warning.gif" width="18" height="16" align="absmiddle" alt="" />',
+			3 => '<img src="' . TYPO3_mainDir . 'gfx/icon_fatalerror.gif" width="18" height="16" align="absmiddle" alt="" />'
 		);
 		$this->starttime = $this->getMilliseconds();
 	}
@@ -207,9 +207,9 @@ class TimeTracker {
 		$k = current($this->currentHashPointer);
 		// Enlarge the "details" column by adding a wide clear.gif
 		if (strlen($content) > 30) {
-			$placeholder = ('<br /><img src="' . TYPO3_mainDir) . 'clear.gif" width="300" height="1" alt="" />';
+			$placeholder = '<br /><img src="' . TYPO3_mainDir . 'clear.gif" width="300" height="1" alt="" />';
 		}
-		$this->tsStackLog[$k]['message'][] = ((($this->wrapIcon[$num] . $this->wrapError[$num][0]) . htmlspecialchars($content)) . $this->wrapError[$num][1]) . $placeholder;
+		$this->tsStackLog[$k]['message'][] = $this->wrapIcon[$num] . $this->wrapError[$num][0] . htmlspecialchars($content) . $this->wrapError[$num][1] . $placeholder;
 	}
 
 	/**
@@ -317,10 +317,10 @@ class TimeTracker {
 		$outputArr[] = $this->fw('Details');
 		$out = '';
 		foreach ($outputArr as $row) {
-			$out .= ('
-				<th><strong>' . $row) . '</strong></th>';
+			$out .= '
+				<th><strong>' . $row . '</strong></th>';
 		}
-		$out = ('<tr>' . $out) . '</tr>';
+		$out = '<tr>' . $out . '</tr>';
 		$flag_tree = $this->printConf['flag_tree'];
 		$flag_messages = $this->printConf['flag_messages'];
 		$flag_content = $this->printConf['flag_content'];
@@ -354,7 +354,7 @@ class TimeTracker {
 				$temp = array_reverse($temp);
 				array_pop($temp);
 				if (count($temp)) {
-					$keyLabel = ('<br /><span style="color:#999999;">' . implode($temp, '<br />')) . '</span>';
+					$keyLabel = '<br /><span style="color:#999999;">' . implode($temp, '<br />') . '</span>';
 				}
 			}
 			if ($flag_tree) {
@@ -364,19 +364,19 @@ class TimeTracker {
 				$theLabel = $data['key'];
 			}
 			$theLabel = \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($theLabel, -$keyLgd);
-			$theLabel = $data['stackPointer'] ? ('<span class="stackPointer">' . $theLabel) . '</span>' : $theLabel;
+			$theLabel = $data['stackPointer'] ? '<span class="stackPointer">' . $theLabel . '</span>' : $theLabel;
 			$keyLabel = $theLabel . $keyLabel;
-			$item .= (((('<td class="' . $logRowClass) . '" style="padding-left:2px;">') . ($flag_tree ? $data['icons'] : '')) . $this->fw($keyLabel)) . '</td>';
+			$item .= '<td class="' . $logRowClass . '" style="padding-left:2px;">' . ($flag_tree ? $data['icons'] : '') . $this->fw($keyLabel) . '</td>';
 			// Key value:
 			$keyValue = $data['value'];
-			$item .= ((('<td class="' . $logRowClass) . ' typo3-adminPanel-tsLogTime">') . $this->fw(htmlspecialchars($keyValue))) . '</td>';
+			$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime">' . $this->fw(htmlspecialchars($keyValue)) . '</td>';
 			if ($this->printConf['allTime']) {
-				$item .= ((('<td class="' . $logRowClass) . ' typo3-adminPanel-tsLogTime"> ') . $this->fw($data['starttime'])) . '</td>';
-				$item .= ((('<td class="' . $logRowClass) . ' typo3-adminPanel-tsLogTime"> ') . $this->fw($data['owntime'])) . '</td>';
-				$item .= ((('<td class="' . $logRowClass) . ' typo3-adminPanel-tsLogTime"> ') . $this->fw(($data['subtime'] ? '+' . $data['subtime'] : ''))) . '</td>';
-				$item .= ((('<td class="' . $logRowClass) . ' typo3-adminPanel-tsLogTime"> ') . $this->fw(($data['subtime'] ? '=' . $data['deltatime'] : ''))) . '</td>';
+				$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['starttime']) . '</td>';
+				$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['owntime']) . '</td>';
+				$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw(($data['subtime'] ? '+' . $data['subtime'] : '')) . '</td>';
+				$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw(($data['subtime'] ? '=' . $data['deltatime'] : '')) . '</td>';
 			} else {
-				$item .= ((('<td class="' . $logRowClass) . ' typo3-adminPanel-tsLogTime"> ') . $this->fw($data['owntime'])) . '</td>';
+				$item .= '<td class="' . $logRowClass . ' typo3-adminPanel-tsLogTime"> ' . $this->fw($data['owntime']) . '</td>';
 			}
 			// Messages:
 			$msgArr = array();
@@ -392,22 +392,22 @@ class TimeTracker {
 			if ($flag_content && strcmp($data['content'], '')) {
 				$maxlen = 120;
 				// Break lines which are too longer than $maxlen chars (can happen if content contains long paths...)
-				if (preg_match_all(('/(\\S{' . $maxlen) . ',})/', $data['content'], $reg)) {
+				if (preg_match_all('/(\\S{' . $maxlen . ',})/', $data['content'], $reg)) {
 					foreach ($reg[1] as $key => $match) {
-						$match = preg_replace(('/(.{' . $maxlen) . '})/', '$1 ', $match);
+						$match = preg_replace('/(.{' . $maxlen . '})/', '$1 ', $match);
 						$data['content'] = str_replace($reg[0][$key], $match, $data['content']);
 					}
 				}
-				$msgArr[] = ('<span style="color:#000066;">' . nl2br($data['content'])) . '</span>';
+				$msgArr[] = '<span style="color:#000066;">' . nl2br($data['content']) . '</span>';
 			}
 			if (count($msgArr)) {
 				$msg = implode($msgArr, '<hr />');
 			}
-			$item .= ((('<td valign="top" class="' . $logRowClass) . '" style="text-align:left;">') . $this->fw($msg)) . '</td>';
-			$out .= ('<tr>' . $item) . '</tr>';
+			$item .= '<td valign="top" class="' . $logRowClass . '" style="text-align:left;">' . $this->fw($msg) . '</td>';
+			$out .= '<tr>' . $item . '</tr>';
 			$c++;
 		}
-		$out = ('<table id="typo3-adminPanel-tsLog">' . $out) . '</table>';
+		$out = '<table id="typo3-adminPanel-tsLog">' . $out . '</table>';
 		return $out;
 	}
 
@@ -440,12 +440,12 @@ class TimeTracker {
 				$LN = $ac == $c ? 'blank' : 'line';
 				$BTM = $ac == $c ? 'bottom' : '';
 				$PM = is_array($arr[$k . '.']) ? ($deeper ? 'minus' : 'plus') : 'join';
-				$this->tsStackLog[$v]['icons'] = $depthData . ($first ? '' : (((('<img src="' . TYPO3_mainDir) . 'gfx/ol/') . $PM) . $BTM) . '.gif" width="18" height="16" align="top" border="0" alt="" />');
+				$this->tsStackLog[$v]['icons'] = $depthData . ($first ? '' : '<img src="' . TYPO3_mainDir . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" alt="" />');
 				if (strlen($this->tsStackLog[$v]['content'])) {
 					$content = str_replace($this->tsStackLog[$v]['content'], $v, $content);
 				}
 				if (is_array($arr[$k . '.'])) {
-					$this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k . '.'], $this->tsStackLog[$v]['content'], $depthData . ($first ? '' : ((('<img src="' . TYPO3_mainDir) . 'gfx/ol/') . $LN) . '.gif" width="18" height="16" align="top" border="0" alt="" />'), 0, $v);
+					$this->tsStackLog[$v]['content'] = $this->fixContent($arr[$k . '.'], $this->tsStackLog[$v]['content'], $depthData . ($first ? '' : '<img src="' . TYPO3_mainDir . 'gfx/ol/' . $LN . '.gif" width="18" height="16" align="top" border="0" alt="" />'), 0, $v);
 				} else {
 					$this->tsStackLog[$v]['content'] = $this->fixCLen($this->tsStackLog[$v]['content'], $this->tsStackLog[$v]['value']);
 					$this->tsStackLog[$v]['subtime'] = '';
@@ -464,7 +464,7 @@ class TimeTracker {
 		foreach ($arr as $k => $v) {
 			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($k)) {
 				if (strlen($this->tsStackLog[$v]['content'])) {
-					$content = str_replace($v, ('<strong style="color:red;">[' . $this->tsStackLog[$v]['key']) . ']</strong>', $content);
+					$content = str_replace($v, '<strong style="color:red;">[' . $this->tsStackLog[$v]['key'] . ']</strong>', $content);
 				}
 			}
 		}
@@ -482,7 +482,7 @@ class TimeTracker {
 	protected function fixCLen($c, $v) {
 		$len = $v == 'FILE' ? $this->printConf['contentLength_FILE'] : $this->printConf['contentLength'];
 		if (strlen($c) > $len) {
-			$c = ('<span style="color:green;">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($c, $len))) . '</span>';
+			$c = '<span style="color:green;">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($c, $len)) . '</span>';
 		} else {
 			$c = htmlspecialchars($c);
 		}
@@ -496,7 +496,7 @@ class TimeTracker {
 	 * @return string
 	 */
 	protected function fw($str) {
-		return ('<span style="font-family:Verdana,Arial,Helvetica,sans-serif; font-size:10px; color:black; vertical-align:top;">' . $str) . '&nbsp;</span>';
+		return '<span style="font-family:Verdana,Arial,Helvetica,sans-serif; font-size:10px; color:black; vertical-align:top;">' . $str . '&nbsp;</span>';
 	}
 
 	/**

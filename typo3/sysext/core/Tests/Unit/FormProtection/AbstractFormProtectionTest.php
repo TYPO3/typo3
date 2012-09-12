@@ -57,7 +57,7 @@ class AbstractFormProtectionTest extends \tx_phpunit_testcase {
 	 */
 	public function constructionRetrievesToken() {
 		$className = uniqid('t3lib_formProtection');
-		eval((((((('class ' . $className) . ' extends \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting {') . 'public $tokenHasBeenRetrieved = FALSE; ') . 'protected function retrieveSessionToken() {') . '$this->tokenHasBeenRetrieved = TRUE;') . '}') . '}');
+		eval('class ' . $className . ' extends \TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting {' . 'public $tokenHasBeenRetrieved = FALSE; ' . 'protected function retrieveSessionToken() {' . '$this->tokenHasBeenRetrieved = TRUE;' . '}' . '}');
 		$fixture = new $className();
 		$this->assertTrue($fixture->tokenHasBeenRetrieved);
 	}

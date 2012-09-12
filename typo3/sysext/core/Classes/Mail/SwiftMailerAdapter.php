@@ -123,7 +123,7 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 			}
 		} else {
 			// on Unix-like systems single quotes are escaped
-			if (preg_match(('/^\'([^' . preg_quote('\'')) . ']*)\'$/', trim($escapedString), $matches)) {
+			if (preg_match('/^\'([^' . preg_quote('\'') . ']*)\'$/', trim($escapedString), $matches)) {
 				$result = str_replace('\\\'', '\'', $matches[1]);
 			}
 		}
@@ -220,7 +220,7 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 	protected function setBody($body) {
 		if ($this->boundary) {
 			// handle multi-part
-			$bodyParts = preg_split(('/--' . preg_quote($this->boundary)) . '(--)?/m', $body, NULL, PREG_SPLIT_NO_EMPTY);
+			$bodyParts = preg_split('/--' . preg_quote($this->boundary) . '(--)?/m', $body, NULL, PREG_SPLIT_NO_EMPTY);
 			foreach ($bodyParts as $bodyPart) {
 				// skip empty parts
 				if (trim($bodyPart) == '') {
@@ -307,10 +307,10 @@ class SwiftMailerAdapter implements \TYPO3\CMS\Core\Mail\MailerAdapterInterface 
 		foreach ($addresses as $address) {
 			if ($address->personal) {
 				// item with name found ( name <email@example.org> )
-				$addressList[($address->mailbox . '@') . $address->host] = $address->personal;
+				$addressList[$address->mailbox . '@' . $address->host] = $address->personal;
 			} else {
 				// item without name found ( email@example.org )
-				$addressList[] = ($address->mailbox . '@') . $address->host;
+				$addressList[] = $address->mailbox . '@' . $address->host;
 			}
 		}
 		return $addressList;

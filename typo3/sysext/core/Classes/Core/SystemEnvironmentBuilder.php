@@ -260,7 +260,7 @@ class SystemEnvironmentBuilder {
 	 * @return void
 	 */
 	static protected function addCorePearPathToIncludePath() {
-		set_include_path(((PATH_typo3 . 'contrib/pear/') . PATH_SEPARATOR) . get_include_path());
+		set_include_path(PATH_typo3 . 'contrib/pear/' . PATH_SEPARATOR . get_include_path());
 	}
 
 	/**
@@ -321,7 +321,7 @@ class SystemEnvironmentBuilder {
 	 */
 	static protected function initializeBasicErrorReporting() {
 		// Core should be notice free at least until this point ...
-		error_reporting(E_ALL & ~((E_STRICT | E_NOTICE) | E_DEPRECATED));
+		error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
 	}
 
 	/**
@@ -373,7 +373,7 @@ class SystemEnvironmentBuilder {
 		} elseif (isset($_SERVER['PATH_TRANSLATED'])) {
 			$cgiPath = $_SERVER['PATH_TRANSLATED'];
 		}
-		if ($cgiPath && (((PHP_SAPI === 'fpm-fcgi' || PHP_SAPI === 'cgi') || PHP_SAPI === 'isapi') || PHP_SAPI === 'cgi-fcgi')) {
+		if ($cgiPath && (PHP_SAPI === 'fpm-fcgi' || PHP_SAPI === 'cgi' || PHP_SAPI === 'isapi' || PHP_SAPI === 'cgi-fcgi')) {
 			$scriptPath = $cgiPath;
 		} else {
 			if (isset($_SERVER['ORIG_SCRIPT_FILENAME'])) {
@@ -424,7 +424,7 @@ class SystemEnvironmentBuilder {
 			} else {
 				$workingDirectory = getcwd();
 			}
-			$scriptPath = ($workingDirectory . '/') . preg_replace('/\\.\\//', '', $scriptPath);
+			$scriptPath = $workingDirectory . '/' . preg_replace('/\\.\\//', '', $scriptPath);
 		}
 		return $scriptPath;
 	}
@@ -478,7 +478,7 @@ class SystemEnvironmentBuilder {
 	 * @return string Absolute path to document root of installation
 	 */
 	static protected function getPathSiteByTypo3ModulePath() {
-		if ((substr(TYPO3_MOD_PATH, 0, strlen('sysext/')) === 'sysext/' || substr(TYPO3_MOD_PATH, 0, strlen('ext/')) === 'ext/') || substr(TYPO3_MOD_PATH, 0, strlen('install/')) === 'install/') {
+		if (substr(TYPO3_MOD_PATH, 0, strlen('sysext/')) === 'sysext/' || substr(TYPO3_MOD_PATH, 0, strlen('ext/')) === 'ext/' || substr(TYPO3_MOD_PATH, 0, strlen('install/')) === 'install/') {
 			$pathPartRelativeToDocumentRoot = TYPO3_mainDir . TYPO3_MOD_PATH;
 		} elseif (substr(TYPO3_MOD_PATH, 0, strlen('../typo3conf/')) === '../typo3conf/') {
 			$pathPartRelativeToDocumentRoot = substr(TYPO3_MOD_PATH, 3);

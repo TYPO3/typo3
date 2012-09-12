@@ -280,7 +280,7 @@ class CategoryCollectionTest extends \tx_phpunit_testcase {
 	 * @return void
 	 */
 	private function dropDummyTable() {
-		$sql = ('DROP TABLE ' . $this->tableName) . ';';
+		$sql = 'DROP TABLE ' . $this->tableName . ';';
 		$this->database->sql_query($sql);
 	}
 

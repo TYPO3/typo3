@@ -147,7 +147,7 @@ class MailUtilityTest extends \tx_phpunit_testcase {
 		// first space after 20 chars (more than $lineWidth)
 		$str = 'abcdefghijklmnopqrst uvwxyz 123456';
 		$returnString = \TYPO3\CMS\Core\Utility\MailUtility::breakLinesForEmail($str, $newlineChar, $lineWidth);
-		$this->assertEquals($returnString, ((('abcdefghijklmnopqrst' . LF) . 'uvwxyz') . LF) . '123456');
+		$this->assertEquals($returnString, 'abcdefghijklmnopqrst' . LF . 'uvwxyz' . LF . '123456');
 	}
 
 }

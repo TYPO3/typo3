@@ -233,10 +233,10 @@ class TypoScriptParser {
 		$pre = '[GLOBAL]';
 		while ($pre) {
 			if ($this->breakPointLN && $pre == '[_BREAK]') {
-				$this->error(((('Breakpoint at ' . (($this->lineNumberOffset + $this->rawP) - 2)) . ': Line content was "') . $this->raw[($this->rawP - 2)]) . '"', 1);
+				$this->error('Breakpoint at ' . ($this->lineNumberOffset + $this->rawP - 2) . ': Line content was "' . $this->raw[($this->rawP - 2)] . '"', 1);
 				break;
 			}
-			if ((strtoupper($pre) == '[GLOBAL]' || strtoupper($pre) == '[END]') || !$this->lastConditionTrue && strtoupper($pre) == '[ELSE]') {
+			if (strtoupper($pre) == '[GLOBAL]' || strtoupper($pre) == '[END]' || !$this->lastConditionTrue && strtoupper($pre) == '[ELSE]') {
 				$pre = trim($this->parseSub($this->setup));
 				$this->lastConditionTrue = 1;
 			} else {
@@ -257,10 +257,10 @@ class TypoScriptParser {
 			}
 		}
 		if ($this->inBrace) {
-			$this->error(((('Line ' . (($this->lineNumberOffset + $this->rawP) - 1)) . ': The script is short of ') . $this->inBrace) . ' end brace(s)', 1);
+			$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': The script is short of ' . $this->inBrace . ' end brace(s)', 1);
 		}
 		if ($this->multiLineEnabled) {
-			$this->error(('Line ' . (($this->lineNumberOffset + $this->rawP) - 1)) . ': A multiline value section is not ended with a parenthesis!', 1);
+			$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': A multiline value section is not ended with a parenthesis!', 1);
 		}
 		$this->lineNumberOffset += count($this->raw) + 1;
 	}
@@ -299,7 +299,7 @@ class TypoScriptParser {
 			}
 			// Breakpoint?
 			// By adding 1 we get that line processed
-			if ($this->breakPointLN && ($this->lineNumberOffset + $this->rawP) - 1 == $this->breakPointLN + 1) {
+			if ($this->breakPointLN && $this->lineNumberOffset + $this->rawP - 1 == $this->breakPointLN + 1) {
 				return '[_BREAK]';
 			}
 			// Set comment flag?
@@ -328,7 +328,7 @@ class TypoScriptParser {
 								$setup[$this->multiLineObject . '..'] .= $this->lastComment;
 							}
 							if ($this->regLinenumbers) {
-								$setup[$this->multiLineObject . '.ln..'][] = ($this->lineNumberOffset + $this->rawP) - 1;
+								$setup[$this->multiLineObject . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
 							}
 						}
 					} else {
@@ -349,7 +349,7 @@ class TypoScriptParser {
 						if ($this->syntaxHighLight) {
 							$this->regHighLight('condition', $lineP);
 						}
-						$this->error(((('Line ' . (($this->lineNumberOffset + $this->rawP) - 1)) . ': On return to [GLOBAL] scope, the script was short of ') . $this->inBrace) . ' end brace(s)', 1);
+						$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': On return to [GLOBAL] scope, the script was short of ' . $this->inBrace . ' end brace(s)', 1);
 						$this->inBrace = 0;
 						return $line;
 					} elseif (strcspn($line, '}#/') != 0) {
@@ -363,7 +363,7 @@ class TypoScriptParser {
 						if (strlen($objStrName)) {
 							$r = array();
 							if ($this->strict && preg_match('/[^[:alnum:]_\\\\\\.-]/i', $objStrName, $r)) {
-								$this->error(((((('Line ' . (($this->lineNumberOffset + $this->rawP) - 1)) . ': Object Name String, "') . htmlspecialchars($objStrName)) . '" contains invalid character "') . $r[0]) . '". Must be alphanumeric or one of: "_-\\."');
+								$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" contains invalid character "' . $r[0] . '". Must be alphanumeric or one of: "_-\\."');
 							} else {
 								$line = ltrim(substr($line, $varL));
 								if ($this->syntaxHighLight) {
@@ -411,7 +411,7 @@ class TypoScriptParser {
 											$fakeThis = FALSE;
 											$newValue = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookMethod, $params, $fakeThis);
 										} else {
-											\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog((('Missing function definition for ' . $tsFunc) . ' on TypoScript line ') . $lineP, 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+											\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Missing function definition for ' . $tsFunc . ' on TypoScript line ' . $lineP, 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
 										}
 									}
 									if (isset($newValue)) {
@@ -434,7 +434,7 @@ class TypoScriptParser {
 											$setup[$objStrName . '..'] .= $this->lastComment;
 										}
 										if ($this->regLinenumbers) {
-											$setup[$objStrName . '.ln..'][] = ($this->lineNumberOffset + $this->rawP) - 1;
+											$setup[$objStrName . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
 										}
 									}
 									break;
@@ -480,7 +480,7 @@ class TypoScriptParser {
 									$this->setVal($objStrName, $setup, 'UNSET');
 									break;
 								default:
-									$this->error(((('Line ' . (($this->lineNumberOffset + $this->rawP) - 1)) . ': Object Name String, "') . htmlspecialchars($objStrName)) . '" was not preceded by any operator, =<>({');
+									$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': Object Name String, "' . htmlspecialchars($objStrName) . '" was not preceded by any operator, =<>({');
 									break;
 								}
 							}
@@ -493,7 +493,7 @@ class TypoScriptParser {
 							$this->regHighLight('operator', $lineP, strlen($line) - 1);
 						}
 						if ($this->inBrace < 0) {
-							$this->error(('Line ' . (($this->lineNumberOffset + $this->rawP) - 1)) . ': An end brace is in excess.', 1);
+							$this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': An end brace is in excess.', 1);
 							$this->inBrace = 0;
 						} else {
 							break;
@@ -603,7 +603,7 @@ class TypoScriptParser {
 					unset($setup[$string]);
 					unset($setup[$string . '.']);
 					if ($this->regLinenumbers) {
-						$setup[$string . '.ln..'][] = (($this->lineNumberOffset + $this->rawP) - 1) . '>';
+						$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '>';
 					}
 				} else {
 					$lnRegisDone = 0;
@@ -611,7 +611,7 @@ class TypoScriptParser {
 						unset($setup[$string]);
 						unset($setup[$string . '.']);
 						if ($this->regLinenumbers) {
-							$setup[$string . '.ln..'][] = (($this->lineNumberOffset + $this->rawP) - 1) . '<';
+							$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP - 1) . '<';
 							$lnRegisDone = 1;
 						}
 					}
@@ -625,7 +625,7 @@ class TypoScriptParser {
 						$setup[$string . '..'] .= $this->lastComment;
 					}
 					if ($this->regLinenumbers && !$lnRegisDone) {
-						$setup[$string . '.ln..'][] = ($this->lineNumberOffset + $this->rawP) - 1;
+						$setup[$string . '.ln..'][] = $this->lineNumberOffset + $this->rawP - 1;
 					}
 				}
 			} else {
@@ -684,7 +684,7 @@ class TypoScriptParser {
 		if (strstr($string, $splitStr)) {
 			$newString = '';
 			// Adds line break char before/after
-			$allParts = explode($splitStr, (LF . $string) . LF);
+			$allParts = explode($splitStr, LF . $string . LF);
 			foreach ($allParts as $c => $v) {
 				// First goes through
 				if (!$c) {
@@ -694,7 +694,7 @@ class TypoScriptParser {
 					// There must be a line-break char after
 					if (preg_match('/^\\s*\\r?\\n/', $subparts[1])) {
 						// SO, the include was positively recognized:
-						$newString .= ((('### ' . $splitStr) . $subparts[0]) . '> BEGIN:') . LF;
+						$newString .= '### ' . $splitStr . $subparts[0] . '> BEGIN:' . LF;
 						$params = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes($subparts[0]);
 						if ($params['source']) {
 							$sourceParts = explode(':', $params['source'], 2);
@@ -717,28 +717,28 @@ class TypoScriptParser {
 											}
 											$newString .= $included_text . LF;
 										} else {
-											$newString .= ('
+											$newString .= '
 ###
-### ERROR: File "' . $filename) . '" was not was not found.
+### ERROR: File "' . $filename . '" was not was not found.
 ###
 
 ';
-											\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(('File "' . $filename) . '" was not found.', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+											\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('File "' . $filename . '" was not found.', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
 										}
 									} else {
-										$newString .= ('
+										$newString .= '
 ###
-### ERROR: File "' . $filename) . '" was not included since it is not allowed due to fileDenyPattern
+### ERROR: File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern
 ###
 
 ';
-										\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(('File "' . $filename) . '" was not included since it is not allowed due to fileDenyPattern', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
+										\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('File "' . $filename . '" was not included since it is not allowed due to fileDenyPattern', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
 									}
 								}
 								break;
 							}
 						}
-						$newString .= ((('### ' . $splitStr) . $subparts[0]) . '> END:') . LF;
+						$newString .= '### ' . $splitStr . $subparts[0] . '> END:' . LF;
 						$newString .= $subparts[1];
 					} else {
 						$newString .= $splitStr . $v;
@@ -819,7 +819,7 @@ class TypoScriptParser {
 					// Found a commented include statement
 					$fileName = trim($matches[1]);
 					$inIncludePart = TRUE;
-					$expectedEndTag = ('### <INCLUDE_TYPOSCRIPT: source="FILE:' . $fileName) . '"> END';
+					$expectedEndTag = '### <INCLUDE_TYPOSCRIPT: source="FILE:' . $fileName . '"> END';
 					// Strip all whitespace characters to make comparision safer
 					$expectedEndTag = strtolower(preg_replace('/\\s/', '', $expectedEndTag));
 				} else {
@@ -853,7 +853,7 @@ class TypoScriptParser {
 						throw new \RuntimeException(sprintf('Could not write file "%s"', $realFileName), 1294586444);
 					}
 					// Insert reference to the file in the rest content
-					$restContent[] = ('<INCLUDE_TYPOSCRIPT: source="FILE: ' . $fileName) . '">';
+					$restContent[] = '<INCLUDE_TYPOSCRIPT: source="FILE: ' . $fileName . '">';
 					// Reset variables (preparing for the next commented include statement)
 					$fileContent = array();
 					$fileName = NULL;
@@ -959,13 +959,13 @@ class TypoScriptParser {
 			$lineC = '';
 			if (is_array($this->highLightData[$rawP])) {
 				foreach ($this->highLightData[$rawP] as $set) {
-					$len = ($strlen - $start) - $set[1];
+					$len = $strlen - $start - $set[1];
 					if ($len > 0) {
 						$part = substr($value, $start, $len);
 						$start += $len;
 						$st = $this->highLightStyles[isset($this->highLightStyles[$set[0]]) ? $set[0] : 'default'];
 						if (!$highlightBlockMode || $set[0] != 'prespace') {
-							$lineC .= ($st[0] . htmlspecialchars($part)) . $st[1];
+							$lineC .= $st[0] . htmlspecialchars($part) . $st[1];
 						}
 					} elseif ($len < 0) {
 						debug(array($len, $value, $rawP));
@@ -975,24 +975,24 @@ class TypoScriptParser {
 				debug(array($value));
 			}
 			if (strlen(substr($value, $start))) {
-				$lineC .= ($this->highLightStyles['ignored'][0] . htmlspecialchars(substr($value, $start))) . $this->highLightStyles['ignored'][1];
+				$lineC .= $this->highLightStyles['ignored'][0] . htmlspecialchars(substr($value, $start)) . $this->highLightStyles['ignored'][1];
 			}
 			if ($errA[$rawP]) {
-				$lineC .= (($this->highLightStyles['error'][0] . '<strong> - ERROR:</strong> ') . htmlspecialchars(implode(';', $errA[$rawP]))) . $this->highLightStyles['error'][1];
+				$lineC .= $this->highLightStyles['error'][0] . '<strong> - ERROR:</strong> ' . htmlspecialchars(implode(';', $errA[$rawP])) . $this->highLightStyles['error'][1];
 			}
 			if ($highlightBlockMode && $this->highLightData_bracelevel[$rawP]) {
-				$lineC = (((((str_pad('', $this->highLightData_bracelevel[$rawP] * 2, ' ', STR_PAD_LEFT) . '<span style="') . $this->highLightBlockStyles) . ($this->highLightBlockStyles_basecolor ? 'background-color: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::modifyHTMLColorAll($this->highLightBlockStyles_basecolor, -$this->highLightData_bracelevel[$rawP] * 16) : '')) . '">') . (strcmp($lineC, '') ? $lineC : '&nbsp;')) . '</span>';
+				$lineC = str_pad('', $this->highLightData_bracelevel[$rawP] * 2, ' ', STR_PAD_LEFT) . '<span style="' . $this->highLightBlockStyles . ($this->highLightBlockStyles_basecolor ? 'background-color: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::modifyHTMLColorAll($this->highLightBlockStyles_basecolor, -$this->highLightData_bracelevel[$rawP] * 16) : '') . '">' . (strcmp($lineC, '') ? $lineC : '&nbsp;') . '</span>';
 			}
 			if (is_array($lineNumDat)) {
 				$lineNum = $rawP + $lineNumDat[0];
 				if ($this->parentObject instanceof \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService) {
 					$lineNum = $this->parentObject->ext_lnBreakPointWrap($lineNum, $lineNum);
 				}
-				$lineC = (((($this->highLightStyles['linenum'][0] . str_pad($lineNum, 4, ' ', STR_PAD_LEFT)) . ':') . $this->highLightStyles['linenum'][1]) . ' ') . $lineC;
+				$lineC = $this->highLightStyles['linenum'][0] . str_pad($lineNum, 4, ' ', STR_PAD_LEFT) . ':' . $this->highLightStyles['linenum'][1] . ' ' . $lineC;
 			}
 			$lines[] = $lineC;
 		}
-		return ('<pre class="ts-hl">' . implode(LF, $lines)) . '</pre>';
+		return '<pre class="ts-hl">' . implode(LF, $lines) . '</pre>';
 	}
 
 }

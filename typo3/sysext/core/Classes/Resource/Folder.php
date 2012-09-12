@@ -130,9 +130,9 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 	public function getCombinedIdentifier() {
 		// @todo $this->properties is never defined nor used here
 		if (is_array($this->properties) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->properties['storage'])) {
-			$combinedIdentifier = ($this->properties['storage'] . ':') . $this->getIdentifier();
+			$combinedIdentifier = $this->properties['storage'] . ':' . $this->getIdentifier();
 		} else {
-			$combinedIdentifier = ($this->getStorage()->getUid() . ':') . $this->getIdentifier();
+			$combinedIdentifier = $this->getStorage()->getUid() . ':' . $this->getIdentifier();
 		}
 		return $combinedIdentifier;
 	}
@@ -191,13 +191,13 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 	 */
 	public function getSubfolder($name) {
 		if (!$this->storage->hasFolderInFolder($name, $this)) {
-			throw new \InvalidArgumentException(((('Folder "' . $name) . '" does not exist in "') . $this->identifier) . '"', 1329836110);
+			throw new \InvalidArgumentException('Folder "' . $name . '" does not exist in "' . $this->identifier . '"', 1329836110);
 		}
 		// TODO this will not work with non-hierarchical storages -> the identifier for subfolders is not composed of
 		// the current item's identifier for these
 		/** @var $factory \TYPO3\CMS\Core\Resource\ResourceFactory */
 		$factory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
-		$folderObject = $factory->createFolderObject($this->storage, ($this->identifier . $name) . '/', $name);
+		$folderObject = $factory->createFolderObject($this->storage, $this->identifier . $name . '/', $name);
 		return $folderObject;
 	}
 
@@ -216,7 +216,7 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 			// -> the identifier for subfolders is not composed of the
 			// current item's identifier for these
 			foreach ($folderArray as $folder) {
-				$folderObjects[] = $factory->createFolderObject($this->storage, ($this->identifier . $folder['name']) . '/', $folder['name']);
+				$folderObjects[] = $factory->createFolderObject($this->storage, $this->identifier . $folder['name'] . '/', $folder['name']);
 			}
 		}
 		return $folderObjects;

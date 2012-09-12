@@ -43,7 +43,7 @@ class DatabaseConnectionTest extends \tx_phpunit_testcase {
 	public function setUp() {
 		$this->fixture = $GLOBALS['TYPO3_DB'];
 		$this->testTable = 'test_t3lib_dbtest';
-		$this->fixture->sql_query(('CREATE TABLE ' . $this->testTable) . ' (
+		$this->fixture->sql_query('CREATE TABLE ' . $this->testTable . ' (
 			id int(11) unsigned NOT NULL auto_increment,
 			fieldblob mediumblob,
 			PRIMARY KEY (id)
@@ -52,7 +52,7 @@ class DatabaseConnectionTest extends \tx_phpunit_testcase {
 	}
 
 	public function tearDown() {
-		$this->fixture->sql_query(('DROP TABLE ' . $this->testTable) . ';');
+		$this->fixture->sql_query('DROP TABLE ' . $this->testTable . ';');
 		unset($this->fixture);
 	}
 

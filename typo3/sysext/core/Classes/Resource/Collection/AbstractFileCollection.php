@@ -112,7 +112,7 @@ abstract class AbstractFileCollection extends \TYPO3\CMS\Core\Collection\Abstrac
 		$list = array();
 		/** @var $entry \TYPO3\CMS\Core\Resource\File */
 		foreach ($this->storage as $entry) {
-			$list[] = ($this->getItemTableName() . '_') . $entry->getUid();
+			$list[] = $this->getItemTableName() . '_' . $entry->getUid();
 		}
 		return implode(',', $list);
 	}

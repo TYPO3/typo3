@@ -105,9 +105,9 @@ class FlashMessage extends \TYPO3\CMS\Core\Messaging\AbstractMessage {
 	public function render() {
 		$title = '';
 		if (!empty($this->title)) {
-			$title = ('<div class="message-header">' . $this->title) . '</div>';
+			$title = '<div class="message-header">' . $this->title . '</div>';
 		}
-		$message = (((((('<div class="typo3-message ' . $this->getClass()) . '">') . $title) . '<div class="message-body">') . $this->message) . '</div>') . '</div>';
+		$message = '<div class="typo3-message ' . $this->getClass() . '">' . $title . '<div class="message-body">' . $this->message . '</div>' . '</div>';
 		return $message;
 	}
 

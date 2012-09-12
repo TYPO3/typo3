@@ -104,7 +104,7 @@ class FrontendEditingController {
 				}
 			}
 		}
-		if ((($GLOBALS['TSFE']->displayEditIcons && $table) && $this->allowedToEdit($table, $dataArray, $conf, $checkEditAccessInternals)) && $this->allowedToEditLanguage($table, $dataArray)) {
+		if ($GLOBALS['TSFE']->displayEditIcons && $table && $this->allowedToEdit($table, $dataArray, $conf, $checkEditAccessInternals) && $this->allowedToEditLanguage($table, $dataArray)) {
 			$editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
 			if ($editClass) {
 				$edit = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($editClass, FALSE);
@@ -145,7 +145,7 @@ class FrontendEditingController {
 		if (!array_key_exists('allow', $conf)) {
 			$conf['allow'] = 'edit';
 		}
-		if (((($GLOBALS['TSFE']->displayFieldEditIcons && $table) && $this->allowedToEdit($table, $dataArray, $conf)) && $fieldList) && $this->allowedToEditLanguage($table, $dataArray)) {
+		if ($GLOBALS['TSFE']->displayFieldEditIcons && $table && $this->allowedToEdit($table, $dataArray, $conf) && $fieldList && $this->allowedToEditLanguage($table, $dataArray)) {
 			$editClass = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit'];
 			if ($editClass) {
 				$edit = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($editClass);
@@ -174,7 +174,7 @@ class FrontendEditingController {
 				unset($this->TSFE_EDIT['cmd']);
 			} else {
 				$cmd = (string) $this->TSFE_EDIT['cmd'];
-				if (($cmd != 'edit' || is_array($this->TSFE_EDIT['data']) && (($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update']) || $this->TSFE_EDIT['update_close'])) && $cmd != 'new') {
+				if (($cmd != 'edit' || is_array($this->TSFE_EDIT['data']) && ($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close'])) && $cmd != 'new') {
 					// $cmd can be a command like "hide" or "move". If $cmd is "edit" or "new" it's an indication to show the formfields. But if data is sent with update-flag then $cmd = edit is accepted because edit may be sent because of .keepGoing flag.
 					return TRUE;
 				}
@@ -213,10 +213,10 @@ class FrontendEditingController {
 		$uid = intval($uid);
 		$cmd = $this->TSFE_EDIT['cmd'];
 		// Look for some TSFE_EDIT data that indicates we should save.
-		if ((($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update']) || $this->TSFE_EDIT['update_close']) && is_array($this->TSFE_EDIT['data'])) {
+		if (($this->TSFE_EDIT['doSave'] || $this->TSFE_EDIT['update'] || $this->TSFE_EDIT['update_close']) && is_array($this->TSFE_EDIT['data'])) {
 			$cmd = 'save';
 		}
-		if ($cmd == 'save' || (($cmd && $table) && $uid) && isset($GLOBALS['TCA'][$table])) {
+		if ($cmd == 'save' || $cmd && $table && $uid && isset($GLOBALS['TCA'][$table])) {
 			// Hook for defining custom editing actions. Naming is incorrect, but preserves compatibility.
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tsfebeuserauth.php']['extEditAction'])) {
 				$_params = array();
@@ -229,7 +229,7 @@ class FrontendEditingController {
 			if (is_callable(array($this, $cmdAction))) {
 				$this->{$cmdAction}($table, $uid);
 			} else {
-				throw new \UnexpectedValueException(('The specified frontend edit command (' . $cmd) . ') is not valid.', 1225818120);
+				throw new \UnexpectedValueException('The specified frontend edit command (' . $cmd . ') is not valid.', 1225818120);
 			}
 		}
 	}
@@ -318,7 +318,7 @@ class FrontendEditingController {
 		$sortField = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
 		if ($sortField) {
 			// Get self
-			$fields = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', ($GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'] . ',uid,pid,') . $sortField, TRUE));
+			$fields = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'] . ',uid,pid,' . $sortField, TRUE));
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fields), $table, 'uid=' . $uid);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				// Record before or after
@@ -329,7 +329,7 @@ class FrontendEditingController {
 				if ($GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields']) {
 					$cAFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['copyAfterDuplFields'], TRUE);
 					foreach ($cAFields as $fieldName) {
-						$copyAfterFieldsQuery .= (((' AND ' . $fieldName) . '="') . $row[$fieldName]) . '"';
+						$copyAfterFieldsQuery .= ' AND ' . $fieldName . '="' . $row[$fieldName] . '"';
 					}
 				}
 				if (!empty($direction)) {
@@ -340,10 +340,10 @@ class FrontendEditingController {
 						$operator = '>';
 						$order = 'ASC';
 					}
-					$sortCheck = ((' AND ' . $sortField) . $operator) . intval($row[$sortField]);
+					$sortCheck = ' AND ' . $sortField . $operator . intval($row[$sortField]);
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid', $table, ((('pid=' . intval($row['pid'])) . $sortCheck) . $copyAfterFieldsQuery) . $GLOBALS['TSFE']->sys_page->enableFields($table, '', $ignore), '', ($sortField . ' ') . $order, '2');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid', $table, 'pid=' . intval($row['pid']) . $sortCheck . $copyAfterFieldsQuery . $GLOBALS['TSFE']->sys_page->enableFields($table, '', $ignore), '', $sortField . ' ' . $order, '2');
 				if ($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					if ($afterUID) {
 						$cmdData[$table][$uid]['move'] = -$afterUID;

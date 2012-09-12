@@ -86,7 +86,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 			throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1343331521);
 		}
 		if (!is_string($data)) {
-			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException(('The specified data is of type "' . gettype($data)) . '" but a string is expected.', 1343331522);
+			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1343331522);
 		}
 		$tags[] = '%WCBE%' . $this->cache->getIdentifier();
 		$expiration = $lifetime !== NULL ? $lifetime : $this->defaultLifetime;
@@ -145,7 +145,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 	 */
 	public function findIdentifiersByTag($tag) {
 		$success = FALSE;
-		$identifiers = wincache_ucache_get(($this->identifierPrefix . 'tag_') . $tag, $success);
+		$identifiers = wincache_ucache_get($this->identifierPrefix . 'tag_' . $tag, $success);
 		if ($success === FALSE) {
 			return array();
 		} else {
@@ -162,7 +162,7 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 	 */
 	protected function findTagsByIdentifier($identifier) {
 		$success = FALSE;
-		$tags = wincache_ucache_get(($this->identifierPrefix . 'ident_') . $identifier, $success);
+		$tags = wincache_ucache_get($this->identifierPrefix . 'ident_' . $identifier, $success);
 		return $success ? (array) $tags : array();
 	}
 
@@ -217,12 +217,12 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 			$identifiers = $this->findIdentifiersByTag($tag);
 			if (array_search($entryIdentifier, $identifiers) === FALSE) {
 				$identifiers[] = $entryIdentifier;
-				wincache_ucache_set(($this->identifierPrefix . 'tag_') . $tag, $identifiers);
+				wincache_ucache_set($this->identifierPrefix . 'tag_' . $tag, $identifiers);
 			}
 			// Update identifier-to-tag index
 			$existingTags = $this->findTagsByIdentifier($entryIdentifier);
 			if (array_search($entryIdentifier, $existingTags) === FALSE) {
-				wincache_ucache_set(($this->identifierPrefix . 'ident_') . $entryIdentifier, array_merge($existingTags, $tags));
+				wincache_ucache_set($this->identifierPrefix . 'ident_' . $entryIdentifier, array_merge($existingTags, $tags));
 			}
 		}
 	}
@@ -247,14 +247,14 @@ class WincacheBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impl
 			if (($key = array_search($entryIdentifier, $identifiers)) !== FALSE) {
 				unset($identifiers[$key]);
 				if (count($identifiers)) {
-					wincache_ucache_set(($this->identifierPrefix . 'tag_') . $tag, $identifiers);
+					wincache_ucache_set($this->identifierPrefix . 'tag_' . $tag, $identifiers);
 				} else {
-					wincache_ucache_delete(($this->identifierPrefix . 'tag_') . $tag);
+					wincache_ucache_delete($this->identifierPrefix . 'tag_' . $tag);
 				}
 			}
 		}
 		// Clear reverse tag index for this identifier
-		wincache_ucache_delete(($this->identifierPrefix . 'ident_') . $entryIdentifier);
+		wincache_ucache_delete($this->identifierPrefix . 'ident_' . $entryIdentifier);
 	}
 
 	/**

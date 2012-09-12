@@ -61,7 +61,7 @@ class RecordCollectionRepository {
 	 */
 	public function findByUid($uid) {
 		$result = NULL;
-		$data = $this->getDatabase()->exec_SELECTgetSingleRow('*', $this->table, ('uid=' . intval($uid)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table));
+		$data = $this->getDatabase()->exec_SELECTgetSingleRow('*', $this->table, 'uid=' . intval($uid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table));
 		if ($data !== NULL) {
 			$result = $this->createDomainObject($data);
 		}
@@ -85,7 +85,7 @@ class RecordCollectionRepository {
 	 */
 	public function findByTableName($tableName) {
 		$conditions = array(
-			($this->tableField . '=') . $this->getDatabase()->fullQuoteStr($tableName, $this->table)
+			$this->tableField . '=' . $this->getDatabase()->fullQuoteStr($tableName, $this->table)
 		);
 		return $this->queryMultipleRecords($conditions);
 	}
@@ -98,7 +98,7 @@ class RecordCollectionRepository {
 	 */
 	public function findByType($type) {
 		$conditions = array(
-			($this->typeField . '=') . $this->getDatabase()->fullQuoteStr($type, $this->table)
+			$this->typeField . '=' . $this->getDatabase()->fullQuoteStr($type, $this->table)
 		);
 		return $this->queryMultipleRecords($conditions);
 	}
@@ -112,8 +112,8 @@ class RecordCollectionRepository {
 	 */
 	public function findByTypeAndTableName($type, $tableName) {
 		$conditions = array(
-			($this->typeField . '=') . $this->getDatabase()->fullQuoteStr($type, $this->table),
-			($this->tableField . '=') . $this->getDatabase()->fullQuoteStr($tableName, $this->table)
+			$this->typeField . '=' . $this->getDatabase()->fullQuoteStr($type, $this->table),
+			$this->tableField . '=' . $this->getDatabase()->fullQuoteStr($tableName, $this->table)
 		);
 		return $this->queryMultipleRecords($conditions);
 	}

@@ -385,9 +385,9 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 */
 	public function getCombinedIdentifier() {
 		if (is_array($this->properties) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->properties['storage'])) {
-			$combinedIdentifier = ($this->properties['storage'] . ':') . $this->getIdentifier();
+			$combinedIdentifier = $this->properties['storage'] . ':' . $this->getIdentifier();
 		} else {
-			$combinedIdentifier = ($this->getStorage()->getUid() . ':') . $this->getIdentifier();
+			$combinedIdentifier = $this->getStorage()->getUid() . ':' . $this->getIdentifier();
 		}
 		return $combinedIdentifier;
 	}

@@ -85,7 +85,7 @@ final class MathUtility {
 	 * @return boolean Returns TRUE if string is an integer
 	 */
 	static public function canBeInterpretedAsInteger($var) {
-		if (($var === '' || is_object($var)) || is_array($var)) {
+		if ($var === '' || is_object($var) || is_array($var)) {
 			return FALSE;
 		}
 		return (string) intval($var) === (string) $var;
@@ -104,10 +104,10 @@ final class MathUtility {
 		// Ensuring an operator for the first entrance
 		$string = '+' . $string;
 		$qm = '\\*\\/\\+-^%';
-		$regex = ((('([' . $qm) . '])([') . $qm) . ']?[0-9\\.]*)';
+		$regex = '([' . $qm . '])([' . $qm . ']?[0-9\\.]*)';
 		// Split the expression here:
 		$reg = array();
-		preg_match_all(('/' . $regex) . '/', $string, $reg);
+		preg_match_all('/' . $regex . '/', $string, $reg);
 		reset($reg[2]);
 		$number = 0;
 		$Msign = '+';

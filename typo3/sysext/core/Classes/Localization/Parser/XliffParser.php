@@ -61,7 +61,7 @@ class XliffParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXmlParser 
 							'target' => (string) $translationElement->target
 						);
 					}
-				} elseif (($translationElement->getName() === 'group' && isset($translationElement['restype'])) && (string) $translationElement['restype'] === 'x-gettext-plurals') {
+				} elseif ($translationElement->getName() === 'group' && isset($translationElement['restype']) && (string) $translationElement['restype'] === 'x-gettext-plurals') {
 					// This is a translation with plural forms
 					$parsedTranslationElement = array();
 					foreach ($translationElement->children() as $translationPluralForm) {

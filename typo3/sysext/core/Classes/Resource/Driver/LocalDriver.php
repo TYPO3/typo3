@@ -91,7 +91,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	public function initialize() {
 		$this->determineBaseUrl();
 		// The capabilities of this driver. See CAPABILITY_* constants for possible values
-		$this->capabilities = (\TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_BROWSABLE | \TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_PUBLIC) | \TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_WRITABLE;
+		$this->capabilities = \TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_BROWSABLE | \TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_PUBLIC | \TYPO3\CMS\Core\Resource\ResourceStorage::CAPABILITY_WRITABLE;
 	}
 
 	/**
@@ -128,7 +128,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		}
 		$absoluteBasePath = rtrim($absoluteBasePath, '/') . '/';
 		if (!is_dir($absoluteBasePath)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException(('Base path "' . $absoluteBasePath) . '" does not exist or is no directory.', 1299233097);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException('Base path "' . $absoluteBasePath . '" does not exist or is no directory.', 1299233097);
 		}
 		return $absoluteBasePath;
 	}
@@ -143,7 +143,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 */
 	public function getPublicUrl(\TYPO3\CMS\Core\Resource\ResourceInterface $fileOrFolder, $relativeToCurrentScript = FALSE) {
 		if ($this->configuration['pathType'] === 'relative' && rtrim($this->configuration['basePath'], '/') !== '') {
-			$publicUrl = (rtrim($this->configuration['basePath'], '/') . '/') . ltrim($fileOrFolder->getIdentifier(), '/');
+			$publicUrl = rtrim($this->configuration['basePath'], '/') . '/' . ltrim($fileOrFolder->getIdentifier(), '/');
 		} elseif (isset($this->baseUri)) {
 			$publicUrl = $this->baseUri . ltrim($fileOrFolder->getIdentifier(), '/');
 		} else {
@@ -209,13 +209,13 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$this->checkFilePath($fileIdentifier);
 		$dirPath = dirname($fileIdentifier);
 		if ($dirPath !== '' && $dirPath !== '/') {
-			$dirPath = ('/' . trim($dirPath, '/')) . '/';
+			$dirPath = '/' . trim($dirPath, '/') . '/';
 		}
 		$absoluteFilePath = $this->absoluteBasePath . ltrim($fileIdentifier, '/');
 		// don't use $this->fileExists() because we need the absolute path to the file anyways, so we can directly
 		// use PHP's filesystem method.
 		if (!file_exists($absoluteFilePath)) {
-			throw new \InvalidArgumentException(('File ' . $fileIdentifier) . ' does not exist.', 1314516809);
+			throw new \InvalidArgumentException('File ' . $fileIdentifier . ' does not exist.', 1314516809);
 		}
 		return $this->extractFileInformation($absoluteFilePath, $dirPath);
 	}
@@ -270,7 +270,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		// Strip trailing dots and return
 		$cleanFileName = preg_replace('/\\.*$/', '', $cleanFileName);
 		if (!$cleanFileName) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException(('File name ' . $cleanFileName) . ' is invalid.', 1320288991);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException('File name ' . $cleanFileName . ' is invalid.', 1320288991);
 		}
 		return $cleanFileName;
 	}
@@ -291,7 +291,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	protected function getDirectoryItemList($path, $start, $numberOfItems, array $filterMethods, $itemHandlerMethod, $itemRows = array()) {
 		$realPath = rtrim(($this->absoluteBasePath . trim($path, '/')), '/') . '/';
 		if (!is_dir($realPath)) {
-			throw new \InvalidArgumentException(('Cannot list items in directory ' . $path) . ' - does not exist or is no directory', 1314349666);
+			throw new \InvalidArgumentException('Cannot list items in directory ' . $path . ' - does not exist or is no directory', 1314349666);
 		}
 		if ($start > 0) {
 			$start--;
@@ -307,7 +307,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		}
 		$iterator->seek($start);
 		if ($path !== '' && $path !== '/') {
-			$path = ('/' . trim($path, '/')) . '/';
+			$path = '/' . trim($path, '/') . '/';
 		}
 		// $c is the counter for how many items we still have to fetch (-1 is unlimited)
 		$c = $numberOfItems > 0 ? $numberOfItems : -1;
@@ -373,7 +373,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			return array('', array());
 		}
 		// also don't show hidden files
-		if ((($folderName === '..' || $folderName === '.') || $folderName === '') || \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($folderName, '.') === TRUE) {
+		if ($folderName === '..' || $folderName === '.' || $folderName === '' || \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($folderName, '.') === TRUE) {
 			return array('', array());
 		}
 		// remove the trailing slash from the folder name (the trailing slash comes from the DirectoryIterator)
@@ -454,7 +454,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			'ctime' => filectime($folderPath),
 			'mtime' => filemtime($folderPath),
 			'name' => $folderName,
-			'identifier' => ($containerPath . $folderName) . '/',
+			'identifier' => $containerPath . $folderName . '/',
 			'storage' => $this->storage->getUid()
 		);
 		return $folderInformation;
@@ -484,7 +484,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		} elseif (is_string($file)) {
 			$path = $this->absoluteBasePath . ltrim($file, '/');
 		} else {
-			throw new \RuntimeException(('Type "' . gettype($file)) . '" is not supported.', 1325191178);
+			throw new \RuntimeException('Type "' . gettype($file) . '" is not supported.', 1325191178);
 		}
 		return $path;
 	}
@@ -535,7 +535,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 */
 	public function hash(\TYPO3\CMS\Core\Resource\FileInterface $file, $hashAlgorithm) {
 		if (!in_array($hashAlgorithm, $this->getSupportedHashAlgorithms())) {
-			throw new \InvalidArgumentException(('Hash algorithm "' . $hashAlgorithm) . '" is not supported.', 1304964032);
+			throw new \InvalidArgumentException('Hash algorithm "' . $hashAlgorithm . '" is not supported.', 1304964032);
 		}
 		switch ($hashAlgorithm) {
 		case 'sha1':
@@ -545,7 +545,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			$hash = md5_file($this->getAbsolutePath($file));
 			break;
 		default:
-			throw new \RuntimeException(('Hash algorithm ' . $hashAlgorithm) . ' is not implemented.', 1329644451);
+			throw new \RuntimeException('Hash algorithm ' . $hashAlgorithm . ' is not implemented.', 1329644451);
 		}
 		return $hash;
 	}
@@ -577,7 +577,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			$moveResult = rename($localFilePath, $targetPath);
 		}
 		if ($moveResult !== TRUE) {
-			throw new \RuntimeException(((('Moving file ' . $localFilePath) . ' to ') . $targetPath) . ' failed.', 1314803096);
+			throw new \RuntimeException('Moving file ' . $localFilePath . ' to ' . $targetPath . ' failed.', 1314803096);
 		}
 		clearstatcache();
 		// Change the permissions of the file
@@ -657,7 +657,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * @return \TYPO3\CMS\Core\Resource\Folder
 	 */
 	public function getFolderInFolder($name, \TYPO3\CMS\Core\Resource\Folder $parentFolder) {
-		$folderIdentifier = ($parentFolder->getIdentifier() . $name) . '/';
+		$folderIdentifier = $parentFolder->getIdentifier() . $name . '/';
 		return $this->getFolder($folderIdentifier);
 	}
 
@@ -672,7 +672,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$filePath = $this->getAbsolutePath($file);
 		$result = rename($localFilePath, $filePath);
 		if ($result === FALSE) {
-			throw new \RuntimeException(((('Replacing file ' . $filePath) . ' with ') . $localFilePath) . ' failed.', 1315314711);
+			throw new \RuntimeException('Replacing file ' . $filePath . ' with ' . $localFilePath . ' failed.', 1315314711);
 		}
 		$fileInfo = $this->getFileInfoByIdentifier($file->getIdentifier());
 		$file->updateProperties($fileInfo);
@@ -693,7 +693,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$absoluteFilePath = $this->absoluteBasePath . $fileIdentifier;
 		$result = copy($localFilePath, $absoluteFilePath);
 		if ($result === FALSE || !file_exists($absoluteFilePath)) {
-			throw new \RuntimeException(((('Adding file ' . $localFilePath) . ' at ') . $fileIdentifier) . ' failed.');
+			throw new \RuntimeException('Adding file ' . $localFilePath . ' at ' . $fileIdentifier . ' failed.');
 		}
 		return $fileIdentifier;
 	}
@@ -711,7 +711,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$targetPath = $this->absoluteBasePath . ltrim($identifier, '/');
 		$result = unlink($targetPath);
 		if ($result === FALSE || file_exists($targetPath)) {
-			throw new \RuntimeException(('Deleting file ' . $identifier) . ' failed.', 1320381534);
+			throw new \RuntimeException('Deleting file ' . $identifier . ' failed.', 1320381534);
 		}
 		return TRUE;
 	}
@@ -749,7 +749,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$targetIdentifier = $targetFolder->getIdentifier() . $fileName;
 		$result = rename($sourcePath, $this->absoluteBasePath . $targetIdentifier);
 		if ($result === FALSE) {
-			throw new \RuntimeException(((('Moving file ' . $sourcePath) . ' to ') . $targetIdentifier) . ' failed.', 1315314712);
+			throw new \RuntimeException('Moving file ' . $sourcePath . ' to ' . $targetIdentifier . ' failed.', 1315314712);
 		}
 		return $targetIdentifier;
 	}
@@ -765,7 +765,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$temporaryPath = $this->getTemporaryPathForFile($file);
 		$result = copy($sourcePath, $temporaryPath);
 		if ($result === FALSE) {
-			throw new \RuntimeException(('Copying file ' . $file->getIdentifier()) . ' to temporary path failed.', 1320577649);
+			throw new \RuntimeException('Copying file ' . $file->getIdentifier() . ' to temporary path failed.', 1320577649);
 		}
 		return $temporaryPath;
 	}
@@ -804,13 +804,13 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	public function moveFolderWithinStorage(\TYPO3\CMS\Core\Resource\Folder $folderToMove, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newFolderName) {
 		$relativeSourcePath = $folderToMove->getIdentifier();
 		$sourcePath = $this->getAbsolutePath($relativeSourcePath);
-		$relativeTargetPath = ($targetFolder->getIdentifier() . $newFolderName) . '/';
+		$relativeTargetPath = $targetFolder->getIdentifier() . $newFolderName . '/';
 		$targetPath = $this->getAbsolutePath($relativeTargetPath);
 		// get all files and folders we are going to move, to have a map for updating later.
 		$filesAndFolders = $this->getFileAndFoldernamesInPath($sourcePath, TRUE);
 		$result = rename($sourcePath, $targetPath);
 		if ($result === FALSE) {
-			throw new \RuntimeException(((('Moving folder ' . $sourcePath) . ' to ') . $targetPath) . ' failed.', 1320711817);
+			throw new \RuntimeException('Moving folder ' . $sourcePath . ' to ' . $targetPath . ' failed.', 1320711817);
 		}
 		// Create a mapping from old to new identifiers
 		$identifierMap = $this->createIdentifierMap($filesAndFolders, $relativeSourcePath, $relativeTargetPath);
@@ -828,7 +828,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	public function copyFolderWithinStorage(\TYPO3\CMS\Core\Resource\Folder $folderToCopy, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $newFolderName) {
 		// This target folder path already includes the topmost level, i.e. the folder this method knows as $folderToCopy.
 		// We can thus rely on this folder being present and just create the subfolder we want to copy to.
-		$targetFolderPath = ($this->getAbsolutePath($targetFolder) . $newFolderName) . '/';
+		$targetFolderPath = $this->getAbsolutePath($targetFolder) . $newFolderName . '/';
 		mkdir($targetFolderPath);
 		$sourceFolderPath = $this->getAbsolutePath($folderToCopy);
 		/** @var $iterator RecursiveDirectoryIterator */
@@ -842,7 +842,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			} elseif ($current->isFile()) {
 				$result = copy($sourceFolderPath . $itemSubPath, $targetFolderPath . $itemSubPath);
 				if ($result === FALSE) {
-					throw new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException(((((('Copying file "' . $sourceFolderPath) . $itemSubPath) . '" to "') . $targetFolderPath) . $itemSubPath) . '" failed.', 1330119452);
+					throw new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException('Copying file "' . $sourceFolderPath . $itemSubPath . '" to "' . $targetFolderPath . $itemSubPath . '" failed.', 1330119452);
 				}
 			}
 			$iterator->next();
@@ -860,16 +860,16 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	public function renameFile(\TYPO3\CMS\Core\Resource\FileInterface $file, $newName) {
 		// Makes sure the Path given as parameter is valid
 		$newName = $this->sanitizeFileName($newName);
-		$newIdentifier = (rtrim(dirname($file->getIdentifier()), '/') . '/') . $newName;
+		$newIdentifier = rtrim(dirname($file->getIdentifier()), '/') . '/' . $newName;
 		// The target should not exist already
 		if ($this->fileExists($newIdentifier)) {
 			throw new \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException('The target file already exists.', 1320291063);
 		}
 		$sourcePath = $this->getAbsolutePath($file);
-		$targetPath = ($this->absoluteBasePath . '/') . ltrim($newIdentifier, '/');
+		$targetPath = $this->absoluteBasePath . '/' . ltrim($newIdentifier, '/');
 		$result = rename($sourcePath, $targetPath);
 		if ($result === FALSE) {
-			throw new \RuntimeException(((('Renaming file ' . $sourcePath) . ' to ') . $targetPath) . ' failed.', 1320375115);
+			throw new \RuntimeException('Renaming file ' . $sourcePath . ' to ' . $targetPath . ' failed.', 1320375115);
 		}
 		return $newIdentifier;
 	}
@@ -883,7 +883,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	protected function checkFilePath($filePath) {
 		// filePath must be valid
 		if (!$this->isPathValid($filePath)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidPathException(('File ' . $filePath) . ' is not valid (".." and "//" is not allowed in path).', 1320286857);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidPathException('File ' . $filePath . ' is not valid (".." and "//" is not allowed in path).', 1320286857);
 		}
 	}
 
@@ -900,7 +900,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$newName = $this->sanitizeFileName($newName);
 		$relativeSourcePath = $folder->getIdentifier();
 		$sourcePath = $this->getAbsolutePath($relativeSourcePath);
-		$relativeTargetPath = ((rtrim(dirname($relativeSourcePath), '/') . '/') . $newName) . '/';
+		$relativeTargetPath = rtrim(dirname($relativeSourcePath), '/') . '/' . $newName . '/';
 		$targetPath = $this->getAbsolutePath($relativeTargetPath);
 		// get all files and folders we are going to move, to have a map for updating later.
 		$filesAndFolders = $this->getFileAndFoldernamesInPath($sourcePath, TRUE);
@@ -928,7 +928,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$filePath = $this->getAbsolutePath($file);
 		$result = unlink($filePath);
 		if ($result === FALSE) {
-			throw new \RuntimeException(('Deletion of file ' . $file->getIdentifier()) . ' failed.', 1320855304);
+			throw new \RuntimeException('Deletion of file ' . $file->getIdentifier() . ' failed.', 1320855304);
 		}
 		return $result;
 	}
@@ -944,7 +944,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$folderPath = $this->getAbsolutePath($folder);
 		$result = \TYPO3\CMS\Core\Utility\GeneralUtility::rmdir($folderPath, $deleteRecursively);
 		if ($result === FALSE) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException(('Deleting folder "' . $folder->getIdentifier()) . '" failed.', 1330119451);
+			throw new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException('Deleting folder "' . $folder->getIdentifier() . '" failed.', 1330119451);
 		}
 		return $result;
 	}
@@ -1058,14 +1058,14 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 */
 	public function createFile($fileName, \TYPO3\CMS\Core\Resource\Folder $parentFolder) {
 		if (!$this->isValidFilename($fileName)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException(('Invalid characters in fileName "' . $fileName) . '"', 1320572272);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidFileNameException('Invalid characters in fileName "' . $fileName . '"', 1320572272);
 		}
 		$filePath = $parentFolder->getIdentifier() . ltrim($fileName, '/');
 		// TODO set permissions of new file
 		$result = touch($this->absoluteBasePath . $filePath);
 		clearstatcache();
 		if ($result !== TRUE) {
-			throw new \RuntimeException(('Creating file ' . $filePath) . ' failed.', 1320569854);
+			throw new \RuntimeException('Creating file ' . $filePath . ' failed.', 1320569854);
 		}
 		$fileInfo = $this->getFileInfoByIdentifier($filePath);
 		return $this->getFileObject($fileInfo);
@@ -1097,7 +1097,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$filePath = $this->getAbsolutePath($file);
 		$result = file_put_contents($filePath, $contents);
 		if ($result === FALSE) {
-			throw new \RuntimeException(('Setting contents of file "' . $file->getIdentifier()) . '" failed.', 1325419305);
+			throw new \RuntimeException('Setting contents of file "' . $file->getIdentifier() . '" failed.', 1325419305);
 		}
 		return $result;
 	}

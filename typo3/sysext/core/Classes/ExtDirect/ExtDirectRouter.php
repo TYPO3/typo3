@@ -111,7 +111,7 @@ class ExtDirectRouter {
 			$response = json_encode($response);
 			$response = preg_replace('/&quot;/', '\\&quot;', $response);
 			$response = array(
-				('<html><body><textarea>' . $response) . '</textarea></body></html>'
+				'<html><body><textarea>' . $response . '</textarea></body></html>'
 			);
 		} else {
 			$ajaxObj->setContentFormat('jsonbody');
@@ -130,7 +130,7 @@ class ExtDirectRouter {
 	 * @throws UnexpectedValueException if the remote method couldn't be found
 	 */
 	protected function processRpc($singleRequest, $namespace) {
-		$endpointName = ($namespace . '.') . $singleRequest->action;
+		$endpointName = $namespace . '.' . $singleRequest->action;
 		if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ExtDirect'][$endpointName])) {
 			throw new \UnexpectedValueException('ExtDirect: Call to undefined endpoint: ' . $endpointName, 1294586450);
 		}

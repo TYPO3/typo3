@@ -62,9 +62,9 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 	 */
 	protected function writeLogEntries(\Exception $exception, $context) {
 		$filePathAndName = $exception->getFile();
-		$exceptionCodeNumber = $exception->getCode() > 0 ? ('#' . $exception->getCode()) . ': ' : '';
-		$logTitle = ('Core: Exception handler (' . $context) . ')';
-		$logMessage = ((((((('Uncaught TYPO3 Exception: ' . $exceptionCodeNumber) . $exception->getMessage()) . ' | ') . get_class($exception)) . ' thrown in file ') . $filePathAndName) . ' in line ') . $exception->getLine();
+		$exceptionCodeNumber = $exception->getCode() > 0 ? '#' . $exception->getCode() . ': ' : '';
+		$logTitle = 'Core: Exception handler (' . $context . ')';
+		$logMessage = 'Uncaught TYPO3 Exception: ' . $exceptionCodeNumber . $exception->getMessage() . ' | ' . get_class($exception) . ' thrown in file ' . $filePathAndName . ' in line ' . $exception->getLine();
 		if ($context === 'WEB') {
 			$logMessage .= '. Requested URL: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 		}
@@ -77,7 +77,7 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 		try {
 			// In case an error occurs before a database connection exists, try
 			// to connect to the DB to be able to write the devlog/sys_log entry
-			if ((isset($GLOBALS['TYPO3_DB']) && is_object($GLOBALS['TYPO3_DB'])) && empty($GLOBALS['TYPO3_DB']->link)) {
+			if (isset($GLOBALS['TYPO3_DB']) && is_object($GLOBALS['TYPO3_DB']) && empty($GLOBALS['TYPO3_DB']->link)) {
 				$GLOBALS['TYPO3_DB']->connectDB();
 			}
 			// Write error message to devlog
@@ -89,7 +89,7 @@ abstract class AbstractExceptionHandler implements \TYPO3\CMS\Core\Error\Excepti
 				));
 			}
 			// Write error message to sys_log table
-			$this->writeLog(($logTitle . ': ') . $logMessage);
+			$this->writeLog($logTitle . ': ' . $logMessage);
 		} catch (\Exception $exception) {
 
 		}

@@ -152,7 +152,7 @@ class LockerTest extends \tx_phpunit_testcase {
 	 */
 	public function constructorSetsResourceToPathWithIdIfUsingSimpleLocking() {
 		$instance = new \TYPO3\CMS\Core\Locking\Locker('999999999', 'simple');
-		$this->assertSame((PATH_site . 'typo3temp/locks/') . md5('999999999'), $instance->getResource());
+		$this->assertSame(PATH_site . 'typo3temp/locks/' . md5('999999999'), $instance->getResource());
 	}
 
 	/**

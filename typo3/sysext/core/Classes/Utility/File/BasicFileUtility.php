@@ -337,7 +337,7 @@ class BasicFileUtility {
 			}
 			// Check if the file exists and if not - return the filename...
 			$fileInfo = $origFileInfo;
-			$theDestFile = ($theDest . '/') . $fileInfo['file'];
+			$theDestFile = $theDest . '/' . $fileInfo['file'];
 			// The destinations file
 			if (!file_exists($theDestFile) || $dontCheckForUnique) {
 				// If the file does NOT exist we return this filename
@@ -355,8 +355,8 @@ class BasicFileUtility {
 					// .. then we try unique-strings...
 					$insert = '_' . substr(md5(uniqId('')), 0, $this->uniquePrecision);
 				}
-				$theTestFile = ($theTempFileBody . $insert) . $theOrigExt;
-				$theDestFile = ($theDest . '/') . $theTestFile;
+				$theTestFile = $theTempFileBody . $insert . $theOrigExt;
+				$theDestFile = $theDest . '/' . $theTestFile;
 				// The destinations file
 				if (!file_exists($theDestFile)) {
 					// If the file does NOT exist we return this filename
@@ -377,7 +377,7 @@ class BasicFileUtility {
 	 */
 	public function checkPathAgainstMounts($thePath) {
 		// @todo: deprecate this function, now done in the Storage object
-		if (($thePath && $this->isPathValid($thePath)) && is_array($this->mounts)) {
+		if ($thePath && $this->isPathValid($thePath) && is_array($this->mounts)) {
 			foreach ($this->mounts as $k => $val) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($thePath, $val['path'])) {
 					return $k;
@@ -416,7 +416,7 @@ class BasicFileUtility {
 		$k = $this->checkPathAgainstMounts($thePath);
 		if ($k) {
 			$name = '';
-			$name .= ('[' . $this->mounts[$k]['name']) . ']: ';
+			$name .= '[' . $this->mounts[$k]['name'] . ']: ';
 			$name .= substr($thePath, strlen($this->mounts[$k]['path']));
 			return $name;
 		}

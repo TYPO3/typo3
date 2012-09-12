@@ -79,11 +79,11 @@ class ExtDirectApi {
 		$javascriptNamespaces = $this->getExtDirectApi($filterNamespaces);
 		// Return the generated javascript API configuration
 		if (count($javascriptNamespaces)) {
-			return ('
+			return '
 				if (!Ext.isObject(Ext.app.ExtDirectAPI)) {
 					Ext.app.ExtDirectAPI = {};
 				}
-				Ext.apply(Ext.app.ExtDirectAPI, ' . json_encode($javascriptNamespaces)) . ');
+				Ext.apply(Ext.app.ExtDirectAPI, ' . json_encode($javascriptNamespaces) . ');
 			';
 		} else {
 			$errorMessage = $this->getNamespaceError($filterNamespaces);
@@ -149,7 +149,7 @@ class ExtDirectApi {
 		if (TYPO3_MODE === 'FE') {
 			$url = \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl('?eID=ExtDirect&action=route&namespace=');
 		} else {
-			$url = \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir) . 'ajax.php?ajaxID=ExtDirect::route&namespace=');
+			$url = \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'ajax.php?ajaxID=ExtDirect::route&namespace=');
 		}
 		$url .= rawurlencode($namespace);
 		return $url;
@@ -166,7 +166,7 @@ class ExtDirectApi {
 		$noCache = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('no_cache') ? TRUE : FALSE;
 		// Look up into the cache
 		$cacheIdentifier = 'ExtDirectApi';
-		$cacheHash = md5((((($cacheIdentifier . implode(',', $filterNamespaces)) . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) . serialize($this->settings)) . TYPO3_MODE) . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST'));
+		$cacheHash = md5($cacheIdentifier . implode(',', $filterNamespaces) . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL') . serialize($this->settings) . TYPO3_MODE . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST'));
 		// With no_cache always generate the javascript content
 		$cacheContent = $noCache ? '' : \TYPO3\CMS\Frontend\Page\PageRepository::getHash($cacheHash);
 		// Generate the javascript content if it wasn't found inside the cache and cache it!

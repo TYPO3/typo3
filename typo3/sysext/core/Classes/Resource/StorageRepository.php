@@ -60,7 +60,7 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	public function findByStorageType($storageType) {
 		$storageObjects = array();
 		$whereClause = 'deleted=0 AND hidden=0';
-		$whereClause .= ((' AND ' . $this->typeField) . ' = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr($storageType, $this->table);
+		$whereClause .= ' AND ' . $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($storageType, $this->table);
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $whereClause);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$storageObjects[] = $this->createDomainObject($row);
@@ -79,7 +79,7 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 		$storageObjects = array();
 		$whereClause = 'deleted=0 AND hidden=0';
 		if ($this->type != '') {
-			$whereClause .= ((' AND ' . $this->typeField) . ' = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->type, $this->table);
+			$whereClause .= ' AND ' . $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->type, $this->table);
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $whereClause);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -110,16 +110,16 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 			'name' => $name,
 			'description' => $description,
 			'driver' => 'Local',
-			'configuration' => ((('<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+			'configuration' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 				<T3FlexForms>
 					<data>
 						<sheet index="sDEF">
 							<language index="lDEF">
 								<field index="basePath">
-									<value index="vDEF">' . rtrim($basePath, '/')) . '/</value>
+									<value index="vDEF">' . rtrim($basePath, '/') . '/</value>
 								</field>
 								<field index="pathType">
-									<value index="vDEF">') . $pathType) . '</value>
+									<value index="vDEF">' . $pathType . '</value>
 								</field>
 							</language>
 						</sheet>

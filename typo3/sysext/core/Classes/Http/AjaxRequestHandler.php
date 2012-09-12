@@ -222,7 +222,7 @@ class AjaxRequestHandler {
 		header(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_500 . ' (AJAX)');
 		header('Content-type: text/xml; charset=' . $this->charset);
 		header('X-JSON: false');
-		die(('<t3err>' . htmlspecialchars($this->errorMessage)) . '</t3err>');
+		die('<t3err>' . htmlspecialchars($this->errorMessage) . '</t3err>');
 	}
 
 	/**

@@ -81,15 +81,15 @@ class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCas
 				TRUE
 			),
 			'filename with tab' => array(
-				('some' . TAB) . 'tag',
+				'some' . TAB . 'tag',
 				TRUE
 			),
 			'filename with carriage return' => array(
-				('some' . CR) . 'CarriageReturn',
+				'some' . CR . 'CarriageReturn',
 				FALSE
 			),
 			'filename with linefeed' => array(
-				('some' . LF) . 'Linefeed',
+				'some' . LF . 'Linefeed',
 				FALSE
 			),
 			'filename with leading slash' => array(
@@ -97,7 +97,7 @@ class AbstractDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCas
 				FALSE
 			),
 			'filename with null character' => array(
-				('someFile' . chr(0)) . 'name',
+				'someFile' . chr(0) . 'name',
 				FALSE
 			)
 		);
