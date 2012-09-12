@@ -175,9 +175,13 @@ abstract class AbstractUpdate {
 	 * @return void
 	 */
 	protected function installExtensions($extensionKeys) {
-		$extensionManagerConnection = $this->getExtensionManagerConnection();
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		$installUtility = $objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
+
 		foreach ($extensionKeys as $extension) {
-			$extensionManagerConnection->enableExtension($extension);
+			if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extension))  {
+				$installUtility->install($extension);
+			}
 		}
 	}
 
