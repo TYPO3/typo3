@@ -326,7 +326,7 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	 * @return string
 	 */
 	public function calculateNodeId($prefix = 'p') {
-		return ($prefix . dechex($this->getId())) . ($this->getMountPoint() ? '-' . dechex($this->getMountPoint()) : '');
+		return $prefix . dechex($this->getId()) . ($this->getMountPoint() ? '-' . dechex($this->getMountPoint()) : '');
 	}
 
 	/**

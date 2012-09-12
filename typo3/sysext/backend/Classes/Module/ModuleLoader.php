@@ -173,10 +173,10 @@ class ModuleLoader {
 				// SUBMODULES - if any - are loaded
 				if (is_array($subMod)) {
 					foreach ($subMod as $valsub) {
-						$extModRelPath = $this->checkExtensionModule(($mods . '_') . $valsub);
+						$extModRelPath = $this->checkExtensionModule($mods . '_' . $valsub);
 						if ($extModRelPath) {
 							// EXTENSION submodule:
-							$theTempSubMod = $this->checkMod(($mods . '_') . $valsub, PATH_site . $extModRelPath);
+							$theTempSubMod = $this->checkMod($mods . '_' . $valsub, PATH_site . $extModRelPath);
 							// Default sub-module in either main-module-path, be it the default or the userdefined.
 							if (is_array($theTempSubMod)) {
 								$this->modules[$mods]['sub'][$valsub] = $theTempSubMod;
@@ -185,13 +185,13 @@ class ModuleLoader {
 							// 'CLASSIC' submodule
 							// Checking for typo3/mod/xxx/ module existence...
 							// FIXME what about $path = 1; from above and using $path as string here?
-							$theTempSubMod = $this->checkMod(($mods . '_') . $valsub, (($path . $mods) . '/') . $valsub);
+							$theTempSubMod = $this->checkMod($mods . '_' . $valsub, $path . $mods . '/' . $valsub);
 							// Default sub-module in either main-module-path, be it the default or the userdefined.
 							if (is_array($theTempSubMod)) {
 								$this->modules[$mods]['sub'][$valsub] = $theTempSubMod;
 							} elseif ($path == $paths['defMods']) {
 								// If the submodule did not exist in the default module path, then check if there is a submodule in the submodule path!
-								$theTempSubMod = $this->checkMod(($mods . '_') . $valsub, (($paths['userMods'] . $mods) . '/') . $valsub);
+								$theTempSubMod = $this->checkMod($mods . '_' . $valsub, $paths['userMods'] . $mods . '/' . $valsub);
 								if (is_array($theTempSubMod)) {
 									$this->modules[$mods]['sub'][$valsub] = $theTempSubMod;
 								}
@@ -204,7 +204,7 @@ class ModuleLoader {
 				if (is_array($subMod)) {
 					foreach ($subMod as $valsub) {
 						// FIXME path can only be NULL here, or not?
-						$this->checkMod(($mods . '_') . $valsub, (($path . $mods) . '/') . $valsub);
+						$this->checkMod($mods . '_' . $valsub, $path . $mods . '/' . $valsub);
 					}
 				}
 			}
@@ -263,7 +263,7 @@ class ModuleLoader {
 			$MLANG = array();
 			// The conf-file is included. This must be valid PHP.
 			include $path . '/conf.php';
-			if ((!$MCONF['shy'] && $this->checkModAccess($name, $MCONF)) && $this->checkModWorkspace($name, $MCONF)) {
+			if (!$MCONF['shy'] && $this->checkModAccess($name, $MCONF) && $this->checkModWorkspace($name, $MCONF)) {
 				$modconf['name'] = $name;
 				// Language processing. This will add module labels and image reference to the internal ->moduleLabels array of the LANG object.
 				if (is_object($GLOBALS['LANG'])) {
@@ -272,14 +272,14 @@ class ModuleLoader {
 					if ($MLANG['default']['tabs_images']['tab']) {
 						// Initializing search for alternative icon:
 						// Alternative icon key (might have an alternative set in $TBE_STYLES['skinImg']
-						$altIconKey = (('MOD:' . $name) . '/') . $MLANG['default']['tabs_images']['tab'];
+						$altIconKey = 'MOD:' . $name . '/' . $MLANG['default']['tabs_images']['tab'];
 						$altIconAbsPath = is_array($GLOBALS['TBE_STYLES']['skinImg'][$altIconKey]) ? \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(PATH_typo3 . $GLOBALS['TBE_STYLES']['skinImg'][$altIconKey][0]) : '';
 						// Setting icon, either default or alternative:
 						if ($altIconAbsPath && @is_file($altIconAbsPath)) {
 							$MLANG['default']['tabs_images']['tab'] = $this->getRelativePath(PATH_typo3, $altIconAbsPath);
 						} else {
 							// Setting default icon:
-							$MLANG['default']['tabs_images']['tab'] = $this->getRelativePath(PATH_typo3, ($fullpath . '/') . $MLANG['default']['tabs_images']['tab']);
+							$MLANG['default']['tabs_images']['tab'] = $this->getRelativePath(PATH_typo3, $fullpath . '/' . $MLANG['default']['tabs_images']['tab']);
 						}
 						// Finally, setting the icon with correct path:
 						if (substr($MLANG['default']['tabs_images']['tab'], 0, 3) == '../') {
@@ -308,8 +308,8 @@ class ModuleLoader {
 					} else {
 						$modconf['script'] = 'mod.php?M=' . rawurlencode($name);
 					}
-				} elseif ($MCONF['script'] && file_exists(($path . '/') . $MCONF['script'])) {
-					$modconf['script'] = $this->getRelativePath(PATH_typo3, ($fullpath . '/') . $MCONF['script']);
+				} elseif ($MCONF['script'] && file_exists($path . '/' . $MCONF['script'])) {
+					$modconf['script'] = $this->getRelativePath(PATH_typo3, $fullpath . '/' . $MCONF['script']);
 				} else {
 					$modconf['script'] = 'dummy.php';
 				}
@@ -321,8 +321,8 @@ class ModuleLoader {
 				if ($MCONF['navFrameScript']) {
 					$navFrameScript = explode('?', $MCONF['navFrameScript']);
 					$navFrameScript = $navFrameScript[0];
-					if (file_exists(($path . '/') . $navFrameScript)) {
-						$modconf['navFrameScript'] = $this->getRelativePath(PATH_typo3, ($fullpath . '/') . $MCONF['navFrameScript']);
+					if (file_exists($path . '/' . $navFrameScript)) {
+						$modconf['navFrameScript'] = $this->getRelativePath(PATH_typo3, $fullpath . '/' . $MCONF['navFrameScript']);
 					}
 				}
 				// additional params for Navigation Frame Script: "&anyParam=value&moreParam=1"
@@ -392,7 +392,7 @@ class ModuleLoader {
 			$status = TRUE;
 			if ($MCONF['workspaces']) {
 				$status = FALSE;
-				if (($this->BE_USER->workspace === 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($MCONF['workspaces'], 'online') || $this->BE_USER->workspace === -1 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($MCONF['workspaces'], 'offline')) || $this->BE_USER->workspace > 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($MCONF['workspaces'], 'custom')) {
+				if ($this->BE_USER->workspace === 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($MCONF['workspaces'], 'online') || $this->BE_USER->workspace === -1 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($MCONF['workspaces'], 'offline') || $this->BE_USER->workspace > 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($MCONF['workspaces'], 'custom')) {
 					$status = TRUE;
 				}
 			} elseif ($this->BE_USER->workspace === -99) {

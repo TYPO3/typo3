@@ -75,7 +75,7 @@ class QueryParser {
 	 */
 	public function getSearchQueryValue($query) {
 		$this->extractKeyFromQuery($query);
-		return str_replace((self::COMMAND_KEY_INDICATOR . $this->commandKey) . self::COMMAND_SPLIT_INDICATOR, '', $query);
+		return str_replace(self::COMMAND_KEY_INDICATOR . $this->commandKey . self::COMMAND_SPLIT_INDICATOR, '', $query);
 	}
 
 	/**
@@ -125,7 +125,7 @@ class QueryParser {
 	 */
 	public function isValidCommand($query) {
 		$isValid = FALSE;
-		if ((strpos($query, self::COMMAND_KEY_INDICATOR) === 0 && strpos($query, self::COMMAND_SPLIT_INDICATOR) > 1) && $this->getTableNameFromCommand($query)) {
+		if (strpos($query, self::COMMAND_KEY_INDICATOR) === 0 && strpos($query, self::COMMAND_SPLIT_INDICATOR) > 1 && $this->getTableNameFromCommand($query)) {
 			$isValid = TRUE;
 		}
 		return $isValid;
@@ -157,7 +157,7 @@ class QueryParser {
 		if ($this->isValidPageJump($query)) {
 			$command = $this->getCommandForTable('pages');
 			$id = $this->getId($query);
-			$resultQuery = ((self::COMMAND_KEY_INDICATOR . $command) . self::COMMAND_SPLIT_INDICATOR) . $id;
+			$resultQuery = self::COMMAND_KEY_INDICATOR . $command . self::COMMAND_SPLIT_INDICATOR . $id;
 		} else {
 			$resultQuery = FALSE;
 		}

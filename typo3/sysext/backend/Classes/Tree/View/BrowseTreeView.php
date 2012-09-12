@@ -59,11 +59,11 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 		$clauseExcludePidList = '';
 		if ($pidList = $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages')) {
 			if ($pidList = $GLOBALS['TYPO3_DB']->cleanIntList($pidList)) {
-				$clauseExcludePidList = (' AND pages.uid NOT IN (' . $pidList) . ')';
+				$clauseExcludePidList = ' AND pages.uid NOT IN (' . $pidList . ')';
 			}
 		}
 		// This is very important for making trees of pages: Filtering out deleted pages, pages with no access to and sorting them correctly:
-		parent::init((((' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1)) . ' ') . $clause) . $clauseExcludePidList, 'sorting');
+		parent::init(' AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1) . ' ' . $clause . $clauseExcludePidList, 'sorting');
 		$this->table = 'pages';
 		$this->setTreeName('browsePages');
 		$this->domIdPrefix = 'pages';
@@ -104,13 +104,13 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 */
 	public function wrapIcon($icon, $row) {
 		// Add title attribute to input icon tag
-		$theIcon = $this->addTagAttributes($icon, $this->titleAttrib ? (($this->titleAttrib . '="') . $this->getTitleAttrib($row)) . '"' : '');
+		$theIcon = $this->addTagAttributes($icon, $this->titleAttrib ? $this->titleAttrib . '="' . $this->getTitleAttrib($row) . '"' : '');
 		// Wrap icon in click-menu link.
 		if (!$this->ext_IconMode) {
 			$theIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($theIcon, $this->treeName, $this->getId($row), 0);
 		} elseif (!strcmp($this->ext_IconMode, 'titlelink')) {
-			$aOnClick = (((((('return jumpTo(\'' . $this->getJumpToParam($row)) . '\',this,\'') . $this->domIdPrefix) . $this->getId($row)) . '\',') . $this->bank) . ');';
-			$theIcon = ((('<a href="#" onclick="' . htmlspecialchars($aOnClick)) . '">') . $theIcon) . '</a>';
+			$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($row) . '\',this,\'' . $this->domIdPrefix . $this->getId($row) . '\',' . $this->bank . ');';
+			$theIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $theIcon . '</a>';
 		}
 		return $theIcon;
 	}
@@ -127,8 +127,8 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	public function getTitleStr($row, $titleLen = 30) {
 		// Get the basic title from the parent implementation in t3lib_treeview
 		$title = parent::getTitleStr($row, $titleLen);
-		if ((isset($row['is_siteroot']) && $row['is_siteroot'] != 0) && $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showDomainNameWithTitle')) {
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('domainName,sorting', 'sys_domain', 'pid=' . $GLOBALS['TYPO3_DB']->quoteStr((($row['uid'] . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_domain')) . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_domain')), 'sys_domain'), '', 'sorting', 1);
+		if (isset($row['is_siteroot']) && $row['is_siteroot'] != 0 && $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showDomainNameWithTitle')) {
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('domainName,sorting', 'sys_domain', 'pid=' . $GLOBALS['TYPO3_DB']->quoteStr(($row['uid'] . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_domain') . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_domain')), 'sys_domain'), '', 'sorting', 1);
 			if (is_array($rows) && count($rows) > 0) {
 				$title = sprintf('%s [%s]', $title, htmlspecialchars($rows[0]['domainName']));
 			}
@@ -147,8 +147,8 @@ class BrowseTreeView extends \TYPO3\CMS\Backend\Tree\View\AbstractTreeView {
 	 */
 	public function wrapStop($str, $row) {
 		if ($row['php_tree_stop']) {
-			$str .= ('<span class="typo3-red">
-								<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => $row['uid'])))) . '" class="typo3-red">+</a>
+			$str .= '<span class="typo3-red">
+								<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => $row['uid']))) . '" class="typo3-red">+</a>
 							</span>';
 		}
 		return $str;

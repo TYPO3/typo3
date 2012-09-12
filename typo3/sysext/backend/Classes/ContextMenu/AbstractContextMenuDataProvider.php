@@ -82,7 +82,7 @@ abstract class AbstractContextMenuDataProvider {
 	 * @return array
 	 */
 	protected function getConfiguration() {
-		$contextMenuActions = $GLOBALS['BE_USER']->getTSConfig(('options.contextMenu.' . $this->contextMenuType) . '.items');
+		$contextMenuActions = $GLOBALS['BE_USER']->getTSConfig('options.contextMenu.' . $this->contextMenuType . '.items');
 		return $contextMenuActions['properties'];
 	}
 
@@ -184,7 +184,7 @@ abstract class AbstractContextMenuDataProvider {
 			if ($type === 'DIVIDER') {
 				$action->setType('divider');
 			} else {
-				if (in_array($actionConfiguration['name'], $this->disableItems) || (isset($actionConfiguration['displayCondition']) && trim($actionConfiguration['displayCondition']) !== '') && !$this->evaluateDisplayCondition($node, $actionConfiguration['displayCondition'])) {
+				if (in_array($actionConfiguration['name'], $this->disableItems) || isset($actionConfiguration['displayCondition']) && trim($actionConfiguration['displayCondition']) !== '' && !$this->evaluateDisplayCondition($node, $actionConfiguration['displayCondition'])) {
 					unset($action);
 					continue;
 				}

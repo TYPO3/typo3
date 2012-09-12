@@ -185,7 +185,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 	 * @return boolean Whether the admin panel is enabled and visible
 	 */
 	public function isAdminPanelVisible() {
-		return ($this->extAdmEnabled && !$this->extAdminConfig['hide']) && $GLOBALS['TSFE']->config['config']['admPanel'];
+		return $this->extAdmEnabled && !$this->extAdminConfig['hide'] && $GLOBALS['TSFE']->config['config']['admPanel'];
 	}
 
 	/*****************************************************
@@ -259,7 +259,7 @@ class FrontendBackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\B
 		$id = intval($id);
 		$theList = '';
 		if ($id && $depth > 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title', 'pages', (((('pid=' . $id) . ' AND doktype IN (') . $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes']) . ') AND deleted=0 AND ') . $perms_clause);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title', 'pages', 'pid=' . $id . ' AND doktype IN (' . $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ') AND deleted=0 AND ' . $perms_clause);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				if ($begin <= 0) {
 					$theList .= $row['uid'] . ',';

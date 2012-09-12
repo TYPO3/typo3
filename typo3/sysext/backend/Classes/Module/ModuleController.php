@@ -111,7 +111,7 @@ class ModuleController {
 		if (!empty($module['link']) && is_string($module['link'])) {
 			$entry->setLink($module['link']);
 		}
-		if ((empty($module['link']) && !empty($module['path'])) && is_string($module['path'])) {
+		if (empty($module['link']) && !empty($module['path']) && is_string($module['path'])) {
 			$entry->setLink($module['path']);
 		}
 		if (!empty($module['description']) && is_string($module['description'])) {

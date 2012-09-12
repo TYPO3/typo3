@@ -96,7 +96,7 @@ class SpriteManager {
 		$handler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($handlerClass);
 		// Throw exception if handler class does not implement required interface
 		if (!$handler instanceof \TYPO3\CMS\Backend\Sprite\SpriteIconGeneratorInterface) {
-			throw new \RuntimeException((('Class ' . $handlerClass) . ' in $TYPO3_CONF_VARS[BE][spriteIconGenerator_handler] ') . ' does not implement TYPO3\\CMS\\Backend\\Sprite\\SpriteIconGeneratorInterface', 1294586333);
+			throw new \RuntimeException('Class ' . $handlerClass . ' in $TYPO3_CONF_VARS[BE][spriteIconGenerator_handler] ' . ' does not implement TYPO3\\CMS\\Backend\\Sprite\\SpriteIconGeneratorInterface', 1294586333);
 		}
 		// Create temp directory if missing
 		if (!is_dir((PATH_site . self::$tempPath))) {
@@ -113,7 +113,7 @@ class SpriteManager {
 		// registered "complete sprites" and the handler class
 		$iconNames = array_merge($availableSkinIcons, (array) $GLOBALS['TBE_STYLES']['spritemanager']['spriteIconsAvailable'], $handler->getAvailableIconNames());
 		$cacheString = addslashes(serialize($iconNames));
-		$cacheFileContent = ('$GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = unserialize(stripslashes(\'' . $cacheString) . '\'));';
+		$cacheFileContent = '$GLOBALS[\'TBE_STYLES\'][\'spriteIconApi\'][\'iconsAvailable\'] = unserialize(stripslashes(\'' . $cacheString . '\'));';
 		/** @var $codeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
 		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(static::getCacheIdentifier(), $cacheFileContent);
 	}
@@ -124,7 +124,7 @@ class SpriteManager {
 	 * @return string
 	 */
 	static protected function getCacheIdentifier() {
-		return 'sprites_' . sha1(((TYPO3_version . PATH_site) . 'spriteManagement'));
+		return 'sprites_' . sha1((TYPO3_version . PATH_site . 'spriteManagement'));
 	}
 
 	/**
@@ -159,7 +159,7 @@ class SpriteManager {
 	 */
 	static public function addSingleIcons(array $icons, $extKey = '') {
 		foreach ($icons as $iconName => $iconFile) {
-			$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'][(('extensions-' . $extKey) . '-') . $iconName] = $iconFile;
+			$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['extensions-' . $extKey . '-' . $iconName] = $iconFile;
 		}
 	}
 
@@ -173,9 +173,9 @@ class SpriteManager {
 	 * @return void
 	 */
 	static public function addTcaTypeIcon($table, $type, $iconFile) {
-		$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'][(('tcarecords-' . $table) . '-') . $type] = $iconFile;
+		$GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['tcarecords-' . $table . '-' . $type] = $iconFile;
 		if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
-			$GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type] = (('tcarecords-' . $table) . '-') . $type;
+			$GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'][$type] = 'tcarecords-' . $table . '-' . $type;
 		}
 	}
 

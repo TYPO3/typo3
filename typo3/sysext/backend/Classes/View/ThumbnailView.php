@@ -164,7 +164,7 @@ class ThumbnailView {
 			$OK = FALSE;
 			if ($mTime) {
 				// Always use the absolute path for this check!
-				$check = (((basename($relativeFilePath) . ':') . $mTime) . ':') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+				$check = basename($relativeFilePath) . ':' . $mTime . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 				$md5_real = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($check);
 				if (!strcmp($md5_real, $md5sum)) {
 					$OK = TRUE;
@@ -179,7 +179,7 @@ class ThumbnailView {
 			$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileObjectFromCombinedIdentifier($combinedIdentifier);
 		}
 		if (empty($OK)) {
-			$OK = ($fileObject !== NULL && $fileObject->checkActionPermission('read')) && $fileObject->calculateChecksum() == $md5sum;
+			$OK = $fileObject !== NULL && $fileObject->checkActionPermission('read') && $fileObject->calculateChecksum() == $md5sum;
 		}
 		if ($OK) {
 			$this->image = $fileObject;
@@ -216,7 +216,7 @@ class ThumbnailView {
 			// That means the value is exploded, evaluated to an integer and the imploded to [value]x[value].
 			// Furthermore you can specify: size=340 and it'll be translated to 340x340.
 			// explodes the input size (and if no "x" is found this will add size again so it is the same for both dimensions)
-			$sizeParts = explode('x', ($this->size . 'x') . $this->size);
+			$sizeParts = explode('x', $this->size . 'x' . $this->size);
 			// Cleaning it up, only two parameters now.
 			$sizeParts = array(\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($sizeParts[0], 1, 1000), \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($sizeParts[1], 1, 1000));
 			// Imploding the cleaned size-value back to the internal variable
@@ -229,12 +229,12 @@ class ThumbnailView {
 			// René: png work for me
 			$thmMode = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails_png'], 0);
 			$outext = $this->image->getExtension() != 'jpg' || $thmMode & 2 ? ($thmMode & 1 ? 'png' : 'gif') : 'jpg';
-			$outfile = (('tmb_' . substr(md5((($this->image->getName() . $this->mtime) . $this->size)), 0, 10)) . '.') . $outext;
+			$outfile = 'tmb_' . substr(md5(($this->image->getName() . $this->mtime . $this->size)), 0, 10) . '.' . $outext;
 			$this->output = $outpath . $outfile;
 			if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) {
 				// If thumbnail does not exist, we generate it
 				if (!file_exists($this->output)) {
-					$parameters = (((('-sample ' . $this->size) . ' ') . $this->wrapFileName($this->image->getForLocalProcessing(FALSE))) . '[0] ') . $this->wrapFileName($this->output);
+					$parameters = '-sample ' . $this->size . ' ' . $this->wrapFileName($this->image->getForLocalProcessing(FALSE)) . '[0] ' . $this->wrapFileName($this->output);
 					$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('convert', $parameters);
 					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 					if (!file_exists($this->output)) {
@@ -248,9 +248,9 @@ class ThumbnailView {
 					$fileModificationTime = filemtime($this->output);
 					header('Content-type: image/' . $outext);
 					header('Last-Modified: ' . date('r', $fileModificationTime));
-					header((('Etag: ' . md5($this->output)) . '-') . $fileModificationTime);
+					header('Etag: ' . md5($this->output) . '-' . $fileModificationTime);
 					// Expiration time is choosen arbitrary to 1 month
-					header('Expires: ' . date('r', ($fileModificationTime + ((30 * 24) * 60) * 60)));
+					header('Expires: ' . date('r', ($fileModificationTime + 30 * 24 * 60 * 60)));
 					fpassthru($fd);
 					fclose($fd);
 				} else {
@@ -282,7 +282,7 @@ class ThumbnailView {
 	 */
 	public function errorGif($l1, $l2, $l3) {
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
-			throw new \RuntimeException((((('TYPO3 Fatal Error: No gdlib. ' . $l1) . ' ') . $l2) . ' ') . $l3, 1270853952);
+			throw new \RuntimeException('TYPO3 Fatal Error: No gdlib. ' . $l1 . ' ' . $l2 . ' ' . $l3, 1270853952);
 		}
 		// Creates the basis for the error image
 		if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) {

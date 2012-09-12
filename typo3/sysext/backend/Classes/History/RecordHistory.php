@@ -127,7 +127,7 @@ class RecordHistory {
 			$this->showInsertDelete = 0;
 			$this->showSubElements = 0;
 			$element = explode(':', $this->element);
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_history', (('tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($element[0], 'sys_history')) . ' AND recuid=') . intval($element[1]), '', 'uid DESC', '1');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($element[0], 'sys_history') . ' AND recuid=' . intval($element[1]), '', 'uid DESC', '1');
 			$record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$this->lastSyslogId = $record['sys_log_uid'];
 			$this->createChangeLog();
@@ -330,11 +330,11 @@ class RecordHistory {
 		// render selectors
 		$displayCode = '';
 		foreach ($selector as $key => $values) {
-			$displayCode .= ('<tr><td>' . $GLOBALS['LANG']->getLL($key, 1)) . '</td>';
-			$displayCode .= ('<td><select name="settings[' . $key) . ']" onChange="document.settings.submit()" style="width:100px">';
+			$displayCode .= '<tr><td>' . $GLOBALS['LANG']->getLL($key, 1) . '</td>';
+			$displayCode .= '<td><select name="settings[' . $key . ']" onChange="document.settings.submit()" style="width:100px">';
 			foreach ($values as $singleKey => $singleVal) {
 				$caption = $GLOBALS['LANG']->getLL($singleVal, 1) ? $GLOBALS['LANG']->getLL($singleVal, 1) : $singleVal;
-				$displayCode .= ((((('<option value="' . $singleKey) . '"') . ($singleKey == $currentSelection[$key] ? ' selected="selected"' : '')) . '> ') . $caption) . '</option>';
+				$displayCode .= '<option value="' . $singleKey . '"' . ($singleKey == $currentSelection[$key] ? ' selected="selected"' : '') . '> ' . $caption . '</option>';
 			}
 			$displayCode .= '</select></td></tr>';
 		}
@@ -352,11 +352,11 @@ class RecordHistory {
 		// Get link to page history if the element history is shown
 		$elParts = explode(':', $this->element);
 		if ($elParts[0] != 'pages') {
-			$content .= ('<strong>' . $GLOBALS['LANG']->getLL('elementHistory', 1)) . '</strong><br />';
+			$content .= '<strong>' . $GLOBALS['LANG']->getLL('elementHistory', 1) . '</strong><br />';
 			$pid = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($elParts[0], 'uid=' . intval($elParts[1]));
 			$content .= $this->linkPage($GLOBALS['LANG']->getLL('elementHistory_link', 1), array('element' => 'pages:' . $pid['pid']));
 		}
-		$content .= ((('<form name="settings" action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) . '" method="post"><table>') . $displayCode) . '</table></form>';
+		$content .= '<form name="settings" action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '" method="post"><table>' . $displayCode . '</table></form>';
 		return $GLOBALS['SOBE']->doc->section($GLOBALS['LANG']->getLL('settings', 1), $content, FALSE, TRUE, FALSE, FALSE);
 	}
 
@@ -369,13 +369,13 @@ class RecordHistory {
 	public function displayHistory() {
 		$lines = array();
 		// Initialize:
-		$lines[] = ((((((((('<tr class="t3-row-header">
+		$lines[] = '<tr class="t3-row-header">
 				<td> </td>
-				<td>' . $GLOBALS['LANG']->getLL('time', 1)) . '</td>
-				<td>') . $GLOBALS['LANG']->getLL('age', 1)) . '</td>
-				<td>') . $GLOBALS['LANG']->getLL('user', 1)) . '</td>
-				<td>') . $GLOBALS['LANG']->getLL('tableUid', 1)) . '</td>
-				<td>') . $GLOBALS['LANG']->getLL('differences', 1)) . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('time', 1) . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('age', 1) . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('user', 1) . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('tableUid', 1) . '</td>
+				<td>' . $GLOBALS['LANG']->getLL('differences', 1) . '</td>
 				<td>&nbsp;</td>
 			</tr>';
 		$be_user_array = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
@@ -400,7 +400,7 @@ class RecordHistory {
 			$singleLine = array();
 			// Diff link
 			$image = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-forward', array('title' => $GLOBALS['LANG']->getLL('sumUpChanges', TRUE)));
-			$singleLine[] = ('<span>' . $this->linkPage($image, array('diff' => $sysLogUid))) . '</span>';
+			$singleLine[] = '<span>' . $this->linkPage($image, array('diff' => $sysLogUid)) . '</span>';
 			// remove first link
 			$singleLine[] = htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($entry['tstamp']));
 			// add time
@@ -408,12 +408,12 @@ class RecordHistory {
 			// add age
 			$singleLine[] = htmlspecialchars($userName);
 			// add user name
-			$singleLine[] = $this->linkPage($this->generateTitle($entry['tablename'], $entry['recuid']), array('element' => ($entry['tablename'] . ':') . $entry['recuid']), '', $GLOBALS['LANG']->getLL('linkRecordHistory', 1));
+			$singleLine[] = $this->linkPage($this->generateTitle($entry['tablename'], $entry['recuid']), array('element' => $entry['tablename'] . ':' . $entry['recuid']), '', $GLOBALS['LANG']->getLL('linkRecordHistory', 1));
 			// add record UID
 			// Show insert/delete/diff/changed field names
 			if ($entry['action']) {
 				// insert or delete of element
-				$singleLine[] = ('<strong>' . htmlspecialchars($GLOBALS['LANG']->getLL($entry['action'], 1))) . '</strong>';
+				$singleLine[] = '<strong>' . htmlspecialchars($GLOBALS['LANG']->getLL($entry['action'], 1)) . '</strong>';
 			} else {
 				// Display field names instead of full diff
 				if (!$this->showDiff) {
@@ -438,34 +438,34 @@ class RecordHistory {
 			// Show link to mark/unmark state
 			if (!$entry['action']) {
 				if ($entry['snapshot']) {
-					$image = ((((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', 'gfx/unmarkstate.gif')) . ' align="top" alt="') . $GLOBALS['LANG']->getLL('unmarkState', 1)) . '" title="') . $GLOBALS['LANG']->getLL('unmarkState', 1)) . '" />';
+					$image = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', 'gfx/unmarkstate.gif') . ' align="top" alt="' . $GLOBALS['LANG']->getLL('unmarkState', 1) . '" title="' . $GLOBALS['LANG']->getLL('unmarkState', 1) . '" />';
 				} else {
-					$image = ((((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', 'gfx/markstate.gif')) . ' align="top" alt="') . $GLOBALS['LANG']->getLL('markState', 1)) . '" title="') . $GLOBALS['LANG']->getLL('markState', 1)) . '" />';
+					$image = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', 'gfx/markstate.gif') . ' align="top" alt="' . $GLOBALS['LANG']->getLL('markState', 1) . '" title="' . $GLOBALS['LANG']->getLL('markState', 1) . '" />';
 				}
 				$singleLine[] = $this->linkPage($image, array('highlight' => $entry['uid']));
 			} else {
 				$singleLine[] = '';
 			}
 			// put line together
-			$lines[] = ('
+			$lines[] = '
 				<tr class="db_list_normal">
-					<td>' . implode('</td><td>', $singleLine)) . '</td>
+					<td>' . implode('</td><td>', $singleLine) . '</td>
 				</tr>';
 		}
 		// Finally, put it all together:
-		$theCode = ('
+		$theCode = '
 			<!--
 				History (list):
 			-->
 			<table class="typo3-dblist" border="0" cellpadding="0" cellspacing="0" id="typo3-history">
-				' . implode('', $lines)) . '
+				' . implode('', $lines) . '
 			</table>';
 		if ($this->lastSyslogId) {
 			$theCode .= '<br />' . $this->linkPage(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-move-to-bottom', array('title' => $GLOBALS['LANG']->getLL('fullView', TRUE))), array('diff' => ''));
 		}
 		// Add message about the difference view.
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('differenceMsg'), '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
-		$theCode .= ('<br /><br />' . $flashMessage->render()) . '<br />';
+		$theCode .= '<br /><br />' . $flashMessage->render() . '<br />';
 		// Add the whole content as a module section:
 		return $GLOBALS['SOBE']->doc->section($GLOBALS['LANG']->getLL('changes'), $theCode, FALSE, TRUE);
 	}
@@ -489,10 +489,10 @@ class RecordHistory {
 				// Turn around diff because it should be a "rollback preview"
 				if ($diff['insertsDeletes'][$key] == 1) {
 					// insert
-					$record .= ('<strong>' . $GLOBALS['LANG']->getLL('delete', 1)) . '</strong>';
+					$record .= '<strong>' . $GLOBALS['LANG']->getLL('delete', 1) . '</strong>';
 					$record .= '<br />';
 				} elseif ($diff['insertsDeletes'][$key] == -1) {
-					$record .= ('<strong>' . $GLOBALS['LANG']->getLL('insert', 1)) . '</strong>';
+					$record .= '<strong>' . $GLOBALS['LANG']->getLL('insert', 1) . '</strong>';
 					$record .= '<br />';
 				}
 				// Build up temporary diff array
@@ -504,10 +504,10 @@ class RecordHistory {
 				}
 				$elParts = explode(':', $key);
 				$titleLine = $this->createRollbackLink($key, $GLOBALS['LANG']->getLL('revertRecord', 1), 1) . $this->generateTitle($elParts[0], $elParts[1]);
-				$record = ('<div style="margin-left:10px;padding-left:5px;border-left:1px solid black;border-bottom:1px dotted black;padding-bottom:2px;">' . $record) . '</div>';
+				$record = '<div style="margin-left:10px;padding-left:5px;border-left:1px solid black;border-bottom:1px dotted black;padding-bottom:2px;">' . $record . '</div>';
 				$content .= $GLOBALS['SOBE']->doc->section($titleLine, $record, FALSE, FALSE, FALSE, TRUE);
 			}
-			$content = (($this->createRollbackLink('ALL', $GLOBALS['LANG']->getLL('revertAll', 1), 0) . '<div style="margin-left:10px;padding-left:5px;border-left:1px solid black;border-bottom:1px dotted black;padding-bottom:2px;">') . $content) . '</div>';
+			$content = $this->createRollbackLink('ALL', $GLOBALS['LANG']->getLL('revertAll', 1), 0) . '<div style="margin-left:10px;padding-left:5px;border-left:1px solid black;border-bottom:1px dotted black;padding-bottom:2px;">' . $content . '</div>';
 		} else {
 			$content = $GLOBALS['LANG']->getLL('noDifferences', 1);
 		}
@@ -534,18 +534,18 @@ class RecordHistory {
 				if (is_array($GLOBALS['TCA'][$table]['columns'][$fN]) && $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] != 'passthrough') {
 					// Create diff-result:
 					$diffres = $t3lib_diff_Obj->makeDiffDisplay(\TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($table, $fN, $entry['oldRecord'][$fN], 0, 1), \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($table, $fN, $entry['newRecord'][$fN], 0, 1));
-					$lines[] = ((((('
+					$lines[] = '
 						<tr class="bgColor4">
-						' . ($rollbackUid ? ('<td style="width:33px">' . $this->createRollbackLink((((($table . ':') . $rollbackUid) . ':') . $fN), $GLOBALS['LANG']->getLL('revertField', 1), 2)) . '</td>' : '')) . '
-							<td style="width:90px"><em>') . $GLOBALS['LANG']->sl(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($table, $fN), 1)) . '</em></td>
-							<td style="width:300px">') . nl2br($diffres)) . '</td>
+						' . ($rollbackUid ? '<td style="width:33px">' . $this->createRollbackLink(($table . ':' . $rollbackUid . ':' . $fN), $GLOBALS['LANG']->getLL('revertField', 1), 2) . '</td>' : '') . '
+							<td style="width:90px"><em>' . $GLOBALS['LANG']->sl(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($table, $fN), 1) . '</em></td>
+							<td style="width:300px">' . nl2br($diffres) . '</td>
 						</tr>';
 				}
 			}
 		}
 		if ($lines) {
-			$content = ('<table border="0" cellpadding="2" cellspacing="2" id="typo3-history-item">
-					' . implode('', $lines)) . '
+			$content = '<table border="0" cellpadding="2" cellspacing="2" id="typo3-history-item">
+					' . implode('', $lines) . '
 				</table>';
 			return $content;
 		}
@@ -573,7 +573,7 @@ class RecordHistory {
 		}
 		// traverse changelog array
 		foreach ($this->changeLog as $key => $value) {
-			$field = ($value['tablename'] . ':') . $value['recuid'];
+			$field = $value['tablename'] . ':' . $value['recuid'];
 			// inserts / deletes
 			if ($value['action']) {
 				if (!$insertsDeletes[$field]) {
@@ -665,9 +665,9 @@ class RecordHistory {
 		// If table is found in $GLOBALS['TCA']:
 		if ($GLOBALS['TCA'][$table]) {
 			// Selecting the $this->maxSteps most recent states:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_history.*, sys_log.userid', 'sys_history, sys_log', (('sys_history.sys_log_uid = sys_log.uid
-							AND sys_history.tablename = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_history')) . '
-							AND sys_history.recuid = ') . intval($uid), '', 'sys_log.uid DESC', $this->maxSteps);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('sys_history.*, sys_log.userid', 'sys_history, sys_log', 'sys_history.sys_log_uid = sys_log.uid
+							AND sys_history.tablename = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_history') . '
+							AND sys_history.recuid = ' . intval($uid), '', 'sys_log.uid DESC', $this->maxSteps);
 			// Traversing the result, building up changesArray / changeLog:
 			$changeLog = array();
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -695,10 +695,10 @@ class RecordHistory {
 			// SELECT INSERTS/DELETES
 			if ($this->showInsertDelete) {
 				// Select most recent inserts and deletes // WITHOUT snapshots
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, userid, action, tstamp', 'sys_log', (('type = 1
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, userid, action, tstamp', 'sys_log', 'type = 1
 							AND (action=1 OR action=3)
-							AND tablename = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_log')) . '
-							AND recuid = ') . intval($uid), '', 'uid DESC', $this->maxSteps);
+							AND tablename = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_log') . '
+							AND recuid = ' . intval($uid), '', 'uid DESC', $this->maxSteps);
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					if ($row['uid'] < $this->lastSyslogId && $this->lastSyslogId) {
 						continue;
@@ -741,10 +741,10 @@ class RecordHistory {
 	 * @todo Define visibility
 	 */
 	public function generateTitle($table, $uid) {
-		$out = ($table . ':') . $uid;
+		$out = $table . ':' . $uid;
 		if ($labelField = $GLOBALS['TCA'][$table]['ctrl']['label']) {
 			$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 'uid=' . intval($uid));
-			$out .= (' (' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $record, TRUE)) . ')';
+			$out .= ' (' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $record, TRUE) . ')';
 		}
 		return $out;
 	}
@@ -759,7 +759,7 @@ class RecordHistory {
 	 * @todo Define visibility
 	 */
 	public function createRollbackLink($key, $alt = '', $type = 0) {
-		return $this->linkPage(((((('<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', (('gfx/revert_' . $type) . '.gif'), 'width="33" height="33"')) . ' alt="') . $alt) . '" title="') . $alt) . '" align="middle" />', array('rollbackFields' => $key));
+		return $this->linkPage('<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg('', ('gfx/revert_' . $type . '.gif'), 'width="33" height="33"') . ' alt="' . $alt . '" title="' . $alt . '" align="middle" />', array('rollbackFields' => $key));
 	}
 
 	/**
@@ -781,8 +781,8 @@ class RecordHistory {
 		// Mergin overriding values:
 		$params = array_merge($params, $inparams);
 		// Make the link:
-		$link = ('show_rechis.php?' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $params)) . ($anchor ? '#' . $anchor : '');
-		return ((((('<a href="' . htmlspecialchars($link)) . '"') . ($title ? (' title="' . $title) . '"' : '')) . '>') . $str) . '</a>';
+		$link = 'show_rechis.php?' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $params) . ($anchor ? '#' . $anchor : '');
+		return '<a href="' . htmlspecialchars($link) . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $str . '</a>';
 	}
 
 	/**
@@ -834,7 +834,7 @@ class RecordHistory {
 			$sh_uid = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sh_uid');
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_history', 'uid=' . intval($sh_uid));
 			$record = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
-			$this->element = ($record['tablename'] . ':') . $record['recuid'];
+			$this->element = $record['tablename'] . ':' . $record['recuid'];
 			$this->lastSyslogId = $record['sys_log_uid'] - 1;
 		}
 	}

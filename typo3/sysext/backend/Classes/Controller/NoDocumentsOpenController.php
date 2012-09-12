@@ -76,7 +76,7 @@ class NoDocumentsOpenController {
 	public function main() {
 		$msg = array();
 		// Add a message, telling that no documents were open...
-		$msg[] = ('<p>' . $GLOBALS['LANG']->getLL('noDocuments_msg', 1)) . '</p><br />';
+		$msg[] = '<p>' . $GLOBALS['LANG']->getLL('noDocuments_msg', 1) . '</p><br />';
 		// If another page module was specified, replace the default Page module with the new one
 		$newPageModule = trim($GLOBALS['BE_USER']->getTSConfigVal('options.overridePageModule'));
 		$pageModule = \TYPO3\CMS\Backend\Utility\BackendUtility::isModuleSetInTBE_MODULES($newPageModule) ? $newPageModule : 'web_layout';
@@ -86,30 +86,30 @@ class NoDocumentsOpenController {
 		// Finding module images: PAGE
 		$imgFile = $GLOBALS['LANG']->moduleLabels['tabs_images']['web_layout_tab'];
 		$imgInfo = @getimagesize($imgFile);
-		$img_web_layout = is_array($imgInfo) ? ((('<img src="../' . substr($imgFile, strlen(PATH_site))) . '" ') . $imgInfo[3]) . ' alt="" />' : '';
+		$img_web_layout = is_array($imgInfo) ? '<img src="../' . substr($imgFile, strlen(PATH_site)) . '" ' . $imgInfo[3] . ' alt="" />' : '';
 		// Finding module images: LIST
 		$imgFile = $GLOBALS['LANG']->moduleLabels['tabs_images']['web_list_tab'];
 		$imgInfo = @getimagesize($imgFile);
-		$img_web_list = is_array($imgInfo) ? ((('<img src="../' . substr($imgFile, strlen(PATH_site))) . '" ') . $imgInfo[3]) . ' alt="" />' : '';
+		$img_web_list = is_array($imgInfo) ? '<img src="../' . substr($imgFile, strlen(PATH_site)) . '" ' . $imgInfo[3] . ' alt="" />' : '';
 		// If either the Web>List OR Web>Page module are active, show the little message with links to those modules:
 		if ($a_wl || $a_wp) {
 			$msg_2 = array();
 			// Web>Page:
 			if ($a_wp) {
-				$msg_2[] = (((('<strong><a href="#" onclick="top.goToModule(\'' . $pageModule) . '\'); return false;">') . $GLOBALS['LANG']->getLL('noDocuments_pagemodule', 1)) . $img_web_layout) . '</a></strong>';
+				$msg_2[] = '<strong><a href="#" onclick="top.goToModule(\'' . $pageModule . '\'); return false;">' . $GLOBALS['LANG']->getLL('noDocuments_pagemodule', 1) . $img_web_layout . '</a></strong>';
 				if ($a_wl) {
 					$msg_2[] = $GLOBALS['LANG']->getLL('noDocuments_OR');
 				}
 			}
 			// Web>List
 			if ($a_wl) {
-				$msg_2[] = (('<strong><a href="#" onclick="top.goToModule(\'web_list\'); return false;">' . $GLOBALS['LANG']->getLL('noDocuments_listmodule', 1)) . $img_web_list) . '</a></strong>';
+				$msg_2[] = '<strong><a href="#" onclick="top.goToModule(\'web_list\'); return false;">' . $GLOBALS['LANG']->getLL('noDocuments_listmodule', 1) . $img_web_list . '</a></strong>';
 			}
-			$msg[] = ('<p>' . sprintf($GLOBALS['LANG']->getLL('noDocuments_msg2', 1), implode(' ', $msg_2))) . '</p><br />';
+			$msg[] = '<p>' . sprintf($GLOBALS['LANG']->getLL('noDocuments_msg2', 1), implode(' ', $msg_2)) . '</p><br />';
 		}
 		// Display the list of the most recently edited documents:
 		$modObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Opendocs\\Controller\\OpendocsController');
-		$msg[] = (('<p>' . $GLOBALS['LANG']->getLL('noDocuments_msg3', TRUE)) . '</p><br />') . $modObj->renderMenu();
+		$msg[] = '<p>' . $GLOBALS['LANG']->getLL('noDocuments_msg3', TRUE) . '</p><br />' . $modObj->renderMenu();
 		// Adding the content:
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('noDocuments'), implode(' ', $msg), 0, 1);
 	}

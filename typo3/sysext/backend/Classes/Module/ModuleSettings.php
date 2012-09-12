@@ -212,7 +212,7 @@ class ModuleSettings {
 	public function addToStoreListFromPrefix($prefix = '') {
 		$prefix = $prefix ? $prefix : $this->prefix;
 		foreach ($GLOBALS['SOBE']->MOD_SETTINGS as $key => $value) {
-			if (preg_match(('/^' . $prefix) . '/', $key)) {
+			if (preg_match('/^' . $prefix . '/', $key)) {
 				$this->storeList[$key] = $key;
 			}
 		}
@@ -325,7 +325,7 @@ class ModuleSettings {
 			if ($storeControl['LOAD'] and $storeIndex) {
 				$writeArray = $this->getStoredData($storeIndex, $writeArray);
 				$saveSettings = TRUE;
-				$msg = ('\'' . $this->storedSettings[$storeIndex]['title']) . '\' preset loaded!';
+				$msg = '\'' . $this->storedSettings[$storeIndex]['title'] . '\' preset loaded!';
 			} elseif ($storeControl['SAVE']) {
 				if (trim($storeControl['title'])) {
 					// Get the data to store
@@ -337,13 +337,13 @@ class ModuleSettings {
 					// Add data to the storage array
 					$this->storedSettings[$storeIndex] = $newEntry;
 					$saveSettings = TRUE;
-					$msg = ('\'' . $newEntry['title']) . '\' preset saved!';
+					$msg = '\'' . $newEntry['title'] . '\' preset saved!';
 				} else {
 					$msg = 'Please enter a name for the preset!';
 				}
 			} elseif ($storeControl['REMOVE'] and $storeIndex) {
 				// Removing entry
-				$msg = ('\'' . $this->storedSettings[$storeIndex]['title']) . '\' preset entry removed!';
+				$msg = '\'' . $this->storedSettings[$storeIndex]['title'] . '\' preset entry removed!';
 				unset($this->storedSettings[$storeIndex]);
 				$saveSettings = TRUE;
 			}
@@ -394,18 +394,18 @@ class ModuleSettings {
 		$opt = array();
 		$opt[] = '<option value="0">   </option>';
 		foreach ($this->storedSettings as $id => $v) {
-			$opt[] = ((('<option value="' . $id) . '">') . htmlspecialchars($v['title'])) . '</option>';
+			$opt[] = '<option value="' . $id . '">' . htmlspecialchars($v['title']) . '</option>';
 		}
 		$storedEntries = count($opt) > 1;
 		$codeTD = array();
 		// LOAD, REMOVE, but also show selector so you can overwrite an entry with SAVE
 		if ($storedEntries and count($showElements)) {
 			// Selector box
-			$onChange = ('document.forms[\'' . $this->formName) . '\'][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';';
-			$code = ((('
-					<select name="storeControl[STORE]" onChange="' . htmlspecialchars($onChange)) . '">
-					') . implode('
-						', $opt)) . '
+			$onChange = 'document.forms[\'' . $this->formName . '\'][\'storeControl[title]\'].value= this.options[this.selectedIndex].value!=0 ? this.options[this.selectedIndex].text : \'\';';
+			$code = '
+					<select name="storeControl[STORE]" onChange="' . htmlspecialchars($onChange) . '">
+					' . implode('
+						', $opt) . '
 					</select>';
 			// Load button
 			if (in_array('load', $showElements)) {
@@ -418,37 +418,37 @@ class ModuleSettings {
 					<input type="submit" name="storeControl[REMOVE]" value="Remove" /> ';
 			}
 			$codeTD[] = '<td width="1%">Preset:</td>';
-			$codeTD[] = ('<td nowrap="nowrap">' . $code) . '&nbsp;&nbsp;</td>';
+			$codeTD[] = '<td nowrap="nowrap">' . $code . '&nbsp;&nbsp;</td>';
 		}
 		// SAVE
 		if (in_array('save', $showElements)) {
-			$onClick = !$storedEntries ? '' : ((('if (document.forms[\'' . $this->formName) . '\'][\'storeControl[STORE]\'].options[document.forms[\'') . $this->formName) . '\'][\'storeControl[STORE]\'].selectedIndex].value<0) return confirm(\'Are you sure you want to overwrite the existing entry?\');';
+			$onClick = !$storedEntries ? '' : 'if (document.forms[\'' . $this->formName . '\'][\'storeControl[STORE]\'].options[document.forms[\'' . $this->formName . '\'][\'storeControl[STORE]\'].selectedIndex].value<0) return confirm(\'Are you sure you want to overwrite the existing entry?\');';
 			$code = '<input name="storeControl[title]" value="" type="text" max="80" width="25"> ';
-			$code .= ('<input type="submit" name="storeControl[SAVE]" value="Save" onClick="' . htmlspecialchars($onClick)) . '" />';
-			$codeTD[] = ('<td nowrap="nowrap">' . $code) . '</td>';
+			$code .= '<input type="submit" name="storeControl[SAVE]" value="Save" onClick="' . htmlspecialchars($onClick) . '" />';
+			$codeTD[] = '<td nowrap="nowrap">' . $code . '</td>';
 		}
 		$codeTD = implode('
 			', $codeTD);
 		if (trim($code)) {
-			$code = ('
+			$code = '
 			<!--
 				Store control
 			-->
 			<table border="0" cellpadding="3" cellspacing="0" width="100%">
 				<tr class="bgColor4">
-				' . $codeTD) . '
+				' . $codeTD . '
 				</tr>
 			</table>
 			';
 		}
 		if ($this->msg) {
-			$code .= ('
-			<div><strong>' . htmlspecialchars($this->msg)) . '</strong></div>';
+			$code .= '
+			<div><strong>' . htmlspecialchars($this->msg) . '</strong></div>';
 		}
 		// TODO need to add parameters
 		if ($useOwnForm and trim($code)) {
-			$code = ((((((('
-		<form action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '" method="post" name="') . $this->formName) . '" enctype="') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype']) . '">') . $code) . '</form>';
+			$code = '
+		<form action="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME') . '" method="post" name="' . $this->formName . '" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">' . $code . '</form>';
 		}
 		return $code;
 	}

@@ -290,8 +290,8 @@ class SpriteGenerator {
 		$iconNames = array_keys($this->iconsData);
 		natsort($iconNames);
 		return array(
-			'spriteImage' => ((PATH_site . $this->spriteFolder) . $this->spriteName) . '.png',
-			'cssFile' => ((PATH_site . $this->cssFolder) . $this->spriteName) . '.css',
+			'spriteImage' => PATH_site . $this->spriteFolder . $this->spriteName . '.png',
+			'cssFile' => PATH_site . $this->cssFolder . $this->spriteName . '.css',
 			'iconNames' => $iconNames
 		);
 	}
@@ -316,7 +316,7 @@ class SpriteGenerator {
 			'###SPRITENAME###' => '',
 			'###SPRITEURL###' => $spritePathForCSS ? $spritePathForCSS . '/' : ''
 		);
-		$markerArray['###SPRITEURL###'] .= ($this->spriteName . '.png') . $timestamp;
+		$markerArray['###SPRITEURL###'] .= $this->spriteName . '.png' . $timestamp;
 		foreach ($this->spriteBases as $base) {
 			$markerArray['###SPRITENAME###'] = $base;
 			$cssData .= \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($this->templateSprite, $markerArray);
@@ -333,14 +333,14 @@ class SpriteGenerator {
 				'###SIZE_INFO###' => ''
 			);
 			if ($data['height'] != $this->defaultHeight) {
-				$markerArrayIcons['###SIZE_INFO###'] .= (((TAB . 'height: ') . $data['height']) . 'px;') . LF;
+				$markerArrayIcons['###SIZE_INFO###'] .= TAB . 'height: ' . $data['height'] . 'px;' . LF;
 			}
 			if ($data['width'] != $this->defaultWidth) {
-				$markerArrayIcons['###SIZE_INFO###'] .= (((TAB . 'width: ') . $data['width']) . 'px;') . LF;
+				$markerArrayIcons['###SIZE_INFO###'] .= TAB . 'width: ' . $data['width'] . 'px;' . LF;
 			}
 			$cssData .= \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($this->templateIcon, $markerArrayIcons);
 		}
-		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(((PATH_site . $this->cssFolder) . $this->spriteName) . '.css', $cssData);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $this->cssFolder . $this->spriteName . '.css', $cssData);
 	}
 
 	/**
@@ -355,7 +355,7 @@ class SpriteGenerator {
 		$cssPathSegments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', trim($this->cssFolder, '/'));
 		$graphicPathSegments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', trim($this->spriteFolder, '/'));
 		$i = 0;
-		while ((isset($cssPathSegments[$i]) && isset($graphicPathSegments[$i])) && $cssPathSegments[$i] == $graphicPathSegments[$i]) {
+		while (isset($cssPathSegments[$i]) && isset($graphicPathSegments[$i]) && $cssPathSegments[$i] == $graphicPathSegments[$i]) {
 			unset($cssPathSegments[$i]);
 			unset($graphicPathSegments[$i]);
 			++$i;
@@ -376,7 +376,7 @@ class SpriteGenerator {
 	protected function generateGraphic() {
 		$tempSprite = \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam($this->spriteName);
 		$filePath = array(
-			'mainFile' => ((PATH_site . $this->spriteFolder) . $this->spriteName) . '.png'
+			'mainFile' => PATH_site . $this->spriteFolder . $this->spriteName . '.png'
 		);
 		// Create black true color image with given size
 		$newSprite = imagecreatetruecolor($this->spriteWidth, $this->spriteHeight);
@@ -462,17 +462,17 @@ class SpriteGenerator {
 		$resultArray = array();
 		foreach ($subFolders as $folder) {
 			if ($folder !== '.svn') {
-				$icons = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir(((PATH_site . $directoryPath) . $folder) . '/', 'gif,png,jpg');
-				if ((!in_array($folder, $this->spriteBases) && count($icons)) && $folder !== '') {
+				$icons = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir(PATH_site . $directoryPath . $folder . '/', 'gif,png,jpg');
+				if (!in_array($folder, $this->spriteBases) && count($icons) && $folder !== '') {
 					$this->spriteBases[] = $folder;
 				}
 				foreach ($icons as $icon) {
 					$fileInfo = pathinfo($icon);
 					$iconName = ($folder ? $folder . '-' : '') . $fileInfo['filename'];
 					if (!$this->ommitSpriteNameInIconName) {
-						$iconName = ($this->spriteName . '-') . $iconName;
+						$iconName = $this->spriteName . '-' . $iconName;
 					}
-					$resultArray[$iconName] = (($directoryPath . $folder) . '/') . $icon;
+					$resultArray[$iconName] = $directoryPath . $folder . '/' . $icon;
 				}
 			}
 		}
@@ -504,7 +504,7 @@ class SpriteGenerator {
 				'left' => 0,
 				'top' => 0
 			);
-			$sizeTag = ($imageInfo[0] . 'x') . $imageInfo[1];
+			$sizeTag = $imageInfo[0] . 'x' . $imageInfo[1];
 			if (isset($this->iconSizes[$sizeTag])) {
 				$this->iconSizes[$sizeTag] += 1;
 			} else {

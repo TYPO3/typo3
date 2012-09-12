@@ -100,9 +100,9 @@ class AbstractRte {
 		// Transform value:
 		$value = $this->transformContent('rte', $PA['itemFormElValue'], $table, $field, $row, $specConf, $thisConfig, $RTErelPath, $thePidValue);
 		// Create item:
-		$item = ((((((('
-			' . $this->triggerField($PA['itemFormElName'])) . '
-			<textarea name="') . htmlspecialchars($PA['itemFormElName'])) . '"') . $pObj->formWidthText('48', 'off')) . ' rows="20" wrap="off" style="background-color: #99eebb;">') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($value)) . '</textarea>';
+		$item = '
+			' . $this->triggerField($PA['itemFormElName']) . '
+			<textarea name="' . htmlspecialchars($PA['itemFormElName']) . '"' . $pObj->formWidthText('48', 'off') . ' rows="20" wrap="off" style="background-color: #99eebb;">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($value) . '</textarea>';
 		// Return form item:
 		return $item;
 	}
@@ -132,7 +132,7 @@ class AbstractRte {
 			if ($p['mode']) {
 				// Initialize transformation:
 				$parseHTML = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
-				$parseHTML->init(($table . ':') . $field, $pid);
+				$parseHTML->init($table . ':' . $field, $pid);
 				$parseHTML->setRelPath($RTErelPath);
 				// Perform transformation:
 				$value = $parseHTML->RTE_transform($value, $specConf, $dirRTE, $thisConfig);
@@ -155,7 +155,7 @@ class AbstractRte {
 	 */
 	public function triggerField($fieldName) {
 		$triggerFieldName = preg_replace('/\\[([^]]+)\\]$/', '[_TRANSFORM_\\1]', $fieldName);
-		return ('<input type="hidden" name="' . htmlspecialchars($triggerFieldName)) . '" value="RTE" />';
+		return '<input type="hidden" name="' . htmlspecialchars($triggerFieldName) . '" value="RTE" />';
 	}
 
 }
