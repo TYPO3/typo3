@@ -55,6 +55,40 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	}
 
 	/**
+	 *
+	 * @test
+	 */
+	public function mergeDefaultConfigurationWithNoCurrentValuesReturnsTheDefaultConfiguration() {
+
+		$extensionKey = 'some_non_existing_extension';
+		$extension = array(
+			'key' => $extensionKey
+		);
+		$defaultConfiguration = array(
+			'foo' => 'bar'
+		);
+
+		// No value is set
+		$configuration = $this->configurationItemRepository->mergeWithExistingConfiguration($defaultConfiguration, $extension);
+		$this->assertEquals($defaultConfiguration, $configuration);
+
+		// Value is set to null
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey] = NULL;
+		$configuration = $this->configurationItemRepository->mergeWithExistingConfiguration($defaultConfiguration, $extension);
+		$this->assertEquals($defaultConfiguration, $configuration);
+
+		// Value is set to integer
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey] = 123;
+		$configuration = $this->configurationItemRepository->mergeWithExistingConfiguration($defaultConfiguration, $extension);
+		$this->assertEquals($defaultConfiguration, $configuration);
+
+		// valid configuration value - an empty serialized array
+		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extensionKey] = 'a:0:{}';
+		$configuration = $this->configurationItemRepository->mergeWithExistingConfiguration($defaultConfiguration, $extension);
+		$this->assertEquals($defaultConfiguration, $configuration);
+	}
+
+	/**
 	 * @test
 	 * @return void
 	 */
