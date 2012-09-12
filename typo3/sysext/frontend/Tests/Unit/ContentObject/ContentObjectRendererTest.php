@@ -1029,6 +1029,50 @@ class ContentObjectRendererTest extends \tx_phpunit_testcase {
 		}
 	}
 
+	/**
+	 * Data provider for the stdWrap_strftime test
+	 *
+	 * @return array multi-dimensional array with the second level like this:
+	 * @see stdWrap_strftime
+	 */
+	public function stdWrap_strftimeDataProvider() {
+		$data = array(
+			'testing timestamp' => array(
+				1347394798,
+				array(
+					'strftime' => '%d-%m-%Y',
+				),
+				'11-09-2012',
+			),
+			'testing empty string' => array(
+				'',
+				array(
+					'strftime' => '%d-%m-%Y',
+				),
+				strftime('%d-%m-%Y', $GLOBALS['EXEC_TIME']),
+			),
+			'testing null' => array(
+				NULL,
+				array(
+					'strftime' => '%d-%m-%Y',
+				),
+				strftime('%d-%m-%Y', $GLOBALS['EXEC_TIME']),
+			),
+		);
+		return $data;
+	}
+
+	/**
+	 * Check if strftime works as expected
+	 *
+	 * @dataProvider stdWrap_strftimeDataProvider
+	 * @test
+	 */
+	public function stdWrap_strftime($content, $conf, $expected) {
+		$result = $this->cObj->stdWrap_strftime($content, $conf);
+		$this->assertEquals($expected, $result);
+	}
+
 }
 
 ?>
