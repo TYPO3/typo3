@@ -41,7 +41,34 @@ define('TYPO3_MODE', 'FE');
 // Prevent any output until AJAX/compression is initialized to stop
 // AJAX/compression data corruption
 ob_start();
-\TYPO3\CMS\Core\Core\Bootstrap::getInstance()->registerExtDirectComponents()->populateLocalConfiguration()->initializeCachingFramework()->registerAutoloader()->checkUtf8DatabaseSettingsOrDie()->transferDeprecatedCurlSettings()->setCacheHashOptions()->enforceCorrectProxyAuthScheme()->setDefaultTimezone()->initializeL10nLocales()->configureImageProcessingOptions()->convertPageNotFoundHandlingToBoolean()->registerGlobalDebugFunctions()->registerSwiftMailer()->configureExceptionHandling()->setMemoryLimit()->defineTypo3RequestTypes()->populateTypo3LoadedExtGlobal(TRUE)->loadAdditionalConfigurationFromExtensions(TRUE)->deprecationLogForOldExtCacheSetting()->initializeExceptionHandling()->requireAdditionalExtensionFiles()->setFinalCachingFrameworkCacheConfiguration()->defineLoggingAndExceptionConstants()->unsetReservedGlobalVariables();
+
+\TYPO3\CMS\Core\Core\Bootstrap::getInstance()
+	->registerExtDirectComponents()
+	->populateLocalConfiguration()
+	->initializeCachingFramework()
+	->registerAutoloader()
+	->checkUtf8DatabaseSettingsOrDie()
+	->transferDeprecatedCurlSettings()
+	->setCacheHashOptions()
+	->enforceCorrectProxyAuthScheme()
+	->setDefaultTimezone()
+	->initializeL10nLocales()
+	->configureImageProcessingOptions()
+	->convertPageNotFoundHandlingToBoolean()
+	->registerGlobalDebugFunctions()
+	->registerSwiftMailer()
+	->configureExceptionHandling()
+	->setMemoryLimit()
+	->defineTypo3RequestTypes()
+	->populateTypo3LoadedExtGlobal(TRUE)
+	->loadAdditionalConfigurationFromExtensions(TRUE)
+	->deprecationLogForOldExtCacheSetting()
+	->initializeExceptionHandling()
+	->requireAdditionalExtensionFiles()
+	->setFinalCachingFrameworkCacheConfiguration()
+	->defineLoggingAndExceptionConstants()
+	->unsetReservedGlobalVariables();
+
 if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
 	die('<strong>Error:</strong> The main frontend extension "cms" was not loaded. Enable it in the extension manager in the backend.');
 }
