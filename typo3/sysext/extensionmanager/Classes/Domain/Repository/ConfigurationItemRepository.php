@@ -193,6 +193,9 @@ class ConfigurationItemRepository {
 	 */
 	protected function mergeWithExistingConfiguration(array $configuration, array $extension) {
 		$currentExtensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extension['key']]);
+		if (!is_array($currentExtensionConfig)) {
+			$currentExtensionConfig = array();
+		}
 		$flatExtensionConfig = \TYPO3\CMS\Core\Utility\ArrayUtility::flatten($currentExtensionConfig);
 		$valuedCurrentExtensionConfig = array();
 		foreach ($flatExtensionConfig as $key => $value) {
