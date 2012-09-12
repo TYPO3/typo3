@@ -458,9 +458,6 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	 * @dataProvider IPv6Bin2HexDataProviderCorrect
 	 */
 	public function IPv6Bin2HexCorrectlyConvertsAddresses($binary, $hex) {
-		if (!class_exists('t3lib_diff')) {
-			$this->markTestSkipped('The current version of phpunit relies on t3lib_diff which is removed in 6.0 and thus this test fails. Move t3lib_diff to phpunit and reenable this test.');
-		}
 		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::IPv6Bin2Hex($binary), $hex);
 	}
 
@@ -476,7 +473,6 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		return array(
 			'empty' => array('::', '0000:0000:0000:0000:0000:0000:0000:0000'),
 			'localhost' => array('::1', '0000:0000:0000:0000:0000:0000:0000:0001'),
-			'some address on right side' => array('::f0f', '0000:0000:0000:0000:0000:0000:0000:0f0f'),
 			'expansion in middle 1' => array('1::2', '0001:0000:0000:0000:0000:0000:0000:0002'),
 			'expansion in middle 2' => array('1:2::3', '0001:0002:0000:0000:0000:0000:0000:0003'),
 			'expansion in middle 3' => array('1::2:3', '0001:0000:0000:0000:0000:0000:0002:0003'),
@@ -489,7 +485,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	 * @dataProvider normalizeCompressIPv6DataProviderCorrect
 	 */
 	public function normalizeIPv6CorrectlyNormalizesAddresses($compressed, $normalized) {
-		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::normalizeIPv6($compressed), $normalized);
+		$this->assertEquals($normalized, \TYPO3\CMS\Core\Utility\GeneralUtility::normalizeIPv6($compressed));
 	}
 
 	/**
@@ -497,10 +493,17 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	 * @dataProvider normalizeCompressIPv6DataProviderCorrect
 	 */
 	public function compressIPv6CorrectlyCompressesAdresses($compressed, $normalized) {
-		if (!class_exists('t3lib_diff')) {
-			$this->markTestSkipped('The current version of phpunit relies on t3lib_diff which is removed in 6.0 and thus this test fails. Move t3lib_diff to phpunit and reenable this test.');
+		$this->assertEquals($compressed, \TYPO3\CMS\Core\Utility\GeneralUtility::compressIPv6($normalized));
+	}
+
+	/**
+	 * @test
+	 */
+	public function compressIPv6CorrectlyCompressesAdressWithSomeAddressOnRightSide() {
+		if (strtolower(PHP_OS) === 'darwin') {
+			$this->markTestSkipped('This test does not work on OSX / Darwin OS.');
 		}
-		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::compressIPv6($normalized), $compressed);
+		$this->assertEquals('::f0f', \TYPO3\CMS\Core\Utility\GeneralUtility::compressIPv6('0000:0000:0000:0000:0000:0000:0000:0f0f'));
 	}
 
 	///////////////////////////////

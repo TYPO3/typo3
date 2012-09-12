@@ -67,9 +67,6 @@ class CacheHashCalculatorTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function cacheHashCalculationWorks($params, $expected) {
-		if (!class_exists('t3lib_diff')) {
-			$this->markTestSkipped('The current version of phpunit relies on t3lib_diff which is removed in 6.0 and thus this test fails. Move t3lib_diff to phpunit and reenable this test.');
-		}
 		$this->assertEquals($expected, $this->fixture->calculateCacheHash($params));
 	}
 
@@ -139,9 +136,6 @@ class CacheHashCalculatorTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function canGenerateForParameters($params, $expected) {
-		if (!class_exists('t3lib_diff')) {
-			$this->markTestSkipped('The current version of phpunit relies on t3lib_diff which is removed in 6.0 and thus this test fails. Move t3lib_diff to phpunit and reenable this test.');
-		}
 		$this->assertEquals($expected, $this->fixture->generateForParameters($params));
 	}
 
@@ -193,9 +187,6 @@ class CacheHashCalculatorTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function canWhitelistParameters($params, $expected) {
-		if (!class_exists('t3lib_diff')) {
-			$this->markTestSkipped('The current version of phpunit relies on t3lib_diff which is removed in 6.0 and thus this test fails. Move t3lib_diff to phpunit and reenable this test.');
-		}
 		$method = new \ReflectionMethod('TYPO3\\CMS\\Frontend\\Page\\CacheHashCalculator', 'setCachedParametersWhiteList');
 		$method->setAccessible(TRUE);
 		$method->invoke($this->fixture, array('whitep1', 'whitep2'));
