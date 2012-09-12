@@ -25,6 +25,9 @@
 		<testsuite name="Core legacy tests">
 			<directory>../../../../typo3/sysext/core/Tests/Legacy/</directory>
 		</testsuite>
+		<testsuite name="EXT:belog tests">
+			<directory>../../../../typo3/sysext/belog/Tests/Unit/</directory>
+		</testsuite>
 		<testsuite name="EXT:beuser tests">
 			<directory>../../../../typo3/sysext/beuser/Tests/Unit/</directory>
 		</testsuite>

@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for the Tx_Belog_Domain_Repository_HistoryEntryRepository class.
+ * Testcase
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @package TYPO3
@@ -33,9 +33,9 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
 class HistoryEntryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings||\Tx_Phpunit_Interface_AccessibleObject
 	 */
-	private $querySettings = NULL;
+	protected $querySettings = NULL;
 
 	public function setUp() {
 		$this->querySettings = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
