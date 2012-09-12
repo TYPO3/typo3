@@ -84,16 +84,16 @@ class FileSystemNavigationFrameController {
 		$this->doc->getDragDropCode('folders');
 		$this->doc->getContextMenuCode();
 		// Setting JavaScript for menu.
-		$this->doc->JScode .= $this->doc->wrapScriptTags((((((((((((($this->currentSubScript ? ('top.currentSubScript=unescape("' . rawurlencode($this->currentSubScript)) . '");' : '') . '
+		$this->doc->JScode .= $this->doc->wrapScriptTags(($this->currentSubScript ? 'top.currentSubScript=unescape("' . rawurlencode($this->currentSubScript) . '");' : '') . '
 
 		function initFlashUploader(path) {
 			path = decodeURIComponent(path);
 			var flashUploadOptions = {
 				uploadURL: top.TS.PATH_typo3 + "ajax.php",
-				uploadFileSizeLimit: "') . \TYPO3\CMS\Core\Utility\GeneralUtility::getMaxUploadFileSize()) . '",
+				uploadFileSizeLimit: "' . \TYPO3\CMS\Core\Utility\GeneralUtility::getMaxUploadFileSize() . '",
 				uploadFileTypes: {
-					allow:  "') . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['allow']) . '",
-					deny: "') . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['deny']) . '"
+					allow:  "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['allow'] . '",
+					deny: "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['deny'] . '"
 				},
 				uploadFilePostName: "upload_1",
 				uploadPostParams: {
@@ -148,11 +148,11 @@ class FileSystemNavigationFrameController {
 			top.fsMod.currentBank = bank;
 			top.TYPO3.Backend.ContentContainer.setUrl(theUrl);
 
-			') . ($this->doHighlight ? 'Tree.highlightActiveItem("file", highlightID + "_" + bank);' : '')) . '
-			') . (!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ')) . '
+			' . ($this->doHighlight ? 'Tree.highlightActiveItem("file", highlightID + "_" + bank);' : '') . '
+			' . (!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ') . '
 			return false;
 		}
-		') . ($this->cMR ? ' jumpTo(top.fsMod.recentIds[\'file\'],\'\');' : ''));
+		' . ($this->cMR ? ' jumpTo(top.fsMod.recentIds[\'file\'],\'\');' : ''));
 	}
 
 	/**
@@ -167,13 +167,13 @@ class FileSystemNavigationFrameController {
 		// Outputting page tree:
 		$this->content .= $tree;
 		// Adding javascript for drag & drop activation and highlighting
-		$this->content .= $this->doc->wrapScriptTags((('
-			' . ($this->doHighlight ? 'Tree.highlightActiveItem("", top.fsMod.navFrameHighlightedID["file"]);' : '')) . '
-			') . (!$this->doc->isCMlayers() ? 'Tree.activateDragDrop = false;' : 'Tree.registerDragDropHandlers();'));
+		$this->content .= $this->doc->wrapScriptTags('
+			' . ($this->doHighlight ? 'Tree.highlightActiveItem("", top.fsMod.navFrameHighlightedID["file"]);' : '') . '
+			' . (!$this->doc->isCMlayers() ? 'Tree.activateDragDrop = false;' : 'Tree.registerDragDropHandlers();'));
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
-			'IMG_RESET' => (((((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"')) . ' id="treeFilterReset" alt="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.resetFilter')) . '" ') . 'title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.resetFilter')) . '" />',
+			'IMG_RESET' => '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/close_gray.gif', ' width="16" height="16"') . ' id="treeFilterReset" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.resetFilter') . '" ' . 'title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.resetFilter') . '" />',
 			'CONTENT' => $this->content
 		);
 		$subparts = array();
@@ -207,7 +207,7 @@ class FileSystemNavigationFrameController {
 			'refresh' => ''
 		);
 		// Refresh
-		$buttons['refresh'] = ((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-refresh')) . '</a>';
+		$buttons['refresh'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
 		// CSH
 		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'filetree', $GLOBALS['BACK_PATH']));
 		return $buttons;

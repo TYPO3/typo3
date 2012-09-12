@@ -73,7 +73,7 @@ class SpriteManagerTest extends \tx_phpunit_testcase {
 		$table = 'tt_content';
 		$type = 'contains-news';
 		\TYPO3\CMS\Backend\Sprite\SpriteManager::addTcaTypeIcon($table, $type, '');
-		$this->assertArrayHasKey((('tcarecords-' . $table) . '-') . $type, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']);
+		$this->assertArrayHasKey('tcarecords-' . $table . '-' . $type, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']);
 	}
 
 	/**
@@ -84,7 +84,7 @@ class SpriteManagerTest extends \tx_phpunit_testcase {
 		$table = 'tt_content';
 		$type = 'contains-news';
 		\TYPO3\CMS\Backend\Sprite\SpriteManager::addTcaTypeIcon($table, $type, $imagePath);
-		$this->assertEquals($imagePath, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'][(('tcarecords-' . $table) . '-') . $type]);
+		$this->assertEquals($imagePath, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['tcarecords-' . $table . '-' . $type]);
 	}
 
 	//////////////////////////////////////////
@@ -99,7 +99,7 @@ class SpriteManagerTest extends \tx_phpunit_testcase {
 		$icons = array($type => $imagePath);
 		$extensionKey = 'dummy';
 		\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $extensionKey);
-		$this->assertArrayHasKey((('extensions-' . $extensionKey) . '-') . $type, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']);
+		$this->assertArrayHasKey('extensions-' . $extensionKey . '-' . $type, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']);
 	}
 
 	/**
@@ -111,7 +111,7 @@ class SpriteManagerTest extends \tx_phpunit_testcase {
 		$icons = array($type => $imagePath);
 		$extensionKey = 'dummy';
 		\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $extensionKey);
-		$this->assertEquals($imagePath, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'][(('extensions-' . $extensionKey) . '-') . $type]);
+		$this->assertEquals($imagePath, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['extensions-' . $extensionKey . '-' . $type]);
 	}
 
 	/**
@@ -123,7 +123,7 @@ class SpriteManagerTest extends \tx_phpunit_testcase {
 		$icons = array($type => $imagePath);
 		$extensionKey = 'dummy';
 		\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $extensionKey);
-		$this->assertArrayHasKey((('extensions-' . $extensionKey) . '-') . $type, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']);
+		$this->assertArrayHasKey('extensions-' . $extensionKey . '-' . $type, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']);
 	}
 
 	/**
@@ -135,7 +135,7 @@ class SpriteManagerTest extends \tx_phpunit_testcase {
 		$icons = array($type => $imagePath);
 		$extensionKey = 'dummy';
 		\TYPO3\CMS\Backend\Sprite\SpriteManager::addSingleIcons($icons, $extensionKey);
-		$this->assertEquals($imagePath, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons'][(('extensions-' . $extensionKey) . '-') . $type]);
+		$this->assertEquals($imagePath, $GLOBALS['TBE_STYLES']['spritemanager']['singleIcons']['extensions-' . $extensionKey . '-' . $type]);
 	}
 
 }

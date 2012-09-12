@@ -87,7 +87,7 @@ class ElementHistoryController {
 		// Start history object
 		$historyObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\History\\RecordHistory');
 		if ($historyObj->returnUrl) {
-			$buttons['back'] = ((('<a href="' . htmlspecialchars($historyObj->returnUrl)) . '" class="typo3-goBack">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back')) . '</a>';
+			$buttons['back'] = '<a href="' . htmlspecialchars($historyObj->returnUrl) . '" class="typo3-goBack">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 		}
 		return $buttons;
 	}

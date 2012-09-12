@@ -83,7 +83,7 @@ class ModuleMenuView {
 				$data['root'][$num]['label'] = $moduleData['title'];
 				$data['root'][$num]['subitems'] = is_array($moduleData['subitems']) ? count($moduleData['subitems']) : 0;
 				if ($moduleData['link'] && $this->linkModules) {
-					$data['root'][$num]['link'] = ('top.goToModule(\'' . $moduleData['name']) . '\')';
+					$data['root'][$num]['link'] = 'top.goToModule(\'' . $moduleData['name'] . '\')';
 				}
 				// Traverse submodules
 				if (is_array($moduleData['subitems'])) {
@@ -158,7 +158,7 @@ class ModuleMenuView {
 			$modules[$moduleKey] = array(
 				'name' => $moduleName,
 				'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
-				'onclick' => ('top.goToModule(\'' . $moduleName) . '\');',
+				'onclick' => 'top.goToModule(\'' . $moduleName . '\');',
 				'icon' => $moduleIcon,
 				'link' => $moduleLink,
 				'description' => $GLOBALS['LANG']->moduleLabels['labels'][$moduleKey . 'label']
@@ -168,7 +168,7 @@ class ModuleMenuView {
 				$modules[$moduleKey]['subitems'][$moduleKey] = array(
 					'name' => $moduleName,
 					'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleName . '_tab'],
-					'onclick' => ('top.goToModule(\'' . $moduleName) . '\');',
+					'onclick' => 'top.goToModule(\'' . $moduleName . '\');',
 					'icon' => $this->getModuleIcon($moduleName . '_tab'),
 					'link' => $moduleLink,
 					'originalLink' => $moduleLink,
@@ -180,14 +180,14 @@ class ModuleMenuView {
 			} elseif (is_array($moduleData['sub'])) {
 				foreach ($moduleData['sub'] as $submoduleName => $submoduleData) {
 					$submoduleLink = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($submoduleData['script']);
-					$submoduleKey = (($moduleName . '_') . $submoduleName) . '_tab';
+					$submoduleKey = $moduleName . '_' . $submoduleName . '_tab';
 					$submoduleIcon = $this->getModuleIcon($submoduleKey);
 					$submoduleDescription = $GLOBALS['LANG']->moduleLabels['labels'][$submoduleKey . 'label'];
 					$originalLink = $submoduleLink;
 					$modules[$moduleKey]['subitems'][$submoduleKey] = array(
-						'name' => ($moduleName . '_') . $submoduleName,
+						'name' => $moduleName . '_' . $submoduleName,
 						'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$submoduleKey],
-						'onclick' => ((('top.goToModule(\'' . $moduleName) . '_') . $submoduleName) . '\');',
+						'onclick' => 'top.goToModule(\'' . $moduleName . '_' . $submoduleName . '\');',
 						'icon' => $submoduleIcon,
 						'link' => $submoduleLink,
 						'originalLink' => $originalLink,
@@ -226,7 +226,7 @@ class ModuleMenuView {
 			$icon['filename'] = $iconFileRelative;
 			$icon['size'] = $iconSizes[3];
 			$icon['title'] = htmlspecialchars($iconTitle);
-			$icon['html'] = ((((((('<img src="' . $iconFileRelative) . '" ') . $iconSizes[3]) . ' title="') . htmlspecialchars($iconTitle)) . '" alt="') . htmlspecialchars($iconTitle)) . '" />';
+			$icon['html'] = '<img src="' . $iconFileRelative . '" ' . $iconSizes[3] . ' title="' . htmlspecialchars($iconTitle) . '" alt="' . htmlspecialchars($iconTitle) . '" />';
 		}
 		return $icon;
 	}
@@ -281,9 +281,9 @@ class ModuleMenuView {
 	 */
 	public function renderLogoutButton() {
 		$buttonLabel = $GLOBALS['BE_USER']->user['ses_backuserid'] ? 'LLL:EXT:lang/locallang_core.php:buttons.exit' : 'LLL:EXT:lang/locallang_core.php:buttons.logout';
-		$buttonForm = ('
+		$buttonForm = '
 		<form action="logout.php" target="_top">
-			<input type="submit" value="&nbsp;' . $GLOBALS['LANG']->sL($buttonLabel, 1)) . '&nbsp;" />
+			<input type="submit" value="&nbsp;' . $GLOBALS['LANG']->sL($buttonLabel, 1) . '&nbsp;" />
 		</form>';
 		return $buttonForm;
 	}

@@ -183,9 +183,9 @@ abstract class AbstractRecordList {
 	public function addElement($h, $icon, $data, $trParams = '', $lMargin = '', $altLine = '') {
 		$noWrap = $this->no_noWrap ? '' : ' nowrap="nowrap"';
 		// Start up:
-		$out = ('
+		$out = '
 		<!-- Element, begin: -->
-		<tr ' . $trParams) . '>';
+		<tr ' . $trParams . '>';
 		// Show icon and lines
 		if ($this->showIcon) {
 			$out .= '
@@ -219,8 +219,8 @@ abstract class AbstractRecordList {
 					if ($this->oddColumnsCssClass && $ccount % 2 == 0) {
 						$cssClass = implode(' ', array($this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass));
 					}
-					$out .= (((((((('
-						<td' . $noWrap) . ' class="') . $cssClass) . '"') . $colsp) . $this->addElement_tdParams[$lastKey]) . '>') . $data[$lastKey]) . '</td>';
+					$out .= '
+						<td' . $noWrap . ' class="' . $cssClass . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</td>';
 				}
 				$lastKey = $vKey;
 				$c = 1;
@@ -232,7 +232,7 @@ abstract class AbstractRecordList {
 				$c++;
 			}
 			if ($c > 1) {
-				$colsp = (' colspan="' . $c) . '"';
+				$colsp = ' colspan="' . $c . '"';
 			} else {
 				$colsp = '';
 			}
@@ -242,8 +242,8 @@ abstract class AbstractRecordList {
 			if ($this->oddColumnsCssClass) {
 				$cssClass = implode(' ', array($this->addElement_tdCssClass[$lastKey], $this->oddColumnsCssClass));
 			}
-			$out .= (((((((('
-				<td' . $noWrap) . ' class="') . $cssClass) . '"') . $colsp) . $this->addElement_tdParams[$lastKey]) . '>') . $data[$lastKey]) . '</td>';
+			$out .= '
+				<td' . $noWrap . ' class="' . $cssClass . '"' . $colsp . $this->addElement_tdParams[$lastKey] . '>' . $data[$lastKey] . '</td>';
 		}
 		// End row
 		$out .= '
@@ -275,7 +275,7 @@ abstract class AbstractRecordList {
 			End of list table:
 		-->
 		<table border="0" cellpadding="0" cellspacing="0">';
-		$theIcon = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/ol/stopper.gif', 'width="18" height="16"')) . ' alt="" />';
+		$theIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/ol/stopper.gif', 'width="18" height="16"') . ' alt="" />';
 		$this->HTMLcode .= $this->addElement(1, '', array(), '', $this->leftMargin, $theIcon);
 		$this->HTMLcode .= '
 		</table>';
@@ -326,12 +326,12 @@ abstract class AbstractRecordList {
 		$tParam = $table ? '&table=' . rawurlencode($table) : '';
 		switch ($type) {
 		case 'fwd':
-			$href = (($this->listURL() . '&pointer=') . ($pointer - $this->iLimit)) . $tParam;
-			$content = ((((('<a href="' . htmlspecialchars($href)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-move-up')) . '</a> <i>[1 - ') . $pointer) . ']</i>';
+			$href = $this->listURL() . '&pointer=' . ($pointer - $this->iLimit) . $tParam;
+			$content = '<a href="' . htmlspecialchars($href) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-move-up') . '</a> <i>[1 - ' . $pointer . ']</i>';
 			break;
 		case 'rwd':
-			$href = (($this->listURL() . '&pointer=') . $pointer) . $tParam;
-			$content = ((((((('<a href="' . htmlspecialchars($href)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-move-down')) . '</a> <i>[') . ($pointer + 1)) . ' - ') . $this->totalItems) . ']</i>';
+			$href = $this->listURL() . '&pointer=' . $pointer . $tParam;
+			$content = '<a href="' . htmlspecialchars($href) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-move-down') . '</a> <i>[' . ($pointer + 1) . ' - ' . $this->totalItems . ']</i>';
 			break;
 		}
 		return $content;
@@ -345,7 +345,7 @@ abstract class AbstractRecordList {
 	 * @todo Define visibility
 	 */
 	public function listURL($altId = '') {
-		return ($this->script . '?id=') . (strcmp($altId, '') ? $altId : $this->id);
+		return $this->script . '?id=' . (strcmp($altId, '') ? $altId : $this->id);
 	}
 
 	/**
@@ -395,7 +395,7 @@ abstract class AbstractRecordList {
 	 */
 	public function initializeLanguages() {
 		// Look up page overlays:
-		$this->pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'pages_language_overlay', (('pid=' . intval($this->id)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay')) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages_language_overlay'), '', '', '', 'sys_language_uid');
+		$this->pageOverlays = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'pages_language_overlay', 'pid=' . intval($this->id) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages_language_overlay'), '', '', '', 'sys_language_uid');
 		$this->languageIconTitles = $this->getTranslateTools()->getSystemLanguages($this->id, $this->backPath);
 	}
 
@@ -444,7 +444,7 @@ abstract class AbstractRecordList {
 	protected function generateReferenceToolTip(array $references, $launchViewParameter = '') {
 		$result = array();
 		foreach ($references as $reference) {
-			$result[] = ((($reference['tablename'] . ':') . $reference['recuid']) . ':') . $reference['field'];
+			$result[] = $reference['tablename'] . ':' . $reference['recuid'] . ':' . $reference['field'];
 			if (strlen(implode(' / ', $result)) >= 100) {
 				break;
 			}
@@ -454,9 +454,9 @@ abstract class AbstractRecordList {
 		} else {
 			$htmlCode = '<a href="#"';
 			if ($launchViewParameter !== '') {
-				$htmlCode .= (' onclick="' . htmlspecialchars((('top.launchView(' . $launchViewParameter) . '); return false;'))) . '"';
+				$htmlCode .= ' onclick="' . htmlspecialchars(('top.launchView(' . $launchViewParameter . '); return false;')) . '"';
 			}
-			$htmlCode .= (' title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(implode(' / ', $result), 100))) . '">';
+			$htmlCode .= ' title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(implode(' / ', $result), 100)) . '">';
 			$htmlCode .= count($result);
 			$htmlCode .= '</a>';
 		}

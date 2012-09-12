@@ -63,7 +63,7 @@ class FileUploadController {
 		$this->target = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('target');
 		$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
 		if (!$this->returnUrl) {
-			$this->returnUrl = (((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir) . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('file_list')) . '&id=') . rawurlencode($this->target);
+			$this->returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('file_list') . '&id=' . rawurlencode($this->target);
 		}
 		// Create the folder object
 		if ($this->target) {
@@ -73,16 +73,16 @@ class FileUploadController {
 		if (!$this->folderObject) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', TRUE);
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', TRUE);
-			throw new \RuntimeException(($title . ': ') . $message, 1294586843);
+			throw new \RuntimeException($title . ': ' . $message, 1294586843);
 		}
 		// Setting the title and the icon
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-filetree-root');
-		$this->title = (($icon . htmlspecialchars($this->folderObject->getStorage()->getName())) . ': ') . htmlspecialchars($this->folderObject->getIdentifier());
+		$this->title = $icon . htmlspecialchars($this->folderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->folderObject->getIdentifier());
 		// Setting template object
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->setModuleTemplate('templates/file_upload.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->form = ('<form action="tce_file.php" method="post" name="editform" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype']) . '">';
+		$this->doc->form = '<form action="tce_file.php" method="post" name="editform" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
 	}
 
 	/**
@@ -119,11 +119,11 @@ class FileUploadController {
 	 */
 	public function renderUploadForm() {
 		// Make checkbox for "overwrite"
-		$content = ((('
+		$content = '
 			<div id="c-override">
-				<p><label for="overwriteExistingFiles"><input type="checkbox" class="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> ' . $GLOBALS['LANG']->getLL('overwriteExistingFiles', 1)) . '</label></p>
+				<p><label for="overwriteExistingFiles"><input type="checkbox" class="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> ' . $GLOBALS['LANG']->getLL('overwriteExistingFiles', 1) . '</label></p>
 				<p>&nbsp;</p>
-				<p>') . $GLOBALS['LANG']->getLL('uploadMultipleFilesInfo', TRUE)) . '</p>
+				<p>' . $GLOBALS['LANG']->getLL('uploadMultipleFilesInfo', TRUE) . '</p>
 			</div>
 			';
 		// Produce the number of upload-fields needed:
@@ -131,19 +131,19 @@ class FileUploadController {
 			<div id="c-upload">
 		';
 		// Adding 'size="50" ' for the sake of Mozilla!
-		$content .= ('
+		$content .= '
 				<input type="file" multiple="true" name="upload_1[]" />
-				<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($this->folderObject->getCombinedIdentifier())) . '" />
+				<input type="hidden" name="file[upload][1][target]" value="' . htmlspecialchars($this->folderObject->getCombinedIdentifier()) . '" />
 				<input type="hidden" name="file[upload][1][data]" value="1" /><br />
 			';
 		$content .= '
 			</div>
 		';
 		// Submit button:
-		$content .= ((('
+		$content .= '
 			<div id="c-submit">
-				<input type="hidden" name="redirect" value="' . $this->returnUrl) . '" /><br />
-				<input type="submit" value="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit', 1)) . '" />
+				<input type="hidden" name="redirect" value="' . $this->returnUrl . '" /><br />
+				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit', 1) . '" />
 			</div>
 		';
 		return $content;

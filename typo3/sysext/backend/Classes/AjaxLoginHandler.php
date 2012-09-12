@@ -65,7 +65,7 @@ class AjaxLoginHandler {
 	 * @return boolean
 	 */
 	protected function isAuthorizedBackendSession() {
-		return (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication) && isset($GLOBALS['BE_USER']->user['uid']);
+		return isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication && isset($GLOBALS['BE_USER']->user['uid']);
 	}
 
 	/**
@@ -75,7 +75,7 @@ class AjaxLoginHandler {
 	 */
 	protected function hasLoginBeenProcessed() {
 		$loginFormData = $GLOBALS['BE_USER']->getLoginFormData();
-		return ((($loginFormData['status'] == 'login' && isset($loginFormData['uname'])) && isset($loginFormData['uident'])) && isset($loginFormData['chalvalue'])) && (string) $_COOKIE[\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName()] !== (string) $GLOBALS['BE_USER']->id;
+		return $loginFormData['status'] == 'login' && isset($loginFormData['uname']) && isset($loginFormData['uident']) && isset($loginFormData['chalvalue']) && (string) $_COOKIE[\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName()] !== (string) $GLOBALS['BE_USER']->id;
 	}
 
 	/**
@@ -130,7 +130,7 @@ class AjaxLoginHandler {
 				$timeout = $GLOBALS['BE_USER']->auth_timeout_field;
 				// If 120 seconds from now is later than the session timeout, we need to show the refresh dialog.
 				// 120 is somewhat arbitrary to allow for a little room during the countdown and load times, etc.
-				if ($GLOBALS['EXEC_TIME'] >= ($ses_tstamp + $timeout) - 120) {
+				if ($GLOBALS['EXEC_TIME'] >= $ses_tstamp + $timeout - 120) {
 					$ajaxObj->addContent('login', array('will_time_out' => TRUE));
 				} else {
 					$ajaxObj->addContent('login', array('will_time_out' => FALSE));

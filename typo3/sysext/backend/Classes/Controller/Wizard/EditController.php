@@ -53,14 +53,14 @@ class EditController {
 			$config = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 			$fTable = $this->P['currentValue'] < 0 ? $config['neg_foreign_table'] : $config['foreign_table'];
 			// Detecting the various allowed field type setups and acting accordingly.
-			if ((((((is_array($config) && $config['type'] == 'select') && !$config['MM']) && $config['maxitems'] <= 1) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->P['currentValue'])) && $this->P['currentValue']) && $fTable) {
+			if (is_array($config) && $config['type'] == 'select' && !$config['MM'] && $config['maxitems'] <= 1 && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->P['currentValue']) && $this->P['currentValue'] && $fTable) {
 				// SINGLE value:
-				$redirectUrl = ((((('alt_doc.php?returnUrl=' . rawurlencode('wizard_edit.php?doClose=1')) . '&edit[') . $fTable) . '][') . $this->P['currentValue']) . ']=edit';
+				$redirectUrl = 'alt_doc.php?returnUrl=' . rawurlencode('wizard_edit.php?doClose=1') . '&edit[' . $fTable . '][' . $this->P['currentValue'] . ']=edit';
 				\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
-			} elseif ((is_array($config) && $this->P['currentSelectedValues']) && ($config['type'] == 'select' && $config['foreign_table'] || $config['type'] == 'group' && $config['internal_type'] == 'db')) {
+			} elseif (is_array($config) && $this->P['currentSelectedValues'] && ($config['type'] == 'select' && $config['foreign_table'] || $config['type'] == 'group' && $config['internal_type'] == 'db')) {
 				// MULTIPLE VALUES:
 				// Init settings:
-				$allowedTables = $config['type'] == 'group' ? $config['allowed'] : ($config['foreign_table'] . ',') . $config['neg_foreign_table'];
+				$allowedTables = $config['type'] == 'group' ? $config['allowed'] : $config['foreign_table'] . ',' . $config['neg_foreign_table'];
 				$prependName = 1;
 				$params = '';
 				// Selecting selected values into an array:
@@ -70,10 +70,10 @@ class EditController {
 				// Traverse that array and make parameters for alt_doc.php:
 				foreach ($value as $rec) {
 					$recTableUidParts = \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('_', $rec, 2);
-					$params .= ((('&edit[' . $recTableUidParts[0]) . '][') . $recTableUidParts[1]) . ']=edit';
+					$params .= '&edit[' . $recTableUidParts[0] . '][' . $recTableUidParts[1] . ']=edit';
 				}
 				// Redirect to alt_doc.php:
-				\TYPO3\CMS\Core\Utility\HttpUtility::redirect(('alt_doc.php?returnUrl=' . rawurlencode('wizard_edit.php?doClose=1')) . $params);
+				\TYPO3\CMS\Core\Utility\HttpUtility::redirect('alt_doc.php?returnUrl=' . rawurlencode('wizard_edit.php?doClose=1') . $params);
 			} else {
 				$this->closeWindow();
 			}

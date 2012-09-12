@@ -177,7 +177,7 @@ class SimpleDataHandlerController {
 		// Checking referer / executing
 		$refInfo = parse_url(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER'));
 		$httpHost = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
-		if (($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode()) && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
+		if ($httpHost != $refInfo['host'] && $this->vC != $GLOBALS['BE_USER']->veriCode() && !$GLOBALS['TYPO3_CONF_VARS']['SYS']['doNotCheckReferer']) {
 			$this->tce->log('', 0, 0, 0, 1, 'Referer host "%s" and server host "%s" did not match and veriCode was not valid either!', 1, array($refInfo['host'], $httpHost));
 		} else {
 			// Register uploaded files

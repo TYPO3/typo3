@@ -50,7 +50,7 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
 	 * @return string
 	 */
 	public function renderNode(\TYPO3\CMS\Backend\Tree\TreeRepresentationNode $node, $recursive = TRUE) {
-		$code = (('<li><span class="' . $node->getIcon()) . '">&nbsp;</span>') . $node->getLabel();
+		$code = '<li><span class="' . $node->getIcon() . '">&nbsp;</span>' . $node->getLabel();
 		if ($recursive && $node->getChildNodes() !== NULL) {
 			$this->recursionLevel++;
 			$code .= $this->renderNodeCollection($node->getChildNodes());
@@ -69,7 +69,7 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
 	 */
 	public function renderTree(\TYPO3\CMS\Backend\Tree\AbstractTree $tree, $recursive = TRUE) {
 		$this->recursionLevel = 0;
-		$code = ('<ul class="level' . $this->recursionLevel) . '" style="margin-left:10px">';
+		$code = '<ul class="level' . $this->recursionLevel . '" style="margin-left:10px">';
 		$code .= $this->renderNode($tree->getRoot(), $recursive);
 		$code .= '</ul>';
 		return $code;
@@ -83,7 +83,7 @@ class UnorderedListTreeRenderer extends \TYPO3\CMS\Backend\Tree\Renderer\Abstrac
 	 * @return string
 	 */
 	public function renderNodeCollection(\TYPO3\CMS\Backend\Tree\TreeNodeCollection $collection, $recursive = TRUE) {
-		$code = ('<ul class="level' . $this->recursionLevel) . '" style="margin-left:10px">';
+		$code = '<ul class="level' . $this->recursionLevel . '" style="margin-left:10px">';
 		foreach ($collection as $node) {
 			$code .= $this->renderNode($node, $recursive);
 		}

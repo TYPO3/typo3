@@ -69,7 +69,7 @@ class RenameFileController {
 		if (!$this->fileOrFolderObject) {
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:paramError', TRUE);
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.xml:targetNoDir', TRUE);
-			throw new \RuntimeException(($title . ': ') . $message, 1294586844);
+			throw new \RuntimeException($title . ': ' . $message, 1294586844);
 		}
 		// If a folder should be renamed, AND the returnURL should go to the old directory name, the redirect is forced
 		// so the redirect will NOT end in a error message
@@ -84,7 +84,7 @@ class RenameFileController {
 		}
 		// Setting icon and title
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-filetree-root');
-		$this->title = (($icon . htmlspecialchars($this->fileOrFolderObject->getStorage()->getName())) . ': ') . htmlspecialchars($this->fileOrFolderObject->getIdentifier());
+		$this->title = $icon . htmlspecialchars($this->fileOrFolderObject->getStorage()->getName()) . ': ' . htmlspecialchars($this->fileOrFolderObject->getIdentifier());
 		// Setting template object
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->setModuleTemplate('templates/file_rename.html');
@@ -116,19 +116,19 @@ class RenameFileController {
 		}
 		$code = '<form action="tce_file.php" method="post" name="editform">';
 		// Making the formfields for renaming:
-		$code .= ((((('
+		$code .= '
 
 			<div id="c-rename">
-				<input type="text" name="file[rename][0][target]" value="' . htmlspecialchars($this->fileOrFolderObject->getName())) . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(40)) . ' />
-				<input type="hidden" name="file[rename][0][data]" value="') . htmlspecialchars($fileIdentifier)) . '" />
+				<input type="text" name="file[rename][0][target]" value="' . htmlspecialchars($this->fileOrFolderObject->getName()) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(40) . ' />
+				<input type="hidden" name="file[rename][0][data]" value="' . htmlspecialchars($fileIdentifier) . '" />
 			</div>
 		';
 		// Making submit button:
-		$code .= ((((('
+		$code .= '
 			<div id="c-submit">
-				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_rename.php.submit', 1)) . '" />
-				<input type="submit" value="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.cancel', 1)) . '" onclick="backToList(); return false;" />
-				<input type="hidden" name="redirect" value="') . htmlspecialchars($this->returnUrl)) . '" />
+				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_rename.php.submit', 1) . '" />
+				<input type="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.cancel', 1) . '" onclick="backToList(); return false;" />
+				<input type="hidden" name="redirect" value="' . htmlspecialchars($this->returnUrl) . '" />
 			</div>
 		';
 		$code .= '</form>';

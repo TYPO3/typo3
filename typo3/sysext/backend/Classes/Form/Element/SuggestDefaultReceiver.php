@@ -173,27 +173,27 @@ class SuggestDefaultReceiver {
 				$uid = $row['t3ver_oid'] > 0 ? $row['t3ver_oid'] : $row['uid'];
 				$path = $this->getRecordPath($row, $uid);
 				if (strlen($path) > 30) {
-					$croppedPath = ((('<abbr title="' . htmlspecialchars($path)) . '">') . htmlspecialchars((($GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, 10) . '...') . $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, -20)))) . '</abbr>';
+					$croppedPath = '<abbr title="' . htmlspecialchars($path) . '">' . htmlspecialchars(($GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, 10) . '...' . $GLOBALS['LANG']->csConvObj->crop($GLOBALS['LANG']->charSet, $path, -20))) . '</abbr>';
 				} else {
 					$croppedPath = htmlspecialchars($path);
 				}
 				$label = $this->getLabel($row);
 				$entry = array(
-					'text' => ((((('<span class="suggest-label">' . $label) . '</span><span class="suggest-uid">[') . $uid) . ']</span><br />
-								<span class="suggest-path">') . $croppedPath) . '</span>',
+					'text' => '<span class="suggest-label">' . $label . '</span><span class="suggest-uid">[' . $uid . ']</span><br />
+								<span class="suggest-path">' . $croppedPath . '</span>',
 					'table' => $this->mmForeignTable ? $this->mmForeignTable : $this->table,
 					'label' => $label,
 					'path' => $path,
 					'uid' => $uid,
 					'icon' => $iconPath,
-					'style' => ('background-image:url(' . $iconPath) . ');',
+					'style' => 'background-image:url(' . $iconPath . ');',
 					'class' => isset($this->config['cssClass']) ? $this->config['cssClass'] : ''
 				);
-				$rows[($this->table . '_') . $uid] = $this->renderRecord($row, $entry);
+				$rows[$this->table . '_' . $uid] = $this->renderRecord($row, $entry);
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			// if there are less records than we need, call this function again to get more records
-			if ((count($rows) < $this->maxItems && $allRowsCount >= 50) && $recursionCounter < $this->maxItems) {
+			if (count($rows) < $this->maxItems && $allRowsCount >= 50 && $recursionCounter < $this->maxItems) {
 				$tmp = self::queryTable($params, ++$recursionCounter);
 				$rows = array_merge($tmp, $rows);
 			}
@@ -213,27 +213,27 @@ class SuggestDefaultReceiver {
 		$searchUid = intval($searchString);
 		if (strlen($searchString)) {
 			$searchString = $GLOBALS['TYPO3_DB']->quoteStr($searchString, $this->table);
-			$likeCondition = ((' LIKE \'' . ($searchWholePhrase ? '%' : '')) . $GLOBALS['TYPO3_DB']->escapeStrForLike($searchString, $this->table)) . '%\'';
+			$likeCondition = ' LIKE \'' . ($searchWholePhrase ? '%' : '') . $GLOBALS['TYPO3_DB']->escapeStrForLike($searchString, $this->table) . '%\'';
 			// Search in all fields given by label or label_alt
-			$selectFieldsList = ((($GLOBALS['TCA'][$this->table]['ctrl']['label'] . ',') . $GLOBALS['TCA'][$this->table]['ctrl']['label_alt']) . ',') . $this->config['additionalSearchFields'];
+			$selectFieldsList = $GLOBALS['TCA'][$this->table]['ctrl']['label'] . ',' . $GLOBALS['TCA'][$this->table]['ctrl']['label_alt'] . ',' . $this->config['additionalSearchFields'];
 			$selectFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $selectFieldsList, TRUE);
 			$selectFields = array_unique($selectFields);
 			$selectParts = array();
 			foreach ($selectFields as $field) {
 				$selectParts[] = $field . $likeCondition;
 			}
-			$this->selectClause = ('(' . implode(' OR ', $selectParts)) . ')';
+			$this->selectClause = '(' . implode(' OR ', $selectParts) . ')';
 			if ($searchUid > 0 && $searchUid == $searchString) {
-				$this->selectClause = ((('(' . $this->selectClause) . ' OR uid = ') . $searchUid) . ')';
+				$this->selectClause = '(' . $this->selectClause . ' OR uid = ' . $searchUid . ')';
 			}
 		}
 		if (isset($GLOBALS['TCA'][$this->table]['ctrl']['delete'])) {
-			$this->selectClause .= (' AND ' . $GLOBALS['TCA'][$this->table]['ctrl']['delete']) . ' = 0';
+			$this->selectClause .= ' AND ' . $GLOBALS['TCA'][$this->table]['ctrl']['delete'] . ' = 0';
 		}
 		if (count($this->allowedPages)) {
 			$pidList = $GLOBALS['TYPO3_DB']->cleanIntArray($this->allowedPages);
 			if (count($pidList)) {
-				$this->selectClause .= (' AND pid IN (' . implode(', ', $pidList)) . ') ';
+				$this->selectClause .= ' AND pid IN (' . implode(', ', $pidList) . ') ';
 			}
 		}
 		// add an additional search condition comment
@@ -259,7 +259,7 @@ class SuggestDefaultReceiver {
 		while ($depth - $level > 0 && !empty($pageIds)) {
 			++$level;
 			$pidList = $GLOBALS['TYPO3_DB']->cleanIntArray($pageIds);
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', ('pid IN (' . implode(', ', $pidList)) . ')', '', '', '', 'uid');
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', 'pid IN (' . implode(', ', $pidList) . ')', '', '', '', 'uid');
 			if (count($rows) > 0) {
 				$pageIds = array_keys($rows);
 				$pages = array_merge($pages, $pageIds);

@@ -64,7 +64,7 @@ class RteController {
 		// Need to NOT have the page wrapped in DIV since if we do that we destroy
 		// the feature that the RTE spans the whole height of the page!!!
 		$this->doc->divClass = '';
-		$this->doc->form = ('<form action="tce_db.php" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype']) . '" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
+		$this->doc->form = '<form action="tce_db.php" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '" name="editform" onsubmit="return TBE_EDITOR.checkSubmit(1);">';
 	}
 
 	/**
@@ -79,12 +79,12 @@ class RteController {
 			$this->P['uid'] = $versionRec['uid'];
 		}
 		// If all parameters are available:
-		if ((($this->P['table'] && $this->P['field']) && $this->P['uid']) && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
 			// Getting the raw record (we need only the pid-value from here...)
 			$rawRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($this->P['table'], $this->P['uid']);
 			\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid($this->P['table'], $rawRec);
 			// Setting JavaScript, including the pid value for viewing:
-			$this->doc->JScode = $this->doc->wrapScriptTags(('
+			$this->doc->JScode = $this->doc->wrapScriptTags('
 					function jumpToUrl(URL,formEl) {	//
 						if (document.editform) {
 							if (!TBE_EDITOR.isFormChanged()) {
@@ -94,7 +94,7 @@ class RteController {
 							}
 						} else window.location.href = URL;
 					}
-				' . ($this->popView ? \TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($rawRec['pid'], '', \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($rawRec['pid'])) : '')) . '
+				' . ($this->popView ? \TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($rawRec['pid'], '', \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($rawRec['pid'])) : '') . '
 			');
 			// Initialize TCeforms - for rendering the field:
 			$tceforms = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\FormEngine');
@@ -127,26 +127,26 @@ class RteController {
 			}
 			// Get the form field and wrap it in the table with the buttons:
 			$formContent = $tceforms->getSoloField($this->P['table'], $rec, $this->P['field']);
-			$formContent = ((((('
+			$formContent = '
 
 
 			<!--
 				RTE wizard:
 			-->
-				<table border="0" cellpadding="0" cellspacing="0" width="' . $width) . '" id="typo3-rtewizard">
+				<table border="0" cellpadding="0" cellspacing="0" width="' . $width . '" id="typo3-rtewizard">
 					<tr>
-						<td width="') . $width) . '" colspan="2" id="c-formContent">') . $formContent) . '</td>
+						<td width="' . $width . '" colspan="2" id="c-formContent">' . $formContent . '</td>
 						<td></td>
 					</tr>
 				</table>';
 			// Adding hidden fields:
-			$formContent .= (((('<input type="hidden" name="redirect" value="' . htmlspecialchars($this->R_URI)) . '" />
-						<input type="hidden" name="_serialNumber" value="') . md5(microtime())) . '" />') . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
+			$formContent .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($this->R_URI) . '" />
+						<input type="hidden" name="_serialNumber" value="' . md5(microtime()) . '" />' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
 			// Finally, add the whole setup:
-			$this->content .= ($tceforms->printNeededJSFunctions_top() . $formContent) . $tceforms->printNeededJSFunctions();
+			$this->content .= $tceforms->printNeededJSFunctions_top() . $formContent . $tceforms->printNeededJSFunctions();
 		} else {
 			// ERROR:
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('forms_title'), ('<span class="typo3-red">' . $GLOBALS['LANG']->getLL('table_noData', 1)) . '</span>', 0, 1);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('forms_title'), '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('table_noData', 1) . '</span>', 0, 1);
 		}
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
@@ -184,27 +184,27 @@ class RteController {
 			'shortcut' => '',
 			'undo' => ''
 		);
-		if ((($this->P['table'] && $this->P['field']) && $this->P['uid']) && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid'] && $this->checkEditAccess($this->P['table'], $this->P['uid'])) {
 			$closeUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']);
 			// Getting settings for the undo button:
 			$undoButton = 0;
-			$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', (('tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->P['table'], 'sys_history')) . ' AND recuid=') . intval($this->P['uid']), '', 'tstamp DESC', '1');
+			$undoRes = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tstamp', 'sys_history', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->P['table'], 'sys_history') . ' AND recuid=' . intval($this->P['uid']), '', 'tstamp DESC', '1');
 			if ($undoButtonR = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($undoRes)) {
 				$undoButton = 1;
 			}
 			// Close
-			$buttons['close'] = ((((((('<a href="#" onclick="' . htmlspecialchars((('jumpToUrl(unescape(\'' . rawurlencode($closeUrl)) . '\')); return false;'))) . '">') . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/closedok.gif')) . ' class="c-inputButton" title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1)) . '" alt="" />') . '</a>';
+			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode($closeUrl) . '\')); return false;')) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/closedok.gif') . ' class="c-inputButton" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', 1) . '" alt="" />' . '</a>';
 			// Save
-			$buttons['save'] = ((((('<a href="#" onclick="TBE_EDITOR.checkAndDoSubmit(1); return false;">' . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/savedok.gif')) . ' class="c-inputButton" title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1)) . '" alt="" />') . '</a>';
+			$buttons['save'] = '<a href="#" onclick="TBE_EDITOR.checkAndDoSubmit(1); return false;">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' class="c-inputButton" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" alt="" />' . '</a>';
 			// Save & View
 			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms')) {
-				$buttons['save_view'] = ((((((('<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;')) . '">') . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/savedokshow.gif')) . ' class="c-inputButton" title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow', 1)) . '" alt="" />') . '</a>';
+				$buttons['save_view'] = '<a href="#" onclick="' . htmlspecialchars('document.editform.redirect.value+=\'&popView=1\'; TBE_EDITOR.checkAndDoSubmit(1); return false;') . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/savedokshow.gif') . ' class="c-inputButton" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDocShow', 1) . '" alt="" />' . '</a>';
 			}
 			// Save & Close
-			$buttons['save_close'] = ((((('<input type="image" class="c-inputButton" onclick="' . htmlspecialchars((('document.editform.redirect.value=\'' . $closeUrl) . '\'; TBE_EDITOR.checkAndDoSubmit(1); return false;'))) . '" name="_saveandclosedok"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif', '')) . ' title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', 1)) . '" />';
+			$buttons['save_close'] = '<input type="image" class="c-inputButton" onclick="' . htmlspecialchars(('document.editform.redirect.value=\'' . $closeUrl . '\'; TBE_EDITOR.checkAndDoSubmit(1); return false;')) . '" name="_saveandclosedok"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif', '') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', 1) . '" />';
 			// Undo/Revert:
 			if ($undoButton) {
-				$buttons['undo'] = ((((((('<a href="#" onclick="' . htmlspecialchars((((((('window.location.href=\'show_rechis.php?element=' . rawurlencode((($this->P['table'] . ':') . $this->P['uid']))) . '&revert=') . rawurlencode(('field:' . $this->P['field']))) . '&sumUp=-1&returnUrl=') . rawurlencode($this->R_URI)) . '\'; return false;'))) . '">') . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/undo.gif')) . ' class="c-inputButton" title="') . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('rte_undoLastChange'), \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears'))))) . '" alt="" />') . '</a>';
+				$buttons['undo'] = '<a href="#" onclick="' . htmlspecialchars(('window.location.href=\'show_rechis.php?element=' . rawurlencode(($this->P['table'] . ':' . $this->P['uid'])) . '&revert=' . rawurlencode(('field:' . $this->P['field'])) . '&sumUp=-1&returnUrl=' . rawurlencode($this->R_URI) . '\'; return false;')) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/undo.gif') . ' class="c-inputButton" title="' . htmlspecialchars(sprintf($GLOBALS['LANG']->getLL('rte_undoLastChange'), \TYPO3\CMS\Backend\Utility\BackendUtility::calcAge(($GLOBALS['EXEC_TIME'] - $undoButtonR['tstamp']), $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.minutesHoursDaysYears')))) . '" alt="" />' . '</a>';
 			}
 			// Shortcut
 			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {

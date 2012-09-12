@@ -171,9 +171,9 @@ class NewContentElementController {
 				$this->elementWrapper = $this->elementWrapperForTabs;
 			}
 			// Add document inline javascript
-			$this->doc->JScode = $this->doc->wrapScriptTags(('
+			$this->doc->JScode = $this->doc->wrapScriptTags('
 				function goToalt_doc() {	//
-					' . $this->onClickEvent) . '
+					' . $this->onClickEvent . '
 				}
 
 				if(top.refreshMenu) {
@@ -196,18 +196,18 @@ class NewContentElementController {
 				} else {
 					$content = '';
 					// Radio button:
-					$oC = (('document.editForm.defValues.value=unescape(\'' . rawurlencode($wInfo['params'])) . '\');goToalt_doc();') . (!$this->onClickEvent ? 'window.location.hash=\'#sel2\';' : '');
-					$content .= ((((($this->elementWrapper['wizardPart'][0] . '<input type="radio" name="tempB" value="') . htmlspecialchars($k)) . '" onclick="') . htmlspecialchars($oC)) . '" />') . $this->elementWrapper['wizardPart'][1];
+					$oC = 'document.editForm.defValues.value=unescape(\'' . rawurlencode($wInfo['params']) . '\');goToalt_doc();' . (!$this->onClickEvent ? 'window.location.hash=\'#sel2\';' : '');
+					$content .= $this->elementWrapper['wizardPart'][0] . '<input type="radio" name="tempB" value="' . htmlspecialchars($k) . '" onclick="' . htmlspecialchars($oC) . '" />' . $this->elementWrapper['wizardPart'][1];
 					// Onclick action for icon/title:
-					$aOnClick = ((('document.getElementsByName(\'tempB\')[' . $cc) . '].checked=1;') . $oC) . 'return false;';
+					$aOnClick = 'document.getElementsByName(\'tempB\')[' . $cc . '].checked=1;' . $oC . 'return false;';
 					// Icon:
 					$iInfo = @getimagesize($wInfo['icon']);
-					$content .= ((((($this->elementWrapper['wizardPart'][0] . '<a href="#" onclick="') . htmlspecialchars($aOnClick)) . '">
-						<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '')) . ' alt="" /></a>') . $this->elementWrapper['wizardPart'][1];
+					$content .= $this->elementWrapper['wizardPart'][0] . '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">
+						<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, $wInfo['icon'], '') . ' alt="" /></a>' . $this->elementWrapper['wizardPart'][1];
 					// Title + description:
-					$content .= ((((((($this->elementWrapper['wizardPart'][0] . '<a href="#" onclick="') . htmlspecialchars($aOnClick)) . '"><strong>') . htmlspecialchars($wInfo['title'])) . '</strong><br />') . nl2br(htmlspecialchars(trim($wInfo['description'])))) . '</a>') . $this->elementWrapper['wizardPart'][1];
+					$content .= $this->elementWrapper['wizardPart'][0] . '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"><strong>' . htmlspecialchars($wInfo['title']) . '</strong><br />' . nl2br(htmlspecialchars(trim($wInfo['description']))) . '</a>' . $this->elementWrapper['wizardPart'][1];
 					// Finally, put it together in a container:
-					$menuItems[$key]['content'] .= ($this->elementWrapper['wizard'][0] . $content) . $this->elementWrapper['wizard'][1];
+					$menuItems[$key]['content'] .= $this->elementWrapper['wizard'][0] . $content . $this->elementWrapper['wizard'][1];
 					$cc++;
 				}
 			}
@@ -222,11 +222,11 @@ class NewContentElementController {
 					.typo3-dyntabmenu-divs table { margin: 15px; }
 					.typo3-dyntabmenu-divs table td { padding: 3px; }
 				';
-				$code = ($GLOBALS['LANG']->getLL('sel1', 1) . '<br /><br />') . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', FALSE, FALSE);
+				$code = $GLOBALS['LANG']->getLL('sel1', 1) . '<br /><br />' . $this->doc->getDynTabMenu($menuItems, 'new-content-element-wizard', FALSE, FALSE);
 			} else {
 				$code = $GLOBALS['LANG']->getLL('sel1', 1) . '<br /><br />';
 				foreach ($menuItems as $section) {
-					$code .= (($this->elementWrapper['sectionHeader'][0] . $section['label']) . $this->elementWrapper['sectionHeader'][1]) . $section['content'];
+					$code .= $this->elementWrapper['sectionHeader'][0] . $section['label'] . $this->elementWrapper['sectionHeader'][1] . $section['content'];
 				}
 			}
 			$this->content .= $this->doc->section(!$this->onClickEvent ? $GLOBALS['LANG']->getLL('1_selectType') : '', $code, 0, 1);
@@ -291,7 +291,7 @@ class NewContentElementController {
 			$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'new_ce', $GLOBALS['BACK_PATH'], '', TRUE);
 			// Back
 			if ($this->R_URI) {
-				$buttons['back'] = ((((('<a href="' . htmlspecialchars($this->R_URI)) . '" class="typo3-goBack" title="') . $GLOBALS['LANG']->getLL('goBack', TRUE)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back')) . '</a>';
+				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->getLL('goBack', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 			}
 		}
 		return $buttons;
@@ -342,7 +342,7 @@ class NewContentElementController {
 						if ($showAll || in_array($itemKey, $showItems)) {
 							$tmpItem = $this->wizard_getItem($groupKey, $itemKey, $itemConf);
 							if ($tmpItem) {
-								$groupItems[($groupKey . '_') . $itemKey] = $tmpItem;
+								$groupItems[$groupKey . '_' . $itemKey] = $tmpItem;
 							}
 						}
 					}
@@ -447,15 +447,15 @@ class NewContentElementController {
 					if (is_array($GLOBALS['TCA']['tt_content']['columns'][$fN])) {
 						// Get information about if the field value is OK:
 						$config =& $GLOBALS['TCA']['tt_content']['columns'][$fN]['config'];
-						$authModeDeny = ($config['type'] == 'select' && $config['authMode']) && !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
+						$authModeDeny = $config['type'] == 'select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
 						$isNotInKeepItems = count($keepItems) && !in_array($fV, $keepItems);
-						if (($authModeDeny || $fN == 'CType' && in_array($fV, $removeItems)) || $isNotInKeepItems) {
+						if ($authModeDeny || $fN == 'CType' && in_array($fV, $removeItems) || $isNotInKeepItems) {
 							// Remove element all together:
 							unset($wizardItems[$key]);
 							break;
 						} else {
 							// Add the parameter:
-							$wizardItems[$key]['params'] .= (('&defVals[tt_content][' . $fN) . ']=') . rawurlencode($fV);
+							$wizardItems[$key]['params'] .= '&defVals[tt_content][' . $fN . ']=' . rawurlencode($fV);
 							$tmp = explode('_', $key);
 							$headersUsed[$tmp[0]] = $tmp[0];
 						}
@@ -466,7 +466,7 @@ class NewContentElementController {
 		// remove headers without elements
 		foreach ($wizardItems as $key => $cfg) {
 			$tmp = explode('_', $key);
-			if (($tmp[0] && !$tmp[1]) && !in_array($tmp[0], $headersUsed)) {
+			if ($tmp[0] && !$tmp[1] && !in_array($tmp[0], $headersUsed)) {
 				unset($wizardItems[$key]);
 			}
 		}

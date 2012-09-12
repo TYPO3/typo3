@@ -62,7 +62,7 @@ class TranslationConfigurationProvider {
 		}
 		$languageIconTitles[0] = array(
 			'uid' => 0,
-			'title' => strlen($modSharedTSconfig['properties']['defaultLanguageLabel']) ? (($modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (') . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xml:defaultLanguage')) . ')' : $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xml:defaultLanguage'),
+			'title' => strlen($modSharedTSconfig['properties']['defaultLanguageLabel']) ? $modSharedTSconfig['properties']['defaultLanguageLabel'] . ' (' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xml:defaultLanguage') . ')' : $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_mod_web_list.xml:defaultLanguage'),
 			'ISOcode' => 'DEF',
 			'flagIcon' => strlen($modSharedTSconfig['properties']['defaultLanguageFlag']) ? 'flags-' . $modSharedTSconfig['properties']['defaultLanguageFlag'] : 'empty-empty'
 		);
@@ -114,7 +114,7 @@ class TranslationConfigurationProvider {
 					if ($trTable !== $table || $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0) {
 						if ($trTable !== $table || $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] == 0) {
 							// Look for translations of this record, index by language field value:
-							$translationsTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selFieldList ? $selFieldList : 'uid,' . $GLOBALS['TCA'][$trTable]['ctrl']['languageField'], $trTable, (((((((($GLOBALS['TCA'][$trTable]['ctrl']['transOrigPointerField'] . '=') . intval($uid)) . ' AND pid=') . intval(($table === 'pages' ? $row['uid'] : $row['pid']))) . ' AND ') . $GLOBALS['TCA'][$trTable]['ctrl']['languageField']) . (!$sys_language_uid ? '>0' : '=' . intval($sys_language_uid))) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($trTable)) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($trTable));
+							$translationsTemp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($selFieldList ? $selFieldList : 'uid,' . $GLOBALS['TCA'][$trTable]['ctrl']['languageField'], $trTable, $GLOBALS['TCA'][$trTable]['ctrl']['transOrigPointerField'] . '=' . intval($uid) . ' AND pid=' . intval(($table === 'pages' ? $row['uid'] : $row['pid'])) . ' AND ' . $GLOBALS['TCA'][$trTable]['ctrl']['languageField'] . (!$sys_language_uid ? '>0' : '=' . intval($sys_language_uid)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($trTable) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($trTable));
 							$translations = array();
 							$translations_errors = array();
 							foreach ($translationsTemp as $r) {
@@ -134,19 +134,19 @@ class TranslationConfigurationProvider {
 								'excessive_translations' => $translations_errors
 							);
 						} else {
-							return ((((('Record "' . $table) . '_') . $uid) . '" seems to be a translation already (has a relation to record "') . $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) . '")';
+							return 'Record "' . $table . '_' . $uid . '" seems to be a translation already (has a relation to record "' . $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] . '")';
 						}
 					} else {
-						return ((((((('Record "' . $table) . '_') . $uid) . '" seems to be a translation already (has a language value "') . $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]) . '", relation to record "') . $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]) . '")';
+						return 'Record "' . $table . '_' . $uid . '" seems to be a translation already (has a language value "' . $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] . '", relation to record "' . $row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']] . '")';
 					}
 				} else {
 					return 'Translation is not supported for this table!';
 				}
 			} else {
-				return ((('Record "' . $table) . '_') . $uid) . '" was not found';
+				return 'Record "' . $table . '_' . $uid . '" was not found';
 			}
 		} else {
-			return ('No table "' . $table) . '" or no UID value';
+			return 'No table "' . $table . '" or no UID value';
 		}
 	}
 
@@ -169,7 +169,7 @@ class TranslationConfigurationProvider {
 	 * @todo Define visibility
 	 */
 	public function isTranslationInOwnTable($table) {
-		return ($GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'];
+		return $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] && !$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'];
 	}
 
 	/**
@@ -181,7 +181,7 @@ class TranslationConfigurationProvider {
 	 */
 	public function foreignTranslationTable($table) {
 		$trTable = $GLOBALS['TCA'][$table]['ctrl']['transForeignTable'];
-		if (((($trTable && $GLOBALS['TCA'][$trTable]) && $GLOBALS['TCA'][$trTable]['ctrl']['languageField']) && $GLOBALS['TCA'][$trTable]['ctrl']['transOrigPointerField']) && $GLOBALS['TCA'][$trTable]['ctrl']['transOrigPointerTable'] === $table) {
+		if ($trTable && $GLOBALS['TCA'][$trTable] && $GLOBALS['TCA'][$trTable]['ctrl']['languageField'] && $GLOBALS['TCA'][$trTable]['ctrl']['transOrigPointerField'] && $GLOBALS['TCA'][$trTable]['ctrl']['transOrigPointerTable'] === $table) {
 			return $trTable;
 		}
 	}

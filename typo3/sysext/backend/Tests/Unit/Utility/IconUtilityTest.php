@@ -101,7 +101,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 		$fixtureGifFile = __DIR__ . '/Fixtures/clear.gif';
 		// Create image ressource, determine target filename, fake target permission, run method and clean up
 		$fixtureGifRessource = imagecreatefromgif($fixtureGifFile);
-		$targetFilename = ((PATH_site . 'typo3temp/') . uniqid('test_')) . '.gif';
+		$targetFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
 		\TYPO3\CMS\Backend\Utility\IconUtility::imagemake($fixtureGifRessource, $targetFilename);
 		clearstatcache();
@@ -229,7 +229,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	public function getSpriteIconWithExistingIconAndOverlayReturnsSpanWithIconSpriteAndOverlay() {
 		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array(), array('status-overlay-hidden' => array()));
 		$overlay = '<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden t3-icon-overlay">&nbsp;</span>';
-		$this->assertEquals(('<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">' . $overlay) . '</span>', $result);
+		$this->assertEquals('<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">' . $overlay . '</span>', $result);
 	}
 
 	/**
@@ -240,7 +240,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	public function getSpriteIconWithExistingIconAndOverlayAndAttributesReturnsSpanWithIconSpriteAndOverlayAndAttributes() {
 		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('html' => 'foo1'), array('status-overlay-hidden' => array('class' => 'foo2')));
 		$overlay = '<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden foo2 t3-icon-overlay">foo1</span>';
-		$this->assertEquals(('<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">' . $overlay) . '</span>', $result);
+		$this->assertEquals('<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">' . $overlay . '</span>', $result);
 	}
 
 	//////////////////////////////////////////
@@ -310,7 +310,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 		$mockRecord['hidden'] = '1';
 		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $mockRecord);
 		$overlay = '<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden t3-icon-overlay">&nbsp;</span>';
-		$this->assertEquals(('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text">' . $overlay) . '</span>', $result);
+		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text">' . $overlay . '</span>', $result);
 	}
 
 	//////////////////////////////////////////

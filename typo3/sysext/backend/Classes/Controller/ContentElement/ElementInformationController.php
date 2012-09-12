@@ -141,7 +141,7 @@ class ElementInformationController {
 				$treatData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
 				$treatData->renderRecord($this->table, $this->uid, 0, $this->row);
 			}
-		} elseif (($this->table == '_FILE' || $this->table == '_FOLDER') || $this->table == 'sys_file') {
+		} elseif ($this->table == '_FILE' || $this->table == '_FOLDER' || $this->table == 'sys_file') {
 			$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->uid);
 			if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
 				$this->folderObject = $fileOrFolderObject;
@@ -165,7 +165,7 @@ class ElementInformationController {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		// Starting the page by creating page header stuff:
 		$this->content .= $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem'));
-		$this->content .= ('<h3 class="t3-row-header">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem')) . '</h3>';
+		$this->content .= '<h3 class="t3-row-header">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.viewItem') . '</h3>';
 		$this->content .= $this->doc->spacer(5);
 	}
 
@@ -181,14 +181,14 @@ class ElementInformationController {
 			return;
 		}
 		$returnLink = \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'));
-		$returnLinkTag = $returnLink ? ('<a href="' . $returnLink) . '" class="typo3-goBack">' : '<a href="#" onclick="window.close();">';
+		$returnLinkTag = $returnLink ? '<a href="' . $returnLink . '" class="typo3-goBack">' : '<a href="#" onclick="window.close();">';
 		// render type by user func
 		$typeRendered = FALSE;
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/show_item.php']['typeRendering'] as $classRef) {
 				$typeRenderObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
 				// @TODO should have an interface
-				if ((is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid')) && method_exists($typeRenderObj, 'render')) {
+				if (is_object($typeRenderObj) && method_exists($typeRenderObj, 'isValid') && method_exists($typeRenderObj, 'render')) {
 					if ($typeRenderObj->isValid($this->type, $this)) {
 						$this->content .= $typeRenderObj->render($this->type, $this);
 						$typeRendered = TRUE;
@@ -214,8 +214,8 @@ class ElementInformationController {
 		}
 		// If return Url is set, output link to go back:
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('returnUrl'))) {
-			$this->content = $this->doc->section('', ((($returnLinkTag . '<strong>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack', 1)) . '</strong></a><br /><br />')) . $this->content;
-			$this->content .= $this->doc->section('', ((('<br />' . $returnLinkTag) . '<strong>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack', 1)) . '</strong></a>');
+			$this->content = $this->doc->section('', ($returnLinkTag . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack', 1) . '</strong></a><br /><br />')) . $this->content;
+			$this->content .= $this->doc->section('', '<br />' . $returnLinkTag . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.goBack', 1) . '</strong></a>');
 		}
 	}
 
@@ -248,10 +248,10 @@ class ElementInformationController {
 					}
 				}
 			}
-			$tableRows[] = ((('
+			$tableRows[] = '
 				<tr>
-					<td class="t3-col-header">' . $value) . '</td>
-					<td>') . htmlspecialchars($rowValue)) . '</td>
+					<td class="t3-col-header">' . $value . '</td>
+					<td>' . htmlspecialchars($rowValue) . '</td>
 				</tr>';
 		}
 		// Traverse the list of fields to display for the record:
@@ -261,29 +261,29 @@ class ElementInformationController {
 			if (!isset($GLOBALS['TCA'][$this->table]['columns'][$name])) {
 				continue;
 			}
-			$isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', ($this->table . ':') . $name));
+			$isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table . ':' . $name));
 			if ($isExcluded) {
 				continue;
 			}
 			$uid = $this->row['uid'];
 			$itemValue = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, FALSE, $uid);
 			$itemLabel = $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($this->table, $name), 1);
-			$tableRows[] = ((('
+			$tableRows[] = '
 				<tr>
-					<td class="t3-col-header">' . $itemLabel) . '</td>
-					<td>') . htmlspecialchars($itemValue)) . '</td>
+					<td class="t3-col-header">' . $itemLabel . '</td>
+					<td>' . htmlspecialchars($itemValue) . '</td>
 				</tr>';
 		}
 		// Create table from the information:
-		$tableCode = ('
+		$tableCode = '
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-showitem" class="t3-table-info">
-				' . implode('', $tableRows)) . '
+				' . implode('', $tableRows) . '
 			</table>';
 		$this->content .= $this->doc->section('', $tableCode);
 		// Add path and table information in the bottom:
 		$code = '';
-		$code .= (($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path') . ': ') . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->pageinfo['_thePath'], -48)) . '<br />';
-		$code .= (((((($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.table') . ': ') . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->table]['ctrl']['title'])) . ' (') . $this->table) . ') - UID: ') . $this->uid) . '<br />';
+		$code .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.path') . ': ' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->pageinfo['_thePath'], -48) . '<br />';
+		$code .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.table') . ': ' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']) . ' (' . $this->table . ') - UID: ' . $this->uid . '<br />';
 		$this->content .= $this->doc->section('', $code);
 		// References:
 		$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem'), $this->makeRef($this->table, $this->row['uid']));
@@ -300,7 +300,7 @@ class ElementInformationController {
 	 */
 	public function renderFileInfo($returnLinkTag) {
 		$fileExtension = $this->fileObject->getExtension();
-		$code = (((((((((('<div class="fileInfoContainer">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension)) . '<strong>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.file', TRUE)) . ':</strong> ') . $this->fileObject->getName()) . '&nbsp;&nbsp;') . '<strong>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.filesize')) . ':</strong> ') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($this->fileObject->getSize())) . '</div>
+		$code = '<div class="fileInfoContainer">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension) . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.file', TRUE) . ':</strong> ' . $this->fileObject->getName() . '&nbsp;&nbsp;' . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.filesize') . ':</strong> ' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($this->fileObject->getSize()) . '</div>
 			';
 		$this->content .= $this->doc->section('', $code);
 		$this->content .= $this->doc->divider(2);
@@ -310,14 +310,14 @@ class ElementInformationController {
 			// @todo: find a way to make getimagesize part of the t3lib_file object
 			$imgInfo = @getimagesize($this->fileObject->getForLocalProcessing(FALSE));
 			$thumbUrl = $this->fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => '150m', 'height' => '150m'))->getPublicUrl(TRUE);
-			$code = (((((((('<div class="fileInfoContainer fileDimensions">' . '<strong>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.dimensions')) . ':</strong> ') . $imgInfo[0]) . 'x') . $imgInfo[1]) . ' ') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.pixels')) . '</div>';
-			$code .= ((((((('<br />
-				<div align="center">' . $returnLinkTag) . '<img src="') . $thumbUrl) . '" alt="') . htmlspecialchars(trim($this->fileObject->getName()))) . '" title="') . htmlspecialchars(trim($this->fileObject->getName()))) . '" /></a></div>';
+			$code = '<div class="fileInfoContainer fileDimensions">' . '<strong>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.dimensions') . ':</strong> ' . $imgInfo[0] . 'x' . $imgInfo[1] . ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.pixels') . '</div>';
+			$code .= '<br />
+				<div align="center">' . $returnLinkTag . '<img src="' . $thumbUrl . '" alt="' . htmlspecialchars(trim($this->fileObject->getName())) . '" title="' . htmlspecialchars(trim($this->fileObject->getName())) . '" /></a></div>';
 			$this->content .= $this->doc->section('', $code);
 		} elseif ($fileExtension == 'ttf') {
 			$thumbUrl = $this->fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => '530m', 'height' => '600m'))->getPublicUrl(TRUE);
-			$thumb = ((((('<br />
-				<div align="center">' . $returnLinkTag) . '<img src="') . $thumbUrl) . '" border="0" title="') . htmlspecialchars(trim($this->fileObject->getName()))) . '" alt="" /></a></div>';
+			$thumb = '<br />
+				<div align="center">' . $returnLinkTag . '<img src="' . $thumbUrl . '" border="0" title="' . htmlspecialchars(trim($this->fileObject->getName())) . '" alt="" /></a></div>';
 			$this->content .= $this->doc->section('', $thumb);
 		}
 		// Traverse the list of fields to display for the record:
@@ -329,23 +329,23 @@ class ElementInformationController {
 			if (!isset($GLOBALS['TCA'][$this->table]['columns'][$name])) {
 				continue;
 			}
-			$isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', ($this->table . ':') . $name));
+			$isExcluded = !(!$GLOBALS['TCA'][$this->table]['columns'][$name]['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table . ':' . $name));
 			if ($isExcluded) {
 				continue;
 			}
 			$uid = $this->row['uid'];
 			$itemValue = \TYPO3\CMS\Backend\Utility\BackendUtility::getProcessedValue($this->table, $name, $this->row[$name], 0, 0, FALSE, $uid);
 			$itemLabel = $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel($this->table, $name), 1);
-			$tableRows[] = ((('
+			$tableRows[] = '
 				<tr>
-					<td class="t3-col-header">' . $itemLabel) . '</td>
-					<td>') . htmlspecialchars($itemValue)) . '</td>
+					<td class="t3-col-header">' . $itemLabel . '</td>
+					<td>' . htmlspecialchars($itemValue) . '</td>
 				</tr>';
 		}
 		// Create table from the information:
-		$tableCode = ('
+		$tableCode = '
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-showitem" class="t3-table-info">
-				' . implode('', $tableRows)) . '
+				' . implode('', $tableRows) . '
 			</table>';
 		$this->content .= $this->doc->section('', $tableCode);
 		// References:
@@ -398,12 +398,12 @@ class ElementInformationController {
 		if ($table === '' || $uid < 0) {
 			return '';
 		}
-		$editOnClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(((('&edit[' . $table) . '][') . $uid) . ']=edit', $GLOBALS['BACK_PATH']);
+		$editOnClick = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[' . $table . '][' . $uid . ']=edit', $GLOBALS['BACK_PATH']);
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open');
-		$pageActionIcons = ((('<a href="#" onclick="' . htmlspecialchars($editOnClick)) . '">') . $icon) . '</a>';
-		$historyOnClick = ((((('window.location.href=\'show_rechis.php?element=' . $table) . '%3A') . $uid) . '&returnUrl=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '\'; return false;';
+		$pageActionIcons = '<a href="#" onclick="' . htmlspecialchars($editOnClick) . '">' . $icon . '</a>';
+		$historyOnClick = 'window.location.href=\'show_rechis.php?element=' . $table . '%3A' . $uid . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\'; return false;';
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-history-open');
-		$pageActionIcons .= ((('<a href="#" onclick="' . $historyOnClick) . '">') . $icon) . '</a>';
+		$pageActionIcons .= '<a href="#" onclick="' . $historyOnClick . '">' . $icon . '</a>';
 		if ($table === 'pages') {
 			$pageActionIcons .= $this->doc->viewPageIcon($uid, '');
 		}
@@ -423,12 +423,12 @@ class ElementInformationController {
 		if ($table === '_FILE') {
 			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_file_reference', 'uid_local=' . $ref->getUid());
 		} else {
-			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', ((('ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex')) . ' AND ref_uid=') . intval($ref)) . ' AND deleted=0');
+			$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND ref_uid=' . intval($ref) . ' AND deleted=0');
 		}
 		// Compile information for title tag:
 		$infoData = array();
 		if (count($rows)) {
-			$infoData[] = (((((((((((((((((((('<tr class="t3-row-header">' . '<td>&nbsp;</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.table')) . '</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.title')) . '</td>') . '<td>[uid]</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field')) . '</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer')) . '</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey')) . '</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting')) . '</td>') . '</tr>';
+			$infoData[] = '<tr class="t3-row-header">' . '<td>&nbsp;</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.table') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.title') . '</td>' . '<td>[uid]</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting') . '</td>' . '</tr>';
 		}
 		foreach ($rows as $row) {
 			if ($table === '_FILE') {
@@ -437,11 +437,11 @@ class ElementInformationController {
 			$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($row['tablename'], $row['recuid']);
 			$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $record['pid']);
 			$actions = $this->getRecordActions($row['tablename'], $row['recuid']);
-			$infoData[] = (((((((((((((((((((((((((((((('<tr class="bgColor4">' . '<td style="white-space:nowrap;">') . $actions) . '</td>') . '<td>') . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE)) . '</td>') . '<td>') . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($row['tablename'], $record, TRUE)) . '</td>') . '<td><span title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:page')) . ': ') . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $parentRecord))) . ' (uid=') . $record['pid']) . ')">') . $record['uid']) . '</span></td>') . '<td>') . htmlspecialchars($this->getFieldName($row['tablename'], $row['field']))) . '</td>') . '<td>') . htmlspecialchars($row['flexpointer'])) . '</td>') . '<td>') . htmlspecialchars($row['softref_key'])) . '</td>') . '<td>') . htmlspecialchars($row['sorting'])) . '</td>') . '</tr>';
+			$infoData[] = '<tr class="bgColor4">' . '<td style="white-space:nowrap;">' . $actions . '</td>' . '<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['tablename']]['ctrl']['title'], TRUE) . '</td>' . '<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($row['tablename'], $record, TRUE) . '</td>' . '<td><span title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xlf:page') . ': ' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $parentRecord)) . ' (uid=' . $record['pid'] . ')">' . $record['uid'] . '</span></td>' . '<td>' . htmlspecialchars($this->getFieldName($row['tablename'], $row['field'])) . '</td>' . '<td>' . htmlspecialchars($row['flexpointer']) . '</td>' . '<td>' . htmlspecialchars($row['softref_key']) . '</td>' . '<td>' . htmlspecialchars($row['sorting']) . '</td>' . '</tr>';
 		}
 		$referenceLine = '';
 		if (count($infoData)) {
-			$referenceLine = ('<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $infoData)) . '</table>';
+			$referenceLine = '<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $infoData) . '</table>';
 		}
 		return $referenceLine;
 	}
@@ -475,19 +475,19 @@ class ElementInformationController {
 	public function makeRefFrom($table, $ref) {
 		// Look up the path:
 		// @TODO files not respected (see makeRef)
-		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', (('tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex')) . ' AND recuid=') . intval($ref));
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND recuid=' . intval($ref));
 		// Compile information for title tag:
 		$infoData = array();
 		if (count($rows)) {
-			$infoData[] = (((((((((((((((((((((('<tr class="t3-row-header">' . '<td>&nbsp;</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field')) . '</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer')) . '</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey')) . '</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting')) . '</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refTable')) . '</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refUid')) . '</td>') . '<td>') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refString')) . '</td>') . '</tr>';
+			$infoData[] = '<tr class="t3-row-header">' . '<td>&nbsp;</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.field') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.flexpointer') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.softrefKey') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.sorting') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refTable') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refUid') . '</td>' . '<td>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.refString') . '</td>' . '</tr>';
 		}
 		foreach ($rows as $row) {
 			$actions = $this->getRecordActions($row['ref_table'], $row['ref_uid']);
-			$infoData[] = (((((((((((((((((((((((('<tr class="bgColor4">' . '<td style="white-space:nowrap;">') . $actions) . '</td>') . '<td>') . htmlspecialchars($this->getFieldName($table, $row['field']))) . '</td>') . '<td>') . htmlspecialchars($row['flexpointer'])) . '</td>') . '<td>') . htmlspecialchars($row['softref_key'])) . '</td>') . '<td>') . htmlspecialchars($row['sorting'])) . '</td>') . '<td>') . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'], TRUE)) . '</td>') . '<td>') . htmlspecialchars($row['ref_uid'])) . '</td>') . '<td>') . htmlspecialchars($row['ref_string'])) . '</td>') . '</tr>';
+			$infoData[] = '<tr class="bgColor4">' . '<td style="white-space:nowrap;">' . $actions . '</td>' . '<td>' . htmlspecialchars($this->getFieldName($table, $row['field'])) . '</td>' . '<td>' . htmlspecialchars($row['flexpointer']) . '</td>' . '<td>' . htmlspecialchars($row['softref_key']) . '</td>' . '<td>' . htmlspecialchars($row['sorting']) . '</td>' . '<td>' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$row['ref_table']]['ctrl']['title'], TRUE) . '</td>' . '<td>' . htmlspecialchars($row['ref_uid']) . '</td>' . '<td>' . htmlspecialchars($row['ref_string']) . '</td>' . '</tr>';
 		}
 		$referenceLine = '';
 		if (count($infoData)) {
-			$referenceLine = ('<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $infoData)) . '</table>';
+			$referenceLine = '<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $infoData) . '</table>';
 		}
 		return $referenceLine;
 	}
