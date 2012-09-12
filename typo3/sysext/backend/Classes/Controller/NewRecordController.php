@@ -317,7 +317,7 @@ class NewRecordController {
 		// Initialize array for accumulating table rows:
 		$this->tRows = array();
 		// tree images
-		$halfLine = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/ol/halfline.gif', 'width="18" height="8"')) . ' alt="" />';
+		$halfLine = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/ol/line.gif', 'width="18" height="16"')) . ' alt="" />';
 		$firstLevel = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/ol/join.gif', 'width="18" height="16"')) . ' alt="" />';
 		$secondLevel = ((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/ol/line.gif', 'width="18" height="16"')) . ' alt="" />
 						<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/ol/join.gif', 'width="18" height="16"')) . ' alt="" />';
