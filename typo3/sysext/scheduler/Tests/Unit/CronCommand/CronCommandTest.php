@@ -33,15 +33,36 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
 class CronCommandTest extends \tx_phpunit_testcase {
 
 	/**
-	 * @const 	integer	timestamp of 1.1.2010 0:00 (Friday)
+	 * @const integer timestamp of 1.1.2010 0:00 (Friday), timezone UTC/GMT
 	 */
-	const TIMESTAMP = 1262300400;
+	const TIMESTAMP = 1262304000;
+
+	/**
+	 * @var string Selected timezone backup
+	 */
+	protected $timezoneBackup = '';
+
+	/**
+	 * We're fiddling with hard timestamps in the tests, but time methods in
+	 * the system under test do use timezone settings. Therefore we backup the
+	 * current timezone setting, set it to UTC explicitly and reconstitute it
+	 * again in tearDown()
+	 */
+	public function setUp() {
+		$this->timezoneBackup = date_default_timezone_get();
+		date_default_timezone_set('UTC');
+	}
+
+	public function tearDown() {
+		date_default_timezone_set($this->timezoneBackup);
+	}
+
 	/**
 	 * @test
 	 */
 	public function constructorSetsNormalizedCronCommandSections() {
 		$instance = new \TYPO3\CMS\Scheduler\CronCommand\CronCommand('2-3 * * * *');
-		$this->assertSame($instance->getCronCommandSections(), array('2,3', '*', '*', '*', '*'));
+		$this->assertSame(array('2,3', '*', '*', '*', '*'), $instance->getCronCommandSections());
 	}
 
 	/**
@@ -67,7 +88,7 @@ class CronCommandTest extends \tx_phpunit_testcase {
 	 */
 	public function constructorSetsTimestampToGivenTimestampPlusSixtySeconds() {
 		$instance = new \TYPO3\CMS\Scheduler\CronCommand\CronCommand('* * * * *', self::TIMESTAMP);
-		$this->assertSame($instance->getTimestamp(), self::TIMESTAMP + 60);
+		$this->assertSame(self::TIMESTAMP + 60, $instance->getTimestamp());
 	}
 
 	/**
@@ -75,7 +96,7 @@ class CronCommandTest extends \tx_phpunit_testcase {
 	 */
 	public function constructorSetsTimestampToGiveTimestampRoundedDownToSixtySeconds() {
 		$instance = new \TYPO3\CMS\Scheduler\CronCommand\CronCommand('* * * * *', self::TIMESTAMP + 1);
-		$this->assertSame($instance->getTimestamp(), self::TIMESTAMP + 60);
+		$this->assertSame(self::TIMESTAMP + 60, $instance->getTimestamp());
 	}
 
 	/**
@@ -113,12 +134,6 @@ class CronCommandTest extends \tx_phpunit_testcase {
 				self::TIMESTAMP + (60 * 60) * 24,
 				self::TIMESTAMP + ((60 * 60) * 24) * 2
 			),
-			'every first day of month' => array(
-				'0 0 1 * *',
-				self::TIMESTAMP,
-				strtotime('01-02-2010'),
-				strtotime('01-03-2010')
-			),
 			'once a month' => array(
 				'0 0 4 * *',
 				self::TIMESTAMP,
@@ -137,24 +152,6 @@ class CronCommandTest extends \tx_phpunit_testcase {
 				self::TIMESTAMP + ((60 * 60) * 24) * 31,
 				(self::TIMESTAMP + ((60 * 60) * 24) * 31) + (60 * 60) * 24
 			),
-			'once every February' => array(
-				'0 0 1 feb *',
-				self::TIMESTAMP,
-				self::TIMESTAMP + ((60 * 60) * 24) * 31,
-				strtotime('01-02-2011')
-			),
-			'once every Friday February' => array(
-				'0 0 * feb fri',
-				self::TIMESTAMP,
-				strtotime('05-02-2010'),
-				strtotime('12-02-2010')
-			),
-			'first day in February and every Friday' => array(
-				'0 0 1 feb fri',
-				self::TIMESTAMP,
-				strtotime('01-02-2010'),
-				strtotime('05-02-2010')
-			),
 			'day of week and day of month restricted, next match in day of month field' => array(
 				'0 0 2 * sun',
 				self::TIMESTAMP,
@@ -166,12 +163,6 @@ class CronCommandTest extends \tx_phpunit_testcase {
 				self::TIMESTAMP,
 				self::TIMESTAMP + (60 * 60) * 24,
 				(self::TIMESTAMP + (60 * 60) * 24) + (60 * 60) * 24
-			),
-			'29th February leap year' => array(
-				'0 0 29 feb *',
-				self::TIMESTAMP,
-				strtotime('29-02-2012'),
-				strtotime('29-02-2016')
 			),
 			'list of minutes' => array(
 				'2,4 * * * *',
@@ -185,23 +176,61 @@ class CronCommandTest extends \tx_phpunit_testcase {
 				self::TIMESTAMP + (60 * 60) * 2,
 				self::TIMESTAMP + (60 * 60) * 4
 			),
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	static public function expectedCalculatedTimestampDataProvider() {
+		return array(
+			'every first day of month' => array(
+				'0 0 1 * *',
+				self::TIMESTAMP,
+				'01-02-2010',
+				'01-03-2010',
+			),
+			'once every February' => array(
+				'0 0 1 feb *',
+				self::TIMESTAMP,
+				'01-02-2010',
+				'01-02-2011',
+			),
+			'once every Friday February' => array(
+				'0 0 * feb fri',
+				self::TIMESTAMP,
+				'05-02-2010',
+				'12-02-2010',
+			),
+			'first day in February and every Friday' => array(
+				'0 0 1 feb fri',
+				self::TIMESTAMP,
+				'01-02-2010',
+				'05-02-2010',
+			),
+			'29th February leap year' => array(
+				'0 0 29 feb *',
+				self::TIMESTAMP,
+				'29-02-2012',
+				'29-02-2016',
+			),
 			'list of days in month' => array(
 				'0 0 2,4 * *',
 				self::TIMESTAMP,
-				strtotime('02-01-2010'),
-				strtotime('04-01-2010')
+				'02-01-2010',
+				'04-01-2010',
 			),
 			'list of month' => array(
 				'0 0 1 2,3 *',
 				self::TIMESTAMP,
-				strtotime('01-02-2010'),
-				strtotime('01-03-2010')
+				'01-02-2010',
+				'01-03-2010',
 			),
 			'list of days of weeks' => array(
 				'0 0 * * 2,4',
 				self::TIMESTAMP,
-				strtotime('05-01-2010'),
-				strtotime('07-01-2010')
+				'05-01-2010',
+				'07-01-2010',
 			)
 		);
 	}
@@ -216,21 +245,48 @@ class CronCommandTest extends \tx_phpunit_testcase {
 	public function calculateNextValueDeterminesCorrectNextTimestamp($cronCommand, $startTimestamp, $expectedTimestamp) {
 		$instance = new \TYPO3\CMS\Scheduler\CronCommand\CronCommand($cronCommand, $startTimestamp);
 		$instance->calculateNextValue();
-		$this->assertSame($instance->getTimestamp(), $expectedTimestamp);
+		$this->assertSame($expectedTimestamp, $instance->getTimestamp());
+	}
+
+	/**
+	 * @test
+	 * @dataProvider expectedCalculatedTimestampDataProvider
+	 * @param string $cronCommand Cron command
+	 * @param integer $startTimestamp Timestamp for start of calculation
+	 * @param string $expectedTimestamp Expected result (next time of execution), to be feeded to strtotime
+	 */
+	public function calculateNextValueDeterminesCorrectNextCalculatedTimestamp($cronCommand, $startTimestamp, $expectedTimestamp) {
+		$instance = new \TYPO3\CMS\Scheduler\CronCommand\CronCommand($cronCommand, $startTimestamp);
+		$instance->calculateNextValue();
+		$this->assertSame(strtotime($expectedTimestamp), $instance->getTimestamp());
 	}
 
 	/**
 	 * @test
 	 * @dataProvider expectedTimestampDataProvider
 	 * @param string $cronCommand Cron command
-	 * @param integer $startTimestamp Timestamp for start of calculation
+	 * @param integer $startTimestamp [unused] Timestamp for start of calculation
 	 * @param integer $firstTimestamp Timestamp of the next execution
 	 * @param integer $secondTimestamp Timestamp of the further execution
 	 */
 	public function calculateNextValueDeterminesCorrectNextTimestampOnConsecutiveCall($cronCommand, $startTimestamp, $firstTimestamp, $secondTimestamp) {
 		$instance = new \TYPO3\CMS\Scheduler\CronCommand\CronCommand($cronCommand, $firstTimestamp);
 		$instance->calculateNextValue();
-		$this->assertSame($instance->getTimestamp(), $secondTimestamp);
+		$this->assertSame($secondTimestamp, $instance->getTimestamp());
+	}
+
+	/**
+	 * @test
+	 * @dataProvider expectedCalculatedTimestampDataProvider
+	 * @param string $cronCommand Cron command
+	 * @param integer $startTimestamp [unused] Timestamp for start of calculation
+	 * @param string $firstTimestamp Timestamp of the next execution, to be feeded to strtotime
+	 * @param string $secondTimestamp Timestamp of the further execution, to be feeded to strtotime
+	 */
+	public function calculateNextValueDeterminesCorrectNextCalculatedTimestampOnConsecutiveCall($cronCommand, $startTimestamp, $firstTimestamp, $secondTimestamp) {
+		$instance = new \TYPO3\CMS\Scheduler\CronCommand\CronCommand($cronCommand, strtotime($firstTimestamp));
+		$instance->calculateNextValue();
+		$this->assertSame(strtotime($secondTimestamp), $instance->getTimestamp());
 	}
 
 	/**
@@ -242,7 +298,7 @@ class CronCommandTest extends \tx_phpunit_testcase {
 		$instance = new \TYPO3\CMS\Scheduler\CronCommand\CronCommand('* 3 28 mar *', self::TIMESTAMP);
 		$instance->calculateNextValue();
 		date_default_timezone_set($backupTimezone);
-		$this->assertSame($instance->getTimestamp(), 1269741600);
+		$this->assertSame(1269741600, $instance->getTimestamp());
 	}
 
 	/**

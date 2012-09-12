@@ -501,7 +501,6 @@ class NormalizeCommandTest extends \tx_phpunit_testcase {
 			'jul' => array('jul', 7),
 			'aug' => array('aug', 8),
 			'sep' => array('sep', 9),
-			'September' => array('September', 9),
 			'oct' => array('oct', 10),
 			'nov' => array('nov', 11),
 			'dec' => array('dec', 12),
