@@ -85,7 +85,7 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 * @todo Define visibility
 	 */
 	public function listURL($altId = '', $table = -1, $exclList = '') {
-		return ((((((((($this->thisScript . '?id=') . (strcmp($altId, '') ? $altId : $this->id)) . '&table=') . rawurlencode(($table == -1 ? $this->table : $table))) . ($this->thumbs ? '&imagemode=' . $this->thumbs : '')) . ($this->searchString ? '&search_field=' . rawurlencode($this->searchString) : '')) . ($this->searchLevels ? '&search_levels=' . rawurlencode($this->searchLevels) : '')) . ((!$exclList || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($exclList, 'sortField')) && $this->sortField ? '&sortField=' . rawurlencode($this->sortField) : '')) . ((!$exclList || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev ? '&sortRev=' . rawurlencode($this->sortRev) : '')) . $this->ext_addP();
+		return $this->thisScript . '?id=' . (strcmp($altId, '') ? $altId : $this->id) . '&table=' . rawurlencode(($table == -1 ? $this->table : $table)) . ($this->thumbs ? '&imagemode=' . $this->thumbs : '') . ($this->searchString ? '&search_field=' . rawurlencode($this->searchString) : '') . ($this->searchLevels ? '&search_levels=' . rawurlencode($this->searchLevels) : '') . ((!$exclList || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($exclList, 'sortField')) && $this->sortField ? '&sortField=' . rawurlencode($this->sortField) : '') . ((!$exclList || !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev ? '&sortRev=' . rawurlencode($this->sortRev) : '') . $this->ext_addP();
 	}
 
 	/**
@@ -95,7 +95,7 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 * @todo Define visibility
 	 */
 	public function ext_addP() {
-		$str = (((((('&act=' . $GLOBALS['SOBE']->browser->act) . '&mode=') . $GLOBALS['SOBE']->browser->mode) . '&expandPage=') . $GLOBALS['SOBE']->browser->expandPage) . '&bparams=') . rawurlencode($GLOBALS['SOBE']->browser->bparams);
+		$str = '&act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $GLOBALS['SOBE']->browser->expandPage . '&bparams=' . rawurlencode($GLOBALS['SOBE']->browser->bparams);
 		return $str;
 	}
 
@@ -111,17 +111,17 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 	 */
 	public function linkWrapItems($table, $uid, $code, $row) {
 		if (!$code) {
-			$code = ('<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title', 1)) . ']</i>';
+			$code = '<i>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title', 1) . ']</i>';
 		} else {
 			$code = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitlePrep($code, $this->fixedL);
 		}
 		$title = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row, FALSE, TRUE);
 		$ficon = \TYPO3\CMS\Backend\Utility\IconUtility::getIcon($table, $row);
-		$aOnClick = ((((((('return insertElement(\'' . $table) . '\', \'') . $row['uid']) . '\', \'db\', ') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($title)) . ', \'\', \'\', \'') . $ficon) . '\');';
-		$ATag = ('<a href="#" onclick="' . $aOnClick) . '">';
+		$aOnClick = 'return insertElement(\'' . $table . '\', \'' . $row['uid'] . '\', \'db\', ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($title) . ', \'\', \'\', \'' . $ficon . '\');';
+		$ATag = '<a href="#" onclick="' . $aOnClick . '">';
 		$ATag_alt = substr($ATag, 0, -4) . ',\'\',1);">';
 		$ATag_e = '</a>';
-		return (((((((($ATag . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"')) . ' title="') . $GLOBALS['LANG']->getLL('addToList', 1)) . '" alt="" />') . $ATag_e) . $ATag_alt) . $code) . $ATag_e;
+		return $ATag . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList', 1) . '" alt="" />' . $ATag_e . $ATag_alt . $code . $ATag_e;
 	}
 
 	/**
@@ -141,7 +141,7 @@ class ElementBrowserRecordList extends \TYPO3\CMS\Recordlist\RecordList\Database
 						continue;
 					}
 					$parameters = $filter['parameters'] ? $filter['parameters'] : array();
-					$parameters['values'] = array(($table . '_') . $row['uid']);
+					$parameters['values'] = array($table . '_' . $row['uid']);
 					$parameters['tcaFieldConfig'] = $tcaFieldConfig;
 					$valueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($filter['userFunc'], $parameters, $this);
 					if (count($valueArray) === 0) {

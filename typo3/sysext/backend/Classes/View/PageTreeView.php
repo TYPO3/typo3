@@ -84,8 +84,8 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	public function wrapIcon($thePageIcon, &$row) {
 		// If the record is locked, present a warning sign.
 		if ($lockInfo = \TYPO3\CMS\Backend\Utility\BackendUtility::isRecordLocked('pages', $row['uid'])) {
-			$aOnClick = ('alert(' . $GLOBALS['LANG']->JScharCode($lockInfo['msg'])) . ');return false;';
-			$lockIcon = ((('<a href="#" onclick="' . htmlspecialchars($aOnClick)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-in-use', array('title' => htmlspecialchars($lockInfo['msg'])))) . '</a>';
+			$aOnClick = 'alert(' . $GLOBALS['LANG']->JScharCode($lockInfo['msg']) . ');return false;';
+			$lockIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-in-use', array('title' => htmlspecialchars($lockInfo['msg']))) . '</a>';
 		} else {
 			$lockIcon = '';
 		}
@@ -93,15 +93,15 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		if (!$this->ext_IconMode) {
 			$thePageIcon = $GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon($thePageIcon, 'pages', $row['uid'], 0, '&bank=' . $this->bank);
 		} elseif (!strcmp($this->ext_IconMode, 'titlelink')) {
-			$aOnClick = ((('return jumpTo(\'' . $this->getJumpToParam($row)) . '\',this,\'') . $this->treeName) . '\');';
-			$thePageIcon = ((('<a href="#" onclick="' . htmlspecialchars($aOnClick)) . '">') . $thePageIcon) . '</a>';
+			$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($row) . '\',this,\'' . $this->treeName . '\');';
+			$thePageIcon = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $thePageIcon . '</a>';
 		}
 		// Wrap icon in a drag/drop span.
-		$dragDropIcon = ((('<span class="dragIcon" id="dragIconID_' . $row['uid']) . '">') . $thePageIcon) . '</span>';
+		$dragDropIcon = '<span class="dragIcon" id="dragIconID_' . $row['uid'] . '">' . $thePageIcon . '</span>';
 		// Add Page ID:
 		$pageIdStr = '';
 		if ($this->ext_showPageId) {
-			$pageIdStr = ('<span class="dragId">[' . $row['uid']) . ']</span> ';
+			$pageIdStr = '<span class="dragId">[' . $row['uid'] . ']</span> ';
 		}
 		// Call stats information hook
 		$stat = '';
@@ -111,7 +111,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 				$stat .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
-		return (($dragDropIcon . $lockIcon) . $pageIdStr) . $stat;
+		return $dragDropIcon . $lockIcon . $pageIdStr . $stat;
 	}
 
 	/**
@@ -125,7 +125,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 */
 	public function wrapStop($str, $row) {
 		if ($row['php_tree_stop']) {
-			$str .= ('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => $row['uid'])))) . '" class="typo3-red">+</a> ';
+			$str .= '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => $row['uid']))) . '" class="typo3-red">+</a> ';
 		}
 		return $str;
 	}
@@ -149,11 +149,11 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			}
 			unset($_params);
 		}
-		$aOnClick = (((((('return jumpTo(\'' . $this->getJumpToParam($row)) . '\',this,\'') . $this->domIdPrefix) . $this->getId($row)) . '\',') . $bank) . ');';
-		$CSM = (' oncontextmenu="' . htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('', 'pages', $row['uid'], 0, ('&bank=' . $this->bank), '', TRUE))) . ';"';
-		$thePageTitle = ((((('<a href="#" onclick="' . htmlspecialchars($aOnClick)) . '"') . $CSM) . '>') . $title) . '</a>';
+		$aOnClick = 'return jumpTo(\'' . $this->getJumpToParam($row) . '\',this,\'' . $this->domIdPrefix . $this->getId($row) . '\',' . $bank . ');';
+		$CSM = ' oncontextmenu="' . htmlspecialchars($GLOBALS['TBE_TEMPLATE']->wrapClickMenuOnIcon('', 'pages', $row['uid'], 0, ('&bank=' . $this->bank), '', TRUE)) . ';"';
+		$thePageTitle = '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"' . $CSM . '>' . $title . '</a>';
 		// Wrap title in a drag/drop span.
-		return ((('<span class="dragTitle" id="dragTitleID_' . $row['uid']) . '">') . $thePageTitle) . '</span>';
+		return '<span class="dragTitle" id="dragTitleID_' . $row['uid'] . '">' . $thePageTitle . '</span>';
 	}
 
 	/**
@@ -179,7 +179,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			$PM = substr($PM, 0, $PMpos);
 		}
 		$PM = explode('_', $PM);
-		if (((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX && is_array($PM)) && count($PM) == 4) && $PM[2] != 0) {
+		if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_AJAX && is_array($PM) && count($PM) == 4 && $PM[2] != 0) {
 			if ($PM[1]) {
 				$expandedPageUid = $PM[2];
 				$ajaxOutput = '';
@@ -197,11 +197,11 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		foreach ($treeArr as $k => $v) {
 			$classAttr = $v['row']['_CSSCLASS'];
 			$uid = $v['row']['uid'];
-			$idAttr = htmlspecialchars((($this->domIdPrefix . $this->getId($v['row'])) . '_') . $v['bank']);
+			$idAttr = htmlspecialchars($this->domIdPrefix . $this->getId($v['row']) . '_' . $v['bank']);
 			$itemHTML = '';
 			// If this item is the start of a new level,
 			// then a new level <ul> is needed, but not in ajax mode
-			if (($v['isFirst'] && !$doCollapse) && !($doExpand && $expandedPageUid == $uid)) {
+			if ($v['isFirst'] && !$doCollapse && !($doExpand && $expandedPageUid == $uid)) {
 				$itemHTML = '<ul>';
 			}
 			// Add CSS classes to the list item
@@ -211,8 +211,8 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			if ($v['isLast']) {
 				$classAttr .= $classAttr ? ' last' : 'last';
 			}
-			$itemHTML .= (((((('
-				<li id="' . $idAttr) . '"') . ($classAttr ? (' class="' . $classAttr) . '"' : '')) . '><div class="treeLinkItem">') . $v['HTML']) . $this->wrapTitle($this->getTitleStr($v['row'], $titleLen), $v['row'], $v['bank'])) . '</div>
+			$itemHTML .= '
+				<li id="' . $idAttr . '"' . ($classAttr ? ' class="' . $classAttr . '"' : '') . '><div class="treeLinkItem">' . $v['HTML'] . $this->wrapTitle($this->getTitleStr($v['row'], $titleLen), $v['row'], $v['bank']) . '</div>
 ';
 			if (!$v['hasSub']) {
 				$itemHTML .= '</li>';
@@ -224,7 +224,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			}
 			// If this is the last one and does not have subitems, we need to close
 			// the tree as long as the upper levels have last items too
-			if ((($v['isLast'] && !$v['hasSub']) && !$doCollapse) && !($doExpand && $expandedPageUid == $uid)) {
+			if ($v['isLast'] && !$v['hasSub'] && !$doCollapse && !($doExpand && $expandedPageUid == $uid)) {
 				for ($i = $v['invertedDepth']; $closeDepth[$i] == 1; $i++) {
 					$closeDepth[$i] = 0;
 					$itemHTML .= '</ul></li>';
@@ -274,9 +274,9 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	public function PMicon($row, $a, $c, $nextCount, $exp) {
 		$PM = $nextCount ? ($exp ? 'minus' : 'plus') : 'join';
 		$BTM = $a == $c ? 'bottom' : '';
-		$icon = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ((('gfx/ol/' . $PM) . $BTM) . '.gif'), 'width="18" height="16"')) . ' alt="" />';
+		$icon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' alt="" />';
 		if ($nextCount) {
-			$cmd = (((($this->bank . '_') . ($exp ? '0_' : '1_')) . $row['uid']) . '_') . $this->treeName;
+			$cmd = $this->bank . '_' . ($exp ? '0_' : '1_') . $row['uid'] . '_' . $this->treeName;
 			$icon = $this->PMiconATagWrap($icon, $cmd, !$exp);
 		}
 		return $icon;
@@ -294,8 +294,8 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
 		if ($this->thisScript) {
 			// Activate dynamic ajax-based tree
-			$js = htmlspecialchars(((('Tree.load(\'' . $cmd) . '\', ') . intval($isExpand)) . ', this);');
-			return ((('<a class="pm" onclick="' . $js) . '">') . $icon) . '</a>';
+			$js = htmlspecialchars('Tree.load(\'' . $cmd . '\', ' . intval($isExpand) . ', this);');
+			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
 		} else {
 			return $icon;
 		}
@@ -318,16 +318,16 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		foreach ($this->MOUNTS as $idx => $uid) {
 			// Set first:
 			$this->bank = $idx;
-			$isOpen = ($this->stored[$idx][$uid] || $this->expandFirst) || $uid === '0';
+			$isOpen = $this->stored[$idx][$uid] || $this->expandFirst || $uid === '0';
 			// Save ids while resetting everything else.
 			$curIds = $this->ids;
 			$this->reset();
 			$this->ids = $curIds;
 			// Set PM icon for root of mount:
-			$cmd = (((($this->bank . '_') . ($isOpen ? '0_' : '1_')) . $uid) . '_') . $this->treeName;
+			$cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $uid . '_' . $this->treeName;
 			// Only, if not for uid 0
 			if ($uid) {
-				$icon = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, (('gfx/ol/' . ($isOpen ? 'minus' : 'plus')) . 'only.gif'))) . ' alt="" />';
+				$icon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif')) . ' alt="" />';
 				$firstHtml = $this->PMiconATagWrap($icon, $cmd, !$isOpen);
 			}
 			// Preparing rootRec for the mount
@@ -385,9 +385,9 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res, $subCSSclass))) {
 			$crazyRecursionLimiter--;
 			// Not in menu:
-			if ($this->ext_separateNotinmenuPages && (($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION || $row['doktype'] >= 200) || $row['nav_hide'])) {
+			if ($this->ext_separateNotinmenuPages && ($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION || $row['doktype'] >= 200 || $row['nav_hide'])) {
 				$outOfMenuPages[] = $row;
-				$outOfMenuPagesTextIndex[] = ($row['doktype'] >= 200 ? ('zzz' . $row['doktype']) . '_' : '') . $row['title'];
+				$outOfMenuPagesTextIndex[] = ($row['doktype'] >= 200 ? 'zzz' . $row['doktype'] . '_' : '') . $row['title'];
 			} else {
 				$inMenuPages[] = $row;
 			}
@@ -427,8 +427,8 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			$this->ids[] = ($idH[$row['uid']]['uid'] = $row['uid']);
 			$this->ids_hierarchy[$depth][] = $row['uid'];
 			// Make a recursive call to the next level
-			if (($depth > 1 && $this->expandNext($newID)) && !$row['php_tree_stop']) {
-				$nextCount = $this->getTree($newID, $depth - 1, ($blankLineCode . ',') . $LN, $row['_SUBCSSCLASS']);
+			if ($depth > 1 && $this->expandNext($newID) && !$row['php_tree_stop']) {
+				$nextCount = $this->getTree($newID, $depth - 1, $blankLineCode . ',' . $LN, $row['_SUBCSSCLASS']);
 				if (count($this->buffer_idH)) {
 					$idH[$row['uid']]['subrow'] = $this->buffer_idH;
 				}
@@ -442,7 +442,7 @@ class PageTreeView extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 			// Set HTML-icons, if any:
 			if ($this->makeHTML) {
 				if ($row['_FIRST_NOT_IN_MENU']) {
-					$HTML = ((((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/ol/line.gif')) . ' alt="" /><br/><img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/ol/line.gif')) . ' alt="" /><i>Not shown in menu') . $label_shownAlphabetically) . ':</i><br>';
+					$HTML = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/ol/line.gif') . ' alt="" /><br/><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/ol/line.gif') . ' alt="" /><i>Not shown in menu' . $label_shownAlphabetically . ':</i><br>';
 				} else {
 					$HTML = '';
 				}

@@ -192,7 +192,7 @@ abstract class AbstractFunctionModule {
 		// Path of this script:
 		$this->thisPath = dirname($conf['path']);
 		if (!@is_dir($this->thisPath)) {
-			throw new \RuntimeException(('TYPO3 Fatal Error: Extension "' . $this->thisPath) . ' was not a directory as expected...', 1270853912);
+			throw new \RuntimeException('TYPO3 Fatal Error: Extension "' . $this->thisPath . ' was not a directory as expected...', 1270853912);
 		}
 		// Local lang:
 		$this->incLocalLang();
@@ -225,8 +225,8 @@ abstract class AbstractFunctionModule {
 	 * @todo Define visibility
 	 */
 	public function incLocalLang() {
-		if ($this->localLangFile && ((@is_file((($this->thisPath . '/') . $this->localLangFile)) || @is_file(((($this->thisPath . '/') . substr($this->localLangFile, 0, -4)) . '.xml'))) || @is_file(((($this->thisPath . '/') . substr($this->localLangFile, 0, -4)) . '.xlf')))) {
-			$LOCAL_LANG = $GLOBALS['LANG']->includeLLFile(($this->thisPath . '/') . $this->localLangFile, FALSE);
+		if ($this->localLangFile && (@is_file(($this->thisPath . '/' . $this->localLangFile)) || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xml')) || @is_file(($this->thisPath . '/' . substr($this->localLangFile, 0, -4) . '.xlf')))) {
+			$LOCAL_LANG = $GLOBALS['LANG']->includeLLFile($this->thisPath . '/' . $this->localLangFile, FALSE);
 			if (is_array($LOCAL_LANG)) {
 				$GLOBALS['LOCAL_LANG'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule((array) $GLOBALS['LOCAL_LANG'], $LOCAL_LANG);
 			}

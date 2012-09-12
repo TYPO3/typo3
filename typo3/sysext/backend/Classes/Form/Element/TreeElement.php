@@ -149,14 +149,14 @@ class TreeElement {
 		$pageRenderer->loadExtJs();
 		$pageRenderer->addJsFile('../t3lib/js/extjs/tree/tree.js');
 		$pageRenderer->addInlineLanguageLabelFile(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('lang') . 'locallang_csh_corebe.xml', 'tcatree');
-		$pageRenderer->addExtOnReadyCode(((((((((((((((((((((((((((((((((((('
-			TYPO3.Components.Tree.StandardTreeItemData["' . $id) . '"] = ') . $treeData) . ';
-			var tree') . $id) . ' = new TYPO3.Components.Tree.StandardTree({
-				id: "') . $id) . '",
-				showHeader: ') . intval($header)) . ',
-				onChange: "') . $onChange) . '",
-				countSelectedNodes: ') . count($selectedNodes)) . ',
-				width: ') . $width) . ',
+		$pageRenderer->addExtOnReadyCode('
+			TYPO3.Components.Tree.StandardTreeItemData["' . $id . '"] = ' . $treeData . ';
+			var tree' . $id . ' = new TYPO3.Components.Tree.StandardTree({
+				id: "' . $id . '",
+				showHeader: ' . intval($header) . ',
+				onChange: "' . $onChange . '",
+				countSelectedNodes: ' . count($selectedNodes) . ',
+				width: ' . $width . ',
 				listeners: {
 					click: function(node, event) {
 						if (typeof(node.attributes.checked) == "boolean") {
@@ -178,20 +178,20 @@ class TreeElement {
 						top.TYPO3.BackendUserSettings.ExtDirect.addToList("tcaTrees." + this.ucId, node.attributes.uid);
 					}
 				},
-				tcaMaxItems: ') . ($PA['fieldConf']['config']['maxitems'] ? intval($PA['fieldConf']['config']['maxitems']) : 99999)) . ',
-				tcaSelectRecursiveAllowed: ') . ($appearance['allowRecursiveMode'] ? 'true' : 'false')) . ',
+				tcaMaxItems: ' . ($PA['fieldConf']['config']['maxitems'] ? intval($PA['fieldConf']['config']['maxitems']) : 99999) . ',
+				tcaSelectRecursiveAllowed: ' . ($appearance['allowRecursiveMode'] ? 'true' : 'false') . ',
 				tcaSelectRecursive: false,
-				tcaExclusiveKeys: "') . ($PA['fieldConf']['config']['exclusiveKeys'] ? $PA['fieldConf']['config']['exclusiveKeys'] : '')) . '",
-				ucId: "') . md5((($table . '|') . $field))) . '",
+				tcaExclusiveKeys: "' . ($PA['fieldConf']['config']['exclusiveKeys'] ? $PA['fieldConf']['config']['exclusiveKeys'] : '') . '",
+				ucId: "' . md5(($table . '|' . $field)) . '",
 				selModel: TYPO3.Components.Tree.EmptySelectionModel,
-				disabled: ') . ($PA['fieldConf']['config']['readOnly'] ? 'true' : 'false')) . '
-			});') . LF) . ($autoSizeMax ? ((((('tree' . $id) . '.bodyStyle = "max-height: ') . $autoSizeMax) . 'px;min-height: ') . $height) . 'px;";' : ((('tree' . $id) . '.height = ') . $height) . ';')) . LF) . 'tree') . $id) . '.render("tree_') . $id) . '");') . ($expanded ? ('tree' . $id) . '.expandAll();' : '')) . '
+				disabled: ' . ($PA['fieldConf']['config']['readOnly'] ? 'true' : 'false') . '
+			});' . LF . ($autoSizeMax ? 'tree' . $id . '.bodyStyle = "max-height: ' . $autoSizeMax . 'px;min-height: ' . $height . 'px;";' : 'tree' . $id . '.height = ' . $height . ';') . LF . 'tree' . $id . '.render("tree_' . $id . '");' . ($expanded ? 'tree' . $id . '.expandAll();' : '') . '
 		');
-		$formField = ((((((('
+		$formField = '
 			<div class="typo3-tceforms-tree">
-				<input class="treeRecord" type="hidden" name="' . htmlspecialchars($PA['itemFormElName'])) . '" id="treeinput') . $id) . '" value="') . htmlspecialchars($PA['itemFormElValue'])) . '" />
+				<input class="treeRecord" type="hidden" name="' . htmlspecialchars($PA['itemFormElName']) . '" id="treeinput' . $id . '" value="' . htmlspecialchars($PA['itemFormElValue']) . '" />
 			</div>
-			<div id="tree_') . $id) . '">
+			<div id="tree_' . $id . '">
 
 			</div>';
 		return $formField;

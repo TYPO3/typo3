@@ -88,20 +88,20 @@ class ValueSlider {
 		$callback = $params['fieldChangeFunc']['TBE_EDITOR_fieldChanged'];
 		$getField = $params['fieldChangeFunc']['typo3form.fieldGet'];
 		$id = 'slider-' . $params['md5ID'];
-		$contents = ('<div id="' . $id) . '"></div>';
-		$js = ((((((((((((((((((((('
+		$contents = '<div id="' . $id . '"></div>';
+		$js = '
 		new TYPO3.Components.TcaValueSlider({
-			minValue: ' . $min) . ',
-			maxValue: ') . $max) . ',
-			value: ') . $value) . ',
-			increment: ') . $step) . ',
-			renderTo: "') . $id) . '",
-			itemName: "') . $itemName) . '",
-			changeCallback: "') . $callback) . '",
-			getField: "') . $getField) . '",
-			width: "') . $width) . '",
-			type: "') . $type) . '",
-			elementType: "') . $elementType) . '"
+			minValue: ' . $min . ',
+			maxValue: ' . $max . ',
+			value: ' . $value . ',
+			increment: ' . $step . ',
+			renderTo: "' . $id . '",
+			itemName: "' . $itemName . '",
+			changeCallback: "' . $callback . '",
+			getField: "' . $getField . '",
+			width: "' . $width . '",
+			type: "' . $type . '",
+			elementType: "' . $elementType . '"
 		});
 		';
 		/** @var $pageRenderer t3lib_pageRenderer */

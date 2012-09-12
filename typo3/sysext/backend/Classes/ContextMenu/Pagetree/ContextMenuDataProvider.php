@@ -54,7 +54,7 @@ class ContextMenuDataProvider extends \TYPO3\CMS\Backend\ContextMenu\AbstractCon
 	 * @return array
 	 */
 	protected function getDisableActions() {
-		$tsConfig = $GLOBALS['BE_USER']->getTSConfig(('options.contextMenu.' . $this->getContextMenuType()) . '.disableItems');
+		$tsConfig = $GLOBALS['BE_USER']->getTSConfig('options.contextMenu.' . $this->getContextMenuType() . '.disableItems');
 		$disableItems = array();
 		if (trim($tsConfig['value']) !== '') {
 			$disableItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tsConfig['value']);

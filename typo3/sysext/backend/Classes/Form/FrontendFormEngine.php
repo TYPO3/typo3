@@ -53,7 +53,7 @@ class FrontendFormEngine extends \TYPO3\CMS\Backend\Form\FormEngine {
 	 * @return string
 	 */
 	public function wrapLabels($str) {
-		return ('<font face="verdana" size="1" color="black">' . $str) . '</font>';
+		return '<font face="verdana" size="1" color="black">' . $str . '</font>';
 	}
 
 	/**
@@ -66,12 +66,12 @@ class FrontendFormEngine extends \TYPO3\CMS\Backend\Form\FormEngine {
 		$out = '';
 		$bgColor = ' bgcolor="#D6DAD0"';
 		foreach ($paletteArray as $content) {
-			$hRow[] = ((((('<td' . $bgColor) . '><font face="verdana" size="1">&nbsp;</font></td><td nowrap="nowrap"') . $bgColor) . '><font color="#666666" face="verdana" size="1">') . $content['NAME']) . '</font></td>';
-			$iRow[] = ((((((((((((((((('<td valign="top">' . '<img name="req_') . $content['TABLE']) . '_') . $content['ID']) . '_') . $content['FIELD']) . '" src="clear.gif" width="10" height="10" alt="" />') . '<img name="cm_') . $content['TABLE']) . '_') . $content['ID']) . '_') . $content['FIELD']) . '" src="clear.gif" width="7" height="10" alt="" />') . '</td><td nowrap="nowrap" valign="top">') . $content['ITEM']) . $content['HELP_ICON']) . '</td>';
+			$hRow[] = '<td' . $bgColor . '><font face="verdana" size="1">&nbsp;</font></td><td nowrap="nowrap"' . $bgColor . '><font color="#666666" face="verdana" size="1">' . $content['NAME'] . '</font></td>';
+			$iRow[] = '<td valign="top">' . '<img name="req_' . $content['TABLE'] . '_' . $content['ID'] . '_' . $content['FIELD'] . '" src="clear.gif" width="10" height="10" alt="" />' . '<img name="cm_' . $content['TABLE'] . '_' . $content['ID'] . '_' . $content['FIELD'] . '" src="clear.gif" width="7" height="10" alt="" />' . '</td><td nowrap="nowrap" valign="top">' . $content['ITEM'] . $content['HELP_ICON'] . '</td>';
 		}
-		$out = ((((('<table border="0" cellpadding="0" cellspacing="0">
-			<tr><td><img src="clear.gif" width="' . intval($this->paletteMargin)) . '" height="1" alt="" /></td>') . implode('', $hRow)) . '</tr>
-			<tr><td></td>') . implode('', $iRow)) . '</tr>
+		$out = '<table border="0" cellpadding="0" cellspacing="0">
+			<tr><td><img src="clear.gif" width="' . intval($this->paletteMargin) . '" height="1" alt="" /></td>' . implode('', $hRow) . '</tr>
+			<tr><td></td>' . implode('', $iRow) . '</tr>
 		</table>';
 		return $out;
 	}
@@ -138,7 +138,7 @@ class FrontendFormEngine extends \TYPO3\CMS\Backend\Form\FormEngine {
 	 */
 	public function initializeTemplateContainer() {
 		$GLOBALS['TBE_TEMPLATE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\FrontendDocumentTemplate');
-		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addInlineSetting('', 'PATH_typo3', (\TYPO3\CMS\Core\Utility\GeneralUtility::dirname(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/') . TYPO3_mainDir);
+		$GLOBALS['TBE_TEMPLATE']->getPageRenderer()->addInlineSetting('', 'PATH_typo3', \TYPO3\CMS\Core\Utility\GeneralUtility::dirname(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . TYPO3_mainDir);
 		$GLOBALS['SOBE'] = new \stdClass();
 		$GLOBALS['SOBE']->doc = $GLOBALS['TBE_TEMPLATE'];
 	}

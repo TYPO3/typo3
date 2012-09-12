@@ -119,7 +119,7 @@ class LiveSearch {
 		}
 		$pageIdList = implode(',', array_unique(explode(',', implode(',', $pageList))));
 		unset($pageList);
-		$limit = ($this->startCount . ',') . $this->limitCount;
+		$limit = $this->startCount . ',' . $this->limitCount;
 		if ($this->queryParser->isValidCommand($searchQuery)) {
 			$this->setQueryString($this->queryParser->getSearchQueryValue($searchQuery));
 			$tableName = $this->queryParser->getTableNameFromCommand($searchQuery);
@@ -188,7 +188,7 @@ class LiveSearch {
 		$getRecordArray = array();
 		if (count($fieldsToSearchWithin) > 0) {
 			$pageBasedPermission = $tableName == 'pages' && $this->userPermissions ? $this->userPermissions : '1=1 ';
-			$where = ((('pid IN (' . $pageIdList) . ') AND ') . $pageBasedPermission) . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin);
+			$where = 'pid IN (' . $pageIdList . ') AND ' . $pageBasedPermission . $this->makeQuerySearchByTable($tableName, $fieldsToSearchWithin);
 			$orderBy = $this->makeOrderByTable($tableName);
 			$getRecordArray = $this->getRecordArray($tableName, $where, $this->makeOrderByTable($tableName), $limit);
 		}
@@ -224,7 +224,7 @@ class LiveSearch {
 		$dbCount = $GLOBALS['TYPO3_DB']->sql_num_rows($result);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$collect[] = array(
-				'id' => ($tableName . ':') . $row['uid'],
+				'id' => $tableName . ':' . $row['uid'],
 				'pageId' => $tableName === 'pages' ? $row['uid'] : $row['pid'],
 				'recordTitle' => $isFirst ? $this->getRecordTitlePrep($this->getTitleOfCurrentRecordType($tableName), self::GROUP_TITLE_MAX_LENGTH) : '',
 				'iconHTML' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($tableName, $row),
@@ -258,7 +258,7 @@ class LiveSearch {
 		// "Edit" link: ( Only if permissions to edit the page-record of the content of the parent page ($this->id)
 		// @todo Is there an existing function to generate this link?
 		if ($permsEdit) {
-			$editLink = (((('alt_doc.php?' . '&edit[') . $tableName) . '][') . $row['uid']) . ']=edit';
+			$editLink = 'alt_doc.php?' . '&edit[' . $tableName . '][' . $row['uid'] . ']=edit';
 		}
 		return $editLink;
 	}
@@ -284,7 +284,7 @@ class LiveSearch {
 	 */
 	public function getRecordTitlePrep($title, $titleLength = 0) {
 		// If $titleLength is not a valid positive integer, use BE_USER->uc['titleLen']:
-		if ((!$titleLength || !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($titleLength)) || $titleLength < 0) {
+		if (!$titleLength || !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($titleLength) || $titleLength < 0) {
 			$titleLength = $GLOBALS['BE_USER']->uc['titleLen'];
 		}
 		return htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($title, $titleLength));
@@ -318,16 +318,16 @@ class LiveSearch {
 		// If the search string is a simple integer, assemble an equality comparison
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->queryString)) {
 			foreach ($fieldsToSearchWithin as $fieldName) {
-				if (($fieldName == 'uid' || $fieldName == 'pid') || isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
+				if ($fieldName == 'uid' || $fieldName == 'pid' || isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
 					$fieldConfig =& $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
 					// Assemble the search condition only if the field is an integer, or is uid or pid
-					if (($fieldName == 'uid' || $fieldName == 'pid') || ($fieldConfig['type'] == 'input' && $fieldConfig['eval']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($fieldConfig['eval'], 'int')) {
-						$whereParts[] = ($fieldName . '=') . $this->queryString;
+					if ($fieldName == 'uid' || $fieldName == 'pid' || $fieldConfig['type'] == 'input' && $fieldConfig['eval'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($fieldConfig['eval'], 'int')) {
+						$whereParts[] = $fieldName . '=' . $this->queryString;
 					}
 				}
 			}
 		} else {
-			$like = ('\'%' . $GLOBALS['TYPO3_DB']->escapeStrForLike($GLOBALS['TYPO3_DB']->quoteStr($this->queryString, $tableName), $tableName)) . '%\'';
+			$like = '\'%' . $GLOBALS['TYPO3_DB']->escapeStrForLike($GLOBALS['TYPO3_DB']->quoteStr($this->queryString, $tableName), $tableName) . '%\'';
 			foreach ($fieldsToSearchWithin as $fieldName) {
 				if (isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
 					$fieldConfig =& $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
@@ -339,11 +339,11 @@ class LiveSearch {
 						}
 						// Apply additional condition, if any
 						if ($fieldConfig['search']['andWhere']) {
-							$format = ((('((' . $fieldConfig['search']['andWhere']) . ') AND (') . $format) . '))';
+							$format = '((' . $fieldConfig['search']['andWhere'] . ') AND (' . $format . '))';
 						}
 					}
 					// Assemble the search condition only if the field makes sense to be searched
-					if (($fieldConfig['type'] == 'text' || $fieldConfig['type'] == 'flex') || $fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] || !preg_match('/date|time|int/', $fieldConfig['eval']))) {
+					if ($fieldConfig['type'] == 'text' || $fieldConfig['type'] == 'flex' || $fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] || !preg_match('/date|time|int/', $fieldConfig['eval']))) {
 						$whereParts[] = sprintf($format, $fieldName, $like);
 					}
 				}
@@ -351,7 +351,7 @@ class LiveSearch {
 		}
 		// If at least one condition was defined, create the search query
 		if (count($whereParts) > 0) {
-			$queryPart = (' AND (' . implode(' OR ', $whereParts)) . ')';
+			$queryPart = ' AND (' . implode(' OR ', $whereParts) . ')';
 			// And the relevant conditions for deleted and versioned records
 			$queryPart .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableName);
 			$queryPart .= \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($tableName);

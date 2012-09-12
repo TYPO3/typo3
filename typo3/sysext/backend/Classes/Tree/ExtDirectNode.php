@@ -559,7 +559,7 @@ class ExtDirectNode extends \TYPO3\CMS\Backend\Tree\TreeNode {
 			'id' => $this->getId(),
 			'type' => $this->getType(),
 			'editableText' => $this->getEditableText(),
-			'text' => ($this->getPrefix() . $this->getText()) . $this->getSuffix(),
+			'text' => $this->getPrefix() . $this->getText() . $this->getSuffix(),
 			'cls' => $this->getCls(),
 			'prefix' => $this->getPrefix(),
 			'suffix' => $this->getSuffix(),

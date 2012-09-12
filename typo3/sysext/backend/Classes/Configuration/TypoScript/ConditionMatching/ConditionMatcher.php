@@ -93,7 +93,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 
 			case 'PIDinRootline':
 				$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
-				if (($key == 'PIDinRootline' || !in_array($this->pageId, $values)) || $this->isNewPageWithPageId($this->pageId)) {
+				if ($key == 'PIDinRootline' || !in_array($this->pageId, $values) || $this->isNewPageWithPageId($this->pageId)) {
 					foreach ($values as $test) {
 						foreach ($this->rootline as $rl_dat) {
 							if ($rl_dat['uid'] == $test) {
@@ -212,7 +212,7 @@ class ConditionMatcher extends \TYPO3\CMS\Core\Configuration\TypoScript\Conditio
 			$elementsData = $GLOBALS['SOBE']->elementsData;
 			$data = $GLOBALS['SOBE']->data;
 			// If saving a new page record:
-			if ((is_array($data) && isset($data['pages'])) && is_array($data['pages'])) {
+			if (is_array($data) && isset($data['pages']) && is_array($data['pages'])) {
 				foreach ($data['pages'] as $uid => $fields) {
 					if (strpos($uid, 'NEW') === 0 && $fields['pid'] == $pageId) {
 						return TRUE;

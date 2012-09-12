@@ -126,7 +126,7 @@ class BackendController {
 		foreach ($coreToolbarItems as $toolbarItemName => $toolbarItemClassName) {
 			$toolbarItem = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($toolbarItemClassName, $this);
 			if (!$toolbarItem instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface) {
-				throw new \UnexpectedValueException(('$toolbarItem "' . $toolbarItemName) . '" must implement interface TYPO3\\CMS\\Backend\\Toolbar\\ToolbarItemHookInterface', 1195126772);
+				throw new \UnexpectedValueException('$toolbarItem "' . $toolbarItemName . '" must implement interface TYPO3\\CMS\\Backend\\Toolbar\\ToolbarItemHookInterface', 1195126772);
 			}
 			if ($toolbarItem->checkAccess()) {
 				$this->toolbarItems[$toolbarItemName] = $toolbarItem;
@@ -147,10 +147,10 @@ class BackendController {
 		$logo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Views\\LogoView');
 		$logo->setLogo('gfx/typo3logo_mini.png');
 		// Create backend scaffolding
-		$backendScaffolding = ((('
+		$backendScaffolding = '
 		<div id="typo3-top-container" class="x-hide-display">
-			<div id="typo3-logo">' . $logo->render()) . '</div>
-			<div id="typo3-top" class="typo3-top-toolbar">') . $this->renderToolbar()) . '</div>
+			<div id="typo3-logo">' . $logo->render() . '</div>
+			<div id="typo3-top" class="typo3-top-toolbar">' . $this->renderToolbar() . '</div>
 		</div>';
 		/******************************************************
 		 * Now put the complete backend document together
@@ -182,7 +182,7 @@ class BackendController {
 			}));
 		';
 		if ($states) {
-			$extOnReadyCode .= ('Ext.state.Manager.getProvider().initState(' . json_encode($states)) . ');';
+			$extOnReadyCode .= 'Ext.state.Manager.getProvider().initState(' . json_encode($states) . ');';
 		}
 		$extOnReadyCode .= '
 			TYPO3.Backend = new TYPO3.Viewport(TYPO3.Viewport.configuration);
@@ -192,7 +192,7 @@ class BackendController {
 			TYPO3.ContextHelpWindow.init();';
 		$this->pageRenderer->addExtOnReadyCode($extOnReadyCode);
 		// Set document title:
-		$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? (($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 ') . TYPO3_version) . ']' : 'TYPO3 ' . TYPO3_version;
+		$title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] ? $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ' [TYPO3 ' . TYPO3_version . ']' : 'TYPO3 ' . TYPO3_version;
 		$this->content = $backendScaffolding;
 		// Renders the module page
 		$this->content = $GLOBALS['TBE_TEMPLATE']->render($title, $this->content);
@@ -217,9 +217,9 @@ class BackendController {
 			}
 			$loadedComponents[] = $info['componentId'];
 			$component = strtolower(substr($info['componentId'], strrpos($info['componentId'], '-') + 1));
-			$componentDirectory = ('components/' . $component) . '/';
+			$componentDirectory = 'components/' . $component . '/';
 			if ($info['isCoreComponent']) {
-				$absoluteComponentPath = (PATH_t3lib . 'js/extjs/') . $componentDirectory;
+				$absoluteComponentPath = PATH_t3lib . 'js/extjs/' . $componentDirectory;
 				$relativeComponentPath = '../' . str_replace(PATH_site, '', $absoluteComponentPath);
 			} else {
 				$absoluteComponentPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($info['extKey']) . $componentDirectory;
@@ -233,7 +233,7 @@ class BackendController {
 				$cssFiles = array_merge($cssFilesOrdered, $cssFiles);
 			}
 			foreach ($cssFiles as $cssFile) {
-				$this->pageRenderer->addCssFile(($relativeComponentPath . 'css/') . $cssFile);
+				$this->pageRenderer->addCssFile($relativeComponentPath . 'css/' . $cssFile);
 			}
 			$jsFiles = \TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir($absoluteComponentPath . 'javascript/', 'js');
 			if (file_exists($absoluteComponentPath . 'javascript/loadorder.txt')) {
@@ -243,7 +243,7 @@ class BackendController {
 				$jsFiles = array_merge($jsFilesOrdered, $jsFiles);
 			}
 			foreach ($jsFiles as $jsFile) {
-				$this->pageRenderer->addJsFile(($relativeComponentPath . 'javascript/') . $jsFile);
+				$this->pageRenderer->addJsFile($relativeComponentPath . 'javascript/' . $jsFile);
 			}
 		}
 	}
@@ -261,8 +261,8 @@ class BackendController {
 			$this->toolbarItems['liveSearch'] = $search;
 		}
 		$toolbar = '<ul id="typo3-toolbar">';
-		$toolbar .= ('<li>' . $this->getLoggedInUserLabel()) . '</li>';
-		$toolbar .= ('<li class="separator"><div id="logout-button" class="toolbar-item no-separator">' . $this->moduleMenu->renderLogoutButton()) . '</div></li>';
+		$toolbar .= '<li>' . $this->getLoggedInUserLabel() . '</li>';
+		$toolbar .= '<li class="separator"><div id="logout-button" class="toolbar-item no-separator">' . $this->moduleMenu->renderLogoutButton() . '</div></li>';
 		$i = 0;
 		foreach ($this->toolbarItems as $key => $toolbarItem) {
 			$i++;
@@ -276,7 +276,7 @@ class BackendController {
 						$additionalAttributes .= 'class="separator"';
 					}
 				}
-				$toolbar .= ((('<li' . $additionalAttributes) . '>') . $menu) . '</li>';
+				$toolbar .= '<li' . $additionalAttributes . '>' . $menu . '</li>';
 			}
 		}
 		return $toolbar . '</ul>';
@@ -302,10 +302,10 @@ class BackendController {
 		// Superuser mode
 		if ($GLOBALS['BE_USER']->user['ses_backuserid']) {
 			$css .= ' su-user';
-			$title = ($GLOBALS['LANG']->getLL('switchtouser') . ': ') . $username;
-			$label = ($GLOBALS['LANG']->getLL('switchtousershort') . ' ') . ($realName ? (($realName . ' (') . $username) . ')' : $username);
+			$title = $GLOBALS['LANG']->getLL('switchtouser') . ': ' . $username;
+			$label = $GLOBALS['LANG']->getLL('switchtousershort') . ' ' . ($realName ? $realName . ' (' . $username . ')' : $username);
 		}
-		return (((((((((('<div id="username" class="' . $css) . '">') . $link) . $icon) . '<span title="') . htmlspecialchars($title)) . '">') . htmlspecialchars($label)) . '</span>') . ($link ? '</a>' : '')) . '</div>';
+		return '<div id="username" class="' . $css . '">' . $link . $icon . '<span title="' . htmlspecialchars($title) . '">' . htmlspecialchars($label) . '</span>' . ($link ? '</a>' : '') . '</div>';
 	}
 
 	/**
@@ -316,7 +316,7 @@ class BackendController {
 	 */
 	protected function getLocalLangFileName() {
 		$code = $this->generateLocalLang();
-		$filePath = ('typo3temp/locallang-BE-' . sha1($code)) . '.js';
+		$filePath = 'typo3temp/locallang-BE-' . sha1($code) . '.js';
 		if (!file_exists((PATH_site . $filePath))) {
 			// writeFileToTypo3tempDir() returns NULL on success (please double-read!)
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir(PATH_site . $filePath, $code) !== NULL) {
@@ -416,10 +416,10 @@ class BackendController {
 			// Then loop over every single label
 			foreach ($categoryLabels as $label) {
 				// LLL identifier must be called $categoryName_$label, e.g. liveSearch_loadingText
-				$generatedLabels[$categoryName][$label] = $GLOBALS['LANG']->getLL(($categoryName . '_') . $label);
+				$generatedLabels[$categoryName][$label] = $GLOBALS['LANG']->getLL($categoryName . '_' . $label);
 			}
 		}
-		return ('TYPO3.LLL = ' . json_encode($generatedLabels)) . ';';
+		return 'TYPO3.LLL = ' . json_encode($generatedLabels) . ';';
 	}
 
 	/**
@@ -470,8 +470,8 @@ class BackendController {
 			),
 			'firstWebmountPid' => intval($GLOBALS['WEBMOUNTS'][0])
 		);
-		$this->js .= (('
-	TYPO3.configuration = ' . json_encode($t3Configuration)) . ';
+		$this->js .= '
+	TYPO3.configuration = ' . json_encode($t3Configuration) . ';
 
 	/**
 	 * TypoSetup object.
@@ -507,7 +507,7 @@ class BackendController {
 	top.goToModule = function(modName, cMR_flag, addGetVars) {
 		TYPO3.ModuleMenu.App.showModule(modName, addGetVars);
 	}
-	') . $this->setStartupModule();
+	' . $this->setStartupModule();
 		// Check editing of page:
 		$this->handlePageEditing();
 	}
@@ -527,7 +527,7 @@ class BackendController {
 		$editRecord = '';
 		if ($editId) {
 			// Looking up the page to edit, checking permissions:
-			$where = (((' AND (' . $GLOBALS['BE_USER']->getPagePermsClause(2)) . ' OR ') . $GLOBALS['BE_USER']->getPagePermsClause(16)) . ')';
+			$where = ' AND (' . $GLOBALS['BE_USER']->getPagePermsClause(2) . ' OR ' . $GLOBALS['BE_USER']->getPagePermsClause(16) . ')';
 			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($editId)) {
 				$editRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $editId, '*', $where);
 			} else {
@@ -540,9 +540,9 @@ class BackendController {
 			// If the page was accessible, then let the user edit it.
 			if (is_array($editRecord) && $GLOBALS['BE_USER']->isInWebMount($editRecord['uid'])) {
 				// Setting JS code to open editing:
-				$this->js .= ('
+				$this->js .= '
 		// Load page to edit:
-	window.setTimeout("top.loadEditId(' . intval($editRecord['uid'])) . ');", 500);
+	window.setTimeout("top.loadEditId(' . intval($editRecord['uid']) . ');", 500);
 			';
 				// Checking page edit parameter:
 				if (!$GLOBALS['BE_USER']->getTSConfigVal('options.bookmark_onEditId_dontSetPageTree')) {
@@ -551,9 +551,9 @@ class BackendController {
 					\TYPO3\CMS\Backend\Utility\BackendUtility::openPageTree(intval($editRecord['pid']), !$bookmarkKeepExpanded);
 				}
 			} else {
-				$this->js .= ('
+				$this->js .= '
 		// Warning about page editing:
-	alert(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('noEditPage'), $editId))) . ');
+	alert(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('noEditPage'), $editId)) . ');
 			';
 			}
 		}
@@ -575,9 +575,9 @@ class BackendController {
 		}
 		$moduleParameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('modParams');
 		if ($startModule) {
-			return ((('
+			return '
 					// start in module:
-				top.startInModule = [\'' . $startModule) . '\', ') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($moduleParameters)) . '];
+				top.startInModule = [\'' . $startModule . '\', ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($moduleParameters) . '];
 			';
 		} else {
 			return '';
@@ -653,7 +653,7 @@ class BackendController {
 	public function addToolbarItem($toolbarItemName, $toolbarItemClassName) {
 		$toolbarItem = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($toolbarItemClassName, $this);
 		if (!$toolbarItem instanceof \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInterface) {
-			throw new \UnexpectedValueException(('$toolbarItem "' . $toolbarItemName) . '" must implement interface TYPO3\\CMS\\Backend\\Toolbar\\ToolbarItemHookInterface', 1195125501);
+			throw new \UnexpectedValueException('$toolbarItem "' . $toolbarItemName . '" must implement interface TYPO3\\CMS\\Backend\\Toolbar\\ToolbarItemHookInterface', 1195125501);
 		}
 		if ($toolbarItem->checkAccess()) {
 			$this->toolbarItems[$toolbarItemName] = $toolbarItem;

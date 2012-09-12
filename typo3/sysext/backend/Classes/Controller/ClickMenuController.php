@@ -76,7 +76,7 @@ class ClickMenuController {
 		$this->MCONF['name'] = 'xMOD_alt_clickmenu.php';
 		// Takes the backPath as a parameter BUT since we are worried about someone forging a backPath (XSS security hole) we will check with sent md5 hash:
 		$inputBP = explode('|', $this->backPath);
-		if (count($inputBP) == 2 && $inputBP[1] == \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($inputBP[0] . '|') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
+		if (count($inputBP) == 2 && $inputBP[1] == \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($inputBP[0] . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) {
 			$this->backPath = $inputBP[0];
 		} else {
 			$this->backPath = $GLOBALS['BACK_PATH'];
@@ -106,11 +106,11 @@ class ClickMenuController {
 		// default is 5
 		// Setting the JavaScript controlling the timer on the page
 		$listFrameDoc = $this->reloadListFrame != 2 ? 'top.content.list_frame' : 'top.content';
-		$this->doc->JScode .= $this->doc->wrapScriptTags(((((('
+		$this->doc->JScode .= $this->doc->wrapScriptTags('
 	var date = new Date();
 	var mo_timeout = Math.floor(date.getTime()/1000);
 
-	roImg = "' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-status-current')) . '";
+	roImg = "' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('status-status-current') . '";
 
 	routImg = "t3-icon-empty";
 
@@ -130,7 +130,7 @@ class ClickMenuController {
 	}
 	function timeout_func() {	//
 		date = new Date();
-		if (Math.floor(date.getTime()/1000)-mo_timeout > ') . $secs) . ') {
+		if (Math.floor(date.getTime()/1000)-mo_timeout > ' . $secs . ') {
 			hideCM();
 			return false;
 		} else {
@@ -145,9 +145,9 @@ class ClickMenuController {
 		// Start timer
 	timeout_func();
 
-	') . ($this->reloadListFrame ? ((((('
+	' . ($this->reloadListFrame ? '
 		// Reload list frame:
-	if(' . $listFrameDoc) . '){') . $listFrameDoc) . '.location.href=') . $listFrameDoc) . '.location.href;}' : '')) . '
+	if(' . $listFrameDoc . '){' . $listFrameDoc . '.location.href=' . $listFrameDoc . '.location.href;}' : '') . '
 		');
 	}
 
@@ -198,7 +198,7 @@ class ClickMenuController {
 			echo $this->content;
 		} else {
 			header('Content-Type: text/xml');
-			echo ((('<?xml version="1.0"?>' . LF) . '<t3ajax>') . $this->content) . '</t3ajax>';
+			echo '<?xml version="1.0"?>' . LF . '<t3ajax>' . $this->content . '</t3ajax>';
 		}
 	}
 

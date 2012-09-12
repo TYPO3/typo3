@@ -111,7 +111,7 @@ class TableController {
 		');
 		// Setting form tag:
 		list($rUri) = explode('#', \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
-		$this->doc->form = ('<form action="' . htmlspecialchars($rUri)) . '" method="post" name="wizardForm">';
+		$this->doc->form = '<form action="' . htmlspecialchars($rUri) . '" method="post" name="wizardForm">';
 		$this->tableParsing_delimiter = '|';
 		$this->tableParsing_quote = '';
 	}
@@ -123,10 +123,10 @@ class TableController {
 	 * @todo Define visibility
 	 */
 	public function main() {
-		if (($this->P['table'] && $this->P['field']) && $this->P['uid']) {
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('table_title'), $this->tableWizard(), 0, 1);
 		} else {
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('table_title'), ('<span class="typo3-red">' . $GLOBALS['LANG']->getLL('table_noData', 1)) . '</span>', 0, 1);
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('table_title'), '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('table_noData', 1) . '</span>', 0, 1);
 		}
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
@@ -163,19 +163,19 @@ class TableController {
 			'save_close' => '',
 			'reload' => ''
 		);
-		if (($this->P['table'] && $this->P['field']) && $this->P['uid']) {
+		if ($this->P['table'] && $this->P['field'] && $this->P['uid']) {
 			// CSH
 			$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_table_wiz', $GLOBALS['BACK_PATH'], '');
 			// CSH Buttons
 			$buttons['csh_buttons'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_table_wiz_buttons', $GLOBALS['BACK_PATH'], '');
 			// Close
-			$buttons['close'] = ((('<a href="#" onclick="' . htmlspecialchars((('jumpToUrl(unescape(\'' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($this->P['returnUrl']))) . '\')); return false;'))) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE)))) . '</a>';
+			$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($this->P['returnUrl'])) . '\')); return false;')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE))) . '</a>';
 			// Save
-			$buttons['save'] = ((('<input type="image" class="c-inputButton" name="savedok"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/savedok.gif')) . ' title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1)) . '" />';
+			$buttons['save'] = '<input type="image" class="c-inputButton" name="savedok"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/savedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />';
 			// Save & Close
-			$buttons['save_close'] = ((('<input type="image" class="c-inputButton" name="saveandclosedok"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif')) . ' title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', 1)) . '" />';
+			$buttons['save_close'] = '<input type="image" class="c-inputButton" name="saveandclosedok"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/saveandclosedok.gif') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', 1) . '" />';
 			// Reload
-			$buttons['reload'] = ((('<input type="image" class="c-inputButton" name="_refresh"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/refresh_n.gif')) . ' title="') . $GLOBALS['LANG']->getLL('forms_refresh', 1)) . '" />';
+			$buttons['reload'] = '<input type="image" class="c-inputButton" name="_refresh"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/refresh_n.gif') . ' title="' . $GLOBALS['LANG']->getLL('forms_refresh', 1) . '" />';
 		}
 		return $buttons;
 	}
@@ -288,37 +288,37 @@ class TableController {
 				// Traverse the columns:
 				foreach ($cellArr as $cellContent) {
 					if ($this->inputStyle) {
-						$cells[] = ((((((('<input type="text"' . $this->doc->formWidth(20)) . ' name="TABLE[c][') . ($k + 1) * 2) . '][') . ($a + 1) * 2) . ']" value="') . htmlspecialchars($cellContent)) . '" />';
+						$cells[] = '<input type="text"' . $this->doc->formWidth(20) . ' name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']" value="' . htmlspecialchars($cellContent) . '" />';
 					} else {
 						$cellContent = preg_replace('/<br[ ]?[\\/]?>/i', LF, $cellContent);
-						$cells[] = ((((((('<textarea ' . $this->doc->formWidth(20)) . ' rows="5" name="TABLE[c][') . ($k + 1) * 2) . '][') . ($a + 1) * 2) . ']">') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($cellContent)) . '</textarea>';
+						$cells[] = '<textarea ' . $this->doc->formWidth(20) . ' rows="5" name="TABLE[c][' . ($k + 1) * 2 . '][' . ($a + 1) * 2 . ']">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($cellContent) . '</textarea>';
 					}
 					// Increment counter:
 					$a++;
 				}
 				// CTRL panel for a table row (move up/down/around):
-				$onClick = ('document.wizardForm.action+=\'#ANC_' . (($k + 1) * 2 - 2)) . '\';';
-				$onClick = (' onclick="' . htmlspecialchars($onClick)) . '"';
+				$onClick = 'document.wizardForm.action+=\'#ANC_' . (($k + 1) * 2 - 2) . '\';';
+				$onClick = ' onclick="' . htmlspecialchars($onClick) . '"';
 				$ctrl = '';
 				$brTag = $this->inputStyle ? '' : '<br />';
 				if ($k != 0) {
-					$ctrl .= ((((((('<input type="image" name="TABLE[row_up][' . ($k + 1) * 2) . ']"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/pil2up.gif', '')) . $onClick) . ' title="') . $GLOBALS['LANG']->getLL('table_up', 1)) . '" />') . $brTag;
+					$ctrl .= '<input type="image" name="TABLE[row_up][' . ($k + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/pil2up.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_up', 1) . '" />' . $brTag;
 				} else {
-					$ctrl .= ((((((('<input type="image" name="TABLE[row_bottom][' . ($k + 1) * 2) . ']"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/turn_up.gif', '')) . $onClick) . ' title="') . $GLOBALS['LANG']->getLL('table_bottom', 1)) . '" />') . $brTag;
+					$ctrl .= '<input type="image" name="TABLE[row_bottom][' . ($k + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/turn_up.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_bottom', 1) . '" />' . $brTag;
 				}
-				$ctrl .= ((((((('<input type="image" name="TABLE[row_remove][' . ($k + 1) * 2) . ']"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '')) . $onClick) . ' title="') . $GLOBALS['LANG']->getLL('table_removeRow', 1)) . '" />') . $brTag;
+				$ctrl .= '<input type="image" name="TABLE[row_remove][' . ($k + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_removeRow', 1) . '" />' . $brTag;
 				// FIXME what is $tLines? See wizard_forms.php for the same.
 				if ($k + 1 != count($tLines)) {
-					$ctrl .= ((((((('<input type="image" name="TABLE[row_down][' . ($k + 1) * 2) . ']"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/pil2down.gif', '')) . $onClick) . ' title="') . $GLOBALS['LANG']->getLL('table_down', 1)) . '" />') . $brTag;
+					$ctrl .= '<input type="image" name="TABLE[row_down][' . ($k + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/pil2down.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_down', 1) . '" />' . $brTag;
 				} else {
-					$ctrl .= ((((((('<input type="image" name="TABLE[row_top][' . ($k + 1) * 2) . ']"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/turn_down.gif', '')) . $onClick) . ' title="') . $GLOBALS['LANG']->getLL('table_top', 1)) . '" />') . $brTag;
+					$ctrl .= '<input type="image" name="TABLE[row_top][' . ($k + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/turn_down.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_top', 1) . '" />' . $brTag;
 				}
-				$ctrl .= ((((((('<input type="image" name="TABLE[row_add][' . ($k + 1) * 2) . ']"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '')) . $onClick) . ' title="') . $GLOBALS['LANG']->getLL('table_addRow', 1)) . '" />') . $brTag;
-				$tRows[] = ((((('
+				$ctrl .= '<input type="image" name="TABLE[row_add][' . ($k + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . $onClick . ' title="' . $GLOBALS['LANG']->getLL('table_addRow', 1) . '" />' . $brTag;
+				$tRows[] = '
 					<tr class="bgColor4">
-						<td class="bgColor5"><a name="ANC_' . ($k + 1) * 2) . '"></a><span class="c-wizButtonsV">') . $ctrl) . '</span></td>
-						<td>') . implode('</td>
-						<td>', $cells)) . '</td>
+						<td class="bgColor5"><a name="ANC_' . ($k + 1) * 2 . '"></a><span class="c-wizButtonsV">' . $ctrl . '</span></td>
+						<td>' . implode('</td>
+						<td>', $cells) . '</td>
 					</tr>';
 				// Increment counter:
 				$k++;
@@ -337,46 +337,46 @@ class TableController {
 			foreach ($firstRow as $temp) {
 				$ctrl = '';
 				if ($a != 0) {
-					$ctrl .= ((((('<input type="image" name="TABLE[col_left][' . ($a + 1) * 2) . ']"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/pil2left.gif', '')) . ' title="') . $GLOBALS['LANG']->getLL('table_left', 1)) . '" />';
+					$ctrl .= '<input type="image" name="TABLE[col_left][' . ($a + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/pil2left.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('table_left', 1) . '" />';
 				} else {
-					$ctrl .= ((((('<input type="image" name="TABLE[col_end][' . ($a + 1) * 2) . ']"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/turn_left.gif', '')) . ' title="') . $GLOBALS['LANG']->getLL('table_end', 1)) . '" />';
+					$ctrl .= '<input type="image" name="TABLE[col_end][' . ($a + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/turn_left.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('table_end', 1) . '" />';
 				}
-				$ctrl .= ((((('<input type="image" name="TABLE[col_remove][' . ($a + 1) * 2) . ']"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '')) . ' title="') . $GLOBALS['LANG']->getLL('table_removeColumn', 1)) . '" />';
+				$ctrl .= '<input type="image" name="TABLE[col_remove][' . ($a + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/garbage.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('table_removeColumn', 1) . '" />';
 				if ($a + 1 != $cols) {
-					$ctrl .= ((((('<input type="image" name="TABLE[col_right][' . ($a + 1) * 2) . ']"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/pil2right.gif', '')) . ' title="') . $GLOBALS['LANG']->getLL('table_right', 1)) . '" />';
+					$ctrl .= '<input type="image" name="TABLE[col_right][' . ($a + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/pil2right.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('table_right', 1) . '" />';
 				} else {
-					$ctrl .= ((((('<input type="image" name="TABLE[col_start][' . ($a + 1) * 2) . ']"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/turn_right.gif', '')) . ' title="') . $GLOBALS['LANG']->getLL('table_start', 1)) . '" />';
+					$ctrl .= '<input type="image" name="TABLE[col_start][' . ($a + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/turn_right.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('table_start', 1) . '" />';
 				}
-				$ctrl .= ((((('<input type="image" name="TABLE[col_add][' . ($a + 1) * 2) . ']"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '')) . ' title="') . $GLOBALS['LANG']->getLL('table_addColumn', 1)) . '" />';
-				$cells[] = ('<span class="c-wizButtonsH">' . $ctrl) . '</span>';
+				$ctrl .= '<input type="image" name="TABLE[col_add][' . ($a + 1) * 2 . ']"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->doc->backPath, 'gfx/add.gif', '') . ' title="' . $GLOBALS['LANG']->getLL('table_addColumn', 1) . '" />';
+				$cells[] = '<span class="c-wizButtonsH">' . $ctrl . '</span>';
 				// Incr. counter:
 				$a++;
 			}
-			$tRows[] = ('
+			$tRows[] = '
 				<tr class="bgColor5">
 					<td align="center">' . implode('</td>
-					<td align="center">', $cells)) . '</td>
+					<td align="center">', $cells) . '</td>
 				</tr>';
 		}
 		$content = '';
 		// Implode all table rows into a string, wrapped in table tags.
-		$content .= ('
+		$content .= '
 
 
 			<!--
 				Table wizard
 			-->
 			<table border="0" cellpadding="0" cellspacing="1" id="typo3-tablewizard">
-				' . implode('', $tRows)) . '
+				' . implode('', $tRows) . '
 			</table>';
 		// Input type checkbox:
-		$content .= ((((('
+		$content .= '
 
 			<!--
 				Input mode check box:
 			-->
 			<div id="c-inputMode">
-				' . '<input type="hidden" name="TABLE[textFields]" value="0" />') . '<input type="checkbox" name="TABLE[textFields]" id="textFields" value="1"') . ($this->inputStyle ? ' checked="checked"' : '')) . ' /> <label for="textFields">') . $GLOBALS['LANG']->getLL('table_smallFields')) . '</label>
+				' . '<input type="hidden" name="TABLE[textFields]" value="0" />' . '<input type="checkbox" name="TABLE[textFields]" id="textFields" value="1"' . ($this->inputStyle ? ' checked="checked"' : '') . ' /> <label for="textFields">' . $GLOBALS['LANG']->getLL('table_smallFields') . '</label>
 			</div>
 
 			<br /><br />
@@ -521,7 +521,7 @@ class TableController {
 		foreach ($this->TABLECFG['c'] as $a => $value) {
 			$thisLine = array();
 			foreach ($this->TABLECFG['c'][$a] as $b => $value) {
-				$thisLine[] = ($this->tableParsing_quote . str_replace($this->tableParsing_delimiter, '', $this->TABLECFG['c'][$a][$b])) . $this->tableParsing_quote;
+				$thisLine[] = $this->tableParsing_quote . str_replace($this->tableParsing_delimiter, '', $this->TABLECFG['c'][$a][$b]) . $this->tableParsing_quote;
 			}
 			$inLines[] = implode($this->tableParsing_delimiter, $thisLine);
 		}
@@ -556,7 +556,7 @@ class TableController {
 			$vParts = explode($this->tableParsing_delimiter, $v);
 			// Traverse columns:
 			for ($a = 0; $a < $cols; $a++) {
-				if (($this->tableParsing_quote && substr($vParts[$a], 0, 1) == $this->tableParsing_quote) && substr($vParts[$a], -1, 1) == $this->tableParsing_quote) {
+				if ($this->tableParsing_quote && substr($vParts[$a], 0, 1) == $this->tableParsing_quote && substr($vParts[$a], -1, 1) == $this->tableParsing_quote) {
 					$vParts[$a] = substr(trim($vParts[$a]), 1, -1);
 				}
 				$cfgArr[$k][$a] = $vParts[$a];
