@@ -59,7 +59,7 @@ class CategoryRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Creates this object.
 	 */
 	public function __construct() {
-		$this->template = (((((str_repeat(PHP_EOL, 3) . 'CREATE TABLE %s (') . PHP_EOL) . '  %s int(11) DEFAULT \'0\' NOT NULL') . PHP_EOL) . ');') . str_repeat(PHP_EOL, 3);
+		$this->template = str_repeat(PHP_EOL, 3) . 'CREATE TABLE %s (' . PHP_EOL . '  %s int(11) DEFAULT \'0\' NOT NULL' . PHP_EOL . ');' . str_repeat(PHP_EOL, 3);
 	}
 
 	/**

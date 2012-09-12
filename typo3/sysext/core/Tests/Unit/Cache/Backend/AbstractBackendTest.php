@@ -45,8 +45,8 @@ class AbstractBackendTest extends \tx_phpunit_testcase {
 	 */
 	public function setUp() {
 		$className = 'ConcreteBackend_' . md5(uniqid(mt_rand(), TRUE));
-		eval(('
-			class ' . $className) . ' extends TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend {
+		eval('
+			class ' . $className . ' extends TYPO3\\CMS\\Core\\Cache\\Backend\\AbstractBackend {
 				public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {}
 				public function get($entryIdentifier) {}
 				public function has($entryIdentifier) {}

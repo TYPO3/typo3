@@ -79,9 +79,9 @@ class LocallangXmlParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXml
 	protected function doParsingFromRootForElement(\SimpleXMLElement $root, $element) {
 		$bodyOfFileTag = $root->data->languageKey;
 		// Check if the source llxml file contains localized records
-		$localizedBodyOfFileTag = $root->data->xpath(('languageKey[@index=\'' . $this->languageKey) . '\']');
+		$localizedBodyOfFileTag = $root->data->xpath('languageKey[@index=\'' . $this->languageKey . '\']');
 		$parsedData = $this->getParsedDataForElement($bodyOfFileTag, $element);
-		if (($element === 'target' && isset($localizedBodyOfFileTag[0])) && $localizedBodyOfFileTag[0] instanceof \SimpleXMLElement) {
+		if ($element === 'target' && isset($localizedBodyOfFileTag[0]) && $localizedBodyOfFileTag[0] instanceof \SimpleXMLElement) {
 			$parsedDataTarget = $this->getParsedDataForElement($localizedBodyOfFileTag[0], $element);
 			$mergedData = array_merge($parsedData, $parsedDataTarget);
 			if ($this->languageKey === 'default') {
@@ -169,7 +169,7 @@ class LocallangXmlParser extends \TYPO3\CMS\Core\Localization\Parser\AbstractXml
 			$rootXmlNode = simplexml_load_file($targetPath, 'SimpleXmlElement', \LIBXML_NOWARNING);
 		}
 		if (!isset($rootXmlNode) || $rootXmlNode === FALSE) {
-			throw new \TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException(('The path provided does not point to existing and accessible well-formed XML file (' . $targetPath) . ').', 1278155987);
+			throw new \TYPO3\CMS\Core\Localization\Exception\InvalidXmlFileException('The path provided does not point to existing and accessible well-formed XML file (' . $targetPath . ').', 1278155987);
 		}
 		return $this->doParsingTargetFromRoot($rootXmlNode);
 	}

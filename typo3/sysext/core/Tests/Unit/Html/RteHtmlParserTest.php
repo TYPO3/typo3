@@ -66,7 +66,7 @@ class RteHtmlParserTest extends \tx_phpunit_testcase {
 			),
 			'double hr' => array(
 				'<hr /><hr />',
-				('<hr />' . LF) . '<hr />'
+				'<hr />' . LF . '<hr />'
 			),
 			'linefeed followed by hr' => array(
 				LF . '<hr />',
@@ -74,43 +74,43 @@ class RteHtmlParserTest extends \tx_phpunit_testcase {
 			),
 			'white space followed by hr' => array(
 				' <hr />',
-				(' ' . LF) . '<hr />'
+				' ' . LF . '<hr />'
 			),
 			'white space followed linefeed and hr' => array(
-				(' ' . LF) . '<hr />',
-				(' ' . LF) . '<hr />'
+				' ' . LF . '<hr />',
+				' ' . LF . '<hr />'
 			),
 			'br followed by hr' => array(
 				'<br /><hr />',
-				('<br />' . LF) . '<hr />'
+				'<br />' . LF . '<hr />'
 			),
 			'br followed by linefeed and hr' => array(
-				('<br />' . LF) . '<hr />',
-				('<br />' . LF) . '<hr />'
+				'<br />' . LF . '<hr />',
+				'<br />' . LF . '<hr />'
 			),
 			'preserved div followed by hr' => array(
 				'<div>Some text</div><hr />',
-				('<div>Some text</div>' . LF) . '<hr />'
+				'<div>Some text</div>' . LF . '<hr />'
 			),
 			'preserved div followed by linefeed and hr' => array(
-				('<div>Some text</div>' . LF) . '<hr />',
-				('<div>Some text</div>' . LF) . '<hr />'
+				'<div>Some text</div>' . LF . '<hr />',
+				'<div>Some text</div>' . LF . '<hr />'
 			),
 			'h1 followed by linefeed and hr' => array(
-				('<h1>Some text</h1>' . LF) . '<hr />',
-				('<h1>Some text</h1>' . LF) . '<hr />'
+				'<h1>Some text</h1>' . LF . '<hr />',
+				'<h1>Some text</h1>' . LF . '<hr />'
 			),
 			'paragraph followed by linefeed and hr' => array(
-				('<p>Some text</p>' . LF) . '<hr />',
-				('Some text' . LF) . '<hr />'
+				'<p>Some text</p>' . LF . '<hr />',
+				'Some text' . LF . '<hr />'
 			),
 			'some text followed by hr' => array(
 				'Some text<hr />',
-				('Some text' . LF) . '<hr />'
+				'Some text' . LF . '<hr />'
 			),
 			'some text followed by linefeed and hr' => array(
-				('Some text' . LF) . '<hr />',
-				('Some text' . LF) . '<hr />'
+				'Some text' . LF . '<hr />',
+				'Some text' . LF . '<hr />'
 			)
 		);
 	}

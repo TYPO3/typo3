@@ -128,7 +128,7 @@ abstract class AbstractStandaloneMessage extends \TYPO3\CMS\Core\Messaging\Abstr
 	public function setHtmlTemplate($htmlTemplate) {
 		$this->htmlTemplate = PATH_site . $htmlTemplate;
 		if (!file_exists($this->htmlTemplate)) {
-			throw new \RuntimeException(('Template file "' . $this->htmlTemplate) . '" not found', 1312830504);
+			throw new \RuntimeException('Template file "' . $this->htmlTemplate . '" not found', 1312830504);
 		}
 	}
 

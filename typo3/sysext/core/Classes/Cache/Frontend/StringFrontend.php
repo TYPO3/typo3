@@ -49,14 +49,14 @@ class StringFrontend extends \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend {
 	 */
 	public function set($entryIdentifier, $string, array $tags = array(), $lifetime = NULL) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-			throw new \InvalidArgumentException(('"' . $entryIdentifier) . '" is not a valid cache entry identifier.', 1233057566);
+			throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1233057566);
 		}
 		if (!is_string($string)) {
-			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException(('Given data is of type "' . gettype($string)) . '", but a string is expected for string cache.', 1222808333);
+			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('Given data is of type "' . gettype($string) . '", but a string is expected for string cache.', 1222808333);
 		}
 		foreach ($tags as $tag) {
 			if (!$this->isValidTag($tag)) {
-				throw new \InvalidArgumentException(('"' . $tag) . '" is not a valid tag for a cache entry.', 1233057512);
+				throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233057512);
 			}
 		}
 		$this->backend->set($entryIdentifier, $string, $tags, $lifetime);
@@ -72,7 +72,7 @@ class StringFrontend extends \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend {
 	 */
 	public function get($entryIdentifier) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-			throw new \InvalidArgumentException(('"' . $entryIdentifier) . '" is not a valid cache entry identifier.', 1233057752);
+			throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1233057752);
 		}
 		return $this->backend->get($entryIdentifier);
 	}
@@ -87,7 +87,7 @@ class StringFrontend extends \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend {
 	 */
 	public function getByTag($tag) {
 		if (!$this->isValidTag($tag)) {
-			throw new \InvalidArgumentException(('"' . $tag) . '" is not a valid tag for a cache entry.', 1233057772);
+			throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233057772);
 		}
 		$entries = array();
 		$identifiers = $this->backend->findIdentifiersByTag($tag);

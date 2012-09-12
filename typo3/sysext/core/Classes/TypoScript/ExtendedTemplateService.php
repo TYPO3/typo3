@@ -263,10 +263,10 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	public function substituteConstantsCallBack($matches) {
 		switch ($this->constantMode) {
 		case 'const':
-			$ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? ((((('##' . $this->Cmarker) . '_B##') . $matches[0]) . '##') . $this->Cmarker) . '_E##' : $matches[0];
+			$ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? '##' . $this->Cmarker . '_B##' . $matches[0] . '##' . $this->Cmarker . '_E##' : $matches[0];
 			break;
 		case 'subst':
-			$ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? ((((('##' . $this->Cmarker) . '_B##') . $this->flatSetup[$matches[1]]) . '##') . $this->Cmarker) . '_E##' : $matches[0];
+			$ret_val = isset($this->flatSetup[$matches[1]]) && !is_array($this->flatSetup[$matches[1]]) ? '##' . $this->Cmarker . '_B##' . $this->flatSetup[$matches[1]] . '##' . $this->Cmarker . '_E##' : $matches[0];
 			break;
 		case 'untouched':
 			$ret_val = $matches[0];
@@ -287,12 +287,12 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	public function substituteCMarkers($all) {
 		switch ($this->constantMode) {
 		case 'const':
-			$all = str_replace(('##' . $this->Cmarker) . '_B##', '<font color="green"><strong>', $all);
-			$all = str_replace(('##' . $this->Cmarker) . '_E##', '</strong></font>', $all);
+			$all = str_replace('##' . $this->Cmarker . '_B##', '<font color="green"><strong>', $all);
+			$all = str_replace('##' . $this->Cmarker . '_E##', '</strong></font>', $all);
 			break;
 		case 'subst':
-			$all = str_replace(('##' . $this->Cmarker) . '_B##', '<font color="green"><strong>', $all);
-			$all = str_replace(('##' . $this->Cmarker) . '_E##', '</strong></font>', $all);
+			$all = str_replace('##' . $this->Cmarker . '_B##', '<font color="green"><strong>', $all);
+			$all = str_replace('##' . $this->Cmarker . '_E##', '</strong></font>', $all);
 			break;
 		default:
 			$all = $all;
@@ -420,24 +420,24 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 				$BTM = $a == $c ? 'bottom' : '';
 				$PM = is_array($arr[$key . '.']) && !$this->ext_noPMicons ? ($deeper ? 'minus' : 'plus') : 'join';
 				$HTML .= $depthData;
-				$theIcon = (((('<img src="' . $GLOBALS['BACK_PATH']) . 'gfx/ol/') . $PM) . $BTM) . '.gif" width="18" height="16" align="top" border="0" alt="" />';
+				$theIcon = '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" alt="" />';
 				if ($PM == 'join') {
 					$HTML .= $theIcon;
 				} else {
 					$urlParameters = array(
 						'id' => $GLOBALS['SOBE']->id,
-						('tsbr[' . $depth) . ']' => $deeper ? 0 : 1
+						'tsbr[' . $depth . ']' => $deeper ? 0 : 1
 					);
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('breakPointLN')) {
 						$urlParameters['breakPointLN'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('breakPointLN');
 					}
-					$aHref = (\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters) . '#') . $goto;
-					$HTML .= ((((('<a name="' . $goto) . '" href="') . htmlspecialchars($aHref)) . '">') . $theIcon) . '</a>';
+					$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters) . '#' . $goto;
+					$HTML .= '<a name="' . $goto . '" href="' . htmlspecialchars($aHref) . '">' . $theIcon . '</a>';
 				}
 				$label = $key;
 				// Read only...
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('types,resources,sitetitle', $depth) && $this->bType == 'setup') {
-					$label = ('<font color="#666666">' . $label) . '</font>';
+					$label = '<font color="#666666">' . $label . '</font>';
 				} else {
 					if ($this->linkObjects) {
 						$urlParameters = array(
@@ -454,25 +454,25 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							$ln = '';
 						}
 						if ($this->tsbrowser_searchKeys[$depth] & 4) {
-							$label = ('<strong><font color="red">' . $label) . '</font></strong>';
+							$label = '<strong><font color="red">' . $label . '</font></strong>';
 						}
 						// The key has matched the search string
-						$label = ((((('<a href="' . htmlspecialchars($aHref)) . '" title="') . htmlspecialchars($ln)) . '">') . $label) . '</a>';
+						$label = '<a href="' . htmlspecialchars($aHref) . '" title="' . htmlspecialchars($ln) . '">' . $label . '</a>';
 					}
 				}
-				$HTML .= ('[' . $label) . ']';
+				$HTML .= '[' . $label . ']';
 				if (isset($arr[$key])) {
 					$theValue = $arr[$key];
 					if ($this->fixedLgd) {
 						$imgBlocks = ceil(1 + strlen($depthData) / 77);
-						$lgdChars = (68 - ceil(strlen((('[' . $key) . ']')) * 0.8)) - $imgBlocks * 3;
+						$lgdChars = 68 - ceil(strlen(('[' . $key . ']')) * 0.8) - $imgBlocks * 3;
 						$theValue = $this->ext_fixed_lgd($theValue, $lgdChars);
 					}
 					// The value has matched the search string
 					if ($this->tsbrowser_searchKeys[$depth] & 2) {
-						$HTML .= ('&nbsp;=&nbsp;<strong><font color="red">' . $this->makeHtmlspecialchars($theValue)) . '</font></strong>';
+						$HTML .= '&nbsp;=&nbsp;<strong><font color="red">' . $this->makeHtmlspecialchars($theValue) . '</font></strong>';
 					} else {
-						$HTML .= ('&nbsp;=&nbsp;<strong>' . $this->makeHtmlspecialchars($theValue)) . '</strong>';
+						$HTML .= '&nbsp;=&nbsp;<strong>' . $this->makeHtmlspecialchars($theValue) . '</strong>';
 					}
 					if ($this->ext_regComments && isset($arr[$key . '..'])) {
 						$comment = $arr[$key . '..'];
@@ -486,13 +486,13 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							$comment = preg_replace('/^[#\\*\\s]+/', '# ', $comment);
 							// Masking HTML Tags: Replace < with &lt; and > with &gt;
 							$comment = $this->makeHtmlspecialchars($comment);
-							$HTML .= (' <span class="comment">' . trim($comment)) . '</span>';
+							$HTML .= ' <span class="comment">' . trim($comment) . '</span>';
 						}
 					}
 				}
 				$HTML .= '<br />';
 				if ($deeper) {
-					$HTML .= $this->ext_getObjTree($arr[$key . '.'], $depth, (((($depthData . '<img src="') . $GLOBALS['BACK_PATH']) . 'gfx/ol/') . $LN) . '.gif" width="18" height="16" align="top" alt="" />', '', $arr[$key], $alphaSort);
+					$HTML .= $this->ext_getObjTree($arr[$key . '.'], $depth, $depthData . '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $LN . '.gif" width="18" height="16" align="top" alt="" />', '', $arr[$key], $alphaSort);
 				}
 			}
 		}
@@ -520,7 +520,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 		foreach ($lnArr as $k => $ln) {
 			foreach ($this->lnToScript as $endLn => $title) {
 				if ($endLn >= intval($ln)) {
-					$lnArr[$k] = (('"' . $title) . '", ') . $ln;
+					$lnArr[$k] = '"' . $title . '", ' . $ln;
 					break;
 				}
 			}
@@ -566,15 +566,15 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 			$deeper = is_array($arr[$key . '.']);
 			if ($this->regexMode) {
 				// The value has matched
-				if (preg_match(('/' . $searchString) . '/', $arr[$key])) {
+				if (preg_match('/' . $searchString . '/', $arr[$key])) {
 					$this->tsbrowser_searchKeys[$depth] += 2;
 				}
 				// The key has matched
-				if (preg_match(('/' . $searchString) . '/', $key)) {
+				if (preg_match('/' . $searchString . '/', $key)) {
 					$this->tsbrowser_searchKeys[$depth] += 4;
 				}
 				// Just open this subtree if the parent key has matched the search
-				if (preg_match(('/' . $searchString) . '/', $depth_in)) {
+				if (preg_match('/' . $searchString . '/', $depth_in)) {
 					$this->tsbrowser_searchKeys[$depth] = 1;
 				}
 			} else {
@@ -650,7 +650,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 			$BTM = $a == $c ? 'top' : '';
 			$PM = 'join';
 			$HTML .= $depthData;
-			$alttext = ('[' . $row['templateID']) . ']';
+			$alttext = '[' . $row['templateID'] . ']';
 			$alttext .= $row['pid'] ? ' - ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($row['pid'], $GLOBALS['SOBE']->perms_clause, 20) : '';
 			$icon = substr($row['templateID'], 0, 3) == 'sys' ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_template', $row, array('title' => $alttext)) : \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('mimetypes-x-content-template-static', array('title' => $alttext));
 			if (in_array($row['templateID'], $this->clearList_const) || in_array($row['templateID'], $this->clearList_setup)) {
@@ -659,7 +659,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 					'template' => $row['templateID']
 				);
 				$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
-				$A_B = ('<a href="' . htmlspecialchars($aHref)) . '">';
+				$A_B = '<a href="' . htmlspecialchars($aHref) . '">';
 				$A_E = '</a>';
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('template') == $row['templateID']) {
 					$A_B = '<strong>' . $A_B;
@@ -669,19 +669,19 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 				$A_B = '';
 				$A_E = '';
 			}
-			$HTML .= ((((($first ? '' : (((('<img src="' . $GLOBALS['BACK_PATH']) . 'gfx/ol/') . $PM) . $BTM) . '.gif" width="18" height="16" align="top" border="0" alt="" />') . $icon) . $A_B) . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen']))) . $A_E) . '&nbsp;&nbsp;';
+			$HTML .= ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $PM . $BTM . '.gif" width="18" height="16" align="top" border="0" alt="" />') . $icon . $A_B . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . $A_E . '&nbsp;&nbsp;';
 			$RL = $this->ext_getRootlineNumber($row['pid']);
-			$keyArray[] = ((((((((((((((((('<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6')) . '">
-							<td nowrap="nowrap">') . $HTML) . '</td>
-							<td align="center">') . ($row['root'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '')) . '&nbsp;&nbsp;</td>
-							<td align="center">') . ($row['clConf'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '')) . '&nbsp;&nbsp;') . '</td>
-							<td align="center">') . ($row['clConst'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '')) . '&nbsp;&nbsp;') . '</td>
-							<td align="center">') . ($row['pid'] ? $row['pid'] : '')) . '</td>
-							<td align="center">') . (strcmp($RL, '') ? $RL : '')) . '</td>
-							<td>') . ($row['next'] ? ('&nbsp;' . $row['next']) . '&nbsp;&nbsp;' : '')) . '</td>
+			$keyArray[] = '<tr class="' . ($i++ % 2 == 0 ? 'bgColor4' : 'bgColor6') . '">
+							<td nowrap="nowrap">' . $HTML . '</td>
+							<td align="center">' . ($row['root'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;</td>
+							<td align="center">' . ($row['clConf'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;' . '</td>
+							<td align="center">' . ($row['clConst'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-checked') : '') . '&nbsp;&nbsp;' . '</td>
+							<td align="center">' . ($row['pid'] ? $row['pid'] : '') . '</td>
+							<td align="center">' . (strcmp($RL, '') ? $RL : '') . '</td>
+							<td>' . ($row['next'] ? '&nbsp;' . $row['next'] . '&nbsp;&nbsp;' : '') . '</td>
 						</tr>';
 			if ($deeper) {
-				$keyArray = $this->ext_getTemplateHierarchyArr($arr[$key . '.'], $depthData . ($first ? '' : ((('<img src="' . $GLOBALS['BACK_PATH']) . 'gfx/ol/') . $LN) . '.gif" width="18" height="16" align="top" />'), $keyArray);
+				$keyArray = $this->ext_getTemplateHierarchyArr($arr[$key . '.'], $depthData . ($first ? '' : '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $LN . '.gif" width="18" height="16" align="top" />'), $keyArray);
 			}
 		}
 		return $keyArray;
@@ -728,10 +728,10 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	public function ext_outputTS($config, $lineNumbers = 0, $comments = 0, $crop = 0, $syntaxHL = 0, $syntaxHLBlockmode = 0) {
 		$all = '';
 		foreach ($config as $str) {
-			$all .= ((LF . '[GLOBAL]') . LF) . $str;
+			$all .= LF . '[GLOBAL]' . LF . $str;
 		}
 		if ($syntaxHL) {
-			$all = preg_replace(('/^[^' . LF) . ']*./', '', $all);
+			$all = preg_replace('/^[^' . LF . ']*./', '', $all);
 			$all = chop($all);
 			$tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 			$tsparser->lineNumberOffset = $this->ext_lineNumberOffset + 1;
@@ -755,8 +755,8 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	public function ext_fixed_lgd($string, $chars) {
 		if ($chars >= 4) {
 			if (strlen($string) > $chars) {
-				if (strlen($string) > 24 && substr($string, 0, 12) == ('##' . $this->Cmarker) . '_B##') {
-					return ((((('##' . $this->Cmarker) . '_B##') . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(substr($string, 12, -12), ($chars - 3))) . '##') . $this->Cmarker) . '_E##';
+				if (strlen($string) > 24 && substr($string, 0, 12) == '##' . $this->Cmarker . '_B##') {
+					return '##' . $this->Cmarker . '_B##' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(substr($string, 12, -12), ($chars - 3)) . '##' . $this->Cmarker . '_E##';
 				} else {
 					return \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($string, $chars - 3);
 				}
@@ -774,7 +774,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @todo Define visibility
 	 */
 	public function ext_lnBreakPointWrap($lineNumber, $str) {
-		return ((((((('<a href="#" id="line-' . $lineNumber) . '" onClick="return brPoint(') . $lineNumber) . ',') . ($this->ext_lineNumberOffset_mode == 'setup' ? 1 : 0)) . ');">') . $str) . '</a>';
+		return '<a href="#" id="line-' . $lineNumber . '" onClick="return brPoint(' . $lineNumber . ',' . ($this->ext_lineNumberOffset_mode == 'setup' ? 1 : 0) . ');">' . $str . '</a>';
 	}
 
 	/**
@@ -788,15 +788,15 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @todo Define visibility
 	 */
 	public function ext_formatTS($input, $ln, $comments = 1, $crop = 0) {
-		$input = preg_replace(('/^[^' . LF) . ']*./', '', $input);
+		$input = preg_replace('/^[^' . LF . ']*./', '', $input);
 		$input = chop($input);
 		$cArr = explode(LF, $input);
 		$n = ceil(log10(count($cArr) + $this->ext_lineNumberOffset));
 		$lineNum = '';
 		foreach ($cArr as $k => $v) {
-			$lln = ($k + $this->ext_lineNumberOffset) + 1;
+			$lln = $k + $this->ext_lineNumberOffset + 1;
 			if ($ln) {
-				$lineNum = $this->ext_lnBreakPointWrap($lln, str_replace(' ', '&nbsp;', sprintf((('% ' . $n) . 'd'), $lln))) . ':   ';
+				$lineNum = $this->ext_lnBreakPointWrap($lln, str_replace(' ', '&nbsp;', sprintf(('% ' . $n . 'd'), $lln))) . ':   ';
 			}
 			$v = htmlspecialchars($v);
 			if ($crop) {
@@ -805,10 +805,10 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 			$cArr[$k] = $lineNum . str_replace(' ', '&nbsp;', $v);
 			$firstChar = substr(trim($v), 0, 1);
 			if ($firstChar == '[') {
-				$cArr[$k] = ('<font color="green"><strong>' . $cArr[$k]) . '</strong></font>';
+				$cArr[$k] = '<font color="green"><strong>' . $cArr[$k] . '</strong></font>';
 			} elseif ($firstChar == '/' || $firstChar == '#') {
 				if ($comments) {
-					$cArr[$k] = ('<span class="typo3-dimmed">' . $cArr[$k]) . '</span>';
+					$cArr[$k] = '<span class="typo3-dimmed">' . $cArr[$k] . '</span>';
 				} else {
 					unset($cArr[$k]);
 				}
@@ -832,7 +832,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 			if ($template_uid) {
 				$addC = ' AND uid=' . $template_uid;
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', ((('pid=' . intval($id)) . $addC) . ' ') . $this->whereClause, '', 'sorting', '1');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . intval($id) . $addC . ' ' . $this->whereClause, '', 'sorting', '1');
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('sys_template', $row);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -852,7 +852,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 		// Query is taken from the runThroughTemplates($theRootLine) function in the parent class.
 		if (intval($id)) {
 			$outRes = array();
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', (('pid=' . intval($id)) . ' ') . $this->whereClause, '', 'sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . intval($id) . ' ' . $this->whereClause, '', 'sorting');
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('sys_template', $row);
 				if (is_array($row)) {
@@ -899,9 +899,9 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 									$catSplit[1] = trim($catSplit[1]);
 									if ($catSplit[1] && isset($this->subCategories[$catSplit[1]])) {
 										$editableComments[$const]['subcat_name'] = $catSplit[1];
-										$editableComments[$const]['subcat'] = (((($this->subCategories[$catSplit[1]][1] . '/') . $catSplit[1]) . '/') . trim($catSplit[2])) . 'z';
+										$editableComments[$const]['subcat'] = $this->subCategories[$catSplit[1]][1] . '/' . $catSplit[1] . '/' . trim($catSplit[2]) . 'z';
 									} else {
-										$editableComments[$const]['subcat'] = (('x' . '/') . trim($catSplit[2])) . 'z';
+										$editableComments[$const]['subcat'] = 'x' . '/' . trim($catSplit[2]) . 'z';
 									}
 									break;
 								case 'label':
@@ -968,7 +968,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 		$retArr = array();
 		foreach ($this->categories as $k => $v) {
 			if (count($v)) {
-				$retArr[$k] = ((strtoupper($k) . ' (') . count($v)) . ')';
+				$retArr[$k] = strtoupper($k) . ' (' . count($v) . ')';
 			}
 		}
 		return $retArr;
@@ -1004,7 +1004,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 						} else {
 							$retArr['params'] = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode('-', $retArr['paramstr']);
 						}
-						$retArr['paramstr'] = ($retArr['params'][0] . ' - ') . $retArr['params'][1];
+						$retArr['paramstr'] = $retArr['params'][0] . ' - ' . $retArr['params'][1];
 						break;
 					case 'options':
 						$retArr['params'] = explode(',', $retArr['paramstr']);
@@ -1064,7 +1064,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @todo Define visibility
 	 */
 	public function ext_getKeyImage($key) {
-		return ((('<img src="' . $this->ext_localWebGfxPrefix) . 'gfx/') . $key) . '.gif" align="top" hspace=2>';
+		return '<img src="' . $this->ext_localWebGfxPrefix . 'gfx/' . $key . '.gif" align="top" hspace=2>';
 	}
 
 	/**
@@ -1082,11 +1082,11 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 			$iFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($imgConf);
 			if ($iFile) {
 				$f = substr($iFile, strlen(PATH_site));
-				$tFile = ($GLOBALS['BACK_PATH'] . '../') . $f;
+				$tFile = $GLOBALS['BACK_PATH'] . '../' . $f;
 			}
 		}
 		$imageInfo = @getImagesize($iFile);
-		return ((('<img src="' . $tFile) . '" ') . $imageInfo[3]) . '>';
+		return '<img src="' . $tFile . '" ' . $imageInfo[3] . '>';
 	}
 
 	/**
@@ -1097,7 +1097,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @todo Define visibility
 	 */
 	public function ext_fNandV($params) {
-		$fN = ('data[' . $params['name']) . ']';
+		$fN = 'data[' . $params['name'] . ']';
 		$fV = $params['value'];
 		// Values entered from the constantsedit cannot be constants!	230502; removed \{ and set {
 		if (preg_match('/^{[\\$][a-zA-Z0-9\\.]*}$/', trim($fV), $reg)) {
@@ -1117,7 +1117,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 */
 	public function ext_printFields($theConstants, $category) {
 		reset($theConstants);
-		$output = ('<script type="text/javascript" src="' . $GLOBALS['BACK_PATH']) . 'js/constantEditor.js"></script>
+		$output = '<script type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . 'js/constantEditor.js"></script>
 		';
 		$subcat = '';
 		if (is_array($this->categories[$category])) {
@@ -1131,7 +1131,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 					if ($subcat != $params['subcat_name']) {
 						$subcat = $params['subcat_name'];
 						$subcat_name = $params['subcat_name'] ? $this->subCategories[$params['subcat_name']][0] : 'Others';
-						$output .= ('<h3 class="typo3-tstemplate-ceditor-subcat">' . $subcat_name) . '</h3>';
+						$output .= '<h3 class="typo3-tstemplate-ceditor-subcat">' . $subcat_name . '</h3>';
 					}
 					$label = $GLOBALS['LANG']->sL($params['label']);
 					$label_parts = explode(':', $label, 2);
@@ -1152,13 +1152,13 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 					$checked = '';
 					$p_field = '';
 					$raname = substr(md5($params['name']), 0, 10);
-					$aname = ('\'' . $raname) . '\'';
+					$aname = '\'' . $raname . '\'';
 					list($fN, $fV, $params) = $this->ext_fNandV($params);
 					switch ($typeDat['type']) {
 					case 'int':
 
 					case 'int+':
-						$p_field = ((((((((('<input id="' . $fN) . '" type="text" name="') . $fN) . '" value="') . $fV) . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(5)) . ' onChange="uFormUrl(') . $aname) . ')" />';
+						$p_field = '<input id="' . $fN . '" type="text" name="' . $fN . '" value="' . $fV . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . ' onChange="uFormUrl(' . $aname . ')" />';
 						if ($typeDat['paramstr']) {
 							$p_field .= ' Range: ' . $typeDat['paramstr'];
 						} elseif ($typeDat['type'] == 'int+') {
@@ -1175,28 +1175,28 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							if ($val == strtolower($params['value'])) {
 								$sel = ' selected';
 							}
-							$p_field .= ((((('<option value="' . htmlspecialchars($val)) . '"') . $sel) . '>') . $val) . '</option>';
+							$p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $val . '</option>';
 						}
-						$p_field = ((((((((('<select id="select-' . $fN) . '" rel="') . $fN) . '" name="C') . $fN) . '" class="typo3-tstemplate-ceditor-color-select" onChange="uFormUrl(') . $aname) . ');">') . $p_field) . '</select>';
-						$p_field .= ((((((((((('<input type="text" id="input-' . $fN) . '" rel="') . $fN) . '" name="') . $fN) . '" class="typo3-tstemplate-ceditor-color-input" value="') . $fV) . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(7)) . ' onChange="uFormUrl(') . $aname) . ')" />';
+						$p_field = '<select id="select-' . $fN . '" rel="' . $fN . '" name="C' . $fN . '" class="typo3-tstemplate-ceditor-color-select" onChange="uFormUrl(' . $aname . ');">' . $p_field . '</select>';
+						$p_field .= '<input type="text" id="input-' . $fN . '" rel="' . $fN . '" name="' . $fN . '" class="typo3-tstemplate-ceditor-color-input" value="' . $fV . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(7) . ' onChange="uFormUrl(' . $aname . ')" />';
 						break;
 					case 'wrap':
 						$wArr = explode('|', $fV);
-						$p_field = ((((((((('<input type="text" id="' . $fN) . '" name="') . $fN) . '" value="') . $wArr[0]) . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(29)) . ' onChange="uFormUrl(') . $aname) . ')" />';
+						$p_field = '<input type="text" id="' . $fN . '" name="' . $fN . '" value="' . $wArr[0] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(29) . ' onChange="uFormUrl(' . $aname . ')" />';
 						$p_field .= ' | ';
-						$p_field .= ((((((('<input type="text" name="W' . $fN) . '" value="') . $wArr[1]) . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(15)) . ' onChange="uFormUrl(') . $aname) . ')" />';
+						$p_field .= '<input type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(15) . ' onChange="uFormUrl(' . $aname . ')" />';
 						break;
 					case 'offset':
 						$wArr = explode(',', $fV);
 						$labels = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $typeDat['paramstr']);
-						$p_field = ((((((((($labels[0] ? $labels[0] : 'x') . ':<input type="text" name="') . $fN) . '" value="') . $wArr[0]) . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(4)) . ' onChange="uFormUrl(') . $aname) . ')" />';
+						$p_field = ($labels[0] ? $labels[0] : 'x') . ':<input type="text" name="' . $fN . '" value="' . $wArr[0] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
 						$p_field .= ' , ';
-						$p_field .= ((((((((($labels[1] ? $labels[1] : 'y') . ':<input type="text" name="W') . $fN) . '" value="') . $wArr[1]) . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(4)) . ' onChange="uFormUrl(') . $aname) . ')" />';
+						$p_field .= ($labels[1] ? $labels[1] : 'y') . ':<input type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
 						for ($aa = 2; $aa < count($labels); $aa++) {
 							if ($labels[$aa]) {
-								$p_field .= ((((((((((' , ' . $labels[$aa]) . ':<input type="text" name="W') . $aa) . $fN) . '" value="') . $wArr[$aa]) . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(4)) . ' onChange="uFormUrl(') . $aname) . ')" />';
+								$p_field .= ' , ' . $labels[$aa] . ':<input type="text" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
 							} else {
-								$p_field .= (((('<input type="hidden" name="W' . $aa) . $fN) . '" value="') . $wArr[$aa]) . '" />';
+								$p_field .= '<input type="hidden" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '" />';
 							}
 						}
 						break;
@@ -1212,42 +1212,42 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 								if ($val == $params['value']) {
 									$sel = ' selected';
 								}
-								$p_field .= ((((('<option value="' . htmlspecialchars($val)) . '"') . $sel) . '>') . $GLOBALS['LANG']->sL($label)) . '</option>';
+								$p_field .= '<option value="' . htmlspecialchars($val) . '"' . $sel . '>' . $GLOBALS['LANG']->sL($label) . '</option>';
 							}
-							$p_field = ((((((('<select id="' . $fN) . '" name="') . $fN) . '" onChange="uFormUrl(') . $aname) . ')">') . $p_field) . '</select>';
+							$p_field = '<select id="' . $fN . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
 						}
 						break;
 					case 'boolean':
-						$p_field = ('<input type="hidden" name="' . $fN) . '" value="0" />';
+						$p_field = '<input type="hidden" name="' . $fN . '" value="0" />';
 						$sel = '';
 						if ($fV) {
 							$sel = ' checked';
 						}
-						$p_field .= ((((((((('<input id="' . $fN) . '" type="checkbox" name="') . $fN) . '" value="') . ($typeDat['paramstr'] ? $typeDat['paramstr'] : 1)) . '"') . $sel) . ' onClick="uFormUrl(') . $aname) . ')" />';
+						$p_field .= '<input id="' . $fN . '" type="checkbox" name="' . $fN . '" value="' . ($typeDat['paramstr'] ? $typeDat['paramstr'] : 1) . '"' . $sel . ' onClick="uFormUrl(' . $aname . ')" />';
 						break;
 					case 'comment':
-						$p_field = ('<input type="hidden" name="' . $fN) . '" value="#" />';
+						$p_field = '<input type="hidden" name="' . $fN . '" value="#" />';
 						$sel = '';
 						if (!$fV) {
 							$sel = ' checked';
 						}
-						$p_field .= ((((((('<input id="' . $fN) . '" type="checkbox" name="') . $fN) . '" value=""') . $sel) . ' onClick="uFormUrl(') . $aname) . ')" />';
+						$p_field .= '<input id="' . $fN . '" type="checkbox" name="' . $fN . '" value=""' . $sel . ' onClick="uFormUrl(' . $aname . ')" />';
 						break;
 					case 'file':
 						$p_field = '<option value=""></option>';
 						$theImage = '';
 						// extensionlist
 						$extList = $typeDat['paramstr'];
-						$p_field = ('<option value="">(' . $extList) . ')</option>';
+						$p_field = '<option value="">(' . $extList . ')</option>';
 						if ($extList == 'IMAGE_EXT') {
 							$extList = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
 						}
 						if (trim($params['value'])) {
 							$val = $params['value'];
 							$p_field .= '<option value=""></option>';
-							$p_field .= ((('<option value="' . htmlspecialchars($val)) . '" selected>') . $val) . '</option>';
+							$p_field .= '<option value="' . htmlspecialchars($val) . '" selected>' . $val . '</option>';
 						}
-						$p_field = ((((((('<select id="' . $fN) . '" name="') . $fN) . '" onChange="uFormUrl(') . $aname) . ')">') . $p_field) . '</select>';
+						$p_field = '<select id="' . $fN . '" name="' . $fN . '" onChange="uFormUrl(' . $aname . ')">' . $p_field . '</select>';
 						$p_field .= $theImage;
 						break;
 					case 'user':
@@ -1259,17 +1259,17 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 
 					default:
 						$fwidth = $typeDat['type'] == 'small' ? 10 : 46;
-						$p_field = ((((((((('<input id="' . $fN) . '" type="text" name="') . $fN) . '" value="') . $fV) . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth($fwidth)) . ' onChange="uFormUrl(') . $aname) . ')" />';
+						$p_field = '<input id="' . $fN . '" type="text" name="' . $fN . '" value="' . $fV . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth($fwidth) . ' onChange="uFormUrl(' . $aname . ')" />';
 						break;
 					}
 					// Define default names and IDs
 					$userTyposcriptID = 'userTS-' . $params['name'];
 					$defaultTyposcriptID = 'defaultTS-' . $params['name'];
-					$checkboxName = ('check[' . $params['name']) . ']';
+					$checkboxName = 'check[' . $params['name'] . ']';
 					$checkboxID = $checkboxName;
 					// Handle type=color specially
 					if ($typeDat['type'] == 'color' && substr($params['value'], 0, 2) != '{$') {
-						$color = ((('<div id="colorbox-' . $fN) . '" class="typo3-tstemplate-ceditor-colorblock" style="background-color:') . $params['value']) . ';">&nbsp;</div>';
+						$color = '<div id="colorbox-' . $fN . '" class="typo3-tstemplate-ceditor-colorblock" style="background-color:' . $params['value'] . ';">&nbsp;</div>';
 					} else {
 						$color = '';
 					}
@@ -1296,20 +1296,20 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							'title' => 'Edit this Constant',
 							'rel' => $params['name']
 						));
-						$constantCheckbox = ((((('<input type="hidden" name="' . $checkboxName) . '" id="') . $checkboxID) . '" value="') . $checkboxValue) . '"/>';
+						$constantCheckbox = '<input type="hidden" name="' . $checkboxName . '" id="' . $checkboxID . '" value="' . $checkboxValue . '"/>';
 						// If there's no default value for the field, use a static label.
 						if (!$params['default_value']) {
 							$params['default_value'] = '[Empty]';
 						}
-						$constantDefaultRow = ((((((('<div class="typo3-tstemplate-ceditor-row" id="' . $defaultTyposcriptID) . '" ') . $defaultTyposcriptStyle) . '>') . $editIconHTML) . htmlspecialchars($params['default_value'])) . $color) . '</div>';
+						$constantDefaultRow = '<div class="typo3-tstemplate-ceditor-row" id="' . $defaultTyposcriptID . '" ' . $defaultTyposcriptStyle . '>' . $editIconHTML . htmlspecialchars($params['default_value']) . $color . '</div>';
 					}
-					$constantEditRow = ((((((('<div class="typo3-tstemplate-ceditor-row" id="' . $userTyposcriptID) . '" ') . $userTyposcriptStyle) . '>') . $deleteIconHTML) . $p_field) . $color) . '</div>';
-					$constantLabel = ('<dt class="typo3-tstemplate-ceditor-label">' . htmlspecialchars($head)) . '</dt>';
-					$constantName = ('<dt class="typo3-dimmed">[' . $params['name']) . ']</dt>';
-					$constantDescription = $body ? ('<dd>' . htmlspecialchars($body)) . '</dd>' : '';
-					$constantData = ((('<dd>' . $constantCheckbox) . $constantEditRow) . $constantDefaultRow) . '</dd>';
-					$output .= (('<a name="' . $raname) . '"></a>') . $help['constants'][$params['name']];
-					$output .= (((('<dl class="typo3-tstemplate-ceditor-constant">' . $constantLabel) . $constantName) . $constantDescription) . $constantData) . '</dl>';
+					$constantEditRow = '<div class="typo3-tstemplate-ceditor-row" id="' . $userTyposcriptID . '" ' . $userTyposcriptStyle . '>' . $deleteIconHTML . $p_field . $color . '</div>';
+					$constantLabel = '<dt class="typo3-tstemplate-ceditor-label">' . htmlspecialchars($head) . '</dt>';
+					$constantName = '<dt class="typo3-dimmed">[' . $params['name'] . ']</dt>';
+					$constantDescription = $body ? '<dd>' . htmlspecialchars($body) . '</dd>' : '';
+					$constantData = '<dd>' . $constantCheckbox . $constantEditRow . $constantDefaultRow . '</dd>';
+					$output .= '<a name="' . $raname . '"></a>' . $help['constants'][$params['name']];
+					$output .= '<dl class="typo3-tstemplate-ceditor-constant">' . $constantLabel . $constantName . $constantDescription . $constantData . '</dl>';
 				} else {
 					debug('Error. Constant did not exist. Should not happen.');
 				}
@@ -1367,7 +1367,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 						break;
 					case '{':
 						$this->ext_inBrace++;
-						$this->ext_regObjects(($pre . $var) . '.');
+						$this->ext_regObjects($pre . $var . '.');
 						break;
 					}
 					$this->lastComment = '';
@@ -1404,7 +1404,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 			}
 			$this->raw[$lineNum] = implode($parts, '=');
 		} else {
-			$this->raw[] = ($key . ' =') . $theValue;
+			$this->raw[] = $key . ' =' . $theValue;
 		}
 		$this->changed = 1;
 	}
@@ -1507,9 +1507,9 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 									$col[] = HexDec(substr($var, 4, 1));
 									$col[] = HexDec(substr($var, 5, 1));
 								}
-								$var = (substr(('0' . DecHex($col[0])), -1) . substr(('0' . DecHex($col[1])), -1)) . substr(('0' . DecHex($col[2])), -1);
+								$var = substr(('0' . DecHex($col[0])), -1) . substr(('0' . DecHex($col[1])), -1) . substr(('0' . DecHex($col[2])), -1);
 								if ($useFulHex) {
-									$var .= (substr(('0' . DecHex($col[3])), -1) . substr(('0' . DecHex($col[4])), -1)) . substr(('0' . DecHex($col[5])), -1);
+									$var .= substr(('0' . DecHex($col[3])), -1) . substr(('0' . DecHex($col[4])), -1) . substr(('0' . DecHex($col[5])), -1);
 								}
 								$var = '#' . strtoupper($var);
 							}
@@ -1528,7 +1528,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 							break;
 						case 'offset':
 							if (isset($Wdata[$key])) {
-								$var = (intval($var) . ',') . intval($Wdata[$key]);
+								$var = intval($var) . ',' . intval($Wdata[$key]);
 								if (isset($W2data[$key])) {
 									$var .= ',' . intval($W2data[$key]);
 									if (isset($W3data[$key])) {

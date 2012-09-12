@@ -117,7 +117,7 @@ class SqlParser {
 			$result = $this->parseTRUNCATETABLE($parseString);
 			break;
 		default:
-			$result = $this->parseError(('"' . $keyword) . '" is not a keyword', $parseString);
+			$result = $this->parseError('"' . $keyword . '" is not a keyword', $parseString);
 			break;
 		}
 		return $result;
@@ -307,13 +307,13 @@ class SqlParser {
 									if (!isset($insertValues[$fN])) {
 										$insertValues[$fN] = $values[$k];
 									} else {
-										return $this->parseError(('Fieldname ("' . $fN) . '") already found in list!', $parseString);
+										return $this->parseError('Fieldname ("' . $fN . '") already found in list!', $parseString);
 									}
 								} else {
 									return $this->parseError('No value set!', $parseString);
 								}
 							} else {
-								return $this->parseError(('Invalid fieldname ("' . $fN) . '")', $parseString);
+								return $this->parseError('Invalid fieldname ("' . $fN . '")', $parseString);
 							}
 						}
 						if (isset($values[$k + 1])) {
@@ -497,7 +497,7 @@ class SqlParser {
 		$result['type'] = 'ALTERTABLE';
 		// Get table:
 		$hasBackquote = $this->nextPart($parseString, '^(`)') === '`';
-		$result['TABLE'] = $this->nextPart($parseString, ('^([[:alnum:]_]+)' . ($hasBackquote ? '`' : '')) . '[[:space:]]+');
+		$result['TABLE'] = $this->nextPart($parseString, '^([[:alnum:]_]+)' . ($hasBackquote ? '`' : '') . '[[:space:]]+');
 		if ($hasBackquote && $this->nextPart($parseString, '^(`)') !== '`') {
 			return $this->parseError('No end backquote found!', $parseString);
 		}
@@ -1072,7 +1072,7 @@ class SqlParser {
 						// - "%" (modulo)
 						$calcOperators = '&|\\+|-|\\*|\\/|%';
 						// Fieldname:
-						if (($fieldName = $this->nextPart($parseString, ('^([[:alnum:]._]+)([[:space:]]+|' . $calcOperators) . '|<=|>=|<|>|=|!=|IS)')) !== '') {
+						if (($fieldName = $this->nextPart($parseString, '^([[:alnum:]._]+)([[:space:]]+|' . $calcOperators . '|<=|>=|<|>|=|!=|IS)')) !== '') {
 							// Parse field name into field and table:
 							$tableField = explode('.', $fieldName, 2);
 							if (count($tableField) == 2) {
@@ -1086,7 +1086,7 @@ class SqlParser {
 							return $this->parseError('No field name found as expected in parseWhereClause()', $parseString);
 						}
 						// See if the value is calculated:
-						$stack[$level][$pnt[$level]]['calc'] = $this->nextPart($parseString, ('^(' . $calcOperators) . ')');
+						$stack[$level][$pnt[$level]]['calc'] = $this->nextPart($parseString, '^(' . $calcOperators . ')');
 						if (strlen($stack[$level][$pnt[$level]]['calc'])) {
 							// Finding value for calculation:
 							$calc_value = $this->getValue($parseString);
@@ -1124,7 +1124,7 @@ class SqlParser {
 						'BETWEEN',
 						'NOT[[:space]]+BETWEEN'
 					);
-					$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, ('^(' . implode('|', $comparatorPatterns)) . ')');
+					$stack[$level][$pnt[$level]]['comparator'] = $this->nextPart($parseString, '^(' . implode('|', $comparatorPatterns) . ')');
 					if (strlen($stack[$level][$pnt[$level]]['comparator'])) {
 						if (preg_match('/^CONCAT[[:space:]]*\\(/', $parseString)) {
 							$this->nextPart($parseString, '^(CONCAT[[:space:]]?[(])');
@@ -1291,7 +1291,7 @@ class SqlParser {
 	protected function nextPart(&$parseString, $regex, $trimAll = FALSE) {
 		$reg = array();
 		// Adding space char because [[:space:]]+ is often a requirement in regex's
-		if (preg_match(('/' . $regex) . '/i', $parseString . ' ', $reg)) {
+		if (preg_match('/' . $regex . '/i', $parseString . ' ', $reg)) {
 			$parseString = ltrim(substr($parseString, strlen($reg[$trimAll ? 0 : 1])));
 			return $reg[1];
 		}
@@ -1456,7 +1456,7 @@ class SqlParser {
 	 * @return string Error message.
 	 */
 	protected function parseError($msg, $restQuery) {
-		$this->parse_error = ((('SQL engine parse ERROR: ' . $msg) . ': near "') . substr($restQuery, 0, 50)) . '"';
+		$this->parse_error = 'SQL engine parse ERROR: ' . $msg . ': near "' . substr($restQuery, 0, 50) . '"';
 		return $this->parse_error;
 	}
 
@@ -1504,7 +1504,7 @@ class SqlParser {
 			$query = 'EXPLAIN ' . $this->compileSELECT($components);
 			break;
 		case 'DROPTABLE':
-			$query = (('DROP TABLE' . ($components['ifExists'] ? ' IF EXISTS' : '')) . ' ') . $components['TABLE'];
+			$query = 'DROP TABLE' . ($components['ifExists'] ? ' IF EXISTS' : '') . ' ' . $components['TABLE'];
 			break;
 		case 'CREATETABLE':
 			$query = $this->compileCREATETABLE($components);
@@ -1533,12 +1533,12 @@ class SqlParser {
 		$orderBy = $this->compileFieldList($components['ORDERBY']);
 		$limit = $components['LIMIT'];
 		// Make query:
-		$query = (((((((('SELECT ' . ($components['STRAIGHT_JOIN'] ? $components['STRAIGHT_JOIN'] . '' : '')) . '
-				') . $this->compileFieldList($components['SELECT'])) . '
-				FROM ') . $this->compileFromTables($components['FROM'])) . (strlen($where) ? '
-				WHERE ' . $where : '')) . (strlen($groupBy) ? '
-				GROUP BY ' . $groupBy : '')) . (strlen($orderBy) ? '
-				ORDER BY ' . $orderBy : '')) . (strlen($limit) ? '
+		$query = 'SELECT ' . ($components['STRAIGHT_JOIN'] ? $components['STRAIGHT_JOIN'] . '' : '') . '
+				' . $this->compileFieldList($components['SELECT']) . '
+				FROM ' . $this->compileFromTables($components['FROM']) . (strlen($where) ? '
+				WHERE ' . $where : '') . (strlen($groupBy) ? '
+				GROUP BY ' . $groupBy : '') . (strlen($orderBy) ? '
+				ORDER BY ' . $orderBy : '') . (strlen($limit) ? '
 				LIMIT ' . $limit : '');
 		return $query;
 	}
@@ -1556,13 +1556,13 @@ class SqlParser {
 		// Fields
 		$fields = array();
 		foreach ($components['FIELDS'] as $fN => $fV) {
-			$fields[] = ((($fN . '=') . $fV[1]) . $this->compileAddslashes($fV[0])) . $fV[1];
+			$fields[] = $fN . '=' . $fV[1] . $this->compileAddslashes($fV[0]) . $fV[1];
 		}
 		// Make query:
-		$query = (((('UPDATE ' . $components['TABLE']) . ' SET
-				') . implode(',
-				', $fields)) . '
-				') . (strlen($where) ? '
+		$query = 'UPDATE ' . $components['TABLE'] . ' SET
+				' . implode(',
+				', $fields) . '
+				' . (strlen($where) ? '
 				WHERE ' . $where : '');
 		return $query;
 	}
@@ -1586,17 +1586,17 @@ class SqlParser {
 		foreach ($valuesComponents as $valuesComponent) {
 			$fields = array();
 			foreach ($valuesComponent as $fV) {
-				$fields[] = ($fV[1] . $this->compileAddslashes($fV[0])) . $fV[1];
+				$fields[] = $fV[1] . $this->compileAddslashes($fV[0]) . $fV[1];
 			}
-			$values[] = ('(' . implode(',
-				', $fields)) . ')';
+			$values[] = '(' . implode(',
+				', $fields) . ')';
 		}
 		// Make query:
 		$query = 'INSERT INTO ' . $components['TABLE'];
 		if (count($tableFields)) {
-			$query .= ('
+			$query .= '
 				(' . implode(',
-				', $tableFields)) . ')';
+				', $tableFields) . ')';
 		}
 		$query .= '
 			VALUES
@@ -1616,7 +1616,7 @@ class SqlParser {
 		// Where clause:
 		$where = $this->compileWhereClause($components['WHERE']);
 		// Make query:
-		$query = ('DELETE FROM ' . $components['TABLE']) . (strlen($where) ? '
+		$query = 'DELETE FROM ' . $components['TABLE'] . (strlen($where) ? '
 				WHERE ' . $where : '');
 		return $query;
 	}
@@ -1632,24 +1632,24 @@ class SqlParser {
 		// Create fields and keys:
 		$fieldsKeys = array();
 		foreach ($components['FIELDS'] as $fN => $fCfg) {
-			$fieldsKeys[] = ($fN . ' ') . $this->compileFieldCfg($fCfg['definition']);
+			$fieldsKeys[] = $fN . ' ' . $this->compileFieldCfg($fCfg['definition']);
 		}
 		foreach ($components['KEYS'] as $kN => $kCfg) {
 			if ($kN === 'PRIMARYKEY') {
-				$fieldsKeys[] = ('PRIMARY KEY (' . implode(',', $kCfg)) . ')';
+				$fieldsKeys[] = 'PRIMARY KEY (' . implode(',', $kCfg) . ')';
 			} elseif ($kN === 'UNIQUE') {
 				$key = key($kCfg);
 				$fields = current($kCfg);
-				$fieldsKeys[] = ((('UNIQUE KEY ' . $key) . ' (') . implode(',', $fields)) . ')';
+				$fieldsKeys[] = 'UNIQUE KEY ' . $key . ' (' . implode(',', $fields) . ')';
 			} else {
-				$fieldsKeys[] = ((('KEY ' . $kN) . ' (') . implode(',', $kCfg)) . ')';
+				$fieldsKeys[] = 'KEY ' . $kN . ' (' . implode(',', $kCfg) . ')';
 			}
 		}
 		// Make query:
-		$query = (((('CREATE TABLE ' . $components['TABLE']) . ' (
-			') . implode(',
-			', $fieldsKeys)) . '
-			)') . ($components['tableType'] ? ' TYPE=' . $components['tableType'] : '');
+		$query = 'CREATE TABLE ' . $components['TABLE'] . ' (
+			' . implode(',
+			', $fieldsKeys) . '
+			)' . ($components['tableType'] ? ' TYPE=' . $components['tableType'] : '');
 		return $query;
 	}
 
@@ -1662,14 +1662,14 @@ class SqlParser {
 	 */
 	protected function compileALTERTABLE($components) {
 		// Make query:
-		$query = (((('ALTER TABLE ' . $components['TABLE']) . ' ') . $components['action']) . ' ') . ($components['FIELD'] ? $components['FIELD'] : $components['KEY']);
+		$query = 'ALTER TABLE ' . $components['TABLE'] . ' ' . $components['action'] . ' ' . ($components['FIELD'] ? $components['FIELD'] : $components['KEY']);
 		// Based on action, add the final part:
 		switch (strtoupper(str_replace(array(' ', TAB, CR, LF), '', $components['action']))) {
 		case 'ADD':
 			$query .= ' ' . $this->compileFieldCfg($components['definition']);
 			break;
 		case 'CHANGE':
-			$query .= ((' ' . $components['newField']) . ' ') . $this->compileFieldCfg($components['definition']);
+			$query .= ' ' . $components['newField'] . ' ' . $this->compileFieldCfg($components['definition']);
 			break;
 		case 'DROP':
 
@@ -1680,7 +1680,7 @@ class SqlParser {
 		case 'ADDPRIMARYKEY':
 
 		case 'ADDUNIQUE':
-			$query .= (' (' . implode(',', $components['fields'])) . ')';
+			$query .= ' (' . implode(',', $components['fields']) . ')';
 			break;
 		case 'DEFAULTCHARACTERSET':
 			$query .= $components['charset'];
@@ -1731,7 +1731,7 @@ class SqlParser {
 				// Detecting type:
 				switch ($v['type']) {
 				case 'function':
-					$outputParts[$k] = (($v['function'] . '(') . $v['func_content']) . ')';
+					$outputParts[$k] = $v['function'] . '(' . $v['func_content'] . ')';
 					break;
 				case 'flow-control':
 					if ($v['flow-control']['type'] === 'CASE') {
@@ -1739,12 +1739,12 @@ class SqlParser {
 					}
 					break;
 				case 'field':
-					$outputParts[$k] = (($v['distinct'] ? $v['distinct'] : '') . ($v['table'] ? $v['table'] . '.' : '')) . $v['field'];
+					$outputParts[$k] = ($v['distinct'] ? $v['distinct'] : '') . ($v['table'] ? $v['table'] . '.' : '') . $v['field'];
 					break;
 				}
 				// Alias:
 				if ($v['as']) {
-					$outputParts[$k] .= ((' ' . $v['as_keyword']) . ' ') . $v['as'];
+					$outputParts[$k] .= ' ' . $v['as_keyword'] . ' ' . $v['as'];
 				}
 				// Specifically for ORDER BY and GROUP BY field lists:
 				if ($v['sortDir']) {
@@ -1771,17 +1771,17 @@ class SqlParser {
 		if (isset($components['case_field'])) {
 			$statement .= ' ' . $components['case_field'];
 		} elseif (isset($components['case_value'])) {
-			$statement .= ((' ' . $components['case_value'][1]) . $components['case_value'][0]) . $components['case_value'][1];
+			$statement .= ' ' . $components['case_value'][1] . $components['case_value'][0] . $components['case_value'][1];
 		}
 		foreach ($components['when'] as $when) {
 			$statement .= ' WHEN ';
 			$statement .= $this->compileWhereClause($when['when_value']);
 			$statement .= ' THEN ';
-			$statement .= ($when['then_value'][1] . $when['then_value'][0]) . $when['then_value'][1];
+			$statement .= $when['then_value'][1] . $when['then_value'][0] . $when['then_value'][1];
 		}
 		if (isset($components['else'])) {
 			$statement .= ' ELSE ';
-			$statement .= ($components['else'][1] . $components['else'][0]) . $components['else'][1];
+			$statement .= $components['else'][1] . $components['else'][0] . $components['else'][1];
 		}
 		$statement .= ' END';
 		return $statement;
@@ -1804,19 +1804,19 @@ class SqlParser {
 				$outputParts[$k] = $v['table'];
 				// Add alias AS if there:
 				if ($v['as']) {
-					$outputParts[$k] .= ((' ' . $v['as_keyword']) . ' ') . $v['as'];
+					$outputParts[$k] .= ' ' . $v['as_keyword'] . ' ' . $v['as'];
 				}
 				if (is_array($v['JOIN'])) {
 					foreach ($v['JOIN'] as $join) {
-						$outputParts[$k] .= ((' ' . $join['type']) . ' ') . $join['withTable'];
+						$outputParts[$k] .= ' ' . $join['type'] . ' ' . $join['withTable'];
 						// Add alias AS if there:
 						if (isset($join['as']) && $join['as']) {
-							$outputParts[$k] .= ((' ' . $join['as_keyword']) . ' ') . $join['as'];
+							$outputParts[$k] .= ' ' . $join['as_keyword'] . ' ' . $join['as'];
 						}
 						$outputParts[$k] .= ' ON ';
 						foreach ($join['ON'] as $condition) {
 							if ($condition['operator'] !== '') {
-								$outputParts[$k] .= (' ' . $condition['operator']) . ' ';
+								$outputParts[$k] .= ' ' . $condition['operator'] . ' ';
 							}
 							$outputParts[$k] .= $condition['left']['table'] ? $condition['left']['table'] . '.' : '';
 							$outputParts[$k] .= $condition['left']['field'];
@@ -1849,32 +1849,32 @@ class SqlParser {
 				$output .= $v['operator'] ? ' ' . $v['operator'] : '';
 				// Look for sublevel:
 				if (is_array($v['sub'])) {
-					$output .= (' (' . trim($this->compileWhereClause($v['sub']))) . ')';
+					$output .= ' (' . trim($this->compileWhereClause($v['sub'])) . ')';
 				} elseif (isset($v['func']) && $v['func']['type'] === 'EXISTS') {
-					$output .= (((' ' . trim($v['modifier'])) . ' EXISTS (') . $this->compileSELECT($v['func']['subquery'])) . ')';
+					$output .= ' ' . trim($v['modifier']) . ' EXISTS (' . $this->compileSELECT($v['func']['subquery']) . ')';
 				} else {
 					if (isset($v['func']) && $v['func']['type'] === 'LOCATE') {
-						$output .= (' ' . trim($v['modifier'])) . ' LOCATE(';
-						$output .= ($v['func']['substr'][1] . $v['func']['substr'][0]) . $v['func']['substr'][1];
-						$output .= (', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '')) . $v['func']['field'];
+						$output .= ' ' . trim($v['modifier']) . ' LOCATE(';
+						$output .= $v['func']['substr'][1] . $v['func']['substr'][0] . $v['func']['substr'][1];
+						$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 						$output .= isset($v['func']['pos']) ? ', ' . $v['func']['pos'][0] : '';
 						$output .= ')';
 					} elseif (isset($v['func']) && $v['func']['type'] === 'IFNULL') {
-						$output .= (' ' . trim($v['modifier'])) . ' IFNULL(';
+						$output .= ' ' . trim($v['modifier']) . ' IFNULL(';
 						$output .= ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
-						$output .= ((', ' . $v['func']['default'][1]) . $this->compileAddslashes($v['func']['default'][0])) . $v['func']['default'][1];
+						$output .= ', ' . $v['func']['default'][1] . $this->compileAddslashes($v['func']['default'][0]) . $v['func']['default'][1];
 						$output .= ')';
 					} elseif (isset($v['func']) && $v['func']['type'] === 'FIND_IN_SET') {
-						$output .= (' ' . trim($v['modifier'])) . ' FIND_IN_SET(';
-						$output .= ($v['func']['str'][1] . $v['func']['str'][0]) . $v['func']['str'][1];
-						$output .= (', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '')) . $v['func']['field'];
+						$output .= ' ' . trim($v['modifier']) . ' FIND_IN_SET(';
+						$output .= $v['func']['str'][1] . $v['func']['str'][0] . $v['func']['str'][1];
+						$output .= ', ' . ($v['func']['table'] ? $v['func']['table'] . '.' : '') . $v['func']['field'];
 						$output .= ')';
 					} else {
 						// Set field/table with modifying prefix if any:
-						$output .= ' ' . trim(((($v['modifier'] . ' ') . ($v['table'] ? $v['table'] . '.' : '')) . $v['field']));
+						$output .= ' ' . trim(($v['modifier'] . ' ' . ($v['table'] ? $v['table'] . '.' : '') . $v['field']));
 						// Set calculation, if any:
 						if ($v['calc']) {
-							$output .= (($v['calc'] . $v['calc_value'][1]) . $this->compileAddslashes($v['calc_value'][0])) . $v['calc_value'][1];
+							$output .= $v['calc'] . $v['calc_value'][1] . $this->compileAddslashes($v['calc_value'][0]) . $v['calc_value'][1];
 						}
 					}
 					// Set comparator:
@@ -1883,30 +1883,30 @@ class SqlParser {
 						// Detecting value type; list or plain:
 						if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('NOTIN,IN', strtoupper(str_replace(array(' ', TAB, CR, LF), '', $v['comparator'])))) {
 							if (isset($v['subquery'])) {
-								$output .= (' (' . $this->compileSELECT($v['subquery'])) . ')';
+								$output .= ' (' . $this->compileSELECT($v['subquery']) . ')';
 							} else {
 								$valueBuffer = array();
 								foreach ($v['value'] as $realValue) {
-									$valueBuffer[] = ($realValue[1] . $this->compileAddslashes($realValue[0])) . $realValue[1];
+									$valueBuffer[] = $realValue[1] . $this->compileAddslashes($realValue[0]) . $realValue[1];
 								}
-								$output .= (' (' . trim(implode(',', $valueBuffer))) . ')';
+								$output .= ' (' . trim(implode(',', $valueBuffer)) . ')';
 							}
 						} else {
 							if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
 								$lbound = $v['values'][0];
 								$ubound = $v['values'][1];
-								$output .= ((' ' . $lbound[1]) . $this->compileAddslashes($lbound[0])) . $lbound[1];
+								$output .= ' ' . $lbound[1] . $this->compileAddslashes($lbound[0]) . $lbound[1];
 								$output .= ' AND ';
-								$output .= ($ubound[1] . $this->compileAddslashes($ubound[0])) . $ubound[1];
+								$output .= $ubound[1] . $this->compileAddslashes($ubound[0]) . $ubound[1];
 							} else {
 								if (isset($v['value']['operator'])) {
 									$values = array();
 									foreach ($v['value']['args'] as $fieldDef) {
 										$values[] = ($fieldDef['table'] ? $fieldDef['table'] . '.' : '') . $fieldDef['field'];
 									}
-									$output .= (((' ' . $v['value']['operator']) . '(') . implode(',', $values)) . ')';
+									$output .= ' ' . $v['value']['operator'] . '(' . implode(',', $values) . ')';
 								} else {
-									$output .= ((' ' . $v['value'][1]) . $this->compileAddslashes($v['value'][0])) . $v['value'][1];
+									$output .= ' ' . $v['value'][1] . $this->compileAddslashes($v['value'][0]) . $v['value'][1];
 								}
 							}
 						}
@@ -1929,7 +1929,7 @@ class SqlParser {
 		$cfg = $fieldCfg['fieldType'];
 		// Add value, if any:
 		if (strlen($fieldCfg['value'])) {
-			$cfg .= ('(' . $fieldCfg['value']) . ')';
+			$cfg .= '(' . $fieldCfg['value'] . ')';
 		}
 		// Add additional features:
 		if (is_array($fieldCfg['featureIndex'])) {
@@ -1937,7 +1937,7 @@ class SqlParser {
 				$cfg .= ' ' . $featureDef['keyword'];
 				// Add value if found:
 				if (is_array($featureDef['value'])) {
-					$cfg .= ((' ' . $featureDef['value'][1]) . $this->compileAddslashes($featureDef['value'][0])) . $featureDef['value'][1];
+					$cfg .= ' ' . $featureDef['value'][1] . $this->compileAddslashes($featureDef['value'][0]) . $featureDef['value'][1];
 				}
 			}
 		}

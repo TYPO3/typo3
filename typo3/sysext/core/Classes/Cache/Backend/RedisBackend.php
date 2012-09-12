@@ -163,7 +163,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 			if ($this->database > 0) {
 				$success = $this->redis->select($this->database);
 				if (!$success) {
-					throw new \TYPO3\CMS\Core\Cache\Exception(('The given database "' . $this->database) . '" could not be selected.', 1279765144);
+					throw new \TYPO3\CMS\Core\Cache\Exception('The given database "' . $this->database . '" could not be selected.', 1279765144);
 				}
 			}
 		}
@@ -201,10 +201,10 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 */
 	public function setDatabase($database) {
 		if (!is_integer($database)) {
-			throw new \InvalidArgumentException(('The specified database number is of type "' . gettype($database)) . '" but an integer is expected.', 1279763057);
+			throw new \InvalidArgumentException('The specified database number is of type "' . gettype($database) . '" but an integer is expected.', 1279763057);
 		}
 		if ($database < 0) {
-			throw new \InvalidArgumentException(('The specified database "' . $database) . '" must be greater or equal than zero.', 1279763534);
+			throw new \InvalidArgumentException('The specified database "' . $database . '" must be greater or equal than zero.', 1279763534);
 		}
 		$this->database = $database;
 	}
@@ -230,7 +230,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 */
 	public function setCompression($compression) {
 		if (!is_bool($compression)) {
-			throw new \InvalidArgumentException(('The specified compression of type "' . gettype($compression)) . '" but a boolean is expected.', 1289679153);
+			throw new \InvalidArgumentException('The specified compression of type "' . gettype($compression) . '" but a boolean is expected.', 1289679153);
 		}
 		$this->compression = $compression;
 	}
@@ -247,7 +247,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 */
 	public function setCompressionLevel($compressionLevel) {
 		if (!is_integer($compressionLevel)) {
-			throw new \InvalidArgumentException(('The specified compression of type "' . gettype($compressionLevel)) . '" but an integer is expected.', 1289679154);
+			throw new \InvalidArgumentException('The specified compression of type "' . gettype($compressionLevel) . '" but an integer is expected.', 1289679154);
 		}
 		if ($compressionLevel >= -1 && $compressionLevel <= 9) {
 			$this->compressionLevel = $compressionLevel;
@@ -273,17 +273,17 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		if (!is_string($entryIdentifier)) {
-			throw new \InvalidArgumentException(('The specified identifier is of type "' . gettype($entryIdentifier)) . '" but a string is expected.', 1279470252);
+			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" but a string is expected.', 1279470252);
 		}
 		if (!is_string($data)) {
-			throw new \t3lib_cache_Exception_InvalidData(('The specified data is of type "' . gettype($data)) . '" but a string is expected.', 1279469941);
+			throw new \t3lib_cache_Exception_InvalidData('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1279469941);
 		}
 		$lifetime = $lifetime === NULL ? $this->defaultLifetime : $lifetime;
 		if (!is_integer($lifetime)) {
-			throw new \InvalidArgumentException(('The specified lifetime is of type "' . gettype($lifetime)) . '" but an integer or NULL is expected.', 1279488008);
+			throw new \InvalidArgumentException('The specified lifetime is of type "' . gettype($lifetime) . '" but an integer or NULL is expected.', 1279488008);
 		}
 		if ($lifetime < 0) {
-			throw new \InvalidArgumentException(('The specified lifetime "' . $lifetime) . '" must be greater or equal than zero.', 1279487573);
+			throw new \InvalidArgumentException('The specified lifetime "' . $lifetime . '" must be greater or equal than zero.', 1279487573);
 		}
 		if ($this->connected) {
 			$expiration = $lifetime === 0 ? self::FAKED_UNLIMITED_LIFETIME : $lifetime;
@@ -325,7 +325,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 */
 	public function get($entryIdentifier) {
 		if (!is_string($entryIdentifier)) {
-			throw new \InvalidArgumentException(('The specified identifier is of type "' . gettype($entryIdentifier)) . '" but a string is expected.', 1279470253);
+			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" but a string is expected.', 1279470253);
 		}
 		$storedEntry = FALSE;
 		if ($this->connected) {
@@ -349,7 +349,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 */
 	public function has($entryIdentifier) {
 		if (!is_string($entryIdentifier)) {
-			throw new \InvalidArgumentException(('The specified identifier is of type "' . gettype($entryIdentifier)) . '" but a string is expected.', 1279470254);
+			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" but a string is expected.', 1279470254);
 		}
 		return $this->connected && $this->redis->exists(self::IDENTIFIER_DATA_PREFIX . $entryIdentifier);
 	}
@@ -367,7 +367,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 */
 	public function remove($entryIdentifier) {
 		if (!is_string($entryIdentifier)) {
-			throw new \InvalidArgumentException(('The specified identifier is of type "' . gettype($entryIdentifier)) . '" but a string is expected.', 1279470255);
+			throw new \InvalidArgumentException('The specified identifier is of type "' . gettype($entryIdentifier) . '" but a string is expected.', 1279470255);
 		}
 		$elementsDeleted = FALSE;
 		if ($this->connected) {
@@ -399,7 +399,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 */
 	public function findIdentifiersByTag($tag) {
 		if (!is_string($tag)) {
-			throw new \InvalidArgumentException(('The specified tag is of type "' . gettype($tag)) . '" but a string is expected.', 1279569759);
+			throw new \InvalidArgumentException('The specified tag is of type "' . gettype($tag) . '" but a string is expected.', 1279569759);
 		}
 		$foundIdentifiers = array();
 		if ($this->connected) {
@@ -435,7 +435,7 @@ class RedisBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend impleme
 	 */
 	public function flushByTag($tag) {
 		if (!is_string($tag)) {
-			throw new \InvalidArgumentException(('The specified tag is of type "' . gettype($tag)) . '" but a string is expected.', 1279578078);
+			throw new \InvalidArgumentException('The specified tag is of type "' . gettype($tag) . '" but a string is expected.', 1279578078);
 		}
 		if ($this->connected) {
 			$identifiers = $this->redis->sMembers(self::TAG_IDENTIFIERS_PREFIX . $tag);

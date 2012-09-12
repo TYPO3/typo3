@@ -63,7 +63,7 @@ class VersionNumberUtility {
 			substr($versionString, 3, 3),
 			substr($versionString, 6, 3)
 		);
-		return (((intval($parts[0]) . '.') . intval($parts[1])) . '.') . intval($parts[2]);
+		return intval($parts[0]) . '.' . intval($parts[1]) . '.' . intval($parts[2]);
 	}
 
 	/**
@@ -102,7 +102,7 @@ class VersionNumberUtility {
 	 */
 	static public function getNumericTypo3Version() {
 		$t3version = static::getCurrentTypo3Version();
-		if (((stripos($t3version, '-dev') || stripos($t3version, '-alpha')) || stripos($t3version, '-beta')) || stripos($t3version, '-RC')) {
+		if (stripos($t3version, '-dev') || stripos($t3version, '-alpha') || stripos($t3version, '-beta') || stripos($t3version, '-RC')) {
 			// find the last occurence of "-" and replace that part with a ".0"
 			$t3version = substr($t3version, 0, strrpos($t3version, '-')) . '.0';
 		}
@@ -157,8 +157,8 @@ class VersionNumberUtility {
 		$parts[1] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[1], 0, 999);
 		$parts[2] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($parts[2], 0, 999);
 		$result = array();
-		$result['version'] = ((($parts[0] . '.') . $parts[1]) . '.') . $parts[2];
-		$result['version_int'] = intval(($parts[0] * 1000000 + $parts[1] * 1000) + $parts[2]);
+		$result['version'] = $parts[0] . '.' . $parts[1] . '.' . $parts[2];
+		$result['version_int'] = intval($parts[0] * 1000000 + $parts[1] * 1000 + $parts[2]);
 		$result['version_main'] = $parts[0];
 		$result['version_sub'] = $parts[1];
 		$result['version_dev'] = $parts[2];
@@ -195,7 +195,7 @@ class VersionNumberUtility {
 			$parts[2]++;
 			break;
 		}
-		return ((($parts[0] . '.') . $parts[1]) . '.') . $parts[2];
+		return $parts[0] . '.' . $parts[1] . '.' . $parts[2];
 	}
 
 }

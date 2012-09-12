@@ -99,7 +99,7 @@ class MagicImageService {
 		// Create the magic image
 		$magicImageInfo = $this->getImageObject()->imageMagickConvert($imageFilePath, 'WEB', $maxWidth . 'm', $maxHeight . 'm');
 		if ($magicImageInfo[3]) {
-			$targetFileName = (('RTEmagicC_' . pathInfo($imageFileObject->getName(), PATHINFO_FILENAME)) . '.') . pathinfo($magicImageInfo[3], PATHINFO_EXTENSION);
+			$targetFileName = 'RTEmagicC_' . pathInfo($imageFileObject->getName(), PATHINFO_FILENAME) . '.' . pathinfo($magicImageInfo[3], PATHINFO_EXTENSION);
 			$magicFolder = $this->getMagicFolder($targetFolderCombinedIdentifier);
 			if ($magicFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
 				$magicImage = $magicFolder->addFile($magicImageInfo[3], $targetFileName, 'changeName');

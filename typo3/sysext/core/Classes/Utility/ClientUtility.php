@@ -53,7 +53,7 @@ final class ClientUtility {
 				// so create a reference to NULL
 				$null = NULL;
 				$hookResult = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookParameters, $null);
-				if (($returnResult && is_array($hookResult)) && count($hookResult)) {
+				if ($returnResult && is_array($hookResult) && count($hookResult)) {
 					return $hookResult;
 				}
 			}
@@ -86,7 +86,7 @@ final class ClientUtility {
 			'aol'
 		);
 		$matches = array();
-		$pattern = ('#(?P<browser>' . join('|', $known)) . ')[/ ]+(?P<version>[0-9]+(?:\\.[0-9]+)?)#';
+		$pattern = '#(?P<browser>' . join('|', $known) . ')[/ ]+(?P<version>[0-9]+(?:\\.[0-9]+)?)#';
 		// Find all phrases (or return empty array if none found)
 		if (!preg_match_all($pattern, strtolower($userAgent), $matches)) {
 			$browserInfo['browser'] = 'unknown';
@@ -139,7 +139,7 @@ final class ClientUtility {
 				$browserInfo['all_systems'][] = 'win311';
 			}
 		} elseif (strstr($userAgent, 'Mac')) {
-			if ((strstr($userAgent, 'iPad') || strstr($userAgent, 'iPhone')) || strstr($userAgent, 'iPod')) {
+			if (strstr($userAgent, 'iPad') || strstr($userAgent, 'iPhone') || strstr($userAgent, 'iPod')) {
 				$browserInfo['all_systems'][] = 'iOS';
 				$browserInfo['all_systems'][] = 'mac';
 			} else {
@@ -196,7 +196,7 @@ final class ClientUtility {
 				// so create a reference to NULL
 				$null = NULL;
 				$hookResult = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookParameters, $null);
-				if (($returnResult && is_string($hookResult)) && !empty($hookResult)) {
+				if ($returnResult && is_string($hookResult) && !empty($hookResult)) {
 					return $hookResult;
 				}
 			}
@@ -210,15 +210,15 @@ final class ClientUtility {
 		// wap
 		$browser = substr($userAgent, 0, 4);
 		$wapviwer = substr(stristr($userAgent, 'wap'), 0, 3);
-		if (((((($wapviwer == 'wap' || $browser == 'noki') || $browser == 'eric') || $browser == 'r380') || $browser == 'up.b') || $browser == 'winw') || $browser == 'wapa') {
+		if ($wapviwer == 'wap' || $browser == 'noki' || $browser == 'eric' || $browser == 'r380' || $browser == 'up.b' || $browser == 'winw' || $browser == 'wapa') {
 			$deviceType = 'wap';
 		}
 		// grabber
-		if ((((strstr($userAgent, 'g.r.a.b.') || strstr($userAgent, 'utilmind httpget')) || strstr($userAgent, 'webcapture')) || strstr($userAgent, 'teleport')) || strstr($userAgent, 'webcopier')) {
+		if (strstr($userAgent, 'g.r.a.b.') || strstr($userAgent, 'utilmind httpget') || strstr($userAgent, 'webcapture') || strstr($userAgent, 'teleport') || strstr($userAgent, 'webcopier')) {
 			$deviceType = 'grabber';
 		}
 		// robots
-		if ((((((strstr($userAgent, 'crawler') || strstr($userAgent, 'spider')) || strstr($userAgent, 'googlebot')) || strstr($userAgent, 'searchbot')) || strstr($userAgent, 'infoseek')) || strstr($userAgent, 'altavista')) || strstr($userAgent, 'diibot')) {
+		if (strstr($userAgent, 'crawler') || strstr($userAgent, 'spider') || strstr($userAgent, 'googlebot') || strstr($userAgent, 'searchbot') || strstr($userAgent, 'infoseek') || strstr($userAgent, 'altavista') || strstr($userAgent, 'diibot')) {
 			$deviceType = 'robot';
 		}
 		return $deviceType;

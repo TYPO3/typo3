@@ -137,7 +137,7 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 		$itemList = array();
 		$whereClause = 'deleted = 0';
 		if ($this->type != '') {
-			$whereClause .= ((' AND ' . $this->typeField) . ' = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->type, $this->table);
+			$whereClause .= ' AND ' . $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->type, $this->table);
 		}
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $whereClause);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -188,9 +188,9 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 		if (!is_numeric($uid)) {
 			throw new \InvalidArgumentException('uid has to be numeric.', 1316779798);
 		}
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->table, ('uid=' . intval($uid)) . ' AND deleted=0');
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->table, 'uid=' . intval($uid) . ' AND deleted=0');
 		if (count($row) === 0) {
-			throw new \RuntimeException(('Could not find row with uid "' . $uid) . '" in table $this->table.', 1314354065);
+			throw new \RuntimeException('Could not find row with uid "' . $uid . '" in table $this->table.', 1314354065);
 		}
 		return $this->createDomainObject($row);
 	}

@@ -66,7 +66,7 @@ class TreeDataProviderFactory {
 			} else {
 				$dataProvider->setLabelField($GLOBALS['TCA'][$tableName]['ctrl']['label']);
 			}
-			$dataProvider->setTreeId(md5(($table . '|') . $field));
+			$dataProvider->setTreeId(md5($table . '|' . $field));
 			$dataProvider->setSelectedList($currentValue);
 			if (isset($tcaConfiguration['treeConfig']) && is_array($tcaConfiguration['treeConfig'])) {
 				$treeConfiguration = $tcaConfiguration['treeConfig'];
@@ -101,7 +101,7 @@ class TreeDataProviderFactory {
 			// TODO Not implemented yet
 			throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for "internal_type=file" not implemented yet', 1288215891);
 		} else {
-			throw new \InvalidArgumentException(('TCA Tree configuration is invalid: tree for "internal_type=' . $tcaConfiguration['internal_type']) . '" not implemented yet', 1288215892);
+			throw new \InvalidArgumentException('TCA Tree configuration is invalid: tree for "internal_type=' . $tcaConfiguration['internal_type'] . '" not implemented yet', 1288215892);
 		}
 		return $dataProvider;
 	}

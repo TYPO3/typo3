@@ -342,7 +342,7 @@ class QueryGenerator {
 						break;
 					}
 				} else {
-					$this->fields[$fN]['label'] = ('[FIELD: ' . $fN) . ']';
+					$this->fields[$fN]['label'] = '[FIELD: ' . $fN . ']';
 					switch ($fN) {
 					case 'pid':
 						$this->fields[$fN]['type'] = 'relation';
@@ -415,7 +415,7 @@ class QueryGenerator {
 	 * @todo Define visibility
 	 */
 	public function setAndCleanUpExternalLists($name, $list, $force = '') {
-		$fields = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', ($list . ',') . $force, 1));
+		$fields = array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $list . ',' . $force, 1));
 		$reList = array();
 		foreach ($fields as $fN) {
 			if ($this->fields[$fN]) {
@@ -596,7 +596,7 @@ class QueryGenerator {
 		$arrCount = 0;
 		$loopcount = 0;
 		foreach ($queryConfig as $key => $conf) {
-			$subscript = (($parent . '[') . $key) . ']';
+			$subscript = $parent . '[' . $key . ']';
 			$lineHTML = '';
 			$lineHTML .= $this->mkOperatorSelect($this->name . $subscript, $conf['operator'], $c, $conf['type'] != 'FIELD_');
 			if (substr($conf['type'], 0, 6) == 'FIELD_') {
@@ -622,40 +622,40 @@ class QueryGenerator {
 				if (!$queryConfig[$key]['nl']) {
 					$queryConfig[$key]['nl'][0]['type'] = 'FIELD_';
 				}
-				$lineHTML .= (('<input type="hidden" name="' . $this->name) . $subscript) . '[type]" value="newlevel">';
+				$lineHTML .= '<input type="hidden" name="' . $this->name . $subscript . '[type]" value="newlevel">';
 				$codeArr[$arrCount]['sub'] = $this->getFormElements($subLevel + 1, $queryConfig[$key]['nl'], $subscript . '[nl]');
 				break;
 			case 'userdef':
 				$lineHTML .= $this->userDef($this->name . $subscript, $conf, $fName, $fType);
 				break;
 			case 'date':
-				$lineHTML .= $this->mkTypeSelect(($this->name . $subscript) . '[type]', $fName);
-				$lineHTML .= $this->mkCompSelect(($this->name . $subscript) . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-				$lineHTML .= ((((('<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '')) . ' name="') . $this->name) . $subscript) . '[negate]') . '" onClick="submit();">';
+				$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
+				$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+				$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
 				if ($conf['comparison'] == 100 || $conf['comparison'] == 101) {
 					// between
-					$lineHTML .= (((((((((((((((('<input type="text" name="' . $this->name) . $subscript) . '[inputValue]_hr') . '" value="') . strftime('%e-%m-%Y', $conf['inputValue'])) . '" ') . $GLOBALS['TBE_TEMPLATE']->formWidth(10)) . ' onChange="typo3form.fieldGet(\'') . $this->name) . $subscript) . '[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="') . htmlspecialchars($conf['inputValue'])) . '" name="') . $this->name) . $subscript) . '[inputValue]') . '">';
-					$lineHTML .= (((((((((((((((('<input type="text" name="' . $this->name) . $subscript) . '[inputValue1]_hr') . '" value="') . strftime('%e-%m-%Y', $conf['inputValue1'])) . '" ') . $GLOBALS['TBE_TEMPLATE']->formWidth(10)) . ' onChange="typo3form.fieldGet(\'') . $this->name) . $subscript) . '[inputValue1]\', \'date\', \'\', 0,0);"><input type="hidden" value="') . htmlspecialchars($conf['inputValue1'])) . '" name="') . $this->name) . $subscript) . '[inputValue1]') . '">';
-					$this->extJSCODE .= (('typo3form.fieldSet("' . $this->name) . $subscript) . '[inputValue]", "date", "", 0,0);';
-					$this->extJSCODE .= (('typo3form.fieldSet("' . $this->name) . $subscript) . '[inputValue1]", "date", "", 0,0);';
+					$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%e-%m-%Y', $conf['inputValue']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
+					$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue1]_hr' . '" value="' . strftime('%e-%m-%Y', $conf['inputValue1']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue1]\', \'date\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '">';
+					$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "date", "", 0,0);';
+					$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue1]", "date", "", 0,0);';
 				} else {
-					$lineHTML .= (((((((((((((((('<input type="text" name="' . $this->name) . $subscript) . '[inputValue]_hr') . '" value="') . strftime('%e-%m-%Y', $conf['inputValue'])) . '" ') . $GLOBALS['TBE_TEMPLATE']->formWidth(10)) . ' onChange="typo3form.fieldGet(\'') . $this->name) . $subscript) . '[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="') . htmlspecialchars($conf['inputValue'])) . '" name="') . $this->name) . $subscript) . '[inputValue]') . '">';
-					$this->extJSCODE .= (('typo3form.fieldSet("' . $this->name) . $subscript) . '[inputValue]", "date", "", 0,0);';
+					$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%e-%m-%Y', $conf['inputValue']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'date\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
+					$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "date", "", 0,0);';
 				}
 				break;
 			case 'time':
-				$lineHTML .= $this->mkTypeSelect(($this->name . $subscript) . '[type]', $fName);
-				$lineHTML .= $this->mkCompSelect(($this->name . $subscript) . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-				$lineHTML .= ((((('<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '')) . ' name="') . $this->name) . $subscript) . '[negate]') . '" onClick="submit();">';
+				$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
+				$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+				$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
 				if ($conf['comparison'] == 100 || $conf['comparison'] == 101) {
 					// between:
-					$lineHTML .= (((((((((((((((('<input type="text" name="' . $this->name) . $subscript) . '[inputValue]_hr') . '" value="') . strftime('%H:%M %e-%m-%Y', $conf['inputValue'])) . '" ') . $GLOBALS['TBE_TEMPLATE']->formWidth(10)) . ' onChange="typo3form.fieldGet(\'') . $this->name) . $subscript) . '[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="') . htmlspecialchars($conf['inputValue'])) . '" name="') . $this->name) . $subscript) . '[inputValue]') . '">';
-					$lineHTML .= (((((((((((((((('<input type="text" name="' . $this->name) . $subscript) . '[inputValue1]_hr') . '" value="') . strftime('%H:%M %e-%m-%Y', $conf['inputValue1'])) . '" ') . $GLOBALS['TBE_TEMPLATE']->formWidth(10)) . ' onChange="typo3form.fieldGet(\'') . $this->name) . $subscript) . '[inputValue1]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="') . htmlspecialchars($conf['inputValue1'])) . '" name="') . $this->name) . $subscript) . '[inputValue1]') . '">';
-					$this->extJSCODE .= (('typo3form.fieldSet("' . $this->name) . $subscript) . '[inputValue]", "datetime", "", 0,0);';
-					$this->extJSCODE .= (('typo3form.fieldSet("' . $this->name) . $subscript) . '[inputValue1]", "datetime", "", 0,0);';
+					$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', $conf['inputValue']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
+					$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue1]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', $conf['inputValue1']) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue1]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '">';
+					$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "datetime", "", 0,0);';
+					$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue1]", "datetime", "", 0,0);';
 				} else {
-					$lineHTML .= (((((((((((((((('<input type="text" name="' . $this->name) . $subscript) . '[inputValue]_hr') . '" value="') . strftime('%H:%M %e-%m-%Y', intval($conf['inputValue']))) . '" ') . $GLOBALS['TBE_TEMPLATE']->formWidth(10)) . ' onChange="typo3form.fieldGet(\'') . $this->name) . $subscript) . '[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="') . htmlspecialchars($conf['inputValue'])) . '" name="') . $this->name) . $subscript) . '[inputValue]') . '">';
-					$this->extJSCODE .= (('typo3form.fieldSet("' . $this->name) . $subscript) . '[inputValue]", "datetime", "", 0,0);';
+					$lineHTML .= '<input type="text" name="' . $this->name . $subscript . '[inputValue]_hr' . '" value="' . strftime('%H:%M %e-%m-%Y', intval($conf['inputValue'])) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . ' onChange="typo3form.fieldGet(\'' . $this->name . $subscript . '[inputValue]\', \'datetime\', \'\', 0,0);"><input type="hidden" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '">';
+					$this->extJSCODE .= 'typo3form.fieldSet("' . $this->name . $subscript . '[inputValue]", "datetime", "", 0,0);';
 				}
 				break;
 			case 'multiple':
@@ -663,18 +663,18 @@ class QueryGenerator {
 			case 'binary':
 
 			case 'relation':
-				$lineHTML .= $this->mkTypeSelect(($this->name . $subscript) . '[type]', $fName);
-				$lineHTML .= $this->mkCompSelect(($this->name . $subscript) . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-				$lineHTML .= ((((('<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '')) . ' name="') . $this->name) . $subscript) . '[negate]') . '" onClick="submit();">';
-				if ((($conf['comparison'] == 68 || $conf['comparison'] == 69) || $conf['comparison'] == 162) || $conf['comparison'] == 163) {
-					$lineHTML .= ((('<select name="' . $this->name) . $subscript) . '[inputValue]') . '[]" style="vertical-align:top;" size="5" multiple>';
+				$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
+				$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+				$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
+				if ($conf['comparison'] == 68 || $conf['comparison'] == 69 || $conf['comparison'] == 162 || $conf['comparison'] == 163) {
+					$lineHTML .= '<select name="' . $this->name . $subscript . '[inputValue]' . '[]" style="vertical-align:top;" size="5" multiple>';
 				} elseif ($conf['comparison'] == 66 || $conf['comparison'] == 67) {
 					if (is_array($conf['inputValue'])) {
 						$conf['inputValue'] = implode(',', $conf['inputValue']);
 					}
-					$lineHTML .= ((((((('<input type="text" value="' . htmlspecialchars($conf['inputValue'])) . '" name="') . $this->name) . $subscript) . '[inputValue]') . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(10)) . '>';
+					$lineHTML .= '<input type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>';
 				} else {
-					$lineHTML .= ((('<select name="' . $this->name) . $subscript) . '[inputValue]') . '" style="vertical-align:top;" onChange="submit();">';
+					$lineHTML .= '<select name="' . $this->name . $subscript . '[inputValue]' . '" style="vertical-align:top;" onChange="submit();">';
 				}
 				if ($conf['comparison'] != 66 && $conf['comparison'] != 67) {
 					$lineHTML .= $this->makeOptionList($fName, $conf, $this->table);
@@ -682,53 +682,53 @@ class QueryGenerator {
 				}
 				break;
 			case 'files':
-				$lineHTML .= $this->mkTypeSelect(($this->name . $subscript) . '[type]', $fName);
-				$lineHTML .= $this->mkCompSelect(($this->name . $subscript) . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-				$lineHTML .= ((((('<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '')) . ' name="') . $this->name) . $subscript) . '[negate]') . '" onClick="submit();">';
+				$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
+				$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+				$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
 				if ($conf['comparison'] == 68 || $conf['comparison'] == 69) {
-					$lineHTML .= ((('<select name="' . $this->name) . $subscript) . '[inputValue]') . '[]" style="vertical-align:top;" size="5" multiple>';
+					$lineHTML .= '<select name="' . $this->name . $subscript . '[inputValue]' . '[]" style="vertical-align:top;" size="5" multiple>';
 				} else {
-					$lineHTML .= ((('<select name="' . $this->name) . $subscript) . '[inputValue]') . '" style="vertical-align:top;" onChange="submit();">';
+					$lineHTML .= '<select name="' . $this->name . $subscript . '[inputValue]' . '" style="vertical-align:top;" onChange="submit();">';
 				}
 				$lineHTML .= '<option value=""></option>' . $this->makeOptionList($fName, $conf, $this->table);
 				$lineHTML .= '</select>';
 				if ($conf['comparison'] == 66 || $conf['comparison'] == 67) {
-					$lineHTML .= (((((((' + <input type="text" value="' . htmlspecialchars($conf['inputValue1'])) . '" name="') . $this->name) . $subscript) . '[inputValue1]') . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(10)) . '>';
+					$lineHTML .= ' + <input type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>';
 				}
 				break;
 			case 'boolean':
-				$lineHTML .= $this->mkTypeSelect(($this->name . $subscript) . '[type]', $fName);
-				$lineHTML .= $this->mkCompSelect(($this->name . $subscript) . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-				$lineHTML .= ((((('<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '')) . ' name="') . $this->name) . $subscript) . '[negate]') . '" onClick="submit();">';
-				$lineHTML .= ((((('<input type="hidden" value="1" name="' . $this->name) . $subscript) . '[inputValue]') . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(10)) . '>';
+				$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
+				$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+				$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
+				$lineHTML .= '<input type="hidden" value="1" name="' . $this->name . $subscript . '[inputValue]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>';
 				break;
 			default:
-				$lineHTML .= $this->mkTypeSelect(($this->name . $subscript) . '[type]', $fName);
-				$lineHTML .= $this->mkCompSelect(($this->name . $subscript) . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
-				$lineHTML .= ((((('<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '')) . ' name="') . $this->name) . $subscript) . '[negate]') . '" onClick="submit();">';
+				$lineHTML .= $this->mkTypeSelect($this->name . $subscript . '[type]', $fName);
+				$lineHTML .= $this->mkCompSelect($this->name . $subscript . '[comparison]', $conf['comparison'], $conf['negate'] ? 1 : 0);
+				$lineHTML .= '<input type="checkbox" class="checkbox"' . ($conf['negate'] ? ' checked' : '') . ' name="' . $this->name . $subscript . '[negate]' . '" onClick="submit();">';
 				if ($conf['comparison'] == 37 || $conf['comparison'] == 36) {
 					// between:
-					$lineHTML .= ((((((((((((((('<input type="text" value="' . htmlspecialchars($conf['inputValue'])) . '" name="') . $this->name) . $subscript) . '[inputValue]') . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(5)) . '>
-						<input type="text" value="') . htmlspecialchars($conf['inputValue1'])) . '" name="') . $this->name) . $subscript) . '[inputValue1]') . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(5)) . '>';
+					$lineHTML .= '<input type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . '>
+						<input type="text" value="' . htmlspecialchars($conf['inputValue1']) . '" name="' . $this->name . $subscript . '[inputValue1]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(5) . '>';
 				} else {
-					$lineHTML .= ((((((('<input type="text" value="' . htmlspecialchars($conf['inputValue'])) . '" name="') . $this->name) . $subscript) . '[inputValue]') . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(10)) . '>';
+					$lineHTML .= '<input type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $this->name . $subscript . '[inputValue]' . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>';
 				}
 				break;
 			}
 			if ($fType != 'ignore') {
 				$lineHTML .= $this->updateIcon();
 				if ($loopcount) {
-					$lineHTML .= ((('<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/garbage.gif', 'width="11" height="12"')) . 'title="Remove condition" name="qG_del') . $subscript) . '">';
+					$lineHTML .= '<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/garbage.gif', 'width="11" height="12"') . 'title="Remove condition" name="qG_del' . $subscript . '">';
 				}
-				$lineHTML .= ((('<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/add.gif', 'width="12" height="12"')) . ' title="Add condition" name="qG_ins') . $subscript) . '">';
+				$lineHTML .= '<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/add.gif', 'width="12" height="12"') . ' title="Add condition" name="qG_ins' . $subscript . '">';
 				if ($c != 0) {
-					$lineHTML .= ((('<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/pil2up.gif', 'width="12" height="7"')) . ' title="Move up" name="qG_up') . $subscript) . '">';
+					$lineHTML .= '<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/pil2up.gif', 'width="12" height="7"') . ' title="Move up" name="qG_up' . $subscript . '">';
 				}
 				if ($c != 0 && $fType != 'newlevel') {
-					$lineHTML .= ((('<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/pil2right.gif', 'height="12" width="7"')) . ' title="New level" name="qG_nl') . $subscript) . '">';
+					$lineHTML .= '<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/pil2right.gif', 'height="12" width="7"') . ' title="New level" name="qG_nl' . $subscript . '">';
 				}
 				if ($fType == 'newlevel') {
-					$lineHTML .= ((('<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/pil2left.gif', 'height="12" width="7"')) . ' title="Collapse new level" name="qG_remnl') . $subscript) . '">';
+					$lineHTML .= '<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/pil2left.gif', 'height="12" width="7"') . ' title="Collapse new level" name="qG_remnl' . $subscript . '">';
 				}
 				$codeArr[$arrCount]['html'] = $lineHTML;
 				$codeArr[$arrCount]['query'] = $this->getQuerySingle($conf, $c > 0 ? 0 : 1);
@@ -759,9 +759,9 @@ class QueryGenerator {
 				natcasesort($fileExtArray);
 				foreach ($fileExtArray as $fileExt) {
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($conf['inputValue'], $fileExt)) {
-						$out .= ((('<option value="' . $fileExt) . '" selected>.') . $fileExt) . '</option>';
+						$out .= '<option value="' . $fileExt . '" selected>.' . $fileExt . '</option>';
 					} else {
-						$out .= ((('<option value="' . $fileExt) . '">.') . $fileExt) . '</option>';
+						$out .= '<option value="' . $fileExt . '">.' . $fileExt . '</option>';
 					}
 				}
 			}
@@ -776,9 +776,9 @@ class QueryGenerator {
 			natcasesort($fileArray);
 			foreach ($fileArray as $fileName) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($conf['inputValue'], $fileName)) {
-					$out .= ((('<option value="' . $fileName) . '" selected>') . $fileName) . '</option>';
+					$out .= '<option value="' . $fileName . '" selected>' . $fileName . '</option>';
 				} else {
-					$out .= ((('<option value="' . $fileName) . '">') . $fileName) . '</option>';
+					$out .= '<option value="' . $fileName . '">' . $fileName . '</option>';
 				}
 			}
 		}
@@ -790,9 +790,9 @@ class QueryGenerator {
 					$value = $val[0];
 				}
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($conf['inputValue'], $val[1])) {
-					$out .= ((('<option value="' . $val[1]) . '" selected>') . $value) . '</option>';
+					$out .= '<option value="' . $val[1] . '" selected>' . $value . '</option>';
 				} else {
-					$out .= ((('<option value="' . $val[1]) . '">') . $value) . '</option>';
+					$out .= '<option value="' . $val[1] . '">' . $value . '</option>';
 				}
 			}
 		}
@@ -804,9 +804,9 @@ class QueryGenerator {
 					$value = $val[0];
 				}
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($conf['inputValue'], pow(2, $key))) {
-					$out .= ((('<option value="' . pow(2, $key)) . '" selected>') . $value) . '</option>';
+					$out .= '<option value="' . pow(2, $key) . '" selected>' . $value . '</option>';
 				} else {
-					$out .= ((('<option value="' . pow(2, $key)) . '">') . $value) . '</option>';
+					$out .= '<option value="' . pow(2, $key) . '">' . $value . '</option>';
 				}
 			}
 		}
@@ -819,9 +819,9 @@ class QueryGenerator {
 						$value = $val[0];
 					}
 					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($conf['inputValue'], $val[1])) {
-						$out .= ((('<option value="' . $val[1]) . '" selected>') . $value) . '</option>';
+						$out .= '<option value="' . $val[1] . '" selected>' . $value . '</option>';
 					} else {
-						$out .= ((('<option value="' . $val[1]) . '">') . $value) . '</option>';
+						$out .= '<option value="' . $val[1] . '">' . $value . '</option>';
 					}
 				}
 			}
@@ -861,7 +861,7 @@ class QueryGenerator {
 			$counter = 0;
 			$webMountPageTree = '';
 			while (list(, $from_table) = each($from_table_Arr)) {
-				if (($useTablePrefix && !$dontPrefixFirstTable) && $counter != 1 || $counter == 1) {
+				if ($useTablePrefix && !$dontPrefixFirstTable && $counter != 1 || $counter == 1) {
 					$tablePrefix = $from_table . '_';
 				}
 				$counter = 1;
@@ -890,7 +890,7 @@ class QueryGenerator {
 						$useAltSelectLabels = 1;
 					}
 					$altLabelFieldSelect = $altLabelField ? ',' . $altLabelField : '';
-					$select_fields = ('uid,' . $labelField) . $altLabelFieldSelect;
+					$select_fields = 'uid,' . $labelField . $altLabelFieldSelect;
 					if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
 						$webMounts = $GLOBALS['BE_USER']->returnWebmounts();
 						$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
@@ -901,12 +901,12 @@ class QueryGenerator {
 							$webMountPageTree .= $webMountPageTreePrefix . $this->getTreeList($val, 999, ($begin = 0), $perms_clause);
 						}
 						if ($from_table == 'pages') {
-							$where_clause = ('uid IN (' . $webMountPageTree) . ') ';
+							$where_clause = 'uid IN (' . $webMountPageTree . ') ';
 							if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted']) {
-								$where_clause .= (\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($from_table) . ' AND') . $perms_clause;
+								$where_clause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($from_table) . ' AND' . $perms_clause;
 							}
 						} else {
-							$where_clause = ('pid IN (' . $webMountPageTree) . ') ';
+							$where_clause = 'pid IN (' . $webMountPageTree . ') ';
 							if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted']) {
 								$where_clause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($from_table);
 							}
@@ -945,9 +945,9 @@ class QueryGenerator {
 			}
 			foreach ($outArray as $key2 => $val2) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($conf['inputValue'], $key2)) {
-					$out .= ((((('<option value="' . $key2) . '" selected>[') . $key2) . '] ') . $val2) . '</option>';
+					$out .= '<option value="' . $key2 . '" selected>[' . $key2 . '] ' . $val2 . '</option>';
 				} else {
-					$out .= ((((('<option value="' . $key2) . '">[') . $key2) . '] ') . $val2) . '</option>';
+					$out .= '<option value="' . $key2 . '">[' . $key2 . '] ' . $val2 . '</option>';
 				}
 			}
 		}
@@ -970,15 +970,15 @@ class QueryGenerator {
 		$lf = $l * 30;
 		$bgColor = \TYPO3\CMS\Core\Utility\GeneralUtility::modifyHTMLColor($GLOBALS['TBE_TEMPLATE']->bgColor2, $lf, $lf, $lf);
 		foreach ($codeArr as $k => $v) {
-			$line .= ((((((('<tr>' . $indent) . '<td bgcolor="') . $bgColor) . '"') . $this->noWrap) . '>') . $v['html']) . '</td></tr>';
+			$line .= '<tr>' . $indent . '<td bgcolor="' . $bgColor . '"' . $this->noWrap . '>' . $v['html'] . '</td></tr>';
 			if ($this->enableQueryParts) {
-				$line .= ((('<tr>' . $indent) . '<td>') . $this->formatQ($v['query'])) . '</td></tr>';
+				$line .= '<tr>' . $indent . '<td>' . $this->formatQ($v['query']) . '</td></tr>';
 			}
 			if (is_array($v['sub'])) {
-				$line .= ((((('<tr>' . $indent) . '<td') . $this->noWrap) . '>') . $this->printCodeArray($v['sub'], ($l + 1))) . '</td></tr>';
+				$line .= '<tr>' . $indent . '<td' . $this->noWrap . '>' . $this->printCodeArray($v['sub'], ($l + 1)) . '</td></tr>';
 			}
 		}
-		$out = ('<table border="0" cellpadding="0" cellspacing="1">' . $line) . '</table>';
+		$out = '<table border="0" cellpadding="0" cellspacing="1">' . $line . '</table>';
 		return $out;
 	}
 
@@ -990,7 +990,7 @@ class QueryGenerator {
 	 * @todo Define visibility
 	 */
 	public function formatQ($str) {
-		return ('<font size="1" face="verdana" color="maroon"><i>' . htmlspecialchars($str)) . '</i></font>';
+		return '<font size="1" face="verdana" color="maroon"><i>' . htmlspecialchars($str) . '</i></font>';
 	}
 
 	/**
@@ -1005,13 +1005,13 @@ class QueryGenerator {
 	 */
 	public function mkOperatorSelect($name, $op, $draw, $submit) {
 		if ($draw) {
-			$out = ((('<select name="' . $name) . '[operator]"') . ($submit ? ' onChange="submit();"' : '')) . '>';
+			$out = '<select name="' . $name . '[operator]"' . ($submit ? ' onChange="submit();"' : '') . '>';
 			//
-			$out .= ((('<option value="AND"' . (!$op || $op == 'AND' ? ' selected' : '')) . '>') . $this->lang['AND']) . '</option>';
-			$out .= ((('<option value="OR"' . ($op == 'OR' ? ' selected' : '')) . '>') . $this->lang['OR']) . '</option>';
+			$out .= '<option value="AND"' . (!$op || $op == 'AND' ? ' selected' : '') . '>' . $this->lang['AND'] . '</option>';
+			$out .= '<option value="OR"' . ($op == 'OR' ? ' selected' : '') . '>' . $this->lang['OR'] . '</option>';
 			$out .= '</select>';
 		} else {
-			$out = ((('<input type="hidden" value="' . $op) . '" name="') . $name) . '[operator]">';
+			$out = '<input type="hidden" value="' . $op . '" name="' . $name . '[operator]">';
 			$out .= '<img src="clear.gif" height="1" width="47">';
 		}
 		return $out;
@@ -1027,13 +1027,13 @@ class QueryGenerator {
 	 * @todo Define visibility
 	 */
 	public function mkTypeSelect($name, $fieldName, $prepend = 'FIELD_') {
-		$out = ('<select name="' . $name) . '" onChange="submit();">';
+		$out = '<select name="' . $name . '" onChange="submit();">';
 		$out .= '<option value=""></option>';
 		foreach ($this->fields as $key => $value) {
-			if (!$value['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', ($this->table . ':') . $key)) {
+			if (!$value['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table . ':' . $key)) {
 				$label = $this->fields[$key]['label'];
 				$label_alt = $this->fields[$key]['label_alt'];
-				$out .= (((((('<option value="' . $prepend) . $key) . '"') . ($key == $fieldName ? ' selected' : '')) . '>') . $label) . '</option>';
+				$out .= '<option value="' . $prepend . $key . '"' . ($key == $fieldName ? ' selected' : '') . '>' . $label . '</option>';
 			}
 		}
 		$out .= '</select>';
@@ -1091,14 +1091,14 @@ class QueryGenerator {
 	 * @todo Define visibility
 	 */
 	public function mkFieldToInputSelect($name, $fieldName) {
-		$out = (((((('<input type="Text" value="' . htmlspecialchars($fieldName)) . '" name="') . $name) . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth()) . '>') . $this->updateIcon();
-		$out .= ((('<a href="#" onClick="document.forms[0][\'' . $name) . '\'].value=\'\';return false;">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => 'Clear list'))) . '</a>';
-		$out .= ('<BR><select name="_fieldListDummy" size="5" onChange="document.forms[0][\'' . $name) . '\'].value+=\',\'+this.value">';
+		$out = '<input type="Text" value="' . htmlspecialchars($fieldName) . '" name="' . $name . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth() . '>' . $this->updateIcon();
+		$out .= '<a href="#" onClick="document.forms[0][\'' . $name . '\'].value=\'\';return false;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete', array('title' => 'Clear list')) . '</a>';
+		$out .= '<BR><select name="_fieldListDummy" size="5" onChange="document.forms[0][\'' . $name . '\'].value+=\',\'+this.value">';
 		foreach ($this->fields as $key => $value) {
-			if (!$value['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', ($this->table . ':') . $key)) {
+			if (!$value['exclude'] || $GLOBALS['BE_USER']->check('non_exclude_fields', $this->table . ':' . $key)) {
 				$label = $this->fields[$key]['label'];
 				$label_alt = $this->fields[$key]['label_alt'];
-				$out .= ((((('<option value="' . $key) . '"') . ($key == $fieldName ? ' selected' : '')) . '>') . $label) . '</option>';
+				$out .= '<option value="' . $key . '"' . ($key == $fieldName ? ' selected' : '') . '>' . $label . '</option>';
 			}
 		}
 		$out .= '</select>';
@@ -1114,11 +1114,11 @@ class QueryGenerator {
 	 * @todo Define visibility
 	 */
 	public function mkTableSelect($name, $cur) {
-		$out = ('<select name="' . $name) . '" onChange="submit();">';
+		$out = '<select name="' . $name . '" onChange="submit();">';
 		$out .= '<option value=""></option>';
 		foreach ($GLOBALS['TCA'] as $tN => $value) {
 			if ($GLOBALS['BE_USER']->check('tables_select', $tN)) {
-				$out .= ((((('<option value="' . $tN) . '"') . ($tN == $cur ? ' selected' : '')) . '>') . $GLOBALS['LANG']->sl($GLOBALS['TCA'][$tN]['ctrl']['title'])) . '</option>';
+				$out .= '<option value="' . $tN . '"' . ($tN == $cur ? ' selected' : '') . '>' . $GLOBALS['LANG']->sl($GLOBALS['TCA'][$tN]['ctrl']['title']) . '</option>';
 			}
 		}
 		$out .= '</select>';
@@ -1136,10 +1136,10 @@ class QueryGenerator {
 	 */
 	public function mkCompSelect($name, $comparison, $neg) {
 		$compOffSet = $comparison >> 5;
-		$out = ('<select name="' . $name) . '" onChange="submit();">';
+		$out = '<select name="' . $name . '" onChange="submit();">';
 		for ($i = 32 * $compOffSet + $neg; $i < 32 * ($compOffSet + 1); $i += 2) {
 			if ($this->lang['comparison'][$i . '_']) {
-				$out .= ((((('<option value="' . $i) . '"') . ($i >> 1 == $comparison >> 1 ? ' selected' : '')) . '>') . $this->lang['comparison'][($i . '_')]) . '</option>';
+				$out .= '<option value="' . $i . '"' . ($i >> 1 == $comparison >> 1 ? ' selected' : '') . '>' . $this->lang['comparison'][($i . '_')] . '</option>';
 			}
 		}
 		$out .= '</select>';
@@ -1210,13 +1210,13 @@ class QueryGenerator {
 		foreach ($queryConfig as $key => $conf) {
 			switch ($conf['type']) {
 			case 'newlevel':
-				$qs .= ((((((LF . $pad) . trim($conf['operator'])) . ' (') . $this->getQuery($queryConfig[$key]['nl'], ($pad . '   '))) . LF) . $pad) . ')';
+				$qs .= LF . $pad . trim($conf['operator']) . ' (' . $this->getQuery($queryConfig[$key]['nl'], ($pad . '   ')) . LF . $pad . ')';
 				break;
 			case 'userdef':
-				$qs .= (LF . $pad) . getUserDefQuery($conf, $first);
+				$qs .= LF . $pad . getUserDefQuery($conf, $first);
 				break;
 			default:
-				$qs .= (LF . $pad) . $this->getQuerySingle($conf, $first);
+				$qs .= LF . $pad . $this->getQuerySingle($conf, $first);
 				break;
 			}
 			$first = 0;
@@ -1244,7 +1244,7 @@ class QueryGenerator {
 		if ($conf['comparison'] == 68 || $conf['comparison'] == 69) {
 			$inputVal = explode(',', $inputVal);
 			foreach ($inputVal as $key => $fileName) {
-				$inputVal[$key] = ('\'' . $fileName) . '\'';
+				$inputVal[$key] = '\'' . $fileName . '\'';
 			}
 			$inputVal = implode(',', $inputVal);
 			$qsTmp = str_replace('#VALUE#', $inputVal, $qsTmp);
@@ -1258,7 +1258,7 @@ class QueryGenerator {
 		} else {
 			$qsTmp = str_replace('#VALUE#', $GLOBALS['TYPO3_DB']->quoteStr($inputVal, $this->table), $qsTmp);
 		}
-		if ((((($conf['comparison'] == 37 || $conf['comparison'] == 36) || $conf['comparison'] == 66) || $conf['comparison'] == 67) || $conf['comparison'] == 100) || $conf['comparison'] == 101) {
+		if ($conf['comparison'] == 37 || $conf['comparison'] == 36 || $conf['comparison'] == 66 || $conf['comparison'] == 67 || $conf['comparison'] == 100 || $conf['comparison'] == 101) {
 			// between:
 			$inputVal = $this->cleanInputVal($conf, '1');
 			$qsTmp = str_replace('#VALUE1#', $GLOBALS['TYPO3_DB']->quoteStr($inputVal, $this->table), $qsTmp);
@@ -1276,12 +1276,12 @@ class QueryGenerator {
 	 * @todo Define visibility
 	 */
 	public function cleanInputVal($conf, $suffix = '') {
-		if ($conf['comparison'] >> 5 == 0 || ((((((($conf['comparison'] == 32 || $conf['comparison'] == 33) || $conf['comparison'] == 64) || $conf['comparison'] == 65) || $conf['comparison'] == 66) || $conf['comparison'] == 67) || $conf['comparison'] == 96) || $conf['comparison'] == 97)) {
+		if ($conf['comparison'] >> 5 == 0 || ($conf['comparison'] == 32 || $conf['comparison'] == 33 || $conf['comparison'] == 64 || $conf['comparison'] == 65 || $conf['comparison'] == 66 || $conf['comparison'] == 67 || $conf['comparison'] == 96 || $conf['comparison'] == 97)) {
 			$inputVal = $conf['inputValue' . $suffix];
 		} elseif ($conf['comparison'] == 39 || $conf['comparison'] == 38) {
 			// in list:
 			$inputVal = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['inputValue' . $suffix]));
-		} elseif ((($conf['comparison'] == 68 || $conf['comparison'] == 69) || $conf['comparison'] == 162) || $conf['comparison'] == 163) {
+		} elseif ($conf['comparison'] == 68 || $conf['comparison'] == 69 || $conf['comparison'] == 162 || $conf['comparison'] == 163) {
 			// in list:
 			if (is_array($conf['inputValue' . $suffix])) {
 				$inputVal = implode(',', $conf['inputValue' . $suffix]);
@@ -1314,7 +1314,7 @@ class QueryGenerator {
 	 * @todo Define visibility
 	 */
 	public function updateIcon() {
-		return ('<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/refresh_n.gif', 'width="14" height="14"')) . ' title="Update" name="just_update">';
+		return '<input type="image" border="0" ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/refresh_n.gif', 'width="14" height="14"') . ' title="Update" name="just_update">';
 	}
 
 	/**
@@ -1340,17 +1340,17 @@ class QueryGenerator {
 		// Make output
 		$TDparams = ' class="bgColor5" nowrap';
 		if (in_array('table', $enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableSelectATable']) {
-			$out = ((((('
+			$out = '
 			<tr>
-				<td' . $TDparams) . '><strong>Select a table:</strong></td>
-				<td') . $TDparams) . '>') . $this->mkTableSelect('SET[queryTable]', $this->table)) . '</td>
+				<td' . $TDparams . '><strong>Select a table:</strong></td>
+				<td' . $TDparams . '>' . $this->mkTableSelect('SET[queryTable]', $this->table) . '</td>
 			</tr>';
 		}
 		if ($this->table) {
 			// Init fields:
 			$this->setAndCleanUpExternalLists('queryFields', $modSettings['queryFields'], 'uid,' . $this->getLabelCol());
 			$this->setAndCleanUpExternalLists('queryGroup', $modSettings['queryGroup']);
-			$this->setAndCleanUpExternalLists('queryOrder', ($modSettings['queryOrder'] . ',') . $modSettings['queryOrder2']);
+			$this->setAndCleanUpExternalLists('queryOrder', $modSettings['queryOrder'] . ',' . $modSettings['queryOrder2']);
 			// Limit:
 			$this->extFieldLists['queryLimit'] = $modSettings['queryLimit'];
 			if (!$this->extFieldLists['queryLimit']) {
@@ -1366,7 +1366,7 @@ class QueryGenerator {
 			$this->extFieldLists['queryLimit'] = implode(',', array_slice($parts, 0, 2));
 			// Insert Descending parts
 			if ($this->extFieldLists['queryOrder']) {
-				$descParts = explode(',', ($modSettings['queryOrderDesc'] . ',') . $modSettings['queryOrder2Desc']);
+				$descParts = explode(',', $modSettings['queryOrderDesc'] . ',' . $modSettings['queryOrder2Desc']);
 				$orderParts = explode(',', $this->extFieldLists['queryOrder']);
 				$reList = array();
 				foreach ($orderParts as $kk => $vv) {
@@ -1381,44 +1381,44 @@ class QueryGenerator {
 			$codeArr = $this->getFormElements();
 			$queryCode = $this->printCodeArray($codeArr);
 			if (in_array('fields', $enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableSelectFields']) {
-				$out .= ((((('
+				$out .= '
 				<tr>
-					<td' . $TDparams) . '><strong>Select fields:</strong></td>
-					<td') . $TDparams) . '>') . $this->mkFieldToInputSelect('SET[queryFields]', $this->extFieldLists['queryFields'])) . '</td>
+					<td' . $TDparams . '><strong>Select fields:</strong></td>
+					<td' . $TDparams . '>' . $this->mkFieldToInputSelect('SET[queryFields]', $this->extFieldLists['queryFields']) . '</td>
 				</tr>';
 			}
 			if (in_array('query', $enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableMakeQuery']) {
-				$out .= ((('<tr>
-					<td colspan="2"' . $TDparams) . '><strong>Make Query:</strong></td>
+				$out .= '<tr>
+					<td colspan="2"' . $TDparams . '><strong>Make Query:</strong></td>
 				</tr>
 				<tr>
-					<td colspan="2">') . $queryCode) . '</td>
+					<td colspan="2">' . $queryCode . '</td>
 				</tr>
 				';
 			}
 			if (in_array('group', $enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableGroupBy']) {
-				$out .= ((((('<tr>
-					<td' . $TDparams) . '><strong>Group By:</strong></td>
-					<td') . $TDparams) . '>') . $this->mkTypeSelect('SET[queryGroup]', $this->extFieldLists['queryGroup'], '')) . '</td>
+				$out .= '<tr>
+					<td' . $TDparams . '><strong>Group By:</strong></td>
+					<td' . $TDparams . '>' . $this->mkTypeSelect('SET[queryGroup]', $this->extFieldLists['queryGroup'], '') . '</td>
 				</tr>';
 			}
 			if (in_array('order', $enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableOrderBy']) {
 				$orderByArr = explode(',', $this->extFieldLists['queryOrder']);
 				$orderBy = '';
-				$orderBy .= (($this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '') . '&nbsp;') . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'], '', '', 'id="checkQueryOrderDesc"')) . '&nbsp;<label for="checkQueryOrderDesc">Descending</label>';
+				$orderBy .= $this->mkTypeSelect('SET[queryOrder]', $orderByArr[0], '') . '&nbsp;' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrderDesc]', $modSettings['queryOrderDesc'], '', '', 'id="checkQueryOrderDesc"') . '&nbsp;<label for="checkQueryOrderDesc">Descending</label>';
 				if ($orderByArr[0]) {
-					$orderBy .= ((('<BR>' . $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1], '')) . '&nbsp;') . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"')) . '&nbsp;<label for="checkQueryOrder2Desc">Descending</label>';
+					$orderBy .= '<BR>' . $this->mkTypeSelect('SET[queryOrder2]', $orderByArr[1], '') . '&nbsp;' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[queryOrder2Desc]', $modSettings['queryOrder2Desc'], '', '', 'id="checkQueryOrder2Desc"') . '&nbsp;<label for="checkQueryOrder2Desc">Descending</label>';
 				}
-				$out .= ((((('<tr>
-					<td' . $TDparams) . '><strong>Order By:</strong></td>
-					<td') . $TDparams) . '>') . $orderBy) . '</td>
+				$out .= '<tr>
+					<td' . $TDparams . '><strong>Order By:</strong></td>
+					<td' . $TDparams . '>' . $orderBy . '</td>
 				</tr>';
 			}
 			if (in_array('limit', $enableArr) && !$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableLimit']) {
-				$limit = (((('<input type="Text" value="' . htmlspecialchars($this->extFieldLists['queryLimit'])) . '" name="SET[queryLimit]" id="queryLimit"') . $GLOBALS['TBE_TEMPLATE']->formWidth(10)) . '>') . $this->updateIcon();
+				$limit = '<input type="Text" value="' . htmlspecialchars($this->extFieldLists['queryLimit']) . '" name="SET[queryLimit]" id="queryLimit"' . $GLOBALS['TBE_TEMPLATE']->formWidth(10) . '>' . $this->updateIcon();
 				$prevLimit = $this->limitBegin - $this->limitLength < 0 ? 0 : $this->limitBegin - $this->limitLength;
 				if ($this->limitBegin) {
-					$prevButton = ((((('<input type="button" value="previous ' . $this->limitLength) . '" onclick=\'document.getElementById("queryLimit").value="') . $prevLimit) . ',') . $this->limitLength) . '";document.forms[0].submit();\'>';
+					$prevButton = '<input type="button" value="previous ' . $this->limitLength . '" onclick=\'document.getElementById("queryLimit").value="' . $prevLimit . ',' . $this->limitLength . '";document.forms[0].submit();\'>';
 				}
 				if (!$this->limitLength) {
 					$this->limitLength = 100;
@@ -1428,20 +1428,20 @@ class QueryGenerator {
 					$nextLimit = 0;
 				}
 				if ($nextLimit) {
-					$nextButton = ((((('<input type="button" value="next ' . $this->limitLength) . '" onclick=\'document.getElementById("queryLimit").value="') . $nextLimit) . ',') . $this->limitLength) . '";document.forms[0].submit();\'>';
+					$nextButton = '<input type="button" value="next ' . $this->limitLength . '" onclick=\'document.getElementById("queryLimit").value="' . $nextLimit . ',' . $this->limitLength . '";document.forms[0].submit();\'>';
 				}
 				$numberButtons = '<input type="button" value="10" onclick=\'document.getElementById("queryLimit").value="10";document.forms[0].submit();\'>';
 				$numberButtons .= '<input type="button" value="20" onclick=\'document.getElementById("queryLimit").value="20";document.forms[0].submit();\'>';
 				$numberButtons .= '<input type="button" value="50" onclick=\'document.getElementById("queryLimit").value="50";document.forms[0].submit();\'>';
 				$numberButtons .= '<input type="button" value="100" onclick=\'document.getElementById("queryLimit").value="100";document.forms[0].submit();\'>';
-				$out .= ((((((((('<tr>
-					<td' . $TDparams) . '><strong>Limit:</strong></td>
-					<td') . $TDparams) . '>') . $limit) . $prevButton) . $nextButton) . '&nbsp;') . $numberButtons) . '</td>
+				$out .= '<tr>
+					<td' . $TDparams . '><strong>Limit:</strong></td>
+					<td' . $TDparams . '>' . $limit . $prevButton . $nextButton . '&nbsp;' . $numberButtons . '</td>
 				</tr>
 				';
 			}
 		}
-		$out = ('<table border="0" cellpadding="3" cellspacing="1" class="qg-make-query">' . $out) . '</table>';
+		$out = '<table border="0" cellpadding="3" cellspacing="1" class="qg-make-query">' . $out . '</table>';
 		$out .= $this->JSbottom($this->formName);
 		return $out;
 	}
@@ -1466,7 +1466,7 @@ class QueryGenerator {
 			$theList = '';
 		}
 		if ($id && $depth > 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', (((('pid=' . $id) . ' ') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')) . ' AND ') . $perms_clause);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . $id . ' ' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages') . ' AND ' . $perms_clause);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				if ($begin <= 0) {
 					$theList .= ',' . $row['uid'];
@@ -1492,7 +1492,7 @@ class QueryGenerator {
 		if (!$qString) {
 			$qString = $this->getQuery($this->queryConfig);
 		}
-		$qString = ('(' . $qString) . ')';
+		$qString = '(' . $qString . ')';
 		if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) {
 			$webMounts = $GLOBALS['BE_USER']->returnWebmounts();
 			$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
@@ -1504,12 +1504,12 @@ class QueryGenerator {
 				$webMountPageTree .= $webMountPageTreePrefix . $this->getTreeList($val, 999, ($begin = 0), $perms_clause);
 			}
 			if ($this->table == 'pages') {
-				$qString .= (' AND uid IN (' . $webMountPageTree) . ')';
+				$qString .= ' AND uid IN (' . $webMountPageTree . ')';
 			} else {
-				$qString .= (' AND pid IN (' . $webMountPageTree) . ')';
+				$qString .= ' AND pid IN (' . $webMountPageTree . ')';
 			}
 		}
-		$fieldlist = ($this->extFieldLists['queryFields'] . ',pid') . ($GLOBALS['TCA'][$this->table]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$this->table]['ctrl']['delete'] : '');
+		$fieldlist = $this->extFieldLists['queryFields'] . ',pid' . ($GLOBALS['TCA'][$this->table]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$this->table]['ctrl']['delete'] : '');
 		if (!$GLOBALS['SOBE']->MOD_SETTINGS['show_deleted']) {
 			$qString .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($this->table);
 		}
@@ -1527,14 +1527,14 @@ class QueryGenerator {
 	public function JSbottom($formname) {
 		$out = '';
 		if ($this->extJSCODE) {
-			$out .= ((((((((((('
-			<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH']) . '../t3lib/jsfunc.evalfield.js"></script>
-			<script language="javascript" type="text/javascript" src="') . $GLOBALS['BACK_PATH']) . 'jsfunc.tbe_editor.js"></script>
+			$out .= '
+			<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . '../t3lib/jsfunc.evalfield.js"></script>
+			<script language="javascript" type="text/javascript" src="' . $GLOBALS['BACK_PATH'] . 'jsfunc.tbe_editor.js"></script>
 			<script language="javascript" type="text/javascript">
-				TBE_EDITOR.formname = "') . $formname) . '";
-				TBE_EDITOR.formnameUENC = "') . rawurlencode($formname)) . '";
-				TBE_EDITOR.backend_interface = "') . $GLOBALS['BE_USER']->uc['interfaceSetup']) . '";
-				') . $this->extJSCODE) . '
+				TBE_EDITOR.formname = "' . $formname . '";
+				TBE_EDITOR.formnameUENC = "' . rawurlencode($formname) . '";
+				TBE_EDITOR.backend_interface = "' . $GLOBALS['BE_USER']->uc['interfaceSetup'] . '";
+				' . $this->extJSCODE . '
 			</script>';
 		}
 		return $out;

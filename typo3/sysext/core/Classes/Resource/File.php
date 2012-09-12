@@ -171,7 +171,7 @@ class File extends \TYPO3\CMS\Core\Resource\AbstractFile {
 			$this->mergeIndexRecord($indexRecord);
 			$this->indexed = TRUE;
 		} else {
-			throw new \RuntimeException(('Could not load index record for "' . $this->getIdentifier()) . '"', 1321288316);
+			throw new \RuntimeException('Could not load index record for "' . $this->getIdentifier() . '"', 1321288316);
 		}
 	}
 
@@ -270,7 +270,7 @@ class File extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 * @return string the MD5 hash
 	 */
 	public function calculateChecksum() {
-		return md5(((($this->getCombinedIdentifier() . '|') . $this->getMimeType()) . '|') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+		return md5($this->getCombinedIdentifier() . '|' . $this->getMimeType() . '|' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
 	}
 
 	/**

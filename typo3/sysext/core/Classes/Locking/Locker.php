@@ -129,7 +129,7 @@ class Locker {
 		case 'disable':
 			break;
 		default:
-			throw new \InvalidArgumentException(('No such method "' . $method) . '"', 1294586097);
+			throw new \InvalidArgumentException('No such method "' . $method . '"', 1294586097);
 		}
 	}
 
@@ -194,7 +194,7 @@ class Locker {
 				// Lock with blocking (waiting for similar locks to become released)
 				$noWait = FALSE;
 			} else {
-				throw new \RuntimeException(('Could not lock file "' . $this->resource) . '"', 1294586100);
+				throw new \RuntimeException('Could not lock file "' . $this->resource . '"', 1294586100);
 			}
 			break;
 		case 'semaphore':
@@ -321,7 +321,7 @@ class Locker {
 	 */
 	public function sysLog($message, $severity = 0) {
 		if ($this->isLoggingEnabled) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog((((('Locking [' . $this->method) . '::') . $this->id) . ']: ') . trim($message), $this->syslogFacility, $severity);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Locking [' . $this->method . '::' . $this->id . ']: ' . trim($message), $this->syslogFacility, $severity);
 		}
 	}
 

@@ -212,7 +212,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		$fixtureGifFile = __DIR__ . '/Fixtures/clear.gif';
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress'] = TRUE;
 		// Copy file to unique filename in typo3temp, set target permissions and run method
-		$testFilename = ((PATH_site . 'typo3temp/') . uniqid('test_')) . '.gif';
+		$testFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
 		@copy($fixtureGifFile, $testFilename);
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress($testFilename, 'IM');
@@ -235,7 +235,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] = FALSE;
 		$GLOBALS['TYPO3_CONF_VARS']['GFX']['gif_compress'] = TRUE;
 		// Copy file to unique filename in typo3temp, set target permissions and run method
-		$testFilename = ((PATH_site . 'typo3temp/') . uniqid('test_')) . '.gif';
+		$testFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
 		@copy($fixtureGifFile, $testFilename);
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress($testFilename, 'GD');
@@ -262,7 +262,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		$fixturePngFile = __DIR__ . '/Fixtures/clear.png';
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] = TRUE;
 		// Copy file to unique filename in typo3temp, set target permissions and run method
-		$testFilename = ((PATH_site . 'typo3temp/') . uniqid('test_')) . '.png';
+		$testFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.png';
 		@copy($fixturePngFile, $testFilename);
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
 		$newGifFile = \TYPO3\CMS\Core\Utility\GeneralUtility::png_to_gif_by_imagemagick($testFilename);
@@ -1370,7 +1370,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function checkTrimExplodeRemovesNewLines() {
-		$testString = (' a , b , ' . LF) . ' ,d ,,  e,f,';
+		$testString = ' a , b , ' . LF . ' ,d ,,  e,f,';
 		$expectedArray = array('a', 'b', 'd', 'e', 'f');
 		$actualArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $testString, TRUE);
 		$this->assertEquals($expectedArray, $actualArray);
@@ -1829,7 +1829,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			'../typo3/mod.php?var1=test-case&var2=~user' => array('../typo3/mod.php?var1=test-case&var2=~user'),
 			PATH_site . 'typo3/alt_intro.php' => array(PATH_site . 'typo3/alt_intro.php'),
 			$typo3SiteUrl . 'typo3/alt_intro.php' => array($typo3SiteUrl . 'typo3/alt_intro.php'),
-			($typo3RequestHost . $subDirectory) . '/index.php' => array(($typo3RequestHost . $subDirectory) . '/index.php')
+			$typo3RequestHost . $subDirectory . '/index.php' => array($typo3RequestHost . $subDirectory . '/index.php')
 		);
 	}
 
@@ -2289,7 +2289,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 				'Hello\\x20World\\x21'
 			),
 			'Whitespaces are properly encoded' => array(
-				((TAB . LF) . CR) . ' ',
+				TAB . LF . CR . ' ',
 				'\\x09\\x0A\\x0D\\x20'
 			),
 			'Null byte is properly encoded' => array(
@@ -2310,7 +2310,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	 * @dataProvider quoteJsValueDataProvider
 	 */
 	public function quoteJsValueTest($input, $expected) {
-		$this->assertSame(('\'' . $expected) . '\'', \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($input));
+		$this->assertSame('\'' . $expected . '\'', \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($input));
 	}
 
 	//////////////////////////////////
@@ -2329,7 +2329,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 					</languageKey>
 				</data>
 			</T3locallang>';
-		$file = ((PATH_site . 'typo3temp/') . $unique) . '.xml';
+		$file = PATH_site . 'typo3temp/' . $unique . '.xml';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($file, $xml);
 		// Make sure there is no cached version of the label
 		$GLOBALS['typo3CacheManager']->getCache('t3lib_l10n')->flush();
@@ -2463,7 +2463,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	public function minifyJavaScriptCallsRegisteredHookWithInputString() {
 		$hookClassName = uniqid('tx_coretest');
 		$minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);
-		$functionName = ('&' . $hookClassName) . '->minify';
+		$functionName = '&' . $hookClassName . '->minify';
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
@@ -2495,7 +2495,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	public function minifyJavaScriptReturnsErrorStringOfHookException() {
 		$hookClassName = uniqid('tx_coretest');
 		$minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);
-		$functionName = ('&' . $hookClassName) . '->minify';
+		$functionName = '&' . $hookClassName . '->minify';
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
@@ -2515,11 +2515,11 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	public function minifyJavaScriptWritesExceptionMessageToDevLog() {
 		$namespace = 'TYPO3\\CMS\\Core\\Utility';
 		$t3libDivMock = uniqid('GeneralUtility');
-		eval((((((((('namespace ' . $namespace . '; class ' . $t3libDivMock) . ' extends \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility {') . '  public static function devLog($errorMessage) {') . '    if (!($errorMessage === \'Error minifying java script: foo\')) {') . '      throw new \\UnexpectedValue(\'broken\');') . '    }') . '    throw new \\RuntimeException();') . '  }') . '}');
+		eval('namespace ' . $namespace . '; class ' . $t3libDivMock . ' extends \\TYPO3\\CMS\\Core\\Utility\\GeneralUtility {' . '  public static function devLog($errorMessage) {' . '    if (!($errorMessage === \'Error minifying java script: foo\')) {' . '      throw new \\UnexpectedValue(\'broken\');' . '    }' . '    throw new \\RuntimeException();' . '  }' . '}');
 		$t3libDivMock = $namespace . '\\' . $t3libDivMock;
 		$hookClassName = uniqid('tx_coretest');
 		$minifyHookMock = $this->getMock('stdClass', array('minify'), array(), $hookClassName);
-		$functionName = ('&' . $hookClassName) . '->minify';
+		$functionName = '&' . $hookClassName . '->minify';
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName] = array();
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['obj'] = $minifyHookMock;
 		$GLOBALS['T3_VAR']['callUserFunction'][$functionName]['method'] = 'minify';
@@ -2580,7 +2580,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			$this->markTestSkipped('The fixPermissionsSetsGroup() is not available on Mac OS because posix_getegid() always returns -1 on Mac OS.');
 		}
 		// Create and prepare test file
-		$filename = (PATH_site . 'typo3temp/') . uniqid('test_');
+		$filename = PATH_site . 'typo3temp/' . uniqid('test_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($filename, '42');
 		$currentGroupId = posix_getegid();
 		// Set target group and run method
@@ -2600,7 +2600,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test file
-		$filename = (PATH_site . 'typo3temp/') . uniqid('test_');
+		$filename = PATH_site . 'typo3temp/' . uniqid('test_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($filename, '42');
 		chmod($filename, 482);
 		// Set target permissions and run method
@@ -2623,7 +2623,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test file
-		$filename = (PATH_site . 'typo3temp/') . uniqid('.test_');
+		$filename = PATH_site . 'typo3temp/' . uniqid('.test_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($filename, '42');
 		chmod($filename, 482);
 		// Set target permissions and run method
@@ -2646,7 +2646,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test directory
-		$directory = (PATH_site . 'typo3temp/') . uniqid('test_');
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($directory);
 		chmod($directory, 1551);
 		// Set target permissions and run method
@@ -2669,7 +2669,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test directory
-		$directory = (PATH_site . 'typo3temp/') . uniqid('test_');
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($directory);
 		chmod($directory, 1551);
 		// Set target permissions and run method
@@ -2692,7 +2692,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test directory
-		$directory = (PATH_site . 'typo3temp/') . uniqid('.test_');
+		$directory = PATH_site . 'typo3temp/' . uniqid('.test_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($directory);
 		chmod($directory, 1551);
 		// Set target permissions and run method
@@ -2715,7 +2715,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test directory and file structure
-		$baseDirectory = (PATH_site . 'typo3temp/') . uniqid('test_');
+		$baseDirectory = PATH_site . 'typo3temp/' . uniqid('test_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($baseDirectory);
 		chmod($baseDirectory, 1751);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFileToTypo3tempDir($baseDirectory . '/file', '42');
@@ -2773,7 +2773,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			$this->markTestSkipped('fixPermissions() tests not available on Windows');
 		}
 		// Create and prepare test file
-		$filename = (PATH_site . 'typo3temp/../typo3temp/') . uniqid('test_');
+		$filename = PATH_site . 'typo3temp/../typo3temp/' . uniqid('test_');
 		touch($filename);
 		chmod($filename, 482);
 		// Set target permissions and run method
@@ -2816,7 +2816,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function mkdirCreatesDirectory() {
-		$directory = (PATH_site . 'typo3temp/') . uniqid('test_');
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
 		$mkdirResult = \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($directory);
 		clearstatcache();
 		$directoryCreated = is_dir($directory);
@@ -2829,7 +2829,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function mkdirCreatesHiddenDirectory() {
-		$directory = (PATH_site . 'typo3temp/') . uniqid('.test_');
+		$directory = PATH_site . 'typo3temp/' . uniqid('.test_');
 		$mkdirResult = \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($directory);
 		clearstatcache();
 		$directoryCreated = is_dir($directory);
@@ -2842,7 +2842,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function mkdirCreatesDirectoryWithTrailingSlash() {
-		$directory = ((PATH_site . 'typo3temp/') . uniqid('test_')) . '/';
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_') . '/';
 		$mkdirResult = \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($directory);
 		clearstatcache();
 		$directoryCreated = is_dir($directory);
@@ -2858,7 +2858,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		if (TYPO3_OS == 'WIN') {
 			$this->markTestSkipped('mkdirSetsPermissionsOfCreatedDirectory() test not available on Windows');
 		}
-		$directory = (PATH_site . 'typo3temp/') . uniqid('test_');
+		$directory = PATH_site . 'typo3temp/' . uniqid('test_');
 		$oldUmask = umask(19);
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0772';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($directory);
@@ -2883,11 +2883,11 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		if ($swapGroup !== FALSE) {
 			$GLOBALS['TYPO3_CONF_VARS']['BE']['createGroup'] = $swapGroup;
 			$directory = uniqid('mkdirtest_');
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir((PATH_site . 'typo3temp/') . $directory);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir(PATH_site . 'typo3temp/' . $directory);
 			clearstatcache();
-			$resultDirectoryGroupInfo = posix_getgrgid(filegroup((PATH_site . 'typo3temp/') . $directory));
+			$resultDirectoryGroupInfo = posix_getgrgid(filegroup(PATH_site . 'typo3temp/' . $directory));
 			$resultDirectoryGroup = $resultDirectoryGroupInfo['name'];
-			@rmdir(((PATH_site . 'typo3temp/') . $directory));
+			@rmdir((PATH_site . 'typo3temp/' . $directory));
 			$this->assertEquals($resultDirectoryGroup, $swapGroup);
 		}
 	}
@@ -2908,7 +2908,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			return FALSE;
 		}
 		if (!function_exists('posix_getgroups')) {
-			$this->markTestSkipped(('Function posix_getgroups() not available, ' . $methodName) . '() tests skipped');
+			$this->markTestSkipped('Function posix_getgroups() not available, ' . $methodName . '() tests skipped');
 		}
 		$groups = posix_getgroups();
 		if (count($groups) <= 1) {
@@ -2958,8 +2958,8 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['folderCreateMask'] = '0777';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $directory);
 		clearstatcache();
-		$resultDirectoryPermissions = substr(decoct(fileperms((PATH_site . 'typo3temp/') . $directory)), -3, 3);
-		@rmdir(((PATH_site . 'typo3temp/') . $directory));
+		$resultDirectoryPermissions = substr(decoct(fileperms(PATH_site . 'typo3temp/' . $directory)), -3, 3);
+		@rmdir((PATH_site . 'typo3temp/' . $directory));
 		umask($oldUmask);
 		$this->assertEquals($resultDirectoryPermissions, '777');
 	}
@@ -2977,9 +2977,9 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		$oldUmask = umask(19);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
 		clearstatcache();
-		$resultDirectoryPermissions = substr(decoct(fileperms((PATH_site . 'typo3temp/') . $directory)), -3, 3);
-		@rmdir(((PATH_site . 'typo3temp/') . $subDirectory));
-		@rmdir(((PATH_site . 'typo3temp/') . $directory));
+		$resultDirectoryPermissions = substr(decoct(fileperms(PATH_site . 'typo3temp/' . $directory)), -3, 3);
+		@rmdir((PATH_site . 'typo3temp/' . $subDirectory));
+		@rmdir((PATH_site . 'typo3temp/' . $directory));
 		umask($oldUmask);
 		$this->assertEquals($resultDirectoryPermissions, '777');
 	}
@@ -3013,9 +3013,9 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			$directory = uniqid('mkdirdeeptest_');
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $directory);
 			clearstatcache();
-			$resultDirectoryGroupInfo = posix_getgrgid(filegroup((PATH_site . 'typo3temp/') . $directory));
+			$resultDirectoryGroupInfo = posix_getgrgid(filegroup(PATH_site . 'typo3temp/' . $directory));
 			$resultDirectoryGroup = $resultDirectoryGroupInfo['name'];
-			@rmdir(((PATH_site . 'typo3temp/') . $directory));
+			@rmdir((PATH_site . 'typo3temp/' . $directory));
 			$this->assertEquals($resultDirectoryGroup, $swapGroup);
 		}
 	}
@@ -3031,10 +3031,10 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			$subDirectory = $directory . '/bar';
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
 			clearstatcache();
-			$resultDirectoryGroupInfo = posix_getgrgid(filegroup((PATH_site . 'typo3temp/') . $directory));
+			$resultDirectoryGroupInfo = posix_getgrgid(filegroup(PATH_site . 'typo3temp/' . $directory));
 			$resultDirectoryGroup = $resultDirectoryGroupInfo['name'];
-			@rmdir(((PATH_site . 'typo3temp/') . $subDirectory));
-			@rmdir(((PATH_site . 'typo3temp/') . $directory));
+			@rmdir((PATH_site . 'typo3temp/' . $subDirectory));
+			@rmdir((PATH_site . 'typo3temp/' . $directory));
 			$this->assertEquals($resultDirectoryGroup, $swapGroup);
 		}
 	}
@@ -3050,10 +3050,10 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 			$subDirectory = $directory . '/bar';
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(PATH_site . 'typo3temp/', $subDirectory);
 			clearstatcache();
-			$resultDirectoryGroupInfo = posix_getgrgid(filegroup((PATH_site . 'typo3temp/') . $subDirectory));
+			$resultDirectoryGroupInfo = posix_getgrgid(filegroup(PATH_site . 'typo3temp/' . $subDirectory));
 			$resultDirectoryGroup = $resultDirectoryGroupInfo['name'];
-			@rmdir(((PATH_site . 'typo3temp/') . $subDirectory));
-			@rmdir(((PATH_site . 'typo3temp/') . $directory));
+			@rmdir((PATH_site . 'typo3temp/' . $subDirectory));
+			@rmdir((PATH_site . 'typo3temp/' . $directory));
 			$this->assertEquals($resultDirectoryGroup, $swapGroup);
 		}
 	}
@@ -3068,8 +3068,8 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		\vfsStreamWrapper::register();
 		$baseDirectory = uniqid('test_');
 		\vfsStreamWrapper::setRoot(new \vfsStreamDirectory($baseDirectory));
-		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(('vfs://' . $baseDirectory) . '/', 'sub');
-		$this->assertTrue(is_dir(('vfs://' . $baseDirectory) . '/sub'));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep('vfs://' . $baseDirectory . '/', 'sub');
+		$this->assertTrue(is_dir('vfs://' . $baseDirectory . '/sub'));
 	}
 
 	/**
@@ -3441,7 +3441,7 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	public function makeInstancePassesParametersToConstructor() {
 		$className = 'testingClass' . uniqid();
 		if (!class_exists($className, FALSE)) {
-			eval((((((((('class ' . $className) . ' {') . '  public $constructorParameter1;') . '  public $constructorParameter2;') . '  public function __construct($parameter1, $parameter2) {') . '    $this->constructorParameter1 = $parameter1;') . '    $this->constructorParameter2 = $parameter2;') . '  }') . '}');
+			eval('class ' . $className . ' {' . '  public $constructorParameter1;' . '  public $constructorParameter2;' . '  public function __construct($parameter1, $parameter2) {' . '    $this->constructorParameter1 = $parameter1;' . '    $this->constructorParameter2 = $parameter2;' . '  }' . '}');
 		}
 		$instance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className, 'one parameter', 'another parameter');
 		$this->assertEquals('one parameter', $instance->constructorParameter1, 'The first constructor parameter has not been set.');
@@ -3684,8 +3684,8 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLogLevel'] = 0;
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogInit'] = TRUE;
 		unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLog']);
-		$testLogFilename = ((PATH_site . 'typo3temp/') . uniqid('test_')) . '.txt';
-		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'] = ('file,' . $testLogFilename) . ',0';
+		$testLogFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.txt';
+		$GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLog'] = 'file,' . $testLogFilename . ',0';
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
 		// Call method, get actual permissions and clean up
 		\TYPO3\CMS\Core\Utility\GeneralUtility::syslog('testLog', 'test', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_NOTICE);
@@ -3946,25 +3946,25 @@ class GeneralUtilityTest extends \tx_phpunit_testcase {
 	public function substUrlsInPlainTextDataProvider() {
 		$urlMatch = 'http://example.com/index.php\\?RDCT=[0-9a-z]{20}';
 		return array(
-			array('http://only-url.com', ('|^' . $urlMatch) . '$|'),
-			array('https://only-secure-url.com', ('|^' . $urlMatch) . '$|'),
-			array('A http://url in the sentence.', ('|^A ' . $urlMatch) . ' in the sentence\\.$|'),
-			array('URL in round brackets (http://www.example.com) in the sentence.', ('|^URL in round brackets \\(' . $urlMatch) . '\\) in the sentence.$|'),
-			array('URL in square brackets [http://www.example.com/a/b.php?c[d]=e] in the sentence.', ('|^URL in square brackets \\[' . $urlMatch) . '\\] in the sentence.$|'),
-			array('URL in square brackets at the end of the sentence [http://www.example.com/a/b.php?c[d]=e].', ('|^URL in square brackets at the end of the sentence \\[' . $urlMatch) . '].$|'),
-			array('Square brackets in the http://www.url.com?tt_news[uid]=1', ('|^Square brackets in the ' . $urlMatch) . '$|'),
-			array('URL with http://dot.com.', ('|^URL with ' . $urlMatch) . '.$|'),
-			array('URL in <a href="http://www.example.com/">a tag</a>', ('|^URL in <a href="' . $urlMatch) . '">a tag</a\\>$|'),
-			array('URL in HTML <b>http://www.example.com</b><br />', ('|^URL in HTML <b>' . $urlMatch) . '</b><br />$|'),
-			array('URL with http://username@example.com/', ('|^URL with ' . $urlMatch) . '$|'),
-			array('Secret in URL http://username:secret@example.com', ('|^Secret in URL ' . $urlMatch) . '$|'),
-			array('URL in quotation marks "http://example.com"', ('|^URL in quotation marks "' . $urlMatch) . '"$|'),
-			array('URL with umlauts http://müller.de', ('|^URL with umlauts ' . $urlMatch) . '$|'),
+			array('http://only-url.com', '|^' . $urlMatch . '$|'),
+			array('https://only-secure-url.com', '|^' . $urlMatch . '$|'),
+			array('A http://url in the sentence.', '|^A ' . $urlMatch . ' in the sentence\\.$|'),
+			array('URL in round brackets (http://www.example.com) in the sentence.', '|^URL in round brackets \\(' . $urlMatch . '\\) in the sentence.$|'),
+			array('URL in square brackets [http://www.example.com/a/b.php?c[d]=e] in the sentence.', '|^URL in square brackets \\[' . $urlMatch . '\\] in the sentence.$|'),
+			array('URL in square brackets at the end of the sentence [http://www.example.com/a/b.php?c[d]=e].', '|^URL in square brackets at the end of the sentence \\[' . $urlMatch . '].$|'),
+			array('Square brackets in the http://www.url.com?tt_news[uid]=1', '|^Square brackets in the ' . $urlMatch . '$|'),
+			array('URL with http://dot.com.', '|^URL with ' . $urlMatch . '.$|'),
+			array('URL in <a href="http://www.example.com/">a tag</a>', '|^URL in <a href="' . $urlMatch . '">a tag</a\\>$|'),
+			array('URL in HTML <b>http://www.example.com</b><br />', '|^URL in HTML <b>' . $urlMatch . '</b><br />$|'),
+			array('URL with http://username@example.com/', '|^URL with ' . $urlMatch . '$|'),
+			array('Secret in URL http://username:secret@example.com', '|^Secret in URL ' . $urlMatch . '$|'),
+			array('URL in quotation marks "http://example.com"', '|^URL in quotation marks "' . $urlMatch . '"$|'),
+			array('URL with umlauts http://müller.de', '|^URL with umlauts ' . $urlMatch . '$|'),
 			array('Multiline
-text with a http://url.com', ('|^Multiline
-text with a ' . $urlMatch) . '$|s'),
-			array('http://www.shout.com!', ('|^' . $urlMatch) . '!$|'),
-			array('And with two URLs http://www.two.com/abc http://urls.com/abc?x=1&y=2', ((('|^And with two URLs ' . $urlMatch) . ' ') . $urlMatch) . '$|')
+text with a http://url.com', '|^Multiline
+text with a ' . $urlMatch . '$|s'),
+			array('http://www.shout.com!', '|^' . $urlMatch . '!$|'),
+			array('And with two URLs http://www.two.com/abc http://urls.com/abc?x=1&y=2', '|^And with two URLs ' . $urlMatch . ' ' . $urlMatch . '$|')
 		);
 	}
 

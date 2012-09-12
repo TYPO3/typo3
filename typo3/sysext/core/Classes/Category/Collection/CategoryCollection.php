@@ -88,7 +88,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 	 */
 	static public function load($id, $fillItems = FALSE, $tableName = '') {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA(static::$storageTableName);
-		$collectionRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', static::$storageTableName, ('uid=' . intval($id)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause(static::$storageTableName));
+		$collectionRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', static::$storageTableName, 'uid=' . intval($id) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause(static::$storageTableName));
 		$collectionRecord['table_name'] = $tableName;
 		return self::create($collectionRecord, $fillItems);
 	}
@@ -103,7 +103,7 @@ class CategoryCollection extends \TYPO3\CMS\Core\Collection\AbstractRecordCollec
 	protected function getCollectedRecords() {
 		$relatedRecords = array();
 		/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-		$resource = $this->getDatabase()->exec_SELECT_mm_query($this->getItemTableName() . '.*', self::$storageTableName, 'sys_category_record_mm', $this->getItemTableName(), (('AND ' . self::$storageTableName) . '.uid=') . intval($this->getIdentifier()));
+		$resource = $this->getDatabase()->exec_SELECT_mm_query($this->getItemTableName() . '.*', self::$storageTableName, 'sys_category_record_mm', $this->getItemTableName(), 'AND ' . self::$storageTableName . '.uid=' . intval($this->getIdentifier()));
 		if ($resource) {
 			while ($record = $this->getDatabase()->sql_fetch_assoc($resource)) {
 				$relatedRecords[] = $record;

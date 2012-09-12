@@ -177,7 +177,7 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 	 */
 	public function doesCheckModifyAccessListThrowExceptionOnWrongHookInterface() {
 		$hookClass = uniqid('tx_coretest');
-		eval(('class ' . $hookClass) . ' {}');
+		eval('class ' . $hookClass . ' {}');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
 		$this->fixture->checkModifyAccessList('tt_content');
 	}
@@ -205,8 +205,8 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 	 */
 	public function doesCheckModifyAccessListHookModifyAccessAllowed() {
 		$hookClass = uniqid('tx_coretest');
-		eval(('
-			class ' . $hookClass) . ' implements \\TYPO3\\CMS\\Core\\DataHandling\\DataHandlerCheckModifyAccessListHookInterface {
+		eval('
+			class ' . $hookClass . ' implements \\TYPO3\\CMS\\Core\\DataHandling\\DataHandlerCheckModifyAccessListHookInterface {
 				public function checkModifyAccessList(&$accessAllowed, $table, \\TYPO3\\CMS\\Core\\DataHandler\\DataHandler $parent) { $accessAllowed = TRUE; }
 			}
 		');
@@ -321,8 +321,8 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 		$this->fixture->enableLogging = TRUE;
 		$this->fixture->errorLog = array();
 		$logDetails = uniqid('details');
-		$this->fixture->log('', 23, 0, 42, 1, ('%1s' . $logDetails) . '%2s', -1, array('foo', 'bar'));
-		$expected = ('foo' . $logDetails) . 'bar';
+		$this->fixture->log('', 23, 0, 42, 1, '%1s' . $logDetails . '%2s', -1, array('foo', 'bar'));
+		$expected = 'foo' . $logDetails . 'bar';
 		$this->assertStringEndsWith($expected, $this->fixture->errorLog[0]);
 	}
 

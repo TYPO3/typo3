@@ -88,7 +88,7 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getParsedData($fileReference, $languageKey, $charset, $errorMode, $isLocalizationOverride = FALSE) {
 		try {
-			$hash = md5(($fileReference . $languageKey) . $charset);
+			$hash = md5($fileReference . $languageKey . $charset);
 			$this->errorMode = $errorMode;
 			// English is the default language
 			$languageKey = $languageKey === 'en' ? 'default' : $languageKey;
@@ -143,10 +143,10 @@ class LocalizationFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		$fileReferenceWithoutExtension = $this->store->getFileReferenceWithoutExtension($fileReference);
 		$locallangXMLOverride = $GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'];
 		foreach ($this->store->getSupportedExtensions() as $extension) {
-			if (isset($locallangXMLOverride[$languageKey][($fileReferenceWithoutExtension . '.') . $extension]) && is_array($locallangXMLOverride[$languageKey][($fileReferenceWithoutExtension . '.') . $extension])) {
-				$overrides = array_merge($overrides, $locallangXMLOverride[$languageKey][($fileReferenceWithoutExtension . '.') . $extension]);
-			} elseif (isset($locallangXMLOverride[($fileReferenceWithoutExtension . '.') . $extension]) && is_array($locallangXMLOverride[($fileReferenceWithoutExtension . '.') . $extension])) {
-				$overrides = array_merge($overrides, $locallangXMLOverride[($fileReferenceWithoutExtension . '.') . $extension]);
+			if (isset($locallangXMLOverride[$languageKey][$fileReferenceWithoutExtension . '.' . $extension]) && is_array($locallangXMLOverride[$languageKey][$fileReferenceWithoutExtension . '.' . $extension])) {
+				$overrides = array_merge($overrides, $locallangXMLOverride[$languageKey][$fileReferenceWithoutExtension . '.' . $extension]);
+			} elseif (isset($locallangXMLOverride[$fileReferenceWithoutExtension . '.' . $extension]) && is_array($locallangXMLOverride[$fileReferenceWithoutExtension . '.' . $extension])) {
+				$overrides = array_merge($overrides, $locallangXMLOverride[$fileReferenceWithoutExtension . '.' . $extension]);
 			}
 		}
 		if (count($overrides) > 0) {

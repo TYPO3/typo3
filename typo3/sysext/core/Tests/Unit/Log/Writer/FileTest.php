@@ -73,13 +73,13 @@ class FileTest extends \tx_phpunit_testcase {
 	protected function createWriter() {
 		/** @var \TYPO3\CMS\Core\Log\Writer\FileWriter $writer */
 		$writer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter', array(
-			'logFile' => (('vfs://LogRoot/' . $this->logFileDirectory) . '/') . $this->logFileName
+			'logFile' => 'vfs://LogRoot/' . $this->logFileDirectory . '/' . $this->logFileName
 		));
 		return $writer;
 	}
 
 	protected function getDefaultFileName() {
-		return (('vfs://LogRoot/' . $this->logFileDirectory) . '/') . $this->logFileName;
+		return 'vfs://LogRoot/' . $this->logFileDirectory . '/' . $this->logFileName;
 	}
 
 	/**
@@ -153,9 +153,9 @@ class FileTest extends \tx_phpunit_testcase {
 	public function createsHtaccessForNewDirectory() {
 		$this->setUpVfsStream();
 		$directory = uniqid('Log');
-		$logFile = (('vfs://LogRoot/' . $directory) . '/') . $this->logFileName;
+		$logFile = 'vfs://LogRoot/' . $directory . '/' . $this->logFileName;
 		$this->createWriter()->setLogFile($logFile);
-		$this->assertFileExists(('vfs://LogRoot/' . $directory) . '/.htaccess');
+		$this->assertFileExists('vfs://LogRoot/' . $directory . '/.htaccess');
 	}
 
 	/**
@@ -166,10 +166,10 @@ class FileTest extends \tx_phpunit_testcase {
 		$directory = uniqid('Log');
 			// create a directory
 		\vfsStreamWrapper::getRoot()->addChild(new \vfsStreamDirectory($directory));
-		$logFile = (('vfs://LogRoot/' . $directory) . '/') . $this->logFileName;
+		$logFile = 'vfs://LogRoot/' . $directory . '/' . $this->logFileName;
 		$this->assertTrue(is_dir('vfs://LogRoot/' . $directory));
 		$this->createWriter()->setLogFile($logFile);
-		$this->assertFileNotExists(('vfs://LogRoot/' . $directory) . '/.htaccess');
+		$this->assertFileNotExists('vfs://LogRoot/' . $directory . '/.htaccess');
 	}
 
 }

@@ -100,7 +100,7 @@ class ExtensionManagerTest extends \tx_phpunit_testcase {
 		$namespace = 'TYPO3\\CMS\\Core\\Extension';
 		$className = 'ExtensionManagerAccessibleProxy';
 		if (!class_exists($namespace . '\\' . $className, FALSE)) {
-			eval((((((((((((((((((((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {') . '  public static function createTypo3LoadedExtensionInformationArray() {') . '    return parent::createTypo3LoadedExtensionInformationArray();') . '  }') . '  public static function getTypo3LoadedExtensionInformationCacheIdentifier() {') . '    return parent::getTypo3LoadedExtensionInformationCacheIdentifier();') . '  }') . '  public static function getExtLocalconfCacheIdentifier() {') . '    return parent::getExtLocalconfCacheIdentifier();') . '  }') . '  public static function loadSingleExtLocalconfFiles() {') . '    return parent::loadSingleExtLocalconfFiles();') . '  }') . '  public static function resetExtTablesWasReadFromCacheOnceBoolean() {') . '    self::$extTablesWasReadFromCacheOnce = FALSE;') . '  }') . '  public static function createExtLocalconfCacheEntry() {') . '    return parent::createExtLocalconfCacheEntry();') . '  }') . '  public static function createExtTablesCacheEntry() {') . '    return parent::createExtTablesCacheEntry();') . '  }') . '  public static function getExtTablesCacheIdentifier() {') . '    return parent::getExtTablesCacheIdentifier();') . '  }') . '}');
+			eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function createTypo3LoadedExtensionInformationArray() {' . '    return parent::createTypo3LoadedExtensionInformationArray();' . '  }' . '  public static function getTypo3LoadedExtensionInformationCacheIdentifier() {' . '    return parent::getTypo3LoadedExtensionInformationCacheIdentifier();' . '  }' . '  public static function getExtLocalconfCacheIdentifier() {' . '    return parent::getExtLocalconfCacheIdentifier();' . '  }' . '  public static function loadSingleExtLocalconfFiles() {' . '    return parent::loadSingleExtLocalconfFiles();' . '  }' . '  public static function resetExtTablesWasReadFromCacheOnceBoolean() {' . '    self::$extTablesWasReadFromCacheOnce = FALSE;' . '  }' . '  public static function createExtLocalconfCacheEntry() {' . '    return parent::createExtLocalconfCacheEntry();' . '  }' . '  public static function createExtTablesCacheEntry() {' . '    return parent::createExtTablesCacheEntry();' . '  }' . '  public static function getExtTablesCacheIdentifier() {' . '    return parent::getExtTablesCacheIdentifier();' . '  }' . '}');
 		}
 	}
 
@@ -709,7 +709,7 @@ class ExtensionManagerTest extends \tx_phpunit_testcase {
 	 */
 	public function loadSingleExtLocalconfFilesRequiresExtLocalconfFileRegisteredInGlobalTypo3LoadedExt() {
 		$extensionName = uniqid('foo');
-		$extLocalconfLocation = ((PATH_site . 'typo3temp/') . uniqid('test_ext_localconf')) . '.php';
+		$extLocalconfLocation = PATH_site . 'typo3temp/' . uniqid('test_ext_localconf') . '.php';
 		$this->testFilesToDelete[] = $extLocalconfLocation;
 		file_put_contents($extLocalconfLocation, '<?php
 
@@ -732,12 +732,12 @@ throw new RuntimeException(\'\', 1340559079);
 	 */
 	public function createExtLocalconfCacheEntryWritesCacheEntryWithContentOfLoadedExtensionExtLocalconf() {
 		$extensionName = uniqid('foo');
-		$extLocalconfLocation = ((PATH_site . 'typo3temp/') . uniqid('test_ext_localconf')) . '.php';
+		$extLocalconfLocation = PATH_site . 'typo3temp/' . uniqid('test_ext_localconf') . '.php';
 		$this->testFilesToDelete[] = $extLocalconfLocation;
 		$uniqueStringInLocalconf = uniqid('foo');
-		file_put_contents($extLocalconfLocation, ('<?php
+		file_put_contents($extLocalconfLocation, '<?php
 
-' . $uniqueStringInLocalconf) . '
+' . $uniqueStringInLocalconf . '
 
 ?>');
 		$GLOBALS['TYPO3_LOADED_EXT'] = array(
@@ -812,12 +812,12 @@ throw new RuntimeException(\'\', 1340559079);
 	 */
 	public function createExtTablesCacheEntryWritesCacheEntryWithContentOfLoadedExtensionExtTables() {
 		$extensionName = uniqid('foo');
-		$extTablesLocation = ((PATH_site . 'typo3temp/') . uniqid('test_ext_tables')) . '.php';
+		$extTablesLocation = PATH_site . 'typo3temp/' . uniqid('test_ext_tables') . '.php';
 		$this->testFilesToDelete[] = $extTablesLocation;
 		$uniqueStringInTables = uniqid('foo');
-		file_put_contents($extTablesLocation, ('<?php
+		file_put_contents($extTablesLocation, '<?php
 
-' . $uniqueStringInTables) . '
+' . $uniqueStringInTables . '
 
 ?>');
 		$GLOBALS['TYPO3_LOADED_EXT'] = array(
@@ -958,7 +958,7 @@ throw new RuntimeException(\'\', 1340559079);
 	public function getLoadedExtensionListArrayConsidersRequiredExtensions() {
 		$namespace = 'TYPO3\\CMS\\Core\\Extension';
 		$className = uniqid('ExtensionManager');
-		eval(((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {') . '  public static function getRequiredExtensionListArray() {') . '    return array(\'baz\');') . '  }') . '}');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function getRequiredExtensionListArray() {' . '    return array(\'baz\');' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'] = array();
 		$this->assertEquals(array('baz'), $className::getLoadedExtensionListArray());
@@ -970,7 +970,7 @@ throw new RuntimeException(\'\', 1340559079);
 	public function getLoadedExtensionListArrayReturnsUniqueList() {
 		$namespace = 'TYPO3\\CMS\\Core\\Extension';
 		$className = uniqid('ExtensionManager');
-		eval(((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {') . '  public static function getRequiredExtensionListArray() {') . '    return array(\'bar\');') . '  }') . '}');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function getRequiredExtensionListArray() {' . '    return array(\'bar\');' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$GLOBALS['TYPO3_CONF_VARS']['EXT']['extListArray'] = array('foo', 'bar', 'foo');
 		$this->assertSame(array('bar', 'foo'), $className::getLoadedExtensionListArray());
@@ -1014,7 +1014,7 @@ throw new RuntimeException(\'\', 1340559079);
 	public function loadExtensionThrowsExceptionIfExtensionIsLoaded() {
 		$namespace = 'TYPO3\\CMS\\Core\\Extension';
 		$className = uniqid('ExtensionManager');
-		eval(((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {') . '  public static function isLoaded() {') . '    return TRUE;') . '  }') . '}');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function isLoaded() {' . '    return TRUE;' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$className::loadExtension('test');
 	}
@@ -1030,7 +1030,7 @@ throw new RuntimeException(\'\', 1340559079);
 		$extensionKeyToLoad = uniqid('loadMe');
 		$namespace = 'TYPO3\\CMS\\Core\\Extension';
 		$className = uniqid('ExtensionManager');
-		eval(((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {') . '  public static function writeNewExtensionList($extList) {') . '    if (in_array(') . $extensionKeyToLoad) . ', $extList)) {') . '      throw new \\RuntimeException(\'test\');') . '    }') . '  }') . '}');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function writeNewExtensionList($extList) {' . '    if (in_array(' . $extensionKeyToLoad . ', $extList)) {' . '      throw new \\RuntimeException(\'test\');' . '    }' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$className::loadExtension($extensionKeyToLoad);
 	}
@@ -1045,7 +1045,7 @@ throw new RuntimeException(\'\', 1340559079);
 	public function unloadExtensionThrowsExceptionIfExtensionIsNotLoaded() {
 		$namespace = 'TYPO3\\CMS\\Core\\Extension';
 		$className = uniqid('ExtensionManager');
-		eval(((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {') . '  public static function isLoaded() {') . '    return FALSE;') . '  }') . '}');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function isLoaded() {' . '    return FALSE;' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$className::unloadExtension('test');
 	}
@@ -1058,7 +1058,7 @@ throw new RuntimeException(\'\', 1340559079);
 		$extensionKey = uniqid('test');
 		$namespace = 'TYPO3\\CMS\\Core\\Extension';
 		$className = uniqid('ExtensionManager');
-		eval((((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {') . '  public static function isLoaded() {') . '    return TRUE;') . '  }') . '  public static function getRequiredExtensionListArray() {') . '    return array(\'') . $extensionKey) . '\');') . '  }') . '}');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function isLoaded() {' . '    return TRUE;' . '  }' . '  public static function getRequiredExtensionListArray() {' . '    return array(\'' . $extensionKey . '\');' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$className::unloadExtension($extensionKey);
 	}
@@ -1074,7 +1074,7 @@ throw new RuntimeException(\'\', 1340559079);
 		$extensionKeyToUnload = uniqid('unloadMe');
 		$namespace = 'TYPO3\\CMS\\Core\\Extension';
 		$className = uniqid('ExtensionManager');
-		eval((((((((((((('namespace ' . $namespace . '; class ' . $className) . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {') . '  public static function isLoaded() {') . '    return TRUE;') . '  }') . '  public static function writeNewExtensionList($extList) {') . '    if (!in_array(') . $extensionKeyToUnload) . ', $extList)) {') . '      throw new \\RuntimeException(\'test\');') . '    }') . '  }') . '}');
+		eval('namespace ' . $namespace . '; class ' . $className . ' extends \\TYPO3\\CMS\\Core\\Extension\\ExtensionManager {' . '  public static function isLoaded() {' . '    return TRUE;' . '  }' . '  public static function writeNewExtensionList($extList) {' . '    if (!in_array(' . $extensionKeyToUnload . ', $extList)) {' . '      throw new \\RuntimeException(\'test\');' . '    }' . '  }' . '}');
 		$className = $namespace . '\\' . $className;
 		$className::unloadExtension($extensionKeyToUnload);
 	}

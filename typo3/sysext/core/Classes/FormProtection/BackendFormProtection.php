@@ -215,7 +215,7 @@ class BackendFormProtection extends \TYPO3\CMS\Core\FormProtection\AbstractFormP
 	 * @return boolean
 	 */
 	protected function isAuthorizedBackendSession() {
-		return (isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication) && isset($GLOBALS['BE_USER']->user['uid']);
+		return isset($GLOBALS['BE_USER']) && $GLOBALS['BE_USER'] instanceof \TYPO3\CMS\Core\Authentication\BackendUserAuthentication && isset($GLOBALS['BE_USER']->user['uid']);
 	}
 
 }

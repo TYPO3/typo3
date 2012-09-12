@@ -62,7 +62,7 @@ class TransientMemoryBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBacke
 			throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1238244992);
 		}
 		if (!is_string($data)) {
-			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException(('The specified data is of type "' . gettype($data)) . '" but a string is expected.', 1238244993);
+			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1238244993);
 		}
 		$this->entries[$entryIdentifier] = $data;
 		foreach ($tags as $tag) {

@@ -235,7 +235,7 @@ class Autoloader {
 		if (array_key_exists($classNameLower, self::$classNameToFileMapping)) {
 			$classPath = self::$classNameToFileMapping[$classNameLower];
 		}
-		if (($classPath === NULL && substr($classNameLower, 0, 3) === 'ux_') && !array_key_exists($classNameLower, self::$classNameToFileMapping)) {
+		if ($classPath === NULL && substr($classNameLower, 0, 3) === 'ux_' && !array_key_exists($classNameLower, self::$classNameToFileMapping)) {
 			self::$cacheUpdateRequired = TRUE;
 			self::$classNameToFileMapping[$classNameLower] = NULL;
 		}
@@ -283,7 +283,7 @@ class Autoloader {
 			$delimiter = '\\';
 		}
 		$classNameParts = explode($delimiter, $tempClassName, 4);
-		if ((isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3') && (isset($classNameParts[1]) && $classNameParts[1] === 'CMS')) {
+		if (isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3' && (isset($classNameParts[1]) && $classNameParts[1] === 'CMS')) {
 			$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[2]);
 			$classNameWithoutVendorAndProduct = $classNameParts[3];
 		} else {
@@ -333,8 +333,8 @@ class Autoloader {
 	static protected function updateRegistryCacheEntry(array $registry) {
 		$cachedFileContent = 'return array(';
 		foreach ($registry as $className => $classLocation) {
-			$nullOrLocation = is_string($classLocation) ? ('\'' . $classLocation) . '\',' : 'NULL,';
-			$cachedFileContent .= (((LF . '\'') . $className) . '\' => ') . $nullOrLocation;
+			$nullOrLocation = is_string($classLocation) ? '\'' . $classLocation . '\',' : 'NULL,';
+			$cachedFileContent .= LF . '\'' . $className . '\' => ' . $nullOrLocation;
 		}
 		$cachedFileContent .= LF . ');';
 		$GLOBALS['typo3CacheManager']->getCache('cache_core')->set(self::getAutoloadCacheIdentifier(), $cachedFileContent);
@@ -353,7 +353,7 @@ class Autoloader {
 	 */
 	static protected function getAutoloadCacheIdentifier() {
 		if (is_null(self::$autoloadCacheIdentifier)) {
-			self::$autoloadCacheIdentifier = 'autoload_' . sha1(((TYPO3_version . PATH_site) . 'autoload'));
+			self::$autoloadCacheIdentifier = 'autoload_' . sha1((TYPO3_version . PATH_site . 'autoload'));
 		}
 		return self::$autoloadCacheIdentifier;
 	}

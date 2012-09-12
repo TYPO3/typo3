@@ -57,7 +57,7 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	 */
 	public function __construct($identifier, \TYPO3\CMS\Core\Cache\Backend\BackendInterface $backend) {
 		if (preg_match(self::PATTERN_ENTRYIDENTIFIER, $identifier) !== 1) {
-			throw new \InvalidArgumentException(('"' . $identifier) . '" is not a valid cache identifier.', 1203584729);
+			throw new \InvalidArgumentException('"' . $identifier . '" is not a valid cache identifier.', 1203584729);
 		}
 		$this->identifier = $identifier;
 		$this->backend = $backend;
@@ -94,7 +94,7 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	 */
 	public function has($entryIdentifier) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-			throw new \InvalidArgumentException(('"' . $entryIdentifier) . '" is not a valid cache entry identifier.', 1233058486);
+			throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1233058486);
 		}
 		return $this->backend->has($entryIdentifier);
 	}
@@ -109,7 +109,7 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	 */
 	public function remove($entryIdentifier) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-			throw new \InvalidArgumentException(('"' . $entryIdentifier) . '" is not a valid cache entry identifier.', 1233058495);
+			throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1233058495);
 		}
 		return $this->backend->remove($entryIdentifier);
 	}
@@ -134,7 +134,7 @@ abstract class AbstractFrontend implements \TYPO3\CMS\Core\Cache\Frontend\Fronte
 	 */
 	public function flushByTag($tag) {
 		if (!$this->isValidTag($tag)) {
-			throw new \InvalidArgumentException(('"' . $tag) . '" is not a valid tag for a cache entry.', 1233057359);
+			throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233057359);
 		}
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_cache_frontend_abstractfrontend.php']['flushByTag'] as $_funcRef) {

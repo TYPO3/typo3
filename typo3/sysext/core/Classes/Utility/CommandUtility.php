@@ -124,25 +124,25 @@ final class CommandUtility {
 		// Compile the path & command
 		if ($im_version === 'gm') {
 			$switchCompositeParameters = TRUE;
-			$path = (escapeshellarg((($path . 'gm') . $isExt)) . ' ') . $command;
+			$path = escapeshellarg(($path . 'gm' . $isExt)) . ' ' . $command;
 		} else {
 			if ($im_version === 'im6') {
 				$switchCompositeParameters = TRUE;
 			}
-			$path = escapeshellarg(($path . ($command == 'composite' ? $combineScript : $command)) . $isExt);
+			$path = escapeshellarg($path . ($command == 'composite' ? $combineScript : $command) . $isExt);
 		}
 		// strip profile information for thumbnails and reduce their size
-		if ((($parameters && $command != 'identify') && $gfxConf['im_useStripProfileByDefault']) && $gfxConf['im_stripProfileCommand'] != '') {
+		if ($parameters && $command != 'identify' && $gfxConf['im_useStripProfileByDefault'] && $gfxConf['im_stripProfileCommand'] != '') {
 			if (strpos($parameters, $gfxConf['im_stripProfileCommand']) === FALSE) {
 				// Determine whether the strip profile action has be disabled by TypoScript:
 				if ($parameters !== '-version' && strpos($parameters, '###SkipStripProfile###') === FALSE) {
-					$parameters = ($gfxConf['im_stripProfileCommand'] . ' ') . $parameters;
+					$parameters = $gfxConf['im_stripProfileCommand'] . ' ' . $parameters;
 				} else {
 					$parameters = str_replace('###SkipStripProfile###', '', $parameters);
 				}
 			}
 		}
-		$cmdLine = ($path . ' ') . $parameters;
+		$cmdLine = $path . ' ' . $parameters;
 		// Because of some weird incompatibilities between ImageMagick 4 and 6 (plus GraphicsMagick),
 		// it is needed to change the parameters order under some preconditions
 		if ($command == 'composite' && $switchCompositeParameters) {
@@ -153,7 +153,7 @@ final class CommandUtility {
 				$paramsArr[count($paramsArr) - 3] = $paramsArr[count($paramsArr) - 4];
 				$paramsArr[count($paramsArr) - 4] = $tmp;
 			}
-			$cmdLine = ($path . ' ') . implode(' ', $paramsArr);
+			$cmdLine = $path . ' ' . implode(' ', $paramsArr);
 		}
 		return $cmdLine;
 	}

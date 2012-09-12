@@ -63,7 +63,7 @@ class Cache {
 	 * @return boolean True if caching framework is initialized
 	 */
 	static public function isCachingFrameworkInitialized() {
-		if ((((!self::$isCachingFrameworkInitialized && isset($GLOBALS['typo3CacheManager'])) && $GLOBALS['typo3CacheManager'] instanceof \TYPO3\CMS\Core\Cache\CacheManager) && isset($GLOBALS['typo3CacheFactory'])) && $GLOBALS['typo3CacheFactory'] instanceof \TYPO3\CMS\Core\Cache\CacheFactory) {
+		if (!self::$isCachingFrameworkInitialized && isset($GLOBALS['typo3CacheManager']) && $GLOBALS['typo3CacheManager'] instanceof \TYPO3\CMS\Core\Cache\CacheManager && isset($GLOBALS['typo3CacheFactory']) && $GLOBALS['typo3CacheFactory'] instanceof \TYPO3\CMS\Core\Cache\CacheFactory) {
 			self::$isCachingFrameworkInitialized = TRUE;
 		}
 		return self::$isCachingFrameworkInitialized;

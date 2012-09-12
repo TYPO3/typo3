@@ -787,9 +787,9 @@ class RedisBackendTest extends \tx_phpunit_testcase {
 		$identifier = 'identifier' . uniqid();
 		$this->backend->set($identifier . 'A', 'data', array('tag'));
 		$this->backend->set($identifier . 'B', 'data', array('tag'));
-		$this->redis->delete(('identData:' . $identifier) . 'A');
+		$this->redis->delete('identData:' . $identifier . 'A');
 		$this->backend->collectGarbage();
-		$this->assertTrue($this->redis->exists(('identData:' . $identifier) . 'B'));
+		$this->assertTrue($this->redis->exists('identData:' . $identifier . 'B'));
 	}
 
 	/**
@@ -801,12 +801,12 @@ class RedisBackendTest extends \tx_phpunit_testcase {
 		$identifier = 'identifier' . uniqid();
 		$this->backend->set($identifier . 'A', 'data', array('tag'));
 		$this->backend->set($identifier . 'B', 'data', array('tag'));
-		$this->redis->delete(('identData:' . $identifier) . 'A');
+		$this->redis->delete('identData:' . $identifier . 'A');
 		$this->backend->collectGarbage();
 		$expectedResult = array(FALSE, TRUE);
 		$actualResult = array(
-			$this->redis->exists(('identTags:' . $identifier) . 'A'),
-			$this->redis->exists(('identTags:' . $identifier) . 'B')
+			$this->redis->exists('identTags:' . $identifier . 'A'),
+			$this->redis->exists('identTags:' . $identifier . 'B')
 		);
 		$this->assertSame($expectedResult, $actualResult);
 	}
@@ -820,7 +820,7 @@ class RedisBackendTest extends \tx_phpunit_testcase {
 		$identifier = 'identifier' . uniqid();
 		$this->backend->set($identifier . 'A', 'data', array('tag1', 'tag2'));
 		$this->backend->set($identifier . 'B', 'data', array('tag2'));
-		$this->redis->delete(('identData:' . $identifier) . 'A');
+		$this->redis->delete('identData:' . $identifier . 'A');
 		$this->backend->collectGarbage();
 		$expectedResult = array(
 			array(),
