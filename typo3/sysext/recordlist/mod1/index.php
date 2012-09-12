@@ -128,7 +128,7 @@ class SC_db_list {
 		$this->perms_clause = $BE_USER->getPagePermsClause(1);
 
 			// GPvars:
-		$this->id = t3lib_div::_GP('id');
+		$this->id = (int) t3lib_div::_GP('id');
 		$this->pointer = t3lib_div::_GP('pointer');
 		$this->imagemode = t3lib_div::_GP('imagemode');
 		$this->table = t3lib_div::_GP('table');
