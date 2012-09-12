@@ -108,6 +108,10 @@ table#typo3-dblist-fieldSelect {
 	margin-top: 20px;
 }
 
+table#typo3-dblist-fieldSelect input[type="submit"] {
+	margin-left: 10px;
+}
+
 table.typo3-dblist-overview {
 	margin-top: 10px;
 	margin-left: 1px;
