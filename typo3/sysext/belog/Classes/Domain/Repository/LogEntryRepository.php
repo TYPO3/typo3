@@ -58,7 +58,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * Finds all log entries that match all given constraints.
 	 *
 	 * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
-	 * @return Tx_Extbase_Persistence_QueryResult<Tx_Belog_Domain_Model_LogEntry>
+	 * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface<\TYPO3\CMS\Belog\Domain\Model\LogEntry>
 	 */
 	public function findByConstraint(\TYPO3\CMS\Belog\Domain\Model\Constraint $constraint) {
 		$query = $this->createQuery();
@@ -76,7 +76,7 @@ class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
 	 * @param \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint
-	 * @return array<Tx_Extbase_Persistence_QOM_Constraint>
+	 * @return array<\TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface>
 	 */
 	protected function createQueryConstraints(\TYPO3\CMS\Extbase\Persistence\QueryInterface $query, \TYPO3\CMS\Belog\Domain\Model\Constraint $constraint) {
 		$queryConstraints = array();
