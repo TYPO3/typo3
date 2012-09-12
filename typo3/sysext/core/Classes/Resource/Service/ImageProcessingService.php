@@ -80,7 +80,7 @@ class ImageProcessingService {
 		if ($file instanceof \TYPO3\CMS\Core\Resource\FileReference) {
 			$hash = $file->getOriginalFile()->calculateChecksum();
 		} else {
-			$hash = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($theImage . serialize($fileConfiguration)) . serialize($maskImages));
+			$hash = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($theImage . serialize($fileConfiguration) . serialize($maskImages));
 		}
 		if (isset($GLOBALS['TSFE']->tmpl->fileCache[$hash])) {
 			return $GLOBALS['TSFE']->tmpl->fileCache[$hash];
@@ -147,7 +147,7 @@ class ImageProcessingService {
 			}
 		} else {
 			// Filename:
-			$fileDestination = (($gifCreator->tempPath . $hash) . '.') . $imgExt;
+			$fileDestination = $gifCreator->tempPath . $hash . '.' . $imgExt;
 			// Generate!
 			if (!file_exists($fileDestination)) {
 				$this->processMask($maskImages, $gifCreator, $theImage, $fileConfiguration, $options, $fileDestination);
@@ -201,20 +201,20 @@ class ImageProcessingService {
 				}
 				// Scaling:
 				$tempScale = array();
-				$command = ((('-geometry ' . $tempFileInfo[0]) . 'x') . $tempFileInfo[1]) . '!';
+				$command = '-geometry ' . $tempFileInfo[0] . 'x' . $tempFileInfo[1] . '!';
 				$command = $this->modifyImageMagickStripProfileParameters($command, $fileConfiguration);
 				$tmpStr = $gifCreator->randomName();
 				// m_mask
-				$tempScale['m_mask'] = ($tmpStr . '_mask.') . $temp_ext;
+				$tempScale['m_mask'] = $tmpStr . '_mask.' . $temp_ext;
 				$gifCreator->imageMagickExec($m_mask[3], $tempScale['m_mask'], $command . $negate);
 				// m_bgImg
-				$tempScale['m_bgImg'] = ($tmpStr . '_bgImg.') . trim($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_noloss']);
+				$tempScale['m_bgImg'] = $tmpStr . '_bgImg.' . trim($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_mask_temp_ext_noloss']);
 				$gifCreator->imageMagickExec($m_bgImg[3], $tempScale['m_bgImg'], $command);
 				// m_bottomImg / m_bottomImg_mask
 				if ($m_bottomImg && $m_bottomImg_mask) {
-					$tempScale['m_bottomImg'] = ($tmpStr . '_bottomImg.') . $temp_ext;
+					$tempScale['m_bottomImg'] = $tmpStr . '_bottomImg.' . $temp_ext;
 					$gifCreator->imageMagickExec($m_bottomImg[3], $tempScale['m_bottomImg'], $command);
-					$tempScale['m_bottomImg_mask'] = ($tmpStr . '_bottomImg_mask.') . $temp_ext;
+					$tempScale['m_bottomImg_mask'] = $tmpStr . '_bottomImg_mask.' . $temp_ext;
 					$gifCreator->imageMagickExec($m_bottomImg_mask[3], $tempScale['m_bottomImg_mask'], $command . $negate);
 					// BEGIN combining:
 					// The image onto the background (including the mask here)

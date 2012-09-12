@@ -56,9 +56,9 @@ class Localization implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getLocalLanguageLabel($labelKey) {
 		if (TYPO3_MODE === 'FE') {
-			$output = $GLOBALS['TSFE']->sL(($this->localLanguageFile . ':') . $labelKey);
+			$output = $GLOBALS['TSFE']->sL($this->localLanguageFile . ':' . $labelKey);
 		} else {
-			$output = $GLOBALS['LANG']->sL(($this->localLanguageFile . ':') . $labelKey);
+			$output = $GLOBALS['LANG']->sL($this->localLanguageFile . ':' . $labelKey);
 		}
 		return $output;
 	}

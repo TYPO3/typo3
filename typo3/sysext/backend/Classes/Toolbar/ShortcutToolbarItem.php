@@ -72,7 +72,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarks', TRUE);
 		$this->addJavascriptToBackend();
 		$shortcutMenu = array();
-		$shortcutMenu[] = ('<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-shortcut', array('title' => $title))) . '</a>';
+		$shortcutMenu[] = '<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-shortcut', array('title' => $title)) . '</a>';
 		$shortcutMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
 		$shortcutMenu[] = $this->renderMenu();
 		$shortcutMenu[] = '</div>';
@@ -88,21 +88,21 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 		$shortcutGroup = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarksGroup', TRUE);
 		$shortcutEdit = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarksEdit', TRUE);
 		$shortcutDelete = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.bookmarksDelete', TRUE);
-		$groupIcon = ((((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/i/sysf.gif', 'width="18" height="16"')) . ' title="') . $shortcutGroup) . '" alt="') . $shortcutGroup) . '" />';
-		$editIcon = ((((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/edit2.gif', 'width="11" height="12"')) . ' title="') . $shortcutEdit) . '" alt="') . $shortcutEdit) . '"';
-		$deleteIcon = ((((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/garbage.gif', 'width="11" height="12"')) . ' title="') . $shortcutDelete) . '" alt="') . $shortcutDelete) . '" />';
+		$groupIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/i/sysf.gif', 'width="18" height="16"') . ' title="' . $shortcutGroup . '" alt="' . $shortcutGroup . '" />';
+		$editIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/edit2.gif', 'width="11" height="12"') . ' title="' . $shortcutEdit . '" alt="' . $shortcutEdit . '"';
+		$deleteIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/garbage.gif', 'width="11" height="12"') . ' title="' . $shortcutDelete . '" alt="' . $shortcutDelete . '" />';
 		$shortcutMenu[] = '<table border="0" cellspacing="0" cellpadding="0" class="shortcut-list">';
 		// Render shortcuts with no group (group id = 0) first
 		$noGroupShortcuts = $this->getShortcutsByGroup(0);
 		foreach ($noGroupShortcuts as $shortcut) {
-			$shortcutMenu[] = ((((((((((((((('
-			<tr id="shortcut-' . $shortcut['raw']['uid']) . '" class="shortcut">
-				<td class="shortcut-icon">') . $shortcut['icon']) . '</td>
+			$shortcutMenu[] = '
+			<tr id="shortcut-' . $shortcut['raw']['uid'] . '" class="shortcut">
+				<td class="shortcut-icon">' . $shortcut['icon'] . '</td>
 				<td class="shortcut-label">
-					<a id="shortcut-label-') . $shortcut['raw']['uid']) . '" href="#" onclick="') . $shortcut['action']) . '; return false;">') . htmlspecialchars($shortcut['label'])) . '</a>
+					<a id="shortcut-label-' . $shortcut['raw']['uid'] . '" href="#" onclick="' . $shortcut['action'] . '; return false;">' . htmlspecialchars($shortcut['label']) . '</a>
 				</td>
-				<td class="shortcut-edit">') . $editIcon) . ' id="shortcut-edit-') . $shortcut['raw']['uid']) . '" /></td>
-				<td class="shortcut-delete">') . $deleteIcon) . '</td>
+				<td class="shortcut-edit">' . $editIcon . ' id="shortcut-edit-' . $shortcut['raw']['uid'] . '" /></td>
+				<td class="shortcut-delete">' . $deleteIcon . '</td>
 			</tr>';
 		}
 		// Now render groups and the contained shortcuts
@@ -110,10 +110,10 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 		krsort($groups, SORT_NUMERIC);
 		foreach ($groups as $groupId => $groupLabel) {
 			if ($groupId != 0) {
-				$shortcutGroup = ((((('
-				<tr class="shortcut-group" id="shortcut-group-' . $groupId) . '">
-					<td class="shortcut-group-icon">') . $groupIcon) . '</td>
-					<td class="shortcut-group-label">') . $groupLabel) . '</td>
+				$shortcutGroup = '
+				<tr class="shortcut-group" id="shortcut-group-' . $groupId . '">
+					<td class="shortcut-group-icon">' . $groupIcon . '</td>
+					<td class="shortcut-group-label">' . $groupLabel . '</td>
 					<td colspan="2">&nbsp;</td>
 				</tr>';
 				$shortcuts = $this->getShortcutsByGroup($groupId);
@@ -124,14 +124,14 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 					if ($i == 1) {
 						$firstRow = ' first-row';
 					}
-					$shortcutGroup .= ((((((((((((((((('
-					<tr id="shortcut-' . $shortcut['raw']['uid']) . '" class="shortcut') . $firstRow) . '">
-						<td class="shortcut-icon">') . $shortcut['icon']) . '</td>
+					$shortcutGroup .= '
+					<tr id="shortcut-' . $shortcut['raw']['uid'] . '" class="shortcut' . $firstRow . '">
+						<td class="shortcut-icon">' . $shortcut['icon'] . '</td>
 						<td class="shortcut-label">
-							<a id="shortcut-label-') . $shortcut['raw']['uid']) . '" href="#" onclick="') . $shortcut['action']) . '; return false;">') . htmlspecialchars($shortcut['label'])) . '</a>
+							<a id="shortcut-label-' . $shortcut['raw']['uid'] . '" href="#" onclick="' . $shortcut['action'] . '; return false;">' . htmlspecialchars($shortcut['label']) . '</a>
 						</td>
-						<td class="shortcut-edit">') . $editIcon) . ' id="shortcut-edit-') . $shortcut['raw']['uid']) . '" /></td>
-						<td class="shortcut-delete">') . $deleteIcon) . '</td>
+						<td class="shortcut-edit">' . $editIcon . ' id="shortcut-edit-' . $shortcut['raw']['uid'] . '" /></td>
+						<td class="shortcut-delete">' . $deleteIcon . '</td>
 					</tr>';
 				}
 				$shortcutMenu[] = $shortcutGroup;
@@ -144,7 +144,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 				'title' => $title
 			));
 			$label = str_replace('%icon%', $icon, $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:bookmarkDescription'));
-			$shortcutMenu[] = ('<tr><td style="padding:1px 2px; color: #838383;">' . $label) . '</td></tr>';
+			$shortcutMenu[] = '<tr><td style="padding:1px 2px; color: #838383;">' . $label . '</td></tr>';
 		}
 		$shortcutMenu[] = '</table>';
 		$compiledShortcutMenu = implode(LF, $shortcutMenu);
@@ -189,7 +189,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 	protected function initShortcuts() {
 		$shortcuts = array();
 		$globalGroups = $this->getGlobalShortcutGroups();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_be_shortcuts', ((('((userid = ' . $GLOBALS['BE_USER']->user['uid']) . ' AND sc_group>=0) OR sc_group IN (') . implode(',', array_keys($globalGroups))) . '))', '', 'sc_group,sorting');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_be_shortcuts', '((userid = ' . $GLOBALS['BE_USER']->user['uid'] . ' AND sc_group>=0) OR sc_group IN (' . implode(',', array_keys($globalGroups)) . '))', '', 'sc_group,sorting');
 		// Traverse shortcuts
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$shortcut = array('raw' => $row);
@@ -234,7 +234,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 				}
 			}
 			$shortcutGroup = $row['sc_group'];
-			if (($shortcutGroup && strcmp($lastGroup, $shortcutGroup)) && $shortcutGroup != -100) {
+			if ($shortcutGroup && strcmp($lastGroup, $shortcutGroup) && $shortcutGroup != -100) {
 				$shortcut['groupLabel'] = $this->getShortcutGroupLabel($shortcutGroup);
 			}
 			if ($row['description']) {
@@ -245,7 +245,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			$shortcut['group'] = $shortcutGroup;
 			$shortcut['icon'] = $this->getShortcutIcon($row, $shortcut);
 			$shortcut['iconTitle'] = $this->getShortcutIconTitle($shortcutLabel, $row['module_name'], $row['M_module_name']);
-			$shortcut['action'] = ((((((('jump(unescape(\'' . rawurlencode($row['url'])) . '\'),\'') . implode('_', $moduleParts)) . '\',\'') . $moduleParts[0]) . '\', ') . intval($pageId)) . ');';
+			$shortcut['action'] = 'jump(unescape(\'' . rawurlencode($row['url']) . '\'),\'' . implode('_', $moduleParts) . '\',\'' . $moduleParts[0] . '\', ' . intval($pageId) . ');';
 			$lastGroup = $row['sc_group'];
 			$shortcuts[] = $shortcut;
 		}
@@ -321,14 +321,14 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 				$label = $GLOBALS['LANG']->getLL('bookmark_group_' . abs($groupId), 1);
 				if (empty($label)) {
 					// Fallback label
-					$label = ($GLOBALS['LANG']->getLL('bookmark_group', 1) . ' ') . abs($groupId);
+					$label = $GLOBALS['LANG']->getLL('bookmark_group', 1) . ' ' . abs($groupId);
 				}
 			}
 			if ($groupId < 0) {
 				// Global group
-				$label = ($GLOBALS['LANG']->getLL('bookmark_global', 1) . ': ') . (!empty($label) ? $label : abs($groupId));
+				$label = $GLOBALS['LANG']->getLL('bookmark_global', 1) . ': ' . (!empty($label) ? $label : abs($groupId));
 				if ($groupId == -100) {
-					$label = ($GLOBALS['LANG']->getLL('bookmark_global', 1) . ': ') . $GLOBALS['LANG']->getLL('bookmark_all', 1);
+					$label = $GLOBALS['LANG']->getLL('bookmark_global', 1) . ': ' . $GLOBALS['LANG']->getLL('bookmark_all', 1);
 				}
 			}
 			$this->shortcutGroups[$groupId] = $label;
@@ -418,7 +418,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 					if ($shortcut['type'] == 'other') {
 						$shortcutName = $page['title'];
 					} else {
-						$shortcutName = (((($shortcutNamePrepend . ' ') . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title'])) . ' (') . $page['title']) . ')';
+						$shortcutName = $shortcutNamePrepend . ' ' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$shortcut['table']]['ctrl']['title']) . ' (' . $page['title'] . ')';
 					}
 				}
 			} else {
@@ -434,7 +434,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			if ($module && $url) {
 				$fieldValues = array(
 					'userid' => $GLOBALS['BE_USER']->user['uid'],
-					'module_name' => ($module . '|') . $motherModule,
+					'module_name' => $module . '|' . $motherModule,
 					'url' => $url,
 					'description' => $shortcutName,
 					'sorting' => $GLOBALS['EXEC_TIME']
@@ -470,7 +470,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			if ($fieldValues['sc_group'] < 0 && !$GLOBALS['BE_USER']->isAdmin()) {
 				$fieldValues['sc_group'] = 0;
 			}
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_be_shortcuts', ('uid=' . $shortcutId) . $addUserWhere, $fieldValues);
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_be_shortcuts', 'uid=' . $shortcutId . $addUserWhere, $fieldValues);
 			$affectedRows = $GLOBALS['TYPO3_DB']->sql_affected_rows();
 			if ($affectedRows == 1) {
 				$ajaxObj->addContent('shortcut', $shortcutName);
@@ -565,7 +565,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 				$sqlQueryParts = array(
 					'SELECT' => implode(',', $selectFields),
 					'FROM' => $table,
-					'WHERE' => (((('uid IN (' . $recordid) . ') ') . $permissionClause) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table)) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($table)
+					'WHERE' => 'uid IN (' . $recordid . ') ' . $permissionClause . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause($table)
 				);
 				$result = $GLOBALS['TYPO3_DB']->exec_SELECT_queryArray($sqlQueryParts);
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result);
@@ -593,7 +593,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 				$icon = 'gfx/dummy_module.gif';
 			}
 		}
-		return ((((('<img src="' . $icon) . '" alt="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcut', TRUE)) . '" title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcut', TRUE)) . '" />';
+		return '<img src="' . $icon . '" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcut', TRUE) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:toolbarItems.shortcut', TRUE) . '" />';
 	}
 
 	/**
@@ -616,7 +616,7 @@ class ShortcutToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookI
 			}
 		}
 		if ($parentModuleName) {
-			$title .= (' (' . $parentModuleName) . ')';
+			$title .= ' (' . $parentModuleName . ')';
 		}
 		$title .= ': ' . $shortcutLabel;
 		return $title;

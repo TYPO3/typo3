@@ -75,7 +75,7 @@ class XmlParserFactory {
 	 * @return Tx_Extensionmanager_ExtensionXmlAbstractParser an instance of an extension.xml parser
 	 */
 	static public function getParserInstance($parserType, $excludeClassNames = '') {
-		if ((!isset(self::$instance[$parserType]) || !is_object(self::$instance[$parserType])) || !empty($excludeClassNames)) {
+		if (!isset(self::$instance[$parserType]) || !is_object(self::$instance[$parserType]) || !empty($excludeClassNames)) {
 			// reset instance
 			self::$instance[$parserType] = ($objParser = NULL);
 			foreach (self::$parsers[$parserType] as $className => $file) {

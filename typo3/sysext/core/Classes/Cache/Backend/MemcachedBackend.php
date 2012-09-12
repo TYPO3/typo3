@@ -173,7 +173,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 	 */
 	public function setCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache) {
 		parent::setCache($cache);
-		$this->identifierPrefix = ('TYPO3_' . md5(PATH_site)) . '_';
+		$this->identifierPrefix = 'TYPO3_' . md5(PATH_site) . '_';
 	}
 
 	/**
@@ -191,13 +191,13 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 	 */
 	public function set($entryIdentifier, $data, array $tags = array(), $lifetime = NULL) {
 		if (strlen($this->identifierPrefix . $entryIdentifier) > 250) {
-			throw new \InvalidArgumentException((('Could not set value. Key more than 250 characters (' . $this->identifierPrefix) . $entryIdentifier) . ').', 1232969508);
+			throw new \InvalidArgumentException('Could not set value. Key more than 250 characters (' . $this->identifierPrefix . $entryIdentifier . ').', 1232969508);
 		}
 		if (!$this->cache instanceof \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface) {
 			throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1207149215);
 		}
 		if (!is_string($data)) {
-			throw new \t3lib_cache_Exception_InvalidData(('The specified data is of type "' . gettype($data)) . '" but a string is expected.', 1207149231);
+			throw new \t3lib_cache_Exception_InvalidData('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1207149231);
 		}
 		$tags[] = '%MEMCACHEBE%' . $this->cacheIdentifier;
 		$expiration = $lifetime !== NULL ? $lifetime : $this->defaultLifetime;
@@ -212,7 +212,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 				$success = TRUE;
 				$chunkNumber = 1;
 				foreach ($data as $chunk) {
-					$success = $success && $this->memcache->set((($this->identifierPrefix . $entryIdentifier) . '_chunk_') . $chunkNumber, $chunk, $this->flags, $expiration);
+					$success = $success && $this->memcache->set($this->identifierPrefix . $entryIdentifier . '_chunk_' . $chunkNumber, $chunk, $this->flags, $expiration);
 					$chunkNumber++;
 				}
 				$success = $success && $this->memcache->set($this->identifierPrefix . $entryIdentifier, 'TYPO3*chunked:' . $chunkNumber, $this->flags, $expiration);
@@ -243,7 +243,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 			list(, $chunkCount) = explode(':', $value);
 			$value = '';
 			for ($chunkNumber = 1; $chunkNumber < $chunkCount; $chunkNumber++) {
-				$value .= $this->memcache->get((($this->identifierPrefix . $entryIdentifier) . '_chunk_') . $chunkNumber);
+				$value .= $this->memcache->get($this->identifierPrefix . $entryIdentifier . '_chunk_' . $chunkNumber);
 			}
 		}
 		return $value;
@@ -283,7 +283,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 	 * @api
 	 */
 	public function findIdentifiersByTag($tag) {
-		$identifiers = $this->memcache->get(($this->identifierPrefix . 'tag_') . $tag);
+		$identifiers = $this->memcache->get($this->identifierPrefix . 'tag_' . $tag);
 		if ($identifiers !== FALSE) {
 			return (array) $identifiers;
 		} else {
@@ -332,12 +332,12 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 			$identifiers = $this->findIdentifiersByTag($tag);
 			if (array_search($entryIdentifier, $identifiers) === FALSE) {
 				$identifiers[] = $entryIdentifier;
-				$this->memcache->set(($this->identifierPrefix . 'tag_') . $tag, $identifiers);
+				$this->memcache->set($this->identifierPrefix . 'tag_' . $tag, $identifiers);
 			}
 			// Update identifier-to-tag index
 			$existingTags = $this->findTagsByIdentifier($entryIdentifier);
 			if (array_search($tag, $existingTags) === FALSE) {
-				$this->memcache->set(($this->identifierPrefix . 'ident_') . $entryIdentifier, array_merge($existingTags, $tags));
+				$this->memcache->set($this->identifierPrefix . 'ident_' . $entryIdentifier, array_merge($existingTags, $tags));
 			}
 		}
 	}
@@ -363,14 +363,14 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 			if (($key = array_search($entryIdentifier, $identifiers)) !== FALSE) {
 				unset($identifiers[$key]);
 				if (count($identifiers)) {
-					$this->memcache->set(($this->identifierPrefix . 'tag_') . $tag, $identifiers);
+					$this->memcache->set($this->identifierPrefix . 'tag_' . $tag, $identifiers);
 				} else {
-					$this->memcache->delete(($this->identifierPrefix . 'tag_') . $tag, 0);
+					$this->memcache->delete($this->identifierPrefix . 'tag_' . $tag, 0);
 				}
 			}
 		}
 		// Clear reverse tag index for this identifier
-		$this->memcache->delete(($this->identifierPrefix . 'ident_') . $entryIdentifier, 0);
+		$this->memcache->delete($this->identifierPrefix . 'ident_' . $entryIdentifier, 0);
 	}
 
 	/**
@@ -382,7 +382,7 @@ class MemcachedBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend imp
 	 * @api
 	 */
 	protected function findTagsByIdentifier($identifier) {
-		$tags = $this->memcache->get(($this->identifierPrefix . 'ident_') . $identifier);
+		$tags = $this->memcache->get($this->identifierPrefix . 'ident_' . $identifier);
 		return $tags === FALSE ? array() : (array) $tags;
 	}
 

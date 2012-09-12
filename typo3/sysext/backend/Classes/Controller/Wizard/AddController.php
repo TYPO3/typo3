@@ -97,7 +97,7 @@ class AddController {
 				$this->id = intval(key($eC[$this->table]));
 				$cmd = current($eC[$this->table]);
 				// ... and if everything seems OK we will register some classes for inclusion and instruct the object to perform processing later.
-				if ((((($this->P['params']['setValue'] && $cmd == 'edit') && $this->id) && $this->P['table']) && $this->P['field']) && $this->P['uid']) {
+				if ($this->P['params']['setValue'] && $cmd == 'edit' && $this->id && $this->P['table'] && $this->P['field'] && $this->P['uid']) {
 					if ($LiveRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord($this->table, $this->id, 'uid')) {
 						$this->id = $LiveRec['uid'];
 					}
@@ -127,7 +127,7 @@ class AddController {
 					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
 					$tce->stripslashes_values = 0;
 					$data = array();
-					$addEl = ($this->table . '_') . $this->id;
+					$addEl = $this->table . '_' . $this->id;
 					// Setting the new field data:
 					// If the field is a flexform field, work with the XML structure instead:
 					if ($this->P['flexFormPath']) {
@@ -141,10 +141,10 @@ class AddController {
 							$insertValue = $addEl;
 							break;
 						case 'prepend':
-							$insertValue = ($curValueOfFlexform . ',') . $addEl;
+							$insertValue = $curValueOfFlexform . ',' . $addEl;
 							break;
 						case 'append':
-							$insertValue = ($addEl . ',') . $curValueOfFlexform;
+							$insertValue = $addEl . ',' . $curValueOfFlexform;
 							break;
 						}
 						$insertValue = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $insertValue, 1));
@@ -156,10 +156,10 @@ class AddController {
 							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl;
 							break;
 						case 'prepend':
-							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = ($current[$this->P['field']] . ',') . $addEl;
+							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $current[$this->P['field']] . ',' . $addEl;
 							break;
 						case 'append':
-							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = ($addEl . ',') . $current[$this->P['field']];
+							$data[$this->P['table']][$this->P['uid']][$this->P['field']] = $addEl . ',' . $current[$this->P['field']];
 							break;
 						}
 						$data[$this->P['table']][$this->P['uid']][$this->P['field']] = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $data[$this->P['table']][$this->P['uid']][$this->P['field']], 1));
@@ -174,7 +174,7 @@ class AddController {
 		} else {
 			// Redirecting to alt_doc.php with instructions to create a new record
 			// AND when closing to return back with information about that records ID etc.
-			$redirectUrl = ((((('alt_doc.php?returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '&returnEditConf=1&edit[') . $this->P['params']['table']) . '][') . $this->pid) . ']=new';
+			$redirectUrl = 'alt_doc.php?returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '&returnEditConf=1&edit[' . $this->P['params']['table'] . '][' . $this->pid . ']=new';
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
 		}
 	}

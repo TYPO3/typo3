@@ -46,7 +46,7 @@ class HiddenElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstract
 	 * @return string
 	 */
 	public function render() {
-		$content = ($this->getLabel() . ': ') . $this->getValue();
+		$content = $this->getLabel() . ': ' . $this->getValue();
 		return str_repeat(chr(32), $this->spaces) . $content;
 	}
 

@@ -83,7 +83,7 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 		$existTemplate = $this->initialize_editor($this->pObj->id, $template_uid);
 		// initialize
 		if ($existTemplate) {
-			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', TRUE), (((\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_template', $GLOBALS['tplRow']) . '<strong>') . $this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']['title'])) . '</strong>') . htmlspecialchars((trim($GLOBALS['tplRow']['sitetitle']) ? (' (' . $GLOBALS['tplRow']['sitetitle']) . ')' : '')));
+			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('currentTemplate', TRUE), \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_template', $GLOBALS['tplRow']) . '<strong>' . $this->pObj->linkWrapTemplateTitle($GLOBALS['tplRow']['title']) . '</strong>' . htmlspecialchars((trim($GLOBALS['tplRow']['sitetitle']) ? ' (' . $GLOBALS['tplRow']['sitetitle'] . ')' : '')));
 		}
 		if ($manyTemplatesMenu) {
 			$theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
@@ -95,16 +95,16 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 		$GLOBALS['tmpl']->processIncludes();
 		$hierarArr = array();
 		$head = '<tr class="t3-row-header">';
-		$head .= ('<td>' . $GLOBALS['LANG']->getLL('title', TRUE)) . '</td>';
-		$head .= ('<td>' . $GLOBALS['LANG']->getLL('rootlevel', TRUE)) . '</td>';
-		$head .= ('<td>' . $GLOBALS['LANG']->getLL('clearSetup', TRUE)) . '</td>';
-		$head .= ('<td>' . $GLOBALS['LANG']->getLL('clearConstants', TRUE)) . '</td>';
-		$head .= ('<td>' . $GLOBALS['LANG']->getLL('pid', TRUE)) . '</td>';
-		$head .= ('<td>' . $GLOBALS['LANG']->getLL('rootline', TRUE)) . '</td>';
-		$head .= ('<td>' . $GLOBALS['LANG']->getLL('nextLevel', TRUE)) . '</td>';
+		$head .= '<td>' . $GLOBALS['LANG']->getLL('title', TRUE) . '</td>';
+		$head .= '<td>' . $GLOBALS['LANG']->getLL('rootlevel', TRUE) . '</td>';
+		$head .= '<td>' . $GLOBALS['LANG']->getLL('clearSetup', TRUE) . '</td>';
+		$head .= '<td>' . $GLOBALS['LANG']->getLL('clearConstants', TRUE) . '</td>';
+		$head .= '<td>' . $GLOBALS['LANG']->getLL('pid', TRUE) . '</td>';
+		$head .= '<td>' . $GLOBALS['LANG']->getLL('rootline', TRUE) . '</td>';
+		$head .= '<td>' . $GLOBALS['LANG']->getLL('nextLevel', TRUE) . '</td>';
 		$head .= '</tr>';
 		$hierar = implode(array_reverse($GLOBALS['tmpl']->ext_getTemplateHierarchyArr($GLOBALS['tmpl']->hierarchyInfoArr, '', array(), 1)), '');
-		$hierar = (('<table id="ts-analyzer" cellpadding="0" cellspacing="0">' . $head) . $hierar) . '</table>';
+		$hierar = '<table id="ts-analyzer" cellpadding="0" cellspacing="0">' . $head . $hierar . '</table>';
 		$theOutput .= $this->pObj->doc->spacer(5);
 		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateHierarchy', TRUE), $hierar, 0, 1);
 		$urlParameters = array(
@@ -112,14 +112,14 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 			'template' => 'all'
 		);
 		$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
-		$completeLink = ((('<p><a href="' . htmlspecialchars($aHref)) . '">') . $GLOBALS['LANG']->getLL('viewCompleteTS', TRUE)) . '</a></p>';
+		$completeLink = '<p><a href="' . htmlspecialchars($aHref) . '">' . $GLOBALS['LANG']->getLL('viewCompleteTS', TRUE) . '</a></p>';
 		$theOutput .= $this->pObj->doc->spacer(5);
 		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('completeTS', TRUE), $completeLink, 0, 1);
 		$theOutput .= $this->pObj->doc->spacer(15);
 		// Output options
 		$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('displayOptions', TRUE), '', FALSE, TRUE);
 		$addParams = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') ? '&template=' . \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') : '';
-		$theOutput .= ((((((((('<div class="tst-analyzer-options">' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkLinenum]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], '', $addParams, 'id="checkTs_analyzer_checkLinenum"')) . '<label for="checkTs_analyzer_checkLinenum">') . $GLOBALS['LANG']->getLL('lineNumbers', TRUE)) . '</label> ') . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkSyntax]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], '', $addParams, 'id="checkTs_analyzer_checkSyntax"')) . '<label for="checkTs_analyzer_checkSyntax">') . $GLOBALS['LANG']->getLL('syntaxHighlight', TRUE)) . '</label> ') . (!$this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'] ? ((((((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkComments]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], '', $addParams, 'id="checkTs_analyzer_checkComments"') . '<label for="checkTs_analyzer_checkComments">') . $GLOBALS['LANG']->getLL('comments', TRUE)) . '</label> ') . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkCrop]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], '', $addParams, 'id="checkTs_analyzer_checkCrop"')) . '<label for="checkTs_analyzer_checkCrop">') . $GLOBALS['LANG']->getLL('cropLines', TRUE)) . '</label> ' : '')) . '</div>';
+		$theOutput .= '<div class="tst-analyzer-options">' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkLinenum]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], '', $addParams, 'id="checkTs_analyzer_checkLinenum"') . '<label for="checkTs_analyzer_checkLinenum">' . $GLOBALS['LANG']->getLL('lineNumbers', TRUE) . '</label> ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkSyntax]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], '', $addParams, 'id="checkTs_analyzer_checkSyntax"') . '<label for="checkTs_analyzer_checkSyntax">' . $GLOBALS['LANG']->getLL('syntaxHighlight', TRUE) . '</label> ' . (!$this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'] ? \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkComments]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], '', $addParams, 'id="checkTs_analyzer_checkComments"') . '<label for="checkTs_analyzer_checkComments">' . $GLOBALS['LANG']->getLL('comments', TRUE) . '</label> ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[ts_analyzer_checkCrop]', $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], '', $addParams, 'id="checkTs_analyzer_checkCrop"') . '<label for="checkTs_analyzer_checkCrop">' . $GLOBALS['LANG']->getLL('cropLines', TRUE) . '</label> ' : '') . '</div>';
 		$theOutput .= $this->pObj->doc->spacer(25);
 		// Output Constants
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template')) {
@@ -136,11 +136,11 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 			foreach ($GLOBALS['tmpl']->constants as $key => $val) {
 				$cVal = current($GLOBALS['tmpl']->clearList_const);
 				if ($cVal == \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') || \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') == 'all') {
-					$theOutput .= ((('
+					$theOutput .= '
 						<tr>
-							</td><td class="bgColor2"><strong>' . htmlspecialchars($GLOBALS['tmpl']->templateTitles[$cVal])) . '</strong></td></tr>
+							</td><td class="bgColor2"><strong>' . htmlspecialchars($GLOBALS['tmpl']->templateTitles[$cVal]) . '</strong></td></tr>
 						<tr>
-							<td class="bgColor2"><table border="0" cellpadding="0" cellspacing="0" class="bgColor0" width="100%"><tr><td nowrap="nowrap">') . $GLOBALS['tmpl']->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0)) . '</td></tr></table>
+							<td class="bgColor2"><table border="0" cellpadding="0" cellspacing="0" class="bgColor0" width="100%"><tr><td nowrap="nowrap">' . $GLOBALS['tmpl']->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) . '</td></tr></table>
 							</td>
 						</tr>
 					';
@@ -169,11 +169,11 @@ class TemplateAnalyzerModuleFunctionController extends \TYPO3\CMS\Backend\Module
 			reset($GLOBALS['tmpl']->clearList_setup);
 			foreach ($GLOBALS['tmpl']->config as $key => $val) {
 				if (current($GLOBALS['tmpl']->clearList_setup) == \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') || \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('template') == 'all') {
-					$theOutput .= ((('
+					$theOutput .= '
 						<tr>
-							<td class="bgColor2"><strong>' . htmlspecialchars($GLOBALS['tmpl']->templateTitles[current($GLOBALS['tmpl']->clearList_setup)])) . '</strong></td></tr>
+							<td class="bgColor2"><strong>' . htmlspecialchars($GLOBALS['tmpl']->templateTitles[current($GLOBALS['tmpl']->clearList_setup)]) . '</strong></td></tr>
 						<tr>
-							<td class="bgColor2"><table border="0" cellpadding="0" cellspacing="0" class="bgColor0" width="100%"><tr><td nowrap="nowrap">') . $GLOBALS['tmpl']->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0)) . '</td></tr></table>
+							<td class="bgColor2"><table border="0" cellpadding="0" cellspacing="0" class="bgColor0" width="100%"><tr><td nowrap="nowrap">' . $GLOBALS['tmpl']->ext_outputTS(array($val), $this->pObj->MOD_SETTINGS['ts_analyzer_checkLinenum'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkComments'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkCrop'], $this->pObj->MOD_SETTINGS['ts_analyzer_checkSyntax'], 0) . '</td></tr></table>
 							</td>
 						</tr>
 					';

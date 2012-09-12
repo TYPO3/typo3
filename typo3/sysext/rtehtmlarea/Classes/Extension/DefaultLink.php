@@ -72,11 +72,11 @@ class DefaultLink extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$button = 'link';
 		if (in_array($button, $this->toolbar) && $this->htmlAreaRTE->is_FE()) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-				$registerRTEinJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . ']["buttons"]["') . $button) . '"] = new Object();';
+				$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . ']["buttons"]["' . $button . '"] = new Object();';
 			}
-			$registerRTEinJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . '.stripBaseUrl = true;';
+			$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.stripBaseUrl = true;';
 		}
 		return $registerRTEinJavascriptString;
 	}

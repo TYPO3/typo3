@@ -47,7 +47,7 @@ class LoginFormHook {
 
 		case 'superchallenged':
 			$_SESSION['login_challenge'] = $this->getChallenge();
-			$content = ((((('<form action="index.php" method="post" name="loginform" ' . 'onsubmit="doChallengeResponse(') . ($pObj->loginSecurityLevel == 'challenged' ? 0 : 1)) . ');">') . '<input type="hidden" name="challenge" value="') . htmlspecialchars($_SESSION['login_challenge'])) . '" />';
+			$content = '<form action="index.php" method="post" name="loginform" ' . 'onsubmit="doChallengeResponse(' . ($pObj->loginSecurityLevel == 'challenged' ? 0 : 1) . ');">' . '<input type="hidden" name="challenge" value="' . htmlspecialchars($_SESSION['login_challenge']) . '" />';
 			break;
 		case 'normal':
 			$content = '<form action="index.php" method="post" name="loginform" onsubmit="document.loginform.userident.value=document.loginform.p_field.value;document.loginform.p_field.value=\'\';return true;">';

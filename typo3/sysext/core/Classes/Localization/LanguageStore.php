@@ -160,8 +160,8 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 		);
 		$fileWithoutExtension = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->getFileReferenceWithoutExtension($fileReference));
 		foreach ($this->supportedExtensions as $extension) {
-			if (@is_file((($fileWithoutExtension . '.') . $extension))) {
-				$this->configuration[$fileReference]['fileReference'] = ($fileWithoutExtension . '.') . $extension;
+			if (@is_file(($fileWithoutExtension . '.' . $extension))) {
+				$this->configuration[$fileReference]['fileReference'] = $fileWithoutExtension . '.' . $extension;
 				$this->configuration[$fileReference]['fileExtension'] = $extension;
 				break;
 			}
@@ -173,10 +173,10 @@ class LanguageStore implements \TYPO3\CMS\Core\SingletonInterface {
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['parser'][$extension]) && trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['parser'][$extension]) !== '') {
 			$this->configuration[$fileReference]['parserClass'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['lang']['parser'][$extension];
 		} else {
-			throw new \TYPO3\CMS\Core\Localization\Exception\InvalidParserException(('TYPO3 Fatal Error: l10n parser for file extension "' . $extension) . '" is not configured! Please check you configuration.', 1301579637);
+			throw new \TYPO3\CMS\Core\Localization\Exception\InvalidParserException('TYPO3 Fatal Error: l10n parser for file extension "' . $extension . '" is not configured! Please check you configuration.', 1301579637);
 		}
 		if (!class_exists($this->configuration[$fileReference]['parserClass']) || trim($this->configuration[$fileReference]['parserClass']) === '') {
-			throw new \TYPO3\CMS\Core\Localization\Exception\InvalidParserException(('TYPO3 Fatal Error: l10n parser "' . $this->configuration[$fileReference]['parserClass']) . '" cannot be found or is an empty parser!', 1270853900);
+			throw new \TYPO3\CMS\Core\Localization\Exception\InvalidParserException('TYPO3 Fatal Error: l10n parser "' . $this->configuration[$fileReference]['parserClass'] . '" cannot be found or is an empty parser!', 1270853900);
 		}
 		return $this;
 	}

@@ -61,22 +61,22 @@ class MultimediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 				if (!$height) {
 					$height = 200;
 				}
-				$parArray['src'] = (('src="' . $GLOBALS['TSFE']->absRefPrefix) . $incFile) . '"';
+				$parArray['src'] = 'src="' . $GLOBALS['TSFE']->absRefPrefix . $incFile . '"';
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('au,wav,mp3', $fileinfo['fileext'])) {
 
 				}
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('avi,mov,mpg,asf,wmv', $fileinfo['fileext'])) {
-					$parArray['width'] = ('width="' . $width) . '"';
-					$parArray['height'] = ('height="' . $height) . '"';
+					$parArray['width'] = 'width="' . $width . '"';
+					$parArray['height'] = 'height="' . $height . '"';
 				}
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('swf,swa,dcr', $fileinfo['fileext'])) {
 					$parArray['quality'] = 'quality="high"';
-					$parArray['width'] = ('width="' . $width) . '"';
-					$parArray['height'] = ('height="' . $height) . '"';
+					$parArray['width'] = 'width="' . $width . '"';
+					$parArray['height'] = 'height="' . $height . '"';
 				}
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('class', $fileinfo['fileext'])) {
-					$parArray['width'] = ('width="' . $width) . '"';
-					$parArray['height'] = ('height="' . $height) . '"';
+					$parArray['width'] = 'width="' . $width . '"';
+					$parArray['height'] = 'height="' . $height . '"';
 				}
 				// fetching params
 				$params = isset($conf['params.']) ? $this->cObj->stdWrap($conf['params'], $conf['params.']) : $conf['params'];
@@ -86,18 +86,18 @@ class MultimediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 					$parameter = strtolower(trim($parts[0]));
 					$value = trim($parts[1]);
 					if ((string) $value != '') {
-						$parArray[$parameter] = (($parameter . '="') . htmlspecialchars($value)) . '"';
+						$parArray[$parameter] = $parameter . '="' . htmlspecialchars($value) . '"';
 					} else {
 						unset($parArray[$parameter]);
 					}
 				}
 				if ($fileinfo['fileext'] == 'class') {
 					unset($parArray['src']);
-					$parArray['code'] = ('code="' . htmlspecialchars($fileinfo['file'])) . '"';
-					$parArray['codebase'] = ('codebase="' . htmlspecialchars($fileinfo['path'])) . '"';
-					$content = ('<applet ' . implode(' ', $parArray)) . '></applet>';
+					$parArray['code'] = 'code="' . htmlspecialchars($fileinfo['file']) . '"';
+					$parArray['codebase'] = 'codebase="' . htmlspecialchars($fileinfo['path']) . '"';
+					$content = '<applet ' . implode(' ', $parArray) . '></applet>';
 				} else {
-					$content = ('<embed ' . implode(' ', $parArray)) . '></embed>';
+					$content = '<embed ' . implode(' ', $parArray) . '></embed>';
 				}
 			}
 		}

@@ -89,13 +89,13 @@ class t3lib_ajax {
 		} else {
 			$fallback = 'return';
 		}
-		$code .= ((((('
+		$code .= '
 		function ajax_doRequest(url) {
 			var x;
 
 			x = ajax_initObject();
 			if (!x) {
-				' . $fallback) . ';
+				' . $fallback . ';
 			}
 			x.open("GET", url, true);
 
@@ -103,10 +103,10 @@ class t3lib_ajax {
 				if (x.readyState != 4) {
 					return;
 				}
-				') . ($debug ? 'alert(x.responseText)' : '')) . '
+				' . ($debug ? 'alert(x.responseText)' : '') . '
 				var xmldoc = x.responseXML;
 				var t3ajax = xmldoc.getElementsByTagName("t3ajax")[0];
-				') . $handlerFunction) . '(t3ajax);
+				' . $handlerFunction . '(t3ajax);
 			}
 			x.send("");
 
@@ -126,8 +126,8 @@ class t3lib_ajax {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		// AJAX needs some XML data
 		header('Content-Type: text/xml');
-		$xml = ('<?xml version="1.0"?>
-<t3ajax>' . $innerXML) . '</t3ajax>';
+		$xml = '<?xml version="1.0"?>
+<t3ajax>' . $innerXML . '</t3ajax>';
 		echo $xml;
 	}
 

@@ -719,7 +719,7 @@ class CharsetConverter {
 				}
 				break;
 			case 'recode':
-				$conv_str = recode_string(($fromCS . '..') . $toCS, $str);
+				$conv_str = recode_string($fromCS . '..' . $toCS, $str);
 				if (FALSE !== $conv_str) {
 					return $conv_str;
 				}
@@ -870,7 +870,7 @@ class CharsetConverter {
 							}
 						} elseif ($useEntityForNoChar) {
 							// Create num entity:
-							$outStr .= ('&#' . $this->utf8CharToUnumber($buf, 1)) . ';';
+							$outStr .= '&#' . $this->utf8CharToUnumber($buf, 1) . ';';
 						} else {
 							$outStr .= chr($this->noCharByteVal);
 						}
@@ -919,7 +919,7 @@ class CharsetConverter {
 							break;
 						}
 					}
-					$outStr .= ('&#' . $this->utf8CharToUnumber($buf, 1)) . ';';
+					$outStr .= '&#' . $this->utf8CharToUnumber($buf, 1) . ';';
 				} else {
 					$outStr .= chr($this->noCharByteVal);
 				}
@@ -943,7 +943,7 @@ class CharsetConverter {
 			$trans_tbl = array_flip(get_html_translation_table(HTML_ENTITIES, ENT_COMPAT, 'UTF-8'));
 		}
 		$token = md5(microtime());
-		$parts = explode($token, preg_replace('/(&([#[:alnum:]]*);)/', ($token . '${2}') . $token, $str));
+		$parts = explode($token, preg_replace('/(&([#[:alnum:]]*);)/', $token . '${2}' . $token, $str));
 		foreach ($parts as $k => $v) {
 			// Only take every second element
 			if ($k % 2 === 0) {
@@ -959,12 +959,12 @@ class CharsetConverter {
 					$v = substr($v, $position);
 				}
 				$parts[$k] = $this->UnumberToChar($v);
-			} elseif ($alsoStdHtmlEnt && isset($trans_tbl[('&' . $v) . ';'])) {
+			} elseif ($alsoStdHtmlEnt && isset($trans_tbl['&' . $v . ';'])) {
 				// Other entities:
-				$parts[$k] = $trans_tbl[('&' . $v) . ';'];
+				$parts[$k] = $trans_tbl['&' . $v . ';'];
 			} else {
 				// No conversion:
-				$parts[$k] = ('&' . $v) . ';';
+				$parts[$k] = '&' . $v . ';';
 			}
 		}
 		return implode('', $parts);
@@ -1144,12 +1144,12 @@ class CharsetConverter {
 		// Only process if the charset is not yet loaded:
 		if (!is_array($this->parsedCharsets[$charset])) {
 			// Conversion table filename:
-			$charsetConvTableFile = ((PATH_t3lib . 'csconvtbl/') . $charset) . '.tbl';
+			$charsetConvTableFile = PATH_t3lib . 'csconvtbl/' . $charset . '.tbl';
 			// If the conversion table is found:
-			if (($charset && \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($charsetConvTableFile)) && @is_file($charsetConvTableFile)) {
+			if ($charset && \TYPO3\CMS\Core\Utility\GeneralUtility::validPathStr($charsetConvTableFile) && @is_file($charsetConvTableFile)) {
 				// Cache file for charsets:
 				// Caching brought parsing time for gb2312 down from 2400 ms to 150 ms. For other charsets we are talking 11 ms down to zero.
-				$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(('typo3temp/cs/charset_' . $charset) . '.tbl');
+				$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/cs/charset_' . $charset . '.tbl');
 				if ($cacheFile && @is_file($cacheFile)) {
 					$this->parsedCharsets[$charset] = unserialize(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($cacheFile));
 				} else {
@@ -1304,11 +1304,11 @@ class CharsetConverter {
 				switch ($match[1]) {
 				case '<circle>':
 					// add parenthesis as circle replacement, eg (1)
-					$match[2] = ('0028 ' . $match[2]) . ' 0029';
+					$match[2] = '0028 ' . $match[2] . ' 0029';
 					break;
 				case '<square>':
 					// add square brackets as square replacement, eg [1]
-					$match[2] = ('005B ' . $match[2]) . ' 005D';
+					$match[2] = '005B ' . $match[2] . ' 005D';
 					break;
 				case '<compat>':
 					// ignore multi char decompositions that start with a space
@@ -1454,7 +1454,7 @@ class CharsetConverter {
 			return 1;
 		}
 		// Use cached version if possible
-		$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(('typo3temp/cs/cscase_' . $charset) . '.tbl');
+		$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/cs/cscase_' . $charset . '.tbl');
 		if ($cacheFile && @is_file($cacheFile)) {
 			$this->caseFolding[$charset] = unserialize(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($cacheFile));
 			return 2;
@@ -1512,7 +1512,7 @@ class CharsetConverter {
 			return 1;
 		}
 		// Use cached version if possible
-		$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(('typo3temp/cs/csascii_' . $charset) . '.tbl');
+		$cacheFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('typo3temp/cs/csascii_' . $charset . '.tbl');
 		if ($cacheFile && @is_file($cacheFile)) {
 			$this->toASCII[$charset] = unserialize(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($cacheFile));
 			return 2;

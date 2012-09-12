@@ -54,7 +54,7 @@ class StaticTemplatesHook {
 						// ... there was a template, then we fetch that
 					if ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 						$subrow = $pObj->prependStaticExtra($subrow);
-						$pObj->processTemplate($subrow, ($params['idList'] . ',static_') . $id, $params['pid'], 'static_' . $id, $params['templateId']);
+						$pObj->processTemplate($subrow, $params['idList'] . ',static_' . $id, $params['pid'], 'static_' . $id, $params['templateId']);
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				}

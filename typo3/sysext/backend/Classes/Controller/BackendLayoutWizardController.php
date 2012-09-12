@@ -48,12 +48,12 @@ class BackendLayoutWizardController {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\StandardDocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$pageRenderer = $this->doc->getPageRenderer();
-		$pageRenderer->addJsFile(($GLOBALS['BACK_PATH'] . TYPO3_MOD_PATH) . 'res/grideditor.js');
-		$pageRenderer->addJsInlineCode('storeData', ((((((((((((('
+		$pageRenderer->addJsFile($GLOBALS['BACK_PATH'] . TYPO3_MOD_PATH . 'res/grideditor.js');
+		$pageRenderer->addJsInlineCode('storeData', '
 			function storeData(data) {
-				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName) . ' && parent.opener.document.') . $this->formName) . '["') . $this->fieldName) . '"]) {
-					parent.opener.document.') . $this->formName) . '["') . $this->fieldName) . '"].value = data;
-					parent.opener.TBE_EDITOR.fieldChanged("backend_layout","') . $uid) . '","config","data[backend_layout][') . $uid) . '][config]");
+				if (parent.opener && parent.opener.document && parent.opener.document.' . $this->formName . ' && parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"]) {
+					parent.opener.document.' . $this->formName . '["' . $this->fieldName . '"].value = data;
+					parent.opener.TBE_EDITOR.fieldChanged("backend_layout","' . $uid . '","config","data[backend_layout][' . $uid . '][config]");
 				}
 			}
 			', FALSE);
@@ -129,7 +129,7 @@ class BackendLayoutWizardController {
 								$cellData[] = 'rowspan:1';
 							}
 							if (isset($column['name'])) {
-								$cellData[] = ('name:\'' . $column['name']) . '\'';
+								$cellData[] = 'name:\'' . $column['name'] . '\'';
 							}
 							if (isset($column['colPos'])) {
 								$cellData[] = 'column:' . $column['colPos'];
@@ -151,11 +151,11 @@ class BackendLayoutWizardController {
 			$t3GridData .= implode(',', $rows) . ']';
 		}
 		$pageRenderer->enableExtJSQuickTips();
-		$pageRenderer->addExtOnReadyCode(((((('
+		$pageRenderer->addExtOnReadyCode('
 			t3Grid = new TYPO3.Backend.t3Grid({
-				data: ' . $t3GridData) . ',
-				colCount: ') . $colCount) . ',
-				rowCount: ') . $rowCount) . ',
+				data: ' . $t3GridData . ',
+				colCount: ' . $colCount . ',
+				rowCount: ' . $rowCount . ',
 				targetElement: \'editor\'
 			});
 			t3Grid.drawTable();
@@ -170,11 +170,11 @@ class BackendLayoutWizardController {
 	 * @todo Define visibility
 	 */
 	public function main() {
-		$content .= ((('<a href="#" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', TRUE)) . '" onclick="storeData(t3Grid.export2LayoutRecord());return true;">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save')) . '</a>';
-		$content .= ((('<a href="#" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', TRUE)) . '" onclick="storeData(t3Grid.export2LayoutRecord());window.close();return true;">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save-close')) . '</a>';
-		$content .= ((('<a href="#" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE)) . '" onclick="window.close();return true;">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close')) . '</a>';
+		$content .= '<a href="#" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', TRUE) . '" onclick="storeData(t3Grid.export2LayoutRecord());return true;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save') . '</a>';
+		$content .= '<a href="#" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveCloseDoc', TRUE) . '" onclick="storeData(t3Grid.export2LayoutRecord());window.close();return true;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save-close') . '</a>';
+		$content .= '<a href="#" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE) . '" onclick="window.close();return true;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close') . '</a>';
 		$content .= $this->doc->spacer(10);
-		$content .= ((((((('
+		$content .= '
 		<table border="0" width="100%" height="100%" id="outer_container">
 			<tr>
 				<td class="editor_cell">
@@ -182,20 +182,20 @@ class BackendLayoutWizardController {
 					</div>
 				</td>
 				<td width="20" valign="center">
-					<a class="addCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_addColumn')) . '" onclick="t3Grid.addColumn(); t3Grid.drawTable(\'editor\');">
+					<a class="addCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_addColumn') . '" onclick="t3Grid.addColumn(); t3Grid.drawTable(\'editor\');">
 						<img src="res/t3grid-tableright.png" border="0" />
 					</a><br />
-					<a class="removeCol" href="#" title="') . $GLOBALS['LANG']->getLL('grid_removeColumn')) . '" onclick="t3Grid.removeColumn(); t3Grid.drawTable(\'editor\');">
+					<a class="removeCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_removeColumn') . '" onclick="t3Grid.removeColumn(); t3Grid.drawTable(\'editor\');">
 						<img src="res/t3grid-tableleft.png" border="0" />
 					</a>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2" height="20" align="center">
-					<a class="addCol" href="#" title="') . $GLOBALS['LANG']->getLL('grid_addRow')) . '" onclick="t3Grid.addRow(); t3Grid.drawTable(\'editor\');">
+					<a class="addCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_addRow') . '" onclick="t3Grid.addRow(); t3Grid.drawTable(\'editor\');">
 						<img src="res/t3grid-tabledown.png" border="0" />
 					</a>
-					<a class="removeCol" href="#" title="') . $GLOBALS['LANG']->getLL('grid_removeRow')) . '" onclick="t3Grid.removeRow(); t3Grid.drawTable(\'editor\');">
+					<a class="removeCol" href="#" title="' . $GLOBALS['LANG']->getLL('grid_removeRow') . '" onclick="t3Grid.removeRow(); t3Grid.drawTable(\'editor\');">
 						<img src="res/t3grid-tableup.png" border="0" />
 					</a>
 				</td>

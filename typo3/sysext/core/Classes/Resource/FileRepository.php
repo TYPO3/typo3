@@ -180,7 +180,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 		if (!is_numeric($uid)) {
 			throw new \InvalidArgumentException('Uid of related record has to be numeric.', 1316789798);
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_file_reference', (((((('tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_file_reference')) . ' AND deleted=0') . ' AND hidden=0') . ' AND uid_foreign=') . intval($uid)) . ' AND fieldname=') . $GLOBALS['TYPO3_DB']->fullQuoteStr($fieldName, 'sys_file_reference'), '', 'sorting_foreign');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_file_reference', 'tablenames=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_file_reference') . ' AND deleted=0' . ' AND hidden=0' . ' AND uid_foreign=' . intval($uid) . ' AND fieldname=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($fieldName, 'sys_file_reference'), '', 'sorting_foreign');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$itemList[] = $this->createFileReferenceObject($row);
 		}
@@ -200,7 +200,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 		if (!is_numeric($uid)) {
 			throw new \InvalidArgumentException('uid of record has to be numeric.', 1316889798);
 		}
-		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', (('uid=' . $uid) . ' AND deleted=0') . ' AND hidden=0');
+		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . $uid . ' AND deleted=0' . ' AND hidden=0');
 		if (is_array($row)) {
 			$fileReferenceObject = $this->createFileReferenceObject($row);
 		}

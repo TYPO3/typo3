@@ -45,7 +45,7 @@ class ContentObjectArrayInternalContentObject extends \TYPO3\CMS\Frontend\Conten
 		if (is_array($conf)) {
 			$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
 			$includeLibs = isset($conf['includeLibs.']) ? $this->cObj->stdWrap($conf['includeLibs'], $conf['includeLibs.']) : $conf['includeLibs'];
-			$content = ('<!--' . $substKey) . '-->';
+			$content = '<!--' . $substKey . '-->';
 			$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
 				'file' => $includeLibs,
 				'conf' => $conf,

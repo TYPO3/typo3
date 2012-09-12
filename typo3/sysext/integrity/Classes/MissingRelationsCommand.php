@@ -90,7 +90,7 @@ Reports missing relations';
 		// Initialize result array:
 		$listExplain = ' Shows the missing record as header and underneath a list of record fields in which the references are found. ' . $this->label_infoString;
 		$resultArray = array(
-			'message' => (($this->cli_help['name'] . LF) . LF) . $this->cli_help['description'],
+			'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
 			'headers' => array(
 				'offlineVersionRecords_m' => array('Offline version records (managed)', 'These records are offline versions having a pid=-1 and references should never occur directly to their uids.' . $listExplain, 3),
 				'deletedRecords_m' => array('Deleted-flagged records (managed)', 'These records are deleted with a flag but references are still pointing at them. Keeping the references is useful if you undelete the referenced records later, otherwise the references are lost completely when the deleted records are flushed at some point. Notice that if those records listed are themselves deleted (marked with "DELETED") it is not a problem.' . $listExplain, 2),
@@ -108,13 +108,13 @@ Reports missing relations';
 			'nonExistingRecords_s' => array()
 		);
 		// Select DB relations from reference table
-		$recs = $TYPO3_DB->exec_SELECTgetRows('*', 'sys_refindex', (('ref_table<>' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex')) . ' AND ref_uid>0') . $filterClause, '', 'sorting DESC');
+		$recs = $TYPO3_DB->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table<>' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_uid>0' . $filterClause, '', 'sorting DESC');
 		// Traverse the records
 		$tempExists = array();
 		if (is_array($recs)) {
 			foreach ($recs as $rec) {
 				$suffix = $rec['softref_key'] != '' ? '_s' : '_m';
-				$idx = ($rec['ref_table'] . ':') . $rec['ref_uid'];
+				$idx = $rec['ref_table'] . ':' . $rec['ref_uid'];
 				// Get referenced record:
 				if (!isset($tempExists[$idx])) {
 					$tempExists[$idx] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($rec['ref_table'], 'uid=' . intval($rec['ref_uid']), 'uid,pid' . ($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'] : ''));
@@ -156,17 +156,17 @@ Reports missing relations';
 	public function main_autoFix($resultArray) {
 		$trav = array('offlineVersionRecords_m', 'nonExistingRecords_m');
 		foreach ($trav as $tk) {
-			echo (('Processing managed "' . $tk) . '"...') . LF;
+			echo 'Processing managed "' . $tk . '"...' . LF;
 			foreach ($resultArray[$tk] as $key => $value) {
 				foreach ($value as $hash => $recReference) {
-					echo ((('	Removing reference to ' . $key) . ' in record "') . $recReference) . '": ';
+					echo '	Removing reference to ' . $key . ' in record "' . $recReference . '": ';
 					if ($bypass = $this->cli_noExecutionCheck($recReference)) {
 						echo $bypass;
 					} else {
 						$sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 						$error = $sysRefObj->setReferenceValue($hash, NULL);
 						if ($error) {
-							echo ('		TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error) . LF;
+							echo '		TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error . LF;
 						} else {
 							echo 'DONE';
 						}

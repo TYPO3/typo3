@@ -126,7 +126,7 @@ class IconUtility {
 	 * @see getIcon()
 	 */
 	static public function getIconImage($table, $row = array(), $backPath, $params = '', $shaded = FALSE) {
-		$str = ('<img' . self::skinImg($backPath, self::getIcon($table, $row, $shaded), 'width="18" height="16"')) . (trim($params) ? ' ' . trim($params) : '');
+		$str = '<img' . self::skinImg($backPath, self::getIcon($table, $row, $shaded), 'width="18" height="16"') . (trim($params) ? ' ' . trim($params) : '');
 		if (!stristr($str, 'alt="')) {
 			$str .= ' alt=""';
 		}
@@ -242,11 +242,11 @@ class IconUtility {
 			$deleted = TRUE;
 		}
 		// Detecting extendToSubpages (for pages only)
-		if (($table == 'pages' && $row['extendToSubpages']) && ((($hidden || $timing) || $futuretiming) || $user)) {
+		if ($table == 'pages' && $row['extendToSubpages'] && ($hidden || $timing || $futuretiming || $user)) {
 			$protectSection = TRUE;
 		}
 		// If ANY of the booleans are set it means we have to alter the icon:
-		if (((((($hidden || $timing) || $futuretiming) || $user) || $deleted) || $shaded) || $noIconFound) {
+		if ($hidden || $timing || $futuretiming || $user || $deleted || $shaded || $noIconFound) {
 			$flags = '';
 			$string = '';
 			if ($deleted) {
@@ -266,14 +266,14 @@ class IconUtility {
 				if (!$string && $futuretiming) {
 					$string = 'futuretiming';
 				}
-				$flags .= ((((($hidden ? 'h' : '') . ($timing ? 't' : '')) . ($futuretiming ? 'f' : '')) . ($user ? 'u' : '')) . ($protectSection ? 'p' : '')) . ($shaded ? 's' : '');
+				$flags .= ($hidden ? 'h' : '') . ($timing ? 't' : '') . ($futuretiming ? 'f' : '') . ($user ? 'u' : '') . ($protectSection ? 'p' : '') . ($shaded ? 's' : '');
 			}
 			// Create tagged icon file name:
-			$iconFileName_stateTagged = preg_replace('/.([[:alnum:]]+)$/', ('__' . $flags) . '.\\1', basename($iconfile));
+			$iconFileName_stateTagged = preg_replace('/.([[:alnum:]]+)$/', '__' . $flags . '.\\1', basename($iconfile));
 			// Check if tagged icon file name exists (a tagged icon means the icon base name with the flags added between body and extension of the filename, prefixed with underscore)
-			if (@is_file(((dirname($absfile) . '/') . $iconFileName_stateTagged)) || @is_file((((($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'] . '/') . dirname($iconfile)) . '/') . $iconFileName_stateTagged))) {
+			if (@is_file((dirname($absfile) . '/' . $iconFileName_stateTagged)) || @is_file(($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'] . '/' . dirname($iconfile) . '/' . $iconFileName_stateTagged))) {
 				// Look for [iconname]_xxxx.[ext]
-				return (dirname($iconfile) . '/') . $iconFileName_stateTagged;
+				return dirname($iconfile) . '/' . $iconFileName_stateTagged;
 			} else {
 				// Otherwise, create the icon:
 				$theRes = self::makeIcon($GLOBALS['BACK_PATH'] . $iconfile, $string, $user, $protectSection, $absfile, $iconFileName_stateTagged);
@@ -297,7 +297,7 @@ class IconUtility {
 	 */
 	static public function skinImg($backPath, $src, $wHattribs = '', $outputMode = 0) {
 		static $cachedSkinImages = array();
-		$imageId = md5((($backPath . $src) . $wHattribs) . $outputMode);
+		$imageId = md5($backPath . $src . $wHattribs . $outputMode);
 		if (isset($cachedSkinImages[$imageId])) {
 			return $cachedSkinImages[$imageId];
 		}
@@ -313,7 +313,7 @@ class IconUtility {
 			$fExt = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['forceFileExtension'];
 			$scaleFactor = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] ? $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['scaleFactor'] : 1;
 			// Scaling factor
-			$lookUpName = $fExt ? (preg_replace('/\\.[[:alnum:]]+$/', '', $srcKey) . '.') . $fExt : $srcKey;
+			$lookUpName = $fExt ? preg_replace('/\\.[[:alnum:]]+$/', '', $srcKey) . '.' . $fExt : $srcKey;
 			// Set filename to look for
 			if ($fExt && !@is_file(($GLOBALS['TBE_STYLES']['skinImgAutoCfg']['absDir'] . $lookUpName))) {
 				// Fallback to original filename if icon with forced extension doesn't exists
@@ -326,7 +326,7 @@ class IconUtility {
 				// Get width/height:
 				// Set $src and $wHattribs:
 				$src = $GLOBALS['TBE_STYLES']['skinImgAutoCfg']['relDir'] . $lookUpName;
-				$wHattribs = ((('width="' . round($iInfo[0] * $scaleFactor)) . '" height="') . round($iInfo[1] * $scaleFactor)) . '"';
+				$wHattribs = 'width="' . round($iInfo[0] * $scaleFactor) . '" height="' . round($iInfo[1] * $scaleFactor) . '"';
 			}
 			// In any case, set currect src / wHattrib - this way we make sure that an entry IS found next time we hit the function,
 			// regardless of whether it points to a alternative icon or just the current.
@@ -337,16 +337,16 @@ class IconUtility {
 		$srcBasename = basename($src);
 		if (preg_match('/(.*)_i(\\....)$/', $srcBasename, $matches)) {
 			$temp_path = dirname(PATH_thisScript) . '/';
-			if (!@is_file((($temp_path . $backPath) . $src))) {
-				$srcOrg = preg_replace(('/_i' . preg_quote($matches[2])) . '$/', $matches[2], $src);
-				$src = self::makeIcon($backPath . $srcOrg, 'disabled', 0, FALSE, ($temp_path . $backPath) . $srcOrg, $srcBasename);
+			if (!@is_file(($temp_path . $backPath . $src))) {
+				$srcOrg = preg_replace('/_i' . preg_quote($matches[2]) . '$/', $matches[2], $src);
+				$src = self::makeIcon($backPath . $srcOrg, 'disabled', 0, FALSE, $temp_path . $backPath . $srcOrg, $srcBasename);
 			}
 		}
 		// Return icon source/wHattributes:
 		$output = '';
 		switch ($outputMode) {
 		case 0:
-			$output = (((' src="' . $backPath) . $src) . '" ') . $wHattribs;
+			$output = ' src="' . $backPath . $src . '" ' . $wHattribs;
 			break;
 		case 1:
 			$output = $backPath . $src;
@@ -377,10 +377,10 @@ class IconUtility {
 	 * @access private
 	 */
 	static public function makeIcon($iconfile, $mode, $user, $protectSection, $absFile, $iconFileName_stateTagged) {
-		$iconFileName = (((('icon_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5((((((($iconfile . '|') . $mode) . '|-') . $user) . '|') . $protectSection))) . '_') . $iconFileName_stateTagged) . '.') . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? 'png' : 'gif');
+		$iconFileName = 'icon_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($iconfile . '|' . $mode . '|-' . $user . '|' . $protectSection)) . '_' . $iconFileName_stateTagged . '.' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? 'png' : 'gif');
 		$mainpath = '../typo3temp/' . $iconFileName;
-		$path = (PATH_site . 'typo3temp/') . $iconFileName;
-		if (file_exists((PATH_typo3 . 'icons/') . $iconFileName)) {
+		$path = PATH_site . 'typo3temp/' . $iconFileName;
+		if (file_exists(PATH_typo3 . 'icons/' . $iconFileName)) {
 			// Returns if found in typo3/icons/
 			return 'icons/' . $iconFileName;
 		} elseif (file_exists($path)) {
@@ -396,10 +396,10 @@ class IconUtility {
 						return $iconfile;
 					}
 					// Converting to gray scale, dimming the icon:
-					if ($mode == 'disabled' or ($mode != 'futuretiming' && $mode != 'no_icon_found') && !(!$mode && $user)) {
+					if ($mode == 'disabled' or $mode != 'futuretiming' && $mode != 'no_icon_found' && !(!$mode && $user)) {
 						for ($c = 0; $c < ImageColorsTotal($im); $c++) {
 							$cols = ImageColorsForIndex($im, $c);
-							$newcol = round((($cols['red'] + $cols['green']) + $cols['blue']) / 3);
+							$newcol = round(($cols['red'] + $cols['green'] + $cols['blue']) / 3);
 							$lighten = $mode == 'disabled' ? 2.5 : 2;
 							$newcol = round(255 - (255 - $newcol) / $lighten);
 							ImageColorSet($im, $c, $newcol, $newcol, $newcol);
@@ -642,9 +642,9 @@ class IconUtility {
 		// then it is checked whether it is a valid directory
 		if (strpos($fileExtension, '.') !== FALSE || strpos($fileExtension, '/') !== FALSE) {
 			// Check if it is a directory
-			$filePath = ((dirname(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_FILENAME')) . '/') . $GLOBALS['BACK_PATH']) . $fileExtension;
+			$filePath = dirname(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_FILENAME')) . '/' . $GLOBALS['BACK_PATH'] . $fileExtension;
 			$path = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($filePath);
-			if ((is_dir($path) || substr($fileExtension, -1) === '/') || substr($fileExtension, -1) === '\\') {
+			if (is_dir($path) || substr($fileExtension, -1) === '/' || substr($fileExtension, -1) === '\\') {
 				$fileExtension = 'folder';
 			} else {
 				if (($pos = strrpos($fileExtension, '.')) !== FALSE) {
@@ -777,16 +777,16 @@ class IconUtility {
 				}
 			} else {
 				foreach ($recordType as &$type) {
-					$type = (('tcarecords-' . $table) . '-') . $type;
+					$type = 'tcarecords-' . $table . '-' . $type;
 				}
 				unset($type);
-				$recordType[0] = ('tcarecords-' . $table) . '-default';
+				$recordType[0] = 'tcarecords-' . $table . '-default';
 			}
 		} else {
 			if (is_array($GLOBALS['TCA'][$table]['ctrl']['typeicon_classes'])) {
 				$recordType[0] = $GLOBALS['TCA'][$table]['ctrl']['typeicon_classes']['default'];
 			} else {
-				$recordType[0] = ('tcarecords-' . $table) . '-default';
+				$recordType[0] = 'tcarecords-' . $table . '-default';
 			}
 		}
 		krsort($recordType);
@@ -909,11 +909,11 @@ class IconUtility {
 		$parts = explode('-', $iconName);
 		if (count($parts) > 1) {
 			// Will be something like "t3-icon-actions"
-			$cssClasses .= ' ' . (($baseCssClass . '-') . $parts[0]);
+			$cssClasses .= ' ' . ($baseCssClass . '-' . $parts[0]);
 			// Will be something like "t3-icon-actions-document"
-			$cssClasses .= ' ' . (((($baseCssClass . '-') . $parts[0]) . '-') . $parts[1]);
+			$cssClasses .= ' ' . ($baseCssClass . '-' . $parts[0] . '-' . $parts[1]);
 			// Will be something like "t3-icon-document-new"
-			$cssClasses .= ' ' . (($baseCssClass . '-') . substr($iconName, (strlen($parts[0]) + 1)));
+			$cssClasses .= ' ' . ($baseCssClass . '-' . substr($iconName, (strlen($parts[0]) + 1)));
 		}
 		return $cssClasses;
 	}
@@ -933,9 +933,9 @@ class IconUtility {
 		$tagName = $tagName === NULL ? 'span' : $tagName;
 		$attributes = '';
 		foreach ($tagAttributes as $attribute => $value) {
-			$attributes .= (((' ' . htmlspecialchars($attribute)) . '="') . htmlspecialchars($value)) . '"';
+			$attributes .= ' ' . htmlspecialchars($attribute) . '="' . htmlspecialchars($value) . '"';
 		}
-		return (((((('<' . $tagName) . $attributes) . '>') . $innerHtml) . '</') . $tagName) . '>';
+		return '<' . $tagName . $attributes . '>' . $innerHtml . '</' . $tagName . '>';
 	}
 
 }

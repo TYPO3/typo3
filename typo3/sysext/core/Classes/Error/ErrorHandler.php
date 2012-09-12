@@ -89,7 +89,7 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 			E_STRICT => 'Runtime Notice',
 			E_RECOVERABLE_ERROR => 'Catchable Fatal Error'
 		);
-		$message = (((((('PHP ' . $errorLevels[$errorLevel]) . ': ') . $errorMessage) . ' in ') . $errorFile) . ' line ') . $errorLine;
+		$message = 'PHP ' . $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
 		if ($errorLevel & $this->exceptionalErrors) {
 			// We need to manually require the exception classes in case the autoloader is not available at this point yet.
 			// @see http://forge.typo3.org/issues/23444
@@ -114,7 +114,7 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 				$severity = 0;
 				break;
 			}
-			$logTitle = ('Core: Error handler (' . TYPO3_MODE) . ')';
+			$logTitle = 'Core: Error handler (' . TYPO3_MODE . ')';
 			// Write error message to the configured syslogs,
 			// see: $TYPO3_CONF_VARS['SYS']['systemLog']
 			if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['syslogErrorReporting']) {
@@ -136,11 +136,11 @@ class ErrorHandler implements \TYPO3\CMS\Core\Error\ErrorHandlerInterface {
 			}
 			// Write error message to TSlog (admin panel)
 			if (is_object($GLOBALS['TT'])) {
-				$GLOBALS['TT']->setTSlogMessage(($logTitle . ': ') . $message, $severity + 1);
+				$GLOBALS['TT']->setTSlogMessage($logTitle . ': ' . $message, $severity + 1);
 			}
 			// Write error message to sys_log table (ext: belog, Tools->Log)
 			if ($errorLevel & $GLOBALS['TYPO3_CONF_VARS']['SYS']['belogErrorReporting']) {
-				$this->writeLog(($logTitle . ': ') . $message, $severity);
+				$this->writeLog($logTitle . ': ' . $message, $severity);
 			}
 			// Add error message to the flashmessageQueue
 			if (defined('TYPO3_ERRORHANDLER_MODE') && TYPO3_ERRORHANDLER_MODE == 'debug') {

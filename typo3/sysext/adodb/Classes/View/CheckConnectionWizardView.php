@@ -22,7 +22,7 @@ class CheckConnectionWizardView {
 			if (is_array($dsRecord)) {
 				$dsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($dsRecord['configuration']);
 				$dsConf = $dsArr['data']['sDEF']['lDEF'];
-				$content .= ((('<p>Trying to connect with Host / DSN <strong>' . htmlspecialchars($dsConf['field_host']['vDEF'])) . '</strong> with user <strong>') . htmlspecialchars($dsConf['field_username']['vDEF'])) . '</strong> ... ';
+				$content .= '<p>Trying to connect with Host / DSN <strong>' . htmlspecialchars($dsConf['field_host']['vDEF']) . '</strong> with user <strong>' . htmlspecialchars($dsConf['field_username']['vDEF']) . '</strong> ... ';
 				$dbConn =& ADONewConnection($dsConf['field_dbtype']['vDEF']);
 				$dbConn->PConnect($dsConf['field_host']['vDEF'], $dsConf['field_username']['vDEF'], $dsConf['field_password']['vDEF'], $dsConf['field_dbname']['vDEF']);
 				$dbConn->SetFetchMode(ADODB_FETCH_ASSOC);
@@ -32,7 +32,7 @@ class CheckConnectionWizardView {
 					$query = 'SELECT * FROM ' . $dsConf['field_table']['vDEF'];
 					$recordSet =& $dbConn->SelectLimit($query, 150);
 					if (!$recordSet) {
-						$content .= ('<p>Query failed (' . htmlspecialchars($query)) . '):<br />';
+						$content .= '<p>Query failed (' . htmlspecialchars($query) . '):<br />';
 						$content .= $dbConn->ErrorMsg() . '</p>';
 					} else {
 						$content .= '<span style="color:green">successful!</span></p>';
@@ -43,12 +43,12 @@ class CheckConnectionWizardView {
 							$content .= '<tr>';
 							if ($counter == 0) {
 								foreach (array_keys($recordSet->fields) as $key) {
-									$content .= ('<th>' . htmlspecialchars($key)) . '</th>';
+									$content .= '<th>' . htmlspecialchars($key) . '</th>';
 								}
 								$content .= '</tr><tr>';
 							}
 							foreach (array_values($recordSet->fields) as $value) {
-								$content .= ('<td>' . htmlspecialchars($value)) . '&nbsp;</td>';
+								$content .= '<td>' . htmlspecialchars($value) . '&nbsp;</td>';
 							}
 							$recordSet->MoveNext();
 							$counter++;
@@ -58,7 +58,7 @@ class CheckConnectionWizardView {
 					}
 				}
 			} else {
-				$content .= ('<span style="color:red">failed!</span></p><p><strong>Error Message:</strong>' . $dbConn->ErrorMsg()) . '</p>';
+				$content .= '<span style="color:red">failed!</span></p><p><strong>Error Message:</strong>' . $dbConn->ErrorMsg() . '</p>';
 			}
 		}
 		$content .= '</body></html>';

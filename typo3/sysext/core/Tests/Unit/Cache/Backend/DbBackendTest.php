@@ -79,7 +79,7 @@ class DbBackendTest extends \tx_phpunit_testcase {
 	 * @return void
 	 */
 	protected function setUpBackend(array $backendOptions = array()) {
-		$GLOBALS['TYPO3_DB']->sql_query(('CREATE TABLE ' . $this->testingCacheTable) . ' (
+		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingCacheTable . ' (
 			id int(11) unsigned NOT NULL auto_increment,
 			identifier varchar(250) DEFAULT \'\' NOT NULL,
 			expires int(11) unsigned DEFAULT \'0\' NOT NULL,
@@ -88,7 +88,7 @@ class DbBackendTest extends \tx_phpunit_testcase {
 			KEY cache_id (identifier, expires)
 		) ENGINE=InnoDB;
 		');
-		$GLOBALS['TYPO3_DB']->sql_query(('CREATE TABLE ' . $this->testingTagsTable) . ' (
+		$GLOBALS['TYPO3_DB']->sql_query('CREATE TABLE ' . $this->testingTagsTable . ' (
 			id int(11) unsigned NOT NULL auto_increment,
 			identifier varchar(250) DEFAULT \'\' NOT NULL,
 			tag varchar(250) DEFAULT \'\' NOT NULL,
@@ -119,8 +119,8 @@ class DbBackendTest extends \tx_phpunit_testcase {
 	 */
 	public function tearDown() {
 		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
-		$GLOBALS['TYPO3_DB']->sql_query(('DROP TABLE IF EXISTS ' . $this->testingCacheTable) . ';');
-		$GLOBALS['TYPO3_DB']->sql_query(('DROP TABLE IF EXISTS ' . $this->testingTagsTable) . ';');
+		$GLOBALS['TYPO3_DB']->sql_query('DROP TABLE IF EXISTS ' . $this->testingCacheTable . ';');
+		$GLOBALS['TYPO3_DB']->sql_query('DROP TABLE IF EXISTS ' . $this->testingTagsTable . ';');
 	}
 
 	/**
@@ -171,7 +171,7 @@ class DbBackendTest extends \tx_phpunit_testcase {
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbTest';
 		$backend->set($entryIdentifier, $data);
-		$entryFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->testingCacheTable, ('identifier = \'' . $entryIdentifier) . '\'');
+		$entryFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->testingCacheTable, 'identifier = \'' . $entryIdentifier . '\'');
 		$this->assertEquals($data, $entryFound['content']);
 	}
 
@@ -186,7 +186,7 @@ class DbBackendTest extends \tx_phpunit_testcase {
 		$entryIdentifier = 'BackendDbRemoveBeforeSetTest';
 		$backend->set($entryIdentifier, $data1, array(), 500);
 		$backend->set($entryIdentifier, $data2, array(), 200);
-		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $this->testingCacheTable, ('identifier = \'' . $entryIdentifier) . '\'');
+		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $this->testingCacheTable, 'identifier = \'' . $entryIdentifier . '\'');
 		$this->assertEquals(1, count($entriesFound));
 	}
 
@@ -199,7 +199,7 @@ class DbBackendTest extends \tx_phpunit_testcase {
 		$data = 'some data' . microtime();
 		$entryIdentifier = 'BackendDbTest';
 		$backend->set($entryIdentifier, $data, array('UnitTestTag%tag1', 'UnitTestTag%tag2'));
-		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $this->testingTagsTable, ('identifier = \'' . $entryIdentifier) . '\'');
+		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $this->testingTagsTable, 'identifier = \'' . $entryIdentifier . '\'');
 		$tags = array();
 		foreach ($entriesFound as $entry) {
 			$tags[] = $entry['tag'];
@@ -220,7 +220,7 @@ class DbBackendTest extends \tx_phpunit_testcase {
 		$data = 'some data ' . microtime();
 		$entryIdentifier = 'BackendDbTest';
 		$backend->set($entryIdentifier, $data);
-		$entry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('content', $this->testingCacheTable, ('identifier = \'' . $entryIdentifier) . '\'');
+		$entry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('content', $this->testingCacheTable, 'identifier = \'' . $entryIdentifier . '\'');
 		$this->assertEquals($data, @gzuncompress($entry['content']));
 	}
 
@@ -236,7 +236,7 @@ class DbBackendTest extends \tx_phpunit_testcase {
 		$data = 'some data ' . microtime();
 		$entryIdentifier = 'BackendDbTest';
 		$backend->set($entryIdentifier, $data);
-		$entry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('content', $this->testingCacheTable, ('identifier = \'' . $entryIdentifier) . '\'');
+		$entry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('content', $this->testingCacheTable, 'identifier = \'' . $entryIdentifier . '\'');
 		$this->assertGreaterThan(0, substr_count($entry['content'], $data));
 	}
 
@@ -305,7 +305,7 @@ class DbBackendTest extends \tx_phpunit_testcase {
 		$entryIdentifier = 'BackendDbRemovalTest';
 		$backend->set($entryIdentifier, $data);
 		$backend->remove($entryIdentifier);
-		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $this->testingCacheTable, ('identifier = \'' . $entryIdentifier) . '\'');
+		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $this->testingCacheTable, 'identifier = \'' . $entryIdentifier . '\'');
 		$this->assertTrue(count($entriesFound) == 0);
 	}
 
@@ -332,7 +332,7 @@ class DbBackendTest extends \tx_phpunit_testcase {
 		// needed after manual $GLOBALS['EXEC_TIME'] manipulation
 		$backend->setCache($mockCache);
 		$backend->collectGarbage();
-		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $this->testingCacheTable, ('identifier = \'' . $entryIdentifier) . '\'');
+		$entriesFound = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $this->testingCacheTable, 'identifier = \'' . $entryIdentifier . '\'');
 		$this->assertTrue(count($entriesFound) == 0);
 	}
 

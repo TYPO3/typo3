@@ -51,7 +51,7 @@ class FileuploadElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Cont
 	 * @return string
 	 */
 	public function render() {
-		$content = ($this->getLabel() . ': ') . $this->model->getValue();
+		$content = $this->getLabel() . ': ' . $this->model->getValue();
 		return str_repeat(chr(32), $this->spaces) . $content;
 	}
 

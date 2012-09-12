@@ -47,8 +47,8 @@ class ContextHelpDataProvider {
 		$moreIcon = $helpTextArray['moreInfo'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-forward') : '';
 		return array(
 			'title' => $helpTextArray['title'],
-			'description' => (((('<p class="t3-help-short' . ($moreIcon ? ' tipIsLinked' : '')) . '">') . $helpTextArray['description']) . $moreIcon) . '</p>',
-			'id' => ($table . '.') . $field,
+			'description' => '<p class="t3-help-short' . ($moreIcon ? ' tipIsLinked' : '') . '">' . $helpTextArray['description'] . $moreIcon . '</p>',
+			'id' => $table . '.' . $field,
 			'moreInfo' => $helpTextArray['moreInfo']
 		);
 	}
@@ -71,14 +71,14 @@ class ContextHelpDataProvider {
 					'description' => NULL,
 					'title' => NULL,
 					'moreInfo' => FALSE,
-					'id' => ($table . '.') . $field
+					'id' => $table . '.' . $field
 				);
 				// Add alternative title, if defined
 				if ($data['alttitle']) {
 					$output[$field]['title'] = $data['alttitle'];
 				}
 				// If we have more information to show
-				if ((($data['image_descr'] || $data['seeAlso']) || $data['details']) || $data['syntax']) {
+				if ($data['image_descr'] || $data['seeAlso'] || $data['details'] || $data['syntax']) {
 					$output[$field]['moreInfo'] = TRUE;
 				}
 				// Add description

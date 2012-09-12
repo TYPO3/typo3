@@ -73,13 +73,13 @@ class User {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->bodyTagAdditions = 'onload="Init();"';
-		$this->doc->form = ('
+		$this->doc->form = '
 	<form action="" id="process" name="process" method="post">
 		<input type="hidden" name="processContent" value="" />
-		<input type="hidden" name="returnUrl" value="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '" />
+		<input type="hidden" name="returnUrl" value="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '" />
 		';
-		$JScode = ((((((((('
-			var plugin = window.parent.RTEarea["' . $this->editorNo) . '"].editor.getPlugin("UserElements");
+		$JScode = '
+			var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("UserElements");
 			var HTMLArea = window.parent.HTMLArea;
 			var editor = plugin.editor;
 
@@ -95,7 +95,7 @@ class User {
 				if(!editor.getSelection().isEmpty()) {
 					editor.getSelection().surroundHtml(wrap1,wrap2);
 				} else {
-					alert(') . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('noTextSelection'))) . ');
+					alert(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('noTextSelection')) . ');
 				}
 				if(!noHide) plugin.close();
 			};
@@ -106,9 +106,9 @@ class User {
 				document.process.submit();
 			};
 			function jumpToUrl(URL) {
-				var RTEtsConfigParams = "&RTEtsConfigParams=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RTEtsConfigParams'))) . '";
-				var editorNo = "&editorNo=') . rawurlencode($this->editorNo)) . '";
-				theLocation = "') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '"+URL+RTEtsConfigParams+editorNo;
+				var RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('RTEtsConfigParams')) . '";
+				var editorNo = "&editorNo=' . rawurlencode($this->editorNo) . '";
+				theLocation = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME') . '"+URL+RTEtsConfigParams+editorNo;
 				window.location.href = theLocation;
 			}
 		';
@@ -158,14 +158,14 @@ class User {
 		$IW = $imgInfo[0];
 		$IH = $imgInfo[1];
 		if ($IW > $maxW) {
-			$IH = ceil(($IH / $IW) * $maxW);
+			$IH = ceil($IH / $IW * $maxW);
 			$IW = $maxW;
 		}
 		if ($IH > $maxH) {
-			$IW = ceil(($IW / $IH) * $maxH);
+			$IW = ceil($IW / $IH * $maxH);
 			$IH = $maxH;
 		}
-		$imgInfo[3] = ((('width="' . $IW) . '" height="') . $IH) . '"';
+		$imgInfo[3] = 'width="' . $IW . '" height="' . $IH . '"';
 		return $imgInfo;
 	}
 
@@ -200,14 +200,14 @@ class User {
 								if (is_array($files)) {
 									$c = 0;
 									foreach ($files as $filename) {
-										$iInfo = @getimagesize(((PATH_site . $v['path']) . $filename));
+										$iInfo = @getimagesize((PATH_site . $v['path'] . $filename));
 										$iInfo = $this->calcWH($iInfo, 50, 100);
 										$ks = (string) (100 + $c);
 										$mArray[$ks] = $filename;
 										$mArray[$ks . '.'] = array(
-											'content' => ((('<img src="' . $this->siteUrl) . $v['path']) . $filename) . '" />',
-											'_icon' => ((((('<img src="' . $this->siteUrl) . $v['path']) . $filename) . '" ') . $iInfo[3]) . ' />',
-											'description' => ((((((($GLOBALS['LANG']->getLL('filesize') . ': ') . str_replace('&nbsp;', ' ', \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize(((PATH_site . $v['path']) . $filename))))) . ', ') . $GLOBALS['LANG']->getLL('pixels', 1)) . ': ') . $iInfo[0]) . 'x') . $iInfo[1]
+											'content' => '<img src="' . $this->siteUrl . $v['path'] . $filename . '" />',
+											'_icon' => '<img src="' . $this->siteUrl . $v['path'] . $filename . '" ' . $iInfo[3] . ' />',
+											'description' => $GLOBALS['LANG']->getLL('filesize') . ': ' . str_replace('&nbsp;', ' ', \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize((PATH_site . $v['path'] . $filename)))) . ', ' . $GLOBALS['LANG']->getLL('pixels', 1) . ': ' . $iInfo[0] . 'x' . $iInfo[1]
 										);
 										$c++;
 									}
@@ -227,7 +227,7 @@ class User {
 							if (substr($k2, -1) == '.' && is_array($v[$k2i . '.'])) {
 								$title = trim($v[$k2i]);
 								if (!$title) {
-									$title = ('[' . $GLOBALS['LANG']->getLL('noTitle', 1)) . ']';
+									$title = '[' . $GLOBALS['LANG']->getLL('noTitle', 1) . ']';
 								} else {
 									$title = $GLOBALS['LANG']->sL($title, 1);
 								}
@@ -240,7 +240,7 @@ class User {
 								switch ((string) $v[($k2i . '.')]['mode']) {
 								case 'wrap':
 									$wrap = explode('|', $v[$k2i . '.']['content']);
-									$onClickEvent = ((('wrapHTML(' . $GLOBALS['LANG']->JScharCode($wrap[0])) . ',') . $GLOBALS['LANG']->JScharCode($wrap[1])) . ',false);';
+									$onClickEvent = 'wrapHTML(' . $GLOBALS['LANG']->JScharCode($wrap[0]) . ',' . $GLOBALS['LANG']->JScharCode($wrap[1]) . ',false);';
 									break;
 								case 'processor':
 									$script = trim($v[$k2i . '.']['submitToScript']);
@@ -248,20 +248,20 @@ class User {
 										$script = $this->siteUrl . $script;
 									}
 									if ($script) {
-										$onClickEvent = ('processSelection(' . $GLOBALS['LANG']->JScharCode($script)) . ');';
+										$onClickEvent = 'processSelection(' . $GLOBALS['LANG']->JScharCode($script) . ');';
 									}
 									break;
 								case 'insert':
 
 								default:
-									$onClickEvent = ('insertHTML(' . $GLOBALS['LANG']->JScharCode($v[($k2i . '.')]['content'])) . ');';
+									$onClickEvent = 'insertHTML(' . $GLOBALS['LANG']->JScharCode($v[($k2i . '.')]['content']) . ');';
 									break;
 								}
-								$A = array(('<a href="#" onClick="' . $onClickEvent) . 'return false;">', '</a>');
-								$subcats[$k2i] = (((((((((('<tr>
+								$A = array('<a href="#" onClick="' . $onClickEvent . 'return false;">', '</a>');
+								$subcats[$k2i] = '<tr>
 									<td><img src="clear.gif" width="18" height="1" /></td>
-									<td class="bgColor4" valign="top">' . $A[0]) . $logo) . $A[1]) . '</td>
-									<td class="bgColor4" valign="top">') . $A[0]) . '<strong>') . $title) . '</strong><br />') . $description) . $A[1]) . '</td>
+									<td class="bgColor4" valign="top">' . $A[0] . $logo . $A[1] . '</td>
+									<td class="bgColor4" valign="top">' . $A[0] . '<strong>' . $title . '</strong><br />' . $description . $A[1] . '</td>
 								</tr>';
 							}
 						}
@@ -277,14 +277,14 @@ class User {
 				$title = trim($thisConfig['userElements.'][$k]);
 				$openK = $k;
 				if (!$title) {
-					$title = ('[' . $GLOBALS['LANG']->getLL('noTitle', 1)) . ']';
+					$title = '[' . $GLOBALS['LANG']->getLL('noTitle', 1) . ']';
 				} else {
 					$title = $GLOBALS['LANG']->sL($title, 1);
 				}
-				$lines[] = (((((((((('<tr><td colspan="3" class="bgColor5"><a href="#" title="' . $GLOBALS['LANG']->getLL('expand', 1)) . '" onClick="jumpToUrl(\'?OC_key=') . ($openKeys[$openK] ? 'C|' : 'O|')) . $openK) . '\');return false;"><img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], (('gfx/ol/' . ($openKeys[$openK] ? 'minus' : 'plus')) . 'bullet.gif'), 'width="18" height="16"')) . ' title="') . $GLOBALS['LANG']->getLL('expand', 1)) . '" /><strong>') . $title) . '</strong></a></td></tr>';
+				$lines[] = '<tr><td colspan="3" class="bgColor5"><a href="#" title="' . $GLOBALS['LANG']->getLL('expand', 1) . '" onClick="jumpToUrl(\'?OC_key=' . ($openKeys[$openK] ? 'C|' : 'O|') . $openK . '\');return false;"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/' . ($openKeys[$openK] ? 'minus' : 'plus') . 'bullet.gif'), 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('expand', 1) . '" /><strong>' . $title . '</strong></a></td></tr>';
 				$lines[] = $v;
 			}
-			$content .= ('<table border="0" cellpadding="1" cellspacing="1">' . implode('', $lines)) . '</table>';
+			$content .= '<table border="0" cellpadding="1" cellspacing="1">' . implode('', $lines) . '</table>';
 		}
 		$content .= $this->doc->endPage();
 		return $content;

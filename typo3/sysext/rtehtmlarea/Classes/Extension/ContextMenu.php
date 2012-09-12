@@ -72,15 +72,15 @@ class ContextMenu extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	public function buildJavascriptConfiguration($editorId) {
 		$registerRTEinJavascriptString = '';
 		if (is_array($this->thisConfig['contextMenu.'])) {
-			$registerRTEinJavascriptString .= ((('
-	RTEarea[' . $editorId) . '].contextMenu =  ') . $this->htmlAreaRTE->buildNestedJSArray($this->thisConfig['contextMenu.'])) . ';';
+			$registerRTEinJavascriptString .= '
+	RTEarea[' . $editorId . '].contextMenu =  ' . $this->htmlAreaRTE->buildNestedJSArray($this->thisConfig['contextMenu.']) . ';';
 			if ($this->thisConfig['contextMenu.']['showButtons']) {
-				$registerRTEinJavascriptString .= ((('
-	RTEarea[' . $editorId) . '].contextMenu.showButtons = ') . json_encode(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(\TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($this->thisConfig['contextMenu.']['showButtons'])), 1))) . ';';
+				$registerRTEinJavascriptString .= '
+	RTEarea[' . $editorId . '].contextMenu.showButtons = ' . json_encode(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(\TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($this->thisConfig['contextMenu.']['showButtons'])), 1)) . ';';
 			}
 			if ($this->thisConfig['contextMenu.']['hideButtons']) {
-				$registerRTEinJavascriptString .= ((('
-	RTEarea[' . $editorId) . '].contextMenu.hideButtons = ') . json_encode(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(\TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($this->thisConfig['contextMenu.']['hideButtons'])), 1))) . ';';
+				$registerRTEinJavascriptString .= '
+	RTEarea[' . $editorId . '].contextMenu.hideButtons = ' . json_encode(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->cleanList(\TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($this->thisConfig['contextMenu.']['hideButtons'])), 1)) . ';';
 			}
 		}
 		return $registerRTEinJavascriptString;

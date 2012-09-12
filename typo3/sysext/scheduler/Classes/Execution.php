@@ -231,7 +231,7 @@ class Execution {
 				} else {
 					// Otherwise calculate date based on interval
 					$now = time();
-					$date = ($now + $this->interval) - ($now - $this->start) % $this->interval;
+					$date = $now + $this->interval - ($now - $this->start) % $this->interval;
 				}
 				// If date is in the future, throw an exception
 				if (!empty($this->end) && $date > $this->end) {

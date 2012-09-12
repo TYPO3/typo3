@@ -98,7 +98,7 @@ class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugi
 					// Find original file:
 					$pI = pathinfo(substr($path, strlen($pathPre)));
 					$filename = substr($pI['basename'], 0, -strlen(('.' . $pI['extension'])));
-					$file = ($magicFolderPath . 'RTEmagicP_') . $filename;
+					$file = $magicFolderPath . 'RTEmagicP_' . $filename;
 				} else {
 					$file = $this->cObj->parameters['src'];
 				}
@@ -109,7 +109,7 @@ class CustomAttributeController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugi
 		// Backward compatibility
 		unset($this->cObj->parameters['clickenlarge']);
 		unset($this->cObj->parameters['allParams']);
-		$content = ('<img ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($this->cObj->parameters, TRUE, TRUE)) . ' />';
+		$content = '<img ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($this->cObj->parameters, TRUE, TRUE) . ' />';
 		if ($clickenlarge && is_array($conf['imageLinkWrap.'])) {
 			$theImage = $file ? $GLOBALS['TSFE']->tmpl->getFileName($file) : '';
 			if ($theImage) {

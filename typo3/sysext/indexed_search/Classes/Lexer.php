@@ -108,7 +108,7 @@ class Lexer {
 			if ($len) {
 				$this->addWords($words, $wordString, $start, $len);
 				if ($this->debug) {
-					$this->debugString .= (('<span style="color:red">' . htmlspecialchars(substr($wordString, $pos, ($start - $pos)))) . '</span>') . htmlspecialchars(substr($wordString, $start, $len));
+					$this->debugString .= '<span style="color:red">' . htmlspecialchars(substr($wordString, $pos, ($start - $pos))) . '</span>' . htmlspecialchars(substr($wordString, $start, $len));
 				}
 				$pos = $start + $len;
 			} else {
@@ -223,7 +223,7 @@ class Lexer {
 			if ($len) {
 				if ($letter) {
 					// We are in a sequence of words
-					if ((!$cType || $cType_prev == 'cjk' && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('num,alpha', $cType)) || $cType == 'cjk' && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('num,alpha', $cType_prev)) {
+					if (!$cType || $cType_prev == 'cjk' && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('num,alpha', $cType) || $cType == 'cjk' && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('num,alpha', $cType_prev)) {
 						// Check if the non-letter char is NOT a print-join char because then it signifies the end of the word.
 						if (!in_array($cp, $this->lexerConf['printjoins'])) {
 							// If a printjoin start length has been record, set that back now so the length is right (filtering out multiple end chars)
@@ -282,13 +282,13 @@ class Lexer {
 			return array('num');
 		}
 		// LOOKING for Alpha chars (Latin, Cyrillic, Greek, Hebrew and Arabic):
-		if (((((((($cp >= 65 && $cp <= 90 || $cp >= 97 && $cp <= 122) || (($cp >= 192 && $cp <= 255) && $cp != 215) && $cp != 247) || $cp >= 256 && $cp < 640) || ($cp == 902 || $cp >= 904 && $cp < 1024)) || ($cp >= 1024 && $cp < 1154 || $cp >= 1162 && $cp < 1328)) || ($cp >= 1424 && $cp < 1456 || $cp >= 1488 && $cp < 1523)) || ($cp >= 1569 && $cp <= 1624 || $cp >= 1646 && $cp <= 1747)) || $cp >= 7680 && $cp < 8192) {
+		if ($cp >= 65 && $cp <= 90 || $cp >= 97 && $cp <= 122 || $cp >= 192 && $cp <= 255 && $cp != 215 && $cp != 247 || $cp >= 256 && $cp < 640 || ($cp == 902 || $cp >= 904 && $cp < 1024) || ($cp >= 1024 && $cp < 1154 || $cp >= 1162 && $cp < 1328) || ($cp >= 1424 && $cp < 1456 || $cp >= 1488 && $cp < 1523) || ($cp >= 1569 && $cp <= 1624 || $cp >= 1646 && $cp <= 1747) || $cp >= 7680 && $cp < 8192) {
 			return array('alpha');
 		}
 		// Looking for CJK (Chinese / Japanese / Korean)
 		// Ranges are not certain - deducted from the translation tables in t3lib/csconvtbl/
 		// Verified with http://www.unicode.org/charts/ (16/2) - may still not be complete.
-		if ((((($cp >= 12352 && $cp <= 12543 || $cp >= 12592 && $cp <= 12687) || $cp >= 13312 && $cp <= 19903) || $cp >= 19968 && $cp <= 40879) || $cp >= 44032 && $cp <= 55215) || $cp >= 131072 && $cp <= 195103) {
+		if ($cp >= 12352 && $cp <= 12543 || $cp >= 12592 && $cp <= 12687 || $cp >= 13312 && $cp <= 19903 || $cp >= 19968 && $cp <= 40879 || $cp >= 44032 && $cp <= 55215 || $cp >= 131072 && $cp <= 195103) {
 			return array('cjk');
 		}
 	}

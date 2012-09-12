@@ -265,9 +265,9 @@ class Clipboard {
 		$out = array();
 		$elCount = count($this->elFromTable($this->fileMode ? '_FILE' : ''));
 		// Upper header
-		$out[] = ('
+		$out[] = '
 			<tr class="t3-row-header">
-				<td colspan="3">' . \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_clipboard', $this->clLabel('clipboard', 'buttons'))) . '</td>
+				<td colspan="3">' . \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_clipboard', $this->clLabel('clipboard', 'buttons')) . '</td>
 			</tr>';
 		// Button/menu header:
 		$thumb_url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => array('setThumb' => $this->clipData['_setThumb'] ? 0 : 1)));
@@ -277,69 +277,69 @@ class Clipboard {
 		$moveLabel = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:moveElements'));
 		$copyLabel = htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.php:copyElements'));
 		$opt = array();
-		$opt[] = ((((('<option style="padding-left: 20px; background-image: url(\'' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/clip_cut.gif', '', 1)) . '\'); background-repeat: no-repeat;" value="" ') . ($this->currentMode() == 'copy' ? '' : 'selected="selected"')) . '>') . $moveLabel) . '</option>';
-		$opt[] = ((((('<option style="padding-left: 20px; background-image: url(\'' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/clip_copy.gif', '', 1)) . '\'); background-repeat: no-repeat;" value="1" ') . ($this->currentMode() == 'copy' ? 'selected="selected"' : '')) . '>') . $copyLabel) . '</option>';
-		$copymode_selector = (((' <select name="CB[setCopyMode]" onchange="this.form.method=\'POST\'; this.form.action=\'' . htmlspecialchars(($copymode_url . '&CB[setCopyMode]='))) . '\'+(this.options[this.selectedIndex].value); this.form.submit(); return true;" >') . implode('', $opt)) . '</select>';
+		$opt[] = '<option style="padding-left: 20px; background-image: url(\'' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/clip_cut.gif', '', 1) . '\'); background-repeat: no-repeat;" value="" ' . ($this->currentMode() == 'copy' ? '' : 'selected="selected"') . '>' . $moveLabel . '</option>';
+		$opt[] = '<option style="padding-left: 20px; background-image: url(\'' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/clip_copy.gif', '', 1) . '\'); background-repeat: no-repeat;" value="1" ' . ($this->currentMode() == 'copy' ? 'selected="selected"' : '') . '>' . $copyLabel . '</option>';
+		$copymode_selector = ' <select name="CB[setCopyMode]" onchange="this.form.method=\'POST\'; this.form.action=\'' . htmlspecialchars(($copymode_url . '&CB[setCopyMode]=')) . '\'+(this.options[this.selectedIndex].value); this.form.submit(); return true;" >' . implode('', $opt) . '</select>';
 		// Selector menu + clear button
 		$opt = array();
-		$opt[] = ('<option value="" selected="selected">' . $this->clLabel('menu', 'rm')) . '</option>';
+		$opt[] = '<option value="" selected="selected">' . $this->clLabel('menu', 'rm') . '</option>';
 		// Import / Export link:
 		if ($elCount && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('impexp')) {
-			$opt[] = ((('<option value="' . htmlspecialchars(((((('window.location.href=\'' . $this->backPath) . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('impexp')) . 'app/index.php') . $this->exportClipElementParameters()) . '\';'))) . '">') . $this->clLabel('export', 'rm')) . '</option>';
+			$opt[] = '<option value="' . htmlspecialchars(('window.location.href=\'' . $this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('impexp') . 'app/index.php' . $this->exportClipElementParameters() . '\';')) . '">' . $this->clLabel('export', 'rm') . '</option>';
 		}
 		// Edit:
 		if (!$this->fileMode && $elCount) {
-			$opt[] = ((('<option value="' . htmlspecialchars((('window.location.href=\'' . $this->editUrl()) . '&returnUrl=\'+top.rawurlencode(window.location.href);'))) . '">') . $this->clLabel('edit', 'rm')) . '</option>';
+			$opt[] = '<option value="' . htmlspecialchars(('window.location.href=\'' . $this->editUrl() . '&returnUrl=\'+top.rawurlencode(window.location.href);')) . '">' . $this->clLabel('edit', 'rm') . '</option>';
 		}
 		// Delete:
 		if ($elCount) {
 			if ($GLOBALS['BE_USER']->jsConfirmation(4)) {
-				$js = ((('
-			if (confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.deleteClip'), $elCount))) . ')){
-				window.location.href=\'') . $this->deleteUrl(0, ($this->fileMode ? 1 : 0))) . '&redirect=\'+top.rawurlencode(window.location.href);
+				$js = '
+			if (confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:mess.deleteClip'), $elCount)) . ')){
+				window.location.href=\'' . $this->deleteUrl(0, ($this->fileMode ? 1 : 0)) . '&redirect=\'+top.rawurlencode(window.location.href);
 			}
 					';
 			} else {
-				$js = (' window.location.href=\'' . $this->deleteUrl(0, ($this->fileMode ? 1 : 0))) . '&redirect=\'+top.rawurlencode(window.location.href); ';
+				$js = ' window.location.href=\'' . $this->deleteUrl(0, ($this->fileMode ? 1 : 0)) . '&redirect=\'+top.rawurlencode(window.location.href); ';
 			}
-			$opt[] = ((('<option value="' . htmlspecialchars($js)) . '">') . $this->clLabel('delete', 'rm')) . '</option>';
+			$opt[] = '<option value="' . htmlspecialchars($js) . '">' . $this->clLabel('delete', 'rm') . '</option>';
 		}
-		$selector_menu = ('<select name="_clipMenu" onchange="eval(this.options[this.selectedIndex].value);this.selectedIndex=0;">' . implode('', $opt)) . '</select>';
-		$out[] = (((((((((((((((((('
+		$selector_menu = '<select name="_clipMenu" onchange="eval(this.options[this.selectedIndex].value);this.selectedIndex=0;">' . implode('', $opt) . '</select>';
+		$out[] = '
 			<tr class="typo3-clipboard-head">
-				<td nowrap="nowrap">' . '<a href="') . htmlspecialchars($thumb_url)) . '#clip_head">') . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, (('gfx/thumb_' . ($this->clipData['_setThumb'] ? 's' : 'n')) . '.gif'), 'width="21" height="16"')) . ' vspace="2" border="0" title="') . $this->clLabel('thumbmode_clip')) . '" alt="" />') . '</a>') . '</td>
-				<td width="95%" nowrap="nowrap">') . $copymode_selector) . ' ') . $selector_menu) . '</td>
-				<td>') . '<a href="') . htmlspecialchars($rmall_url)) . '#clip_head">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:buttons.clear', TRUE)))) . '</a></td>
+				<td nowrap="nowrap">' . '<a href="' . htmlspecialchars($thumb_url) . '#clip_head">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/thumb_' . ($this->clipData['_setThumb'] ? 's' : 'n') . '.gif'), 'width="21" height="16"') . ' vspace="2" border="0" title="' . $this->clLabel('thumbmode_clip') . '" alt="" />' . '</a>' . '</td>
+				<td width="95%" nowrap="nowrap">' . $copymode_selector . ' ' . $selector_menu . '</td>
+				<td>' . '<a href="' . htmlspecialchars($rmall_url) . '#clip_head">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:buttons.clear', TRUE))) . '</a></td>
 			</tr>';
 		// Print header and content for the NORMAL tab:
-		$out[] = (((('
+		$out[] = '
 			<tr class="bgColor5">
-				<td colspan="3"><a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => array('setP' => 'normal'))))) . '#clip_head">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'normal' ? 'collapse' : 'expand')))) . $this->padTitleWrap('Normal', 'normal')) . '</a></td>
+				<td colspan="3"><a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => array('setP' => 'normal')))) . '#clip_head">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'normal' ? 'collapse' : 'expand'))) . $this->padTitleWrap('Normal', 'normal') . '</a></td>
 			</tr>';
 		if ($this->current == 'normal') {
 			$out = array_merge($out, $this->printContentFromTab('normal'));
 		}
 		// Print header and content for the NUMERIC tabs:
 		for ($a = 1; $a <= $this->numberTabs; $a++) {
-			$out[] = (((('
+			$out[] = '
 				<tr class="bgColor5">
-					<td colspan="3"><a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => array('setP' => ('tab_' . $a)))))) . '#clip_head">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'tab_' . $a ? 'collapse' : 'expand')))) . $this->padTitleWrap(($this->clLabel('cliptabs') . $a), ('tab_' . $a))) . '</a></td>
+					<td colspan="3"><a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => array('setP' => ('tab_' . $a))))) . '#clip_head">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-view-table-' . ($this->current == 'tab_' . $a ? 'collapse' : 'expand'))) . $this->padTitleWrap(($this->clLabel('cliptabs') . $a), ('tab_' . $a)) . '</a></td>
 				</tr>';
 			if ($this->current == 'tab_' . $a) {
 				$out = array_merge($out, $this->printContentFromTab('tab_' . $a));
 			}
 		}
 		// Wrap accumulated rows in a table:
-		$output = ('<a name="clip_head"></a>
+		$output = '<a name="clip_head"></a>
 
 			<!--
 				TYPO3 Clipboard:
 			-->
 			<table cellpadding="0" cellspacing="1" border="0" width="290" id="typo3-clipboard">
-				' . implode('', $out)) . '
+				' . implode('', $out) . '
 			</table>';
 		// Wrap in form tag:
-		$output = ('<form action="">' . $output) . '</form>';
+		$output = '<form action="">' . $output . '</form>';
 		// Return the accumulated content:
 		return $output;
 	}
@@ -365,16 +365,16 @@ class Clipboard {
 						if ($fileObject) {
 							$thumb = '';
 							$folder = $fileObject instanceof \TYPO3\CMS\Core\Resource\Folder;
-							$size = $folder ? '' : ('(' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize())) . 'bytes)';
-							$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($folder ? 'folder' : strtolower($fileObject->getExtension()), array('style' => 'margin: 0 20px;', 'title' => ($fileObject->getName() . ' ') . $size));
+							$size = $folder ? '' : '(' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize()) . 'bytes)';
+							$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($folder ? 'folder' : strtolower($fileObject->getExtension()), array('style' => 'margin: 0 20px;', 'title' => $fileObject->getName() . ' ' . $size));
 							if ($this->clipData['_setThumb'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $fileObject->getExtension())) {
 								$thumb = '<br />' . \TYPO3\CMS\Backend\Utility\BackendUtility::getThumbNail(($this->backPath . 'thumbs.php'), $v, ' vspace="4"');
 							}
-							$lines[] = ((((((((((((((((((((((('
+							$lines[] = '
 								<tr>
-									<td class="' . $bgColClass) . '">') . $icon) . '</td>
-									<td class="') . $bgColClass) . '" nowrap="nowrap" width="95%">&nbsp;') . $this->linkItemText(htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileObject->getName(), $GLOBALS['BE_USER']->uc['titleLen'])), $fileObject->getName())) . ($pad == 'normal' ? (' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm'))) . ')</strong>' : '')) . '&nbsp;') . $thumb) . '</td>
-									<td class="') . $bgColClass) . '" align="center" nowrap="nowrap">') . '<a href="#" onclick="') . htmlspecialchars((((('top.launchView(\'' . $table) . '\', \'') . $v) . '\'); return false;'))) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-info', array('title' => $this->clLabel('info', 'cm')))) . '</a>') . '<a href="') . htmlspecialchars($this->removeUrl('_FILE', \TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5($v)))) . '#clip_head">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-selection-delete', array('title' => $this->clLabel('removeItem')))) . '</a>') . '</td>
+									<td class="' . $bgColClass . '">' . $icon . '</td>
+									<td class="' . $bgColClass . '" nowrap="nowrap" width="95%">&nbsp;' . $this->linkItemText(htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileObject->getName(), $GLOBALS['BE_USER']->uc['titleLen'])), $fileObject->getName()) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;' . $thumb . '</td>
+									<td class="' . $bgColClass . '" align="center" nowrap="nowrap">' . '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . $v . '\'); return false;')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-info', array('title' => $this->clLabel('info', 'cm'))) . '</a>' . '<a href="' . htmlspecialchars($this->removeUrl('_FILE', \TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5($v))) . '#clip_head">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-selection-delete', array('title' => $this->clLabel('removeItem'))) . '</a>' . '</td>
 								</tr>';
 						} else {
 							// If the file did not exist (or is illegal) then it is removed from the clipboard immediately:
@@ -385,11 +385,11 @@ class Clipboard {
 						// Rendering records:
 						$rec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $uid);
 						if (is_array($rec)) {
-							$lines[] = ((((((((((((((((((((('
+							$lines[] = '
 								<tr>
-									<td class="' . $bgColClass) . '">') . $this->linkItemText(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $rec, array('style' => 'margin: 0 20px;', 'title' => htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordIconAltText($rec, $table)))), $rec, $table)) . '</td>
-									<td class="') . $bgColClass) . '" nowrap="nowrap" width="95%">&nbsp;') . $this->linkItemText(htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $rec), $GLOBALS['BE_USER']->uc['titleLen'])), $rec, $table)) . ($pad == 'normal' ? (' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm'))) . ')</strong>' : '')) . '&nbsp;</td>
-									<td class="') . $bgColClass) . '" align="center" nowrap="nowrap">') . '<a href="#" onclick="') . htmlspecialchars((((('top.launchView(\'' . $table) . '\', \'') . intval($uid)) . '\'); return false;'))) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-info', array('title' => $this->clLabel('info', 'cm')))) . '</a>') . '<a href="') . htmlspecialchars($this->removeUrl($table, $uid))) . '#clip_head">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-selection-delete', array('title' => $this->clLabel('removeItem')))) . '</a>') . '</td>
+									<td class="' . $bgColClass . '">' . $this->linkItemText(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $rec, array('style' => 'margin: 0 20px;', 'title' => htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordIconAltText($rec, $table)))), $rec, $table) . '</td>
+									<td class="' . $bgColClass . '" nowrap="nowrap" width="95%">&nbsp;' . $this->linkItemText(htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $rec), $GLOBALS['BE_USER']->uc['titleLen'])), $rec, $table) . ($pad == 'normal' ? ' <strong>(' . ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) . ')</strong>' : '') . '&nbsp;</td>
+									<td class="' . $bgColClass . '" align="center" nowrap="nowrap">' . '<a href="#" onclick="' . htmlspecialchars(('top.launchView(\'' . $table . '\', \'' . intval($uid) . '\'); return false;')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-info', array('title' => $this->clLabel('info', 'cm'))) . '</a>' . '<a href="' . htmlspecialchars($this->removeUrl($table, $uid)) . '#clip_head">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-selection-delete', array('title' => $this->clLabel('removeItem'))) . '</a>' . '</td>
 								</tr>';
 							$localizationData = $this->getLocalizations($table, $rec, $bgColClass, $pad);
 							if ($localizationData) {
@@ -404,10 +404,10 @@ class Clipboard {
 			}
 		}
 		if (!count($lines)) {
-			$lines[] = ('
+			$lines[] = '
 								<tr>
 									<td class="bgColor4"><img src="clear.gif" width="56" height="1" alt="" /></td>
-									<td colspan="2" class="bgColor4" nowrap="nowrap" width="95%">&nbsp;<em>(' . $this->clLabel('clipNoEl')) . ')</em>&nbsp;</td>
+									<td colspan="2" class="bgColor4" nowrap="nowrap" width="95%">&nbsp;<em>(' . $this->clLabel('clipNoEl') . ')</em>&nbsp;</td>
 								</tr>';
 		}
 		$this->endClipboard();
@@ -427,9 +427,9 @@ class Clipboard {
 	public function getLocalizations($table, $parentRec, $bgColClass, $pad) {
 		$lines = array();
 		$tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
-		if (($table != 'pages' && \TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table)) && !$tcaCtrl['transOrigPointerTable']) {
+		if ($table != 'pages' && \TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($table) && !$tcaCtrl['transOrigPointerTable']) {
 			$where = array();
-			$where[] = ($tcaCtrl['transOrigPointerField'] . '=') . intval($parentRec['uid']);
+			$where[] = $tcaCtrl['transOrigPointerField'] . '=' . intval($parentRec['uid']);
 			$where[] = $tcaCtrl['languageField'] . '<>0';
 			if (isset($tcaCtrl['delete']) && $tcaCtrl['delete']) {
 				$where[] = $tcaCtrl['delete'] . '=0';
@@ -442,14 +442,14 @@ class Clipboard {
 				$modeData = '';
 				if ($pad == 'normal') {
 					$mode = $this->clipData['normal']['mode'] == 'copy' ? 'copy' : 'cut';
-					$modeData = (' <strong>(' . $this->clLabel($mode, 'cm')) . ')</strong>';
+					$modeData = ' <strong>(' . $this->clLabel($mode, 'cm') . ')</strong>';
 				}
 				foreach ($rows as $rec) {
-					$lines[] = (((((((((('
+					$lines[] = '
 					<tr>
-						<td class="' . $bgColClass) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $rec, array('style' => 'margin-left: 38px;'))) . '</td>
-						<td class="') . $bgColClass) . '" nowrap="nowrap" width="95%">&nbsp;') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $rec), $GLOBALS['BE_USER']->uc['titleLen']))) . $modeData) . '&nbsp;</td>
-						<td class="') . $bgColClass) . '" align="center" nowrap="nowrap">&nbsp;</td>
+						<td class="' . $bgColClass . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $rec, array('style' => 'margin-left: 38px;')) . '</td>
+						<td class="' . $bgColClass . '" nowrap="nowrap" width="95%">&nbsp;' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $rec), $GLOBALS['BE_USER']->uc['titleLen'])) . $modeData . '&nbsp;</td>
+						<td class="' . $bgColClass . '" align="center" nowrap="nowrap">&nbsp;</td>
 					</tr>';
 				}
 			}
@@ -468,7 +468,7 @@ class Clipboard {
 	public function padTitleWrap($str, $pad) {
 		$el = count($this->elFromTable($this->fileMode ? '_FILE' : '', $pad));
 		if ($el) {
-			return ((('<strong>' . $str) . '</strong> (') . ($pad == 'normal' ? ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) : htmlspecialchars($el))) . ')';
+			return '<strong>' . $str . '</strong> (' . ($pad == 'normal' ? ($this->clipData['normal']['mode'] == 'copy' ? $this->clLabel('copy', 'cm') : $this->clLabel('cut', 'cm')) : htmlspecialchars($el)) . ')';
 		} else {
 			return $GLOBALS['TBE_TEMPLATE']->dfw($str);
 		}
@@ -489,7 +489,7 @@ class Clipboard {
 				$str = $GLOBALS['TBE_TEMPLATE']->dfw($str);
 			} else {
 				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('recordlist')) {
-					$str = ((('<a href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => $rec['pid']), $this->backPath))) . '">') . $str) . '</a>';
+					$str = '<a href="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_list', array('id' => $rec['pid']), $this->backPath)) . '">' . $str . '</a>';
 				}
 			}
 		} elseif (file_exists($rec)) {
@@ -497,7 +497,7 @@ class Clipboard {
 				$str = $GLOBALS['TBE_TEMPLATE']->dfw($str);
 			} else {
 				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('filelist')) {
-					$str = ((('<a href="' . htmlspecialchars(((($this->backPath . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('file_list')) . '&id=') . dirname($rec)))) . '">') . $str) . '</a>';
+					$str = '<a href="' . htmlspecialchars(($this->backPath . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('file_list') . '&id=' . dirname($rec))) . '">' . $str . '</a>';
 				}
 			}
 		}
@@ -516,7 +516,7 @@ class Clipboard {
 	 * @todo Define visibility
 	 */
 	public function selUrlDB($table, $uid, $copy = 0, $deselect = 0, $baseArray = array()) {
-		$CB = array('el' => array(rawurlencode(($table . '|') . $uid) => $deselect ? 0 : 1));
+		$CB = array('el' => array(rawurlencode($table . '|' . $uid) => $deselect ? 0 : 1));
 		if ($copy) {
 			$CB['setCopyMode'] = 1;
 		}
@@ -555,7 +555,7 @@ class Clipboard {
 	 * @todo Define visibility
 	 */
 	public function pasteUrl($table, $uid, $setRedirect = 1) {
-		$rU = (((((((((($this->backPath . ($table == '_FILE' ? 'tce_file.php' : 'tce_db.php')) . '?') . ($setRedirect ? 'redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => ''))) : '')) . '&vC=') . $GLOBALS['BE_USER']->veriCode()) . '&prErr=1&uPT=1') . '&CB[paste]=') . rawurlencode((($table . '|') . $uid))) . '&CB[pad]=') . $this->current) . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction');
+		$rU = $this->backPath . ($table == '_FILE' ? 'tce_file.php' : 'tce_db.php') . '?' . ($setRedirect ? 'redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => ''))) : '') . '&vC=' . $GLOBALS['BE_USER']->veriCode() . '&prErr=1&uPT=1' . '&CB[paste]=' . rawurlencode(($table . '|' . $uid)) . '&CB[pad]=' . $this->current . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction');
 		return $rU;
 	}
 
@@ -568,7 +568,7 @@ class Clipboard {
 	 * @todo Define visibility
 	 */
 	public function deleteUrl($setRedirect = 1, $file = 0) {
-		$rU = ((((((((($this->backPath . ($file ? 'tce_file.php' : 'tce_db.php')) . '?') . ($setRedirect ? 'redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => ''))) : '')) . '&vC=') . $GLOBALS['BE_USER']->veriCode()) . '&prErr=1&uPT=1') . '&CB[delete]=1') . '&CB[pad]=') . $this->current) . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction');
+		$rU = $this->backPath . ($file ? 'tce_file.php' : 'tce_db.php') . '?' . ($setRedirect ? 'redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => ''))) : '') . '&vC=' . $GLOBALS['BE_USER']->veriCode() . '&prErr=1&uPT=1' . '&CB[delete]=1' . '&CB[pad]=' . $this->current . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction');
 		return $rU;
 	}
 
@@ -586,9 +586,9 @@ class Clipboard {
 		$editCMDArray = array();
 		foreach ($elements as $tP => $value) {
 			list($table, $uid) = explode('|', $tP);
-			$editCMDArray[] = ((('&edit[' . $table) . '][') . $uid) . ']=edit';
+			$editCMDArray[] = '&edit[' . $table . '][' . $uid . ']=edit';
 		}
-		$rU = ($this->backPath . 'alt_doc.php?') . implode('', $editCMDArray);
+		$rU = $this->backPath . 'alt_doc.php?' . implode('', $editCMDArray);
 		return $rU;
 	}
 
@@ -602,7 +602,7 @@ class Clipboard {
 	 * @todo Define visibility
 	 */
 	public function removeUrl($table, $uid) {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => array('remove' => ($table . '|') . $uid)));
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('CB' => array('remove' => $table . '|' . $uid)));
 	}
 
 	/**
@@ -617,7 +617,7 @@ class Clipboard {
 	 */
 	public function confirmMsg($table, $rec, $type, $clElements) {
 		if ($GLOBALS['BE_USER']->jsConfirmation(2)) {
-			$labelKey = ((('LLL:EXT:lang/locallang_core.php:mess.' . ($this->currentMode() == 'copy' ? 'copy' : 'move')) . ($this->current == 'normal' ? '' : 'cb')) . '_') . $type;
+			$labelKey = 'LLL:EXT:lang/locallang_core.php:mess.' . ($this->currentMode() == 'copy' ? 'copy' : 'move') . ($this->current == 'normal' ? '' : 'cb') . '_' . $type;
 			$msg = $GLOBALS['LANG']->sL($labelKey);
 			if ($table == '_FILE') {
 				$thisRecTitle = basename($rec);
@@ -637,7 +637,7 @@ class Clipboard {
 				}
 			}
 			// Message
-			$conf = ('confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($msg, \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($selRecTitle, 30), \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($thisRecTitle, 30)))) . ')';
+			$conf = 'confirm(' . $GLOBALS['LANG']->JScharCode(sprintf($msg, \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($selRecTitle, 30), \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($thisRecTitle, 30))) . ')';
 		} else {
 			$conf = '';
 		}
@@ -653,7 +653,7 @@ class Clipboard {
 	 * @todo Define visibility
 	 */
 	public function clLabel($key, $Akey = 'labels') {
-		return htmlspecialchars($GLOBALS['LANG']->sL((('LLL:EXT:lang/locallang_core.php:' . $Akey) . '.') . $key));
+		return htmlspecialchars($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:' . $Akey . '.' . $key));
 	}
 
 	/**
@@ -675,13 +675,13 @@ class Clipboard {
 					// Rendering files/directories on the clipboard
 					if ($table == '_FILE') {
 						if (file_exists($v) && \TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($v)) {
-							$params[] = (('tx_impexp[' . (is_dir($v) ? 'dir' : 'file')) . '][]=') . rawurlencode($v);
+							$params[] = 'tx_impexp[' . (is_dir($v) ? 'dir' : 'file') . '][]=' . rawurlencode($v);
 						}
 					} else {
 						// Rendering records:
 						$rec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $uid);
 						if (is_array($rec)) {
-							$params[] = 'tx_impexp[record][]=' . rawurlencode((($table . ':') . $uid));
+							$params[] = 'tx_impexp[record][]=' . rawurlencode(($table . ':' . $uid));
 						}
 					}
 				}
@@ -795,7 +795,7 @@ class Clipboard {
 	 * @todo Define visibility
 	 */
 	public function isSelected($table, $uid) {
-		$k = ($table . '|') . $uid;
+		$k = $table . '|' . $uid;
 		return $this->clipData[$this->current]['el'][$k] ? ($this->current == 'normal' ? $this->currentMode() : 1) : '';
 	}
 

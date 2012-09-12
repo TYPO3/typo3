@@ -140,7 +140,7 @@ class CrawlerHook {
 		}
 		// Finally, set entry for next indexing instance (if all steps are not completed)
 		if ($session_data['step'] <= 3) {
-			$title = ('Step #' . $session_data['step']) . ' of 3';
+			$title = 'Step #' . $session_data['step'] . ' of 3';
 			// Just information field. Never mind that the field is called "url" - this is what will be shown in the "crawler" log. Could be a URL - or whatever else tells what that indexing instance will do.
 			$pObj->addQueueEntryForHook($cfgRec, $title);
 		}

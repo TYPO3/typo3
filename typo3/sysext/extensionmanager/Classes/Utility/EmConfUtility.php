@@ -43,7 +43,7 @@ class EmConfUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function includeEmConf(array $extension) {
 		$_EXTKEY = $extension['key'];
-		$path = (PATH_site . $extension['siteRelPath']) . '/ext_emconf.php';
+		$path = PATH_site . $extension['siteRelPath'] . '/ext_emconf.php';
 		$EM_CONF = NULL;
 		if (file_exists($path)) {
 			include $path;
@@ -69,19 +69,19 @@ class EmConfUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$emConf = $this->fixEmConf($extensionData['EM_CONF']);
 		$emConf = var_export($emConf, TRUE);
-		$code = ((((('<?php
+		$code = '<?php
 
 /***************************************************************
-* Extension Manager/Repository config file for ext "' . $extensionData['extKey']) . '".
+* Extension Manager/Repository config file for ext "' . $extensionData['extKey'] . '".
 *
-* Auto generated ') . date('d-m-Y H:i')) . '
+* Auto generated ' . date('d-m-Y H:i') . '
 *
 * Manual updates:
 * Only the data in the array - everything else is removed by next
 * writing. "version" and "dependencies" must not be touched!
 ***************************************************************/
 
-$EM_CONF[$_EXTKEY] = ') . $emConf) . ';
+$EM_CONF[$_EXTKEY] = ' . $emConf . ';
 
 ?>';
 		return str_replace('  ', TAB, $code);
@@ -94,7 +94,7 @@ $EM_CONF[$_EXTKEY] = ') . $emConf) . ';
 	 * @return array
 	 */
 	public function fixEmConf(array $emConf) {
-		if (((!isset($emConf['constraints']) || !isset($emConf['constraints']['depends'])) || !isset($emConf['constraints']['conflicts'])) || !isset($emConf['constraints']['suggests'])) {
+		if (!isset($emConf['constraints']) || !isset($emConf['constraints']['depends']) || !isset($emConf['constraints']['conflicts']) || !isset($emConf['constraints']['suggests'])) {
 			if (!isset($emConf['constraints']) || !isset($emConf['constraints']['depends'])) {
 				$emConf['constraints']['depends'] = $this->stringToDependency($emConf['dependencies']);
 				if (strlen($emConf['PHP_version'])) {

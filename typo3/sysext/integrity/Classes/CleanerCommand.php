@@ -165,7 +165,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 					die;
 				}
 			} else {
-				$this->cli_echo(('ERROR: Analysis Type \'' . $analysisType) . '\' is unknown.
+				$this->cli_echo('ERROR: Analysis Type \'' . $analysisType . '\' is unknown.
 ', 1);
 				die;
 			}
@@ -219,7 +219,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 		// Check for filter:
 		if ($this->cli_isArg('--filterRegex') && ($regex = $this->cli_argValue('--filterRegex', 0))) {
 			if (!preg_match($regex, $matchString)) {
-				return ((('BYPASS: Filter Regex "' . $regex) . '" did not match string "') . $matchString) . '"';
+				return 'BYPASS: Filter Regex "' . $regex . '" did not match string "' . $matchString . '"';
 			}
 		}
 		// Check for interactive mode
@@ -253,10 +253,10 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 		);
 		// Header output:
 		if ($detailLevel <= 1) {
-			$this->cli_echo((('*********************************************
-' . $header) . LF) . '*********************************************
+			$this->cli_echo('*********************************************
+' . $header . LF . '*********************************************
 ');
-			$this->cli_echo((wordwrap(trim($res['message'])) . LF) . LF);
+			$this->cli_echo(wordwrap(trim($res['message'])) . LF . LF);
 		}
 		// Traverse headers for output:
 		if (is_array($res['headers'])) {
@@ -265,11 +265,11 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 					if (is_array($res[$key]) && (count($res[$key]) || !$silent)) {
 						// Header and explanaion:
 						$this->cli_echo('---------------------------------------------' . LF, 1);
-						$this->cli_echo((('[' . $header) . ']') . LF, 1);
-						$this->cli_echo(((($value[0] . ' [') . $severity[$value[2]]) . ']') . LF, 1);
+						$this->cli_echo('[' . $header . ']' . LF, 1);
+						$this->cli_echo($value[0] . ' [' . $severity[$value[2]] . ']' . LF, 1);
 						$this->cli_echo('---------------------------------------------' . LF, 1);
 						if (trim($value[1])) {
-							$this->cli_echo((('Explanation: ' . wordwrap(trim($value[1]))) . LF) . LF, 1);
+							$this->cli_echo('Explanation: ' . wordwrap(trim($value[1])) . LF . LF, 1);
 						}
 					}
 					// Content:
@@ -279,10 +279,10 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 								print_r($res[$key]);
 							}
 						} else {
-							$this->cli_echo(('(None)' . LF) . LF);
+							$this->cli_echo('(None)' . LF . LF);
 						}
 					} else {
-						$this->cli_echo(($res[$key] . LF) . LF);
+						$this->cli_echo($res[$key] . LF . LF);
 					}
 				}
 			}
@@ -359,7 +359,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 			$resSub = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*)', $tableName, '');
 			$countRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resSub);
 			$this->performanceStatistics['MySQL_count'][$tableName] = $countRow['count(*)'];
-			$this->performanceStatistics['CSV'] .= ((((((LF . $tableName) . ',') . $this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL'][$tableName]) . ',') . $this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc'][$tableName]) . ',') . $this->performanceStatistics['MySQL_count'][$tableName];
+			$this->performanceStatistics['CSV'] .= LF . $tableName . ',' . $this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL'][$tableName] . ',' . $this->performanceStatistics['genTree_traverse():TraverseTables:']['Proc'][$tableName] . ',' . $this->performanceStatistics['MySQL_count'][$tableName];
 		}
 		$this->performanceStatistics['recStats_size']['(ALL)'] = strlen(serialize($this->recStats));
 		foreach ($this->recStats as $key => $arrcontent) {
@@ -412,10 +412,10 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 			}
 		}
 		if ($echoLevel > 0) {
-			echo (((((LF . $accumulatedPath) . ' [') . $rootID) . ']') . ($pageRecord['deleted'] ? ' (DELETED)' : '')) . ($this->recStats['versions_published']['pages'][$rootID] ? ' (PUBLISHED)' : '');
+			echo LF . $accumulatedPath . ' [' . $rootID . ']' . ($pageRecord['deleted'] ? ' (DELETED)' : '') . ($this->recStats['versions_published']['pages'][$rootID] ? ' (PUBLISHED)' : '');
 		}
 		if ($echoLevel > 1 && $this->recStats['versions_lost_workspace']['pages'][$rootID]) {
-			echo ((LF . '	ERROR! This version belongs to non-existing workspace (') . $pageRecord['t3ver_wsid']) . ')!';
+			echo LF . '	ERROR! This version belongs to non-existing workspace (' . $pageRecord['t3ver_wsid'] . ')!';
 		}
 		if ($echoLevel > 1 && $this->recStats['versions_inside_versioned_page']['pages'][$rootID]) {
 			echo LF . '	WARNING! This version is inside an already versioned page or branch!';
@@ -430,26 +430,26 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 			if ($tableName != 'pages') {
 				// Select all records belonging to page:
 				$pt4 = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
-				$resSub = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), $tableName, ('pid=' . intval($rootID)) . ($this->genTree_traverseDeleted ? '' : \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableName)));
+				$resSub = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid' . ($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), $tableName, 'pid=' . intval($rootID) . ($this->genTree_traverseDeleted ? '' : \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableName)));
 				$this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL']['(ALL)'] += \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt4;
 				$this->performanceStatistics['genTree_traverse():TraverseTables:']['MySQL'][$tableName] += \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt4;
 				$pt5 = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
 				$count = $GLOBALS['TYPO3_DB']->sql_num_rows($resSub);
 				if ($count) {
 					if ($echoLevel == 2) {
-						echo ((((LF . '	\\-') . $tableName) . ' (') . $count) . ')';
+						echo LF . '	\\-' . $tableName . ' (' . $count . ')';
 					}
 				}
 				while ($rowSub = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resSub)) {
 					if ($echoLevel == 3) {
-						echo (((LF . '	\\-') . $tableName) . ':') . $rowSub['uid'];
+						echo LF . '	\\-' . $tableName . ':' . $rowSub['uid'];
 					}
 					// If the rootID represents an "element" or "page" version type, we must check if the record from this table is allowed to belong to this:
 					if ($versionSwapmode == 'SWAPMODE:-1' || $versionSwapmode == 'SWAPMODE:0' && !$GLOBALS['TCA'][$tableName]['ctrl']['versioning_followPages']) {
 						// This is illegal records under a versioned page - therefore not registered in $this->recStats['all'] so they should be orphaned:
 						$this->recStats['illegal_record_under_versioned_page'][$tableName][$rowSub['uid']] = $rowSub['uid'];
 						if ($echoLevel > 1) {
-							echo ((((LF . '		ERROR! Illegal record (') . $tableName) . ':') . $rowSub['uid']) . ') under versioned page!';
+							echo LF . '		ERROR! Illegal record (' . $tableName . ':' . $rowSub['uid'] . ') under versioned page!';
 						}
 					} else {
 						$this->recStats['all'][$tableName][$rowSub['uid']] = $rowSub['uid'];
@@ -464,13 +464,13 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 						if (!$GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'] && $rootID == 0) {
 							$this->recStats['misplaced_at_rootlevel'][$tableName][$rowSub['uid']] = $rowSub['uid'];
 							if ($echoLevel > 1) {
-								echo ((((LF . '		ERROR! Misplaced record (') . $tableName) . ':') . $rowSub['uid']) . ') on rootlevel!';
+								echo LF . '		ERROR! Misplaced record (' . $tableName . ':' . $rowSub['uid'] . ') on rootlevel!';
 							}
 						}
 						if ($GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'] == 1 && $rootID > 0) {
 							$this->recStats['misplaced_inside_tree'][$tableName][$rowSub['uid']] = $rowSub['uid'];
 							if ($echoLevel > 1) {
-								echo ((((LF . '		ERROR! Misplaced record (') . $tableName) . ':') . $rowSub['uid']) . ') inside page tree!';
+								echo LF . '		ERROR! Misplaced record (' . $tableName . ':' . $rowSub['uid'] . ') inside page tree!';
 							}
 						}
 						// Traverse plugins:
@@ -484,7 +484,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 								foreach ($versions as $verRec) {
 									if (!$verRec['_CURRENT_VERSION']) {
 										if ($echoLevel == 3) {
-											echo ((((((((LF . '		\\-[#OFFLINE VERSION: WS#') . $verRec['t3ver_wsid']) . '/Cnt:') . $verRec['t3ver_count']) . '] ') . $tableName) . ':') . $verRec['uid']) . ')';
+											echo LF . '		\\-[#OFFLINE VERSION: WS#' . $verRec['t3ver_wsid'] . '/Cnt:' . $verRec['t3ver_count'] . '] ' . $tableName . ':' . $verRec['uid'] . ')';
 										}
 										$this->recStats['all'][$tableName][$verRec['uid']] = $verRec['uid'];
 										// Register deleted:
@@ -509,14 +509,14 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 										if (!isset($this->workspaceIndex[$verRec['t3ver_wsid']])) {
 											$this->recStats['versions_lost_workspace'][$tableName][$verRec['uid']] = $verRec['uid'];
 											if ($echoLevel > 1) {
-												echo ((((((LF . '		ERROR! Version (') . $tableName) . ':') . $verRec['uid']) . ') belongs to non-existing workspace (') . $verRec['t3ver_wsid']) . ')!';
+												echo LF . '		ERROR! Version (' . $tableName . ':' . $verRec['uid'] . ') belongs to non-existing workspace (' . $verRec['t3ver_wsid'] . ')!';
 											}
 										}
 										// In case we are inside a versioned branch, there should not exists versions inside that "branch".
 										if ($versionSwapmode) {
 											$this->recStats['versions_inside_versioned_page'][$tableName][$verRec['uid']] = $verRec['uid'];
 											if ($echoLevel > 1) {
-												echo ((((LF . '		ERROR! This version (') . $tableName) . ':') . $verRec['uid']) . ') is inside an already versioned page or branch!';
+												echo LF . '		ERROR! This version (' . $tableName . ':' . $verRec['uid'] . ') is inside an already versioned page or branch!';
 											}
 										}
 										// Traverse plugins:
@@ -541,7 +541,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 		if (!$versionSwapmode || $versionSwapmode == 'SWAPMODE:1') {
 			if ($depth > 0) {
 				$depth--;
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', ('pid=' . intval($rootID)) . ($this->genTree_traverseDeleted ? '' : \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')), '', 'sorting');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'pid=' . intval($rootID) . ($this->genTree_traverseDeleted ? '' : \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')), '', 'sorting');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$this->genTree_traverse($row['uid'], $depth, $echoLevel, $callBack, $versionSwapmode, 0, $accumulatedPath);
 				}
@@ -552,7 +552,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 				if (is_array($versions)) {
 					foreach ($versions as $verRec) {
 						if (!$verRec['_CURRENT_VERSION']) {
-							$this->genTree_traverse($verRec['uid'], $depth, $echoLevel, $callBack, 'SWAPMODE:-1', $versionSwapmode ? 2 : 1, (((($accumulatedPath . ' [#OFFLINE VERSION: WS#') . $verRec['t3ver_wsid']) . '/Cnt:') . $verRec['t3ver_count']) . ']');
+							$this->genTree_traverse($verRec['uid'], $depth, $echoLevel, $callBack, 'SWAPMODE:-1', $versionSwapmode ? 2 : 1, $accumulatedPath . ' [#OFFLINE VERSION: WS#' . $verRec['t3ver_wsid'] . '/Cnt:' . $verRec['t3ver_count'] . ']');
 						}
 					}
 				}
@@ -573,7 +573,7 @@ NOW Running --AUTOFIX on result. OK?' . ($this->cli_isArg('--dryrun') ? ' (--dry
 	 * @todo Define visibility
 	 */
 	public function infoStr($rec) {
-		return (((((((($rec['tablename'] . ':') . $rec['recuid']) . ':') . $rec['field']) . ':') . $rec['flexpointer']) . ':') . $rec['softref_key']) . ($rec['deleted'] ? ' (DELETED)' : '');
+		return $rec['tablename'] . ':' . $rec['recuid'] . ':' . $rec['field'] . ':' . $rec['flexpointer'] . ':' . $rec['softref_key'] . ($rec['deleted'] ? ' (DELETED)' : '');
 	}
 
 }

@@ -216,7 +216,7 @@ abstract class AbstractDriver {
 	 * @return string
 	 */
 	protected function getTemporaryPathForFile(\TYPO3\CMS\Core\Resource\FileInterface $file) {
-		return (\TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('fal-tempfile-') . '.') . $file->getExtension();
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('fal-tempfile-') . '.' . $file->getExtension();
 	}
 
 	/**
@@ -456,7 +456,7 @@ abstract class AbstractDriver {
 				if ($result === -1) {
 					return FALSE;
 				} elseif ($result === FALSE) {
-					throw new \RuntimeException((('Could not apply file/folder name filter ' . $filter[0]) . '::') . $filter[1]);
+					throw new \RuntimeException('Could not apply file/folder name filter ' . $filter[0] . '::' . $filter[1]);
 				}
 			}
 		}

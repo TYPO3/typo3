@@ -245,14 +245,14 @@ class DatabaseConnection {
 		if ($foreign_table == $local_table) {
 			$foreign_table_as = $foreign_table . uniqid('_join');
 		}
-		$mmWhere = $local_table ? (($local_table . '.uid=') . $mm_table) . '.uid_local' : '';
+		$mmWhere = $local_table ? $local_table . '.uid=' . $mm_table . '.uid_local' : '';
 		$mmWhere .= ($local_table and $foreign_table) ? ' AND ' : '';
 		$tables = ($local_table ? $local_table . ',' : '') . $mm_table;
 		if ($foreign_table) {
-			$mmWhere .= ((($foreign_table_as ? $foreign_table_as : $foreign_table) . '.uid=') . $mm_table) . '.uid_foreign';
-			$tables .= (',' . $foreign_table) . ($foreign_table_as ? ' AS ' . $foreign_table_as : '');
+			$mmWhere .= ($foreign_table_as ? $foreign_table_as : $foreign_table) . '.uid=' . $mm_table . '.uid_foreign';
+			$tables .= ',' . $foreign_table . ($foreign_table_as ? ' AS ' . $foreign_table_as : '');
 		}
-		return $this->exec_SELECTquery($select, $tables, ($mmWhere . ' ') . $whereClause, $groupBy, $orderBy, $limit);
+		return $this->exec_SELECTquery($select, $tables, $mmWhere . ' ' . $whereClause, $groupBy, $orderBy, $limit);
 	}
 
 	/**
@@ -343,7 +343,7 @@ class DatabaseConnection {
 	 */
 	public function exec_SELECTcountRows($field, $table, $where = '') {
 		$count = FALSE;
-		$resultSet = $this->exec_SELECTquery(('COUNT(' . $field) . ')', $table, $where);
+		$resultSet = $this->exec_SELECTquery('COUNT(' . $field . ')', $table, $where);
 		if ($resultSet !== FALSE) {
 			list($count) = $this->sql_fetch_row($resultSet);
 			$count = intval($count);
@@ -393,7 +393,7 @@ class DatabaseConnection {
 			// Quote and escape values
 			$fields_values = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
 			// Build query
-			$query = (((((('INSERT INTO ' . $table) . ' (') . implode(',', array_keys($fields_values))) . ') VALUES ') . '(') . implode(',', $fields_values)) . ')';
+			$query = 'INSERT INTO ' . $table . ' (' . implode(',', array_keys($fields_values)) . ') VALUES ' . '(' . implode(',', $fields_values) . ')';
 			// Return query
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
@@ -419,12 +419,12 @@ class DatabaseConnection {
 				$hookObject->INSERTmultipleRows_preProcessAction($table, $fields, $rows, $no_quote_fields, $this);
 			}
 			// Build query
-			$query = ((('INSERT INTO ' . $table) . ' (') . implode(', ', $fields)) . ') VALUES ';
+			$query = 'INSERT INTO ' . $table . ' (' . implode(', ', $fields) . ') VALUES ';
 			$rowSQL = array();
 			foreach ($rows as $row) {
 				// Quote and escape values
 				$row = $this->fullQuoteArray($row, $table, $no_quote_fields);
-				$rowSQL[] = ('(' . implode(', ', $row)) . ')';
+				$rowSQL[] = '(' . implode(', ', $row) . ')';
 			}
 			$query .= implode(', ', $rowSQL);
 			// Return query
@@ -457,11 +457,11 @@ class DatabaseConnection {
 				// Quote and escape values
 				$nArr = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
 				foreach ($nArr as $k => $v) {
-					$fields[] = ($k . '=') . $v;
+					$fields[] = $k . '=' . $v;
 				}
 			}
 			// Build query
-			$query = ((('UPDATE ' . $table) . ' SET ') . implode(',', $fields)) . (strlen($where) > 0 ? ' WHERE ' . $where : '');
+			$query = 'UPDATE ' . $table . ' SET ' . implode(',', $fields) . (strlen($where) > 0 ? ' WHERE ' . $where : '');
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
 			}
@@ -485,7 +485,7 @@ class DatabaseConnection {
 				$hookObject->DELETEquery_preProcessAction($table, $where, $this);
 			}
 			// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
-			$query = ('DELETE FROM ' . $table) . (strlen($where) > 0 ? ' WHERE ' . $where : '');
+			$query = 'DELETE FROM ' . $table . (strlen($where) > 0 ? ' WHERE ' . $where : '');
 			if ($this->debugOutput || $this->store_lastBuiltQuery) {
 				$this->debug_lastBuiltQuery = $query;
 			}
@@ -510,7 +510,7 @@ class DatabaseConnection {
 	public function SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
 		// Build basic query
-		$query = ((('SELECT ' . $select_fields) . ' FROM ') . $from_table) . (strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
+		$query = 'SELECT ' . $select_fields . ' FROM ' . $from_table . (strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
 		// Group by
 		$query .= strlen($groupBy) > 0 ? ' GROUP BY ' . $groupBy : '';
 		// Order by
@@ -536,7 +536,7 @@ class DatabaseConnection {
 	public function SELECTsubquery($select_fields, $from_table, $where_clause) {
 		// Table and fieldnames should be "SQL-injection-safe" when supplied to this function
 		// Build basic query:
-		$query = ((('SELECT ' . $select_fields) . ' FROM ') . $from_table) . (strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
+		$query = 'SELECT ' . $select_fields . ' FROM ' . $from_table . (strlen($where_clause) > 0 ? ' WHERE ' . $where_clause : '');
 		// Return query
 		if ($this->debugOutput || $this->store_lastBuiltQuery) {
 			$this->debug_lastBuiltQuery = $query;
@@ -584,7 +584,7 @@ class DatabaseConnection {
 			throw new \InvalidArgumentException('$value must not contain a comma (,) in $this->listQuery() !', 1294585862);
 		}
 		$pattern = $this->quoteStr($value, $table);
-		$where = ((('FIND_IN_SET(\'' . $pattern) . '\',') . $field) . ')';
+		$where = 'FIND_IN_SET(\'' . $pattern . '\',' . $field . ')';
 		return $where;
 	}
 
@@ -600,10 +600,10 @@ class DatabaseConnection {
 	public function searchQuery($searchWords, $fields, $table) {
 		$queryParts = array();
 		foreach ($searchWords as $sw) {
-			$like = (' LIKE \'%' . $this->quoteStr($sw, $table)) . '%\'';
-			$queryParts[] = (($table . '.') . implode(((($like . ' OR ') . $table) . '.'), $fields)) . $like;
+			$like = ' LIKE \'%' . $this->quoteStr($sw, $table) . '%\'';
+			$queryParts[] = $table . '.' . implode(($like . ' OR ' . $table . '.'), $fields) . $like;
 		}
-		$query = ('(' . implode(') AND (', $queryParts)) . ')';
+		$query = '(' . implode(') AND (', $queryParts) . ')';
 		return $query;
 	}
 
@@ -683,7 +683,7 @@ class DatabaseConnection {
 	 * @todo Define visibility
 	 */
 	public function fullQuoteStr($str, $table) {
-		return ('\'' . mysql_real_escape_string($str, $this->link)) . '\'';
+		return '\'' . mysql_real_escape_string($str, $this->link) . '\'';
 	}
 
 	/**
@@ -1066,12 +1066,12 @@ class DatabaseConnection {
 		@ini_restore('track_errors');
 		@ini_restore('html_errors');
 		if (!$this->link) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog((((('Could not connect to MySQL server ' . $TYPO3_db_host) . ' with user ') . $TYPO3_db_username) . ': ') . $error_msg, 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not connect to MySQL server ' . $TYPO3_db_host . ' with user ' . $TYPO3_db_username . ': ' . $error_msg, 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL);
 		} else {
 			$setDBinit = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, str_replace('\' . LF . \'', LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']), TRUE);
 			foreach ($setDBinit as $v) {
 				if (mysql_query($v, $this->link) === FALSE) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog((('Could not initialize DB connection with query "' . $v) . '": ') . mysql_error($this->link), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not initialize DB connection with query "' . $v . '": ' . mysql_error($this->link), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				}
 			}
 			$this->setSqlMode();
@@ -1088,9 +1088,9 @@ class DatabaseConnection {
 		$resource = $this->sql_query('SELECT @@SESSION.sql_mode;');
 		if (is_resource($resource)) {
 			$result = $this->sql_fetch_row($resource);
-			if ((isset($result[0]) && $result[0]) && strpos($result[0], 'NO_BACKSLASH_ESCAPES') !== FALSE) {
+			if (isset($result[0]) && $result[0] && strpos($result[0], 'NO_BACKSLASH_ESCAPES') !== FALSE) {
 				$modes = array_diff(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $result[0]), array('NO_BACKSLASH_ESCAPES'));
-				$query = ('SET sql_mode=\'' . mysql_real_escape_string(implode(',', $modes))) . '\';';
+				$query = 'SET sql_mode=\'' . mysql_real_escape_string(implode(',', $modes)) . '\';';
 				$success = $this->sql_query($query);
 				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('NO_BACKSLASH_ESCAPES could not be removed from SQL mode: ' . $this->sql_error(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 			}
@@ -1108,7 +1108,7 @@ class DatabaseConnection {
 	public function sql_select_db($TYPO3_db) {
 		$ret = @mysql_select_db($TYPO3_db, $this->link);
 		if (!$ret) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog((('Could not select MySQL database ' . $TYPO3_db) . ': ') . mysql_error(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Could not select MySQL database ' . $TYPO3_db . ': ' . mysql_error(), 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_FATAL);
 		}
 		return $ret;
 	}
@@ -1149,7 +1149,7 @@ class DatabaseConnection {
 	 */
 	public function admin_get_tables() {
 		$whichTables = array();
-		$tables_result = mysql_query(('SHOW TABLE STATUS FROM `' . TYPO3_db) . '`', $this->link);
+		$tables_result = mysql_query('SHOW TABLE STATUS FROM `' . TYPO3_db . '`', $this->link);
 		if (!mysql_error()) {
 			while ($theTable = mysql_fetch_assoc($tables_result)) {
 				$whichTables[$theTable['Name']] = $theTable;
@@ -1173,7 +1173,7 @@ class DatabaseConnection {
 	 */
 	public function admin_get_fields($tableName) {
 		$output = array();
-		$columns_res = mysql_query(('SHOW COLUMNS FROM `' . $tableName) . '`', $this->link);
+		$columns_res = mysql_query('SHOW COLUMNS FROM `' . $tableName . '`', $this->link);
 		while ($fieldRow = mysql_fetch_assoc($columns_res)) {
 			$output[$fieldRow['Field']] = $fieldRow;
 		}
@@ -1191,7 +1191,7 @@ class DatabaseConnection {
 	 */
 	public function admin_get_keys($tableName) {
 		$output = array();
-		$keyRes = mysql_query(('SHOW KEYS FROM `' . $tableName) . '`', $this->link);
+		$keyRes = mysql_query('SHOW KEYS FROM `' . $tableName . '`', $this->link);
 		while ($keyRow = mysql_fetch_assoc($keyRes)) {
 			$output[] = $keyRow;
 		}
@@ -1262,7 +1262,7 @@ class DatabaseConnection {
 		}
 		if ($this->sql_pconnect($host, $user, $password)) {
 			if (!$this->sql_select_db($db)) {
-				throw new \RuntimeException(('TYPO3 Fatal Error: Cannot connect to the current database, "' . $db) . '"!', 1270853883);
+				throw new \RuntimeException('TYPO3 Fatal Error: Cannot connect to the current database, "' . $db . '"!', 1270853883);
 			}
 		} else {
 			throw new \RuntimeException('TYPO3 Fatal Error: The current username, password or host was not accepted when the connection to the database was attempted to be established!', 1270853884);
@@ -1341,7 +1341,7 @@ class DatabaseConnection {
 				unset($trace['object']);
 			}
 		}
-		$msg .= ((((': function TYPO3\\CMS\\Core\\Database\\DatabaseConnection->' . $trace[0]['function']) . ' called from file ') . substr($trace[0]['file'], (strlen(PATH_site) + 2))) . ' in line ') . $trace[0]['line'];
+		$msg .= ': function TYPO3\\CMS\\Core\\Database\\DatabaseConnection->' . $trace[0]['function'] . ' called from file ' . substr($trace[0]['file'], (strlen(PATH_site) + 2)) . ' in line ' . $trace[0]['line'];
 		\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog($msg . '. Use a devLog extension to get more details.', 'Core/t3lib_db', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 		// Send to devLog if enabled
 		if (TYPO3_DLOG) {
@@ -1397,7 +1397,7 @@ class DatabaseConnection {
 			// Only enable output if it's really useful
 			$debug = TRUE;
 			foreach ($explain_tables as $table) {
-				$tableRes = $this->sql_query(('SHOW TABLE STATUS LIKE \'' . $table) . '\'');
+				$tableRes = $this->sql_query('SHOW TABLE STATUS LIKE \'' . $table . '\'');
 				$isTable = $this->sql_num_rows($tableRes);
 				if ($isTable) {
 					$res = $this->sql_query('SHOW INDEX FROM ' . $table, $this->link);

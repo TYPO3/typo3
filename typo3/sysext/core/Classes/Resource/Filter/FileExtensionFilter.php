@@ -124,11 +124,11 @@ class FileExtensionFilter {
 		$result = TRUE;
 		$fileExt = $file->getExtension();
 		// Check allowed file extensions
-		if (($this->allowedFileExtensions !== NULL && count($this->allowedFileExtensions) > 0) && !in_array($fileExt, $this->allowedFileExtensions)) {
+		if ($this->allowedFileExtensions !== NULL && count($this->allowedFileExtensions) > 0 && !in_array($fileExt, $this->allowedFileExtensions)) {
 			$result = FALSE;
 		}
 		// Check disallowed file extensions
-		if (($this->disallowedFileExtensions !== NULL && count($this->disallowedFileExtensions) > 0) && in_array($fileExt, $this->disallowedFileExtensions)) {
+		if ($this->disallowedFileExtensions !== NULL && count($this->disallowedFileExtensions) > 0 && in_array($fileExt, $this->disallowedFileExtensions)) {
 			$result = FALSE;
 		}
 		return $result;

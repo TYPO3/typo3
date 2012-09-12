@@ -238,12 +238,12 @@ class GeneralUtility {
 		// GIF...
 		if ($gfxConf['gif_compress'] && strtolower(substr($theFile, -4, 4)) == '.gif') {
 			// IM
-			if ((($type == 'IM' || !$type) && $gfxConf['im']) && $gfxConf['im_path_lzw']) {
+			if (($type == 'IM' || !$type) && $gfxConf['im'] && $gfxConf['im_path_lzw']) {
 				// Use temporary file to prevent problems with read and write lock on same file on network file systems
-				$temporaryName = ((dirname($theFile) . '/') . md5(uniqid())) . '.gif';
+				$temporaryName = dirname($theFile) . '/' . md5(uniqid()) . '.gif';
 				// Rename could fail, if a simultaneous thread is currently working on the same thing
 				if (@rename($theFile, $temporaryName)) {
-					$cmd = self::imageMagickCommand('convert', ((('"' . $temporaryName) . '" "') . $theFile) . '"', $gfxConf['im_path_lzw']);
+					$cmd = self::imageMagickCommand('convert', '"' . $temporaryName . '" "' . $theFile . '"', $gfxConf['im_path_lzw']);
 					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 					unlink($temporaryName);
 				}
@@ -251,7 +251,7 @@ class GeneralUtility {
 				if (@is_file($theFile)) {
 					self::fixPermissions($theFile);
 				}
-			} elseif ((($type == 'GD' || !$type) && $gfxConf['gdlib']) && !$gfxConf['gdlib_png']) {
+			} elseif (($type == 'GD' || !$type) && $gfxConf['gdlib'] && !$gfxConf['gdlib_png']) {
 				// GD
 				$tempImage = imageCreateFromGif($theFile);
 				imageGif($tempImage, $theFile);
@@ -273,10 +273,10 @@ class GeneralUtility {
 	 * @return string New filename
 	 */
 	static public function png_to_gif_by_imagemagick($theFile) {
-		if (((($GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']) && strtolower(substr($theFile, -4, 4)) == '.png') && @is_file($theFile)) {
+		if ($GLOBALS['TYPO3_CONF_VARS']['FE']['png_to_gif'] && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im'] && $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'] && strtolower(substr($theFile, -4, 4)) == '.png' && @is_file($theFile)) {
 			// IM
 			$newFile = substr($theFile, 0, -4) . '.gif';
-			$cmd = self::imageMagickCommand('convert', ((('"' . $theFile) . '" "') . $newFile) . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']);
+			$cmd = self::imageMagickCommand('convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw']);
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 			$theFile = $newFile;
 			if (@is_file($newFile)) {
@@ -300,8 +300,8 @@ class GeneralUtility {
 			if ((string) $ext == '.png' && $output_png || (string) $ext == '.gif' && !$output_png) {
 				return $theFile;
 			} else {
-				$newFile = ((PATH_site . 'typo3temp/readPG_') . md5((($theFile . '|') . filemtime($theFile)))) . ($output_png ? '.png' : '.gif');
-				$cmd = self::imageMagickCommand('convert', ((('"' . $theFile) . '" "') . $newFile) . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']);
+				$newFile = PATH_site . 'typo3temp/readPG_' . md5(($theFile . '|' . filemtime($theFile))) . ($output_png ? '.png' : '.gif');
+				$cmd = self::imageMagickCommand('convert', '"' . $theFile . '" "' . $newFile . '"', $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path']);
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 				if (@is_file($newFile)) {
 					self::fixPermissions($newFile);
@@ -518,7 +518,7 @@ class GeneralUtility {
 			if ($left == 0) {
 				$stageOneAddress = $hiddenPart . $chunks[1];
 			} else {
-				$stageOneAddress = (($chunks[0] . ':') . $hiddenPart) . $chunks[1];
+				$stageOneAddress = $chunks[0] . ':' . $hiddenPart . $chunks[1];
 			}
 		} else {
 			$stageOneAddress = $address;
@@ -676,7 +676,7 @@ class GeneralUtility {
 	 * @return boolean TRUE if $item is in $list
 	 */
 	static public function inList($list, $item) {
-		return strpos((',' . $list) . ',', (',' . $item) . ',') !== FALSE ? TRUE : FALSE;
+		return strpos(',' . $list . ',', ',' . $item . ',') !== FALSE ? TRUE : FALSE;
 	}
 
 	/**
@@ -787,7 +787,7 @@ class GeneralUtility {
 		$hashAlgorithm = 'sha1';
 		$hashBlocksize = 64;
 		$hmac = '';
-		if (((extension_loaded('hash') && function_exists('hash_hmac')) && function_exists('hash_algos')) && in_array($hashAlgorithm, hash_algos())) {
+		if (extension_loaded('hash') && function_exists('hash_hmac') && function_exists('hash_algos') && in_array($hashAlgorithm, hash_algos())) {
 			$hmac = hash_hmac($hashAlgorithm, $input, $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
 		} else {
 			// Outer padding
@@ -887,7 +887,7 @@ class GeneralUtility {
 		$nR = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(hexdec(substr($color, 1, 2)) + $R, 0, 255);
 		$nG = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(hexdec(substr($color, 3, 2)) + $G, 0, 255);
 		$nB = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(hexdec(substr($color, 5, 2)) + $B, 0, 255);
-		return (('#' . substr(('0' . dechex($nR)), -2)) . substr(('0' . dechex($nG)), -2)) . substr(('0' . dechex($nB)), -2);
+		return '#' . substr(('0' . dechex($nR)), -2) . substr(('0' . dechex($nG)), -2) . substr(('0' . dechex($nB)), -2);
 	}
 
 	/**
@@ -932,7 +932,7 @@ class GeneralUtility {
 		if ($sizeInBytes > 900) {
 			// GB
 			if ($sizeInBytes > 900000000) {
-				$val = $sizeInBytes / ((1024 * 1024) * 1024);
+				$val = $sizeInBytes / (1024 * 1024 * 1024);
 				return number_format($val, ($val < 20 ? 1 : 0), '.', '') . $labelArr[3];
 			} elseif ($sizeInBytes > 900000) {
 				// MB
@@ -1086,7 +1086,7 @@ class GeneralUtility {
 	static public function normalizeMailAddress($address) {
 		if (self::isBrokenEmailEnvironment() && FALSE !== ($pos1 = strrpos($address, '<'))) {
 			$pos2 = strpos($address, '>', $pos1);
-			$address = substr($address, $pos1 + 1, (($pos2 ? $pos2 : strlen($address)) - $pos1) - 1);
+			$address = substr($address, $pos1 + 1, ($pos2 ? $pos2 : strlen($address)) - $pos1 - 1);
 		}
 		return $address;
 	}
@@ -1228,9 +1228,9 @@ class GeneralUtility {
 	static protected function generateRandomBytesFallback($bytesToReturn) {
 		$bytes = '';
 		// We initialize with somewhat random.
-		$randomState = ((($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . base_convert(memory_get_usage() % pow(10, 6), 10, 2)) . microtime()) . uniqid('')) . getmypid();
+		$randomState = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . base_convert(memory_get_usage() % pow(10, 6), 10, 2) . microtime() . uniqid('') . getmypid();
 		while (!isset($bytes[($bytesToReturn - 1)])) {
-			$randomState = sha1((microtime() . mt_rand()) . $randomState);
+			$randomState = sha1(microtime() . mt_rand() . $randomState);
 			$bytes .= sha1(mt_rand() . $randomState, TRUE);
 		}
 		return $bytes;
@@ -1483,12 +1483,12 @@ class GeneralUtility {
 	 */
 	static public function implodeArrayForUrl($name, array $theArray, $str = '', $skipBlank = FALSE, $rawurlencodeParamName = FALSE) {
 		foreach ($theArray as $Akey => $AVal) {
-			$thisKeyName = $name ? (($name . '[') . $Akey) . ']' : $Akey;
+			$thisKeyName = $name ? $name . '[' . $Akey . ']' : $Akey;
 			if (is_array($AVal)) {
 				$str = self::implodeArrayForUrl($thisKeyName, $AVal, $str, $skipBlank, $rawurlencodeParamName);
 			} else {
 				if (!$skipBlank || strcmp($AVal, '')) {
-					$str .= (('&' . ($rawurlencodeParamName ? rawurlencode($thisKeyName) : $thisKeyName)) . '=') . rawurlencode($AVal);
+					$str .= '&' . ($rawurlencodeParamName ? rawurlencode($thisKeyName) : $thisKeyName) . '=' . rawurlencode($AVal);
 				}
 			}
 		}
@@ -1694,7 +1694,7 @@ class GeneralUtility {
 		foreach ($row as $value) {
 			$out[] = str_replace($quote, $quote . $quote, $value);
 		}
-		$str = ($quote . implode((($quote . $delim) . $quote), $out)) . $quote;
+		$str = $quote . implode(($quote . $delim . $quote), $out) . $quote;
 		return $str;
 	}
 
@@ -1831,7 +1831,7 @@ class GeneralUtility {
 		$list = array();
 		foreach ($arr as $p => $v) {
 			if (strcmp($v, '') || $dontOmitBlankAttribs) {
-				$list[] = (($p . '="') . $v) . '"';
+				$list[] = $p . '="' . $v . '"';
 			}
 		}
 		return implode(' ', $list);
@@ -1857,11 +1857,11 @@ class GeneralUtility {
 			if (preg_match('/^(\\t+)/', $string, $match)) {
 				$string = str_replace($match[1], TAB, $string);
 			}
-			$string = ((($cr . '<script type="text/javascript">
+			$string = $cr . '<script type="text/javascript">
 /*<![CDATA[*/
-') . $string) . '
+' . $string . '
 /*]]>*/
-</script>') . $cr;
+</script>' . $cr;
 		}
 		return trim($string);
 	}
@@ -1882,7 +1882,7 @@ class GeneralUtility {
 		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
 		xml_parse_into_struct($parser, $string, $vals, $index);
 		if (xml_get_error_code($parser)) {
-			return (('Line ' . xml_get_current_line_number($parser)) . ': ') . xml_error_string(xml_get_error_code($parser));
+			return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
 		}
 		xml_parser_free($parser);
 		$stack = array(array());
@@ -1913,7 +1913,7 @@ class GeneralUtility {
 				unset($oldtagi['tag']);
 				if ($depth == $stacktop + 1) {
 					if ($key - $startPoint > 0) {
-						$partArray = array_slice($vals, $startPoint + 1, ($key - $startPoint) - 1);
+						$partArray = array_slice($vals, $startPoint + 1, $key - $startPoint - 1);
 						$oldtagi['XMLvalue'] = self::xmlRecompileFromStructValArray($partArray);
 					} else {
 						$oldtagi['XMLvalue'] = $oldtagi['values'][0];
@@ -1944,7 +1944,7 @@ class GeneralUtility {
 		// Set default charset unless explicitly specified
 		$charset = $charset ? $charset : 'utf-8';
 		// Return XML:
-		return ((('<?xml version="1.0" encoding="' . htmlspecialchars($charset)) . '" standalone="yes" ?>') . LF) . self::array2xml($array, '', 0, $docTag, 0, $options);
+		return '<?xml version="1.0" encoding="' . htmlspecialchars($charset) . '" standalone="yes" ?>' . LF . self::array2xml($array, '', 0, $docTag, 0, $options);
 	}
 
 	/**
@@ -1971,7 +1971,7 @@ class GeneralUtility {
 	 */
 	static public function array2xml(array $array, $NSprefix = '', $level = 0, $docTag = 'phparray', $spaceInd = 0, array $options = array(), array $stackData = array()) {
 		// The list of byte values which will trigger binary-safe storage. If any value has one of these char values in it, it will be encoded in base64
-		$binaryChars = (((((((((((((((((((((((((((chr(0) . chr(1)) . chr(2)) . chr(3)) . chr(4)) . chr(5)) . chr(6)) . chr(7)) . chr(8)) . chr(11)) . chr(12)) . chr(14)) . chr(15)) . chr(16)) . chr(17)) . chr(18)) . chr(19)) . chr(20)) . chr(21)) . chr(22)) . chr(23)) . chr(24)) . chr(25)) . chr(26)) . chr(27)) . chr(28)) . chr(29)) . chr(30)) . chr(31);
+		$binaryChars = chr(0) . chr(1) . chr(2) . chr(3) . chr(4) . chr(5) . chr(6) . chr(7) . chr(8) . chr(11) . chr(12) . chr(14) . chr(15) . chr(16) . chr(17) . chr(18) . chr(19) . chr(20) . chr(21) . chr(22) . chr(23) . chr(24) . chr(25) . chr(26) . chr(27) . chr(28) . chr(29) . chr(30) . chr(31);
 		// Set indenting mode:
 		$indentChar = $spaceInd ? ' ' : TAB;
 		$indentN = $spaceInd > 0 ? $spaceInd : 1;
@@ -1984,20 +1984,20 @@ class GeneralUtility {
 			$tagName = $k;
 			// Construct the tag name.
 			// Use tag based on grand-parent + parent tag name
-			if (isset($options['grandParentTagMap'][($stackData['grandParentTagName'] . '/') . $stackData['parentTagName']])) {
-				$attr .= (' index="' . htmlspecialchars($tagName)) . '"';
-				$tagName = (string) $options['grandParentTagMap'][(($stackData['grandParentTagName'] . '/') . $stackData['parentTagName'])];
+			if (isset($options['grandParentTagMap'][$stackData['grandParentTagName'] . '/' . $stackData['parentTagName']])) {
+				$attr .= ' index="' . htmlspecialchars($tagName) . '"';
+				$tagName = (string) $options['grandParentTagMap'][($stackData['grandParentTagName'] . '/' . $stackData['parentTagName'])];
 			} elseif (isset($options['parentTagMap'][$stackData['parentTagName'] . ':_IS_NUM']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($tagName)) {
 				// Use tag based on parent tag name + if current tag is numeric
-				$attr .= (' index="' . htmlspecialchars($tagName)) . '"';
+				$attr .= ' index="' . htmlspecialchars($tagName) . '"';
 				$tagName = (string) $options['parentTagMap'][($stackData['parentTagName'] . ':_IS_NUM')];
-			} elseif (isset($options['parentTagMap'][($stackData['parentTagName'] . ':') . $tagName])) {
+			} elseif (isset($options['parentTagMap'][$stackData['parentTagName'] . ':' . $tagName])) {
 				// Use tag based on parent tag name + current tag
-				$attr .= (' index="' . htmlspecialchars($tagName)) . '"';
-				$tagName = (string) $options['parentTagMap'][(($stackData['parentTagName'] . ':') . $tagName)];
+				$attr .= ' index="' . htmlspecialchars($tagName) . '"';
+				$tagName = (string) $options['parentTagMap'][($stackData['parentTagName'] . ':' . $tagName)];
 			} elseif (isset($options['parentTagMap'][$stackData['parentTagName']])) {
 				// Use tag based on parent tag name:
-				$attr .= (' index="' . htmlspecialchars($tagName)) . '"';
+				$attr .= ' index="' . htmlspecialchars($tagName) . '"';
 				$tagName = (string) $options['parentTagMap'][$stackData['parentTagName']];
 			} elseif (!strcmp(intval($tagName), $tagName)) {
 				// If integer...;
@@ -2006,12 +2006,12 @@ class GeneralUtility {
 					$tagName = 'n' . $tagName;
 				} else {
 					// Use special tag for num. keys:
-					$attr .= (' index="' . $tagName) . '"';
+					$attr .= ' index="' . $tagName . '"';
 					$tagName = $options['useIndexTagForNum'] ? $options['useIndexTagForNum'] : 'numIndex';
 				}
 			} elseif ($options['useIndexTagForAssoc']) {
 				// Use tag for all associative keys:
-				$attr .= (' index="' . htmlspecialchars($tagName)) . '"';
+				$attr .= ' index="' . htmlspecialchars($tagName) . '"';
 				$tagName = $options['useIndexTagForAssoc'];
 			}
 			// The tag name is cleaned up so only alphanumeric chars (plus - and _) are in there and not longer than 100 chars either.
@@ -2019,18 +2019,18 @@ class GeneralUtility {
 			// If the value is an array then we will call this function recursively:
 			if (is_array($v)) {
 				// Sub elements:
-				if ($options['alt_options'][($stackData['path'] . '/') . $tagName]) {
-					$subOptions = $options['alt_options'][($stackData['path'] . '/') . $tagName];
+				if ($options['alt_options'][$stackData['path'] . '/' . $tagName]) {
+					$subOptions = $options['alt_options'][$stackData['path'] . '/' . $tagName];
 					$clearStackPath = $subOptions['clearStackPath'];
 				} else {
 					$subOptions = $options;
 					$clearStackPath = FALSE;
 				}
-				$content = ($nl . self::array2xml($v, $NSprefix, ($level + 1), '', $spaceInd, $subOptions, array(
+				$content = $nl . self::array2xml($v, $NSprefix, ($level + 1), '', $spaceInd, $subOptions, array(
 					'parentTagName' => $tagName,
 					'grandParentTagName' => $stackData['parentTagName'],
-					'path' => ($clearStackPath ? '' : ($stackData['path'] . '/') . $tagName)
-				))) . ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '');
+					'path' => ($clearStackPath ? '' : $stackData['path'] . '/' . $tagName)
+				)) . ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '');
 				// Do not set "type = array". Makes prettier XML but means that empty arrays are not restored with xml2array
 				if ((int) $options['disableTypeAttrib'] != 2) {
 					$attr .= ' type="array"';
@@ -2051,19 +2051,19 @@ class GeneralUtility {
 					$dType = gettype($v);
 					if ($dType == 'string') {
 						if ($options['useCDATA'] && $content != $v) {
-							$content = ('<![CDATA[' . $v) . ']]>';
+							$content = '<![CDATA[' . $v . ']]>';
 						}
 					} elseif (!$options['disableTypeAttrib']) {
-						$attr .= (' type="' . $dType) . '"';
+						$attr .= ' type="' . $dType . '"';
 					}
 				}
 			}
 			// Add the element to the output string:
-			$output .= ((((((((((($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '') . '<') . $NSprefix) . $tagName) . $attr) . '>') . $content) . '</') . $NSprefix) . $tagName) . '>') . $nl;
+			$output .= ($spaceInd >= 0 ? str_pad('', ($level + 1) * $indentN, $indentChar) : '') . '<' . $NSprefix . $tagName . $attr . '>' . $content . '</' . $NSprefix . $tagName . '>' . $nl;
 		}
 		// If we are at the outer-most level, then we finally wrap it all in the document tags and return that as the value:
 		if (!$level) {
-			$output = (((((('<' . $docTag) . '>') . $nl) . $output) . '</') . $docTag) . '>';
+			$output = '<' . $docTag . '>' . $nl . $output . '</' . $docTag . '>';
 		}
 		return $output;
 	}
@@ -2081,7 +2081,7 @@ class GeneralUtility {
 	 */
 	static public function xml2array($string, $NSprefix = '', $reportDocTag = FALSE) {
 		static $firstLevelCache = array();
-		$identifier = md5(($string . $NSprefix) . ($reportDocTag ? '1' : '0'));
+		$identifier = md5($string . $NSprefix . ($reportDocTag ? '1' : '0'));
 		// Look up in first level cache
 		if (!empty($firstLevelCache[$identifier])) {
 			$array = $firstLevelCache[$identifier];
@@ -2126,7 +2126,7 @@ class GeneralUtility {
 		xml_parse_into_struct($parser, $string, $vals, $index);
 		// If error, return error message:
 		if (xml_get_error_code($parser)) {
-			return (('Line ' . xml_get_current_line_number($parser)) . ': ') . xml_error_string(xml_get_error_code($parser));
+			return 'Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser));
 		}
 		xml_parser_free($parser);
 		// Init vars:
@@ -2219,12 +2219,12 @@ class GeneralUtility {
 				$XMLcontent .= '<' . $val['tag'];
 				if (isset($val['attributes'])) {
 					foreach ($val['attributes'] as $k => $v) {
-						$XMLcontent .= (((' ' . $k) . '="') . htmlspecialchars($v)) . '"';
+						$XMLcontent .= ' ' . $k . '="' . htmlspecialchars($v) . '"';
 					}
 				}
 				if ($type == 'complete') {
 					if (isset($val['value'])) {
-						$XMLcontent .= ((('>' . htmlspecialchars($val['value'])) . '</') . $val['tag']) . '>';
+						$XMLcontent .= '>' . htmlspecialchars($val['value']) . '</' . $val['tag'] . '>';
 					} else {
 						$XMLcontent .= '/>';
 					}
@@ -2237,7 +2237,7 @@ class GeneralUtility {
 			}
 			// Finish tag:
 			if ($type == 'close') {
-				$XMLcontent .= ('</' . $val['tag']) . '>';
+				$XMLcontent .= '</' . $val['tag'] . '>';
 			}
 			// Cdata
 			if ($type == 'cdata') {
@@ -2351,7 +2351,7 @@ class GeneralUtility {
 				} else {
 					$curlInfo = curl_getinfo($ch);
 					// We hit a redirection but we couldn't follow it
-					if ((!$followLocation && $curlInfo['status'] >= 300) && $curlInfo['status'] < 400) {
+					if (!$followLocation && $curlInfo['status'] >= 300 && $curlInfo['status'] < 400) {
 						$report['error'] = -1;
 						$report['message'] = 'Couldn\'t follow location redirect (PHP configuration option open_basedir is in effect).';
 					} elseif ($includeHeader) {
@@ -2394,7 +2394,7 @@ class GeneralUtility {
 				return FALSE;
 			}
 			$method = $includeHeader == 2 ? 'HEAD' : 'GET';
-			$msg = ((((((($method . ' ') . (isset($parsedURL['path']) ? $parsedURL['path'] : '/')) . ($parsedURL['query'] ? '?' . $parsedURL['query'] : '')) . ' HTTP/1.0') . CRLF) . 'Host: ') . $parsedURL['host']) . '
+			$msg = $method . ' ' . (isset($parsedURL['path']) ? $parsedURL['path'] : '/') . ($parsedURL['query'] ? '?' . $parsedURL['query'] : '') . ' HTTP/1.0' . CRLF . 'Host: ' . $parsedURL['host'] . '
 
 Connection: close
 
@@ -2521,10 +2521,10 @@ Connection: close
 					while (($file = readdir($handle)) !== FALSE) {
 						$recursionResult = NULL;
 						if ($file !== '.' && $file !== '..') {
-							if (@is_file((($path . '/') . $file))) {
-								$recursionResult = self::fixPermissions(($path . '/') . $file);
-							} elseif (@is_dir((($path . '/') . $file))) {
-								$recursionResult = self::fixPermissions(($path . '/') . $file, TRUE);
+							if (@is_file(($path . '/' . $file))) {
+								$recursionResult = self::fixPermissions($path . '/' . $file);
+							} elseif (@is_dir(($path . '/' . $file))) {
+								$recursionResult = self::fixPermissions($path . '/' . $file, TRUE);
 							}
 							if (isset($recursionResult) && !$recursionResult) {
 								$result = FALSE;
@@ -2553,7 +2553,7 @@ Connection: close
 		$fI = pathinfo($filepath);
 		$fI['dirname'] .= '/';
 		// Check parts:
-		if ((self::validPathStr($filepath) && $fI['basename']) && strlen($fI['basename']) < 60) {
+		if (self::validPathStr($filepath) && $fI['basename'] && strlen($fI['basename']) < 60) {
 			if (defined('PATH_site')) {
 				// Setting main temporary directory name (standard)
 				$dirName = PATH_site . 'typo3temp/';
@@ -2568,7 +2568,7 @@ Connection: close
 									self::mkdir_deep(PATH_site . 'typo3temp/', $subdir);
 								}
 							} else {
-								return ('Subdir, "' . $subdir) . '", was NOT on the form "[[:alnum:]_]/" or  "[[:alnum:]_]/[[:alnum:]_]/"';
+								return 'Subdir, "' . $subdir . '", was NOT on the form "[[:alnum:]_]/" or  "[[:alnum:]_]/[[:alnum:]_]/"';
 							}
 						}
 						// Checking dir-name again (sub-dir might have been created):
@@ -2582,10 +2582,10 @@ Connection: close
 								return 'Calculated filelocation didn\'t match input $filepath!';
 							}
 						} else {
-							return ('"' . $dirName) . '" is not a directory!';
+							return '"' . $dirName . '" is not a directory!';
 						}
 					} else {
-						return ('"' . $fI['dirname']) . '" was not within directory PATH_site + "typo3temp/"';
+						return '"' . $fI['dirname'] . '" was not within directory PATH_site + "typo3temp/"';
 					}
 				} else {
 					return 'PATH_site + "typo3temp/" was not a directory!';
@@ -2594,7 +2594,7 @@ Connection: close
 				return 'PATH_site constant was NOT defined!';
 			}
 		} else {
-			return ('Input filepath "' . $filepath) . '" was generally invalid!';
+			return 'Input filepath "' . $filepath . '" was generally invalid!';
 		}
 	}
 
@@ -2626,10 +2626,10 @@ Connection: close
 	 */
 	static public function mkdir_deep($directory, $deepDirectory = '') {
 		if (!is_string($directory)) {
-			throw new \InvalidArgumentException(('The specified directory is of type "' . gettype($directory)) . '" but a string is expected.', 1303662955);
+			throw new \InvalidArgumentException('The specified directory is of type "' . gettype($directory) . '" but a string is expected.', 1303662955);
 		}
 		if (!is_string($deepDirectory)) {
-			throw new \InvalidArgumentException(('The specified directory is of type "' . gettype($deepDirectory)) . '" but a string is expected.', 1303662956);
+			throw new \InvalidArgumentException('The specified directory is of type "' . gettype($deepDirectory) . '" but a string is expected.', 1303662956);
 		}
 		$fullPath = $directory . $deepDirectory;
 		if (!is_dir($fullPath) && strlen($fullPath) > 0) {
@@ -2663,7 +2663,7 @@ Connection: close
 			} while (!is_dir($currentPath) && $separatorPosition !== FALSE);
 			$result = @mkdir($fullDirectoryPath, $permissionMask, TRUE);
 			if (!$result) {
-				throw new \RuntimeException(('Could not create directory "' . $fullDirectoryPath) . '"!', 1170251400);
+				throw new \RuntimeException('Could not create directory "' . $fullDirectoryPath . '"!', 1170251400);
 			}
 		}
 		return $firstCreatedPath;
@@ -2688,7 +2688,7 @@ Connection: close
 						if ($file == '.' || $file == '..') {
 							continue;
 						}
-						$OK = self::rmdir(($path . '/') . $file, $removeNonEmpty);
+						$OK = self::rmdir($path . '/' . $file, $removeNonEmpty);
 					}
 					closedir($handle);
 				}
@@ -2717,7 +2717,7 @@ Connection: close
 				$dir = scandir($path);
 				$dirs = array();
 				foreach ($dir as $entry) {
-					if ((is_dir(($path . '/') . $entry) && $entry != '..') && $entry != '.') {
+					if (is_dir($path . '/' . $entry) && $entry != '..' && $entry != '.') {
 						$dirs[] = $entry;
 					}
 				}
@@ -2749,14 +2749,14 @@ Connection: close
 			$d = dir($path);
 			if (is_object($d)) {
 				while ($entry = $d->read()) {
-					if (@is_file((($path . '/') . $entry))) {
+					if (@is_file(($path . '/' . $entry))) {
 						$fI = pathinfo($entry);
 						// Don't change this ever - extensions may depend on the fact that the hash is an md5 of the path! (import/export extension)
-						$key = md5(($path . '/') . $entry);
-						if ((!strlen($extensionList) || self::inList($extensionList, strtolower($fI['extension']))) && (!strlen($excludePattern) || !preg_match((('/^' . $excludePattern) . '$/'), $entry))) {
+						$key = md5($path . '/' . $entry);
+						if ((!strlen($extensionList) || self::inList($extensionList, strtolower($fI['extension']))) && (!strlen($excludePattern) || !preg_match(('/^' . $excludePattern . '$/'), $entry))) {
 							$filearray[$key] = ($prependPath ? $path . '/' : '') . $entry;
 							if ($order == 'mtime') {
-								$sortarray[$key] = filemtime(($path . '/') . $entry);
+								$sortarray[$key] = filemtime($path . '/' . $entry);
 							} elseif ($order) {
 								$sortarray[$key] = strtolower($entry);
 							}
@@ -2765,7 +2765,7 @@ Connection: close
 				}
 				$d->close();
 			} else {
-				return ('error opening path: "' . $path) . '"';
+				return 'error opening path: "' . $path . '"';
 			}
 		}
 		// Sort them:
@@ -2801,8 +2801,8 @@ Connection: close
 		$dirs = self::get_dirs($path);
 		if (is_array($dirs) && $recursivityLevels > 0) {
 			foreach ($dirs as $subdirs) {
-				if ((string) $subdirs != '' && (!strlen($excludePattern) || !preg_match((('/^' . $excludePattern) . '$/'), $subdirs))) {
-					$fileArr = self::getAllFilesAndFoldersInPath($fileArr, ($path . $subdirs) . '/', $extList, $regDirs, $recursivityLevels - 1, $excludePattern);
+				if ((string) $subdirs != '' && (!strlen($excludePattern) || !preg_match(('/^' . $excludePattern . '$/'), $subdirs))) {
+					$fileArr = self::getAllFilesAndFoldersInPath($fileArr, $path . $subdirs . '/', $extList, $regDirs, $recursivityLevels - 1, $excludePattern);
 				}
 			}
 		}
@@ -2920,7 +2920,7 @@ Connection: close
 	static public function getBytesFromSizeMeasurement($measurement) {
 		$bytes = doubleval($measurement);
 		if (stripos($measurement, 'G')) {
-			$bytes *= (1024 * 1024) * 1024;
+			$bytes *= 1024 * 1024 * 1024;
 		} elseif (stripos($measurement, 'M')) {
 			$bytes *= 1024 * 1024;
 		} elseif (stripos($measurement, 'K')) {
@@ -2957,7 +2957,7 @@ Connection: close
 	 */
 	static public function createVersionNumberedFilename($file, $forceQueryString = FALSE) {
 		$lookupFile = explode('?', $file);
-		$path = self::resolveBackPath((self::dirname(PATH_thisScript) . '/') . $lookupFile[0]);
+		$path = self::resolveBackPath(self::dirname(PATH_thisScript) . '/' . $lookupFile[0]);
 		if (TYPO3_MODE == 'FE') {
 			$mode = strtolower($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['versionNumberInFilename']);
 			if ($mode === 'embed') {
@@ -2984,7 +2984,7 @@ Connection: close
 				} else {
 					$separator = '?';
 				}
-				$fullName = ($file . $separator) . filemtime($path);
+				$fullName = $file . $separator . filemtime($path);
 			} else {
 				// Change the filename
 				$name = explode('.', $lookupFile[0]);
@@ -3013,7 +3013,7 @@ Connection: close
 		$p = parse_url(self::getIndpEnv('TYPO3_REQUEST_SCRIPT'));
 		$dir = self::dirname($p['path']) . '/';
 		// Strip file
-		$url = str_replace('//', '/', ($p['host'] . ($p['port'] ? ':' . $p['port'] : '')) . $dir);
+		$url = str_replace('//', '/', $p['host'] . ($p['port'] ? ':' . $p['port'] : '') . $dir);
 		return $url;
 	}
 
@@ -3036,7 +3036,7 @@ Connection: close
 			}
 		}
 		$pString = self::implodeArrayForUrl('', $params);
-		return $pString ? ($parts . '?') . preg_replace('/^&/', '', $pString) : $parts;
+		return $pString ? $parts . '?' . preg_replace('/^&/', '', $pString) : $parts;
 	}
 
 	/**
@@ -3114,7 +3114,7 @@ Connection: close
 		$retVal = '';
 		switch ((string) $getEnvName) {
 		case 'SCRIPT_NAME':
-			$retVal = ((PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi') || PHP_SAPI == 'cgi-fcgi') && ($_SERVER['ORIG_PATH_INFO'] ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']) ? ($_SERVER['ORIG_PATH_INFO'] ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']) : ($_SERVER['ORIG_SCRIPT_NAME'] ? $_SERVER['ORIG_SCRIPT_NAME'] : $_SERVER['SCRIPT_NAME']);
+			$retVal = (PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi' || PHP_SAPI == 'cgi-fcgi') && ($_SERVER['ORIG_PATH_INFO'] ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']) ? ($_SERVER['ORIG_PATH_INFO'] ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['PATH_INFO']) : ($_SERVER['ORIG_SCRIPT_NAME'] ? $_SERVER['ORIG_SCRIPT_NAME'] : $_SERVER['SCRIPT_NAME']);
 			// Add a prefix if TYPO3 is behind a proxy: ext-domain.com => int-server.com/prefix
 			if (self::cmpIP($_SERVER['REMOTE_ADDR'], $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'])) {
 				if (self::getIndpEnv('TYPO3_SSL') && $GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyPrefixSSL']) {
@@ -3135,7 +3135,7 @@ Connection: close
 				$retVal = $GLOBALS[$v][$n];
 			} elseif (!$_SERVER['REQUEST_URI']) {
 				// This is for ISS/CGI which does not have the REQUEST_URI available.
-				$retVal = ('/' . ltrim(self::getIndpEnv('SCRIPT_NAME'), '/')) . ($_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '');
+				$retVal = '/' . ltrim(self::getIndpEnv('SCRIPT_NAME'), '/') . ($_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '');
 			} else {
 				$retVal = $_SERVER['REQUEST_URI'];
 			}
@@ -3152,7 +3152,7 @@ Connection: close
 			// $_SERVER['PATH_INFO']!=$_SERVER['SCRIPT_NAME'] is necessary because some servers (Windows/CGI) are seen to set PATH_INFO equal to script_name
 			// Further, there must be at least one '/' in the path - else the PATH_INFO value does not make sense.
 			// IF 'PATH_INFO' never works for our purpose in TYPO3 with CGI-servers, then 'PHP_SAPI=='cgi'' might be a better check. Right now strcmp($_SERVER['PATH_INFO'],t3lib_div::getIndpEnv('SCRIPT_NAME')) will always return FALSE for CGI-versions, but that is only as long as SCRIPT_NAME is set equal to PATH_INFO because of PHP_SAPI=='cgi' (see above)
-			if ((PHP_SAPI != 'cgi' && PHP_SAPI != 'cgi-fcgi') && PHP_SAPI != 'fpm-fcgi') {
+			if (PHP_SAPI != 'cgi' && PHP_SAPI != 'cgi-fcgi' && PHP_SAPI != 'fpm-fcgi') {
 				$retVal = $_SERVER['PATH_INFO'];
 			}
 			break;
@@ -3268,7 +3268,7 @@ Connection: close
 			$retVal = self::getIndpEnv('TYPO3_REQUEST_HOST') . self::getIndpEnv('SCRIPT_NAME');
 			break;
 		case 'TYPO3_REQUEST_DIR':
-			$retVal = (self::getIndpEnv('TYPO3_REQUEST_HOST') . self::dirname(self::getIndpEnv('SCRIPT_NAME'))) . '/';
+			$retVal = self::getIndpEnv('TYPO3_REQUEST_HOST') . self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/';
 			break;
 		case 'TYPO3_SITE_URL':
 			if (defined('PATH_thisScript') && defined('PATH_site')) {
@@ -3295,7 +3295,7 @@ Connection: close
 			if (self::cmpIP(self::getIndpEnv('REMOTE_ADDR'), $proxySSL)) {
 				$retVal = TRUE;
 			} else {
-				$retVal = ($_SERVER['SSL_SESSION_ID'] || !strcasecmp($_SERVER['HTTPS'], 'on')) || !strcmp($_SERVER['HTTPS'], '1') ? TRUE : FALSE;
+				$retVal = $_SERVER['SSL_SESSION_ID'] || !strcasecmp($_SERVER['HTTPS'], 'on') || !strcmp($_SERVER['HTTPS'], '1') ? TRUE : FALSE;
 			}
 			break;
 		case '_ARRAY':
@@ -3401,11 +3401,11 @@ Connection: close
 				$bInfo['SYSTEM'] = 'win';
 			} elseif (strpos($useragent, 'Mac') !== FALSE) {
 				$bInfo['SYSTEM'] = 'mac';
-			} elseif ((((strpos($useragent, 'Linux') !== FALSE || strpos($useragent, 'X11') !== FALSE) || strpos($useragent, 'SGI') !== FALSE) || strpos($useragent, ' SunOS ') !== FALSE) || strpos($useragent, ' HP-UX ') !== FALSE) {
+			} elseif (strpos($useragent, 'Linux') !== FALSE || strpos($useragent, 'X11') !== FALSE || strpos($useragent, 'SGI') !== FALSE || strpos($useragent, ' SunOS ') !== FALSE || strpos($useragent, ' HP-UX ') !== FALSE) {
 				$bInfo['SYSTEM'] = 'unix';
 			}
 			// Is TRUE if the browser supports css to format forms, especially the width
-			$bInfo['FORMSTYLE'] = (($bInfo['BROWSER'] == 'msie' || $bInfo['BROWSER'] == 'net' && $bInfo['VERSION'] >= 5) || $bInfo['BROWSER'] == 'opera') || $bInfo['BROWSER'] == 'konqu';
+			$bInfo['FORMSTYLE'] = $bInfo['BROWSER'] == 'msie' || $bInfo['BROWSER'] == 'net' && $bInfo['VERSION'] >= 5 || $bInfo['BROWSER'] == 'opera' || $bInfo['BROWSER'] == 'konqu';
 		}
 		return $bInfo;
 	}
@@ -3477,7 +3477,7 @@ Connection: close
 		if (substr($filename, 0, 4) == 'EXT:') {
 			list($extKey, $local) = explode('/', substr($filename, 4), 2);
 			$filename = '';
-			if ((strcmp($extKey, '') && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extKey)) && strcmp($local, '')) {
+			if (strcmp($extKey, '') && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extKey) && strcmp($local, '')) {
 				$filename = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($extKey) . $local;
 			}
 		} elseif (!self::isAbsPath($filename)) {
@@ -3506,7 +3506,7 @@ Connection: close
 	 * @todo Possible improvement: Should it rawurldecode the string first to check if any of these characters is encoded?
 	 */
 	static public function validPathStr($theFile) {
-		if ((strpos($theFile, '//') === FALSE && strpos($theFile, '\\') === FALSE) && !preg_match('#(?:^\\.\\.|/\\.\\./|[[:cntrl:]])#u', $theFile)) {
+		if (strpos($theFile, '//') === FALSE && strpos($theFile, '\\') === FALSE && !preg_match('#(?:^\\.\\.|/\\.\\./|[[:cntrl:]])#u', $theFile)) {
 			return TRUE;
 		}
 		return FALSE;
@@ -3534,7 +3534,7 @@ Connection: close
 	 * @return boolean
 	 */
 	static public function isAllowedAbsPath($path) {
-		if ((self::isAbsPath($path) && self::validPathStr($path)) && (self::isFirstPartOfStr($path, PATH_site) || $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] && self::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath']))) {
+		if (self::isAbsPath($path) && self::validPathStr($path) && (self::isFirstPartOfStr($path, PATH_site) || $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] && self::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath']))) {
 			return TRUE;
 		}
 	}
@@ -3551,7 +3551,7 @@ Connection: close
 			return FALSE;
 		}
 		if (strcmp($filename, '') && strcmp($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'], '')) {
-			$result = preg_match(('/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']) . '/i', $filename);
+			$result = preg_match('/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] . '/i', $filename);
 			if ($result) {
 				return FALSE;
 			}
@@ -3571,7 +3571,7 @@ Connection: close
 		$decodedUrl = rawurldecode($url);
 		if (!empty($url) && self::removeXSS($decodedUrl) === $decodedUrl) {
 			$testAbsoluteUrl = self::resolveBackPath($decodedUrl);
-			$testRelativeUrl = self::resolveBackPath((self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/') . $decodedUrl);
+			$testRelativeUrl = self::resolveBackPath(self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl);
 			// Pass if URL is on the current host:
 			if (self::isValidUrl($decodedUrl)) {
 				if (self::isOnCurrentHost($decodedUrl) && strpos($decodedUrl, self::getIndpEnv('TYPO3_SITE_URL')) === 0) {
@@ -3586,7 +3586,7 @@ Connection: close
 			}
 		}
 		if (!empty($url) && empty($sanitizedUrl)) {
-			self::sysLog(('The URL "' . $url) . '" is not considered to be local and was denied.', 'Core', self::SYSLOG_SEVERITY_NOTICE);
+			self::sysLog('The URL "' . $url . '" is not considered to be local and was denied.', 'Core', self::SYSLOG_SEVERITY_NOTICE);
 		}
 		return $sanitizedUrl;
 	}
@@ -3642,7 +3642,7 @@ Connection: close
 	 * @see upload_to_tempfile(), tempnam()
 	 */
 	static public function unlink_tempfile($uploadedTempFileName) {
-		if ((($uploadedTempFileName && self::validPathStr($uploadedTempFileName)) && self::isFirstPartOfStr($uploadedTempFileName, PATH_site . 'typo3temp/')) && @is_file($uploadedTempFileName)) {
+		if ($uploadedTempFileName && self::validPathStr($uploadedTempFileName) && self::isFirstPartOfStr($uploadedTempFileName, PATH_site . 'typo3temp/') && @is_file($uploadedTempFileName)) {
 			if (unlink($uploadedTempFileName)) {
 				return TRUE;
 			}
@@ -3685,7 +3685,7 @@ Connection: close
 		} else {
 			$preKey = $uid_or_record;
 		}
-		$authCode = ($preKey . '||') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+		$authCode = $preKey . '||' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 		$authCode = substr(md5($authCode), 0, $codeLength);
 		return $authCode;
 	}
@@ -3806,7 +3806,7 @@ Connection: close
 			$location = 'EXT:';
 		} else {
 			// Default location of translations
-			$location = ('typo3conf/l10n/' . $language) . '/';
+			$location = 'typo3conf/l10n/' . $language . '/';
 		}
 		// Analyse file reference:
 		// Is system:
@@ -3843,7 +3843,7 @@ Connection: close
 				return $fileRef;
 			}
 			// The filename is prefixed with "[language key]." because it prevents the llxmltranslate tool from detecting it.
-			return ((((($location . $file_extKey) . '/') . ($file_extPath ? $file_extPath . '/' : '')) . $language) . '.') . $file_fileName;
+			return $location . $file_extKey . '/' . ($file_extPath ? $file_extPath . '/' : '') . $language . '.' . $file_fileName;
 		} else {
 			return NULL;
 		}
@@ -3872,7 +3872,7 @@ Connection: close
 				$dcf = $tca['ctrl']['dynamicConfigFile'];
 				if ($dcf) {
 					if (!strcmp(substr($dcf, 0, 6), 'T3LIB:')) {
-						include (PATH_t3lib . 'stddb/') . substr($dcf, 6);
+						include PATH_t3lib . 'stddb/' . substr($dcf, 6);
 					} elseif (self::isAbsPath($dcf) && @is_file($dcf)) {
 						// Absolute path...
 						include $dcf;
@@ -4015,7 +4015,7 @@ Connection: close
 					// Call method:
 					$content = call_user_func_array(array(&$classObj, $parts[1]), array(&$params, &$ref));
 				} else {
-					$errorMsg = (('No method name \'' . $parts[1]) . '\' in class ') . $parts[0];
+					$errorMsg = 'No method name \'' . $parts[1] . '\' in class ' . $parts[0];
 					if ($errorMode == 2) {
 						throw new \InvalidArgumentException($errorMsg, 1294585865);
 					} elseif (!$errorMode) {
@@ -4281,7 +4281,7 @@ Connection: close
 			throw new \InvalidArgumentException('$className must not be empty.', 1288967479);
 		}
 		if (!$instance instanceof $className) {
-			throw new \InvalidArgumentException(((('$instance must be an instance of ' . $className) . ', but actually is an instance of ') . get_class($instance)) . '.', 1288967686);
+			throw new \InvalidArgumentException('$instance must be an instance of ' . $className . ', but actually is an instance of ' . get_class($instance) . '.', 1288967686);
 		}
 	}
 
@@ -4432,17 +4432,17 @@ Connection: close
 		}
 		switch ((string) $encoding) {
 		case 'base64':
-			$headers = (((((((trim($headers) . LF) . 'Mime-Version: 1.0') . LF) . 'Content-Type: text/plain; charset="') . $charset) . '"') . LF) . 'Content-Transfer-Encoding: base64';
+			$headers = trim($headers) . LF . 'Mime-Version: 1.0' . LF . 'Content-Type: text/plain; charset="' . $charset . '"' . LF . 'Content-Transfer-Encoding: base64';
 			// Adding LF because I think MS outlook 2002 wants it... may be removed later again.
 			$message = trim(chunk_split(base64_encode(($message . LF)))) . LF;
 			break;
 		case '8bit':
-			$headers = ((((((trim($headers) . LF) . 'Mime-Version: 1.0') . LF) . 'Content-Type: text/plain; charset=') . $charset) . LF) . 'Content-Transfer-Encoding: 8bit';
+			$headers = trim($headers) . LF . 'Mime-Version: 1.0' . LF . 'Content-Type: text/plain; charset=' . $charset . LF . 'Content-Transfer-Encoding: 8bit';
 			break;
 		case 'quoted-printable':
 
 		default:
-			$headers = ((((((trim($headers) . LF) . 'Mime-Version: 1.0') . LF) . 'Content-Type: text/plain; charset=') . $charset) . LF) . 'Content-Transfer-Encoding: quoted-printable';
+			$headers = trim($headers) . LF . 'Mime-Version: 1.0' . LF . 'Content-Type: text/plain; charset=' . $charset . LF . 'Content-Transfer-Encoding: quoted-printable';
 			$message = self::quoted_printable($message);
 			break;
 		}
@@ -4491,7 +4491,7 @@ Connection: close
 					// Reset the length counter
 					$len = 0;
 				}
-				if ((($ordVal >= 33 && $ordVal <= 60 || $ordVal >= 62 && $ordVal <= 126) || $ordVal == 9) || $ordVal == 32) {
+				if ($ordVal >= 33 && $ordVal <= 60 || $ordVal >= 62 && $ordVal <= 126 || $ordVal == 9 || $ordVal == 32) {
 					// This character is ok, add it to the message
 					$newVal .= $char;
 					$len++;
@@ -4502,13 +4502,13 @@ Connection: close
 				}
 			}
 			// Replaces a possible SPACE-character at the end of a line
-			$newVal = preg_replace(('/' . chr(32)) . '$/', '=20', $newVal);
+			$newVal = preg_replace('/' . chr(32) . '$/', '=20', $newVal);
 			// Replaces a possible TAB-character at the end of a line
-			$newVal = preg_replace(('/' . TAB) . '$/', '=09', $newVal);
+			$newVal = preg_replace('/' . TAB . '$/', '=09', $newVal);
 			$newString .= $newVal . $linebreak;
 		}
 		// Remove last newline
-		return preg_replace(('/' . $linebreak) . '$/', '', $newString);
+		return preg_replace('/' . $linebreak . '$/', '', $newString);
 	}
 
 	/**
@@ -4526,7 +4526,7 @@ Connection: close
 			return $line;
 		}
 		// Check if any non-ASCII characters are found - otherwise encoding is not needed
-		if (!preg_match((((('/[^' . chr(32)) . '-') . chr(127)) . ']/'), $line)) {
+		if (!preg_match(('/[^' . chr(32) . '-' . chr(127) . ']/'), $line)) {
 			return $line;
 		}
 		// Wrap email addresses in a special marker
@@ -4538,7 +4538,7 @@ Connection: close
 			$part = trim($part, '"');
 			switch ((string) $enc) {
 			case 'base64':
-				$part = ((('=?' . $charset) . '?B?') . base64_encode($part)) . '?=';
+				$part = '=?' . $charset . '?B?' . base64_encode($part) . '?=';
 				break;
 			case 'quoted-printable':
 
@@ -4551,12 +4551,12 @@ Connection: close
 					$search = array(' ', '?');
 					$replace = array('_', '=3F');
 					$qpValue = str_replace($search, $replace, $qpValue);
-					$part = ((('=?' . $charset) . '?Q?') . $qpValue) . '?=';
+					$part = '=?' . $charset . '?Q?' . $qpValue . '?=';
 				}
 				break;
 			}
 			if ($partWasQuoted) {
-				$part = ('"' . $part) . '"';
+				$part = '"' . $part . '"';
 			}
 			$line = str_replace($oldPart, $part, $line);
 		}
@@ -4593,7 +4593,7 @@ Connection: close
 			// No processing
 			$messageSubstituted = $message;
 		} else {
-			$messageSubstituted = preg_replace('/(http|https):\\/\\/.+(?=[\\]\\.\\?]*([\\! \'"()<>]+|$))/eiU', ((('self::makeRedirectUrl("\\0",' . $lengthLimit) . ',"') . $index_script_url) . '")', $message);
+			$messageSubstituted = preg_replace('/(http|https):\\/\\/.+(?=[\\]\\.\\?]*([\\! \'"()<>]+|$))/eiU', 'self::makeRedirectUrl("\\0",' . $lengthLimit . ',"' . $index_script_url . '")', $message);
 		}
 		return $messageSubstituted;
 	}
@@ -4619,7 +4619,7 @@ Connection: close
 				);
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_md5params', $insertFields);
 			}
-			$inUrl = (($index_script_url ? $index_script_url : self::getIndpEnv('TYPO3_REQUEST_DIR') . 'index.php') . '?RDCT=') . $md5;
+			$inUrl = ($index_script_url ? $index_script_url : self::getIndpEnv('TYPO3_REQUEST_DIR') . 'index.php') . '?RDCT=' . $md5;
 		}
 		return $inUrl;
 	}
@@ -4633,7 +4633,7 @@ Connection: close
 	static public function freetypeDpiComp($font_size) {
 		$dpi = intval($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi']);
 		if ($dpi != 72) {
-			$font_size = ($font_size / $dpi) * 72;
+			$font_size = $font_size / $dpi * 72;
 		}
 		return $font_size;
 	}
@@ -4648,7 +4648,7 @@ Connection: close
 		// For CLI logging name is <fqdn-hostname>:<TYPO3-path>
 		// Note that TYPO3_REQUESTTYPE is not used here as it may not yet be defined
 		if (defined('TYPO3_cliMode') && TYPO3_cliMode) {
-			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = (self::getHostname(($requestHost = FALSE)) . ':') . PATH_site;
+			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getHostname(($requestHost = FALSE)) . ':' . PATH_site;
 		} else {
 			$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] = self::getIndpEnv('TYPO3_SITE_URL');
 		}
@@ -4718,7 +4718,7 @@ Connection: close
 			if (intval($level) > $severity) {
 				continue;
 			}
-			$msgLine = ((' - ' . $extKey) . ': ') . $msg;
+			$msgLine = ' - ' . $extKey . ': ' . $msg;
 			// Write message to a file
 			if ($type == 'file') {
 				$lockObject = self::makeInstance('TYPO3\\CMS\\Core\\Locking\\Locker', $destination, $GLOBALS['TYPO3_CONF_VARS']['SYS']['lockingMode']);
@@ -4727,7 +4727,7 @@ Connection: close
 				$lockObject->acquire();
 				$file = fopen($destination, 'a');
 				if ($file) {
-					fwrite($file, (date((($dateFormat . ' ') . $timeFormat)) . $msgLine) . LF);
+					fwrite($file, date(($dateFormat . ' ' . $timeFormat)) . $msgLine . LF);
 					fclose($file);
 					self::fixPermissions($destination);
 				}
@@ -4739,7 +4739,7 @@ Connection: close
 				}
 				/** @var $mail \TYPO3\CMS\Core\Mail\MailMessage */
 				$mail = self::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
-				$mail->setTo($to)->setFrom($from)->setSubject('Warning - error in TYPO3 installation')->setBody(((((((((('Host: ' . $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost']) . LF) . 'Extension: ') . $extKey) . LF) . 'Severity: ') . $severity) . LF) . LF) . $msg);
+				$mail->setTo($to)->setFrom($from)->setSubject('Warning - error in TYPO3 installation')->setBody('Host: ' . $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . LF . 'Extension: ' . $extKey . LF . 'Severity: ' . $severity . LF . LF . $msg);
 				$mail->send();
 			} elseif ($type == 'error_log') {
 				error_log($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['systemLogHost'] . $msgLine, 0);
@@ -4785,7 +4785,7 @@ Connection: close
 			return;
 		}
 		$log = $GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog'];
-		$date = date((($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']) . ': ');
+		$date = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] . ': ');
 		// Legacy values (no strict comparison, $log can be boolean, string or int)
 		if ($log === TRUE || $log == '1') {
 			$log = 'file';
@@ -4803,7 +4803,7 @@ Connection: close
 			$lockObject->acquire();
 			$file = @fopen($destination, 'a');
 			if ($file) {
-				@fwrite($file, (($date . $msg) . LF));
+				@fwrite($file, ($date . $msg . LF));
 				@fclose($file);
 				self::fixPermissions($destination);
 			}
@@ -4825,7 +4825,7 @@ Connection: close
 	 * @return string Absolute path to the deprecation log file
 	 */
 	static public function getDeprecationLogFileName() {
-		return ((PATH_typo3conf . 'deprecation_') . self::shortMD5((PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']))) . '.log';
+		return PATH_typo3conf . 'deprecation_' . self::shortMD5((PATH_site . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) . '.log';
 	}
 
 	/**
@@ -4853,11 +4853,11 @@ Connection: close
 		if ($trail[1]['class']) {
 			$errorMsg .= ' of class ' . $trail[1]['class'];
 		}
-		$errorMsg .= (((((((' is deprecated (called from ' . $trail[1]['file']) . '#') . $trail[1]['line']) . ', defined in ') . $function->getFileName()) . '#') . $function->getStartLine()) . ')';
+		$errorMsg .= ' is deprecated (called from ' . $trail[1]['file'] . '#' . $trail[1]['line'] . ', defined in ' . $function->getFileName() . '#' . $function->getStartLine() . ')';
 		// Write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
-		$logMsg = ($trail[1]['class'] . $trail[1]['type']) . $trail[1]['function'];
-		$logMsg .= (('() - ' . $msg) . ' - ') . \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail();
-		$logMsg .= (((' (' . substr($function->getFileName(), strlen(PATH_site))) . '#') . $function->getStartLine()) . ')';
+		$logMsg = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'];
+		$logMsg .= '() - ' . $msg . ' - ' . \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail();
+		$logMsg .= ' (' . substr($function->getFileName(), strlen(PATH_site)) . '#' . $function->getStartLine() . ')';
 		self::deprecationLog($logMsg);
 	}
 
@@ -4940,7 +4940,7 @@ Connection: close
 	 */
 	static public function quoteJSvalue($value) {
 		$escapedValue = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Encoder\\JavaScriptEncoder')->encode($value);
-		return ('\'' . $escapedValue) . '\'';
+		return '\'' . $escapedValue . '\'';
 	}
 
 	/**

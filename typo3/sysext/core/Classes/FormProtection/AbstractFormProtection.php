@@ -89,7 +89,7 @@ abstract class AbstractFormProtection {
 		if ($formName == '') {
 			throw new \InvalidArgumentException('$formName must not be empty.', 1294586643);
 		}
-		$tokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac((($formName . $action) . $formInstanceName) . $this->sessionToken);
+		$tokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($formName . $action . $formInstanceName . $this->sessionToken);
 		return $tokenId;
 	}
 
@@ -104,7 +104,7 @@ abstract class AbstractFormProtection {
 	 * @return boolean
 	 */
 	public function validateToken($tokenId, $formName, $action = '', $formInstanceName = '') {
-		$validTokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac((((string) $formName . (string) $action) . (string) $formInstanceName) . $this->sessionToken);
+		$validTokenId = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(((string) $formName . (string) $action) . (string) $formInstanceName . $this->sessionToken);
 		if ((string) $tokenId === $validTokenId) {
 			$isValid = TRUE;
 		} else {

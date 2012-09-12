@@ -322,7 +322,7 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 	 */
 	static public function load($id, $fillItems = FALSE) {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA(static::$storageTableName);
-		$collectionRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', static::$storageTableName, ('uid=' . intval($id)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause(static::$storageTableName));
+		$collectionRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', static::$storageTableName, 'uid=' . intval($id) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause(static::$storageTableName));
 		return self::create($collectionRecord, $fillItems);
 	}
 

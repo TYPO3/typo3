@@ -169,7 +169,7 @@ class ConfigurationManager {
 	 */
 	static protected function writeLocalConfiguration(array $configuration) {
 		$configuration = \TYPO3\CMS\Core\Utility\ArrayUtility::sortByKeyRecursive($configuration);
-		$result = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . static::LOCAL_CONFIGURATION_FILE, ((((('<?php' . LF) . 'return ') . \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($configuration)) . ';') . LF) . '?>');
+		$result = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . static::LOCAL_CONFIGURATION_FILE, '<?php' . LF . 'return ' . \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($configuration) . ';' . LF . '?>');
 		return $result === FALSE ? FALSE : TRUE;
 	}
 

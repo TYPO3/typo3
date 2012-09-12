@@ -81,7 +81,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 		$pointerFields = !empty($tableConf['config']['ds_pointerField']) ? $tableConf['config']['ds_pointerField'] : 'list_type,CType';
 		$pointerFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $pointerFields);
 		$flexformIdentifier = !empty($tableRow[$pointerFields[0]]) ? $tableRow[$pointerFields[0]] : '';
-		if ((!empty($tableRow[$pointerFields[1]]) && $tableRow[$pointerFields[1]] != 'list') && $tableRow[$pointerFields[1]] != '*') {
+		if (!empty($tableRow[$pointerFields[1]]) && $tableRow[$pointerFields[1]] != 'list' && $tableRow[$pointerFields[1]] != '*') {
 			$flexformIdentifier = $tableRow[$pointerFields[1]];
 		}
 		if (empty($flexformIdentifier)) {
@@ -156,13 +156,13 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 	 * @see t3lib_TCEforms_flex::modifyFlexFormDS()
 	 */
 	public function modifySingleFlexFormSheet(array $sheet, $table, $tableField, array $tableRow, array $sheetConf, array $nonExcludeFields) {
-		if (((empty($sheet) || empty($table)) || empty($tableField)) || empty($tableRow)) {
+		if (empty($sheet) || empty($table) || empty($tableField) || empty($tableRow)) {
 			return $sheet;
 		}
 		// Modify fields
 		foreach ($sheet as $fieldName => $field) {
 			// Remove excluded fields
-			if ((!$GLOBALS['BE_USER']->isAdmin() && !empty($field['TCEforms']['exclude'])) && empty($nonExcludeFields[$fieldName])) {
+			if (!$GLOBALS['BE_USER']->isAdmin() && !empty($field['TCEforms']['exclude']) && empty($nonExcludeFields[$fieldName])) {
 				unset($sheet[$fieldName]);
 				continue;
 			}
@@ -208,7 +208,7 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 				unset($sheet[$fieldName]['TCEforms']['config'][$option]);
 			}
 			// Rename and remove items in select
-			if (((!empty($removeItems) || !empty($renameItems)) && !empty($selItems)) && is_array($selItems)) {
+			if ((!empty($removeItems) || !empty($renameItems)) && !empty($selItems) && is_array($selItems)) {
 				foreach ($selItems as $itemKey => $itemConf) {
 					// Option has no key, no manipulation possible
 					if (!isset($itemConf[1])) {
@@ -245,11 +245,11 @@ class FlexFormsHelper extends \TYPO3\CMS\Backend\Form\FormEngine {
 	 * @see t3lib_TCEforms::getSingleField_typeFlex()
 	 */
 	protected function getFlexFormNonExcludeFields($table, $tableField, $extIdent) {
-		if (((empty($GLOBALS['BE_USER']->groupData['non_exclude_fields']) || empty($table)) || empty($tableField)) || empty($extIdent)) {
+		if (empty($GLOBALS['BE_USER']->groupData['non_exclude_fields']) || empty($table) || empty($tableField) || empty($extIdent)) {
 			return array();
 		}
 		$accessListFields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->groupData['non_exclude_fields']);
-		$identPrefix = (((($table . ':') . $tableField) . ';') . $extIdent) . ';';
+		$identPrefix = $table . ':' . $tableField . ';' . $extIdent . ';';
 		$nonExcludeFields = array();
 		// Collect only FlexForm fields
 		foreach ($accessListFields as $field) {

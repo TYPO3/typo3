@@ -96,7 +96,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 		// circumvented until there is a better solution in extbase.
 		// For now we throw an exception if no settings are detected.
 		if (empty($this->settings)) {
-			throw new \RuntimeException(('No settings detected. This module can not work then. ' . 'This usually happens if there is no frontend TypoScript template with root flag set. ') . 'Please create a frontend page with a TypoScript root template.', 1344375003);
+			throw new \RuntimeException('No settings detected. This module can not work then. ' . 'This usually happens if there is no frontend TypoScript template with root flag set. ' . 'Please create a frontend page with a TypoScript root template.', 1344375003);
 		}
 	}
 
@@ -190,7 +190,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	 * @return void
 	 */
 	protected function terminateBackendUserSessionAction(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $sessionId) {
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('be_sessions', ((((('ses_userid = "' . $backendUser->getUid()) . '"') . ' AND ses_id = "') . $sessionId) . '"') . ' LIMIT 1');
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('be_sessions', 'ses_userid = "' . $backendUser->getUid() . '"' . ' AND ses_id = "' . $sessionId . '"' . ' LIMIT 1');
 		if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
 			$message = 'Session successfully terminated.';
 			$this->flashMessageContainer->add($message, '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
@@ -213,8 +213,8 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 			if ($switchBack) {
 				$updateData['ses_backuserid'] = intval($GLOBALS['BE_USER']->user['uid']);
 			}
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_sessions', (((('ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions')) . ' AND ses_name=') . $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(), 'be_sessions')) . ' AND ses_userid=') . intval($GLOBALS['BE_USER']->user['uid']), $updateData);
-			$redirectUrl = ($GLOBALS['BACK_PATH'] . 'index.php') . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_sessions', 'ses_id=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions') . ' AND ses_name=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(), 'be_sessions') . ' AND ses_userid=' . intval($GLOBALS['BE_USER']->user['uid']), $updateData);
+			$redirectUrl = $GLOBALS['BACK_PATH'] . 'index.php' . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
 		}
 	}

@@ -202,7 +202,7 @@ class Logger {
 			foreach ($this->processors[$record->getLevel()] as $processor) {
 				$processedRecord = $processor->processLogRecord($record);
 				if (!$processedRecord instanceof \TYPO3\CMS\Core\Log\LogRecord) {
-					throw new \RuntimeException(('Processor ' . get_class($processor)) . ' returned invalid data. Instance of TYPO3\\CMS\\Core\\Log\\LogRecord expected', 1343593398);
+					throw new \RuntimeException('Processor ' . get_class($processor) . ' returned invalid data. Instance of TYPO3\\CMS\\Core\\Log\\LogRecord expected', 1343593398);
 				}
 				$record = $processedRecord;
 			}

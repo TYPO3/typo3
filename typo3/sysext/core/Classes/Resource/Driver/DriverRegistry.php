@@ -68,13 +68,13 @@ class DriverRegistry implements \TYPO3\CMS\Core\SingletonInterface {
 	public function registerDriverClass($className, $shortName = NULL, $label = NULL, $flexFormDataStructurePathAndFilename = NULL) {
 		// check if the class is available for TYPO3 before registering the driver
 		if (!class_exists($className)) {
-			throw new \InvalidArgumentException(('Class ' . $className) . ' does not exist.', 1314979197);
+			throw new \InvalidArgumentException('Class ' . $className . ' does not exist.', 1314979197);
 		}
 		if ($shortName === '') {
 			$shortName = $className;
 		}
 		if (array_key_exists($shortName, $this->drivers)) {
-			throw new \InvalidArgumentException(('Driver ' . $shortName) . ' is already registered.', 1314979451);
+			throw new \InvalidArgumentException('Driver ' . $shortName . ' is already registered.', 1314979451);
 		}
 		$this->drivers[$shortName] = $className;
 		$this->driverConfigurations[$shortName] = array(

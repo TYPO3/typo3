@@ -165,7 +165,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		foreach ($dependencies as $dependency) {
 			$identifier = strtolower($dependency->getIdentifier());
 			if (in_array($identifier, \TYPO3\CMS\Extensionmanager\Domain\Model\Dependency::$specialDependencies)) {
-				$methodname = ('check' . ucfirst($identifier)) . 'Dependency';
+				$methodname = 'check' . ucfirst($identifier) . 'Dependency';
 				try {
 					$this->{$methodname}($dependency);
 				} catch (\TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException $e) {
@@ -197,10 +197,10 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Your TYPO3 version is lower than necessary. You need at least TYPO3 version ' . $dependency->getLowestVersion());
 			}
 			if (!($dependency->getHighestVersion() === '') && version_compare($dependency->getHighestVersion(), \TYPO3\CMS\Core\Utility\VersionNumberUtility::getNumericTypo3Version()) === -1) {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException((('Your TYPO3 version is higher than allowed. You can use TYPO3 versions ' . $dependency->getLowestVersion()) . ' - ') . $dependency->getHighestVersion());
+				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Your TYPO3 version is higher than allowed. You can use TYPO3 versions ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion());
 			}
 		} else {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(('checkTypo3Dependency can only check TYPO3 dependencies. Found dependency with identifier "' . $dependency->getIdentifier()) . '"');
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('checkTypo3Dependency can only check TYPO3 dependencies. Found dependency with identifier "' . $dependency->getIdentifier() . '"');
 		}
 		return TRUE;
 	}
@@ -219,10 +219,10 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Your PHP version is lower than necessary. You need at least PHP version ' . $dependency->getLowestVersion());
 			}
 			if (!($dependency->getHighestVersion() === '') && version_compare($dependency->getHighestVersion(), PHP_VERSION) === -1) {
-				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException((('Your PHP version is higher than allowed. You can use PHP versions ' . $dependency->getLowestVersion()) . ' - ') . $dependency->getHighestVersion());
+				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Your PHP version is higher than allowed. You can use PHP versions ' . $dependency->getLowestVersion() . ' - ' . $dependency->getHighestVersion());
 			}
 		} else {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(('checkPhpDependency can only check PHP dependencies. Found dependency with identifier "' . $dependency->getIdentifier()) . '"');
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('checkPhpDependency can only check PHP dependencies. Found dependency with identifier "' . $dependency->getIdentifier() . '"');
 		}
 		return TRUE;
 	}
@@ -293,7 +293,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('No compatible version found for extension ' . $extensionKey);
 			}
 		} else {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(('The extension ' . $extensionKey) . ' is not available from TER.');
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('The extension ' . $extensionKey . ' is not available from TER.');
 		}
 	}
 
@@ -411,7 +411,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$dependentExtensions = array();
 		foreach ($availableAndInstalledExtensions as $availableAndInstalledExtensionKey => $availableAndInstalledExtension) {
 			if (isset($availableAndInstalledExtension['installed']) && $availableAndInstalledExtension['installed'] === TRUE) {
-				if ((is_array($availableAndInstalledExtension['constraints']) && is_array($availableAndInstalledExtension['constraints']['depends'])) && array_key_exists($extensionKey, $availableAndInstalledExtension['constraints']['depends'])) {
+				if (is_array($availableAndInstalledExtension['constraints']) && is_array($availableAndInstalledExtension['constraints']['depends']) && array_key_exists($extensionKey, $availableAndInstalledExtension['constraints']['depends'])) {
 					$dependentExtensions[] = $availableAndInstalledExtensionKey;
 				}
 			}

@@ -212,7 +212,7 @@ class LanguageService {
 	public function JScharCode($str) {
 			// Convert the UTF-8 string into a array of char numbers:
 		$nArr = $this->csConvObj->utf8_to_numberarray($str);
-		return ('String.fromCharCode(' . implode(',', $nArr)) . ')';
+		return 'String.fromCharCode(' . implode(',', $nArr) . ')';
 	}
 
 	/**
@@ -222,7 +222,7 @@ class LanguageService {
 	 * @return string
 	 */
 	public function debugLL($value) {
-		return $this->debugKey ? ('[' . $value) . ']' : '';
+		return $this->debugKey ? '[' . $value . ']' : '';
 	}
 
 	/**
@@ -304,7 +304,7 @@ class LanguageService {
 				$this->LL_files_cache[$parts[0]] = $this->readLLfile($parts[0]);
 					// If the current language is found in another file, load that as well:
 				$lFileRef = $this->localizedFileRef($parts[0]);
-				if (($lFileRef && is_string($this->LL_files_cache[$parts[0]][$this->lang])) && $this->LL_files_cache[$parts[0]][$this->lang] == 'EXT') {
+				if ($lFileRef && is_string($this->LL_files_cache[$parts[0]][$this->lang]) && $this->LL_files_cache[$parts[0]][$this->lang] == 'EXT') {
 					$tempLL = $this->readLLfile($lFileRef);
 					$this->LL_files_cache[$parts[0]][$this->lang] = $tempLL[$this->lang];
 				}
@@ -336,7 +336,7 @@ class LanguageService {
 	public function loadSingleTableDescription($table) {
 			// First the 'table' cannot already be loaded in [columns]
 			// and secondly there must be a references to locallang files available in [refs]
-		if ((is_array($GLOBALS['TCA_DESCR'][$table]) && !isset($GLOBALS['TCA_DESCR'][$table]['columns'])) && is_array($GLOBALS['TCA_DESCR'][$table]['refs'])) {
+		if (is_array($GLOBALS['TCA_DESCR'][$table]) && !isset($GLOBALS['TCA_DESCR'][$table]['columns']) && is_array($GLOBALS['TCA_DESCR'][$table]['refs'])) {
 				// Init $TCA_DESCR for $table-key
 			$GLOBALS['TCA_DESCR'][$table]['columns'] = array();
 				// Get local-lang for each file in $TCA_DESCR[$table]['refs'] as they are ordered.
@@ -377,8 +377,10 @@ class LanguageService {
 							$fieldName = substr($fieldName, 1);
 						}
 							// Append label
-						$label = $lVal[0]['target'] ? :
-							$lVal[0]['source'];
+						/*
+                         * $label = $lVal[0]['target'] ? :
+						 * 	$lVal[0]['source'];
+                         */
 						if ($specialInstruction) {
 							$GLOBALS['TCA_DESCR'][$table]['columns'][$fieldName][$type] .= LF . $label;
 						} else {
@@ -418,7 +420,7 @@ class LanguageService {
 				$globalLanguage = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($globalLanguage, $localLanguage);
 			}
 				// Merge local onto default
-			if ((($mergeLocalOntoDefault && $this->lang !== 'default') && is_array($globalLanguage[$this->lang])) && is_array($globalLanguage['default'])) {
+			if ($mergeLocalOntoDefault && $this->lang !== 'default' && is_array($globalLanguage[$this->lang]) && is_array($globalLanguage['default'])) {
 					// array_merge can be used so far the keys are not
 					// numeric - which we assume they are not...
 				$globalLanguage['default'] = array_merge($globalLanguage['default'], $globalLanguage[$this->lang]);
@@ -469,7 +471,7 @@ class LanguageService {
 	 */
 	protected function localizedFileRef($fileRef) {
 		if ($this->lang != 'default' && substr($fileRef, -4) == '.php') {
-			return ((substr($fileRef, 0, -4) . '.') . $this->lang) . '.php';
+			return substr($fileRef, 0, -4) . '.' . $this->lang . '.php';
 		}
 	}
 

@@ -173,9 +173,9 @@ class t3lib_syntaxhl {
 					}
 					break;
 				}
-				$output .= ($wrap[0] . htmlspecialchars($v['tag'])) . $wrap[1];
+				$output .= $wrap[0] . htmlspecialchars($v['tag']) . $wrap[1];
 				$output .= $this->highLight_DS_markUpRecursively($v['sub'], $v['tagName'], $nextApp);
-				$output .= ($wrap[0] . htmlspecialchars((('</' . $v['tagName']) . '>'))) . $wrap[1];
+				$output .= $wrap[0] . htmlspecialchars(('</' . $v['tagName'] . '>')) . $wrap[1];
 			} else {
 				$output .= htmlspecialchars($v);
 			}
@@ -269,9 +269,9 @@ class t3lib_syntaxhl {
 				if ($v['tagName'] == 'el') {
 					$app = 'el';
 				}
-				$output .= ($wrap[0] . htmlspecialchars($v['tag'])) . $wrap[1];
+				$output .= $wrap[0] . htmlspecialchars($v['tag']) . $wrap[1];
 				$output .= $this->highLight_FF_markUpRecursively($v['sub'], $v['tagName'], $app);
-				$output .= ($wrap[0] . htmlspecialchars((('</' . $v['tagName']) . '>'))) . $wrap[1];
+				$output .= $wrap[0] . htmlspecialchars(('</' . $v['tagName'] . '>')) . $wrap[1];
 			} else {
 				$output .= htmlspecialchars($v);
 			}
@@ -296,7 +296,7 @@ class t3lib_syntaxhl {
 		$tags = array();
 		$token = md5(microtime());
 		// Markup all tag names with token.
-		$markUpStr = preg_replace('/<([[:alnum:]_]+)[^>]*>/', ($token . '${1}') . $token, $str);
+		$markUpStr = preg_replace('/<([[:alnum:]_]+)[^>]*>/', $token . '${1}' . $token, $str);
 		// Splitting by token:
 		$parts = explode($token, $markUpStr);
 		// Traversing parts:

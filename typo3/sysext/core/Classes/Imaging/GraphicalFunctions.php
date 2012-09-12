@@ -298,7 +298,7 @@ class GraphicalFunctions {
 		if (!$gfxConf['im']) {
 			$this->NO_IMAGE_MAGICK = 1;
 		}
-		if (!$this->NO_IMAGE_MAGICK && ((!$gfxConf['im_version_5'] || $gfxConf['im_version_5'] === 'im4') || $gfxConf['im_version_5'] === 'im5')) {
+		if (!$this->NO_IMAGE_MAGICK && (!$gfxConf['im_version_5'] || $gfxConf['im_version_5'] === 'im4' || $gfxConf['im_version_5'] === 'im5')) {
 			throw new \RuntimeException('Your TYPO3 installation is configured to use an old version of ImageMagick, which is not supported anymore. ' . 'Please upgrade to ImageMagick version 6 or GraphicksMagick and set $TYPO3_CONF_VARS[\'GFX\'][\'im_version_5\'] appropriately.', 1305059666);
 		}
 		// When GIFBUILDER gets used in truecolor mode
@@ -345,7 +345,7 @@ class GraphicalFunctions {
 			$this->NO_IM_EFFECTS = 0;
 			$this->V5_EFFECTS = 1;
 			if ($gfxConf['im_v5effects'] > 0) {
-				$this->cmds['jpg'] = ($this->cmds['jpeg'] = ('-colorspace RGB -quality ' . intval($gfxConf['jpg_quality'])) . $this->v5_sharpen(10));
+				$this->cmds['jpg'] = ($this->cmds['jpeg'] = '-colorspace RGB -quality ' . intval($gfxConf['jpg_quality']) . $this->v5_sharpen(10));
 			}
 		}
 		// Secures that images are not scaled up.
@@ -401,9 +401,9 @@ class GraphicalFunctions {
 				$w = imagesx($im);
 				$h = imagesy($im);
 				$tmpStr = $this->randomName();
-				$theImage = ($tmpStr . '_img.') . $this->gifExtension;
-				$theDest = ($tmpStr . '_dest.') . $this->gifExtension;
-				$theMask = ($tmpStr . '_mask.') . $this->gifExtension;
+				$theImage = $tmpStr . '_img.' . $this->gifExtension;
+				$theDest = $tmpStr . '_dest.' . $this->gifExtension;
+				$theMask = $tmpStr . '_mask.' . $this->gifExtension;
 				// Prepare overlay image
 				$cpImg = $this->imageCreateFromFile($BBimage[3]);
 				$destImg = imagecreatetruecolor($w, $h);
@@ -510,8 +510,8 @@ class GraphicalFunctions {
 					$cpImgCutX = 0;
 				}
 				$w = $cpW - $cpImgCutX;
-				if ($Xstart > ($workArea[0] + $workArea[2]) - $w) {
-					$w = ($workArea[0] + $workArea[2]) - $Xstart;
+				if ($Xstart > $workArea[0] + $workArea[2] - $w) {
+					$w = $workArea[0] + $workArea[2] - $Xstart;
 				}
 				// If this image is inside of the workArea, then go on
 				if ($Xstart < $workArea[0] + $workArea[2]) {
@@ -527,8 +527,8 @@ class GraphicalFunctions {
 								$cpImgCutY = 0;
 							}
 							$h = $cpH - $cpImgCutY;
-							if ($Ystart > ($workArea[1] + $workArea[3]) - $h) {
-								$h = ($workArea[1] + $workArea[3]) - $Ystart;
+							if ($Ystart > $workArea[1] + $workArea[3] - $h) {
+								$h = $workArea[1] + $workArea[3] - $Ystart;
 							}
 							// If this image is inside of the workArea, then go on
 							if ($Ystart < $workArea[1] + $workArea[3]) {
@@ -633,9 +633,9 @@ class GraphicalFunctions {
 				$w = imagesx($im);
 				$h = imagesy($im);
 				$tmpStr = $this->randomName();
-				$fileMenu = ($tmpStr . '_menuNT.') . $this->gifExtension;
-				$fileColor = ($tmpStr . '_colorNT.') . $this->gifExtension;
-				$fileMask = ($tmpStr . '_maskNT.') . $this->gifExtension;
+				$fileMenu = $tmpStr . '_menuNT.' . $this->gifExtension;
+				$fileColor = $tmpStr . '_colorNT.' . $this->gifExtension;
+				$fileMask = $tmpStr . '_maskNT.' . $this->gifExtension;
 				// Scalefactor
 				$sF = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($conf['niceText.']['scaleFactor'], 2, 5);
 				$newW = ceil($sF * imagesx($im));
@@ -657,15 +657,15 @@ class GraphicalFunctions {
 				if ($this->NO_IM_EFFECTS) {
 					if ($this->maskNegate) {
 						// Negate 2 times makes no negate...
-						$command = trim((((($this->scalecmd . ' ') . $w) . 'x') . $h) . '!');
+						$command = trim($this->scalecmd . ' ' . $w . 'x' . $h . '!');
 					} else {
-						$command = trim((((($this->scalecmd . ' ') . $w) . 'x') . $h) . '! -negate');
+						$command = trim($this->scalecmd . ' ' . $w . 'x' . $h . '! -negate');
 					}
 				} else {
 					if ($this->maskNegate) {
-						$command = trim(((((((($conf['niceText.']['before'] . ' ') . $this->scalecmd) . ' ') . $w) . 'x') . $h) . '! ') . $conf['niceText.']['after']);
+						$command = trim($conf['niceText.']['before'] . ' ' . $this->scalecmd . ' ' . $w . 'x' . $h . '! ' . $conf['niceText.']['after']);
 					} else {
-						$command = trim((((((((($conf['niceText.']['before'] . ' ') . $this->scalecmd) . ' ') . $w) . 'x') . $h) . '! ') . $conf['niceText.']['after']) . ' -negate');
+						$command = trim($conf['niceText.']['before'] . ' ' . $this->scalecmd . ' ' . $w . 'x' . $h . '! ' . $conf['niceText.']['after'] . ' -negate');
 					}
 					if ($conf['niceText.']['sharpen']) {
 						if ($this->V5_EFFECTS) {
@@ -718,7 +718,7 @@ class GraphicalFunctions {
 	 */
 	public function txtPosition($conf, $workArea, $BB) {
 		$bbox = $BB[2];
-		$angle = (intval($conf['angle']) / 180) * pi();
+		$angle = intval($conf['angle']) / 180 * pi();
 		$conf['angle'] = 0;
 		$straightBB = $this->calcBBox($conf);
 		// offset, align, valign, workarea
@@ -734,12 +734,12 @@ class GraphicalFunctions {
 		case 'center':
 			$factor = abs(cos($angle));
 			$sign = cos($angle) < 0 ? -1 : 1;
-			$len1 = ($sign * $factor) * $straightBB[0];
+			$len1 = $sign * $factor * $straightBB[0];
 			$len2 = $sign * $BB[0];
 			$result[0] = $w - ceil(($len2 * $factor + (1 - $factor) * $len1));
 			$factor = abs(sin($angle));
 			$sign = sin($angle) < 0 ? -1 : 1;
-			$len1 = ($sign * $factor) * $straightBB[0];
+			$len1 = $sign * $factor * $straightBB[0];
 			$len2 = $sign * $BB[1];
 			$result[1] = ceil($len2 * $factor + (1 - $factor) * $len1);
 			break;
@@ -807,7 +807,7 @@ class GraphicalFunctions {
 					$x += $charW + ($char == ' ' ? $wordSpacing : $spacing);
 				}
 			}
-		} elseif ((isset($conf['breakWidth']) && $conf['breakWidth']) && $this->getRenderedTextWidth($conf['text'], $conf) > $conf['breakWidth']) {
+		} elseif (isset($conf['breakWidth']) && $conf['breakWidth'] && $this->getRenderedTextWidth($conf['text'], $conf) > $conf['breakWidth']) {
 			$maxWidth = 0;
 			$currentWidth = 0;
 			$breakWidth = $conf['breakWidth'];
@@ -851,7 +851,7 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function addToMap($cords, $conf) {
-		$this->map .= (((((((((((('<area' . ' shape="poly"') . ' coords="') . implode(',', $cords)) . '"') . ' href="') . htmlspecialchars($conf['url'])) . '"') . ($conf['target'] ? (' target="' . htmlspecialchars($conf['target'])) . '"' : '')) . $JS) . (strlen($conf['titleText']) ? (' title="' . htmlspecialchars($conf['titleText'])) . '"' : '')) . ' alt="') . htmlspecialchars($conf['altText'])) . '" />';
+		$this->map .= '<area' . ' shape="poly"' . ' coords="' . implode(',', $cords) . '"' . ' href="' . htmlspecialchars($conf['url']) . '"' . ($conf['target'] ? ' target="' . htmlspecialchars($conf['target']) . '"' : '') . $JS . (strlen($conf['titleText']) ? ' title="' . htmlspecialchars($conf['titleText']) . '"' : '') . ' alt="' . htmlspecialchars($conf['altText']) . '" />';
 	}
 
 	/**
@@ -867,14 +867,14 @@ class GraphicalFunctions {
 	 */
 	public function calcTextCordsForMap($cords, $offset, $conf) {
 		$pars = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['explode'] . ',');
-		$newCords[0] = ($cords[0] + $offset[0]) - $pars[0];
-		$newCords[1] = ($cords[1] + $offset[1]) + $pars[1];
-		$newCords[2] = ($cords[2] + $offset[0]) + $pars[0];
-		$newCords[3] = ($cords[3] + $offset[1]) + $pars[1];
-		$newCords[4] = ($cords[4] + $offset[0]) + $pars[0];
-		$newCords[5] = ($cords[5] + $offset[1]) - $pars[1];
-		$newCords[6] = ($cords[6] + $offset[0]) - $pars[0];
-		$newCords[7] = ($cords[7] + $offset[1]) - $pars[1];
+		$newCords[0] = $cords[0] + $offset[0] - $pars[0];
+		$newCords[1] = $cords[1] + $offset[1] + $pars[1];
+		$newCords[2] = $cords[2] + $offset[0] + $pars[0];
+		$newCords[3] = $cords[3] + $offset[1] + $pars[1];
+		$newCords[4] = $cords[4] + $offset[0] + $pars[0];
+		$newCords[5] = $cords[5] + $offset[1] - $pars[1];
+		$newCords[6] = $cords[6] + $offset[0] - $pars[0];
+		$newCords[7] = $cords[7] + $offset[1] - $pars[1];
 		return $newCords;
 	}
 
@@ -999,10 +999,10 @@ class GraphicalFunctions {
 					// First run, just copy over.
 					$offsetInfo = $calc;
 				} else {
-					$offsetInfo[2] += ((($calc[2] - $calc[0]) + intval($splitRendering['compX'])) + intval($strCfg['xSpaceBefore'])) + intval($strCfg['xSpaceAfter']);
-					$offsetInfo[3] += ((($calc[3] - $calc[1]) - intval($splitRendering['compY'])) - intval($strCfg['ySpaceBefore'])) - intval($strCfg['ySpaceAfter']);
-					$offsetInfo[4] += ((($calc[4] - $calc[6]) + intval($splitRendering['compX'])) + intval($strCfg['xSpaceBefore'])) + intval($strCfg['xSpaceAfter']);
-					$offsetInfo[5] += ((($calc[5] - $calc[7]) - intval($splitRendering['compY'])) - intval($strCfg['ySpaceBefore'])) - intval($strCfg['ySpaceAfter']);
+					$offsetInfo[2] += $calc[2] - $calc[0] + intval($splitRendering['compX']) + intval($strCfg['xSpaceBefore']) + intval($strCfg['xSpaceAfter']);
+					$offsetInfo[3] += $calc[3] - $calc[1] - intval($splitRendering['compY']) - intval($strCfg['ySpaceBefore']) - intval($strCfg['ySpaceAfter']);
+					$offsetInfo[4] += $calc[4] - $calc[6] + intval($splitRendering['compX']) + intval($strCfg['xSpaceBefore']) + intval($strCfg['xSpaceAfter']);
+					$offsetInfo[5] += $calc[5] - $calc[7] - intval($splitRendering['compY']) - intval($strCfg['ySpaceBefore']) - intval($strCfg['ySpaceAfter']);
 				}
 			} else {
 				debug('cannot read file: ' . $fontFile, 'TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions::ImageTTFBBoxWrapper()');
@@ -1053,8 +1053,8 @@ class GraphicalFunctions {
 				ImageTTFText($im, \TYPO3\CMS\Core\Utility\GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, $x, $y, $colorIndex, $fontFile, $strCfg['str']);
 				// Calculate offset to apply:
 				$wordInf = ImageTTFBBox(\TYPO3\CMS\Core\Utility\GeneralUtility::freetypeDpiComp($sF * $strCfg['fontSize']), $angle, self::prependAbsolutePath($strCfg['fontFile']), $strCfg['str']);
-				$x += (($wordInf[2] - $wordInf[0]) + intval($splitRendering['compX'])) + intval($strCfg['xSpaceAfter']);
-				$y += (($wordInf[5] - $wordInf[7]) - intval($splitRendering['compY'])) - intval($strCfg['ySpaceAfter']);
+				$x += $wordInf[2] - $wordInf[0] + intval($splitRendering['compX']) + intval($strCfg['xSpaceAfter']);
+				$y += $wordInf[5] - $wordInf[7] - intval($splitRendering['compY']) - intval($strCfg['ySpaceAfter']);
 			} else {
 				debug('cannot read file: ' . $fontFile, 'TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions::ImageTTFTextWrapper()');
 			}
@@ -1253,7 +1253,7 @@ class GraphicalFunctions {
 	 * @return void
 	 */
 	protected function renderTTFText(&$im, $fontSize, $angle, $x, $y, $color, $fontFile, $string, $splitRendering, $conf, $sF = 1) {
-		if ((isset($conf['breakWidth']) && $conf['breakWidth']) && $this->getRenderedTextWidth($string, $conf) > $conf['breakWidth']) {
+		if (isset($conf['breakWidth']) && $conf['breakWidth'] && $this->getRenderedTextWidth($string, $conf) > $conf['breakWidth']) {
 			$phrase = '';
 			$currentWidth = 0;
 			$breakWidth = $conf['breakWidth'];
@@ -1389,11 +1389,11 @@ class GraphicalFunctions {
 		$res = array();
 		if ($distance && $iterations) {
 			for ($a = 0; $a < $iterations; $a++) {
-				$yOff = round((sin((((2 * pi()) / $iterations) * ($a + 1))) * 100) * $distance);
+				$yOff = round(sin((2 * pi() / $iterations * ($a + 1))) * 100 * $distance);
 				if ($yOff) {
 					$yOff = intval(ceil(abs(($yOff / 100))) * ($yOff / abs($yOff)));
 				}
-				$xOff = round((cos((((2 * pi()) / $iterations) * ($a + 1))) * 100) * $distance);
+				$xOff = round(cos((2 * pi() / $iterations * ($a + 1))) * 100 * $distance);
 				if ($xOff) {
 					$xOff = intval(ceil(abs(($xOff / 100))) * ($xOff / abs($xOff)));
 				}
@@ -1450,9 +1450,9 @@ class GraphicalFunctions {
 			// Area around the blur used for cropping something
 			$blurBorder = 3;
 			$tmpStr = $this->randomName();
-			$fileMenu = ($tmpStr . '_menu.') . $this->gifExtension;
-			$fileColor = ($tmpStr . '_color.') . $this->gifExtension;
-			$fileMask = ($tmpStr . '_mask.') . $this->gifExtension;
+			$fileMenu = $tmpStr . '_menu.' . $this->gifExtension;
+			$fileColor = $tmpStr . '_color.' . $this->gifExtension;
+			$fileMask = $tmpStr . '_mask.' . $this->gifExtension;
 			// BlurColor Image laves
 			$blurColImg = imagecreatetruecolor($w, $h);
 			$bcols = $this->convertColor($conf['color']);
@@ -1503,11 +1503,11 @@ class GraphicalFunctions {
 				if ($conf['intensity']) {
 					$intensity = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($conf['intensity'], 0, 100);
 				}
-				$intensity = ceil(255 - ($intensity / 100) * 255);
+				$intensity = ceil(255 - $intensity / 100 * 255);
 				$this->inputLevels($blurTextImg, 0, $intensity, $this->maskNegate);
 				$opacity = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(intval($conf['opacity']), 0, 100);
 				if ($opacity && $opacity < 100) {
-					$high = ceil((255 * $opacity) / 100);
+					$high = ceil(255 * $opacity / 100);
 					// Reducing levels as the opacity demands
 					$this->outputLevels($blurTextImg, 0, $high, $this->maskNegate);
 				}
@@ -1555,7 +1555,7 @@ class GraphicalFunctions {
 	 */
 	public function makeBox(&$im, $conf, $workArea) {
 		$cords = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
-		$conf['offset'] = ($cords[0] . ',') . $cords[1];
+		$conf['offset'] = $cords[0] . ',' . $cords[1];
 		$cords = $this->objPosition($conf, $workArea, array($cords[2], $cords[3]));
 		$cols = $this->convertColor($conf['color']);
 		$opacity = 0;
@@ -1565,10 +1565,10 @@ class GraphicalFunctions {
 			// TYPO3 100 = opaque, 0 = transparent
 			$opacity = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(intval($conf['opacity']), 1, 100, 1);
 			$opacity = abs($opacity - 100);
-			$opacity = round((127 * $opacity) / 100);
+			$opacity = round(127 * $opacity / 100);
 		}
 		$tmpColor = ImageColorAllocateAlpha($im, $cols[0], $cols[1], $cols[2], $opacity);
-		imagefilledrectangle($im, $cords[0], $cords[1], ($cords[0] + $cords[2]) - 1, ($cords[1] + $cords[3]) - 1, $tmpColor);
+		imagefilledrectangle($im, $cords[0], $cords[1], $cords[0] + $cords[2] - 1, $cords[1] + $cords[3] - 1, $tmpColor);
 	}
 
 	/**
@@ -1595,7 +1595,7 @@ class GraphicalFunctions {
 	public function makeEllipse(&$im, array $conf, array $workArea) {
 		$ellipseConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['dimensions'] . ',,,');
 		// Ellipse offset inside workArea (x/y)
-		$conf['offset'] = ($ellipseConfiguration[0] . ',') . $ellipseConfiguration[1];
+		$conf['offset'] = $ellipseConfiguration[0] . ',' . $ellipseConfiguration[1];
 		// @see objPosition
 		$imageCoordinates = $this->objPosition($conf, $workArea, array($ellipseConfiguration[2], $ellipseConfiguration[3]));
 		$color = $this->convertColor($conf['color']);
@@ -1672,7 +1672,7 @@ class GraphicalFunctions {
 				break;
 			case 'wave':
 				$params = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $value);
-				$commands .= ((' -wave ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params[0], 0, 99)) . 'x') . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params[1], 0, 99);
+				$commands .= ' -wave ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params[0], 0, 99) . 'x' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($params[1], 0, 99);
 				break;
 			case 'charcoal':
 				$commands .= ' -charcoal ' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($value, 0, 100);
@@ -1755,7 +1755,7 @@ class GraphicalFunctions {
 		// Clears workArea to total image
 		$this->setWorkArea('');
 		$cords = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $conf['crop'] . ',,,');
-		$conf['offset'] = ($cords[0] . ',') . $cords[1];
+		$conf['offset'] = $cords[0] . ',' . $cords[1];
 		$cords = $this->objPosition($conf, $this->workArea, array($cords[2], $cords[3]));
 		$newIm = imagecreatetruecolor($cords[2], $cords[3]);
 		$cols = $this->convertColor($conf['backColor'] ? $conf['backColor'] : $this->setup['backColor']);
@@ -1791,9 +1791,9 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function scale(&$im, $conf) {
-		if (($conf['width'] || $conf['height']) || $conf['params']) {
+		if ($conf['width'] || $conf['height'] || $conf['params']) {
 			$tmpStr = $this->randomName();
-			$theFile = ($tmpStr . '.') . $this->gifExtension;
+			$theFile = $tmpStr . '.' . $this->gifExtension;
 			$this->ImageWrite($im, $theFile);
 			$theNewFile = $this->imageMagickConvert($theFile, $this->gifExtension, $conf['width'], $conf['height'], $conf['params'], '', '');
 			$tmpImg = $this->imageCreateFromFile($theNewFile[3]);
@@ -1853,7 +1853,7 @@ class GraphicalFunctions {
 		$max = 0;
 		for ($c = 0; $c < $totalCols; $c++) {
 			$cols = ImageColorsForIndex($im, $c);
-			$grayArr[] = round((($cols['red'] + $cols['green']) + $cols['blue']) / 3);
+			$grayArr[] = round(($cols['red'] + $cols['green'] + $cols['blue']) / 3);
 		}
 		$min = min($grayArr);
 		$max = max($grayArr);
@@ -1861,9 +1861,9 @@ class GraphicalFunctions {
 		if ($delta) {
 			for ($c = 0; $c < $totalCols; $c++) {
 				$cols = ImageColorsForIndex($im, $c);
-				$cols['red'] = floor((($cols['red'] - $min) / $delta) * 255);
-				$cols['green'] = floor((($cols['green'] - $min) / $delta) * 255);
-				$cols['blue'] = floor((($cols['blue'] - $min) / $delta) * 255);
+				$cols['red'] = floor(($cols['red'] - $min) / $delta * 255);
+				$cols['green'] = floor(($cols['green'] - $min) / $delta * 255);
+				$cols['blue'] = floor(($cols['blue'] - $min) / $delta * 255);
 				ImageColorSet($im, $c, $cols['red'], $cols['green'], $cols['blue']);
 			}
 		}
@@ -1892,9 +1892,9 @@ class GraphicalFunctions {
 			$totalCols = ImageColorsTotal($im);
 			for ($c = 0; $c < $totalCols; $c++) {
 				$cols = ImageColorsForIndex($im, $c);
-				$cols['red'] = $low + floor(($cols['red'] / 255) * $delta);
-				$cols['green'] = $low + floor(($cols['green'] / 255) * $delta);
-				$cols['blue'] = $low + floor(($cols['blue'] / 255) * $delta);
+				$cols['red'] = $low + floor($cols['red'] / 255 * $delta);
+				$cols['green'] = $low + floor($cols['green'] / 255 * $delta);
+				$cols['blue'] = $low + floor($cols['blue'] / 255 * $delta);
 				ImageColorSet($im, $c, $cols['red'], $cols['green'], $cols['blue']);
 			}
 		}
@@ -1923,9 +1923,9 @@ class GraphicalFunctions {
 			$totalCols = ImageColorsTotal($im);
 			for ($c = 0; $c < $totalCols; $c++) {
 				$cols = ImageColorsForIndex($im, $c);
-				$cols['red'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((($cols['red'] - $low) / $delta) * 255, 0, 255);
-				$cols['green'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((($cols['green'] - $low) / $delta) * 255, 0, 255);
-				$cols['blue'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((($cols['blue'] - $low) / $delta) * 255, 0, 255);
+				$cols['red'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(($cols['red'] - $low) / $delta * 255, 0, 255);
+				$cols['green'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(($cols['green'] - $low) / $delta * 255, 0, 255);
+				$cols['blue'] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(($cols['blue'] - $low) / $delta * 255, 0, 255);
 				ImageColorSet($im, $c, $cols['red'], $cols['green'], $cols['blue']);
 			}
 		}
@@ -1942,7 +1942,7 @@ class GraphicalFunctions {
 	public function IMreduceColors($file, $cols) {
 		$fI = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($file);
 		$ext = strtolower($fI['fileext']);
-		$result = ($this->randomName() . '.') . $ext;
+		$result = $this->randomName() . '.' . $ext;
 		if (($reduce = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($cols, 0, $ext == 'gif' ? 256 : $this->truecolorColors, 0)) > 0) {
 			$params = ' -colors ' . $reduce;
 			if ($reduce <= 256) {
@@ -2026,7 +2026,7 @@ class GraphicalFunctions {
 	 */
 	public function randomName() {
 		$this->createTempSubDir('temp/');
-		return ($this->tempPath . 'temp/') . md5(uniqid(''));
+		return $this->tempPath . 'temp/' . md5(uniqid(''));
 	}
 
 	/**
@@ -2238,8 +2238,8 @@ class GraphicalFunctions {
 				// the image to be scaled!! (that is if no width / height is
 				// given or if the destination w/h matches the original image
 				// dimensions or if the option to not scale the image is set)
-				$noScale = (!$w && !$h || $data[0] == $info[0] && $data[1] == $info[1]) || $options['noScale'];
-				if ((((($noScale && !$data['crs']) && !$params) && !$frame) && $newExt == $info[2]) && !$mustCreate) {
+				$noScale = !$w && !$h || $data[0] == $info[0] && $data[1] == $info[1] || $options['noScale'];
+				if ($noScale && !$data['crs'] && !$params && !$frame && $newExt == $info[2] && !$mustCreate) {
 					// Set the new width and height before returning,
 					// if the noScale option is set
 					if ($options['noScale']) {
@@ -2263,16 +2263,16 @@ class GraphicalFunctions {
 					if (!$data['origH']) {
 						$data['origH'] = $data[1];
 					}
-					$offsetX = intval((($data[0] - $data['origW']) * ($data['cropH'] + 100)) / 200);
-					$offsetY = intval((($data[1] - $data['origH']) * ($data['cropV'] + 100)) / 200);
-					$params .= (((((((' -crop ' . $data['origW']) . 'x') . $data['origH']) . '+') . $offsetX) . '+') . $offsetY) . ' ';
+					$offsetX = intval(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
+					$offsetY = intval(($data[1] - $data['origH']) * ($data['cropV'] + 100) / 200);
+					$params .= ' -crop ' . $data['origW'] . 'x' . $data['origH'] . '+' . $offsetX . '+' . $offsetY . ' ';
 				}
-				$command = (((((($this->scalecmd . ' ') . $info[0]) . 'x') . $info[1]) . '! ') . $params) . ' ';
-				$cropscale = $data['crs'] ? (('crs-V' . $data['cropV']) . 'H') . $data['cropH'] : '';
+				$command = $this->scalecmd . ' ' . $info[0] . 'x' . $info[1] . '! ' . $params . ' ';
+				$cropscale = $data['crs'] ? 'crs-V' . $data['cropV'] . 'H' . $data['cropH'] : '';
 				if ($this->alternativeOutputKey) {
-					$theOutputName = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(((((($command . $cropscale) . basename($imagefile)) . $this->alternativeOutputKey) . '[') . $frame) . ']');
+					$theOutputName = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($command . $cropscale . basename($imagefile) . $this->alternativeOutputKey . '[' . $frame . ']');
 				} else {
-					$theOutputName = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(((((($command . $cropscale) . $imagefile) . filemtime($imagefile)) . '[') . $frame) . ']');
+					$theOutputName = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($command . $cropscale . $imagefile . filemtime($imagefile) . '[' . $frame . ']');
 				}
 				if ($this->imageMagickConvert_forceFileNameBody) {
 					$theOutputName = $this->imageMagickConvert_forceFileNameBody;
@@ -2280,7 +2280,7 @@ class GraphicalFunctions {
 				}
 				// Making the temporary filename:
 				$this->createTempSubDir('pics/');
-				$output = ((((($this->absPrefix . $this->tempPath) . 'pics/') . $this->filenamePrefix) . $theOutputName) . '.') . $newExt;
+				$output = $this->absPrefix . $this->tempPath . 'pics/' . $this->filenamePrefix . $theOutputName . '.' . $newExt;
 				// Register temporary filename:
 				$GLOBALS['TEMP_IMAGES_ON_PAGE'][] = $output;
 				if ($this->dontCheckForExistingTempFile || !$this->file_exists_typo3temp_file($output, $imagefile)) {
@@ -2498,13 +2498,13 @@ class GraphicalFunctions {
 		// Set minimum-measures!
 		if ($options['minW'] && $out[0] < $options['minW']) {
 			if (($max || $crs) && $out[0]) {
-				$out[1] = round(($out[1] * $options['minW']) / $out[0]);
+				$out[1] = round($out[1] * $options['minW'] / $out[0]);
 			}
 			$out[0] = $options['minW'];
 		}
 		if ($options['minH'] && $out[1] < $options['minH']) {
 			if (($max || $crs) && $out[1]) {
-				$out[0] = round(($out[0] * $options['minH']) / $out[1]);
+				$out[0] = round($out[0] * $options['minH'] / $out[1]);
 			}
 			$out[1] = $options['minH'];
 		}
@@ -2528,7 +2528,7 @@ class GraphicalFunctions {
 			} else {
 				// If not, we look up in the cache_typo3temp_log table to see if there is a image being rendered right now.
 				$md5Hash = md5($output);
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('md5hash', 'cache_typo3temp_log', (('md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($md5Hash, 'cache_typo3temp_log')) . ' AND tstamp>') . ($GLOBALS['EXEC_TIME'] - 30));
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('md5hash', 'cache_typo3temp_log', 'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($md5Hash, 'cache_typo3temp_log') . ' AND tstamp>' . ($GLOBALS['EXEC_TIME'] - 30));
 				// If there was a record, the image is being generated by another proces (we assume)
 				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -2619,11 +2619,11 @@ class GraphicalFunctions {
 			// Unless noFramePrepended is set in the Install Tool, a frame number is added to
 			// select a specific page of the image (by default this will be the first page)
 			if (!$this->noFramePrepended) {
-				$frame = ('[' . intval($frame)) . ']';
+				$frame = '[' . intval($frame) . ']';
 			} else {
 				$frame = '';
 			}
-			$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('convert', (((($params . ' ') . $this->wrapFileName($input)) . $frame) . ' ') . $this->wrapFileName($output));
+			$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('convert', $params . ' ' . $this->wrapFileName($input) . $frame . ' ' . $this->wrapFileName($output));
 			$this->IM_commands[] = array($output, $cmd);
 			$ret = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 			// Change the permissions of the file
@@ -2652,9 +2652,9 @@ class GraphicalFunctions {
 					$params .= ' ' . $this->maskNegate;
 				}
 			}
-			$theMask = ($this->randomName() . '.') . $this->gifExtension;
+			$theMask = $this->randomName() . '.' . $this->gifExtension;
 			$this->imageMagickExec($mask, $theMask, $params);
-			$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('combine', (((((('-compose over +matte ' . $this->wrapFileName($input)) . ' ') . $this->wrapFileName($overlay)) . ' ') . $this->wrapFileName($theMask)) . ' ') . $this->wrapFileName($output));
+			$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('combine', '-compose over +matte ' . $this->wrapFileName($input) . ' ' . $this->wrapFileName($overlay) . ' ' . $this->wrapFileName($theMask) . ' ' . $this->wrapFileName($output));
 			// +matte = no alpha layer in output
 			$this->IM_commands[] = array($output, $cmd);
 			$ret = \TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
@@ -2735,7 +2735,7 @@ class GraphicalFunctions {
 	 */
 	public function applyImageMagickToPHPGif(&$im, $command) {
 		$tmpStr = $this->randomName();
-		$theFile = ($tmpStr . '.') . $this->gifExtension;
+		$theFile = $tmpStr . '.' . $this->gifExtension;
 		$this->ImageWrite($im, $theFile);
 		$this->imageMagickExec($theFile, $theFile, $command);
 		$tmpImg = $this->imageCreateFromFile($theFile);
@@ -2838,7 +2838,7 @@ class GraphicalFunctions {
 	 * @todo Define visibility
 	 */
 	public function imgTag($imgInfo) {
-		return ((((('<img src="' . $imgInfo[3]) . '" width="') . $imgInfo[0]) . '" height="') . $imgInfo[1]) . '" border="0" alt="" />';
+		return '<img src="' . $imgInfo[3] . '" width="' . $imgInfo[0] . '" height="' . $imgInfo[1] . '" border="0" alt="" />';
 	}
 
 	/**
@@ -2946,7 +2946,7 @@ class GraphicalFunctions {
 		if (strlen($b) < 2) {
 			$b = '0' . $b;
 		}
-		return (('#' . $r) . $g) . $b;
+		return '#' . $r . $g . $b;
 	}
 
 	/**
@@ -2960,7 +2960,7 @@ class GraphicalFunctions {
 	 */
 	public function unifyColors(&$img, $colArr, $closest = FALSE) {
 		$retCol = -1;
-		if (((is_array($colArr) && count($colArr)) && function_exists('imagepng')) && function_exists('imagecreatefrompng')) {
+		if (is_array($colArr) && count($colArr) && function_exists('imagepng') && function_exists('imagecreatefrompng')) {
 			$firstCol = array_shift($colArr);
 			$firstColArr = $this->convertColor($firstCol);
 			if (count($colArr) > 1) {
@@ -2971,7 +2971,7 @@ class GraphicalFunctions {
 				foreach ($colArr as $transparentColor) {
 					$transparentColor = $this->convertColor($transparentColor);
 					$transparentColor = $this->hexColor($transparentColor);
-					$cmd = ((('-fill "' . $firstCol) . '" -opaque "') . $transparentColor) . '"';
+					$cmd = '-fill "' . $firstCol . '" -opaque "' . $transparentColor . '"';
 					$this->imageMagickExec($preName, $postName, $cmd);
 					$preName = $postName;
 				}

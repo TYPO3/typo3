@@ -168,7 +168,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			// Get mount data if not already supplied as argument to this function
 			if (count($recordData) === 0 || $recordData['uid'] !== $uid) {
 				/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-				$recordData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_collection', ('uid=' . intval($uid)) . ' AND deleted=0');
+				$recordData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_collection', 'uid=' . intval($uid) . ' AND deleted=0');
 				if (!is_array($recordData)) {
 					throw new \InvalidArgumentException('No collection found for given UID.', 1314085992);
 				}
@@ -253,7 +253,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 			// Fetches data in case $fileData is empty
 			if (empty($fileData)) {
 				/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-				$fileData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file', ('uid=' . intval($uid)) . ' AND deleted=0');
+				$fileData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file', 'uid=' . intval($uid) . ' AND deleted=0');
 				if (!is_array($fileData)) {
 					throw new \InvalidArgumentException('No file found for given UID.', 1317178604);
 				}
@@ -362,7 +362,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		} elseif ($storage->hasFolder($objectIdentifier)) {
 			return $storage->getFolder($objectIdentifier);
 		} else {
-			throw new \RuntimeException(('Object with identifier "' . $identifier) . '" does not exist in storage', 1329647780);
+			throw new \RuntimeException('Object with identifier "' . $identifier . '" does not exist in storage', 1329647780);
 		}
 	}
 
@@ -405,7 +405,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 					$fileReferenceData = $GLOBALS['TSFE']->sys_page->checkRecord('sys_file_reference', $uid);
 				} else {
 					/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-					$fileReferenceData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', ('uid=' . intval($uid)) . ' AND deleted=0');
+					$fileReferenceData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . intval($uid) . ' AND deleted=0');
 				}
 				if (!is_array($fileReferenceData)) {
 					throw new \InvalidArgumentException('No fileusage (sys_file_reference) found for given UID.', 1317178794);

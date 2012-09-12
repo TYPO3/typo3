@@ -64,21 +64,21 @@ class SuggestElement {
 	 */
 	public function renderSuggestSelector($fieldname, $table, $field, array $row, array $config) {
 		$this->suggestCount++;
-		$containerCssClass = (($this->cssClass . ' ') . $this->cssClass) . '-position-right';
-		$suggestId = (((('suggest-' . $table) . '-') . $field) . '-') . $row['uid'];
+		$containerCssClass = $this->cssClass . ' ' . $this->cssClass . '-position-right';
+		$suggestId = 'suggest-' . $table . '-' . $field . '-' . $row['uid'];
 		if ($GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'flex') {
-			$fieldPattern = ((('data[' . $table) . '][') . $row['uid']) . '][';
+			$fieldPattern = 'data[' . $table . '][' . $row['uid'] . '][';
 			$flexformField = str_replace($fieldPattern, '', $fieldname);
 			$flexformField = substr($flexformField, 0, -1);
 			$field = str_replace(array(']['), '|', $flexformField);
 		}
-		$selector = ((((((((((((((((((((('
-		<div class="' . $containerCssClass) . '" id="') . $suggestId) . '">
-			<input type="text" id="') . $fieldname) . 'Suggest" value="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.findRecord')) . '" class="') . $this->cssClass) . '-search" />
-			<div class="') . $this->cssClass) . '-indicator" style="display: none;" id="') . $fieldname) . 'SuggestIndicator">
-				<img src="') . $GLOBALS['BACK_PATH']) . 'gfx/spinner.gif" alt="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:alttext.suggestSearching')) . '" />
+		$selector = '
+		<div class="' . $containerCssClass . '" id="' . $suggestId . '">
+			<input type="text" id="' . $fieldname . 'Suggest" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.findRecord') . '" class="' . $this->cssClass . '-search" />
+			<div class="' . $this->cssClass . '-indicator" style="display: none;" id="' . $fieldname . 'SuggestIndicator">
+				<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/spinner.gif" alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:alttext.suggestSearching') . '" />
 			</div>
-			<div class="') . $this->cssClass) . '-choices" style="display: none;" id="') . $fieldname) . 'SuggestChoices"></div>
+			<div class="' . $this->cssClass . '-choices" style="display: none;" id="' . $fieldname . 'SuggestChoices"></div>
 
 		</div>';
 		// Get minimumCharacters from TCA
@@ -92,9 +92,9 @@ class SuggestElement {
 		$minChars = $minChars > 0 ? $minChars : 2;
 		// Replace "-" with ucwords for the JS object name
 		$jsObj = str_replace(' ', '', ucwords(str_replace('-', ' ', \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($suggestId))));
-		$this->TCEformsObj->additionalJS_post[] = ((((((((((((((((('
-			var ' . $jsObj) . ' = new TCEForms.Suggest("') . $fieldname) . '", "') . $table) . '", "') . $field) . '", "') . $row['uid']) . '", ') . $row['pid']) . ', ') . $minChars) . ');
-			') . $jsObj) . '.defaultValue = "') . \TYPO3\CMS\Core\Utility\GeneralUtility::slashJS($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.findRecord'))) . '";
+		$this->TCEformsObj->additionalJS_post[] = '
+			var ' . $jsObj . ' = new TCEForms.Suggest("' . $fieldname . '", "' . $table . '", "' . $field . '", "' . $row['uid'] . '", ' . $row['pid'] . ', ' . $minChars . ');
+			' . $jsObj . '.defaultValue = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::slashJS($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.findRecord')) . '";
 		';
 		return $selector;
 	}
@@ -229,16 +229,16 @@ class SuggestElement {
 			// put together the selector entry
 			for ($i = 0; $i < $maxItems; $i++) {
 				$row = $resultRows[$rowsSort[$i]];
-				$rowId = ((((((($row['table'] . '-') . $row['uid']) . '-') . $table) . '-') . $uid) . '-') . $field;
-				$listItems[] = ((((((('<li' . ($row['class'] != '' ? (' class="' . $row['class']) . '"' : '')) . ' id="') . $rowId) . '" style="') . $row['style']) . '">') . $row['text']) . '</li>';
+				$rowId = $row['table'] . '-' . $row['uid'] . '-' . $table . '-' . $uid . '-' . $field;
+				$listItems[] = '<li' . ($row['class'] != '' ? ' class="' . $row['class'] . '"' : '') . ' id="' . $rowId . '" style="' . $row['style'] . '">' . $row['text'] . '</li>';
 			}
 		}
 		if (count($listItems) > 0) {
 			$list = implode('', $listItems);
 		} else {
-			$list = ('<li class="suggest-noresults"><i>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.noRecordFound')) . '</i></li>';
+			$list = '<li class="suggest-noresults"><i>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.noRecordFound') . '</i></li>';
 		}
-		$list = ((('<ul class="' . $this->cssClass) . '-resultlist">') . $list) . '</ul>';
+		$list = '<ul class="' . $this->cssClass . '-resultlist">' . $list . '</ul>';
 		$ajaxObj->addContent(0, $list);
 	}
 

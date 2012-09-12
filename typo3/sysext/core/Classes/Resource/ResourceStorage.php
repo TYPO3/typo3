@@ -207,7 +207,7 @@ class ResourceStorage {
 			$this->markAsPermanentlyOffline();
 		}
 		$this->driver->initialize();
-		$this->capabilities = (($this->storageRecord['is_browsable'] && $this->driver->hasCapability(self::CAPABILITY_BROWSABLE) ? self::CAPABILITY_BROWSABLE : 0) + ($this->storageRecord['is_public'] && $this->driver->hasCapability(self::CAPABILITY_PUBLIC) ? self::CAPABILITY_PUBLIC : 0)) + ($this->storageRecord['is_writable'] && $this->driver->hasCapability(self::CAPABILITY_WRITABLE) ? self::CAPABILITY_WRITABLE : 0);
+		$this->capabilities = ($this->storageRecord['is_browsable'] && $this->driver->hasCapability(self::CAPABILITY_BROWSABLE) ? self::CAPABILITY_BROWSABLE : 0) + ($this->storageRecord['is_public'] && $this->driver->hasCapability(self::CAPABILITY_PUBLIC) ? self::CAPABILITY_PUBLIC : 0) + ($this->storageRecord['is_writable'] && $this->driver->hasCapability(self::CAPABILITY_WRITABLE) ? self::CAPABILITY_WRITABLE : 0);
 		// TODO do not set the "public" capability if no public URIs can be generated
 		$this->processConfiguration();
 		$this->resetFileAndFolderNameFiltersToDefault();
@@ -404,7 +404,7 @@ class ResourceStorage {
 				} else {
 					// check if the storage is disabled temporary for now
 					$registryObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
-					$offlineUntil = $registryObject->get('core', ('sys_file_storage-' . $this->getUid()) . '-offline-until');
+					$offlineUntil = $registryObject->get('core', 'sys_file_storage-' . $this->getUid() . '-offline-until');
 					if ($offlineUntil && $offlineUntil > time()) {
 						$this->isOnline = FALSE;
 					} else {
@@ -441,7 +441,7 @@ class ResourceStorage {
 	 */
 	public function markAsTemporaryOffline() {
 		$registryObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');
-		$registryObject->set('core', ('sys_file_storage-' . $this->getUid()) . '-offline-until', time() + 60 * 5);
+		$registryObject->set('core', 'sys_file_storage-' . $this->getUid() . '-offline-until', time() + 60 * 5);
 		$this->storageRecord['is_online'] = 0;
 		$this->isOnline = FALSE;
 	}
@@ -462,7 +462,7 @@ class ResourceStorage {
 		if ($this->driver->folderExists($folderIdentifier) === FALSE) {
 			// if there is an error, this is important and should be handled
 			// as otherwise the user would see the whole storage without any restrictions for the filemounts
-			throw new \TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException(('Folder for file mount ' . $folderIdentifier) . ' does not exist.', 1334427099);
+			throw new \TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException('Folder for file mount ' . $folderIdentifier . ' does not exist.', 1334427099);
 		}
 		$folderObject = $this->driver->getFolder($folderIdentifier);
 		if (empty($additionalData)) {
@@ -569,7 +569,7 @@ class ResourceStorage {
 		}
 		// Check 2: Does the user has the right to perform the action?
 		// (= is he within the file mount borders)
-		if ((is_array($this->fileMounts) && count($this->fileMounts)) && !$this->isWithinFileMountBoundaries($file)) {
+		if (is_array($this->fileMounts) && count($this->fileMounts) && !$this->isWithinFileMountBoundaries($file)) {
 			return FALSE;
 		}
 		$isReadCheck = FALSE;
@@ -615,7 +615,7 @@ class ResourceStorage {
 		}
 		// Check 2: Does the user has the right to perform the action?
 		// (= is he within the file mount borders)
-		if ((is_array($this->fileMounts) && count($this->fileMounts)) && !$this->isWithinFileMountBoundaries($folder)) {
+		if (is_array($this->fileMounts) && count($this->fileMounts) && !$this->isWithinFileMountBoundaries($folder)) {
 			return FALSE;
 		}
 		$isReadCheck = FALSE;
@@ -699,12 +699,12 @@ class ResourceStorage {
 	public function addFile($localFilePath, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $fileName = '', $conflictMode = 'changeName') {
 		// TODO check permissions (write on target, upload, ...)
 		if (!file_exists($localFilePath)) {
-			throw new \InvalidArgumentException(('File "' . $localFilePath) . '" does not exist.', 1319552745);
+			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552745);
 		}
 		$targetFolder = $targetFolder ? $targetFolder : $this->getDefaultFolder();
 		$fileName = $fileName ? $fileName : basename($localFilePath);
 		if ($conflictMode === 'cancel' && $this->driver->fileExistsInFolder($fileName, $targetFolder)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException((('File "' . $fileName) . '" already exists in folder ') . $targetFolder->getIdentifier(), 1322121068);
+			throw new \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException('File "' . $fileName . '" already exists in folder ' . $targetFolder->getIdentifier(), 1322121068);
 		} elseif ($conflictMode === 'changeName') {
 			$fileName = $this->getUniqueName($targetFolder, $fileName);
 		}
@@ -909,7 +909,7 @@ class ResourceStorage {
 	public function getFileContents($file) {
 		// Check if $file is readable
 		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException(('Reading file "' . $file->getIdentifier()) . '" is not allowed.', 1330121089);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException('Reading file "' . $file->getIdentifier() . '" is not allowed.', 1330121089);
 		}
 		return $this->driver->getFileContents($file);
 	}
@@ -924,11 +924,11 @@ class ResourceStorage {
 	public function setFileContents(\TYPO3\CMS\Core\Resource\AbstractFile $file, $contents) {
 		// Check if user is allowed to update
 		if (!$this->checkUserActionPermission('update', 'File')) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException(('Updating file "' . $file->getIdentifier()) . '" not allowed for user.', 1330121117);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException('Updating file "' . $file->getIdentifier() . '" not allowed for user.', 1330121117);
 		}
 		// Check if $file is writable
 		if (!$this->checkFileActionPermission('write', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException(('Writing to file "' . $file->getIdentifier()) . '" is not allowed.', 1330121088);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException('Writing to file "' . $file->getIdentifier() . '" is not allowed.', 1330121088);
 		}
 		// Call driver method to update the file and update file properties afterwards
 		try {
@@ -953,7 +953,7 @@ class ResourceStorage {
 	 */
 	public function createFile($fileName, \TYPO3\CMS\Core\Resource\Folder $targetFolderObject) {
 		if (!$this->checkFolderActionPermission('add', $targetFolderObject)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException(('You are not allowed to create directories on this storage "' . $targetFolderObject->getIdentifier()) . '"', 1323059807);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories on this storage "' . $targetFolderObject->getIdentifier() . '"', 1323059807);
 		}
 		return $this->driver->createFile($fileName, $targetFolderObject);
 	}
@@ -966,11 +966,11 @@ class ResourceStorage {
 	 */
 	public function deleteFile($fileObject) {
 		if (!$this->checkFileActionPermission('remove', $fileObject)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException(('You are not allowed to delete the file "' . $fileObject->getIdentifier()) . '\'', 1319550425);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException('You are not allowed to delete the file "' . $fileObject->getIdentifier() . '\'', 1319550425);
 		}
 		$result = $this->driver->deleteFile($fileObject);
 		if ($result === FALSE) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException(('Deleting the file "' . $fileObject->getIdentifier()) . '\' failed.', 1329831691);
+			throw new \TYPO3\CMS\Core\Resource\Exception\FileOperationErrorException('Deleting the file "' . $fileObject->getIdentifier() . '\' failed.', 1329831691);
 		}
 		// Mark the file object as deleted
 		$fileObject->setDeleted();
@@ -1032,7 +1032,7 @@ class ResourceStorage {
 	protected function checkFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $uploadedFileSize) {
 		// Makes sure the user is allowed to upload
 		if (!$this->checkUserActionPermission('upload', 'File')) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException(('You are not allowed to upload files to this storage "' . $this->getUid()) . '"', 1322112430);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException('You are not allowed to upload files to this storage "' . $this->getUid() . '"', 1322112430);
 		}
 		// Makes sure this is an uploaded file
 		if (!is_uploaded_file($localFilePath)) {
@@ -1041,15 +1041,15 @@ class ResourceStorage {
 		// Max upload size (kb) for files.
 		$maxUploadFileSize = \TYPO3\CMS\Core\Utility\GeneralUtility::getMaxUploadFileSize() * 1024;
 		if ($uploadedFileSize >= $maxUploadFileSize) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\UploadSizeException(('The uploaded file exceeds the size-limit of ' . $maxUploadFileSize) . ' bytes', 1322110041);
+			throw new \TYPO3\CMS\Core\Resource\Exception\UploadSizeException('The uploaded file exceeds the size-limit of ' . $maxUploadFileSize . ' bytes', 1322110041);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException(('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier()) . '"', 1322120356);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1322120356);
 		}
 		// Check for a valid file extension
 		if (!$this->checkFileExtensionPermission($targetFileName)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException(('Extension of file name is not allowed in "' . $targetFileName) . '"!', 1322120271);
+			throw new \TYPO3\CMS\Core\Resource\Exception\IllegalFileExtensionException('Extension of file name is not allowed in "' . $targetFileName . '"!', 1322120271);
 		}
 	}
 
@@ -1065,19 +1065,19 @@ class ResourceStorage {
 	protected function checkFileCopyPermissions(\TYPO3\CMS\Core\Resource\FileInterface $file, \TYPO3\CMS\Core\Resource\Folder $targetFolder, $targetFileName) {
 		// Check if targetFolder is within this storage, this should never happen
 		if ($this->getUid() != $targetFolder->getStorage()->getUid()) {
-			throw new \TYPO3\CMS\Core\Resource\Exception(('The operation of the folder cannot be called by this storage "' . $this->getUid()) . '"', 1319550405);
+			throw new \TYPO3\CMS\Core\Resource\Exception('The operation of the folder cannot be called by this storage "' . $this->getUid() . '"', 1319550405);
 		}
 		// Check if user is allowed to copy
 		if (!$this->checkUserActionPermission('copy', 'File')) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException(('You are not allowed to copy files to this storage "' . $this->getUid()) . '"', 1319550415);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException('You are not allowed to copy files to this storage "' . $this->getUid() . '"', 1319550415);
 		}
 		// Check if $file is readable
 		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException(('You are not allowed to read the file "' . $file->getIdentifier()) . '\'', 1319550425);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . '\'', 1319550425);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException(('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier()) . '"', 1319550435);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319550435);
 		}
 		// Check for a valid file extension
 		if (!$this->checkFileExtensionPermission($targetFileName)) {
@@ -1184,19 +1184,19 @@ class ResourceStorage {
 		}
 		// Check if user is allowed to move
 		if (!$this->checkUserActionPermission('move', 'File')) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException(('You are not allowed to move files to storage "' . $this->getUid()) . '"', 1319219349);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException('You are not allowed to move files to storage "' . $this->getUid() . '"', 1319219349);
 		}
 		// Check if $file is readable
 		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException(('You are not allowed to read the file "' . $file->getIdentifier()) . '\'', 1319219349);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . '\'', 1319219349);
 		}
 		// Check if $file is writable
 		if (!$this->checkFileActionPermission('write', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException(('You are not allowed to move the file "' . $file->getIdentifier()) . '\'', 1319219349);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException('You are not allowed to move the file "' . $file->getIdentifier() . '\'', 1319219349);
 		}
 		// Check if targetFolder is writable
 		if (!$this->checkFolderActionPermission('write', $targetFolder)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException(('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier()) . '"', 1319219349);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException('You are not allowed to write to the target folder "' . $targetFolder->getIdentifier() . '"', 1319219349);
 		}
 	}
 
@@ -1219,11 +1219,11 @@ class ResourceStorage {
 		}
 		// Check if $file is readable
 		if (!$this->checkFileActionPermission('read', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException(('You are not allowed to read the file "' . $file->getIdentifier()) . '\'', 1319219349);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileReadPermissionsException('You are not allowed to read the file "' . $file->getIdentifier() . '\'', 1319219349);
 		}
 		// Check if $file is writable
 		if (!$this->checkFileActionPermission('write', $file)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException(('You are not allowed to rename the file "' . $file->getIdentifier()) . '\'', 1319219349);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileWritePermissionsException('You are not allowed to rename the file "' . $file->getIdentifier() . '\'', 1319219349);
 		}
 		// Call driver method to rename the file that also updates the file
 		// object properties
@@ -1248,7 +1248,7 @@ class ResourceStorage {
 	 */
 	public function replaceFile(\TYPO3\CMS\Core\Resource\FileInterface $file, $localFilePath) {
 		if (!file_exists($localFilePath)) {
-			throw new \InvalidArgumentException(('File "' . $localFilePath) . '" does not exist.', 1325842622);
+			throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1325842622);
 		}
 		// TODO check permissions
 		$this->emitPreFileReplaceSignal($file, $localFilePath);
@@ -1420,7 +1420,7 @@ class ResourceStorage {
 		// TODO access checks
 		$returnObject = NULL;
 		if ($this->driver->folderExistsInFolder($newName, $folderObject)) {
-			throw new \InvalidArgumentException((('The folder ' . $newName) . ' already exists in folder ') . $folderObject->getIdentifier(), 1325418870);
+			throw new \InvalidArgumentException('The folder ' . $newName . ' already exists in folder ' . $folderObject->getIdentifier(), 1325418870);
 		}
 		$this->emitPreFolderRenameSignal($folderObject, $newName);
 		$fileObjects = $this->getAllFileObjectsInFolder($folderObject);
@@ -1450,10 +1450,10 @@ class ResourceStorage {
 	 */
 	public function deleteFolder($folderObject, $deleteRecursively = FALSE) {
 		if (!$this->checkFolderActionPermission('remove', $folderObject)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException(('You are not allowed to access the folder "' . $folderObject->getIdentifier()) . '\'', 1323423953);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFileAccessPermissionsException('You are not allowed to access the folder "' . $folderObject->getIdentifier() . '\'', 1323423953);
 		}
 		if ($this->driver->isFolderEmpty($folderObject) && !$deleteRecursively) {
-			throw new \RuntimeException(('Could not delete folder "' . $folderObject->getIdentifier()) . '" because it is not empty.', 1325952534);
+			throw new \RuntimeException('Could not delete folder "' . $folderObject->getIdentifier() . '" because it is not empty.', 1325952534);
 		}
 		$this->emitPreFolderDeleteSignal($folderObject);
 		$result = $this->driver->deleteFolder($folderObject, $deleteRecursively);
@@ -1532,10 +1532,10 @@ class ResourceStorage {
 			$parentFolder = $this->getRootLevelFolder();
 		}
 		if (!$this->driver->folderExists($parentFolder->getIdentifier())) {
-			throw new \InvalidArgumentException(('Parent folder "' . $parentFolder->getIdentifier()) . '" does not exist.', 1325689164);
+			throw new \InvalidArgumentException('Parent folder "' . $parentFolder->getIdentifier() . '" does not exist.', 1325689164);
 		}
 		if (!$this->checkFolderActionPermission('add', $parentFolder)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException(('You are not allowed to create directories in the folder "' . $parentFolder->getIdentifier()) . '"', 1323059807);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException('You are not allowed to create directories in the folder "' . $parentFolder->getIdentifier() . '"', 1323059807);
 		}
 		$folderParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $folderName, TRUE);
 		foreach ($folderParts as $folder) {
@@ -1564,11 +1564,11 @@ class ResourceStorage {
 	 */
 	public function getFolder($identifier) {
 		if (!$this->driver->folderExists($identifier)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException(('Folder ' . $identifier) . ' does not exist.', 1320575630);
+			throw new \TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException('Folder ' . $identifier . ' does not exist.', 1320575630);
 		}
 		$folderObject = $this->driver->getFolder($identifier);
 		if ($this->fileMounts && !$this->isWithinFileMountBoundaries($folderObject)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\NotInMountPointException(('Folder "' . $identifier) . '" is not within your mount points.', 1330120649);
+			throw new \TYPO3\CMS\Core\Resource\Exception\NotInMountPointException('Folder "' . $identifier . '" is not within your mount points.', 1330120649);
 		} else {
 			return $folderObject;
 		}
@@ -1882,7 +1882,7 @@ class ResourceStorage {
 				// TODO remove constant 6
 				$insert = '_' . substr(md5(uniqId('')), 0, 6);
 			}
-			$theTestFile = ($theTempFileBody . $insert) . $theOrigExt;
+			$theTestFile = $theTempFileBody . $insert . $theOrigExt;
 			// The destinations file
 			$theDestFile = $theTestFile;
 			// If the file does NOT exist we return this fileName
@@ -1890,7 +1890,7 @@ class ResourceStorage {
 				return $theDestFile;
 			}
 		}
-		throw new \RuntimeException(('Last possible name "' . $theDestFile) . '" is already taken.', 1325194291);
+		throw new \RuntimeException('Last possible name "' . $theDestFile . '" is already taken.', 1325194291);
 	}
 
 	/**

@@ -78,7 +78,7 @@ class UserSetupHook {
 			);
 			$content = '';
 			foreach ($files as $file) {
-				$content .= ((('<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')) . $javascriptPath) . $file) . '"></script>';
+				$content .= '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $javascriptPath . $file . '"></script>';
 			}
 			// Generate a new key pair
 			$keyPair = $backend->createNewKeyPair();
@@ -87,10 +87,10 @@ class UserSetupHook {
 			/** @var $storage \TYPO3\CMS\Rsaauth\Storage\AbstractStorage */
 			$storage->put($keyPair->getPrivateKey());
 			// Add form tag
-			$form = ('<form action="' . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('user_setup')) . '" method="post" name="usersetup" enctype="application/x-www-form-urlencoded" onsubmit="tx_rsaauth_encryptUserSetup();">';
+			$form = '<form action="' . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="application/x-www-form-urlencoded" onsubmit="tx_rsaauth_encryptUserSetup();">';
 			// Add RSA hidden fields
-			$form .= ('<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus())) . '" />';
-			$form .= ('<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent())) . '" />';
+			$form .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
+			$form .= '<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent()) . '" />';
 			$userSetupObject->doc->form = $form;
 		}
 		return $content;

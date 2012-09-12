@@ -121,7 +121,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		$this->sword = $searchData['sword'];
 		// Add previous search words to current
 		if ($searchData['sword_prev_include'] && $searchData['sword_prev']) {
-			$this->sword = (trim($searchData['sword_prev']) . ' ') . $this->sword;
+			$this->sword = trim($searchData['sword_prev']) . ' ' . $this->sword;
 		}
 		$this->searchWords = $this->getSearchWords($searchData['defaultOperand']);
 		// This is the id of the site root.
@@ -186,7 +186,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			// Create header if we are searching more than one indexing configuration
 			if (count($indexCfgs) > 1) {
 				if ($freeIndexUid > 0) {
-					$indexCfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('title', 'index_config', ('uid=' . intval($freeIndexUid)) . $GLOBALS['TSFE']->cObj->enableFields('index_config'));
+					$indexCfgRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('title', 'index_config', 'uid=' . intval($freeIndexUid) . $GLOBALS['TSFE']->cObj->enableFields('index_config'));
 					$categoryTitle = $indexCfgRec['title'];
 				} else {
 					$categoryTitle = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('indexingConfigurationHeader.' . $freeIndexUid, 'indexed_search');
@@ -235,7 +235,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		}
 		// Print a message telling which words in which sections we searched for
 		if (substr($this->searchData['sections'], 0, 2) == 'rl') {
-			$result['searchedInSectionInfo'] = ((\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.inSection', 'indexed_search') . ' "') . substr($this->getPathFromPageId(substr($this->searchData['sections'], 4)), 1)) . '"';
+			$result['searchedInSectionInfo'] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.inSection', 'indexed_search') . ' "' . substr($this->getPathFromPageId(substr($this->searchData['sections'], 4)), 1) . '"';
 		}
 		return $result;
 	}
@@ -278,7 +278,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$rl2flag = substr($this->searchData['sections'], 0, 2) == 'rl';
 			$sections = array();
 			foreach ($resultRows as $row) {
-				$id = (($row['rl0'] . '-') . $row['rl1']) . ($rl2flag ? '-' . $row['rl2'] : '');
+				$id = $row['rl0'] . '-' . $row['rl1'] . ($rl2flag ? '-' . $row['rl2'] : '');
 				$sections[$id][] = $row;
 			}
 			$this->resultSections = array();
@@ -299,8 +299,8 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				if (!trim($sectionName)) {
 					$sectionTitleLinked = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.unnamedSection', 'indexed_search') . ':';
 				} else {
-					$onclick = ((((((('document.' . $this->prefixId) . '[\'') . $this->prefixId) . '[_sections]\'].value=\'') . $theRLid) . '\';document.') . $this->prefixId) . '.submit();return false;';
-					$sectionTitleLinked = ((('<a href="#" onclick="' . htmlspecialchars($onclick)) . '">') . htmlspecialchars($sectionName)) . ':</a>';
+					$onclick = 'document.' . $this->prefixId . '[\'' . $this->prefixId . '[_sections]\'].value=\'' . $theRLid . '\';document.' . $this->prefixId . '.submit();return false;';
+					$sectionTitleLinked = '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . htmlspecialchars($sectionName) . ':</a>';
 				}
 				$this->resultSections[$id] = array($sectionName, count($resultRows));
 				// Add section header
@@ -340,9 +340,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$dat = unserialize($row['cHashParams']);
 			$pp = explode('-', $dat['key']);
 			if ($pp[0] != $pp[1]) {
-				$resultData['titleaddition'] = ((', ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.page', 'indexed_search')) . ' ') . $dat['key'];
+				$resultData['titleaddition'] = ', ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.page', 'indexed_search') . ' ' . $dat['key'];
 			} else {
-				$resultData['titleaddition'] = ((', ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.pages', 'indexed_search')) . ' ') . $pp[0];
+				$resultData['titleaddition'] = ', ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.pages', 'indexed_search') . ' ' . $pp[0];
 			}
 		}
 		$title = $resultData['item_title'] . $resultData['titleaddition'];
@@ -353,9 +353,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				// Can link directly.
 				$targetAttribute = '';
 				if ($GLOBALS['TSFE']->config['config']['fileTarget']) {
-					$targetAttribute = (' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget'])) . '"';
+					$targetAttribute = ' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget']) . '"';
 				}
-				$title = ((((('<a href="' . htmlspecialchars($row['data_filename'])) . '"') . $targetAttribute) . '>') . $title) . '</a>';
+				$title = '<a href="' . htmlspecialchars($row['data_filename']) . '"' . $targetAttribute . '>' . $title . '</a>';
 			} else {
 				// Suspicious, so linking to page instead...
 				$copiedRow = $row;
@@ -387,9 +387,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		if ($pI['scheme']) {
 			$targetAttribute = '';
 			if ($GLOBALS['TSFE']->config['config']['fileTarget']) {
-				$targetAttribute = (' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget'])) . '"';
+				$targetAttribute = ' target="' . htmlspecialchars($GLOBALS['TSFE']->config['config']['fileTarget']) . '"';
 			}
-			$resultData['path'] = ((((('<a href="' . htmlspecialchars($row['data_filename'])) . '"') . $targetAttribute) . '>') . htmlspecialchars($row['data_filename'])) . '</a>';
+			$resultData['path'] = '<a href="' . htmlspecialchars($row['data_filename']) . '"' . $targetAttribute . '>' . htmlspecialchars($row['data_filename']) . '</a>';
 		} else {
 			$pathId = $row['data_page_id'] ? $row['data_page_id'] : $row['page_id'];
 			$pathMP = $row['data_page_id'] ? $row['data_page_mp'] : '';
@@ -402,7 +402,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			));
 			// check if the access is restricted
 			if (is_array($this->requiredFrontendUsergroups[$id]) && count($this->requiredFrontendUsergroups[$id])) {
-				$resultData['access'] = ((('<img src="' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('indexed_search')) . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="') . sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.memberGroups', 'indexed_search'), implode(',', array_unique($this->requiredFrontendUsergroups[$id])))) . '" alt="" />';
+				$resultData['access'] = '<img src="' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('indexed_search') . 'pi/res/locked.gif" width="12" height="15" vspace="5" title="' . sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.memberGroups', 'indexed_search'), implode(',', array_unique($this->requiredFrontendUsergroups[$id]))) . '" alt="" />';
 			}
 		}
 		// If there are subrows (eg. subpages in a PDF-file or if a duplicate page
@@ -456,25 +456,25 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	protected function makeRating($row) {
 		switch ((string) $this->searchData['sortOrder']) {
 		case 'rank_count':
-			return ($row['order_val'] . ' ') . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.ratingMatches', 'indexed_search');
+			return $row['order_val'] . ' ' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.ratingMatches', 'indexed_search');
 			break;
 		case 'rank_first':
-			return ceil((\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((255 - $row['order_val']), 1, 255) / 255) * 100) . '%';
+			return ceil(\TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange((255 - $row['order_val']), 1, 255) / 255 * 100) . '%';
 			break;
 		case 'rank_flag':
 			if ($this->firstRow['order_val2']) {
 				// (3 MSB bit, 224 is highest value of order_val1 currently)
 				$base = $row['order_val1'] * 256;
 				// 15-3 MSB = 12
-				$freqNumber = ($row['order_val2'] / $this->firstRow['order_val2']) * pow(2, 12);
+				$freqNumber = $row['order_val2'] / $this->firstRow['order_val2'] * pow(2, 12);
 				$total = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($base + $freqNumber, 0, 32767);
-				return ceil((log($total) / log(32767)) * 100) . '%';
+				return ceil(log($total) / log(32767) * 100) . '%';
 			}
 			break;
 		case 'rank_freq':
 			$max = 10000;
 			$total = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($row['order_val'], 0, $max);
-			return ceil((log($total) / log($max)) * 100) . '%';
+			return ceil(log($total) / log($max) * 100) . '%';
 			break;
 		case 'crdate':
 			return $this->cObj->calcAge($GLOBALS['EXEC_TIME'] - $row['item_crdate'], 0);
@@ -505,16 +505,16 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				$output = $cObj->cObjGetSingle($this->settings['flagRendering'], $this->settings['flagRendering.']);
 			} else {
 				// ... otherwise, get flag from sys_language record:
-				$languageRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('flag, title', 'sys_language', ('uid=' . intval($row['sys_language_uid'])) . $GLOBALS['TSFE']->cObj->enableFields('sys_language'));
+				$languageRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('flag, title', 'sys_language', 'uid=' . intval($row['sys_language_uid']) . $GLOBALS['TSFE']->cObj->enableFields('sys_language'));
 				// Flag code:
 				$flag = $languageRow['flag'];
 				if ($flag) {
 					// FIXME not all flags from typo3/gfx/flags
 					// are available in media/flags/
-					$file = (substr(PATH_tslib, strlen(PATH_site)) . 'media/flags/flag_') . $flag;
+					$file = substr(PATH_tslib, strlen(PATH_site)) . 'media/flags/flag_' . $flag;
 					$imgInfo = @getimagesize((PATH_site . $file));
 					if (is_array($imgInfo)) {
-						$output = ((((((('<img src="' . $file) . '" ') . $imgInfo[3]) . ' title="') . htmlspecialchars($languageRow['title'])) . '" alt="') . htmlspecialchars($languageRow['title'])) . '" />';
+						$output = '<img src="' . $file . '" ' . $imgInfo[3] . ' title="' . htmlspecialchars($languageRow['title']) . '" alt="' . htmlspecialchars($languageRow['title']) . '" />';
 					}
 				}
 			}
@@ -534,7 +534,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	public function makeItemTypeIcon($imageType, $alt, $specRowConf) {
 		// Build compound key if item type is 0, iconRendering is not used
 		// and specConfs.[pid].pageIcon was set in TS
-		if ((($imageType === '0' && $specRowConf['_pid']) && is_array($specRowConf['pageIcon.'])) && !is_array($this->settings['iconRendering.'])) {
+		if ($imageType === '0' && $specRowConf['_pid'] && is_array($specRowConf['pageIcon.']) && !is_array($this->settings['iconRendering.'])) {
 			$imageType .= ':' . $specRowConf['_pid'];
 		}
 		if (!isset($this->iconFileNameCache[$imageType])) {
@@ -560,7 +560,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					if ($fullPath) {
 						$info = @getimagesize($fullPath);
 						$iconPath = substr($fullPath, strlen(PATH_site));
-						$this->iconFileNameCache[$imageType] = is_array($info) ? ((((('<img src="' . $iconPath) . '" ') . $info[3]) . ' title="') . htmlspecialchars($alt)) . '" alt="" />' : '';
+						$this->iconFileNameCache[$imageType] = is_array($info) ? '<img src="' . $iconPath . '" ' . $info[3] . ' title="' . htmlspecialchars($alt) . '" alt="" />' : '';
 					}
 				}
 			}
@@ -596,7 +596,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$output = $outputStr ? $outputStr : $markedSW;
 			$output = $GLOBALS['TSFE']->csConv($output, 'utf-8');
 		} else {
-			$output = ('<span class="noResume">' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.noResume', 'indexed_search')) . '</span>';
+			$output = '<span class="noResume">' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('result.noResume', 'indexed_search') . '</span>';
 		}
 		return $output;
 	}
@@ -616,9 +616,9 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 		foreach ($this->sWArr as $d) {
 			$swForReg[] = preg_quote($d['sword'], '/');
 		}
-		$regExString = ('(' . implode('|', $swForReg)) . ')';
+		$regExString = '(' . implode('|', $swForReg) . ')';
 		// Split and combine:
-		$parts = preg_split(('/' . $regExString) . '/i', (' ' . $str) . ' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
+		$parts = preg_split('/' . $regExString . '/i', ' ' . $str . ' ', 20000, PREG_SPLIT_DELIM_CAPTURE);
 		// Constants:
 		$summaryMax = 300;
 		$postPreLgd = 60;
@@ -650,7 +650,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					}
 				} else {
 					if ($strLen > $postPreLgd * 2) {
-						$output[$k] = (preg_replace('/[[:space:]][^[:space:]]+$/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider) . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
+						$output[$k] = preg_replace('/[[:space:]][^[:space:]]+$/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], ($postPreLgd - $postPreLgd_offset))) . $divider . preg_replace('/^[^[:space:]]+[[:space:]]/', '', $GLOBALS['TSFE']->csConvObj->crop('utf-8', $parts[$k], -($postPreLgd - $postPreLgd_offset)));
 					}
 				}
 				$summaryLgd += $GLOBALS['TSFE']->csConvObj->strlen('utf-8', $output[$k]);
@@ -662,7 +662,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 				}
 			} else {
 				$summaryLgd += $GLOBALS['TSFE']->csConvObj->strlen('utf-8', $strP);
-				$output[$k] = ('<strong class="tx-indexedsearch-redMarkup">' . htmlspecialchars($parts[$k])) . '</strong>';
+				$output[$k] = '<strong class="tx-indexedsearch-redMarkup">' . htmlspecialchars($parts[$k]) . '</strong>';
 			}
 		}
 		// Return result:
@@ -984,12 +984,12 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			$labelLevel2 = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('sections.Rl2', 'indexed_search');
 			foreach ($firstLevelMenu as $firstLevelKey => $menuItem) {
 				if (!$menuItem['nav_hide']) {
-					$allOptions['rl1_' . $menuItem['uid']] = trim(($labelLevel1 . ' ') . $menuItem['title']);
+					$allOptions['rl1_' . $menuItem['uid']] = trim($labelLevel1 . ' ' . $menuItem['title']);
 					if ($this->settings['displayLevel2Sections']) {
 						$secondLevelMenu = $this->getMenuOfPages($menuItem['uid']);
 						foreach ($secondLevelMenu as $secondLevelKey => $menuItemLevel2) {
 							if (!$menuItemLevel2['nav_hide']) {
-								$allOptions['rl2_' . $menuItemLevel2['uid']] = trim(($labelLevel2 . ' ') . $menuItemLevel2['title']);
+								$allOptions['rl2_' . $menuItemLevel2['uid']] = trim($labelLevel2 . ' ' . $menuItemLevel2['title']);
 							} else {
 								unset($secondLevelMenu[$secondLevelKey]);
 							}
@@ -1023,7 +1023,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 			// add an additional index configuration
 			if ($this->settings['defaultFreeIndexUidList']) {
 				$uidList = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->settings['defaultFreeIndexUidList']);
-				$indexCfgRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'index_config', (('uid IN (' . implode(',', $uidList)) . ')') . $GLOBALS['TSFE']->cObj->enableFields('index_config'), '', '', '', 'uid');
+				$indexCfgRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'index_config', 'uid IN (' . implode(',', $uidList) . ')' . $GLOBALS['TSFE']->cObj->enableFields('index_config'), '', '', '', 'uid');
 				foreach ($uidList as $uidValue) {
 					if (is_array($indexCfgRecords[$uidValue])) {
 						$allOptions[$uidValue] = $indexCfgRecords[$uidValue]['title'];
@@ -1175,15 +1175,15 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					$additionalParams = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $urlParameters);
 				}
 			}
-			$uri = ((($scheme . $firstDomain) . '/index.php?id=') . $pageUid) . $additionalParams;
+			$uri = $scheme . $firstDomain . '/index.php?id=' . $pageUid . $additionalParams;
 			if ($target = $this->settings['detectDomainRecords.']['target']) {
-				$target = (' target="' . $target) . '"';
+				$target = ' target="' . $target . '"';
 			}
 		} else {
 			$uriBuilder = $this->controllerContext->getUriBuilder();
 			$uri = $uriBuilder->setTargetPageUid($pageUid)->setTargetPageType($row['data_page_type'])->setUseCacheHash(TRUE)->setArguments($urlParameters)->build();
 		}
-		return ((((('<a href="' . htmlspecialchars($uri)) . '"') . $target) . '>') . htmlspecialchars($linkText)) . '</a>';
+		return '<a href="' . htmlspecialchars($uri) . '"' . $target . '>' . htmlspecialchars($linkText) . '</a>';
 	}
 
 	/**
@@ -1195,7 +1195,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	protected function getMenuOfPages($pageUid) {
 		if ($this->settings['displayLevelxAllTypes']) {
 			$menu = array();
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title,uid', 'pages', ('pid=' . intval($pageUid)) . $GLOBALS['TSFE']->cObj->enableFields('pages'), '', 'sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('title,uid', 'pages', 'pid=' . intval($pageUid) . $GLOBALS['TSFE']->cObj->enableFields('pages'), '', 'sorting');
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$menu[$row['uid']] = $GLOBALS['TSFE']->sys_page->getPageOverlay($row);
 			}
@@ -1214,7 +1214,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @return string Path
 	 */
 	protected function getPathFromPageId($id, $pathMP = '') {
-		$identStr = ($id . '|') . $pathMP;
+		$identStr = $id . '|' . $pathMP;
 		if (!isset($this->pathCache[$identStr])) {
 			$this->requiredFrontendUsergroups[$id] = array();
 			$this->domainRecords[$id] = array();
@@ -1240,7 +1240,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 					if ($v['uid'] == $GLOBALS['TSFE']->config['rootLine'][0]['uid']) {
 						break;
 					}
-					$path = ('/' . $v['title']) . $path;
+					$path = '/' . $v['title'] . $path;
 				}
 			}
 			$this->pathCache[$identStr] = $path;
@@ -1255,7 +1255,7 @@ class SearchController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 * @return string Domain name
 	 */
 	protected function getFirstSysDomainRecordForPage($id) {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('domainName', 'sys_domain', ('pid=' . intval($id)) . $GLOBALS['TSFE']->cObj->enableFields('sys_domain'), '', 'sorting');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('domainName', 'sys_domain', 'pid=' . intval($id) . $GLOBALS['TSFE']->cObj->enableFields('sys_domain'), '', 'sorting');
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		return rtrim($row['domainName'], '/');
 	}

@@ -254,7 +254,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 					if ($isNumericSearchFilter && intval($rootlineElement['uid']) === intval($searchFilter)) {
 						$text = str_replace('$1', $refNode->getText(), $replacement);
 					} else {
-						$text = preg_replace(('/(' . $searchFilter) . ')/i', $replacement, $refNode->getText());
+						$text = preg_replace('/(' . $searchFilter . ')/i', $replacement, $refNode->getText());
 					}
 					$refNode->setText($text, $refNode->getTextSourceField(), $refNode->getPrefix(), $refNode->getSuffix());
 					/** @var $childCollection \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNodeCollection */
@@ -378,22 +378,22 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 * @return string
 	 */
 	protected function getWhereClause($id, $searchFilter = '') {
-		$where = ($GLOBALS['BE_USER']->getPagePermsClause(1) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages')) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages');
+		$where = $GLOBALS['BE_USER']->getPagePermsClause(1) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages');
 		if (is_numeric($id) && $id >= 0) {
 			$where .= ' AND pid= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(intval($id), 'pages');
 		}
 		if ($searchFilter !== '') {
 			if (is_numeric($searchFilter) && $searchFilter > 0) {
-				$searchWhere .= ('uid = ' . intval($searchFilter)) . ' OR ';
+				$searchWhere .= 'uid = ' . intval($searchFilter) . ' OR ';
 			}
-			$searchFilter = $GLOBALS['TYPO3_DB']->fullQuoteStr(('%' . $searchFilter) . '%', 'pages');
+			$searchFilter = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . $searchFilter . '%', 'pages');
 			$useNavTitle = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showNavTitle');
 			if ($useNavTitle) {
-				$searchWhere .= ((('(nav_title LIKE ' . $searchFilter) . ' OR (nav_title = "" AND title LIKE ') . $searchFilter) . '))';
+				$searchWhere .= '(nav_title LIKE ' . $searchFilter . ' OR (nav_title = "" AND title LIKE ' . $searchFilter . '))';
 			} else {
 				$searchWhere .= 'title LIKE ' . $searchFilter;
 			}
-			$where .= (' AND (' . $searchWhere) . ')';
+			$where .= ' AND (' . $searchWhere . ')';
 		}
 		return $where;
 	}

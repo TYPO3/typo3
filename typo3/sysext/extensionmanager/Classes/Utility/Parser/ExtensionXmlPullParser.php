@@ -184,7 +184,7 @@ class ExtensionXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\
 		if (!$this->objXml->isEmptyElement) {
 			$value = '';
 			while ($this->objXml->read()) {
-				if ((($this->objXml->nodeType == \XMLReader::TEXT || $this->objXml->nodeType == \XMLReader::CDATA) || $this->objXml->nodeType == \XMLReader::WHITESPACE) || $this->objXml->nodeType == \XMLReader::SIGNIFICANT_WHITESPACE) {
+				if ($this->objXml->nodeType == \XMLReader::TEXT || $this->objXml->nodeType == \XMLReader::CDATA || $this->objXml->nodeType == \XMLReader::WHITESPACE || $this->objXml->nodeType == \XMLReader::SIGNIFICANT_WHITESPACE) {
 					$value .= $this->objXml->value;
 				} else {
 					if ($this->objXml->nodeType == \XMLReader::END_ELEMENT && $this->objXml->name === $elementName) {

@@ -85,7 +85,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 	public function set($namespace, $key, $value) {
 		$this->validateNamespace($namespace);
 		$serializedValue = serialize($value);
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_registry', (('entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry')) . ' AND entry_key = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'sys_registry', 'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry') . ' AND entry_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'));
 		if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) < 1) {
 			$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_registry', array(
 				'entry_namespace' => $namespace,
@@ -93,7 +93,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 				'entry_value' => $serializedValue
 			));
 		} else {
-			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_registry', (('entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry')) . ' AND entry_key = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'), array(
+			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_registry', 'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry') . ' AND entry_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'), array(
 				'entry_value' => $serializedValue
 			));
 		}
@@ -110,7 +110,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function remove($namespace, $key) {
 		$this->validateNamespace($namespace);
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_registry', (('entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry')) . ' AND entry_key = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'));
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_registry', 'entry_namespace = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($namespace, 'sys_registry') . ' AND entry_key = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($key, 'sys_registry'));
 		unset($this->entries[$namespace][$key]);
 	}
 

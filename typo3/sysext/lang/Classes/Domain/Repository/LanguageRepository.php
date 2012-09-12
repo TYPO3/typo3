@@ -116,14 +116,16 @@ class LanguageRepository {
 				);
 			}
 
-			usort($this->languages, function($a, $b) {
-				/** @var $a \TYPO3\CMS\Lang\Domain\Model\Language */
-				/** @var $b \TYPO3\CMS\Lang\Domain\Model\Language */
-				if ($a->getLanguage() == $b->getLanguage()) {
-					return 0;
-				}
-				return $a->getLanguage() < $b->getLanguage() ? -1 : 1;
-			});
+			/*
+             * usort($this->languages, function($a, $b) {
+			 * 	/\** @var $a \TYPO3\CMS\Lang\Domain\Model\Language *\/
+			 * 	/\** @var $b \TYPO3\CMS\Lang\Domain\Model\Language *\/
+			 * 	if ($a->getLanguage() == $b->getLanguage()) {
+			 * 		return 0;
+			 * 	}
+			 * 	return $a->getLanguage() < $b->getLanguage() ? -1 : 1;
+			 * });
+             */
 		}
 
 		return $this->languages;

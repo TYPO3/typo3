@@ -137,7 +137,7 @@ abstract class AbstractMessage {
 		if (!empty($this->title)) {
 			$title = ' - ' . $this->title;
 		}
-		return (($severities[$this->severity] . $title) . ': ') . $this->message;
+		return $severities[$this->severity] . $title . ': ' . $this->message;
 	}
 
 }

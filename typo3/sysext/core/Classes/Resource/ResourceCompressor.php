@@ -70,7 +70,7 @@ class ResourceCompressor {
 		// if enabled, we check whether we should auto-create the .htaccess file
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['generateApacheHtaccess']) {
 			// check whether .htaccess exists
-			$htaccessPath = (PATH_site . $this->targetDirectory) . '.htaccess';
+			$htaccessPath = PATH_site . $this->targetDirectory . '.htaccess';
 			if (!file_exists($htaccessPath)) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($htaccessPath, $this->htaccessTemplate);
 			}
@@ -285,9 +285,9 @@ class ResourceCompressor {
 				$filename = $filesToInclude[$key];
 			}
 			$filepath = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($this->rootPath . $filename);
-			$unique .= ($filename . filemtime($filepath)) . filesize($filepath);
+			$unique .= $filename . filemtime($filepath) . filesize($filepath);
 		}
-		$targetFile = ((($this->targetDirectory . 'merged-') . md5($unique)) . '.') . $type;
+		$targetFile = $this->targetDirectory . 'merged-' . md5($unique) . '.' . $type;
 		// if the file doesn't already exist, we create it
 		if (!file_exists((PATH_site . $targetFile))) {
 			$concatenated = '';
@@ -345,11 +345,11 @@ class ResourceCompressor {
 	public function compressCssFile($filename) {
 		// generate the unique name of the file
 		$filenameAbsolute = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($this->rootPath . $this->getFilenameFromMainDir($filename));
-		$unique = ($filenameAbsolute . filemtime($filenameAbsolute)) . filesize($filenameAbsolute);
+		$unique = $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
 		$pathinfo = pathinfo($filename);
-		$targetFile = ((($this->targetDirectory . $pathinfo['filename']) . '-') . md5($unique)) . '.css';
+		$targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.css';
 		// only create it, if it doesn't exist, yet
-		if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists(((PATH_site . $targetFile) . '.gzip'))) {
+		if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists((PATH_site . $targetFile . '.gzip'))) {
 			$contents = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($filenameAbsolute);
 			// Perform some safe CSS optimizations.
 			$contents = str_replace('', '', $contents);
@@ -426,8 +426,8 @@ class ResourceCompressor {
 			$matches[6] = preg_replace('/;?\\}/S', '}
 ', $matches[6]);
 			// Add a touch of formatting.
-			return ('
-/*T2\\*/' . $matches[6]) . '
+			return '
+/*T2\\*/' . $matches[6] . '
 /*T2E*/
 ';
 		} elseif (isset($matches[8])) {
@@ -479,11 +479,11 @@ class ResourceCompressor {
 	public function compressJsFile($filename) {
 		// generate the unique name of the file
 		$filenameAbsolute = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($this->rootPath . $this->getFilenameFromMainDir($filename));
-		$unique = ($filenameAbsolute . filemtime($filenameAbsolute)) . filesize($filenameAbsolute);
+		$unique = $filenameAbsolute . filemtime($filenameAbsolute) . filesize($filenameAbsolute);
 		$pathinfo = pathinfo($filename);
-		$targetFile = ((($this->targetDirectory . $pathinfo['filename']) . '-') . md5($unique)) . '.js';
+		$targetFile = $this->targetDirectory . $pathinfo['filename'] . '-' . md5($unique) . '.js';
 		// only create it, if it doesn't exist, yet
-		if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists(((PATH_site . $targetFile) . '.gzip'))) {
+		if (!file_exists((PATH_site . $targetFile)) || $this->createGzipped && !file_exists((PATH_site . $targetFile . '.gzip'))) {
 			$contents = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($filenameAbsolute);
 			$this->writeFileAndCompressed($targetFile, $contents);
 		}
@@ -555,7 +555,7 @@ class ResourceCompressor {
 	 */
 	protected function cssFixRelativeUrlPaths($contents, $oldDir) {
 		$mainDir = TYPO3_MODE === 'BE' ? TYPO3_mainDir : '';
-		$newDir = ('../../' . $mainDir) . $oldDir;
+		$newDir = '../../' . $mainDir . $oldDir;
 		// Replace "url()" paths
 		if (stripos($contents, 'url') !== FALSE) {
 			$regex = '/url(\\(\\s*["\']?(?!\\/)([^"\']+)["\']?\\s*\\))/iU';
@@ -589,7 +589,7 @@ class ResourceCompressor {
 			// we must not rewrite paths containing ":" or "url(", e.g. data URIs (see RFC 2397)
 			if (strpos($match, ':') === FALSE && !preg_match('/url\\s*\\(/i', $match)) {
 				$newPath = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($newDir . $match);
-				$replacements[$matches[1][$matchCount]] = ($wrap[0] . $newPath) . $wrap[1];
+				$replacements[$matches[1][$matchCount]] = $wrap[0] . $newPath . $wrap[1];
 			}
 		}
 		// replace URL paths in content
@@ -608,9 +608,9 @@ class ResourceCompressor {
 	 */
 	protected function cssFixStatements($contents) {
 		$matches = array();
-		$comment = (LF . '/* moved by compressor */') . LF;
+		$comment = LF . '/* moved by compressor */' . LF;
 		// nothing to do, so just return contents
-		if ((stripos($contents, '@charset') === FALSE && stripos($contents, '@import') === FALSE) && stripos($contents, '@namespace') === FALSE) {
+		if (stripos($contents, '@charset') === FALSE && stripos($contents, '@import') === FALSE && stripos($contents, '@namespace') === FALSE) {
 			return $contents;
 		}
 		$regex = '/@(charset|import|namespace)\\s*(url)?\\s*\\(?\\s*["\']?[^"\']+["\']?\\s*\\)?.*;/i';
@@ -619,7 +619,7 @@ class ResourceCompressor {
 			// remove existing statements
 			$contents = str_replace($matches[0], '', $contents);
 			// add statements to the top of contents in the order they occur in original file
-			$contents = (($comment . implode($comment, $matches[0])) . LF) . $contents;
+			$contents = $comment . implode($comment, $matches[0]) . LF . $contents;
 		}
 		return $contents;
 	}
@@ -636,7 +636,7 @@ class ResourceCompressor {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $contents);
 		if ($this->createGzipped) {
 			// create compressed version
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile((PATH_site . $filename) . '.gzip', gzencode($contents, $this->gzipCompressionLevel));
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename . '.gzip', gzencode($contents, $this->gzipCompressionLevel));
 		}
 	}
 
@@ -664,7 +664,7 @@ class ResourceCompressor {
 	 */
 	protected function retrieveExternalFile($url) {
 		$externalContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url);
-		$filename = ($this->targetDirectory . 'external-') . md5($url);
+		$filename = $this->targetDirectory . 'external-' . md5($url);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . $filename, $externalContent);
 		return $filename;
 	}

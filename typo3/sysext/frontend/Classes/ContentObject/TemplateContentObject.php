@@ -57,7 +57,7 @@ class TemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCo
 		$content = $this->cObj->cObjGetSingle($conf['template'], $conf['template.'], 'template');
 		$workOnSubpart = isset($conf['workOnSubpart.']) ? $this->cObj->stdWrap($conf['workOnSubpart'], $conf['workOnSubpart.']) : $conf['workOnSubpart'];
 		if ($workOnSubpart) {
-			$content = $this->cObj->getSubpart($content, ($PRE . $workOnSubpart) . $POST);
+			$content = $this->cObj->getSubpart($content, $PRE . $workOnSubpart . $POST);
 		}
 		// Fixing all relative paths found:
 		if ($conf['relPathPrefix']) {
@@ -72,7 +72,7 @@ class TemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCo
 				if (is_array($conf['marks.'])) {
 					foreach ($conf['marks.'] as $theKey => $theValue) {
 						if (!strstr($theKey, '.')) {
-							$content = str_replace(($PRE . $theKey) . $POST, $this->cObj->cObjGetSingle($theValue, $conf['marks.'][$theKey . '.'], 'marks.' . $theKey), $content);
+							$content = str_replace($PRE . $theKey . $POST, $this->cObj->cObjGetSingle($theValue, $conf['marks.'][$theKey . '.'], 'marks.' . $theKey), $content);
 						}
 					}
 				}
@@ -80,10 +80,10 @@ class TemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCo
 				if (is_array($conf['subparts.'])) {
 					foreach ($conf['subparts.'] as $theKey => $theValue) {
 						if (!strstr($theKey, '.')) {
-							$subpart = $this->cObj->getSubpart($content, ($PRE . $theKey) . $POST);
+							$subpart = $this->cObj->getSubpart($content, $PRE . $theKey . $POST);
 							if ($subpart) {
 								$this->cObj->setCurrentVal($subpart);
-								$content = $this->cObj->substituteSubpart($content, ($PRE . $theKey) . $POST, $this->cObj->cObjGetSingle($theValue, $conf['subparts.'][$theKey . '.'], 'subparts.' . $theKey), TRUE);
+								$content = $this->cObj->substituteSubpart($content, $PRE . $theKey . $POST, $this->cObj->cObjGetSingle($theValue, $conf['subparts.'][$theKey . '.'], 'subparts.' . $theKey), TRUE);
 							}
 						}
 					}
@@ -92,10 +92,10 @@ class TemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCo
 				if (is_array($conf['wraps.'])) {
 					foreach ($conf['wraps.'] as $theKey => $theValue) {
 						if (!strstr($theKey, '.')) {
-							$subpart = $this->cObj->getSubpart($content, ($PRE . $theKey) . $POST);
+							$subpart = $this->cObj->getSubpart($content, $PRE . $theKey . $POST);
 							if ($subpart) {
 								$this->cObj->setCurrentVal($subpart);
-								$content = $this->cObj->substituteSubpart($content, ($PRE . $theKey) . $POST, explode('|', $this->cObj->cObjGetSingle($theValue, $conf['wraps.'][$theKey . '.'], 'wraps.' . $theKey)), TRUE);
+								$content = $this->cObj->substituteSubpart($content, $PRE . $theKey . $POST, explode('|', $this->cObj->cObjGetSingle($theValue, $conf['wraps.'][$theKey . '.'], 'wraps.' . $theKey)), TRUE);
 							}
 						}
 					}
@@ -106,7 +106,7 @@ class TemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCo
 				if (is_array($conf['subparts.'])) {
 					foreach ($conf['subparts.'] as $theKey => $theValue) {
 						if (!strstr($theKey, '.')) {
-							$subpart = $this->cObj->getSubpart($content, ($PRE . $theKey) . $POST);
+							$subpart = $this->cObj->getSubpart($content, $PRE . $theKey . $POST);
 							if ($subpart) {
 								$GLOBALS['TSFE']->register['SUBPART_' . $theKey] = $subpart;
 								$subparts[$theKey]['name'] = $theValue;
@@ -139,19 +139,19 @@ class TemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCo
 					// Set current with the content of the subpart...
 					$this->cObj->data[$this->cObj->currentValKey] = $GLOBALS['TSFE']->register['SUBPART_' . $theKey];
 					// Get subpart cObject and substitute it!
-					$subpartArray[($PRE . $theKey) . $POST] = $this->cObj->cObjGetSingle($theValue['name'], $theValue['conf'], 'subparts.' . $theKey);
+					$subpartArray[$PRE . $theKey . $POST] = $this->cObj->cObjGetSingle($theValue['name'], $theValue['conf'], 'subparts.' . $theKey);
 				}
 				// Reset current to empty
 				$this->cObj->data[$this->cObj->currentValKey] = '';
 				// Getting marks
 				$markerArray = array();
 				foreach ($marks as $theKey => $theValue) {
-					$markerArray[($PRE . $theKey) . $POST] = $this->cObj->cObjGetSingle($theValue['name'], $theValue['conf'], 'marks.' . $theKey);
+					$markerArray[$PRE . $theKey . $POST] = $this->cObj->cObjGetSingle($theValue['name'], $theValue['conf'], 'marks.' . $theKey);
 				}
 				// Getting wraps
 				$subpartWraps = array();
 				foreach ($wraps as $theKey => $theValue) {
-					$subpartWraps[($PRE . $theKey) . $POST] = explode('|', $this->cObj->cObjGetSingle($theValue['name'], $theValue['conf'], 'wraps.' . $theKey));
+					$subpartWraps[$PRE . $theKey . $POST] = explode('|', $this->cObj->cObjGetSingle($theValue['name'], $theValue['conf'], 'wraps.' . $theKey));
 				}
 				// Substitution
 				$substMarksSeparately = isset($conf['substMarksSeparately.']) ? $this->cObj->stdWrap($conf['substMarksSeparately'], $conf['substMarksSeparately.']) : $conf['substMarksSeparately'];

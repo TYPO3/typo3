@@ -98,7 +98,7 @@ class ReferenceIndex {
 			'addedNodes' => 0
 		);
 		// Get current index from Database:
-		$currentRels = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', (('tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex')) . ' AND recuid=') . intval($uid), '', '', '', 'hash');
+		$currentRels = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'sys_refindex') . ' AND recuid=' . intval($uid), '', '', '', 'hash');
 		// First, test to see if the record exists (including deleted-flagged)
 		if (\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($table, 'uid=' . intval($uid), 'uid')) {
 			// Then, get relations:
@@ -106,7 +106,7 @@ class ReferenceIndex {
 			if (is_array($relations)) {
 				// Traverse the generated index:
 				foreach ($relations as $k => $datRec) {
-					$relations[$k]['hash'] = md5((implode('///', $relations[$k]) . '///') . $this->hashVersion);
+					$relations[$k]['hash'] = md5(implode('///', $relations[$k]) . '///' . $this->hashVersion);
 					// First, check if already indexed and if so, unset that row (so in the end we know which rows to remove!)
 					if (isset($currentRels[$relations[$k]['hash']])) {
 						unset($currentRels[$relations[$k]['hash']]);
@@ -133,7 +133,7 @@ class ReferenceIndex {
 				$result['deletedNodes'] = count($hashList);
 				$result['deletedNodes_hashList'] = implode(',', $hashList);
 				if (!$testOnly) {
-					$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex', ('hash IN (' . implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($hashList, 'sys_refindex'))) . ')');
+					$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex', 'hash IN (' . implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($hashList, 'sys_refindex')) . ')');
 				}
 			}
 		}
@@ -204,7 +204,7 @@ class ReferenceIndex {
 				// Word indexing:
 				\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $field => $conf) {
-					if ((\TYPO3\CMS\Core\Utility\GeneralUtility::inList('input,text', $conf['config']['type']) && strcmp($record[$field], '')) && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($record[$field])) {
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('input,text', $conf['config']['type']) && strcmp($record[$field], '') && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($record[$field])) {
 						$this->words_strings[$field] = $record[$field];
 					}
 				}
@@ -350,7 +350,7 @@ class ReferenceIndex {
 		$nonFields = explode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,pid');
 		$outRow = array();
 		foreach ($row as $field => $value) {
-			if ((!in_array($field, $nonFields) && is_array($GLOBALS['TCA'][$table]['columns'][$field])) && (!$onlyField || $onlyField === $field)) {
+			if (!in_array($field, $nonFields) && is_array($GLOBALS['TCA'][$table]['columns'][$field]) && (!$onlyField || $onlyField === $field)) {
 				$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
 				// Add files
 				if ($result = $this->getRelations_procFiles($value, $conf, $uid)) {
@@ -406,7 +406,7 @@ class ReferenceIndex {
 							}
 						}
 					}
-					if (((is_array($outRow[$field]['softrefs']) && count($outRow[$field]['softrefs'])) && strcmp($value, $softRefValue)) && strstr($softRefValue, '{softref:')) {
+					if (is_array($outRow[$field]['softrefs']) && count($outRow[$field]['softrefs']) && strcmp($value, $softRefValue) && strstr($softRefValue, '{softref:')) {
 						$outRow[$field]['softrefs']['tokenizedContent'] = $softRefValue;
 					}
 				}
@@ -494,7 +494,7 @@ class ReferenceIndex {
 			$newValueFiles = array();
 			foreach ($theFileValues as $file) {
 				if (trim($file)) {
-					$realFile = ($dest . '/') . trim($file);
+					$realFile = $dest . '/' . trim($file);
 					$newValueFiles[] = array(
 						'filename' => basename($file),
 						'ID' => md5($realFile),
@@ -521,7 +521,7 @@ class ReferenceIndex {
 	public function getRelations_procDB($value, $conf, $uid, $table = '', $field = '') {
 		// DB record lists:
 		if ($this->isReferenceField($conf)) {
-			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : ($conf['foreign_table'] . ',') . $conf['neg_foreign_table'];
+			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
 			if ($conf['MM_opposite_field']) {
 				return array();
 			}
@@ -529,13 +529,13 @@ class ReferenceIndex {
 			$dbAnalysis->start($value, $allowedTables, $conf['MM'], $uid, $table, $conf);
 			return $dbAnalysis->itemArray;
 		} elseif ($conf['type'] == 'inline' && $conf['foreign_table'] == 'sys_file_reference') {
-			$files = (array) $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid_local', 'sys_file_reference', ((((('tablenames=\'' . $table) . '\' AND fieldname=\'') . $field) . '\' AND uid_foreign=') . $uid));
+			$files = (array) $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid_local', 'sys_file_reference', ('tablenames=\'' . $table . '\' AND fieldname=\'' . $field . '\' AND uid_foreign=' . $uid));
 			$fileArray = array('0' => array());
 			foreach ($files as $fileUid) {
 				$fileArray[0][] = array('table' => 'sys_file', 'id' => $fileUid);
 			}
 			return $fileArray;
-		} elseif (($conf['type'] == 'input' && isset($conf['wizards']['link'])) && trim($value)) {
+		} elseif ($conf['type'] == 'input' && isset($conf['wizards']['link']) && trim($value)) {
 			try {
 				$file = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($value);
 			} catch (\Exception $e) {
@@ -651,16 +651,16 @@ class ReferenceIndex {
 								$tce->process_datamap();
 								// Return errors if any:
 								if (count($tce->errorLog)) {
-									return (LF . 'TCEmain:') . implode((LF . 'TCEmain:'), $tce->errorLog);
+									return LF . 'TCEmain:' . implode((LF . 'TCEmain:'), $tce->errorLog);
 								}
 							}
 						}
 					}
 				} else {
-					return ('ERROR: Tablename "' . $refRec['tablename']) . '" was not in TCA!';
+					return 'ERROR: Tablename "' . $refRec['tablename'] . '" was not in TCA!';
 				}
 			} else {
-				return ('ERROR: No reference record with hash="' . $hash) . '" was found!';
+				return 'ERROR: No reference record with hash="' . $hash . '" was found!';
 			}
 		} else {
 			return 'ERROR: BE_USER object is not admin OR not in workspace 0 (Live)';
@@ -690,7 +690,7 @@ class ReferenceIndex {
 			// Traverse and compile new list of records:
 			$saveValue = array();
 			foreach ($itemArray as $pair) {
-				$saveValue[] = ($pair['table'] . '_') . $pair['id'];
+				$saveValue[] = $pair['table'] . '_' . $pair['id'];
 			}
 			// Set in data array:
 			if ($flexpointer) {
@@ -701,7 +701,7 @@ class ReferenceIndex {
 				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',', $saveValue);
 			}
 		} else {
-			return ((((((((('ERROR: table:id pair "' . $refRec['ref_table']) . ':') . $refRec['ref_uid']) . '" did not match that of the record ("') . $itemArray[$refRec['sorting']]['table']) . ':') . $itemArray[$refRec['sorting']]['id']) . '") in sorting index "') . $refRec['sorting']) . '"';
+			return 'ERROR: table:id pair "' . $refRec['ref_table'] . ':' . $refRec['ref_uid'] . '" did not match that of the record ("' . $itemArray[$refRec['sorting']]['table'] . ':' . $itemArray[$refRec['sorting']]['id'] . '") in sorting index "' . $refRec['sorting'] . '"';
 		}
 	}
 
@@ -739,7 +739,7 @@ class ReferenceIndex {
 				$dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',', $saveValue);
 			}
 		} else {
-			return ((((((('ERROR: either "' . $refRec['ref_table']) . '" was not "_FILE" or file PATH_site+"') . $refRec['ref_string']) . '" did not match that of the record ("') . $itemArray[$refRec['sorting']]['ID_absFile']) . '") in sorting index "') . $refRec['sorting']) . '"';
+			return 'ERROR: either "' . $refRec['ref_table'] . '" was not "_FILE" or file PATH_site+"' . $refRec['ref_string'] . '" did not match that of the record ("' . $itemArray[$refRec['sorting']]['ID_absFile'] . '") in sorting index "' . $refRec['sorting'] . '"';
 		}
 	}
 
@@ -761,7 +761,7 @@ class ReferenceIndex {
 			// Traverse softreferences and replace in tokenized content to rebuild it with new value inside:
 			foreach ($softref['keys'] as $sfIndexes) {
 				foreach ($sfIndexes as $data) {
-					$softref['tokenizedContent'] = str_replace(('{softref:' . $data['subst']['tokenID']) . '}', $data['subst']['tokenValue'], $softref['tokenizedContent']);
+					$softref['tokenizedContent'] = str_replace('{softref:' . $data['subst']['tokenID'] . '}', $data['subst']['tokenValue'], $softref['tokenizedContent']);
 				}
 			}
 			// Set in data array:
@@ -777,7 +777,7 @@ class ReferenceIndex {
 				return 'ERROR: After substituting all found soft references there were still soft reference tokens in the text. (theoretically this does not have to be an error if the string "{softref:" happens to be in the field for another reason.)';
 			}
 		} else {
-			return ((('ERROR: Soft reference parser key "' . $refRec['softref_key']) . '" or the index "') . $refRec['softref_id']) . '" was not found.';
+			return 'ERROR: Soft reference parser key "' . $refRec['softref_key'] . '" or the index "' . $refRec['softref_id'] . '" was not found.';
 		}
 	}
 
@@ -794,7 +794,7 @@ class ReferenceIndex {
 	 * @todo Define visibility
 	 */
 	public function isReferenceField($conf) {
-		return $conf['type'] == 'group' && $conf['internal_type'] == 'db' || (($conf['type'] == 'select' || $conf['type'] == 'inline') && $conf['foreign_table']) && $conf['foreign_table'] !== 'sys_file_reference';
+		return $conf['type'] == 'group' && $conf['internal_type'] == 'db' || ($conf['type'] == 'select' || $conf['type'] == 'inline') && $conf['foreign_table'] && $conf['foreign_table'] !== 'sys_file_reference';
 	}
 
 	/**
@@ -837,7 +837,7 @@ class ReferenceIndex {
 		$tableCount = 0;
 		$headerContent = $testOnly ? 'Reference Index being TESTED (nothing written, use "-e" to update)' : 'Reference Index being Updated';
 		if ($cli_echo) {
-			echo (((('*******************************************' . LF) . $headerContent) . LF) . '*******************************************') . LF;
+			echo '*******************************************' . LF . $headerContent . LF . '*******************************************' . LF;
 		}
 		// Traverse all tables:
 		foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
@@ -857,7 +857,7 @@ class ReferenceIndex {
 				$uidList[] = $recdat['uid'];
 				$recCount++;
 				if ($result['addedNodes'] || $result['deletedNodes']) {
-					$Err = ((((((('Record ' . $tableName) . ':') . $recdat['uid']) . ' had ') . $result['addedNodes']) . ' added indexes and ') . $result['deletedNodes']) . ' deleted indexes';
+					$Err = 'Record ' . $tableName . ':' . $recdat['uid'] . ' had ' . $result['addedNodes'] . ' added indexes and ' . $result['deletedNodes'] . ' deleted indexes';
 					$errors[] = $Err;
 					if ($cli_echo) {
 						echo $Err . LF;
@@ -865,10 +865,10 @@ class ReferenceIndex {
 				}
 			}
 			// Searching lost indexes for this table:
-			$where = ((('tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_refindex')) . ' AND recuid NOT IN (') . implode(',', $uidList)) . ')';
+			$where = 'tablename=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($tableName, 'sys_refindex') . ' AND recuid NOT IN (' . implode(',', $uidList) . ')';
 			$lostIndexes = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('hash', 'sys_refindex', $where);
 			if (count($lostIndexes)) {
-				$Err = ((('Table ' . $tableName) . ' has ') . count($lostIndexes)) . ' lost indexes which are now deleted';
+				$Err = 'Table ' . $tableName . ' has ' . count($lostIndexes) . ' lost indexes which are now deleted';
 				$errors[] = $Err;
 				if ($cli_echo) {
 					echo $Err . LF;
@@ -879,10 +879,10 @@ class ReferenceIndex {
 			}
 		}
 		// Searching lost indexes for non-existing tables:
-		$where = ('tablename NOT IN (' . implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($tableNames, 'sys_refindex'))) . ')';
+		$where = 'tablename NOT IN (' . implode(',', $GLOBALS['TYPO3_DB']->fullQuoteArray($tableNames, 'sys_refindex')) . ')';
 		$lostTables = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('hash', 'sys_refindex', $where);
 		if (count($lostTables)) {
-			$Err = ('Index table hosted ' . count($lostTables)) . ' indexes for non-existing tables, now removed';
+			$Err = 'Index table hosted ' . count($lostTables) . ' indexes for non-existing tables, now removed';
 			$errors[] = $Err;
 			if ($cli_echo) {
 				echo $Err . LF;
@@ -891,10 +891,10 @@ class ReferenceIndex {
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery('sys_refindex', $where);
 			}
 		}
-		$testedHowMuch = ((($recCount . ' records from ') . $tableCount) . ' tables were checked/updated.') . LF;
+		$testedHowMuch = $recCount . ' records from ' . $tableCount . ' tables were checked/updated.' . LF;
 		$bodyContent = $testedHowMuch . (count($errors) ? implode(LF, $errors) : 'Index Integrity was perfect!');
 		if ($cli_echo) {
-			echo ($testedHowMuch . (count($errors) ? 'Updates: ' . count($errors) : 'Index Integrity was perfect!')) . LF;
+			echo $testedHowMuch . (count($errors) ? 'Updates: ' . count($errors) : 'Index Integrity was perfect!') . LF;
 		}
 		if (!$testOnly) {
 			$registry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Registry');

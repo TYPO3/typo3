@@ -42,7 +42,7 @@ class EnableFileService {
 	static protected function checkFirstInstallFile() {
 		$quickstartFile = PATH_site . self::QUICKSTART_FILE_PATH;
 		// If typo3conf/FIRST_INSTALL is present and can be deleted, automatically create typo3conf/ENABLE_INSTALL_TOOL
-		if ((is_file($quickstartFile) && is_writeable($quickstartFile)) && unlink($quickstartFile)) {
+		if (is_file($quickstartFile) && is_writeable($quickstartFile) && unlink($quickstartFile)) {
 			self::createInstallToolEnableFile();
 		}
 	}

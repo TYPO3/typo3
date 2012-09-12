@@ -69,8 +69,8 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 			$isProcessed = FALSE;
 		}
 		if (!empty($loginData['uident_text'])) {
-			$loginData['uident_challenged'] = (string) md5((((($loginData['uname'] . ':') . $loginData['uident_text']) . ':') . $loginData['chalvalue']));
-			$loginData['uident_superchallenged'] = (string) md5((((($loginData['uname'] . ':') . md5($loginData['uident_text'])) . ':') . $loginData['chalvalue']));
+			$loginData['uident_challenged'] = (string) md5(($loginData['uname'] . ':' . $loginData['uident_text'] . ':' . $loginData['chalvalue']));
+			$loginData['uident_superchallenged'] = (string) md5(($loginData['uname'] . ':' . md5($loginData['uident_text']) . ':' . $loginData['chalvalue']));
 			$this->processOriginalPasswordValue($loginData);
 			$isProcessed = TRUE;
 		}
@@ -146,7 +146,7 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 				}
 			}
 			// Checking the domain (lockToDomain)
-			if (($OK && $user['lockToDomain']) && $user['lockToDomain'] != $this->authInfo['HTTP_HOST']) {
+			if ($OK && $user['lockToDomain'] && $user['lockToDomain'] != $this->authInfo['HTTP_HOST']) {
 				// Lock domain didn't match, so error:
 				if ($this->writeAttemptLog) {
 					$this->writelog(255, 3, 3, 1, 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!', array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']));
@@ -179,7 +179,7 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 			// ADD group-numbers if the IPmask matches.
 			if (is_array($TYPO3_CONF_VARS['FE']['IPmaskMountGroups'])) {
 				foreach ($TYPO3_CONF_VARS['FE']['IPmaskMountGroups'] as $IPel) {
-					if (($this->authInfo['REMOTE_ADDR'] && $IPel[0]) && \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP($this->authInfo['REMOTE_ADDR'], $IPel[0])) {
+					if ($this->authInfo['REMOTE_ADDR'] && $IPel[0] && \TYPO3\CMS\Core\Utility\GeneralUtility::cmpIP($this->authInfo['REMOTE_ADDR'], $IPel[0])) {
 						$groups[] = intval($IPel[1]);
 					}
 				}
@@ -190,11 +190,11 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 				if ($this->writeDevLog) {
 					\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Get usergroups with id: ' . $list, 'TYPO3\\CMS\\Sv\\AuthenticationService');
 				}
-				$lockToDomain_SQL = (' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST']) . '\')';
+				$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
 				if (!$this->authInfo['showHiddenRecords']) {
 					$hiddenP = 'AND hidden=0 ';
 				}
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->db_groups['table'], (((('deleted=0 ' . $hiddenP) . ' AND uid IN (') . $list) . ')') . $lockToDomain_SQL);
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->db_groups['table'], 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $list . ')' . $lockToDomain_SQL);
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$groupDataArr[$row['uid']] = $row;
 				}
@@ -225,11 +225,11 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 	 */
 	public function getSubGroups($grList, $idList = '', &$groups) {
 		// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
-		$lockToDomain_SQL = (' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST']) . '\')';
+		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . $this->authInfo['HTTP_HOST'] . '\')';
 		if (!$this->authInfo['showHiddenRecords']) {
 			$hiddenP = 'AND hidden=0 ';
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,subgroup', 'fe_groups', (((('deleted=0 ' . $hiddenP) . ' AND uid IN (') . $grList) . ')') . $lockToDomain_SQL);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,subgroup', 'fe_groups', 'deleted=0 ' . $hiddenP . ' AND uid IN (' . $grList . ')' . $lockToDomain_SQL);
 		// Internal group record storage
 		$groupRows = array();
 		// The groups array is filled
@@ -252,7 +252,7 @@ class AuthenticationService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 					// Make integer list
 					$theList = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $row['subgroup']));
 					// Call recursively, pass along list of already processed groups so they are not recursed again.
-					$this->getSubGroups($theList, ($idList . ',') . $uid, $groups);
+					$this->getSubGroups($theList, $idList . ',' . $uid, $groups);
 				}
 			}
 		}

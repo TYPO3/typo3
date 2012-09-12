@@ -122,7 +122,7 @@ class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizard
 			$videoId = $matches[2];
 		}
 		if ($videoId) {
-			$url = ('http://www.youtube.com/v/' . $videoId) . '?fs=1';
+			$url = 'http://www.youtube.com/v/' . $videoId . '?fs=1';
 		}
 		return $url;
 	}
@@ -164,7 +164,7 @@ class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizard
 		if (strpos($videoId, '-') !== FALSE) {
 			$videoId = substr($videoId, 0, strpos($videoId, '-'));
 		}
-		return ('http://de.sevenload.com/pl/' . $videoId) . '/400x500/swf';
+		return 'http://de.sevenload.com/pl/' . $videoId . '/400x500/swf';
 	}
 
 	/**
@@ -181,7 +181,7 @@ class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizard
 	protected function process_vimeo($url) {
 		if (preg_match('/[\\/#](\\d+)$/', $url, $matches)) {
 			$videoId = $matches[1];
-			$url = ('http://vimeo.com/moogaloop.swf?clip_id=' . $videoId) . '&server=vimeo.com&show_title=1&show_byline=1&show_portrait=0&fullscreen=1';
+			$url = 'http://vimeo.com/moogaloop.swf?clip_id=' . $videoId . '&server=vimeo.com&show_title=1&show_byline=1&show_portrait=0&fullscreen=1';
 		}
 		return $url;
 	}
@@ -225,7 +225,7 @@ class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizard
 		if (preg_match('/watch([^(\\&|$)]*)/', $url, $matches)) {
 			$parts = explode('/', $matches[1]);
 			$videoId = $parts[1];
-			$url = ('http://www.metacafe.com/fplayer/' . $videoId) . '/.swf';
+			$url = 'http://www.metacafe.com/fplayer/' . $videoId . '/.swf';
 		}
 		return $url;
 	}
@@ -240,7 +240,7 @@ class MediaWizardProvider implements \TYPO3\CMS\Frontend\MediaWizard\MediaWizard
 		preg_match('/watch([^(\\&|$)]*)/', $url, $matches);
 		$parts = explode('/', $matches[1]);
 		$videoId = $parts[1];
-		return ('http://www.myvideo.de/movie/' . $videoId) . '/';
+		return 'http://www.myvideo.de/movie/' . $videoId . '/';
 	}
 
 	/**

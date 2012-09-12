@@ -58,7 +58,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
 		$fieldName = 'TYPO3\\CMS\\Scheduler\\Scheduler[scheduler_cachingFrameworkGarbageCollection_selectedBackends][]';
 		$fieldId = 'task_cachingFrameworkGarbageCollection_selectedBackends';
 		$fieldOptions = $this->getCacheBackendOptions($taskInfo['scheduler_cachingFrameworkGarbageCollection_selectedBackends']);
-		$fieldHtml = ((((('<select name="' . $fieldName) . '" id="') . $fieldId) . '" class="wide" size="10" multiple="multiple">') . $fieldOptions) . '</select>';
+		$fieldHtml = '<select name="' . $fieldName . '" id="' . $fieldId . '" class="wide" size="10" multiple="multiple">' . $fieldOptions . '</select>';
 		$additionalFields[$fieldId] = array(
 			'code' => $fieldHtml,
 			'label' => 'LLL:EXT:scheduler/mod1/locallang.xml:label.cachingFrameworkGarbageCollection.selectBackends',
@@ -117,7 +117,7 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider implements \TYPO3
 			} else {
 				$selected = '';
 			}
-			$options[] = ((((('<option value="' . $backendName) . '"') . $selected) . '>') . $backendName) . '</option>';
+			$options[] = '<option value="' . $backendName . '"' . $selected . '>' . $backendName . '</option>';
 		}
 		return implode('', $options);
 	}

@@ -44,7 +44,7 @@ abstract class AbstractProcessor implements \TYPO3\CMS\Core\Log\Processor\Proces
 			if (method_exists($this, $methodName)) {
 				$this->{$methodName}($optionValue);
 			} else {
-				throw new \InvalidArgumentException(((('Invalid log processor option "' . $optionKey) . '" for log processor of type "') . get_class($this)) . '"', 1321696151);
+				throw new \InvalidArgumentException('Invalid log processor option "' . $optionKey . '" for log processor of type "' . get_class($this) . '"', 1321696151);
 			}
 		}
 	}

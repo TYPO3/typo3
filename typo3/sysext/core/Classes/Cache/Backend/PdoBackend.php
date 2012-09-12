@@ -119,7 +119,7 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 			throw new \TYPO3\CMS\Core\Cache\Exception('No cache frontend has been set yet via setCache().', 1259515600);
 		}
 		if (!is_string($data)) {
-			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException(('The specified data is of type "' . gettype($data)) . '" but a string is expected.', 1259515601);
+			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The specified data is of type "' . gettype($data) . '" but a string is expected.', 1259515601);
 		}
 		if ($this->has($entryIdentifier)) {
 			$this->remove($entryIdentifier);
@@ -128,13 +128,13 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 		$statementHandle = $this->databaseHandle->prepare('INSERT INTO "cache" ("identifier", "context", "cache", "created", "lifetime", "content") VALUES (?, ?, ?, ?, ?, ?)');
 		$result = $statementHandle->execute(array($entryIdentifier, $this->context, $this->cacheIdentifier, $GLOBALS['EXEC_TIME'], $lifetime, $data));
 		if ($result === FALSE) {
-			throw new \TYPO3\CMS\Core\Cache\Exception(('The cache entry "' . $entryIdentifier) . '" could not be written.', 1259530791);
+			throw new \TYPO3\CMS\Core\Cache\Exception('The cache entry "' . $entryIdentifier . '" could not be written.', 1259530791);
 		}
 		$statementHandle = $this->databaseHandle->prepare('INSERT INTO "tags" ("identifier", "context", "cache", "tag") VALUES (?, ?, ?, ?)');
 		foreach ($tags as $tag) {
 			$result = $statementHandle->execute(array($entryIdentifier, $this->context, $this->cacheIdentifier, $tag));
 			if ($result === FALSE) {
-				throw new \TYPO3\CMS\Core\Cache\Exception(((('The tag "' . $tag) . ' for cache entry "') . $entryIdentifier) . '" could not be written.', 1259530751);
+				throw new \TYPO3\CMS\Core\Cache\Exception('The tag "' . $tag . ' for cache entry "' . $entryIdentifier . '" could not be written.', 1259530751);
 			}
 		}
 	}
@@ -230,7 +230,7 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 	 * @api
 	 */
 	public function collectGarbage() {
-		$statementHandle = $this->databaseHandle->prepare((('DELETE FROM "tags" WHERE "context"=? AND "cache"=? AND "identifier" IN ' . '(SELECT "identifier" FROM "cache" WHERE "context"=? AND "cache"=? AND "lifetime" > 0 AND "created" + "lifetime" < ') . $GLOBALS['EXEC_TIME']) . ')');
+		$statementHandle = $this->databaseHandle->prepare('DELETE FROM "tags" WHERE "context"=? AND "cache"=? AND "identifier" IN ' . '(SELECT "identifier" FROM "cache" WHERE "context"=? AND "cache"=? AND "lifetime" > 0 AND "created" + "lifetime" < ' . $GLOBALS['EXEC_TIME'] . ')');
 		$statementHandle->execute(array($this->context, $this->cacheIdentifier, $this->context, $this->cacheIdentifier));
 		$statementHandle = $this->databaseHandle->prepare('DELETE FROM "cache" WHERE "context"=? AND "cache"=? AND "lifetime" > 0 AND "created" + "lifetime" < ' . $GLOBALS['EXEC_TIME']);
 		$statementHandle->execute(array($this->context, $this->cacheIdentifier));
@@ -242,7 +242,7 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 	 * @return string
 	 */
 	protected function getNotExpiredStatement() {
-		return (' AND ("lifetime" = 0 OR "created" + "lifetime" >= ' . $GLOBALS['EXEC_TIME']) . ')';
+		return ' AND ("lifetime" = 0 OR "created" + "lifetime" >= ' . $GLOBALS['EXEC_TIME'] . ')';
 	}
 
 	/**
@@ -266,7 +266,7 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 				$this->databaseHandle->exec('SET SESSION sql_mode=\'ANSI\';');
 			}
 		} catch (\PDOException $e) {
-			throw new \RuntimeException((('Could not connect to cache table with DSN "' . $this->dataSourceName) . '". PDO error: ') . $e->getMessage(), 1334736164);
+			throw new \RuntimeException('Could not connect to cache table with DSN "' . $this->dataSourceName . '". PDO error: ' . $e->getMessage(), 1334736164);
 		}
 	}
 
@@ -280,7 +280,7 @@ class PdoBackend extends \TYPO3\CMS\Core\Cache\Backend\AbstractBackend implement
 		try {
 			\TYPO3\CMS\Core\Database\PdoHelper::importSql($this->databaseHandle, $this->pdoDriver, PATH_t3lib . 'cache/backend/resources/ddl.sql');
 		} catch (\PDOException $e) {
-			throw new \RuntimeException((('Could not create cache tables with DSN "' . $this->dataSourceName) . '". PDO error: ') . $e->getMessage(), 1259576985);
+			throw new \RuntimeException('Could not create cache tables with DSN "' . $this->dataSourceName . '". PDO error: ' . $e->getMessage(), 1259576985);
 		}
 	}
 

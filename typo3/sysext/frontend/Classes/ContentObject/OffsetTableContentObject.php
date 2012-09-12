@@ -61,14 +61,14 @@ class OffsetTableContentObject {
 	 */
 	public function start($content, $offset) {
 		$valPairs = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $offset . ',,,,,');
-		if ((((($valPairs[0] || $valPairs[1]) || $valPairs[2]) || $valPairs[3]) || $valPairs[4]) || $valPairs[5]) {
+		if ($valPairs[0] || $valPairs[1] || $valPairs[2] || $valPairs[3] || $valPairs[4] || $valPairs[5]) {
 			// If width is defined AND there has been no change to the default table params,
 			// then extend them to a tablewidth of 1
 			if ($valPairs[4] && $this->default_tableParams == $this->tableParams) {
 				$this->tableParams .= ' width="1"';
 			}
 			// Init:
-			$this->begin = ((LF . '<table ') . $this->tableParams) . '>';
+			$this->begin = LF . '<table ' . $this->tableParams . '>';
 			$this->end = '</table>';
 			$rows = array();
 			$widthImg = '';
@@ -78,7 +78,7 @@ class OffsetTableContentObject {
 				if (!$valPairs[3]) {
 					$valPairs[3] = 1;
 				}
-				$widthImg = ((('<img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="') . $valPairs[4]) . '" height="1" alt="" title="" />';
+				$widthImg = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $valPairs[4] . '" height="1" alt="" title="" />';
 			}
 			// If height is required, set so right column will display for sure
 			if ($valPairs[5]) {
@@ -86,13 +86,13 @@ class OffsetTableContentObject {
 					$valPairs[2] = 1;
 				}
 				$valPairs[2] = 1;
-				$heightImg = ((('<img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="1" height="') . $valPairs[5]) . '" alt="" title="" />';
+				$heightImg = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $valPairs[5] . '" alt="" title="" />';
 			}
 			// First row:
 			// top
 			if ($valPairs[1]) {
 				$rows[1] .= '<tr>';
-				$rows[1] .= ((((('<td><img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="') . ($valPairs[0] ? $valPairs[0] : 1)) . '" height="') . $valPairs[1]) . '" alt="" title="" /></td>';
+				$rows[1] .= '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . ($valPairs[0] ? $valPairs[0] : 1) . '" height="' . $valPairs[1] . '" alt="" title="" /></td>';
 				if ($valPairs[0]) {
 					$rows[1] .= '<td></td>';
 				}
@@ -104,11 +104,11 @@ class OffsetTableContentObject {
 			// Middle row:
 			$rows[2] .= '<tr>';
 			if ($valPairs[0]) {
-				$rows[2] .= $valPairs[1] ? '<td></td>' : ((('<td><img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="') . $valPairs[0]) . '" height="1" alt="" title="" /></td>';
+				$rows[2] .= $valPairs[1] ? '<td></td>' : '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $valPairs[0] . '" height="1" alt="" title="" /></td>';
 			}
-			$rows[2] .= ((('<td' . $this->tdParams) . '>') . $content) . '</td>';
+			$rows[2] .= '<td' . $this->tdParams . '>' . $content . '</td>';
 			if ($valPairs[2]) {
-				$rows[2] .= $valPairs[3] ? ('<td>' . $heightImg) . '</td>' : ((((('<td><img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="') . $valPairs[2]) . '" height="') . ($valPairs[5] ? $valPairs[5] : 1)) . '" alt="" title="" /></td>';
+				$rows[2] .= $valPairs[3] ? '<td>' . $heightImg . '</td>' : '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $valPairs[2] . '" height="' . ($valPairs[5] ? $valPairs[5] : 1) . '" alt="" title="" /></td>';
 			}
 			$rows[2] .= '</tr>';
 			// Bottom row:
@@ -118,12 +118,12 @@ class OffsetTableContentObject {
 					$rows[3] .= '<td></td>';
 				}
 				if ($valPairs[2]) {
-					$rows[3] .= ('<td>' . $widthImg) . '</td>';
+					$rows[3] .= '<td>' . $widthImg . '</td>';
 				}
-				$rows[3] .= ((((('<td><img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="') . ($valPairs[2] ? $valPairs[2] : ($valPairs[4] ? $valPairs[4] : 1))) . '" height="') . $valPairs[3]) . '" alt="" title="" /></td>';
+				$rows[3] .= '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . ($valPairs[2] ? $valPairs[2] : ($valPairs[4] ? $valPairs[4] : 1)) . '" height="' . $valPairs[3] . '" alt="" title="" /></td>';
 				$rows[3] .= '</tr>';
 			}
-			return ($this->begin . implode('', $rows)) . $this->end;
+			return $this->begin . implode('', $rows) . $this->end;
 		} else {
 			return $content;
 		}

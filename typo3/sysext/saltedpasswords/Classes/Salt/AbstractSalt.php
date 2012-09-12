@@ -113,7 +113,7 @@ abstract class AbstractSalt {
 	 */
 	protected function getLengthBase64FromBytes($byteLength) {
 		// Calculates bytes in bits in base64
-		return intval(ceil(($byteLength * 8) / 6));
+		return intval(ceil($byteLength * 8 / 6));
 	}
 
 }

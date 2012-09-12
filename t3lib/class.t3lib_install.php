@@ -132,7 +132,7 @@ class t3lib_install {
 		$stopAtToken = $this->localconf_startEditPointToken && $inArray;
 		$hasEndToken = in_array($this->localconf_endEditPointToken, $line_array);
 		$respectEndToken = $hasEndToken;
-		$comment = (' Modified or inserted by ' . $this->updateIdentity) . '.';
+		$comment = ' Modified or inserted by ' . $this->updateIdentity . '.';
 		$replace = array('["', '"]');
 		$search = array('[\'', '\']');
 		$varDoubleQuotes = str_replace($search, $replace, $variable);
@@ -158,10 +158,10 @@ class t3lib_install {
 					if (count($mainparts) == 2) {
 						$subparts = explode('//', $mainparts[1], 2);
 						if ($quoteValue) {
-							$value = ('\'' . $this->slashValueForSingleDashes($value)) . '\'';
+							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
 						}
-						$line_array[$k] = (((($mainparts[0] . $variable) . ' = ') . $value) . ';	') . (('//' . $comment) . str_replace($comment, '', $subparts[1]));
-						$this->touchedLine = (count($line_array) - $k) - 1;
+						$line_array[$k] = $mainparts[0] . $variable . ' = ' . $value . ';	' . ('//' . $comment . str_replace($comment, '', $subparts[1]));
+						$this->touchedLine = count($line_array) - $k - 1;
 						$found = 1;
 						break;
 					}
@@ -176,10 +176,10 @@ class t3lib_install {
 					if (count($mainparts) == 2) {
 						$subparts = explode('//', $mainparts[1], 2);
 						if ($quoteValue) {
-							$value = ('\'' . $this->slashValueForSingleDashes($value)) . '\'';
+							$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
 						}
-						$line_array[$k] = (((($mainparts[0] . $variable) . ' = ') . $value) . ';	') . (('//' . $comment) . str_replace($comment, '', $subparts[1]));
-						$this->touchedLine = (count($line_array) - $k) - 1;
+						$line_array[$k] = $mainparts[0] . $variable . ' = ' . $value . ';	' . ('//' . $comment . str_replace($comment, '', $subparts[1]));
+						$this->touchedLine = count($line_array) - $k - 1;
 						$found = 1;
 						break;
 					}
@@ -193,9 +193,9 @@ class t3lib_install {
 				$line_array[] = '';
 			}
 			if ($quoteValue) {
-				$value = ('\'' . $this->slashValueForSingleDashes($value)) . '\'';
+				$value = '\'' . $this->slashValueForSingleDashes($value) . '\'';
 			}
-			$line_array[] = ((($variable . ' = ') . $value) . ';	// ') . $comment;
+			$line_array[] = $variable . ' = ' . $value . ';	// ' . $comment;
 			if (!$hasEndToken) {
 				$line_array[] = '';
 				$line_array[] = $this->localconf_endEditPointToken;
@@ -205,7 +205,7 @@ class t3lib_install {
 		if ($variable == '$typo_db_password') {
 			$this->messages[] = 'Updated ' . $variable;
 		} else {
-			$this->messages[] = ($variable . ' = ') . htmlspecialchars($value);
+			$this->messages[] = $variable . ' = ' . htmlspecialchars($value);
 		}
 		$this->setLocalconf = 1;
 	}
@@ -225,7 +225,7 @@ class t3lib_install {
 		$tokenSet = $this->localconf_startEditPointToken && !$inArray;
 		// Flag is set if the token should be set but is not yet
 		$stopAtToken = $this->localconf_startEditPointToken && $inArray;
-		$comment = ('Modified or inserted by ' . $this->updateIdentity) . '.';
+		$comment = 'Modified or inserted by ' . $this->updateIdentity . '.';
 		$format = '%s = %s;	// ' . $comment;
 		$insertPos = count($lines);
 		$startPos = 0;
@@ -318,7 +318,7 @@ class t3lib_install {
 			throw new RuntimeException('TYPO3 Fatal Error: ->allowUpdateLocalConf flag in the install object is not set and therefore "localconf.php" cannot be altered.', 1270853915);
 		}
 		if (!@is_writable($writeToLocalconf_dat['file'])) {
-			throw new RuntimeException(('TYPO3 Fatal Error: ' . $writeToLocalconf_dat['file']) . ' is not writable!', 1270853916);
+			throw new RuntimeException('TYPO3 Fatal Error: ' . $writeToLocalconf_dat['file'] . ' is not writable!', 1270853916);
 		}
 		// Splitting localconf.php file into lines
 		$lines = explode(LF, str_replace(CR, '', trim(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($writeToLocalconf_dat['file']))));
@@ -326,7 +326,7 @@ class t3lib_install {
 		// Getting "? >" ending.
 		// Checking if "updated" line was set by this tool - if so remove old line.
 		$updatedLine = array_pop($lines);
-		$writeToLocalconf_dat['updatedText'] = ('// Updated by ' . $this->updateIdentity) . ' ';
+		$writeToLocalconf_dat['updatedText'] = '// Updated by ' . $this->updateIdentity . ' ';
 		if (!strstr($updatedLine, $writeToLocalconf_dat['updatedText'])) {
 			array_push($lines, $updatedLine);
 		}
@@ -369,7 +369,7 @@ class t3lib_install {
 			throw new RuntimeException('TYPO3 Fatal Error: ->allowUpdateLocalConf flag in the install object is not set and therefore "localconf.php" cannot be altered.', 1270853915);
 		}
 		if (!@is_writable($writeToLocalconf_dat['file'])) {
-			throw new RuntimeException(('TYPO3 Fatal Error: ' . $writeToLocalconf_dat['file']) . ' is not writable!', 1270853916);
+			throw new RuntimeException('TYPO3 Fatal Error: ' . $writeToLocalconf_dat['file'] . ' is not writable!', 1270853916);
 		}
 		$writeToLocalconf_dat['endLine'] = array_pop($lines);
 		// Getting "? >" ending.
@@ -379,7 +379,7 @@ class t3lib_install {
 		}
 		// Checking if "updated" line was set by this tool - if so remove old line.
 		$updatedLine = array_pop($lines);
-		$writeToLocalconf_dat['updatedText'] = ('// Updated by ' . $this->updateIdentity) . ' ';
+		$writeToLocalconf_dat['updatedText'] = '// Updated by ' . $this->updateIdentity . ' ';
 		if (!strstr($updatedLine, $writeToLocalconf_dat['updatedText'])) {
 			$lines[] = $updatedLine;
 		}
@@ -388,12 +388,12 @@ class t3lib_install {
 		$lines[] = $writeToLocalconf_dat['endLine'];
 		$success = FALSE;
 		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($writeToLocalconf_dat['tmpfile'], implode(LF, $lines))) {
-			$msg = ('typo3conf/localconf.php' . $tmpExt) . ' could not be written - maybe a write access problem?';
+			$msg = 'typo3conf/localconf.php' . $tmpExt . ' could not be written - maybe a write access problem?';
 		} elseif (strcmp(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($writeToLocalconf_dat['tmpfile']), implode(LF, $lines))) {
 			@unlink($writeToLocalconf_dat['tmpfile']);
-			$msg = ('typo3conf/localconf.php' . $tmpExt) . ' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
+			$msg = 'typo3conf/localconf.php' . $tmpExt . ' was NOT written properly (written content didn\'t match file content) - maybe a disk space problem?';
 		} elseif (!@copy($writeToLocalconf_dat['tmpfile'], $writeToLocalconf_dat['file'])) {
-			$msg = ('typo3conf/localconf.php could not be replaced by typo3conf/localconf.php' . $tmpExt) . ' - maybe a write access problem?';
+			$msg = 'typo3conf/localconf.php could not be replaced by typo3conf/localconf.php' . $tmpExt . ' - maybe a write access problem?';
 		} else {
 			@unlink($writeToLocalconf_dat['tmpfile']);
 			$success = TRUE;
@@ -415,7 +415,7 @@ class t3lib_install {
 	 * @todo Define visibility
 	 */
 	public function checkForBadString($string) {
-		return preg_match((('/[' . LF) . CR) . ']/', $string) ? FALSE : TRUE;
+		return preg_match('/[' . LF . CR . ']/', $string) ? FALSE : TRUE;
 	}
 
 	/**
@@ -450,13 +450,13 @@ class t3lib_install {
 		if (is_array($arr)) {
 			$tableId = uniqid('table');
 			if (count($arr) > 1) {
-				$out[] = ((((((('
+				$out[] = '
 					<tr class="update-db-fields-batch">
 						<td valign="top">
-							<input type="checkbox" id="' . $tableId) . '-checkbox"') . ($checked ? ' checked="checked"' : '')) . '
-							onclick="$(\'') . $tableId) . '\').select(\'input[type=checkbox]\').invoke(\'setValue\', $(this).checked);" />
+							<input type="checkbox" id="' . $tableId . '-checkbox"' . ($checked ? ' checked="checked"' : '') . '
+							onclick="$(\'' . $tableId . '\').select(\'input[type=checkbox]\').invoke(\'setValue\', $(this).checked);" />
 						</td>
-						<td nowrap="nowrap"><label for="') . $tableId) . '-checkbox" style="cursor:pointer"><strong>select/deselect all</strong></label></td>
+						<td nowrap="nowrap"><label for="' . $tableId . '-checkbox" style="cursor:pointer"><strong>select/deselect all</strong></label></td>
 					</tr>';
 			}
 			foreach ($arr as $key => $string) {
@@ -464,41 +464,41 @@ class t3lib_install {
 				$warnings = array();
 				if ($iconDis) {
 					if (preg_match('/^TRUNCATE/i', $string)) {
-						$ico .= ('<img src="' . $this->backPath) . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong> </strong>';
+						$ico .= '<img src="' . $this->backPath . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong> </strong>';
 						$warnings['clear_table_info'] = 'Clearing the table is sometimes neccessary when adding new keys. In case of cache_* tables this should not hurt at all. However, use it with care.';
 					} elseif (stristr($string, ' user_')) {
-						$ico .= ('<img src="' . $this->backPath) . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(USER) </strong>';
+						$ico .= '<img src="' . $this->backPath . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(USER) </strong>';
 					} elseif (stristr($string, ' app_')) {
-						$ico .= ('<img src="' . $this->backPath) . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(APP) </strong>';
+						$ico .= '<img src="' . $this->backPath . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(APP) </strong>';
 					} elseif (stristr($string, ' ttx_') || stristr($string, ' tx_')) {
-						$ico .= ('<img src="' . $this->backPath) . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(EXT) </strong>';
+						$ico .= '<img src="' . $this->backPath . 'gfx/icon_warning.gif" width="18" height="16" align="top" alt="" /><strong>(EXT) </strong>';
 					}
 				}
-				$out[] = ((((((((((('
+				$out[] = '
 					<tr>
-						<td valign="top"><input type="checkbox" id="db-' . $key) . '" name="') . $this->dbUpdateCheckboxPrefix) . '[') . $key) . ']" value="1"') . ($checked ? ' checked="checked"' : '')) . ' /></td>
-						<td nowrap="nowrap"><label for="db-') . $key) . '">') . nl2br(($ico . htmlspecialchars($string)))) . '</label></td>
+						<td valign="top"><input type="checkbox" id="db-' . $key . '" name="' . $this->dbUpdateCheckboxPrefix . '[' . $key . ']" value="1"' . ($checked ? ' checked="checked"' : '') . ' /></td>
+						<td nowrap="nowrap"><label for="db-' . $key . '">' . nl2br(($ico . htmlspecialchars($string))) . '</label></td>
 					</tr>';
 				if (isset($currentValue[$key])) {
-					$out[] = ('
+					$out[] = '
 					<tr>
 						<td valign="top"></td>
-						<td nowrap="nowrap" style="color:#666666;">' . nl2br(((((!$cVfullMsg ? 'Current value: ' : '') . '<em>') . $currentValue[$key]) . '</em>'))) . '</td>
+						<td nowrap="nowrap" style="color:#666666;">' . nl2br(((!$cVfullMsg ? 'Current value: ' : '') . '<em>' . $currentValue[$key] . '</em>')) . '</td>
 					</tr>';
 				}
 			}
 			if (count($warnings)) {
-				$out[] = ('
+				$out[] = '
 					<tr>
 						<td valign="top"></td>
-						<td style="color:#666666;"><em>' . implode('<br />', $warnings)) . '</em></td>
+						<td style="color:#666666;"><em>' . implode('<br />', $warnings) . '</em></td>
 					</tr>';
 			}
 			// Compile rows:
-			$content = ((((('
+			$content = '
 				<!-- Update database fields / tables -->
-				<h3>' . $label) . '</h3>
-				<table border="0" cellpadding="2" cellspacing="2" id="') . $tableId) . '" class="update-db-fields">') . implode('', $out)) . '
+				<h3>' . $label . '</h3>
+				<table border="0" cellpadding="2" cellspacing="2" id="' . $tableId . '" class="update-db-fields">' . implode('', $out) . '
 				</table>';
 		}
 		return $content;

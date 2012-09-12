@@ -116,10 +116,10 @@ class DiffUtility {
 					$outString .= $this->addClearBuffer($clearBuffer);
 					$clearBuffer = '';
 					if (is_array($diffResArray[$a + 1]['old'])) {
-						$outString .= ((((('<' . $wrapTag) . ' class="diff-r">') . htmlspecialchars(implode(' ', $diffResArray[($a + 1)]['old']))) . '</') . $wrapTag) . '> ';
+						$outString .= '<' . $wrapTag . ' class="diff-r">' . htmlspecialchars(implode(' ', $diffResArray[($a + 1)]['old'])) . '</' . $wrapTag . '> ';
 					}
 					if (is_array($diffResArray[$a + 1]['new'])) {
-						$outString .= ((((('<' . $wrapTag) . ' class="diff-g">') . htmlspecialchars(implode(' ', $diffResArray[($a + 1)]['new']))) . '</') . $wrapTag) . '> ';
+						$outString .= '<' . $wrapTag . ' class="diff-g">' . htmlspecialchars(implode(' ', $diffResArray[($a + 1)]['new'])) . '</' . $wrapTag . '> ';
 					}
 					$chInfParts = explode(',', $diffResArray[$a + 1]['changeInfo']);
 					if (!strcmp($chInfParts[0], ($a + 1))) {
@@ -159,7 +159,7 @@ class DiffUtility {
 		$file2 = \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('diff2_');
 		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($file2, $str2);
 		// Perform diff.
-		$cmd = ((((($GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'] . ' ') . $this->diffOptions) . ' ') . $file1) . ' ') . $file2;
+		$cmd = $GLOBALS['TYPO3_CONF_VARS']['BE']['diff_path'] . ' ' . $this->diffOptions . ' ' . $file1 . ' ' . $file2;
 		$res = array();
 		\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 		unlink($file1);
@@ -178,7 +178,7 @@ class DiffUtility {
 	 */
 	public function addClearBuffer($clearBuffer, $last = 0) {
 		if (strlen($clearBuffer) > 200) {
-			$clearBuffer = (((($this->clearBufferIdx ? \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($clearBuffer, 70) : '') . '[') . strlen($clearBuffer)) . ']') . (!$last ? \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($clearBuffer, -70) : '');
+			$clearBuffer = ($this->clearBufferIdx ? \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($clearBuffer, 70) : '') . '[' . strlen($clearBuffer) . ']' . (!$last ? \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($clearBuffer, -70) : '');
 		}
 		$this->clearBufferIdx++;
 		return $clearBuffer;

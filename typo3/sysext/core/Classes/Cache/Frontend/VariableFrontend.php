@@ -67,11 +67,11 @@ class VariableFrontend extends \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend {
 	 */
 	public function set($entryIdentifier, $variable, array $tags = array(), $lifetime = NULL) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-			throw new \InvalidArgumentException(('"' . $entryIdentifier) . '" is not a valid cache entry identifier.', 1233058264);
+			throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1233058264);
 		}
 		foreach ($tags as $tag) {
 			if (!$this->isValidTag($tag)) {
-				throw new \InvalidArgumentException(('"' . $tag) . '" is not a valid tag for a cache entry.', 1233058269);
+				throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233058269);
 			}
 		}
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/cache/frontend/class.t3lib_Cache\Frontend\VariableFrontend.php']['set'])) {
@@ -102,7 +102,7 @@ class VariableFrontend extends \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend {
 	 */
 	public function get($entryIdentifier) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-			throw new \InvalidArgumentException(('"' . $entryIdentifier) . '" is not a valid cache entry identifier.', 1233058294);
+			throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1233058294);
 		}
 		$rawResult = $this->backend->get($entryIdentifier);
 		if ($rawResult === FALSE) {
@@ -122,7 +122,7 @@ class VariableFrontend extends \TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend {
 	 */
 	public function getByTag($tag) {
 		if (!$this->isValidTag($tag)) {
-			throw new \InvalidArgumentException(('"' . $tag) . '" is not a valid tag for a cache entry.', 1233058312);
+			throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1233058312);
 		}
 		$entries = array();
 		$identifiers = $this->backend->findIdentifiersByTag($tag);

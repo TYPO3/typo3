@@ -114,7 +114,7 @@ class EidHandler {
 		if (!headers_sent()) {
 			// see RFC 2616
 			// see Microsoft Knowledge Base #234067
-			header(('Last-Modified: ' . gmdate('D, d M Y H:i:s')) . ' GMT');
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Pragma: no-cache');
 			header('Expires: -1');

@@ -151,12 +151,12 @@ class DeletedRecords {
 			$deletedField = \TYPO3\CMS\Recycler\Utility\RecyclerUtility::getDeletedField($table);
 			// create the filter WHERE-clause
 			if (trim($filter) != '') {
-				$filterWhere = (((((' AND (' . (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($filter) ? ((('uid = ' . $filter) . ' OR pid = ') . $filter) . ' OR ' : '')) . $tcaCtrl['label']) . ' LIKE "%') . $this->escapeValueForLike($filter, $table)) . '%"') . ')';
+				$filterWhere = ' AND (' . (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($filter) ? 'uid = ' . $filter . ' OR pid = ' . $filter . ' OR ' : '') . $tcaCtrl['label'] . ' LIKE "%' . $this->escapeValueForLike($filter, $table) . '%"' . ')';
 			}
 			// get the limit
 			if ($this->limit != '') {
 				// count the number of deleted records for this pid
-				$deletedCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, (($deletedField . '<>0 AND pid = ') . $id) . $filterWhere);
+				$deletedCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, $deletedField . '<>0 AND pid = ' . $id . $filterWhere);
 				// split the limit
 				$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->limit);
 				$offset = $parts[0];
@@ -220,7 +220,7 @@ class DeletedRecords {
 			}
 			// query for actual deleted records
 			if ($allowQuery) {
-				$recordsToCheck = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField($table, $deletedField, '1', (' AND pid = ' . $id) . $filterWhere, '', '', $limit, FALSE);
+				$recordsToCheck = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordsByField($table, $deletedField, '1', ' AND pid = ' . $id . $filterWhere, '', '', $limit, FALSE);
 				if ($recordsToCheck) {
 					$this->checkRecordAccess($table, $recordsToCheck);
 				}

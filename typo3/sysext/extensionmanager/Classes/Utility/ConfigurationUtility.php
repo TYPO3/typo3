@@ -94,7 +94,7 @@ class ConfigurationUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getCurrentConfiguration($extensionKey) {
 		$extension = $GLOBALS['TYPO3_LOADED_EXT'][$extensionKey];
-		$defaultConfig = $this->configurationItemRepository->createArrayFromConstants(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl((PATH_site . $extension['siteRelPath']) . '/ext_conf_template.txt'), $extension);
+		$defaultConfig = $this->configurationItemRepository->createArrayFromConstants(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt'), $extension);
 		$currentExtensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$extension['key']]);
 		$currentExtensionConfig = is_array($currentExtensionConfig) ? $currentExtensionConfig : array();
 		$currentFullConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($defaultConfig, $currentExtensionConfig);

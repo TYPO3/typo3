@@ -9,7 +9,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	), array(
 		'access' => 'user,group',
 		'icon' => 'EXT:aboutmodules/ext_icon.gif',
-		'labels' => ('LLL:EXT:' . $_EXTKEY) . '/Resources/Private/Language/locallang_mod.xlf'
+		'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf'
 	));
 }
 ?>

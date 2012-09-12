@@ -53,7 +53,7 @@ class OpenidModuleSetup {
 	 */
 	public function renderOpenID(array $parameters, \TYPO3\CMS\Setup\Controller\SetupModuleController $parent) {
 		$openid = $GLOBALS['BE_USER']->user['tx_openid_openid'];
-		return (((('<input id="field_tx_openid_openid"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20)) . ' type="text" name="data[be_users][tx_openid_openid]"') . ' value="') . htmlspecialchars($openid)) . '" />';
+		return '<input id="field_tx_openid_openid"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' type="text" name="data[be_users][tx_openid_openid]"' . ' value="' . htmlspecialchars($openid) . '" />';
 	}
 
 }

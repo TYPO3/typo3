@@ -261,7 +261,7 @@ return array(
 		// String: Classname to handle PHP errors. E.g.: t3lib_error_ErrorHandler. This class displays and logs all errors that are registered as "errorHandlerErrors" (<a href="#SYS-errorHandlerErrors">[SYS][errorHandlerErrors]</a>). Leave empty to disable error handling. Errors can be logged to syslog (see: <a href="#SYS-systemLog">[SYS][systemLog]</a>) to the installed developer log and to the "syslog" table. If an error is registered in "exceptionalErrors" ([SYS][exceptionalErrors]) it will be turned into an exception to be handled by the configured exceptionHandler.
 		'errorHandlerErrors' => E_ALL & ~(E_STRICT | E_NOTICE),
 		// Integer: The E_* constant that will be handled by the errorhandler. Default is "E_ALL ^ E_NOTICE".
-		'exceptionalErrors' => E_ALL & ~((((((E_STRICT | E_NOTICE) | E_DEPRECATED) | E_WARNING) | E_USER_ERROR) | E_USER_NOTICE) | E_USER_WARNING),
+		'exceptionalErrors' => E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED | E_WARNING | E_USER_ERROR | E_USER_NOTICE | E_USER_WARNING),
 		// Integer: The E_* constant that will be handled as an exception by t3lib_error_ErrorHandler. Default is <tt>E_ALL ^ E_NOTICE ^ E_DEPRECATED ^ E_WARNING ^ E_USER_ERROR ^ E_USER_NOTICE ^ E_USER_WARNING</tt> (20725) and "0" if <tt>displayErrors=0</tt> (see <a href="http://php.net/manual/en/errorfunc.constants.php" target="_blank">PHP documentation</a>).
 		'enable_errorDLOG' => 0,
 		// Boolean: If set, errors are written to the developer log (requires an installed *devlog* extension).

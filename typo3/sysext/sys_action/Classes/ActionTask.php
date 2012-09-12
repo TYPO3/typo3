@@ -119,7 +119,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 * @return string Overview as HTML
 	 */
 	public function getOverview() {
-		$content = ('<p>' . $GLOBALS['LANG']->getLL('description')) . '</p>';
+		$content = '<p>' . $GLOBALS['LANG']->getLL('description') . '</p>';
 		// Get the actions
 		$actionList = $this->getActions();
 		if (count($actionList) > 0) {
@@ -127,11 +127,11 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			// Render a single action menu item
 			foreach ($actionList as $action) {
 				$active = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('show') === $action['uid'] ? ' class="active" ' : '';
-				$items .= ((((((('<li' . $active) . '>
-								<a href="') . $action['link']) . '" title="') . htmlspecialchars($action['description'])) . '">') . htmlspecialchars($action['title'])) . '</a>
+				$items .= '<li' . $active . '>
+								<a href="' . $action['link'] . '" title="' . htmlspecialchars($action['description']) . '">' . htmlspecialchars($action['title']) . '</a>
 							</li>';
 			}
-			$content .= ('<ul>' . $items) . '</ul>';
+			$content .= '<ul>' . $items . '</ul>';
 		}
 		return $content;
 	}
@@ -149,7 +149,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_action', '', '', 'sys_action.sorting');
 		} else {
 			// Editors can only see the actions which are assigned to a usergroup they belong to
-			$additionalWhere = ('be_groups.uid IN (' . ($GLOBALS['BE_USER']->groupList ? $GLOBALS['BE_USER']->groupList : 0)) . ')';
+			$additionalWhere = 'be_groups.uid IN (' . ($GLOBALS['BE_USER']->groupList ? $GLOBALS['BE_USER']->groupList : 0) . ')';
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('sys_action.*', 'sys_action', 'sys_action_asgr_mm', 'be_groups', ' AND sys_action.hidden=0 AND ' . $additionalWhere, 'sys_action.uid', 'sys_action.sorting');
 		}
 		while ($actionRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -157,8 +157,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			// Admins are allowed to edit sys_action records
 			if ($GLOBALS['BE_USER']->isAdmin()) {
 				$returnUrl = rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
-				$link = (((((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $GLOBALS['BACK_PATH']) . 'alt_doc.php?returnUrl=') . $returnUrl) . '&edit[sys_action][') . $actionRow['uid']) . ']=edit';
-				$editActionLink = (((((((('<a class="edit" href="' . $link) . '">') . '<img class="icon"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif')) . ' title="') . $GLOBALS['LANG']->getLL('edit-sys_action')) . '" alt="" />') . $GLOBALS['LANG']->getLL('edit-sys_action')) . '</a>';
+				$link = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . $returnUrl . '&edit[sys_action][' . $actionRow['uid'] . ']=edit';
+				$editActionLink = '<a class="edit" href="' . $link . '">' . '<img class="icon"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif') . ' title="' . $GLOBALS['LANG']->getLL('edit-sys_action') . '" alt="" />' . $GLOBALS['LANG']->getLL('edit-sys_action') . '</a>';
 			}
 			$actionList[] = array(
 				'uid' => $actionRow['uid'],
@@ -192,9 +192,9 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		// Admin users can create a new action
 		if ($GLOBALS['BE_USER']->isAdmin()) {
 			$returnUrl = rawurlencode('mod.php?M=user_task');
-			$link = (((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $GLOBALS['BACK_PATH']) . 'alt_doc.php?returnUrl=') . $returnUrl) . '&edit[sys_action][0]=new';
-			$content .= (((((((((('<br />
-						<a href="' . $link) . '" title="') . $GLOBALS['LANG']->getLL('new-sys_action')) . '">') . '<img class="icon"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_record.gif')) . ' title="') . $GLOBALS['LANG']->getLL('new-sys_action')) . '" alt="" /> ') . $GLOBALS['LANG']->getLL('new-sys_action')) . '</a>';
+			$link = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . $returnUrl . '&edit[sys_action][0]=new';
+			$content .= '<br />
+						<a href="' . $link . '" title="' . $GLOBALS['LANG']->getLL('new-sys_action') . '">' . '<img class="icon"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/new_record.gif') . ' title="' . $GLOBALS['LANG']->getLL('new-sys_action') . '" alt="" /> ' . $GLOBALS['LANG']->getLL('new-sys_action') . '</a>';
 		}
 		return $content;
 	}
@@ -265,47 +265,47 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$this->JScode();
 		$loadDB = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 		$loadDB->start($vars['db_mountpoints'], 'pages');
-		$content .= ((((((((((((((((((((((((((((('<form action="" method="post" enctype="multipart/form-data">
+		$content .= '<form action="" method="post" enctype="multipart/form-data">
 						<fieldset class="fields">
 							<legend>General fields</legend>
 							<div class="row">
-								<label for="field_disable">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.disable')) . '</label>
-								<input type="checkbox" id="field_disable" name="data[disable]" value="1" class="checkbox" ') . ($vars['disable'] == 1 ? ' checked="checked" ' : '')) . ' />
+								<label for="field_disable">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.disable') . '</label>
+								<input type="checkbox" id="field_disable" name="data[disable]" value="1" class="checkbox" ' . ($vars['disable'] == 1 ? ' checked="checked" ' : '') . ' />
 							</div>
 							<div class="row">
-								<label for="field_realname">') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.name')) . '</label>
-								<input type="text" id="field_realname" name="data[realName]" value="') . htmlspecialchars($vars['realName'])) . '" />
+								<label for="field_realname">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.name') . '</label>
+								<input type="text" id="field_realname" name="data[realName]" value="' . htmlspecialchars($vars['realName']) . '" />
 							</div>
 							<div class="row">
-								<label for="field_username">') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.username')) . '</label>
-								<input type="text" id="field_username" name="data[username]" value="') . htmlspecialchars($vars['username'])) . '" />
+								<label for="field_username">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.username') . '</label>
+								<input type="text" id="field_username" name="data[username]" value="' . htmlspecialchars($vars['username']) . '" />
 							</div>
 							<div class="row">
-								<label for="field_password">') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.password')) . '</label>
+								<label for="field_password">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.password') . '</label>
 								<input type="password" id="field_password" name="data[password]" value="" />
 							</div>
 							<div class="row">
-								<label for="field_email">') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.email')) . '</label>
-								<input type="text" id="field_email" name="data[email]" value="') . htmlspecialchars($vars['email'])) . '" />
+								<label for="field_email">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.email') . '</label>
+								<input type="text" id="field_email" name="data[email]" value="' . htmlspecialchars($vars['email']) . '" />
 							</div>
 						</fieldset>
 						<fieldset class="fields">
 							<legend>Configuration</legend>
 
 							<div class="row">
-								<label for="field_usergroup">') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.usergroup')) . '</label>
+								<label for="field_usergroup">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.usergroup') . '</label>
 								<select id="field_usergroup" name="data[usergroup][]" multiple="multiple">
-									') . $this->getUsergroups($record, $vars)) . '
+									' . $this->getUsergroups($record, $vars) . '
 								</select>
 							</div>
 							<div class="row">
-								<label for="field_db_mountpoints">') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.options_db_mounts')) . '</label>
-								') . $this->t3lib_TCEforms->dbFileIcons('data[db_mountpoints]', 'db', 'pages', $loadDB->itemArray, '', array('size' => 3))) . '
+								<label for="field_db_mountpoints">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tca.xml:be_users.options_db_mounts') . '</label>
+								' . $this->t3lib_TCEforms->dbFileIcons('data[db_mountpoints]', 'db', 'pages', $loadDB->itemArray, '', array('size' => 3)) . '
 							</div>
 							<div class="row">
-								<input type="hidden" name="data[key]" value="') . $key) . '" />
+								<input type="hidden" name="data[key]" value="' . $key . '" />
 								<input type="hidden" name="data[sent]" value="1" />
-								<input type="submit" value="') . ($key === 'NEW' ? $GLOBALS['LANG']->getLL('action_Create') : $GLOBALS['LANG']->getLL('action_Update'))) . '" />
+								<input type="submit" value="' . ($key === 'NEW' ? $GLOBALS['LANG']->getLL('action_Create') : $GLOBALS['LANG']->getLL('action_Update')) . '" />
 							</div>
 						</fieldset>
 					</form>';
@@ -338,7 +338,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 * @return mixed The record of the BE user if found, otherwise FALSE
 	 */
 	protected function isCreatedByUser($id, $action) {
-		$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', $id, '*', ((' AND cruser_id=' . $GLOBALS['BE_USER']->user['uid']) . ' AND createdByAction=') . $action['uid']);
+		$record = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_users', $id, '*', ' AND cruser_id=' . $GLOBALS['BE_USER']->user['uid'] . ' AND createdByAction=' . $action['uid']);
 		if (is_array($record)) {
 			return $record;
 		} else {
@@ -357,14 +357,14 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$content = '';
 		$userList = array();
 		// List of users
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'be_users', ((('cruser_id=' . $GLOBALS['BE_USER']->user['uid']) . ' AND createdByAction=') . intval($action['uid'])) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('be_users'), '', 'username');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'be_users', 'cruser_id=' . $GLOBALS['BE_USER']->user['uid'] . ' AND createdByAction=' . intval($action['uid']) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('be_users'), '', 'username');
 		// Render the user records
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$icon = \t3lib_iconworks::getSpriteIconForRecord('be_users', $row, array('title' => 'uid=' . $row['uid']));
 			$line = $icon . $this->action_linkUserName($row['username'], $row['realName'], $action['uid'], $row['uid']);
 			// Selected user
 			if ($row['uid'] == $selectedUser) {
-				$line = ('<strong>' . $line) . '</strong>';
+				$line = '<strong>' . $line . '</strong>';
 			}
 			$userList[] = $line;
 		}
@@ -387,16 +387,16 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 */
 	protected function action_linkUserName($username, $realName, $sysActionUid, $userId) {
 		if (!empty($realName)) {
-			$username .= (' (' . $realName) . ')';
+			$username .= ' (' . $realName . ')';
 		}
 		// Link to update the user record
-		$href = (('mod.php?M=user_task&SET[function]=sys_action.tx_sysaction_task&show=' . intval($sysActionUid)) . '&be_users_uid=') . intval($userId);
-		$link = ((('<a href="' . htmlspecialchars($href)) . '">') . htmlspecialchars($username)) . '</a>';
+		$href = 'mod.php?M=user_task&SET[function]=sys_action.tx_sysaction_task&show=' . intval($sysActionUid) . '&be_users_uid=' . intval($userId);
+		$link = '<a href="' . htmlspecialchars($href) . '">' . htmlspecialchars($username) . '</a>';
 		// Link to delete the user record
-		$onClick = (' onClick="return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('lDelete_warning'))) . ');"';
-		$link .= ((((('
-				<a href="' . htmlspecialchars(($href . '&delete=1'))) . '" ') . $onClick) . '>
-					<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/delete_record.gif')) . ' alt="" />
+		$onClick = ' onClick="return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('lDelete_warning')) . ');"';
+		$link .= '
+				<a href="' . htmlspecialchars(($href . '&delete=1')) . '" ' . $onClick . '>
+					<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/delete_record.gif') . ' alt="" />
 				</a>';
 		return $link;
 	}
@@ -573,7 +573,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 		$path = $this->action_getUserMainDir();
 		if ($path) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($path . $uid);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir(($path . $uid) . '/_temp_/');
+			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($path . $uid . '/_temp_/');
 		}
 	}
 
@@ -585,7 +585,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	protected function action_getUserMainDir() {
 		$path = $GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'];
 		// If path is set and a valid directory
-		if (((($path && @is_dir($path)) && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath']) && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'])) && substr($path, -1) == '/') {
+		if ($path && @is_dir($path) && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($path, $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath']) && substr($path, -1) == '/') {
 			return $path;
 		}
 	}
@@ -609,7 +609,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			$checkGroup = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('be_groups', $group);
 			if (is_array($checkGroup)) {
 				$selected = \TYPO3\CMS\Core\Utility\GeneralUtility::inList($vars['usergroup'], $checkGroup['uid']) ? ' selected="selected" ' : '';
-				$content .= ((((('<option ' . $selected) . 'value="') . $checkGroup['uid']) . '">') . htmlspecialchars($checkGroup['title'])) . '</option>';
+				$content .= '<option ' . $selected . 'value="' . $checkGroup['uid'] . '">' . htmlspecialchars($checkGroup['title']) . '</option>';
 			}
 		}
 		return $content;
@@ -623,7 +623,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 	 */
 	protected function viewNewRecord($record) {
 		$returnUrl = rawurlencode('mod.php?M=user_task');
-		$link = (((((((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $GLOBALS['BACK_PATH']) . 'alt_doc.php?returnUrl=') . $returnUrl) . '&edit[') . $record['t3_tables']) . '][') . intval($record['t3_listPid'])) . ']=new';
+		$link = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_DIR') . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . $returnUrl . '&edit[' . $record['t3_tables'] . '][' . intval($record['t3_listPid']) . ']=new';
 		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($link);
 	}
 
@@ -654,7 +654,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 				'title' => $title,
 				'description' => \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($el['table'], $dbAnalysis->results[$el['table']][$el['id']]),
 				'descriptionHtml' => $description,
-				'link' => (((((($GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '&edit[') . $el['table']) . '][') . $el['id']) . ']=edit',
+				'link' => $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '&edit[' . $el['table'] . '][' . $el['id'] . ']=edit',
 				'icon' => \t3lib_iconworks::getSpriteIconForRecord($el['table'], $dbAnalysis->results[$el['table']][$el['id']], array('title' => htmlspecialchars($path)))
 			);
 		}
@@ -694,7 +694,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 						$actionContent = $cP['content'];
 						// If the result is rendered as csv or xml, show a download link
 						if ($type === 'csv' || $type === 'xml') {
-							$actionContent .= ((('<br /><br /><a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '&download_file=1"><strong>') . $GLOBALS['LANG']->getLL('action_download_file')) . '</strong></a>';
+							$actionContent .= '<br /><br /><a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '&download_file=1"><strong>' . $GLOBALS['LANG']->getLL('action_download_file') . '</strong></a>';
 						}
 					} else {
 						$actionContent .= $GLOBALS['TYPO3_DB']->sql_error();
@@ -710,8 +710,8 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 					if (!$queryIsEmpty) {
 						$actionContent .= '<hr /> ' . $fullsearch->tableWrap($sql_query['qSelect']);
 					}
-					$actionContent .= (((((((((((((('<br /><a title="' . $GLOBALS['LANG']->getLL('action_editQuery')) . '" href="') . $GLOBALS['BACK_PATH']) . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('lowlevel')) . 'dbint/index.php?id=') . '&SET[function]=search') . '&SET[search]=query') . '&storeControl[STORE]=-') . $record['uid']) . '&storeControl[LOAD]=1') . '">
-						<img class="icon"') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif')) . ' alt="" />') . $GLOBALS['LANG']->getLL(($queryIsEmpty ? 'action_createQuery' : 'action_editQuery'))) . '</a><br /><br />';
+					$actionContent .= '<br /><a title="' . $GLOBALS['LANG']->getLL('action_editQuery') . '" href="' . $GLOBALS['BACK_PATH'] . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('lowlevel') . 'dbint/index.php?id=' . '&SET[function]=search' . '&SET[search]=query' . '&storeControl[STORE]=-' . $record['uid'] . '&storeControl[LOAD]=1' . '">
+						<img class="icon"' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/edit2.gif') . ' alt="" />' . $GLOBALS['LANG']->getLL(($queryIsEmpty ? 'action_createQuery' : 'action_editQuery')) . '</a><br /><br />';
 				}
 				$content .= $this->taskObject->doc->section($GLOBALS['LANG']->getLL('action_t2_result'), $actionContent, 0, 1);
 			} else {
@@ -762,7 +762,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			$dblist->counter++;
 			$dblist->MOD_MENU = array('bigControlPanel' => '', 'clipBoard' => '', 'localization' => '');
 			$dblist->modTSconfig = $this->taskObject->modTSconfig;
-			$dblist->dontShowClipControlPanels = (($CLIENT['FORMSTYLE'] && !$this->taskObject->MOD_SETTINGS['bigControlPanel']) && $dblist->clipObj->current == 'normal') && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
+			$dblist->dontShowClipControlPanels = $CLIENT['FORMSTYLE'] && !$this->taskObject->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current == 'normal' && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
 			// Initialize the listing object, dblist, for rendering the list:
 			$this->pointer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pointer'), 0, 100000);
 			$dblist->start($this->id, $this->table, $this->pointer, $this->taskObject->search_field, $this->taskObject->search_levels, $this->taskObject->showLimit);
@@ -770,7 +770,7 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 			// Render the list of tables:
 			$dblist->generateList();
 			// Add JavaScript functions to the page:
-			$this->taskObject->doc->JScode = $this->taskObject->doc->wrapScriptTags(((((((((('
+			$this->taskObject->doc->JScode = $this->taskObject->doc->wrapScriptTags('
 
 				function jumpToUrl(URL) {
 					window.location.href = URL;
@@ -795,9 +795,9 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 					}
 				}
 
-				' . $dblist->CBfunctions()) . '
+				' . $dblist->CBfunctions() . '
 				function editRecords(table,idList,addParams,CBflag) {
-					window.location.href="') . $GLOBALS['BACK_PATH']) . 'alt_doc.php?returnUrl=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '&edit["+table+"]["+idList+"]=edit"+addParams;
+					window.location.href="' . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
 				function editList(table,idList) {
 					var list="";
@@ -818,14 +818,14 @@ class ActionTask implements \TYPO3\CMS\Taskcenter\TaskInterface {
 
 					return list ? list : idList;
 				}
-				T3_THIS_LOCATION = "') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '";
+				T3_THIS_LOCATION = "' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '";
 
-				if (top.fsMod) top.fsMod.recentIds["web"] = ') . intval($this->id)) . ';
+				if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id) . ';
 			');
 			// Setting up the context sensitive menu:
 			$this->taskObject->doc->getContextMenuCode();
 			// Begin to compile the whole page
-			$content .= ((('<form action="' . htmlspecialchars($dblist->listURL())) . '" method="post" name="dblistForm">') . $dblist->HTMLcode) . '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" />
+			$content .= '<form action="' . htmlspecialchars($dblist->listURL()) . '" method="post" name="dblistForm">' . $dblist->HTMLcode . '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" />
 						</form>';
 			// If a listing was produced, create the page footer with search form etc:
 			if ($dblist->HTMLcode) {

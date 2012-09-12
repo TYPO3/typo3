@@ -176,9 +176,9 @@ class FlexFormTools {
 						$this->traverseFlexFormXMLData_DS =& $dataStruct;
 						$this->traverseFlexFormXMLData_Data =& $editData;
 						// Render flexform:
-						$this->traverseFlexFormXMLData_recurse($dataStruct['ROOT']['el'], $editData['data'][$sheet][$lang], $PA, (('data/' . $sheet) . '/') . $lang);
+						$this->traverseFlexFormXMLData_recurse($dataStruct['ROOT']['el'], $editData['data'][$sheet][$lang], $PA, 'data/' . $sheet . '/' . $lang);
 					} else {
-						return ('Data Structure ERROR: No ROOT element found for sheet "' . $sheet) . '".';
+						return 'Data Structure ERROR: No ROOT element found for sheet "' . $sheet . '".';
 					}
 				}
 			}
@@ -222,14 +222,14 @@ class FlexFormTools {
 										$theDat = $v3[$theType];
 										$newSectionEl = $value['el'][$theType];
 										if (is_array($newSectionEl)) {
-											$this->traverseFlexFormXMLData_recurse(array($theType => $newSectionEl), array($theType => $theDat), $PA, ((($path . '/') . $key) . '/el/') . $cc);
+											$this->traverseFlexFormXMLData_recurse(array($theType => $newSectionEl), array($theType => $theDat), $PA, $path . '/' . $key . '/el/' . $cc);
 										}
 									}
 								}
 							}
 						} else {
 							// Array traversal:
-							$this->traverseFlexFormXMLData_recurse($value['el'], $editData[$key]['el'], $PA, (($path . '/') . $key) . '/el');
+							$this->traverseFlexFormXMLData_recurse($value['el'], $editData[$key]['el'], $PA, $path . '/' . $key . '/el');
 						}
 					} elseif (is_array($value['TCEforms']['config'])) {
 						// Processing a field value:
@@ -237,7 +237,7 @@ class FlexFormTools {
 							$vKey = 'v' . $vKey;
 							// Call back:
 							if ($PA['callBackMethod_value']) {
-								$this->callBackObj->{$PA['callBackMethod_value']}($value, $editData[$key][$vKey], $PA, ((($path . '/') . $key) . '/') . $vKey, $this);
+								$this->callBackObj->{$PA['callBackMethod_value']}($value, $editData[$key][$vKey], $PA, $path . '/' . $key . '/' . $vKey, $this);
 							}
 						}
 					}
@@ -408,7 +408,7 @@ class FlexFormTools {
 		$spaceInd = $GLOBALS['TYPO3_CONF_VARS']['BE']['compactFlexFormXML'] ? -1 : 4;
 		$output = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', $spaceInd, $options);
 		if ($addPrologue) {
-			$output = ((('<?xml version="1.0" encoding="' . $GLOBALS['LANG']->charSet) . '" standalone="yes" ?>') . LF) . $output;
+			$output = '<?xml version="1.0" encoding="' . $GLOBALS['LANG']->charSet . '" standalone="yes" ?>' . LF . $output;
 		}
 		return $output;
 	}

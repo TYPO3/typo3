@@ -55,7 +55,7 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
 	 * @todo Define visibility
 	 */
 	public function wrapIcon($icon, $row) {
-		return $this->addTagAttributes($icon, (' title="id=' . htmlspecialchars($row['uid'])) . '"');
+		return $this->addTagAttributes($icon, ' title="id=' . htmlspecialchars($row['uid']) . '"');
 	}
 
 }
@@ -83,7 +83,7 @@ class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 * @todo Define visibility
 	 */
 	public function onClickEvent($pid, $newPagePID) {
-		return (((((((((('window.location.href=\'tce_db.php?cmd[pages][' . $GLOBALS['SOBE']->moveUid) . '][') . $this->moveOrCopy) . ']=') . $pid) . '&redirect=') . rawurlencode($this->R_URI)) . '&prErr=1&uPT=1&vC=') . $GLOBALS['BE_USER']->veriCode()) . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction')) . '\';return false;';
+		return 'window.location.href=\'tce_db.php?cmd[pages][' . $GLOBALS['SOBE']->moveUid . '][' . $this->moveOrCopy . ']=' . $pid . '&redirect=' . rawurlencode($this->R_URI) . '&prErr=1&uPT=1&vC=' . $GLOBALS['BE_USER']->veriCode() . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction') . '\';return false;';
 	}
 
 	/**
@@ -96,7 +96,7 @@ class ext_posMap_pages extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap {
 	 */
 	public function linkPageTitle($str, $rec) {
 		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => intval($rec['uid']), 'moveUid' => $GLOBALS['SOBE']->moveUid));
-		return ((('<a href="' . htmlspecialchars($url)) . '">') . $str) . '</a>';
+		return '<a href="' . htmlspecialchars($url) . '">' . $str . '</a>';
 	}
 
 	/**
@@ -138,7 +138,7 @@ class ext_posMap_tt_content extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap
 	 */
 	public function linkPageTitle($str, $rec) {
 		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => intval($rec['uid']), 'moveUid' => $GLOBALS['SOBE']->moveUid));
-		return ((('<a href="' . htmlspecialchars($url)) . '">') . $str) . '</a>';
+		return '<a href="' . htmlspecialchars($url) . '">' . $str . '</a>';
 	}
 
 	/**
@@ -151,7 +151,7 @@ class ext_posMap_tt_content extends \TYPO3\CMS\Backend\Tree\View\PagePositionMap
 	 */
 	public function wrapRecordTitle($str, $row) {
 		if ($GLOBALS['SOBE']->moveUid == $row['uid']) {
-			$str = ('<strong>' . $str) . '</strong>';
+			$str = '<strong>' . $str . '</strong>';
 		}
 		return parent::wrapRecordTitle($str, $row);
 	}

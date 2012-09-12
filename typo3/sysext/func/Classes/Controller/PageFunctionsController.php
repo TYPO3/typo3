@@ -60,13 +60,13 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 					window.location.href = URL;
 				}
 			');
-			$this->doc->postCode = $this->doc->wrapScriptTags(('
+			$this->doc->postCode = $this->doc->wrapScriptTags('
 				script_ended = 1;
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id)) . ';
+				if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id) . ';
 			');
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
-			$this->doc->form = ('<form action="index.php" method="post"><input type="hidden" name="id" value="' . $this->id) . '" />';
+			$this->doc->form = '<form action="index.php" method="post"><input type="hidden" name="id" value="' . $this->id . '" />';
 			$vContent = $this->doc->getVersionSelector($this->id, 1);
 			if ($vContent) {
 				$this->content .= $this->doc->section('', $vContent);
@@ -118,10 +118,10 @@ class PageFunctionsController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH'], '', TRUE);
 		if ($this->id && is_array($this->pageinfo)) {
 			// View page
-			$buttons['view'] = ((((('<a href="#"
-					onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->pageinfo['uid'], $BACK_PATH, \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->pageinfo['uid'])))) . '"
-					title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1)) . '
-				">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view')) . '</a>';
+			$buttons['view'] = '<a href="#"
+					onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->pageinfo['uid'], $BACK_PATH, \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '"
+					title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '
+				">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 			// Shortcut
 			if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 				$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);

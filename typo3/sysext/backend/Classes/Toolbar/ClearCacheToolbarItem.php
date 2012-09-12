@@ -67,7 +67,7 @@ class ClearCacheToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 			$this->cacheActions[] = array(
 				'id' => 'all',
 				'title' => $title,
-				'href' => ((($this->backPath . 'tce_db.php?vC=') . $GLOBALS['BE_USER']->veriCode()) . '&cacheCmd=all&ajaxCall=1') . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction'),
+				'href' => $this->backPath . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() . '&cacheCmd=all&ajaxCall=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction'),
 				'icon' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-cache-clear-impact-high')
 			);
 		}
@@ -77,7 +77,7 @@ class ClearCacheToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 			$this->cacheActions[] = array(
 				'id' => 'pages',
 				'title' => $title,
-				'href' => ((($this->backPath . 'tce_db.php?vC=') . $GLOBALS['BE_USER']->veriCode()) . '&cacheCmd=pages&ajaxCall=1') . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction'),
+				'href' => $this->backPath . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() . '&cacheCmd=pages&ajaxCall=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction'),
 				'icon' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-cache-clear-impact-medium')
 			);
 		}
@@ -87,7 +87,7 @@ class ClearCacheToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 			$this->cacheActions[] = array(
 				'id' => 'temp_CACHED',
 				'title' => $title,
-				'href' => ((($this->backPath . 'tce_db.php?vC=') . $GLOBALS['BE_USER']->veriCode()) . '&cacheCmd=temp_CACHED&ajaxCall=1') . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction'),
+				'href' => $this->backPath . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() . '&cacheCmd=temp_CACHED&ajaxCall=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction'),
 				'icon' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-cache-clear-impact-low')
 			);
 		}
@@ -131,10 +131,10 @@ class ClearCacheToolbarItem implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHoo
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.clearCache_clearCache', TRUE);
 		$this->addJavascriptToBackend();
 		$cacheMenu = array();
-		$cacheMenu[] = ('<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-cache', array('title' => $title))) . '</a>';
+		$cacheMenu[] = '<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-cache', array('title' => $title)) . '</a>';
 		$cacheMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 		foreach ($this->cacheActions as $actionKey => $cacheAction) {
-			$cacheMenu[] = ((((('<li><a href="' . htmlspecialchars($cacheAction['href'])) . '">') . $cacheAction['icon']) . ' ') . $cacheAction['title']) . '</a></li>';
+			$cacheMenu[] = '<li><a href="' . htmlspecialchars($cacheAction['href']) . '">' . $cacheAction['icon'] . ' ' . $cacheAction['title'] . '</a></li>';
 		}
 		$cacheMenu[] = '</ul>';
 		return implode(LF, $cacheMenu);

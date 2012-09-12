@@ -320,7 +320,7 @@ class TemplateService {
 			// Set the simulation flag, if simulation is detected!
 			$this->simulationHiddenOrTime = 1;
 		}
-		$this->whereClause .= ((('AND (starttime<=' . $GLOBALS['SIM_ACCESS_TIME']) . ') AND (endtime=0 OR endtime>') . $GLOBALS['SIM_ACCESS_TIME']) . ')';
+		$this->whereClause .= 'AND (starttime<=' . $GLOBALS['SIM_ACCESS_TIME'] . ') AND (endtime=0 OR endtime>' . $GLOBALS['SIM_ACCESS_TIME'] . ')';
 		if (!$GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) {
 			$this->menuclasses = 'tmenu,jsmenu,gmenu';
 		}
@@ -364,7 +364,7 @@ class TemplateService {
 	 * @see start(), tslib_fe::getFromCache()
 	 */
 	public function getCurrentPageData() {
-		return $GLOBALS['typo3CacheManager']->getCache('cache_pagesection')->get((intval($GLOBALS['TSFE']->id) . '_') . \TYPO3\CMS\Core\Utility\GeneralUtility::md5int($GLOBALS['TSFE']->MP));
+		return $GLOBALS['typo3CacheManager']->getCache('cache_pagesection')->get(intval($GLOBALS['TSFE']->id) . '_' . \TYPO3\CMS\Core\Utility\GeneralUtility::md5int($GLOBALS['TSFE']->MP));
 	}
 
 	/**
@@ -469,7 +469,7 @@ class TemplateService {
 				// This stores the data.
 				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($hash, serialize($this->setup), 'TS_TEMPLATE');
 				if ($this->tt_track) {
-					$GLOBALS['TT']->setTSlogMessage(('TS template size, serialized: ' . strlen(serialize($this->setup))) . ' bytes');
+					$GLOBALS['TT']->setTSlogMessage('TS template size, serialized: ' . strlen(serialize($this->setup)) . ' bytes');
 				}
 				$rowSumHash = md5('ROWSUM:' . serialize($this->rowSum));
 				\TYPO3\CMS\Frontend\Page\PageRepository::storeHash($rowSumHash, serialize($cc['all']), 'TMPL_CONDITIONS_ALL');
@@ -481,18 +481,18 @@ class TemplateService {
 			$GLOBALS['TSFE']->all = $cc;
 			// Matching must be executed for every request, so this must never be part of the pagesection cache!
 			unset($cc['match']);
-			if ((!$isCached && !$this->simulationHiddenOrTime) && !$GLOBALS['TSFE']->no_cache) {
+			if (!$isCached && !$this->simulationHiddenOrTime && !$GLOBALS['TSFE']->no_cache) {
 				// Only save the data if we're not simulating by hidden/starttime/endtime
 				$mpvarHash = \TYPO3\CMS\Core\Utility\GeneralUtility::md5int($GLOBALS['TSFE']->MP);
 				/** @var $pageSectionCache \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface */
 				$pageSectionCache = $GLOBALS['typo3CacheManager']->getCache('cache_pagesection');
-				$pageSectionCache->set((intval($GLOBALS['TSFE']->id) . '_') . $mpvarHash, $cc, array(
+				$pageSectionCache->set(intval($GLOBALS['TSFE']->id) . '_' . $mpvarHash, $cc, array(
 					'pageId_' . intval($GLOBALS['TSFE']->id),
 					'mpvarHash_' . $mpvarHash
 				));
 			}
 			// If everything OK.
-			if (($this->rootId && $this->rootLine) && $this->setup) {
+			if ($this->rootId && $this->rootLine && $this->setup) {
 				$this->loaded = 1;
 			}
 		}
@@ -526,7 +526,7 @@ class TemplateService {
 		for ($a = 0; $a < $c; $a++) {
 			// If some template loaded before has set a template-id for the next level, then load this template first!
 			if ($this->nextLevel) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', (('uid=' . intval($this->nextLevel)) . ' ') . $this->whereClause);
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'uid=' . intval($this->nextLevel) . ' ' . $this->whereClause);
 				$this->nextLevel = 0;
 				if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$this->versionOL($row);
@@ -542,7 +542,7 @@ class TemplateService {
 			if ($a == $c - 1 && $start_template_uid) {
 				$addC = ' AND uid=' . intval($start_template_uid);
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', ((('pid=' . intval($this->absoluteRootLine[$a]['uid'])) . $addC) . ' ') . $this->whereClause, '', 'sorting', 1);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'pid=' . intval($this->absoluteRootLine[$a]['uid']) . $addC . ' ' . $this->whereClause, '', 'sorting', 1);
 			if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$this->versionOL($row);
 				if (is_array($row)) {
@@ -602,12 +602,12 @@ class TemplateService {
 				$id = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GET($basedOn_hackFeature[1]));
 				// If $id is not allready included ...
 				if ($id && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($idList, ('sys_' . $id))) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', (('uid=' . $id) . ' ') . $this->whereClause);
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', 'uid=' . $id . ' ' . $this->whereClause);
 					// there was a template, then we fetch that
 					if ($subrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 						$this->versionOL($subrow);
 						if (is_array($subrow)) {
-							$this->processTemplate($subrow, ($idList . ',sys_') . $id, $pid, 'sys_' . $id, $templateID);
+							$this->processTemplate($subrow, $idList . ',sys_' . $id, $pid, 'sys_' . $id, $templateID);
 						}
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -622,12 +622,12 @@ class TemplateService {
 						unset($basedOnIds[$key]);
 					}
 				}
-				$subTemplates = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_template', (('uid IN (' . implode(',', $basedOnIds)) . ') ') . $this->whereClause, '', '', '', 'uid');
+				$subTemplates = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_template', 'uid IN (' . implode(',', $basedOnIds) . ') ' . $this->whereClause, '', '', '', 'uid');
 				// Traversing list again to ensure the sorting of the templates
 				foreach ($basedOnIds as $id) {
 					if (is_array($subTemplates[$id])) {
 						$this->versionOL($subTemplates[$id]);
-						$this->processTemplate($subTemplates[$id], ($idList . ',sys_') . $id, $pid, 'sys_' . $id, $templateID);
+						$this->processTemplate($subTemplates[$id], $idList . ',sys_' . $id, $pid, 'sys_' . $id, $templateID);
 					}
 				}
 			}
@@ -697,7 +697,7 @@ class TemplateService {
 			}
 		}
 		// If "Include before all static templates if root-flag is set" is set:
-		if (($row['static_file_mode'] == 3 && substr($templateID, 0, 4) == 'sys_') && $row['root']) {
+		if ($row['static_file_mode'] == 3 && substr($templateID, 0, 4) == 'sys_' && $row['root']) {
 			$this->addExtensionStatics($idList, $templateID, $pid, $row);
 		}
 		// Static Template Files (Text files from extensions): include_static_file is a list of static files to include (from extensions)
@@ -707,11 +707,11 @@ class TemplateService {
 			foreach ($include_static_fileArr as $ISF_file) {
 				if (substr($ISF_file, 0, 4) == 'EXT:') {
 					list($ISF_extKey, $ISF_localPath) = explode('/', substr($ISF_file, 4), 2);
-					if ((strcmp($ISF_extKey, '') && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($ISF_extKey)) && strcmp($ISF_localPath, '')) {
+					if (strcmp($ISF_extKey, '') && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($ISF_extKey) && strcmp($ISF_localPath, '')) {
 						$ISF_localPath = rtrim($ISF_localPath, '/') . '/';
 						$ISF_filePath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($ISF_extKey) . $ISF_localPath;
 						if (@is_dir($ISF_filePath)) {
-							$mExtKey = str_replace('_', '', ($ISF_extKey . '/') . $ISF_localPath);
+							$mExtKey = str_replace('_', '', $ISF_extKey . '/' . $ISF_localPath);
 							$subrow = array(
 								'constants' => @is_file(($ISF_filePath . 'constants.txt')) ? \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($ISF_filePath . 'constants.txt') : '',
 								'config' => @is_file(($ISF_filePath . 'setup.txt')) ? \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($ISF_filePath . 'setup.txt') : '',
@@ -721,7 +721,7 @@ class TemplateService {
 								'uid' => $mExtKey
 							);
 							$subrow = $this->prependStaticExtra($subrow);
-							$this->processTemplate($subrow, ($idList . ',ext_') . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID);
+							$this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID);
 						}
 					}
 				}
@@ -729,7 +729,7 @@ class TemplateService {
 		}
 		// If "Default (include before if root flag is set)" is set OR
 		// "Always include before this template record" AND root-flag are set
-		if ($row['static_file_mode'] == 1 || ($row['static_file_mode'] == 0 && substr($templateID, 0, 4) == 'sys_') && $row['root']) {
+		if ($row['static_file_mode'] == 1 || $row['static_file_mode'] == 0 && substr($templateID, 0, 4) == 'sys_' && $row['root']) {
 			$this->addExtensionStatics($idList, $templateID, $pid, $row);
 		}
 		// Include Static Template Records after all other TypoScript has been included.
@@ -769,7 +769,7 @@ class TemplateService {
 					'uid' => $mExtKey
 				);
 				$subrow = $this->prependStaticExtra($subrow);
-				$this->processTemplate($subrow, ($idList . ',ext_') . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID);
+				$this->processTemplate($subrow, $idList . ',ext_' . $mExtKey, $pid, 'ext_' . $mExtKey, $templateID);
 			}
 		}
 	}
@@ -804,7 +804,7 @@ class TemplateService {
 		// To do the fronted call a full frontend is required, just checking for
 		// TYPO3_MODE === 'FE' is not enough. This could otherwise lead to fatals in
 		// eId scripts that run in frontend scope, but do not have a full blown frontend.
-		if ((is_object($GLOBALS['TSFE']) === TRUE && property_exists($GLOBALS['TSFE'], 'sys_page') === TRUE) && method_exists($GLOBALS['TSFE']->sys_page, 'versionOL') === TRUE) {
+		if (is_object($GLOBALS['TSFE']) === TRUE && property_exists($GLOBALS['TSFE'], 'sys_page') === TRUE && method_exists($GLOBALS['TSFE']->sys_page, 'versionOL') === TRUE) {
 			// Frontend
 			$GLOBALS['TSFE']->sys_page->versionOL('sys_template', $row);
 		} else {
@@ -880,7 +880,7 @@ class TemplateService {
 		}
 		// Substitute constants in the Setup code:
 		if ($this->tt_track) {
-			$GLOBALS['TT']->push(('Substitute Constants (' . count($this->flatSetup)) . ')');
+			$GLOBALS['TT']->push('Substitute Constants (' . count($this->flatSetup) . ')');
 		}
 		$all = $this->substituteConstants($all);
 		if ($this->tt_track) {
@@ -901,7 +901,7 @@ class TemplateService {
 		}
 		// Logging the textual size of the TypoScript Setup field text with all constants substituted:
 		if ($this->tt_track) {
-			$GLOBALS['TT']->setTSlogMessage(('TypoScript template size as textfile: ' . strlen($all)) . ' bytes');
+			$GLOBALS['TT']->setTSlogMessage('TypoScript template size as textfile: ' . strlen($all) . ' bytes');
 		}
 		// Finally parse the Setup field TypoScript code (where constants are now substituted)
 		$config->parse($all, $matchObj);
@@ -992,7 +992,7 @@ class TemplateService {
 		}
 		// Parsing the user TS (or getting from cache)
 		$TSdataArray = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines_array($TSdataArray);
-		$userTS = implode((LF . '[GLOBAL]') . LF, $TSdataArray);
+		$userTS = implode(LF . '[GLOBAL]' . LF, $TSdataArray);
 		/** @var $parseObj \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser */
 		$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 		$parseObj->parse($userTS);
@@ -1155,7 +1155,7 @@ class TemplateService {
 			return;
 		} elseif (strstr($file, '../')) {
 			if ($this->tt_track) {
-				$GLOBALS['TT']->setTSlogMessage(('File path "' . $file) . '" contained illegal string "../"!', 3);
+				$GLOBALS['TT']->setTSlogMessage('File path "' . $file . '" contained illegal string "../"!', 3);
 			}
 			return;
 		}
@@ -1173,7 +1173,7 @@ class TemplateService {
 			}
 			if (!@is_file((PATH_site . $newFile))) {
 				if ($this->tt_track) {
-					$GLOBALS['TT']->setTSlogMessage(('Extension media file "' . $newFile) . '" was not found!', 3);
+					$GLOBALS['TT']->setTSlogMessage('Extension media file "' . $newFile . '" was not found!', 3);
 				}
 				return;
 			} else {
@@ -1188,7 +1188,7 @@ class TemplateService {
 			// If the file is in the media/ folder but it doesn't exist,
 			// it is assumed that it's in the tslib folder
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($file, 'media/') && !is_file(($this->getFileName_backPath . $file))) {
-				$file = (\TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('cms') . 'tslib/') . $file;
+				$file = \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('cms') . 'tslib/' . $file;
 			}
 			if (is_file($this->getFileName_backPath . $file)) {
 				$outFile = $file;
@@ -1204,10 +1204,10 @@ class TemplateService {
 					$this->fileCache[$hash] = $outFile;
 					return $outFile;
 				} elseif ($this->tt_track) {
-					$GLOBALS['TT']->setTSlogMessage(((('"' . $file) . '" was not located in the allowed paths: (') . implode(',', $this->allowedPaths)) . ')', 3);
+					$GLOBALS['TT']->setTSlogMessage('"' . $file . '" was not located in the allowed paths: (' . implode(',', $this->allowedPaths) . ')', 3);
 				}
 			} elseif ($this->tt_track) {
-				$GLOBALS['TT']->setTSlogMessage((('"' . $this->getFileName_backPath) . $file) . '" is not a file (non-uploads/.. resource, did not exist).', 3);
+				$GLOBALS['TT']->setTSlogMessage('"' . $this->getFileName_backPath . $file . '" is not a file (non-uploads/.. resource, did not exist).', 3);
 			}
 		}
 	}
@@ -1237,7 +1237,7 @@ class TemplateService {
 				$pageTitleSeparator = $this->setup['config.']['pageTitleSeparator'] . ' ';
 			}
 		}
-		return ($siteTitle . $pageTitleSeparator) . $pageTitle;
+		return $siteTitle . $pageTitleSeparator . $pageTitle;
 	}
 
 	/**
@@ -1268,7 +1268,7 @@ class TemplateService {
 	public function wrap($content, $wrap) {
 		if ($wrap) {
 			$wrapArr = explode('|', $wrap);
-			return (trim($wrapArr[0]) . $content) . trim($wrapArr[1]);
+			return trim($wrapArr[0]) . $content . trim($wrapArr[1]);
 		} else {
 			return $content;
 		}
@@ -1358,7 +1358,7 @@ class TemplateService {
 		// Overriding some fields in the page record and still preserves the values by adding them as parameters. Little strange function.
 		if (is_array($overrideArray)) {
 			foreach ($overrideArray as $theKey => $theNewVal) {
-				$addParams .= (('&real_' . $theKey) . '=') . rawurlencode($page[$theKey]);
+				$addParams .= '&real_' . $theKey . '=' . rawurlencode($page[$theKey]);
 				$page[$theKey] = $theNewVal;
 			}
 		}
@@ -1380,9 +1380,9 @@ class TemplateService {
 			$script = $GLOBALS['TSFE']->config['mainScript'];
 		}
 		if ($page['alias']) {
-			$LD['url'] = ($script . '?id=') . rawurlencode($page['alias']);
+			$LD['url'] = $script . '?id=' . rawurlencode($page['alias']);
 		} else {
-			$LD['url'] = ($script . '?id=') . $page['uid'];
+			$LD['url'] = $script . '?id=' . $page['uid'];
 		}
 		// Setting target
 		$LD['target'] = trim($page['target']) ? trim($page['target']) : $oTarget;
@@ -1419,7 +1419,7 @@ class TemplateService {
 		// If the special key 'sectionIndex_uid' (added 'manually' in tslib/menu.php to the page-record) is set, then the link jumps directly to a section on the page.
 		$LD['sectionIndex'] = $page['sectionIndex_uid'] ? '#c' . $page['sectionIndex_uid'] : '';
 		// Compile the normal total url
-		$LD['totalURL'] = $this->removeQueryString((((($LD['url'] . $LD['type']) . $LD['no_cache']) . $LD['linkVars']) . $GLOBALS['TSFE']->getMethodUrlIdToken)) . $LD['sectionIndex'];
+		$LD['totalURL'] = $this->removeQueryString(($LD['url'] . $LD['type'] . $LD['no_cache'] . $LD['linkVars'] . $GLOBALS['TSFE']->getMethodUrlIdToken)) . $LD['sectionIndex'];
 		// Call post processing function for link rendering:
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tstemplate.php']['linkData-PostProc'])) {
 			$_params = array(
@@ -1505,7 +1505,7 @@ class TemplateService {
 		if ($id && $level < 20) {
 			$nextLevelAcc = array();
 			// Select and traverse current level pages:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol', 'pages', (((('pid=' . intval($id)) . ' AND deleted=0 AND doktype<>') . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER) . ' AND doktype<>') . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol', 'pages', 'pid=' . intval($id) . ' AND deleted=0 AND doktype<>' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER . ' AND doktype<>' . \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION);
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				// Find mount point if any:
 				$next_id = $row['uid'];

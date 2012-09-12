@@ -26,7 +26,7 @@ class LoginFramesetController {
 	public function main() {
 		// Set doktype:
 		$GLOBALS['TBE_TEMPLATE']->docType = 'xhtml_frames';
-		$title = ('TYPO3 Re-Login (' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . ')';
+		$title = 'TYPO3 Re-Login (' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
 		$this->content .= $GLOBALS['TBE_TEMPLATE']->startPage($title);
 		// Create the frameset for the window:
 		$this->content .= '

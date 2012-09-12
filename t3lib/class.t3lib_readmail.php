@@ -85,8 +85,8 @@ class t3lib_readmail {
 				$parts = $this->getMailBoundaryParts($CType['boundary'], $mailParts['CONTENT']);
 				$c = $this->getTextContent($parts[0]);
 			} else {
-				$c = $this->getTextContent((('Content-Type: ' . $mailParts['content-type']) . '
-					') . $mailParts['CONTENT']);
+				$c = $this->getTextContent('Content-Type: ' . $mailParts['content-type'] . '
+					' . $mailParts['CONTENT']);
 			}
 		} else {
 			$c = $mailParts['CONTENT'];

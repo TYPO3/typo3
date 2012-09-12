@@ -131,9 +131,9 @@ class PageTreeNavigationController {
 		if ($this->hasFilterBox) {
 			$this->doc->getPageRenderer()->addJsFile('js/pagetreefiltermenu.js');
 		}
-		$this->doc->JScode .= $this->doc->wrapScriptTags((((((((((($this->currentSubScript ? ('top.currentSubScript=unescape("' . rawurlencode($this->currentSubScript)) . '");' : '') . '
+		$this->doc->JScode .= $this->doc->wrapScriptTags(($this->currentSubScript ? 'top.currentSubScript=unescape("' . rawurlencode($this->currentSubScript) . '");' : '') . '
 		// setting prefs for pagetree and drag & drop
-		') . ($this->doHighlight ? ('Tree.highlightClass = "' . $hlClass) . '";' : '')) . '
+		' . ($this->doHighlight ? 'Tree.highlightClass = "' . $hlClass . '";' : '') . '
 
 		// Function, loading the list frame from navigation tree:
 		function jumpTo(id, linkObj, highlightID, bank) { //
@@ -146,11 +146,11 @@ class PageTreeNavigationController {
 			top.fsMod.currentBank = bank;
 			top.TYPO3.Backend.ContentContainer.setUrl(theUrl);
 
-			') . ($this->doHighlight ? 'Tree.highlightActiveItem("web", highlightID + "_" + bank);' : '')) . '
-			') . (!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ')) . '
+			' . ($this->doHighlight ? 'Tree.highlightActiveItem("web", highlightID + "_" + bank);' : '') . '
+			' . (!$GLOBALS['CLIENT']['FORMSTYLE'] ? '' : 'if (linkObj) linkObj.blur(); ') . '
 			return false;
 		}
-		') . ($this->cMR ? 'jumpTo(top.fsMod.recentIds[\'web\'],\'\');' : '')) . ($this->hasFilterBox ? 'var TYPO3PageTreeFilter = new PageTreeFilter();' : '')) . '
+		' . ($this->cMR ? 'jumpTo(top.fsMod.recentIds[\'web\'],\'\');' : '') . ($this->hasFilterBox ? 'var TYPO3PageTreeFilter = new PageTreeFilter();' : '') . '
 
 		');
 		$this->doc->bodyTagId = 'typo3-pagetree';
@@ -167,18 +167,18 @@ class PageTreeNavigationController {
 		$tree = $this->pagetree->getBrowsableTree();
 		// Outputting Temporary DB mount notice:
 		if ($this->active_tempMountPoint) {
-			$flashText = ((((((((('
-				<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => 0)))) . '">') . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount', 1)) . '</a>		<br />') . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.path', 1)) . ': <span title="') . htmlspecialchars($this->active_tempMountPoint['_thePathFull'])) . '">') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->active_tempMountPoint['_thePath'], -50))) . '</span>
+			$flashText = '
+				<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount', 1) . '</a>		<br />' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.path', 1) . ': <span title="' . htmlspecialchars($this->active_tempMountPoint['_thePathFull']) . '">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->active_tempMountPoint['_thePath'], -50)) . '</span>
 			';
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $flashText, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$this->content .= $flashMessage->render();
 		}
 		// Outputting page tree:
-		$this->content .= ('<div id="PageTreeDiv">' . $tree) . '</div>';
+		$this->content .= '<div id="PageTreeDiv">' . $tree . '</div>';
 		// Adding javascript for drag & drop activation and highlighting
-		$this->content .= $this->doc->wrapScriptTags((('
-			' . ($this->doHighlight ? 'Tree.highlightActiveItem("",top.fsMod.navFrameHighlightedID["web"]);' : '')) . '
-			') . (!$this->doc->isCMlayers() ? 'Tree.activateDragDrop = false;' : 'Tree.registerDragDropHandlers();'));
+		$this->content .= $this->doc->wrapScriptTags('
+			' . ($this->doHighlight ? 'Tree.highlightActiveItem("",top.fsMod.navFrameHighlightedID["web"]);' : '') . '
+			' . (!$this->doc->isCMlayers() ? 'Tree.activateDragDrop = false;' : 'Tree.registerDragDropHandlers();'));
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(
@@ -225,14 +225,14 @@ class PageTreeNavigationController {
 		);
 		// New Page
 		$onclickNewPageWizard = 'top.content.list_frame.location.href=top.TS.PATH_typo3+\'db_new.php?pagesOnly=1&amp;id=\'+Tree.pageID;';
-		$buttons['new_page'] = ((((('<a href="#" onclick="' . $onclickNewPageWizard) . '" title="') . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:newPage', TRUE)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new')) . '</a>';
+		$buttons['new_page'] = '<a href="#" onclick="' . $onclickNewPageWizard . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:newPage', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-new') . '</a>';
 		// Refresh
-		$buttons['refresh'] = ((((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '" title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.refresh', TRUE)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-refresh')) . '</a>';
+		$buttons['refresh'] = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.refresh', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-refresh') . '</a>';
 		// CSH
 		$buttons['csh'] = str_replace('typo3-csh-inline', 'typo3-csh-inline show-right', \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'pagetree', $GLOBALS['BACK_PATH'], '', TRUE));
 		// Filter
 		if ($this->hasFilterBox) {
-			$buttons['filter'] = ('<a href="#" id="tree-toolbar-filter-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-tree-search-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:labels.filter', 1)))) . '</a>';
+			$buttons['filter'] = '<a href="#" id="tree-toolbar-filter-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-tree-search-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:cms/layout/locallang.xml:labels.filter', 1))) . '</a>';
 		}
 		return $buttons;
 	}
@@ -245,12 +245,12 @@ class PageTreeNavigationController {
 	protected function getWorkspaceInfo() {
 		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('workspaces') && ($GLOBALS['BE_USER']->workspace !== 0 || $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.onlineWorkspaceInfo'))) {
 			$wsTitle = htmlspecialchars(\tx_Workspaces_Service_Workspaces::getWorkspaceTitle($GLOBALS['BE_USER']->workspace));
-			$workspaceInfo = (('
+			$workspaceInfo = '
 				<div class="bgColor4 workspace-info">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-workspace', array(
 				'title' => $wsTitle,
 				'onclick' => 'top.goToModule(\'web_WorkspacesWorkspaces\');',
 				'style' => 'cursor:pointer;'
-			))) . $wsTitle) . '</div>
+			)) . $wsTitle . '</div>
 			';
 		}
 		return $workspaceInfo;

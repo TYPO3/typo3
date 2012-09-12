@@ -85,7 +85,7 @@ abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendI
 				if (method_exists($this, $methodName)) {
 					$this->{$methodName}($optionValue);
 				} else {
-					throw new \InvalidArgumentException(((('Invalid cache backend option "' . $optionKey) . '" for backend of type "') . get_class($this)) . '"', 1231267498);
+					throw new \InvalidArgumentException('Invalid cache backend option "' . $optionKey . '" for backend of type "' . get_class($this) . '"', 1231267498);
 				}
 			}
 		}
@@ -132,7 +132,7 @@ abstract class AbstractBackend implements \TYPO3\CMS\Core\Cache\Backend\BackendI
 			if ($lifetime === NULL) {
 				$lifetime = $this->defaultLifetime;
 			}
-			$expiryTime = new \DateTime(('now +' . $lifetime) . ' seconds', new \DateTimeZone('UTC'));
+			$expiryTime = new \DateTime('now +' . $lifetime . ' seconds', new \DateTimeZone('UTC'));
 		}
 		return $expiryTime;
 	}

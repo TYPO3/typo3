@@ -301,10 +301,10 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	 * @todo Define visibility
 	 */
 	public function getErrorMessages() {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', ((('type = 2 AND userid = ' . intval($GLOBALS['BE_USER']->user['uid'])) . ' AND tstamp=') . intval($GLOBALS['EXEC_TIME'])) . ' AND error<>0');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'type = 2 AND userid = ' . intval($GLOBALS['BE_USER']->user['uid']) . ' AND tstamp=' . intval($GLOBALS['EXEC_TIME']) . ' AND error<>0');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$logData = unserialize($row['log_data']);
-			$msg = ($row['error'] . ': ') . sprintf($row['details'], $logData[0], $logData[1], $logData[2], $logData[3], $logData[4]);
+			$msg = $row['error'] . ': ' . sprintf($row['details'], $logData[0], $logData[1], $logData[2], $logData[3], $logData[4]);
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $msg, '', \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR, TRUE);
 			\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
 		}
@@ -393,11 +393,11 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 					$shortcutRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($row['tablename'], $row['recuid']);
 					if (is_array($shortcutRecord) && $row['tablename'] !== 'sys_file_reference') {
 						$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($row['tablename'], $shortcutRecord);
-						$onClick = ((('showClickmenu("' . $row['tablename']) . '", "') . $row['recuid']) . '", "1", "+info,history,edit,delete", "|", "");return false;';
-						$shortcutContent[] = (((((('<a href="#" oncontextmenu="' . htmlspecialchars($onClick)) . '" onclick="') . htmlspecialchars($onClick)) . '">') . $icon) . '</a>') . htmlspecialchars((((\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [') . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80)) . ']'));
+						$onClick = 'showClickmenu("' . $row['tablename'] . '", "' . $row['recuid'] . '", "1", "+info,history,edit,delete", "|", "");return false;';
+						$shortcutContent[] = '<a href="#" oncontextmenu="' . htmlspecialchars($onClick) . '" onclick="' . htmlspecialchars($onClick) . '">' . $icon . '</a>' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($row['tablename'], $shortcutRecord) . '  [' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($shortcutRecord['pid'], '', 80) . ']'));
 					}
 				}
-				$out = ('<p>The file cannot be deleted since it is still used at the following places:<br />' . implode('<br />', $shortcutContent)) . '</p>';
+				$out = '<p>The file cannot be deleted since it is still used at the following places:<br />' . implode('<br />', $shortcutContent) . '</p>';
 				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_flashMessage', $out, 'File not deleted', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING, TRUE);
 				\TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($flashMessage);
 				return;
@@ -440,7 +440,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 	protected function getFileObject($identifier) {
 		$object = $this->fileFactory->retrieveFileOrFolderObject($identifier);
 		if (!is_object($object)) {
-			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidFileException(('The item ' . $identifier) . ' was not a file or directory!!', 1320122453);
+			throw new \TYPO3\CMS\Core\Resource\Exception\InvalidFileException('The item ' . $identifier . ' was not a file or directory!!', 1320122453);
 		}
 		return $object;
 	}
@@ -891,7 +891,7 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		// !!! Method has been put in the sotrage driver, can be saftely removed
 		if ($this->checkPathAgainstMounts($theFile) && $this->checkPathAgainstMounts($theDest . '/')) {
 			// No way to do this under windows.
-			$cmd = ((($this->unzipPath . 'unzip -qq ') . escapeshellarg($theFile)) . ' -d ') . escapeshellarg($theDest);
+			$cmd = $this->unzipPath . 'unzip -qq ' . escapeshellarg($theFile) . ' -d ' . escapeshellarg($theDest);
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 			$this->writelog(7, 0, 1, 'Unzipping file "%s" in "%s"', array($theFile, $theDest));
 			return TRUE;

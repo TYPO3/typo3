@@ -216,11 +216,11 @@ class SchemaMigrator {
 										$keys = array();
 										foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $match[2]) as $kfN) {
 											if ($fN == $kfN) {
-												$kfN .= ('(' . $newSize) . ')';
+												$kfN .= '(' . $newSize . ')';
 											}
 											$keys[] = $kfN;
 										}
-										$total[$table]['keys'][$kN] = ((($match[1] . '(') . implode(',', $keys)) . ')') . $match[3];
+										$total[$table]['keys'][$kN] = $match[1] . '(' . implode(',', $keys) . ')' . $match[3];
 									}
 								}
 							}
@@ -286,7 +286,7 @@ class SchemaMigrator {
 				$keyName = $keyRow['Key_name'];
 				$colName = $keyRow['Column_name'];
 				if ($keyRow['Sub_part']) {
-					$colName .= ('(' . $keyRow['Sub_part']) . ')';
+					$colName .= '(' . $keyRow['Sub_part'] . ')';
 				}
 				$tempKeys[$tableName][$keyName][$keyRow['Seq_in_index']] = $colName;
 				if ($keyName == 'PRIMARY') {
@@ -321,7 +321,7 @@ class SchemaMigrator {
 			foreach ($tempKeys as $table => $keyInf) {
 				foreach ($keyInf as $kName => $index) {
 					ksort($index);
-					$total[$table]['keys'][$kName] = (($tempKeysPrefix[$table][$kName] . ' (') . implode(',', $index)) . ')';
+					$total[$table]['keys'][$kName] = $tempKeysPrefix[$table][$kName] . ' (' . implode(',', $index) . ')';
 				}
 			}
 		}
@@ -410,7 +410,7 @@ class SchemaMigrator {
 					if (is_array($info['fields'])) {
 						foreach ($info['fields'] as $fN => $fV) {
 							if ($info['whole_table']) {
-								$whole_table[] = ($fN . ' ') . $fV;
+								$whole_table[] = $fN . ' ' . $fV;
 							} else {
 								// Special case to work around MySQL problems when adding auto_increment fields:
 								if (stristr($fV, 'auto_increment')) {
@@ -429,18 +429,18 @@ class SchemaMigrator {
 										if (substr($fN, 0, $deletedPrefixLength) !== $deletedPrefixKey) {
 											// we've to make sure we don't exceed the maximal length
 											$prefixedFieldName = $deletedPrefixKey . substr($fN, ($deletedPrefixLength - self::MYSQL_MAXIMUM_FIELD_WIDTH));
-											$statement = ((((((('ALTER TABLE ' . $table) . ' CHANGE ') . $fN) . ' ') . $prefixedFieldName) . ' ') . $fV) . ';';
+											$statement = 'ALTER TABLE ' . $table . ' CHANGE ' . $fN . ' ' . $prefixedFieldName . ' ' . $fV . ';';
 											$statements['change'][md5($statement)] = $statement;
 										} else {
-											$statement = ((('ALTER TABLE ' . $table) . ' DROP ') . $fN) . ';';
+											$statement = 'ALTER TABLE ' . $table . ' DROP ' . $fN . ';';
 											$statements['drop'][md5($statement)] = $statement;
 										}
 									} else {
-										$statement = ((((('ALTER TABLE ' . $table) . ' ADD ') . $fN) . ' ') . $fV) . ';';
+										$statement = 'ALTER TABLE ' . $table . ' ADD ' . $fN . ' ' . $fV . ';';
 										$statements['add'][md5($statement)] = $statement;
 									}
 								} elseif ($theKey == 'diff') {
-									$statement = ((((((('ALTER TABLE ' . $table) . ' CHANGE ') . $fN) . ' ') . $fN) . ' ') . $fV) . ';';
+									$statement = 'ALTER TABLE ' . $table . ' CHANGE ' . $fN . ' ' . $fN . ' ' . $fV . ';';
 									$statements['change'][md5($statement)] = $statement;
 									$statements['change_currentValue'][md5($statement)] = $diffArr['diff_currentValues'][$table]['fields'][$fN];
 								}
@@ -454,16 +454,16 @@ class SchemaMigrator {
 							} else {
 								if ($theKey == 'extra') {
 									if ($remove) {
-										$statement = (('ALTER TABLE ' . $table) . ($fN == 'PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY ' . $fN)) . ';';
+										$statement = 'ALTER TABLE ' . $table . ($fN == 'PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY ' . $fN) . ';';
 										$statements['drop'][md5($statement)] = $statement;
 									} else {
-										$statement = ((('ALTER TABLE ' . $table) . ' ADD ') . $fV) . ';';
+										$statement = 'ALTER TABLE ' . $table . ' ADD ' . $fV . ';';
 										$statements['add'][md5($statement)] = $statement;
 									}
 								} elseif ($theKey == 'diff') {
-									$statement = (('ALTER TABLE ' . $table) . ($fN == 'PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY ' . $fN)) . ';';
+									$statement = 'ALTER TABLE ' . $table . ($fN == 'PRIMARY' ? ' DROP PRIMARY KEY' : ' DROP KEY ' . $fN) . ';';
 									$statements['change'][md5($statement)] = $statement;
-									$statement = ((('ALTER TABLE ' . $table) . ' ADD ') . $fV) . ';';
+									$statement = 'ALTER TABLE ' . $table . ' ADD ' . $fV . ';';
 									$statements['change'][md5($statement)] = $statement;
 								}
 							}
@@ -486,18 +486,18 @@ class SchemaMigrator {
 										}
 										continue;
 									} else {
-										$extras[] = ($fN . '=') . $fV;
-										$extras_currentValue[] = ($fN . '=') . $diffArr['diff_currentValues'][$table]['extra'][$fN];
+										$extras[] = $fN . '=' . $fV;
+										$extras_currentValue[] = $fN . '=' . $diffArr['diff_currentValues'][$table]['extra'][$fN];
 									}
 								}
 							}
 						}
 						if ($clear_table) {
-							$statement = ('TRUNCATE TABLE ' . $table) . ';';
+							$statement = 'TRUNCATE TABLE ' . $table . ';';
 							$statements['clear_table'][md5($statement)] = $statement;
 						}
 						if (count($extras)) {
-							$statement = ((('ALTER TABLE ' . $table) . ' ') . implode(' ', $extras)) . ';';
+							$statement = 'ALTER TABLE ' . $table . ' ' . implode(' ', $extras) . ';';
 							$statements['change'][md5($statement)] = $statement;
 							$statements['change_currentValue'][md5($statement)] = implode(' ', $extras_currentValue);
 						}
@@ -507,19 +507,19 @@ class SchemaMigrator {
 							if (substr($table, 0, $deletedPrefixLength) !== $deletedPrefixKey) {
 								// we've to make sure we don't exceed the maximal length
 								$prefixedTableName = $deletedPrefixKey . substr($table, ($deletedPrefixLength - self::MYSQL_MAXIMUM_FIELD_WIDTH));
-								$statement = ((('ALTER TABLE ' . $table) . ' RENAME ') . $prefixedTableName) . ';';
+								$statement = 'ALTER TABLE ' . $table . ' RENAME ' . $prefixedTableName . ';';
 								$statements['change_table'][md5($statement)] = $statement;
 							} else {
-								$statement = ('DROP TABLE ' . $table) . ';';
+								$statement = 'DROP TABLE ' . $table . ';';
 								$statements['drop_table'][md5($statement)] = $statement;
 							}
 							// Count
 							$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', $table);
 							$statements['tables_count'][md5($statement)] = $count ? 'Records in table: ' . $count : '';
 						} else {
-							$statement = ((('CREATE TABLE ' . $table) . ' (
-') . implode(',
-', $whole_table)) . '
+							$statement = 'CREATE TABLE ' . $table . ' (
+' . implode(',
+', $whole_table) . '
 )';
 							if ($info['extra']) {
 								foreach ($info['extra'] as $k => $v) {
@@ -528,7 +528,7 @@ class SchemaMigrator {
 										continue;
 									}
 									// Add extra attributes like ENGINE, CHARSET, etc.
-									$statement .= ((' ' . $k) . '=') . $v;
+									$statement .= ' ' . $k . '=' . $v;
 								}
 							}
 							$statement .= ';';
@@ -558,7 +558,7 @@ class SchemaMigrator {
 				if ($row['Default'] === NULL) {
 					$field[] = 'default NULL';
 				} else {
-					$field[] = ('default \'' . addslashes($row['Default'])) . '\'';
+					$field[] = 'default \'' . addslashes($row['Default']) . '\'';
 				}
 			}
 		}
@@ -587,14 +587,14 @@ class SchemaMigrator {
 			if (stristr($lineContent, 'auto_increment')) {
 				$lineContent = preg_replace('/ default \'0\'/i', '', $lineContent);
 			}
-			if (!$removeNonSQL || (strcmp(trim($lineContent), '') && substr(trim($lineContent), 0, 1) != '#') && substr(trim($lineContent), 0, 2) != '--') {
+			if (!$removeNonSQL || strcmp(trim($lineContent), '') && substr(trim($lineContent), 0, 1) != '#' && substr(trim($lineContent), 0, 2) != '--') {
 				// '--' is seen as mysqldump comments from server version 3.23.49
 				$statementArray[$statementArrayPointer] .= $lineContent;
 				$is_set = 1;
 			}
 			if (substr(trim($lineContent), -1) == ';') {
 				if (isset($statementArray[$statementArrayPointer])) {
-					if (!trim($statementArray[$statementArrayPointer]) || $query_regex && !preg_match((('/' . $query_regex) . '/i'), trim($statementArray[$statementArrayPointer]))) {
+					if (!trim($statementArray[$statementArrayPointer]) || $query_regex && !preg_match(('/' . $query_regex . '/i'), trim($statementArray[$statementArrayPointer]))) {
 						unset($statementArray[$statementArrayPointer]);
 					}
 				}

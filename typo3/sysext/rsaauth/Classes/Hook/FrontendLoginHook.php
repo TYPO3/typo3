@@ -54,7 +54,7 @@ class FrontendLoginHook {
 					'rsaauth_min.js'
 				);
 				foreach ($files as $file) {
-					$result[1] .= ((('<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')) . $javascriptPath) . $file) . '"></script>';
+					$result[1] .= '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $javascriptPath . $file . '"></script>';
 				}
 				// Generate a new key pair
 				$keyPair = $backend->createNewKeyPair();
@@ -63,8 +63,8 @@ class FrontendLoginHook {
 				/** @var $storage \TYPO3\CMS\Rsaauth\Storage\AbstractStorage */
 				$storage->put($keyPair->getPrivateKey());
 				// Add RSA hidden fields
-				$result[1] .= ('<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus())) . '" />';
-				$result[1] .= ('<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent())) . '" />';
+				$result[1] .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
+				$result[1] .= '<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent()) . '" />';
 			}
 		}
 		return $result;

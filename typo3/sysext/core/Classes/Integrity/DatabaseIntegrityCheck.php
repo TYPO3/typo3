@@ -156,9 +156,9 @@ class DatabaseIntegrityCheck {
 	 */
 	public function genTree($theID, $depthData, $versions = FALSE) {
 		if ($versions) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,doktype,deleted,t3ver_wsid,t3ver_id,t3ver_count' . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms') ? ',hidden' : ''), 'pages', ((('pid=-1 AND t3ver_oid=' . intval($theID)) . ' ') . (!$this->genTree_includeDeleted ? 'AND deleted=0' : '')) . $this->perms_clause, '', 'sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,doktype,deleted,t3ver_wsid,t3ver_id,t3ver_count' . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms') ? ',hidden' : ''), 'pages', 'pid=-1 AND t3ver_oid=' . intval($theID) . ' ' . (!$this->genTree_includeDeleted ? 'AND deleted=0' : '') . $this->perms_clause, '', 'sorting');
 		} else {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,doktype,deleted' . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms') ? ',hidden' : ''), 'pages', ((('pid=' . intval($theID)) . ' ') . (!$this->genTree_includeDeleted ? 'AND deleted=0' : '')) . $this->perms_clause, '', 'sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,doktype,deleted' . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms') ? ',hidden' : ''), 'pages', 'pid=' . intval($theID) . ' ' . (!$this->genTree_includeDeleted ? 'AND deleted=0' : '') . $this->perms_clause, '', 'sorting');
 		}
 		// Traverse the records selected:
 		$a = 0;
@@ -166,7 +166,7 @@ class DatabaseIntegrityCheck {
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			// Prepare the additional label used in the HTML output in case of versions:
 			if ($versions) {
-				$versionLabel = ((('[v1.' . $row['t3ver_id']) . '; WS#') . $row['t3ver_wsid']) . ']';
+				$versionLabel = '[v1.' . $row['t3ver_id'] . '; WS#' . $row['t3ver_wsid'] . ']';
 			} else {
 				$versionLabel = '';
 			}
@@ -178,7 +178,7 @@ class DatabaseIntegrityCheck {
 				$PM = 'join';
 				$LN = $a == $c ? 'blank' : 'line';
 				$BTM = $a == $c ? 'bottom' : '';
-				$this->genTree_HTML .= (((((($depthData . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ((('gfx/ol/' . $PM) . $BTM) . '.gif'), 'width="18" height="16"')) . ' align="top" alt="" />') . $versionLabel) . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $row)) . htmlspecialchars((($row['uid'] . ': ') . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags($row['title']), 50)))) . '</span></div>';
+				$this->genTree_HTML .= $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />' . $versionLabel . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $row) . htmlspecialchars(($row['uid'] . ': ' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags($row['title']), 50))) . '</span></div>';
 			}
 			// Register various data for this item:
 			$this->page_idArray[$newID] = $row;
@@ -197,7 +197,7 @@ class DatabaseIntegrityCheck {
 			}
 			$this->recStats['doktype'][$row['doktype']]++;
 			// Create the HTML code prefix for recursive call:
-			$genHTML = ((($depthData . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, (('gfx/ol/' . $LN) . '.gif'), 'width="18" height="16"')) . ' align="top" alt="" />') . $versionLabel;
+			$genHTML = $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />' . $versionLabel;
 			// If all records should be shown, do so:
 			if ($this->genTree_includeRecords) {
 				foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
@@ -227,10 +227,10 @@ class DatabaseIntegrityCheck {
 	public function genTree_records($theID, $depthData, $table = '', $versions = FALSE) {
 		if ($versions) {
 			// Select all records from table pointing to this page:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(\TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields($table), $table, ('pid=-1 AND t3ver_oid=' . intval($theID)) . (!$this->genTree_includeDeleted ? \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) : ''));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(\TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields($table), $table, 'pid=-1 AND t3ver_oid=' . intval($theID) . (!$this->genTree_includeDeleted ? \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) : ''));
 		} else {
 			// Select all records from table pointing to this page:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(\TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields($table), $table, ('pid=' . intval($theID)) . (!$this->genTree_includeDeleted ? \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) : ''));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(\TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields($table), $table, 'pid=' . intval($theID) . (!$this->genTree_includeDeleted ? \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table) : ''));
 		}
 		// Traverse selected:
 		$a = 0;
@@ -238,7 +238,7 @@ class DatabaseIntegrityCheck {
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			// Prepare the additional label used in the HTML output in case of versions:
 			if ($versions) {
-				$versionLabel = ((('[v1.' . $row['t3ver_id']) . '; WS#') . $row['t3ver_wsid']) . ']';
+				$versionLabel = '[v1.' . $row['t3ver_id'] . '; WS#' . $row['t3ver_wsid'] . ']';
 			} else {
 				$versionLabel = '';
 			}
@@ -250,7 +250,7 @@ class DatabaseIntegrityCheck {
 				$PM = 'join';
 				$LN = $a == $c ? 'blank' : 'line';
 				$BTM = $a == $c ? 'bottom' : '';
-				$this->genTree_HTML .= (((((($depthData . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ((('gfx/ol/' . $PM) . $BTM) . '.gif'), 'width="18" height="16"')) . ' align="top" alt="" />') . $versionLabel) . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row, array('title' => $table))) . htmlspecialchars((($row['uid'] . ': ') . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row)))) . '</span></div>';
+				$this->genTree_HTML .= $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />' . $versionLabel . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row, array('title' => $table)) . htmlspecialchars(($row['uid'] . ': ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($table, $row))) . '</span></div>';
 			}
 			// Register various data for this item:
 			$this->rec_idArray[$table][$newID] = $row;
@@ -258,12 +258,12 @@ class DatabaseIntegrityCheck {
 			if ($row['deleted']) {
 				$this->recStats['deleted'][$table][$newID] = $newID;
 			}
-			if (($versions && $row['t3ver_count'] >= 1) && $row['t3ver_wsid'] == 0) {
+			if ($versions && $row['t3ver_count'] >= 1 && $row['t3ver_wsid'] == 0) {
 				$this->recStats['published_versions'][$table][$newID] = $newID;
 			}
 			// Select all versions of this record:
 			if ($this->genTree_includeVersions && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
-				$genHTML = (($depthData . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, (('gfx/ol/' . $LN) . '.gif'), 'width="18" height="16"')) . ' align="top" alt="" />';
+				$genHTML = $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />';
 				$this->genTree_records($newID, $genHTML, $table, TRUE);
 			}
 		}
@@ -311,7 +311,7 @@ class DatabaseIntegrityCheck {
 					// Remove preceding "-1," for non-versioned tables
 					$pid_list_tmp = preg_replace('/^\\-1,/', '', $pid_list_tmp);
 				}
-				$garbage = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,' . $GLOBALS['TCA'][$table]['ctrl']['label'], $table, ('pid NOT IN (' . $pid_list_tmp) . ')');
+				$garbage = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,' . $GLOBALS['TCA'][$table]['ctrl']['label'], $table, 'pid NOT IN (' . $pid_list_tmp . ')');
 				$lostIdList = array();
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($garbage)) {
 					$this->lRecords[$table][$row['uid']] = array(
@@ -339,7 +339,7 @@ class DatabaseIntegrityCheck {
 	 * @todo Define visibility
 	 */
 	public function fixLostRecord($table, $uid) {
-		if (((($table && $GLOBALS['TCA'][$table]) && $uid) && is_array($this->lRecords[$table][$uid])) && $GLOBALS['BE_USER']->user['admin']) {
+		if ($table && $GLOBALS['TCA'][$table] && $uid && is_array($this->lRecords[$table][$uid]) && $GLOBALS['BE_USER']->user['admin']) {
 			$updateFields = array();
 			$updateFields['pid'] = 0;
 			// If possible a lost record restored is hidden as default
@@ -371,11 +371,11 @@ class DatabaseIntegrityCheck {
 					// Remove preceding "-1," for non-versioned tables
 					$pid_list_tmp = preg_replace('/^\\-1,/', '', $pid_list_tmp);
 				}
-				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, ('pid IN (' . $pid_list_tmp) . ')');
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid IN (' . $pid_list_tmp . ')');
 				if ($count) {
 					$list[$table] = $count;
 				}
-				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, (('pid IN (' . $pid_list_tmp) . ')') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 'pid IN (' . $pid_list_tmp . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
 				if ($count) {
 					$list_n[$table] = $count;
 				}
@@ -402,7 +402,7 @@ class DatabaseIntegrityCheck {
 						$result[$table][] = $field;
 					}
 				}
-				if (((!$mode || $mode == 'db') && $config['config']['type'] == 'select') && $config['config']['foreign_table']) {
+				if ((!$mode || $mode == 'db') && $config['config']['type'] == 'select' && $config['config']['foreign_table']) {
 					$result[$table][] = $field;
 				}
 			}
@@ -426,7 +426,7 @@ class DatabaseIntegrityCheck {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			$cols = $GLOBALS['TCA'][$table]['columns'];
 			foreach ($cols as $field => $config) {
-				if (($config['config']['type'] == 'group' && $config['config']['internal_type'] == 'file') && $config['config']['uploadfolder'] == $uploadfolder) {
+				if ($config['config']['type'] == 'group' && $config['config']['internal_type'] == 'file' && $config['config']['uploadfolder'] == $uploadfolder) {
 					$result[] = array($table, $field);
 				}
 			}
@@ -476,9 +476,9 @@ class DatabaseIntegrityCheck {
 					if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal')) {
 						$fields = $GLOBALS['TYPO3_DB']->admin_get_fields($table);
 						$field = array_shift($fieldArr);
-						$cl_fl = ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N') || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R' ? $field . '<>0' : $field . '<>\'\'';
+						$cl_fl = $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R' ? $field . '<>0' : $field . '<>\'\'';
 						foreach ($fieldArr as $field) {
-							$cl_fl .= ($GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N') || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R' ? (' OR ' . $field) . '<>0' : (' OR ' . $field) . '<>\'\'';
+							$cl_fl .= $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'I' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'N' || $GLOBALS['TYPO3_DB']->MetaType($fields[$field]['type'], $table) == 'R' ? ' OR ' . $field . '<>0' : ' OR ' . $field . '<>\'\'';
 						}
 						unset($fields);
 					} else {
@@ -574,20 +574,20 @@ class DatabaseIntegrityCheck {
 			if (@is_dir($path)) {
 				$d = dir($path);
 				while ($entry = $d->read()) {
-					if (@is_file((($path . '/') . $entry))) {
+					if (@is_file(($path . '/' . $entry))) {
 						if (isset($fileArr[$entry])) {
 							if ($fileArr[$entry] > 1) {
 								$temp = $this->whereIsFileReferenced($folder, $entry);
 								$tempList = '';
 								foreach ($temp as $inf) {
-									$tempList .= ((((((('[' . $inf['table']) . '][') . $inf['uid']) . '][') . $inf['field']) . '] (pid:') . $inf['pid']) . ') - ';
+									$tempList .= '[' . $inf['table'] . '][' . $inf['uid'] . '][' . $inf['field'] . '] (pid:' . $inf['pid'] . ') - ';
 								}
 								$output['moreReferences'][] = array($path, $entry, $fileArr[$entry], $tempList);
 							}
 							unset($fileArr[$entry]);
 						} else {
 							// Contains workaround for direct references
-							if (!strstr($entry, 'index.htm') && !preg_match((('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/')) . '/'), $folder)) {
+							if (!strstr($entry, 'index.htm') && !preg_match(('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/'), $folder)) {
 								$output['noReferences'][] = array($path, $entry);
 							}
 						}
@@ -597,18 +597,18 @@ class DatabaseIntegrityCheck {
 				$tempCounter = 0;
 				foreach ($fileArr as $file => $value) {
 					// Workaround for direct file references
-					if (preg_match(('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/')) . '/', $folder)) {
-						$file = ($folder . '/') . $file;
+					if (preg_match('/^' . preg_quote($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], '/') . '/', $folder)) {
+						$file = $folder . '/' . $file;
 						$folder = '';
 						$path = substr(PATH_site, 0, -1);
 					}
 					$temp = $this->whereIsFileReferenced($folder, $file);
 					$tempList = '';
 					foreach ($temp as $inf) {
-						$tempList .= ((((((('[' . $inf['table']) . '][') . $inf['uid']) . '][') . $inf['field']) . '] (pid:') . $inf['pid']) . ') - ';
+						$tempList .= '[' . $inf['table'] . '][' . $inf['uid'] . '][' . $inf['field'] . '] (pid:' . $inf['pid'] . ') - ';
 					}
 					$tempCounter++;
-					$output['noFile'][(((substr($path, -3) . '_') . substr($file, 0, 3)) . '_') . $tempCounter] = array($path, $file, $tempList);
+					$output['noFile'][substr($path, -3) . '_' . substr($file, 0, 3) . '_' . $tempCounter] = array($path, $file, $tempList);
 				}
 			} else {
 				$output['error'][] = array($path);
@@ -631,7 +631,7 @@ class DatabaseIntegrityCheck {
 				$idlist = array_keys($dbArr);
 				$theList = implode(',', $idlist);
 				if ($theList) {
-					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, (('uid IN (' . $theList) . ')') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
+					$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', $table, 'uid IN (' . $theList . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
 					while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
 						if (isset($dbArr[$row['uid']])) {
 							unset($dbArr[$row['uid']]);
@@ -641,7 +641,7 @@ class DatabaseIntegrityCheck {
 					}
 					$GLOBALS['TYPO3_DB']->sql_free_result($mres);
 					foreach ($dbArr as $theId => $theC) {
-						$result .= ((((('There are ' . $theC) . ' records pointing to this missing or deleted record; [') . $table) . '][') . $theId) . ']<br />';
+						$result .= 'There are ' . $theC . ' records pointing to this missing or deleted record; [' . $table . '][' . $theId . ']<br />';
 					}
 				}
 			} else {
@@ -667,7 +667,7 @@ class DatabaseIntegrityCheck {
 			$table = $info[0];
 			$field = $info[1];
 			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
-			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery((('uid,pid,' . $GLOBALS['TCA'][$table]['ctrl']['label']) . ',') . $field, $table, (($field . ' LIKE \'%') . $GLOBALS['TYPO3_DB']->quoteStr($id, $table)) . '%\'');
+			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ',' . $field, $table, $field . ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($id, $table) . '%\'');
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
 				// Now this is the field, where the reference COULD come from. But we're not garanteed, so we must carefully examine the data.
 				$fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
@@ -701,7 +701,7 @@ class DatabaseIntegrityCheck {
 		foreach ($fileFields as $info) {
 			$table = $info[0];
 			$field = $info[1];
-			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery((('uid,pid,' . $GLOBALS['TCA'][$table]['ctrl']['label']) . ',') . $field, $table, (($field . ' LIKE \'%') . $GLOBALS['TYPO3_DB']->quoteStr($filename, $table)) . '%\'');
+			$mres = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,' . $GLOBALS['TCA'][$table]['ctrl']['label'] . ',' . $field, $table, $field . ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($filename, $table) . '%\'');
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($mres)) {
 				// Now this is the field, where the reference COULD come from.
 				// But we're not guaranteed, so we must carefully examine the data.

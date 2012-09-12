@@ -72,7 +72,7 @@ class ProcessedFileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepositor
 	 */
 	public function populateDataOfProcessedFileObject(\TYPO3\CMS\Core\Resource\ProcessedFile $processedFileObject) {
 		/** @var $GLOBALS['TYPO3_DB'] \TYPO3\CMS\Core\Database\DatabaseConnection */
-		$recordData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->table, ((('original=' . intval($processedFileObject->getOriginalFile()->getUid())) . ' AND checksum=') . $GLOBALS['TYPO3_DB']->fullQuoteStr($processedFileObject->calculateChecksum(), $this->table)) . ' AND deleted=0');
+		$recordData = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->table, 'original=' . intval($processedFileObject->getOriginalFile()->getUid()) . ' AND checksum=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($processedFileObject->calculateChecksum(), $this->table) . ' AND deleted=0');
 		// Update the properties if the data was found
 		if (is_array($recordData)) {
 			$processedFileObject->updateProperties($recordData);

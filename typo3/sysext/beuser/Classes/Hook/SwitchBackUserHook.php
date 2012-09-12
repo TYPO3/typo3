@@ -42,7 +42,7 @@ class SwitchBackUserHook {
 	 */
 	public function switchBack($params, $that) {
 		// Is a backend session handled?
-		if (($that->session_table !== 'be_sessions' || !$that->user['uid']) || !$that->user['ses_backuserid']) {
+		if ($that->session_table !== 'be_sessions' || !$that->user['uid'] || !$that->user['ses_backuserid']) {
 			return;
 		}
 		// @TODO: Move update functionality to Tx_Beuser_Domain_Repository_BackendUserSessionRepository
@@ -50,8 +50,8 @@ class SwitchBackUserHook {
 			'ses_userid' => $that->user['ses_backuserid'],
 			'ses_backuserid' => 0
 		);
-		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_sessions', (((('ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions')) . ' AND ses_name = ') . $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(), 'be_sessions')) . ' AND ses_userid=') . intval($GLOBALS['BE_USER']->user['uid']), $updateData);
-		$redirectUrl = ($GLOBALS['BACK_PATH'] . 'index.php') . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
+		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_sessions', 'ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($GLOBALS['BE_USER']->id, 'be_sessions') . ' AND ses_name = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName(), 'be_sessions') . ' AND ses_userid=' . intval($GLOBALS['BE_USER']->user['uid']), $updateData);
+		$redirectUrl = $GLOBALS['BACK_PATH'] . 'index.php' . ($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'] ? '' : '?commandLI=1');
 		\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
 	}
 

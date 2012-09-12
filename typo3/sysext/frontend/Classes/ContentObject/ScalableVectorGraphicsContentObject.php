@@ -57,30 +57,30 @@ class ScalableVectorGraphicsContentObject extends \TYPO3\CMS\Frontend\ContentObj
 		$value = isset($conf['value.']) ? $this->cObj->stdWrap($conf['value'], $conf['value.']) : $conf['value'];
 		$noscript = isset($conf['noscript.']) ? $this->cObj->stdWrap($conf['noscript'], $conf['noscript.']) : $conf['noscript'];
 		if ($src) {
-			$content = ((((((((((((('
+			$content = '
 
 					<!--[if IE]>
-					<object src="' . $src) . '" classid="image/svg+xml" width="') . $width) . '" height="') . $height) . '">
+					<object src="' . $src . '" classid="image/svg+xml" width="' . $width . '" height="' . $height . '">
 					<![endif]-->
 					<!--[if !IE]>-->
-					<object data="') . $src) . '" type="image/svg+xml" width="') . $width) . '" height="') . $height) . '">
+					<object data="' . $src . '" type="image/svg+xml" width="' . $width . '" height="' . $height . '">
 					<!--<![endif]-->
-					') . $noscript) . '
+					' . $noscript . '
 					</object>
 
 			';
 		} else {
-			$content = ((((((('
+			$content = '
 				<script type="image/svg+xml">
 					<svg xmlns="http://www.w3.org/2000/svg"
 					xmlns:xlink="http://www.w3.org/1999/xlink"
-					width="' . $width) . '"
-					height="') . $height) . '">
-			') . $value) . '
+					width="' . $width . '"
+					height="' . $height . '">
+			' . $value . '
 				</svg>
 				</script>
 				<noscript>
-			') . $noscript) . '
+			' . $noscript . '
 				</noscript>
 			';
 		}

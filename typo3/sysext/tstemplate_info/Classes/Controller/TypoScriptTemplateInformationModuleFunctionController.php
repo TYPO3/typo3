@@ -30,8 +30,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 			'id' => $this->pObj->id
 		);
 		$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
-		$ret .= ((((('<a href="' . htmlspecialchars(((($aHref . '&e[') . $field) . ']=1'))) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', TRUE)))) . '<strong>') . $label) . '&nbsp;&nbsp;</strong></a>';
-		$ret .= ('</td><td width="80%" class="bgColor4">' . $data) . '&nbsp;</td></tr>';
+		$ret .= '<a href="' . htmlspecialchars(($aHref . '&e[' . $field . ']=1')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editField', TRUE))) . '<strong>' . $label . '&nbsp;&nbsp;</strong></a>';
+		$ret .= '</td><td width="80%" class="bgColor4">' . $data . '&nbsp;</td></tr>';
 		return $ret;
 	}
 
@@ -48,33 +48,33 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 		$out = '';
 		$bgcol = $func ? ' class="bgColor4"' : '';
 		foreach ($arr as $k => $v) {
-			$path = ((PATH_site . $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder']) . '/') . $v;
+			$path = PATH_site . $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder'] . '/' . $v;
 			$functions = '';
 			if ($func) {
-				$functions = ((((('<td bgcolor="red" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('delete')) . ' <input type="checkbox" name="data[remove_resource][') . $k) . ']" value="') . htmlspecialchars($v)) . '" /></td>';
-				$functions .= ((((((('<td' . $bgcol) . ' nowrap="nowrap">') . $GLOBALS['LANG']->getLL('toTop')) . ' <input type="checkbox" name="data[totop_resource][') . $k) . ']" value="') . htmlspecialchars($v)) . '" /></td>';
-				$functions .= ('<td' . $bgcol) . ' nowrap="nowrap">';
+				$functions = '<td bgcolor="red" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('delete') . ' <input type="checkbox" name="data[remove_resource][' . $k . ']" value="' . htmlspecialchars($v) . '" /></td>';
+				$functions .= '<td' . $bgcol . ' nowrap="nowrap">' . $GLOBALS['LANG']->getLL('toTop') . ' <input type="checkbox" name="data[totop_resource][' . $k . ']" value="' . htmlspecialchars($v) . '" /></td>';
+				$functions .= '<td' . $bgcol . ' nowrap="nowrap">';
 				$fI = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($v);
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->textExtensions, $fI['fileext'])) {
 					$urlParameters = array(
 						'id' => $this->pObj->id
 					);
 					$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_ts', $urlParameters);
-					$functions .= ((('<a href="' . htmlspecialchars((($aHref . '&e[file]=') . rawurlencode($v)))) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', TRUE)))) . '</a>';
+					$functions .= '<a href="' . htmlspecialchars(($aHref . '&e[file]=' . rawurlencode($v))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:editFile', TRUE))) . '</a>';
 				}
 				$functions .= '</td>';
 			}
 			$thumb = \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode(array('resources' => $v), 'sys_template', 'resources', $GLOBALS['BACK_PATH'], '');
-			$out .= ((((((((((((('<tr><td' . $bgcol) . ' nowrap="nowrap">') . $v) . '&nbsp;&nbsp;</td><td') . $bgcol) . ' nowrap="nowrap">&nbsp;') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize($path))) . '&nbsp;</td>') . $functions) . '<td') . $bgcol) . '>') . trim($thumb)) . '</td></tr>';
+			$out .= '<tr><td' . $bgcol . ' nowrap="nowrap">' . $v . '&nbsp;&nbsp;</td><td' . $bgcol . ' nowrap="nowrap">&nbsp;' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize($path)) . '&nbsp;</td>' . $functions . '<td' . $bgcol . '>' . trim($thumb) . '</td></tr>';
 		}
 		if ($out) {
 			if ($func) {
-				$out = ('<table border="0" cellpadding="1" cellspacing="1" width="100%">' . $out) . '</table>';
-				$out = ('<table border="0" cellpadding="0" cellspacing="0">
-					<tr><td class="bgColor2">' . $out) . '<img src="clear.gif" width="465px" height="1px"></td></tr>
+				$out = '<table border="0" cellpadding="1" cellspacing="1" width="100%">' . $out . '</table>';
+				$out = '<table border="0" cellpadding="0" cellspacing="0">
+					<tr><td class="bgColor2">' . $out . '<img src="clear.gif" width="465px" height="1px"></td></tr>
 				</table>';
 			} else {
-				$out = ('<table border="0" cellpadding="0" cellspacing="0">' . $out) . '</table>';
+				$out = '<table border="0" cellpadding="0" cellspacing="0">' . $out . '</table>';
 			}
 		}
 		return $out;
@@ -98,12 +98,12 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 		foreach ($theResources as $k => $v) {
 			$fI = pathinfo($v);
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->textExtensions, strtolower($fI['extension']))) {
-				$path = ((PATH_site . $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder']) . '/') . $v;
+				$path = PATH_site . $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder'] . '/' . $v;
 				$thumb = \TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode(array('resources' => $v), 'sys_template', 'resources', $GLOBALS['BACK_PATH'], '');
-				$out .= ((((((((((((((('<tr><td' . $bgcol) . ' nowrap="nowrap">') . $v) . '&nbsp;&nbsp;</td><td') . $bgcol) . ' nowrap="nowrap">&nbsp;') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize($path))) . '&nbsp;</td><td') . $bgcol) . '>') . trim($thumb)) . '</td><td><input type="Checkbox" name="data[makecopy_resource][') . $k) . ']" value="') . htmlspecialchars($v)) . '"></td></tr>';
+				$out .= '<tr><td' . $bgcol . ' nowrap="nowrap">' . $v . '&nbsp;&nbsp;</td><td' . $bgcol . ' nowrap="nowrap">&nbsp;' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize($path)) . '&nbsp;</td><td' . $bgcol . '>' . trim($thumb) . '</td><td><input type="Checkbox" name="data[makecopy_resource][' . $k . ']" value="' . htmlspecialchars($v) . '"></td></tr>';
 			}
 		}
-		$out = $out ? ('<table border="0" cellpadding="0" cellspacing="0">' . $out) . '</table>' : '';
+		$out = $out ? '<table border="0" cellpadding="0" cellspacing="0">' . $out . '</table>' : '';
 		return $out;
 	}
 
@@ -204,7 +204,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 		if ($existTemplate) {
 			// Update template ?
 			$POST = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
-			if ((($POST['submit'] || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['submit_x']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['submit_y'])) || $POST['saveclose']) || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['saveclose_x']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['saveclose_y'])) {
+			if ($POST['submit'] || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['submit_x']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['submit_y']) || $POST['saveclose'] || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['saveclose_x']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['saveclose_y'])) {
 				// Set the data to be saved
 				$recData = array();
 				$alternativeFileName = array();
@@ -247,18 +247,18 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 				}
 				// If files has been edited:
 				if (is_array($edit)) {
-					if (($edit['filename'] && $tplRow['resources']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($tplRow['resources'], $edit['filename'])) {
+					if ($edit['filename'] && $tplRow['resources'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($tplRow['resources'], $edit['filename'])) {
 						// Check if there are resources, and that the file is in the resourcelist.
-						$path = ((PATH_site . $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder']) . '/') . $edit['filename'];
+						$path = PATH_site . $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder'] . '/' . $edit['filename'];
 						$fI = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($edit['filename']);
-						if ((@is_file($path) && \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path)) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->textExtensions, $fI['fileext'])) {
+						if (@is_file($path) && \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($path) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->textExtensions, $fI['fileext'])) {
 							// checks that have already been done.. Just to make sure
 							// @TODO: Check if the hardcorded value already has a config member, otherwise create one
 							// Checks that have already been done.. Just to make sure
 							if (filesize($path) < 30720) {
 								\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($path, $edit['file']);
 								$theOutput .= $this->pObj->doc->spacer(10);
-								$theOutput .= $this->pObj->doc->section(('<font color=red>' . $GLOBALS['LANG']->getLL('fileChanged')) . '</font>', sprintf($GLOBALS['LANG']->getLL('resourceUpdated'), $edit['filename']), 0, 0, 0, 1);
+								$theOutput .= $this->pObj->doc->section('<font color=red>' . $GLOBALS['LANG']->getLL('fileChanged') . '</font>', sprintf($GLOBALS['LANG']->getLL('resourceUpdated'), $edit['filename']), 0, 0, 0, 1);
 								// Clear cache - the file has probably affected the template setup
 								// @TODO: Check if the edited file really had something to do with cached data and prevent this clearing if possible!
 								/** @var $tce \TYPO3\CMS\Core\DataHandler\DataHandler */
@@ -284,7 +284,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 					}
 				}
 			}
-			$content = (((\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_template', $tplRow) . '<strong>') . htmlspecialchars($tplRow['title'])) . '</strong>') . htmlspecialchars((trim($tplRow['sitetitle']) ? (' (' . $tplRow['sitetitle']) . ')' : ''));
+			$content = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_template', $tplRow) . '<strong>' . htmlspecialchars($tplRow['title']) . '</strong>' . htmlspecialchars((trim($tplRow['sitetitle']) ? ' (' . $tplRow['sitetitle'] . ')' : ''));
 			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('templateInformation'), $content, 0, 1);
 			if ($manyTemplatesMenu) {
 				$theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
@@ -292,47 +292,47 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 			$theOutput .= $this->pObj->doc->spacer(10);
 			$numberOfRows = 35;
 			// If abort pressed, nothing should be edited:
-			if ((($POST['abort'] || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['abort_x']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['abort_y'])) || $POST['saveclose']) || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['saveclose_x']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['saveclose_y'])) {
+			if ($POST['abort'] || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['abort_x']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['abort_y']) || $POST['saveclose'] || \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['saveclose_x']) && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($POST['saveclose_y'])) {
 				unset($e);
 			}
 			if ($e['title']) {
-				$outCode = ((('<input type="Text" name="data[title]" value="' . htmlspecialchars($tplRow['title'])) . '"') . $this->pObj->doc->formWidth()) . '>';
+				$outCode = '<input type="Text" name="data[title]" value="' . htmlspecialchars($tplRow['title']) . '"' . $this->pObj->doc->formWidth() . '>';
 				$outCode .= '<input type="Hidden" name="e[title]" value="1">';
 				$theOutput .= $this->pObj->doc->spacer(15);
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('title'), $outCode, TRUE);
 			}
 			if ($e['sitetitle']) {
-				$outCode = ((('<input type="Text" name="data[sitetitle]" value="' . htmlspecialchars($tplRow['sitetitle'])) . '"') . $this->pObj->doc->formWidth()) . '>';
+				$outCode = '<input type="Text" name="data[sitetitle]" value="' . htmlspecialchars($tplRow['sitetitle']) . '"' . $this->pObj->doc->formWidth() . '>';
 				$outCode .= '<input type="Hidden" name="e[sitetitle]" value="1">';
 				$theOutput .= $this->pObj->doc->spacer(15);
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('sitetitle'), $outCode, TRUE);
 			}
 			if ($e['description']) {
-				$outCode = ((('<textarea name="data[description]" rows="5" class="fixed-font enable-tab"' . $this->pObj->doc->formWidthText(48, '', '')) . '>') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($tplRow['description'])) . '</textarea>';
+				$outCode = '<textarea name="data[description]" rows="5" class="fixed-font enable-tab"' . $this->pObj->doc->formWidthText(48, '', '') . '>' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($tplRow['description']) . '</textarea>';
 				$outCode .= '<input type="Hidden" name="e[description]" value="1">';
 				$theOutput .= $this->pObj->doc->spacer(15);
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('description'), $outCode, TRUE);
 			}
 			if ($e['constants']) {
-				$outCode = ((((('<textarea name="data[constants]" rows="' . $numberOfRows) . '" wrap="off" class="fixed-font enable-tab"') . $this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off')) . ' class="fixed-font">') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($tplRow['constants'])) . '</textarea>';
+				$outCode = '<textarea name="data[constants]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off') . ' class="fixed-font">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($tplRow['constants']) . '</textarea>';
 				$outCode .= '<input type="Hidden" name="e[constants]" value="1">';
 				// Display "Include TypoScript file content?" checkbox
 				$outCode .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[constants]=1', 'id="checkIncludeTypoScriptFileContent"');
-				$outCode .= ('<label for="checkIncludeTypoScriptFileContent">' . $GLOBALS['LANG']->getLL('includeTypoScriptFileContent')) . '</label><br />';
+				$outCode .= '<label for="checkIncludeTypoScriptFileContent">' . $GLOBALS['LANG']->getLL('includeTypoScriptFileContent') . '</label><br />';
 				$theOutput .= $this->pObj->doc->spacer(15);
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('constants'), '', TRUE);
 				$theOutput .= $this->pObj->doc->sectionEnd() . $outCode;
 			}
 			if ($e['file']) {
-				$path = ((PATH_site . $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder']) . '/') . $e[file];
+				$path = PATH_site . $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['uploadfolder'] . '/' . $e[file];
 				$fI = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($e[file]);
 				if (@is_file($path) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->pObj->textExtensions, $fI['fileext'])) {
 					if (filesize($path) < $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['max_size'] * 1024) {
 						$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($path);
-						$outCode = (($GLOBALS['LANG']->getLL('file') . ' <strong>') . $e[file]) . '</strong><BR>';
-						$outCode .= ((((('<textarea name="edit[file]" rows="' . $numberOfRows) . '" wrap="off" class="fixed-font enable-tab"') . $this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off')) . ' class="fixed-font">') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($fileContent)) . '</textarea>';
-						$outCode .= ('<input type="Hidden" name="edit[filename]" value="' . $e[file]) . '">';
-						$outCode .= ('<input type="Hidden" name="e[file]" value="' . htmlspecialchars($e[file])) . '">';
+						$outCode = $GLOBALS['LANG']->getLL('file') . ' <strong>' . $e[file] . '</strong><BR>';
+						$outCode .= '<textarea name="edit[file]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off') . ' class="fixed-font">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($fileContent) . '</textarea>';
+						$outCode .= '<input type="Hidden" name="edit[filename]" value="' . $e[file] . '">';
+						$outCode .= '<input type="Hidden" name="e[file]" value="' . htmlspecialchars($e[file]) . '">';
 						$theOutput .= $this->pObj->doc->spacer(15);
 						$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('editResource'), '');
 						$theOutput .= $this->pObj->doc->sectionEnd() . $outCode;
@@ -340,23 +340,23 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 						$theOutput .= $this->pObj->doc->spacer(15);
 						$fileToBig = sprintf($GLOBALS['LANG']->getLL('filesizeExceeded'), $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['max_size']);
 						$filesizeNotAllowed = sprintf($GLOBALS['LANG']->getLL('notAllowed'), $GLOBALS['TCA']['sys_template']['columns']['resources']['config']['max_size']);
-						$theOutput .= $this->pObj->doc->section(('<font color=red>' . $fileToBig) . '</font>', $filesizeNotAllowed, 0, 0, 0, 1);
+						$theOutput .= $this->pObj->doc->section('<font color=red>' . $fileToBig . '</font>', $filesizeNotAllowed, 0, 0, 0, 1);
 					}
 				}
 			}
 			if ($e['config']) {
-				$outCode = ((((('<textarea name="data[config]" rows="' . $numberOfRows) . '" wrap="off" class="fixed-font enable-tab"') . $this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off')) . ' class="fixed-font">') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($tplRow['config'])) . '</textarea>';
+				$outCode = '<textarea name="data[config]" rows="' . $numberOfRows . '" wrap="off" class="fixed-font enable-tab"' . $this->pObj->doc->formWidthText(48, 'width:98%;height:70%', 'off') . ' class="fixed-font">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($tplRow['config']) . '</textarea>';
 				$outCode .= '<input type="Hidden" name="e[config]" value="1">';
 				// Display "Include TypoScript file content?" checkbox
 				$outCode .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[includeTypoScriptFileContent]', $this->pObj->MOD_SETTINGS['includeTypoScriptFileContent'], '', '&e[config]=1', 'id="checkIncludeTypoScriptFileContent"');
-				$outCode .= ('<label for="checkIncludeTypoScriptFileContent">' . $GLOBALS['LANG']->getLL('includeTypoScriptFileContent')) . '</label><br />';
+				$outCode .= '<label for="checkIncludeTypoScriptFileContent">' . $GLOBALS['LANG']->getLL('includeTypoScriptFileContent') . '</label><br />';
 				if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('tsconfig_help')) {
 					$url = $BACK_PATH . 'wizard_tsconfig.php?mode=tsref';
 					$params = array(
 						'formName' => 'editForm',
 						'itemName' => 'data[config]'
 					);
-					$outCode .= (((((('<a href="#" onClick="vHWin=window.open(\'' . $url) . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', array('P' => $params))) . '\',\'popUp') . $md5ID) . '\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-typoscript-documentation-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:tsRef', TRUE)))) . '</a>';
+					$outCode .= '<a href="#" onClick="vHWin=window.open(\'' . $url . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', array('P' => $params)) . '\',\'popUp' . $md5ID . '\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-typoscript-documentation-open', array('title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:tsRef', TRUE))) . '</a>';
 				}
 				$theOutput .= $this->pObj->doc->spacer(15);
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('setup'), '', TRUE);
@@ -369,9 +369,9 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 			$outCode .= $this->tableRow($GLOBALS['LANG']->getLL('description'), nl2br(htmlspecialchars($tplRow['description'])), 'description');
 			$outCode .= $this->tableRow($GLOBALS['LANG']->getLL('constants'), sprintf($GLOBALS['LANG']->getLL('editToView'), trim($tplRow[constants]) ? count(explode(LF, $tplRow[constants])) : 0), 'constants');
 			$outCode .= $this->tableRow($GLOBALS['LANG']->getLL('setup'), sprintf($GLOBALS['LANG']->getLL('editToView'), trim($tplRow[config]) ? count(explode(LF, $tplRow[config])) : 0), 'config');
-			$outCode = ('<table class="t3-table-info">' . $outCode) . '</table>';
+			$outCode = '<table class="t3-table-info">' . $outCode . '</table>';
 			// Edit all icon:
-			$outCode .= (((('<br /><a href="#" onClick="' . \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick((((rawurlencode('&createExtension=0') . '&amp;edit[sys_template][') . $tplRow['uid']) . ']=edit'), $BACK_PATH, '')) . '"><strong>') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->getLL('editTemplateRecord')))) . $GLOBALS['LANG']->getLL('editTemplateRecord')) . '</strong></a>';
+			$outCode .= '<br /><a href="#" onClick="' . \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick((rawurlencode('&createExtension=0') . '&amp;edit[sys_template][' . $tplRow['uid'] . ']=edit'), $BACK_PATH, '') . '"><strong>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open', array('title' => $GLOBALS['LANG']->getLL('editTemplateRecord'))) . $GLOBALS['LANG']->getLL('editTemplateRecord') . '</strong></a>';
 			$theOutput .= $this->pObj->doc->section('', $outCode);
 			// hook	after compiling the output
 			if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/tstemplate_info/class.tx_tstemplateinfo.php']['postOutputProcessingHook'])) {

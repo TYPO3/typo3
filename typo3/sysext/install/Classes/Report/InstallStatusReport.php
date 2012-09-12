@@ -22,7 +22,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 		$reports = array();
 		$reportMethods = explode(',', $this->reportList);
 		foreach ($reportMethods as $reportMethod) {
-			$reports[$reportMethod] = $this->{('get' . $reportMethod) . 'Status'}();
+			$reports[$reportMethod] = $this->{'get' . $reportMethod . 'Status'}();
 		}
 		return $reports;
 	}
@@ -116,7 +116,7 @@ class InstallStatusReport implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			$value = $GLOBALS['LANG']->getLL('status_updateIncomplete');
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 			$url = 'install/index.php?redirect_url=index.php' . urlencode('?TYPO3_INSTALL[type]=update');
-			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_update'), ('<a href="' . $url) . '">', '</a>');
+			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_update'), '<a href="' . $url . '">', '</a>');
 		}
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->sL('LLL:EXT:install/report/locallang.xml:status_remainingUpdates'), $value, $message, $severity);
 	}

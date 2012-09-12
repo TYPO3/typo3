@@ -275,7 +275,7 @@ final class Commands {
 	 * @return string
 	 */
 	static public function getDomainName($uid) {
-		$whereClause = $GLOBALS['TYPO3_DB']->quoteStr((('pid=' . intval($uid)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_domain')) . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_domain'), 'sys_domain');
+		$whereClause = $GLOBALS['TYPO3_DB']->quoteStr('pid=' . intval($uid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_domain') . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields('sys_domain'), 'sys_domain');
 		$domain = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('domainName', 'sys_domain', $whereClause, '', 'sorting');
 		return htmlspecialchars($domain['domainName']);
 	}
@@ -311,7 +311,7 @@ final class Commands {
 			$text = $record['nav_title'];
 		}
 		if (trim($text) === '') {
-			$visibleText = ('[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.no_title', TRUE)) . ']';
+			$visibleText = '[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.no_title', TRUE) . ']';
 		} else {
 			$visibleText = $text;
 		}
@@ -319,7 +319,7 @@ final class Commands {
 		$suffix = '';
 		if (self::$addDomainName) {
 			$domain = self::getDomainName($record['uid']);
-			$suffix = $domain !== '' ? (' [' . $domain) . ']' : '';
+			$suffix = $domain !== '' ? ' [' . $domain . ']' : '';
 		}
 		$qtip = str_replace(' - ', '<br />', htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::titleAttribForPages($record, '', FALSE)));
 		$prefix = '';
@@ -338,7 +338,7 @@ final class Commands {
 				$stat .= \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $_params, $this);
 			}
 		}
-		$prefix .= htmlspecialchars(self::$addIdAsPrefix ? ('[' . $record['uid']) . '] ' : '');
+		$prefix .= htmlspecialchars(self::$addIdAsPrefix ? '[' . $record['uid'] . '] ' : '');
 		$subNode->setEditableText($text);
 		$subNode->setText(htmlspecialchars($visibleText), $field, $prefix, htmlspecialchars($suffix) . $stat);
 		$subNode->setQTip($qtip);
@@ -351,7 +351,7 @@ final class Commands {
 		if (!$subNode->canCreateNewPages() || intval($record['t3ver_state']) === 2) {
 			$subNode->setIsDropTarget(FALSE);
 		}
-		if ((!$subNode->canBeEdited() || !$subNode->canBeRemoved()) || intval($record['t3ver_state']) === 2) {
+		if (!$subNode->canBeEdited() || !$subNode->canBeRemoved() || intval($record['t3ver_state']) === 2) {
 			$subNode->setDraggable(FALSE);
 		}
 		return $subNode;

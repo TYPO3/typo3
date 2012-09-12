@@ -135,7 +135,7 @@ class IndexerService implements \TYPO3\CMS\Core\SingletonInterface {
 		// Check for an error during the execution and throw an exception
 		$error = $GLOBALS['TYPO3_DB']->sql_error();
 		if ($error) {
-			throw new \RuntimeException(('Error during file indexing: "' . $error) . '"', 1314455642);
+			throw new \RuntimeException('Error during file indexing: "' . $error . '"', 1314455642);
 		}
 		// Signal slot AFTER the file was indexed
 		$this->emitPostFileIndexSignal($fileObject, $fileInfo);

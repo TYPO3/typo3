@@ -144,17 +144,17 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 		$this->ext_makeHelpInformationForCategory($cat);
 		$printFields = trim($this->ext_printFields($theConstants, $cat));
 		$content = '';
-		$content .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS(((('
+		$content .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('
 			function uFormUrl(aname) {
-				document.' . $this->ext_CEformName) . '.action = "') . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript()) . '#"+aname;
+				document.' . $this->ext_CEformName . '.action = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript() . '#"+aname;
 			}
 		');
 		if ($addFormTag) {
-			$content .= ((((('<form action="' . htmlspecialchars(($script ? $script : \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript()))) . '" name="') . $this->ext_CEformName) . '" method="post" enctype="') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype']) . '">';
+			$content .= '<form action="' . htmlspecialchars(($script ? $script : \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript())) . '" name="' . $this->ext_CEformName . '" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">';
 		}
 		$content .= $addFields;
 		$content .= $printFields;
-		$content .= ((('<input type="submit" name="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsfe.xml:update', TRUE)) . '" id="configuration-submit-') . htmlspecialchars($extKey)) . '" />';
+		$content .= '<input type="submit" name="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_tsfe.xml:update', TRUE) . '" id="configuration-submit-' . htmlspecialchars($extKey) . '" />';
 		$example = $this->ext_displayExample();
 		$content .= $example ? '<hr/>' . $example : '';
 		return $content;
@@ -167,8 +167,8 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @todo Define visibility
 	 */
 	public function ext_displayExample() {
-		if (($this->helpConfig['imagetag'] || $this->helpConfig['description']) || $this->helpConfig['header']) {
-			$out = ((('<div align="center">' . $this->helpConfig['imagetag']) . '</div><BR>') . ($this->helpConfig['description'] ? implode(explode('//', $this->helpConfig['description']), '<BR>') . '<BR>' : '')) . ($this->helpConfig['bulletlist'] ? ('<ul><li>' . implode(explode('//', $this->helpConfig['bulletlist']), '<li>')) . '</ul>' : '<BR>');
+		if ($this->helpConfig['imagetag'] || $this->helpConfig['description'] || $this->helpConfig['header']) {
+			$out = '<div align="center">' . $this->helpConfig['imagetag'] . '</div><BR>' . ($this->helpConfig['description'] ? implode(explode('//', $this->helpConfig['description']), '<BR>') . '<BR>' : '') . ($this->helpConfig['bulletlist'] ? '<ul><li>' . implode(explode('//', $this->helpConfig['bulletlist']), '<li>') . '</ul>' : '<BR>');
 		}
 		return $out;
 	}
@@ -192,7 +192,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @todo Define visibility
 	 */
 	public function ext_getKeyImage($key) {
-		return ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->ext_backPath, (('gfx/rednumbers/' . $key) . '.gif'), '')) . ' hspace="2" align="top" alt="" />';
+		return '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->ext_backPath, ('gfx/rednumbers/' . $key . '.gif'), '') . ' hspace="2" align="top" alt="" />';
 	}
 
 	/**
@@ -206,7 +206,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 		$iFile = $this->ext_localGfxPrefix . $imgConf;
 		$tFile = $this->ext_localWebGfxPrefix . $imgConf;
 		$imageInfo = @getImagesize($iFile);
-		return ((('<img src="' . $tFile) . '" ') . $imageInfo[3]) . '>';
+		return '<img src="' . $tFile . '" ' . $imageInfo[3] . '>';
 	}
 
 	/**
@@ -217,7 +217,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @todo Define visibility
 	 */
 	public function ext_fNandV($params) {
-		$fN = ('data[' . $params['name']) . ']';
+		$fN = 'data[' . $params['name'] . ']';
 		$fV = ($params['value'] = isset($this->ext_realValues[$params['name']]) ? $this->ext_realValues[$params['name']] : $params['default_value']);
 		$reg = array();
 		// Values entered from the constantsedit cannot be constants!
@@ -237,7 +237,7 @@ class ConfigurationForm extends \TYPO3\CMS\Core\TypoScript\ExtendedTemplateServi
 	 * @todo Define visibility
 	 */
 	public function ext_putValueInConf($key, $var) {
-		$this->ext_incomingValues[$key] = ($key . '=') . $var;
+		$this->ext_incomingValues[$key] = $key . '=' . $var;
 	}
 
 	/**

@@ -219,7 +219,7 @@ abstract class AbstractConditionMatcher {
 			// "webkit532.5 chrome4.1 safari532.5"
 			$all = '';
 			foreach ($browserInfo['all'] as $key => $value) {
-				$all .= ($key . $value) . ' ';
+				$all .= $key . $value . ' ';
 			}
 			foreach ($values as $test) {
 				if (stripos($all, $test) !== FALSE) {
@@ -530,7 +530,7 @@ abstract class AbstractConditionMatcher {
 				$regex = $needle;
 			} else {
 				$needle = str_replace(array('*', '?'), array('###MANY###', '###ONE###'), $needle);
-				$regex = ('/^' . preg_quote($needle, '/')) . '$/';
+				$regex = '/^' . preg_quote($needle, '/') . '$/';
 				// Replace the marker with .* to match anything (wildcard)
 				$regex = str_replace(array('###MANY###', '###ONE###'), array('.*', '.'), $regex);
 			}

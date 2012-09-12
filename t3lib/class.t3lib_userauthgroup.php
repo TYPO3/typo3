@@ -294,17 +294,17 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	public function modAccess($conf, $exitOnError) {
 		if (!t3lib_BEfunc::isModuleSetInTBE_MODULES($conf['name'])) {
 			if ($exitOnError) {
-				throw new RuntimeException(('Fatal Error: This module "' . $conf['name']) . '" is not enabled in TBE_MODULES', 1294586446);
+				throw new RuntimeException('Fatal Error: This module "' . $conf['name'] . '" is not enabled in TBE_MODULES', 1294586446);
 			}
 			return FALSE;
 		}
 		// Workspaces check:
 		if (t3lib_extMgm::isLoaded('workspaces') && $conf['workspaces']) {
-			if (($this->workspace === 0 && t3lib_div::inList($conf['workspaces'], 'online') || $this->workspace === -1 && t3lib_div::inList($conf['workspaces'], 'offline')) || $this->workspace > 0 && t3lib_div::inList($conf['workspaces'], 'custom')) {
+			if ($this->workspace === 0 && t3lib_div::inList($conf['workspaces'], 'online') || $this->workspace === -1 && t3lib_div::inList($conf['workspaces'], 'offline') || $this->workspace > 0 && t3lib_div::inList($conf['workspaces'], 'custom')) {
 
 			} else {
 				if ($exitOnError) {
-					throw new RuntimeException(('Workspace Error: This module "' . $conf['name']) . '" is not available under the current workspace', 1294586447);
+					throw new RuntimeException('Workspace Error: This module "' . $conf['name'] . '" is not available under the current workspace', 1294586447);
 				}
 				return FALSE;
 			}
@@ -346,11 +346,11 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			}
 			$perms = intval($perms);
 			// Make sure it's integer.
-			$str = (((((((((((' (' . '(pages.perms_everybody & ') . $perms) . ' = ') . $perms) . ')') . ' OR (pages.perms_userid = ') . $this->user['uid']) . ' AND pages.perms_user & ') . $perms) . ' = ') . $perms) . ')';
+			$str = ' (' . '(pages.perms_everybody & ' . $perms . ' = ' . $perms . ')' . ' OR (pages.perms_userid = ' . $this->user['uid'] . ' AND pages.perms_user & ' . $perms . ' = ' . $perms . ')';
 			// User
 			if ($this->groupList) {
 				// Group (if any is set)
-				$str .= (((((' OR (pages.perms_groupid in (' . $this->groupList) . ') AND pages.perms_group & ') . $perms) . ' = ') . $perms) . ')';
+				$str .= ' OR (pages.perms_groupid in (' . $this->groupList . ') AND pages.perms_group & ' . $perms . ' = ' . $perms . ')';
 			}
 			$str .= ')';
 			// ****************
@@ -383,7 +383,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			return 31;
 		}
 		$out = 0;
-		if (((((isset($row['perms_userid']) && isset($row['perms_user'])) && isset($row['perms_groupid'])) && isset($row['perms_group'])) && isset($row['perms_everybody'])) && isset($this->groupList)) {
+		if (isset($row['perms_userid']) && isset($row['perms_user']) && isset($row['perms_groupid']) && isset($row['perms_group']) && isset($row['perms_everybody']) && isset($this->groupList)) {
 			if ($this->user['uid'] == $row['perms_userid']) {
 				$out |= $row['perms_user'];
 			}
@@ -480,7 +480,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			return FALSE;
 		}
 		// Initialize:
-		$testValue = ((($table . ':') . $field) . ':') . $value;
+		$testValue = $table . ':' . $field . ':' . $value;
 		$out = TRUE;
 		// Checking value:
 		switch ((string) $authMode) {
@@ -616,24 +616,24 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 					if (!$this->checkLanguageAccess($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
 						$this->errorMsg = 'ERROR: Language was not allowed.';
 						return FALSE;
-					} elseif (($checkFullLanguageAccess && $idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']] == 0) && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
+					} elseif ($checkFullLanguageAccess && $idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']] == 0 && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
 						$this->errorMsg = 'ERROR: Related/affected language was not allowed.';
 						return FALSE;
 					}
 				} else {
-					$this->errorMsg = ('ERROR: The "languageField" field named "' . $GLOBALS['TCA'][$table]['ctrl']['languageField']) . '" was not found in testing record!';
+					$this->errorMsg = 'ERROR: The "languageField" field named "' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '" was not found in testing record!';
 					return FALSE;
 				}
-			} elseif ((isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) && $checkFullLanguageAccess) && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
+			} elseif (isset($GLOBALS['TCA'][$table]['ctrl']['transForeignTable']) && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
 				return FALSE;
 			}
 			// Checking authMode fields:
 			if (is_array($GLOBALS['TCA'][$table]['columns'])) {
 				foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldValue) {
 					if (isset($idOrRow[$fieldName])) {
-						if (($fieldValue['config']['type'] == 'select' && $fieldValue['config']['authMode']) && !strcmp($fieldValue['config']['authMode_enforce'], 'strict')) {
+						if ($fieldValue['config']['type'] == 'select' && $fieldValue['config']['authMode'] && !strcmp($fieldValue['config']['authMode_enforce'], 'strict')) {
 							if (!$this->checkAuthMode($table, $fieldName, $idOrRow[$fieldName], $fieldValue['config']['authMode'])) {
-								$this->errorMsg = ((((('ERROR: authMode "' . $fieldValue['config']['authMode']) . '" failed for field "') . $fieldName) . '" with value "') . $idOrRow[$fieldName]) . '" evaluated';
+								$this->errorMsg = 'ERROR: authMode "' . $fieldValue['config']['authMode'] . '" failed for field "' . $fieldName . '" with value "' . $idOrRow[$fieldName] . '" evaluated';
 								return FALSE;
 							}
 						}
@@ -648,7 +648,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 						return FALSE;
 					}
 				} else {
-					$this->errorMsg = ('ERROR: The "editLock" field named "' . $GLOBALS['TCA'][$table]['ctrl']['editlock']) . '" was not found in testing record!';
+					$this->errorMsg = 'ERROR: The "editLock" field named "' . $GLOBALS['TCA'][$table]['ctrl']['editlock'] . '" was not found in testing record!';
 					return FALSE;
 				}
 			}
@@ -809,7 +809,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	public function workspaceAllowLiveRecordsInPID($pid, $table) {
 		// Always for Live workspace AND if live-edit is enabled and tables are completely without versioning it is ok as well.
-		if (($this->workspace === 0 || $this->workspaceRec['live_edit'] && !$GLOBALS['TCA'][$table]['ctrl']['versioningWS']) || $GLOBALS['TCA'][$table]['ctrl']['versioningWS_alwaysAllowLiveEdit']) {
+		if ($this->workspace === 0 || $this->workspaceRec['live_edit'] && !$GLOBALS['TCA'][$table]['ctrl']['versioningWS'] || $GLOBALS['TCA'][$table]['ctrl']['versioningWS_alwaysAllowLiveEdit']) {
 			// OK to create for this table.
 			return 2;
 		} else {
@@ -853,7 +853,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		// Auto-creation of version: In offline workspace, test if versioning is
 		// enabled and look for workspace version of input record.
 		// If there is no versionized record found we will create one and save to that.
-		if (((($this->workspace !== 0 && !$this->workspaceRec['disable_autocreate']) && $GLOBALS['TCA'][$table]['ctrl']['versioningWS']) && $recpid >= 0) && !t3lib_BEfunc::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid')) {
+		if ($this->workspace !== 0 && !$this->workspaceRec['disable_autocreate'] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $recpid >= 0 && !t3lib_BEfunc::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid')) {
 			// There must be no existing version of this record in workspace.
 			return TRUE;
 		} elseif ($this->workspaceRec['disable_autocreate']) {
@@ -881,7 +881,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			$stat = $this->checkWorkspaceCurrent();
 			// Check if custom staging is activated
 			$workspaceRec = t3lib_BEfunc::getRecord('sys_workspace', $stat['uid']);
-			if (($workspaceRec['custom_stages'] > 0 && $stage !== 0) && $stage !== -10) {
+			if ($workspaceRec['custom_stages'] > 0 && $stage !== 0 && $stage !== -10) {
 				// Get custom stage record
 				$workspaceStageRec = t3lib_BEfunc::getRecord('sys_workspace_stage', $stage);
 				// Check if the user is responsible for the current stage
@@ -902,7 +902,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				}
 			} else {
 				$memberStageLimit = $this->workspaceRec['review_stage_edit'] ? 1 : 0;
-				if (($stage <= $memberStageLimit && $stat['_ACCESS'] === 'member' || $stage <= 1 && $stat['_ACCESS'] === 'reviewer') || $stat['_ACCESS'] === 'owner') {
+				if ($stage <= $memberStageLimit && $stat['_ACCESS'] === 'member' || $stage <= 1 && $stat['_ACCESS'] === 'reviewer' || $stat['_ACCESS'] === 'owner') {
 					return TRUE;
 				}
 			}
@@ -1162,10 +1162,10 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 					admPanel.enable.all = 1
 				';
 				if (t3lib_extMgm::isLoaded('sys_note')) {
-					$this->TSdataArray[] = ((('
+					$this->TSdataArray[] = '
 							// Setting defaults for sys_note author / email...
-						TCAdefaults.sys_note.author = ' . $this->user['realName']) . '
-						TCAdefaults.sys_note.email = ') . $this->user['email']) . '
+						TCAdefaults.sys_note.author = ' . $this->user['realName'] . '
+						TCAdefaults.sys_note.email = ' . $this->user['email'] . '
 					';
 				}
 			}
@@ -1183,7 +1183,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			// Check include lines.
 			$this->TSdataArray = t3lib_TSparser::checkIncludeLines_array($this->TSdataArray);
 			// Imploding with "[global]" will make sure that non-ended confinements with braces are ignored.
-			$this->userTS_text = implode((LF . '[GLOBAL]') . LF, $this->TSdataArray);
+			$this->userTS_text = implode(LF . '[GLOBAL]' . LF, $this->TSdataArray);
 			if ($GLOBALS['TYPO3_CONF_VARS']['BE']['TSconfigConditions'] && !$this->userTS_dontGetCached) {
 				// Perform TS-Config parsing with condition matching
 				$parseObj = t3lib_div::makeInstance('t3lib_TSparser_TSconfig');
@@ -1215,7 +1215,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			// The lists are cleaned for duplicates
 			$this->groupData['webmounts'] = t3lib_div::uniqueList($this->dataLists['webmount_list']);
 			$this->groupData['pagetypes_select'] = t3lib_div::uniqueList($this->dataLists['pagetypes_select']);
-			$this->groupData['tables_select'] = t3lib_div::uniqueList(($this->dataLists['tables_modify'] . ',') . $this->dataLists['tables_select']);
+			$this->groupData['tables_select'] = t3lib_div::uniqueList($this->dataLists['tables_modify'] . ',' . $this->dataLists['tables_select']);
 			$this->groupData['tables_modify'] = t3lib_div::uniqueList($this->dataLists['tables_modify']);
 			$this->groupData['non_exclude_fields'] = t3lib_div::uniqueList($this->dataLists['non_exclude_fields']);
 			$this->groupData['explicit_allowdeny'] = t3lib_div::uniqueList($this->dataLists['explicit_allowdeny']);
@@ -1234,7 +1234,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				$webmounts = explode(',', $this->groupData['webmounts']);
 				// Explode mounts
 				// Selecting all webmounts with permission clause for reading
-				$MProws = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', (('deleted=0 AND uid IN (' . $this->groupData['webmounts']) . ') AND ') . $this->getPagePermsClause(1), '', '', '', 'uid');
+				$MProws = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', 'deleted=0 AND uid IN (' . $this->groupData['webmounts'] . ') AND ' . $this->getPagePermsClause(1), '', '', '', 'uid');
 				foreach ($webmounts as $idx => $mountPointUid) {
 					// If the mount ID is NOT found among selected pages, unset it:
 					if ($mountPointUid > 0 && !isset($MProws[$mountPointUid])) {
@@ -1261,8 +1261,8 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 */
 	public function fetchGroups($grList, $idList = '') {
 		// Fetching records of the groups in $grList (which are not blocked by lockedToDomain either):
-		$lockToDomain_SQL = (' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . t3lib_div::getIndpEnv('HTTP_HOST')) . '\')';
-		$whereSQL = (('deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $grList) . ')') . $lockToDomain_SQL;
+		$lockToDomain_SQL = ' AND (lockToDomain=\'\' OR lockToDomain IS NULL OR lockToDomain=\'' . t3lib_div::getIndpEnv('HTTP_HOST') . '\')';
+		$whereSQL = 'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $grList . ')' . $lockToDomain_SQL;
 		// Hook for manipulation of the WHERE sql sentence which controls which BE-groups are included
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['fetchGroupQuery'] as $classRef) {
@@ -1291,12 +1291,12 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 					// Make integer list
 					$theList = implode(',', t3lib_div::intExplode(',', $row['subgroup']));
 					// Call recursively, pass along list of already processed groups so they are not recursed again.
-					$this->fetchGroups($theList, ($idList . ',') . $uid);
+					$this->fetchGroups($theList, $idList . ',' . $uid);
 				}
 				// Add the group uid, current list, TSconfig to the internal arrays.
 				$this->includeGroupArray[] = $uid;
 				$this->includeHierarchy[] = $idList;
-				$this->TSdataArray[] = $this->addTScomment((((('Group "' . $row['title']) . '" [') . $row['uid']) . '] TSconfig field:')) . $row['TSconfig'];
+				$this->TSdataArray[] = $this->addTScomment(('Group "' . $row['title'] . '" [' . $row['uid'] . '] TSconfig field:')) . $row['TSconfig'];
 				// Mount group database-mounts
 				if (($this->user['options'] & 1) == 1) {
 					$this->dataLists['webmount_list'] .= ',' . $row['db_mountpoints'];
@@ -1379,11 +1379,11 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				if ($userHomeStorageUid > 0) {
 					$storageObject = $storageRepository->findByUid($userHomeStorageUid);
 					// First try and mount with [uid]_[username]
-					$userHomeFilterIdentifier = ((($userHomeFilter . $this->user['uid']) . '_') . $this->user['username']) . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
+					$userHomeFilterIdentifier = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
 					$didMount = $storageObject->injectFileMount($userHomeFilterIdentifier);
 					// If that failed, try and mount with only [uid]
 					if (!$didMount) {
-						$userHomeFilterIdentifier = ((($userHomeFilter . $this->user['uid']) . '_') . $this->user['username']) . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
+						$userHomeFilterIdentifier = $userHomeFilter . $this->user['uid'] . '_' . $this->user['username'] . $GLOBALS['TYPO3_CONF_VARS']['BE']['userUploadDir'];
 						$storageObject->injectFileMount($userHomeFilterIdentifier);
 					}
 					$this->fileStorages[$storageObject->getUid()] = $storageObject;
@@ -1407,7 +1407,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			$this->dataLists['filemount_list'] = t3lib_div::uniqueList($this->dataLists['filemount_list']);
 			if ($this->dataLists['filemount_list']) {
 				$orderBy = $GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby'] ? $GLOBALS['TYPO3_DB']->stripOrderBy($GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby']) : 'sorting';
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', ('deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $this->dataLists['filemount_list']) . ')', '', $orderBy);
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', 'deleted=0 AND hidden=0 AND pid=0 AND uid IN (' . $this->dataLists['filemount_list'] . ')', '', $orderBy);
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$storageObject = $storageRepository->findByUid($row['base']);
 					$storageObject->injectFileMount($row['path'], $row);
@@ -1686,7 +1686,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 					// Alternative title?
 					$name = $title ? $title : $altTitle;
 					// Adds the filemount. The same filemount with same name, type and path cannot be set up twice because of the hash string used as key.
-					$this->groupData['filemounts'][md5(((($name . '|') . $path) . '|') . $type)] = array('name' => $name, 'path' => $path, 'type' => $type);
+					$this->groupData['filemounts'][md5($name . '|' . $path . '|' . $type)] = array('name' => $name, 'path' => $path, 'type' => $type);
 					// Return TRUE - went well, success!
 					return 1;
 				}
@@ -1721,7 +1721,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		$out = $delimiter . LF;
 		$lines = t3lib_div::trimExplode(LF, $str);
 		foreach ($lines as $v) {
-			$out .= ('# ' . $v) . LF;
+			$out .= '# ' . $v . LF;
 		}
 		$out .= $delimiter . LF;
 		return $out;
@@ -1795,7 +1795,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				$this->fileStorages = array();
 				$storageRepository = t3lib_div::makeInstance('\TYPO3\CMS\Core\Resource\StorageRepository');
 				// Fetching all filemounts from the workspace
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', ('deleted = 0 AND hidden = 0 AND pid = 0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($storageFiltersInWorkspace)) . ')');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_filemounts', 'deleted = 0 AND hidden = 0 AND pid = 0 AND uid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($storageFiltersInWorkspace) . ')');
 				// add every filemount of this workspace record
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					// get the added entry, and check if it was in the users' original filemounts
@@ -1831,7 +1831,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 				break;
 			default:
 				if (t3lib_extMgm::isLoaded('workspaces')) {
-					$wsRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, 'sys_workspace', ('pid=0 AND uid=' . intval($wsRec)) . t3lib_BEfunc::deleteClause('sys_workspace'), '', 'title');
+					$wsRec = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, 'sys_workspace', 'pid=0 AND uid=' . intval($wsRec) . t3lib_BEfunc::deleteClause('sys_workspace'), '', 'title');
 				}
 				break;
 			}
@@ -1919,7 +1919,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		if (strcmp($this->workspace, $this->user['workspace_id'])) {
 			$this->user['workspace_id'] = $this->workspace;
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_users', 'uid=' . intval($this->user['uid']), array('workspace_id' => $this->user['workspace_id']));
-			$this->simplelog(('User changed workspace to "' . $this->workspace) . '"');
+			$this->simplelog('User changed workspace to "' . $this->workspace . '"');
 		}
 	}
 
@@ -2019,7 +2019,7 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 	 * @todo Define visibility
 	 */
 	public function simplelog($message, $extKey = '', $error = 0) {
-		return $this->writelog(4, 0, $error, 0, ($extKey ? ('[' . $extKey) . '] ' : '') . $message, array());
+		return $this->writelog(4, 0, $error, 0, ($extKey ? '[' . $extKey . '] ' : '') . $message, array());
 	}
 
 	/**
@@ -2046,16 +2046,16 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_log', 'type=255 AND action=3 AND error<>0 AND tstamp>' . intval($theTimeBack), '', 'tstamp');
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) > $max) {
 				// OK, so there were more than the max allowed number of login failures - so we will send an email then.
-				$subject = ('TYPO3 Login Failure Warning (at ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . ')';
-				$email_body = ((((('There have been some attempts (' . $GLOBALS['TYPO3_DB']->sql_num_rows($res)) . ') to login at the TYPO3
-site "') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '" (') . t3lib_div::getIndpEnv('HTTP_HOST')) . ').
+				$subject = 'TYPO3 Login Failure Warning (at ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . ')';
+				$email_body = 'There have been some attempts (' . $GLOBALS['TYPO3_DB']->sql_num_rows($res) . ') to login at the TYPO3
+site "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" (' . t3lib_div::getIndpEnv('HTTP_HOST') . ').
 
 This is a dump of the failures:
 
 ';
 				while ($testRows = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$theData = unserialize($testRows['log_data']);
-					$email_body .= (date((($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']), $testRows['tstamp']) . ':  ') . @sprintf($testRows['details'], ('' . $theData[0]), ('' . $theData[1]), ('' . $theData[2]));
+					$email_body .= date(($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] . ' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']), $testRows['tstamp']) . ':  ' . @sprintf($testRows['details'], ('' . $theData[0]), ('' . $theData[1]), ('' . $theData[2]));
 					$email_body .= LF;
 				}
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);

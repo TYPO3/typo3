@@ -146,10 +146,10 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function makeAndClearExtensionDir($extensionkey, $pathType = 'Local') {
 		$paths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnInstallPaths();
 		$path = $paths[$pathType];
-		if ((!$path || !is_dir($path)) || !$extensionkey) {
+		if (!$path || !is_dir($path) || !$extensionkey) {
 			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(sprintf('ERROR: The extension install path "%s" was no directory!', $path), 1337280417);
 		} else {
-			$extDirPath = ($path . $extensionkey) . '/';
+			$extDirPath = $path . $extensionkey . '/';
 			if (is_dir($extDirPath)) {
 				$this->removeDirectory($extDirPath);
 			}
@@ -245,7 +245,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function createZipFileFromExtension($extension) {
 		$extensionPath = $this->getAbsoluteExtensionPath($extension);
-		$fileName = ((PATH_site . 'typo3temp/') . $extension) . '.zip';
+		$fileName = PATH_site . 'typo3temp/' . $extension . '.zip';
 		$zip = new \ZipArchive();
 		$zip->open($fileName, \ZipArchive::CREATE);
 		$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($extensionPath));
@@ -283,7 +283,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 						\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($extensionDir . $dir);
 					}
 					if (strlen(trim($file)) > 0) {
-						$return = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile((($extensionDir . $dir) . '/') . $file, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)));
+						$return = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($extensionDir . $dir . '/' . $file, zip_entry_read($zipEntry, zip_entry_filesize($zipEntry)));
 						if ($return === FALSE) {
 							throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Could not write file ' . $file, 1344691048);
 						}
@@ -310,7 +310,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		header('Content-Type: application/zip');
 		header('Content-Length: ' . filesize($fileName));
-		header(('Content-Disposition: attachment; filename="' . $downloadName) . '.zip"');
+		header('Content-Disposition: attachment; filename="' . $downloadName . '.zip"');
 		readfile($fileName);
 		unlink($fileName);
 		die;
@@ -331,7 +331,7 @@ class FileHandlingUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		header('Content-Type: text');
 		header('Content-Length: ' . filesize($fileName));
-		header(('Content-Disposition: attachment; filename="' . $downloadName) . '.sql"');
+		header('Content-Disposition: attachment; filename="' . $downloadName . '.sql"');
 		readfile($fileName);
 		unlink($fileName);
 		die;

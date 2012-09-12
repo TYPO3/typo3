@@ -83,7 +83,7 @@ class ModulesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	protected function getSubModuleData($moduleName, array $subModulesInfo = array()) {
 		$subModulesData = array();
 		foreach ($subModulesInfo as $subModuleName => $subModuleInfo) {
-			$subModuleKey = (($moduleName . '_') . $subModuleName) . '_tab';
+			$subModuleKey = $moduleName . '_' . $subModuleName . '_tab';
 			$subModuleData = array();
 			$subModuleData['name'] = $subModuleName;
 			$subModuleData['icon'] = substr($GLOBALS['LANG']->moduleLabels['tabs_images'][$subModuleKey], strlen(PATH_site));

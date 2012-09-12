@@ -59,17 +59,17 @@ class PhpFrontend extends \TYPO3\CMS\Core\Cache\Frontend\StringFrontend {
 	 */
 	public function set($entryIdentifier, $sourceCode, array $tags = array(), $lifetime = NULL) {
 		if (!$this->isValidEntryIdentifier($entryIdentifier)) {
-			throw new \InvalidArgumentException(('"' . $entryIdentifier) . '" is not a valid cache entry identifier.', 1264023823);
+			throw new \InvalidArgumentException('"' . $entryIdentifier . '" is not a valid cache entry identifier.', 1264023823);
 		}
 		if (!is_string($sourceCode)) {
 			throw new \TYPO3\CMS\Core\Cache\Exception\InvalidDataException('The given source code is not a valid string.', 1264023824);
 		}
 		foreach ($tags as $tag) {
 			if (!$this->isValidTag($tag)) {
-				throw new \InvalidArgumentException(('"' . $tag) . '" is not a valid tag for a cache entry.', 1264023825);
+				throw new \InvalidArgumentException('"' . $tag . '" is not a valid tag for a cache entry.', 1264023825);
 			}
 		}
-		$sourceCode = ((('<?php' . chr(10)) . $sourceCode) . chr(10)) . '#';
+		$sourceCode = '<?php' . chr(10) . $sourceCode . chr(10) . '#';
 		$this->backend->set($entryIdentifier, $sourceCode, $tags, $lifetime);
 	}
 

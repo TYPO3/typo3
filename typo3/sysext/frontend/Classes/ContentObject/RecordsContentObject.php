@@ -88,13 +88,13 @@ class RecordsContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 					if (!$dontCheckPid) {
 						$row = $this->cObj->checkPid($row['pid']) ? $row : '';
 					}
-					if ($row && !$GLOBALS['TSFE']->recordRegister[(($val['table'] . ':') . $val['id'])]) {
+					if ($row && !$GLOBALS['TSFE']->recordRegister[($val['table'] . ':' . $val['id'])]) {
 						$renderObjName = $conf['conf.'][$val['table']] ? $conf['conf.'][$val['table']] : '<' . $val['table'];
 						$renderObjKey = $conf['conf.'][$val['table']] ? 'conf.' . $val['table'] : '';
 						$renderObjConf = $conf['conf.'][$val['table'] . '.'];
 						$this->cObj->currentRecordNumber++;
 						$cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
-						$GLOBALS['TSFE']->currentRecord = ($val['table'] . ':') . $val['id'];
+						$GLOBALS['TSFE']->currentRecord = $val['table'] . ':' . $val['id'];
 						$this->cObj->lastChanged($row['tstamp']);
 						$cObj->start($row, $val['table']);
 						$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);

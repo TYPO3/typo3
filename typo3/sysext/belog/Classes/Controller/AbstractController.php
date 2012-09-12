@@ -221,7 +221,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 	 * @return void
 	 */
 	protected function configurePropertyMapperForDateTimeFormat(\TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration $propertyMapperDate) {
-		$propertyMapperDate->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT, ($this->settings['dateFormat'] . ' ') . $this->settings['timeFormat']);
+		$propertyMapperDate->setTypeConverterOption('TYPO3\\CMS\\Extbase\\Property\\TypeConverter\\DateTimeConverter', \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT, $this->settings['dateFormat'] . ' ' . $this->settings['timeFormat']);
 	}
 
 	/**
@@ -239,12 +239,12 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		// List of groups, key is gr-'uid'
 		$groups = \TYPO3\CMS\Backend\Utility\BackendUtility::getGroupNames();
 		foreach ($groups as $group) {
-			$userGroupArray['gr-' . $group['uid']] = (\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('group', 'Belog') . ' ') . $group['title'];
+			$userGroupArray['gr-' . $group['uid']] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('group', 'Belog') . ' ' . $group['title'];
 		}
 		// List of users, key is us-'uid'
 		$users = \TYPO3\CMS\Backend\Utility\BackendUtility::getUserNames();
 		foreach ($users as $user) {
-			$userGroupArray['us-' . $user['uid']] = (\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('user', 'Belog') . ' ') . $user['username'];
+			$userGroupArray['us-' . $user['uid']] = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('user', 'Belog') . ' ' . $user['username'];
 		}
 		return $userGroupArray;
 	}
@@ -265,7 +265,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		$workspaces = $this->objectManager->get('TYPO3\\CMS\\Belog\\Domain\\Repository\\WorkspaceRepository')->findAll();
 		/** @var $workspace \TYPO3\CMS\Belog\Domain\Model\Workspace */
 		foreach ($workspaces as $workspace) {
-			$workspaceArray[$workspace->getUid()] = ($workspace->getUid() . ': ') . $workspace->getTitle();
+			$workspaceArray[$workspace->getUid()] = $workspace->getUid() . ': ' . $workspace->getTitle();
 		}
 		return $workspaceArray;
 	}
@@ -317,17 +317,17 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 		case self::TIMEFRAME_THISWEEK:
 			// This week
 			$week = (date('w') ?: 7) - 1;
-			$startTime = mktime(0, 0, 0) - ($week * 3600) * 24;
+			$startTime = mktime(0, 0, 0) - $week * 3600 * 24;
 			break;
 		case self::TIMEFRAME_LASTWEEK:
 			// Last week
 			$week = (date('w') ?: 7) - 1;
-			$startTime = mktime(0, 0, 0) - (($week + 7) * 3600) * 24;
-			$endTime = mktime(0, 0, 0) - ($week * 3600) * 24;
+			$startTime = mktime(0, 0, 0) - ($week + 7) * 3600 * 24;
+			$endTime = mktime(0, 0, 0) - $week * 3600 * 24;
 			break;
 		case self::TIMEFRAME_LASTSEVENDAYS:
 			// Last 7 days
-			$startTime = mktime(0, 0, 0) - (7 * 3600) * 24;
+			$startTime = mktime(0, 0, 0) - 7 * 3600 * 24;
 			break;
 		case self::TIMEFRAME_THISMONTH:
 			// This month
@@ -340,7 +340,7 @@ abstract class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\Acti
 			break;
 		case self::TIMEFRAME_LAST31DAYS:
 			// Last 31 days
-			$startTime = mktime(0, 0, 0) - (31 * 3600) * 24;
+			$startTime = mktime(0, 0, 0) - 31 * 3600 * 24;
 			break;
 		case self::TIMEFRAME_CUSTOM:
 			if ($constraint->getManualDateStart() instanceof \DateTime) {

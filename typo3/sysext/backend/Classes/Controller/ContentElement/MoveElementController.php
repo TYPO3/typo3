@@ -109,9 +109,9 @@ class MoveElementController {
 			$hline .= \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle($this->table, $elRow, TRUE);
 			// Make-copy checkbox (clicking this will reload the page with the GET var makeCopy set differently):
 			$hline .= $this->doc->spacer(5);
-			$onClick = ('window.location.href=\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('makeCopy' => !$this->makeCopy))) . '\';';
+			$onClick = 'window.location.href=\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('makeCopy' => !$this->makeCopy)) . '\';';
 			$hline .= $this->doc->spacer(5);
-			$hline .= (((((('<input type="hidden" name="makeCopy" value="0" />' . '<input type="checkbox" name="makeCopy" id="makeCopy" value="1"') . ($this->makeCopy ? ' checked="checked"' : '')) . ' onclick="') . htmlspecialchars($onClick)) . '" /> <label for="makeCopy" class="t3-label-valign-top">') . $GLOBALS['LANG']->getLL('makeCopy', 1)) . '</label>';
+			$hline .= '<input type="hidden" name="makeCopy" value="0" />' . '<input type="checkbox" name="makeCopy" id="makeCopy" value="1"' . ($this->makeCopy ? ' checked="checked"' : '') . ' onclick="' . htmlspecialchars($onClick) . '" /> <label for="makeCopy" class="t3-label-valign-top">' . $GLOBALS['LANG']->getLL('makeCopy', 1) . '</label>';
 			// Add the header-content to the module content:
 			$this->content .= $this->doc->section('', $hline, FALSE, TRUE);
 			$this->content .= $this->doc->spacer(20);
@@ -130,9 +130,9 @@ class MoveElementController {
 						$pidPageInfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($pageinfo['pid'], $this->perms_clause);
 						if (is_array($pidPageInfo)) {
 							if ($GLOBALS['BE_USER']->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-								$code .= (((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => intval($pageinfo['pid']), 'moveUid' => $this->moveUid)))) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-up')) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE)) . '</a><br />';
+								$code .= '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('uid' => intval($pageinfo['pid']), 'moveUid' => $this->moveUid))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-up') . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
 							} else {
-								$code .= (\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE)) . '<br />';
+								$code .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
 							}
 						}
 					}
@@ -177,12 +177,12 @@ class MoveElementController {
 						$pidPageInfo = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($pageinfo['pid'], $this->perms_clause);
 						if (is_array($pidPageInfo)) {
 							if ($GLOBALS['BE_USER']->isInWebMount($pidPageInfo['pid'], $this->perms_clause)) {
-								$code .= (((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array(
+								$code .= '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array(
 									'uid' => intval($pageinfo['pid']),
 									'moveUid' => $this->moveUid
-								)))) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-up')) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE)) . '</a><br />';
+								))) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-up') . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '</a><br />';
 							} else {
-								$code .= (\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE)) . '<br />';
+								$code .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pidPageInfo) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $pidPageInfo, TRUE) . '<br />';
 							}
 						}
 					}
@@ -234,7 +234,7 @@ class MoveElementController {
 			}
 			if ($this->R_URI) {
 				// Back
-				$buttons['back'] = ((((('<a href="' . htmlspecialchars($this->R_URI)) . '" class="typo3-goBack" title="') . $GLOBALS['LANG']->getLL('goBack', TRUE)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back')) . '</a>';
+				$buttons['back'] = '<a href="' . htmlspecialchars($this->R_URI) . '" class="typo3-goBack" title="' . $GLOBALS['LANG']->getLL('goBack', TRUE) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . '</a>';
 			}
 		}
 		return $buttons;

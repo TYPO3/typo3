@@ -55,7 +55,7 @@ class TsConfigParser extends \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser 
 		$this->type = $type;
 		$this->id = $id;
 		$this->rootLine = $rootLine;
-		$hash = md5(($type . ':') . $TStext);
+		$hash = md5($type . ':' . $TStext);
 		$cachedContent = \TYPO3\CMS\Backend\Utility\BackendUtility::getHash($hash, 0);
 		if ($cachedContent) {
 			$storedData = unserialize($cachedContent);

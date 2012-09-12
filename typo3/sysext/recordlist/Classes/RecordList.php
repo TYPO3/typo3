@@ -280,7 +280,7 @@ class RecordList {
 		$dblist->clipObj->endClipboard();
 		// This flag will prevent the clipboard panel in being shown.
 		// It is set, if the clickmenu-layer is active AND the extended view is not enabled.
-		$dblist->dontShowClipControlPanels = (($GLOBALS['CLIENT']['FORMSTYLE'] && !$this->MOD_SETTINGS['bigControlPanel']) && $dblist->clipObj->current == 'normal') && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
+		$dblist->dontShowClipControlPanels = $GLOBALS['CLIENT']['FORMSTYLE'] && !$this->MOD_SETTINGS['bigControlPanel'] && $dblist->clipObj->current == 'normal' && !$this->modTSconfig['properties']['showClipControlPanelsDespiteOfCMlayers'];
 		// If there is access to the page, then render the list contents and set up the document template object:
 		if ($access) {
 			// Deleting records...:
@@ -317,7 +317,7 @@ class RecordList {
 			$dblist->writeBottom();
 			$listUrl = substr($dblist->listURL(), strlen($GLOBALS['BACK_PATH']));
 			// Add JavaScript functions to the page:
-			$this->doc->JScode = $this->doc->wrapScriptTags(((((((((('
+			$this->doc->JScode = $this->doc->wrapScriptTags('
 				function jumpToUrl(URL) {	//
 					window.location.href = URL;
 					return false;
@@ -340,10 +340,10 @@ class RecordList {
 						top.content.nav_frame.refresh_nav();
 					}
 				}
-				' . $this->doc->redirectUrls($listUrl)) . '
-				') . $dblist->CBfunctions()) . '
+				' . $this->doc->redirectUrls($listUrl) . '
+				' . $dblist->CBfunctions() . '
 				function editRecords(table,idList,addParams,CBflag) {	//
-					window.location.href="') . $GLOBALS['BACK_PATH']) . 'alt_doc.php?returnUrl=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '&edit["+table+"]["+idList+"]=edit"+addParams;
+					window.location.href="' . $GLOBALS['BACK_PATH'] . 'alt_doc.php?returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '&edit["+table+"]["+idList+"]=edit"+addParams;
 				}
 				function editList(table,idList) {	//
 					var list="";
@@ -365,7 +365,7 @@ class RecordList {
 					return list ? list : idList;
 				}
 
-				if (top.fsMod) top.fsMod.recentIds["web"] = ') . intval($this->id)) . ';
+				if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id) . ';
 			');
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
@@ -373,7 +373,7 @@ class RecordList {
 		// access
 		// Begin to compile the whole page, starting out with page header:
 		$this->body = $this->doc->header($this->pageinfo['title']);
-		$this->body .= ('<form action="' . htmlspecialchars($dblist->listURL())) . '" method="post" name="dblistForm">';
+		$this->body .= '<form action="' . htmlspecialchars($dblist->listURL()) . '" method="post" name="dblistForm">';
 		$this->body .= $dblist->HTMLcode;
 		$this->body .= '<input type="hidden" name="cmd_table" /><input type="hidden" name="cmd" /></form>';
 		// If a listing was produced, create the page footer with search form etc:
@@ -393,31 +393,31 @@ class RecordList {
 			// Add "display bigControlPanel" checkbox:
 			if ($this->modTSconfig['properties']['enableDisplayBigControlPanel'] === 'selectable') {
 				$this->body .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLargeControl"');
-				$this->body .= ('<label for="checkLargeControl">' . \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('largeControl', TRUE))) . '</label><br />';
+				$this->body .= '<label for="checkLargeControl">' . \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('largeControl', TRUE)) . '</label><br />';
 			}
 			// Add "clipboard" checkbox:
 			if ($this->modTSconfig['properties']['enableClipBoard'] === 'selectable') {
 				if ($dblist->showClipboard) {
 					$this->body .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', $this->table ? '&table=' . $this->table : '', 'id="checkShowClipBoard"');
-					$this->body .= ('<label for="checkShowClipBoard">' . \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('showClipBoard', TRUE))) . '</label><br />';
+					$this->body .= '<label for="checkShowClipBoard">' . \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('showClipBoard', TRUE)) . '</label><br />';
 				}
 			}
 			// Add "localization view" checkbox:
 			if ($this->modTSconfig['properties']['enableLocalizationView'] === 'selectable') {
 				$this->body .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[localization]', $this->MOD_SETTINGS['localization'], '', $this->table ? '&table=' . $this->table : '', 'id="checkLocalization"');
-				$this->body .= ('<label for="checkLocalization">' . \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('localization', TRUE))) . '</label><br />';
+				$this->body .= '<label for="checkLocalization">' . \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_options', $GLOBALS['LANG']->getLL('localization', TRUE)) . '</label><br />';
 			}
 			$this->body .= '
 						</form>
 					</div>';
 			// Printing clipboard if enabled:
 			if ($this->MOD_SETTINGS['clipBoard'] && $dblist->showClipboard) {
-				$this->body .= ('<div class="db_list-dashboard">' . $dblist->clipObj->printClipboard()) . '</div>';
+				$this->body .= '<div class="db_list-dashboard">' . $dblist->clipObj->printClipboard() . '</div>';
 			}
 			// Search box:
 			if (!$this->modTSconfig['properties']['disableSearchBox']) {
 				$sectionTitle = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('xMOD_csh_corebe', 'list_searchbox', $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.search', TRUE));
-				$this->body .= ('<div class="db_list-searchbox">' . $this->doc->section($sectionTitle, $dblist->getSearchBox(), FALSE, TRUE, FALSE, TRUE)) . '</div>';
+				$this->body .= '<div class="db_list-searchbox">' . $this->doc->section($sectionTitle, $dblist->getSearchBox(), FALSE, TRUE, FALSE, TRUE) . '</div>';
 			}
 			// Additional footer content
 			$footerContentHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['recordlist/mod1/index.php']['drawFooterHook'];

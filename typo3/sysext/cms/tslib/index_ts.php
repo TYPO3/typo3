@@ -235,7 +235,7 @@ $TSFE->storeSessionData();
 $TYPO3_MISC['microtime_end'] = microtime(TRUE);
 $TSFE->setParseTime();
 if ($TSFE->isOutputting() && (!empty($TSFE->TYPO3_CONF_VARS['FE']['debug']) || !empty($TSFE->config['config']['debug']))) {
-	$TSFE->content .= ((LF . '<!-- Parsetime: ') . $TSFE->scriptParseTime) . 'ms -->';
+	$TSFE->content .= LF . '<!-- Parsetime: ' . $TSFE->scriptParseTime . 'ms -->';
 }
 // Check JumpUrl
 $TSFE->jumpurl();
@@ -250,7 +250,7 @@ $TT->pull();
 // beLoginLinkIPList
 echo $TSFE->beLoginLinkIPList();
 // Admin panel
-if ((is_object($BE_USER) && $BE_USER->isAdminPanelVisible()) && $TSFE->isBackendUserLoggedIn()) {
+if (is_object($BE_USER) && $BE_USER->isAdminPanelVisible() && $TSFE->isBackendUserLoggedIn()) {
 	$TSFE->content = str_ireplace('</head>', $BE_USER->adminPanel->getAdminPanelHeaderData() . '</head>', $TSFE->content);
 	$TSFE->content = str_ireplace('</body>', $BE_USER->displayAdminPanel() . '</body>', $TSFE->content);
 }
@@ -258,7 +258,7 @@ if ($sendTSFEContent) {
 	echo $TSFE->content;
 }
 // Debugging Output
-if ((isset($error) && is_object($error)) && @is_callable(array($error, 'debugOutput'))) {
+if (isset($error) && is_object($error) && @is_callable(array($error, 'debugOutput'))) {
 	$error->debugOutput();
 }
 if (TYPO3_DLOG) {

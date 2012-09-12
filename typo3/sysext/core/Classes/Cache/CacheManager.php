@@ -87,7 +87,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 	public function setCacheConfigurations(array $cacheConfigurations) {
 		foreach ($cacheConfigurations as $identifier => $configuration) {
 			if (!is_array($configuration)) {
-				throw new \InvalidArgumentException(('The cache configuration for cache "' . $identifier) . '" was not an array as expected.', 1231259656);
+				throw new \InvalidArgumentException('The cache configuration for cache "' . $identifier . '" was not an array as expected.', 1231259656);
 			}
 			$this->cacheConfigurations[$identifier] = $configuration;
 		}
@@ -104,7 +104,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 	public function registerCache(\TYPO3\CMS\Core\Cache\Frontend\FrontendInterface $cache) {
 		$identifier = $cache->getIdentifier();
 		if (isset($this->caches[$identifier])) {
-			throw new \TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException(('A cache with identifier "' . $identifier) . '" has already been registered.', 1203698223);
+			throw new \TYPO3\CMS\Core\Cache\Exception\DuplicateIdentifierException('A cache with identifier "' . $identifier . '" has already been registered.', 1203698223);
 		}
 		$this->caches[$identifier] = $cache;
 	}
@@ -119,7 +119,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getCache($identifier) {
 		if ($this->hasCache($identifier) === FALSE) {
-			throw new \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException(('A cache with identifier "' . $identifier) . '" does not exist.', 1203699034);
+			throw new \TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException('A cache with identifier "' . $identifier . '" does not exist.', 1203699034);
 		}
 		if (!isset($this->caches[$identifier])) {
 			$this->createCache($identifier);
@@ -195,7 +195,7 @@ class CacheManager implements \TYPO3\CMS\Core\SingletonInterface {
 				$pathAndFilename = str_replace(FLOW3_PATH_PACKAGES, '', $pathAndFilename);
 				$matches = array();
 				if (preg_match('/[^\\/]+\\/(.+)\\/(Classes|Tests)\\/(.+)\\.php/', $pathAndFilename, $matches) === 1) {
-					$classNameWithUnderscores = str_replace('/', '_', (($matches[1] . '_') . ($matches[2] === 'Tests' ? 'Tests_' : '')) . $matches[3]);
+					$classNameWithUnderscores = str_replace('/', '_', $matches[1] . '_' . ($matches[2] === 'Tests' ? 'Tests_' : '') . $matches[3]);
 					$classNameWithUnderscores = str_replace('.', '_', $classNameWithUnderscores);
 					$modifiedClassNamesWithUnderscores[$classNameWithUnderscores] = TRUE;
 					// If an aspect was modified, the whole code cache needs to be flushed, so keep track of them:

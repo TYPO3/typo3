@@ -86,21 +86,21 @@ class TsconfigWizard {
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->form = '<form action="" name="editform">';
 		// Adding Styles (should go into stylesheet?)
-		$this->doc->inDocStylesArray[] = ((((((('
-			A:link {text-decoration: bold; color: ' . $this->doc->hoverColor) . ';}
-			A:visited {text-decoration: bold; color: ') . $this->doc->hoverColor) . ';}
-			A:active {text-decoration: bold; color: ') . $this->doc->hoverColor) . ';}
-			A:hover {color: ') . $this->doc->bgColor2) . '}
+		$this->doc->inDocStylesArray[] = '
+			A:link {text-decoration: bold; color: ' . $this->doc->hoverColor . ';}
+			A:visited {text-decoration: bold; color: ' . $this->doc->hoverColor . ';}
+			A:active {text-decoration: bold; color: ' . $this->doc->hoverColor . ';}
+			A:hover {color: ' . $this->doc->bgColor2 . '}
 		';
-		$this->doc->JScode .= $this->doc->wrapScriptTags(((((((((((((((((((((((('
+		$this->doc->JScode .= $this->doc->wrapScriptTags('
 			function checkReference_name() {	// Checks if the input field containing the name exists in the document
-				if (window.opener && window.opener.document && window.opener.document.' . $this->P['formName']) . ' && window.opener.document.') . $this->P['formName']) . '["') . $this->P['itemName']) . '"] ) {
-					return window.opener.document.') . $this->P['formName']) . '["') . $this->P['itemName']) . '"];
+				if (window.opener && window.opener.document && window.opener.document.' . $this->P['formName'] . ' && window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemName'] . '"] ) {
+					return window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemName'] . '"];
 				}
 			}
 			function checkReference_value() {	// Checks if the input field containing the value exists in the document
-				if (window.opener && window.opener.document && window.opener.document.') . $this->P['formName']) . ' && window.opener.document.') . $this->P['formName']) . '["') . $this->P['itemValue']) . '"] ) {
-					return window.opener.document.') . $this->P['formName']) . '["') . $this->P['itemValue']) . '"];
+				if (window.opener && window.opener.document && window.opener.document.' . $this->P['formName'] . ' && window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemValue'] . '"] ) {
+					return window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemValue'] . '"];
 				}
 			}
 
@@ -124,7 +124,7 @@ class TsconfigWizard {
 							nameField.value=field+"\\n"+nameField.value;
 						}
 					}
-					') . $update) . '
+					' . $update . '
 					window.opener.focus();
 				}
 				close();
@@ -193,7 +193,7 @@ class TsconfigWizard {
 	 * @return	[type]		...
 	 */
 			function jump(show, objString) {
-				window.location.href = "') . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('show' => '', 'objString' => ''))) . '&show="+show+"&objString="+objString;
+				window.location.href = "' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('show' => '', 'objString' => '')) . '&show="+show+"&objString="+objString;
 			}
 		');
 		// Start the page:
@@ -211,14 +211,14 @@ class TsconfigWizard {
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('tsprop'), $this->browseTSprop($this->mode, $this->show), 0, 1);
 		// Adding link to TSref:
 		if ($this->mode == 'tsref') {
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('tsprop_TSref'), ((('
-			<a href="' . TYPO3_URL_DOCUMENTATION_TSREF) . '" target="_blank">') . $GLOBALS['LANG']->getLL('tsprop_TSref', 1)) . '</a>
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('tsprop_TSref'), '
+			<a href="' . TYPO3_URL_DOCUMENTATION_TSREF . '" target="_blank">' . $GLOBALS['LANG']->getLL('tsprop_TSref', 1) . '</a>
 			', 0, 1);
 		}
 		// Adding link to admin guides etc:
 		if ($this->mode == 'page' || $this->mode == 'beuser') {
-			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('tsprop_tsconfig'), ((('
-			<a href="' . TYPO3_URL_DOCUMENTATION_TSCONFIG) . '" target="_blank">') . $GLOBALS['LANG']->getLL('tsprop_tsconfig', 1)) . '</a>
+			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('tsprop_tsconfig'), '
+			<a href="' . TYPO3_URL_DOCUMENTATION_TSCONFIG . '" target="_blank">' . $GLOBALS['LANG']->getLL('tsprop_tsconfig', 1) . '</a>
 			', 0, 1);
 		}
 	}
@@ -256,9 +256,9 @@ class TsconfigWizard {
 			// Title:
 			$obj_string = strtr($this->objString, '()', '[]');
 			// Title and description:
-			$out .= (((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('show' => '')))) . '" class="typo3-goBack">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back')) . htmlspecialchars($obj_string)) . '</a><br />';
+			$out .= '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('show' => ''))) . '" class="typo3-goBack">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') . htmlspecialchars($obj_string) . '</a><br />';
 			if ($rec['title']) {
-				$out .= ('<strong>' . htmlspecialchars($rec['title'])) . ': </strong>';
+				$out .= '<strong>' . htmlspecialchars($rec['title']) . ': </strong>';
 			}
 			if ($rec['description']) {
 				$out .= nl2br(htmlspecialchars(trim($rec['description']))) . '<br />';
@@ -269,12 +269,12 @@ class TsconfigWizard {
 			// Printing the "mixer-field":
 			if (!$this->onlyProperty) {
 				$links = array();
-				$links[] = ('<a href="#" onclick="mixerField(\'Indent\');return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_indent', 1)) . '</a>';
-				$links[] = ('<a href="#" onclick="mixerField(\'Outdent\');return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_outdent', 1)) . '</a>';
-				$links[] = ((('<a href="#" onclick="mixerField(\'Wrap\',unescape(\'' . rawurlencode($obj_string)) . '\'));return false;">') . $GLOBALS['LANG']->getLL('tsprop_mixer_wrap', 1)) . '</a>';
-				$links[] = ('<a href="#" onclick="mixerField(\'Transfer\');return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_transfer', 1)) . '</a>';
-				$out .= ('<textarea rows="5" name="mixer" wrap="off"' . $this->doc->formWidthText(48, '', 'off')) . ' class="fixed-font enable-tab"></textarea>';
-				$out .= ('<br /><strong>' . implode('&nbsp; | &nbsp;', $links)) . '</strong>';
+				$links[] = '<a href="#" onclick="mixerField(\'Indent\');return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_indent', 1) . '</a>';
+				$links[] = '<a href="#" onclick="mixerField(\'Outdent\');return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_outdent', 1) . '</a>';
+				$links[] = '<a href="#" onclick="mixerField(\'Wrap\',unescape(\'' . rawurlencode($obj_string) . '\'));return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_wrap', 1) . '</a>';
+				$links[] = '<a href="#" onclick="mixerField(\'Transfer\');return false;">' . $GLOBALS['LANG']->getLL('tsprop_mixer_transfer', 1) . '</a>';
+				$out .= '<textarea rows="5" name="mixer" wrap="off"' . $this->doc->formWidthText(48, '', 'off') . ' class="fixed-font enable-tab"></textarea>';
+				$out .= '<br /><strong>' . implode('&nbsp; | &nbsp;', $links) . '</strong>';
 				$out .= '<hr />';
 			}
 		}
@@ -289,7 +289,7 @@ class TsconfigWizard {
 		$tmpl->ext_noPMicons = 1;
 		$tmpl->ext_noSpecialCharsOnLabels = 1;
 		if (is_array($objTree[$mode . '.'])) {
-			$out .= ('
+			$out .= '
 
 
 			<!--
@@ -298,7 +298,7 @@ class TsconfigWizard {
 				<table border="0" cellpadding="0" cellspacing="0" class="t3-tree t3-tree-config" id="typo3-objtree">
 					<tr class="t3-row-header"><td>TSref</td></tr>
 					<tr>
-						<td nowrap="nowrap">' . $tmpl->ext_getObjTree($this->removePointerObjects($objTree[($mode . '.')]), '', '', '', '', '1')) . '</td>
+						<td nowrap="nowrap">' . $tmpl->ext_getObjTree($this->removePointerObjects($objTree[($mode . '.')]), '', '', '', '', '1') . '</td>
 					</tr>
 				</table>';
 		}
@@ -327,7 +327,7 @@ class TsconfigWizard {
 				$p2 = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(':', $v, 1);
 				$subp = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $p2[1], 1);
 				foreach ($subp as $v2) {
-					$this->setObj($objTree, explode('.', ($p2[0] . '.') . $v2), array($rec, $v2));
+					$this->setObj($objTree, explode('.', $p2[0] . '.' . $v2), array($rec, $v2));
 				}
 			}
 		}
@@ -417,8 +417,8 @@ class TsconfigWizard {
 	 * @todo Define visibility
 	 */
 	public function linkToObj($str, $uid, $objString = '') {
-		$aOnClick = ((('jump(\'' . rawurlencode($uid)) . '\',\'') . rawurlencode($objString)) . '\');return false;';
-		return ((('<a href="#" onclick="' . htmlspecialchars($aOnClick)) . '">') . htmlspecialchars($str)) . '</a>';
+		$aOnClick = 'jump(\'' . rawurlencode($uid) . '\',\'' . rawurlencode($objString) . '\');return false;';
+		return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . htmlspecialchars($str) . '</a>';
 	}
 
 	/**
@@ -457,23 +457,23 @@ class TsconfigWizard {
 				$reg = array();
 				preg_match('/->[[:alnum:]_]*/', $dataType, $reg);
 				if ($reg[0] && is_array($objTree[$reg[0]])) {
-					$dataType = str_replace($reg[0], ((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('show' => $objTree[$reg[0]][0]['uid'], 'objString' => (($objString . '.') . $lP[0]))))) . '">') . htmlspecialchars($reg[0])) . '</a>', $dataType);
+					$dataType = str_replace($reg[0], '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('show' => $objTree[$reg[0]][0]['uid'], 'objString' => ($objString . '.' . $lP[0])))) . '">' . htmlspecialchars($reg[0]) . '</a>', $dataType);
 				}
 				// stdWrap
 				if (!strstr($dataType, '->stdWrap') && strstr(strip_tags($dataType), 'stdWrap')) {
 					// Potential problem can be that "stdWrap" is substituted inside another A-tag. So maybe we should even check if there is already a <A>-tag present and if so, not make a substitution?
-					$dataType = str_replace('stdWrap', ('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('show' => $objTree['->stdWrap'][0]['uid'], 'objString' => (($objString . '.') . $lP[0]))))) . '">stdWrap</a>', $dataType);
+					$dataType = str_replace('stdWrap', '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('show' => $objTree['->stdWrap'][0]['uid'], 'objString' => ($objString . '.' . $lP[0])))) . '">stdWrap</a>', $dataType);
 				}
-				$lines[] = ((((((((('
-					<tr class="t3-row ' . ($i % 2 ? 't3-row-even' : 't3-row-odd')) . '">
-						<td valign="top" class="bgColor4-20" nowrap="nowrap"><strong>') . $linkedProperties) . '</strong></td>
-						<td valign="top">') . nl2br(($dataType . '&nbsp;'))) . '</td>
-						<td valign="top">') . nl2br($row['description'])) . '</td>
-						<td valign="top">') . nl2br($row['default'])) . '</td>
+				$lines[] = '
+					<tr class="t3-row ' . ($i % 2 ? 't3-row-even' : 't3-row-odd') . '">
+						<td valign="top" class="bgColor4-20" nowrap="nowrap"><strong>' . $linkedProperties . '</strong></td>
+						<td valign="top">' . nl2br(($dataType . '&nbsp;')) . '</td>
+						<td valign="top">' . nl2br($row['description']) . '</td>
+						<td valign="top">' . nl2br($row['default']) . '</td>
 					</tr>';
 			}
 			// Return it all:
-			return ('
+			return '
 
 
 
@@ -481,7 +481,7 @@ class TsconfigWizard {
 				TSconfig, attribute selector:
 			-->
 				<table border="0" cellpadding="0" cellspacing="1" width="98%" class="t3-table" id="typo3-attributes">
-					' . implode('', $lines)) . '
+					' . implode('', $lines) . '
 				</table>';
 		}
 	}
@@ -505,13 +505,13 @@ class TsconfigWizard {
 		}
 		// Adding mixer features; The plus icon:
 		if (!$this->onlyProperty) {
-			$aOnClick = ('document.editform.mixer.value=unescape(\'  ' . rawurlencode((($propertyName . '=') . $propertyVal))) . '\')+\'\\n\'+document.editform.mixer.value; return false;';
-			$out .= ((('<a href="#" onclick="' . htmlspecialchars($aOnClick)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-add', array('title' => $GLOBALS['LANG']->getLL('tsprop_addToList', TRUE)))) . '</a>';
-			$propertyName = ($prefix . '.') . $propertyName;
+			$aOnClick = 'document.editform.mixer.value=unescape(\'  ' . rawurlencode(($propertyName . '=' . $propertyVal)) . '\')+\'\\n\'+document.editform.mixer.value; return false;';
+			$out .= '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-add', array('title' => $GLOBALS['LANG']->getLL('tsprop_addToList', TRUE))) . '</a>';
+			$propertyName = $prefix . '.' . $propertyName;
 		}
 		// Wrap string:
-		$aOnClick = ((('setValue(unescape(\'' . rawurlencode($propertyName)) . '\'), unescape(\'') . rawurlencode($propertyVal)) . '\')); return false;';
-		$out .= ((('<a href="#" onclick="' . htmlspecialchars($aOnClick)) . '">') . $str) . '</a>';
+		$aOnClick = 'setValue(unescape(\'' . rawurlencode($propertyName) . '\'), unescape(\'' . rawurlencode($propertyVal) . '\')); return false;';
+		$out .= '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $str . '</a>';
 		// Return link:
 		return $out;
 	}
@@ -523,7 +523,7 @@ class TsconfigWizard {
 	 * @return boolean Whether the submitted field change functions are valid
 	 */
 	protected function areFieldChangeFunctionsValid() {
-		return ((isset($this->P['fieldChangeFunc']) && is_array($this->P['fieldChangeFunc'])) && isset($this->P['fieldChangeFuncHash'])) && $this->P['fieldChangeFuncHash'] === \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($this->P['fieldChangeFunc']));
+		return isset($this->P['fieldChangeFunc']) && is_array($this->P['fieldChangeFunc']) && isset($this->P['fieldChangeFuncHash']) && $this->P['fieldChangeFuncHash'] === \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($this->P['fieldChangeFunc']));
 	}
 
 }

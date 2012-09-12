@@ -124,7 +124,7 @@ class ConditionMatcherTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function simulateEnabledMatchSpecificConditionsSucceeds() {
-		$testCondition = ('[' . uniqid('test')) . ' = Any condition to simulate a positive match]';
+		$testCondition = '[' . uniqid('test') . ' = Any condition to simulate a positive match]';
 		$this->matchCondition->setSimulateMatchConditions(array($testCondition));
 		$this->assertTrue($this->matchCondition->match($testCondition));
 	}
@@ -477,8 +477,8 @@ class ConditionMatcherTest extends \tx_phpunit_testcase {
 	 */
 	public function globalVarConditionMatchesOnEmptyExpressionWithNoValueSet() {
 		$testKey = uniqid('test');
-		$this->assertTrue($this->matchCondition->match(('[globalVar = GP:' . $testKey) . '=]'));
-		$this->assertTrue($this->matchCondition->match(('[globalVar = GP:' . $testKey) . ' = ]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = GP:' . $testKey . '=]'));
+		$this->assertTrue($this->matchCondition->match('[globalVar = GP:' . $testKey . ' = ]'));
 	}
 
 	/**
@@ -490,8 +490,8 @@ class ConditionMatcherTest extends \tx_phpunit_testcase {
 		$testKey = uniqid('test');
 		$_GET = array();
 		$_POST = array($testKey => 0);
-		$this->assertFalse($this->matchCondition->match(('[globalVar = GP:' . $testKey) . '=]'));
-		$this->assertFalse($this->matchCondition->match(('[globalVar = GP:' . $testKey) . ' = ]'));
+		$this->assertFalse($this->matchCondition->match('[globalVar = GP:' . $testKey . '=]'));
+		$this->assertFalse($this->matchCondition->match('[globalVar = GP:' . $testKey . ' = ]'));
 	}
 
 	/**
@@ -534,7 +534,7 @@ class ConditionMatcherTest extends \tx_phpunit_testcase {
 	public function globalStringConditionMatchesEmptyRegularExpression() {
 		$testKey = uniqid('test');
 		$_SERVER[$testKey] = '';
-		$this->assertTrue($this->matchCondition->match(('[globalString = _SERVER|' . $testKey) . ' = /^$/]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = _SERVER|' . $testKey . ' = /^$/]'));
 	}
 
 	/**
@@ -822,7 +822,7 @@ class ConditionMatcherTest extends \tx_phpunit_testcase {
 	public function genericGetVariablesSucceedsWithNamespaceENV() {
 		$testKey = uniqid('test');
 		putenv($testKey . '=testValue');
-		$this->assertTrue($this->matchCondition->match(('[globalString = ENV:' . $testKey) . ' = testValue]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = ENV:' . $testKey . ' = testValue]'));
 	}
 
 	/**
@@ -845,8 +845,8 @@ class ConditionMatcherTest extends \tx_phpunit_testcase {
 			'first' => 'testFirst',
 			'second' => array('third' => 'testThird')
 		);
-		$this->assertTrue($this->matchCondition->match(('[globalString = ' . $this->testGlobalNamespace) . '|first = testFirst]'));
-		$this->assertTrue($this->matchCondition->match(('[globalString = ' . $this->testGlobalNamespace) . '|second|third = testThird]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = ' . $this->testGlobalNamespace . '|first = testFirst]'));
+		$this->assertTrue($this->matchCondition->match('[globalString = ' . $this->testGlobalNamespace . '|second|third = testThird]'));
 	}
 
 	/**

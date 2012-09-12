@@ -111,7 +111,7 @@ class Download implements \SplObserver {
 			throw new \InvalidArgumentException($directory . ' is not a directory', 1312223779);
 		}
 		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($directory)) {
-			throw new \InvalidArgumentException(($directory . ' is not within the PATH_site') . ' OR within the lockRootPath', 1328734617);
+			throw new \InvalidArgumentException($directory . ' is not within the PATH_site' . ' OR within the lockRootPath', 1328734617);
 		}
 		$this->targetDirectory = ($directory = rtrim($directory, DIRECTORY_SEPARATOR));
 	}
@@ -139,7 +139,7 @@ class Download implements \SplObserver {
 	protected function determineFilename(\HTTP_Request2 $request, \HTTP_Request2_Response $response) {
 		$matches = array();
 		$disposition = $response->getHeader('content-disposition');
-		if (($disposition !== NULL && 0 === strpos($disposition, 'attachment')) && 1 === preg_match('/filename="([^"]+)"/', $disposition, $matches)) {
+		if ($disposition !== NULL && 0 === strpos($disposition, 'attachment') && 1 === preg_match('/filename="([^"]+)"/', $disposition, $matches)) {
 			$filename = basename($matches[1]);
 		} else {
 			$filename = basename($request->getUrl()->getPath());
@@ -161,7 +161,7 @@ class Download implements \SplObserver {
 		if ($this->targetFilename === '') {
 			throw new \UnexpectedValueException('The file name must not be empty', 1321113658);
 		}
-		$this->targetFilePath = ($this->targetDirectory . DIRECTORY_SEPARATOR) . $this->targetFilename;
+		$this->targetFilePath = $this->targetDirectory . DIRECTORY_SEPARATOR . $this->targetFilename;
 		$this->filePointer = @fopen($this->targetFilePath, 'wb');
 		if ($this->filePointer === FALSE) {
 			throw new \TYPO3\CMS\Core\Exception('Cannot open target file ' . $this->targetFilePath, 1320833203);

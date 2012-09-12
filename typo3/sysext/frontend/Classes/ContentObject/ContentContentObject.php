@@ -108,10 +108,10 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 								}
 							}
 							\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($row, $conf['table']);
-							if (!$GLOBALS['TSFE']->recordRegister[(($conf['table'] . ':') . $row['uid'])]) {
+							if (!$GLOBALS['TSFE']->recordRegister[($conf['table'] . ':' . $row['uid'])]) {
 								$this->cObj->currentRecordNumber++;
 								$cObj->parentRecordNumber = $this->cObj->currentRecordNumber;
-								$GLOBALS['TSFE']->currentRecord = ($conf['table'] . ':') . $row['uid'];
+								$GLOBALS['TSFE']->currentRecord = $conf['table'] . ':' . $row['uid'];
 								$this->cObj->lastChanged($row['tstamp']);
 								$cObj->start($row, $conf['table']);
 								$tmpValue = $cObj->cObjGetSingle($renderObjName, $renderObjConf, $renderObjKey);
@@ -139,7 +139,7 @@ class ContentContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractCon
 					}
 					$again = strlen($conf['select.']['pidInList']) ? TRUE : FALSE;
 				}
-			} while ($again && (($slide && !strlen($tmpValue)) && $slideCollectFuzzy || $slide && $slideCollect));
+			} while ($again && ($slide && !strlen($tmpValue) && $slideCollectFuzzy || $slide && $slideCollect));
 		}
 		$wrap = isset($conf['wrap.']) ? $this->cObj->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 		if ($wrap) {

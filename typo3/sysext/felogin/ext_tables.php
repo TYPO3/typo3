@@ -5,9 +5,9 @@ if (!defined('TYPO3_MODE')) {
 $_EXTCONF = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['felogin']);
 \TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('tt_content');
 if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 4002000) {
-	\TYPO3\CMS\Core\Extension\ExtensionManager::addPiFlexFormValue('*', ('FILE:EXT:' . $_EXTKEY) . '/flexform.xml', 'login');
+	\TYPO3\CMS\Core\Extension\ExtensionManager::addPiFlexFormValue('*', 'FILE:EXT:' . $_EXTKEY . '/flexform.xml', 'login');
 } else {
-	\TYPO3\CMS\Core\Extension\ExtensionManager::addPiFlexFormValue('default', ('FILE:EXT:' . $_EXTKEY) . '/flexform.xml');
+	\TYPO3\CMS\Core\Extension\ExtensionManager::addPiFlexFormValue('default', 'FILE:EXT:' . $_EXTKEY . '/flexform.xml');
 }
 \TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem('tt_content', 'CType', array(
 	'LLL:EXT:cms/locallang_ttc.xml:CType.I.10',

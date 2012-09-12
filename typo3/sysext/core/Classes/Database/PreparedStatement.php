@@ -463,7 +463,7 @@ class PreparedStatement {
 				if (count($precompiledQueryParts['queryParts']) > 0) {
 					$precompiledQueryParts['queryParts'][2 * $key + 1] = $value;
 				} else {
-					$parts = explode(($this->parameterWrapToken . '?') . $this->parameterWrapToken, $query, 2);
+					$parts = explode($this->parameterWrapToken . '?' . $this->parameterWrapToken, $query, 2);
 					$parts[0] .= $value;
 					$query = implode('', $parts);
 				}
@@ -473,7 +473,7 @@ class PreparedStatement {
 						$precompiledQueryParts['queryParts'][$i] = $value;
 					}
 				}
-				$query = str_replace(($this->parameterWrapToken . $key) . $this->parameterWrapToken, $value, $query);
+				$query = str_replace($this->parameterWrapToken . $key . $this->parameterWrapToken, $value, $query);
 			}
 		}
 	}
@@ -495,13 +495,13 @@ class PreparedStatement {
 				}
 				// Replace the marker (not preceeded by a word character or a ':' but
 				// followed by a word boundary)
-				$query = preg_replace(('/(?<![\\w:])' . $key) . '\\b/', ($this->parameterWrapToken . $key) . $this->parameterWrapToken, $query);
+				$query = preg_replace('/(?<![\\w:])' . $key . '\\b/', $this->parameterWrapToken . $key . $this->parameterWrapToken, $query);
 			} else {
 				$unnamedParameterCount++;
 			}
 		}
 		$parts = explode('?', $query, $unnamedParameterCount + 1);
-		$query = implode(($this->parameterWrapToken . '?') . $this->parameterWrapToken, $parts);
+		$query = implode($this->parameterWrapToken . '?' . $this->parameterWrapToken, $parts);
 		return $query;
 	}
 
@@ -511,7 +511,7 @@ class PreparedStatement {
 	 * @return string
 	 */
 	protected function generateParameterWrapToken() {
-		return ('__' . \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(16)) . '__';
+		return '__' . \TYPO3\CMS\Core\Utility\GeneralUtility::getRandomHexString(16) . '__';
 	}
 
 }

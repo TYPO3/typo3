@@ -106,9 +106,9 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 				<fieldset>
 					<ol>
 			';
-			$content .= ('
+			$content .= '
 				<li class="labelAfter">
-					<input type="checkbox" id="versioning" name="' . $inputPrefix) . '[versioning]" value="1" checked="checked" />
+					<input type="checkbox" id="versioning" name="' . $inputPrefix . '[versioning]" value="1" checked="checked" />
 					<label for="versioning">Activate workspaces?</label>
 				</li>
 			';
@@ -118,7 +118,7 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 			';
 		} else {
 			// No feedback needed, just include the update flag as a hidden field
-			$content = ('<input type="hidden" id="versioning" name="' . $inputPrefix) . '[versioning]" value="1" />';
+			$content = '<input type="hidden" id="versioning" name="' . $inputPrefix . '[versioning]" value="1" />';
 		}
 		return $content;
 	}
@@ -214,7 +214,7 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 			foreach ($tables as $table) {
 				$versioningVer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['TCA'][$table]['ctrl']['versioningWS'], 0, 2, 0);
 				if ($versioningVer > 0) {
-					$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, ('t3ver_wsid IN (' . implode(',', $workspaceUids)) . ') AND t3ver_stage IN (-1,1,10) AND pid = -1');
+					$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', $table, 't3ver_wsid IN (' . implode(',', $workspaceUids) . ') AND t3ver_stage IN (-1,1,10) AND pid = -1');
 					if ($count > 0) {
 						$foundOldStyleStages = TRUE;
 						break;
@@ -255,7 +255,7 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 	 */
 	protected function migrateOldRecordsToStage($workspaceId, $oldStageId, $newStageId) {
 		$tables = array_keys($GLOBALS['TCA']);
-		$where = ((('t3ver_wsid = ' . intval($workspaceId)) . ' AND t3ver_stage = ') . intval($oldStageId)) . ' AND pid = -1';
+		$where = 't3ver_wsid = ' . intval($workspaceId) . ' AND t3ver_stage = ' . intval($oldStageId) . ' AND pid = -1';
 		$values = array(
 			't3ver_stage' => intval($newStageId)
 		);
@@ -362,7 +362,7 @@ class MigrateWorkspacesUpdate extends \TYPO3\CMS\Install\CoreUpdates\InstallSysE
 			$wsWhitelist[] = $stage['parentid'];
 		}
 		$where = 'deleted=0';
-		$where .= !empty($wsWhitelist) ? (' AND uid NOT IN (' . implode(',', $wsWhitelist)) . ')' : '';
+		$where .= !empty($wsWhitelist) ? ' AND uid NOT IN (' . implode(',', $wsWhitelist) . ')' : '';
 		return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_workspace', $where);
 	}
 

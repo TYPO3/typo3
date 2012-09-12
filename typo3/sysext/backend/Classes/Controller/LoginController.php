@@ -270,12 +270,12 @@ class LoginController {
 	public function wrapLoginForm($content) {
 		$mainContent = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($GLOBALS['TBE_TEMPLATE']->moduleTemplate, '###PAGE###');
 		if ($GLOBALS['TBE_STYLES']['logo_login']) {
-			$logo = ('<img src="' . htmlspecialchars(($GLOBALS['BACK_PATH'] . $GLOBALS['TBE_STYLES']['logo_login']))) . '" alt="" />';
+			$logo = '<img src="' . htmlspecialchars(($GLOBALS['BACK_PATH'] . $GLOBALS['TBE_STYLES']['logo_login'])) . '" alt="" />';
 		} else {
-			$logo = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/typo3logo.gif', 'width="123" height="34"')) . ' alt="" />';
+			$logo = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/typo3logo.gif', 'width="123" height="34"') . ' alt="" />';
 		}
 		/** @var $browserWarning \TYPO3\CMS\Core\Messaging\FlashMessage */
-		$browserWarning = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', ($GLOBALS['LANG']->getLL('warning.incompatibleBrowser') . ' ') . $GLOBALS['LANG']->getLL('warning.incompatibleBrowserInternetExplorer'), $GLOBALS['LANG']->getLL('warning.incompatibleBrowserHeadline'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+		$browserWarning = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('warning.incompatibleBrowser') . ' ' . $GLOBALS['LANG']->getLL('warning.incompatibleBrowserInternetExplorer'), $GLOBALS['LANG']->getLL('warning.incompatibleBrowserHeadline'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		$browserWarning = $browserWarning->render();
 		$additionalCssClasses = array();
 		if ($this->isLoginInProgress()) {
@@ -290,7 +290,7 @@ class LoginController {
 			'FORM' => $content,
 			'NEWS' => $this->makeLoginNews(),
 			'COPYRIGHT' => $this->makeCopyrightNotice(),
-			'CSS_CLASSES' => !empty($additionalCssClasses) ? ('class="' . implode(' ', $additionalCssClasses)) . '"' : '',
+			'CSS_CLASSES' => !empty($additionalCssClasses) ? 'class="' . implode(' ', $additionalCssClasses) . '"' : '',
 			'CSS_OPENIDCLASS' => 't3-login-openid-' . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('openid') ? 'enabled' : 'disabled'),
 			// The labels will be replaced later on, thus the other parts above
 			// can use these markers as well and it will be replaced
@@ -330,7 +330,7 @@ class LoginController {
 	public function checkRedirect() {
 		// Do redirect:
 		// If a user is logged in AND a) if either the login is just done (isLoginInProgress) or b) a loginRefresh is done or c) the interface-selector is NOT enabled (If it is on the other hand, it should not just load an interface, because people has to choose then...)
-		if ($GLOBALS['BE_USER']->user['uid'] && (($this->isLoginInProgress() || $this->loginRefresh) || !$this->interfaceSelector)) {
+		if ($GLOBALS['BE_USER']->user['uid'] && ($this->isLoginInProgress() || $this->loginRefresh || !$this->interfaceSelector)) {
 			// If no cookie has been set previously we tell people that this is a problem. This assumes that a cookie-setting script (like this one) has been hit at least once prior to this instance.
 			if (!$_COOKIE[\TYPO3\CMS\Core\Authentication\BackendUserAuthentication::getCookieName()]) {
 				if ($this->commandLI == 'setCookie') {
@@ -413,20 +413,20 @@ class LoginController {
 				$jumpScript['frontend'] = '../';
 				// Traverse the interface keys:
 				foreach ($parts as $valueStr) {
-					$this->interfaceSelector .= ((((('
-							<option value="' . htmlspecialchars($valueStr)) . '"') . (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('interface') == htmlspecialchars($valueStr) ? ' selected="selected"' : '')) . '>') . htmlspecialchars($labels[$valueStr])) . '</option>';
-					$this->interfaceSelector_jump .= ((('
-							<option value="' . htmlspecialchars($jumpScript[$valueStr])) . '">') . htmlspecialchars($labels[$valueStr])) . '</option>';
+					$this->interfaceSelector .= '
+							<option value="' . htmlspecialchars($valueStr) . '"' . (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('interface') == htmlspecialchars($valueStr) ? ' selected="selected"' : '') . '>' . htmlspecialchars($labels[$valueStr]) . '</option>';
+					$this->interfaceSelector_jump .= '
+							<option value="' . htmlspecialchars($jumpScript[$valueStr]) . '">' . htmlspecialchars($labels[$valueStr]) . '</option>';
 				}
-				$this->interfaceSelector = ('
-						<select id="t3-interfaceselector" name="interface" class="c-interfaceselector" tabindex="3">' . $this->interfaceSelector) . '
+				$this->interfaceSelector = '
+						<select id="t3-interfaceselector" name="interface" class="c-interfaceselector" tabindex="3">' . $this->interfaceSelector . '
 						</select>';
-				$this->interfaceSelector_jump = ('
-						<select id="t3-interfaceselector" name="interface" class="c-interfaceselector" tabindex="3" onchange="window.location.href=this.options[this.selectedIndex].value;">' . $this->interfaceSelector_jump) . '
+				$this->interfaceSelector_jump = '
+						<select id="t3-interfaceselector" name="interface" class="c-interfaceselector" tabindex="3" onchange="window.location.href=this.options[this.selectedIndex].value;">' . $this->interfaceSelector_jump . '
 						</select>';
 			} elseif (!$this->redirect_url) {
 				// If there is only ONE interface value set and no redirect_url is present:
-				$this->interfaceSelector_hidden = ('<input type="hidden" name="interface" value="' . trim($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces'])) . '" />';
+				$this->interfaceSelector_hidden = '<input type="hidden" name="interface" value="' . trim($GLOBALS['TYPO3_CONF_VARS']['BE']['interfaces']) . '" />';
 			}
 		}
 	}
@@ -449,12 +449,12 @@ class LoginController {
 		$loginImageSmall = trim($GLOBALS['TBE_STYLES']['loginBoxImageSmall']) ? trim($GLOBALS['TBE_STYLES']['loginBoxImageSmall']) : 'gfx/loginlogo_transp.gif';
 		// Make warranty note:
 		if (strlen($loginCopyrightWarrantyProvider) >= 2 && strlen($loginCopyrightWarrantyURL) >= 10) {
-			$warrantyNote = sprintf($GLOBALS['LANG']->getLL('warranty.by'), htmlspecialchars($loginCopyrightWarrantyProvider), ('<a href="' . htmlspecialchars($loginCopyrightWarrantyURL)) . '" target="_blank">', '</a>');
+			$warrantyNote = sprintf($GLOBALS['LANG']->getLL('warranty.by'), htmlspecialchars($loginCopyrightWarrantyProvider), '<a href="' . htmlspecialchars($loginCopyrightWarrantyURL) . '" target="_blank">', '</a>');
 		} else {
-			$warrantyNote = sprintf($GLOBALS['LANG']->getLL('no.warranty'), ('<a href="' . TYPO3_URL_LICENSE) . '" target="_blank">', '</a>');
+			$warrantyNote = sprintf($GLOBALS['LANG']->getLL('no.warranty'), '<a href="' . TYPO3_URL_LICENSE . '" target="_blank">', '</a>');
 		}
 		// Compile full copyright notice:
-		$copyrightNotice = ((((((((((((((((((((('<a href="' . TYPO3_URL_GENERAL) . '" target="_blank">') . '<img src="') . $loginImageSmall) . '" alt="') . $GLOBALS['LANG']->getLL('typo3.logo')) . '" align="left" />') . $GLOBALS['LANG']->getLL('typo3.cms')) . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion'] ? ((' ' . $GLOBALS['LANG']->getLL('version.short')) . ' ') . htmlspecialchars(TYPO3_version) : '')) . '</a>. ') . $GLOBALS['LANG']->getLL('copyright')) . ' &copy; ') . TYPO3_copyright_year) . ' Kasper Sk&#229;rh&#248;j. ') . $GLOBALS['LANG']->getLL('extension.copyright')) . ' ') . sprintf($GLOBALS['LANG']->getLL('details.link'), (((('<a href="' . TYPO3_URL_GENERAL) . '" target="_blank">') . TYPO3_URL_GENERAL) . '</a>'))) . '<br /> ') . $warrantyNote) . ' ') . sprintf($GLOBALS['LANG']->getLL('free.software'), (('<a href="' . TYPO3_URL_LICENSE) . '" target="_blank">'), '</a> ')) . $GLOBALS['LANG']->getLL('keep.notice');
+		$copyrightNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . '<img src="' . $loginImageSmall . '" alt="' . $GLOBALS['LANG']->getLL('typo3.logo') . '" align="left" />' . $GLOBALS['LANG']->getLL('typo3.cms') . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion'] ? ' ' . $GLOBALS['LANG']->getLL('version.short') . ' ' . htmlspecialchars(TYPO3_version) : '') . '</a>. ' . $GLOBALS['LANG']->getLL('copyright') . ' &copy; ' . TYPO3_copyright_year . ' Kasper Sk&#229;rh&#248;j. ' . $GLOBALS['LANG']->getLL('extension.copyright') . ' ' . sprintf($GLOBALS['LANG']->getLL('details.link'), ('<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>')) . '<br /> ' . $warrantyNote . ' ' . sprintf($GLOBALS['LANG']->getLL('free.software'), ('<a href="' . TYPO3_URL_LICENSE . '" target="_blank">'), '</a> ') . $GLOBALS['LANG']->getLL('keep.notice');
 		// Return notice:
 		return $copyrightNotice;
 	}
@@ -482,7 +482,7 @@ class LoginController {
 				$imgAuthor = is_array($GLOBALS['TBE_STYLES']['loginBoxImage_author']) && $GLOBALS['TBE_STYLES']['loginBoxImage_author'][$files[$randImg]] ? htmlspecialchars($GLOBALS['TBE_STYLES']['loginBoxImage_author'][$files[$randImg]]) : '';
 				// Create image tag:
 				if (is_array($imgSize)) {
-					$loginboxImage = ((((((('<img src="' . htmlspecialchars(($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'] . $files[$randImg]))) . '" ') . $imgSize[3]) . ' id="loginbox-image" alt="') . $imgAuthor) . '" title="') . $imgAuthor) . '" />';
+					$loginboxImage = '<img src="' . htmlspecialchars(($GLOBALS['TBE_STYLES']['loginBoxImage_rotationFolder'] . $files[$randImg])) . '" ' . $imgSize[3] . ' id="loginbox-image" alt="' . $imgAuthor . '" title="' . $imgAuthor . '" />';
 				}
 			}
 		} else {
@@ -495,7 +495,7 @@ class LoginController {
 				$loginImage = 'loginbox_image.jpg';
 				$imagecopy = 'Photo by J.C. Franca (www.digitalphoto.com.br)';
 			}
-			$loginboxImage = ((((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/' . $loginImage), 'width="200" height="133"')) . ' id="loginbox-image" alt="') . $imagecopy) . '" title="') . $imagecopy) . '" />';
+			$loginboxImage = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/' . $loginImage), 'width="200" height="133"') . ' id="loginbox-image" alt="' . $imagecopy . '" title="' . $imagecopy . '" />';
 		}
 		// Return image tag:
 		return $loginboxImage;
@@ -513,7 +513,7 @@ class LoginController {
 		$newsContent = '';
 		$systemNews = $this->getSystemNews();
 		// Traverse news array IF there are records in it:
-		if ((is_array($systemNews) && count($systemNews)) && !\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('loginRefresh')) {
+		if (is_array($systemNews) && count($systemNews) && !\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('loginRefresh')) {
 			/** @var $htmlParser \TYPO3\CMS\Core\Html\RteHtmlParser */
 			$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\RteHtmlParser');
 			// Get the main news template, and replace the subpart after looped through
@@ -554,7 +554,7 @@ class LoginController {
 	protected function getSystemNews() {
 		$systemNewsTable = 'sys_news';
 		$systemNews = array();
-		$systemNewsRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('title, content, crdate', $systemNewsTable, ('1=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($systemNewsTable)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($systemNewsTable), '', 'crdate DESC');
+		$systemNewsRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('title, content, crdate', $systemNewsTable, '1=1' . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($systemNewsTable) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($systemNewsTable), '', 'crdate DESC');
 		foreach ($systemNewsRecords as $systemNewsRecord) {
 			$systemNews[] = array(
 				'date' => date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $systemNewsRecord['crdate']),
@@ -576,7 +576,7 @@ class LoginController {
 		// The form defaults to 'no login'. This prevents plain
 		// text logins to the Backend. The 'sv' extension changes the form to
 		// use superchallenged method and rsaauth extension makes rsa authetication.
-		$form = ('<form action="index.php" method="post" name="loginform" ' . 'onsubmit="alert(\'No authentication methods available. Please, ') . 'contact your TYPO3 administrator.\');return false">';
+		$form = '<form action="index.php" method="post" name="loginform" ' . 'onsubmit="alert(\'No authentication methods available. Please, ' . 'contact your TYPO3 administrator.\');return false">';
 		// Call hooks. If they do not return anything, we fail to login
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/index.php']['loginFormHook'] as $function) {
@@ -588,7 +588,7 @@ class LoginController {
 				}
 			}
 		}
-		$output .= ((((((((($form . '<input type="hidden" name="login_status" value="login" />') . '<input type="hidden" name="userident" value="" />') . '<input type="hidden" name="redirect_url" value="') . htmlspecialchars($this->redirectToURL)) . '" />') . '<input type="hidden" name="loginRefresh" value="') . htmlspecialchars($this->loginRefresh)) . '" />') . $this->interfaceSelector_hidden) . $this->addFields_hidden;
+		$output .= $form . '<input type="hidden" name="login_status" value="login" />' . '<input type="hidden" name="userident" value="" />' . '<input type="hidden" name="redirect_url" value="' . htmlspecialchars($this->redirectToURL) . '" />' . '<input type="hidden" name="loginRefresh" value="' . htmlspecialchars($this->loginRefresh) . '" />' . $this->interfaceSelector_hidden . $this->addFields_hidden;
 		return $output;
 	}
 
