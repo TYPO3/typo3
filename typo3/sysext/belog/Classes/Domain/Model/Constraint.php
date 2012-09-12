@@ -79,14 +79,14 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * manual date start
 	 *
-	 * @var DateTime
+	 * @var \DateTime
 	 */
 	protected $manualDateStart = NULL;
 
 	/**
 	 * manual date stop
 	 *
-	 * @var DateTime
+	 * @var \DateTime
 	 */
 	protected $manualDateStop = NULL;
 
@@ -249,7 +249,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set manual date start
 	 *
-	 * @param DateTime $manualDateStart
+	 * @param \DateTime $manualDateStart
 	 * @return void
 	 */
 	public function setManualDateStart(\DateTime $manualDateStart) {
@@ -259,7 +259,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get manual date start
 	 *
-	 * @return DateTime
+	 * @return \DateTime
 	 */
 	public function getManualDateStart() {
 		return $this->manualDateStart;
@@ -268,7 +268,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Set manual date stop
 	 *
-	 * @param DateTime $manualDateStop
+	 * @param \DateTime $manualDateStop
 	 * @return void
 	 */
 	public function setManualDateStop(\DateTime $manualDateStop) {
@@ -278,7 +278,7 @@ class Constraint extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Get manual date stop
 	 *
-	 * @return DateTime
+	 * @return \DateTime
 	 */
 	public function getManualDateStop() {
 		return $this->manualDateStop;
