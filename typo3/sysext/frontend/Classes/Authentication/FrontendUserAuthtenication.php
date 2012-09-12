@@ -291,7 +291,7 @@ class FrontendUserAuthtenication extends \TYPO3\CMS\Core\Authentication\Abstract
 			unset($serviceObj);
 		}
 		if ($this->writeDevLog && $serviceChain) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(($subType . ' auth services called: ') . $serviceChain, 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication');
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($subType . ' auth services called: ' . $serviceChain, 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication');
 		}
 		if ($this->writeDevLog && !count($groupDataArr)) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('No usergroups found by services', 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication');
@@ -311,7 +311,7 @@ class FrontendUserAuthtenication extends \TYPO3\CMS\Core\Authentication\Abstract
 				if (!$serviceObj->authGroup($this->user, $groupData)) {
 					$validGroup = FALSE;
 					if ($this->writeDevLog) {
-						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(($subType . ' auth service did not auth group: ') . \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($groupData, 'uid,title'), 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication', 2);
+						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($subType . ' auth service did not auth group: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($groupData, 'uid,title'), 'TYPO3\\CMS\\Frontend\\Authentication\\FrontendUserAuthtenication', 2);
 					}
 					break;
 				}
@@ -350,7 +350,7 @@ class FrontendUserAuthtenication extends \TYPO3\CMS\Core\Authentication\Abstract
 		if (!$this->userTSUpdated) {
 			// Parsing the user TS (or getting from cache)
 			$this->TSdataArray = \TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser::checkIncludeLines_array($this->TSdataArray);
-			$userTS = implode((LF . '[GLOBAL]') . LF, $this->TSdataArray);
+			$userTS = implode(LF . '[GLOBAL]' . LF, $this->TSdataArray);
 			$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 			$parseObj->parse($userTS);
 			$this->userTS = $parseObj->setup;

@@ -161,7 +161,7 @@ class SearchResultContentObject {
 		foreach ($aCols as $k => $v) {
 			$aCols[$k] = trim($v);
 			$parts = explode('.', $aCols[$k]);
-			$this->tables[$parts[0]]['resultfields'][] = ($parts[1] . ' AS ') . str_replace('.', '_', $aCols[$k]);
+			$this->tables[$parts[0]]['resultfields'][] = $parts[1] . ' AS ' . str_replace('.', '_', $aCols[$k]);
 			$this->tables[$parts[0]]['fkey'] = 'pid';
 		}
 		$this->fTable = '';
@@ -195,7 +195,7 @@ class SearchResultContentObject {
 				foreach ($subparts as $piece) {
 					$piece = trim($piece);
 					if ($piece) {
-						$out[] = ($parts[0] . '.') . $piece;
+						$out[] = $parts[0] . '.' . $piece;
 					}
 				}
 			}
@@ -249,7 +249,7 @@ class SearchResultContentObject {
 	 */
 	public function split($origSword, $specchars = '+-', $delchars = '+.,-') {
 		$sword = $origSword;
-		$specs = ('[' . preg_quote($specchars, '/')) . ']';
+		$specs = '[' . preg_quote($specchars, '/') . ']';
 		// As long as $sword is TRUE (that means $sword MUST be reduced little by little until its empty inside the loop!)
 		while ($sword) {
 			// There was a double-quote and we will then look for the ending quote.
@@ -260,13 +260,13 @@ class SearchResultContentObject {
 				preg_match('/^[^"]*/', $sword, $reg);
 				// reg[0] is the value, should not be trimmed
 				$value[] = $reg[0];
-				$sword = preg_replace(('/^' . preg_quote($reg[0], '/')) . '/', '', $sword);
+				$sword = preg_replace('/^' . preg_quote($reg[0], '/') . '/', '', $sword);
 				// Removes last double-quote
 				$sword = trim(preg_replace('/^"/', '', $sword));
-			} elseif (preg_match(('/^' . $specs) . '/', $sword, $reg)) {
+			} elseif (preg_match('/^' . $specs . '/', $sword, $reg)) {
 				$value[] = $reg[0];
 				// Removes = sign
-				$sword = trim(preg_replace(('/^' . $specs) . '/', '', $sword));
+				$sword = trim(preg_replace('/^' . $specs . '/', '', $sword));
 			} elseif (preg_match('/[\\+\\-]/', $sword)) {
 				// Check if $sword contains + or -
 				// + and - shall only be interpreted as $specchars when there's whitespace before it
@@ -283,11 +283,11 @@ class SearchResultContentObject {
 				$sword = implode(' ', $a_sword);
 			} else {
 				// There are no double-quotes around the value. Looking for next (space) or special char.
-				preg_match(('/^[^ ' . preg_quote($specchars, '/')) . ']*/', $sword, $reg);
+				preg_match('/^[^ ' . preg_quote($specchars, '/') . ']*/', $sword, $reg);
 				// Delete $delchars at end of string
 				$word = rtrim(trim($reg[0]), $delchars);
 				$value[] = $word;
-				$sword = trim(preg_replace(('/^' . preg_quote($reg[0], '/')) . '/', '', $sword));
+				$sword = trim(preg_replace('/^' . preg_quote($reg[0], '/') . '/', '', $sword));
 			}
 		}
 		return $value;
@@ -332,7 +332,7 @@ class SearchResultContentObject {
 					$resultfields = $tables[$key]['resultfields'];
 					if (is_array($resultfields)) {
 						foreach ($resultfields as $key2 => $val2) {
-							$fieldArray[] = ($key . '.') . $val2;
+							$fieldArray[] = $key . '.' . $val2;
 						}
 					}
 				}
@@ -340,16 +340,16 @@ class SearchResultContentObject {
 				$this->queryParts['FROM'] = implode(',', $tableArray);
 				// Set join WHERE parts:
 				$whereArray = array();
-				$primary_table_and_key = ($primary_table . '.') . $tables[$primary_table]['primary_key'];
+				$primary_table_and_key = $primary_table . '.' . $tables[$primary_table]['primary_key'];
 				$primKeys = array();
 				foreach ($tables as $key => $val) {
 					$fkey = $tables[$key]['fkey'];
 					if ($fkey) {
-						$primKeys[] = ((($key . '.') . $fkey) . '=') . $primary_table_and_key;
+						$primKeys[] = $key . '.' . $fkey . '=' . $primary_table_and_key;
 					}
 				}
 				if (count($primKeys)) {
-					$whereArray[] = ('(' . implode(' OR ', $primKeys)) . ')';
+					$whereArray[] = '(' . implode(' OR ', $primKeys) . ')';
 				}
 				// Additional where clause:
 				if (trim($endClause)) {
@@ -360,7 +360,7 @@ class SearchResultContentObject {
 				if (!$query_part) {
 					$query_part = '(0!=0)';
 				}
-				$whereArray[] = ('(' . $query_part) . ')';
+				$whereArray[] = '(' . $query_part . ')';
 				// Implode where clauses:
 				$this->queryParts['WHERE'] = implode(' AND ', $whereArray);
 				// Group by settings:
@@ -394,14 +394,14 @@ class SearchResultContentObject {
 					$searchfields = $this->tables[$key3]['searchfields'];
 					if (is_array($searchfields)) {
 						foreach ($searchfields as $key2 => $val2) {
-							$this->listOfSearchFields .= (($key3 . '.') . $val2) . ',';
-							$sub_query_part[] = (((($key3 . '.') . $val2) . ' LIKE \'%') . $GLOBALS['TYPO3_DB']->quoteStr($s_sword, $key3)) . '%\'';
+							$this->listOfSearchFields .= $key3 . '.' . $val2 . ',';
+							$sub_query_part[] = $key3 . '.' . $val2 . ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($s_sword, $key3) . '%\'';
 						}
 					}
 				}
 				if (count($sub_query_part)) {
 					$main_query_part[] = $this->sword_array[$key]['oper'];
-					$main_query_part[] = ('(' . implode(' OR ', $sub_query_part)) . ')';
+					$main_query_part[] = '(' . implode(' OR ', $sub_query_part) . ')';
 				}
 			}
 			if (count($main_query_part)) {

@@ -304,7 +304,7 @@ class AbstractPlugin {
 		$conf['useCacheHash'] = $this->pi_USER_INT_obj ? 0 : $cache;
 		$conf['no_cache'] = $this->pi_USER_INT_obj ? 0 : !$cache;
 		$conf['parameter'] = $altPageId ? $altPageId : ($this->pi_tmpPageId ? $this->pi_tmpPageId : $GLOBALS['TSFE']->id);
-		$conf['additionalParams'] = ($this->conf['parent.']['addParams'] . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE)) . $this->pi_moreParams;
+		$conf['additionalParams'] = $this->conf['parent.']['addParams'] . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE) . $this->pi_moreParams;
 		return $this->cObj->typoLink($str, $conf);
 	}
 
@@ -323,7 +323,7 @@ class AbstractPlugin {
 	 * @todo Define visibility
 	 */
 	public function pi_linkTP_keepPIvars($str, $overrulePIvars = array(), $cache = 0, $clearAnyway = 0, $altPageId = 0) {
-		if ((is_array($this->piVars) && is_array($overrulePIvars)) && !$clearAnyway) {
+		if (is_array($this->piVars) && is_array($overrulePIvars) && !$clearAnyway) {
 			$piVars = $this->piVars;
 			unset($piVars['DATA']);
 			$overrulePIvars = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($piVars, $overrulePIvars);
@@ -397,8 +397,8 @@ class AbstractPlugin {
 	public function pi_openAtagHrefInJSwindow($str, $winName = '', $winParams = 'width=670,height=500,status=0,menubar=0,scrollbars=1,resizable=1') {
 		if (preg_match('/(.*)(<a[^>]*>)(.*)/i', $str, $match)) {
 			$aTagContent = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes($match[2]);
-			$match[2] = ('<a href="#" onclick="' . htmlspecialchars((((((('vHWin=window.open(\'' . $GLOBALS['TSFE']->baseUrlWrap($aTagContent['href'])) . '\',\'') . ($winName ? $winName : md5($aTagContent['href']))) . '\',\'') . $winParams) . '\');vHWin.focus();return false;'))) . '">';
-			$str = ($match[1] . $match[2]) . $match[3];
+			$match[2] = '<a href="#" onclick="' . htmlspecialchars(('vHWin=window.open(\'' . $GLOBALS['TSFE']->baseUrlWrap($aTagContent['href']) . '\',\'' . ($winName ? $winName : md5($aTagContent['href'])) . '\',\'' . $winParams . '\');vHWin.focus();return false;')) . '">';
+			$str = $match[1] . $match[2] . $match[3];
 		}
 		return $str;
 	}
@@ -477,14 +477,14 @@ class AbstractPlugin {
 		// Default values for "traditional" wrapping with a table. Can be overwritten by vars from $wrapArr
 		$wrapper['disabledLinkWrap'] = '<td nowrap="nowrap"><p>|</p></td>';
 		$wrapper['inactiveLinkWrap'] = '<td nowrap="nowrap"><p>|</p></td>';
-		$wrapper['activeLinkWrap'] = ('<td' . $this->pi_classParam('browsebox-SCell')) . ' nowrap="nowrap"><p>|</p></td>';
+		$wrapper['activeLinkWrap'] = '<td' . $this->pi_classParam('browsebox-SCell') . ' nowrap="nowrap"><p>|</p></td>';
 		$wrapper['browseLinksWrap'] = trim(('<table ' . $tableParams)) . '><tr>|</tr></table>';
 		$wrapper['showResultsWrap'] = '<p>|</p>';
-		$wrapper['browseBoxWrap'] = ('
+		$wrapper['browseBoxWrap'] = '
 		<!--
 			List browsing box:
 		-->
-		<div ' . $this->pi_classParam('browsebox')) . '>
+		<div ' . $this->pi_classParam('browsebox') . '>
 			|
 		</div>';
 		// Now overwrite all entries in $wrapper which are also in $wrapArr
@@ -492,7 +492,7 @@ class AbstractPlugin {
 		// Show pagebrowser
 		if ($showResultCount != 2) {
 			if ($pagefloat > -1) {
-				$lastPage = min($totalPages, max(($pointer + 1) + $pagefloat, $maxPages));
+				$lastPage = min($totalPages, max($pointer + 1 + $pagefloat, $maxPages));
 				$firstPage = max(0, $lastPage - $maxPages);
 			} else {
 				$firstPage = 0;
@@ -519,9 +519,9 @@ class AbstractPlugin {
 			// Links to pages
 			for ($a = $firstPage; $a < $lastPage; $a++) {
 				if ($this->internal['showRange']) {
-					$pageText = (($a * $results_at_a_time + 1) . '-') . min($count, ($a + 1) * $results_at_a_time);
+					$pageText = ($a * $results_at_a_time + 1) . '-' . min($count, ($a + 1) * $results_at_a_time);
 				} else {
-					$pageText = trim(($this->pi_getLL('pi_list_browseresults_page', 'Page', $hscText) . ' ') . ($a + 1));
+					$pageText = trim($this->pi_getLL('pi_list_browseresults_page', 'Page', $hscText) . ' ' . ($a + 1));
 				}
 				// Current page
 				if ($pointer == $a) {
@@ -563,14 +563,14 @@ class AbstractPlugin {
 				$markerArray['###FROM###'] = $this->cObj->wrap($this->internal['res_count'] > 0 ? $pR1 : 0, $wrapper['showResultsNumbersWrap']);
 				$markerArray['###TO###'] = $this->cObj->wrap(min($this->internal['res_count'], $pR2), $wrapper['showResultsNumbersWrap']);
 				$markerArray['###OUT_OF###'] = $this->cObj->wrap($this->internal['res_count'], $wrapper['showResultsNumbersWrap']);
-				$markerArray['###FROM_TO###'] = $this->cObj->wrap((((($this->internal['res_count'] > 0 ? $pR1 : 0) . ' ') . $this->pi_getLL('pi_list_browseresults_to', 'to')) . ' ') . min($this->internal['res_count'], $pR2), $wrapper['showResultsNumbersWrap']);
+				$markerArray['###FROM_TO###'] = $this->cObj->wrap(($this->internal['res_count'] > 0 ? $pR1 : 0) . ' ' . $this->pi_getLL('pi_list_browseresults_to', 'to') . ' ' . min($this->internal['res_count'], $pR2), $wrapper['showResultsNumbersWrap']);
 				$markerArray['###CURRENT_PAGE###'] = $this->cObj->wrap($pointer + 1, $wrapper['showResultsNumbersWrap']);
 				$markerArray['###TOTAL_PAGES###'] = $this->cObj->wrap($totalPages, $wrapper['showResultsNumbersWrap']);
 				// Substitute markers
 				$resultCountMsg = $this->cObj->substituteMarkerArray($this->pi_getLL('pi_list_browseresults_displays', 'Displaying results ###FROM### to ###TO### out of ###OUT_OF###'), $markerArray);
 			} else {
 				// Render the resultcount in the "traditional" way using sprintf
-				$resultCountMsg = sprintf(str_replace('###SPAN_BEGIN###', ('<span' . $this->pi_classParam('browsebox-strong')) . '>', $this->pi_getLL('pi_list_browseresults_displays', 'Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>')), $count > 0 ? $pR1 : 0, min($count, $pR2), $count);
+				$resultCountMsg = sprintf(str_replace('###SPAN_BEGIN###', '<span' . $this->pi_classParam('browsebox-strong') . '>', $this->pi_getLL('pi_list_browseresults_displays', 'Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>')), $count > 0 ? $pR1 : 0, min($count, $pR2), $count);
 			}
 			$resultCountMsg = $this->cObj->wrap($resultCountMsg, $wrapper['showResultsWrap']);
 		} else {
@@ -590,17 +590,17 @@ class AbstractPlugin {
 	 */
 	public function pi_list_searchBox($tableParams = '') {
 		// Search box design:
-		$sTables = (((((((((((((((((((('
+		$sTables = '
 
 		<!--
 			List search box:
 		-->
-		<div' . $this->pi_classParam('searchbox')) . '>
-			<form action="') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '" method="post" style="margin: 0 0 0 0;">
-			<') . trim(('table ' . $tableParams))) . '>
+		<div' . $this->pi_classParam('searchbox') . '>
+			<form action="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '" method="post" style="margin: 0 0 0 0;">
+			<' . trim(('table ' . $tableParams)) . '>
 				<tr>
-					<td><input type="text" name="') . $this->prefixId) . '[sword]" value="') . htmlspecialchars($this->piVars['sword'])) . '"') . $this->pi_classParam('searchbox-sword')) . ' /></td>
-					<td><input type="submit" value="') . $this->pi_getLL('pi_list_searchBox_search', 'Search', TRUE)) . '"') . $this->pi_classParam('searchbox-button')) . ' />') . '<input type="hidden" name="no_cache" value="1" />') . '<input type="hidden" name="') . $this->prefixId) . '[pointer]" value="" />') . '</td>
+					<td><input type="text" name="' . $this->prefixId . '[sword]" value="' . htmlspecialchars($this->piVars['sword']) . '"' . $this->pi_classParam('searchbox-sword') . ' /></td>
+					<td><input type="submit" value="' . $this->pi_getLL('pi_list_searchBox_search', 'Search', TRUE) . '"' . $this->pi_classParam('searchbox-button') . ' />' . '<input type="hidden" name="no_cache" value="1" />' . '<input type="hidden" name="' . $this->prefixId . '[pointer]" value="" />' . '</td>
 				</tr>
 			</table>
 			</form>
@@ -619,18 +619,18 @@ class AbstractPlugin {
 	public function pi_list_modeSelector($items = array(), $tableParams = '') {
 		$cells = array();
 		foreach ($items as $k => $v) {
-			$cells[] = ((('
-					<td' . ($this->piVars['mode'] == $k ? $this->pi_classParam('modeSelector-SCell') : '')) . '><p>') . $this->pi_linkTP_keepPIvars(htmlspecialchars($v), array('mode' => $k), $this->pi_isOnlyFields($this->pi_isOnlyFields))) . '</p></td>';
+			$cells[] = '
+					<td' . ($this->piVars['mode'] == $k ? $this->pi_classParam('modeSelector-SCell') : '') . '><p>' . $this->pi_linkTP_keepPIvars(htmlspecialchars($v), array('mode' => $k), $this->pi_isOnlyFields($this->pi_isOnlyFields)) . '</p></td>';
 		}
-		$sTables = ((((('
+		$sTables = '
 
 		<!--
 			Mode selector (menu for list):
 		-->
-		<div' . $this->pi_classParam('modeSelector')) . '>
-			<') . trim(('table ' . $tableParams))) . '>
+		<div' . $this->pi_classParam('modeSelector') . '>
+			<' . trim(('table ' . $tableParams)) . '>
 				<tr>
-					') . implode('', $cells)) . '
+					' . implode('', $cells) . '
 				</tr>
 			</table>
 		</div>';
@@ -661,14 +661,14 @@ class AbstractPlugin {
 			$tRows[] = $this->pi_list_row($c);
 			$c++;
 		}
-		$out = ((((('
+		$out = '
 
 		<!--
 			Record list:
 		-->
-		<div' . $this->pi_classParam('listrow')) . '>
-			<') . trim(('table ' . $tableParams))) . '>
-				') . implode('', $tRows)) . '
+		<div' . $this->pi_classParam('listrow') . '>
+			<' . trim(('table ' . $tableParams)) . '>
+				' . implode('', $tRows) . '
 			</table>
 		</div>';
 		return $out;
@@ -685,7 +685,7 @@ class AbstractPlugin {
 	 */
 	public function pi_list_row($c) {
 		// Dummy
-		return ('<tr' . ($c % 2 ? $this->pi_classParam('listrow-odd') : '')) . '><td><p>[dummy row]</p></td></tr>';
+		return '<tr' . ($c % 2 ? $this->pi_classParam('listrow-odd') : '') . '><td><p>[dummy row]</p></td></tr>';
 	}
 
 	/**
@@ -697,7 +697,7 @@ class AbstractPlugin {
 	 * @todo Define visibility
 	 */
 	public function pi_list_header() {
-		return ('<tr' . $this->pi_classParam('listrow-header')) . '><td><p>[dummy header row]</p></td></tr>';
+		return '<tr' . $this->pi_classParam('listrow-header') . '><td><p>[dummy header row]</p></td></tr>';
 	}
 
 	/***************************
@@ -713,7 +713,7 @@ class AbstractPlugin {
 	 * @todo Define visibility
 	 */
 	public function pi_getClassName($class) {
-		return (str_replace('_', '-', $this->prefixId) . ($this->prefixId ? '-' : '')) . $class;
+		return str_replace('_', '-', $this->prefixId) . ($this->prefixId ? '-' : '') . $class;
 	}
 
 	/**
@@ -734,7 +734,7 @@ class AbstractPlugin {
 		foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $addClasses) as $v) {
 			$output .= ' ' . $v;
 		}
-		return (' class="' . trim($output)) . '"';
+		return ' class="' . trim($output) . '"';
 	}
 
 	/**
@@ -746,21 +746,21 @@ class AbstractPlugin {
 	 * @todo Define visibility
 	 */
 	public function pi_wrapInBaseClass($str) {
-		$content = ((('<div class="' . str_replace('_', '-', $this->prefixId)) . '">
-		') . $str) . '
+		$content = '<div class="' . str_replace('_', '-', $this->prefixId) . '">
+		' . $str . '
 	</div>
 	';
 		if (!$GLOBALS['TSFE']->config['config']['disablePrefixComment']) {
-			$content = ((((((((('
+			$content = '
 
 
 	<!--
 
-		BEGIN: Content of extension "' . $this->extKey) . '", plugin "') . $this->prefixId) . '"
+		BEGIN: Content of extension "' . $this->extKey . '", plugin "' . $this->prefixId . '"
 
 	-->
-	') . $content) . '
-	<!-- END: Content of extension "') . $this->extKey) . '", plugin "') . $this->prefixId) . '" -->
+	' . $content . '
+	<!-- END: Content of extension "' . $this->extKey . '", plugin "' . $this->prefixId . '" -->
 
 	';
 		}
@@ -803,9 +803,9 @@ class AbstractPlugin {
 		}
 		if ($panel) {
 			if ($label) {
-				return ((('<!-- BEGIN: EDIT PANEL --><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top">' . $label) . '</td><td valign="top" align="right">') . $panel) . '</td></tr></table><!-- END: EDIT PANEL -->';
+				return '<!-- BEGIN: EDIT PANEL --><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top">' . $label . '</td><td valign="top" align="right">' . $panel . '</td></tr></table><!-- END: EDIT PANEL -->';
 			} else {
-				return ('<!-- BEGIN: EDIT PANEL -->' . $panel) . '<!-- END: EDIT PANEL -->';
+				return '<!-- BEGIN: EDIT PANEL -->' . $panel . '<!-- END: EDIT PANEL -->';
 			}
 		} else {
 			return $label;
@@ -836,7 +836,7 @@ class AbstractPlugin {
 				'beforeLastTag' => 1,
 				'iconTitle' => $title
 			), $oConf);
-			$content = $this->cObj->editIcons($content, ($tablename . ':') . $fields, $conf, ($tablename . ':') . $row['uid'], $row, '&viewUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')));
+			$content = $this->cObj->editIcons($content, $tablename . ':' . $fields, $conf, $tablename . ':' . $row['uid'], $row, '&viewUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')));
 		}
 		return $content;
 	}
@@ -895,7 +895,7 @@ class AbstractPlugin {
 	 */
 	public function pi_loadLL() {
 		if (!$this->LOCAL_LANG_loaded && $this->scriptRelPath) {
-			$basePath = ((('EXT:' . $this->extKey) . '/') . dirname($this->scriptRelPath)) . '/locallang.xml';
+			$basePath = 'EXT:' . $this->extKey . '/' . dirname($this->scriptRelPath) . '/locallang.xml';
 			// Read the strings in the required charset (since TYPO3 4.2)
 			$this->LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($basePath, $this->LLkey, $GLOBALS['TSFE']->renderCharset);
 			if ($this->altLLkey) {
@@ -952,11 +952,11 @@ class AbstractPlugin {
 			if (is_array($mm_cat)) {
 				// This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT
 				// selected, if they should not! Almost ALWAYS add this to your queries!
-				$query = ((((((((((((((((((((((((('FROM ' . $table) . ',') . $mm_cat['table']) . ',') . $mm_cat['mmtable']) . LF) . ' WHERE ') . $table) . '.uid=') . $mm_cat['mmtable']) . '.uid_local AND ') . $mm_cat['table']) . '.uid=') . $mm_cat['mmtable']) . '.uid_foreign ') . LF) . (strcmp($mm_cat['catUidList'], '') ? (((' AND ' . $mm_cat['table']) . '.uid IN (') . $mm_cat['catUidList']) . ')' : '')) . LF) . ' AND ') . $table) . '.pid IN (') . $pidList) . ')') . LF) . $this->cObj->enableFields($table)) . LF;
+				$query = 'FROM ' . $table . ',' . $mm_cat['table'] . ',' . $mm_cat['mmtable'] . LF . ' WHERE ' . $table . '.uid=' . $mm_cat['mmtable'] . '.uid_local AND ' . $mm_cat['table'] . '.uid=' . $mm_cat['mmtable'] . '.uid_foreign ' . LF . (strcmp($mm_cat['catUidList'], '') ? ' AND ' . $mm_cat['table'] . '.uid IN (' . $mm_cat['catUidList'] . ')' : '') . LF . ' AND ' . $table . '.pid IN (' . $pidList . ')' . LF . $this->cObj->enableFields($table) . LF;
 			} else {
 				// This adds WHERE-clauses that ensures deleted, hidden, starttime/endtime/access records are NOT
 				// selected, if they should not! Almost ALWAYS add this to your queries!
-				$query = (((((('FROM ' . $table) . ' WHERE pid IN (') . $pidList) . ')') . LF) . $this->cObj->enableFields($table)) . LF;
+				$query = 'FROM ' . $table . ' WHERE pid IN (' . $pidList . ')' . LF . $this->cObj->enableFields($table) . LF;
 			}
 		}
 		// Split the "FROM ... WHERE" string so we get the WHERE part and TABLE names separated...:
@@ -965,7 +965,7 @@ class AbstractPlugin {
 		$WHERE = trim($WHERE);
 		// Add '$addWhere'
 		if ($addWhere) {
-			$WHERE .= (' ' . $addWhere) . LF;
+			$WHERE .= ' ' . $addWhere . LF;
 		}
 		// Search word:
 		if ($this->piVars['sword'] && $this->internal['searchFieldList']) {
@@ -984,14 +984,14 @@ class AbstractPlugin {
 			// Order by data:
 			if (!$orderBy && $this->internal['orderBy']) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->internal['orderByList'], $this->internal['orderBy'])) {
-					$orderBy = ((('ORDER BY ' . $table) . '.') . $this->internal['orderBy']) . ($this->internal['descFlag'] ? ' DESC' : '');
+					$orderBy = 'ORDER BY ' . $table . '.' . $this->internal['orderBy'] . ($this->internal['descFlag'] ? ' DESC' : '');
 				}
 			}
 			// Limit data:
 			$pointer = $this->piVars['pointer'];
 			$pointer = intval($pointer);
 			$results_at_a_time = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->internal['results_at_a_time'], 1, 1000);
-			$LIMIT = ($pointer * $results_at_a_time . ',') . $results_at_a_time;
+			$LIMIT = $pointer * $results_at_a_time . ',' . $results_at_a_time;
 			// Add 'SELECT'
 			$queryParts = array(
 				'SELECT' => $this->pi_prependFieldsWithTable($table, $this->pi_listFields),
@@ -1058,7 +1058,7 @@ class AbstractPlugin {
 		$list = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldList, 1);
 		$return = array();
 		foreach ($list as $listItem) {
-			$return[] = ($table . '.') . $listItem;
+			$return[] = $table . '.' . $listItem;
 		}
 		return implode(',', $return);
 	}
@@ -1076,7 +1076,7 @@ class AbstractPlugin {
 	 * @todo Define visibility
 	 */
 	public function pi_getCategoryTableContents($table, $pid, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, ((('pid=' . intval($pid)) . $this->cObj->enableFields($table)) . ' ') . $whereClause, $groupBy, $orderBy, $limit);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid=' . intval($pid) . $this->cObj->enableFields($table) . ' ' . $whereClause, $groupBy, $orderBy, $limit);
 		$outArr = array();
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$outArr[$row['uid']] = $row;
@@ -1129,7 +1129,7 @@ class AbstractPlugin {
 				if (!strcmp($inArray[$fN], '')) {
 					unset($inArray[$fN]);
 				} elseif (is_array($this->pi_autoCacheFields[$fN])) {
-					if ((is_array($this->pi_autoCacheFields[$fN]['range']) && intval($inArray[$fN]) >= intval($this->pi_autoCacheFields[$fN]['range'][0])) && intval($inArray[$fN]) <= intval($this->pi_autoCacheFields[$fN]['range'][1])) {
+					if (is_array($this->pi_autoCacheFields[$fN]['range']) && intval($inArray[$fN]) >= intval($this->pi_autoCacheFields[$fN]['range'][0]) && intval($inArray[$fN]) <= intval($this->pi_autoCacheFields[$fN]['range'][1])) {
 						unset($inArray[$fN]);
 					}
 					if (is_array($this->pi_autoCacheFields[$fN]['list']) && in_array($inArray[$fN], $this->pi_autoCacheFields[$fN]['list'])) {

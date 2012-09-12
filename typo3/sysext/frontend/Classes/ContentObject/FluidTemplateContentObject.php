@@ -118,7 +118,7 @@ class FluidTemplateContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstr
 			if (!in_array($variableName, $reservedVariables)) {
 				$view->assign($variableName, $this->cObj->cObjGetSingle($cObjType, $variables[$variableName . '.']));
 			} else {
-				throw new \InvalidArgumentException(('Cannot use reserved name "' . $variableName) . '" as variable name in FLUIDTEMPLATE.', 1288095720);
+				throw new \InvalidArgumentException('Cannot use reserved name "' . $variableName . '" as variable name in FLUIDTEMPLATE.', 1288095720);
 			}
 		}
 		$view->assign('data', $this->cObj->data);

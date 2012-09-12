@@ -380,7 +380,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		$this->w = $XY[0];
 		$this->h = $XY[1];
 		// Transparent layer as background if set and requirements are met
-		if ((((!empty($this->setup['backColor']) && $this->setup['backColor'] === 'transparent') && $this->png_truecolor) && !$this->setup['reduceColors']) && (empty($this->setup['format']) || $this->setup['format'] === 'png')) {
+		if (!empty($this->setup['backColor']) && $this->setup['backColor'] === 'transparent' && $this->png_truecolor && !$this->setup['reduceColors'] && (empty($this->setup['format']) || $this->setup['format'] === 'png')) {
 			// Set transparency properties
 			imagesavealpha($this->im, TRUE);
 			// Fill with a transparent background
@@ -711,7 +711,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 		// Not only the wrong glyphs are printed but also some memory stack overflow resulted in strange additional
 		// chars - and finally the reason for this investigation: The Bounding box data was changing all the time
 		// resulting in new images being generated all the time. With PHP4 it works fine.
-		return (((($this->tempPath . $pre) . $meaningfulPrefix) . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(serialize($this->setup))) . '.') . $this->extension();
+		return $this->tempPath . $pre . $meaningfulPrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(serialize($this->setup)) . '.' . $this->extension();
 	}
 
 	/**
@@ -755,7 +755,7 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			$sign = $part[0];
 			if ((string) intval($theVal) == (string) $theVal) {
 				$theVal = intval($theVal);
-			} elseif (('[' . substr($theVal, 1, -1)) . ']' == $theVal) {
+			} elseif ('[' . substr($theVal, 1, -1) . ']' == $theVal) {
 				$objParts = explode('.', substr($theVal, 1, -1));
 				$theVal = 0;
 				if (isset($this->objBB[$objParts[0]])) {

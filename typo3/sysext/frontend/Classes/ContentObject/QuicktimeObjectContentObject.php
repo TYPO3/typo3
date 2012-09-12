@@ -62,14 +62,14 @@ class QuicktimeObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abs
 		if (is_array($conf['params.'])) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
 			foreach ($conf['params.'] as $key => $value) {
-				$params .= ((((($qtObject . '.addParam("') . $key) . '", "') . $value) . '");') . LF;
+				$params .= $qtObject . '.addParam("' . $key . '", "' . $value . '");' . LF;
 			}
 		}
-		$params = ((((($params ? substr($params, 0, -2) : '') . LF) . $qtObject) . '.write("') . $replaceElementIdString) . '");';
+		$params = ($params ? substr($params, 0, -2) : '') . LF . $qtObject . '.write("' . $replaceElementIdString . '");';
 		$alternativeContent = isset($conf['alternativeContent.']) ? $this->cObj->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']) : $conf['alternativeContent'];
 		$layout = isset($conf['layout.']) ? $this->cObj->stdWrap($conf['layout'], $conf['layout.']) : $conf['layout'];
 		$layout = str_replace('###ID###', $replaceElementIdString, $layout);
-		$layout = str_replace('###QTOBJECT###', ((('<div id="' . $replaceElementIdString) . '">') . $alternativeContent) . '</div>', $layout);
+		$layout = str_replace('###QTOBJECT###', '<div id="' . $replaceElementIdString . '">' . $alternativeContent . '</div>', $layout);
 		$width = isset($conf['width.']) ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : $conf['width'];
 		if (!$width) {
 			$width = $conf[$type . '.']['defaultWidth'];
@@ -83,11 +83,11 @@ class QuicktimeObjectContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abs
 		if (strpos($filename, '://') === FALSE && !empty($prefix)) {
 			$fullFilename = $prefix . $filename;
 		}
-		$embed = ((((((((('var ' . $qtObject) . ' = new QTObject("') . $fullFilename) . '", "') . $replaceElementIdString) . '", "') . $width) . '", "') . $height) . '");';
-		$content = (((($layout . '
+		$embed = 'var ' . $qtObject . ' = new QTObject("' . $fullFilename . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '");';
+		$content = $layout . '
 			<script type="text/javascript">
-				') . $embed) . '
-				') . $params) . '
+				' . $embed . '
+				' . $params . '
 			</script>';
 		if (isset($conf['stdWrap.'])) {
 			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);

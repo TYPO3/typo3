@@ -517,7 +517,7 @@ class ContentObjectRenderer {
 		\TYPO3\CMS\Core\Resource\Service\FrontendContentAdapterService::modifyDBRow($data, $table);
 		$this->data = $data;
 		$this->table = $table;
-		$this->currentRecord = $table ? ($table . ':') . $this->data['uid'] : '';
+		$this->currentRecord = $table ? $table . ':' . $this->data['uid'] : '';
 		$this->parameters = array();
 		if (is_array($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'])) {
 			foreach ($TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_content.php']['cObjTypeAndClass'] as $classArr) {
@@ -1293,7 +1293,7 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function getFieldDefaultValue($noValueInsert, $fieldName, $defaultVal) {
-		if ((!$GLOBALS['TSFE']->no_cache || !isset($_POST[$fieldName]) && !isset($_GET[$fieldName])) || $noValueInsert) {
+		if (!$GLOBALS['TSFE']->no_cache || !isset($_POST[$fieldName]) && !isset($_GET[$fieldName]) || $noValueInsert) {
 			return $defaultVal;
 		} else {
 			return \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($fieldName);
@@ -1325,7 +1325,7 @@ class ContentObjectRenderer {
 			} else {
 				$params = isset($conf['params.']) ? ' ' . $this->stdWrap($conf['params'], $conf['params.']) : '';
 			}
-			$theValue = (((((((((('<img src="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP($info[3])))) . '" width="') . $info[0]) . '" height="') . $info[1]) . '"') . $this->getBorderAttr(((' border="' . intval($conf['border'])) . '"'))) . $params) . $altParam) . (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '')) . '>';
+			$theValue = '<img src="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::rawUrlEncodeFP($info[3]))) . '" width="' . $info[0] . '" height="' . $info[1] . '"' . $this->getBorderAttr((' border="' . intval($conf['border']) . '"')) . $params . $altParam . (!empty($GLOBALS['TSFE']->xhtmlDoctype) ? ' /' : '') . '>';
 			$linkWrap = isset($conf['linkWrap.']) ? $this->stdWrap($conf['linkWrap'], $conf['linkWrap.']) : $conf['linkWrap'];
 			if ($linkWrap) {
 				$theValue = $this->linkWrap($theValue, $linkWrap);
@@ -1349,7 +1349,7 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function getBorderAttr($borderAttr) {
-		if ((!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype) && $GLOBALS['TSFE']->config['config']['doctype'] != 'html5') && !$GLOBALS['TSFE']->config['config']['disableImgBorderAttr']) {
+		if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('xhtml_strict,xhtml_11,xhtml_2', $GLOBALS['TSFE']->xhtmlDoctype) && $GLOBALS['TSFE']->config['config']['doctype'] != 'html5' && !$GLOBALS['TSFE']->config['config']['disableImgBorderAttr']) {
 			return $borderAttr;
 		}
 	}
@@ -1394,9 +1394,9 @@ class ContentObjectRenderer {
 				$md5_value = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(implode('|', array($imageFile, $parametersEncoded)));
 				$params = '&md5=' . $md5_value;
 				foreach (str_split($parametersEncoded, 64) as $index => $chunk) {
-					$params .= (((('&parameters' . rawurlencode('[')) . $index) . rawurlencode(']')) . '=') . rawurlencode($chunk);
+					$params .= '&parameters' . rawurlencode('[') . $index . rawurlencode(']') . '=' . rawurlencode($chunk);
 				}
-				$url = (($GLOBALS['TSFE']->absRefPrefix . 'index.php?eID=tx_cms_showpic&file=') . rawurlencode($imageFile)) . $params;
+				$url = $GLOBALS['TSFE']->absRefPrefix . 'index.php?eID=tx_cms_showpic&file=' . rawurlencode($imageFile) . $params;
 				$directImageLink = isset($conf['directImageLink.']) ? $this->stdWrap($conf['directImageLink'], $conf['directImageLink.']) : $conf['directImageLink'];
 				if ($directImageLink) {
 					$imgResourceConf = array(
@@ -1425,7 +1425,7 @@ class ContentObjectRenderer {
 					if ($conf['JSwindow.']['altUrl'] || $conf['JSwindow.']['altUrl.']) {
 						$altUrl = isset($conf['JSwindow.']['altUrl.']) ? $this->stdWrap($conf['JSwindow.']['altUrl'], $conf['JSwindow.']['altUrl.']) : $conf['JSwindow.']['altUrl'];
 						if ($altUrl) {
-							$url = $altUrl . ($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : ('?file=' . rawurlencode($imageFile)) . $params);
+							$url = $altUrl . ($conf['JSwindow.']['altUrl_noDefaultParams'] ? '' : '?file=' . rawurlencode($imageFile) . $params);
 						}
 					}
 					$gifCreator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_gifbuilder');
@@ -1435,7 +1435,7 @@ class ContentObjectRenderer {
 					$JSwindowExpand = isset($conf['JSwindow.']['expand.']) ? $this->stdWrap($conf['JSwindow.']['expand'], $conf['JSwindow.']['expand.']) : $conf['JSwindow.']['expand'];
 					$offset = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $JSwindowExpand . ',');
 					$newWindow = isset($conf['JSwindow.']['newWindow.']) ? $this->stdWrap($conf['JSwindow.']['newWindow'], $conf['JSwindow.']['newWindow.']) : $conf['JSwindow.']['newWindow'];
-					$a1 = (((((('<a href="' . htmlspecialchars($url)) . '" onclick="') . htmlspecialchars((((((((('openPic(\'' . $GLOBALS['TSFE']->baseUrlWrap($url)) . '\',\'') . ($newWindow ? md5($url) : 'thePicture')) . '\',\'width=') . ($dims[0] + $offset[0])) . ',height=') . ($dims[1] + $offset[1])) . ',status=0,menubar=0\'); return false;'))) . '"') . $target) . $GLOBALS['TSFE']->ATagParams) . '>';
+					$a1 = '<a href="' . htmlspecialchars($url) . '" onclick="' . htmlspecialchars(('openPic(\'' . $GLOBALS['TSFE']->baseUrlWrap($url) . '\',\'' . ($newWindow ? md5($url) : 'thePicture') . '\',\'width=' . ($dims[0] + $offset[0]) . ',height=' . ($dims[1] + $offset[1]) . ',status=0,menubar=0\'); return false;')) . '"' . $target . $GLOBALS['TSFE']->ATagParams . '>';
 					$a2 = '</a>';
 					$GLOBALS['TSFE']->setJS('openPic');
 				} else {
@@ -1445,7 +1445,7 @@ class ContentObjectRenderer {
 				if (isset($conf['stdWrap.'])) {
 					$string = $this->stdWrap($string, $conf['stdWrap.']);
 				}
-				$content = ($a1 . $string) . $a2;
+				$content = $a1 . $string . $a2;
 			}
 		}
 		return $content;
@@ -1467,7 +1467,7 @@ class ContentObjectRenderer {
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('jpg,gif,jpeg,png', $fileinfo['fileext'])) {
 				$imgFile = $incFile;
 				$imgInfo = @getImageSize($imgFile);
-				return (((((((((('<img src="' . $GLOBALS['TSFE']->absRefPrefix) . $imgFile) . '" width="') . $imgInfo[0]) . '" height="') . $imgInfo[1]) . '"') . $this->getBorderAttr(' border="0"')) . ' ') . $addParams) . ' />';
+				return '<img src="' . $GLOBALS['TSFE']->absRefPrefix . $imgFile . '" width="' . $imgInfo[0] . '" height="' . $imgInfo[1] . '"' . $this->getBorderAttr(' border="0"') . ' ' . $addParams . ' />';
 			} elseif (filesize($incFile) < 1024 * 1024) {
 				return $GLOBALS['TSFE']->tmpl->fileContent($incFile);
 			}
@@ -1508,7 +1508,7 @@ class ContentObjectRenderer {
 				$wrapArr[0] = str_replace($reg[0], $uid, $wrapArr[0]);
 			}
 		}
-		return (trim($wrapArr[0]) . $content) . trim($wrapArr[1]);
+		return trim($wrapArr[0]) . $content . trim($wrapArr[1]);
 	}
 
 	/**
@@ -1530,19 +1530,19 @@ class ContentObjectRenderer {
 			$longDesc = trim($conf['longdescURL']);
 		}
 		// "alt":
-		$altParam = (' alt="' . htmlspecialchars($altText)) . '"';
+		$altParam = ' alt="' . htmlspecialchars($altText) . '"';
 		// "title":
 		$emptyTitleHandling = 'useAlt';
 		$emptyTitleHandling = isset($conf['emptyTitleHandling.']) ? $this->stdWrap($conf['emptyTitleHandling'], $conf['emptyTitleHandling.']) : $conf['emptyTitleHandling'];
 		// Choices: 'keepEmpty' | 'useAlt' | 'removeAttr'
 		if ($titleText || $emptyTitleHandling == 'keepEmpty') {
-			$altParam .= (' title="' . htmlspecialchars($titleText)) . '"';
+			$altParam .= ' title="' . htmlspecialchars($titleText) . '"';
 		} elseif (!$titleText && $emptyTitleHandling == 'useAlt') {
-			$altParam .= (' title="' . htmlspecialchars($altText)) . '"';
+			$altParam .= ' title="' . htmlspecialchars($altText) . '"';
 		}
 		// "longDesc" URL
 		if ($longDesc) {
-			$altParam .= (' longdesc="' . htmlspecialchars(strip_tags($longDesc))) . '"';
+			$altParam .= ' longdesc="' . htmlspecialchars(strip_tags($longDesc)) . '"';
 		}
 		return $altParam;
 	}
@@ -1769,7 +1769,7 @@ class ContentObjectRenderer {
 				foreach ($aKeys as $tK => $tV) {
 					$aKeys[$tK] = preg_quote($tV, '/');
 				}
-				$regex = ('/' . implode('|', $aKeys)) . '/';
+				$regex = '/' . implode('|', $aKeys) . '/';
 				// Doing regex's
 				$storeArr['c'] = preg_split($regex, $content);
 				preg_match_all($regex, $content, $keyList);
@@ -1880,7 +1880,7 @@ class ContentObjectRenderer {
 		if ($fieldList) {
 			$fArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldList, 1);
 			foreach ($fArr as $field) {
-				$markContentArray[(('###' . $prefix) . $field) . '###'] = $nl2br ? nl2br($row[$field], !empty($GLOBALS['TSFE']->xhtmlDoctype)) : $row[$field];
+				$markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($row[$field], !empty($GLOBALS['TSFE']->xhtmlDoctype)) : $row[$field];
 			}
 		} else {
 			if (is_array($row)) {
@@ -1889,7 +1889,7 @@ class ContentObjectRenderer {
 						if ($HSC) {
 							$value = htmlspecialchars($value);
 						}
-						$markContentArray[(('###' . $prefix) . $field) . '###'] = $nl2br ? nl2br($value, !empty($GLOBALS['TSFE']->xhtmlDoctype)) : $value;
+						$markContentArray['###' . $prefix . $field . '###'] = $nl2br ? nl2br($value, !empty($GLOBALS['TSFE']->xhtmlDoctype)) : $value;
 					}
 				}
 			}
@@ -2086,7 +2086,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_lang($content = '', $conf = array()) {
-		if ((isset($conf['lang.']) && $GLOBALS['TSFE']->config['config']['language']) && isset($conf['lang.'][$GLOBALS['TSFE']->config['config']['language']])) {
+		if (isset($conf['lang.']) && $GLOBALS['TSFE']->config['config']['language'] && isset($conf['lang.'][$GLOBALS['TSFE']->config['config']['language']])) {
 			$content = $conf['lang.'][$GLOBALS['TSFE']->config['config']['language']];
 		}
 		return $content;
@@ -2925,7 +2925,7 @@ class ContentObjectRenderer {
 	public function stdWrap_wrapAlign($content = '', $conf = array()) {
 		$wrapAlign = trim($conf['wrapAlign']);
 		if ($wrapAlign) {
-			$content = $this->wrap($content, ('<div style="text-align:' . $wrapAlign) . ';">|</div>');
+			$content = $this->wrap($content, '<div style="text-align:' . $wrapAlign . ';">|</div>');
 		}
 		return $content;
 	}
@@ -3199,7 +3199,7 @@ class ContentObjectRenderer {
 			'type' => 'POSTUSERFUNC',
 			'cObj' => serialize($this)
 		);
-		$content = ('<!--' . $substKey) . '-->';
+		$content = '<!--' . $substKey . '-->';
 		return $content;
 	}
 
@@ -3319,7 +3319,7 @@ class ContentObjectRenderer {
 	 * @return string The processed input value
 	 */
 	public function stdWrap_debug($content = '', $conf = array()) {
-		$content = ('<pre>' . htmlspecialchars($content)) . '</pre>';
+		$content = '<pre>' . htmlspecialchars($content) . '</pre>';
 		return $content;
 	}
 
@@ -3507,7 +3507,7 @@ class ContentObjectRenderer {
 					while ($entry = $d->read()) {
 						if ($entry != '.' && $entry != '..') {
 							// Because of odd PHP-error where <br />-tag is sometimes placed after a filename!!
-							$wholePath = ($path . '/') . $entry;
+							$wholePath = $path . '/' . $entry;
 							if (file_exists($wholePath) && filetype($wholePath) == 'file') {
 								$info = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($wholePath);
 								if (!$ext_list || \TYPO3\CMS\Core\Utility\GeneralUtility::inList($ext_list, $info['fileext'])) {
@@ -3553,7 +3553,7 @@ class ContentObjectRenderer {
 					$fullPath = trim($data_arr[4]);
 					$list_arr = array();
 					foreach ($items['sorting'] as $key => $v) {
-						$list_arr[] = $fullPath ? ($path . '/') . $items['files'][$key] : $items['files'][$key];
+						$list_arr[] = $fullPath ? $path . '/' . $items['files'][$key] : $items['files'][$key];
 					}
 					return implode(',', $list_arr);
 				}
@@ -3651,7 +3651,7 @@ class ContentObjectRenderer {
 	 */
 	public function prefixComment($str, $conf, $content) {
 		$parts = explode('|', $str);
-		$output = (((((((((((((LF . str_pad('', $parts[0], TAB)) . '<!-- ') . htmlspecialchars($this->insertData($parts[1]))) . ' [begin] -->') . LF) . str_pad('', ($parts[0] + 1), TAB)) . $content) . LF) . str_pad('', $parts[0], TAB)) . '<!-- ') . htmlspecialchars($this->insertData($parts[1]))) . ' [end] -->') . LF) . str_pad('', ($parts[0] + 1), TAB);
+		$output = LF . str_pad('', $parts[0], TAB) . '<!-- ' . htmlspecialchars($this->insertData($parts[1])) . ' [begin] -->' . LF . str_pad('', ($parts[0] + 1), TAB) . $content . LF . str_pad('', $parts[0], TAB) . '<!-- ' . htmlspecialchars($this->insertData($parts[1])) . ' [end] -->' . LF . str_pad('', ($parts[0] + 1), TAB);
 		return $output;
 	}
 
@@ -3733,13 +3733,13 @@ class ContentObjectRenderer {
 		// Split $content into an array(even items in the array are outside the tags, odd numbers are tag-blocks).
 		$tags = 'a|b|blockquote|body|div|em|font|form|h1|h2|h3|h4|h5|h6|i|li|map|ol|option|p|pre|sub|sup|select|span|strong|table|thead|tbody|tfoot|td|textarea|tr|u|ul|br|hr|img|input|area|link';
 		// TODO We should not crop inside <script> tags.
-		$tagsRegEx = ('
+		$tagsRegEx = '
 			(
 				(?:
 					<!--.*?-->					# a comment
 				)
 				|
-				</?(?:' . $tags) . ')+			# opening tag (\'<tag\') or closing tag (\'</tag\')
+				</?(?:' . $tags . ')+			# opening tag (\'<tag\') or closing tag (\'</tag\')
 				(?:
 					(?:
 						(?:
@@ -3765,7 +3765,7 @@ class ContentObjectRenderer {
 				)
 				/?>								# closing the tag with \'>\' or \'/>\'
 			)';
-		$splittedContent = preg_split(('%' . $tagsRegEx) . '%xs', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
+		$splittedContent = preg_split('%' . $tagsRegEx . '%xs', $content, -1, PREG_SPLIT_DELIM_CAPTURE);
 		// Reverse array if we are cropping from right.
 		if ($chars < 0) {
 			$splittedContent = array_reverse($splittedContent);
@@ -3784,17 +3784,17 @@ class ContentObjectRenderer {
 					$cropPosition = $absChars - $strLen;
 					// The snippet "&[^&\s;]{2,8};" in the RegEx below represents entities.
 					$patternMatchEntityAsSingleChar = '(&[^&\\s;]{2,8};|.)';
-					$cropRegEx = $chars < 0 ? ((('#' . $patternMatchEntityAsSingleChar) . '{0,') . ($cropPosition + 1)) . '}$#ui' : ((('#^' . $patternMatchEntityAsSingleChar) . '{0,') . ($cropPosition + 1)) . '}#ui';
+					$cropRegEx = $chars < 0 ? '#' . $patternMatchEntityAsSingleChar . '{0,' . ($cropPosition + 1) . '}$#ui' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . ($cropPosition + 1) . '}#ui';
 					if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
 						$tempContentPlusOneCharacter = $croppedMatch[0];
 					} else {
 						$tempContentPlusOneCharacter = FALSE;
 					}
-					$cropRegEx = $chars < 0 ? ((('#' . $patternMatchEntityAsSingleChar) . '{0,') . $cropPosition) . '}$#ui' : ((('#^' . $patternMatchEntityAsSingleChar) . '{0,') . $cropPosition) . '}#ui';
+					$cropRegEx = $chars < 0 ? '#' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#ui' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}#ui';
 					if (preg_match($cropRegEx, $tempContent, $croppedMatch)) {
 						$tempContent = $croppedMatch[0];
 						if ($crop2space && $tempContentPlusOneCharacter !== FALSE) {
-							$cropRegEx = $chars < 0 ? ((('#(?<=\\s)' . $patternMatchEntityAsSingleChar) . '{0,') . $cropPosition) . '}$#ui' : ((('#^' . $patternMatchEntityAsSingleChar) . '{0,') . $cropPosition) . '}(?=\\s)#ui';
+							$cropRegEx = $chars < 0 ? '#(?<=\\s)' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}$#ui' : '#^' . $patternMatchEntityAsSingleChar . '{0,' . $cropPosition . '}(?=\\s)#ui';
 							if (preg_match($cropRegEx, $tempContentPlusOneCharacter, $croppedMatch)) {
 								$tempContent = $croppedMatch[0];
 							}
@@ -3938,13 +3938,13 @@ class ContentObjectRenderer {
 			$theValue = $this->HTMLcaseshift($theValue, 'upper');
 		}
 		if ($properties & 1) {
-			$theValue = ('<strong>' . $theValue) . '</strong>';
+			$theValue = '<strong>' . $theValue . '</strong>';
 		}
 		if ($properties & 2) {
-			$theValue = ('<i>' . $theValue) . '</i>';
+			$theValue = '<i>' . $theValue . '</i>';
 		}
 		if ($properties & 4) {
-			$theValue = ('<u>' . $theValue) . '</u>';
+			$theValue = '<u>' . $theValue . '</u>';
 		}
 		// Fonttag
 		$theFace = $conf['face.'][$face];
@@ -3961,13 +3961,13 @@ class ContentObjectRenderer {
 		}
 		if ($conf['altWrap']) {
 			$theValue = $this->wrap($theValue, $conf['altWrap']);
-		} elseif (($theFace || $theSize) || $theColor) {
-			$fontWrap = ((('<font' . ($theFace ? (' face="' . $theFace) . '"' : '')) . ($theSize ? (' size="' . $theSize) . '"' : '')) . ($theColor ? (' color="' . $theColor) . '"' : '')) . '>|</font>';
+		} elseif ($theFace || $theSize || $theColor) {
+			$fontWrap = '<font' . ($theFace ? ' face="' . $theFace . '"' : '') . ($theSize ? ' size="' . $theSize . '"' : '') . ($theColor ? ' color="' . $theColor . '"' : '') . '>|</font>';
 			$theValue = $this->wrap($theValue, $fontWrap);
 		}
 		// Align
 		if ($align) {
-			$theValue = $this->wrap($theValue, ('<div style="text-align:' . $align) . ';">|</div>');
+			$theValue = $this->wrap($theValue, '<div style="text-align:' . $align . ';">|</div>');
 		}
 		// Return
 		return $theValue;
@@ -3999,14 +3999,14 @@ class ContentObjectRenderer {
 		$tableTagArray = array(
 			'<table'
 		);
-		$tableTagArray[] = ('border="' . $border) . '"';
-		$tableTagArray[] = ('cellspacing="' . $cellspacing) . '"';
-		$tableTagArray[] = ('cellpadding="' . $cellpadding) . '"';
+		$tableTagArray[] = 'border="' . $border . '"';
+		$tableTagArray[] = 'cellspacing="' . $cellspacing . '"';
+		$tableTagArray[] = 'cellpadding="' . $cellpadding . '"';
 		if ($align) {
-			$tableTagArray[] = ('align="' . $align) . '"';
+			$tableTagArray[] = 'align="' . $align . '"';
 		}
 		if ($theColor) {
-			$tableTagArray[] = ('bgcolor="' . $theColor) . '"';
+			$tableTagArray[] = 'bgcolor="' . $theColor . '"';
 		}
 		if ($conf['params']) {
 			$tableTagArray[] = $conf['params'];
@@ -4040,7 +4040,7 @@ class ContentObjectRenderer {
 		$subparts = explode('>', $parts[$key]);
 		if (trim($subparts[0])) {
 			// Get attributes and name
-			$attribs = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes(('<' . $subparts[0]) . '>');
+			$attribs = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes('<' . $subparts[0] . '>');
 			list($tagName) = explode(' ', $subparts[0], 2);
 			// adds/overrides attributes
 			foreach ($conf as $pkey => $val) {
@@ -4055,7 +4055,7 @@ class ContentObjectRenderer {
 				}
 			}
 			// Re-assembles the tag and content
-			$subparts[0] = trim(($tagName . ' ') . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($attribs));
+			$subparts[0] = trim($tagName . ' ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($attribs));
 			$parts[$key] = implode('>', $subparts);
 			$content = implode('<', $parts);
 		}
@@ -4090,11 +4090,11 @@ class ContentObjectRenderer {
 			if ($conf['jumpurl.']['secure']) {
 				$alternativeJumpUrlParameter = isset($conf['jumpurl.']['parameter.']) ? $this->stdWrap($conf['jumpurl.']['parameter'], $conf['jumpurl.']['parameter.']) : $conf['jumpurl.']['parameter'];
 				$typoLinkConf = array(
-					'parameter' => $alternativeJumpUrlParameter ? $alternativeJumpUrlParameter : ($GLOBALS['TSFE']->id . ',') . $GLOBALS['TSFE']->type,
+					'parameter' => $alternativeJumpUrlParameter ? $alternativeJumpUrlParameter : $GLOBALS['TSFE']->id . ',' . $GLOBALS['TSFE']->type,
 					'fileTarget' => $target,
 					'title' => $title,
 					'ATagParams' => $this->getATagParams($conf),
-					'additionalParams' => (('&jumpurl=' . rawurlencode($theFileEnc)) . $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.'])) . $GLOBALS['TSFE']->getMethodUrlIdToken
+					'additionalParams' => '&jumpurl=' . rawurlencode($theFileEnc) . $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']) . $GLOBALS['TSFE']->getMethodUrlIdToken
 				);
 			} else {
 				$typoLinkConf = array(
@@ -4107,7 +4107,7 @@ class ContentObjectRenderer {
 			// If the global jumpURL feature is activated, but is disabled for this
 			// filelink, the global parameter needs to be disabled as well for this link creation
 			$globalJumpUrlEnabled = $GLOBALS['TSFE']->config['config']['jumpurl_enable'];
-			if (($globalJumpUrlEnabled && isset($conf['jumpurl'])) && $conf['jumpurl'] == 0) {
+			if ($globalJumpUrlEnabled && isset($conf['jumpurl']) && $conf['jumpurl'] == 0) {
 				$GLOBALS['TSFE']->config['config']['jumpurl_enable'] = 0;
 			} elseif (!$globalJumpUrlEnabled && $conf['jumpurl']) {
 				$GLOBALS['TSFE']->config['config']['jumpurl_enable'] = 1;
@@ -4122,7 +4122,7 @@ class ContentObjectRenderer {
 				$iconP = !empty($conf['icon.']['path']) ? $conf['icon.']['path'] : TYPO3_mainDir . '/gfx/fileicons/';
 				$conf['icon.']['ext'] = isset($conf['icon.']['ext.']) ? $this->stdWrap($conf['icon.']['ext'], $conf['icon.']['ext.']) : $conf['icon.']['ext'];
 				$iconExt = !empty($conf['icon.']['ext']) ? '.' . $conf['icon.']['ext'] : '.gif';
-				$icon = @is_file((($iconP . $fI['fileext']) . $iconExt)) ? ($iconP . $fI['fileext']) . $iconExt : ($iconP . 'default') . $iconExt;
+				$icon = @is_file(($iconP . $fI['fileext'] . $iconExt)) ? $iconP . $fI['fileext'] . $iconExt : $iconP . 'default' . $iconExt;
 				// Checking for images: If image, then return link to thumbnail.
 				$IEList = isset($conf['icon_image_ext_list.']) ? $this->stdWrap($conf['icon_image_ext_list'], $conf['icon_image_ext_list.']) : $conf['icon_image_ext_list'];
 				$image_ext_list = str_replace(' ', '', strtolower($IEList));
@@ -4135,20 +4135,20 @@ class ContentObjectRenderer {
 							if ($conf['icon_thumbSize'] || $conf['icon_thumbSize.']) {
 								$thumbSize = '&size=' . (isset($conf['icon_thumbSize.']) ? $this->stdWrap($conf['icon_thumbSize'], $conf['icon_thumbSize.']) : $conf['icon_thumbSize']);
 							}
-							$check = (((basename($theFile) . ':') . filemtime($theFile)) . ':') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
+							$check = basename($theFile) . ':' . filemtime($theFile) . ':' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 							$md5sum = '&md5sum=' . md5($check);
-							$icon = (('t3lib/thumbs.php?file=' . rawurlencode(('../' . $theFile))) . $thumbSize) . $md5sum;
+							$icon = 't3lib/thumbs.php?file=' . rawurlencode(('../' . $theFile)) . $thumbSize . $md5sum;
 						} else {
 							$icon = TYPO3_mainDir . 'gfx/fileicons/notfound_thumb.gif';
 						}
-						$icon = ((((('<img src="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $icon))) . '"') . $this->getBorderAttr(' border="0"')) . '') . $this->getAltParam($conf)) . ' />';
+						$icon = '<img src="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $icon)) . '"' . $this->getBorderAttr(' border="0"') . '' . $this->getAltParam($conf) . ' />';
 					}
 				} else {
 					$conf['icon.']['widthAttribute'] = isset($conf['icon.']['widthAttribute.']) ? $this->stdWrap($conf['icon.']['widthAttribute'], $conf['icon.']['widthAttribute.']) : $conf['icon.']['widthAttribute'];
 					$iconWidth = !empty($conf['icon.']['widthAttribute']) ? $conf['icon.']['widthAttribute'] : 18;
 					$conf['icon.']['heightAttribute'] = isset($conf['icon.']['heightAttribute.']) ? $this->stdWrap($conf['icon.']['heightAttribute'], $conf['icon.']['heightAttribute.']) : $conf['icon.']['heightAttribute'];
 					$iconHeight = !empty($conf['icon.']['heightAttribute']) ? $conf['icon.']['heightAttribute'] : 16;
-					$icon = (((((((('<img src="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $icon))) . '" width="') . $iconWidth) . '" height="') . $iconHeight) . '"') . $this->getBorderAttr(' border="0"')) . $this->getAltParam($conf)) . ' />';
+					$icon = '<img src="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $icon)) . '" width="' . $iconWidth . '" height="' . $iconHeight . '"' . $this->getBorderAttr(' border="0"') . $this->getAltParam($conf) . ' />';
 				}
 				if ($conf['icon_link'] && !$conf['combinedLink']) {
 					$icon = $this->wrap($icon, $theLinkWrap);
@@ -4185,7 +4185,7 @@ class ContentObjectRenderer {
 				}
 				$file = isset($conf['file.']) ? $this->stdWrap($theValue, $conf['file.']) : $theValue;
 				// output
-				$output = ($icon . $file) . $size;
+				$output = $icon . $file . $size;
 			}
 			if (isset($conf['stdWrap.'])) {
 				$output = $this->stdWrap($output, $conf['stdWrap.']);
@@ -4220,7 +4220,7 @@ class ContentObjectRenderer {
 				}
 			}
 		}
-		$locationData = ($GLOBALS['TSFE']->id . ':') . $this->currentRecord;
+		$locationData = $GLOBALS['TSFE']->id . ':' . $this->currentRecord;
 		$rec = '&locationData=' . rawurlencode($locationData);
 		$hArr = array(
 			$jumpUrl,
@@ -4228,7 +4228,7 @@ class ContentObjectRenderer {
 			$mimetypeValue
 		);
 		$juHash = '&juHash=' . \TYPO3\CMS\Core\Utility\GeneralUtility::hmac(serialize($hArr));
-		return (('&juSecure=1' . $mimetype) . $rec) . $juHash;
+		return '&juSecure=1' . $mimetype . $rec . $juHash;
 	}
 
 	/**
@@ -4359,7 +4359,7 @@ class ContentObjectRenderer {
 		ksort($configuration, SORT_NUMERIC);
 		foreach ($configuration as $index => $action) {
 			// Checks whether we have an valid action and a numeric key ending with a dot ("10.")
-			if ((is_array($action) && substr($index, -1) === '.') && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger(substr($index, 0, -1))) {
+			if (is_array($action) && substr($index, -1) === '.' && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger(substr($index, 0, -1))) {
 				$content = $this->replacementSingle($content, $action);
 			}
 		}
@@ -4487,10 +4487,10 @@ class ContentObjectRenderer {
 					$tagName = strtolower($htmlParser->getFirstTagName($v));
 					$cfg = $conf['externalBlocks.'][$tagName . '.'];
 					if ($cfg['stripNLprev'] || $cfg['stripNL']) {
-						$parts[$k - 1] = preg_replace(((('/' . CR) . '?') . LF) . '[ ]*$/', '', $parts[$k - 1]);
+						$parts[$k - 1] = preg_replace('/' . CR . '?' . LF . '[ ]*$/', '', $parts[$k - 1]);
 					}
 					if ($cfg['stripNLnext'] || $cfg['stripNL']) {
-						$parts[$k + 1] = preg_replace(((('/^[ ]*' . CR) . '?') . LF) . '/', '', $parts[$k + 1]);
+						$parts[$k + 1] = preg_replace('/^[ ]*' . CR . '?' . LF . '/', '', $parts[$k + 1]);
 					}
 				}
 			}
@@ -4508,7 +4508,7 @@ class ContentObjectRenderer {
 								if (is_array($cfg['callRecursive.']['tagStdWrap.'])) {
 									$tag = $this->stdWrap($tag, $cfg['callRecursive.']['tagStdWrap.']);
 								}
-								$parts[$k] = ((($tag . $parts[$k]) . '</') . $tagName) . '>';
+								$parts[$k] = $tag . $parts[$k] . '</' . $tagName . '>';
 							}
 						}
 					} elseif ($cfg['HTMLtableCells']) {
@@ -4525,7 +4525,7 @@ class ContentObjectRenderer {
 										$colParts[$kkk] = $htmlParser->removeFirstAndLastTag($vvv);
 										if ($cfg['HTMLtableCells.'][$cc . '.']['callRecursive'] || !isset($cfg['HTMLtableCells.'][($cc . '.')]['callRecursive']) && $cfg['HTMLtableCells.']['default.']['callRecursive']) {
 											if ($cfg['HTMLtableCells.']['addChr10BetweenParagraphs']) {
-												$colParts[$kkk] = str_replace('</p><p>', ('</p>' . LF) . '<p>', $colParts[$kkk]);
+												$colParts[$kkk] = str_replace('</p><p>', '</p>' . LF . '<p>', $colParts[$kkk]);
 											}
 											$colParts[$kkk] = $this->parseFunc($colParts[$kkk], $conf);
 										}
@@ -4537,7 +4537,7 @@ class ContentObjectRenderer {
 										if (is_array($stdWrap)) {
 											$colParts[$kkk] = $this->stdWrap($colParts[$kkk], $stdWrap);
 										}
-										$colParts[$kkk] = ((($tag . $colParts[$kkk]) . '</') . $tagName) . '>';
+										$colParts[$kkk] = $tag . $colParts[$kkk] . '</' . $tagName . '>';
 									}
 								}
 								$rowParts[$kk] = implode('', $colParts);
@@ -4596,7 +4596,7 @@ class ContentObjectRenderer {
 						$len_p += $len + 1;
 						$endChar = ord(strtolower(substr($theValue, $pointer + $len_p, 1)));
 						$c--;
-					} while ((($c > 0 && $endChar) && ($endChar < 97 || $endChar > 122)) && $endChar != 47);
+					} while ($c > 0 && $endChar && ($endChar < 97 || $endChar > 122) && $endChar != 47);
 					$len = $len_p - 1;
 				} else {
 					// If we're inside a currentTag, just take it to the end of that tag!
@@ -4612,7 +4612,7 @@ class ContentObjectRenderer {
 				if ($data != '') {
 					if ($stripNL) {
 						// If the previous tag was set to strip NewLines in the beginning of the next data-chunk.
-						$data = preg_replace(((('/^[ ]*' . CR) . '?') . LF) . '/', '', $data);
+						$data = preg_replace('/^[ ]*' . CR . '?' . LF . '/', '', $data);
 					}
 					// These operations should only be performed on code outside the tags...
 					if (!is_array($currentTag)) {
@@ -4621,7 +4621,7 @@ class ContentObjectRenderer {
 						if ($conf['constants'] && is_array($tmpConstants)) {
 							foreach ($tmpConstants as $key => $val) {
 								if (is_string($val)) {
-									$data = str_replace(('###' . $key) . '###', $val, $data);
+									$data = str_replace('###' . $key . '###', $val, $data);
 								}
 							}
 						}
@@ -4649,14 +4649,14 @@ class ContentObjectRenderer {
 							$data = $this->mailto_makelinks($data, $conf['makelinks.']['mailto.']);
 						}
 						// Search Words:
-						if ((($GLOBALS['TSFE']->no_cache && $conf['sword']) && is_array($GLOBALS['TSFE']->sWordList)) && $GLOBALS['TSFE']->sWordRegEx) {
+						if ($GLOBALS['TSFE']->no_cache && $conf['sword'] && is_array($GLOBALS['TSFE']->sWordList) && $GLOBALS['TSFE']->sWordRegEx) {
 							$newstring = '';
 							do {
 								$pregSplitMode = 'i';
 								if (isset($GLOBALS['TSFE']->config['config']['sword_noMixedCase']) && !empty($GLOBALS['TSFE']->config['config']['sword_noMixedCase'])) {
 									$pregSplitMode = '';
 								}
-								$pieces = preg_split((('/' . $GLOBALS['TSFE']->sWordRegEx) . '/') . $pregSplitMode, $data, 2);
+								$pieces = preg_split('/' . $GLOBALS['TSFE']->sWordRegEx . '/' . $pregSplitMode, $data, 2);
 								$newstring .= $pieces[0];
 								$match_len = strlen($data) - (strlen($pieces[0]) + strlen($pieces[1]));
 								if (strstr($pieces[0], '<') || strstr($pieces[0], '>')) {
@@ -4668,7 +4668,7 @@ class ContentObjectRenderer {
 								}
 								// The searchword:
 								$match = substr($data, strlen($pieces[0]), $match_len);
-								if ((trim($match) && strlen($match) > 1) && !$inTag) {
+								if (trim($match) && strlen($match) > 1 && !$inTag) {
 									$match = $this->wrap($match, $conf['sword']);
 								}
 								// Concatenate the Search Word again.
@@ -4726,9 +4726,9 @@ class ContentObjectRenderer {
 						// Removes NL in the beginning and end of the tag-content AND at the end of the currentTagBuffer.
 						// $stripNL depends on the configuration of the current tag
 						if ($stripNL) {
-							$contentAccum[$contentAccumP - 1] = preg_replace(((('/' . CR) . '?') . LF) . '[ ]*$/', '', $contentAccum[$contentAccumP - 1]);
-							$contentAccum[$contentAccumP] = preg_replace(((('/^[ ]*' . CR) . '?') . LF) . '/', '', $contentAccum[$contentAccumP]);
-							$contentAccum[$contentAccumP] = preg_replace(((('/' . CR) . '?') . LF) . '[ ]*$/', '', $contentAccum[$contentAccumP]);
+							$contentAccum[$contentAccumP - 1] = preg_replace('/' . CR . '?' . LF . '[ ]*$/', '', $contentAccum[$contentAccumP - 1]);
+							$contentAccum[$contentAccumP] = preg_replace('/^[ ]*' . CR . '?' . LF . '/', '', $contentAccum[$contentAccumP]);
+							$contentAccum[$contentAccumP] = preg_replace('/' . CR . '?' . LF . '[ ]*$/', '', $contentAccum[$contentAccumP]);
 						}
 						$this->data[$this->currentValKey] = $contentAccum[$contentAccumP];
 						$newInput = $this->cObjGetSingle($theName, $theConf, '/parseFunc/.tags.' . $tag[0]);
@@ -4812,11 +4812,11 @@ class ContentObjectRenderer {
 					if (substr($fwParts[0], -1) == '/') {
 						$sameBeginEnd = 1;
 						$emptyTag = 1;
-						$attrib = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes(('<' . substr($fwParts[0], 0, -1)) . '>');
+						$attrib = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes('<' . substr($fwParts[0], 0, -1) . '>');
 					}
 				} else {
 					$backParts = \TYPO3\CMS\Core\Utility\GeneralUtility::revExplode('<', substr($fwParts[1], 0, -1), 2);
-					$attrib = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes(('<' . $fwParts[0]) . '>');
+					$attrib = \TYPO3\CMS\Core\Utility\GeneralUtility::get_tag_attributes('<' . $fwParts[0] . '>');
 					$str_content = $backParts[0];
 					$sameBeginEnd = substr(strtolower($backParts[1]), 1, strlen($tagName)) == strtolower($tagName);
 				}
@@ -4868,9 +4868,9 @@ class ContentObjectRenderer {
 					$str_content = $str_content;
 				} else {
 					if ($emptyTag) {
-						$str_content = (('<' . strtolower($uTagName)) . (trim($params) ? ' ' . trim($params) : '')) . ' />';
+						$str_content = '<' . strtolower($uTagName) . (trim($params) ? ' ' . trim($params) : '') . ' />';
 					} else {
-						$str_content = (((((('<' . strtolower($uTagName)) . (trim($params) ? ' ' . trim($params) : '')) . '>') . $str_content) . '</') . strtolower($uTagName)) . '>';
+						$str_content = '<' . strtolower($uTagName) . (trim($params) ? ' ' . trim($params) : '') . '>' . $str_content . '</' . strtolower($uTagName) . '>';
 					}
 				}
 			}
@@ -4897,9 +4897,9 @@ class ContentObjectRenderer {
 		$textpieces = explode('http://', $data);
 		$pieces = count($textpieces);
 		$textstr = $textpieces[0];
-		$initP = (('?id=' . $GLOBALS['TSFE']->id) . '&type=') . $GLOBALS['TSFE']->type;
+		$initP = '?id=' . $GLOBALS['TSFE']->id . '&type=' . $GLOBALS['TSFE']->type;
 		for ($i = 1; $i < $pieces; $i++) {
-			$len = strcspn($textpieces[$i], (chr(32) . TAB) . CRLF);
+			$len = strcspn($textpieces[$i], chr(32) . TAB . CRLF);
 			if (trim(substr($textstr, -1)) == '' && $len) {
 				$lastChar = substr($textpieces[$i], $len - 1, 1);
 				if (!preg_match('/[A-Za-z0-9\\/#_-]/', $lastChar)) {
@@ -4934,15 +4934,15 @@ class ContentObjectRenderer {
 					$target = $GLOBALS['TSFE']->extTarget;
 				}
 				if ($GLOBALS['TSFE']->config['config']['jumpurl_enable']) {
-					$res = (((((('<a' . ' href="') . htmlspecialchars(((((($GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript']) . $initP) . '&jumpurl=') . rawurlencode(('http://' . $parts[0]))) . $GLOBALS['TSFE']->getMethodUrlIdToken))) . '"') . ($target ? (' target="' . $target) . '"' : '')) . $aTagParams) . $this->extLinkATagParams(('http://' . $parts[0]), 'url')) . '>';
+					$res = '<a' . ' href="' . htmlspecialchars(($GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode(('http://' . $parts[0])) . $GLOBALS['TSFE']->getMethodUrlIdToken)) . '"' . ($target ? ' target="' . $target . '"' : '') . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
 				} else {
-					$res = (((((('<a' . ' href="http://') . htmlspecialchars($parts[0])) . '"') . ($target ? (' target="' . $target) . '"' : '')) . $aTagParams) . $this->extLinkATagParams(('http://' . $parts[0]), 'url')) . '>';
+					$res = '<a' . ' href="http://' . htmlspecialchars($parts[0]) . '"' . ($target ? ' target="' . $target . '"' : '') . $aTagParams . $this->extLinkATagParams(('http://' . $parts[0]), 'url') . '>';
 				}
 				$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 				if ($conf['ATagBeforeWrap']) {
-					$res = ($res . $this->wrap($linktxt, $wrap)) . '</a>';
+					$res = $res . $this->wrap($linktxt, $wrap) . '</a>';
 				} else {
-					$res = $this->wrap(($res . $linktxt) . '</a>', $wrap);
+					$res = $this->wrap($res . $linktxt . '</a>', $wrap);
 				}
 				$textstr .= $res . $parts[1];
 			} else {
@@ -4968,9 +4968,9 @@ class ContentObjectRenderer {
 		$textpieces = explode('mailto:', $data);
 		$pieces = count($textpieces);
 		$textstr = $textpieces[0];
-		$initP = (('?id=' . $GLOBALS['TSFE']->id) . '&type=') . $GLOBALS['TSFE']->type;
+		$initP = '?id=' . $GLOBALS['TSFE']->id . '&type=' . $GLOBALS['TSFE']->type;
 		for ($i = 1; $i < $pieces; $i++) {
-			$len = strcspn($textpieces[$i], (chr(32) . TAB) . CRLF);
+			$len = strcspn($textpieces[$i], chr(32) . TAB . CRLF);
 			if (trim(substr($textstr, -1)) == '' && $len) {
 				$lastChar = substr($textpieces[$i], $len - 1, 1);
 				if (!preg_match('/[A-Za-z0-9]/', $lastChar)) {
@@ -4981,12 +4981,12 @@ class ContentObjectRenderer {
 				$linktxt = preg_replace('/\\?.*/', '', $parts[0]);
 				list($mailToUrl, $linktxt) = $this->getMailTo($parts[0], $linktxt, $initP);
 				$mailToUrl = $GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii' ? $mailToUrl : htmlspecialchars($mailToUrl);
-				$res = ((('<a href="' . $mailToUrl) . '"') . $aTagParams) . '>';
+				$res = '<a href="' . $mailToUrl . '"' . $aTagParams . '>';
 				$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 				if ($conf['ATagBeforeWrap']) {
-					$res = ($res . $this->wrap($linktxt, $wrap)) . '</a>';
+					$res = $res . $this->wrap($linktxt, $wrap) . '</a>';
 				} else {
-					$res = $this->wrap(($res . $linktxt) . '</a>', $wrap);
+					$res = $this->wrap($res . $linktxt . '</a>', $wrap);
 				}
 				$textstr .= $res . $parts[1];
 			} else {
@@ -5225,7 +5225,7 @@ class ContentObjectRenderer {
 					break;
 				case 'fullrootline':
 					$keyP = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $key);
-					$fullKey = (intval($keyP[0]) - count($GLOBALS['TSFE']->tmpl->rootLine)) + count($GLOBALS['TSFE']->rootLine);
+					$fullKey = intval($keyP[0]) - count($GLOBALS['TSFE']->tmpl->rootLine) + count($GLOBALS['TSFE']->rootLine);
 					if ($fullKey >= 0) {
 						$retVal = $this->rootLineValue($fullKey, $keyP[1], stristr($keyP[2], 'slide'), $GLOBALS['TSFE']->rootLine);
 					}
@@ -5461,7 +5461,7 @@ class ContentObjectRenderer {
 		$delimiter = $conf['delimiter'] ? $conf['delimiter'] : ' ,';
 		$GLOBALS['TSFE']->includeTCA();
 		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
-		if ((is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field])) && is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'])) {
+		if (is_array($GLOBALS['TCA'][$table]) && is_array($GLOBALS['TCA'][$table]['columns'][$field]) && is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']['items'])) {
 			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $inputValue);
 			$output = array();
 			foreach ($values as $value) {
@@ -5507,7 +5507,7 @@ class ContentObjectRenderer {
 		$link_param = isset($conf['parameter.']) ? trim($this->stdWrap($conf['parameter'], $conf['parameter.'])) : trim($conf['parameter']);
 		$sectionMark = isset($conf['section.']) ? trim($this->stdWrap($conf['section'], $conf['section.'])) : trim($conf['section']);
 		$sectionMark = $sectionMark ? (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($sectionMark) ? '#c' : '#') . $sectionMark : '';
-		$initP = (('?id=' . $GLOBALS['TSFE']->id) . '&type=') . $GLOBALS['TSFE']->type;
+		$initP = '?id=' . $GLOBALS['TSFE']->id . '&type=' . $GLOBALS['TSFE']->type;
 		$this->lastTypoLinkUrl = '';
 		$this->lastTypoLinkTarget = '';
 		if ($link_param) {
@@ -5567,11 +5567,11 @@ class ContentObjectRenderer {
 			$onClick = '';
 			if ($forceTarget && preg_match('/^([0-9]+)x([0-9]+)(:(.*)|.*)$/', $forceTarget, $JSwindowParts)) {
 				// Take all pre-configured and inserted parameters and compile parameter list, including width+height:
-				$JSwindow_tempParamsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower(($conf['JSwindow_params'] . ',') . $JSwindowParts[4]), TRUE);
+				$JSwindow_tempParamsArr = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtolower($conf['JSwindow_params'] . ',' . $JSwindowParts[4]), TRUE);
 				$JSwindow_paramsArr = array();
 				foreach ($JSwindow_tempParamsArr as $JSv) {
 					list($JSp, $JSv) = explode('=', $JSv);
-					$JSwindow_paramsArr[$JSp] = ($JSp . '=') . $JSv;
+					$JSwindow_paramsArr[$JSp] = $JSp . '=' . $JSv;
 				}
 				// Add width/height:
 				$JSwindow_paramsArr['width'] = 'width=' . $JSwindowParts[1];
@@ -5614,14 +5614,14 @@ class ContentObjectRenderer {
 					list($rootFileDat) = explode('?', rawurldecode($link_param));
 					$containsSlash = strstr($rootFileDat, '/');
 					$rFD_fI = pathinfo($rootFileDat);
-					if ((trim($rootFileDat) && !$containsSlash) && (@is_file((PATH_site . $rootFileDat)) || \TYPO3\CMS\Core\Utility\GeneralUtility::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
+					if (trim($rootFileDat) && !$containsSlash && (@is_file((PATH_site . $rootFileDat)) || \TYPO3\CMS\Core\Utility\GeneralUtility::inList('php,html,htm', strtolower($rFD_fI['extension'])))) {
 						$isLocalFile = 1;
 					} elseif ($containsSlash) {
 						// Adding this so realurl directories are linked right (non-existing).
 						$isLocalFile = 2;
 					}
 				}
-				if ($pU['scheme'] || ($isLocalFile != 1 && $urlChar) && (!$containsSlash || $urlChar < $fileChar)) {
+				if ($pU['scheme'] || $isLocalFile != 1 && $urlChar && (!$containsSlash || $urlChar < $fileChar)) {
 					// url (external): If doubleSlash or if a '.' comes before a '/'.
 					if ($GLOBALS['TSFE']->dtdAllowsFrames) {
 						$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
@@ -5643,13 +5643,13 @@ class ContentObjectRenderer {
 						$scheme = '';
 					}
 					if ($GLOBALS['TSFE']->config['config']['jumpurl_enable']) {
-						$this->lastTypoLinkUrl = (((($GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript']) . $initP) . '&jumpurl=') . rawurlencode(($scheme . $link_param))) . $GLOBALS['TSFE']->getMethodUrlIdToken;
+						$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode(($scheme . $link_param)) . $GLOBALS['TSFE']->getMethodUrlIdToken;
 					} else {
 						$this->lastTypoLinkUrl = $scheme . $link_param;
 					}
 					$this->lastTypoLinkTarget = $target;
 					$finalTagParts['url'] = $this->lastTypoLinkUrl;
-					$finalTagParts['targetParams'] = $target ? (' target="' . $target) . '"' : '';
+					$finalTagParts['targetParams'] = $target ? ' target="' . $target . '"' : '';
 					$finalTagParts['TYPE'] = 'url';
 					$finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], $finalTagParts['TYPE']);
 				} elseif ($containsSlash || $isLocalFile) {
@@ -5661,7 +5661,7 @@ class ContentObjectRenderer {
 						}
 						if ($GLOBALS['TSFE']->config['config']['jumpurl_enable'] || $conf['jumpurl']) {
 							$theFileEnc = str_replace('%2F', '/', rawurlencode(rawurldecode($link_param)));
-							$this->lastTypoLinkUrl = ((((($GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript']) . $initP) . '&jumpurl=') . rawurlencode($link_param)) . ($conf['jumpurl.']['secure'] ? $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']) : '')) . $GLOBALS['TSFE']->getMethodUrlIdToken;
+							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($link_param) . ($conf['jumpurl.']['secure'] ? $this->locDataJU($theFileEnc, $conf['jumpurl.']['secure.']) : '') . $GLOBALS['TSFE']->getMethodUrlIdToken;
 						} else {
 							$this->lastTypoLinkUrl = $GLOBALS['TSFE']->absRefPrefix . $link_param;
 						}
@@ -5675,11 +5675,11 @@ class ContentObjectRenderer {
 						}
 						$this->lastTypoLinkTarget = $target;
 						$finalTagParts['url'] = $this->lastTypoLinkUrl;
-						$finalTagParts['targetParams'] = $target ? (' target="' . $target) . '"' : '';
+						$finalTagParts['targetParams'] = $target ? ' target="' . $target . '"' : '';
 						$finalTagParts['TYPE'] = 'file';
 						$finalTagParts['aTagParams'] .= $this->extLinkATagParams($finalTagParts['url'], $finalTagParts['TYPE']);
 					} else {
-						$GLOBALS['TT']->setTSlogMessage(((('typolink(): File \'' . $splitLinkParam[0]) . '\' did not exist, so \'') . $linktxt) . '\' was not linked.', 1);
+						$GLOBALS['TT']->setTSlogMessage('typolink(): File \'' . $splitLinkParam[0] . '\' did not exist, so \'' . $linktxt . '\' was not linked.', 1);
 						return $linktxt;
 					}
 				} else {
@@ -5733,7 +5733,7 @@ class ContentObjectRenderer {
 						if (is_array($mount_info) && $mount_info['overlay']) {
 							$page = $GLOBALS['TSFE']->sys_page->getPage($mount_info['mount_pid'], $disableGroupAccessCheck);
 							if (!count($page)) {
-								$GLOBALS['TT']->setTSlogMessage(((('typolink(): Mount point \'' . $mount_info['mount_pid']) . '\' was not available, so \'') . $linktxt) . '\' was not linked.', 1);
+								$GLOBALS['TT']->setTSlogMessage('typolink(): Mount point \'' . $mount_info['mount_pid'] . '\' was not available, so \'' . $linktxt . '\' was not linked.', 1);
 								return $linktxt;
 							}
 							$MPvarAcc['re-map'] = $mount_info['MPvar'];
@@ -5772,12 +5772,12 @@ class ContentObjectRenderer {
 							// If we link across domains and page is free type shortcut, we must resolve the shortcut first!
 							// If we do not do it, TYPO3 will fail to (1) link proper page in RealURL/CoolURI because
 							// they return relative links and (2) show proper page if no RealURL/CoolURI exists when link is clicked
-							if (($enableLinksAcrossDomains && $page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) && $page['shortcut_mode'] == \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_NONE) {
+							if ($enableLinksAcrossDomains && $page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT && $page['shortcut_mode'] == \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_NONE) {
 								// Save in case of broken destination or endless loop
 								$page2 = $page;
 								// Same as in RealURL, seems enough
 								$maxLoopCount = 20;
-								while ((($maxLoopCount && is_array($page)) && $page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT) && $page['shortcut_mode'] == \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_NONE) {
+								while ($maxLoopCount && is_array($page) && $page['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT && $page['shortcut_mode'] == \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_NONE) {
 									$page = $GLOBALS['TSFE']->sys_page->getPage($page['shortcut'], $disableGroupAccessCheck);
 									$maxLoopCount--;
 								}
@@ -5795,7 +5795,7 @@ class ContentObjectRenderer {
 							foreach ($targetPageRootline as $data) {
 								$targetPageRootlinePids[] = intval($data['uid']);
 							}
-							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid, domainName, forced', 'sys_domain', ((('pid IN (' . implode(',', $targetPageRootlinePids)) . ') ') . ' AND redirectTo=\'\' ') . $this->enableFields('sys_domain'), '', 'sorting ASC');
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid, domainName, forced', 'sys_domain', 'pid IN (' . implode(',', $targetPageRootlinePids) . ') ' . ' AND redirectTo=\'\' ' . $this->enableFields('sys_domain'), '', 'sorting ASC');
 							// TODO maybe it makes sense to hold all sys_domain records in a cache to save additional DB querys on each typolink
 							while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 								$foundDomains[] = preg_replace('/\\/$/', '', $row['domainName']);
@@ -5846,7 +5846,7 @@ class ContentObjectRenderer {
 							}
 						}
 						// If target page has a different domain and the current domain's linking scheme (e.g. RealURL/...) should not be used
-						if ((strlen($targetDomain) && $targetDomain !== $currentDomain) && !$enableLinksAcrossDomains) {
+						if (strlen($targetDomain) && $targetDomain !== $currentDomain && !$enableLinksAcrossDomains) {
 							$target = isset($conf['extTarget']) ? $conf['extTarget'] : $GLOBALS['TSFE']->extTarget;
 							if ($conf['extTarget.']) {
 								$target = $this->stdWrap($target, $conf['extTarget.']);
@@ -5862,7 +5862,7 @@ class ContentObjectRenderer {
 								$targetDomain = $IDN->encode($targetDomain);
 								unset($IDN);
 							}
-							$this->lastTypoLinkUrl = $this->URLqMark((((($absoluteUrlScheme . '://') . $targetDomain) . '/index.php?id=') . $page['uid']), $addQueryParams) . $sectionMark;
+							$this->lastTypoLinkUrl = $this->URLqMark(($absoluteUrlScheme . '://' . $targetDomain . '/index.php?id=' . $page['uid']), $addQueryParams) . $sectionMark;
 						} else {
 							// Internal link or current domain's linking scheme should be used
 							if ($forceTarget) {
@@ -5883,15 +5883,15 @@ class ContentObjectRenderer {
 								}
 								$urlParts = parse_url($LD['totalURL']);
 								if ($urlParts['host'] == '') {
-									$LD['totalURL'] = ((($absoluteUrlScheme . '://') . $targetDomain) . ($LD['totalURL'][0] == '/' ? '' : '/')) . $LD['totalURL'];
+									$LD['totalURL'] = $absoluteUrlScheme . '://' . $targetDomain . ($LD['totalURL'][0] == '/' ? '' : '/') . $LD['totalURL'];
 								}
 							}
 							$this->lastTypoLinkUrl = $this->URLqMark($LD['totalURL'], '') . $sectionMark;
 						}
 						$this->lastTypoLinkTarget = $LD['target'];
-						$targetPart = $LD['target'] ? (' target="' . htmlspecialchars($LD['target'])) . '"' : '';
+						$targetPart = $LD['target'] ? ' target="' . htmlspecialchars($LD['target']) . '"' : '';
 						// If sectionMark is set, there is no baseURL AND the current page is the page the link is to, check if there are any additional parameters or addQueryString parameters and if not, drop the url.
-						if (((($sectionMark && !$GLOBALS['TSFE']->config['config']['baseURL']) && $page['uid'] == $GLOBALS['TSFE']->id) && !trim($addQueryParams)) && !($conf['addQueryString'] && $conf['addQueryString.'])) {
+						if ($sectionMark && !$GLOBALS['TSFE']->config['config']['baseURL'] && $page['uid'] == $GLOBALS['TSFE']->id && !trim($addQueryParams) && !($conf['addQueryString'] && $conf['addQueryString.'])) {
 							list(, $URLparams) = explode('?', $this->lastTypoLinkUrl);
 							list($URLparams) = explode('#', $URLparams);
 							parse_str($URLparams . $LD['orig_type'], $URLparamsArray);
@@ -5906,7 +5906,7 @@ class ContentObjectRenderer {
 							}
 						}
 						// If link is to a access restricted page which should be redirected, then find new URL:
-						if (($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] && $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE') && !$GLOBALS['TSFE']->checkPageGroupAccess($page)) {
+						if ($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] && $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages'] !== 'NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page)) {
 							$thePage = $GLOBALS['TSFE']->sys_page->getPage($GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages']);
 							$addParams = $GLOBALS['TSFE']->config['config']['typolinkLinkAccessRestrictedPages_addParams'];
 							$addParams = str_replace('###RETURN_URL###', rawurlencode($this->lastTypoLinkUrl), $addParams);
@@ -5921,7 +5921,7 @@ class ContentObjectRenderer {
 						$finalTagParts['targetParams'] = $targetPart;
 						$finalTagParts['TYPE'] = 'page';
 					} else {
-						$GLOBALS['TT']->setTSlogMessage(((('typolink(): Page id \'' . $link_param) . '\' was not found, so \'') . $linktxt) . '\' was not linked.', 1);
+						$GLOBALS['TT']->setTSlogMessage('typolink(): Page id \'' . $link_param . '\' was not found, so \'' . $linktxt . '\' was not linked.', 1);
 						return $linktxt;
 					}
 				}
@@ -5937,13 +5937,13 @@ class ContentObjectRenderer {
 				} else {
 					$target = '';
 				}
-				$onClick = ((('vHWin=window.open(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url']), TRUE)) . ',\'FEopenLink\',\'') . $JSwindowParams) . '\');vHWin.focus();return false;';
-				$res = ((((((((('<a href="' . htmlspecialchars($finalTagParts['url'])) . '"') . $target) . ' onclick="') . htmlspecialchars($onClick)) . '"') . ($title ? (' title="' . $title) . '"' : '')) . ($linkClass ? (' class="' . $linkClass) . '"' : '')) . $finalTagParts['aTagParams']) . '>';
+				$onClick = 'vHWin=window.open(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($GLOBALS['TSFE']->baseUrlWrap($finalTagParts['url']), TRUE) . ',\'FEopenLink\',\'' . $JSwindowParams . '\');vHWin.focus();return false;';
+				$res = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"' . $target . ' onclick="' . htmlspecialchars($onClick) . '"' . ($title ? ' title="' . $title . '"' : '') . ($linkClass ? ' class="' . $linkClass . '"' : '') . $finalTagParts['aTagParams'] . '>';
 			} else {
 				if ($GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii' && $finalTagParts['TYPE'] === 'mailto') {
-					$res = (((((('<a href="' . $finalTagParts['url']) . '"') . ($title ? (' title="' . $title) . '"' : '')) . $finalTagParts['targetParams']) . ($linkClass ? (' class="' . $linkClass) . '"' : '')) . $finalTagParts['aTagParams']) . '>';
+					$res = '<a href="' . $finalTagParts['url'] . '"' . ($title ? ' title="' . $title . '"' : '') . $finalTagParts['targetParams'] . ($linkClass ? ' class="' . $linkClass . '"' : '') . $finalTagParts['aTagParams'] . '>';
 				} else {
-					$res = (((((('<a href="' . htmlspecialchars($finalTagParts['url'])) . '"') . ($title ? (' title="' . $title) . '"' : '')) . $finalTagParts['targetParams']) . ($linkClass ? (' class="' . $linkClass) . '"' : '')) . $finalTagParts['aTagParams']) . '>';
+					$res = '<a href="' . htmlspecialchars($finalTagParts['url']) . '"' . ($title ? ' title="' . $title . '"' : '') . $finalTagParts['targetParams'] . ($linkClass ? ' class="' . $linkClass . '"' : '') . $finalTagParts['aTagParams'] . '>';
 				}
 			}
 			// Call user function:
@@ -5976,9 +5976,9 @@ class ContentObjectRenderer {
 			}
 			$wrap = isset($conf['wrap.']) ? $this->stdWrap($conf['wrap'], $conf['wrap.']) : $conf['wrap'];
 			if ($conf['ATagBeforeWrap']) {
-				return ($res . $this->wrap($linktxt, $wrap)) . '</a>';
+				return $res . $this->wrap($linktxt, $wrap) . '</a>';
 			} else {
-				return $this->wrap(($res . $linktxt) . '</a>', $wrap);
+				return $this->wrap($res . $linktxt . '</a>', $wrap);
 			}
 		} else {
 			return $linktxt;
@@ -5993,7 +5993,7 @@ class ContentObjectRenderer {
 	 * @return string The absolute URL
 	 */
 	protected function forceAbsoluteUrl($url, array $configuration) {
-		if ((!empty($url) && isset($configuration['forceAbsoluteUrl'])) && $configuration['forceAbsoluteUrl']) {
+		if (!empty($url) && isset($configuration['forceAbsoluteUrl']) && $configuration['forceAbsoluteUrl']) {
 			if (preg_match('#^(?:([a-z]+)(://))?([^/]*)(.*)$#', $url, $matches)) {
 				$urlParts = array(
 					'scheme' => $matches[1],
@@ -6184,7 +6184,7 @@ class ContentObjectRenderer {
 				if ($GLOBALS['TSFE']->spamProtectEmailAddresses === 'ascii') {
 					$mailToUrl = $GLOBALS['TSFE']->encryptEmail($mailToUrl);
 				} else {
-					$mailToUrl = ('javascript:linkTo_UnCryptMailto(\'' . $GLOBALS['TSFE']->encryptEmail($mailToUrl)) . '\');';
+					$mailToUrl = 'javascript:linkTo_UnCryptMailto(\'' . $GLOBALS['TSFE']->encryptEmail($mailToUrl) . '\');';
 				}
 				if ($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']) {
 					$atLabel = trim($GLOBALS['TSFE']->config['config']['spamProtectEmailAddresses_atSubst']);
@@ -6198,7 +6198,7 @@ class ContentObjectRenderer {
 				$linktxt = str_ireplace($mailAddress, $spamProtectedMailAddress, $linktxt);
 			}
 		} else {
-			$mailToUrl = (((($GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript']) . $initP) . '&jumpurl=') . rawurlencode($mailToUrl)) . $GLOBALS['TSFE']->getMethodUrlIdToken;
+			$mailToUrl = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->config['mainScript'] . $initP . '&jumpurl=' . rawurlencode($mailToUrl) . $GLOBALS['TSFE']->getMethodUrlIdToken;
 		}
 		return array(
 			$mailToUrl,
@@ -6269,7 +6269,7 @@ class ContentObjectRenderer {
 	public function wrap($content, $wrap, $char = '|') {
 		if ($wrap) {
 			$wrapArr = explode($char, $wrap);
-			return (trim($wrapArr[0]) . $content) . trim($wrapArr[1]);
+			return trim($wrapArr[0]) . $content . trim($wrapArr[1]);
 		} else {
 			return $content;
 		}
@@ -6288,7 +6288,7 @@ class ContentObjectRenderer {
 	public function noTrimWrap($content, $wrap) {
 		if ($wrap) {
 			$wrapArr = explode('|', $wrap);
-			return ($wrapArr[1] . $content) . $wrapArr[2];
+			return $wrapArr[1] . $content . $wrapArr[2];
 		} else {
 			return $content;
 		}
@@ -6311,16 +6311,16 @@ class ContentObjectRenderer {
 			$useDivTag = isset($conf['useDiv']) && $conf['useDiv'];
 			if ($wrapBefore) {
 				if ($useDivTag) {
-					$content = (('<div class="content-spacer spacer-before" style="height:' . $wrapBefore) . 'px;"></div>') . $content;
+					$content = '<div class="content-spacer spacer-before" style="height:' . $wrapBefore . 'px;"></div>' . $content;
 				} else {
-					$content = (((((('<img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="1" height="') . $wrapBefore) . '"') . $this->getBorderAttr(' border="0"')) . ' class="spacer-gif" alt="" title="" /><br />') . $content;
+					$content = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $wrapBefore . '"' . $this->getBorderAttr(' border="0"') . ' class="spacer-gif" alt="" title="" /><br />' . $content;
 				}
 			}
 			if ($wrapAfter) {
 				if ($useDivTag) {
-					$content .= ('<div class="content-spacer spacer-after" style="height:' . $wrapAfter) . 'px;"></div>';
+					$content .= '<div class="content-spacer spacer-after" style="height:' . $wrapAfter . 'px;"></div>';
 				} else {
-					$content .= ((((('<img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="1" height="') . $wrapAfter) . '"') . $this->getBorderAttr(' border="0"')) . ' class="spacer-gif" alt="" title="" /><br />';
+					$content .= '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $wrapAfter . '"' . $this->getBorderAttr(' border="0"') . ' class="spacer-gif" alt="" title="" /><br />';
 				}
 			}
 		}
@@ -6356,17 +6356,17 @@ class ContentObjectRenderer {
 						$conf
 					));
 				} else {
-					$GLOBALS['TT']->setTSlogMessage(((('Method "' . $parts[1]) . '" did not exist in class "') . $parts[0]) . '"', 3);
+					$GLOBALS['TT']->setTSlogMessage('Method "' . $parts[1] . '" did not exist in class "' . $parts[0] . '"', 3);
 				}
 			} else {
-				$GLOBALS['TT']->setTSlogMessage(('Class "' . $parts[0]) . '" did not exist', 3);
+				$GLOBALS['TT']->setTSlogMessage('Class "' . $parts[0] . '" did not exist', 3);
 			}
 		} else {
 			// Function
 			if (function_exists($funcName)) {
 				$content = call_user_func($funcName, $content, $conf);
 			} else {
-				$GLOBALS['TT']->setTSlogMessage(('Function "' . $funcName) . '" did not exist', 3);
+				$GLOBALS['TT']->setTSlogMessage('Function "' . $funcName . '" did not exist', 3);
 			}
 		}
 		return $content;
@@ -6400,7 +6400,7 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function keywords($content) {
-		$listArr = preg_split(('/[,;' . LF) . ']/', $content);
+		$listArr = preg_split('/[,;' . LF . ']/', $content);
 		foreach ($listArr as $k => $v) {
 			$listArr[$k] = trim($v);
 		}
@@ -6493,11 +6493,11 @@ class ContentObjectRenderer {
 		} elseif ($absSeconds < 24 * 3600) {
 			$val = round($absSeconds / 3600);
 			$seconds = $sign * $val . ($val == 1 ? $labelArr[5] : $labelArr[1]);
-		} elseif ($absSeconds < (365 * 24) * 3600) {
+		} elseif ($absSeconds < 365 * 24 * 3600) {
 			$val = round($absSeconds / (24 * 3600));
 			$seconds = $sign * $val . ($val == 1 ? $labelArr[6] : $labelArr[2]);
 		} else {
-			$val = round($absSeconds / ((365 * 24) * 3600));
+			$val = round($absSeconds / (365 * 24 * 3600));
 			$seconds = $sign * $val . ($val == 1 ? $labelArr[7] : $labelArr[3]);
 		}
 		return $seconds;
@@ -6519,7 +6519,7 @@ class ContentObjectRenderer {
 		// Sends order emails:
 		$headers = array();
 		if ($email_from) {
-			$headers[] = ((('From: ' . $email_fromName) . ' <') . $email_from) . '>';
+			$headers[] = 'From: ' . $email_fromName . ' <' . $email_from . '>';
 		}
 		if ($replyTo) {
 			$headers[] = 'Reply-To: ' . $replyTo;
@@ -6551,7 +6551,7 @@ class ContentObjectRenderer {
 	 */
 	public function URLqMark($url, $params) {
 		if ($params && !strstr($url, '?')) {
-			return ($url . '?') . $params;
+			return $url . '?' . $params;
 		} else {
 			return $url . $params;
 		}
@@ -6643,10 +6643,10 @@ class ContentObjectRenderer {
 			$textArr = $this->linebreaks($text, $chars, $maxLines);
 			$angle = intval($gifbuilderConf[$tmplObjNumber . '.']['angle']);
 			foreach ($textArr as $c => $textChunk) {
-				$index = ($tmplObjNumber + 1) + $c * 2;
+				$index = $tmplObjNumber + 1 + $c * 2;
 				// Workarea
 				$gifbuilderConf = $this->clearTSProperties($gifbuilderConf, $index);
-				$rad_angle = ((2 * pi()) / 360) * $angle;
+				$rad_angle = 2 * pi() / 360 * $angle;
 				$x_d = sin($rad_angle) * $lineDist;
 				$y_d = cos($rad_angle) * $lineDist;
 				$diff_x_d = 0;
@@ -6660,7 +6660,7 @@ class ContentObjectRenderer {
 				$x_d = round($x_d * $c - $diff_x_d);
 				$y_d = round($y_d * $c - $diff_y_d);
 				$gifbuilderConf[$index] = 'WORKAREA';
-				$gifbuilderConf[$index . '.']['set'] = ($x_d . ',') . $y_d;
+				$gifbuilderConf[$index . '.']['set'] = $x_d . ',' . $y_d;
 				// Text
 				$index++;
 				$gifbuilderConf = $this->clearTSProperties($gifbuilderConf, $index);
@@ -6723,20 +6723,20 @@ class ContentObjectRenderer {
 			$value = $dataArray[$fKey];
 			if (is_array($value)) {
 				foreach ($value as $Nvalue) {
-					$JSPart .= ((((((('
-	updateForm(\'' . $formName) . '\',\'') . $arrPrefix) . '[') . $fKey) . '][]\',') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($Nvalue, TRUE)) . ');';
+					$JSPart .= '
+	updateForm(\'' . $formName . '\',\'' . $arrPrefix . '[' . $fKey . '][]\',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($Nvalue, TRUE) . ');';
 				}
 			} else {
-				$JSPart .= ((((((('
-	updateForm(\'' . $formName) . '\',\'') . $arrPrefix) . '[') . $fKey) . ']\',') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($value, TRUE)) . ');';
+				$JSPart .= '
+	updateForm(\'' . $formName . '\',\'' . $arrPrefix . '[' . $fKey . ']\',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($value, TRUE) . ');';
 			}
 		}
-		$JSPart = ('<script type="text/javascript">
-	/*<![CDATA[*/ ' . $JSPart) . '
+		$JSPart = '<script type="text/javascript">
+	/*<![CDATA[*/ ' . $JSPart . '
 	/*]]>*/
 </script>
 ';
-		$GLOBALS['TSFE']->additionalHeaderData['JSincludeFormupdate'] = ('<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($GLOBALS['TSFE']->absRefPrefix . 't3lib/jsfunc.updateform.js'))) . '"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData['JSincludeFormupdate'] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($GLOBALS['TSFE']->absRefPrefix . 't3lib/jsfunc.updateform.js')) . '"></script>';
 		return $JSPart;
 	}
 
@@ -6915,7 +6915,7 @@ class ContentObjectRenderer {
 			$dataArr['pid'] = $pid;
 		}
 		// Set pid < 0 and the dataarr-pid will be used!
-		$fieldList = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', ($fieldList . ',') . $extraList, 1));
+		$fieldList = implode(',', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldList . ',' . $extraList, 1));
 		$insertFields = array();
 		foreach ($dataArr as $f => $v) {
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($fieldList, $f)) {
@@ -6954,7 +6954,7 @@ class ContentObjectRenderer {
 				}
 			}
 			// If $feEditSelf is set, fe_users may always edit them selves...
-			if (($feEditSelf && $table == 'fe_users') && !strcmp($feUserRow['uid'], $row['uid'])) {
+			if ($feEditSelf && $table == 'fe_users' && !strcmp($feUserRow['uid'], $row['uid'])) {
 				$ok = 1;
 			}
 			// Points to the field (integer) that holds the fe_group-id of the creator fe_user's first group
@@ -6989,14 +6989,14 @@ class ContentObjectRenderer {
 		$OR_arr = array();
 		// Points to the field (integer) that holds the fe_users-id of the creator fe_user
 		if ($GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id']) {
-			$OR_arr[] = ($GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id'] . '=') . $feUserRow['uid'];
+			$OR_arr[] = $GLOBALS['TCA'][$table]['ctrl']['fe_cruser_id'] . '=' . $feUserRow['uid'];
 		}
 		// Points to the field (integer) that holds the fe_group-id of the creator fe_user's first group
 		if ($GLOBALS['TCA'][$table]['ctrl']['fe_crgroup_id']) {
 			$values = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $groupList);
 			foreach ($values as $theGroupUid) {
 				if ($theGroupUid) {
-					$OR_arr[] = ($GLOBALS['TCA'][$table]['ctrl']['fe_crgroup_id'] . '=') . $theGroupUid;
+					$OR_arr[] = $GLOBALS['TCA'][$table]['ctrl']['fe_crgroup_id'] . '=' . $theGroupUid;
 				}
 			}
 		}
@@ -7006,9 +7006,9 @@ class ContentObjectRenderer {
 		}
 		$whereDef = ' AND 1=0';
 		if (count($OR_arr)) {
-			$whereDef = (' AND (' . implode(' OR ', $OR_arr)) . ')';
+			$whereDef = ' AND (' . implode(' OR ', $OR_arr) . ')';
 			if ($GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock']) {
-				$whereDef .= (' AND ' . $GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock']) . '=0';
+				$whereDef .= ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['fe_admin_lock'] . '=0';
 			}
 		}
 		return $whereDef;
@@ -7085,7 +7085,7 @@ class ContentObjectRenderer {
 					$GLOBALS['TSFE']->gr_list
 				);
 				$requestHash = md5(serialize($parameters));
-				$cacheEntry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('treelist', 'cache_treelist', ((('md5hash = \'' . $requestHash) . '\' AND ( expires > ') . $GLOBALS['EXEC_TIME']) . ' OR expires = 0 )');
+				$cacheEntry = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('treelist', 'cache_treelist', 'md5hash = \'' . $requestHash . '\' AND ( expires > ' . $GLOBALS['EXEC_TIME'] . ' OR expires = 0 )');
 				if (is_array($cacheEntry)) {
 					// Cache hit
 					return $cacheEntry['treelist'];
@@ -7116,10 +7116,10 @@ class ContentObjectRenderer {
 			}
 			// Select sublevel:
 			if ($depth > 0) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', (('pid = ' . intval($id)) . ' AND deleted = 0 ') . $moreWhereClauses, '', 'sorting');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'pid = ' . intval($id) . ' AND deleted = 0 ' . $moreWhereClauses, '', 'sorting');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
-					if (($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER || $row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION) || $row['t3ver_state'] > 0) {
+					if ($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER || $row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION || $row['t3ver_state'] > 0) {
 						// Doing this after the overlay to make sure changes
 						// in the overlay are respected.
 						// However, we do not process pages below of and
@@ -7132,11 +7132,11 @@ class ContentObjectRenderer {
 					// Overlay mode:
 					if (is_array($mount_info) && $mount_info['overlay']) {
 						$next_id = $mount_info['mount_pid'];
-						$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', (('uid = ' . intval($next_id)) . ' AND deleted = 0 ') . $moreWhereClauses, '', 'sorting');
+						$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery($allFields, 'pages', 'uid = ' . intval($next_id) . ' AND deleted = 0 ' . $moreWhereClauses, '', 'sorting');
 						$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2);
 						$GLOBALS['TYPO3_DB']->sql_free_result($res2);
 						$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
-						if (($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER || $row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION) || $row['t3ver_state'] > 0) {
+						if ($row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER || $row['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION || $row['t3ver_state'] > 0) {
 							// Doing this after the overlay to make sure
 							// changes in the overlay are respected.
 							// see above
@@ -7203,7 +7203,7 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function exec_mm_query($select, $local_table, $mm_table, $foreign_table, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
-		return $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, (($local_table . ',') . $mm_table) . ($foreign_table ? ',' . $foreign_table : ''), (((($local_table . '.uid=') . $mm_table) . '.uid_local') . ($foreign_table ? (((' AND ' . $foreign_table) . '.uid=') . $mm_table) . '.uid_foreign' : '')) . $whereClause, $groupBy, $orderBy, $limit);
+		return $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $local_table . ',' . $mm_table . ($foreign_table ? ',' . $foreign_table : ''), $local_table . '.uid=' . $mm_table . '.uid_local' . ($foreign_table ? ' AND ' . $foreign_table . '.uid=' . $mm_table . '.uid_foreign' : '') . $whereClause, $groupBy, $orderBy, $limit);
 	}
 
 	/**
@@ -7223,7 +7223,7 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function exec_mm_query_uidList($select, $local_table_uidlist, $mm_table, $foreign_table = '', $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
-		return $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $mm_table . ($foreign_table ? ',' . $foreign_table : ''), (((($mm_table . '.uid_local IN (') . $local_table_uidlist) . ')') . ($foreign_table ? (((' AND ' . $foreign_table) . '.uid=') . $mm_table) . '.uid_foreign' : '')) . $whereClause, $groupBy, $orderBy, $limit);
+		return $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $mm_table . ($foreign_table ? ',' . $foreign_table : ''), $mm_table . '.uid_local IN (' . $local_table_uidlist . ')' . ($foreign_table ? ' AND ' . $foreign_table . '.uid=' . $mm_table . '.uid_foreign' : '') . $whereClause, $groupBy, $orderBy, $limit);
 	}
 
 	/**
@@ -7249,11 +7249,11 @@ class ContentObjectRenderer {
 				if (strlen($val) >= 2) {
 					$val = $TYPO3_DB->escapeStrForLike($TYPO3_DB->quoteStr($val, $searchTable), $searchTable);
 					foreach ($searchFields as $field) {
-						$where_p[] = ((($prefixTableName . $field) . ' LIKE \'%') . $val) . '%\'';
+						$where_p[] = $prefixTableName . $field . ' LIKE \'%' . $val . '%\'';
 					}
 				}
 				if (count($where_p)) {
-					$where .= (' AND (' . implode(' OR ', $where_p)) . ')';
+					$where .= ' AND (' . implode(' OR ', $where_p) . ')';
 				}
 			}
 		}
@@ -7330,7 +7330,7 @@ class ContentObjectRenderer {
 			);
 			foreach ($properties as $property) {
 				if ($conf[$property]) {
-					$conf[$property] = str_replace(('###' . $marker) . '###', $markerValue, $conf[$property]);
+					$conf[$property] = str_replace('###' . $marker . '###', $markerValue, $conf[$property]);
 				}
 			}
 		}
@@ -7344,7 +7344,7 @@ class ContentObjectRenderer {
 					if ($value === 'this') {
 						$value = $GLOBALS['TSFE']->id;
 					}
-					$pidList .= ($value . ',') . $this->getTreeList($value, $conf['recursive']);
+					$pidList .= $value . ',' . $this->getTreeList($value, $conf['recursive']);
 				}
 				$conf['pidInList'] = trim($pidList, ',');
 			}
@@ -7381,7 +7381,7 @@ class ContentObjectRenderer {
 					$conf['max'] = 100000;
 				}
 				if ($conf['begin'] && $conf['max']) {
-					$queryParts['LIMIT'] = ($conf['begin'] . ',') . $conf['max'];
+					$queryParts['LIMIT'] = $conf['begin'] . ',' . $conf['max'];
 				} elseif (!$conf['begin'] && $conf['max']) {
 					$queryParts['LIMIT'] = $conf['max'];
 				}
@@ -7398,12 +7398,12 @@ class ContentObjectRenderer {
 				$joinPart = 'RIGHT OUTER JOIN ' . $conf['rightjoin'];
 			}
 			// Compile and return query:
-			$queryParts['FROM'] = trim(($table . ' ') . $joinPart);
+			$queryParts['FROM'] = trim($table . ' ' . $joinPart);
 			// Replace the markers in the queryParts to handle stdWrap
 			// enabled properties
 			foreach ($queryMarkers as $marker => $markerValue) {
 				foreach ($queryParts as $queryPartKey => &$queryPartValue) {
-					$queryPartValue = str_replace(('###' . $marker) . '###', $markerValue, $queryPartValue);
+					$queryPartValue = str_replace('###' . $marker . '###', $markerValue, $queryPartValue);
 				}
 				unset($queryPartValue);
 			}
@@ -7438,9 +7438,9 @@ class ContentObjectRenderer {
 		if (trim($conf['uidInList'])) {
 			$listArr = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', str_replace('this', $GLOBALS['TSFE']->contentPid, $conf['uidInList']));
 			if (count($listArr) == 1) {
-				$query .= ((' AND ' . $table) . '.uid=') . intval($listArr[0]);
+				$query .= ' AND ' . $table . '.uid=' . intval($listArr[0]);
 			} else {
-				$query .= (((' AND ' . $table) . '.uid IN (') . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($listArr))) . ')';
+				$query .= ' AND ' . $table . '.uid IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($listArr)) . ')';
 			}
 			$pid_uid_flag++;
 		}
@@ -7453,7 +7453,7 @@ class ContentObjectRenderer {
 			// Removes all pages which are not visible for the user!
 			$listArr = $this->checkPidArray($listArr);
 			if (count($listArr)) {
-				$query .= (((' AND ' . $table) . '.pid IN (') . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($listArr))) . ')';
+				$query .= ' AND ' . $table . '.pid IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($listArr)) . ')';
 				$pid_uid_flag++;
 			} else {
 				// If not uid and not pid then uid is set to 0 - which results in nothing!!
@@ -7462,21 +7462,21 @@ class ContentObjectRenderer {
 		}
 		// If not uid and not pid then uid is set to 0 - which results in nothing!!
 		if (!$pid_uid_flag) {
-			$query .= (' AND ' . $table) . '.uid=0';
+			$query .= ' AND ' . $table . '.uid=0';
 		}
 		$where = isset($conf['where.']) ? trim($this->stdWrap($conf['where'], $conf['where.'])) : trim($conf['where']);
 		if ($where) {
 			$query .= ' AND ' . $where;
 		}
 		if ($conf['languageField']) {
-			if ((($GLOBALS['TSFE']->sys_language_contentOL && $GLOBALS['TCA'][$table]) && $GLOBALS['TCA'][$table]['ctrl']['languageField']) && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
+			if ($GLOBALS['TSFE']->sys_language_contentOL && $GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
 				// Sys language content is set to zero/-1 - and it is expected that whatever routine processes the output will
 				// OVERLAY the records with localized versions!
 				$sys_language_content = '0,-1';
 			} else {
 				$sys_language_content = intval($GLOBALS['TSFE']->sys_language_content);
 			}
-			$query .= (((' AND ' . $conf['languageField']) . ' IN (') . $sys_language_content) . ')';
+			$query .= ' AND ' . $conf['languageField'] . ' IN (' . $sys_language_content . ')';
 		}
 		$andWhere = isset($conf['andWhere.']) ? trim($this->stdWrap($conf['andWhere'], $conf['andWhere.'])) : trim($conf['andWhere']);
 		if ($andWhere) {
@@ -7484,7 +7484,7 @@ class ContentObjectRenderer {
 		}
 		// Enablefields
 		if ($table == 'pages') {
-			$query .= (' ' . $GLOBALS['TSFE']->sys_page->where_hid_del) . $GLOBALS['TSFE']->sys_page->where_groupAccess;
+			$query .= ' ' . $GLOBALS['TSFE']->sys_page->where_hid_del . $GLOBALS['TSFE']->sys_page->where_groupAccess;
 		} else {
 			$query .= $this->enableFields($table);
 		}
@@ -7521,22 +7521,22 @@ class ContentObjectRenderer {
 	 */
 	protected function sanitizeSelectPart($selectPart, $table) {
 		// Pattern matching parts
-		$matchStart = ('/(^\\s*|,\\s*|' . $table) . '\\.)';
+		$matchStart = '/(^\\s*|,\\s*|' . $table . '\\.)';
 		$matchEnd = '(\\s*,|\\s*$)/';
 		$necessaryFields = array('uid', 'pid');
 		$wsFields = array('t3ver_state');
-		if ((isset($GLOBALS['TCA'][$table]) && !preg_match((($matchStart . '\\*') . $matchEnd), $selectPart)) && !preg_match('/(count|max|min|avg|sum)\\([^\\)]+\\)/i', $selectPart)) {
+		if (isset($GLOBALS['TCA'][$table]) && !preg_match(($matchStart . '\\*' . $matchEnd), $selectPart) && !preg_match('/(count|max|min|avg|sum)\\([^\\)]+\\)/i', $selectPart)) {
 			foreach ($necessaryFields as $field) {
-				$match = ($matchStart . $field) . $matchEnd;
+				$match = $matchStart . $field . $matchEnd;
 				if (!preg_match($match, $selectPart)) {
-					$selectPart .= ((((', ' . $table) . '.') . $field) . ' as ') . $field;
+					$selectPart .= ', ' . $table . '.' . $field . ' as ' . $field;
 				}
 			}
 			if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS']) {
 				foreach ($wsFields as $field) {
-					$match = ($matchStart . $field) . $matchEnd;
+					$match = $matchStart . $field . $matchEnd;
 					if (!preg_match($match, $selectPart)) {
-						$selectPart .= ((((', ' . $table) . '.') . $field) . ' as ') . $field;
+						$selectPart .= ', ' . $table . '.' . $field . ' as ' . $field;
 					}
 				}
 			}
@@ -7556,9 +7556,9 @@ class ContentObjectRenderer {
 	public function checkPidArray($listArr) {
 		$outArr = array();
 		if (is_array($listArr) && count($listArr)) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', ((((('uid IN (' . implode(',', $listArr)) . ')') . $this->enableFields('pages')) . ' AND doktype NOT IN (') . $this->checkPid_badDoktypeList) . ')');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid IN (' . implode(',', $listArr) . ')' . $this->enableFields('pages') . ' AND doktype NOT IN (' . $this->checkPid_badDoktypeList . ')');
 			if ($error = $GLOBALS['TYPO3_DB']->sql_error()) {
-				$GLOBALS['TT']->setTSlogMessage(($error . ': ') . $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery, 3);
+				$GLOBALS['TT']->setTSlogMessage($error . ': ' . $GLOBALS['TYPO3_DB']->debug_lastBuiltQuery, 3);
 			} else {
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$outArr[] = $row['uid'];
@@ -7581,7 +7581,7 @@ class ContentObjectRenderer {
 	public function checkPid($uid) {
 		$uid = intval($uid);
 		if (!isset($this->checkPid_cache[$uid])) {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'pages', (((('uid=' . intval($uid)) . $this->enableFields('pages')) . ' AND doktype NOT IN (') . $this->checkPid_badDoktypeList) . ')');
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'pages', 'uid=' . intval($uid) . $this->enableFields('pages') . ' AND doktype NOT IN (' . $this->checkPid_badDoktypeList . ')');
 			$this->checkPid_cache[$uid] = (bool) $count;
 		}
 		return $this->checkPid_cache[$uid];
@@ -7727,7 +7727,7 @@ class ContentObjectRenderer {
 	 * @todo Define visibility
 	 */
 	public function isDisabled($table, $row) {
-		if ((($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']] || ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'] && $GLOBALS['TSFE']->simUserGroup) && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group']] == $GLOBALS['TSFE']->simUserGroup) || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME']) || ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']]) && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME']) {
+		if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']] || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'] && $GLOBALS['TSFE']->simUserGroup && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group']] == $GLOBALS['TSFE']->simUserGroup || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime']] > $GLOBALS['EXEC_TIME'] || $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] && $row[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime']] < $GLOBALS['EXEC_TIME']) {
 			return TRUE;
 		}
 	}

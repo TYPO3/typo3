@@ -250,7 +250,7 @@ class AbstractMenuContentObject {
 		// Init:
 		$this->conf = $conf;
 		$this->menuNumber = $menuNumber;
-		$this->mconf = $conf[($this->menuNumber . $objSuffix) . '.'];
+		$this->mconf = $conf[$this->menuNumber . $objSuffix . '.'];
 		$this->debug = $GLOBALS['TSFE']->debug;
 		// In XHTML there is no "name" attribute anymore
 		switch ($GLOBALS['TSFE']->xhtmlDoctype) {
@@ -268,7 +268,7 @@ class AbstractMenuContentObject {
 			break;
 		}
 		// Sets the internal vars. $tmpl MUST be the template-object. $sys_page MUST be the sys_page object
-		if (($this->conf[$this->menuNumber . $objSuffix] && is_object($tmpl)) && is_object($sys_page)) {
+		if ($this->conf[$this->menuNumber . $objSuffix] && is_object($tmpl) && is_object($sys_page)) {
 			$this->tmpl = $tmpl;
 			$this->sys_page = $sys_page;
 			// alwaysActivePIDlist initialized:
@@ -329,7 +329,7 @@ class AbstractMenuContentObject {
 						$rl_MParray[] = $v_rl['_MP_PARAM'];
 					}
 					// Add to register:
-					$this->rL_uidRegister[] = ('ITEM:' . $v_rl['uid']) . (count($rl_MParray) ? ':' . implode(',', $rl_MParray) : '');
+					$this->rL_uidRegister[] = 'ITEM:' . $v_rl['uid'] . (count($rl_MParray) ? ':' . implode(',', $rl_MParray) : '');
 					// For normal mount points, set the variable for next level.
 					if ($v_rl['_MP_PARAM'] && !$v_rl['_MOUNT_OL']) {
 						$rl_MParray[] = $v_rl['_MP_PARAM'];
@@ -352,7 +352,7 @@ class AbstractMenuContentObject {
 			$currentLevel = $startLevel + $this->menuNumber;
 			if (is_array($this->tmpl->rootLine[$currentLevel])) {
 				$nextMParray = $this->MP_array;
-				if ((!count($nextMParray) && !$this->tmpl->rootLine[$currentLevel]['_MOUNT_OL']) && $currentLevel > 0) {
+				if (!count($nextMParray) && !$this->tmpl->rootLine[$currentLevel]['_MOUNT_OL'] && $currentLevel > 0) {
 					// Make sure to slide-down any mount point information (_MP_PARAM) to children records in the rootline
 					// otherwise automatic expansion will not work
 					$parentRecord = $this->tmpl->rootLine[$currentLevel - 1];
@@ -426,7 +426,7 @@ class AbstractMenuContentObject {
 							$lRecs = array();
 						}
 						// Checking if the "disabled" state should be set.
-						if (((\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && $sUid) && !count($lRecs) || $GLOBALS['TSFE']->page['l18n_cfg'] & 1 && (!$sUid || !count($lRecs))) || (!$this->conf['special.']['normalWhenNoLanguage'] && $sUid) && !count($lRecs)) {
+						if (\TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($GLOBALS['TSFE']->page['l18n_cfg']) && $sUid && !count($lRecs) || $GLOBALS['TSFE']->page['l18n_cfg'] & 1 && (!$sUid || !count($lRecs)) || !$this->conf['special.']['normalWhenNoLanguage'] && $sUid && !count($lRecs)) {
 							$iState = $GLOBALS['TSFE']->sys_language_uid == $sUid ? 'USERDEF2' : 'USERDEF1';
 						} else {
 							$iState = $GLOBALS['TSFE']->sys_language_uid == $sUid ? 'ACT' : 'NO';
@@ -565,7 +565,7 @@ class AbstractMenuContentObject {
 					$id_list_arr = array();
 					foreach ($items as $id) {
 						$bA = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
-						$id_list_arr[] = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(-1 * $id, ($depth - 1) + $bA, $bA - 1);
+						$id_list_arr[] = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(-1 * $id, $depth - 1 + $bA, $bA - 1);
 					}
 					$id_list = implode(',', $id_list_arr);
 					// Get sortField (mode)
@@ -594,12 +594,12 @@ class AbstractMenuContentObject {
 						$extraWhere .= ' AND pages.no_search=0';
 					}
 					if ($maxAge > 0) {
-						$extraWhere .= ((' AND ' . $sortField) . '>') . ($GLOBALS['SIM_ACCESS_TIME'] - $maxAge);
+						$extraWhere .= ' AND ' . $sortField . '>' . ($GLOBALS['SIM_ACCESS_TIME'] - $maxAge);
 					}
 					$res = $this->parent_cObj->exec_getQuery('pages', array(
 						'pidInList' => '0',
 						'uidInList' => $id_list,
-						'where' => ($sortField . '>=0') . $extraWhere,
+						'where' => $sortField . '>=0' . $extraWhere,
 						'orderBy' => $altSortFieldValue ? $altSortFieldValue : $sortField . ' desc',
 						'max' => $limit
 					));
@@ -653,7 +653,7 @@ class AbstractMenuContentObject {
 					}
 					// Max number of items
 					$limit = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['limit'], 0, 100);
-					$extraWhere = ((' AND pages.uid<>' . $value) . ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0')) . $this->getDoktypeExcludeWhere();
+					$extraWhere = ' AND pages.uid<>' . $value . ($this->conf['includeNotInMenu'] ? '' : ' AND pages.nav_hide=0') . $this->getDoktypeExcludeWhere();
 					if ($this->conf['special.']['excludeNoSearchPages']) {
 						$extraWhere .= ' AND pages.no_search=0';
 					}
@@ -668,15 +668,15 @@ class AbstractMenuContentObject {
 					// If there are keywords and the startuid is present.
 					if ($kw && $startUid) {
 						$bA = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->conf['special.']['beginAtLevel'], 0, 100);
-						$id_list = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(-1 * $startUid, ($depth - 1) + $bA, $bA - 1);
+						$id_list = \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getTreeList(-1 * $startUid, $depth - 1 + $bA, $bA - 1);
 						$kwArr = explode(',', $kw);
 						foreach ($kwArr as $word) {
 							$word = trim($word);
 							if ($word) {
-								$keyWordsWhereArr[] = (($kfield . ' LIKE \'%') . $GLOBALS['TYPO3_DB']->quoteStr($word, 'pages')) . '%\'';
+								$keyWordsWhereArr[] = $kfield . ' LIKE \'%' . $GLOBALS['TYPO3_DB']->quoteStr($word, 'pages') . '%\'';
 							}
 						}
-						$res = $this->parent_cObj->exec_getQuery('pages', array('pidInList' => '0', 'uidInList' => $id_list, 'where' => (('(' . implode(' OR ', $keyWordsWhereArr)) . ')') . $extraWhere, 'orderBy' => $altSortFieldValue ? $altSortFieldValue : $sortField . ' desc', 'max' => $limit));
+						$res = $this->parent_cObj->exec_getQuery('pages', array('pidInList' => '0', 'uidInList' => $id_list, 'where' => '(' . implode(' OR ', $keyWordsWhereArr) . ')' . $extraWhere, 'orderBy' => $altSortFieldValue ? $altSortFieldValue : $sortField . ' desc', 'max' => $limit));
 						while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 							$GLOBALS['TSFE']->sys_page->versionOL('pages', $row);
 							if (is_array($row)) {
@@ -899,7 +899,7 @@ class AbstractMenuContentObject {
 			}
 			// Setting number of menu items
 			$GLOBALS['TSFE']->register['count_menuItems'] = count($this->menuArr);
-			$this->hash = md5(((serialize($this->menuArr) . serialize($this->mconf)) . serialize($this->tmpl->rootLine)) . serialize($this->MP_array));
+			$this->hash = md5(serialize($this->menuArr) . serialize($this->mconf) . serialize($this->tmpl->rootLine) . serialize($this->MP_array));
 			// Get the cache timeout:
 			if ($this->conf['cache_period']) {
 				$cacheTimeout = $this->conf['cache_period'];
@@ -1278,12 +1278,12 @@ class AbstractMenuContentObject {
 		// Creating link:
 		if ($this->mconf['collapse'] && $this->isActive($this->menuArr[$key]['uid'], $this->getMPvar($key))) {
 			$thePage = $this->sys_page->getPage($this->menuArr[$key]['pid']);
-			$LD = $this->menuTypoLink($thePage, $mainTarget, '', '', $overrideArray, ($this->mconf['addParams'] . $MP_params) . $this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
+			$LD = $this->menuTypoLink($thePage, $mainTarget, '', '', $overrideArray, $this->mconf['addParams'] . $MP_params . $this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		} else {
-			$LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, '', '', $overrideArray, (($this->mconf['addParams'] . $MP_params) . $this->I['val']['additionalParams']) . $this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
+			$LD = $this->menuTypoLink($this->menuArr[$key], $mainTarget, '', '', $overrideArray, $this->mconf['addParams'] . $MP_params . $this->I['val']['additionalParams'] . $this->menuArr[$key]['_ADD_GETVARS'], $typeOverride);
 		}
 		// Override URL if using "External URL" as doktype with a valid e-mail address:
-		if (($this->menuArr[$key]['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK && $this->menuArr[$key]['urltype'] == 3) && \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->menuArr[$key]['url'])) {
+		if ($this->menuArr[$key]['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK && $this->menuArr[$key]['urltype'] == 3 && \TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($this->menuArr[$key]['url'])) {
 			// Create mailto-link using tslib_cObj::typolink (concerning spamProtectEmailAddresses):
 			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array('parameter' => $this->menuArr[$key]['url']));
 			$LD['target'] = '';
@@ -1302,7 +1302,7 @@ class AbstractMenuContentObject {
 			// Only setting url, not target
 			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array(
 				'parameter' => $shortcut['uid'],
-				'additionalParams' => (($this->mconf['addParams'] . $MP_params) . $this->I['val']['additionalParams']) . $this->menuArr[$key]['_ADD_GETVARS']
+				'additionalParams' => $this->mconf['addParams'] . $MP_params . $this->I['val']['additionalParams'] . $this->menuArr[$key]['_ADD_GETVARS']
 			));
 		}
 		// Manipulation in case of access restricted pages:
@@ -1320,7 +1320,7 @@ class AbstractMenuContentObject {
 			$conf = $this->mconf['JSWindow.'];
 			$url = $LD['totalURL'];
 			$LD['totalURL'] = '#';
-			$onClick = ((((('openPic(\'' . $GLOBALS['TSFE']->baseUrlWrap($url)) . '\',\'') . ($conf['newWindow'] ? md5($url) : 'theNewPage')) . '\',\'') . $conf['params']) . '\'); return false;';
+			$onClick = 'openPic(\'' . $GLOBALS['TSFE']->baseUrlWrap($url) . '\',\'' . ($conf['newWindow'] ? md5($url) : 'theNewPage') . '\',\'' . $conf['params'] . '\'); return false;';
 			$GLOBALS['TSFE']->setJS('openPic');
 		}
 		// look for type and popup
@@ -1339,8 +1339,8 @@ class AbstractMenuContentObject {
 			}
 			// Open in popup window?
 			if ($matches[3] && $matches[4]) {
-				$JSparamWH = ((('width=' . $matches[3]) . ',height=') . $matches[4]) . ($matches[5] ? ',' . substr($matches[5], 1) : '');
-				$onClick = ((('vHWin=window.open(\'' . $LD['totalURL']) . '\',\'FEopenLink\',\'') . $JSparamWH) . '\');vHWin.focus();return false;';
+				$JSparamWH = 'width=' . $matches[3] . ',height=' . $matches[4] . ($matches[5] ? ',' . substr($matches[5], 1) : '');
+				$onClick = 'vHWin=window.open(\'' . $LD['totalURL'] . '\',\'FEopenLink\',\'' . $JSparamWH . '\');vHWin.focus();return false;';
 				$LD['target'] = '';
 			}
 		}
@@ -1367,7 +1367,7 @@ class AbstractMenuContentObject {
 	 */
 	public function changeLinksForAccessRestrictedPages(&$LD, $page, $mainTarget, $typeOverride) {
 		// If access restricted pages should be shown in menus, change the link of such pages to link to a redirection page:
-		if (($this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages'] !== 'NONE') && !$GLOBALS['TSFE']->checkPageGroupAccess($page)) {
+		if ($this->mconf['showAccessRestrictedPages'] && $this->mconf['showAccessRestrictedPages'] !== 'NONE' && !$GLOBALS['TSFE']->checkPageGroupAccess($page)) {
 			$thePage = $this->sys_page->getPage($this->mconf['showAccessRestrictedPages']);
 			$addParams = $this->mconf['showAccessRestrictedPages.']['addParams'];
 			$addParams = str_replace('###RETURN_URL###', rawurlencode($LD['totalURL']), $addParams);
@@ -1398,7 +1398,7 @@ class AbstractMenuContentObject {
 		if (isset($this->mconf['expAll.'])) {
 			$this->mconf['expAll'] = $this->parent_cObj->stdWrap($this->mconf['expAll'], $this->mconf['expAll.']);
 		}
-		if (($subLevelClass && (($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key']))) || is_array($altArray))) && !$this->mconf['sectionIndex']) {
+		if ($subLevelClass && ($this->mconf['expAll'] || $this->isNext($uid, $this->getMPvar($this->I['key'])) || is_array($altArray)) && !$this->mconf['sectionIndex']) {
 			$submenu = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_' . $subLevelClass);
 			$submenu->entryLevel = $this->entryLevel + 1;
 			$submenu->rL_uidRegister = $this->rL_uidRegister;
@@ -1521,7 +1521,7 @@ class AbstractMenuContentObject {
 			// No valid subpage if the alternative language should be shown and the page settings
 			// are requiring a valid overlay but it doesn't exists
 			$hideIfNotTranslated = \TYPO3\CMS\Core\Utility\GeneralUtility::hideIfNotTranslated($theRec['l18n_cfg']);
-			if (($GLOBALS['TSFE']->sys_language_uid && $hideIfNotTranslated) && !$theRec['_PAGES_OVERLAY']) {
+			if ($GLOBALS['TSFE']->sys_language_uid && $hideIfNotTranslated && !$theRec['_PAGES_OVERLAY']) {
 				continue;
 			}
 			$hasSubPages = TRUE;
@@ -1592,8 +1592,8 @@ class AbstractMenuContentObject {
 			$key = strtoupper(substr($title, $a, 1));
 			if (preg_match('/[A-Z]/', $key) && !isset($GLOBALS['TSFE']->accessKey[$key])) {
 				$GLOBALS['TSFE']->accessKey[$key] = 1;
-				$result['code'] = (' accesskey="' . $key) . '"';
-				$result['alt'] = (' (ALT+' . $key) . ')';
+				$result['code'] = ' accesskey="' . $key . '"';
+				$result['alt'] = ' (ALT+' . $key . ')';
 				$result['key'] = $key;
 				break;
 			}
@@ -1628,7 +1628,7 @@ class AbstractMenuContentObject {
 	 * @todo Define visibility
 	 */
 	public function setATagParts() {
-		$this->I['A1'] = (((('<a ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($this->I['linkHREF'], 1)) . ' ') . $this->I['val']['ATagParams']) . $this->I['accessKey']['code']) . '>';
+		$this->I['A1'] = '<a ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($this->I['linkHREF'], 1) . ' ' . $this->I['val']['ATagParams'] . $this->I['accessKey']['code'] . '>';
 		$this->I['A2'] = '</a>';
 	}
 
@@ -1674,7 +1674,7 @@ class AbstractMenuContentObject {
 	 * @todo Define visibility
 	 */
 	public function getDoktypeExcludeWhere() {
-		return $this->doktypeExcludeList ? (' AND pages.doktype NOT IN (' . $this->doktypeExcludeList) . ')' : '';
+		return $this->doktypeExcludeList ? ' AND pages.doktype NOT IN (' . $this->doktypeExcludeList . ')' : '';
 	}
 
 	/**

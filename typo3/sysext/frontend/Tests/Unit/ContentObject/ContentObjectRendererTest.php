@@ -337,13 +337,13 @@ class ContentObjectRendererTest extends \tx_phpunit_testcase {
 				$charset . ' plain text; 11|...' => array(
 					'11|...',
 					$plainText,
-					('Kasper Sk' . chr(229)) . 'r...',
+					'Kasper Sk' . chr(229) . 'r...',
 					$charset
 				),
 				$charset . ' plain text; -58|...' => array(
 					'-58|...',
 					$plainText,
-					('...h' . chr(248)) . 'j implemented the original version of the crop function.',
+					'...h' . chr(248) . 'j implemented the original version of the crop function.',
 					$charset
 				),
 				$charset . ' plain text; 4|...|1' => array(
@@ -373,7 +373,7 @@ class ContentObjectRendererTest extends \tx_phpunit_testcase {
 				$charset . ' text with markup; 11|...' => array(
 					'11|...',
 					$textWithMarkup,
-					('<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229)) . 'r...</a></strong>',
+					'<strong><a href="mailto:kasper@typo3.org">Kasper Sk' . chr(229) . 'r...</a></strong>',
 					$charset
 				),
 				$charset . ' text with markup; 13|...' => array(
@@ -403,7 +403,7 @@ class ContentObjectRendererTest extends \tx_phpunit_testcase {
 				$charset . ' text with markup; -58|...' => array(
 					'-58|...',
 					$textWithMarkup,
-					('<strong><a href="mailto:kasper@typo3.org">...h' . chr(248)) . 'j</a> implemented</strong> the original version of the crop function.',
+					'<strong><a href="mailto:kasper@typo3.org">...h' . chr(248) . 'j</a> implemented</strong> the original version of the crop function.',
 					$charset
 				),
 				$charset . ' text with markup 4|...|1' => array(

@@ -56,7 +56,7 @@ class FramesetRenderer {
 						if (!$conf['src'] && !$typeNum) {
 							$typeNum = -1;
 						}
-						$content .= (('<frame' . $this->frameParams($conf, $typeNum)) . ' />') . LF;
+						$content .= '<frame' . $this->frameParams($conf, $typeNum) . ' />' . LF;
 						break;
 					case 'FRAMESET':
 						$frameset = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\FramesetRenderer');
@@ -65,7 +65,7 @@ class FramesetRenderer {
 					}
 				}
 			}
-			return (((('<frameset' . $this->framesetParams($setup)) . '>') . LF) . $content) . '</frameset>';
+			return '<frameset' . $this->framesetParams($setup) . '>' . LF . $content . '</frameset>';
 		}
 	}
 
@@ -88,16 +88,16 @@ class FramesetRenderer {
 			if (is_array($setup['src.'])) {
 				$src = $GLOBALS['TSFE']->cObj->stdWrap($src, $setup['src.']);
 			}
-			$paramStr .= (' src="' . htmlspecialchars($src)) . '"';
+			$paramStr .= ' src="' . htmlspecialchars($src) . '"';
 		} else {
 			$LD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page, '', $GLOBALS['TSFE']->no_cache, '', '', ($setup['options'] ? '&' . $setup['options'] : '') . $GLOBALS['TSFE']->cObj->getClosestMPvalueForPage($GLOBALS['TSFE']->page['uid']), intval($typeNum));
 			$finalURL = $LD['totalURL'];
-			$paramStr .= (' src="' . htmlspecialchars($finalURL)) . '"';
+			$paramStr .= ' src="' . htmlspecialchars($finalURL) . '"';
 		}
 		if ($setup['name']) {
-			$paramStr .= (' name="' . $setup['name']) . '"';
+			$paramStr .= ' name="' . $setup['name'] . '"';
 		} else {
-			$paramStr .= (' name="' . $name) . '"';
+			$paramStr .= ' name="' . $name . '"';
 		}
 		if ($setup['params']) {
 			$paramStr .= ' ' . $setup['params'];
@@ -117,10 +117,10 @@ class FramesetRenderer {
 	public function framesetParams($setup) {
 		$paramStr = '';
 		if ($setup['cols']) {
-			$paramStr .= (' cols="' . $setup['cols']) . '"';
+			$paramStr .= ' cols="' . $setup['cols'] . '"';
 		}
 		if ($setup['rows']) {
-			$paramStr .= (' rows="' . $setup['rows']) . '"';
+			$paramStr .= ' rows="' . $setup['rows'] . '"';
 		}
 		if ($setup['params']) {
 			$paramStr .= ' ' . $setup['params'];

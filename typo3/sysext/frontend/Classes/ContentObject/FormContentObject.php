@@ -208,7 +208,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 				// Accessibility: Set id = fieldname attribute:
 				$accessibility = isset($conf['accessibility.']) ? $this->cObj->stdWrap($conf['accessibility'], $conf['accessibility.']) : $conf['accessibility'];
 				if ($accessibility || $xhtmlStrict) {
-					$elementIdAttribute = ((' id="' . $prefix) . $fName) . '"';
+					$elementIdAttribute = ' id="' . $prefix . $fName . '"';
 				} else {
 					$elementIdAttribute = '';
 				}
@@ -226,7 +226,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 					if ($noWrapAttr || $wrap === 'disabled') {
 						$wrap = '';
 					} else {
-						$wrap = $wrap ? (' wrap="' . $wrap) . '"' : ' wrap="virtual"';
+						$wrap = $wrap ? ' wrap="' . $wrap . '"' : ' wrap="virtual"';
 					}
 					$noValueInsert = isset($conf['noValueInsert.']) ? $this->cObj->stdWrap($conf['noValueInsert'], $conf['noValueInsert.']) : $conf['noValueInsert'];
 					$default = $this->cObj->getFieldDefaultValue($noValueInsert, $confData['fieldname'], str_replace('\\n', LF, trim($parts[2])));
@@ -245,7 +245,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 					if ($confData['type'] == 'password') {
 						$default = '';
 					}
-					$max = trim($fParts[2]) ? (' maxlength="' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($fParts[2], 1, 1000)) . '"' : '';
+					$max = trim($fParts[2]) ? ' maxlength="' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($fParts[2], 1, 1000) . '"' : '';
 					$theType = $confData['type'] == 'input' ? 'text' : 'password';
 					$fieldCode = sprintf('<input type="%s" name="%s"%s size="%s"%s value="%s"%s />', $theType, $confData['fieldname'], $elementIdAttribute, $size, $max, htmlspecialchars($default), $addParams);
 					break;
@@ -307,7 +307,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 					// Create the select-box:
 					$iCount = count($items);
 					for ($a = 0; $a < $iCount; $a++) {
-						$option .= ((((('<option value="' . $items[$a][1]) . '"') . (in_array($items[$a][1], $defaults) ? ' selected="selected"' : '')) . '>') . trim($items[$a][0])) . '</option>';
+						$option .= '<option value="' . $items[$a][1] . '"' . (in_array($items[$a][1], $defaults) ? ' selected="selected"' : '') . '>' . trim($items[$a][0]) . '</option>';
 					}
 					if ($multiple) {
 						// The fieldname must be prepended '[]' if multiple select. And the reason why it's prepended is, because the required-field list later must also have [] prepended.
@@ -348,16 +348,16 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 					$iCount = count($items);
 					for ($a = 0; $a < $iCount; $a++) {
 						$optionParts = '';
-						$radioId = ($prefix . $fName) . $this->cObj->cleanFormName($items[$a][0]);
+						$radioId = $prefix . $fName . $this->cObj->cleanFormName($items[$a][0]);
 						if ($accessibility) {
-							$radioLabelIdAttribute = (' id="' . $radioId) . '"';
+							$radioLabelIdAttribute = ' id="' . $radioId . '"';
 						} else {
 							$radioLabelIdAttribute = '';
 						}
-						$optionParts .= (((((((('<input type="radio" name="' . $confData['fieldname']) . '"') . $radioLabelIdAttribute) . ' value="') . $items[$a][1]) . '"') . (!strcmp($items[$a][1], $default) ? ' checked="checked"' : '')) . $addParams) . ' />';
+						$optionParts .= '<input type="radio" name="' . $confData['fieldname'] . '"' . $radioLabelIdAttribute . ' value="' . $items[$a][1] . '"' . (!strcmp($items[$a][1], $default) ? ' checked="checked"' : '') . $addParams . ' />';
 						if ($accessibility) {
 							$label = isset($conf['radioWrap.']) ? $this->cObj->stdWrap(trim($items[$a][0]), $conf['radioWrap.']) : trim($items[$a][0]);
-							$optionParts .= ((('<label for="' . $radioId) . '">') . $label) . '</label>';
+							$optionParts .= '<label for="' . $radioId . '">' . $label . '</label>';
 						} else {
 							$optionParts .= isset($conf['radioWrap.']) ? $this->cObj->stdWrap(trim($items[$a][0]), $conf['radioWrap.']) : trim($items[$a][0]);
 						}
@@ -388,7 +388,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						$hmacChecksum = \TYPO3\CMS\Core\Utility\GeneralUtility::hmac($value);
 						$hiddenfields .= sprintf('<input type="hidden" name="auto_respond_checksum" id="%sauto_respond_checksum" value="%s" />', $prefix, $hmacChecksum);
 					}
-					if ((strlen($value) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('recipient_copy,recipient', $confData['fieldname'])) && $GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
+					if (strlen($value) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('recipient_copy,recipient', $confData['fieldname']) && $GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
 						break;
 					}
 					if (strlen($value) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('recipient_copy,recipient', $confData['fieldname'])) {
@@ -466,8 +466,8 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 					}
 					// Field:
 					$fieldLabel = $confData['label'];
-					if (($accessibility && trim($fieldLabel)) && !preg_match('/^(label|hidden|comment)$/', $confData['type'])) {
-						$fieldLabel = (((('<label for="' . $prefix) . $fName) . '">') . $fieldLabel) . '</label>';
+					if ($accessibility && trim($fieldLabel) && !preg_match('/^(label|hidden|comment)$/', $confData['type'])) {
+						$fieldLabel = '<label for="' . $prefix . $fName . '">' . $fieldLabel . '</label>';
 					}
 					// Getting template code:
 					if (isset($conf['fieldWrap.'])) {
@@ -543,7 +543,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 			// External URL, redirect-hidden field is rendered!
 			$LD = $GLOBALS['TSFE']->tmpl->linkData($page, $target, $noCache, '', '', $this->cObj->getClosestMPvalueForPage($page['uid']));
 			$LD['totalURL'] = $theRedirect;
-			$hiddenfields .= ('<input type="hidden" name="redirect" value="' . htmlspecialchars($LD['totalURL'])) . '" />';
+			$hiddenfields .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($LD['totalURL']) . '" />';
 		}
 		// Formtype (where to submit to!):
 		if ($propertyOverride['type']) {
@@ -572,7 +572,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 		$theEmail = isset($conf['recipient.']) ? $this->cObj->stdWrap($conf['recipient'], $conf['recipient.']) : $conf['recipient'];
 		if ($theEmail && !$GLOBALS['TYPO3_CONF_VARS']['FE']['secureFormmail']) {
 			$theEmail = $GLOBALS['TSFE']->codeString($theEmail);
-			$hiddenfields .= ('<input type="hidden" name="recipient" value="' . htmlspecialchars($theEmail)) . '" />';
+			$hiddenfields .= '<input type="hidden" name="recipient" value="' . htmlspecialchars($theEmail) . '" />';
 		}
 		// location data:
 		$location = isset($conf['locationData.']) ? $this->cObj->stdWrap($conf['locationData'], $conf['locationData.']) : $conf['locationData'];
@@ -582,12 +582,12 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 			} else {
 				// locationData is [the page id]:[tablename]:[uid of record]. Indicates on which page the record (from tablename with uid) is shown. Used to check access.
 				if (isset($this->data['_LOCALIZED_UID'])) {
-					$locationData = ($GLOBALS['TSFE']->id . ':') . str_replace($this->data['uid'], $this->data['_LOCALIZED_UID'], $this->cObj->currentRecord);
+					$locationData = $GLOBALS['TSFE']->id . ':' . str_replace($this->data['uid'], $this->data['_LOCALIZED_UID'], $this->cObj->currentRecord);
 				} else {
-					$locationData = ($GLOBALS['TSFE']->id . ':') . $this->cObj->currentRecord;
+					$locationData = $GLOBALS['TSFE']->id . ':' . $this->cObj->currentRecord;
 				}
 			}
-			$hiddenfields .= ('<input type="hidden" name="locationData" value="' . htmlspecialchars($locationData)) . '" />';
+			$hiddenfields .= '<input type="hidden" name="locationData" value="' . htmlspecialchars($locationData) . '" />';
 		}
 		// Hidden fields:
 		if (is_array($conf['hiddenFields.'])) {
@@ -600,18 +600,18 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 						}
 						$hF_value = $GLOBALS['TSFE']->codeString($hF_value);
 					}
-					$hiddenfields .= ((('<input type="hidden" name="' . $hF_key) . '" value="') . htmlspecialchars($hF_value)) . '" />';
+					$hiddenfields .= '<input type="hidden" name="' . $hF_key . '" value="' . htmlspecialchars($hF_value) . '" />';
 				}
 			}
 		}
 		// Wrap all hidden fields in a div tag (see http://bugs.typo3.org/view.php?id=678)
-		$hiddenfields = isset($conf['hiddenFields.']['stdWrap.']) ? $this->cObj->stdWrap($hiddenfields, $conf['hiddenFields.']['stdWrap.']) : ('<div style="display:none;">' . $hiddenfields) . '</div>';
+		$hiddenfields = isset($conf['hiddenFields.']['stdWrap.']) ? $this->cObj->stdWrap($hiddenfields, $conf['hiddenFields.']['stdWrap.']) : '<div style="display:none;">' . $hiddenfields . '</div>';
 		if ($conf['REQ']) {
 			$goodMess = isset($conf['goodMess.']) ? $this->cObj->stdWrap($conf['goodMess'], $conf['goodMess.']) : $conf['goodMess'];
 			$badMess = isset($conf['badMess.']) ? $this->cObj->stdWrap($conf['badMess'], $conf['badMess.']) : $conf['badMess'];
 			$emailMess = isset($conf['emailMess.']) ? $this->cObj->stdWrap($conf['emailMess'], $conf['emailMess.']) : $conf['emailMess'];
-			$validateForm = (((((((((' onsubmit="return validateForm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($formName)) . ',') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(implode(',', $fieldlist))) . ',') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($goodMess)) . ',') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($badMess)) . ',') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($emailMess)) . ')"';
-			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = ('<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($GLOBALS['TSFE']->absRefPrefix . 't3lib/jsfunc.validateform.js'))) . '"></script>';
+			$validateForm = ' onsubmit="return validateForm(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($formName) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(implode(',', $fieldlist)) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($goodMess) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($badMess) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($emailMess) . ')"';
+			$GLOBALS['TSFE']->additionalHeaderData['JSFormValidate'] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($GLOBALS['TSFE']->absRefPrefix . 't3lib/jsfunc.validateform.js')) . '"></script>';
 		} else {
 			$validateForm = '';
 		}
@@ -619,7 +619,7 @@ class FormContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConten
 		$theTarget = $theRedirect ? $LD['target'] : $LD_A['target'];
 		$method = isset($conf['method.']) ? $this->cObj->stdWrap($conf['method'], $conf['method.']) : $conf['method'];
 		$content = array(
-			((((((((((((((('<form' . ' action="') . htmlspecialchars($action)) . '"') . ' id="') . $formName) . '"') . ($xhtmlStrict ? '' : (' name="' . $formName) . '"')) . ' enctype="') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype']) . '"') . ' method="') . ($method ? $method : 'post')) . '"') . ($theTarget ? (' target="' . $theTarget) . '"' : '')) . $validateForm) . '>',
+			'<form' . ' action="' . htmlspecialchars($action) . '"' . ' id="' . $formName . '"' . ($xhtmlStrict ? '' : ' name="' . $formName . '"') . ' enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '"' . ' method="' . ($method ? $method : 'post') . '"' . ($theTarget ? ' target="' . $theTarget . '"' : '') . $validateForm . '>',
 			$hiddenfields . $content,
 			'</form>'
 		);
