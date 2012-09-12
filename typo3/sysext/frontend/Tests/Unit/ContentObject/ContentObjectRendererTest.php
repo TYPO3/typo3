@@ -1029,6 +1029,56 @@ class ContentObjectRendererTest extends \tx_phpunit_testcase {
 		}
 	}
 
+	/**
+	 * Data provider for the stdWrap_strftime test
+	 *
+	 * @return array multi-dimensional array with the second level like this:
+	 * @see stdWrap_strftime
+	 */
+	public function stdWrap_strftimeReturnsFormattedStringDataProvider() {
+		$data = array(
+			'given timestamp' => array(
+				1346500800, // This is 2012-09-01 12:00 in UTC/GMT
+				array(
+					'strftime' => '%d-%m-%Y',
+				),
+			),
+			'empty string' => array(
+				'',
+				array(
+					'strftime' => '%d-%m-%Y',
+				),
+			),
+			'testing null' => array(
+				NULL,
+				array(
+					'strftime' => '%d-%m-%Y',
+				),
+			),
+		);
+		return $data;
+	}
+
+	/**
+	 * @test
+	 * @dataProvider stdWrap_strftimeReturnsFormattedStringDataProvider
+	 */
+	public function stdWrap_strftimeReturnsFormattedString($content, $conf) {
+			// Set exec_time to a hard timestamp (backed up by $this->backupGlobals = TRUE)
+		$GLOBALS['EXEC_TIME'] = 1346500800;
+			// Save current timezone and set to UTC to make the system unter test behave
+			// the same in all server timezone settings
+		$timezoneBackup = date_default_timezone_get();
+		date_default_timezone_set('UTC');
+
+		$result = $this->cObj->stdWrap_strftime($content, $conf);
+
+			// Reset timezone
+		date_default_timezone_set($timezoneBackup);
+
+		$this->assertEquals('01-09-2012', $result);
+	}
+
 }
 
 ?>
