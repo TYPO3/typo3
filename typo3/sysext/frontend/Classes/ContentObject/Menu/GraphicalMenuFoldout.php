@@ -115,10 +115,10 @@ class GraphicalMenuFoldout extends \TYPO3\CMS\Frontend\ContentObject\Menu\Graphi
 		$this->I['addATagParams'] = '';
 		$this->WMsubmenu = $this->subMenu($this->I['uid'], $this->WMsubmenuObjSuffixes[$key]['sOSuffix']);
 		if (trim($this->WMsubmenu)) {
-			$this->I['addATagParams'] = (((' onclick="GF_menu(' . $key) . ');') . ($this->mconf['dontLinkIfSubmenu'] ? ' return false;' : '')) . '"';
+			$this->I['addATagParams'] = ' onclick="GF_menu(' . $key . ');' . ($this->mconf['dontLinkIfSubmenu'] ? ' return false;' : '') . '"';
 			// orig: && $this->WMisSub, changed 210901
 			if ($this->isActive($this->I['uid'], $this->getMPvar($key)) && $this->mconf['displayActiveOnLoad']) {
-				$this->WM_activeOnLoad = ('GF_menu(' . $key) . ');';
+				$this->WM_activeOnLoad = 'GF_menu(' . $key . ');';
 			}
 		}
 	}
@@ -133,7 +133,7 @@ class GraphicalMenuFoldout extends \TYPO3\CMS\Frontend\ContentObject\Menu\Graphi
 	public function extProc_afterLinking($key) {
 		$this->WMtableWrap = $this->mconf['dontWrapInTable'] ? '' : '<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td>|</td></tr></table>';
 		if ($this->WMimagesFlag) {
-			$this->WMimageHTML = (((((((((('<img src="' . $GLOBALS['TSFE']->absRefPrefix) . $this->WMarrowNO[3]) . '" width="') . $this->WMarrowNO[0]) . '" height="') . $this->WMarrowNO[1]) . '" border="0" name="imgA') . $key) . '"') . ($this->mconf['arrowImgParams'] ? ' ' . $this->mconf['arrowImgParams'] : '')) . ' alt="" />';
+			$this->WMimageHTML = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . $this->WMarrowNO[3] . '" width="' . $this->WMarrowNO[0] . '" height="' . $this->WMarrowNO[1] . '" border="0" name="imgA' . $key . '"' . ($this->mconf['arrowImgParams'] ? ' ' . $this->mconf['arrowImgParams'] : '') . ' alt="" />';
 		} else {
 			$this->WMimageHTML = '';
 		}
@@ -142,10 +142,10 @@ class GraphicalMenuFoldout extends \TYPO3\CMS\Frontend\ContentObject\Menu\Graphi
 		} else {
 			$this->I['theItem'] = $this->WMimageHTML . $this->I['theItem'];
 		}
-		$this->WMresult .= ((((((('
-<div class="clTop" id="divTop' . ($key + 1)) . '">') . $this->tmpl->wrap($this->I['theItem'], $this->WMtableWrap)) . '
-<div class="clSub" id="divSub') . ($key + 1)) . '">
-		') . $this->WMsubmenu) . '
+		$this->WMresult .= '
+<div class="clTop" id="divTop' . ($key + 1) . '">' . $this->tmpl->wrap($this->I['theItem'], $this->WMtableWrap) . '
+<div class="clSub" id="divSub' . ($key + 1) . '">
+		' . $this->WMsubmenu . '
 </div>
 </div>';
 	}
@@ -163,44 +163,44 @@ class GraphicalMenuFoldout extends \TYPO3\CMS\Frontend\ContentObject\Menu\Graphi
 		$adjustSubHeights = intval($this->mconf['adjustSubItemsH']);
 		$mWidth = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->mconf['menuWidth'] ? $this->mconf['menuWidth'] : 170, 0, 3000);
 		$mHeight = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->mconf['menuHeight'] ? $this->mconf['menuHeight'] : 400, 0, 3000);
-		$insertmColor = $this->mconf['menuBackColor'] ? (('BACKGROUND-COLOR: ' . $this->mconf['menuBackColor']) . '; layer-background-color: ') . $this->mconf['menuBackColor'] : '';
-		$insertBottomColor = $this->mconf['bottomBackColor'] ? (('BACKGROUND-COLOR: ' . $this->mconf['bottomBackColor']) . '; layer-background-color: ') . $this->mconf['bottomBackColor'] : '';
+		$insertmColor = $this->mconf['menuBackColor'] ? 'BACKGROUND-COLOR: ' . $this->mconf['menuBackColor'] . '; layer-background-color: ' . $this->mconf['menuBackColor'] : '';
+		$insertBottomColor = $this->mconf['bottomBackColor'] ? 'BACKGROUND-COLOR: ' . $this->mconf['bottomBackColor'] . '; layer-background-color: ' . $this->mconf['bottomBackColor'] : '';
 		$menuOffset = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->mconf['menuOffset'] . ',');
 		$subOffset = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->mconf['subMenuOffset'] . ',');
-		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared'] = ('<script type="text/javascript" src="' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('statictemplates')) . 'media/scripts/jsfunc.layermenu.js"></script>';
-		$GLOBALS['TSFE']->additionalHeaderData['gmenu_foldout'] = ('<script type="text/javascript" src="' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('statictemplates')) . 'media/scripts/jsfunc.foldout.js"></script>';
-		$GLOBALS['TSFE']->additionalHeaderData[] .= ((((((((((((((((((((((((((((((((((((((((((((((('
+		$GLOBALS['TSFE']->additionalHeaderData['gmenu_layer_shared'] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('statictemplates') . 'media/scripts/jsfunc.layermenu.js"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData['gmenu_foldout'] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('statictemplates') . 'media/scripts/jsfunc.foldout.js"></script>';
+		$GLOBALS['TSFE']->additionalHeaderData[] .= '
 <style type="text/css">
 	/*<![CDATA[*/
 #divCont {
-	Z-INDEX: 1; LEFT: ' . $menuOffset[0]) . 'px; VISIBILITY: hidden; WIDTH: ') . $mWidth) . 'px; POSITION: absolute; TOP: ') . $menuOffset[1]) . 'px; HEIGHT: ') . $mHeight) . 'px
+	Z-INDEX: 1; LEFT: ' . $menuOffset[0] . 'px; VISIBILITY: hidden; WIDTH: ' . $mWidth . 'px; POSITION: absolute; TOP: ' . $menuOffset[1] . 'px; HEIGHT: ' . $mHeight . 'px
 }
 .clTop {
-	Z-INDEX: 1; WIDTH: ') . $mWidth) . 'px; POSITION: absolute; ') . $insertmColor) . '
+	Z-INDEX: 1; WIDTH: ' . $mWidth . 'px; POSITION: absolute; ' . $insertmColor . '
 }
 .clSub {
-	Z-INDEX: 1; LEFT: ') . $subOffset[0]) . 'px; WIDTH: ') . $mWidth) . 'px; POSITION: absolute; TOP: ') . $subOffset[1]) . 'px
+	Z-INDEX: 1; LEFT: ' . $subOffset[0] . 'px; WIDTH: ' . $mWidth . 'px; POSITION: absolute; TOP: ' . $subOffset[1] . 'px
 }
 .bottomLayer {
-	Z-INDEX: 1; WIDTH: ') . $mWidth) . 'px; CLIP: rect(0px ') . $mWidth) . 'px ') . $bHeight) . 'px 0px); POSITION: absolute; HEIGHT: ') . $bHeight) . 'px; ') . $insertBottomColor) . '
+	Z-INDEX: 1; WIDTH: ' . $mWidth . 'px; CLIP: rect(0px ' . $mWidth . 'px ' . $bHeight . 'px 0px); POSITION: absolute; HEIGHT: ' . $bHeight . 'px; ' . $insertBottomColor . '
 }
 	/*]]>*/
 </style>
 <script type="text/javascript">
 /*<![CDATA[*/
 <!--
-GFV_foldNumber=') . $this->WMmenuItems) . ';          //How many toplinks do you have?
-GFV_foldTimer=') . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(($this->mconf['foldTimer'] ? $this->mconf['foldTimer'] : 40), 1, 3000)) . ';          //The timeout in the animation, these are milliseconds.
-GFV_foldSpeed=') . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->mconf['foldSpeed'], 1, 100)) . ';           //How many steps in an animation?
-GFV_stayFolded=') . ($this->mconf['stayFolded'] ? 'true' : 'false')) . ';      //Stay open when you click a new toplink?
-GFV_foldImg=') . $this->WMimagesFlag) . ';             //Do you want images (if not set to 0 and remove the images from the body)?
+GFV_foldNumber=' . $this->WMmenuItems . ';          //How many toplinks do you have?
+GFV_foldTimer=' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange(($this->mconf['foldTimer'] ? $this->mconf['foldTimer'] : 40), 1, 3000) . ';          //The timeout in the animation, these are milliseconds.
+GFV_foldSpeed=' . \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->mconf['foldSpeed'], 1, 100) . ';           //How many steps in an animation?
+GFV_stayFolded=' . ($this->mconf['stayFolded'] ? 'true' : 'false') . ';      //Stay open when you click a new toplink?
+GFV_foldImg=' . $this->WMimagesFlag . ';             //Do you want images (if not set to 0 and remove the images from the body)?
 GFV_currentFold=null;
 GFV_foldStep1=null;
 GFV_foldStep2=null;
 GFV_step=0;
 GFV_active=false;	 //Don\'t change this one.
-GFV_adjustTopHeights = ') . $adjustTopHeights) . ';
-GFV_adjustSubHeights = ') . $adjustSubHeights) . ';
+GFV_adjustTopHeights = ' . $adjustTopHeights . ';
+GFV_adjustSubHeights = ' . $adjustSubHeights . ';
 if (bw.opera) {
 	GFV_scrX= innerWidth;
 	GFV_scrY= innerHeight;
@@ -209,23 +209,23 @@ if (bw.opera) {
 //This is the default image.
 //Remember to change the actual images in the page as well, but remember to keep the name of the image.
 var GFV_unImg=new Image();
-GFV_unImg.src="') . $GLOBALS['TSFE']->absRefPrefix) . $this->WMarrowNO[3]) . '";
+GFV_unImg.src="' . $GLOBALS['TSFE']->absRefPrefix . $this->WMarrowNO[3] . '";
 
 var GFV_exImg=new Image();          //Making an image variable...
-GFV_exImg.src="') . $GLOBALS['TSFE']->absRefPrefix) . $this->WMarrowACT[3]) . '";   //...this is the source of the image that it changes to when the menu expands.
+GFV_exImg.src="' . $GLOBALS['TSFE']->absRefPrefix . $this->WMarrowACT[3] . '";   //...this is the source of the image that it changes to when the menu expands.
 
 //-->
 /*]]>*/
 </script>
 ';
 		$GLOBALS['TSFE']->JSeventFuncCalls['onmousemove']['GF_resizeForOpera()'] = 'GF_resizeForOpera();';
-		$GLOBALS['TSFE']->JSeventFuncCalls['onload']['GMENU_FOLDOUT'] = ('if(bw.bw) {GF_initFoldout();' . $this->WM_activeOnLoad) . '}';
-		$GLOBALS['TSFE']->divSection .= ((((((('
+		$GLOBALS['TSFE']->JSeventFuncCalls['onload']['GMENU_FOLDOUT'] = 'if(bw.bw) {GF_initFoldout();' . $this->WM_activeOnLoad . '}';
+		$GLOBALS['TSFE']->divSection .= '
 <div id="divCont"><!-- These are the contents of the foldoutmenu. -->
-		' . $this->tmpl->wrap($this->WMresult, $this->mconf['wrap'])) . '
-<div class="bottomLayer" id="divTop') . ($this->WMmenuItems + 1)) . '">
-	<div class="clSub" id="divSub') . ($this->WMmenuItems + 1)) . '"><!-- This is a cover layer, it should always be the last one, and does NOT count in your number of toplinks! --><!-- So if this one is divTop7, the GFV_foldNumber variable should be set to 6 --><!-- This layer covers up the last sub, so if the last sub gets too big, increase this layers size in the stylesheet. --><!-- There are tables with width="100%" around the toplinks, to force NS4 to use the real width specified for the toplinks in the stylesheet. -->
-	</div>') . $this->tmpl->wrap($bottomContent, $this->WMtableWrap)) . '
+		' . $this->tmpl->wrap($this->WMresult, $this->mconf['wrap']) . '
+<div class="bottomLayer" id="divTop' . ($this->WMmenuItems + 1) . '">
+	<div class="clSub" id="divSub' . ($this->WMmenuItems + 1) . '"><!-- This is a cover layer, it should always be the last one, and does NOT count in your number of toplinks! --><!-- So if this one is divTop7, the GFV_foldNumber variable should be set to 6 --><!-- This layer covers up the last sub, so if the last sub gets too big, increase this layers size in the stylesheet. --><!-- There are tables with width="100%" around the toplinks, to force NS4 to use the real width specified for the toplinks in the stylesheet. -->
+	</div>' . $this->tmpl->wrap($bottomContent, $this->WMtableWrap) . '
 </div>
 </div><!-- Here ends the foldoutmenu. -->
 		';

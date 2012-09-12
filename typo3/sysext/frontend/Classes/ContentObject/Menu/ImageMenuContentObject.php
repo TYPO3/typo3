@@ -215,12 +215,12 @@ class ImageMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\Abst
 			$res =& $this->result;
 			// shortMD5 260900
 			$menuName = 'menu_' . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5($res['imgMap']);
-			$result = ((((((((('<img src="' . $GLOBALS['TSFE']->absRefPrefix) . $res['output_file']) . '" width="') . $res['output_w']) . '" height="') . $res['output_h']) . '" usemap="#') . $menuName) . '" border="0" ') . $this->mconf['params'];
+			$result = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . $res['output_file'] . '" width="' . $res['output_w'] . '" height="' . $res['output_h'] . '" usemap="#' . $menuName . '" border="0" ' . $this->mconf['params'];
 			// Adding alt attribute if not set.
 			if (!strstr($result, 'alt="')) {
 				$result .= ' alt="Menu Image Map"';
 			}
-			$result .= (((((' /><map name="' . $menuName) . '" id="') . $menuName) . '">') . $res['imgMap']) . '</map>';
+			$result .= ' /><map name="' . $menuName . '" id="' . $menuName . '">' . $res['imgMap'] . '</map>';
 			$GLOBALS['TSFE']->imagesOnPage[] = $res['output_file'];
 			return $this->tmpl->wrap($result, $this->mconf['wrap']);
 		}

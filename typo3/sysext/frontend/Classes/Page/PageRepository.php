@@ -143,7 +143,7 @@ class PageRepository {
 		if (!$show_hidden) {
 			$this->where_hid_del .= 'AND pages.hidden=0 ';
 		}
-		$this->where_hid_del .= ((('AND pages.starttime<=' . $GLOBALS['SIM_ACCESS_TIME']) . ' AND (pages.endtime=0 OR pages.endtime>') . $GLOBALS['SIM_ACCESS_TIME']) . ') ';
+		$this->where_hid_del .= 'AND pages.starttime<=' . $GLOBALS['SIM_ACCESS_TIME'] . ' AND (pages.endtime=0 OR pages.endtime>' . $GLOBALS['SIM_ACCESS_TIME'] . ') ';
 		// Filter out new/deleted place-holder pages in case we are NOT in a versioning preview (that means we are online!)
 		if (!$this->versioningPreview) {
 			$this->where_hid_del .= ' AND NOT pages.t3ver_state>0';
@@ -184,12 +184,12 @@ class PageRepository {
 			}
 		}
 		$accessCheck = $disableGroupAccessCheck ? '' : $this->where_groupAccess;
-		$cacheKey = md5(((($accessCheck . '-') . $this->where_hid_del) . '-') . $this->sys_language_uid);
+		$cacheKey = md5($accessCheck . '-' . $this->where_hid_del . '-' . $this->sys_language_uid);
 		if (is_array($this->cache_getPage[$uid][$cacheKey])) {
 			return $this->cache_getPage[$uid][$cacheKey];
 		}
 		$result = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', (('uid=' . intval($uid)) . $this->where_hid_del) . $accessCheck);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid=' . intval($uid) . $this->where_hid_del . $accessCheck);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		if ($row) {
@@ -214,7 +214,7 @@ class PageRepository {
 		if ($this->cache_getPage_noCheck[$uid]) {
 			return $this->cache_getPage_noCheck[$uid];
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', ('uid=' . intval($uid)) . $this->deleteClause('pages'));
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'uid=' . intval($uid) . $this->deleteClause('pages'));
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		$result = array();
@@ -238,7 +238,7 @@ class PageRepository {
 	 */
 	public function getFirstWebPage($uid) {
 		$output = '';
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', (('pid=' . intval($uid)) . $this->where_hid_del) . $this->where_groupAccess, '', 'sorting', '1');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'pages', 'pid=' . intval($uid) . $this->where_hid_del . $this->where_groupAccess, '', 'sorting', '1');
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		if ($row) {
@@ -263,7 +263,7 @@ class PageRepository {
 		if ($this->cache_getPageIdFromAlias[$alias]) {
 			return $this->cache_getPageIdFromAlias[$alias];
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', ('alias=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($alias, 'pages')) . ' AND pid>=0 AND pages.deleted=0');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'alias=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($alias, 'pages') . ' AND pid>=0 AND pages.deleted=0');
 		// "AND pid>=0" because of versioning (means that aliases sent MUST be online!)
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -315,8 +315,8 @@ class PageRepository {
 				// Currently the showHiddenRecords of TSFE set will allow pages_language_overlay records to be selected as they are child-records of a page.
 				// However you may argue that the showHiddenField flag should determine this. But that's not how it's done right now.
 				// Selecting overlay record:
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fieldArr), 'pages_language_overlay', ((('pid=' . intval($page_id)) . '
-								AND sys_language_uid=') . intval($lUid)) . $this->enableFields('pages_language_overlay'), '', '', '1');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', $fieldArr), 'pages_language_overlay', 'pid=' . intval($page_id) . '
+								AND sys_language_uid=' . intval($lUid) . $this->enableFields('pages_language_overlay'), '', '', '1');
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				$this->versionOL('pages_language_overlay', $row);
@@ -361,7 +361,7 @@ class PageRepository {
 			}
 		}
 		if ($row['uid'] > 0 && $row['pid'] > 0) {
-			if (($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField']) && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
+			if ($GLOBALS['TCA'][$table] && $GLOBALS['TCA'][$table]['ctrl']['languageField'] && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) {
 				if (!$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable']) {
 					// Will not be able to work with other tables (Just didn't implement it yet; Requires a scan
 					// over all tables [ctrl] part for first FIND the table that carries localization information for
@@ -372,7 +372,7 @@ class PageRepository {
 						// Must be default language or [All], otherwise no overlaying:
 						if ($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] <= 0) {
 							// Select overlay record:
-							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, ((((((((('pid=' . intval($row['pid'])) . ' AND ') . $GLOBALS['TCA'][$table]['ctrl']['languageField']) . '=') . intval($sys_language_content)) . ' AND ') . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']) . '=') . intval($row['uid'])) . $this->enableFields($table), '', '', '1');
+							$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'pid=' . intval($row['pid']) . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . intval($sys_language_content) . ' AND ' . $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] . '=' . intval($row['uid']) . $this->enableFields($table), '', '', '1');
 							$olrow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 							$GLOBALS['TYPO3_DB']->sql_free_result($res);
 							$this->versionOL($table, $olrow);
@@ -385,7 +385,7 @@ class PageRepository {
 									$row['_ORIG_pid'] = $olrow['_ORIG_pid'];
 								}
 								foreach ($row as $fN => $fV) {
-									if (($fN != 'uid' && $fN != 'pid') && isset($olrow[$fN])) {
+									if ($fN != 'uid' && $fN != 'pid' && isset($olrow[$fN])) {
 										if ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$fN] != 'exclude' && ($GLOBALS['TSFE']->TCAcachedExtras[$table]['l10n_mode'][$fN] != 'mergeIfNotBlank' || strcmp(trim($olrow[$fN]), ''))) {
 											$row[$fN] = $olrow[$fN];
 										}
@@ -443,7 +443,7 @@ class PageRepository {
 	 */
 	public function getMenu($uid, $fields = '*', $sortField = 'sorting', $addWhere = '', $checkShortcuts = TRUE) {
 		$output = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'pages', (((('pid=' . intval($uid)) . $this->where_hid_del) . $this->where_groupAccess) . ' ') . $addWhere, '', $sortField);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, 'pages', 'pid=' . intval($uid) . $this->where_hid_del . $this->where_groupAccess . ' ' . $addWhere, '', $sortField);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$this->versionOL('pages', $row, TRUE);
 			if (is_array($row)) {
@@ -463,7 +463,7 @@ class PageRepository {
 					}
 				}
 				// If shortcut, look up if the target exists and is currently visible
-				if (($row['doktype'] == self::DOKTYPE_SHORTCUT && ($row['shortcut'] || $row['shortcut_mode'])) && $checkShortcuts) {
+				if ($row['doktype'] == self::DOKTYPE_SHORTCUT && ($row['shortcut'] || $row['shortcut_mode']) && $checkShortcuts) {
 					if ($row['shortcut_mode'] == self::SHORTCUT_MODE_NONE) {
 						// No shortcut_mode set, so target is directly set in $row['shortcut']
 						$searchField = 'uid';
@@ -478,7 +478,7 @@ class PageRepository {
 						$searchField = 'uid';
 						$searchUid = $row['pid'];
 					}
-					$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'pages', ((((($searchField . '=') . $searchUid) . $this->where_hid_del) . $this->where_groupAccess) . ' ') . $addWhere);
+					$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'pages', $searchField . '=' . $searchUid . $this->where_hid_del . $this->where_groupAccess . ' ' . $addWhere);
 					if (!$count) {
 						unset($row);
 					}
@@ -515,9 +515,9 @@ class PageRepository {
 		// Appending to domain string
 		$domain .= $path;
 		$domain = preg_replace('/\\/*$/', '', $domain);
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pages.uid,sys_domain.redirectTo,sys_domain.redirectHttpStatusCode,sys_domain.prepend_params', 'pages,sys_domain', ((((('pages.uid=sys_domain.pid
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pages.uid,sys_domain.redirectTo,sys_domain.redirectHttpStatusCode,sys_domain.prepend_params', 'pages,sys_domain', 'pages.uid=sys_domain.pid
 						AND sys_domain.hidden=0
-						AND (sys_domain.domainName=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($domain, 'sys_domain')) . ' OR sys_domain.domainName=') . $GLOBALS['TYPO3_DB']->fullQuoteStr(($domain . '/'), 'sys_domain')) . ') ') . $this->where_hid_del) . $this->where_groupAccess, '', '', 1);
+						AND (sys_domain.domainName=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($domain, 'sys_domain') . ' OR sys_domain.domainName=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(($domain . '/'), 'sys_domain') . ') ' . $this->where_hid_del . $this->where_groupAccess, '', '', 1);
 		$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
 		if ($row) {
@@ -636,7 +636,7 @@ class PageRepository {
 			}
 			// Get pageRec if not supplied:
 			if (!is_array($pageRec)) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', ('uid=' . intval($pageId)) . ' AND pages.deleted=0 AND pages.doktype<>255');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', 'uid=' . intval($pageId) . ' AND pages.deleted=0 AND pages.doktype<>255');
 				$pageRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				// Only look for version overlay if page record is not supplied; This assumes that the input record is overlaid with preview version, if any!
@@ -648,9 +648,9 @@ class PageRepository {
 			}
 			// Look for mount pid value plus other required circumstances:
 			$mount_pid = intval($pageRec['mount_pid']);
-			if (((is_array($pageRec) && $pageRec['doktype'] == self::DOKTYPE_MOUNTPOINT) && $mount_pid > 0) && !in_array($mount_pid, $prevMountPids)) {
+			if (is_array($pageRec) && $pageRec['doktype'] == self::DOKTYPE_MOUNTPOINT && $mount_pid > 0 && !in_array($mount_pid, $prevMountPids)) {
 				// Get the mount point record (to verify its general existence):
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', ('uid=' . $mount_pid) . ' AND pages.deleted=0 AND pages.doktype<>255');
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,doktype,mount_pid,mount_pid_ol,t3ver_state', 'pages', 'uid=' . $mount_pid . ' AND pages.deleted=0 AND pages.doktype<>255');
 				$mountRec = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				$this->versionOL('pages', $mountRec);
@@ -662,7 +662,7 @@ class PageRepository {
 					$result = $recursiveMountPid ? $recursiveMountPid : array(
 						'mount_pid' => $mount_pid,
 						'overlay' => $pageRec['mount_pid_ol'],
-						'MPvar' => ($mount_pid . '-') . $firstPageUid,
+						'MPvar' => $mount_pid . '-' . $firstPageUid,
 						'mount_point_rec' => $pageRec,
 						'mount_pid_rec' => $mountRec
 					);
@@ -694,14 +694,14 @@ class PageRepository {
 	public function checkRecord($table, $uid, $checkPage = 0) {
 		$uid = intval($uid);
 		if (is_array($GLOBALS['TCA'][$table]) && $uid > 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, ('uid = ' . $uid) . $this->enableFields($table));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $table, 'uid = ' . $uid . $this->enableFields($table));
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($row) {
 				$this->versionOL($table, $row);
 				if (is_array($row)) {
 					if ($checkPage) {
-						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', ('uid=' . intval($row['pid'])) . $this->enableFields('pages'));
+						$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid', 'pages', 'uid=' . intval($row['pid']) . $this->enableFields('pages'));
 						$numRows = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 						$GLOBALS['TYPO3_DB']->sql_free_result($res);
 						if ($numRows > 0) {
@@ -732,7 +732,7 @@ class PageRepository {
 		$uid = intval($uid);
 		// Excluding pages here so we can ask the function BEFORE TCA gets initialized. Support for this is followed up in deleteClause()...
 		if ((is_array($GLOBALS['TCA'][$table]) || $table == 'pages') && $uid > 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, ('uid = ' . $uid) . $this->deleteClause($table));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($fields, $table, 'uid = ' . $uid . $this->deleteClause($table));
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			if ($row) {
@@ -761,7 +761,7 @@ class PageRepository {
 	 */
 	public function getRecordsByField($theTable, $theField, $theValue, $whereClause = '', $groupBy = '', $orderBy = '', $limit = '') {
 		if (is_array($GLOBALS['TCA'][$theTable])) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $theTable, (((($theField . '=') . $GLOBALS['TYPO3_DB']->fullQuoteStr($theValue, $theTable)) . $this->deleteClause($theTable)) . ' ') . $whereClause, $groupBy, $orderBy, $limit);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $theTable, $theField . '=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($theValue, $theTable) . $this->deleteClause($theTable) . ' ' . $whereClause, $groupBy, $orderBy, $limit);
 			$rows = array();
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				if (is_array($row)) {
@@ -834,7 +834,7 @@ class PageRepository {
 		if (!strcmp($table, 'pages')) {
 			return ' AND pages.deleted=0';
 		} else {
-			return $GLOBALS['TCA'][$table]['ctrl']['delete'] ? (((' AND ' . $table) . '.') . $GLOBALS['TCA'][$table]['ctrl']['delete']) . '=0' : '';
+			return $GLOBALS['TCA'][$table]['ctrl']['delete'] ? ' AND ' . $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['delete'] . '=0' : '';
 		}
 	}
 
@@ -864,31 +864,31 @@ class PageRepository {
 		if (is_array($ctrl)) {
 			// Delete field check:
 			if ($ctrl['delete']) {
-				$query .= (((' AND ' . $table) . '.') . $ctrl['delete']) . '=0';
+				$query .= ' AND ' . $table . '.' . $ctrl['delete'] . '=0';
 			}
 			// Filter out new place-holder records in case we are NOT in a versioning preview (that means we are online!)
 			if ($ctrl['versioningWS'] && !$this->versioningPreview) {
 				// Shadow state for new items MUST be ignored!
-				$query .= (((' AND ' . $table) . '.t3ver_state<=0 AND ') . $table) . '.pid<>-1';
+				$query .= ' AND ' . $table . '.t3ver_state<=0 AND ' . $table . '.pid<>-1';
 			}
 			// Enable fields:
 			if (is_array($ctrl['enablecolumns'])) {
 				// In case of versioning-preview, enableFields are ignored (checked in versionOL())
-				if ((!$this->versioningPreview || !$ctrl['versioningWS']) || $noVersionPreview) {
-					if (($ctrl['enablecolumns']['disabled'] && !$show_hidden) && !$ignore_array['disabled']) {
-						$field = ($table . '.') . $ctrl['enablecolumns']['disabled'];
-						$query .= (' AND ' . $field) . '=0';
+				if (!$this->versioningPreview || !$ctrl['versioningWS'] || $noVersionPreview) {
+					if ($ctrl['enablecolumns']['disabled'] && !$show_hidden && !$ignore_array['disabled']) {
+						$field = $table . '.' . $ctrl['enablecolumns']['disabled'];
+						$query .= ' AND ' . $field . '=0';
 					}
 					if ($ctrl['enablecolumns']['starttime'] && !$ignore_array['starttime']) {
-						$field = ($table . '.') . $ctrl['enablecolumns']['starttime'];
-						$query .= ((' AND ' . $field) . '<=') . $GLOBALS['SIM_ACCESS_TIME'];
+						$field = $table . '.' . $ctrl['enablecolumns']['starttime'];
+						$query .= ' AND ' . $field . '<=' . $GLOBALS['SIM_ACCESS_TIME'];
 					}
 					if ($ctrl['enablecolumns']['endtime'] && !$ignore_array['endtime']) {
-						$field = ($table . '.') . $ctrl['enablecolumns']['endtime'];
-						$query .= (((((' AND (' . $field) . '=0 OR ') . $field) . '>') . $GLOBALS['SIM_ACCESS_TIME']) . ')';
+						$field = $table . '.' . $ctrl['enablecolumns']['endtime'];
+						$query .= ' AND (' . $field . '=0 OR ' . $field . '>' . $GLOBALS['SIM_ACCESS_TIME'] . ')';
 					}
 					if ($ctrl['enablecolumns']['fe_group'] && !$ignore_array['fe_group']) {
-						$field = ($table . '.') . $ctrl['enablecolumns']['fe_group'];
+						$field = $table . '.' . $ctrl['enablecolumns']['fe_group'];
 						$query .= $this->getMultipleGroupsWhereClause($field, $table);
 					}
 					// Call hook functions for additional enableColumns
@@ -907,7 +907,7 @@ class PageRepository {
 				}
 			}
 		} else {
-			throw new \InvalidArgumentException((('There is no entry in the $TCA array for the table "' . $table) . '". This means that the function enableFields() is ') . 'called with an invalid table name as argument.', 1283790586);
+			throw new \InvalidArgumentException('There is no entry in the $TCA array for the table "' . $table . '". This means that the function enableFields() is ' . 'called with an invalid table name as argument.', 1283790586);
 		}
 		return $query;
 	}
@@ -933,7 +933,7 @@ class PageRepository {
 		foreach ($memberGroups as $value) {
 			$orChecks[] = $GLOBALS['TYPO3_DB']->listQuery($field, $value, $table);
 		}
-		return (' AND (' . implode(' OR ', $orChecks)) . ')';
+		return ' AND (' . implode(' OR ', $orChecks) . ')';
 	}
 
 	/*********************************
@@ -955,7 +955,7 @@ class PageRepository {
 	 * @todo Define visibility
 	 */
 	public function fixVersioningPid($table, &$rr) {
-		if ((($this->versioningPreview && is_array($rr)) && $rr['pid'] == -1) && ($table == 'pages' || $GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
+		if ($this->versioningPreview && is_array($rr) && $rr['pid'] == -1 && ($table == 'pages' || $GLOBALS['TCA'][$table]['ctrl']['versioningWS'])) {
 			// Have to hardcode it for "pages" table since TCA is not loaded at this moment!
 			// Check values for t3ver_oid and t3ver_wsid:
 			if (isset($rr['t3ver_oid']) && isset($rr['t3ver_wsid'])) {
@@ -1068,7 +1068,7 @@ class PageRepository {
 			}
 			// Find pointed-to record.
 			if ($moveID) {
-				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', array_keys($row)), $table, ('uid=' . intval($moveID)) . $this->enableFields($table));
+				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(implode(',', array_keys($row)), $table, 'uid=' . intval($moveID) . $this->enableFields($table));
 				$origRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
 				if ($origRow) {
@@ -1095,10 +1095,10 @@ class PageRepository {
 			$workspace = (int) $this->versioningWorkspaceId;
 			if (($table == 'pages' || (int) $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] >= 2) && $workspace !== 0) {
 				// Select workspace version of record:
-				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, $table, ((('pid<>-1 AND
+				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, $table, 'pid<>-1 AND
 						t3ver_state=3 AND
-						t3ver_move_id=' . intval($uid)) . ' AND
-						t3ver_wsid=') . intval($workspace)) . $this->deleteClause($table));
+						t3ver_move_id=' . intval($uid) . ' AND
+						t3ver_wsid=' . intval($workspace) . $this->deleteClause($table));
 				if (is_array($row)) {
 					return $row;
 				}
@@ -1129,14 +1129,14 @@ class PageRepository {
 				$enFields = $this->enableFields($table, -1, array(), TRUE);
 			}
 			// Select workspace version of record, only testing for deleted.
-			$newrow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, $table, ((('pid=-1 AND
-					t3ver_oid=' . intval($uid)) . ' AND
-					t3ver_wsid=') . intval($workspace)) . $this->deleteClause($table));
+			$newrow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow($fields, $table, 'pid=-1 AND
+					t3ver_oid=' . intval($uid) . ' AND
+					t3ver_wsid=' . intval($workspace) . $this->deleteClause($table));
 			// If version found, check if it could have been selected with enableFields on as well:
 			if (is_array($newrow)) {
-				if ($bypassEnableFieldsCheck || $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', $table, ((('pid=-1 AND
-						t3ver_oid=' . intval($uid)) . ' AND
-						t3ver_wsid=') . intval($workspace)) . $enFields)) {
+				if ($bypassEnableFieldsCheck || $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', $table, 'pid=-1 AND
+						t3ver_oid=' . intval($uid) . ' AND
+						t3ver_wsid=' . intval($workspace) . $enFields)) {
 					// Return offline version, tested for its enableFields.
 					return $newrow;
 				} else {
@@ -1145,7 +1145,7 @@ class PageRepository {
 				}
 			} else {
 				// OK, so no workspace version was found. Then check if online version can be selected with full enable fields and if so, return 1:
-				if ($bypassEnableFieldsCheck || $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', $table, ('uid=' . intval($uid)) . $enFields)) {
+				if ($bypassEnableFieldsCheck || $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid', $table, 'uid=' . intval($uid) . $enFields)) {
 					// Means search was done, but no version found.
 					return 1;
 				} else {
@@ -1174,7 +1174,7 @@ class PageRepository {
 		} else {
 			if ($wsid > 0) {
 				// No $GLOBALS['TCA'] yet!
-				$ws = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_workspace', ('uid=' . intval($wsid)) . ' AND deleted=0');
+				$ws = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_workspace', 'uid=' . intval($wsid) . ' AND deleted=0');
 				if (!is_array($ws)) {
 					return FALSE;
 				}

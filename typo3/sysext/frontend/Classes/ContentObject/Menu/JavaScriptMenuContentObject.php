@@ -34,14 +34,14 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 			$uniqueParam = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(microtime(), 5);
 			$this->JSVarName = 'eid' . $uniqueParam;
 			$this->JSMenuName = $this->mconf['menuName'] ? $this->mconf['menuName'] : 'JSmenu' . $uniqueParam;
-			$JScode = ((((('
- var ' . $this->JSMenuName) . ' = new JSmenu(') . $levels) . ', \'') . $this->JSMenuName) . 'Form\');';
+			$JScode = '
+ var ' . $this->JSMenuName . ' = new JSmenu(' . $levels . ', \'' . $this->JSMenuName . 'Form\');';
 			for ($a = 1; $a <= $levels; $a++) {
-				$JScode .= (('
- var ' . $this->JSVarName) . $a) . '=0;';
+				$JScode .= '
+ var ' . $this->JSVarName . $a . '=0;';
 			}
 			$JScode .= $this->generate_level($levels, 1, $this->id, $this->menuArr, $this->MP_array) . LF;
-			$GLOBALS['TSFE']->additionalHeaderData['JSMenuCode'] = ('<script type="text/javascript" src="' . $GLOBALS['TSFE']->absRefPrefix) . 't3lib/jsfunc.menu.js"></script>';
+			$GLOBALS['TSFE']->additionalHeaderData['JSMenuCode'] = '<script type="text/javascript" src="' . $GLOBALS['TSFE']->absRefPrefix . 't3lib/jsfunc.menu.js"></script>';
 			$GLOBALS['TSFE']->JSCode .= $JScode;
 			// Printing:
 			$allFormCode = '';
@@ -54,7 +54,7 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 					$lenghtStr .= '_';
 				}
 				$height = $levelConf['elements'] ? $levelConf['elements'] : 5;
-				$formCode .= ((((((('<select name="selector' . $a) . '" onchange="') . $this->JSMenuName) . '.act(') . $a) . ');"') . ($levelConf['additionalParams'] ? ' ' . $levelConf['additionalParams'] : '')) . '>';
+				$formCode .= '<select name="selector' . $a . '" onchange="' . $this->JSMenuName . '.act(' . $a . ');"' . ($levelConf['additionalParams'] ? ' ' . $levelConf['additionalParams'] : '') . '>';
 				for ($b = 0; $b < $height; $b++) {
 					$formCode .= '<option value="0">';
 					if ($b == 0) {
@@ -66,8 +66,8 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 				$allFormCode .= $this->tmpl->wrap($formCode, $levelConf['wrap']);
 			}
 			$formCode = $this->tmpl->wrap($allFormCode, $this->mconf['wrap']);
-			$formCode = ((('<form action="" method="post" style="margin: 0 0 0 0;" name="' . $this->JSMenuName) . 'Form">') . $formCode) . '</form>';
-			$formCode .= ((('<script type="text/javascript"> /*<![CDATA[*/ ' . $this->JSMenuName) . '.writeOut(1,') . $this->JSMenuName) . '.openID,1); /*]]>*/ </script>';
+			$formCode = '<form action="" method="post" style="margin: 0 0 0 0;" name="' . $this->JSMenuName . 'Form">' . $formCode . '</form>';
+			$formCode .= '<script type="text/javascript"> /*<![CDATA[*/ ' . $this->JSMenuName . '.writeOut(1,' . $this->JSMenuName . '.openID,1); /*]]>*/ </script>';
 			return $this->tmpl->wrap($formCode, $this->mconf['wrapAfterTags']);
 		}
 	}
@@ -118,7 +118,7 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 			// If the spacer-function is not enabled, spacers will not enter the $menuArr
 			if ($this->mconf['SPC'] || !$spacer) {
 				// Page may not be 'not_in_menu' or 'Backend User Section' + not in banned uid's
-				if ((!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->doktypeExcludeList, $data['doktype']) && (!$data['nav_hide'] || $this->conf['includeNotInMenu'])) && !\TYPO3\CMS\Core\Utility\GeneralUtility::inArray($banUidArray, $uid)) {
+				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->doktypeExcludeList, $data['doktype']) && (!$data['nav_hide'] || $this->conf['includeNotInMenu']) && !\TYPO3\CMS\Core\Utility\GeneralUtility::inArray($banUidArray, $uid)) {
 					if ($count < $levels) {
 						$addLines = $this->generate_level($levels, $count + 1, $data['uid'], '', $MP_array_sub);
 					} else {
@@ -134,7 +134,7 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 						$url = $GLOBALS['TSFE']->baseUrlWrap($LD['totalURL']);
 						$target = $LD['target'];
 					}
-					$codeLines .= ((((((((((((((LF . $var) . $count) . '=') . $menuName) . '.add(') . $parent) . ',') . $prev) . ',0,') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($title, TRUE)) . ',') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($url, TRUE)) . ',') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($target, TRUE)) . ');';
+					$codeLines .= LF . $var . $count . '=' . $menuName . '.add(' . $parent . ',' . $prev . ',0,' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($title, TRUE) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($url, TRUE) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($target, TRUE) . ');';
 					// If the active one should be chosen...
 					$active = $levelConf['showActive'] && $this->isActive($data['uid'], $MP_var);
 					// If the first item should be shown
@@ -142,9 +142,9 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 					// do it...
 					if ($active || $first) {
 						if ($count == 1) {
-							$codeLines .= ((((LF . $menuName) . '.openID = ') . $var) . $count) . ';';
+							$codeLines .= LF . $menuName . '.openID = ' . $var . $count . ';';
 						} else {
-							$codeLines .= ((((((LF . $menuName) . '.entry[') . $parent) . '].openID = ') . $var) . $count) . ';';
+							$codeLines .= LF . $menuName . '.entry[' . $parent . '].openID = ' . $var . $count . ';';
 						}
 					}
 					// Add submenu...
@@ -158,7 +158,7 @@ class JavaScriptMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu
 			$levelConf['firstLabel'] = $this->mconf['firstLabelGeneral'];
 		}
 		if ($levelConf['firstLabel'] && $codeLines) {
-			$codeLines .= (((((LF . $menuName) . '.defTopTitle[') . $count) . '] = ') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($levelConf['firstLabel'], TRUE)) . ';';
+			$codeLines .= LF . $menuName . '.defTopTitle[' . $count . '] = ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($levelConf['firstLabel'], TRUE) . ';';
 		}
 		return $codeLines;
 	}

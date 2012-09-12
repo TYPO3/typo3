@@ -62,7 +62,7 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 			// initialisation
 			$caption = '';
 			$captionArray = array();
-			if ((!$conf['captionSplit'] && !$conf['imageTextSplit']) && isset($conf['caption.'])) {
+			if (!$conf['captionSplit'] && !$conf['imageTextSplit'] && isset($conf['caption.'])) {
 				$caption = $this->cObj->cObjGet($conf['caption.'], 'caption.');
 				// Global caption, no splitting
 				$caption = $this->cObj->stdWrap($caption, $conf['caption.']);
@@ -136,7 +136,7 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 			}
 			// If there is a max width and if colCount is greater than  column
 			if ($maxW && $colCount > 0) {
-				$maxW = ceil((($maxW - $colspacing * ($colCount - 1)) - (($colCount * $border) * $borderThickness) * 2) / $colCount);
+				$maxW = ceil(($maxW - $colspacing * ($colCount - 1) - $colCount * $border * $borderThickness * 2) / $colCount);
 			}
 			// Create the relation between rows
 			$colMaxW = array();
@@ -149,7 +149,7 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 				}
 				if ($rel_total) {
 					for ($a = 0; $a < $colCount; $a++) {
-						$colMaxW[$a] = round((($maxW * $colCount) / $rel_total) * $rel_parts[$a]);
+						$colMaxW[$a] = round($maxW * $colCount / $rel_total * $rel_parts[$a]);
 					}
 					// The difference in size between the largest and smalles must be within a factor of ten.
 					if (min($colMaxW) <= 0 || max($rel_parts) / min($rel_parts) > 10) {
@@ -274,7 +274,7 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 			}
 			// Calculating the tableWidth:
 			// TableWidth problems: It creates problems if the pictures are NOT as wide as the tableWidth.
-			$tableWidth = (max($imageRowsFinalWidths) + $colspacing * ($colCount - 1)) + (($colCount * $border) * $borderThickness) * 2;
+			$tableWidth = max($imageRowsFinalWidths) + $colspacing * ($colCount - 1) + $colCount * $border * $borderThickness * 2;
 			// Make table for pictures
 			$index = ($imgIndex = $imgStart);
 			$noRows = isset($conf['noRows.']) ? $this->cObj->stdWrap($conf['noRows'], $conf['noRows.']) : $conf['noRows'];
@@ -312,14 +312,14 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 				$tablecode .= '<tr>';
 				if ($txtMarg && $align == 'right') {
 					// If right aligned, the textborder is added on the right side
-					$tablecode .= ((((((('<td rowspan="' . ($rowspan + 1)) . '" valign="top"><img src="') . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="') . $txtMarg) . '" height="1" alt="" title="" />') . ($editIconsHTML ? '<br />' . $editIconsHTML : '')) . '</td>';
+					$tablecode .= '<td rowspan="' . ($rowspan + 1) . '" valign="top"><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $txtMarg . '" height="1" alt="" title="" />' . ($editIconsHTML ? '<br />' . $editIconsHTML : '') . '</td>';
 					$editIconsHTML = '';
 					$flag = 1;
 				}
-				$tablecode .= ((((('<td colspan="' . $colspan) . '"><img src="') . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="') . $tableWidth) . '" height="1" alt="" /></td>';
+				$tablecode .= '<td colspan="' . $colspan . '"><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $tableWidth . '" height="1" alt="" /></td>';
 				if ($txtMarg && $align == 'left') {
 					// If left aligned, the textborder is added on the left side
-					$tablecode .= ((((((('<td rowspan="' . ($rowspan + 1)) . '" valign="top"><img src="') . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="') . $txtMarg) . '" height="1" alt="" title="" />') . ($editIconsHTML ? '<br />' . $editIconsHTML : '')) . '</td>';
+					$tablecode .= '<td rowspan="' . ($rowspan + 1) . '" valign="top"><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $txtMarg . '" height="1" alt="" title="" />' . ($editIconsHTML ? '<br />' . $editIconsHTML : '') . '</td>';
 					$editIconsHTML = '';
 					$flag = 1;
 				}
@@ -333,7 +333,7 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 			for ($c = 0; $c < $rowCount; $c++) {
 				// If this is NOT the first time in the loop AND if space is required, a row-spacer is added. In case of "noRows" rowspacing is done further down.
 				if ($c && $rowspacing) {
-					$tablecode .= ((((((('<tr><td colspan="' . $colspan) . '"><img src="') . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="1" height="') . $rowspacing) . '"') . $this->cObj->getBorderAttr(' border="0"')) . ' alt="" title="" /></td></tr>';
+					$tablecode .= '<tr><td colspan="' . $colspan . '"><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $rowspacing . '"' . $this->cObj->getBorderAttr(' border="0"') . ' alt="" title="" /></td></tr>';
 				}
 				// starting row
 				$tablecode .= '<tr>';
@@ -342,10 +342,10 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 					// If this is NOT the first iteration AND if column space is required. In case of "noCols", the space is done without a separate cell.
 					if ($b && $colspacing) {
 						if (!$noCols) {
-							$tablecode .= ((((('<td><img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="') . $colspacing) . '" height="1"') . $this->cObj->getBorderAttr(' border="0"')) . ' alt="" title="" /></td>';
+							$tablecode .= '<td><img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . $colspacing . '" height="1"' . $this->cObj->getBorderAttr(' border="0"') . ' alt="" title="" /></td>';
 						} else {
-							$colSpacer = ((((((((('<img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="') . ($border ? $colspacing - 6 : $colspacing)) . '" height="') . ($imageRowsMaxHeights[$c] + ($border ? $borderThickness * 2 : 0))) . '"') . $this->cObj->getBorderAttr(' border="0"')) . ' align="') . ($border ? 'left' : 'top')) . '" alt="" title="" />';
-							$colSpacer = ('<td valign="top">' . $colSpacer) . '</td>';
+							$colSpacer = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="' . ($border ? $colspacing - 6 : $colspacing) . '" height="' . ($imageRowsMaxHeights[$c] + ($border ? $borderThickness * 2 : 0)) . '"' . $this->cObj->getBorderAttr(' border="0"') . ' align="' . ($border ? 'left' : 'top') . '" alt="" title="" />';
+							$colSpacer = '<td valign="top">' . $colSpacer . '</td>';
 							// added 160301, needed for the new "noCols"-table...
 							$tablecode .= $colSpacer;
 						}
@@ -354,7 +354,7 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 						// starting the cell. If "noCols" this cell will hold all images in the row, otherwise only a single image.
 						$tablecode .= '<td valign="top">';
 						if ($noCols) {
-							$tablecode .= ('<table width="' . $imageRowsFinalWidths[$c]) . '" border="0" cellpadding="0" cellspacing="0"><tr>';
+							$tablecode .= '<table width="' . $imageRowsFinalWidths[$c] . '" border="0" cellpadding="0" cellspacing="0"><tr>';
 						}
 					}
 					// Looping through the rows IF "noRows" is set. "noRows"  means that the rows of images is not rendered
@@ -367,8 +367,8 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 						$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgIndex;
 						if ($imgsTag[$imgIndex]) {
 							// Puts distance between the images IF "noRows" is set and this is the first iteration of the loop
-							if (($rowspacing && $noRows) && $a) {
-								$tablecode .= ((('<img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif" width="1" height="') . $rowspacing) . '" alt="" title="" /><br />';
+							if ($rowspacing && $noRows && $a) {
+								$tablecode .= '<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif" width="1" height="' . $rowspacing . '" alt="" title="" /><br />';
 							}
 							if ($legacyCaptionSplit) {
 								$thisCaption = $captionArray[$imgIndex];
@@ -380,14 +380,14 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 							// this is necessary if the tablerows are supposed to space properly together! "noRows" is excluded because else the images "layer" together.
 							$Talign = !trim($thisCaption) && !$noRows ? ' align="left"' : '';
 							if ($border) {
-								$imageHTML = ((((((('<table border="0" cellpadding="' . $borderThickness) . '" cellspacing="0" bgcolor="') . $borderColor) . '"') . $Talign) . '><tr><td>') . $imageHTML) . '</td></tr></table>';
+								$imageHTML = '<table border="0" cellpadding="' . $borderThickness . '" cellspacing="0" bgcolor="' . $borderColor . '"' . $Talign . '><tr><td>' . $imageHTML . '</td></tr></table>';
 							}
 							$imageHTML .= $editIconsHTML;
 							$editIconsHTML = '';
 							// Adds caption.
 							$imageHTML .= $thisCaption;
 							if ($noCols) {
-								$imageHTML = ('<td valign="top">' . $imageHTML) . '</td>';
+								$imageHTML = '<td valign="top">' . $imageHTML . '</td>';
 							}
 							// If noCols, put in table cell.
 							$tablecode .= $imageHTML;
@@ -422,24 +422,24 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 						// Most of all: left
 						$table_align = 'margin-left: 0px; margin-right: auto';
 					}
-					$table_align = ('style="' . $table_align) . '"';
+					$table_align = 'style="' . $table_align . '"';
 					break;
 				case '16':
 					// in text
-					$table_align = ('align="' . $align) . '"';
+					$table_align = 'align="' . $align . '"';
 					break;
 				default:
 					$table_align = '';
 				}
 				// Table-tag is inserted
-				$tablecode = (((('<table' . ($tableWidth ? (' width="' . $tableWidth) . '"' : '')) . ' border="0" cellspacing="0" cellpadding="0" ') . $table_align) . ' class="imgtext-table">') . $tablecode;
+				$tablecode = '<table' . ($tableWidth ? ' width="' . $tableWidth . '"' : '') . ' border="0" cellspacing="0" cellpadding="0" ' . $table_align . ' class="imgtext-table">' . $tablecode;
 				// If this value is not long since reset.
 				if ($editIconsHTML) {
-					$tablecode .= ((('<tr><td colspan="' . $colspan) . '">') . $editIconsHTML) . '</td></tr>';
+					$tablecode .= '<tr><td colspan="' . $colspan . '">' . $editIconsHTML . '</td></tr>';
 					$editIconsHTML = '';
 				}
 				if ($cap) {
-					$tablecode .= ((((('<tr><td colspan="' . $colspan) . '" align="') . $caption_align) . '">') . $caption) . '</td></tr>';
+					$tablecode .= '<tr><td colspan="' . $colspan . '" align="' . $caption_align . '">' . $caption . '</td></tr>';
 				}
 				$tablecode .= '</table>';
 				if (isset($conf['tableStdWrap.'])) {
@@ -450,11 +450,11 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 			switch ($contentPosition) {
 			case '0':
 				// above
-				$output = (((('<div style="text-align:' . $align) . ';">') . $tablecode) . '</div>') . $this->cObj->wrapSpace($content, ($spaceBelowAbove . '|0'));
+				$output = '<div style="text-align:' . $align . ';">' . $tablecode . '</div>' . $this->cObj->wrapSpace($content, ($spaceBelowAbove . '|0'));
 				break;
 			case '8':
 				// below
-				$output = (((($this->cObj->wrapSpace($content, ('0|' . $spaceBelowAbove)) . '<div style="text-align:') . $align) . ';">') . $tablecode) . '</div>';
+				$output = $this->cObj->wrapSpace($content, ('0|' . $spaceBelowAbove)) . '<div style="text-align:' . $align . ';">' . $tablecode . '</div>';
 				break;
 			case '16':
 				// in text
@@ -465,9 +465,9 @@ class ImageTextContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractC
 				$theResult = '';
 				$theResult .= '<table border="0" cellspacing="0" cellpadding="0" class="imgtext-nowrap"><tr>';
 				if ($align == 'right') {
-					$theResult .= ((('<td valign="top">' . $content) . '</td><td valign="top">') . $tablecode) . '</td>';
+					$theResult .= '<td valign="top">' . $content . '</td><td valign="top">' . $tablecode . '</td>';
 				} else {
-					$theResult .= ((('<td valign="top">' . $tablecode) . '</td><td valign="top">') . $content) . '</td>';
+					$theResult .= '<td valign="top">' . $tablecode . '</td><td valign="top">' . $content . '</td>';
 				}
 				$theResult .= '</tr></table>';
 				$output = $theResult;

@@ -56,7 +56,7 @@ class ShockwaveFlashContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abst
 		$player = isset($typeConf['player.']) ? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.']) : $typeConf['player'];
 		$installUrl = isset($conf['installUrl.']) ? $this->cObj->stdWrap($conf['installUrl'], $conf['installUrl.']) : $conf['installUrl'];
 		if (!$installUrl) {
-			$installUrl = ($prefix . TYPO3_mainDir) . 'contrib/flashmedia/swfobject/expressInstall.swf';
+			$installUrl = $prefix . TYPO3_mainDir . 'contrib/flashmedia/swfobject/expressInstall.swf';
 		}
 		$filename = isset($conf['file.']) ? $this->cObj->stdWrap($conf['file'], $conf['file.']) : $conf['file'];
 		$forcePlayer = isset($conf['forcePlayer.']) ? $this->cObj->stdWrap($conf['forcePlayer'], $conf['forcePlayer.']) : $conf['forcePlayer'];
@@ -92,15 +92,15 @@ class ShockwaveFlashContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abst
 		if (is_array($conf['flashvars.'])) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['flashvars.'], $typeConf['mapping.']['flashvars.']);
 		}
-		$flashvars = ('var flashvars = ' . (count($conf['flashvars.']) ? json_encode($conf['flashvars.']) : '{}')) . ';';
+		$flashvars = 'var flashvars = ' . (count($conf['flashvars.']) ? json_encode($conf['flashvars.']) : '{}') . ';';
 		if (is_array($conf['params.'])) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['params.'], $typeConf['mapping.']['params.']);
 		}
-		$params = ('var params = ' . (count($conf['params.']) ? json_encode($conf['params.']) : '{}')) . ';';
+		$params = 'var params = ' . (count($conf['params.']) ? json_encode($conf['params.']) : '{}') . ';';
 		if (is_array($conf['attributes.'])) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
 		}
-		$attributes = ('var attributes = ' . (count($conf['attributes.']) ? json_encode($conf['attributes.']) : '{}')) . ';';
+		$attributes = 'var attributes = ' . (count($conf['attributes.']) ? json_encode($conf['attributes.']) : '{}') . ';';
 		$flashVersion = isset($conf['flashVersion.']) ? $this->cObj->stdWrap($conf['flashVersion'], $conf['flashVersion.']) : $conf['flashVersion'];
 		if (!$flashVersion) {
 			$flashVersion = '9';
@@ -110,7 +110,7 @@ class ShockwaveFlashContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abst
 		$alternativeContent = isset($conf['alternativeContent.']) ? $this->cObj->stdWrap($conf['alternativeContent'], $conf['alternativeContent.']) : $conf['alternativeContent'];
 		$layout = isset($conf['layout.']) ? $this->cObj->stdWrap($conf['layout'], $conf['layout.']) : $conf['layout'];
 		$content = str_replace('###ID###', $replaceElementIdString, $layout);
-		$content = str_replace('###SWFOBJECT###', ((('<div id="' . $replaceElementIdString) . '">') . $alternativeContent) . '</div>', $content);
+		$content = str_replace('###SWFOBJECT###', '<div id="' . $replaceElementIdString . '">' . $alternativeContent . '</div>', $content);
 		$width = isset($conf['width.']) ? $this->cObj->stdWrap($conf['width'], $conf['width.']) : $conf['width'];
 		if (!$width) {
 			$width = $conf[$type . '.']['defaultWidth'];
@@ -119,9 +119,9 @@ class ShockwaveFlashContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abst
 		if (!$height) {
 			$height = $conf[$type . '.']['defaultHeight'];
 		}
-		$embed = ((((((((((((('swfobject.embedSWF("' . $conf['player']) . '", "') . $replaceElementIdString) . '", "') . $width) . '", "') . $height) . '",
-		 		"') . $flashVersion) . '", "') . $installUrl) . '", ') . $conf['embedParams']) . ');';
-		$script = (($flashvars . $params) . $attributes) . $embed;
+		$embed = 'swfobject.embedSWF("' . $conf['player'] . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '",
+		 		"' . $flashVersion . '", "' . $installUrl . '", ' . $conf['embedParams'] . ');';
+		$script = $flashvars . $params . $attributes . $embed;
 		$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode($replaceElementIdString, $script);
 		if (isset($conf['stdWrap.'])) {
 			$content = $this->cObj->stdWrap($content, $conf['stdWrap.']);

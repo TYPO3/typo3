@@ -55,26 +55,26 @@ class HorizontalRulerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abs
 			$tableWidth = '99%';
 		}
 		$theValue = '';
-		$theValue .= ('<table border="0" cellspacing="0" cellpadding="0"
-			width="' . htmlspecialchars($tableWidth)) . '"
+		$theValue .= '<table border="0" cellspacing="0" cellpadding="0"
+			width="' . htmlspecialchars($tableWidth) . '"
 			summary=""><tr>';
 		if ($spaceBefore) {
-			$theValue .= ((('<td width="1">
-				<img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif"
-				width="') . $spaceBefore) . '"
+			$theValue .= '<td width="1">
+				<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif"
+				width="' . $spaceBefore . '"
 				height="1" alt="" title="" />
 			</td>';
 		}
-		$theValue .= ((((('<td bgcolor="' . $lineColor) . '">
-			<img src="') . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif"
+		$theValue .= '<td bgcolor="' . $lineColor . '">
+			<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif"
 			width="1"
-			height="') . $lineThickness) . '"
+			height="' . $lineThickness . '"
 			alt="" title="" />
 		</td>';
 		if ($spaceAfter) {
-			$theValue .= ((('<td width="1">
-				<img src="' . $GLOBALS['TSFE']->absRefPrefix) . 'clear.gif"
-				width="') . $spaceAfter) . '"
+			$theValue .= '<td width="1">
+				<img src="' . $GLOBALS['TSFE']->absRefPrefix . 'clear.gif"
+				width="' . $spaceAfter . '"
 				height="1" alt="" title="" />
 			</td>';
 		}

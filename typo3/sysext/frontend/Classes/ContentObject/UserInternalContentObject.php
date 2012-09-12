@@ -44,7 +44,7 @@ class UserInternalContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 	public function render($conf = array()) {
 		$this->cObj->setUserObjectType(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::OBJECTTYPE_USER_INT);
 		$substKey = 'INT_SCRIPT.' . $GLOBALS['TSFE']->uniqueHash();
-		$content = ('<!--' . $substKey) . '-->';
+		$content = '<!--' . $substKey . '-->';
 		$includeLibs = isset($conf['includeLibs.']) ? $this->cObj->stdWrap($conf['includeLibs'], $conf['includeLibs.']) : $conf['includeLibs'];
 		$GLOBALS['TSFE']->config['INTincScript'][$substKey] = array(
 			'file' => $includeLibs,

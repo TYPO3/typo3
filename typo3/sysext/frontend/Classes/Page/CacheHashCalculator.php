@@ -120,7 +120,7 @@ class CacheHashCalculator implements \TYPO3\CMS\Core\SingletonInterface {
 		$parameters = $this->splitQueryStringToArray($queryString);
 		$relevantParameters = array();
 		foreach ($parameters as $parameterName => $parameterValue) {
-			if (($this->isAdminPanelParameter($parameterName) || $this->isExcludedParameter($parameterName)) || $this->isCoreParameter($parameterName)) {
+			if ($this->isAdminPanelParameter($parameterName) || $this->isExcludedParameter($parameterName) || $this->isCoreParameter($parameterName)) {
 				continue;
 			}
 			if ($this->hasCachedParametersWhiteList() && !$this->isInCachedParametersWhiteList($parameterName)) {

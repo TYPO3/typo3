@@ -93,7 +93,7 @@ class PageGenerator {
 		$GLOBALS['TSFE']->absRefPrefix = $GLOBALS['TSFE']->config['config']['absRefPrefix'] ? trim($GLOBALS['TSFE']->config['config']['absRefPrefix']) : '';
 		if ($GLOBALS['TSFE']->type && $GLOBALS['TSFE']->config['config']['frameReloadIfNotInFrameset']) {
 			$tdlLD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page, '_top', $GLOBALS['TSFE']->no_cache, '');
-			$GLOBALS['TSFE']->JSCode = ((('if(!parent.' . trim($GLOBALS['TSFE']->sPre)) . ' && !parent.view_frame) top.location.href="') . $GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL'])) . '"';
+			$GLOBALS['TSFE']->JSCode = 'if(!parent.' . trim($GLOBALS['TSFE']->sPre) . ' && !parent.view_frame) top.location.href="' . $GLOBALS['TSFE']->baseUrlWrap($tdlLD['totalURL']) . '"';
 		}
 		$GLOBALS['TSFE']->compensateFieldWidth = '' . $GLOBALS['TSFE']->config['config']['compensateFieldWidth'];
 		$GLOBALS['TSFE']->lockFilePath = '' . $GLOBALS['TSFE']->config['config']['lockFilePath'];
@@ -113,7 +113,7 @@ class PageGenerator {
 			$space = !empty($GLOBALS['TSFE']->config['config']['sword_standAlone']) ? '[[:space:]]' : '';
 			foreach ($GLOBALS['TSFE']->sWordList as $val) {
 				if (strlen(trim($val)) > 0) {
-					$GLOBALS['TSFE']->sWordRegEx .= (($space . quotemeta($val)) . $space) . '|';
+					$GLOBALS['TSFE']->sWordRegEx .= $space . quotemeta($val) . $space . '|';
 				}
 			}
 			$GLOBALS['TSFE']->sWordRegEx = preg_replace('/\\|$/', '', $GLOBALS['TSFE']->sWordRegEx);
@@ -210,15 +210,15 @@ class PageGenerator {
 		$setBody = array();
 		foreach ($GLOBALS['TSFE']->JSeventFuncCalls as $event => $handlers) {
 			if (count($handlers)) {
-				$functions[] = ((('	function T3_' . $event) . 'Wrapper(e) {	') . implode('   ', $handlers)) . '	}';
-				$setEvents[] = ((('	document.' . $event) . '=T3_') . $event) . 'Wrapper;';
+				$functions[] = '	function T3_' . $event . 'Wrapper(e) {	' . implode('   ', $handlers) . '	}';
+				$setEvents[] = '	document.' . $event . '=T3_' . $event . 'Wrapper;';
 				if ($event == 'onload') {
 					// Dubiuos double setting breaks on some browser - do we need it?
 					$setBody[] = 'onload="T3_onloadWrapper();"';
 				}
 			}
 		}
-		return array(count($functions) ? (implode(LF, $functions) . LF) . implode(LF, $setEvents) : '', $setBody);
+		return array(count($functions) ? implode(LF, $functions) . LF . implode(LF, $setEvents) : '', $setBody);
 	}
 
 	/**
@@ -269,7 +269,7 @@ class PageGenerator {
 		}
 		$headerComment = $GLOBALS['TSFE']->config['config']['headerComment'];
 		if (trim($headerComment)) {
-			$pageRenderer->addInlineComment((TAB . str_replace(LF, (LF . TAB), trim($headerComment))) . LF);
+			$pageRenderer->addInlineComment(TAB . str_replace(LF, (LF . TAB), trim($headerComment)) . LF);
 		}
 		// Setting charset:
 		$theCharset = $GLOBALS['TSFE']->metaCharset;
@@ -291,14 +291,14 @@ class PageGenerator {
 			$GLOBALS['TSFE']->config['config']['xhtml_cleaning'] = 'none';
 			break;
 		case 'xml_10':
-			$docTypeParts[] = ('<?xml version="1.0" encoding="' . $theCharset) . '"?>';
+			$docTypeParts[] = '<?xml version="1.0" encoding="' . $theCharset . '"?>';
 			break;
 		case 'xml_11':
-			$docTypeParts[] = ('<?xml version="1.1" encoding="' . $theCharset) . '"?>';
+			$docTypeParts[] = '<?xml version="1.1" encoding="' . $theCharset . '"?>';
 			break;
 		case '':
 			if ($GLOBALS['TSFE']->xhtmlVersion) {
-				$docTypeParts[] = ('<?xml version="1.0" encoding="' . $theCharset) . '"?>';
+				$docTypeParts[] = '<?xml version="1.0" encoding="' . $theCharset . '"?>';
 			}
 			break;
 		default:
@@ -390,7 +390,7 @@ class PageGenerator {
 		} else {
 			$_attr = '';
 		}
-		$htmlTag = ('<html' . ($_attr ? ' ' . $_attr : '')) . '>';
+		$htmlTag = '<html' . ($_attr ? ' ' . $_attr : '') . '>';
 		if (isset($GLOBALS['TSFE']->config['config']['htmlTag_stdWrap.'])) {
 			$htmlTag = $GLOBALS['TSFE']->cObj->stdWrap($htmlTag, $GLOBALS['TSFE']->config['config']['htmlTag_stdWrap.']);
 		}
@@ -400,10 +400,10 @@ class PageGenerator {
 		$pageRenderer->setHeadTag($headTag);
 		// Setting charset meta tag:
 		$pageRenderer->setCharSet($theCharset);
-		$pageRenderer->addInlineComment(((('	This website is powered by TYPO3 - inspiring people to share!
+		$pageRenderer->addInlineComment('	This website is powered by TYPO3 - inspiring people to share!
 	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
-	TYPO3 is copyright ' . TYPO3_copyright_year) . ' of Kasper Skaarhoj. Extensions are copyright of their respective owners.
-	Information and contribution at ') . TYPO3_URL_ORG) . '
+	TYPO3 is copyright ' . TYPO3_copyright_year . ' of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+	Information and contribution at ' . TYPO3_URL_ORG . '
 ');
 		if ($GLOBALS['TSFE']->baseUrl) {
 			$pageRenderer->setBaseUrl($GLOBALS['TSFE']->baseUrl);
@@ -413,7 +413,7 @@ class PageGenerator {
 			$iconMimeType = '';
 			if (function_exists('finfo_open')) {
 				if ($finfo = @finfo_open(FILEINFO_MIME)) {
-					$iconMimeType = (' type="' . finfo_file($finfo, (PATH_site . $favIcon))) . '"';
+					$iconMimeType = ' type="' . finfo_file($finfo, (PATH_site . $favIcon)) . '"';
 					finfo_close($finfo);
 					$pageRenderer->setIconMimeType($iconMimeType);
 				}
@@ -426,10 +426,10 @@ class PageGenerator {
 			foreach ($GLOBALS['TSFE']->tmpl->setup['plugin.'] as $key => $iCSScode) {
 				if (is_array($iCSScode)) {
 					if ($iCSScode['_CSS_DEFAULT_STYLE'] && empty($GLOBALS['TSFE']->config['config']['removeDefaultCss'])) {
-						$temp_styleLines[] = ((('/* default styles for extension "' . substr($key, 0, -1)) . '" */') . LF) . $iCSScode['_CSS_DEFAULT_STYLE'];
+						$temp_styleLines[] = '/* default styles for extension "' . substr($key, 0, -1) . '" */' . LF . $iCSScode['_CSS_DEFAULT_STYLE'];
 					}
 					if ($iCSScode['_CSS_PAGE_STYLE']) {
-						$temp_styleLines[] = ((('/* specific page styles for extension "' . substr($key, 0, -1)) . '" */') . LF) . implode(LF, $iCSScode['_CSS_PAGE_STYLE']);
+						$temp_styleLines[] = '/* specific page styles for extension "' . substr($key, 0, -1) . '" */' . LF . implode(LF, $iCSScode['_CSS_PAGE_STYLE']);
 					}
 				}
 			}
@@ -464,9 +464,9 @@ class PageGenerator {
 						if ($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['import']) {
 							if (!$GLOBALS['TSFE']->pSetup['includeCSS.'][($key . '.')]['external'] && substr($ss, 0, 1) != '/') {
 								// To fix MSIE 6 that cannot handle these as relative paths (according to Ben v Ende)
-								$ss = (\TYPO3\CMS\Core\Utility\GeneralUtility::dirname(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/') . $ss;
+								$ss = \TYPO3\CMS\Core\Utility\GeneralUtility::dirname(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('SCRIPT_NAME')) . '/' . $ss;
 							}
-							$pageRenderer->addCssInlineBlock('import_' . $key, ((('@import url("' . htmlspecialchars($ss)) . '") ') . htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][($key . '.')]['media'])) . ';', empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, '');
+							$pageRenderer->addCssInlineBlock('import_' . $key, '@import url("' . htmlspecialchars($ss) . '") ' . htmlspecialchars($GLOBALS['TSFE']->pSetup['includeCSS.'][($key . '.')]['media']) . ';', empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, '');
 						} else {
 							$pageRenderer->addCssFile($ss, $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['alternate'] ? 'alternate stylesheet' : 'stylesheet', $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['media'] : 'all', $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] ? $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['title'] : '', empty($GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['disableCompression']), $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['forceOnTop'] ? TRUE : FALSE, $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['allWrap'], $GLOBALS['TSFE']->pSetup['includeCSS.'][$key . '.']['excludeFromConcatenation'] ? TRUE : FALSE);
 						}
@@ -482,8 +482,8 @@ class PageGenerator {
 			if (is_array($RTEclasses)) {
 				foreach ($RTEclasses as $RTEclassName => $RTEvalueArray) {
 					if ($RTEvalueArray['value']) {
-						$style .= ((('
-.' . substr($RTEclassName, 0, -1)) . ' {') . $RTEvalueArray['value']) . '}';
+						$style .= '
+.' . substr($RTEclassName, 0, -1) . ' {' . $RTEvalueArray['value'] . '}';
 					}
 				}
 			}
@@ -491,8 +491,8 @@ class PageGenerator {
 				$mSOa_tList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', strtoupper($GLOBALS['TSFE']->pSetup['insertClassesFromRTE.']['add_mainStyleOverrideDefs']), 1);
 				foreach ($pageTSConfig['RTE.']['default.']['mainStyleOverride_add.'] as $mSOa_key => $mSOa_value) {
 					if (!is_array($mSOa_value) && (in_array('*', $mSOa_tList) || in_array($mSOa_key, $mSOa_tList))) {
-						$style .= ((('
-' . $mSOa_key) . ' {') . $mSOa_value) . '}';
+						$style .= '
+' . $mSOa_key . ' {' . $mSOa_value . '}';
 					}
 				}
 			}
@@ -500,8 +500,8 @@ class PageGenerator {
 		// Setting body tag margins in CSS:
 		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins']) && $GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS']) {
 			$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
-			$style .= ((((((('
-	BODY {margin: ' . $margins) . 'px ') . $margins) . 'px ') . $margins) . 'px ') . $margins) . 'px;}';
+			$style .= '
+	BODY {margin: ' . $margins . 'px ' . $margins . 'px ' . $margins . 'px ' . $margins . 'px;}';
 		}
 		if ($GLOBALS['TSFE']->pSetup['adminPanelStyles']) {
 			$style .= '
@@ -671,7 +671,7 @@ class PageGenerator {
 		}
 		// Add ending slash only to documents rendered as xhtml
 		$endingSlash = $GLOBALS['TSFE']->xhtmlVersion ? ' /' : '';
-		$pageRenderer->addMetaTag(((('<meta name="generator" content="TYPO3 ' . TYPO3_branch) . ' CMS"') . $endingSlash) . '>');
+		$pageRenderer->addMetaTag('<meta name="generator" content="TYPO3 ' . TYPO3_branch . ' CMS"' . $endingSlash . '>');
 		$conf = $GLOBALS['TSFE']->pSetup['meta.'];
 		if (is_array($conf)) {
 			foreach ($conf as $theKey => $theValue) {
@@ -687,7 +687,7 @@ class PageGenerator {
 						if (strtolower($key) === 'refresh' || !empty($conf[($theKey . '.')]['httpEquivalent'])) {
 							$a = 'http-equiv';
 						}
-						$pageRenderer->addMetaTag(((((((('<meta ' . $a) . '="') . $key) . '" content="') . htmlspecialchars(trim($val))) . '"') . $endingSlash) . '>');
+						$pageRenderer->addMetaTag('<meta ' . $a . '="' . $key . '" content="' . htmlspecialchars(trim($val)) . '"' . $endingSlash . '>');
 					}
 				}
 			}
@@ -707,11 +707,11 @@ class PageGenerator {
 			// Storing the JS-data array
 			$GLOBALS['TSFE']->config['INTincScript_ext']['additionalCSS'] = $GLOBALS['TSFE']->additionalCSS;
 			// Storing the Style-data array
-			$GLOBALS['TSFE']->additionalHeaderData = array(('<!--HD_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey']) . '-->');
+			$GLOBALS['TSFE']->additionalHeaderData = array('<!--HD_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] . '-->');
 			// Clearing the array
-			$GLOBALS['TSFE']->additionalFooterData = array(('<!--FD_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey']) . '-->');
+			$GLOBALS['TSFE']->additionalFooterData = array('<!--FD_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] . '-->');
 			// Clearing the array
-			$GLOBALS['TSFE']->divSection .= ('<!--TDS_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey']) . '-->';
+			$GLOBALS['TSFE']->divSection .= '<!--TDS_' . $GLOBALS['TSFE']->config['INTincScript_ext']['divKey'] . '-->';
 		} else {
 			$GLOBALS['TSFE']->INTincScript_loadJSCode();
 		}
@@ -729,7 +729,7 @@ class PageGenerator {
 		}
 		' . $JSef[0];
 		if ($GLOBALS['TSFE']->spamProtectEmailAddresses && $GLOBALS['TSFE']->spamProtectEmailAddresses !== 'ascii') {
-			$scriptJsCode .= ('
+			$scriptJsCode .= '
 			// decrypt helper function
 		function decryptCharcode(n,start,end,offset) {
 			n = n + offset;
@@ -760,7 +760,7 @@ class PageGenerator {
 		}
 			// decrypt spam-protected emails
 		function linkTo_UnCryptMailto(s) {
-			location.href = decryptString(s,' . $GLOBALS['TSFE']->spamProtectEmailAddresses * -1) . ');
+			location.href = decryptString(s,' . $GLOBALS['TSFE']->spamProtectEmailAddresses * -1 . ');
 		}
 		';
 		}
@@ -770,7 +770,7 @@ class PageGenerator {
 		if (is_array($GLOBALS['TSFE']->inlineJS)) {
 			foreach ($GLOBALS['TSFE']->inlineJS as $key => $val) {
 				if (!is_array($val)) {
-					$inlineJS .= (LF . $val) . LF;
+					$inlineJS .= LF . $val . LF;
 				}
 			}
 		}
@@ -778,7 +778,7 @@ class PageGenerator {
 		// Javascript inline code
 		$inline = $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['jsInline.'], 'jsInline.');
 		if ($inline) {
-			$inlineJS .= (LF . $inline) . LF;
+			$inlineJS .= LF . $inline . LF;
 		}
 		// Javascript inline code for Footer
 		$inlineFooterJs = $GLOBALS['TSFE']->cObj->cObjGet($GLOBALS['TSFE']->pSetup['jsFooterInline.'], 'jsFooterInline.');
@@ -886,7 +886,7 @@ class PageGenerator {
 		if ($GLOBALS['TSFE']->pSetup['frameSet.']) {
 			$fs = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\FramesetRenderer');
 			$pageRenderer->addBodyContent($fs->make($GLOBALS['TSFE']->pSetup['frameSet.']));
-			$pageRenderer->addBodyContent((LF . '<noframes>') . LF);
+			$pageRenderer->addBodyContent(LF . '<noframes>' . LF);
 		}
 		// Bodytag:
 		$defBT = $GLOBALS['TSFE']->pSetup['bodyTagCObject'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($GLOBALS['TSFE']->pSetup['bodyTagCObject'], $GLOBALS['TSFE']->pSetup['bodyTagCObject.'], 'bodyTagCObject') : '';
@@ -895,22 +895,22 @@ class PageGenerator {
 		}
 		$bodyTag = $GLOBALS['TSFE']->pSetup['bodyTag'] ? $GLOBALS['TSFE']->pSetup['bodyTag'] : $defBT;
 		if ($bgImg = $GLOBALS['TSFE']->cObj->getImgResource($GLOBALS['TSFE']->pSetup['bgImg'], $GLOBALS['TSFE']->pSetup['bgImg.'])) {
-			$bodyTag = (((preg_replace('/>$/', '', trim($bodyTag)) . ' background="') . $GLOBALS['TSFE']->absRefPrefix) . $bgImg[3]) . '">';
+			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' background="' . $GLOBALS['TSFE']->absRefPrefix . $bgImg[3] . '">';
 		}
 		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins'])) {
 			$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
 			if ($GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS']) {
 
 			} else {
-				$bodyTag = ((((((((preg_replace('/>$/', '', trim($bodyTag)) . ' leftmargin="') . $margins) . '" topmargin="') . $margins) . '" marginwidth="') . $margins) . '" marginheight="') . $margins) . '">';
+				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' leftmargin="' . $margins . '" topmargin="' . $margins . '" marginwidth="' . $margins . '" marginheight="' . $margins . '">';
 			}
 		}
 		if (trim($GLOBALS['TSFE']->pSetup['bodyTagAdd'])) {
-			$bodyTag = ((preg_replace('/>$/', '', trim($bodyTag)) . ' ') . trim($GLOBALS['TSFE']->pSetup['bodyTagAdd'])) . '>';
+			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']) . '>';
 		}
 		// Event functions
 		if (count($JSef[1])) {
-			$bodyTag = ((preg_replace('/>$/', '', trim($bodyTag)) . ' ') . trim(implode(' ', $JSef[1]))) . '>';
+			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim(implode(' ', $JSef[1])) . '>';
 		}
 		$pageRenderer->addBodyContent(LF . $bodyTag);
 		// Div-sections
@@ -966,10 +966,10 @@ class PageGenerator {
 		$script = '';
 		switch ($ext) {
 		case 'js':
-			$script = ('typo3temp/javascript_' . substr(md5($str), 0, 10)) . '.js';
+			$script = 'typo3temp/javascript_' . substr(md5($str), 0, 10) . '.js';
 			break;
 		case 'css':
-			$script = ('typo3temp/stylesheet_' . substr(md5($str), 0, 10)) . '.css';
+			$script = 'typo3temp/stylesheet_' . substr(md5($str), 0, 10) . '.css';
 			break;
 		}
 		// Write file:
@@ -1012,7 +1012,7 @@ class PageGenerator {
 			// List
 			// Trim the input
 			$haystack = str_replace(' ', '', $haystack);
-			if (strstr(('|' . $needle) . '|', ('|' . $haystack) . '|')) {
+			if (strstr('|' . $needle . '|', '|' . $haystack . '|')) {
 				$OK = TRUE;
 			}
 		} elseif (!strcmp($needle, $haystack)) {

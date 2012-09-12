@@ -235,11 +235,11 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		// Build Flash configuration
 		$player = isset($typeConf['player.']) ? $this->cObj->stdWrap($typeConf['player'], $typeConf['player.']) : $typeConf['player'];
 		if (!$player) {
-			$player = ($prefix . TYPO3_mainDir) . 'contrib/flowplayer/flowplayer-3.2.7.swf';
+			$player = $prefix . TYPO3_mainDir . 'contrib/flowplayer/flowplayer-3.2.7.swf';
 		}
 		$installUrl = isset($conf['installUrl.']) ? $this->cObj->stdWrap($conf['installUrl'], $conf['installUrl.']) : $conf['installUrl'];
 		if (!$installUrl) {
-			$installUrl = ($prefix . TYPO3_mainDir) . 'contrib/flowplayer/expressinstall.swf';
+			$installUrl = $prefix . TYPO3_mainDir . 'contrib/flowplayer/expressinstall.swf';
 		}
 		$flashVersion = isset($conf['flashVersion.']) ? $this->cObj->stdWrap($conf['flashVersion'], $conf['flashVersion.']) : $conf['flashVersion'];
 		if (!$flashVersion) {
@@ -256,10 +256,10 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			'onFail' => '###ONFAIL###'
 		);
 		$flashDownloadUrl = 'http://www.adobe.com/go/getflashplayer';
-		$onFail = ((((((('function()  {
+		$onFail = 'function()  {
 			if (!(flashembed.getVersion()[0] > 0)) {
-				var message = "<p>" + "' . $GLOBALS['TSFE']->sL('LLL:EXT:cms/locallang_ttc.xlf:media.needFlashPlugin')) . '" + "</p>" + "<p>" + "<a href=\\"') . $flashDownloadUrl) . '\\">') . $GLOBALS['TSFE']->sL('LLL:EXT:cms/locallang_ttc.xlf:media.downloadFlash')) . '</a>" + "</p>";
-				document.getElementById("') . $replaceElementIdString) . '_flash_install_info").innerHTML = "<div class=\\"message\\">" + message + "</div>";
+				var message = "<p>" + "' . $GLOBALS['TSFE']->sL('LLL:EXT:cms/locallang_ttc.xlf:media.needFlashPlugin') . '" + "</p>" + "<p>" + "<a href=\\"' . $flashDownloadUrl . '\\">' . $GLOBALS['TSFE']->sL('LLL:EXT:cms/locallang_ttc.xlf:media.downloadFlash') . '</a>" + "</p>";
+				document.getElementById("' . $replaceElementIdString . '_flash_install_info").innerHTML = "<div class=\\"message\\">" + message + "</div>";
 			}
 		}';
 		$flashConfiguration = json_encode($flashConfiguration);
@@ -329,7 +329,7 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			foreach ($conf['sources'] as $source) {
 				$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
 				$mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
-				$videoSources .= (((('<source src="' . $source) . '"') . ($mimeType ? (' type="' . $mimeType) . '"' : '')) . ' />') . LF;
+				$videoSources .= '<source src="' . $source . '"' . ($mimeType ? ' type="' . $mimeType . '"' : '') . ' />' . LF;
 			}
 		}
 		// Render audio sources
@@ -338,13 +338,13 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			foreach ($conf['audioSources'] as $source) {
 				$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
 				$mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
-				$audioSources .= (((('<source src="' . $source) . '"') . ($mimeType ? (' type="' . $mimeType) . '"' : '')) . ' />') . LF;
+				$audioSources .= '<source src="' . $source . '"' . ($mimeType ? ' type="' . $mimeType . '"' : '') . ' />' . LF;
 			}
 		}
 		// Configure captions
 		if ($conf['type'] === 'video' && isset($conf['caption'])) {
 			// Assemble captions track tag
-			$videoCaptions = (((('<track id="' . $replaceElementIdString) . '_captions_track" kind="captions" src="') . $conf['caption']) . '"></track>') . LF;
+			$videoCaptions = '<track id="' . $replaceElementIdString . '_captions_track" kind="captions" src="' . $conf['caption'] . '"></track>' . LF;
 			// Add videoJS extension for captions
 			$GLOBALS['TSFE']->getPageRenderer()->addJsFile(TYPO3_mainDir . '../t3lib/js/videojs/captions.js');
 			// Flowplayer captions
@@ -383,23 +383,23 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 		$videoFlashParams = '';
 		if (is_array($conf['params.'])) {
 			foreach ($conf['params.'] as $name => $value) {
-				$videoFlashParams .= (((('<param name="' . $name) . '" value="') . $value) . '" />') . LF;
+				$videoFlashParams .= '<param name="' . $name . '" value="' . $value . '" />' . LF;
 			}
 		}
 		$audioFlashParams = $videoFlashParams;
 		// Required param tags
-		$videoFlashParams .= (('<param name="movie" value="' . $player) . '" />') . LF;
-		$videoFlashParams .= (('<param name="flashvars" value=\'config=' . $flowplayerVideoJsonConfig) . '\' />') . LF;
-		$audioFlashParams .= (('<param name="movie" value="' . $player) . '" />') . LF;
-		$audioFlashParams .= (('<param name="flashvars" value=\'config=' . $flowplayerAudioJsonConfig) . '\' />') . LF;
+		$videoFlashParams .= '<param name="movie" value="' . $player . '" />' . LF;
+		$videoFlashParams .= '<param name="flashvars" value=\'config=' . $flowplayerVideoJsonConfig . '\' />' . LF;
+		$audioFlashParams .= '<param name="movie" value="' . $player . '" />' . LF;
+		$audioFlashParams .= '<param name="flashvars" value=\'config=' . $flowplayerAudioJsonConfig . '\' />' . LF;
 		// Assemble audio/video tag attributes
 		$attributes = '';
 		if (is_array($conf['attributes.'])) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::remapArrayKeys($conf['attributes.'], $typeConf['attributes.']['params.']);
 		}
 		foreach ($this->html5TagAttributes as $attribute) {
-			if (($conf['attributes.'][$attribute] === 'true' || $conf['attributes.'][$attribute] === strToLower($attribute)) || $conf['attributes.'][$attribute] === $attribute) {
-				$attributes .= ((strToLower($attribute) . '="') . strToLower($attribute)) . '" ';
+			if ($conf['attributes.'][$attribute] === 'true' || $conf['attributes.'][$attribute] === strToLower($attribute) || $conf['attributes.'][$attribute] === $attribute) {
+				$attributes .= strToLower($attribute) . '="' . strToLower($attribute) . '" ';
 			}
 		}
 		// Media dimensions
@@ -418,39 +418,39 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			if ($conf['preferFlashOverHtml5']) {
 				// Flash with video tag fallback
 				$conf['params.']['playerFallbackOrder'] = array('flash', 'html5');
-				$flashDivContent = (((((((((((((((((($videoFlashParams . LF) . '<video id="') . $replaceElementIdString) . '_video_js" class="video-js" ') . $attributes) . 'controls="controls"  mediagroup="') . $replaceElementIdString) . '" width="') . $width) . '" height="') . $height) . '">') . LF) . $videoSources) . $videoCaptions) . $alternativeContent) . LF) . '</video>') . LF;
-				$divContent = ((((((((((((((((((('
-					<div id="' . $replaceElementIdString) . '_flash_install_info" class="flash-install-info"></div>') . LF) . '<noscript>') . LF) . '<object id="') . $replaceElementIdString) . '_vjs_flash" type="application/x-shockwave-flash" data="') . $player) . '" width="') . $width) . '" height="') . $height) . '">') . LF) . $flashDivContent) . '</object>') . LF) . '</noscript>') . LF;
-				$content = str_replace('###SWFOBJECT###', (((((((('<div id="' . $replaceElementIdString) . '_video" class="flashcontainer" style="width:') . $width) . 'px; height:') . $height) . 'px;">') . LF) . $divContent) . '</div>', $content);
+				$flashDivContent = $videoFlashParams . LF . '<video id="' . $replaceElementIdString . '_video_js" class="video-js" ' . $attributes . 'controls="controls"  mediagroup="' . $replaceElementIdString . '" width="' . $width . '" height="' . $height . '">' . LF . $videoSources . $videoCaptions . $alternativeContent . LF . '</video>' . LF;
+				$divContent = '
+					<div id="' . $replaceElementIdString . '_flash_install_info" class="flash-install-info"></div>' . LF . '<noscript>' . LF . '<object id="' . $replaceElementIdString . '_vjs_flash" type="application/x-shockwave-flash" data="' . $player . '" width="' . $width . '" height="' . $height . '">' . LF . $flashDivContent . '</object>' . LF . '</noscript>' . LF;
+				$content = str_replace('###SWFOBJECT###', '<div id="' . $replaceElementIdString . '_video" class="flashcontainer" style="width:' . $width . 'px; height:' . $height . 'px;">' . LF . $divContent . '</div>', $content);
 			} else {
 				// Video tag with Flash fallback
 				$conf['params.']['playerFallbackOrder'] = array('html5', 'flash');
 				$videoTagContent = $videoSources . $videoCaptions;
 				if (isset($conf['videoflashvars']['url'])) {
-					$videoTagContent .= ((((((((((((((((('
-						<noscript>' . LF) . '<object class="vjs-flash-fallback" id="') . $replaceElementIdString) . '_vjs_flash_fallback" type="application/x-shockwave-flash" data="') . $player) . '" width="') . $width) . '" height="') . $height) . '">') . LF) . $videoFlashParams) . LF) . $alternativeContent) . LF) . '</object>') . LF) . '</noscript>';
+					$videoTagContent .= '
+						<noscript>' . LF . '<object class="vjs-flash-fallback" id="' . $replaceElementIdString . '_vjs_flash_fallback" type="application/x-shockwave-flash" data="' . $player . '" width="' . $width . '" height="' . $height . '">' . LF . $videoFlashParams . LF . $alternativeContent . LF . '</object>' . LF . '</noscript>';
 				}
-				$divContent = (((((((((((((((('
-					<div id="' . $replaceElementIdString) . '_flash_install_info" class="flash-install-info"></div>') . LF) . '<video id="') . $replaceElementIdString) . '_video_js" class="video-js" ') . $attributes) . 'controls="controls" mediagroup="') . $replaceElementIdString) . '" width="') . $width) . '" height="') . $height) . '">') . LF) . $videoTagContent) . '</video>';
-				$content = str_replace('###SWFOBJECT###', (((((((('<div id="' . $replaceElementIdString) . '_video" class="video-js-box" style="width:') . $width) . 'px; height:') . $height) . 'px;">') . LF) . $divContent) . '</div>', $content);
+				$divContent = '
+					<div id="' . $replaceElementIdString . '_flash_install_info" class="flash-install-info"></div>' . LF . '<video id="' . $replaceElementIdString . '_video_js" class="video-js" ' . $attributes . 'controls="controls" mediagroup="' . $replaceElementIdString . '" width="' . $width . '" height="' . $height . '">' . LF . $videoTagContent . '</video>';
+				$content = str_replace('###SWFOBJECT###', '<div id="' . $replaceElementIdString . '_video" class="video-js-box" style="width:' . $width . 'px; height:' . $height . 'px;">' . LF . $divContent . '</div>', $content);
 			}
 		}
 		// Render audio
-		if (($conf['type'] === 'audio' || $audioSources) || isset($conf['audioFallback'])) {
+		if ($conf['type'] === 'audio' || $audioSources || isset($conf['audioFallback'])) {
 			if ($conf['preferFlashOverHtml5']) {
 				// Flash with audio tag fallback
-				$flashDivContent = (((((((((((((((($audioFlashParams . LF) . '<audio id="') . $replaceElementIdString) . '_audio_element"') . $attributes) . ($conf['type'] === 'video' ? (' mediagroup="' . $replaceElementIdString) . 'style="position:absolute;left:-10000px;"' : ' controls="controls"')) . ' style="width:') . $width) . 'px; height:') . $height) . 'px;">') . LF) . $audioSources) . $alternativeContent) . LF) . '</audio>') . LF;
-				$divContent = ((((((((((((((((($conf['type'] === 'video' ? '' : (('<div id="' . $replaceElementIdString) . '_flash_install_info" class="flash-install-info"></div>') . LF) . '<noscript>') . LF) . '<object id="') . $replaceElementIdString) . '_audio_flash" type="application/x-shockwave-flash" data="') . $player) . '" width="') . ($conf['type'] === 'video' ? 0 : $width)) . '" height="') . ($conf['type'] === 'video' ? 0 : $height)) . '">') . LF) . $flashDivContent) . '</object>') . LF) . '</noscript>') . LF;
-				$audioContent = (((((((('<div id="' . $replaceElementIdString) . '_audio_box" class="audio-flash-container" style="width:') . ($conf['type'] === 'video' ? 0 : $width)) . 'px; height:') . ($conf['type'] === 'video' ? 0 : $height)) . 'px;">') . LF) . $divContent) . '</div>';
+				$flashDivContent = $audioFlashParams . LF . '<audio id="' . $replaceElementIdString . '_audio_element"' . $attributes . ($conf['type'] === 'video' ? ' mediagroup="' . $replaceElementIdString . 'style="position:absolute;left:-10000px;"' : ' controls="controls"') . ' style="width:' . $width . 'px; height:' . $height . 'px;">' . LF . $audioSources . $alternativeContent . LF . '</audio>' . LF;
+				$divContent = ($conf['type'] === 'video' ? '' : '<div id="' . $replaceElementIdString . '_flash_install_info" class="flash-install-info"></div>' . LF) . '<noscript>' . LF . '<object id="' . $replaceElementIdString . '_audio_flash" type="application/x-shockwave-flash" data="' . $player . '" width="' . ($conf['type'] === 'video' ? 0 : $width) . '" height="' . ($conf['type'] === 'video' ? 0 : $height) . '">' . LF . $flashDivContent . '</object>' . LF . '</noscript>' . LF;
+				$audioContent = '<div id="' . $replaceElementIdString . '_audio_box" class="audio-flash-container" style="width:' . ($conf['type'] === 'video' ? 0 : $width) . 'px; height:' . ($conf['type'] === 'video' ? 0 : $height) . 'px;">' . LF . $divContent . '</div>';
 			} else {
 				// Audio tag with Flash fallback
 				$audioTagContent = $audioSources;
 				if (isset($conf['audioflashvars']['url'])) {
-					$audioTagContent .= ((((((((((((((((('
-						<noscript>' . LF) . '<object class="audio-flash-fallback" id="') . $replaceElementIdString) . '_audio_flash" type="application/x-shockwave-flash" data="') . $player) . '" width="') . $width) . '" height="') . $height) . '">') . LF) . $audioFlashParams) . LF) . $alternativeContent) . LF) . '</object>') . LF) . '</noscript>';
+					$audioTagContent .= '
+						<noscript>' . LF . '<object class="audio-flash-fallback" id="' . $replaceElementIdString . '_audio_flash" type="application/x-shockwave-flash" data="' . $player . '" width="' . $width . '" height="' . $height . '">' . LF . $audioFlashParams . LF . $alternativeContent . LF . '</object>' . LF . '</noscript>';
 				}
-				$divContent = ((((((((((($conf['type'] === 'video' ? '' : (('<div id="' . $replaceElementIdString) . '_flash_install_info" class="flash-install-info"></div>') . LF) . '<audio id="') . $replaceElementIdString) . '_audio_element" class="audio-element"') . $attributes) . ($conf['type'] === 'video' ? (' mediagroup="' . $replaceElementIdString) . '" style="position:absolute;left:-10000px;"' : ' controls="controls"')) . '>') . LF) . $audioTagContent) . '</audio>') . LF) . $audioSourcesEmbeddingJsScript;
-				$audioContent = (((((((('<div id="' . $replaceElementIdString) . '_audio_box" class="audio-box" style="width:') . ($conf['type'] === 'video' ? 0 : $width)) . 'px; height:') . ($conf['type'] === 'video' ? 0 : $height)) . 'px;">') . LF) . $divContent) . '</div>';
+				$divContent = ($conf['type'] === 'video' ? '' : '<div id="' . $replaceElementIdString . '_flash_install_info" class="flash-install-info"></div>' . LF) . '<audio id="' . $replaceElementIdString . '_audio_element" class="audio-element"' . $attributes . ($conf['type'] === 'video' ? ' mediagroup="' . $replaceElementIdString . '" style="position:absolute;left:-10000px;"' : ' controls="controls"') . '>' . LF . $audioTagContent . '</audio>' . LF . $audioSourcesEmbeddingJsScript;
+				$audioContent = '<div id="' . $replaceElementIdString . '_audio_box" class="audio-box" style="width:' . ($conf['type'] === 'video' ? 0 : $width) . 'px; height:' . ($conf['type'] === 'video' ? 0 : $height) . 'px;">' . LF . $divContent . '</div>';
 			}
 			if ($conf['type'] === 'audio') {
 				$content = str_replace('###SWFOBJECT###', $audioContent, $content);
@@ -472,20 +472,20 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			$videoJsOptions = count($videoJsOptions) ? json_encode($videoJsOptions) : '{}';
 			// videoJS setup and videoJS listeners for audio description synchronisation
 			if ($audioSources || isset($conf['audioFallback'])) {
-				$videoJsSetup = ((((((((((((((((((((((((((((((((((((((((((('
-			var ' . $replaceElementIdString) . '_video = VideoJS.setup("') . $replaceElementIdString) . '_video_js", ') . $videoJsOptions) . ');
-			var ') . $replaceElementIdString) . '_video_element = document.getElementById("') . $replaceElementIdString) . '_video_js");
-			var ') . $replaceElementIdString) . '_audio_element = document.getElementById("') . $replaceElementIdString) . '_audio_element");
-			if (!!') . $replaceElementIdString) . '_video_element && !!') . $replaceElementIdString) . '_audio_element) {
-				') . $replaceElementIdString) . '_audio_element.muted = true;
-				VideoJS.addListener(') . $replaceElementIdString) . '_video_element, "pause", function () { document.getElementById("') . $replaceElementIdString) . '_audio_element").pause(); });
-				VideoJS.addListener(') . $replaceElementIdString) . '_video_element, "play", function () { try {document.getElementById("') . $replaceElementIdString) . '_audio_element").currentTime = document.getElementById("') . $replaceElementIdString) . '_video_js").currentTime} catch(e) {}; document.getElementById("') . $replaceElementIdString) . '_audio_element").play(); });
-				VideoJS.addListener(') . $replaceElementIdString) . '_video_element, "seeked", function () { document.getElementById("') . $replaceElementIdString) . '_audio_element").currentTime = document.getElementById("') . $replaceElementIdString) . '_video_js").currentTime; });
-				VideoJS.addListener(') . $replaceElementIdString) . '_video_element, "volumechange", function () { document.getElementById("') . $replaceElementIdString) . '_audio_element").volume = document.getElementById("') . $replaceElementIdString) . '_video_js").volume; });
+				$videoJsSetup = '
+			var ' . $replaceElementIdString . '_video = VideoJS.setup("' . $replaceElementIdString . '_video_js", ' . $videoJsOptions . ');
+			var ' . $replaceElementIdString . '_video_element = document.getElementById("' . $replaceElementIdString . '_video_js");
+			var ' . $replaceElementIdString . '_audio_element = document.getElementById("' . $replaceElementIdString . '_audio_element");
+			if (!!' . $replaceElementIdString . '_video_element && !!' . $replaceElementIdString . '_audio_element) {
+				' . $replaceElementIdString . '_audio_element.muted = true;
+				VideoJS.addListener(' . $replaceElementIdString . '_video_element, "pause", function () { document.getElementById("' . $replaceElementIdString . '_audio_element").pause(); });
+				VideoJS.addListener(' . $replaceElementIdString . '_video_element, "play", function () { try {document.getElementById("' . $replaceElementIdString . '_audio_element").currentTime = document.getElementById("' . $replaceElementIdString . '_video_js").currentTime} catch(e) {}; document.getElementById("' . $replaceElementIdString . '_audio_element").play(); });
+				VideoJS.addListener(' . $replaceElementIdString . '_video_element, "seeked", function () { document.getElementById("' . $replaceElementIdString . '_audio_element").currentTime = document.getElementById("' . $replaceElementIdString . '_video_js").currentTime; });
+				VideoJS.addListener(' . $replaceElementIdString . '_video_element, "volumechange", function () { document.getElementById("' . $replaceElementIdString . '_audio_element").volume = document.getElementById("' . $replaceElementIdString . '_video_js").volume; });
 			}';
 			} else {
-				$videoJsSetup = ((((('
-			var ' . $replaceElementIdString) . '_video = VideoJS.setup("') . $replaceElementIdString) . '_video_js", ') . $videoJsOptions) . ');
+				$videoJsSetup = '
+			var ' . $replaceElementIdString . '_video = VideoJS.setup("' . $replaceElementIdString . '_video_js", ' . $videoJsOptions . ');
 			';
 			}
 			// Prefer Flash or fallback to Flash
@@ -500,50 +500,50 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 						foreach ($conf['sources'] as $source) {
 							$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
 							$mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
-							$videoTagAssembly .= ((((('
-			' . $replaceElementIdString) . '_video_js.appendChild($f.extend(document.createElement("source"), {
-				src: "') . $source) . '",
-				type: "') . $mimeType) . '"
+							$videoTagAssembly .= '
+			' . $replaceElementIdString . '_video_js.appendChild($f.extend(document.createElement("source"), {
+				src: "' . $source . '",
+				type: "' . $mimeType . '"
 			}));';
 						}
 						// Create "track" elements
 						if (isset($conf['caption'])) {
 							// Assemble captions track tag
 							// It will take a while before the captions are loaded and parsed...
-							$videoTagAssembly .= ((((('
+							$videoTagAssembly .= '
 			var track  = document.createElement("track");
-			track.setAttribute("src", "' . $conf['caption']) . '");
-			track.setAttribute("id", "') . $replaceElementIdString) . '_captions_track");
+			track.setAttribute("src", "' . $conf['caption'] . '");
+			track.setAttribute("id", "' . $replaceElementIdString . '_captions_track");
 			track.setAttribute("kind", "captions");
-			') . $replaceElementIdString) . '_video_js.appendChild(track);';
+			' . $replaceElementIdString . '_video_js.appendChild(track);';
 						}
-						$videoTagAssembly .= ((((((((((((((('
-			$f.extend(' . $replaceElementIdString) . '_video_js, {
-				id: "') . $replaceElementIdString) . '_video_js",
+						$videoTagAssembly .= '
+			$f.extend(' . $replaceElementIdString . '_video_js, {
+				id: "' . $replaceElementIdString . '_video_js",
 				className: "video-js",
 				controls: "controls",
-				mediagroup: "') . $replaceElementIdString) . '",
+				mediagroup: "' . $replaceElementIdString . '",
 				preload: "none",
-				width: "') . $width) . '",
-				height: "') . $height) . '"
+				width: "' . $width . '",
+				height: "' . $height . '"
 			});
-			') . $replaceElementIdString) . '_video.appendChild(') . $replaceElementIdString) . '_video_js);
-			') . $replaceElementIdString) . '_video.className = "video-js-box";';
+			' . $replaceElementIdString . '_video.appendChild(' . $replaceElementIdString . '_video_js);
+			' . $replaceElementIdString . '_video.className = "video-js-box";';
 						$videoTagAssembly .= $videoJsSetup;
 					}
-					$videoSourcesEmbedding = ((((((((((((((((((('
-		var ' . $replaceElementIdString) . '_video = document.getElementById("') . $replaceElementIdString) . '_video");
-		var ') . $replaceElementIdString) . '_video_js = document.createElement("video");
+					$videoSourcesEmbedding = '
+		var ' . $replaceElementIdString . '_video = document.getElementById("' . $replaceElementIdString . '_video");
+		var ' . $replaceElementIdString . '_video_js = document.createElement("video");
 		if (flashembed.getVersion()[0] > 0) {
 				// Flash is available
-			var videoPlayer = flowplayer("') . $replaceElementIdString) . '_video", ') . $flashConfiguration) . ', ') . $flowplayerVideoJsonConfig) . ').load();
+			var videoPlayer = flowplayer("' . $replaceElementIdString . '_video", ' . $flashConfiguration . ', ' . $flowplayerVideoJsonConfig . ').load();
 			videoPlayer.onBeforeUnload(function () { return false; });
-		} else if (!!') . $replaceElementIdString) . '_video_js.canPlayType) {
+		} else if (!!' . $replaceElementIdString . '_video_js.canPlayType) {
 				// Flash is not available: fallback to videoJS if video tag is supported
-			') . $videoTagAssembly) . '
+			' . $videoTagAssembly . '
 		} else {
 				// Neither Flash nor video is available: offer to install Flash
-			flashembed("') . $replaceElementIdString) . '_video", ') . $flashConfiguration) . ');
+			flashembed("' . $replaceElementIdString . '_video", ' . $flashConfiguration . ');
 		}';
 				} elseif (is_array($conf['sources'])) {
 					// HTML5 is the preferred rendering method
@@ -552,28 +552,28 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 					foreach ($conf['sources'] as $source) {
 						$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
 						$mimeType = $this->mimeTypes[$fileinfo['fileext']]['video'];
-						$supported[] = (($replaceElementIdString . '_videoTag.canPlayType("') . $mimeType) . '") != ""';
+						$supported[] = $replaceElementIdString . '_videoTag.canPlayType("' . $mimeType . '") != ""';
 					}
 					// Testing whether the browser supports the video tag with any of the provided source types
 					// If no support, embed flowplayer
-					$videoSourcesEmbedding = ((((((((((((((((((((((((((((('
-		var ' . $replaceElementIdString) . '_videoTag = document.createElement(\'video\');
-		var ') . $replaceElementIdString) . '_video_box = document.getElementById("') . $replaceElementIdString) . '_video");
-		if (') . $replaceElementIdString) . '_video_box) {
-			if (!') . $replaceElementIdString) . '_videoTag || !') . $replaceElementIdString) . '_videoTag.canPlayType || !(') . (count($supported) ? implode(' || ', $supported) : 'false')) . ')) {
+					$videoSourcesEmbedding = '
+		var ' . $replaceElementIdString . '_videoTag = document.createElement(\'video\');
+		var ' . $replaceElementIdString . '_video_box = document.getElementById("' . $replaceElementIdString . '_video");
+		if (' . $replaceElementIdString . '_video_box) {
+			if (!' . $replaceElementIdString . '_videoTag || !' . $replaceElementIdString . '_videoTag.canPlayType || !(' . (count($supported) ? implode(' || ', $supported) : 'false') . ')) {
 					// Avoid showing an empty video element
-				if (document.getElementById("') . $replaceElementIdString) . '_video_js")) {
-					document.getElementById("') . $replaceElementIdString) . '_video_js").style.display = "none";
+				if (document.getElementById("' . $replaceElementIdString . '_video_js")) {
+					document.getElementById("' . $replaceElementIdString . '_video_js").style.display = "none";
 				}
 				if (flashembed.getVersion()[0] > 0) {
 						// Flash is available
-					var videoPlayer = flowplayer("') . $replaceElementIdString) . '_video", ') . $flashConfiguration) . ', ') . $flowplayerVideoJsonConfig) . ').load();
+					var videoPlayer = flowplayer("' . $replaceElementIdString . '_video", ' . $flashConfiguration . ', ' . $flowplayerVideoJsonConfig . ').load();
 					videoPlayer.onBeforeUnload(function () { return false; });
 				} else {
 						// Neither Flash nor video is available: offer to install Flash
-					flashembed("') . $replaceElementIdString) . '_video", ') . $flashConfiguration) . ');
+					flashembed("' . $replaceElementIdString . '_video", ' . $flashConfiguration . ');
 				}
-			} else {') . $videoJsSetup) . '
+			} else {' . $videoJsSetup . '
 			}
 		}';
 				}
@@ -591,39 +591,39 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 					foreach ($conf['audioSources'] as $source) {
 						$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
 						$mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
-						$audioTagAssembly .= ((((('
-		' . $replaceElementIdString) . '_audio_element.appendChild($f.extend(document.createElement("source"), {
-			src: "') . $source) . '",
-			type: "') . $mimeType) . '"
+						$audioTagAssembly .= '
+		' . $replaceElementIdString . '_audio_element.appendChild($f.extend(document.createElement("source"), {
+			src: "' . $source . '",
+			type: "' . $mimeType . '"
 		}));';
 					}
-					$audioTagAssembly .= ((((((((((((((((('
-		$f.extend(' . $replaceElementIdString) . '_audio_element, {
-			id: "') . $replaceElementIdString) . '_audio_element",
+					$audioTagAssembly .= '
+		$f.extend(' . $replaceElementIdString . '_audio_element, {
+			id: "' . $replaceElementIdString . '_audio_element",
 			className: "audio-element",
-			controls: "') . ($conf['type'] === 'video' ? '' : 'controls')) . '",
-			mediagroup: "') . $replaceElementIdString) . '",
+			controls: "' . ($conf['type'] === 'video' ? '' : 'controls') . '",
+			mediagroup: "' . $replaceElementIdString . '",
 			preload: "none",
-			width: "') . ($conf['type'] === 'video' ? 0 : $width)) . 'px",
-			height: "') . ($conf['type'] === 'video' ? 0 : $height)) . 'px"
+			width: "' . ($conf['type'] === 'video' ? 0 : $width) . 'px",
+			height: "' . ($conf['type'] === 'video' ? 0 : $height) . 'px"
 		});
-		') . $replaceElementIdString) . '_audio_box.appendChild(') . $replaceElementIdString) . '_audio_element);
-		') . $replaceElementIdString) . '_audio_box.className = "audio-box";';
+		' . $replaceElementIdString . '_audio_box.appendChild(' . $replaceElementIdString . '_audio_element);
+		' . $replaceElementIdString . '_audio_box.className = "audio-box";';
 				}
-				$audioSourcesEmbedding = ((((((((((((((((((('
-		var ' . $replaceElementIdString) . '_audio_box = document.getElementById("') . $replaceElementIdString) . '_audio_box");
-		var ') . $replaceElementIdString) . '_audio_element = document.createElement("audio");
+				$audioSourcesEmbedding = '
+		var ' . $replaceElementIdString . '_audio_box = document.getElementById("' . $replaceElementIdString . '_audio_box");
+		var ' . $replaceElementIdString . '_audio_element = document.createElement("audio");
 		if (flashembed.getVersion()[0] > 0) {
 				// Flash is available
-			var audioPlayer = flowplayer("') . $replaceElementIdString) . '_audio_box", ') . $flashConfiguration) . ', ') . $flowplayerAudioJsonConfig) . ').load();
+			var audioPlayer = flowplayer("' . $replaceElementIdString . '_audio_box", ' . $flashConfiguration . ', ' . $flowplayerAudioJsonConfig . ').load();
 			audioPlayer.onBeforeUnload(function () { return false; });
-			') . ($conf['type'] === 'video' ? 'audioPlayer.mute();' : '')) . '
-		} else if (!!') . $replaceElementIdString) . '_audio_element.canPlayType) {
+			' . ($conf['type'] === 'video' ? 'audioPlayer.mute();' : '') . '
+		} else if (!!' . $replaceElementIdString . '_audio_element.canPlayType) {
 				// Flash is not available: fallback to audio element if audio tag is supported
-			') . $audioTagAssembly) . '
+			' . $audioTagAssembly . '
 		} else {
 				// Neither Flash nor audio is available: offer to install Flash if this is not an audio description of a video
-			') . ($conf['type'] === 'video' ? '' : ((('flashembed("' . $replaceElementIdString) . '_audio_box", ') . $flashConfiguration) . ');')) . '
+			' . ($conf['type'] === 'video' ? '' : 'flashembed("' . $replaceElementIdString . '_audio_box", ' . $flashConfiguration . ');') . '
 		}';
 			} elseif (is_array($conf['audioSources'])) {
 				// HTML5 is the preferred rendering method
@@ -632,26 +632,26 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 				foreach ($conf['audioSources'] as $source) {
 					$fileinfo = \TYPO3\CMS\Core\Utility\GeneralUtility::split_fileref($source);
 					$mimeType = $this->mimeTypes[$fileinfo['fileext']]['audio'];
-					$supported[] = (($replaceElementIdString . '_audioTag.canPlayType("') . $mimeType) . '") != ""';
+					$supported[] = $replaceElementIdString . '_audioTag.canPlayType("' . $mimeType . '") != ""';
 				}
 				// Testing whether the browser supports the audio tag with any of the provided source types
 				// If no support, embed flowplayer
-				$audioSourcesEmbedding = ((((((((((((((((((((((((((('
-		var ' . $replaceElementIdString) . '_audioTag = document.createElement(\'audio\');
-		var ') . $replaceElementIdString) . '_audio_box = document.getElementById("') . $replaceElementIdString) . '_audio_box");
-		if (') . $replaceElementIdString) . '_audio_box) {
-			if (!') . $replaceElementIdString) . '_audioTag || !') . $replaceElementIdString) . '_audioTag.canPlayType || !(') . (count($supported) ? implode(' || ', $supported) : 'false')) . ')) {
+				$audioSourcesEmbedding = '
+		var ' . $replaceElementIdString . '_audioTag = document.createElement(\'audio\');
+		var ' . $replaceElementIdString . '_audio_box = document.getElementById("' . $replaceElementIdString . '_audio_box");
+		if (' . $replaceElementIdString . '_audio_box) {
+			if (!' . $replaceElementIdString . '_audioTag || !' . $replaceElementIdString . '_audioTag.canPlayType || !(' . (count($supported) ? implode(' || ', $supported) : 'false') . ')) {
 					// Avoid showing an empty audio element
-				if (document.getElementById("') . $replaceElementIdString) . '_audio_element")) {
-					document.getElementById("') . $replaceElementIdString) . '_audio_element").style.display = "none";
+				if (document.getElementById("' . $replaceElementIdString . '_audio_element")) {
+					document.getElementById("' . $replaceElementIdString . '_audio_element").style.display = "none";
 				}
 				if (flashembed.getVersion()[0] > 0) {
-					var audioPlayer = flowplayer("') . $replaceElementIdString) . '_audio_box", ') . $flashConfiguration) . ', ') . $flowplayerAudioJsonConfig) . ').load();
+					var audioPlayer = flowplayer("' . $replaceElementIdString . '_audio_box", ' . $flashConfiguration . ', ' . $flowplayerAudioJsonConfig . ').load();
 					audioPlayer.onBeforeUnload(function () { return false; });
-					') . ($conf['type'] === 'video' ? 'audioPlayer.mute()' : '')) . '
+					' . ($conf['type'] === 'video' ? 'audioPlayer.mute()' : '') . '
 				} else {
 						// Neither Flash nor audio is available: offer to install Flash if this is not an audio description of a video
-					') . ($conf['type'] === 'video' ? '' : ((('flashembed("' . $replaceElementIdString) . '_audio_box", ') . $flashConfiguration) . ');')) . '
+					' . ($conf['type'] === 'video' ? '' : 'flashembed("' . $replaceElementIdString . '_audio_box", ' . $flashConfiguration . ');') . '
 				}
 			}
 		}';
@@ -659,43 +659,43 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			// Flowplayer eventHandlers for audio description synchronisation
 			$flowplayerHandlers = '';
 			if ($conf['type'] === 'video') {
-				$flowplayerHandlers = ((((((((((((((((((((((((((((((('
+				$flowplayerHandlers = '
 		if (flashembed.getVersion()[0] > 0) {
 				// Flash is available
-			var videoPlayer = flowplayer("' . $replaceElementIdString) . '_video");
+			var videoPlayer = flowplayer("' . $replaceElementIdString . '_video");
 			if (videoPlayer) {
 					// Control audio description through video control bar
-				videoPlayer.onVolume(function (volume) { flowplayer("') . $replaceElementIdString) . '_audio_box").setVolume(volume); });
-				videoPlayer.onMute(function () { flowplayer("') . $replaceElementIdString) . '_audio_box").mute(); });
-				videoPlayer.onUnmute(function () { flowplayer("') . $replaceElementIdString) . '_audio_box").unmute(); });
-				videoPlayer.onPause(function () { flowplayer("') . $replaceElementIdString) . '_audio_box").pause(); });
-				videoPlayer.onResume(function () { flowplayer("') . $replaceElementIdString) . '_audio_box").resume(); });
-				videoPlayer.onStart(function () { flowplayer("') . $replaceElementIdString) . '_audio_box").play(); });
-				videoPlayer.onStop(function () { flowplayer("') . $replaceElementIdString) . '_audio_box").stop(); });
-				videoPlayer.onSeek(function (clip, seconds) { flowplayer("') . $replaceElementIdString) . '_audio_box").seek(seconds); });
+				videoPlayer.onVolume(function (volume) { flowplayer("' . $replaceElementIdString . '_audio_box").setVolume(volume); });
+				videoPlayer.onMute(function () { flowplayer("' . $replaceElementIdString . '_audio_box").mute(); });
+				videoPlayer.onUnmute(function () { flowplayer("' . $replaceElementIdString . '_audio_box").unmute(); });
+				videoPlayer.onPause(function () { flowplayer("' . $replaceElementIdString . '_audio_box").pause(); });
+				videoPlayer.onResume(function () { flowplayer("' . $replaceElementIdString . '_audio_box").resume(); });
+				videoPlayer.onStart(function () { flowplayer("' . $replaceElementIdString . '_audio_box").play(); });
+				videoPlayer.onStop(function () { flowplayer("' . $replaceElementIdString . '_audio_box").stop(); });
+				videoPlayer.onSeek(function (clip, seconds) { flowplayer("' . $replaceElementIdString . '_audio_box").seek(seconds); });
 					// Mute audio description on start
-				flowplayer("') . $replaceElementIdString) . '_audio_box").onStart(function () { this.mute()});
+				flowplayer("' . $replaceElementIdString . '_audio_box").onStart(function () { this.mute()});
 					// Audio description toggle
-				var videoContainer = document.getElementById("') . $replaceElementIdString) . '_video");
+				var videoContainer = document.getElementById("' . $replaceElementIdString . '_video");
 				var buttonContainer = document.createElement("div");
 				$f.extend(buttonContainer, {
-					id: "') . $replaceElementIdString) . '_audio_description_toggle",
+					id: "' . $replaceElementIdString . '_audio_description_toggle",
 					className: "vjs-audio-description-control"
 				});
 				var button = document.createElement("div");
 				buttonContainer.appendChild(button);
 				buttonContainer.style.position = "relative";
-				buttonContainer.style.left = (parseInt(') . $width) . ', 10)-27) + "px";
+				buttonContainer.style.left = (parseInt(' . $width . ', 10)-27) + "px";
 				videoContainer.parentNode.insertBefore(buttonContainer, videoContainer.nextSibling);
 				VideoJS.addListener(buttonContainer, "click", function () {
-					var buttonContainer = document.getElementById("') . $replaceElementIdString) . '_audio_description_toggle");
+					var buttonContainer = document.getElementById("' . $replaceElementIdString . '_audio_description_toggle");
 					var state = buttonContainer.getAttribute("data-state");
 					if (state == "enabled") {
 						buttonContainer.setAttribute("data-state", "disabled");
-						flowplayer("') . $replaceElementIdString) . '_audio_box").mute();
+						flowplayer("' . $replaceElementIdString . '_audio_box").mute();
 					} else {
 						buttonContainer.setAttribute("data-state", "enabled");
-						flowplayer("') . $replaceElementIdString) . '_audio_box").unmute();
+						flowplayer("' . $replaceElementIdString . '_audio_box").unmute();
 					}
 				});
 			}
@@ -703,9 +703,9 @@ class FlowPlayerContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstract
 			}
 		}
 		// Wrap up inline JS code
-		$jsInlineCode = ($audioSourcesEmbedding . $videoSourcesEmbedding) . $flowplayerHandlers;
+		$jsInlineCode = $audioSourcesEmbedding . $videoSourcesEmbedding . $flowplayerHandlers;
 		if ($jsInlineCode) {
-			$jsInlineCode = (('VideoJS.DOMReady(function(){' . $jsInlineCode) . LF) . '});';
+			$jsInlineCode = 'VideoJS.DOMReady(function(){' . $jsInlineCode . LF . '});';
 		}
 		$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode($replaceElementIdString, $jsInlineCode);
 		if (isset($conf['stdWrap.'])) {

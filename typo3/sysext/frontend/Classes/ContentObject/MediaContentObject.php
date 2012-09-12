@@ -174,7 +174,7 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 		if ($conf['type'] === 'audio' && !isset($conf['audioSources'])) {
 			$renderType = 'swf';
 		}
-		if (($renderType !== 'qt' && $renderType !== 'embed') && $conf['type'] == 'video') {
+		if ($renderType !== 'qt' && $renderType !== 'embed' && $conf['type'] == 'video') {
 			if (isset($conf['file']) && (strpos($conf['file'], '.swf') !== FALSE || strpos($conf['file'], '://') !== FALSE && strpos(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($conf['file'], 2), 'application/x-shockwave-flash') !== FALSE)) {
 				$conf = array_merge((array) $conf['mimeConf.']['swfobject.'], $conf);
 				$conf[$conf['type'] . '.']['player'] = strpos($conf['file'], '://') === FALSE ? 'http://' . $conf['file'] : $conf['file'];
@@ -188,7 +188,7 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 					$conf['forcePlayer'] = 0;
 					$renderType = 'swf';
 				}
-			} elseif ((isset($conf['file']) && !isset($conf['caption'])) && !isset($conf['sources'])) {
+			} elseif (isset($conf['file']) && !isset($conf['caption']) && !isset($conf['sources'])) {
 				$renderType = 'swf';
 				$conf['forcePlayer'] = 1;
 			}
@@ -221,7 +221,7 @@ class MediaContentObject extends \TYPO3\CMS\Frontend\ContentObject\AbstractConte
 			$paramsArray = array_merge((array) $typeConf['default.']['params.'], (array) $conf['params.'], $conf['predefined']);
 			$conf['params'] = '';
 			foreach ($paramsArray as $key => $value) {
-				$conf['params'] .= (($key . '=') . $value) . LF;
+				$conf['params'] .= $key . '=' . $value . LF;
 			}
 			$content = $this->cObj->MULTIMEDIA($conf);
 			break;

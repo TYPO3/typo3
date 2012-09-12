@@ -92,7 +92,7 @@ class ShowImageController {
 		$this->md5 = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('md5');
 		// Check parameters
 		// If no file-param or parameters are given, we must exit
-		if ((!$this->file || !isset($parametersArray)) || !is_array($parametersArray)) {
+		if (!$this->file || !isset($parametersArray) || !is_array($parametersArray)) {
 			\TYPO3\CMS\Core\Utility\HttpUtility::setResponseCodeAndExit(\TYPO3\CMS\Core\Utility\HttpUtility::HTTP_STATUS_410);
 		}
 		$this->parametersEncoded = implode('', $parametersArray);
@@ -149,18 +149,18 @@ class ShowImageController {
 		$imgInfo = $img->imageMagickConvert($this->file, 'web', $this->width . $max, $this->height, $img->IMparams($this->effects), $this->frame, '');
 		// Create HTML output:
 		$this->content = '';
-		$this->content .= (((('
+		$this->content .= '
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 <html>
 <head>
-	<title>' . htmlspecialchars(($this->title ? $this->title : 'Image'))) . '</title>
-	') . ($this->title ? '' : '<meta name="robots" content="noindex,follow" />')) . '
+	<title>' . htmlspecialchars(($this->title ? $this->title : 'Image')) . '</title>
+	' . ($this->title ? '' : '<meta name="robots" content="noindex,follow" />') . '
 </head>
-		') . ($this->bodyTag ? $this->bodyTag : '<body>');
+		' . ($this->bodyTag ? $this->bodyTag : '<body>');
 		if (is_array($imgInfo)) {
 			$wrapParts = explode('|', $this->wrap);
-			$this->content .= (trim($wrapParts[0]) . $img->imgTag($imgInfo)) . trim($wrapParts[1]);
+			$this->content .= trim($wrapParts[0]) . $img->imgTag($imgInfo) . trim($wrapParts[1]);
 		}
 		$this->content .= '
 		</body>

@@ -95,7 +95,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 				$items = count($conf);
 			}
 			// TOTAL width
-			if ((($this->mconf['useLargestItemX'] || $this->mconf['useLargestItemY']) || $this->mconf['distributeX']) || $this->mconf['distributeY']) {
+			if ($this->mconf['useLargestItemX'] || $this->mconf['useLargestItemY'] || $this->mconf['distributeX'] || $this->mconf['distributeY']) {
 				$totalWH = $this->findLargestDims($conf, $items, $Hobjs, $Wobjs, $minDim, $maxDim);
 			}
 		}
@@ -154,14 +154,14 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 				if (count($totalWH) && ($this->mconf['distributeX'] || $this->mconf['distributeY'])) {
 					$tempXY = explode(',', $gifCreator->setup['XY']);
 					if ($this->mconf['distributeX']) {
-						$diff = ($this->mconf['distributeX'] - $totalWH['W_total']) - $distributeAccu['W'];
-						$compensate = round($diff / (($items - $c) + 1));
+						$diff = $this->mconf['distributeX'] - $totalWH['W_total'] - $distributeAccu['W'];
+						$compensate = round($diff / ($items - $c + 1));
 						$distributeAccu['W'] += $compensate;
 						$tempXY[0] = $totalWH['W'][$key] + $compensate;
 					}
 					if ($this->mconf['distributeY']) {
-						$diff = ($this->mconf['distributeY'] - $totalWH['H_total']) - $distributeAccu['H'];
-						$compensate = round($diff / (($items - $c) + 1));
+						$diff = $this->mconf['distributeY'] - $totalWH['H_total'] - $distributeAccu['H'];
+						$compensate = round($diff / ($items - $c + 1));
 						$distributeAccu['H'] += $compensate;
 						$tempXY[1] = $totalWH['H'][$key] + $compensate;
 					}
@@ -349,7 +349,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 	 * @todo Define visibility
 	 */
 	public function writeMenu() {
-		if (((is_array($this->menuArr) && is_array($this->result)) && count($this->result)) && is_array($this->result['NO'])) {
+		if (is_array($this->menuArr) && is_array($this->result) && count($this->result) && is_array($this->result['NO'])) {
 			// Create new tslib_cObj for our use
 			$this->WMcObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 			$this->WMresult = '';
@@ -363,7 +363,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 					$this->WMcObj->start($this->menuArr[$key], 'pages');
 					$this->I = array();
 					$this->I['key'] = $key;
-					$this->I['INPfix'] = (($this->imgNameNotRandom ? '' : '_' . $this->INPfixMD5) . '_') . $key;
+					$this->I['INPfix'] = ($this->imgNameNotRandom ? '' : '_' . $this->INPfixMD5) . '_' . $key;
 					$this->I['val'] = $this->result['NO'][$key];
 					$this->I['title'] = $this->getPageTitle($this->menuArr[$key]['title'], $this->menuArr[$key]['nav_title']);
 					$this->I['uid'] = $this->menuArr[$key]['uid'];
@@ -373,7 +373,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 					if (!$this->I['uid'] && !$this->menuArr[$key]['_OVERRIDE_HREF']) {
 						$this->I['spacer'] = 1;
 					}
-					$this->I['noLink'] = ($this->I['spacer'] || $this->I['val']['noLink']) || !count($this->menuArr[$key]);
+					$this->I['noLink'] = $this->I['spacer'] || $this->I['val']['noLink'] || !count($this->menuArr[$key]);
 					// !count($this->menuArr[$key]) means that this item is a dummyItem
 					$this->I['name'] = '';
 					// Set access key
@@ -395,12 +395,12 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 					}
 					// Set rollover
 					if ($this->result['RO'][$key] && !$this->I['noLink']) {
-						$this->I['theName'] = ($this->imgNamePrefix . $this->I['uid']) . $this->I['INPfix'];
-						$this->I['name'] = (((' ' . $this->nameAttribute) . '="') . $this->I['theName']) . '"';
-						$this->I['linkHREF']['onMouseover'] = (($this->WMfreezePrefix . 'over(\'') . $this->I['theName']) . '\');';
-						$this->I['linkHREF']['onMouseout'] = (($this->WMfreezePrefix . 'out(\'') . $this->I['theName']) . '\');';
-						$GLOBALS['TSFE']->JSImgCode .= ((((((LF . $this->I['theName']) . '_n=new Image(); ') . $this->I['theName']) . '_n.src = "') . $GLOBALS['TSFE']->absRefPrefix) . $this->I['val']['output_file']) . '"; ';
-						$GLOBALS['TSFE']->JSImgCode .= ((((((LF . $this->I['theName']) . '_h=new Image(); ') . $this->I['theName']) . '_h.src = "') . $GLOBALS['TSFE']->absRefPrefix) . $this->result['RO'][$key]['output_file']) . '"; ';
+						$this->I['theName'] = $this->imgNamePrefix . $this->I['uid'] . $this->I['INPfix'];
+						$this->I['name'] = ' ' . $this->nameAttribute . '="' . $this->I['theName'] . '"';
+						$this->I['linkHREF']['onMouseover'] = $this->WMfreezePrefix . 'over(\'' . $this->I['theName'] . '\');';
+						$this->I['linkHREF']['onMouseout'] = $this->WMfreezePrefix . 'out(\'' . $this->I['theName'] . '\');';
+						$GLOBALS['TSFE']->JSImgCode .= LF . $this->I['theName'] . '_n=new Image(); ' . $this->I['theName'] . '_n.src = "' . $GLOBALS['TSFE']->absRefPrefix . $this->I['val']['output_file'] . '"; ';
+						$GLOBALS['TSFE']->JSImgCode .= LF . $this->I['theName'] . '_h=new Image(); ' . $this->I['theName'] . '_h.src = "' . $GLOBALS['TSFE']->absRefPrefix . $this->result['RO'][$key]['output_file'] . '"; ';
 						$GLOBALS['TSFE']->imagesOnPage[] = $this->result['RO'][$key]['output_file'];
 						$GLOBALS['TSFE']->setJS('mouseOver');
 						$this->extProc_RO($key);
@@ -416,7 +416,7 @@ class GraphicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Menu\
 						$this->I['A1'] = '';
 						$this->I['A2'] = '';
 					}
-					$this->I['IMG'] = ((((((((((('<img src="' . $GLOBALS['TSFE']->absRefPrefix) . $this->I['val']['output_file']) . '" width="') . $this->I['val']['output_w']) . '" height="') . $this->I['val']['output_h']) . '" ') . \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getBorderAttr('border="0"')) . ($this->mconf['disableAltText'] ? '' : (' alt="' . htmlspecialchars($this->I['altText'])) . '"')) . $this->I['name']) . ($this->I['val']['imgParams'] ? ' ' . $this->I['val']['imgParams'] : '')) . ' />';
+					$this->I['IMG'] = '<img src="' . $GLOBALS['TSFE']->absRefPrefix . $this->I['val']['output_file'] . '" width="' . $this->I['val']['output_w'] . '" height="' . $this->I['val']['output_h'] . '" ' . \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::getBorderAttr('border="0"') . ($this->mconf['disableAltText'] ? '' : ' alt="' . htmlspecialchars($this->I['altText']) . '"') . $this->I['name'] . ($this->I['val']['imgParams'] ? ' ' . $this->I['val']['imgParams'] : '') . ' />';
 					// Make before, middle and after parts
 					$this->I['parts'] = array();
 					$this->I['parts']['ATag_begin'] = $this->I['A1'];
