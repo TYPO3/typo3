@@ -47,6 +47,11 @@ class ToggleExtensionInstallationStateViewHelper extends \TYPO3\CMS\Fluid\ViewHe
 	 * @return string the rendered a tag
 	 */
 	public function render($extension) {
+			// Required extensions can't be activated or deactivated
+		if ($extension['internal'] == 1) {
+			return '';
+		}
+		
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$action = 'toggleExtensionInstallationState';
 		$uri = $uriBuilder->reset()->uriFor($action, array(
