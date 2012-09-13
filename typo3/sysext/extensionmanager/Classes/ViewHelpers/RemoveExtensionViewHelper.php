@@ -47,7 +47,10 @@ class RemoveExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Action
 	 * @return string the rendered a tag
 	 */
 	public function render($extension) {
-		if (!in_array($extension['type'], \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallTypes())) {
+		if (
+			!in_array($extension['type'], \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallTypes()) ||
+			$extension['type'] === 'System'
+		) {
 			return '';
 		}
 		$uriBuilder = $this->controllerContext->getUriBuilder();
