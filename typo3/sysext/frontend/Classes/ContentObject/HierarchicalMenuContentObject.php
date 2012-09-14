@@ -48,12 +48,6 @@ class HierarchicalMenuContentObject extends \TYPO3\CMS\Frontend\ContentObject\Ab
 			try {
 				$menuObjectFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\MenuContentObjectFactory');
 				$menu = $menuObjectFactory->getMenuObjectByType($menuType);
-				if (isset($conf['excludeUidList.'])) {
-					$conf['excludeUidList'] = $this->cObj->stdWrap($conf['excludeUidList'], $conf['excludeUidList.']);
-				}
-				if (isset($conf['special.']['value.'])) {
-					$conf['special.']['value'] = $this->cObj->stdWrap($conf['special.']['value'], $conf['special.']['value.']);
-				}
 				$GLOBALS['TSFE']->register['count_HMENU']++;
 				$GLOBALS['TSFE']->register['count_HMENU_MENUOBJ'] = 0;
 				$GLOBALS['TSFE']->register['count_MENUOBJ'] = 0;
