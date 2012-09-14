@@ -1674,12 +1674,16 @@ class AbstractMenuContentObject {
 	 * @todo Define visibility
 	 */
 	public function getBannedUids() {
-		$banUidArray = array();
-		if (trim($this->conf['excludeUidList'])) {
-			$banUidList = str_replace('current', $GLOBALS['TSFE']->page['uid'], $this->conf['excludeUidList']);
-			$banUidArray = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $banUidList);
+		$excludeUidList = isset($this->conf['excludeUidList.'])
+			? $this->parent_cObj->stdWrap($this->conf['excludeUidList'], $this->conf['excludeUidList.'])
+			: $this->conf['excludeUidList'];
+
+		if (!trim($excludeUidList)) {
+			return array();
 		}
-		return $banUidArray;
+
+		$banUidList = str_replace('current', $GLOBALS['TSFE']->page['uid'], $excludeUidList);
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $banUidList);
 	}
 
 	/**
