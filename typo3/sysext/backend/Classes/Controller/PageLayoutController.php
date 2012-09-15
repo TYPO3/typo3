@@ -349,6 +349,31 @@ class PageLayoutController {
 	}
 
 	/**
+	 * Gets the title of current page considering localization
+	 *
+	 * @return string $title
+	 */
+	protected function getLocalizedPageTitle() {
+		if ($this->current_sys_language > 0) {
+			$overlayRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+				'*',
+				'pages_language_overlay',
+				'pid = ' . intval($this->id) .
+						' AND sys_language_uid = ' . intval($this->current_sys_language) .
+						\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay') .
+						\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
+				'',
+				'',
+				'',
+				'sys_language_uid'
+			);
+			return $overlayRecord['title'];
+		} else {
+			return $this->pageinfo['title'];
+		}
+	}
+
+	/**
 	 * Main function.
 	 * Creates some general objects and calls other functions for the main rendering of module content.
 	 *
@@ -464,22 +489,28 @@ class PageLayoutController {
 						DTM_origClass = "";
 				}
 			');
-			// Setting doc-header
+
+				// Setting doc-header
 			$this->doc->form = ('<form action="' . htmlspecialchars(((('db_layout.php?id=' . $this->id) . '&imagemode=') . $this->imagemode))) . '" method="post">';
-			// Creating the top function menu:
+
+				// Creating the top function menu:
 			$this->topFuncMenu = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'], 'db_layout.php', '');
 			$this->languageMenu = count($this->MOD_MENU['language']) > 1 ? $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.xml:LGL.language', 1) . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[language]', $this->current_sys_language, $this->MOD_MENU['language'], 'db_layout.php', '') : '';
-			// Find backend layout / coumns
+
+				// Find backend layout / coumns
 			$backendLayout = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction('TYPO3\\CMS\\Backend\\View\\BackendLayoutView->getSelectedBackendLayout', $this->id, $this);
 			if (count($backendLayout['__colPosList'])) {
 				$this->colPosList = implode(',', $backendLayout['__colPosList']);
 			}
-			// Removing duplicates, if any
+
+				// Removing duplicates, if any
 			$this->colPosList = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->colPosList)));
-			// Page title
-			$body = $this->doc->header($this->pageinfo['title']);
+
+				// Page title
+			$body = $this->doc->header($this->getLocalizedPageTitle());
 			$body .= $this->getHeaderFlashMessagesForCurrentPid();
-			// Render the primary module content:
+
+				// Render the primary module content:
 			if ($this->MOD_SETTINGS['function'] == 0) {
 				// QuickEdit
 				$body .= $this->renderQuickEdit();
@@ -487,7 +518,8 @@ class PageLayoutController {
 				// All other listings
 				$body .= $this->renderListContent();
 			}
-			// Setting up the buttons and markers for docheader
+
+				// Setting up the buttons and markers for docheader
 			$docHeaderButtons = $this->getButtons($this->MOD_SETTINGS['function'] == 0 ? 'quickEdit' : '');
 			$markers = array(
 				'CSH' => $docHeaderButtons['csh'],
