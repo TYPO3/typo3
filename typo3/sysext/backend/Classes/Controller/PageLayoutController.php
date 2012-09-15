@@ -373,6 +373,30 @@ class PageLayoutController {
 	}
 
 	/**
+	 *
+	 * @return string $title
+	 */
+	protected function getLocalizedPageTitle() {
+		if ($this->current_sys_language > 0) {
+			$overlayRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+				'title',
+				'pages_language_overlay',
+				'pid = ' . intval($this->id) .
+						' AND sys_language_uid = ' . intval($this->current_sys_language) .
+						\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay') .
+						\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
+				'',
+				'',
+				'',
+				'sys_language_uid'
+			);
+			return $overlayRecord['title'];
+		} else {
+			return $this->pageinfo['title'];
+		}
+	}
+
+	/**
 	 * Main function.
 	 * Creates some general objects and calls other functions for the main rendering of module content.
 	 *
@@ -501,7 +525,7 @@ class PageLayoutController {
 			// Removing duplicates, if any
 			$this->colPosList = implode(',', array_unique(\TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $this->colPosList)));
 			// Page title
-			$body = $this->doc->header($this->pageinfo['title']);
+			$body = $this->doc->header($this->getLocalizedPageTitle());
 			$body .= $this->getHeaderFlashMessagesForCurrentPid();
 			// Render the primary module content:
 			if ($this->MOD_SETTINGS['function'] == 0) {
