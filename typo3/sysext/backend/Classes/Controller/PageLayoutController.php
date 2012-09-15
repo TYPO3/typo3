@@ -975,11 +975,35 @@ class PageLayoutController {
 			if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->eRParts[1])) {
 				$buttons['move_record'] = ((('<a href="' . htmlspecialchars((((((($GLOBALS['BACK_PATH'] . 'move_el.php?table=') . $this->eRParts[0]) . '&uid=') . $this->eRParts[1]) . '&returnUrl=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))))) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon((('actions-' . ($this->eRParts[0] == 'tt_content' ? 'document' : 'page')) . '-move'), array('class' => 'c-inputButton', 'title' => $GLOBALS['LANG']->getLL(('move_' . ($this->eRParts[0] == 'tt_content' ? 'record' : 'page')), 1)))) . '</a>';
 			}
-			// Edit page properties
+
+				// Edit page properties
 			if ($this->CALC_PERMS & 2) {
-				$params = ('&edit[pages][' . $this->id) . ']=edit';
-				$buttons['edit_page'] = ((((('<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH']))) . '" title="') . $GLOBALS['LANG']->getLL('editPageProperties', TRUE)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-open')) . '</a>';
+					// Edit localized page_language_overlay only in Columns mode and non-default language
+				if ($this->MOD_SETTINGS['function'] == 1 && $this->current_sys_language > 0) {
+					$overlayRecord = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow(
+						'uid',
+						'pages_language_overlay',
+						'pid = ' . intval($this->id) . ' ' .
+						'AND sys_language_uid = ' . intval($this->current_sys_language) .
+						\TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages_language_overlay') .
+						\TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages_language_overlay'),
+						'',
+						'',
+						'',
+						'sys_language_uid'
+					);
+
+					$params = '&edit[pages_language_overlay][' . $overlayRecord['uid'] . ']=edit';
+				} else {
+					$params = '&edit[pages][' . $this->id . ']=edit';
+				}
+
+				$buttons['edit_page'] = '<a href="#" ' .
+						'onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'])) . '" ' .
+						'title="' . $GLOBALS['LANG']->getLL('editPageProperties', TRUE) . '">' .
+						\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-page-open') . '</a>';
 			}
+
 			// Add CSH (Context Sensitive Help) icon to tool bar
 			if ($function == 'quickEdit') {
 				$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem($this->descrTable, 'quickEdit', $GLOBALS['BACK_PATH'], '', TRUE, 'margin-top: 0px; margin-bottom: 0px;');
