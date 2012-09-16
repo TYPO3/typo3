@@ -42,7 +42,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	 */
 	public function tearDown() {
 		foreach ($this->fakedExtensions as $extension => $dummy) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir((PATH_site . 'typo3conf/ext/') . $extension, TRUE);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3conf/ext/' . $extension, TRUE);
 		}
 	}
 
@@ -55,8 +55,8 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	 */
 	protected function createFakeExtension($extkeyOnly = FALSE) {
 		$extKey = strtolower(uniqid('testing'));
-		$absExtPath = ((PATH_site . 'typo3conf/ext/') . $extKey) . '/';
-		$relPath = ('typo3conf/ext/' . $extKey) . '/';
+		$absExtPath = PATH_site . 'typo3conf/ext/' . $extKey . '/';
+		$relPath = 'typo3conf/ext/' . $extKey . '/';
 		$this->fakedExtensions[$extKey] = array(
 			'siteRelPath' => $relPath,
 			'siteAbsPath' => $absExtPath
@@ -75,7 +75,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	public function makeAndClearExtensionDirRemovesExtensionDirIfAlreadyExists() {
 		$extKey = $this->createFakeExtension();
 		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('removeDirectory', 'addDirectory'));
-		$fileHandlerMock->expects($this->once())->method('removeDirectory')->with(((PATH_site . 'typo3conf/ext/') . $extKey) . '/');
+		$fileHandlerMock->expects($this->once())->method('removeDirectory')->with(PATH_site . 'typo3conf/ext/' . $extKey . '/');
 		$fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);
 	}
 
@@ -86,7 +86,7 @@ class FileHandlingUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase
 	public function makeAndClearExtensionDirAddsDir() {
 		$extKey = $this->createFakeExtension();
 		$fileHandlerMock = $this->getAccessibleMock('TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility', array('removeDirectory', 'addDirectory'));
-		$fileHandlerMock->expects($this->once())->method('addDirectory')->with(((PATH_site . 'typo3conf/ext/') . $extKey) . '/');
+		$fileHandlerMock->expects($this->once())->method('addDirectory')->with(PATH_site . 'typo3conf/ext/' . $extKey . '/');
 		$fileHandlerMock->_call('makeAndClearExtensionDir', $extKey);
 	}
 

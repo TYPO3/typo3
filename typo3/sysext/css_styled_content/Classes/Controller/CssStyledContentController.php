@@ -93,14 +93,14 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			// Split into single lines:
 			$lines = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $content);
 			foreach ($lines as &$val) {
-				$val = ('<li>' . $this->cObj->stdWrap($val, $conf['innerStdWrap.'])) . '</li>';
+				$val = '<li>' . $this->cObj->stdWrap($val, $conf['innerStdWrap.']) . '</li>';
 			}
 			unset($val);
 			// Set header type:
 			$type = intval($this->cObj->data['layout']);
 			// Compile list:
-			$out = ((('
-				<ul class="csc-bulletlist csc-bulletlist-' . $type) . '">') . implode('', $lines)) . '
+			$out = '
+				<ul class="csc-bulletlist csc-bulletlist-' . $type . '">' . implode('', $lines) . '
 				</ul>';
 			// Calling stdWrap:
 			if ($conf['stdWrap.']) {
@@ -153,7 +153,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			}
 			// Generate id prefix for accessible header
 			$headerScope = $headerPos == 'top' ? 'col' : 'row';
-			$headerIdPrefix = ($headerScope . $this->cObj->data['uid']) . '-';
+			$headerIdPrefix = $headerScope . $this->cObj->data['uid'] . '-';
 			// Split into single lines (will become table-rows):
 			$rows = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $content);
 			reset($rows);
@@ -166,57 +166,57 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$newCells = array();
 				for ($a = 0; $a < $cols; $a++) {
 					// Remove quotes if needed
-					if (($quotedInput && substr($cells[$a], 0, 1) == $quotedInput) && substr($cells[$a], -1, 1) == $quotedInput) {
+					if ($quotedInput && substr($cells[$a], 0, 1) == $quotedInput && substr($cells[$a], -1, 1) == $quotedInput) {
 						$cells[$a] = substr($cells[$a], 1, -1);
 					}
 					if (!strcmp(trim($cells[$a]), '')) {
 						$cells[$a] = '&nbsp;';
 					}
-					$cellAttribs = $noStyles ? '' : ($a > 0 && $cols - 1 == $a ? (' class="td-last td-' . $a) . '"' : (' class="td-' . $a) . '"');
+					$cellAttribs = $noStyles ? '' : ($a > 0 && $cols - 1 == $a ? ' class="td-last td-' . $a . '"' : ' class="td-' . $a . '"');
 					if ($headerPos == 'top' && !$k || $headerPos == 'left' && !$a) {
-						$scope = (' scope="' . $headerScope) . '"';
-						$scope .= ((' id="' . $headerIdPrefix) . ($headerScope == 'col' ? $a : $k)) . '"';
-						$newCells[$a] = (((('
-							<th' . $cellAttribs) . $scope) . '>') . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.'])) . '</th>';
+						$scope = ' scope="' . $headerScope . '"';
+						$scope .= ' id="' . $headerIdPrefix . ($headerScope == 'col' ? $a : $k) . '"';
+						$newCells[$a] = '
+							<th' . $cellAttribs . $scope . '>' . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']) . '</th>';
 					} else {
 						if (empty($headerPos)) {
 							$accessibleHeader = '';
 						} else {
-							$accessibleHeader = ((' headers="' . $headerIdPrefix) . ($headerScope == 'col' ? $a : $k)) . '"';
+							$accessibleHeader = ' headers="' . $headerIdPrefix . ($headerScope == 'col' ? $a : $k) . '"';
 						}
-						$newCells[$a] = (((('
-							<td' . $cellAttribs) . $accessibleHeader) . '>') . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.'])) . '</td>';
+						$newCells[$a] = '
+							<td' . $cellAttribs . $accessibleHeader . '>' . $this->cObj->stdWrap($cells[$a], $conf['innerStdWrap.']) . '</td>';
 					}
 				}
 				if (!$noStyles) {
 					$oddEven = $k % 2 ? 'tr-odd' : 'tr-even';
-					$rowAttribs = $k > 0 && $rCount - 1 == $k ? (' class="' . $oddEven) . ' tr-last"' : (((' class="' . $oddEven) . ' tr-') . $k) . '"';
+					$rowAttribs = $k > 0 && $rCount - 1 == $k ? ' class="' . $oddEven . ' tr-last"' : ' class="' . $oddEven . ' tr-' . $k . '"';
 				}
-				$rows[$k] = ((('
-					<tr' . $rowAttribs) . '>') . implode('', $newCells)) . '
+				$rows[$k] = '
+					<tr' . $rowAttribs . '>' . implode('', $newCells) . '
 					</tr>';
 			}
 			$addTbody = 0;
 			$tableContents = '';
 			if ($caption) {
-				$tableContents .= ('
-					<caption>' . $caption) . '</caption>';
+				$tableContents .= '
+					<caption>' . $caption . '</caption>';
 			}
 			if ($headerPos == 'top' && $rows[0]) {
-				$tableContents .= ('<thead>' . $rows[0]) . '
+				$tableContents .= '<thead>' . $rows[0] . '
 					</thead>';
 				unset($rows[0]);
 				$addTbody = 1;
 			}
 			if ($useTfoot) {
-				$tableContents .= ('
-					<tfoot>' . $rows[($rCount - 1)]) . '</tfoot>';
+				$tableContents .= '
+					<tfoot>' . $rows[($rCount - 1)] . '</tfoot>';
 				unset($rows[$rCount - 1]);
 				$addTbody = 1;
 			}
 			$tmpTable = implode('', $rows);
 			if ($addTbody) {
-				$tmpTable = ('<tbody>' . $tmpTable) . '</tbody>';
+				$tmpTable = '<tbody>' . $tmpTable . '</tbody>';
 			}
 			$tableContents .= $tmpTable;
 			// Set header type:
@@ -224,13 +224,13 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			// Table tag params.
 			$tableTagParams = $this->getTableAttributes($conf, $type);
 			if (!$noStyles) {
-				$tableTagParams['class'] = (('contenttable contenttable-' . $type) . ($tableClass ? ' ' . $tableClass : '')) . $tableTagParams['class'];
+				$tableTagParams['class'] = 'contenttable contenttable-' . $type . ($tableClass ? ' ' . $tableClass : '') . $tableTagParams['class'];
 			} elseif ($tableClass) {
 				$tableTagParams['class'] = $tableClass;
 			}
 			// Compile table output:
-			$out = ((('
-				<table ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($tableTagParams)) . '>') . $tableContents) . '
+			$out = '
+				<table ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($tableTagParams) . '>' . $tableContents . '
 				</table>';
 			// Calling stdWrap:
 			if ($conf['stdWrap.']) {
@@ -367,7 +367,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 					// Table tag params
 					$tableTagParams = $this->getTableAttributes($conf, $type);
 					$tableTagParams['class'] = 'csc-uploads csc-uploads-' . $type;
-					$outerWrap = ('<table ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($tableTagParams)) . '>|</table>';
+					$outerWrap = '<table ' . \TYPO3\CMS\Core\Utility\GeneralUtility::implodeAttributes($tableTagParams) . '>|</table>';
 				}
 				// Compile it all into table tags:
 				$out = $this->cObj->wrap(implode('', $outputEntries), $outerWrap);
@@ -439,7 +439,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			// This much width is available for the remaining images in this row (int)
 			$availableWidth = $netW - $accumWidth;
 			// Theoretical width of resized image. (float)
-			$desiredWidth = ($netW / $relUnitCount) * $colRelations[$a];
+			$desiredWidth = $netW / $relUnitCount * $colRelations[$a];
 			// Add this width. $accumDesiredWidth becomes the desired horizontal position
 			$accumDesiredWidth += $desiredWidth;
 			// Calculate width by comparing actual and desired horizontal position.
@@ -499,7 +499,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		}
 		$imgPath = $this->cObj->stdWrap($conf['imgPath'], $conf['imgPath.']);
 		// Does we need to render a "global caption" (below the whole image block)?
-		$renderGlobalCaption = (!$conf['captionSplit'] && !$conf['imageTextSplit']) && is_array($conf['caption.']);
+		$renderGlobalCaption = !$conf['captionSplit'] && !$conf['imageTextSplit'] && is_array($conf['caption.']);
 		if ($imgCount == 1) {
 			// If we just have one image, the caption relates to the image, so it is not "global"
 			$renderGlobalCaption = FALSE;
@@ -559,7 +559,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 		// Max Width
 		$maxW = intval($this->cObj->stdWrap($conf['maxW'], $conf['maxW.']));
 		$maxWInText = intval($this->cObj->stdWrap($conf['maxWInText'], $conf['maxWInText.']));
-		$fiftyPercentWidthInText = round(($maxW / 100) * 50);
+		$fiftyPercentWidthInText = round($maxW / 100 * 50);
 		// in Text
 		if ($contentPosition >= 16) {
 			if (!$maxWInText) {
@@ -570,7 +570,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			}
 		}
 		// max usuable width for images (without spacers and borders)
-		$netW = ($maxW - $colspacing * ($colCount - 1)) - (($colCount * $border) * ($borderThickness + $borderSpace)) * 2;
+		$netW = $maxW - $colspacing * ($colCount - 1) - $colCount * $border * ($borderThickness + $borderSpace) * 2;
 		// Specify the maximum width for each column
 		$columnWidths = $this->getImgColumnWidths($conf, $colCount, $netW);
 		$image_compression = intval($this->cObj->stdWrap($conf['image_compression'], $conf['image_compression.']));
@@ -669,7 +669,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$titleText = trim($this->cObj->stdWrap($imgConf['titleText'], $imgConf['titleText.']));
 				if ($titleText) {
 					// This will be used by the IMAGE call later:
-					$GLOBALS['TSFE']->ATagParams .= (' title="' . $titleText) . '"';
+					$GLOBALS['TSFE']->ATagParams .= ' title="' . $titleText . '"';
 				}
 			}
 			if ($imgConf || $imgConf['file']) {
@@ -720,7 +720,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			}
 		}
 		// How much space will the image-block occupy?
-		$imageBlockWidth = (max($imageRowsFinalWidths) + $colspacing * ($colCount - 1)) + (($colCount * $border) * ($borderSpace + $borderThickness)) * 2;
+		$imageBlockWidth = max($imageRowsFinalWidths) + $colspacing * ($colCount - 1) + $colCount * $border * ($borderSpace + $borderThickness) * 2;
 		$GLOBALS['TSFE']->register['rowwidth'] = $imageBlockWidth;
 		$GLOBALS['TSFE']->register['rowWidthPlusTextMargin'] = $imageBlockWidth + $textMargin;
 		// noRows is in fact just one ROW, with the amount of columns specified, where the images are placed in.
@@ -856,17 +856,17 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			}
 			// Set the margin for image + text, no wrap always to avoid multiple stylesheets
 			$noWrapMargin = (int) (($maxWInText ? $maxWInText : $fiftyPercentWidthInText) + intval($this->cObj->stdWrap($conf['textMargin'], $conf['textMargin.'])));
-			$this->addPageStyle('.csc-textpic-intext-right-nowrap .csc-textpic-text', ('margin-right: ' . $noWrapMargin) . 'px;');
-			$this->addPageStyle('.csc-textpic-intext-left-nowrap .csc-textpic-text', ('margin-left: ' . $noWrapMargin) . 'px;');
+			$this->addPageStyle('.csc-textpic-intext-right-nowrap .csc-textpic-text', 'margin-right: ' . $noWrapMargin . 'px;');
+			$this->addPageStyle('.csc-textpic-intext-left-nowrap .csc-textpic-text', 'margin-left: ' . $noWrapMargin . 'px;');
 			// Beside Text where the image block width is not equal to maxW
 			if ($contentPosition == 24 && $maxW != $imageBlockWidth) {
 				$noWrapMargin = $imageBlockWidth + $textMargin;
 				// Beside Text, Right
 				if ($imagePosition == 1) {
-					$this->addPageStyle(('.csc-textpic-intext-right-nowrap-' . $noWrapMargin) . ' .csc-textpic-text', ('margin-right: ' . $noWrapMargin) . 'px;');
+					$this->addPageStyle('.csc-textpic-intext-right-nowrap-' . $noWrapMargin . ' .csc-textpic-text', 'margin-right: ' . $noWrapMargin . 'px;');
 					$classes[] = 'csc-textpic-intext-right-nowrap-' . $noWrapMargin;
 				} elseif ($imagePosition == 2) {
-					$this->addPageStyle(('.csc-textpic-intext-left-nowrap-' . $noWrapMargin) . ' .csc-textpic-text', ('margin-left: ' . $noWrapMargin) . 'px;');
+					$this->addPageStyle('.csc-textpic-intext-left-nowrap-' . $noWrapMargin . ' .csc-textpic-text', 'margin-left: ' . $noWrapMargin . 'px;');
 					$classes[] = 'csc-textpic-intext-left-nowrap-' . $noWrapMargin;
 				}
 			}
@@ -913,9 +913,9 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 					}
 					// Render one image
 					if ($origImages[$imgKey][0] == 0) {
-						$imageSpace = $this->cObj->data['imagewidth'] + ($border * ($borderSpace + $borderThickness)) * 2;
+						$imageSpace = $this->cObj->data['imagewidth'] + $border * ($borderSpace + $borderThickness) * 2;
 					} else {
-						$imageSpace = $origImages[$imgKey][0] + ($border * ($borderSpace + $borderThickness)) * 2;
+						$imageSpace = $origImages[$imgKey][0] + $border * ($borderSpace + $borderThickness) * 2;
 					}
 					$GLOBALS['TSFE']->register['IMAGE_NUM'] = $imgKey;
 					$GLOBALS['TSFE']->register['IMAGE_NUM_CURRENT'] = $imgKey;
@@ -1048,10 +1048,10 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$constant = (int) $configuration['constant'];
 			if ($configuration['space'] === 'before') {
 				$value = $constant + $this->cObj->data['spaceBefore'];
-				$declaration = ('margin-top: ' . $value) . 'px;';
+				$declaration = 'margin-top: ' . $value . 'px;';
 			} else {
 				$value = $constant + $this->cObj->data['spaceAfter'];
-				$declaration = ('margin-bottom: ' . $value) . 'px;';
+				$declaration = 'margin-bottom: ' . $value . 'px;';
 			}
 			if (!empty($value)) {
 				if ($configuration['stdWrap.']) {
@@ -1092,7 +1092,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$pos = strrpos($linkText, '.');
 			$linkText = substr($linkText, 0, $pos);
 		}
-		$links[1] = str_replace(('>' . $fileName) . '<', ('>' . htmlspecialchars($linkText)) . '<', $links[1]);
+		$links[1] = str_replace('>' . $fileName . '<', '>' . htmlspecialchars($linkText) . '<', $links[1]);
 		return $links;
 	}
 
@@ -1106,7 +1106,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 	 */
 	public function getTableAttributes($conf, $type) {
 		// Initializing:
-		$tableTagParams_conf = $conf[('tableParams_' . $type) . '.'];
+		$tableTagParams_conf = $conf['tableParams_' . $type . '.'];
 		$border = $this->cObj->data['table_border'] ? intval($this->cObj->data['table_border']) : $tableTagParams_conf['border'];
 		$cellSpacing = $this->cObj->data['table_cellspacing'] ? intval($this->cObj->data['table_cellspacing']) : $tableTagParams_conf['cellspacing'];
 		$cellPadding = $this->cObj->data['table_cellpadding'] ? intval($this->cObj->data['table_cellpadding']) : $tableTagParams_conf['cellpadding'];
@@ -1125,7 +1125,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			if ($border) {
 				// Border property has changed, now with class
 				$borderClass = 'contenttable-border-' . $border;
-				$borderDeclaration = ('border-width: ' . $border) . 'px; border-style: solid;';
+				$borderDeclaration = 'border-width: ' . $border . 'px; border-style: solid;';
 				$this->addPageStyle('.' . $borderClass, $borderDeclaration);
 				$classes[] = $borderClass;
 			}
@@ -1134,15 +1134,15 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$tableTagParams['border'] = 1;
 				// Use CSS3 border-spacing in class to have cell spacing
 				$cellSpacingClass = 'contenttable-cellspacing-' . $cellSpacing;
-				$cellSpacingDeclaration = ('border-spacing: ' . $cellSpacing) . 'px;';
+				$cellSpacingDeclaration = 'border-spacing: ' . $cellSpacing . 'px;';
 				$this->addPageStyle('.' . $cellSpacingClass, $cellSpacingDeclaration);
 				$classes[] = $cellSpacingClass;
 			}
 			if ($cellPadding) {
 				// Cell padding property has changed, now with class
 				$cellPaddingClass = 'contenttable-cellpadding-' . $cellPadding;
-				$cellSpacingSelector = ((('.' . $cellPaddingClass) . ' td, .') . $cellPaddingClass) . ' th';
-				$cellPaddingDeclaration = ('padding: ' . $cellPadding) . 'px;';
+				$cellSpacingSelector = '.' . $cellPaddingClass . ' td, .' . $cellPaddingClass . ' th';
+				$cellPaddingDeclaration = 'padding: ' . $cellPadding . 'px;';
 				$this->addPageStyle($cellSpacingSelector, $cellPaddingDeclaration);
 				$classes[] = $cellPaddingClass;
 			}
@@ -1174,7 +1174,7 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 			$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'] = array();
 		}
 		if (!isset($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'][$selector])) {
-			$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'][$selector] = (((TAB . $selector) . ' { ') . $declaration) . ' }';
+			$GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_cssstyledcontent.']['_CSS_PAGE_STYLE'][$selector] = TAB . $selector . ' { ' . $declaration . ' }';
 		}
 	}
 

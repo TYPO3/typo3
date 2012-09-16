@@ -56,7 +56,7 @@ class TerUtility {
 	 */
 	public function fetchExtension($extensionKey, $version, $expectedMd5, $mirrorUrl) {
 		$extensionPath = \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($extensionKey);
-		$mirrorUrl .= (((((($extensionPath[0] . '/') . $extensionPath[1]) . '/') . $extensionPath) . '_') . $version) . '.t3x';
+		$mirrorUrl .= $extensionPath[0] . '/' . $extensionPath[1] . '/' . $extensionPath . '_' . $version . '.t3x';
 		$t3x = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($mirrorUrl, 0, array(TYPO3_user_agent));
 		$md5 = md5($t3x);
 		if ($t3x === FALSE) {
@@ -66,7 +66,7 @@ class TerUtility {
 			// Fetch and return:
 			$extensionData = $this->decodeExchangeData($t3x);
 		} else {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException((('Error: MD5 hash of downloaded file not as expected:<br />' . $md5) . ' != ') . $expectedMd5, 1334426098);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Error: MD5 hash of downloaded file not as expected:<br />' . $md5 . ' != ' . $expectedMd5, 1334426098);
 		}
 		return $extensionData;
 	}

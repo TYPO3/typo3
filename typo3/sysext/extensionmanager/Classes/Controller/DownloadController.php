@@ -121,7 +121,7 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 			// @todo translate and beautify
 			$message = 'The following dependencies have to be resolved before installation:<br /><br />';
 			foreach ($dependencyTypes as $dependencyType => $dependencies) {
-				$message .= ('<h3>Extensions marked for ' . $dependencyType) . ':</h3>';
+				$message .= '<h3>Extensions marked for ' . $dependencyType . ':</h3>';
 				foreach ($dependencies as $extensionKey => $dependency) {
 					$message .= $extensionKey . '<br />';
 				}
