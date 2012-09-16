@@ -100,7 +100,7 @@ class AddFlexFormsToAclUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 		// Get all access lists from groups which are allowed to select or modify the content-table
 		$search = $GLOBALS['TYPO3_DB']->escapeStrForLike($contentTable, 'be_groups');
 		$where = 'deleted = 0 AND non_exclude_fields IS NOT NULL AND non_exclude_fields != ""';
-		$where .= (((' AND (tables_select LIKE "%' . $search) . '%" OR tables_modify LIKE "%') . $search) . '%")';
+		$where .= ' AND (tables_select LIKE "%' . $search . '%" OR tables_modify LIKE "%' . $search . '%")';
 		$accessLists = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, non_exclude_fields', 'be_groups', $where);
 		if (empty($accessLists)) {
 			return array();
@@ -121,7 +121,7 @@ class AddFlexFormsToAclUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 							if (empty($field['TCEforms']['exclude'])) {
 								continue;
 							}
-							$flexExcludeFields[] = ((((((($contentTable . ':') . $tableField) . ';') . $flexFormIdentifier) . ';') . $sheetName) . ';') . $fieldName;
+							$flexExcludeFields[] = $contentTable . ':' . $tableField . ';' . $flexFormIdentifier . ';' . $sheetName . ';' . $fieldName;
 						}
 					}
 				}
@@ -163,7 +163,7 @@ class AddFlexFormsToAclUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 			$nonExcludeFields = $result['non_exclude_fields'];
 			// Now add new ones
 			$flexExcludeFields = implode(',', $flexExcludeFields);
-			$nonExcludeFields = trim(($nonExcludeFields . ',') . $flexExcludeFields, ', ');
+			$nonExcludeFields = trim($nonExcludeFields . ',' . $flexExcludeFields, ', ');
 			// Finally override with new fields
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('be_groups', 'uid=' . (int) $groupUID, array('non_exclude_fields' => $nonExcludeFields));
 			// Get last executed query

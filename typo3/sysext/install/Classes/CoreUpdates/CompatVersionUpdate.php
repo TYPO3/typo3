@@ -45,11 +45,11 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	public function checkForUpdate(&$description) {
 		global $TYPO3_CONF_VARS;
 		if (!$this->compatVersionIsCurrent()) {
-			$description = ('
+			$description = '
 				<p>
 					Your current TYPO3 installation is configured to
 					<strong>behave like version
-					' . htmlspecialchars($TYPO3_CONF_VARS['SYS']['compat_version'])) . '
+					' . htmlspecialchars($TYPO3_CONF_VARS['SYS']['compat_version']) . '
 					</strong> of TYPO3. If you just upgraded from this version,
 					you most likely want to <strong>use new features</strong> as
 					well.
@@ -75,7 +75,7 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	public function getUserInput($inputPrefix) {
 		global $TYPO3_CONF_VARS;
 		if ($this->compatVersionIsCurrent()) {
-			$content = ('
+			$content = '
 				<fieldset>
 					<ol>
 						<li>
@@ -83,7 +83,7 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 						</li>
 						<li>
 							<label for="version">Select the version where you have upgraded from:</label>
-							<select name="' . $inputPrefix) . '[version]" id="version">
+							<select name="' . $inputPrefix . '[version]" id="version">
 			';
 			$versions = array(
 				'3.8' => '<= 3.8',
@@ -94,8 +94,8 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 				'4.5' => '<= 4.5'
 			);
 			foreach ($versions as $singleVersion => $caption) {
-				$content .= ((('
-								<option value="' . $singleVersion) . '">') . $caption) . '</option>
+				$content .= '
+								<option value="' . $singleVersion . '">' . $caption . '</option>
 				';
 			}
 			$content .= '
@@ -105,9 +105,9 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 				</fieldset>
 			';
 		} else {
-			$content = ('
+			$content = '
 				<p>
-					TYPO3 output is currently compatible to version ' . htmlspecialchars($TYPO3_CONF_VARS['SYS']['compat_version'])) . '.
+					TYPO3 output is currently compatible to version ' . htmlspecialchars($TYPO3_CONF_VARS['SYS']['compat_version']) . '.
 					To use all the new features in the current TYPO3 version,
 					make sure you follow the guidelines below to upgrade without
 					problems.
@@ -121,11 +121,11 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 				</p>
 			';
 			$content .= $this->showChangesNeeded($inputPrefix);
-			$content .= ('
+			$content .= '
 				<fieldset>
 					<ol>
 						<li class="labelAfter">
-							<input type="checkbox" name="' . $inputPrefix) . '[compatVersion][all]" id="compatVersionAll" value="1" />
+							<input type="checkbox" name="' . $inputPrefix . '[compatVersion][all]" id="compatVersionAll" value="1" />
 							<label for="compatVersionAll">Check all (ignore selection above)</label>
 						</li>
 						<li>
@@ -186,7 +186,7 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		}
 		$version = $this->userInput['version'] ? $this->userInput['version'] : TYPO3_branch;
 		\TYPO3\CMS\Core\Configuration\ConfigurationManager::setLocalConfigurationValueByPath('SYS/compat_version', $version);
-		$customMessages .= ('<br />The compatibility version has been set to ' . $version) . '.';
+		$customMessages .= '<br />The compatibility version has been set to ' . $version . '.';
 		return 1;
 	}
 
@@ -228,19 +228,19 @@ class CompatVersionUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 				if ($details['version'] > $oldVersion && $details['version'] <= $currentVersion) {
 					$description = str_replace(chr(10), '<br />', $details['description']);
 					$description_acknowledge = isset($details['description_acknowledge']) ? str_replace(chr(10), '<br />', $details['description_acknowledge']) : '';
-					$updateWizardBoxes .= ((((('
+					$updateWizardBoxes .= '
 						<div style="border: 1px solid; padding: 10px; margin: 10px; padding-top: 0px; width: 500px;">
-							<h3>' . (isset($details['title']) ? $details['title'] : $internalName)) . '</h3>
-							') . $description) . (strlen($description_acknowledge) ? ('<p>' . $description_acknowledge) . '</p>' : '')) . (strlen($inputPrefix) ? ((((((('
+							<h3>' . (isset($details['title']) ? $details['title'] : $internalName) . '</h3>
+							' . $description . (strlen($description_acknowledge) ? '<p>' . $description_acknowledge . '</p>' : '') . (strlen($inputPrefix) ? '
 								<fieldset>
 									<ol>
 										<li class="labelAfter">
-											<input type="checkbox" name="' . $inputPrefix) . '[compatVersion][') . $internalName) . ']" id="compatVersion') . $internalName) . '" value="1" />
-											<label for="compatVersion') . $internalName) . '">Acknowledged</label>
+											<input type="checkbox" name="' . $inputPrefix . '[compatVersion][' . $internalName . ']" id="compatVersion' . $internalName . '" value="1" />
+											<label for="compatVersion' . $internalName . '">Acknowledged</label>
 										</li>
 									</ol>
 								</fieldset>
-							' : '')) . '
+							' : '') . '
 						</div>';
 				}
 			}
