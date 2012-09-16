@@ -59,9 +59,9 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 	 */
 	public function displayExample($theOutput) {
 		global $tmpl;
-		if (($tmpl->helpConfig['imagetag'] || $tmpl->helpConfig['description']) || $tmpl->helpConfig['header']) {
+		if ($tmpl->helpConfig['imagetag'] || $tmpl->helpConfig['description'] || $tmpl->helpConfig['header']) {
 			$theOutput .= $this->pObj->doc->spacer(30);
-			$theOutput .= $this->pObj->doc->section($tmpl->helpConfig['header'], ((('<div align="center">' . $tmpl->helpConfig['imagetag']) . '</div><BR>') . ($tmpl->helpConfig['description'] ? implode(explode('//', $tmpl->helpConfig['description']), '<BR>') . '<BR>' : '')) . ($tmpl->helpConfig['bulletlist'] ? ('<ul><li>' . implode(explode('//', $tmpl->helpConfig['bulletlist']), '<li>')) . '</ul>' : '<BR>'));
+			$theOutput .= $this->pObj->doc->section($tmpl->helpConfig['header'], '<div align="center">' . $tmpl->helpConfig['imagetag'] . '</div><BR>' . ($tmpl->helpConfig['description'] ? implode(explode('//', $tmpl->helpConfig['description']), '<BR>') . '<BR>' : '') . ($tmpl->helpConfig['bulletlist'] ? '<ul><li>' . implode(explode('//', $tmpl->helpConfig['bulletlist']), '<li>') . '</ul>' : '<BR>'));
 		}
 		return $theOutput;
 	}
@@ -112,7 +112,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 			$this->pObj->MOD_MENU['constant_editor_cat'] = $tmpl->ext_getCategoryLabelArray();
 			$this->pObj->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->pObj->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->pObj->MCONF['name']);
 			// Resetting the menu (stop)
-			$content = (((\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_template', $tplRow) . '<strong>') . $this->pObj->linkWrapTemplateTitle($tplRow['title'], 'constants')) . '</strong>') . htmlspecialchars((trim($tplRow['sitetitle']) ? (' (' . $tplRow['sitetitle']) . ')' : ''));
+			$content = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('sys_template', $tplRow) . '<strong>' . $this->pObj->linkWrapTemplateTitle($tplRow['title'], 'constants') . '</strong>' . htmlspecialchars((trim($tplRow['sitetitle']) ? ' (' . $tplRow['sitetitle'] . ')' : ''));
 			$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('editConstants', TRUE), $content, FALSE, TRUE);
 			if ($manyTemplatesMenu) {
 				$theOutput .= $this->pObj->doc->section('', $manyTemplatesMenu);
@@ -120,7 +120,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 			$theOutput .= $this->pObj->doc->spacer(10);
 			if (count($this->pObj->MOD_MENU['constant_editor_cat'])) {
 				$menu = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[constant_editor_cat]', $this->pObj->MOD_SETTINGS['constant_editor_cat'], $this->pObj->MOD_MENU['constant_editor_cat']);
-				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('category', TRUE), ('<NOBR>' . $menu) . '</NOBR>', FALSE);
+				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('category', TRUE), '<NOBR>' . $menu . '</NOBR>', FALSE);
 			} else {
 				$theOutput .= $this->pObj->doc->section($GLOBALS['LANG']->getLL('noConstants', TRUE), $GLOBALS['LANG']->getLL('noConstantsDescription', TRUE), FALSE, FALSE, 1);
 			}
