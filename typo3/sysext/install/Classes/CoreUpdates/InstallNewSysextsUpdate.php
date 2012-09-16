@@ -60,14 +60,14 @@ class InstallNewSysextsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 			if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($_EXTKEY)) {
 				$EM_CONF = FALSE;
 				// extension may not been loaded at this point, so we can't use an API function from t3lib_extmgm
-				require ((PATH_site . 'typo3/sysext/') . $_EXTKEY) . '/ext_emconf.php';
-				$description .= ((((('
+				require PATH_site . 'typo3/sysext/' . $_EXTKEY . '/ext_emconf.php';
+				$description .= '
 					<li>
 						<strong>
-							' . $EM_CONF[$_EXTKEY]['title']) . ' [') . $_EXTKEY) . ']
+							' . $EM_CONF[$_EXTKEY]['title'] . ' [' . $_EXTKEY . ']
 						</strong>
 						<br />
-						') . $EM_CONF[$_EXTKEY]['description']) . '
+						' . $EM_CONF[$_EXTKEY]['description'] . '
 					</li>
 				';
 				$result = TRUE;
@@ -105,11 +105,11 @@ class InstallNewSysextsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate 
 			if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($_EXTKEY)) {
 				$EM_CONF = FALSE;
 				// extension may not been loaded at this point, so we can't use an API function from t3lib_extmgm
-				require ((PATH_site . 'typo3/sysext/') . $_EXTKEY) . '/ext_emconf.php';
-				$content .= ((((((((((('
+				require PATH_site . 'typo3/sysext/' . $_EXTKEY . '/ext_emconf.php';
+				$content .= '
 					<li class="labelAfter">
-						<input type="checkbox" id="' . $_EXTKEY) . '" name="') . $inputPrefix) . '[sysext][') . $_EXTKEY) . ']" value="1" checked="checked" />
-						<label for="') . $_EXTKEY) . '">') . $EM_CONF[$_EXTKEY]['title']) . ' [') . $_EXTKEY) . ']</label>
+						<input type="checkbox" id="' . $_EXTKEY . '" name="' . $inputPrefix . '[sysext][' . $_EXTKEY . ']" value="1" checked="checked" />
+						<label for="' . $_EXTKEY . '">' . $EM_CONF[$_EXTKEY]['title'] . ' [' . $_EXTKEY . ']</label>
 					</li>
 				';
 			}

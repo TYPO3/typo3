@@ -58,7 +58,7 @@ class DatabaseIntegrityView {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $BACK_PATH;
 		$this->doc->setModuleTemplate('templates/dbint.html');
-		$this->doc->form = ('<form action="" method="post" name="' . $this->formName) . '">';
+		$this->doc->form = '<form action="" method="post" name="' . $this->formName . '">';
 		// JavaScript
 		$this->doc->JScode = '
 		<script language="javascript" type="text/javascript">
@@ -72,12 +72,12 @@ class DatabaseIntegrityView {
 			<colgroup><col width="24"><col width="300"><col width="76"></colgroup>';
 		$this->doc->tableLayout = array(
 			'0' => array(
-				'defCol' => array(('<td class="t3-row-header"><img src="' . $this->doc->backPath) . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top" class="t3-row-header"><strong>', '</strong></td>')
+				'defCol' => array('<td class="t3-row-header"><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top" class="t3-row-header"><strong>', '</strong></td>')
 			),
 			'defRow' => array(
 				'0' => array('<td valign="top">', '</td>'),
 				'1' => array('<td valign="top">', '</td>'),
-				'defCol' => array(('<td><img src="' . $this->doc->backPath) . 'clear.gif" width="15" height="1" alt="" /></td><td valign="top">', '</td>')
+				'defCol' => array('<td><img src="' . $this->doc->backPath . 'clear.gif" width="15" height="1" alt="" /></td><td valign="top">', '</td>')
 			)
 		);
 	}
@@ -151,7 +151,7 @@ class DatabaseIntegrityView {
 		}
 		$addConditionCheck = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('qG_ins');
 		foreach ($OLD_MOD_SETTINGS as $key => $val) {
-			if (((substr($key, 0, 5) == 'query' && $this->MOD_SETTINGS[$key] != $val) && $key != 'queryLimit') && $key != 'use_listview') {
+			if (substr($key, 0, 5) == 'query' && $this->MOD_SETTINGS[$key] != $val && $key != 'queryLimit' && $key != 'use_listview') {
 				$setLimitToStart = 1;
 				if ($key == 'queryTable' && !$addConditionCheck) {
 					$this->MOD_SETTINGS['queryConfig'] = '';
@@ -264,13 +264,13 @@ class DatabaseIntegrityView {
 		$availableModFuncs = array('records', 'relations', 'search', 'filesearch', 'refindex');
 		$content = '<dl class="t3-overview-list">';
 		foreach ($availableModFuncs as $modFunc) {
-			$functionUrl = (\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tools_dbint') . '&SET[function]=') . $modFunc;
+			$functionUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tools_dbint') . '&SET[function]=' . $modFunc;
 			$title = $GLOBALS['LANG']->getLL($modFunc);
 			$description = $GLOBALS['LANG']->getLL($modFunc . '_description');
-			$icon = ((((('<img src="' . \t3lib_iconworks::skinImg($GLOBALS['BACK_PATH'], 'MOD:tools_dbint/db.gif', '', 1)) . '" width="16" height="16" title="') . $title) . '" alt="') . $title) . '" />';
-			$content .= (((((('
-				<dt><a href="' . htmlspecialchars($functionUrl)) . '">') . $icon) . $title) . '</a></dt>
-				<dd>') . $description) . '</dd>
+			$icon = '<img src="' . \t3lib_iconworks::skinImg($GLOBALS['BACK_PATH'], 'MOD:tools_dbint/db.gif', '', 1) . '" width="16" height="16" title="' . $title . '" alt="' . $title . '" />';
+			$content .= '
+				<dt><a href="' . htmlspecialchars($functionUrl) . '">' . $icon . $title . '</a></dt>
+				<dd>' . $description . '</dd>
 			';
 		}
 		$content .= '</dl>';
@@ -300,16 +300,16 @@ class DatabaseIntegrityView {
 			$this->content .= $this->doc->section('', str_replace(LF, '<br/>', $bodyContent), FALSE, TRUE);
 		}
 		// Output content:
-		$content = ('<p>' . $GLOBALS['LANG']->getLL('referenceIndex_description')) . '</p><br />';
-		$content .= ((('<input type="submit" name="_check" value="' . $GLOBALS['LANG']->getLL('referenceIndex_buttonCheck')) . '" /> <input type="submit" name="_update" value="') . $GLOBALS['LANG']->getLL('referenceIndex_buttonUpdate')) . '" /><br /><br />';
+		$content = '<p>' . $GLOBALS['LANG']->getLL('referenceIndex_description') . '</p><br />';
+		$content .= '<input type="submit" name="_check" value="' . $GLOBALS['LANG']->getLL('referenceIndex_buttonCheck') . '" /> <input type="submit" name="_update" value="' . $GLOBALS['LANG']->getLL('referenceIndex_buttonUpdate') . '" /><br /><br />';
 		$this->content .= $this->doc->section('', $content, FALSE, TRUE);
 		// Command Line Interface
 		$content = '';
-		$content .= ('<p>' . $GLOBALS['LANG']->getLL('checkScript')) . '</p>';
-		$content .= (((('<h4>' . $GLOBALS['LANG']->getLL('checkScript_check_description')) . '</h4>') . '<code>php ') . PATH_typo3) . 'cli_dispatch.phpsh lowlevel_refindex -c</code><br />';
-		$content .= (((('<h4>' . $GLOBALS['LANG']->getLL('checkScript_update_description')) . '</h4>') . '<code>php ') . PATH_typo3) . 'cli_dispatch.phpsh lowlevel_refindex -e</code><br /><br />';
-		$content .= ('<div class="typo3-message message-information"><div class="message-body">' . $GLOBALS['LANG']->getLL('checkScript_information')) . '</div></div>';
-		$content .= ((((('<p>' . $GLOBALS['LANG']->getLL('checkScript_moreDetails')) . '<br /><a href="') . $GLOBALS['BACK_PATH']) . 'sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt" target="_new">') . PATH_typo3) . 'sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt</a></p>';
+		$content .= '<p>' . $GLOBALS['LANG']->getLL('checkScript') . '</p>';
+		$content .= '<h4>' . $GLOBALS['LANG']->getLL('checkScript_check_description') . '</h4>' . '<code>php ' . PATH_typo3 . 'cli_dispatch.phpsh lowlevel_refindex -c</code><br />';
+		$content .= '<h4>' . $GLOBALS['LANG']->getLL('checkScript_update_description') . '</h4>' . '<code>php ' . PATH_typo3 . 'cli_dispatch.phpsh lowlevel_refindex -e</code><br /><br />';
+		$content .= '<div class="typo3-message message-information"><div class="message-body">' . $GLOBALS['LANG']->getLL('checkScript_information') . '</div></div>';
+		$content .= '<p>' . $GLOBALS['LANG']->getLL('checkScript_moreDetails') . '<br /><a href="' . $GLOBALS['BACK_PATH'] . 'sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt" target="_new">' . PATH_typo3 . 'sysext/lowlevel/HOWTO_clean_up_TYPO3_installations.txt</a></p>';
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('checkScript_headline'), $content, FALSE, TRUE);
 	}
 
@@ -333,11 +333,11 @@ class DatabaseIntegrityView {
 			$menu2 .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(0, 'SET[search_query_makeQuery]', $this->MOD_SETTINGS['search_query_makeQuery'], $this->MOD_MENU['search_query_makeQuery']) . '<br />';
 		}
 		if (!$GLOBALS['BE_USER']->userTS['mod.']['dbint.']['disableTopCheckboxes'] && $this->MOD_SETTINGS['search'] == 'query') {
-			$menu2 .= ((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'], '', '', 'id="checkSearch_query_smallparts"') . '&nbsp;<label for="checkSearch_query_smallparts">') . $GLOBALS['LANG']->getLL('showSQL')) . '</label><br />';
-			$menu2 .= ((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'], '', '', 'id="checkSearch_result_labels"') . '&nbsp;<label for="checkSearch_result_labels">') . $GLOBALS['LANG']->getLL('useFormattedStrings')) . '</label><br />';
-			$menu2 .= ((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'], '', '', 'id="checkLabels_noprefix"') . '&nbsp;<label for="checkLabels_noprefix">') . $GLOBALS['LANG']->getLL('dontUseOrigValues')) . '</label><br />';
-			$menu2 .= ((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'], '', '', 'id="checkOptions_sortlabel"') . '&nbsp;<label for="checkOptions_sortlabel">') . $GLOBALS['LANG']->getLL('sortOptions')) . '</label><br />';
-			$menu2 .= ((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'], '', '', 'id="checkShow_deleted"') . '&nbsp;<label for="checkShow_deleted">') . $GLOBALS['LANG']->getLL('showDeleted')) . '</label>';
+			$menu2 .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_query_smallparts]', $this->MOD_SETTINGS['search_query_smallparts'], '', '', 'id="checkSearch_query_smallparts"') . '&nbsp;<label for="checkSearch_query_smallparts">' . $GLOBALS['LANG']->getLL('showSQL') . '</label><br />';
+			$menu2 .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[search_result_labels]', $this->MOD_SETTINGS['search_result_labels'], '', '', 'id="checkSearch_result_labels"') . '&nbsp;<label for="checkSearch_result_labels">' . $GLOBALS['LANG']->getLL('useFormattedStrings') . '</label><br />';
+			$menu2 .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[labels_noprefix]', $this->MOD_SETTINGS['labels_noprefix'], '', '', 'id="checkLabels_noprefix"') . '&nbsp;<label for="checkLabels_noprefix">' . $GLOBALS['LANG']->getLL('dontUseOrigValues') . '</label><br />';
+			$menu2 .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[options_sortlabel]', $this->MOD_SETTINGS['options_sortlabel'], '', '', 'id="checkOptions_sortlabel"') . '&nbsp;<label for="checkOptions_sortlabel">' . $GLOBALS['LANG']->getLL('sortOptions') . '</label><br />';
+			$menu2 .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($GLOBALS['SOBE']->id, 'SET[show_deleted]', $this->MOD_SETTINGS['show_deleted'], '', '', 'id="checkShow_deleted"') . '&nbsp;<label for="checkShow_deleted">' . $GLOBALS['LANG']->getLL('showDeleted') . '</label>';
 		}
 		$this->content .= $this->doc->section('', $menu2) . $this->doc->spacer(10);
 		switch ($this->MOD_SETTINGS['search']) {
@@ -392,7 +392,7 @@ class DatabaseIntegrityView {
 			foreach ($doktype as $n => $setup) {
 				if ($setup[1] != '--div--') {
 					$codeArr[$n][] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', array('doktype' => $setup[1]));
-					$codeArr[$n][] = (($GLOBALS['LANG']->sL($setup[0]) . ' (') . $setup[1]) . ')';
+					$codeArr[$n][] = $GLOBALS['LANG']->sL($setup[0]) . ' (' . $setup[1] . ')';
 					$codeArr[$n][] = intval($admin->recStats['doktype'][$setup[1]]);
 				}
 			}
@@ -433,7 +433,7 @@ class DatabaseIntegrityView {
 					$lostRecordCount = count($admin->lRecords[$t]);
 				}
 				if ($countArr['all'][$t]) {
-					$theNumberOfRe = (intval($countArr['non_deleted'][$t]) . '/') . $lostRecordCount;
+					$theNumberOfRe = intval($countArr['non_deleted'][$t]) . '/' . $lostRecordCount;
 				} else {
 					$theNumberOfRe = '';
 				}
@@ -442,9 +442,9 @@ class DatabaseIntegrityView {
 				if (is_array($admin->lRecords[$t])) {
 					foreach ($admin->lRecords[$t] as $data) {
 						if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($admin->lostPagesList, $data[pid])) {
-							$lr .= ((((((((((('<nobr><strong><a href="' . htmlspecialchars(((((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tools_dbint') . '&SET[function]=records&fixLostRecords_table=') . $t) . '&fixLostRecords_uid=') . $data['uid']))) . '"><img src="') . $BACK_PATH) . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="') . $GLOBALS['LANG']->getLL('fixLostRecord')) . '"></a>uid:') . $data['uid']) . ', pid:') . $data['pid']) . ', ') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20))) . '</strong></nobr><br>';
+							$lr .= '<nobr><strong><a href="' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('tools_dbint') . '&SET[function]=records&fixLostRecords_table=' . $t . '&fixLostRecords_uid=' . $data['uid'])) . '"><img src="' . $BACK_PATH . 'gfx/required_h.gif" width="10" hspace="3" height="10" border="0" align="top" title="' . $GLOBALS['LANG']->getLL('fixLostRecord') . '"></a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</strong></nobr><br>';
 						} else {
-							$lr .= ((((((('<nobr><img src="' . $BACK_PATH) . 'clear.gif" width="16" height="1" border="0"><font color="Gray">uid:') . $data['uid']) . ', pid:') . $data['pid']) . ', ') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20))) . '</font></nobr><br>';
+							$lr .= '<nobr><img src="' . $BACK_PATH . 'clear.gif" width="16" height="1" border="0"><font color="Gray">uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) . '</font></nobr><br>';
 						}
 					}
 				}
@@ -472,7 +472,7 @@ class DatabaseIntegrityView {
 		$code = '';
 		if (is_array($fileTest['noReferences'])) {
 			foreach ($fileTest['noReferences'] as $val) {
-				$code .= ((('<nobr>' . $val[0]) . '/<strong>') . $val[1]) . '</strong></nobr><br>';
+				$code .= '<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong></nobr><br>';
 			}
 		} else {
 			$code = $GLOBALS['LANG']->getLL('no_files_found');
@@ -481,7 +481,7 @@ class DatabaseIntegrityView {
 		$code = '';
 		if (is_array($fileTest['moreReferences'])) {
 			foreach ($fileTest['moreReferences'] as $val) {
-				$code .= ((((((((('<nobr>' . $val[0]) . '/<strong>') . $val[1]) . '</strong>: ') . $val[2]) . ' ') . $GLOBALS['LANG']->getLL('references')) . '</nobr><br>') . $val[3]) . '<br><br>';
+				$code .= '<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong>: ' . $val[2] . ' ' . $GLOBALS['LANG']->getLL('references') . '</nobr><br>' . $val[3] . '<br><br>';
 			}
 		} else {
 			$code = $GLOBALS['LANG']->getLL('no_files_found');
@@ -491,7 +491,7 @@ class DatabaseIntegrityView {
 		if (is_array($fileTest['noFile'])) {
 			ksort($fileTest['noFile']);
 			foreach ($fileTest['noFile'] as $val) {
-				$code .= (((((((('<nobr>' . $val[0]) . '/<strong>') . $val[1]) . '</strong> ') . $GLOBALS['LANG']->getLL('isMissing')) . ' </nobr><br>') . $GLOBALS['LANG']->getLL('referencedFrom')) . $val[2]) . '<br><br>';
+				$code .= '<nobr>' . $val[0] . '/<strong>' . $val[1] . '</strong> ' . $GLOBALS['LANG']->getLL('isMissing') . ' </nobr><br>' . $GLOBALS['LANG']->getLL('referencedFrom') . $val[2] . '<br><br>';
 			}
 		} else {
 			$code = $GLOBALS['LANG']->getLL('no_files_found');
@@ -509,7 +509,7 @@ class DatabaseIntegrityView {
 	 */
 	public function func_filesearch() {
 		$pattern = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pattern');
-		$pcontent = (((($GLOBALS['LANG']->getLL('enterRegexPattern') . ' <input type="text" name="pattern" value="') . htmlspecialchars(($pattern ? $pattern : $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern']))) . '"> <input type="submit" name="') . $GLOBALS['LANG']->getLL('SearchButton')) . '">';
+		$pcontent = $GLOBALS['LANG']->getLL('enterRegexPattern') . ' <input type="text" name="pattern" value="' . htmlspecialchars(($pattern ? $pattern : $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'])) . '"> <input type="submit" name="' . $GLOBALS['LANG']->getLL('SearchButton') . '">';
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('findFilename'));
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('pattern'), $pcontent, FALSE, TRUE);
 		if (strcmp($pattern, '')) {
@@ -520,18 +520,18 @@ class DatabaseIntegrityView {
 				$matching_files = array();
 				$info = '';
 				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('typo3,typo3conf,tslib,media,t3lib', $value)) {
-					$info = $this->findFile((PATH_site . $value) . '/', $pattern, $matching_files, $depth);
+					$info = $this->findFile(PATH_site . $value . '/', $pattern, $matching_files, $depth);
 				}
 				if (is_array($info)) {
-					$lines[] = (('<hr><strong>' . $value) . '/</strong> ') . $GLOBALS['LANG']->getLL('beingChecked');
-					$lines[] = ($GLOBALS['LANG']->getLL('directories') . ' ') . $info[0];
+					$lines[] = '<hr><strong>' . $value . '/</strong> ' . $GLOBALS['LANG']->getLL('beingChecked');
+					$lines[] = $GLOBALS['LANG']->getLL('directories') . ' ' . $info[0];
 					if ($info[2]) {
-						$lines[] = ((('<span class="typo3-red">' . $GLOBALS['LANG']->getLL('directoriesTooDeep')) . ' ') . $depth) . '</span>';
+						$lines[] = '<span class="typo3-red">' . $GLOBALS['LANG']->getLL('directoriesTooDeep') . ' ' . $depth . '</span>';
 					}
-					$lines[] = ($GLOBALS['LANG']->getLL('files') . ' ') . $info[1];
-					$lines[] = (($GLOBALS['LANG']->getLL('matchingFiles') . '<br><nobr><span class="typo3-red">') . implode('<br>', $matching_files)) . '</span></nobr>';
+					$lines[] = $GLOBALS['LANG']->getLL('files') . ' ' . $info[1];
+					$lines[] = $GLOBALS['LANG']->getLL('matchingFiles') . '<br><nobr><span class="typo3-red">' . implode('<br>', $matching_files) . '</span></nobr>';
 				} else {
-					$lines[] = $GLOBALS['TBE_TEMPLATE']->dfw((('<hr><strong>' . $value) . '/</strong> ') . $GLOBALS['LANG']->getLL('notChecked'));
+					$lines[] = $GLOBALS['TBE_TEMPLATE']->dfw('<hr><strong>' . $value . '/</strong> ' . $GLOBALS['LANG']->getLL('notChecked'));
 				}
 			}
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('searchingForFilenames'), implode('<br>', $lines), FALSE, TRUE);
@@ -560,7 +560,7 @@ class DatabaseIntegrityView {
 			// Escape the regexp. Note: we cannot use preg_quote here because it will escape more than we need!
 			$regExpPattern = str_replace('/', '\\/', $pattern);
 			foreach ($files as $value) {
-				if (preg_match(('/' . $regExpPattern) . '/i', basename($value))) {
+				if (preg_match('/' . $regExpPattern . '/i', basename($value))) {
 					$matching_files[] = substr($value, strlen(PATH_site));
 				}
 			}
@@ -571,7 +571,7 @@ class DatabaseIntegrityView {
 			if (is_array($dirs)) {
 				$dirs_searched += count($dirs);
 				foreach ($dirs as $value) {
-					$inf = $this->findFile(($basedir . $value) . '/', $pattern, $matching_files, $depth - 1);
+					$inf = $this->findFile($basedir . $value . '/', $pattern, $matching_files, $depth - 1);
 					$dirs_searched += $inf[0];
 					$files_searched += $inf[1];
 					$dirs_error = $inf[2];

@@ -126,11 +126,11 @@ class ArrayBrowser {
 			$BTM = $a == $c ? 'bottom' : '';
 			$PM = $isArray ? ($deeper ? 'minus' : 'plus') : 'join';
 			$HTML .= $depthData;
-			$theIcon = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ((('gfx/ol/' . $PM) . $BTM) . '.gif'), 'width="18" height="16"')) . ' align="top" border="0" alt="" />';
+			$theIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/' . $PM . $BTM . '.gif'), 'width="18" height="16"') . ' align="top" border="0" alt="" />';
 			if ($PM == 'join') {
 				$HTML .= $theIcon;
 			} else {
-				$HTML .= (($this->expAll ? '' : ((('<a id="' . $goto) . '" href="') . htmlspecialchars(((((((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) . '&node[') . $depth) . ']=') . ($deeper ? 0 : 1)) . '#') . $goto))) . '">') . $theIcon) . ($this->expAll ? '' : '</a>');
+				$HTML .= ($this->expAll ? '' : '<a id="' . $goto . '" href="' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) . '&node[' . $depth . ']=' . ($deeper ? 0 : 1) . '#' . $goto)) . '">') . $theIcon . ($this->expAll ? '' : '</a>');
 			}
 			$label = $key;
 			$HTML .= $this->wrapArrayKey($label, $depth, !$isArray ? $arr[$key] : '');
@@ -138,18 +138,18 @@ class ArrayBrowser {
 				$theValue = $arr[$key];
 				if ($this->fixedLgd) {
 					$imgBlocks = ceil(1 + strlen($depthData) / 77);
-					$lgdChars = (68 - ceil(strlen((('[' . $key) . ']')) * 0.8)) - $imgBlocks * 3;
+					$lgdChars = 68 - ceil(strlen(('[' . $key . ']')) * 0.8) - $imgBlocks * 3;
 					$theValue = $this->fixed_lgd($theValue, $lgdChars);
 				}
 				if ($this->searchKeys[$depth]) {
-					$HTML .= ('=<span style="color:red;">' . $this->wrapValue($theValue, $depth)) . '</span>';
+					$HTML .= '=<span style="color:red;">' . $this->wrapValue($theValue, $depth) . '</span>';
 				} else {
 					$HTML .= '=' . $this->wrapValue($theValue, $depth);
 				}
 			}
 			$HTML .= '<br />';
 			if ($deeper) {
-				$HTML .= $this->tree($arr[$key], $depth, (($depthData . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], (('gfx/ol/' . $LN) . '.gif'), 'width="18" height="16"')) . ' align="top" alt="" />');
+				$HTML .= $this->tree($arr[$key], $depth, $depthData . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/' . $LN . '.gif'), 'width="18" height="16"') . ' align="top" alt="" />');
 			}
 		}
 		return $HTML;
@@ -166,7 +166,7 @@ class ArrayBrowser {
 	public function wrapValue($theValue, $depth) {
 		$wrappedValue = '';
 		if (strlen($theValue) > 0) {
-			$wrappedValue = ('<strong>' . htmlspecialchars($theValue)) . '</strong>';
+			$wrappedValue = '<strong>' . htmlspecialchars($theValue) . '</strong>';
 		}
 		return $wrappedValue;
 	}
@@ -185,11 +185,11 @@ class ArrayBrowser {
 		$label = htmlspecialchars($label);
 		// If varname is set:
 		if ($this->varName && !$this->dontLinkVar) {
-			$variableName = (((($this->varName . '[\'') . str_replace('.', '\'][\'', $depth)) . '\'] = ') . (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($theValue) ? ('\'' . addslashes($theValue)) . '\'' : $theValue)) . '; ';
-			$label = ((('<a href="' . htmlspecialchars(((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) . '&varname=') . urlencode($variableName)))) . '#varname">') . $label) . '</a>';
+			$variableName = $this->varName . '[\'' . str_replace('.', '\'][\'', $depth) . '\'] = ' . (!\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($theValue) ? '\'' . addslashes($theValue) . '\'' : $theValue) . '; ';
+			$label = '<a href="' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('M')) . '&varname=' . urlencode($variableName))) . '#varname">' . $label . '</a>';
 		}
 		// Return:
-		return ('[' . $label) . ']';
+		return '[' . $label . ']';
 	}
 
 	/**
@@ -211,7 +211,7 @@ class ArrayBrowser {
 			$depth = $depth_in . $key;
 			$deeper = is_array($keyArr[$key]);
 			if ($this->regexMode) {
-				if (preg_match(('/' . $searchString) . '/', $keyArr[$key]) || $this->searchKeysToo && preg_match(('/' . $searchString) . '/', $key)) {
+				if (preg_match('/' . $searchString . '/', $keyArr[$key]) || $this->searchKeysToo && preg_match('/' . $searchString . '/', $key)) {
 					$this->searchKeys[$depth] = 1;
 				}
 			} else {

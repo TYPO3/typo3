@@ -42,7 +42,7 @@ class CharsetDefaultsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @return 	boolean		whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description, &$showUpdate = FALSE) {
-		if ((isset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] != '') && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] != 'utf-8' || $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] === '-1') {
+		if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset']) && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] != '' && $GLOBALS['TYPO3_CONF_VARS']['BE']['forceCharset'] != 'utf-8' || $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit'] === '-1') {
 			$description = 'The configuration variables $TYPO3_CONF_VARS[\'SYS\'][\'setDBinit\'] and/or
 				$TYPO3_CONF_VARS[\'BE\'][\'forceCharset\'] are relying on empty default values.<br />
 				However, the defaults for both values have changed in TYPO3 4.5.<br /><br />

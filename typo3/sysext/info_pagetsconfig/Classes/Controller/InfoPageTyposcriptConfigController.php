@@ -86,7 +86,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 	public function main() {
 		global $LANG;
 		$menu = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[tsconf_parts]', $this->pObj->MOD_SETTINGS['tsconf_parts'], $this->pObj->MOD_MENU['tsconf_parts']);
-		$menu .= (('<br /><label for="checkTsconf_alphaSort">' . $GLOBALS['LANG']->getLL('sort_alphabetic', TRUE)) . '</label> ') . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"');
+		$menu .= '<br /><label for="checkTsconf_alphaSort">' . $GLOBALS['LANG']->getLL('sort_alphabetic', TRUE) . '</label> ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[tsconf_alphaSort]', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'], '', '', 'id="checkTsconf_alphaSort"');
 		$menu .= '<br /><br />';
 		$theOutput = $this->pObj->doc->header($LANG->getLL('tsconf_title'));
 		if ($this->pObj->MOD_SETTINGS['tsconf_parts'] == 99) {
@@ -96,40 +96,40 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 			foreach ($TSparts as $k => $v) {
 				if ($k != 'uid_0') {
 					if ($k == 'defaultPageTSconfig') {
-						$pTitle = ('<strong>' . $GLOBALS['LANG']->getLL('editTSconfig_default', 1)) . '</strong>';
+						$pTitle = '<strong>' . $GLOBALS['LANG']->getLL('editTSconfig_default', 1) . '</strong>';
 						$editIcon = '';
 					} else {
 						$pUids[] = substr($k, 4);
 						$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', substr($k, 4));
 						$pTitle = $this->pObj->doc->getHeader('pages', $row, '', 0);
 						$editIdList = substr($k, 4);
-						$params = ('&edit[pages][' . $editIdList) . ']=edit&columnsOnly=TSconfig';
+						$params = '&edit[pages][' . $editIdList . ']=edit&columnsOnly=TSconfig';
 						$onclickUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], '');
-						$editIcon = ((((('<a href="#" onclick="' . htmlspecialchars($onclickUrl)) . '" title="') . $GLOBALS['LANG']->getLL('editTSconfig', 1)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open')) . '</a>';
+						$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $GLOBALS['LANG']->getLL('editTSconfig', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
 					}
 					$TScontent = nl2br(htmlspecialchars(trim($v) . chr(10)));
 					$tsparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 					$tsparser->lineNumberOffset = 0;
 					$TScontent = $tsparser->doSyntaxHighlight(trim($v) . LF, '', 0);
-					$lines[] = (((('
-						<tr><td nowrap="nowrap" class="bgColor5">' . $pTitle) . '</td></tr>
-						<tr><td nowrap="nowrap" class="bgColor4">') . $TScontent) . $editIcon) . '</td></tr>
+					$lines[] = '
+						<tr><td nowrap="nowrap" class="bgColor5">' . $pTitle . '</td></tr>
+						<tr><td nowrap="nowrap" class="bgColor4">' . $TScontent . $editIcon . '</td></tr>
 						<tr><td>&nbsp;</td></tr>
 					';
 				}
 			}
 			if (count($pUids)) {
-				$params = ('&edit[pages][' . implode(',', $pUids)) . ']=edit&columnsOnly=TSconfig';
+				$params = '&edit[pages][' . implode(',', $pUids) . ']=edit&columnsOnly=TSconfig';
 				$onclickUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], '');
-				$editIcon = (((((((('<a href="#" onclick="' . htmlspecialchars($onclickUrl)) . '" title="') . $GLOBALS['LANG']->getLL('editTSconfig_all', 1)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open')) . '<strong>') . $GLOBALS['LANG']->getLL('editTSconfig_all', 1)) . '</strong>') . '</a>';
+				$editIcon = '<a href="#" onclick="' . htmlspecialchars($onclickUrl) . '" title="' . $GLOBALS['LANG']->getLL('editTSconfig_all', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '<strong>' . $GLOBALS['LANG']->getLL('editTSconfig_all', 1) . '</strong>' . '</a>';
 			} else {
 				$editIcon = '';
 			}
-			$theOutput .= $this->pObj->doc->section('', ((((\TYPO3\CMS\Backend\Utility\BackendUtility::cshItem(('_MOD_' . $GLOBALS['MCONF']['name']), 'tsconfig_edit', $GLOBALS['BACK_PATH'], '|<br />') . $menu) . '
+			$theOutput .= $this->pObj->doc->section('', \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem(('_MOD_' . $GLOBALS['MCONF']['name']), 'tsconfig_edit', $GLOBALS['BACK_PATH'], '|<br />') . $menu . '
 					<br /><br />
 
 					<!-- Edit fields: -->
-					<table border="0" cellpadding="0" cellspacing="1">') . implode('', $lines)) . '</table><br />') . $editIcon, 0, 1);
+					<table border="0" cellpadding="0" cellspacing="1">' . implode('', $lines) . '</table><br />' . $editIcon, 0, 1);
 		} else {
 			// Defined global here!
 			$tmpl = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
@@ -188,12 +188,12 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 			if (!is_array($modTSconfig)) {
 				$modTSconfig = array();
 			}
-			$theOutput .= $this->pObj->doc->section('', (((\TYPO3\CMS\Backend\Utility\BackendUtility::cshItem(('_MOD_' . $GLOBALS['MCONF']['name']), 'tsconfig_hierarchy', $GLOBALS['BACK_PATH'], '|<br />') . $menu) . '
+			$theOutput .= $this->pObj->doc->section('', \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem(('_MOD_' . $GLOBALS['MCONF']['name']), 'tsconfig_hierarchy', $GLOBALS['BACK_PATH'], '|<br />') . $menu . '
 
 					<!-- Page TSconfig Tree: -->
 					<table border="0" cellpadding="0" cellspacing="0">
 						<tr>
-							<td nowrap="nowrap">') . $tmpl->ext_getObjTree($modTSconfig, '', '', '', '', $this->pObj->MOD_SETTINGS['tsconf_alphaSort'])) . '</td>
+							<td nowrap="nowrap">' . $tmpl->ext_getObjTree($modTSconfig, '', '', '', '', $this->pObj->MOD_SETTINGS['tsconf_alphaSort']) . '</td>
 						</tr>
 					</table>', 0, 1);
 		}

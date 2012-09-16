@@ -84,7 +84,7 @@ class TtContentUploadsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUp
 		}
 		$this->fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 		$this->fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-		$this->targetDirectory = ((PATH_site . $fileadminDirectory) . self::FOLDER_ContentUploads) . '/';
+		$this->targetDirectory = PATH_site . $fileadminDirectory . self::FOLDER_ContentUploads . '/';
 	}
 
 	/**
@@ -100,7 +100,7 @@ class TtContentUploadsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUp
 		// * then check whether media field does not contain a reference count (= not integer)
 		$notMigratedRowsCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('uid', 'tt_content', 'media <> \'\' AND CAST(CAST(media AS DECIMAL) AS CHAR) <> media OR (CType = \'uploads\' AND select_key != \'\')');
 		if ($notMigratedRowsCount > 0) {
-			$description = (('There are Content Elements of type "upload" which are referencing files that are not using ' . ' the File Abstraction Layer. This wizard will move the files to fileadmin/') . self::FOLDER_ContentUploads) . ' and index them.';
+			$description = 'There are Content Elements of type "upload" which are referencing files that are not using ' . ' the File Abstraction Layer. This wizard will move the files to fileadmin/' . self::FOLDER_ContentUploads . ' and index them.';
 			$updateNeeded = TRUE;
 		}
 		return $updateNeeded;
@@ -158,9 +158,9 @@ class TtContentUploadsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUp
 ', $record['titleText']);
 		$i = 0;
 		foreach ($files as $file) {
-			if (file_exists((PATH_site . 'uploads/media/') . $file)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move((PATH_site . 'uploads/media/') . $file, $this->targetDirectory . $file);
-				$fileObject = $this->storage->getFile((self::FOLDER_ContentUploads . '/') . $file);
+			if (file_exists(PATH_site . 'uploads/media/' . $file)) {
+				\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move(PATH_site . 'uploads/media/' . $file, $this->targetDirectory . $file);
+				$fileObject = $this->storage->getFile(self::FOLDER_ContentUploads . '/' . $file);
 				$this->fileRepository->addToIndex($fileObject);
 				$dataArray = array(
 					'uid_local' => $fileObject->getUid(),
@@ -176,7 +176,7 @@ class TtContentUploadsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUp
 					$dataArray['alternative'] = $titleText[$i];
 				}
 				$GLOBALS['TYPO3_DB']->exec_INSERTquery('sys_file_reference', $dataArray);
-				unlink((PATH_site . 'uploads/media/') . $file);
+				unlink(PATH_site . 'uploads/media/' . $file);
 			}
 			$i++;
 		}

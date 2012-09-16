@@ -123,7 +123,7 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 				$fieldsToGet = array();
 				// find all additional fields we should get from the database
 				foreach ($tableConfiguration as $field => $fieldConfiguration) {
-					$fieldKey = ($table . ':') . $field;
+					$fieldKey = $table . ':' . $field;
 					if (array_search($fieldKey, $finishedFields) !== FALSE) {
 						// this field was already migrated
 						continue;
@@ -192,8 +192,8 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 				throw new \Exception('PATH_site was undefined.');
 			}
 			// copy file
-			$sourcePath = (PATH_site . $fieldConfiguration['sourcePath']) . $item;
-			$targetPath = ((PATH_site . $fileadminDirectory) . $fieldConfiguration['targetPath']) . $item;
+			$sourcePath = PATH_site . $fieldConfiguration['sourcePath'] . $item;
+			$targetPath = PATH_site . $fileadminDirectory . $fieldConfiguration['targetPath'] . $item;
 			if (!is_dir(dirname($targetPath))) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep(dirname($targetPath));
 			}

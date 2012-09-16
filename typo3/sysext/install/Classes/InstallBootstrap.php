@@ -45,7 +45,7 @@ class InstallBootstrap {
 		$quickstartFile = PATH_site . 'typo3conf/FIRST_INSTALL';
 		$enableInstallToolFile = PATH_site . 'typo3conf/ENABLE_INSTALL_TOOL';
 		// If typo3conf/FIRST_INSTALL is present and can be deleted, automatically create typo3conf/ENABLE_INSTALL_TOOL
-		if ((is_file($quickstartFile) && is_writeable($quickstartFile)) && unlink($quickstartFile)) {
+		if (is_file($quickstartFile) && is_writeable($quickstartFile) && unlink($quickstartFile)) {
 			touch($enableInstallToolFile);
 		}
 		// Additional security measure if ENABLE_INSTALL_TOOL file cannot, but
