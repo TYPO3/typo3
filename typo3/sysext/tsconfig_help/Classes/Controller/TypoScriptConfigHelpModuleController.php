@@ -132,12 +132,12 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 	public function moduleContent() {
 		switch ((string) $this->MOD_SETTINGS['function']) {
 		case 1:
-			$content = ('<div align="left"><strong>' . $GLOBALS['LANG']->getLL('referenceExplanation')) . '</strong></div>';
-			$content .= ('<p>' . $GLOBALS['LANG']->getLL('referenceExplanationDetailed')) . '</p><br />';
+			$content = '<div align="left"><strong>' . $GLOBALS['LANG']->getLL('referenceExplanation') . '</strong></div>';
+			$content .= '<p>' . $GLOBALS['LANG']->getLL('referenceExplanationDetailed') . '</p><br />';
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('displayReferences'), $content, 0, 1);
-			$this->content .= ((('<a href="#" onclick="vHWin=window.open(\'' . $GLOBALS['BACK_PATH']) . 'wizard_tsconfig.php?mode=tsref&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-typoscript-documentation-open')) . 'TSREF</a><br />';
-			$this->content .= ((('<a href="#" onclick="vHWin=window.open(\'' . $GLOBALS['BACK_PATH']) . 'wizard_tsconfig.php?mode=beuser&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-typoscript-documentation-open')) . 'USER TSCONFIG</a><br />';
-			$this->content .= ((('<a href="#" onclick="vHWin=window.open(\'' . $GLOBALS['BACK_PATH']) . 'wizard_tsconfig.php?mode=page&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-typoscript-documentation-open')) . 'PAGE TSCONFIG</a><br />';
+			$this->content .= '<a href="#" onclick="vHWin=window.open(\'' . $GLOBALS['BACK_PATH'] . 'wizard_tsconfig.php?mode=tsref&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-typoscript-documentation-open') . 'TSREF</a><br />';
+			$this->content .= '<a href="#" onclick="vHWin=window.open(\'' . $GLOBALS['BACK_PATH'] . 'wizard_tsconfig.php?mode=beuser&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-typoscript-documentation-open') . 'USER TSCONFIG</a><br />';
+			$this->content .= '<a href="#" onclick="vHWin=window.open(\'' . $GLOBALS['BACK_PATH'] . 'wizard_tsconfig.php?mode=page&amp;P[formName]=editForm\',\'popUp\',\'height=500,width=780,status=0,menubar=0,scrollbars=1\');vHWin.focus();return false;" title="TSref reference">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-typoscript-documentation-open') . 'PAGE TSCONFIG</a><br />';
 			break;
 		case 2:
 			if ($GLOBALS['BE_USER']->user['admin']) {
@@ -146,7 +146,7 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 					$this->purgeSQLContents();
 					// get all loaded extension keys
 					$extArray = $GLOBALS['TYPO3_LOADED_EXT'];
-					$content = ('<div align="left"><strong>' . $GLOBALS['LANG']->getLL('loadedTSfrom')) . '</strong></div><br />';
+					$content = '<div align="left"><strong>' . $GLOBALS['LANG']->getLL('loadedTSfrom') . '</strong></div><br />';
 					// parse the extension names only (no need for all details from the TYPO3_LOADED_EXT table
 					foreach ($extArray as $extName => $dummy) {
 						// check that the extension is really loaded (which should always be the case)
@@ -156,11 +156,11 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 							// check if the manual file actually exists and if the content.xml could be loaded
 							if ($manual != '') {
 								// if the manual file exists, proceed with the load into the SQL database
-								$content .= ('<p>Extension ' . $extName) . '...';
+								$content .= '<p>Extension ' . $extName . '...';
 								// run the extraction processing and import the data into SQL. Return the number of TS tables found in the open office document
 								$number = $this->loadExtensionManual($extName, $manual);
 								// print a status message with a link to the openoffice manual
-								$content .= (((((($number . ' ') . $GLOBALS['LANG']->getLL('sections')) . ' (<a href="') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')) . TYPO3_mainDir) . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($extName)) . 'doc/manual.sxw">manual</a>)</p>';
+								$content .= $number . ' ' . $GLOBALS['LANG']->getLL('sections') . ' (<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($extName) . 'doc/manual.sxw">manual</a>)</p>';
 							}
 						} else {
 							// This should never happen!
@@ -177,14 +177,14 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 						if (empty($obj_string)) {
 							$emptyWarnings = '<p class="typo3-red">' . $GLOBALS['LANG']->getLL('warning_manualsWithoutMarkers');
 							foreach ($extensions as $extensionKey => $counter) {
-								$emptyWarnings .= (((' ' . $extensionKey) . ' (') . $counter) . ')<br />';
+								$emptyWarnings .= ' ' . $extensionKey . ' (' . $counter . ')<br />';
 							}
 							$emptyWarnings .= '</p><br />';
 						} else {
 							if (array_sum($extensions) > 1) {
 								$duplicateWarnings .= $obj_string . ':';
 								foreach ($extensions as $extensionKey => $counter) {
-									$duplicateWarnings .= (((' ' . $extensionKey) . ' (') . $counter) . ')';
+									$duplicateWarnings .= ' ' . $extensionKey . ' (' . $counter . ')';
 								}
 								$duplicateWarnings .= '<br />';
 							}
@@ -192,17 +192,17 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 					}
 					$warnings = $emptyWarnings;
 					if (!empty($duplicateWarnings)) {
-						$warnings .= ((('<p class="typo3-red">' . $GLOBALS['LANG']->getLL('warning_duplicateMarkers')) . '<br />') . $duplicateWarnings) . '</p>';
+						$warnings .= '<p class="typo3-red">' . $GLOBALS['LANG']->getLL('warning_duplicateMarkers') . '<br />' . $duplicateWarnings . '</p>';
 					}
 					if (!empty($warnings)) {
-						$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('updateWarnings'), ('<div>' . $warnings) . '</div>', 0, 1);
+						$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('updateWarnings'), '<div>' . $warnings . '</div>', 0, 1);
 					}
 				}
-				$content = ('<p>' . $GLOBALS['LANG']->getLL('rebuildExplanation')) . '</p><br />';
+				$content = '<p>' . $GLOBALS['LANG']->getLL('rebuildExplanation') . '</p><br />';
 				$content .= $GLOBALS['LANG']->getLL('rebuild') . ' <input type="submit" name="_rebuild" value="Rebuild" /><br />';
 				$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('rebuildTS'), $content, 0, 1);
 			} else {
-				$this->content .= ('<p>' . $GLOBALS['LANG']->getLL('adminAccessOnly')) . '</p><br />';
+				$this->content .= '<p>' . $GLOBALS['LANG']->getLL('adminAccessOnly') . '</p><br />';
 			}
 			break;
 		}
@@ -221,7 +221,7 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 			\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($tempPath);
 			$this->unzip($ZIPfile, $tempPath);
 			$output = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($tempPath . $filename);
-			$cmd = ('rm -r "' . $tempPath) . '"';
+			$cmd = 'rm -r "' . $tempPath . '"';
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 			return $output;
 		}
@@ -331,7 +331,7 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 		if (!strcmp($child, $parent)) {
 			return TRUE;
 		}
-		if ((is_array($Styles[$child]) && array_key_exists('parents', $Styles[$child])) && array_search($parent, $Styles[$child]['parents']) !== FALSE) {
+		if (is_array($Styles[$child]) && array_key_exists('parents', $Styles[$child]) && array_search($parent, $Styles[$child]['parents']) !== FALSE) {
 			// and the parent appears amongst its ancestors
 			return TRUE;
 		}
@@ -414,7 +414,7 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 		$string = '';
 		if (count($style) > 0) {
 			foreach ($style as $tag) {
-				$string .= (('<' . $char) . $tag) . '>';
+				$string .= '<' . $char . $tag . '>';
 			}
 		}
 		return $string;
@@ -527,7 +527,7 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 					// Make sure we are in a cell
 					if ($sectionCell) {
 						$sectionP++;
-						$table[$rowID - 1][$cellID - 1] .= ($this->styleHTML($this->styleTags($node), '') . $newLineRequired) . $this->HSCtext($node['value']);
+						$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired . $this->HSCtext($node['value']);
 						// No newline required after this
 						$newLineRequired = '';
 						$latestTEXTPopen = $node;
@@ -540,14 +540,14 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 				case 'TEXT:P':
 					// make sure we are in a cell
 					if ($sectionCell) {
-						$table[$rowID - 1][$cellID - 1] .= (($this->styleHTML($this->styleTags($node), '') . $newLineRequired) . $this->HSCtext($node['value'])) . $this->styleHTML($this->styleTags($node), '/');
+						$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired . $this->HSCtext($node['value']) . $this->styleHTML($this->styleTags($node), '/');
 						$newLineRequired = '<br>';
 					}
 					break;
 				case 'TEXT:SPAN':
 					// make sure we are in a cell
 					if ($sectionCell) {
-						$table[$rowID - 1][$cellID - 1] .= (($this->styleHTML($this->styleTags($node), '') . $newLineRequired) . $this->HSCtext($node['value'])) . $this->styleHTML($this->styleTags($node), '/');
+						$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired . $this->HSCtext($node['value']) . $this->styleHTML($this->styleTags($node), '/');
 						$newLineRequired = '';
 					}
 					break;
@@ -568,7 +568,7 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 				case 'TEXT:P':
 					// make sure we are in a cell
 					if ($sectionCell) {
-						$table[$rowID - 1][$cellID - 1] .= (($this->styleHTML($this->styleTags($node), '') . $newLineRequired) . $this->HSCtext($node['value'])) . $this->styleHTML($this->styleTags($node), '/');
+						$table[$rowID - 1][$cellID - 1] .= $this->styleHTML($this->styleTags($node), '') . $newLineRequired . $this->HSCtext($node['value']) . $this->styleHTML($this->styleTags($node), '/');
 						// no newline required after this
 						$newLineRequired = '';
 					}
@@ -646,7 +646,7 @@ class TypoScriptConfigHelpModuleController extends \TYPO3\CMS\Backend\Module\Bas
 		// This way the tables do not overwrite each other in the online help
 		if (isset($this->allObjStrings[$obj_string])) {
 			$this->allObjStrings[$obj_string]++;
-			$obj_string .= (' (' . $this->allObjStrings[$obj_string]) . ')';
+			$obj_string .= ' (' . $this->allObjStrings[$obj_string] . ')';
 		} else {
 			$this->allObjStrings[$obj_string] = 0;
 		}

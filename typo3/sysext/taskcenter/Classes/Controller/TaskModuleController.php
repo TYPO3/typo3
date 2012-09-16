@@ -24,7 +24,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('taskcenter') . 'res/mod_template.html');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->getPageRenderer()->loadScriptaculous('effects,dragdrop');
-		$this->doc->addStyleSheet('tx_taskcenter', ('../' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('taskcenter')) . 'res/mod_styles.css');
+		$this->doc->addStyleSheet('tx_taskcenter', '../' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('taskcenter') . 'res/mod_styles.css');
 	}
 
 	/**
@@ -121,9 +121,9 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xml:mlang_labels_tabdescr'), $GLOBALS['LANG']->sL('LLL:EXT:taskcenter/task/locallang_mod.xml:mlang_tabs_tab'), \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 			$actionContent .= $flashMessage->render();
 		}
-		$content = ((((('<div id="taskcenter-main">
-						<div id="taskcenter-menu">' . $this->indexAction()) . '</div>
-						<div id="taskcenter-item" class="') . htmlspecialchars((($extKey . '-') . $taskClass))) . '">') . $actionContent) . '
+		$content = '<div id="taskcenter-main">
+						<div id="taskcenter-menu">' . $this->indexAction() . '</div>
+						<div id="taskcenter-item" class="' . htmlspecialchars(($extKey . '-' . $taskClass)) . '">' . $actionContent . '
 						</div>
 					</div>';
 		$this->content .= $content;
@@ -152,7 +152,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	public function description($title, $description = '') {
 		if (!empty($description)) {
-			$description = ('<p class="description">' . nl2br(htmlspecialchars($description))) . '</p><br />';
+			$description = '<p class="description">' . nl2br(htmlspecialchars($description)) . '</p><br />';
 		}
 		$content = $this->doc->section($title, $description, FALSE, TRUE);
 		return $content;
@@ -201,20 +201,20 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						$absIconPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFilename($item['icon']);
 						// If the file indeed exists, assemble relative path to it
 						if (file_exists($absIconPath)) {
-							$icon = ($GLOBALS['BACK_PATH'] . '../') . str_replace(PATH_site, '', $absIconPath);
-							$icon = ((((('<img src="' . $icon) . '" title="') . $title) . '" alt="') . $title) . '" />';
+							$icon = $GLOBALS['BACK_PATH'] . '../' . str_replace(PATH_site, '', $absIconPath);
+							$icon = '<img src="' . $icon . '" title="' . $title . '" alt="' . $title . '" />';
 						}
 						if (@is_file($icon)) {
-							$icon = ((((('<img' . \t3lib_iconworks::skinImg($GLOBALS['BACK_PATH'], $icon, 'width="16" height="16"')) . ' title="') . $title) . '" alt="') . $title) . '" />';
+							$icon = '<img' . \t3lib_iconworks::skinImg($GLOBALS['BACK_PATH'], $icon, 'width="16" height="16"') . ' title="' . $title . '" alt="' . $title . '" />';
 						}
 					} else {
 						$icon = $item['icon'];
 					}
 				}
-				$description = !empty($item['descriptionHtml']) ? $item['descriptionHtml'] : ('<p>' . nl2br(htmlspecialchars($item['description']))) . '</p>';
+				$description = !empty($item['descriptionHtml']) ? $item['descriptionHtml'] : '<p>' . nl2br(htmlspecialchars($item['description'])) . '</p>';
 				$id = $this->getUniqueKey($item['uid']);
 				// Collapsed & expanded menu items
-				if (($mainMenu && isset($GLOBALS['BE_USER']->uc['taskcenter']['states'][$id])) && $GLOBALS['BE_USER']->uc['taskcenter']['states'][$id]) {
+				if ($mainMenu && isset($GLOBALS['BE_USER']->uc['taskcenter']['states'][$id]) && $GLOBALS['BE_USER']->uc['taskcenter']['states'][$id]) {
 					$collapsedStyle = 'style="display:none"';
 					$additionalClass = 'collapsed';
 				} else {
@@ -230,21 +230,21 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 				$active = (string) $this->MOD_SETTINGS['function'] == $item['uid'] ? ' active-task' : '';
 				// Main menu: Render additional syntax to sort tasks
 				if ($mainMenu) {
-					$dragIcon = ((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/move.gif', 'width="16" height="16" hspace="2"')) . ' title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.move', 1)) . '" alt="" />';
-					$section = ('<div class="down">&nbsp;</div>
-								<div class="drag">' . $dragIcon) . '</div>';
+					$dragIcon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/move.gif', 'width="16" height="16" hspace="2"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.move', 1) . '" alt="" />';
+					$section = '<div class="down">&nbsp;</div>
+								<div class="drag">' . $dragIcon . '</div>';
 					$backgroundClass = 't3-row-header ';
 				}
-				$content .= (((((((((((((((((('<li class="' . $additionalClass) . $active) . '" id="el_') . $id) . '">
-								') . $section) . '
-								<div class="image">') . $icon) . '</div>
-								<div class="') . $backgroundClass) . 'link"><a href="') . $item['link']) . '">') . $title) . '</a></div>
-								<div class="content " ') . $collapsedStyle) . '>') . $description) . '</div>
+				$content .= '<li class="' . $additionalClass . $active . '" id="el_' . $id . '">
+								' . $section . '
+								<div class="image">' . $icon . '</div>
+								<div class="' . $backgroundClass . 'link"><a href="' . $item['link'] . '">' . $title . '</a></div>
+								<div class="content " ' . $collapsedStyle . '>' . $description . '</div>
 							</li>';
 				$count++;
 			}
 			$navigationId = $mainMenu ? 'id="task-list"' : '';
-			$content = ((('<ul ' . $navigationId) . ' class="task-list">') . $content) . '</ul>';
+			$content = '<ul ' . $navigationId . ' class="task-list">' . $content . '</ul>';
 		}
 		return $content;
 	}
@@ -265,7 +265,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					if (!$this->checkAccess($extKey, $taskClass)) {
 						continue;
 					}
-					$link = (('mod.php?M=user_task&SET[function]=' . $extKey) . '.') . $taskClass;
+					$link = 'mod.php?M=user_task&SET[function]=' . $extKey . '.' . $taskClass;
 					$taskTitle = $GLOBALS['LANG']->sL($task['title']);
 					$taskDescriptionHtml = '';
 					// Check for custom icon
@@ -279,14 +279,14 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 						}
 					}
 					// Generate an array of all tasks
-					$uniqueKey = $this->getUniqueKey(($extKey . '.') . $taskClass);
+					$uniqueKey = $this->getUniqueKey($extKey . '.' . $taskClass);
 					$tasks[$uniqueKey] = array(
 						'title' => $taskTitle,
 						'descriptionHtml' => $taskDescriptionHtml,
 						'description' => $GLOBALS['LANG']->sL($task['description']),
 						'icon' => $icon,
 						'link' => $link,
-						'uid' => ($extKey . '.') . $taskClass
+						'uid' => $extKey . '.' . $taskClass
 					);
 				}
 			}
@@ -329,7 +329,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function checkAccess($extKey, $taskClass) {
 		// Check if task is blinded with TsConfig (taskcenter.<extkey>.<taskName>
-		$tsConfig = $GLOBALS['BE_USER']->getTSConfig((('taskcenter.' . $extKey) . '.') . $taskClass);
+		$tsConfig = $GLOBALS['BE_USER']->getTSConfig('taskcenter.' . $extKey . '.' . $taskClass);
 		if (isset($tsConfig['value']) && intval($tsConfig['value']) == 0) {
 			return FALSE;
 		}
@@ -360,7 +360,7 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 		}
 		Event.observe(window, "resize", resizeIframe, false);';
-		return ((('<iframe onload="resizeIframe(this,' . $max) . ');" scrolling="auto"  width="100%" src="') . $url) . '" name="list_frame" id="list_frame" frameborder="no" style="margin-top:-51px;border: none;"></iframe>';
+		return '<iframe onload="resizeIframe(this,' . $max . ');" scrolling="auto"  width="100%" src="' . $url . '" name="list_frame" id="list_frame" frameborder="no" style="margin-top:-51px;border: none;"></iframe>';
 	}
 
 	/**
@@ -383,8 +383,8 @@ class TaskModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 	 */
 	protected function openInNewWindow() {
 		$url = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-		$onClick = ('devlogWin=window.open(\'' . $url) . '\',\'taskcenter\',\'width=790,status=0,menubar=1,resizable=1,location=0,scrollbars=1,toolbar=0\');return false;';
-		$content = ((((((('<a href="#" onclick="' . htmlspecialchars($onClick)) . '">') . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/open_in_new_window.gif', 'width="19" height="14"')) . ' title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.openInNewWindow', 1)) . '" class="absmiddle" alt="" />') . '</a>';
+		$onClick = 'devlogWin=window.open(\'' . $url . '\',\'taskcenter\',\'width=790,status=0,menubar=1,resizable=1,location=0,scrollbars=1,toolbar=0\');return false;';
+		$content = '<a href="#" onclick="' . htmlspecialchars($onClick) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/open_in_new_window.gif', 'width="19" height="14"') . ' title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.openInNewWindow', 1) . '" class="absmiddle" alt="" />' . '</a>';
 		return $content;
 	}
 
