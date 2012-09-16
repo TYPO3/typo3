@@ -74,8 +74,8 @@ class FileEditHook {
 		if (!$t3editor->isEnabled() || !$t3editor->getMode()) {
 			return;
 		}
-		$attributes = ('rows="30" ' . 'wrap="off" ') . $pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off');
-		$title = ($GLOBALS['LANG']->getLL('file') . ' ') . htmlspecialchars($pObj->target);
+		$attributes = 'rows="30" ' . 'wrap="off" ' . $pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off');
+		$title = $GLOBALS['LANG']->getLL('file') . ' ' . htmlspecialchars($pObj->target);
 		$outCode = $t3editor->getCodeEditor('file[editfile][0][data]', 'fixed-font enable-tab', '$1', $attributes, $title, array(
 			'target' => intval($pObj->target)
 		));

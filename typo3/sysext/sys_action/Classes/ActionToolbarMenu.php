@@ -52,10 +52,10 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 			$this->addJavascriptToBackend();
 			$this->addCssToBackend();
 			$title = $GLOBALS['LANG']->getLL('action_toolbaritem', TRUE);
-			$actionMenu[] = ('<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-actions', array('title' => $title))) . '</a>';
+			$actionMenu[] = '<a href="#" class="toolbar-item">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-actions', array('title' => $title)) . '</a>';
 			$actionMenu[] = '<ul class="toolbar-item-menu" style="display: none;">';
 			foreach ($actionEntries as $linkConf) {
-				$actionMenu[] = (((('<li><a href="' . htmlspecialchars($linkConf[1])) . '" target="content">') . $linkConf[2]) . htmlspecialchars($linkConf[0])) . '</a></li>';
+				$actionMenu[] = '<li><a href="' . htmlspecialchars($linkConf[1]) . '" target="content">' . $linkConf[2] . htmlspecialchars($linkConf[0]) . '</a></li>';
 			}
 			$actionMenu[] = '</ul>';
 			return implode('
@@ -81,7 +81,7 @@ class ActionToolbarMenu implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookInt
 			if ($GLOBALS['BE_USER']->groupList) {
 				$groupList = $GLOBALS['BE_USER']->groupList;
 			}
-			$queryResource = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('sys_action.*', 'sys_action', 'sys_action_asgr_mm', 'be_groups', (' AND be_groups.uid IN (' . $groupList) . ') AND sys_action.pid = 0 AND sys_action.hidden = 0', 'sys_action.uid', 'sys_action.sorting');
+			$queryResource = $GLOBALS['TYPO3_DB']->exec_SELECT_mm_query('sys_action.*', 'sys_action', 'sys_action_asgr_mm', 'be_groups', ' AND be_groups.uid IN (' . $groupList . ') AND sys_action.pid = 0 AND sys_action.hidden = 0', 'sys_action.uid', 'sys_action.sorting');
 		}
 		if ($queryResource) {
 			while ($actionRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($queryResource)) {
