@@ -146,23 +146,23 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 				foreach ($menuItems as $rec) {
 					\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL('pages', $rec);
 					if (is_array($rec)) {
-						$lines[] = (('<nobr>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec, array('title' => \TYPO3\CMS\Backend\Utility\BackendUtility::titleAttribForPages($rec, '', FALSE)))) . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen']))) . '</nobr>';
+						$lines[] = '<nobr>' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec, array('title' => \TYPO3\CMS\Backend\Utility\BackendUtility::titleAttribForPages($rec, '', FALSE))) . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '</nobr>';
 					}
 				}
-				$theCode .= (('<h4>' . $LANG->getLL('wiz_newPages_currentMenu')) . '</h4>') . implode('<br />', $lines);
+				$theCode .= '<h4>' . $LANG->getLL('wiz_newPages_currentMenu') . '</h4>' . implode('<br />', $lines);
 			} else {
 				// Display create form
 				$lines = array();
 				for ($a = 0; $a < 9; $a++) {
 					$lines[] = $this->getFormLine($a);
 				}
-				$theCode .= ((((((((((((((((('<h4>' . $LANG->getLL('wiz_newPages')) . ':</h4>') . '<div id="formFieldContainer">') . implode('', $lines)) . '</div>') . '<br class="clearLeft" />') . '<input type="button" id="createNewFormFields" value="') . $LANG->getLL('wiz_newPages_addMoreLines')) . '" />') . '<br /><br />
-				<input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" /> <label for="createInListEnd">') . $LANG->getLL('wiz_newPages_listEnd')) . '</label><br />
-				<input type="checkbox" name="hidePages" id="hidePages" value="1" /> <label for="hidePages">') . $LANG->getLL('wiz_newPages_hidePages')) . '</label><br /><br />
-				<input type="submit" name="create" value="') . $LANG->getLL('wiz_newPages_lCreate')) . '" />&nbsp;<input type="reset" value="') . $LANG->getLL('wiz_newPages_lReset')) . '" /><br />';
+				$theCode .= '<h4>' . $LANG->getLL('wiz_newPages') . ':</h4>' . '<div id="formFieldContainer">' . implode('', $lines) . '</div>' . '<br class="clearLeft" />' . '<input type="button" id="createNewFormFields" value="' . $LANG->getLL('wiz_newPages_addMoreLines') . '" />' . '<br /><br />
+				<input type="checkbox" name="createInListEnd" id="createInListEnd" value="1" /> <label for="createInListEnd">' . $LANG->getLL('wiz_newPages_listEnd') . '</label><br />
+				<input type="checkbox" name="hidePages" id="hidePages" value="1" /> <label for="hidePages">' . $LANG->getLL('wiz_newPages_hidePages') . '</label><br /><br />
+				<input type="submit" name="create" value="' . $LANG->getLL('wiz_newPages_lCreate') . '" />&nbsp;<input type="reset" value="' . $LANG->getLL('wiz_newPages_lReset') . '" /><br />';
 				// Add ExtJS inline code
-				$extCode = ('
-					var tpl = "' . addslashes(str_replace(array(LF, TAB), array('', ''), $this->getFormLine('#')))) . '", i, line, div, bg, label;
+				$extCode = '
+					var tpl = "' . addslashes(str_replace(array(LF, TAB), array('', ''), $this->getFormLine('#'))) . '", i, line, div, bg, label;
 					var lineCounter = 9;
 					Ext.get("createNewFormFields").on("click", function() {
 						div = Ext.get("formFieldContainer");
@@ -204,7 +204,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 	 * @todo Define visibility
 	 */
 	public function helpBubble() {
-		return ('<img src="' . $GLOBALS['BACK_PATH']) . 'gfx/helpbubble.gif" width="14" height="14" hspace="2" align="top" alt="" />';
+		return '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/helpbubble.gif" width="14" height="14" hspace="2" align="top" alt="" />';
 	}
 
 	/**
@@ -224,16 +224,16 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 			$backgroundClass = 'bgColor{2}';
 			$label = '{1}';
 		}
-		$content = (((('<label for="page_new_' . $index) . '"> ') . $GLOBALS['LANG']->getLL('wiz_newPages_page')) . ' ') . $label;
+		$content = '<label for="page_new_' . $index . '"> ' . $GLOBALS['LANG']->getLL('wiz_newPages_page') . ' ' . $label;
 		$content .= ':&nbsp;</label>';
 		// Title
-		$content .= ((((('<input type="text" id="page_new_' . $index) . '" name="data[pages][NEW') . $index) . '][title]"') . $this->pObj->doc->formWidth(35)) . ' />&nbsp';
+		$content .= '<input type="text" id="page_new_' . $index . '" name="data[pages][NEW' . $index . '][title]"' . $this->pObj->doc->formWidth(35) . ' />&nbsp';
 		// Lorem ipsum link, if available
-		$content .= is_object($this->loremIpsumObject) ? ((('<a href="#" onclick="' . htmlspecialchars($this->loremIpsumObject->getHeaderTitleJS((('document.forms[0][\'data[pages][NEW' . $index) . '][title]\'].value'), 'title'))) . '">') . $this->loremIpsumObject->getIcon('', $this->pObj->doc->backPath)) . '</a>' : '';
+		$content .= is_object($this->loremIpsumObject) ? '<a href="#" onclick="' . htmlspecialchars($this->loremIpsumObject->getHeaderTitleJS(('document.forms[0][\'data[pages][NEW' . $index . '][title]\'].value'), 'title')) . '">' . $this->loremIpsumObject->getIcon('', $this->pObj->doc->backPath) . '</a>' : '';
 		// type selector
-		$content .= ('<span>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.php:LGL.type')) . '</span>';
+		$content .= '<span>' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_general.php:LGL.type') . '</span>';
 		$content .= '<select onchange="this.style.backgroundImage=this.options[this.selectedIndex].style.backgroundImage;if (this.options[this.selectedIndex].value==\'--div--\') {this.selectedIndex=1;}" ';
-		$content .= ((('class="select icon-select" name="data[pages][NEW' . $index) . '][doktype]" style="background: url(&quot;') . $backPath) . 'sysext/t3skin/icons/gfx/i/pages.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); padding: 1px 1px 1px 24px;">';
+		$content .= 'class="select icon-select" name="data[pages][NEW' . $index . '][doktype]" style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/pages.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); padding: 1px 1px 1px 24px;">';
 		// dokType
 		$types = $GLOBALS['PAGES_TYPES'];
 		unset($types['default']);
@@ -245,36 +245,36 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 		$removeItems = isset($this->pagesTsConfig['doktype.']['removeItems']) ? \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pagesTsConfig['doktype.']['removeItems'], TRUE) : array();
 		$group = '';
 		if (in_array(1, $types) && !in_array(1, $removeItems)) {
-			$group .= ('<option style="background: url(&quot;' . $backPath) . 'sysext/t3skin/icons/gfx/i/pages.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" selected="selected" value="1">Standard</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/pages.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" selected="selected" value="1">Standard</option>';
 		}
 		if (in_array(6, $types) && !in_array(6, $removeItems)) {
-			$group .= ('<option style="background: url(&quot;' . $backPath) . 'gfx/i/be_users_section.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="6">Backend User Section</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'gfx/i/be_users_section.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="6">Backend User Section</option>';
 		}
-		$content .= $group ? ('<optgroup class="c-divider" label="Page">' . $group) . '</optgroup>' : '';
+		$content .= $group ? '<optgroup class="c-divider" label="Page">' . $group . '</optgroup>' : '';
 		$group = '';
 		if (in_array(4, $types) && !in_array(4, $removeItems)) {
-			$group .= ('<option style="background: url(&quot;' . $backPath) . 'sysext/t3skin/icons/gfx/i/pages_shortcut.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="4">Shortcut</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/pages_shortcut.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="4">Shortcut</option>';
 		}
 		if (in_array(7, $types) && !in_array(7, $removeItems)) {
-			$group .= ('<option style="background: url(&quot;' . $backPath) . 'gfx/i/pages_mountpoint.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="7">Mount Point</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'gfx/i/pages_mountpoint.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="7">Mount Point</option>';
 		}
 		if (in_array(3, $types) && !in_array(3, $removeItems)) {
-			$group .= ('<option style="background: url(&quot;' . $backPath) . 'sysext/t3skin/icons/gfx/i/pages_link.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="3">Link to external URL</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/pages_link.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="3">Link to external URL</option>';
 		}
-		$content .= $group ? ('<optgroup class="c-divider" label="Link">' . $group) . '</optgroup>' : '';
+		$content .= $group ? '<optgroup class="c-divider" label="Link">' . $group . '</optgroup>' : '';
 		$group = '';
 		if (in_array(254, $types) && !in_array(254, $removeItems)) {
-			$group .= ('<option style="background: url(&quot;' . $backPath) . 'sysext/t3skin/icons/gfx/i/sysf.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="254">Folder</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/sysf.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="254">Folder</option>';
 		}
 		if (in_array(255, $types) && !in_array(255, $removeItems)) {
-			$group .= ('<option style="background: url(&quot;' . $backPath) . 'sysext/t3skin/icons/gfx/i/recycler.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="255">Recycler</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/recycler.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="255">Recycler</option>';
 		}
 		if (in_array(199, $types) && !in_array(199, $removeItems)) {
-			$group .= ('<option style="background: url(&quot;' . $backPath) . 'sysext/t3skin/icons/gfx/i/spacer_icon.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="199">Visual menu separator</option>';
+			$group .= '<option style="background: url(&quot;' . $backPath . 'sysext/t3skin/icons/gfx/i/spacer_icon.gif&quot;) no-repeat scroll 0% 50% rgb(255, 255, 255); height: 16px; padding-top: 2px; padding-left: 22px;" value="199">Visual menu separator</option>';
 		}
-		$content .= $group ? ('<optgroup class="c-divider" label="Special">' . $group) . '</optgroup>' : '';
+		$content .= $group ? '<optgroup class="c-divider" label="Special">' . $group . '</optgroup>' : '';
 		$content .= '</select>';
-		return ((((('<div id="form-line-' . $index) . '" class="') . $backgroundClass) . '">') . $content) . '</div>';
+		return '<div id="form-line-' . $index . '" class="' . $backgroundClass . '">' . $content . '</div>';
 	}
 
 }
