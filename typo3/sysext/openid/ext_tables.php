@@ -20,14 +20,14 @@ $tempColumns = array(
 \TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('be_users');
 \TYPO3\CMS\Core\Extension\ExtensionManager::addTCAcolumns('be_users', $tempColumns, FALSE);
 \TYPO3\CMS\Core\Extension\ExtensionManager::addToAllTCAtypes('be_users', 'tx_openid_openid;;;;1-1-1', '', 'after:username');
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('be_users', ('EXT:' . $_EXTKEY) . '/locallang_csh.xml');
+\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('be_users', 'EXT:' . $_EXTKEY . '/locallang_csh.xml');
 // Prepare new columns for fe_users table
 $tempColumns['tx_openid_openid']['config']['eval'] = 'trim,nospace,uniqueInPid';
 // Add new columns to fe_users table
 \TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('fe_users');
 \TYPO3\CMS\Core\Extension\ExtensionManager::addTCAcolumns('fe_users', $tempColumns, FALSE);
 \TYPO3\CMS\Core\Extension\ExtensionManager::addFieldsToAllPalettesOfField('fe_users', 'username', 'tx_openid_openid');
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('fe_users', ('EXT:' . $_EXTKEY) . '/locallang_csh.xml');
+\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('fe_users', 'EXT:' . $_EXTKEY . '/locallang_csh.xml');
 // Add field to setup module
 $GLOBALS['TYPO3_USER_SETTINGS']['columns']['tx_openid_openid'] = array(
 	'type' => 'user',

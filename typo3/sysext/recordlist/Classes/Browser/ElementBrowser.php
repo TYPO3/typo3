@@ -261,7 +261,7 @@ class ElementBrowser {
 					$processor->extendUrlArray($_params, $this);
 				}
 			}
-			$this->curUrlInfo = $this->parseCurUrl(($this->siteURL . '?id=') . $this->curUrlArray['href'], $this->siteURL);
+			$this->curUrlInfo = $this->parseCurUrl($this->siteURL . '?id=' . $this->curUrlArray['href'], $this->siteURL);
 			// pageid == 0 means that this is not an internal (page) link
 			if ($this->curUrlInfo['pageid'] == 0 && $this->curUrlArray['href']) {
 				// Check if there is the FAL API
@@ -291,7 +291,7 @@ class ElementBrowser {
 				$this->curUrlInfo = array();
 				$this->act = 'page';
 			} else {
-				$this->curUrlInfo = $this->parseCurUrl(($this->siteURL . '?id=') . $this->curUrlArray['href'], $this->siteURL);
+				$this->curUrlInfo = $this->parseCurUrl($this->siteURL . '?id=' . $this->curUrlArray['href'], $this->siteURL);
 			}
 		} else {
 			$this->curUrlArray = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('curUrl');
@@ -325,19 +325,19 @@ class ElementBrowser {
 		// Initializing the params value
 		$this->setParams = $this->curUrlArray['params'] != '-' ? rawurlencode($this->curUrlArray['params']) : '';
 		// BEGIN accumulation of header JavaScript:
-		$JScode = ((((((((((((((((((('
+		$JScode = '
 				// This JavaScript is primarily for RTE/Link. jumpToUrl is used in the other cases as well...
-			var add_href="' . ($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '')) . '";
-			var add_target="') . ($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '')) . '";
-			var add_class="') . ($this->setClass ? '&curUrl[class]=' . rawurlencode($this->setClass) : '')) . '";
-			var add_title="') . ($this->setTitle ? '&curUrl[title]=' . rawurlencode($this->setTitle) : '')) . '";
-			var add_params="') . ($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '')) . '";
+			var add_href="' . ($this->curUrlArray['href'] ? '&curUrl[href]=' . rawurlencode($this->curUrlArray['href']) : '') . '";
+			var add_target="' . ($this->setTarget ? '&curUrl[target]=' . rawurlencode($this->setTarget) : '') . '";
+			var add_class="' . ($this->setClass ? '&curUrl[class]=' . rawurlencode($this->setClass) : '') . '";
+			var add_title="' . ($this->setTitle ? '&curUrl[title]=' . rawurlencode($this->setTitle) : '') . '";
+			var add_params="' . ($this->bparams ? '&bparams=' . rawurlencode($this->bparams) : '') . '";
 
-			var cur_href="') . ($this->curUrlArray['href'] ? rawurlencode($this->curUrlArray['href']) : '')) . '";
-			var cur_target="') . ($this->setTarget ? $this->setTarget : '')) . '";
-			var cur_class = "') . ($this->setClass ? $this->setClass : '')) . '";
-			var cur_title="') . ($this->setTitle ? $this->setTitle : '')) . '";
-			var cur_params="') . ($this->setParams ? $this->setParams : '')) . '";
+			var cur_href="' . ($this->curUrlArray['href'] ? rawurlencode($this->curUrlArray['href']) : '') . '";
+			var cur_target="' . ($this->setTarget ? $this->setTarget : '') . '";
+			var cur_class = "' . ($this->setClass ? $this->setClass : '') . '";
+			var cur_title="' . ($this->setTitle ? $this->setTitle : '') . '";
+			var cur_params="' . ($this->setParams ? $this->setParams : '') . '";
 
 			function browse_links_setTarget(target) {	//
 				cur_target=target;
@@ -380,7 +380,7 @@ class ElementBrowser {
 			$P2['params']['blindLinkOptions'] = $this->P['params']['blindLinkOptions'];
 			$P2['params']['blindLinkFields'] = $this->P['params']['blindLinkFields'];
 			$addPassOnParams .= \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('P', $P2);
-			$JScode .= ((((((((((('
+			$JScode .= '
 				function link_typo3Page(id,anchor) {	//
 					updateValueInMainForm(id + (anchor ? anchor : ""));
 					close();
@@ -411,8 +411,8 @@ class ElementBrowser {
 					return false;
 				}
 				function checkReference() {	//
-					if (window.opener && window.opener.document && window.opener.document.' . $this->P['formName']) . ' && window.opener.document.') . $this->P['formName']) . '["') . $this->P['itemName']) . '"] ) {
-						return window.opener.document.') . $this->P['formName']) . '["') . $this->P['itemName']) . '"];
+					if (window.opener && window.opener.document && window.opener.document.' . $this->P['formName'] . ' && window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemName'] . '"] ) {
+						return window.opener.document.' . $this->P['formName'] . '["' . $this->P['itemName'] . '"];
 					} else {
 						close();
 					}
@@ -446,20 +446,20 @@ class ElementBrowser {
 						} else {
 							field.value = input;
 						}
-						') . $update) . '
+						' . $update . '
 					}
 				}
 			';
 		} else {
 			// Functions used, if the link selector is in RTE mode:
-			$JScode .= ((('
+			$JScode .= '
 				function link_typo3Page(id,anchor) {	//
-					var theLink = \'' . $this->siteURL) . '?id=\'+id+(anchor?anchor:"");
+					var theLink = \'' . $this->siteURL . '?id=\'+id+(anchor?anchor:"");
 					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
 					return false;
 				}
 				function link_folder(folder) {	//
-					var theLink = \'') . $this->siteURL) . '\'+folder;
+					var theLink = \'' . $this->siteURL . '\'+folder;
 					self.parent.parent.renderPopup_addLink(theLink, cur_target, cur_class, cur_title);
 					return false;
 				}
@@ -476,11 +476,11 @@ class ElementBrowser {
 			';
 		}
 		// General "jumpToUrl" function:
-		$JScode .= ((((('
+		$JScode .= '
 			function jumpToUrl(URL,anchor) {	//
-				var add_act = URL.indexOf("act=")==-1 ? "&act=' . $this->act) . '" : "";
-				var add_mode = URL.indexOf("mode=")==-1 ? "&mode=') . $this->mode) . '" : "";
-				var theLocation = URL + add_act + add_mode + add_href + add_target + add_class + add_title + add_params') . ($addPassOnParams ? ('+"' . $addPassOnParams) . '"' : '')) . '+(anchor?anchor:"");
+				var add_act = URL.indexOf("act=")==-1 ? "&act=' . $this->act . '" : "";
+				var add_mode = URL.indexOf("mode=")==-1 ? "&mode=' . $this->mode . '" : "";
+				var theLocation = URL + add_act + add_mode + add_href + add_target + add_class + add_title + add_params' . ($addPassOnParams ? '+"' . $addPassOnParams . '"' : '') . '+(anchor?anchor:"");
 				window.location.href = theLocation;
 				return false;
 			}
@@ -492,13 +492,13 @@ class ElementBrowser {
 		 */
 		$pArr = explode('|', $this->bparams);
 		// This is JavaScript especially for the TBE Element Browser!
-		$formFieldName = ((((('data[' . $pArr[0]) . '][') . $pArr[1]) . '][') . $pArr[2]) . ']';
+		$formFieldName = 'data[' . $pArr[0] . '][' . $pArr[1] . '][' . $pArr[2] . ']';
 		// insertElement - Call check function (e.g. for uniqueness handling):
 		if ($pArr[4] && $pArr[5]) {
-			$JScodeCheck = ((('
+			$JScodeCheck = '
 					// Call a check function in the opener window (e.g. for uniqueness handling):
 				if (parent.window.opener) {
-					var res = parent.window.opener.' . $pArr[5]) . '("') . addslashes($pArr[4])) . '",table,uid,type);
+					var res = parent.window.opener.' . $pArr[5] . '("' . addslashes($pArr[4]) . '",table,uid,type);
 					if (!res.passed) {
 						if (res.message) alert(res.message);
 						performAction = false;
@@ -511,10 +511,10 @@ class ElementBrowser {
 		}
 		// insertElement - Call helper function:
 		if ($pArr[4] && $pArr[6]) {
-			$JScodeHelper = ((((('
+			$JScodeHelper = '
 						// Call helper function to manage data in the opener window:
 					if (parent.window.opener) {
-						parent.window.opener.' . $pArr[6]) . '("') . addslashes($pArr[4])) . '",table,uid,type,"') . addslashes($pArr[0])) . '");
+						parent.window.opener.' . $pArr[6] . '("' . addslashes($pArr[4]) . '",table,uid,type,"' . addslashes($pArr[0]) . '");
 					} else {
 						alert("Error - reference to main window is not set properly!");
 						parent.close();
@@ -524,53 +524,53 @@ class ElementBrowser {
 		// insertElement - perform action commands:
 		if ($pArr[4] && $pArr[7]) {
 			// Call user defined action function:
-			$JScodeAction = ((('
+			$JScodeAction = '
 					if (parent.window.opener) {
-						parent.window.opener.' . $pArr[7]) . '("') . addslashes($pArr[4])) . '",table,uid,type);
+						parent.window.opener.' . $pArr[7] . '("' . addslashes($pArr[4]) . '",table,uid,type);
 						if (close) { focusOpenerAndClose(close); }
 					} else {
 						alert("Error - reference to main window is not set properly!");
 						if (close) { parent.close(); }
 					}
 			';
-			$JScodeActionMultiple = ((((('
+			$JScodeActionMultiple = '
 						// Call helper function to manage data in the opener window:
 					if (parent.window.opener) {
-						parent.window.opener.' . $pArr[7]) . 'Multiple("') . addslashes($pArr[4])) . '",table,uid,type,"') . addslashes($pArr[0])) . '");
+						parent.window.opener.' . $pArr[7] . 'Multiple("' . addslashes($pArr[4]) . '",table,uid,type,"' . addslashes($pArr[0]) . '");
 					} else {
 						alert("Error - reference to main window is not set properly!");
 						parent.close();
 					}
 			';
-		} elseif (($pArr[0] && !$pArr[1]) && !$pArr[2]) {
+		} elseif ($pArr[0] && !$pArr[1] && !$pArr[2]) {
 			$JScodeAction = '
 					addElement(filename,table+"_"+uid,fp,close);
 			';
 		} else {
-			$JScodeAction = ((((('
+			$JScodeAction = '
 					if (setReferences()) {
-						parent.window.opener.group_change("add","' . $pArr[0]) . '","') . $pArr[1]) . '","') . $pArr[2]) . '",elRef,targetDoc);
+						parent.window.opener.group_change("add","' . $pArr[0] . '","' . $pArr[1] . '","' . $pArr[2] . '",elRef,targetDoc);
 					} else {
 						alert("Error - reference to main window is not set properly!");
 					}
 					focusOpenerAndClose(close);
 			';
 		}
-		$JScode .= (((((((((((((('
+		$JScode .= '
 			var elRef="";
 			var targetDoc="";
 
 			function launchView(url) {	//
 				var thePreviewWindow="";
-				thePreviewWindow = window.open("' . $GLOBALS['BACK_PATH']) . 'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
+				thePreviewWindow = window.open("' . $GLOBALS['BACK_PATH'] . 'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
 				if (thePreviewWindow && thePreviewWindow.focus) {
 					thePreviewWindow.focus();
 				}
 			}
 			function setReferences() {	//
-				if (parent.window.opener && parent.window.opener.content && parent.window.opener.content.document.editform && parent.window.opener.content.document.editform["') . $formFieldName) . '"]) {
+				if (parent.window.opener && parent.window.opener.content && parent.window.opener.content.document.editform && parent.window.opener.content.document.editform["' . $formFieldName . '"]) {
 					targetDoc = parent.window.opener.content.document;
-					elRef = targetDoc.editform["') . $formFieldName) . '"];
+					elRef = targetDoc.editform["' . $formFieldName . '"];
 					return true;
 				} else {
 					return false;
@@ -578,21 +578,21 @@ class ElementBrowser {
 			}
 			function insertElement(table, uid, type, filename, fp, filetype, imagefile, action, close) {	//
 				var performAction = true;
-				') . $JScodeCheck) . '
+				' . $JScodeCheck . '
 					// Call performing function and finish this action:
 				if (performAction) {
-						') . $JScodeHelper) . $JScodeAction) . '
+						' . $JScodeHelper . $JScodeAction . '
 				}
 				return false;
 			}
 			function insertMultiple(table, uid) {
 				var type = "";
-						') . $JScodeActionMultiple) . '
+						' . $JScodeActionMultiple . '
 				return false;
 			}
 			function addElement(elName, elValue, altElValue, close) {	//
 				if (parent.window.opener && parent.window.opener.setFormValueFromBrowseWin) {
-					parent.window.opener.setFormValueFromBrowseWin("') . $pArr[0]) . '",altElValue?altElValue:elValue,elName);
+					parent.window.opener.setFormValueFromBrowseWin("' . $pArr[0] . '",altElValue?altElValue:elValue,elName);
 					focusOpenerAndClose(close);
 				} else {
 					alert("Error - reference to main window is not set properly!");
@@ -738,7 +738,7 @@ class ElementBrowser {
 		// Depending on the current action we will create the actual module content for selecting a link:
 		switch ($this->act) {
 		case 'mail':
-			$extUrl = (((((((('
+			$extUrl = '
 
 			<!--
 				Enter mail address:
@@ -746,15 +746,15 @@ class ElementBrowser {
 					<form action="" name="lurlform" id="lurlform">
 						<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkMail">
 							<tr>
-								<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('emailAddress', 1)) . ':</td>
-								<td><input type="text" name="lemail"') . $this->doc->formWidth(20)) . ' value="') . htmlspecialchars(($this->curUrlInfo['act'] == 'mail' ? $this->curUrlInfo['info'] : ''))) . '" /> ') . '<input type="submit" value="') . $GLOBALS['LANG']->getLL('setLink', 1)) . '" onclick="browse_links_setTarget(\'\');browse_links_setValue(\'mailto:\'+document.lurlform.lemail.value); return link_current();" /></td>
+								<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('emailAddress', 1) . ':</td>
+								<td><input type="text" name="lemail"' . $this->doc->formWidth(20) . ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'mail' ? $this->curUrlInfo['info'] : '')) . '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', 1) . '" onclick="browse_links_setTarget(\'\');browse_links_setValue(\'mailto:\'+document.lurlform.lemail.value); return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
 			$content .= $extUrl;
 			break;
 		case 'url':
-			$extUrl = (((((('
+			$extUrl = '
 
 			<!--
 				Enter External URL:
@@ -763,7 +763,7 @@ class ElementBrowser {
 						<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkURL">
 							<tr>
 								<td style="width: 96px;">URL:</td>
-								<td><input type="text" name="lurl"' . $this->doc->formWidth(30)) . ' value="') . htmlspecialchars(($this->curUrlInfo['act'] == 'url' ? $this->curUrlInfo['info'] : 'http://'))) . '" /> ') . '<input type="submit" value="') . $GLOBALS['LANG']->getLL('setLink', 1)) . '" onclick="browse_links_setValue(document.lurlform.lurl.value); return link_current();" /></td>
+								<td><input type="text" name="lurl"' . $this->doc->formWidth(30) . ' value="' . htmlspecialchars(($this->curUrlInfo['act'] == 'url' ? $this->curUrlInfo['info'] : 'http://')) . '" /> ' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('setLink', 1) . '" onclick="browse_links_setValue(document.lurlform.lurl.value); return link_current();" /></td>
 							</tr>
 						</table>
 					</form>';
@@ -803,14 +803,14 @@ class ElementBrowser {
 			$this->doc->JScode .= $this->doc->wrapScriptTags('
 			Tree.ajaxID = "SC_alt_file_navframe::expandCollapse";
 		');
-			$content .= (((('
+			$content .= '
 			<!--
 				Wrapper table for folder tree / file/folder list:
 			-->
 					<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkFiles">
 						<tr>
-							<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':'))) . $tree) . '</td>
-							<td class="c-wCell" valign="top">') . $files) . '</td>
+							<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
+							<td class="c-wCell" valign="top">' . $files . '</td>
 						</tr>
 					</table>
 					';
@@ -834,36 +834,36 @@ class ElementBrowser {
 						// URL + onclick event:
 						$onClickEvent = '';
 						if (isset($v[$k2i . '.']['target'])) {
-							$onClickEvent .= ('browse_links_setTarget(\'' . $v[($k2i . '.')]['target']) . '\');';
+							$onClickEvent .= 'browse_links_setTarget(\'' . $v[($k2i . '.')]['target'] . '\');';
 						}
 						$v[$k2i . '.']['url'] = str_replace('###_URL###', $this->siteURL, $v[$k2i . '.']['url']);
 						if (substr($v[$k2i . '.']['url'], 0, 7) == 'http://' || substr($v[$k2i . '.']['url'], 0, 7) == 'mailto:') {
-							$onClickEvent .= ('cur_href=unescape(\'' . rawurlencode($v[($k2i . '.')]['url'])) . '\');link_current();';
+							$onClickEvent .= 'cur_href=unescape(\'' . rawurlencode($v[($k2i . '.')]['url']) . '\');link_current();';
 						} else {
-							$onClickEvent .= (('link_spec(unescape(\'' . $this->siteURL) . rawurlencode($v[($k2i . '.')]['url'])) . '\'));';
+							$onClickEvent .= 'link_spec(unescape(\'' . $this->siteURL . rawurlencode($v[($k2i . '.')]['url']) . '\'));';
 						}
 						// Link:
-						$A = array(('<a href="#" onclick="' . htmlspecialchars($onClickEvent)) . 'return false;">', '</a>');
+						$A = array('<a href="#" onclick="' . htmlspecialchars($onClickEvent) . 'return false;">', '</a>');
 						// Adding link to menu of user defined links:
-						$subcats[$k2i] = ((((((('
+						$subcats[$k2i] = '
 								<tr>
-									<td class="bgColor4">' . $A[0]) . '<strong>') . htmlspecialchars($title)) . ($this->curUrlInfo['info'] == $v[$k2i . '.']['url'] ? ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_right.gif', 'width="5" height="9"')) . ' class="c-blinkArrowR" alt="" />' : '')) . '</strong><br />') . $description) . $A[1]) . '</td>
+									<td class="bgColor4">' . $A[0] . '<strong>' . htmlspecialchars($title) . ($this->curUrlInfo['info'] == $v[$k2i . '.']['url'] ? '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_right.gif', 'width="5" height="9"') . ' class="c-blinkArrowR" alt="" />' : '') . '</strong><br />' . $description . $A[1] . '</td>
 								</tr>';
 					}
 				}
 				// Sort by keys:
 				ksort($subcats);
 				// Add menu to content:
-				$content .= ((('
+				$content .= '
 
 			<!--
 				Special userdefined menu:
 			-->
 						<table border="0" cellpadding="1" cellspacing="1" id="typo3-linkSpecial">
 							<tr>
-								<td class="bgColor5" class="c-wCell" valign="top"><strong>' . $GLOBALS['LANG']->getLL('special', 1)) . '</strong></td>
+								<td class="bgColor5" class="c-wCell" valign="top"><strong>' . $GLOBALS['LANG']->getLL('special', 1) . '</strong></td>
 							</tr>
-							') . implode('', $subcats)) . '
+							' . implode('', $subcats) . '
 						</table>
 						';
 			}
@@ -878,19 +878,19 @@ class ElementBrowser {
 			$cElements = $this->expandPage();
 			// Outputting Temporary DB mount notice:
 			if (intval($GLOBALS['BE_USER']->getSessionData('pageTree_temporaryMountPoint'))) {
-				$link = ((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => 0)))) . '">') . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount', 1)) . '</a>';
+				$link = '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('setTempDBmount' => 0))) . '">' . $GLOBALS['LANG']->sl('LLL:EXT:lang/locallang_core.xml:labels.temporaryDBmount', 1) . '</a>';
 				$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $link, '', \TYPO3\CMS\Core\Messaging\FlashMessage::INFO);
 				$dbmount = $flashMessage->render();
 			}
-			$content .= ((((('
+			$content .= '
 
 			<!--
 				Wrapper table for page tree / record list:
 			-->
 					<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkPages">
 						<tr>
-							<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':'))) . $dbmount) . $tree) . '</td>
-							<td class="c-wCell" valign="top">') . $cElements) . '</td>
+							<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':')) . $dbmount . $tree . '</td>
+							<td class="c-wCell" valign="top">' . $cElements . '</td>
 						</tr>
 					</table>
 					';
@@ -903,45 +903,45 @@ class ElementBrowser {
 			break;
 		}
 		if (in_array('params', $allowedFields, TRUE)) {
-			$content .= ((('
+			$content .= '
 				<!--
 					Selecting params for link:
 				-->
 				<form action="" name="lparamsform" id="lparamsform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkParams">
 						<tr>
-							<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('params', 1)) . '</td>
-							<td><input type="text" name="lparams" class="typo3-link-input" onchange="browse_links_setParams(this.value);" value="') . htmlspecialchars($this->setParams)) . '" /></td>
+							<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('params', 1) . '</td>
+							<td><input type="text" name="lparams" class="typo3-link-input" onchange="browse_links_setParams(this.value);" value="' . htmlspecialchars($this->setParams) . '" /></td>
 						</tr>
 					</table>
 				</form>
 			';
 		}
 		if (in_array('class', $allowedFields, TRUE)) {
-			$content .= ((('
+			$content .= '
 				<!--
 					Selecting class for link:
 				-->
 				<form action="" name="lclassform" id="lclassform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkClass">
 						<tr>
-							<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('class', 1)) . '</td>
-							<td><input type="text" name="lclass" class="typo3-link-input" onchange="browse_links_setClass(this.value);" value="') . htmlspecialchars($this->setClass)) . '" /></td>
+							<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('class', 1) . '</td>
+							<td><input type="text" name="lclass" class="typo3-link-input" onchange="browse_links_setClass(this.value);" value="' . htmlspecialchars($this->setClass) . '" /></td>
 						</tr>
 					</table>
 				</form>
 			';
 		}
 		if (in_array('title', $allowedFields, TRUE)) {
-			$content .= ((('
+			$content .= '
 				<!--
 					Selecting title for link:
 				-->
 				<form action="" name="ltitleform" id="ltitleform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTitle">
 						<tr>
-							<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('title', 1)) . '</td>
-							<td><input type="text" name="ltitle" class="typo3-link-input" onchange="browse_links_setTitle(this.value);" value="') . htmlspecialchars($this->setTitle)) . '" /></td>
+							<td style="width: 96px;">' . $GLOBALS['LANG']->getLL('title', 1) . '</td>
+							<td><input type="text" name="ltitle" class="typo3-link-input" onchange="browse_links_setTitle(this.value);" value="' . htmlspecialchars($this->setTitle) . '" /></td>
 						</tr>
 					</table>
 				</form>
@@ -959,7 +959,7 @@ class ElementBrowser {
 		}
 		// Target:
 		if ($this->act != 'mail' && in_array('target', $allowedFields, TRUE)) {
-			$ltarget = ((((((((('
+			$ltarget = '
 
 			<!--
 				Selecting target for link:
@@ -967,19 +967,19 @@ class ElementBrowser {
 				<form action="" name="ltargetform" id="ltargetform">
 					<table border="0" cellpadding="2" cellspacing="1" id="typo3-linkTarget">
 						<tr>
-							<td>' . $GLOBALS['LANG']->getLL('target', 1)) . ':</td>
-							<td><input type="text" name="ltarget" onchange="browse_links_setTarget(this.value);" value="') . htmlspecialchars($this->setTarget)) . '"') . $this->doc->formWidth(10)) . ' /></td>
+							<td>' . $GLOBALS['LANG']->getLL('target', 1) . ':</td>
+							<td><input type="text" name="ltarget" onchange="browse_links_setTarget(this.value);" value="' . htmlspecialchars($this->setTarget) . '"' . $this->doc->formWidth(10) . ' /></td>
 							<td>
 								<select name="ltarget_type" onchange="browse_links_setTarget(this.options[this.selectedIndex].value);document.ltargetform.ltarget.value=this.options[this.selectedIndex].value;this.selectedIndex=0;">
 									<option></option>
-									<option value="_top">') . $GLOBALS['LANG']->getLL('top', 1)) . '</option>
-									<option value="_blank">') . $GLOBALS['LANG']->getLL('newWindow', 1)) . '</option>
+									<option value="_top">' . $GLOBALS['LANG']->getLL('top', 1) . '</option>
+									<option value="_blank">' . $GLOBALS['LANG']->getLL('newWindow', 1) . '</option>
 								</select>
 							</td>
 							<td>';
-			if (((($this->curUrlInfo['act'] == 'page' || $this->curUrlInfo['act'] == 'file') || $this->curUrlInfo['act'] == 'folder') && $this->curUrlArray['href']) && $this->curUrlInfo['act'] == $this->act) {
-				$ltarget .= ('
-							<input type="submit" value="' . $GLOBALS['LANG']->getLL('update', 1)) . '" onclick="return link_current();" />';
+			if (($this->curUrlInfo['act'] == 'page' || $this->curUrlInfo['act'] == 'file' || $this->curUrlInfo['act'] == 'folder') && $this->curUrlArray['href'] && $this->curUrlInfo['act'] == $this->act) {
+				$ltarget .= '
+							<input type="submit" value="' . $GLOBALS['LANG']->getLL('update', 1) . '" onclick="return link_current();" />';
 			}
 			$selectJS = '
 				if (document.ltargetform.popup_width.options[document.ltargetform.popup_width.selectedIndex].value>0 && document.ltargetform.popup_height.options[document.ltargetform.popup_height.selectedIndex].value>0) {
@@ -992,13 +992,13 @@ class ElementBrowser {
 					document.ltargetform.popup_height.selectedIndex=0;
 				}
 			';
-			$ltarget .= ((((((((('		</td>
+			$ltarget .= '		</td>
 						</tr>
 						<tr>
-							<td>' . $GLOBALS['LANG']->getLL('target_popUpWindow', 1)) . ':</td>
+							<td>' . $GLOBALS['LANG']->getLL('target_popUpWindow', 1) . ':</td>
 							<td colspan="3">
-								<select name="popup_width" onchange="') . htmlspecialchars($selectJS)) . '">
-									<option value="0">') . $GLOBALS['LANG']->getLL('target_popUpWindow_width', 1)) . '</option>
+								<select name="popup_width" onchange="' . htmlspecialchars($selectJS) . '">
+									<option value="0">' . $GLOBALS['LANG']->getLL('target_popUpWindow_width', 1) . '</option>
 									<option value="300">300</option>
 									<option value="400">400</option>
 									<option value="500">500</option>
@@ -1007,8 +1007,8 @@ class ElementBrowser {
 									<option value="800">800</option>
 								</select>
 								x
-								<select name="popup_height" onchange="') . htmlspecialchars($selectJS)) . '">
-									<option value="0">') . $GLOBALS['LANG']->getLL('target_popUpWindow_height', 1)) . '</option>
+								<select name="popup_height" onchange="' . htmlspecialchars($selectJS) . '">
+									<option value="0">' . $GLOBALS['LANG']->getLL('target_popUpWindow_height', 1) . '</option>
 									<option value="200">200</option>
 									<option value="300">300</option>
 									<option value="400">400</option>
@@ -1052,15 +1052,15 @@ class ElementBrowser {
 		// Making the list of elements, if applicable:
 		$cElements = $this->TBE_expandPage($pArr[3]);
 		// Putting the things together, side by side:
-		$content .= (((('
+		$content .= '
 
 			<!--
 				Wrapper table for page tree / record list:
 			-->
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBrecords">
 				<tr>
-					<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':'))) . $tree) . '</td>
-					<td class="c-wCell" valign="top">') . $cElements) . '</td>
+					<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('pageTree') . ':')) . $tree . '</td>
+					<td class="c-wCell" valign="top">' . $cElements . '</td>
 				</tr>
 			</table>
 			';
@@ -1144,15 +1144,15 @@ class ElementBrowser {
 			$files = $this->TBE_expandFolder($this->selectedFolder, $pArr[3], $noThumbs);
 		}
 		// Putting the parts together, side by side:
-		$content .= (((('
+		$content .= '
 
 			<!--
 				Wrapper table for folder tree / file list:
 			-->
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBfiles">
 				<tr>
-					<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':'))) . $tree) . '</td>
-					<td class="c-wCell" valign="top">') . $files) . '</td>
+					<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
+					<td class="c-wCell" valign="top">' . $files . '</td>
 				</tr>
 			</table>
 			';
@@ -1166,7 +1166,7 @@ class ElementBrowser {
 		// Add some space
 		$content .= '<br /><br />';
 		// Setup indexed elements:
-		$this->doc->JScode .= $this->doc->wrapScriptTags(('BrowseLinks.addElements(' . json_encode($this->elements)) . ');');
+		$this->doc->JScode .= $this->doc->wrapScriptTags('BrowseLinks.addElements(' . json_encode($this->elements) . ');');
 		// Ending page, returning content:
 		$content .= $this->doc->endPage();
 		$content = $this->doc->insertStylesAndJS($content);
@@ -1210,15 +1210,15 @@ class ElementBrowser {
 			$folders = $this->TBE_expandSubFolders($this->selectedFolder);
 		}
 		// Putting the parts together, side by side:
-		$content .= (((('
+		$content .= '
 
 			<!--
 				Wrapper table for folder tree / folder list:
 			-->
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-EBfiles">
 				<tr>
-					<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':'))) . $tree) . '</td>
-					<td class="c-wCell" valign="top">') . $folders) . '</td>
+					<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
+					<td class="c-wCell" valign="top">' . $folders . '</td>
 				</tr>
 			</table>
 			';
@@ -1255,7 +1255,7 @@ class ElementBrowser {
 			$expPageId = $this->curUrlInfo['pageid'];
 		}
 		// Draw the record list IF there is a page id to expand:
-		if (($expPageId && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($expPageId)) && $GLOBALS['BE_USER']->isInWebMount($expPageId)) {
+		if ($expPageId && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($expPageId) && $GLOBALS['BE_USER']->isInWebMount($expPageId)) {
 			// Set header:
 			$out .= $this->barheader($GLOBALS['LANG']->getLL('contentElements') . ':');
 			// Create header for listing, showing the page title/icon:
@@ -1265,7 +1265,7 @@ class ElementBrowser {
 			$picon .= \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', $mainPageRec, TRUE);
 			$out .= $picon . '<br />';
 			// Look up tt_content elements from the expanded page:
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,header,hidden,starttime,endtime,fe_group,CType,colPos,bodytext', 'tt_content', (('pid=' . intval($expPageId)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content')) . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'), '', 'colPos,sorting');
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,header,hidden,starttime,endtime,fe_group,CType,colPos,bodytext', 'tt_content', 'pid=' . intval($expPageId) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('tt_content') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('tt_content'), '', 'colPos,sorting');
 			$cc = $GLOBALS['TYPO3_DB']->sql_num_rows($res);
 			// Traverse list of records:
 			$c = 0;
@@ -1273,12 +1273,12 @@ class ElementBrowser {
 				$c++;
 				$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $row);
 				if ($this->curUrlInfo['act'] == 'page' && $this->curUrlInfo['cElement'] == $row['uid']) {
-					$arrCol = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"')) . ' class="c-blinkArrowL" alt="" />';
+					$arrCol = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"') . ' class="c-blinkArrowL" alt="" />';
 				} else {
 					$arrCol = '';
 				}
 				// Putting list element HTML together:
-				$out .= (((((((((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], (('gfx/ol/join' . ($c == $cc ? 'bottom' : '')) . '.gif'), 'width="18" height="16"')) . ' alt="" />') . $arrCol) . '<a href="#" onclick="return link_typo3Page(\'') . $expPageId) . '\',\'#') . $row['uid']) . '\');">') . $icon) . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tt_content', $row, TRUE)) . '</a><br />';
+				$out .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join' . ($c == $cc ? 'bottom' : '') . '.gif'), 'width="18" height="16"') . ' alt="" />' . $arrCol . '<a href="#" onclick="return link_typo3Page(\'' . $expPageId . '\',\'#' . $row['uid'] . '\');">' . $icon . \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('tt_content', $row, TRUE) . '</a><br />';
 				// Finding internal anchor points:
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('text,textpic', $row['CType'])) {
 					$split = preg_split('/(<a[^>]+name=[\'"]?([^"\'>[:space:]]+)[\'"]?[^>]*>)/i', $row['bodytext'], -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -1286,7 +1286,7 @@ class ElementBrowser {
 						if ($skey % 3 == 2) {
 							// Putting list element HTML together:
 							$sval = substr($sval, 0, 100);
-							$out .= ((((((((((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/line.gif', 'width="18" height="16"')) . ' alt="" />') . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], (('gfx/ol/join' . ($skey + 3 > count($split) ? 'bottom' : '')) . '.gif'), 'width="18" height="16"')) . ' alt="" />') . '<a href="#" onclick="return link_typo3Page(\'') . $expPageId) . '\',\'#') . rawurlencode($sval)) . '\');">') . htmlspecialchars((' <A> ' . $sval))) . '</a><br />';
+							$out .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/line.gif', 'width="18" height="16"') . ' alt="" />' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join' . ($skey + 3 > count($split) ? 'bottom' : '') . '.gif'), 'width="18" height="16"') . ' alt="" />' . '<a href="#" onclick="return link_typo3Page(\'' . $expPageId . '\',\'#' . rawurlencode($sval) . '\');">' . htmlspecialchars((' <A> ' . $sval)) . '</a><br />';
 						}
 					}
 				}
@@ -1304,7 +1304,7 @@ class ElementBrowser {
 	 */
 	public function TBE_expandPage($tables) {
 		$out = '';
-		if (($this->expandPage >= 0 && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->expandPage)) && $GLOBALS['BE_USER']->isInWebMount($this->expandPage)) {
+		if ($this->expandPage >= 0 && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->expandPage) && $GLOBALS['BE_USER']->isInWebMount($this->expandPage)) {
 			// Set array with table names to list:
 			if (!strcmp(trim($tables), '*')) {
 				$tablesArr = array_keys($GLOBALS['TCA']);
@@ -1324,15 +1324,15 @@ class ElementBrowser {
 			if (is_array($mainPageRec)) {
 				$picon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $mainPageRec);
 				if (in_array('pages', $tablesArr)) {
-					$ATag = ((('<a href="#" onclick="return insertElement(\'pages\', \'' . $mainPageRec['uid']) . '\', \'db\', ') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($mainPageRec['title'])) . ', \'\', \'\', \'\',\'\',1);">';
-					$ATag2 = ((('<a href="#" onclick="return insertElement(\'pages\', \'' . $mainPageRec['uid']) . '\', \'db\', ') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($mainPageRec['title'])) . ', \'\', \'\', \'\',\'\',0);">';
+					$ATag = '<a href="#" onclick="return insertElement(\'pages\', \'' . $mainPageRec['uid'] . '\', \'db\', ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($mainPageRec['title']) . ', \'\', \'\', \'\',\'\',1);">';
+					$ATag2 = '<a href="#" onclick="return insertElement(\'pages\', \'' . $mainPageRec['uid'] . '\', \'db\', ' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($mainPageRec['title']) . ', \'\', \'\', \'\',\'\',0);">';
 					$ATag_alt = substr($ATag, 0, -4) . ',\'\',1);">';
 					$ATag_e = '</a>';
 				}
 			}
-			$pBicon = $ATag2 ? ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"')) . ' alt="" />' : '';
+			$pBicon = $ATag2 ? '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"') . ' alt="" />' : '';
 			$pText = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($mainPageRec['title'], $titleLen));
-			$out .= (((((($picon . $ATag2) . $pBicon) . $ATag_e) . $ATag) . $pText) . $ATag_e) . '<br />';
+			$out .= $picon . $ATag2 . $pBicon . $ATag_e . $ATag . $pText . $ATag_e . '<br />';
 			// Initialize the record listing:
 			$id = $this->expandPage;
 			$pointer = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($this->pointer, 0, 100000);
@@ -1419,9 +1419,9 @@ class ElementBrowser {
 			$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
 			$folderIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('folder');
 			$folderIcon .= htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen));
-			$picon = ((('<a href="#" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier()) . '\');">') . $folderIcon) . '</a>';
+			$picon = '<a href="#" onclick="return link_folder(\'file:' . $folder->getCombinedIdentifier() . '\');">' . $folderIcon . '</a>';
 			if ($this->curUrlInfo['act'] == 'folder' && $currentIdentifier == $folder->getCombinedIdentifier()) {
-				$out .= ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"')) . ' class="c-blinkArrowL" alt="" />';
+				$out .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"') . ' class="c-blinkArrowL" alt="" />';
 			}
 			$out .= $picon . '<br />';
 			// Get files from the folder:
@@ -1443,18 +1443,18 @@ class ElementBrowser {
 					// File icon:
 					$fileExtension = $fileOrFolderObject->getExtension();
 					// Get size and icon:
-					$size = (' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileOrFolderObject->getSize())) . 'bytes)';
+					$size = ' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileOrFolderObject->getSize()) . 'bytes)';
 					$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileOrFolderObject->getName() . $size));
 					$itemUid = 'file:' . $fileIdentifier;
 				}
 				// If the listed file turns out to be the CURRENT file, then show blinking arrow:
 				if (($this->curUrlInfo['act'] == 'file' || $this->curUrlInfo['act'] == 'folder') && $currentIdentifier == $fileIdentifier) {
-					$arrCol = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"')) . ' class="c-blinkArrowL" alt="" />';
+					$arrCol = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_left.gif', 'width="5" height="9"') . ' class="c-blinkArrowL" alt="" />';
 				} else {
 					$arrCol = '';
 				}
 				// Put it all together for the file element:
-				$out .= (((((((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], (('gfx/ol/join' . ($c == $totalItems ? 'bottom' : '')) . '.gif'), 'width="18" height="16"')) . ' alt="" />') . $arrCol) . '<a href="#" onclick="return link_folder(\'') . $itemUid) . '\');">') . $icon) . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen))) . '</a><br />';
+				$out .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/ol/join' . ($c == $totalItems ? 'bottom' : '') . '.gif'), 'width="18" height="16"') . ' alt="" />' . $arrCol . '<a href="#" onclick="return link_folder(\'' . $itemUid . '\');">' . $icon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileOrFolderObject->getName(), $titleLen)) . '</a><br />';
 			}
 		}
 		return $out;
@@ -1504,8 +1504,8 @@ class ElementBrowser {
 			// Create the header of current folder:
 			if ($folder) {
 				$folderIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('folder');
-				$lines[] = (('<tr class="t3-row-header">
-					<td colspan="4">' . $folderIcon) . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen))) . '</td>
+				$lines[] = '<tr class="t3-row-header">
+					<td colspan="4">' . $folderIcon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen)) . '</td>
 				</tr>';
 			}
 			if ($filesCount == 0) {
@@ -1527,14 +1527,14 @@ class ElementBrowser {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), strtolower($fileExtension)) && !$noThumbs) {
 					$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 64, 'height' => 64))->getPublicUrl(TRUE);
 					$imgInfo = $imgObj->getImageDimensions($fileObject->getForLocalProcessing(FALSE));
-					$pDim = (($imgInfo[0] . 'x') . $imgInfo[1]) . ' pixels';
-					$clickIcon = ('<img src="' . $imageUrl) . '" hspace="5" vspace="5" border="1"';
+					$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
+					$clickIcon = '<img src="' . $imageUrl . '" hspace="5" vspace="5" border="1"';
 				} else {
 					$clickIcon = '';
 					$pDim = '';
 				}
 				// Create file icon:
-				$size = (((' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize())) . 'bytes') . ($pDim ? ', ' . $pDim : '')) . ')';
+				$size = ' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
 				$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName() . $size));
 				// Create links for adding the file:
 				$filesIndex = count($this->elements);
@@ -1547,48 +1547,48 @@ class ElementBrowser {
 					'fileExt' => $fileExtension,
 					'fileIcon' => $icon
 				);
-				$ATag = ('<a href="#" onclick="return BrowseLinks.File.insertElement(\'file_' . $filesIndex) . '\');">';
+				$ATag = '<a href="#" onclick="return BrowseLinks.File.insertElement(\'file_' . $filesIndex . '\');">';
 				$ATag_alt = substr($ATag, 0, -4) . ',1);">';
-				$bulkCheckBox = ('<input type="checkbox" class="typo3-bulk-item" name="file_' . $filesIndex) . '" value="0" /> ';
+				$bulkCheckBox = '<input type="checkbox" class="typo3-bulk-item" name="file_' . $filesIndex . '" value="0" /> ';
 				$ATag_e = '</a>';
 				// Create link to showing details about the file in a window:
-				$Ahref = ((($GLOBALS['BACK_PATH'] . 'show_item.php?type=file&table=_FILE&uid=') . rawurlencode($fileObject->getCombinedIdentifier())) . '&returnUrl=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
-				$ATag2 = ('<a href="' . htmlspecialchars($Ahref)) . '">';
+				$Ahref = $GLOBALS['BACK_PATH'] . 'show_item.php?type=file&table=_FILE&uid=' . rawurlencode($fileObject->getCombinedIdentifier()) . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
+				$ATag2 = '<a href="' . htmlspecialchars($Ahref) . '">';
 				$ATag2_e = '</a>';
 				// Combine the stuff:
-				$filenameAndIcon = ((($bulkCheckBox . $ATag_alt) . $icon) . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileObject->getName(), $titleLen))) . $ATag_e;
+				$filenameAndIcon = $bulkCheckBox . $ATag_alt . $icon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileObject->getName(), $titleLen)) . $ATag_e;
 				// Show element:
 				// Image...
 				if ($pDim) {
-					$lines[] = ((((((((((((('
+					$lines[] = '
 						<tr class="file_list_normal">
-							<td nowrap="nowrap">' . $filenameAndIcon) . '&nbsp;</td>
-							<td>') . $ATag) . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"')) . ' title="') . $GLOBALS['LANG']->getLL('addToList', 1)) . '" alt="" />') . $ATag_e) . '</td>
-							<td nowrap="nowrap">') . ((((((($ATag2 . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"')) . ' title="') . $GLOBALS['LANG']->getLL('info', 1)) . '" alt="" /> ') . $GLOBALS['LANG']->getLL('info', 1)) . $ATag2_e)) . '</td>
-							<td nowrap="nowrap">&nbsp;') . $pDim) . '</td>
+							<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
+							<td>' . $ATag . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList', 1) . '" alt="" />' . $ATag_e . '</td>
+							<td nowrap="nowrap">' . ($ATag2 . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
+							<td nowrap="nowrap">&nbsp;' . $pDim . '</td>
 						</tr>';
-					$lines[] = ((('
+					$lines[] = '
 						<tr>
-							<td class="filelistThumbnail" colspan="4">' . $ATag_alt) . $clickIcon) . $ATag_e) . '</td>
+							<td class="filelistThumbnail" colspan="4">' . $ATag_alt . $clickIcon . $ATag_e . '</td>
 						</tr>';
 				} else {
-					$lines[] = ((((((((((('
+					$lines[] = '
 						<tr class="file_list_normal">
-							<td nowrap="nowrap">' . $filenameAndIcon) . '&nbsp;</td>
-							<td>') . $ATag) . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"')) . ' title="') . $GLOBALS['LANG']->getLL('addToList', 1)) . '" alt="" />') . $ATag_e) . '</td>
-							<td nowrap="nowrap">') . ((((((($ATag2 . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"')) . ' title="') . $GLOBALS['LANG']->getLL('info', 1)) . '" alt="" /> ') . $GLOBALS['LANG']->getLL('info', 1)) . $ATag2_e)) . '</td>
+							<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
+							<td>' . $ATag . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList', 1) . '" alt="" />' . $ATag_e . '</td>
+							<td nowrap="nowrap">' . ($ATag2 . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
 							<td>&nbsp;</td>
 						</tr>';
 				}
 			}
 			// Wrap all the rows in table tags:
-			$out .= ('
+			$out .= '
 
 		<!--
 			File listing
 		-->
 				<table cellpadding="0" cellspacing="0" id="typo3-filelist">
-					' . implode('', $lines)) . '
+					' . implode('', $lines) . '
 				</table>';
 		}
 		// Return accumulated content for filelisting:
@@ -1614,16 +1614,16 @@ class ElementBrowser {
 			if (strstr($baseFolder, ',') || strstr($baseFolder, '|')) {
 				// In case an invalid character is in the filepath, display error message:
 				$errorMessage = $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('invalidChar'), ', |'));
-				$aTag = ($aTag_alt = ('<a href="#" onclick="alert(' . $errorMessage) . ');return false;">');
+				$aTag = ($aTag_alt = '<a href="#" onclick="alert(' . $errorMessage . ');return false;">');
 			} else {
 				// If foldername is OK, just add it:
-				$aTag = ((((((((('<a href="#" onclick="return insertElement(\'\',\'' . rawurlencode($baseFolder)) . '\', \'folder\', \'') . rawurlencode($baseFolder)) . '\', unescape(\'') . rawurlencode($baseFolder)) . '\'), \'') . $fI['extension']) . '\', \'') . $ficon) . '\');">';
+				$aTag = '<a href="#" onclick="return insertElement(\'\',\'' . rawurlencode($baseFolder) . '\', \'folder\', \'' . rawurlencode($baseFolder) . '\', unescape(\'' . rawurlencode($baseFolder) . '\'), \'' . $fI['extension'] . '\', \'' . $ficon . '\');">';
 				$aTag_alt = substr($aTag, 0, -4) . ',\'\',1);">';
 			}
 			$aTag_e = '</a>';
 			// Add the foder icon
 			$folderIcon = $aTag_alt;
-			$folderIcon .= ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"')) . ' alt="" />';
+			$folderIcon .= '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" />';
 			$folderIcon .= htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(basename($baseFolder), $titleLength));
 			$folderIcon .= $aTag_e;
 			$content .= $folderIcon . '<br />';
@@ -1636,35 +1636,35 @@ class ElementBrowser {
 				foreach ($folders as $folderPath) {
 					$pathInfo = pathinfo($folderPath);
 					// Create folder icon:
-					$icon = ((('<img src="clear.gif" width="16" height="16" alt="" /><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="16" height="16"')) . ' title="') . htmlspecialchars(($pathInfo['basename'] . $size))) . '" class="absmiddle" alt="" />';
+					$icon = '<img src="clear.gif" width="16" height="16" alt="" /><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="16" height="16"') . ' title="' . htmlspecialchars(($pathInfo['basename'] . $size)) . '" class="absmiddle" alt="" />';
 					// Create links for adding the folder:
 					if ($this->P['itemName'] != '' && $this->P['formName'] != '') {
-						$aTag = ('<a href="#" onclick="return set_folderpath(unescape(\'' . rawurlencode($folderPath)) . '\'));">';
+						$aTag = '<a href="#" onclick="return set_folderpath(unescape(\'' . rawurlencode($folderPath) . '\'));">';
 					} else {
-						$aTag = ((((((((('<a href="#" onclick="return insertElement(\'\',\'' . rawurlencode($folderPath)) . '\', \'folder\', \'') . rawurlencode($folderPath)) . '\', unescape(\'') . rawurlencode($folderPath)) . '\'), \'') . $pathInfo['extension']) . '\', \'') . $ficon) . '\');">';
+						$aTag = '<a href="#" onclick="return insertElement(\'\',\'' . rawurlencode($folderPath) . '\', \'folder\', \'' . rawurlencode($folderPath) . '\', unescape(\'' . rawurlencode($folderPath) . '\'), \'' . $pathInfo['extension'] . '\', \'' . $ficon . '\');">';
 					}
 					if (strstr($folderPath, ',') || strstr($folderPath, '|')) {
 						// In case an invalid character is in the filepath, display error message:
 						$errorMessage = $GLOBALS['LANG']->JScharCode(sprintf($GLOBALS['LANG']->getLL('invalidChar'), ', |'));
-						$aTag = ($aTag_alt = ('<a href="#" onclick="alert(' . $errorMessage) . ');return false;">');
+						$aTag = ($aTag_alt = '<a href="#" onclick="alert(' . $errorMessage . ');return false;">');
 					} else {
 						// If foldername is OK, just add it:
 						$aTag_alt = substr($aTag, 0, -4) . ',\'\',1);">';
 					}
 					$aTag_e = '</a>';
 					// Combine icon and folderpath:
-					$foldernameAndIcon = (($aTag_alt . $icon) . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(basename($folderPath), $titleLength))) . $aTag_e;
+					$foldernameAndIcon = $aTag_alt . $icon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(basename($folderPath), $titleLength)) . $aTag_e;
 					if ($this->P['itemName'] != '') {
-						$lines[] = ('
+						$lines[] = '
 							<tr class="bgColor4">
-								<td nowrap="nowrap">' . $foldernameAndIcon) . '&nbsp;</td>
+								<td nowrap="nowrap">' . $foldernameAndIcon . '&nbsp;</td>
 								<td>&nbsp;</td>
 							</tr>';
 					} else {
-						$lines[] = ((((((((('
+						$lines[] = '
 							<tr class="bgColor4">
-								<td nowrap="nowrap">' . $foldernameAndIcon) . '&nbsp;</td>
-								<td>') . $aTag) . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"')) . ' title="') . $GLOBALS['LANG']->getLL('addToList', 1)) . '" alt="" />') . $aTag_e) . ' </td>
+								<td nowrap="nowrap">' . $foldernameAndIcon . '&nbsp;</td>
+								<td>' . $aTag . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/plusbullet2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('addToList', 1) . '" alt="" />' . $aTag_e . ' </td>
 								<td>&nbsp;</td>
 							</tr>';
 					}
@@ -1675,13 +1675,13 @@ class ElementBrowser {
 				}
 			}
 			// Wrap all the rows in table tags:
-			$content .= ('
+			$content .= '
 
 		<!--
 			Folder listing
 		-->
 				<table border="0" cellpadding="0" cellspacing="1" id="typo3-folderList">
-					' . implode('', $lines)) . '
+					' . implode('', $lines) . '
 				</table>';
 		}
 		// Return accumulated content for folderlisting:
@@ -1707,15 +1707,15 @@ class ElementBrowser {
 				if (is_array($files)) {
 					$out .= $this->barheader(sprintf($GLOBALS['LANG']->getLL('files') . ' (%s):', count($files)));
 					$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
-					$picon = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"')) . ' alt="" />';
+					$picon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/i/_icon_webfolders.gif', 'width="18" height="16"') . ' alt="" />';
 					$picon .= htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs(basename($folder->getName()), $titleLen));
 					$out .= $picon . '<br />';
 					// Init row-array:
 					$lines = array();
 					// Add "drag-n-drop" message:
-					$lines[] = ('
+					$lines[] = '
 						<tr>
-							<td colspan="2">' . $this->getMsgBox($GLOBALS['LANG']->getLL('findDragDrop'))) . '</td>
+							<td colspan="2">' . $this->getMsgBox($GLOBALS['LANG']->getLL('findDragDrop')) . '</td>
 						</tr>';
 					// Traverse files:
 					foreach ($files as $fileObject) {
@@ -1726,8 +1726,8 @@ class ElementBrowser {
 						$fileExtension = strtolower($fileObject->getExtension());
 						if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('gif,jpeg,jpg,png', $fileExtension)) {
 							$imgInfo = @getimagesize($fileObject->getForLocalProcessing(FALSE));
-							$pDim = (($imgInfo[0] . 'x') . $imgInfo[1]) . ' pixels';
-							$size = (((' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize())) . 'bytes') . ($pDim ? ', ' . $pDim : '')) . ')';
+							$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
+							$size = ' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
 							$filenameAndIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName() . $size));
 							if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('noLimit')) {
 								$maxW = 10000;
@@ -1739,22 +1739,22 @@ class ElementBrowser {
 							$IW = $imgInfo[0];
 							$IH = $imgInfo[1];
 							if ($IW > $maxW) {
-								$IH = ceil(($IH / $IW) * $maxW);
+								$IH = ceil($IH / $IW * $maxW);
 								$IW = $maxW;
 							}
 							if ($IH > $maxH) {
-								$IW = ceil(($IW / $IH) * $maxH);
+								$IW = ceil($IW / $IH * $maxH);
 								$IH = $maxH;
 							}
 							// Make row:
-							$lines[] = (((('
+							$lines[] = '
 								<tr class="bgColor4">
-									<td nowrap="nowrap">' . $filenameAndIcon) . '&nbsp;</td>
-									<td nowrap="nowrap">') . ($imgInfo[0] != $IW ? ((((((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('noLimit' => '1')))) . '">') . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning2.gif', 'width="18" height="16"')) . ' title="') . $GLOBALS['LANG']->getLL('clickToRedrawFullSize', 1)) . '" alt="" />') . '</a>' : '')) . $pDim) . '&nbsp;</td>
+									<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
+									<td nowrap="nowrap">' . ($imgInfo[0] != $IW ? '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('noLimit' => '1'))) . '">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/icon_warning2.gif', 'width="18" height="16"') . ' title="' . $GLOBALS['LANG']->getLL('clickToRedrawFullSize', 1) . '" alt="" />' . '</a>' : '') . $pDim . '&nbsp;</td>
 								</tr>';
-							$lines[] = ((((((('
+							$lines[] = '
 								<tr>
-									<td colspan="2"><img src="' . $iUrl) . '" data-htmlarea-file-uid="') . $fileObject->getUid()) . '" width="') . $IW) . '" height="') . $IH) . '" border="1" alt="" /></td>
+									<td colspan="2"><img src="' . $iUrl . '" data-htmlarea-file-uid="' . $fileObject->getUid() . '" width="' . $IW . '" height="' . $IH . '" border="1" alt="" /></td>
 								</tr>';
 							$lines[] = '
 								<tr>
@@ -1763,14 +1763,14 @@ class ElementBrowser {
 						}
 					}
 					// Finally, wrap all rows in a table tag:
-					$out .= ('
+					$out .= '
 
 
 			<!--
 				File listing / Drag-n-drop
 			-->
 						<table border="0" cellpadding="0" cellspacing="1" id="typo3-dragBox">
-							' . implode('', $lines)) . '
+							' . implode('', $lines) . '
 						</table>';
 				}
 			} else {
@@ -1829,9 +1829,9 @@ class ElementBrowser {
 	 * @todo Define visibility
 	 */
 	public function barheader($str) {
-		return ('
+		return '
 			<!-- Bar header: -->
-			<h3>' . htmlspecialchars($str)) . '</h3>
+			<h3>' . htmlspecialchars($str) . '</h3>
 			';
 	}
 
@@ -1844,15 +1844,15 @@ class ElementBrowser {
 	 * @todo Define visibility
 	 */
 	public function getMsgBox($in_msg, $icon = 'icon_note') {
-		$msg = (('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], (('gfx/' . $icon) . '.gif'), 'width="18" height="16"')) . ' alt="" />') . htmlspecialchars($in_msg);
-		$msg = ('
+		$msg = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/' . $icon . '.gif'), 'width="18" height="16"') . ' alt="" />' . htmlspecialchars($in_msg);
+		$msg = '
 
 			<!--
 				Message box:
 			-->
 			<table cellspacing="0" class="bgColor4" id="typo3-msgBox">
 				<tr>
-					<td>' . $msg) . '</td>
+					<td>' . $msg . '</td>
 				</tr>
 			</table>
 			';
@@ -1879,11 +1879,11 @@ class ElementBrowser {
 			}
 		}
 		if (strlen($str)) {
-			return ((('
+			return '
 				<!-- Print current URL -->
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-curUrl">
 					<tr>
-						<td>' . $GLOBALS['LANG']->getLL('currentLink', 1)) . ': ') . htmlspecialchars(rawurldecode($str))) . '</td>
+						<td>' . $GLOBALS['LANG']->getLL('currentLink', 1) . ': ' . htmlspecialchars(rawurldecode($str)) . '</td>
 					</tr>
 				</table>';
 		} else {
@@ -1951,7 +1951,7 @@ class ElementBrowser {
 							}
 							$pageRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL('pages', $id);
 							$titleLen = intval($GLOBALS['BE_USER']->uc['titleLen']);
-							$info['value'] = ((((($GLOBALS['LANG']->getLL('page', 1) . ' \'') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($pageRow['title'], $titleLen))) . '\' (ID:') . $id) . ($uP['fragment'] ? ', #' . $uP['fragment'] : '')) . ')';
+							$info['value'] = $GLOBALS['LANG']->getLL('page', 1) . ' \'' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($pageRow['title'], $titleLen)) . '\' (ID:' . $id . ($uP['fragment'] ? ', #' . $uP['fragment'] : '') . ')';
 							$info['pageid'] = $id;
 							$info['cElement'] = $uP['fragment'];
 							$info['act'] = 'page';
@@ -2002,35 +2002,35 @@ class ElementBrowser {
 		$count = intval($count) == 0 ? 3 : intval($count);
 		// Create header, showing upload path:
 		$header = $folderObject->getIdentifier();
-		$code = ((((((((('
+		$code = '
 			<br />
 			<!--
 				Form, for uploading files:
 			-->
-			<form action="' . $GLOBALS['BACK_PATH']) . 'tce_file.php" method="post" name="editform" id="typo3-uplFilesForm" enctype="') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype']) . '">
+			<form action="' . $GLOBALS['BACK_PATH'] . 'tce_file.php" method="post" name="editform" id="typo3-uplFilesForm" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-uplFiles">
 					<tr>
-						<td>') . $this->barheader(($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.pagetitle', 1) . ':'))) . '</td>
+						<td>' . $this->barheader(($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.pagetitle', 1) . ':')) . '</td>
 					</tr>
 					<tr>
-						<td class="c-wCell c-hCell"><strong>') . $GLOBALS['LANG']->getLL('path', 1)) . ':</strong> ') . htmlspecialchars($header)) . '</td>
+						<td class="c-wCell c-hCell"><strong>' . $GLOBALS['LANG']->getLL('path', 1) . ':</strong> ' . htmlspecialchars($header) . '</td>
 					</tr>
 					<tr>
 						<td class="c-wCell c-hCell">';
 		// Traverse the number of upload fields (default is 3):
 		for ($a = 1; $a <= $count; $a++) {
-			$code .= ((((((((((('<input type="file" multiple="multiple" name="upload_' . $a) . '"') . $this->doc->formWidth(35)) . ' size="50" />
-				<input type="hidden" name="file[upload][') . $a) . '][target]" value="') . htmlspecialchars($folderObject->getCombinedIdentifier())) . '" />
-				<input type="hidden" name="file[upload][') . $a) . '][data]" value="') . $a) . '" /><br />';
+			$code .= '<input type="file" multiple="multiple" name="upload_' . $a . '"' . $this->doc->formWidth(35) . ' size="50" />
+				<input type="hidden" name="file[upload][' . $a . '][target]" value="' . htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />
+				<input type="hidden" name="file[upload][' . $a . '][data]" value="' . $a . '" /><br />';
 		}
 		// Make footer of upload form, including the submit button:
-		$redirectValue = ((((((($this->thisScript . '?act=') . $this->act) . '&mode=') . $this->mode) . '&expandFolder=') . rawurlencode($folderObject->getCombinedIdentifier())) . '&bparams=') . rawurlencode($this->bparams);
-		$code .= ('<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue)) . '" />';
-		$code .= ((('
+		$redirectValue = $this->thisScript . '?act=' . $this->act . '&mode=' . $this->mode . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier()) . '&bparams=' . rawurlencode($this->bparams);
+		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />';
+		$code .= '
 			<div id="c-override">
-				<label><input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:overwriteExistingFiles', 1)) . '</label>
+				<label><input type="checkbox" name="overwriteExistingFiles" id="overwriteExistingFiles" value="1" /> ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_misc.xml:overwriteExistingFiles', 1) . '</label>
 			</div>
-			<input type="submit" name="submit" value="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit', 1)) . '" />
+			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_upload.php.submit', 1) . '" />
 		';
 		$code .= '</td>
 					</tr>
@@ -2057,27 +2057,27 @@ class ElementBrowser {
 		}
 		// Create header, showing upload path:
 		$header = $folderObject->getIdentifier();
-		$code = ((((((('
+		$code = '
 
 			<!--
 				Form, for creating new folders:
 			-->
-			<form action="' . $GLOBALS['BACK_PATH']) . 'tce_file.php" method="post" name="editform2" id="typo3-crFolderForm">
+			<form action="' . $GLOBALS['BACK_PATH'] . 'tce_file.php" method="post" name="editform2" id="typo3-crFolderForm">
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-crFolder">
 					<tr>
-						<td>') . $this->barheader(($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle') . ':'))) . '</td>
+						<td>' . $this->barheader(($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.pagetitle') . ':')) . '</td>
 					</tr>
 					<tr>
-						<td class="c-wCell c-hCell"><strong>') . $GLOBALS['LANG']->getLL('path', 1)) . ':</strong> ') . htmlspecialchars($header)) . '</td>
+						<td class="c-wCell c-hCell"><strong>' . $GLOBALS['LANG']->getLL('path', 1) . ':</strong> ' . htmlspecialchars($header) . '</td>
 					</tr>
 					<tr>
 						<td class="c-wCell c-hCell">';
 		// Create the new-folder name field:
 		$a = 1;
-		$code .= (((((((('<input' . $this->doc->formWidth(20)) . ' type="text" name="file[newfolder][') . $a) . '][data]" />') . '<input type="hidden" name="file[newfolder][') . $a) . '][target]" value="') . htmlspecialchars($folderObject->getCombinedIdentifier())) . '" />';
+		$code .= '<input' . $this->doc->formWidth(20) . ' type="text" name="file[newfolder][' . $a . '][data]" />' . '<input type="hidden" name="file[newfolder][' . $a . '][target]" value="' . htmlspecialchars($folderObject->getCombinedIdentifier()) . '" />';
 		// Make footer of upload form, including the submit button:
-		$redirectValue = ((((((($this->thisScript . '?act=') . $this->act) . '&mode=') . $this->mode) . '&expandFolder=') . rawurlencode($folderObject->getCombinedIdentifier())) . '&bparams=') . rawurlencode($this->bparams);
-		$code .= (((('<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue)) . '" />') . '<input type="submit" name="submit" value="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.submit', 1)) . '" />';
+		$redirectValue = $this->thisScript . '?act=' . $this->act . '&mode=' . $this->mode . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier()) . '&bparams=' . rawurlencode($this->bparams);
+		$code .= '<input type="hidden" name="redirect" value="' . htmlspecialchars($redirectValue) . '" />' . '<input type="submit" name="submit" value="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_newfolder.php.submit', 1) . '" />';
 		$code .= '</td>
 					</tr>
 				</table>
@@ -2098,16 +2098,16 @@ class ElementBrowser {
 			$labelImportSelection = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_browse_links.php:importSelection', 1);
 			// Getting flag for showing/not showing thumbnails:
 			$noThumbsInEB = $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInEB');
-			$out = ((((((((((((((((($this->doc->spacer(10) . '<div>') . '<a href="#" onclick="BrowseLinks.Selector.handle()">') . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/import.gif', 'width="12" height="12"')) . ' title="') . $labelImportSelection) . '" alt="" /> ') . $labelImportSelection) . '</a>&nbsp;&nbsp;&nbsp;') . '<a href="#" onclick="BrowseLinks.Selector.toggle()">') . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/clip_select.gif', 'width="12" height="12"')) . ' title="') . $labelToggleSelection) . '" alt="" /> ') . $labelToggleSelection) . '</a>') . '</div>';
+			$out = $this->doc->spacer(10) . '<div>' . '<a href="#" onclick="BrowseLinks.Selector.handle()">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/import.gif', 'width="12" height="12"') . ' title="' . $labelImportSelection . '" alt="" /> ' . $labelImportSelection . '</a>&nbsp;&nbsp;&nbsp;' . '<a href="#" onclick="BrowseLinks.Selector.toggle()">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/clip_select.gif', 'width="12" height="12"') . ' title="' . $labelToggleSelection . '" alt="" /> ' . $labelToggleSelection . '</a>' . '</div>';
 			$thumbNailCheck = '';
 			if (!$noThumbsInEB && $this->selectedFolder) {
 				// MENU-ITEMS, fetching the setting for thumbnails from File>List module:
 				$_MOD_MENU = array('displayThumbs' => '');
 				$_MCONF['name'] = 'file_list';
 				$_MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($_MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $_MCONF['name']);
-				$addParams = (((((('&act=' . $this->act) . '&mode=') . $this->mode) . '&expandFolder=') . rawurlencode($this->selectedFolder->getCombinedIdentifier())) . '&bparams=') . rawurlencode($this->bparams);
-				$thumbNailCheck = ((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[displayThumbs]', $_MOD_SETTINGS['displayThumbs'], $this->thisScript, $addParams, 'id="checkDisplayThumbs"') . ' <label for="checkDisplayThumbs">') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.php:displayThumbs', 1)) . '</label>';
-				$out .= ($this->doc->spacer(5) . $thumbNailCheck) . $this->doc->spacer(15);
+				$addParams = '&act=' . $this->act . '&mode=' . $this->mode . '&expandFolder=' . rawurlencode($this->selectedFolder->getCombinedIdentifier()) . '&bparams=' . rawurlencode($this->bparams);
+				$thumbNailCheck = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck('', 'SET[displayThumbs]', $_MOD_SETTINGS['displayThumbs'], $this->thisScript, $addParams, 'id="checkDisplayThumbs"') . ' <label for="checkDisplayThumbs">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_file_list.php:displayThumbs', 1) . '</label>';
+				$out .= $this->doc->spacer(5) . $thumbNailCheck . $this->doc->spacer(15);
 			} else {
 				$out .= $this->doc->spacer(15);
 			}
@@ -2124,7 +2124,7 @@ class ElementBrowser {
 	 */
 	protected function areFieldChangeFunctionsValid($handleFlexformSections = FALSE) {
 		$result = FALSE;
-		if ((isset($this->P['fieldChangeFunc']) && is_array($this->P['fieldChangeFunc'])) && isset($this->P['fieldChangeFuncHash'])) {
+		if (isset($this->P['fieldChangeFunc']) && is_array($this->P['fieldChangeFunc']) && isset($this->P['fieldChangeFuncHash'])) {
 			$matches = array();
 			$pattern = '#\\[el\\]\\[(([^]-]+-[^]-]+-)(idx\\d+-)([^]]+))\\]#i';
 			$fieldChangeFunctions = $this->P['fieldChangeFunc'];

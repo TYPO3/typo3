@@ -151,7 +151,7 @@ class PermissionModuleController {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/perm.html');
-		$this->doc->form = ('<form action="' . $GLOBALS['BACK_PATH']) . 'tce_db.php" method="post" name="editform">';
+		$this->doc->form = '<form action="' . $GLOBALS['BACK_PATH'] . 'tce_db.php" method="post" name="editform">';
 		$this->doc->loadJavascriptLib('../t3lib/jsfunc.updateform.js');
 		$this->doc->getPageRenderer()->loadPrototype();
 		$this->doc->loadJavascriptLib(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('perm') . 'mod1/perm.js');
@@ -209,10 +209,10 @@ class PermissionModuleController {
 			$this->edit = $this->edit && $this->editingAllowed;
 			// If $this->edit then these functions are called in the end of the page...
 			if ($this->edit) {
-				$this->doc->postCode .= $this->doc->wrapScriptTags(((((('
-					setCheck("check[perms_user]", "data[pages][' . $this->id) . '][perms_user]");
-					setCheck("check[perms_group]", "data[pages][') . $this->id) . '][perms_group]");
-					setCheck("check[perms_everybody]", "data[pages][') . $this->id) . '][perms_everybody]");
+				$this->doc->postCode .= $this->doc->wrapScriptTags('
+					setCheck("check[perms_user]", "data[pages][' . $this->id . '][perms_user]");
+					setCheck("check[perms_group]", "data[pages][' . $this->id . '][perms_group]");
+					setCheck("check[perms_everybody]", "data[pages][' . $this->id . '][perms_everybody]");
 				');
 			}
 			// Draw the HTML page header.
@@ -266,7 +266,7 @@ class PermissionModuleController {
 		// CSH
 		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_info', '', $GLOBALS['BACK_PATH'], '', TRUE);
 		// View page
-		$buttons['view'] = ((((('<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewonclick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->pageinfo['uid'])))) . '" title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view')) . '</a>';
+		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewonclick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 		// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);
@@ -315,14 +315,14 @@ class PermissionModuleController {
 			} else {
 				$selected = '';
 			}
-			$options .= ((((('
-				<option value="' . $uid) . '"') . $selected) . '>') . htmlspecialchars($row['username'])) . '</option>';
+			$options .= '
+				<option value="' . $uid . '"' . $selected . '>' . htmlspecialchars($row['username']) . '</option>';
 		}
 		$options = '
 				<option value="0"></option>' . $options;
-		$selector = ((('
-			<select name="data[pages][' . $this->id) . '][perms_userid]">
-				') . $options) . '
+		$selector = '
+			<select name="data[pages][' . $this->id . '][perms_userid]">
+				' . $options . '
 			</select>';
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Owner') . ':', $selector);
 		// Group selector:
@@ -335,67 +335,67 @@ class PermissionModuleController {
 			} else {
 				$selected = '';
 			}
-			$options .= ((((('
-				<option value="' . $uid) . '"') . $selected) . '>') . htmlspecialchars($row['title'])) . '</option>';
+			$options .= '
+				<option value="' . $uid . '"' . $selected . '>' . htmlspecialchars($row['title']) . '</option>';
 		}
 		// If the group was not set AND there is a group for the page
 		if (!$userset && $this->pageinfo['perms_groupid']) {
-			$options = (((('
-				<option value="' . $this->pageinfo['perms_groupid']) . '" selected="selected">') . htmlspecialchars($beGroupArray_o[$this->pageinfo['perms_groupid']]['title'])) . '</option>') . $options;
+			$options = '
+				<option value="' . $this->pageinfo['perms_groupid'] . '" selected="selected">' . htmlspecialchars($beGroupArray_o[$this->pageinfo['perms_groupid']]['title']) . '</option>' . $options;
 		}
 		$options = '
 				<option value="0"></option>' . $options;
-		$selector = ((('
-			<select name="data[pages][' . $this->id) . '][perms_groupid]">
-				') . $options) . '
+		$selector = '
+			<select name="data[pages][' . $this->id . '][perms_groupid]">
+				' . $options . '
 			</select>';
 		$this->content .= $this->doc->divider(5);
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Group') . ':', $selector);
 		// Permissions checkbox matrix:
-		$code = ((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((('
+		$code = '
 			<table border="0" cellspacing="2" cellpadding="0" id="typo3-permissionMatrix">
 				<tr>
 					<td></td>
-					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('1', 1))) . '</td>
-					<td class="bgColor2">') . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('16', 1))) . '</td>
-					<td class="bgColor2">') . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('2', 1))) . '</td>
-					<td class="bgColor2">') . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('4', 1))) . '</td>
-					<td class="bgColor2">') . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('8', 1))) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('1', 1)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('16', 1)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('2', 1)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('4', 1)) . '</td>
+					<td class="bgColor2">' . str_replace(' ', '<br />', $GLOBALS['LANG']->getLL('8', 1)) . '</td>
 				</tr>
 				<tr>
-					<td align="right" class="bgColor2">') . $GLOBALS['LANG']->getLL('Owner', 1)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_user', 1)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_user', 5)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_user', 2)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_user', 3)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_user', 4)) . '</td>
+					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Owner', 1) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 1) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 5) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 2) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 3) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_user', 4) . '</td>
 				</tr>
 				<tr>
-					<td align="right" class="bgColor2">') . $GLOBALS['LANG']->getLL('Group', 1)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_group', 1)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_group', 5)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_group', 2)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_group', 3)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_group', 4)) . '</td>
+					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Group', 1) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 1) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 5) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 2) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 3) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_group', 4) . '</td>
 				</tr>
 				<tr>
-					<td align="right" class="bgColor2">') . $GLOBALS['LANG']->getLL('Everybody', 1)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_everybody', 1)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_everybody', 5)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_everybody', 2)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_everybody', 3)) . '</td>
-					<td class="bgColor-20">') . $this->printCheckBox('perms_everybody', 4)) . '</td>
+					<td align="right" class="bgColor2">' . $GLOBALS['LANG']->getLL('Everybody', 1) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 1) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 5) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 2) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 3) . '</td>
+					<td class="bgColor-20">' . $this->printCheckBox('perms_everybody', 4) . '</td>
 				</tr>
 			</table>
 			<br />
 
-			<input type="hidden" name="data[pages][') . $this->id) . '][perms_user]" value="') . $this->pageinfo['perms_user']) . '" />
-			<input type="hidden" name="data[pages][') . $this->id) . '][perms_group]" value="') . $this->pageinfo['perms_group']) . '" />
-			<input type="hidden" name="data[pages][') . $this->id) . '][perms_everybody]" value="') . $this->pageinfo['perms_everybody']) . '" />
-			') . $this->getRecursiveSelect($this->id, $this->perms_clause)) . '
-			<input type="submit" name="submit" value="') . $GLOBALS['LANG']->getLL('Save', 1)) . '" />') . '<input type="submit" value="') . $GLOBALS['LANG']->getLL('Abort', 1)) . '" onclick="') . htmlspecialchars((('jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue(((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_perm') . '&id=') . $this->id), TRUE)) . '); return false;'))) . '" />
-			<input type="hidden" name="redirect" value="') . htmlspecialchars(((((((((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_perm') . '&mode=') . $this->MOD_SETTINGS['mode']) . '&depth=') . $this->MOD_SETTINGS['depth']) . '&id=') . intval($this->return_id)) . '&lastEdited=') . $this->id))) . '" />
-			') . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
+			<input type="hidden" name="data[pages][' . $this->id . '][perms_user]" value="' . $this->pageinfo['perms_user'] . '" />
+			<input type="hidden" name="data[pages][' . $this->id . '][perms_group]" value="' . $this->pageinfo['perms_group'] . '" />
+			<input type="hidden" name="data[pages][' . $this->id . '][perms_everybody]" value="' . $this->pageinfo['perms_everybody'] . '" />
+			' . $this->getRecursiveSelect($this->id, $this->perms_clause) . '
+			<input type="submit" name="submit" value="' . $GLOBALS['LANG']->getLL('Save', 1) . '" />' . '<input type="submit" value="' . $GLOBALS['LANG']->getLL('Abort', 1) . '" onclick="' . htmlspecialchars(('jumpToUrl(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_perm') . '&id=' . $this->id), TRUE) . '); return false;')) . '" />
+			<input type="hidden" name="redirect" value="' . htmlspecialchars((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . intval($this->return_id) . '&lastEdited=' . $this->id)) . '" />
+			' . \TYPO3\CMS\Backend\Form\FormEngine::getHiddenTokenField('tceAction');
 		// Adding section with the permission setting matrix:
 		$this->content .= $this->doc->divider(5);
 		$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('permissions') . ':', $code);
@@ -404,12 +404,12 @@ class PermissionModuleController {
 		// Adding help text:
 		if ($GLOBALS['BE_USER']->uc['helpText']) {
 			$this->content .= $this->doc->divider(20);
-			$legendText = (('<strong>' . $GLOBALS['LANG']->getLL('1', 1)) . '</strong>: ') . $GLOBALS['LANG']->getLL('1_t', 1);
-			$legendText .= (('<br /><strong>' . $GLOBALS['LANG']->getLL('16', 1)) . '</strong>: ') . $GLOBALS['LANG']->getLL('16_t', 1);
-			$legendText .= (('<br /><strong>' . $GLOBALS['LANG']->getLL('2', 1)) . '</strong>: ') . $GLOBALS['LANG']->getLL('2_t', 1);
-			$legendText .= (('<br /><strong>' . $GLOBALS['LANG']->getLL('4', 1)) . '</strong>: ') . $GLOBALS['LANG']->getLL('4_t', 1);
-			$legendText .= (('<br /><strong>' . $GLOBALS['LANG']->getLL('8', 1)) . '</strong>: ') . $GLOBALS['LANG']->getLL('8_t', 1);
-			$code = ($legendText . '<br /><br />') . $GLOBALS['LANG']->getLL('def', 1);
+			$legendText = '<strong>' . $GLOBALS['LANG']->getLL('1', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('1_t', 1);
+			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('16', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('16_t', 1);
+			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('2', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('2_t', 1);
+			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('4', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('4_t', 1);
+			$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('8', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('8_t', 1);
+			$code = $legendText . '<br /><br />' . $GLOBALS['LANG']->getLL('def', 1);
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('Legend', 1) . ':', $code);
 		}
 	}
@@ -459,27 +459,27 @@ class PermissionModuleController {
 		// Make header of table:
 		$code = '';
 		if ($this->MOD_SETTINGS['mode'] == 'perms') {
-			$code .= ((((((((((((((('
+			$code .= '
 				<tr class="t3-row-header">
 					<td colspan="2">&nbsp;</td>
-					<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"')) . ' alt="" /></td>
-					<td>') . $GLOBALS['LANG']->getLL('Owner', TRUE)) . '</td>
-					<td><img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"')) . ' alt="" /></td>
-					<td align="center">') . $GLOBALS['LANG']->getLL('Group', TRUE)) . '</td>
-					<td><img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"')) . ' alt="" /></td>
-					<td align="center">') . $GLOBALS['LANG']->getLL('Everybody', TRUE)) . '</td>
-					<td><img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"')) . ' alt="" /></td>
-					<td align="center">') . $GLOBALS['LANG']->getLL('EditLock', TRUE)) . '</td>
+					<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td>' . $GLOBALS['LANG']->getLL('Owner', TRUE) . '</td>
+					<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center">' . $GLOBALS['LANG']->getLL('Group', TRUE) . '</td>
+					<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center">' . $GLOBALS['LANG']->getLL('Everybody', TRUE) . '</td>
+					<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center">' . $GLOBALS['LANG']->getLL('EditLock', TRUE) . '</td>
 				</tr>
 			';
 		} else {
-			$code .= ((((((('
+			$code .= '
 				<tr class="t3-row-header">
 					<td colspan="2">&nbsp;</td>
-					<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"')) . ' alt="" /></td>
-					<td align="center" nowrap="nowrap">') . $GLOBALS['LANG']->getLL('User', TRUE)) . ': ') . htmlspecialchars($GLOBALS['BE_USER']->user['username'])) . '</td>
-					') . (!$GLOBALS['BE_USER']->isAdmin() ? ((('<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"')) . ' alt="" /></td>
-					<td align="center">') . $GLOBALS['LANG']->getLL('EditLock', TRUE)) . '</td>' : '')) . '
+					<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('User', TRUE) . ': ' . htmlspecialchars($GLOBALS['BE_USER']->user['username']) . '</td>
+					' . (!$GLOBALS['BE_USER']->isAdmin() ? '<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td align="center">' . $GLOBALS['LANG']->getLL('EditLock', TRUE) . '</td>' : '') . '
 				</tr>';
 		}
 		// Traverse tree:
@@ -505,76 +505,76 @@ class PermissionModuleController {
 			// Seeing if editing of permissions are allowed for that page:
 			$editPermsAllowed = $data['row']['perms_userid'] == $GLOBALS['BE_USER']->user['uid'] || $GLOBALS['BE_USER']->isAdmin();
 			// First column:
-			$cellAttrib = $data['row']['_CSSCLASS'] ? (' class="' . $data['row']['_CSSCLASS']) . '"' : '';
-			$cells[] = (((('
-					<td align="left" nowrap="nowrap"' . ($cellAttrib ? $cellAttrib : $bgCol)) . '>') . $data['HTML']) . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($data['row']['title'], $tLen))) . '&nbsp;</td>';
+			$cellAttrib = $data['row']['_CSSCLASS'] ? ' class="' . $data['row']['_CSSCLASS'] . '"' : '';
+			$cells[] = '
+					<td align="left" nowrap="nowrap"' . ($cellAttrib ? $cellAttrib : $bgCol) . '>' . $data['HTML'] . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($data['row']['title'], $tLen)) . '&nbsp;</td>';
 			// "Edit permissions" -icon
 			if ($editPermsAllowed && $pageId) {
-				$aHref = ((((((((\TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_perm') . '&mode=') . $this->MOD_SETTINGS['mode']) . '&depth=') . $this->MOD_SETTINGS['depth']) . '&id=') . ($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId)) . '&return_id=') . $this->id) . '&edit=1';
-				$cells[] = ((((((('
-					<td' . $bgCol) . '><a href="') . htmlspecialchars($aHref)) . '" title="') . $GLOBALS['LANG']->getLL('ch_permissions', 1)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open')) . '</a></td>';
+				$aHref = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('web_perm') . '&mode=' . $this->MOD_SETTINGS['mode'] . '&depth=' . $this->MOD_SETTINGS['depth'] . '&id=' . ($data['row']['_ORIG_uid'] ? $data['row']['_ORIG_uid'] : $pageId) . '&return_id=' . $this->id . '&edit=1';
+				$cells[] = '
+					<td' . $bgCol . '><a href="' . htmlspecialchars($aHref) . '" title="' . $GLOBALS['LANG']->getLL('ch_permissions', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a></td>';
 			} else {
-				$cells[] = ('
-					<td' . $bgCol) . '></td>';
+				$cells[] = '
+					<td' . $bgCol . '></td>';
 			}
 			// Rest of columns (depending on mode)
 			if ($this->MOD_SETTINGS['mode'] == 'perms') {
-				$cells[] = ((((((((((((((((((((((((((((((('
-					<td' . $bgCol) . ' class="center"><img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"')) . ' alt="" /></td>
-					<td') . $bgCol) . ' nowrap="nowrap">') . ($pageId ? (\TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_user'], $pageId, 'user') . ' ') . $userName : '')) . '</td>
+				$cells[] = '
+					<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_user'], $pageId, 'user') . ' ' . $userName : '') . '</td>
 
-					<td') . $bgCol) . ' class="center"><img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"')) . ' alt="" /></td>
-					<td') . $bgCol) . ' nowrap="nowrap">') . ($pageId ? (\TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_group'], $pageId, 'group') . ' ') . $groupName : '')) . '</td>
+					<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_group'], $pageId, 'group') . ' ' . $groupName : '') . '</td>
 
-					<td') . $bgCol) . ' class="center"><img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"')) . ' alt="" /></td>
-					<td') . $bgCol) . ' nowrap="nowrap">') . ($pageId ? ' ' . \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '')) . '</td>
+					<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? ' ' . \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '') . '</td>
 
-					<td') . $bgCol) . ' class="center"><img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"')) . ' alt="" /></td>
-					<td') . $bgCol) . ' nowrap="nowrap">') . ($data['row']['editlock'] ? ((((((('<span id="el_' . $pageId) . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'') . $pageId) . '\', \'1\');" title="') . $GLOBALS['LANG']->getLL('EditLock_descr', 1)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-lock')) . '</a></span>' : ($pageId === 0 ? '' : ((('<span id="el_' . $pageId) . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'') . $pageId) . '\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>'))) . '</td>
+					<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td' . $bgCol . ' nowrap="nowrap">' . ($data['row']['editlock'] ? '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'1\');" title="' . $GLOBALS['LANG']->getLL('EditLock_descr', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-lock') . '</a></span>' : ($pageId === 0 ? '' : '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')) . '</td>
 				';
 			} else {
-				$cells[] = ((('
-					<td' . $bgCol) . ' class="center"><img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"')) . ' alt="" /></td>';
+				$cells[] = '
+					<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>';
 				$bgCol = $GLOBALS['BE_USER']->user['uid'] == $data['row']['perms_userid'] ? ' class="bgColor-20"' : $lE_bgCol;
 				// FIXME $owner undefined
-				$cells[] = (((('
-					<td' . $bgCol) . ' nowrap="nowrap" align="center">') . ($pageId ? $owner . \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($GLOBALS['BE_USER']->calcPerms($data['row']), $pageId, 'user') : '')) . '</td>
-					') . (!$GLOBALS['BE_USER']->isAdmin() ? ((((((('
-					<td' . $bgCol) . ' class="center"><img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"')) . ' alt="" /></td>
-					<td') . $bgCol) . ' nowrap="nowrap">') . ($data['row']['editlock'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-lock', array('title' => $GLOBALS['LANG']->getLL('EditLock_descr', TRUE))) : '')) . '</td>
+				$cells[] = '
+					<td' . $bgCol . ' nowrap="nowrap" align="center">' . ($pageId ? $owner . \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($GLOBALS['BE_USER']->calcPerms($data['row']), $pageId, 'user') : '') . '</td>
+					' . (!$GLOBALS['BE_USER']->isAdmin() ? '
+					<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+					<td' . $bgCol . ' nowrap="nowrap">' . ($data['row']['editlock'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-lock', array('title' => $GLOBALS['LANG']->getLL('EditLock_descr', TRUE))) : '') . '</td>
 					' : '');
 				$bgCol = $lE_bgCol;
 			}
 			// Compile table row:
-			$code .= ('
+			$code .= '
 				<tr>
 					' . implode('
-					', $cells)) . '
+					', $cells) . '
 				</tr>';
 		}
 		// Wrap rows in table tags:
-		$code = ('<table border="0" cellspacing="0" cellpadding="0" id="typo3-permissionList">' . $code) . '</table>';
+		$code = '<table border="0" cellspacing="0" cellpadding="0" id="typo3-permissionList">' . $code . '</table>';
 		// Adding the content as a section:
 		$this->content .= $this->doc->section('', $code);
 		// CSH for permissions setting
 		$this->content .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'perm_module', $GLOBALS['BACK_PATH'], '<br />|');
 		// Creating legend table:
-		$legendText = (('<strong>' . $GLOBALS['LANG']->getLL('1', 1)) . '</strong>: ') . $GLOBALS['LANG']->getLL('1_t', 1);
-		$legendText .= (('<br /><strong>' . $GLOBALS['LANG']->getLL('16', 1)) . '</strong>: ') . $GLOBALS['LANG']->getLL('16_t', 1);
-		$legendText .= (('<br /><strong>' . $GLOBALS['LANG']->getLL('2', 1)) . '</strong>: ') . $GLOBALS['LANG']->getLL('2_t', 1);
-		$legendText .= (('<br /><strong>' . $GLOBALS['LANG']->getLL('4', 1)) . '</strong>: ') . $GLOBALS['LANG']->getLL('4_t', 1);
-		$legendText .= (('<br /><strong>' . $GLOBALS['LANG']->getLL('8', 1)) . '</strong>: ') . $GLOBALS['LANG']->getLL('8_t', 1);
-		$code = ((('<table border="0" id="typo3-legendTable">
+		$legendText = '<strong>' . $GLOBALS['LANG']->getLL('1', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('1_t', 1);
+		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('16', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('16_t', 1);
+		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('2', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('2_t', 1);
+		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('4', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('4_t', 1);
+		$legendText .= '<br /><strong>' . $GLOBALS['LANG']->getLL('8', 1) . '</strong>: ' . $GLOBALS['LANG']->getLL('8_t', 1);
+		$code = '<table border="0" id="typo3-legendTable">
 			<tr>
 				<td valign="top">
-					<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/legend.gif', 'width="86" height="75"')) . ' alt="" />
+					<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/legend.gif', 'width="86" height="75"') . ' alt="" />
 				</td>
-				<td valign="top" nowrap="nowrap">') . $legendText) . '</td>
+				<td valign="top" nowrap="nowrap">' . $legendText . '</td>
 			</tr>
 		</table>';
 		$code .= '<div id="perm-legend">' . $GLOBALS['LANG']->getLL('def', 1);
-		$code .= (('<br /><br />' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-permission-granted')) . ': ') . $GLOBALS['LANG']->getLL('A_Granted', 1);
-		$code .= (('<br />' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-permission-denied')) . ': ') . $GLOBALS['LANG']->getLL('A_Denied', 1);
+		$code .= '<br /><br />' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-permission-granted') . ': ' . $GLOBALS['LANG']->getLL('A_Granted', 1);
+		$code .= '<br />' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-permission-denied') . ': ' . $GLOBALS['LANG']->getLL('A_Denied', 1);
 		$code .= '</div>';
 		// Adding section with legend code:
 		$this->content .= $this->doc->spacer(20);
@@ -594,8 +594,8 @@ class PermissionModuleController {
 	 * @return string HTML checkbox
 	 */
 	public function printCheckBox($checkName, $num) {
-		$onclick = ((((('checkChange(\'check[' . $checkName) . ']\', \'data[pages][') . $GLOBALS['SOBE']->id) . '][') . $checkName) . ']\')';
-		return ((((('<input type="checkbox" name="check[' . $checkName) . '][') . $num) . ']" onclick="') . htmlspecialchars($onclick)) . '" /><br />';
+		$onclick = 'checkChange(\'check[' . $checkName . ']\', \'data[pages][' . $GLOBALS['SOBE']->id . '][' . $checkName . ']\')';
+		return '<input type="checkbox" name="check[' . $checkName . '][' . $num . ']" onclick="' . htmlspecialchars($onclick) . '" /><br />';
 	}
 
 	/**
@@ -648,15 +648,15 @@ class PermissionModuleController {
 							$theIdListArr[] = $theId;
 						}
 					}
-					$lKey = ($this->getLevels - $a) + 1;
-					$opts .= (((((((('
-						<option value="' . htmlspecialchars(implode(',', $theIdListArr))) . '">') . \TYPO3\CMS\Core\Utility\GeneralUtility::deHSCentities(htmlspecialchars((((($label_recur . ' ') . $lKey) . ' ') . $label_levels)))) . ' (') . count($theIdListArr)) . ' ') . $label_pA) . ')') . '</option>';
+					$lKey = $this->getLevels - $a + 1;
+					$opts .= '
+						<option value="' . htmlspecialchars(implode(',', $theIdListArr)) . '">' . \TYPO3\CMS\Core\Utility\GeneralUtility::deHSCentities(htmlspecialchars(($label_recur . ' ' . $lKey . ' ' . $label_levels))) . ' (' . count($theIdListArr) . ' ' . $label_pA . ')' . '</option>';
 				}
 			}
 			// Put the selector box together:
-			$theRecursiveSelect = ((('<br />
-					<select name="mirror[pages][' . $id) . ']">
-						') . $opts) . '
+			$theRecursiveSelect = '<br />
+					<select name="mirror[pages][' . $id . ']">
+						' . $opts . '
 					</select>
 				<br /><br />';
 		} else {

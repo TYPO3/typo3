@@ -67,7 +67,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 		$title = $GLOBALS['LANG']->getLL('toolbaritem', TRUE);
 		// Toolbar item icon
 		$opendocsMenu[] = '<a href="#" class="toolbar-item">';
-		$opendocsMenu[] = ('<input type="text" id="tx-opendocs-counter" disabled="disabled" value="' . $numDocs) . '" />';
+		$opendocsMenu[] = '<input type="text" id="tx-opendocs-counter" disabled="disabled" value="' . $numDocs . '" />';
 		$opendocsMenu[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-opendocs', array('title' => $title)) . '</a>';
 		// Toolbar item menu and initial content
 		$opendocsMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
@@ -87,7 +87,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 		$entries = array();
 		$content = '';
 		if (count($openDocuments)) {
-			$entries[] = ('<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('open_docs', TRUE)) . '</th></tr>';
+			$entries[] = '<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('open_docs', TRUE) . '</th></tr>';
 			$i = 0;
 			foreach ($openDocuments as $md5sum => $openDocument) {
 				$i++;
@@ -96,7 +96,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 		}
 		// if there are "recent documents" in the list, add them
 		if (count($recentDocuments)) {
-			$entries[] = ('<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('recent_docs', TRUE)) . '</th></tr>';
+			$entries[] = '<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('recent_docs', TRUE) . '</th></tr>';
 			$i = 0;
 			foreach ($recentDocuments as $md5sum => $recentDocument) {
 				$i++;
@@ -104,9 +104,9 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 			}
 		}
 		if (count($entries)) {
-			$content = ('<table class="list" cellspacing="0" cellpadding="0" border="0">' . implode('', $entries)) . '</table>';
+			$content = '<table class="list" cellspacing="0" cellpadding="0" border="0">' . implode('', $entries) . '</table>';
 		} else {
-			$content = ('<div class="no-docs">' . $GLOBALS['LANG']->getLL('no_docs', TRUE)) . '</div>';
+			$content = '<div class="no-docs">' . $GLOBALS['LANG']->getLL('no_docs', TRUE) . '</div>';
 		}
 		return $content;
 	}
@@ -126,7 +126,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 		}
 		$label = htmlspecialchars(strip_tags(\TYPO3\CMS\Core\Utility\GeneralUtility::htmlspecialchars_decode($document[0])));
 		$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $record);
-		$link = ($GLOBALS['BACK_PATH'] . 'alt_doc.php?') . $document[2];
+		$link = $GLOBALS['BACK_PATH'] . 'alt_doc.php?' . $document[2];
 		$pageId = intval($document[3]['uid']);
 		if ($document[3]['table'] !== 'pages') {
 			$pageId = intval($document[3]['pid']);
@@ -139,18 +139,18 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 			$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:rm.closeDoc', TRUE);
 			// Open document
 			$closeIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close');
-			$entry = ((((((((((((('
-				<tr class="opendoc' . $firstRow) . '">
-					<td class="icon">') . $icon) . '</td>
-					<td class="label"><a href="#" onclick="jump(unescape(\'') . htmlspecialchars($link)) . '\'), \'web_list\', \'web\', ') . $pageId) . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">') . $label) . '</a></td>
-					<td class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\'') . $md5sum) . '\');">') . $closeIcon) . '</td>
+			$entry = '
+				<tr class="opendoc' . $firstRow . '">
+					<td class="icon">' . $icon . '</td>
+					<td class="label"><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
+					<td class="close" onclick="return TYPO3BackendOpenDocs.closeDocument(\'' . $md5sum . '\');">' . $closeIcon . '</td>
 				</tr>';
 		} else {
 			// Recently used document
-			$entry = ((((((((('
-				<tr class="recentdoc' . $firstRow) . '">
-					<td class="icon">') . $icon) . '</td>
-					<td class="label" colspan="2"><a href="#" onclick="jump(unescape(\'') . htmlspecialchars($link)) . '\'), \'web_list\', \'web\', ') . $pageId) . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">') . $label) . '</a></td>
+			$entry = '
+				<tr class="recentdoc' . $firstRow . '">
+					<td class="icon">' . $icon . '</td>
+					<td class="label" colspan="2"><a href="#" onclick="jump(unescape(\'' . htmlspecialchars($link) . '\'), \'web_list\', \'web\', ' . $pageId . '); TYPO3BackendOpenDocs.toggleMenu(); return false;" target="content">' . $label . '</a></td>
 				</tr>';
 		}
 		return $entry;
@@ -195,9 +195,9 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	 * @return string list item HTML attibutes
 	 */
 	public function updateNumberOfOpenDocsHook(&$params, $ref) {
-		$params['JScode'] = ('
+		$params['JScode'] = '
 			if (top && top.TYPO3BackendOpenDocs) {
-				top.TYPO3BackendOpenDocs.updateNumberOfDocs(' . count($this->openDocs)) . ', true);
+				top.TYPO3BackendOpenDocs.updateNumberOfDocs(' . count($this->openDocs) . ', true);
 			}
 		';
 	}

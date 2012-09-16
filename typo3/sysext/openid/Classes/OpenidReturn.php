@@ -16,7 +16,7 @@ class OpenidReturn {
 	public function main() {
 		if ($GLOBALS['BE_USER']->user['uid']) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::cleanOutputBuffers();
-			$backendURL = (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir) . 'backend.php';
+			$backendURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'backend.php';
 			\TYPO3\CMS\Core\Utility\HttpUtility::redirect($backendURL);
 		}
 	}
