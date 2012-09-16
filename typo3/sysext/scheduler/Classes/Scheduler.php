@@ -108,7 +108,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 					if ($tstamp - $task < $maxDuration) {
 						$executions[] = $task;
 					} else {
-						$logMessage = (((('Removing logged execution, assuming that the process is dead. Execution of \'' . $row['classname']) . '\' (UID: ') . $row['uid']) . ') was started at ') . date('Y-m-d H:i:s', $task);
+						$logMessage = 'Removing logged execution, assuming that the process is dead. Execution of \'' . $row['classname'] . '\' (UID: ' . $row['uid'] . ') was started at ' . date('Y-m-d H:i:s', $task);
 						$this->log($logMessage);
 					}
 				}
@@ -144,12 +144,12 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		// Task is already running and multiple executions are not allowed
 		if (!$task->areMultipleExecutionsAllowed() && $task->isExecutionRunning()) {
 			// Log multiple execution error
-			$logMessage = (('Task is already running and multiple executions are not allowed, skipping! Class: ' . get_class($task)) . ', UID: ') . $task->getTaskUid();
+			$logMessage = 'Task is already running and multiple executions are not allowed, skipping! Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid();
 			$this->log($logMessage);
 			$result = FALSE;
 		} else {
 			// Log scheduler invocation
-			$logMessage = (('Start execution. Class: ' . get_class($task)) . ', UID: ') . $task->getTaskUid();
+			$logMessage = 'Start execution. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid();
 			$this->log($logMessage);
 			// Register execution
 			$executionID = $task->markExecution();
@@ -158,7 +158,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				// Execute task
 				$successfullyExecuted = $task->execute();
 				if (!$successfullyExecuted) {
-					throw new \TYPO3\CMS\Scheduler\FailedExecutionException((('Task failed to execute successfully. Class: ' . get_class($task)) . ', UID: ') . $task->getTaskUid(), 1250596541);
+					throw new \TYPO3\CMS\Scheduler\FailedExecutionException('Task failed to execute successfully. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid(), 1250596541);
 				}
 			} catch (\Exception $e) {
 				// Store exception, so that it can be saved to database
@@ -167,7 +167,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 			// Un-register execution
 			$task->unmarkExecution($executionID, $failure);
 			// Log completion of execution
-			$logMessage = (('Task executed. Class: ' . get_class($task)) . ', UID: ') . $task->getTaskUid();
+			$logMessage = 'Task executed. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid();
 			$this->log($logMessage);
 			// Now that the result of the task execution has been handled,
 			// throw the exception again, if any
@@ -397,7 +397,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 		// Get at job id from registry and remove at job
 		$atJobId = $registry->get('tx_scheduler', 'atJobId');
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($atJobId)) {
-			shell_exec(('atrm ' . (int) $atJobId) . ' 2>&1');
+			shell_exec('atrm ' . (int) $atJobId . ' 2>&1');
 		}
 		// Can not use fetchTask() here because if tasks have just executed
 		// they are not in the list of next executions
@@ -421,7 +421,7 @@ class Scheduler implements \TYPO3\CMS\Core\SingletonInterface {
 				$currentLocale = setlocale(LC_CTYPE, 0);
 				setlocale(LC_CTYPE, $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemLocale']);
 			}
-			$cmd = ((('echo ' . escapeshellarg($cliDispatchPath)) . ' scheduler | at ') . escapeshellarg($startTime)) . ' 2>&1';
+			$cmd = 'echo ' . escapeshellarg($cliDispatchPath) . ' scheduler | at ' . escapeshellarg($startTime) . ' 2>&1';
 			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
 				setlocale(LC_CTYPE, $currentLocale);
 			}

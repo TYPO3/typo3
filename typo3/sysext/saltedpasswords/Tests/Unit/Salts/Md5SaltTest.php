@@ -244,7 +244,7 @@ class Md5SaltTest extends \tx_phpunit_testcase {
 				break;
 			}
 		}
-		$this->assertTrue($criticalPwLength == 0 || $criticalPwLength > 32, (($this->getWarningWhenMethodUnavailable() . 'Duplicates of hashed passwords with plaintext password of length ') . $criticalPwLength) . '+.');
+		$this->assertTrue($criticalPwLength == 0 || $criticalPwLength > 32, $this->getWarningWhenMethodUnavailable() . 'Duplicates of hashed passwords with plaintext password of length ' . $criticalPwLength . '+.');
 	}
 
 	/**

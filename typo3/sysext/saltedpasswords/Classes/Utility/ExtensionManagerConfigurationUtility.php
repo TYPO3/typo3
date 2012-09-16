@@ -136,7 +136,7 @@ your TYPO3 installation and the usability of the backend.';
 					} else {
 						// This means that login would fail because rsaauth is not working properly
 						$this->setErrorLevel('error');
-						$problems[] = ('<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' . 'is available. Please install and configure the PHP extension "openssl". ') . 'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
+						$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' . 'is available. Please install and configure the PHP extension "openssl". ' . 'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
 					}
 				} else {
 					// This means that we are not using saltedpasswords
@@ -269,7 +269,7 @@ Make sure that the Login Security Level is not set to "" or "challenged"!';
 				} else {
 					// This means that login would fail because rsaauth is not working properly
 					$this->setErrorLevel('error');
-					$problems[] = ('<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' . 'is available. Please install and configure the PHP extension "openssl". ') . 'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
+					$problems[] = '<strong>Using the extension "rsaauth" is not possible, as no encryption backend ' . 'is available. Please install and configure the PHP extension "openssl". ' . 'See <a href="http://php.net/manual/en/openssl.installation.php" target="_blank">PHP.net</a></strong>.';
 				}
 			}
 			// Only saltedpasswords as authsservice
@@ -329,17 +329,17 @@ Please disable either one of them.';
 	protected function buildHashMethodSelector(array $params, $pObj, $disposal) {
 		$this->init();
 		$propertyName = $params['propertyName'];
-		$unknownVariablePleaseRenameMe = ('\'' . substr(md5($propertyName), 0, 10)) . '\'';
+		$unknownVariablePleaseRenameMe = '\'' . substr(md5($propertyName), 0, 10) . '\'';
 		$p_field = '';
 		foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/saltedpasswords']['saltMethods'] as $class => $reference) {
 			$classInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($reference, 'tx_');
 			if ($classInstance instanceof \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface && $classInstance->isAvailable()) {
 				$sel = $this->extConf[$disposal]['saltedPWHashingMethod'] == $class ? ' selected="selected" ' : '';
 				$label = 'ext.saltedpasswords.title.' . $class;
-				$p_field .= ((((('<option value="' . htmlspecialchars($class)) . '"') . $sel) . '>') . $GLOBALS['LANG']->getLL($label)) . '</option>';
+				$p_field .= '<option value="' . htmlspecialchars($class) . '"' . $sel . '>' . $GLOBALS['LANG']->getLL($label) . '</option>';
 			}
 		}
-		$p_field = ((((((('<select id="' . $propertyName) . '" name="') . $params['fieldName']) . '" onChange="uFormUrl(') . $unknownVariablePleaseRenameMe) . ')">') . $p_field) . '</select>';
+		$p_field = '<select id="' . $propertyName . '" name="' . $params['fieldName'] . '" onChange="uFormUrl(' . $unknownVariablePleaseRenameMe . ')">' . $p_field . '</select>';
 		return $p_field;
 	}
 

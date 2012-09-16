@@ -108,7 +108,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task {
 	 * @return string Additional information
 	 */
 	public function getAdditionalInformation() {
-		$information = ((($GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.deactivateself') . $this->getCanDeactivateSelf()) . '; ') . $GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.numberofrecords')) . $this->getNumberOfRecords();
+		$information = $GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.deactivateself') . $this->getCanDeactivateSelf() . '; ' . $GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.label.additionalinformation.numberofrecords') . $this->getNumberOfRecords();
 		return $information;
 	}
 
@@ -119,7 +119,7 @@ class BulkUpdateTask extends \TYPO3\CMS\Scheduler\Task {
 	 * @return array Rows with uid and password
 	 */
 	protected function findUsersToUpdate($mode) {
-		$usersToUpdate = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, password', strtolower($mode) . '_users', '1 = 1', '', 'uid ASC', ($this->userRecordPointer[$mode] . ', ') . $this->numberOfRecords);
+		$usersToUpdate = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid, password', strtolower($mode) . '_users', '1 = 1', '', 'uid ASC', $this->userRecordPointer[$mode] . ', ' . $this->numberOfRecords);
 		return $usersToUpdate;
 	}
 

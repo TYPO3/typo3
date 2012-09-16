@@ -114,55 +114,55 @@ class CronCommandTest extends \tx_phpunit_testcase {
 				'1 * * * *',
 				self::TIMESTAMP,
 				self::TIMESTAMP + 60,
-				(self::TIMESTAMP + 60) + 60 * 60
+				self::TIMESTAMP + 60 + 60 * 60
 			),
 			'once an hour at 0' => array(
 				'0 * * * *',
 				self::TIMESTAMP,
 				self::TIMESTAMP + 60 * 60,
-				(self::TIMESTAMP + 60 * 60) + 60 * 60
+				self::TIMESTAMP + 60 * 60 + 60 * 60
 			),
 			'once a day at 1:00' => array(
 				'0 1 * * *',
 				self::TIMESTAMP,
 				self::TIMESTAMP + 60 * 60,
-				(self::TIMESTAMP + 60 * 60) + (60 * 60) * 24
+				self::TIMESTAMP + 60 * 60 + 60 * 60 * 24
 			),
 			'once a day at 0:00' => array(
 				'0 0 * * *',
 				self::TIMESTAMP,
-				self::TIMESTAMP + (60 * 60) * 24,
-				self::TIMESTAMP + ((60 * 60) * 24) * 2
+				self::TIMESTAMP + 60 * 60 * 24,
+				self::TIMESTAMP + 60 * 60 * 24 * 2
 			),
 			'once a month' => array(
 				'0 0 4 * *',
 				self::TIMESTAMP,
-				self::TIMESTAMP + ((60 * 60) * 24) * 3,
-				(self::TIMESTAMP + ((60 * 60) * 24) * 3) + ((60 * 60) * 24) * 31
+				self::TIMESTAMP + 60 * 60 * 24 * 3,
+				self::TIMESTAMP + 60 * 60 * 24 * 3 + 60 * 60 * 24 * 31
 			),
 			'once every Saturday' => array(
 				'0 0 * * sat',
 				self::TIMESTAMP,
-				self::TIMESTAMP + (60 * 60) * 24,
-				(self::TIMESTAMP + (60 * 60) * 24) + ((60 * 60) * 24) * 7
+				self::TIMESTAMP + 60 * 60 * 24,
+				self::TIMESTAMP + 60 * 60 * 24 + 60 * 60 * 24 * 7
 			),
 			'once every day in February' => array(
 				'0 0 * feb *',
 				self::TIMESTAMP,
-				self::TIMESTAMP + ((60 * 60) * 24) * 31,
-				(self::TIMESTAMP + ((60 * 60) * 24) * 31) + (60 * 60) * 24
+				self::TIMESTAMP + 60 * 60 * 24 * 31,
+				self::TIMESTAMP + 60 * 60 * 24 * 31 + 60 * 60 * 24
 			),
 			'day of week and day of month restricted, next match in day of month field' => array(
 				'0 0 2 * sun',
 				self::TIMESTAMP,
-				self::TIMESTAMP + (60 * 60) * 24,
-				(self::TIMESTAMP + (60 * 60) * 24) + (60 * 60) * 24
+				self::TIMESTAMP + 60 * 60 * 24,
+				self::TIMESTAMP + 60 * 60 * 24 + 60 * 60 * 24
 			),
 			'day of week and day of month restricted, next match in day of week field' => array(
 				'0 0 3 * sat',
 				self::TIMESTAMP,
-				self::TIMESTAMP + (60 * 60) * 24,
-				(self::TIMESTAMP + (60 * 60) * 24) + (60 * 60) * 24
+				self::TIMESTAMP + 60 * 60 * 24,
+				self::TIMESTAMP + 60 * 60 * 24 + 60 * 60 * 24
 			),
 			'list of minutes' => array(
 				'2,4 * * * *',
@@ -173,8 +173,8 @@ class CronCommandTest extends \tx_phpunit_testcase {
 			'list of hours' => array(
 				'0 2,4 * * *',
 				self::TIMESTAMP,
-				self::TIMESTAMP + (60 * 60) * 2,
-				self::TIMESTAMP + (60 * 60) * 4
+				self::TIMESTAMP + 60 * 60 * 2,
+				self::TIMESTAMP + 60 * 60 * 4
 			),
 		);
 	}

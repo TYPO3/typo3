@@ -281,7 +281,7 @@ class SetupModuleController {
 		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->setModuleTemplate('templates/setup.html');
-		$this->doc->form = ('<form action="' . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('user_setup')) . '" method="post" name="usersetup" enctype="application/x-www-form-urlencoded">';
+		$this->doc->form = '<form action="' . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('user_setup') . '" method="post" name="usersetup" enctype="application/x-www-form-urlencoded">';
 		$this->doc->tableLayout = array(
 			'defRow' => array(
 				'0' => array('<td class="td-label">', '</td>'),
@@ -339,7 +339,7 @@ class SetupModuleController {
 		$this->loadModules->load($GLOBALS['TBE_MODULES']);
 		$this->content .= $this->doc->header($LANG->getLL('UserSettings'));
 		// Show if setup was saved
-		if (($this->setupIsUpdated && !$this->tempDataIsCleared) && !$this->settingsAreResetToDefault) {
+		if ($this->setupIsUpdated && !$this->tempDataIsCleared && !$this->settingsAreResetToDefault) {
 			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $LANG->getLL('setupWasUpdated'), $LANG->getLL('UserSettings'));
 			$this->content .= $flashMessage->render();
 		}
@@ -371,8 +371,8 @@ class SetupModuleController {
 		$menuItems = $this->renderUserSetup();
 		$this->content .= $this->doc->getDynTabMenu($menuItems, 'user-setup', FALSE, FALSE, 1, FALSE, 1, $this->dividers2tabs);
 		$formToken = $this->formProtection->generateToken('BE user setup', 'edit');
-		$this->content .= $this->doc->section('', ((('<input type="hidden" name="simUser" value="' . $this->simUser) . '" />
-			<input type="hidden" name="formToken" value="') . $formToken) . '" />
+		$this->content .= $this->doc->section('', '<input type="hidden" name="simUser" value="' . $this->simUser . '" />
+			<input type="hidden" name="formToken" value="' . $formToken . '" />
 			<input type="hidden" value="1" name="data[save]" />
 			<input type="hidden" name="data[setValuesToDefault]" value="0" id="setValuesToDefault" />
 			<input type="hidden" name="data[clearSessionVars]" value="0" id="clearSessionVars" />');
@@ -410,7 +410,7 @@ class SetupModuleController {
 			'shortcut' => ''
 		);
 		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_user_setup', '', $GLOBALS['BACK_PATH'], '|', TRUE);
-		$buttons['save'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save', array('html' => ('<input type="image" name="data[save]" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1)) . '" />'));
+		$buttons['save'] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save', array('html' => '<input type="image" name="data[save]" class="c-inputButton" src="clear.gif" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.saveDoc', 1) . '" />'));
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('', '', $this->MCONF['name']);
 		}
@@ -471,10 +471,10 @@ class SetupModuleController {
 			$class = $config['class'];
 			$style = $config['style'];
 			if ($class) {
-				$more .= (' class="' . $class) . '"';
+				$more .= ' class="' . $class . '"';
 			}
 			if ($style) {
-				$more .= (' style="' . $style) . '"';
+				$more .= ' style="' . $style . '"';
 			}
 			if ($this->overrideConf[$fieldName]) {
 				$more .= ' disabled="disabled"';
@@ -498,17 +498,17 @@ class SetupModuleController {
 					$value = '';
 				}
 				$noAutocomplete = $type == 'password' ? 'autocomplete="off" ' : '';
-				$html = (((((((((((((('<input id="field_' . $fieldName) . '"
-							type="') . $type) . '"
-							name="data') . $dataAdd) . '[') . $fieldName) . ']" ') . $noAutocomplete) . 'value="') . htmlspecialchars($value)) . '" ') . $GLOBALS['TBE_TEMPLATE']->formWidth(20)) . $more) . ' />';
+				$html = '<input id="field_' . $fieldName . '"
+							type="' . $type . '"
+							name="data' . $dataAdd . '[' . $fieldName . ']" ' . $noAutocomplete . 'value="' . htmlspecialchars($value) . '" ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . $more . ' />';
 				break;
 			case 'check':
 				if (!$class) {
 					$more .= ' class="check"';
 				}
-				$html = (((((('<input id="field_' . $fieldName) . '"
+				$html = '<input id="field_' . $fieldName . '"
 									type="checkbox"
-									name="data[') . $fieldName) . ']"') . ($value ? ' checked="checked"' : '')) . $more) . ' />';
+									name="data[' . $fieldName . ']"' . ($value ? ' checked="checked"' : '') . $more . ' />';
 				break;
 			case 'select':
 				if (!$class) {
@@ -517,9 +517,9 @@ class SetupModuleController {
 				if ($config['itemsProcFunc']) {
 					$html = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($config['itemsProcFunc'], $config, $this, '');
 				} else {
-					$html = (((((((('<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20)) . ' id="field_') . $fieldName) . '" name="data[') . $fieldName) . ']"') . $more) . '>') . LF;
+					$html = '<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' id="field_' . $fieldName . '" name="data[' . $fieldName . ']"' . $more . '>' . LF;
 					foreach ($config['items'] as $key => $optionLabel) {
-						$html .= (((((('<option value="' . $key) . '"') . ($value == $key ? ' selected="selected"' : '')) . '>') . $this->getLabel($optionLabel, '', FALSE)) . '</option>') . LF;
+						$html .= '<option value="' . $key . '"' . ($value == $key ? ' selected="selected"' : '') . '>' . $this->getLabel($optionLabel, '', FALSE) . '</option>' . LF;
 					}
 					$html .= '</select>';
 				}
@@ -536,7 +536,7 @@ class SetupModuleController {
 						}
 						$onClick = vsprintf($onClick, $config['onClickLabels']);
 					}
-					$html = ((((('<input ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20)) . ' type="button" value="') . $this->getLabel($config['buttonlabel'], '', FALSE)) . '" onclick="') . $onClick) . '" />';
+					$html = '<input ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' type="button" value="' . $this->getLabel($config['buttonlabel'], '', FALSE) . '" onclick="' . $onClick . '" />';
 				}
 				break;
 			default:
@@ -579,7 +579,7 @@ class SetupModuleController {
 		$languageOptions = array();
 		// Compile the languages dropdown
 		$langDefault = $GLOBALS['LANG']->getLL('lang_default', 1);
-		$languageOptions[$langDefault] = ((('<option value=""' . ($GLOBALS['BE_USER']->uc['lang'] === '' ? ' selected="selected"' : '')) . '>') . $langDefault) . '</option>';
+		$languageOptions[$langDefault] = '<option value=""' . ($GLOBALS['BE_USER']->uc['lang'] === '' ? ' selected="selected"' : '') . '>' . $langDefault . '</option>';
 		// Traverse the number of languages
 		/** @var $locales \TYPO3\CMS\Core\Localization\Locales */
 		$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\Locales');
@@ -591,19 +591,19 @@ class SetupModuleController {
 				if ($localizedName === '') {
 					$localizedName = htmlspecialchars($name);
 				}
-				$localLabel = ('  -  [' . htmlspecialchars($defaultName)) . ']';
-				$available = is_dir((PATH_typo3conf . 'l10n/') . $locale) ? TRUE : FALSE;
+				$localLabel = '  -  [' . htmlspecialchars($defaultName) . ']';
+				$available = is_dir(PATH_typo3conf . 'l10n/' . $locale) ? TRUE : FALSE;
 				if ($available) {
-					$languageOptions[$defaultName] = (((((('<option value="' . $locale) . '"') . ($GLOBALS['BE_USER']->uc['lang'] === $locale ? ' selected="selected"' : '')) . '>') . $localizedName) . $localLabel) . '</option>';
+					$languageOptions[$defaultName] = '<option value="' . $locale . '"' . ($GLOBALS['BE_USER']->uc['lang'] === $locale ? ' selected="selected"' : '') . '>' . $localizedName . $localLabel . '</option>';
 				}
 			}
 		}
 		ksort($languageOptions);
-		$languageCode = ((('
-				<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20)) . ' id="field_lang" name="data[lang]" class="select">') . implode('', $languageOptions)) . '
+		$languageCode = '
+				<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' id="field_lang" name="data[lang]" class="select">' . implode('', $languageOptions) . '
 				</select>';
-		if ($GLOBALS['BE_USER']->uc['lang'] && !@is_dir(((PATH_typo3conf . 'l10n/') . $GLOBALS['BE_USER']->uc['lang']))) {
-			$languageUnavailableWarning = (('The selected language "' . $GLOBALS['LANG']->getLL(('lang_' . $GLOBALS['BE_USER']->uc['lang']), 1)) . '" is not available before the language pack is installed.<br />') . ($GLOBALS['BE_USER']->isAdmin() ? 'You can use the Extension Manager to easily download and install new language packs.' : 'Please ask your system administrator to do this.');
+		if ($GLOBALS['BE_USER']->uc['lang'] && !@is_dir((PATH_typo3conf . 'l10n/' . $GLOBALS['BE_USER']->uc['lang']))) {
+			$languageUnavailableWarning = 'The selected language "' . $GLOBALS['LANG']->getLL(('lang_' . $GLOBALS['BE_USER']->uc['lang']), 1) . '" is not available before the language pack is installed.<br />' . ($GLOBALS['BE_USER']->isAdmin() ? 'You can use the Extension Manager to easily download and install new language packs.' : 'Please ask your system administrator to do this.');
 			$languageUnavailableMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $languageUnavailableWarning, '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 			$languageCode = $languageUnavailableMessage->render() . $languageCode;
 		}
@@ -623,15 +623,15 @@ class SetupModuleController {
 		$startModuleSelect = '<option value=""></option>';
 		foreach ($pObj->loadModules->modules as $mainMod => $modData) {
 			if (isset($modData['sub']) && is_array($modData['sub'])) {
-				$startModuleSelect .= ('<option disabled="disabled">' . $GLOBALS['LANG']->moduleLabels['tabs'][($mainMod . '_tab')]) . '</option>';
+				$startModuleSelect .= '<option disabled="disabled">' . $GLOBALS['LANG']->moduleLabels['tabs'][($mainMod . '_tab')] . '</option>';
 				foreach ($modData['sub'] as $subKey => $subData) {
 					$modName = $subData['name'];
-					$startModuleSelect .= ((('<option value="' . $modName) . '"') . ($GLOBALS['BE_USER']->uc['startModule'] == $modName ? ' selected="selected"' : '')) . '>';
-					$startModuleSelect .= (' - ' . $GLOBALS['LANG']->moduleLabels['tabs'][($modName . '_tab')]) . '</option>';
+					$startModuleSelect .= '<option value="' . $modName . '"' . ($GLOBALS['BE_USER']->uc['startModule'] == $modName ? ' selected="selected"' : '') . '>';
+					$startModuleSelect .= ' - ' . $GLOBALS['LANG']->moduleLabels['tabs'][($modName . '_tab')] . '</option>';
 				}
 			}
 		}
-		return ((('<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20)) . 'id="field_startModule" name="data[startModule]" class="select">') . $startModuleSelect) . '</select>';
+		return '<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . 'id="field_startModule" name="data[startModule]" class="select">' . $startModuleSelect . '</select>';
 	}
 
 	/**
@@ -652,11 +652,11 @@ class SetupModuleController {
 			$opt = array();
 			foreach ($users as $rr) {
 				if ($rr['uid'] != $GLOBALS['BE_USER']->user['uid']) {
-					$opt[] = ((((('<option value="' . $rr['uid']) . '"') . ($this->simUser == $rr['uid'] ? ' selected="selected"' : '')) . '>') . htmlspecialchars(((($rr['username'] . ' (') . $rr['realName']) . ')'))) . '</option>';
+					$opt[] = '<option value="' . $rr['uid'] . '"' . ($this->simUser == $rr['uid'] ? ' selected="selected"' : '') . '>' . htmlspecialchars(($rr['username'] . ' (' . $rr['realName'] . ')')) . '</option>';
 				}
 			}
 			if (count($opt)) {
-				$this->simulateSelector = ((((('<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20)) . ' id="field_simulate" name="simulateUser" onchange="window.location.href=\'') . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('user_setup')) . '&simUser=\'+this.options[this.selectedIndex].value;"><option></option>') . implode('', $opt)) . '</select>';
+				$this->simulateSelector = '<select ' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' id="field_simulate" name="simulateUser" onchange="window.location.href=\'' . \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleUrl('user_setup') . '&simUser=\'+this.options[this.selectedIndex].value;"><option></option>' . implode('', $opt) . '</select>';
 			}
 		}
 		// This can only be set if the previous code was executed.
@@ -694,7 +694,7 @@ class SetupModuleController {
 	protected function checkAccess(array $config) {
 		$access = $config['access'];
 		// Check for hook
-		$accessObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj(($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck'][$access] . ':&') . $access);
+		$accessObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['setup']['accessLevelCheck'][$access] . ':&' . $access);
 		if (is_object($accessObject) && method_exists($accessObject, 'accessLevelCheck')) {
 			// Initialize vars. If method fails, $set will be set to FALSE
 			return $accessObject->accessLevelCheck($config);
@@ -719,10 +719,10 @@ class SetupModuleController {
 			$out = htmlspecialchars($str);
 		}
 		if (isset($this->overrideConf[$key ? $key : $str])) {
-			$out = ('<span style="color:#999999">' . $out) . '</span>';
+			$out = '<span style="color:#999999">' . $out . '</span>';
 		}
 		if ($addLabelTag) {
-			$out = ((('<label for="' . ($altLabelTagId ? $altLabelTagId : 'field_' . $key)) . '">') . $out) . '</label>';
+			$out = '<label for="' . ($altLabelTagId ? $altLabelTagId : 'field_' . $key) . '">' . $out . '</label>';
 		}
 		return $out;
 	}

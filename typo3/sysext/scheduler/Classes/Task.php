@@ -384,7 +384,7 @@ abstract class Task {
 				}
 				if ($failure instanceof \Exception) {
 					// Log failed execution
-					$logMessage = (((('Task failed to execute successfully. Class: ' . get_class($this)) . ', UID: ') . $this->taskUid) . '. ') . $failure->getMessage();
+					$logMessage = 'Task failed to execute successfully. Class: ' . get_class($this) . ', UID: ' . $this->taskUid . '. ' . $failure->getMessage();
 					$this->scheduler->log($logMessage, 1, $failure->getCode());
 					$failure = serialize($failure);
 				} else {

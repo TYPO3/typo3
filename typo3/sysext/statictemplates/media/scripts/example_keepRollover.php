@@ -48,9 +48,9 @@ function user_keepRolloverAtOnClick($I, $conf)
 	// on mouse over
 	if (!$I['linkHREF']['TARGET']) {
 		$I['linkHREF']['HREF'] = '#';
-		$I['linkHREF']['onClick'] .= ((((('ARO_setLocation' . $conf['setLocation']) . '(') . $itemRow['uid']) . ',\'') . $I['theName']) . '\'); return false;';
+		$I['linkHREF']['onClick'] .= 'ARO_setLocation' . $conf['setLocation'] . '(' . $itemRow['uid'] . ',\'' . $I['theName'] . '\'); return false;';
 	} else {
-		$I['linkHREF']['onClick'] .= (('ARO_setActiveImg' . '(\'') . $I['theName']) . '\');';
+		$I['linkHREF']['onClick'] .= 'ARO_setActiveImg' . '(\'' . $I['theName'] . '\');';
 	}
 	if ($I['linkHREF']['onMouseover']) {
 		$I['linkHREF']['onMouseover'] = 'ARO_' . $I['linkHREF']['onMouseover'];
@@ -59,11 +59,11 @@ function user_keepRolloverAtOnClick($I, $conf)
 		$I['linkHREF']['onMouseout'] = 'ARO_' . $I['linkHREF']['onMouseout'];
 	}
 	if ($conf['parentObj']->isActive($itemRow['uid'])) {
-		$conf['parentObj']->WMextraScript .= ((('
+		$conf['parentObj']->WMextraScript .= '
 <script type="text/javascript">
 	/*<![CDATA[*/
- ARO_Image = "' . $I['theName']) . '";
- ') . $I['linkHREF']['onMouseover']) . '
+ ARO_Image = "' . $I['theName'] . '";
+ ' . $I['linkHREF']['onMouseover'] . '
 	/*]]>*/
 </script>
 		';
@@ -80,7 +80,7 @@ function user_keepRolloverAtOnClick($I, $conf)
 	// Debug:
 	if ($conf['debug']) {
 		// Outputting for debug example:
-		echo ('ITEM: <h2>' . htmlspecialchars((($itemRow['uid'] . ': ') . $itemRow['title']))) . '</h2>';
+		echo 'ITEM: <h2>' . htmlspecialchars(($itemRow['uid'] . ': ' . $itemRow['title'])) . '</h2>';
 		t3lib_utility_Debug::debug($itemRow);
 		t3lib_utility_Debug::debug($I);
 		echo '<hr />';

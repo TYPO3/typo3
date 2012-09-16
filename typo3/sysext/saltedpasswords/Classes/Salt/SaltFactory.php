@@ -66,7 +66,7 @@ class SaltFactory {
 		// * no instance existing
 		// * a salted hash given to determine salted hashing method from
 		// * a NULL parameter given to reset instance back to default method
-		if ((!is_object(self::$instance) || !empty($saltedHash)) || is_NULL($saltedHash)) {
+		if (!is_object(self::$instance) || !empty($saltedHash) || is_NULL($saltedHash)) {
 			// Determine method by checking the given hash
 			if (!empty($saltedHash)) {
 				$result = self::determineSaltingHashingMethod($saltedHash);

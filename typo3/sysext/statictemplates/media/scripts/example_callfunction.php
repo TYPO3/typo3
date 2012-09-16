@@ -83,7 +83,7 @@ function user_reverseString($content, $conf)
  */
 function user_printTime($content, $conf)
 {
-	return ('<font color="red">Dynamic time: ' . date('H:i:s')) . '</font><br />';
+	return '<font color="red">Dynamic time: ' . date('H:i:s') . '</font><br />';
 }
 /**
  * Example of calling a method in a PHP class from TypoScript
@@ -136,8 +136,8 @@ class user_various {
 	 * @todo Define visibility
 	 */
 	public function listContentRecordsOnPage($content, $conf) {
-		$query = $GLOBALS['TYPO3_DB']->SELECTquery('header', 'tt_content', ('pid=' . intval($GLOBALS['TSFE']->id)) . $this->cObj->enableFields('tt_content'), '', 'sorting' . ($conf['reverseOrder'] ? ' DESC' : ''));
-		$output = ('This is the query: <strong>' . $query) . '</strong><br /><br />';
+		$query = $GLOBALS['TYPO3_DB']->SELECTquery('header', 'tt_content', 'pid=' . intval($GLOBALS['TSFE']->id) . $this->cObj->enableFields('tt_content'), '', 'sorting' . ($conf['reverseOrder'] ? ' DESC' : ''));
+		$output = 'This is the query: <strong>' . $query . '</strong><br /><br />';
 		return $output . $this->selectThem($query);
 	}
 

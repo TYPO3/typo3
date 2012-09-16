@@ -68,7 +68,7 @@ function user_itemArrayProcFuncTest($menuArr, $conf)
 		$teststates = explode(',', 'NO,ACT,IFSUB,CUR,USR,SPC,USERDEF1,USERDEF2');
 		foreach ($menuArr as $k => $v) {
 			$menuArr[$k]['ITEM_STATE'] = $teststates[$c];
-			$menuArr[$k]['title'] .= $teststates[$c] ? (' [' . $teststates[$c]) . ']' : '';
+			$menuArr[$k]['title'] .= $teststates[$c] ? ' [' . $teststates[$c] . ']' : '';
 			$c++;
 		}
 	} else {
@@ -98,7 +98,7 @@ function user_IProcFuncTest($I, $conf)
 {
 	$itemRow = $conf['parentObj']->menuArr[$I['key']];
 	// Setting the document status content to the value of the page title on mouse over
-	$I['linkHREF']['onMouseover'] .= ('extraRollover(\'' . rawurlencode($itemRow['title'])) . '\');';
+	$I['linkHREF']['onMouseover'] .= 'extraRollover(\'' . rawurlencode($itemRow['title']) . '\');';
 	$conf['parentObj']->I = $I;
 	$conf['parentObj']->setATagParts();
 	$I = $conf['parentObj']->I;
@@ -107,7 +107,7 @@ function user_IProcFuncTest($I, $conf)
 	}
 	if ($conf['debug']) {
 		// Outputting for debug example:
-		echo ('ITEM: <h2>' . htmlspecialchars((($itemRow['uid'] . ': ') . $itemRow['title']))) . '</h2>';
+		echo 'ITEM: <h2>' . htmlspecialchars(($itemRow['uid'] . ': ' . $itemRow['title'])) . '</h2>';
 		t3lib_utility_Debug::debug($itemRow);
 		t3lib_utility_Debug::debug($I);
 		echo '<hr />';
