@@ -55,7 +55,7 @@ class UpdateFromTerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\ActionVi
 		$label = 'Update Extension List';
 		$this->tag->setContent($label);
 		$this->tag->addAttribute('class', 'text');
-		return ('<div class="updateFromTer">' . $this->tag->render()) . '<span class="spinner"></span></div>';
+		return '<div class="updateFromTer">' . $this->tag->render() . '<span class="spinner"></span></div>';
 	}
 
 }

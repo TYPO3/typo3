@@ -50,9 +50,9 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 		$installPaths = \TYPO3\CMS\Extensionmanager\Domain\Model\Extension::returnAllowedInstallPaths();
 		$pathSelector = '<ul>';
 		foreach ($installPaths as $installPathType => $installPath) {
-			$pathSelector .= ((((((((((((((('<li>
-				<input type="radio" id="' . $extension->getExtensionKey()) . '-downloadPath-') . $installPathType) . '" name="') . $this->getFieldNamePrefix('downloadPath')) . '[downloadPath]" class="downloadPath" value="') . $installPathType) . '"') . ($installPathType == 'Local' ? 'checked="checked"' : '')) . '/>
-				<label for="') . $extension->getExtensionKey()) . '-downloadPath-') . $installPathType) . '">') . $installPathType) . '</label>
+			$pathSelector .= '<li>
+				<input type="radio" id="' . $extension->getExtensionKey() . '-downloadPath-' . $installPathType . '" name="' . $this->getFieldNamePrefix('downloadPath') . '[downloadPath]" class="downloadPath" value="' . $installPathType . '"' . ($installPathType == 'Local' ? 'checked="checked"' : '') . '/>
+				<label for="' . $extension->getExtensionKey() . '-downloadPath-' . $installPathType . '">' . $installPathType . '</label>
 			</li>';
 		}
 		$pathSelector .= '</ul>';
@@ -67,7 +67,7 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 		$label = '<input type="submit" value="Import and Install" />';
 		$this->tag->setContent($label . $pathSelector);
 		$this->tag->addAttribute('class', 'download');
-		return ((('<div id="' . $extension->getExtensionKey()) . '-downloadFromTer" class="downloadFromTer">') . $this->tag->render()) . '</div>';
+		return '<div id="' . $extension->getExtensionKey() . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';
 	}
 
 }

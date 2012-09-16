@@ -56,7 +56,7 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				$header = $this->dumpHeader();
 				$tableHeader = $this->dumpTableHeader($table, $dbFields[$table], TRUE);
 				$insertStatements = $this->dumpTableContent($table, $dbFields[$table]['fields']);
-				$out .= (((($header . self::MULTI_LINEBREAKS) . $tableHeader) . self::MULTI_LINEBREAKS) . $insertStatements) . self::MULTI_LINEBREAKS;
+				$out .= $header . self::MULTI_LINEBREAKS . $tableHeader . self::MULTI_LINEBREAKS . $insertStatements . self::MULTI_LINEBREAKS;
 			}
 		}
 		return $out;
@@ -68,10 +68,10 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string Table header
 	 */
 	protected function dumpHeader() {
-		return trim(((('
+		return trim('
 # TYPO3 Extension Manager dump 1.1
 #
-# Host: ' . TYPO3_db_host) . '    Database: ') . TYPO3_db) . '
+# Host: ' . TYPO3_db_host . '    Database: ' . TYPO3_db . '
 #--------------------------------------------------------
 ');
 	}
@@ -90,7 +90,7 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		// Create field definitions
 		if (is_array($fieldKeyInfo['fields'])) {
 			foreach ($fieldKeyInfo['fields'] as $fieldN => $data) {
-				$lines[] = (('  ' . $fieldN) . ' ') . $data;
+				$lines[] = '  ' . $fieldN . ' ' . $data;
 			}
 		}
 		// Create index key definitions
@@ -101,13 +101,13 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		// Compile final output:
 		if (count($lines)) {
-			$dump = trim(((((((('
+			$dump = trim('
 #
-# Table structure for table "' . $table) . '"
+# Table structure for table "' . $table . '"
 #
-') . ($dropTableIfExists ? ('DROP TABLE IF EXISTS ' . $table) . ';
-' : '')) . 'CREATE TABLE ') . $table) . ' (
-') . implode((',' . LF), $lines)) . '
+' . ($dropTableIfExists ? 'DROP TABLE IF EXISTS ' . $table . ';
+' : '') . 'CREATE TABLE ' . $table . ' (
+' . implode((',' . LF), $lines) . '
 );');
 		}
 		return $dump;
@@ -135,9 +135,9 @@ class DatabaseUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($result)) {
 			$values = array();
 			foreach ($fieldStructure as $field => $structure) {
-				$values[] = isset($row[$field]) ? ('\'' . str_replace($search, $replace, $row[$field])) . '\'' : 'NULL';
+				$values[] = isset($row[$field]) ? '\'' . str_replace($search, $replace, $row[$field]) . '\'' : 'NULL';
 			}
-			$lines[] = ((('INSERT INTO ' . $table) . ' VALUES (') . implode(', ', $values)) . ');';
+			$lines[] = 'INSERT INTO ' . $table . ' VALUES (' . implode(', ', $values) . ');';
 		}
 		// Free DB result:
 		$GLOBALS['TYPO3_DB']->sql_free_result($result);

@@ -64,14 +64,14 @@ class ExtraPageContextMenuOptions {
 			if ($backRef->editOK) {
 				$LL = $this->includeLL();
 				$localItems[] = 'spacer';
-				$localItems['moreoptions'] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('label', $LL)), $backRef->excludeIcon(''), ('top.loadTopMenu(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript()) . '&cmLevel=1&subname=moreoptions\');return false;', 0, 1);
-				if ((!in_array('hide', $backRef->disabledItems) && is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) && $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']) {
+				$localItems['moreoptions'] = $backRef->linkItem($GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->getLLL('label', $LL)), $backRef->excludeIcon(''), 'top.loadTopMenu(\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript() . '&cmLevel=1&subname=moreoptions\');return false;', 0, 1);
+				if (!in_array('hide', $backRef->disabledItems) && is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']) && $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']) {
 					$localItems['hide'] = $backRef->DB_hideUnhide($table, $backRef->rec, $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']);
 				}
 				if (!in_array('edit_access', $backRef->disabledItems) && is_array($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'])) {
 					$localItems['edit_access'] = $backRef->DB_editAccess($table, $uid);
 				}
-				if ((!in_array('edit_pageproperties', $backRef->disabledItems) && $table == 'pages') && $backRef->editPageIconSet) {
+				if (!in_array('edit_pageproperties', $backRef->disabledItems) && $table == 'pages' && $backRef->editPageIconSet) {
 					$localItems['edit_pageproperties'] = $backRef->DB_editPageProperties($uid);
 				}
 			}
@@ -102,7 +102,7 @@ class ExtraPageContextMenuOptions {
 				if (!in_array('new_wizard', $backRef->disabledItems) && ($table == 'pages' || $table == 'tt_content')) {
 					$localItems['new_wizard'] = $backRef->DB_newWizard($table, $uid, $backRef->rec);
 				}
-				if ((!in_array('perms', $backRef->disabledItems) && $table == 'pages') && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
+				if (!in_array('perms', $backRef->disabledItems) && $table == 'pages' && $GLOBALS['BE_USER']->check('modules', 'web_perm')) {
 					$localItems['perms'] = $backRef->DB_perms($table, $uid, $backRef->rec);
 				}
 				if (!in_array('db_list', $backRef->disabledItems) && $GLOBALS['BE_USER']->check('modules', 'web_list')) {

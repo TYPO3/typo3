@@ -88,7 +88,7 @@ class DownloadUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function download(\TYPO3\CMS\Extensionmanager\Domain\Model\Extension $extension) {
 		$mirrorUrl = $this->repositoryHelper->getMirrors()->getMirrorUrl();
 		$fetchedExtension = $this->terUtility->fetchExtension($extension->getExtensionKey(), $extension->getVersion(), $extension->getMd5hash(), $mirrorUrl);
-		if ((isset($fetchedExtension['extKey']) && !empty($fetchedExtension['extKey'])) && is_string($fetchedExtension['extKey'])) {
+		if (isset($fetchedExtension['extKey']) && !empty($fetchedExtension['extKey']) && is_string($fetchedExtension['extKey'])) {
 			$this->fileHandlingUtility->unpackExtensionFromExtensionDataArray($fetchedExtension, $extension, $this->getDownloadPath());
 		}
 	}

@@ -92,9 +92,9 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		$pageRenderer = $doc->getPageRenderer();
 		$pageRenderer->addCssFile('sysext/extensionmanager/Resources/Public/Contrib/Farbtastic/farbtastic.css');
 		$pageRenderer->addJsFile('sysext/extensionmanager/Resources/Public/Contrib/Farbtastic/farbtastic.js');
-		$pageRenderer->addJsInlineCode('colorpicker', ('
+		$pageRenderer->addJsInlineCode('colorpicker', '
 			jQuery(document).ready(function() {
-				jQuery(".colorPicker").farbtastic("#' . $configuration->getName()) . '");
+				jQuery(".colorPicker").farbtastic("#' . $configuration->getName() . '");
 			});
 		');
 		if ($configuration->getValue() !== NULL) {
@@ -152,11 +152,11 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		$optionValueArray = $configuration->getGeneric();
 		$output = '';
 		foreach ($optionValueArray as $label => $value) {
-			$output .= ('<option value="' . htmlspecialchars($value)) . '"';
+			$output .= '<option value="' . htmlspecialchars($value) . '"';
 			if ($configuration->getValue() == $value) {
 				$output .= ' selected="selected"';
 			}
-			$output .= ('>' . htmlspecialchars($label)) . '</option>';
+			$output .= '>' . htmlspecialchars($label) . '</option>';
 		}
 		$this->tag->setContent($output);
 		return $this->tag->render();
@@ -266,7 +266,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 	 * @return string
 	 */
 	protected function getName(\TYPO3\CMS\Extensionmanager\Domain\Model\ConfigurationItem $configuration) {
-		return ('tx_extensionmanager_tools_extensionmanagerextensionmanager[config][' . $configuration->getName()) . '][value]';
+		return 'tx_extensionmanager_tools_extensionmanagerextensionmanager[config][' . $configuration->getName() . '][value]';
 	}
 
 	/**
@@ -287,7 +287,7 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		if (!in_array($fieldName, $hiddenFieldNames)) {
 			$hiddenFieldNames[] = $fieldName;
 			$this->viewHelperVariableContainer->addOrUpdate('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'renderedHiddenFields', $hiddenFieldNames);
-			return ('<input type="hidden" name="' . htmlspecialchars($fieldName)) . '" value="0" />';
+			return '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="0" />';
 		}
 		return '';
 	}

@@ -54,7 +54,7 @@ class ConfigurationItemRepository {
 	 * @return null|SplObjectStorage
 	 */
 	public function findByExtension(array $extension) {
-		$configRaw = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl((PATH_site . $extension['siteRelPath']) . '/ext_conf_template.txt');
+		$configRaw = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt');
 		$configurationObjectStorage = NULL;
 		if ($configRaw) {
 			$configurationObjectStorage = $this->convertRawConfigurationToObject($configRaw, $extension);

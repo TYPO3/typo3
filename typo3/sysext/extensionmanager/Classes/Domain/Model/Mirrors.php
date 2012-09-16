@@ -70,7 +70,7 @@ class Mirrors extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		if (is_null($mirrorId)) {
 			$this->isRandomSelection = TRUE;
 		} else {
-			if ((is_int($mirrorId) && $mirrorId >= 1) && $mirrorId <= count($this->mirrors)) {
+			if (is_int($mirrorId) && $mirrorId >= 1 && $mirrorId <= count($this->mirrors)) {
 				$this->currentMirror = $mirrorId - 1;
 			}
 		}

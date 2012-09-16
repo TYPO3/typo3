@@ -116,7 +116,7 @@ class ListController extends \TYPO3\CMS\Extensionmanager\Controller\AbstractCont
 		$this->pageRenderer->addJsFile($this->backPath . '../t3lib/js/extjs/notifications.js');
 		$extensions = array();
 		$extensionKey = '';
-		if ((($this->request->hasArgument('allVersions') && $this->request->getArgument('allVersions') == 1) && $this->request->hasArgument('extensionKey')) && is_string($this->request->getArgument('extensionKey'))) {
+		if ($this->request->hasArgument('allVersions') && $this->request->getArgument('allVersions') == 1 && $this->request->hasArgument('extensionKey') && is_string($this->request->getArgument('extensionKey'))) {
 			$extensionKey = $this->request->getArgument('extensionKey');
 			$extensions = $this->extensionRepository->findByExtensionKeyOrderedByVersion($extensionKey);
 		} else {
