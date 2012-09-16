@@ -106,24 +106,24 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 */
 	public function findByTitleOrAuthorNameOrExtensionKey($searchString) {
 		$quotedSearchString = $GLOBALS['TYPO3_DB']->escapeStrForLike($GLOBALS['TYPO3_DB']->quoteStr($searchString, 'tx_extensionmanager_domain_model_extension'), 'tx_extensionmanager_domain_model_extension');
-		$quotedSearchStringForLike = ('\'%' . $quotedSearchString) . '%\'';
-		$quotedSearchString = ('\'' . $quotedSearchString) . '\'';
-		$select = ((((((('tx_extensionmanager_domain_model_extension.*,
+		$quotedSearchStringForLike = '\'%' . $quotedSearchString . '%\'';
+		$quotedSearchString = '\'' . $quotedSearchString . '\'';
+		$select = 'tx_extensionmanager_domain_model_extension.*,
 			(
-				(extension_key like ' . $quotedSearchString) . ') * 8 +
-				(extension_key like ') . $quotedSearchStringForLike) . ') * 4 +
-				(title like ') . $quotedSearchStringForLike) . ') * 2 +
-				(author_name like ') . $quotedSearchStringForLike) . ')
+				(extension_key like ' . $quotedSearchString . ') * 8 +
+				(extension_key like ' . $quotedSearchStringForLike . ') * 4 +
+				(title like ' . $quotedSearchStringForLike . ') * 2 +
+				(author_name like ' . $quotedSearchStringForLike . ')
 			) as position';
 		$from = 'tx_extensionmanager_domain_model_extension';
-		$where = ((((((('(
-					extension_key = ' . $quotedSearchString) . '
+		$where = '(
+					extension_key = ' . $quotedSearchString . '
 					OR
-					extension_key LIKE ') . $quotedSearchStringForLike) . '
+					extension_key LIKE ' . $quotedSearchStringForLike . '
 					OR
-					description LIKE ') . $quotedSearchStringForLike) . '
+					description LIKE ' . $quotedSearchStringForLike . '
 					OR
-					title LIKE ') . $quotedSearchStringForLike) . '
+					title LIKE ' . $quotedSearchStringForLike . '
 				)
 				AND current_version=1
 				HAVING position > 0';
@@ -204,7 +204,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 			$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_extensionmanager_domain_model_extension', 'current_version=1 AND repository=' . intval($repositoryUid), array('current_version' => 0));
 			// Find latest version of extensions and set current_version to 1 for these
 			foreach ($groupedRows as $row) {
-				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_extensionmanager_domain_model_extension', (((('extension_key=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row['extension_key'], 'tx_extensionmanager_domain_model_extension')) . ' AND integer_version=') . intval($row['maxintversion'])) . ' AND repository=') . intval($repositoryUid), array('current_version' => 1));
+				$GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_extensionmanager_domain_model_extension', 'extension_key=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($row['extension_key'], 'tx_extensionmanager_domain_model_extension') . ' AND integer_version=' . intval($row['maxintversion']) . ' AND repository=' . intval($repositoryUid), array('current_version' => 1));
 			}
 		}
 		return $extensions;

@@ -132,7 +132,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function uninstall($extensionKey) {
 		$dependentExtensions = $this->dependencyUtility->findInstalledExtensionsThatDependOnMe($extensionKey);
 		if (is_array($dependentExtensions) && count($dependentExtensions) > 0) {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(((('Cannot deactivate extension ' . $extensionKey) . ' - The extension(s) ') . implode(',', $dependentExtensions)) . ' depend on it', 1342554622);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Cannot deactivate extension ' . $extensionKey . ' - The extension(s) ' . implode(',', $dependentExtensions) . ' depend on it', 1342554622);
 		} else {
 			$this->unloadExtension($extensionKey);
 		}
@@ -190,7 +190,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		if (isset($availableExtensions[$extensionKey])) {
 			$extension = $availableExtensions[$extensionKey];
 		} else {
-			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException(('Extension ' . $extensionKey) . ' is not available', 1342864081);
+			throw new \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException('Extension ' . $extensionKey . ' is not available', 1342864081);
 		}
 		$availableAndInstalledExtensions = $this->listUtility->enrichExtensionsWithEmConfAndTerInformation(array($extensionKey => $extension));
 		return $availableAndInstalledExtensions[$extensionKey];
@@ -204,7 +204,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return void
 	 */
 	public function processDatabaseUpdates($extension) {
-		$extTablesSqlFile = (PATH_site . $extension['siteRelPath']) . '/ext_tables.sql';
+		$extTablesSqlFile = PATH_site . $extension['siteRelPath'] . '/ext_tables.sql';
 		if (file_exists($extTablesSqlFile)) {
 			$extTablesSqlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extTablesSqlFile);
 				// @TODO: This should probably moved to TYPO3\CMS\Core\Cache\Cache->getDatabaseTableDefinitions ?!
@@ -212,7 +212,7 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 			$extTablesSqlContent .= \TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions();
 			$this->updateDbWithExtTablesSql($extTablesSqlContent);
 		}
-		$extTablesStaticSqlFile = (PATH_site . $extension['siteRelPath']) . '/ext_tables_static+adt.sql';
+		$extTablesStaticSqlFile = PATH_site . $extension['siteRelPath'] . '/ext_tables_static+adt.sql';
 		if (file_exists($extTablesStaticSqlFile)) {
 			$extTablesStaticSqlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($extTablesStaticSqlFile);
 			$this->importStaticSql($extTablesStaticSqlContent);

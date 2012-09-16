@@ -70,7 +70,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function tearDown() {
 		foreach ($this->fakedExtensions as $extension => $dummy) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir((PATH_site . 'typo3temp/') . $extension, TRUE);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::rmdir(PATH_site . 'typo3temp/' . $extension, TRUE);
 		}
 	}
 
@@ -82,8 +82,8 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	protected function createFakeExtension() {
 		$extKey = strtolower(uniqid('testing'));
-		$absExtPath = ((PATH_site . 'typo3temp/') . $extKey) . '/';
-		$relPath = ('typo3temp/' . $extKey) . '/';
+		$absExtPath = PATH_site . 'typo3temp/' . $extKey . '/';
+		$relPath = 'typo3temp/' . $extKey . '/';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($absExtPath);
 		$this->fakedExtensions[$extKey] = array(
 			'siteRelPath' => $relPath
@@ -159,7 +159,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function processDatabaseUpdatesCallsUpdateDbWithExtTablesSql() {
 		$extKey = $this->createFakeExtension();
-		$extPath = ((PATH_site . 'typo3temp/') . $extKey) . '/';
+		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$extTablesFile = $extPath . 'ext_tables.sql';
 		$fileContent = 'DUMMY TEXT TO COMPARE';
 		file_put_contents($extTablesFile, $fileContent);
@@ -174,7 +174,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function processDatabaseUpdatesCallsUpdateDbWithExtTablesSqlIncludingCachingFrameworkTables() {
 		$extKey = $this->createFakeExtension();
-		$extPath = ((PATH_site . 'typo3temp/') . $extKey) . '/';
+		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$extTablesFile = $extPath . 'ext_tables.sql';
 		$fileContent = 'DUMMY TEXT TO COMPARE';
 		file_put_contents($extTablesFile, $fileContent);
@@ -189,7 +189,7 @@ class InstallUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function processDatabaseUpdatesCallsImportStaticSql() {
 		$extKey = $this->createFakeExtension();
-		$extPath = ((PATH_site . 'typo3temp/') . $extKey) . '/';
+		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$extTablesFile = $extPath . 'ext_tables_static+adt.sql';
 		$fileContent = 'DUMMY TEXT TO COMPARE';
 		file_put_contents($extTablesFile, $fileContent);

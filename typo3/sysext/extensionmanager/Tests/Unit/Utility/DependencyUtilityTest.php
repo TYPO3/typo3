@@ -25,6 +25,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  ***************************************************************/
 
 /**
+ * Test for DependencyUtility
+ *
  * @package Extension Manager
  * @subpackage Tests
  */
@@ -495,7 +497,7 @@ class DependencyUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$extension2->setExtensionKey('bar');
 		$extension2->setVersion('1.0.42');
 		$className = uniqid('objectStorage');
-		eval((((((('class ' . $className) . ' {') . 'public $extensions = array();') . 'public function getFirst() {') . '  return $this->extensions[0];') . '}') . '}');
+		eval('class ' . $className . ' {' . 'public $extensions = array();' . 'public function getFirst() {' . '  return $this->extensions[0];' . '}' . '}');
 		$myStorage = new $className();
 		$myStorage->extensions[] = $extension1;
 		$myStorage->extensions[] = $extension2;

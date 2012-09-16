@@ -25,6 +25,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Repository;
  ***************************************************************/
 
 /**
+ * Tests for ConfigurationItemRepository
+ *
  * @package Extension Manager
  * @subpackage Tests
  */
@@ -49,7 +51,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	public function getConfigurationItemRepositoryMock() {
 		$className = 'Tx_Extensionmanager_Repository_ConfigurationItemRepositoryMock';
 		if (!class_exists($className, FALSE)) {
-			eval((((((((((((((('class ' . $className) . ' extends TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ConfigurationItemRepository {') . '  public function addMetaInformation(&$configuration) {') . '    return parent::addMetaInformation($configuration);') . '  }') . '  public function extractInformationForConfigFieldsOfTypeUser($configurationOption) {') . '    return parent::extractInformationForConfigFieldsOfTypeUser($configurationOption);') . '  }') . '  public function extractInformationForConfigFieldsOfTypeOptions($configurationOption) {') . '    return parent::extractInformationForConfigFieldsOfTypeOptions($configurationOption);') . '  }') . '  public function mergeWithExistingConfiguration(array $configuration, array $extension) {') . '    return parent::mergeWithExistingConfiguration($configuration, $extension);') . '  }') . '}');
+			eval('class ' . $className . ' extends TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ConfigurationItemRepository {' . '  public function addMetaInformation(&$configuration) {' . '    return parent::addMetaInformation($configuration);' . '  }' . '  public function extractInformationForConfigFieldsOfTypeUser($configurationOption) {' . '    return parent::extractInformationForConfigFieldsOfTypeUser($configurationOption);' . '  }' . '  public function extractInformationForConfigFieldsOfTypeOptions($configurationOption) {' . '    return parent::extractInformationForConfigFieldsOfTypeOptions($configurationOption);' . '  }' . '  public function mergeWithExistingConfiguration(array $configuration, array $extension) {' . '    return parent::mergeWithExistingConfiguration($configuration, $extension);' . '  }' . '}');
 		}
 		return $className;
 	}

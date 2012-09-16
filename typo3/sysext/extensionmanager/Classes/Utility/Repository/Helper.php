@@ -139,7 +139,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
 	 */
 	protected function fetchFile($remoteResource, $localResource) {
-		if (((is_string($remoteResource) && is_string($localResource)) && !empty($remoteResource)) && !empty($localResource)) {
+		if (is_string($remoteResource) && is_string($localResource) && !empty($remoteResource) && !empty($localResource)) {
 			$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($remoteResource, 0, array(TYPO3_user_agent));
 			if ($fileContent !== FALSE) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($localResource, $fileContent) === FALSE) {
@@ -159,7 +159,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @see getRemoteExtListFile()
 	 */
 	public function getLocalExtListFile() {
-		$absFilePath = ((PATH_site . 'typo3temp/') . intval($this->repository->getUid())) . '.extensions.xml.gz';
+		$absFilePath = PATH_site . 'typo3temp/' . intval($this->repository->getUid()) . '.extensions.xml.gz';
 		return $absFilePath;
 	}
 
@@ -172,7 +172,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getRemoteExtListFile() {
 		$mirror = $this->getMirrors(TRUE)->getMirror();
-		$filePath = (('http://' . $mirror['host']) . $mirror['path']) . 'extensions.xml.gz';
+		$filePath = 'http://' . $mirror['host'] . $mirror['path'] . 'extensions.xml.gz';
 		return $filePath;
 	}
 
@@ -185,7 +185,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getRemoteExtHashFile() {
 		$mirror = $this->getMirrors(TRUE)->getMirror();
-		$filePath = (('http://' . $mirror['host']) . $mirror['path']) . 'extensions.md5';
+		$filePath = 'http://' . $mirror['host'] . $mirror['path'] . 'extensions.md5';
 		return $filePath;
 	}
 
@@ -197,7 +197,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @see getRemoteMirrorListFile()
 	 */
 	public function getLocalMirrorListFile() {
-		$absFilePath = ((PATH_site . 'typo3temp/') . intval($this->repository->getUid())) . '.mirrors.xml.gz';
+		$absFilePath = PATH_site . 'typo3temp/' . intval($this->repository->getUid()) . '.mirrors.xml.gz';
 		return $absFilePath;
 	}
 
@@ -226,7 +226,7 @@ class Helper implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getMirrors($forcedUpdateFromRemote = TRUE) {
 		$assignedMirror = $this->repository->getMirrors();
-		if (($forcedUpdateFromRemote || is_null($assignedMirror)) || !is_object($assignedMirror)) {
+		if ($forcedUpdateFromRemote || is_null($assignedMirror) || !is_object($assignedMirror)) {
 			if ($forcedUpdateFromRemote || !is_file($this->getLocalMirrorListFile())) {
 				$this->fetchMirrorListFile();
 			}
