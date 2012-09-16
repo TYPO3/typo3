@@ -30,7 +30,7 @@
  * @author René Fritz <r.fritz@colorcube.de>
  */
 // Set error reporting
-error_reporting(E_ALL & ~((E_STRICT | E_NOTICE) | E_DEPRECATED));
+error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
 require 'init.php';
 // include thumbs script
 require PATH_t3lib . 'thumbs.php';

@@ -160,8 +160,8 @@ class t3lib_formmail {
 						// Convert form data from renderCharset to mail charset (HTML may use entities)
 						$plainTextValue = $val;
 						$HtmlValue = htmlspecialchars($val);
-						$plainTextContent .= ((((strtoupper($key) . ':  ') . $space) . $plainTextValue) . LF) . $space;
-						$htmlContent .= ((('<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><strong>' . strtoupper($key)) . '</strong></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">') . nl2br($HtmlValue)) . '&nbsp;</font></td></tr>';
+						$plainTextContent .= strtoupper($key) . ':  ' . $space . $plainTextValue . LF . $space;
+						$htmlContent .= '<tr><td bgcolor="#eeeeee"><font face="Verdana" size="1"><strong>' . strtoupper($key) . '</strong></font></td><td bgcolor="#eeeeee"><font face="Verdana" size="1">' . nl2br($HtmlValue) . '&nbsp;</font></td></tr>';
 					}
 				}
 			}
@@ -179,10 +179,10 @@ class t3lib_formmail {
 					continue;
 				}
 				if (!is_uploaded_file($_FILES[$variableName]['tmp_name'])) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(((('Possible abuse of t3lib_formmail: temporary file "' . $_FILES[$variableName]['tmp_name']) . '" ("') . $_FILES[$variableName]['name']) . '") was not an uploaded file.', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Possible abuse of t3lib_formmail: temporary file "' . $_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") was not an uploaded file.', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				}
 				if ($_FILES[$variableName]['tmp_name']['error'] !== UPLOAD_ERR_OK) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog((((('Error in uploaded file in t3lib_formmail: temporary file "' . $_FILES[$variableName]['tmp_name']) . '" ("') . $_FILES[$variableName]['name']) . '") Error code: ') . $_FILES[$variableName]['tmp_name']['error'], 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('Error in uploaded file in t3lib_formmail: temporary file "' . $_FILES[$variableName]['tmp_name'] . '" ("' . $_FILES[$variableName]['name'] . '") Error code: ' . $_FILES[$variableName]['tmp_name']['error'], 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				}
 				$theFile = \TYPO3\CMS\Core\Utility\GeneralUtility::upload_to_tempfile($_FILES[$variableName]['tmp_name']);
 				$theName = $_FILES[$variableName]['name'];
@@ -249,10 +249,10 @@ class t3lib_formmail {
 		foreach ($addresses as $address) {
 			if ($address->personal) {
 				// Item with name found ( name <email@example.org> )
-				$addressList[($address->mailbox . '@') . $address->host] = $address->personal;
+				$addressList[$address->mailbox . '@' . $address->host] = $address->personal;
 			} else {
 				// Item without name found ( email@example.org )
-				$addressList[] = ($address->mailbox . '@') . $address->host;
+				$addressList[] = $address->mailbox . '@' . $address->host;
 			}
 		}
 		return $addressList;

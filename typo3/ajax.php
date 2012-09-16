@@ -58,11 +58,11 @@ $ajaxParams = array();
 if (empty($ajaxID)) {
 	$ajaxObj->setError('No valid ajaxID parameter given.');
 } elseif (empty($ajaxScript)) {
-	$ajaxObj->setError(('No backend function registered for ajaxID "' . $ajaxID) . '".');
+	$ajaxObj->setError('No backend function registered for ajaxID "' . $ajaxID . '".');
 } else {
 	$ret = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($ajaxScript, $ajaxParams, $ajaxObj, FALSE, TRUE);
 	if ($ret === FALSE) {
-		$ajaxObj->setError(('Registered backend function for ajaxID "' . $ajaxID) . '" was not found.');
+		$ajaxObj->setError('Registered backend function for ajaxID "' . $ajaxID . '" was not found.');
 	}
 }
 // Outputting the content (and setting the X-JSON-Header)
