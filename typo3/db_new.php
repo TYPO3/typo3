@@ -56,7 +56,7 @@ class localPageTree extends \TYPO3\CMS\Backend\Tree\View\PageTreeView {
 	 * @todo Define visibility
 	 */
 	public function wrapIcon($icon, $row) {
-		return $this->addTagAttributes($icon, (' title="id=' . htmlspecialchars($row['uid'])) . '"');
+		return $this->addTagAttributes($icon, ' title="id=' . htmlspecialchars($row['uid']) . '"');
 	}
 
 	/**
