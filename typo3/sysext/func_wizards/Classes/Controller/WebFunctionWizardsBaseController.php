@@ -92,8 +92,8 @@ class WebFunctionWizardsBaseController extends \TYPO3\CMS\Backend\Module\Abstrac
 	 */
 	public function main() {
 		global $SOBE, $LANG;
-		$menu = ($LANG->getLL('wiz_lWizards', 1) . ': ') . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[wiz]', $this->pObj->MOD_SETTINGS['wiz'], $this->pObj->MOD_MENU['wiz']);
-		$theOutput .= $this->pObj->doc->section('', ('<span class="nobr">' . $menu) . '</span>');
+		$menu = $LANG->getLL('wiz_lWizards', 1) . ': ' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->pObj->id, 'SET[wiz]', $this->pObj->MOD_SETTINGS['wiz'], $this->pObj->MOD_MENU['wiz']);
+		$theOutput .= $this->pObj->doc->section('', '<span class="nobr">' . $menu . '</span>');
 		$content = '';
 		$content .= $theOutput;
 		$content .= $this->pObj->doc->spacer(20);
