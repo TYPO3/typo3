@@ -96,7 +96,7 @@ class Session {
 		// Always call the garbage collector to clean up stale session files
 		ini_set('session.gc_probability', 100);
 		ini_set('session.gc_divisor', 100);
-		ini_set('session.gc_maxlifetime', ($this->expireTimeInMinutes * 2) * 60);
+		ini_set('session.gc_maxlifetime', $this->expireTimeInMinutes * 2 * 60);
 		if (version_compare(phpversion(), '5.2', '<')) {
 			ini_set('session.cookie_httponly', TRUE);
 		}
@@ -136,8 +136,8 @@ class Session {
 			} catch (\RuntimeException $exception) {
 				throw new \RuntimeException('Could not create session folder in typo3temp/. Make sure it is writeable!', 1294587484);
 			}
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($sessionSavePath . '/.htaccess', (('Order deny, allow' . '
-') . 'Deny from all') . '
+			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($sessionSavePath . '/.htaccess', 'Order deny, allow' . '
+' . 'Deny from all' . '
 ');
 			$indexContent = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">';
 			$indexContent .= '<HTML><HEAD<TITLE></TITLE><META http-equiv=Refresh Content="0; Url=../../">';
@@ -210,7 +210,7 @@ class Session {
 		if (!$sessionId) {
 			$sessionId = $this->getSessionId();
 		}
-		return md5(($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] . '|') . $sessionId);
+		return md5($GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword'] . '|' . $sessionId);
 	}
 
 	/**
@@ -296,7 +296,7 @@ class Session {
 	 */
 	private function getSessionFile($id) {
 		$sessionSavePath = $this->getSessionSavePath();
-		return ($sessionSavePath . '/hash_') . $this->getSessionHash($id);
+		return $sessionSavePath . '/hash_' . $this->getSessionHash($id);
 	}
 
 	/**

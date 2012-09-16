@@ -73,7 +73,7 @@ Cleaning XML for FlexForm fields.
 		global $TYPO3_DB;
 		// Initialize result array:
 		$resultArray = array(
-			'message' => (($this->cli_help['name'] . LF) . LF) . $this->cli_help['description'],
+			'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
 			'headers' => array(
 				'dirty' => array('', '', 2)
 			),
@@ -105,7 +105,7 @@ Cleaning XML for FlexForm fields.
 		foreach ($GLOBALS['TCA'][$tableName]['columns'] as $colName => $config) {
 			if ($config['config']['type'] == 'flex') {
 				if ($echoLevel > 2) {
-					echo ((((((LF . '			[cleanflexform:] Field "') . $colName) . '" in ') . $tableName) . ':') . $uid) . ' was a flexform and...';
+					echo LF . '			[cleanflexform:] Field "' . $colName . '" in ' . $tableName . ':' . $uid . ' was a flexform and...';
 				}
 				$recRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordRaw($tableName, 'uid=' . intval($uid));
 				$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
@@ -116,7 +116,7 @@ Cleaning XML for FlexForm fields.
 						if ($echoLevel > 2) {
 							echo ' was DIRTY, needs cleanup!';
 						}
-						$this->cleanFlexForm_dirtyFields[\TYPO3\CMS\Core\Utility\GeneralUtility::shortMd5(((($tableName . ':') . $uid) . ':') . $colName)] = ((($tableName . ':') . $uid) . ':') . $colName;
+						$this->cleanFlexForm_dirtyFields[\TYPO3\CMS\Core\Utility\GeneralUtility::shortMd5($tableName . ':' . $uid . ':' . $colName)] = $tableName . ':' . $uid . ':' . $colName;
 					} else {
 						if ($echoLevel > 2) {
 							echo ' was CLEAN';
@@ -140,7 +140,7 @@ Cleaning XML for FlexForm fields.
 	public function main_autoFix($resultArray) {
 		foreach ($resultArray['dirty'] as $fieldID) {
 			list($table, $uid, $field) = explode(':', $fieldID);
-			echo ('Cleaning XML in "' . $fieldID) . '": ';
+			echo 'Cleaning XML in "' . $fieldID . '": ';
 			if ($bypass = $this->cli_noExecutionCheck($fieldID)) {
 				echo $bypass;
 			} else {
@@ -162,7 +162,7 @@ Cleaning XML for FlexForm fields.
 				$tce->process_datamap();
 				// Return errors if any:
 				if (count($tce->errorLog)) {
-					echo (('	ERROR from "TCEmain":' . LF) . 'TCEmain:') . implode((LF . 'TCEmain:'), $tce->errorLog);
+					echo '	ERROR from "TCEmain":' . LF . 'TCEmain:' . implode((LF . 'TCEmain:'), $tce->errorLog);
 				} else {
 					echo 'DONE';
 				}

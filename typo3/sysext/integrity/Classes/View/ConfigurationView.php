@@ -109,12 +109,12 @@ class ConfigurationView {
 	public function main() {
 		$arrayBrowser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Integrity\\Utility\\ArrayBrowser');
 		$this->content = $this->doc->header($GLOBALS['LANG']->getLL('configuration', TRUE));
-		$this->content .= ((((((('<div id="lowlevel-config">
-						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', TRUE)) . '</label>
-						<input type="text" id="search_field" name="search_field" value="') . htmlspecialchars($search_field)) . '"') . $GLOBALS['TBE_TEMPLATE']->formWidth(20)) . ' />
-						<input type="submit" name="search" id="search" value="') . $GLOBALS['LANG']->getLL('search', TRUE)) . '" />';
-		$this->content .= ((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"') . '<label for="checkRegexsearch">') . $GLOBALS['LANG']->getLL('useRegExp', TRUE)) . '</label>';
-		$this->content .= ((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"') . '<label for="checkFixedLgd">') . $GLOBALS['LANG']->getLL('cropLines', TRUE)) . '</label>
+		$this->content .= '<div id="lowlevel-config">
+						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', TRUE) . '</label>
+						<input type="text" id="search_field" name="search_field" value="' . htmlspecialchars($search_field) . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' />
+						<input type="submit" name="search" id="search" value="' . $GLOBALS['LANG']->getLL('search', TRUE) . '" />';
+		$this->content .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck(0, 'SET[regexsearch]', $this->MOD_SETTINGS['regexsearch'], '', '', 'id="checkRegexsearch"') . '<label for="checkRegexsearch">' . $GLOBALS['LANG']->getLL('useRegExp', TRUE) . '</label>';
+		$this->content .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck(0, 'SET[fixedLgd]', $this->MOD_SETTINGS['fixedLgd'], '', '', 'id="checkFixedLgd"') . '<label for="checkFixedLgd">' . $GLOBALS['LANG']->getLL('cropLines', TRUE) . '</label>
 						</div>';
 		$this->content .= $this->doc->spacer(5);
 		switch ($this->MOD_SETTINGS['function']) {
@@ -197,7 +197,7 @@ class ConfigurationView {
 		}
 		// mask the encryption key to not show it as plaintext in the configuration module
 		if ($theVar == $GLOBALS['TYPO3_CONF_VARS']) {
-			$theVar['SYS']['encryptionKey'] = ('***** (length: ' . strlen($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'])) . ' characters)';
+			$theVar['SYS']['encryptionKey'] = '***** (length: ' . strlen($GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']) . ' characters)';
 		}
 		$tree = $arrayBrowser->tree($theVar, '', '');
 		$label = $this->MOD_MENU['function'][$this->MOD_SETTINGS['function']];
@@ -210,7 +210,7 @@ class ConfigurationView {
 				// change value to $GLOBALS
 				$length = strpos($line, '[');
 				$var = substr($line, 0, $length);
-				$changedLine = (('$GLOBALS[\'' . substr($line, 1, ($length - 1))) . '\']') . substr($line, $length);
+				$changedLine = '$GLOBALS[\'' . substr($line, 1, ($length - 1)) . '\']' . substr($line, $length);
 				// load current extTables.php
 				$extTables = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_typo3conf . TYPO3_extTableDef_script);
 				if ($var === '$TCA') {
@@ -218,42 +218,42 @@ class ConfigurationView {
 					preg_match_all('/\\[\'([^\']+)\'\\]/', $line, $parts);
 					if ($parts[1][1] !== 'ctrl') {
 						// anything else than ctrl section requires to load TCA
-						$loadTCA = ('TYPO3\\CMS\\Core\\Utility\\GeneralUtility::loadTCA(\'' . $parts[1][0]) . '\');';
+						$loadTCA = 'TYPO3\\CMS\\Core\\Utility\\GeneralUtility::loadTCA(\'' . $parts[1][0] . '\');';
 						if (strpos($extTables, $loadTCA) === FALSE) {
 							// check if the loadTCA statement is not already present in the file
-							$changedLine = ($loadTCA . LF) . $changedLine;
+							$changedLine = $loadTCA . LF . $changedLine;
 						}
 					}
 				}
 				// insert line in extTables.php
 				$extTables = preg_replace('/<\\?php|\\?>/is', '', $extTables);
-				$extTables = (((('<?php' . (empty($extTables) ? LF : '')) . $extTables) . $changedLine) . LF) . '?>';
+				$extTables = '<?php' . (empty($extTables) ? LF : '') . $extTables . $changedLine . LF . '?>';
 				$success = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_typo3conf . TYPO3_extTableDef_script, $extTables);
 				if ($success) {
 					// show flash message
-					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', sprintf($GLOBALS['LANG']->getLL('writeMessage', TRUE), TYPO3_extTableDef_script, '<br />', ('<strong>' . nl2br($changedLine)) . '</strong>'), \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
+					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', sprintf($GLOBALS['LANG']->getLL('writeMessage', TRUE), TYPO3_extTableDef_script, '<br />', '<strong>' . nl2br($changedLine) . '</strong>'), \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
 				} else {
 					// Error: show flash message
 					$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', '', sprintf($GLOBALS['LANG']->getLL('writeMessageFailed', TRUE), TYPO3_extTableDef_script), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				}
 				$this->content .= $flashMessage->render();
 			}
-			$this->content .= ((('<div id="lowlevel-config-var">
-				<strong>' . $GLOBALS['LANG']->getLL('variable', TRUE)) . '</strong><br />
-				<input type="text" name="_" value="') . trim(htmlspecialchars($line))) . '" size="120" /><br/>';
+			$this->content .= '<div id="lowlevel-config-var">
+				<strong>' . $GLOBALS['LANG']->getLL('variable', TRUE) . '</strong><br />
+				<input type="text" name="_" value="' . trim(htmlspecialchars($line)) . '" size="120" /><br/>';
 			if (TYPO3_extTableDef_script !== '' && ($this->MOD_SETTINGS['function'] === '1' || $this->MOD_SETTINGS['function'] === '4')) {
 				// write only for $TCA and TBE_STYLES if  TYPO3_extTableDef_script is defined
-				$this->content .= ('<br /><input type="submit" name="writetoexttables" value="' . $GLOBALS['LANG']->getLL('writeValue', TRUE)) . '" /></div>';
+				$this->content .= '<br /><input type="submit" name="writetoexttables" value="' . $GLOBALS['LANG']->getLL('writeValue', TRUE) . '" /></div>';
 			} else {
-				$this->content .= ($GLOBALS['LANG']->getLL('copyPaste', TRUE) . LF) . '</div>';
+				$this->content .= $GLOBALS['LANG']->getLL('copyPaste', TRUE) . LF . '</div>';
 			}
 		}
 		$this->content .= '<br /><table border="0" cellpadding="0" cellspacing="0" class="t3-tree t3-tree-config">';
-		$this->content .= ((('<tr>
-					<th class="t3-row-header t3-tree-config-header">' . $label) . '</th>
+		$this->content .= '<tr>
+					<th class="t3-row-header t3-tree-config-header">' . $label . '</th>
 				</tr>
 				<tr>
-					<td>') . $tree) . '</td>
+					<td>' . $tree . '</td>
 				</tr>
 			</table>
 		';

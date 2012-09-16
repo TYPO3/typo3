@@ -77,7 +77,7 @@ Automatic Repair:
 		global $TYPO3_DB;
 		// Initialize result array:
 		$resultArray = array(
-			'message' => (($this->cli_help['name'] . LF) . LF) . $this->cli_help['description'],
+			'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
 			'headers' => array(
 				'versions' => array('All versions', 'Showing all versions of records found', 0),
 				'versions_published' => array('All published versions', 'This is all records that has been published and can therefore be removed permanently', 1),
@@ -106,7 +106,7 @@ Automatic Repair:
 				$placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid', $table, 't3ver_state=1 AND pid>=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
 				foreach ($placeHolders as $phrec) {
 					if (count(\TYPO3\CMS\Backend\Utility\BackendUtility::selectVersionsOfRecord($table, $phrec['uid'], 'uid')) <= 1) {
-						$resultArray['versions_unused_placeholders'][\TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5(($table . ':') . $phrec['uid'])] = ($table . ':') . $phrec['uid'];
+						$resultArray['versions_unused_placeholders'][\TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5($table . ':' . $phrec['uid'])] = $table . ':' . $phrec['uid'];
 					}
 				}
 			}
@@ -119,29 +119,29 @@ Automatic Repair:
 			if ((int) $cfg['ctrl']['versioningWS'] >= 2) {
 				$placeHolders = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,pid,t3ver_move_id,t3ver_wsid,t3ver_state', $table, 't3ver_state=3 AND pid>=0' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table));
 				foreach ($placeHolders as $phrec) {
-					$shortID = \TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5(($table . ':') . $phrec['uid']);
+					$shortID = \TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5($table . ':' . $phrec['uid']);
 					if ((int) $phrec['t3ver_wsid'] != 0) {
 						$phrecCopy = $phrec;
 						if (\TYPO3\CMS\Backend\Utility\BackendUtility::movePlhOL($table, $phrec)) {
 							if ($wsAlt = \TYPO3\CMS\Backend\Utility\BackendUtility::getWorkspaceVersionOfRecord($phrecCopy['t3ver_wsid'], $table, $phrec['uid'], 'uid,pid,t3ver_state')) {
 								if ($wsAlt['t3ver_state'] != 4) {
-									$resultArray['versions_move_placeholders_bad'][$shortID] = array(($table . ':') . $phrec['uid'], 'State for version was not "4" as it should be!', $phrecCopy);
+									$resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $phrec['uid'], 'State for version was not "4" as it should be!', $phrecCopy);
 								} else {
 									$resultArray['versions_move_placeholders_ok'][$shortID] = array(
-										($table . ':') . $phrec['uid'],
+										$table . ':' . $phrec['uid'],
 										'PLH' => $phrecCopy,
 										'online' => $phrec,
 										'PNT' => $wsAlt
 									);
 								}
 							} else {
-								$resultArray['versions_move_placeholders_bad'][$shortID] = array(($table . ':') . $phrec['uid'], 'No version was found for online record to be moved. A version must exist.', $phrecCopy);
+								$resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $phrec['uid'], 'No version was found for online record to be moved. A version must exist.', $phrecCopy);
 							}
 						} else {
-							$resultArray['versions_move_placeholders_bad'][$shortID] = array(($table . ':') . $phrec['uid'], 'Did not find online record for "t3ver_move_id" value ' . $phrec['t3ver_move_id'], $phrec);
+							$resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $phrec['uid'], 'Did not find online record for "t3ver_move_id" value ' . $phrec['t3ver_move_id'], $phrec);
 						}
 					} else {
-						$resultArray['versions_move_placeholders_bad'][$shortID] = array(($table . ':') . $phrec['uid'], 'Placeholder was not assigned a workspace value in t3ver_wsid.', $phrec);
+						$resultArray['versions_move_placeholders_bad'][$shortID] = array($table . ':' . $phrec['uid'], 'Placeholder was not assigned a workspace value in t3ver_wsid.', $phrec);
 					}
 				}
 			}
@@ -158,10 +158,10 @@ Automatic Repair:
 						if ($phrec['pid'] != -1) {
 
 						} else {
-							$resultArray['versions_move_id_check'][] = array(($table . ':') . $phrec['uid'], 'Record was offline, must not be!', $phrec);
+							$resultArray['versions_move_id_check'][] = array($table . ':' . $phrec['uid'], 'Record was offline, must not be!', $phrec);
 						}
 					} else {
-						$resultArray['versions_move_id_check'][] = array(($table . ':') . $phrec['uid'], (('Record had t3ver_move_id set to "' . $phrec['t3ver_move_id']) . '" while having t3ver_state=') . $phrec['t3ver_state'], $phrec);
+						$resultArray['versions_move_id_check'][] = array($table . ':' . $phrec['uid'], 'Record had t3ver_move_id set to "' . $phrec['t3ver_move_id'] . '" while having t3ver_state=' . $phrec['t3ver_state'], $phrec);
 					}
 				}
 			}
@@ -187,10 +187,10 @@ Automatic Repair:
 		}
 		// Traversing records:
 		foreach ($resultArray[$kk] as $table => $list) {
-			echo (('Flushing published records from table "' . $table) . '":') . LF;
+			echo 'Flushing published records from table "' . $table . '":' . LF;
 			foreach ($list as $uid) {
-				echo ((('	Flushing record "' . $table) . ':') . $uid) . '": ';
-				if ($bypass = $this->cli_noExecutionCheck(($table . ':') . $uid)) {
+				echo '	Flushing record "' . $table . ':' . $uid . '": ';
+				if ($bypass = $this->cli_noExecutionCheck($table . ':' . $uid)) {
 					echo $bypass;
 				} else {
 					// Execute CMD array:
@@ -200,7 +200,7 @@ Automatic Repair:
 					$tce->deleteEl($table, $uid, TRUE, TRUE);
 					// Return errors if any:
 					if (count($tce->errorLog)) {
-						echo (('	ERROR from "TCEmain":' . LF) . 'TCEmain:') . implode((LF . 'TCEmain:'), $tce->errorLog);
+						echo '	ERROR from "TCEmain":' . LF . 'TCEmain:' . implode((LF . 'TCEmain:'), $tce->errorLog);
 					} else {
 						echo 'DONE';
 					}
@@ -210,10 +210,10 @@ Automatic Repair:
 		}
 		// Traverse workspace:
 		foreach ($resultArray['versions_lost_workspace'] as $table => $list) {
-			echo (('Resetting workspace to zero for records from table "' . $table) . '":') . LF;
+			echo 'Resetting workspace to zero for records from table "' . $table . '":' . LF;
 			foreach ($list as $uid) {
-				echo ((('	Flushing record "' . $table) . ':') . $uid) . '": ';
-				if ($bypass = $this->cli_noExecutionCheck(($table . ':') . $uid)) {
+				echo '	Flushing record "' . $table . ':' . $uid . '": ';
+				if ($bypass = $this->cli_noExecutionCheck($table . ':' . $uid)) {
 					echo $bypass;
 				} else {
 					$fields_values = array(
@@ -228,8 +228,8 @@ Automatic Repair:
 		// Delete unused placeholders
 		foreach ($resultArray['versions_unused_placeholders'] as $recID) {
 			list($table, $uid) = explode(':', $recID);
-			echo ((('Deleting unused placeholder (soft) "' . $table) . ':') . $uid) . '": ';
-			if ($bypass = $this->cli_noExecutionCheck(($table . ':') . $uid)) {
+			echo 'Deleting unused placeholder (soft) "' . $table . ':' . $uid . '": ';
+			if ($bypass = $this->cli_noExecutionCheck($table . ':' . $uid)) {
 				echo $bypass;
 			} else {
 				// Execute CMD array:
@@ -239,7 +239,7 @@ Automatic Repair:
 				$tce->deleteAction($table, $uid);
 				// Return errors if any:
 				if (count($tce->errorLog)) {
-					echo (('	ERROR from "TCEmain":' . LF) . 'TCEmain:') . implode((LF . 'TCEmain:'), $tce->errorLog);
+					echo '	ERROR from "TCEmain":' . LF . 'TCEmain:' . implode((LF . 'TCEmain:'), $tce->errorLog);
 				} else {
 					echo 'DONE';
 				}

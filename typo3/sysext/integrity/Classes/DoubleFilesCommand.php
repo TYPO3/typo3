@@ -86,7 +86,7 @@ This will check the system for double files relations.';
 		global $TYPO3_DB;
 		// Initialize result array:
 		$resultArray = array(
-			'message' => (($this->cli_help['name'] . LF) . LF) . $this->cli_help['description'],
+			'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
 			'headers' => array(
 				'multipleReferencesList_count' => array('Number of multi-reference files', '(See below)', 0),
 				'singleReferencesList_count' => array('Number of files correctly referenced', 'The amount of correct 1-1 references', 0),
@@ -103,7 +103,7 @@ This will check the system for double files relations.';
 			'warnings' => array()
 		);
 		// Select all files in the reference table not found by a soft reference parser (thus TCA configured)
-		$recs = $TYPO3_DB->exec_SELECTgetRows('*', 'sys_refindex', (('ref_table=' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex')) . ' AND softref_key=') . $TYPO3_DB->fullQuoteStr('', 'sys_refindex'), '', 'sorting DESC');
+		$recs = $TYPO3_DB->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex') . ' AND softref_key=' . $TYPO3_DB->fullQuoteStr('', 'sys_refindex'), '', 'sorting DESC');
 		// Traverse the files and put into a large table:
 		$tempCount = array();
 		if (is_array($recs)) {
@@ -111,7 +111,7 @@ This will check the system for double files relations.';
 				// Compile info string for location of reference:
 				$infoString = $this->infoStr($rec);
 				// Registering occurencies in directories:
-				$resultArray['dirname_registry'][dirname($rec['ref_string'])][(($rec['tablename'] . ':') . $rec['field'])]++;
+				$resultArray['dirname_registry'][dirname($rec['ref_string'])][($rec['tablename'] . ':' . $rec['field'])]++;
 				// Handle missing file:
 				if (!@is_file((PATH_site . $rec['ref_string']))) {
 					$resultArray['missingFiles'][$rec['ref_string']][$rec['hash']] = $infoString;
@@ -140,7 +140,7 @@ This will check the system for double files relations.';
 		foreach ($resultArray['dirname_registry'] as $dir => $temp) {
 			ksort($resultArray['dirname_registry'][$dir]);
 			if (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($dir, 'uploads/')) {
-				$resultArray['warnings'][\TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5($dir)] = (('Directory "' . $dir) . '" was outside uploads/ which is unusual practice in TYPO3 although not forbidden. Directory used by the following table:field pairs: ') . implode(',', array_keys($temp));
+				$resultArray['warnings'][\TYPO3\CMS\Core\Utility\GeneralUtility::shortmd5($dir)] = 'Directory "' . $dir . '" was outside uploads/ which is unusual practice in TYPO3 although not forbidden. Directory used by the following table:field pairs: ' . implode(',', array_keys($temp));
 			}
 		}
 		return $resultArray;
@@ -158,16 +158,16 @@ This will check the system for double files relations.';
 		foreach ($resultArray['multipleReferencesList'] as $key => $value) {
 			$absFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($key);
 			if ($absFileName && @is_file($absFileName)) {
-				echo ('Processing file: ' . $key) . LF;
+				echo 'Processing file: ' . $key . LF;
 				$c = 0;
 				foreach ($value as $hash => $recReference) {
 					if ($c == 0) {
-						echo (((('	Keeping ' . $key) . ' for record "') . $recReference) . '"') . LF;
+						echo '	Keeping ' . $key . ' for record "' . $recReference . '"' . LF;
 					} else {
 						// Create unique name for file:
 						$fileFunc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\File\\BasicFileUtility');
 						$newName = $fileFunc->getUniqueName(basename($key), dirname($absFileName));
-						echo ((((('	Copying ' . $key) . ' to ') . substr($newName, strlen(PATH_site))) . ' for record "') . $recReference) . '": ';
+						echo '	Copying ' . $key . ' to ' . substr($newName, strlen(PATH_site)) . ' for record "' . $recReference . '": ';
 						if ($bypass = $this->cli_noExecutionCheck($recReference)) {
 							echo $bypass;
 						} else {
@@ -177,13 +177,13 @@ This will check the system for double files relations.';
 								$sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 								$error = $sysRefObj->setReferenceValue($hash, basename($newName));
 								if ($error) {
-									echo ('	ERROR:	TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error) . LF;
+									echo '	ERROR:	TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error . LF;
 									die;
 								} else {
 									echo 'DONE';
 								}
 							} else {
-								echo ('	ERROR: File "' . $newName) . '" was not created!';
+								echo '	ERROR: File "' . $newName . '" was not created!';
 							}
 						}
 						echo LF;
@@ -191,7 +191,7 @@ This will check the system for double files relations.';
 					$c++;
 				}
 			} else {
-				echo ('	ERROR: File "' . $absFileName) . '" was not found!';
+				echo '	ERROR: File "' . $absFileName . '" was not found!';
 			}
 		}
 	}

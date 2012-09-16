@@ -248,7 +248,7 @@ class Installer extends \t3lib_install {
 		}
 		if ($this->sendNoCacheHeaders) {
 			header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-			header(('Last-Modified: ' . gmdate('D, d M Y H:i:s')) . ' GMT');
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 			header('Expires: 0');
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Pragma: no-cache');
@@ -275,7 +275,7 @@ class Installer extends \t3lib_install {
 			// Check for mandatory PHP modules
 			$missingPhpModules = $this->getMissingPhpModules();
 			if (count($missingPhpModules) > 0) {
-				throw new \RuntimeException(('TYPO3 Installation Error: The following PHP module(s) is/are missing: <em>' . implode(', ', $missingPhpModules)) . '</em><br /><br />You need to install and enable these modules first to be able to install TYPO3.', 1294587482);
+				throw new \RuntimeException('TYPO3 Installation Error: The following PHP module(s) is/are missing: <em>' . implode(', ', $missingPhpModules) . '</em><br /><br />You need to install and enable these modules first to be able to install TYPO3.', 1294587482);
 			}
 			// Load saltedpasswords if possible
 			$saltedpasswordsLoaderFile = $this->backPath . 'sysext/saltedpasswords/classes/class.tx_saltedpasswords_autoloader.php';
@@ -332,7 +332,7 @@ class Installer extends \t3lib_install {
 				$this->INSTALL['type'] = 'about';
 			}
 		}
-		$this->action = ((($this->scriptSelf . '?TYPO3_INSTALL[type]=') . $this->INSTALL['type']) . ($this->mode ? '&mode=' . $this->mode : '')) . ($this->step ? '&step=' . $this->step : '');
+		$this->action = $this->scriptSelf . '?TYPO3_INSTALL[type]=' . $this->INSTALL['type'] . ($this->mode ? '&mode=' . $this->mode : '') . ($this->step ? '&step=' . $this->step : '');
 		$this->typo3temp_path = PATH_site . 'typo3temp/';
 		if (!is_dir($this->typo3temp_path) || !is_writeable($this->typo3temp_path)) {
 			$this->outputErrorAndExit('Install Tool needs to write to typo3temp/. Make sure this directory is writeable by your webserver: ' . htmlspecialchars($this->typo3temp_path), 'Fatal error');
@@ -381,8 +381,8 @@ class Installer extends \t3lib_install {
 			// Sending warning email
 			$wEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
 			if ($wEmail) {
-				$subject = ('Install Tool Login at "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '"';
-				$email_body = ((((((('There has been an Install Tool login at TYPO3 site "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '" (') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST')) . ') from remote address "') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR')) . '" (') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_HOST')) . ')';
+				$subject = 'Install Tool Login at "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '"';
+				$email_body = 'There has been an Install Tool login at TYPO3 site "' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '" (' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST') . ') from remote address "' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR') . '" (' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_HOST') . ')';
 				mail($wEmail, $subject, $email_body, 'From: TYPO3 Install Tool WARNING <>');
 			}
 			return TRUE;
@@ -391,10 +391,10 @@ class Installer extends \t3lib_install {
 			if ($p) {
 				$wEmail = $GLOBALS['TYPO3_CONF_VARS']['BE']['warning_email_addr'];
 				if ($wEmail) {
-					$subject = ('Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '\'';
-					$email_body = ((((((((('There has been an Install Tool login attempt at TYPO3 site \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '\' (') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST')) . ').
-The MD5 hash of the last 5 characters of the password tried was \'') . substr(md5($p), -5)) . '\'
-REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR')) . '\' (') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_HOST')) . ')';
+					$subject = 'Install Tool Login ATTEMPT at \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\'';
+					$email_body = 'There has been an Install Tool login attempt at TYPO3 site \'' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . '\' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST') . ').
+The MD5 hash of the last 5 characters of the password tried was \'' . substr(md5($p), -5) . '\'
+REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR') . '\' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_HOST') . ')';
 					mail($wEmail, $subject, $email_body, 'From: TYPO3 Install Tool WARNING <>');
 				}
 			}
@@ -416,7 +416,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		$password = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('password');
 		$redirect_url = $this->redirect_url ? $this->redirect_url : $this->action;
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'LoginForm.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'LoginForm.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Password has been given, but this form is rendered again.
@@ -450,7 +450,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		// Define the markers content
 		$markers = array(
 			'siteName' => 'Site: ' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']),
-			'headTitle' => ('Login to TYPO3 ' . TYPO3_version) . ' Install Tool',
+			'headTitle' => 'Login to TYPO3 ' . TYPO3_version . ' Install Tool',
 			'redirectUrl' => htmlspecialchars($redirect_url),
 			'enterPassword' => 'Password',
 			'login' => 'Login',
@@ -524,15 +524,15 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$this->silent = 0;
 				$this->checkIM = 1;
 				$this->message('About configuration', 'How to configure TYPO3', $this->generallyAboutConfiguration());
-				$isPhpCgi = ((PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi') || PHP_SAPI == 'isapi') || PHP_SAPI == 'cgi-fcgi';
-				$this->message('System Information', 'Your system has the following configuration', ((((('
+				$isPhpCgi = PHP_SAPI == 'fpm-fcgi' || PHP_SAPI == 'cgi' || PHP_SAPI == 'isapi' || PHP_SAPI == 'cgi-fcgi';
+				$this->message('System Information', 'Your system has the following configuration', '
 							<dl id="systemInformation">
 								<dt>OS detected:</dt>
-								<dd>' . (TYPO3_OS == 'WIN' ? 'WIN' : 'UNIX')) . '</dd>
+								<dd>' . (TYPO3_OS == 'WIN' ? 'WIN' : 'UNIX') . '</dd>
 								<dt>CGI detected:</dt>
-								<dd>') . ($isPhpCgi ? 'YES' : 'NO')) . '</dd>
+								<dd>' . ($isPhpCgi ? 'YES' : 'NO') . '</dd>
 								<dt>PATH_thisScript:</dt>
-								<dd>') . PATH_thisScript) . '</dd>
+								<dd>' . PATH_thisScript . '</dd>
 							</dl>
 						');
 				$this->checkTheConfig();
@@ -568,7 +568,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					}
 				} elseif ($this->mode == '123') {
 					if (!$this->fatalError) {
-						$this->message($ext, 'Basic configuration completed', ((('
+						$this->message($ext, 'Basic configuration completed', '
 								<p>
 									You have no fatal errors in your basic
 									configuration.
@@ -581,12 +581,12 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 									<strong>
 										<span style="color:#f00;">Step 2: </span>
 									</strong>
-									<a href="' . $this->scriptSelf) . '?TYPO3_INSTALL[type]=database') . ($this->mode ? '&mode=' . rawurlencode($this->mode) : '')) . '">Click here to install the database.</a>
+									<a href="' . $this->scriptSelf . '?TYPO3_INSTALL[type]=database' . ($this->mode ? '&mode=' . rawurlencode($this->mode) : '') . '">Click here to install the database.</a>
 								</p>
 							', -1, 1);
 					}
 				}
-				$this->message($ext, 'Very Important: Changing Image Processing settings', ('
+				$this->message($ext, 'Very Important: Changing Image Processing settings', '
 						<p>
 							When you change the settings for Image Processing
 							you <em>must</em> take into account
@@ -597,22 +597,22 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 							trying to set up image processing for the very first
 							time.
 							<br />
-							The problem is solved by <a href="' . htmlspecialchars($this->setScriptName('cleanup'))) . '">clearing the typo3temp/ folder</a>.
+							The problem is solved by <a href="' . htmlspecialchars($this->setScriptName('cleanup')) . '">clearing the typo3temp/ folder</a>.
 							Also make sure to clear the cache_pages table.
 						</p>
 					', 1, 1);
-				$this->message($ext, 'Very Important: Changing Encryption Key setting', ('
+				$this->message($ext, 'Very Important: Changing Encryption Key setting', '
 						<p>
 							When you change the setting for the Encryption Key
 							you <em>must</em> take into account that a change to
 							this value might invalidate temporary information,
 							URLs etc.
 							<br />
-							The problem is solved by <a href="' . htmlspecialchars($this->setScriptName('cleanup'))) . '">clearing the typo3temp/ folder</a>.
+							The problem is solved by <a href="' . htmlspecialchars($this->setScriptName('cleanup')) . '">clearing the typo3temp/ folder</a>.
 							Also make sure to clear the cache_pages table.
 						</p>
 					', 1, 1);
-				$this->message($ext, 'Update configuration', ('
+				$this->message($ext, 'Update configuration', '
 						<p>
 							This form updates the configuration with the
 							suggested values you see below. The values are based
@@ -624,7 +624,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 							By this final step you will configure TYPO3 for
 							immediate use provided that you have no fatal errors
 							left above.
-						</p>' . $this->setupGeneral('get_form')) . '
+						</p>' . $this->setupGeneral('get_form') . '
 					', 0, 1);
 				$this->output($this->outputWrapper($this->printAll()));
 				break;
@@ -632,7 +632,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$this->silent = 0;
 				$this->generateConfigForm('get_form');
 				// Get the template file
-				$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'InitExtConfig.html'));
+				$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'InitExtConfig.html'));
 				// Get the template part from the file
 				$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 				// Define the markers content
@@ -828,7 +828,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function stepOutput() {
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'StepOutput.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'StepOutput.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Define the markers content
@@ -838,23 +838,23 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			'skip123' => $this->scriptSelf
 		);
 		$this->checkTheConfig();
-		$error_missingConnect = ((('
+		$error_missingConnect = '
 			<p class="typo3-message message-error">
 				<strong>
 					There is no connection to the database!
 				</strong>
 				<br />
-				(Username: <em>' . htmlspecialchars(TYPO3_db_username)) . '</em>,
-				Host: <em>') . htmlspecialchars(TYPO3_db_host)) . '</em>,
+				(Username: <em>' . htmlspecialchars(TYPO3_db_username) . '</em>,
+				Host: <em>' . htmlspecialchars(TYPO3_db_host) . '</em>,
 				Using Password: YES)
 				<br />
 				Go to Step 1 and enter a valid username and password!
 			</p>
 		';
-		$error_missingDB = ('
+		$error_missingDB = '
 			<p class="typo3-message message-error">
 				<strong>
-					There is no access to the database (<em>' . htmlspecialchars(TYPO3_db)) . '</em>)!
+					There is no access to the database (<em>' . htmlspecialchars(TYPO3_db) . '</em>)!
 				</strong>
 				<br />
 				Go to Step 2 and select a valid database!
@@ -971,7 +971,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					} elseif (is_array($createDatabaseAllowed)) {
 						$llRemark1 = 'Enter a name for your TYPO3 database.';
 						$llDbPatternRemark = 'The name has to match one of these names/patterns (% is a wild card):';
-						$llDbPatternList = ('<li>' . implode('</li><li>', $createDatabaseAllowed)) . '</li>';
+						$llDbPatternList = '<li>' . implode('</li><li>', $createDatabaseAllowed) . '</li>';
 						$usePatternList = TRUE;
 					} else {
 						$formFieldAttributesNew = 'disabled="disabled"';
@@ -1080,8 +1080,8 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 								'messageBasicFinished' => $this->messageBasicFinished(),
 								'llImportant' => 'Important Security Warning',
 								'securityRisk' => $this->securityRisk(),
-								'llSwitchMode' => ('
-										<a href="' . $this->scriptSelf) . '">
+								'llSwitchMode' => '
+										<a href="' . $this->scriptSelf . '">
 											Change the Install Tool password here
 										</a>
 									'
@@ -1163,8 +1163,8 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				if (is_dir($tmp_path)) {
 					$EDIT_path = $tmp_path;
 				} else {
-					$this->errorMessages[] = ('
-						\'' . $tmp_path) . '\' was not directory
+					$this->errorMessages[] = '
+						\'' . $tmp_path . '\' was not directory
 					';
 				}
 			} else {
@@ -1173,13 +1173,13 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				';
 			}
 		}
-		$headCode = ('Edit files in ' . basename($EDIT_path)) . '/';
+		$headCode = 'Edit files in ' . basename($EDIT_path) . '/';
 		$messages = '';
 		if ($this->INSTALL['SAVE_FILE']) {
 			$save_to_file = $this->INSTALL['FILE']['name'];
 			if (@is_file($save_to_file)) {
 				$save_to_file_md5 = md5($save_to_file);
-				if (((isset($this->INSTALL['FILE'][$save_to_file_md5]) && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($save_to_file, $EDIT_path . '')) && substr($save_to_file, -1) != '~') && !strstr($save_to_file, '_bak')) {
+				if (isset($this->INSTALL['FILE'][$save_to_file_md5]) && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($save_to_file, $EDIT_path . '') && substr($save_to_file, -1) != '~' && !strstr($save_to_file, '_bak')) {
 					$this->INSTALL['typo3conf_files'] = $save_to_file;
 					$save_fileContent = $this->INSTALL['FILE'][$save_to_file_md5];
 					if ($this->INSTALL['FILE']['win_to_unix_br']) {
@@ -1191,18 +1191,18 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 							unlink($backupFile);
 						}
 						rename($save_to_file, $backupFile);
-						$messages .= ('
-							Backup written to <strong>' . $backupFile) . '</strong>
+						$messages .= '
+							Backup written to <strong>' . $backupFile . '</strong>
 							<br />
 						';
 					}
 					\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($save_to_file, $save_fileContent);
-					$messages .= ((((('
-						File saved: <strong>' . $save_to_file) . '</strong>
+					$messages .= '
+						File saved: <strong>' . $save_to_file . '</strong>
 						<br />
-						MD5-sum: ') . $this->INSTALL['FILE']['prevMD5']) . ' (prev)
+						MD5-sum: ' . $this->INSTALL['FILE']['prevMD5'] . ' (prev)
 						<br />
-						MD5-sum: ') . md5($save_fileContent)) . ' (new)
+						MD5-sum: ' . md5($save_fileContent) . ' (new)
 						<br />
 					';
 				}
@@ -1210,7 +1210,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		}
 		// Filelist:
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'Typo3ConfEdit.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'Typo3ConfEdit.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Get the subpart for the files
@@ -1229,7 +1229,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			}
 			// Define the markers content for the files subpart
 			$filesMarkers = array(
-				'editUrl' => ((($this->action . '&amp;TYPO3_INSTALL[typo3conf_files]=') . rawurlencode($file)) . ($this->allowFileEditOutsite_typo3conf_dir ? '&amp;TYPO3_INSTALL[FILE][EDIT_path]=' . rawurlencode($this->INSTALL['FILE']['EDIT_path']) : '')) . '#confEditFileList',
+				'editUrl' => $this->action . '&amp;TYPO3_INSTALL[typo3conf_files]=' . rawurlencode($file) . ($this->allowFileEditOutsite_typo3conf_dir ? '&amp;TYPO3_INSTALL[FILE][EDIT_path]=' . rawurlencode($this->INSTALL['FILE']['EDIT_path']) : '') . '#confEditFileList',
 				'fileName' => basename($file),
 				'fileSize' => \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(filesize($file)),
 				'class' => $this->INSTALL['typo3conf_files'] && !strcmp($this->INSTALL['typo3conf_files'], $file) ? 'class="act"' : ''
@@ -1257,7 +1257,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			$fileEditContent = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($fileEditContent, '###ALLOWFILEEDITOUTSIDETYPO3CONFDIR###', $allowFileEditOutsideTypo3ConfDirSubPart);
 			// Define the markers content for subpart to edit the files
 			$fileEditMarkers = array(
-				'messages' => !empty($messages) ? ('<p class="typo3-message message-warning">' . $messages) . '</p>' : '',
+				'messages' => !empty($messages) ? '<p class="typo3-message message-warning">' . $messages . '</p>' : '',
 				'action' => $this->action . '#fileEditHeader',
 				'saveFile' => 'Save file',
 				'close' => 'Close',
@@ -1272,7 +1272,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				'winToUnixBrChecked' => TYPO3_OS == 'WIN' ? '' : 'checked="checked"',
 				'winToUnixBr' => 'Convert Windows linebreaks (13-10) to Unix (10)',
 				'backupChecked' => @is_file($backupFile) ? 'checked="checked"' : '',
-				'backup' => ('Make backup copy (rename to ' . basename($backupFile)) . ')'
+				'backup' => 'Make backup copy (rename to ' . basename($backupFile) . ')'
 			);
 			// Fill the markers in the subpart to edit the files
 			$fileEditContent = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($fileEditContent, $fileEditMarkers, '###|###', TRUE, FALSE);
@@ -1298,7 +1298,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		$fileListContent = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($fileListContent, '###FILES###', implode(LF, $files));
 		// Define the markers content
 		$fileListMarkers = array(
-			'editPath' => ('(' . $EDIT_path) . ')',
+			'editPath' => '(' . $EDIT_path . ')',
 			'deleteTempCachedUrl' => $this->action . '&amp;TYPO3_INSTALL[delTempCached]=1',
 			'deleteTempCached' => 'Delete temp_CACHED* files'
 		);
@@ -1346,11 +1346,11 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			'### DEBUG SYSTEM INFORMATION - START ###'
 		);
 		foreach ($sVar as $kkk => $vvv) {
-			$debugInfo[] = (str_pad(substr($kkk, 0, 20), 20) . ': ') . $vvv;
+			$debugInfo[] = str_pad(substr($kkk, 0, 20), 20) . ': ' . $vvv;
 		}
 		$debugInfo[] = '### DEBUG SYSTEM INFORMATION - END ###';
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'PhpInformation.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'PhpInformation.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Define the markers content
@@ -1386,9 +1386,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		$phpinfo = str_replace('<img border="0"', '<img', $phpinfo);
 		$phpinfo = str_replace('<a name=', '<a id=', $phpinfo);
 		// Add phpinfo() to the message array
-		$this->message($headCode, 'phpinfo()', ('
+		$this->message($headCode, 'phpinfo()', '
 			<div class="phpinfo">
-				' . $phpinfo) . '
+				' . $phpinfo . '
 			</div>
 		');
 		// Output the page
@@ -1447,7 +1447,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			$cachedImageSizesCounter = 'unknown';
 		}
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'CleanUpManager.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'CleanUpManager.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Get the subpart for the 'Clean up' dropdown
@@ -1512,13 +1512,13 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		$tt = $this->INSTALL['typo3temp_delete'];
 		$subdir = $this->INSTALL['typo3temp_subdir'];
 		if (strlen($subdir) && !preg_match('/^[[:alnum:]_]+\\/$/', $subdir)) {
-			die(('subdir "' . $subdir) . '" was not allowed!');
+			die('subdir "' . $subdir . '" was not allowed!');
 		}
 		$action = $this->INSTALL['typo3temp_action'];
 		$d = @dir(($this->typo3temp_path . $subdir));
 		if (is_object($d)) {
 			while ($entry = $d->read()) {
-				$theFile = ($this->typo3temp_path . $subdir) . $entry;
+				$theFile = $this->typo3temp_path . $subdir . $entry;
 				if (@is_file($theFile)) {
 					$ok = 0;
 					$fileCounter++;
@@ -1528,7 +1528,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 								$ok = 1;
 							}
 						} else {
-							if (fileatime($theFile) < $GLOBALS['EXEC_TIME'] - ((intval($tmap[$tt]) * 60) * 60) * 24) {
+							if (fileatime($theFile) < $GLOBALS['EXEC_TIME'] - intval($tmap[$tt]) * 60 * 60 * 24) {
 								$ok = 1;
 							}
 						}
@@ -1538,7 +1538,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					if ($ok) {
 						$hashPart = substr(basename($theFile), -14, 10);
 						// This is a kind of check that the file being deleted has a 10 char hash in it
-						if (((!preg_match('/[^a-f0-9]/', $hashPart) || substr($theFile, -6) === '.cache') || substr($theFile, -4) === '.tbl') || substr(basename($theFile), 0, 8) === 'install_') {
+						if (!preg_match('/[^a-f0-9]/', $hashPart) || substr($theFile, -6) === '.cache' || substr($theFile, -4) === '.tbl' || substr(basename($theFile), 0, 8) === 'install_') {
 							if ($action && $deleteCounter < $action) {
 								$deleteCounter++;
 								unlink($theFile);
@@ -1557,8 +1557,8 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		if (is_object($d)) {
 			while ($entry = $d->read()) {
 				$theFile = $entry;
-				if ((@is_dir(($this->typo3temp_path . $theFile)) && $theFile != '..') && $theFile != '.') {
-					$subdirRegistry[$theFile . '/'] = (($theFile . '/ (Files: ') . count(\TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir(($this->typo3temp_path . $theFile)))) . ')';
+				if (@is_dir(($this->typo3temp_path . $theFile)) && $theFile != '..' && $theFile != '.') {
+					$subdirRegistry[$theFile . '/'] = $theFile . '/ (Files: ' . count(\TYPO3\CMS\Core\Utility\GeneralUtility::getFilesInDir(($this->typo3temp_path . $theFile))) . ')';
 				}
 			}
 		}
@@ -1578,7 +1578,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			'1000' => 'Delete 1000'
 		);
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'Typo3TempManager.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'Typo3TempManager.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Get the subpart for 'Delete files by condition' dropdown
@@ -1632,7 +1632,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			'numberDeleted' => 'Number deleted:',
 			'temporary' => $fileCounter - $deleteCounter,
 			'matching' => $criteriaMatch,
-			'deleteType' => ('<span>' . htmlspecialchars($deleteType[$tt])) . '</span>',
+			'deleteType' => '<span>' . htmlspecialchars($deleteType[$tt]) . '</span>',
 			'deleted' => $deleteCounter,
 			'deleteCondition' => 'Delete files by condition',
 			'numberFiles' => 'Number of files at a time:',
@@ -1672,19 +1672,19 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		switch ($type) {
 		case 'get_form':
 			// Get the template file
-			$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'GenerateConfigForm.html'));
+			$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'GenerateConfigForm.html'));
 			// Get the template part from the file
 			$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 			foreach ($GLOBALS['TYPO3_CONF_VARS'] as $k => $va) {
-				$ext = ('[' . $k) . ']';
-				$this->message($ext, ('$TYPO3_CONF_VARS[\'' . $k) . '\']', $commentArr[0][$k], 1);
+				$ext = '[' . $k . ']';
+				$this->message($ext, '$TYPO3_CONF_VARS[\'' . $k . '\']', $commentArr[0][$k], 1);
 				foreach ($va as $vk => $value) {
 					if (isset($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$k][$vk])) {
 						// Don't allow editing stuff which is added by extensions
 						// Make sure we fix potentially duplicated entries from older setups
 						$potentialValue = str_replace(array('\'.chr(10).\'', '\' . LF . \''), array(LF, LF), $value);
-						while (preg_match(('/' . preg_quote($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$k][$vk], '/')) . '$/', '', $potentialValue)) {
-							$potentialValue = preg_replace(('/' . preg_quote($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$k][$vk], '/')) . '$/', '', $potentialValue);
+						while (preg_match('/' . preg_quote($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$k][$vk], '/') . '$/', '', $potentialValue)) {
+							$potentialValue = preg_replace('/' . preg_quote($GLOBALS['TYPO3_CONF_VARS_extensionAdded'][$k][$vk], '/') . '$/', '', $potentialValue);
 						}
 						$value = $potentialValue;
 					}
@@ -1694,15 +1694,15 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					$description = trim($commentArr[1][$k][$vk]);
 					$isTextarea = preg_match('/^(<.*?>)?string \\(textarea\\)/i', $description) ? TRUE : FALSE;
 					$doNotRender = preg_match('/^(<.*?>)?string \\(exclude\\)/i', $description) ? TRUE : FALSE;
-					if ((!is_array($value) && !$doNotRender) && ($this->checkForBadString($value) || $isTextarea)) {
-						$k2 = ('[' . $vk) . ']';
+					if (!is_array($value) && !$doNotRender && ($this->checkForBadString($value) || $isTextarea)) {
+						$k2 = '[' . $vk . ']';
 						if ($isTextarea) {
 							// Get the subpart for a textarea
 							$textAreaSubpart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###TEXTAREA###');
 							// Define the markers content
 							$textAreaMarkers = array(
-								'id' => ($k . '-') . $vk,
-								'name' => ((('TYPO3_INSTALL[extConfig][' . $k) . '][') . $vk) . ']',
+								'id' => $k . '-' . $vk,
+								'name' => 'TYPO3_INSTALL[extConfig][' . $k . '][' . $vk . ']',
 								'value' => htmlspecialchars(str_replace(array('\'.chr(10).\'', '\' . LF . \''), array(LF, LF), $value))
 							);
 							// Fill the markers in the subpart
@@ -1712,8 +1712,8 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 							$booleanSubpart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###BOOLEAN###');
 							// Define the markers content
 							$booleanMarkers = array(
-								'id' => ($k . '-') . $vk,
-								'name' => ((('TYPO3_INSTALL[extConfig][' . $k) . '][') . $vk) . ']',
+								'id' => $k . '-' . $vk,
+								'name' => 'TYPO3_INSTALL[extConfig][' . $k . '][' . $vk . ']',
 								'value' => $value && strcmp($value, '0') ? $value : 1,
 								'checked' => $value ? 'checked="checked"' : ''
 							);
@@ -1724,8 +1724,8 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 							$textLineSubpart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###TEXTLINE###');
 							// Define the markers content
 							$textLineMarkers = array(
-								'id' => ($k . '-') . $vk,
-								'name' => ((('TYPO3_INSTALL[extConfig][' . $k) . '][') . $vk) . ']',
+								'id' => $k . '-' . $vk,
+								'name' => 'TYPO3_INSTALL[extConfig][' . $k . '][' . $vk . ']',
 								'value' => htmlspecialchars($value)
 							);
 							// Fill the markers in the subpart
@@ -1740,7 +1740,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 						// Define the markers content
 						$markers = array(
 							'description' => $description,
-							'key' => ((('[' . $k) . '][') . $vk) . ']',
+							'key' => '[' . $k . '][' . $vk . ']',
 							'label' => htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($value, 40))
 						);
 						// Fill the markers
@@ -1796,7 +1796,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 									}
 								}
 								if ($doit && strcmp($GLOBALS['TYPO3_CONF_VARS'][$k][$vk], $value)) {
-									$configurationPathValuePairs[((((('"' . $k) . '"') . '/') . '"') . $vk) . '"'] = $value;
+									$configurationPathValuePairs['"' . $k . '"' . '/' . '"' . $vk . '"'] = $value;
 								}
 							}
 						}
@@ -1866,9 +1866,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		// Includepath
 		$incPaths = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(TYPO3_OS == 'WIN' ? ';' : ':', ini_get('include_path'));
 		if (!in_array('.', $incPaths)) {
-			$this->message($ext, 'Current directory (./) is not in include path!', ('
+			$this->message($ext, 'Current directory (./) is not in include path!', '
 				<p>
-					<em>include_path=' . ini_get('include_path')) . '</em>
+					<em>include_path=' . ini_get('include_path') . '</em>
 					<br />
 					Normally the current path, \'.\', is included in the
 					include_path of PHP. Although TYPO3 does not rely on this,
@@ -1883,9 +1883,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		// File uploads
 		// *****************
 		if (!ini_get('file_uploads')) {
-			$this->message($ext, 'File uploads not allowed', ('
+			$this->message($ext, 'File uploads not allowed', '
 				<p>
-					<em>file_uploads=' . ini_get('file_uploads')) . '</em>
+					<em>file_uploads=' . ini_get('file_uploads') . '</em>
 					<br />
 					TYPO3 uses the ability to upload files from the browser in
 					various cases.
@@ -1908,10 +1908,10 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		}
 		$upload_max_filesize = \TYPO3\CMS\Core\Utility\GeneralUtility::getBytesFromSizeMeasurement(ini_get('upload_max_filesize'));
 		$post_max_size = \TYPO3\CMS\Core\Utility\GeneralUtility::getBytesFromSizeMeasurement(ini_get('post_max_size'));
-		if ($upload_max_filesize < (1024 * 1024) * 10) {
-			$this->message($ext, 'Maximum upload filesize too small?', ('
+		if ($upload_max_filesize < 1024 * 1024 * 10) {
+			$this->message($ext, 'Maximum upload filesize too small?', '
 				<p>
-					<em>upload_max_filesize=' . ini_get('upload_max_filesize')) . '</em>
+					<em>upload_max_filesize=' . ini_get('upload_max_filesize') . '</em>
 					<br />
 					By default TYPO3 supports uploading, copying and moving
 					files of sizes up to 10MB (You can alter the TYPO3 defaults
@@ -1928,14 +1928,14 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			', 1);
 		}
 		if ($upload_max_filesize > $post_max_size) {
-			$this->message($ext, 'Maximum size for POST requests is smaller than max. upload filesize', ((((('
+			$this->message($ext, 'Maximum size for POST requests is smaller than max. upload filesize', '
 				<p>
-					<em>upload_max_filesize=' . ini_get('upload_max_filesize')) . '
-					, post_max_size=') . ini_get('post_max_size')) . '</em>
+					<em>upload_max_filesize=' . ini_get('upload_max_filesize') . '
+					, post_max_size=' . ini_get('post_max_size') . '</em>
 					<br />
 					You have defined a maximum size for file uploads which
 					exceeds the allowed size for POST requests. Therefore the
-					file uploads can not be larger than ') . ini_get('post_max_size')) . '
+					file uploads can not be larger than ' . ini_get('post_max_size') . '
 				</p>
 			', 1);
 		}
@@ -1944,42 +1944,42 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		// *****************
 		$memory_limit_value = \TYPO3\CMS\Core\Utility\GeneralUtility::getBytesFromSizeMeasurement(ini_get('memory_limit'));
 		if ($memory_limit_value <= 0) {
-			$this->message($ext, 'Unlimited memory limit!', ('<p>Your webserver is configured to not limit PHP memory usage at all. This is a risk
+			$this->message($ext, 'Unlimited memory limit!', '<p>Your webserver is configured to not limit PHP memory usage at all. This is a risk
 				and should be avoided in production setup. In general it\'s best practice to limit this
 				in the configuration of your webserver. To be safe, ask the system administrator of the
-				webserver to raise the limit to something over ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT) . '.</p>', 2);
+				webserver to raise the limit to something over ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . '.</p>', 2);
 		} elseif ($memory_limit_value < \TYPO3\CMS\Core\Utility\GeneralUtility::getBytesFromSizeMeasurement(TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT)) {
-			$this->message($ext, 'Memory limit below ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT, ((((('
+			$this->message($ext, 'Memory limit below ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT, '
 				<p>
-					<em>memory_limit=' . ini_get('memory_limit')) . '</em>
+					<em>memory_limit=' . ini_get('memory_limit') . '</em>
 					<br />
 					Your system is configured to enforce a memory limit of PHP
-					scripts lower than ') . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT) . '.
+					scripts lower than ' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . '.
 					The Extension Manager needs to include more PHP-classes than
 					will fit into this memory space. There is nothing else to do
 					than raise the limit. To be safe, ask the system
 					administrator of the webserver to raise the limit to over
-					') . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT) . '.
+					' . TYPO3_REQUIREMENTS_MINIMUM_PHP_MEMORY_LIMIT . '.
 				</p>
 			', 3);
 		} else {
 			$this->message($ext, 'Memory limit: ' . ini_get('memory_limit'), '', -1);
 		}
 		if (ini_get('max_execution_time') < 30) {
-			$this->message($ext, 'Maximum execution time below 30 seconds', ('
+			$this->message($ext, 'Maximum execution time below 30 seconds', '
 				<p>
-					<em>max_execution_time=' . ini_get('max_execution_time')) . '</em>
+					<em>max_execution_time=' . ini_get('max_execution_time') . '</em>
 					<br />
 					May impose problems if too low.
 				</p>
 			', 1);
 		} else {
-			$this->message($ext, ('Maximum execution time: ' . ini_get('max_execution_time')) . ' seconds', '', -1);
+			$this->message($ext, 'Maximum execution time: ' . ini_get('max_execution_time') . ' seconds', '', -1);
 		}
 		if (ini_get('disable_functions')) {
-			$this->message($ext, 'Functions disabled!', ('
+			$this->message($ext, 'Functions disabled!', '
 				<p>
-					<em>disable_functions=' . ini_get('disable_functions')) . '</em>
+					<em>disable_functions=' . ini_get('disable_functions') . '</em>
 					<br />
 					The above list of functions are disabled. If TYPO3 use any
 					of these there might be trouble.
@@ -2005,7 +2005,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			} else {
 				$smtp_addr = $smtp;
 			}
-			if ((!$smtp || $bad_smtp) || !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger(ini_get('smtp_port'))) {
+			if (!$smtp || $bad_smtp || !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger(ini_get('smtp_port'))) {
 				$this->message($ext, 'Mail configuration is not set correctly', '
 					<p>
 						Mail configuration is not set
@@ -2016,49 +2016,49 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				', 2);
 			} else {
 				if (($smtp_addr == '127.0.0.1' || $smtp_addr == '::1') && ($_SERVER['SERVER_ADDR'] == '127.0.0.1' || $_SERVER['SERVER_ADDR'] == '::1')) {
-					$this->message($ext, 'Mail is configured (potential problem exists!)', ((((('
+					$this->message($ext, 'Mail is configured (potential problem exists!)', '
 						<p>
-							<em>SMTP=' . $smtp) . '</em> - <strong>Note:</strong>
+							<em>SMTP=' . $smtp . '</em> - <strong>Note:</strong>
 							this server! Are you sure it runs SMTP server?
 							<br />
-							<em>smtp_port=') . ini_get('smtp_port')) . '</em>
-						</p>') . $this->check_mail('get_form')) . '
+							<em>smtp_port=' . ini_get('smtp_port') . '</em>
+						</p>' . $this->check_mail('get_form') . '
 					', 1);
 				} else {
-					$this->message($ext, 'Mail is configured', ((((('
+					$this->message($ext, 'Mail is configured', '
 						<p>
-							<em>SMTP=' . $smtp) . '</em>
+							<em>SMTP=' . $smtp . '</em>
 							<br />
-							<em>smtp_port=') . ini_get('smtp_port')) . '</em>
-						</p>') . $this->check_mail('get_form')) . '
+							<em>smtp_port=' . ini_get('smtp_port') . '</em>
+						</p>' . $this->check_mail('get_form') . '
 					', -1);
 				}
 			}
 		} elseif (!ini_get('sendmail_path')) {
-			$this->message($ext, 'Sendmail path not defined!', ('
+			$this->message($ext, 'Sendmail path not defined!', '
 				<p>
 					This may be critical to TYPO3\'s use of the mail() function.
 					Please be sure that the mail() function in your
 					php-installation works!
-				</p>' . $this->check_mail('get_form')) . '
+				</p>' . $this->check_mail('get_form') . '
 			', 1);
 		} else {
 			list($prg) = explode(' ', ini_get('sendmail_path'));
 			if (!@is_executable($prg)) {
-				$this->message($ext, 'Sendmail program not found or not executable?', ((('
+				$this->message($ext, 'Sendmail program not found or not executable?', '
 					<p>
-						<em>sendmail_path=' . ini_get('sendmail_path')) . '</em>
+						<em>sendmail_path=' . ini_get('sendmail_path') . '</em>
 						<br />
 						This may be critical to TYPO3\'s use of the mail()
 						function. Please be sure that the mail() function in
 						your php-installation works!
-					</p>') . $this->check_mail('get_form')) . '
+					</p>' . $this->check_mail('get_form') . '
 				', 1);
 			} else {
-				$this->message($ext, 'Sendmail OK', ((('
+				$this->message($ext, 'Sendmail OK', '
 					<p>
-						<em>sendmail_path=' . ini_get('sendmail_path')) . '</em>
-					</p>') . $this->check_mail('get_form')) . '
+						<em>sendmail_path=' . ini_get('sendmail_path') . '</em>
+					</p>' . $this->check_mail('get_form') . '
 				', -1);
 			}
 		}
@@ -2066,9 +2066,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		// Safe mode related
 		// *****************
 		if (\TYPO3\CMS\Core\Utility\PhpOptionsUtility::isSafeModeEnabled()) {
-			$this->message($ext, 'Safe mode turned on', ((('
+			$this->message($ext, 'Safe mode turned on', '
 				<p>
-					<em>safe_mode=' . ini_get('safe_mode')) . '</em>
+					<em>safe_mode=' . ini_get('safe_mode') . '</em>
 					<br />
 					In safe_mode PHP is restricted in several ways. This is a
 					good thing because it adds protection to your (and others)
@@ -2090,7 +2090,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					upload folders are owned by the same user.
 				</p>
 				<p>
-					<em>safe_mode_exec_dir=') . ini_get('safe_mode_exec_dir')) . '</em>
+					<em>safe_mode_exec_dir=' . ini_get('safe_mode_exec_dir') . '</em>
 					<br />
 					If the ImageMagick utilities are located in this directory,
 					everything is fine. Below on this page, you can see if
@@ -2130,9 +2130,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				</p>
 			', 2);
 			if (ini_get('doc_root')) {
-				$this->message($ext, 'doc_root set', ('
+				$this->message($ext, 'doc_root set', '
 					<p>
-						<em>doc_root=' . ini_get('doc_root')) . '</em>
+						<em>doc_root=' . ini_get('doc_root') . '</em>
 						<br />
 						PHP cannot execute scripts outside this directory. If
 						that is a problem is please correct it.
@@ -2144,9 +2144,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			$this->message($ext, 'safe_mode: off', '', -1);
 		}
 		if (\TYPO3\CMS\Core\Utility\PhpOptionsUtility::isSqlSafeModeEnabled()) {
-			$this->message($ext, 'sql.safe_mode is enabled', ((('
+			$this->message($ext, 'sql.safe_mode is enabled', '
 				<p>
-					<em>sql.safe_mode=' . ini_get('sql.safe_mode')) . '</em>
+					<em>sql.safe_mode=' . ini_get('sql.safe_mode') . '</em>
 					<br />
 					This means that you can only connect to the database with a
 					username corresponding to the user of the webserver process
@@ -2155,7 +2155,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					http://www.wrox.com/Consumer/Store/Books/2963/29632002.htm</a>
 					<br />
 					The owner of the current file is:
-					<strong>') . get_current_user()) . '</strong>
+					<strong>' . get_current_user() . '</strong>
 				</p>
 			', 1);
 			$this->config_array['sql.safe_mode_user'] = get_current_user();
@@ -2163,9 +2163,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			$this->message($ext, 'sql.safe_mode: off', '', -1);
 		}
 		if (ini_get('open_basedir')) {
-			$this->message($ext, 'open_basedir set', ('
+			$this->message($ext, 'open_basedir set', '
 				<p>
-					<em>open_basedir=' . ini_get('open_basedir')) . '</em>
+					<em>open_basedir=' . ini_get('open_basedir') . '</em>
 					<br />
 					This restricts TYPO3 to open and include files only in this
 					path. Please make sure that this does not prevent TYPO3 from
@@ -2266,7 +2266,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					</p>
 				';
 			// Get the template file
-			$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'CheckMail.html'));
+			$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'CheckMail.html'));
 			// Get the template part from the file
 			$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 			if (!empty($this->mailMessage)) {
@@ -2386,9 +2386,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					</p>
 				', 2);
 			} else {
-				$this->message($ext, ('FreeType quick-test (' . ($this->isGIF() ? 'as GIF' : 'as PNG')) . ')', ('
+				$this->message($ext, 'FreeType quick-test (' . ($this->isGIF() ? 'as GIF' : 'as PNG') . ')', '
 					<p>
-						<img src="' . htmlspecialchars((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '&testingTrueTypeSupport=1'))) . '" alt="" />
+						<img src="' . htmlspecialchars((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '&testingTrueTypeSupport=1')) . '" alt="" />
 						<br />
 						(If the text is exceeding the image borders you are
 						using Freetype 2 and need to set
@@ -2466,14 +2466,14 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			if (!@is_dir((PATH_site . $relpath))) {
 				if ($descr[1]) {
 					// required...
-					$this->message($ext, $relpath . ' directory does not exist and could not be created', (((((('
+					$this->message($ext, $relpath . ' directory does not exist and could not be created', '
 						<p>
-							<em>Full path: ' . PATH_site) . $relpath) . '</em>
+							<em>Full path: ' . PATH_site . $relpath . '</em>
 							<br />
-							') . $general_message) . '
+							' . $general_message . '
 						</p>
 						<p>
-							This error should not occur as ') . $relpath) . ' must
+							This error should not occur as ' . $relpath . ' must
 							always be accessible in the root of a TYPO3 website.
 						</p>
 					', 3);
@@ -2483,19 +2483,19 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					} else {
 						$msg = 'This directory does not necessarily have to exist and if it does it can be writable or not.';
 					}
-					$this->message($ext, $relpath . ' directory does not exist', (((((('
+					$this->message($ext, $relpath . ' directory does not exist', '
 						<p>
-							<em>Full path: ' . PATH_site) . $relpath) . '</em>
+							<em>Full path: ' . PATH_site . $relpath . '</em>
 							<br />
-							') . $general_message) . '
+							' . $general_message . '
 						</p>
 						<p>
-							') . $msg) . '
+							' . $msg . '
 						</p>
 					', 2);
 				}
 			} else {
-				$file = (PATH_site . $relpath) . $uniqueName;
+				$file = PATH_site . $relpath . $uniqueName;
 				@touch($file);
 				if (@is_file($file)) {
 					unlink($file);
@@ -2506,21 +2506,21 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				} else {
 					$severity = $descr[1] == 2 || $descr[1] == 0 ? 3 : 2;
 					if ($descr[1] == 0 || $descr[1] == 2) {
-						$msg = ('The directory ' . $relpath) . ' must be writable!';
+						$msg = 'The directory ' . $relpath . ' must be writable!';
 					} elseif ($descr[1] == -1 || $descr[1] == 1) {
-						$msg = ('The directory ' . $relpath) . ' does not necessarily have to be writable.';
+						$msg = 'The directory ' . $relpath . ' does not necessarily have to be writable.';
 					}
-					$this->message($ext, $relpath . ' directory not writable', ((((('
+					$this->message($ext, $relpath . ' directory not writable', '
 						<p>
-							<em>Full path: ' . $file) . '</em>
+							<em>Full path: ' . $file . '</em>
 							<br />
-							') . $general_message) . '
+							' . $general_message . '
 						</p>
 						<p>
 							Tried to write this file (with touch()) but didn\'t
 							succeed.
 							<br />
-							') . $msg) . '
+							' . $msg . '
 						</p>
 					', $severity);
 				}
@@ -2541,7 +2541,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		$ext = 'Check Image Magick';
 		$this->message($ext);
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'CheckImageMagick.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'CheckImageMagick.html'));
 		$paths = array_unique($paths);
 		$programs = explode(',', 'gm,convert,combine,composite,identify');
 		$isExt = TYPO3_OS == 'WIN' ? '.exe' : '';
@@ -2551,7 +2551,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$v .= '/';
 			}
 			foreach ($programs as $filename) {
-				if (ini_get('open_basedir') || file_exists($v) && @is_file((($v . $filename) . $isExt))) {
+				if (ini_get('open_basedir') || file_exists($v) && @is_file(($v . $filename . $isExt))) {
 					$version = $this->_checkImageMagick_getVersion($filename, $v);
 					if ($version > 0) {
 						// Assume GraphicsMagick
@@ -2580,10 +2580,10 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		}
 		$this->config_array['im_versions'] = $index;
 		if (!$this->config_array['im']) {
-			$this->message($ext, 'No ImageMagick installation available', ('
+			$this->message($ext, 'No ImageMagick installation available', '
 				<p>
 					It seems that there is no adequate ImageMagick installation
-					available at the checked locations (' . implode(', ', $paths)) . ')
+					available at the checked locations (' . implode(', ', $paths) . ')
 					<br />
 					An \'adequate\' installation for requires \'convert\',
 					\'combine\'/\'composite\' and \'identify\' to be available
@@ -2644,10 +2644,10 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		if ($this->config_array['dir_typo3temp']) {
 			$tempPath = $this->typo3temp_path;
 			$uniqueName = md5(uniqid(microtime()));
-			$dest = ($tempPath . $uniqueName) . '.gif';
+			$dest = $tempPath . $uniqueName . '.gif';
 			$src = $this->backPath . 'gfx/typo3logo.gif';
-			if ((@is_file($src) && !strstr($src, ' ')) && !strstr($dest, ' ')) {
-				$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('convert', ($src . ' ') . $dest, $path);
+			if (@is_file($src) && !strstr($src, ' ') && !strstr($dest, ' ')) {
+				$cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::imageMagickCommand('convert', $src . ' ' . $dest, $path);
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 			} else {
 				die('No typo3/gfx/typo3logo.gif file!');
@@ -2660,7 +2660,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$src_info = @getimagesize($src);
 				clearstatcache();
 				$src_size = @filesize($src);
-				if ((($new_info[0] != $src_info[0] || $new_info[1] != $src_info[1]) || !$new_size) || !$src_size) {
+				if ($new_info[0] != $src_info[0] || $new_info[1] != $src_info[1] || !$new_size || !$src_size) {
 					$out = 'error';
 				} else {
 					// NONE-LZW ratio was 5.5 in test
@@ -2732,13 +2732,13 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			', 2);
 		} else {
 			if (!TYPO3_db_host || !TYPO3_db_username) {
-				$this->message($ext, 'Username, password or host not set', ((('
+				$this->message($ext, 'Username, password or host not set', '
 					<p>
 						You may need to enter data for these values:
 						<br />
-						Username: <strong>' . htmlspecialchars(TYPO3_db_username)) . '</strong>
+						Username: <strong>' . htmlspecialchars(TYPO3_db_username) . '</strong>
 						<br />
-						Host: <strong>') . htmlspecialchars(TYPO3_db_host)) . '</strong>
+						Host: <strong>' . htmlspecialchars(TYPO3_db_host) . '</strong>
 						<br />
 						<br />
 						Use the form below.
@@ -2746,19 +2746,19 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				', 2);
 			}
 			if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
-				$this->message($ext, 'Connected to SQL database successfully', ((('
+				$this->message($ext, 'Connected to SQL database successfully', '
 					<dl id="t3-install-databaseconnected">
 						<dt>
 							Username:
 						</dt>
 						<dd>
-							' . htmlspecialchars(TYPO3_db_username)) . '
+							' . htmlspecialchars(TYPO3_db_username) . '
 						</dd>
 						<dt>
 							Host:
 						</dt>
 						<dd>
-							') . htmlspecialchars(TYPO3_db_host)) . '
+							' . htmlspecialchars(TYPO3_db_host) . '
 						</dd>
 					</dl>
 				', -1, 1);
@@ -2773,18 +2773,18 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					', 3);
 					$this->config_array['no_database'] = 1;
 				} elseif (!$GLOBALS['TYPO3_DB']->sql_select_db(TYPO3_db)) {
-					$this->message($ext, 'Database', ('
+					$this->message($ext, 'Database', '
 						<p>
-							\'' . htmlspecialchars(TYPO3_db)) . '\' could not be selected as database!
+							\'' . htmlspecialchars(TYPO3_db) . '\' could not be selected as database!
 							<br />
 							Please select another one or create a new database.
 						</p>
 					', 3, 1);
 					$this->config_array['no_database'] = 1;
 				} else {
-					$this->message($ext, 'Database', ('
+					$this->message($ext, 'Database', '
 						<p>
-							<strong>' . htmlspecialchars(TYPO3_db)) . '</strong> is selected as
+							<strong>' . htmlspecialchars(TYPO3_db) . '</strong> is selected as
 							database.
 						</p>
 					', 1, 1);
@@ -2798,18 +2798,18 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 						username to the database is the same as the scriptowner,
 						which is ' . $this->config_array['sql.safe_mode_user'];
 				}
-				$this->message($ext, 'Could not connect to SQL database!', ((((('
+				$this->message($ext, 'Could not connect to SQL database!', '
 					<p>
 						Connecting to SQL database failed with these settings:
 						<br />
-						Username: <strong>' . htmlspecialchars(TYPO3_db_username)) . '</strong>
+						Username: <strong>' . htmlspecialchars(TYPO3_db_username) . '</strong>
 						<br />
-						Host: <strong>') . htmlspecialchars(TYPO3_db_host)) . '</strong>
+						Host: <strong>' . htmlspecialchars(TYPO3_db_host) . '</strong>
 					</p>
 					<p>
 						Make sure you\'re using the correct set of data.
 						<br />
-						') . $sqlSafeModeUser) . '
+						' . $sqlSafeModeUser . '
 					</p>
 				', 3);
 			}
@@ -2827,7 +2827,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		switch ($cmd) {
 		case 'get_form':
 			// Get the template file
-			$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'SetupGeneral.html'));
+			$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'SetupGeneral.html'));
 			// Get the template part from the file
 			$form = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 			// Get the subpart for all modes
@@ -3113,24 +3113,24 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					$newDatabaseName = trim($this->INSTALL['Database']['NEW_DATABASE_NAME']);
 					if (!preg_match('/[^[:alnum:]_-]/', $newDatabaseName)) {
 						if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
-							if ($GLOBALS['TYPO3_DB']->admin_query(('CREATE DATABASE ' . $newDatabaseName) . ' CHARACTER SET utf8')) {
+							if ($GLOBALS['TYPO3_DB']->admin_query('CREATE DATABASE ' . $newDatabaseName . ' CHARACTER SET utf8')) {
 								$this->INSTALL['Database']['typo_db'] = $newDatabaseName;
-								$this->messages[] = ('Database \'' . $newDatabaseName) . '\' created';
+								$this->messages[] = 'Database \'' . $newDatabaseName . '\' created';
 							} else {
-								$this->errorMessages[] = ('
-										Could not create database \'' . $newDatabaseName) . '\' (...not created)
+								$this->errorMessages[] = '
+										Could not create database \'' . $newDatabaseName . '\' (...not created)
 									';
 							}
 						} else {
-							$this->errorMessages[] = ('
+							$this->errorMessages[] = '
 									Could not connect to database when creating
-									database \'' . $newDatabaseName) . '\' (...not
+									database \'' . $newDatabaseName . '\' (...not
 									created)
 								';
 						}
 					} else {
-						$this->errorMessages[] = ('
-								The NEW database name \'' . $newDatabaseName) . '\' was
+						$this->errorMessages[] = '
+								The NEW database name \'' . $newDatabaseName . '\' was
 								not alphanumeric, a-zA-Z0-9_- (...not created)
 							';
 					}
@@ -3143,8 +3143,8 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 								$localConfigurationPathValuePairs['DB/username'] = $value;
 							}
 						} else {
-							$this->errorMessages[] = ('
-										Username \'' . $value) . '\' was longer
+							$this->errorMessages[] = '
+										Username \'' . $value . '\' was longer
 										than 50 chars (...not saved)
 									';
 						}
@@ -3166,8 +3166,8 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 								$localConfigurationPathValuePairs['DB/host'] = $value;
 							}
 						} else {
-							$this->errorMessages[] = ('
-										Host \'' . $value) . '\' was not
+							$this->errorMessages[] = '
+										Host \'' . $value . '\' was not
 										alphanumeric (a-z, A-Z, 0-9 or _-.), or
 										longer than 50 chars (...not saved)
 									';
@@ -3179,8 +3179,8 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 								$localConfigurationPathValuePairs['DB/database'] = $value;
 							}
 						} else {
-							$this->errorMessages[] = ('
-										Database name \'' . $value) . '\' was
+							$this->errorMessages[] = '
+										Database name \'' . $value . '\' was
 										longer than 50 chars (...not saved)
 									';
 						}
@@ -3281,7 +3281,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	protected function setLocalConfigurationValues(array $pathValuePairs) {
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'WriteToLocalConfControl.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'WriteToLocalConfControl.html'));
 		if (\TYPO3\CMS\Core\Configuration\ConfigurationManager::setLocalConfigurationValuesByPathValuePairs($pathValuePairs)) {
 			// Get the template part from the file
 			$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###CONTINUE###');
@@ -3380,7 +3380,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				}
 				break;
 			case 2:
-				$arr[$k] .= (' (' . ($v == 1 ? 'PNG' : 'GIF')) . ')';
+				$arr[$k] .= ' (' . ($v == 1 ? 'PNG' : 'GIF') . ')';
 				break;
 			}
 		}
@@ -3550,7 +3550,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					}
 				}
 				if ($detectedSubmodules === FALSE) {
-					$result[] = ('one of: (' . implode(', ', $module)) . ')';
+					$result[] = 'one of: (' . implode(', ', $module) . ')';
 				}
 			} else {
 				if (!extension_loaded($module)) {
@@ -3592,7 +3592,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function isGIF() {
 		// If GIF-functions exists, also do a real test of them:
-		if ((function_exists('imagecreatefromgif') && function_exists('imagegif')) && $this->ImageTypes() & IMG_GIF) {
+		if (function_exists('imagecreatefromgif') && function_exists('imagegif') && $this->ImageTypes() & IMG_GIF) {
 			$im = @imagecreatefromgif((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.gif'));
 			return $im ? 1 : 0;
 		}
@@ -3605,7 +3605,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 * @todo Define visibility
 	 */
 	public function isJPG() {
-		if ((function_exists('imagecreatefromjpeg') && function_exists('imagejpeg')) && $this->ImageTypes() & IMG_JPG) {
+		if (function_exists('imagecreatefromjpeg') && function_exists('imagejpeg') && $this->ImageTypes() & IMG_JPG) {
 			return 1;
 		}
 	}
@@ -3617,7 +3617,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 * @todo Define visibility
 	 */
 	public function isPNG() {
-		if ((function_exists('imagecreatefrompng') && function_exists('imagepng')) && $this->ImageTypes() & IMG_PNG) {
+		if (function_exists('imagecreatefrompng') && function_exists('imagepng') && $this->ImageTypes() & IMG_PNG) {
 			$im = imagecreatefrompng(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.png');
 			return $im ? 1 : 0;
 		}
@@ -3640,7 +3640,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 * @todo Define visibility
 	 */
 	public function getGDSoftwareInfo() {
-		return ((('
+		return '
 			<p>
 				You can get GDLib in the PNG version from
 				<a href="http://www.libgd.org/">http://www.libgd.org/</a>
@@ -3649,7 +3649,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				<a href="http://www.freetype.org/">http://www.freetype.org/</a>
 				<br />
 				Generally, TYPO3 packages are listed at
-				<a href="' . TYPO3_URL_DOWNLOAD) . '">') . TYPO3_URL_DOWNLOAD) . '</a>
+				<a href="' . TYPO3_URL_DOWNLOAD . '">' . TYPO3_URL_DOWNLOAD . '</a>
 			</p>
 		';
 	}
@@ -3661,7 +3661,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 * @todo Define visibility
 	 */
 	public function generallyAboutConfiguration() {
-		return ('
+		return '
 		<p>
 			Local configuration is done by overriding default values in the
 			included file, typo3conf/LocalConfiguration.php. In this file you enter the
@@ -3674,7 +3674,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			subsequently includes the localconf.php file in which you can then
 			override values.
 			<br />
-			See this page for <a href="' . TYPO3_URL_SYSTEMREQUIREMENTS) . '">more
+			See this page for <a href="' . TYPO3_URL_SYSTEMREQUIREMENTS . '">more
 			information about system requirements.</a>
 		</p>';
 	}
@@ -3719,7 +3719,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 * @todo Define visibility
 	 */
 	public function checkTheImageProcessing() {
-		$this->message('Image Processing', 'What is it?', ('
+		$this->message('Image Processing', 'What is it?', '
 			<p>
 				TYPO3 is known for its ability to process images on the server.
 				<br />
@@ -3780,7 +3780,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				fonts with GDLib you\'ll need FreeType compiled in as well.
 				<br />
 			</p>
-			' . $this->getGDSoftwareInfo()) . '
+			' . $this->getGDSoftwareInfo() . '
 			<p>
 				You can disable all image processing options in TYPO3
 				([GFX][image_processing]=0), but that would seriously disable
@@ -3822,31 +3822,31 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		}
 		$im_path_lzw = $GLOBALS['TYPO3_CONF_VARS']['GFX']['im_path_lzw'];
 		$im_path_lzw_version = $this->config_array['im_versions'][$im_path_lzw]['convert'];
-		$msg = ((((((((((((((((((((((('
+		$msg = '
 			<dl id="t3-install-imageprocessingim">
 				<dt>
 					ImageMagick enabled:
 				</dt>
 				<dd>
-					' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im'])) . '
+					' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im']) . '
 				</dd>
 				<dt>
 					ImageMagick path:
 				</dt>
 				<dd>
-					') . htmlspecialchars($im_path)) . ' <span>(') . htmlspecialchars($im_path_version)) . ')</span>
+					' . htmlspecialchars($im_path) . ' <span>(' . htmlspecialchars($im_path_version) . ')</span>
 				</dd>
 				<dt>
 					ImageMagick path/LZW:
 				</dt>
 				<dd>
-					') . htmlspecialchars($im_path_lzw)) . ' <span>(') . htmlspecialchars($im_path_lzw_version)) . ')</span>
+					' . htmlspecialchars($im_path_lzw) . ' <span>(' . htmlspecialchars($im_path_lzw_version) . ')</span>
 				</dd>
 				<dt>
 					Version 5/GraphicsMagick flag:
 				</dt>
 				<dd>
-					') . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']) : '&nbsp;')) . '
+					' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']) : '&nbsp;') . '
 				</dd>
 			</dl>
 			<dl id="t3-install-imageprocessingother">
@@ -3854,33 +3854,33 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					GDLib enabled:
 				</dt>
 				<dd>
-					') . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) : '&nbsp;')) . '
+					' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib']) : '&nbsp;') . '
 				</dd>
 				<dt>
 					GDLib using PNG:
 				</dt>
 				<dd>
-					') . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) : '&nbsp;')) . '
+					' . ($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png'] ? htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['gdlib_png']) : '&nbsp;') . '
 				</dd>
 				<dt>
 					IM5 effects enabled:
 				</dt>
 				<dd>
-					') . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects'])) . '
+					' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_v5effects']) . '
 					<span>(Blurring/Sharpening with IM 5+)</span>
 				</dd>
 				<dt>
 					Freetype DPI:
 				</dt>
 				<dd>
-					') . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi'])) . '
+					' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['TTFdpi']) . '
 					<span>(Should be 96 for Freetype 2)</span>
 				</dd>
 				<dt>
 					Mask invert:
 				</dt>
 				<dd>
-					') . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState'])) . '
+					' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_imvMaskState']) . '
 					<span>(Should be set for some IM versions approx. 5.4+)</span>
 				</dd>
 			</dl>
@@ -3889,7 +3889,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					File Formats:
 				</dt>
 				<dd>
-					') . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'])) . '
+					' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']) . '
 				</dd>
 			</dl>
 		';
@@ -3908,9 +3908,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			break;
 		}
 		if ($mismatch) {
-			$msg .= ((((('
+			$msg .= '
 				<p>
-					Warning: Mismatch between the version of ImageMagick' . ' (') . htmlspecialchars($im_path_version)) . ') and the configuration of ') . '[GFX][im_version_5] (') . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5'])) . ')
+					Warning: Mismatch between the version of ImageMagick' . ' (' . htmlspecialchars($im_path_version) . ') and the configuration of ' . '[GFX][im_version_5] (' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['GFX']['im_version_5']) . ')
 				</p>
 			';
 			$etype = 2;
@@ -3987,9 +3987,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				foreach ($extArr as $ext) {
 					if ($this->isExtensionEnabled($ext, $headCode, 'Read ' . strtoupper($ext))) {
 						$imageProc->IM_commands = array();
-						$theFile = (\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.') . $ext;
+						$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.' . $ext;
 						if (!@is_file($theFile)) {
-							die(('Error: ' . $theFile) . ' was not a file');
+							die('Error: ' . $theFile . ' was not a file');
 						}
 						$imageProc->imageMagickConvert_forceFileNameBody = 'read_' . $ext;
 						$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '', '', '', '', '', 1);
@@ -4001,7 +4001,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					$imageProc->IM_commands = array();
 					$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/pdf_from_imagemagick.pdf';
 					if (!@is_file($theFile)) {
-						die(('Error: ' . $theFile) . ' was not a file');
+						die('Error: ' . $theFile . ' was not a file');
 					}
 					$imageProc->imageMagickConvert_forceFileNameBody = 'read_pdf';
 					$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '170', '', '', '', '', 1);
@@ -4012,7 +4012,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					$imageProc->IM_commands = array();
 					$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/typo3logotype.ai';
 					if (!@is_file($theFile)) {
-						die(('Error: ' . $theFile) . ' was not a file');
+						die('Error: ' . $theFile . ' was not a file');
 					}
 					$imageProc->imageMagickConvert_forceFileNameBody = 'read_ai';
 					$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '170', '', '', '', '', 1);
@@ -4049,7 +4049,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$imageProc->IM_commands = array();
 				$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.gif';
 				if (!@is_file($theFile)) {
-					die(('Error: ' . $theFile) . ' was not a file');
+					die('Error: ' . $theFile . ' was not a file');
 				}
 				$imageProc->imageMagickConvert_forceFileNameBody = 'write_gif';
 				$fileInfo = $imageProc->imageMagickConvert($theFile, 'gif', '', '', '', '', '', 1);
@@ -4059,7 +4059,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					$returnCode = \TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress($fileInfo[3], '');
 					clearstatcache();
 					$curSize = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize($fileInfo[3]));
-					$note = array('Note on gif_compress() function:', (((('The \'gif_compress\' method used was \'' . $returnCode) . '\'.<br />Previous filesize: ') . $prevSize) . '. Current filesize:') . $curSize);
+					$note = array('Note on gif_compress() function:', 'The \'gif_compress\' method used was \'' . $returnCode . '\'.<br />Previous filesize: ' . $prevSize . '. Current filesize:' . $curSize);
 				} else {
 					$note = array('Note on gif_compress() function:', '<em>Not used! Disabled by [GFX][gif_compress]</em>');
 				}
@@ -4099,7 +4099,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$imageProc->IM_commands = array();
 				$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus2_transp.gif';
 				if (!@is_file($theFile)) {
-					die(('Error: ' . $theFile) . ' was not a file');
+					die('Error: ' . $theFile . ' was not a file');
 				}
 				$imageProc->imageMagickConvert_forceFileNameBody = 'scale_gif';
 				$fileInfo = $imageProc->imageMagickConvert($theFile, 'gif', '150', '', '', '', '', 1);
@@ -4109,7 +4109,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					$returnCode = \TYPO3\CMS\Core\Utility\GeneralUtility::gif_compress($fileInfo[3], '');
 					clearstatcache();
 					$curSize = \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(@filesize($fileInfo[3]));
-					$note = array('Note on gif_compress() function:', (((('The \'gif_compress\' method used was \'' . $returnCode) . '\'.<br />Previous filesize: ') . $prevSize) . '. Current filesize:') . $curSize);
+					$note = array('Note on gif_compress() function:', 'The \'gif_compress\' method used was \'' . $returnCode . '\'.<br />Previous filesize: ' . $prevSize . '. Current filesize:' . $curSize);
 				} else {
 					$note = array('Note on gif_compress() function:', '<em>Not used! Disabled by [GFX][gif_compress]</em>');
 				}
@@ -4118,7 +4118,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$imageProc->IM_commands = array();
 				$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus2_transp.png';
 				if (!@is_file($theFile)) {
-					die(('Error: ' . $theFile) . ' was not a file');
+					die('Error: ' . $theFile . ' was not a file');
 				}
 				$imageProc->imageMagickConvert_forceFileNameBody = 'scale_png';
 				$fileInfo = $imageProc->imageMagickConvert($theFile, 'png', '150', '', '', '', '', 1);
@@ -4127,7 +4127,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$imageProc->IM_commands = array();
 				$theFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus2_transp.gif';
 				if (!@is_file($theFile)) {
-					die(('Error: ' . $theFile) . ' was not a file');
+					die('Error: ' . $theFile . ' was not a file');
 				}
 				$imageProc->imageMagickConvert_forceFileNameBody = 'scale_jpg';
 				$fileInfo = $imageProc->imageMagickConvert($theFile, 'jpg', '150', '', '', '', '', 1);
@@ -4169,15 +4169,15 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$overlay = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.jpg';
 				$mask = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/blackwhite_mask.gif';
 				if (!@is_file($input)) {
-					die(('Error: ' . $input) . ' was not a file');
+					die('Error: ' . $input . ' was not a file');
 				}
 				if (!@is_file($overlay)) {
-					die(('Error: ' . $overlay) . ' was not a file');
+					die('Error: ' . $overlay . ' was not a file');
 				}
 				if (!@is_file($mask)) {
-					die(('Error: ' . $mask) . ' was not a file');
+					die('Error: ' . $mask . ' was not a file');
 				}
-				$output = (($imageProc->tempPath . $imageProc->filenamePrefix) . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($imageProc->alternativeOutputKey . 'combine1'))) . '.jpg';
+				$output = $imageProc->tempPath . $imageProc->filenamePrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($imageProc->alternativeOutputKey . 'combine1')) . '.jpg';
 				$imageProc->combineExec($input, $overlay, $mask, $output, TRUE);
 				$fileInfo = $imageProc->getImageDimensions($output);
 				$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
@@ -4188,15 +4188,15 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$overlay = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.jpg';
 				$mask = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/combine_mask.jpg';
 				if (!@is_file($input)) {
-					die(('Error: ' . $input) . ' was not a file');
+					die('Error: ' . $input . ' was not a file');
 				}
 				if (!@is_file($overlay)) {
-					die(('Error: ' . $overlay) . ' was not a file');
+					die('Error: ' . $overlay . ' was not a file');
 				}
 				if (!@is_file($mask)) {
-					die(('Error: ' . $mask) . ' was not a file');
+					die('Error: ' . $mask . ' was not a file');
 				}
-				$output = (($imageProc->tempPath . $imageProc->filenamePrefix) . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($imageProc->alternativeOutputKey . 'combine2'))) . '.jpg';
+				$output = $imageProc->tempPath . $imageProc->filenamePrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($imageProc->alternativeOutputKey . 'combine2')) . '.jpg';
 				$imageProc->combineExec($input, $overlay, $mask, $output, TRUE);
 				$fileInfo = $imageProc->getImageDimensions($output);
 				$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
@@ -4239,16 +4239,16 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					'color' => 'olive'
 				);
 				$imageProc->makeBox($im, $conf, $workArea);
-				$output = ((($imageProc->tempPath . $imageProc->filenamePrefix) . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('GDbox')) . '.') . $imageProc->gifExtension;
+				$output = $imageProc->tempPath . $imageProc->filenamePrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('GDbox') . '.' . $imageProc->gifExtension;
 				$imageProc->ImageWrite($im, $output);
 				$fileInfo = $imageProc->getImageDimensions($output);
 				$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
 				$this->message($headCode, 'Create simple image', $result[0], $result[1]);
 				// GD from image with box
 				$imageProc->IM_commands = array();
-				$input = (\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.') . $imageProc->gifExtension;
+				$input = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'imgs/jesus.' . $imageProc->gifExtension;
 				if (!@is_file($input)) {
-					die(('Error: ' . $input) . ' was not a file');
+					die('Error: ' . $input . ' was not a file');
 				}
 				$im = $imageProc->imageCreateFromFile($input);
 				$workArea = array(0, 0, 170, 136);
@@ -4256,7 +4256,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$conf['dimensions'] = '10,50,150,36';
 				$conf['color'] = 'olive';
 				$imageProc->makeBox($im, $conf, $workArea);
-				$output = ((($imageProc->tempPath . $imageProc->filenamePrefix) . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('GDfromImage+box')) . '.') . $imageProc->gifExtension;
+				$output = $imageProc->tempPath . $imageProc->filenamePrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('GDfromImage+box') . '.' . $imageProc->gifExtension;
 				$imageProc->ImageWrite($im, $output);
 				$fileInfo = $imageProc->getImageDimensions($output);
 				$GDWithBox_filesize = @filesize($output);
@@ -4280,7 +4280,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				);
 				$conf['BBOX'] = $imageProc->calcBBox($conf);
 				$imageProc->makeText($im, $conf, $workArea);
-				$output = ((($imageProc->tempPath . $imageProc->filenamePrefix) . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('GDwithText')) . '.') . $imageProc->gifExtension;
+				$output = $imageProc->tempPath . $imageProc->filenamePrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('GDwithText') . '.' . $imageProc->gifExtension;
 				$imageProc->ImageWrite($im, $output);
 				$fileInfo = $imageProc->getImageDimensions($output);
 				$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands);
@@ -4290,7 +4290,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					$conf['offset'] = '17,65';
 					$conf['niceText'] = 1;
 					$imageProc->makeText($im, $conf, $workArea);
-					$output = ((($imageProc->tempPath . $imageProc->filenamePrefix) . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('GDwithText-niceText')) . '.') . $imageProc->gifExtension;
+					$output = $imageProc->tempPath . $imageProc->filenamePrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('GDwithText-niceText') . '.' . $imageProc->gifExtension;
 					$imageProc->ImageWrite($im, $output);
 					$fileInfo = $imageProc->getImageDimensions($output);
 					$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands, array('Note on \'niceText\':', '\'niceText\' is a concept that tries to improve the antialiasing of the rendered type by actually rendering the textstring in double size on a black/white mask, downscaling the mask and masking the text onto the image through this mask. This involves ImageMagick \'combine\'/\'composite\' and \'convert\'.'));
@@ -4329,7 +4329,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					);
 					$imageProc->makeShadow($im, $conf['shadow.'], $workArea, $conf);
 					$imageProc->makeText($im, $conf, $workArea);
-					$output = ((($imageProc->tempPath . $imageProc->filenamePrefix) . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('GDwithText-niceText-shadow')) . '.') . $imageProc->gifExtension;
+					$output = $imageProc->tempPath . $imageProc->filenamePrefix . \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('GDwithText-niceText-shadow') . '.' . $imageProc->gifExtension;
 					$imageProc->ImageWrite($im, $output);
 					$fileInfo = $imageProc->getImageDimensions($output);
 					$result = $this->displayTwinImage($fileInfo[3], $imageProc->IM_commands, array('Note on drop shadows:', 'Drop shadows are done by using ImageMagick to blur a mask through which the drop shadow is generated. The blurring of the mask only works in ImageMagick 4.2.9 and <em>not</em> ImageMagick 5 - which is why you may see a hard and not soft shadow.'));
@@ -4361,10 +4361,10 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				}
 				if ($imageProc->gifExtension == 'gif') {
 					$buffer = 20;
-					$assess = ('This assessment is based on the filesize from \'Create image from file\' test, which were ' . $GDWithBox_filesize) . ' bytes';
+					$assess = 'This assessment is based on the filesize from \'Create image from file\' test, which were ' . $GDWithBox_filesize . ' bytes';
 					$goodNews = 'If the image was LZW compressed you would expect to have a size of less than 9000 bytes. If you open the image with Photoshop and saves it from Photoshop, you\'ll a filesize like that.<br />The good news is (hopefully) that your [GFX][im_path_lzw] path is correctly set so the gif_compress() function will take care of the compression for you!';
 					if ($GDWithBox_filesize < 8784 + $buffer) {
-						$msg = ('
+						$msg = '
 								<p>
 									<strong>
 										Your GDLib appears to have LZW compression!
@@ -4372,7 +4372,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 									<br />
 									This assessment is based on the filesize
 									from \'Create image from file\' test, which
-									were ' . $GDWithBox_filesize) . ' bytes.
+									were ' . $GDWithBox_filesize . ' bytes.
 									<br />
 									This is a real advantage for you because you
 									don\'t need to use ImageMagick for LZW
@@ -4391,31 +4391,31 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 								</p>
 							';
 					} elseif ($GDWithBox_filesize > 19000) {
-						$msg = ((('
+						$msg = '
 								<p>
 									<strong>
 										Your GDLib appears to have no
 										compression at all!
 									</strong>
 									<br />
-									' . $assess) . '
+									' . $assess . '
 									<br />
-									') . $goodNews) . '
+									' . $goodNews . '
 								</p>
 							';
 					} else {
-						$msg = ((('
+						$msg = '
 								<p>
 									Your GDLib appears to have RLE compression
 									<br />
-									' . $assess) . '
+									' . $assess . '
 									<br />
-									') . $goodNews) . '
+									' . $goodNews . '
 								</p>
 							';
 					}
-					$this->message($headCode, 'GIF compressing in GDLib', ('
-						' . $msg) . '
+					$this->message($headCode, 'GIF compressing in GDLib', '
+						' . $msg . '
 						', 1);
 				}
 			} else {
@@ -4444,9 +4444,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				');
 			}
 			$parseMS = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $parseStart;
-			$this->message('Info', 'Parsetime', ('
+			$this->message('Info', 'Parsetime', '
 				<p>
-					' . $parseMS) . ' ms
+					' . $parseMS . ' ms
 				</p>
 			');
 		}
@@ -4489,7 +4489,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function displayTwinImage($imageFile, $IMcommands = array(), $note = '') {
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'DisplayTwinImage.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'DisplayTwinImage.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		$content = '';
@@ -4497,11 +4497,11 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		if ($imageFile) {
 			// Get the subpart for the images
 			$imageSubpart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###IMAGE###');
-			$verifyFile = (\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'verify_imgs/') . basename($imageFile);
+			$verifyFile = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'verify_imgs/' . basename($imageFile);
 			$destImg = @getImageSize($imageFile);
-			$destImgCode = ((((('<img src="' . $this->backPath) . '../') . substr($imageFile, strlen(PATH_site))) . '" ') . $destImg[3]) . '>';
+			$destImgCode = '<img src="' . $this->backPath . '../' . substr($imageFile, strlen(PATH_site)) . '" ' . $destImg[3] . '>';
 			$verifyImg = @getImageSize($verifyFile);
-			$verifyImgCode = (((((('<img src="' . $this->backPath) . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('install')) . 'verify_imgs/') . basename($verifyFile)) . '" ') . $verifyImg[3]) . '>';
+			$verifyImgCode = '<img src="' . $this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('install') . 'verify_imgs/' . basename($verifyFile) . '" ' . $verifyImg[3] . '>';
 			clearstatcache();
 			$destImg['filesize'] = @filesize($imageFile);
 			clearstatcache();
@@ -4510,14 +4510,14 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			$imageMarkers = array(
 				'destWidth' => $destImg[0],
 				'destHeight' => $destImg[1],
-				'destUrl' => ($this->backPath . '../') . substr($imageFile, strlen(PATH_site)),
+				'destUrl' => $this->backPath . '../' . substr($imageFile, strlen(PATH_site)),
 				'verifyWidth' => $verifyImg[0],
 				'verifyHeight' => $verifyImg[1],
-				'verifyUrl' => (($this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('install')) . 'verify_imgs/') . basename($verifyFile),
+				'verifyUrl' => $this->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('install') . 'verify_imgs/' . basename($verifyFile),
 				'yourServer' => 'Your server:',
-				'yourServerInformation' => ((((\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($destImg['filesize']) . ', ') . $destImg[0]) . 'x') . $destImg[1]) . ' pixels',
+				'yourServerInformation' => \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($destImg['filesize']) . ', ' . $destImg[0] . 'x' . $destImg[1] . ' pixels',
 				'reference' => 'Reference:',
-				'referenceInformation' => ((((\TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($verifyImg['filesize']) . ', ') . $verifyImg[0]) . 'x') . $verifyImg[1]) . ' pixels'
+				'referenceInformation' => \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($verifyImg['filesize']) . ', ' . $verifyImg[0] . 'x' . $verifyImg[1] . ' pixels'
 			);
 			if ($destImg[0] != $verifyImg[0] || $destImg[1] != $verifyImg[1]) {
 				// Get the subpart for the different pixel dimensions message
@@ -4623,7 +4623,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function imagemenu() {
 		// Get the template file
-		$template = @file_get_contents(((PATH_site . $this->templateFilePath) . 'ImageMenu.html'));
+		$template = @file_get_contents((PATH_site . $this->templateFilePath . 'ImageMenu.html'));
 		// Get the subpart for the menu
 		$menuSubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###MENU###');
 		// Get the subpart for the single item in the menu
@@ -4641,7 +4641,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			// Define the markers content
 			$markers = array(
 				'backgroundColor' => $this->INSTALL['images_type'] == $k ? 'activeMenu' : 'generalTableBackground',
-				'url' => htmlspecialchars((($this->action . '&TYPO3_INSTALL[images_type]=') . $k) . '#imageMenu'),
+				'url' => htmlspecialchars($this->action . '&TYPO3_INSTALL[images_type]=' . $k . '#imageMenu'),
 				'item' => $v
 			);
 			// Fill the markers in the subpart
@@ -4700,27 +4700,27 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				earlier versions of TYPO3.
 			</p>
 		', 0);
-		$this->message($headCode, 'Connected to SQL database successfully', ((('
+		$this->message($headCode, 'Connected to SQL database successfully', '
 			<dl id="t3-install-databaseconnected">
 				<dt>
 					Username:
 				</dt>
 				<dd>
-					' . htmlspecialchars(TYPO3_db_username)) . '
+					' . htmlspecialchars(TYPO3_db_username) . '
 				</dd>
 				<dt>
 					Host:
 				</dt>
 				<dd>
-					') . htmlspecialchars(TYPO3_db_host)) . '
+					' . htmlspecialchars(TYPO3_db_host) . '
 				</dd>
 			</dl>
 		', -1, 1);
-		$this->message($headCode, 'Database', ((('
+		$this->message($headCode, 'Database', '
 			<p>
-				<strong>' . htmlspecialchars(TYPO3_db)) . '</strong> is selected as database.
+				<strong>' . htmlspecialchars(TYPO3_db) . '</strong> is selected as database.
 				<br />
-				Has <strong>') . count($whichTables)) . '</strong> tables.
+				Has <strong>' . count($whichTables) . '</strong> tables.
 			</p>
 		', -1, 1);
 		// Menu
@@ -4731,7 +4731,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			$action_type = '';
 		}
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'CheckTheDatabaseMenu.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'CheckTheDatabaseMenu.html'));
 		// Get the template part from the file
 		$menu = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###MENU###');
 		$menuMarkers = array(
@@ -4756,8 +4756,8 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		$directJump = '';
 		$extraSqlFiles = array();
 		foreach ($sql_files as $k => $file) {
-			if (($this->mode == '123' && !count($whichTables)) && strstr($file, '_testsite')) {
-				$directJump = ($this->action . '&TYPO3_INSTALL[database_type]=import|') . rawurlencode($file);
+			if ($this->mode == '123' && !count($whichTables) && strstr($file, '_testsite')) {
+				$directJump = $this->action . '&TYPO3_INSTALL[database_type]=import|' . rawurlencode($file);
 			}
 			$lf = \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($k);
 			$fShortName = substr($file, strlen(PATH_site));
@@ -4782,9 +4782,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		$menu = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($menu, $menuMarkers, '###|###', TRUE, FALSE);
 		if ($directJump) {
 			if (!$action_type) {
-				$this->message($headCode, 'Menu', ('
+				$this->message($headCode, 'Menu', '
 					<script language="javascript" type="text/javascript">
-						window.location.href = "' . $directJump) . '";
+						window.location.href = "' . $directJump . '";
 					</script>', 0, 1);
 			}
 		} else {
@@ -4850,7 +4850,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $extKey => $loadedExtConf) {
 						if (is_array($loadedExtConf) && $loadedExtConf['ext_tables.sql']) {
 							$extensionSqlContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($loadedExtConf['ext_tables.sql']);
-							$tblFileContent .= (((LF . LF) . LF) . LF) . $extensionSqlContent;
+							$tblFileContent .= LF . LF . LF . LF . $extensionSqlContent;
 							foreach ($hookObjects as $hookObject) {
 								/** @var $hookObject Tx_Install_Interfaces_CheckTheDatabaseHook * */
 								$appendableTableDefinitions = $hookObject->appendExtensionTableDefinitions($extKey, $loadedExtConf, $extensionSqlContent, $this->sqlHandler, $this);
@@ -4988,7 +4988,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$this->message($tLabel);
 				if (is_array($cmpDB_TCA['extra'])) {
 					foreach ($cmpDB_TCA['extra'] as $tableName => $conf) {
-						if ((((!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($excludeTables, $tableName) && substr($tableName, 0, 4) != 'sys_') && substr($tableName, -3) != '_mm') && substr($tableName, 0, 6) != 'index_') && substr($tableName, 0, 6) != 'cache_') {
+						if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($excludeTables, $tableName) && substr($tableName, 0, 4) != 'sys_' && substr($tableName, -3) != '_mm' && substr($tableName, 0, 6) != 'index_' && substr($tableName, 0, 6) != 'cache_') {
 							if ($conf['whole_table']) {
 								$this->message($tLabel, $tableName, $this->displayFields($conf['fields']), 1);
 								$tCount++;
@@ -5074,18 +5074,18 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 						$tblFileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_t3lib . 'stddb/tables.sql');
 						foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $loadedExtConf) {
 							if (is_array($loadedExtConf) && $loadedExtConf['ext_tables.sql']) {
-								$tblFileContent .= (((LF . LF) . LF) . LF) . \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($loadedExtConf['ext_tables.sql']);
+								$tblFileContent .= LF . LF . LF . LF . \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($loadedExtConf['ext_tables.sql']);
 							}
 						}
 					}
 					if (!strcmp($actionParts[1], 'CURRENT_STATIC') || !strcmp($actionParts[1], 'CURRENT_TABLES+STATIC')) {
 						foreach ($GLOBALS['TYPO3_LOADED_EXT'] as $loadedExtConf) {
 							if (is_array($loadedExtConf) && $loadedExtConf['ext_tables_static+adt.sql']) {
-								$tblFileContent .= (((LF . LF) . LF) . LF) . \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($loadedExtConf['ext_tables_static+adt.sql']);
+								$tblFileContent .= LF . LF . LF . LF . \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($loadedExtConf['ext_tables_static+adt.sql']);
 							}
 						}
 					}
-					$tblFileContent .= (((LF . LF) . LF) . LF) . \TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions();
+					$tblFileContent .= LF . LF . LF . LF . \TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions();
 				} elseif (@is_file($actionParts[1])) {
 					$tblFileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($actionParts[1]);
 				}
@@ -5137,9 +5137,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 							}
 						}
 
-						$this->message($tLabel, 'Imported ALL', ('
+						$this->message($tLabel, 'Imported ALL', '
 								<p>
-									Queries: ' . $r) . '
+									Queries: ' . $r . '
 								</p>
 							', 1, 1);
 						if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('goto_step')) {
@@ -5158,9 +5158,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 										$res = $GLOBALS['TYPO3_DB']->admin_query($v);
 									}
 								}
-								$this->message($tLabel, ('Imported \'' . $table) . '\'', ('
+								$this->message($tLabel, 'Imported \'' . $table . '\'', '
 										<p>
-											Rows: ' . $insertCount[$table]) . '
+											Rows: ' . $insertCount[$table] . '
 										</p>
 									', 1, 1);
 							}
@@ -5174,7 +5174,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 							reset($statements_table);
 							$out = '';
 							// Get the template file
-							$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'CheckTheDatabaseImport.html'));
+							$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'CheckTheDatabaseImport.html'));
 							// Get the template part from the file
 							$content = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###IMPORT###');
 							if ($this->mode != '123') {
@@ -5219,7 +5219,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 							// Define the markers content
 							$contentMarkers = array(
 								'checked' => $this->mode == '123' || \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('presetWholeTable') ? 'checked="checked"' : '',
-								'label' => ('Import the whole file \'' . basename($actionParts[1])) . '\' directly (ignores selections above)'
+								'label' => 'Import the whole file \'' . basename($actionParts[1]) . '\' directly (ignores selections above)'
 							);
 							// Fill the markers
 							$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($content, $contentMarkers, '###|###', TRUE, FALSE);
@@ -5267,7 +5267,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					if (count($statements)) {
 						$out = '';
 						foreach ($statements as $statement) {
-							$out .= ('<p>' . nl2br(htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($statement, $maxlen)))) . '</p>';
+							$out .= '<p>' . nl2br(htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($statement, $maxlen))) . '</p>';
 						}
 					}
 					$this->message($tLabel, 'Content of ' . basename($actionParts[1]), $out, 1);
@@ -5279,7 +5279,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 						$username = preg_replace('/[^\\da-z._-]/i', '', trim($this->INSTALL['database_adminUser']['username']));
 						$pass = trim($this->INSTALL['database_adminUser']['password']);
 						$pass2 = trim($this->INSTALL['database_adminUser']['password2']);
-						if (($username && $pass) && $pass2) {
+						if ($username && $pass && $pass2) {
 							if ($pass != $pass2) {
 								$this->message($headCode, 'Passwords are not equal!', '
 										<p>
@@ -5302,27 +5302,27 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 									$result = $GLOBALS['TYPO3_DB']->exec_INSERTquery('be_users', $insertFields);
 									$this->isBasicComplete($headCode);
 									if ($result) {
-										$this->message($headCode, 'User created', ('
+										$this->message($headCode, 'User created', '
 												<p>
 													Username:
-													<strong>' . htmlspecialchars($username)) . '
+													<strong>' . htmlspecialchars($username) . '
 													</strong>
 												</p>
 											', 1, 1);
 									} else {
-										$this->message($headCode, 'User not created', ('
+										$this->message($headCode, 'User not created', '
 												<p>
 													Error:
-													<strong>' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error())) . '
+													<strong>' . htmlspecialchars($GLOBALS['TYPO3_DB']->sql_error()) . '
 													</strong>
 												</p>
 											', 3, 1);
 									}
 								} else {
-									$this->message($headCode, 'Username not unique!', ('
+									$this->message($headCode, 'Username not unique!', '
 											<p>
 												The username,
-												<strong>' . htmlspecialchars($username)) . '
+												<strong>' . htmlspecialchars($username) . '
 												</strong>
 												, was not unique.
 											</p>
@@ -5339,7 +5339,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 						}
 					}
 					// Get the template file
-					$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'CheckTheDatabaseAdminUser.html'));
+					$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'CheckTheDatabaseAdminUser.html'));
 					// Get the template part from the file
 					$content = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 					// Define the markers content
@@ -5384,7 +5384,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 							', 1);
 					}
 					// Get the template file
-					$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'CheckTheDatabaseUc.html'));
+					$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'CheckTheDatabaseUc.html'));
 					// Get the template part from the file
 					$content = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 					// Define the markers content
@@ -5417,11 +5417,11 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				}
 				break;
 			case 'cache':
-				$tableListArr = explode(',', (('cache_pages,cache_pagesection,cache_hash,cache_imagesizes,--div--,sys_log,sys_history,--div--,be_sessions,fe_sessions,fe_session_data' . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('indexed_search') ? ',--div--,index_words,index_rel,index_phash,index_grlist,index_section,index_fulltext' : '')) . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('tt_products') ? ',--div--,sys_products_orders,sys_products_orders_mm_tt_products' : '')) . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('direct_mail') ? ',--div--,sys_dmail_maillog' : ''));
+				$tableListArr = explode(',', 'cache_pages,cache_pagesection,cache_hash,cache_imagesizes,--div--,sys_log,sys_history,--div--,be_sessions,fe_sessions,fe_session_data' . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('indexed_search') ? ',--div--,index_words,index_rel,index_phash,index_grlist,index_section,index_fulltext' : '') . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('tt_products') ? ',--div--,sys_products_orders,sys_products_orders_mm_tt_products' : '') . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('direct_mail') ? ',--div--,sys_dmail_maillog' : ''));
 				if (is_array($this->INSTALL['database_clearcache'])) {
 					$qList = array();
 					// Get the template file
-					$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'CheckTheDatabaseCache.html'));
+					$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'CheckTheDatabaseCache.html'));
 					// Get the subpart for emptied tables
 					$emptiedTablesSubpart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###EMPTIEDTABLES###');
 					// Get the subpart for table
@@ -5468,7 +5468,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$countEntries = array();
 				reset($tableListArr);
 				// Get the template file
-				$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'CheckTheDatabaseCache.html'));
+				$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'CheckTheDatabaseCache.html'));
 				// Get the subpart for table list
 				$tableListSubpart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TABLELIST###');
 				// Get the subpart for the group separator
@@ -5491,7 +5491,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 							$singleTableMarkers = array(
 								'table' => $table,
 								'checked' => $checked,
-								'count' => ('(' . $countEntries[$table]) . ' rows)',
+								'count' => '(' . $countEntries[$table] . ' rows)',
 								'label' => $labelArr[$table]
 							);
 							// Fill the markers in the subpart
@@ -5570,7 +5570,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		$content = '';
 		$updateItems = array();
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'UpdateWizardParts.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'UpdateWizardParts.html'));
 		switch ($action) {
 		case 'checkForUpdate':
 			// Get the subpart for check for update
@@ -5675,7 +5675,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					$updateMarkers['identifier'] = $identifier;
 					$updateMarkers['title'] = $tmpObj->getTitle();
 					if (method_exists($tmpObj, 'getUserInput')) {
-						$updateMarkers['identifierMethod'] = $tmpObj->getUserInput(('TYPO3_INSTALL[update][' . $identifier) . ']');
+						$updateMarkers['identifierMethod'] = $tmpObj->getUserInput('TYPO3_INSTALL[update][' . $identifier . ']');
 					}
 					$updateItems[] = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($updatesAvailableSubpart, $updateMarkers, '###|###', TRUE, TRUE);
 				}
@@ -5835,12 +5835,12 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$this->message($tLabel, 'Basic Installation Completed', $this->messageBasicFinished(), -1, 1);
 				$this->message($tLabel, 'Security Risk!', $this->securityRisk() . $this->alterPasswordForm(), 2, 1);
 			} else {
-				$this->message($tLabel, 'Still missing something?', nl2br((('
+				$this->message($tLabel, 'Still missing something?', nl2br('
 				You may be missing one of these points before your TYPO3 installation is complete:
 
 				' . (count($tables) ? '' : '- You haven\'t imported any tables yet.
-				')) . ($beuser ? '' : '- You haven\'t created an admin user yet.
-				')) . '
+				') . ($beuser ? '' : '- You haven\'t created an admin user yet.
+				') . '
 
 				You\'re about to import a database with a complete site in it, these three points should be met.
 				'), -1, 1);
@@ -5892,7 +5892,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function getUpdateDbFormWrap($action_type, $content, $label = 'Write to database') {
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'GetUpdateDbFormWrap.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'GetUpdateDbFormWrap.html'));
 		// Get the template part from the file
 		$form = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Define the markers content
@@ -5919,7 +5919,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function displayFields($arr, $pre = 0, $label = '') {
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'DisplayFields.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'DisplayFields.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Define the markers content
@@ -5933,7 +5933,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			$rowsSubpart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###ROWS###');
 			foreach ($arr as $fieldname => $fieldContent) {
 				if ($pre) {
-					$fieldContent = ('<pre>' . trim($fieldContent)) . '</pre>';
+					$fieldContent = '<pre>' . trim($fieldContent) . '</pre>';
 				}
 				// Define the markers content
 				$rowsMarkers = array(
@@ -5962,7 +5962,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function displayFieldComp($arr, $arr_db) {
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'DisplayFieldComp.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'DisplayFieldComp.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Define the markers content
@@ -6018,7 +6018,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function displaySuggestions($arr, $excludeList = '') {
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'DisplaySuggestions.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'DisplaySuggestions.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		$templateMarkers = array();
@@ -6028,13 +6028,13 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			// Get the subpart for rows
 			$rowsSubpart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###ROWS###');
 			foreach ($arr as $fieldname => $fieldContent) {
-				if ((!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($excludeList, $fieldname) && substr($fieldname, 0, strlen($this->sqlHandler->getDeletedPrefixKey())) != $this->sqlHandler->getDeletedPrefixKey()) && substr($fieldname, -1) != '.') {
+				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($excludeList, $fieldname) && substr($fieldname, 0, strlen($this->sqlHandler->getDeletedPrefixKey())) != $this->sqlHandler->getDeletedPrefixKey() && substr($fieldname, -1) != '.') {
 					if ($arr[$fieldname . '.']) {
 						// Get the subpart for pre
 						$preSubpart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($rowsSubpart, '###PRE###');
 						// Define the markers content
 						$preMarkers = array(
-							'code' => ('<pre>' . trim($arr[($fieldname . '.')])) . '</pre>'
+							'code' => '<pre>' . trim($arr[($fieldname . '.')]) . '</pre>'
 						);
 						// Fill the markers in the subpart
 						$preSubpart = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($preSubpart, $preMarkers, '###|###', TRUE, FALSE);
@@ -6170,7 +6170,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			} else {
 				$max = intval($fieldInfo['config']['max']);
 				if ($max > 0 && $max < 200) {
-					$out = ('varchar(' . $max) . ') NOT NULL default \'\'';
+					$out = 'varchar(' . $max . ') NOT NULL default \'\'';
 				} else {
 					$out = 'tinytext';
 				}
@@ -6198,7 +6198,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$max = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($fieldInfo['config']['maxitems'], 1, 10000);
 				if (count(explode(',', $fieldInfo['config']['allowed'])) > 1) {
 					// Tablenames are 10, "_" 1, uid's 5, comma 1
-					$len = $max * (((10 + 1) + 5) + 1);
+					$len = $max * (10 + 1 + 5 + 1);
 					$out = $this->getItemBlobSize($len);
 				} elseif ($max <= 1) {
 					$out = 'int(11) NOT NULL default \'0\'';
@@ -6255,7 +6255,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			}
 			$us = min($intSize) >= 0 ? ' unsigned' : '';
 			if (max($type) > 0) {
-				$out = ('varchar(' . max($type)) . ') NOT NULL default \'\'';
+				$out = 'varchar(' . max($type) . ') NOT NULL default \'\'';
 			} else {
 				$out = 'int(11) NOT NULL default \'0\'';
 			}
@@ -6287,9 +6287,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		list($type, $len) = preg_split('/ |\\(|\\)/', $fieldInfo, 3);
 		switch ($type) {
 		case 'int':
-			$out = ((((((('
-\'' . $fieldName) . '\' => array (
-	\'label\' => \'') . strtoupper($fieldName)) . ':\',
+			$out = '
+\'' . $fieldName . '\' => array (
+	\'label\' => \'' . strtoupper($fieldName) . ':\',
 	\'exclude\' => 0,
 	\'config\' => array (
 		\'type\' => \'input\',
@@ -6303,8 +6303,8 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 
 ----- OR -----
 
-\'') . $fieldName) . '\' => array (
-	\'label\' => \'') . strtoupper($fieldName)) . ':\',
+\'' . $fieldName . '\' => array (
+	\'label\' => \'' . strtoupper($fieldName) . ':\',
 	\'exclude\' => 0,
 	\'config\' => array (
 		\'type\' => \'select\',
@@ -6319,22 +6319,22 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			break;
 		case 'varchar':
 			if ($len > 10) {
-				$out = ((((('
-\'' . $fieldName) . '\' => array (
-	\'label\' => \'') . strtoupper($fieldName)) . ':\',
+				$out = '
+\'' . $fieldName . '\' => array (
+	\'label\' => \'' . strtoupper($fieldName) . ':\',
 	\'exclude\' => 0,
 	\'config\' => array (
 		\'type\' => \'input\',
 		\'size\' => \'8\',
-		\'max\' => \'') . $len) . '\',
+		\'max\' => \'' . $len . '\',
 		\'eval\' => \'trim\',
 		\'default\' => \'\'
 	)
 ),';
 			} else {
-				$out = ((('
-\'' . $fieldName) . '\' => array (
-	\'label\' => \'') . strtoupper($fieldName)) . ':\',
+				$out = '
+\'' . $fieldName . '\' => array (
+	\'label\' => \'' . strtoupper($fieldName) . ':\',
 	\'exclude\' => 0,
 	\'config\' => array (
 		\'type\' => \'select\',
@@ -6350,9 +6350,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			}
 			break;
 		case 'tinyint':
-			$out = ((((((('
-\'' . $fieldName) . '\' => array (
-	\'label\' => \'') . strtoupper($fieldName)) . ':\',
+			$out = '
+\'' . $fieldName . '\' => array (
+	\'label\' => \'' . strtoupper($fieldName) . ':\',
 	\'exclude\' => 0,
 	\'config\' => array (
 		\'type\' => \'select\',
@@ -6368,8 +6368,8 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 
 ----- OR -----
 
-\'') . $fieldName) . '\' => array (
-	\'label\' => \'') . strtoupper($fieldName)) . ':\',
+\'' . $fieldName . '\' => array (
+	\'label\' => \'' . strtoupper($fieldName) . ':\',
 	\'exclude\' => 0,
 	\'config\' => array (
 		\'type\' => \'check\',
@@ -6378,9 +6378,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 ),';
 			break;
 		case 'tinytext':
-			$out = ((('
-\'' . $fieldName) . '\' => array (
-	\'label\' => \'') . strtoupper($fieldName)) . ':\',
+			$out = '
+\'' . $fieldName . '\' => array (
+	\'label\' => \'' . strtoupper($fieldName) . ':\',
 	\'exclude\' => 0,
 	\'config\' => array (
 		\'type\' => \'input\',
@@ -6394,9 +6394,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		case 'text':
 
 		case 'mediumtext':
-			$out = ((('
-\'' . $fieldName) . '\' => array (
-	\'label\' => \'') . strtoupper($fieldName)) . ':\',
+			$out = '
+\'' . $fieldName . '\' => array (
+	\'label\' => \'' . strtoupper($fieldName) . ':\',
 	\'config\' => array (
 		\'type\' => \'text\',
 		\'cols\' => \'48\',
@@ -6405,9 +6405,9 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 ),';
 			break;
 		default:
-			$out = ((('
-\'' . $fieldName) . '\' => array (
-	\'label\' => \'') . strtoupper($fieldName)) . ':\',
+			$out = '
+\'' . $fieldName . '\' => array (
+	\'label\' => \'' . strtoupper($fieldName) . ':\',
 	\'exclude\' => 0,
 	\'config\' => array (
 		\'type\' => \'input\',
@@ -6453,7 +6453,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function message($head, $short_string = '', $long_string = '', $type = 0, $force = 0) {
 		// Return directly if mode-123 is enabled.
-		if ((!$force && $this->mode == '123') && $type < 2) {
+		if (!$force && $this->mode == '123' && $type < 2) {
 			return;
 		}
 		if ($type == 3) {
@@ -6477,7 +6477,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function printSection($head, $short_string, $long_string, $type) {
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'PrintSection.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'PrintSection.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		switch ($type) {
@@ -6526,7 +6526,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function printAll() {
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'PrintAll.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'PrintAll.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		$sections = array();
@@ -6556,44 +6556,44 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	public function outputWrapper($content) {
 		// Get the template file
 		if (!$this->passwordOK) {
-			$this->template = @file_get_contents(((PATH_site . $this->templateFilePath) . 'Install_login.html'));
+			$this->template = @file_get_contents((PATH_site . $this->templateFilePath . 'Install_login.html'));
 		} elseif ($this->mode == '123') {
-			$this->template = @file_get_contents(((PATH_site . $this->templateFilePath) . 'Install_123.html'));
+			$this->template = @file_get_contents((PATH_site . $this->templateFilePath . 'Install_123.html'));
 		} else {
-			$this->template = @file_get_contents(((PATH_site . $this->templateFilePath) . 'Install.html'));
+			$this->template = @file_get_contents((PATH_site . $this->templateFilePath . 'Install.html'));
 		}
 		// Add prototype to javascript array for output
-		$this->javascript[] = ('<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename('../contrib/prototype/prototype.js')) . '"></script>';
+		$this->javascript[] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename('../contrib/prototype/prototype.js') . '"></script>';
 		// Add JS functions for output
-		$this->javascript[] = ('<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename('../sysext/install/Resources/Public/Javascript/install.js')) . '"></script>';
+		$this->javascript[] = '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename('../sysext/install/Resources/Public/Javascript/install.js') . '"></script>';
 		// Include the default stylesheets
-		$this->stylesheets[] = ('<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/reset.css'))) . '" />';
-		$this->stylesheets[] = ('<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/general.css'))) . '" />';
+		$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/reset.css')) . '" />';
+		$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/general.css')) . '" />';
 		// Get the browser info
 		$browserInfo = \TYPO3\CMS\Core\Utility\ClientUtility::getBrowserInfo(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT'));
 		// Add the stylesheet for Internet Explorer
 		if ($browserInfo['browser'] === 'msie') {
 			// IE7
 			if (intval($browserInfo['version']) === 7) {
-				$this->stylesheets[] = ('<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/ie7.css'))) . '" />';
+				$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/ie7.css')) . '" />';
 			}
 		}
 		// Include the stylesheets based on screen
 		if ($this->mode == '123') {
-			$this->stylesheets[] = ('<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/install_123.css'))) . '" />';
+			$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/install_123.css')) . '" />';
 		} elseif ($this->passwordOK) {
-			$this->stylesheets[] = ('<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/install.css'))) . '" />';
+			$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/install.css')) . '" />';
 		} else {
-			$this->stylesheets[] = ('<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/install.css'))) . '" />';
-			$this->stylesheets[] = ('<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/install_login.css'))) . '" />';
+			$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/install.css')) . '" />';
+			$this->stylesheets[] = '<link rel="stylesheet" type="text/css" href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($this->backPath . 'sysext/install/Resources/Public/Stylesheets/install_login.css')) . '" />';
 		}
 		// Define the markers content
 		if ($this->mode == '123') {
 			$this->markers['headTitle'] = 'Installing TYPO3 ' . TYPO3_branch;
 		} else {
-			$this->markers['headTitle'] = ((('
-				TYPO3 ' . TYPO3_version) . '
-				Install Tool on site: ') . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])) . '
+			$this->markers['headTitle'] = '
+				TYPO3 ' . TYPO3_version . '
+				Install Tool on site: ' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '
 			';
 		}
 		$this->markers['title'] = 'TYPO3 ' . TYPO3_version;
@@ -6658,7 +6658,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	protected function outputErrorAndExit($content, $title = 'Install Tool error') {
 		// Define the stylesheet
 		$stylesheet = '<link rel="stylesheet" type="text/css" href="' . '../stylesheets/install/install.css" />';
-		$javascript = ('<script type="text/javascript" src="' . '../contrib/prototype/prototype.js"></script>') . LF;
+		$javascript = '<script type="text/javascript" src="' . '../contrib/prototype/prototype.js"></script>' . LF;
 		$javascript .= '<script type="text/javascript" src="' . '../sysext/install/Resources/Public/Javascript/install.js"></script>';
 		// Get the template file
 		$template = @file_get_contents((PATH_site . '/typo3/templates/install.html'));
@@ -6713,7 +6713,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				$markers = array(
 					'class' => $this->INSTALL['type'] == $k ? 'class="act"' : '',
 					'id' => 't3-install-menu-' . $k,
-					'url' => htmlspecialchars((($this->scriptSelf . '?TYPO3_INSTALL[type]=') . $k) . ($this->mode ? '&mode=' . rawurlencode($this->mode) : '')),
+					'url' => htmlspecialchars($this->scriptSelf . '?TYPO3_INSTALL[type]=' . $k . ($this->mode ? '&mode=' . rawurlencode($this->mode) : '')),
 					'item' => $v
 				);
 				// Fill the markers in the subpart
@@ -6733,7 +6733,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function stepHeader() {
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'StepHeader.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'StepHeader.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Get the subpart for each item
@@ -6748,8 +6748,8 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			}
 			// Define the markers content
 			$stepItemMarkers = array(
-				'class' => (('class="step' . ($counter - 1)) . ($state ? ' ' . $state : '')) . '"',
-				'url' => ((($this->scriptSelf . '?mode=') . $this->mode) . '&amp;step=') . $counter,
+				'class' => 'class="step' . ($counter - 1) . ($state ? ' ' . $state : '') . '"',
+				'url' => $this->scriptSelf . '?mode=' . $this->mode . '&amp;step=' . $counter,
 				'step' => $counter
 			);
 			// Fill the markers in the subpart
@@ -6796,7 +6796,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function alterPasswordForm() {
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'AlterPasswordForm.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'AlterPasswordForm.html'));
 		// Get the template part from the file
 		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Define the markers content
@@ -6819,20 +6819,20 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 * @todo Define visibility
 	 */
 	public function copyright() {
-		$content = ((((((((((((('
+		$content = '
 			<p>
-				<strong>TYPO3 CMS.</strong> Copyright &copy; 1998-' . date('Y')) . '
+				<strong>TYPO3 CMS.</strong> Copyright &copy; 1998-' . date('Y') . '
 				Kasper Sk&#229;rh&#248;j. Extensions are copyright of their respective
-				owners. Go to <a href="') . TYPO3_URL_GENERAL) . '">') . TYPO3_URL_GENERAL) . '</a>
+				owners. Go to <a href="' . TYPO3_URL_GENERAL . '">' . TYPO3_URL_GENERAL . '</a>
 				for details. TYPO3 comes with ABSOLUTELY NO WARRANTY;
-				<a href="') . TYPO3_URL_LICENSE) . '">click</a> for details.
+				<a href="' . TYPO3_URL_LICENSE . '">click</a> for details.
 				This is free software, and you are welcome to redistribute it
-				under certain conditions; <a href="') . TYPO3_URL_LICENSE) . '">click</a>
+				under certain conditions; <a href="' . TYPO3_URL_LICENSE . '">click</a>
 				for details. Obstructing the appearance of this notice is prohibited by law.
 			</p>
 			<p>
-				<a href="') . TYPO3_URL_DONATE) . '"><strong>Donate</strong></a> |
-				<a href="') . TYPO3_URL_ORG) . '">TYPO3.org</a>
+				<a href="' . TYPO3_URL_DONATE . '"><strong>Donate</strong></a> |
+				<a href="' . TYPO3_URL_ORG . '">TYPO3.org</a>
 			</p>
 		';
 		return $content;
@@ -6845,14 +6845,14 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 * @todo Define visibility
 	 */
 	public function messageBasicFinished() {
-		return ('
+		return '
 			<p>
 				You have completed the basic setup of the TYPO3 Content Management System.
 				Choose between these options to continue:
 			</p>
 			<ul>
 				<li>
-					<a href="' . $this->scriptSelf) . '">Configure TYPO3</a> (Recommended)
+					<a href="' . $this->scriptSelf . '">Configure TYPO3</a> (Recommended)
 					<br />
 					This will let you analyze and verify that everything in your
 					installation is in order. In addition, you can configure advanced
@@ -6882,7 +6882,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 * @todo Define visibility
 	 */
 	public function setScriptName($type) {
-		$value = ((($this->scriptSelf . '?TYPO3_INSTALL[type]=') . $type) . ($this->mode ? '&mode=' . rawurlencode($this->mode) : '')) . ($this->step ? '&step=' . rawurlencode($this->step) : '');
+		$value = $this->scriptSelf . '?TYPO3_INSTALL[type]=' . $type . ($this->mode ? '&mode=' . rawurlencode($this->mode) : '') . ($this->step ? '&step=' . rawurlencode($this->step) : '');
 		return $value;
 	}
 
@@ -6921,7 +6921,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 		$templateMarkers = array();
 		if (is_array($arr)) {
 			// Get the template file
-			$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'GenerateUpdateDatabaseFormCheckboxes.html'));
+			$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'GenerateUpdateDatabaseFormCheckboxes.html'));
 			// Get the template part from the file
 			$content = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 			// Define the markers content
@@ -6938,7 +6938,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 					'label' => $label,
 					'tableId' => $tableId,
 					'checked' => $checked ? ' checked="checked"' : '',
-					'selectAllId' => ('t3-install-' . $tableId) . '-checkbox',
+					'selectAllId' => 't3-install-' . $tableId . '-checkbox',
 					'selectDeselectAll' => 'select/deselect all'
 				);
 				// Fill the markers in the subpart
@@ -6956,7 +6956,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 				// Define the markers content
 				$rowsMarkers = array(
 					'checkboxId' => 't3-install-db-' . $key,
-					'name' => (($this->dbUpdateCheckboxPrefix . '[') . $key) . ']',
+					'name' => $this->dbUpdateCheckboxPrefix . '[' . $key . ']',
 					'checked' => $checked ? 'checked="checked"' : '',
 					'string' => htmlspecialchars($string)
 				);
@@ -7046,7 +7046,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 	 */
 	public function viewArray($incomingValue) {
 		// Get the template file
-		$templateFile = @file_get_contents(((PATH_site . $this->templateFilePath) . 'ViewArray.html'));
+		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'ViewArray.html'));
 		if (is_array($incomingValue) && !empty($incomingValue)) {
 			// Get the template part from the file
 			$content = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
@@ -7129,7 +7129,7 @@ REMOTE_ADDR was \'') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOT
 			$dbName = substr($grant, $dbNameOffset, strpos($grant, '.', $dbNameOffset) - $dbNameOffset);
 			$privileges = substr($grant, 6, strpos($grant, ' ON ') - 6);
 			// we need at least one of the following privileges
-			if ((($privileges === 'ALL' || $privileges === 'ALL PRIVILEGES') || $privileges === 'CREATE') || strpos($privileges, 'CREATE,') !== FALSE) {
+			if ($privileges === 'ALL' || $privileges === 'ALL PRIVILEGES' || $privileges === 'CREATE' || strpos($privileges, 'CREATE,') !== FALSE) {
 				// And we need this privilege not on a specific DB, but on *
 				if ($dbName === '*') {
 					// user has permissions to create new databases

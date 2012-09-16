@@ -92,7 +92,7 @@ Will report lost files.';
 		global $TYPO3_DB;
 		// Initialize result array:
 		$resultArray = array(
-			'message' => (($this->cli_help['name'] . LF) . LF) . $this->cli_help['description'],
+			'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
 			'headers' => array(
 				'managedFiles' => array('Files related to TYPO3 records and managed by TCEmain', 'These files you definitely want to keep.', 0),
 				'ignoredFiles' => array('Ignored files (index.html, .htaccess etc.)', 'These files are allowed in uploads/ folder', 0),
@@ -127,13 +127,13 @@ Will report lost files.';
 					$resultArray['ignoredFiles'][$shortKey] = $value;
 				} else {
 					// Looking for a reference from a field which is NOT a soft reference (thus, only fields with a proper TCA/Flexform configuration)
-					$recs = $TYPO3_DB->exec_SELECTgetRows('*', 'sys_refindex', (((('ref_table=' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex')) . ' AND ref_string=') . $TYPO3_DB->fullQuoteStr($value, 'sys_refindex')) . ' AND softref_key=') . $TYPO3_DB->fullQuoteStr('', 'sys_refindex'), '', 'sorting DESC');
+					$recs = $TYPO3_DB->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_string=' . $TYPO3_DB->fullQuoteStr($value, 'sys_refindex') . ' AND softref_key=' . $TYPO3_DB->fullQuoteStr('', 'sys_refindex'), '', 'sorting DESC');
 					// If found, unset entry:
 					if (count($recs)) {
 						unset($fileArr[$key]);
 						$resultArray['managedFiles'][$shortKey] = $value;
 						if (count($recs) > 1) {
-							$resultArray['warnings'][$shortKey] = ((('Warning: File "' . $value) . '" had ') . count($recs)) . ' references from group-fields, should have only one!';
+							$resultArray['warnings'][$shortKey] = 'Warning: File "' . $value . '" had ' . count($recs) . ' references from group-fields, should have only one!';
 						}
 					} else {
 						// When here it means the file was not found. So we test if it has a RTEmagic-image name and if so, we allow it:
@@ -169,7 +169,7 @@ Will report lost files.';
 	public function main_autoFix($resultArray) {
 		foreach ($resultArray['lostFiles'] as $key => $value) {
 			$absFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($value);
-			echo ('Deleting file: "' . $absFileName) . '": ';
+			echo 'Deleting file: "' . $absFileName . '": ';
 			if ($bypass = $this->cli_noExecutionCheck($absFileName)) {
 				echo $bypass;
 			} else {
@@ -177,7 +177,7 @@ Will report lost files.';
 					unlink($absFileName);
 					echo 'DONE';
 				} else {
-					echo ('	ERROR: File "' . $absFileName) . '" was not found!';
+					echo '	ERROR: File "' . $absFileName . '" was not found!';
 				}
 			}
 			echo LF;
