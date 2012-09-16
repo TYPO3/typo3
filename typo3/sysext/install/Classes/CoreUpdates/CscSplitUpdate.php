@@ -46,7 +46,7 @@ class CscSplitUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		$templates = $this->getTemplatesWithCsc($dbQueries, $customMessages);
 		$templates = $this->findUpdateableTemplatesWithCsc($templates);
 		if (count($templates)) {
-			$description = (((((('<p>Run this wizard if you use CSS styled content in your templates, as the inclusion of the static templates changed. </p>' . '<p>You are currently using CSS styled content in <strong>') . count($templates)) . '&nbsp;templates</strong>  (including deleted and hidden),') . ' so if you did not run this wizard before, <strong>do it now</strong>.</p>') . '<p>The wizard will automatically choose the right template according to your compatibility version. So if you want to ') . 'change the rendering back to an older version, you will have to use the changeCompatibilityVersion wizard above ') . 'first, and then return back to this one.</p>';
+			$description = '<p>Run this wizard if you use CSS styled content in your templates, as the inclusion of the static templates changed. </p>' . '<p>You are currently using CSS styled content in <strong>' . count($templates) . '&nbsp;templates</strong>  (including deleted and hidden),' . ' so if you did not run this wizard before, <strong>do it now</strong>.</p>' . '<p>The wizard will automatically choose the right template according to your compatibility version. So if you want to ' . 'change the rendering back to an older version, you will have to use the changeCompatibilityVersion wizard above ' . 'first, and then return back to this one.</p>';
 			return TRUE;
 		}
 		return FALSE;

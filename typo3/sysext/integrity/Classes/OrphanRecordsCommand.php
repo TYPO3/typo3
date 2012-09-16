@@ -82,7 +82,7 @@ Will report orphan uids from TCA tables.';
 		global $TYPO3_DB;
 		// Initialize result array:
 		$resultArray = array(
-			'message' => (($this->cli_help['name'] . LF) . LF) . $this->cli_help['description'],
+			'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
 			'headers' => array(
 				'orphans' => array('Index of orphaned records', '', 3),
 				'misplaced_at_rootlevel' => array('Records that should not be at root level but are.', 'Fix manually by moving record into page tree', 2),
@@ -107,7 +107,7 @@ Will report orphan uids from TCA tables.';
 		foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
 			$idList = is_array($this->recStats['all'][$tableName]) && count($this->recStats['all'][$tableName]) ? implode(',', $this->recStats['all'][$tableName]) : 0;
 			// Select all records belonging to page:
-			$orphanRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $tableName, ('uid NOT IN (' . $idList) . ')', '', 'uid', '', 'uid');
+			$orphanRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $tableName, 'uid NOT IN (' . $idList . ')', '', 'uid', '', 'uid');
 			if (count($orphanRecords)) {
 				$resultArray['orphans'][$tableName] = array();
 				foreach ($orphanRecords as $oR) {
@@ -135,10 +135,10 @@ Will report orphan uids from TCA tables.';
 		}
 		// Traversing records:
 		foreach ($resultArray['orphans'] as $table => $list) {
-			echo (('Removing orphans from table "' . $table) . '":') . LF;
+			echo 'Removing orphans from table "' . $table . '":' . LF;
 			foreach ($list as $uid) {
-				echo ((('	Flushing orphan record "' . $table) . ':') . $uid) . '": ';
-				if ($bypass = $this->cli_noExecutionCheck(($table . ':') . $uid)) {
+				echo '	Flushing orphan record "' . $table . ':' . $uid . '": ';
+				if ($bypass = $this->cli_noExecutionCheck($table . ':' . $uid)) {
 					echo $bypass;
 				} else {
 					// Execute CMD array:
@@ -150,7 +150,7 @@ Will report orphan uids from TCA tables.';
 					$tce->deleteRecord($table, $uid, TRUE, TRUE);
 					// Return errors if any:
 					if (count($tce->errorLog)) {
-						echo (('	ERROR from "TCEmain":' . LF) . 'TCEmain:') . implode((LF . 'TCEmain:'), $tce->errorLog);
+						echo '	ERROR from "TCEmain":' . LF . 'TCEmain:' . implode((LF . 'TCEmain:'), $tce->errorLog);
 					} else {
 						echo 'DONE';
 					}

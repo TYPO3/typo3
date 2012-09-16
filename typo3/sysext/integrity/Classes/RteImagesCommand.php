@@ -87,7 +87,7 @@ Reports problems with RTE images';
 		global $TYPO3_DB;
 		// Initialize result array:
 		$resultArray = array(
-			'message' => (($this->cli_help['name'] . LF) . LF) . $this->cli_help['description'],
+			'message' => $this->cli_help['name'] . LF . LF . $this->cli_help['description'],
 			'headers' => array(
 				'completeFileList' => array('Complete list of used RTEmagic files', 'Both parent and copy are listed here including usage count (which should in theory all be "1"). This list does not exclude files that might be missing.', 1),
 				'RTEmagicFilePairs' => array('Statistical info about RTEmagic files', '(copy used as index)', 0),
@@ -102,7 +102,7 @@ Reports problems with RTE images';
 			'lostFiles' => array()
 		);
 		// Select all RTEmagic files in the reference table (only from soft references of course)
-		$recs = $TYPO3_DB->exec_SELECTgetRows('*', 'sys_refindex', (((('ref_table=' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex')) . ' AND ref_string LIKE ') . $TYPO3_DB->fullQuoteStr('%/RTEmagic%', 'sys_refindex')) . ' AND softref_key=') . $TYPO3_DB->fullQuoteStr('images', 'sys_refindex'), '', 'sorting DESC');
+		$recs = $TYPO3_DB->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=' . $TYPO3_DB->fullQuoteStr('_FILE', 'sys_refindex') . ' AND ref_string LIKE ' . $TYPO3_DB->fullQuoteStr('%/RTEmagic%', 'sys_refindex') . ' AND softref_key=' . $TYPO3_DB->fullQuoteStr('images', 'sys_refindex'), '', 'sorting DESC');
 		// Traverse the files and put into a large table:
 		if (is_array($recs)) {
 			foreach ($recs as $rec) {
@@ -129,7 +129,7 @@ Reports problems with RTE images';
 			}
 			// Searching for duplicates:
 			foreach ($resultArray['RTEmagicFilePairs'] as $fileName => $fileInfo) {
-				if (($fileInfo['count'] > 1 && $fileInfo['exists']) && $fileInfo['original_exists']) {
+				if ($fileInfo['count'] > 1 && $fileInfo['exists'] && $fileInfo['original_exists']) {
 					$resultArray['doubleFiles'][$fileName] = $fileInfo['usedIn'];
 				}
 			}
@@ -168,28 +168,28 @@ Reports problems with RTE images';
 				echo 'FIXING double-usages of RTE files in uploads/: ' . LF;
 				foreach ($resultArray['RTEmagicFilePairs'] as $fileName => $fileInfo) {
 					// Only fix something if there is a usage count of more than 1 plus if both original and copy exists:
-					if (($fileInfo['count'] > 1 && $fileInfo['exists']) && $fileInfo['original_exists']) {
+					if ($fileInfo['count'] > 1 && $fileInfo['exists'] && $fileInfo['original_exists']) {
 						// Traverse all records using the file:
 						$c = 0;
 						foreach ($fileInfo['usedIn'] as $hash => $recordID) {
 							if ($c == 0) {
-								echo ((('	Keeping file ' . $fileName) . ' for record ') . $recordID) . LF;
+								echo '	Keeping file ' . $fileName . ' for record ' . $recordID . LF;
 							} else {
 								// CODE below is adapted from "class.tx_impexp.php" where there is support for duplication of RTE images:
-								echo ((('	Copying file ' . basename($fileName)) . ' for record ') . $recordID) . ' ';
+								echo '	Copying file ' . basename($fileName) . ' for record ' . $recordID . ' ';
 								// Initialize; Get directory prefix for file and set the original name:
 								$dirPrefix = dirname($fileName) . '/';
 								$rteOrigName = basename($fileInfo['original']);
 								// If filename looks like an RTE file, and the directory is in "uploads/", then process as a RTE file!
-								if (($rteOrigName && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/')) && @is_dir((PATH_site . $dirPrefix))) {
+								if ($rteOrigName && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($dirPrefix, 'uploads/') && @is_dir((PATH_site . $dirPrefix))) {
 									// RTE:
 									// From the "original" RTE filename, produce a new "original" destination filename which is unused.
 									$fileProcObj = $this->getFileProcObj();
 									$origDestName = $fileProcObj->getUniqueName($rteOrigName, PATH_site . $dirPrefix);
 									// Create copy file name:
 									$pI = pathinfo($fileName);
-									$copyDestName = (((dirname($origDestName) . '/RTEmagicC_') . substr(basename($origDestName), 10)) . '.') . $pI['extension'];
-									if (((!@is_file($copyDestName) && !@is_file($origDestName)) && $origDestName === \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($origDestName)) && $copyDestName === \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($copyDestName)) {
+									$copyDestName = dirname($origDestName) . '/RTEmagicC_' . substr(basename($origDestName), 10) . '.' . $pI['extension'];
+									if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($copyDestName)) {
 										echo ' to ' . basename($copyDestName);
 										if ($bypass = $this->cli_noExecutionCheck($fileName)) {
 											echo $bypass;
@@ -202,13 +202,13 @@ Reports problems with RTE images';
 												$sysRefObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\ReferenceIndex');
 												$error = $sysRefObj->setReferenceValue($hash, substr($copyDestName, strlen(PATH_site)));
 												if ($error) {
-													echo ('	- ERROR:	TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error) . LF;
+													echo '	- ERROR:	TYPO3\\CMS\\Core\\Database\\ReferenceIndex::setReferenceValue(): ' . $error . LF;
 													die;
 												} else {
 													echo ' - DONE';
 												}
 											} else {
-												echo ('	- ERROR: File "' . $copyDestName) . '" was not created!';
+												echo '	- ERROR: File "' . $copyDestName . '" was not created!';
 											}
 										}
 									} else {
@@ -232,7 +232,7 @@ Reports problems with RTE images';
 				echo 'Removing lost RTEmagic files from folders inside uploads/: ' . LF;
 				foreach ($resultArray['lostFiles'] as $key => $value) {
 					$absFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($value);
-					echo ('Deleting file: "' . $absFileName) . '": ';
+					echo 'Deleting file: "' . $absFileName . '": ';
 					if ($bypass = $this->cli_noExecutionCheck($absFileName)) {
 						echo $bypass;
 					} else {
@@ -240,7 +240,7 @@ Reports problems with RTE images';
 							unlink($absFileName);
 							echo 'DONE';
 						} else {
-							echo ('	ERROR: File "' . $absFileName) . '" was not found!';
+							echo '	ERROR: File "' . $absFileName . '" was not found!';
 						}
 					}
 					echo LF;
