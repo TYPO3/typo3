@@ -199,7 +199,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 					// (not an URL).
 					// TODO: Improve testing here. After normalization has been added, now all identifiers will succeed here...
 					$urlParts = @parse_url($this->openIDIdentifier);
-					if ((is_array($urlParts) && $urlParts['scheme'] != '') && $urlParts['host']) {
+					if (is_array($urlParts) && $urlParts['scheme'] != '' && $urlParts['host']) {
 						// Yes, this looks like a good OpenID. Ask OpenID server (should not return)
 						$this->sendOpenIDRequest();
 					}
@@ -221,7 +221,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 			// PHP OpenID libraries requires adjustments of path settings
 			$oldIncludePath = get_include_path();
 			$phpOpenIDLibPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('openid') . 'lib/php-openid';
-			@set_include_path((((((($phpOpenIDLibPath . PATH_SEPARATOR) . $phpOpenIDLibPath) . PATH_SEPARATOR) . 'Auth') . PATH_SEPARATOR) . $oldIncludePath));
+			@set_include_path(($phpOpenIDLibPath . PATH_SEPARATOR . $phpOpenIDLibPath . PATH_SEPARATOR . 'Auth' . PATH_SEPARATOR . $oldIncludePath));
 			// Make sure that random generator is properly set up. Constant could be
 			// defined by the previous inclusion of the file
 			if (!defined('Auth_OpenID_RAND_SOURCE')) {
@@ -260,7 +260,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		if ($openIDIdentifier) {
 			// $openIDIdentifier always as a trailing slash because it got normalized
 			// but tx_openid_openid possibly not so check for both alternatives in database
-			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->authenticationInformation['db_user']['table'], ((((('tx_openid_openid IN (' . $GLOBALS['TYPO3_DB']->fullQuoteStr($openIDIdentifier, $this->authenticationInformation['db_user']['table'])) . ',') . $GLOBALS['TYPO3_DB']->fullQuoteStr(rtrim($openIDIdentifier, '/'), $this->authenticationInformation['db_user']['table'])) . ')') . $this->authenticationInformation['db_user']['check_pid_clause']) . $this->authenticationInformation['db_user']['enable_clause']);
+			$record = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', $this->authenticationInformation['db_user']['table'], 'tx_openid_openid IN (' . $GLOBALS['TYPO3_DB']->fullQuoteStr($openIDIdentifier, $this->authenticationInformation['db_user']['table']) . ',' . $GLOBALS['TYPO3_DB']->fullQuoteStr(rtrim($openIDIdentifier, '/'), $this->authenticationInformation['db_user']['table']) . ')' . $this->authenticationInformation['db_user']['check_pid_clause'] . $this->authenticationInformation['db_user']['enable_clause']);
 			if ($record) {
 				// Make sure to work only with normalized OpenID during the whole process
 				$record['tx_openid_openid'] = $this->normalizeOpenID($record['tx_openid_openid']);
@@ -363,14 +363,14 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 			// return to the calling page.
 			// Notice: 'pid' and 'logintype' parameter names cannot be changed!
 			// They are essential for FE user authentication.
-			$returnURL = ((('index.php?eID=tx_openid&' . 'pid=') . $this->authenticationInformation['db_user']['checkPidList']) . '&') . 'logintype=login&';
+			$returnURL = 'index.php?eID=tx_openid&' . 'pid=' . $this->authenticationInformation['db_user']['checkPidList'] . '&' . 'logintype=login&';
 		} else {
 			// In the Backend we will use dedicated script to create session.
 			// It is much easier for the Backend to manage users.
 			// Notice: 'login_status' parameter name cannot be changed!
 			// It is essential for BE user authentication.
 			$absoluteSiteURL = substr(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), strlen(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST')));
-			$returnURL = ((($absoluteSiteURL . TYPO3_mainDir) . 'sysext/') . $this->extKey) . '/class.tx_openid_return.php?login_status=login&';
+			$returnURL = $absoluteSiteURL . TYPO3_mainDir . 'sysext/' . $this->extKey . '/class.tx_openid_return.php?login_status=login&';
 		}
 		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_mode') == 'finish') {
 			$requestURL = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_openid_location');
@@ -379,7 +379,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 			$requestURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
 			$claimedIdentifier = $this->openIDIdentifier;
 		}
-		$returnURL .= ((((((('tx_openid_location=' . rawurlencode($requestURL)) . '&') . 'tx_openid_mode=finish&') . 'tx_openid_claimed=') . rawurlencode($claimedIdentifier)) . '&') . 'tx_openid_signature=') . $this->getSignature($claimedIdentifier);
+		$returnURL .= 'tx_openid_location=' . rawurlencode($requestURL) . '&' . 'tx_openid_mode=finish&' . 'tx_openid_claimed=' . rawurlencode($claimedIdentifier) . '&' . 'tx_openid_signature=' . $this->getSignature($claimedIdentifier);
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($returnURL);
 	}
 
@@ -413,7 +413,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 		// A URI with a missing scheme is normalized to a http URI
 		if (!preg_match('#^https?://#', $openIDIdentifier)) {
 			$escapedIdentifier = $GLOBALS['TYPO3_DB']->quoteStr($openIDIdentifier, $this->authenticationInformation['db_user']['table']);
-			$condition = (((((((((((('tx_openid_openid IN (' . '\'http://') . $escapedIdentifier) . '\',') . '\'http://') . $escapedIdentifier) . '/\',') . '\'https://') . $escapedIdentifier) . '\',') . '\'https://') . $escapedIdentifier) . '/\'') . ')';
+			$condition = 'tx_openid_openid IN (' . '\'http://' . $escapedIdentifier . '\',' . '\'http://' . $escapedIdentifier . '/\',' . '\'https://' . $escapedIdentifier . '\',' . '\'https://' . $escapedIdentifier . '/\'' . ')';
 			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('tx_openid_openid', $this->authenticationInformation['db_user']['table'], $condition);
 			if (is_array($row)) {
 				$openIDIdentifier = $row['tx_openid_openid'];
@@ -482,7 +482,7 @@ class OpenidService extends \TYPO3\CMS\Core\Service\AbstractService {
 	protected function getAdjustedOpenIDIdentifier($openIDIdentifier) {
 		$result = '';
 		$claimedOpenIDIdentifier = $this->getSignedClaimedOpenIDIdentifier();
-		$pattern = ('#^' . preg_quote($claimedOpenIDIdentifier, '#')) . '/?$#';
+		$pattern = '#^' . preg_quote($claimedOpenIDIdentifier, '#') . '/?$#';
 		if (preg_match($pattern, $openIDIdentifier)) {
 			$result = $claimedOpenIDIdentifier;
 		}
