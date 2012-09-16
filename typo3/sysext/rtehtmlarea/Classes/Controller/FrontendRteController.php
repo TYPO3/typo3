@@ -160,7 +160,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		// Register RTE windows:
 		$this->TCEform->RTEwindows[] = $PA['itemFormElName'];
 		$textAreaId = preg_replace('/[^a-zA-Z0-9_:.-]/', '_', $PA['itemFormElName']);
-		$textAreaId = (htmlspecialchars(preg_replace('/^[^a-zA-Z]/', 'x', $textAreaId)) . '_') . strval($this->TCEform->RTEcounter);
+		$textAreaId = htmlspecialchars(preg_replace('/^[^a-zA-Z]/', 'x', $textAreaId)) . '_' . strval($this->TCEform->RTEcounter);
 		/* =======================================
 		 * LANGUAGES & CHARACTER SETS
 		 * =======================================
@@ -168,7 +168,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		// Language
 		$TSFE->initLLvars();
 		$this->language = $TSFE->lang;
-		$this->LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile(('EXT:' . $this->ID) . '/locallang.xml', $this->language);
+		$this->LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile('EXT:' . $this->ID . '/locallang.xml', $this->language);
 		if ($this->language == 'default' || !$this->language) {
 			$this->language = 'en';
 		}
@@ -178,9 +178,9 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 				$tableA = 'sys_language';
 				$tableB = 'static_languages';
 				$languagesUidsList = $this->contentLanguageUid;
-				$selectFields = (((((($tableA . '.uid,') . $tableB) . '.lg_iso_2,') . $tableB) . '.lg_country_iso_2,') . $tableB) . '.lg_typo3';
-				$tableAB = (((((($tableA . ' LEFT JOIN ') . $tableB) . ' ON ') . $tableA) . '.static_lang_isocode=') . $tableB) . '.uid';
-				$whereClause = (($tableA . '.uid IN (') . $languagesUidsList) . ') ';
+				$selectFields = $tableA . '.uid,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2,' . $tableB . '.lg_typo3';
+				$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
+				$whereClause = $tableA . '.uid IN (' . $languagesUidsList . ') ';
 				$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($tableA);
 				$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableA);
 				$res = $TYPO3_DB->exec_SELECTquery($selectFields, $tableAB, $whereClause);
@@ -237,8 +237,8 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		$height = $RTEHeightOverride > 0 ? $RTEHeightOverride : $height;
 		$RTEHeight = $height . 'px';
 		$editorWrapHeight = ($height + 2) . 'px';
-		$this->RTEWrapStyle = $this->RTEWrapStyle ? $this->RTEWrapStyle : ($this->RTEdivStyle ? $this->RTEdivStyle : ((('height:' . $editorWrapHeight) . '; width:') . $editorWrapWidth) . ';');
-		$this->RTEdivStyle = $this->RTEdivStyle ? $this->RTEdivStyle : ((('position:relative; left:0px; top:0px; height:' . $RTEHeight) . '; width:') . $RTEWidth) . '; border: 1px solid black;';
+		$this->RTEWrapStyle = $this->RTEWrapStyle ? $this->RTEWrapStyle : ($this->RTEdivStyle ? $this->RTEdivStyle : 'height:' . $editorWrapHeight . '; width:' . $editorWrapWidth . ';');
+		$this->RTEdivStyle = $this->RTEdivStyle ? $this->RTEdivStyle : 'position:relative; left:0px; top:0px; height:' . $RTEHeight . '; width:' . $RTEWidth . '; border: 1px solid black;';
 		/* =======================================
 		 * LOAD JS, CSS and more
 		 * =======================================
@@ -279,11 +279,11 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 			}
 		}
 		// draw the textarea
-		$item = ((((((((((((((((($this->triggerField($PA['itemFormElName']) . '
-			<div id="pleasewait') . $textAreaId) . '" class="pleasewait" style="display: block;" >') . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait', $this->LOCAL_LANG), $this->charset, $TSFE->renderCharset)) . '</div>
-			<div id="editorWrap') . $textAreaId) . '" class="editorWrap" style="visibility: hidden; ') . htmlspecialchars($this->RTEWrapStyle)) . '">
-			<textarea id="RTEarea') . $textAreaId) . '" name="') . htmlspecialchars($PA['itemFormElName'])) . '" rows="0" cols="0" style="') . htmlspecialchars($this->RTEdivStyle)) . '">') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($value)) . '</textarea>
-			</div>') . LF;
+		$item = $this->triggerField($PA['itemFormElName']) . '
+			<div id="pleasewait' . $textAreaId . '" class="pleasewait" style="display: block;" >' . $TSFE->csConvObj->conv($TSFE->getLLL('Please wait', $this->LOCAL_LANG), $this->charset, $TSFE->renderCharset) . '</div>
+			<div id="editorWrap' . $textAreaId . '" class="editorWrap" style="visibility: hidden; ' . htmlspecialchars($this->RTEWrapStyle) . '">
+			<textarea id="RTEarea' . $textAreaId . '" name="' . htmlspecialchars($PA['itemFormElName']) . '" rows="0" cols="0" style="' . htmlspecialchars($this->RTEdivStyle) . '">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatForTextarea($value) . '</textarea>
+			</div>' . LF;
 		return $item;
 	}
 
@@ -311,11 +311,11 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	 * @todo Define visibility
 	 */
 	public function setSaveRTE($RTEcounter, $form, $textareaId) {
-		return ((((((('
-		if (RTEarea[\'' . $textareaId) . '\'] && !RTEarea[\'') . $textareaId) . '\'].deleted) {
-			var field = document.getElementById(\'RTEarea') . $textareaId) . '\');
+		return '
+		if (RTEarea[\'' . $textareaId . '\'] && !RTEarea[\'' . $textareaId . '\'].deleted) {
+			var field = document.getElementById(\'RTEarea' . $textareaId . '\');
 			if (field && field.nodeName.toLowerCase() == \'textarea\') {
-				field.value = RTEarea[\'') . $textareaId) . '\'][\'editor\'].getHTML();
+				field.value = RTEarea[\'' . $textareaId . '\'][\'editor\'].getHTML();
 			}
 		} else {
 			OK = 0;

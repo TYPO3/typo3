@@ -106,8 +106,8 @@ class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$registerRTEinJavascriptString = '';
 		if (in_array('formatblock', $this->toolbar)) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formatblock.'])) {
-				$registerRTEinJavascriptString .= ('
-			RTEarea[' . $RTEcounter) . '].buttons.formatblock = new Object();';
+				$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.formatblock = new Object();';
 			}
 			// Default block elements
 			$hideItems = array();
@@ -160,7 +160,7 @@ class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			// Localizing the options
 			$blockElementsOptions = array();
 			$labels = array();
-			if ((is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['formatblock.'])) && is_array($this->thisConfig['buttons.']['formatblock.']['items.'])) {
+			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['formatblock.']) && is_array($this->thisConfig['buttons.']['formatblock.']['items.'])) {
 				$labels = $this->thisConfig['buttons.']['formatblock.']['items.'];
 			}
 			foreach ($blockElementsOrder as $item) {
@@ -173,11 +173,11 @@ class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				if (is_array($labels[$item . '.']) && $labels[$item . '.']['label']) {
 					$blockElementsOptions[$item] = $this->htmlAreaRTE->getPageConfigLabel($labels[$item . '.']['label'], 0);
 				}
-				$blockElementsOptions[$item] = (($prefixLabelWithTag && $item != 'none' ? $item . ' - ' : '') . $blockElementsOptions[$item]) . ($postfixLabelWithTag && $item != 'none' ? ' - ' . $item : '');
+				$blockElementsOptions[$item] = ($prefixLabelWithTag && $item != 'none' ? $item . ' - ' : '') . $blockElementsOptions[$item] . ($postfixLabelWithTag && $item != 'none' ? ' - ' . $item : '');
 			}
 			$first = array_shift($blockElementsOptions);
 			// Sorting the options
-			if ((!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formatblock.'])) || !$this->thisConfig['buttons.']['formatblock.']['orderItems']) {
+			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formatblock.']) || !$this->thisConfig['buttons.']['formatblock.']['orderItems']) {
 				asort($blockElementsOptions);
 			}
 			// Generating the javascript options
@@ -189,8 +189,8 @@ class BlockElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			if ($this->htmlAreaRTE->is_FE()) {
 				$GLOBALS['TSFE']->csConvObj->convArray($JSBlockElements, $this->htmlAreaRTE->OutputCharset, 'utf-8');
 			}
-			$registerRTEinJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . '].buttons.formatblock.options = ') . json_encode($JSBlockElements)) . ';';
+			$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.formatblock.options = ' . json_encode($JSBlockElements) . ';';
 		}
 		return $registerRTEinJavascriptString;
 	}

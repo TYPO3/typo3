@@ -166,7 +166,7 @@ class SpellCheckingController {
 			$AspellVersionString = explode('Aspell', shell_exec($this->AspellDirectory . ' -v'));
 			$AspellVersion = substr($AspellVersionString[1], 0, 4);
 			if (doubleval($AspellVersion) < doubleval('0.5') && (!$this->pspell_is_available || $this->forceCommandMode)) {
-				echo ('Configuration problem: Aspell version ' . $AspellVersion) . ' too old. Spell checking cannot be performed in command mode.';
+				echo 'Configuration problem: Aspell version ' . $AspellVersion . ' too old. Spell checking cannot be performed in command mode.';
 			}
 			$this->defaultAspellEncoding = trim(shell_exec($this->AspellDirectory . ' config encoding'));
 		}
@@ -254,18 +254,18 @@ class SpellCheckingController {
 					$mainDictionaryCharacterSet = $this->getMainDictionaryCharacterSet();
 					// Write the personal words addition commands to the temporary file
 					foreach ($to_p_dict as $personal_word) {
-						$cmd = ('&' . $this->csConvObj->conv($personal_word, $this->parserCharset, $mainDictionaryCharacterSet)) . LF;
+						$cmd = '&' . $this->csConvObj->conv($personal_word, $this->parserCharset, $mainDictionaryCharacterSet) . LF;
 						fwrite($filehandle, $cmd, strlen($cmd));
 					}
 					// Write the replacent pairs addition commands to the temporary file
 					foreach ($to_r_list as $replace_pair) {
-						$cmd = ((('$$ra ' . $this->csConvObj->conv($replace_pair[0], $this->parserCharset, $mainDictionaryCharacterSet)) . ' , ') . $this->csConvObj->conv($replace_pair[1], $this->parserCharset, $mainDictionaryCharacterSet)) . LF;
+						$cmd = '$$ra ' . $this->csConvObj->conv($replace_pair[0], $this->parserCharset, $mainDictionaryCharacterSet) . ' , ' . $this->csConvObj->conv($replace_pair[1], $this->parserCharset, $mainDictionaryCharacterSet) . LF;
 						fwrite($filehandle, $cmd, strlen($cmd));
 					}
 					$cmd = '#' . LF;
 					fwrite($filehandle, $cmd, strlen($cmd));
 					// Assemble the Aspell command
-					$AspellCommand = ((((((((((TYPO3_OS === 'WIN' ? 'type ' : 'cat ') . escapeshellarg($tmpFileName)) . ' | ') . $this->AspellDirectory) . ' -a --mode=none') . ($this->personalDictionaryPath ? ' --home-dir=' . escapeshellarg($this->personalDictionaryPath) : '')) . ' --lang=') . escapeshellarg($this->dictionary)) . ' --encoding=') . escapeshellarg($mainDictionaryCharacterSet)) . ' 2>&1';
+					$AspellCommand = (TYPO3_OS === 'WIN' ? 'type ' : 'cat ') . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a --mode=none' . ($this->personalDictionaryPath ? ' --home-dir=' . escapeshellarg($this->personalDictionaryPath) : '') . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($mainDictionaryCharacterSet) . ' 2>&1';
 					$AspellAnswer = shell_exec($AspellCommand);
 					// Close and delete the temporary file
 					fclose($filehandle);
@@ -283,14 +283,14 @@ class SpellCheckingController {
 		} else {
 			// Check spelling content
 			// Initialize output
-			$this->result = (((((((((('<?xml version="1.0" encoding="' . $this->parserCharset) . '"?>
+			$this->result = '<?xml version="1.0" encoding="' . $this->parserCharset . '"?>
 <!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="') . substr($this->dictionary, 0, 2)) . '" lang="') . substr($this->dictionary, 0, 2)) . '">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . substr($this->dictionary, 0, 2) . '" lang="' . substr($this->dictionary, 0, 2) . '">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=') . $this->parserCharset) . '" />
-<link rel="stylesheet" type="text/css" media="all" href="') . (TYPO3_MODE == 'BE' ? '../' : '')) . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath($this->extKey)) . '/htmlarea/plugins/SpellChecker/spell-check-style.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=' . $this->parserCharset . '" />
+<link rel="stylesheet" type="text/css" media="all" href="' . (TYPO3_MODE == 'BE' ? '../' : '') . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath($this->extKey) . '/htmlarea/plugins/SpellChecker/spell-check-style.css" />
 <script type="text/javascript">
 /*<![CDATA[*/
 <!--
@@ -310,32 +310,32 @@ class SpellCheckingController {
 			if (!xml_set_default_handler($parser, 'defaultHandler')) {
 				echo 'Bad xml handler setting';
 			}
-			if (!xml_parse($parser, (((('<?xml version="1.0" encoding="' . $this->parserCharset) . '"?><spellchecker> ') . preg_replace(('/&nbsp;/' . ($this->parserCharset == 'utf-8' ? 'u' : '')), ' ', $content)) . ' </spellchecker>'))) {
+			if (!xml_parse($parser, ('<?xml version="1.0" encoding="' . $this->parserCharset . '"?><spellchecker> ' . preg_replace(('/&nbsp;/' . ($this->parserCharset == 'utf-8' ? 'u' : '')), ' ', $content) . ' </spellchecker>'))) {
 				echo 'Bad parsing';
 			}
 			if (xml_get_error_code($parser)) {
-				throw new \UnexpectedException((('Line ' . xml_get_current_line_number($parser)) . ': ') . xml_error_string(xml_get_error_code($parser)), 1294585788);
+				throw new \UnexpectedException('Line ' . xml_get_current_line_number($parser) . ': ' . xml_error_string(xml_get_error_code($parser)), 1294585788);
 			}
 			xml_parser_free($parser);
 			if ($this->pspell_is_available && !$this->forceCommandMode) {
 				pspell_clear_session($this->pspell_link);
 			}
-			$this->result .= ((((('var suggestedWords = {' . $this->suggestedWords) . '};
-var dictionaries = "') . $dictionaryList) . '";
-var selectedDictionary = "') . $this->dictionary) . '";
+			$this->result .= 'var suggestedWords = {' . $this->suggestedWords . '};
+var dictionaries = "' . $dictionaryList . '";
+var selectedDictionary = "' . $this->dictionary . '";
 ';
 			// Calculating parsing and spell checkting time
 			$time = number_format(microtime(TRUE) - $time_start, 2, ',', ' ');
 			// Insert spellcheck info
-			$this->result .= ((((((((('var spellcheckInfo = { "Total words":"' . $this->wordCount) . '","Misspelled words":"') . sizeof($this->misspelled)) . '","Total suggestions":"') . $this->suggestionCount) . '","Total words suggested":"') . $this->suggestedWordCount) . '","Spelling checked in":"') . $time) . '" };
+			$this->result .= 'var spellcheckInfo = { "Total words":"' . $this->wordCount . '","Misspelled words":"' . sizeof($this->misspelled) . '","Total suggestions":"' . $this->suggestionCount . '","Total words suggested":"' . $this->suggestedWordCount . '","Spelling checked in":"' . $time . '" };
 // -->
 /*]]>*/
 </script>
 </head>
 ';
-			$this->result .= ('<body onload="window.parent.RTEarea[\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('editorId')) . '\'].editor.getPlugin(\'SpellChecker\').spellCheckComplete();">';
-			$this->result .= preg_replace((((((('/' . preg_quote('<?xml')) . '.*') . preg_quote('?>')) . '[') . preg_quote(((LF . CR) . chr(32)))) . ']*/') . ($this->parserCharset == 'utf-8' ? 'u' : ''), '', $this->text);
-			$this->result .= ('<div style="display: none;">' . $dictionaries) . '</div>';
+			$this->result .= '<body onload="window.parent.RTEarea[\'' . \TYPO3\CMS\Core\Utility\GeneralUtility::_POST('editorId') . '\'].editor.getPlugin(\'SpellChecker\').spellCheckComplete();">';
+			$this->result .= preg_replace('/' . preg_quote('<?xml') . '.*' . preg_quote('?>') . '[' . preg_quote((LF . CR . chr(32))) . ']*/' . ($this->parserCharset == 'utf-8' ? 'u' : ''), '', $this->text);
+			$this->result .= '<div style="display: none;">' . $dictionaries . '</div>';
 			// Closing
 			$this->result .= '
 </body></html>';
@@ -363,7 +363,7 @@ var selectedDictionary = "') . $this->dictionary) . '";
 	protected function getMainDictionaryCharacterSet() {
 		$characterSet = '';
 		// Read the options of the dictionary
-		$dictionaryHandle = fopen((($this->mainDictionaryPath . '/') . $this->dictionary) . '.dat', 'rb');
+		$dictionaryHandle = fopen($this->mainDictionaryPath . '/' . $this->dictionary . '.dat', 'rb');
 		$dictionaryContent = fread($dictionaryHandle, 500);
 		fclose($dictionaryHandle);
 		// Get the line that contains the character set option
@@ -386,12 +386,12 @@ var selectedDictionary = "') . $this->dictionary) . '";
 	 */
 	protected function setPersonalDictionaryPath() {
 		$this->personalDictionaryPath = '';
-		if ((\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('enablePersonalDicts') == 'true' && TYPO3_MODE == 'BE') && is_object($GLOBALS['BE_USER'])) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('enablePersonalDicts') == 'true' && TYPO3_MODE == 'BE' && is_object($GLOBALS['BE_USER'])) {
 			if ($GLOBALS['BE_USER']->user['uid']) {
 				$personalDictionaryFolderName = 'BE_' . $GLOBALS['BE_USER']->user['uid'];
 				// Check for pre-FAL personal dictionary folder
 				try {
-					$personalDictionaryFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier((PATH_site . $this->uploadFolder) . $personalDictionaryFolderName);
+					$personalDictionaryFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier(PATH_site . $this->uploadFolder . $personalDictionaryFolderName);
 				} catch (\Exception $e) {
 					$personalDictionaryFolder = FALSE;
 				}
@@ -419,8 +419,8 @@ var selectedDictionary = "') . $this->dictionary) . '";
 	protected function fixPersonalDictionaryCharacterSet() {
 		// Fix the options of the personl word list and of the replacement pairs files
 		$fileNames = array();
-		$fileNames[0] = ((($this->personalDictionaryPath . '/') . '.aspell.') . $this->dictionary) . '.pws';
-		$fileNames[1] = ((($this->personalDictionaryPath . '/') . '.aspell.') . $this->dictionary) . '.prepl';
+		$fileNames[0] = $this->personalDictionaryPath . '/' . '.aspell.' . $this->dictionary . '.pws';
+		$fileNames[1] = $this->personalDictionaryPath . '/' . '.aspell.' . $this->dictionary . '.prepl';
 		foreach ($fileNames as $fileName) {
 			if (file_exists($fileName)) {
 				$fileContent = file_get_contents($fileName);
@@ -460,16 +460,16 @@ var selectedDictionary = "') . $this->dictionary) . '";
 		case 'area':
 
 		case 'AREA':
-			$this->text .= ('<' . $this->csConvObj->conv_case($this->parserCharset, $tag, 'toLower')) . ' ';
+			$this->text .= '<' . $this->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
 			foreach ($attributes as $key => $val) {
-				$this->text .= (($key . '="') . $val) . '" ';
+				$this->text .= $key . '="' . $val . '" ';
 			}
 			$this->text .= ' />';
 			break;
 		default:
-			$this->text .= ('<' . $this->csConvObj->conv_case($this->parserCharset, $tag, 'toLower')) . ' ';
+			$this->text .= '<' . $this->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
 			foreach ($attributes as $key => $val) {
-				$this->text .= (($key . '="') . $val) . '" ';
+				$this->text .= $key . '="' . $val . '" ';
 			}
 			$this->text .= '>';
 			break;
@@ -509,7 +509,7 @@ var selectedDictionary = "') . $this->dictionary) . '";
 		case 'AREA':
 			break;
 		default:
-			$this->text .= ('</' . $tag) . '>';
+			$this->text .= '</' . $tag . '>';
 			break;
 		}
 		return;
@@ -537,12 +537,12 @@ var selectedDictionary = "') . $this->dictionary) . '";
 								$this->suggestionCount++;
 								$this->suggestedWordCount += sizeof($suggest);
 							}
-							$this->suggestedWords .= ((('"' . $word) . '":"') . implode(',', $suggest)) . '"';
+							$this->suggestedWords .= '"' . $word . '":"' . implode(',', $suggest) . '"';
 							$this->misspelled[] = $word;
 							unset($suggest);
 						}
 						if (!in_array($word, $incurrent)) {
-							$stringText = preg_replace((('/\\b' . $word) . '\\b/') . ($this->parserCharset == 'utf-8' ? 'u' : ''), ('<span class="htmlarea-spellcheck-error">' . $word) . '</span>', $stringText);
+							$stringText = preg_replace('/\\b' . $word . '\\b/' . ($this->parserCharset == 'utf-8' ? 'u' : ''), '<span class="htmlarea-spellcheck-error">' . $word . '</span>', $stringText);
 							$incurrent[] = $word;
 						}
 					}
@@ -558,12 +558,12 @@ var selectedDictionary = "') . $this->dictionary) . '";
 						echo 'SpellChecker tempfile close error';
 					}
 					$catCommand = TYPO3_OS == 'WIN' ? 'type' : 'cat';
-					$AspellCommand = ((((((((((($catCommand . ' ') . escapeshellarg($tmpFileName)) . ' | ') . $this->AspellDirectory) . ' -a check --mode=none --sug-mode=') . escapeshellarg($this->pspellMode)) . ($this->personalDictionaryPath ? ' --home-dir=' . escapeshellarg($this->personalDictionaryPath) : '')) . ' --lang=') . escapeshellarg($this->dictionary)) . ' --encoding=') . escapeshellarg($this->aspellEncoding)) . ' 2>&1';
+					$AspellCommand = $catCommand . ' ' . escapeshellarg($tmpFileName) . ' | ' . $this->AspellDirectory . ' -a check --mode=none --sug-mode=' . escapeshellarg($this->pspellMode) . ($this->personalDictionaryPath ? ' --home-dir=' . escapeshellarg($this->personalDictionaryPath) : '') . ' --lang=' . escapeshellarg($this->dictionary) . ' --encoding=' . escapeshellarg($this->aspellEncoding) . ' 2>&1';
 					$AspellAnswer = shell_exec($AspellCommand);
 					$AspellResultLines = array();
 					$AspellResultLines = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $AspellAnswer, 1);
 					if (substr($AspellResultLines[0], 0, 6) == 'Error:') {
-						echo ('{' . $AspellAnswer) . '}';
+						echo '{' . $AspellAnswer . '}';
 					}
 					\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($tmpFileName);
 					if (substr($AspellResultLines['1'], 0, 1) != '*') {
@@ -581,13 +581,13 @@ var selectedDictionary = "') . $this->dictionary) . '";
 								$this->suggestionCount++;
 								$this->suggestedWordCount += sizeof($suggest);
 							}
-							$this->suggestedWords .= ((('"' . $word) . '":"') . implode(',', $suggest)) . '"';
+							$this->suggestedWords .= '"' . $word . '":"' . implode(',', $suggest) . '"';
 							$this->misspelled[] = $word;
 							unset($suggest);
 							unset($suggestions);
 						}
 						if (!in_array($word, $incurrent)) {
-							$stringText = preg_replace((('/\\b' . $word) . '\\b/') . ($this->parserCharset == 'utf-8' ? 'u' : ''), ('<span class="htmlarea-spellcheck-error">' . $word) . '</span>', $stringText);
+							$stringText = preg_replace('/\\b' . $word . '\\b/' . ($this->parserCharset == 'utf-8' ? 'u' : ''), '<span class="htmlarea-spellcheck-error">' . $word . '</span>', $stringText);
 							$incurrent[] = $word;
 						}
 					}

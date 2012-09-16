@@ -53,8 +53,8 @@ class LoginFormHook {
 				/** @var $storage \TYPO3\CMS\Rsaauth\Storage\AbstractStorage */
 				$storage->put($keyPair->getPrivateKey());
 				// Add RSA hidden fields
-				$form .= ('<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus())) . '" />';
-				$form .= ('<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent())) . '" />';
+				$form .= '<input type="hidden" id="rsa_n" name="n" value="' . htmlspecialchars($keyPair->getPublicKeyModulus()) . '" />';
+				$form .= '<input type="hidden" id="rsa_e" name="e" value="' . sprintf('%x', $keyPair->getExponent()) . '" />';
 			} else {
 				throw new \TYPO3\CMS\Core\Error\Exception('No OpenSSL backend could be obtained for rsaauth.', 1318283565);
 			}
@@ -83,7 +83,7 @@ class LoginFormHook {
 			);
 			$content = '';
 			foreach ($files as $file) {
-				$content .= ((('<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')) . $javascriptPath) . $file) . '"></script>';
+				$content .= '<script type="text/javascript" src="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $javascriptPath . $file . '"></script>';
 			}
 		}
 		return $content;

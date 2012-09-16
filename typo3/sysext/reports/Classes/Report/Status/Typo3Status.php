@@ -68,7 +68,7 @@ class Typo3Status implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$numberOfXclasses = count($xclasses);
 		if ($numberOfXclasses > 0) {
 			$value = sprintf($GLOBALS['LANG']->getLL('status_oldXclassUsageFound'), $numberOfXclasses);
-			$message = ('<ol><li>' . implode('</li><li>', $xclasses)) . '</li></ol>';
+			$message = '<ol><li>' . implode('</li><li>', $xclasses) . '</li></ol>';
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 		}
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_oldXclassUsage'), $value, $message, $severity);

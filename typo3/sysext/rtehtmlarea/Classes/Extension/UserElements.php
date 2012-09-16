@@ -71,11 +71,11 @@ class UserElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$button = 'user';
 		if (in_array($button, $this->toolbar)) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-				$registerRTEinJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . ' = new Object();';
+				$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
 			}
-			$registerRTEinJavascriptString .= ((((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . '.pathUserModule = "') . $this->htmlAreaRTE->extHttpPath) . 'mod5/user.php";';
+			$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathUserModule = "' . $this->htmlAreaRTE->extHttpPath . 'mod5/user.php";';
 		}
 		return $registerRTEinJavascriptString;
 	}

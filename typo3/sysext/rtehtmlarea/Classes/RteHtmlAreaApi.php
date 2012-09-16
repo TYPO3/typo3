@@ -103,9 +103,9 @@ abstract class RteHtmlAreaApi {
 		// Localization array must be initialized here
 		if ($this->relativePathToLocallangFile) {
 			if ($this->htmlAreaRTE->is_FE()) {
-				$this->LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->LOCAL_LANG, \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile((('EXT:' . $this->extensionKey) . '/') . $this->relativePathToLocallangFile, $this->htmlAreaRTE->language));
+				$this->LOCAL_LANG = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->LOCAL_LANG, \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile, $this->htmlAreaRTE->language));
 			} else {
-				$LANG->includeLLFile((('EXT:' . $this->extensionKey) . '/') . $this->relativePathToLocallangFile);
+				$LANG->includeLLFile('EXT:' . $this->extensionKey . '/' . $this->relativePathToLocallangFile);
 			}
 		}
 		return TRUE;
@@ -119,7 +119,7 @@ abstract class RteHtmlAreaApi {
 	public function addButtonsToToolbar() {
 		//Add only buttons not yet in the default toolbar order
 		$addButtons = implode(',', array_diff(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->pluginButtons, 1), \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->htmlAreaRTE->defaultToolbarOrder, 1)));
-		return ($addButtons ? ('bar,' . $addButtons) . ',linebreak,' : '') . $this->htmlAreaRTE->defaultToolbarOrder;
+		return ($addButtons ? 'bar,' . $addButtons . ',linebreak,' : '') . $this->htmlAreaRTE->defaultToolbarOrder;
 	}
 
 	/**
@@ -149,8 +149,8 @@ abstract class RteHtmlAreaApi {
 		foreach ($pluginButtons as $button) {
 			if (in_array($button, $this->toolbar)) {
 				if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-					$registerRTEinJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . ' = new Object();';
+					$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
 				}
 			}
 		}
@@ -172,7 +172,7 @@ abstract class RteHtmlAreaApi {
 	 * @return 	string		the full path to the plugin directory
 	 */
 	public function getPathToPluginDirectory() {
-		return $this->relativePathToPluginDirectory ? ($this->htmlAreaRTE->httpTypo3Path . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath($this->extensionKey)) . $this->relativePathToPluginDirectory : '';
+		return $this->relativePathToPluginDirectory ? $this->htmlAreaRTE->httpTypo3Path . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath($this->extensionKey) . $this->relativePathToPluginDirectory : '';
 	}
 
 	/**

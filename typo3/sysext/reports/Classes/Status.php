@@ -122,7 +122,7 @@ class Status {
 			self::ERROR => 'ERR'
 		);
 		// Max length 80 characters
-		$stringRepresentation = ((str_pad((('[' . $severity[$this->severity]) . ']'), 7) . str_pad($this->title, 40)) . ' - ') . substr($this->value, 0, 30);
+		$stringRepresentation = str_pad(('[' . $severity[$this->severity] . ']'), 7) . str_pad($this->title, 40) . ' - ' . substr($this->value, 0, 30);
 		return $stringRepresentation;
 	}
 

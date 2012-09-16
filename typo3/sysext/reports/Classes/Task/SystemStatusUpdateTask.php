@@ -94,9 +94,9 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task {
 		$subject = sprintf($GLOBALS['LANG']->getLL('status_updateTask_email_subject'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
 		$message = sprintf($GLOBALS['LANG']->getLL('status_problemNotification'), '', '');
 		$message .= CRLF . CRLF;
-		$message .= ($GLOBALS['LANG']->getLL('status_updateTask_email_site') . ': ') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+		$message .= $GLOBALS['LANG']->getLL('status_updateTask_email_site') . ': ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
 		$message .= CRLF . CRLF;
-		$message .= ($GLOBALS['LANG']->getLL('status_updateTask_email_issues') . ': ') . CRLF;
+		$message .= $GLOBALS['LANG']->getLL('status_updateTask_email_issues') . ': ' . CRLF;
 		$message .= implode(CRLF, $systemIssues);
 		$message .= CRLF . CRLF;
 		$from = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFrom();

@@ -7,8 +7,8 @@ if (TYPO3_MODE === 'BE') {
 		'Report' => 'index,detail'
 	), array(
 		'access' => 'admin',
-		'icon' => ('EXT:' . $_EXTKEY) . '/Resources/Public/moduleicon.gif',
-		'labels' => ('LLL:EXT:' . $_EXTKEY) . '/Resources/Private/Language/locallang.xlf'
+		'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/moduleicon.gif',
+		'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.xlf'
 	));
 	$statusReport = array(
 		'title' => 'LLL:EXT:reports/reports/locallang.xml:status_report_title',

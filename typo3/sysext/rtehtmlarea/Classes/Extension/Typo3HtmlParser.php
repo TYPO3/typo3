@@ -61,7 +61,7 @@ class Typo3HtmlParser extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 	);
 
 	public function main($parentObject) {
-		return (parent::main($parentObject) && $this->thisConfig['enableWordClean']) && is_array($this->thisConfig['enableWordClean.']['HTMLparser.']);
+		return parent::main($parentObject) && $this->thisConfig['enableWordClean'] && is_array($this->thisConfig['enableWordClean.']['HTMLparser.']);
 	}
 
 	/**
@@ -75,12 +75,12 @@ class Typo3HtmlParser extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$button = 'cleanword';
 		if (in_array($button, $this->toolbar)) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-				$registerRTEinJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . ' = new Object();';
+				$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
 			}
-			$registerRTEinJavascriptString .= ((((((((((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . '.pathParseHtmlModule = "') . $this->htmlAreaRTE->extHttpPath) . 'mod6/parse_html.php";
-			RTEarea[') . $RTEcounter) . '].buttons.') . $button) . '.hotKey = "') . ($this->thisConfig['enableWordClean.']['hotKey'] ? $this->thisConfig['enableWordClean.']['hotKey'] : '0')) . '";';
+			$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathParseHtmlModule = "' . $this->htmlAreaRTE->extHttpPath . 'mod6/parse_html.php";
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.hotKey = "' . ($this->thisConfig['enableWordClean.']['hotKey'] ? $this->thisConfig['enableWordClean.']['hotKey'] : '0') . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}

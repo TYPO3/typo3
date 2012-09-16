@@ -24,24 +24,24 @@ $GLOBALS['TCA']['tx_rtehtmlarea_acronym'] = array(
 	)
 );
 \TYPO3\CMS\Core\Extension\ExtensionManager::allowTableOnStandardPages('tx_rtehtmlarea_acronym');
-\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('tx_rtehtmlarea_acronym', ('EXT:' . $_EXTKEY) . '/locallang_csh_abbreviation.xml');
+\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('tx_rtehtmlarea_acronym', 'EXT:' . $_EXTKEY . '/locallang_csh_abbreviation.xml');
 // Add contextual help files
 $htmlAreaRteContextHelpFiles = array(
-	'General' => ('EXT:' . $_EXTKEY) . '/locallang_csh.xlf',
-	'Acronym' => ('EXT:' . $_EXTKEY) . '/extensions/Acronym/locallang_csh.xlf',
-	'EditElement' => ('EXT:' . $_EXTKEY) . '/extensions/EditElement/locallang_csh.xlf',
-	'Language' => ('EXT:' . $_EXTKEY) . '/extensions/Language/locallang_csh.xlf',
-	'MicrodataSchema' => ('EXT:' . $_EXTKEY) . '/extensions/MicrodataSchema/locallang_csh.xlf',
-	'PlainText' => ('EXT:' . $_EXTKEY) . '/extensions/PlainText/locallang_csh.xlf',
-	'RemoveFormat' => ('EXT:' . $_EXTKEY) . '/extensions/RemoveFormat/locallang_csh.xlf',
-	'TableOperations' => ('EXT:' . $_EXTKEY) . '/extensions/TableOperations/locallang_csh.xlf'
+	'General' => 'EXT:' . $_EXTKEY . '/locallang_csh.xlf',
+	'Acronym' => 'EXT:' . $_EXTKEY . '/extensions/Acronym/locallang_csh.xlf',
+	'EditElement' => 'EXT:' . $_EXTKEY . '/extensions/EditElement/locallang_csh.xlf',
+	'Language' => 'EXT:' . $_EXTKEY . '/extensions/Language/locallang_csh.xlf',
+	'MicrodataSchema' => 'EXT:' . $_EXTKEY . '/extensions/MicrodataSchema/locallang_csh.xlf',
+	'PlainText' => 'EXT:' . $_EXTKEY . '/extensions/PlainText/locallang_csh.xlf',
+	'RemoveFormat' => 'EXT:' . $_EXTKEY . '/extensions/RemoveFormat/locallang_csh.xlf',
+	'TableOperations' => 'EXT:' . $_EXTKEY . '/extensions/TableOperations/locallang_csh.xlf'
 );
 foreach ($htmlAreaRteContextHelpFiles as $key => $file) {
-	\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr((('xEXT_' . $_EXTKEY) . '_') . $key, $file);
+	\TYPO3\CMS\Core\Extension\ExtensionManager::addLLrefForTCAdescr('xEXT_' . $_EXTKEY . '_' . $key, $file);
 }
 unset($htmlAreaRteContextHelpFiles);
 // Extend TYPO3 User Settings Configuration
-if ((TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('setup')) && is_array($GLOBALS['TYPO3_USER_SETTINGS'])) {
+if (TYPO3_MODE === 'BE' && \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('setup') && is_array($GLOBALS['TYPO3_USER_SETTINGS'])) {
 	$GLOBALS['TYPO3_USER_SETTINGS']['columns'] = array_merge($GLOBALS['TYPO3_USER_SETTINGS']['columns'], array(
 		'rteWidth' => array(
 			'type' => 'text',

@@ -64,7 +64,7 @@ class Typo3Image extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$enabled = parent::main($parentObject);
 		// Check if this should be enabled based on extension configuration and Page TSConfig
 		// The 'Minimal' and 'Typical' default configurations include Page TSConfig that removes images on the way to the database
-		$enabled = ($enabled && !($this->thisConfig['proc.']['entryHTMLparser_db.']['tags.']['img.']['allowedAttribs'] == '0' && $this->thisConfig['proc.']['entryHTMLparser_db.']['tags.']['img.']['rmTagIfNoAttrib'] == '1')) && !$this->thisConfig['buttons.']['image.']['TYPO3Browser.']['disabled'];
+		$enabled = $enabled && !($this->thisConfig['proc.']['entryHTMLparser_db.']['tags.']['img.']['allowedAttribs'] == '0' && $this->thisConfig['proc.']['entryHTMLparser_db.']['tags.']['img.']['rmTagIfNoAttrib'] == '1') && !$this->thisConfig['buttons.']['image.']['TYPO3Browser.']['disabled'];
 		return $enabled;
 	}
 
@@ -79,11 +79,11 @@ class Typo3Image extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$button = 'image';
 		if (in_array($button, $this->toolbar)) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-				$registerRTEinJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . ']["buttons"]["') . $button) . '"] = new Object();';
+				$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . ']["buttons"]["' . $button . '"] = new Object();';
 			}
-			$registerRTEinJavascriptString .= ((((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . '.pathImageModule = "') . $this->htmlAreaRTE->extHttpPath) . 'mod4/select_image.php";';
+			$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathImageModule = "' . $this->htmlAreaRTE->extHttpPath . 'mod4/select_image.php";';
 		}
 		return $registerRTEinJavascriptString;
 	}

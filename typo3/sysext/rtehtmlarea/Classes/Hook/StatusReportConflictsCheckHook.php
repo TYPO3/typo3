@@ -56,7 +56,7 @@ class StatusReportConflictsCheckHook implements \TYPO3\CMS\Reports\StatusProvide
 			}
 		}
 		if (count($conflictingExtensions)) {
-			$value = ($GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/statusreport/locallang.xml:keys') . ' ') . implode(', ', $conflictingExtensions);
+			$value = $GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/statusreport/locallang.xml:keys') . ' ' . implode(', ', $conflictingExtensions);
 			$message = $GLOBALS['LANG']->sL('LLL:EXT:rtehtmlarea/hooks/statusreport/locallang.xml:uninstall');
 			$status = \TYPO3\CMS\Reports\Status::ERROR;
 		} else {

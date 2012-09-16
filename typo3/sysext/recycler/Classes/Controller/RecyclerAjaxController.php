@@ -101,7 +101,7 @@ class RecyclerAjaxController {
 			$depth = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('depth') ? \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('depth') : '';
 			$this->setDataInSession('tableSelection', $table);
 			$model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
-			$model->loadData($startUid, $table, $depth, ($start . ',') . $limit, $filter);
+			$model->loadData($startUid, $table, $depth, $start . ',' . $limit, $filter);
 			$deletedRowsArray = $model->getDeletedRows();
 			$model = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Recycler\\Domain\\Model\\DeletedRecords');
 			$totalDeleted = $model->getTotalCount($startUid, $table, $depth, $filter);

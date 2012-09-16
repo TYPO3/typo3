@@ -78,22 +78,22 @@ class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$button = 'link';
 		if (in_array($button, $this->toolbar)) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-				$registerRTEinJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . ' = new Object();';
+				$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
 			}
-			$registerRTEinJavascriptString .= ((((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . '.pathLinkModule = "') . $this->htmlAreaRTE->extHttpPath) . 'mod3/browse_links.php";';
+			$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.pathLinkModule = "' . $this->htmlAreaRTE->extHttpPath . 'mod3/browse_links.php";';
 			if ($this->htmlAreaRTE->is_FE()) {
 				$RTEProperties = $this->htmlAreaRTE->RTEsetup;
 			} else {
 				$RTEProperties = $this->htmlAreaRTE->RTEsetup['properties'];
 			}
 			if (is_array($RTEProperties['classesAnchor.'])) {
-				$registerRTEinJavascriptString .= ((((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . '.classesAnchorUrl = "') . $this->htmlAreaRTE->writeTemporaryFile('', ('classesAnchor_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $this->buildJSClassesAnchorArray(), TRUE)) . '";';
+				$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.classesAnchorUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', ('classesAnchor_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $this->buildJSClassesAnchorArray(), TRUE) . '";';
 			}
-			$registerRTEinJavascriptString .= ((((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . '.additionalAttributes = "data-htmlarea-external') . ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] ? ',' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] : '')) . '";';
+			$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.additionalAttributes = "data-htmlarea-external' . ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] ? ',' . $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins'][$this->pluginName]['additionalAttributes'] : '') . '";';
 		}
 		return $registerRTEinJavascriptString;
 	}
@@ -109,26 +109,26 @@ class Typo3Link extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$classesAnchorIndex = 0;
 		foreach ($this->htmlAreaRTE->RTEsetup['properties']['classesAnchor.'] as $label => $conf) {
 			if (is_array($conf) && $conf['class']) {
-				$JSClassesAnchorArray .= (($classesAnchorIndex++ ? ',' : '') . ' { ') . LF;
+				$JSClassesAnchorArray .= ($classesAnchorIndex++ ? ',' : '') . ' { ' . LF;
 				$index = 0;
-				$JSClassesAnchorArray .= (((($index++ ? ',' : '') . 'name : "') . str_replace('"', '', str_replace('\'', '', $conf['class']))) . '"') . LF;
+				$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'name : "' . str_replace('"', '', str_replace('\'', '', $conf['class'])) . '"' . LF;
 				if ($conf['type']) {
-					$JSClassesAnchorArray .= (((($index++ ? ',' : '') . 'type : "') . str_replace('"', '', str_replace('\'', '', $conf['type']))) . '"') . LF;
+					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'type : "' . str_replace('"', '', str_replace('\'', '', $conf['type'])) . '"' . LF;
 				}
 				if (trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))) {
-					$JSClassesAnchorArray .= ((((($index++ ? ',' : '') . 'image : "') . $this->htmlAreaRTE->siteURL) . \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath((TYPO3_mainDir . $this->htmlAreaRTE->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image']))))))) . '"') . LF;
+					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'image : "' . $this->htmlAreaRTE->siteURL . \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath((TYPO3_mainDir . $this->htmlAreaRTE->getFullFileName(trim(str_replace('\'', '', str_replace('"', '', $conf['image'])))))) . '"' . LF;
 				}
-				$JSClassesAnchorArray .= ((($index++ ? ',' : '') . 'addIconAfterLink : ') . ($conf['addIconAfterLink'] ? 'true' : 'false')) . LF;
+				$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'addIconAfterLink : ' . ($conf['addIconAfterLink'] ? 'true' : 'false') . LF;
 				if (trim($conf['altText'])) {
 					$string = $this->htmlAreaRTE->getLLContent(trim($conf['altText']));
-					$JSClassesAnchorArray .= ((($index++ ? ',' : '') . 'altText : ') . str_replace('"', '\\"', str_replace('\\\'', '\'', $string))) . LF;
+					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'altText : ' . str_replace('"', '\\"', str_replace('\\\'', '\'', $string)) . LF;
 				}
 				if (trim($conf['titleText'])) {
 					$string = $this->htmlAreaRTE->getLLContent(trim($conf['titleText']));
-					$JSClassesAnchorArray .= ((($index++ ? ',' : '') . 'titleText : ') . str_replace('"', '\\"', str_replace('\\\'', '\'', $string))) . LF;
+					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'titleText : ' . str_replace('"', '\\"', str_replace('\\\'', '\'', $string)) . LF;
 				}
 				if (trim($conf['target'])) {
-					$JSClassesAnchorArray .= (((($index++ ? ',' : '') . 'target : "') . trim($conf['target'])) . '"') . LF;
+					$JSClassesAnchorArray .= ($index++ ? ',' : '') . 'target : "' . trim($conf['target']) . '"' . LF;
 				}
 				$JSClassesAnchorArray .= '}' . LF;
 			}

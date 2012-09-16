@@ -96,7 +96,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 			$value = $GLOBALS['LANG']->getLL('status_empty');
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 			$url = 'sysext/lowlevel/dbint/index.php?&id=0&SET[function]=refindex';
-			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_reference_index'), ('<a href="' . $url) . '">', '</a>', \t3lib_BeFunc::dateTime($lastRefIndexUpdate));
+			$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.backend_reference_index'), '<a href="' . $url . '">', '</a>', \t3lib_BeFunc::dateTime($lastRefIndexUpdate));
 		}
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_referenceIndex'), $value, $message, $severity);
 	}
@@ -211,7 +211,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 		if (count($failedConnections)) {
 			$value = $GLOBALS['LANG']->getLL('status_connectionFailed');
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
-			$message = ((($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.memcache_not_usable') . '<br /><br />') . '<ul><li>') . implode('</li><li>', $failedConnections)) . '</li></ul>';
+			$message = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.memcache_not_usable') . '<br /><br />' . '<ul><li>' . implode('</li><li>', $failedConnections) . '</li></ul>';
 		}
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Reports\\Status', $GLOBALS['LANG']->getLL('status_memcachedConfiguration'), $value, $message, $severity);
 	}
@@ -229,15 +229,15 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 		$severity = \TYPO3\CMS\Reports\Status::OK;
 		if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['enableDeprecationLog']) {
 			$value = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_common.xml:enabled');
-			$message = ('<p>' . $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogEnabled')) . '</p>';
+			$message = '<p>' . $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogEnabled') . '</p>';
 			$severity = \TYPO3\CMS\Reports\Status::NOTICE;
 			$logFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getDeprecationLogFileName();
 			$logFileSize = 0;
 			if (@file_exists($logFile)) {
 				$logFileSize = filesize($logFile);
-				$message .= ('<p>' . sprintf($GLOBALS['LANG']->getLL('status_configuration_DeprecationLogFile'), $this->getDeprecationLogFileLink())) . '</p>';
+				$message .= '<p>' . sprintf($GLOBALS['LANG']->getLL('status_configuration_DeprecationLogFile'), $this->getDeprecationLogFileLink()) . '</p>';
 				$removeDeprecationLogFileUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=removeDeprecationLogFile';
-				$message .= ((((('<p>' . sprintf($GLOBALS['LANG']->getLL('status_configuration_DeprecationLogSize'), \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($logFileSize))) . ' <a href="') . $removeDeprecationLogFileUrl) . '">') . $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeleteLink')) . '</a></p>';
+				$message .= '<p>' . sprintf($GLOBALS['LANG']->getLL('status_configuration_DeprecationLogSize'), \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($logFileSize)) . ' <a href="' . $removeDeprecationLogFileUrl . '">' . $GLOBALS['LANG']->getLL('status_configuration_DeprecationLogDeleteLink') . '</a></p>';
 			}
 			if ($logFileSize > $this->deprecationLogFileSizeWarningThreshold) {
 				$severity = \TYPO3\CMS\Reports\Status::WARNING;
@@ -292,7 +292,7 @@ class ConfigurationStatus implements \TYPO3\CMS\Reports\StatusProviderInterface 
 	protected function getDeprecationLogFileLink() {
 		$logFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getDeprecationLogFileName();
 		$relativePath = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($this->backPath . substr($logFile, strlen(PATH_site)));
-		$link = ((('<a href="' . $relativePath) . '">') . $logFile) . '</a>';
+		$link = '<a href="' . $relativePath . '">' . $logFile . '</a>';
 		return $link;
 	}
 

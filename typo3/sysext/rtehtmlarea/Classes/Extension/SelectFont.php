@@ -185,11 +185,11 @@ class SelectFont extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$itemsJSArray = json_encode(array('options' => $itemsJSArray));
 		// Adding to button JS configuration
 		if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($buttonId . '.')])) {
-			$configureRTEInJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $buttonId) . ' = new Object();';
+			$configureRTEInJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $buttonId . ' = new Object();';
 		}
-		$configureRTEInJavascriptString .= (((((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $buttonId) . '.dataUrl = "') . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '')) . $this->htmlAreaRTE->writeTemporaryFile('', (($buttonId . '_') . $this->htmlAreaRTE->contentLanguageUid), 'js', $itemsJSArray)) . '";';
+		$configureRTEInJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $buttonId . '.dataUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', ($buttonId . '_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $itemsJSArray) . '";';
 		return $configureRTEInJavascriptString;
 	}
 

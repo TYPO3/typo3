@@ -21,10 +21,10 @@ class FolderTree extends \rteFolderTree {
 	 */
 	public function wrapTitle($title, \TYPO3\CMS\Core\Resource\Folder $folderObject) {
 		if ($this->ext_isLinkable($folderObject)) {
-			$aOnClick = ((((((((((((('return jumpToUrl(\'' . $this->thisScript) . '?act=') . $GLOBALS['SOBE']->browser->act) . '&mode=') . $GLOBALS['SOBE']->browser->mode) . '&editorNo=') . $GLOBALS['SOBE']->browser->editorNo) . '&contentTypo3Language=') . $GLOBALS['SOBE']->browser->contentTypo3Language) . '&contentTypo3Charset=') . $GLOBALS['SOBE']->browser->contentTypo3Charset) . '&expandFolder=') . rawurlencode($folderObject->getCombinedIdentifier())) . '\');';
-			return ((('<a href="#" onclick="' . htmlspecialchars($aOnClick)) . '">') . $title) . '</a>';
+			$aOnClick = 'return jumpToUrl(\'' . $this->thisScript . '?act=' . $GLOBALS['SOBE']->browser->act . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&editorNo=' . $GLOBALS['SOBE']->browser->editorNo . '&contentTypo3Language=' . $GLOBALS['SOBE']->browser->contentTypo3Language . '&contentTypo3Charset=' . $GLOBALS['SOBE']->browser->contentTypo3Charset . '&expandFolder=' . rawurlencode($folderObject->getCombinedIdentifier()) . '\');';
+			return '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '">' . $title . '</a>';
 		} else {
-			return ('<span class="typo3-dimmed">' . $title) . '</span>';
+			return '<span class="typo3-dimmed">' . $title . '</span>';
 		}
 	}
 
@@ -38,8 +38,8 @@ class FolderTree extends \rteFolderTree {
 	 */
 	public function PMiconATagWrap($icon, $cmd, $isExpand = TRUE) {
 		if ($this->thisScript) {
-			$js = htmlspecialchars(((((('Tree.thisScript=\'' . $GLOBALS['BACK_PATH']) . 'ajax.php\',Tree.load(\'') . $cmd) . '\', ') . intval($isExpand)) . ', this);');
-			return ((('<a class="pm" onclick="' . $js) . '">') . $icon) . '</a>';
+			$js = htmlspecialchars('Tree.thisScript=\'' . $GLOBALS['BACK_PATH'] . 'ajax.php\',Tree.load(\'' . $cmd . '\', ' . intval($isExpand) . ', this);');
+			return '<a class="pm" onclick="' . $js . '">' . $icon . '</a>';
 		} else {
 			return $icon;
 		}

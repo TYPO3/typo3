@@ -64,7 +64,7 @@ class SystemStatusUpdateTaskNotificationEmailField implements \TYPO3\CMS\Schedul
 		foreach ($fields as $field) {
 			$fieldName = $this->getFullFieldName($field);
 			$fieldId = 'task_' . $fieldName;
-			$fieldHtml = (((((((('<input type="text" ' . 'name="tx_scheduler[') . $fieldName) . ']" ') . 'id="') . $fieldId) . '" ') . 'value="') . htmlspecialchars($taskInfo[$fieldName])) . '" />';
+			$fieldHtml = '<input type="text" ' . 'name="tx_scheduler[' . $fieldName . ']" ' . 'id="' . $fieldId . '" ' . 'value="' . htmlspecialchars($taskInfo[$fieldName]) . '" />';
 			$additionalFields[$fieldId] = array(
 				'code' => $fieldHtml,
 				'label' => 'LLL:EXT:reports/reports/locallang.xml:status_updateTaskField_' . $field,

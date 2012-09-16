@@ -94,18 +94,18 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$button = 'acronym';
 		if (in_array($button, $this->toolbar)) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-				$registerRTEinJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . ']["buttons"]["') . $button) . '"] = new Object();';
+				$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . ']["buttons"]["' . $button . '"] = new Object();';
 			}
-			$registerRTEinJavascriptString .= ((((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . '.acronymUrl = "') . $this->htmlAreaRTE->writeTemporaryFile('', ('acronym_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $this->buildJSAcronymArray($this->htmlAreaRTE->contentLanguageUid))) . '";';
+			$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.acronymUrl = "' . $this->htmlAreaRTE->writeTemporaryFile('', ('acronym_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $this->buildJSAcronymArray($this->htmlAreaRTE->contentLanguageUid)) . '";';
 			// <abbr> was not supported by IE before version 7
 			if ($this->htmlAreaRTE->client['browser'] == 'msie' && $this->htmlAreaRTE->client['version'] < 7) {
 				$this->abbreviationIndex = 0;
 			}
-			$registerRTEinJavascriptString .= ((((((((((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . '.noAcronym = ') . ($this->acronymIndex ? 'false' : 'true')) . ';
-			RTEarea[') . $RTEcounter) . '].buttons.') . $button) . '.noAbbr =  ') . ($this->abbreviationIndex ? 'false' : 'true')) . ';';
+			$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.noAcronym = ' . ($this->acronymIndex ? 'false' : 'true') . ';
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.noAbbr =  ' . ($this->abbreviationIndex ? 'false' : 'true') . ';';
 		}
 		return $registerRTEinJavascriptString;
 	}
@@ -122,12 +122,12 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$abbrArray = array();
 		$tableA = 'tx_rtehtmlarea_acronym';
 		$tableB = 'static_languages';
-		$fields = (((((((($tableA . '.type,') . $tableA) . '.term,') . $tableA) . '.acronym,') . $tableB) . '.lg_iso_2,') . $tableB) . '.lg_country_iso_2';
-		$tableAB = (((((($tableA . ' LEFT JOIN ') . $tableB) . ' ON ') . $tableA) . '.static_lang_isocode=') . $tableB) . '.uid';
+		$fields = $tableA . '.type,' . $tableA . '.term,' . $tableA . '.acronym,' . $tableB . '.lg_iso_2,' . $tableB . '.lg_country_iso_2';
+		$tableAB = $tableA . ' LEFT JOIN ' . $tableB . ' ON ' . $tableA . '.static_lang_isocode=' . $tableB . '.uid';
 		$whereClause = '1=1';
 		// Get all acronyms on pages to which the user has access
 		$lockBeUserToDBmounts = isset($this->thisConfig['buttons.'][$button . '.']['lockBeUserToDBmounts']) ? $this->thisConfig['buttons.'][$button . '.']['lockBeUserToDBmounts'] : $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'];
-		if ((!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts']) && $lockBeUserToDBmounts) {
+		if (!$GLOBALS['BE_USER']->isAdmin() && $GLOBALS['TYPO3_CONF_VARS']['BE']['lockBeUserToDBmounts'] && $lockBeUserToDBmounts) {
 			// Temporarily setting alternative web browsing mounts
 			$altMountPoints = trim($GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.altElementBrowserMountPoints'));
 			if ($altMountPoints) {
@@ -160,16 +160,16 @@ class Acronym extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				}
 				$pageTree .= $pageTreePrefix . $queryGenerator->getTreeList($val, $recursive, ($begin = 0), $perms_clause);
 			}
-			$whereClause .= (((' AND ' . $tableA) . '.pid IN (') . $GLOBALS['TYPO3_DB']->fullQuoteStr(($pageTree ? $pageTree : ''), $tableA)) . ')';
+			$whereClause .= ' AND ' . $tableA . '.pid IN (' . $GLOBALS['TYPO3_DB']->fullQuoteStr(($pageTree ? $pageTree : ''), $tableA) . ')';
 		}
 		// Restrict to acronyms applicable to the language of current content element
 		if ($this->htmlAreaRTE->contentLanguageUid > -1) {
-			$whereClause .= (((((' AND (' . $tableA) . '.sys_language_uid=') . $this->htmlAreaRTE->contentLanguageUid) . ' OR ') . $tableA) . '.sys_language_uid=-1) ';
+			$whereClause .= ' AND (' . $tableA . '.sys_language_uid=' . $this->htmlAreaRTE->contentLanguageUid . ' OR ' . $tableA . '.sys_language_uid=-1) ';
 		}
 		// Restrict to acronyms in certain languages
-		if ((is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.'])) && isset($this->thisConfig['buttons.']['language.']['restrictToItems'])) {
+		if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.']) && isset($this->thisConfig['buttons.']['language.']['restrictToItems'])) {
 			$languageList = implode('\',\'', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $tableB)));
-			$whereClause .= (((' AND ' . $tableB) . '.lg_iso_2 IN (') . $languageList) . ') ';
+			$whereClause .= ' AND ' . $tableB . '.lg_iso_2 IN (' . $languageList . ') ';
 		}
 		$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($tableA);
 		$whereClause .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($tableA);

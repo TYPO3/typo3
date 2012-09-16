@@ -56,7 +56,7 @@ class ActionMenuItemViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstract
 		$currentArguments = $currentRequest->getArguments();
 		unset($currentArguments['action']);
 		unset($currentArguments['controller']);
-		if (($action === $currentAction && $controller === $currentController) && $currentArguments === $arguments) {
+		if ($action === $currentAction && $controller === $currentController && $currentArguments === $arguments) {
 			$this->tag->addAttribute('selected', 'selected');
 		}
 		$this->tag->setContent($label);

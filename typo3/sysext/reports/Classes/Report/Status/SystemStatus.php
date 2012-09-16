@@ -147,13 +147,13 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 		$message = '';
 		$severity = \TYPO3\CMS\Reports\Status::OK;
 		$bytesUsed = $peakMemoryUsage['used'];
-		$percentageUsed = $memoryLimit ? number_format(($bytesUsed / $memoryLimit) * 100, 1) . '%' : '?';
+		$percentageUsed = $memoryLimit ? number_format($bytesUsed / $memoryLimit * 100, 1) . '%' : '?';
 		$dateOfPeak = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $peakMemoryUsage['tstamp']);
-		$urlOfPeak = ((('<a href="' . htmlspecialchars($peakMemoryUsage['url'])) . '">') . htmlspecialchars($peakMemoryUsage['url'])) . '</a>';
+		$urlOfPeak = '<a href="' . htmlspecialchars($peakMemoryUsage['url']) . '">' . htmlspecialchars($peakMemoryUsage['url']) . '</a>';
 		$clearFlagUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL') . '&amp;adminCmd=clear_peak_memory_usage_flag';
 		if ($peakMemoryUsage['used']) {
 			$message = sprintf($GLOBALS['LANG']->getLL('status_phpPeakMemoryTooHigh'), \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($peakMemoryUsage['used']), $percentageUsed, \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($memoryLimit), $dateOfPeak, $urlOfPeak);
-			$message .= (((' <a href="' . $clearFlagUrl) . '">') . $GLOBALS['LANG']->getLL('status_phpPeakMemoryClearFlag')) . '</a>.';
+			$message .= ' <a href="' . $clearFlagUrl . '">' . $GLOBALS['LANG']->getLL('status_phpPeakMemoryClearFlag') . '</a>.';
 			$severity = \TYPO3\CMS\Reports\Status::WARNING;
 			$value = $percentageUsed;
 		}
@@ -193,7 +193,7 @@ class SystemStatus implements \TYPO3\CMS\Reports\StatusProviderInterface {
 					}
 				}
 				if ($detectedSubmodules === FALSE) {
-					$missingPhpModules[] = sprintf($GLOBALS['LANG']->getLL('status_phpModulesGroup'), ('(' . implode(', ', $module)) . ')');
+					$missingPhpModules[] = sprintf($GLOBALS['LANG']->getLL('status_phpModulesGroup'), '(' . implode(', ', $module) . ')');
 				}
 			} elseif (!extension_loaded($module)) {
 				$missingPhpModules[] = $module;

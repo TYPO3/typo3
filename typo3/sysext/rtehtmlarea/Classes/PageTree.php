@@ -63,27 +63,27 @@ class PageTree extends \rtePageTree {
 		foreach ($treeArr as $k => $v) {
 			$c++;
 			$bgColorClass = ($c + 1) % 2 ? 'bgColor' : 'bgColor-10';
-			if (($GLOBALS['SOBE']->browser->curUrlInfo['act'] == 'page' && $GLOBALS['SOBE']->browser->curUrlInfo['pageid'] == $v['row']['uid']) && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']) {
-				$arrCol = ('<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_right.gif', 'width="5" height="9"')) . ' class="c-blinkArrowR" alt="" /></td>';
+			if ($GLOBALS['SOBE']->browser->curUrlInfo['act'] == 'page' && $GLOBALS['SOBE']->browser->curUrlInfo['pageid'] == $v['row']['uid'] && $GLOBALS['SOBE']->browser->curUrlInfo['pageid']) {
+				$arrCol = '<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/blinkarrow_right.gif', 'width="5" height="9"') . ' class="c-blinkArrowR" alt="" /></td>';
 				$bgColorClass = 'bgColor4';
 			} else {
 				$arrCol = '<td></td>';
 			}
-			$aOnClick = ((((((((((('return jumpToUrl(\'' . $this->thisScript) . '?act=') . $GLOBALS['SOBE']->browser->act) . '&editorNo=') . $GLOBALS['SOBE']->browser->editorNo) . '&contentTypo3Language=') . $GLOBALS['SOBE']->browser->contentTypo3Language) . '&mode=') . $GLOBALS['SOBE']->browser->mode) . '&expandPage=') . $v['row']['uid']) . '\');';
-			$cEbullet = $this->ext_isLinkable($v['row']['doktype'], $v['row']['uid']) ? ((('<a href="#" onclick="' . htmlspecialchars($aOnClick)) . '"><img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/arrowbullet.gif', 'width="18" height="16"')) . ' alt="" /></a>' : '';
-			$out .= (((((((((('
-				<tr class="' . $bgColorClass) . '">
-					<td nowrap="nowrap"') . ($v['row']['_CSSCLASS'] ? (' class="' . $v['row']['_CSSCLASS']) . '"' : '')) . '>') . $v['HTML']) . $this->wrapTitle($this->getTitleStr($v['row'], $titleLen), $v['row'], $this->ext_pArrPages)) . '</td>') . $arrCol) . '<td>') . $cEbullet) . '</td>
+			$aOnClick = 'return jumpToUrl(\'' . $this->thisScript . '?act=' . $GLOBALS['SOBE']->browser->act . '&editorNo=' . $GLOBALS['SOBE']->browser->editorNo . '&contentTypo3Language=' . $GLOBALS['SOBE']->browser->contentTypo3Language . '&mode=' . $GLOBALS['SOBE']->browser->mode . '&expandPage=' . $v['row']['uid'] . '\');';
+			$cEbullet = $this->ext_isLinkable($v['row']['doktype'], $v['row']['uid']) ? '<a href="#" onclick="' . htmlspecialchars($aOnClick) . '"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/ol/arrowbullet.gif', 'width="18" height="16"') . ' alt="" /></a>' : '';
+			$out .= '
+				<tr class="' . $bgColorClass . '">
+					<td nowrap="nowrap"' . ($v['row']['_CSSCLASS'] ? ' class="' . $v['row']['_CSSCLASS'] . '"' : '') . '>' . $v['HTML'] . $this->wrapTitle($this->getTitleStr($v['row'], $titleLen), $v['row'], $this->ext_pArrPages) . '</td>' . $arrCol . '<td>' . $cEbullet . '</td>
 				</tr>';
 		}
-		$out = ('
+		$out = '
 
 
 			<!--
 				Navigation Page Tree:
 			-->
 			<table border="0" cellpadding="0" cellspacing="0" id="typo3-tree">
-				' . $out) . '
+				' . $out . '
 			</table>';
 		return $out;
 	}
