@@ -44,7 +44,7 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI && basename(PATH_thisScript) == 'c
 			if ($cli->cli_isArg('-f')) {
 				$task = $scheduler->fetchTask($taskId);
 			} else {
-				$whereClause = (('uid = ' . $taskId) . ' AND nextexecution != 0 AND nextexecution <= ') . $GLOBALS['EXEC_TIME'];
+				$whereClause = 'uid = ' . $taskId . ' AND nextexecution != 0 AND nextexecution <= ' . $GLOBALS['EXEC_TIME'];
 				list($task) = $scheduler->fetchTasksWithCondition($whereClause);
 			}
 			if ($scheduler->isValidTaskObject($task)) {

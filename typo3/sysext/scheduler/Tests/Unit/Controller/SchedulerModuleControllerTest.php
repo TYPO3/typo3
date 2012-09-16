@@ -103,8 +103,8 @@ class SchedulerModuleControllerTest extends \tx_phpunit_testcase {
 			// If this tests runs over 1 seconds the test will fail if we use assertSame / assertEquals
 			// With assertLessThan the tests could run 0 till 3 seconds ($delta = 4)
 		$delta = 4;
-		$this->assertLessThan($delta, $checkDateResult - $expectedTimestamp, ('assertLessThan fails with value "' . $strToTimeValue) . '"');
-		$this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT, $checkDateResult, ('assertType fails with value "' . $strToTimeValue) . '"');
+		$this->assertLessThan($delta, $checkDateResult - $expectedTimestamp, 'assertLessThan fails with value "' . $strToTimeValue . '"');
+		$this->assertInternalType(\PHPUnit_Framework_Constraint_IsType::TYPE_INT, $checkDateResult, 'assertType fails with value "' . $strToTimeValue . '"');
 	}
 
 	/**
@@ -161,7 +161,7 @@ class SchedulerModuleControllerTest extends \tx_phpunit_testcase {
 	 * @param integer $expectedTimestamp Expected value to compare with result from operation
 	 */
 	public function checkDateWithTypo3DateSyntax($typo3DateValue, $expectedTimestamp) {
-		$this->assertSame($expectedTimestamp, $this->testObject->checkDate($typo3DateValue), ('Fails with value "' . $typo3DateValue) . '"');
+		$this->assertSame($expectedTimestamp, $this->testObject->checkDate($typo3DateValue), 'Fails with value "' . $typo3DateValue . '"');
 	}
 
 	/**

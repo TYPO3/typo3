@@ -144,7 +144,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 				$this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL);
 				$this->updatePassword(intval($user['uid']), array('password' => $this->objInstanceSaltedPW->getHashedPassword($password)));
 			}
-			if (($validPasswd && !$skip) && $this->objInstanceSaltedPW->isHashUpdateNeeded($user['password'])) {
+			if ($validPasswd && !$skip && $this->objInstanceSaltedPW->isHashUpdateNeeded($user['password'])) {
 				$this->updatePassword(intval($user['uid']), array('password' => $this->objInstanceSaltedPW->getHashedPassword($password)));
 			}
 		} elseif (!intval($this->extConf['forceSalted'])) {
@@ -217,7 +217,7 @@ class SaltedPasswordService extends \TYPO3\CMS\Sv\AbstractAuthenticationService 
 				if (intval($this->extConf['onlyAuthService']) || $this->authenticationFailed) {
 					$OK = 0;
 				}
-			} elseif (($validPasswd && $user['lockToDomain']) && strcasecmp($user['lockToDomain'], $this->authInfo['HTTP_HOST'])) {
+			} elseif ($validPasswd && $user['lockToDomain'] && strcasecmp($user['lockToDomain'], $this->authInfo['HTTP_HOST'])) {
 				// Lock domain didn't match, so error:
 				$errorMessage = 'Login-attempt from %s (%s), username \'%s\', locked domain \'%s\' did not match \'%s\'!';
 				$this->writeLogMessage($errorMessage, $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname'], $user['lockToDomain'], $this->authInfo['HTTP_HOST']);

@@ -177,7 +177,7 @@ class CronCommand {
 		$isDayOfWeekRestricted = (string) $this->cronCommandSections[4] === '*' ? FALSE : TRUE;
 		$commandMatch = FALSE;
 		if ($isInMonth) {
-			if (($isInDayOfMonth && $isDayOfMonthRestricted || $isInDayOfWeek && $isDayOfWeekRestricted) || (($isInDayOfMonth && !$isDayOfMonthRestricted) && $isInDayOfWeek) && !$isDayOfWeekRestricted) {
+			if ($isInDayOfMonth && $isDayOfMonthRestricted || $isInDayOfWeek && $isDayOfWeekRestricted || $isInDayOfMonth && !$isDayOfMonthRestricted && $isInDayOfWeek && !$isDayOfWeekRestricted) {
 				$commandMatch = TRUE;
 			}
 		}
@@ -217,7 +217,7 @@ class CronCommand {
 	protected function numberOfSecondsInDay($timestamp) {
 		$now = mktime(0, 0, 0, date('n', $timestamp), date('j', $timestamp), date('Y', $timestamp));
 		// Make sure to be in next day, even if day has 25 hours
-		$nextDay = $now + (60 * 60) * 25;
+		$nextDay = $now + 60 * 60 * 25;
 		$nextDay = mktime(0, 0, 0, date('n', $nextDay), date('j', $nextDay), date('Y', $nextDay));
 		return $nextDay - $now;
 	}

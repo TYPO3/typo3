@@ -166,7 +166,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 		$saltedPW = NULL;
 		$reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
 		// Retrieving settings with salt
-		$setting = substr($setting, 0, (strlen($this->getSetting()) + 1) + $reqLenBase64);
+		$setting = substr($setting, 0, strlen($this->getSetting()) + 1 + $reqLenBase64);
 		$count_log2 = $this->getCountLog2($setting);
 		// Hashes may be imported from elsewhere, so we allow != HASH_COUNT
 		if ($count_log2 >= $this->getMinHashCount() && $count_log2 <= $this->getMaxHashCount()) {
@@ -337,7 +337,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 			}
 			// Checking base64 characters
 			if (!$skip && strlen($salt) >= $reqLenBase64) {
-				if (preg_match(((((('/^[' . preg_quote($this->getItoa64(), '/')) . ']{') . $reqLenBase64) . ',') . $reqLenBase64) . '}$/', substr($salt, 0, $reqLenBase64))) {
+				if (preg_match('/^[' . preg_quote($this->getItoa64(), '/') . ']{' . $reqLenBase64 . ',' . $reqLenBase64 . '}$/', substr($salt, 0, $reqLenBase64))) {
 					$isValid = TRUE;
 				}
 			}
@@ -369,7 +369,7 @@ class PhpassSalt extends \TYPO3\CMS\Saltedpasswords\Salt\AbstractSalt implements
 	 * @see getHashCount()
 	 */
 	public function setHashCount($hashCount = NULL) {
-		self::$hashCount = ((!is_NULL($hashCount) && is_int($hashCount)) && $hashCount >= $this->getMinHashCount()) && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
+		self::$hashCount = !is_NULL($hashCount) && is_int($hashCount) && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
 	}
 
 	/**

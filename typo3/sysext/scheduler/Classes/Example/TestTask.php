@@ -52,7 +52,7 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task {
 			// If an email address is defined, send a message to it
 			// NOTE: the TYPO3_DLOG constant is not used in this case, as this is a test task
 			// and debugging is its main purpose anyway
-			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog(('[TYPO3\\CMS\\Scheduler\\Example\\TestTask]: Test email sent to "' . $this->email) . '"', 'scheduler', 0);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::devLog('[TYPO3\\CMS\\Scheduler\\Example\\TestTask]: Test email sent to "' . $this->email . '"', 'scheduler', 0);
 			// Get execution information
 			$exec = $this->getExecution();
 			// Get call method
@@ -68,7 +68,7 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task {
 			$interval = $exec->getInterval();
 			$multiple = $exec->getMultiple();
 			$cronCmd = $exec->getCronCmd();
-			$mailBody = (((((((((((((((((((((((((((((((((((((((('SCHEDULER TEST-TASK' . LF) . '- - - - - - - - - - - - - - - -') . LF) . 'UID: ') . $this->taskUid) . LF) . 'Sitename: ') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . LF) . 'Site: ') . $site) . LF) . 'Called by: ') . $calledBy) . LF) . 'tstamp: ') . date('Y-m-d H:i:s')) . ' [') . time()) . ']') . LF) . 'maxLifetime: ') . $this->scheduler->extConf['maxLifetime']) . LF) . 'start: ') . date('Y-m-d H:i:s', $start)) . ' [') . $start) . ']') . LF) . 'end: ') . (empty($end) ? '-' : ((date('Y-m-d H:i:s', $end) . ' [') . $end) . ']')) . LF) . 'interval: ') . $interval) . LF) . 'multiple: ') . ($multiple ? 'yes' : 'no')) . LF) . 'cronCmd: ') . ($cronCmd ? $cronCmd : 'not used');
+			$mailBody = 'SCHEDULER TEST-TASK' . LF . '- - - - - - - - - - - - - - - -' . LF . 'UID: ' . $this->taskUid . LF . 'Sitename: ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'] . LF . 'Site: ' . $site . LF . 'Called by: ' . $calledBy . LF . 'tstamp: ' . date('Y-m-d H:i:s') . ' [' . time() . ']' . LF . 'maxLifetime: ' . $this->scheduler->extConf['maxLifetime'] . LF . 'start: ' . date('Y-m-d H:i:s', $start) . ' [' . $start . ']' . LF . 'end: ' . (empty($end) ? '-' : date('Y-m-d H:i:s', $end) . ' [' . $end . ']') . LF . 'interval: ' . $interval . LF . 'multiple: ' . ($multiple ? 'yes' : 'no') . LF . 'cronCmd: ' . ($cronCmd ? $cronCmd : 'not used');
 			// Prepare mailer and send the mail
 			try {
 				/** @var $mailer t3lib_mail_message */
@@ -96,7 +96,7 @@ class TestTask extends \TYPO3\CMS\Scheduler\Task {
 	 * @return string Information to display
 	 */
 	public function getAdditionalInformation() {
-		return ($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:label.email') . ': ') . $this->email;
+		return $GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:label.email') . ': ' . $this->email;
 	}
 
 }

@@ -281,7 +281,7 @@ class BlowfishSaltTest extends \tx_phpunit_testcase {
 				break;
 			}
 		}
-		$this->assertTrue($criticalPwLength == 0 || $criticalPwLength > 32, ('Duplicates of hashed passwords with plaintext password of length ' . $criticalPwLength) . '+.');
+		$this->assertTrue($criticalPwLength == 0 || $criticalPwLength > 32, 'Duplicates of hashed passwords with plaintext password of length ' . $criticalPwLength . '+.');
 	}
 
 	/**

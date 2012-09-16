@@ -110,7 +110,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 		$reqLenBase64 = $this->getLengthBase64FromBytes($this->getSaltLength());
 		// salt without setting
 		if (strlen($salt) == $reqLenBase64) {
-			$saltWithSettings = (($this->getSetting() . sprintf('%02u', $this->getHashCount())) . '$') . $salt;
+			$saltWithSettings = $this->getSetting() . sprintf('%02u', $this->getHashCount()) . '$' . $salt;
 		}
 		return $saltWithSettings;
 	}
@@ -126,7 +126,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 		$setting = substr($setting, strlen($this->getSetting()));
 		$firstSplitPos = strpos($setting, '$');
 		// Hashcount existing
-		if (($firstSplitPos !== FALSE && $firstSplitPos <= 2) && is_numeric(substr($setting, 0, $firstSplitPos))) {
+		if ($firstSplitPos !== FALSE && $firstSplitPos <= 2 && is_numeric(substr($setting, 0, $firstSplitPos))) {
 			$countLog2 = intval(substr($setting, 0, $firstSplitPos));
 		}
 		return $countLog2;
@@ -246,7 +246,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 			}
 			// Checking base64 characters
 			if (!$skip && strlen($salt) >= $reqLenBase64) {
-				if (preg_match(((((('/^[' . preg_quote($this->getItoa64(), '/')) . ']{') . $reqLenBase64) . ',') . $reqLenBase64) . '}$/', substr($salt, 0, $reqLenBase64))) {
+				if (preg_match('/^[' . preg_quote($this->getItoa64(), '/') . ']{' . $reqLenBase64 . ',' . $reqLenBase64 . '}$/', substr($salt, 0, $reqLenBase64))) {
 					$isValid = TRUE;
 				}
 			}
@@ -278,7 +278,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 	 * @see getHashCount()
 	 */
 	public function setHashCount($hashCount = NULL) {
-		self::$hashCount = ((!is_NULL($hashCount) && is_int($hashCount)) && $hashCount >= $this->getMinHashCount()) && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
+		self::$hashCount = !is_NULL($hashCount) && is_int($hashCount) && $hashCount >= $this->getMinHashCount() && $hashCount <= $this->getMaxHashCount() ? $hashCount : self::HASH_COUNT;
 	}
 
 	/**

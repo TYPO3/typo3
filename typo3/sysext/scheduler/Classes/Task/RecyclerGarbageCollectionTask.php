@@ -61,7 +61,7 @@ class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task {
 		if (TYPO3_OS == 'WIN') {
 			throw new \BadMethodCallException('This task is not reliable for Windows OS', 1308270454);
 		}
-		$seconds = ((60 * 60) * 24) * (int) $this->numberOfDays;
+		$seconds = 60 * 60 * 24 * (int) $this->numberOfDays;
 		$timestamp = $GLOBALS['EXEC_TIME'] - $seconds;
 		// Get fileadmin directory
 		$directory = PATH_site . 'fileadmin/';
@@ -86,7 +86,7 @@ class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task {
 		$timestamp = (int) $timestamp;
 		// Check if given directory exists
 		if (!@is_dir($directory)) {
-			throw new \RuntimeException(('Given directory "' . $directory) . '" does not exist', 1301614535);
+			throw new \RuntimeException('Given directory "' . $directory . '" does not exist', 1301614535);
 		}
 		// Find all _recycler_ directories
 		$directoryContent = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($directory));
@@ -99,7 +99,7 @@ class RecyclerGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task {
 			// Remove files from _recycler_ that where moved to this folder for more than 'number of days'
 			if ($file->isFile() && $timestamp > $file->getCTime()) {
 				if (!@unlink($fileName)) {
-					throw new \RuntimeException(('Could not remove file "' . $fileName) . '"', 1301614537);
+					throw new \RuntimeException('Could not remove file "' . $fileName . '"', 1301614537);
 				}
 			}
 		}

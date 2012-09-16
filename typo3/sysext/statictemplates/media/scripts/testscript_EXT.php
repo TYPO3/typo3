@@ -11,7 +11,7 @@ if (!is_object($TSFE)) {
  */
 function user_printTimeExt($content, $conf)
 {
-	return ('<font color="red">Dynamic time: ' . date('H:i:s')) . '</font><br />';
+	return '<font color="red">Dynamic time: ' . date('H:i:s') . '</font><br />';
 }
 ?>
 

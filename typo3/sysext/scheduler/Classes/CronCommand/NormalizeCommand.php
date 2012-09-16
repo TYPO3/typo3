@@ -140,18 +140,18 @@ class NormalizeCommand {
 						list($leftBound, $rightBound) = explode('-', $left);
 						$leftBound = self::normalizeMonthAndWeekday($leftBound, $isMonthField);
 						$rightBound = self::normalizeMonthAndWeekday($rightBound, $isMonthField);
-						$left = ($leftBound . '-') . $rightBound;
+						$left = $leftBound . '-' . $rightBound;
 					} else {
 						if ((string) $left !== '*') {
 							$left = self::normalizeMonthAndWeekday($left, $isMonthField);
 						}
 					}
-					$fieldArray[] = ($left . '/') . $right;
+					$fieldArray[] = $left . '/' . $right;
 				} elseif (strpos($listElement, '-') !== FALSE) {
 					list($left, $right) = explode('-', $listElement);
 					$left = self::normalizeMonthAndWeekday($left, $isMonthField);
 					$right = self::normalizeMonthAndWeekday($right, $isMonthField);
-					$fieldArray[] = ($left . '-') . $right;
+					$fieldArray[] = $left . '-' . $right;
 				} else {
 					$fieldArray[] = self::normalizeMonthAndWeekday($listElement, $isMonthField);
 				}
@@ -180,11 +180,11 @@ class NormalizeCommand {
 				if (strpos($listElement, '/') !== FALSE) {
 					list($left, $right) = explode('/', $listElement);
 					if ((string) $left === '*') {
-						$leftList = self::convertRangeToListOfValues(($lowerBound . '-') . $upperBound);
+						$leftList = self::convertRangeToListOfValues($lowerBound . '-' . $upperBound);
 					} else {
 						$leftList = self::convertRangeToListOfValues($left);
 					}
-					$fieldArray[] = self::reduceListOfValuesByStepValue(($leftList . '/') . $right);
+					$fieldArray[] = self::reduceListOfValuesByStepValue($leftList . '/' . $right);
 				} elseif (strpos($listElement, '-') !== FALSE) {
 					$fieldArray[] = self::convertRangeToListOfValues($listElement);
 				} elseif (strcmp(intval($listElement), $listElement) === 0) {
@@ -324,9 +324,9 @@ class NormalizeCommand {
 	 * @return integer month integer representation between 1 and 12
 	 */
 	static protected function normalizeMonth($month) {
-		$timestamp = strtotime(('2010-' . $month) . '-01');
+		$timestamp = strtotime('2010-' . $month . '-01');
 		// timestamp must be >= 2010-01-01 and <= 2010-12-01
-		if ((!$timestamp || $timestamp < strtotime('2010-01-01')) || $timestamp > strtotime('2010-12-01')) {
+		if (!$timestamp || $timestamp < strtotime('2010-01-01') || $timestamp > strtotime('2010-12-01')) {
 			throw new \InvalidArgumentException('Unable to convert given month name.', 1291083486);
 		}
 		return (int) date('n', $timestamp);
@@ -352,7 +352,7 @@ class NormalizeCommand {
 		if (!$normalizedWeekday) {
 			// Convert string representation like 'sun' to integer
 			$timestamp = strtotime('next ' . $weekday, mktime(0, 0, 0, 1, 1, 2010));
-			if ((!$timestamp || $timestamp < strtotime('2010-01-01')) || $timestamp > strtotime('2010-01-08')) {
+			if (!$timestamp || $timestamp < strtotime('2010-01-01') || $timestamp > strtotime('2010-01-08')) {
 				throw new \InvalidArgumentException('Unable to convert given weekday name.', 1291163589);
 			}
 			$normalizedWeekday = (int) date('N', $timestamp);
