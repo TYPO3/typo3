@@ -143,7 +143,7 @@ class CommandLineController {
 			if ($token[0] === '-' && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($token[1])) {
 				list($index, $opt) = explode('=', $token, 2);
 				if (isset($cli_options[$index])) {
-					echo (('ERROR: Option ' . $index) . ' was used twice!') . LF;
+					echo 'ERROR: Option ' . $index . ' was used twice!' . LF;
 					die;
 				}
 				$cli_options[$index] = array();
@@ -176,21 +176,21 @@ class CommandLineController {
 					if ($i > 0) {
 						if (!isset($cli_args_copy[$argSplit[0]][($i - 1)]) && $v[0] != '[') {
 							// Using "[]" around a paramter makes it optional
-							echo ((((('ERROR: Option "' . $argSplit[0]) . '" requires a value ("') . $v) . '") on position ') . $i) . LF;
+							echo 'ERROR: Option "' . $argSplit[0] . '" requires a value ("' . $v . '") on position ' . $i . LF;
 							die;
 						}
 					}
 				}
 				$ii++;
 				if (isset($cli_args_copy[$argSplit[0]][$ii - 1])) {
-					echo ((('ERROR: Option "' . $argSplit[0]) . '" does not support a value on position ') . $ii) . LF;
+					echo 'ERROR: Option "' . $argSplit[0] . '" does not support a value on position ' . $ii . LF;
 					die;
 				}
 				unset($cli_args_copy[$argSplit[0]]);
 			}
 		}
 		if (count($cli_args_copy)) {
-			echo wordwrap((((((('ERROR: Option ' . implode(',', array_keys($cli_args_copy))) . ' was unknown to this script!') . LF) . '(Options are: ') . implode(', ', $allOptions)) . ')') . LF);
+			echo wordwrap('ERROR: Option ' . implode(',', array_keys($cli_args_copy)) . ' was unknown to this script!' . LF . '(Options are: ' . implode(', ', $allOptions) . ')' . LF);
 			die;
 		}
 	}
@@ -262,7 +262,7 @@ class CommandLineController {
 			case 'synopsis':
 				$optStr = '';
 				foreach ($this->cli_options as $v) {
-					$optStr .= (' [' . $v[0]) . ']';
+					$optStr .= ' [' . $v[0] . ']';
 				}
 				$this->cli_echo($this->cli_indent(str_replace('###OPTIONS###', trim($optStr), $value), 4) . '
 
@@ -277,7 +277,7 @@ class CommandLineController {
 					}
 				}
 				foreach ($this->cli_options as $v) {
-					$this->cli_echo(($v[0] . substr($this->cli_indent(rtrim((($v[1] . LF) . $v[2])), ($maxLen + 4)), strlen($v[0]))) . LF);
+					$this->cli_echo($v[0] . substr($this->cli_indent(rtrim(($v[1] . LF . $v[2])), ($maxLen + 4)), strlen($v[0])) . LF);
 				}
 				$this->cli_echo(LF);
 				break;

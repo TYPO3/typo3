@@ -68,7 +68,7 @@ class CliBootstrap {
 			$cliKeys = array_keys($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['cliKeys']);
 			asort($cliKeys);
 			foreach ($cliKeys as $key => $value) {
-				$message .= ('  ' . $value) . LF;
+				$message .= '  ' . $value . LF;
 			}
 			fwrite(STDERR, $message . LF);
 			die(1);
@@ -95,7 +95,7 @@ class CliBootstrap {
 			if (array_key_exists($var, $_SERVER)) {
 				echo 'SECURITY CHECK FAILED! This script cannot be used within your browser!' . chr(10);
 				echo 'If you are sure that we run in a shell or cronjob, please unset' . chr(10);
-				echo (((('environment variable ' . $var) . ' (usually using \'unset ') . $var) . '\')') . chr(10);
+				echo 'environment variable ' . $var . ' (usually using \'unset ' . $var . '\')' . chr(10);
 				echo 'before starting this script.' . chr(10);
 				die;
 			}
