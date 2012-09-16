@@ -57,11 +57,11 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 			$this->doc->tableLayout = array(
 				'0' => array(
 					'0' => array('<td valign="top"><strong>', '</strong></td>'),
-					'defCol' => array(('<td><img src="' . $this->doc->backPath) . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><strong>', '</strong></td>')
+					'defCol' => array('<td><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top"><strong>', '</strong></td>')
 				),
 				'defRow' => array(
 					'0' => array('<td valign="top">', '</td>'),
-					'defCol' => array(('<td><img src="' . $this->doc->backPath) . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top">', '</td>')
+					'defCol' => array('<td><img src="' . $this->doc->backPath . 'clear.gif" width="10" height="1" alt="" /></td><td valign="top">', '</td>')
 				)
 			);
 			// JavaScript
@@ -71,9 +71,9 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 					window.location.href = URL;
 				}
 			');
-			$this->doc->postCode = $this->doc->wrapScriptTags(('
+			$this->doc->postCode = $this->doc->wrapScriptTags('
 				script_ended = 1;
-				if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id)) . ';
+				if (top.fsMod) top.fsMod.recentIds["web"] = ' . intval($this->id) . ';
 			');
 			// Setting up the context sensitive menu:
 			$this->doc->getContextMenuCode();
@@ -129,7 +129,7 @@ class InfoModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 		// CSH
 		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_info', '', $GLOBALS['BACK_PATH'], '', TRUE);
 		// View page
-		$buttons['view'] = ((((('<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->pageinfo['uid'])))) . '" title="') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view')) . '</a>';
+		$buttons['view'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($this->pageinfo['uid'], $GLOBALS['BACK_PATH'], \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($this->pageinfo['uid']))) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPage', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-view') . '</a>';
 		// Shortcut
 		if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
 			$buttons['shortcut'] = $this->doc->makeShortcutIcon('id, edit_record, pointer, new_unique_uid, search_field, search_levels, showLimit', implode(',', array_keys($this->MOD_MENU)), $this->MCONF['name']);

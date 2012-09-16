@@ -167,7 +167,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		$tree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
 		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		$tree->init('AND ' . $perms_clause);
-		$HTML = (('<img src="' . $BACK_PATH) . \TYPO3\CMS\Backend\Utility\IconUtility::getIcon('pages', $this->pObj->pageinfo)) . '" width="18" height="16" align="top" alt="" />';
+		$HTML = '<img src="' . $BACK_PATH . \TYPO3\CMS\Backend\Utility\IconUtility::getIcon('pages', $this->pObj->pageinfo) . '" width="18" height="16" align="top" alt="" />';
 		$tree->tree[] = array(
 			'row' => $this->pObj->pageinfo,
 			'HTML' => $HTML
@@ -181,12 +181,12 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			$code .= $this->indexed_info($data['row'], $data['HTML'] . $this->showPageDetails(\TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitlePrep($data['row']['title']), $data['row']['uid']));
 		}
 		if ($code) {
-			$code = (('<br /><br />
-					<table border="0" cellspacing="1" cellpadding="2" class="c-list">' . $this->printPhashRowHeader()) . $code) . '</table>';
+			$code = '<br /><br />
+					<table border="0" cellspacing="1" cellpadding="2" class="c-list">' . $this->printPhashRowHeader() . $code . '</table>';
 			// Create section to output:
 			$theOutput .= $this->pObj->doc->section('', $code, 0, 1);
 		} else {
-			$theOutput .= $this->pObj->doc->section('', ('<br /><br />' . $this->pObj->doc->icons(1)) . 'There were no indexed pages found in the tree.<br /><br />', 0, 1);
+			$theOutput .= $this->pObj->doc->section('', '<br /><br />' . $this->pObj->doc->icons(1) . 'There were no indexed pages found in the tree.<br /><br />', 0, 1);
 		}
 		return $theOutput;
 	}
@@ -201,7 +201,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function indexed_info($data, $firstColContent) {
 		// Query:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery((((('ISEC.phash_t3, ISEC.rl0, ISEC.rl1, ISEC.rl2, ISEC.page_id, ISEC.uniqid, ' . 'IP.phash, IP.phash_grouping, IP.cHashParams, IP.data_filename, IP.data_page_id, ') . 'IP.data_page_reg1, IP.data_page_type, IP.data_page_mp, IP.gr_list, IP.item_type, ') . 'IP.item_title, IP.item_description, IP.item_mtime, IP.tstamp, IP.item_size, ') . 'IP.contentHash, IP.crdate, IP.parsetime, IP.sys_language_uid, IP.item_crdate, ') . 'IP.externalUrl, IP.recordUid, IP.freeIndexUid, IP.freeIndexSetId, count(*) AS count_val', 'index_phash IP, index_section ISEC', 'IP.phash = ISEC.phash AND ISEC.page_id = ' . intval($data['uid']), 'IP.phash,IP.phash_grouping,IP.cHashParams,IP.data_filename,IP.data_page_id,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2,ISEC.page_id,ISEC.uniqid,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId', 'IP.item_type, IP.tstamp', $this->maxListPerPage + 1);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('ISEC.phash_t3, ISEC.rl0, ISEC.rl1, ISEC.rl2, ISEC.page_id, ISEC.uniqid, ' . 'IP.phash, IP.phash_grouping, IP.cHashParams, IP.data_filename, IP.data_page_id, ' . 'IP.data_page_reg1, IP.data_page_type, IP.data_page_mp, IP.gr_list, IP.item_type, ' . 'IP.item_title, IP.item_description, IP.item_mtime, IP.tstamp, IP.item_size, ' . 'IP.contentHash, IP.crdate, IP.parsetime, IP.sys_language_uid, IP.item_crdate, ' . 'IP.externalUrl, IP.recordUid, IP.freeIndexUid, IP.freeIndexSetId, count(*) AS count_val', 'index_phash IP, index_section ISEC', 'IP.phash = ISEC.phash AND ISEC.page_id = ' . intval($data['uid']), 'IP.phash,IP.phash_grouping,IP.cHashParams,IP.data_filename,IP.data_page_id,IP.data_page_reg1,IP.data_page_type,IP.data_page_mp,IP.gr_list,IP.item_type,IP.item_title,IP.item_description,IP.item_mtime,IP.tstamp,IP.item_size,IP.contentHash,IP.crdate,IP.parsetime,IP.sys_language_uid,IP.item_crdate,ISEC.phash,ISEC.phash_t3,ISEC.rl0,ISEC.rl1,ISEC.rl2,ISEC.page_id,ISEC.uniqid,IP.externalUrl,IP.recordUid,IP.freeIndexUid,IP.freeIndexSetId', 'IP.item_type, IP.tstamp', $this->maxListPerPage + 1);
 		// Initialize variables:
 		$rowCount = 0;
 		$lines = array();
@@ -224,37 +224,37 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		}
 		// Compile rows into the table:
 		$out = '';
-		$cellAttrib = $data['_CSSCLASS'] ? (' class="' . $data['_CSSCLASS']) . '"' : '';
+		$cellAttrib = $data['_CSSCLASS'] ? ' class="' . $data['_CSSCLASS'] . '"' : '';
 		if (count($lines)) {
-			$firstColContent = ((((('<td rowspan="' . $rowCount) . '"') . $cellAttrib) . '>') . $firstColContent) . '</td>';
+			$firstColContent = '<td rowspan="' . $rowCount . '"' . $cellAttrib . '>' . $firstColContent . '</td>';
 			foreach ($lines as $rowSet) {
 				foreach ($rowSet as $rows) {
-					$out .= (('
-						<tr class="bgColor-20">' . $firstColContent) . implode('', $rows)) . '</tr>';
+					$out .= '
+						<tr class="bgColor-20">' . $firstColContent . implode('', $rows) . '</tr>';
 					$firstColContent = '';
 				}
 			}
 			if ($rowCount > $this->maxListPerPage) {
 				// Now checking greater than, because we increased $rowCount before...
-				$out .= ((((((('
+				$out .= '
 				<tr class="bgColor-20">
 					<td>&nbsp;</td>
-					<td colspan="' . ($this->returnNumberOfColumns() - 1)) . '">') . $this->pObj->doc->icons(3)) . '<span class="">There were more than ') . $this->maxListPerPage) . ' rows. <a href="') . htmlspecialchars((('index.php?id=' . $this->pObj->id) . '&listALL=1'))) . '">Click here to list them ALL!</a></span></td>
+					<td colspan="' . ($this->returnNumberOfColumns() - 1) . '">' . $this->pObj->doc->icons(3) . '<span class="">There were more than ' . $this->maxListPerPage . ' rows. <a href="' . htmlspecialchars(('index.php?id=' . $this->pObj->id . '&listALL=1')) . '">Click here to list them ALL!</a></span></td>
 				</tr>';
 			}
 		} else {
-			$out .= ((((('
+			$out .= '
 				<tr class="bgColor-20">
-					<td' . $cellAttrib) . '>') . $firstColContent) . '</td>
-					<td colspan="') . ($this->returnNumberOfColumns() - 1)) . '"><em>Not indexed</em></td>
+					<td' . $cellAttrib . '>' . $firstColContent . '</td>
+					<td colspan="' . ($this->returnNumberOfColumns() - 1) . '"><em>Not indexed</em></td>
 				</tr>';
 		}
 		// Checking for phash-rows which are NOT joined with the section table:
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('IP.*', 'index_phash IP', ((('IP.data_page_id = ' . intval($data['uid'])) . ' AND IP.phash NOT IN (') . implode(',', $phashAcc)) . ')');
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('IP.*', 'index_phash IP', 'IP.data_page_id = ' . intval($data['uid']) . ' AND IP.phash NOT IN (' . implode(',', $phashAcc) . ')');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$out .= ((('
+			$out .= '
 				<tr class="typo3-red">
-					<td colspan="' . $this->returnNumberOfColumns()) . '"><strong>Warning:</strong> phash-row "') . $row['phash']) . '" didn\'t have a representation in the index_section table!</td>
+					<td colspan="' . $this->returnNumberOfColumns() . '"><strong>Warning:</strong> phash-row "' . $row['phash'] . '" didn\'t have a representation in the index_section table!</td>
 				</tr>';
 			$this->allPhashListed[] = $row['phash'];
 		}
@@ -277,7 +277,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		$titleCellAttribs = $row['count_val'] != 1 ? ' bgcolor="red"' : ($row['item_type'] === '0' ? ' class="bgColor4"' : '');
 		if ($row['item_type']) {
 			$arr = unserialize($row['cHashParams']);
-			$page = $arr['key'] ? (' [' . $arr['key']) . ']' : '';
+			$page = $arr['key'] ? ' [' . $arr['key'] . ']' : '';
 		} else {
 			$page = '';
 		}
@@ -288,31 +288,31 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			// Technical details:
 			// Display icon:
 			if (!$grouping) {
-				$lines[] = ('<td>' . $this->makeItemTypeIcon($row['item_type'], ($row['data_filename'] ? $row['data_filename'] : $row['item_title']))) . '</td>';
+				$lines[] = '<td>' . $this->makeItemTypeIcon($row['item_type'], ($row['data_filename'] ? $row['data_filename'] : $row['item_title'])) . '</td>';
 			} else {
 				$lines[] = '<td>&nbsp;</td>';
 			}
 			// Title displayed:
-			$lines[] = ((('<td' . $titleCellAttribs) . '>') . $elTitle) . '</td>';
+			$lines[] = '<td' . $titleCellAttribs . '>' . $elTitle . '</td>';
 			// Remove-indexing-link:
-			$lines[] = ('<td>' . $cmdLinks) . '</td>';
+			$lines[] = '<td>' . $cmdLinks . '</td>';
 			// Various data:
-			$lines[] = ('<td>' . $row['phash']) . '</td>';
-			$lines[] = ('<td>' . $row['contentHash']) . '</td>';
+			$lines[] = '<td>' . $row['phash'] . '</td>';
+			$lines[] = '<td>' . $row['contentHash'] . '</td>';
 			if ($row['item_type'] === '0') {
-				$lines[] = ('<td>' . ($row['data_page_id'] ? $row['data_page_id'] : '&nbsp;')) . '</td>';
-				$lines[] = ('<td>' . ($row['data_page_type'] ? $row['data_page_type'] : '&nbsp;')) . '</td>';
-				$lines[] = ('<td>' . ($row['sys_language_uid'] ? $row['sys_language_uid'] : '&nbsp;')) . '</td>';
-				$lines[] = ('<td>' . ($row['data_page_mp'] ? $row['data_page_mp'] : '&nbsp;')) . '</td>';
+				$lines[] = '<td>' . ($row['data_page_id'] ? $row['data_page_id'] : '&nbsp;') . '</td>';
+				$lines[] = '<td>' . ($row['data_page_type'] ? $row['data_page_type'] : '&nbsp;') . '</td>';
+				$lines[] = '<td>' . ($row['sys_language_uid'] ? $row['sys_language_uid'] : '&nbsp;') . '</td>';
+				$lines[] = '<td>' . ($row['data_page_mp'] ? $row['data_page_mp'] : '&nbsp;') . '</td>';
 			} else {
-				$lines[] = ('<td colspan="4">' . htmlspecialchars($row['data_filename'])) . '</td>';
+				$lines[] = '<td colspan="4">' . htmlspecialchars($row['data_filename']) . '</td>';
 			}
-			$lines[] = (('<td>' . $row['gr_list']) . $this->printExtraGrListRows($extraGrListRows)) . '</td>';
-			$lines[] = ('<td>' . $this->printRootlineInfo($row)) . '</td>';
-			$lines[] = ('<td>' . ($row['page_id'] ? $row['page_id'] : '&nbsp;')) . '</td>';
-			$lines[] = ('<td>' . ($row['phash_t3'] != $row['phash'] ? $row['phash_t3'] : '&nbsp;')) . '</td>';
-			$lines[] = ('<td>' . ($row['freeIndexUid'] ? $row['freeIndexUid'] . ($row['freeIndexSetId'] ? '/' . $row['freeIndexSetId'] : '') : '&nbsp;')) . '</td>';
-			$lines[] = ('<td>' . ($row['recordUid'] ? $row['recordUid'] : '&nbsp;')) . '</td>';
+			$lines[] = '<td>' . $row['gr_list'] . $this->printExtraGrListRows($extraGrListRows) . '</td>';
+			$lines[] = '<td>' . $this->printRootlineInfo($row) . '</td>';
+			$lines[] = '<td>' . ($row['page_id'] ? $row['page_id'] : '&nbsp;') . '</td>';
+			$lines[] = '<td>' . ($row['phash_t3'] != $row['phash'] ? $row['phash_t3'] : '&nbsp;') . '</td>';
+			$lines[] = '<td>' . ($row['freeIndexUid'] ? $row['freeIndexUid'] . ($row['freeIndexSetId'] ? '/' . $row['freeIndexSetId'] : '') : '&nbsp;') . '</td>';
+			$lines[] = '<td>' . ($row['recordUid'] ? $row['recordUid'] : '&nbsp;') . '</td>';
 			// cHash parameters:
 			$arr = unserialize($row['cHashParams']);
 			if (!is_array($arr)) {
@@ -324,55 +324,55 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			unset($arr['cHash']);
 			if ($row['item_type']) {
 				// pdf...
-				$lines[] = ('<td>' . ($arr['key'] ? 'Page ' . $arr['key'] : '')) . '&nbsp;</td>';
+				$lines[] = '<td>' . ($arr['key'] ? 'Page ' . $arr['key'] : '') . '&nbsp;</td>';
 			} elseif ($row['item_type'] == 0) {
-				$lines[] = ('<td>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $arr))) . '&nbsp;</td>';
+				$lines[] = '<td>' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $arr)) . '&nbsp;</td>';
 			} else {
 				$lines[] = '<td class="bgColor">&nbsp;</td>';
 			}
-			$lines[] = ('<td>' . $theCHash) . '</td>';
+			$lines[] = '<td>' . $theCHash . '</td>';
 			break;
 		case 2:
 			// Words and content:
 			// Display icon:
 			if (!$grouping) {
-				$lines[] = ('<td>' . $this->makeItemTypeIcon($row['item_type'], ($row['data_filename'] ? $row['data_filename'] : $row['item_title']))) . '</td>';
+				$lines[] = '<td>' . $this->makeItemTypeIcon($row['item_type'], ($row['data_filename'] ? $row['data_filename'] : $row['item_title'])) . '</td>';
 			} else {
 				$lines[] = '<td>&nbsp;</td>';
 			}
 			// Title displayed:
-			$lines[] = ((('<td' . $titleCellAttribs) . '>') . $elTitle) . '</td>';
+			$lines[] = '<td' . $titleCellAttribs . '>' . $elTitle . '</td>';
 			// Remove-indexing-link:
-			$lines[] = ('<td>' . $cmdLinks) . '</td>';
+			$lines[] = '<td>' . $cmdLinks . '</td>';
 			// Query:
 			$ftrow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'index_fulltext', 'phash = ' . intval($row['phash']));
-			$lines[] = (((('<td style="white-space: normal;">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->utf8_to_currentCharset($ftrow['fulltextdata']), 3000))) . '<hr/><em>Size: ') . strlen($ftrow['fulltextdata'])) . '</em>') . '</td>';
+			$lines[] = '<td style="white-space: normal;">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($this->utf8_to_currentCharset($ftrow['fulltextdata']), 3000)) . '<hr/><em>Size: ' . strlen($ftrow['fulltextdata']) . '</em>' . '</td>';
 			// Query:
-			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.baseword, index_rel.*', 'index_rel, index_words', ('index_rel.phash = ' . intval($row['phash'])) . ' AND index_words.wid = index_rel.wid', '', '', '', 'baseword');
+			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.baseword, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . intval($row['phash']) . ' AND index_words.wid = index_rel.wid', '', '', '', 'baseword');
 			$wordList = '';
 			if (is_array($ftrows)) {
 				$indexed_words = array_keys($ftrows);
 				sort($indexed_words);
 				$wordList = htmlspecialchars($this->utf8_to_currentCharset(implode(' ', $indexed_words)));
-				$wordList .= ('<hr/><em>Count: ' . count($indexed_words)) . '</em>';
+				$wordList .= '<hr/><em>Count: ' . count($indexed_words) . '</em>';
 			}
-			$lines[] = ('<td style="white-space: normal;">' . $wordList) . '</td>';
+			$lines[] = '<td style="white-space: normal;">' . $wordList . '</td>';
 			break;
 		default:
 			// Overview
 			// Display icon:
 			if (!$grouping) {
-				$lines[] = ('<td>' . $this->makeItemTypeIcon($row['item_type'], ($row['data_filename'] ? $row['data_filename'] : $row['item_title']))) . '</td>';
+				$lines[] = '<td>' . $this->makeItemTypeIcon($row['item_type'], ($row['data_filename'] ? $row['data_filename'] : $row['item_title'])) . '</td>';
 			} else {
 				$lines[] = '<td>&nbsp;</td>';
 			}
 			// Title displayed:
-			$lines[] = ((('<td' . $titleCellAttribs) . '>') . $elTitle) . '</td>';
+			$lines[] = '<td' . $titleCellAttribs . '>' . $elTitle . '</td>';
 			// Remove-indexing-link:
-			$lines[] = ('<td>' . $cmdLinks) . '</td>';
-			$lines[] = ('<td style="white-space: normal;">' . htmlspecialchars($this->utf8_to_currentCharset($row['item_description']))) . '...</td>';
-			$lines[] = ('<td>' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($row['item_size'])) . '</td>';
-			$lines[] = ('<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::dateTimeAge($row['tstamp'])) . '</td>';
+			$lines[] = '<td>' . $cmdLinks . '</td>';
+			$lines[] = '<td style="white-space: normal;">' . htmlspecialchars($this->utf8_to_currentCharset($row['item_description'])) . '...</td>';
+			$lines[] = '<td>' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($row['item_size']) . '</td>';
+			$lines[] = '<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::dateTimeAge($row['tstamp']) . '</td>';
 			break;
 		}
 		return $lines;
@@ -391,7 +391,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			$lines[] = '<td>&nbsp;</td>';
 			$lines[] = '<td>&nbsp;</td>';
 			$lines[] = '<td>Title</td>';
-			$lines[] = ('<td bgcolor="red">' . $this->printRemoveIndexed('ALL', 'Clear ALL phash-rows below!')) . '</td>';
+			$lines[] = '<td bgcolor="red">' . $this->printRemoveIndexed('ALL', 'Clear ALL phash-rows below!') . '</td>';
 			$lines[] = '<td>pHash</td>';
 			$lines[] = '<td>contentHash</td>';
 			$lines[] = '<td>&amp;id</td>';
@@ -411,7 +411,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			$lines[] = '<td>&nbsp;</td>';
 			$lines[] = '<td>&nbsp;</td>';
 			$lines[] = '<td>Title</td>';
-			$lines[] = ('<td bgcolor="red">' . $this->printRemoveIndexed('ALL', 'Clear ALL phash-rows below!')) . '</td>';
+			$lines[] = '<td bgcolor="red">' . $this->printRemoveIndexed('ALL', 'Clear ALL phash-rows below!') . '</td>';
 			$lines[] = '<td>Content<br />
 							<img src="clear.gif" width="300" height="1" alt="" /></td>';
 			$lines[] = '<td>Words<br />
@@ -421,13 +421,13 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			$lines[] = '<td>&nbsp;</td>';
 			$lines[] = '<td>&nbsp;</td>';
 			$lines[] = '<td>Title</td>';
-			$lines[] = ('<td bgcolor="red">' . $this->printRemoveIndexed('ALL', 'Clear ALL phash-rows below!')) . '</td>';
+			$lines[] = '<td bgcolor="red">' . $this->printRemoveIndexed('ALL', 'Clear ALL phash-rows below!') . '</td>';
 			$lines[] = '<td>Description</td>';
 			$lines[] = '<td>Size</td>';
 			$lines[] = '<td>Indexed:</td>';
 			break;
 		}
-		$out = ('<tr class="tableheader bgColor5">' . implode('', $lines)) . '</tr>';
+		$out = '<tr class="tableheader bgColor5">' . implode('', $lines) . '</tr>';
 		return $out;
 	}
 
@@ -477,14 +477,14 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 				$lexer = $debugInfo['lexer'];
 				unset($debugInfo['lexer']);
 				$content .= '<h3>Debug information:</h3>' . $this->utf8_to_currentCharset(\TYPO3\CMS\Core\Utility\DebugUtility::viewArray($debugInfo));
-				$content .= (('<h4>Debug information / lexer splitting:</h4>' . '<hr/><strong>') . $this->utf8_to_currentCharset($lexer)) . '</strong><hr/>';
+				$content .= '<h4>Debug information / lexer splitting:</h4>' . '<hr/><strong>' . $this->utf8_to_currentCharset($lexer) . '</strong><hr/>';
 			}
 			$content .= '<h3>Word statistics</h3>';
 			// Finding all words for this phash:
-			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.*, index_rel.*', 'index_rel, index_words', ('index_rel.phash = ' . intval($phash)) . ' AND index_words.wid = index_rel.wid', '', 'index_words.baseword', '');
+			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.*, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . intval($phash) . ' AND index_words.wid = index_rel.wid', '', 'index_words.baseword', '');
 			$pageRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $phashRecord['data_page_id']);
 			$showStopWordCheckBox = $GLOBALS['BE_USER']->isAdmin();
-			$content .= $this->listWords($ftrows, ('All words found on page (' . count($ftrows)) . '):', $showStopWordCheckBox, $pageRec);
+			$content .= $this->listWords($ftrows, 'All words found on page (' . count($ftrows) . '):', $showStopWordCheckBox, $pageRec);
 			if ($this->enableMetaphoneSearch) {
 				// Group metaphone hash:
 				$metaphone = array();
@@ -494,11 +494,11 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 				$content .= $this->listMetaphoneStat($metaphone, 'Metaphone stats:');
 			}
 			// Finding top-20 on frequency for this phash:
-			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.baseword, index_words.metaphone, index_rel.*', 'index_rel, index_words', ('index_rel.phash = ' . intval($phash)) . ' AND index_words.wid = index_rel.wid
+			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.baseword, index_words.metaphone, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . intval($phash) . ' AND index_words.wid = index_rel.wid
 							 AND index_words.is_stopword=0', '', 'index_rel.freq DESC', '20');
 			$content .= $this->listWords($ftrows, 'Top-20 words by frequency:', 2);
 			// Finding top-20 on count for this phash:
-			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.baseword, index_words.metaphone, index_rel.*', 'index_rel, index_words', ('index_rel.phash = ' . intval($phash)) . ' AND index_words.wid = index_rel.wid
+			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.baseword, index_words.metaphone, index_rel.*', 'index_rel, index_words', 'index_rel.phash = ' . intval($phash) . ' AND index_words.wid = index_rel.wid
 							 AND index_words.is_stopword=0', '', 'index_rel.count DESC', '20');
 			$content .= $this->listWords($ftrows, 'Top-20 words by count:', 2);
 			$content .= '<h3>Section records for this phash</h3>';
@@ -506,7 +506,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'index_section', 'index_section.phash = ' . intval($phash), '', '', '');
 			$content .= \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($ftrows);
 			// Add go-back link:
-			$content = ($this->linkList() . $content) . $this->linkList();
+			$content = $this->linkList() . $content . $this->linkList();
 		} else {
 			$content .= 'Error: No phash row found';
 		}
@@ -528,35 +528,35 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		$keywords = is_array($page) ? array_flip(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $page['keywords'], 1)) : '';
 		// Render list:
 		$trows = '';
-		$trows .= ((((((((((((('
+		$trows .= '
 			<tr class="tableheader bgColor5">
-				' . ($stopWordBoxes ? ('<td>' . htmlspecialchars('Stopword:')) . '</td>' : '')) . '
-				<td>') . htmlspecialchars('Word:')) . '</td>
-				<td>') . htmlspecialchars('Count:')) . '</td>
-				<td>') . htmlspecialchars('First:')) . '</td>
-				<td>') . htmlspecialchars('Frequency:')) . '</td>
-				<td>') . htmlspecialchars('Flags:')) . '</td>
-				') . (is_array($keywords) ? ('<td>' . htmlspecialchars('Page keyword:')) . '</td>' : '')) . '
+				' . ($stopWordBoxes ? '<td>' . htmlspecialchars('Stopword:') . '</td>' : '') . '
+				<td>' . htmlspecialchars('Word:') . '</td>
+				<td>' . htmlspecialchars('Count:') . '</td>
+				<td>' . htmlspecialchars('First:') . '</td>
+				<td>' . htmlspecialchars('Frequency:') . '</td>
+				<td>' . htmlspecialchars('Flags:') . '</td>
+				' . (is_array($keywords) ? '<td>' . htmlspecialchars('Page keyword:') . '</td>' : '') . '
 			</tr>
 		';
 		foreach ($ftrows as $row) {
-			$hiddenField = $stopWordBoxes != 2 ? ('<input type="hidden" name="stopWord[' . $row['wid']) . ']" value="0" />' : '';
-			$trows .= ((((((((((((((('
-				<tr class="' . ($row['is_stopword'] ? 'bgColor' : 'bgColor4')) . '">
-					') . ($stopWordBoxes ? ((((((('<td align="center"' . ($row['is_stopword'] ? ' style="background-color:red;"' : '')) . '>') . $hiddenField) . '<input type="checkbox" name="stopWord[') . $row['wid']) . ']" value="1"') . ($row['is_stopword'] ? 'checked="checked"' : '')) . ' /></td>' : '')) . '
-					<td>') . $this->linkWordDetails(htmlspecialchars($this->utf8_to_currentCharset($row['baseword'])), $row['wid'])) . '</td>
-					<td>') . htmlspecialchars($row['count'])) . '</td>
-					<td>') . htmlspecialchars($row['first'])) . '</td>
-					<td>') . htmlspecialchars($row['freq'])) . '</td>
-					<td>') . htmlspecialchars($this->flagsMsg($row['flags']))) . '</td>
-					') . (is_array($keywords) ? ((((((('<td align="center"' . (isset($keywords[$row['baseword']]) ? ' class="bgColor2"' : '')) . '><input type="hidden" name="pageKeyword[') . $row['baseword']) . ']" value="0" /><input type="checkbox" name="pageKeyword[') . $row['baseword']) . ']" value="1"') . (isset($keywords[$row['baseword']]) ? 'checked="checked"' : '')) . ' /></td>' : '')) . '
+			$hiddenField = $stopWordBoxes != 2 ? '<input type="hidden" name="stopWord[' . $row['wid'] . ']" value="0" />' : '';
+			$trows .= '
+				<tr class="' . ($row['is_stopword'] ? 'bgColor' : 'bgColor4') . '">
+					' . ($stopWordBoxes ? '<td align="center"' . ($row['is_stopword'] ? ' style="background-color:red;"' : '') . '>' . $hiddenField . '<input type="checkbox" name="stopWord[' . $row['wid'] . ']" value="1"' . ($row['is_stopword'] ? 'checked="checked"' : '') . ' /></td>' : '') . '
+					<td>' . $this->linkWordDetails(htmlspecialchars($this->utf8_to_currentCharset($row['baseword'])), $row['wid']) . '</td>
+					<td>' . htmlspecialchars($row['count']) . '</td>
+					<td>' . htmlspecialchars($row['first']) . '</td>
+					<td>' . htmlspecialchars($row['freq']) . '</td>
+					<td>' . htmlspecialchars($this->flagsMsg($row['flags'])) . '</td>
+					' . (is_array($keywords) ? '<td align="center"' . (isset($keywords[$row['baseword']]) ? ' class="bgColor2"' : '') . '><input type="hidden" name="pageKeyword[' . $row['baseword'] . ']" value="0" /><input type="checkbox" name="pageKeyword[' . $row['baseword'] . ']" value="1"' . (isset($keywords[$row['baseword']]) ? 'checked="checked"' : '') . ' /></td>' : '') . '
 				</tr>
 			';
 		}
-		return (((((('<h4>' . htmlspecialchars($header)) . '</h4>') . '
+		return '<h4>' . htmlspecialchars($header) . '</h4>' . '
 					<table border="0" cellspacing="1" cellpadding="2" class="c-list">
-					') . $trows) . '
-					</table>') . ($stopWordBoxes ? ('<input type="submit" value="Change stop-word settings" name="_stopwords" onclick="document.webinfoForm.action=\'' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '\';" />' : '')) . (is_array($keywords) ? (((((('<input type="submit" value="Set page keywords" name="_pageKeywords" onclick="document.webinfoForm.action=\'' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'))) . '\';" /><input type="hidden" name="pageKeyword_pageUid" value="') . $page['uid']) . '" />') . '<br />Current keywords are: <em>') . htmlspecialchars(implode(', ', array_keys($keywords)))) . '</em>' : '');
+					' . $trows . '
+					</table>' . ($stopWordBoxes ? '<input type="submit" value="Change stop-word settings" name="_stopwords" onclick="document.webinfoForm.action=\'' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';" />' : '') . (is_array($keywords) ? '<input type="submit" value="Set page keywords" name="_pageKeywords" onclick="document.webinfoForm.action=\'' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI')) . '\';" /><input type="hidden" name="pageKeyword_pageUid" value="' . $page['uid'] . '" />' . '<br />Current keywords are: <em>' . htmlspecialchars(implode(', ', array_keys($keywords))) . '</em>' : '');
 	}
 
 	/**
@@ -569,28 +569,28 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function listMetaphoneStat($ftrows, $header) {
 		$trows = '';
-		$trows .= ((((((('
+		$trows .= '
 			<tr class="tableheader bgColor5">
-				<td>' . htmlspecialchars('Metaphone:')) . '</td>
-				<td>') . htmlspecialchars('Hash:')) . '</td>
-				<td>') . htmlspecialchars('Count:')) . '</td>
-				<td>') . htmlspecialchars('Words:')) . '</td>
+				<td>' . htmlspecialchars('Metaphone:') . '</td>
+				<td>' . htmlspecialchars('Hash:') . '</td>
+				<td>' . htmlspecialchars('Count:') . '</td>
+				<td>' . htmlspecialchars('Words:') . '</td>
 			</tr>
 		';
 		foreach ($ftrows as $metaphone => $words) {
 			if (count($words) > 1) {
-				$trows .= ((((((('
+				$trows .= '
 					<tr class="bgColor4">
-						<td>' . $this->linkMetaPhoneDetails($this->indexerObj->metaphone($words[0], 1), $metaphone)) . '</td>
-						<td>') . htmlspecialchars($metaphone)) . '</td>
-						<td>') . htmlspecialchars(count($words))) . '</td>
-						<td style="white-space: normal;">') . htmlspecialchars($this->utf8_to_currentCharset(implode(', ', $words)))) . '</td>
+						<td>' . $this->linkMetaPhoneDetails($this->indexerObj->metaphone($words[0], 1), $metaphone) . '</td>
+						<td>' . htmlspecialchars($metaphone) . '</td>
+						<td>' . htmlspecialchars(count($words)) . '</td>
+						<td style="white-space: normal;">' . htmlspecialchars($this->utf8_to_currentCharset(implode(', ', $words))) . '</td>
 					</tr>
 				';
 			}
 		}
-		return (((('<h4>' . htmlspecialchars($header)) . '</h4>') . '<table border="0" cellspacing="1" cellpadding="2" class="c-list">
-					') . $trows) . '
+		return '<h4>' . htmlspecialchars($header) . '</h4>' . '<table border="0" cellspacing="1" cellpadding="2" class="c-list">
+					' . $trows . '
 					</table>';
 	}
 
@@ -603,7 +603,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * @todo Define visibility
 	 */
 	public function linkWordDetails($string, $wid) {
-		return ((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('wid' => $wid, 'phash' => '')))) . '">') . $string) . '</a>';
+		return '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('wid' => $wid, 'phash' => ''))) . '">' . $string . '</a>';
 	}
 
 	/**
@@ -615,7 +615,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * @todo Define visibility
 	 */
 	public function linkMetaPhoneDetails($string, $metaphone) {
-		return ((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('metaphone' => $metaphone, 'wid' => '', 'phash' => '')))) . '">') . $string) . '</a>';
+		return '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('metaphone' => $metaphone, 'wid' => '', 'phash' => ''))) . '">' . $string . '</a>';
 	}
 
 	/**
@@ -627,7 +627,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function flagsMsg($flags) {
 		if ($flags > 0) {
-			return ((((($flags & 128 ? '<title>' : '') . ($flags & 64 ? '<meta/keywords>' : '')) . ($flags & 32 ? '<meta/description>' : '')) . ' (') . $flags) . ')';
+			return ($flags & 128 ? '<title>' : '') . ($flags & 64 ? '<meta/keywords>' : '') . ($flags & 32 ? '<meta/description>' : '') . ' (' . $flags . ')';
 		}
 	}
 
@@ -645,7 +645,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function showDetailsForWord($wid) {
 		// Select references to this word
-		$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_phash.*, index_section.*, index_rel.*', 'index_rel, index_section, index_phash', (('index_rel.wid = ' . intval($wid)) . ' AND index_rel.phash = index_section.phash') . ' AND index_section.phash = index_phash.phash', '', 'index_rel.freq DESC', '');
+		$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_phash.*, index_section.*, index_rel.*', 'index_rel, index_section, index_phash', 'index_rel.wid = ' . intval($wid) . ' AND index_rel.phash = index_section.phash' . ' AND index_section.phash = index_phash.phash', '', 'index_rel.freq DESC', '');
 		// Headers:
 		$content .= '
 			<tr class="tableheader bgColor5">
@@ -659,21 +659,21 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			</tr>';
 		if (is_array($ftrows)) {
 			foreach ($ftrows as $wDat) {
-				$content .= ((((((((((((('
+				$content .= '
 					<tr class="bgColor4">
-						<td>' . $this->linkDetails(htmlspecialchars($wDat['phash']), $wDat['phash'])) . '</td>
-						<td>') . htmlspecialchars($wDat['page_id'])) . '</td>
-						<td>') . htmlspecialchars($wDat['data_filename'])) . '</td>
-						<td>') . htmlspecialchars($wDat['count'])) . '</td>
-						<td>') . htmlspecialchars($wDat['first'])) . '</td>
-						<td>') . htmlspecialchars($wDat['freq'])) . '</td>
-						<td>') . htmlspecialchars($wDat['flags'])) . '</td>
+						<td>' . $this->linkDetails(htmlspecialchars($wDat['phash']), $wDat['phash']) . '</td>
+						<td>' . htmlspecialchars($wDat['page_id']) . '</td>
+						<td>' . htmlspecialchars($wDat['data_filename']) . '</td>
+						<td>' . htmlspecialchars($wDat['count']) . '</td>
+						<td>' . htmlspecialchars($wDat['first']) . '</td>
+						<td>' . htmlspecialchars($wDat['freq']) . '</td>
+						<td>' . htmlspecialchars($wDat['flags']) . '</td>
 					</tr>';
 			}
 		}
 		// Compile table:
-		$content = ('
-			<table border="0" cellspacing="1" cellpadding="2" class="c-list">' . $content) . '
+		$content = '
+			<table border="0" cellspacing="1" cellpadding="2" class="c-list">' . $content . '
 			</table>';
 		// Add go-back link:
 		$content = $content . $this->linkList();
@@ -691,7 +691,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 		// Finding top-20 on frequency for this phash:
 		$ftrows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('index_words.*', 'index_words', 'index_words.metaphone = ' . intval($metaphone), '', 'index_words.baseword', '');
 		if (count($ftrows)) {
-			$content .= ('<h4>Metaphone: ' . $this->indexerObj->metaphone($ftrows[0]['baseword'], 1)) . '</h4>';
+			$content .= '<h4>Metaphone: ' . $this->indexerObj->metaphone($ftrows[0]['baseword'], 1) . '</h4>';
 			$content .= '
 				<tr class="tableheader bgColor5">
 					<td>Word</td>
@@ -699,15 +699,15 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 				</tr>';
 			if (is_array($ftrows)) {
 				foreach ($ftrows as $wDat) {
-					$content .= ((('
+					$content .= '
 						<tr class="bgColor4">
-							<td>' . $this->linkWordDetails(htmlspecialchars($wDat['baseword']), $wDat['wid'])) . '</td>
-							<td>') . htmlspecialchars(($wDat['is_stopword'] ? 'YES' : 'No'))) . '</td>
+							<td>' . $this->linkWordDetails(htmlspecialchars($wDat['baseword']), $wDat['wid']) . '</td>
+							<td>' . htmlspecialchars(($wDat['is_stopword'] ? 'YES' : 'No')) . '</td>
 						</tr>';
 				}
 			}
-			$content = ('
-				<table border="0" cellspacing="1" cellpadding="2" class="c-list">' . $content) . '
+			$content = '
+				<table border="0" cellspacing="1" cellpadding="2" class="c-list">' . $content . '
 				</table>';
 			if ($this->indexerObj->metaphone($ftrows[0]['baseword']) != $metaphone) {
 				$content .= 'ERROR: Metaphone string and hash did not match for some reason!?';
@@ -732,7 +732,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * @todo Define visibility
 	 */
 	public function printRemoveIndexed($phash, $alt) {
-		return ((((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('deletePhash' => $phash)))) . '" title="') . htmlspecialchars($alt)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete')) . '</a>';
+		return '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('deletePhash' => $phash))) . '" title="' . htmlspecialchars($alt) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete') . '</a>';
 	}
 
 	/**
@@ -745,7 +745,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function printReindex($resultRow, $alt) {
 		if ($resultRow['item_type'] && $resultRow['item_type'] !== '0') {
-			return ((((((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('reindex' => $resultRow['phash'], 'reindex_id' => $resultRow['page_id'])))) . '">') . '<img ') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/refresh_n.gif', 'width="14" height="14"')) . ' hspace="1" vspace="2" border="0" title="') . htmlspecialchars($alt)) . '" alt="" />') . '</a>';
+			return '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('reindex' => $resultRow['phash'], 'reindex_id' => $resultRow['page_id']))) . '">' . '<img ' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/refresh_n.gif', 'width="14" height="14"') . ' hspace="1" vspace="2" border="0" title="' . htmlspecialchars($alt) . '" alt="" />' . '</a>';
 		}
 	}
 
@@ -758,7 +758,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * @todo Define visibility
 	 */
 	public function linkDetails($string, $phash) {
-		return ((('<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('phash' => $phash)))) . '">') . $string) . '</a>';
+		return '<a href="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('phash' => $phash))) . '">' . $string . '</a>';
 	}
 
 	/**
@@ -768,7 +768,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * @todo Define visibility
 	 */
 	public function linkList() {
-		return ('<br /><a href="index.php?id=' . $this->pObj->id) . '">Back to list.</a><br />';
+		return '<br /><a href="index.php?id=' . $this->pObj->id . '">Back to list.</a><br />';
 	}
 
 	/**
@@ -780,7 +780,7 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 * @todo Define visibility
 	 */
 	public function showPageDetails($string, $id) {
-		return ((('<a href="' . htmlspecialchars((('index.php?id=' . $id) . '&SET[depth]=0&SET[type]=1'))) . '">') . $string) . '</a>';
+		return '<a href="' . htmlspecialchars(('index.php?id=' . $id . '&SET[depth]=0&SET[type]=1')) . '">' . $string . '</a>';
 	}
 
 	/**
@@ -849,11 +849,11 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 			$fullPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($icon);
 			if ($fullPath) {
 				$info = @getimagesize($fullPath);
-				$iconPath = ($GLOBALS['BACK_PATH'] . '../') . substr($fullPath, strlen(PATH_site));
-				$this->iconFileNameCache[$it] = is_array($info) ? ((('<img src="' . $iconPath) . '" ') . $info[3]) . ' title="###TITLE_ATTRIBUTE###" alt="" />' : '';
+				$iconPath = $GLOBALS['BACK_PATH'] . '../' . substr($fullPath, strlen(PATH_site));
+				$this->iconFileNameCache[$it] = is_array($info) ? '<img src="' . $iconPath . '" ' . $info[3] . ' title="###TITLE_ATTRIBUTE###" alt="" />' : '';
 			}
 		}
-		return str_replace('###TITLE_ATTRIBUTE###', htmlspecialchars(($it . ': ') . $alt), $this->iconFileNameCache[$it]);
+		return str_replace('###TITLE_ATTRIBUTE###', htmlspecialchars($it . ': ' . $alt), $this->iconFileNameCache[$it]);
 	}
 
 	/**
@@ -884,9 +884,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 	 */
 	public function reindexPhash($phash, $pageId) {
 		// Query:
-		$resultRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('ISEC.*, IP.*', 'index_phash IP, index_section ISEC', (('IP.phash = ISEC.phash
-						AND IP.phash = ' . intval($phash)) . '
-						AND ISEC.page_id = ') . intval($pageId));
+		$resultRow = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('ISEC.*, IP.*', 'index_phash IP, index_section ISEC', 'IP.phash = ISEC.phash
+						AND IP.phash = ' . intval($phash) . '
+						AND ISEC.page_id = ' . intval($pageId));
 		$content = '';
 		if (is_array($resultRow)) {
 			if ($resultRow['item_type'] && $resultRow['item_type'] !== '0') {
@@ -900,9 +900,9 @@ class IndexedPagesController extends \TYPO3\CMS\Backend\Module\AbstractFunctionM
 					$indexerObj->indexRegularDocument($resultRow['data_filename'], TRUE);
 				}
 				if ($indexerObj->file_phash_arr['phash'] != $resultRow['phash']) {
-					$content .= ((('ERROR: phash (' . $indexerObj->file_phash_arr['phash']) . ') did NOT match ') . $resultRow['phash']) . ' for strange reasons!';
+					$content .= 'ERROR: phash (' . $indexerObj->file_phash_arr['phash'] . ') did NOT match ' . $resultRow['phash'] . ' for strange reasons!';
 				}
-				$content .= ('<h4>Log for re-indexing of "' . htmlspecialchars($resultRow['data_filename'])) . '":</h4>';
+				$content .= '<h4>Log for re-indexing of "' . htmlspecialchars($resultRow['data_filename']) . '":</h4>';
 				$content .= \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($indexerObj->internal_log);
 				$content .= '<h4>Hash-array, page:</h4>';
 				$content .= \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($indexerObj->hash);
