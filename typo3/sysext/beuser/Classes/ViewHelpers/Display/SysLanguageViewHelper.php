@@ -45,9 +45,9 @@ class SysLanguageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVie
 		$content = '';
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid, title, flag', 'sys_language', '', 'title ASC');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
-			$content .= ((('<li>' . $row['title']) . ' [') . $row['uid']) . ']</li>';
+			$content .= '<li>' . $row['title'] . ' [' . $row['uid'] . ']</li>';
 		}
-		return ('<ul>' . $content) . '</ul>';
+		return '<ul>' . $content . '</ul>';
 	}
 
 }

@@ -43,8 +43,8 @@ class SuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 		if ($backendUser->getIsAdministrator()) {
 			return '';
 		}
-		$title = ((($GLOBALS['LANG']->getLL('switchUserTo', TRUE) . ' ') . $backendUser->getUserName()) . ' ') . $GLOBALS['LANG']->getLL('switchBackMode', TRUE);
-		return ((((('<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('SwitchUser' => $backendUser->getUid(), 'switchBackUser' => $emulate))) . '" target="_top" title="') . htmlspecialchars($title)) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-system-backend-user-' . ($emulate ? 'emulate' : 'switch')))) . '</a>';
+		$title = $GLOBALS['LANG']->getLL('switchUserTo', TRUE) . ' ' . $backendUser->getUserName() . ' ' . $GLOBALS['LANG']->getLL('switchBackMode', TRUE);
+		return '<a href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript(array('SwitchUser' => $backendUser->getUid(), 'switchBackUser' => $emulate)) . '" target="_top" title="' . htmlspecialchars($title) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(('actions-system-backend-user-' . ($emulate ? 'emulate' : 'switch'))) . '</a>';
 	}
 
 }
