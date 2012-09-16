@@ -95,13 +95,13 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 			}
 			// Generate page-tree
 			$search->pageIdList .= $this->cObj->getTreeList(-1 * $theStartId, $depth);
-			$endClause = (((((('pages.uid IN (' . $search->pageIdList) . ')
-				AND pages.doktype in (') . $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes']) . ($conf['addExtUrlsAndShortCuts'] ? ',3,4' : '')) . ')
-				AND pages.no_search=0') . $this->cObj->enableFields($search->fTable)) . $this->cObj->enableFields('pages');
+			$endClause = 'pages.uid IN (' . $search->pageIdList . ')
+				AND pages.doktype in (' . $GLOBALS['TYPO3_CONF_VARS']['FE']['content_doktypes'] . ($conf['addExtUrlsAndShortCuts'] ? ',3,4' : '') . ')
+				AND pages.no_search=0' . $this->cObj->enableFields($search->fTable) . $this->cObj->enableFields('pages');
 			if ($conf['languageField.'][$search->fTable]) {
 				// (using sys_language_uid which is the ACTUAL language of the page.
 				// sys_language_content is only for selecting DISPLAY content!)
-				$endClause .= ((((' AND ' . $search->fTable) . '.') . $conf['languageField.'][$search->fTable]) . ' = ') . intval($GLOBALS['TSFE']->sys_language_uid);
+				$endClause .= ' AND ' . $search->fTable . '.' . $conf['languageField.'][$search->fTable] . ' = ' . intval($GLOBALS['TSFE']->sys_language_uid);
 			}
 			// Build query
 			$search->build_search_query($endClause);
@@ -124,7 +124,7 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 			if (!$noOrderBy) {
 				$search->queryParts['ORDERBY'] = 'pages.lastUpdated, pages.tstamp';
 			}
-			$search->queryParts['LIMIT'] = ($spointer . ',') . $theRange;
+			$search->queryParts['LIMIT'] = $spointer . ',' . $theRange;
 			// Search...
 			$search->execute_query();
 			if ($GLOBALS['TYPO3_DB']->sql_num_rows($search->result)) {
@@ -135,8 +135,8 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 				// prev/next url:
 				$target = isset($conf['target.']) ? $this->cObj->stdWrap($conf['target'], $conf['target.']) : $conf['target'];
 				$LD = $GLOBALS['TSFE']->tmpl->linkData($GLOBALS['TSFE']->page, $target, 1, '', '', $this->cObj->getClosestMPvalueForPage($GLOBALS['TSFE']->page['uid']));
-				$targetPart = $LD['target'] ? (' target="' . htmlspecialchars($LD['target'])) . '"' : '';
-				$urlParams = $this->cObj->URLqMark($LD['totalURL'], (((((('&sword=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sword'))) . '&scols=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('scols'))) . '&stype=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype'))) . '&scount=') . $total);
+				$targetPart = $LD['target'] ? ' target="' . htmlspecialchars($LD['target']) . '"' : '';
+				$urlParams = $this->cObj->URLqMark($LD['totalURL'], '&sword=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('sword')) . '&scols=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('scols')) . '&stype=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('stype')) . '&scount=' . $total);
 				// substitution:
 				$result = $this->cObj->cObjGetSingle($conf['layout'], $conf['layout.'], 'layout');
 				$result = str_replace('###RANGELOW###', $rangeLow, $result);
@@ -144,14 +144,14 @@ class SearchResultContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abstra
 				$result = str_replace('###TOTAL###', $total, $result);
 				if ($rangeHigh < $total) {
 					$next = $this->cObj->cObjGetSingle($conf['next'], $conf['next.'], 'next');
-					$next = (((((('<a href="' . htmlspecialchars((($urlParams . '&spointer=') . ($spointer + $theRange)))) . '"') . $targetPart) . $GLOBALS['TSFE']->ATagParams) . '>') . $next) . '</a>';
+					$next = '<a href="' . htmlspecialchars(($urlParams . '&spointer=' . ($spointer + $theRange))) . '"' . $targetPart . $GLOBALS['TSFE']->ATagParams . '>' . $next . '</a>';
 				} else {
 					$next = '';
 				}
 				$result = str_replace('###NEXT###', $next, $result);
 				if ($rangeLow > 1) {
 					$prev = $this->cObj->cObjGetSingle($conf['prev'], $conf['prev.'], 'prev');
-					$prev = (((((('<a href="' . htmlspecialchars((($urlParams . '&spointer=') . ($spointer - $theRange)))) . '"') . $targetPart) . $GLOBALS['TSFE']->ATagParams) . '>') . $prev) . '</a>';
+					$prev = '<a href="' . htmlspecialchars(($urlParams . '&spointer=' . ($spointer - $theRange))) . '"' . $targetPart . $GLOBALS['TSFE']->ATagParams . '>' . $prev . '</a>';
 				} else {
 					$prev = '';
 				}

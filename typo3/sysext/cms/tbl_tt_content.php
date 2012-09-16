@@ -1784,12 +1784,12 @@ $TCA['tt_content'] = array(
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended'
 		),
 		'textpic' => array(
-			'showitem' => ('--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
+			'showitem' => '--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.header;header,
 					bodytext;Text;;richtext:rte_transform[flag=rte_enabled|mode=ts_css],
 					rte_enabled;LLL:EXT:cms/locallang_ttc.xml:rte_enabled_formlabel,' . '--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.images,
 					image,
-					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.imagelinks;imagelinks,') . '--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance,
+					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.imagelinks;imagelinks,' . '--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.image_settings;image_settings,
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.imageblock;imageblock,
