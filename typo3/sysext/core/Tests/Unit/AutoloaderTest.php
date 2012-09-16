@@ -112,7 +112,7 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 	public function unregisterAndRegisterAgainDoesNotFatal() {
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
-		// If this fatals the autoload re registering went wrong
+			// If this fatals the autoload re registering went wrong
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
 	}
 
@@ -121,8 +121,8 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 	 */
 	public function unregisterAutoloaderSetsCacheEntryWithT3libNoTags() {
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
-		// Expect the mock cache set method to be called
-		// once with t3lib_autoloader as third parameter
+			// Expect the mock cache set method to be called
+			// once with t3lib_autoloader as third parameter
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->anything(), array());
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
@@ -139,25 +139,17 @@ class AutoloaderTest extends \Tx_Phpunit_TestCase {
 		$autoloaderFile = $extPath . 'ext_autoload.php';
 		$class = strtolower("tx_{$extKey}_" . uniqid(''));
 		$file = $extPath . uniqid('') . '.php';
-		file_put_contents($file, '<?php
-
-throw new \\RuntimeException(\'\', 1310203812);
-
-?>');
-		file_put_contents($autoloaderFile, '<?php
-
-return array(\'' . $class . '\' => \'' . $file . '\');
-
-?>');
-		// Inject a dummy for the core_phpcode cache to force the autoloader
-		// to re calculate the registry
+		file_put_contents($file, '<?php' . LF . 'throw new \\RuntimeException(\'\', 1310203812);' . LF . '?>');
+		file_put_contents($autoloaderFile, '<?php' . LF . 'return array(\'' . $class . '\' => \'' . $file . '\');' . LF . '?>');
+			// Inject a dummy for the core_phpcode cache to force the autoloader
+			// to re calculate the registry
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		// Re-initialize autoloader registry to force it to recognize the new extension
+			// Re-initialize autoloader registry to force it to recognize the new extension
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
-		// Expect the exception of the file to be thrown
+			// Expect the exception of the file to be thrown
 		\TYPO3\CMS\Core\Autoloader::autoload($class);
 	}
 
@@ -168,22 +160,18 @@ return array(\'' . $class . '\' => \'' . $file . '\');
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$autoloaderFile = $extPath . 'ext_autoload.php';
-		// A case sensitive key (FooBar) in ext_autoload file
+			// A case sensitive key (FooBar) in ext_autoload file
 		$class = "tx_{$extKey}_" . uniqid('FooBar');
 		$file = $extPath . uniqid('') . '.php';
-		file_put_contents($autoloaderFile, '<?php
-
-return array(\'' . $class . '\' => \'' . $file . '\');
-
-?>');
-		// Inject a dummy for the core_phpcode cache to force the autoloader
-		// to re calculate the registry
+		file_put_contents($autoloaderFile, '<?php' . LF . 'return array(\'' . $class . '\' => \'' . $file . '\');' . LF . '?>');
+			// Inject a dummy for the core_phpcode cache to force the autoloader
+			// to re calculate the registry
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		// Expect that the lower case version of the class name is written to cache
+			// Expect that the lower case version of the class name is written to cache
 		$mockCache->expects($this->at(2))->method('set')->with($this->anything(), $this->stringContains(strtolower($class), FALSE));
-		// Re-initialize autoloader registry to force it to recognize the new extension
+			// Re-initialize autoloader registry to force it to recognize the new extension
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
@@ -196,26 +184,18 @@ return array(\'' . $class . '\' => \'' . $file . '\');
 	public function autoloadFindsClassFileIfExtAutoloadEntryIsCamelCased() {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
-		// A case sensitive key (FooBar) in ext_autoload file
+			// A case sensitive key (FooBar) in ext_autoload file
 		$class = "tx_{$extKey}_" . uniqid('FooBar');
 		$file = $extPath . uniqid('') . '.php';
-		file_put_contents($file, '<?php
-
-throw new \\RuntimeException(\'\', 1336756850);
-
-?>');
+		file_put_contents($file, '<?php' . LF . 'throw new \\RuntimeException(\'\', 1336756850);' . LF . '?>');
 		$extAutoloadFile = $extPath . 'ext_autoload.php';
-		file_put_contents($extAutoloadFile, '<?php
-
-return array(\'' . $class . '\' => \'' . $file . '\');
-
-?>');
-		// Inject cache and return false, so autoloader is forced to read ext_autoloads from extensions
+		file_put_contents($extAutoloadFile, '<?php' . LF . 'return array(\'' . $class . '\' => \'' . $file . '\');' . LF . '?>');
+			// Inject cache and return false, so autoloader is forced to read ext_autoloads from extensions
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->any())->method('has')->will($this->returnValue(FALSE));
-		// Re-initialize autoloader registry to force it to recognize the new extension
+			// Re-initialize autoloader registry to force it to recognize the new extension
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
 		\TYPO3\CMS\Core\Autoloader::autoload($class);
@@ -228,21 +208,17 @@ return array(\'' . $class . '\' => \'' . $file . '\');
 	public function autoloadFindsCamelCasedClassFileIfExtAutoloadEntryIsReadLowerCasedFromCache() {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
-		// A case sensitive key (FooBar) in ext_autoload file
+			// A case sensitive key (FooBar) in ext_autoload file
 		$class = "tx_{$extKey}_" . uniqid('FooBar');
 		$file = $extPath . uniqid('') . '.php';
-		file_put_contents($file, '<?php
-
-throw new \RuntimeException(\'\', 1336756850);
-
-?>');
-		// Inject cache mock and let the cache entry return the lowercased class name as key
+		file_put_contents($file, '<?php' . LF . 'throw new \RuntimeException(\'\', 1336756850);' . LF . '?>');
+			// Inject cache mock and let the cache entry return the lowercased class name as key
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->any())->method('has')->will($this->returnValue(TRUE));
 		$mockCache->expects($this->once())->method('requireOnce')->will($this->returnValue(array(strtolower($class) => $file)));
-		// Re-initialize autoloader registry to force it to recognize the new extension
+			// Re-initialize autoloader registry to force it to recognize the new extension
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
 		\TYPO3\CMS\Core\Autoloader::autoload($class);
@@ -255,25 +231,21 @@ throw new \RuntimeException(\'\', 1336756850);
 	public function autoloadFindsClassFileThatRespectsExtbaseNamingSchemeWithoutExtAutoloadFile() {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
-		// Create a class named Tx_Extension_Foo123_Bar456
-		// to find file extension/Classes/Foo123/Bar456.php
+			// Create a class named Tx_Extension_Foo123_Bar456
+			// to find file extension/Classes/Foo123/Bar456.php
 		$pathSegment = 'Foo' . uniqid();
 		$fileName = 'Bar' . uniqid();
 		$class = 'Tx_' . ucfirst($extKey) . '_' . $pathSegment . '_' . $fileName;
 
 		$file = $extPath . 'Classes/' . $pathSegment . '/' . $fileName . '.php';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($extPath . 'Classes/' . $pathSegment);
-		file_put_contents($file, '<?php
-
-throw new \\RuntimeException(\'\', 1310203813);
-
-?>');
-		// Inject a dummy for the core_phpcode cache to cache
-		// the calculated cache entry to a dummy cache
+		file_put_contents($file, '<?php' . LF . 'throw new \\RuntimeException(\'\', 1310203813);' . LF . '?>');
+			// Inject a dummy for the core_phpcode cache to cache
+			// the calculated cache entry to a dummy cache
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		// Expect the exception of the file to be thrown
+			// Expect the exception of the file to be thrown
 		\TYPO3\CMS\Core\Autoloader::autoload($class);
 	}
 
@@ -281,7 +253,6 @@ throw new \\RuntimeException(\'\', 1310203813);
 	 * @test
 	 */
 	public function unregisterAutoloaderWritesClassFileThatRespectsExtbaseNamingSchemeToCacheFile() {
-		$this->markTestSkipped('This test was a blocker for other namespaced tests.');
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$pathSegment = 'Foo' . uniqid();
@@ -289,15 +260,11 @@ throw new \\RuntimeException(\'\', 1310203813);
 		$class = 'Tx_' . $extKey . '_' . $pathSegment . '_' . $fileName;
 		$file = $extPath . 'Classes/' . $pathSegment . '/' . $fileName . '.php';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($extPath . 'Classes/' . $pathSegment);
-		file_put_contents($file, '<?php
-
-$foo = \'bar\';
-
-?>');
+		file_put_contents($file, '<?php' . LF . '$foo = \'bar\';' . LF . '?>');
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		// Expect that an entry to the cache is written containing the newly found class
+			// Expect that an entry to the cache is written containing the newly found class
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains(strtolower($class), $this->anything()));
 		\TYPO3\CMS\Core\Autoloader::autoload($class);
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
@@ -307,7 +274,6 @@ $foo = \'bar\';
 	 * @test
 	 */
 	public function unregisterAutoloaderWritesClassFileLocationOfClassRespectingExtbaseNamingSchemeToCacheFile() {
-		$this->markTestSkipped('This test was a blocker for other namespaced tests.');
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$pathSegment = 'Foo' . uniqid();
@@ -315,15 +281,11 @@ $foo = \'bar\';
 		$class = 'Tx_' . $extKey . '_' . $pathSegment . '_' . $fileName;
 		$file = $extPath . 'Classes/' . $pathSegment . '/' . $fileName . '.php';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($extPath . 'Classes/' . $pathSegment);
-		file_put_contents($file, '<?php
-
-$foo = \'bar\';
-
-?>');
+		file_put_contents($file, '<?php' . LF . '$foo = \'bar\';' . LF . '?>');
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		// Expect that an entry to the cache is written containing the newly found class
+			// Expect that an entry to the cache is written containing the newly found class
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains(strtolower($file), $this->anything()));
 		\TYPO3\CMS\Core\Autoloader::autoload($class);
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
@@ -333,23 +295,19 @@ $foo = \'bar\';
 	 * @test
 	 */
 	public function getClassPathByRegistryLookupFindsClassPrefixedWithUxRegisteredInExtAutoloadFile() {
-		// Create a dummy extension with a path to a 'ux_' prefixed php file
+			// Create a dummy extension with a path to a 'ux_' prefixed php file
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$autoloaderFile = $extPath . 'ext_autoload.php';
 		$class = strtolower("ux_tx_{$extKey}_" . uniqid(''));
 		$file = $extPath . uniqid('') . '.php';
-		file_put_contents($autoloaderFile, '<?php
-
-return array(\'' . $class . '\' => \'' . $file . '\');
-
-?>');
-		// Inject a dummy for the core_phpcode cache to force the autoloader
-		// to re calculate the registry
+		file_put_contents($autoloaderFile, '<?php' . LF . 'return array(\'' . $class . '\' => \'' . $file . '\');' . LF . '?>');
+			// Inject a dummy for the core_phpcode cache to force the autoloader
+			// to re calculate the registry
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		// Re-initialize autoloader registry to force it to recognize the new extension with the ux_ autoload definition
+			// Re-initialize autoloader registry to force it to recognize the new extension with the ux_ autoload definition
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
 		$this->assertSame($file, \TYPO3\CMS\Core\Autoloader::getClassPathByRegistryLookup($class));
@@ -365,12 +323,12 @@ return array(\'' . $class . '\' => \'' . $file . '\');
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
-		// Class is not found by returning NULL
+			// Class is not found by returning NULL
 		$this->assertSame(NULL, \TYPO3\CMS\Core\Autoloader::getClassPathByRegistryLookup($uxClassName));
 		// Expect NULL lookup is cached
 		$expectedCacheString = '\'' . strtolower($uxClassName) . '\' => NULL,';
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains($expectedCacheString));
-		// Trigger writing new cache file
+			// Trigger writing new cache file
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 	}
 
@@ -378,33 +336,25 @@ return array(\'' . $class . '\' => \'' . $file . '\');
 	 * @test
 	 */
 	public function unregisterAutoloaderWritesDeprecatedTypo3ConfVarsRegisteredXclassClassFoundByGetClassPathByRegistryLookupToCache() {
-		// Create a fake extension
+			// Create a fake extension
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$autoloaderFile = $extPath . 'ext_autoload.php';
-		// Feed ext_autoload with a base file and the class file
+			// Feed ext_autoload with a base file and the class file
 		$class = strtolower("tx_{$extKey}_" . uniqid(''));
 		$fileName = uniqid('') . '.php';
 		$file = $extPath . $fileName;
 		$xClassFile = 'typo3temp/' . $extKey . '/xclassFile';
-		file_put_contents($autoloaderFile, '<?php
-
-return array(\'' . $class . '\' => \'' . $file . '\');
-
-?>');
-		file_put_contents(PATH_site . $xClassFile, '<?php
-
-die();
-
-?>');
-		// Register a xclass for the base file
+		file_put_contents($autoloaderFile, '<?php' . LF . 'return array(\'' . $class . '\' => \'' . $file . '\');' . LF . '?>');
+		file_put_contents(PATH_site . $xClassFile, '<?php' . LF . 'die();' . LF . '?>');
+			// Register a xclass for the base file
 		$GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['typo3temp/' . $extKey . '/' . $fileName] = $xClassFile;
-		// Inject a dummy for the core_phpcode cache to force the autoloader
-		// to re calculate the registry
+			// Inject a dummy for the core_phpcode cache to force the autoloader
+			// to re calculate the registry
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		// Excpect the cache entry to be called once with the new class name
+			// Excpect the cache entry to be called once with the new class name
 		$mockCache->expects($this->at(2))->method('set')->with($this->anything(), $this->stringContains('ux_' . $class));
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
@@ -419,18 +369,18 @@ die();
 	public function autoloadFindsClassFileThatRespectsExtbaseNamingSchemeWithNamespace() {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
-		// Create a class named \Tx\Extension\Foo123\Bar456
-		// to find file extension/Classes/Foo123/Bar456.php
+			// Create a class named \Tx\Extension\Foo123\Bar456
+			// to find file extension/Classes/Foo123/Bar456.php
 		$pathSegment = 'Foo' . uniqid();
 		$fileName = 'Bar' . uniqid();
 		$namespacedClass = '\\Vendor\\' . ucfirst($extKey) . '\\' . $pathSegment . '\\' . $fileName;
 		$file = $extPath . 'Classes/' . $pathSegment . '/' . $fileName . '.php';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($extPath . 'Classes/' . $pathSegment);
 		file_put_contents($file, '<?php' . LF . 'throw new \\RuntimeException(\'\', 1342800577);' . LF . '?>');
-		// Re-initialize autoloader registry to force it to recognize the new extension
+			// Re-initialize autoloader registry to force it to recognize the new extension
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
-		// Expect the exception of the file to be thrown
+			// Expect the exception of the file to be thrown
 		\TYPO3\CMS\Core\Autoloader::autoload($namespacedClass);
 	}
 
@@ -438,7 +388,6 @@ die();
 	 * @test
 	 */
 	public function unregisterAutoloaderWritesClassFileLocationOfClassRespectingExtbaseNamingSchemeWithNamespaceToCacheFile() {
-		$this->markTestSkipped('This test was a blocker for other namespaced tests.');
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$pathSegment = 'Foo' . uniqid();
@@ -446,11 +395,11 @@ die();
 		$namespacedClass = '\\Tx\\' . $extKey . '\\' . $pathSegment . '\\' . $fileName;
 		$file = $extPath . 'Classes/' . $pathSegment . '/' . $fileName . '.php';
 		\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir_deep($extPath . 'Classes/' . $pathSegment);
-		file_put_contents($file, '<?php' . LF . ($foo = 'bar;' . LF . '?>'));
+		file_put_contents($file, "<?php\n\n\$foo = 'bar';\n\n?>");
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		// Expect that an entry to the cache is written containing the newly found class
+			// Expect that an entry to the cache is written containing the newly found class
 		$mockCache->expects($this->once())->method('set')->with($this->anything(), $this->stringContains(strtolower($file), $this->anything()));
 		\TYPO3\CMS\Core\Autoloader::autoload($namespacedClass);
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
@@ -473,17 +422,17 @@ die();
 		$pathSegment = 'Foo' . uniqid();
 		$fileName = 'Bar' . uniqid();
 		$autoloaderFile = $extPath . 'ext_autoload.php';
-		// A case sensitive key (FooBar) in ext_autoload file
+			// A case sensitive key (FooBar) in ext_autoload file
 		$namespacedClass = '\\Tx\\' . $extKey . '\\' . $pathSegment . '\\' . $fileName;
 		file_put_contents($autoloaderFile, '<?php' . LF . 'return array(\'' . $namespacedClass . '\' =>   \'EXT:someExt/Classes/Foo/bar.php\');' . LF . '?>');
-		// Inject a dummy for the core_phpcode cache to force the autoloader
-		// to re calculate the registry
+			// Inject a dummy for the core_phpcode cache to force the autoloader
+			// to re calculate the registry
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
-		// Expect that the lower case version of the class name is written to cache
+			// Expect that the lower case version of the class name is written to cache
 		$mockCache->expects($this->at(2))->method('set')->with($this->anything(), $this->stringContains(strtolower($namespacedClass), FALSE));
-		// Re-initialize autoloader registry to force it to recognize the new extension
+			// Re-initialize autoloader registry to force it to recognize the new extension
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Autoloader::registerAutoloader();
 		\TYPO3\CMS\Core\Autoloader::unregisterAutoloader();

@@ -120,7 +120,7 @@ class ShockwaveFlashContentObject extends \TYPO3\CMS\Frontend\ContentObject\Abst
 			$height = $conf[$type . '.']['defaultHeight'];
 		}
 		$embed = 'swfobject.embedSWF("' . $conf['player'] . '", "' . $replaceElementIdString . '", "' . $width . '", "' . $height . '",
-		 		"' . $flashVersion . '", "' . $installUrl . '", ' . $conf['embedParams'] . ');';
+				"' . $flashVersion . '", "' . $installUrl . '", ' . $conf['embedParams'] . ');';
 		$script = $flashvars . $params . $attributes . $embed;
 		$GLOBALS['TSFE']->getPageRenderer()->addJsInlineCode($replaceElementIdString, $script);
 		if (isset($conf['stdWrap.'])) {
