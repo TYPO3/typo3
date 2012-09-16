@@ -65,7 +65,7 @@ class ModuleController {
 		$this->doc->tableLayout = array(
 			'defRow' => array(
 				'0' => array('<td valign="top" nowrap>', '</td>'),
-				'defCol' => array(('<td><img src="' . $this->doc->backPath) . 'clear.gif" width=10 height=1></td><td valign="top" nowrap>', '</td>')
+				'defCol' => array('<td><img src="' . $this->doc->backPath . 'clear.gif" width=10 height=1></td><td valign="top" nowrap>', '</td>')
 			)
 		);
 		$indexer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\IndexedSearch\\Indexer');
@@ -186,7 +186,7 @@ class ModuleController {
 	 * @todo Define visibility
 	 */
 	public function tableHead($str) {
-		return ('<strong>' . $str) . ':&nbsp;&nbsp;&nbsp;</strong>';
+		return '<strong>' . $str . ':&nbsp;&nbsp;&nbsp;</strong>';
 	}
 
 	/**
@@ -258,14 +258,14 @@ class ModuleController {
 				\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['crdate']),
 				$row['tstamp'] != $row['crdate'] ? \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp']) : '',
 				$row['parsetime'],
-				((($this->getNumberOfSections($row['phash']) . '/') . $grListRec[0]['pcount']) . '/') . $this->getNumberOfFulltext($row['phash']),
-				($row['pcount'] . '/') . $this->formatFeGroup($grListRec),
+				$this->getNumberOfSections($row['phash']) . '/' . $grListRec[0]['pcount'] . '/' . $this->getNumberOfFulltext($row['phash']),
+				$row['pcount'] . '/' . $this->formatFeGroup($grListRec),
 				$row['sys_language_uid'],
 				$cHash,
 				$row['phash']
 			);
 			if ($row['pcount'] > 1) {
-				$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_phash.*', 'index_phash', (('phash_grouping=' . intval($row['phash_grouping'])) . ' AND phash<>') . intval($row['phash']));
+				$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_phash.*', 'index_phash', 'phash_grouping=' . intval($row['phash_grouping']) . ' AND phash<>' . intval($row['phash']));
 				while ($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2)) {
 					$grListRec = $this->getGrlistRecord($row2['phash']);
 					$recList[] = array(
@@ -277,7 +277,7 @@ class ModuleController {
 						\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row2['crdate']),
 						$row2['tstamp'] != $row2['crdate'] ? \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row2['tstamp']) : '',
 						$row2['parsetime'],
-						((($this->getNumberOfSections($row2['phash']) . '/') . $grListRec[0]['pcount']) . '/') . $this->getNumberOfFulltext($row2['phash']),
+						$this->getNumberOfSections($row2['phash']) . '/' . $grListRec[0]['pcount'] . '/' . $this->getNumberOfFulltext($row2['phash']),
 						'-/' . $this->formatFeGroup($grListRec),
 						'',
 						'',
@@ -323,14 +323,14 @@ class ModuleController {
 				\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['crdate']),
 				$row['tstamp'] != $row['crdate'] ? \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp']) : '',
 				$row['parsetime'],
-				((($this->getNumberOfSections($row['phash']) . '/') . $grListRec[0]['pcount']) . '/') . $this->getNumberOfFulltext($row['phash']),
+				$this->getNumberOfSections($row['phash']) . '/' . $grListRec[0]['pcount'] . '/' . $this->getNumberOfFulltext($row['phash']),
 				$row['pcount'],
 				$cHash,
 				$row['phash'],
 				htmlentities(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['data_filename'], 100))
 			);
 			if ($row['pcount'] > 1) {
-				$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_phash.*', 'index_phash', (('phash_grouping=' . intval($row['phash_grouping'])) . ' AND phash<>') . intval($row['phash']));
+				$res2 = $GLOBALS['TYPO3_DB']->exec_SELECTquery('index_phash.*', 'index_phash', 'phash_grouping=' . intval($row['phash_grouping']) . ' AND phash<>' . intval($row['phash']));
 				while ($row2 = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res2)) {
 					$cHash = count(unserialize($row2['cHashParams'])) ? $this->formatCHash(unserialize($row2['cHashParams'])) : '';
 					$grListRec = $this->getGrlistRecord($row2['phash']);
@@ -342,7 +342,7 @@ class ModuleController {
 						\TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row2['crdate']),
 						$row2['tstamp'] != $row2['crdate'] ? \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row2['tstamp']) : '',
 						$row2['parsetime'],
-						((($this->getNumberOfSections($row2['phash']) . '/') . $grListRec[0]['pcount']) . '/') . $this->getNumberOfFulltext($row2['phash']),
+						$this->getNumberOfSections($row2['phash']) . '/' . $grListRec[0]['pcount'] . '/' . $this->getNumberOfFulltext($row2['phash']),
 						'',
 						$cHash,
 						$row2['phash'],
@@ -380,7 +380,7 @@ class ModuleController {
 	public function formatCHash($arr) {
 		$list = array();
 		foreach ($arr as $k => $v) {
-			$list[] = (htmlspecialchars($k) . '=') . htmlspecialchars($v);
+			$list[] = htmlspecialchars($k) . '=' . htmlspecialchars($v);
 		}
 		return implode('<br />', $list);
 	}
@@ -458,7 +458,7 @@ class ModuleController {
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(*),item_type', 'index_phash', '', 'item_type', 'item_type');
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_row($res)) {
 			$iT = $row[1];
-			$recList[] = array($this->tableHead((($revTypes[$iT] . ' (') . $iT) . ')'), ($this->countUniqueTypes($iT) . '/') . $row[0]);
+			$recList[] = array($this->tableHead($revTypes[$iT] . ' (' . $iT . ')'), $this->countUniqueTypes($iT) . '/' . $row[0]);
 		}
 		return $recList;
 	}

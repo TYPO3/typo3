@@ -109,9 +109,9 @@ class FileContentParser {
 			// PDF
 			if ($indexerConfig['pdftools']) {
 				$pdfPath = rtrim($indexerConfig['pdftools'], '/') . '/';
-				if (@is_file((($pdfPath . 'pdftotext') . $exe)) && @is_file((($pdfPath . 'pdfinfo') . $exe))) {
-					$this->app['pdfinfo'] = ($pdfPath . 'pdfinfo') . $exe;
-					$this->app['pdftotext'] = ($pdfPath . 'pdftotext') . $exe;
+				if (@is_file(($pdfPath . 'pdftotext' . $exe)) && @is_file(($pdfPath . 'pdfinfo' . $exe))) {
+					$this->app['pdfinfo'] = $pdfPath . 'pdfinfo' . $exe;
+					$this->app['pdftotext'] = $pdfPath . 'pdftotext' . $exe;
 					// PDF mode:
 					$this->pdf_mode = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($indexerConfig['pdf_mode'], -100, 100);
 					$extOK = TRUE;
@@ -126,8 +126,8 @@ class FileContentParser {
 			// Catdoc
 			if ($indexerConfig['catdoc']) {
 				$catdocPath = rtrim($indexerConfig['catdoc'], '/') . '/';
-				if (@is_file((($catdocPath . 'catdoc') . $exe))) {
-					$this->app['catdoc'] = ($catdocPath . 'catdoc') . $exe;
+				if (@is_file(($catdocPath . 'catdoc' . $exe))) {
+					$this->app['catdoc'] = $catdocPath . 'catdoc' . $exe;
 					$extOK = TRUE;
 				} else {
 					$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:catdocNotFound'), $catdocPath), 3);
@@ -143,8 +143,8 @@ class FileContentParser {
 			// ppthtml
 			if ($indexerConfig['ppthtml']) {
 				$ppthtmlPath = rtrim($indexerConfig['ppthtml'], '/') . '/';
-				if (@is_file((($ppthtmlPath . 'ppthtml') . $exe))) {
-					$this->app['ppthtml'] = ($ppthtmlPath . 'ppthtml') . $exe;
+				if (@is_file(($ppthtmlPath . 'ppthtml' . $exe))) {
+					$this->app['ppthtml'] = $ppthtmlPath . 'ppthtml' . $exe;
 					$extOK = TRUE;
 				} else {
 					$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:ppthtmlNotFound'), $ppthtmlPath), 3);
@@ -158,8 +158,8 @@ class FileContentParser {
 			// Xlhtml
 			if ($indexerConfig['xlhtml']) {
 				$xlhtmlPath = rtrim($indexerConfig['xlhtml'], '/') . '/';
-				if (@is_file((($xlhtmlPath . 'xlhtml') . $exe))) {
-					$this->app['xlhtml'] = ($xlhtmlPath . 'xlhtml') . $exe;
+				if (@is_file(($xlhtmlPath . 'xlhtml' . $exe))) {
+					$this->app['xlhtml'] = $xlhtmlPath . 'xlhtml' . $exe;
 					$extOK = TRUE;
 				} else {
 					$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:xlhtmlNotFound'), $xlhtmlPath), 3);
@@ -182,8 +182,8 @@ class FileContentParser {
 			// Oasis OpenDocument Text
 			if ($indexerConfig['unzip']) {
 				$unzipPath = rtrim($indexerConfig['unzip'], '/') . '/';
-				if (@is_file((($unzipPath . 'unzip') . $exe))) {
-					$this->app['unzip'] = ($unzipPath . 'unzip') . $exe;
+				if (@is_file(($unzipPath . 'unzip' . $exe))) {
+					$this->app['unzip'] = $unzipPath . 'unzip' . $exe;
 					$extOK = TRUE;
 				} else {
 					$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:unzipNotFound'), $unzipPath), 3);
@@ -196,8 +196,8 @@ class FileContentParser {
 			// Catdoc
 			if ($indexerConfig['unrtf']) {
 				$unrtfPath = rtrim($indexerConfig['unrtf'], '/') . '/';
-				if (@is_file((($unrtfPath . 'unrtf') . $exe))) {
-					$this->app['unrtf'] = ($unrtfPath . 'unrtf') . $exe;
+				if (@is_file(($unrtfPath . 'unrtf' . $exe))) {
+					$this->app['unrtf'] = $unrtfPath . 'unrtf' . $exe;
 					$extOK = TRUE;
 				} else {
 					$this->pObj->log_setTSlogMessage(sprintf($this->sL('LLL:EXT:indexed_search/locallang.xml:unrtfNotFound'), $unrtfPath), 3);
@@ -466,7 +466,7 @@ class FileContentParser {
 		case 'pdf':
 			if ($this->app['pdfinfo']) {
 				// Getting pdf-info:
-				$cmd = ($this->app['pdfinfo'] . ' ') . escapeshellarg($absFile);
+				$cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 				$pdfInfo = $this->splitPdfInfo($res);
 				unset($res);
@@ -477,7 +477,7 @@ class FileContentParser {
 					// Create temporary name
 					@unlink($tempFileName);
 					// Delete if exists, just to be safe.
-					$cmd = ((((((($this->app['pdftotext'] . ' -f ') . $low) . ' -l ') . $high) . ' -enc UTF-8 -q ') . escapeshellarg($absFile)) . ' ') . $tempFileName;
+					$cmd = $this->app['pdftotext'] . ' -f ' . $low . ' -l ' . $high . ' -enc UTF-8 -q ' . escapeshellarg($absFile) . ' ' . $tempFileName;
 					\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd);
 					if (@is_file($tempFileName)) {
 						$content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($tempFileName);
@@ -493,7 +493,7 @@ class FileContentParser {
 			break;
 		case 'doc':
 			if ($this->app['catdoc']) {
-				$cmd = ($this->app['catdoc'] . ' -d utf-8 ') . escapeshellarg($absFile);
+				$cmd = $this->app['catdoc'] . ' -d utf-8 ' . escapeshellarg($absFile);
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 				$content = implode(LF, $res);
 				unset($res);
@@ -504,7 +504,7 @@ class FileContentParser {
 
 		case 'ppt':
 			if ($this->app['ppthtml']) {
-				$cmd = ($this->app['ppthtml'] . ' ') . escapeshellarg($absFile);
+				$cmd = $this->app['ppthtml'] . ' ' . escapeshellarg($absFile);
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 				$content = implode(LF, $res);
 				unset($res);
@@ -515,7 +515,7 @@ class FileContentParser {
 			break;
 		case 'xls':
 			if ($this->app['xlhtml']) {
-				$cmd = ($this->app['xlhtml'] . ' -nc -te ') . escapeshellarg($absFile);
+				$cmd = $this->app['xlhtml'] . ' -nc -te ' . escapeshellarg($absFile);
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 				$content = implode(LF, $res);
 				unset($res);
@@ -537,12 +537,12 @@ class FileContentParser {
 		case 'odt':
 			if ($this->app['unzip']) {
 				// Read content.xml:
-				$cmd = (($this->app['unzip'] . ' -p ') . escapeshellarg($absFile)) . ' content.xml';
+				$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' content.xml';
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 				$content_xml = implode(LF, $res);
 				unset($res);
 				// Read meta.xml:
-				$cmd = (($this->app['unzip'] . ' -p ') . escapeshellarg($absFile)) . ' meta.xml';
+				$cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' meta.xml';
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 				$meta_xml = implode(LF, $res);
 				unset($res);
@@ -555,7 +555,7 @@ class FileContentParser {
 				$metaContent = $metaContent['office:document-meta'][0]['ch']['office:meta'][0]['ch'];
 				if (is_array($metaContent)) {
 					$contentArr['title'] = $metaContent['dc:title'][0]['values'][0] ? $metaContent['dc:title'][0]['values'][0] : $contentArr['title'];
-					$contentArr['description'] = ($metaContent['dc:subject'][0]['values'][0] . ' ') . $metaContent['dc:description'][0]['values'][0];
+					$contentArr['description'] = $metaContent['dc:subject'][0]['values'][0] . ' ' . $metaContent['dc:description'][0]['values'][0];
 					// Keywords collected:
 					if (is_array($metaContent['meta:keywords'][0]['ch']['meta:keyword'])) {
 						foreach ($metaContent['meta:keywords'][0]['ch']['meta:keyword'] as $kwDat) {
@@ -567,7 +567,7 @@ class FileContentParser {
 			break;
 		case 'rtf':
 			if ($this->app['unrtf']) {
-				$cmd = ($this->app['unrtf'] . ' ') . escapeshellarg($absFile);
+				$cmd = $this->app['unrtf'] . ' ' . escapeshellarg($absFile);
 				\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 				$fileContent = implode(LF, $res);
 				unset($res);
@@ -618,7 +618,7 @@ class FileContentParser {
 				$exif = FALSE;
 			}
 			if ($exif) {
-				$comment = trim(($exif['COMMENT'][0] . ' ') . $exif['ImageDescription']);
+				$comment = trim($exif['COMMENT'][0] . ' ' . $exif['ImageDescription']);
 			} else {
 				$comment = '';
 			}
@@ -652,7 +652,7 @@ class FileContentParser {
 		switch ($ext) {
 		case 'pdf':
 			// Getting pdf-info:
-			$cmd = ($this->app['pdfinfo'] . ' ') . escapeshellarg($absFile);
+			$cmd = $this->app['pdfinfo'] . ' ' . escapeshellarg($absFile);
 			\TYPO3\CMS\Core\Utility\CommandUtility::exec($cmd, $res);
 			$pdfInfo = $this->splitPdfInfo($res);
 			unset($res);
@@ -668,7 +668,7 @@ class FileContentParser {
 				for ($a = 0; $a < $iter; $a++) {
 					$low = floor($a * ($pdfInfo['pages'] / $iter)) + 1;
 					$high = floor(($a + 1) * ($pdfInfo['pages'] / $iter));
-					$cParts[] = ($low . '-') . $high;
+					$cParts[] = $low . '-' . $high;
 				}
 			}
 			break;
@@ -706,7 +706,7 @@ class FileContentParser {
 	 * @todo Define visibility
 	 */
 	public function removeEndJunk($string) {
-		return trim(preg_replace((('/[' . LF) . chr(12)) . ']*$/', '', $string));
+		return trim(preg_replace('/[' . LF . chr(12) . ']*$/', '', $string));
 	}
 
 	/************************
@@ -728,7 +728,7 @@ class FileContentParser {
 		if ($extension == 'jpeg') {
 			$extension = 'jpg';
 		}
-		return ('EXT:indexed_search/pi/res/' . $extension) . '.gif';
+		return 'EXT:indexed_search/pi/res/' . $extension . '.gif';
 	}
 
 }

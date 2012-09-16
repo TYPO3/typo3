@@ -36,18 +36,18 @@ if (TYPO3_MODE == 'BE') {
 		}
 	';
 	// Context menu user default configuration
-	$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= ((((('
+	$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= '
 		options.contextMenu.table {
 			virtual_root.items {
-				' . $importExportActions) . '
+				' . $importExportActions . '
 			}
 
 			pages_root.items {
-				') . $importExportActions) . '
+				' . $importExportActions . '
 			}
 
 			pages.items.1000 {
-				') . $importExportActions) . '
+				' . $importExportActions . '
 			}
 		}
 	';
