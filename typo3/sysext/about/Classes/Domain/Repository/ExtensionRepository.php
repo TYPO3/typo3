@@ -55,7 +55,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$loadedExtensionsArray = $GLOBALS['TYPO3_LOADED_EXT'];
 		foreach ($loadedExtensionsArray as $extensionKey => $extension) {
 			if (is_array($extension) && $extension['type'] != 'S') {
-				$emconfPath = (PATH_site . $extension['siteRelPath']) . 'ext_emconf.php';
+				$emconfPath = PATH_site . $extension['siteRelPath'] . 'ext_emconf.php';
 				include $emconfPath;
 				$extension = $this->objectManager->create('TYPO3\\CMS\\About\\Domain\\Model\\Extension');
 				$extension->setKey($extensionKey);

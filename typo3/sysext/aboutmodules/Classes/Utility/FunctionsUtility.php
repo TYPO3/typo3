@@ -86,7 +86,7 @@ class FunctionsUtility {
 		$mIcons = array();
 		$mJScmds = array();
 		$onBlur = $GLOBALS['CLIENT']['FORMSTYLE'] ? 'this.blur();' : '';
-		$selectItems[] = ('<option value="">[ ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:buttons.selMenu_modules', 1)) . ' ]</option>';
+		$selectItems[] = '<option value="">[ ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:buttons.selMenu_modules', 1) . ' ]</option>';
 		$mC = 0;
 		// Get collapsed configuration
 		if ($collapsable == 1) {
@@ -117,7 +117,7 @@ class FunctionsUtility {
 			$mC++;
 			$prefix = $this->getNavFramePrefix($moduleInfo);
 			if ($prefix) {
-				$this->fsMod[] = ('fsMod.recentIds["' . $moduleName) . '"]="";';
+				$this->fsMod[] = 'fsMod.recentIds["' . $moduleName . '"]="";';
 			}
 			// If there are submodules:
 			if (is_array($moduleInfo['sub'])) {
@@ -141,7 +141,7 @@ class FunctionsUtility {
 			$collection[$moduleKey] = array(
 				'moduleName' => $moduleName,
 				'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey],
-				'onclick' => ('top.goToModule(\'' . $moduleName) . '\');'
+				'onclick' => 'top.goToModule(\'' . $moduleName . '\');'
 			);
 			// Creating image icon
 			$image = @getimagesize($this->mIconFile($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey], $backPath));
@@ -150,10 +150,10 @@ class FunctionsUtility {
 			if ($image) {
 				$Ifilename = $this->mIconFilename($GLOBALS['LANG']->moduleLabels['tabs_images'][$moduleKey], $backPath);
 				$collection[$moduleKey]['icon'] = array($Ifilename, $image[3]);
-				$imageCode = ((('<img src="' . $Ifilename) . '" ') . $image[3]) . ' alt="" />';
-				$descr3_imageCode = ((((('<img src="' . $Ifilename) . '" ') . $image[3]) . ' title="') . htmlspecialchars($descr3_title)) . '" alt="" />';
+				$imageCode = '<img src="' . $Ifilename . '" ' . $image[3] . ' alt="" />';
+				$descr3_imageCode = '<img src="' . $Ifilename . '" ' . $image[3] . ' title="' . htmlspecialchars($descr3_title) . '" alt="" />';
 			} else {
-				$descr3_imageCode = ((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($backPath, 'gfx/dummy_module.gif', 'width="14" height="12"')) . ' title="') . htmlspecialchars($descr3_title)) . '" alt="" />';
+				$descr3_imageCode = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($backPath, 'gfx/dummy_module.gif', 'width="14" height="12"') . ' title="' . htmlspecialchars($descr3_title) . '" alt="" />';
 			}
 			// Creating the various links:
 			$label = $GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey];
@@ -161,36 +161,36 @@ class FunctionsUtility {
 				$link = $prefix . rawurlencode($link);
 			}
 			if ($link && !$dontLink) {
-				$label = ((((('<a href="#" onclick="top.goToModule(\'' . $moduleName) . '\');') . $onBlur) . 'return false;">') . $label) . '</a>';
-				$mIcons[] = ((((((('<a href="#" onclick="top.goToModule(\'' . $moduleName) . '\');') . $onBlur) . 'return false;" class="c-mainitem" id="') . $moduleCSSId) . '">') . $descr3_imageCode) . '</a>';
-				$JScmd = ((('
-						top.content.location=top.getModuleUrl(top.TS.PATH_typo3+"' . $this->wrapLinkWithAB($link)) . '"+additionalGetVariables);
-						top.highlightModuleMenuItem("') . $moduleCSSId) . '",1);';
-				$mJScmds[] = ((('case \'' . $moduleName) . '\':
- ') . $JScmd) . '
+				$label = '<a href="#" onclick="top.goToModule(\'' . $moduleName . '\');' . $onBlur . 'return false;">' . $label . '</a>';
+				$mIcons[] = '<a href="#" onclick="top.goToModule(\'' . $moduleName . '\');' . $onBlur . 'return false;" class="c-mainitem" id="' . $moduleCSSId . '">' . $descr3_imageCode . '</a>';
+				$JScmd = '
+						top.content.location=top.getModuleUrl(top.TS.PATH_typo3+"' . $this->wrapLinkWithAB($link) . '"+additionalGetVariables);
+						top.highlightModuleMenuItem("' . $moduleCSSId . '",1);';
+				$mJScmds[] = 'case \'' . $moduleName . '\':
+ ' . $JScmd . '
  break;';
 			}
-			$selectItems[] = ((('<option value="top.goToModule(\'' . $moduleName) . '\');">') . htmlspecialchars($GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey])) . '</option>';
-			$label = ('&nbsp;<strong>' . $label) . '</strong>&nbsp;';
+			$selectItems[] = '<option value="top.goToModule(\'' . $moduleName . '\');">' . htmlspecialchars($GLOBALS['LANG']->moduleLabels['tabs'][$moduleKey]) . '</option>';
+			$label = '&nbsp;<strong>' . $label . '</strong>&nbsp;';
 			// make menu collapsable
 			if ($collapsable == 1 && is_array($moduleInfo['sub'])) {
-				$collapseJS = ((('onclick="window.location.href=\'alt_menu.php?collapsedOverride[' . $moduleName) . ']=') . ($config[$moduleName] ? '0' : '1')) . '\'"';
+				$collapseJS = 'onclick="window.location.href=\'alt_menu.php?collapsedOverride[' . $moduleName . ']=' . ($config[$moduleName] ? '0' : '1') . '\'"';
 				$collapseIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-table-' . ($config[$moduleName] ? 'expand' : 'collapse'), array('class' => 'c-iconCollapse'));
 			} else {
 				$collapseJS = ($collapseIcon = '');
 			}
 			// Creating a main item for the vertical menu (descr=0)
-			$menuCode .= ((((((((('
-						<tr class="c-mainitem" id="' . $moduleCSSId) . '">
-							<td colspan="3" ') . $collapseJS) . ' >') . $imageCode) . '<span class="c-label">') . $label) . '</span>') . $collapseIcon) . '</td>
+			$menuCode .= '
+						<tr class="c-mainitem" id="' . $moduleCSSId . '">
+							<td colspan="3" ' . $collapseJS . ' >' . $imageCode . '<span class="c-label">' . $label . '</span>' . $collapseIcon . '</td>
 						</tr>';
 			// Code for "About modules"
-			$descrCode .= (('
+			$descrCode .= '
 						<tr class="c-mainitem">
-							<td colspan="3">' . $imageCode) . $label) . '</td>
+							<td colspan="3">' . $imageCode . $label . '</td>
 						</tr>';
 			// Hide submodules when collapsed:
-			if ((($collapsable == 1 && $config[$moduleName] == 1) && $descr == 0) && $config['expandAll'] != 1) {
+			if ($collapsable == 1 && $config[$moduleName] == 1 && $descr == 0 && $config['expandAll'] != 1) {
 				unset($moduleInfo['sub']);
 			}
 			// Traversing submodules
@@ -211,28 +211,28 @@ class FunctionsUtility {
 					}
 					$link = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($subInfo['script']);
 					$prefix = $this->getNavFramePrefix($moduleInfo, $subInfo);
-					$subKey = (($moduleName . '_') . $subName) . '_tab';
-					$moduleCSSId = 'ID_' . \TYPO3\CMS\Core\Utility\GeneralUtility::md5int((($moduleName . '_') . $subName));
+					$subKey = $moduleName . '_' . $subName . '_tab';
+					$moduleCSSId = 'ID_' . \TYPO3\CMS\Core\Utility\GeneralUtility::md5int(($moduleName . '_' . $subName));
 					$collection[$moduleKey]['subitems'][$subKey] = array(
-						'moduleName' => ($moduleName . '_') . $subName,
+						'moduleName' => $moduleName . '_' . $subName,
 						'title' => $GLOBALS['LANG']->moduleLabels['tabs'][$subKey],
-						'onclick' => ((('top.goToModule(\'' . $moduleName) . '_') . $subName) . '\');'
+						'onclick' => 'top.goToModule(\'' . $moduleName . '_' . $subName . '\');'
 					);
 					// Creating image icon
 					$image = @getimagesize($this->mIconFile($GLOBALS['LANG']->moduleLabels['tabs_images'][$subKey], $backPath));
 					$imageCode = '';
-					$descr3_title = ($GLOBALS['LANG']->moduleLabels['tabs'][$subKey] . ': ') . $GLOBALS['LANG']->moduleLabels['labels'][($subKey . 'label')];
+					$descr3_title = $GLOBALS['LANG']->moduleLabels['tabs'][$subKey] . ': ' . $GLOBALS['LANG']->moduleLabels['labels'][($subKey . 'label')];
 					if ($image) {
 						$Ifilename = $this->mIconFilename($GLOBALS['LANG']->moduleLabels['tabs_images'][$subKey], $backPath);
 						$collection[$moduleKey]['subitems'][$subKey]['icon'] = array($Ifilename, $image[3]);
-						$imageCode = ((((('<img src="' . $Ifilename) . '" ') . $image[3]) . ' title="') . htmlspecialchars($GLOBALS['LANG']->moduleLabels['labels'][($subKey . 'label')])) . '" alt="" />';
-						$descr3_imageCode = ((((('<img src="' . $Ifilename) . '" ') . $image[3]) . ' title="') . htmlspecialchars($descr3_title)) . '" alt="" />';
+						$imageCode = '<img src="' . $Ifilename . '" ' . $image[3] . ' title="' . htmlspecialchars($GLOBALS['LANG']->moduleLabels['labels'][($subKey . 'label')]) . '" alt="" />';
+						$descr3_imageCode = '<img src="' . $Ifilename . '" ' . $image[3] . ' title="' . htmlspecialchars($descr3_title) . '" alt="" />';
 					} else {
-						$descr3_imageCode = ((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($backPath, 'gfx/dummy_module.gif', 'width="14" height="12"')) . ' title="') . htmlspecialchars($descr3_title)) . '" alt="" />';
+						$descr3_imageCode = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($backPath, 'gfx/dummy_module.gif', 'width="14" height="12"') . ' title="' . htmlspecialchars($descr3_title) . '" alt="" />';
 					}
 					// Label for submodule:
 					$label = $GLOBALS['LANG']->moduleLabels['tabs'][$subKey];
-					$label_descr = (' title="' . htmlspecialchars($GLOBALS['LANG']->moduleLabels['labels'][($subKey . 'label')])) . '"';
+					$label_descr = ' title="' . htmlspecialchars($GLOBALS['LANG']->moduleLabels['labels'][($subKey . 'label')]) . '"';
 					$flabel = htmlspecialchars($label);
 					$origLink = $link;
 					if ($link && $prefix) {
@@ -241,7 +241,7 @@ class FunctionsUtility {
 					// Setting additional JavaScript if frameset script:
 					$addJS = '';
 					if ($moduleInfo['navFrameScript']) {
-						$addJS = ('+\'&id=\'+top.rawurlencodeAndRemoveSiteUrl(top.fsMod.recentIds[\'' . $moduleName) . '\'])';
+						$addJS = '+\'&id=\'+top.rawurlencodeAndRemoveSiteUrl(top.fsMod.recentIds[\'' . $moduleName . '\'])';
 					}
 					// If there is a script to link to (and linking is not disabled.
 					if ($link && !$dontLink) {
@@ -250,13 +250,13 @@ class FunctionsUtility {
 							$addJS .= '+(cMR?\'&cMR=1\':\'\')';
 						}
 						// Command for the selector box:
-						$JScmd = ((((('
-								top.content.location=top.getModuleUrl(top.TS.PATH_typo3+"' . $this->wrapLinkWithAB($link)) . '"') . $addJS) . '+additionalGetVariables);
-								top.fsMod.currentMainLoaded="') . $moduleName) . '";
+						$JScmd = '
+								top.content.location=top.getModuleUrl(top.TS.PATH_typo3+"' . $this->wrapLinkWithAB($link) . '"' . $addJS . '+additionalGetVariables);
+								top.fsMod.currentMainLoaded="' . $moduleName . '";
 								';
 						if ($subInfo['navFrameScript']) {
-							$JScmd .= ('
-								top.currentSubScript="' . $origLink) . '";';
+							$JScmd .= '
+								top.currentSubScript="' . $origLink . '";';
 						}
 						// If there is a frameset script in place:
 						if (!$GLOBALS['BE_USER']->uc['condensedMode'] && $moduleInfo['navFrameScript']) {
@@ -265,52 +265,52 @@ class FunctionsUtility {
 							$subNavFrameScript = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($subNavFrameScript);
 							// add GET params for sub module to the nav script
 							$subNavFrameScript = $this->wrapLinkWithAB($subNavFrameScript) . $subInfo['navFrameScriptParam'];
-							$JScmd = ((((((((((((((((((((((('
-								if (top.content.list_frame && top.fsMod.currentMainLoaded=="' . $moduleName) . '") {
-									top.currentSubScript="') . $origLink) . '";
-									top.content.list_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"') . $this->wrapLinkWithAB($origLink)) . '"') . $addJS) . '+additionalGetVariables);
-									if(top.currentSubNavScript!="') . $subNavFrameScript) . '") {
-										top.currentSubNavScript="') . $subNavFrameScript) . '";
-										top.content.nav_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"') . $subNavFrameScript) . '");
+							$JScmd = '
+								if (top.content.list_frame && top.fsMod.currentMainLoaded=="' . $moduleName . '") {
+									top.currentSubScript="' . $origLink . '";
+									top.content.list_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"' . $this->wrapLinkWithAB($origLink) . '"' . $addJS . '+additionalGetVariables);
+									if(top.currentSubNavScript!="' . $subNavFrameScript . '") {
+										top.currentSubNavScript="' . $subNavFrameScript . '";
+										top.content.nav_frame.location=top.getModuleUrl(top.TS.PATH_typo3+"' . $subNavFrameScript . '");
 									}
 								} else {
 									top.content.location=top.TS.PATH_typo3+(
 										top.nextLoadModuleUrl?
-										"') . ($prefix ? $this->wrapLinkWithAB($link) . '&exScript=' : '')) . 'listframe_loader.php":
-										"') . $this->wrapLinkWithAB($link)) . '"') . $addJS) . '+additionalGetVariables
+										"' . ($prefix ? $this->wrapLinkWithAB($link) . '&exScript=' : '') . 'listframe_loader.php":
+										"' . $this->wrapLinkWithAB($link) . '"' . $addJS . '+additionalGetVariables
 									);
-									top.fsMod.currentMainLoaded="') . $moduleName) . '";
-									top.currentSubScript="') . $origLink) . '";
+									top.fsMod.currentMainLoaded="' . $moduleName . '";
+									top.currentSubScript="' . $origLink . '";
 								}
 								';
 						}
-						$selectItems[] = ((((('<option value="top.goToModule(\'' . $moduleName) . '_') . $subName) . '\');">') . htmlspecialchars(('- ' . $label))) . '</option>';
-						$onClickString = htmlspecialchars(((((('top.goToModule(\'' . $moduleName) . '_') . $subName) . '\');') . $onBlur) . 'return false;');
-						$flabel = ((((('<a href="#" onclick="' . $onClickString) . '"') . $label_descr) . '>') . htmlspecialchars($label)) . '</a>';
-						$mIcons[] = ((((((('<a href="#" onclick="' . $onClickString) . '"') . $label_descr) . ' class="c-subitem" id="') . $moduleCSSId) . '">') . $descr3_imageCode) . '</a>';
-						$JScmd .= ('
-								top.highlightModuleMenuItem("' . $moduleCSSId) . '");';
-						$mJScmds[] = ((((('case \'' . $moduleName) . '_') . $subName) . '\':
- ') . $JScmd) . '
+						$selectItems[] = '<option value="top.goToModule(\'' . $moduleName . '_' . $subName . '\');">' . htmlspecialchars(('- ' . $label)) . '</option>';
+						$onClickString = htmlspecialchars('top.goToModule(\'' . $moduleName . '_' . $subName . '\');' . $onBlur . 'return false;');
+						$flabel = '<a href="#" onclick="' . $onClickString . '"' . $label_descr . '>' . htmlspecialchars($label) . '</a>';
+						$mIcons[] = '<a href="#" onclick="' . $onClickString . '"' . $label_descr . ' class="c-subitem" id="' . $moduleCSSId . '">' . $descr3_imageCode . '</a>';
+						$JScmd .= '
+								top.highlightModuleMenuItem("' . $moduleCSSId . '");';
+						$mJScmds[] = 'case \'' . $moduleName . '_' . $subName . '\':
+ ' . $JScmd . '
  break;';
 					}
-					$subCode .= ((((('
-							<tr class="c-subitem-row" id="' . $moduleCSSId) . '">
+					$subCode .= '
+							<tr class="c-subitem-row" id="' . $moduleCSSId . '">
 								<td></td>
-								<td align="center">') . (!$GLOBALS['BE_USER']->uc['hideSubmoduleIcons'] ? $imageCode : '')) . '</td>
-								<td class="c-subitem-label">') . $flabel) . '</td>
+								<td align="center">' . (!$GLOBALS['BE_USER']->uc['hideSubmoduleIcons'] ? $imageCode : '') . '</td>
+								<td class="c-subitem-label">' . $flabel . '</td>
 							</tr>';
 					// For "About modules":
 					$moduleLabel = htmlspecialchars($GLOBALS['LANG']->moduleLabels['labels'][$subKey . 'label']);
-					$moduleLabelHtml = !empty($moduleLabel) ? ('<strong>' . $moduleLabel) . '</strong><br />' : '';
+					$moduleLabelHtml = !empty($moduleLabel) ? '<strong>' . $moduleLabel . '</strong><br />' : '';
 					$moduleDescription = $GLOBALS['LANG']->moduleLabels['labels'][$subKey . 'descr'];
-					$descrCode .= ((('
+					$descrCode .= '
 							<tr class="c-subitem-row">
-								<td align="center">' . $imageCode) . '</td>
-								<td>') . $flabel) . '&nbsp;&nbsp;</td>';
+								<td align="center">' . $imageCode . '</td>
+								<td>' . $flabel . '&nbsp;&nbsp;</td>';
 					if (!empty($moduleLabel) || !empty($moduleDescription)) {
-						$descrCode .= (('
-								<td class="module-description">' . $moduleLabelHtml) . $moduleDescription) . '</td>';
+						$descrCode .= '
+								<td class="module-description">' . $moduleLabelHtml . $moduleDescription . '</td>';
 					} else {
 						$descrCode .= '
 								<td>&nbsp;</td>';
@@ -321,15 +321,15 @@ class FunctionsUtility {
 					$c++;
 					if ($c < count($moduleInfo['sub'])) {
 						// Divider
-						$subCode .= ('
+						$subCode .= '
 							<tr class="c-divrow">
-								<td colspan="3"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($backPath, 'gfx/altmenuline.gif', 'width="105" height="3"')) . ' alt="" /></td>
+								<td colspan="3"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($backPath, 'gfx/altmenuline.gif', 'width="105" height="3"') . ' alt="" /></td>
 							</tr>';
 					}
 				}
 				// Spacer gif for top menu:
 				if (count($theModules) > $mC) {
-					$mIcons[] = ('<img src="' . $backPath) . 'gfx/acm_spacer2.gif" width="8" height="12" hspace="3" alt="" />';
+					$mIcons[] = '<img src="' . $backPath . 'gfx/acm_spacer2.gif" width="8" height="12" hspace="3" alt="" />';
 				}
 			}
 			if (!empty($subCode)) {
@@ -349,42 +349,42 @@ class FunctionsUtility {
 		// $descr==0:	Ordinary vertical menu
 		if ($menuCode) {
 			if ($collapsable == 1 || $config['expandAll'] == 1) {
-				$collapseAllHTML = ((('<tr class="c-endrow">
+				$collapseAllHTML = '<tr class="c-endrow">
 						<td></td>
 						<td align="center">
 								<form action="alt_menu.php" method="get">
 									<input type="hidden" name="collapsableExpandAll" value="1" />
-									<input type="checkbox" name="expandAll" id="expandall" value="1" onclick="this.form.submit();" ' . ($config['expandAll'] ? 'checked="checked"' : '')) . ' />
+									<input type="checkbox" name="expandAll" id="expandall" value="1" onclick="this.form.submit();" ' . ($config['expandAll'] ? 'checked="checked"' : '') . ' />
 								</form>
 						</td>
-						<td class="c-subitem-label"><label for="expandall">') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.expandAll', 1)) . '</label></td>
+						<td class="c-subitem-label"><label for="expandall">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.expandAll', 1) . '</label></td>
 					</tr>';
 			} else {
 				$collapseAllHTML = '';
 			}
-			$final = ((((('
+			$final = '
 
 
 				<!--
 					Vertical module menu, shown in left frame of backend.
 				-->
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-vmenu">
-					' . $menuCode) . '
+					' . $menuCode . '
 					<tr class="c-endrow">
-						<td colspan="3">') . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'menu_modules', $GLOBALS['BACK_PATH'])) . '</td></tr>
-					') . $collapseAllHTML) . '
+						<td colspan="3">' . \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'menu_modules', $GLOBALS['BACK_PATH']) . '</td></tr>
+					' . $collapseAllHTML . '
 				</table>';
 		}
 		// Output for the "About modules" module
 		if ($descr == 1) {
-			$descrCode = ('
+			$descrCode = '
 
 
 				<!--
 					Listing of modules, for Help > About modules
 				-->
 				<table border="0" cellpadding="0" cellspacing="0" id="typo3-about-modules">
-					' . $descrCode) . '
+					' . $descrCode . '
 				</table>';
 			$final = $descrCode;
 		}
@@ -396,26 +396,26 @@ class FunctionsUtility {
 				if (count($functionArray)) {
 					$selectItems[] = '<option value=""></option>';
 					foreach ($functionArray as $fAoptions) {
-						$selectItems[] = ((('<option value="' . htmlspecialchars((('window.location.href=\'' . $fAoptions['href']) . '\';'))) . '">[ ') . htmlspecialchars($fAoptions['title'])) . ' ]</option>';
+						$selectItems[] = '<option value="' . htmlspecialchars(('window.location.href=\'' . $fAoptions['href'] . '\';')) . '">[ ' . htmlspecialchars($fAoptions['title']) . ' ]</option>';
 					}
 				}
 			}
 			// Logout item:
 			$selectItems[] = '<option value=""></option>';
-			$selectItems[] = ((('<option value="' . htmlspecialchars('top.location=\'logout.php\';')) . '">[ ') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:buttons.logout', 1)) . ' ]</option>';
-			$final = ('
+			$selectItems[] = '<option value="' . htmlspecialchars('top.location=\'logout.php\';') . '">[ ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:buttons.logout', 1) . ' ]</option>';
+			$final = '
 				<select name="menuselector" onchange="eval(this.options[this.selectedIndex].value);">
 					' . implode('
-					', $selectItems)) . '
+					', $selectItems) . '
 				</select>';
 		}
 		// topmenu - horizontal line of icons!
 		if ($descr == 3) {
-			$final = ('' . implode('', $mIcons)) . '';
+			$final = '' . implode('', $mIcons) . '';
 		}
 		// Output for the goToModules() function in main frameset.
 		if ($descr == 4) {
-			$final = (chr(10) . implode(chr(10), $mJScmds)) . chr(10);
+			$final = chr(10) . implode(chr(10), $mJScmds) . chr(10);
 		}
 		// Output for TOPMENU BAR drop downs (but basically this is an array with which you can do many interesting things...)
 		if ($descr == 5) {
@@ -441,9 +441,9 @@ class FunctionsUtility {
 			$navFrameScript = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($navFrameScript);
 			$navFrameScript = $this->wrapLinkWithAB($navFrameScript);
 			if ($GLOBALS['BE_USER']->uc['condensedMode']) {
-				$prefix = ($navFrameScript . $navFrameScriptParam) . '&currentSubScript=';
+				$prefix = $navFrameScript . $navFrameScriptParam . '&currentSubScript=';
 			} else {
-				$prefix = ((('alt_mod_frameset.php?' . 'fW="+top.TS.navFrameWidth+"') . '&nav="+top.TS.PATH_typo3+"') . rawurlencode(($navFrameScript . $navFrameScriptParam))) . '&script=';
+				$prefix = 'alt_mod_frameset.php?' . 'fW="+top.TS.navFrameWidth+"' . '&nav="+top.TS.PATH_typo3+"' . rawurlencode(($navFrameScript . $navFrameScriptParam)) . '&script=';
 			}
 		}
 		return $prefix;
@@ -490,7 +490,7 @@ class FunctionsUtility {
 	 */
 	public function topButtons() {
 		$label = $GLOBALS['BE_USER']->user['ses_backuserid'] ? 'LLL:EXT:lang/locallang_core.php:buttons.exit' : 'LLL:EXT:lang/locallang_core.php:buttons.logout';
-		$out = ('<form action="logout.php" target="_top"><input type="submit" value="' . $GLOBALS['LANG']->sL($label, 1)) . '" /></form>';
+		$out = '<form action="logout.php" target="_top"><input type="submit" value="' . $GLOBALS['LANG']->sL($label, 1) . '" /></form>';
 		return $out;
 	}
 
@@ -504,7 +504,7 @@ class FunctionsUtility {
 		$functionArray = $this->adminFunctions('');
 		$icons = array();
 		foreach ($functionArray as $fAoptions) {
-			$icons[] = ((('<a href="' . htmlspecialchars($fAoptions['href'])) . '">') . $fAoptions['icon']) . '</a>';
+			$icons[] = '<a href="' . htmlspecialchars($fAoptions['href']) . '">' . $fAoptions['icon'] . '</a>';
 		}
 		return implode('', $icons);
 	}
@@ -523,16 +523,16 @@ class FunctionsUtility {
 		$functions[] = array(
 			'id' => 'temp_CACHED',
 			'title' => $title,
-			'href' => ((((($backPath . 'tce_db.php?vC=') . $GLOBALS['BE_USER']->veriCode()) . '&redirect=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'))) . '&cacheCmd=temp_CACHED') . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction'),
-			'icon' => ((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($backPath, 'gfx/clear_cache_files_in_typo3c.gif', 'width="21" height="18"')) . ' title="') . htmlspecialchars($title)) . '" alt="" />'
+			'href' => $backPath . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() . '&redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '&cacheCmd=temp_CACHED' . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction'),
+			'icon' => '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($backPath, 'gfx/clear_cache_files_in_typo3c.gif', 'width="21" height="18"') . ' title="' . htmlspecialchars($title) . '" alt="" />'
 		);
 		// Clear all page cache
 		$title = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.clearCache_all');
 		$functions[] = array(
 			'id' => 'all',
 			'title' => $title,
-			'href' => ((((($backPath . 'tce_db.php?vC=') . $GLOBALS['BE_USER']->veriCode()) . '&redirect=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT'))) . '&cacheCmd=all') . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction'),
-			'icon' => ((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($backPath, 'gfx/clear_all_cache.gif', 'width="21" height="18"')) . ' title="') . htmlspecialchars($title)) . '" alt="" />'
+			'href' => $backPath . 'tce_db.php?vC=' . $GLOBALS['BE_USER']->veriCode() . '&redirect=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_SCRIPT')) . '&cacheCmd=all' . \TYPO3\CMS\Backend\Utility\BackendUtility::getUrlToken('tceAction'),
+			'icon' => '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($backPath, 'gfx/clear_all_cache.gif', 'width="21" height="18"') . ' title="' . htmlspecialchars($title) . '" alt="" />'
 		);
 		// Return functions
 		return $functions;
@@ -561,7 +561,7 @@ class FunctionsUtility {
 	 */
 	public function generateMenuJScode($loadedModules, $menuType = 4) {
 		$goToModuleSwitch = $this->topMenu($loadedModules, 0, '', $menuType);
-		$jsCode = ('
+		$jsCode = '
 	/**
 	 * Function used to switch switch module.
 	 */
@@ -575,7 +575,7 @@ class FunctionsUtility {
 
 		currentModuleLoaded = modName;
 
-		switch(modName)	{' . $goToModuleSwitch) . '
+		switch(modName)	{' . $goToModuleSwitch . '
 		}
 	}';
 		return $jsCode;
