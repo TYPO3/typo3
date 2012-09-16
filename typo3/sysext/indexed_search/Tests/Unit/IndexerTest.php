@@ -52,7 +52,7 @@ class IndexerTest extends \tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function testNonExistingLocalPath() {
-		$html = ('test <a href="' . md5(uniqid(''))) . '">test</a> test';
+		$html = 'test <a href="' . md5(uniqid('')) . '">test</a> test';
 		$result = $this->indexer->extractHyperLinks($html);
 		$this->assertEquals(1, count($result), 'Wrong number of parsed links');
 		$this->assertEquals($result[0]['localPath'], '', 'Local path is incorrect');
@@ -83,7 +83,7 @@ class IndexerTest extends \tx_phpunit_testcase {
 	 */
 	public function testLocalPathWithSiteURL() {
 		$baseURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
-		$html = ('test <a href="' . $baseURL) . 'index.php">test</a> test';
+		$html = 'test <a href="' . $baseURL . 'index.php">test</a> test';
 		$result = $this->indexer->extractHyperLinks($html);
 		$this->assertEquals(1, count($result), 'Wrong number of parsed links');
 		$this->assertEquals($result[0]['localPath'], PATH_site . 'index.php', 'Local path is incorrect');
@@ -108,7 +108,7 @@ class IndexerTest extends \tx_phpunit_testcase {
 	 */
 	public function testAbsoluteLocalPath() {
 		$path = substr(PATH_typo3, strlen(PATH_site) - 1);
-		$html = ('test <a href="' . $path) . 'index.php">test</a> test';
+		$html = 'test <a href="' . $path . 'index.php">test</a> test';
 		$result = $this->indexer->extractHyperLinks($html);
 		$this->assertEquals(1, count($result), 'Wrong number of parsed links');
 		$this->assertEquals($result[0]['localPath'], PATH_typo3 . 'index.php', 'Local path is incorrect');
@@ -121,7 +121,7 @@ class IndexerTest extends \tx_phpunit_testcase {
 	 */
 	public function testLocalPathWithAbsRefPrefix() {
 		$absRefPrefix = '/' . md5(uniqid(''));
-		$html = ('test <a href="' . $absRefPrefix) . 'index.php">test</a> test';
+		$html = 'test <a href="' . $absRefPrefix . 'index.php">test</a> test';
 		$savedPrefix = $GLOBALS['TSFE']->config['config']['absRefPrefix'];
 		if (!($GLOBALS['TSFE'] instanceof \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController)) {
 			$GLOBALS['TSFE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController');
@@ -140,7 +140,7 @@ class IndexerTest extends \tx_phpunit_testcase {
 	 */
 	public function textExtractBaseHref() {
 		$baseHref = 'http://example.com/';
-		$html = ('<html><head><Base Href="' . $baseHref) . '" /></head></html>';
+		$html = '<html><head><Base Href="' . $baseHref . '" /></head></html>';
 		$result = $this->indexer->extractHyperLinks($html);
 		$this->assertEquals($baseHref, $result, 'Incorrect base href was extracted');
 	}

@@ -243,7 +243,7 @@ class Indexer {
 		$indexerConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['indexed_search']);
 		// Crawler activation:
 		// Requirements are that the crawler is loaded, a crawler session is running and re-indexing requested as processing instruction:
-		if ((\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('crawler') && $pObj->applicationData['tx_crawler']['running']) && in_array('tx_indexedsearch_reindex', $pObj->applicationData['tx_crawler']['parameters']['procInstructions'])) {
+		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('crawler') && $pObj->applicationData['tx_crawler']['running'] && in_array('tx_indexedsearch_reindex', $pObj->applicationData['tx_crawler']['parameters']['procInstructions'])) {
 			// Setting simple log message:
 			$pObj->applicationData['tx_crawler']['log'][] = 'Forced Re-indexing enabled';
 			// Setting variables:
@@ -412,15 +412,15 @@ class Indexer {
 		$this->conf['recordUid'] = $recordUid;
 		// UID of the record, if applicable
 		// Construct fake HTML for parsing:
-		$this->conf['content'] = ((((((('
+		$this->conf['content'] = '
 		<html>
 			<head>
-				<title>' . htmlspecialchars($title)) . '</title>
-				<meta name="keywords" content="') . htmlspecialchars($keywords)) . '" />
-				<meta name="description" content="') . htmlspecialchars($description)) . '" />
+				<title>' . htmlspecialchars($title) . '</title>
+				<meta name="keywords" content="' . htmlspecialchars($keywords) . '" />
+				<meta name="description" content="' . htmlspecialchars($description) . '" />
 			</head>
 			<body>
-				') . htmlspecialchars($content)) . '
+				' . htmlspecialchars($content) . '
 			</body>
 		</html>';
 		// Content string (HTML of TYPO3 page)
@@ -523,7 +523,7 @@ class Indexer {
 	public function indexTypo3PageContent() {
 		$check = $this->checkMtimeTstamp($this->conf['mtime'], $this->hash['phash']);
 		$is_grlist = $this->is_grlist_set($this->hash['phash']);
-		if (($check > 0 || !$is_grlist) || $this->forceIndexing) {
+		if ($check > 0 || !$is_grlist || $this->forceIndexing) {
 			// Setting message:
 			if ($this->forceIndexing) {
 				$this->log_setTSlogMessage('Indexing needed, reason: Forced', 1);
@@ -547,7 +547,7 @@ class Indexer {
 			$checkCHash = $this->checkContentHash();
 			if (!is_array($checkCHash) || $check === 1) {
 				$Pstart = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
-				$this->log_push(('Converting charset of content (' . $this->conf['metaCharset']) . ') to utf-8', '');
+				$this->log_push('Converting charset of content (' . $this->conf['metaCharset'] . ') to utf-8', '');
 				$this->charsetEntity2utf8($this->contentParts, $this->conf['metaCharset']);
 				$this->log_pull();
 				// Splitting words
@@ -584,7 +584,7 @@ class Indexer {
 				// $checkCHash['phash'] is the phash of the result row that is similar to the current phash regarding the content hash.
 				$this->update_grlist($checkCHash['phash'], $this->hash['phash']);
 				$this->updateRootline();
-				$this->log_setTSlogMessage(('Indexing not needed, the contentHash, ' . $this->content_md5h) . ', has not changed. Timestamp, grlist and rootline updated if necessary.');
+				$this->log_setTSlogMessage('Indexing not needed, the contentHash, ' . $this->content_md5h . ', has not changed. Timestamp, grlist and rootline updated if necessary.');
 			}
 		} else {
 			$this->log_setTSlogMessage('Indexing not needed, reason: ' . $this->reasons[$check]);
@@ -694,7 +694,7 @@ class Indexer {
 	 * @todo Define visibility
 	 */
 	public function embracingTags($string, $tagName, &$tagContent, &$stringAfter, &$paramList) {
-		$endTag = ('</' . $tagName) . '>';
+		$endTag = '</' . $tagName . '>';
 		$startTag = '<' . $tagName;
 		// stristr used because we want a case-insensitive search for the tag.
 		$isTagInText = stristr($string, $startTag);
@@ -799,7 +799,7 @@ class Indexer {
 							);
 							unset($params['conf']['content']);
 							$crawler->addQueueEntry_callBack(0, $params, 'EXT:indexed_search/class.crawler.php:&TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController_files', $this->conf['id']);
-							$this->log_setTSlogMessage(('media "' . $params['document']) . '" added to "crawler" queue.', 1);
+							$this->log_setTSlogMessage('media "' . $params['document'] . '" added to "crawler" queue.', 1);
 						} else {
 							$this->indexRegularDocument($linkInfo['href'], FALSE, $linkSource, $ext);
 						}
@@ -811,7 +811,7 @@ class Indexer {
 							);
 							unset($params['conf']['content']);
 							$crawler->addQueueEntry_callBack(0, $params, 'EXT:indexed_search/class.crawler.php:&TYPO3\\CMS\\IndexedSearch\\Controller\\SearchFormController_files', $this->conf['id']);
-							$this->log_setTSlogMessage(('media "' . $params['document']) . '" added to "crawler" queue.', 1);
+							$this->log_setTSlogMessage('media "' . $params['document'] . '" added to "crawler" queue.', 1);
 						} else {
 							$this->indexRegularDocument($linkSource);
 						}
@@ -1127,7 +1127,7 @@ class Indexer {
 				$cParts = $this->fileContentParts($ext, $absFile);
 				foreach ($cParts as $cPKey) {
 					$this->internal_log = array();
-					$this->log_push(('Index: ' . str_replace('.', '_', basename($file))) . ($cPKey ? '#' . $cPKey : ''), '');
+					$this->log_push('Index: ' . str_replace('.', '_', basename($file)) . ($cPKey ? '#' . $cPKey : ''), '');
 					$Pstart = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
 					$subinfo = array('key' => $cPKey);
 					// Setting page range. This is "0" (zero) when no division is made, otherwise a range like "1-3"
@@ -1178,13 +1178,13 @@ class Indexer {
 								} else {
 									// Update the timestamp
 									$this->updateTstamp($phash_arr['phash'], $mtime);
-									$this->log_setTSlogMessage(('Indexing not needed, the contentHash, ' . $content_md5h) . ', has not changed. Timestamp updated.');
+									$this->log_setTSlogMessage('Indexing not needed, the contentHash, ' . $content_md5h . ', has not changed. Timestamp updated.');
 								}
 							} else {
 								$this->log_setTSlogMessage('Could not index file! Unsupported extension.');
 							}
 						} else {
-							$this->log_setTSlogMessage(('The limit of ' . $this->maxExternalFiles) . ' has already been exceeded, so no indexing will take place this time.');
+							$this->log_setTSlogMessage('The limit of ' . $this->maxExternalFiles . ' has already been exceeded, so no indexing will take place this time.');
 						}
 					} else {
 						$this->log_setTSlogMessage('Indexing not needed, reason: ' . $this->reasons[$check]);
@@ -1195,10 +1195,10 @@ class Indexer {
 					$this->log_pull();
 				}
 			} else {
-				$this->log_setTSlogMessage(('Indexing not possible; The extension "' . $ext) . '" was not supported.');
+				$this->log_setTSlogMessage('Indexing not possible; The extension "' . $ext . '" was not supported.');
 			}
 		} else {
-			$this->log_setTSlogMessage(('Indexing not possible; File "' . $absFile) . '" not found or valid.');
+			$this->log_setTSlogMessage('Indexing not possible; File "' . $absFile . '" not found or valid.');
 		}
 	}
 
@@ -1658,7 +1658,7 @@ class Indexer {
 	public function submitFile_grlist($hash) {
 		// Testing if there is a gr_list record for a non-logged in user and if so, there is no need to place another one.
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_grlist')) {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_grlist', ((((('phash=' . intval($hash)) . ' AND (hash_gr_list=') . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->defaultGrList)) . ' OR hash_gr_list=') . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->conf['gr_list'])) . ')');
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_grlist', 'phash=' . intval($hash) . ' AND (hash_gr_list=' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->defaultGrList) . ' OR hash_gr_list=' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->conf['gr_list']) . ')');
 			if ($count == 0) {
 				$this->submit_grlist($hash, $hash);
 			}
@@ -1675,7 +1675,7 @@ class Indexer {
 	public function submitFile_section($hash) {
 		// Testing if there is already a section
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_section')) {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_section', (('phash=' . intval($hash)) . ' AND page_id=') . intval($this->conf['id']));
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_section', 'phash=' . intval($hash) . ' AND page_id=' . intval($this->conf['id']));
 			if ($count == 0) {
 				$this->submit_section($hash, $this->hash['phash']);
 			}
@@ -1738,7 +1738,7 @@ class Indexer {
 								// mtime matched the document, so no changes detected and no content updated
 								$result = -1;
 								if ($this->tstamp_maxAge) {
-									$this->log_setTSlogMessage(('mtime matched, timestamp NOT updated because a maxAge is set (' . (($row['tstamp'] + $this->tstamp_maxAge) - $GLOBALS['EXEC_TIME'])) . ' seconds to expire time).', 1);
+									$this->log_setTSlogMessage('mtime matched, timestamp NOT updated because a maxAge is set (' . ($row['tstamp'] + $this->tstamp_maxAge - $GLOBALS['EXEC_TIME']) . ' seconds to expire time).', 1);
 								} else {
 									$this->updateTstamp($phash);
 									$this->log_setTSlogMessage('mtime matched, timestamp updated.', 1);
@@ -1771,7 +1771,7 @@ class Indexer {
 		// With this query the page will only be indexed if it's content is different from the same "phash_grouping" -page.
 		$result = TRUE;
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
-			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('phash', 'index_phash', (('phash_grouping=' . intval($this->hash['phash_grouping'])) . ' AND contentHash=') . intval($this->content_md5h));
+			$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('phash', 'index_phash', 'phash_grouping=' . intval($this->hash['phash_grouping']) . ' AND contentHash=' . intval($this->content_md5h));
 			if ($row) {
 				$result = $row;
 			}
@@ -1791,7 +1791,7 @@ class Indexer {
 	public function checkExternalDocContentHash($hashGr, $content_md5h) {
 		$result = TRUE;
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash')) {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'index_phash', (('phash_grouping=' . intval($hashGr)) . ' AND contentHash=') . intval($content_md5h));
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'index_phash', 'phash_grouping=' . intval($hashGr) . ' AND contentHash=' . intval($content_md5h));
 			$result = $count == 0;
 		}
 		return $result;
@@ -1824,10 +1824,10 @@ class Indexer {
 	 */
 	public function update_grlist($phash, $phash_x) {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_grlist')) {
-			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_grlist', (('phash=' . intval($phash)) . ' AND hash_gr_list=') . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->conf['gr_list']));
+			$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('phash', 'index_grlist', 'phash=' . intval($phash) . ' AND hash_gr_list=' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->conf['gr_list']));
 			if ($count == 0) {
 				$this->submit_grlist($phash, $phash_x);
-				$this->log_setTSlogMessage(((('Inserted gr_list \'' . $this->conf['gr_list']) . '\' for phash \'') . $phash) . '\'', 1);
+				$this->log_setTSlogMessage('Inserted gr_list \'' . $this->conf['gr_list'] . '\' for phash \'' . $phash . '\'', 1);
 			}
 		}
 	}
@@ -1927,13 +1927,13 @@ class Indexer {
 	 */
 	public function removeLoginpagesWithContentHash() {
 		if (\TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_phash') && \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::isTableUsed('index_grlist')) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.phash', 'index_phash A,index_grlist B', (((('
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('A.phash', 'index_phash A,index_grlist B', '
 					A.phash=B.phash
-					AND A.phash_grouping=' . intval($this->hash['phash_grouping'])) . '
-					AND B.hash_gr_list<>') . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->defaultGrList)) . '
-					AND A.contentHash=') . intval($this->content_md5h));
+					AND A.phash_grouping=' . intval($this->hash['phash_grouping']) . '
+					AND B.hash_gr_list<>' . \TYPO3\CMS\IndexedSearch\Utility\IndexedSearchUtility::md5inthash($this->defaultGrList) . '
+					AND A.contentHash=' . intval($this->content_md5h));
 			while ($res && FALSE !== ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
-				$this->log_setTSlogMessage(('The currently indexed page was indexed under no user-login and apparently this page has been indexed under login conditions earlier, but with the SAME content. Therefore the old similar page with phash=\'' . $row['phash']) . '\' are now removed.', 1);
+				$this->log_setTSlogMessage('The currently indexed page was indexed under no user-login and apparently this page has been indexed under login conditions earlier, but with the SAME content. Therefore the old similar page with phash=\'' . $row['phash'] . '\' are now removed.', 1);
 				$this->removeOldIndexedPages($row['phash']);
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -1970,9 +1970,9 @@ class Indexer {
 					$phashArray[] = intval($value['hash']);
 				}
 				$cwl = implode(',', $phashArray);
-				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('baseword', 'index_words', ('wid IN (' . $cwl) . ')');
+				$count = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('baseword', 'index_words', 'wid IN (' . $cwl . ')');
 				if ($count != count($wordListArray)) {
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('baseword', 'index_words', ('wid IN (' . $cwl) . ')');
+					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('baseword', 'index_words', 'wid IN (' . $cwl . ')');
 					$this->log_setTSlogMessage('Inserting words: ' . (count($wordListArray) - $count), 1);
 					while (FALSE != ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))) {
 						unset($wordListArray[$row['baseword']]);
@@ -2026,7 +2026,7 @@ class Indexer {
 	 * @todo Define visibility
 	 */
 	public function freqMap($freq) {
-		$mapFactor = ($this->freqMax * 100) * $this->freqRange;
+		$mapFactor = $this->freqMax * 100 * $this->freqRange;
 		if ($freq < 1) {
 			$newFreq = $freq * $mapFactor;
 			$newFreq = $newFreq > $this->freqRange ? $this->freqRange : $newFreq;
@@ -2146,7 +2146,7 @@ class Indexer {
 	 */
 	protected function addSpacesToKeywordList($keywordList) {
 		$keywords = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $keywordList);
-		return (' ' . implode(', ', $keywords)) . ' ';
+		return ' ' . implode(', ', $keywords) . ' ';
 	}
 
 }

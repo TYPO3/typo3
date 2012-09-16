@@ -42,11 +42,11 @@ class CrawlerHook {
 	 */
 	public function crawler_init(&$pObj) {
 		// Select all indexing configuration which are waiting to be activated:
-		$indexingConfigurations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'index_config', (((('hidden=0
-				AND (starttime=0 OR starttime<=' . $GLOBALS['EXEC_TIME']) . ')
-				AND timer_next_indexing<') . $GLOBALS['EXEC_TIME']) . '
+		$indexingConfigurations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'index_config', 'hidden=0
+				AND (starttime=0 OR starttime<=' . $GLOBALS['EXEC_TIME'] . ')
+				AND timer_next_indexing<' . $GLOBALS['EXEC_TIME'] . '
 				AND set_id=0
-				') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('index_config'));
+				' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('index_config'));
 		// For each configuration, check if it should be executed and if so, start:
 		foreach ($indexingConfigurations as $cfgRec) {
 			// Generate a unique set-ID:
@@ -67,7 +67,7 @@ class CrawlerHook {
 				// Parameters:
 				$params = array(
 					'indexConfigUid' => $cfgRec['uid'],
-					'procInstructions' => array(('[Index Cfg UID#' . $cfgRec['uid']) . ']'),
+					'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
 					'url' => 'Records (start)'
 				);
 				//
@@ -79,7 +79,7 @@ class CrawlerHook {
 				$params = array(
 					'indexConfigUid' => $cfgRec['uid'],
 					// General
-					'procInstructions' => array(('[Index Cfg UID#' . $cfgRec['uid']) . ']'),
+					'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
 					// General
 					'url' => $cfgRec['filepath'],
 					// Partly general... (for URL and file types)
@@ -93,7 +93,7 @@ class CrawlerHook {
 				$params = array(
 					'indexConfigUid' => $cfgRec['uid'],
 					// General
-					'procInstructions' => array(('[Index Cfg UID#' . $cfgRec['uid']) . ']'),
+					'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
 					// General
 					'url' => $cfgRec['externalUrl'],
 					// Partly general... (for URL and file types)
@@ -107,7 +107,7 @@ class CrawlerHook {
 				$params = array(
 					'indexConfigUid' => $cfgRec['uid'],
 					// General
-					'procInstructions' => array(('[Index Cfg UID#' . $cfgRec['uid']) . ']'),
+					'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
 					// General
 					'url' => intval($cfgRec['alternative_source_pid']),
 					// Partly general... (for URL and file types and page tree (root))
@@ -127,7 +127,7 @@ class CrawlerHook {
 						$params = array(
 							'indexConfigUid' => $cfgRec['uid'],
 							// General
-							'procInstructions' => array(('[Index Cfg UID#' . $cfgRec['uid']) . '/CUSTOM]'),
+							'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . '/CUSTOM]'),
 							// General
 							'url' => $hookObj->initMessage($message)
 						);
@@ -224,8 +224,8 @@ class CrawlerHook {
 			// Get root line:
 			$rl = $this->getUidRootLineForClosestTemplate($cfgRec['pid']);
 			// Select
-			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $cfgRec['table2index'], (((('pid = ' . intval($pid)) . '
-							AND uid > ') . intval($session_data['uid'])) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($cfgRec['table2index'])) . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($cfgRec['table2index']), '', 'uid', $numberOfRecords);
+			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', $cfgRec['table2index'], 'pid = ' . intval($pid) . '
+							AND uid > ' . intval($session_data['uid']) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($cfgRec['table2index']) . \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($cfgRec['table2index']), '', 'uid', $numberOfRecords);
 			// Traverse:
 			if (count($recs)) {
 				foreach ($recs as $r) {
@@ -237,8 +237,8 @@ class CrawlerHook {
 				// Finally, set entry for next indexing of batch of records:
 				$nparams = array(
 					'indexConfigUid' => $cfgRec['uid'],
-					'url' => ('Records from UID#' . ($r['uid'] + 1)) . '-?',
-					'procInstructions' => array(('[Index Cfg UID#' . $cfgRec['uid']) . ']')
+					'url' => 'Records from UID#' . ($r['uid'] + 1) . '-?',
+					'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']')
 				);
 				$pObj->addQueueEntry_callBack($cfgRec['set_id'], $nparams, $this->callBack, $cfgRec['pid']);
 			}
@@ -286,7 +286,7 @@ class CrawlerHook {
 				if (is_array($directoryList) && $params['depth'] < $cfgRec['depth']) {
 					foreach ($directoryList as $subdir) {
 						if ((string) $subdir != '') {
-							$files[] = ($readpath . $subdir) . '/';
+							$files[] = $readpath . $subdir . '/';
 						}
 					}
 				}
@@ -299,7 +299,7 @@ class CrawlerHook {
 						$nparams = array(
 							'indexConfigUid' => $cfgRec['uid'],
 							'url' => $path,
-							'procInstructions' => array(('[Index Cfg UID#' . $cfgRec['uid']) . ']'),
+							'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
 							'depth' => $params['depth'] + 1
 						);
 						$pObj->addQueueEntry_callBack($cfgRec['set_id'], $nparams, $this->callBack, $cfgRec['pid'], $GLOBALS['EXEC_TIME'] + $this->instanceCounter * $this->secondsPerExternalUrl);
@@ -340,7 +340,7 @@ class CrawlerHook {
 						$nparams = array(
 							'indexConfigUid' => $cfgRec['uid'],
 							'url' => $url,
-							'procInstructions' => array(('[Index Cfg UID#' . $cfgRec['uid']) . ']'),
+							'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
 							'depth' => $params['depth'] + 1
 						);
 						$pObj->addQueueEntry_callBack($cfgRec['set_id'], $nparams, $this->callBack, $cfgRec['pid'], $GLOBALS['EXEC_TIME'] + $this->instanceCounter * $this->secondsPerExternalUrl);
@@ -379,18 +379,18 @@ class CrawlerHook {
 		// Add subpages to log now:
 		if ($params['depth'] < $cfgRec['depth']) {
 			// Subpages selected
-			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'pages', ('pid = ' . intval($pageUid)) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages'));
+			$recs = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,title', 'pages', 'pid = ' . intval($pageUid) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages'));
 			// Traverse subpages and add to queue:
 			if (count($recs)) {
 				foreach ($recs as $r) {
 					$this->instanceCounter++;
-					$url = (('pages:' . $r['uid']) . ': ') . $r['title'];
+					$url = 'pages:' . $r['uid'] . ': ' . $r['title'];
 					$session_data['urlLog'][] = $url;
 					// Parameters:
 					$nparams = array(
 						'indexConfigUid' => $cfgRec['uid'],
 						'url' => $r['uid'],
-						'procInstructions' => array(('[Index Cfg UID#' . $cfgRec['uid']) . ']'),
+						'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']'),
 						'depth' => $params['depth'] + 1
 					);
 					$pObj->addQueueEntry_callBack($cfgRec['set_id'], $nparams, $this->callBack, $cfgRec['pid'], $GLOBALS['EXEC_TIME'] + $this->instanceCounter * $this->secondsPerExternalUrl);
@@ -411,10 +411,10 @@ class CrawlerHook {
 		// For each running configuration, look up how many log entries there are which are scheduled for execution and if none, clear the "set_id" (means; Processing was DONE)
 		foreach ($runningIndexingConfigurations as $cfgRec) {
 			// Look for ended processes:
-			$queued_items = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'tx_crawler_queue', ('set_id=' . intval($cfgRec['set_id'])) . ' AND exec_time=0');
+			$queued_items = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'tx_crawler_queue', 'set_id=' . intval($cfgRec['set_id']) . ' AND exec_time=0');
 			if (!$queued_items) {
 				// Lookup old phash rows:
-				$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash', 'index_phash', (('freeIndexUid=' . intval($cfgRec['uid'])) . ' AND freeIndexSetId<>') . $cfgRec['set_id']);
+				$oldPhashRows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('phash', 'index_phash', 'freeIndexUid=' . intval($cfgRec['uid']) . ' AND freeIndexSetId<>' . $cfgRec['set_id']);
 				foreach ($oldPhashRows as $pHashRow) {
 					// Removing old registrations for all tables (code copied from class.tx_indexedsearch_modfunc1.php)
 					$tableArr = explode(',', 'index_phash,index_rel,index_section,index_grlist,index_fulltext,index_debug');
@@ -480,7 +480,7 @@ class CrawlerHook {
 		// To avoid phash_t3 being written to file sections (otherwise they are removed when page is reindexed!!!)
 		$indexerObj->indexExternalUrl($url);
 		$url_qParts = parse_url($url);
-		$baseAbsoluteHref = ($url_qParts['scheme'] . '://') . $url_qParts['host'];
+		$baseAbsoluteHref = $url_qParts['scheme'] . '://' . $url_qParts['host'];
 		$baseHref = $indexerObj->extractBaseHref($indexerObj->indexExternalUrl_content);
 		if (!$baseHref) {
 			// Extract base href from current URL
@@ -501,7 +501,7 @@ class CrawlerHook {
 				if ($relativeUrl[0] === '/') {
 					$subUrl = $baseAbsoluteHref . $relativeUrl;
 				} else {
-					$subUrl = ($baseHref . '/') . $relativeUrl;
+					$subUrl = $baseHref . '/' . $relativeUrl;
 				}
 			}
 			$subUrls[] = $subUrl;
@@ -593,7 +593,7 @@ class CrawlerHook {
 		$currentTime = $GLOBALS['EXEC_TIME'];
 		// Now, find a midnight time to use for offset calculation. This has to differ depending on whether we have frequencies within a day or more than a day; Less than a day, we don't care which day to use for offset, more than a day we want to respect the currently entered day as offset regardless of when the script is run - thus the day-of-week used in case "Weekly" is selected will be respected
 		if ($cfgRec['timer_frequency'] <= 24 * 3600) {
-			$aMidNight = mktime(0, 0, 0) - (1 * 24) * 3600;
+			$aMidNight = mktime(0, 0, 0) - 1 * 24 * 3600;
 		} else {
 			$lastTime = $cfgRec['timer_next_indexing'] ? $cfgRec['timer_next_indexing'] : $GLOBALS['EXEC_TIME'];
 			$aMidNight = mktime(0, 0, 0, date('m', $lastTime), date('d', $lastTime), date('y', $lastTime));
@@ -621,7 +621,7 @@ class CrawlerHook {
 			$url_denyArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, $url_deny, 1);
 			foreach ($url_denyArray as $testurl) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($url, $testurl)) {
-					echo (($url . ' /// ') . $url_deny) . LF;
+					echo $url . ' /// ' . $url_deny . LF;
 					return TRUE;
 				}
 			}
@@ -642,7 +642,7 @@ class CrawlerHook {
 			'indexConfigUid' => $cfgRec['uid'],
 			// This must ALWAYS be the cfgRec uid!
 			'url' => $title,
-			'procInstructions' => array(('[Index Cfg UID#' . $cfgRec['uid']) . ']')
+			'procInstructions' => array('[Index Cfg UID#' . $cfgRec['uid'] . ']')
 		);
 		$this->pObj->addQueueEntry_callBack($cfgRec['set_id'], $nparams, $this->callBack, $cfgRec['pid']);
 	}
@@ -662,7 +662,7 @@ class CrawlerHook {
 			foreach ($oldPhashRows as $pHashRow) {
 				$pHashesToDelete[] = $pHashRow['phash'];
 			}
-			$where_clause = ('phash IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($pHashesToDelete))) . ')';
+			$where_clause = 'phash IN (' . implode(',', $GLOBALS['TYPO3_DB']->cleanIntArray($pHashesToDelete)) . ')';
 			$tables = explode(',', 'index_debug,index_fulltext,index_grlist,index_phash,index_rel,index_section');
 			foreach ($tables as $table) {
 				$GLOBALS['TYPO3_DB']->exec_DELETEquery($table, $where_clause);
@@ -710,7 +710,7 @@ class CrawlerHook {
 			// Translate new ids.
 			if ($status == 'new') {
 				$id = $pObj->substNEWwithIDs[$id];
-			} elseif (($table == 'pages' && $status == 'update') && (array_key_exists('hidden', $fieldArray) && $fieldArray['hidden'] == 1 || array_key_exists('no_search', $fieldArray) && $fieldArray['no_search'] == 1)) {
+			} elseif ($table == 'pages' && $status == 'update' && (array_key_exists('hidden', $fieldArray) && $fieldArray['hidden'] == 1 || array_key_exists('no_search', $fieldArray) && $fieldArray['no_search'] == 1)) {
 				// If the page should be hidden or not indexed after update, delete index for this page
 				$this->deleteFromIndex($id);
 			}
@@ -718,17 +718,17 @@ class CrawlerHook {
 			$currentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $id);
 			if (is_array($currentRecord)) {
 				// Select all (not running) indexing configurations of type "record" (1) and which points to this table and is located on the same page as the record or pointing to the right source PID
-				$indexingConfigurations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'index_config', (((((((('hidden=0
-						AND (starttime=0 OR starttime<=' . $GLOBALS['EXEC_TIME']) . ')
+				$indexingConfigurations = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'index_config', 'hidden=0
+						AND (starttime=0 OR starttime<=' . $GLOBALS['EXEC_TIME'] . ')
 						AND set_id=0
 						AND type=1
-						AND table2index=') . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'index_config')) . '
+						AND table2index=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($table, 'index_config') . '
 						AND (
-								(alternative_source_pid=0 AND pid=') . intval($currentRecord['pid'])) . ')
-								OR (alternative_source_pid=') . intval($currentRecord['pid'])) . ')
+								(alternative_source_pid=0 AND pid=' . intval($currentRecord['pid']) . ')
+								OR (alternative_source_pid=' . intval($currentRecord['pid']) . ')
 							)
 						AND records_indexonchange=1
-						') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('index_config'));
+						' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('index_config'));
 				foreach ($indexingConfigurations as $cfgRec) {
 					$this->indexSingleRecord($currentRecord, $cfgRec);
 				}

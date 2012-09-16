@@ -507,9 +507,9 @@ class ImportExport {
 	 */
 	public function export_addRecord($table, $row, $relationLevel = 0) {
 		\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($table, $row);
-		if (((strcmp($table, '') && is_array($row)) && $row['uid'] > 0) && !$this->excludeMap[(($table . ':') . $row['uid'])]) {
+		if (strcmp($table, '') && is_array($row) && $row['uid'] > 0 && !$this->excludeMap[($table . ':' . $row['uid'])]) {
 			if ($this->checkPID($table === 'pages' ? $row['uid'] : $row['pid'])) {
-				if (!isset($this->dat['records'][(($table . ':') . $row['uid'])])) {
+				if (!isset($this->dat['records'][($table . ':' . $row['uid'])])) {
 					// Prepare header info:
 					$headerInfo = array();
 					$headerInfo['uid'] = $row['uid'];
@@ -530,23 +530,23 @@ class ImportExport {
 						// Yes to workspace overlays for exporting....
 						$refIndexObj->WSOL = TRUE;
 						// Data:
-						$this->dat['records'][($table . ':') . $row['uid']] = array();
-						$this->dat['records'][($table . ':') . $row['uid']]['data'] = $row;
-						$this->dat['records'][($table . ':') . $row['uid']]['rels'] = $refIndexObj->getRelations($table, $row);
+						$this->dat['records'][$table . ':' . $row['uid']] = array();
+						$this->dat['records'][$table . ':' . $row['uid']]['data'] = $row;
+						$this->dat['records'][$table . ':' . $row['uid']]['rels'] = $refIndexObj->getRelations($table, $row);
 						$this->errorLog = array_merge($this->errorLog, $refIndexObj->errorLog);
 						// Merge error logs.
 						// Add information about the relations in the record in the header:
-						$this->dat['header']['records'][$table][$row['uid']]['rels'] = $this->flatDBrels($this->dat['records'][($table . ':') . $row['uid']]['rels']);
+						$this->dat['header']['records'][$table][$row['uid']]['rels'] = $this->flatDBrels($this->dat['records'][$table . ':' . $row['uid']]['rels']);
 						// Add information about the softrefs to header:
-						$this->dat['header']['records'][$table][$row['uid']]['softrefs'] = $this->flatSoftRefs($this->dat['records'][($table . ':') . $row['uid']]['rels']);
+						$this->dat['header']['records'][$table][$row['uid']]['softrefs'] = $this->flatSoftRefs($this->dat['records'][$table . ':' . $row['uid']]['rels']);
 					} else {
-						$this->error(((((('Record ' . $table) . ':') . $row['uid']) . ' was larger than maxRecordSize (') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($this->maxRecordSize)) . ')');
+						$this->error('Record ' . $table . ':' . $row['uid'] . ' was larger than maxRecordSize (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($this->maxRecordSize) . ')');
 					}
 				} else {
-					$this->error(((('Record ' . $table) . ':') . $row['uid']) . ' already added.');
+					$this->error('Record ' . $table . ':' . $row['uid'] . ' already added.');
 				}
 			} else {
-				$this->error(((('Record ' . $table) . ':') . $row['uid']) . ' was outside your DB mounts!');
+				$this->error('Record ' . $table . ':' . $row['uid'] . ' was outside your DB mounts!');
 			}
 		}
 	}
@@ -635,10 +635,10 @@ class ImportExport {
 				// Set status message
 				// Relation pointers always larger than zero except certain "select" types with negative values pointing to uids - but that is not supported here.
 				if ($fI['id'] > 0) {
-					$rId = ($fI['table'] . ':') . $fI['id'];
+					$rId = $fI['table'] . ':' . $fI['id'];
 					if (!isset($this->dat['records'][$rId])) {
 						$this->dat['records'][$rId] = 'NOT_FOUND';
-						$this->error(('Relation record ' . $rId) . ' was not found!');
+						$this->error('Relation record ' . $rId . ' was not found!');
 					}
 				}
 			}
@@ -658,8 +658,8 @@ class ImportExport {
 	 * @todo Define visibility
 	 */
 	public function export_addDBRelations_registerRelation($fI, &$addR, $tokenID = '') {
-		$rId = ($fI['table'] . ':') . $fI['id'];
-		if ((((isset($GLOBALS['TCA'][$fI['table']]) && !$this->isTableStatic($fI['table'])) && !$this->isExcluded($fI['table'], $fI['id'])) && (!$tokenID || $this->includeSoftref($tokenID))) && $this->inclRelation($fI['table'])) {
+		$rId = $fI['table'] . ':' . $fI['id'];
+		if (isset($GLOBALS['TCA'][$fI['table']]) && !$this->isTableStatic($fI['table']) && !$this->isExcluded($fI['table'], $fI['id']) && (!$tokenID || $this->includeSoftref($tokenID)) && $this->inclRelation($fI['table'])) {
 			if (!isset($this->dat['records'][$rId])) {
 				// Set this record to be included since it is not already.
 				$addR[$rId] = $fI;
@@ -778,7 +778,7 @@ class ImportExport {
 				//for internal type file_reference
 				$fileRec['relFileRef'] = substr($fI['ID_absFile'], strlen(PATH_site));
 				if ($recordRef) {
-					$fileRec['record_ref'] = ($recordRef . '/') . $fieldname;
+					$fileRec['record_ref'] = $recordRef . '/' . $fieldname;
 				}
 				if ($fI['relFileName']) {
 					$fileRec['relFileName'] = $fI['relFileName'];
@@ -801,7 +801,7 @@ class ImportExport {
 				if ($recordRef === '_SOFTREF_') {
 					// RTE files?
 					if ($RTEoriginal = $this->getRTEoriginalFilename(basename($fI['ID_absFile']))) {
-						$RTEoriginal_absPath = (dirname($fI['ID_absFile']) . '/') . $RTEoriginal;
+						$RTEoriginal_absPath = dirname($fI['ID_absFile']) . '/' . $RTEoriginal;
 						if (@is_file($RTEoriginal_absPath)) {
 							$RTEoriginal_ID = md5($RTEoriginal_absPath);
 							$fileRec = array();
@@ -817,16 +817,16 @@ class ImportExport {
 							$fileRec['content_md5'] = md5($fileRec['content']);
 							$this->dat['files'][$RTEoriginal_ID] = $fileRec;
 						} else {
-							$this->error(('RTE original file "' . substr($RTEoriginal_absPath, strlen(PATH_site))) . '" was not found!');
+							$this->error('RTE original file "' . substr($RTEoriginal_absPath, strlen(PATH_site)) . '" was not found!');
 						}
 					}
 					// Files with external media?
 					// This is only done with files grabbed by a softreference parser since it is deemed improbable that hard-referenced files should undergo this treatment.
 					$html_fI = pathinfo(basename($fI['ID_absFile']));
 					if ($this->includeExtFileResources && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->extFileResourceExtensions, strtolower($html_fI['extension']))) {
-						$uniquePrefix = ('###' . md5($GLOBALS['EXEC_TIME'])) . '###';
+						$uniquePrefix = '###' . md5($GLOBALS['EXEC_TIME']) . '###';
 						if (strtolower($html_fI['extension']) === 'css') {
-							$prefixedMedias = explode($uniquePrefix, preg_replace('/(url[[:space:]]*\\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\\))/i', ((('\\1' . $uniquePrefix) . '\\2') . $uniquePrefix) . '\\3', $fileRec['content']));
+							$prefixedMedias = explode($uniquePrefix, preg_replace('/(url[[:space:]]*\\([[:space:]]*["\']?)([^"\')]*)(["\']?[[:space:]]*\\))/i', '\\1' . $uniquePrefix . '\\2' . $uniquePrefix . '\\3', $fileRec['content']));
 						} else {
 							// html, htm:
 							$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
@@ -835,13 +835,13 @@ class ImportExport {
 						$htmlResourceCaptured = FALSE;
 						foreach ($prefixedMedias as $k => $v) {
 							if ($k % 2) {
-								$EXTres_absPath = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath((dirname($fI['ID_absFile']) . '/') . $v);
+								$EXTres_absPath = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(dirname($fI['ID_absFile']) . '/' . $v);
 								$EXTres_absPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($EXTres_absPath);
-								if (($EXTres_absPath && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($EXTres_absPath, (PATH_site . $this->fileadminFolderName) . '/')) && @is_file($EXTres_absPath)) {
+								if ($EXTres_absPath && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($EXTres_absPath, PATH_site . $this->fileadminFolderName . '/') && @is_file($EXTres_absPath)) {
 									$htmlResourceCaptured = TRUE;
 									$EXTres_ID = md5($EXTres_absPath);
 									$this->dat['header']['files'][$fI['ID']]['EXT_RES_ID'][] = $EXTres_ID;
-									$prefixedMedias[$k] = ('{EXT_RES_ID:' . $EXTres_ID) . '}';
+									$prefixedMedias[$k] = '{EXT_RES_ID:' . $EXTres_ID . '}';
 									// Add file to memory if it is not set already:
 									if (!isset($this->dat['header']['files'][$EXTres_ID])) {
 										$fileRec = array();
@@ -867,7 +867,7 @@ class ImportExport {
 					}
 				}
 			} else {
-				$this->error((((($fI['ID_absFile'] . ' was larger (') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(filesize($fI['ID_absFile']))) . ') than the maxFileSize (') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($this->maxFileSize)) . ')! Skipping.');
+				$this->error($fI['ID_absFile'] . ' was larger (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize(filesize($fI['ID_absFile'])) . ') than the maxFileSize (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($this->maxFileSize) . ')! Skipping.');
 			}
 		} else {
 			$this->error($fI['ID_absFile'] . ' was not a file! Skipping.');
@@ -887,13 +887,13 @@ class ImportExport {
 		foreach ($dbrels as $dat) {
 			if ($dat['type'] == 'db') {
 				foreach ($dat['itemArray'] as $i) {
-					$list[($i['table'] . ':') . $i['id']] = $i;
+					$list[$i['table'] . ':' . $i['id']] = $i;
 				}
 			}
 			if ($dat['type'] == 'flex' && is_array($dat['flexFormRels']['db'])) {
 				foreach ($dat['flexFormRels']['db'] as $subList) {
 					foreach ($subList as $i) {
-						$list[($i['table'] . ':') . $i['id']] = $i;
+						$list[$i['table'] . ':' . $i['id']] = $i;
 					}
 				}
 			}
@@ -915,7 +915,7 @@ class ImportExport {
 				foreach ($dat['softrefs']['keys'] as $spKey => $elements) {
 					if (is_array($elements)) {
 						foreach ($elements as $subKey => $el) {
-							$lKey = ((($field . ':') . $spKey) . ':') . $subKey;
+							$lKey = $field . ':' . $spKey . ':' . $subKey;
 							$list[$lKey] = array_merge(array('field' => $field, 'spKey' => $spKey), $el);
 							// Add file_ID key to header - slightly "risky" way of doing this because if the calculation changes for the same value in $this->records[...] this will not work anymore!
 							if ($el['subst'] && $el['subst']['relFileName']) {
@@ -930,7 +930,7 @@ class ImportExport {
 					if (is_array($subSoftrefs['keys'])) {
 						foreach ($subSoftrefs['keys'] as $spKey => $elements) {
 							foreach ($elements as $subKey => $el) {
-								$lKey = ((((($field . ':') . $structurePath) . ':') . $spKey) . ':') . $subKey;
+								$lKey = $field . ':' . $structurePath . ':' . $spKey . ':' . $subKey;
 								$list[$lKey] = array_merge(array('field' => $field, 'spKey' => $spKey, 'structurePath' => $structurePath), $el);
 								// Add file_ID key to header - slightly "risky" way of doing this because if the calculation changes for the same value in $this->records[...] this will not work anymore!
 								if ($el['subst'] && $el['subst']['relFileName']) {
@@ -1058,7 +1058,7 @@ class ImportExport {
 		);
 		// Creating XML file from $outputArray:
 		$charset = $this->dat['header']['charset'] ? $this->dat['header']['charset'] : 'utf-8';
-		$XML = (('<?xml version="1.0" encoding="' . $charset) . '" standalone="yes" ?>') . LF;
+		$XML = '<?xml version="1.0" encoding="' . $charset . '" standalone="yes" ?>' . LF;
 		$XML .= \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($this->dat, '', 0, 'T3RecordDocument', 0, $options);
 		return $XML;
 	}
@@ -1085,7 +1085,7 @@ class ImportExport {
 		if ($compress) {
 			$data = gzcompress($data);
 		}
-		return ((((((md5($data) . ':') . ($compress ? '1' : '0')) . ':') . str_pad(strlen($data), 10, '0', STR_PAD_LEFT)) . ':') . $data) . ':';
+		return md5($data) . ':' . ($compress ? '1' : '0') . ':' . str_pad(strlen($data), 10, '0', STR_PAD_LEFT) . ':' . $data . ':';
 	}
 
 	/***********************
@@ -1337,15 +1337,15 @@ class ImportExport {
 	 * @todo Define visibility
 	 */
 	public function addSingle($table, $uid, $pid) {
-		if ($this->import_mode[($table . ':') . $uid] !== 'exclude') {
-			$record = $this->dat['records'][($table . ':') . $uid]['data'];
+		if ($this->import_mode[$table . ':' . $uid] !== 'exclude') {
+			$record = $this->dat['records'][$table . ':' . $uid]['data'];
 			if (is_array($record)) {
-				if (($this->update && $this->doesRecordExist($table, $uid)) && $this->import_mode[($table . ':') . $uid] !== 'as_new') {
+				if ($this->update && $this->doesRecordExist($table, $uid) && $this->import_mode[$table . ':' . $uid] !== 'as_new') {
 					$ID = $uid;
 				} else {
 					$ID = uniqid('NEW');
 				}
-				$this->import_newId[($table . ':') . $ID] = array('table' => $table, 'uid' => $uid);
+				$this->import_newId[$table . ':' . $ID] = array('table' => $table, 'uid' => $uid);
 				if ($table == 'pages') {
 					$this->import_newId_pids[$uid] = $ID;
 				}
@@ -1366,13 +1366,13 @@ class ImportExport {
 				} else {
 					// Inserts:
 					$this->import_data[$table][$ID]['pid'] = $pid;
-					if (($this->import_mode[($table . ':') . $uid] === 'force_uid' && $this->update || $this->force_all_UIDS) && $GLOBALS['BE_USER']->isAdmin()) {
+					if (($this->import_mode[$table . ':' . $uid] === 'force_uid' && $this->update || $this->force_all_UIDS) && $GLOBALS['BE_USER']->isAdmin()) {
 						$this->import_data[$table][$ID]['uid'] = $uid;
-						$this->suggestedInsertUids[($table . ':') . $uid] = 'DELETE';
+						$this->suggestedInsertUids[$table . ':' . $uid] = 'DELETE';
 					}
 				}
 				// Setting db/file blank:
-				foreach ($this->dat['records'][($table . ':') . $uid]['rels'] as $field => $config) {
+				foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
 					switch ((string) $config['type']) {
 					case 'db':
 
@@ -1388,7 +1388,7 @@ class ImportExport {
 						break;
 					}
 				}
-			} elseif (($table . ':') . $uid != 'pages:0') {
+			} elseif ($table . ':' . $uid != 'pages:0') {
 				// On root level we don't want this error message.
 				$this->error('Error: no record was found in data array!', 1);
 			}
@@ -1406,14 +1406,14 @@ class ImportExport {
 	public function addToMapId($substNEWwithIDs) {
 		foreach ($this->import_data as $table => $recs) {
 			foreach ($recs as $id => $value) {
-				$old_uid = $this->import_newId[($table . ':') . $id]['uid'];
+				$old_uid = $this->import_newId[$table . ':' . $id]['uid'];
 				if (isset($substNEWwithIDs[$id])) {
 					$this->import_mapId[$table][$old_uid] = $substNEWwithIDs[$id];
 				} elseif ($this->update) {
 					// Map same ID to same ID....
 					$this->import_mapId[$table][$old_uid] = $id;
 				} else {
-					$this->error(((('Possible error: ' . $table) . ':') . $old_uid) . ' had no new id assigned to it. This indicates that the record was not added to database during import. Please check changelog!', 1);
+					$this->error('Possible error: ' . $table . ':' . $old_uid . ' had no new id assigned to it. This indicates that the record was not added to database during import. Please check changelog!', 1);
 				}
 			}
 		}
@@ -1447,10 +1447,10 @@ class ImportExport {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($fileName);
 				clearstatcache();
 				if (is_file($fileName)) {
-					$this->error(('Error: ' . $fileName) . ' was NOT unlinked as it should have been!', 1);
+					$this->error('Error: ' . $fileName . ' was NOT unlinked as it should have been!', 1);
 				}
 			} else {
-				$this->error(('Error: ' . $fileName) . ' was not in temp-path. Not removed!', 1);
+				$this->error('Error: ' . $fileName . ' was not in temp-path. Not removed!', 1);
 			}
 		}
 		$this->unlinkFiles = array();
@@ -1479,9 +1479,9 @@ class ImportExport {
 			// If the record has been written and received a new id, then proceed:
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid])) {
 				$thisNewUid = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
-				if (is_array($this->dat['records'][($table . ':') . $uid]['rels'])) {
+				if (is_array($this->dat['records'][$table . ':' . $uid]['rels'])) {
 					// Traverse relation fields of each record
-					foreach ($this->dat['records'][($table . ':') . $uid]['rels'] as $field => $config) {
+					foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
 						switch ((string) $config['type']) {
 						case 'db':
 							if (is_array($config['itemArray']) && count($config['itemArray'])) {
@@ -1504,7 +1504,7 @@ class ImportExport {
 					$this->error('Error: no record was found in data array!', 1);
 				}
 			} else {
-				$this->error(((('Error: this records is NOT created it seems! (' . $table) . ':') . $uid) . ')', 1);
+				$this->error('Error: this records is NOT created it seems! (' . $table . ':' . $uid . ')', 1);
 			}
 		}
 		if (count($updateData)) {
@@ -1532,12 +1532,12 @@ class ImportExport {
 		$valArray = array();
 		foreach ($itemArray as $relDat) {
 			if (is_array($this->import_mapId[$relDat['table']]) && isset($this->import_mapId[$relDat['table']][$relDat['id']])) {
-				$valArray[] = ($relDat['table'] . '_') . $this->import_mapId[$relDat['table']][$relDat['id']];
-			} elseif (($this->isTableStatic($relDat['table']) || $this->isExcluded($relDat['table'], $relDat['id'])) || $relDat['id'] < 0) {
+				$valArray[] = $relDat['table'] . '_' . $this->import_mapId[$relDat['table']][$relDat['id']];
+			} elseif ($this->isTableStatic($relDat['table']) || $this->isExcluded($relDat['table'], $relDat['id']) || $relDat['id'] < 0) {
 				// Checking for less than zero because some select types could contain negative values, eg. fe_groups (-1, -2) and sys_language (-1 = ALL languages). This must be handled on both export and import.
-				$valArray[] = ($relDat['table'] . '_') . $relDat['id'];
+				$valArray[] = $relDat['table'] . '_' . $relDat['id'];
 			} else {
-				$this->error((('Lost relation: ' . $relDat['table']) . ':') . $relDat['id'], 1);
+				$this->error('Lost relation: ' . $relDat['table'] . ':' . $relDat['id'], 1);
 			}
 		}
 		return $valArray;
@@ -1562,10 +1562,10 @@ class ImportExport {
 					$this->alternativeFilePath[$tmpFile] = $this->dat['files'][$fI['ID']]['relFileRef'];
 					return $tmpFile;
 				} else {
-					$this->error(((((('Error: temporary file ' . $tmpFile) . ' had a size (') . filesize($tmpFile)) . ') different from the original (') . $this->dat['files'][$fI['ID']]['filesize']) . ')', 1);
+					$this->error('Error: temporary file ' . $tmpFile . ' had a size (' . filesize($tmpFile) . ') different from the original (' . $this->dat['files'][$fI['ID']]['filesize'] . ')', 1);
 				}
 			} else {
-				$this->error(('Error: temporary file ' . $tmpFile) . ' was not written as it should have been!', 1);
+				$this->error('Error: temporary file ' . $tmpFile . ' was not written as it should have been!', 1);
 			}
 		} else {
 			$this->error('Error: No file found for ID ' . $fI['ID'], 1);
@@ -1590,20 +1590,20 @@ class ImportExport {
 			// If the record has been written and received a new id, then proceed:
 			if (is_array($this->import_mapId[$table]) && isset($this->import_mapId[$table][$uid])) {
 				$thisNewUid = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($table, $this->import_mapId[$table][$uid]);
-				if (is_array($this->dat['records'][($table . ':') . $uid]['rels'])) {
+				if (is_array($this->dat['records'][$table . ':' . $uid]['rels'])) {
 					\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 					// Traverse relation fields of each record
-					foreach ($this->dat['records'][($table . ':') . $uid]['rels'] as $field => $config) {
+					foreach ($this->dat['records'][$table . ':' . $uid]['rels'] as $field => $config) {
 						switch ((string) $config['type']) {
 						case 'flex':
 							// Get XML content and set as default value (string, non-processed):
-							$updateData[$table][$thisNewUid][$field] = $this->dat['records'][($table . ':') . $uid]['data'][$field];
+							$updateData[$table][$thisNewUid][$field] = $this->dat['records'][$table . ':' . $uid]['data'][$field];
 							// If there has been registered relations inside the flex form field, run processing on the content:
 							if (count($config['flexFormRels']['db']) || count($config['flexFormRels']['file'])) {
 								$origRecordRow = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($table, $thisNewUid, '*');
 								// This will fetch the new row for the element (which should be updated with any references to data structures etc.)
 								$conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-								if ((is_array($origRecordRow) && is_array($conf)) && $conf['type'] === 'flex') {
+								if (is_array($origRecordRow) && is_array($conf) && $conf['type'] === 'flex') {
 									// Get current data structure and value array:
 									$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
 									$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($updateData[$table][$thisNewUid][$field]);
@@ -1624,7 +1624,7 @@ class ImportExport {
 					$this->error('Error: no record was found in data array!', 1);
 				}
 			} else {
-				$this->error(((('Error: this records is NOT created it seems! (' . $table) . ':') . $uid) . ')', 1);
+				$this->error('Error: this records is NOT created it seems! (' . $table . ':' . $uid . ')', 1);
 			}
 		}
 		if (count($updateData)) {
@@ -1699,7 +1699,7 @@ class ImportExport {
 						$fieldsIndex = array();
 						foreach ($thisRec['softrefs'] as $softrefDef) {
 							// If a substitution token is set:
-							if (($softrefDef['field'] && is_array($softrefDef['subst'])) && $softrefDef['subst']['tokenID']) {
+							if ($softrefDef['field'] && is_array($softrefDef['subst']) && $softrefDef['subst']['tokenID']) {
 								$fieldsIndex[$softrefDef['field']][$softrefDef['subst']['tokenID']] = $softrefDef;
 							}
 						}
@@ -1728,7 +1728,7 @@ class ImportExport {
 									}
 								} else {
 									// Get tokenizedContent string and proceed only if that is not blank:
-									$tokenizedContent = $this->dat['records'][($table . ':') . $uid]['rels'][$field]['softrefs']['tokenizedContent'];
+									$tokenizedContent = $this->dat['records'][$table . ':' . $uid]['rels'][$field]['softrefs']['tokenizedContent'];
 									if (strlen($tokenizedContent) && is_array($softRefCfgs)) {
 										$inData[$table][$thisNewUid][$field] = $this->processSoftReferences_substTokens($tokenizedContent, $softRefCfgs, $table, $uid);
 									}
@@ -1780,7 +1780,7 @@ class ImportExport {
 			// If any was found, do processing:
 			if (count($thisSoftRefCfgList)) {
 				// Get tokenizedContent string and proceed only if that is not blank:
-				$tokenizedContent = $this->dat['records'][($table . ':') . $origUid]['rels'][$field]['flexFormRels']['softrefs'][$path]['tokenizedContent'];
+				$tokenizedContent = $this->dat['records'][$table . ':' . $origUid]['rels'][$field]['flexFormRels']['softrefs'][$path]['tokenizedContent'];
 				if (strlen($tokenizedContent)) {
 					$dataValue = $this->processSoftReferences_substTokens($tokenizedContent, $thisSoftRefCfgList, $table, $origUid);
 				}
@@ -1844,7 +1844,7 @@ class ImportExport {
 				break;
 			}
 			// Finally, swap the soft reference token in tokenized content with the insert value:
-			$tokenizedContent = str_replace(('{softref:' . $tokenID) . '}', $insertValue, $tokenizedContent);
+			$tokenizedContent = str_replace('{softref:' . $tokenID . '}', $insertValue, $tokenizedContent);
 		}
 		return $tokenizedContent;
 	}
@@ -1874,8 +1874,8 @@ class ImportExport {
 					$origDestName = $fileProcObj->getUniqueName($rteOrigName, PATH_site . $dirPrefix);
 					// Create copy file name:
 					$pI = pathinfo($relFileName);
-					$copyDestName = (((dirname($origDestName) . '/RTEmagicC_') . substr(basename($origDestName), 10)) . '.') . $pI['extension'];
-					if (((!@is_file($copyDestName) && !@is_file($origDestName)) && $origDestName === \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($origDestName)) && $copyDestName === \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($copyDestName)) {
+					$copyDestName = dirname($origDestName) . '/RTEmagicC_' . substr(basename($origDestName), 10) . '.' . $pI['extension'];
+					if (!@is_file($copyDestName) && !@is_file($origDestName) && $origDestName === \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($origDestName) && $copyDestName === \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($copyDestName)) {
 						if ($this->dat['header']['files'][$fileHeaderInfo['RTE_ORIG_ID']]) {
 							// Write the copy and original RTE file to the respective filenames:
 							$this->writeFileVerify($copyDestName, $cfg['file_ID'], TRUE);
@@ -1886,10 +1886,10 @@ class ImportExport {
 							$this->error('ERROR: Could not find original file ID');
 						}
 					} else {
-						$this->error(((('ERROR: The destination filenames "' . $copyDestName) . '" and "') . $origDestName) . '" either existed or have non-valid names');
+						$this->error('ERROR: The destination filenames "' . $copyDestName . '" and "' . $origDestName . '" either existed or have non-valid names');
 					}
 				} else {
-					$this->error((((('ERROR: "' . PATH_site) . $dirPrefix) . '" was not a directory, so could not process file "') . $relFileName) . '"');
+					$this->error('ERROR: "' . PATH_site . $dirPrefix . '" was not a directory, so could not process file "' . $relFileName . '"');
 				}
 			} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($dirPrefix, $this->fileadminFolderName . '/')) {
 				// File in fileadmin/ folder:
@@ -1898,7 +1898,7 @@ class ImportExport {
 				if (strlen($newFileName)) {
 					$relFileName = $newFileName;
 				} else {
-					$this->error(('ERROR: No new file created for "' . $relFileName) . '"');
+					$this->error('ERROR: No new file created for "' . $relFileName . '"');
 				}
 			} else {
 				$this->error('ERROR: Sorry, cannot operate on non-RTE files which are outside the fileadmin folder.');
@@ -1928,13 +1928,13 @@ class ImportExport {
 		}
 		// Verify FileMount access to dir-prefix. Returns the best alternative relative path if any
 		$dirPrefix = $this->verifyFolderAccess($origDirPrefix);
-		if (($dirPrefix && (!$this->update || $origDirPrefix === $dirPrefix)) && $this->checkOrCreateDir($dirPrefix)) {
+		if ($dirPrefix && (!$this->update || $origDirPrefix === $dirPrefix) && $this->checkOrCreateDir($dirPrefix)) {
 			$fileHeaderInfo = $this->dat['header']['files'][$fileID];
-			$updMode = ($this->update && $this->import_mapId[$table][$uid] === $uid) && $this->import_mode[($table . ':') . $uid] !== 'as_new';
+			$updMode = $this->update && $this->import_mapId[$table][$uid] === $uid && $this->import_mode[$table . ':' . $uid] !== 'as_new';
 			// Create new name for file:
 			// Must have same ID in map array (just for security, is not really needed) and NOT be set "as_new".
 			if ($updMode) {
-				$newName = (PATH_site . $dirPrefix) . $fileName;
+				$newName = PATH_site . $dirPrefix . $fileName;
 			} else {
 				// Create unique filename:
 				$fileProcObj = $this->getFileProcObj();
@@ -1952,32 +1952,32 @@ class ImportExport {
 							if ($this->dat['files'][$res_fileID]['filename']) {
 								// Resolve original filename:
 								$relResourceFileName = $this->dat['files'][$res_fileID]['parentRelFileName'];
-								$absResourceFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath((PATH_site . $origDirPrefix) . $relResourceFileName);
+								$absResourceFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(PATH_site . $origDirPrefix . $relResourceFileName);
 								$absResourceFileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($absResourceFileName);
-								if ($absResourceFileName && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($absResourceFileName, (PATH_site . $this->fileadminFolderName) . '/')) {
+								if ($absResourceFileName && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($absResourceFileName, PATH_site . $this->fileadminFolderName . '/')) {
 									$destDir = substr(dirname($absResourceFileName) . '/', strlen(PATH_site));
 									if ($this->verifyFolderAccess($destDir, TRUE) && $this->checkOrCreateDir($destDir)) {
 										$this->writeFileVerify($absResourceFileName, $res_fileID);
 									} else {
-										$this->error(('ERROR: Could not create file in directory "' . $destDir) . '"');
+										$this->error('ERROR: Could not create file in directory "' . $destDir . '"');
 									}
 								} else {
-									$this->error(('ERROR: Could not resolve path for "' . $relResourceFileName) . '"');
+									$this->error('ERROR: Could not resolve path for "' . $relResourceFileName . '"');
 								}
-								$tokenizedContent = str_replace(('{EXT_RES_ID:' . $res_fileID) . '}', $relResourceFileName, $tokenizedContent);
+								$tokenizedContent = str_replace('{EXT_RES_ID:' . $res_fileID . '}', $relResourceFileName, $tokenizedContent);
 								$tokenSubstituted = TRUE;
 							}
 						}
 					} else {
 						// Create the resouces directory name (filename without extension, suffixed "_FILES")
-						$resourceDir = ((dirname($newName) . '/') . preg_replace('/\\.[^.]*$/', '', basename($newName))) . '_FILES';
+						$resourceDir = dirname($newName) . '/' . preg_replace('/\\.[^.]*$/', '', basename($newName)) . '_FILES';
 						if (\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($resourceDir)) {
 							foreach ($fileHeaderInfo['EXT_RES_ID'] as $res_fileID) {
 								if ($this->dat['files'][$res_fileID]['filename']) {
 									$absResourceFileName = $fileProcObj->getUniqueName($this->dat['files'][$res_fileID]['filename'], $resourceDir);
 									$relResourceFileName = substr($absResourceFileName, strlen(dirname($resourceDir)) + 1);
 									$this->writeFileVerify($absResourceFileName, $res_fileID);
-									$tokenizedContent = str_replace(('{EXT_RES_ID:' . $res_fileID) . '}', $relResourceFileName, $tokenizedContent);
+									$tokenizedContent = str_replace('{EXT_RES_ID:' . $res_fileID . '}', $relResourceFileName, $tokenizedContent);
 									$tokenSubstituted = TRUE;
 								}
 							}
@@ -2016,22 +2016,22 @@ class ImportExport {
 							if (md5(\TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($fileName)) == $this->dat['files'][$fileID]['content_md5']) {
 								return TRUE;
 							} else {
-								$this->error(('ERROR: File content "' . $fileName) . '" was corrupted');
+								$this->error('ERROR: File content "' . $fileName . '" was corrupted');
 							}
 						} else {
-							$this->error(('ERROR: File ID "' . $fileID) . '" could not be found');
+							$this->error('ERROR: File ID "' . $fileID . '" could not be found');
 						}
 					} else {
-						$this->error(('ERROR: Filename "' . $fileName) . '" was not a valid relative file path!');
+						$this->error('ERROR: Filename "' . $fileName . '" was not a valid relative file path!');
 					}
 				} else {
-					$this->error(('ERROR: Filename "' . $fileName) . '" failed against extension check or deny-pattern!');
+					$this->error('ERROR: Filename "' . $fileName . '" failed against extension check or deny-pattern!');
 				}
 			} else {
-				$this->error(('ERROR: Filename "' . $fileName) . '" was not allowed in destination path!');
+				$this->error('ERROR: Filename "' . $fileName . '" was not allowed in destination path!');
 			}
 		} else {
-			$this->error(('ERROR: You did not have sufficient permissions to write the file "' . $fileName) . '"');
+			$this->error('ERROR: You did not have sufficient permissions to write the file "' . $fileName . '"');
 		}
 	}
 
@@ -2051,8 +2051,8 @@ class ImportExport {
 			foreach ($filePathParts as $dirname) {
 				$pathAcc .= '/' . $dirname;
 				if (strlen($dirname)) {
-					if (!@is_dir(((PATH_site . $this->fileadminFolderName) . $pathAcc))) {
-						if (!\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir(((PATH_site . $this->fileadminFolderName) . $pathAcc))) {
+					if (!@is_dir((PATH_site . $this->fileadminFolderName . $pathAcc))) {
+						if (!\TYPO3\CMS\Core\Utility\GeneralUtility::mkdir((PATH_site . $this->fileadminFolderName . $pathAcc))) {
 							$this->error('ERROR: Directory could not be created....B');
 							return FALSE;
 						}
@@ -2121,7 +2121,7 @@ class ImportExport {
 				if (strlen($xmlContent)) {
 					$this->dat = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($xmlContent, '', TRUE);
 					if (is_array($this->dat)) {
-						if (($this->dat['_DOCUMENT_TAG'] === 'T3RecordDocument' && is_array($this->dat['header'])) && is_array($this->dat['records'])) {
+						if ($this->dat['_DOCUMENT_TAG'] === 'T3RecordDocument' && is_array($this->dat['header']) && is_array($this->dat['records'])) {
 							$this->loadInit();
 							return TRUE;
 						} else {
@@ -2166,7 +2166,7 @@ class ImportExport {
 	 * @todo Define visibility
 	 */
 	public function getNextFilePart($fd, $unserialize = 0, $name = '') {
-		$initStrLen = ((((32 + 1) + 1) + 1) + 10) + 1;
+		$initStrLen = 32 + 1 + 1 + 1 + 10 + 1;
 		// Getting header data
 		$initStr = fread($fd, $initStrLen);
 		$initStrDat = explode(':', $initStr);
@@ -2184,13 +2184,13 @@ class ImportExport {
 					}
 					return $unserialize ? unserialize($datString) : $datString;
 				} else {
-					$this->error(('MD5 check failed (' . $name) . ')');
+					$this->error('MD5 check failed (' . $name . ')');
 				}
 			} else {
-				$this->error(('File read error: InitString had a wrong length. (' . $name) . ')');
+				$this->error('File read error: InitString had a wrong length. (' . $name . ')');
 			}
 		} else {
-			$this->error((('File read error: Warning message in file. (' . $initStr) . fgets($fd)) . ')');
+			$this->error('File read error: Warning message in file. (' . $initStr . fgets($fd) . ')');
 		}
 	}
 
@@ -2221,7 +2221,7 @@ class ImportExport {
 	 * @todo Define visibility
 	 */
 	public function getNextContentPart($filecontent, &$pointer, $unserialize = 0, $name = '') {
-		$initStrLen = ((((32 + 1) + 1) + 1) + 10) + 1;
+		$initStrLen = 32 + 1 + 1 + 1 + 10 + 1;
 		// getting header data
 		$initStr = substr($filecontent, $pointer, $initStrLen);
 		$pointer += $initStrLen;
@@ -2239,10 +2239,10 @@ class ImportExport {
 				}
 				return $unserialize ? unserialize($datString) : $datString;
 			} else {
-				$this->error(('MD5 check failed (' . $name) . ')');
+				$this->error('MD5 check failed (' . $name . ')');
 			}
 		} else {
-			$this->error(('Content read error: InitString had a wrong length. (' . $name) . ')');
+			$this->error('Content read error: InitString had a wrong length. (' . $name . ')');
 		}
 	}
 
@@ -2272,7 +2272,7 @@ class ImportExport {
 		$importCharset = $this->dat['header']['charset'];
 		if ($importCharset) {
 			if ($importCharset !== $LANG->charSet) {
-				$this->error(((('CHARSET: Converting charset of input file (' . $importCharset) . ') to the system charset (') . $LANG->charSet) . ')');
+				$this->error('CHARSET: Converting charset of input file (' . $importCharset . ') to the system charset (' . $LANG->charSet . ')');
 				// Convert meta data:
 				if (is_array($this->dat['header']['meta'])) {
 					$LANG->csConvObj->convArray($this->dat['header']['meta'], $importCharset, $LANG->charSet);
@@ -2308,7 +2308,7 @@ class ImportExport {
 		if (is_array($this->dat['header']['extensionDependencies'])) {
 			foreach ($this->dat['header']['extensionDependencies'] as $extKey) {
 				if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extKey)) {
-					$this->error(('DEPENDENCY: The extension with key "' . $extKey) . '" must be installed!');
+					$this->error('DEPENDENCY: The extension with key "' . $extKey . '" must be installed!');
 				}
 			}
 		}
@@ -2323,32 +2323,32 @@ class ImportExport {
 				$lines = array();
 				$this->traversePageTree($this->dat['header']['pagetree'], $lines);
 				$rows = array();
-				$rows[] = ((((((((((((('
+				$rows[] = '
 				<tr class="bgColor5 tableheader">
-					<td>' . $LANG->getLL('impexpcore_displaycon_controls', 1)) . '</td>
-					<td>') . $LANG->getLL('impexpcore_displaycon_title', 1)) . '</td>
-					<td>') . $LANG->getLL('impexpcore_displaycon_size', 1)) . '</td>
-					<td>') . $LANG->getLL('impexpcore_displaycon_message', 1)) . '</td>
-					') . ($this->update ? ('<td>' . $LANG->getLL('impexpcore_displaycon_updateMode', 1)) . '</td>' : '')) . '
-					') . ($this->update ? ('<td>' . $LANG->getLL('impexpcore_displaycon_currentPath', 1)) . '</td>' : '')) . '
-					') . ($this->showDiff ? ('<td>' . $LANG->getLL('impexpcore_displaycon_result', 1)) . '</td>' : '')) . '
+					<td>' . $LANG->getLL('impexpcore_displaycon_controls', 1) . '</td>
+					<td>' . $LANG->getLL('impexpcore_displaycon_title', 1) . '</td>
+					<td>' . $LANG->getLL('impexpcore_displaycon_size', 1) . '</td>
+					<td>' . $LANG->getLL('impexpcore_displaycon_message', 1) . '</td>
+					' . ($this->update ? '<td>' . $LANG->getLL('impexpcore_displaycon_updateMode', 1) . '</td>' : '') . '
+					' . ($this->update ? '<td>' . $LANG->getLL('impexpcore_displaycon_currentPath', 1) . '</td>' : '') . '
+					' . ($this->showDiff ? '<td>' . $LANG->getLL('impexpcore_displaycon_result', 1) . '</td>' : '') . '
 				</tr>';
 				foreach ($lines as $r) {
-					$rows[] = (((((((((((((((('
-					<tr class="' . $r['class']) . '">
-						<td>') . $this->renderControls($r)) . '</td>
-						<td nowrap="nowrap">') . $r['preCode']) . $r['title']) . '</td>
-						<td nowrap="nowrap">') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($r['size'])) . '</td>
-						<td nowrap="nowrap">') . ($r['msg'] && !$this->doesImport ? ('<span class="typo3-red">' . htmlspecialchars($r['msg'])) . '</span>' : '')) . '</td>
-						') . ($this->update ? ('<td nowrap="nowrap">' . $r['updateMode']) . '</td>' : '')) . '
-						') . ($this->update ? ('<td nowrap="nowrap">' . $r['updatePath']) . '</td>' : '')) . '
-						') . ($this->showDiff ? ('<td>' . $r['showDiffContent']) . '</td>' : '')) . '
+					$rows[] = '
+					<tr class="' . $r['class'] . '">
+						<td>' . $this->renderControls($r) . '</td>
+						<td nowrap="nowrap">' . $r['preCode'] . $r['title'] . '</td>
+						<td nowrap="nowrap">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($r['size']) . '</td>
+						<td nowrap="nowrap">' . ($r['msg'] && !$this->doesImport ? '<span class="typo3-red">' . htmlspecialchars($r['msg']) . '</span>' : '') . '</td>
+						' . ($this->update ? '<td nowrap="nowrap">' . $r['updateMode'] . '</td>' : '') . '
+						' . ($this->update ? '<td nowrap="nowrap">' . $r['updatePath'] . '</td>' : '') . '
+						' . ($this->showDiff ? '<td>' . $r['showDiffContent'] . '</td>' : '') . '
 					</tr>';
 				}
-				$out = ((('
-					<strong>' . $LANG->getLL('impexpcore_displaycon_insidePagetree', 1)) . '</strong>
+				$out = '
+					<strong>' . $LANG->getLL('impexpcore_displaycon_insidePagetree', 1) . '</strong>
 					<br /><br />
-					<table border="0" cellpadding="0" cellspacing="1">') . implode('', $rows)) . '</table>
+					<table border="0" cellpadding="0" cellspacing="1">' . implode('', $rows) . '</table>
 					<br /><br />';
 			}
 			// Print remaining records that were not contained inside the page tree:
@@ -2360,31 +2360,31 @@ class ImportExport {
 				$this->traverseAllRecords($this->remainHeader['records'], $lines);
 				if (count($lines)) {
 					$rows = array();
-					$rows[] = ((((((((((((('
+					$rows[] = '
 					<tr class="bgColor5 tableheader">
-						<td>' . $LANG->getLL('impexpcore_displaycon_controls', 1)) . '</td>
-						<td>') . $LANG->getLL('impexpcore_displaycon_title', 1)) . '</td>
-						<td>') . $LANG->getLL('impexpcore_displaycon_size', 1)) . '</td>
-						<td>') . $LANG->getLL('impexpcore_displaycon_message', 1)) . '</td>
-						') . ($this->update ? ('<td>' . $LANG->getLL('impexpcore_displaycon_updateMode', 1)) . '</td>' : '')) . '
-						') . ($this->update ? ('<td>' . $LANG->getLL('impexpcore_displaycon_currentPath', 1)) . '</td>' : '')) . '
-						') . ($this->showDiff ? ('<td>' . $LANG->getLL('impexpcore_displaycon_result', 1)) . '</td>' : '')) . '
+						<td>' . $LANG->getLL('impexpcore_displaycon_controls', 1) . '</td>
+						<td>' . $LANG->getLL('impexpcore_displaycon_title', 1) . '</td>
+						<td>' . $LANG->getLL('impexpcore_displaycon_size', 1) . '</td>
+						<td>' . $LANG->getLL('impexpcore_displaycon_message', 1) . '</td>
+						' . ($this->update ? '<td>' . $LANG->getLL('impexpcore_displaycon_updateMode', 1) . '</td>' : '') . '
+						' . ($this->update ? '<td>' . $LANG->getLL('impexpcore_displaycon_currentPath', 1) . '</td>' : '') . '
+						' . ($this->showDiff ? '<td>' . $LANG->getLL('impexpcore_displaycon_result', 1) . '</td>' : '') . '
 					</tr>';
 					foreach ($lines as $r) {
-						$rows[] = (((((((((((((((('<tr class="' . $r['class']) . '">
-							<td>') . $this->renderControls($r)) . '</td>
-							<td nowrap="nowrap">') . $r['preCode']) . $r['title']) . '</td>
-							<td nowrap="nowrap">') . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($r['size'])) . '</td>
-							<td nowrap="nowrap">') . ($r['msg'] && !$this->doesImport ? ('<span class="typo3-red">' . htmlspecialchars($r['msg'])) . '</span>' : '')) . '</td>
-							') . ($this->update ? ('<td nowrap="nowrap">' . $r['updateMode']) . '</td>' : '')) . '
-							') . ($this->update ? ('<td nowrap="nowrap">' . $r['updatePath']) . '</td>' : '')) . '
-							') . ($this->showDiff ? ('<td>' . $r['showDiffContent']) . '</td>' : '')) . '
+						$rows[] = '<tr class="' . $r['class'] . '">
+							<td>' . $this->renderControls($r) . '</td>
+							<td nowrap="nowrap">' . $r['preCode'] . $r['title'] . '</td>
+							<td nowrap="nowrap">' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($r['size']) . '</td>
+							<td nowrap="nowrap">' . ($r['msg'] && !$this->doesImport ? '<span class="typo3-red">' . htmlspecialchars($r['msg']) . '</span>' : '') . '</td>
+							' . ($this->update ? '<td nowrap="nowrap">' . $r['updateMode'] . '</td>' : '') . '
+							' . ($this->update ? '<td nowrap="nowrap">' . $r['updatePath'] . '</td>' : '') . '
+							' . ($this->showDiff ? '<td>' . $r['showDiffContent'] . '</td>' : '') . '
 						</tr>';
 					}
-					$out .= ((('
-						<strong>' . $LANG->getLL('impexpcore_singlereco_outsidePagetree', 1)) . '</strong>
+					$out .= '
+						<strong>' . $LANG->getLL('impexpcore_singlereco_outsidePagetree', 1) . '</strong>
 						<br /><br />
-						<table border="0" cellpadding="0" cellspacing="1">') . implode('', $rows)) . '</table>';
+						<table border="0" cellpadding="0" cellspacing="1">' . implode('', $rows) . '</table>';
 				}
 			}
 		}
@@ -2483,46 +2483,46 @@ class ImportExport {
 		$record = $this->dat['header']['records'][$table][$uid];
 		unset($this->remainHeader['records'][$table][$uid]);
 		if (!is_array($record) && !($table === 'pages' && !$uid)) {
-			$this->error((('MISSING RECORD: ' . $table) . ':') . $uid, 1);
+			$this->error('MISSING RECORD: ' . $table . ':' . $uid, 1);
 		}
 		// Begin to create the line arrays information record, pInfo:
 		$pInfo = array();
-		$pInfo['ref'] = ($table . ':') . $uid;
+		$pInfo['ref'] = $table . ':' . $uid;
 		// Unknown table name:
 		if ($table === '_SOFTREF_') {
 			$pInfo['preCode'] = $preCode;
-			$pInfo['title'] = ('<em>' . $GLOBALS['LANG']->getLL('impexpcore_singlereco_softReferencesFiles', 1)) . '</em>';
+			$pInfo['title'] = '<em>' . $GLOBALS['LANG']->getLL('impexpcore_singlereco_softReferencesFiles', 1) . '</em>';
 		} elseif (!isset($GLOBALS['TCA'][$table])) {
 			// Unknown table name:
 			$pInfo['preCode'] = $preCode;
-			$pInfo['msg'] = ('UNKNOWN TABLE \'' . $pInfo['ref']) . '\'';
-			$pInfo['title'] = ('<em>' . htmlspecialchars($record['title'])) . '</em>';
+			$pInfo['msg'] = 'UNKNOWN TABLE \'' . $pInfo['ref'] . '\'';
+			$pInfo['title'] = '<em>' . htmlspecialchars($record['title']) . '</em>';
 		} else {
 			// Otherwise, set table icon and title.
 			// Import Validation (triggered by $this->display_import_pid_record) will show messages if import is not possible of various items.
 			if (is_array($this->display_import_pid_record)) {
 				if ($checkImportInPidRecord) {
 					if (!$GLOBALS['BE_USER']->doesUserHaveAccess($this->display_import_pid_record, ($table === 'pages' ? 8 : 16))) {
-						$pInfo['msg'] .= ('\'' . $pInfo['ref']) . '\' cannot be INSERTED on this page! ';
+						$pInfo['msg'] .= '\'' . $pInfo['ref'] . '\' cannot be INSERTED on this page! ';
 					}
 					if (!$this->checkDokType($table, $this->display_import_pid_record['doktype']) && !$GLOBALS['TCA'][$table]['ctrl']['rootLevel']) {
-						$pInfo['msg'] .= ('\'' . $table) . '\' cannot be INSERTED on this page type (change page type to \'Folder\'.) ';
+						$pInfo['msg'] .= '\'' . $table . '\' cannot be INSERTED on this page type (change page type to \'Folder\'.) ';
 					}
 				}
 				if (!$GLOBALS['BE_USER']->check('tables_modify', $table)) {
-					$pInfo['msg'] .= ('You are not allowed to CREATE \'' . $table) . '\' tables! ';
+					$pInfo['msg'] .= 'You are not allowed to CREATE \'' . $table . '\' tables! ';
 				}
 				if ($GLOBALS['TCA'][$table]['ctrl']['readOnly']) {
-					$pInfo['msg'] .= ('TABLE \'' . $table) . '\' is READ ONLY! ';
+					$pInfo['msg'] .= 'TABLE \'' . $table . '\' is READ ONLY! ';
 				}
 				if ($GLOBALS['TCA'][$table]['ctrl']['adminOnly'] && !$GLOBALS['BE_USER']->isAdmin()) {
-					$pInfo['msg'] .= ('TABLE \'' . $table) . '\' is ADMIN ONLY! ';
+					$pInfo['msg'] .= 'TABLE \'' . $table . '\' is ADMIN ONLY! ';
 				}
 				if ($GLOBALS['TCA'][$table]['ctrl']['is_static']) {
-					$pInfo['msg'] .= ('TABLE \'' . $table) . '\' is a STATIC TABLE! ';
+					$pInfo['msg'] .= 'TABLE \'' . $table . '\' is a STATIC TABLE! ';
 				}
 				if ($GLOBALS['TCA'][$table]['ctrl']['rootLevel']) {
-					$pInfo['msg'] .= ('TABLE \'' . $table) . '\' will be inserted on ROOT LEVEL! ';
+					$pInfo['msg'] .= 'TABLE \'' . $table . '\' will be inserted on ROOT LEVEL! ';
 				}
 				$diffInverse = FALSE;
 				if ($this->update) {
@@ -2547,7 +2547,7 @@ class ImportExport {
 						$optValues['force_uid'] = sprintf($LANG->getLL('impexpcore_singlereco_forceUidSAdmin'), $uid);
 					}
 					$optValues['exclude'] = $LANG->getLL('impexpcore_singlereco_exclude');
-					$pInfo['updateMode'] = $this->renderSelectBox(((('tx_impexp[import_mode][' . $table) . ':') . $uid) . ']', $this->import_mode[($table . ':') . $uid], $optValues);
+					$pInfo['updateMode'] = $this->renderSelectBox('tx_impexp[import_mode][' . $table . ':' . $uid . ']', $this->import_mode[$table . ':' . $uid], $optValues);
 				}
 				// Diff vieiw:
 				if ($this->showDiff) {
@@ -2558,17 +2558,17 @@ class ImportExport {
 						\TYPO3\CMS\Backend\Utility\BackendUtility::workspaceOL($table, $recInf);
 					}
 					if (is_array($recInf)) {
-						$pInfo['showDiffContent'] = $this->compareRecords($recInf, $this->dat['records'][($table . ':') . $uid]['data'], $table, $diffInverse);
+						$pInfo['showDiffContent'] = $this->compareRecords($recInf, $this->dat['records'][$table . ':' . $uid]['data'], $table, $diffInverse);
 					}
 				}
 			}
-			$pInfo['preCode'] = $preCode . \t3lib_iconworks::getSpriteIconForRecord($table, (array) $this->dat['records'][(($table . ':') . $uid)]['data'], array('title' => htmlspecialchars((($table . ':') . $uid))));
+			$pInfo['preCode'] = $preCode . \t3lib_iconworks::getSpriteIconForRecord($table, (array) $this->dat['records'][($table . ':' . $uid)]['data'], array('title' => htmlspecialchars(($table . ':' . $uid))));
 			$pInfo['title'] = htmlspecialchars($record['title']);
 			// View page:
 			if ($table === 'pages') {
 				$viewID = $this->mode === 'export' ? $uid : ($this->doesImport ? $this->import_mapId['pages'][$uid] : 0);
 				if ($viewID) {
-					$pInfo['title'] = ((('<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($viewID, $GLOBALS['BACK_PATH']))) . 'return false;">') . $pInfo['title']) . '</a>';
+					$pInfo['title'] = '<a href="#" onclick="' . htmlspecialchars(\TYPO3\CMS\Backend\Utility\BackendUtility::viewOnClick($viewID, $GLOBALS['BACK_PATH'])) . 'return false;">' . $pInfo['title'] . '</a>';
 				}
 			}
 		}
@@ -2591,15 +2591,15 @@ class ImportExport {
 			foreach ($record['softrefs'] as $info) {
 				$pInfo = array();
 				$pInfo['preCode'] = $preCode_A . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-reference-soft');
-				$pInfo['title'] = ((((((('<em>' . $info['field']) . ', "') . $info['spKey']) . '" </em>: <span title="') . htmlspecialchars($info['matchString'])) . '">') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($info['matchString'], 60))) . '</span>';
+				$pInfo['title'] = '<em>' . $info['field'] . ', "' . $info['spKey'] . '" </em>: <span title="' . htmlspecialchars($info['matchString']) . '">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($info['matchString'], 60)) . '</span>';
 				if ($info['subst']['type']) {
 					if (strlen($info['subst']['title'])) {
-						$pInfo['title'] .= (((('<br/>' . $preCode_B) . '<strong>') . $LANG->getLL('impexpcore_singlereco_title', 1)) . '</strong> ') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($info['subst']['title'], 60));
+						$pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . $LANG->getLL('impexpcore_singlereco_title', 1) . '</strong> ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($info['subst']['title'], 60));
 					}
 					if (strlen($info['subst']['description'])) {
-						$pInfo['title'] .= (((('<br/>' . $preCode_B) . '<strong>') . $LANG->getLL('impexpcore_singlereco_descr', 1)) . '</strong> ') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($info['subst']['description'], 60));
+						$pInfo['title'] .= '<br/>' . $preCode_B . '<strong>' . $LANG->getLL('impexpcore_singlereco_descr', 1) . '</strong> ' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($info['subst']['description'], 60));
 					}
-					$pInfo['title'] .= ((('<br/>' . $preCode_B) . ($info['subst']['type'] == 'file' ? (($LANG->getLL('impexpcore_singlereco_filename', 1) . ' <strong>') . $info['subst']['relFileName']) . '</strong>' : '')) . ($info['subst']['type'] == 'string' ? (($LANG->getLL('impexpcore_singlereco_value', 1) . ' <strong>') . $info['subst']['tokenValue']) . '</strong>' : '')) . ($info['subst']['type'] == 'db' ? (($LANG->getLL('impexpcore_softrefsel_record', 1) . ' <strong>') . $info['subst']['recordRef']) . '</strong>' : '');
+					$pInfo['title'] .= '<br/>' . $preCode_B . ($info['subst']['type'] == 'file' ? $LANG->getLL('impexpcore_singlereco_filename', 1) . ' <strong>' . $info['subst']['relFileName'] . '</strong>' : '') . ($info['subst']['type'] == 'string' ? $LANG->getLL('impexpcore_singlereco_value', 1) . ' <strong>' . $info['subst']['tokenValue'] . '</strong>' : '') . ($info['subst']['type'] == 'db' ? $LANG->getLL('impexpcore_softrefsel_record', 1) . ' <strong>' . $info['subst']['recordRef'] . '</strong>' : '');
 				}
 				$pInfo['ref'] = 'SOFTREF';
 				$pInfo['size'] = '';
@@ -2644,12 +2644,12 @@ class ImportExport {
 			$pInfo = array();
 			$Iprepend = '';
 			$staticFixed = FALSE;
-			$pInfo['ref'] = ($table . ':') . $uid;
+			$pInfo['ref'] = $table . ':' . $uid;
 			if (!in_array($pInfo['ref'], $recurCheck)) {
 				if ($uid > 0) {
 					$record = $this->dat['header']['records'][$table][$uid];
 					if (!is_array($record)) {
-						if (($this->isTableStatic($table) || $this->isExcluded($table, $uid)) || $dat['tokenID'] && !$this->includeSoftref($dat['tokenID'])) {
+						if ($this->isTableStatic($table) || $this->isExcluded($table, $uid) || $dat['tokenID'] && !$this->includeSoftref($dat['tokenID'])) {
 							$pInfo['title'] = htmlspecialchars('STATIC: ' . $pInfo['ref']);
 							$Iprepend = '_static';
 							$staticFixed = TRUE;
@@ -2657,20 +2657,20 @@ class ImportExport {
 							$doesRE = $this->doesRecordExist($table, $uid);
 							$lostPath = $this->getRecordPath($table === 'pages' ? $doesRE['uid'] : $doesRE['pid']);
 							$pInfo['title'] = htmlspecialchars($pInfo['ref']);
-							$pInfo['title'] = ((('<span title="' . htmlspecialchars($lostPath)) . '">') . $pInfo['title']) . '</span>';
-							$pInfo['msg'] = 'LOST RELATION' . (!$doesRE ? ' (Record not found!)' : (' (Path: ' . $lostPath) . ')');
+							$pInfo['title'] = '<span title="' . htmlspecialchars($lostPath) . '">' . $pInfo['title'] . '</span>';
+							$pInfo['msg'] = 'LOST RELATION' . (!$doesRE ? ' (Record not found!)' : ' (Path: ' . $lostPath . ')');
 							$Iprepend = '_lost';
 						}
 					} else {
 						$pInfo['title'] = htmlspecialchars($record['title']);
-						$pInfo['title'] = ((('<span title="' . htmlspecialchars($this->getRecordPath(($table === 'pages' ? $record['uid'] : $record['pid'])))) . '">') . $pInfo['title']) . '</span>';
+						$pInfo['title'] = '<span title="' . htmlspecialchars($this->getRecordPath(($table === 'pages' ? $record['uid'] : $record['pid']))) . '">' . $pInfo['title'] . '</span>';
 					}
 				} else {
 					// Negative values in relation fields. This is typically sys_language fields, fe_users fields etc. They are static values. They CAN theoretically be negative pointers to uids in other tables but this is so rarely used that it is not supported
 					$pInfo['title'] = htmlspecialchars('FIXED: ' . $pInfo['ref']);
 					$staticFixed = TRUE;
 				}
-				$pInfo['preCode'] = (((($preCode . '&nbsp;&nbsp;&nbsp;&nbsp;<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], (('gfx/rel_db' . $Iprepend) . '.gif'), 'width="13" height="12"')) . ' align="top" title="') . htmlspecialchars($pInfo['ref'])) . '" alt="" />';
+				$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], ('gfx/rel_db' . $Iprepend . '.gif'), 'width="13" height="12"') . ' align="top" title="' . htmlspecialchars($pInfo['ref']) . '" alt="" />';
 				$pInfo['class'] = $htmlColorClass ? $htmlColorClass : 'bgColor3';
 				$pInfo['type'] = 'rel';
 				if (!$staticFixed || $this->showStaticRelations) {
@@ -2711,14 +2711,14 @@ class ImportExport {
 					return;
 				}
 			}
-			$pInfo['preCode'] = ($preCode . '&nbsp;&nbsp;&nbsp;&nbsp;') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-reference-hard');
+			$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-reference-hard');
 			$pInfo['title'] = htmlspecialchars($fI['filename']);
 			$pInfo['ref'] = 'FILE';
 			$pInfo['size'] = $fI['filesize'];
 			$pInfo['class'] = $htmlColorClass ? $htmlColorClass : 'bgColor3';
 			$pInfo['type'] = 'file';
 			// If import mode and there is a non-RTE softreference, check the destination directory:
-			if (($this->mode === 'import' && $tokenID) && !$fI['RTE_ORIG_ID']) {
+			if ($this->mode === 'import' && $tokenID && !$fI['RTE_ORIG_ID']) {
 				if (isset($fI['parentRelFileName'])) {
 					$pInfo['msg'] = 'Seems like this file is already referenced from within an HTML/CSS file. That takes precedence. ';
 				} else {
@@ -2727,7 +2727,7 @@ class ImportExport {
 					if (!$testDirPrefix2) {
 						$pInfo['msg'] = 'ERROR: There are no available filemounts to write file in! ';
 					} elseif (strcmp($testDirPrefix, $testDirPrefix2)) {
-						$pInfo['msg'] = ('File will be attempted written to "' . $testDirPrefix2) . '". ';
+						$pInfo['msg'] = 'File will be attempted written to "' . $testDirPrefix2 . '". ';
 					}
 				}
 				// Check if file exists:
@@ -2762,7 +2762,7 @@ class ImportExport {
 					$this->error('MISSING RTE original FILE: ' . $ID, 1);
 				}
 				$pInfo['showDiffContent'] = substr($this->fileIDMap[$ID], strlen(PATH_site));
-				$pInfo['preCode'] = ($preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-reference-file');
+				$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-reference-file');
 				$pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Original)</em>';
 				$pInfo['ref'] = 'FILE';
 				$pInfo['size'] = $fI['filesize'];
@@ -2783,7 +2783,7 @@ class ImportExport {
 						$pInfo['updatePath'] = $fI['parentRelFileName'];
 					}
 					$pInfo['showDiffContent'] = substr($this->fileIDMap[$ID], strlen(PATH_site));
-					$pInfo['preCode'] = ($preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-insert-reference');
+					$pInfo['preCode'] = $preCode . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-insert-reference');
 					$pInfo['title'] = htmlspecialchars($fI['filename']) . ' <em>(Resource)</em>';
 					$pInfo['ref'] = 'FILE';
 					$pInfo['size'] = $fI['filesize'];
@@ -2824,16 +2824,16 @@ class ImportExport {
 	public function renderControls($r) {
 		global $LANG;
 		if ($this->mode === 'export') {
-			return $r['type'] == 'record' ? ((((((('<input type="checkbox" name="tx_impexp[exclude][' . $r['ref']) . ']" id="checkExclude') . $r['ref']) . '" value="1" /> <label for="checkExclude') . $r['ref']) . '">') . $LANG->getLL('impexpcore_singlereco_exclude', 1)) . '</label>' : ($r['type'] == 'softref' ? $this->softrefSelector($r['_softRefInfo']) : '');
+			return $r['type'] == 'record' ? '<input type="checkbox" name="tx_impexp[exclude][' . $r['ref'] . ']" id="checkExclude' . $r['ref'] . '" value="1" /> <label for="checkExclude' . $r['ref'] . '">' . $LANG->getLL('impexpcore_singlereco_exclude', 1) . '</label>' : ($r['type'] == 'softref' ? $this->softrefSelector($r['_softRefInfo']) : '');
 		} else {
 			// During import
 			// For softreferences with editable fields:
-			if (($r['type'] == 'softref' && is_array($r['_softRefInfo']['subst'])) && $r['_softRefInfo']['subst']['tokenID']) {
+			if ($r['type'] == 'softref' && is_array($r['_softRefInfo']['subst']) && $r['_softRefInfo']['subst']['tokenID']) {
 				$tokenID = $r['_softRefInfo']['subst']['tokenID'];
 				$cfg = $this->softrefCfg[$tokenID];
 				if ($cfg['mode'] === 'editable') {
-					return ((((((strlen($cfg['title']) ? ('<strong>' . htmlspecialchars($cfg['title'])) . '</strong><br/>' : '') . htmlspecialchars($cfg['description'])) . '<br/>
-						<input type="text" name="tx_impexp[softrefInputValues][') . $tokenID) . ']" value="') . htmlspecialchars((isset($this->softrefInputValues[$tokenID]) ? $this->softrefInputValues[$tokenID] : $cfg['defValue']))) . '" />';
+					return (strlen($cfg['title']) ? '<strong>' . htmlspecialchars($cfg['title']) . '</strong><br/>' : '') . htmlspecialchars($cfg['description']) . '<br/>
+						<input type="text" name="tx_impexp[softrefInputValues][' . $tokenID . ']" value="' . htmlspecialchars((isset($this->softrefInputValues[$tokenID]) ? $this->softrefInputValues[$tokenID] : $cfg['defValue'])) . '" />';
 				}
 			}
 		}
@@ -2851,7 +2851,7 @@ class ImportExport {
 		// Looking for file ID if any:
 		$fI = $cfg['file_ID'] ? $this->dat['header']['files'][$cfg['file_ID']] : array();
 		// Substitution scheme has to be around and RTE images MUST be exported.
-		if ((is_array($cfg['subst']) && $cfg['subst']['tokenID']) && !$fI['RTE_ORIG_ID']) {
+		if (is_array($cfg['subst']) && $cfg['subst']['tokenID'] && !$fI['RTE_ORIG_ID']) {
 			// Create options:
 			$optValues = array();
 			$optValues[''] = '';
@@ -2860,27 +2860,27 @@ class ImportExport {
 			// Get current value:
 			$value = $this->softrefCfg[$cfg['subst']['tokenID']]['mode'];
 			// Render options selector:
-			$selectorbox = $this->renderSelectBox((('tx_impexp[softrefCfg][' . $cfg['subst']['tokenID']) . '][mode]'), $value, $optValues) . '<br/>';
+			$selectorbox = $this->renderSelectBox(('tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][mode]'), $value, $optValues) . '<br/>';
 			if ($value === 'editable') {
 				$descriptionField = '';
 				// Title:
 				if (strlen($cfg['subst']['title'])) {
-					$descriptionField .= ((((('
-					<input type="hidden" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID']) . '][title]" value="') . htmlspecialchars($cfg['subst']['title'])) . '" />
-					<strong>') . htmlspecialchars($cfg['subst']['title'])) . '</strong><br/>';
+					$descriptionField .= '
+					<input type="hidden" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][title]" value="' . htmlspecialchars($cfg['subst']['title']) . '" />
+					<strong>' . htmlspecialchars($cfg['subst']['title']) . '</strong><br/>';
 				}
 				// Description:
 				if (!strlen($cfg['subst']['description'])) {
-					$descriptionField .= ((((('
-					' . $LANG->getLL('impexpcore_printerror_description', 1)) . '<br/>
-					<input type="text" name="tx_impexp[softrefCfg][') . $cfg['subst']['tokenID']) . '][description]" value="') . htmlspecialchars($this->softrefCfg[$cfg['subst']['tokenID']]['description'])) . '" />';
+					$descriptionField .= '
+					' . $LANG->getLL('impexpcore_printerror_description', 1) . '<br/>
+					<input type="text" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][description]" value="' . htmlspecialchars($this->softrefCfg[$cfg['subst']['tokenID']]['description']) . '" />';
 				} else {
-					$descriptionField .= (((('
+					$descriptionField .= '
 
-					<input type="hidden" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID']) . '][description]" value="') . htmlspecialchars($cfg['subst']['description'])) . '" />') . htmlspecialchars($cfg['subst']['description']);
+					<input type="hidden" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][description]" value="' . htmlspecialchars($cfg['subst']['description']) . '" />' . htmlspecialchars($cfg['subst']['description']);
 				}
 				// Default Value:
-				$descriptionField .= ((('<input type="hidden" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID']) . '][defValue]" value="') . htmlspecialchars($cfg['subst']['tokenValue'])) . '" />';
+				$descriptionField .= '<input type="hidden" name="tx_impexp[softrefCfg][' . $cfg['subst']['tokenID'] . '][defValue]" value="' . htmlspecialchars($cfg['subst']['tokenValue']) . '" />';
 			} else {
 				$descriptionField = '';
 			}
@@ -2902,7 +2902,7 @@ class ImportExport {
 	 */
 	public function isTableStatic($table) {
 		if (is_array($GLOBALS['TCA'][$table])) {
-			return ($GLOBALS['TCA'][$table]['ctrl']['is_static'] || in_array($table, $this->relStaticTables)) || in_array('_ALL', $this->relStaticTables);
+			return $GLOBALS['TCA'][$table]['ctrl']['is_static'] || in_array($table, $this->relStaticTables) || in_array('_ALL', $this->relStaticTables);
 		}
 	}
 
@@ -2928,7 +2928,7 @@ class ImportExport {
 	 * @todo Define visibility
 	 */
 	public function isExcluded($table, $uid) {
-		return $this->excludeMap[($table . ':') . $uid] ? TRUE : FALSE;
+		return $this->excludeMap[$table . ':' . $uid] ? TRUE : FALSE;
 	}
 
 	/**
@@ -2965,7 +2965,7 @@ class ImportExport {
 	 * @todo Define visibility
 	 */
 	public function dontIgnorePid($table, $uid) {
-		return $this->import_mode[($table . ':') . $uid] !== 'ignore_pid' && (!$this->global_ignore_pid || $this->import_mode[($table . ':') . $uid] === 'respect_pid');
+		return $this->import_mode[$table . ':' . $uid] !== 'ignore_pid' && (!$this->global_ignore_pid || $this->import_mode[$table . ':' . $uid] === 'respect_pid');
 	}
 
 	/**
@@ -3013,12 +3013,12 @@ class ImportExport {
 			if ($sel) {
 				$isSelFlag++;
 			}
-			$opt[] = ((((('<option value="' . htmlspecialchars($k)) . '"') . $sel) . '>') . htmlspecialchars($v)) . '</option>';
+			$opt[] = '<option value="' . htmlspecialchars($k) . '"' . $sel . '>' . htmlspecialchars($v) . '</option>';
 		}
 		if (!$isSelFlag && strcmp('', $value)) {
-			$opt[] = ((('<option value="' . htmlspecialchars($value)) . '" selected="selected">') . htmlspecialchars((('[\'' . $value) . '\']'))) . '</option>';
+			$opt[] = '<option value="' . htmlspecialchars($value) . '" selected="selected">' . htmlspecialchars(('[\'' . $value . '\']')) . '</option>';
 		}
-		return ((('<select name="' . $prefix) . '">') . implode('', $opt)) . '</select>';
+		return '<select name="' . $prefix . '">' . implode('', $opt) . '</select>';
 	}
 
 	/**
@@ -3060,18 +3060,18 @@ class ImportExport {
 			if (count($output)) {
 				$tRows = array();
 				foreach ($output as $fN => $state) {
-					$tRows[] = ((((('
+					$tRows[] = '
 						<tr>
-							<td class="bgColor5">' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label'], 1)) . ' (') . htmlspecialchars($fN)) . ')</td>
-							<td class="bgColor4">') . $state) . '</td>
+							<td class="bgColor5">' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$table]['columns'][$fN]['label'], 1) . ' (' . htmlspecialchars($fN) . ')</td>
+							<td class="bgColor4">' . $state . '</td>
 						</tr>
 					';
 				}
-				$output = ('<table border="0" cellpadding="0" cellspacing="1">' . implode('', $tRows)) . '</table>';
+				$output = '<table border="0" cellpadding="0" cellspacing="1">' . implode('', $tRows) . '</table>';
 			} else {
 				$output = 'Match';
 			}
-			return (('<strong class="nobr">[' . htmlspecialchars((((($table . ':') . $importRecord['uid']) . ' => ') . $databaseRecord['uid']))) . ']:</strong> ') . $output;
+			return '<strong class="nobr">[' . htmlspecialchars(($table . ':' . $importRecord['uid'] . ' => ' . $databaseRecord['uid'])) . ']:</strong> ' . $output;
 		}
 		return 'ERROR: One of the inputs were not an array!';
 	}

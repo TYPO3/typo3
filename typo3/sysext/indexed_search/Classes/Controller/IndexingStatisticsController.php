@@ -49,7 +49,7 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 		$theOutput .= $this->pObj->doc->section('', $this->showStats(), 0, 1);
 		$menu = array();
 		$functionMenu = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->pObj->id, 'SET[tx_indexedsearch_modfunc2_check]', $this->pObj->MOD_SETTINGS['tx_indexedsearch_modfunc2_check'], '', '', 'id="checkTx_indexedsearch_modfunc2_check"');
-		$menu[] = (($functionMenu . '<label for="checkTx_indexedsearch_modfunc2_check"') . $GLOBALS['LANG']->getLL('checklabel')) . '</label>';
+		$menu[] = $functionMenu . '<label for="checkTx_indexedsearch_modfunc2_check"' . $GLOBALS['LANG']->getLL('checklabel') . '</label>';
 		$theOutput .= $this->pObj->doc->spacer(5);
 		return $theOutput;
 	}
@@ -68,12 +68,12 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 		// pageid for several statistics
 		$addwhere1 = '';
 		// all records
-		$addwhere2 = ' AND tstamp > ' . ($GLOBALS['EXEC_TIME'] - ((30 * 24) * 60) * 60);
+		$addwhere2 = ' AND tstamp > ' . ($GLOBALS['EXEC_TIME'] - 30 * 24 * 60 * 60);
 		// last 30 days
-		$addwhere3 = ' AND tstamp > ' . ($GLOBALS['EXEC_TIME'] - (24 * 60) * 60);
+		$addwhere3 = ' AND tstamp > ' . ($GLOBALS['EXEC_TIME'] - 24 * 60 * 60);
 		// last 24 hours
-		$content = ((((((($GLOBALS['LANG']->getLL('title2') . '
-			<table cellpading="5" cellspacing="5" valign="top"><tr><td valign="top">') . $this->listSeveralStats($GLOBALS['LANG']->getLL('all'), $addwhere1, $conf)) . '</td><td valign="top">') . $this->listSeveralStats($GLOBALS['LANG']->getLL('last30days'), $addwhere2, $conf)) . '</td><td valign="top">') . $this->listSeveralStats($GLOBALS['LANG']->getLL('last24hours'), $addwhere3, $conf)) . '</td></tr></table>') . $this->note;
+		$content = $GLOBALS['LANG']->getLL('title2') . '
+			<table cellpading="5" cellspacing="5" valign="top"><tr><td valign="top">' . $this->listSeveralStats($GLOBALS['LANG']->getLL('all'), $addwhere1, $conf) . '</td><td valign="top">' . $this->listSeveralStats($GLOBALS['LANG']->getLL('last30days'), $addwhere2, $conf) . '</td><td valign="top">' . $this->listSeveralStats($GLOBALS['LANG']->getLL('last24hours'), $addwhere3, $conf) . '</td></tr></table>' . $this->note;
 		// Ask hook to include more on the page:
 		if ($hookObj = $this->hookRequest('additionalSearchStat')) {
 			$content .= $hookObj->additionalSearchStat();
@@ -109,9 +109,9 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 			$this->note = $LANG->getLL('justthispage');
 		} else {
 			// Limit access to pages of the current site
-			$secureaddwhere = ((' AND pageid IN (' . $this->extGetTreeList($conf['bid'], 100, 0, '1=1')) . $conf['bid']) . ') ';
+			$secureaddwhere = ' AND pageid IN (' . $this->extGetTreeList($conf['bid'], 100, 0, '1=1') . $conf['bid'] . ') ';
 			$this->note = $LANG->getLL('allpages');
-			$queryParts['WHERE'] = ('1=1 ' . $addwhere) . $secureaddwhere;
+			$queryParts['WHERE'] = '1=1 ' . $addwhere . $secureaddwhere;
 		}
 		// make real query
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($queryParts['SELECT'], $queryParts['FROM'], $queryParts['WHERE'], $queryParts['GROUPBY'], $queryParts['ORDERBY'], $queryParts['LIMIT']);
@@ -120,13 +120,13 @@ class IndexingStatisticsController extends \TYPO3\CMS\Backend\Module\AbstractFun
 		if ($res) {
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$i++;
-				$table1 .= ((((('<tr class="bgColor4"><td>' . $i) . '.</td><td>') . htmlspecialchars($row['word'])) . '</td><td>&nbsp;&nbsp;') . $row['c']) . '</td></tr>';
+				$table1 .= '<tr class="bgColor4"><td>' . $i . '.</td><td>' . htmlspecialchars($row['word']) . '</td><td>&nbsp;&nbsp;' . $row['c'] . '</td></tr>';
 			}
 		}
 		if ($i == 0) {
-			$table1 = ('<tr class="bgColor4"><td callspan="3">' . $LANG->getLL('noresults')) . '</td></tr>';
+			$table1 = '<tr class="bgColor4"><td callspan="3">' . $LANG->getLL('noresults') . '</td></tr>';
 		}
-		$table1 = ((('<table class="bgColor5" cellpadding="2" cellspacing="1"><tr class="tableheader"><td colspan="3">' . $title) . '</td></tr>') . $table1) . '</table>';
+		$table1 = '<table class="bgColor5" cellpadding="2" cellspacing="1"><tr class="tableheader"><td colspan="3">' . $title . '</td></tr>' . $table1 . '</table>';
 		return $note . $table1;
 	}
 

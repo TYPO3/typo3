@@ -41,7 +41,7 @@ class TypoScriptFrontendHook {
 	 */
 	public function headerNoCache(array &$params, $ref) {
 		// Requirements are that the crawler is loaded, a crawler session is running and re-indexing requested as processing instruction:
-		if ((\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('crawler') && $params['pObj']->applicationData['tx_crawler']['running']) && in_array('tx_indexedsearch_reindex', $params['pObj']->applicationData['tx_crawler']['parameters']['procInstructions'])) {
+		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('crawler') && $params['pObj']->applicationData['tx_crawler']['running'] && in_array('tx_indexedsearch_reindex', $params['pObj']->applicationData['tx_crawler']['parameters']['procInstructions'])) {
 			// Setting simple log entry:
 			$params['pObj']->applicationData['tx_crawler']['log'][] = 'RE_CACHE (indexed), old status: ' . $params['disableAcquireCacheData'];
 			// Disables a look-up for cached page data - thus resulting in re-generation of the page even if cached.

@@ -53,7 +53,7 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 * @todo Define visibility
 	 */
 	public function wrapTitle($title, $v) {
-		$title = !strcmp(trim($title), '') ? ('<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title', 1)) . ']</em>' : htmlspecialchars($title);
+		$title = !strcmp(trim($title), '') ? '<em>[' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.no_title', 1) . ']</em>' : htmlspecialchars($title);
 		return $title;
 	}
 
@@ -102,7 +102,7 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 	 */
 	public function ext_tree($pid, $clause = '') {
 		// Initialize:
-		$this->init((' AND ' . $this->permsC()) . $clause);
+		$this->init(' AND ' . $this->permsC() . $clause);
 		// Get stored tree structure:
 		$this->stored = unserialize($this->BE_USER->uc['browseTrees']['browsePages']);
 		// PM action:
@@ -119,8 +119,8 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 		$this->reset();
 		$this->ids = $curIds;
 		// Set PM icon:
-		$cmd = (($this->bank . '_') . ($isOpen ? '0_' : '1_')) . $pid;
-		$icon = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, (('gfx/ol/' . ($isOpen ? 'minus' : 'plus')) . 'only.gif'), 'width="18" height="16"')) . ' align="top" alt="" />';
+		$cmd = $this->bank . '_' . ($isOpen ? '0_' : '1_') . $pid;
+		$icon = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, ('gfx/ol/' . ($isOpen ? 'minus' : 'plus') . 'only.gif'), 'width="18" height="16"') . ' align="top" alt="" />';
 		$firstHtml = $this->PM_ATagWrap($icon, $cmd);
 		if ($pid > 0) {
 			$rootRec = \t3lib_befunc::getRecordWSOL('pages', $pid);
@@ -130,12 +130,12 @@ class LocalPageTree extends \TYPO3\CMS\Backend\Tree\View\BrowseTreeView {
 				'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
 				'uid' => 0
 			);
-			$firstHtml .= $this->wrapIcon(('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/i/_icon_website.gif', 'width="18" height="16"')) . ' align="top" alt="" />', $rootRec);
+			$firstHtml .= $this->wrapIcon('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/i/_icon_website.gif', 'width="18" height="16"') . ' align="top" alt="" />', $rootRec);
 		}
 		$this->tree[] = array('HTML' => $firstHtml, 'row' => $rootRec);
 		if ($isOpen) {
 			// Set depth:
-			$depthD = ('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/ol/blank.gif', 'width="18" height="16"')) . ' align="top" alt="" />';
+			$depthD = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/ol/blank.gif', 'width="18" height="16"') . ' align="top" alt="" />';
 			if ($this->addSelfId) {
 				$this->ids[] = $pid;
 			}

@@ -84,7 +84,7 @@ class PluginHook {
 	 * @todo Define visibility
 	 */
 	public function prepareResultRowTemplateData_postProc($tmplContent, $row, $headerOnly) {
-		$tmplContent['description'] = ('<em>' . $tmplContent['description']) . '</em>';
+		$tmplContent['description'] = '<em>' . $tmplContent['description'] . '</em>';
 		$tmplContent['path'] = '';
 		return $tmplContent;
 	}

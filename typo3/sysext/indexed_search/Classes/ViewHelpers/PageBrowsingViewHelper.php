@@ -58,31 +58,31 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 			// show on all pages after the 1st one
 			if ($currentPage > 0) {
 				$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults.previous', 'indexed_search');
-				$content .= ('<li>' . $this->makecurrentPageSelector_link($label, ($currentPage - 1), $freeIndexUid)) . '</li>';
+				$content .= '<li>' . $this->makecurrentPageSelector_link($label, ($currentPage - 1), $freeIndexUid) . '</li>';
 			}
 			for ($a = 0; $a < $pageCount; $a++) {
-				$min = max(0, ($currentPage + 1) - ceil($maximumNumberOfResultPages / 2));
+				$min = max(0, $currentPage + 1 - ceil($maximumNumberOfResultPages / 2));
 				$max = $min + $maximumNumberOfResultPages;
 				if ($max > $pageCount) {
 					$min = $min - ($max - $pageCount);
 				}
 				if ($a >= $min && $a < $max) {
 					$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults.page', 'indexed_search');
-					$label = trim(($label . ' ') . ($a + 1));
+					$label = trim($label . ' ' . ($a + 1));
 					$label = $this->makecurrentPageSelector_link($label, $a, $freeIndexUid);
 					if ($a == $currentPage) {
-						$content .= ('<li class="tx-indexedsearch-browselist-currentPage"><strong>' . $label) . '</strong></li>';
+						$content .= '<li class="tx-indexedsearch-browselist-currentPage"><strong>' . $label . '</strong></li>';
 					} else {
-						$content .= ('<li>' . $label) . '</li>';
+						$content .= '<li>' . $label . '</li>';
 					}
 				}
 			}
 			// next link
 			if ($currentPage + 1 < $pageCount) {
 				$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('displayResults.next', 'indexed_search');
-				$content = ('<li>' . $this->makecurrentPageSelector_link($label, ($currentPage + 1), $freeIndexUid)) . '</li>';
+				$content = '<li>' . $this->makecurrentPageSelector_link($label, ($currentPage + 1), $freeIndexUid) . '</li>';
 			}
-			$content = ('<ul class="tx-indexedsearch-browsebox">' . $content) . '</ul>';
+			$content = '<ul class="tx-indexedsearch-browsebox">' . $content . '</ul>';
 		}
 		return $content;
 	}
@@ -98,8 +98,8 @@ class PageBrowsingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 	 * @todo Define visibility
 	 */
 	public function makecurrentPageSelector_link($str, $p, $freeIndexUid) {
-		$onclick = ((((((((((('document.getElementById(\'' . $this->prefixId) . '_currentPage\').value=\'') . $p) . '\';') . 'document.getElementById(\'') . $this->prefixId) . '_freeIndexUid\').value=\'') . rawurlencode($freeIndexUid)) . '\';') . 'document.getElementById(\'') . $this->prefixId) . '\').submit();return false;';
-		return ((('<a href="#" onclick="' . htmlspecialchars($onclick)) . '">') . $str) . '</a>';
+		$onclick = 'document.getElementById(\'' . $this->prefixId . '_currentPage\').value=\'' . $p . '\';' . 'document.getElementById(\'' . $this->prefixId . '_freeIndexUid\').value=\'' . rawurlencode($freeIndexUid) . '\';' . 'document.getElementById(\'' . $this->prefixId . '\').submit();return false;';
+		return '<a href="#" onclick="' . htmlspecialchars($onclick) . '">' . $str . '</a>';
 	}
 
 }
