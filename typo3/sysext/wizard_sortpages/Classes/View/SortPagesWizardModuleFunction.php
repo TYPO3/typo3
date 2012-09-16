@@ -85,24 +85,24 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 			}
 			$menuItems = $sys_pages->getMenu($this->pObj->id, '*', 'sorting', '', 0);
 			$lines = array();
-			$lines[] = ((((((('<tr class="t3-row-header">
-				<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'), 'title')) . '</td>
-				') . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms') ? ('<td> ' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'), 'subtitle')) . '</td>' : '')) . '
-				<td>') . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'), 'tstamp')) . '</td>
-				<td>') . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'), 'crdate')) . '</td>
+			$lines[] = '<tr class="t3-row-header">
+				<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_title'), 'title') . '</td>
+				' . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms') ? '<td> ' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_subtitle'), 'subtitle') . '</td>' : '') . '
+				<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tChange'), 'tstamp') . '</td>
+				<td>' . $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'), 'crdate') . '</td>
 				</tr>';
 			foreach ($menuItems as $rec) {
 				$m_perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(2);
 				// edit permissions for that page!
 				$pRec = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $rec['uid'], 'uid', ' AND ' . $m_perms_clause);
-				$lines[] = ((((((((('<tr><td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec)) . (!is_array($pRec) ? $GLOBALS['TBE_TEMPLATE']->rfw(('<strong>' . $LANG->getLL('wiz_W', 1)) . '</strong> ') : '')) . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen']))) . '&nbsp;</td>
-					') . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms') ? ('<td nowrap="nowrap">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['subtitle'], $GLOBALS['BE_USER']->uc['titleLen']))) . '&nbsp;</td>' : '')) . '
-					<td nowrap="nowrap">') . \t3lib_Befunc::datetime($rec['tstamp'])) . '&nbsp;&nbsp;</td>
-					<td nowrap="nowrap">') . \t3lib_Befunc::datetime($rec['crdate'])) . '&nbsp;&nbsp;</td>
+				$lines[] = '<tr><td nowrap="nowrap">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $rec) . (!is_array($pRec) ? $GLOBALS['TBE_TEMPLATE']->rfw('<strong>' . $LANG->getLL('wiz_W', 1) . '</strong> ') : '') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['title'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>
+					' . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('cms') ? '<td nowrap="nowrap">' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($rec['subtitle'], $GLOBALS['BE_USER']->uc['titleLen'])) . '&nbsp;</td>' : '') . '
+					<td nowrap="nowrap">' . \t3lib_Befunc::datetime($rec['tstamp']) . '&nbsp;&nbsp;</td>
+					<td nowrap="nowrap">' . \t3lib_Befunc::datetime($rec['crdate']) . '&nbsp;&nbsp;</td>
 					</tr>';
 			}
-			$theCode .= ((('<h4>' . $LANG->getLL('wiz_currentPageOrder', TRUE)) . '</h4>
-			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">') . implode('', $lines)) . '</table><br />';
+			$theCode .= '<h4>' . $LANG->getLL('wiz_currentPageOrder', TRUE) . '</h4>
+			<table border="0" cellpadding="0" cellspacing="0" class="typo3-dblist">' . implode('', $lines) . '</table><br />';
 			if (count($menuItems)) {
 				// Menu:
 				$lines = array();
@@ -114,7 +114,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_tCreate'), 'crdate');
 				$lines[] = '';
 				$lines[] = $this->wiz_linkOrder($LANG->getLL('wiz_changeOrder_REVERSE'), 'REV');
-				$theCode .= (('<h4>' . $LANG->getLL('wiz_changeOrder')) . '</h4>') . implode('<br />', $lines);
+				$theCode .= '<h4>' . $LANG->getLL('wiz_changeOrder') . '</h4>' . implode('<br />', $lines);
 			}
 			// CSH:
 			$theCode .= \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', 'tx_wizardsortpages', $GLOBALS['BACK_PATH'], '<br />|');
@@ -134,7 +134,7 @@ class SortPagesWizardModuleFunction extends \TYPO3\CMS\Backend\Module\AbstractFu
 	 * @todo Define visibility
 	 */
 	public function wiz_linkOrder($title, $order) {
-		return ((((('&nbsp; &nbsp;<a class="t3-link" href="' . htmlspecialchars(((('index.php?id=' . $GLOBALS['SOBE']->id) . '&sortByField=') . $order))) . '" onclick="return confirm(') . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('wiz_changeOrder_msg1'))) . ')">') . htmlspecialchars($title)) . '</a>';
+		return '&nbsp; &nbsp;<a class="t3-link" href="' . htmlspecialchars(('index.php?id=' . $GLOBALS['SOBE']->id . '&sortByField=' . $order)) . '" onclick="return confirm(' . $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->getLL('wiz_changeOrder_msg1')) . ')">' . htmlspecialchars($title) . '</a>';
 	}
 
 }

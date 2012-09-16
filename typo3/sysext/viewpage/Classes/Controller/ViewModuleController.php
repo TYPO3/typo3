@@ -73,9 +73,9 @@ class ViewModuleController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionContr
 			if ($page['url_scheme'] == 2 || $page['url_scheme'] == 0 && \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				$protocol = 'https';
 			}
-			$protocolAndHost = ($protocol . '://') . $domainName;
+			$protocolAndHost = $protocol . '://' . $domainName;
 		}
-		$url = (((($protocolAndHost . '/index.php?id=') . $finalPageIdToShow) . $this->getTypeParameterIfSet($finalPageIdToShow)) . $mountPointMpParameter) . $adminCommand;
+		$url = $protocolAndHost . '/index.php?id=' . $finalPageIdToShow . $this->getTypeParameterIfSet($finalPageIdToShow) . $mountPointMpParameter . $adminCommand;
 		return $url;
 	}
 
