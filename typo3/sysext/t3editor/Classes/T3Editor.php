@@ -159,7 +159,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 			$pageRenderer->loadPrototype();
 			$pageRenderer->loadScriptaculous();
 			// Include editor-css
-			$content .= ('<link href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename((($GLOBALS['BACK_PATH'] . \t3lib_extmgm::extRelPath('t3editor')) . 'res/css/t3editor.css'))) . '" type="text/css" rel="stylesheet" />';
+			$content .= '<link href="' . \TYPO3\CMS\Core\Utility\GeneralUtility::createVersionNumberedFilename(($GLOBALS['BACK_PATH'] . \t3lib_extmgm::extRelPath('t3editor') . 'res/css/t3editor.css')) . '" type="text/css" rel="stylesheet" />';
 			// Include editor-js-lib
 			$doc->loadJavascriptLib($path_codemirror . 'codemirror.js');
 			$doc->loadJavascriptLib($path_t3e . 'res/jslib/t3editor.js');
@@ -190,12 +190,12 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 		$path_t3e = $GLOBALS['BACK_PATH'] . \t3lib_extmgm::extRelPath('t3editor');
 		$content = '';
 		if ($this->mode === self::MODE_TYPOSCRIPT) {
-			$content .= (('<script type="text/javascript" src="' . $path_t3e) . 'res/jslib/ts_codecompletion/tsref.js') . '"></script>';
-			$content .= (('<script type="text/javascript" src="' . $path_t3e) . 'res/jslib/ts_codecompletion/completionresult.js') . '"></script>';
-			$content .= (('<script type="text/javascript" src="' . $path_t3e) . 'res/jslib/ts_codecompletion/tsparser.js') . '"></script>';
-			$content .= (('<script type="text/javascript" src="' . $path_t3e) . 'res/jslib/ts_codecompletion/tscodecompletion.js') . '"></script>';
+			$content .= '<script type="text/javascript" src="' . $path_t3e . 'res/jslib/ts_codecompletion/tsref.js' . '"></script>';
+			$content .= '<script type="text/javascript" src="' . $path_t3e . 'res/jslib/ts_codecompletion/completionresult.js' . '"></script>';
+			$content .= '<script type="text/javascript" src="' . $path_t3e . 'res/jslib/ts_codecompletion/tsparser.js' . '"></script>';
+			$content .= '<script type="text/javascript" src="' . $path_t3e . 'res/jslib/ts_codecompletion/tscodecompletion.js' . '"></script>';
 		}
-		$content .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS(((((('T3editor.parserfile = ' . $this->getParserfileByMode($this->mode)) . ';') . LF) . 'T3editor.stylesheet = ') . $this->getStylesheetByMode($this->mode)) . ';');
+		$content .= \TYPO3\CMS\Core\Utility\GeneralUtility::wrapJS('T3editor.parserfile = ' . $this->getParserfileByMode($this->mode) . ';' . LF . 'T3editor.stylesheet = ' . $this->getStylesheetByMode($this->mode) . ';');
 		return $content;
 	}
 
@@ -208,7 +208,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 		$T3Editor_template = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName('EXT:t3editor/res/templates/t3editor.html'));
 		$T3Editor_template = addslashes($T3Editor_template);
 		$T3Editor_template = str_replace(array(CR, LF), array('', '\' + \''), $T3Editor_template);
-		return ('\'' . $T3Editor_template) . '\'';
+		return '\'' . $T3Editor_template . '\'';
 	}
 
 	/**
@@ -220,8 +220,8 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function getParserfileByMode($mode) {
 		switch ($mode) {
 		case self::MODE_TYPOSCRIPT:
-			$relPath = (($GLOBALS['BACK_PATH'] ? $GLOBALS['BACK_PATH'] : '../../../') . \t3lib_extmgm::extRelPath('t3editor')) . 'res/jslib/parse_typoscript/';
-			$parserfile = ((('["' . $relPath) . 'tokenizetyposcript.js", "') . $relPath) . 'parsetyposcript.js"]';
+			$relPath = ($GLOBALS['BACK_PATH'] ? $GLOBALS['BACK_PATH'] : '../../../') . \t3lib_extmgm::extRelPath('t3editor') . 'res/jslib/parse_typoscript/';
+			$parserfile = '["' . $relPath . 'tokenizetyposcript.js", "' . $relPath . 'parsetyposcript.js"]';
 			break;
 		case self::MODE_JAVASCRIPT:
 			$parserfile = '["tokenizejavascript.js", "parsejavascript.js"]';
@@ -241,7 +241,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 		case self::MODE_PHP:
 
 		case self::MODE_MIXED:
-			$parserfile = ((((((('[' . '"tokenizejavascript.js", ') . '"parsejavascript.js", ') . '"parsecss.js", ') . '"parsexml.js", ') . '"../contrib/php/js/tokenizephp.js", ') . '"../contrib/php/js/parsephp.js", ') . '"../contrib/php/js/parsephphtmlmixed.js"') . ']';
+			$parserfile = '[' . '"tokenizejavascript.js", ' . '"parsejavascript.js", ' . '"parsecss.js", ' . '"parsexml.js", ' . '"../contrib/php/js/tokenizephp.js", ' . '"../contrib/php/js/parsephp.js", ' . '"../contrib/php/js/parsephphtmlmixed.js"' . ']';
 			break;
 		}
 		return $parserfile;
@@ -268,7 +268,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 			$stylesheet = 'T3editor.PATH_codemirror + "../css/xmlcolors.css"';
 			break;
 		case self::MODE_HTML:
-			$stylesheet = ('T3editor.PATH_codemirror + "../css/xmlcolors.css", ' . 'T3editor.PATH_codemirror + "../css/jscolors.css", ') . 'T3editor.PATH_codemirror + "../css/csscolors.css"';
+			$stylesheet = 'T3editor.PATH_codemirror + "../css/xmlcolors.css", ' . 'T3editor.PATH_codemirror + "../css/jscolors.css", ' . 'T3editor.PATH_codemirror + "../css/csscolors.css"';
 			break;
 		case self::MODE_SPARQL:
 			$stylesheet = 'T3editor.PATH_codemirror + "../css/sparqlcolors.css"';
@@ -277,13 +277,13 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 			$stylesheet = 'T3editor.PATH_codemirror + "../contrib/php/css/phpcolors.css"';
 			break;
 		case self::MODE_MIXED:
-			$stylesheet = (('T3editor.PATH_codemirror + "../css/xmlcolors.css", ' . 'T3editor.PATH_codemirror + "../css/jscolors.css", ') . 'T3editor.PATH_codemirror + "../css/csscolors.css", ') . 'T3editor.PATH_codemirror + "../contrib/php/css/phpcolors.css"';
+			$stylesheet = 'T3editor.PATH_codemirror + "../css/xmlcolors.css", ' . 'T3editor.PATH_codemirror + "../css/jscolors.css", ' . 'T3editor.PATH_codemirror + "../css/csscolors.css", ' . 'T3editor.PATH_codemirror + "../contrib/php/css/phpcolors.css"';
 			break;
 		}
 		if ($stylesheet != '') {
-			$stylesheet = ('' . $stylesheet) . ', ';
+			$stylesheet = '' . $stylesheet . ', ';
 		}
-		return ('[' . $stylesheet) . 'T3editor.PATH_t3e + "res/css/t3editor_inner.css"]';
+		return '[' . $stylesheet . 'T3editor.PATH_t3e + "res/css/t3editor_inner.css"]';
 	}
 
 	/**
@@ -311,7 +311,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 		$extraction = array();
 		$labels = array_merge((array) $GLOBALS['LOCAL_LANG']['default'], (array) $GLOBALS['LOCAL_LANG'][$GLOBALS['LANG']->lang]);
 		// Regular expression to strip the selection prefix and possibly something from the label name:
-		$labelPattern = ((('#^' . preg_quote($selectionPrefix, '#')) . '(') . preg_quote($stripFromSelectionName, '#')) . ')?#';
+		$labelPattern = '#^' . preg_quote($selectionPrefix, '#') . '(' . preg_quote($stripFromSelectionName, '#') . ')?#';
 		// Iterate throuh all locallang lables:
 		foreach ($labels as $label => $value) {
 			if (strpos($label, $selectionPrefix) === 0) {
@@ -340,22 +340,22 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 			$class .= ' t3editor';
 			$alt = htmlspecialchars($alt);
 			if (!empty($alt)) {
-				$alt = (' alt="' . $alt) . '"';
+				$alt = ' alt="' . $alt . '"';
 			}
-			$code .= (((((((((((((('<div>' . '<textarea id="t3editor_') . $this->editorCounter) . '" ') . 'name="') . $name) . '" ') . 'class="') . $class) . '" ') . $additionalParams) . ' ') . $alt) . '>') . $content) . '</textarea></div>';
+			$code .= '<div>' . '<textarea id="t3editor_' . $this->editorCounter . '" ' . 'name="' . $name . '" ' . 'class="' . $class . '" ' . $additionalParams . ' ' . $alt . '>' . $content . '</textarea></div>';
 			$checked = $GLOBALS['BE_USER']->uc['disableT3Editor'] ? 'checked="checked"' : '';
-			$code .= ((((((((((((((('<br /><br />' . '<input type="checkbox" ') . 'class="checkbox t3editor_disableEditor" ') . 'onclick="T3editor.toggleEditor(this);" ') . 'name="t3editor_disableEditor" ') . 'value="true" ') . 'id="t3editor_disableEditor_') . $this->editorCounter) . '_checkbox" ') . $checked) . ' />&nbsp;') . '<label for="t3editor_disableEditor_') . $this->editorCounter) . '_checkbox">') . $GLOBALS['LANG']->getLL('deactivate')) . '</label>') . '<br /><br />';
+			$code .= '<br /><br />' . '<input type="checkbox" ' . 'class="checkbox t3editor_disableEditor" ' . 'onclick="T3editor.toggleEditor(this);" ' . 'name="t3editor_disableEditor" ' . 'value="true" ' . 'id="t3editor_disableEditor_' . $this->editorCounter . '_checkbox" ' . $checked . ' />&nbsp;' . '<label for="t3editor_disableEditor_' . $this->editorCounter . '_checkbox">' . $GLOBALS['LANG']->getLL('deactivate') . '</label>' . '<br /><br />';
 			if (count($hiddenfields)) {
 				foreach ($hiddenfields as $name => $value) {
-					$code .= ((((('<input type="hidden" ' . 'name="') . $name) . '" ') . 'value="') . $value) . '" />';
+					$code .= '<input type="hidden" ' . 'name="' . $name . '" ' . 'value="' . $value . '" />';
 				}
 			}
 		} else {
 			// Fallback
 			if (!empty($class)) {
-				$class = ('class="' . $class) . '" ';
+				$class = 'class="' . $class . '" ';
 			}
-			$code .= (((((('<textarea name="' . $name) . '" ') . $class) . $additionalParams) . '>') . $content) . '</textarea>';
+			$code .= '<textarea name="' . $name . '" ' . $class . $additionalParams . '>' . $content . '</textarea>';
 		}
 		return $code;
 	}

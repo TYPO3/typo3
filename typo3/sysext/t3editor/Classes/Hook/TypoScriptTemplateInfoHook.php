@@ -60,12 +60,12 @@ class TypoScriptTemplateInfoHook {
 		}
 		foreach (array('constants', 'config') as $type) {
 			if ($parameters['e'][$type]) {
-				$attributes = ((('rows="' . $parameters['numberOfRows']) . '" ') . 'wrap="off" ') . $pObj->pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off');
-				$title = (((($GLOBALS['LANG']->getLL('template') . ' ') . htmlspecialchars($parameters['tplRow']['title'])) . $GLOBALS['LANG']->getLL('delimiter')) . ' ') . $GLOBALS['LANG']->getLL($type);
-				$outCode = $t3editor->getCodeEditor(('data[' . $type) . ']', 'fixed-font enable-tab', '$1', $attributes, $title, array(
+				$attributes = 'rows="' . $parameters['numberOfRows'] . '" ' . 'wrap="off" ' . $pObj->pObj->doc->formWidthText(48, 'width:98%;height:60%', 'off');
+				$title = $GLOBALS['LANG']->getLL('template') . ' ' . htmlspecialchars($parameters['tplRow']['title']) . $GLOBALS['LANG']->getLL('delimiter') . ' ' . $GLOBALS['LANG']->getLL($type);
+				$outCode = $t3editor->getCodeEditor('data[' . $type . ']', 'fixed-font enable-tab', '$1', $attributes, $title, array(
 					'pageId' => intval($pObj->pObj->id)
 				));
-				$parameters['theOutput'] = preg_replace(('/\\<textarea name="data\\[' . $type) . '\\]".*\\>([^\\<]*)\\<\\/textarea\\>/mi', $outCode, $parameters['theOutput']);
+				$parameters['theOutput'] = preg_replace('/\\<textarea name="data\\[' . $type . '\\]".*\\>([^\\<]*)\\<\\/textarea\\>/mi', $outCode, $parameters['theOutput']);
 			}
 		}
 	}

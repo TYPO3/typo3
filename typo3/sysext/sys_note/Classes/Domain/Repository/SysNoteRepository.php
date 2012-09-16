@@ -39,8 +39,8 @@ class SysNoteRepository {
 	 * @return array records
 	 */
 	public function findAllByPidList($pidlist) {
-		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_note', (((('pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($pidlist)) . ')
-					AND (personal=0 OR cruser=') . intval($GLOBALS['BE_USER']->user['uid'])) . ')') . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_note'), '', 'sorting');
+		$records = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_note', 'pid IN (' . $GLOBALS['TYPO3_DB']->cleanIntList($pidlist) . ')
+					AND (personal=0 OR cruser=' . intval($GLOBALS['BE_USER']->user['uid']) . ')' . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('sys_note'), '', 'sorting');
 		// exec_SELECTgetRows can return NULL if the query failed. This is
 		// transformed here to an empty array instead.
 		if ($records === NULL) {
