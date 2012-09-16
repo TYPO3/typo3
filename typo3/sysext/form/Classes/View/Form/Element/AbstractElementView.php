@@ -71,7 +71,7 @@ abstract class AbstractElementView {
 	 */
 	public function __construct(\TYPO3\CMS\Form\Domain\Model\Element\AbstractElement $model) {
 		if ($this->isValidModel($model) === FALSE) {
-			throw new \RuntimeException(('Unexpected model "' . get_class($model)) . '".');
+			throw new \RuntimeException('Unexpected model "' . get_class($model) . '".');
 		}
 		$this->model = $model;
 	}

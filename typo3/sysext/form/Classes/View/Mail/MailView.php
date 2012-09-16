@@ -125,7 +125,7 @@ class MailView {
 	 * @return string The local language message label
 	 */
 	protected function getLocalLanguageLabel($type) {
-		$label = (strtolower(get_class($this)) . '.') . $type;
+		$label = strtolower(get_class($this)) . '.' . $type;
 		$message = $this->localizationHandler->getLocalLanguageLabel($label);
 		return $message;
 	}

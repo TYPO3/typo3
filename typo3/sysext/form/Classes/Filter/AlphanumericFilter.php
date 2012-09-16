@@ -68,7 +68,7 @@ class AlphanumericFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 */
 	public function filter($value) {
 		$whiteSpace = $this->allowWhiteSpace ? '\\s' : '';
-		$pattern = ('/[^[:alnum:]' . $whiteSpace) . ']/u';
+		$pattern = '/[^[:alnum:]' . $whiteSpace . ']/u';
 		return preg_replace($pattern, '', (string) $value);
 	}
 

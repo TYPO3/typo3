@@ -140,7 +140,7 @@ class MailPostProcessor implements \TYPO3\CMS\Form\PostProcess\PostProcessorInte
 		}
 		$fromName = $this->sanitizeHeaderString($fromName);
 		if (preg_match('/\\s|,/', $fromName) >= 1) {
-			$fromName = ('"' . $fromName) . '"';
+			$fromName = '"' . $fromName . '"';
 		}
 		$from = array($fromEmail => $fromName);
 		$this->mailMessage->setFrom($from);
