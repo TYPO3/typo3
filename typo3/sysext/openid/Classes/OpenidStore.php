@@ -177,7 +177,7 @@ class OpenidStore extends \Auth_OpenID_OpenIDStore {
 			'content' => base64_encode($serializedAssociation),
 			'crdate' => $association->issued,
 			'tstamp' => time(),
-			'expires' => ($association->issued + $association->lifetime) - self::ASSOCIATION_EXPIRATION_SAFETY_INTERVAL,
+			'expires' => $association->issued + $association->lifetime - self::ASSOCIATION_EXPIRATION_SAFETY_INTERVAL,
 			'server_url' => $serverUrl
 		);
 		// In the next query we can get race conditions. sha1_hash prevents many

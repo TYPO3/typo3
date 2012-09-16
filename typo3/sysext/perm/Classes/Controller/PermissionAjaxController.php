@@ -131,7 +131,7 @@ class PermissionAjaxController {
 		} else {
 			$ajaxObj->setError('This script cannot be called directly.');
 		}
-		$ajaxObj->addContent(($this->conf['page'] . '_') . $this->conf['who'], $content);
+		$ajaxObj->addContent($this->conf['page'] . '_' . $this->conf['who'], $content);
 	}
 
 	/********************************************
@@ -160,14 +160,14 @@ class PermissionAjaxController {
 		// Loop through the users
 		foreach ($beUsers as $uid => $row) {
 			$selected = $uid == $ownerUid ? ' selected="selected"' : '';
-			$options .= ((((('<option value="' . $uid) . '"') . $selected) . '>') . htmlspecialchars($row['username'])) . '</option>';
+			$options .= '<option value="' . $uid . '"' . $selected . '>' . htmlspecialchars($row['username']) . '</option>';
 		}
 		$elementId = 'o_' . $page;
 		$options = '<option value="0"></option>' . $options;
-		$selector = ('<select name="new_page_owner" id="new_page_owner">' . $options) . '</select>';
-		$saveButton = ((((((('<a onclick="WebPermissions.changeOwner(' . $page) . ', ') . $ownerUid) . ', \'') . $elementId) . '\');" title="Change owner">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save')) . '</a>';
-		$cancelButton = ((((((((('<a onclick="WebPermissions.restoreOwner(' . $page) . ', ') . $ownerUid) . ', \'') . ($username == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars($username))) . '\', \'') . $elementId) . '\');" title="Cancel">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close')) . '</a>';
-		$ret = ($selector . $saveButton) . $cancelButton;
+		$selector = '<select name="new_page_owner" id="new_page_owner">' . $options . '</select>';
+		$saveButton = '<a onclick="WebPermissions.changeOwner(' . $page . ', ' . $ownerUid . ', \'' . $elementId . '\');" title="Change owner">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save') . '</a>';
+		$cancelButton = '<a onclick="WebPermissions.restoreOwner(' . $page . ', ' . $ownerUid . ', \'' . ($username == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars($username)) . '\', \'' . $elementId . '\');" title="Cancel">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+		$ret = $selector . $saveButton . $cancelButton;
 		return $ret;
 	}
 
@@ -199,18 +199,18 @@ class PermissionAjaxController {
 			} else {
 				$selected = '';
 			}
-			$options .= ((((('<option value="' . $uid) . '"') . $selected) . '>') . htmlspecialchars($row['title'])) . '</option>';
+			$options .= '<option value="' . $uid . '"' . $selected . '>' . htmlspecialchars($row['title']) . '</option>';
 		}
 		// If the group was not set AND there is a group for the page
 		if (!$userset && $groupUid) {
-			$options = (((('<option value="' . $groupUid) . '" selected="selected">') . htmlspecialchars($beGroupsO[$groupUid]['title'])) . '</option>') . $options;
+			$options = '<option value="' . $groupUid . '" selected="selected">' . htmlspecialchars($beGroupsO[$groupUid]['title']) . '</option>' . $options;
 		}
 		$elementId = 'g_' . $page;
 		$options = '<option value="0"></option>' . $options;
-		$selector = ('<select name="new_page_group" id="new_page_group">' . $options) . '</select>';
-		$saveButton = ((((((('<a onclick="WebPermissions.changeGroup(' . $page) . ', ') . $groupUid) . ', \'') . $elementId) . '\');" title="Change group">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save')) . '</a>';
-		$cancelButton = ((((((((('<a onclick="WebPermissions.restoreGroup(' . $page) . ', ') . $groupUid) . ', \'') . ($groupname == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars($groupname))) . '\', \'') . $elementId) . '\');" title="Cancel">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close')) . '</a>';
-		$ret = ($selector . $saveButton) . $cancelButton;
+		$selector = '<select name="new_page_group" id="new_page_group">' . $options . '</select>';
+		$saveButton = '<a onclick="WebPermissions.changeGroup(' . $page . ', ' . $groupUid . ', \'' . $elementId . '\');" title="Change group">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-save') . '</a>';
+		$cancelButton = '<a onclick="WebPermissions.restoreGroup(' . $page . ', ' . $groupUid . ', \'' . ($groupname == '' ? '<span class=not_set>[not set]</span>' : htmlspecialchars($groupname)) . '\', \'' . $elementId . '\');" title="Cancel">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close') . '</a>';
+		$ret = $selector . $saveButton . $cancelButton;
 		return $ret;
 	}
 
@@ -225,7 +225,7 @@ class PermissionAjaxController {
 	 */
 	static public function renderOwnername($page, $ownerUid, $username, $validUser = TRUE) {
 		$elementId = 'o_' . $page;
-		$ret = ((((((((((('<span id="' . $elementId) . '"><a class="ug_selector" onclick="WebPermissions.showChangeOwnerSelector(') . $page) . ', ') . $ownerUid) . ', \'') . $elementId) . '\', \'') . htmlspecialchars($username)) . '\');">') . ($validUser ? ($username == '' ? ('<span class=not_set>[' . $GLOBALS['LANG']->getLL('notSet')) . ']</span>' : htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($username, 20))) : ((('<span class=not_set title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($username, 20))) . '">[') . $GLOBALS['LANG']->getLL('deleted')) . ']</span>')) . '</a></span>';
+		$ret = '<span id="' . $elementId . '"><a class="ug_selector" onclick="WebPermissions.showChangeOwnerSelector(' . $page . ', ' . $ownerUid . ', \'' . $elementId . '\', \'' . htmlspecialchars($username) . '\');">' . ($validUser ? ($username == '' ? '<span class=not_set>[' . $GLOBALS['LANG']->getLL('notSet') . ']</span>' : htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($username, 20))) : '<span class=not_set title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($username, 20)) . '">[' . $GLOBALS['LANG']->getLL('deleted') . ']</span>') . '</a></span>';
 		return $ret;
 	}
 
@@ -240,7 +240,7 @@ class PermissionAjaxController {
 	 */
 	static public function renderGroupname($page, $groupUid, $groupname, $validGroup = TRUE) {
 		$elementId = 'g_' . $page;
-		$ret = ((((((((((('<span id="' . $elementId) . '"><a class="ug_selector" onclick="WebPermissions.showChangeGroupSelector(') . $page) . ', ') . $groupUid) . ', \'') . $elementId) . '\', \'') . htmlspecialchars($groupname)) . '\');">') . ($validGroup ? ($groupname == '' ? ('<span class=not_set>[' . $GLOBALS['LANG']->getLL('notSet')) . ']</span>' : htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($groupname, 20))) : ((('<span class=not_set title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($groupname, 20))) . '">[') . $GLOBALS['LANG']->getLL('deleted')) . ']</span>')) . '</a></span>';
+		$ret = '<span id="' . $elementId . '"><a class="ug_selector" onclick="WebPermissions.showChangeGroupSelector(' . $page . ', ' . $groupUid . ', \'' . $elementId . '\', \'' . htmlspecialchars($groupname) . '\');">' . ($validGroup ? ($groupname == '' ? '<span class=not_set>[' . $GLOBALS['LANG']->getLL('notSet') . ']</span>' : htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($groupname, 20))) : '<span class=not_set title="' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($groupname, 20)) . '">[' . $GLOBALS['LANG']->getLL('deleted') . ']</span>') . '</a></span>';
 		return $ret;
 	}
 
@@ -253,9 +253,9 @@ class PermissionAjaxController {
 	 */
 	protected function renderToggleEditLock($page, $editLockState) {
 		if ($editLockState === 1) {
-			$ret = ((('<a class="editlock" onclick="WebPermissions.toggleEditLock(' . $page) . ', 1);" title="The page and all content is locked for editing by all non-Admin users.">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-lock')) . '</a>';
+			$ret = '<a class="editlock" onclick="WebPermissions.toggleEditLock(' . $page . ', 1);" title="The page and all content is locked for editing by all non-Admin users.">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-lock') . '</a>';
 		} else {
-			$ret = ('<a class="editlock" onclick="WebPermissions.toggleEditLock(' . $page) . ', 0);" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a>';
+			$ret = '<a class="editlock" onclick="WebPermissions.toggleEditLock(' . $page . ', 0);" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a>';
 		}
 		return $ret;
 	}
@@ -276,19 +276,19 @@ class PermissionAjaxController {
 				$str .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-permission-granted', array(
 					'tag' => 'a',
 					'title' => $GLOBALS['LANG']->getLL($permission, TRUE),
-					'onclick' => ((((((('WebPermissions.setPermissions(' . $pageId) . ', ') . $permission) . ', \'delete\', \'') . $who) . '\', ') . $int) . ');',
+					'onclick' => 'WebPermissions.setPermissions(' . $pageId . ', ' . $permission . ', \'delete\', \'' . $who . '\', ' . $int . ');',
 					'style' => 'cursor:pointer'
 				));
 			} else {
 				$str .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-status-permission-denied', array(
 					'tag' => 'a',
 					'title' => $GLOBALS['LANG']->getLL($permission, TRUE),
-					'onclick' => ((((((('WebPermissions.setPermissions(' . $pageId) . ', ') . $permission) . ', \'add\', \'') . $who) . '\', ') . $int) . ');',
+					'onclick' => 'WebPermissions.setPermissions(' . $pageId . ', ' . $permission . ', \'add\', \'' . $who . '\', ' . $int . ');',
 					'style' => 'cursor:pointer'
 				));
 			}
 		}
-		return ((((('<span id="' . $pageId) . '_') . $who) . '">') . $str) . '</span>';
+		return '<span id="' . $pageId . '_' . $who . '">' . $str . '</span>';
 	}
 
 }
