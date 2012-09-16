@@ -10,9 +10,9 @@ plugin.tx_felogin_pi1 {
   userFunc = tx_felogin_pi1->main
 }
 ');
-\TYPO3\CMS\Core\Extension\ExtensionManager::addTypoScript($_EXTKEY, 'setup', (('
-# Setting ' . $_EXTKEY) . ' plugin TypoScript
-') . $pluginContent);
+\TYPO3\CMS\Core\Extension\ExtensionManager::addTypoScript($_EXTKEY, 'setup', '
+# Setting ' . $_EXTKEY . ' plugin TypoScript
+' . $pluginContent);
 $addLine = '
 tt_content.login = COA
 tt_content.login {
@@ -21,7 +21,7 @@ tt_content.login {
 	20 = < plugin.tx_felogin_pi1
 }
 ';
-\TYPO3\CMS\Core\Extension\ExtensionManager::addTypoScript($_EXTKEY, 'setup', ((('# Setting ' . $_EXTKEY) . ' plugin TypoScript') . $addLine) . '', 43);
+\TYPO3\CMS\Core\Extension\ExtensionManager::addTypoScript($_EXTKEY, 'setup', '# Setting ' . $_EXTKEY . ' plugin TypoScript' . $addLine . '', 43);
 \TYPO3\CMS\Core\Extension\ExtensionManager::addPageTSConfig('
 mod.wizards.newContentElement.wizardItems.forms {
 	elements {

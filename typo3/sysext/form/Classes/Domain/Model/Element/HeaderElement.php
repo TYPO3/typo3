@@ -49,7 +49,7 @@ class HeaderElement extends \TYPO3\CMS\Form\Domain\Model\Element\AbstractPlainEl
 	 */
 	protected function wrapContent($content) {
 		if (isset($this->properties['headingSize']) && preg_match('#^h[1-5]$#', $this->properties['headingSize'])) {
-			$content = ((((('<' . $this->properties['headingSize']) . '>') . $content) . '</') . $this->properties['headingSize']) . '>';
+			$content = '<' . $this->properties['headingSize'] . '>' . $content . '</' . $this->properties['headingSize'] . '>';
 		}
 		return $content;
 	}

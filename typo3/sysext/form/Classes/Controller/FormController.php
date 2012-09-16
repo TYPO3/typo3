@@ -150,7 +150,7 @@ class FormController {
 	protected function showForm() {
 		$show = FALSE;
 		$submittedByPrefix = $this->requestHandler->getByMethod();
-		if (($submittedByPrefix === NULL || !empty($submittedByPrefix) && !$this->validate->isValid()) || (!empty($submittedByPrefix) && $this->validate->isValid()) && $this->requestHandler->getPost('confirmation-false', NULL) !== NULL) {
+		if ($submittedByPrefix === NULL || !empty($submittedByPrefix) && !$this->validate->isValid() || !empty($submittedByPrefix) && $this->validate->isValid() && $this->requestHandler->getPost('confirmation-false', NULL) !== NULL) {
 			$show = TRUE;
 		}
 		return $show;
@@ -181,7 +181,7 @@ class FormController {
 	 */
 	protected function showConfirmation() {
 		$show = FALSE;
-		if ((isset($this->typoscript['confirmation']) && $this->typoscript['confirmation'] == 1) && $this->requestHandler->getPost('confirmation-true', NULL) === NULL) {
+		if (isset($this->typoscript['confirmation']) && $this->typoscript['confirmation'] == 1 && $this->requestHandler->getPost('confirmation-true', NULL) === NULL) {
 			$show = TRUE;
 		}
 		return $show;

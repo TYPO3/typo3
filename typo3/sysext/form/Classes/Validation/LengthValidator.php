@@ -112,7 +112,7 @@ class LengthValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	 * @see tx_form_System_Validate_Abstract::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel($type) {
-		$label = (strtolower(get_class($this)) . '.') . $type;
+		$label = strtolower(get_class($this)) . '.' . $type;
 		$messages[] = $this->localizationHandler->getLocalLanguageLabel($label);
 		if ($this->maximum !== NULL) {
 			$messages[] = $this->localizationHandler->getLocalLanguageLabel($label . '2');

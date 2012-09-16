@@ -83,7 +83,7 @@ class SelectElement extends \TYPO3\CMS\Form\Domain\Model\Element\ContainerElemen
 		if (array_key_exists($attribute, $this->allowedAttributes)) {
 			$this->attributes->addAttribute($attribute, $value);
 		}
-		if (($attribute === 'name' && $this->attributes->hasAttribute('multiple')) && $this->attributes->getValue('multiple') === 'multiple' || $attribute === 'multiple' && $this->attributes->hasAttribute('name')) {
+		if ($attribute === 'name' && $this->attributes->hasAttribute('multiple') && $this->attributes->getValue('multiple') === 'multiple' || $attribute === 'multiple' && $this->attributes->hasAttribute('name')) {
 			/** @var $nameAttribute \TYPO3\CMS\Form\Domain\Model\Attribute\NameAttribute */
 			$nameAttribute = $this->attributes->getAttributeObjectByKey('name');
 			$nameAttribute->setAddition('[]');

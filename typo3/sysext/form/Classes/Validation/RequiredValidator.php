@@ -41,7 +41,7 @@ class RequiredValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
 	public function isValid() {
 		if ($this->requestHandler->has($this->fieldName)) {
 			$value = $this->requestHandler->getByMethod($this->fieldName);
-			if ((!empty($value) || $value === 0) || $value === '0') {
+			if (!empty($value) || $value === 0 || $value === '0') {
 				return TRUE;
 			}
 		}

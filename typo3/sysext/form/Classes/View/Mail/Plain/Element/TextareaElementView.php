@@ -46,7 +46,7 @@ class TextareaElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Abstra
 	 * @return string
 	 */
 	public function render() {
-		$content = ((($this->getLabel() . ': ') . chr(10)) . str_repeat(chr(32), ($this->spaces + 4))) . $this->getData();
+		$content = $this->getLabel() . ': ' . chr(10) . str_repeat(chr(32), ($this->spaces + 4)) . $this->getData();
 		return str_repeat(chr(32), $this->spaces) . $content;
 	}
 

@@ -46,8 +46,8 @@ class FrontendLoginTest extends \tx_phpunit_testcase {
 		$this->testSitePath = '/';
 		// We need to subclass because the method we want to test is protected
 		$className = uniqid('FeLogin_');
-		eval(('
-			class ' . $className) . ' extends TYPO3\\CMS\\Felogin\\Controller\\FrontendLoginController {
+		eval('
+			class ' . $className . ' extends TYPO3\\CMS\\Felogin\\Controller\\FrontendLoginController {
 				public function validateRedirectUrl($url) {
 					return parent::validateRedirectUrl($url);
 				}
@@ -113,7 +113,7 @@ class FrontendLoginTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function typo3SiteUrlEqualsStubSiteUrl() {
-		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), ('http://' . $this->testHostName) . $this->testSitePath);
+		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), 'http://' . $this->testHostName . $this->testSitePath);
 	}
 
 	/**
@@ -133,7 +133,7 @@ class FrontendLoginTest extends \tx_phpunit_testcase {
 		$this->testHostName = 'somenewhostname.com';
 		$this->testSitePath = '/somenewpath/';
 		$this->setUpFakeSitePathAndHost();
-		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), ('http://' . $this->testHostName) . $this->testSitePath);
+		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), 'http://' . $this->testHostName . $this->testSitePath);
 	}
 
 	/**

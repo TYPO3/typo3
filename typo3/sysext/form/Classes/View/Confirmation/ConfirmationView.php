@@ -93,9 +93,9 @@ class ConfirmationView extends \TYPO3\CMS\Form\View\Confirmation\Element\Contain
 	public function get() {
 		$message = $this->getMessage();
 		$node = $this->render('element', FALSE);
-		$formInput = (chr(10) . html_entity_decode($node->saveXML($node->firstChild), ENT_QUOTES, 'UTF-8')) . chr(10);
+		$formInput = chr(10) . html_entity_decode($node->saveXML($node->firstChild), ENT_QUOTES, 'UTF-8') . chr(10);
 		$confirmationButtons = $this->getConfirmationButtons();
-		$content = ((($message . chr(10)) . $formInput) . chr(10)) . $confirmationButtons;
+		$content = $message . chr(10) . $formInput . chr(10) . $confirmationButtons;
 		return $content;
 	}
 
@@ -130,15 +130,15 @@ class ConfirmationView extends \TYPO3\CMS\Form\View\Confirmation\Element\Contain
 		$requestHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Form\\Request');
 		$prefix = $requestHandler->getPrefix();
 		$action = $this->localCobj->getTypoLink_URL($GLOBALS['TSFE']->id);
-		$confirmationButtons = ((((((((('
-			<form class="csc-form-confirmation" method="post" action="' . $action) . '">
+		$confirmationButtons = '
+			<form class="csc-form-confirmation" method="post" action="' . $action . '">
 				<fieldset>
 					<ol>
 						<li class="csc-form-confirmation-false">
-							<input type="submit" value="') . $this->localizationHandler->getLocalLanguageLabel('tx_form_view_confirmation.donotconfirm')) . '" name="') . $prefix) . '[confirmation-false]" />
+							<input type="submit" value="' . $this->localizationHandler->getLocalLanguageLabel('tx_form_view_confirmation.donotconfirm') . '" name="' . $prefix . '[confirmation-false]" />
 						</li>
 						<li class="csc-form-confirmation-true">
-							<input type="submit" value="') . $this->localizationHandler->getLocalLanguageLabel('tx_form_view_confirmation.confirm')) . '" name="') . $prefix) . '[confirmation-true]" />
+							<input type="submit" value="' . $this->localizationHandler->getLocalLanguageLabel('tx_form_view_confirmation.confirm') . '" name="' . $prefix . '[confirmation-true]" />
 						</li>
 					</ol>
 				</fieldset>

@@ -46,7 +46,7 @@ class SelectElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\Containe
 	 * @return string
 	 */
 	public function render() {
-		$content = (($this->getLabel() . ': ') . chr(10)) . $this->getValues();
+		$content = $this->getLabel() . ': ' . chr(10) . $this->getValues();
 		return str_repeat(chr(32), $this->spaces) . $content;
 	}
 

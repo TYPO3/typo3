@@ -168,7 +168,7 @@ class FileListController {
 		if ($this->folderObject) {
 			// Include the initialization for the flash uploader
 			if ($GLOBALS['BE_USER']->uc['enableFlashUploader']) {
-				$this->doc->JScodeArray['flashUploader'] = ((((((('
+				$this->doc->JScodeArray['flashUploader'] = '
 					if (top.TYPO3.FileUploadWindow.isFlashAvailable()) {
 						document.observe("dom:loaded", function() {
 								// monitor the button
@@ -178,14 +178,14 @@ class FileListController {
 									// set the page specific options for the flashUploader
 								var flashUploadOptions = {
 									uploadURL:           top.TS.PATH_typo3 + "ajax.php",
-									uploadFileSizeLimit: "' . \TYPO3\CMS\Core\Utility\GeneralUtility::getMaxUploadFileSize()) . '",
+									uploadFileSizeLimit: "' . \TYPO3\CMS\Core\Utility\GeneralUtility::getMaxUploadFileSize() . '",
 									uploadFileTypes: {
-										allow:  "') . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['allow']) . '",
-										deny: "') . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['deny']) . '"
+										allow:  "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['allow'] . '",
+										deny: "' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileExtensions']['webspace']['deny'] . '"
 									},
 									uploadFilePostName:  "upload_1",
 									uploadPostParams: {
-										"file[upload][1][target]": "') . ($this->folderObject ? $this->folderObject->getCombinedIdentifier() : '')) . '",
+										"file[upload][1][target]": "' . ($this->folderObject ? $this->folderObject->getCombinedIdentifier() : '') . '",
 										"file[upload][1][data]": 1,
 										"file[upload][1][charset]": "utf-8",
 										"ajaxID": "TYPO3\\CMS\\Backend\\Controller\\File\\FileController::process"
@@ -300,14 +300,14 @@ class FileListController {
 			// Write the footer
 			$this->filelist->writeBottom();
 			// Set top JavaScript:
-			$this->doc->JScode = $this->doc->wrapScriptTags((('
+			$this->doc->JScode = $this->doc->wrapScriptTags('
 
-			if (top.fsMod) top.fsMod.recentIds["file"] = unescape("' . rawurlencode($this->id)) . '");
+			if (top.fsMod) top.fsMod.recentIds["file"] = unescape("' . rawurlencode($this->id) . '");
 			function jumpToUrl(URL) {	//
 				window.location.href = URL;
 			}
 
-			') . $this->filelist->CBfunctions());
+			' . $this->filelist->CBfunctions());
 			// This will return content necessary for the context sensitive clickmenus to work: bodytag events, JavaScript functions and DIV-layers.
 			$this->doc->getContextMenuCode();
 			// Setting up the buttons and markers for docheader
@@ -318,7 +318,7 @@ class FileListController {
 			// Build the <body> for the module
 			// Create output
 			$pageContent = '';
-			$pageContent .= ('<form action="' . htmlspecialchars($this->filelist->listURL())) . '" method="post" name="dblistForm">';
+			$pageContent .= '<form action="' . htmlspecialchars($this->filelist->listURL()) . '" method="post" name="dblistForm">';
 			$pageContent .= $this->filelist->HTMLcode;
 			$pageContent .= '<input type="hidden" name="cmd" /></form>';
 			// Making listing options:
@@ -332,15 +332,15 @@ class FileListController {
 				';
 				// Add "display bigControlPanel" checkbox:
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayBigControlPanel') === 'selectable') {
-					$pageContent .= ((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', '', 'id="bigControlPanel"') . '<label for="bigControlPanel"> ') . $GLOBALS['LANG']->getLL('bigControlPanel', TRUE)) . '</label><br />';
+					$pageContent .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[bigControlPanel]', $this->MOD_SETTINGS['bigControlPanel'], '', '', 'id="bigControlPanel"') . '<label for="bigControlPanel"> ' . $GLOBALS['LANG']->getLL('bigControlPanel', TRUE) . '</label><br />';
 				}
 				// Add "display thumbnails" checkbox:
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableDisplayThumbnails') === 'selectable') {
-					$pageContent .= ((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[displayThumbs]', $this->MOD_SETTINGS['displayThumbs'], '', '', 'id="checkDisplayThumbs"') . ' <label for="checkDisplayThumbs">') . $GLOBALS['LANG']->getLL('displayThumbs', TRUE)) . '</label><br />';
+					$pageContent .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[displayThumbs]', $this->MOD_SETTINGS['displayThumbs'], '', '', 'id="checkDisplayThumbs"') . ' <label for="checkDisplayThumbs">' . $GLOBALS['LANG']->getLL('displayThumbs', TRUE) . '</label><br />';
 				}
 				// Add "clipboard" checkbox:
 				if ($GLOBALS['BE_USER']->getTSConfigVal('options.file_list.enableClipBoard') === 'selectable') {
-					$pageContent .= ((\TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', '', 'id="checkClipBoard"') . ' <label for="checkClipBoard">') . $GLOBALS['LANG']->getLL('clipBoard', TRUE)) . '</label>';
+					$pageContent .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[clipBoard]', $this->MOD_SETTINGS['clipBoard'], '', '', 'id="checkClipBoard"') . ' <label for="checkClipBoard">' . $GLOBALS['LANG']->getLL('clipBoard', TRUE) . '</label>';
 				}
 				$pageContent .= '
 					</div>
@@ -399,12 +399,12 @@ class FileListController {
 		// FileList Module CSH:
 		$buttons['csh'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'filelist_module', $GLOBALS['BACK_PATH'], '', TRUE);
 		// Upload button (only if upload to this directory is allowed)
-		if (($this->folderObject && $this->folderObject->getStorage()->checkUserActionPermission('upload', 'File')) && $this->folderObject->checkActionPermission('write')) {
-			$buttons['upload'] = ((((((((('<a href="' . $GLOBALS['BACK_PATH']) . 'file_upload.php?target=') . rawurlencode($this->folderObject->getCombinedIdentifier())) . '&amp;returnUrl=') . rawurlencode($this->filelist->listURL())) . '" id="button-upload" title="') . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.upload', 1))) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-upload')) . '</a>';
+		if ($this->folderObject && $this->folderObject->getStorage()->checkUserActionPermission('upload', 'File') && $this->folderObject->checkActionPermission('write')) {
+			$buttons['upload'] = '<a href="' . $GLOBALS['BACK_PATH'] . 'file_upload.php?target=' . rawurlencode($this->folderObject->getCombinedIdentifier()) . '&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" id="button-upload" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.upload', 1)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-upload') . '</a>';
 		}
 		// New folder button
 		if ($this->folderObject && $this->folderObject->checkActionPermission('add')) {
-			$buttons['new'] = ((((((((('<a href="' . $GLOBALS['BACK_PATH']) . 'file_newfolder.php?target=') . rawurlencode($this->folderObject->getCombinedIdentifier())) . '&amp;returnUrl=') . rawurlencode($this->filelist->listURL())) . '" title="') . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.new', 1))) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new')) . '</a>';
+			$buttons['new'] = '<a href="' . $GLOBALS['BACK_PATH'] . 'file_newfolder.php?target=' . rawurlencode($this->folderObject->getCombinedIdentifier()) . '&amp;returnUrl=' . rawurlencode($this->filelist->listURL()) . '" title="' . $GLOBALS['LANG']->makeEntities($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:cm.new', 1)) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new') . '</a>';
 		}
 		return $buttons;
 	}

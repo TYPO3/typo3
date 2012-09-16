@@ -119,7 +119,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	 */
 	protected function loadJavascript() {
 		$compress = TRUE;
-		$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(('../../../../../' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('form')) . 'Resources/Public/JavaScript/Wizard/');
+		$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath('../../../../../' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('form') . 'Resources/Public/JavaScript/Wizard/');
 		$javascriptFiles = array(
 			'Initialize.js',
 			'Ux/Ext.ux.merge.js',
@@ -235,7 +235,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 	protected function loadCss() {
 		// TODO Set to TRUE when finished
 		$compress = FALSE;
-		$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(('../../../../../' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('form')) . 'Resources/Public/CSS/');
+		$baseUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath('../../../../../' . \TYPO3\CMS\Core\Extension\ExtensionManager::siteRelPath('form') . 'Resources/Public/CSS/');
 		$cssFiles = array(
 			'Wizard/Form.css',
 			'Wizard/Wizard.css'
@@ -259,7 +259,7 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		$modTSconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($pageId, 'mod.wizards.form');
 		$settings = $modTSconfig['properties'];
 		$this->removeTrailingDotsFromTyposcript($settings);
-		$this->doc->JScode .= $this->doc->wrapScriptTags(('TYPO3.Form.Wizard.Settings = ' . json_encode($settings)) . ';');
+		$this->doc->JScode .= $this->doc->wrapScriptTags('TYPO3.Form.Wizard.Settings = ' . json_encode($settings) . ';');
 	}
 
 	/**
@@ -330,9 +330,9 @@ class WizardView extends \TYPO3\CMS\Form\View\Wizard\AbstractWizardView {
 		$buttons['csh_buttons'] = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('xMOD_csh_corebe', 'wizard_forms_wiz_buttons', $GLOBALS['BACK_PATH'], '');
 		// Close
 		$getPostVariables = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('P');
-		$buttons['close'] = ((('<a href="#" onclick="' . htmlspecialchars((('jumpToUrl(unescape(\'' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($getPostVariables['returnUrl']))) . '\')); return false;'))) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array(
+		$buttons['close'] = '<a href="#" onclick="' . htmlspecialchars(('jumpToUrl(unescape(\'' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl($getPostVariables['returnUrl'])) . '\')); return false;')) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array(
 			'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:rm.closeDoc', TRUE)
-		))) . '</a>';
+		)) . '</a>';
 		return $buttons;
 	}
 

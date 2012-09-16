@@ -133,7 +133,7 @@ class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator impl
 	 * @see tx_form_System_Validate_Abstract::_getLocalLanguageLabel()
 	 */
 	protected function getLocalLanguageLabel($type) {
-		$label = (strtolower(get_class($this)) . '.') . $type;
+		$label = strtolower(get_class($this)) . '.' . $type;
 		$messages[] = $this->localizationHandler->getLocalLanguageLabel($label);
 		if ($this->inclusive) {
 			$messages[] = $this->localizationHandler->getLocalLanguageLabel($label . '2');

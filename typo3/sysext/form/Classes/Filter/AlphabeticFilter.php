@@ -68,7 +68,7 @@ class AlphabeticFilter implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 */
 	public function filter($value) {
 		$whiteSpace = $this->allowWhiteSpace ? '\\s' : '';
-		$pattern = ('/[^[:alpha:]' . $whiteSpace) . ']/u';
+		$pattern = '/[^[:alpha:]' . $whiteSpace . ']/u';
 		return preg_replace($pattern, '', (string) $value);
 	}
 

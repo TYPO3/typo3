@@ -48,7 +48,7 @@ class CheckboxGroupElementView extends \TYPO3\CMS\Form\View\Mail\Plain\Element\C
 	public function render() {
 		$content = '';
 		if ($this->model->additionalIsSet('legend')) {
-			$content = ($this->model->getAdditionalValue('legend') . ': ') . chr(10);
+			$content = $this->model->getAdditionalValue('legend') . ': ' . chr(10);
 		}
 		$content .= $this->renderChildren($this->model->getElements(), $this->spaces + 4);
 		return str_repeat(chr(32), $this->spaces) . $content;
