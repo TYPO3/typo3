@@ -35,7 +35,7 @@
  * @author 	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author 	Stanislas Rolland <typo3(arobas)sjbr.ca>
  */
-error_reporting(E_ALL & ~((E_STRICT | E_NOTICE) | E_DEPRECATED));
+error_reporting(E_ALL & ~(E_STRICT | E_NOTICE | E_DEPRECATED));
 unset($MCONF);
 require 'conf.php';
 require $BACK_PATH . 'init.php';

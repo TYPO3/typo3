@@ -61,7 +61,7 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 		$this->temporaryDirectory = PATH_site . 'typo3temp';
 		// Get temporary directory from the configuration
 		$extconf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['rsaauth']);
-		if ((($extconf['temporaryDirectory'] != '' && $extconf['temporaryDirectory'][0] == '/') && @is_dir($extconf['temporaryDirectory'])) && is_writable($extconf['temporaryDirectory'])) {
+		if ($extconf['temporaryDirectory'] != '' && $extconf['temporaryDirectory'][0] == '/' && @is_dir($extconf['temporaryDirectory']) && is_writable($extconf['temporaryDirectory'])) {
 			$this->temporaryDirectory = $extconf['temporaryDirectory'];
 		}
 	}
@@ -79,13 +79,13 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 		// PHP generates 1024 bit key files. We force command line version
 		// to do the same and use the F4 (0x10001) exponent. This is the most
 		// secure.
-		$command = (($this->opensslPath . ' genrsa -out ') . escapeshellarg($privateKeyFile)) . ' 1024';
+		$command = $this->opensslPath . ' genrsa -out ' . escapeshellarg($privateKeyFile) . ' 1024';
 		\TYPO3\CMS\Core\Utility\CommandUtility::exec($command);
 		// Test that we got a private key
 		$privateKey = file_get_contents($privateKeyFile);
 		if (FALSE !== strpos($privateKey, 'BEGIN RSA PRIVATE KEY')) {
 			// Ok, we got the private key. Get the modulus.
-			$command = ($this->opensslPath . ' rsa -noout -modulus -in ') . escapeshellarg($privateKeyFile);
+			$command = $this->opensslPath . ' rsa -noout -modulus -in ' . escapeshellarg($privateKeyFile);
 			$value = \TYPO3\CMS\Core\Utility\CommandUtility::exec($command);
 			if (substr($value, 0, 8) === 'Modulus=') {
 				$publicKey = substr($value, 8);
@@ -114,7 +114,7 @@ class CommandLineBackend extends \TYPO3\CMS\Rsaauth\Backend\AbstractBackend {
 		$dataFile = tempnam($this->temporaryDirectory, uniqid());
 		file_put_contents($dataFile, base64_decode($data));
 		// Prepare the command
-		$command = (((($this->opensslPath . ' rsautl -inkey ') . escapeshellarg($privateKeyFile)) . ' -in ') . escapeshellarg($dataFile)) . ' -decrypt';
+		$command = $this->opensslPath . ' rsautl -inkey ' . escapeshellarg($privateKeyFile) . ' -in ' . escapeshellarg($dataFile) . ' -decrypt';
 		// Execute the command and capture the result
 		$output = array();
 		\TYPO3\CMS\Core\Utility\CommandUtility::exec($command, $output);

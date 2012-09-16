@@ -48,7 +48,7 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 	 */
 	public function findRef($table, $field, $uid, $content, $spKey, $spParams, $structurePath = '') {
 		$retVal = FALSE;
-		$this->tokenID_basePrefix = ((((((($table . ':') . $uid) . ':') . $field) . ':') . $structurePath) . ':') . $spKey;
+		$this->tokenID_basePrefix = $table . ':' . $uid . ':' . $field . ':' . $structurePath . ':' . $spKey;
 		switch ($spKey) {
 		case 'rtehtmlarea_images':
 			$retVal = $this->findRef_rtehtmlarea_images($content, $spParams);
@@ -89,10 +89,10 @@ class SoftReferenceHook extends \TYPO3\CMS\Core\Database\SoftReferenceIndex {
 					$elements[$k] = array();
 					$elements[$k]['matchString'] = $v;
 					// Token and substitute value
-					$imgTags[$k] = str_replace(('data-htmlarea-file-uid="' . $fileUid) . '"', ('data-htmlarea-file-uid="{softref:' . $tokenID) . '}"', $imgTags[$k]);
+					$imgTags[$k] = str_replace('data-htmlarea-file-uid="' . $fileUid . '"', 'data-htmlarea-file-uid="{softref:' . $tokenID . '}"', $imgTags[$k]);
 					$elements[$k]['subst'] = array(
 						'type' => 'db',
-						'recordRef' => (($fileTable ? $fileTable : 'sys_file') . ':') . $fileUid,
+						'recordRef' => ($fileTable ? $fileTable : 'sys_file') . ':' . $fileUid,
 						'tokenID' => $tokenID,
 						'tokenValue' => $fileUid
 					);

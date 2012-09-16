@@ -89,7 +89,7 @@ class RecyclerUtility {
 		$output = ($fullOutput = '/');
 		while ($uid != 0 && $loopCheck > 0) {
 			$loopCheck--;
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,title,deleted,t3ver_oid,t3ver_wsid', 'pages', ('uid=' . intval($uid)) . (strlen(trim($clause)) ? ' AND ' . $clause : ''));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,pid,title,deleted,t3ver_oid,t3ver_wsid', 'pages', 'uid=' . intval($uid) . (strlen(trim($clause)) ? ' AND ' . $clause : ''));
 			if (is_resource($res)) {
 				$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 				$GLOBALS['TYPO3_DB']->sql_free_result($res);
@@ -97,12 +97,12 @@ class RecyclerUtility {
 				if (is_array($row)) {
 					\TYPO3\CMS\Backend\Utility\BackendUtility::fixVersioningPid('pages', $row);
 					$uid = $row['pid'];
-					$output = ('/' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $titleLimit))) . $output;
+					$output = '/' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $titleLimit)) . $output;
 					if ($row['deleted']) {
-						$output = ('<span class="deletedPath">' . $output) . '</span>';
+						$output = '<span class="deletedPath">' . $output . '</span>';
 					}
 					if ($fullTitleLimit) {
-						$fullOutput = ('/' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $fullTitleLimit))) . $fullOutput;
+						$fullOutput = '/' . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($row['title'], $fullTitleLimit)) . $fullOutput;
 					}
 				} else {
 					break;
@@ -126,7 +126,7 @@ class RecyclerUtility {
 	 */
 	static public function getDeletedField($tableName) {
 		$TCA = self::getTableTCA($tableName);
-		if (($TCA && isset($TCA['ctrl']['delete'])) && $TCA['ctrl']['delete']) {
+		if ($TCA && isset($TCA['ctrl']['delete']) && $TCA['ctrl']['delete']) {
 			return $TCA['ctrl']['delete'];
 		}
 	}

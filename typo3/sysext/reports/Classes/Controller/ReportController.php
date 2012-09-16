@@ -38,7 +38,7 @@ class ReportController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 	 */
 	public function initializeAction() {
 		$vars = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('tx_reports_tools_reportstxreportsm1');
-		if (((!isset($vars['redirect']) && $vars['action'] !== 'index') && !isset($vars['extension'])) && is_array($GLOBALS['BE_USER']->uc['reports']['selection'])) {
+		if (!isset($vars['redirect']) && $vars['action'] !== 'index' && !isset($vars['extension']) && is_array($GLOBALS['BE_USER']->uc['reports']['selection'])) {
 			$previousSelection = $GLOBALS['BE_USER']->uc['reports']['selection'];
 			if (!empty($previousSelection['extension']) && !empty($previousSelection['report'])) {
 				$this->redirect('detail', 'Report', NULL, array('extension' => $previousSelection['extension'], 'report' => $previousSelection['report'], 'redirect' => 1));

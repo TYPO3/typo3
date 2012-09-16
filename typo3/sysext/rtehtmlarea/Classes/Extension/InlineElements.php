@@ -148,8 +148,8 @@ class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$registerRTEinJavascriptString = '';
 		if (in_array('formattext', $this->toolbar)) {
 			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formattext.'])) {
-				$registerRTEinJavascriptString .= ('
-			RTEarea[' . $RTEcounter) . '].buttons.formattext = new Object();';
+				$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.formattext = new Object();';
 			}
 			// Default inline elements
 			$hideItems = array();
@@ -188,11 +188,11 @@ class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 				} else {
 					$inlineElementsOptions[$this->buttonToInlineElement[$item]] = $LANG->getLL($this->defaultInlineElements[$this->buttonToInlineElement[$item]]);
 				}
-				$inlineElementsOptions[$this->buttonToInlineElement[$item]] = (($prefixLabelWithTag && $item != 'none' ? $this->buttonToInlineElement[$item] . ' - ' : '') . $inlineElementsOptions[$this->buttonToInlineElement[$item]]) . ($postfixLabelWithTag && $item != 'none' ? ' - ' . $this->buttonToInlineElement[$item] : '');
+				$inlineElementsOptions[$this->buttonToInlineElement[$item]] = ($prefixLabelWithTag && $item != 'none' ? $this->buttonToInlineElement[$item] . ' - ' : '') . $inlineElementsOptions[$this->buttonToInlineElement[$item]] . ($postfixLabelWithTag && $item != 'none' ? ' - ' . $this->buttonToInlineElement[$item] : '');
 			}
 			$first = array_shift($inlineElementsOptions);
 			// Sorting the options
-			if ((!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formattext.'])) || !$this->thisConfig['buttons.']['formattext.']['orderItems']) {
+			if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.']['formattext.']) || !$this->thisConfig['buttons.']['formattext.']['orderItems']) {
 				asort($inlineElementsOptions);
 			}
 			// Generating the javascript options
@@ -204,8 +204,8 @@ class InlineElements extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			if ($this->htmlAreaRTE->is_FE()) {
 				$GLOBALS['TSFE']->csConvObj->convArray($JSInlineElements, $this->htmlAreaRTE->OutputCharset, 'utf-8');
 			}
-			$registerRTEinJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . '].buttons.formattext.options = ') . json_encode($JSInlineElements)) . ';';
+			$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.formattext.options = ' . json_encode($JSInlineElements) . ';';
 		}
 		return $registerRTEinJavascriptString;
 	}

@@ -82,8 +82,8 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		$button = 'language';
 		$registerRTEinJavascriptString = '';
 		if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-			$registerRTEinJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . ' = new Object();';
+			$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
 		}
 		if ($this->htmlAreaRTE->is_FE()) {
 			$first = $GLOBALS['TSFE']->getLLL('No language mark', $this->LOCAL_LANG);
@@ -97,8 +97,8 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			$languagesJSArray[] = array('text' => $key, 'value' => $value);
 		}
 		$languagesJSArray = json_encode(array('options' => $languagesJSArray));
-		$registerRTEinJavascriptString .= (((((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . '.dataUrl = "') . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '')) . $this->htmlAreaRTE->writeTemporaryFile('', (($button . '_') . $this->htmlAreaRTE->contentLanguageUid), 'js', $languagesJSArray)) . '";';
+		$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.dataUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', ($button . '_' . $this->htmlAreaRTE->contentLanguageUid), 'js', $languagesJSArray) . '";';
 		return $registerRTEinJavascriptString;
 	}
 
@@ -120,22 +120,22 @@ class Language extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			$titleFields = \tx_staticinfotables_div::getTCAlabelField($table, TRUE, $lang);
 			$prefixedTitleFields = array();
 			foreach ($titleFields as $titleField) {
-				$prefixedTitleFields[] = ($table . '.') . $titleField;
+				$prefixedTitleFields[] = $table . '.' . $titleField;
 			}
 			$labelFields = implode(',', $prefixedTitleFields);
 			// Restrict to certain languages
-			if ((is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.'])) && isset($this->thisConfig['buttons.']['language.']['restrictToItems'])) {
+			if (is_array($this->thisConfig['buttons.']) && is_array($this->thisConfig['buttons.']['language.']) && isset($this->thisConfig['buttons.']['language.']['restrictToItems'])) {
 				$languageList = implode('\',\'', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_DB']->fullQuoteStr(strtoupper($this->thisConfig['buttons.']['language.']['restrictToItems']), $table)));
-				$where .= (((' AND ' . $table) . '.lg_iso_2 IN (') . $languageList) . ')';
+				$where .= ' AND ' . $table . '.lg_iso_2 IN (' . $languageList . ')';
 			}
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(((($table . '.lg_iso_2,') . $table) . '.lg_country_iso_2,') . $labelFields, $table, ($where . ' AND lg_constructed = 0 ') . ($this->htmlAreaRTE->is_FE() ? $GLOBALS['TSFE']->sys_page->enableFields($table) : \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($table) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table)));
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($table . '.lg_iso_2,' . $table . '.lg_country_iso_2,' . $labelFields, $table, $where . ' AND lg_constructed = 0 ' . ($this->htmlAreaRTE->is_FE() ? $GLOBALS['TSFE']->sys_page->enableFields($table) : \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($table) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table)));
 			$prefixLabelWithCode = !$this->thisConfig['buttons.']['language.']['prefixLabelWithCode'] ? FALSE : TRUE;
 			$postfixLabelWithCode = !$this->thisConfig['buttons.']['language.']['postfixLabelWithCode'] ? FALSE : TRUE;
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$code = strtolower($row['lg_iso_2']) . ($row['lg_country_iso_2'] ? '-' . strtoupper($row['lg_country_iso_2']) : '');
 				foreach ($titleFields as $titleField) {
 					if ($row[$titleField]) {
-						$nameArray[$code] = $prefixLabelWithCode ? ($code . ' - ') . $row[$titleField] : ($postfixLabelWithCode ? ($row[$titleField] . ' - ') . $code : $row[$titleField]);
+						$nameArray[$code] = $prefixLabelWithCode ? $code . ' - ' . $row[$titleField] : ($postfixLabelWithCode ? $row[$titleField] . ' - ' . $code : $row[$titleField]);
 						break;
 					}
 				}

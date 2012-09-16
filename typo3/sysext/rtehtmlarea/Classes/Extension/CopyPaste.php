@@ -92,11 +92,11 @@ class CopyPaste extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			$mozillaAllowClipboardURL = $this->thisConfig['buttons.'][$button . '.']['mozillaAllowClipboardURL'] ? $this->thisConfig['buttons.'][$button . '.']['mozillaAllowClipboardURL'] : $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$this->extensionKey]['plugins']['CopyPaste']['mozillaAllowClipboardURL'];
 			if ($mozillaAllowClipboardURL) {
 				if (!is_array($this->thisConfig['buttons.']) || !is_array($this->thisConfig['buttons.'][($button . '.')])) {
-					$registerRTEinJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . ' = new Object();';
+					$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . ' = new Object();';
 				}
-				$registerRTEinJavascriptString .= ((((('
-			RTEarea[' . $RTEcounter) . '].buttons.') . $button) . '.mozillaAllowClipboardURL = "') . $mozillaAllowClipboardURL) . '";';
+				$registerRTEinJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].buttons.' . $button . '.mozillaAllowClipboardURL = "' . $mozillaAllowClipboardURL . '";';
 			}
 		}
 		return $registerRTEinJavascriptString;

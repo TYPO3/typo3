@@ -76,10 +76,10 @@ class MicroDataSchema extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 		if (is_array($this->thisConfig['schema.']) && is_array($this->thisConfig['schema.']['sources.'])) {
 			foreach ($this->thisConfig['schema.']['sources.'] as $source) {
 				$fileName = $this->htmlAreaRTE->getFullFileName($source);
-				$absolutePath = $fileName ? \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath((PATH_site . ($this->htmlAreaRTE->is_FE() || $this->htmlAreaRTE->isFrontendEditActive() ? '' : TYPO3_mainDir)) . $fileName) : '';
+				$absolutePath = $fileName ? \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath(PATH_site . ($this->htmlAreaRTE->is_FE() || $this->htmlAreaRTE->isFrontendEditActive() ? '' : TYPO3_mainDir) . $fileName) : '';
 				// Fallback to default schema file if configured file does not exists or is of zero size
-				if ((!$fileName || !file_exists($absolutePath)) || !filesize($absolutePath)) {
-					$fileName = $this->htmlAreaRTE->getFullFileName(('EXT:' . $this->ID) . '/extensions/MicrodataSchema/res/schemaOrgAll.rdf');
+				if (!$fileName || !file_exists($absolutePath) || !filesize($absolutePath)) {
+					$fileName = $this->htmlAreaRTE->getFullFileName('EXT:' . $this->ID . '/extensions/MicrodataSchema/res/schemaOrgAll.rdf');
 				}
 				$rdf = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($fileName);
 				if ($rdf) {
@@ -104,7 +104,7 @@ class MicroDataSchema extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			$GLOBALS['TSFE']->csConvObj->convArray($schema, $this->htmlAreaRTE->outputCharset, 'utf-8');
 		}
 		// Store json encoded array in temporary file
-		$registerRTEinJavascriptString = ((((LF . TAB) . 'RTEarea[editornumber].schemaUrl = "') . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '')) . $this->htmlAreaRTE->writeTemporaryFile('', ('schema_' . $this->htmlAreaRTE->language), 'js', json_encode($schema), TRUE)) . '";';
+		$registerRTEinJavascriptString = LF . TAB . 'RTEarea[editornumber].schemaUrl = "' . ($this->htmlAreaRTE->is_FE() && $GLOBALS['TSFE']->absRefPrefix ? $GLOBALS['TSFE']->absRefPrefix : '') . $this->htmlAreaRTE->writeTemporaryFile('', ('schema_' . $this->htmlAreaRTE->language), 'js', json_encode($schema), TRUE) . '";';
 		return $registerRTEinJavascriptString;
 	}
 

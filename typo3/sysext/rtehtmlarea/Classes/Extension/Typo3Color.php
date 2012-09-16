@@ -91,8 +91,8 @@ class Typo3Color extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			$RTEProperties = $this->htmlAreaRTE->RTEsetup['properties'];
 		}
 		$configureRTEInJavascriptString = '';
-		$configureRTEInJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . '].disableColorPicker = ') . (trim($this->thisConfig['disableColorPicker']) ? 'true' : 'false')) . ';';
+		$configureRTEInJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].disableColorPicker = ' . (trim($this->thisConfig['disableColorPicker']) ? 'true' : 'false') . ';';
 		// Building the array of configured colors
 		if (is_array($RTEProperties['colors.'])) {
 			$HTMLAreaColorname = array();
@@ -114,8 +114,8 @@ class Typo3Color extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaApi {
 			if ($this->htmlAreaRTE->is_FE()) {
 				$GLOBALS['TSFE']->csConvObj->convArray($HTMLAreaJSColors, $this->htmlAreaRTE->OutputCharset, 'utf-8');
 			}
-			$configureRTEInJavascriptString .= ((('
-			RTEarea[' . $RTEcounter) . '].colors = ') . json_encode($HTMLAreaJSColors)) . ';';
+			$configureRTEInJavascriptString .= '
+			RTEarea[' . $RTEcounter . '].colors = ' . json_encode($HTMLAreaJSColors) . ';';
 		}
 		return $configureRTEInJavascriptString;
 	}

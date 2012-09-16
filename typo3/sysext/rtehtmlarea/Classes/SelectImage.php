@@ -176,11 +176,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$titleText = $fileObject->getProperty('name');
 			switch ($this->act) {
 			case 'magic':
-				$this->insertMagicImage($fileObject, $altText, $titleText, ((('data-htmlarea-file-uid="' . $uid) . '" data-htmlarea-file-table="') . $table) . '"');
+				$this->insertMagicImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
 				die;
 				break;
 			case 'plain':
-				$this->insertPlainImage($fileObject, $altText, $titleText, ((('data-htmlarea-file-uid="' . $uid) . '" data-htmlarea-file-table="') . $table) . '"');
+				$this->insertPlainImage($fileObject, $altText, $titleText, 'data-htmlarea-file-uid="' . $uid . '" data-htmlarea-file-table="' . $table . '"');
 				die;
 				break;
 			default:
@@ -255,16 +255,16 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 	 * @return 	void
 	 */
 	protected function imageInsertJS($url, $width, $height, $altText = '', $titleText = '', $additionalParams = '') {
-		echo ((((((((((((((('
+		echo '
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Untitled</title>
 	<script type="text/javascript">
 	/*<![CDATA[*/
-		var plugin = window.parent.RTEarea["' . $this->editorNo) . '"].editor.getPlugin("TYPO3Image");
+		var plugin = window.parent.RTEarea["' . $this->editorNo . '"].editor.getPlugin("TYPO3Image");
 		function insertImage(file,width,height,alt,title,additionalParams) {
-			plugin.insertImage(\'<img src="\'+file+\'" width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'"\'') . ($this->defaultClass ? ('+\' class="' . $this->defaultClass) . '"\'' : '')) . '+(alt?\' alt="\'+alt+\'"\':\'\')+(title?\' title="\'+title+\'"\':\'\')+(additionalParams?\' \'+additionalParams:\'\')+\' />\');
+			plugin.insertImage(\'<img src="\'+file+\'" width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'"\'' . ($this->defaultClass ? '+\' class="' . $this->defaultClass . '"\'' : '') . '+(alt?\' alt="\'+alt+\'"\':\'\')+(title?\' title="\'+title+\'"\':\'\')+(additionalParams?\' \'+additionalParams:\'\')+\' />\');
 		}
 	/*]]>*/
 	</script>
@@ -272,7 +272,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 <body>
 <script type="text/javascript">
 /*<![CDATA[*/
-	insertImage(') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($url, 1)) . ',') . $width) . ',') . $height) . ',') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($altText, 1)) . ',') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($titleText, 1)) . ',') . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($additionalParams, 1)) . ');
+	insertImage(' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($url, 1) . ',' . $width . ',' . $height . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($altText, 1) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($titleText, 1) . ',' . \TYPO3\CMS\Core\Utility\GeneralUtility::quoteJSvalue($additionalParams, 1) . ');
 /*]]>*/
 </script>
 </body>
@@ -299,7 +299,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$classesImageArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->buttonConfig['properties.']['class.']['allowedClasses'], 1);
 			$classesImageJSOptions = '<option value=""></option>';
 			foreach ($classesImageArray as $class) {
-				$classesImageJSOptions .= ((('<option value="' . $class) . '">') . $class) . '</option>';
+				$classesImageJSOptions .= '<option value="' . $class . '">' . $class . '</option>';
 			}
 		}
 		$lockPlainWidth = 'false';
@@ -307,17 +307,17 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 		if (is_array($this->thisConfig['proc.']) && $this->thisConfig['proc.']['plainImageMode']) {
 			$plainImageMode = $this->thisConfig['proc.']['plainImageMode'];
 			$lockPlainWidth = $plainImageMode == 'lockDimensions' ? 'true' : 'false';
-			$lockPlainHeight = ($lockPlainWidth || $plainImageMode == 'lockRatio') || $plainImageMode == 'lockRatioWhenSmaller' ? 'true' : 'false';
+			$lockPlainHeight = $lockPlainWidth || $plainImageMode == 'lockRatio' || $plainImageMode == 'lockRatioWhenSmaller' ? 'true' : 'false';
 		}
-		$JScode = (((((((((((((((((((((((((((((((((((((((((((((((((((((('
-			var plugin = window.parent.RTEarea["' . $editorNo) . '"].editor.getPlugin("TYPO3Image");
+		$JScode = '
+			var plugin = window.parent.RTEarea["' . $editorNo . '"].editor.getPlugin("TYPO3Image");
 			var HTMLArea = window.parent.HTMLArea;
 
 			HTMLArea.TYPO3Image.insertElement = function (table, uid, type, filename, filePath, fileExt, fileIcon) {
-				return jumpToUrl(\'?editorNo=\' + \'') . $editorNo) . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'') . $this->bparams) . '\');
+				return jumpToUrl(\'?editorNo=\' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
 			}
 			function insertElement(table, uid, type, fileName, filePath, fileExt, fileIcon, action, close) {
-				return jumpToUrl(\'?editorNo=\' + \'') . $editorNo) . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'') . $this->bparams) . '\');
+				return jumpToUrl(\'?editorNo=\' + \'' . $editorNo . '\' + \'&insertImage=\' + filePath + \'&table=\' + table + \'&uid=\' + uid + \'&type=\' + type + \'bparams=\' + \'' . $this->bparams . '\');
 			}
 			function initEventListeners() {
 				if (Ext.isWebKit) {
@@ -325,10 +325,10 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				}
 			}
 			function jumpToUrl(URL,anchor) {
-				var add_act = URL.indexOf("act=")==-1 ? "&act=') . $act) . '" : "";
-				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo=') . $editorNo) . '" : "";
-				var add_sys_language_content = URL.indexOf("sys_language_content=")==-1 ? "&sys_language_content=') . $sys_language_content) . '" : "";
-				var RTEtsConfigParams = "&RTEtsConfigParams=') . rawurlencode($this->RTEtsConfigParams)) . '";
+				var add_act = URL.indexOf("act=")==-1 ? "&act=' . $act . '" : "";
+				var add_editorNo = URL.indexOf("editorNo=")==-1 ? "&editorNo=' . $editorNo . '" : "";
+				var add_sys_language_content = URL.indexOf("sys_language_content=")==-1 ? "&sys_language_content=' . $sys_language_content . '" : "";
+				var RTEtsConfigParams = "&RTEtsConfigParams=' . rawurlencode($this->RTEtsConfigParams) . '";
 
 				var cur_width = selectedImageRef ? "&cWidth="+selectedImageRef.style.width : "";
 				var cur_height = selectedImageRef ? "&cHeight="+selectedImageRef.style.height : "";
@@ -338,11 +338,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				return false;
 			}
 			function insertImage(file,width,height) {
-				plugin.insertImage(\'<img src="\'+file+\'"') . ($this->defaultClass ? (' class="' . $this->defaultClass) . '"' : '')) . ' width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'" />\');
+				plugin.insertImage(\'<img src="\'+file+\'"' . ($this->defaultClass ? ' class="' . $this->defaultClass . '"' : '') . ' width="\'+parseInt(width)+\'" height="\'+parseInt(height)+\'" />\');
 			}
 			function launchView(url) {
 				var thePreviewWindow="";
-				thePreviewWindow = window.open("') . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')) . TYPO3_mainDir) . 'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
+				thePreviewWindow = window.open("' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . TYPO3_mainDir . 'show_item.php?table="+url,"ShowItem","height=300,width=410,status=0,menubar=0,resizable=0,location=0,directories=0,scrollbars=1,toolbar=0");
 				if (thePreviewWindow && thePreviewWindow.focus) {
 					thePreviewWindow.focus();
 				}
@@ -355,9 +355,9 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				}
 			}
 			function printCurrentImageOptions() {
-				var classesImage = ') . ($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage'] ? 'true' : 'false')) . ';
-				if (classesImage) var styleSelector=\'<select id="iClass" name="iClass" style="width:140px;">') . $classesImageJSOptions) . '</select>\';
-				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">') . $GLOBALS['LANG']->getLL('notSet')) . '</option><option value="none">') . $GLOBALS['LANG']->getLL('nonFloating')) . '</option><option value="left">') . $GLOBALS['LANG']->getLL('left')) . '</option><option value="right">') . $GLOBALS['LANG']->getLL('right')) . '</option></select>\';
+				var classesImage = ' . ($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage'] ? 'true' : 'false') . ';
+				if (classesImage) var styleSelector=\'<select id="iClass" name="iClass" style="width:140px;">' . $classesImageJSOptions . '</select>\';
+				var floatSelector=\'<select id="iFloat" name="iFloat"><option value="">' . $GLOBALS['LANG']->getLL('notSet') . '</option><option value="none">' . $GLOBALS['LANG']->getLL('nonFloating') . '</option><option value="left">' . $GLOBALS['LANG']->getLL('left') . '</option><option value="right">' . $GLOBALS['LANG']->getLL('right') . '</option></select>\';
 				if (plugin.getButton("Language")) {
 					var languageSelector = \'<select id="iLang" name="iLang">\';
 					plugin.getButton("Language").getStore().each(function (record) {
@@ -368,34 +368,34 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				var bgColor=\' class="bgColor4"\';
 				var sz="";
 				sz+=\'<table border="0" cellpadding="1" cellspacing="1"><form action="" name="imageData">\';
-				') . (in_array('class', $removedProperties) ? '' : ('
+				' . (in_array('class', $removedProperties) ? '' : '
 				if(classesImage) {
-					sz+=\'<tr><td\'+bgColor+\'><label for="iClass">' . $GLOBALS['LANG']->getLL('class')) . ': </label></td><td>\'+styleSelector+\'</td></tr>\';
-				}')) . (in_array('width', $removedProperties) ? '' : ((((('
-				if (!(selectedImageRef && selectedImageRef.src.indexOf("RTEmagic") == -1 && ' . $lockPlainWidth) . ')) {
-					sz+=\'<tr><td\'+bgColor+\'><label for="iWidth">') . $GLOBALS['LANG']->getLL('width')) . ': </label></td><td><input type="text" id="iWidth" name="iWidth" value=""') . $GLOBALS['TBE_TEMPLATE']->formWidth(4)) . ' /></td></tr>\';
-				}')) . (in_array('height', $removedProperties) ? '' : ((((('
-				if (!(selectedImageRef && selectedImageRef.src.indexOf("RTEmagic") == -1 && ' . $lockPlainHeight) . ')) {
-					sz+=\'<tr><td\'+bgColor+\'><label for="iHeight">') . $GLOBALS['LANG']->getLL('height')) . ': </label></td><td><input type="text" id="iHeight" name="iHeight" value=""') . $GLOBALS['TBE_TEMPLATE']->formWidth(4)) . ' /></td></tr>\';
-				}')) . (in_array('border', $removedProperties) ? '' : ('
-				sz+=\'<tr><td\'+bgColor+\'><label for="iBorder">' . $GLOBALS['LANG']->getLL('border')) . ': </label></td><td><input type="checkbox" id="iBorder" name="iBorder" value="1" /></td></tr>\';')) . (in_array('float', $removedProperties) ? '' : ('
-				sz+=\'<tr><td\'+bgColor+\'><label for="iFloat">' . $GLOBALS['LANG']->getLL('float')) . ': </label></td><td>\'+floatSelector+\'</td></tr>\';')) . (in_array('paddingTop', $removedProperties) ? '' : ((('
-				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingTop">' . $GLOBALS['LANG']->getLL('padding_top')) . ': </label></td><td><input type="text" id="iPaddingTop" name="iPaddingTop" value=""') . $GLOBALS['TBE_TEMPLATE']->formWidth(4)) . '></td></tr>\';')) . (in_array('paddingRight', $removedProperties) ? '' : ((('
-				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingRight">' . $GLOBALS['LANG']->getLL('padding_right')) . ': </label></td><td><input type="text" id="iPaddingRight" name="iPaddingRight" value=""') . $GLOBALS['TBE_TEMPLATE']->formWidth(4)) . ' /></td></tr>\';')) . (in_array('paddingBottom', $removedProperties) ? '' : ((('
-				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingBottom">' . $GLOBALS['LANG']->getLL('padding_bottom')) . ': </label></td><td><input type="text" id="iPaddingBottom" name="iPaddingBottom" value=""') . $GLOBALS['TBE_TEMPLATE']->formWidth(4)) . ' /></td></tr>\';')) . (in_array('paddingLeft', $removedProperties) ? '' : ((('
-				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingLeft">' . $GLOBALS['LANG']->getLL('padding_left')) . ': </label></td><td><input type="text" id="iPaddingLeft" name="iPaddingLeft" value=""') . $GLOBALS['TBE_TEMPLATE']->formWidth(4)) . ' /></td></tr>\';')) . (in_array('title', $removedProperties) ? '' : ((('
-				sz+=\'<tr><td\'+bgColor+\'><label for="iTitle">' . $GLOBALS['LANG']->getLL('title')) . ': </label></td><td><input type="text" id="iTitle" name="iTitle"') . $GLOBALS['TBE_TEMPLATE']->formWidth(20)) . ' /></td></tr>\';')) . (in_array('alt', $removedProperties) ? '' : ((('
-				sz+=\'<tr><td\'+bgColor+\'><label for="iAlt">' . $GLOBALS['LANG']->getLL('alt')) . ': </label></td><td><input type="text" id="iAlt" name="iAlt"') . $GLOBALS['TBE_TEMPLATE']->formWidth(20)) . ' /></td></tr>\';')) . (in_array('lang', $removedProperties) ? '' : '
+					sz+=\'<tr><td\'+bgColor+\'><label for="iClass">' . $GLOBALS['LANG']->getLL('class') . ': </label></td><td>\'+styleSelector+\'</td></tr>\';
+				}') . (in_array('width', $removedProperties) ? '' : '
+				if (!(selectedImageRef && selectedImageRef.src.indexOf("RTEmagic") == -1 && ' . $lockPlainWidth . ')) {
+					sz+=\'<tr><td\'+bgColor+\'><label for="iWidth">' . $GLOBALS['LANG']->getLL('width') . ': </label></td><td><input type="text" id="iWidth" name="iWidth" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';
+				}') . (in_array('height', $removedProperties) ? '' : '
+				if (!(selectedImageRef && selectedImageRef.src.indexOf("RTEmagic") == -1 && ' . $lockPlainHeight . ')) {
+					sz+=\'<tr><td\'+bgColor+\'><label for="iHeight">' . $GLOBALS['LANG']->getLL('height') . ': </label></td><td><input type="text" id="iHeight" name="iHeight" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';
+				}') . (in_array('border', $removedProperties) ? '' : '
+				sz+=\'<tr><td\'+bgColor+\'><label for="iBorder">' . $GLOBALS['LANG']->getLL('border') . ': </label></td><td><input type="checkbox" id="iBorder" name="iBorder" value="1" /></td></tr>\';') . (in_array('float', $removedProperties) ? '' : '
+				sz+=\'<tr><td\'+bgColor+\'><label for="iFloat">' . $GLOBALS['LANG']->getLL('float') . ': </label></td><td>\'+floatSelector+\'</td></tr>\';') . (in_array('paddingTop', $removedProperties) ? '' : '
+				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingTop">' . $GLOBALS['LANG']->getLL('padding_top') . ': </label></td><td><input type="text" id="iPaddingTop" name="iPaddingTop" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . '></td></tr>\';') . (in_array('paddingRight', $removedProperties) ? '' : '
+				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingRight">' . $GLOBALS['LANG']->getLL('padding_right') . ': </label></td><td><input type="text" id="iPaddingRight" name="iPaddingRight" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';') . (in_array('paddingBottom', $removedProperties) ? '' : '
+				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingBottom">' . $GLOBALS['LANG']->getLL('padding_bottom') . ': </label></td><td><input type="text" id="iPaddingBottom" name="iPaddingBottom" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';') . (in_array('paddingLeft', $removedProperties) ? '' : '
+				sz+=\'<tr><td\'+bgColor+\'><label for="iPaddingLeft">' . $GLOBALS['LANG']->getLL('padding_left') . ': </label></td><td><input type="text" id="iPaddingLeft" name="iPaddingLeft" value=""' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' /></td></tr>\';') . (in_array('title', $removedProperties) ? '' : '
+				sz+=\'<tr><td\'+bgColor+\'><label for="iTitle">' . $GLOBALS['LANG']->getLL('title') . ': </label></td><td><input type="text" id="iTitle" name="iTitle"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /></td></tr>\';') . (in_array('alt', $removedProperties) ? '' : '
+				sz+=\'<tr><td\'+bgColor+\'><label for="iAlt">' . $GLOBALS['LANG']->getLL('alt') . ': </label></td><td><input type="text" id="iAlt" name="iAlt"' . $GLOBALS['TBE_TEMPLATE']->formWidth(20) . ' /></td></tr>\';') . (in_array('lang', $removedProperties) ? '' : '
 				if (plugin.getButton("Language")) {
 					sz+=\'<tr><td\'+bgColor+\'><label for="iLang">\' + plugin.editor.getPlugin("Language").localize(\'Language-Tooltip\') + \': </label></td><td>\' + languageSelector + \'</td></tr>\';
-				}')) . (in_array('clickenlarge', $removedProperties) || in_array('data-htmlarea-clickenlarge', $removedProperties) ? '' : ('
-				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">' . $GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom', 1)) . ' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';')) . '
-				sz+=\'<tr><td><input type="submit" value="') . $GLOBALS['LANG']->getLL('update')) . '" onClick="return setImageProperties();"></td></tr>\';
+				}') . (in_array('clickenlarge', $removedProperties) || in_array('data-htmlarea-clickenlarge', $removedProperties) ? '' : '
+				sz+=\'<tr><td\'+bgColor+\'><label for="iClickEnlarge">' . $GLOBALS['LANG']->sL('LLL:EXT:cms/locallang_ttc.php:image_zoom', 1) . ' </label></td><td><input type="checkbox" name="iClickEnlarge" id="iClickEnlarge" value="0" /></td></tr>\';') . '
+				sz+=\'<tr><td><input type="submit" value="' . $GLOBALS['LANG']->getLL('update') . '" onClick="return setImageProperties();"></td></tr>\';
 				sz+=\'</form></table>\';
 				return sz;
 			}
 			function setImageProperties() {
-				var classesImage = ') . ($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage'] ? 'true' : 'false')) . ';
+				var classesImage = ' . ($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage'] ? 'true' : 'false') . ';
 				if (selectedImageRef) {
 					if (document.imageData.iWidth) {
 						if (document.imageData.iWidth.value && parseInt(document.imageData.iWidth.value)) {
@@ -499,7 +499,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				return false;
 			}
 			function insertImagePropertiesInForm() {
-				var classesImage = ') . ($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage'] ? 'true' : 'false')) . ';
+				var classesImage = ' . ($this->buttonConfig['properties.']['class.']['allowedClasses'] || $this->thisConfig['classesImage'] ? 'true' : 'false') . ';
 				if (selectedImageRef) {
 					var styleWidth, styleHeight, padding;
 					if (document.imageData.iWidth) {
@@ -641,25 +641,25 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			$menuDef['image']['isActive'] = FALSE;
 			$menuDef['image']['label'] = $GLOBALS['LANG']->getLL('currentImage', 1);
 			$menuDef['image']['url'] = '#';
-			$menuDef['image']['addParams'] = ('onClick="jumpToUrl(\'?act=image&bparams=' . $this->bparams) . '\');return false;"';
+			$menuDef['image']['addParams'] = 'onClick="jumpToUrl(\'?act=image&bparams=' . $this->bparams . '\');return false;"';
 		}
 		if (in_array('magic', $this->allowedItems)) {
 			$menuDef['magic']['isActive'] = FALSE;
 			$menuDef['magic']['label'] = $GLOBALS['LANG']->getLL('magicImage', 1);
 			$menuDef['magic']['url'] = '#';
-			$menuDef['magic']['addParams'] = ('onClick="jumpToUrl(\'?act=magic&bparams=' . $this->bparams) . '\');return false;"';
+			$menuDef['magic']['addParams'] = 'onClick="jumpToUrl(\'?act=magic&bparams=' . $this->bparams . '\');return false;"';
 		}
 		if (in_array('plain', $this->allowedItems)) {
 			$menuDef['plain']['isActive'] = FALSE;
 			$menuDef['plain']['label'] = $GLOBALS['LANG']->getLL('plainImage', 1);
 			$menuDef['plain']['url'] = '#';
-			$menuDef['plain']['addParams'] = ('onClick="jumpToUrl(\'?act=plain&bparams=' . $this->bparams) . '\');return false;"';
+			$menuDef['plain']['addParams'] = 'onClick="jumpToUrl(\'?act=plain&bparams=' . $this->bparams . '\');return false;"';
 		}
 		if (in_array('dragdrop', $this->allowedItems)) {
 			$menuDef['dragdrop']['isActive'] = FALSE;
 			$menuDef['dragdrop']['label'] = $GLOBALS['LANG']->getLL('dragDropImage', 1);
 			$menuDef['dragdrop']['url'] = '#';
-			$menuDef['dragdrop']['addParams'] = ('onClick="jumpToUrl(\'?act=dragdrop&bparams=' . $this->bparams) . '\');return false;"';
+			$menuDef['dragdrop']['addParams'] = 'onClick="jumpToUrl(\'?act=dragdrop&bparams=' . $this->bparams . '\');return false;"';
 		}
 		// Call hook for extra options
 		foreach ($this->hookObjects as $hookObject) {
@@ -734,17 +734,17 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				$files = $this->TBE_expandFolder($selectedFolder, $this->act === 'plain' ? 'jpg,jpeg,gif,png' : $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], $GLOBALS['BE_USER']->getTSConfigVal('options.noThumbsInRTEimageSelect'));
 			}
 			// Setup filelist indexed elements:
-			$this->doc->JScode .= $this->doc->wrapScriptTags(('BrowseLinks.addElements(' . json_encode($this->elements)) . ');');
+			$this->doc->JScode .= $this->doc->wrapScriptTags('BrowseLinks.addElements(' . json_encode($this->elements) . ');');
 			// Wrap tree
-			$this->content .= (((('
+			$this->content .= '
 
 			<!--
 				Wrapper table for folder tree / file/folder list:
 			-->
 					<table border="0" cellpadding="0" cellspacing="0" id="typo3-linkFiles">
 						<tr>
-							<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':'))) . $tree) . '</td>
-							<td class="c-wCell" valign="top">') . $files) . '</td>
+							<td class="c-wCell" valign="top">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
+							<td class="c-wCell" valign="top">' . $files . '</td>
 						</tr>
 					</table>
 					';
@@ -786,11 +786,11 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				$files = $this->TBE_dragNDrop($selectedFolder, implode(',', $this->allowedFileTypes));
 			}
 			// Wrap tree
-			$this->content .= (((('<table border="0" cellpadding="0" cellspacing="0">
+			$this->content .= '<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
-					<td style="vertical-align: top;">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':'))) . $tree) . '</td>
+					<td style="vertical-align: top;">' . $this->barheader(($GLOBALS['LANG']->getLL('folderTree') . ':')) . $tree . '</td>
 					<td>&nbsp;</td>
-					<td style="vertical-align: top;">') . $files) . '</td>
+					<td style="vertical-align: top;">' . $files . '</td>
 				</tr>
 				</table>';
 			break;
@@ -992,8 +992,8 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			// Create the header of current folder:
 			if ($folder) {
 				$folderIcon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('folder');
-				$lines[] = (('<tr class="t3-row-header">
-					<td colspan="4">' . $folderIcon) . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen))) . '</td>
+				$lines[] = '<tr class="t3-row-header">
+					<td colspan="4">' . $folderIcon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($folder->getIdentifier(), $titleLen)) . '</td>
 				</tr>';
 			}
 			if ($filesCount == 0) {
@@ -1016,14 +1016,14 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList(strtolower($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']), strtolower($fileExtension)) && !$noThumbs) {
 					$imageUrl = $fileObject->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGEPREVIEW, array('width' => 64, 'height' => 64))->getPublicUrl(TRUE);
 					$imgInfo = $imgObj->getImageDimensions($fileObject->getForLocalProcessing(FALSE));
-					$pDim = (($imgInfo[0] . 'x') . $imgInfo[1]) . ' pixels';
-					$clickIcon = ('<img src="' . $imageUrl) . '" hspace="5" vspace="5" border="1"';
+					$pDim = $imgInfo[0] . 'x' . $imgInfo[1] . ' pixels';
+					$clickIcon = '<img src="' . $imageUrl . '" hspace="5" vspace="5" border="1"';
 				} else {
 					$clickIcon = '';
 					$pDim = '';
 				}
 				// Create file icon:
-				$size = (((' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize())) . 'bytes') . ($pDim ? ', ' . $pDim : '')) . ')';
+				$size = ' (' . \TYPO3\CMS\Core\Utility\GeneralUtility::formatSize($fileObject->getSize()) . 'bytes' . ($pDim ? ', ' . $pDim : '') . ')';
 				$icon = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile($fileExtension, array('title' => $fileObject->getName() . $size));
 				// Create links for adding the file:
 				$filesIndex = count($this->elements);
@@ -1051,40 +1051,40 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 						'fileExt' => $fileExtension,
 						'fileIcon' => $icon
 					);
-					$ATag = ('<a href="#" onclick="return BrowseLinks.File.insertElement(\'file_' . $filesIndex) . '\');">';
+					$ATag = '<a href="#" onclick="return BrowseLinks.File.insertElement(\'file_' . $filesIndex . '\');">';
 					$ATag_alt = substr($ATag, 0, -4) . ',1);">';
 					$ATag_e = '</a>';
 				}
 				// Create link to showing details about the file in a window:
-				$Ahref = ((($GLOBALS['BACK_PATH'] . 'show_item.php?type=file&table=') . rawurlencode($fileObject->getCombinedIdentifier())) . '&returnUrl=') . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
-				$ATag2 = ('<a href="' . htmlspecialchars($Ahref)) . '">';
+				$Ahref = $GLOBALS['BACK_PATH'] . 'show_item.php?type=file&table=' . rawurlencode($fileObject->getCombinedIdentifier()) . '&returnUrl=' . rawurlencode(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI'));
+				$ATag2 = '<a href="' . htmlspecialchars($Ahref) . '">';
 				$ATag2_e = '</a>';
 				// Combine the stuff:
-				$filenameAndIcon = (($ATag_alt . $icon) . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileObject->getName(), $titleLen))) . $ATag_e;
+				$filenameAndIcon = $ATag_alt . $icon . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::fixed_lgd_cs($fileObject->getName(), $titleLen)) . $ATag_e;
 				// Show element:
 				if ($pDim) {
 					// Image...
-					$lines[] = ((((('
+					$lines[] = '
 						<tr class="file_list_normal">
-							<td nowrap="nowrap">' . $filenameAndIcon) . '&nbsp;</td>
-							<td nowrap="nowrap">') . ((((((($ATag2 . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"')) . ' title="') . $GLOBALS['LANG']->getLL('info', 1)) . '" alt="" /> ') . $GLOBALS['LANG']->getLL('info', 1)) . $ATag2_e)) . '</td>
-							<td nowrap="nowrap">&nbsp;') . $pDim) . '</td>
+							<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
+							<td nowrap="nowrap">' . ($ATag2 . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
+							<td nowrap="nowrap">&nbsp;' . $pDim . '</td>
 						</tr>';
-					$lines[] = ((('
+					$lines[] = '
 						<tr>
-							<td class="filelistThumbnail" colspan="4">' . $ATag_alt) . $clickIcon) . $ATag_e) . '</td>
+							<td class="filelistThumbnail" colspan="4">' . $ATag_alt . $clickIcon . $ATag_e . '</td>
 						</tr>';
 				} else {
-					$lines[] = ((('
+					$lines[] = '
 						<tr class="file_list_normal">
-							<td nowrap="nowrap">' . $filenameAndIcon) . '&nbsp;</td>
-							<td nowrap="nowrap">') . ((((((($ATag2 . '<img') . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"')) . ' title="') . $GLOBALS['LANG']->getLL('info', 1)) . '" alt="" /> ') . $GLOBALS['LANG']->getLL('info', 1)) . $ATag2_e)) . '</td>
+							<td nowrap="nowrap">' . $filenameAndIcon . '&nbsp;</td>
+							<td nowrap="nowrap">' . ($ATag2 . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/zoom2.gif', 'width="12" height="12"') . ' title="' . $GLOBALS['LANG']->getLL('info', 1) . '" alt="" /> ' . $GLOBALS['LANG']->getLL('info', 1) . $ATag2_e) . '</td>
 							<td>&nbsp;</td>
 						</tr>';
 				}
 			}
 			// Wrap all the rows in table tags:
-			$out .= ('
+			$out .= '
 
 
 
@@ -1092,7 +1092,7 @@ class SelectImage extends \TYPO3\CMS\Recordlist\Browser\ElementBrowser {
 			File listing
 		-->
 				<table cellpadding="0" cellspacing="0" id="typo3-filelist">
-					' . implode('', $lines)) . '
+					' . implode('', $lines) . '
 				</table>';
 		}
 		// Return accumulated content for filelisting:
