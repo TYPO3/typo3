@@ -235,8 +235,7 @@ class tx_reports_reports_status_SecurityStatus implements tx_reports_StatusProvi
 			$value = $GLOBALS['LANG']->getLL('status_insecure');
 			$severity = tx_reports_reports_status_Status::ERROR;
 
-			$changeInstallToolPasswordUrl = 'install/index.php?redirect_url=index.php' .
-				urlencode('?TYPO3_INSTALL[type]=about');
+			$changeInstallToolPasswordUrl = 'mod.php?M=tools_install';
 
 			$message = sprintf(
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:warning.install_password'),
