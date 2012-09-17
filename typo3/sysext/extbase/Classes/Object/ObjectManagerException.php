@@ -132,7 +132,7 @@ class ObjectManagerException implements \TYPO3\CMS\Extbase\Object\ObjectManagerI
 			$instance = $this->objectContainer->getInstance($objectName, $arguments);
 		}
 		if ($instance instanceof \TYPO3\CMS\Core\SingletonInterface) {
-			throw new \TYPO3\CMS\Extbase\Object\Exception\WrongScopeException(('Object "' . $objectName) . '" is of not of scope prototype, but only prototype is supported by create()', 1265203124);
+			throw new \TYPO3\CMS\Extbase\Object\Exception\WrongScopeException('Object "' . $objectName . '" is of not of scope prototype, but only prototype is supported by create()', 1265203124);
 		}
 		return $instance;
 	}

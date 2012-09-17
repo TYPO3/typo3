@@ -149,8 +149,8 @@ class StringLengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation
 		$this->validator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError'), array(), '', FALSE);
 		$this->validatorOptions(array('minimum' => 5, 'maximum' => 100));
 		$className = 'TestClass' . md5(uniqid(mt_rand(), TRUE));
-		eval(('
-			class ' . $className) . ' {
+		eval('
+			class ' . $className . ' {
 				public function __toString() {
 					return \'some string\';
 				}
@@ -169,8 +169,8 @@ class StringLengthValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation
 		$this->validator = $this->getMock('TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator', array('addError'), array(), '', FALSE);
 		$this->validatorOptions(array('minimum' => 5, 'maximum' => 100));
 		$className = 'TestClass' . md5(uniqid(mt_rand(), TRUE));
-		eval(('
-			class ' . $className) . ' {
+		eval('
+			class ' . $className . ' {
 				protected $someProperty;
 			}
 		');

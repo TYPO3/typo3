@@ -30,7 +30,7 @@ class AbstractEntityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithSimpleProperties() {
 		$domainObjectName = uniqid('DomainObject_');
-		eval(('class ' . $domainObjectName) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		eval('class ' . $domainObjectName . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 			public $foo;
 			public $bar;
 		}');
@@ -46,7 +46,7 @@ class AbstractEntityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function objectIsDirtyAfterCallingMemorizeCleanStateWithSimplePropertiesAndModifyingThePropertiesAfterwards() {
 		$domainObjectName = uniqid('DomainObject_');
-		eval(('class ' . $domainObjectName) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		eval('class ' . $domainObjectName . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 			public $foo;
 			public $bar;
 		}');
@@ -63,7 +63,7 @@ class AbstractEntityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithObjectProperties() {
 		$domainObjectName = uniqid('DomainObject_');
-		eval(('class ' . $domainObjectName) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		eval('class ' . $domainObjectName . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 			public $foo;
 			public $bar;
 		}');
@@ -79,12 +79,12 @@ class AbstractEntityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function objectIsNotDirtyAfterCallingMemorizeCleanStateWithOtherDomainObjectsAsProperties() {
 		$domainObjectName = uniqid('DomainObject_');
-		eval(('class ' . $domainObjectName) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		eval('class ' . $domainObjectName . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 			public $foo;
 			public $bar;
 		}');
 		$secondDomainObjectName = uniqid('DomainObject_');
-		eval(('class ' . $secondDomainObjectName) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		eval('class ' . $secondDomainObjectName . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 			public $foo;
 			public $bar;
 		}');

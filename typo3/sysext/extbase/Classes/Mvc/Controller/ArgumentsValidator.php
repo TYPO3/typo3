@@ -49,7 +49,7 @@ class ArgumentsValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstrac
 	 */
 	public function isValid($arguments) {
 		if (!$arguments instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Arguments) {
-			throw new \InvalidArgumentException(('Expected TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments, ' . gettype($arguments)) . ' given.', 1241079561);
+			throw new \InvalidArgumentException('Expected TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments, ' . gettype($arguments) . ' given.', 1241079561);
 		}
 		$this->errors = array();
 		$result = TRUE;
@@ -85,7 +85,7 @@ class ArgumentsValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstrac
 	 */
 	public function isPropertyValid($arguments, $argumentName) {
 		if (!$arguments instanceof \TYPO3\CMS\Extbase\Mvc\Controller\Arguments) {
-			throw new \InvalidArgumentException(('Expected TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments, ' . gettype($arguments)) . ' given.', 1241079562);
+			throw new \InvalidArgumentException('Expected TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Arguments, ' . gettype($arguments) . ' given.', 1241079562);
 		}
 		$argument = $arguments[$argumentName];
 		$validatorConjunction = $argument->getValidator();

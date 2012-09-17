@@ -131,7 +131,7 @@ class ExtensionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function getPluginNamespaceTests($extensionName, $pluginName, $expectedResult) {
 		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->will($this->returnValue(array()));
 		$actualResult = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
-		$this->assertEquals($expectedResult, $actualResult, ((('Failing for extension: "' . $extensionName) . '", plugin: "') . $pluginName) . '"');
+		$this->assertEquals($expectedResult, $actualResult, 'Failing for extension: "' . $extensionName . '", plugin: "' . $pluginName . '"');
 	}
 
 	/**
@@ -171,7 +171,7 @@ class ExtensionServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	public function getPluginNameByActionTests($extensionName, $controllerName, $actionName, $expectedResult) {
 		$this->mockConfigurationManager->expects($this->once())->method('getConfiguration')->with(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK)->will($this->returnValue(array('view' => array('pluginNamespace' => 'overridden_plugin_namespace'))));
 		$actualResult = $this->extensionService->getPluginNameByAction($extensionName, $controllerName, $actionName);
-		$this->assertEquals($expectedResult, $actualResult, ((((('Failing for $extensionName: "' . $extensionName) . '", $controllerName: "') . $controllerName) . '", $actionName: "') . $actionName) . '" - ');
+		$this->assertEquals($expectedResult, $actualResult, 'Failing for $extensionName: "' . $extensionName . '", $controllerName: "' . $controllerName . '", $actionName: "' . $actionName . '" - ');
 	}
 
 	/**

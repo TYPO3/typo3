@@ -82,10 +82,10 @@ class Command {
 			$classNameParts = array_values($classNameParts);
 		}
 		if (count($classNameParts) !== 4 || strpos($classNameParts[3], 'CommandController') === FALSE) {
-			throw new \InvalidArgumentException(('Invalid controller class name "' . $controllerClassName) . '"', 1305100019);
+			throw new \InvalidArgumentException('Invalid controller class name "' . $controllerClassName . '"', 1305100019);
 		}
 		$extensionKey = \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($classNameParts[1]);
-		$this->commandIdentifier = strtolower(((($extensionKey . ':') . substr($classNameParts[3], 0, -17)) . ':') . $controllerCommandName);
+		$this->commandIdentifier = strtolower($extensionKey . ':' . substr($classNameParts[3], 0, -17) . ':' . $controllerCommandName);
 	}
 
 	/**

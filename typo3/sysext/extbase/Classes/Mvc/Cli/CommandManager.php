@@ -104,10 +104,10 @@ class CommandManager implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		if (count($matchedCommands) === 0) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException(('No command could be found that matches the command identifier "' . $commandIdentifier) . '".', 1310556663);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException('No command could be found that matches the command identifier "' . $commandIdentifier . '".', 1310556663);
 		}
 		if (count($matchedCommands) > 1) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException(('More than one command matches the command identifier "' . $commandIdentifier) . '"', 1310557169, NULL, $matchedCommands);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\AmbiguousCommandIdentifierException('More than one command matches the command identifier "' . $commandIdentifier . '"', 1310557169, NULL, $matchedCommands);
 		}
 		return current($matchedCommands);
 	}

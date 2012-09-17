@@ -224,7 +224,7 @@ class BackendUser extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return boolean whether this user is currently activated
 	 */
 	public function isActivated() {
-		return (!$this->getIsDisabled() && $this->isActivatedViaStartDateAndTime()) && $this->isActivatedViaEndDateAndTime();
+		return !$this->getIsDisabled() && $this->isActivatedViaStartDateAndTime() && $this->isActivatedViaEndDateAndTime();
 	}
 
 	/**

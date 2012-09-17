@@ -128,7 +128,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 		$className = $this->getImplementationClassName($className);
 		$classInfo = $this->getClassInfo($className);
 		// get an object and avoid calling __construct()
-		$object = unserialize(((('O:' . strlen($className)) . ':"') . $className) . '":0:{};');
+		$object = unserialize('O:' . strlen($className) . ':"' . $className . '":0:{};');
 		$this->injectDependencies($object, $classInfo);
 		return $object;
 	}
@@ -153,7 +153,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 		$className = \TYPO3\CMS\Core\Core\ClassLoader::getClassNameForAlias($className);
 		if (isset($this->singletonInstances[$className])) {
 			if (count($givenConstructorArguments) > 0) {
-				throw new \TYPO3\CMS\Extbase\Object\Exception(('Object "' . $className) . '" fetched from singleton cache, thus, explicit constructor arguments are not allowed.', 1292857934);
+				throw new \TYPO3\CMS\Extbase\Object\Exception('Object "' . $className . '" fetched from singleton cache, thus, explicit constructor arguments are not allowed.', 1292857934);
 			}
 			return $this->singletonInstances[$className];
 		}
@@ -161,7 +161,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 		$classIsSingleton = $classInfo->getIsSingleton();
 		if (!$classIsSingleton) {
 			if (array_key_exists($className, $this->prototypeObjectsWhichAreCurrentlyInstanciated) !== FALSE) {
-				throw new \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException(('Cyclic dependency in prototype object, for class "' . $className) . '".', 1295611406);
+				throw new \TYPO3\CMS\Extbase\Object\Exception\CannotBuildObjectException('Cyclic dependency in prototype object, for class "' . $className . '".', 1295611406);
 			}
 			$this->prototypeObjectsWhichAreCurrentlyInstanciated[$className] = TRUE;
 		}
@@ -190,7 +190,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 		$className = $classInfo->getClassName();
 		$classIsSingleton = $classInfo->getIsSingleton();
 		if ($classIsSingleton && count($givenConstructorArguments) > 0) {
-			throw new \TYPO3\CMS\Extbase\Object\Exception(('Object "' . $className) . '" has explicit constructor arguments but is a singleton; this is not allowed.', 1292858051);
+			throw new \TYPO3\CMS\Extbase\Object\Exception('Object "' . $className . '" has explicit constructor arguments but is a singleton; this is not allowed.', 1292858051);
 		}
 		$constructorArguments = $this->getConstructorArguments($className, $classInfo, $givenConstructorArguments);
 		array_unshift($constructorArguments, $className);
@@ -215,7 +215,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 		foreach ($classInfo->getInjectMethods() as $injectMethodName => $classNameToInject) {
 			$instanceToInject = $this->getInstanceInternal($classNameToInject);
 			if ($classInfo->getIsSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
-				$this->log(((('The singleton "' . $classInfo->getClassName()) . '" needs a prototype in "') . $injectMethodName) . '". This is often a bad code smell; often you rather want to inject a singleton.', 1);
+				$this->log('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectMethodName . '". This is often a bad code smell; often you rather want to inject a singleton.', 1);
 			}
 			if (is_callable(array($instance, $injectMethodName))) {
 				$instance->{$injectMethodName}($instanceToInject);
@@ -224,7 +224,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 		foreach ($classInfo->getInjectProperties() as $injectPropertyName => $classNameToInject) {
 			$instanceToInject = $this->getInstanceInternal($classNameToInject);
 			if ($classInfo->getIsSingleton() && !$instanceToInject instanceof \TYPO3\CMS\Core\SingletonInterface) {
-				$this->log(((('The singleton "' . $classInfo->getClassName()) . '" needs a prototype in "') . $injectPropertyName) . '". This is often a bad code smell; often you rather want to inject a singleton.', 1320177676);
+				$this->log('The singleton "' . $classInfo->getClassName() . '" needs a prototype in "' . $injectPropertyName . '". This is often a bad code smell; often you rather want to inject a singleton.', 1320177676);
 			}
 			$propertyReflection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Reflection\\PropertyReflection', $instance, $injectPropertyName);
 			$propertyReflection->setAccessible(TRUE);
@@ -273,7 +273,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 				// Inject parameter
 				$parameter = $this->getInstanceInternal($argumentInformation['dependency']);
 				if ($classInfo->getIsSingleton() && !$parameter instanceof \TYPO3\CMS\Core\SingletonInterface) {
-					$this->log(('The singleton "' . $className) . '" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.', 1);
+					$this->log('The singleton "' . $className . '" needs a prototype in the constructor. This is often a bad code smell; often you rather want to inject a singleton.', 1);
 				}
 			} elseif (count($givenConstructorArguments)) {
 				// EITHER:

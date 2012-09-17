@@ -55,7 +55,7 @@ class FlashMessages implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function add($message, $title = '', $severity = \TYPO3\CMS\Core\Messaging\FlashMessage::OK) {
 		if (!is_string($message)) {
-			throw new \InvalidArgumentException(('The flash message must be string, ' . gettype($message)) . ' given.', 1243258395);
+			throw new \InvalidArgumentException('The flash message must be string, ' . gettype($message) . ' given.', 1243258395);
 		}
 		/** @var $flashMessage \TYPO3\CMS\Core\Messaging\FlashMessage */
 		$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, $title, $severity, TRUE);

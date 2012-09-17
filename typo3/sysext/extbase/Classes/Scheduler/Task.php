@@ -143,7 +143,7 @@ class Task extends \TYPO3\CMS\Scheduler\Task {
 			$arguments = array();
 			foreach ($this->arguments as $argumentName => $argumentValue) {
 				if ($argumentValue != $this->defaults[$argumentName]) {
-					array_push($arguments, ($argumentName . '=') . $argumentValue);
+					array_push($arguments, $argumentName . '=' . $argumentValue);
 				}
 			}
 			$label .= ' ' . implode(', ', $arguments);

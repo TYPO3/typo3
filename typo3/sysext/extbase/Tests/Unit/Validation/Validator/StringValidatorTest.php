@@ -53,8 +53,8 @@ class StringValidatorTest extends \TYPO3\CMS\Extbase\Tests\Unit\Validation\Valid
 	 */
 	public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven() {
 		$className = 'TestClass' . md5(uniqid(mt_rand(), TRUE));
-		eval(('
-			class ' . $className) . ' {
+		eval('
+			class ' . $className . ' {
 				public function __toString() {
 					return "ASDF";
 				}

@@ -113,7 +113,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 		case self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT:
 			return $this->concreteConfigurationManager->getTypoScriptSetup();
 		default:
-			throw new \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationType(('Invalid configuration type "' . $configurationType) . '"', 1206031879);
+			throw new \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationType('Invalid configuration type "' . $configurationType . '"', 1206031879);
 		}
 	}
 

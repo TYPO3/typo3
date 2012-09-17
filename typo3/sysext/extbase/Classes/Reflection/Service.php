@@ -426,7 +426,7 @@ class Service implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function buildClassSchema($className) {
 		if (!class_exists($className)) {
-			throw new \TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException(('The classname "' . $className) . '" was not found and thus can not be reflected.', 1278450972);
+			throw new \TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException('The classname "' . $className . '" was not found and thus can not be reflected.', 1278450972);
 		}
 		$classSchema = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Reflection\\ClassSchema', $className);
 		if (is_subclass_of($className, 'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity')) {

@@ -142,10 +142,10 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 		}
 		$schema = $this->reflectionService->getClassSchema($targetType);
 		if (!$schema->hasProperty($propertyName)) {
-			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException(((('Property "' . $propertyName) . '" was not found in target object of type "') . $targetType) . '".', 1297978366);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Property "' . $propertyName . '" was not found in target object of type "' . $targetType . '".', 1297978366);
 		}
 		$propertyInformation = $schema->getProperty($propertyName);
-		return $propertyInformation['type'] . ($propertyInformation['elementType'] !== NULL ? ('<' . $propertyInformation['elementType']) . '>' : '');
+		return $propertyInformation['type'] . ($propertyInformation['elementType'] !== NULL ? '<' . $propertyInformation['elementType'] . '>' : '');
 	}
 
 	/**
@@ -171,7 +171,7 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 		foreach ($convertedChildProperties as $propertyName => $propertyValue) {
 			$result = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::setProperty($object, $propertyName, $propertyValue);
 			if ($result === FALSE) {
-				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException(((('Property "' . $propertyName) . '" could not be set in target object of type "') . $targetType) . '".', 1297935345);
+				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Property "' . $propertyName . '" could not be set in target object of type "' . $targetType . '".', 1297935345);
 			}
 		}
 		return $object;
@@ -221,10 +221,10 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 		if (is_numeric($identity)) {
 			$object = $this->persistenceManager->getObjectByIdentifier($identity, $targetType);
 		} else {
-			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException(('The identity property "' . $identity) . '" is no UID.', 1297931020);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidSourceException('The identity property "' . $identity . '" is no UID.', 1297931020);
 		}
 		if ($object === NULL) {
-			throw new \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException(('Object with identity "' . print_r($identity, TRUE)) . '" not found.', 1297933823);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException('Object with identity "' . print_r($identity, TRUE) . '" not found.', 1297933823);
 		}
 		return $object;
 	}
@@ -255,7 +255,7 @@ class PersistentObjectConverter extends \TYPO3\CMS\Extbase\Property\TypeConverte
 			} elseif ($constructorArgumentInformation['optional'] === TRUE) {
 				$constructorArguments[] = $constructorArgumentInformation['defaultValue'];
 			} else {
-				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException(((('Missing constructor argument "' . $constructorArgumentName) . '" for object of type "') . $objectType) . '".', 1268734872);
+				throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Missing constructor argument "' . $constructorArgumentName . '" for object of type "' . $objectType . '".', 1268734872);
 			}
 		}
 		return call_user_func_array(array($this->objectManager, 'create'), array_merge(array($objectType), $constructorArguments));

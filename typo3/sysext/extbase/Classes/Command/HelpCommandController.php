@@ -135,7 +135,7 @@ class HelpCommandController extends \TYPO3\CMS\Extbase\Mvc\Controller\CommandCon
 				$usage .= sprintf(' <%s>', strtolower(preg_replace('/([A-Z])/', ' $1', $commandArgumentDefinition->getName())));
 			}
 		}
-		$usage = (('./cli_dispatch.phpsh extbase ' . $this->commandManager->getShortestIdentifierForCommand($command)) . ($hasOptions ? ' [<options>]' : '')) . $usage;
+		$usage = './cli_dispatch.phpsh extbase ' . $this->commandManager->getShortestIdentifierForCommand($command) . ($hasOptions ? ' [<options>]' : '') . $usage;
 		$this->outputLine();
 		$this->outputLine('USAGE:');
 		$this->outputLine('  ' . $usage);

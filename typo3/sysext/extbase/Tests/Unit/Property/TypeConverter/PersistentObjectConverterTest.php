@@ -288,7 +288,7 @@ class PersistentObjectConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTe
 		$convertedChildProperties = array('property1' => 'bar');
 		$this->mockObjectManager->expects($this->once())->method('create')->with($className)->will($this->returnValue($model));
 		$configuration = $this->buildConfiguration(array(\TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED => TRUE));
-		$reflectionException = new \ReflectionException(('Method ' . $className) . '::__construct() does not exist');
+		$reflectionException = new \ReflectionException('Method ' . $className . '::__construct() does not exist');
 		$this->mockReflectionService->expects($this->once())->method('getMethodParameters')->with($className, '__construct')->will($this->throwException($reflectionException));
 		$result = $this->converter->convertFrom($source, $className, $convertedChildProperties, $configuration);
 		$this->assertSame($model, $result);

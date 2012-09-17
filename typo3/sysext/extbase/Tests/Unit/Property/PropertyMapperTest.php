@@ -294,7 +294,7 @@ class PropertyMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		try {
 			$actualTypeConverter = $propertyMapper->_call('findTypeConverter', 'someSourceString', $targetClass, $this->mockConfiguration);
 			if ($shouldFailWithException) {
-				$this->fail(('Expected exception ' . $shouldFailWithException) . ' which was not thrown.');
+				$this->fail('Expected exception ' . $shouldFailWithException . ' which was not thrown.');
 			}
 			$this->assertSame($expectedTypeConverter, $actualTypeConverter->_name);
 		} catch (\Exception $e) {

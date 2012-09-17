@@ -104,7 +104,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	 */
 	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
 		if (!$this->canProcessRequest($request)) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException(((get_class($this) . ' does not support requests of type "') . get_class($request)) . '".', 1300787096);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException(get_class($this) . ' does not support requests of type "' . get_class($request) . '".', 1300787096);
 		}
 		$this->request = $request;
 		$this->request->setDispatched(TRUE);
@@ -128,7 +128,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 	protected function resolveCommandMethodName() {
 		$commandMethodName = $this->request->getControllerCommandName() . 'Command';
 		if (!is_callable(array($this, $commandMethodName))) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException(((('A command method "' . $commandMethodName) . '()" does not exist in controller "') . get_class($this)) . '".', 1300902143);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchCommandException('A command method "' . $commandMethodName . '()" does not exist in controller "' . get_class($this) . '".', 1300902143);
 		}
 		return $commandMethodName;
 	}
@@ -151,7 +151,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 				$dataType = 'array';
 			}
 			if ($dataType === NULL) {
-				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException(((((('The argument type for parameter $' . $parameterName) . ' of method ') . get_class($this)) . '->') . $this->commandMethodName) . '() could not be detected.', 1306755296);
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException('The argument type for parameter $' . $parameterName . ' of method ' . get_class($this) . '->' . $this->commandMethodName . '() could not be detected.', 1306755296);
 			}
 			$defaultValue = isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL;
 			$this->arguments->addNewArgument($parameterName, $dataType, $parameterInfo['optional'] === FALSE, $defaultValue);
@@ -171,7 +171,7 @@ class CommandController implements \TYPO3\CMS\Extbase\Mvc\Controller\CommandCont
 			if ($this->request->hasArgument($argumentName)) {
 				$argument->setValue($this->request->getArgument($argumentName));
 			} elseif ($argument->isRequired()) {
-				$exception = new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException(('Required argument "' . $argumentName) . '" is not set.', 1306755520);
+				$exception = new \TYPO3\CMS\Extbase\Mvc\Exception\CommandException('Required argument "' . $argumentName . '" is not set.', 1306755520);
 				$this->forward('error', 'TYPO3\\CMS\\Extbase\\Command\\HelpCommandController', array('exception' => $exception));
 			}
 		}

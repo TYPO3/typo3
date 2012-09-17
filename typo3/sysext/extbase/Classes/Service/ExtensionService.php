@@ -69,7 +69,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return string plugin namespace
 	 */
 	public function getPluginNamespace($extensionName, $pluginName) {
-		$pluginSignature = strtolower(($extensionName . '_') . $pluginName);
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 		$defaultPluginNamespace = 'tx_' . $pluginSignature;
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
 		if (!isset($frameworkConfiguration['view']['pluginNamespace']) || empty($frameworkConfiguration['view']['pluginNamespace'])) {
@@ -117,7 +117,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		if (count($pluginNames) > 1) {
-			throw new \TYPO3\CMS\Extbase\Exception(((((('There is more than one plugin that can handle this request (Extension: "' . $extensionName) . '", Controller: "') . $controllerName) . '", action: "') . $actionName) . '"). Please specify "pluginName" argument', 1280825466);
+			throw new \TYPO3\CMS\Extbase\Exception('There is more than one plugin that can handle this request (Extension: "' . $extensionName . '", Controller: "' . $controllerName . '", action: "' . $actionName . '"). Please specify "pluginName" argument', 1280825466);
 		}
 		return count($pluginNames) > 0 ? $pluginNames[0] : NULL;
 	}
@@ -133,7 +133,7 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function isActionCacheable($extensionName, $pluginName, $controllerName, $actionName) {
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, $extensionName, $pluginName);
-		if (((isset($frameworkConfiguration['controllerConfiguration'][$controllerName]) && is_array($frameworkConfiguration['controllerConfiguration'][$controllerName])) && is_array($frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) && in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) {
+		if (isset($frameworkConfiguration['controllerConfiguration'][$controllerName]) && is_array($frameworkConfiguration['controllerConfiguration'][$controllerName]) && is_array($frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions']) && in_array($actionName, $frameworkConfiguration['controllerConfiguration'][$controllerName]['nonCacheableActions'])) {
 			return FALSE;
 		}
 		return TRUE;
@@ -156,11 +156,11 @@ class ExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 		if (!isset($frameworkConfiguration['view']['defaultPid']) || empty($frameworkConfiguration['view']['defaultPid'])) {
 			return NULL;
 		}
-		$pluginSignature = strtolower(($extensionName . '_') . $pluginName);
+		$pluginSignature = strtolower($extensionName . '_' . $pluginName);
 		if ($frameworkConfiguration['view']['defaultPid'] === 'auto') {
-			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pid', 'tt_content', (((('list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content')) . ' AND CType="list"') . $GLOBALS['TSFE']->sys_page->enableFields('tt_content')) . ' AND sys_language_uid=') . $GLOBALS['TSFE']->sys_language_uid, '', '', 2);
+			$pages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pid', 'tt_content', 'list_type=' . $GLOBALS['TYPO3_DB']->fullQuoteStr($pluginSignature, 'tt_content') . ' AND CType="list"' . $GLOBALS['TSFE']->sys_page->enableFields('tt_content') . ' AND sys_language_uid=' . $GLOBALS['TSFE']->sys_language_uid, '', '', 2);
 			if (count($pages) > 1) {
-				throw new \TYPO3\CMS\Extbase\Exception(((('There is more than one "' . $pluginSignature) . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_') . $pluginSignature) . '.view.defaultPid" to a fixed page id', 1280773643);
+				throw new \TYPO3\CMS\Extbase\Exception('There is more than one "' . $pluginSignature . '" plugin in the current page tree. Please remove one plugin or set the TypoScript configuration "plugin.tx_' . $pluginSignature . '.view.defaultPid" to a fixed page id', 1280773643);
 			}
 			return count($pages) > 0 ? $pages[0]['pid'] : NULL;
 		}

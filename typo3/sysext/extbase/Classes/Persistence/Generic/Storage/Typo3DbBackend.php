@@ -152,7 +152,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$values[] = '?';
 			$parameters[] = $value;
 		}
-		$sqlString = ((((('INSERT INTO ' . $tableName) . ' (') . implode(', ', $fields)) . ') VALUES (') . implode(', ', $values)) . ')';
+		$sqlString = 'INSERT INTO ' . $tableName . ' (' . implode(', ', $fields) . ') VALUES (' . implode(', ', $values) . ')';
 		$this->replacePlaceholders($sqlString, $parameters);
 		// debug($sqlString,-2);
 		$this->databaseHandle->sql_query($sqlString);
@@ -186,7 +186,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$parameters[] = $value;
 		}
 		$parameters[] = $uid;
-		$sqlString = ((('UPDATE ' . $tableName) . ' SET ') . implode(', ', $fields)) . ' WHERE uid=?';
+		$sqlString = 'UPDATE ' . $tableName . ' SET ' . implode(', ', $fields) . ' WHERE uid=?';
 		$this->replacePlaceholders($sqlString, $parameters);
 		// debug($sqlString,-2);
 		$returnValue = $this->databaseHandle->sql_query($sqlString);
@@ -206,7 +206,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @return bool
 	 */
 	public function removeRow($tableName, array $identifier, $isRelation = FALSE) {
-		$statement = (('DELETE FROM ' . $tableName) . ' WHERE ') . $this->parseIdentifier($identifier);
+		$statement = 'DELETE FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier);
 		$this->replacePlaceholders($statement, $identifier);
 		if (!$isRelation && isset($identifier['uid'])) {
 			$this->clearPageCache($tableName, $identifier['uid'], $isRelation);
@@ -225,7 +225,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @return array|boolean
 	 */
 	public function getRowByIdentifier($tableName, array $identifier) {
-		$statement = (('SELECT * FROM ' . $tableName) . ' WHERE ') . $this->parseIdentifier($identifier);
+		$statement = 'SELECT * FROM ' . $tableName . ' WHERE ' . $this->parseIdentifier($identifier);
 		$this->replacePlaceholders($statement, $identifier);
 		// debug($statement,-2);
 		$res = $this->databaseHandle->sql_query($statement);
@@ -304,7 +304,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$statementParts['fields'] = array('COUNT(*)');
 			if (isset($statementParts['keywords']['distinct'])) {
 				unset($statementParts['keywords']['distinct']);
-				$statementParts['fields'] = array(('COUNT(DISTINCT ' . reset($statementParts['tables'])) . '.uid)');
+				$statementParts['fields'] = array('COUNT(DISTINCT ' . reset($statementParts['tables']) . '.uid)');
 			}
 			$statement = $this->buildQuery($statementParts, $parameters);
 			$this->replacePlaceholders($statement, $parameters);
@@ -355,7 +355,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 * @return string The SQL statement
 	 */
 	public function buildQuery(array $sql) {
-		$statement = (((((('SELECT ' . implode(' ', $sql['keywords'])) . ' ') . implode(',', $sql['fields'])) . ' FROM ') . implode(' ', $sql['tables'])) . ' ') . implode(' ', $sql['unions']);
+		$statement = 'SELECT ' . implode(' ', $sql['keywords']) . ' ' . implode(',', $sql['fields']) . ' FROM ' . implode(' ', $sql['tables']) . ' ' . implode(' ', $sql['unions']);
 		if (!empty($sql['where'])) {
 			$statement .= ' WHERE ' . implode('', $sql['where']);
 			if (!empty($sql['additionalWhereClause'])) {
@@ -386,7 +386,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$properties = $object->_getProperties();
 		foreach ($properties as $propertyName => $propertyValue) {
 			// FIXME We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
-			if ((($dataMap->isPersistableProperty($propertyName) && $propertyName !== 'uid') && $propertyName !== 'pid') && $propertyName !== 'isClone') {
+			if ($dataMap->isPersistableProperty($propertyName) && $propertyName !== 'uid' && $propertyName !== 'pid' && $propertyName !== 'isClone') {
 				if ($propertyValue === NULL) {
 					$fields[] = $dataMap->getColumnMap($propertyName)->getColumnName() . ' IS NULL';
 				} else {
@@ -459,9 +459,9 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				if (count($recordTypes) > 0) {
 					$recordTypeStatements = array();
 					foreach ($recordTypes as $recordType) {
-						$recordTypeStatements[] = ((($dataMap->getTableName() . '.') . $dataMap->getRecordTypeColumnName()) . '=') . $this->databaseHandle->fullQuoteStr($recordType, 'foo');
+						$recordTypeStatements[] = $dataMap->getTableName() . '.' . $dataMap->getRecordTypeColumnName() . '=' . $this->databaseHandle->fullQuoteStr($recordType, 'foo');
 					}
-					$sql['additionalWhereClause'][] = ('(' . implode(' OR ', $recordTypeStatements)) . ')';
+					$sql['additionalWhereClause'][] = '(' . implode(' OR ', $recordTypeStatements) . ')';
 				}
 			}
 		}
@@ -496,7 +496,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		if ($joinCondition instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\EquiJoinCondition) {
 			$column1Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty1Name(), $leftClassName);
 			$column2Name = $this->dataMapper->convertPropertyNameToColumnName($joinCondition->getProperty2Name(), $rightClassName);
-			$sql['unions'][$rightTableName] .= ((((((' ON ' . $joinCondition->getSelector1Name()) . '.') . $column1Name) . ' = ') . $joinCondition->getSelector2Name()) . '.') . $column2Name;
+			$sql['unions'][$rightTableName] .= ' ON ' . $joinCondition->getSelector1Name() . '.' . $column1Name . ' = ' . $joinCondition->getSelector2Name() . '.' . $column2Name;
 		}
 		if ($rightSource instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Qom\JoinInterface) {
 			$this->parseJoin($rightSource, $sql);
@@ -580,18 +580,18 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				$typeOfRelation = $columnMap instanceof \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap ? $columnMap->getTypeOfRelation() : NULL;
 				if ($typeOfRelation === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 					$relationTableName = $columnMap->getRelationTableName();
-					$sql['where'][] = (((((((($tableName . '.uid IN (SELECT ') . $columnMap->getParentKeyFieldName()) . ' FROM ') . $relationTableName) . ' WHERE ') . $columnMap->getChildKeyFieldName()) . '=') . $this->getPlainValue($operand2)) . ')';
+					$sql['where'][] = $tableName . '.uid IN (SELECT ' . $columnMap->getParentKeyFieldName() . ' FROM ' . $relationTableName . ' WHERE ' . $columnMap->getChildKeyFieldName() . '=' . $this->getPlainValue($operand2) . ')';
 				} elseif ($typeOfRelation === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
 					$parentKeyFieldName = $columnMap->getParentKeyFieldName();
 					if (isset($parentKeyFieldName)) {
 						$childTableName = $columnMap->getChildTableName();
-						$sql['where'][] = (((((((((($tableName . '.uid=(SELECT ') . $childTableName) . '.') . $parentKeyFieldName) . ' FROM ') . $childTableName) . ' WHERE ') . $childTableName) . '.uid=') . $this->getPlainValue($operand2)) . ')';
+						$sql['where'][] = $tableName . '.uid=(SELECT ' . $childTableName . '.' . $parentKeyFieldName . ' FROM ' . $childTableName . ' WHERE ' . $childTableName . '.uid=' . $this->getPlainValue($operand2) . ')';
 					} else {
-						$statement = ((((('FIND_IN_SET(' . $this->getPlainValue($operand2)) . ',') . $tableName) . '.') . $columnName) . ')';
+						$statement = 'FIND_IN_SET(' . $this->getPlainValue($operand2) . ',' . $tableName . '.' . $columnName . ')';
 						$sql['where'][] = $statement;
 					}
 				} else {
-					throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException(('Unsupported or non-existing property name "' . $propertyName) . '" used in relation matching.', 1327065745);
+					throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\RepositoryException('Unsupported or non-existing property name "' . $propertyName . '" used in relation matching.', 1327065745);
 				}
 			}
 		} else {
@@ -624,7 +624,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			if ($input instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
 				return $input->getUid();
 			} else {
-				throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException(('An object of class "' . get_class($input)) . '" could not be converted to a plain value.', 1274799934);
+				throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException('An object of class "' . get_class($input) . '" could not be converted to a plain value.', 1274799934);
 			}
 		} elseif (is_bool($input)) {
 			return $input === TRUE ? 1 : 0;
@@ -666,9 +666,9 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$operator = $this->resolveOperator($operator);
 			$constraintSQL = '';
 			if ($valueFunction === NULL) {
-				$constraintSQL .= ((((!empty($tableName) ? $tableName . '.' : '') . $columnName) . ' ') . $operator) . ' ?';
+				$constraintSQL .= (!empty($tableName) ? $tableName . '.' : '') . $columnName . ' ' . $operator . ' ?';
 			} else {
-				$constraintSQL .= ((((($valueFunction . '(') . (!empty($tableName) ? $tableName . '.' : '')) . $columnName) . ') ') . $operator) . ' ?';
+				$constraintSQL .= $valueFunction . '(' . (!empty($tableName) ? $tableName . '.' : '') . $columnName . ') ' . $operator . ' ?';
 			}
 			$sql['where'][] = $constraintSQL;
 		}
@@ -691,23 +691,23 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		$childTableName = $columnMap->getChildTableName();
 		if ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_ONE) {
 			if (isset($parentKeyFieldName)) {
-				$sql['unions'][$childTableName] = (((((('LEFT JOIN ' . $childTableName) . ' ON ') . $tableName) . '.uid=') . $childTableName) . '.') . $parentKeyFieldName;
+				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $tableName . '.uid=' . $childTableName . '.' . $parentKeyFieldName;
 			} else {
-				$sql['unions'][$childTableName] = ((((((('LEFT JOIN ' . $childTableName) . ' ON ') . $tableName) . '.') . $columnName) . '=') . $childTableName) . '.uid';
+				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $tableName . '.' . $columnName . '=' . $childTableName . '.uid';
 			}
 			$className = $this->dataMapper->getType($className, $propertyName);
 		} elseif ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_MANY) {
 			if (isset($parentKeyFieldName)) {
-				$sql['unions'][$childTableName] = (((((('LEFT JOIN ' . $childTableName) . ' ON ') . $tableName) . '.uid=') . $childTableName) . '.') . $parentKeyFieldName;
+				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $tableName . '.uid=' . $childTableName . '.' . $parentKeyFieldName;
 			} else {
-				$onStatement = ((((('(FIND_IN_SET(' . $childTableName) . '.uid, ') . $tableName) . '.') . $columnName) . '))';
-				$sql['unions'][$childTableName] = (('LEFT JOIN ' . $childTableName) . ' ON ') . $onStatement;
+				$onStatement = '(FIND_IN_SET(' . $childTableName . '.uid, ' . $tableName . '.' . $columnName . '))';
+				$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $onStatement;
 			}
 			$className = $this->dataMapper->getType($className, $propertyName);
 		} elseif ($columnMap->getTypeOfRelation() === \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_HAS_AND_BELONGS_TO_MANY) {
 			$relationTableName = $columnMap->getRelationTableName();
-			$sql['unions'][$relationTableName] = (((((('LEFT JOIN ' . $relationTableName) . ' ON ') . $tableName) . '.uid=') . $relationTableName) . '.') . $columnMap->getParentKeyFieldName();
-			$sql['unions'][$childTableName] = ((((((('LEFT JOIN ' . $childTableName) . ' ON ') . $relationTableName) . '.') . $columnMap->getChildKeyFieldName()) . '=') . $childTableName) . '.uid';
+			$sql['unions'][$relationTableName] = 'LEFT JOIN ' . $relationTableName . ' ON ' . $tableName . '.uid=' . $relationTableName . '.' . $columnMap->getParentKeyFieldName();
+			$sql['unions'][$childTableName] = 'LEFT JOIN ' . $childTableName . ' ON ' . $relationTableName . '.' . $columnMap->getChildKeyFieldName() . '=' . $childTableName . '.uid';
 			$className = $this->dataMapper->getType($className, $propertyName);
 		} else {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception('Could not determine type of relation.', 1252502725);
@@ -783,16 +783,16 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			if ($markPosition !== FALSE) {
 				if ($parameter === NULL) {
 					$parameter = 'NULL';
-				} elseif ((is_array($parameter) || $parameter instanceof \ArrayAccess) || $parameter instanceof \Traversable) {
+				} elseif (is_array($parameter) || $parameter instanceof \ArrayAccess || $parameter instanceof \Traversable) {
 					$items = array();
 					foreach ($parameter as $item) {
 						$items[] = $this->databaseHandle->fullQuoteStr($item, 'foo');
 					}
-					$parameter = ('(' . implode(',', $items)) . ')';
+					$parameter = '(' . implode(',', $items) . ')';
 				} else {
 					$parameter = $this->databaseHandle->fullQuoteStr($parameter, 'foo');
 				}
-				$sqlString = (substr($sqlString, 0, $markPosition) . $parameter) . substr($sqlString, ($markPosition + 1));
+				$sqlString = substr($sqlString, 0, $markPosition) . $parameter . substr($sqlString, ($markPosition + 1));
 			}
 			$offset = $markPosition + strlen($parameter);
 		}
@@ -925,18 +925,18 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
 			if (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== NULL) {
 				// Select all entries for the current language
-				$additionalWhereClause = (((($tableName . '.') . $GLOBALS['TCA'][$tableName]['ctrl']['languageField']) . ' IN (') . $GLOBALS['TSFE']->sys_language_uid) . ',-1)';
+				$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (' . $GLOBALS['TSFE']->sys_language_uid . ',-1)';
 				// If any language is set -> get those entries which are not translated yet
 				// They will be removed by t3lib_page::getRecordOverlay if not matching overlay mode
 				if ($GLOBALS['TSFE']->sys_language_uid && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])) {
-					$additionalWhereClause .= ((((((((((((((((((((' OR (' . $tableName) . '.') . $GLOBALS['TCA'][$tableName]['ctrl']['languageField']) . '=0 AND ') . $tableName) . '.uid NOT IN (') . 'SELECT ') . $tableName) . '.') . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']) . ' FROM ') . $tableName) . ' WHERE ') . $tableName) . '.') . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']) . '>0 AND ') . $tableName) . '.') . $GLOBALS['TCA'][$tableName]['ctrl']['languageField']) . '>0';
+					$additionalWhereClause .= ' OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0 AND ' . $tableName . '.uid NOT IN (' . 'SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . ' FROM ' . $tableName . ' WHERE ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '>0 AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '>0';
 					// Add delete clause to ensure all entries are loaded
 					if (isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
-						$additionalWhereClause .= (((' AND ' . $tableName) . '.') . $GLOBALS['TCA'][$tableName]['ctrl']['delete']) . '=0';
+						$additionalWhereClause .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
 					}
 					$additionalWhereClause .= '))';
 				}
-				$sql['additionalWhereClause'][] = ('(' . $additionalWhereClause) . ')';
+				$sql['additionalWhereClause'][] = '(' . $additionalWhereClause . ')';
 			}
 		}
 	}
@@ -956,7 +956,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			$this->tableColumnCache->set($tableName, $tableColumns);
 		}
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && array_key_exists('pid', $tableColumns)) {
-			$sql['additionalWhereClause'][] = (($tableName . '.pid IN (') . implode(', ', $storagePageIds)) . ')';
+			$sql['additionalWhereClause'][] = $tableName . '.pid IN (' . implode(', ', $storagePageIds) . ')';
 		}
 	}
 
@@ -998,9 +998,9 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 			}
 			$columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
 			if (strlen($tableName) > 0) {
-				$sql['orderings'][] = ((($tableName . '.') . $columnName) . ' ') . $order;
+				$sql['orderings'][] = $tableName . '.' . $columnName . ' ' . $order;
 			} else {
-				$sql['orderings'][] = ($columnName . ' ') . $order;
+				$sql['orderings'][] = $columnName . ' ' . $order;
 			}
 		}
 	}
@@ -1015,7 +1015,7 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 */
 	protected function parseLimitAndOffset($limit, $offset, array &$sql) {
 		if ($limit !== NULL && $offset !== NULL) {
-			$sql['limit'] = ($offset . ', ') . $limit;
+			$sql['limit'] = $offset . ', ' . $limit;
 		} elseif ($limit !== NULL) {
 			$sql['limit'] = $limit;
 		}
@@ -1089,9 +1089,9 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 				$tableName = $source->getRight()->getSelectorName();
 			}
 			// If current row is a translation select its parent
-			if ((isset($GLOBALS['TCA'][$tableName]) && isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])) && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])) {
+			if (isset($GLOBALS['TCA'][$tableName]) && isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])) {
 				if (isset($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']]) && $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] > 0) {
-					$row = $this->databaseHandle->exec_SELECTgetSingleRow($tableName . '.*', $tableName, (((((($tableName . '.uid=') . $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']]) . ' AND ') . $tableName) . '.') . $GLOBALS['TCA'][$tableName]['ctrl']['languageField']) . '=0');
+					$row = $this->databaseHandle->exec_SELECTgetSingleRow($tableName . '.*', $tableName, $tableName . '.uid=' . $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] . ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0');
 				}
 			}
 			$this->pageSelectObject->versionOL($tableName, $row, TRUE);

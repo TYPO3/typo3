@@ -57,7 +57,7 @@ class HashService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function generateHmac($string) {
 		if (!is_string($string)) {
-			throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException(('A hash can only be generated for a string, but "' . gettype($string)) . '" was given.', 1255069587);
+			throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('A hash can only be generated for a string, but "' . gettype($string) . '" was given.', 1255069587);
 		}
 		$encryptionKey = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'];
 		if (!$encryptionKey) {
@@ -118,10 +118,10 @@ class HashService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function validateAndStripHmac($string) {
 		if (!is_string($string)) {
-			throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException(('A hash can only be validated for a string, but "' . gettype($string)) . '" was given.', 1320829762);
+			throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('A hash can only be validated for a string, but "' . gettype($string) . '" was given.', 1320829762);
 		}
 		if (strlen($string) < 40) {
-			throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException(('A hashed string must contain at least 40 characters, the given string was only ' . strlen($string)) . ' characters long.', 1320830276);
+			throw new \TYPO3\CMS\Extbase\Security\Exception\InvalidArgumentForHashGenerationException('A hashed string must contain at least 40 characters, the given string was only ' . strlen($string) . ' characters long.', 1320830276);
 		}
 		$stringWithoutHmac = substr($string, 0, -40);
 		if ($this->validateHmac($stringWithoutHmac, substr($string, -40)) !== TRUE) {

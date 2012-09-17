@@ -489,7 +489,7 @@ class Query implements \TYPO3\CMS\Extbase\Persistence\QueryInterface {
 	 * @api
 	 */
 	public function in($propertyName, $operand) {
-		if ((!is_array($operand) && !$operand instanceof \ArrayAccess) && !$operand instanceof \Traversable) {
+		if (!is_array($operand) && !$operand instanceof \ArrayAccess && !$operand instanceof \Traversable) {
 			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnexpectedTypeException('The "in" operator must be given a mutlivalued operand (array, ArrayAccess, Traversable).', 1264678095);
 		}
 		return $this->qomFactory->comparison($this->qomFactory->propertyValue($propertyName, $this->getSelectorName()), \TYPO3\CMS\Extbase\Persistence\QueryInterface::OPERATOR_IN, $operand);

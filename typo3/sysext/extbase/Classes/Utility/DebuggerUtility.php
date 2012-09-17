@@ -99,7 +99,7 @@ class DebuggerUtility {
 		if (is_string($value)) {
 			$croppedValue = strlen($value) > 2000 ? substr($value, 0, 2000) . '...' : $value;
 			if ($plainText) {
-				$dump = ((self::ansiEscapeWrap((('"' . implode((PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, ($level + 1))), str_split($croppedValue, 76))) . '"'), '33', $ansiColors) . ' (') . strlen($value)) . ' chars)';
+				$dump = self::ansiEscapeWrap(('"' . implode((PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, ($level + 1))), str_split($croppedValue, 76)) . '"'), '33', $ansiColors) . ' (' . strlen($value) . ' chars)';
 			} else {
 				$dump = sprintf('\'<span class="debug-string">%s</span>\' (%s chars)', implode('<br />' . str_repeat(self::HTML_INDENT, ($level + 1)), str_split(htmlspecialchars($croppedValue), 76)), strlen($value));
 			}
@@ -131,9 +131,9 @@ class DebuggerUtility {
 		if ($plainText) {
 			$header = self::ansiEscapeWrap($type, '36', $ansiColors);
 		} else {
-			$header = ('<span class="debug-type">' . $type) . '</span>';
+			$header = '<span class="debug-type">' . $type . '</span>';
 		}
-		$header .= count($array) > 0 ? (' (' . count($array)) . ' items)' : ' (empty)';
+		$header .= count($array) > 0 ? ' (' . count($array) . ' items)' : ' (empty)';
 		if ($level >= self::$maxDepth) {
 			if ($plainText) {
 				$content = ' ' . self::ansiEscapeWrap('max depth', '47;30', $ansiColors);
@@ -143,8 +143,8 @@ class DebuggerUtility {
 		} else {
 			$content = self::renderCollection($array, $level, $plainText, $ansiColors);
 		}
-		if (($level > 1 && count($array) > 0) && !$plainText) {
-			$dump = ((('<span class="debug-tree"><input type="checkbox" /><span class="debug-header">' . $header) . '</span><span class="debug-content">') . $content) . '</span></span>';
+		if ($level > 1 && count($array) > 0 && !$plainText) {
+			$dump = '<span class="debug-tree"><input type="checkbox" /><span class="debug-header">' . $header . '</span><span class="debug-content">' . $content . '</span></span>';
 		} else {
 			$dump = $header . $content;
 		}
@@ -165,7 +165,7 @@ class DebuggerUtility {
 			$object = $object->_loadRealInstance();
 		}
 		$header = self::renderHeader($object, $level, $plainText, $ansiColors);
-		if (($level < self::$maxDepth && !self::isBlacklisted($object)) && !(self::isAlreadyRendered($object) && $plainText !== TRUE)) {
+		if ($level < self::$maxDepth && !self::isBlacklisted($object) && !(self::isAlreadyRendered($object) && $plainText !== TRUE)) {
 			$content = self::renderContent($object, $level, $plainText, $ansiColors);
 		} else {
 			$content = '';
@@ -173,7 +173,7 @@ class DebuggerUtility {
 		if ($plainText) {
 			return $header . $content;
 		} else {
-			return ((('<span class="debug-tree">' . $header) . '<span class="debug-content">') . $content) . '</span></span>';
+			return '<span class="debug-tree">' . $header . '<span class="debug-content">' . $content . '</span></span>';
 		}
 	}
 
@@ -186,9 +186,9 @@ class DebuggerUtility {
 	static protected function isBlacklisted($value) {
 		$result = FALSE;
 		if ($value instanceof \ReflectionProperty) {
-			$result = (bool) preg_match((('/' . implode('|', self::$blacklistedPropertyNames)) . '/'), $value->getName());
+			$result = (bool) preg_match(('/' . implode('|', self::$blacklistedPropertyNames) . '/'), $value->getName());
 		} elseif (is_object($value)) {
-			$result = (bool) preg_match((('/' . implode('|', self::$blacklistedClassNames)) . '/'), get_class($value));
+			$result = (bool) preg_match(('/' . implode('|', self::$blacklistedClassNames) . '/'), get_class($value));
 		}
 		return $result;
 	}
@@ -219,7 +219,7 @@ class DebuggerUtility {
 		if ($plainText) {
 			$dump .= self::ansiEscapeWrap($className, '36', $ansiColors);
 		} else {
-			$dump .= ('<span class="debug-type">' . $className) . '</span>';
+			$dump .= '<span class="debug-type">' . $className . '</span>';
 		}
 		if ($object instanceof \TYPO3\CMS\Core\SingletonInterface) {
 			$scope = 'singleton';
@@ -229,7 +229,7 @@ class DebuggerUtility {
 		if ($plainText) {
 			$dump .= ' ' . self::ansiEscapeWrap($scope, '44;37', $ansiColors);
 		} else {
-			$dump .= $scope ? ('<span class="debug-scope">' . $scope) . '</span>' : '';
+			$dump .= $scope ? '<span class="debug-scope">' . $scope . '</span>' : '';
 		}
 		if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) {
 			if ($object->_isDirty()) {
@@ -251,35 +251,35 @@ class DebuggerUtility {
 			$domainObjectType = 'object';
 		}
 		if ($plainText) {
-			$dump .= ' ' . self::ansiEscapeWrap((($persistenceType . ' ') . $domainObjectType), '42;30', $ansiColors);
+			$dump .= ' ' . self::ansiEscapeWrap(($persistenceType . ' ' . $domainObjectType), '42;30', $ansiColors);
 		} else {
-			$dump .= ((('<span class="debug-ptype">' . $persistenceType) . ' ') . $domainObjectType) . '</span>';
+			$dump .= '<span class="debug-ptype">' . $persistenceType . ' ' . $domainObjectType . '</span>';
 		}
-		if (preg_match(('/' . implode('|', self::$blacklistedClassNames)) . '/', get_class($object)) !== 0) {
+		if (preg_match('/' . implode('|', self::$blacklistedClassNames) . '/', get_class($object)) !== 0) {
 			if ($plainText) {
 				$dump .= ' ' . self::ansiEscapeWrap('filtered', '47;30', $ansiColors);
 			} else {
 				$dump .= '<span class="debug-filtered">filtered</span>';
 			}
 		} elseif (self::$renderedObjects->contains($object) && !$plainText) {
-			$dump = ((('<a href="javascript:;" onclick="document.location.hash=\'#' . spl_object_hash($object)) . '\';" class="debug-seeabove">') . $dump) . '<span class="debug-filtered">see above</span></a>';
+			$dump = '<a href="javascript:;" onclick="document.location.hash=\'#' . spl_object_hash($object) . '\';" class="debug-seeabove">' . $dump . '<span class="debug-filtered">see above</span></a>';
 		} elseif ($level >= self::$maxDepth && !$object instanceof \DateTime) {
 			if ($plainText) {
 				$dump .= ' ' . self::ansiEscapeWrap('max depth', '47;30', $ansiColors);
 			} else {
 				$dump .= '<span class="debug-filtered">max depth</span>';
 			}
-		} elseif (($level > 1 && !$object instanceof \DateTime) && !$plainText) {
-			$dump = ((('<input type="checkbox" id="' . spl_object_hash($object)) . '" /><span class="debug-header">') . $dump) . '</span>';
+		} elseif ($level > 1 && !$object instanceof \DateTime && !$plainText) {
+			$dump = '<input type="checkbox" id="' . spl_object_hash($object) . '" /><span class="debug-header">' . $dump . '</span>';
 		}
 		if ($object instanceof \Countable) {
-			$dump .= count($object) > 0 ? (' (' . count($object)) . ' items)' : ' (empty)';
+			$dump .= count($object) > 0 ? ' (' . count($object) . ' items)' : ' (empty)';
 		}
 		if ($object instanceof \DateTime) {
-			$dump .= (((' (' . $object->format(\DateTime::RFC3339)) . ', ') . $object->getTimestamp()) . ')';
+			$dump .= ' (' . $object->format(\DateTime::RFC3339) . ', ' . $object->getTimestamp() . ')';
 		}
 		if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface && !$object->_isNew()) {
-			$dump .= (((' (uid=' . $object->getUid()) . ', pid=') . $object->getPid()) . ')';
+			$dump .= ' (uid=' . $object->getUid() . ', pid=' . $object->getPid() . ')';
 		}
 		return $dump;
 	}
@@ -298,7 +298,7 @@ class DebuggerUtility {
 		} else {
 			self::$renderedObjects->attach($object);
 			if (!$plainText) {
-				$dump .= ((('<a name="' . spl_object_hash($object)) . '" id="') . spl_object_hash($object)) . '"></a>';
+				$dump .= '<a name="' . spl_object_hash($object) . '" id="' . spl_object_hash($object) . '"></a>';
 			}
 			$classReflection = new \ReflectionClass(get_class($object));
 			$properties = $classReflection->getProperties();
@@ -306,10 +306,10 @@ class DebuggerUtility {
 				if (self::isBlacklisted($property)) {
 					continue;
 				}
-				$dump .= ((((PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level)) . ($plainText ? '' : '<span class="debug-property">')) . self::ansiEscapeWrap($property->getName(), '37', $ansiColors)) . ($plainText ? '' : '</span>')) . ' => ';
+				$dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level) . ($plainText ? '' : '<span class="debug-property">') . self::ansiEscapeWrap($property->getName(), '37', $ansiColors) . ($plainText ? '' : '</span>') . ' => ';
 				$property->setAccessible(TRUE);
 				$dump .= self::renderDump($property->getValue($object), $level, $plainText, $ansiColors);
-				if (($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject && !$object->_isNew()) && $object->_isDirty($property->getName())) {
+				if ($object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject && !$object->_isNew() && $object->_isDirty($property->getName())) {
 					if ($plainText) {
 						$dump .= ' ' . self::ansiEscapeWrap('modified', '43;30', $ansiColors);
 					} else {
@@ -331,7 +331,7 @@ class DebuggerUtility {
 	static protected function renderCollection($collection, $level, $plainText, $ansiColors) {
 		$dump = '';
 		foreach ($collection as $key => $value) {
-			$dump .= ((((PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level)) . ($plainText ? '' : '<span class="debug-property">')) . self::ansiEscapeWrap($key, '37', $ansiColors)) . ($plainText ? '' : '</span>')) . ' => ';
+			$dump .= PHP_EOL . str_repeat(self::PLAINTEXT_INDENT, $level) . ($plainText ? '' : '<span class="debug-property">') . self::ansiEscapeWrap($key, '37', $ansiColors) . ($plainText ? '' : '</span>') . ' => ';
 			$dump .= self::renderDump($value, $level + 1, $plainText, $ansiColors);
 		}
 		return $dump;
@@ -347,7 +347,7 @@ class DebuggerUtility {
 	 */
 	static protected function ansiEscapeWrap($string, $ansiColors, $enable = TRUE) {
 		if ($enable) {
-			return ((('[' . $ansiColors) . 'm') . $string) . '[0m';
+			return '[' . $ansiColors . 'm' . $string . '[0m';
 		} else {
 			return $string;
 		}
@@ -374,7 +374,7 @@ class DebuggerUtility {
 		}
 		$ansiColors = $plainText && $ansiColors;
 		if ($ansiColors === TRUE) {
-			$title = ('[1m' . $title) . '[0m';
+			$title = '[1m' . $title . '[0m';
 		}
 		if (is_array($blacklistedClassNames)) {
 			self::$blacklistedClassNames = $blacklistedClassNames;
@@ -412,13 +412,13 @@ class DebuggerUtility {
 			self::$stylesheetEchoed = TRUE;
 		}
 		if ($plainText) {
-			$output = ((($title . PHP_EOL) . self::renderDump($variable, 0, TRUE, $ansiColors)) . PHP_EOL) . PHP_EOL;
+			$output = $title . PHP_EOL . self::renderDump($variable, 0, TRUE, $ansiColors) . PHP_EOL . PHP_EOL;
 		} else {
-			$output = ((((('
-				<div class="Extbase-Utility-Debugger-VarDump ' . ($return ? 'Extbase-Utility-Debugger-VarDump-Inline' : 'Extbase-Utility-Debugger-VarDump-Floating')) . '">
-				<div class="Extbase-Utility-Debugger-VarDump-Top">') . htmlspecialchars($title)) . '</div>
+			$output = '
+				<div class="Extbase-Utility-Debugger-VarDump ' . ($return ? 'Extbase-Utility-Debugger-VarDump-Inline' : 'Extbase-Utility-Debugger-VarDump-Floating') . '">
+				<div class="Extbase-Utility-Debugger-VarDump-Top">' . htmlspecialchars($title) . '</div>
 				<div class="Extbase-Utility-Debugger-VarDump-Center">
-					<pre dir="ltr">') . self::renderDump($variable, 0, FALSE, FALSE)) . '</pre>
+					<pre dir="ltr">' . self::renderDump($variable, 0, FALSE, FALSE) . '</pre>
 				</div>
 			</div>
 			';

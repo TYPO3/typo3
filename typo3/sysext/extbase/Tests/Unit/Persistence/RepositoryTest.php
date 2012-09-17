@@ -171,9 +171,9 @@ class RepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function constructSetsObjectTypeFromClassName($repositoryClassName, $modelClassName) {
 		$mockClassName = 'MockRepository' . uniqid();
-		eval(((('class ' . $mockClassName) . ' extends TYPO3\\CMS\\Extbase\\Persistence\\Repository {
+		eval('class ' . $mockClassName . ' extends TYPO3\\CMS\\Extbase\\Persistence\\Repository {
 			protected function getRepositoryClassName() {
-				return \'') . $repositoryClassName) . '\';
+				return \'' . $repositoryClassName . '\';
 			}
 			public function _getObjectType() {
 				return $this->objectType;

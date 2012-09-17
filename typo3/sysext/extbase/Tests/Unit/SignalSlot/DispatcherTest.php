@@ -103,7 +103,7 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function dispatchRetrievesSlotInstanceFromTheObjectManagerIfOnlyAClassNameWasSpecified() {
 		$slotClassName = uniqid('Mock_');
-		eval(('class ' . $slotClassName) . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }');
+		eval('class ' . $slotClassName . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }');
 		$mockSlot = new $slotClassName();
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(TRUE));
@@ -134,7 +134,7 @@ class DispatcherTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function dispatchThrowsAnExceptionIfTheSpecifiedSlotMethodDoesNotExist() {
 		$slotClassName = uniqid('Mock_');
-		eval(('class ' . $slotClassName) . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }');
+		eval('class ' . $slotClassName . ' { function slot($foo, $baz) { $this->arguments = array($foo, $baz); } }');
 		$mockSlot = new $slotClassName();
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('isRegistered')->with($slotClassName)->will($this->returnValue(TRUE));

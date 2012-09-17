@@ -88,13 +88,13 @@ class PropertyReflection extends \ReflectionProperty {
 	 */
 	public function getValue($object = NULL) {
 		if (!is_object($object)) {
-			throw new \TYPO3\CMS\Extbase\Reflection\Exception(((('$object is of type ' . gettype($object)) . ', instance of class ') . $this->class) . ' expected.', 1210859212);
+			throw new \TYPO3\CMS\Extbase\Reflection\Exception('$object is of type ' . gettype($object) . ', instance of class ' . $this->class . ' expected.', 1210859212);
 		}
 		if ($this->isPublic()) {
 			return parent::getValue($object);
 		}
 		if ($this->isPrivate()) {
-			throw new \TYPO3\CMS\Extbase\Reflection\Exception(('Cannot return value of private property "' . $this->name) . '.', 1210859206);
+			throw new \TYPO3\CMS\Extbase\Reflection\Exception('Cannot return value of private property "' . $this->name . '.', 1210859206);
 		}
 		parent::setAccessible(TRUE);
 		return parent::getValue($object);

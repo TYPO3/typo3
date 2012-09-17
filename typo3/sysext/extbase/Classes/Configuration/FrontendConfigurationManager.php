@@ -67,13 +67,13 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 	protected function getPluginConfiguration($extensionName, $pluginName = NULL) {
 		$setup = $this->getTypoScriptSetup();
 		$pluginConfiguration = array();
-		if (is_array($setup['plugin.'][('tx_' . strtolower($extensionName)) . '.'])) {
-			$pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.'][('tx_' . strtolower($extensionName)) . '.']);
+		if (is_array($setup['plugin.']['tx_' . strtolower($extensionName) . '.'])) {
+			$pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . strtolower($extensionName) . '.']);
 		}
 		if ($pluginName !== NULL) {
-			$pluginSignature = strtolower(($extensionName . '_') . $pluginName);
-			if (is_array($setup['plugin.'][('tx_' . $pluginSignature) . '.'])) {
-				$pluginConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.'][('tx_' . $pluginSignature) . '.']));
+			$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+			if (is_array($setup['plugin.']['tx_' . $pluginSignature . '.'])) {
+				$pluginConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['plugin.']['tx_' . $pluginSignature . '.']));
 			}
 		}
 		return $pluginConfiguration;
@@ -131,7 +131,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 				}
 			}
 			if (count($list) > 0) {
-				$pages = ($pages . ',') . implode(',', $list);
+				$pages = $pages . ',' . implode(',', $list);
 			}
 			$frameworkConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($frameworkConfiguration, array(
 				'persistence' => array(
@@ -150,8 +150,8 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 	 */
 	protected function overrideConfigurationFromPlugin(array $frameworkConfiguration) {
 		$setup = $this->getTypoScriptSetup();
-		$pluginSignature = strtolower(($frameworkConfiguration['extensionName'] . '_') . $frameworkConfiguration['pluginName']);
-		$pluginConfiguration = $setup['plugin.'][('tx_' . $pluginSignature) . '.'];
+		$pluginSignature = strtolower($frameworkConfiguration['extensionName'] . '_' . $frameworkConfiguration['pluginName']);
+		$pluginConfiguration = $setup['plugin.']['tx_' . $pluginSignature . '.'];
 		if (is_array($pluginConfiguration)) {
 			$pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($pluginConfiguration);
 			$frameworkConfiguration = $this->mergeConfigurationIntoFrameworkConfiguration($frameworkConfiguration, $pluginConfiguration, 'settings');

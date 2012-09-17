@@ -224,7 +224,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	 */
 	public function getArgument($argumentName) {
 		if (!isset($this->arguments[$argumentName])) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException(('An argument "' . $argumentName) . '" does not exist for this request.', 1300893886);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException('An argument "' . $argumentName . '" does not exist for this request.', 1300893886);
 		}
 		return $this->arguments[$argumentName];
 	}

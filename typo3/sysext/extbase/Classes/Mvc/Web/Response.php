@@ -121,10 +121,10 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	 */
 	public function setStatus($code, $message = NULL) {
 		if (!is_int($code)) {
-			throw new \InvalidArgumentException(('The HTTP status code must be of type integer, ' . gettype($code)) . ' given.', 1220526013);
+			throw new \InvalidArgumentException('The HTTP status code must be of type integer, ' . gettype($code) . ' given.', 1220526013);
 		}
 		if ($message === NULL && !isset($this->statusMessages[$code])) {
-			throw new \InvalidArgumentException(('No message found for HTTP status code "' . $code) . '".', 1220526014);
+			throw new \InvalidArgumentException('No message found for HTTP status code "' . $code . '".', 1220526014);
 		}
 		$this->statusCode = $code;
 		$this->statusMessage = $message === NULL ? $this->statusMessages[$code] : $message;
@@ -137,7 +137,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	 * @api
 	 */
 	public function getStatus() {
-		return ($this->statusCode . ' ') . $this->statusMessage;
+		return $this->statusCode . ' ' . $this->statusMessage;
 	}
 
 	/**
@@ -171,12 +171,12 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 		$preparedHeaders = array();
 		if ($this->statusCode !== NULL) {
 			$protocolVersion = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
-			$statusHeader = ((($protocolVersion . ' ') . $this->statusCode) . ' ') . $this->statusMessage;
+			$statusHeader = $protocolVersion . ' ' . $this->statusCode . ' ' . $this->statusMessage;
 			$preparedHeaders[] = $statusHeader;
 		}
 		foreach ($this->headers as $name => $values) {
 			foreach ($values as $value) {
-				$preparedHeaders[] = ($name . ': ') . $value;
+				$preparedHeaders[] = $name . ': ' . $value;
 			}
 		}
 		return $preparedHeaders;
@@ -225,7 +225,7 @@ class Response extends \TYPO3\CMS\Extbase\Mvc\Response {
 	 */
 	public function addAdditionalHeaderData($additionalHeaderData) {
 		if (!is_string($additionalHeaderData)) {
-			throw new \InvalidArgumentException(('The additiona header data must be of type String, ' . gettype($additionalHeaderData)) . ' given.', 1237370877);
+			throw new \InvalidArgumentException('The additiona header data must be of type String, ' . gettype($additionalHeaderData) . ' given.', 1237370877);
 		}
 		if ($this->request->isCached()) {
 			if (TYPO3_MODE === 'FE') {

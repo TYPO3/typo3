@@ -67,7 +67,7 @@ abstract class AbstractFileFolderConverter extends \TYPO3\CMS\Extbase\Property\T
 	public function convertFrom($source, $targetType, array $convertedChildProperties = array(), \TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface $configuration = NULL) {
 		$object = $this->getObject($source);
 		if (empty($this->expectedObjectType) || !$object instanceof $this->expectedObjectType) {
-			throw new \TYPO3\CMS\Extbase\Property\Exception((('Expected object of type "' . $this->expectedObjectType) . '" but got ') . get_class($object), 1342895975);
+			throw new \TYPO3\CMS\Extbase\Property\Exception('Expected object of type "' . $this->expectedObjectType . '" but got ' . get_class($object), 1342895975);
 		}
 		/** @var $subject \TYPO3\CMS\Extbase\Domain\Model\AbstractFileFolder */
 		$subject = $this->objectManager->create($targetType);

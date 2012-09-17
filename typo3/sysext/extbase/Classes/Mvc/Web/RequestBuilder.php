@@ -196,7 +196,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	protected function resolveControllerName(array $parameters) {
 		if (!isset($parameters['controller']) || strlen($parameters['controller']) === 0) {
 			if (strlen($this->defaultControllerName) === 0) {
-				throw new \TYPO3\CMS\Extbase\Mvc\Exception(((('The default controller for extension "' . $this->extensionName) . '" and plugin "') . $this->pluginName) . '" can not be determined. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1316104317);
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception('The default controller for extension "' . $this->extensionName . '" and plugin "' . $this->pluginName . '" can not be determined. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1316104317);
 			}
 			return $this->defaultControllerName;
 		}
@@ -208,7 +208,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
 				return $this->defaultControllerName;
 			}
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException(('The controller "' . $parameters['controller']) . '" is not allowed by this plugin. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1313855173);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException('The controller "' . $parameters['controller'] . '" is not allowed by this plugin. Please check for TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1313855173);
 		}
 		return filter_var($parameters['controller'], FILTER_SANITIZE_STRING);
 	}
@@ -229,7 +229,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 		$defaultActionName = is_array($this->allowedControllerActions[$controllerName]) ? current($this->allowedControllerActions[$controllerName]) : '';
 		if (!isset($parameters['action']) || strlen($parameters['action']) === 0) {
 			if (strlen($defaultActionName) === 0) {
-				throw new \TYPO3\CMS\Extbase\Mvc\Exception(('The default action can not be determined for controller "' . $controllerName) . '". Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1295479651);
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception('The default action can not be determined for controller "' . $controllerName . '". Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1295479651);
 			}
 			return $defaultActionName;
 		}
@@ -242,7 +242,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 			} elseif (isset($configuration['mvc']['callDefaultActionIfActionCantBeResolved']) && (bool) $configuration['mvc']['callDefaultActionIfActionCantBeResolved']) {
 				return $defaultActionName;
 			}
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException(((('The action "' . $actionName) . '" (controller "') . $controllerName) . '") is not allowed by this plugin. Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1313855175);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException('The action "' . $actionName . '" (controller "' . $controllerName . '") is not allowed by this plugin. Please check TYPO3\\CMS\\Extbase\\Utility\\ExtensionUtility::configurePlugin() in your ext_localconf.php.', 1313855175);
 		}
 		return filter_var($actionName, FILTER_SANITIZE_STRING);
 	}
@@ -296,7 +296,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 				$fieldPath = ($firstLevelFieldName !== NULL ? $firstLevelFieldName . '/' : '') . $key;
 				if (is_array($subStructure)) {
 					foreach ($this->calculateFieldPaths($subStructure) as $subFieldPath) {
-						$fieldPaths[] = ($fieldPath . '/') . $subFieldPath;
+						$fieldPaths[] = $fieldPath . '/' . $subFieldPath;
 					}
 				} else {
 					$fieldPaths[] = $fieldPath;

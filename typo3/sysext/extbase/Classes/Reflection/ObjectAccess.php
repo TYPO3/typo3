@@ -61,7 +61,7 @@ class ObjectAccess {
 	 */
 	static public function getProperty($subject, $propertyName, $forceDirectAccess = FALSE) {
 		if (!is_object($subject) && !is_array($subject)) {
-			throw new \InvalidArgumentException(('$subject must be an object or array, ' . gettype($subject)) . ' given.', 1237301367);
+			throw new \InvalidArgumentException('$subject must be an object or array, ' . gettype($subject) . ' given.', 1237301367);
 		}
 		if (!is_string($propertyName) && (!is_array($subject) && !$subject instanceof \ArrayAccess)) {
 			throw new \InvalidArgumentException('Given property name is not of type string.', 1231178303);
@@ -71,7 +71,7 @@ class ObjectAccess {
 		if ($propertyExists === TRUE) {
 			return $propertyValue;
 		}
-		throw new \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException(('The property "' . $propertyName) . '" on the subject was not accessible.', 1263391473);
+		throw new \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject was not accessible.', 1263391473);
 	}
 
 	/**
@@ -107,7 +107,7 @@ class ObjectAccess {
 			} elseif (property_exists($subject, $propertyName)) {
 				return $subject->{$propertyName};
 			} else {
-				throw new \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException(('The property "' . $propertyName) . '" on the subject does not exist.', 1302855001);
+				throw new \TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException('The property "' . $propertyName . '" on the subject does not exist.', 1302855001);
 			}
 		}
 		if ($subject instanceof \ArrayAccess && isset($subject[$propertyName])) {
@@ -145,7 +145,7 @@ class ObjectAccess {
 		foreach ($propertyPathSegments as $pathSegment) {
 			$propertyExists = FALSE;
 			$propertyValue = self::getPropertyInternal($subject, $pathSegment, FALSE, $propertyExists);
-			if (($propertyExists !== TRUE && (is_array($subject) || $subject instanceof \ArrayAccess)) && isset($subject[$pathSegment])) {
+			if ($propertyExists !== TRUE && (is_array($subject) || $subject instanceof \ArrayAccess) && isset($subject[$pathSegment])) {
 				$subject = $subject[$pathSegment];
 			} else {
 				$subject = $propertyValue;
@@ -178,7 +178,7 @@ class ObjectAccess {
 			return TRUE;
 		}
 		if (!is_object($subject)) {
-			throw new \InvalidArgumentException(('subject must be an object or array, ' . gettype($subject)) . ' given.', 1237301368);
+			throw new \InvalidArgumentException('subject must be an object or array, ' . gettype($subject) . ' given.', 1237301368);
 		}
 		if (!is_string($propertyName)) {
 			throw new \InvalidArgumentException('Given property name is not of type string.', 1231178878);
@@ -218,7 +218,7 @@ class ObjectAccess {
 	 */
 	static public function getGettablePropertyNames($object) {
 		if (!is_object($object)) {
-			throw new \InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1237301369);
+			throw new \InvalidArgumentException('$object must be an object, ' . gettype($object) . ' given.', 1237301369);
 		}
 		if ($object instanceof \stdClass) {
 			$declaredPropertyNames = array_keys(get_object_vars($object));
@@ -254,7 +254,7 @@ class ObjectAccess {
 	 */
 	static public function getSettablePropertyNames($object) {
 		if (!is_object($object)) {
-			throw new \InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1264022994);
+			throw new \InvalidArgumentException('$object must be an object, ' . gettype($object) . ' given.', 1264022994);
 		}
 		if ($object instanceof \stdClass) {
 			$declaredPropertyNames = array_keys(get_object_vars($object));
@@ -282,7 +282,7 @@ class ObjectAccess {
 	 */
 	static public function isPropertySettable($object, $propertyName) {
 		if (!is_object($object)) {
-			throw new \InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1259828920);
+			throw new \InvalidArgumentException('$object must be an object, ' . gettype($object) . ' given.', 1259828920);
 		}
 		if ($object instanceof \stdClass && array_search($propertyName, array_keys(get_object_vars($object))) !== FALSE) {
 			return TRUE;
@@ -302,7 +302,7 @@ class ObjectAccess {
 	 */
 	static public function isPropertyGettable($object, $propertyName) {
 		if (!is_object($object)) {
-			throw new \InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1259828921);
+			throw new \InvalidArgumentException('$object must be an object, ' . gettype($object) . ' given.', 1259828921);
 		}
 		if ($object instanceof \ArrayAccess && isset($object[$propertyName]) === TRUE) {
 			return TRUE;
@@ -331,7 +331,7 @@ class ObjectAccess {
 	 */
 	static public function getGettableProperties($object) {
 		if (!is_object($object)) {
-			throw new \InvalidArgumentException(('$object must be an object, ' . gettype($object)) . ' given.', 1237301370);
+			throw new \InvalidArgumentException('$object must be an object, ' . gettype($object) . ' given.', 1237301370);
 		}
 		$properties = array();
 		foreach (self::getGettablePropertyNames($object) as $propertyName) {

@@ -44,7 +44,7 @@ class ClassInfoFactory {
 		try {
 			$reflectedClass = new \ReflectionClass($className);
 		} catch (\Exception $e) {
-			throw new \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException(('Could not analyse class:' . $className) . ' maybe not loaded or no autoloader?', 1289386765);
+			throw new \TYPO3\CMS\Extbase\Object\Container\Exception\UnknownObjectException('Could not analyse class:' . $className . ' maybe not loaded or no autoloader?', 1289386765);
 		}
 		$constructorArguments = $this->getConstructorArguments($reflectedClass);
 		$injectMethods = $this->getInjectMethods($reflectedClass);
@@ -93,11 +93,11 @@ class ClassInfoFactory {
 		$reflectionMethods = $reflectedClass->getMethods();
 		if (is_array($reflectionMethods)) {
 			foreach ($reflectionMethods as $reflectionMethod) {
-				if (($reflectionMethod->isPublic() && substr($reflectionMethod->getName(), 0, 6) === 'inject') && $reflectionMethod->getName() !== 'injectSettings') {
+				if ($reflectionMethod->isPublic() && substr($reflectionMethod->getName(), 0, 6) === 'inject' && $reflectionMethod->getName() !== 'injectSettings') {
 					$reflectionParameter = $reflectionMethod->getParameters();
 					if (isset($reflectionParameter[0])) {
 						if (!$reflectionParameter[0]->getClass()) {
-							throw new \Exception(((('Method "' . $reflectionMethod->getName()) . '" of class "') . $reflectedClass->getName()) . '" is marked as setter for Dependency Injection, but does not have a type annotation');
+							throw new \Exception('Method "' . $reflectionMethod->getName() . '" of class "' . $reflectedClass->getName() . '" is marked as setter for Dependency Injection, but does not have a type annotation');
 						}
 						$result[$reflectionMethod->getName()] = $reflectionParameter[0]->getClass()->getName();
 					}

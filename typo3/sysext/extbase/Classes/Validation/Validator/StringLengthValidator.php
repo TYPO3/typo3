@@ -50,7 +50,7 @@ class StringLengthValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
 	 */
 	public function isValid($value) {
 		$this->errors = array();
-		if ((isset($this->options['minimum']) && isset($this->options['maximum'])) && $this->options['maximum'] < $this->options['minimum']) {
+		if (isset($this->options['minimum']) && isset($this->options['maximum']) && $this->options['maximum'] < $this->options['minimum']) {
 			throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException('The \'maximum\' is shorter than the \'minimum\' in the StringLengthValidator.', 1238107096);
 		}
 		if (is_object($value) && !method_exists($value, '__toString')) {

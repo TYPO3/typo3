@@ -223,7 +223,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 		// Note: The class_implements() function also invokes autoload to assure that the interfaces
 		// and the class are loaded. Would end up with __PHP_Incomplete_Class without it.
 		if (!in_array('TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface', class_implements($className))) {
-			throw new \TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException(('Cannot create empty instance of the class "' . $className) . '" because it does not implement the TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface.', 1234386924);
+			throw new \TYPO3\CMS\Extbase\Object\Exception\CannotReconstituteObjectException('Cannot create empty instance of the class "' . $className . '" because it does not implement the TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface.', 1234386924);
 		}
 		$object = $this->objectManager->getEmptyObject($className);
 		return $object;

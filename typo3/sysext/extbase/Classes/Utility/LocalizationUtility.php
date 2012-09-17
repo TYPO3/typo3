@@ -160,7 +160,7 @@ class LocalizationUtility {
 		if (isset(self::$LOCAL_LANG[$extensionName])) {
 			return;
 		}
-		$locallangPathAndFilename = ((('EXT:' . \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName)) . '/') . self::$locallangPath) . 'locallang.xml';
+		$locallangPathAndFilename = 'EXT:' . \TYPO3\CMS\Core\Utility\GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName) . '/' . self::$locallangPath . 'locallang.xml';
 		self::setLanguageKeys();
 		$renderCharset = TYPO3_MODE === 'FE' ? $GLOBALS['TSFE']->renderCharset : $GLOBALS['LANG']->charSet;
 		self::$LOCAL_LANG[$extensionName] = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($locallangPathAndFilename, self::$languageKey, $renderCharset);
@@ -249,7 +249,7 @@ class LocalizationUtility {
 		$result = array();
 		foreach ($labelValues as $key => $labelValue) {
 			if (!empty($parentKey)) {
-				$key = ($parentKey . '.') . $key;
+				$key = $parentKey . '.' . $key;
 			}
 			if (is_array($labelValue)) {
 				$labelValue = self::flattenTypoScriptLabelArray($labelValue, $key);

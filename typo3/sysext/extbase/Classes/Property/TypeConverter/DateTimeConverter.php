@@ -124,7 +124,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 		}
 		$date = \DateTime::createFromFormat($dateFormat, $dateAsString);
 		if ($date === FALSE) {
-			return new \TYPO3\CMS\Extbase\Error\Error(((('The string"' . $dateAsString) . '" could not be converted to DateTime with format "') . $dateFormat) . '"', 1307719788);
+			return new \TYPO3\CMS\Extbase\Error\Error('The string"' . $dateAsString . '" could not be converted to DateTime with format "' . $dateFormat . '"', 1307719788);
 		}
 		if (is_array($source)) {
 			$this->overrideTimeIfSpecified($date, $source);
@@ -150,7 +150,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 		if ($dateFormat === NULL) {
 			return self::DEFAULT_DATE_FORMAT;
 		} elseif ($dateFormat !== NULL && !is_string($dateFormat)) {
-			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException(('CONFIGURATION_DATE_FORMAT must be of type string, "' . (is_object($dateFormat) ? get_class($dateFormat) : gettype($dateFormat))) . '" given', 1307719569);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidPropertyMappingConfigurationException('CONFIGURATION_DATE_FORMAT must be of type string, "' . (is_object($dateFormat) ? get_class($dateFormat) : gettype($dateFormat)) . '" given', 1307719569);
 		}
 		return $dateFormat;
 	}
@@ -163,7 +163,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 	 * @return void
 	 */
 	protected function overrideTimeIfSpecified(\DateTime $date, array $source) {
-		if ((!isset($source['hour']) && !isset($source['minute'])) && !isset($source['second'])) {
+		if (!isset($source['hour']) && !isset($source['minute']) && !isset($source['second'])) {
 			return;
 		}
 		$hour = isset($source['hour']) ? (int) $source['hour'] : 0;
@@ -187,7 +187,7 @@ class DateTimeConverter extends \TYPO3\CMS\Extbase\Property\TypeConverter\Abstra
 		try {
 			$timezone = new \DateTimeZone($source['timezone']);
 		} catch (\Exception $e) {
-			throw new \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException(('The specified timezone "' . $source['timezone']) . '" is invalid', 1308240974);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\TypeConverterException('The specified timezone "' . $source['timezone'] . '" is invalid', 1308240974);
 		}
 		$date->setTimezone($timezone);
 	}

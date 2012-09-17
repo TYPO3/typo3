@@ -64,7 +64,7 @@ class DataMapperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function thawPropertiesSetsPropertyValues() {
 		$className = 'Class' . md5(uniqid(mt_rand(), TRUE));
-		eval(('class ' . $className) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity { public $firstProperty; public $secondProperty; public $thirdProperty; public $fourthProperty; }');
+		eval('class ' . $className . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity { public $firstProperty; public $secondProperty; public $thirdProperty; public $fourthProperty; }');
 		$object = new $className();
 		$row = array(
 			'uid' => '1234',

@@ -197,13 +197,13 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function map(array $propertyNames, $source, $target, $optionalPropertyNames = array()) {
 		if (!is_object($source) && !is_array($source)) {
-			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidSource(('The source object must be a valid object or array, ' . gettype($target)) . ' given.', 1187807099);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidSource('The source object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
 		}
 		if (is_string($target) && strpbrk($target, '_\\') !== FALSE) {
 			return $this->transformToObject($source, $target, '--none--');
 		}
 		if (!is_object($target) && !is_array($target)) {
-			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTarget(('The target object must be a valid object or array, ' . gettype($target)) . ' given.', 1187807099);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTarget('The target object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
 		}
 		$this->mappingResults = new \TYPO3\CMS\Extbase\Property\MappingResults();
 		if (is_object($target)) {
@@ -292,7 +292,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 			if (is_numeric($propertyValue)) {
 				$propertyValue = $this->findObjectByUid($targetType, $propertyValue);
 				if ($propertyValue === FALSE) {
-					$this->mappingResults->addError(new \TYPO3\CMS\Extbase\Error\Error(('Querying the repository for the specified object with UUID ' . $propertyValue) . ' was not successful.', 1249379517), $propertyName);
+					$this->mappingResults->addError(new \TYPO3\CMS\Extbase\Error\Error('Querying the repository for the specified object with UUID ' . $propertyValue . ' was not successful.', 1249379517), $propertyName);
 				}
 			} elseif (is_array($propertyValue)) {
 				if (isset($propertyValue['__identity'])) {

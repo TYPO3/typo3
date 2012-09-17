@@ -123,7 +123,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 		$command = $this->commandManager->getCommandByIdentifier($this->task->getCommandIdentifier());
 		return array(
 			'code' => '',
-			'label' => ('<strong>' . $command->getDescription()) . '</strong>'
+			'label' => '<strong>' . $command->getDescription() . '</strong>'
 		);
 	}
 
@@ -139,7 +139,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 			if ($command->isInternal() === FALSE) {
 				$classNameParts = explode('_', $command->getControllerClassName());
 				$identifier = $command->getCommandIdentifier();
-				$options[$identifier] = ((($classNameParts[1] . ' ') . str_replace('CommandController', '', $classNameParts[3])) . ': ') . $command->getControllerCommandName();
+				$options[$identifier] = $classNameParts[1] . ' ' . str_replace('CommandController', '', $classNameParts[3]) . ': ' . $command->getControllerCommandName();
 			}
 		}
 		$name = 'action';
@@ -231,7 +231,7 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 			$description = $argument->getDescription();
 		}
 		if (strlen($description) > 0) {
-			$label .= ('. <em>' . htmlspecialchars($description)) . '</em>';
+			$label .= '. <em>' . htmlspecialchars($description) . '</em>';
 		}
 		return $label;
 	}
@@ -278,11 +278,11 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	 */
 	protected function renderSelectField($name, array $options, $selectedOptionValue) {
 		$html = array(
-			('<select name="TYPO3\\CMS\\Scheduler\\Scheduler[task_extbase][' . htmlspecialchars($name)) . ']">'
+			'<select name="TYPO3\\CMS\\Scheduler\\Scheduler[task_extbase][' . htmlspecialchars($name) . ']">'
 		);
 		foreach ($options as $optionValue => $optionLabel) {
 			$selected = $optionValue === $selectedOptionValue ? ' selected="selected"' : '';
-			array_push($html, ((((('<option title="test" value="' . htmlspecialchars($optionValue)) . '"') . $selected) . '>') . htmlspecialchars($optionLabel)) . '</option>');
+			array_push($html, '<option title="test" value="' . htmlspecialchars($optionValue) . '"' . $selected . '>' . htmlspecialchars($optionLabel) . '</option>');
 		}
 		array_push($html, '</select>');
 		return implode(LF, $html);
@@ -298,14 +298,14 @@ class FieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInter
 	protected function renderField(\TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition $argument, $currentValue) {
 		$type = $this->getArgumentType($argument);
 		$name = $argument->getName();
-		$fieldName = ('TYPO3\\CMS\\Scheduler\\Scheduler[task_extbase][arguments][' . htmlspecialchars($name)) . ']';
+		$fieldName = 'TYPO3\\CMS\\Scheduler\\Scheduler[task_extbase][arguments][' . htmlspecialchars($name) . ']';
 		if ($type === 'boolean') {
 			// checkbox field for boolean values.
-			$html = ('<input type="hidden" name="' . $fieldName) . '" value="0" />';
-			$html .= ((('<input type="checkbox" name="' . $fieldName) . '" value="1" ') . ((bool) $currentValue ? ' checked="checked"' : '')) . '/>';
+			$html = '<input type="hidden" name="' . $fieldName . '" value="0" />';
+			$html .= '<input type="checkbox" name="' . $fieldName . '" value="1" ' . ((bool) $currentValue ? ' checked="checked"' : '') . '/>';
 		} else {
 			// regular string, also the default field type
-			$html = ((('<input type="text" name="' . $fieldName) . '" value="') . htmlspecialchars($currentValue)) . '" /> ';
+			$html = '<input type="text" name="' . $fieldName . '" value="' . htmlspecialchars($currentValue) . '" /> ';
 		}
 		return $html;
 	}

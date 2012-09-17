@@ -225,7 +225,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 	 */
 	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
 		if (!$this->canProcessRequest($request)) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException((((get_class($this) . ' does not support requests of type "') . get_class($request)) . '". Supported types are: ') . implode(' ', $this->supportedRequestTypes), 1187701131);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701131);
 		}
 		$response->setRequest($request);
 		$this->request = $request;
@@ -339,7 +339,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 		}
 		$uri = $this->addBaseUriIfNecessary($uri);
 		$escapedUri = htmlentities($uri, ENT_QUOTES, 'utf-8');
-		$this->response->setContent(((('<html><head><meta http-equiv="refresh" content="' . intval($delay)) . ';url=') . $escapedUri) . '"/></head></html>');
+		$this->response->setContent('<html><head><meta http-equiv="refresh" content="' . intval($delay) . ';url=' . $escapedUri . '"/></head></html>');
 		$this->response->setStatus($statusCode);
 		$this->response->setHeader('Location', (string) $uri);
 		throw new \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException();
@@ -407,7 +407,7 @@ abstract class AbstractController implements \TYPO3\CMS\Extbase\Mvc\Controller\C
 				if ($this->request->hasArgument($argumentName)) {
 					$argument->setValue($this->request->getArgument($argumentName));
 				} elseif ($argument->isRequired()) {
-					throw new \TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException(('Required argument "' . $argumentName) . '" is not set.', 1298012500);
+					throw new \TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException('Required argument "' . $argumentName . '" is not set.', 1298012500);
 				}
 			}
 		} else {

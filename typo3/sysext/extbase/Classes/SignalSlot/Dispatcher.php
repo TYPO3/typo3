@@ -130,15 +130,15 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 					throw new \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException(sprintf('Cannot dispatch %s::%s to class %s. The object manager is not yet available in the Signal Slot Dispatcher and therefore it cannot dispatch classes.', $signalClassName, $signalName, $slotInformation['class']), 1298113624);
 				}
 				if (!$this->objectManager->isRegistered($slotInformation['class'])) {
-					throw new \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException(('The given class "' . $slotInformation['class']) . '" is not a registered object.', 1245673367);
+					throw new \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException('The given class "' . $slotInformation['class'] . '" is not a registered object.', 1245673367);
 				}
 				$object = $this->objectManager->get($slotInformation['class']);
 			}
 			if ($slotInformation['passSignalInformation'] === TRUE) {
-				$signalArguments[] = ($signalClassName . '::') . $signalName;
+				$signalArguments[] = $signalClassName . '::' . $signalName;
 			}
 			if (!method_exists($object, $slotInformation['method'])) {
-				throw new \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException(((('The slot method ' . get_class($object)) . '->') . $slotInformation['method']) . '() does not exist.', 1245673368);
+				throw new \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException('The slot method ' . get_class($object) . '->' . $slotInformation['method'] . '() does not exist.', 1245673368);
 			}
 			call_user_func_array(array($object, $slotInformation['method']), $signalArguments);
 		}

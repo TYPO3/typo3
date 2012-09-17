@@ -92,7 +92,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 		$dispatchLoopCount = 0;
 		while (!$request->isDispatched()) {
 			if ($dispatchLoopCount++ > 99) {
-				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException(('Could not ultimately dispatch the request after ' . $dispatchLoopCount) . ' iterations. Most probably, a @dontvalidate annotation is missing on re-displaying a form with validation errors.', 1217839467);
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InfiniteLoopException('Could not ultimately dispatch the request after ' . $dispatchLoopCount . ' iterations. Most probably, a @dontvalidate annotation is missing on re-displaying a form with validation errors.', 1217839467);
 			}
 			$controller = $this->resolveController($request);
 			try {
@@ -118,7 +118,7 @@ class Dispatcher implements \TYPO3\CMS\Core\SingletonInterface {
 		$controllerObjectName = $request->getControllerObjectName();
 		$controller = $this->objectManager->get($controllerObjectName);
 		if (!$controller instanceof \TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException(('Invalid controller "' . $request->getControllerObjectName()) . '". The controller must implement the TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerInterface.', 1202921619);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerException('Invalid controller "' . $request->getControllerObjectName() . '". The controller must implement the TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerInterface.', 1202921619);
 		}
 		return $controller;
 	}

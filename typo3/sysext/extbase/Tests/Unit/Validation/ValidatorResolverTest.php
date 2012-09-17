@@ -50,7 +50,7 @@ class ValidatorResolverTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function resolveValidatorObjectNameReturnsTheGivenArgumentIfAnObjectOfThatNameIsRegistered() {
 		$validatorName = uniqid('FooValidator_') . 'Validator';
-		eval(('class ' . $validatorName) . ' {}');
+		eval('class ' . $validatorName . ' {}');
 		$validatorResolver = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Validation\\ValidatorResolver'), array('dummy'));
 		$this->assertSame($validatorName, $validatorResolver->_call('resolveValidatorObjectName', $validatorName));
 	}

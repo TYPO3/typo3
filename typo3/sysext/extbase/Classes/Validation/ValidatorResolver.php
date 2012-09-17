@@ -175,12 +175,12 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 				foreach ($parsedAnnotation['validators'] as $validatorConfiguration) {
 					$newValidator = $this->createValidator($validatorConfiguration['validatorName'], $validatorConfiguration['validatorOptions']);
 					if ($newValidator === NULL) {
-						throw new \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException(((((('Invalid validate annotation in ' . $className) . '->') . $methodName) . '(): Could not resolve class name for  validator "') . $validatorConfiguration['validatorName']) . '".', 1239853109);
+						throw new \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException('Invalid validate annotation in ' . $className . '->' . $methodName . '(): Could not resolve class name for  validator "' . $validatorConfiguration['validatorName'] . '".', 1239853109);
 					}
 					if (isset($validatorConjunctions[$parsedAnnotation['argumentName']])) {
 						$validatorConjunctions[$parsedAnnotation['argumentName']]->addValidator($newValidator);
 					} else {
-						throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException(((((('Invalid validate annotation in ' . $className) . '->') . $methodName) . '(): Validator specified for argument name "') . $parsedAnnotation['argumentName']) . '", but this argument does not exist.', 1253172726);
+						throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException('Invalid validate annotation in ' . $className . '->' . $methodName . '(): Validator specified for argument name "' . $parsedAnnotation['argumentName'] . '", but this argument does not exist.', 1253172726);
 					}
 				}
 			}
@@ -221,7 +221,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 					foreach ($parsedAnnotation['validators'] as $validatorConfiguration) {
 						$newValidator = $this->createValidator($validatorConfiguration['validatorName'], $validatorConfiguration['validatorOptions']);
 						if ($newValidator === NULL) {
-							throw new \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException(((((('Invalid validate annotation in ' . $dataType) . '::') . $classPropertyName) . ': Could not resolve class name for  validator "') . $validatorConfiguration['validatorName']) . '".', 1241098027);
+							throw new \TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException('Invalid validate annotation in ' . $dataType . '::' . $classPropertyName . ': Could not resolve class name for  validator "' . $validatorConfiguration['validatorName'] . '".', 1241098027);
 						}
 						$objectValidator->addPropertyValidator($classPropertyName, $newValidator);
 						$validatorCount++;
@@ -318,9 +318,9 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		list($extensionName, $extensionValidatorName) = explode(':', $validatorName);
 		if (!$extensionValidatorName) {
-			$possibleClassName = ('Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName)) . 'Validator';
+			$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';
 		} else {
-			$possibleClassName = ((('Tx_' . $extensionName) . '_Validation_Validator_') . $extensionValidatorName) . 'Validator';
+			$possibleClassName = 'Tx_' . $extensionName . '_Validation_Validator_' . $extensionValidatorName . 'Validator';
 		}
 		if (class_exists($possibleClassName)) {
 			return $possibleClassName;

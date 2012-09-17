@@ -78,8 +78,8 @@ abstract class BaseTestCase extends \tx_phpunit_testcase {
 		$accessibleClassName = uniqid('AccessibleTestProxy');
 		$class = new \ReflectionClass($className);
 		$abstractModifier = $class->isAbstract() ? 'abstract ' : '';
-		eval(((((('
-			' . $abstractModifier) . 'class ') . $accessibleClassName) . ' extends ') . $className) . ' {
+		eval('
+			' . $abstractModifier . 'class ' . $accessibleClassName . ' extends ' . $className . ' {
 				public function _call($methodName) {
 					$args = func_get_args();
 					return call_user_func_array(array($this, $methodName), array_slice($args, 1));

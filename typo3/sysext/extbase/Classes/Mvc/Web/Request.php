@@ -102,7 +102,7 @@ class Request extends \TYPO3\CMS\Extbase\Mvc\Request {
 	 */
 	public function setMethod($method) {
 		if ($method === '' || strtoupper($method) !== $method) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException(('The request method "' . $method) . '" is not supported.', 1217778382);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidRequestMethodException('The request method "' . $method . '" is not supported.', 1217778382);
 		}
 		$this->method = $method;
 	}

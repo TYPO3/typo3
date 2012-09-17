@@ -128,7 +128,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 */
 	public function add($object) {
 		if (!$object instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException(('The object given to add() was not of the type (' . $this->objectType) . ') this repository manages.', 1248363335);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The object given to add() was not of the type (' . $this->objectType . ') this repository manages.', 1248363335);
 		}
 		$this->addedObjects->attach($object);
 		if ($this->removedObjects->contains($object)) {
@@ -146,7 +146,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 */
 	public function remove($object) {
 		if (!$object instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException(('The object given to remove() was not of the type (' . $this->objectType) . ') this repository manages.', 1248363335);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The object given to remove() was not of the type (' . $this->objectType . ') this repository manages.', 1248363335);
 		}
 		if ($this->addedObjects->contains($object)) {
 			$this->addedObjects->detach($object);
@@ -168,10 +168,10 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 */
 	public function replace($existingObject, $newObject) {
 		if (!$existingObject instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException(('The existing object given to replace was not of the type (' . $this->objectType) . ') this repository manages.', 1248363434);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The existing object given to replace was not of the type (' . $this->objectType . ') this repository manages.', 1248363434);
 		}
 		if (!$newObject instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException(('The new object given to replace was not of the type (' . $this->objectType) . ') this repository manages.', 1248363439);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The new object given to replace was not of the type (' . $this->objectType . ') this repository manages.', 1248363439);
 		}
 		$backend = $this->persistenceManager->getBackend();
 		$session = $this->persistenceManager->getSession();
@@ -206,7 +206,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 */
 	public function update($modifiedObject) {
 		if (!$modifiedObject instanceof $this->objectType) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException(('The modified object given to update() was not of the type (' . $this->objectType) . ') this repository manages.', 1249479625);
+			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The modified object given to update() was not of the type (' . $this->objectType . ') this repository manages.', 1249479625);
 		}
 		$uid = $modifiedObject->getUid();
 		if ($uid !== NULL) {
@@ -364,7 +364,7 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 			$result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();
 			return $result;
 		}
-		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException(('The method "' . $methodName) . '" is not supported by the repository.', 1233180480);
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
 	}
 
 	/**

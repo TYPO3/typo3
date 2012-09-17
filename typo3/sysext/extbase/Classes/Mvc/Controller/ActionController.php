@@ -139,7 +139,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 */
 	public function processRequest(\TYPO3\CMS\Extbase\Mvc\RequestInterface $request, \TYPO3\CMS\Extbase\Mvc\ResponseInterface $response) {
 		if (!$this->canProcessRequest($request)) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException((((get_class($this) . ' does not support requests of type "') . get_class($request)) . '". Supported types are: ') . implode(' ', $this->supportedRequestTypes), 1187701131);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\UnsupportedRequestTypeException(get_class($this) . ' does not support requests of type "' . get_class($request) . '". Supported types are: ' . implode(' ', $this->supportedRequestTypes), 1187701131);
 		}
 		if ($response instanceof \TYPO3\CMS\Extbase\Mvc\Web\Response) {
 			$response->setRequest($request);
@@ -187,7 +187,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 				$dataType = 'array';
 			}
 			if ($dataType === NULL) {
-				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException(((((('The argument type for parameter $' . $parameterName) . ' of method ') . get_class($this)) . '->') . $this->actionMethodName) . '() could not be detected.', 1253175643);
+				throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentTypeException('The argument type for parameter $' . $parameterName . ' of method ' . get_class($this) . '->' . $this->actionMethodName . '() could not be detected.', 1253175643);
 			}
 			$defaultValue = isset($parameterInfo['defaultValue']) ? $parameterInfo['defaultValue'] : NULL;
 			$this->arguments->addNewArgument($parameterName, $dataType, $parameterInfo['optional'] === FALSE, $defaultValue);
@@ -238,7 +238,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	protected function resolveActionMethodName() {
 		$actionMethodName = $this->request->getControllerActionName() . 'Action';
 		if (!method_exists($this, $actionMethodName)) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException(((('An action "' . $actionMethodName) . '" does not exist in controller "') . get_class($this)) . '".', 1186669086);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException('An action "' . $actionMethodName . '" does not exist in controller "' . get_class($this) . '".', 1186669086);
 		}
 		return $actionMethodName;
 	}
@@ -336,7 +336,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 		}
 		if (!isset($view)) {
 			$view = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\View\\NotFoundView');
-			$view->assign('errorMessage', ('No template was found. View could not be resolved for action "' . $this->request->getControllerActionName()) . '"');
+			$view->assign('errorMessage', 'No template was found. View could not be resolved for action "' . $this->request->getControllerActionName() . '"');
 		}
 		$view->setControllerContext($this->controllerContext);
 		if (method_exists($view, 'injectSettings')) {
@@ -356,13 +356,13 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	protected function setViewConfiguration(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view) {
 		// Template Path Override
 		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		if ((isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0) && method_exists($view, 'setTemplateRootPath')) {
+		if (isset($extbaseFrameworkConfiguration['view']['templateRootPath']) && strlen($extbaseFrameworkConfiguration['view']['templateRootPath']) > 0 && method_exists($view, 'setTemplateRootPath')) {
 			$view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']));
 		}
-		if ((isset($extbaseFrameworkConfiguration['view']['layoutRootPath']) && strlen($extbaseFrameworkConfiguration['view']['layoutRootPath']) > 0) && method_exists($view, 'setLayoutRootPath')) {
+		if (isset($extbaseFrameworkConfiguration['view']['layoutRootPath']) && strlen($extbaseFrameworkConfiguration['view']['layoutRootPath']) > 0 && method_exists($view, 'setLayoutRootPath')) {
 			$view->setLayoutRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['layoutRootPath']));
 		}
-		if ((isset($extbaseFrameworkConfiguration['view']['partialRootPath']) && strlen($extbaseFrameworkConfiguration['view']['partialRootPath']) > 0) && method_exists($view, 'setPartialRootPath')) {
+		if (isset($extbaseFrameworkConfiguration['view']['partialRootPath']) && strlen($extbaseFrameworkConfiguration['view']['partialRootPath']) > 0 && method_exists($view, 'setPartialRootPath')) {
 			$view->setPartialRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['partialRootPath']));
 		}
 	}
@@ -444,10 +444,10 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 				$this->request->setOriginalRequestMappingResults($this->arguments->getValidationResults());
 				$this->forward($referringRequest->getControllerActionName(), $referringRequest->getControllerName(), $referringRequest->getControllerExtensionName(), $referringRequest->getArguments());
 			}
-			$message = (((('An error occurred while trying to call ' . get_class($this)) . '->') . $this->actionMethodName) . '().') . PHP_EOL;
+			$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
 			foreach ($this->arguments->getValidationResults()->getFlattenedErrors() as $propertyPath => $errors) {
 				foreach ($errors as $error) {
-					$message .= ((('Error for ' . $propertyPath) . ':  ') . $error->render()) . PHP_EOL;
+					$message .= 'Error for ' . $propertyPath . ':  ' . $error->render() . PHP_EOL;
 				}
 			}
 			return $message;
@@ -462,12 +462,12 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 			if ($referrer !== NULL) {
 				$this->forward($referrer['actionName'], $referrer['controllerName'], $referrer['extensionName'], $this->request->getArguments());
 			}
-			$message = (((('An error occurred while trying to call ' . get_class($this)) . '->') . $this->actionMethodName) . '().') . PHP_EOL;
+			$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
 			foreach ($this->argumentsMappingResults->getErrors() as $error) {
-				$message .= ('Error:   ' . $error->getMessage()) . PHP_EOL;
+				$message .= 'Error:   ' . $error->getMessage() . PHP_EOL;
 			}
 			foreach ($this->argumentsMappingResults->getWarnings() as $warning) {
-				$message .= ('Warning: ' . $warning->getMessage()) . PHP_EOL;
+				$message .= 'Warning: ' . $warning->getMessage() . PHP_EOL;
 			}
 			return $message;
 		}
@@ -482,7 +482,7 @@ class ActionController extends \TYPO3\CMS\Extbase\Mvc\Controller\AbstractControl
 	 * @api
 	 */
 	protected function getErrorFlashMessage() {
-		return ((('An error occurred while trying to call ' . get_class($this)) . '->') . $this->actionMethodName) . '()';
+		return 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '()';
 	}
 
 	/**

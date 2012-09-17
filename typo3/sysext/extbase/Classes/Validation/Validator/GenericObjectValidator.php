@@ -163,7 +163,7 @@ class GenericObjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abs
 	 */
 	public function isPropertyValid($object, $propertyName) {
 		if (!is_object($object)) {
-			throw new \InvalidArgumentException(('Object expected, ' . gettype($object)) . ' given.', 1241099149);
+			throw new \InvalidArgumentException('Object expected, ' . gettype($object) . ' given.', 1241099149);
 		}
 		if (!isset($this->propertyValidators[$propertyName])) {
 			return TRUE;

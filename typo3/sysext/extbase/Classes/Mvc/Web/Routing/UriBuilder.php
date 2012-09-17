@@ -664,7 +664,7 @@ class UriBuilder {
 				} elseif ($argumentValue instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject) {
 					$arguments[$argumentKey] = $this->convertTransientObjectToArray($argumentValue);
 				} else {
-					throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException(('Could not serialize Domain Object ' . get_class($argumentValue)) . '. It is neither an Entity with identity properties set, nor a Value Object.', 1260881688);
+					throw new \TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentValueException('Could not serialize Domain Object ' . get_class($argumentValue) . '. It is neither an Entity with identity properties set, nor a Value Object.', 1260881688);
 				}
 			} elseif (is_array($argumentValue)) {
 				$arguments[$argumentKey] = $this->convertDomainObjectsToIdentityArrays($argumentValue);

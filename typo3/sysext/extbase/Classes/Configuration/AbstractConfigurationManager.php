@@ -140,7 +140,7 @@ abstract class AbstractConfigurationManager implements \TYPO3\CMS\Core\Singleton
 	 */
 	public function getConfiguration($extensionName = NULL, $pluginName = NULL) {
 		// 1st level cache
-		$configurationCacheKey = strtolower((($extensionName ?: $this->extensionName) . '_') . ($pluginName ?: $this->pluginName));
+		$configurationCacheKey = strtolower(($extensionName ?: $this->extensionName) . '_' . ($pluginName ?: $this->pluginName));
 		if (isset($this->configurationCache[$configurationCacheKey])) {
 			return $this->configurationCache[$configurationCacheKey];
 		}

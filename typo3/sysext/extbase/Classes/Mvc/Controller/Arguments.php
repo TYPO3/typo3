@@ -136,7 +136,7 @@ class Arguments extends \ArrayObject {
 	public function offsetGet($offset) {
 		$translatedOffset = $this->translateToLongArgumentName($offset);
 		if ($translatedOffset === '') {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException(('The argument "' . $offset) . '" does not exist.', 1216909923);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException('The argument "' . $offset . '" does not exist.', 1216909923);
 		}
 		return parent::offsetGet($translatedOffset);
 	}
@@ -184,7 +184,7 @@ class Arguments extends \ArrayObject {
 	 */
 	public function getArgument($argumentName) {
 		if (!$this->offsetExists($argumentName)) {
-			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException(('An argument "' . $argumentName) . '" does not exist.', 1195815178);
+			throw new \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException('An argument "' . $argumentName . '" does not exist.', 1195815178);
 		}
 		return $this->offsetGet($argumentName);
 	}
@@ -233,7 +233,7 @@ class Arguments extends \ArrayObject {
 	 */
 	public function __call($methodName, array $arguments) {
 		if (substr($methodName, 0, 3) !== 'set') {
-			throw new \LogicException(('Unknown method "' . $methodName) . '".', 1210858451);
+			throw new \LogicException('Unknown method "' . $methodName . '".', 1210858451);
 		}
 		$firstLowerCaseArgumentName = $this->translateToLongArgumentName(strtolower($methodName[3]) . substr($methodName, 4));
 		$firstUpperCaseArgumentName = $this->translateToLongArgumentName(ucfirst(substr($methodName, 3)));

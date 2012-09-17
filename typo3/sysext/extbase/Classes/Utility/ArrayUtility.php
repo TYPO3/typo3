@@ -180,7 +180,7 @@ class ArrayUtility {
 		if (is_string($path)) {
 			$path = explode('.', $path);
 		} elseif (!is_array($path)) {
-			throw new \InvalidArgumentException(('getValueByPath() expects $path to be string or array, "' . gettype($path)) . '" given.', 1304950007);
+			throw new \InvalidArgumentException('getValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1304950007);
 		}
 		$key = array_shift($path);
 		if (isset($array[$key])) {
@@ -205,12 +205,12 @@ class ArrayUtility {
 	 */
 	static public function setValueByPath($subject, $path, $value) {
 		if (!is_array($subject) && !$subject instanceof \ArrayAccess) {
-			throw new \InvalidArgumentException(('setValueByPath() expects $subject to be array or an object implementing \\ArrayAccess, "' . (is_object($subject) ? get_class($subject) : gettype($subject))) . '" given.', 1306424308);
+			throw new \InvalidArgumentException('setValueByPath() expects $subject to be array or an object implementing \\ArrayAccess, "' . (is_object($subject) ? get_class($subject) : gettype($subject)) . '" given.', 1306424308);
 		}
 		if (is_string($path)) {
 			$path = explode('.', $path);
 		} elseif (!is_array($path)) {
-			throw new \InvalidArgumentException(('setValueByPath() expects $path to be string or array, "' . gettype($path)) . '" given.', 1305111499);
+			throw new \InvalidArgumentException('setValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1305111499);
 		}
 		$key = array_shift($path);
 		if (count($path) === 0) {
@@ -236,7 +236,7 @@ class ArrayUtility {
 		if (is_string($path)) {
 			$path = explode('.', $path);
 		} elseif (!is_array($path)) {
-			throw new \InvalidArgumentException(('unsetValueByPath() expects $path to be string or array, "' . gettype($path)) . '" given.', 1305111513);
+			throw new \InvalidArgumentException('unsetValueByPath() expects $path to be string or array, "' . gettype($path) . '" given.', 1305111513);
 		}
 		$key = array_shift($path);
 		if (count($path) === 0) {
@@ -279,7 +279,7 @@ class ArrayUtility {
 	 */
 	static public function convertObjectToArray($subject) {
 		if (!is_object($subject) && !is_array($subject)) {
-			throw new \InvalidArgumentException(('convertObjectToArray expects either array or object as input, ' . gettype($subject)) . ' given.', 1287059709);
+			throw new \InvalidArgumentException('convertObjectToArray expects either array or object as input, ' . gettype($subject) . ' given.', 1287059709);
 		}
 		if (is_object($subject)) {
 			$subject = (array) $subject;

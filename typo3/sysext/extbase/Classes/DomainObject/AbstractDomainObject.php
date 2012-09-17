@@ -263,8 +263,8 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	 * @return boolean
 	 */
 	public function _isDirty($propertyName = NULL) {
-		if (($this->uid !== NULL && is_array($this->_cleanProperties)) && $this->uid != $this->_getCleanProperty('uid')) {
-			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\TooDirtyException(('The uid "' . $this->uid) . '" has been modified, that is simply too much.', 1222871239);
+		if ($this->uid !== NULL && is_array($this->_cleanProperties) && $this->uid != $this->_getCleanProperty('uid')) {
+			throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\TooDirtyException('The uid "' . $this->uid . '" has been modified, that is simply too much.', 1222871239);
 		}
 		if ($propertyName === NULL) {
 			foreach ($this->_getCleanProperties() as $propertyName => $cleanPropertyValue) {
@@ -292,9 +292,9 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 		// We do this, because if the object itself contains a lazy loaded property, the comparison of the objects might fail even if the object didn't change
 		if (is_object($currentValue)) {
 			if ($currentValue instanceof \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface) {
-				$result = (!is_object($previousValue) || get_class($previousValue) !== get_class($currentValue)) || $currentValue->getUid() !== $previousValue->getUid();
+				$result = !is_object($previousValue) || get_class($previousValue) !== get_class($currentValue) || $currentValue->getUid() !== $previousValue->getUid();
 			} elseif ($currentValue instanceof \TYPO3\CMS\Extbase\Persistence\ObjectMonitoringInterface) {
-				$result = (!is_object($previousValue) || $currentValue->_isDirty()) || get_class($previousValue) !== get_class($currentValue);
+				$result = !is_object($previousValue) || $currentValue->_isDirty() || get_class($previousValue) !== get_class($currentValue);
 			} else {
 				// For all other objects we do only a simple comparison (!=) as we want cloned objects to return the same values.
 				$result = $previousValue != $currentValue;
@@ -341,7 +341,7 @@ abstract class AbstractDomainObject implements \TYPO3\CMS\Extbase\DomainObject\D
 	 * @return string
 	 */
 	public function __toString() {
-		return (get_class($this) . ':') . (string) $this->uid;
+		return get_class($this) . ':' . (string) $this->uid;
 	}
 
 }

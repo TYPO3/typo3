@@ -76,13 +76,13 @@ class BackendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abstr
 	protected function getPluginConfiguration($extensionName, $pluginName = NULL) {
 		$setup = $this->getTypoScriptSetup();
 		$pluginConfiguration = array();
-		if (is_array($setup['module.'][('tx_' . strtolower($extensionName)) . '.'])) {
-			$pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.'][('tx_' . strtolower($extensionName)) . '.']);
+		if (is_array($setup['module.']['tx_' . strtolower($extensionName) . '.'])) {
+			$pluginConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . strtolower($extensionName) . '.']);
 		}
 		if ($pluginName !== NULL) {
-			$pluginSignature = strtolower(($extensionName . '_') . $pluginName);
-			if (is_array($setup['module.'][('tx_' . $pluginSignature) . '.'])) {
-				$pluginConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.'][('tx_' . $pluginSignature) . '.']));
+			$pluginSignature = strtolower($extensionName . '_' . $pluginName);
+			if (is_array($setup['module.']['tx_' . $pluginSignature . '.'])) {
+				$pluginConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($pluginConfiguration, $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['module.']['tx_' . $pluginSignature . '.']));
 			}
 		}
 		return $pluginConfiguration;
