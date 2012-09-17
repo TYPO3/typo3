@@ -36,7 +36,7 @@ abstract class AbstractNode implements \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\N
 			} else {
 				if (is_object($output)) {
 					if (!method_exists($output, '__toString')) {
-						throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('Cannot cast object of type "' . get_class($output)) . '" to string.', 1248356140);
+						throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Cannot cast object of type "' . get_class($output) . '" to string.', 1248356140);
 					}
 					$output = $output->__toString();
 				} else {
@@ -45,7 +45,7 @@ abstract class AbstractNode implements \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\N
 				$subNodeOutput = $subNode->evaluate($renderingContext);
 				if (is_object($subNodeOutput)) {
 					if (!method_exists($subNodeOutput, '__toString')) {
-						throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('Cannot cast object of type "' . get_class($subNodeOutput)) . '" to string.', 1273753083);
+						throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Cannot cast object of type "' . get_class($subNodeOutput) . '" to string.', 1273753083);
 					}
 					$output .= $subNodeOutput->__toString();
 				} else {

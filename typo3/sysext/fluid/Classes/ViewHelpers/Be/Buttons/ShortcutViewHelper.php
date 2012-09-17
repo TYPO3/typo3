@@ -60,7 +60,7 @@ class ShortcutViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 		$extensionName = $currentRequest->getControllerExtensionName();
 		$moduleName = $currentRequest->getPluginName();
 		if (count($getVars) === 0) {
-			$modulePrefix = strtolower((('tx_' . $extensionName) . '_') . $moduleName);
+			$modulePrefix = strtolower('tx_' . $extensionName . '_' . $moduleName);
 			$getVars = array('id', 'M', $modulePrefix);
 		}
 		$getList = implode(',', $getVars);

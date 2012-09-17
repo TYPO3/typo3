@@ -152,7 +152,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 						if (method_exists($key, '__toString')) {
 							$key = (string) $key;
 						} else {
-							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(('Identifying value for object of class "' . get_class($value)) . '" was an object.', 1247827428);
+							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Identifying value for object of class "' . get_class($value) . '" was an object.', 1247827428);
 						}
 					}
 				} elseif ($this->persistenceManager->getBackend()->getIdentifierByObject($value) !== NULL) {
@@ -160,7 +160,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 				} elseif (method_exists($value, '__toString')) {
 					$key = (string) $value;
 				} else {
-					throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(('No identifying value for object of class "' . get_class($value)) . '" found.', 1247826696);
+					throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('No identifying value for object of class "' . get_class($value) . '" found.', 1247826696);
 				}
 				if ($this->hasArgument('optionLabelField')) {
 					$value = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
@@ -168,7 +168,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 						if (method_exists($value, '__toString')) {
 							$value = (string) $value;
 						} else {
-							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(('Label value for object of class "' . get_class($value)) . '" was an object without a __toString() method.', 1247827553);
+							throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Label value for object of class "' . get_class($value) . '" was an object without a __toString() method.', 1247827553);
 						}
 					}
 				} elseif (method_exists($value, '__toString')) {
@@ -254,11 +254,11 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFie
 	 * @return string the rendered option tag
 	 */
 	protected function renderOptionTag($value, $label, $isSelected) {
-		$output = ('<option value="' . htmlspecialchars($value)) . '"';
+		$output = '<option value="' . htmlspecialchars($value) . '"';
 		if ($isSelected) {
 			$output .= ' selected="selected"';
 		}
-		$output .= ('>' . htmlspecialchars($label)) . '</option>';
+		$output .= '>' . htmlspecialchars($label) . '</option>';
 		return $output;
 	}
 

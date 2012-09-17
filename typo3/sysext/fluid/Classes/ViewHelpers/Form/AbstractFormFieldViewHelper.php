@@ -81,7 +81,7 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 				$propertySegments = explode('.', $this->arguments['property']);
 				$propertyPath = '';
 				foreach ($propertySegments as $segment) {
-					$propertyPath .= ('[' . $segment) . ']';
+					$propertyPath .= '[' . $segment . ']';
 				}
 				$name = $formObjectName . $propertyPath;
 			} else {
@@ -159,7 +159,7 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 			// If Count == 2 -> we need to go through the for-loop exactly once
 			for ($i = 1; $i < count($propertySegments); $i++) {
 				$object = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyPath($formObject, implode('.', array_slice($propertySegments, 0, $i)));
-				$objectName .= ('[' . $propertySegments[($i - 1)]) . ']';
+				$objectName .= '[' . $propertySegments[($i - 1)] . ']';
 				$hiddenIdentityField = $this->renderHiddenIdentityField($object, $objectName);
 				// Add the hidden identity field to the ViewHelperVariableContainer
 				$additionalIdentityProperties = $this->viewHelperVariableContainer->get('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'additionalIdentityProperties');
@@ -286,7 +286,7 @@ abstract class AbstractFormFieldViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\
 		if (!in_array($fieldName, $hiddenFieldNames)) {
 			$hiddenFieldNames[] = $fieldName;
 			$this->viewHelperVariableContainer->addOrUpdate('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'renderedHiddenFields', $hiddenFieldNames);
-			return ('<input type="hidden" name="' . htmlspecialchars($fieldName)) . '" value="" />';
+			return '<input type="hidden" name="' . htmlspecialchars($fieldName) . '" value="" />';
 		}
 		return '';
 	}

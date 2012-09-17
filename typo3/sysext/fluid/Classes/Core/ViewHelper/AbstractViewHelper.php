@@ -164,7 +164,7 @@ abstract class AbstractViewHelper {
 	 */
 	protected function registerArgument($name, $type, $description, $required = FALSE, $defaultValue = NULL) {
 		if (array_key_exists($name, $this->argumentDefinitions)) {
-			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(('Argument "' . $name) . '" has already been defined, thus it should not be defined again.', 1253036401);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Argument "' . $name . '" has already been defined, thus it should not be defined again.', 1253036401);
 		}
 		$this->argumentDefinitions[$name] = new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition($name, $type, $description, $required, $defaultValue);
 		return $this;
@@ -185,7 +185,7 @@ abstract class AbstractViewHelper {
 	 */
 	protected function overrideArgument($name, $type, $description, $required = FALSE, $defaultValue = NULL) {
 		if (!array_key_exists($name, $this->argumentDefinitions)) {
-			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(('Argument "' . $name) . '" has not been defined, thus it can\'t be overridden.', 1279212461);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Argument "' . $name . '" has not been defined, thus it can\'t be overridden.', 1279212461);
 		}
 		$this->argumentDefinitions[$name] = new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition($name, $type, $description, $required, $defaultValue);
 		return $this;
@@ -334,7 +334,7 @@ abstract class AbstractViewHelper {
 				$dataType = 'array';
 			}
 			if ($dataType === NULL) {
-				throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(((('could not determine type of argument "' . $parameterName) . '" of the render-method in ViewHelper "') . get_class($this)) . '". Either the methods docComment is invalid or some PHP optimizer strips off comments.', 1242292003);
+				throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('could not determine type of argument "' . $parameterName . '" of the render-method in ViewHelper "' . get_class($this) . '". Either the methods docComment is invalid or some PHP optimizer strips off comments.', 1242292003);
 			}
 			$description = '';
 			if (\TYPO3\CMS\Fluid\Fluid::$debugMode && isset($paramAnnotations[$i])) {
@@ -369,19 +369,19 @@ abstract class AbstractViewHelper {
 					continue;
 				}
 				if ($type === 'array') {
-					if ((!is_array($this->arguments[$argumentName]) && !$this->arguments[$argumentName] instanceof \ArrayAccess) && !$this->arguments[$argumentName] instanceof \Traversable) {
-						throw new \InvalidArgumentException(((((('The argument "' . $argumentName) . '" was registered with type "array", but is of type "') . gettype($this->arguments[$argumentName])) . '" in view helper "') . get_class($this)) . '"', 1237900529);
+					if (!is_array($this->arguments[$argumentName]) && !$this->arguments[$argumentName] instanceof \ArrayAccess && !$this->arguments[$argumentName] instanceof \Traversable) {
+						throw new \InvalidArgumentException('The argument "' . $argumentName . '" was registered with type "array", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '"', 1237900529);
 					}
 				} elseif ($type === 'boolean') {
 					if (!is_bool($this->arguments[$argumentName])) {
-						throw new \InvalidArgumentException(((((('The argument "' . $argumentName) . '" was registered with type "boolean", but is of type "') . gettype($this->arguments[$argumentName])) . '" in view helper "') . get_class($this)) . '".', 1240227732);
+						throw new \InvalidArgumentException('The argument "' . $argumentName . '" was registered with type "boolean", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1240227732);
 					}
 				} elseif (class_exists($type, FALSE)) {
 					if (!$this->arguments[$argumentName] instanceof $type) {
 						if (is_object($this->arguments[$argumentName])) {
-							throw new \InvalidArgumentException(((((((('The argument "' . $argumentName) . '" was registered with type "') . $type) . '", but is of type "') . get_class($this->arguments[$argumentName])) . '" in view helper "') . get_class($this)) . '".', 1256475114);
+							throw new \InvalidArgumentException('The argument "' . $argumentName . '" was registered with type "' . $type . '", but is of type "' . get_class($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1256475114);
 						} else {
-							throw new \InvalidArgumentException(((((((('The argument "' . $argumentName) . '" was registered with type "') . $type) . '", but is of type "') . gettype($this->arguments[$argumentName])) . '" in view helper "') . get_class($this)) . '".', 1256475113);
+							throw new \InvalidArgumentException('The argument "' . $argumentName . '" was registered with type "' . $type . '", but is of type "' . gettype($this->arguments[$argumentName]) . '" in view helper "' . get_class($this) . '".', 1256475113);
 						}
 					}
 				}

@@ -262,7 +262,7 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		}
 		if ($this->templateSource === NULL) {
 			if (!file_exists($this->templatePathAndFilename)) {
-				throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('Template could not be found at "' . $this->templatePathAndFilename) . '".', 1288087061);
+				throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Template could not be found at "' . $this->templatePathAndFilename . '".', 1288087061);
 			}
 			$this->templateSource = file_get_contents($this->templatePathAndFilename);
 		}
@@ -294,7 +294,7 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$layoutPathAndFilename = $this->getLayoutPathAndFilename($layoutName);
 		$layoutSource = file_get_contents($layoutPathAndFilename);
 		if ($layoutSource === FALSE) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('"' . $layoutPathAndFilename) . '" is not a valid template resource URI.', 1312215888);
+			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('"' . $layoutPathAndFilename . '" is not a valid template resource URI.', 1312215888);
 		}
 		return $layoutSource;
 	}
@@ -314,17 +314,17 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	protected function getLayoutPathAndFilename($layoutName = 'Default') {
 		$layoutRootPath = $this->getLayoutRootPath();
 		if (!is_dir($layoutRootPath)) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('Layout root path "' . $layoutRootPath) . '" does not exist.', 1288092521);
+			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Layout root path "' . $layoutRootPath . '" does not exist.', 1288092521);
 		}
 		$possibleLayoutPaths = array();
-		$possibleLayoutPaths[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(((($layoutRootPath . '/') . $layoutName) . '.') . $this->getRequest()->getFormat());
-		$possibleLayoutPaths[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(($layoutRootPath . '/') . $layoutName);
+		$possibleLayoutPaths[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName . '.' . $this->getRequest()->getFormat());
+		$possibleLayoutPaths[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($layoutRootPath . '/' . $layoutName);
 		foreach ($possibleLayoutPaths as $layoutPathAndFilename) {
 			if (file_exists($layoutPathAndFilename)) {
 				return $layoutPathAndFilename;
 			}
 		}
-		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('Could not load layout file. Tried following paths: "' . implode('", "', $possibleLayoutPaths)) . '".', 1288092555);
+		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Could not load layout file. Tried following paths: "' . implode('", "', $possibleLayoutPaths) . '".', 1288092555);
 	}
 
 	/**
@@ -352,7 +352,7 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$partialPathAndFilename = $this->getPartialPathAndFilename($partialName);
 		$partialSource = file_get_contents($partialPathAndFilename);
 		if ($partialSource === FALSE) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('"' . $partialPathAndFilename) . '" is not a valid template resource URI.', 1257246929);
+			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('"' . $partialPathAndFilename . '" is not a valid template resource URI.', 1257246929);
 		}
 		return $partialSource;
 	}
@@ -367,17 +367,17 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	protected function getPartialPathAndFilename($partialName) {
 		$partialRootPath = $this->getPartialRootPath();
 		if (!is_dir($partialRootPath)) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('Partial root path "' . $partialRootPath) . '" does not exist.', 1288094648);
+			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Partial root path "' . $partialRootPath . '" does not exist.', 1288094648);
 		}
 		$possiblePartialPaths = array();
-		$possiblePartialPaths[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(((($partialRootPath . '/') . $partialName) . '.') . $this->getRequest()->getFormat());
-		$possiblePartialPaths[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(($partialRootPath . '/') . $partialName);
+		$possiblePartialPaths[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName . '.' . $this->getRequest()->getFormat());
+		$possiblePartialPaths[] = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($partialRootPath . '/' . $partialName);
 		foreach ($possiblePartialPaths as $partialPathAndFilename) {
 			if (file_exists($partialPathAndFilename)) {
 				return $partialPathAndFilename;
 			}
 		}
-		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('Could not load partial file. Tried following paths: "' . implode('", "', $possiblePartialPaths)) . '".', 1288092555);
+		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Could not load partial file. Tried following paths: "' . implode('", "', $possiblePartialPaths) . '".', 1288092555);
 	}
 
 	/**
@@ -391,7 +391,7 @@ class StandaloneView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 	 */
 	protected function createIdentifierForFile($pathAndFilename, $prefix) {
 		$templateModifiedTimestamp = filemtime($pathAndFilename);
-		$templateIdentifier = sprintf('Standalone_%s_%s', $prefix, sha1(($pathAndFilename . '|') . $templateModifiedTimestamp));
+		$templateIdentifier = sprintf('Standalone_%s_%s', $prefix, sha1($pathAndFilename . '|' . $templateModifiedTimestamp));
 		$templateIdentifier = str_replace('/', '_', str_replace('.', '_', $templateIdentifier));
 		return $templateIdentifier;
 	}

@@ -118,7 +118,7 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 		case self::RENDER_MODE_DIV:
 			return $this->renderDiv($flashMessages);
 		default:
-			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(('Invalid render mode "' . $renderMode) . '" passed to FlashMessageViewhelper', 1290697924);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Invalid render mode "' . $renderMode . '" passed to FlashMessageViewhelper', 1290697924);
 		}
 	}
 
@@ -135,7 +135,7 @@ class FlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractT
 		}
 		$tagContent = '';
 		foreach ($flashMessages as $singleFlashMessage) {
-			$tagContent .= ('<li>' . htmlspecialchars($singleFlashMessage->getMessage())) . '</li>';
+			$tagContent .= '<li>' . htmlspecialchars($singleFlashMessage->getMessage()) . '</li>';
 		}
 		$this->tag->setContent($tagContent);
 		return $this->tag->render();

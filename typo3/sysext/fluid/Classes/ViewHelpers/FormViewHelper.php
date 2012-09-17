@@ -174,7 +174,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		$content .= $this->renderHiddenReferrerFields();
 		$content .= $this->renderRequestHashField();
 		// Render hmac after everything else has been rendered
-		$content .= (chr(10) . '</div>') . chr(10);
+		$content .= chr(10) . '</div>' . chr(10);
 		$content .= $formContent;
 		$this->tag->setContent($content);
 		$this->removeFieldNamePrefixFromViewHelperVariableContainer();
@@ -233,15 +233,15 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		$actionName = $request->getControllerActionName();
 		$result = chr(10);
 		if ($this->configurationManager->isFeatureEnabled('rewrittenPropertyMapper')) {
-			$result .= (((('<input type="hidden" name="' . $this->prefixFieldName('__referrer[@extension]')) . '" value="') . $extensionName) . '" />') . chr(10);
-			$result .= (((('<input type="hidden" name="' . $this->prefixFieldName('__referrer[@controller]')) . '" value="') . $controllerName) . '" />') . chr(10);
-			$result .= (((('<input type="hidden" name="' . $this->prefixFieldName('__referrer[@action]')) . '" value="') . $actionName) . '" />') . chr(10);
-			$result .= (((('<input type="hidden" name="' . $this->prefixFieldName('__referrer[arguments]')) . '" value="') . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments()))))) . '" />') . chr(10);
+			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@extension]') . '" value="' . $extensionName . '" />' . chr(10);
+			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@controller]') . '" value="' . $controllerName . '" />' . chr(10);
+			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[@action]') . '" value="' . $actionName . '" />' . chr(10);
+			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[arguments]') . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())))) . '" />' . chr(10);
 		} else {
 			// @deprecated since Extbase 1.4.0, will be removed with Extbase 1.6.0.
-			$result .= (((('<input type="hidden" name="' . $this->prefixFieldName('__referrer[extensionName]')) . '" value="') . $extensionName) . '" />') . chr(10);
-			$result .= (((('<input type="hidden" name="' . $this->prefixFieldName('__referrer[controllerName]')) . '" value="') . $controllerName) . '" />') . chr(10);
-			$result .= (((('<input type="hidden" name="' . $this->prefixFieldName('__referrer[actionName]')) . '" value="') . $actionName) . '" />') . chr(10);
+			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[extensionName]') . '" value="' . $extensionName . '" />' . chr(10);
+			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[controllerName]') . '" value="' . $controllerName . '" />' . chr(10);
+			$result .= '<input type="hidden" name="' . $this->prefixFieldName('__referrer[actionName]') . '" value="' . $actionName . '" />' . chr(10);
 		}
 		return $result;
 	}
@@ -371,7 +371,7 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		$this->postProcessUriArgumentsForRequesthash($this->formActionUriArguments, $formFieldNames);
 		$requestHash = $this->requestHashService->generateRequestHash($formFieldNames, $this->getFieldNamePrefix());
 		// in v4, we need to prefix __hmac as well to make it show up in the request object.
-		return ((('<input type="hidden" name="' . $this->prefixFieldName('__hmac')) . '" value="') . htmlspecialchars($requestHash)) . '" />';
+		return '<input type="hidden" name="' . $this->prefixFieldName('__hmac') . '" value="' . htmlspecialchars($requestHash) . '" />';
 	}
 
 	/**
@@ -383,10 +383,10 @@ class FormViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewH
 		}
 		foreach ($arguments as $argumentName => $argumentValue) {
 			if (is_array($argumentValue)) {
-				$prefix = $level == 0 ? $argumentName : (($currentPrefix . '[') . $argumentName) . ']';
+				$prefix = $level == 0 ? $argumentName : $currentPrefix . '[' . $argumentName . ']';
 				$this->postProcessUriArgumentsForRequestHash($argumentValue, $results, $prefix, $level + 1);
 			} else {
-				$results[] = $level == 0 ? $argumentName : (($currentPrefix . '[') . $argumentName) . ']';
+				$results[] = $level == 0 ? $argumentName : $currentPrefix . '[' . $argumentName . ']';
 			}
 		}
 	}

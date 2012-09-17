@@ -39,7 +39,7 @@ class BaseViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 	 * @api
 	 */
 	public function render() {
-		return ('<base href="' . $this->controllerContext->getRequest()->getBaseUri()) . '" />';
+		return '<base href="' . $this->controllerContext->getRequest()->getBaseUri() . '" />';
 	}
 
 }

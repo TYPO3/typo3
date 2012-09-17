@@ -190,10 +190,10 @@ class TagBuilder {
 		}
 		$output = '<' . $this->tagName;
 		foreach ($this->attributes as $attributeName => $attributeValue) {
-			$output .= (((' ' . $attributeName) . '="') . $attributeValue) . '"';
+			$output .= ' ' . $attributeName . '="' . $attributeValue . '"';
 		}
 		if ($this->hasContent() || $this->forceClosingTag) {
-			$output .= ((('>' . $this->content) . '</') . $this->tagName) . '>';
+			$output .= '>' . $this->content . '</' . $this->tagName . '>';
 		} else {
 			$output .= ' />';
 		}

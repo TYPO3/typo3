@@ -107,7 +107,7 @@ class CObjectViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHel
 		$setup = $this->typoScriptSetup;
 		foreach ($pathSegments as $segment) {
 			if (!array_key_exists(($segment . '.'), $setup)) {
-				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(('TypoScript object path "' . htmlspecialchars($typoscriptObjectPath)) . '" does not exist', 1253191023);
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist', 1253191023);
 			}
 			$setup = $setup[$segment . '.'];
 		}

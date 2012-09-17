@@ -47,7 +47,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	public function selectCreatesExpectedOptions() {
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-		$this->tagBuilder->expects($this->once())->method('setContent')->with((('<option value="value1">label1</option>' . chr(10)) . '<option value="value2" selected="selected">label2</option>') . chr(10));
+		$this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10));
 		$this->tagBuilder->expects($this->once())->method('render');
 		$this->arguments['options'] = array(
 			'value1' => 'label1',
@@ -82,7 +82,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	public function OrderOfOptionsIsNotAlteredByDefault() {
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-		$this->tagBuilder->expects($this->once())->method('setContent')->with((((('<option value="value3">label3</option>' . chr(10)) . '<option value="value1">label1</option>') . chr(10)) . '<option value="value2" selected="selected">label2</option>') . chr(10));
+		$this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value3">label3</option>' . chr(10) . '<option value="value1">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10));
 		$this->tagBuilder->expects($this->once())->method('render');
 		$this->arguments['options'] = array(
 			'value3' => 'label3',
@@ -102,7 +102,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	public function optionsAreSortedByLabelIfSortByOptionLabelIsSet() {
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-		$this->tagBuilder->expects($this->once())->method('setContent')->with((((('<option value="value1">label1</option>' . chr(10)) . '<option value="value2" selected="selected">label2</option>') . chr(10)) . '<option value="value3">label3</option>') . chr(10));
+		$this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10) . '<option value="value3">label3</option>' . chr(10));
 		$this->tagBuilder->expects($this->once())->method('render');
 		$this->arguments['options'] = array(
 			'value3' => 'label3',
@@ -134,7 +134,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$this->viewHelper->initializeArguments();
 		$this->viewHelper->initialize();
 		$result = $this->viewHelper->render();
-		$expected = ((((('<input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="value1" selected="selected">label1</option>' . chr(10)) . '<option value="value2">label2</option>') . chr(10)) . '<option value="value3" selected="selected">label3</option>') . chr(10)) . '</select>';
+		$expected = '<input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="value1" selected="selected">label1</option>' . chr(10) . '<option value="value2">label2</option>' . chr(10) . '<option value="value3" selected="selected">label3</option>' . chr(10) . '</select>';
 		$this->assertSame($expected, $result);
 	}
 
@@ -148,7 +148,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
 		$this->tagBuilder->expects($this->once())->method('addAttribute')->with('name', 'myName');
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
-		$this->tagBuilder->expects($this->once())->method('setContent')->with((((('<option value="1">Ingmar</option>' . chr(10)) . '<option value="2" selected="selected">Sebastian</option>') . chr(10)) . '<option value="3">Robert</option>') . chr(10));
+		$this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="1">Ingmar</option>' . chr(10) . '<option value="2" selected="selected">Sebastian</option>' . chr(10) . '<option value="3">Robert</option>' . chr(10));
 		$this->tagBuilder->expects($this->once())->method('render');
 		$user_is = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
 		$user_sk = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
@@ -190,7 +190,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$this->viewHelper->initializeArguments();
 		$this->viewHelper->initialize();
 		$actual = $this->viewHelper->render();
-		$expected = ((((('<input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="1" selected="selected">Schlecht</option>' . chr(10)) . '<option value="2">Kurfuerst</option>') . chr(10)) . '<option value="3" selected="selected">Lemke</option>') . chr(10)) . '</select>';
+		$expected = '<input type="hidden" name="myName" value="" /><select multiple="multiple" name="myName[]"><option value="1" selected="selected">Schlecht</option>' . chr(10) . '<option value="2">Kurfuerst</option>' . chr(10) . '<option value="3" selected="selected">Lemke</option>' . chr(10) . '</select>';
 		$this->assertSame($expected, $actual);
 	}
 
@@ -220,7 +220,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$this->viewHelper->initializeArguments();
 		$this->viewHelper->initialize();
 		$actual = $this->viewHelper->render();
-		$expected = ((((((('<input type="hidden" name="myName" value="" />' . '<select multiple="multiple" name="myName[]">') . '<option value="1" selected="selected">Schlecht</option>') . chr(10)) . '<option value="2">Kurfuerst</option>') . chr(10)) . '<option value="3" selected="selected">Lemke</option>') . chr(10)) . '</select>';
+		$expected = '<input type="hidden" name="myName" value="" />' . '<select multiple="multiple" name="myName[]">' . '<option value="1" selected="selected">Schlecht</option>' . chr(10) . '<option value="2">Kurfuerst</option>' . chr(10) . '<option value="3" selected="selected">Lemke</option>' . chr(10) . '</select>';
 		$this->assertSame($expected, $actual);
 	}
 
@@ -302,7 +302,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	 * @test
 	 */
 	public function allOptionsAreSelectedIfSelectAllIsTrue() {
-		$this->tagBuilder->expects($this->once())->method('setContent')->with((((('<option value="value1" selected="selected">label1</option>' . chr(10)) . '<option value="value2" selected="selected">label2</option>') . chr(10)) . '<option value="value3" selected="selected">label3</option>') . chr(10));
+		$this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1" selected="selected">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10) . '<option value="value3" selected="selected">label3</option>' . chr(10));
 		$this->arguments['options'] = array(
 			'value1' => 'label1',
 			'value2' => 'label2',
@@ -320,7 +320,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	 * @test
 	 */
 	public function selectAllHasNoEffectIfValueIsSet() {
-		$this->tagBuilder->expects($this->once())->method('setContent')->with((((('<option value="value1" selected="selected">label1</option>' . chr(10)) . '<option value="value2" selected="selected">label2</option>') . chr(10)) . '<option value="value3">label3</option>') . chr(10));
+		$this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="value1" selected="selected">label1</option>' . chr(10) . '<option value="value2" selected="selected">label2</option>' . chr(10) . '<option value="value3">label3</option>' . chr(10));
 		$this->arguments['options'] = array(
 			'value1' => 'label1',
 			'value2' => 'label2',

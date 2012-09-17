@@ -43,7 +43,7 @@ class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 	public function render($uri, $defaultScheme = 'http') {
 		$scheme = parse_url($uri, PHP_URL_SCHEME);
 		if ($scheme === NULL && $defaultScheme !== '') {
-			$uri = ($defaultScheme . '://') . $uri;
+			$uri = $defaultScheme . '://' . $uri;
 		}
 		return $uri;
 	}

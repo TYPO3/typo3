@@ -288,7 +288,7 @@ class TemplateParser {
 	 */
 	public function parse($templateString) {
 		if (!is_string($templateString)) {
-			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('Parse requires a template string as argument, ' . gettype($templateString)) . ' given.', 1224237899);
+			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Parse requires a template string as argument, ' . gettype($templateString) . ' given.', 1224237899);
 		}
 		$this->reset();
 		$templateString = $this->extractNamespaceDefinitions($templateString);
@@ -335,7 +335,7 @@ class TemplateParser {
 				$namespaceIdentifier = $matchedVariables[1][$index];
 				$fullyQualifiedNamespace = $matchedVariables[2][$index];
 				if (key_exists($namespaceIdentifier, $this->namespaces)) {
-					throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('Namespace identifier "' . $namespaceIdentifier) . '" is already registered. Do not redeclare namespaces!', 1224241246);
+					throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Namespace identifier "' . $namespaceIdentifier . '" is already registered. Do not redeclare namespaces!', 1224241246);
 				}
 				$this->namespaces[$namespaceIdentifier] = $fullyQualifiedNamespace;
 			}
@@ -455,7 +455,7 @@ class TemplateParser {
 		}
 		foreach (array_keys($actualArguments) as $argumentName) {
 			if (!in_array($argumentName, $expectedArgumentNames)) {
-				throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('Argument "' . $argumentName) . '" was not registered.', 1237823695);
+				throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Argument "' . $argumentName . '" was not registered.', 1237823695);
 			}
 		}
 	}
@@ -471,7 +471,7 @@ class TemplateParser {
 		$actualArgumentNames = array_keys($actualArguments);
 		foreach ($expectedArguments as $expectedArgument) {
 			if ($expectedArgument->isRequired() && !in_array($expectedArgument->getName(), $actualArgumentNames)) {
-				throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('Required argument "' . $expectedArgument->getName()) . '" was not supplied.', 1237823699);
+				throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Required argument "' . $expectedArgument->getName() . '" was not supplied.', 1237823699);
 			}
 		}
 	}
@@ -507,7 +507,7 @@ class TemplateParser {
 			$className = ucfirst($explodedViewHelperName[0]);
 		}
 		$className .= 'ViewHelper';
-		$name = ($this->namespaces[$namespaceIdentifier] . $namespaceSeperator) . $className;
+		$name = $this->namespaces[$namespaceIdentifier] . $namespaceSeperator . $className;
 		return $name;
 	}
 
@@ -529,7 +529,7 @@ class TemplateParser {
 			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('You closed a templating tag which you never opened!', 1224485838);
 		}
 		if ($lastStackElement->getViewHelperClassName() != $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier)) {
-			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception((('Templating tags not properly nested. Expected: ' . $lastStackElement->getViewHelperClassName()) . '; Actual: ') . $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier), 1224485398);
+			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Templating tags not properly nested. Expected: ' . $lastStackElement->getViewHelperClassName() . '; Actual: ' . $this->resolveViewHelperName($namespaceIdentifier, $methodIdentifier), 1224485398);
 		}
 		$this->callInterceptor($lastStackElement, \TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_CLOSING_VIEWHELPER, $state);
 	}
@@ -764,7 +764,7 @@ class TemplateParser {
 				} elseif (array_key_exists('Subarray', $singleMatch) && !empty($singleMatch['Subarray'])) {
 					$arrayToBuild[$arrayKey] = $this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ArrayNode', $this->recursiveArrayHandler($singleMatch['Subarray']));
 				} else {
-					throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('This exception should never be thrown, as the array value has to be of some type (Value given: "' . var_export($singleMatch, TRUE)) . '"). Please post your template to the bugtracker at forge.typo3.org.', 1225136013);
+					throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('This exception should never be thrown, as the array value has to be of some type (Value given: "' . var_export($singleMatch, TRUE) . '"). Please post your template to the bugtracker at forge.typo3.org.', 1225136013);
 				}
 			}
 			return $arrayToBuild;

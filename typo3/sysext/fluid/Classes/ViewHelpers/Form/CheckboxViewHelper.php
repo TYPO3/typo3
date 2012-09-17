@@ -80,7 +80,7 @@ class CheckboxViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormF
 				$checked = in_array($valueAttribute, $propertyValue);
 				$nameAttribute .= '[]';
 			} else {
-				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(((('Checkbox viewhelpers can only be bound to properties of type boolean or array. Property "' . $this->arguments['property']) . '" is of type "') . (is_object($propertyValue) ? get_class($propertyValue) : gettype($propertyValue))) . '".', 1248261038);
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('Checkbox viewhelpers can only be bound to properties of type boolean or array. Property "' . $this->arguments['property'] . '" is of type "' . (is_object($propertyValue) ? get_class($propertyValue) : gettype($propertyValue)) . '".', 1248261038);
 			}
 		}
 		$this->registerFieldNameForFormTokenGeneration($nameAttribute);

@@ -29,7 +29,7 @@ class TextNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 	 */
 	public function __construct($text) {
 		if (!is_string($text)) {
-			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('Text node requires an argument of type string, "' . gettype($text)) . '" given.');
+			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Text node requires an argument of type string, "' . gettype($text) . '" given.');
 		}
 		$this->text = $text;
 	}

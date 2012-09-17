@@ -98,9 +98,9 @@ class CropViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 			$this->simulateFrontendEnvironment();
 		}
 		if ($respectHtml) {
-			$content = $this->contentObject->cropHTML($stringToTruncate, ((($maxCharacters . '|') . $append) . '|') . $respectWordBoundaries);
+			$content = $this->contentObject->cropHTML($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
 		} else {
-			$content = $this->contentObject->crop($stringToTruncate, ((($maxCharacters . '|') . $append) . '|') . $respectWordBoundaries);
+			$content = $this->contentObject->crop($stringToTruncate, $maxCharacters . '|' . $append . '|' . $respectWordBoundaries);
 		}
 		if (TYPO3_MODE === 'BE') {
 			$this->resetFrontendEnvironment();

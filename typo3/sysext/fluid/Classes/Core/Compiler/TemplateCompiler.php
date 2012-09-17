@@ -80,7 +80,7 @@ class TemplateCompiler implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$generatedRenderFunctions .= $this->generateCodeForSection($this->convertListOfSubNodes($parsingState->getRootNode()), 'render', 'Main Render function');
 		$convertedLayoutNameNode = $parsingState->hasLayout() ? $this->convert($parsingState->getLayoutNameNode()) : array('initialization' => '', 'execution' => 'NULL');
-		$classDefinition = ('class FluidCache_' . $identifier) . ' extends TYPO3\\CMS\\Fluid\\Core\\Compiler\\AbstractCompiledTemplate';
+		$classDefinition = 'class FluidCache_' . $identifier . ' extends TYPO3\\CMS\\Fluid\\Core\\Compiler\\AbstractCompiledTemplate';
 		$templateCode = '%s {
 
 public function getVariableContainer() {
@@ -159,7 +159,7 @@ return %s;
 	protected function convertTextNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\TextNode $node) {
 		return array(
 			'initialization' => '',
-			'execution' => ('\'' . $this->escapeTextForUseInSingleQuotes($node->getText())) . '\''
+			'execution' => '\'' . $this->escapeTextForUseInSingleQuotes($node->getText()) . '\''
 		);
 	}
 
@@ -172,7 +172,7 @@ return %s;
 	 * @see convert()
 	 */
 	protected function convertViewHelperNode(\TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\ViewHelperNode $node) {
-		$initializationPhpCode = ('// Rendering ViewHelper ' . $node->getViewHelperClassName()) . chr(10);
+		$initializationPhpCode = '// Rendering ViewHelper ' . $node->getViewHelperClassName() . chr(10);
 		// Build up $arguments array
 		$argumentsVariableName = $this->variableName('arguments');
 		$initializationPhpCode .= sprintf('%s = array();', $argumentsVariableName) . chr(10);
@@ -209,7 +209,7 @@ return %s;
 		$initializationPhpCode .= sprintf('%s->setArguments(%s);', $viewHelperVariableName, $argumentsVariableName) . chr(10);
 		$initializationPhpCode .= sprintf('%s->setRenderingContext($renderingContext);', $viewHelperVariableName) . chr(10);
 		$initializationPhpCode .= sprintf('%s->setRenderChildrenClosure(%s);', $viewHelperVariableName, $renderChildrenClosureVariableName) . chr(10);
-		$initializationPhpCode .= ('// End of ViewHelper ' . $node->getViewHelperClassName()) . chr(10);
+		$initializationPhpCode .= '// End of ViewHelper ' . $node->getViewHelperClassName() . chr(10);
 		return array(
 			'initialization' => $initializationPhpCode,
 			'execution' => sprintf('%s->initializeArgumentsAndRender()', $viewHelperVariableName)
@@ -297,7 +297,7 @@ return %s;
 			$convertedLeftSide = $this->convert($node->getLeftSide());
 			$convertedRightSide = $this->convert($node->getRightSide());
 			return array(
-				'initialization' => ($initializationPhpCode . $convertedLeftSide['initialization']) . $convertedRightSide['initialization'],
+				'initialization' => $initializationPhpCode . $convertedLeftSide['initialization'] . $convertedRightSide['initialization'],
 				'execution' => sprintf('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\BooleanNode::evaluateComparator(\'%s\', %s, %s)', $node->getComparator(), $convertedLeftSide['execution'], $convertedRightSide['execution'])
 			);
 		} else {
@@ -339,7 +339,7 @@ return %s;
 	 * @return string
 	 */
 	public function variableName($prefix) {
-		return ('$' . $prefix) . $this->variableCounter++;
+		return '$' . $prefix . $this->variableCounter++;
 	}
 
 }

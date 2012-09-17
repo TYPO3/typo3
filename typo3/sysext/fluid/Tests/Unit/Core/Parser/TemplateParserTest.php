@@ -109,8 +109,8 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function splitTemplateAtDynamicTagsReturnsCorrectlySplitTemplate($templateName) {
-		$template = file_get_contents(((dirname(__FILE__) . '/Fixtures/') . $templateName) . '.html', FILE_TEXT);
-		$expectedResult = require ((dirname(__FILE__) . '/Fixtures/') . $templateName) . '-split.php';
+		$template = file_get_contents(dirname(__FILE__) . '/Fixtures/' . $templateName . '.html', FILE_TEXT);
+		$expectedResult = require dirname(__FILE__) . '/Fixtures/' . $templateName . '-split.php';
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('dummy'));
 		$this->assertSame($expectedResult, $templateParser->_call('splitTemplateAtDynamicTags', $template), 'Filed for ' . $templateName);
 	}

@@ -71,7 +71,7 @@ class AjaxWidgetContextHolder implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function get($ajaxWidgetId) {
 		if (!isset($this->widgetContexts[$ajaxWidgetId])) {
-			throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetContextNotFoundException(('No widget context was found for the Ajax Widget Identifier "' . $ajaxWidgetId) . '". This only happens if AJAX URIs are called without including the widget on a page.', 1284793775);
+			throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\WidgetContextNotFoundException('No widget context was found for the Ajax Widget Identifier "' . $ajaxWidgetId . '". This only happens if AJAX URIs are called without including the widget on a page.', 1284793775);
 		}
 		return $this->widgetContexts[$ajaxWidgetId];
 	}

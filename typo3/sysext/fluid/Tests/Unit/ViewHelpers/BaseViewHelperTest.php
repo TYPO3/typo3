@@ -25,7 +25,7 @@ class BaseViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$this->request->expects($this->any())->method('getBaseUri')->will($this->returnValue($baseUri));
 		$viewHelper = new \Tx_Fluid_ViewHelpers_BaseViewHelper();
 		$this->injectDependenciesIntoViewHelper($viewHelper);
-		$expectedResult = ('<base href="' . $baseUri) . '" />';
+		$expectedResult = '<base href="' . $baseUri . '" />';
 		$actualResult = $viewHelper->render();
 		$this->assertSame($expectedResult, $actualResult);
 	}

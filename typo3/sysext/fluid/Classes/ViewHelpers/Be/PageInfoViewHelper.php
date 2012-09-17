@@ -55,7 +55,7 @@ class PageInfoViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 		} else {
 			// On root-level of page tree
 			// Make Icon
-			$iconImg = ((('<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/i/_icon_website.gif')) . ' alt="') . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'])) . '" />';
+			$iconImg = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' alt="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '" />';
 			if ($BE_USER->user['admin']) {
 				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
 			} else {
@@ -63,7 +63,7 @@ class PageInfoViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 			}
 		}
 		// Setting icon with clickmenu + uid
-		$pageInfo = (($theIcon . '<em>[pid: ') . $pageRecord['uid']) . ']</em>';
+		$pageInfo = $theIcon . '<em>[pid: ' . $pageRecord['uid'] . ']</em>';
 		return $pageInfo;
 	}
 

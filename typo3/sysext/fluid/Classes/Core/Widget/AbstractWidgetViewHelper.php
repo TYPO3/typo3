@@ -157,9 +157,9 @@ abstract class AbstractWidgetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper
 	protected function initiateSubRequest() {
 		if (!$this->controller instanceof \TYPO3\CMS\Fluid\Core\Widget\AbstractWidgetController) {
 			if (isset($this->controller)) {
-				throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException(((('initiateSubRequest() can not be called if there is no valid controller extending TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetController. Got "' . get_class($this->controller)) . '" in class "') . get_class($this)) . '".', 1289422564);
+				throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException('initiateSubRequest() can not be called if there is no valid controller extending TYPO3\\CMS\\Fluid\\Core\\Widget\\AbstractWidgetController. Got "' . get_class($this->controller) . '" in class "' . get_class($this) . '".', 1289422564);
 			}
-			throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException(('initiateSubRequest() can not be called if there is no controller inside $this->controller. Make sure to add a corresponding injectController method to your WidgetViewHelper class "' . get_class($this)) . '".', 1284401632);
+			throw new \TYPO3\CMS\Fluid\Core\Widget\Exception\MissingControllerException('initiateSubRequest() can not be called if there is no controller inside $this->controller. Make sure to add a corresponding injectController method to your WidgetViewHelper class "' . get_class($this) . '".', 1284401632);
 		}
 		$subRequest = $this->objectManager->create('TYPO3\\CMS\\Fluid\\Core\\Widget\\WidgetRequest');
 		$subRequest->setWidgetContext($this->widgetContext);

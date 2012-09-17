@@ -61,9 +61,9 @@ class CurrencyViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHe
 		if ($currencySign !== '') {
 			$currencySeparator = $separateCurrency ? ' ' : '';
 			if ($prependCurrency === TRUE) {
-				$output = ($currencySign . $currencySeparator) . $output;
+				$output = $currencySign . $currencySeparator . $output;
 			} else {
-				$output = ($output . $currencySeparator) . $currencySign;
+				$output = $output . $currencySeparator . $currencySign;
 			}
 		}
 		return $output;

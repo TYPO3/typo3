@@ -61,7 +61,7 @@ class ExternalViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagBas
 	public function render($uri, $defaultScheme = 'http') {
 		$scheme = parse_url($uri, PHP_URL_SCHEME);
 		if ($scheme === NULL && $defaultScheme !== '') {
-			$uri = ($defaultScheme . '://') . $uri;
+			$uri = $defaultScheme . '://' . $uri;
 		}
 		$this->tag->addAttribute('href', $uri);
 		$this->tag->setContent($this->renderChildren());

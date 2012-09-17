@@ -51,7 +51,7 @@ abstract class AbstractFormViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 			return $fieldName;
 		}
 		$fieldNameSegments = explode('[', $fieldName, 2);
-		$fieldName = (($fieldNamePrefix . '[') . $fieldNameSegments[0]) . ']';
+		$fieldName = $fieldNamePrefix . '[' . $fieldNameSegments[0] . ']';
 		if (count($fieldNameSegments) > 1) {
 			$fieldName .= '[' . $fieldNameSegments[1];
 		}
@@ -67,18 +67,18 @@ abstract class AbstractFormViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\A
 	 * @see Tx_Fluid_MVC_Controller_Argument::setValue()
 	 */
 	protected function renderHiddenIdentityField($object, $name) {
-		if ((!is_object($object) || !$object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject) || $object->_isNew() && !$object->_isClone()) {
+		if (!is_object($object) || !$object instanceof \TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject || $object->_isNew() && !$object->_isClone()) {
 			return '';
 		}
 		// Intentionally NOT using PersistenceManager::getIdentifierByObject here!!
 		// Using that one breaks re-submission of data in forms in case of an error.
 		$identifier = $object->getUid();
 		if ($identifier === NULL) {
-			return (((chr(10) . '<!-- Object of type ') . get_class($object)) . ' is without identity -->') . chr(10);
+			return chr(10) . '<!-- Object of type ' . get_class($object) . ' is without identity -->' . chr(10);
 		}
 		$name = $this->prefixFieldName($name) . '[__identity]';
 		$this->registerFieldNameForFormTokenGeneration($name);
-		return (((((chr(10) . '<input type="hidden" name="') . $name) . '" value="') . $identifier) . '" />') . chr(10);
+		return chr(10) . '<input type="hidden" name="' . $name . '" value="' . $identifier . '" />' . chr(10);
 	}
 
 	/**

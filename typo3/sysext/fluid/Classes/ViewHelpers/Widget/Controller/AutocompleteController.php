@@ -41,9 +41,9 @@ class AutocompleteController extends \TYPO3\CMS\Fluid\Core\Widget\AbstractWidget
 		$query = $this->widgetConfiguration['objects']->getQuery();
 		$constraint = $query->getConstraint();
 		if ($constraint !== NULL) {
-			$query->matching($query->logicalAnd($constraint, $query->like($searchProperty, ('%' . $term) . '%', FALSE)));
+			$query->matching($query->logicalAnd($constraint, $query->like($searchProperty, '%' . $term . '%', FALSE)));
 		} else {
-			$query->matching($query->like($searchProperty, ('%' . $term) . '%', FALSE));
+			$query->matching($query->like($searchProperty, '%' . $term . '%', FALSE));
 		}
 		$results = $query->execute();
 		$output = array();

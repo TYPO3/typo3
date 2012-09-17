@@ -230,7 +230,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 			}
 			return $evaluatedLeftSide <= $evaluatedRightSide;
 		default:
-			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception(('Comparator "' . $comparator) . '" is not implemented.', 1244234398);
+			throw new \TYPO3\CMS\Fluid\Core\Parser\Exception('Comparator "' . $comparator . '" is not implemented.', 1244234398);
 		}
 	}
 
@@ -252,7 +252,7 @@ class BooleanNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\AbstractNode {
 		if (is_object($evaluatedLeftSide) && is_object($evaluatedRightSide)) {
 			return TRUE;
 		}
-		if (((is_string($evaluatedLeftSide) || is_resource($evaluatedLeftSide)) || is_numeric($evaluatedLeftSide)) && ((is_string($evaluatedRightSide) || is_resource($evaluatedRightSide)) || is_numeric($evaluatedRightSide))) {
+		if ((is_string($evaluatedLeftSide) || is_resource($evaluatedLeftSide) || is_numeric($evaluatedLeftSide)) && (is_string($evaluatedRightSide) || is_resource($evaluatedRightSide) || is_numeric($evaluatedRightSide))) {
 			return TRUE;
 		}
 		if (is_array($evaluatedLeftSide) && is_array($evaluatedRightSide)) {

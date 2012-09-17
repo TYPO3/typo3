@@ -185,7 +185,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$templatePathAndFilename = $this->getTemplatePathAndFilename($actionName);
 		$templateSource = file_get_contents($templatePathAndFilename);
 		if ($templateSource === FALSE) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('"' . $templatePathAndFilename) . '" is not a valid template resource URI.', 1257246929);
+			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('"' . $templatePathAndFilename . '" is not a valid template resource URI.', 1257246929);
 		}
 		return $templateSource;
 	}
@@ -215,15 +215,15 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 				// additional check for deprecated template filename for case insensitive file systems (Windows)
 				$realFileName = basename(realpath($templatePathAndFilename));
 				if ($realFileName !== ucfirst($realFileName)) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(((('the template filename "' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(realpath($templatePathAndFilename))) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "') . basename($templatePathAndFilename)) . '"');
+					\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('the template filename "' . \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(realpath($templatePathAndFilename)) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($templatePathAndFilename) . '"');
 				}
 				return $templatePathAndFilename;
 			} elseif (file_exists($fallbackPath)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(((('the template filename "' . $fallbackPath) . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "') . basename($templatePathAndFilename)) . '"');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('the template filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.4. Please rename the template to "' . basename($templatePathAndFilename) . '"');
 				return $fallbackPath;
 			}
 		}
-		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('Template could not be loaded. I tried "' . implode('", "', $paths)) . '"', 1225709595);
+		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('Template could not be loaded. I tried "' . implode('", "', $paths) . '"', 1225709595);
 	}
 
 	/**
@@ -255,7 +255,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$layoutPathAndFilename = $this->getLayoutPathAndFilename($layoutName);
 		$layoutSource = file_get_contents($layoutPathAndFilename);
 		if ($layoutSource === FALSE) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('"' . $layoutPathAndFilename) . '" is not a valid template resource URI.', 1257246929);
+			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('"' . $layoutPathAndFilename . '" is not a valid template resource URI.', 1257246929);
 		}
 		return $layoutSource;
 	}
@@ -285,11 +285,11 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 			if (file_exists($layoutPathAndFilename)) {
 				return $layoutPathAndFilename;
 			} elseif (file_exists($fallbackPath)) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(((('the layout filename "' . $fallbackPath) . '" is lowercase. This is deprecated since TYPO3 4.6. Please rename the layout to "') . basename($layoutPathAndFilename)) . '"');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('the layout filename "' . $fallbackPath . '" is lowercase. This is deprecated since TYPO3 4.6. Please rename the layout to "' . basename($layoutPathAndFilename) . '"');
 				return $fallbackPath;
 			}
 		}
-		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('The template files "' . implode('", "', $paths)) . '" could not be loaded.', 1225709595);
+		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
@@ -316,7 +316,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$partialPathAndFilename = $this->getPartialPathAndFilename($partialName);
 		$partialSource = file_get_contents($partialPathAndFilename);
 		if ($partialSource === FALSE) {
-			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('"' . $partialPathAndFilename) . '" is not a valid template resource URI.', 1257246929);
+			throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('"' . $partialPathAndFilename . '" is not a valid template resource URI.', 1257246929);
 		}
 		return $partialSource;
 	}
@@ -336,7 +336,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 				return $partialPathAndFilename;
 			}
 		}
-		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException(('The template files "' . implode('", "', $paths)) . '" could not be loaded.', 1225709595);
+		throw new \TYPO3\CMS\Fluid\View\Exception\InvalidTemplateResourceException('The template files "' . implode('", "', $paths) . '" could not be loaded.', 1225709595);
 	}
 
 	/**
@@ -473,7 +473,7 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		}
 		$controllerName = $request->getControllerName();
 		$templateModifiedTimestamp = filemtime($pathAndFilename);
-		$templateIdentifier = sprintf('%s_%s_%s_%s', $extensionName, $controllerName, $prefix, sha1(($pathAndFilename . '|') . $templateModifiedTimestamp));
+		$templateIdentifier = sprintf('%s_%s_%s_%s', $extensionName, $controllerName, $prefix, sha1($pathAndFilename . '|' . $templateModifiedTimestamp));
 		return $templateIdentifier;
 	}
 

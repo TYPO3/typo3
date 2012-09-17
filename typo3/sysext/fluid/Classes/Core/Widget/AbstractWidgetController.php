@@ -65,7 +65,7 @@ abstract class AbstractWidgetController extends \TYPO3\CMS\Extbase\Mvc\Controlle
 	protected function setViewConfiguration(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view) {
 		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$widgetViewHelperClassName = $this->request->getWidgetContext()->getWidgetViewHelperClassName();
-		if ((isset($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['template']) && strlen($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['template']) > 0) && method_exists($view, 'setTemplateRootPath')) {
+		if (isset($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['template']) && strlen($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['template']) > 0 && method_exists($view, 'setTemplateRootPath')) {
 			$view->setTemplateRootPath(\TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['widget'][$widgetViewHelperClassName]['template']));
 		}
 	}

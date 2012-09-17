@@ -30,7 +30,7 @@ abstract class TagBasedViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 	 * Constructor
 	 */
 	public function __construct() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(('the ViewHelper "' . get_class($this)) . '" extends "TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBasedViewHelper". This is deprecated since TYPO3 4.5. Please extend the class "TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractTagBasedViewHelper"');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog('the ViewHelper "' . get_class($this) . '" extends "TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBasedViewHelper". This is deprecated since TYPO3 4.5. Please extend the class "TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractTagBasedViewHelper"');
 		parent::__construct();
 	}
 

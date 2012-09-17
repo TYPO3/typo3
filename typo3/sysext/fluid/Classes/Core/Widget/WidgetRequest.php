@@ -52,7 +52,7 @@ class WidgetRequest extends \TYPO3\CMS\Extbase\Mvc\Web\Request {
 	 * @return string
 	 */
 	public function getArgumentPrefix() {
-		return (($this->widgetContext->getParentPluginNamespace() . '[') . $this->widgetContext->getWidgetIdentifier()) . ']';
+		return $this->widgetContext->getParentPluginNamespace() . '[' . $this->widgetContext->getWidgetIdentifier() . ']';
 	}
 
 }

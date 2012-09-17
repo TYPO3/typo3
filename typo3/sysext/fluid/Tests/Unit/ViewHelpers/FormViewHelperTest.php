@@ -137,7 +137,7 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$viewHelper->expects($this->once())->method('renderHiddenReferrerFields')->will($this->returnValue('hiddenReferrerFields'));
 		$viewHelper->expects($this->once())->method('renderRequestHashField')->will($this->returnValue('requestHashField'));
 		$viewHelper->expects($this->once())->method('renderChildren')->will($this->returnValue('formContent'));
-		$expectedResult = (((((chr(10) . '<div style="display: none">') . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFieldsrequestHashField') . chr(10)) . '</div>') . chr(10)) . 'formContent';
+		$expectedResult = chr(10) . '<div style="display: none">' . 'hiddenIdentityFieldadditionalIdentityFieldshiddenReferrerFieldsrequestHashField' . chr(10) . '</div>' . chr(10) . 'formContent';
 		$this->tagBuilder->expects($this->once())->method('setContent')->with($expectedResult);
 		$viewHelper->render();
 	}
@@ -154,7 +154,7 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$this->viewHelperVariableContainer->expects($this->once())->method('get')->with('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', 'additionalIdentityProperties')->will($this->returnValue($identityProperties));
 		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', array('renderChildren'), array(), '', FALSE);
 		$this->injectDependenciesIntoViewHelper($viewHelper);
-		$expected = ((chr(10) . '<input type="hidden" name="object1[object2][__identity]" value="42" />') . chr(10)) . '<input type="hidden" name="object1[object2][subobject][__identity]" value="21" />';
+		$expected = chr(10) . '<input type="hidden" name="object1[object2][__identity]" value="42" />' . chr(10) . '<input type="hidden" name="object1[object2][subobject][__identity]" value="21" />';
 		$actual = $viewHelper->_call('renderAdditionalIdentityFields');
 		$this->assertEquals($expected, $actual);
 	}
@@ -170,7 +170,7 @@ class FormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHel
 		$this->request->expects($this->atLeastOnce())->method('getControllerName')->will($this->returnValue('controllerName'));
 		$this->request->expects($this->atLeastOnce())->method('getControllerActionName')->will($this->returnValue('controllerActionName'));
 		$hiddenFields = $viewHelper->_call('renderHiddenReferrerFields');
-		$expectedResult = (((((chr(10) . '<input type="hidden" name="__referrer[extensionName]" value="extensionName" />') . chr(10)) . '<input type="hidden" name="__referrer[controllerName]" value="controllerName" />') . chr(10)) . '<input type="hidden" name="__referrer[actionName]" value="controllerActionName" />') . chr(10);
+		$expectedResult = chr(10) . '<input type="hidden" name="__referrer[extensionName]" value="extensionName" />' . chr(10) . '<input type="hidden" name="__referrer[controllerName]" value="controllerName" />' . chr(10) . '<input type="hidden" name="__referrer[actionName]" value="controllerActionName" />' . chr(10);
 		$this->assertEquals($expectedResult, $hiddenFields);
 	}
 

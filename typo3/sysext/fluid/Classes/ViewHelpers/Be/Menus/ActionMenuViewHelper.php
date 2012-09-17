@@ -88,7 +88,7 @@ class ActionMenuViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractTagB
 			}
 		}
 		$this->tag->setContent($options);
-		return ('<div class="docheader-funcmenu">' . $this->tag->render()) . '</div>';
+		return '<div class="docheader-funcmenu">' . $this->tag->render() . '</div>';
 	}
 
 }

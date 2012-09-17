@@ -93,7 +93,7 @@ class TemplateViewTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @param $format
 	 */
 	protected function setupMockControllerContextForPathResolving($packageKey, $subPackageKey, $controllerName, $format) {
-		$controllerObjectName = ((("TYPO3\\{$packageKey}\\" . ($subPackageKey != $subPackageKey . '\\' ?: '')) . 'Controller\\') . $controllerName) . 'Controller';
+		$controllerObjectName = "TYPO3\\{$packageKey}\\" . ($subPackageKey != $subPackageKey . '\\' ?: '') . 'Controller\\' . $controllerName . 'Controller';
 		$mockRequest = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Request');
 		$mockRequest->expects($this->any())->method('getControllerPackageKey')->will($this->returnValue($packageKey));
 		$mockRequest->expects($this->any())->method('getControllerSubPackageKey')->will($this->returnValue($subPackageKey));

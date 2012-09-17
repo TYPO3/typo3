@@ -50,7 +50,7 @@ class CountViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 			$subject = $this->renderChildren();
 		}
 		if (is_object($subject) && !$subject instanceof \Countable) {
-			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(('CountViewHelper only supports arrays and objects implementing Countable interface. Given: "' . get_class($subject)) . '"', 1279808078);
+			throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('CountViewHelper only supports arrays and objects implementing Countable interface. Given: "' . get_class($subject) . '"', 1279808078);
 		}
 		return count($subject);
 	}

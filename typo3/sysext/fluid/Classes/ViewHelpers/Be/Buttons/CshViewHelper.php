@@ -62,7 +62,7 @@ class CshViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewH
 			$table = '_MOD_' . $moduleName;
 		}
 		$cshButton = \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem($table, $field, $GLOBALS['BACK_PATH'], '', $iconOnly, $styleAttributes);
-		return ('<div class="docheader-csh">' . $cshButton) . '</div>';
+		return '<div class="docheader-csh">' . $cshButton . '</div>';
 	}
 
 }

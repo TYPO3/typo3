@@ -32,11 +32,11 @@ class AbstractFormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers
 	 */
 	public function renderHiddenIdentityFieldReturnsAHiddenInputFieldContainingTheObjectsUID() {
 		$className = 'Object' . uniqid();
-		eval(('class ' . $className) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		eval('class ' . $className . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 		}');
 		$object = $this->getAccessibleMock($className, array('dummy'));
 		$object->_set('uid', 123);
-		$expectedResult = (chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />') . chr(10);
+		$expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
 		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', array('prefixFieldName', 'registerFieldNameForFormTokenGeneration'), array(), '', FALSE);
 		$viewHelper->expects($this->any())->method('prefixFieldName')->with('theName')->will($this->returnValue('prefix[theName]'));
 		$actualResult = $viewHelper->_call('renderHiddenIdentityField', $object, 'theName');
@@ -48,12 +48,12 @@ class AbstractFormViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers
 	 */
 	public function renderHiddenIdentityFieldReturnsAHiddenInputFieldIfObjectIsNewButAClone() {
 		$className = 'Object' . uniqid();
-		eval(('class ' . $className) . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
+		eval('class ' . $className . ' extends TYPO3\\CMS\\Extbase\\DomainObject\\AbstractEntity {
 		}');
 		$object = $this->getAccessibleMock($className, array('dummy'));
 		$object->_set('uid', 123);
 		$object = clone $object;
-		$expectedResult = (chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />') . chr(10);
+		$expectedResult = chr(10) . '<input type="hidden" name="prefix[theName][__identity]" value="123" />' . chr(10);
 		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\FormViewHelper', array('prefixFieldName', 'registerFieldNameForFormTokenGeneration'), array(), '', FALSE);
 		$viewHelper->expects($this->any())->method('prefixFieldName')->with('theName')->will($this->returnValue('prefix[theName]'));
 		$actualResult = $viewHelper->_call('renderHiddenIdentityField', $object, 'theName');

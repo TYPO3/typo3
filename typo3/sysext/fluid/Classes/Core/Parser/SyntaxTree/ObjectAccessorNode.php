@@ -80,7 +80,7 @@ class ObjectAccessorNode extends \TYPO3\CMS\Fluid\Core\Parser\SyntaxTree\Abstrac
 		foreach ($propertyPathSegments as $pathSegment) {
 			$propertyExists = FALSE;
 			$propertyValue = \TYPO3\CMS\Extbase\Reflection\ObjectAccess::getPropertyInternal($subject, $pathSegment, FALSE, $propertyExists);
-			if (($propertyExists !== TRUE && (is_array($subject) || $subject instanceof \ArrayAccess)) && isset($subject[$pathSegment])) {
+			if ($propertyExists !== TRUE && (is_array($subject) || $subject instanceof \ArrayAccess) && isset($subject[$pathSegment])) {
 				$subject = $subject[$pathSegment];
 			} else {
 				$subject = $propertyValue;
