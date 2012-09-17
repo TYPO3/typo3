@@ -83,11 +83,12 @@ class DriverRegistryTest extends \Tx_Phpunit_TestCase {
 	/**
 	 * @test
 	 */
-	public function registerDriverClassThrowsExceptionIfShortnameIsAlreadyTaken() {
+	public function registerDriverClassThrowsExceptionIfShortnameIsAlreadyTakenByAnotherDriverClass() {
 		$this->setExpectedException('InvalidArgumentException', '', 1314979451);
 		$className = $this->getMockClass('TYPO3\\CMS\\Core\\Resource\\Driver\\AbstractDriver');
+		$className2 = '\stdClass';
 		$this->fixture->registerDriverClass($className, 'foobar');
-		$this->fixture->registerDriverClass($className, 'foobar');
+		$this->fixture->registerDriverClass($className2, 'foobar');
 	}
 
 	/**
