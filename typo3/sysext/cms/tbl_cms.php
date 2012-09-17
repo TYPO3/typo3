@@ -294,11 +294,22 @@ $TCA['fe_users'] = array(
 				'eval' => 'datetime',
 				'default' => 0
 			)
+		),
+		'is_online' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.is_online',
+			'config' => array(
+				'type' => 'input',
+				'readOnly' => '1',
+				'size' => '12',
+				'eval' => 'datetime',
+				'default' => 0
+			)
 		)
 	),
 	'types' => array(
 		'0' => array('showitem' => '
-			disable,username;;;;1-1-1, password, usergroup, lastlogin;;;;1-1-1,
+			disable,username;;;;1-1-1, password, usergroup, lastlogin;;3;;1-1-1,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.personelData, company;;1;;1-1-1, name;;2;;2-2-2, address, zip, city, country, telephone, fax, email, www, image;;;;2-2-2,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.options, lockToDomain;;;;1-1-1, TSconfig;;;;2-2-2,
 			--div--;LLL:EXT:cms/locallang_tca.xml:fe_users.tabs.access, starttime, endtime,
@@ -308,7 +319,8 @@ $TCA['fe_users'] = array(
 	),
 	'palettes' => array(
 		'1' => array('showitem' => 'title'),
-		'2' => array('showitem' => 'first_name,--linebreak--,middle_name,--linebreak--,last_name')
+		'2' => array('showitem' => 'first_name,--linebreak--,middle_name,--linebreak--,last_name'),
+		'3' => array('showitem' => 'is_online')
 	)
 );
 // fe_groups
