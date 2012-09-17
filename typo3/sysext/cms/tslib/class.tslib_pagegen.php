@@ -1006,29 +1006,33 @@ See <a href="http://wiki.typo3.org/index.php/TYPO3_3.8.1" target="_blank">wiki.t
 		}
 
 			// Bodytag:
-		$defBT = $GLOBALS['TSFE']->pSetup['bodyTagCObject'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($GLOBALS['TSFE']->pSetup['bodyTagCObject'], $GLOBALS['TSFE']->pSetup['bodyTagCObject.'], 'bodyTagCObject') : '';
-		if (! $defBT)
-			$defBT = $GLOBALS['TSFE']->defaultBodyTag;
-		$bodyTag = $GLOBALS['TSFE']->pSetup['bodyTag'] ? $GLOBALS['TSFE']->pSetup['bodyTag'] : $defBT;
-		if ($bgImg = $GLOBALS['TSFE']->cObj->getImgResource($GLOBALS['TSFE']->pSetup['bgImg'], $GLOBALS['TSFE']->pSetup['bgImg.'])) {
-			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' background="' . $GLOBALS["TSFE"]->absRefPrefix . $bgImg[3] . '">';
-		}
-
-		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins'])) {
-			$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
-			if ($GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS']) {
-				// Setting margins in CSS, see above
-			} else {
-				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' leftmargin="' . $margins . '" topmargin="' . $margins . '" marginwidth="' . $margins . '" marginheight="' . $margins . '">';
+		if ($GLOBALS['TSFE']->config['config']['disableBodyTag'])    {
+			$bodyTag = '';
+		} else {
+			$defBT = $GLOBALS['TSFE']->pSetup['bodyTagCObject'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($GLOBALS['TSFE']->pSetup['bodyTagCObject'], $GLOBALS['TSFE']->pSetup['bodyTagCObject.'], 'bodyTagCObject') : '';
+			if (! $defBT)
+				$defBT = $GLOBALS['TSFE']->defaultBodyTag;
+			$bodyTag = $GLOBALS['TSFE']->pSetup['bodyTag'] ? $GLOBALS['TSFE']->pSetup['bodyTag'] : $defBT;
+			if ($bgImg = $GLOBALS['TSFE']->cObj->getImgResource($GLOBALS['TSFE']->pSetup['bgImg'], $GLOBALS['TSFE']->pSetup['bgImg.'])) {
+				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' background="' . $GLOBALS["TSFE"]->absRefPrefix . $bgImg[3] . '">';
 			}
-		}
 
-		if (trim($GLOBALS['TSFE']->pSetup['bodyTagAdd'])) {
-			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']) . '>';
-		}
+			if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins'])) {
+				$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
+				if ($GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS']) {
+					// Setting margins in CSS, see above
+				} else {
+					$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' leftmargin="' . $margins . '" topmargin="' . $margins . '" marginwidth="' . $margins . '" marginheight="' . $margins . '">';
+				}
+			}
 
-		if (count($JSef[1])) { // Event functions:
-			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim(implode(' ', $JSef[1])) . '>';
+			if (trim($GLOBALS['TSFE']->pSetup['bodyTagAdd'])) {
+				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']) . '>';
+			}
+
+			if (count($JSef[1])) { // Event functions:
+				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim(implode(' ', $JSef[1])) . '>';
+			}
 		}
 		$pageRenderer->addBodyContent(LF . $bodyTag);
 
