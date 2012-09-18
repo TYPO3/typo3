@@ -889,28 +889,32 @@ class PageGenerator {
 			$pageRenderer->addBodyContent(LF . '<noframes>' . LF);
 		}
 		// Bodytag:
-		$defBT = $GLOBALS['TSFE']->pSetup['bodyTagCObject'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($GLOBALS['TSFE']->pSetup['bodyTagCObject'], $GLOBALS['TSFE']->pSetup['bodyTagCObject.'], 'bodyTagCObject') : '';
-		if (!$defBT) {
-			$defBT = $GLOBALS['TSFE']->defaultBodyTag;
-		}
-		$bodyTag = $GLOBALS['TSFE']->pSetup['bodyTag'] ? $GLOBALS['TSFE']->pSetup['bodyTag'] : $defBT;
-		if ($bgImg = $GLOBALS['TSFE']->cObj->getImgResource($GLOBALS['TSFE']->pSetup['bgImg'], $GLOBALS['TSFE']->pSetup['bgImg.'])) {
-			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' background="' . $GLOBALS['TSFE']->absRefPrefix . $bgImg[3] . '">';
-		}
-		if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins'])) {
-			$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
-			if ($GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS']) {
-
-			} else {
-				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' leftmargin="' . $margins . '" topmargin="' . $margins . '" marginwidth="' . $margins . '" marginheight="' . $margins . '">';
+		if ($GLOBALS['TSFE']->config['config']['disableBodyTag']) {
+			$bodyTag = '';
+		} else {
+			$defBT = $GLOBALS['TSFE']->pSetup['bodyTagCObject'] ? $GLOBALS['TSFE']->cObj->cObjGetSingle($GLOBALS['TSFE']->pSetup['bodyTagCObject'], $GLOBALS['TSFE']->pSetup['bodyTagCObject.'], 'bodyTagCObject') : '';
+			if (!$defBT) {
+				$defBT = $GLOBALS['TSFE']->defaultBodyTag;
 			}
-		}
-		if (trim($GLOBALS['TSFE']->pSetup['bodyTagAdd'])) {
-			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']) . '>';
-		}
-		// Event functions
-		if (count($JSef[1])) {
-			$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim(implode(' ', $JSef[1])) . '>';
+			$bodyTag = $GLOBALS['TSFE']->pSetup['bodyTag'] ? $GLOBALS['TSFE']->pSetup['bodyTag'] : $defBT;
+			if ($bgImg = $GLOBALS['TSFE']->cObj->getImgResource($GLOBALS['TSFE']->pSetup['bgImg'], $GLOBALS['TSFE']->pSetup['bgImg.'])) {
+				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' background="' . $GLOBALS['TSFE']->absRefPrefix . $bgImg[3] . '">';
+			}
+			if (isset($GLOBALS['TSFE']->pSetup['bodyTagMargins'])) {
+				$margins = intval($GLOBALS['TSFE']->pSetup['bodyTagMargins']);
+				if ($GLOBALS['TSFE']->pSetup['bodyTagMargins.']['useCSS']) {
+
+				} else {
+					$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' leftmargin="' . $margins . '" topmargin="' . $margins . '" marginwidth="' . $margins . '" marginheight="' . $margins . '">';
+				}
+			}
+			if (trim($GLOBALS['TSFE']->pSetup['bodyTagAdd'])) {
+				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim($GLOBALS['TSFE']->pSetup['bodyTagAdd']) . '>';
+			}
+			// Event functions
+			if (count($JSef[1])) {
+				$bodyTag = preg_replace('/>$/', '', trim($bodyTag)) . ' ' . trim(implode(' ', $JSef[1])) . '>';
+			}
 		}
 		$pageRenderer->addBodyContent(LF . $bodyTag);
 		// Div-sections
