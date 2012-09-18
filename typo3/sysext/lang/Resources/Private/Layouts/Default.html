@@ -1,10 +1,30 @@
 {namespace lang=TYPO3\CMS\Lang\ViewHelpers}
 
 <lang:be.container
-	loadJQuery="1"
-	addCssFile="{f:uri.resource(path:'StyleSheet/LangModule.css')}"
-	addJsFile="{f:uri.resource(path:'JavaScript/LangModule.js')}"
->
+	enableJumpToUrl="0"
+	enableClickMenu="0"
+	loadPrototype="0"
+	loadScriptaculous="0"
+	loadExtJs="0"
+	loadJQuery="0"
+	addCssFiles="{
+		0: '{f:uri.resource(path:\'StyleSheet/LangModule.css\')}'
+	}"
+	addJsFiles="{
+		0: '{f:uri.resource(path:\'Contrib/jquery-1.8.0.js\')}',
+		1: '{f:uri.resource(path:\'Contrib/jquery.dataTables-1.9.4.js\')}',
+		2: '{f:uri.resource(path:\'JavaScript/LangModule.js\')}'
+	}"
+	addJsInlineLabels="{
+		0: 'flashmessage.error',
+		1: 'flashmessage.information',
+		2: 'flashmessage.success',
+		3: 'flashmessage.multipleErrors',
+		4: 'flashmessage.checkComplete',
+		5: 'flashmessage.updateComplete',
+		6: 'flashmessage.canceled'
+	}"
+	>
 	<div class="typo3-fullDoc">
 
 		<div id="typo3-docheader">
@@ -17,6 +37,7 @@
 			</div>
 			<div class="typo3-docheader-buttons">
 				<div class="left">
+					<f:render section="iconButtons" />
 				</div>
 				<div class="right">
 					<f:be.buttons.shortcut />
