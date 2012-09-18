@@ -2072,13 +2072,23 @@ class TypoScriptFrontendController {
 		$GET = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
 		if ($this->cHash && is_array($GET)) {
 			$this->cHash_array = $this->cacheHash->getRelevantParameters(\TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $GET));
-			$cHash_calc = $this->cacheHash->calculateCacheHash($this->cHash_array);
-			if ($cHash_calc != $this->cHash) {
-				if ($this->TYPO3_CONF_VARS['FE']['pageNotFoundOnCHashError']) {
-					$this->pageNotFoundAndExit('Request parameters could not be validated (&cHash comparison failed)');
-				} else {
-					$this->disableCache();
-					$GLOBALS['TT']->setTSlogMessage('The incoming cHash "' . $this->cHash . '" and calculated cHash "' . $cHash_calc . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($this->cHash_array)) . '"', 2);
+			if (count($this->cHash_array) == 0) {
+				// It seems that cHash was added to the request but it is not needed.
+				// This may cause a call to disableCache() and be used for slowing down the site from the outside.
+				// We prevent that by simply not using cHash if it was not needed.
+				// Another good effect is that we do not polute page cache with needless cHash-ed entries.
+				$GLOBALS['TT']->setTSlogMessage('cHash check is requested but there are no appropriate GET variables. Skipping.', 2);
+				$this->cHash = '';
+				$this->cHash_array = array();
+			} else {
+				$cHash_calc = $this->cacheHash->calculateCacheHash($this->cHash_array);
+				if ($cHash_calc != $this->cHash) {
+					if ($this->TYPO3_CONF_VARS['FE']['pageNotFoundOnCHashError']) {
+						$this->pageNotFoundAndExit('Request parameters could not be validated (&cHash comparison failed)');
+					} else {
+						$this->disableCache();
+						$GLOBALS['TT']->setTSlogMessage('The incoming cHash "' . $this->cHash . '" and calculated cHash "' . $cHash_calc . '" did not match, so caching was disabled. The fieldlist used was "' . implode(',', array_keys($this->cHash_array)) . '"', 2);
+					}
 				}
 			}
 		} elseif (is_array($GET)) {
