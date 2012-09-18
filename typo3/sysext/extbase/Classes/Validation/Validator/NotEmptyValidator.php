@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
 class NotEmptyValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
-	 * Checks if the given property ($propertyValue) is not empty (NULL or empty string).
+	 * Checks if the given property ($propertyValue) is not empty (NULL, empty string, empty array or empty object).
 	 *
 	 * If at least one error occurred, the result is FALSE.
 	 *
@@ -47,6 +47,14 @@ class NotEmptyValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 		}
 		if ($value === '') {
 			$this->addError('The given subject was empty.', 1221560718);
+			return FALSE;
+		}
+		if (is_array($value) && empty($value)) {
+			$this->addError('The given subject was empty.', 1347992400);
+			return FALSE;
+		}
+		if (is_object($value) && $value instanceof \Countable && $value->count() === 0) {
+			$this->addError('The given subject was empty.', 1347992453);
 			return FALSE;
 		}
 		return TRUE;
