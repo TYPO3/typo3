@@ -12,7 +12,7 @@ if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		'after:extensionmanager', // Position
 		array(
 				// An array holding the controller-action-combinations that are accessible
-			'Language' => 'index, updateLanguageSelection, updateTranslation'
+			'Language' => 'index, updateLanguageSelection, checkTranslation, updateTranslation'
 		),
 		array(
 			'access' => 'admin',

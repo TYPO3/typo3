@@ -3,27 +3,73 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2012-08-31T17:54:12Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="not_checked" xml:space="preserve">
-				<source>not checked</source>
+			<trans-unit id="state.error" xml:space="preserve">
+				<source>Error</source>
 			</trans-unit>
-			<trans-unit id="translation_n_a" xml:space="preserve">
-				<source>translation not available</source>
+			<trans-unit id="state.notAvailable" xml:space="preserve">
+				<source>Not available</source>
 			</trans-unit>
-			<trans-unit id="translation_msg_failed" xml:space="preserve">
+			<trans-unit id="state.updateAvailable" xml:space="preserve">
+				<source>Update available</source>
+			</trans-unit>
+			<trans-unit id="state.failed" xml:space="preserve">
 				<source>Failed</source>
 			</trans-unit>
-			<trans-unit id="translation_msg_updated" xml:space="preserve">
-				<source>Updated</source>
+			<trans-unit id="state.upToDate" xml:space="preserve">
+				<source>Up to date</source>
 			</trans-unit>
-			<trans-unit id="translation_status_uptodate" xml:space="preserve">
-				<source>up to date</source>
+			<trans-unit id="state.invalid" xml:space="preserve">
+				<source>Invalid</source>
 			</trans-unit>
-			<trans-unit id="button_save" xml:space="preserve">
-				<source>Save</source>
+			<trans-unit id="state.checking" xml:space="preserve">
+				<source>Checking...</source>
 			</trans-unit>
-			<trans-unit id="button_update" xml:space="preserve">
+			<trans-unit id="state.notChecked" xml:space="preserve">
+				<source>Not checked</source>
+			</trans-unit>
+
+			<trans-unit id="button.check" xml:space="preserve">
+				<source>Check against repository</source>
+			</trans-unit>
+			<trans-unit id="button.update" xml:space="preserve">
 				<source>Update from repository</source>
 			</trans-unit>
+			<trans-unit id="button.cancel" xml:space="preserve">
+				<source>Cancel</source>
+			</trans-unit>
+
+			<trans-unit id="header.module" xml:space="preserve">
+				<source>Language Administration</source>
+			</trans-unit>
+			<trans-unit id="header.languageSelectionList" xml:space="preserve">
+				<source>Languages</source>
+			</trans-unit>
+			<trans-unit id="header.translationUpdateList" xml:space="preserve">
+				<source>Translations</source>
+			</trans-unit>
+
+			<trans-unit id="flashmessage.error" xml:space="preserve">
+				<source>Error</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.information" xml:space="preserve">
+				<source>Information</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.success" xml:space="preserve">
+				<source>Success</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.multipleErrors" xml:space="preserve">
+				<source>Several requests have been failed. Please check your internet connection!</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.checkComplete" xml:space="preserve">
+				<source>The translation check has been successfully completed.</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.updateComplete" xml:space="preserve">
+				<source>The translation update has been successfully completed.</source>
+			</trans-unit>
+			<trans-unit id="flashmessage.canceled" xml:space="preserve">
+				<source>The process has been canceled.</source>
+			</trans-unit>
+
 		</body>
 	</file>
 </xliff>
