@@ -1428,9 +1428,9 @@ class SqlParser {
 	 * @return string Output string
 	 */
 	protected function parseStripslashes($str) {
-		$search = array('\\\\', '\\\'', '\\"', '\\0', '\\n', '\\r', '\\Z');
-		$replace = array('\\', '\'', '"', ' ', '
-', '', '');
+		$search = array('\\\\', '\\\'', '\\"', '\0', '\n', '\r', '\Z');
+		$replace = array('\\', '\'', '"', "\x00", "\x0a", "\x0d", "\x1a");
+
 		return str_replace($search, $replace, $str);
 	}
 
@@ -1442,9 +1442,9 @@ class SqlParser {
 	 * @return string Output string
 	 */
 	protected function compileAddslashes($str) {
-		$search = array('\\', '\'', '"', ' ', '
-', '', '');
-		$replace = array('\\\\', '\\\'', '\\"', '\\0', '\\n', '\\r', '\\Z');
+		$search = array('\\', '\'', '"', "\x00", "\x0a", "\x0d", "\x1a");
+		$replace = array('\\\\', '\\\'', '\\"', '\0', '\n', '\r', '\Z');
+
 		return str_replace($search, $replace, $str);
 	}
 
@@ -1470,7 +1470,7 @@ class SqlParser {
 	 * @return string Output string
 	 */
 	protected function trimSQL($str) {
-		return trim(rtrim($str, '; 
+		return trim(rtrim($str, ';
 	')) . ' ';
 	}
 
@@ -1989,16 +1989,17 @@ class SqlParser {
 			$str1 = $str;
 			$str2 = $newStr;
 		}
-		// Fixing escaped chars:
-		$search = array('\\0', '\\n', '\\r', '\\Z');
-		$replace = array(' ', '
-', '', '');
+
+			// Fixing escaped chars:
+		$search = array('\0', '\n', '\r', '\Z');
+		$replace = array("\x00", "\x0a", "\x0d", "\x1a");
 		$str1 = str_replace($search, $replace, $str1);
 		$str2 = str_replace($search, $replace, $str2);
+
 		if (strcmp(str_replace(array(' ', TAB, CR, LF), '', $this->trimSQL($str1)), str_replace(array(' ', TAB, CR, LF), '', $this->trimSQL($str2)))) {
 			return array(
 				str_replace(array(' ', TAB, CR, LF), ' ', $str),
-				str_replace(array(' ', TAB, CR, LF), ' ', $newStr)
+				str_replace(array(' ', TAB, CR, LF), ' ', $newStr),
 			);
 		}
 	}
