@@ -2568,6 +2568,8 @@ class tslib_cObj {
 	 * @return	string		The processed input value
 	 */
 	public function stdWrap_strftime($content = '', $conf = array()) {
+			// Check for zero length string to mimic default case of strtime/gmstrftime
+		$content = $content == '' ? $GLOBALS['EXEC_TIME'] : intval($content);
 		$content = ($conf['strftime.']['GMT'] ? gmstrftime($conf['strftime'], $content) : strftime($conf['strftime'], $content));
 		$tmp_charset = $conf['strftime.']['charset'] ? $conf['strftime.']['charset'] : $GLOBALS['TSFE']->localeCharset;
 		if ($tmp_charset) {
