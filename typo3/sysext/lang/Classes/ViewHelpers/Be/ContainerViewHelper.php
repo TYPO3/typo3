@@ -60,13 +60,14 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @param string  $extJsAdapter load alternative adapter (ext-base is default adapter)
 	 * @param boolean $enableExtJsDebug if TRUE, debug version of ExtJS is loaded. Use this for development only
 	 * @param boolean $loadJQuery whether to load jQuery library. Defaults to FALSE
-	 * @param string $addCssFile Custom CSS file to be loaded
-	 * @param string $addJsFile Custom JavaScript file to be loaded
+	 * @param array $addCssFiles Custom CSS files to be loaded
+	 * @param array $addJsFiles Custom JavaScript files to be loaded
+	 * @param array $addJsInlineLabels Custom labels to add to JavaScript inline labels
 	 * @return string
 	 * @see template
 	 * @see t3lib_PageRenderer
 	 */
-	public function render($pageTitle = '', $enableJumpToUrl = TRUE, $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $extJsAdapter = '', $enableExtJsDebug = FALSE, $loadJQuery = FALSE, $addCssFile = NULL, $addJsFile = NULL) {
+	public function render($pageTitle = '', $enableJumpToUrl = TRUE, $enableClickMenu = TRUE, $loadPrototype = TRUE, $loadScriptaculous = FALSE, $scriptaculousModule = '', $loadExtJs = FALSE, $loadExtJsTheme = TRUE, $extJsAdapter = '', $enableExtJsDebug = FALSE, $loadJQuery = FALSE, $addCssFiles = NULL, $addJsFiles = NULL, $addJsInlineLabels = NULL) {
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 		if ($enableJumpToUrl) {
@@ -90,7 +91,7 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 			$pageRenderer->loadScriptaculous($scriptaculousModule);
 		}
 		if ($loadExtJs) {
-			$pageRenderer->loadExtJS(true, $loadExtJsTheme, $extJsAdapter);
+			$pageRenderer->loadExtJS(TRUE, $loadExtJsTheme, $extJsAdapter);
 			if ($enableExtJsDebug) {
 				$pageRenderer->enableExtJsDebug();
 			}
@@ -98,11 +99,22 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 		if ($loadJQuery) {
 			$pageRenderer->loadJquery();
 		}
-		if ($addCssFile !== NULL) {
-			$pageRenderer->addCssFile($addCssFile);
+		if (is_array($addCssFiles)) {
+			foreach ($addCssFiles as $addCssFile) {
+				$pageRenderer->addCssFile($addCssFile);
+			}
 		}
-		if ($addJsFile !== NULL) {
-			$pageRenderer->addJsFile($addJsFile);
+		if (is_array($addJsFiles)) {
+			foreach ($addJsFiles as $addJsFile) {
+				$pageRenderer->addJsFile($addJsFile);
+			}
+		}
+		if (is_array($addJsInlineLabels)) {
+			$extensionKey = $this->controllerContext->getRequest()->getControllerExtensionKey();
+			foreach ($addJsInlineLabels as $key) {
+				$label = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $extensionKey);
+				$pageRenderer->addInlineLanguageLabel($key, $label);
+			}
 		}
 		$output = $this->renderChildren();
 		$output = $doc->startPage($pageTitle) . $output;
