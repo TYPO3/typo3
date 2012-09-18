@@ -5917,6 +5917,10 @@ cssInline {
 			<default><![CDATA[
 ]]></default>
 		</property>
+		<property name="disableBodyTag" type="boolean">
+			<description><![CDATA[This option disables <body> tag generation by the TYPO3 core. It is useful for extensions like TemplaVoila, which can produce its own <body> tag with additional attributes.]]></description>
+			<default><![CDATA[0]]></default>
+		</property>
 		<property name="extOnReady" type="CARRAY">
 			<description><![CDATA[ExtJS specific, adds inline javascript, wrapped in Ext.onReady.
 
