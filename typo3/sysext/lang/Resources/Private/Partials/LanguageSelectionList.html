@@ -1,12 +1,23 @@
 {namespace lang=TYPO3\CMS\Lang\ViewHelpers}
 
 <f:form action="updateLanguageSelection" name="languageSelectionForm" object="{languageSelectionForm}">
-	<lang:be.formEngineBasedCheckboxGroup
-		property="selectedLanguages"
-		options="{languageSelectionForm.languages}"
-		optionValueField="locale"
-		optionLabelField="language"
-		optionIcon="empty-empty"
-		class="languageSelection"
-	/>
+	<f:form.hidden name="languageSelectionForm[selectedLanguages][]" />
+	<table border="0" cellpadding="0" cellspacing="0" class="gridTable selectionList">
+		<thead>
+			<tr>
+				<td class="checkbox notSortable"></td>
+				<td class="language">Language</td>
+				<td class="locale">Locale</td>
+			</tr>
+		</thead>
+		<tbody>
+			<f:for each="{languageSelectionForm.languages}" as="language" iteration="iteration">
+				<tr class="{f:if(condition: language.selected, then: 'selected', else: '')}">
+					<td class="checkbox"><f:form.checkbox name="languageSelectionForm[selectedLanguages][{iteration.index}]" value="{language.locale}" checked="{f:if(condition: language.selected, then: 'checked', else: '')}" id="locale-{language.locale}" /></td>
+					<td class="language"><label for="locale-{language.locale}">{language.language}</label></td>
+					<td class="locale"><label for="locale-{language.locale}">{language.locale}</label></td>
+				</tr>
+			</f:for>
+		</tbody>
+	</table>
 </f:form>
