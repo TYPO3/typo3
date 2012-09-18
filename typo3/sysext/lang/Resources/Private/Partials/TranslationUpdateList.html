@@ -1,98 +1,32 @@
-<div id="ext-comp-1099" class=" x-panel x-panel-noborder x-box-item" style="width: 1049px; left: 250px; top: 0px;">
-	<div class="x-panel-bwrap" id="ext-gen46">
-		<div class="x-panel-body x-panel-body-noheader x-panel-body-noborder" id="ext-gen47" style="width: 1049px; height: 415px;">
+{namespace lang=TYPO3\CMS\Lang\ViewHelpers}
 
-			<f:form action="updateTranslation" name="form">
-
-				<fieldset id="ext-comp-1100" class=" x-fieldset x-form-label-left" style="width: 1029px;">
-					<div class="x-fieldset-bwrap" id="ext-gen62">
-						<div class="x-fieldset-body x-fieldset-body-noheader" id="ext-gen63" style="width: 1029px; height: 401px;">
-							<div id="LanguagesActionPanel" style="height: 40px; width: 1029px;" class="x-box-layout-ct">
-								<div class="x-box-inner" id="ext-gen84" style="width: 1029px; height: 40px;">
-									<table id="lang-updatebutton" cellspacing="0" class="x-btn x-btn-noicon x-box-item" style="width: 200px; height: 28px; left: 0px; top: 0px;">
-										<tbody class="x-btn-small x-btn-icon-small-left">
-											<tr>
-												<td class="x-btn-tl"><i>&nbsp;</i></td>
-												<td class="x-btn-tc"></td>
-												<td class="x-btn-tr"><i>&nbsp;</i></td>
-											</tr>
-											<tr>
-												<td class="x-btn-ml"><i>&nbsp;</i></td>
-												<td class="x-btn-mc"><em class="" unselectable="on">
-													<f:form.submit value="{f:translate(key:'button_update')}"/>
-												</em></td>
-												<td class="x-btn-mr"><i>&nbsp;</i></td>
-											</tr>
-											<tr>
-												<td class="x-btn-bl"><i>&nbsp;</i></td>
-												<td class="x-btn-bc"></td>
-												<td class="x-btn-br"><i>&nbsp;</i></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-
-							<div class="x-progress-wrap left-align x-hide-display" id="langpb" style="margin-top: 0px; margin-right: 0px; margin-bottom: 20px; margin-left: 0px; width: auto; height: 18px;">
-								<div class="x-progress-inner">
-									<div class="x-progress-bar" id="ext-gen67" style="height: 16px;">
-										<div class="x-progress-text x-hidden" id="ext-gen68" style="z-index: 99;">
-											<div id="ext-gen70" style="width: 522px; height: 18px;">&nbsp;</div>
-										</div>
-									</div>
-									<div class="x-progress-text x-progress-text-back" id="ext-gen69">
-										<div id="ext-gen71" style="width: 522px; height: 18px;">&nbsp;</div>
-									</div>
-								</div>
-							</div>
-
-							<div id="em-extlanguagegrid" class=" x-panel x-grid-panel" style="width: 1029px;">
-								<div class="x-panel-bwrap" id="ext-gen72">
-									<div class="x-panel-body x-panel-body-noheader" id="ext-gen73" style="width: 1029px; height: 361px;">
-										<div class="x-grid3" hidefocus="true" id="ext-gen74" style="width: 1029px; height: 361px;">
-											<div class="x-grid3-viewport" id="ext-gen75">
-												<div class="x-grid3-header" id="ext-gen76">
-													<div class="x-grid3-header-inner" id="ext-gen78" style="width: 1029px;">
-														<div class="x-grid3-header-offset" style="width: 387px;">
-															<table border="0" cellspacing="0" cellpadding="0" style="width: 370px;">
-																<thead>
-																<tr class="x-grid3-hd-row">
-																	<td class="x-grid3-hd x-grid3-cell x-grid3-td-0 x-grid3-cell-first" style="width: 200px;">
-																		<div class="x-grid3-hd-inner x-grid3-hd-0" unselectable="on" style="">
-																			Extension<img alt="" class="x-grid3-sort-icon" src="clear.gif">
-																		</div>
-																	</td>
-
-																	<f:render partial="TranslationHeaders" arguments="{languages: languageSelectionForm.languages}"/>
-																</tr>
-																</thead>
-															</table>
-														</div>
-													</div>
-													<div class="x-clear"></div>
-												</div>
-
-												<div class="x-grid3-scroller" id="ext-gen77"
-													 style="width: 1029px; height: 337px;">
-													<div class="x-grid3-body" style="width: 370px;" id="ext-gen79">
-
-														<f:render partial="ExtensionRow" arguments="{languages: languageSelectionForm.languages, selectedLanguages: languageSelectionForm.selectedLanguages, extensions: extensions}"/>
-
-													</div>
-													<a href="#" class="x-grid3-focus" tabindex="-1" id="ext-gen80" style="left: 0px; top: 0px;"></a></div>
-											</div>
-											<div class="x-grid3-resize-marker" id="ext-gen81">&nbsp;</div>
-											<div class="x-grid3-resize-proxy" id="ext-gen82">&nbsp;</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</fieldset>
-
-			</f:form>
-
-		</div>
-	</div>
-</div>
+<table border="0" cellpadding="0" cellspacing="0" class="gridTable translationList">
+	<thead>
+		<tr>
+			<td class="icon notSortable"></td>
+			<td class="extension">Extension</td>
+			<f:for each="{languageSelectionForm.selectedLanguages}" as="selectedLanguage">
+				<td class="notSortable">{selectedLanguage.language}</td>
+			</f:for>
+		</tr>
+	</thead>
+	<tbody>
+		<f:for each="{extensions}" as="extension">
+			<tr>
+				<td class="icon">
+					<f:if condition="{extension.icon}"><f:image src="{extension.icon}" alt="{extension.key}" /></f:if>
+				</td>
+				<td class="extension">{extension.key}</td>
+				<f:for each="{languageSelectionForm.selectedLanguages}" as="selectedLanguage">
+					<td
+						class="languageState"
+						data-checkurl="<f:uri.action action="checkTranslation" arguments="{extension:'{extension.key}', locale:'{selectedLanguage.locale}'}" />"
+						data-updateurl="<f:uri.action action="updateTranslation" arguments="{extension:'{extension.key}', locale:'{selectedLanguage.locale}'}" />"
+					>
+						<span class="stateIconNone"><f:translate key="state.notChecked"/></span>
+					</td>
+				</f:for>
+			</tr>
+		</f:for>
+	</tbody>
+</table>
