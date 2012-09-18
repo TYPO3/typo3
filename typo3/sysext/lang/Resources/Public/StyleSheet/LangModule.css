@@ -1,91 +1,194 @@
 /**
- * Style definitions for the language selection field
+ * Style definitions for the whole module
  */
-div.languageSelection table.typo3-TCEforms-select-checkbox {
-	margin-bottom: 10px;
+.waiting {
+	color: #888;
 }
 
-div.languageSelection table.typo3-TCEforms-select-checkbox tbody {
-	display: block;
-	height: 390px;
-	overflow-y: scroll;
+span.menuItem {
+	cursor: pointer;
 }
 
-div.languageSelection table.typo3-TCEforms-select-checkbox tr td {
-	vertical-align: middle;
-}
-
-div.languageSelection table.typo3-TCEforms-select-checkbox tr.c-header td,
-div.languageSelection table.typo3-TCEforms-select-checkbox tr td.c-checkbox,
-div.languageSelection table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
-	padding: 1px 3px;
-}
-
-div.languageSelection table.typo3-TCEforms-select-checkbox tr td.c-labelCell {
-	width: 180px;
-}
-
-div.languageSelection table.typo3-TCEforms-select-checkbox tr td.c-labelCell img,
-div.languageSelection table.typo3-TCEforms-select-checkbox tr td.c-labelCell span {
-	margin-right: 5px;
-	max-width: 16px;
-}
-
-div.languageSelection table.typo3-TCEforms-select-checkbox td.c-descr {
-	width: 0px;
-}
-
-div.languageSelection table.typo3-TCEforms-select-checkbox td.c-descr img {
-	float: right;
-}
-
-div.languageSelection table.typo3-TCEforms-select-singlebox {
-	margin-bottom: 10px;
-	margin-top: 4px;
-}
-
-div.languageSelection span.t3-icon-edit-undo {
+span.cancelItem {
 	display: none;
 }
 
-div.languageSelection tr.c-header-checkbox-controls input.checkbox {
-	display: none;
+span.cancelItem span {
+	width: 17px;
 }
 
-div.languageSelection tr.c-header-checkbox-controls td {
-	padding: 0;
+span.waiting {
+	cursor: wait !important;
 }
 
-div.languageSelection table.typo3-TCEforms-select-checkbox {
+span.stateIcon span {
+	margin-right: 6px;
+}
+
+span.stateIconChecking {
+	background: url(../../../../t3skin/images/spinner/ffffff.gif) top left no-repeat;
+	height: 16px;
+	width: 16px;
+	padding-left: 20px;
+}
+
+span.stateIconNone {
+	color: #888;
+}
+
+
+/**
+ * Style definitions for dataTables
+ */
+div.dataTables_wrapper {
+	position: relative;
+	clear: both;
+}
+
+div.dataTables_wrapper div.dataTables_scroll {
+	margin-bottom: 10px;
 	background-color: #ffffff;
 	border: 1px solid #aaa;
+	overflow: hidden;
+	clear: both;
 }
 
-div.languageSelection table.typo3-TCEforms-select-checkbox tr.c-header td {
-	background-color: #fff;
+div.dataTables_wrapper div.dataTables_scrollHead {
+	background-color: #5B5B5B;
+	background-image: url(../../../../t3skin/images/backgrounds/row-header.png);
+	background-image: linear-gradient(center top,#7F7F7F 10%,#5B5B5B 100%);
+	background-image: -moz-linear-gradient(center top,#7F7F7F 10%,#5B5B5B 100%);
+	background-image: -webkit-gradient(linear,0% 0%,0% 100%,color-stop(0.1,#7F7F7F),color-stop(1,#5B5B5B));
+	background-repeat: repeat-x;
+	color: white;
+	font-size: 10px;
+	line-height: 19px;
+	height: 20px;
 	font-weight: bold;
 }
 
-div.languageSelection table.typo3-TCEforms-select-checkbox tr:nth-child(2n) {
-	background-color: #f7f7f7;
+div.dataTables_wrapper div.dataTables_scrollBody {
+	-webkit-overflow-scrolling: touch;
 }
 
-div.languageSelection table.typo3-TCEforms-select-checkbox tr.c-selectedItem {
-	background-color: #d8ecd0;
+div.dataTables_wrapper table.translationList {
+	border: 0;
+	margin: 0;
+	background: transparent:
 }
 
-div.languageSelection table.typo3-TCEforms-select-checkbox tr.c-invalidItem {
-	color: #dddddd;
+div.dataTables_wrapper tr.even {
+	background: #f7f7f7;
 }
 
-div.languageSelection table.typo3-TCEforms-select-checkbox tr:hover {
+div.dataTables_wrapper tr.selected {
+	background: #d8ecd0;
+}
+
+div.dataTables_wrapper thead td {
+	cursor: pointer;
+}
+
+div.dataTables_wrapper thead td.sorting_asc {
+	background: url(../../../../t3skin/images/icons/status/status-sorting-asc.png) top right no-repeat;
+}
+
+div.dataTables_wrapper thead td.sorting_desc {
+	background: url(../../../../t3skin/images/icons/status/status-sorting-desc.png) bottom right no-repeat;
+}
+
+div.dataTables_wrapper thead td.notSortable {
+	background: none;
+	cursor: default;
+}
+
+div.dataTables_wrapper tbody tr:hover {
 	background-color: #dedede;
 }
 
-div.languageSelection table.typo3-TCEforms-select-checkbox tr.c-selectedItem:hover {
-	background-color: #abd99a;
+div.dataTables_wrapper td {
+	vertical-align: middle;
+	white-space: nowrap;
+	padding: 0 12px 0 0;
+	cursor: default;
 }
 
-div.languageSelection table.typo3-TCEforms-select-checkbox tr.c-invalidItem:hover {
-	background-color: transparent;
+div.dataTables_wrapper td.center {
+	text-align: center;
+}
+
+div.dataTables_wrapper td img {
+	height: 16px;
+	width: 16px;
+	margin: 0 0 0 6px;
+}
+
+div.dataTables_wrapper td input {
+	margin: 0 0 0 6px;
+}
+
+div.dataTables_wrapper td input,
+div.dataTables_wrapper td label {
+	cursor: pointer;
+}
+
+div.dataTables_wrapper td.waiting,
+div.dataTables_wrapper td.waiting input,
+div.dataTables_wrapper td.waiting label {
+	cursor: wait !important;
+}
+
+div.dataTables_wrapper td label {
+	display: block;
+	height: 24px;
+	width: 100%;
+	line-height: 24px;
+}
+
+div.dataTables_wrapper tbody td {
+	height: 24px;
+}
+
+
+/**
+ * Style definitions for the language selection field
+ */
+td.languageSelectionListContainer {
+	width: 250px;
+	padding-right: 12px;
+	visibility: hidden;
+}
+
+td.languageSelectionListContainer td.language {
+	padding: 0;
+}
+
+td.languageSelectionListContainer td.locale {
+	width: 50px;
+}
+
+
+/**
+ * Style definitions for the translation overview field
+ */
+td.translationUpdateListContainer {
+	visibility: hidden;
+}
+
+td.translationUpdateListContainer td.icon {
+	width: 16px;
+}
+
+td.translationUpdateListContainer td.extension {
+	min-width: 180px;
+}
+
+td.translationUpdateListContainer td.language {
+	text-align: left;
+	width: 150px;
+}
+
+td.translationUpdateListContainer td.languageStateNone,
+td.translationUpdateListContainer td.languageState1 {
+	cursor: pointer;
 }

@@ -80,5 +80,21 @@ class LanguageSelectionForm extends \TYPO3\CMS\Extbase\DomainObject\AbstractEnti
 		return $this->selectedLanguages;
 	}
 
+	/**
+	 * Returns a comma separated list of selected languages
+	 *
+	 * @return string
+	 */
+	public function getSelectedLanguagesLocaleList() {
+		if (!empty($this->selectedLanguages) && is_array($this->selectedLanguages)) {
+			$locales = array();
+			foreach ($this->selectedLanguages as $language) {
+				$locales[] = $language->getLocale();
+			}
+			return implode(',', $locales);
+		}
+		return '';
+	}
+
 }
 ?>
