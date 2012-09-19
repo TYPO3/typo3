@@ -163,7 +163,7 @@ return array(
 	'Tx_Beuser_ViewHelpers_SpriteIconForRecordViewHelper' => 'TYPO3\\CMS\\Beuser\\ViewHelpers\\SpriteIconForRecordViewHelper',
 	'Tx_Beuser_ViewHelpers_SpriteManagerIconViewHelper' => 'TYPO3\\CMS\\Beuser\\ViewHelpers\\SpriteManagerIconViewHelper',
 	'Tx_Beuser_ViewHelpers_SUViewHelper' => 'TYPO3\\CMS\\Beuser\\ViewHelpers\\SuViewHelper',
-	't3lib_cli' => 'TYPO3\\CMS\\Cli\\Controller\\CommandLineController',
+	't3lib_cli' => 'TYPO3\\CMS\\Core\\Controller\\CommandLineController',
 	'extDirect_DataProvider_ContextHelp' => 'TYPO3\\CMS\\ContextHelp\\ExtDirect\\ContextHelpDataProvider',
 	't3lib_userAuth' => 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication',
 	't3lib_beUserAuth' => 'TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication',

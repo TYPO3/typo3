@@ -43,7 +43,6 @@ $t3libClasses = array(
 	't3lib_Cache\Frontend\VariableFrontend' => PATH_t3lib . 'cache/frontend/class.t3lib_Cache\Frontend\VariableFrontend.php',
 	't3lib_cache_manager' => PATH_t3lib . 'cache/class.t3lib_cache_manager.php',
 	't3lib_cachehash' => PATH_t3lib . 'class.t3lib_cacheHash.php',
-	't3lib_cli' => PATH_t3lib . 'class.t3lib_cli.php',
 	't3lib_clipboard' => PATH_t3lib . 'class.t3lib_clipboard.php',
 	't3lib_collection_abstractrecordcollection' => PATH_t3lib . 'collection/AbstractRecordCollection.php',
 	't3lib_collection_collection' => PATH_t3lib . 'collection/interfaces/interface.t3lib_collection_collection.php',
