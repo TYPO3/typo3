@@ -38,7 +38,7 @@ namespace TYPO3\CMS\Integrity;
  * @package TYPO3
  * @subpackage tx_lowlevel
  */
-class AdminCommand extends \TYPO3\CMS\Cli\Controller\CommandLineController {
+class AdminCommand extends \TYPO3\CMS\Core\Controller\CommandLineController {
 
 	/**
 	 * @todo Define visibility
