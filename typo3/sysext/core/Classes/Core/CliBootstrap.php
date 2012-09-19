@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Cli;
+namespace TYPO3\CMS\Core\Core;
 
 /***************************************************************
  *  Copyright notice
