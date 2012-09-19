@@ -12,11 +12,26 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
 class IndexerTest extends \tx_phpunit_testcase {
 
 	/**
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
+
+	/**
 	 * Indexer instance
 	 *
-	 * @var \TYPO3\CMS\IndexedSearch\Indexer
+	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\IndexedSearch\Indexer
 	 */
-	protected $indexer;
+	protected $fixture = NULL;
 
 	/**
 	 * A name of the temporary file
@@ -27,122 +42,98 @@ class IndexerTest extends \tx_phpunit_testcase {
 
 	/**
 	 * Sets up the test
-	 *
-	 * @return void
 	 */
 	public function setUp() {
-		$this->indexer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_indexedsearch_indexer');
+		$this->fixture = $this->getMock('TYPO3\CMS\IndexedSearch\Indexer', array('dummy'));
 	}
 
 	/**
-	 * Explicitly cleans up the indexer object to prevent any memory leaks
-	 *
-	 * @return void
+	 * Explicitly clean up the indexer object to prevent any memory leaks
 	 */
 	public function tearDown() {
-		unset($this->indexer);
+		$this->fixture = NULL;
 		if ($this->temporaryFileName) {
 			@unlink($this->temporaryFileName);
 		}
 	}
 
 	/**
-	 * Checks that non-existing files are not returned
-	 *
-	 * @return void
+	 * @test
 	 */
-	public function testNonExistingLocalPath() {
+	public function extractHyperLinksDoesNotReturnNonExistingLocalPath() {
 		$html = 'test <a href="' . md5(uniqid('')) . '">test</a> test';
-		$result = $this->indexer->extractHyperLinks($html);
-		$this->assertEquals(1, count($result), 'Wrong number of parsed links');
-		$this->assertEquals($result[0]['localPath'], '', 'Local path is incorrect');
+		$result = $this->fixture->extractHyperLinks($html);
+		$this->assertEquals(1, count($result));
+		$this->assertEquals('', $result[0]['localPath']);
 	}
 
 	/**
-	 * Checks that using t3vars returns correct file
-	 *
-	 * @return void
+	 * @test
 	 */
-	public function testLocalPathWithT3Vars() {
+	public function extractHyperLinksReturnsCorrectFileUsingT3Vars() {
 		$this->temporaryFileName = tempnam(sys_get_temp_dir(), 't3unit-');
 		$html = 'test <a href="testfile">test</a> test';
-		$savedValue = $GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'];
 		$GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] = array(
-			\TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('testfile') => $this->temporaryFileName
+			\TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5('testfile') => $this->temporaryFileName,
 		);
-		$result = $this->indexer->extractHyperLinks($html);
-		$GLOBALS['T3_VAR']['ext']['indexed_search']['indexLocalFiles'] = $savedValue;
-		$this->assertEquals(1, count($result), 'Wrong number of parsed links');
-		$this->assertEquals($result[0]['localPath'], $this->temporaryFileName, 'Local path is incorrect');
+		$result = $this->fixture->extractHyperLinks($html);
+		$this->assertEquals(1, count($result));
+		$this->assertEquals($this->temporaryFileName, $result[0]['localPath']);
 	}
 
 	/**
-	 * Tests that a path with baseURL
-	 *
-	 * @return void
+	 * @test
 	 */
-	public function testLocalPathWithSiteURL() {
+	public function extractHyperLinksRecurnsCorrectPathWithBaseUrl() {
 		$baseURL = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL');
 		$html = 'test <a href="' . $baseURL . 'index.php">test</a> test';
-		$result = $this->indexer->extractHyperLinks($html);
-		$this->assertEquals(1, count($result), 'Wrong number of parsed links');
-		$this->assertEquals($result[0]['localPath'], PATH_site . 'index.php', 'Local path is incorrect');
+		$result = $this->fixture->extractHyperLinks($html);
+		$this->assertEquals(1, count($result));
+		$this->assertEquals(PATH_site . 'index.php', $result[0]['localPath']);
 	}
 
 	/**
-	 * Tests absolute path
-	 *
-	 * @return void
+	 * @test
 	 */
-	public function testRelativeLocalPath() {
+	public function extractHyperLinksFindsCorrectPathWithAbsolutePath() {
 		$html = 'test <a href="index.php">test</a> test';
-		$result = $this->indexer->extractHyperLinks($html);
-		$this->assertEquals(1, count($result), 'Wrong number of parsed links');
-		$this->assertEquals($result[0]['localPath'], PATH_site . 'index.php', 'Local path is incorrect');
+		$result = $this->fixture->extractHyperLinks($html);
+		$this->assertEquals(1, count($result));
+		$this->assertEquals(PATH_site . 'index.php', $result[0]['localPath']);
 	}
 
 	/**
-	 * Tests absolute path.
-	 *
-	 * @return void
+	 * @test
 	 */
-	public function testAbsoluteLocalPath() {
+	public function extractHyperLinksFindsCorrectPathForPathWithinTypo3Directory() {
 		$path = substr(PATH_typo3, strlen(PATH_site) - 1);
 		$html = 'test <a href="' . $path . 'index.php">test</a> test';
-		$result = $this->indexer->extractHyperLinks($html);
-		$this->assertEquals(1, count($result), 'Wrong number of parsed links');
-		$this->assertEquals($result[0]['localPath'], PATH_typo3 . 'index.php', 'Local path is incorrect');
+		$result = $this->fixture->extractHyperLinks($html);
+		$this->assertEquals(1, count($result));
+		$this->assertEquals(PATH_typo3 . 'index.php', $result[0]['localPath']);
 	}
 
 	/**
-	 * Tests that a path with the absRefPrefix returns correct result
-	 *
-	 * @return void
+	 * @test
 	 */
-	public function testLocalPathWithAbsRefPrefix() {
+	public function extractHyperLinksFindsCorrectPathUsingAbsRefPrefix() {
 		$absRefPrefix = '/' . md5(uniqid(''));
 		$html = 'test <a href="' . $absRefPrefix . 'index.php">test</a> test';
-		$savedPrefix = $GLOBALS['TSFE']->config['config']['absRefPrefix'];
-		if (!($GLOBALS['TSFE'] instanceof \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController)) {
-			$GLOBALS['TSFE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController');
-		}
+		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
 		$GLOBALS['TSFE']->config['config']['absRefPrefix'] = $absRefPrefix;
-		$result = $this->indexer->extractHyperLinks($html);
-		$GLOBALS['TSFE']->config['config']['absRefPrefix'] = $savedPrefix;
-		$this->assertEquals(1, count($result), 'Wrong number of parsed links');
-		$this->assertEquals($result[0]['localPath'], PATH_site . 'index.php', 'Local path is incorrect');
+		$result = $this->fixture->extractHyperLinks($html);
+		$this->assertEquals(1, count($result));
+		$this->assertEquals(PATH_site . 'index.php', $result[0]['localPath']);
 	}
 
 	/**
-	 * Checks that base HREF is extracted correctly
-	 *
-	 * @return void
+	 * @test
 	 */
-	public function textExtractBaseHref() {
+	public function extractBaseHrefExtractsBaseHref() {
 		$baseHref = 'http://example.com/';
 		$html = '<html><head><Base Href="' . $baseHref . '" /></head></html>';
-		$result = $this->indexer->extractHyperLinks($html);
-		$this->assertEquals($baseHref, $result, 'Incorrect base href was extracted');
+		$result = $this->fixture->extractBaseHref($html);
+		$this->assertEquals($baseHref, $result);
 	}
 
 }
