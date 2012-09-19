@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salts;
+namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
 
 /***************************************************************
  *  Copyright notice
@@ -26,12 +26,9 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salts;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Contains class "tx_saltedpasswords_salts_factory"
- * that provides a salted hashing method factory.
- */
-/**
- * Testcases for class tx_saltedpasswords_salts_factory.
+ * Testcase for SaltFactory
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
  * @since 2009-09-06
@@ -62,7 +59,7 @@ class SaltFactoryTest extends \tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function tearDown() {
-		unset($this->objectInstance);
+		$this->objectInstance = NULL;
 	}
 
 	/**
@@ -141,7 +138,6 @@ class SaltFactoryTest extends \tx_phpunit_testcase {
 	 */
 	public function resettingFactoryInstanceSucceeds() {
 		$defaultClassNameToUse = \TYPO3\CMS\Saltedpasswords\Utility\SaltedPasswordsUtility::getDefaultSaltingHashingMethod();
-		$saltedPW = '';
 		if ($defaultClassNameToUse == 'TYPO3\\CMS\\Saltedpasswords\\Salt\\Md5Salt') {
 			$saltedPW = '$P$CWF13LlG/0UcAQFUjnnS4LOqyRW43c.';
 		} else {

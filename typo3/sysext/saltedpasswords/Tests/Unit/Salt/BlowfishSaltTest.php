@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salts;
+namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salt;
 
 /***************************************************************
  *  Copyright notice
@@ -26,12 +26,9 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Salts;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Contains class "tx_saltedpasswords_salts_blowfish"
- * that provides Blowfish salted hashing.
- */
-/**
- * Testcases for class tx_saltedpasswords_salts_blowfish.
+ * Testcase for BlowfishSalt
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
  * @package TYPO3
@@ -52,7 +49,7 @@ class BlowfishSaltTest extends \tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function setUp() {
-		$this->objectInstance = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt');
+		$this->objectInstance = $this->getMock('TYPO3\\CMS\\Saltedpasswords\\Salt\\BlowfishSalt', array('dummy'));
 	}
 
 	/**
@@ -271,7 +268,7 @@ class BlowfishSaltTest extends \tx_phpunit_testcase {
 		$password = '';
 		$criticalPwLength = 0;
 		// We're using a constant salt.
-		$saltedHashPasswordPrevious = ($saltedHashPasswordCurrent = ($salt = $this->objectInstance->getHashedPassword($pad)));
+		$saltedHashPasswordCurrent = $salt = $this->objectInstance->getHashedPassword($pad);
 		for ($i = 0; $i <= 128; $i += 8) {
 			$password = str_repeat($pad, max($i, 1));
 			$saltedHashPasswordPrevious = $saltedHashPasswordCurrent;

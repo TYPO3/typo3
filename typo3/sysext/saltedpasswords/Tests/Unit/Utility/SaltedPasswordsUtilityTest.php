@@ -26,12 +26,9 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Utility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 /**
- * Contains testcases for "tx_saltedpasswords_div"
- * that provides various helper functions.
- */
-/**
- * Testcases for class tx_saltedpasswords_div.
+ * Testcase for SaltedPasswordsUtility
  *
  * @author Marcus Krause <marcus#exp2009@t3sec.info>
  * @package TYPO3
@@ -39,15 +36,20 @@ namespace TYPO3\CMS\Saltedpasswords\Tests\Unit\Utility;
  */
 class SaltedPasswordsUtilityTest extends \tx_phpunit_testcase {
 
+	/**
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
 	protected $backupGlobals = TRUE;
 
-	public function setUp() {
-
-	}
-
-	public function tearDown() {
-
-	}
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
+	 * @var array
+	 */
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * @test
