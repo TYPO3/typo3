@@ -1,5 +1,31 @@
 <?php
-namespace TYPO3\CMS\Felogin\Tests\Unit;
+namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
+
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2012 Helmut Hummel <helmut@typo3.org>
+ *
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ *
+ *  The code was adapted from newloginbox, see manual for detailed description
+ ***************************************************************/
 
 /**
  * Testcase for URL validation in class FrontendLoginController
@@ -11,66 +37,84 @@ namespace TYPO3\CMS\Felogin\Tests\Unit;
 class FrontendLoginTest extends \tx_phpunit_testcase {
 
 	/**
+	 * Enable backup of global and system variables
+	 *
+	 * @var boolean
+	 */
+	protected $backupGlobals = TRUE;
+
+	/**
+	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
+	 * because resource types cannot be handled during serializing
+	 *
 	 * @var array
 	 */
-	private $backupGlobalVariables;
+	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
-	 * @var FrontendLoginController
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
-	private $txFelogin;
+	protected $typo3DbBackup;
+
+	/**
+	 * @var \TYPO3\CMS\Felogin\Controller\FrontendLoginController|\Tx_Phpunit_Interface_AccessibleObject
+	 */
+	protected $accessibleFixture;
 
 	/**
 	 * @var string
 	 */
-	private $testHostName;
+	protected $testHostName;
 
 	/**
 	 * @var string
 	 */
-	private $testSitePath;
+	protected $testSitePath;
 
 	/**
 	 * @var string
 	 */
 	private $testTableName;
 
+	/**
+	 * Set up
+	 */
 	public function setUp() {
-		$this->backupGlobalVariables = array(
-			'_SERVER' => $_SERVER,
-			'TYPO3_DB' => $GLOBALS['TYPO3_DB'],
-			'TSFE' => $GLOBALS['TSFE']
-		);
+		$this->typo3DbBackup = $GLOBALS['TYPO3_DB'];
 		$this->testTableName = 'sys_domain';
 		$this->testHostName = 'hostname.tld';
 		$this->testSitePath = '/';
-		// We need to subclass because the method we want to test is protected
-		$className = uniqid('FeLogin_');
-		eval('
-			class ' . $className . ' extends TYPO3\\CMS\\Felogin\\Controller\\FrontendLoginController {
-				public function validateRedirectUrl($url) {
-					return parent::validateRedirectUrl($url);
-				}
-			}
-		');
-		$this->txFelogin = new $className();
-		$this->txFelogin->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
-		$this->setUpTSFE();
+		$this->accessibleFixture = $this->getAccessibleMock('TYPO3\\CMS\\Felogin\\Controller\\FrontendLoginController', array('dummy'));
+		$this->accessibleFixture->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
 		$this->setUpFakeSitePathAndHost();
 	}
 
-	private function setUpTSFE() {
-		$GLOBALS['TSFE'] = $this->getMock('TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController', array(), array(), '', FALSE);
+	/**
+	 * Tear down
+	 */
+	public function tearDown() {
+		$GLOBALS['TYPO3_DB'] = $this->typo3DbBackup;
+		$this->accessibleFixture = NULL;
 	}
 
-	private function setUpFakeSitePathAndHost() {
-		$_SERVER['ORIG_PATH_INFO'] = ($_SERVER['PATH_INFO'] = ($_SERVER['ORIG_SCRIPT_NAME'] = ($_SERVER['SCRIPT_NAME'] = $this->testSitePath . TYPO3_mainDir)));
+	/**
+	 * Set up a fake site path and host
+	 */
+	protected function setUpFakeSitePathAndHost() {
+		$_SERVER['ORIG_PATH_INFO'] = $_SERVER['PATH_INFO'] = $_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'] = $this->testSitePath . TYPO3_mainDir;
 		$_SERVER['HTTP_HOST'] = $this->testHostName;
 	}
 
-	private function setUpDatabaseMock() {
+	/**
+	 * Mock database
+	 */
+	protected function setUpDatabaseMock() {
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection', array('exec_SELECTgetRows'));
-		$GLOBALS['TYPO3_DB']->expects($this->any())->method('exec_SELECTgetRows')->will($this->returnCallback(array($this, 'getDomainRecordsCallback')));
+		$GLOBALS['TYPO3_DB']
+			->expects($this->any())
+			->method('exec_SELECTgetRows')
+			->will($this->returnCallback(array($this, 'getDomainRecordsCallback')));
 	}
 
 	/**
@@ -94,14 +138,6 @@ class FrontendLoginTest extends \tx_phpunit_testcase {
 		);
 	}
 
-	public function tearDown() {
-		$this->txFelogin = NULL;
-		foreach ($this->backupGlobalVariables as $key => $data) {
-			$GLOBALS[$key] = $data;
-		}
-		$this->backupGlobalVariables = NULL;
-	}
-
 	/**
 	 * @test
 	 */
@@ -113,7 +149,7 @@ class FrontendLoginTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function typo3SiteUrlEqualsStubSiteUrl() {
-		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), 'http://' . $this->testHostName . $this->testSitePath);
+		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), ('http://' . $this->testHostName) . $this->testSitePath);
 	}
 
 	/**
@@ -133,15 +169,15 @@ class FrontendLoginTest extends \tx_phpunit_testcase {
 		$this->testHostName = 'somenewhostname.com';
 		$this->testSitePath = '/somenewpath/';
 		$this->setUpFakeSitePathAndHost();
-		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), 'http://' . $this->testHostName . $this->testSitePath);
+		$this->assertEquals(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), ('http://' . $this->testHostName) . $this->testSitePath);
 	}
 
 	/**
-	 * Data provider for maliciousUrlsWillBeCleared
+	 * Data provider for validateRedirectUrlClearsUrl
 	 *
-	 * @see maliciousUrlsWillBeCleared
+	 * @return array
 	 */
-	public function variousUrlsDataProviderForMaliciousUrlsWillBeCleared() {
+	public function validateRedirectUrlClearsUrlDataProvider() {
 		return array(
 			'absolute URL, hostname not in sys_domain, trailing slash' => array('http://badhost.tld/'),
 			'absolute URL, hostname not in sys_domain, no trailing slash' => array('http://badhost.tld'),
@@ -154,28 +190,28 @@ class FrontendLoginTest extends \tx_phpunit_testcase {
 			'invalid URL, HTML break out attempt' => array('" >blabuubb'),
 			'invalid URL, UNC path' => array('\\\\foo\\bar\\'),
 			'invalid URL, backslashes in path' => array('http://domainhostname.tld\\bla\\blupp'),
-			'invalid URL, linefeed in path' => array('http://domainhostname.tld/bla/blupp
-'),
+			'invalid URL, linefeed in path' => array('http://domainhostname.tld/bla/blupp' . LF),
 			'invalid URL, only one slash after scheme' => array('http:/domainhostname.tld/bla/blupp'),
-			'invalid URL, illegal chars' => array('http://(<>domainhostname).tld/bla/blupp')
+			'invalid URL, illegal chars' => array('http://(<>domainhostname).tld/bla/blupp'),
 		);
 	}
 
 	/**
 	 * @test
-	 * @dataProvider variousUrlsDataProviderForMaliciousUrlsWillBeCleared
+	 * @dataProvider validateRedirectUrlClearsUrlDataProvider
+	 * @param string $url Invalid Url
 	 */
-	public function maliciousUrlsWillBeCleared($url) {
+	public function validateRedirectUrlClearsUrl($url) {
 		$this->setUpDatabaseMock();
-		$this->assertEquals('', $this->txFelogin->validateRedirectUrl($url));
+		$this->assertEquals('', $this->accessibleFixture->_call('validateRedirectUrl', $url));
 	}
 
 	/**
-	 * Data provider for cleanUrlsAreKept
+	 * Data provider for validateRedirectUrlKeepsCleanUrl
 	 *
-	 * @see cleanUrlsAreKept
+	 * @return array
 	 */
-	public function variousUrlsDataProviderForCleanUrlsAreKept() {
+	public function validateRedirectUrlKeepsCleanUrlDataProvider() {
 		return array(
 			'sane absolute URL' => array('http://domainhostname.tld/'),
 			'sane absolute URL with script' => array('http://domainhostname.tld/index.php?id=1'),
@@ -191,75 +227,78 @@ class FrontendLoginTest extends \tx_phpunit_testcase {
 			'relative URL, no leading slash 1' => array('index.php?id=1'),
 			'relative URL, no leading slash 2' => array('foo/bar/index.php?id=2'),
 			'relative URL, leading slash, no realurl' => array('/index.php?id=1'),
-			'relative URL, leading slash, realurl' => array('/de/service/imprint.html')
+			'relative URL, leading slash, realurl' => array('/de/service/imprint.html'),
 		);
 	}
 
 	/**
 	 * @test
-	 * @dataProvider variousUrlsDataProviderForCleanUrlsAreKept
+	 * @dataProvider validateRedirectUrlKeepsCleanUrlDataProvider
+	 * @param string $url Clean URL to test
 	 */
-	public function cleanUrlsAreKept($url) {
+	public function validateRedirectUrlKeepsCleanUrl($url) {
 		$this->setUpDatabaseMock();
-		$this->assertEquals($url, $this->txFelogin->validateRedirectUrl($url));
+		$this->assertEquals($url, $this->accessibleFixture->_call('validateRedirectUrl', $url));
 	}
 
 	/**
-	 * Data provider for maliciousUrlsWillBeClearedTypo3InSubdirectory
+	 * Data provider for validateRedirectUrlClearsInvalidUrlInSubdirectory
 	 *
-	 * @see maliciousUrlsWillBeClearedTypo3InSubdirectory
+	 * @return array
 	 */
-	public function variousUrlsDataProviderForMaliciousUrlsWillBeClearedTypo3InSubdirectory() {
+	public function validateRedirectUrlClearsInvalidUrlInSubdirectoryDataProvider() {
 		return array(
 			'absolute URL, missing subdirectory' => array('http://hostname.tld/'),
 			'absolute URL, wrong subdirectory' => array('http://hostname.tld/hacker/index.php'),
 			'absolute URL, correct subdirectory, no trailing slash' => array('http://hostname.tld/subdir'),
 			'absolute URL, correct subdirectory of sys_domain record, no trailing slash' => array('http://otherhostname.tld/path'),
-			'absolute URL, correct subdirectory of sys_domain record, no trailing slash' => array('http://sub.domainhostname.tld/path'),
+			'absolute URL, correct subdirectory of sys_domain record, no trailing slash, subdomain' => array('http://sub.domainhostname.tld/path'),
 			'relative URL, leading slash, no path' => array('/index.php?id=1'),
 			'relative URL, leading slash, wrong path' => array('/de/sub/site.html'),
-			'relative URL, leading slash, slash only' => array('/')
+			'relative URL, leading slash, slash only' => array('/'),
 		);
 	}
 
 	/**
 	 * @test
-	 * @dataProvider variousUrlsDataProviderForMaliciousUrlsWillBeClearedTypo3InSubdirectory
+	 * @dataProvider validateRedirectUrlClearsInvalidUrlInSubdirectoryDataProvider
+	 * @param string $url Invalid Url
 	 */
-	public function maliciousUrlsWillBeClearedTypo3InSubdirectory($url) {
+	public function validateRedirectUrlClearsInvalidUrlInSubdirectory($url) {
 		$this->testSitePath = '/subdir/';
 		$this->setUpFakeSitePathAndHost();
 		$this->setUpDatabaseMock();
-		$this->assertEquals('', $this->txFelogin->validateRedirectUrl($url));
+		$this->assertEquals('', $this->accessibleFixture->_call('validateRedirectUrl', $url));
 	}
 
 	/**
-	 * Data provider for cleanUrlsAreKeptTypo3InSubdirectory
+	 * Data provider for validateRedirectUrlKeepsCleanUrlInSubdirectory
 	 *
-	 * @see cleanUrlsAreKeptTypo3InSubdirectory
+	 * @return array
 	 */
-	public function variousUrlsDataProviderForCleanUrlsAreKeptTypo3InSubdirectory() {
+	public function validateRedirectUrlKeepsCleanUrlInSubdirectoryDataProvider() {
 		return array(
 			'absolute URL, correct subdirectory' => array('http://hostname.tld/subdir/'),
 			'absolute URL, correct subdirectory, realurl' => array('http://hostname.tld/subdir/de/imprint.html'),
 			'absolute URL, correct subdirectory, no realurl' => array('http://hostname.tld/subdir/index.php?id=10'),
 			'absolute URL, correct subdirectory of sys_domain record' => array('http://otherhostname.tld/path/'),
-			'absolute URL, correct subdirectory of sys_domain record' => array('http://sub.domainhostname.tld/path/'),
+			'absolute URL, correct subdirectory of sys_domain record, subdomain' => array('http://sub.domainhostname.tld/path/'),
 			'relative URL, no leading slash, realurl' => array('de/service/imprint.html'),
 			'relative URL, no leading slash, no realurl' => array('index.php?id=1'),
-			'relative URL, no leading slash, no realurl' => array('foo/bar/index.php?id=2')
+			'relative nested URL, no leading slash, no realurl' => array('foo/bar/index.php?id=2')
 		);
 	}
 
 	/**
 	 * @test
-	 * @dataProvider variousUrlsDataProviderForCleanUrlsAreKeptTypo3InSubdirectory
+	 * @dataProvider validateRedirectUrlKeepsCleanUrlInSubdirectoryDataProvider
+	 * @param string $url Invalid Url
 	 */
-	public function cleanUrlsAreKeptTypo3InSubdirectory($url) {
+	public function validateRedirectUrlKeepsCleanUrlInSubdirectory($url) {
 		$this->testSitePath = '/subdir/';
 		$this->setUpFakeSitePathAndHost();
 		$this->setUpDatabaseMock();
-		$this->assertEquals($url, $this->txFelogin->validateRedirectUrl($url));
+		$this->assertEquals($url, $this->accessibleFixture->_call('validateRedirectUrl', $url));
 	}
 
 }
