@@ -26,25 +26,57 @@ namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
  ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Lang\Domain\Model\UpdateTranslationForm
+ * Testcase LanguageSelectionForm
  *
  * @author Wouter Wolters <typo3@wouterwolters.nl>
  * @package TYPO3
  * @subpackage lang
  */
-class UpdateTranslationFormTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class LanguageSelectionFormTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Lang\Domain\Model\UpdateTranslationForm
+	 * @var \TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm
 	 */
 	protected $fixture = NULL;
 
+	/**
+	 * Set up
+	 */
 	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Lang\Domain\Model\UpdateTranslationForm();
+		$this->fixture = new \TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm();
 	}
 
+	/**
+	 * Tear down
+	 */
 	public function tearDown() {
-		unset($this->fixture);
+		$this->fixture = NULL;
+	}
+
+	/**
+	 * @test
+	 */
+	public function getLanguagesInitiallyReturnsEmptyArray() {
+		$this->assertSame(
+			array(),
+			$this->fixture->getLanguages()
+		);
+	}
+
+	/**
+	 * @test
+	 */
+	public function setLanguagesSetsLanguage() {
+		$language = array(
+			'nl' => '1',
+			'de' => '0',
+		);
+		$this->fixture->setLanguages($language);
+
+		$this->assertSame(
+			$language,
+			$this->fixture->getLanguages()
+		);
 	}
 
 	/**
@@ -61,42 +93,15 @@ class UpdateTranslationFormTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCa
 	 * @test
 	 */
 	public function setSelectedLanguagesSetsSelectedLanguages() {
-		$languages = array(
-			'nl',
-			'de',
+		$selectedLanguages = array(
+			'nl' => '1',
+			'de' => '0',
 		);
-		$this->fixture->setSelectedLanguages($languages);
+		$this->fixture->setSelectedLanguages($selectedLanguages);
 
 		$this->assertSame(
-			$languages,
+			$selectedLanguages,
 			$this->fixture->getSelectedLanguages()
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function getExtensionsInitiallyReturnsEmptyArray() {
-		$this->assertSame(
-			array(),
-			$this->fixture->getExtensions()
-		);
-	}
-
-	/**
-	 * @test
-	 */
-	public function setExtensionsSetsExtensions() {
-		$extensions = array(
-			1 => 'about',
-			2 => 'aboutmodules',
-			3 => 'adodb',
-		);
-		$this->fixture->setExtensions($extensions);
-
-		$this->assertSame(
-			$extensions,
-			$this->fixture->getExtensions()
 		);
 	}
 }

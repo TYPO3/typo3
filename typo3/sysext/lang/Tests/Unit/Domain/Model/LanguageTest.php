@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,7 +27,7 @@ namespace TYPO3\CMS\Lang\Tests\Unit\Domain\Model;
  ***************************************************************/
 
 /**
- * Test case for class \TYPO3\CMS\Lang\Domain\Model\Language
+ * Testcase for Language
  *
  * @author Wouter Wolters <typo3@wouterwolters.nl>
  * @package TYPO3
@@ -39,12 +40,18 @@ class LanguageTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	protected $fixture = NULL;
 
+	/**
+	 * Set up
+	 */
 	public function setUp() {
 		$this->fixture = new \TYPO3\CMS\Lang\Domain\Model\Language();
 	}
 
+	/**
+	 * Tear down
+	 */
 	public function tearDown() {
-		unset($this->fixture);
+		$this->fixture = NULL;
 	}
 
 	/**
