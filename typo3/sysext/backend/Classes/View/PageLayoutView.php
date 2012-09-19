@@ -1300,7 +1300,13 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				if (strcmp($hookOut, '')) {
 					$out .= $hookOut;
 				} elseif (!empty($row['list_type'])) {
-					$out .= '<strong>' . $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'list_type', $row['list_type']), TRUE) . '</strong><br />';
+					$label = \TYPO3\CMS\Backend\Utility\BackendUtility::getLabelFromItemlist('tt_content', 'list_type', $row['list_type']);
+					if (!empty($label)) {
+						$out .=  '<strong>' . $GLOBALS['LANG']->sL($label, TRUE) . '</strong><br />';;
+					} else {
+						$message = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.noMatchingValue'), $row['list_type']);
+						$out .= \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $message, '', \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING)->render();
+					}
 				} elseif (!empty($row['select_key'])) {
 					$out .= $GLOBALS['LANG']->sL(\TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel('tt_content', 'select_key'), 1) . ' ' . $row['select_key'] . '<br />';
 				} else {
