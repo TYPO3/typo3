@@ -42,4 +42,10 @@ if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('kb_md5fepw') && TYPO3_
 	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'][] = 'tx_kbmd5fepw_newloginbox->loginFormOnSubmit';
 	require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('kb_md5fepw') . 'pi1/class.tx_kbmd5fepw_newloginbox.php';
 }
+
+
+// Page module hook
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'][$_EXTKEY] =
+	'EXT:' . $_EXTKEY . '/Classes/Hooks/CmsLayout.php:TYPO3\CMS\Felogin\Hooks\CmsLayout';
+
 ?>
