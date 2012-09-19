@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Cli\Controller;
+namespace TYPO3\CMS\Core\Controller;
 
 /***************************************************************
  *  Copyright notice

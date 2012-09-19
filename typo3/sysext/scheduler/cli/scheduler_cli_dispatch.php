@@ -34,8 +34,8 @@ if (TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI && basename(PATH_thisScript) == 'c
 	// Create an instance of the scheduler object
 	/** @var $scheduler \TYPO3\CMS\Scheduler\Scheduler */
 	$scheduler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Scheduler\\Scheduler');
-	/** @var \TYPO3\CMS\Cli\Controller\CommandLineController $cli */
-	$cli = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Cli\\Controller\\CommandLineController');
+	/** @var \TYPO3\CMS\Core\Controller\CommandLineController $cli */
+	$cli = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Controller\\CommandLineController');
 	// If a specific id is given in arguments, then run that task. Otherwise run scheduled tasks.
 	if ($cli->cli_isArg('-i')) {
 		$taskId = intval($cli->cli_argValue('-i'));
