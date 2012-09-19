@@ -36,14 +36,20 @@ class AlphanumericFilterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	/**
 	 * @var \TYPO3\CMS\Form\Filter\AlphanumericFilter
 	 */
-	protected $fixture;
+	protected $fixture = NULL;
 
+	/**
+	 * Set up
+	 */
 	public function setUp() {
 		$this->fixture = new \TYPO3\CMS\Form\Filter\AlphanumericFilter();
 	}
 
+	/**
+	 * Tear down
+	 */
 	public function tearDown() {
-		unset($this->fixture);
+		$this->fixture = NULL;
 	}
 
 	/**
@@ -61,9 +67,16 @@ class AlphanumericFilterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 */
 	public function filterForStringWithUnicodeCharactersAndSpacesWithAllowWhitespaceSetToFalseReturnsInputStringWithoutSpaces() {
 		$input = 'My name contains äøüößØœ';
-		$inputWithoutSpaces = 'MynamecontainsäøüößØœ';
+		$expected = 'MynamecontainsäøüößØœ';
 		$this->fixture->setAllowWhiteSpace(FALSE);
-		$this->assertSame($inputWithoutSpaces, $this->fixture->filter($input));
+		$this->assertSame($expected, $this->fixture->filter($input));
+	}
+
+	/**
+	 * @test
+	 */
+	public function filterAllowsNumericCharacters() {
+		$this->assertSame('foo23bar', $this->fixture->filter('foo23bar'));
 	}
 
 }

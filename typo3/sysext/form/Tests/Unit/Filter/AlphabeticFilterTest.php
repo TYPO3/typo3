@@ -25,25 +25,31 @@ namespace TYPO3\CMS\Form\Tests\Unit\Filter;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Test case for class tx_form_System_Filter_Alphabetic.
+ * Testcase for AlphabeticFilter
  *
  * @author Andreas Lappe <a.lappe@kuehlhaus.com>
  * @package TYPO3
  * @subpackage form
  */
-class AlphabeticFilterFilterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class AlphabeticFilterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Form\Filter\AlphabeticFilter
 	 */
-	protected $fixture;
+	protected $fixture = NULL;
 
+	/**
+	 * Set up
+	 */
 	public function setUp() {
 		$this->fixture = new \TYPO3\CMS\Form\Filter\AlphabeticFilter();
 	}
 
+	/**
+	 * Tear down
+	 */
 	public function tearDown() {
-		unset($this->fixture);
+		$this->fixture = NULL;
 	}
 
 	/**
@@ -61,9 +67,9 @@ class AlphabeticFilterFilterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestC
 	 */
 	public function filterForStringWithUnicodeCharactersAndSpacesWithAllowWhitespaceSetToFalseReturnsInputStringWithoutSpaces() {
 		$input = 'My name contains äøüößØœ';
-		$inputWithoutSpaces = 'MynamecontainsäøüößØœ';
+		$expected = 'MynamecontainsäøüößØœ';
 		$this->fixture->setAllowWhiteSpace(FALSE);
-		$this->assertSame($inputWithoutSpaces, $this->fixture->filter($input));
+		$this->assertSame($expected, $this->fixture->filter($input));
 	}
 
 }

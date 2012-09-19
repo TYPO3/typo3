@@ -43,6 +43,9 @@
 		<testsuite name="EXT:fluid tests">
 			<directory>../../../../typo3/sysext/fluid/Tests/Unit/</directory>
 		</testsuite>
+		<testsuite name="EXT:form tests">
+			<directory>../../../../typo3/sysext/form/Tests/Unit/</directory>
+		</testsuite>
 		<testsuite name="EXT:scheduler tests">
 			<directory>../../../../typo3/sysext/scheduler/Tests/Unit/</directory>
 		</testsuite>
