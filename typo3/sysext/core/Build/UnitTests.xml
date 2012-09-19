@@ -37,6 +37,9 @@
 		<testsuite name="EXT:extensionmanager tests">
 			<directory>../../../../typo3/sysext/extensionmanager/Tests/Unit/</directory>
 		</testsuite>
+		<testsuite name="EXT:felogin tests">
+			<directory>../../../../typo3/sysext/felogin/Tests/Unit/</directory>
+		</testsuite>
 		<testsuite name="EXT:fluid tests">
 			<directory>../../../../typo3/sysext/fluid/Tests/Unit/</directory>
 		</testsuite>
