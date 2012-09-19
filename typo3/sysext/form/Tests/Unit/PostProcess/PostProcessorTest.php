@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Form\Tests\Unit\PostProcess;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Test case for class tx_form_System_Postprocessor
+ * Testcase for PostProcessor
  *
  * @author Susanne Moog, <typo3@susannemoog.de>
  * @package TYPO3
@@ -34,85 +34,44 @@ namespace TYPO3\CMS\Form\Tests\Unit\PostProcess;
 class PostProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject
+	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Form\PostProcess\PostProcessor
 	 */
-	public $postprocessor;
+	public $fixture;
 
 	/**
-	 * @var string
-	 */
-	public $classNameWithoutPrefix;
-
-	/**
-	 * @var string
-	 */
-	public $classNameWithPrefix;
-
-	/**
-	 * @var string
-	 */
-	public $classNameWithoutInterface;
-
-	/**
-	 * @var \TYPO3\CMS\Form\Domain\Model\Form
-	 */
-	public $form;
-
-	/**
-	 * set up
+	 * Set up
 	 */
 	public function setUp() {
-		$this->form = new \TYPO3\CMS\Form\Domain\Model\Form();
-		$this->postprocessor = $this->getMock('TYPO3\CMS\Form\PostProcess\PostProcessor', array('sortTypoScriptKeyList'), array(
-			$this->form,
-			array()
-		));
-		$this->classNameWithoutPrefix = uniqid('postprocess');
-		$this->classNameWithPrefix = uniqid('postprocess');
-		$this->classNameWithoutInterface = uniqid('postprocess');
-		eval('
-			namespace TYPO3\CMS\Form\PostProcess;
-			class ' . $this->classNameWithoutPrefix . 'PostProcessor implements PostProcessorInterface {
-
-				public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
-
-				}
-
-				public function process() {
-					return \'processedWithoutPrefix\';
-				}
-			}' . 'class ' . $this->classNameWithPrefix . 'PostProcessor implements PostProcessorInterface {
-
-				public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
-
-				}
-
-				public function process() {
-					return \'processedWithPrefix\';
-				}
-			}' . 'class ' . $this->classNameWithoutInterface . 'PostProcessor{
-
-				public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {
-
-				}
-
-				public function process() {
-					return \'withoutInterface\';
-				}
-			}');
+		$form = $this->getMock('TYPO3\\CMS\\Form\\Domain\\Model\\Form', array(), array(), '', FALSE);
+		$this->fixture = $this->getMock(
+			'TYPO3\CMS\Form\PostProcess\PostProcessor',
+			array('sortTypoScriptKeyList'),
+			array($form, array())
+		);
 	}
 
 	/**
 	 * @test
 	 */
 	public function processFindsClassSpecifiedByTypoScriptWithoutFormPrefix() {
+		$classNameWithoutPrefix = uniqid('postprocess');
+		eval(
+			'namespace TYPO3\CMS\Form\PostProcess;' .
+			'class ' . $classNameWithoutPrefix . 'PostProcessor implements PostProcessorInterface {' .
+			'  public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {' .
+			'  }' .
+			'  public function process() {' .
+			'    return \'processedWithoutPrefix\';' .
+			'  }' .
+			'}'
+		);
 		$typoScript = array(
 			10 => uniqid('postprocess'),
-			20 => $this->classNameWithoutPrefix
+			20 => $classNameWithoutPrefix
 		);
-		$this->postprocessor->typoScript = $typoScript;
-		$this->postprocessor->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
-		$returnValue = $this->postprocessor->process();
+		$this->fixture->typoScript = $typoScript;
+		$this->fixture->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
+		$returnValue = $this->fixture->process();
 		$this->assertEquals('processedWithoutPrefix', $returnValue);
 	}
 
@@ -120,13 +79,24 @@ class PostProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function processFindsClassSpecifiedByTypoScriptWithFormPrefix() {
+		$classNameWithPrefix = uniqid('postprocess');
+		eval(
+			'namespace TYPO3\CMS\Form\PostProcess;' .
+			'class ' . $classNameWithPrefix . 'PostProcessor implements PostProcessorInterface {' .
+			'  public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {' .
+			'  }' .
+			'  public function process() {' .
+			'    return \'processedWithPrefix\';' .
+			'  }' .
+			'}'
+		);
 		$typoScript = array(
 			10 => uniqid('postprocess'),
-			20 => $this->classNameWithPrefix
+			20 => $classNameWithPrefix
 		);
-		$this->postprocessor->typoScript = $typoScript;
-		$this->postprocessor->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
-		$returnValue = $this->postprocessor->process();
+		$this->fixture->typoScript = $typoScript;
+		$this->fixture->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
+		$returnValue = $this->fixture->process();
 		$this->assertEquals('processedWithPrefix', $returnValue);
 	}
 
@@ -134,13 +104,24 @@ class PostProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function processReturnsEmptyStringIfSpecifiedPostProcessorDoesNotImplementTheInterface() {
+		$classNameWithoutInterface = uniqid('postprocess');
+		eval(
+			'namespace TYPO3\CMS\Form\PostProcess;' .
+			'class ' . $classNameWithoutInterface . 'PostProcessor {' .
+			'  public function __construct(\TYPO3\CMS\Form\Domain\Model\Form $form, array $typoScript) {' .
+			'  }' .
+			'  public function process() {' .
+			'    return \'withoutInterface\';' .
+			'  }' .
+			'}'
+		);
 		$typoScript = array(
 			10 => uniqid('postprocess'),
-			20 => $this->classNameWithoutInterface
+			20 => $classNameWithoutInterface
 		);
-		$this->postprocessor->typoScript = $typoScript;
-		$this->postprocessor->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
-		$returnValue = $this->postprocessor->process();
+		$this->fixture->typoScript = $typoScript;
+		$this->fixture->expects($this->once())->method('sortTypoScriptKeyList')->will($this->returnValue(array(10, 20)));
+		$returnValue = $this->fixture->process();
 		$this->assertEquals('', $returnValue);
 	}
 
