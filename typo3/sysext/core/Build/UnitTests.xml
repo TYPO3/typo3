@@ -46,6 +46,9 @@
 		<testsuite name="EXT:form tests">
 			<directory>../../../../typo3/sysext/form/Tests/Unit/</directory>
 		</testsuite>
+		<testsuite name="EXT:indexed_search tests">
+			<directory>../../../../typo3/sysext/indexed_search/Tests/Unit/</directory>
+		</testsuite>
 		<testsuite name="EXT:scheduler tests">
 			<directory>../../../../typo3/sysext/scheduler/Tests/Unit/</directory>
 		</testsuite>
