@@ -40,7 +40,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @package Extension Manager
  * @subpackage Utility/Parser
  */
-class MirrorXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\MirrorXmlAbstractParser implements \SplSubject {
+class MirrorXmlPushParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractMirrorXmlParser implements \SplSubject {
 
 	/**
 	 * Keeps list of attached observers.

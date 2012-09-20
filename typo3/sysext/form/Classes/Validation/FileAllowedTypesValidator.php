@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Form\Validation;
  * @package TYPO3
  * @subpackage form
  */
-class FileAllowedTypesValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator implements \TYPO3\CMS\Form\Validation\InterfaceValidator {
+class FileAllowedTypesValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator implements \TYPO3\CMS\Form\Validation\ValidatorInterface {
 
 	/**
 	 * The allowed types
