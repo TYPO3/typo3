@@ -399,8 +399,8 @@ class EditDocumentController {
 		$this->vC = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('vC');
 		// See tce_db.php for relevate options here:
 		// Only options related to $this->data submission are included here.
-		/** @var $tce \TYPO3\CMS\Core\DataHandler\DataHandler */
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		if (isset($_POST['_translation_savedok_x'])) {
 			$tce->updateModeL10NdiffData = 'FORCE_FFUPD';

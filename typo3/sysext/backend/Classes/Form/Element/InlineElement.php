@@ -1120,8 +1120,8 @@ class InlineElement {
 			$parentRecord = $this->getRecord(0, $parent['table'], $parent['uid']);
 			$cmd = array();
 			$cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = $parent['field'] . ',' . $type;
-			/** @var \TYPO3\CMS\Core\DataHandler\DataHandler */
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+			/** @var \TYPO3\CMS\Core\DataHandling\DataHandler */
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = FALSE;
 			$tce->start(array(), $cmd);
 			$tce->process_cmdmap();
@@ -2203,7 +2203,7 @@ class InlineElement {
 	 * Update expanded/collapsed states on new inline records if any.
 	 *
 	 * @param array $uc The uc array to be processed and saved (by reference)
-	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tce Instance of TCEmain that saved data before
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tce Instance of TCEmain that saved data before
 	 * @return void
 	 * @todo Define visibility
 	 */

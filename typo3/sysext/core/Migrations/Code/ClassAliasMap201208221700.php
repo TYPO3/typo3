@@ -218,7 +218,7 @@ return array(
 	't3lib_softrefproc' => 'TYPO3\\CMS\\Core\\Database\\SoftReferenceIndex',
 	't3lib_sqlparser' => 'TYPO3\\CMS\\Core\\Database\\SqlParser',
 	't3lib_extTables_PostProcessingHook' => 'TYPO3\\CMS\\Core\\Database\\TableConfigurationPostProcessingHookInterface',
-	't3lib_TCEmain' => 'TYPO3\\CMS\\Core\\DataHandler\\DataHandler',
+	't3lib_TCEmain' => 'TYPO3\\CMS\\Core\\DataHandling\\DataHandler',
 	't3lib_TCEmain_checkModifyAccessListHook' => 'TYPO3\\CMS\\Core\\DataHandling\\DataHandlerCheckModifyAccessListHookInterface',
 	't3lib_TCEmain_processUploadHook' => 'TYPO3\\CMS\\Core\\DataHandling\\DataHandlerProcessUploadHookInterface',
 	't3lib_browseLinksHook' => 'TYPO3\\CMS\\Core\\ElementBrowser\\ElementBrowserHookInterface',

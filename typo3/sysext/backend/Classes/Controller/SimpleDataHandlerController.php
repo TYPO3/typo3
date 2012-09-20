@@ -90,7 +90,7 @@ class SimpleDataHandlerController {
 	/**
 	 * TYPO3 Core Engine
 	 *
-	 * @var \TYPO3\CMS\Core\DataHandler\DataHandler
+	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
 	 * @todo Define visibility
 	 */
 	public $tce;
@@ -116,7 +116,7 @@ class SimpleDataHandlerController {
 		$this->uPT = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('uPT');
 		$this->generalComment = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('generalComment');
 		// Creating TCEmain object
-		$this->tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+		$this->tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$this->tce->stripslashes_values = 0;
 		$this->tce->generalComment = $this->generalComment;
 		// Configuring based on user prefs.

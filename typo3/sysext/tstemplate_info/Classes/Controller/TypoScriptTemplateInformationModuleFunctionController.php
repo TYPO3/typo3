@@ -231,7 +231,7 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 				if (count($recData)) {
 					$recData['sys_template'][$saveId] = $this->processTemplateRowBeforeSaving($recData['sys_template'][$saveId]);
 					// Create new  tce-object
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 					$tce->stripslashes_values = 0;
 					$tce->alternativeFileName = $alternativeFileName;
 					// Initialize
@@ -261,8 +261,8 @@ class TypoScriptTemplateInformationModuleFunctionController extends \TYPO3\CMS\B
 								$theOutput .= $this->pObj->doc->section('<font color=red>' . $GLOBALS['LANG']->getLL('fileChanged') . '</font>', sprintf($GLOBALS['LANG']->getLL('resourceUpdated'), $edit['filename']), 0, 0, 0, 1);
 								// Clear cache - the file has probably affected the template setup
 								// @TODO: Check if the edited file really had something to do with cached data and prevent this clearing if possible!
-								/** @var $tce \TYPO3\CMS\Core\DataHandler\DataHandler */
-								$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+								/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
+								$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 								$tce->stripslashes_values = 0;
 								$tce->start(array(), array());
 								$tce->clear_cacheCmd('all');

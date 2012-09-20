@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\DataHandler;
+namespace TYPO3\CMS\Core\DataHandling;
 
 /***************************************************************
  *  Copyright notice
@@ -17,7 +17,6 @@ namespace TYPO3\CMS\Core\DataHandler;
  *  http://www.gnu.org/copyleft/gpl.html.
  *  A copy is found in the textfile GPL.txt and important notices to the license
  *  from the author is found in LICENSE.txt distributed with these scripts.
- *
  *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -486,7 +485,7 @@ class DataHandler {
 	 * The outer most instance of t3lib_TCEmain
 	 * (t3lib_TCEmain instantiates itself on versioning and localization)
 	 *
-	 * @var \TYPO3\CMS\Core\DataHandler\DataHandler
+	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	protected $outerMostInstance = NULL;
 
@@ -907,8 +906,8 @@ class DataHandler {
 											$id = $WSversion['uid'];
 											$recordAccess = TRUE;
 										} elseif ($this->BE_USER->workspaceAllowAutoCreation($table, $id, $theRealPid)) {
-											$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
-											/** @var $tce \TYPO3\CMS\Core\DataHandler\DataHandler */
+											$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+											/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
 											$tce->stripslashes_values = 0;
 											// Setting up command for creating a new version of the record:
 											$cmd = array();
@@ -1812,7 +1811,7 @@ class DataHandler {
 											foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processUpload'] as $classRef) {
 												$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
 												if (!$hookObject instanceof \TYPO3\CMS\Core\DataHandling\DataHandlerProcessUploadHookInterface) {
-													throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Core\\DataHandler\\DataHandlerProcessUploadHookInterface', 1279962349);
+													throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Core\\DataHandling\\DataHandlerProcessUploadHookInterface', 1279962349);
 												}
 												$hookObject->processUpload_postProcessAction($theDestFile, $this);
 											}
@@ -2810,8 +2809,8 @@ class DataHandler {
 							$data[$table][$theNewID][$GLOBALS['TCA'][$table]['ctrl']['origUid']] = $uid;
 						}
 						// Do the copy by simply submitting the array through TCEmain:
-						/** @var $copyTCE \TYPO3\CMS\Core\DataHandler\DataHandler */
-						$copyTCE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+						/** @var $copyTCE \TYPO3\CMS\Core\DataHandling\DataHandler */
+						$copyTCE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 						$copyTCE->stripslashes_values = 0;
 						$copyTCE->copyTree = $this->copyTree;
 						// Copy forth the cached TSconfig
@@ -3775,8 +3774,8 @@ class DataHandler {
 											}
 										} else {
 											// Create new record:
-											/** @var $copyTCE \TYPO3\CMS\Core\DataHandler\DataHandler */
-											$copyTCE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+											/** @var $copyTCE \TYPO3\CMS\Core\DataHandling\DataHandler */
+											$copyTCE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 											// Copy forth the cached TSconfig
 											$copyTCE->stripslashes_values = 0;
 											$copyTCE->cachedTSconfig = $this->cachedTSconfig;
@@ -3890,7 +3889,7 @@ class DataHandler {
 						$this->registerDBList[$table][$id][$field] = $value;
 						// Remove child records (if synchronization requested it):
 						if (is_array($removeArray) && count($removeArray)) {
-							$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+							$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 							$tce->stripslashes_values = FALSE;
 							$tce->start(array(), $removeArray);
 							$tce->process_cmdmap();
@@ -6850,13 +6849,13 @@ class DataHandler {
 	 * Since t3lib_TCEmain can create nested objects of itself,
 	 * this method helps to determine the first (= outer most) one.
 	 *
-	 * @return \TYPO3\CMS\Core\DataHandler\DataHandler
+	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	protected function getOuterMostInstance() {
 		if (!isset($this->outerMostInstance)) {
 			$stack = array_reverse(debug_backtrace());
 			foreach ($stack as $stackItem) {
-				if (isset($stackItem['object']) && $stackItem['object'] instanceof \TYPO3\CMS\Core\DataHandler\DataHandler) {
+				if (isset($stackItem['object']) && $stackItem['object'] instanceof \TYPO3\CMS\Core\DataHandling\DataHandler) {
 					$this->outerMostInstance = $stackItem['object'];
 					break;
 				}

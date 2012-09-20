@@ -237,7 +237,7 @@ class TypoScriptTemplateObjectBrowserModuleFunctionController extends \TYPO3\CMS
 					$field = $bType == 'setup' ? 'config' : 'constants';
 					$recData['sys_template'][$saveId][$field] = $tplRow[$field] . $line;
 					// Create new  tce-object
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 					$tce->stripslashes_values = 0;
 					// Initialize
 					$tce->start($recData, array());

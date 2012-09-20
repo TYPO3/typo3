@@ -53,10 +53,10 @@ class FileExtensionFilter {
 	 * Entry method for use as TCEMain "inline" field filter
 	 *
 	 * @param array $parameters
-	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tceMain
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
 	 * @return array
 	 */
-	public function filterInlineChildren(array $parameters, \TYPO3\CMS\Core\DataHandler\DataHandler $tceMain) {
+	public function filterInlineChildren(array $parameters, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain) {
 		$values = $parameters['values'];
 		if ($parameters['allowedFileExtensions']) {
 			$this->setAllowedFileExtensions($parameters['allowedFileExtensions']);

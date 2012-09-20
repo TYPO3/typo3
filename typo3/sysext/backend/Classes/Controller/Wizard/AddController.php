@@ -124,7 +124,7 @@ class AddController {
 				$current = reset($trData->regTableItems_data);
 				// If that record was found (should absolutely be...), then init TCEmain and set, prepend or append the record
 				if (is_array($current)) {
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 					$tce->stripslashes_values = 0;
 					$data = array();
 					$addEl = $this->table . '_' . $this->id;

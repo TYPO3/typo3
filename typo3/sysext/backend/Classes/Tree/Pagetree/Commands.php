@@ -195,8 +195,8 @@ final class Commands {
 	 * @throws RuntimeException if an error happened while the TCE processing
 	 */
 	static protected function processTceCmdAndDataMap(array $cmd, array $data = array()) {
-		/** @var $tce \TYPO3\CMS\Core\DataHandler\DataHandler */
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->start($data, $cmd);
 		$tce->copyTree = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['BE_USER']->uc['copyLevels'], 0, 100);

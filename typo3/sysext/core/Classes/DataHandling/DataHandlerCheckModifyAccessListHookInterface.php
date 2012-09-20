@@ -40,10 +40,10 @@ interface DataHandlerCheckModifyAccessListHookInterface
 	 *
 	 * @param boolean &$accessAllowed Whether the user has access to modify a table
 	 * @param string $table The name of the table to be modified
-	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $parent The calling parent object
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $parent The calling parent object
 	 * @return void
 	 */
-	public function checkModifyAccessList(&$accessAllowed, $table, \TYPO3\CMS\Core\DataHandler\DataHandler $parent);
+	public function checkModifyAccessList(&$accessAllowed, $table, \TYPO3\CMS\Core\DataHandling\DataHandler $parent);
 
 }
 

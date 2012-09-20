@@ -83,8 +83,8 @@ class ContentRepository {
 		$typoscript = $converter->convert($json);
 		if ($typoscript) {
 			// Make TCEmain object:
-			/** @var $tce \TYPO3\CMS\Core\DataHandler\DataHandler */
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = 0;
 			// Put content into the data array:
 			$data = array();

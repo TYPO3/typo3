@@ -235,7 +235,7 @@ class SetupModuleController {
 			// Persist data if something has changed:
 			if (count($storeRec) && $this->saveData) {
 				// Make instance of TCE for storing the changes.
-				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 				$tce->stripslashes_values = 0;
 				$tce->start($storeRec, array(), $GLOBALS['BE_USER']);
 				// This is so the user can actually update his user record.

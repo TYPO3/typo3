@@ -98,7 +98,7 @@ class TypoScriptTemplateConstantEditorModuleFunctionController extends \TYPO3\CM
 					$recData = array();
 					$recData['sys_template'][$saveId]['constants'] = implode($tmpl->raw, LF);
 					// Create new  tce-object
-					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+					$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 					$tce->stripslashes_values = 0;
 					$tce->start($recData, array());
 					$tce->process_datamap();

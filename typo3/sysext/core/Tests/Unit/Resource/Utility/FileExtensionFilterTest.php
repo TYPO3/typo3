@@ -66,7 +66,7 @@ class FileExtensionFilterTest extends \Tx_Phpunit_TestCase {
 	 */
 	protected function setUp() {
 		$this->filter = new \TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter();
-		$this->tceMainMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandler\\DataHandler', array('deleteAction'), array());
+		$this->tceMainMock = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler', array('deleteAction'), array());
 		$this->fileFactoryMock = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', array('getFileReferenceObject'), array());
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		\TYPO3\CMS\Core\Utility\GeneralUtility::setSingletonInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory', $this->fileFactoryMock);

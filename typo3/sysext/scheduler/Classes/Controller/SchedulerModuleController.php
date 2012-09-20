@@ -274,8 +274,8 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			// Prepare necessary data for _cli_scheduler user creation
 			$password = md5(uniqid('scheduler', TRUE));
 			$data = array('be_users' => array('NEW' => array('username' => '_cli_scheduler', 'password' => $password, 'pid' => 0)));
-			/** @var \TYPO3\CMS\Core\DataHandler\DataHandler $tcemain */
-			$tcemain = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+			/** @var \TYPO3\CMS\Core\DataHandling\DataHandler $tcemain */
+			$tcemain = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tcemain->stripslashes_values = 0;
 			$tcemain->start($data, array());
 			$tcemain->process_datamap();

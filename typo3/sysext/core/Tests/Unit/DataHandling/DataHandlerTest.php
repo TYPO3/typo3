@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for TYPO3\CMS\Core\DataHandler\DataHandler
+ * Testcase for TYPO3\CMS\Core\DataHandling\DataHandler
  *
  * @package TYPO3
  * @subpackage t3lib
@@ -61,7 +61,7 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 	protected $singletonInstances = array();
 
 	/**
-	 * @var \TYPO3\CMS\Core\DataHandler\DataHandler
+	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	private $fixture;
 
@@ -74,7 +74,7 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 		$this->singletonInstances = \TYPO3\CMS\Core\Utility\GeneralUtility::getSingletonInstances();
 		$this->databaseBackup = $GLOBALS['TYPO3_DB'];
 		$this->backEndUser = $this->getMock('TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication');
-		$this->fixture = new \TYPO3\CMS\Core\DataHandler\DataHandler();
+		$this->fixture = new \TYPO3\CMS\Core\DataHandling\DataHandler();
 		$this->fixture->start(array(), '', $this->backEndUser);
 	}
 
@@ -91,7 +91,7 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function fixtureCanBeCreated() {
-		$this->assertTrue($this->fixture instanceof \TYPO3\CMS\Core\DataHandler\DataHandler);
+		$this->assertTrue($this->fixture instanceof \TYPO3\CMS\Core\DataHandling\DataHandler);
 	}
 
 	//////////////////////////////////////////
@@ -207,7 +207,7 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 		$hookClass = uniqid('tx_coretest');
 		eval('
 			class ' . $hookClass . ' implements \\TYPO3\\CMS\\Core\\DataHandling\\DataHandlerCheckModifyAccessListHookInterface {
-				public function checkModifyAccessList(&$accessAllowed, $table, \\TYPO3\\CMS\\Core\\DataHandler\\DataHandler $parent) { $accessAllowed = TRUE; }
+				public function checkModifyAccessList(&$accessAllowed, $table, \\TYPO3\\CMS\\Core\\DataHandling\\DataHandler $parent) { $accessAllowed = TRUE; }
 			}
 		');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
@@ -221,7 +221,7 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function processDatamapForFrozenNonZeroWorkspaceReturnsFalse() {
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\DataHandler\\DataHandler', array('newlog'));
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler', array('newlog'));
 		$this->backEndUser->workspace = 1;
 		$this->backEndUser->workspaceRec = array('freeze' => TRUE);
 		$fixture->BE_USER = $this->backEndUser;
@@ -236,8 +236,8 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] = array();
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
-		/** @var $fixture \TYPO3\CMS\Core\DataHandler\DataHandler|\tx_phpunit_testcase */
-		$fixture = $this->getMock('TYPO3\\CMS\\Core\\DataHandler\\DataHandler', array('newlog', 'checkModifyAccessList', 'tableReadOnly', 'checkRecordUpdateAccess'));
+		/** @var $fixture \TYPO3\CMS\Core\DataHandling\DataHandler|\tx_phpunit_testcase */
+		$fixture = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler', array('newlog', 'checkModifyAccessList', 'tableReadOnly', 'checkRecordUpdateAccess'));
 		$fixture->bypassWorkspaceRestrictions = FALSE;
 		$fixture->datamap = array(
 			'pages' => array(
@@ -256,7 +256,7 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 		$backEndUser->expects($this->once())->method('workspaceCannotEditRecord')->will($this->returnValue(TRUE));
 		$backEndUser->expects($this->once())->method('recordEditAccessInternals')->with('pages', 1)->will($this->returnValue(TRUE));
 		$fixture->BE_USER = $backEndUser;
-		$createdTceMain = $this->getMock('TYPO3\\CMS\\Core\\DataHandler\\DataHandler', array());
+		$createdTceMain = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler', array());
 		$createdTceMain->expects($this->once())->method('start')->with(array(), array(
 			'pages' => array(
 				1 => array(
@@ -270,7 +270,7 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 		));
 		$createdTceMain->expects($this->never())->method('process_datamap');
 		$createdTceMain->expects($this->once())->method('process_cmdmap');
-		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler', $createdTceMain);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler', $createdTceMain);
 		$fixture->process_datamap();
 	}
 
