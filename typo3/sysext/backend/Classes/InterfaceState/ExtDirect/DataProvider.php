@@ -36,14 +36,12 @@ namespace TYPO3\CMS\Backend\InterfaceState\ExtDirect;
 class DataProvider {
 
 	/**
-	 * @var extDirect_DataProvider_BackenduserSettings
+	 * @var \TYPO3\CMS\Backend\User\ExtDirect\BackendUserSettingsDataProvider
 	 */
 	protected $userSettings;
 
 	/**
 	 * Constructor
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 		// All data is saved in BE_USER->uc
@@ -53,7 +51,7 @@ class DataProvider {
 	/**
 	 * Gets state for given key
 	 *
-	 * @param stdClass $parameter
+	 * @param \stdClass $parameter
 	 * @return array
 	 */
 	public function getState($parameter) {
@@ -68,7 +66,7 @@ class DataProvider {
 	/**
 	 * Save the state for a given key
 	 *
-	 * @param stdClass $parameter
+	 * @param \stdClass $parameter
 	 * @return array
 	 */
 	public function setState($parameter) {

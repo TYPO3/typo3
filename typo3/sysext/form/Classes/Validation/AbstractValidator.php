@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Form\Validation;
  * @package TYPO3
  * @subpackage form
  */
-abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\InterfaceValidator {
+abstract class AbstractValidator implements \TYPO3\CMS\Form\Validation\ValidatorInterface {
 
 	/**
 	 * The name of the field for the rule
