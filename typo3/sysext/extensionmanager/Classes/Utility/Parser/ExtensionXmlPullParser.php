@@ -39,7 +39,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @package 	 TYPO3
  * @subpackage EM
  */
-class ExtensionXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\ExtensionXmlAbstractParser implements \SplSubject {
+class ExtensionXmlPullParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser implements \SplSubject {
 
 	/**
 	 * Keeps list of attached observers.

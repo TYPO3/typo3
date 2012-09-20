@@ -39,7 +39,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @package TYPO3
  * @subpackage EM
  */
-abstract class ExtensionXmlAbstractParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\XmlAbstractParser {
+abstract class AbstractExtensionXmlParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractXmlParser {
 
 	/**
 	 * Keeps current author company of an extension's version.

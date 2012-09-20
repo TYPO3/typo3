@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Form\Validation;
  * @package TYPO3
  * @subpackage form
  */
-interface InterfaceValidator
+interface ValidatorInterface
 {
 	/**
 	 * Set the fieldName

@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @package Extension Manager
  * @subpackage Utility/Parser
  */
-abstract class MirrorXmlAbstractParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\XmlAbstractParser {
+abstract class AbstractMirrorXmlParser extends \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractXmlParser {
 
 	/**
 	 * Keeps country of currently processed mirror.
