@@ -174,8 +174,8 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 						}
 					}
 				}
-				/** @var $tce \TYPO3\CMS\Core\DataHandler\DataHandler */
-				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+				/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
+				$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 				$tce->stripslashes_values = 0;
 				$tce->start(array(), $cmdArray);
 				$tce->process_cmdmap();

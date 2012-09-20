@@ -50,7 +50,7 @@ class CommandMap {
 	protected $parent;
 
 	/**
-	 * @var \TYPO3\CMS\Core\DataHandler\DataHandler
+	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	protected $tceMain;
 
@@ -82,10 +82,10 @@ class CommandMap {
 	/**
 	 * Creates this object.
 	 *
-	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $parent
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $parent
 	 * @param array $commandMap
 	 */
-	public function __construct(\TYPO3\CMS\Version\Hook\DataHandlerHook $parent, \TYPO3\CMS\Core\DataHandler\DataHandler $tceMain, array $commandMap) {
+	public function __construct(\TYPO3\CMS\Version\Hook\DataHandlerHook $parent, \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain, array $commandMap) {
 		$this->setParent($parent);
 		$this->setTceMain($tceMain);
 		$this->set($commandMap);
@@ -138,7 +138,7 @@ class CommandMap {
 	/**
 	 * Gets the parent object.
 	 *
-	 * @return \TYPO3\CMS\Core\DataHandler\DataHandler
+	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	public function getTceMain() {
 		return $this->tceMain;
@@ -147,10 +147,10 @@ class CommandMap {
 	/**
 	 * Sets the parent object.
 	 *
-	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tceMain
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tceMain
 	 * @return \TYPO3\CMS\Version\DataHandler\CommandMap
 	 */
-	public function setTceMain(\TYPO3\CMS\Core\DataHandler\DataHandler $tceMain) {
+	public function setTceMain(\TYPO3\CMS\Core\DataHandling\DataHandler $tceMain) {
 		$this->tceMain = $tceMain;
 		return $this;
 	}

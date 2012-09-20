@@ -1442,7 +1442,7 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 				$wslibObj = \t3lib_div::makeInstance('TYPO3\\CMS\\Version\\Utility\\WorkspacesUtility');
 				$cmd = $wslibObj->getCmdArrayForPublishWS($GLOBALS['BE_USER']->workspace, \t3lib_div::_POST('_swap'), $this->uid);
 				// Execute the commands:
-				$tce = \t3lib_div::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+				$tce = \t3lib_div::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 				$tce->stripslashes_values = 0;
 				$tce->start(array(), $cmd);
 				$tce->process_cmdmap();
