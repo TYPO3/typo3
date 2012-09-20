@@ -1200,7 +1200,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 			foreach ($drawItemHooks as $hookClass) {
 				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($hookClass);
 				if (!$hookObject instanceof \TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface) {
-					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Backend\\View\\PageLayoutView_tt_content_drawItemHook', 1218547409);
+					throw new \UnexpectedValueException('$hookObject must implement interface TYPO3\\CMS\\Backend\\View\\PageLayoutViewDrawItemHookInterface', 1218547409);
 				}
 				$hookObject->preProcess($this, $drawItem, $outHeader, $out, $row);
 			}
