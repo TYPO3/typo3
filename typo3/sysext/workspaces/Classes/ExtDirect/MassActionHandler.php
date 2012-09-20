@@ -204,8 +204,8 @@ class MassActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler 
 			$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction', NULL);
 			$GLOBALS['BE_USER']->setAndSaveSessionData('workspaceMassAction_total', 0);
 		} else {
-			/** @var $tce \TYPO3\CMS\Core\DataHandler\DataHandler */
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = 0;
 			// Execute the commands:
 			$tce->start(array(), $limitedCmd);

@@ -364,7 +364,7 @@ class ActionHandler extends \TYPO3\CMS\Workspaces\ExtDirect\AbstractHandler {
 	 * @author Michael Klapper <development@morphodo.com>
 	 */
 	protected function processTcaCmd(array $cmdMapArray) {
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->start(array(), $cmdMapArray);
 		$tce->process_cmdmap();
 	}

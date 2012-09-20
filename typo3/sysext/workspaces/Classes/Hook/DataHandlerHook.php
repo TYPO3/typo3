@@ -44,10 +44,10 @@ class DataHandlerHook {
 	 * @param string $table
 	 * @param string $id
 	 * @param string $value
-	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemain
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemain
 	 * @return void
 	 */
-	public function processCmdmap_postProcess($command, $table, $id, $value, \TYPO3\CMS\Core\DataHandler\DataHandler $tcemain) {
+	public function processCmdmap_postProcess($command, $table, $id, $value, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemain) {
 		if ($command === 'delete') {
 			if ($table === \TYPO3\CMS\Workspaces\Service\StagesService::TABLE_STAGE) {
 				$this->resetStageOfElements($id);
@@ -61,10 +61,10 @@ class DataHandlerHook {
 	 * hook that is called AFTER all commands of the commandmap was
 	 * executed
 	 *
-	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj reference to the main tcemain object
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj reference to the main tcemain object
 	 * @return 	void
 	 */
-	public function processCmdmap_afterFinish(\TYPO3\CMS\Core\DataHandler\DataHandler $tcemainObj) {
+	public function processCmdmap_afterFinish(\TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
 		$this->flushWorkspaceCacheEntriesByWorkspaceId($tcemainObj->BE_USER->workspace);
 	}
 
@@ -128,10 +128,10 @@ class DataHandlerHook {
 	/**
 	 * Gets a new instance of t3lib_TCEmain.
 	 *
-	 * @return \TYPO3\CMS\Core\DataHandler\DataHandler
+	 * @return \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	protected function getTceMain() {
-		$tceMain = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+		$tceMain = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tceMain->stripslashes_values = 0;
 		return $tceMain;
 	}
