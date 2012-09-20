@@ -216,11 +216,25 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 		$isNumericSearchFilter = is_numeric($searchFilter) && $searchFilter > 0;
 		$searchFilterQuoted = preg_quote($searchFilter, '/');
 		$nodeId = intval($node->getId());
+		$processedRecordIds = array();
 		foreach ($records as $record) {
-			$record = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($record['uid']);
-			if (intval($record['pid']) === -1 || in_array($record['uid'], $this->hiddenRecords)) {
+			if (intval($record['t3ver_wsid']) !== intval($GLOBALS['BE_USER']->workspace) && intval($record['t3ver_wsid']) !== 0) {
 				continue;
 			}
+			$liveVersion = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord('pages', $record['uid'], 'uid');
+			if ($liveVersion !== NULL) {
+				$record = $liveVersion;
+			}
+
+			$record = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($record['uid'], FALSE);
+			if (intval($record['pid']) === -1
+				|| in_array($record['uid'], $this->hiddenRecords)
+				|| in_array($record['uid'], $processedRecordIds)
+			) {
+				continue;
+			}
+			$processedRecordIds[] = $record['uid'];
+
 			$rootline = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($record['uid'], '', $GLOBALS['BE_USER']->workspace != 0);
 			$rootline = array_reverse($rootline);
 			if ($nodeId === 0) {
@@ -249,7 +263,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 				if (!$inFilteredRootline) {
 					continue;
 				}
-				$rootlineElement = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($rootlineElement['uid']);
+				$rootlineElement = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($rootlineElement['uid'], FALSE);
 				$ident = intval($rootlineElement['sorting']) . intval($rootlineElement['uid']);
 				if ($reference && $reference->offsetExists($ident)) {
 					/** @var $refNode \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
@@ -420,7 +434,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 */
 	protected function getSubpages($id, $searchFilter = '') {
 		$where = $this->getWhereClause($id, $searchFilter);
-		return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', 'pages', $where, '', 'sorting', '', 'uid');
+		return $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid,t3ver_wsid', 'pages', $where, '', 'sorting', '', 'uid');
 	}
 
 	/**
