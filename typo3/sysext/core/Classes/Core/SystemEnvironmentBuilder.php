@@ -57,6 +57,7 @@ class SystemEnvironmentBuilder {
 		self::definePaths($relativePathPart);
 		self::checkMainPathsExist();
 		self::requireBaseClasses();
+		self::setupClassAliasForLegacyBaseClasses();
 		self::handleMagicQuotesGpc();
 		self::addCorePearPathToIncludePath();
 		self::initializeGlobalVariables();
@@ -231,6 +232,18 @@ class SystemEnvironmentBuilder {
 		if (PHP_VERSION_ID < 50307) {
 			require_once __DIR__ . '/../Compatibility/CompatbilityClassLoaderPhpBelow50307.php';
 		}
+	}
+
+	/**
+	 * Compatibility layer for early t3lib_div or t3lib_extMgm usage
+	 *
+	 * @return void
+	 * @deprecated since 6.0, will be removed in 7.0
+	 * @see t3lib/class.t3lib_div.php, t3lib/class.t3lib_extmgm.php
+	 */
+	static public function setupClassAliasForLegacyBaseClasses() {
+		class_alias('TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 't3lib_div');
+		class_alias('TYPO3\\CMS\\Core\\Extension\\ExtensionManager', 't3lib_extMgm');
 	}
 
 	/**
