@@ -203,11 +203,22 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 		}
 		$isNumericSearchFilter = is_numeric($searchFilter) && $searchFilter > 0;
 		$nodeId = intval($node->getId());
+		$processedRecordIds = array();
 		foreach ($records as $record) {
-			$record = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($record['uid']);
-			if (intval($record['pid']) === -1 || in_array($record['uid'], $this->hiddenRecords)) {
+			$liveVersion = \TYPO3\CMS\Backend\Utility\BackendUtility::getLiveVersionOfRecord('pages', $record['uid'], 'uid');
+			if ($liveVersion !== NULL) {
+				$record = $liveVersion;
+			}
+
+			$record = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($record['uid'], FALSE);
+			if (intval($record['pid']) === -1
+				|| in_array($record['uid'], $this->hiddenRecords)
+				|| in_array($record['uid'], $processedRecordIds)
+			) {
 				continue;
 			}
+			$processedRecordIds[] = $record['uid'];
+
 			$rootline = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($record['uid'], '', $GLOBALS['BE_USER']->workspace != 0);
 			$rootline = array_reverse($rootline);
 			if ($nodeId === 0) {
@@ -236,7 +247,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 				if (!$inFilteredRootline) {
 					continue;
 				}
-				$rootlineElement = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($rootlineElement['uid']);
+				$rootlineElement = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($rootlineElement['uid'], FALSE);
 				$ident = intval($rootlineElement['sorting']) . intval($rootlineElement['uid']);
 				if ($reference && $reference->offsetExists($ident)) {
 					/** @var $refNode \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
