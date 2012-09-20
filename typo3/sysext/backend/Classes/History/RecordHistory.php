@@ -225,7 +225,7 @@ class RecordHistory {
 		}
 		// Writes the data:
 		if ($cmdmapArray) {
-			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = 0;
 			$tce->debug = 0;
 			$tce->dontProcessTransformations = 1;
@@ -260,7 +260,7 @@ class RecordHistory {
 		// Removing fields:
 		$data = $this->removeFilefields($rollbackData[0], $data);
 		// Writes the data:
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->debug = 0;
 		$tce->dontProcessTransformations = 1;

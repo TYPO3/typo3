@@ -639,7 +639,7 @@ class ReferenceIndex {
 								return $dataArray;
 							} else {
 								// Execute CMD array:
-								$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+								$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 								$tce->stripslashes_values = FALSE;
 								$tce->dontProcessTransformations = TRUE;
 								$tce->bypassWorkspaceRestrictions = TRUE;

@@ -577,7 +577,7 @@ class FrontendEditingController {
 	 */
 	protected function initializeTceMain() {
 		if (!isset($this->tce)) {
-			$this->tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+			$this->tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$this->tce->stripslashes_values = 0;
 		}
 	}

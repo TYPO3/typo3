@@ -543,7 +543,7 @@ class QueryView {
 	 */
 	public function resultRowDisplay($row, $conf, $table) {
 		static $even = FALSE;
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$SET = $GLOBALS['SOBE']->MOD_SETTINGS;
 		$out = '<tr class="bgColor' . ($even ? '6' : '4') . '">';
 		$even = !$even;

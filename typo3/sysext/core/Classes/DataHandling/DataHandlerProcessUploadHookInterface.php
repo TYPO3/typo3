@@ -40,10 +40,10 @@ interface DataHandlerProcessUploadHookInterface
 	 * Post-process a file upload.
 	 *
 	 * @param string $filename The uploaded file
-	 * @param \TYPO3\CMS\Core\DataHandler\DataHandler $parentObject Parent t3lib_TCEmain object
+	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $parentObject Parent t3lib_TCEmain object
 	 * @return void
 	 */
-	public function processUpload_postProcessAction(&$filename, \TYPO3\CMS\Core\DataHandler\DataHandler $parentObject);
+	public function processUpload_postProcessAction(&$filename, \TYPO3\CMS\Core\DataHandling\DataHandler $parentObject);
 
 }
 

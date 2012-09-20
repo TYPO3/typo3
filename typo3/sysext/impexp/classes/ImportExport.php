@@ -1426,7 +1426,7 @@ class ImportExport {
 	 * @todo Define visibility
 	 */
 	public function getNewTCE() {
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->dontProcessTransformations = 1;
 		$tce->enableLogging = $this->enableLogging;
@@ -1608,7 +1608,7 @@ class ImportExport {
 									$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
 									$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($updateData[$table][$thisNewUid][$field]);
 									// Do recursive processing of the XML data:
-									$iteratorObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+									$iteratorObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 									$iteratorObj->callBackObj = $this;
 									$currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $thisNewUid, $field, $config), 'remapListedDBRecords_flexFormCallBack');
 									// The return value is set as an array which means it will be processed by tcemain for file and DB references!
@@ -1717,8 +1717,8 @@ class ImportExport {
 										$dataStructArray = \TYPO3\CMS\Backend\Utility\BackendUtility::getFlexFormDS($conf, $origRecordRow, $table);
 										$currentValueArray = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($origRecordRow[$field]);
 										// Do recursive processing of the XML data:
-										/** @var $iteratorObj \TYPO3\CMS\Core\DataHandler\DataHandler */
-										$iteratorObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+										/** @var $iteratorObj \TYPO3\CMS\Core\DataHandling\DataHandler */
+										$iteratorObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 										$iteratorObj->callBackObj = $this;
 										$currentValueArray['data'] = $iteratorObj->checkValue_flex_procInData($currentValueArray['data'], array(), array(), $dataStructArray, array($table, $uid, $field, $softRefCfgs), 'processSoftReferences_flexFormCallBack');
 										// The return value is set as an array which means it will be processed by tcemain for file and DB references!

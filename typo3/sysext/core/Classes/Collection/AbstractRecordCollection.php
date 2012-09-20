@@ -359,8 +359,8 @@ abstract class AbstractRecordCollection implements \TYPO3\CMS\Core\Collection\Re
 		if ($this->getIdentifier() == 0) {
 			$data[trim(static::$storageTableName)][$uid]['pid'] = 0;
 		}
-		/** @var \TYPO3\CMS\Core\DataHandler\DataHandler $tce */
-		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandler\\DataHandler');
+		/** @var \TYPO3\CMS\Core\DataHandling\DataHandler $tce */
+		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
 		$tce->start($data, array());
 		$tce->process_datamap();
