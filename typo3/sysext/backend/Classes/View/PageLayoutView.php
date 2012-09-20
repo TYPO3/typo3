@@ -1069,7 +1069,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		$content = '';
 		// Get processed values:
 		$info = array();
-		$this->getProcessedValue('tt_content', 'hidden,starttime,endtime,fe_group,spaceBefore,spaceAfter', $row, $info);
+		$this->getProcessedValue('tt_content', 'starttime,endtime,fe_group,spaceBefore,spaceAfter', $row, $info);
 		// Display info from records fields:
 		if (count($info)) {
 			$content = '<div class="t3-page-ce-info">
