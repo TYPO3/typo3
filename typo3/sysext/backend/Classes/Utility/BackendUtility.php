@@ -351,11 +351,17 @@ class BackendUtility {
 			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('pid,uid,title,TSconfig,is_siteroot,storage_pid,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,backend_layout_next_level', 'pages', 'uid=' . intval($uid) . ' ' . self::deleteClause('pages') . ' ' . $clause);
 			$row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
 			if ($row) {
+				$newLocation = FALSE;
 				if ($workspaceOL) {
 					self::workspaceOL('pages', $row);
+					$newLocation = self::getMovePlaceholder('pages', $row['uid'], 'pid');
 				}
 				if (is_array($row)) {
-					self::fixVersioningPid('pages', $row);
+					if ($newLocation !== FALSE) {
+						$row['pid'] = $newLocation['pid'];
+					} else {
+						self::fixVersioningPid('pages', $row);
+					}
 					$getPageForRootline_cache[$ident] = $row;
 				}
 			}
