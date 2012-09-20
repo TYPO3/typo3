@@ -1,4 +1,5 @@
 <?php
+
 class Tx_About_Controller_AboutController extends \TYPO3\CMS\About\Controller\AboutController {}
 class tx_about_customSections extends \TYPO3\CMS\About\CustomSectionsInterface {}
 class Tx_About_Domain_Model_Extension extends \TYPO3\CMS\About\Domain\Model\Extension {}
