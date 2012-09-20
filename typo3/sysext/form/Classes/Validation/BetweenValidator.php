@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Form\Validation;
  * @package TYPO3
  * @subpackage form
  */
-class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator implements \TYPO3\CMS\Form\Validation\InterfaceValidator {
+class BetweenValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator implements \TYPO3\CMS\Form\Validation\ValidatorInterface {
 
 	/**
 	 * Minimum value

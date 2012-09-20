@@ -44,7 +44,7 @@ class ExtensionListUtility implements \SplObserver {
 	/**
 	 * Keeps instance of a XML parser.
 	 *
-	 * @var \TYPO3\CMS\Extensionmanager\Utility\Parser\ExtensionXmlAbstractParser
+	 * @var \TYPO3\CMS\Extensionmanager\Utility\Parser\AbstractExtensionXmlParser
 	 */
 	protected $parser;
 
@@ -210,7 +210,7 @@ class ExtensionListUtility implements \SplObserver {
 	 * @return void
 	 */
 	public function update(\SplSubject $subject) {
-		if (is_subclass_of($subject, 'TYPO3\\CMS\\Extensionmanager\\Utility\\Parser\\ExtensionXmlAbstractParser')) {
+		if (is_subclass_of($subject, 'TYPO3\\CMS\\Extensionmanager\\Utility\\Parser\\AbstractExtensionXmlParser')) {
 			$this->loadIntoDatabase($subject);
 		}
 	}

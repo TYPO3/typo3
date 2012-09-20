@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Extensionmanager\Utility\Parser;
  * @package Extension Manager
  * @subpackage Utility/Parser
  */
-abstract class XmlAbstractParser {
+abstract class AbstractXmlParser {
 
 	/**
 	 * Keeps XML parser instance.
