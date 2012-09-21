@@ -104,6 +104,7 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 	public function getHighestSeverity(array $statusCollection) {
 		$highestSeverity = \TYPO3\CMS\Reports\Status::NOTICE;
 		foreach ($statusCollection as $statusProvider => $providerStatuses) {
+			/** @var $status \TYPO3\CMS\Reports\Status */
 			foreach ($providerStatuses as $status) {
 				if ($status->getSeverity() > $highestSeverity) {
 					$highestSeverity = $status->getSeverity();
@@ -150,6 +151,7 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 			$messages = '';
 			$headerIcon = '';
 			$sectionSeverity = 0;
+			/** @var $status \TYPO3\CMS\Reports\Status */
 			foreach ($providerState as $status) {
 				$severity = $status->getSeverity();
 				$sectionSeverity = $severity > $sectionSeverity ? $severity : $sectionSeverity;
@@ -216,6 +218,7 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 	protected function sortStatuses(array $statusCollection) {
 		$statuses = array();
 		$sortTitle = array();
+		/** @var $status \TYPO3\CMS\Reports\Status */
 		foreach ($statusCollection as $status) {
 			if ($status->getTitle() === 'TYPO3') {
 				$header = $status;

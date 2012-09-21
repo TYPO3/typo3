@@ -4946,7 +4946,7 @@ Connection: close
 	 * @return string the encoded value already quoted (with single quotes),
 	 */
 	static public function quoteJSvalue($value) {
-		$escapedValue = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Encoder\\JavaScriptEncoder')->encode($value);
+		$escapedValue = static::makeInstance('TYPO3\\CMS\\Core\\Encoder\\JavaScriptEncoder')->encode($value);
 		return '\'' . $escapedValue . '\'';
 	}
 
