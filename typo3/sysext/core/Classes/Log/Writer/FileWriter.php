@@ -56,7 +56,7 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 * @static
 	 * @var resource
 	 */
-	static $logFileHandle = NULL;
+	static protected $logFileHandle = NULL;
 
 	/**
 	 * Constructor, opens the log file handle
