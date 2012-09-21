@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  ***************************************************************/
 
 /**
+ * 
  * @package Extension Manager
  * @subpackage Tests
  */
@@ -36,14 +37,6 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * @test

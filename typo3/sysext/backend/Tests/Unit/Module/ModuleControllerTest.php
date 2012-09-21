@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Module;
  * @package TYPO3
  * @subpackage backend
  */
-class ModuleControllerTest extends \Tx_PhpUnit_TestCase {
+class ModuleControllerTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 
 	/**
 	 * @var TYPO3\CMS\Backend\Module\ModuleController

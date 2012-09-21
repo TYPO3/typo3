@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
  * @subpackage tx_scheduler
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class CronCommandTest extends \tx_phpunit_testcase {
+class CronCommandTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 
 	/**
 	 * @const integer timestamp of 1.1.2010 0:00 (Friday), timezone UTC/GMT
