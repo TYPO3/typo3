@@ -443,38 +443,37 @@ var selectedDictionary = "' . $this->dictionary . '";
 			$this->xmlCharacterData = '';
 		}
 		switch ($tag) {
-		case 'spellchecker':
-			break;
-		case 'br':
+			case 'spellchecker':
+				break;
+			case 'br':
 
-		case 'BR':
+			case 'BR':
 
-		case 'img':
+			case 'img':
 
-		case 'IMG':
+			case 'IMG':
 
-		case 'hr':
+			case 'hr':
 
-		case 'HR':
+			case 'HR':
 
-		case 'area':
+			case 'area':
 
-		case 'AREA':
-			$this->text .= '<' . $this->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
-			foreach ($attributes as $key => $val) {
-				$this->text .= $key . '="' . $val . '" ';
-			}
-			$this->text .= ' />';
-			break;
-		default:
-			$this->text .= '<' . $this->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
-			foreach ($attributes as $key => $val) {
-				$this->text .= $key . '="' . $val . '" ';
-			}
-			$this->text .= '>';
-			break;
+			case 'AREA':
+				$this->text .= '<' . $this->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
+				foreach ($attributes as $key => $val) {
+					$this->text .= $key . '="' . $val . '" ';
+				}
+				$this->text .= ' />';
+				break;
+			default:
+				$this->text .= '<' . $this->csConvObj->conv_case($this->parserCharset, $tag, 'toLower') . ' ';
+				foreach ($attributes as $key => $val) {
+					$this->text .= $key . '="' . $val . '" ';
+				}
+				$this->text .= '>';
+				break;
 		}
-		return;
 	}
 
 	/**
@@ -486,33 +485,32 @@ var selectedDictionary = "' . $this->dictionary . '";
 			$this->xmlCharacterData = '';
 		}
 		switch ($tag) {
-		case 'spellchecker':
-			break;
-		case 'br':
+			case 'spellchecker':
+				break;
+			case 'br':
 
-		case 'BR':
+			case 'BR':
 
-		case 'img':
+			case 'img':
 
-		case 'IMG':
+			case 'IMG':
 
-		case 'hr':
+			case 'hr':
 
-		case 'HR':
+			case 'HR':
 
-		case 'input':
+			case 'input':
 
-		case 'INPUT':
+			case 'INPUT':
 
-		case 'area':
+			case 'area':
 
-		case 'AREA':
-			break;
-		default:
-			$this->text .= '</' . $tag . '>';
-			break;
+			case 'AREA':
+				break;
+			default:
+				$this->text .= '</' . $tag . '>';
+				break;
 		}
-		return;
 	}
 
 	/**
@@ -598,7 +596,6 @@ var selectedDictionary = "' . $this->dictionary . '";
 		}
 		$this->text .= $stringText;
 		unset($incurrent);
-		return;
 	}
 
 	/**
@@ -613,7 +610,6 @@ var selectedDictionary = "' . $this->dictionary . '";
 	 */
 	public function defaultHandler($xml_parser, $string) {
 		$this->text .= $string;
-		return;
 	}
 
 }
