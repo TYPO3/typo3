@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\Controller;
  * @subpackage tx_scheduler
  * @author Andy Grunwald <andreas.grunwald@wmdb.de>
  */
-class SchedulerModuleControllerTest extends \tx_phpunit_testcase {
+class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 
 	/**
 	 * Object to Test: tx_scheduler_Module

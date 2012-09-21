@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
  * @package TYPO3
  * @subpackage t3lib
  */
-class IconUtilityTest extends \tx_phpunit_testcase {
+class IconUtilityTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 
 	/**
 	 * Enable backup of global and system variables
