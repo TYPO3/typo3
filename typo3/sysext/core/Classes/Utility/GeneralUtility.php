@@ -4855,13 +4855,7 @@ Connection: close
 		if (preg_match('/@deprecated\\s+(.*)/', $function->getDocComment(), $match)) {
 			$msg = $match[1];
 		}
-		// Trigger PHP error with a short message: <function> is deprecated (called from <source>, defined in <source>)
-		$errorMsg = 'Function ' . $trail[1]['function'];
-		if ($trail[1]['class']) {
-			$errorMsg .= ' of class ' . $trail[1]['class'];
-		}
-		$errorMsg .= ' is deprecated (called from ' . $trail[1]['file'] . '#' . $trail[1]['line'] . ', defined in ' . $function->getFileName() . '#' . $function->getStartLine() . ')';
-		// Write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
+			// Write a longer message to the deprecation log: <function> <annotion> - <trace> (<source>)
 		$logMsg = $trail[1]['class'] . $trail[1]['type'] . $trail[1]['function'];
 		$logMsg .= '() - ' . $msg . ' - ' . \TYPO3\CMS\Core\Utility\DebugUtility::debugTrail();
 		$logMsg .= ' (' . substr($function->getFileName(), strlen(PATH_site)) . '#' . $function->getStartLine() . ')';
