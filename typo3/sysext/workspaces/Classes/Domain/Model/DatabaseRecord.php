@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Workspaces\Domain\Model;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
+ * Database record class
+ *
  * @author Oliver Hader <oliver.hader@typo3.org>
  * @package Workspaces
  * @subpackage Domain

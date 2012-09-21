@@ -27,6 +27,8 @@ namespace TYPO3\CMS\Workspaces\Service;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
+ * Service for history
+ *
  * @author Oliver Hader <oliver.hader@typo3.org>
  * @package Workspaces
  * @subpackage Service
