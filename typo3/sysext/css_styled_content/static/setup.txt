@@ -2082,18 +2082,6 @@ tt_content.list {
 
 
 # ****************
-# CType: script
-# ****************
-# OBSOLETE! Please make extensions instead. The "script" content element was meant for these custom purposes in the past. Today extensions will do the job better.
-tt_content.script = TEXT
-tt_content.script {
-	value =
-
-	prefixComment = 2 | Script element (Deprecated)
-}
-
-
-# ****************
 # CType: div
 # ****************
 tt_content.div = TEXT
