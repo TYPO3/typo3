@@ -31,8 +31,7 @@
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 if (!function_exists('user_sortPluginList')) {
-	function user_sortPluginList(array &$parameters)
-	{
+	function user_sortPluginList(array &$parameters) {
 		usort($parameters['items'], create_function('$item1,$item2', 'return strcasecmp($GLOBALS[\'LANG\']->sL($item1[0]),$GLOBALS[\'LANG\']->sL($item2[0]));'));
 	}
 }
