@@ -56,8 +56,8 @@ class PathUtility {
 	 */
 	static public function getRelativePath($sourcePath, $targetPath) {
 		$relativePath = NULL;
-		$sourcePath = rtrim($sourcePath, DIRECTORY_SEPARATOR);
-		$targetPath = rtrim($targetPath, DIRECTORY_SEPARATOR);
+		$sourcePath = rtrim(GeneralUtility::fixWindowsFilePath($sourcePath), '/');
+		$targetPath = rtrim(GeneralUtility::fixWindowsFilePath($targetPath), '/');
 		if ($sourcePath !== $targetPath) {
 			$commonPrefix = self::getCommonPrefix(array($sourcePath, $targetPath));
 			if ($commonPrefix !== NULL && \TYPO3\CMS\Core\Utility\GeneralUtility::isAllowedAbsPath($commonPrefix)) {
@@ -72,9 +72,9 @@ class PathUtility {
 					$resolvedTargetPath = (string) substr($targetPath, $commonPrefixLength);
 				}
 				if ($resolvedSourcePath !== '') {
-					$sourcePathSteps = count(explode(DIRECTORY_SEPARATOR, $resolvedSourcePath));
+					$sourcePathSteps = count(explode('/', $resolvedSourcePath));
 				}
-				$relativePath = self::sanitizeTrailingSeparator(str_repeat('../', $sourcePathSteps) . str_replace(DIRECTORY_SEPARATOR, '/', $resolvedTargetPath));
+				$relativePath = self::sanitizeTrailingSeparator(str_repeat('../', $sourcePathSteps) . $resolvedTargetPath);
 			}
 		}
 		return $relativePath;
@@ -91,17 +91,18 @@ class PathUtility {
 	 * @return NULL|string
 	 */
 	static public function getCommonPrefix(array $paths) {
+		$paths = array_map(array('TYPO3\\CMS\\Core\\Utility\\GeneralUtility', 'fixWindowsFilePath'), $paths);
 		$commonPath = NULL;
 		if (count($paths) === 1) {
 			$commonPath = array_shift($paths);
 		} elseif (count($paths) > 1) {
-			$parts = explode(DIRECTORY_SEPARATOR, array_shift($paths));
+			$parts = explode('/', array_shift($paths));
 			$comparePath = '';
 			$break = FALSE;
 			foreach ($parts as $part) {
-				$comparePath .= $part . DIRECTORY_SEPARATOR;
+				$comparePath .= $part . '/';
 				foreach ($paths as $path) {
-					if (strpos($path . DIRECTORY_SEPARATOR, $comparePath) !== 0) {
+					if (strpos($path . '/', $comparePath) !== 0) {
 						$break = TRUE;
 						break;
 					}
@@ -113,7 +114,7 @@ class PathUtility {
 			}
 		}
 		if ($commonPath !== NULL) {
-			$commonPath = self::sanitizeTrailingSeparator($commonPath, DIRECTORY_SEPARATOR);
+			$commonPath = self::sanitizeTrailingSeparator($commonPath, '/');
 		}
 		return $commonPath;
 	}

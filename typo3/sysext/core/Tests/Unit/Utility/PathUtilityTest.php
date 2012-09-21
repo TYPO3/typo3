@@ -88,6 +88,43 @@ class PathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 					'/var/www/myhost.com/t3lib/utility/'
 				),
 				'/var/www/myhost.com/'
+			),
+			array(
+				array(
+					'C:\\www\\myhost.com\\t3lib\\'
+				),
+				'C:/www/myhost.com/t3lib/'
+			),
+			array(
+				array(
+					'C:\\www\\myhost.com\\t3lib\\',
+					'C:\\www\\myhost.com\\t3lib\\'
+				),
+				'C:/www/myhost.com/t3lib/'
+			),
+			array(
+				array(
+					'C:\\www\\myhost.com\\typo3\\',
+					'C:\\www\\myhost.com\\t3lib\\'
+				),
+				'C:/www/myhost.com/'
+			),
+			array(
+				array(
+					'C:\\www\\myhost.com\\uploads\\',
+					'C:\\www\\myhost.com\\typo3\\',
+					'C:\\www\\myhost.com\\t3lib\\'
+				),
+				'C:/www/myhost.com/'
+			),
+			array(
+				array(
+					'C:\\www\\myhost.com\\uploads\\directory\\',
+					'C:\\www\\myhost.com\\typo3\\sysext\\',
+					'C:\\www\\myhost.com\\typo3\\contrib\\',
+					'C:\\www\\myhost.com\\t3lib\\utility\\'
+				),
+				'C:/www/myhost.com/'
 			)
 		);
 	}
@@ -138,7 +175,7 @@ class PathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 				PATH_site . 'typo3/sysext/cms/',
 				PATH_site . 't3lib/utility/',
 				'../../../t3lib/utility/'
-			)
+			),
 		);
 	}
 
