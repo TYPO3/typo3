@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
  * @package TYPO3
  * @subpackage t3lib
  */
-class LevelTest extends \tx_phpunit_testcase {
+class LevelTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

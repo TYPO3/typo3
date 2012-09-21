@@ -41,7 +41,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * @package TYPO3
  * @subpackage tests
  */
-class RedisBackendTest extends \tx_phpunit_testcase {
+class RedisBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -49,14 +49,6 @@ class RedisBackendTest extends \tx_phpunit_testcase {
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * If set, the tearDown() method will flush the cache used by this unit test.

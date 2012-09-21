@@ -40,14 +40,6 @@ class UpdateFromTerControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTest
 	protected $backupGlobals = TRUE;
 
 	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
-
-	/**
 	 * @test
 	 * @return void
 	 */
