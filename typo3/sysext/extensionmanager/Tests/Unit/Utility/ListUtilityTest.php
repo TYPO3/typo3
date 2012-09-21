@@ -25,6 +25,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Utility;
  ***************************************************************/
 
 /**
+ * List utility test
+ *
  * @package Extension Manager
  * @subpackage Tests
  */

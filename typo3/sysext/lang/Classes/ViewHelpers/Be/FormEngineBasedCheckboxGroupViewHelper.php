@@ -26,7 +26,6 @@ namespace TYPO3\CMS\Lang\ViewHelpers\Be;
 /**
  * Checkbox group view helper
  *
- *
  * Usage:
  *
  * {namespace myext=ENET\MyExt\ViewHelpers}
@@ -35,7 +34,6 @@ namespace TYPO3\CMS\Lang\ViewHelpers\Be;
  * or:
  *
  * <myext:be.formEngineBasedCheckboxGroup name="paymentOptions" options="{options}" optionValueField="id" optionLabelField="firstName" />
- *
  *
  * @author Kai Vogel <kai.vogel@speedprogs.de>
  * @package lang
