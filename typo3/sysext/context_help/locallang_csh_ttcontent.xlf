@@ -79,9 +79,6 @@ This is a placeholder for other records. In other words, by this element you can
 &lt;strong&gt;Insert plugin&lt;/strong&gt;
 This will allow you to insert a forum, guestbook, list of addresses, shopping basket etc. The various features are available &lt;em&gt;only&lt;/em&gt; if they are configured correctly in the template of your website. So before you use it, make sure this is the case.
 
-&lt;strong&gt;Script&lt;/strong&gt;
-This is reserved for custom purposes where the template developer can allow you to insert specialized page content by this element type along with a code to identify which special content you want.
-
 &lt;strong&gt;HTML&lt;/strong&gt;
 This is plain HTML content. Everything put here will be displayed directly on the page without any preprocessing.</source>
 			</trans-unit>

@@ -140,11 +140,6 @@ $TCA['tt_content'] = array(
 						'i/tt_content_list.gif'
 					),
 					array(
-						'LLL:EXT:cms/locallang_ttc.xml:CType.I.15',
-						'script',
-						'i/tt_content_script.gif'
-					),
-					array(
 						'LLL:EXT:cms/locallang_ttc.xml:CType.I.16',
 						'div',
 						'i/tt_content_div.gif'
@@ -1887,21 +1882,6 @@ $TCA['tt_content'] = array(
 					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.access;access,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.behaviour,
 					bodytext;LLL:EXT:cms/locallang_ttc.xml:bodytext.ALT.media_formlabel;;richtext:rte_transform[flag=rte_enabled|mode=ts_css],
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended'
-		),
-		'script' => array(
-			'showitem' => '--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.general;general,
-					header;LLL:EXT:cms/locallang_ttc.xml:header.ALT.script_formlabel,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.script,
-					select_key;LLL:EXT:cms/locallang_ttc.xml:select_key.ALT.script_formlabel,
-					pages;LLL:EXT:cms/locallang_ttc.xml:pages.ALT.script_formlabel,
-					bodytext;LLL:EXT:cms/locallang_ttc.xml:bodytext.ALT.script_formlabel;;nowrap,
-					imagecaption;LLL:EXT:cms/locallang_ttc.xml:imagecaption.ALT.script_formlabel,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.appearance,
-					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.frames;frames,
-				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.access,
-					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.visibility;visibility,
-					--palette--;LLL:EXT:cms/locallang_ttc.xml:palette.access;access,
 				--div--;LLL:EXT:cms/locallang_ttc.xml:tabs.extended'
 		),
 		'menu' => array(

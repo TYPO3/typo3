@@ -13,7 +13,7 @@ TCEFORM.tt_content {
 	text_size.disabled=1
 	image_frames.disabled = 1
 
-	CType.removeItems = rte,script,splash,swfobject,qtobject,multimedia
+	CType.removeItems = rte,splash,swfobject,qtobject,multimedia
 }
 
 

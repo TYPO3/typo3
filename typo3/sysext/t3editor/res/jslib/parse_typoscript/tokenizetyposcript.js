@@ -1053,7 +1053,6 @@ var typoscriptWords = {
 	'required': 'keyword3',
 	'RO': 'keyword3',
 	'rootline': 'keyword3',
-	'script': 'keyword3',
 	'search': 'keyword3',
 	'shortcut': 'keyword3',
 	'sitemap': 'keyword3',

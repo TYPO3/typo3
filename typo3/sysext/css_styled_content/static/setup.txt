@@ -133,7 +133,7 @@ lib.parseFunc_RTE {
 			# Recursive call to self but without wrapping non-wrapped cell content
 			default.stdWrap {
 				parseFunc =< lib.parseFunc_RTE
-				parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag = 
+				parseFunc.nonTypoTagStdWrap.encapsLines.nonWrappedTag =
 			}
 			addChr10BetweenParagraphs=1
 		}
@@ -2078,18 +2078,6 @@ tt_content.list {
 
 		prefixComment = 2 | Plugin inserted:
 	}
-}
-
-
-# ****************
-# CType: script
-# ****************
-# OBSOLETE! Please make extensions instead. The "script" content element was meant for these custom purposes in the past. Today extensions will do the job better.
-tt_content.script = TEXT
-tt_content.script {
-	value =
-
-	prefixComment = 2 | Script element (Deprecated)
 }
 
 
