@@ -571,6 +571,12 @@ class recordList extends t3lib_recordList {
 									$condition = '(' . $condition . ' AND ' . $tablePidField . '=' . $currentPid . ')';
 								}
 								$whereParts[] = $condition;
+							} elseif (
+								$fieldConfig['type'] == 'text' ||
+								$fieldConfig['type'] == 'flex' ||
+								($fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] || !preg_match('/date|time|int/', $fieldConfig['eval'])))) {
+									$condition = $fieldName . ' LIKE \'%' . $this->searchString . '%\'';
+									$whereParts[] = $condition;
 							}
 						}
 					}
