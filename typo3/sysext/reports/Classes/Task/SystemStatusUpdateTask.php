@@ -72,6 +72,7 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task {
 	 * Sets the notification email address.
 	 *
 	 * @param string $notificationEmail Notification email address.
+	 * @return void
 	 */
 	public function setNotificationEmail($notificationEmail) {
 		$this->notificationEmail = $notificationEmail;
@@ -81,12 +82,13 @@ class SystemStatusUpdateTask extends \TYPO3\CMS\Scheduler\Task {
 	 * Sends a notification email, reporting system issues.
 	 *
 	 * @param array $systemStatus Array of statuses
+	 * @return void
 	 */
 	protected function sendNotificationEmail(array $systemStatus) {
 		$systemIssues = array();
 		foreach ($systemStatus as $statusProvider) {
 			foreach ($statusProvider as $status) {
-				if ($status->getSeverity() > \TYPO3\CMS\Reports\Report\Status\Status::OK) {
+				if ($status->getSeverity() > \TYPO3\CMS\Reports\Status::OK) {
 					$systemIssues[] = (string) $status;
 				}
 			}
