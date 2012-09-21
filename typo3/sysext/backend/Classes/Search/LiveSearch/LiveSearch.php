@@ -323,6 +323,13 @@ class LiveSearch {
 					// Assemble the search condition only if the field is an integer, or is uid or pid
 					if ($fieldName == 'uid' || $fieldName == 'pid' || $fieldConfig['type'] == 'input' && $fieldConfig['eval'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($fieldConfig['eval'], 'int')) {
 						$whereParts[] = $fieldName . '=' . $this->queryString;
+					} elseif (
+						$fieldConfig['type'] == 'text' ||
+						$fieldConfig['type'] == 'flex' ||
+						($fieldConfig['type'] == 'input' && (!$fieldConfig['eval'] ||
+						!preg_match('/date|time|int/', $fieldConfig['eval'])))) {
+						// Otherwise and if the field makes sense to be searched, assemble a like condition
+							$whereParts[] = $fieldName . ' LIKE \'%' . $this->queryString . '%\'';
 					}
 				}
 			}
