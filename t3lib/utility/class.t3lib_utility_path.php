@@ -58,8 +58,8 @@ final class t3lib_utility_Path {
 	public static function getRelativePath($sourcePath, $targetPath) {
 		$relativePath = NULL;
 
-		$sourcePath = rtrim($sourcePath, DIRECTORY_SEPARATOR);
-		$targetPath = rtrim($targetPath, DIRECTORY_SEPARATOR);
+		$sourcePath = rtrim(t3lib_div::fixWindowsFilePath($sourcePath), '/');
+		$targetPath = rtrim(t3lib_div::fixWindowsFilePath($targetPath), '/');
 
 		if ($sourcePath !== $targetPath) {
 			$commonPrefix = self::getCommonPrefix(array($sourcePath, $targetPath));
@@ -78,13 +78,10 @@ final class t3lib_utility_Path {
 				}
 
 				if ($resolvedSourcePath !== '') {
-					$sourcePathSteps = count(explode(DIRECTORY_SEPARATOR, $resolvedSourcePath));
+					$sourcePathSteps = count(explode('/', $resolvedSourcePath));
 				}
 
-				$relativePath = self::sanitizeTrailingSeparator(
-					str_repeat('../', $sourcePathSteps) .
-					str_replace(DIRECTORY_SEPARATOR, '/', $resolvedTargetPath)
-				);
+				$relativePath = self::sanitizeTrailingSeparator(str_repeat('../', $sourcePathSteps) . $resolvedTargetPath);
 			}
 		}
 
@@ -102,20 +99,21 @@ final class t3lib_utility_Path {
 	 * @return NULL|string
 	 */
 	public static function getCommonPrefix(array $paths) {
+		$paths = array_map(array('t3lib_div', 'fixWindowsFilePath'), $paths);
 		$commonPath = NULL;
 
 		if (count($paths) === 1) {
 			$commonPath = array_shift($paths);
 		} elseif (count($paths) > 1) {
-			$parts = explode(DIRECTORY_SEPARATOR, array_shift($paths));
+			$parts = explode('/', array_shift($paths));
 			$comparePath = '';
 			$break = FALSE;
 
 			foreach ($parts as $part) {
-				$comparePath .= $part . DIRECTORY_SEPARATOR;
+				$comparePath .= $part . '/';
 
 				foreach ($paths as $path) {
-					if (strpos($path . DIRECTORY_SEPARATOR, $comparePath) !== 0) {
+					if (strpos($path . '/', $comparePath) !== 0) {
 						$break = TRUE;
 						break;
 					}
@@ -130,10 +128,7 @@ final class t3lib_utility_Path {
 		}
 
 		if ($commonPath !== NULL) {
-			$commonPath = self::sanitizeTrailingSeparator(
-				$commonPath,
-				DIRECTORY_SEPARATOR
-			);
+			$commonPath = self::sanitizeTrailingSeparator($commonPath, '/');
 		}
 
 		return $commonPath;

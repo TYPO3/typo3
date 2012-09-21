@@ -88,6 +88,43 @@ class t3lib_utility_PathTest extends tx_phpunit_testcase {
 				),
 				'/var/www/myhost.com/'
 			),
+			array(
+				array(
+					'C:\\www\\myhost.com\\t3lib\\'
+				),
+				'C:/www/myhost.com/t3lib/'
+			),
+			array(
+				array(
+					'C:\\www\\myhost.com\\t3lib\\',
+					'C:\\www\\myhost.com\\t3lib\\'
+				),
+				'C:/www/myhost.com/t3lib/'
+			),
+			array(
+				array(
+					'C:\\www\\myhost.com\\typo3\\',
+					'C:\\www\\myhost.com\\t3lib\\'
+				),
+				'C:/www/myhost.com/'
+			),
+			array(
+				array(
+					'C:\\www\\myhost.com\\uploads\\',
+					'C:\\www\\myhost.com\\typo3\\',
+					'C:\\www\\myhost.com\\t3lib\\'
+				),
+				'C:/www/myhost.com/'
+			),
+			array(
+				array(
+					'C:\\www\\myhost.com\\uploads\\directory\\',
+					'C:\\www\\myhost.com\\typo3\\sysext\\',
+					'C:\\www\\myhost.com\\typo3\\contrib\\',
+					'C:\\www\\myhost.com\\t3lib\\utility\\'
+				),
+				'C:/www/myhost.com/'
+			)
 		);
 	}
 
