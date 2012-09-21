@@ -137,7 +137,7 @@ class ClassLoaderTest extends \Tx_Phpunit_TestCase {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$autoloaderFile = $extPath . 'ext_autoload.php';
-		$class = strtolower("tx_{$extKey}_" . uniqid(''));
+		$class = strtolower('tx_{' . $extKey . '}_' . uniqid(''));
 		$file = $extPath . uniqid('') . '.php';
 		file_put_contents($file, '<?php' . LF . 'throw new \\RuntimeException(\'\', 1310203812);' . LF . '?>');
 		file_put_contents($autoloaderFile, '<?php' . LF . 'return array(\'' . $class . '\' => \'' . $file . '\');' . LF . '?>');
@@ -161,7 +161,7 @@ class ClassLoaderTest extends \Tx_Phpunit_TestCase {
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$autoloaderFile = $extPath . 'ext_autoload.php';
 			// A case sensitive key (FooBar) in ext_autoload file
-		$class = "tx_{$extKey}_" . uniqid('FooBar');
+		$class = 'tx_{' . $extKey . '}_' . uniqid('FooBar');
 		$file = $extPath . uniqid('') . '.php';
 		file_put_contents($autoloaderFile, '<?php' . LF . 'return array(\'' . $class . '\' => \'' . $file . '\');' . LF . '?>');
 			// Inject a dummy for the core_phpcode cache to force the autoloader
@@ -185,7 +185,7 @@ class ClassLoaderTest extends \Tx_Phpunit_TestCase {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 			// A case sensitive key (FooBar) in ext_autoload file
-		$class = "tx_{$extKey}_" . uniqid('FooBar');
+		$class = 'tx_{' . $extKey . '}_' . uniqid('FooBar');
 		$file = $extPath . uniqid('') . '.php';
 		file_put_contents($file, '<?php' . LF . 'throw new \\RuntimeException(\'\', 1336756850);' . LF . '?>');
 		$extAutoloadFile = $extPath . 'ext_autoload.php';
@@ -209,7 +209,7 @@ class ClassLoaderTest extends \Tx_Phpunit_TestCase {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 			// A case sensitive key (FooBar) in ext_autoload file
-		$class = "tx_{$extKey}_" . uniqid('FooBar');
+		$class = 'tx_{' . $extKey . '}_' . uniqid('FooBar');
 		$file = $extPath . uniqid('') . '.php';
 		file_put_contents($file, '<?php' . LF . 'throw new \RuntimeException(\'\', 1336756850);' . LF . '?>');
 			// Inject cache mock and let the cache entry return the lowercased class name as key
@@ -299,7 +299,7 @@ class ClassLoaderTest extends \Tx_Phpunit_TestCase {
 		$extKey = $this->createFakeExtension();
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$autoloaderFile = $extPath . 'ext_autoload.php';
-		$class = strtolower("ux_tx_{$extKey}_" . uniqid(''));
+		$class = strtolower('ux_tx_{' . $extKey . '}_' . uniqid(''));
 		$file = $extPath . uniqid('') . '.php';
 		file_put_contents($autoloaderFile, '<?php' . LF . 'return array(\'' . $class . '\' => \'' . $file . '\');' . LF . '?>');
 			// Inject a dummy for the core_phpcode cache to force the autoloader
@@ -341,7 +341,7 @@ class ClassLoaderTest extends \Tx_Phpunit_TestCase {
 		$extPath = PATH_site . 'typo3temp/' . $extKey . '/';
 		$autoloaderFile = $extPath . 'ext_autoload.php';
 			// Feed ext_autoload with a base file and the class file
-		$class = strtolower("tx_{$extKey}_" . uniqid(''));
+		$class = strtolower('tx_{' . $extKey . '}_' . uniqid(''));
 		$fileName = uniqid('') . '.php';
 		$file = $extPath . $fileName;
 		$xClassFile = 'typo3temp/' . $extKey . '/xclassFile';
