@@ -17,10 +17,8 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['removeNotInMenuDoktypeC
 // remove pagetype "advanced" since TYPO3 4.2
 // this is merged with doctype "standard" with tab view to edit
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['mergeAdvancedDoktypeConversion'] = 'TYPO3\\CMS\\Install\\CoreUpdates\\MergeAdvancedUpdate';
-// add outsourced system extensions since TYPO3 4.3
+// add new / outsourced system extensions since TYPO3 4.3
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['installSystemExtensions'] = 'TYPO3\\CMS\\Install\\CoreUpdates\\InstallSysExtsUpdate';
-// new system extensions since TYPO3 4.3
-$TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['installNewSystemExtensions'] = 'TYPO3\\CMS\\Install\\CoreUpdates\\InstallNewSysextsUpdate';
 // change tt_content.imagecols=0 to 1 for proper display in TCEforms since TYPO3 4.3
 $TYPO3_CONF_VARS['SC_OPTIONS']['ext/install']['update']['changeImagecolsValue'] = 'TYPO3\\CMS\\Install\\CoreUpdates\\ImagecolsUpdate';
 // register eID script for install tool AJAX calls
