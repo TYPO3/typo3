@@ -36,7 +36,7 @@ require_once 'vfsStream/vfsStream.php';
  * @subpackage t3lib
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  */
-class FolderTest extends \Tx_Phpunit_TestCase {
+class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var array A backup of registered singleton instances

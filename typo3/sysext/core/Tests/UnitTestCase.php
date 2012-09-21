@@ -1,10 +1,10 @@
 <?php
-namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
+namespace TYPO3\CMS\Core\Tests;
 
-/***************************************************************
+ /***************************************************************
  * Copyright notice
  *
- * (c) 2012 Steffen Müller (typo3@t3node.com)
+ * (c) 2005-2012 Robert Lemke (robert@typo3.org)
  * All rights reserved
  *
  * This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,26 +24,16 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . '../Fixtures/ProcessorFixture.php';
-
 /**
- * Testcase for t3lib_log_processor_Abstract
+ * Base test case for unit tests.
  *
- * @author Steffen Müller <typo3@t3node.com>
+ * This class currently only inherits the base test case. However, it is recommended
+ * to extend this class for unit test cases instead of the base test case because if,
+ * at some point, specific behavior needs to be implemented for unit tests, your test cases
+ * will profit from it automatically.
+ *
  */
-class AbstractTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
-
-	/**
-	 * @test
-	 * @expectedException InvalidArgumentException
-	 */
-	public function processorRefusesInvalidConfigurationOptions() {
-		$invalidConfiguration = array(
-			'foo' => 'bar'
-		);
-		$processor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Tests\\Unit\\Log\\Fixtures\\ProcessorFixture', $invalidConfiguration);
-	}
+abstract class UnitTestCase extends BaseTestCase {
 
 }
-
 ?>

@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * @package TYPO3
  * @subpackage t3lib
  */
-class HttpUtilityTest extends \tx_phpunit_testcase {
+class HttpUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @param array $urlParts

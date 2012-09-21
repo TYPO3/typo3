@@ -33,7 +33,7 @@ require_once 'Fixtures/MathUtilityTestClassWithStringRepresentationFixture.php';
  * @package TYPO3
  * @subpackage t3lib
  */
-class MathUtilityTest extends \tx_phpunit_testcase {
+class MathUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	//////////////////////////////////
 	// Tests concerning forceIntegerInRange

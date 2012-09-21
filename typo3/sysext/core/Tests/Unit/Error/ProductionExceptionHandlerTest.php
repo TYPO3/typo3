@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Error;
  * @package TYPO3
  * @subpackage t3lib_error
  */
-class ProductionExceptionHandlerTest extends \Tx_Phpunit_TestCase {
+class ProductionExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Error\ProductionExceptionHandler|\PHPUnit_Framework_MockObject_MockObject

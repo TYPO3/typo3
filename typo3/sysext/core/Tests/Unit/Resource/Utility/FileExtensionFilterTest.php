@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Utility;
  * @package TYPO3
  * @subpackage t3lib
  */
-class FileExtensionFilterTest extends \Tx_Phpunit_TestCase {
+class FileExtensionFilterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var array A backup of registered singleton instances
