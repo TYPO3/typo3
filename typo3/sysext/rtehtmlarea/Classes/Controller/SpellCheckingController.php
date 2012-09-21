@@ -520,7 +520,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 		$incurrent = array();
 		$stringText = $string;
 		$words = preg_split($this->parserCharset == 'utf-8' ? '/\\P{L}+/u' : '/\\W+/', $stringText);
-		foreach ($words as $word) {
+		while (list(, $word) = each($words)) {
 			$word = preg_replace('/ /' . ($this->parserCharset == 'utf-8' ? 'u' : ''), '', $word);
 			if ($word && !is_numeric($word)) {
 				if ($this->pspell_is_available && !$this->forceCommandMode) {
