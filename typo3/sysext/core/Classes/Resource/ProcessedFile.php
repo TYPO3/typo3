@@ -139,7 +139,7 @@ class ProcessedFile extends \TYPO3\CMS\Core\Resource\AbstractFile {
 	 * @return boolean
 	 */
 	public function isProcessed() {
-		return (bool) $this->processed;
+		return (bool) $this->processed && file_exists($this->getPublicUrl());
 	}
 
 	/**
