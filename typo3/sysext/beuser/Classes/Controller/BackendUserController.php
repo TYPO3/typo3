@@ -190,7 +190,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	 * @return void
 	 */
 	protected function terminateBackendUserSessionAction(\TYPO3\CMS\Beuser\Domain\Model\BackendUser $backendUser, $sessionId) {
-		$GLOBALS['TYPO3_DB']->exec_DELETEquery('be_sessions', 'ses_userid = "' . $backendUser->getUid() . '" AND ses_id = "' . $sessionId . '"' . ' LIMIT 1');
+		$GLOBALS['TYPO3_DB']->exec_DELETEquery('be_sessions', 'ses_userid = "' . intval($backendUser->getUid()) . '" AND ses_id = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($sessionId, 'be_sessions') . ' LIMIT 1');
 		if ($GLOBALS['TYPO3_DB']->sql_affected_rows() == 1) {
 			$message = 'Session successfully terminated.';
 			$this->flashMessageContainer->add($message, '', \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
