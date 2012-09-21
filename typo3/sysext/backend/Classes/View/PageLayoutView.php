@@ -1314,6 +1314,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$out .= '<br />' . $this->linkEditContent($this->renderText($row['imagecaption']), $row) . '<br />';
 				break;
 			default:
+				$out .= '<strong>' . htmlspecialchars($this->CType_labels[$row['CType']]) . '</strong><br />';
 				if ($row['bodytext']) {
 					$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
 				}
