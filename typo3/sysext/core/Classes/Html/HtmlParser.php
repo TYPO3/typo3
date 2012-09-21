@@ -332,7 +332,7 @@ class HtmlParser {
 		$nested = 0;
 		reset($parts);
 		next($parts);
-		while (list($k, $v) = each($parts)) {
+		foreach ($parts as $k => $v) {
 			$isEndTag = substr($content, $pointer, 2) == '</' ? 1 : 0;
 			$tagLen = strcspn(substr($content, $pointer), '>') + 1;
 			// We meet a start-tag:
@@ -434,7 +434,7 @@ class HtmlParser {
 		$newParts[] = $parts[0];
 		reset($parts);
 		next($parts);
-		while (list($k, $v) = each($parts)) {
+		foreach ($parts as $k => $v) {
 			$tagLen = strcspn(substr($content, $pointer), '>') + 1;
 			// Set tag:
 			// New buffer set and pointer increased
@@ -711,7 +711,7 @@ class HtmlParser {
 		$tagStack = array();
 		$inComment = FALSE;
 		$skipTag = FALSE;
-		while (list(, $tok) = each($tokArr)) {
+		foreach ($tokArr as $tok) {
 			if ($inComment) {
 				if (($eocPos = strpos($tok, '-->')) === FALSE) {
 					// End of comment is not found in the token. Go further until end of comment is found in other tokens.
@@ -1172,7 +1172,7 @@ class HtmlParser {
 		$contentParts = explode('&lt;', $content);
 		next($contentParts);
 		// bypass the first
-		while (list($k, $tok) = each($contentParts)) {
+		foreach ($contentParts as $k => $tok) {
 			$firstChar = substr($tok, 0, 1);
 			if (strcmp(trim($firstChar), '')) {
 				$subparts = explode('&gt;', $tok, 2);
