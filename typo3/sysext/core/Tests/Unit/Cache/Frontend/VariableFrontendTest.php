@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
  * @package TYPO3
  * @subpackage tests
  */
-class VariableFrontendTest extends \tx_phpunit_testcase {
+class VariableFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @expectedException \InvalidArgumentException

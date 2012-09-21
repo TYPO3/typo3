@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Install\Tests\Unit;
  * @subpackage tx_install
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class InstallToolTest extends \tx_phpunit_testcase {
+class InstallToolTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var boolean Enable backup of global and system variables
@@ -44,14 +44,6 @@ class InstallToolTest extends \tx_phpunit_testcase {
 	 * @var boolean True, if a test set a different error handler
 	 */
 	protected $customErrorHandlerUsed = FALSE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * Restore error handler if a different one was set during tests

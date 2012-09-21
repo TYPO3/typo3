@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * @package TYPO3
  * @subpackage t3lib
  */
-class ArrayUtilityTest extends \tx_phpunit_testcase {
+class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	///////////////////////
 	// Tests concerning filterByValueRecursive

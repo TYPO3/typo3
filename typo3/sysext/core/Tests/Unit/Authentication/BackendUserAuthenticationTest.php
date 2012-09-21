@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
  * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class BackendUserAuthenticationTest extends \tx_phpunit_testcase {
+class BackendUserAuthenticationTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
@@ -44,14 +44,6 @@ class BackendUserAuthenticationTest extends \tx_phpunit_testcase {
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	public function setUp() {
 		// reset hooks

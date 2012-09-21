@@ -34,7 +34,7 @@ require_once(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'm
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class InstallToolFormProtectionTest extends \tx_phpunit_testcase {
+class InstallToolFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @var \TYPO3\CMS\Core\FormProtection\InstallToolFormProtection
 	 */

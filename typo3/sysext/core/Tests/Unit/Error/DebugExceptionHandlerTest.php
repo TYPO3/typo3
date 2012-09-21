@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Error;
  * @package TYPO3
  * @subpackage t3lib_error
  */
-class DebugExceptionHandlerTest extends \Tx_Phpunit_TestCase {
+class DebugExceptionHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Error\DebugExceptionHandler|\PHPUnit_Framework_MockObject_MockObject

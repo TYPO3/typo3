@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Repository;
  * @package TYPO3
  * @subpackage t3lib
  */
-class AbstractRepositoryTest extends \Tx_Phpunit_TestCase {
+class AbstractRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\AbstractRepository

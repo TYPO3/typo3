@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  * @package TYPO3
  * @subpackage t3lib
  */
-class IntrospectionTest extends \tx_phpunit_testcase {
+class IntrospectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Tests if debug_backtrace values are added to LogRecord

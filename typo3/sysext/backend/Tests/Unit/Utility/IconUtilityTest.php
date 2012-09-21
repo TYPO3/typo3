@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
+use TYPO3\CMS\Backend\Utility\IconUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -33,7 +34,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
  * @package TYPO3
  * @subpackage t3lib
  */
-class IconUtilityTest extends \tx_phpunit_testcase {
+class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -43,17 +44,14 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	protected $backupGlobals = TRUE;
 
 	/**
-	 * Exclude TYPO3_DB from backup/restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
 	 * @var array
 	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB', 'TBE_STYLES');
+	protected $mockRecord;
 
 	/**
 	 * @var array
 	 */
-	protected $mockRecord;
+	static protected $tbeStylesBackup = array();
 
 	/**
 	 * Set up test case
@@ -61,9 +59,16 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @return void
 	 */
 	public function setUp() {
-		if (!\TYPO3\CMS\Backend\Sprite\SpriteManager::isInitialized()) {
-			\TYPO3\CMS\Backend\Sprite\SpriteManager::initialize();
+		// Initialize sprites (done only once)
+		\TYPO3\CMS\Backend\Sprite\SpriteManager::initialize();
+		// Backup sprites because they will be reset by PHPUnit global backup
+		if (empty(self::$tbeStylesBackup)) {
+			self::$tbeStylesBackup = $GLOBALS['TBE_STYLES'];
+		} else {
+			// Restore the internal backup
+			$GLOBALS['TBE_STYLES'] = self::$tbeStylesBackup;
 		}
+
 		// Simulate a tt_content record
 		$this->mockRecord = array();
 		$this->mockRecord['header'] = 'dummy content header';
@@ -103,7 +108,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 		$fixtureGifRessource = imagecreatefromgif($fixtureGifFile);
 		$targetFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
 		$GLOBALS['TYPO3_CONF_VARS']['BE']['fileCreateMask'] = '0777';
-		\TYPO3\CMS\Backend\Utility\IconUtility::imagemake($fixtureGifRessource, $targetFilename);
+		IconUtility::imagemake($fixtureGifRessource, $targetFilename);
 		clearstatcache();
 		$resultFilePermissions = substr(decoct(fileperms($targetFilename)), 2);
 		\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($targetFilename);
@@ -119,7 +124,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconClassesWithEmptyStringReturnsT3Icon() {
-		$this->assertEquals('t3-icon', \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses(''));
+		$this->assertEquals('t3-icon', IconUtility::getSpriteIconClasses(''));
 	}
 
 	/**
@@ -128,7 +133,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconClassesWithOnePartReturnsT3Icon() {
-		$this->assertEquals('t3-icon', \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('actions'));
+		$this->assertEquals('t3-icon', IconUtility::getSpriteIconClasses('actions'));
 	}
 
 	/**
@@ -137,7 +142,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconClassesWithTwoPartsReturnsT3IconAndCombinedParts() {
-		$result = explode(' ', \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('actions-juggle'));
+		$result = explode(' ', IconUtility::getSpriteIconClasses('actions-juggle'));
 		sort($result);
 		$this->assertEquals(array('t3-icon', 't3-icon-actions', 't3-icon-actions-juggle', 't3-icon-juggle'), $result);
 	}
@@ -148,7 +153,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconClassesWithThreePartsReturnsT3IconAndCombinedParts() {
-		$result = explode(' ', \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('actions-juggle-speed'));
+		$result = explode(' ', IconUtility::getSpriteIconClasses('actions-juggle-speed'));
 		sort($result);
 		$this->assertEquals(array('t3-icon', 't3-icon-actions', 't3-icon-actions-juggle', 't3-icon-juggle-speed'), $result);
 	}
@@ -159,7 +164,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconClassesWithFourPartsReturnsT3IconAndCombinedParts() {
-		$result = explode(' ', \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses('actions-juggle-speed-game'));
+		$result = explode(' ', IconUtility::getSpriteIconClasses('actions-juggle-speed-game'));
 		sort($result);
 		$this->assertEquals(array('t3-icon', 't3-icon-actions', 't3-icon-actions-juggle', 't3-icon-juggle-speed-game'), $result);
 	}
@@ -173,7 +178,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconWithEmptyStringReturnsSpanWithIconMissingSprite() {
-		$this->assertEquals('<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-icon-missing">&nbsp;</span>', \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon(''));
+		$this->assertEquals('<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-icon-missing">&nbsp;</span>', IconUtility::getSpriteIcon(''));
 	}
 
 	/**
@@ -182,7 +187,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconWithMissingIconReturnsSpanWithIconMissingSprite() {
-		$this->assertEquals('<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-icon-missing">&nbsp;</span>', \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-juggle-speed'));
+		$this->assertEquals('<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-icon-missing">&nbsp;</span>', IconUtility::getSpriteIcon('actions-juggle-speed'));
 	}
 
 	/**
@@ -191,7 +196,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconWithExistingIconReturnsSpanWithIconSprite() {
-		$this->assertEquals('<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">&nbsp;</span>', \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new'));
+		$this->assertEquals('<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">&nbsp;</span>', IconUtility::getSpriteIcon('actions-document-new'));
 	}
 
 	/**
@@ -200,7 +205,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconWithExistingIconAndAttributeReturnsSpanWithIconSpriteAndAttribute() {
-		$this->assertEquals('<span title="foo" class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">&nbsp;</span>', \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('title' => 'foo')));
+		$this->assertEquals('<span title="foo" class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">&nbsp;</span>', IconUtility::getSpriteIcon('actions-document-new', array('title' => 'foo')));
 	}
 
 	/**
@@ -209,7 +214,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconWithExistingIconAndClassAttributeReturnsSpanWithIconSpriteAndClassAttribute() {
-		$this->assertEquals('<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new foo">&nbsp;</span>', \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('class' => 'foo')));
+		$this->assertEquals('<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new foo">&nbsp;</span>', IconUtility::getSpriteIcon('actions-document-new', array('class' => 'foo')));
 	}
 
 	/**
@@ -218,7 +223,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconWithExistingIconAndInnerHTMLReturnsSpanWithIconSpriteAndInnerHTML() {
-		$this->assertEquals('<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">foo</span>', \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('html' => 'foo')));
+		$this->assertEquals('<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">foo</span>', IconUtility::getSpriteIcon('actions-document-new', array('html' => 'foo')));
 	}
 
 	/**
@@ -227,7 +232,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconWithExistingIconAndOverlayReturnsSpanWithIconSpriteAndOverlay() {
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array(), array('status-overlay-hidden' => array()));
+		$result = IconUtility::getSpriteIcon('actions-document-new', array(), array('status-overlay-hidden' => array()));
 		$overlay = '<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden t3-icon-overlay">&nbsp;</span>';
 		$this->assertEquals('<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">' . $overlay . '</span>', $result);
 	}
@@ -238,7 +243,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconWithExistingIconAndOverlayAndAttributesReturnsSpanWithIconSpriteAndOverlayAndAttributes() {
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-new', array('html' => 'foo1'), array('status-overlay-hidden' => array('class' => 'foo2')));
+		$result = IconUtility::getSpriteIcon('actions-document-new', array('html' => 'foo1'), array('status-overlay-hidden' => array('class' => 'foo2')));
 		$overlay = '<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden foo2 t3-icon-overlay">foo1</span>';
 		$this->assertEquals('<span class="t3-icon t3-icon-actions t3-icon-actions-document t3-icon-document-new">' . $overlay . '</span>', $result);
 	}
@@ -252,7 +257,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconForRecordWithNullTableReturnsMissingIcon() {
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('', array());
+		$result = IconUtility::getSpriteIconForRecord('', array());
 		$this->assertEquals('<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-icon-missing">&nbsp;</span>', $result);
 	}
 
@@ -262,7 +267,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconForRecordWithEmptyRecordReturnsNormalSprite() {
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', array());
+		$result = IconUtility::getSpriteIconForRecord('tt_content', array());
 		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text">&nbsp;</span>', $result);
 	}
 
@@ -273,7 +278,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 */
 	public function getSpriteIconForRecordWithMockRecordReturnsNormalSprite() {
 		$mockRecord = $this->mockRecord;
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $mockRecord);
+		$result = IconUtility::getSpriteIconForRecord('tt_content', $mockRecord);
 		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text">&nbsp;</span>', $result);
 	}
 
@@ -284,7 +289,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 */
 	public function getSpriteIconForRecordWithMockRecordAndOptionsReturnsNormalSprite() {
 		$mockRecord = $this->mockRecord;
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $mockRecord, array('class' => 'foo', 'title' => 'bar'));
+		$result = IconUtility::getSpriteIconForRecord('tt_content', $mockRecord, array('class' => 'foo', 'title' => 'bar'));
 		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text foo" title="bar">&nbsp;</span>', $result);
 	}
 
@@ -296,7 +301,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	public function getSpriteIconForRecordWithMockRecordOfTypePluginReturnsPluginSprite() {
 		$mockRecord = $this->mockRecord;
 		$mockRecord['CType'] = 'list';
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $mockRecord);
+		$result = IconUtility::getSpriteIconForRecord('tt_content', $mockRecord);
 		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-plugin">&nbsp;</span>', $result);
 	}
 
@@ -308,7 +313,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	public function getSpriteIconForRecordWithMockRecordWithHiddenFlagReturnsNormalSpriteAndOverlay() {
 		$mockRecord = $this->mockRecord;
 		$mockRecord['hidden'] = '1';
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('tt_content', $mockRecord);
+		$result = IconUtility::getSpriteIconForRecord('tt_content', $mockRecord);
 		$overlay = '<span class="t3-icon t3-icon-status t3-icon-status-overlay t3-icon-overlay-hidden t3-icon-overlay">&nbsp;</span>';
 		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-x t3-icon-x-content-text">' . $overlay . '</span>', $result);
 	}
@@ -322,7 +327,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconForFileWithNoFileTypeReturnsOtherSprite() {
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('');
+		$result = IconUtility::getSpriteIconForFile('');
 		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-other t3-icon-other-other">&nbsp;</span>', $result);
 	}
 
@@ -332,7 +337,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconForFileWithNoUnknowFileTypeReturnsOtherSprite() {
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('foo');
+		$result = IconUtility::getSpriteIconForFile('foo');
 		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-other t3-icon-other-other">&nbsp;</span>', $result);
 	}
 
@@ -342,7 +347,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconForFileWithPdfReturnsPdfSprite() {
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('pdf');
+		$result = IconUtility::getSpriteIconForFile('pdf');
 		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-pdf t3-icon-pdf">&nbsp;</span>', $result);
 	}
 
@@ -352,7 +357,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconForFileWithPngReturnsPngSprite() {
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('png');
+		$result = IconUtility::getSpriteIconForFile('png');
 		$this->assertEquals('<span class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-media t3-icon-media-image">&nbsp;</span>', $result);
 	}
 
@@ -362,7 +367,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 	 * @test
 	 */
 	public function getSpriteIconForFileWithPngAndOptionsReturnsPngSpriteAndOptions() {
-		$result = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForFile('png', array('title' => 'bar'));
+		$result = IconUtility::getSpriteIconForFile('png', array('title' => 'bar'));
 		$this->assertEquals('<span title="bar" class="t3-icon t3-icon-mimetypes t3-icon-mimetypes-media t3-icon-media-image">&nbsp;</span>', $result);
 	}
 
@@ -377,7 +382,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 		$hookMock->expects($this->once())->method('overrideIconOverlay');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][$classReference] = $classReference;
 		$GLOBALS['T3_VAR']['getUserObj'][$classReference] = $hookMock;
-		\TYPO3\CMS\Backend\Utility\IconUtility::mapRecordOverlayToSpriteIconName('tt_content', array());
+		IconUtility::mapRecordOverlayToSpriteIconName('tt_content', array());
 	}
 
 	/**
@@ -389,7 +394,7 @@ class IconUtilityTest extends \tx_phpunit_testcase {
 		$classReference = uniqid('user_overrideIconOverlayHook');
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_iconworks.php']['overrideIconOverlay'][$classReference] = $classReference;
 		$GLOBALS['T3_VAR']['getUserObj'][$classReference] = new \stdClass();
-		\TYPO3\CMS\Backend\Utility\IconUtility::mapRecordOverlayToSpriteIconName('tt_content', array());
+		IconUtility::mapRecordOverlayToSpriteIconName('tt_content', array());
 	}
 
 }

@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Extension;
  * @package TYPO3
  * @subpackage t3lib
  */
-class ExtensionManagerTest extends \tx_phpunit_testcase {
+class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var array A backup of registered singleton instances
@@ -45,14 +45,6 @@ class ExtensionManagerTest extends \tx_phpunit_testcase {
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * phpunit still needs some globals that are

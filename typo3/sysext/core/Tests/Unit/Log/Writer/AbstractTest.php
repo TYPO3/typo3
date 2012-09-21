@@ -31,7 +31,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . '../Fixtures/WriterFixture.php';
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class AbstractTest extends \tx_phpunit_testcase {
+class AbstractTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

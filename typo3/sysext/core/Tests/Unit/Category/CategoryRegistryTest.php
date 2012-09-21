@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Category;
  * @subpackage t3lib
  * @author Oliver Hader <oliver.hader@typo3.org>
  */
-class CategoryRegistryTest extends \tx_phpunit_testcase {
+class CategoryRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -39,14 +39,6 @@ class CategoryRegistryTest extends \tx_phpunit_testcase {
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * @var \TYPO3\CMS\Core\Category\CategoryRegistry

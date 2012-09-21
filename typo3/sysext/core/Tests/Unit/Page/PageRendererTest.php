@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Page;
  * @subpackage t3lib
  * @author Steffen Kamper (info@sk-typo3.de)
  */
-class PageRendererTest extends \tx_phpunit_testcase {
+class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -38,14 +38,6 @@ class PageRendererTest extends \tx_phpunit_testcase {
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * @var \TYPO3\CMS\Core\Page\PageRenderer

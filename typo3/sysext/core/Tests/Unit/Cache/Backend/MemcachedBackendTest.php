@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * @package TYPO3
  * @subpackage tests
  */
-class MemcachedBackendTest extends \tx_phpunit_testcase {
+class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Sets up this testcase

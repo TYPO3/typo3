@@ -33,7 +33,7 @@ require_once __DIR__ . '/Fixtures/RootlineUtilityTestAccessibleFixture.php';
  * @package TYPO3
  * @subpackage t3lib
  */
-class RootlineUtilityTest extends \tx_phpunit_testcase {
+class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/***
 	 *
