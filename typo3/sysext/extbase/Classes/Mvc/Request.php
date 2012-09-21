@@ -356,10 +356,13 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 		$controllerObjectName = $this->getControllerObjectName();
 		if ($controllerObjectName !== '' && $this->controllerActionName === strtolower($this->controllerActionName)) {
 			$actionMethodName = $this->controllerActionName . 'Action';
-			foreach (get_class_methods($controllerObjectName) as $existingMethodName) {
-				if (strtolower($existingMethodName) === strtolower($actionMethodName)) {
-					$this->controllerActionName = substr($existingMethodName, 0, -6);
-					break;
+			$classMethods = get_class_methods($controllerObjectName);
+			if (is_array($classMethods)) {
+				foreach ($classMethods as $existingMethodName) {
+					if (strtolower($existingMethodName) === strtolower($actionMethodName)) {
+						$this->controllerActionName = substr($existingMethodName, 0, -6);
+						break;
+					}
 				}
 			}
 		}
