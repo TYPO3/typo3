@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache;
  * @package TYPO3
  * @subpackage tests
  */
-class CacheManagerTest extends \tx_phpunit_testcase {
+class CacheManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

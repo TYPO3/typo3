@@ -34,7 +34,7 @@ require_once 'Fixtures/FormProtectionTesting.php';
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Ernesto Baschny <ernst@cron-it.de>
  */
-class FormprotectionFactoryTest extends \tx_phpunit_testcase {
+class FormprotectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	public function setUp() {
 

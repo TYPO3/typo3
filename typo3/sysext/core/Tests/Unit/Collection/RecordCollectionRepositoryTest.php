@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Collection;
  * @package TYPO3
  * @subpackage t3lib
  */
-class RecordCollectionRepositoryTest extends \Tx_Phpunit_TestCase {
+class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Collection\RecordCollectionRepository

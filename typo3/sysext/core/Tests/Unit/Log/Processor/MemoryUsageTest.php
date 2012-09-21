@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  * @package TYPO3
  * @subpackage t3lib
  */
-class MemoryUsageTest extends \tx_phpunit_testcase {
+class MemoryUsageTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
