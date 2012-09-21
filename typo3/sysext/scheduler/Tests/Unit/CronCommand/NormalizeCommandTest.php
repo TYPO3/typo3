@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\CronCommand;
  * @package TYPO3
  * @subpackage tx_scheduler
  */
-class NormalizeCommandTest extends \tx_phpunit_testcase {
+class NormalizeCommandTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 
 	/**
 	 * Create a subclass of tx_scheduler_CronCmd_Normalize with

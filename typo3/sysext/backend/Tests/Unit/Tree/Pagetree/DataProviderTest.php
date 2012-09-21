@@ -31,19 +31,12 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree\Pagetree;
  * @package TYPO3
  * @subpackage t3lib
  */
-class DataProviderTest extends \tx_phpunit_testcase {
+class DataProviderTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 
 	/**
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Excludes TYPO3_DB from backup/restore of $GLOBALS because resource types cannot be handled during serializing.
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * @var \TYPO3\CMS\Backend\Tree\Pagetree\DataProvider|\PHPUnit_Framework_MockObject_MockObject

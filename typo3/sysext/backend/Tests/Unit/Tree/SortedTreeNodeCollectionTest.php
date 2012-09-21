@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
  * @package TYPO3
  * @subpackage t3lib
  */
-class SortedTreeNodeCollectionTest extends \tx_phpunit_testcase {
+class SortedTreeNodeCollectionTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 
 	protected function createTestCollection() {
 		$nodeCollection = new \TYPO3\CMS\Backend\Tree\SortedTreeNodeCollection();

@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  * @package TYPO3
  * @subpackage t3lib
  */
-class PageRepositoryTest extends \tx_phpunit_testcase {
+class PageRepositoryTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
