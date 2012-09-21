@@ -144,8 +144,12 @@ class t3lib_readmail {
 		$parts = explode(';', $str);
 		$cTypes = array();
 		$cTypes['ContentType'] = $parts[0];
-		next($parts);
-		while (list(, $ppstr) = each($parts)) {
+		$i = 0;
+		foreach ($parts as $ppstr) {
+			if ($i === 0) {
+				$i++;
+				continue;
+			}
 			$mparts = explode('=', $ppstr, 2);
 			if (count($mparts) > 1) {
 				$cTypes[strtolower(trim($mparts[0]))] = preg_replace('/^"/', '', trim(preg_replace('/"$/', '', trim($mparts[1]))));

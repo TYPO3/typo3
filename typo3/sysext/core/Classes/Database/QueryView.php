@@ -774,7 +774,7 @@ class QueryView {
 			}
 			$d->close();
 			natcasesort($fileArray);
-			while (list(, $fileName) = each($fileArray)) {
+			foreach ($fileArray as $fileName) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($fV, $fileName) || $fV == $fileName) {
 					if (!$out) {
 						$out = htmlspecialchars($fileName);
@@ -785,7 +785,7 @@ class QueryView {
 			}
 		}
 		if ($fieldSetup['type'] == 'multiple') {
-			foreach ($fieldSetup['items'] as $key => $val) {
+			foreach ($fieldSetup['items'] as $val) {
 				if (substr($val[0], 0, 4) == 'LLL:') {
 					$value = $GLOBALS['LANG']->sL($val[0]);
 				} else {
@@ -801,7 +801,7 @@ class QueryView {
 			}
 		}
 		if ($fieldSetup['type'] == 'binary') {
-			foreach ($fieldSetup['items'] as $Key => $val) {
+			foreach ($fieldSetup['items'] as $val) {
 				if (substr($val[0], 0, 4) == 'LLL:') {
 					$value = $GLOBALS['LANG']->sL($val[0]);
 				} else {
@@ -816,7 +816,7 @@ class QueryView {
 		}
 		if ($fieldSetup['type'] == 'relation') {
 			if ($fieldSetup['items']) {
-				foreach ($fieldSetup['items'] as $key => $val) {
+				foreach ($fieldSetup['items'] as $val) {
 					if (substr($val[0], 0, 4) == 'LLL:') {
 						$value = $GLOBALS['LANG']->sL($val[0]);
 					} else {

@@ -330,9 +330,12 @@ class HtmlParser {
 		$pointer = strlen($parts[0]);
 		$buffer = $parts[0];
 		$nested = 0;
-		reset($parts);
-		next($parts);
-		while (list($k, $v) = each($parts)) {
+		$i = 0;
+		foreach ($parts as $v) {
+			if ($i === 0) {
+				$i++;
+				continue;
+			}
 			$isEndTag = substr($content, $pointer, 2) == '</' ? 1 : 0;
 			$tagLen = strcspn(substr($content, $pointer), '>') + 1;
 			// We meet a start-tag:
@@ -432,9 +435,12 @@ class HtmlParser {
 		$pointer = strlen($parts[0]);
 		$newParts = array();
 		$newParts[] = $parts[0];
-		reset($parts);
-		next($parts);
-		while (list($k, $v) = each($parts)) {
+		$i = 0;
+		foreach ($parts as $v) {
+			if ($i === 0) {
+				$i++;
+				continue;
+			}
 			$tagLen = strcspn(substr($content, $pointer), '>') + 1;
 			// Set tag:
 			// New buffer set and pointer increased
@@ -705,13 +711,17 @@ class HtmlParser {
 		$newContent = array();
 		$tokArr = explode('<', $content);
 		$newContent[] = $this->processContent(current($tokArr), $hSC, $addConfig);
-		next($tokArr);
 		$c = 1;
 		$tagRegister = array();
 		$tagStack = array();
 		$inComment = FALSE;
 		$skipTag = FALSE;
-		while (list(, $tok) = each($tokArr)) {
+		$i = 0;
+		foreach ($tokArr as $tok) {
+			if ($i === 0) {
+				$i++;
+				continue;
+			}
 			if ($inComment) {
 				if (($eocPos = strpos($tok, '-->')) === FALSE) {
 					// End of comment is not found in the token. Go further until end of comment is found in other tokens.
@@ -1170,9 +1180,13 @@ class HtmlParser {
 	public function unprotectTags($content, $tagList = '') {
 		$tagsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $tagList, 1);
 		$contentParts = explode('&lt;', $content);
-		next($contentParts);
+		$i = 0;
 		// bypass the first
-		while (list($k, $tok) = each($contentParts)) {
+		foreach ($contentParts as $k => $tok) {
+			if ($i === 0) {
+				$i++;
+				continue;
+			}
 			$firstChar = substr($tok, 0, 1);
 			if (strcmp(trim($firstChar), '')) {
 				$subparts = explode('&gt;', $tok, 2);
