@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
  * @subpackage t3lib
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
-class MailerTest extends \tx_phpunit_testcase {
+class MailerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Mail\Mailer

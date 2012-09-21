@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class DatabaseTest extends \tx_phpunit_testcase {
+class DatabaseTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Backup and restore of the $GLOBALS array.

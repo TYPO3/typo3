@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Configuration;
  * @package TYPO3
  * @subpackage t3lib
  */
-class ConfigurationManagerTest extends \tx_phpunit_testcase {
+class ConfigurationManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Absolute path to files that must be removed

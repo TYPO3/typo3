@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * @package TYPO3
  * @subpackage tests
  */
-class AbstractBackendTest extends \tx_phpunit_testcase {
+class AbstractBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Cache\Backend\AbstractBackend

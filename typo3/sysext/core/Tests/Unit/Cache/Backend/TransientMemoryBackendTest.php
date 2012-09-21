@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * @package TYPO3
  * @subpackage tests
  */
-class TransientMemoryBackendTest extends \tx_phpunit_testcase {
+class TransientMemoryBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @expectedException \TYPO3\CMS\Core\Cache\Exception

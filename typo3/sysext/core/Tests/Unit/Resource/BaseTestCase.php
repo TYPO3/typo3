@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class BaseTestCase extends \Tx_Phpunit_TestCase {
+abstract class BaseTestCase extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var string

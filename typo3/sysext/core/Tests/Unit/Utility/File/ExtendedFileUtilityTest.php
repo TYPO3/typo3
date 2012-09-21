@@ -30,20 +30,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility\File;
  * @package TYPO3
  * @subpackage t3lib
  */
-class ExtendedFileUtilityTest extends \tx_phpunit_testcase {
+class ExtendedFileUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var boolean Enable backup of global and system variables
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * @var array A backup of registered singleton instances

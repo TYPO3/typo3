@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Category\Collection;
  * @subpackage t3lib
  * @author Fabien Udriot <fabien.udriot@typo3.org>
  */
-class CategoryCollectionTest extends \tx_phpunit_testcase {
+class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Category\Collection\CategoryCollection
