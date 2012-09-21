@@ -8,7 +8,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		'About' => 'index'
 	), array(
 		'access' => 'user,group',
-		'icon' => 'EXT:about/ext_icon.gif',
+		'icon' => 'EXT:about/Resources/Public/Icons/module-24x24.gif',
 		'labels' => 'LLL:EXT:lang/locallang_mod_help_about.xlf'
 	));
 }
