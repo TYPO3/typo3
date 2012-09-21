@@ -91,7 +91,6 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 		'cmailform' => array('Content: \'Form\'', 'mi'),
 		'csearch' => array('Content: \'Search\'', 'mj'),
 		'clogin' => array('Content: \'Login\'', 'mk'),
-		'csplash' => array('Content: \'Textbox\'', 'ml'),
 		'cmenu' => array('Content: \'Menu/Sitemap\'', 'mm'),
 		'cshortcut' => array('Content: \'Insert records\'', 'mn'),
 		'clist' => array('Content: \'List of records\'', 'mo'),

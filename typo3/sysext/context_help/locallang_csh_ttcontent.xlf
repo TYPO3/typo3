@@ -66,10 +66,6 @@ This inserts a search box and it will also display the search result if a query 
 &lt;strong&gt;Login&lt;/strong&gt;
 Displays a login box for website users. You must create at least one Website user and user group before this makes any sense to use.
 
-&lt;strong&gt;Textbox&lt;/strong&gt;
-This is mainly for customly defined design which includes typically some text and an image. So in other words the function is not generally defined. However the default subtypes will let you choose various ways to display some text with an image.
-Use only if instructed to.
-
 &lt;strong&gt;Menu/Sitemap&lt;/strong&gt;
 Offers a selection of various link menus and a sitemap you can insert on a page.
 
@@ -679,16 +675,6 @@ tt_content:section_frame</source>
 			<trans-unit id="_section_frame.seeAlso" xml:space="preserve">
 				<source>tt_content:spaceAfter,
 tt_content:spaceBefore</source>
-				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
-			</trans-unit>
-			<trans-unit id="splash_layout.description" xml:space="preserve">
-				<source>Select the design for the Text box.</source>
-			</trans-unit>
-			<trans-unit id="splash_layout.details" xml:space="preserve">
-				<source>&lt;strong&gt;Notice:&lt;/strong&gt; The Textbox type has a few default renderings but are primarily designed to be used for custom purposes. Therefore the availability of features will depend on the current website template.</source>
-			</trans-unit>
-			<trans-unit id="_splash_layout.seeAlso" xml:space="preserve">
-				<source>tt_content:CType</source>
 				<note from="developer">This string contains an internal text, which must not be changed. Just copy the original text into the translation field. For more information have a look at the Tutorial.</note>
 			</trans-unit>
 			<trans-unit id="sectionIndex.description" xml:space="preserve">

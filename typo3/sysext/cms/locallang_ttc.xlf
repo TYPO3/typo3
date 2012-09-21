@@ -39,9 +39,6 @@
 			<trans-unit id="CType.I.10" xml:space="preserve">
 				<source>Login</source>
 			</trans-unit>
-			<trans-unit id="CType.I.11" xml:space="preserve">
-				<source>Textbox</source>
-			</trans-unit>
 			<trans-unit id="CType.I.12" xml:space="preserve">
 				<source>Special Menus</source>
 			</trans-unit>
@@ -726,27 +723,6 @@
 			<trans-unit id="section_frame.I.8" xml:space="preserve">
 				<source>Frame 2</source>
 			</trans-unit>
-			<trans-unit id="splash_layout" xml:space="preserve">
-				<source>Textbox Type:</source>
-			</trans-unit>
-			<trans-unit id="splash_layout_formlabel" xml:space="preserve">
-				<source>Type</source>
-			</trans-unit>
-			<trans-unit id="splash_layout.I.1" xml:space="preserve">
-				<source>Image Shadow</source>
-			</trans-unit>
-			<trans-unit id="splash_layout.I.2" xml:space="preserve">
-				<source>Image Frame 1</source>
-			</trans-unit>
-			<trans-unit id="splash_layout.I.3" xml:space="preserve">
-				<source>Image Frame 2</source>
-			</trans-unit>
-			<trans-unit id="splash_layout.I.4" xml:space="preserve">
-				<source>__Graphical:__</source>
-			</trans-unit>
-			<trans-unit id="splash_layout.I.5" xml:space="preserve">
-				<source>Postit 1</source>
-			</trans-unit>
 			<trans-unit id="sectionIndex" xml:space="preserve">
 				<source>Index:</source>
 			</trans-unit>
@@ -1065,9 +1041,6 @@
 			<trans-unit id="bodytext.ALT.multimedia_formlabel" xml:space="preserve">
 				<source>Parameters</source>
 			</trans-unit>
-			<trans-unit id="bodytext.ALT.textbox_formlabel" xml:space="preserve">
-				<source>Text</source>
-			</trans-unit>
 			<trans-unit id="bodytext.ALT.script_formlabel" xml:space="preserve">
 				<source>Parameters to pass to the script</source>
 			</trans-unit>
@@ -1076,9 +1049,6 @@
 			</trans-unit>
 			<trans-unit id="image_formlabel" xml:space="preserve">
 				<source>Images</source>
-			</trans-unit>
-			<trans-unit id="image.ALT.textbox_formlabel" xml:space="preserve">
-				<source>Image Files</source>
 			</trans-unit>
 			<trans-unit id="imagecaption_formlabel" xml:space="preserve">
 				<source>Captions (one per line)</source>
@@ -1133,9 +1103,6 @@
 			</trans-unit>
 			<trans-unit id="palette.multimediafiles" xml:space="preserve">
 				<source>Media Files and Parameters</source>
-			</trans-unit>
-			<trans-unit id="palette.textbox" xml:space="preserve">
-				<source>Render Text into Images</source>
 			</trans-unit>
 			<trans-unit id="palette.menu" xml:space="preserve">
 				<source>Menu and Sitemap</source>
