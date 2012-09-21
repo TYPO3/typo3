@@ -3111,7 +3111,8 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				// New database?
 				if (trim($this->INSTALL['Database']['NEW_DATABASE_NAME'])) {
 					$newDatabaseName = trim($this->INSTALL['Database']['NEW_DATABASE_NAME']);
-					if (!preg_match('/[^[:alnum:]_-]/', $newDatabaseName)) {
+						// Hyphen is not allowed in unquoted database names (at least for MySQL databases)
+					if (!preg_match('/[^[:alnum:]_]/', $newDatabaseName)) {
 						if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
 							if ($GLOBALS['TYPO3_DB']->admin_query('CREATE DATABASE ' . $newDatabaseName . ' CHARACTER SET utf8')) {
 								$this->INSTALL['Database']['typo_db'] = $newDatabaseName;
@@ -3131,7 +3132,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					} else {
 						$this->errorMessages[] = '
 								The NEW database name \'' . $newDatabaseName . '\' was
-								not alphanumeric, a-zA-Z0-9_- (...not created)
+								not alphanumeric, a-zA-Z0-9_ (...not created)
 							';
 					}
 				}
