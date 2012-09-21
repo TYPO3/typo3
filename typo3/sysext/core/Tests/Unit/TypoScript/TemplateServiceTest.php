@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\TypoScript;
  * @subpackage t3lib
  * @author Christian Kuhn <lolli@schwarzbu.ch>
  */
-class TemplateServiceTest extends \tx_phpunit_testcase {
+class TemplateServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -39,14 +39,6 @@ class TemplateServiceTest extends \tx_phpunit_testcase {
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * @test

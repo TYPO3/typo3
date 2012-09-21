@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Encoder;
  * @subpackage t3lib
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
-class JavaScriptEncoderTest extends \Tx_Phpunit_TestCase {
+class JavaScriptEncoderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Encoder\JavaScriptEncoder

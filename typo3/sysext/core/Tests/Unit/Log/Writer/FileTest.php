@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Writer;
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class FileTest extends \tx_phpunit_testcase {
+class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var string

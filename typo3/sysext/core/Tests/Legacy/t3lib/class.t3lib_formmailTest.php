@@ -32,7 +32,7 @@
  * @package TYPO3
  * @subpackage t3lib
  */
-class t3lib_formmailTest extends tx_phpunit_testcase {
+class t3lib_formmailTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	///////////////////////////////
 	// tests concerning __destruct
