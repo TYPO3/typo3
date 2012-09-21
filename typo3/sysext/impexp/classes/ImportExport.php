@@ -1819,27 +1819,25 @@ class ImportExport {
 			default:
 				// Mapping IDs/creating files: Based on type, look up new value:
 				switch ((string) $cfg['subst']['type']) {
-				case 'db':
-
-				default:
-					// Trying to map database element if found in the mapID array:
-					list($tempTable, $tempUid) = explode(':', $cfg['subst']['recordRef']);
-					if (isset($this->import_mapId[$tempTable][$tempUid])) {
-						$insertValue = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($tempTable, $this->import_mapId[$tempTable][$tempUid]);
-						// Look if reference is to a page and the original token value was NOT an integer - then we assume is was an alias and try to look up the new one!
-						if ($tempTable === 'pages' && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($cfg['subst']['tokenValue'])) {
-							$recWithUniqueValue = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($tempTable, $insertValue, 'alias');
-							if ($recWithUniqueValue['alias']) {
-								$insertValue = $recWithUniqueValue['alias'];
+					case 'file':
+						// Create / Overwrite file:
+						$insertValue = $this->processSoftReferences_saveFile($cfg['subst']['relFileName'], $cfg, $table, $uid);
+						break;
+					case 'db':
+					default:
+						// Trying to map database element if found in the mapID array:
+						list($tempTable, $tempUid) = explode(':', $cfg['subst']['recordRef']);
+						if (isset($this->import_mapId[$tempTable][$tempUid])) {
+							$insertValue = \TYPO3\CMS\Backend\Utility\BackendUtility::wsMapId($tempTable, $this->import_mapId[$tempTable][$tempUid]);
+							// Look if reference is to a page and the original token value was NOT an integer - then we assume is was an alias and try to look up the new one!
+							if ($tempTable === 'pages' && !\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($cfg['subst']['tokenValue'])) {
+								$recWithUniqueValue = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord($tempTable, $insertValue, 'alias');
+								if ($recWithUniqueValue['alias']) {
+									$insertValue = $recWithUniqueValue['alias'];
+								}
 							}
 						}
-					}
-					break;
-					break;
-				case 'file':
-					// Create / Overwrite file:
-					$insertValue = $this->processSoftReferences_saveFile($cfg['subst']['relFileName'], $cfg, $table, $uid);
-					break;
+						break;
 				}
 				break;
 			}

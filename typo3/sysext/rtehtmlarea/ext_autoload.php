@@ -16,5 +16,4 @@ return array(
 	'tx_rtehtmlarea_user' => $rtehtmlareaExtensionPath . 'mod5/class.tx_rtehtmlarea_user.php',
 	'tx_rtehtmlarea_parse_html' => $rtehtmlareaExtensionPath . 'mod6/class.tx_rtehtmlarea_parse_html.php'
 );
-unset($rtehtmlareaExtensionPath);
 ?>
