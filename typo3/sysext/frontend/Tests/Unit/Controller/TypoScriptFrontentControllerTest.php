@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Controller;
  * @subpackage tslib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class TypoScriptFrontendControllerTest extends \tx_phpunit_testcase {
+class TypoScriptFrontendControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -40,15 +40,7 @@ class TypoScriptFrontendControllerTest extends \tx_phpunit_testcase {
 	protected $backupGlobals = TRUE;
 
 	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
-
-	/**
-	 * @var \PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 * @var \PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
 	 */
 	private $fixture;
 

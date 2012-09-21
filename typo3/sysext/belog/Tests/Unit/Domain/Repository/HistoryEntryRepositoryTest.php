@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Belog\Tests\Unit\Domain\Repository;
 class HistoryEntryRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings||\Tx_Phpunit_Interface_AccessibleObject
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $querySettings = NULL;
 

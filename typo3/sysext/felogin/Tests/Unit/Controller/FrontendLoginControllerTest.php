@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Felogin\Tests\Unit\Controller;
  * @package TYPO3
  * @subpackage felogin
  */
-class FrontendLoginTest extends \tx_phpunit_testcase {
+class FrontendLoginTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -44,20 +44,12 @@ class FrontendLoginTest extends \tx_phpunit_testcase {
 	protected $backupGlobals = TRUE;
 
 	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
-
-	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $typo3DbBackup;
 
 	/**
-	 * @var \TYPO3\CMS\Felogin\Controller\FrontendLoginController|\Tx_Phpunit_Interface_AccessibleObject
+	 * @var \TYPO3\CMS\Felogin\Controller\FrontendLoginController|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $accessibleFixture;
 

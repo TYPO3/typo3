@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Localization\Parser;
  * @author Xavier Perseguers <xavier@typo3.org>
  * @package TYPO3
  */
-class XliffParserTest extends \tx_phpunit_testcase {
+class XliffParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Localization\Parser\XliffParser
