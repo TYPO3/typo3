@@ -56,8 +56,7 @@
  * @param array $conf TypoScript properties passed on to this function.
  * @return string The input string reversed. If the TypoScript property "uppercase" was set it will also be in uppercase.
  */
-function user_reverseString($content, $conf)
-{
+function user_reverseString($content, $conf) {
 	$content = strrev($content);
 	if ($conf['uppercase']) {
 		$content = strtoupper($content);
@@ -81,8 +80,7 @@ function user_reverseString($content, $conf)
  * @param array $conf TypoScript configuration
  * @return string HTML output, showing the current server time.
  */
-function user_printTime($content, $conf)
-{
+function user_printTime($content, $conf) {
 	return '<font color="red">Dynamic time: ' . date('H:i:s') . '</font><br />';
 }
 /**

@@ -60,8 +60,7 @@
  * @param array $conf TypoScript configuration for the function. Notice that the property "parentObj" is a reference to the parent (calling) object (the tslib_Xmenu class instantiated)
  * @return array The modified $menuArr array
  */
-function user_itemArrayProcFuncTest($menuArr, $conf)
-{
+function user_itemArrayProcFuncTest($menuArr, $conf) {
 	// Used in the example of item states
 	if ($conf['demoItemStates']) {
 		$c = 0;
@@ -94,8 +93,7 @@ function user_itemArrayProcFuncTest($menuArr, $conf)
  * @return array The processed $I array returned (and stored in $this->I of the parent object again)
  * @see tslib_menu::userProcess(), tslib_tmenu::writeMenu(), tslib_gmenu::writeMenu()
  */
-function user_IProcFuncTest($I, $conf)
-{
+function user_IProcFuncTest($I, $conf) {
 	$itemRow = $conf['parentObj']->menuArr[$I['key']];
 	// Setting the document status content to the value of the page title on mouse over
 	$I['linkHREF']['onMouseover'] .= 'extraRollover(\'' . rawurlencode($itemRow['title']) . '\');';
