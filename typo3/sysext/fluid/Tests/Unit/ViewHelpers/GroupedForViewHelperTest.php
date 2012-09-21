@@ -164,7 +164,7 @@ class GroupedForViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\V
 		$invoice3->customer = $customer2;
 		$invoices = array('invoice1' => $invoice1, 'invoice2' => $invoice2, 'invoice3' => $invoice3);
 		$groupBy = 'customer.name';
-		/** @var Tx_Phpunit_Interface_AccessibleObject|Tx_Fluid_ViewHelpers_GroupedForViewHelper $accessibleMock */
+		/** @var \TYPO3\CMS\Core\Tests\AccessibleObjectInterface|\TYPO3\CMS\Fluid\ViewHelpers\GroupedForViewHelper $accessibleMock */
 		$accessibleMock = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\ViewHelpers\\GroupedForViewHelper', array('dummy'));
 		$expectedResult = array(
 			'keys' => array(
