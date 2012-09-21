@@ -774,7 +774,7 @@ class QueryView {
 			}
 			$d->close();
 			natcasesort($fileArray);
-			while (list(, $fileName) = each($fileArray)) {
+			foreach ($fileArray as $key => $fileName) {
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList($fV, $fileName) || $fV == $fileName) {
 					if (!$out) {
 						$out = htmlspecialchars($fileName);

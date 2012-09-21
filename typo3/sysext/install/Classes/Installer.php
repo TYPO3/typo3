@@ -2597,9 +2597,8 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 			$rows = array();
 			foreach ($this->config_array['im_versions'] as $p => $v) {
 				$ka = array();
-				reset($v);
-				while (list($ka[]) = each($v)) {
-
+				foreach ($v as $key => $value) {
+					$ka[] = $key;
 				}
 				// Define the markers content
 				$rowsMarkers = array(
