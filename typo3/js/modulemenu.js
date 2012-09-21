@@ -68,10 +68,6 @@ TYPO3.ModuleMenu.Store = new Ext.data.JsonStore({
 });
 
 TYPO3.ModuleMenu.Template = new Ext.XTemplate(
-		'<div id="typo3-docheader">',
-		'	<div class="typo3-docheader-functions">',
-		'	</div>',
-		'</div>',
 		'<ul id="typo3-menu">',
 		'<tpl for=".">',
 		'	<li class="menuSection" id="{key}">',
@@ -81,7 +77,7 @@ TYPO3.ModuleMenu.Template = new Ext.XTemplate(
 		'	<li id="{name}" class="submodule mod-{name}">',
 		'		<a title="{description}" href="#" class="modlink">',
 		'			<span class="submodule-icon">',
-		'				<img width="16" height="16" alt="{label}" title="{label}" src="{icon}" />',
+		'				<img width="24" height="24" alt="{label}" title="{label}" src="{icon}" />',
 		'			</span>',
 		'			<span>{label}</span>',
 		'		</a>',

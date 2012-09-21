@@ -1,78 +1,28 @@
-/* - - - - - - - - - - - - - - - - - - - - -
-Module menu
+/**
+ * Module menu
+ */
 
-- - - - - - - - - - - - - - - - - - - - - */
+#typo3-menu { padding-top: 35px; }
 
-#typo3-menu {
-	padding-top: 15px;
-}
+#typo3-menu ul { }
 
-#typo3-module-menu .x-panel-body {
-    overflow-x: hidden !important;
-}
+	#typo3-menu li { clear: both; }
 
-#typo3-menu ul {
-	padding: 0;
-	margin: 0;
-}
+	#typo3-menu li a { display: block; }
 
-#typo3-menu li {
-	clear: both;
-	padding-bottom: 1px;
-	margin-bottom: 0;
-}
-
-#typo3-menu li a {
-	display: block;
-	padding-bottom: 1px;
-	margin-bottom: 0;
-}
-
-#typo3-menu li img {
-	vertical-align: baseline;
-}
-
-#typo3-menu li div {
-	overflow: hidden;
-	padding: 2px 0px 4px 16px;
-	vertical-align: middle;
-}
+	#typo3-menu li div { overflow: hidden; padding: 2px 0px 4px 12px; }
 
 #typo3-menu li span.submodule-icon {
 	display: block;
 	float: left;
 	vertical-align: top;
-	width: 20px;
+	width: 24px;
+	height: 24px;
+	margin-right: 6px;
 }
 
-#typo3-menu li ul {
-	margin-bottom: 5px;
-}
+	#typo3-menu li ul { }
 
-#typo3-menu li ul li {
-	min-height: 21px;
-}
+		#typo3-menu li li { height: 30px; line-height: 24px; }
 
-#typo3-menu li ul li a {
-	display: block;
-	margin-bottom: 1px;
-	padding: 3px 0 3px 15px;
-	white-space: nowrap;
-}
-
-#typo3-menu li ul li a:hover,
-#typo3-menu li ul li.hover a,
-#typo3-menu li ul li.highlighted a {
-	margin-bottom: 1px;
-	padding-bottom: 2px;
-	padding-top: 2px;
-}
-
-#typo3-menu div.expanded,
-#typo3-menu div.collapsed {
-	margin-left: 0px;
-}
-
-#typo3-module-menu #typo3-docheader {
-	min-width: 0;
-}
+			#typo3-menu li ul li a { display: block; padding: 3px 0 3px 12px; white-space: nowrap; }
