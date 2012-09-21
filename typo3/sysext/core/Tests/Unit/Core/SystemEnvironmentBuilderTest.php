@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Core;
  * @package TYPO3
  * @subpackage tests
  */
-class SystemEnvironmentBuilderTest extends \tx_phpunit_testcase {
+class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -43,14 +43,7 @@ class SystemEnvironmentBuilderTest extends \tx_phpunit_testcase {
 	protected $backupGlobals = TRUE;
 
 	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS because of included ressource
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
-
-	/**
-	 * @var \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder|\Tx_Phpunit_Interface_AccessibleObject
+	 * @var \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
 	 */
 	protected $fixture = NULL;
 
