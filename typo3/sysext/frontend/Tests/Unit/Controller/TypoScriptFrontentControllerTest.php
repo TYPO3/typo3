@@ -162,6 +162,40 @@ class TypoScriptFrontendControllerTest extends \tx_phpunit_testcase {
 		$this->assertEquals($clearText, $this->fixture->_callRef('roundTripCryptString', $refValue));
 	}
 
+	/**
+	 * @test
+	 */
+	public function isModifyPageIdTestCalled() {
+		$GLOBALS['TT'] = $this->getMock('TYPO3\\CMS\Core\\TimeTracker\\TimeTracker');
+		$this->fixture = $this->getMock(
+			'\\TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
+			array(
+				'initUserGroups',
+				'setSysPageWhereClause',
+				'checkAndSetAlias',
+				'findDomainRecord',
+				'getPageAndRootlineWithDomain'
+			),
+			array(),
+			'',
+			FALSE
+		);
+
+		$pageRepository = $this->getMock('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::addInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository', $pageRepository);
+
+		$initialId = rand(1, 500);
+		$expectedId = $initialId + 42;
+		$this->fixture->id = $initialId;
+
+		$this->fixture->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['modifyPageId'][] = function($params, $frontendController) {
+			return $params['id'] + 42;
+		};
+
+		$this->fixture->fetch_the_id();
+		$this->assertSame($expectedId, $this->fixture->id);
+	}
+
 }
 
 ?>
