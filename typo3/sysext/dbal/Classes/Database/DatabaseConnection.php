@@ -2544,7 +2544,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			// MetaTables is done on a stdClass instance
 			if (method_exists($this->handlerInstance['_DEFAULT'], 'MetaTables')) {
 				$sqlTables = $this->handlerInstance['_DEFAULT']->MetaTables('TABLES');
-				while (list($k, $theTable) = each($sqlTables)) {
+				foreach ($sqlTables as $k => $theTable) {
 					if (preg_match('/BIN\\$/', $theTable)) {
 						// Skip tables from the Oracle 10 Recycle Bin
 						continue;
@@ -2678,7 +2678,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 		case 'adodb':
 			$keyRows = $this->handlerInstance[$this->lastHandlerKey]->MetaIndexes($tableName);
 			if ($keyRows !== FALSE) {
-				while (list($k, $theKey) = each($keyRows)) {
+				foreach ($keyRows as $k => $theKey) {
 					$theKey['Table'] = $tableName;
 					$theKey['Non_unique'] = (int) (!$theKey['unique']);
 					$theKey['Key_name'] = str_replace($tableName . '_', '', $k);
@@ -2692,7 +2692,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 					$theKey['Comment'] = '';
 					// now map multiple fields into multiple rows (we mimic MySQL, remember...)
 					$keycols = $theKey['columns'];
-					while (list($c, $theCol) = each($keycols)) {
+					foreach ($keycols as $c => $theCol) {
 						$theKey['Seq_in_index'] = $c + 1;
 						$theKey['Column_name'] = $theCol;
 						$output[] = $theKey;
@@ -2714,7 +2714,7 @@ class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 			$theKey['Comment'] = '';
 			// now map multiple fields into multiple rows (we mimic MySQL, remember...)
 			if ($priKeyRow !== FALSE) {
-				while (list($c, $theCol) = each($priKeyRow)) {
+				foreach ($priKeyRow as $c => $theCol) {
 					$theKey['Seq_in_index'] = $c + 1;
 					$theKey['Column_name'] = $theCol;
 					$output[] = $theKey;
