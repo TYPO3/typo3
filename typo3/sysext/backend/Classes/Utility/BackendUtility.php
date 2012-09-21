@@ -2503,7 +2503,7 @@ class BackendUtility {
 	 * @param string $backPath Must point back to TYPO3_mainDir (where the site is assumed to be one level above)
 	 * @param array $rootLine If root line is supplied the function will look for the first found domain record and use that URL instead (if found)
 	 * @param string $anchorSection Optional anchor to the URL
-	 * @param string $alternativeUrl An alternative URL which - if set - will make all other parameters ignored: The function will just return the window.open command wrapped around this URL!
+	 * @param string $alternativeUrl An alternative URL that, if set, will ignore other parameters except $switchFocus: It will return the window.open command wrapped around this URL!
 	 * @param string $additionalGetVars Additional GET variables.
 	 * @param boolean $switchFocus If TRUE, then the preview window will gain the focus.
 	 * @return string
@@ -2521,42 +2521,47 @@ class BackendUtility {
 				}
 			}
 		}
-		// Look if a fixed preview language should be added:
-		$viewLanguageOrder = $GLOBALS['BE_USER']->getTSConfigVal('options.view.languageOrder');
-		if (strlen($viewLanguageOrder)) {
-			$suffix = '';
-			// Find allowed languages (if none, all are allowed!)
-			if (!$GLOBALS['BE_USER']->user['admin'] && strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
-				$allowedLanguages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
-			}
-			// Traverse the view order, match first occurence:
-			$languageOrder = GeneralUtility::intExplode(',', $viewLanguageOrder);
-			foreach ($languageOrder as $langUid) {
-				if (is_array($allowedLanguages) && count($allowedLanguages)) {
-					// Choose if set.
-					if (isset($allowedLanguages[$langUid])) {
+
+		if ($alternativeUrl) {
+			$previewUrl = $viewScript;
+		} else {
+			// Look if a fixed preview language should be added:
+			$viewLanguageOrder = $GLOBALS['BE_USER']->getTSConfigVal('options.view.languageOrder');
+			if (strlen($viewLanguageOrder)) {
+				$suffix = '';
+				// Find allowed languages (if none, all are allowed!)
+				if (!$GLOBALS['BE_USER']->user['admin'] && strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
+					$allowedLanguages = array_flip(explode(',', $GLOBALS['BE_USER']->groupData['allowed_languages']));
+				}
+				// Traverse the view order, match first occurence:
+				$languageOrder = GeneralUtility::intExplode(',', $viewLanguageOrder);
+				foreach ($languageOrder as $langUid) {
+					if (is_array($allowedLanguages) && count($allowedLanguages)) {
+						// Choose if set.
+						if (isset($allowedLanguages[$langUid])) {
+							$suffix = '&L=' . $langUid;
+							break;
+						}
+					} else {
+						// All allowed since no lang. are listed.
 						$suffix = '&L=' . $langUid;
 						break;
 					}
-				} else {
-					// All allowed since no lang. are listed.
-					$suffix = '&L=' . $langUid;
-					break;
 				}
+				// Add it
+				$additionalGetVars .= $suffix;
 			}
-			// Add it
-			$additionalGetVars .= $suffix;
+			// Check a mount point needs to be previewed
+			$sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+			$sys_page->init(FALSE);
+			$mountPointInfo = $sys_page->getMountPointInfo($pageUid);
+			if ($mountPointInfo && $mountPointInfo['overlay']) {
+				$pageUid = $mountPointInfo['mount_pid'];
+				$additionalGetVars .= '&MP=' . $mountPointInfo['MPvar'];
+			}
+			$viewDomain = self::getViewDomain($pageUid, $rootLine);
+			$previewUrl = $viewDomain . $viewScript . $pageUid . $additionalGetVars . $anchorSection;
 		}
-		// Check a mount point needs to be previewed
-		$sys_page = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
-		$sys_page->init(FALSE);
-		$mountPointInfo = $sys_page->getMountPointInfo($pageUid);
-		if ($mountPointInfo && $mountPointInfo['overlay']) {
-			$pageUid = $mountPointInfo['mount_pid'];
-			$additionalGetVars .= '&MP=' . $mountPointInfo['MPvar'];
-		}
-		$viewDomain = self::getViewDomain($pageUid, $rootLine);
-		$previewUrl = $viewDomain . $viewScript . $pageUid . $additionalGetVars . $anchorSection;
 		$onclickCode = 'var previewWin = window.open(\'' . $previewUrl . '\',\'newTYPO3frontendWindow\');' . ($switchFocus ? 'previewWin.focus();' : '');
 		return $onclickCode;
 	}
