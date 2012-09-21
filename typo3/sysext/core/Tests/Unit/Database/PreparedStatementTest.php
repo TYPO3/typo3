@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  * @package TYPO3
  * @subpackage tests
  */
-class PreparedStatementTest extends \tx_phpunit_testcase {
+class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Backup and restore of the $GLOBALS array.

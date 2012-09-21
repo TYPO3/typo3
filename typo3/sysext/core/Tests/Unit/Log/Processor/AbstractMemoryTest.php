@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  *
  * @author Steffen Müller <typo3@t3node.com>
  */
-class AbstractMemoryTest extends \tx_phpunit_testcase {
+class AbstractMemoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

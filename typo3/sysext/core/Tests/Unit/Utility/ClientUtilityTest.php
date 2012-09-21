@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * @subpackage t3lib
  * @author Steffen Kamper <info@sk-typo3.de>
  */
-class ClientUtilityTest extends \tx_phpunit_testcase {
+class ClientUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * backed-up TYPO3_CONF_VARS SC_OPTIONS

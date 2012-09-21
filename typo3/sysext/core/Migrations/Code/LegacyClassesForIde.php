@@ -2989,7 +2989,7 @@ class Tx_Extbase_SignalSlot_Dispatcher extends \TYPO3\CMS\Extbase\SignalSlot\Dis
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class Tx_Extbase_Tests_Unit_BaseTestCase extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {}
+class Tx_Extbase_Tests_Unit_UnitTestCase extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
