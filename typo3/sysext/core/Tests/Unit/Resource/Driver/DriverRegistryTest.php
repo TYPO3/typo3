@@ -34,20 +34,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Driver;
  * @package TYPO3
  * @subpackage t3lib
  */
-class DriverRegistryTest extends \Tx_Phpunit_TestCase {
+class DriverRegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var boolean Enable backup of global and system variables
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\Driver\DriverRegistry

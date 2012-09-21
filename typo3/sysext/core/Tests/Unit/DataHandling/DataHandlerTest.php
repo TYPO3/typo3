@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandler;
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  * @author Tolleiv Nietsch <info@tolleiv.de>
  */
-class DataHandlerTest extends \tx_phpunit_testcase {
+class DataHandlerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -39,14 +39,6 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * a backup of the global database
@@ -236,7 +228,7 @@ class DataHandlerTest extends \tx_phpunit_testcase {
 		$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] = array();
 
 		$GLOBALS['TYPO3_DB'] = $this->getMock('TYPO3\\CMS\\Core\\Database\\DatabaseConnection');
-		/** @var $fixture \TYPO3\CMS\Core\DataHandling\DataHandler|\tx_phpunit_testcase */
+		/** @var $fixture \TYPO3\CMS\Core\DataHandling\DataHandler|\TYPO3\CMS\Core\Tests\UnitTestCase */
 		$fixture = $this->getMock('TYPO3\\CMS\\Core\\DataHandling\\DataHandler', array('newlog', 'checkModifyAccessList', 'tableReadOnly', 'checkRecordUpdateAccess'));
 		$fixture->bypassWorkspaceRestrictions = FALSE;
 		$fixture->datamap = array(

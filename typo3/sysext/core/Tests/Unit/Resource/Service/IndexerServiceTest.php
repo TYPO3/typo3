@@ -34,17 +34,12 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Service;
  * @package TYPO3
  * @subpackage t3lib
  */
-class IndexerServiceTest extends \Tx_Phpunit_TestCase {
+class IndexerServiceTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var boolean Backup all $GLOBALS
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * @var array Do not backup TYPO3_DB, it destroys the db resource
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * @var Store backup of TYPO3_DB

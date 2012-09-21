@@ -35,7 +35,7 @@ require_once 'Backend/MockBackend.php';
  * @package TYPO3
  * @subpackage tests
  */
-class FactoryTest extends \tx_phpunit_testcase {
+class FactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

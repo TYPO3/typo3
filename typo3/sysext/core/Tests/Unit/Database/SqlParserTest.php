@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
  * @package TYPO3
  * @subpackage t3lib
  */
-class SqlParserTest extends \tx_phpunit_testcase {
+class SqlParserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Database\SqlParser

@@ -32,22 +32,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class BackendFormProtectionTest extends \tx_phpunit_testcase {
+class BackendFormProtectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * Enable backup of global and system variables
 	 *
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
-
 
 	/**
 	 * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection

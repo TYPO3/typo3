@@ -36,7 +36,7 @@ require_once 'Fixtures/WriterFailing.php';
  * @package TYPO3
  * @subpackage t3lib
  */
-class LoggerTest extends \tx_phpunit_testcase {
+class LoggerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

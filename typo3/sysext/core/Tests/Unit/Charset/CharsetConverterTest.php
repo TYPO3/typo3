@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Charset;
  * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class CharsetConverterTest extends \tx_phpunit_testcase {
+class CharsetConverterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Charset\CharsetConverter

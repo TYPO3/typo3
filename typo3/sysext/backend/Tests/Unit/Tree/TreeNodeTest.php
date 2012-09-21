@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Tree;
  * @package TYPO3
  * @subpackage t3lib
  */
-class TreeNodeTest extends \tx_phpunit_testcase {
+class TreeNodeTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	//////////////////////
 	// Utility functions

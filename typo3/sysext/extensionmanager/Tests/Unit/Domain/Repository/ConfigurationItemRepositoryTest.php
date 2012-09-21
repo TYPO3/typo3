@@ -38,11 +38,6 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	protected $backupGlobals = TRUE;
 
 	/**
-	 * @var array Do not backup TYPO3_DB
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
-
-	/**
 	 * @var \TYPO3\CMS\Extensionmanager\Domain\Repository\ConfigurationItemRepository
 	 */
 	public $configurationItemRepository;

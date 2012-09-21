@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * @package TYPO3
  * @subpackage t3lib
  */
-class StringUtilityTest extends \tx_phpunit_testcase {
+class StringUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Data provider for isLastPartOfStrReturnsTrueForMatchingLastParts

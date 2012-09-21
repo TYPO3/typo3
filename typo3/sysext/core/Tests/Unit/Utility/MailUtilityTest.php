@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * @subpackage t3lib
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */
-class MailUtilityTest extends \tx_phpunit_testcase {
+class MailUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var array A backup of registered singleton instances
