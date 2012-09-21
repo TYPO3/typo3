@@ -5172,7 +5172,10 @@ class ContentObjectRenderer {
 		}
 		$retVal = '';
 		$sections = explode('//', $string);
-		while (!$retVal and list($secKey, $secVal) = each($sections)) {
+		foreach ($sections as $secKey => $secVal) {
+			if ($retVal) {
+				break;
+			}
 			$parts = explode(':', $secVal, 2);
 			$key = trim($parts[1]);
 			if ((string) $key != '') {

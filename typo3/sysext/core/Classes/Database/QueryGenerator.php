@@ -860,7 +860,7 @@ class QueryGenerator {
 			}
 			$counter = 0;
 			$webMountPageTree = '';
-			while (list(, $from_table) = each($from_table_Arr)) {
+			foreach ($from_table_Arr as $from_table) {
 				if ($useTablePrefix && !$dontPrefixFirstTable && $counter != 1 || $counter == 1) {
 					$tablePrefix = $from_table . '_';
 				}
