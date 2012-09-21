@@ -102,14 +102,14 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 	 * @return integer The highest severity found from the statuses.
 	 */
 	public function getHighestSeverity(array $statusCollection) {
-		$highestSeverity = \TYPO3\CMS\Reports\Status::NOTICE;
+		$highestSeverity = self::NOTICE;
 		foreach ($statusCollection as $statusProvider => $providerStatuses) {
 			foreach ($providerStatuses as $status) {
 				if ($status->getSeverity() > $highestSeverity) {
 					$highestSeverity = $status->getSeverity();
 				}
 				// Reached the highest severity level, no need to go on
-				if ($highestSeverity == \TYPO3\CMS\Reports\Status::ERROR) {
+				if ($highestSeverity == self::ERROR) {
 					break;
 				}
 			}
@@ -139,14 +139,14 @@ class Status implements \TYPO3\CMS\Reports\ReportInterface {
 			$providerState = $this->sortStatuses($providerStatus);
 			$id = str_replace(' ', '-', $provider);
 			$classes = array(
-				\TYPO3\CMS\Reports\Status::NOTICE => 'notice',
-				\TYPO3\CMS\Reports\Status::INFO => 'information',
-				\TYPO3\CMS\Reports\Status::OK => 'ok',
-				\TYPO3\CMS\Reports\Status::WARNING => 'warning',
-				\TYPO3\CMS\Reports\Status::ERROR => 'error'
+				self::NOTICE => 'notice',
+				self::INFO => 'information',
+				self::OK => 'ok',
+				self::WARNING => 'warning',
+				self::ERROR => 'error'
 			);
-			$icon[\TYPO3\CMS\Reports\Status::WARNING] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning');
-			$icon[\TYPO3\CMS\Reports\Status::ERROR] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error');
+			$icon[self::WARNING] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-warning');
+			$icon[self::ERROR] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-dialog-error');
 			$messages = '';
 			$headerIcon = '';
 			$sectionSeverity = 0;
