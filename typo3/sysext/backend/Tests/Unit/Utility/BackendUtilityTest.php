@@ -674,6 +674,19 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['TCA'] = $tca;
 		$this->assertSame($expected, \TYPO3\CMS\Backend\Utility\BackendUtility::getExcludeFields());
 	}
+
+	/**
+	 * Tests concerning viewOnClick
+	 */
+
+	/**
+	 * @test
+	 */
+	public function viewOnClickReturnsOnClickCodeWithAlternativeUrl() {
+		$alternativeUrl = 'https://typo3.org/about/typo3-the-cms/the-history-of-typo3/#section';
+		$onclickCode = 'var previewWin = window.open(\'' . $alternativeUrl . '\',\'newTYPO3frontendWindow\');';
+		$this->assertStringMatchesFormat($onclickCode, Utility\BackendUtility::viewOnClick(NULL, NULL, NULL, NULL, $alternativeUrl, NULL, FALSE));
+	}
 }
 
 ?>
