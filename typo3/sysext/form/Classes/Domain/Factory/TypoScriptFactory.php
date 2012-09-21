@@ -369,6 +369,4 @@ class TypoScriptFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-
-
 ?>
