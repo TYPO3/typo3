@@ -270,7 +270,7 @@ class CategoryCollectionTest extends \tx_phpunit_testcase {
 	 * @return void
 	 */
 	private function createDummyTable() {
-		$sql = "CREATE TABLE {$this->tableName} (\n\tuid int(11) auto_increment,\n\tpid int(11) unsigned DEFAULT '0' NOT NULL,\n    title tinytext,\n\tcategories int(11) unsigned DEFAULT '0' NOT NULL,\n\tsys_category_is_dummy_record int(11) unsigned DEFAULT '0' NOT NULL,\n\n    PRIMARY KEY (uid)\n);";
+		$sql = 'CREATE TABLE {' . $this->tableName . "} (\n\tuid int(11) auto_increment,\n\tpid int(11) unsigned DEFAULT '0' NOT NULL,\n    title tinytext,\n\tcategories int(11) unsigned DEFAULT '0' NOT NULL,\n\tsys_category_is_dummy_record int(11) unsigned DEFAULT '0' NOT NULL,\n\n    PRIMARY KEY (uid)\n);";
 		$this->database->sql_query($sql);
 	}
 
