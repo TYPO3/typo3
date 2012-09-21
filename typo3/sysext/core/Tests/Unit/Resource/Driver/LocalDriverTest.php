@@ -973,7 +973,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 			'basePath' => $this->getMountRootUrl()
 		));
 		$mockedFile = $this->getSimpleFileMock('/someDir/someFile');
-		$filePath = $fixture->copyFileToTemporaryPath($mockedFile);
+		$filePath = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath($fixture->copyFileToTemporaryPath($mockedFile));
 		$this->assertContains('/typo3temp/', $filePath);
 		$this->assertEquals($fileContents, file_get_contents($filePath));
 	}
@@ -994,6 +994,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function permissionsAreCorrectlyRetrievedForForbiddenFile() {
+		if (TYPO3_OS === 'WIN') {
+			$this->markTestSkipped('This test cannot be run under Windows systems');
+		}
 		if (function_exists('posix_getegid') && posix_getegid() === 0) {
 			$this->markTestSkipped('Test skipped if run on linux as root');
 		}
@@ -1021,6 +1024,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function permissionsAreCorrectlyRetrievedForForbiddenFolder() {
+		if (TYPO3_OS === 'WIN') {
+			$this->markTestSkipped('This test cannot be run under Windows systems');
+		}
 		if (function_exists('posix_getegid') && posix_getegid() === 0) {
 			$this->markTestSkipped('Test skipped if run on linux as root');
 		}
@@ -1084,6 +1090,9 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @dataProvider getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser_dataProvider
 	 */
 	public function getFilePermissionsReturnsCorrectPermissionsForFilesNotOwnedByCurrentUser($group, $permissions, $expectedResult) {
+		if (TYPO3_OS === 'WIN') {
+			$this->markTestSkipped('This test cannot be run under Windows systems');
+		}
 		$this->addToMount(array(
 			'testfile' => 'asdfg'
 		));

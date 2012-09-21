@@ -411,7 +411,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 				$iterator->next();
 				continue;
 			}
-			$entryPath = substr($entry->getPathname(), strlen($path));
+			$entryPath = \TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(substr($entry->getPathname(), strlen($path)));
 			if ($entry->isDir()) {
 				$entryPath .= '/';
 			}
@@ -862,13 +862,15 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	public function renameFile(\TYPO3\CMS\Core\Resource\FileInterface $file, $newName) {
 		// Makes sure the Path given as parameter is valid
 		$newName = $this->sanitizeFileName($newName);
-		$newIdentifier = rtrim(dirname($file->getIdentifier()), '/') . '/' . $newName;
+		$newIdentifier = rtrim(
+			\TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(dirname($file->getIdentifier())), '/'
+		) . '/' . $newName;
 		// The target should not exist already
 		if ($this->fileExists($newIdentifier)) {
 			throw new \TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException('The target file already exists.', 1320291063);
 		}
 		$sourcePath = $this->getAbsolutePath($file);
-		$targetPath = $this->absoluteBasePath . '/' . ltrim($newIdentifier, '/');
+		$targetPath = $this->getAbsolutePath(rtrim($newIdentifier, '/'));
 		$result = rename($sourcePath, $targetPath);
 		if ($result === FALSE) {
 			throw new \RuntimeException('Renaming file ' . $sourcePath . ' to ' . $targetPath . ' failed.', 1320375115);
@@ -902,7 +904,9 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 		$newName = $this->sanitizeFileName($newName);
 		$relativeSourcePath = $folder->getIdentifier();
 		$sourcePath = $this->getAbsolutePath($relativeSourcePath);
-		$relativeTargetPath = rtrim(dirname($relativeSourcePath), '/') . '/' . $newName . '/';
+		$relativeTargetPath = rtrim(
+			\TYPO3\CMS\Core\Utility\GeneralUtility::fixWindowsFilePath(dirname($relativeSourcePath)), '/'
+		) . '/' . $newName . '/';
 		$targetPath = $this->getAbsolutePath($relativeTargetPath);
 		// get all files and folders we are going to move, to have a map for updating later.
 		$filesAndFolders = $this->getFileAndFoldernamesInPath($sourcePath, TRUE);
