@@ -36,14 +36,6 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	protected $backupGlobals = TRUE;
 
 	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
-
-	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $typo3DbBackup;

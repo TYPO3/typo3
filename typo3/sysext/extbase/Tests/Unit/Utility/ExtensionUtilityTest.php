@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  * @package Extbase
  * @subpackage extbase
  */
-class ExtensionUtilityTest extends \tx_phpunit_testcase {
+class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -37,14 +37,6 @@ class ExtensionUtilityTest extends \tx_phpunit_testcase {
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * A backup of the global database

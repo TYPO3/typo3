@@ -36,14 +36,6 @@ class Typo3DbBackendTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	protected $backupGlobals = true;
 
 	/**
-	 * Excludes TYPO3_DB from backup/restore of $GLOBALS because
-	 * resource types cannot be handled during serializing.
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
-
-	/**
 	 * This is the data provider for the statement generation with a basic comparison
 	 *
 	 * @return array An array of data
