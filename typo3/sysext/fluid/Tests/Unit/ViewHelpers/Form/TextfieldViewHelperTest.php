@@ -59,7 +59,7 @@ class TextfieldViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Fo
 			'value' => 'Current value'
 		);
 		$this->viewHelper->setArguments($arguments);
-		$this->viewHelper->setViewHelperNode(new \Tx_Fluid_ViewHelpers_Fixtures_EmptySyntaxTreeNode());
+		$this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}

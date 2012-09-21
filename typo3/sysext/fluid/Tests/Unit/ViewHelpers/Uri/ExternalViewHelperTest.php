@@ -24,7 +24,7 @@ class ExternalViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Vie
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = new \Tx_Fluid_ViewHelpers_Uri_ExternalViewHelper();
+		$this->viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\Uri\ExternalViewHelper();
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}

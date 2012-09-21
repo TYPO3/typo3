@@ -41,7 +41,7 @@ class EmailViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 		parent::setUp();
 		$this->cObjBackup = $GLOBALS['TSFE']->cObj;
 		$GLOBALS['TSFE']->cObj = $this->getMock('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer', array(), array(), '', FALSE);
-		$this->viewHelper = new \Tx_Fluid_ViewHelpers_Uri_EmailViewHelper();
+		$this->viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\Uri\EmailViewHelper();
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();
 	}

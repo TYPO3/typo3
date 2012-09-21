@@ -121,7 +121,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	 * @test
 	 */
 	public function multipleSelectCreatesExpectedOptions() {
-		$this->tagBuilder = new \Tx_Fluid_Core_ViewHelper_TagBuilder();
+		$this->tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder();
 		$this->arguments['options'] = array(
 			'value1' => 'label1',
 			'value2' => 'label2',
@@ -150,9 +150,9 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
 		$this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="1">Ingmar</option>' . chr(10) . '<option value="2" selected="selected">Sebastian</option>' . chr(10) . '<option value="3">Robert</option>' . chr(10));
 		$this->tagBuilder->expects($this->once())->method('render');
-		$user_is = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
-		$user_sk = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
-		$user_rl = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(3, 'Robert', 'Lemke');
+		$user_is = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\Fixture_UserDomainClass(1, 'Ingmar', 'Schlecht');
+		$user_sk = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\Fixture_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
+		$user_rl = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\Fixture_UserDomainClass(3, 'Robert', 'Lemke');
 		$this->arguments['options'] = array(
 			$user_is,
 			$user_sk,
@@ -171,11 +171,11 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 	 * @test
 	 */
 	public function multipleSelectOnDomainObjectsCreatesExpectedOptions() {
-		$this->tagBuilder = new \Tx_Fluid_Core_ViewHelper_TagBuilder();
+		$this->tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder();
 		$this->viewHelper->expects($this->exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
-		$user_is = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
-		$user_sk = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
-		$user_rl = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(3, 'Robert', 'Lemke');
+		$user_is = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\Fixture_UserDomainClass(1, 'Ingmar', 'Schlecht');
+		$user_sk = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\Fixture_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
+		$user_rl = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\Fixture_UserDomainClass(3, 'Robert', 'Lemke');
 		$this->arguments['options'] = array(
 			$user_is,
 			$user_sk,
@@ -206,11 +206,11 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		}));
 		$mockPersistenceManager->expects($this->any())->method('getBackend')->will($this->returnValue($mockBackend));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
-		$this->tagBuilder = new \Tx_Fluid_Core_ViewHelper_TagBuilder();
+		$this->tagBuilder = new \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder();
 		$this->viewHelper->expects($this->exactly(3))->method('registerFieldNameForFormTokenGeneration')->with('myName[]');
-		$user_is = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
-		$user_sk = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
-		$user_rl = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(3, 'Robert', 'Lemke');
+		$user_is = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\Fixture_UserDomainClass(1, 'Ingmar', 'Schlecht');
+		$user_sk = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\Fixture_UserDomainClass(2, 'Sebastian', 'Kurfuerst');
+		$user_rl = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\Fixture_UserDomainClass(3, 'Robert', 'Lemke');
 		$this->arguments['options'] = array($user_is, $user_sk, $user_rl);
 		$this->arguments['value'] = array($user_rl, $user_is);
 		$this->arguments['optionLabelField'] = 'lastName';
@@ -236,7 +236,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$this->viewHelper->expects($this->once())->method('registerFieldNameForFormTokenGeneration')->with('myName');
 		$this->tagBuilder->expects($this->once())->method('setContent')->with('<option value="fakeUID">fakeUID</option>' . chr(10));
 		$this->tagBuilder->expects($this->once())->method('render');
-		$user = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
+		$user = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\Fixture_UserDomainClass(1, 'Ingmar', 'Schlecht');
 		$this->arguments['options'] = array(
 			$user
 		);
@@ -278,7 +278,7 @@ class SelectViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 		$mockPersistenceManager = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface');
 		$mockPersistenceManager->expects($this->any())->method('getIdentifierByObject')->will($this->returnValue(NULL));
 		$this->viewHelper->injectPersistenceManager($mockPersistenceManager);
-		$user = new \Tx_Fluid_ViewHelpers_Fixtures_UserDomainClass(1, 'Ingmar', 'Schlecht');
+		$user = new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\Fixture_UserDomainClass(1, 'Ingmar', 'Schlecht');
 		$this->arguments['options'] = array(
 			$user
 		);

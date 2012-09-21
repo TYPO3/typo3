@@ -24,7 +24,7 @@ class SubmitViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\
 
 	public function setUp() {
 		parent::setUp();
-		$this->viewHelper = new \Tx_Fluid_ViewHelpers_Form_SubmitViewHelper();
+		$this->viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\Form\SubmitViewHelper();
 		$this->arguments['name'] = '';
 		$this->injectDependenciesIntoViewHelper($this->viewHelper);
 		$this->viewHelper->initializeArguments();

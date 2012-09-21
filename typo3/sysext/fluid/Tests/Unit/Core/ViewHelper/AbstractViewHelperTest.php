@@ -29,7 +29,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$description = 'Example desc';
 		$type = 'string';
 		$isRequired = TRUE;
-		$expected = new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $type, $description, $isRequired);
+		$expected = new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition($name, $type, $description, $isRequired);
 		$viewHelper->_call('registerArgument', $name, $type, $description, $isRequired);
 		$this->assertEquals(array($name => $expected), $viewHelper->prepareArguments(), 'Argument definitions not returned correctly.');
 	}
@@ -61,7 +61,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$type = 'string';
 		$overriddenType = 'integer';
 		$isRequired = TRUE;
-		$expected = new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition($name, $overriddenType, $overriddenDescription, $isRequired);
+		$expected = new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition($name, $overriddenType, $overriddenDescription, $isRequired);
 		$viewHelper->_call('registerArgument', $name, $type, $description, $isRequired);
 		$viewHelper->_call('overrideArgument', $name, $overriddenType, $overriddenDescription, $isRequired);
 		$this->assertEquals($viewHelper->prepareArguments(), array($name => $expected), 'Argument definitions not returned correctly. The original ArgumentDefinition could not be overridden.');
@@ -93,45 +93,45 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	 * @test
 	 */
 	public function prepareArgumentsRegistersAnnotationBasedArgumentsWithDescriptionIfDebugModeIsEnabled() {
-		\Tx_Fluid_Fluid::$debugMode = TRUE;
+		\TYPO3\CMS\Fluid\Fluid::$debugMode = TRUE;
 		$availableClassNames = array(
 			array('TYPO3\\CMS\\Fluid\\Tests\\Unit\\Core\\Fixtures\\TestViewHelper')
 		);
 		$dataCacheMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend', array(), array(), '', FALSE);
 		$dataCacheMock->expects($this->any())->method('has')->will($this->returnValue(TRUE));
 		$dataCacheMock->expects($this->any())->method('get')->will($this->returnValue(array()));
-		$reflectionService = new \Tx_Extbase_Reflection_Service();
+		$reflectionService = new \TYPO3\CMS\Extbase\Reflection\Service();
 		$reflectionService->setDataCache($dataCacheMock);
-		$viewHelper = new \Tx_Fluid_Core_Fixtures_TestViewHelper();
+		$viewHelper = new \TYPO3\CMS\Fluid\Tests\Unit\Core\Fixtures\TestViewHelper();
 		$viewHelper->injectReflectionService($reflectionService);
 		$expected = array(
-			'param1' => new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param1', 'integer', 'P1 Stuff', TRUE, null, TRUE),
-			'param2' => new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param2', 'array', 'P2 Stuff', TRUE, null, TRUE),
-			'param3' => new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param3', 'string', 'P3 Stuff', FALSE, 'default', TRUE)
+			'param1' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param1', 'integer', 'P1 Stuff', TRUE, null, TRUE),
+			'param2' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param2', 'array', 'P2 Stuff', TRUE, null, TRUE),
+			'param3' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param3', 'string', 'P3 Stuff', FALSE, 'default', TRUE)
 		);
 		$this->assertEquals($expected, $viewHelper->prepareArguments(), 'Annotation based arguments were not registered.');
-		\Tx_Fluid_Fluid::$debugMode = FALSE;
+		\TYPO3\CMS\Fluid\Fluid::$debugMode = FALSE;
 	}
 
 	/**
 	 * @test
 	 */
 	public function prepareArgumentsRegistersAnnotationBasedArgumentsWithoutDescriptionIfDebugModeIsDisabled() {
-		\Tx_Fluid_Fluid::$debugMode = FALSE;
+		\TYPO3\CMS\Fluid\Fluid::$debugMode = FALSE;
 		$availableClassNames = array(
 			array('TYPO3\\CMS\\Fluid\\Tests\\Unit\\Core\\Fixtures\\TestViewHelper2')
 		);
 		$dataCacheMock = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\VariableFrontend', array(), array(), '', FALSE);
 		$dataCacheMock->expects($this->any())->method('has')->will($this->returnValue(TRUE));
 		$dataCacheMock->expects($this->any())->method('get')->will($this->returnValue(array()));
-		$reflectionService = new \Tx_Extbase_Reflection_Service();
+		$reflectionService = new \TYPO3\CMS\Extbase\Reflection\Service();
 		$reflectionService->setDataCache($dataCacheMock);
-		$viewHelper = new \Tx_Fluid_Core_Fixtures_TestViewHelper2();
+		$viewHelper = new \TYPO3\CMS\Fluid\Tests\Unit\Core\Fixtures\TestViewHelper2();
 		$viewHelper->injectReflectionService($reflectionService);
 		$expected = array(
-			'param1' => new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param1', 'integer', '', TRUE, null, TRUE),
-			'param2' => new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param2', 'array', '', TRUE, null, TRUE),
-			'param3' => new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('param3', 'string', '', FALSE, 'default', TRUE)
+			'param1' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param1', 'integer', '', TRUE, null, TRUE),
+			'param2' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param2', 'array', '', TRUE, null, TRUE),
+			'param3' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('param3', 'string', '', FALSE, 'default', TRUE)
 		);
 		$this->assertEquals($expected, $viewHelper->prepareArguments(), 'Annotation based arguments were not registered.');
 	}
@@ -153,7 +153,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 	public function validateArgumentsAcceptsAllObjectsImplemtingArrayAccessAsAnArray() {
 		$viewHelper = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\AbstractViewHelper', array('render', 'prepareArguments'), array(), '', FALSE);
 		$viewHelper->setArguments(array('test' => new \ArrayObject()));
-		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array('test' => new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('test', 'array', FALSE, 'documentation'))));
+		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array('test' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('test', 'array', FALSE, 'documentation'))));
 		$viewHelper->validateArguments();
 	}
 
@@ -166,7 +166,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$viewHelper->injectReflectionService($mockReflectionService);
 		$viewHelper->setArguments(array('test' => 'Value of argument'));
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array(
-			'test' => new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('test', 'string', FALSE, 'documentation')
+			'test' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('test', 'string', FALSE, 'documentation')
 		)));
 		$viewHelper->validateArguments();
 	}
@@ -181,7 +181,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$viewHelper->injectReflectionService($mockReflectionService);
 		$viewHelper->setArguments(array('test' => 'test'));
 		$viewHelper->expects($this->once())->method('prepareArguments')->will($this->returnValue(array(
-			'test' => new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('test', 'stdClass', FALSE, 'documentation')
+			'test' => new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('test', 'stdClass', FALSE, 'documentation')
 		)));
 		$viewHelper->validateArguments();
 	}
@@ -206,7 +206,7 @@ class AbstractViewHelperTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase 
 		$templateVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TemplateVariableContainer');
 		$viewHelperVariableContainer = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\ViewHelperVariableContainer');
 		$controllerContext = $this->getMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\ControllerContext', array(), array(), '', FALSE);
-		$renderingContext = new \Tx_Fluid_Core_Rendering_RenderingContext();
+		$renderingContext = new \TYPO3\CMS\Fluid\Core\Rendering\RenderingContext();
 		$renderingContext->injectTemplateVariableContainer($templateVariableContainer);
 		$renderingContext->injectViewHelperVariableContainer($viewHelperVariableContainer);
 		$renderingContext->setControllerContext($controllerContext);

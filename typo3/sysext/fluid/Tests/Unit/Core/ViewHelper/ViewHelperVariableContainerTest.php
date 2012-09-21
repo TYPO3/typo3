@@ -23,7 +23,7 @@ class ViewHelperVariableContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	protected $viewHelperVariableContainer;
 
 	protected function setUp() {
-		$this->viewHelperVariableContainer = new \Tx_Fluid_Core_ViewHelper_ViewHelperVariableContainer();
+		$this->viewHelperVariableContainer = new \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperVariableContainer();
 	}
 
 	/**

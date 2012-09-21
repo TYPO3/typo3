@@ -21,7 +21,7 @@ class AliasViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 	 * @test
 	 */
 	public function renderAddsSingleValueToTemplateVariableContainerAndRemovesItAfterRendering() {
-		$viewHelper = new \Tx_Fluid_ViewHelpers_AliasViewHelper();
+		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\AliasViewHelper();
 		$mockViewHelperNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', array('evaluateChildNodes'), array(), '', FALSE);
 		$mockViewHelperNode->expects($this->once())->method('evaluateChildNodes')->will($this->returnValue('foo'));
 		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('someAlias', 'someValue');
@@ -35,7 +35,7 @@ class AliasViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 	 * @test
 	 */
 	public function renderAddsMultipleValuesToTemplateVariableContainerAndRemovesThemAfterRendering() {
-		$viewHelper = new \Tx_Fluid_ViewHelpers_AliasViewHelper();
+		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\AliasViewHelper();
 		$mockViewHelperNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', array('evaluateChildNodes'), array(), '', FALSE);
 		$mockViewHelperNode->expects($this->once())->method('evaluateChildNodes')->will($this->returnValue('foo'));
 		$this->templateVariableContainer->expects($this->at(0))->method('add')->with('someAlias', 'someValue');
@@ -51,7 +51,7 @@ class AliasViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\ViewHe
 	 * @test
 	 */
 	public function renderDoesNotTouchTemplateVariableContainerAndReturnsChildNodesIfMapIsEmpty() {
-		$viewHelper = new \Tx_Fluid_ViewHelpers_AliasViewHelper();
+		$viewHelper = new \TYPO3\CMS\Fluid\ViewHelpers\AliasViewHelper();
 		$mockViewHelperNode = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\ViewHelperNode', array('evaluateChildNodes'), array(), '', FALSE);
 		$mockViewHelperNode->expects($this->once())->method('evaluateChildNodes')->will($this->returnValue('foo'));
 		$this->templateVariableContainer->expects($this->never())->method('add');

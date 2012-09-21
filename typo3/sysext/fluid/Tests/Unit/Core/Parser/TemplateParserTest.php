@@ -25,7 +25,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @expectedException \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
 	public function parseThrowsExceptionWhenStringArgumentMissing() {
-		$templateParser = new \Tx_Fluid_Core_Parser_TemplateParser();
+		$templateParser = new \TYPO3\CMS\Fluid\Core\Parser\TemplateParser();
 		$templateParser->parse(123);
 	}
 
@@ -250,7 +250,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('abortIfUnregisteredArgumentsExist', 'abortIfRequiredArgumentsAreMissing', 'rewriteBooleanNodesInArgumentsObjectTree'));
 		$templateParser->injectObjectManager($mockObjectManager);
 		$templateParser->_call('initializeViewHelperAndAddItToStack', $mockState, 'f', 'myown', array('arguments'));
-		$this->assertTrue(\Tx_Fluid_Core_Parser_Fixtures_PostParseFacetViewHelper::$wasCalled, 'PostParse was not called!');
+		$this->assertTrue(\TYPO3\CMS\Fluid\Core\Parser\Fixtures\PostParseFacetViewHelper::$wasCalled, 'PostParse was not called!');
 	}
 
 	/**
@@ -258,7 +258,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @expectedException \TYPO3\CMS\Fluid\Core\Parser\Exception
 	 */
 	public function abortIfUnregisteredArgumentsExistThrowsExceptionOnUnregisteredArguments() {
-		$expected = array(new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('firstArgument', 'string', '', FALSE));
+		$expected = array(new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('firstArgument', 'string', '', FALSE));
 		$actual = array('firstArgument' => 'foo', 'secondArgument' => 'bar');
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('dummy'));
 		$templateParser->_call('abortIfUnregisteredArgumentsExist', $expected, $actual);
@@ -269,8 +269,8 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function abortIfUnregisteredArgumentsExistDoesNotThrowExceptionIfEverythingIsOk() {
 		$expectedArguments = array(
-			new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('name1', 'string', 'desc', FALSE),
-			new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('name2', 'string', 'desc', TRUE)
+			new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('name1', 'string', 'desc', FALSE),
+			new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('name2', 'string', 'desc', TRUE)
 		);
 		$actualArguments = array(
 			'name1' => 'bla'
@@ -285,8 +285,8 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function abortIfRequiredArgumentsAreMissingThrowsException() {
 		$expected = array(
-			new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('firstArgument', 'string', '', FALSE),
-			new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('secondArgument', 'string', '', TRUE)
+			new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('firstArgument', 'string', '', FALSE),
+			new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('secondArgument', 'string', '', TRUE)
 		);
 		$templateParser = $this->getAccessibleMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\TemplateParser', array('dummy'));
 		$templateParser->_call('abortIfRequiredArgumentsAreMissing', $expected, array());
@@ -297,8 +297,8 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function abortIfRequiredArgumentsAreMissingDoesNotThrowExceptionIfRequiredArgumentExists() {
 		$expectedArguments = array(
-			new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('name1', 'string', 'desc', FALSE),
-			new \Tx_Fluid_Core_ViewHelper_ArgumentDefinition('name2', 'string', 'desc', TRUE)
+			new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('name1', 'string', 'desc', FALSE),
+			new \TYPO3\CMS\Fluid\Core\ViewHelper\ArgumentDefinition('name2', 'string', 'desc', TRUE)
 		);
 		$actualArguments = array(
 			'name2' => 'bla'
@@ -369,7 +369,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$objectAccessorNodeInterceptor = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\InterceptorInterface');
 		$objectAccessorNodeInterceptor->expects($this->once())->method('process')->with($objectAccessorNode)->will($this->returnArgument(0));
 		$parserConfiguration = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\Configuration');
-		$parserConfiguration->expects($this->once())->method('getInterceptors')->with(\Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_OBJECTACCESSOR)->will($this->returnValue(array($objectAccessorNodeInterceptor)));
+		$parserConfiguration->expects($this->once())->method('getInterceptors')->with(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_OBJECTACCESSOR)->will($this->returnValue(array($objectAccessorNodeInterceptor)));
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('create')->will($this->returnValue($objectAccessorNode));
 		$mockNodeOnStack = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\AbstractNode', array(), array(), '', FALSE);
@@ -491,7 +491,7 @@ class TemplateParserTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$textInterceptor = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\InterceptorInterface');
 		$textInterceptor->expects($this->once())->method('process')->with($textNode)->will($this->returnArgument(0));
 		$parserConfiguration = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\Configuration');
-		$parserConfiguration->expects($this->once())->method('getInterceptors')->with(\Tx_Fluid_Core_Parser_InterceptorInterface::INTERCEPT_TEXT)->will($this->returnValue(array($textInterceptor)));
+		$parserConfiguration->expects($this->once())->method('getInterceptors')->with(\TYPO3\CMS\Fluid\Core\Parser\InterceptorInterface::INTERCEPT_TEXT)->will($this->returnValue(array($textInterceptor)));
 		$mockObjectManager = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerInterface');
 		$mockObjectManager->expects($this->once())->method('create')->with('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\TextNode', 'string')->will($this->returnValue($textNode));
 		$mockNodeOnStack = $this->getMock('TYPO3\\CMS\\Fluid\\Core\\Parser\\SyntaxTree\\AbstractNode', array(), array(), '', FALSE);

@@ -58,7 +58,7 @@ class TextareaViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 			'value' => 'Current value'
 		);
 		$this->viewHelper->setArguments($arguments);
-		$this->viewHelper->setViewHelperNode(new \Tx_Fluid_ViewHelpers_Fixtures_EmptySyntaxTreeNode());
+		$this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
@@ -86,7 +86,7 @@ class TextareaViewHelperTest extends \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\For
 			'value' => 'some <tag> & "quotes"'
 		);
 		$this->viewHelper->setArguments($arguments);
-		$this->viewHelper->setViewHelperNode(new \Tx_Fluid_ViewHelpers_Fixtures_EmptySyntaxTreeNode());
+		$this->viewHelper->setViewHelperNode(new \TYPO3\CMS\Fluid\Tests\Unit\ViewHelpers\Form\Fixtures\EmptySyntaxTreeNode());
 		$this->viewHelper->initialize();
 		$this->viewHelper->render();
 	}
