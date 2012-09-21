@@ -25,6 +25,8 @@ namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Controller;
  ***************************************************************/
 
 /**
+ * Update from TER controller test
+ *
  * @package Extension Manager
  * @subpackage Tests
  */
