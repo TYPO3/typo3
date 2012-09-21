@@ -2,16 +2,16 @@
 namespace TYPO3\CMS\Dbal\Tests;
 
 /**
- * Testcase for class ux_t3lib_db. Testing MS SQL database handling.
+ * Testcase for class ux_TYPO3\CMS\Core\Database\DatabaseConnection. Testing MS SQL database handling.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  * @package TYPO3
  * @subpackage dbal
  */
-class DatabaseMssqlTest extends BaseTestCase {
+class DatabaseMssqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var t3lib_db
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $db;
 

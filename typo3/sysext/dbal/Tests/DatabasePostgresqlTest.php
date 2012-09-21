@@ -2,16 +2,16 @@
 namespace TYPO3\CMS\Dbal\Tests;
 
 /**
- * Testcase for class ux_t3lib_db. Testing PostgreSQL database handling.
+ * Testcase for class ux_TYPO3\CMS\Core\Database\DatabaseConnection. Testing PostgreSQL database handling.
  *
  * @author Xavier Perseguers <xavier@typo3.org>
  * @package TYPO3
  * @subpackage dbal
  */
-class DatabasePostgresqlTest extends BaseTestCase {
+class DatabasePostgresqlTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var t3lib_db
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $db;
 

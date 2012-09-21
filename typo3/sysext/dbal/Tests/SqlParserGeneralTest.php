@@ -31,10 +31,10 @@ namespace TYPO3\CMS\Dbal\Tests;
  * @package TYPO3
  * @subpackage dbal
  */
-class SqlParserGeneralTest extends BaseTestCase {
+class SqlParserGeneralTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var ux_TYPO3\CMS\Core\Database\SqlParser (extended to make protected methods public)
+	 * @var \ux_TYPO3\CMS\Core\Database\SqlParser (extended to make protected methods public)
 	 */
 	protected $fixture;
 

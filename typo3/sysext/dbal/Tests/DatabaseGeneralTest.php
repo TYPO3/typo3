@@ -8,10 +8,10 @@ namespace TYPO3\CMS\Dbal\Tests;
  * @package TYPO3
  * @subpackage dbal
  */
-class DatabaseGeneralTest extends BaseTestCase {
+class DatabaseGeneralTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var t3lib_db
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection
 	 */
 	protected $db;
 
