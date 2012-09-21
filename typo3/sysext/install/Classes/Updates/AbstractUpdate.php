@@ -133,24 +133,6 @@ abstract class AbstractUpdate {
 	}
 
 	/**
-	 * This method creates an instance of a connection to the Extension Manager
-	 * and returns it. This is used when installing an extension.
-	 *
-	 * @return tx_em_Connection_ExtDirectServer EM connection instance
-	 */
-	public function getExtensionManagerConnection() {
-		// Create an instance of language, if necessary.
-		// Needed in order to make the em_index work
-		if (!is_object($GLOBALS['LANG'])) {
-			$GLOBALS['LANG'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
-			$GLOBALS['LANG']->csConvObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Charset\\CharsetConverter');
-		}
-		// Create an instance of a connection class to the EM
-		$extensionManagerConnection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_em_Connection_ExtDirectServer', FALSE);
-		return $extensionManagerConnection;
-	}
-
-	/**
 	 * Checks whether updates are required.
 	 *
 	 * @param string &$description: The description for the update
@@ -175,9 +157,12 @@ abstract class AbstractUpdate {
 	 * @return void
 	 */
 	protected function installExtensions($extensionKeys) {
-		$extensionManagerConnection = $this->getExtensionManagerConnection();
+		/** @var $installUtility \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
+		$installUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility'
+		);
 		foreach ($extensionKeys as $extension) {
-			$extensionManagerConnection->enableExtension($extension);
+			$installUtility->install($extension);
 		}
 	}
 

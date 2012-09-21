@@ -6,6 +6,7 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *
  *  (c) 2008-2011 Benjamin Mack <benni@typo3.org>
  *  (c) 2008-2011 Steffen Kamper <info@sk-typo3.de>
+ *  (c) 2012 Kai Vogel <kai.vogel@speedprogs.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -28,16 +29,52 @@ namespace TYPO3\CMS\Install\CoreUpdates;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Contains the update class for adding outsourced system extensions.
+ * Contains the update class for adding new system extensions.
  *
  * @author Benjamin Mack <benni@typo3.org>
  * @author Steffen Kamper <info@sk-typo3.de>
+ * @author  Kai Vogel <kai.vogel@speedprogs.de>
  */
 class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 
-	protected $title = 'Install Outsourced System Extensions';
+	/**
+	 * @var string
+	 */
+	protected $title = 'Install System Extensions';
 
-	protected $outsourcedSystemExtensions = array('info', 'perm', 'func', 'filelist', 'about', 'cshmanual', 'feedit', 'opendocs');
+	/**
+	 * @var array
+	 */
+	protected $systemExtensions = array(
+		'info',
+		'perm',
+		'func',
+		'filelist',
+		'about',
+		'cshmanual',
+		'feedit',
+		'opendocs',
+		'recycler',
+		't3editor',
+		'reports',
+		'scheduler',
+		'simulatestatic',
+	);
+
+	/**
+	 * @var string
+	 */
+	protected $extEmConfPath = 'typo3/sysext/@extensionKey/ext_emconf.php';
+
+	/**
+	 * @var string
+	 */
+	protected $repositoryUrl = 'http://typo3.org/fileadmin/ter/@filename';
+
+	/**
+	 * @var string
+	 */
+	protected $informationUrl = 'http://typo3.org/index.php?type=95832&tx_terfe2_pi1%5Baction%5D=show&tx_terfe2_pi1%5Bformat%5D=json&tx_terfe2_pi1%5BextensionKey%5D=@extensionKey';
 
 	/**
 	 * Checks if an update is needed
@@ -46,93 +83,251 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @return boolean whether an update is needed (TRUE) or not (FALSE)
 	 */
 	public function checkForUpdate(&$description) {
-		$result = FALSE;
 		$description = '
-			<ul>
+			<br />
+			Uninstalled system extensions have been found.
+			It is now possible to install them automatically by this upgrade wizard.
 		';
-		foreach ($this->outsourcedSystemExtensions as $_EXTKEY) {
-			if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($_EXTKEY)) {
-				$EM_CONF = FALSE;
-				// extension may not been loaded at this point, so we can't use an API function from t3lib_extmgm
-				require_once PATH_site . 'typo3/sysext/' . $_EXTKEY . '/ext_emconf.php';
-				$description .= '
-					<li>
-						<strong>
-							' . htmlspecialchars($EM_CONF[$_EXTKEY]['title']) . ' [' . $_EXTKEY . ']
-						</strong>
-						<br />
-						' . htmlspecialchars($EM_CONF[$_EXTKEY]['description']) . '
-					</li>
-				';
-				$result = TRUE;
+
+		if ($this->isWizardDone()) {
+			return FALSE;
+		}
+
+		foreach ($this->systemExtensions as $extensionKey) {
+			if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extensionKey)) {
+				return TRUE;
 			}
 		}
-		$description .= '
-			</ul>
-		';
-		if ($this->isWizardDone()) {
-			$result = FALSE;
-		}
-		return $result;
+
+		return FALSE;
 	}
 
 	/**
-	 * second step: get user input for installing sysextensions
+	 * Second step: Get user input for installing system extensions
 	 *
 	 * @param string $inputPrefix input prefix, all names of form fields have to start with this. Append custom name in [ ... ]
 	 * @return string HTML output
 	 */
 	public function getUserInput($inputPrefix) {
-		$content = '
+		$list = '
 			<p>
-				<strong>
-					Install the following SystemExtensions:
-				</strong>
+				Install the following system extensions:
 			</p>
-		';
-		$content .= '
 			<fieldset>
-				<ol>
-		';
-		foreach ($this->outsourcedSystemExtensions as $_EXTKEY) {
-			if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($_EXTKEY)) {
-				$EM_CONF = FALSE;
-				// extension may not been loaded at this point, so we can't use an API function from t3lib_extmgm
-				require_once PATH_site . 'typo3/sysext/' . $_EXTKEY . '/ext_emconf.php';
-				$content .= '
-					<li class="labelAfter">
-						<input type="checkbox" id="' . $_EXTKEY . '" name="' . $inputPrefix . '[sysext][' . $_EXTKEY . ']" value="1" checked="checked" />
-						<label for="' . $_EXTKEY . '">' . $EM_CONF[$_EXTKEY]['title'] . ' [' . $_EXTKEY . ']</label>
-					</li>
-				';
+				<ol class="t3-install-form-label-after">%s</ol>
+			</fieldset>';
+		$item = '
+			<li class="labelAfter">
+				<input type="checkbox" id="%1$s" name="%2$s[sysext][%1$s]" value="1" checked="checked" />
+				<label for="%1$s"><strong>%3$s [%1$s]</strong><br />%4$s</label>
+			</li>';
+		$items = array();
+
+		foreach ($this->systemExtensions as $extensionKey) {
+			if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extensionKey)) {
+				continue;
 			}
+			$extension = $this->getExtensionDetails($extensionKey);
+			$items[] = sprintf(
+				$item,
+				$extensionKey,
+				$inputPrefix,
+				htmlspecialchars($extension['title']),
+				htmlspecialchars($extension['description'])
+			);
 		}
-		$content .= '
-				</ol>
-			</fieldset>
-		';
-		return $content;
+
+		return sprintf($list, implode('', $items));
 	}
 
 	/**
 	 * Adds the outsourced extensions to the extList in TYPO3_CONF_VARS
 	 *
-	 * @param 	array		&$dbQueries: queries done in this update
-	 * @param 	mixed		&$customMessages: custom messages
-	 * @return 	boolean		whether it worked (TRUE) or not (FALSE)
+	 * @param array &$dbQueries: queries done in this update
+	 * @param mixed &$customMessages: custom messages
+	 * @return boolean whether it worked (TRUE) or not (FALSE)
 	 */
 	public function performUpdate(array &$dbQueries, &$customMessages) {
-		// Get extension keys that were submitted by the user to be installed and that are valid for this update wizard
+		$errorsOccured = FALSE;
+			// Get extension keys that were submitted by the user to be installed and that are valid for this update wizard
 		if (is_array($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])) {
-			$extArray = array_intersect($this->outsourcedSystemExtensions, array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext']));
-			$this->installExtensions($extArray);
+			$extArray = array_intersect(
+				$this->systemExtensions,
+				array_keys($this->pObj->INSTALL['update']['installSystemExtensions']['sysext'])
+			);
+			$errorsOccured = $this->installExtensions($extArray, $customMessages);
 		}
-		// Never show this wizard again
+
+			// Show this wizard again only if new extension keys have been found
 		$this->markWizardAsDone();
-		return TRUE;
+
+		return !$errorsOccured;
 	}
 
-}
+	/**
+	 * This method can be called to install extensions following all proper processes
+	 * (e.g. installing in extList, respecting priority, etc.)
+	 *
+	 * @param array $extensionKeys List of keys of extensions to install
+	 * @param mixed $customMessages
+	 * @return void
+	 */
+	protected function installExtensions($extensionKeys, &$customMessages) {
+		$errorsOccured = FALSE;
 
+		/** @var $extensionListUtility \TYPO3\CMS\Extensionmanager\Utility\ListUtility */
+		$extensionListUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\ListUtility'
+		);
+
+		/** @var $extensionFileHandlingUtility \TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility */
+		$extensionFileHandlingUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\FileHandlingUtility'
+		);
+		/** @var $objectManager \TYPO3\CMS\Extbase\Object\ObjectManager */
+		$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+
+		/** @var $extensionInstallUtility \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
+		$extensionInstallUtility = $this->objectManager->get('TYPO3\\CMS\\Extensionmanager\\Utility\\InstallUtility');
+
+		/** @var $extensionTerUtility \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility */
+		$extensionTerUtility = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Extensionmanager\\Utility\\Connection\\TerUtility'
+		);
+		$availableExtensions = $extensionListUtility->getAvailableExtensions();
+		$availableAndInstalledExtensions = $extensionListUtility->getAvailableAndInstalledExtensions($availableExtensions);
+		foreach ($extensionKeys as $extensionKey) {
+			if (!is_array($availableAndInstalledExtensions[$extensionKey])) {
+				$extensionDetails = $this->getExtensionDetails($extensionKey);
+				$t3xContent = $this->fetchExtension($extensionKey, $extensionDetails['versionString']);
+				if (empty($t3xContent)) {
+					$errorsOccured = TRUE;
+					$customMessages .= 'The extension ' . $extensionKey . ' could not be downloaded.';
+					continue;
+				}
+				$t3xExtracted = $extensionTerUtility->decodeExchangeData($t3xContent);
+				if (empty($t3xExtracted) || !is_array($t3xExtracted) || empty($t3xExtracted['extKey'])) {
+					$errorsOccured = TRUE;
+					$customMessages .= 'The extension ' . $extensionKey . ' could not be extracted.';
+					continue;
+				}
+				$extensionFileHandlingUtility->unpackExtensionFromExtensionDataArray($t3xExtracted);
+			}
+			$extensionInstallUtility->install($extensionKey);
+		}
+		return $errorsOccured;
+	}
+
+	/**
+	 * Returns the details of a local or external extension
+	 *
+	 * @param string $extensionKey Key of the extension to check
+	 * @return array Extension details
+	 */
+	protected function getExtensionDetails($extensionKey) {
+			// Local extension
+		$extEmConf = PATH_site . str_replace('@extensionKey', $extensionKey, $this->extEmConfPath);
+		if (file_exists($extEmConf)) {
+			$EM_CONF = FALSE;
+			require_once($extEmConf);
+			return reset($EM_CONF);
+		}
+
+			// Repository extension
+		$url = str_replace('@extensionKey', $extensionKey, $this->informationUrl);
+		$jsonResponse = $this->fetchUrl($url);
+		if (!empty($jsonResponse) && is_string($jsonResponse)) {
+			return json_decode($jsonResponse, TRUE);
+		}
+
+		return array();
+	}
+
+	/**
+	 * Fetch extension from repository
+	 *
+	 * @param string $extensionKey The extension key to fetch
+	 * @param string $version The version to fetch
+	 * @return string T3X file content
+	 */
+	protected function fetchExtension($extensionKey, $version) {
+		if (empty($extensionKey) || empty($version)) {
+			return '';
+		}
+
+		$filename = $extensionKey[0] . '/' . $extensionKey[1] . '/' . $extensionKey . '_' . $version . '.t3x';
+		$url = str_replace('@filename', $filename, $this->repositoryUrl);
+		return $this->fetchUrl($url);
+	}
+
+	/**
+	 * Open an URL and return the response
+	 *
+	 * This wrapper method is required to try several download methods if
+	 * the configuration is not valid or initially written by the installer.
+	 *
+	 * @param string $url The URL to file
+	 * @throws \Exception
+	 * @return string File content
+	 */
+	protected function fetchUrl($url) {
+		if (empty($url)) {
+			return NULL;
+		}
+
+		$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url, 0, array(TYPO3_user_agent));
+
+			// No content, force cURL if disabled in configuration but found in system
+		if ($fileContent === FALSE && function_exists('curl_init') && empty($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'])) {
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] = TRUE;
+			$fileContent = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl($url, 0, array(TYPO3_user_agent));
+			$GLOBALS['TYPO3_CONF_VARS']['SYS']['curlUse'] = FALSE;
+		}
+
+			// Still no content, try file_get_contents if allow_url_fopen is enabled
+		if ($fileContent === FALSE && function_exists('file_get_contents') && ini_get('allow_url_fopen')) {
+			$fileContent = file_get_contents($url);
+		}
+
+			// Can not fetch url, throw an exception
+		if ($fileContent === FALSE) {
+			throw new \Exception(
+				'Can not fetch URL "' . $url . '". Possibile reasons are network problems or misconfiguration.',
+				1344685036
+			);
+		}
+
+		return $fileContent;
+	}
+
+	/**
+	 * Marks the wizard as being "seen" so that it not shown again until
+	 * no new extension keys have been found.
+	 *
+	 * Writes the info in LocalConfiguration.php
+	 *
+	 * @return void
+	 */
+	protected function markWizardAsDone() {
+		\TYPO3\CMS\Core\Configuration\ConfigurationManager::setLocalConfigurationValueByPath(
+			'INSTALL/wizardDone/' . get_class($this),
+			json_encode($this->systemExtensions)
+		);
+	}
+
+	/**
+	 * Checks if all extensions have been "seen" before
+	 *
+	 * @return boolean TRUE if wizard has been done before, FALSE otherwise
+	 */
+	protected function isWizardDone() {
+		$wizardClassName = get_class($this);
+		if (!empty($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone'][$wizardClassName])) {
+			$seenExtensions = json_decode($GLOBALS['TYPO3_CONF_VARS']['INSTALL']['wizardDone'][$wizardClassName], TRUE);
+			return (bool) array_diff($this->systemExtensions, $seenExtensions);
+		}
+		return FALSE;
+	}
+}
 
 ?>
