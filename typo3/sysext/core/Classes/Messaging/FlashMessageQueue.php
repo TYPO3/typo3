@@ -35,7 +35,7 @@ namespace TYPO3\CMS\Core\Messaging;
  */
 class FlashMessageQueue {
 
-	static $messages = array();
+	static protected $messages = array();
 
 	/**
 	 * Static class, no instances allowed.
