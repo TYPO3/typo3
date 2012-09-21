@@ -310,7 +310,7 @@ class FrontendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Bas
 
 	/**
 	 * @test
-	 * @expectedException \TYPO3\CMS\Extbase\Configuration\Exception\ParseError
+	 * @expectedException \TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException
 	 */
 	public function overrideSwitchableControllerActionsThrowsExceptionIfFlexFormConfigurationIsInvalid() {
 		$frameworkConfiguration = array(

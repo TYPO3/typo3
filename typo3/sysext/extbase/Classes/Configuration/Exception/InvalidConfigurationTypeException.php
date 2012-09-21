@@ -36,7 +36,7 @@ namespace TYPO3\CMS\Extbase\Configuration\Exception;
  * @subpackage Configuration\Exception
  * @version $ID:$
  */
-class InvalidConfigurationType extends \TYPO3\CMS\Extbase\Configuration\Exception {
+class InvalidConfigurationTypeException extends \TYPO3\CMS\Extbase\Configuration\Exception {
 
 
 }

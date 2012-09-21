@@ -190,7 +190,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param object|array $target The target object
 	 * @param array $optionalPropertyNames Names of optional properties. If a property is specified here and it doesn't exist in the source, no error is issued.
 	 * @throws Exception\InvalidSource
-	 * @throws Exception\InvalidTarget
+	 * @throws Exception\InvalidTargetException
 	 * @return boolean TRUE if the properties could be mapped, otherwise FALSE
 	 * @see mapAndValidate()
 	 * @api
@@ -203,7 +203,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 			return $this->transformToObject($source, $target, '--none--');
 		}
 		if (!is_object($target) && !is_array($target)) {
-			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTarget('The target object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
+			throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('The target object must be a valid object or array, ' . gettype($target) . ' given.', 1187807099);
 		}
 		$this->mappingResults = new \TYPO3\CMS\Extbase\Property\MappingResults();
 		if (is_object($target)) {
@@ -272,7 +272,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param mixed $propertyValue The value to transform, string or array
 	 * @param string $targetType The type to transform to
 	 * @param string $propertyName In case of an error we add this to the error message
-	 * @throws Exception\InvalidTarget
+	 * @throws Exception\InvalidTargetException
 	 * @throws \InvalidArgumentException
 	 * @return object The object, when no transformation was possible this may return NULL as well
 	 */
@@ -298,7 +298,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 				if (isset($propertyValue['__identity'])) {
 					$existingObject = $this->findObjectByUid($targetType, $propertyValue['__identity']);
 					if ($existingObject === NULL) {
-						throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTarget('Querying the repository for the specified object was not successful.', 1237305720);
+						throw new \TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException('Querying the repository for the specified object was not successful.', 1237305720);
 					}
 					unset($propertyValue['__identity']);
 					if (count($propertyValue) === 0) {

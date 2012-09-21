@@ -100,7 +100,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 	 * @param string $configurationType The kind of configuration to fetch - must be one of the CONFIGURATION_TYPE_* constants
 	 * @param string $extensionName if specified, the configuration for the given extension will be returned.
 	 * @param string $pluginName if specified, the configuration for the given plugin will be returned.
-	 * @throws Exception\InvalidConfigurationType
+	 * @throws Exception\InvalidConfigurationTypeException
 	 * @return array The configuration
 	 */
 	public function getConfiguration($configurationType, $extensionName = NULL, $pluginName = NULL) {
@@ -113,7 +113,7 @@ class ConfigurationManager implements \TYPO3\CMS\Extbase\Configuration\Configura
 		case self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT:
 			return $this->concreteConfigurationManager->getTypoScriptSetup();
 		default:
-			throw new \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationType('Invalid configuration type "' . $configurationType . '"', 1206031879);
+			throw new \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException('Invalid configuration type "' . $configurationType . '"', 1206031879);
 		}
 	}
 

@@ -228,7 +228,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 	 *
 	 * @param array $frameworkConfiguration The original framework configuration
 	 * @param array $flexFormConfiguration The full flexForm configuration
-	 * @throws Exception\ParseError
+	 * @throws Exception\ParseErrorException
 	 * @return array the modified framework configuration, if needed
 	 */
 	protected function overrideSwitchableControllerActionsFromFlexForm(array $frameworkConfiguration, array $flexFormConfiguration) {
@@ -242,7 +242,7 @@ class FrontendConfigurationManager extends \TYPO3\CMS\Extbase\Configuration\Abst
 		foreach ($switchableControllerActionPartsFromFlexForm as $switchableControllerActionPartFromFlexForm) {
 			list($controller, $action) = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('->', $switchableControllerActionPartFromFlexForm);
 			if (empty($controller) || empty($action)) {
-				throw new \TYPO3\CMS\Extbase\Configuration\Exception\ParseError('Controller or action were empty when overriding switchableControllerActions from flexForm.', 1257146403);
+				throw new \TYPO3\CMS\Extbase\Configuration\Exception\ParseErrorException('Controller or action were empty when overriding switchableControllerActions from flexForm.', 1257146403);
 			}
 			$newSwitchableControllerActionsFromFlexForm[$controller][] = $action;
 		}
