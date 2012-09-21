@@ -115,7 +115,7 @@ final class MathUtility {
 		$buffer = doubleval(current($reg[2]));
 		// Advance pointer
 		next($reg[2]);
-		while (list($k, $v) = each($reg[2])) {
+		foreach ($reg[2] as $k => $v) {
 			$v = doubleval($v);
 			$sign = $reg[1][$k];
 			if ($sign == '+' || $sign == '-') {
