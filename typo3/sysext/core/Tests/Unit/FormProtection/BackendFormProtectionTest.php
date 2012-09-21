@@ -257,7 +257,7 @@ class BackendFormProtectionTest extends \tx_phpunit_testcase {
 		$GLOBALS['TYPO3_AJAX'] = TRUE;
 		$this->fixture->createValidationErrorMessage();
 
-		$messages = \TYPO3\CMS\Core\Messaging\FlashMessageQueue::$messages;
+		$messages = \TYPO3\CMS\Core\Messaging\FlashMessageQueue::getAllMessages();
 
 		$this->assertNotEmpty($messages);
 		$this->assertContains(
