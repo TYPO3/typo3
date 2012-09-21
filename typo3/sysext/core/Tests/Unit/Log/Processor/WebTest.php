@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  * @package TYPO3
  * @subpackage t3lib
  */
-class WebTest extends \tx_phpunit_testcase {
+class WebTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test

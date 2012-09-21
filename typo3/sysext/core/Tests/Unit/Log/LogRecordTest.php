@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
  * @package TYPO3
  * @subpackage t3lib
  */
-class RecordTest extends \tx_phpunit_testcase {
+class RecordTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Returns a \TYPO3\CMS\Core\Log\LogRecord

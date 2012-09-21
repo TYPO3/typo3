@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Cache\Backend;
  * @package TYPO3
  * @subpackage tests
  */
-class WincacheBackendTest extends \tx_phpunit_testcase {
+class WincacheBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Sets up this testcase

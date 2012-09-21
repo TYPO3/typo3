@@ -9,7 +9,7 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Unit;
  * @package TYPO3
  * @subpackage tx_indexedsearch
  */
-class IndexerTest extends \tx_phpunit_testcase {
+class IndexerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Enable backup of global and system variables
@@ -17,14 +17,6 @@ class IndexerTest extends \tx_phpunit_testcase {
 	 * @var boolean
 	 */
 	protected $backupGlobals = TRUE;
-
-	/**
-	 * Exclude TYPO3_DB from backup/ restore of $GLOBALS
-	 * because resource types cannot be handled during serializing
-	 *
-	 * @var array
-	 */
-	protected $backupGlobalsBlacklist = array('TYPO3_DB');
 
 	/**
 	 * Indexer instance

@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Configuration\TypoScript\ConditionMatchin
  * @package TYPO3
  * @subpackage t3lib
  */
-class ConditionMatcherTest extends \tx_phpunit_testcase {
+class ConditionMatcherTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var array

@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\Page;
  * @package TYPO3
  * @subpackage t3lib
  */
-class CacheHashCalculatorTest extends \tx_phpunit_testcase {
+class CacheHashCalculatorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\Page\CacheHashCalculator

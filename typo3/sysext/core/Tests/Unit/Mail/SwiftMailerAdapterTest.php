@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Mail;
  * @subpackage t3lib
  * @author Ernesto Baschny <ernst@cron-it.de>
  */
-class SwiftMailerAdapterTest extends \tx_phpunit_testcase {
+class SwiftMailerAdapterTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Mail\SwiftMailerAdapter

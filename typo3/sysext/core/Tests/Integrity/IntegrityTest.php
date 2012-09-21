@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Core\Tests\Integrity;
  * should fail if some other test before destroys the environment with
  * invalid mocking or backups.
  */
-class IntegrityTest extends \Tx_Phpunit_TestCase {
+class IntegrityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * This test fails if some test before either set

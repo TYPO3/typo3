@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
  * @package TYPO3
  * @subpackage t3lib
  */
-class VersionNumberUtilityTest extends \tx_phpunit_testcase {
+class VersionNumberUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * Data Provider for convertVersionNumberToIntegerConvertsVersionNumbersToIntegers

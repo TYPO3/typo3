@@ -34,7 +34,7 @@ require_once 'vfsStream/vfsStream.php';
  * @author Andreas Wolf <andreas.wolf@ikt-werk.de>
  * @todo Many, many, many tests are skipped in this test case...
  */
-class FileTest extends \Tx_Phpunit_TestCase {
+class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @var array A backup of registered singleton instances
