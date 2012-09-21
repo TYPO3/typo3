@@ -2484,11 +2484,11 @@ class BackendUtility {
 	 * It will detect the correct domain name if needed and provide the link with the right back path.
 	 * Also it will re-use any window already open.
 	 *
-	 * @param integer $pageUid Page id
+	 * @param integer $pageUid Page UID
 	 * @param string $backPath Must point back to TYPO3_mainDir (where the site is assumed to be one level above)
 	 * @param array $rootLine If root line is supplied the function will look for the first found domain record and use that URL instead (if found)
 	 * @param string $anchorSection Optional anchor to the URL
-	 * @param string $alternativeUrl An alternative URL which - if set - will make all other parameters ignored: The function will just return the window.open command wrapped around this URL!
+	 * @param string $alternativeUrl An alternative URL that, if set, will ignore other parameters except $switchFocus: It will return the window.open command wrapped around this URL!
 	 * @param string $additionalGetVars Additional GET variables.
 	 * @param boolean $switchFocus If TRUE, then the preview window will gain the focus.
 	 * @return string
@@ -2498,6 +2498,7 @@ class BackendUtility {
 		if ($alternativeUrl) {
 			$viewScript = $alternativeUrl;
 		}
+
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass']) && is_array($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_befunc.php']['viewOnClickClass'] as $funcRef) {
 				$hookObj = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($funcRef);
@@ -2506,9 +2507,33 @@ class BackendUtility {
 				}
 			}
 		}
+
+		if ($alternativeUrl) {
+			$previewUrl = $viewScript;
+		} else {
+			$previewUrl = self::createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript);
+		}
+
+		$onclickCode = 'var previewWin = window.open(\'' . $previewUrl . '\',\'newTYPO3frontendWindow\');' . ($switchFocus ? 'previewWin.focus();' : '');
+		return $onclickCode;
+	}
+
+	/**
+	 * Creates the view-on-click preview URL without any alternative URL.
+	 *
+	 * @param integer $pageUid Page UID
+	 * @param array $rootLine If rootline is supplied, the function will look for the first found domain record and use that URL instead
+	 * @param string $anchorSection Optional anchor to the URL
+	 * @param string $additionalGetVars Additional GET variables.
+	 * @param string $viewScript The path to the script used to view the page
+	 *
+	 * @return string The preview URL
+	 */
+	static protected function createPreviewUrl($pageUid, $rootLine, $anchorSection, $additionalGetVars, $viewScript) {
 		// Look if a fixed preview language should be added:
 		$viewLanguageOrder = $GLOBALS['BE_USER']->getTSConfigVal('options.view.languageOrder');
-		if (strlen($viewLanguageOrder)) {
+
+		if (strlen($viewLanguageOrder) > 0) {
 			$suffix = '';
 			// Find allowed languages (if none, all are allowed!)
 			if (!$GLOBALS['BE_USER']->user['admin'] && strlen($GLOBALS['BE_USER']->groupData['allowed_languages'])) {
@@ -2532,18 +2557,19 @@ class BackendUtility {
 			// Add it
 			$additionalGetVars .= $suffix;
 		}
+
 		// Check a mount point needs to be previewed
 		$sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
 		$sys_page->init(FALSE);
 		$mountPointInfo = $sys_page->getMountPointInfo($pageUid);
+
 		if ($mountPointInfo && $mountPointInfo['overlay']) {
 			$pageUid = $mountPointInfo['mount_pid'];
 			$additionalGetVars .= '&MP=' . $mountPointInfo['MPvar'];
 		}
 		$viewDomain = self::getViewDomain($pageUid, $rootLine);
-		$previewUrl = $viewDomain . $viewScript . $pageUid . $additionalGetVars . $anchorSection;
-		$onclickCode = 'var previewWin = window.open(\'' . $previewUrl . '\',\'newTYPO3frontendWindow\');' . ($switchFocus ? 'previewWin.focus();' : '');
-		return $onclickCode;
+
+		return $viewDomain . $viewScript . $pageUid . $additionalGetVars . $anchorSection;
 	}
 
 	/**
@@ -4094,8 +4120,5 @@ class BackendUtility {
 	static public function isRootLevelRestrictionIgnored($table) {
 		return !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']);
 	}
-
 }
-
-
 ?>
