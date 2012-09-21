@@ -33,6 +33,9 @@
 			<trans-unit id="wiz_changeOrder_msg1" xml:space="preserve">
 				<source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
 			</trans-unit>
+			<trans-unit id="no_subpages" xml:space="preserve">
+				<source>Please select a page with subpages.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
