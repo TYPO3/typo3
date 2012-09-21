@@ -137,7 +137,7 @@ $TCA['sys_category'] = array(
 				'internal_type' => 'db',
 				'allowed' => '*',
 				'MM' => 'sys_category_record_mm',
-				'show_thumbs' => false
+				'show_thumbs' => FALSE
 			)
 		)
 	)
