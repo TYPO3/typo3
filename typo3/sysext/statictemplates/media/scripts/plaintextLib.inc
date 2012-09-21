@@ -503,7 +503,7 @@ class user_plaintext {
 		if ($this->conf['images.']['header']) {
 			$lines[] = $this->getString($this->conf['images.']['header']);
 		}
-		foreach ($images as $k => $file) {
+		while (list($k, $file) = each($images)) {
 			$lines[] = ($this->siteUrl . $upload_path) . $file;
 			if ($links && count($linksArr) > 1) {
 				if (isset($linksArr[$k])) {
