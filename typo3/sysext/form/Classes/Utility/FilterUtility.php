@@ -46,7 +46,7 @@ class FilterUtility implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 * will be vulnerable for XSS attacks
 	 */
 	public function __construct() {
-		$removeXssFilter = $this->makeFilter('removexss');
+		$removeXssFilter = $this->makeFilter('removeXss');
 		$this->addFilter($removeXssFilter);
 	}
 
@@ -110,7 +110,6 @@ class FilterUtility implements \TYPO3\CMS\Form\Filter\FilterInterface {
 	 * @return \TYPO3\CMS\Form\Filter\FilterInterface The filter object
 	 */
 	static public function createFilter($class, array $arguments = NULL) {
-		$class = strtolower((string) $class);
 		$className = 'TYPO3\\CMS\\Form\\Filter\\' . ucfirst($class) . 'Filter';
 		if (is_null($arguments)) {
 			$filter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
