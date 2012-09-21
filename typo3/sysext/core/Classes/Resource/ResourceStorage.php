@@ -725,6 +725,20 @@ class ResourceStorage {
 	}
 
 	/**
+	 * Returns true if the file is accessible (available).
+	 *
+	 * WARNING: Access to the file may be restricted by further means, e.g.
+	 * some web-based authentication. You have to take care of this yourself.
+	 *
+	 * @param \TYPO3\CMS\Core\Resource\ResourceInterface $resourceObject The file or folder object
+	 *
+	 * @return boolean
+	 */
+	public function isAccessible(\TYPO3\CMS\Core\Resource\ResourceInterface $resourceObject) {
+		return $this->driver->isAccessible($resourceObject);
+	}
+
+	/**
 	 * Returns a publicly accessible URL for a file.
 	 *
 	 * WARNING: Access to the file may be restricted by further means, e.g.

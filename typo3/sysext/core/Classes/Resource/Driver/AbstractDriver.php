@@ -220,6 +220,15 @@ abstract class AbstractDriver {
 	}
 
 	/**
+	 * Checks if the file can be accessed.
+	 *
+	 * @abstract
+	 * @param \TYPO3\CMS\Core\Resource\ResourceInterface $resource
+	 * @return boolean
+	 */
+	abstract public function isAccessible(\TYPO3\CMS\Core\Resource\ResourceInterface $resource);
+
+	/**
 	 * Returns the public URL to a file.
 	 *
 	 * @abstract

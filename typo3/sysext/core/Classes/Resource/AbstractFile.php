@@ -468,6 +468,14 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * SPECIAL METHODS
 	 *****************/
 	/**
+	 * Checks if the file is accessible or must be processed once again.
+	 *
+	 * @return boolean
+	 */
+	public function isAccessible() {
+		return $this->getStorage()->isAccessible($this);
+	}
+	/**
 	 * Returns a publicly accessible URL for this file
 	 *
 	 * WARNING: Access to the file may be restricted by further means, e.g. some
