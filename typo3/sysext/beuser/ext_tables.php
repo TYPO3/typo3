@@ -8,7 +8,7 @@ if (TYPO3_MODE === 'BE') {
 		'BackendUser' => 'index, addToCompareList, removeFromCompareList, compare, online, terminateBackendUserSession'
 	), array(
 		'access' => 'user,group',
-		'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.gif',
+		'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-24x24.png',
 		'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf'
 	));
 }

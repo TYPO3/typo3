@@ -7,7 +7,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule($_EXTKEY, 'web', 'view', 'after:layout', array(
 		'View' => 'show'
 	), array(
-		'icon' => 'EXT:viewpage/ext_icon.gif',
+		'icon' => 'EXT:' . $_EXTKEY . '/Resources/Public/Icons/module-24x24.png',
 		'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xlf',
 		'access' => 'user,group'
 	));
