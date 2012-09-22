@@ -51,7 +51,7 @@ class ConfigurationItemRepository {
 	 * Find configuration options by extension
 	 *
 	 * @param array $extension array with extension information
-	 * @return null|SplObjectStorage
+	 * @return null|\SplObjectStorage
 	 */
 	public function findByExtension(array $extension) {
 		$configRaw = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt');
@@ -67,7 +67,7 @@ class ConfigurationItemRepository {
 	 *
 	 * @param string $configRaw
 	 * @param array $extension array with extension information
-	 * @return SplObjectStorage
+	 * @return \SplObjectStorage
 	 */
 	protected function convertRawConfigurationToObject($configRaw, array $extension) {
 		$defaultConfiguration = $this->createArrayFromConstants($configRaw, $extension);
@@ -215,7 +215,7 @@ class ConfigurationItemRepository {
 	 * hierarchic object storage structure
 	 *
 	 * @param array $configuration
-	 * @return SplObjectStorage
+	 * @return \SplObjectStorage
 	 */
 	protected function convertHierarchicArrayToObject(array $configuration) {
 		$configurationObjectStorage = new \SplObjectStorage();

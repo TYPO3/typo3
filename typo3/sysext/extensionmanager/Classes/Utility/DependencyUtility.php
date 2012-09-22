@@ -131,7 +131,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @param string $dependencies
-	 * @return SplObjectStorage
+	 * @return \SplObjectStorage
 	 */
 	public function convertDependenciesToObjects($dependencies) {
 		$unserializedDependencies = unserialize($dependencies);
@@ -157,7 +157,7 @@ class DependencyUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Checks dependencies for special cases (currently typo3 and php)
 	 *
-	 * @param SplObjectStorage $dependencies
+	 * @param \SplObjectStorage $dependencies
 	 * @return boolean
 	 */
 	protected function checkDependencies(\SplObjectStorage $dependencies) {

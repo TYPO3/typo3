@@ -71,7 +71,7 @@ class BackendModule {
 	protected $navigationComponentId = '';
 
 	/**
-	 * @var SplObjectStorage $children
+	 * @var \SplObjectStorage $children
 	 */
 	protected $children;
 

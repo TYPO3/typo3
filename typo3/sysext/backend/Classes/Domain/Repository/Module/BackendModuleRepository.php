@@ -63,7 +63,7 @@ class BackendModuleRepository implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Finds a module menu entry by name in a given storage
 	 *
 	 * @param string $name
-	 * @param SplObjectStorage $entries
+	 * @param \SplObjectStorage $entries
 	 * @return \TYPO3\CMS\Backend\Domain\Model\Module\BackendModule|bool
 	 */
 	public function findByModuleNameInGivenEntries($name, \SplObjectStorage $entries) {

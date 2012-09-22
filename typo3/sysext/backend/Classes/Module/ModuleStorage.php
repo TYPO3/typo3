@@ -36,7 +36,7 @@ namespace TYPO3\CMS\Backend\Module;
 class ModuleStorage implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var SplObjectStorage
+	 * @var \SplObjectStorage
 	 */
 	protected $entries;
 
