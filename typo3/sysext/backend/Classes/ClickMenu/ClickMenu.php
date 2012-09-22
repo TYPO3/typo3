@@ -72,12 +72,6 @@ class ClickMenu {
 	 */
 	public $disabledItems = array();
 
-	// If TRUE, the context sensitive menu will not appear in the top frame, only as a layer.
-	/**
-	 * @todo Define visibility
-	 */
-	public $dontDisplayTopFrameCM = 0;
-
 	// If TRUE, Show icons on the left.
 	/**
 	 * @todo Define visibility
@@ -181,13 +175,11 @@ class ClickMenu {
 	 *
 	 * @return boolean
 	 * @todo Define visibility
+	 * @deprecated since TYPO3 6.0, will be removed in 6.2 as there is no click menu in the topframe anymore (no topframe at all actually)
 	 */
 	public function doDisplayTopFrameCM() {
-		if ($this->ajax) {
-			return FALSE;
-		} else {
-			return !$GLOBALS['SOBE']->doc->isCMlayers() || !$this->dontDisplayTopFrameCM;
-		}
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		return FALSE;
 	}
 
 	/***************************************
@@ -997,8 +989,7 @@ class ClickMenu {
 	 *
 	 **************************************/
 	/**
-	 * Prints the items from input $menuItems array - both as topframe menu AND the JS section for writing to the div-layers.
-	 * Of course the topframe menu will appear only if $this->doDisplayTopFrameCM() returns TRUE
+	 * Prints the items from input $menuItems array - as JS section for writing to the div-layers.
 	 *
 	 * @param array $menuItems Array
 	 * @param string $item HTML code for the element which was clicked - shown in the end of the horizontal menu in topframe after the close-button.
@@ -1011,34 +1002,6 @@ class ClickMenu {
 		$menuItems = $this->enableDisableItems($menuItems);
 		// Clean up spacers:
 		$menuItems = $this->cleanUpSpacers($menuItems);
-		// Adding topframe part (horizontal clickmenu)
-		if ($this->doDisplayTopFrameCM()) {
-			$out .= '
-
-				<!--
-					Table, which contains the click menu when shown in the top frame of the backend:
-				-->
-				<table border="0" cellpadding="0" cellspacing="0" id="typo3-CSM-top">
-					<tr>
-
-							<!-- Items: -->
-						<td class="c-item">' . implode(('</td>
-						<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->PH_backPath, 'gfx/acm_spacer2.gif', 'width="8" height="12"') . ' alt="" /></td>
-						<td class="c-item">'), $this->menuItemsForTopFrame($menuItems)) . '</td>
-
-							<!-- Close button: -->
-						<td class="c-closebutton"><a href="#" onclick="hideCM();return false;">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-close', array(
-				'title' => $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.close', 1)
-			)) . '</a></td>
-
-							<!-- The item of the clickmenu: -->
-						<td class="c-itemicon">' . $item . '</td>
-					</tr>
-				</table>
-			';
-			// Set remaining BACK_PATH to blank (if any)
-			$out = str_replace($this->PH_backPath, '', $out);
-		}
 		// Adding JS part:
 		$out .= $this->printLayerJScode($menuItems);
 		// Return the content
@@ -1079,7 +1042,8 @@ class ClickMenu {
 				if (top.content && top.content' . $frameName . ' && top.content' . $frameName . '.Clickmenu) {
 					top.content' . $frameName . '.Clickmenu.populateData(unescape("' . GeneralUtility::rawurlencodeJS($CMtable) . '"),' . $this->cmLevel . ');
 				}
-				' . (!$this->doDisplayTopFrameCM() ? 'hideCM();' : ''));
+				hideCM();
+				');
 				return $script;
 			}
 		}
@@ -1368,11 +1332,7 @@ class ClickMenu {
 	 * @todo Define visibility
 	 */
 	public function isCMlayers() {
-		if ($this->ajax) {
-			return !$this->CB;
-		} else {
-			return $GLOBALS['SOBE']->doc->isCMlayers() && !$this->CB;
-		}
+		return !$this->CB;
 	}
 
 	/**
