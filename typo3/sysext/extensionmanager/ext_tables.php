@@ -25,7 +25,7 @@ $TCA['tx_extensionmanager_domain_model_repository'] = array(
 
 if (TYPO3_MODE === 'BE') {
 	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-		$_EXTKEY,
+		'TYPO3.CMS.' . $_EXTKEY,
 		'tools',
 		'extensionmanager', '', array(
 			'List' => 'index,ter,showAllVersions',
@@ -38,7 +38,7 @@ if (TYPO3_MODE === 'BE') {
 		array(
 			'access' => 'user,group',
 			'icon' => 'EXT:' . $_EXTKEY . '/ext_icon.gif',
-			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml'
+			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml',
 		)
 	);
 }
