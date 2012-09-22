@@ -78,7 +78,6 @@ if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('install')) {
 	die('Install Tool is not loaded as an extension.<br />You must add the key "install" to the list of installed extensions in typo3conf/LocalConfiguration.php, $TYPO3_CONF_VARS[\'EXT\'][\'extListArray\'].');
 }
 require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('install') . 'mod/class.tx_install.php';
-$install_check = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Installer');
-$install_check->allowUpdateLocalConf = 1;
+$install_check = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Installer', TRUE);
 $install_check->init();
 ?>
