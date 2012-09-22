@@ -28,12 +28,11 @@ $EM_CONF[$_EXTKEY] = array(
 	'doNotLoadInFE' => 1,
 	'lockType' => '',
 	'author_company' => 'Connecta AG / cab services ag / Infoglobe',
-	'version' => '1.5.0',
+	'version' => '6.0.0',
 	'constraints' => array(
 		'depends' => array(
-			'php' => '5.3.0-0.0.0',
-			'typo3' => '4.6.0-0.0.0',
-			'info' => '1.1.0-0.0.0'
+			'typo3' => '6.0.0-0.0.0',
+			'info' => '6.0.0-0.0.0'
 		),
 		'conflicts' => array(),
 		'suggests' => array()
