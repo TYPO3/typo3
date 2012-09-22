@@ -377,16 +377,14 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 	 * @param 	[type]		$depthData: ...
 	 * @param 	[type]		$parentType: ...
 	 * @param 	[type]		$parentValue: ...
-	 * @param boolean $alphaSort sorts the array keys / tree by alphabet when set to 1
 	 * @return 	[type]		...
 	 * @todo Define visibility
 	 */
-	public function ext_getObjTree($arr, $depth_in, $depthData, $parentType = '', $parentValue = '', $alphaSort = '0') {
+	public function ext_getObjTree($arr, $depth_in, $depthData, $parentType = '', $parentValue = '') {
 		$HTML = '';
 		$a = 0;
-		if ($alphaSort == '1') {
-			ksort($arr);
-		}
+
+		ksort($arr);
 		$keyArr_num = array();
 		$keyArr_alpha = array();
 		foreach ($arr as $key => $value) {
@@ -492,7 +490,7 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 				}
 				$HTML .= '<br />';
 				if ($deeper) {
-					$HTML .= $this->ext_getObjTree($arr[$key . '.'], $depth, $depthData . '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $LN . '.gif" width="18" height="16" align="top" alt="" />', '', $arr[$key], $alphaSort);
+					$HTML .= $this->ext_getObjTree($arr[$key . '.'], $depth, $depthData . '<img src="' . $GLOBALS['BACK_PATH'] . 'gfx/ol/' . $LN . '.gif" width="18" height="16" align="top" alt="" />', '', $arr[$key]);
 				}
 			}
 		}

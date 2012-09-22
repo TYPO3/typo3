@@ -193,7 +193,7 @@ class InfoPageTyposcriptConfigController extends \TYPO3\CMS\Backend\Module\Abstr
 					<!-- Page TSconfig Tree: -->
 					<table border="0" cellpadding="0" cellspacing="0">
 						<tr>
-							<td nowrap="nowrap">' . $tmpl->ext_getObjTree($modTSconfig, '', '', '', '', $this->pObj->MOD_SETTINGS['tsconf_alphaSort']) . '</td>
+							<td nowrap="nowrap">' . $tmpl->ext_getObjTree($modTSconfig, '', '', '', '') . '</td>
 						</tr>
 					</table>', 0, 1);
 		}

@@ -298,7 +298,7 @@ class TsconfigWizard {
 				<table border="0" cellpadding="0" cellspacing="0" class="t3-tree t3-tree-config" id="typo3-objtree">
 					<tr class="t3-row-header"><td>TSref</td></tr>
 					<tr>
-						<td nowrap="nowrap">' . $tmpl->ext_getObjTree($this->removePointerObjects($objTree[($mode . '.')]), '', '', '', '', '1') . '</td>
+						<td nowrap="nowrap">' . $tmpl->ext_getObjTree($this->removePointerObjects($objTree[($mode . '.')]), '', '', '', '') . '</td>
 					</tr>
 				</table>';
 		}
