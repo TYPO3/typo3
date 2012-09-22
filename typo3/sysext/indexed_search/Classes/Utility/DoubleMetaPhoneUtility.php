@@ -800,7 +800,8 @@ class DoubleMetaPhoneUtility {
 		if ($start < 0 || $start >= strlen($string)) {
 			return 0;
 		}
-		for ($i = 0; $i < count($list); $i++) {
+		$listCount = count($list);
+		for ($i = 0; $i < $listCount; $i++) {
 			if ($list[$i] == substr($string, $start, $length)) {
 				return 1;
 			}

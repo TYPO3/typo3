@@ -905,7 +905,8 @@ class CssStyledContentController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlug
 				$thisImages = '';
 				$allRows = '';
 				$maxImageSpace = 0;
-				for ($i = $c; $i < count($imgsTag); $i = $i + $imageWrapCols) {
+				$imgsTagCount = count($imgsTag);
+				for ($i = $c; $i < $imgsTagCount; $i = $i + $imageWrapCols) {
 					$imgKey = $i + $imgStart;
 					$colPos = $i % $colCount;
 					if ($separateRows && $colPos == 0) {

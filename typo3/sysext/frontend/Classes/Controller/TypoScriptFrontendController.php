@@ -3939,7 +3939,8 @@ if (version == "n3") {
 	public function encryptEmail($string, $back = 0) {
 		$out = '';
 		if ($this->spamProtectEmailAddresses === 'ascii') {
-			for ($a = 0; $a < strlen($string); $a++) {
+			$stringLength = strlen($string);
+			for ($a = 0; $a < $stringLength; $a++) {
 				$out .= '&#' . ord(substr($string, $a, 1)) . ';';
 			}
 		} else {

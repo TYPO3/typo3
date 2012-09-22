@@ -247,7 +247,8 @@ class t3lib_install {
 		if ($startPos) {
 			$this->touchedLine = $startPos;
 			$endPos = $startPos;
-			for ($i = $startPos; $i < count($lines); $i++) {
+			$lineCount = count($lines);
+			for ($i = $startPos; $i < $lineCount; $i++) {
 				$line = trim($lines[$i]);
 				if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($line, ');')) {
 					$endPos = $i;
@@ -280,7 +281,8 @@ class t3lib_install {
 		$lines = explode('
 ', var_export($variable, TRUE));
 		$out = 'array(';
-		for ($i = 1; $i < count($lines); $i++) {
+		$lineCount = count($lines);
+		for ($i = 1; $i < $lineCount; $i++) {
 			$out .= '
 ';
 			// Make the space-indented declaration tab-indented instead

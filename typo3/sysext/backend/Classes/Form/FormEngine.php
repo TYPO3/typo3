@@ -1516,9 +1516,10 @@ function ' . $evalData . '(value) {
 		}
 		$thisValue = intval($PA['itemFormElValue']);
 		$cols = intval($config['cols']);
+		$selItemsCount = count($selItems);
 		if ($cols > 1) {
 			$item .= '<table border="0" cellspacing="0" cellpadding="0" class="typo3-TCEforms-checkboxArray">';
-			for ($c = 0; $c < count($selItems); $c++) {
+			for ($c = 0; $c < $selItemsCount; $c++) {
 				$p = $selItems[$c];
 				if (!($c % $cols)) {
 					$item .= '<tr>';
@@ -1542,7 +1543,7 @@ function ' . $evalData . '(value) {
 			}
 			$item .= '</table>';
 		} else {
-			for ($c = 0; $c < count($selItems); $c++) {
+			for ($c = 0; $c < $selItemsCount; $c++) {
 				$p = $selItems[$c];
 				$cBP = $this->checkBoxParams($PA['itemFormElName'], $thisValue, $c, count($selItems), implode('', $PA['fieldChangeFunc']));
 				$cBName = $PA['itemFormElName'] . '_' . $c;
@@ -1580,7 +1581,8 @@ function ' . $evalData . '(value) {
 			$selItems = $this->procItems($selItems, $PA['fieldTSConfig']['itemsProcFunc.'], $config, $table, $row, $field);
 		}
 		// Traverse the items, making the form elements:
-		for ($c = 0; $c < count($selItems); $c++) {
+		$selItemsCount = count($selItems);
+		for ($c = 0; $c < $selItemsCount; $c++) {
 			$p = $selItems[$c];
 			$rID = $PA['itemFormElID'] . '_' . $c;
 			$rOnClick = implode('', $PA['fieldChangeFunc']);
