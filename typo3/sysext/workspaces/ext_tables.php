@@ -5,16 +5,23 @@ if (!defined('TYPO3_MODE')) {
 // avoid that this block is loaded in the frontend or within the upgrade-wizards
 if (TYPO3_MODE == 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 	/** Registers a Backend Module */
-	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule($_EXTKEY, 'web', 'workspaces', 'before:info', array(
-		// An array holding the controller-action-combinations that are accessible
-		'Review' => 'index,fullIndex,singleIndex',
-		'Preview' => 'index,newPage'
-	), array(
-		'access' => 'user,group',
-		'icon' => 'EXT:workspaces/Resources/Public/Images/moduleicon.gif',
-		'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml',
-		'navigationComponentId' => 'typo3-pagetree'
-	));
+	\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+		'TYPO3.CMS.' . $_EXTKEY,
+		'web',
+		'workspaces',
+		'before:info',
+		array(
+				// An array holding the controller-action-combinations that are accessible
+			'Review' => 'index,fullIndex,singleIndex',
+			'Preview' => 'index,newPage'
+		),
+		array(
+			'access' => 'user,group',
+			'icon' => 'EXT:workspaces/Resources/Public/Images/moduleicon.gif',
+			'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_mod.xml',
+			'navigationComponentId' => 'typo3-pagetree'
+		)
+	);
 	// register ExtDirect
 	\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Workspaces.ExtDirect', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'Classes/ExtDirect/Server.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\ExtDirectServer', 'web_WorkspacesWorkspaces', 'user,group');
 	\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Workspaces.ExtDirectActions', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath($_EXTKEY) . 'Classes/ExtDirect/ActionHandler.php:TYPO3\\CMS\\Workspaces\\ExtDirect\\ActionHandler', 'web_WorkspacesWorkspaces', 'user,group');
