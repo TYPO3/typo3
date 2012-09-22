@@ -3670,7 +3670,7 @@ REMOTE_ADDR was '".t3lib_div::getIndpEnv('REMOTE_ADDR')."' (".t3lib_div::getIndp
 						// New database?
 					if (trim($this->INSTALL['localconf.php']['NEW_DATABASE_NAME'])) {
 						$newdbname=trim($this->INSTALL['localconf.php']['NEW_DATABASE_NAME']);
-						if (!preg_match('/[^[:alnum:]_-]/',$newdbname)) {
+						if (!preg_match('/[^[:alnum:]_]/',$newdbname)) {
 							if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
 								if ($GLOBALS['TYPO3_DB']->admin_query('CREATE DATABASE ' . $newdbname . ' CHARACTER SET utf8')) {
 									$this->INSTALL['localconf.php']['typo_db'] = $newdbname;
