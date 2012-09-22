@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Rsaauth;
  * @package TYPO3
  * @subpackage tx_rsaauth
  */
-final class Keypair {
+class Keypair {
 
 	/**
 	 * RSA public exponent (3 or 0x10001)

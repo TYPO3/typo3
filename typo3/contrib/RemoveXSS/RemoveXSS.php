@@ -20,7 +20,7 @@
  * @author	Jigal van Hemert <jigal@xs4all.nl>
  * @package	RemoveXSS
  */
-final class RemoveXSS {
+class RemoveXSS {
 
 	/**
 	 * Removes potential XSS code from an input string.

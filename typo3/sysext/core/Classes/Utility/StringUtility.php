@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Utility;
  * @package TYPO3
  * @subpackage t3lib
  */
-final class StringUtility {
+class StringUtility {
 
 	/**
 	 * Returns TRUE if $haystack ends with $needle.

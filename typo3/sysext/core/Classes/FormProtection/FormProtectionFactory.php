@@ -50,7 +50,7 @@ namespace TYPO3\CMS\Core\FormProtection;
  * @author Ernesto Baschny <ernst@cron-it.de>
  * @author Helmut Hummel <helmut.hummel@typo3.org>
  */
-final class FormProtectionFactory {
+class FormProtectionFactory {
 
 	/**
 	 * created instances of form protections using the type as array key

@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * @author Oliver Hader <oliver@typo3.org>
  */
-final class ClientUtility {
+class ClientUtility {
 
 	/**
 	 * Generates an array with abstracted browser information
