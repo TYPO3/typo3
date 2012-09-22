@@ -38,12 +38,9 @@ class MessageDisplay {
 	/**
 	 * Renders a message for EM.
 	 *
-	 * @param array $params
-	 * @param \TYPO3\CMS\Core\TypoScript\ConfigurationForm $tsObj
 	 * @return string
-	 * @todo Define visibility
 	 */
-	public function displayMessage(array &$params, \TYPO3\CMS\Core\TypoScript\ConfigurationForm $tsObj) {
+	public function displayMessage() {
 		$out = '
 			<div>
 				<div class="typo3-message message-information">
