@@ -259,7 +259,7 @@ class t3lib_timeTrack {
 			$this->createHierarchyArray($arr, $data['level'], $uniqueId);
 		}
 			// Parsing the registeret content and create icon-html for the tree
-		$this->tsStackLog[$arr['0.'][0]]['content'] = $this->fixContent($arr['0.']['0.'], $this->tsStackLog[$arr['0.'][0]]['content'], '', 0, $arr['0.'][0]);
+		$this->tsStackLog[$arr['0.'][0]]['content'] = $this->fixContent($arr['0.'], $this->tsStackLog[$arr['0.'][0]]['content'], '', 0, $arr['0.'][0]);
 
 			// Displaying the tree:
 		$outputArr = array();
