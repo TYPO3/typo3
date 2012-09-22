@@ -169,7 +169,7 @@ class FileSystemNavigationFrameController {
 		// Adding javascript for drag & drop activation and highlighting
 		$this->content .= $this->doc->wrapScriptTags('
 			' . ($this->doHighlight ? 'Tree.highlightActiveItem("", top.fsMod.navFrameHighlightedID["file"]);' : '') . '
-			' . (!$this->doc->isCMlayers() ? 'Tree.activateDragDrop = false;' : 'Tree.registerDragDropHandlers();'));
+			Tree.registerDragDropHandlers();');
 		// Setting up the buttons and markers for docheader
 		$docHeaderButtons = $this->getButtons();
 		$markers = array(

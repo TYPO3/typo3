@@ -55,12 +55,6 @@ class ClickMenuController {
 	 */
 	public $extClassArray = array();
 
-	// If set, then the clickmenu will NOT display in the top frame.
-	/**
-	 * @todo Define visibility
-	 */
-	public $dontDisplayTopFrameCM = 0;
-
 	/**
 	 * Constructor function for script class.
 	 *
@@ -97,10 +91,7 @@ class ClickMenuController {
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		}
 		// Setting mode for display and background image in the top frame
-		$this->dontDisplayTopFrameCM = $this->doc->isCMlayers() && !$GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame');
-		if ($this->dontDisplayTopFrameCM) {
-			$this->doc->bodyTagId .= '-notop';
-		}
+
 		// Setting clickmenu timeout
 		$secs = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.clickMenuTimeOut'), 1, 100, 5);
 		// default is 5
@@ -175,7 +166,6 @@ class ClickMenuController {
 		// Set internal vars in clickmenu object:
 		$clickMenu->clipObj = $clipObj;
 		$clickMenu->extClassArray = $this->extClassArray;
-		$clickMenu->dontDisplayTopFrameCM = $this->dontDisplayTopFrameCM;
 		$clickMenu->backPath = $this->backPath;
 		// Start page
 		if (!$this->ajax) {
