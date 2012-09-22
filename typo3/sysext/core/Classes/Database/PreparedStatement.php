@@ -468,7 +468,8 @@ class PreparedStatement {
 					$query = implode('', $parts);
 				}
 			} else {
-				for ($i = 1; $i < count($precompiledQueryParts['queryParts']); $i++) {
+				$queryPartsCount = count($precompiledQueryParts['queryParts']);
+				for ($i = 1; $i < $queryPartsCount; $i++) {
 					if ($precompiledQueryParts['queryParts'][$i] === $key) {
 						$precompiledQueryParts['queryParts'][$i] = $value;
 					}

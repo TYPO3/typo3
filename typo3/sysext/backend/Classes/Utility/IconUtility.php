@@ -397,7 +397,8 @@ class IconUtility {
 					}
 					// Converting to gray scale, dimming the icon:
 					if ($mode == 'disabled' or $mode != 'futuretiming' && $mode != 'no_icon_found' && !(!$mode && $user)) {
-						for ($c = 0; $c < ImageColorsTotal($im); $c++) {
+						$totalImageColors = ImageColorsTotal($im);
+						for ($c = 0; $c < $totalImageColors; $c++) {
 							$cols = ImageColorsForIndex($im, $c);
 							$newcol = round(($cols['red'] + $cols['green'] + $cols['blue']) / 3);
 							$lighten = $mode == 'disabled' ? 2.5 : 2;
