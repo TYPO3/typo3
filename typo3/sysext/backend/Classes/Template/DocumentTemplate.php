@@ -1524,7 +1524,7 @@ class DocumentTemplate {
 		$this->loadJavascriptLib('js/clickmenu.js');
 		$this->JScodeArray['clickmenu'] = '
 			Clickmenu.clickURL = "' . $this->backPath . 'alt_clickmenu.php";
-			Clickmenu.ajax     = ' . ($this->isCMLayers() ? 'true' : 'false') . ';';
+			Clickmenu.ajax     = true;';
 	}
 
 	/**

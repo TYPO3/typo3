@@ -97,7 +97,7 @@ class ClickMenuController {
 			$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		}
 		// Setting mode for display and background image in the top frame
-		$this->dontDisplayTopFrameCM = $this->doc->isCMlayers() && !$GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame');
+		$this->dontDisplayTopFrameCM = !$GLOBALS['BE_USER']->getTSConfigVal('options.contextMenu.options.alwaysShowClickMenuInTopFrame');
 		if ($this->dontDisplayTopFrameCM) {
 			$this->doc->bodyTagId .= '-notop';
 		}

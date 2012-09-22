@@ -186,7 +186,7 @@ class ClickMenu {
 		if ($this->ajax) {
 			return FALSE;
 		} else {
-			return !$GLOBALS['SOBE']->doc->isCMlayers() || !$this->dontDisplayTopFrameCM;
+			return !$this->dontDisplayTopFrameCM;
 		}
 	}
 
@@ -1368,11 +1368,7 @@ class ClickMenu {
 	 * @todo Define visibility
 	 */
 	public function isCMlayers() {
-		if ($this->ajax) {
-			return !$this->CB;
-		} else {
-			return $GLOBALS['SOBE']->doc->isCMlayers() && !$this->CB;
-		}
+		return !$this->CB;
 	}
 
 	/**
