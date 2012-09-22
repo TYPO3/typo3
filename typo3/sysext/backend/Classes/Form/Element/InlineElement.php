@@ -970,10 +970,6 @@ class InlineElement {
 		$GLOBALS['SOBE']->tceforms->clipObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
 		// Initialize - reads the clipboard content from the user session
 		$GLOBALS['SOBE']->tceforms->clipObj->initializeClipboard();
-		// Setting external variables:
-		if ($GLOBALS['BE_USER']->uc['edit_showFieldHelp'] != 'text' && $GLOBALS['SOBE']->MOD_SETTINGS['showDescriptions']) {
-			$GLOBALS['SOBE']->tceforms->edit_showFieldHelp = 'text';
-		}
 	}
 
 	/**

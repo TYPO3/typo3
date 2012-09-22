@@ -2310,8 +2310,11 @@ class BackendUtility {
 	 * @param string $table Table name
 	 * @param string $field Field name
 	 * @return string HTML content for help text
+	 * @depreacted since 6.0, will be removed two versions later
 	 */
 	static public function helpText($table, $field) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+
 		$helpTextArray = self::helpTextArray($table, $field);
 		$output = '';
 		$arrow = '';
@@ -2387,35 +2390,21 @@ class BackendUtility {
 	 * @param boolean $onlyIconMode If set, the full text will never be shown (only icon). Useful for places where it will break the page if the table with full text is shown.
 	 * @param string $styleAttrib Additional style-attribute content for wrapping table (full text mode only)
 	 * @return string HTML content for help text
-	 * @see helpText(), helpTextIcon()
+	 * @see helpTextIcon()
 	 */
 	static public function cshItem($table, $field, $BACK_PATH, $wrap = '', $onlyIconMode = FALSE, $styleAttrib = '') {
-		if ($GLOBALS['BE_USER']->uc['edit_showFieldHelp']) {
-			$GLOBALS['LANG']->loadSingleTableDescription($table);
-			if (is_array($GLOBALS['TCA_DESCR'][$table])) {
-				// Creating CSH icon and short description:
-				$fullText = self::helpText($table, $field);
-				$icon = self::helpTextIcon($table, $field, $BACK_PATH);
-				if ($fullText && !$onlyIconMode && $GLOBALS['BE_USER']->uc['edit_showFieldHelp'] == 'text') {
-					// Additional styles?
-					$params = $styleAttrib ? ' style="' . $styleAttrib . '"' : '';
-					// Compile table with CSH information:
-					$fullText = '<table border="0" cellpadding="0" cellspacing="0" class="typo3-csh-inline"' . $params . '>
-					<tr>
-					<td valign="top" width="14"><div class="t3-row-header">' . $icon . '</div></td>
-					<td valign="top">' . $fullText . '</td>
-					</tr>
-					</table>';
-					$output = $fullText;
-				} else {
-					$output = $icon;
-					if ($output && $wrap) {
-						$wrParts = explode('|', $wrap);
-						$output = $wrParts[0] . $output . $wrParts[1];
-					}
-				}
-				return $output;
+		if (!$GLOBALS['BE_USER']->uc['edit_showFieldHelp']) {
+			return '';
+		}
+		$GLOBALS['LANG']->loadSingleTableDescription($table);
+		if (is_array($GLOBALS['TCA_DESCR'][$table])) {
+			// Creating CSH icon and short description:
+			$output = self::helpTextIcon($table, $field, $BACK_PATH);
+			if ($output && $wrap) {
+				$wrParts = explode('|', $wrap);
+				$output = $wrParts[0] . $output . $wrParts[1];
 			}
+			return $output;
 		}
 	}
 
