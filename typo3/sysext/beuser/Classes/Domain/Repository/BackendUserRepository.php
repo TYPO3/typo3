@@ -118,7 +118,8 @@ class BackendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Backend
 	 */
 	public function createQuery() {
 		$query = parent::createQuery();
-		$query->getQuerySettings()->setRespectEnableFields(FALSE);
+		$query->getQuerySettings()->setIgnoreEnableFields(TRUE);
+		$query->getQuerySettings()->setIncludeDeleted(TRUE);
 		return $query;
 	}
 
