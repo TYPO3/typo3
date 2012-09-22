@@ -47,7 +47,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  * @subpackage Persistence
  * @version $Id$
  */
-final class PropertyType {
+class PropertyType {
 
 	/**
 	 * This constant can be used within a property definition to specify that

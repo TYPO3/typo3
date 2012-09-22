@@ -34,7 +34,7 @@ namespace TYPO3\CMS\Extbase\Mvc\View;
  * @version $Id$
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-final class EmptyView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface {
+class EmptyView implements \TYPO3\CMS\Extbase\Mvc\View\ViewInterface {
 
 	/**
 	 * Dummy method to satisfy the ViewInterface
