@@ -9,7 +9,6 @@ namespace TYPO3\CMS\Perm\Controller;
  *
  * Variables:
  * $this->MOD_SETTINGS['depth']: intval 1-3: decides the depth of the list
- * $this->MOD_SETTINGS['mode']: 'perms' / '': decides if we view a user-overview or the permissions.
  *
  * @author Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author Andreas Kundoch <typo3@mehrwert.de>
@@ -167,22 +166,14 @@ class PermissionModuleController {
 	 * @return void
 	 */
 	public function menuConfig() {
-		// MENU-ITEMS:
-		// If array, then it's a selector box menu
-		// If empty string it's just a variable, that'll be saved.
-		// Values NOT in this array will not be saved in the settings-array for the module.
-		$temp = $GLOBALS['LANG']->getLL('levels');
+		$level = $GLOBALS['LANG']->getLL('levels');
 		$this->MOD_MENU = array(
 			'depth' => array(
-				1 => '1 ' . $temp,
-				2 => '2 ' . $temp,
-				3 => '3 ' . $temp,
-				4 => '4 ' . $temp,
-				10 => '10 ' . $temp
-			),
-			'mode' => array(
-				0 => $GLOBALS['LANG']->getLL('user_overview'),
-				'perms' => $GLOBALS['LANG']->getLL('permissions')
+				1 => '1 ' . $level,
+				2 => '2 ' . $level,
+				3 => '3 ' . $level,
+				4 => '4 ' . $level,
+				10 => '10 ' . $level
 			)
 		);
 		// Clean up settings:
@@ -302,8 +293,7 @@ class PermissionModuleController {
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			$beGroupArray = \TYPO3\CMS\Backend\Utility\BackendUtility::blindGroupNames($beGroupArray_o, $beGroupKeys, 1);
 		}
-		// data of the first group, the user is member of
-		$firstGroup = $beGroupKeys[0] ? $beGroupArray[$beGroupKeys[0]] : '';
+
 		// Owner selector:
 		$options = '';
 		// flag: is set if the page-userid equals one from the user-list
@@ -432,7 +422,7 @@ class PermissionModuleController {
 			$beGroupArray = \TYPO3\CMS\Backend\Utility\BackendUtility::blindGroupNames($beGroupArray, $beGroupKeys, 0);
 		}
 		// Length of strings:
-		$tLen = $this->MOD_SETTINGS['mode'] == 'perms' ? 20 : 30;
+		$tLen = 20;
 		// Selector for depth:
 		$code = $GLOBALS['LANG']->getLL('Depth') . ': ';
 		$code .= \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu($this->id, 'SET[depth]', $this->MOD_SETTINGS['depth'], $this->MOD_MENU['depth']);
@@ -457,31 +447,19 @@ class PermissionModuleController {
 		// Create the tree from $this->id:
 		$tree->getTree($this->id, $this->MOD_SETTINGS['depth'], '');
 		// Make header of table:
-		$code = '';
-		if ($this->MOD_SETTINGS['mode'] == 'perms') {
-			$code .= '
-				<tr class="t3-row-header">
-					<td colspan="2">&nbsp;</td>
-					<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td>' . $GLOBALS['LANG']->getLL('Owner', TRUE) . '</td>
-					<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td align="center">' . $GLOBALS['LANG']->getLL('Group', TRUE) . '</td>
-					<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td align="center">' . $GLOBALS['LANG']->getLL('Everybody', TRUE) . '</td>
-					<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td align="center">' . $GLOBALS['LANG']->getLL('EditLock', TRUE) . '</td>
-				</tr>
-			';
-		} else {
-			$code .= '
-				<tr class="t3-row-header">
-					<td colspan="2">&nbsp;</td>
-					<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td align="center" nowrap="nowrap">' . $GLOBALS['LANG']->getLL('User', TRUE) . ': ' . htmlspecialchars($GLOBALS['BE_USER']->user['username']) . '</td>
-					' . (!$GLOBALS['BE_USER']->isAdmin() ? '<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td align="center">' . $GLOBALS['LANG']->getLL('EditLock', TRUE) . '</td>' : '') . '
-				</tr>';
-		}
+		$code = '
+			<tr class="t3-row-header">
+				<td colspan="2">&nbsp;</td>
+				<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+				<td>' . $GLOBALS['LANG']->getLL('Owner', TRUE) . '</td>
+				<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+				<td align="center">' . $GLOBALS['LANG']->getLL('Group', TRUE) . '</td>
+				<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+				<td align="center">' . $GLOBALS['LANG']->getLL('Everybody', TRUE) . '</td>
+				<td><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+				<td align="center">' . $GLOBALS['LANG']->getLL('EditLock', TRUE) . '</td>
+			</tr>
+		';
 		// Traverse tree:
 		foreach ($tree->tree as $data) {
 			$cells = array();
@@ -517,34 +495,20 @@ class PermissionModuleController {
 				$cells[] = '
 					<td' . $bgCol . '></td>';
 			}
-			// Rest of columns (depending on mode)
-			if ($this->MOD_SETTINGS['mode'] == 'perms') {
-				$cells[] = '
-					<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_user'], $pageId, 'user') . ' ' . $userName : '') . '</td>
 
-					<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_group'], $pageId, 'group') . ' ' . $groupName : '') . '</td>
+			$cells[] = '
+				<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_user'], $pageId, 'user') . ' ' . $userName : '') . '</td>
 
-					<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? ' ' . \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '') . '</td>
+				<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_group'], $pageId, 'group') . ' ' . $groupName : '') . '</td>
 
-					<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td' . $bgCol . ' nowrap="nowrap">' . ($data['row']['editlock'] ? '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'1\');" title="' . $GLOBALS['LANG']->getLL('EditLock_descr', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-lock') . '</a></span>' : ($pageId === 0 ? '' : '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')) . '</td>
-				';
-			} else {
-				$cells[] = '
-					<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>';
-				$bgCol = $GLOBALS['BE_USER']->user['uid'] == $data['row']['perms_userid'] ? ' class="bgColor-20"' : $lE_bgCol;
-				// FIXME $owner undefined
-				$cells[] = '
-					<td' . $bgCol . ' nowrap="nowrap" align="center">' . ($pageId ? $owner . \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($GLOBALS['BE_USER']->calcPerms($data['row']), $pageId, 'user') : '') . '</td>
-					' . (!$GLOBALS['BE_USER']->isAdmin() ? '
-					<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
-					<td' . $bgCol . ' nowrap="nowrap">' . ($data['row']['editlock'] ? \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-lock', array('title' => $GLOBALS['LANG']->getLL('EditLock_descr', TRUE))) : '') . '</td>
-					' : '');
-				$bgCol = $lE_bgCol;
-			}
+				<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+				<td' . $bgCol . ' nowrap="nowrap">' . ($pageId ? ' ' . \TYPO3\CMS\Perm\Controller\PermissionAjaxController::renderPermissions($data['row']['perms_everybody'], $pageId, 'everybody') : '') . '</td>
+
+				<td' . $bgCol . ' class="center"><img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/line.gif', 'width="5" height="16"') . ' alt="" /></td>
+				<td' . $bgCol . ' nowrap="nowrap">' . ($data['row']['editlock'] ? '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'1\');" title="' . $GLOBALS['LANG']->getLL('EditLock_descr', 1) . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('status-warning-lock') . '</a></span>' : ($pageId === 0 ? '' : '<span id="el_' . $pageId . '" class="editlock"><a class="editlock" onclick="WebPermissions.toggleEditLock(\'' . $pageId . '\', \'0\');" title="Enable the &raquo;Admin-only&laquo; edit lock for this page">[+]</a></span>')) . '</td>
+			';
 			// Compile table row:
 			$code .= '
 				<tr>
@@ -596,23 +560,6 @@ class PermissionModuleController {
 	public function printCheckBox($checkName, $num) {
 		$onclick = 'checkChange(\'check[' . $checkName . ']\', \'data[pages][' . $GLOBALS['SOBE']->id . '][' . $checkName . ']\')';
 		return '<input type="checkbox" name="check[' . $checkName . '][' . $num . ']" onclick="' . htmlspecialchars($onclick) . '" /><br />';
-	}
-
-	/**
-	 * Returns the permissions for a group based of the perms_groupid of $row. If the $row[perms_groupid] equals the $firstGroup[uid] then the function returns perms_everybody OR'ed with perms_group, else just perms_everybody
-	 *
-	 * @param array $row Row array (from pages table)
-	 * @param array $firstGroup First group data
-	 * @return integer Integer: Combined permissions.
-	 */
-	public function groupPerms($row, $firstGroup) {
-		if (is_array($row)) {
-			$out = intval($row['perms_everybody']);
-			if ($row['perms_groupid'] && $firstGroup['uid'] == $row['perms_groupid']) {
-				$out |= intval($row['perms_group']);
-			}
-			return $out;
-		}
 	}
 
 	/**
