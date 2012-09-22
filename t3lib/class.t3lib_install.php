@@ -158,7 +158,8 @@ class t3lib_install {
 		$lines = explode('
 ', var_export($variable, TRUE));
 		$out = 'array(';
-		for ($i = 1; $i < count($lines); $i++) {
+		$lineCount = count($lines);
+		for ($i = 1; $i < $lineCount; $i++) {
 			$out .= '
 ';
 			// Make the space-indented declaration tab-indented instead
