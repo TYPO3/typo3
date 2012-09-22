@@ -335,7 +335,6 @@ CREATE TABLE tt_content (
   target varchar(30) DEFAULT '' NOT NULL,
   section_frame int(11) unsigned DEFAULT '0' NOT NULL,
   date int(10) unsigned DEFAULT '0' NOT NULL,
-  splash_layout varchar(30) DEFAULT '0' NOT NULL,
   multimedia tinytext,
   image_frames int(11) unsigned DEFAULT '0' NOT NULL,
   recursive tinyint(3) unsigned DEFAULT '0' NOT NULL,
