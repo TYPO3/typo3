@@ -1385,7 +1385,7 @@ class LocalDriverTest extends \TYPO3\CMS\Core\Tests\Unit\Resource\BaseTestCase {
 	 * @test
 	 */
 	public function renameFolderRevertsRenamingIfFilenameMapCannotBeCreated() {
-		$this->setExpectedException('RuntimeException', '', 1334160746);
+		$this->setExpectedException('\RuntimeException', '', 1334160746);
 		$this->addToMount(array(
 			'sourceFolder' => array(
 				'file' => 'asdfg'

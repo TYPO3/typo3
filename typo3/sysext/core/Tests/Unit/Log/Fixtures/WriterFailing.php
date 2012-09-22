@@ -39,7 +39,7 @@ class WriterFailing implements \TYPO3\CMS\Core\Log\Writer\Writer {
 	 * @throws \RuntimeException
 	 */
 	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {
-		throw new RuntimeException('t3lib_log_writer_Failing failed');
+		throw new \RuntimeException('t3lib_log_writer_Failing failed');
 	}
 
 }

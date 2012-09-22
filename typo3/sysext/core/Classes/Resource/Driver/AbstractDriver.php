@@ -275,7 +275,7 @@ abstract class AbstractDriver {
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
 	 * @param string $contents
 	 * @return integer The number of bytes written to the file
-	 * @throws RuntimeException if the operation failed
+	 * @throws \RuntimeException if the operation failed
 	 */
 	abstract public function setFileContents(\TYPO3\CMS\Core\Resource\FileInterface $file, $contents);
 
@@ -356,7 +356,7 @@ abstract class AbstractDriver {
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
 	 * @param string $newName
 	 * @return string The new identifier of the file if the operation succeeds
-	 * @throws RuntimeException if renaming the file failed
+	 * @throws \RuntimeException if renaming the file failed
 	 */
 	abstract public function renameFile(\TYPO3\CMS\Core\Resource\FileInterface $file, $newName);
 
@@ -643,7 +643,7 @@ abstract class AbstractDriver {
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
 	 * @param string $newName The target path (including the file name!)
 	 * @return array A map of old to new file identifiers
-	 * @throws RuntimeException if renaming the folder failed
+	 * @throws \RuntimeException if renaming the folder failed
 	 */
 	abstract public function renameFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $newName);
 

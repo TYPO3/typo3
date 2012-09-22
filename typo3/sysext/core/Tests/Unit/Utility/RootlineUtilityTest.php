@@ -83,7 +83,7 @@ class RootlineUtilityTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function processMountedPageWithNonMountedPageThrowsException() {
 		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1, '1-99');

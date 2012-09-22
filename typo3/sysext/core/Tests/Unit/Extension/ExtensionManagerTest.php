@@ -492,7 +492,7 @@ class ExtensionManagerTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function addTcaSelectItemThrowsExceptionIfFieldIsNotFoundInTca() {
 		$GLOBALS['TCA'] = array();
@@ -705,7 +705,7 @@ class ExtensionManagerTest extends \tx_phpunit_testcase {
 	/////////////////////////////////////////
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function loadSingleExtLocalconfFilesRequiresExtLocalconfFileRegisteredInGlobalTypo3LoadedExt() {
 		$extensionName = uniqid('foo');
@@ -713,7 +713,7 @@ class ExtensionManagerTest extends \tx_phpunit_testcase {
 		$this->testFilesToDelete[] = $extLocalconfLocation;
 		file_put_contents($extLocalconfLocation, '<?php
 
-throw new RuntimeException(\'\', 1340559079);
+throw new \RuntimeException(\'\', 1340559079);
 
 ?>');
 		$GLOBALS['TYPO3_LOADED_EXT'] = array(
@@ -1009,7 +1009,7 @@ throw new RuntimeException(\'\', 1340559079);
 	/////////////////////////////////////////
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function loadExtensionThrowsExceptionIfExtensionIsLoaded() {
 		$namespace = 'TYPO3\\CMS\\Core\\Extension';
@@ -1021,7 +1021,7 @@ throw new RuntimeException(\'\', 1340559079);
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function loadExtensionAddsExtensionToExtList() {
 		if (!file_exists((PATH_typo3conf . 'LocalConfiguration.php'))) {
@@ -1040,7 +1040,7 @@ throw new RuntimeException(\'\', 1340559079);
 	/////////////////////////////////////////
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function unloadExtensionThrowsExceptionIfExtensionIsNotLoaded() {
 		$namespace = 'TYPO3\\CMS\\Core\\Extension';
@@ -1052,7 +1052,7 @@ throw new RuntimeException(\'\', 1340559079);
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function unloadExtensionThrowsExceptionIfExtensionIsRequired() {
 		$extensionKey = uniqid('test');
@@ -1065,7 +1065,7 @@ throw new RuntimeException(\'\', 1340559079);
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function unloadExtensionRemovesExtensionFromExtList() {
 		if (!file_exists((PATH_typo3conf . 'LocalConfiguration.php'))) {

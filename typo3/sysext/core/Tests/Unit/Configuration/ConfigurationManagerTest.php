@@ -67,7 +67,7 @@ class ConfigurationManagerTest extends \tx_phpunit_testcase {
 			'}'
 		);
 		$className = $namespace . '\\' . $className;
-		file_put_contents(PATH_site . $defaultConfigurationFile, '<?php throw new RuntimeException(\'foo\', 1310203814); ?>');
+		file_put_contents(PATH_site . $defaultConfigurationFile, '<?php throw new \RuntimeException(\'foo\', 1310203814); ?>');
 		$this->testFilesToDelete[] = PATH_site . $defaultConfigurationFile;
 		$className::getDefaultConfiguration();
 	}
@@ -90,7 +90,7 @@ class ConfigurationManagerTest extends \tx_phpunit_testcase {
 			'}'
 		);
 		$className = $namespace . '\\' . $className;
-		file_put_contents(PATH_site . $configurationFile, '<?php throw new RuntimeException(\'foo\', 1310203815); ?>');
+		file_put_contents(PATH_site . $configurationFile, '<?php throw new \RuntimeException(\'foo\', 1310203815); ?>');
 		$this->testFilesToDelete[] = PATH_site . $configurationFile;
 		$className::getLocalConfiguration();
 	}

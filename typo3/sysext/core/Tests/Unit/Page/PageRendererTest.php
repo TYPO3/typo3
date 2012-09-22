@@ -636,7 +636,7 @@ class PageRendererTest extends \tx_phpunit_testcase {
 	 * Tests the addInlineLanguageLabelFile() method.
 	 *
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function areInlineLanguageLabelsNotProcessable() {
 		$this->fixture->setLanguage(NULL);

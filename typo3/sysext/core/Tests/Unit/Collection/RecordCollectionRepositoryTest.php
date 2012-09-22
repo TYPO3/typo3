@@ -113,7 +113,7 @@ class RecordCollectionRepositoryTest extends \Tx_Phpunit_TestCase {
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function doesFindByUidThrowException() {
 		$testUid = rand(1, 1000);
