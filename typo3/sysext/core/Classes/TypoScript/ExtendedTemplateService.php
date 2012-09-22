@@ -1192,7 +1192,8 @@ class ExtendedTemplateService extends \TYPO3\CMS\Core\TypoScript\TemplateService
 						$p_field = ($labels[0] ? $labels[0] : 'x') . ':<input type="text" name="' . $fN . '" value="' . $wArr[0] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
 						$p_field .= ' , ';
 						$p_field .= ($labels[1] ? $labels[1] : 'y') . ':<input type="text" name="W' . $fN . '" value="' . $wArr[1] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
-						for ($aa = 2; $aa < count($labels); $aa++) {
+						$labelsCount = count($labels);
+						for ($aa = 2; $aa < $labelsCount; $aa++) {
 							if ($labels[$aa]) {
 								$p_field .= ' , ' . $labels[$aa] . ':<input type="text" name="W' . $aa . $fN . '" value="' . $wArr[$aa] . '"' . $GLOBALS['TBE_TEMPLATE']->formWidth(4) . ' onChange="uFormUrl(' . $aname . ')" />';
 							} else {

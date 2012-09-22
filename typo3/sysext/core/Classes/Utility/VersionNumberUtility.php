@@ -130,9 +130,11 @@ class VersionNumberUtility {
 	 */
 	static public function convertVersionsStringToVersionNumbers($versionsString) {
 		$versions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('-', $versionsString);
-		for ($i = 0; $i < count($versions); $i++) {
+		$versionsCount = count($versions);
+		for ($i = 0; $i < $versionsCount; $i++) {
 			$cleanedVersion = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $versions[$i]);
-			for ($j = 0; $j < count($cleanedVersion); $j++) {
+			$cleanedVersionCount = count($cleanedVersion);
+			for ($j = 0; $j < $cleanedVersionCount; $j++) {
 				$cleanedVersion[$j] = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($cleanedVersion[$j], 0, 999);
 			}
 			$cleanedVersionString = implode('.', $cleanedVersion);

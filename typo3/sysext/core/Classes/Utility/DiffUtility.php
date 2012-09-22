@@ -107,7 +107,8 @@ class DiffUtility {
 			$this->differenceLgd = strlen($differenceStr);
 			$outString = '';
 			$clearBuffer = '';
-			for ($a = -1; $a < count($str1Lines); $a++) {
+			$str1LinesCount = count($str1Lines);
+			for ($a = -1; $a < $str1LinesCount; $a++) {
 				if (is_array($diffResArray[$a + 1])) {
 					// a=Add, c=change, d=delete: If a, then the content is Added after the entry and we must insert the line content as well.
 					if (strstr($diffResArray[$a + 1]['changeInfo'], 'a')) {
