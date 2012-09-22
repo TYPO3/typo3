@@ -109,7 +109,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $category = 0;
 
 	/**
-	 * @var DateTime
+	 * @var \DateTime
 	 */
 	protected $lastUpdated;
 
@@ -149,7 +149,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $serializedDependencies = '';
 
 	/**
-	 * @var SplObjectStorage<Tx_Extensionmanager_Utility_Dependency>
+	 * @var \SplObjectStorage<Tx_Extensionmanager_Utility_Dependency>
 	 */
 	protected $dependencies = NULL;
 
@@ -289,7 +289,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @param DateTime $lastUpdated
+	 * @param \DateTime $lastUpdated
 	 * @return void
 	 */
 	public function setLastUpdated(\DateTime $lastUpdated) {
@@ -297,7 +297,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return DateTime
+	 * @return \DateTime
 	 */
 	public function getLastUpdated() {
 		return $this->lastUpdated;
@@ -494,7 +494,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @param SplObjectStorage $dependencies
+	 * @param \SplObjectStorage $dependencies
 	 * @return void
 	 */
 	public function setDependencies($dependencies) {
@@ -502,7 +502,7 @@ class Extension extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @return SplObjectStorage
+	 * @return \SplObjectStorage
 	 */
 	public function getDependencies() {
 		if (!is_object($this->dependencies)) {
