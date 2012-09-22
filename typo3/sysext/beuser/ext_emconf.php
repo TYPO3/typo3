@@ -1,13 +1,13 @@
 <?php
-########################################################################
-# Extension Manager/Repository config file for ext "backend_users".
-#
-# Auto generated 01-04-2012 20:27
-#
-# Manual updates:
-# Only the data in the array - everything else is removed by next
-# writing. "version" and "dependencies" must not be touched!
-########################################################################
+/***************************************************************
+* Extension Manager/Repository config file for ext "backend_users".
+*
+* Auto generated 01-04-2012 20:27
+*
+* Manual updates:
+* Only the data in the array - everything else is removed by next
+* writing. "version" and "dependencies" must not be touched!
+***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Backend User Administration',
 	'description' => 'Backend user administration and overview. Allows you to compare the settings of users and verify their permissions and see who is online.',
@@ -16,7 +16,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_email' => 'felix-source@phorax.com',
 	'author_company' => 'PHORAX',
 	'shy' => '',
-	'dependencies' => 'extbase,fluid',
+	'dependencies' => '',
 	'priority' => '',
 	'module' => 'mod',
 	'state' => 'beta',
@@ -26,13 +26,10 @@ $EM_CONF[$_EXTKEY] = array(
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
-	'version' => '2.0.0',
+	'version' => '6.0.0',
 	'constraints' => array(
 		'depends' => array(
-			'php' => '5.3.0-0.0.0',
-			'typo3' => '4.7.0-0.0.0',
-			'extbase' => '4.7.0-0.0.0',
-			'fluid' => '4.7.0-0.0.0'
+			'typo3' => '6.0.0-0.0.0',
 		),
 		'conflicts' => array(),
 		'suggests' => array()
