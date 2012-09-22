@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Integrity\View;
+namespace TYPO3\CMS\Lowlevel\View;
 
 /**
  * Script class for the Config module
@@ -107,7 +107,7 @@ class ConfigurationView {
 	 * @todo Define visibility
 	 */
 	public function main() {
-		$arrayBrowser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Integrity\\Utility\\ArrayBrowser');
+		$arrayBrowser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Utility\\ArrayBrowser');
 		$this->content = $this->doc->header($GLOBALS['LANG']->getLL('configuration', TRUE));
 		$this->content .= '<div id="lowlevel-config">
 						<label for="search_field">' . $GLOBALS['LANG']->getLL('enterSearchPhrase', TRUE) . '</label>

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Integrity\Utility;
+namespace TYPO3\CMS\Core\Utility;
 
 /***************************************************************
  *  Copyright notice

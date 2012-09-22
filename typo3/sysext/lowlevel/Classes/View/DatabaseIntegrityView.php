@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Integrity\View;
+namespace TYPO3\CMS\Lowlevel\View;
 
 /**
  * Script class for the DB int module
