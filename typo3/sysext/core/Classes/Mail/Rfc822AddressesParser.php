@@ -299,7 +299,8 @@ class Rfc822AddressesParser {
 	 */
 	protected function _splitCheck($parts, $char) {
 		$string = $parts[0];
-		for ($i = 0; $i < count($parts); $i++) {
+		$partsCounter = count($parts);
+		for ($i = 0; $i < $partsCounter; $i++) {
 			if ($this->_hasUnclosedQuotes($string) || $this->_hasUnclosedBrackets($string, '<>') || $this->_hasUnclosedBrackets($string, '[]') || $this->_hasUnclosedBrackets($string, '()') || substr($string, -1) == '\\') {
 				if (isset($parts[$i + 1])) {
 					$string = $string . $char . $parts[($i + 1)];
@@ -377,7 +378,8 @@ class Rfc822AddressesParser {
 	 */
 	protected function _hasUnclosedBracketsSub($string, &$num, $char) {
 		$parts = explode($char, $string);
-		for ($i = 0; $i < count($parts); $i++) {
+		$partsCounter = count($parts);
+		for ($i = 0; $i < $partsCounter; $i++) {
 			if (substr($parts[$i], -1) == '\\' || $this->_hasUnclosedQuotes($parts[$i])) {
 				$num--;
 			}
@@ -436,7 +438,8 @@ class Rfc822AddressesParser {
 		//                         geezer@domain.com
 		//                         geezer
 		// ... or any other format valid by RFC 822.
-		for ($i = 0; $i < count($addresses); $i++) {
+		$addressesCount = count($addresses);
+		for ($i = 0; $i < $addressesCount; $i++) {
 			if (!$this->validateMailbox($addresses[$i])) {
 				if (empty($this->error)) {
 					$this->error = 'Validation failed for: ' . $addresses[$i];

@@ -1625,7 +1625,8 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 			$info['url'] = rawurldecode(substr($url, strpos($url, '?file:') + 1));
 		} else {
 			$curURL = $this->siteUrl();
-			for ($a = 0; $a < strlen($url); $a++) {
+			$urlLength = strlen($url);
+			for ($a = 0; $a < $urlLength; $a++) {
 				if ($url[$a] != $curURL[$a]) {
 					break;
 				}
