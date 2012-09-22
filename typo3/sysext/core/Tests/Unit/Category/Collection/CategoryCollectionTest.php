@@ -35,7 +35,7 @@ class CategoryCollectionTest extends \tx_phpunit_testcase {
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::__construct
 	 * @return void
 	 */
