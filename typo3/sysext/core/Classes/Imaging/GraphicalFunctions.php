@@ -2301,10 +2301,10 @@ class GraphicalFunctions {
 				}
 				// Cropscaling:
 				if ($data['crs']) {
-					if (!$data['origW']) {
+					if (!$data['origW'] || ($data['origW'] > $data[0] && $data['origH'] < $data[1])) {
 						$data['origW'] = $data[0];
 					}
-					if (!$data['origH']) {
+					if (!$data['origH'] || ($data['origW'] < $data[0] && $data['origH'] > $data[1])) {
 						$data['origH'] = $data[1];
 					}
 					$offsetX = intval(($data[0] - $data['origW']) * ($data['cropH'] + 100) / 200);
