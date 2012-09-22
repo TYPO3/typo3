@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Core\Http\Observer;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2011 Philipp Gampe (dev.typo3@philippgampe.info)
+ *  (c) 2011-2012 Philipp Gampe <philipp.gampe@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -59,7 +59,7 @@ class Download implements \SplObserver {
 	/**
 	 * Constructor
 	 *
-	 * @throws InvalidArgumentException if directory is not found or is not within the PATH_site
+	 * @throws \InvalidArgumentException if directory is not found or is not within the PATH_site
 	 * @param string $directory The absolute path to the directory in which the file is saved.
 	 * @param string $filename The filename - if not set, it is determined automatically.
 	 */
@@ -73,8 +73,8 @@ class Download implements \SplObserver {
 	 * If the filename is empty, tries to determine it from received headers
 	 *
 	 * @throws \TYPO3\CMS\Core\Exception if file can not be opened
-	 * @throws UnexpectedValueException if the file name is empty and can not be determined from headers
-	 * @param SplSubject|HTTP_Request2 $request
+	 * @throws \UnexpectedValueException if the file name is empty and can not be determined from headers
+	 * @param \SplSubject|\HTTP_Request2 $request
 	 * @return void
 	 */
 	public function update(\SplSubject $request) {
@@ -102,7 +102,7 @@ class Download implements \SplObserver {
 	/**
 	 * Sets the directory and checks whether the directory is available.
 	 *
-	 * @throws InvalidArgumentException if directory is not found or is not within the PATH_site
+	 * @throws \InvalidArgumentException if directory is not found or is not within the PATH_site
 	 * @param string $directory The absolute path to the directory in which the file is saved.
 	 * @return void
 	 */
@@ -132,8 +132,8 @@ class Download implements \SplObserver {
 	 * Determines the filename from either the 'content-disposition' header
 	 * or from the basename of the current request.
 	 *
-	 * @param HTTP_Request2 $request
-	 * @param HTTP_Request2_Response $response
+	 * @param \HTTP_Request2 $request
+	 * @param \HTTP_Request2_Response $response
 	 * @return void
 	 */
 	protected function determineFilename(\HTTP_Request2 $request, \HTTP_Request2_Response $response) {
@@ -153,7 +153,7 @@ class Download implements \SplObserver {
 	 *
 	 * $this->filename must be set before calling this function.
 	 *
-	 * @throws UnexpectedValueException if $this->filename is not set
+	 * @throws \UnexpectedValueException if $this->filename is not set
 	 * @throws \TYPO3\CMS\Core\Exception if file can not be opened
 	 * @return void
 	 */
@@ -180,6 +180,5 @@ class Download implements \SplObserver {
 	}
 
 }
-
 
 ?>
