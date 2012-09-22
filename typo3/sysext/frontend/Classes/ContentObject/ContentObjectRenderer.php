@@ -4764,7 +4764,8 @@ class ContentObjectRenderer {
 		} while ($pointer < $totalLen);
 		// Parsing nonTypoTag content (all even keys):
 		reset($contentAccum);
-		for ($a = 0; $a < count($contentAccum); $a++) {
+		$contentAccumCount = count($contentAccum);
+		for ($a = 0; $a < $contentAccumCount; $a++) {
 			if ($a % 2 != 1) {
 				// stdWrap
 				if (is_array($conf['nonTypoTagStdWrap.'])) {

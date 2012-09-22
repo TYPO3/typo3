@@ -1485,10 +1485,14 @@ class CharsetConverter {
 			}
 		}
 		// Add the ASCII case table
-		for ($i = ord('a'); $i <= ord('z'); $i++) {
+		$start = ord('a');
+		$end = ord('z');
+		for ($i = $start; $i <= $end; $i++) {
 			$this->caseFolding[$charset]['toUpper'][chr($i)] = chr($i - 32);
 		}
-		for ($i = ord('A'); $i <= ord('Z'); $i++) {
+		$start = ord('A');
+		$end = ord('Z');
+		for ($i = $start; $i <= $end; $i++) {
 			$this->caseFolding[$charset]['toLower'][chr($i)] = chr($i + 32);
 		}
 		if ($cacheFile) {

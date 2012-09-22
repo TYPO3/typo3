@@ -104,21 +104,24 @@ class BackendLayoutWizardController {
 							$cellData = array();
 							if (isset($column['colspan'])) {
 								$cellData[] = 'colspan:' . intval($column['colspan']);
+								$columnColSpan = intval($column['colspan']);
 								if (isset($column['rowspan'])) {
-									for ($spanRow = 0; $spanRow < intval($column['rowspan']); $spanRow++) {
-										for ($spanColumn = 0; $spanColumn < intval($column['colspan']); $spanColumn++) {
+									$columnRowSpan = intval($column['rowspan']);
+									for ($spanRow = 0; $spanRow < $columnRowSpan; $spanRow++) {
+										for ($spanColumn = 0; $spanColumn < $columnColSpan; $spanColumn++) {
 											$spannedMatrix[$i + $spanRow][$j + $spanColumn] = 1;
 										}
 									}
 								} else {
-									for ($spanColumn = 0; $spanColumn < intval($column['colspan']); $spanColumn++) {
+									for ($spanColumn = 0; $spanColumn < $columnColSpan; $spanColumn++) {
 										$spannedMatrix[$i][$j + $spanColumn] = 1;
 									}
 								}
 							} else {
 								$cellData[] = 'colspan:1';
 								if (isset($column['rowspan'])) {
-									for ($spanRow = 0; $spanRow < intval($column['rowspan']); $spanRow++) {
+									$columnRowSpan = intval($column['rowspan']);
+									for ($spanRow = 0; $spanRow < $columnRowSpan; $spanRow++) {
 										$spannedMatrix[$i + $spanRow][$j] = 1;
 									}
 								}
