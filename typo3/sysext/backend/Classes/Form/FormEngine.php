@@ -311,7 +311,7 @@ class FormEngine {
 	 */
 	public $perms_clause_set = 0;
 
-	// Used to indicate the mode of CSH (Context Sensitive Help), whether it should be icons-only ('icon'), full description ('text') or not at all (blank).
+	// Used to indicate the mode of CSH (Context Sensitive Help), whether it should be icons-only ('icon') or not at all (blank).
 	/**
 	 * @todo Define visibility
 	 */

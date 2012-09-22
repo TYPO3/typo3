@@ -347,12 +347,7 @@ class FrontendEditPanel {
 		$tceforms->backPath = TYPO3_mainDir;
 		$tceforms->setFancyDesign();
 		$tceforms->defStyle = 'font-family:Verdana;font-size:10px;';
-		$tceforms->edit_showFieldHelp = $GLOBALS['BE_USER']->uc['edit_showFieldHelp'];
-		// Icon only mode for CSH destroys the layout for frontend editing so force full text mode instead.
-		// @todo	Make sure the necessary Javascript and CSS are included so that CSH can work properly in all modes.
-		if ($tceforms->edit_showFieldHelp == 'icon') {
-			$tceforms->edit_showFieldHelp = 'text';
-		}
+		$tceforms->edit_showFieldHelp = 0;
 		$tceforms->helpTextFontTag = '<font face="verdana,sans-serif" color="#333333" size="1">';
 		$trData = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Form\\DataPreprocessor');
 		$trData->addRawData = TRUE;

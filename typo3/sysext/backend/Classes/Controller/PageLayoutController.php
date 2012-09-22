@@ -709,9 +709,6 @@ class PageLayoutController {
 				$tceforms->clipObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Clipboard\\Clipboard');
 				// Initialize - reads the clipboard content from the user session
 				$tceforms->clipObj->initializeClipboard();
-				if ($GLOBALS['BE_USER']->uc['edit_showFieldHelp'] !== 'text' && $this->MOD_SETTINGS['showDescriptions']) {
-					$tceforms->edit_showFieldHelp = 'text';
-				}
 				// Render form, wrap it:
 				$panel = '';
 				$panel .= $tceforms->getMainFields($this->eRParts[0], $rec);
@@ -745,7 +742,7 @@ class PageLayoutController {
 		$q_count = $this->getNumberOfHiddenElements();
 		$h_func_b = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[tt_content_showHidden]', $this->MOD_SETTINGS['tt_content_showHidden'], 'db_layout.php', '', 'id="checkTt_content_showHidden"') . '<label for="checkTt_content_showHidden">' . (!$q_count ? $GLOBALS['TBE_TEMPLATE']->dfw($GLOBALS['LANG']->getLL('hiddenCE', 1)) : $GLOBALS['LANG']->getLL('hiddenCE', 1) . ' (' . $q_count . ')') . '</label>';
 		$h_func_b .= '<br />' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[showPalettes]', $this->MOD_SETTINGS['showPalettes'], 'db_layout.php', '', 'id="checkShowPalettes"') . '<label for="checkShowPalettes">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showPalettes', 1) . '</label>';
-		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('context_help') && $GLOBALS['BE_USER']->uc['edit_showFieldHelp'] !== 'text') {
+		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('context_help')) {
 			$h_func_b .= '<br />' . \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncCheck($this->id, 'SET[showDescriptions]', $this->MOD_SETTINGS['showDescriptions'], 'db_layout.php', '', 'id="checkShowDescriptions"') . '<label for="checkShowDescriptions">' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.showDescriptions', 1) . '</label>';
 		}
 		if ($GLOBALS['BE_USER']->isRTE()) {
