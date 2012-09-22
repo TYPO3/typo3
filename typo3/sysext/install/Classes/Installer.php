@@ -1,8 +1,6 @@
 <?php
 namespace TYPO3\CMS\Install;
 
-// TODO remove this requirement
-require_once PATH_t3lib . 'class.t3lib_install.php';
 /**
  * Install Tool module
  *
@@ -11,7 +9,7 @@ require_once PATH_t3lib . 'class.t3lib_install.php';
  * @package TYPO3
  * @subpackage tx_install
  */
-class Installer extends \t3lib_install {
+class Installer {
 
 	/**
 	 * @todo Define visibility
@@ -39,9 +37,11 @@ class Installer extends \t3lib_install {
 	public $markers = array();
 
 	/**
-	 * @todo Define visibility
+	 * Used to set (error)messages from the executing functions like mail-sending, writing Localconf and such
+	 *
+	 * @var array
 	 */
-	public $messages = array();
+	protected $messages = array();
 
 	/**
 	 * @todo Define visibility
@@ -234,13 +234,33 @@ class Installer extends \t3lib_install {
 	);
 
 	/**
+	 * Backpath (used for icons etc.)
+	 *
+	 * @var string
+	 */
+	protected $backPath = '../';
+
+	/**
+	 * @var \TYPO3\CMS\Install\Sql\SchemaMigrator Instance of SQL handler
+	 */
+	protected $sqlHandler = NULL;
+
+	/**
+	 * Prefix for checkbox fields when updating database.
+	 *
+	 * @var string
+	 */
+	protected $dbUpdateCheckboxPrefix = 'TYPO3_INSTALL[database_update]';
+
+	/**
 	 * Constructor
 	 *
 	 * @return void
 	 * @todo Define visibility
 	 */
 	public function __construct() {
-		parent::__construct();
+		$this->sqlHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Sql\\SchemaMigrator');
+
 		if (!$GLOBALS['TYPO3_CONF_VARS']['BE']['installToolPassword']) {
 			$this->outputErrorAndExit('Install Tool deactivated.<br />
 				You must enable it by setting a password in typo3conf/LocalConfiguration.php. If you insert the value below at array position \'EXT\' \'installToolPassword\', the password will be \'joh316\':<br /><br />
@@ -1694,7 +1714,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					$description = trim($commentArr[1][$k][$vk]);
 					$isTextarea = preg_match('/^(<.*?>)?string \\(textarea\\)/i', $description) ? TRUE : FALSE;
 					$doNotRender = preg_match('/^(<.*?>)?string \\(exclude\\)/i', $description) ? TRUE : FALSE;
-					if (!is_array($value) && !$doNotRender && ($this->checkForBadString($value) || $isTextarea)) {
+					if (!is_array($value) && !$doNotRender && (!preg_match('/[' . LF . CR . ']/', $value) || $isTextarea)) {
 						$k2 = '[' . $vk . ']';
 						if ($isTextarea) {
 							// Get the subpart for a textarea

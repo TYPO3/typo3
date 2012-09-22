@@ -220,16 +220,6 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Wrapper for make instance to make
-	 * mocking possible
-	 *
-	 * @return t3lib_install
-	 */
-	protected function getT3libInstallInstance() {
-		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_install');
-	}
-
-	/**
 	 * Reload Cache files and Typo3LoadedExtensions
 	 *
 	 * @return void
