@@ -83,7 +83,7 @@ class RootlineUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function processMountedPageWithNonMountedPageThrowsException() {
 		$fixture = new Fixtures\RootlineUtilityTestAccessibleFixture(1, '1-99');

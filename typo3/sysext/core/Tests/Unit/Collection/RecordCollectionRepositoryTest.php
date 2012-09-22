@@ -113,7 +113,7 @@ class RecordCollectionRepositoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase 
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function doesFindByUidThrowException() {
 		$testUid = rand(1, 1000);

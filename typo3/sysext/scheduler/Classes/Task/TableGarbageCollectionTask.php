@@ -56,7 +56,7 @@ class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task {
 	/**
 	 * Execute garbage collection, called by scheduler.
 	 *
-	 * @throws RuntimeException if configured table was not cleaned up
+	 * @throws \RuntimeException if configured table was not cleaned up
 	 * @return boolean TRUE if task run was successful
 	 */
 	public function execute() {
@@ -77,7 +77,7 @@ class TableGarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task {
 	/**
 	 * Execute clean up of a specific table
 	 *
-	 * @throws RuntimeException If table configuration is broken
+	 * @throws \RuntimeException If table configuration is broken
 	 * @param string $table The table to handle
 	 * @param array $configuration Clean up configuration
 	 * @return boolean TRUE if cleanup was successful

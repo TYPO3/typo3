@@ -247,7 +247,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	///////////////////////
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function getValueByPathThrowsExceptionIfPathIsEmpty() {
 		\TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath(array(), '');
@@ -307,7 +307,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider getValueByPathInvalidPathDataProvider
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function getValueByPathThrowsExceptionIfPathNotExists(array $array, $path) {
 		\TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath($array, $path);
@@ -439,7 +439,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	///////////////////////
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function setValueByPathThrowsExceptionIfPathIsEmpty() {
 		\TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath(array(), '', NULL);
@@ -447,7 +447,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function setValueByPathThrowsExceptionIfPathIsNotAString() {
 		\TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath(array(), array('foo'), NULL);
@@ -704,7 +704,7 @@ class ArrayUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function arrayExportThrowsExceptionIfObjectShouldBeExported() {
 		$array = array(

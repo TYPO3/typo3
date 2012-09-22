@@ -628,7 +628,7 @@ class PageRendererTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Tests the addInlineLanguageLabelFile() method.
 	 *
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 */
 	public function areInlineLanguageLabelsNotProcessable() {
 		$this->fixture->setLanguage(NULL);

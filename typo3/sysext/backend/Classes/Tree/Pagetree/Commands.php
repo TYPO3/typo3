@@ -192,7 +192,7 @@ class Commands {
 	 * @param array $cmd
 	 * @param array $data
 	 * @return array
-	 * @throws RuntimeException if an error happened while the TCE processing
+	 * @throws \RuntimeException if an error happened while the TCE processing
 	 */
 	static protected function processTceCmdAndDataMap(array $cmd, array $data = array()) {
 		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */

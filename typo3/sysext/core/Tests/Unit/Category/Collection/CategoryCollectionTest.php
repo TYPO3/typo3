@@ -35,7 +35,7 @@ class CategoryCollectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException RuntimeException
+	 * @expectedException \RuntimeException
 	 * @covers \TYPO3\CMS\Core\Category\Collection\CategoryCollection::__construct
 	 * @return void
 	 */

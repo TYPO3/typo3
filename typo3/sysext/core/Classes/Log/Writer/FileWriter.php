@@ -130,7 +130,7 @@ class FileWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 * Opens the log file handle
 	 *
 	 * @return void
-	 * @throws RuntimeException if the log file can't be opened.
+	 * @throws \RuntimeException if the log file can't be opened.
 	 */
 	protected function openLogFile() {
 		$this->createLogFile();

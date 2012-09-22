@@ -115,7 +115,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	/**
 	 * Calculates the absolute path to this drivers storage location.
 	 *
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 * @param array $configuration
 	 * @return string
 	 */
@@ -895,7 +895,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
 	 * @param string $newName The target path (including the file name!)
 	 * @return array A map of old to new file identifiers
-	 * @throws RuntimeException if renaming the folder failed
+	 * @throws \RuntimeException if renaming the folder failed
 	 */
 	public function renameFolder(\TYPO3\CMS\Core\Resource\Folder $folder, $newName) {
 		// Makes sure the path given as parameter is valid
@@ -993,7 +993,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file The file object to check
 	 * @return array
-	 * @throws RuntimeException If fetching the permissions failed
+	 * @throws \RuntimeException If fetching the permissions failed
 	 */
 	public function getFilePermissions(\TYPO3\CMS\Core\Resource\FileInterface $file) {
 		$filePath = $this->getAbsolutePath($file);
@@ -1005,7 +1005,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\Folder $folder
 	 * @return array
-	 * @throws RuntimeException If fetching the permissions failed
+	 * @throws \RuntimeException If fetching the permissions failed
 	 */
 	public function getFolderPermissions(\TYPO3\CMS\Core\Resource\Folder $folder) {
 		$folderPath = $this->getAbsolutePath($folder);
@@ -1017,7 +1017,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 *
 	 * @param string $path
 	 * @return array
-	 * @throws RuntimeException If fetching the permissions failed
+	 * @throws \RuntimeException If fetching the permissions failed
 	 */
 	protected function getPermissions($path) {
 		$permissionBits = fileperms($path);
@@ -1093,7 +1093,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 	 * @param \TYPO3\CMS\Core\Resource\FileInterface $file
 	 * @param string $contents
 	 * @return integer The number of bytes written to the file
-	 * @throws RuntimeException if the operation failed
+	 * @throws \RuntimeException if the operation failed
 	 */
 	public function setFileContents(\TYPO3\CMS\Core\Resource\FileInterface $file, $contents) {
 		$filePath = $this->getAbsolutePath($file);
