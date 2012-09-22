@@ -92,12 +92,20 @@ class t3lib_error_ErrorHandler implements t3lib_error_ErrorHandlerInterface {
 			E_USER_WARNING => 'User Warning',
 			E_USER_NOTICE => 'User Notice',
 			E_STRICT => 'Runtime Notice',
-			E_RECOVERABLE_ERROR => 'Catchable Fatal Error'
+			E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
+			E_DEPRECATED => 'Runtime Deprecation Notice'
 		);
 
 		$message = 'PHP ' . $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . $errorFile . ' line ' . $errorLine;
 
 		if ($errorLevel & $this->exceptionalErrors) {
+				// Handle error raised at early parse time
+				// autoloader not available & built-in classes not resolvable
+			if (!class_exists('stdClass', FALSE)) {
+				$message = 'PHP ' . $errorLevels[$errorLevel] . ': ' . $errorMessage . ' in ' . basename($errorFile) . 'line ' . $errorLine;
+				die($message);
+			}
+
 				// We need to manually require the exception classes in case the autoloader is not available at this point yet.
 				// @see http://forge.typo3.org/issues/23444
 			if (!class_exists('t3lib_error_Exception', FALSE)) {
