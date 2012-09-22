@@ -1222,7 +1222,6 @@ class ExtensionManager {
 	 * $type determines the type of frontend plugin:
 	 * "list_type" (default)	- the good old "Insert plugin" entry
 	 * "menu_type"	- a "Menu/Sitemap" entry
-	 * "splash_layout" - a "Textbox" entry
 	 * "CType" - a new content element type
 	 * "header_layout" - an additional header type (added to the selection of layout1-5)
 	 * "includeLib" - just includes the library for manual use somewhere in TypoScript.
@@ -1256,9 +1255,6 @@ plugin.' . $cN . $prefix . ' {
 			break;
 		case 'menu_type':
 			$addLine = 'tt_content.menu.20.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
-			break;
-		case 'splash_layout':
-			$addLine = 'tt_content.splash.' . $key . $prefix . ' = < plugin.' . $cN . $prefix;
 			break;
 		case 'CType':
 			$addLine = trim('

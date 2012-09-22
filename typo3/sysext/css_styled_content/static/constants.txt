@@ -13,8 +13,6 @@ content {
   spaceBefore = 0
     # cat=content/other/b; type=small; label= Content Element margins (after): Space after each content element.
   spaceAfter = 0
-
-  splash.bgCol = white
 }
 
 

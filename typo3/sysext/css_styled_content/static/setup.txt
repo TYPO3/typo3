@@ -1725,64 +1725,6 @@ tt_content.search.30 {
 	}
 }
 
-# ******************
-# CType: splash
-# ******************
-# Deprecated element.
-# Still here for backwards compliance with plugins using the "text box" type.
-tt_content.splash = CASE
-tt_content.splash.key.field = splash_layout
-tt_content.splash.stdWrap {
-	prefixComment = 2 | Textbox inserted (Deprecated)
-}
-tt_content.splash.default = COA
-tt_content.splash.default {
-	20 = CTABLE
-	20 {
-		c.1 = < tt_content.text
-		lm.1 = IMAGE
-		lm.1.file {
-			import = uploads/pics/
-			import.field = image
-			import.listNum = 0
-			maxW.field = imagewidth
-			maxW.ifEmpty = 200
-		}
-		cMargins = 30,0,0,0
-	}
-}
-tt_content.splash.1 < tt_content.splash.default
-tt_content.splash.1.20.lm.1.file >
-tt_content.splash.1.20.lm.1.file = GIFBUILDER
-tt_content.splash.1.20.lm.1.file {
-	XY = [10.w]+10,[10.h]+10
-	backColor = {$content.splash.bgCol}
-	backColor.override.data = register:pageColor
-	format = jpg
-	5 = BOX
-	5.dimensions = 3,3,[10.w],[10.h]
-	5.color = #333333
-	7 = EFFECT
-	7.value = blur=99|blur=99|blur=99|blur=99|blur=99|blur=99|blur=99
-	10 = IMAGE
-	10.file {
-		import = uploads/pics/
-		import.field = image
-		import.listNum = 0
-		maxW.field = imagewidth
-		maxW.ifEmpty = 200
-	}
-}
-// The image frames are not available unless TypoScript code from styles.content.imgFrames.x is provided manually:
-tt_content.splash.2 < tt_content.splash.default
-#tt_content.splash.2.20.lm.1.file.m < styles.content.imgFrames.1
-tt_content.splash.3 < tt_content.splash.default
-#tt_content.splash.3.20.lm.1.file.m < styles.content.imgFrames.2
-
-// From plugin.postit1, if included:
-tt_content.splash.20 = < plugin.postit1
-
-
 
 # ****************
 # CType: menu
