@@ -1253,14 +1253,6 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 					$out .= $this->renderText($row['parameters']) . '<br />';
 				}
 				break;
-			case 'splash':
-				if ($row['bodytext']) {
-					$out .= $this->linkEditContent($this->renderText($row['bodytext']), $row) . '<br />';
-				}
-				if ($row['image']) {
-					$out .= $this->thumbCode($row, 'tt_content', 'image') . '<br />';
-				}
-				break;
 			case 'menu':
 				if ($row['pages']) {
 					$out .= $this->linkEditContent($row['pages'], $row) . '<br />';
