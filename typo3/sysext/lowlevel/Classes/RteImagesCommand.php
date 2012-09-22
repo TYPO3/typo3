@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Integrity;
+namespace TYPO3\CMS\Lowlevel;
 
 /***************************************************************
  *  Copyright notice
@@ -39,7 +39,7 @@ namespace TYPO3\CMS\Integrity;
  * @package TYPO3
  * @subpackage tx_lowlevel
  */
-class RteImagesCommand extends \TYPO3\CMS\Integrity\CleanerCommand {
+class RteImagesCommand extends CleanerCommand {
 
 	/**
 	 * @todo Define visibility

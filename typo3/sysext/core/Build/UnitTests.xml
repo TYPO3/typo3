@@ -52,14 +52,14 @@
 		<testsuite name="EXT:lang tests">
 			<directory>../../../../typo3/sysext/lang/Tests/Unit/</directory>
 		</testsuite>
+		<testsuite name="EXT:lowlevel tests">
+			<directory>../../../../typo3/sysext/lowlevel/Tests/Unit/</directory>
+		</testsuite>
 		<testsuite name="EXT:saltedpasswords tests">
 			<directory>../../../../typo3/sysext/saltedpasswords/Tests/Unit/</directory>
 		</testsuite>
 		<testsuite name="EXT:scheduler tests">
 			<directory>../../../../typo3/sysext/scheduler/Tests/Unit/</directory>
-		</testsuite>
-		<testsuite name="Suite integrity tests">
-			<directory>../../../../typo3/sysext/core/Tests/Integrity/</directory>
 		</testsuite>
 	</testsuites>
 
