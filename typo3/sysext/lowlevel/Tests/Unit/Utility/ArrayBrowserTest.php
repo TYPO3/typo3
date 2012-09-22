@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Integrity\Tests\Unit\Utility;
+namespace TYPO3\CMS\Lowlevel\Tests\Unit\Utility;
 
 /***************************************************************
  * Copyright notice
@@ -25,7 +25,7 @@ namespace TYPO3\CMS\Integrity\Tests\Unit\Utility;
  ***************************************************************/
 
 /**
- * Testcase for the \TYPO3\CMS\Integrity\Utility\ArrayBrowser class in the TYPO3 Core.
+ * Testcase for the \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser class in the TYPO3 Core.
  *
  * @package TYPO3
  * @subpackage t3lib
@@ -34,12 +34,12 @@ namespace TYPO3\CMS\Integrity\Tests\Unit\Utility;
 class ArrayBrowserTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Integrity\Utility\ArrayBrowser
+	 * @var \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser
 	 */
 	private $fixture;
 
 	public function setUp() {
-		$this->fixture = new \TYPO3\CMS\Integrity\Utility\ArrayBrowser();
+		$this->fixture = new \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser();
 	}
 
 	public function tearDown() {

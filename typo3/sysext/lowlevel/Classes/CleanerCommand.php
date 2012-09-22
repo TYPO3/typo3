@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Integrity;
+namespace TYPO3\CMS\Lowlevel;
 
 /***************************************************************
  *  Copyright notice

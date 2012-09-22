@@ -5979,77 +5979,77 @@ class Tx_Install_Updates_File_TtContentUploadsUpdateWizard extends \TYPO3\CMS\In
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lowlevel_admin_core extends \TYPO3\CMS\Integrity\AdminCommand {}
+class tx_lowlevel_admin_core extends \TYPO3\CMS\Lowlevel\AdminCommand {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lowlevel_cleaner_core extends \TYPO3\CMS\Integrity\CleanerCommand {}
+class tx_lowlevel_cleaner_core extends \TYPO3\CMS\Lowlevel\CleanerCommand {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lowlevel_cleanflexform extends \TYPO3\CMS\Integrity\CleanFlexformCommand {}
+class tx_lowlevel_cleanflexform extends \TYPO3\CMS\Lowlevel\CleanFlexformCommand {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lowlevel_deleted extends \TYPO3\CMS\Integrity\DeletedRecordsCommand {}
+class tx_lowlevel_deleted extends \TYPO3\CMS\Lowlevel\DeletedRecordsCommand {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lowlevel_double_files extends \TYPO3\CMS\Integrity\DoubleFilesCommand {}
+class tx_lowlevel_double_files extends \TYPO3\CMS\Lowlevel\DoubleFilesCommand {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lowlevel_lost_files extends \TYPO3\CMS\Integrity\LostFilesCommand {}
+class tx_lowlevel_lost_files extends \TYPO3\CMS\Lowlevel\LostFilesCommand {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lowlevel_missing_files extends \TYPO3\CMS\Integrity\MissingFilesCommand {}
+class tx_lowlevel_missing_files extends \TYPO3\CMS\Lowlevel\MissingFilesCommand {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lowlevel_missing_relations extends \TYPO3\CMS\Integrity\MissingRelationsCommand {}
+class tx_lowlevel_missing_relations extends \TYPO3\CMS\Lowlevel\MissingRelationsCommand {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lowlevel_orphan_records extends \TYPO3\CMS\Integrity\OrphanRecordsCommand {}
+class tx_lowlevel_orphan_records extends \TYPO3\CMS\Lowlevel\OrphanRecordsCommand {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lowlevel_rte_images extends \TYPO3\CMS\Integrity\RteImagesCommand {}
+class tx_lowlevel_rte_images extends \TYPO3\CMS\Lowlevel\RteImagesCommand {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lowlevel_syslog extends \TYPO3\CMS\Integrity\SyslogCommand {}
+class tx_lowlevel_syslog extends \TYPO3\CMS\Lowlevel\SyslogCommand {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class t3lib_arrayBrowser extends \TYPO3\CMS\Integrity\Utility\ArrayBrowser {}
+class t3lib_arrayBrowser extends \TYPO3\CMS\Lowlevel\Utility\ArrayBrowser {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class tx_lowlevel_versions extends \TYPO3\CMS\Integrity\VersionsCommand {}
+class tx_lowlevel_versions extends \TYPO3\CMS\Lowlevel\VersionsCommand {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class SC_mod_tools_config_index extends \TYPO3\CMS\Integrity\View\ConfigurationView {}
+class SC_mod_tools_config_index extends \TYPO3\CMS\Lowlevel\View\ConfigurationView {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class SC_mod_tools_dbint_index extends \TYPO3\CMS\Integrity\View\DatabaseIntegrityView {}
+class SC_mod_tools_dbint_index extends \TYPO3\CMS\Lowlevel\View\DatabaseIntegrityView {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
