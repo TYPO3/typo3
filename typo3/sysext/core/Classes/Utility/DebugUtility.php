@@ -130,8 +130,7 @@ class DebugUtility {
 				'<',
 				'
 ',
-				'
-'
+				''
 			), array(
 				'\\"',
 				'\\/',
@@ -146,8 +145,7 @@ class DebugUtility {
 				'<',
 				'
 ',
-				'
-'
+				''
 			), array(
 				'\\"',
 				'\\/',
