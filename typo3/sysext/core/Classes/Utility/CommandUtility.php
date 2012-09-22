@@ -57,7 +57,7 @@ namespace TYPO3\CMS\Core\Utility;
  * @author Steffen Kamper <steffen@typo3.org>
  * @author René Fritz <r.fritz@colorcube.de>
  */
-final class CommandUtility {
+class CommandUtility {
 
 	/**
 	 * Tells if object is already initialized

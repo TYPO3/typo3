@@ -45,7 +45,7 @@ namespace TYPO3\CMS\Frontend\Utility;
  * @package TYPO3
  * @subpackage tslib
  */
-final class EidUtility {
+class EidUtility {
 
 	/**
 	 * Load and initialize Frontend User. Note, this process is slow because

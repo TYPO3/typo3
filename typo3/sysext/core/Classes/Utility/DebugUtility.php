@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Utility;
  * @package TYPO3
  * @subpackage t3lib
  */
-final class DebugUtility {
+class DebugUtility {
 
 	/**
 	 * Template for debug output
@@ -130,7 +130,8 @@ final class DebugUtility {
 				'<',
 				'
 ',
-				''
+				'
+'
 			), array(
 				'\\"',
 				'\\/',
@@ -145,7 +146,8 @@ final class DebugUtility {
 				'<',
 				'
 ',
-				''
+				'
+'
 			), array(
 				'\\"',
 				'\\/',

@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Utility;
  *
  * @author Jigal van Hemert <jigal@xs4all.nl>
  */
-final class MonitorUtility {
+class MonitorUtility {
 
 	/**
 	 * Checks peak memory usage and stores data in cache for use in the report module

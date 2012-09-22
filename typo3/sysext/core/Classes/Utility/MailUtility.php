@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Utility;
  * @package TYPO3
  * @subpackage t3lib
  */
-final class MailUtility {
+class MailUtility {
 
 	/**
 	 * Proxy for the PHP mail() function. Adds possibility to hook in and send the mails in a different way.

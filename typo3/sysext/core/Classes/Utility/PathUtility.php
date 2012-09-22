@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Core\Utility;
  * @package TYPO3
  * @subpackage t3lib
  */
-final class PathUtility {
+class PathUtility {
 
 	/**
 	 * Gets the relative path from the current used script to a given directory.

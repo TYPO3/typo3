@@ -36,7 +36,7 @@ namespace TYPO3\CMS\IndexedSearch\Utility;
  * @package TYPO3
  * @subpackage tx_indexedsearch
  */
-final class IndexedSearchUtility {
+class IndexedSearchUtility {
 
 	/**
 	 * Check if the tables provided are configured for usage. This becomes
