@@ -128,10 +128,8 @@ class DebugUtility {
 				'"',
 				'/',
 				'<',
-				'
-',
-				'
-'
+				LF,
+				CR
 			), array(
 				'\\"',
 				'\\/',
@@ -144,10 +142,8 @@ class DebugUtility {
 				'"',
 				'/',
 				'<',
-				'
-',
-				'
-'
+				LF,
+				CR
 			), array(
 				'\\"',
 				'\\/',
@@ -312,6 +308,7 @@ class DebugUtility {
 		if (strlen($string) < $characters) {
 			$characters = strlen($string);
 		}
+		$valuestring = '';
 		for ($i = 0; $i < $characters; $i++) {
 			$valuestring .= ' ' . ord(substr($string, $i, 1));
 		}
