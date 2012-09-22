@@ -433,7 +433,7 @@ class ADODB_mssqlnative extends ADOConnection {
 		So all your blobs must be of type "image".
 
 		Remember to set in php.ini the following...
-		
+
 		; Valid range 0 - 2147483647. Default = 4096.
 		mssql.textlimit = 0 ; zero to pass through
 
@@ -485,7 +485,7 @@ class ADODB_mssqlnative extends ADOConnection {
 	static function UnixTimeStamp($v)
 	{
 		return ADORecordSet_array_mssqlnative::UnixTimeStamp($v);
-	}	
+	}
 
 	function &MetaIndexes($table,$primary=false, $owner = false)
 	{
@@ -778,7 +778,7 @@ class ADORecordset_mssqlnative extends ADORecordSet {
         }
 		if(is_array($this->fields)) {
 			foreach($this->fields as $key=>$value) {
-				if (is_object($value) && method_exists($value, 'format')) {//is DateTime object
+				if (is_object($value) && method_exists($value, 'format')) {//is \DateTime object
 					$this->fields[$key] = $value->format("Y-m-d\TH:i:s\Z");
 				}
 			}

@@ -246,7 +246,7 @@ CHANGELOG
 Changed adodb_date to be symmetric with adodb_mktime. See $jan1_71. fix for bc.
 
 - 13 July 2010 0.34
-Changed adodb_get_gm_diff to use DateTimeZone().
+Changed adodb_get_gm_diff to use \DateTimeZone().
 
 - 11 Feb 2008 0.33
 * Bug in 0.32 fix for hour handling. Fixed.
@@ -725,10 +725,10 @@ global $ADODB_DATETIME_CLASS;
 	else if ($y < 1970 || $y >= 2038) $y = false;
 
 	if ($ADODB_DATETIME_CLASS && $y !== false) {
-		$dt = new DateTime();
+		$dt = new \DateTime();
 		$dt->setISODate($y,$m,$d);
 		if (empty($tzo)) {
-			$tzo = new DateTimeZone(date_default_timezone_get());
+			$tzo = new \DateTimeZone(date_default_timezone_get());
 		#	$tzt = timezone_transitions_get( $tzo );
 		}
 		return -$tzo->getOffset($dt);
@@ -739,8 +739,8 @@ global $ADODB_DATETIME_CLASS;
 		if (function_exists('date_default_timezone_get') && function_exists('timezone_offset_get')) {
 			$tzonename = date_default_timezone_get();
 			if ($tzonename) {
-				$tobj = new DateTimeZone($tzonename);
-				$TZ = -timezone_offset_get($tobj,new DateTime("now",$tzo));
+				$tobj = new \DateTimeZone($tzonename);
+				$TZ = -timezone_offset_get($tobj,new \DateTime("now",$tzo));
 			}
 		}
 		*/
@@ -1100,7 +1100,7 @@ static $jan1_1971;
 			break;
 		case 'T':
 			if ($ADODB_DATETIME_CLASS) {
-				$dt = new DateTime();
+				$dt = new \DateTime();
 				$dt->SetDate($year,$month,$day);
 				$dates .= $dt->Format('T');
 			} else

@@ -73,7 +73,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Keeps last update.
 	 *
-	 * @var DateTime
+	 * @var \DateTime
 	 */
 	protected $lastUpdate;
 
@@ -188,7 +188,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Method returns LastUpdate.
 	 *
 	 * @access public
-	 * @return DateTime timestamp of last update
+	 * @return \DateTime timestamp of last update
 	 */
 	public function getLastUpdate() {
 		return $this->lastUpdate;
@@ -198,7 +198,7 @@ class Repository extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Method sets LastUpdate.
 	 *
 	 * @access public
-	 * @param DateTime $time URL of repository WSDL
+	 * @param \DateTime $time URL of repository WSDL
 	 * @return void
 	 */
 	public function setLastUpdate(\DateTime $time) {
