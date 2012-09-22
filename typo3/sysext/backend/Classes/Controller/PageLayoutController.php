@@ -491,7 +491,7 @@ class PageLayoutController {
 			$docHeaderButtons = $this->getButtons($this->MOD_SETTINGS['function'] == 0 ? 'quickEdit' : '');
 			$markers = array(
 				'CSH' => $docHeaderButtons['csh'],
-				'TOP_FUNCTION_MENU' => $this->editSelect . $this->topFuncMenu,
+				'TOP_FUNCTION_MENU' => $this->topFuncMenu . $this->editSelect,
 				'LANGSELECTOR' => $this->languageMenu,
 				'CONTENT' => $body
 			);
