@@ -108,9 +108,9 @@ class HTTP_Request2_CookieJar implements Serializable
     */
     protected function now()
     {
-        $dt = new DateTime();
-        $dt->setTimezone(new DateTimeZone('UTC'));
-        return $dt->format(DateTime::ISO8601);
+        $dt = new \DateTime();
+        $dt->setTimezone(new \DateTimeZone('UTC'));
+        return $dt->format(\DateTime::ISO8601);
     }
 
    /**
@@ -119,7 +119,7 @@ class HTTP_Request2_CookieJar implements Serializable
     * The checks are as follows:
     *   - cookie array should contain 'name' and 'value' fields;
     *   - name and value should not contain disallowed symbols;
-    *   - 'expires' should be either empty parseable by DateTime;
+    *   - 'expires' should be either empty parseable by \DateTime;
     *   - 'domain' and 'path' should be either not empty or an URL where
     *     cookie was set should be provided.
     *   - if $setter is provided, then document at that URL should be allowed
@@ -162,9 +162,9 @@ class HTTP_Request2_CookieJar implements Serializable
             && !preg_match('/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+0000$/', $cookie['expires'])
         ) {
             try {
-                $dt = new DateTime($cookie['expires']);
-                $dt->setTimezone(new DateTimeZone('UTC'));
-                $cookie['expires'] = $dt->format(DateTime::ISO8601);
+                $dt = new \DateTime($cookie['expires']);
+                $dt->setTimezone(new \DateTimeZone('UTC'));
+                $cookie['expires'] = $dt->format(\DateTime::ISO8601);
             } catch (Exception $e) {
                 throw new HTTP_Request2_LogicException($e->getMessage());
             }
