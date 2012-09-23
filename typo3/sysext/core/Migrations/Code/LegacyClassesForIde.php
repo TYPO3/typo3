@@ -684,7 +684,7 @@ class SC_t3lib_thumbs extends \TYPO3\CMS\Backend\View\ThumbnailView {}
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class TYPO3Logo extends \TYPO3\CMS\Backend\Views\LogoView {}
+class TYPO3Logo extends \TYPO3\CMS\Backend\View\LogoView {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
