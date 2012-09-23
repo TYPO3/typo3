@@ -324,8 +324,12 @@ class ElementInformationController {
 		$tableRows = array();
 		$showRecordFieldList = $GLOBALS['TCA'][$this->table]['interface']['showRecordFieldList'];
 		$fieldList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $showRecordFieldList, TRUE);
+
 		foreach ($fieldList as $name) {
-			$name = trim($name);
+			// Ignored fields
+			if ($name === 'size') {
+				continue;
+			}
 			if (!isset($GLOBALS['TCA'][$this->table]['columns'][$name])) {
 				continue;
 			}
