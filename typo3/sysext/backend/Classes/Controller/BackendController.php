@@ -144,7 +144,7 @@ class BackendController {
 	public function render() {
 		$this->executeHook('renderPreProcess');
 		// Prepare the scaffolding, at this point extension may still add javascript and css
-		$logo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Views\\LogoView');
+		$logo = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\View\\LogoView');
 		$logo->setLogo('gfx/typo3logo_mini.png');
 		// Create backend scaffolding
 		$backendScaffolding = '

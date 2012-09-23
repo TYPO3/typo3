@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Backend\Views;
+namespace TYPO3\CMS\Backend\View;
 
 /***************************************************************
  *  Copyright notice

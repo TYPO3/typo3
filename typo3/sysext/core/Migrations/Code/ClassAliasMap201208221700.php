@@ -136,7 +136,7 @@ return array(
 	'tx_cms_layout_tt_content_drawItemHook' => 'TYPO3\\CMS\\Backend\\View\\PageLayoutViewDrawItemHookInterface',
 	'webPageTree' => 'TYPO3\\CMS\\Backend\\View\\PageTreeView',
 	'SC_t3lib_thumbs' => 'TYPO3\\CMS\\Backend\\View\\ThumbnailView',
-	'TYPO3Logo' => 'TYPO3\\CMS\\Backend\\Views\\LogoView',
+	'TYPO3Logo' => 'TYPO3\\CMS\\Backend\\View\\LogoView',
 	'cms_newContentElementWizardsHook' => 'TYPO3\\CMS\\Backend\\Wizard\\NewContentElementWizardHookInterface',
 	'SC_wizard_tsconfig' => 'TYPO3\\CMS\\Backend\\Wizard\\TsconfigWizard',
 	'Tx_Beuser_Controller_BackendUserController' => 'TYPO3\\CMS\\Beuser\\Controller\\BackendUserController',
