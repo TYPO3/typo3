@@ -2021,7 +2021,29 @@ class BackendUtility {
 				}
 				break;
 			case 'group':
-				$l = implode(', ', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, 1));
+				// resolve the titles for DB records
+				if ($theColConf['internal_type'] === 'db') {
+					$finalValues = array();
+					$relationTableName = $theColConf['allowed'];
+					$explodedValues = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE);
+
+					foreach ($explodedValues as $explodedValue) {
+
+						if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($explodedValue)) {
+							$relationTableNameForField = $relationTableName;
+						} else {
+							list($relationTableNameForField, $explodedValue) = self::splitTable_Uid($explodedValue);
+						}
+
+						$relationRecord = static::getRecordWSOL($relationTableNameForField, $explodedValue);
+						$finalValues[] = static::getRecordTitle($relationTableNameForField, $relationRecord);
+					}
+
+					$l = implode(', ', $finalValues);
+				} else {
+					$l = implode(', ', \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $value, TRUE));
+				}
+
 				break;
 			case 'check':
 				if (!is_array($theColConf['items']) || count($theColConf['items']) == 1) {
