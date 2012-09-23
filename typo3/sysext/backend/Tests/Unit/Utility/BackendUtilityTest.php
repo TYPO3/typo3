@@ -146,6 +146,35 @@ class BackendUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
+	 * @test
+	 */
+	public function getProcessedValueForGroup() {
+		$this->assertSame('1, 2', $this->fixture->getProcessedValue('tt_content', 'multimedia', '1,2'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getProcessedValueForGroupWithOneAllowedTable() {
+		/** @var \PHPUnit_Framework_MockObject_MockObject|Utility\BackendUtility $fixture */
+		$fixture = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getRecordWSOL'));
+		$fixture->staticExpects($this->at(0))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 1')));
+		$fixture->staticExpects($this->at(1))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 2')));
+		$this->assertSame('Page 1, Page 2', $fixture->getProcessedValue('tt_content', 'pages', '1,2'));
+	}
+
+	/**
+	 * @test
+	 */
+	public function getProcessedValueForGroupWithMultipleAllowedTables() {
+		/** @var \PHPUnit_Framework_MockObject_MockObject|Utility\BackendUtility $fixture */
+		$fixture = $this->getMock('TYPO3\\CMS\\Backend\\Utility\\BackendUtility', array('getRecordWSOL'));
+		$fixture->staticExpects($this->at(0))->method('getRecordWSOL')->will($this->returnValue(array('title' => 'Page 1')));
+		$fixture->staticExpects($this->at(1))->method('getRecordWSOL')->will($this->returnValue(array('header' => 'Content 2')));
+		$this->assertSame('Page 1, Content 2', $fixture->getProcessedValue('sys_category', 'items', 'pages_1,tt_content_2'));
+	}
+
+	/**
 	 * Tests concerning getCommenSelectFields
 	 */
 
