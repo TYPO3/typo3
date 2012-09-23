@@ -44,7 +44,7 @@ class Localization implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $localLanguageFile File reference to the local language file
 	 */
-	public function __construct($localLanguageFile) {
+	public function __construct($localLanguageFile = '') {
 		$this->localLanguageFile = (string) $localLanguageFile;
 	}
 
