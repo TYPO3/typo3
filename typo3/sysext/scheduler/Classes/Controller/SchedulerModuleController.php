@@ -63,7 +63,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 	protected $cshKey;
 
 	/**
-	 * @var 	tx_scheduler	Local scheduler instance
+	 * @var \TYPO3\CMS\Scheduler\Scheduler Local scheduler instance
 	 */
 	protected $scheduler;
 
@@ -157,7 +157,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		$content = '';
 		$sectionTitle = '';
 		// Get submitted data
-		$this->submittedData = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged('tx_scheduler');
+		$this->submittedData = \TYPO3\CMS\Core\Utility\GeneralUtility::_GPmerged('TYPO3\\CMS\\Scheduler\\Scheduler');
 		$this->submittedData['uid'] = intval($this->submittedData['uid']);
 		// If a save command was submitted, handle saving now
 		if ($this->CMD == 'save') {
@@ -177,7 +177,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 		switch ((string) $this->MOD_SETTINGS['function']) {
 		case 'scheduler':
 			// Scheduler's main screen
-			$content .= $this->executeTasks();
+			$this->executeTasks();
 			// Execute chosen action
 			switch ($this->CMD) {
 			case 'add':
