@@ -10,7 +10,7 @@
  ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'User>Open Documents',
-	'description' => 'Shows opened documents by the user. This concept is more widely used with the "Classic Backend".',
+	'description' => 'Shows opened documents by the user.',
 	'category' => 'module',
 	'shy' => 0,
 	'dependencies' => '',
