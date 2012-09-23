@@ -58,7 +58,6 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		't3editor',
 		'reports',
 		'scheduler',
-		'simulatestatic',
 	);
 
 	/**
