@@ -83,7 +83,7 @@ class IconUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->mockRecord['t3ver_id'] = '0';
 		$this->mockRecord['t3ver_state'] = '0';
 		$this->mockRecord['t3ver_wsid'] = '0';
-		$this->mockRecord['sys_TYPO3\\CMS\\Lang\\LanguageService_uid'] = '0';
+		$this->mockRecord['sys_language_uid'] = '0';
 		$this->mockRecord['l18n_parent'] = '0';
 		$this->mockRecord['subheader'] = '';
 		$this->mockRecord['bodytext'] = '';
