@@ -10,7 +10,7 @@
  ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'User>User Settings',
-	'description' => 'Allows users to edit a limited set of options for their user profile, eg. preferred TYPO3\\CMS\\Lang\\LanguageService and their name and email address.',
+	'description' => 'Allows users to edit a limited set of options for their user profile, eg. preferred language and their name and email address.',
 	'category' => 'module',
 	'shy' => 1,
 	'dependencies' => '',

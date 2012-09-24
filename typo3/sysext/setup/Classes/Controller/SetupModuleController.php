@@ -742,7 +742,7 @@ class SetupModuleController {
 			// Setting comes from another extension
 			$context = $strParts[0];
 			$field = $strParts[1];
-		} elseif (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('TYPO3\\CMS\\Lang\\LanguageService,simuser,reset', $str)) {
+		} elseif (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList('language,simuser,reset', $str)) {
 			$field = 'option_' . $str;
 		}
 		return \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp($context, $field, $label);
