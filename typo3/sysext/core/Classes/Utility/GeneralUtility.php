@@ -2328,20 +2328,10 @@ class GeneralUtility {
 			curl_setopt($ch, CURLOPT_HTTPGET, $includeHeader == 2 ? 'HEAD' : 'GET');
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, max(0, intval($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlTimeout'])));
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
 			$followLocation = @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 			if (is_array($requestHeaders)) {
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $requestHeaders);
-			}
-			// (Proxy support implemented by Arco <arco@appeltaart.mine.nu>)
-			if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']) {
-				curl_setopt($ch, CURLOPT_PROXY, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyServer']);
-				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']) {
-					curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyTunnel']);
-				}
-				if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']) {
-					curl_setopt($ch, CURLOPT_PROXYUSERPWD, $GLOBALS['TYPO3_CONF_VARS']['SYS']['curlProxyUserPass']);
-				}
 			}
 			$content = curl_exec($ch);
 			if (isset($report)) {

@@ -853,12 +853,12 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		// Auto-creation of version: In offline workspace, test if versioning is
 		// enabled and look for workspace version of input record.
 		// If there is no versionized record found we will create one and save to that.
-		if ($this->workspace !== 0 && !$this->workspaceRec['disable_autocreate'] && $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $recpid >= 0 && !t3lib_BEfunc::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid')) {
+		if ($this->workspace !== 0 && $GLOBALS['TCA'][$table]['ctrl']['versioningWS'] && $recpid >= 0 &&
+			!t3lib_BEfunc::getWorkspaceVersionOfRecord($this->workspace, $table, $id, 'uid')) {
 			// There must be no existing version of this record in workspace.
 			return TRUE;
-		} elseif ($this->workspaceRec['disable_autocreate']) {
-			t3lib_div::deprecationLog('Usage of disable_autocreate feature is deprecated since 4.5.');
 		}
+		return FALSE;
 	}
 
 	/**
@@ -958,51 +958,6 @@ abstract class t3lib_userAuthGroup extends t3lib_userAuth {
 		} else {
 			return TRUE;
 		}
-	}
-
-	/**
-	 * Workspace Versioning type access. Check wether the requsted type of versioning (element/page/branch) is allowd in current workspace
-	 * (element/pages/branches type of versioning can/could be set on custom workspaces on filed "vtype")
-	 *
-	 * @todo workspacecleanup: this seems mostly obsolete and should be removed
-	 * @param integer $type Versioning type to evaluation: -1, 0, >1
-	 * @return boolean TRUE if OK
-	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 6.0 as only element versioning is supported now
-	 * @todo Define visibility
-	 */
-	public function workspaceVersioningTypeAccess($type) {
-		t3lib_div::logDeprecatedFunction();
-		$type = t3lib_utility_Math::forceIntegerInRange($type, -1);
-		// only element versioning is allowed now
-		return $type == -1;
-	}
-
-	/**
-	 * Finding "closest" versioning type, used for creation of new records.
-	 *
-	 * @see workspaceVersioningTypeAccess() for hints on $type
-	 * @param integer $type Versioning type to evaluation: -1, 0, >1
-	 * @return integer Returning versioning type
-	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 6.0 as only element versioning is supported now
-	 * @todo Define visibility
-	 */
-	public function workspaceVersioningTypeGetClosest($type) {
-		t3lib_div::logDeprecatedFunction();
-		$type = t3lib_utility_Math::forceIntegerInRange($type, -1);
-		if ($this->workspace > 0) {
-			switch ((int) $type) {
-			case -1:
-				$type = -1;
-				break;
-			case 0:
-				$type = $this->workspaceVersioningTypeAccess($type) ? $type : -1;
-				break;
-			default:
-				$type = $this->workspaceVersioningTypeAccess($type) ? $type : ($this->workspaceVersioningTypeAccess(0) ? 0 : -1);
-				break;
-			}
-		}
-		return $type;
 	}
 
 	/*************************************
