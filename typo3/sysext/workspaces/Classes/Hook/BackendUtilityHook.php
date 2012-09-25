@@ -67,7 +67,7 @@ class BackendUtilityHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Find the Live-Uid for a given page,
 	 * the results are cached at run-time to avoid too many database-queries
 	 *
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 * @param integer $uid
 	 * @return integer
 	 * @deprecated since TYPO3 4.6 - use Tx_Workspaces_Service_Workspaces::getLivePageUid() instead
