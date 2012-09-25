@@ -243,7 +243,7 @@ class ResourceStorage {
 	/**
 	 * Processes the configuration of this storage.
 	 *
-	 * @throws InvalidArgumentException If a required configuration option is not set or has an invalid value.
+	 * @throws \InvalidArgumentException If a required configuration option is not set or has an invalid value.
 	 * @return void
 	 */
 	protected function processConfiguration() {

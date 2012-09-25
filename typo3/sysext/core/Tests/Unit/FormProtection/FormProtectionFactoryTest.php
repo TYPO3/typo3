@@ -49,7 +49,7 @@ class FormprotectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/////////////////////////
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function getForInexistentClassThrowsException() {
 		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('noSuchClass');
@@ -57,7 +57,7 @@ class FormprotectionFactoryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function getForClassThatIsNoFormProtectionSubclassThrowsException() {
 		\TYPO3\CMS\Core\FormProtection\FormProtectionFactory::get('TYPO3\\CMS\\Core\\FormProtection\\FormProtectionFactoryTest');

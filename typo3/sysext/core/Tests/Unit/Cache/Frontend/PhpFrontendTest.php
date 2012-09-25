@@ -37,7 +37,7 @@ class PhpFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setChecksIfTheIdentifierIsValid() {
 		$cache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\StringFrontend', array('isValidEntryIdentifier'), array(), '', FALSE);

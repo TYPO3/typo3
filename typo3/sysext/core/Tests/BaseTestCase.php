@@ -75,7 +75,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 		$callOriginalConstructor = TRUE, $callOriginalClone = TRUE, $callAutoload = TRUE
 	) {
 		if ($originalClassName === '') {
-			throw new InvalidArgumentException('$originalClassName must not be empty.', 1334701880);
+			throw new \InvalidArgumentException('$originalClassName must not be empty.', 1334701880);
 		}
 
 		return $this->getMock(
@@ -109,7 +109,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 				' extends ' . $className . ' implements \TYPO3\CMS\Core\Tests\AccessibleObjectInterface {' .
 					'public function _call($methodName) {' .
 						'if ($methodName === \'\') {' .
-							'throw new InvalidArgumentException(\'$methodName must not be empty.\', 1334663993);' .
+							'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334663993);' .
 						'}' .
 						'$args = func_get_args();' .
 						'return call_user_func_array(array($this, $methodName), array_slice($args, 1));' .
@@ -119,7 +119,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 						'&$arg7 = NULL, &$arg8 = NULL, &$arg9 = NULL' .
 					') {' .
 						'if ($methodName === \'\') {' .
-							'throw new InvalidArgumentException(\'$methodName must not be empty.\', 1334664210);' .
+							'throw new \InvalidArgumentException(\'$methodName must not be empty.\', 1334664210);' .
 						'}' .
 						'switch (func_num_args()) {' .
 							'case 0:' .
@@ -158,7 +158,7 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 								');' .
 								'break;' .
 							'default:' .
-								'throw new InvalidArgumentException(' .
+								'throw new \InvalidArgumentException(' .
 									'\'_callRef currently only allows calls to methods with no more than 9 parameters.\'' .
 								');' .
 						'}' .
@@ -166,31 +166,31 @@ abstract class BaseTestCase extends \PHPUnit_Framework_TestCase {
 					'}' .
 					'public function _set($propertyName, $value) {' .
 						'if ($propertyName === \'\') {' .
-							'throw new InvalidArgumentException(\'$propertyName must not be empty.\', 1334664355);' .
+							'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1334664355);' .
 						'}' .
 						'$this->$propertyName = $value;' .
 					'}' .
 					'public function _setRef($propertyName, &$value) {' .
 						'if ($propertyName === \'\') {' .
-							'throw new InvalidArgumentException(\'$propertyName must not be empty.\', 1334664545);' .
+							'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1334664545);' .
 						'}' .
 						'$this->$propertyName = $value;' .
 					'}' .
 					'public function _setStatic($propertyName, $value) {' .
 						'if ($propertyName === \'\') {' .
-							'throw new InvalidArgumentException(\'$propertyName must not be empty.\', 1344242602);' .
+							'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1344242602);' .
 						'}' .
 						'self::$$propertyName = $value;' .
 					'}' .
 					'public function _get($propertyName) {' .
 						'if ($propertyName === \'\') {' .
-							'throw new InvalidArgumentException(\'$propertyName must not be empty.\', 1334664967);' .
+							'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1334664967);' .
 						'}' .
 						'return $this->$propertyName;' .
 					'}' .
 					'public function _getStatic($propertyName) {' .
 						'if ($propertyName === \'\') {' .
-							'throw new InvalidArgumentException(\'$propertyName must not be empty.\', 1344242603);' .
+							'throw new \InvalidArgumentException(\'$propertyName must not be empty.\', 1344242603);' .
 						'}' .
 						'return self::$$propertyName;' .
 					'}' .

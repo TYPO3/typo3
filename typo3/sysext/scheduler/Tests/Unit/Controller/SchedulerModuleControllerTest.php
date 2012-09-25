@@ -185,7 +185,7 @@ class SchedulerModuleControllerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * This test must be raised an InvalidArgumentException
 	 *
 	 * @dataProvider checkDateWithInvalidDateValuesDataProvider
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 * @test
 	 * @param string $dateValue Test value which will be passed to $this->testObject->checkDate.
 	 */

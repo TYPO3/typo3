@@ -62,7 +62,7 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function getThrowsExceptionForInvalidNamespacesUsingNoNamespace() {
 		$this->registry->get('', 'someKey');
@@ -70,7 +70,7 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function getThrowsExceptionForInvalidNamespacesUsingTooShortNamespace() {
 		$this->registry->get('t', 'someKey');
@@ -117,7 +117,7 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setThrowsAnExceptionOnEmptyNamespace() {
 		$this->registry->set('', 'someKey', 'someValue');
@@ -125,7 +125,7 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setThrowsAnExceptionOnWrongNamespace() {
 		$this->registry->set('t', 'someKey', 'someValue');
@@ -178,7 +178,7 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function removeThrowsAnExceptionOnWrongNamespace() {
 		$this->registry->remove('t', 'someKey');
@@ -208,7 +208,7 @@ class RegistryTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function removeAllByNamespaceThrowsAnExceptionOnWrongNamespace() {
 		$this->registry->removeAllByNamespace('');
