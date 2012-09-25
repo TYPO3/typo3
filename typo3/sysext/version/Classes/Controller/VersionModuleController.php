@@ -590,13 +590,13 @@ class VersionModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass 
 			$this->content .= $this->doc->section('', $actionLinks . (count($errors) ? '<h3>' . $GLOBALS['LANG']->getLL('errors') . '</h3><br />' . implode('<br />', $errors) . '<hr />' : ''), 0, 1);
 		}
 		if (\t3lib_div::_POST('_previewLink')) {
-			$ttlHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));
-			$ttlHours = $ttlHours ? $ttlHours : 24 * 2;
+			$workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+			/* @var $workspaceService TYPO3\CMS\Workspaces\Service\WorkspaceService */
 			if (\t3lib_div::_POST('_previewLink_wholeWorkspace')) {
-				$previewUrl = \t3lib_BEfunc::getViewDomain($this->id) . '/index.php?ADMCMD_prev=' . \t3lib_BEfunc::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], 60 * 60 * $ttlHours, $GLOBALS['BE_USER']->workspace) . '&id=' . intval($this->id);
+				$previewUrl = $workspaceService->generateWorkspacePreviewLink(intval($this->id));
 			} else {
 				$params = 'id=' . $this->id . '&ADMCMD_previewWS=' . $GLOBALS['BE_USER']->workspace;
-				$previewUrl = \t3lib_BEfunc::getViewDomain($this->id) . '/index.php?ADMCMD_prev=' . \t3lib_BEfunc::compilePreviewKeyword($params, $GLOBALS['BE_USER']->user['uid'], 60 * 60 * $ttlHours);
+				$previewUrl = $workspaceService->generateWorkspacePreviewLink(intval($this->id), $params, '');
 			}
 			$this->content .= $this->doc->section($GLOBALS['LANG']->getLL('previewUrl'), sprintf($GLOBALS['LANG']->getLL('previewInstruction'), $ttlHours) . '<br /><br /><a target="_blank" href="' . htmlspecialchars($previewUrl) . '">' . $previewUrl . '</a>', 0, 1);
 		}

@@ -130,7 +130,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * This can also be used to generate previews of hidden pages, start/endtimes, usergroups and those other settings from the Admin Panel - just not implemented yet.
 	 *
 	 * @return 	array		Preview configuration array from sys_preview record.
-	 * @see t3lib_BEfunc::compilePreviewKeyword()
 	 * @previouslyknownas TSFE->ADMCMD_preview
 	 */
 	public function getPreviewConfiguration() {
@@ -229,7 +228,6 @@ class PreviewHook implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param 	integer		Time-To-Live for keyword
 	 * @param 	integer		Which workspace to preview. Workspace UID, -1 or >0. If set, the getVars is ignored in the frontend, so that string can be empty
 	 * @return 	string		Returns keyword to use in URL for ADMCMD_prev=
-	 * @formallyknownas t3lib_BEfunc::compilePreviewKeyword
 	 */
 	public function compilePreviewKeyword($getVarsStr, $backendUserUid, $ttl = 172800, $fullWorkspace = NULL) {
 		$fieldData = array(

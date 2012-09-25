@@ -388,10 +388,10 @@ class WorkspaceModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 			}
 			// Preview of workspace link
 			if (\TYPO3\CMS\Core\Utility\GeneralUtility::_POST('_previewLink')) {
-				$ttlHours = intval($GLOBALS['BE_USER']->getTSConfigVal('options.workspaces.previewLinkTTLHours'));
-				$ttlHours = $ttlHours ? $ttlHours : 24 * 2;
-				$previewUrl = \TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($this->id) . '/index.php?ADMCMD_prev=' . \TYPO3\CMS\Backend\Utility\BackendUtility::compilePreviewKeyword('', $GLOBALS['BE_USER']->user['uid'], 60 * 60 * $ttlHours, $GLOBALS['BE_USER']->workspace) . '&id=' . intval($GLOBALS['BE_USER']->workspaceRec['db_mountpoints']);
-				$actionLinks .= '<br />Any user can browse the workspace frontend using this link for the next ' . $ttlHours . ' hours (does not require backend login):<br /><br /><a target="_blank" href="' . htmlspecialchars($previewUrl) . '">' . $previewUrl . '</a>';
+				$workspaceService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Workspaces\\Service\\WorkspaceService');
+				/* @var $workspaceService TYPO3\CMS\Workspaces\Service\WorkspaceService */
+				$previewUrl = $workspaceService->generateWorkspacePreviewLink(intval($GLOBALS['BE_USER']->workspaceRec['db_mountpoints']));
+				$actionLinks .= '<br />Any user can browse the workspace frontend using this link (does not require a backend login):<br /><br /><a target="_blank" href="' . htmlspecialchars($previewUrl) . '">' . $previewUrl . '</a>';
 			} else {
 				$actionLinks .= '<input type="submit" name="_previewLink" value="Generate Workspace Preview Link" />';
 			}
