@@ -93,21 +93,21 @@ return array(
 		'loginCopyrightShowVersion' => FALSE,	// Boolean: If set, the current TYPO3 version is shown.
 		'curlUse' => FALSE,						// Boolean: If set, try to use cURL to fetch external URLs
 		/**
-		 * @deprecated Deprecated since 4.6 - will be removed in 6.0.
+		 * @deprecated Deprecated since 4.6 - will be removed in 6.2.
 		 */
-		'curlProxyServer' => '',				// String: Proxyserver as http://proxy:port/. Deprecated since 4.6 - will be removed in 6.0. See below for http options.
+		'curlProxyServer' => '',				// String: Proxyserver as http://proxy:port/. Deprecated since 4.6 - will be removed in 6.2. See below for http options.
 		/**
-		 * @deprecated Deprecated since 4.6 - will be removed in 6.0.
+		 * @deprecated Deprecated since 4.6 - will be removed in 6.2.
 		 */
-		'curlProxyTunnel' => FALSE,				// Boolean: If set, use a tunneled connection through the proxy (useful for websense etc.). Deprecated since 4.6 - will be removed in 6.0. See below for http options.
+		'curlProxyTunnel' => FALSE,				// Boolean: If set, use a tunneled connection through the proxy (useful for websense etc.). Deprecated since 4.6 - will be removed in 6.2. See below for http options.
 		/**
-		 * @deprecated Deprecated since 4.6 - will be removed in 6.0.
+		 * @deprecated Deprecated since 4.6 - will be removed in 6.2.
 		 */
-		'curlProxyUserPass' => '',				// String: Proxyserver authentication user:pass. Deprecated since 4.6 - will be removed in 6.0. See below for http options.
+		'curlProxyUserPass' => '',				// String: Proxyserver authentication user:pass. Deprecated since 4.6 - will be removed in 6.2. See below for http options.
 		/**
-		 * @deprecated Deprecated since 4.6 - will be removed in 6.0.
+		 * @deprecated Deprecated since 4.6 - will be removed in 6.2.
 		 */
-		'curlTimeout' => 0,						// Integer: Timeout value for cURL requests in seconds. 0 means to wait indefinitely. Deprecated since 4.6 - will be removed in 6.0. See below for http options.
+		'curlTimeout' => 0,						// Integer: Timeout value for cURL requests in seconds. 0 means to wait indefinitely. Deprecated since 4.6 - will be removed in 6.2. See below for http options.
 		'form_enctype' => 'multipart/form-data',// String: This is the default form encoding type for most forms in TYPO3. It allows for file uploads to be in the form. However if file-upload is disabled for your PHP version even ordinary data sent with this encryption will not get to the server. So if you have file_upload disabled, you will have to change this to eg. 'application/x-www-form-urlencoded'
 		'textfile_ext' => 'txt,html,htm,css,tmpl,js,sql,xml,csv,' . PHP_EXTENSIONS_DEFAULT,		// Text file extensions. Those that can be edited. Executable PHP files may not be editable in webspace if disallowed!
 		'contentTable' => '',					// This is the page-content table (Normally 'tt_content')
