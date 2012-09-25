@@ -35,7 +35,7 @@ class AbstractTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function processorRefusesInvalidConfigurationOptions() {
 		$invalidConfiguration = array(

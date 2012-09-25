@@ -4126,7 +4126,7 @@ Connection: close
 	 * You can also pass arguments for a constructor:
 	 * t3lib_div::makeInstance('myClass', $arg1, $arg2, ..., $argN)
 	 *
-	 * @throws InvalidArgumentException if classname is an empty string
+	 * @throws \InvalidArgumentException if classname is an empty string
 	 * @param string $className name of the class to instantiate, must not be empty
 	 * @return object the created instance
 	 */
@@ -4983,6 +4983,4 @@ Connection: close
 	}
 
 }
-
-
 ?>

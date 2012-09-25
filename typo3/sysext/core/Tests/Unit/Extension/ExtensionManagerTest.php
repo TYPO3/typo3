@@ -444,7 +444,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/////////////////////////////////////////
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function addTcaSelectItemThrowsExceptionIfTableIsNotOfTypeString() {
 		\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem(array(), 'foo', array());
@@ -452,7 +452,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function addTcaSelectItemThrowsExceptionIfFieldIsNotOfTypeString() {
 		\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem('foo', array(), array());
@@ -460,7 +460,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function addTcaSelectItemThrowsExceptionIfRelativeToFieldIsNotOfTypeString() {
 		\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem('foo', 'bar', array(), array());
@@ -468,7 +468,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOfTypeString() {
 		\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem('foo', 'bar', array(), 'foo', array());
@@ -476,7 +476,7 @@ class ExtensionManagerTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function addTcaSelectItemThrowsExceptionIfRelativePositionIsNotOneOfValidKeywords() {
 		\TYPO3\CMS\Core\Extension\ExtensionManager::addTcaSelectItem('foo', 'bar', array(), 'foo', 'not allowed keyword');
@@ -882,7 +882,7 @@ throw new \RuntimeException(\'\', 1340559079);
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 * @dataProvider getExtensionVersionFaultyDataProvider
 	 */
 	public function getExtensionVersionForFaultyExtensionKeyThrowsException($key) {
@@ -1110,5 +1110,4 @@ throw new \RuntimeException(\'\', 1340559079);
 	}
 
 }
-
 ?>

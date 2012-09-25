@@ -3381,7 +3381,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function makeInstanceWithEmptyClassNameThrowsException() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('');
@@ -3389,7 +3389,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function makeInstanceWithNullClassNameThrowsException() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(NULL);
@@ -3397,7 +3397,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function makeInstanceWithZeroStringClassNameThrowsException() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(0);
@@ -3405,7 +3405,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function makeInstanceWithEmptyArrayThrowsException() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(array());
@@ -3413,7 +3413,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function makeInstanceWithNonEmptyArrayThrowsException() {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(array('foo'));
@@ -3468,7 +3468,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setSingletonInstanceForEmptyClassNameThrowsException() {
 		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface');
@@ -3477,7 +3477,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function setSingletonInstanceForClassThatIsNoSubclassOfProvidedClassThrowsException() {
 		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface', array('foo'));
@@ -3547,7 +3547,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function addInstanceForEmptyClassNameThrowsException() {
 		$instance = $this->getMock('foo');
@@ -3556,7 +3556,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function addInstanceForClassThatIsNoSubclassOfProvidedClassThrowsException() {
 		$instance = $this->getMock('foo', array('bar'));
@@ -3566,7 +3566,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function addInstanceWithSingletonInstanceThrowsException() {
 		$instance = $this->getMock('TYPO3\\CMS\\Core\\SingletonInterface');
@@ -3726,7 +3726,7 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 * @dataProvider callUserFunctionInvalidParameterDataprovider
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function callUserFunctionWillThrowExceptionForInvalidParameters($functionName) {
 		$inputData = array('foo' => 'bar');
