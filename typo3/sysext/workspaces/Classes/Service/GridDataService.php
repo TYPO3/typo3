@@ -89,7 +89,7 @@ class GridDataService {
 	 * @param object $parameter Parameters as submitted by JavaScript component
 	 * @param integer $currentWorkspace The current workspace
 	 * @return array Version record information (filtered, sorted and limited)
-	 * @throws InvalidArgumentException
+	 * @throws \InvalidArgumentException
 	 */
 	public function generateGridListFromVersions($versions, $parameter, $currentWorkspace) {
 		// Read the given parameters from grid. If the parameter is not set use default values.
@@ -163,8 +163,8 @@ class GridDataService {
 					$versionArray['icon_Live'] = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($table, $origRecord);
 					$versionArray['icon_Workspace'] = \TYPO3\CMS\Backend\Utility\IconUtility::mapRecordTypeToSpriteIconClass($table, $versionRecord);
 					$languageValue = $this->getLanguageValue($table, $versionRecord);
-					$versionArray['TYPO3\\CMS\\Lang\\LanguageServiceValue'] = $languageValue;
-					$versionArray['TYPO3\\CMS\\Lang\\LanguageService'] = array(
+					$versionArray['languageValue'] = $languageValue;
+					$versionArray['language'] = array(
 						'cls' => \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconClasses($this->getSystemLanguageValue($languageValue, 'flagIcon')),
 						'title' => htmlspecialchars($this->getSystemLanguageValue($languageValue, 'title'))
 					);

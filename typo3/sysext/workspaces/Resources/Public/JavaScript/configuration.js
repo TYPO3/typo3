@@ -144,10 +144,9 @@ TYPO3.Workspaces.Configuration.TitleWithIcon = {
 	sortable: true,
 	header : TYPO3.l10n.localize('column.liveTitle'),
 	renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+		var dekoClass = '';
 		if (record.json.state_Workspace == 'unhidden') {
-			var dekoClass = 'item-state-hidden';
-		} else {
-			var dekoClass = '';
+			dekoClass = 'item-state-hidden';
 		}
 
 		value = "<span class=\"" + dekoClass + "\">" + value + "</span>";
