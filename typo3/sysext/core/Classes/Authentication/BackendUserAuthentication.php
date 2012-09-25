@@ -1116,51 +1116,6 @@ class BackendUserAuthentication extends \TYPO3\CMS\Core\Authentication\AbstractU
 	}
 
 	/**
-	 * Workspace Versioning type access. Check wether the requsted type of versioning (element/page/branch) is allowd in current workspace
-	 * (element/pages/branches type of versioning can/could be set on custom workspaces on filed "vtype")
-	 *
-	 * @todo workspacecleanup: this seems mostly obsolete and should be removed
-	 * @todo Define visibility
-	 * @param integer $type Versioning type to evaluation: -1, 0, >1
-	 * @return boolean TRUE if OK
-	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 6.0 as only element versioning is supported now
-	 */
-	public function workspaceVersioningTypeAccess($type) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		$type = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($type, -1);
-		// only element versioning is allowed now
-		return $type == -1;
-	}
-
-	/**
-	 * Finding "closest" versioning type, used for creation of new records.
-	 *
-	 * @see workspaceVersioningTypeAccess() for hints on $type
-	 * @param integer $type Versioning type to evaluation: -1, 0, >1
-	 * @return integer Returning versioning type
-	 * @deprecated since TYPO3 4.4, will be removed in TYPO3 6.0 as only element versioning is supported now
-	 * @todo Define visibility
-	 */
-	public function workspaceVersioningTypeGetClosest($type) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		$type = \TYPO3\CMS\Core\Utility\MathUtility::forceIntegerInRange($type, -1);
-		if ($this->workspace > 0) {
-			switch ((int) $type) {
-			case -1:
-				$type = -1;
-				break;
-			case 0:
-				$type = $this->workspaceVersioningTypeAccess($type) ? $type : -1;
-				break;
-			default:
-				$type = $this->workspaceVersioningTypeAccess($type) ? $type : ($this->workspaceVersioningTypeAccess(0) ? 0 : -1);
-				break;
-			}
-		}
-		return $type;
-	}
-
-	/**
 	 * Returns the value/properties of a TS-object as given by $objectString, eg. 'options.dontMountAdminMounts'
 	 * Nice (general!) function for returning a part of a TypoScript array!
 	 *
