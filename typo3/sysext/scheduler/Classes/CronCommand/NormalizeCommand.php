@@ -44,7 +44,7 @@ class NormalizeCommand {
 	 * the letter '*' or a sorted, unique comma separated list of integers.
 	 *
 	 * @api
-	 * @throws InvalidArgumentException cron command is invalid or out of bounds
+	 * @throws \InvalidArgumentException cron command is invalid or out of bounds
 	 * @param string $cronCommand The cron command to normalize
 	 * @return string Normalized cron command
 	 */
@@ -107,7 +107,7 @@ class NormalizeCommand {
 	/**
 	 * Split a given cron command like '23 * * * *' to an array with five fields.
 	 *
-	 * @throws InvalidArgumentException If splitted array does not contain five entries
+	 * @throws \InvalidArgumentException If splitted array does not contain five entries
 	 * @param string $cronCommand cron command
 	 * @return array
 	 */
@@ -164,7 +164,7 @@ class NormalizeCommand {
 	/**
 	 * Normalize integer field.
 	 *
-	 * @throws InvalidArgumentException If field is invalid or out of bounds
+	 * @throws \InvalidArgumentException If field is invalid or out of bounds
 	 * @param string $expression Expression
 	 * @param integer $lowerBound Lower limit of result list
 	 * @param integer $upperBound Upper limit of result list
@@ -216,7 +216,7 @@ class NormalizeCommand {
 	/**
 	 * Convert a range of integers to a list: 4-6 results in a string '4,5,6'
 	 *
-	 * @throws InvalidArgumentException If range can not be converted to list
+	 * @throws \InvalidArgumentException If range can not be converted to list
 	 * @param string $range Integer-integer
 	 * @return array
 	 */
@@ -258,7 +258,7 @@ class NormalizeCommand {
 	 * 1-5/2 -> 1,3,5
 	 * 2-10/3 -> 2,5,8
 	 *
-	 * @throws InvalidArgumentException if step value is invalid or if resulting list is empty
+	 * @throws \InvalidArgumentException if step value is invalid or if resulting list is empty
 	 * @param string $stepExpression Step value expression
 	 * @return string Comma separated list of valid values
 	 */
@@ -319,7 +319,7 @@ class NormalizeCommand {
 	 * Accept a string representation or integer number of a month like
 	 * 'jan', 'February', 01, ... and convert to normalized integer value 1 .. 12
 	 *
-	 * @throws InvalidArgumentException If month string can not be converted to integer
+	 * @throws \InvalidArgumentException If month string can not be converted to integer
 	 * @param string $month Month representation
 	 * @return integer month integer representation between 1 and 12
 	 */
@@ -336,7 +336,7 @@ class NormalizeCommand {
 	 * Accept a string representation or integer number of a weekday like
 	 * 'mon', 'Friday', 3, ... and convert to normalized integer value 1 .. 7
 	 *
-	 * @throws InvalidArgumentException If weekday string can not be converted
+	 * @throws \InvalidArgumentException If weekday string can not be converted
 	 * @param string $weekday Weekday representation
 	 * @return integer weekday integer representation between 1 and 7
 	 */

@@ -386,7 +386,7 @@ class ExtensionManager {
 	 * - $relativeToField = mailform
 	 * - $relativePosition = after
 	 *
-	 * @throws InvalidArgumentException If given parameters are not of correct
+	 * @throws \InvalidArgumentException If given parameters are not of correct
 	 * @throws \RuntimeException If reference to related position fields can not
 	 * @param string $table Name of TCA table
 	 * @param string $field Name of TCA field

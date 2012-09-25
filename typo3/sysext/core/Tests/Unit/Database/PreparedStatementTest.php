@@ -207,7 +207,7 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * provided vor bindValue().
 	 *
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 * @dataProvider invalidParameterTypesPassedToBindValueThrowsExceptionDataProvider
 	 * @param mixed   $parameter	Parameter to be replaced in the query
 	 * @param integer $type			Type of the parameter value
@@ -253,7 +253,7 @@ class PreparedStatementTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	 * Checks if an exception is thrown, if parameter have invalid marker named.
 	 *
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 * @dataProvider passingInvalidMarkersThrowsExeptionDataProvider
 	 * @param string $query				Query with unreplaced markers
 	 * @param array  $parameters		Array of parameters to be replaced in the query
