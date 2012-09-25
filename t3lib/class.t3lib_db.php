@@ -1319,10 +1319,14 @@ class t3lib_DB {
 				);
 			}
 		} else {
-			throw new RuntimeException(
-				'TYPO3 Fatal Error: The current username, password or host was not accepted when the connection to the database was attempted to be established!',
-				1270853884
-			);
+			if ((TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_CLI) && basename(PATH_thisScript) == 'cli_dispatch.phpsh') {
+				die('TYPO3 Fatal Error: The current username, password or host was not accepted when the connection to the database was attempted to be established!');
+			} else {
+				throw new RuntimeException(
+					'TYPO3 Fatal Error: The current username, password or host was not accepted when the connection to the database was attempted to be established!',
+					1270853884
+				);
+			}
 		}
 
 			// Prepare user defined objects (if any) for hooks which extend query methods
