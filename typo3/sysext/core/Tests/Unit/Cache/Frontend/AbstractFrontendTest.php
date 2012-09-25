@@ -73,7 +73,7 @@ class AbstractFrontendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function flushByTagRejectsInvalidTags() {
 		$identifier = 'someCacheIdentifier';

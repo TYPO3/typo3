@@ -56,7 +56,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $key The key of the entry to return.
 	 * @param mixed $defaultValue Optional default value to use if this entry has never been set. Defaults to NULL.
 	 * @return mixed The value of the entry.
-	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
+	 * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	public function get($namespace, $key, $defaultValue = NULL) {
 		if (!isset($this->entries[$namespace])) {
@@ -80,7 +80,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $key The key of the entry to set.
 	 * @param mixed $value The value to set. This can be any PHP data type; this class takes care of serialization if necessary.
 	 * @return void
-	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
+	 * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	public function set($namespace, $key, $value) {
 		$this->validateNamespace($namespace);
@@ -106,7 +106,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
 	 * @param string $key The key of the entry to unset.
 	 * @return void
-	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
+	 * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	public function remove($namespace, $key) {
 		$this->validateNamespace($namespace);
@@ -119,7 +119,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
 	 * @return void
-	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
+	 * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	public function removeAllByNamespace($namespace) {
 		$this->validateNamespace($namespace);
@@ -132,7 +132,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $namespace Namespace. extension key for extensions or 'core' for core registry entries
 	 * @return void
-	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
+	 * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	protected function loadEntriesByNamespace($namespace) {
 		$this->validateNamespace($namespace);
@@ -152,7 +152,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $namespace Namespace
 	 * @return void
-	 * @throws InvalidArgumentException Throws an exception if the given namespace is not valid
+	 * @throws \InvalidArgumentException Throws an exception if the given namespace is not valid
 	 */
 	protected function validateNamespace($namespace) {
 		if (strlen($namespace) < 2) {

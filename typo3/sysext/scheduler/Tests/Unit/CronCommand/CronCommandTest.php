@@ -67,7 +67,7 @@ class CronCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @expectedException InvalidArgumentException
+	 * @expectedException \InvalidArgumentException
 	 */
 	public function constructorThrowsExceptionForInvalidCronCommand() {
 		new \TYPO3\CMS\Scheduler\CronCommand\CronCommand('61 * * * *');
@@ -327,6 +327,4 @@ class CronCommandTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 }
-
-
 ?>
