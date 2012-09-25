@@ -33,10 +33,10 @@ class ElementEntity {
 
 	const REFERENCES_ChildOf = 'childOf';
 	const REFERENCES_ParentOf = 'parentOf';
-	const EVENT_Construct = 'TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Element::construct';
-	const EVENT_CreateChildReference = 'TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Element::createChildReference';
-	const EVENT_CreateParentReference = 'TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Element::createParentReference';
-	const RESPONSE_Skip = 'TYPO3\\CMS\\Version\\Dependency\\DependencyResolver_Element->skip';
+	const EVENT_Construct = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::construct';
+	const EVENT_CreateChildReference = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::createChildReference';
+	const EVENT_CreateParentReference = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity::createParentReference';
+	const RESPONSE_Skip = 'TYPO3\\CMS\\Version\\Dependency\\ElementEntity->skip';
 	/**
 	 * @var string
 	 */
