@@ -10,7 +10,7 @@ if (TYPO3_MODE === 'BE' && !(TYPO3_REQUESTTYPE & TYPO3_REQUESTTYPE_INSTALL)) {
 		'view',
 		'after:layout',
 		array(
-			'View' => 'show'
+			'ViewModule' => 'show'
 		),
 		array(
 			'icon' => 'EXT:viewpage/ext_icon.gif',
