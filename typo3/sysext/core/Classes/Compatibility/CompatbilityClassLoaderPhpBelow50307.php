@@ -78,7 +78,7 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 		} else {
 			$cacheIdentifier = static::getClassPathCacheIdentifier($classPath);
 			/** @var $phpCodeCache \TYPO3\CMS\Core\Cache\Frontend\PhpFrontend */
-			$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_phpcode');
+			$phpCodeCache = $GLOBALS['typo3CacheManager']->getCache('cache_core');
 			if (!$phpCodeCache->has($cacheIdentifier)) {
 				$classCode = static::rewriteMethodTypeHintsFromClassPath($classPath);
 				$phpCodeCache->set($cacheIdentifier, $classCode, array(), 0);
@@ -102,7 +102,7 @@ class CompatbilityClassLoaderPhpBelow50307 extends \TYPO3\CMS\Core\Core\ClassLoa
 			// The class content has to be part of the identifier too
 			// otherwise the old class files get loaded from cache
 		$fileSha1 = sha1_file($classPath);
-		$cacheIdentifier = $fileNameWithoutExtension . '_' . substr(sha1($fileSha1 . '|' . $relativeClassPath), 0, 20);
+		$cacheIdentifier = 'ClassLoader_' . $fileNameWithoutExtension . '_' . substr(sha1($fileSha1 . '|' . $relativeClassPath), 0, 20);
 			// Clean up identifier to be a valid cache entry identifier
 		$cacheIdentifier = preg_replace('/[^a-zA-Z0-9_%\-&]/i', '_', $cacheIdentifier);
 		return $cacheIdentifier;
