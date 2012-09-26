@@ -16,7 +16,7 @@ body#typo3-index-php #t3-login-form-outer {
 }
 
 body#typo3-index-php #t3-login-form {
-	margin: 30px 16% 10px;
+	margin: 30px auto 10px;
 	width: 456px;
 }
 
@@ -166,7 +166,7 @@ body#typo3-index-php div#t3-login-image {
 }
 
 body#typo3-index-php #t3-footer {
-	margin: 40px 16% 10px;
+	margin: 40px auto 10px;
 	width: 456px;
 }
 
