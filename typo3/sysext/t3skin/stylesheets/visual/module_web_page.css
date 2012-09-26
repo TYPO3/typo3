@@ -125,3 +125,12 @@ td.t3-gridCell-unassigned div.t3-row-header div {
 	opacity: .60;
 	filter: alpha(opacity = 60);
 }
+
+.t3-page-ce-dropzone.dropReceiveOK {
+    border: 2px dashed #bb0010;
+    background-color: #e5e5e5;
+}
+
+.t3-page-ce-dragitem {
+    margin-bottom: 10px;
+}
