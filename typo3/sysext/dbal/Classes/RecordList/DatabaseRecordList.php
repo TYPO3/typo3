@@ -1,5 +1,5 @@
 <?php
-namespace ux_TYPO3\CMS\Core\RecordList;
+namespace ux_TYPO3\CMS\Recordlist\RecordList;
 
 /***************************************************************
  *  Copyright notice
@@ -41,7 +41,7 @@ namespace ux_TYPO3\CMS\Core\RecordList;
  * @package TYPO3
  * @subpackage DBAL
  */
-class RecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
+class DatabaseRecordList extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 
 	/**
 	 * Creates part of query for searching after a word ($this->searchString) fields in input table
