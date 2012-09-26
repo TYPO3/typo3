@@ -120,6 +120,7 @@ class Bootstrap {
 			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.BackendUserSettings.ExtDirect', PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_beusersettings.php:TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
 			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.CSH.ExtDirect', PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_contexthelp.php:TYPO3\\CMS\\ContextHelp\\ExtDirect\\ContextHelpDataProvider');
 			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.ExtDirectStateProvider.ExtDirect', PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_state.php:TYPO3\\CMS\\Backend\\InterfaceState\\ExtDirect\\DataProvider');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.DragAndDrop.CommandController', \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('backend') . 'Classes/View/PageLayout/Extdirect/ExtdirectPageCommands.php:TYPO3\\CMS\\Backend\\View\\PageLayout\\ExtDirect\\ExtdirectPageCommands', 'web', 'user,group');
 		}
 		return $this;
 	}

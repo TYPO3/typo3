@@ -48,6 +48,11 @@ td.t3-page-column {
 	cursor: move;
 }
 
+.t3-page-ce-wrapper-new-ce {
+    opacity: 1;
+    cursor: default;
+}
+
 .t3-page-ce h4 {
 	margin: 0;
 }
