@@ -14,7 +14,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	/**
 	 * reference back to the backend object
 	 *
-	 * @var 	TYPO3backend
+	 * @var TYPO3backend
 	 */
 	protected $backendReference;
 
@@ -65,10 +65,12 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 		$numDocs = count($this->openDocs);
 		$opendocsMenu = array();
 		$title = $GLOBALS['LANG']->getLL('toolbaritem', TRUE);
+
 		// Toolbar item icon
 		$opendocsMenu[] = '<a href="#" class="toolbar-item">';
 		$opendocsMenu[] = '<input type="text" id="tx-opendocs-counter" disabled="disabled" value="' . $numDocs . '" />';
 		$opendocsMenu[] = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('apps-toolbar-menu-opendocs', array('title' => $title)) . '</a>';
+
 		// Toolbar item menu and initial content
 		$opendocsMenu[] = '<div class="toolbar-item-menu" style="display: none;">';
 		$opendocsMenu[] = $this->renderMenu();
@@ -94,7 +96,7 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 				$entries[] = $this->renderMenuEntry($openDocument, $md5sum, FALSE, $i == 1);
 			}
 		}
-		// if there are "recent documents" in the list, add them
+		// If there are "recent documents" in the list, add them
 		if (count($recentDocuments)) {
 			$entries[] = '<tr><th colspan="3">' . $GLOBALS['LANG']->getLL('recent_docs', TRUE) . '</th></tr>';
 			$i = 0;
@@ -171,7 +173,9 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	 * @return void
 	 */
 	protected function addJavascriptToBackend() {
-		$this->backendReference->addJavascriptFile(\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($this->EXTKEY) . 'opendocs.js');
+		$this->backendReference->addJavascriptFile(
+			\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($this->EXTKEY) . 'Resources/Public/JavaScript/opendocs.js'
+		);
 	}
 
 	/**
@@ -180,7 +184,10 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	 * @return void
 	 */
 	protected function addCssToBackend() {
-		$this->backendReference->addCssFile('opendocs', \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($this->EXTKEY) . 'opendocs.css');
+		$this->backendReference->addCssFile(
+			'opendocs',
+				\TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath($this->EXTKEY) . '/Resources/Public/Css/opendocs.css'
+		);
 	}
 
 	/*******************
@@ -243,6 +250,5 @@ class OpendocsController implements \TYPO3\CMS\Backend\Toolbar\ToolbarItemHookIn
 	}
 
 }
-
 
 ?>
