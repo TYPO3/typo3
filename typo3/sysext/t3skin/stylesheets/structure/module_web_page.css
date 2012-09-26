@@ -45,7 +45,15 @@ td.t3-page-column {
 
 .t3-page-ce:hover {
 	opacity: 1;
-	cursor: move;
+}
+
+.t3-page-ce-dragitem:hover {
+    cursor: move;
+}
+
+.t3-page-ce-wrapper-new-ce {
+    opacity: 1;
+    cursor: default;
 }
 
 .t3-page-ce h4 {
