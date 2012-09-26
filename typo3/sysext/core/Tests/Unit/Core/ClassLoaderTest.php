@@ -209,7 +209,7 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 		$mockCache->expects($this->any())->method('has')->will($this->returnValue(TRUE));
-		$mockCache->expects($this->once())->method('requireOnce')->will($this->returnValue(array(strtolower($class) => $file)));
+		$mockCache->expects($this->once())->method('requireOnce')->will($this->returnValue(array(array(strtolower($class) => $file))));
 			// Re-initialize autoloader registry to force it to recognize the new extension
 		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
@@ -416,14 +416,15 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$autoloaderFile = $extPath . 'ext_autoload.php';
 			// A case sensitive key (FooBar) in ext_autoload file
 		$namespacedClass = '\\Tx\\' . $extKey . '\\' . $pathSegment . '\\' . $fileName;
-		file_put_contents($autoloaderFile, '<?php' . LF . 'return array(\'' . $namespacedClass . '\' =>   \'EXT:someExt/Classes/Foo/bar.php\');' . LF . '?>');
+		$classFile = 'EXT:someExt/Classes/Foo/bar.php';
+		file_put_contents($autoloaderFile, '<?php' . LF . 'return ' . var_export(array($namespacedClass => $classFile), TRUE) . ';' . LF . '?>');
 			// Inject a dummy for the core_phpcode cache to force the autoloader
 			// to re calculate the registry
 		$mockCache = $this->getMock('TYPO3\\CMS\\Core\\Cache\\Frontend\\AbstractFrontend', array('getIdentifier', 'set', 'get', 'getByTag', 'has', 'remove', 'flush', 'flushByTag', 'requireOnce'), array(), '', FALSE);
 		$GLOBALS['typo3CacheManager'] = $this->getMock('TYPO3\\CMS\\Core\\Cache\\CacheManager', array('getCache'));
 		$GLOBALS['typo3CacheManager']->expects($this->any())->method('getCache')->will($this->returnValue($mockCache));
 			// Expect that the lower case version of the class name is written to cache
-		$mockCache->expects($this->at(2))->method('set')->with($this->anything(), $this->stringContains(strtolower($namespacedClass), FALSE));
+		$mockCache->expects($this->at(2))->method('set')->with($this->anything(), $this->stringContains(strtolower(addslashes($namespacedClass)), FALSE));
 			// Re-initialize autoloader registry to force it to recognize the new extension
 		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 		\TYPO3\CMS\Core\Core\ClassLoader::registerAutoloader();
