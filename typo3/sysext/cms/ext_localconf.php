@@ -7,6 +7,7 @@ if (!defined('TYPO3_MODE')) {
 	options.saveDocNew = 1
 	options.saveDocNew.pages = 0
 	options.saveDocNew.pages_language_overlay = 1
+	TCAdefaults.tt_content.imagecols = 2
 ');
 \TYPO3\CMS\Core\Extension\ExtensionManager::addPageTSConfig('
 mod.wizards.newContentElement {
@@ -37,7 +38,6 @@ mod.wizards.newContentElement {
 				description = LLL:EXT:cms/layout/locallang_db_new_content_el.xml:common_imagesOnly_description
 				tt_content_defValues {
 					CType = image
-					imagecols = 2
 				}
 			}
 			bullets {
