@@ -115,8 +115,11 @@ class Ter extends \TYPO3\CMS\Extensionmanager\Utility\Connection\TerUtility {
 						break;
 						// If "complete", then it's a value. If the attribute "base64" is set, then decode the value, otherwise just set it.
 					case 'complete':
-							// Had to cast it as a string - otherwise it would be evaluate FALSE if tested with isset()!!
-						$current[$tagName] = (string) $val['value'];
+							// if the content between two tags is empty or only contains spaces it will not be added to the array
+						$trimmedValue = trim($val['value']);
+						if (strlen($trimmedValue)) {
+							$current[$tagName] = $trimmedValue;
+						}
 						break;
 				}
 			}
