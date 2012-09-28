@@ -74,7 +74,7 @@ class LinkAnalyzer {
 	/**
 	 * Array for hooks for own checks
 	 *
-	 * @var tx_linkvalidator_linktype_Abstract[]
+	 * @var \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype[]
 	 */
 	protected $hookObjectsArr = array();
 
@@ -130,7 +130,7 @@ class LinkAnalyzer {
 	 * Find all supported broken links and store them in tx_linkvalidator_link
 	 *
 	 * @param array $checkOptions List of hook object to activate
-	 * @param boolean $considerHidden Defines whether to look into hidden fields or not
+	 * @param boolean $considerHidden Defines whether to look into hidden fields
 	 * @return void
 	 */
 	public function getLinkStatistics($checkOptions = array(), $considerHidden = FALSE) {
@@ -149,7 +149,8 @@ class LinkAnalyzer {
 				if (!$considerHidden) {
 					$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($table);
 				}
-				// If table is not configured, assume the extension is not installed and therefore no need to check it
+				// If table is not configured, assume the extension is not installed
+				// and therefore no need to check it
 				if (!is_array($GLOBALS['TCA'][$table])) {
 					continue;
 				}
@@ -240,7 +241,7 @@ class LinkAnalyzer {
 				// Traverse soft references
 				foreach ($softRefs as $spKey => $spParams) {
 					/** @var \TYPO3\CMS\Core\Database\SoftReferenceIndex $softRefObj Create or get the soft reference object */
-					$softRefObj =& \TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj($spKey);
+					$softRefObj = \TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj($spKey);
 					// If there is an object returned...
 					if (is_object($softRefObj)) {
 						// Do processing
@@ -362,7 +363,11 @@ class LinkAnalyzer {
 		if (empty($this->pidList)) {
 			$this->pidList = $curPage;
 		}
-		if ($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('count(uid) as nbBrokenLinks,link_type', 'tx_linkvalidator_link', 'record_pid in (' . $this->pidList . ')', 'link_type')) {
+		if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'count(uid) as nbBrokenLinks,link_type',
+			'tx_linkvalidator_link',
+			'record_pid in (' . $this->pidList . ')', 'link_type')
+		)) {
 			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
 				$markerArray[$row['link_type']] = $row['nbBrokenLinks'];
 				$markerArray['brokenlinkCount'] += $row['nbBrokenLinks'];
@@ -393,7 +398,10 @@ class LinkAnalyzer {
 		$id = intval($id);
 		$theList = '';
 		if ($depth > 0) {
-			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,title,hidden,extendToSubpages', 'pages', 'pid=' . $id . ' AND deleted=0 AND ' . $permsClause);
+			$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'uid,title,hidden,extendToSubpages',
+				'pages', 'pid=' . $id . ' AND deleted=0 AND ' . $permsClause
+			);
 			while (($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) !== FALSE) {
 				if ($begin <= 0 && ($row['hidden'] == 0 || $considerHidden == 1)) {
 					$theList .= $row['uid'] . ',';

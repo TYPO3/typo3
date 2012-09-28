@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Linkvalidator\Report;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag)
- *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2005 - 2012 Jochen Rieger (j.rieger@connecta.ag)
+ *  (c) 2010 - 2012 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -132,7 +132,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	protected $content;
 
 	/**
-	 * @var t3lib_pageRenderer $pageRenderer
+	 * @var \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	protected $pageRenderer;
 
@@ -142,7 +142,7 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	protected $resPath = '';
 
 	/**
-	 * @var tx_linkvalidator_linktype_Interface[] $hookObjectsArr
+	 * @var \TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface[]
 	 */
 	protected $hookObjectsArr = array();
 
@@ -352,7 +352,12 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		} else {
 			// If no access or if ID == zero
 			/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
-			$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('no.access'), $GLOBALS['LANG']->getLL('no.access.title'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+				'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				$GLOBALS['LANG']->getLL('no.access'),
+				$GLOBALS['LANG']->getLL('no.access.title'),
+				\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR
+			);
 			$this->content .= $message->render();
 		}
 	}
@@ -364,7 +369,11 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	 * @return string $content
 	 */
 	protected function flush($form = FALSE) {
-		$content = $this->doc->moduleBody($this->pageRecord, $this->getDocHeaderButtons(), $form ? $this->getTemplateMarkers() : $this->getTemplateMarkersCheck());
+		$content = $this->doc->moduleBody(
+			$this->pageRecord,
+			$this->getDocHeaderButtons(),
+			$form ? $this->getTemplateMarkers() : $this->getTemplateMarkersCheck()
+		);
 		return $content;
 	}
 
@@ -405,10 +414,22 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		}
 		$rootLineHidden = $this->processor->getRootLineIsHidden($this->pObj->pageinfo);
 		if (!$rootLineHidden || $this->modTS['checkhidden'] == 1) {
-			$pageList = $this->processor->extGetTreeList($this->pObj->id, $this->searchLevel, 0, $GLOBALS['BE_USER']->getPagePermsClause(1), $this->modTS['checkhidden']);
+			$pageList = $this->processor->extGetTreeList(
+				$this->pObj->id,
+				$this->searchLevel,
+				0,
+				$GLOBALS['BE_USER']->getPagePermsClause(1),
+				$this->modTS['checkhidden']
+			);
 			// Always add the current page, because we are just displaying the results
 			$pageList .= $this->pObj->id;
-			if ($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_linkvalidator_link', 'record_pid in (' . $pageList . ') and link_type in (\'' . implode('\',\'', $keyOpt) . '\')', '', 'record_uid ASC, uid ASC')) {
+			if (($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+				'*',
+				'tx_linkvalidator_link',
+				'record_pid in (' . $pageList . ') and link_type in (\'' . implode('\',\'', $keyOpt) . '\')',
+				'',
+				'record_uid ASC, uid ASC')
+			)) {
 				// Display table with broken links
 				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
 					$brokenLinksTemplate = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_CONTENT###');
@@ -427,7 +448,11 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		} else {
 			$brokenLinksMarker = $this->getNoBrokenLinkMessage($brokenLinksMarker);
 		}
-		$brokenLinksTemplate = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($brokenLinksTemplate, $brokenLinksMarker, '###|###', TRUE);
+		$brokenLinksTemplate = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray(
+			$brokenLinksTemplate,
+			$brokenLinksMarker, '###|###',
+			TRUE
+		);
 		$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($brokenLinksTemplate, '###BROKENLINKS_ITEM', $brokenLinkItems);
 		return $content;
 	}
@@ -441,7 +466,12 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 	protected function getNoBrokenLinkMessage(array $brokenLinksMarker) {
 		$brokenLinksMarker['LIST_HEADER'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'));
 		/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
-		$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('list.no.broken.links'), $GLOBALS['LANG']->getLL('list.no.broken.links.title'), \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
+		$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+			'TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+			$GLOBALS['LANG']->getLL('list.no.broken.links'),
+			$GLOBALS['LANG']->getLL('list.no.broken.links.title'),
+			\TYPO3\CMS\Core\Messaging\FlashMessage::OK
+		);
 		$brokenLinksMarker['NO_BROKEN_LINKS'] = $message->render();
 		return $brokenLinksMarker;
 	}
@@ -484,8 +514,20 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		// Restore the linktype object
 		$hookObj = $this->hookObjectsArr[$row['link_type']];
 		$brokenUrl = $hookObj->getBrokenUrl($row);
+		// Construct link to edit the content element
 		$params = '&edit[' . $table . '][' . $row['record_uid'] . ']=edit';
-		$actionLinks = '<a href="#" onclick="' . \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], (\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '?id=' . $this->pObj->id . '&search_levels=' . $this->searchLevel)) . '"' . ' title="' . $GLOBALS['LANG']->getLL('list.edit') . '">' . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') . '</a>';
+		$requestUri = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') .
+			'?id=' . $this->pObj->id .
+			'&search_levels=' . $this->searchLevel;
+		$actionLink = '<a href="#" onclick="';
+		$actionLink .= \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick(
+			$params,
+			$GLOBALS['BACK_PATH'],
+			$requestUri
+		);
+		$actionLink .= '" title="' . $GLOBALS['LANG']->getLL('list.edit') . '">';
+		$actionLink .= \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open');
+		$actionLink .= '</a>';
 		$elementHeadline = $row['headline'];
 		if (empty($elementHeadline)) {
 			$elementHeadline = '<i>' . $GLOBALS['LANG']->getLL('list.no.headline') . '</i>';
@@ -502,10 +544,14 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		// Fallback, if there is no label
 		$fieldName = !empty($fieldName) ? $fieldName : $row['field'];
 		// column "Element"
-		$element = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row, array('title' => $table . ':' . $row['record_uid']));
+		$element = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord(
+			$table,
+			$row,
+			array('title' => $table . ':' . $row['record_uid'])
+		);
 		$element .= $elementHeadline;
 		$element .= ' ' . sprintf($GLOBALS['LANG']->getLL('list.field'), $fieldName);
-		$markerArray['actionlink'] = $actionLinks;
+		$markerArray['actionlink'] = $actionLink;
 		$markerArray['path'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($row['record_pid'], '', 0, 0);
 		$markerArray['element'] = $element;
 		$markerArray['headlink'] = $row['link_title'];
@@ -554,7 +600,8 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 		$linktypes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->modTS['linktypes'], 1);
 		$hookSectionContent = '';
 		if (is_array($linktypes)) {
-			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
+			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])
+				&& is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 				foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $type => $value) {
 					if (in_array($type, $linktypes)) {
 						$hookSectionMarker = array();
@@ -567,12 +614,20 @@ class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModu
 						$translation = $translation ? $translation : $type;
 						$option = '<input type="checkbox" ' . $additionalAttr . '  id="' . $prefix . 'SET_' . $type . '" name="' . $prefix . 'SET[' . $type . ']" value="1"' . ($this->pObj->MOD_SETTINGS[$type] ? ' checked="checked"' : '') . '/>' . '<label for="' . $prefix . 'SET[' . $type . ']">' . htmlspecialchars($translation) . '</label>';
 						$hookSectionMarker['option'] = $option;
-						$hookSectionContent .= \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($hookSectionTemplate, $hookSectionMarker, '###|###', TRUE, TRUE);
+						$hookSectionContent .= \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray(
+							$hookSectionTemplate,
+							$hookSectionMarker, '###|###',
+							TRUE,
+							TRUE
+						);
 					}
 				}
 			}
 		}
-		$checkOptionsTemplate = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($checkOptionsTemplate, '###HOOK_SECTION###', $hookSectionContent);
+		$checkOptionsTemplate = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart(
+			$checkOptionsTemplate,
+			'###HOOK_SECTION###', $hookSectionContent
+		);
 		return \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($checkOptionsTemplate, $markerArray, '###|###', TRUE, TRUE);
 	}
 

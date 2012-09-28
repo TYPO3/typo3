@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag)
- *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2005 - 2012 Jochen Rieger (j.rieger@connecta.ag)
+ *  (c) 2010 - 2012 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -72,7 +72,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 		$this->responseContent = TRUE;
 		// Might already contain values - empty it
 		unset($this->errorParams);
-		// defines the linked page and anchor (if any).
+		// Defines the linked page and anchor (if any).
 		if (strpos($url, '#c') !== FALSE) {
 			$parts = explode('#c', $url);
 			$page = $parts[0];
@@ -81,13 +81,15 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			$page = $url;
 		}
 		// Check if the linked page is OK
-		$this->responsePage = $this->checkPage($page, $softRefEntry, $reference);
+		$this->responsePage = $this->checkPage($page);
 		// Check if the linked content element is OK
 		if ($anchor) {
 			// Check if the content element is OK
-			$this->responseContent = $this->checkContent($page, $anchor, $softRefEntry, $reference);
+			$this->responseContent = $this->checkContent($page, $anchor);
 		}
-		if (is_array($this->errorParams['page']) && !$this->responsePage || is_array($this->errorParams['content']) && !$this->responseContent) {
+		if (is_array($this->errorParams['page']) && !$this->responsePage
+			|| is_array($this->errorParams['content']) && !$this->responseContent
+		) {
 			$this->setErrorParams($this->errorParams);
 		}
 		if ($this->responsePage === TRUE && $this->responseContent === TRUE) {
@@ -102,11 +104,9 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	 * Checks a given page uid for validity
 	 *
 	 * @param string $page Page uid to check
-	 * @param array $softRefEntry The soft reference entry which builds the context of that url
-	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
-	protected function checkPage($page, $softRefEntry, $reference) {
+	protected function checkPage($page) {
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, title, deleted, hidden, starttime, endtime', 'pages', 'uid = ' . intval($page));
 		$this->responsePage = TRUE;
 		if ($row) {
@@ -134,11 +134,9 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	 *
 	 * @param string $page Uid of the page to which the link is pointing
 	 * @param string $anchor Uid of the content element to check
-	 * @param array $softRefEntry The soft reference entry which builds the context of that url
-	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
-	protected function checkContent($page, $anchor, $softRefEntry, $reference) {
+	protected function checkContent($page, $anchor) {
 		// Get page ID on which the content element in fact is located
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('uid, pid, header, deleted, hidden, starttime, endtime', 'tt_content', 'uid = ' . intval($anchor));
 		$this->responseContent = TRUE;
@@ -178,7 +176,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	}
 
 	/**
-	 * Generate the localized error message from the error params saved from the parsing
+	 * Generates the localized error message from the error params saved from the parsing
 	 *
 	 * @param array $errorParams All parameters needed for the rendering of the error message
 	 * @return string Validation error message
@@ -240,7 +238,7 @@ class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 	}
 
 	/**
-	 * Construct a valid Url for browser output
+	 * Constructs a valid Url for browser output
 	 *
 	 * @param array $row Broken link record
 	 * @return string Parsed broken url

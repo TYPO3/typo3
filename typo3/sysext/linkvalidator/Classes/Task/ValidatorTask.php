@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Linkvalidator\Task;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2010 - 2012 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -76,11 +76,11 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 	protected $configuration = array();
 
 	/**
-	 * Shows if number of result was different from the result of the last check or not
+	 * Shows if number of result was different from the result of the last check
 	 *
 	 * @var boolean
 	 */
-	protected $dif;
+	protected $isDifferentToLastRun;
 
 	/**
 	 * Template to be used for the email
@@ -234,12 +234,14 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 	/**
 	 * Function execute from the Scheduler
 	 *
+	 * @throws \Exception if the email templale file can not be read
 	 * @return boolean TRUE on successful execution, FALSE on error
 	 */
 	public function execute() {
 		$this->setCliArguments();
 		$successfullyExecuted = TRUE;
-		if (!file_exists(($file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->emailTemplateFile))) && !empty($this->email)) {
+		if (!file_exists(($file = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($this->emailTemplateFile)))
+			&& !empty($this->email)) {
 			throw new \Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidEmailTemplateFile'), '1295476972');
 		}
 		$htmlFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getURL($file);
@@ -247,18 +249,18 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 		// The array to put the content into
 		$html = array();
 		$pageSections = '';
-		$this->dif = FALSE;
+		$this->isDifferentToLastRun = FALSE;
 		$pageList = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->page, 1);
-		$modTS = $this->loadModTSconfig($this->page);
+		$modTS = $this->loadModTsConfig($this->page);
 		if (is_array($pageList)) {
 			foreach ($pageList as $page) {
 				$pageSections .= $this->checkPageLinks($page);
 			}
 		}
 		if ($this->totalBrokenLink != $this->oldTotalBrokenLink) {
-			$this->dif = TRUE;
+			$this->isDifferentToLastRun = TRUE;
 		}
-		if ($this->totalBrokenLink > 0 && (!$this->emailOnBrokenLinkOnly || $this->dif) && !empty($this->email)) {
+		if ($this->totalBrokenLink > 0 && (!$this->emailOnBrokenLinkOnly || $this->isDifferentToLastRun) && !empty($this->email)) {
 			$successfullyExecuted = $this->reportEmail($pageSections, $modTS);
 		}
 		return $successfullyExecuted;
@@ -275,7 +277,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 		$pageSections = '';
 		$pageIds = '';
 		$oldLinkCounts = array();
-		$modTS = $this->loadModTSconfig($page);
+		$modTS = $this->loadModTsConfig($page);
 		$searchFields = $this->getSearchField($modTS);
 		$linkTypes = $this->getLinkTypes($modTS);
 		/** @var \TYPO3\CMS\Linkvalidator\LinkAnalyzer $processor */
@@ -288,8 +290,8 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 		}
 		if (!$rootLineHidden || $modTS['checkhidden'] == 1) {
 			$pageIds = $processor->extGetTreeList($page, $this->depth, 0, '1=1', $modTS['checkhidden']);
-			if ($pageRow['hidden'] == 0 || $modTS['checkhidden'] == 1) {
-				// tx_linkvalidator_Processor::extGetTreeList always adds trailing comma:
+			if (isset($pageRow) && $pageRow['hidden'] == 0 || $modTS['checkhidden'] == 1) {
+				// \TYPO3\CMS\Linkvalidator\LinkAnalyzer->extGetTreeList() always adds trailing comma
 				$pageIds .= $page;
 			}
 		}
@@ -313,10 +315,11 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 	 * Get the linkvalidator modTSconfig for a page
 	 *
 	 * @param integer $page Uid of the page
-	 * @return array $modTS mod.linkvalidator TSconfig array
+	 * @throws \Exception
+	 * @return array $modTsConfig mod.linkvalidator TSconfig array
 	 */
-	protected function loadModTSconfig($page) {
-		$modTS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($page, 'mod.linkvalidator');
+	protected function loadModTsConfig($page) {
+		$modTs = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($page, 'mod.linkvalidator');
 		$parseObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\Parser\\TypoScriptParser');
 		$parseObj->parse($this->configuration);
 		if (count($parseObj->errors) > 0) {
@@ -326,13 +329,13 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 			}
 			throw new \Exception($parseErrorMessage, '1295476989');
 		}
-		$TSconfig = $parseObj->setup;
-		$modTS = $modTS['properties'];
-		$overrideTs = $TSconfig['mod.']['tx_linkvalidator.'];
+		$tsConfig = $parseObj->setup;
+		$modTs = $modTs['properties'];
+		$overrideTs = $tsConfig['mod.']['tx_linkvalidator.'];
 		if (is_array($overrideTs)) {
-			$modTS = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($modTS, $overrideTs);
+			$modTs = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($modTs, $overrideTs);
 		}
-		return $modTS;
+		return $modTs;
 	}
 
 	/**
@@ -377,10 +380,11 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 	 * Build and send warning email when new broken links were found
 	 *
 	 * @param string $pageSections Content of page section
-	 * @param array $modTS TSconfig array
+	 * @param array $modTsConfig TSconfig array
+	 * @throws \Exception if required modTsConfig settings are missing
 	 * @return boolean TRUE if mail was sent, FALSE if or not
 	 */
-	protected function reportEmail($pageSections, array $modTS) {
+	protected function reportEmail($pageSections, array $modTsConfig) {
 		$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($this->templateMail, '###PAGE_SECTION###', $pageSections);
 		/** @var array $markerArray */
 		$markerArray = array();
@@ -407,22 +411,22 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 		$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($content, $markerArray, '###|###', TRUE, TRUE);
 		/** @var \TYPO3\CMS\Core\Mail\MailMessage $mail */
 		$mail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Mail\\MailMessage');
-		if (empty($modTS['mail.']['fromemail'])) {
-			$modTS['mail.']['fromemail'] = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
+		if (empty($modTsConfig['mail.']['fromemail'])) {
+			$modTsConfig['mail.']['fromemail'] = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromAddress();
 		}
-		if (empty($modTS['mail.']['fromname'])) {
-			$modTS['mail.']['fromname'] = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromName();
+		if (empty($modTsConfig['mail.']['fromname'])) {
+			$modTsConfig['mail.']['fromname'] = \TYPO3\CMS\Core\Utility\MailUtility::getSystemFromName();
 		}
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($modTS['mail.']['fromemail'])) {
-			$mail->setFrom(array($modTS['mail.']['fromemail'] => $modTS['mail.']['fromname']));
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($modTsConfig['mail.']['fromemail'])) {
+			$mail->setFrom(array($modTsConfig['mail.']['fromemail'] => $modTsConfig['mail.']['fromname']));
 		} else {
 			throw new \Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.invalidFromEmail'), '1295476760');
 		}
-		if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($modTS['mail.']['replytoemail'])) {
-			$mail->setReplyTo(array($modTS['mail.']['replytoemail'] => $modTS['mail.']['replytoname']));
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($modTsConfig['mail.']['replytoemail'])) {
+			$mail->setReplyTo(array($modTsConfig['mail.']['replytoemail'] => $modTsConfig['mail.']['replytoname']));
 		}
-		if (!empty($modTS['mail.']['subject'])) {
-			$mail->setSubject($modTS['mail.']['subject']);
+		if (!empty($modTsConfig['mail.']['subject'])) {
+			$mail->setSubject($modTsConfig['mail.']['subject']);
 		} else {
 			throw new \Exception($GLOBALS['LANG']->sL('LLL:EXT:linkvalidator/locallang.xml:tasks.error.noSubject'), '1295476808');
 		}
@@ -458,7 +462,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 	 * @return string Content of the mail
 	 */
 	protected function buildMail($curPage, $pageList, array $markerArray, array $oldBrokenLink) {
-		$pageSectionHTML = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->templateMail, '###PAGE_SECTION###');
+		$pageSectionHtml = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->templateMail, '###PAGE_SECTION###');
 		// Hook
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['buildMailMarkers'] as $userFunc) {
@@ -482,7 +486,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 					$oldBrokenLink[$markerKey] = 0;
 				}
 				if ($markerValue != $oldBrokenLink[$markerKey]) {
-					$this->dif = TRUE;
+					$this->isDifferentToLastRun = TRUE;
 				}
 				$markerArray[$markerKey . '_old'] = $oldBrokenLink[$markerKey];
 			}
@@ -490,7 +494,7 @@ class ValidatorTask extends \TYPO3\CMS\Scheduler\Task {
 		$markerArray['title'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordTitle('pages', \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $curPage));
 		$content = '';
 		if ($markerArray['brokenlinkCount'] > 0) {
-			$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($pageSectionHTML, $markerArray, '###|###', TRUE, TRUE);
+			$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($pageSectionHtml, $markerArray, '###|###', TRUE, TRUE);
 		}
 		return $content;
 	}

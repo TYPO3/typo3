@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag)
- *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2005 - 2012 Jochen Rieger (j.rieger@connecta.ag)
+ *  (c) 2010 - 2012 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -38,8 +38,8 @@ class FileLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 	 * Checks a given URL + /path/filename.ext for validity
 	 *
 	 * @param string $url Url to check
-	 * @param array $softRefEntry The soft reference entry which builds the context of that url
-	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance of tx_linkvalidator_Processor
+	 * @param array $softRefEntry The soft reference entry which builds the context of the url
+	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance
 	 * @return boolean TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {

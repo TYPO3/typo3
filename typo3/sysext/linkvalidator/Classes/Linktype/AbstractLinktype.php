@@ -4,7 +4,7 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2010 - 2012 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is

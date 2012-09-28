@@ -4,8 +4,8 @@ namespace TYPO3\CMS\Linkvalidator\Linktype;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 - 2009 Jochen Rieger (j.rieger@connecta.ag)
- *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
+ *  (c) 2010 - 2012 Jochen Rieger (j.rieger@connecta.ag)
+ *  (c) 2010 - 2012 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -79,18 +79,18 @@ class ExternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktyp
 			'follow_redirects' => TRUE,
 			'strict_redirects' => TRUE
 		);
-		/** @var t3lib_http_Request|HTTP_Request2 $request */
+		/** @var \TYPO3\CMS\Core\Http\HttpRequest|\HTTP_Request2 $request */
 		$request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\HttpRequest', $url, 'HEAD', $config);
 		// Observe cookies
 		$request->setCookieJar(TRUE);
 		try {
-			/** @var HTTP_Request2_Response $response */
+			/** @var \HTTP_Request2_Response $response */
 			$response = $request->send();
 			// HEAD was not allowed, now trying GET
 			if (isset($response) && $response->getStatus() === 405) {
 				$request->setMethod('GET');
 				$request->setHeader('Range', 'bytes = 0 - 4048');
-				/** @var HTTP_Request2_Response $response */
+				/** @var \HTTP_Request2_Response $response */
 				$response = $request->send();
 			}
 		} catch (\Exception $e) {
