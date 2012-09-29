@@ -143,7 +143,7 @@ abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\Sprite
 		foreach ($tcaTables as $tableName) {
 			// This method is only needed for TCA tables where
 			// typeicon_classes are not configured
-			if (!is_array($GLOBALS['TCA'][$tableName]['ctrl']['typeicon_classes'])) {
+			if (is_array($GLOBALS['TCA'][$tableName]) && !is_array($GLOBALS['TCA'][$tableName]['ctrl']['typeicon_classes'])) {
 				$tcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'];
 				// Adding the default Icon (without types)
 				if (isset($tcaCtrl['iconfile'])) {
