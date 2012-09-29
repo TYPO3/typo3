@@ -43,7 +43,7 @@ var allCheckedStatus = false;
  * @return	void
  */
 function actOnChangedTaskClass(theSelector) {
-	var taskClass = theSelector.options[theSelector.selectedIndex].value;
+	var taskClass = theSelector.options[theSelector.selectedIndex].value.toLowerCase().replace(/\\/g, '-');
 		// Hide all extra fields
 		// Show only relevant extra fields
 	Ext.select('.extraFields').setDisplayed(false);
