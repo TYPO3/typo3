@@ -141,32 +141,35 @@ abstract class AbstractSpriteHandler implements \TYPO3\CMS\Backend\Sprite\Sprite
 		}
 		// check every table in the TCA, if an icon is needed
 		foreach ($tcaTables as $tableName) {
-			// This method is only needed for TCA tables where
-			// typeicon_classes are not configured
-			if (!is_array($GLOBALS['TCA'][$tableName]['ctrl']['typeicon_classes'])) {
-				$tcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'];
-				// Adding the default Icon (without types)
-				if (isset($tcaCtrl['iconfile'])) {
-					// In CSS we need a path relative to the css file
-					// [TCA][ctrl][iconfile] defines icons without path info to reside in gfx/i/
-					if (strpos($tcaCtrl['iconfile'], '/') !== FALSE) {
-						$icon = $tcaCtrl['iconfile'];
-					} else {
-						$icon = $skinPath . 'gfx/i/' . $tcaCtrl['iconfile'];
-					}
-					$icon = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($icon);
-					$resultArray['tcarecords-' . $tableName . '-default'] = $icon;
-				}
-				// If records types are available, register them
-				if (isset($tcaCtrl['typeicon_column']) && is_array($tcaCtrl['typeicons'])) {
-					foreach ($tcaCtrl['typeicons'] as $type => $icon) {
+			// Make sure the data from TCA is an array.
+			if(is_array($GLOBALS['TCA'][$tableName])) {
+				// This method is only needed for TCA tables where
+				// typeicon_classes are not configured
+				if (is_array($GLOBALS['TCA'][$tableName]['ctrl']['typeicon_classes'])) {
+					$tcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'];
+					// Adding the default Icon (without types)
+					if (isset($tcaCtrl['iconfile'])) {
 						// In CSS we need a path relative to the css file
 						// [TCA][ctrl][iconfile] defines icons without path info to reside in gfx/i/
-						if (strpos($icon, '/') === FALSE) {
-							$icon = $skinPath . 'gfx/i/' . $icon;
+						if (strpos($tcaCtrl['iconfile'], '/') !== FALSE) {
+							$icon = $tcaCtrl['iconfile'];
+						} else {
+							$icon = $skinPath . 'gfx/i/' . $tcaCtrl['iconfile'];
 						}
 						$icon = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($icon);
-						$resultArray['tcarecords-' . $tableName . '-' . $type] = $icon;
+						$resultArray['tcarecords-' . $tableName . '-default'] = $icon;
+					}
+					// If records types are available, register them
+					if (isset($tcaCtrl['typeicon_column']) && is_array($tcaCtrl['typeicons'])) {
+						foreach ($tcaCtrl['typeicons'] as $type => $icon) {
+							// In CSS we need a path relative to the css file
+							// [TCA][ctrl][iconfile] defines icons without path info to reside in gfx/i/
+							if (strpos($icon, '/') === FALSE) {
+								$icon = $skinPath . 'gfx/i/' . $icon;
+							}
+							$icon = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($icon);
+							$resultArray['tcarecords-' . $tableName . '-' . $type] = $icon;
+						}
 					}
 				}
 			}
