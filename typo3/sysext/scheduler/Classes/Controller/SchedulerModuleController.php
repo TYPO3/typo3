@@ -775,8 +775,9 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					$label = '<label for="' . $fieldID . '">' . $GLOBALS['LANG']->sL($fieldInfo['label']) . '</label>';
 					$table[$tr][] = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp($fieldInfo['cshKey'], $fieldInfo['cshLabel'], $label);
 					$table[$tr][] = $fieldInfo['code'];
+					$htmlClassName = strtolower(str_replace('\\', '-', $class));
 					$tableLayout[$tr] = array(
-						'tr' => array('<tr id="' . $fieldID . '_row"' . $additionalFieldsStyle . ' class="extraFields extra_fields_' . $class . '">', '</tr>'),
+						'tr' => array('<tr id="' . $fieldID . '_row"' . $additionalFieldsStyle . ' class="extraFields extra_fields_' . $htmlClassName . '">', '</tr>'),
 						'defCol' => $defaultCell,
 						'0' => array('<td class="td-label">', '</td>')
 					);
