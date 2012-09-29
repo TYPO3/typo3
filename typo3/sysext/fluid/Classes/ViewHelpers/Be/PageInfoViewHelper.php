@@ -1,5 +1,7 @@
 <?php
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
+use \TYPO3\CMS\Backend\Utility\BackendUtility;
+use \TYPO3\CMS\Backend\Utility\IconUtility;
 
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
@@ -44,20 +46,20 @@ class PageInfoViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackend
 	public function render() {
 		$doc = $this->getDocInstance();
 		$id = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
-		$pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
+		$pageRecord = BackendUtility::readPageAccess($id, $GLOBALS['BE_USER']->getPagePermsClause(1));
 		// Add icon with clickmenu, etc:
 		if ($pageRecord['uid']) {
 			// If there IS a real page
-			$alttext = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordIconAltText($pageRecord, 'pages');
-			$iconImg = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord('pages', $pageRecord, array('title' => htmlspecialchars($alttext)));
+			$alttext = BackendUtility::getRecordIconAltText($pageRecord, 'pages');
+			$iconImg = IconUtility::getSpriteIconForRecord('pages', $pageRecord, array('title' => htmlspecialchars($alttext)));
 			// Make Icon:
-			$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
+			$theIcon = $doc->wrapClickMenuOnIcon($iconImg, 'pages', $pageRecord['uid']);
 		} else {
 			// On root-level of page tree
 			// Make Icon
-			$iconImg = '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' alt="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '" />';
-			if ($BE_USER->user['admin']) {
-				$theIcon = $GLOBALS['SOBE']->doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
+			$iconImg = '<img' . IconUtility::skinImg($this->backPath, 'gfx/i/_icon_website.gif') . ' alt="' . htmlspecialchars($GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']) . '" />';
+			if ($GLOBALS['BE_USER']->user['admin']) {
+				$theIcon = $doc->wrapClickMenuOnIcon($iconImg, 'pages', 0);
 			} else {
 				$theIcon = $iconImg;
 			}

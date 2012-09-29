@@ -79,7 +79,7 @@ abstract class AbstractViewHelper {
 	protected $renderingContext;
 
 	/**
-	 * @var Closure
+	 * @var \Closure
 	 * @internal
 	 */
 	protected $renderChildrenClosure = NULL;
@@ -206,7 +206,7 @@ abstract class AbstractViewHelper {
 	/**
 	 * Called when being inside a cached template.
 	 *
-	 * @param Closure $renderChildrenClosure
+	 * @param \Closure $renderChildrenClosure
 	 * @return void
 	 * @internal
 	 */
@@ -278,7 +278,7 @@ abstract class AbstractViewHelper {
 	 *
 	 * No public API yet.
 	 *
-	 * @return Closure
+	 * @return \Closure
 	 * @internal
 	 */
 	protected function buildRenderChildrenClosure() {
@@ -457,7 +457,7 @@ abstract class AbstractViewHelper {
 	 * for a detailed description of this method.
 	 *
 	 * @param array $arguments
-	 * @param Closure $renderChildrenClosure
+	 * @param \Closure $renderChildrenClosure
 	 * @param \TYPO3\CMS\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
 	 * @return mixed
 	 * @internal

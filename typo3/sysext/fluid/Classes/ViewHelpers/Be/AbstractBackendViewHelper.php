@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Fluid\ViewHelpers\Be;
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /*                                                                        *
  * This script is backported from the FLOW3 package "TYPO3.Fluid".        *
@@ -33,19 +34,62 @@ abstract class AbstractBackendViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelpe
 	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate $doc
 	 */
 	public function getDocInstance() {
-		if (!isset($GLOBALS['SOBE']->doc)) {
-			/** @var $doc \TYPO3\CMS\Backend\Template\DocumentTemplate */
-			$doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-			$doc->backPath = $GLOBALS['BACK_PATH'];
-			if (is_object($GLOBALS['SOBE'])) {
-				$GLOBALS['SOBE']->doc = $doc;
-			}
+		if ($this->viewHelperVariableContainer->exists(
+			'TYPO3\\CMS\\Fluid\\ViewHelpers\\Be\\AbstractBackendViewHelper',
+			'DocumentTemplate'
+		)) {
+			$doc = $this->viewHelperVariableContainer->get(
+				'TYPO3\\CMS\\Fluid\\ViewHelpers\\Be\\AbstractBackendViewHelper',
+				'DocumentTemplate'
+			);
 		} else {
-			$doc = $GLOBALS['SOBE']->doc;
+			/** @var $doc \TYPO3\CMS\Backend\Template\DocumentTemplate */
+			$doc = $this->createDocInstance();
+			$doc->backPath = $GLOBALS['BACK_PATH'];
+			$this->viewHelperVariableContainer->add(
+				'TYPO3\\CMS\\Fluid\\ViewHelpers\\Be\\AbstractBackendViewHelper',
+				'DocumentTemplate',
+				$doc
+			);
 		}
+
 		return $doc;
 	}
 
+	/**
+	 * Other extensions may rely on the fact that $GLOBALS['SOBE'] exists and holds
+	 * the DocumentTemplate instance. We should really get rid of this, but for now, let's be backwards compatible.
+	 * Relying on $GLOBALS['SOBE'] is @deprecated since 6.0 and will be removed in 6.2 Instead ->getDocInstance() should be used.
+	 *
+	 * If $GLOBALS['SOBE']->doc holds an instance of \TYPO3\CMS\Backend\Template\DocumentTemplate we reuse it,
+	 * if not we create a new one.
+	 *
+	 * Relying on $GLOBALS['SOBE'] is
+	 * @deprecated since 6.0 and will be removed in 6.2 ->getDocInstance() should be used instead.
+	 *
+	 * @return \TYPO3\CMS\Backend\Template\DocumentTemplate
+	 */
+	protected function createDocInstance() {
+		if (
+			isset($GLOBALS['SOBE']) &&
+			is_object($GLOBALS['SOBE']) &&
+			isset($GLOBALS['SOBE']->doc) &&
+			$GLOBALS['SOBE']->doc instanceof \TYPO3\CMS\Backend\Template\DocumentTemplate
+		) {
+			GeneralUtility::deprecationLog('Usage of $GLOBALS[\'SOBE\'] is deprecated since 6.0 and will be removed in 6.2 ->getDocInstance() should be used instead');
+			$doc = $GLOBALS['SOBE']->doc;
+		} else {
+			$doc = GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+			if (!isset($GLOBALS['SOBE'])) {
+				$GLOBALS['SOBE'] = new \stdClass();
+			}
+			if (!isset($GLOBALS['SOBE']->doc)) {
+				$GLOBALS['SOBE']->doc = $doc;
+			}
+		}
+
+		return $doc;
+	}
 }
 
 
