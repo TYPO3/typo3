@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Belog\ViewHelpers;
  * @package TYPO3
  * @subpackage belog
  */
-class ErrorIconViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+class ErrorIconViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper {
 
 	/**
 	 * Renders an error icon link as known from the TYPO3 backend.
@@ -42,7 +42,11 @@ class ErrorIconViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewH
 	 * @return string the rendered error icon link
 	 */
 	public function render($errorNumber = 0) {
-		return $GLOBALS['SOBE']->doc->icons($errorNumber >= 2 ? \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR : \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_WARNING);
+		return $this->getDocInstance()->icons(
+			$errorNumber >= 2
+					? \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_ERROR
+					: \TYPO3\CMS\Backend\Template\DocumentTemplate::STATUS_ICON_WARNING
+		);
 	}
 
 }
