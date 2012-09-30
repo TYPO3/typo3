@@ -189,7 +189,7 @@ class t3lib_install {
 	 */
 	public function writeToLocalconf_control($inlines = '', $absFullPath = '') {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
-		return "nochange";
+		return 'nochange';
 	}
 
 	/**
