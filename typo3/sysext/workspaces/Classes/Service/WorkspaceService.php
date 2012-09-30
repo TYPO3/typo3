@@ -261,17 +261,17 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($isTableLocalizable && \TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($language)) {
 			$where .= ' AND A.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '=' . $language;
 		}
-		/** For "real" workspace numbers, select by that.
-		If = -98, select all that are NOT online (zero).
-		Anything else below -1 will not select on the wsid and therefore select all! */
+		// For "real" workspace numbers, select by that.
+		// If = -98, select all that are NOT online (zero).
+		// Anything else below -1 will not select on the wsid and therefore select all!
 		if ($wsid > self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid=' . $wsid;
 		} elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid!=0';
 		}
-		/** lifecycle filter:
-		1 = select all drafts (never-published),
-		2 = select all published one or more times (archive/multiple) */
+		// lifecycle filter:
+		// 1 = select all drafts (never-published),
+		// 2 = select all published one or more times (archive/multiple)
 		if ($filter === 1 || $filter === 2) {
 			$where .= ' AND A.t3ver_count ' . ($filter === 1 ? '= 0' : '> 0');
 		}
@@ -284,9 +284,9 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		$where .= ' AND A.t3ver_oid=B.uid';
 		$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'A');
 		$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause($table, 'B');
-		/** Select all records from this table in the database from the workspace
-		This joins the online version with the offline version as tables A and B
-		Order by UID, mostly to have a sorting in the backend overview module which doesn't "jump around" when swapping. */
+		// Select all records from this table in the database from the workspace
+		// This joins the online version with the offline version as tables A and B
+		// Order by UID, mostly to have a sorting in the backend overview module which doesn't "jump around" when swapping.
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($fields, $from, $where, '', 'B.uid');
 		return is_array($res) ? $res : array();
 	}
@@ -302,10 +302,10 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return array
 	 */
 	protected function getMoveToPlaceHolderFromPages($table, $pageList, $wsid, $filter, $stage) {
-		/** Aliases:
-		A - moveTo placeholder
-		B - online record
-		C - moveFrom placeholder */
+		// Aliases:
+		// A - moveTo placeholder
+		// B - online record
+		// C - moveFrom placeholder
 		$fields = 'A.pid AS wspid, B.uid AS t3ver_oid, C.uid AS uid, B.pid AS livepid';
 		$from = $table . ' A, ' . $table . ' B,' . $table . ' C';
 		$where = 'A.t3ver_state=3 AND B.pid>0 AND B.t3ver_state=0 AND B.t3ver_wsid=0 AND C.pid=-1 AND C.t3ver_state=4';
@@ -314,9 +314,9 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		} elseif ($wsid === self::SELECT_ALL_WORKSPACES) {
 			$where .= ' AND A.t3ver_wsid!=0 AND C.t3ver_wsid!=0 ';
 		}
-		/** lifecycle filter:
-		1 = select all drafts (never-published),
-		2 = select all published one or more times (archive/multiple) */
+		// lifecycle filter:
+		// 1 = select all drafts (never-published),
+		// 2 = select all published one or more times (archive/multiple)
 		if ($filter === 1 || $filter === 2) {
 			$where .= ' AND C.t3ver_count ' . ($filter === 1 ? '= 0' : '> 0');
 		}
@@ -345,8 +345,8 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return 	string	Comma sep. uid list
 	 */
 	protected function getTreeUids($pageId, $wsid, $recursionLevel) {
-		/** Reusing existing functionality with the drawback that
-		mount points are not covered yet */
+		// Reusing existing functionality with the drawback that
+		// mount points are not covered yet
 		$perms_clause = $GLOBALS['BE_USER']->getPagePermsClause(1);
 		/** @var $searchObj \TYPO3\CMS\Core\Database\QueryView */
 		$searchObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\QueryView');
@@ -571,10 +571,9 @@ class WorkspaceService implements \TYPO3\CMS\Core\SingletonInterface {
 		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManagerException');
 		/** @var $uriBuilder \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder */
 		$uriBuilder = $objectManager->create('TYPO3\\CMS\\Extbase\\Mvc\\Web\\Routing\\UriBuilder');
-		/** This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
-		has /index.php as fixed value here and dealing with the backPath is very error-prone
-
-		@todo make sure this would work in local extension installation too */
+		// This seems to be very harsh to set this directly to "/typo3 but the viewOnClick also
+		// has /index.php as fixed value here and dealing with the backPath is very error-prone
+		// @todo make sure this would work in local extension installation too
 		$backPath = '/' . TYPO3_mainDir;
 		$redirect = $backPath . 'index.php?redirect_url=';
 		// @todo why do we need these additional params? the URIBuilder should add the controller, but he doesn't :(

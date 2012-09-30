@@ -50,9 +50,9 @@ class ReviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControll
 		$wsList = $wsService->getAvailableWorkspaces();
 		$activeWorkspace = $GLOBALS['BE_USER']->workspace;
 		$performWorkspaceSwitch = FALSE;
-		/** Only admins see multiple tabs, we decided to use it this
-		way for usability reasons. Regular users might be confused
-		by switching workspaces with the tabs in a module. */
+		// Only admins see multiple tabs, we decided to use it this
+		// way for usability reasons. Regular users might be confused
+		// by switching workspaces with the tabs in a module.
 		if (!$GLOBALS['BE_USER']->isAdmin()) {
 			$wsCur = array($activeWorkspace => TRUE);
 			$wsList = array_intersect_key($wsList, $wsCur);
