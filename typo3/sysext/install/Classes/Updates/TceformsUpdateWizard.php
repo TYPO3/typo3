@@ -111,13 +111,12 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 		}
 		$result = TRUE;
 		if ($this->versionNumber >= 6000000) {
-			/** TODO
-
-			- for each table:
-			- get records from table
-			- for each record:
-			- for each field:
-			- migrate field */
+			// @todo
+			// - for each table:
+			// - get records from table
+			// - for each record:
+			// - for each field:
+			// - migrate field
 			foreach ($tables as $table => $tableConfiguration) {
 				$fieldsToMigrate = array_keys($tableConfiguration);
 				$fieldsToGet = array();
