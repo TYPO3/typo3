@@ -319,7 +319,7 @@ class LiveSearch {
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($this->queryString)) {
 			foreach ($fieldsToSearchWithin as $fieldName) {
 				if ($fieldName == 'uid' || $fieldName == 'pid' || isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
-					$fieldConfig =& $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+					$fieldConfig = &$GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
 					// Assemble the search condition only if the field is an integer, or is uid or pid
 					if ($fieldName == 'uid' || $fieldName == 'pid' || $fieldConfig['type'] == 'input' && $fieldConfig['eval'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($fieldConfig['eval'], 'int')) {
 						$whereParts[] = $fieldName . '=' . $this->queryString;
@@ -330,7 +330,7 @@ class LiveSearch {
 			$like = '\'%' . $GLOBALS['TYPO3_DB']->escapeStrForLike($GLOBALS['TYPO3_DB']->quoteStr($this->queryString, $tableName), $tableName) . '%\'';
 			foreach ($fieldsToSearchWithin as $fieldName) {
 				if (isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
-					$fieldConfig =& $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+					$fieldConfig = &$GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
 					// Check whether search should be case-sensitive or not
 					$format = 'LCASE(%s) LIKE LCASE(%s)';
 					if (is_array($fieldConfig['search'])) {

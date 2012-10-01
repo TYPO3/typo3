@@ -159,7 +159,7 @@ class MysqlFulltextIndexHook {
 		// Indexing configuration clause:
 		$freeIndexUidClause = $this->pObj->freeIndexUidWhere($freeIndexUid);
 		// Calling hook for alternative creation of page ID list
-		if ($hookObj =& $this->pObj->hookRequest('execFinalQuery_idList')) {
+		if ($hookObj = &$this->pObj->hookRequest('execFinalQuery_idList')) {
 			$pageWhere = $hookObj->execFinalQuery_idList('');
 		} elseif ($this->pObj->join_pages) {
 			// Alternative to getting all page ids by ->getTreeList() where "excludeSubpages" is NOT respected.

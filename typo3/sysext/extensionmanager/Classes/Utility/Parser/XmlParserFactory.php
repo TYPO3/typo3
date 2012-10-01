@@ -82,7 +82,7 @@ class XmlParserFactory {
 				if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($excludeClassNames, $className)) {
 					$objParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($className);
 					if ($objParser->isAvailable()) {
-						self::$instance[$parserType] =& $objParser;
+						self::$instance[$parserType] = &$objParser;
 						break;
 					}
 					$objParser = NULL;

@@ -143,7 +143,7 @@ class IndexSearchRepository {
 	public function doSearch($searchWords, $freeIndexUid = -1) {
 		// Getting SQL result pointer:
 		$GLOBALS['TT']->push('Searching result');
-		if ($hookObj =& $this->hookRequest('getResultRows_SQLpointer')) {
+		if ($hookObj = &$this->hookRequest('getResultRows_SQLpointer')) {
 			$res = $hookObj->getResultRows_SQLpointer($searchWords, $freeIndexUid);
 		} else {
 			$res = $this->getResultRows_SQLpointer($searchWords, $freeIndexUid);

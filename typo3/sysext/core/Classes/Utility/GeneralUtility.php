@@ -176,9 +176,9 @@ class GeneralUtility {
 			if (strpos($key, '|') !== FALSE) {
 				$pieces = explode('|', $key);
 				$newGet = array();
-				$pointer =& $newGet;
+				$pointer = &$newGet;
 				foreach ($pieces as $piece) {
-					$pointer =& $pointer[$piece];
+					$pointer = &$pointer[$piece];
 				}
 				$pointer = $inputGet;
 				$mergedGet = self::array_merge_recursive_overrule($_GET, $newGet);
@@ -3711,7 +3711,7 @@ Connection: close
 		$pA = $cacheHash->getRelevantParameters($addQueryParams);
 		// Hook: Allows to manipulate the parameters which are taken to build the chash:
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook'])) {
-			$cHashParamsHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook'];
+			$cHashParamsHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_div.php']['cHashParamsHook'];
 			if (is_array($cHashParamsHook)) {
 				$hookParameters = array(
 					'addQueryParams' => &$addQueryParams,
@@ -3870,7 +3870,7 @@ Connection: close
 		// Needed for inclusion of the dynamic config files.
 		global $TCA;
 		if (isset($TCA[$table])) {
-			$tca =& $TCA[$table];
+			$tca = &$TCA[$table];
 			if (is_array($tca['ctrl']) && !$tca['columns']) {
 				$dcf = $tca['ctrl']['dynamicConfigFile'];
 				if ($dcf) {

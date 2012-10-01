@@ -698,7 +698,7 @@ class FormEngine {
 			// Load the full TCA for the table.
 			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			// Get dividers2tabs setting from TCA of the current table:
-			$dividers2tabs =& $GLOBALS['TCA'][$table]['ctrl']['dividers2tabs'];
+			$dividers2tabs = &$GLOBALS['TCA'][$table]['ctrl']['dividers2tabs'];
 			// Load the description content for the table.
 			if ($this->edit_showFieldHelp || $this->doLoadTableDescr($table)) {
 				$GLOBALS['LANG']->loadSingleTableDescription($table);
@@ -2948,7 +2948,7 @@ function ' . $evalData . '(value) {
 		$PA['field'] = $field;
 		$PA['row'] = $row;
 		$PA['parameters'] = isset($PA['fieldConf']['config']['parameters']) ? $PA['fieldConf']['config']['parameters'] : array();
-		$PA['pObj'] =& $this;
+		$PA['pObj'] = &$this;
 		return \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($PA['fieldConf']['config']['userFunc'], $PA, $this);
 	}
 
@@ -3810,7 +3810,7 @@ function ' . $evalData . '(value) {
 		}
 		// Traverse wizards:
 		if (is_array($wizConf) && !$this->disableWizards) {
-			$parametersOfWizards =& $specConf['wizards']['parameters'];
+			$parametersOfWizards = &$specConf['wizards']['parameters'];
 			foreach ($wizConf as $wid => $wConf) {
 				if (substr($wid, 0, 1) != '_' && (!$wConf['enableByTypeConfig'] || is_array($parametersOfWizards) && in_array($wid, $parametersOfWizards)) && ($RTE || !$wConf['RTEonly'])) {
 					// Title / icon:
@@ -3885,7 +3885,7 @@ function ' . $evalData . '(value) {
 									break;
 								case 'userFunc':
 									// Reference set!
-									$params['item'] =& $item;
+									$params['item'] = &$item;
 									$params['icon'] = $icon;
 									$params['iTitle'] = $iTitle;
 									$params['wConf'] = $wConf;
@@ -3894,7 +3894,7 @@ function ' . $evalData . '(value) {
 									break;
 								case 'slider':
 									// Reference set!
-									$params['item'] =& $item;
+									$params['item'] = &$item;
 									$params['icon'] = $icon;
 									$params['iTitle'] = $iTitle;
 									$params['wConf'] = $wConf;
@@ -4429,7 +4429,7 @@ function ' . $evalData . '(value) {
 	 */
 	public function procItems($items, $iArray, $config, $table, $row, $field) {
 		$params = array();
-		$params['items'] =& $items;
+		$params['items'] = &$items;
 		$params['config'] = $config;
 		$params['TSconfig'] = $iArray;
 		$params['table'] = $table;
