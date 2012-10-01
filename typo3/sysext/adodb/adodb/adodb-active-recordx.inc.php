@@ -171,7 +171,7 @@ class ADODB_Active_Record {
 		$this->UpdateActiveTable($pkeyarr, $forceUpdate);
 		if(isset($options['new']) && true === $options['new'])
 		{
-			$table =& $this->TableInfo();
+			$table = &$this->TableInfo();
 			unset($table->_hasMany);
 			unset($table->_belongsTo);
 			$table->_hasMany = array();
@@ -295,7 +295,7 @@ class ADODB_Active_Record {
 		$ar->UpdateActiveTable();
 		$ar->foreignKey = ($foreignKey) ? $foreignKey : strtolower(get_class($this)) . self::$_foreignSuffix;
 
-		$table =& $this->TableInfo();
+		$table = &$this->TableInfo();
 		if(!isset($table->_hasMany[$foreignRef]))
 		{
 			$table->_hasMany[$foreignRef] = $ar;
@@ -321,7 +321,7 @@ class ADODB_Active_Record {
 		$ar->UpdateActiveTable();
 		$ar->foreignKey = ($foreignKey) ? $foreignKey : $ar->foreignName . self::$_foreignSuffix;
 		
-		$table =& $this->TableInfo();
+		$table = &$this->TableInfo();
 		if(!isset($table->_belongsTo[$foreignRef]))
 		{
 			$table->_belongsTo[$foreignRef] = $ar;
@@ -347,7 +347,7 @@ class ADODB_Active_Record {
 		$extras = array();
 		if($offset >= 0) $extras['offset'] = $offset;
 		if($limit >= 0) $extras['limit'] = $limit;
-		$table =& $this->TableInfo();
+		$table = &$this->TableInfo();
 		
 		if (strlen($whereOrderBy)) 
 			if (!preg_match('/^[ \n\r]*AND/i',$whereOrderBy))
@@ -609,8 +609,8 @@ class ADODB_Active_Record {
 	// So, I find that for myTable, I want to reload an active record after saving it. -- Malcolm Cook
 	function Reload()
 	{
-		$db =& $this->DB(); if (!$db) return false;
-		$table =& $this->TableInfo();
+		$db = &$this->DB(); if (!$db) return false;
+		$table = &$this->TableInfo();
 		$where = $this->GenWhere($db, $table);
 		return($this->Load($where));
 	}
@@ -660,7 +660,7 @@ class ADODB_Active_Record {
             $this->_original[] = $value;
             if(!next($keys)) break;
 		}
-		$table =& $this->TableInfo();
+		$table = &$this->TableInfo();
 		foreach($table->_belongsTo as $foreignTable)
 		{
 			$ft = $foreignTable->TableInfo();
@@ -751,7 +751,7 @@ class ADODB_Active_Record {
 		
 		$save = $db->SetFetchMode(ADODB_FETCH_NUM);
 		$qry = "select * from ".$this->_table;
-		$table =& $this->TableInfo();
+		$table = &$this->TableInfo();
 
 		if(($k = reset($table->keys)))
 			$hasManyId   = $k;
@@ -962,7 +962,7 @@ class ADODB_Active_Record {
 	function Find($whereOrderBy,$bindarr=false,$pkeysArr=false,$extra=array())
 	{
 		$db = $this->DB(); if (!$db || empty($this->_table)) return false;
-		$table =& $this->TableInfo();
+		$table = &$this->TableInfo();
 		$arr = $db->GetActiveRecordsClass(get_class($this),$this, $whereOrderBy,$bindarr,$pkeysArr,$extra,
 			array('foreignName'=>$this->foreignName, 'belongsTo'=>$table->_belongsTo, 'hasMany'=>$table->_hasMany));
 		return $arr;
@@ -975,7 +975,7 @@ class ADODB_Active_Record {
 	function packageFind($whereOrderBy,$bindarr=false,$pkeysArr=false,$extra=array())
 	{
 		$db = $this->DB(); if (!$db || empty($this->_table)) return false;
-		$table =& $this->TableInfo();
+		$table = &$this->TableInfo();
 		$arr = $db->GetActiveRecordsClass(get_class($this),$this, $whereOrderBy,$bindarr,$pkeysArr,$extra,
 			array('foreignName'=>$this->foreignName, 'belongsTo'=>$table->_belongsTo, 'hasMany'=>$table->_hasMany));
 		return $arr;
@@ -1116,7 +1116,7 @@ function adodb_GetActiveRecordsClass(&$db, $class, $tableObj,$whereOrderBy,$bind
 		
 		$save = $db->SetFetchMode(ADODB_FETCH_NUM);
 		$table = &$tableObj->_table;
-		$tableInfo =& $tableObj->TableInfo();
+		$tableInfo = &$tableObj->TableInfo();
 		if(($k = reset($tableInfo->keys)))
 			$myId   = $k;
 		else

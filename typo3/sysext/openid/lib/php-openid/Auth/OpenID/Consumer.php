@@ -265,7 +265,7 @@ class Auth_OpenID_Consumer {
             $session = new Auth_Yadis_PHPSession();
         }
 
-        $this->session =& $session;
+        $this->session = &$session;
 
         if ($consumer_cls !== null) {
             $this->consumer = new $consumer_cls($store);
@@ -339,7 +339,7 @@ class Auth_OpenID_Consumer {
                                            $this->consumer->fetcher);
 
         // Reset the 'stale' attribute of the manager.
-        $m =& $disco->getManager();
+        $m = &$disco->getManager();
         if ($m) {
             $m->stale = false;
             $disco->session->set($disco->session_key,
@@ -613,7 +613,7 @@ class Auth_OpenID_GenericConsumer {
      */
     function Auth_OpenID_GenericConsumer($store)
     {
-        $this->store =& $store;
+        $this->store = &$store;
         $this->negotiator =& Auth_OpenID_getDefaultNegotiator();
         $this->_use_assocs = ($this->store ? true : false);
 
@@ -1756,7 +1756,7 @@ class Auth_OpenID_AuthRequest {
     function Auth_OpenID_AuthRequest($endpoint, $assoc)
     {
         $this->assoc = $assoc;
-        $this->endpoint =& $endpoint;
+        $this->endpoint = &$endpoint;
         $this->return_to_args = array();
         $this->message = new Auth_OpenID_Message(
             $endpoint->preferredNamespace());

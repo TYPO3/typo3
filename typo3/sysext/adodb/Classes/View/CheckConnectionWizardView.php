@@ -30,7 +30,7 @@ class CheckConnectionWizardView {
 				if ($dbConn->_connectionID) {
 					$content .= '</p>';
 					$query = 'SELECT * FROM ' . $dsConf['field_table']['vDEF'];
-					$recordSet =& $dbConn->SelectLimit($query, 150);
+					$recordSet = &$dbConn->SelectLimit($query, 150);
 					if (!$recordSet) {
 						$content .= '<p>Query failed (' . htmlspecialchars($query) . '):<br />';
 						$content .= $dbConn->ErrorMsg() . '</p>';

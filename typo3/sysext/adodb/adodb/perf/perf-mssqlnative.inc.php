@@ -71,7 +71,7 @@ class perf_mssqlnative extends adodb_perf{
 			$this->sql1 = 'sql1';
 			//$this->explain = false;
 		}
-		$this->conn =& $conn;
+		$this->conn = &$conn;
 	}
 
 	function Explain($sql,$partial=false)
@@ -96,7 +96,7 @@ class perf_mssqlnative extends adodb_perf{
 
 		$save = $ADODB_FETCH_MODE;
 		$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
-		$rs =& $this->conn->Execute($sql);
+		$rs = &$this->conn->Execute($sql);
 		//adodb_printr($rs);
 		$ADODB_FETCH_MODE = $save;
 		if ($rs) {

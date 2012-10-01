@@ -302,7 +302,7 @@ class HTTP_Request2_Adapter_Socket extends HTTP_Request2_Adapter
             $this->request->setLastEvent(
                 'connect', "ssl://{$reqHost}:{$reqPort} via {$host}:{$port}"
             );
-            self::$sockets[$socketKey] =& $this->socket;
+            self::$sockets[$socketKey] = &$this->socket;
 
         } else {
             // Set SSL context options if doing HTTPS request or creating a tunnel
@@ -331,7 +331,7 @@ class HTTP_Request2_Adapter_Socket extends HTTP_Request2_Adapter
                 throw $e;
             }
             $this->request->setLastEvent('connect', $remote);
-            self::$sockets[$socketKey] =& $this->socket;
+            self::$sockets[$socketKey] = &$this->socket;
         }
         return $keepAlive;
     }
@@ -540,7 +540,7 @@ class HTTP_Request2_Adapter_Socket extends HTTP_Request2_Adapter
                 // probably credentials are invalid
                 $ret = false;
             }
-            self::$challenges[$prefix] =& $challenge;
+            self::$challenges[$prefix] = &$challenge;
         }
         return $ret;
     }

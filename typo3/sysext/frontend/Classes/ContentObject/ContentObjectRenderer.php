@@ -6009,7 +6009,7 @@ class ContentObjectRenderer {
 					$isUrlModified = TRUE;
 				}
 				// Override scheme:
-				$forceAbsoluteUrl =& $configuration['forceAbsoluteUrl.']['scheme'];
+				$forceAbsoluteUrl = &$configuration['forceAbsoluteUrl.']['scheme'];
 				if (!empty($forceAbsoluteUrl) && $urlParts['scheme'] !== $forceAbsoluteUrl) {
 					$urlParts['scheme'] = $forceAbsoluteUrl;
 					$isUrlModified = TRUE;
@@ -6780,7 +6780,7 @@ class ContentObjectRenderer {
 		if (class_exists($className)) {
 			return TRUE;
 		} elseif ($config) {
-			$pluginConfiguration =& $GLOBALS['TSFE']->tmpl->setup['plugin.'][$className . '.'];
+			$pluginConfiguration = &$GLOBALS['TSFE']->tmpl->setup['plugin.'][$className . '.'];
 			if (isset($pluginConfiguration['includeLibs']) && $pluginConfiguration['includeLibs']) {
 				$config['includeLibs'] = $pluginConfiguration['includeLibs'];
 				return $this->includeLibs($config);

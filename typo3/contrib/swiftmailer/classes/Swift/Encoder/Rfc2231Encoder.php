@@ -47,7 +47,7 @@ class Swift_Encoder_Rfc2231Encoder implements Swift_Encoder
   {
     $lines = array(); $lineCount = 0;
     $lines[] = '';
-    $currentLine =& $lines[$lineCount++];
+    $currentLine = &$lines[$lineCount++];
     
     if (0 >= $maxLineLength)
     {
@@ -66,7 +66,7 @@ class Swift_Encoder_Rfc2231Encoder implements Swift_Encoder
         && strlen($currentLine . $encodedChar) > $thisLineLength)
       {
         $lines[] = '';
-        $currentLine =& $lines[$lineCount++];
+        $currentLine = &$lines[$lineCount++];
         $thisLineLength = $maxLineLength;
       }
       $currentLine .= $encodedChar;

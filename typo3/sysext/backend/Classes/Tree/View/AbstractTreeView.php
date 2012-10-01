@@ -997,16 +997,16 @@ abstract class AbstractTreeView {
 	 */
 	public function setDataFromArray(&$dataArr, $traverse = FALSE, $pid = 0) {
 		if (!$traverse) {
-			$this->data =& $dataArr;
+			$this->data = &$dataArr;
 			$this->dataLookup = array();
 			// Add root
-			$this->dataLookup[0][$this->subLevelID] =& $dataArr;
+			$this->dataLookup[0][$this->subLevelID] = &$dataArr;
 		}
 		foreach ($dataArr as $uid => $val) {
 			$dataArr[$uid]['uid'] = $uid;
 			$dataArr[$uid]['pid'] = $pid;
 			// Gives quick access to id's
-			$this->dataLookup[$uid] =& $dataArr[$uid];
+			$this->dataLookup[$uid] = &$dataArr[$uid];
 			if (is_array($val[$this->subLevelID])) {
 				$this->setDataFromArray($dataArr[$uid][$this->subLevelID], TRUE, $uid);
 			}
@@ -1022,8 +1022,8 @@ abstract class AbstractTreeView {
 	 * @todo Define visibility
 	 */
 	public function setDataFromTreeArray(&$treeArr, &$treeLookupArr) {
-		$this->data =& $treeArr;
-		$this->dataLookup =& $treeLookupArr;
+		$this->data = &$treeArr;
+		$this->dataLookup = &$treeLookupArr;
 	}
 
 }

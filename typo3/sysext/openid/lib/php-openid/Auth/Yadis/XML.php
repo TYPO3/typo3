@@ -313,7 +313,7 @@ $__Auth_Yadis_defaultParser = null;
 function Auth_Yadis_setDefaultParser(&$parser)
 {
     global $__Auth_Yadis_defaultParser;
-    $__Auth_Yadis_defaultParser =& $parser;
+    $__Auth_Yadis_defaultParser = &$parser;
 }
 
 function Auth_Yadis_getSupportedExtensions()

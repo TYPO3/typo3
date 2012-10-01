@@ -473,7 +473,7 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
     $lineCount = 0;
     $headerLines = array();
     $headerLines[] = $this->_name . ': ';
-    $currentLine =& $headerLines[$lineCount++];
+    $currentLine = &$headerLines[$lineCount++];
     
     //Build all tokens back into compliant header
     foreach ($tokens as $i => $token)
@@ -484,7 +484,7 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
         && 0 < strlen($currentLine))
       {
         $headerLines[] = '';
-        $currentLine =& $headerLines[$lineCount++];
+        $currentLine = &$headerLines[$lineCount++];
       }
       
       //Append token to the line

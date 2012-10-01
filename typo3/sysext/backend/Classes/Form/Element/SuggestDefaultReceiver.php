@@ -151,7 +151,7 @@ class SuggestDefaultReceiver {
 	 */
 	public function queryTable(&$params, $recursionCounter = 0) {
 		$rows = array();
-		$this->params =& $params;
+		$this->params = &$params;
 		$start = $recursionCounter * 50;
 		$this->prepareSelectStatement();
 		$this->prepareOrderByStatement();

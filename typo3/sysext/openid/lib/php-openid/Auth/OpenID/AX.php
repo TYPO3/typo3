@@ -484,7 +484,7 @@ class Auth_OpenID_AX_FetchRequest extends Auth_OpenID_AX_Message {
                          Auth_OpenID::arrayGet($ax_args, 'required'));
 
         foreach ($required as $type_uri) {
-            $attrib =& $this->requested_attributes[$type_uri];
+            $attrib = &$this->requested_attributes[$type_uri];
             $attrib->required = true;
         }
 
@@ -562,7 +562,7 @@ class Auth_OpenID_AX_KeyValueMessage extends Auth_OpenID_AX_Message {
             $this->data[$type_uri] = array();
         }
 
-        $values =& $this->data[$type_uri];
+        $values = &$this->data[$type_uri];
         $values[] = $value;
     }
 
@@ -575,7 +575,7 @@ class Auth_OpenID_AX_KeyValueMessage extends Auth_OpenID_AX_Message {
      */
     function setValues($type_uri, $values)
     {
-        $this->data[$type_uri] =& $values;
+        $this->data[$type_uri] = &$values;
     }
 
     /**

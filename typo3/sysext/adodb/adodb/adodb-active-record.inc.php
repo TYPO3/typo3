@@ -199,7 +199,7 @@ class ADODB_Active_Record {
 		$ar->foreignName = $foreignRef;
 		$ar->UpdateActiveTable();
 		$ar->foreignKey = ($foreignKey) ? $foreignKey : $foreignRef.ADODB_Active_Record::$_foreignSuffix;
-		$table =& $this->TableInfo();
+		$table = &$this->TableInfo();
 		$table->_hasMany[$foreignRef] = $ar;
 	#	$this->$foreignRef = $this->_hasMany[$foreignRef]; // WATCHME Removed assignment by ref. to please __get()
 	}
@@ -239,7 +239,7 @@ class ADODB_Active_Record {
 		$ar->UpdateActiveTable();
 		$ar->foreignKey = ($foreignKey) ? $foreignKey : $foreignRef.ADODB_Active_Record::$_foreignSuffix;
 		
-		$table =& $this->TableInfo();
+		$table = &$this->TableInfo();
 		$table->_belongsTo[$foreignRef] = $ar;
 	#	$this->$foreignRef = $this->_belongsTo[$foreignRef];
 	}
@@ -556,8 +556,8 @@ class ADODB_Active_Record {
 	// So, I find that for myTable, I want to reload an active record after saving it. -- Malcolm Cook
 	function Reload()
 	{
-		$db =& $this->DB(); if (!$db) return false;
-		$table =& $this->TableInfo();
+		$db = &$this->DB(); if (!$db) return false;
+		$table = &$this->TableInfo();
 		$where = $this->GenWhere($db, $table);
 		return($this->Load($where));
 	}

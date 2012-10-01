@@ -592,7 +592,7 @@ class Auth_OpenID_AssociateRequest extends Auth_OpenID_Request {
 
     function Auth_OpenID_AssociateRequest(&$session, $assoc_type)
     {
-        $this->session =& $session;
+        $this->session = &$session;
         $this->namespace = Auth_OpenID_OPENID2_NS;
         $this->assoc_type = $assoc_type;
     }
@@ -752,7 +752,7 @@ class Auth_OpenID_CheckIDRequest extends Auth_OpenID_Request {
                                             $assoc_handle, $server);
 
         $r->namespace = $message->getOpenIDNamespace();
-        $r->message =& $message;
+        $r->message = &$message;
 
         if (!$r->trustRootValid()) {
             return new Auth_OpenID_UntrustedReturnURL($message,
@@ -778,7 +778,7 @@ class Auth_OpenID_CheckIDRequest extends Auth_OpenID_Request {
         }
         $this->return_to = $return_to;
         $this->trust_root = $trust_root;
-        $this->server =& $server;
+        $this->server = &$server;
 
         if ($immediate) {
             $this->immediate = true;
@@ -1185,7 +1185,7 @@ class Auth_OpenID_ServerResponse {
 
     function Auth_OpenID_ServerResponse(&$request)
     {
-        $this->request =& $request;
+        $this->request = &$request;
         $this->fields = new Auth_OpenID_Message($this->request->namespace);
     }
 
@@ -1313,7 +1313,7 @@ class Auth_OpenID_Signatory {
     function Auth_OpenID_Signatory(&$store)
     {
         // assert store is not None
-        $this->store =& $store;
+        $this->store = &$store;
     }
 
     /**
@@ -1480,7 +1480,7 @@ class Auth_OpenID_SigningEncoder extends Auth_OpenID_Encoder {
 
     function Auth_OpenID_SigningEncoder(&$signatory)
     {
-        $this->signatory =& $signatory;
+        $this->signatory = &$signatory;
     }
 
     /**
@@ -1518,7 +1518,7 @@ class Auth_OpenID_Decoder {
 
     function Auth_OpenID_Decoder(&$server)
     {
-        $this->server =& $server;
+        $this->server = &$server;
 
         $this->handlers = array(
             'checkid_setup' => 'Auth_OpenID_CheckIDRequest',
@@ -1601,7 +1601,7 @@ class Auth_OpenID_Decoder {
 class Auth_OpenID_EncodingError {
     function Auth_OpenID_EncodingError(&$response)
     {
-        $this->response =& $response;
+        $this->response = &$response;
     }
 }
 
@@ -1676,7 +1676,7 @@ class Auth_OpenID_UntrustedReturnURL extends Auth_OpenID_ServerError {
 class Auth_OpenID_Server {
     function Auth_OpenID_Server(&$store, $op_endpoint=null)
     {
-        $this->store =& $store;
+        $this->store = &$store;
         $this->signatory = new Auth_OpenID_Signatory($this->store);
         $this->encoder = new Auth_OpenID_SigningEncoder($this->signatory);
         $this->decoder = new Auth_OpenID_Decoder($this);

@@ -140,7 +140,7 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
     $lines = array();
     $lNo = 0;
     $lines[$lNo] = '';
-    $currentLine =& $lines[$lNo++];
+    $currentLine = &$lines[$lNo++];
     $size=$lineLen=0;
 
     $this->_charStream->flushContents();
@@ -176,7 +176,7 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
       if ($currentLine && $lineLen+$size >= $thisLineLength)
       {
         $lines[$lNo] = '';
-        $currentLine =& $lines[$lNo++];
+        $currentLine = &$lines[$lNo++];
         $thisLineLength = $maxLineLength;
         $lineLen=0;
       }
