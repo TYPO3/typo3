@@ -127,9 +127,9 @@ class InlineElement {
 	 */
 	public function init(&$tceForms) {
 		$this->fObj = $tceForms;
-		$this->backPath =& $tceForms->backPath;
-		$this->prependFormFieldNames =& $this->fObj->prependFormFieldNames;
-		$this->prependCmdFieldNames =& $this->fObj->prependCmdFieldNames;
+		$this->backPath = &$tceForms->backPath;
+		$this->prependFormFieldNames = &$this->fObj->prependFormFieldNames;
+		$this->prependCmdFieldNames = &$this->fObj->prependCmdFieldNames;
 		$this->inlineStyles['margin-right'] = '5';
 		$this->initHookObjects();
 	}
@@ -143,7 +143,7 @@ class InlineElement {
 	protected function initHookObjects() {
 		$this->hookObjects = array();
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'])) {
-			$tceformsInlineHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'];
+			$tceformsInlineHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tceforms_inline.php']['tceformsInlineHook'];
 			if (is_array($tceformsInlineHook)) {
 				foreach ($tceformsInlineHook as $classData) {
 					$processObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classData);
@@ -571,8 +571,8 @@ class InlineElement {
 		// Initialize:
 		$cells = array();
 		$isNewItem = substr($rec['uid'], 0, 3) == 'NEW';
-		$tcaTableCtrl =& $GLOBALS['TCA'][$foreign_table]['ctrl'];
-		$tcaTableCols =& $GLOBALS['TCA'][$foreign_table]['columns'];
+		$tcaTableCtrl = &$GLOBALS['TCA'][$foreign_table]['ctrl'];
+		$tcaTableCols = &$GLOBALS['TCA'][$foreign_table]['columns'];
 		$isPagesTable = $foreign_table == 'pages' ? TRUE : FALSE;
 		$isOnSymmetricSide = \TYPO3\CMS\Core\Database\RelationHandler::isOnSymmetricSide($parentUid, $config, $rec);
 		$enableManualSorting = $tcaTableCtrl['sortby'] || $config['MM'] || !$isOnSymmetricSide && $config['foreign_sortby'] || $isOnSymmetricSide && $config['symmetric_sortby'] ? TRUE : FALSE;
@@ -1194,7 +1194,7 @@ class InlineElement {
 		$parent = $this->getStructureLevel(-1);
 		$current = $this->inlineStructure['unstable'];
 		$jsonArray = array('scriptCall' => array());
-		$jsonArrayScriptCall =& $jsonArray['scriptCall'];
+		$jsonArrayScriptCall = &$jsonArray['scriptCall'];
 		$nameObject = $this->inlineNames['object'];
 		$nameObjectForeignTable = $nameObject . self::Structure_Separator . $current['table'];
 		// Get the name of the field pointing to the original record:
@@ -1248,7 +1248,7 @@ class InlineElement {
 		// Only do some action if the top record and the current record were saved before
 		if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($top['uid'])) {
 			$inlineView = (array) unserialize($GLOBALS['BE_USER']->uc['inlineView']);
-			$inlineViewCurrent =& $inlineView[$top['table']][$top['uid']];
+			$inlineViewCurrent = &$inlineView[$top['table']][$top['uid']];
 			$expandUids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $expand);
 			$collapseUids = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $collapse);
 			// Set records to be expanded
@@ -2221,7 +2221,7 @@ class InlineElement {
 							}
 							// Add new expanded child records to UC (if any):
 							if (count($newExpandedChildren)) {
-								$inlineViewCurrent =& $inlineView[$topTable][$topUid][$childTable];
+								$inlineViewCurrent = &$inlineView[$topTable][$topUid][$childTable];
 								if (is_array($inlineViewCurrent)) {
 									$inlineViewCurrent = array_unique(array_merge($inlineViewCurrent, $newExpandedChildren));
 								} else {

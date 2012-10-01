@@ -173,8 +173,8 @@ class FlexFormTools {
 						$PA['table'] = $table;
 						$PA['field'] = $field;
 						$PA['uid'] = $row['uid'];
-						$this->traverseFlexFormXMLData_DS =& $dataStruct;
-						$this->traverseFlexFormXMLData_Data =& $editData;
+						$this->traverseFlexFormXMLData_DS = &$dataStruct;
+						$this->traverseFlexFormXMLData_Data = &$editData;
 						// Render flexform:
 						$this->traverseFlexFormXMLData_recurse($dataStruct['ROOT']['el'], $editData['data'][$sheet][$lang], $PA, 'data/' . $sheet . '/' . $lang);
 					} else {

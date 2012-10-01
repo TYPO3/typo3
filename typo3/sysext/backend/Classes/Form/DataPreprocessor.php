@@ -872,7 +872,7 @@ class DataPreprocessor {
 	 */
 	public function procItems($items, $itemsProcFuncTSconfig, $config, $table, $row, $field) {
 		$params = array();
-		$params['items'] =& $items;
+		$params['items'] = &$items;
 		$params['config'] = $config;
 		$params['TSconfig'] = $itemsProcFuncTSconfig;
 		$params['table'] = $table;

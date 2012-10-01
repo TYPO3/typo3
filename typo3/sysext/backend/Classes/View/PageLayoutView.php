@@ -1195,7 +1195,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 		$infoArr = array();
 		$drawItem = TRUE;
 		// Hook: Render an own preview of a record
-		$drawItemHooks =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'];
+		$drawItemHooks = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['tt_content_drawItem'];
 		if (is_array($drawItemHooks)) {
 			foreach ($drawItemHooks as $hookClass) {
 				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($hookClass);

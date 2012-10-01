@@ -315,7 +315,7 @@ class ExtensionManager {
 		$processedPalettes = array();
 		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {
-			$types =& $GLOBALS['TCA'][$table]['types'];
+			$types = &$GLOBALS['TCA'][$table]['types'];
 			if (is_array($types)) {
 				// Iterate through all types and search for the field that defines the palette to be extended:
 				foreach (array_keys($types) as $type) {
@@ -357,7 +357,7 @@ class ExtensionManager {
 	static public function addFieldsToPalette($table, $palette, $addFields, $insertionPosition = '') {
 		\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 		if (isset($GLOBALS['TCA'][$table])) {
-			$paletteData =& $GLOBALS['TCA'][$table]['palettes'][$palette];
+			$paletteData = &$GLOBALS['TCA'][$table]['palettes'][$palette];
 			// If palette already exists, merge the data:
 			if (is_array($paletteData)) {
 				$paletteData['showitem'] = self::executePositionedStringInsertion($paletteData['showitem'], $addFields, $insertionPosition);

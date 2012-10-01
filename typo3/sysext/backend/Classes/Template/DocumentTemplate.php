@@ -716,7 +716,7 @@ class DocumentTemplate {
 	public function startPage($title, $includeCsh = TRUE) {
 		// hook pre start page
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'])) {
-			$preStartPageHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'];
+			$preStartPageHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preStartPageHook'];
 			if (is_array($preStartPageHook)) {
 				$hookParameters = array(
 					'title' => &$title
@@ -846,7 +846,7 @@ class DocumentTemplate {
 		}
 		// hook for additional headerData
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'])) {
-			$preHeaderRenderHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'];
+			$preHeaderRenderHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/template.php']['preHeaderRenderHook'];
 			if (is_array($preHeaderRenderHook)) {
 				$hookParameters = array(
 					'pageRenderer' => &$this->pageRenderer
