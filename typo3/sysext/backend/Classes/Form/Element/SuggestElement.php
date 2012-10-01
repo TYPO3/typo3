@@ -49,7 +49,7 @@ class SuggestElement {
 	 * @return void
 	 */
 	public function init(&$tceForms) {
-		$this->TCEformsObj =& $tceForms;
+		$this->TCEformsObj = &$tceForms;
 	}
 
 	/**

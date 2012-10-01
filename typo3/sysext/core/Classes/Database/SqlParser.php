@@ -139,7 +139,7 @@ class SqlParser {
 		$result = array();
 		if ($parameterReferences === NULL) {
 			$result['parameters'] = array();
-			$parameterReferences =& $result['parameters'];
+			$parameterReferences = &$result['parameters'];
 		}
 		$result['type'] = 'SELECT';
 		// Looking for STRAIGHT_JOIN keyword:
@@ -1170,7 +1170,7 @@ class SqlParser {
 									$stack[$level][$pnt[$level]]['values'][1] = $this->getValue($parseString);
 								} else {
 									// Finding value for comparator:
-									$stack[$level][$pnt[$level]]['value'] =& $this->getValueOrParameter($parseString, $stack[$level][$pnt[$level]]['comparator'], '', $parameterReferences);
+									$stack[$level][$pnt[$level]]['value'] = &$this->getValueOrParameter($parseString, $stack[$level][$pnt[$level]]['comparator'], '', $parameterReferences);
 									if ($this->parse_error) {
 										return $this->parse_error;
 									}
@@ -1317,15 +1317,15 @@ class SqlParser {
 				$parameterReferences['?'] = array();
 			}
 			$value = array('?');
-			$parameterReferences['?'][] =& $value;
+			$parameterReferences['?'][] = &$value;
 		} elseif ($parameter !== '') {
 			// named parameter
 			if (isset($parameterReferences[$parameter])) {
 				// Use the same reference as last time we encountered this parameter
-				$value =& $parameterReferences[$parameter];
+				$value = &$parameterReferences[$parameter];
 			} else {
 				$value = array($parameter);
-				$parameterReferences[$parameter] =& $value;
+				$parameterReferences[$parameter] = &$value;
 			}
 		} else {
 			$value = $this->getValue($parseString, $comparator, $mode);

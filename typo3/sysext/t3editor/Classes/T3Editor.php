@@ -404,7 +404,7 @@ class T3Editor implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function getPlugins($params, \TYPO3\CMS\Core\Http\AjaxRequestHandler &$ajaxObj) {
 		$result = array();
-		$plugins =& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3editor']['plugins'];
+		$plugins = &$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3editor']['plugins'];
 		if (is_array($plugins)) {
 			$result = array_values($plugins);
 		}

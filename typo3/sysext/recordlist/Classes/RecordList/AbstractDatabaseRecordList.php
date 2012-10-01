@@ -634,7 +634,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 					);
 					foreach ($searchableFields as $fieldName) {
 						if (isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
-							$fieldConfig =& $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
+							$fieldConfig = &$GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
 							if ($fieldConfig['type'] == 'input' && $fieldConfig['eval'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($fieldConfig['eval'], 'int')) {
 								$condition = $fieldName . '=' . $this->searchString;
 								if (is_array($fieldConfig['search']) && in_array('pidonly', $fieldConfig['search']) && $currentPid > 0) {
@@ -649,7 +649,7 @@ class AbstractDatabaseRecordList extends \TYPO3\CMS\Backend\RecordList\AbstractR
 					$like = '\'%' . $GLOBALS['TYPO3_DB']->quoteStr($GLOBALS['TYPO3_DB']->escapeStrForLike($this->searchString, $table), $table) . '%\'';
 					foreach ($searchableFields as $fieldName) {
 						if (isset($GLOBALS['TCA'][$table]['columns'][$fieldName])) {
-							$fieldConfig =& $GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
+							$fieldConfig = &$GLOBALS['TCA'][$table]['columns'][$fieldName]['config'];
 							$format = 'LCASE(%s) LIKE LCASE(%s)';
 							if (is_array($fieldConfig['search'])) {
 								if (in_array('case', $fieldConfig['search'])) {

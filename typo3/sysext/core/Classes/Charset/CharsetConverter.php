@@ -1245,7 +1245,7 @@ class CharsetConverter {
 		// key = utf8 char (single codepoint), value = utf8 string (codepoint sequence)
 		// Note: we use the UTF-8 characters here and not the Unicode numbers to avoid conversion roundtrip in utf8_strtolower/-upper)
 		$this->caseFolding['utf-8'] = array();
-		$utf8CaseFolding =& $this->caseFolding['utf-8'];
+		$utf8CaseFolding = &$this->caseFolding['utf-8'];
 		// a shorthand
 		$utf8CaseFolding['toUpper'] = array();
 		$utf8CaseFolding['toLower'] = array();
@@ -1409,7 +1409,7 @@ class CharsetConverter {
 		}
 		// Create ascii only mapping
 		$this->toASCII['utf-8'] = array();
-		$ascii =& $this->toASCII['utf-8'];
+		$ascii = &$this->toASCII['utf-8'];
 		foreach ($decomposition as $from => $to) {
 			$code_decomp = array();
 			while ($code_value = array_shift($to)) {
@@ -1880,14 +1880,14 @@ class CharsetConverter {
 				return $str;
 			}
 			// Do nothing
-			$map =& $this->caseFolding[$charset][$opt];
+			$map = &$this->caseFolding[$charset][$opt];
 			break;
 		case 'ascii':
 			if (!$this->initToASCII($charset)) {
 				return $str;
 			}
 			// Do nothing
-			$map =& $this->toASCII[$charset];
+			$map = &$this->toASCII[$charset];
 			break;
 		default:
 			return $str;
@@ -2148,10 +2148,10 @@ class CharsetConverter {
 		$out = '';
 		switch ($mode) {
 		case 'case':
-			$map =& $this->caseFolding['utf-8'][$opt];
+			$map = &$this->caseFolding['utf-8'][$opt];
 			break;
 		case 'ascii':
-			$map =& $this->toASCII['utf-8'];
+			$map = &$this->toASCII['utf-8'];
 			break;
 		default:
 			return $str;
@@ -2347,14 +2347,14 @@ class CharsetConverter {
 				return $str;
 			}
 			// do nothing
-			$map =& $this->caseFolding[$charset][$opt];
+			$map = &$this->caseFolding[$charset][$opt];
 			break;
 		case 'ascii':
 			if (!$this->initToASCII($charset)) {
 				return $str;
 			}
 			// do nothing
-			$map =& $this->toASCII[$charset];
+			$map = &$this->toASCII[$charset];
 			break;
 		default:
 			return $str;
