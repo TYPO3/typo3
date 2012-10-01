@@ -675,7 +675,7 @@ class BackendController {
 	 * @return void
 	 */
 	protected function executeHook($identifier, array $hookConfiguration = array()) {
-		$options =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php'];
+		$options = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php'];
 		if (isset($options[$identifier]) && is_array($options[$identifier])) {
 			foreach ($options[$identifier] as $hookFunction) {
 				\TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($hookFunction, $hookConfiguration, $this);

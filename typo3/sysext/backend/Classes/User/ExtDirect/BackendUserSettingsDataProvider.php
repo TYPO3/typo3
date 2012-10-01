@@ -146,9 +146,9 @@ class BackendUserSettingsDataProvider {
 	 */
 	protected function getFromDottedNotation($key) {
 		$subkeys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $key);
-		$array =& $GLOBALS['BE_USER']->uc;
+		$array = &$GLOBALS['BE_USER']->uc;
 		foreach ($subkeys as $subkey) {
-			$array =& $array[$subkey];
+			$array = &$array[$subkey];
 		}
 		return $array;
 	}
@@ -163,12 +163,12 @@ class BackendUserSettingsDataProvider {
 	protected function setFromDottedNotation($key, $value) {
 		$subkeys = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $key, TRUE);
 		$lastKey = $subkeys[count($subkeys) - 1];
-		$array =& $GLOBALS['BE_USER']->uc;
+		$array = &$GLOBALS['BE_USER']->uc;
 		foreach ($subkeys as $subkey) {
 			if ($subkey === $lastKey) {
 				$array[$subkey] = $value;
 			} else {
-				$array =& $array[$subkey];
+				$array = &$array[$subkey];
 			}
 		}
 	}

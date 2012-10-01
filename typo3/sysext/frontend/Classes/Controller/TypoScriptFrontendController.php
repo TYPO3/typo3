@@ -3742,7 +3742,7 @@ if (version == "n3") {
 		}
 		// Hook for supplying custom search/replace data
 		if (isset($this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'])) {
-			$contentStrReplaceHooks =& $this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'];
+			$contentStrReplaceHooks = &$this->TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['tslib_fe-contentStrReplace'];
 			if (is_array($contentStrReplaceHooks)) {
 				$_params = array(
 					'search' => &$search,

@@ -53,7 +53,7 @@ class Auth_OpenID_DiffieHellman {
         if ($lib === null) {
             $this->lib =& Auth_OpenID_getMathLib();
         } else {
-            $this->lib =& $lib;
+            $this->lib = &$lib;
         }
 
         if ($mod === null) {

@@ -1706,9 +1706,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($namespace) {
 			if (strpos($namespace, '.')) {
 				$parts = explode('.', $namespace);
-				$a =& $this->inlineSettings;
+				$a = &$this->inlineSettings;
 				foreach ($parts as $part) {
-					$a =& $a[$part];
+					$a = &$a[$part];
 				}
 				$a[$key] = $value;
 			} else {
@@ -1733,9 +1733,9 @@ class PageRenderer implements \TYPO3\CMS\Core\SingletonInterface {
 		if ($namespace) {
 			if (strpos($namespace, '.')) {
 				$parts = explode('.', $namespace);
-				$a =& $this->inlineSettings;
+				$a = &$this->inlineSettings;
 				foreach ($parts as $part) {
-					$a =& $a[$part];
+					$a = &$a[$part];
 				}
 				$a = array_merge((array) $a, $array);
 			} else {

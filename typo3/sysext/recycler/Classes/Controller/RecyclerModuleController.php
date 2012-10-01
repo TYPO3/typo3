@@ -279,7 +279,7 @@ class RecyclerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
 	 * @return 	string		The accordant data in the session of the current backend user
 	 */
 	protected function getDataFromSession($identifier, $default = NULL) {
-		$sessionData =& $GLOBALS['BE_USER']->uc['tx_recycler'];
+		$sessionData = &$GLOBALS['BE_USER']->uc['tx_recycler'];
 		if (isset($sessionData[$identifier]) && $sessionData[$identifier]) {
 			$data = $sessionData[$identifier];
 		} else {

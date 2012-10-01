@@ -446,7 +446,7 @@ class NewContentElementController {
 				foreach ($wizardItems[$key]['tt_content_defValues'] as $fN => $fV) {
 					if (is_array($GLOBALS['TCA']['tt_content']['columns'][$fN])) {
 						// Get information about if the field value is OK:
-						$config =& $GLOBALS['TCA']['tt_content']['columns'][$fN]['config'];
+						$config = &$GLOBALS['TCA']['tt_content']['columns'][$fN]['config'];
 						$authModeDeny = $config['type'] == 'select' && $config['authMode'] && !$GLOBALS['BE_USER']->checkAuthMode('tt_content', $fN, $fV, $config['authMode']);
 						$isNotInKeepItems = count($keepItems) && !in_array($fV, $keepItems);
 						if ($authModeDeny || $fN == 'CType' && in_array($fV, $removeItems) || $isNotInKeepItems) {
