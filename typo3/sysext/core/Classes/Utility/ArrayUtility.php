@@ -196,7 +196,7 @@ class ArrayUtility {
 		// Extract parts of the path
 		$path = str_getcsv($path, $delimiter);
 		// Point to the root of the array
-		$pointer =& $array;
+		$pointer = &$array;
 		// Find path in given array
 		foreach ($path as $segment) {
 			// Fail if the part is empty
@@ -208,7 +208,7 @@ class ArrayUtility {
 				$pointer[$segment] = array();
 			}
 			// Set pointer to new cell
-			$pointer =& $pointer[$segment];
+			$pointer = &$pointer[$segment];
 		}
 		// Set value of target cell
 		$pointer = $value;

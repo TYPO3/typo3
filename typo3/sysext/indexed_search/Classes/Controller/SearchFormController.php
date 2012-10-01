@@ -515,7 +515,7 @@ class SearchFormController extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	public function getResultRows($searchWordArray, $freeIndexUid = -1) {
 		// Getting SQL result pointer. This fetches ALL results (1,000,000 if found)
 		$GLOBALS['TT']->push('Searching result');
-		if ($hookObj =& $this->hookRequest('getResultRows_SQLpointer')) {
+		if ($hookObj = &$this->hookRequest('getResultRows_SQLpointer')) {
 			$res = $hookObj->getResultRows_SQLpointer($searchWordArray, $freeIndexUid);
 		} else {
 			$res = $this->getResultRows_SQLpointer($searchWordArray, $freeIndexUid);

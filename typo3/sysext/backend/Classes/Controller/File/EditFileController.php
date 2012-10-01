@@ -104,7 +104,7 @@ class EditFileController {
 		$this->content = $this->doc->startPage($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:file_edit.php.pagetitle'));
 		// Hook	before compiling the output
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'])) {
-			$preOutputProcessingHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'];
+			$preOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['preOutputProcessingHook'];
 			if (is_array($preOutputProcessingHook)) {
 				$hookParameters = array(
 					'content' => &$this->content,
@@ -147,7 +147,7 @@ class EditFileController {
 		$pageContent .= $code;
 		// Hook	after compiling the output
 		if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'])) {
-			$postOutputProcessingHook =& $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'];
+			$postOutputProcessingHook = &$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/file_edit.php']['postOutputProcessingHook'];
 			if (is_array($postOutputProcessingHook)) {
 				$hookParameters = array(
 					'pageContent' => &$pageContent,
