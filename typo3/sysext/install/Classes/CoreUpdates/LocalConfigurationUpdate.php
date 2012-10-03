@@ -109,12 +109,12 @@ class LocalConfigurationUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate
 			$TYPO3_CONF_VARS['DB'] = $typo3DatabaseVariables;
 			$TYPO3_CONF_VARS = \TYPO3\CMS\Core\Utility\ArrayUtility::sortByKeyRecursive($TYPO3_CONF_VARS);
 			// Write out new LocalConfiguration file
-			\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . \TYPO3\CMS\Core\Configuration\ConfigurationManager::LOCAL_CONFIGURATION_FILE, '<?php' . LF . 'return ' . \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($TYPO3_CONF_VARS) . ';' . LF . '?>');
+			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->writeLocalConfiguration($TYPO3_CONF_VARS);
 			// Write out new AdditionalConfiguration file
 			if (sizeof($additionalConfiguration) > 0) {
-				\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(PATH_site . \TYPO3\CMS\Core\Configuration\ConfigurationManager::ADDITIONAL_CONFIGURATION_FILE, '<?php' . LF . implode(LF, $additionalConfiguration) . LF . '?>');
+				\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->writeAdditionalConfiguration($additionalConfiguration);
 			} else {
-				@unlink((PATH_site . \TYPO3\CMS\Core\Configuration\ConfigurationManager::ADDITIONAL_CONFIGURATION_FILE));
+				@unlink(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getAdditionalConfigurationFileResource());
 			}
 			rename(PATH_site . 'typo3conf/localconf.php', PATH_site . 'typo3conf/localconf.obsolete.php');
 			$result = TRUE;

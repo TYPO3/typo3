@@ -47,34 +47,15 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	 * @return void
 	 */
 	public function setUp() {
-		$className = $this->getConfigurationItemRepositoryMock();
-		$this->configurationItemRepository = new $className();
-	}
-
-	/**
-	 *
-	 * @return string
-	 */
-	public function getConfigurationItemRepositoryMock() {
-		$className = 'Tx_Extensionmanager_Repository_ConfigurationItemRepositoryMock';
-		if (!class_exists($className, FALSE)) {
-			eval('class ' . $className . ' extends TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ConfigurationItemRepository {' .
-			'  public function addMetaInformation(&$configuration) {' .
-			'    return parent::addMetaInformation($configuration);' .
-			'  }' .
-			'  public function extractInformationForConfigFieldsOfTypeUser($configurationOption) {' .
-			'    return parent::extractInformationForConfigFieldsOfTypeUser($configurationOption);' .
-			'  }' .
-			'  public function extractInformationForConfigFieldsOfTypeOptions($configurationOption) {' .
-			'    return parent::extractInformationForConfigFieldsOfTypeOptions($configurationOption);' .
-			'  }' .
-			'  public function mergeWithExistingConfiguration(array $configuration, array $extension) {' .
-			'    return parent::mergeWithExistingConfiguration($configuration, $extension);' .
-			'  }' .
-			'}'
+		$this->configurationItemRepository = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Extensionmanager\\Domain\\Repository\\ConfigurationItemRepository',
+			array('dummy',)
 		);
-		}
-		return $className;
+		$configurationManagerMock = $this->getAccessibleMock(
+			'TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager',
+			array('dummy')
+		);
+		$this->configurationItemRepository->_set('configurationManager', $configurationManagerMock);
 	}
 
 	/**
@@ -87,7 +68,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 			'__meta__' => 'metaInformation',
 			'test123' => 'test123'
 		);
-		$this->configurationItemRepository->addMetaInformation($configuration);
+		$this->configurationItemRepository->_callRef('addMetaInformation', $configuration);
 		$this->assertEquals(array('test123' => 'test123'), $configuration);
 	}
 
@@ -100,7 +81,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 			'__meta__' => 'metaInformation',
 			'test123' => 'test123'
 		);
-		$meta = $this->configurationItemRepository->addMetaInformation($configuration);
+		$meta = $this->configurationItemRepository->_callRef('addMetaInformation', $configuration);
 		$this->assertEquals('metaInformation', $meta);
 	}
 
@@ -160,7 +141,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	 * @return void
 	 */
 	public function extractInformationForConfigFieldsOfTypeUserAddsGenericAndTypeInformation($configurationOption) {
-		$configurationOptionModified = $this->configurationItemRepository->extractInformationForConfigFieldsOfTypeUser($configurationOption);
+		$configurationOptionModified = $this->configurationItemRepository->_callRef('extractInformationForConfigFieldsOfTypeUser', $configurationOption);
 		$this->assertEquals('user', $configurationOptionModified['type']);
 		$this->assertEquals($configurationOption['comparisonGeneric'], $configurationOptionModified['generic']);
 	}
@@ -187,7 +168,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 			),
 			'typeComparisonValue' => 'options'
 		);
-		$optionModified = $this->configurationItemRepository->extractInformationForConfigFieldsOfTypeOptions($option);
+		$optionModified = $this->configurationItemRepository->_callRef('extractInformationForConfigFieldsOfTypeOptions', $option);
 		$this->assertArrayHasKey('generic', $optionModified);
 		$this->assertArrayHasKey('type', $optionModified);
 		$this->assertArrayHasKey('label', $optionModified);
@@ -230,7 +211,7 @@ class ConfigurationItemRepositoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 		);
 
 		// No value is set
-		$configuration = $this->configurationItemRepository->mergeWithExistingConfiguration($defaultConfiguration, $extension);
+		$configuration = $this->configurationItemRepository->_callRef('mergeWithExistingConfiguration', $defaultConfiguration, $extension);
 		$this->assertEquals($defaultConfiguration, $configuration);
 	}
 
