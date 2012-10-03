@@ -194,7 +194,7 @@ class ConfigurationItemRepository {
 	protected function mergeWithExistingConfiguration(array $configuration, array $extension) {
 		try {
 			$currentExtensionConfig = unserialize(
-				\TYPO3\CMS\Core\Configuration\ConfigurationManager::getConfigurationValueByPath(
+				\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getConfigurationValueByPath(
 					'EXT/extConf/' . $extension['key']
 				)
 			);
