@@ -64,13 +64,13 @@ class CharsetDefaultsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	public function performUpdate(array &$dbQueries, &$customMessages) {
 		// Update "setDBinit" setting
 		$result1 = FALSE;
-		if (\TYPO3\CMS\Core\Configuration\ConfigurationManager::getLocalConfigurationValueByPath('SYS/setDBinit') === '-1') {
-			$result1 = \TYPO3\CMS\Core\Configuration\ConfigurationManager::setLocalConfigurationValueByPath('SYS/setDBinit', '');
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationValueByPath('SYS/setDBinit') === '-1') {
+			$result1 = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('SYS/setDBinit', '');
 		}
 		// Update the "forceCharset" setting
 		$result2 = FALSE;
-		if (\TYPO3\CMS\Core\Configuration\ConfigurationManager::getLocalConfigurationValueByPath('BE/forceCharset') !== '') {
-			$result2 = \TYPO3\CMS\Core\Configuration\ConfigurationManager::setLocalConfigurationValueByPath('BE/forceCharset', '');
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationValueByPath('BE/forceCharset') !== '') {
+			$result2 = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('BE/forceCharset', '');
 		}
 		if ($result1 && $result2) {
 			$customMessages[] = 'The configuration was successfully updated.';
