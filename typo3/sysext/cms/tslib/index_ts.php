@@ -43,8 +43,8 @@ define('TYPO3_MODE', 'FE');
 ob_start();
 
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-	->registerExtDirectComponents()
 	->populateLocalConfiguration()
+	->registerExtDirectComponents()
 	->initializeCachingFramework()
 	->registerAutoloader()
 	->checkUtf8DatabaseSettingsOrDie()

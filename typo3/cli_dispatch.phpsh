@@ -48,8 +48,8 @@ require __DIR__ . '/sysext/core/Classes/Core/CliBootstrap.php';
 require __DIR__ . '/sysext/core/Classes/Core/Bootstrap.php';
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
 	->baseSetup('typo3/')
-	->registerExtDirectComponents()
 	->populateLocalConfiguration()
+	->registerExtDirectComponents()
 	->initializeCachingFramework()
 	->registerAutoloader()
 	->checkUtf8DatabaseSettingsOrDie()
