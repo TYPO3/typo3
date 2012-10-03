@@ -1960,6 +1960,26 @@ tt_content.' . $key . $prefix . ' {
 	}
 
 	/**
+	 * Push given extension to the end of the extension list
+	 *
+	 * Warning: This method only works if the ugrade wizard to transform
+	 * localconf.php to LocalConfiguration.php was already run
+	 *
+	 * @param string $extensionKey Extension key to push
+	 * @return void
+	 * @throws \RuntimeException
+	 */
+	static public function pushExtension($extensionKey) {
+		if (!static::isLoaded($extensionKey)) {
+			throw new \RuntimeException('Extension not loaded', 1342345487);
+		}
+		$extList = \TYPO3\CMS\Core\Configuration\ConfigurationManager::getLocalConfigurationValueByPath('EXT/extListArray');
+		$extList = array_diff($extList, array($extensionKey));
+		$extList[] = $extensionKey;
+		static::writeNewExtensionList($extList);
+	}
+
+	/**
 	 * Writes extension list and clear cache files.
 	 *
 	 * @TODO : This method should be protected, but with current em it is hard to do so,
