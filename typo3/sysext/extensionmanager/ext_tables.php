@@ -33,7 +33,7 @@ if (TYPO3_MODE === 'BE') {
 			'Configuration' => 'showConfigurationForm,save',
 			'Download' => 'checkDependencies,installFromTer,updateExtension,updateCommentForUpdatableVersions',
 			'UpdateFromTer' => 'updateExtensionListFromTer',
-			'UploadExtensionFile' => 'form,extract'
+			'UploadExtensionFile' => 'extract',
 		),
 		array(
 			'access' => 'user,group',
