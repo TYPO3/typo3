@@ -8,8 +8,16 @@
 		<div class="typo3-extensionmanager-headerRowLeft">
 		</div>
 		<div class="typo3-extensionmanager-headerRowRight">
-			<f:link.action action="form" controller="UploadExtensionFile" class="uploadExtension">Upload Extension .t3x/.zip</f:link.action>
-			<div class="uploadForm" style="display:none;">Loading form...<span class="spinner"></span></div>
+			<a href="#" class="uploadExtension">Upload Extension .t3x/.zip</a>
+			<div class="uploadForm" style="display:none;">
+				<f:form enctype="multipart/form-data" id="extensionUploadForm" method="post" controller="UploadExtensionFile" action="extract" format="json" additionalAttributes="{target:'typo3-extensionmanager-upload-target'}">
+					Extension:
+					<f:form.upload name="extensionFile" />
+					<f:form.checkbox name="overwrite" id="extensionOverwrite" value="1" /><label for="extensionOverwrite">Overwrite?</label>
+					<f:form.submit value="Upload!" id="extensionUpload" />
+					<iframe id="typo3-extensionmanager-upload-target" style="display: none;"></iframe>
+				</f:form>
+			</div>
 		</div>
 	</div>
 	<table id="typo3-extension-list" class="typo3-extension-list">
