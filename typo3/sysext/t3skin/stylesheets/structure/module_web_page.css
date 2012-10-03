@@ -3,8 +3,19 @@ Web > Page
 
 - - - - - - - - - - - - - - - - - - - - - */
 
+/** Compensate t3-gridTable/t3-page-langMode cellspacing=10, we only want inner spacing */
+.t3-gridTableWrap {
+	margin: -10px;
+}
+
+table.t3-gridTable,
+table.t3-page-langMode {
+	border-spacing: 10px;
+	width: 100%;
+}
+
 td.t3-page-column {
-	min-width: 150px;
+	min-width: 200px;
 	max-width: 300px;
 }
 
@@ -20,17 +31,18 @@ td.t3-page-column {
 }
 
 .t3-page-colHeader-icons {
-	position: absolute;
-	left: 4px;
+	display: none;
+	float: right;
+}
+h3:hover .t3-page-colHeader-icons {
+	display: block;
 }
 
 .t3-page-ce-wrapper {
-	padding: 12px 0 5px 0;
 }
 
 .t3-page-ce-wrapper-new-ce {
-	margin-bottom: 7px;
-	margin-left: 5px;
+	margin-bottom: 10px;
 }
 
 .t3-page-ce-droptarget {
@@ -40,11 +52,9 @@ td.t3-page-column {
 .t3-page-ce {
 	margin-bottom: 5px;
 	min-width: 150px;
-	opacity: .70;
 }
 
 .t3-page-ce:hover {
-	opacity: 1;
 	cursor: move;
 }
 
@@ -52,7 +62,7 @@ td.t3-page-column {
 	margin: 0;
 }
 
-.t3-page-ce .t3-row-header .ce-icons{
+.t3-page-ce .t3-row-header .ce-icons {
 	visibility: hidden;
 }
 
@@ -99,5 +109,5 @@ table.typo3-page-columnsMode img.c-divider {
 }
 
 td.t3-gridCell div.t3-page-ce {
-	padding: 1px 5px 5px 5px;
+	padding: 0 0 5px 0;
 }

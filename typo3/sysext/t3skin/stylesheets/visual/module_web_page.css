@@ -21,13 +21,15 @@ Web > Page
 	text-align: center;
 }
 
-.t3-page-border {
-	background-color: #cfcfcf;
-	width: 1px;
+.t3-page-ce-wrapper {
 }
 
-.t3-page-ce-wrapper {
-	border-left: 2px solid #c8c8c8;
+.t3-page-ce-wrapper-new-ce {
+	opacity: 0.4;
+}
+
+.t3-page-ce-wrapper-new-ce:hover {
+	opacity: 1;
 }
 
 .t3-page-ce-droptarget {
@@ -36,7 +38,7 @@ Web > Page
 }
 
 .t3-page-ce-header {
-	background-color: #cacaca;
+	background-color: #DADADA;
 }
 
 .t3-page-ce .t3-page-ce-body,
@@ -66,7 +68,14 @@ Web > Page
 	border-style: none dotted dotted;
 }
 
-.t3-page-ce-hidden .t3-page-ce-body .t3-icon ,
+.t3-page-ce-hidden {
+	opacity: 0.4;
+}
+.t3-page-ce-hidden:hover {
+	opacity: 1;
+}
+
+.t3-page-ce-hidden .t3-page-ce-body .t3-icon,
 .t3-page-ce-hidden .t3-page-ce-body img {
 	opacity: 0.4;
 }
@@ -75,7 +84,7 @@ Web > Page
 	background-color: #ffffff;
 }
 
-.t3-page-ce.active .t3-page-ce-body .t3-icon ,
+.t3-page-ce.active .t3-page-ce-body .t3-icon,
 .t3-page-ce.active .t3-page-ce-body img {
 	opacity: inherit;
 }
@@ -102,6 +111,13 @@ table.t3-page-columns tr td span.exampleContent a {
 
 table.typo3-page-buttons td {
 	padding-right: 10px;
+}
+
+td.t3-gridCell {
+	border: 1px solid #DADADA;
+	background-color: #fff;
+	margin: 0 10px 10px 0;
+	padding: 10px;
 }
 
 td.t3-gridCell-restricted {

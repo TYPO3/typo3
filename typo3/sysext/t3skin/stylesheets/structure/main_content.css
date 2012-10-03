@@ -29,8 +29,7 @@ h2 {
 
 /* Normal section headers */
 h3 {
-	padding: 2px 0;
-	margin: 8px 0 10px;
+	padding: 10px 0 12px;
 }
 
 /* Discrete section headers (no background) */
