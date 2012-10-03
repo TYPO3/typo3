@@ -1758,14 +1758,7 @@ tt_content.' . $key . $prefix . ' {
 	 * @internal
 	 */
 	static public function isLocalconfWritable() {
-		$result = TRUE;
-		if (!@is_writable(PATH_typo3conf)) {
-			$result = FALSE;
-		}
-		if (!@is_writable((PATH_site . \TYPO3\CMS\Core\Configuration\ConfigurationManager::LOCALCONF_FILE)) && !@is_writable((PATH_site . \TYPO3\CMS\Core\Configuration\ConfigurationManager::LOCAL_CONFIGURATION_FILE))) {
-			$result = FALSE;
-		}
-		return $result;
+		return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->canWriteConfiguration();
 	}
 
 	/**
@@ -1941,7 +1934,7 @@ tt_content.' . $key . $prefix . ' {
 		if (static::isLoaded($extensionKey)) {
 			throw new \RuntimeException('Extension already loaded', 1342345486);
 		}
-		$extList = \TYPO3\CMS\Core\Configuration\ConfigurationManager::getLocalConfigurationValueByPath('EXT/extListArray');
+		$extList = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationValueByPath('EXT/extListArray');
 		$extList[] = $extensionKey;
 		static::writeNewExtensionList($extList);
 	}
@@ -1963,7 +1956,7 @@ tt_content.' . $key . $prefix . ' {
 		if (in_array($extensionKey, static::getRequiredExtensionListArray())) {
 			throw new \RuntimeException('Can not unload required extension', 1342348167);
 		}
-		$extList = \TYPO3\CMS\Core\Configuration\ConfigurationManager::getLocalConfigurationValueByPath('EXT/extListArray');
+		$extList = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getLocalConfigurationValueByPath('EXT/extListArray');
 		$extList = array_diff($extList, array($extensionKey));
 		static::writeNewExtensionList($extList);
 	}
@@ -1978,10 +1971,10 @@ tt_content.' . $key . $prefix . ' {
 	 */
 	static public function writeNewExtensionList(array $newExtensionList) {
 		$extensionList = array_unique($newExtensionList);
-		\TYPO3\CMS\Core\Configuration\ConfigurationManager::setLocalConfigurationValueByPath('EXT/extListArray', $extensionList);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('EXT/extListArray', $extensionList);
 		// @deprecated: extList as string is deprecated, the handling will be removed with 6.2
 		// For now, this value is still set for better backwards compatibility
-		\TYPO3\CMS\Core\Configuration\ConfigurationManager::setLocalConfigurationValueByPath('EXT/extList', implode(',', $extensionList));
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath('EXT/extList', implode(',', $extensionList));
 		static::removeCacheFiles();
 	}
 

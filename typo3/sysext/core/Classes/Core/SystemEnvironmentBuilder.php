@@ -60,7 +60,6 @@ class SystemEnvironmentBuilder {
 		self::handleMagicQuotesGpc();
 		self::addCorePearPathToIncludePath();
 		self::initializeGlobalVariables();
-		self::loadDefaultConfiguration();
 		self::initializeGlobalTimeTrackingVariables();
 		self::initializeBasicErrorReporting();
 	}
@@ -207,13 +206,13 @@ class SystemEnvironmentBuilder {
 	static protected function requireBaseClasses() {
 		require_once __DIR__ . '/../Utility/GeneralUtility.php';
 		require_once __DIR__ . '/../Utility/ArrayUtility.php';
+		require_once __DIR__ . '/../SingletonInterface.php';
 		require_once __DIR__ . '/../Configuration/ConfigurationManager.php';
 		require_once __DIR__ . '/../Extension/ExtensionManager.php';
 		require_once __DIR__ . '/../Cache/Cache.php';
 		require_once __DIR__ . '/../Cache/Exception.php';
 		require_once __DIR__ . '/../Cache/Exception/NoSuchCacheException.php';
 		require_once __DIR__ . '/../Cache/Exception/InvalidDataException.php';
-		require_once __DIR__ . '/../SingletonInterface.php';
 		require_once __DIR__ . '/../Cache/CacheFactory.php';
 		require_once __DIR__ . '/../Cache/CacheManager.php';
 		require_once __DIR__ . '/../Cache/Frontend/FrontendInterface.php';
@@ -279,15 +278,6 @@ class SystemEnvironmentBuilder {
 		$GLOBALS['TYPO3_MISC'] = array();
 		$GLOBALS['T3_VAR'] = array();
 		$GLOBALS['T3_SERVICES'] = array();
-	}
-
-	/**
-	 * Load default TYPO3_CONF_VARS to globals
-	 *
-	 * @return void
-	 */
-	static protected function loadDefaultConfiguration() {
-		$GLOBALS['TYPO3_CONF_VARS'] = \TYPO3\CMS\Core\Configuration\ConfigurationManager::getDefaultConfiguration();
 	}
 
 	/**

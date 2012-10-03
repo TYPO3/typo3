@@ -205,15 +205,6 @@ class SystemEnvironmentBuilderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	}
 
 	/**
-	 * @test
-	 */
-	public function loadDefaultConfigurationPopulatesTypo3ConfVarsArray() {
-		unset($GLOBALS['TYPO3_CONF_VARS']);
-		$this->fixture->_call('loadDefaultConfiguration');
-		$this->assertInternalType('array', $GLOBALS['TYPO3_CONF_VARS']);
-	}
-
-	/**
 	 * Data provider for initializeGlobalTimeTrackingVariablesSetsGlobalVariables
 	 *
 	 * @return array

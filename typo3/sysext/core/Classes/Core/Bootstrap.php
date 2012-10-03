@@ -113,13 +113,13 @@ class Bootstrap {
 	 */
 	public function registerExtDirectComponents() {
 		if (TYPO3_MODE === 'BE') {
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.DataProvider', PATH_t3lib . 'tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php:TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeDataProvider', 'web', 'user,group');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.Commands', PATH_t3lib . 'tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php:TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeCommands', 'web', 'user,group');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.ContextMenuDataProvider', PATH_t3lib . 'contextmenu/pagetree/extdirect/class.t3lib_contextmenu_pagetree_extdirect_contextmenu.php:TYPO3\\CMS\\Backend\\ContextMenu\\Pagetree\\Extdirect\\ContextMenuConfiguration', 'web', 'user,group');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.LiveSearchActions.ExtDirect', PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_backendlivesearch.php:extDirect_DataProvider_BackendLiveSearch', 'web_list', 'user,group');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.BackendUserSettings.ExtDirect', PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_beusersettings.php:TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.CSH.ExtDirect', PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_contexthelp.php:TYPO3\\CMS\\ContextHelp\\ExtDirect\\ContextHelpDataProvider');
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.ExtDirectStateProvider.ExtDirect', PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_state.php:TYPO3\\CMS\\Backend\\InterfaceState\\ExtDirect\\DataProvider');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.DataProvider', 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeDataProvider', 'web', 'user,group');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.Commands', 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeCommands', 'web', 'user,group');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.ContextMenuDataProvider', 'TYPO3\\CMS\\Backend\\ContextMenu\\Pagetree\\Extdirect\\ContextMenuConfiguration', 'web', 'user,group');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.LiveSearchActions.ExtDirect', 'TYPO3\\CMS\\Backend\\Search\\LiveSearch\\ExtDirect\\LiveSearchDataProvider', 'web_list', 'user,group');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.BackendUserSettings.ExtDirect', 'TYPO3\\CMS\\Backend\\User\\ExtDirect\\BackendUserSettingsDataProvider');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.CSH.ExtDirect', 'TYPO3\\CMS\\ContextHelp\\ExtDirect\\ContextHelpDataProvider');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.ExtDirectStateProvider.ExtDirect', 'TYPO3\\CMS\\Backend\\InterfaceState\\ExtDirect\\DataProvider');
 		}
 		return $this;
 	}
@@ -132,45 +132,17 @@ class Bootstrap {
 	 * @return \TYPO3\CMS\Core\Core\Bootstrap
 	 */
 	public function populateLocalConfiguration() {
-		if (@is_file((PATH_site . \TYPO3\CMS\Core\Configuration\ConfigurationManager::LOCAL_CONFIGURATION_FILE))) {
-			$localConfiguration = \TYPO3\CMS\Core\Configuration\ConfigurationManager::getLocalConfiguration();
-			if (is_array($localConfiguration)) {
-				$GLOBALS['TYPO3_CONF_VARS'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($GLOBALS['TYPO3_CONF_VARS'], $localConfiguration);
-			} else {
-				die('LocalConfiguration invalid.');
-			}
-			if (@is_file((PATH_site . \TYPO3\CMS\Core\Configuration\ConfigurationManager::ADDITIONAL_CONFIGURATION_FILE))) {
-				require PATH_site . \TYPO3\CMS\Core\Configuration\ConfigurationManager::ADDITIONAL_CONFIGURATION_FILE;
-			}
-			define('TYPO3_db', $GLOBALS['TYPO3_CONF_VARS']['DB']['database']);
-			define('TYPO3_db_username', $GLOBALS['TYPO3_CONF_VARS']['DB']['username']);
-			define('TYPO3_db_password', $GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
-			define('TYPO3_db_host', $GLOBALS['TYPO3_CONF_VARS']['DB']['host']);
-			define('TYPO3_extTableDef_script', $GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript']);
-			unset($GLOBALS['TYPO3_CONF_VARS']['DB']);
-		} elseif (@is_file((PATH_site . \TYPO3\CMS\Core\Configuration\ConfigurationManager::LOCALCONF_FILE))) {
-			// Legacy localconf.php handling
-			// @deprecated: Can be removed if old localconf.php is not supported anymore
-			global $TYPO3_CONF_VARS, $typo_db, $typo_db_username, $typo_db_password, $typo_db_host, $typo_db_extTableDef_script;
-			require PATH_site . \TYPO3\CMS\Core\Configuration\ConfigurationManager::LOCALCONF_FILE;
-			// If the localconf.php was not upgraded to LocalConfiguration.php, the default extListArray
-			// from t3lib/stddb/DefaultConfiguration.php is still set. In this case we just unset
-			// this key here, so t3lib_extMgm::getLoadedExtensionListArray() falls back to use extList string
-			// @deprecated: This case can be removed later if localconf.php is not supported anymore
-			unset($TYPO3_CONF_VARS['EXT']['extListArray']);
-			define('TYPO3_db', $typo_db);
-			define('TYPO3_db_username', $typo_db_username);
-			define('TYPO3_db_password', $typo_db_password);
-			define('TYPO3_db_host', $typo_db_host);
-			define('TYPO3_extTableDef_script', $typo_db_extTableDef_script);
-			unset($GLOBALS['typo_db']);
-			unset($GLOBALS['typo_db_username']);
-			unset($GLOBALS['typo_db_password']);
-			unset($GLOBALS['typo_db_host']);
-			unset($GLOBALS['typo_db_extTableDef_script']);
-		} else {
-			die('Neither ' . \TYPO3\CMS\Core\Configuration\ConfigurationManager::LOCAL_CONFIGURATION_FILE . ' (recommended) nor ' . \TYPO3\CMS\Core\Configuration\ConfigurationManager::LOCALCONF_FILE . ' (obsolete) could be found!');
+		try {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->exportConfiguration();
+		} catch (\Exception $e) {
+			die($e->getMessage());
 		}
+		define('TYPO3_db', $GLOBALS['TYPO3_CONF_VARS']['DB']['database']);
+		define('TYPO3_db_username', $GLOBALS['TYPO3_CONF_VARS']['DB']['username']);
+		define('TYPO3_db_password', $GLOBALS['TYPO3_CONF_VARS']['DB']['password']);
+		define('TYPO3_db_host', $GLOBALS['TYPO3_CONF_VARS']['DB']['host']);
+		define('TYPO3_extTableDef_script', $GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript']);
+		unset($GLOBALS['TYPO3_CONF_VARS']['DB']);
 		define('TYPO3_user_agent', 'User-Agent: ' . $GLOBALS['TYPO3_CONF_VARS']['HTTP']['userAgent']);
 		return $this;
 	}
