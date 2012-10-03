@@ -221,6 +221,15 @@ class PagetreeNode extends \TYPO3\CMS\Backend\Tree\ExtDirectNode {
 	}
 
 	/**
+	 * Checks if the page can be hided
+	 *
+	 * @return boolean
+	 */
+	public function canBeHidedAndUnhided() {
+		return $this->canEdit($this->record);
+	}
+
+	/**
 	 * Checks if the page is allowed to can be cut
 	 *
 	 * @return boolean
