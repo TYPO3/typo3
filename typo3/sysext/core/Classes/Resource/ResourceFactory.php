@@ -53,7 +53,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $storageInstances = array();
 
 	/**
-	 * @var t3lib_file_AbstractCollection[]
+	 * @var \TYPO3\CMS\Core\Resource\Collection\AbstractFileCollection[]
 	 */
 	protected $collectionInstances = array();
 
