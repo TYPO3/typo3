@@ -196,7 +196,7 @@ return array(
 				'Local' => array(
 					'class' => 'TYPO3\\CMS\\Core\\Resource\\Driver\\LocalDriver',
 					'shortName' => 'Local',
-					'flexFormDS' => 'FILE:t3lib/file/Driver/Configuration/LocalDriverFlexForm.xml',
+					'flexFormDS' => 'FILE:EXT:core/Configuration/Resource/Driver/LocalDriverFlexForm.xml',
 					'label' => 'Local filesystem'
 				)
 			),
