@@ -82,6 +82,52 @@ class ExtdirectTreeCommands {
 	}
 
 	/**
+	 * Shows the node in menu
+	 *
+	 * @param stdClass $nodeData
+	 * @return array
+	 */
+	public function showNodeInMenu($nodeData) {
+		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
+		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
+		try {
+			\TYPO3\CMS\Backend\Tree\Pagetree\Commands::showNodeInMenu($node);
+			$newNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNode($node->getId());
+			$newNode->setLeaf($node->isLeafNode());
+			$returnValue = $newNode->toArray();
+		} catch (\Exception $exception) {
+			$returnValue = array(
+				'success' => FALSE,
+				'error' => $exception->getMessage()
+			);
+		}
+		return $returnValue;
+	}
+
+	/**
+	 * Hides the node in menu
+	 *
+	 * @param stdClass $nodeData
+	 * @return array
+	 */
+	public function hideNodeInMenu($nodeData) {
+		/** @var $node \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode */
+		$node = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode', (array) $nodeData);
+		try {
+			\TYPO3\CMS\Backend\Tree\Pagetree\Commands::hideNodeInMenu($node);
+			$newNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNode($node->getId());
+			$newNode->setLeaf($node->isLeafNode());
+			$returnValue = $newNode->toArray();
+		} catch (\Exception $exception) {
+			$returnValue = array(
+				'success' => FALSE,
+				'message' => $exception->getMessage()
+			);
+		}
+		return $returnValue;
+	}
+
+	/**
 	 * Delete the page
 	 *
 	 * @param stdClass $nodeData

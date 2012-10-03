@@ -361,24 +361,6 @@ return array(
 
 							300 = ITEM
 							300 {
-								name = disable
-								label = LLL:EXT:lang/locallang_common.xml:disable
-								spriteIcon = actions-edit-hide
-								displayCondition = getRecord|hidden = 0 && canBeDisabledAndEnabled != 0
-								callbackAction = disablePage
-							}
-
-							400 = ITEM
-							400 {
-								name = enable
-								label = LLL:EXT:lang/locallang_common.xml:enable
-								spriteIcon = actions-edit-unhide
-								displayCondition = getRecord|hidden = 1 && canBeDisabledAndEnabled != 0
-								callbackAction = enablePage
-							}
-
-							500 = ITEM
-							500 {
 								name = edit
 								label = LLL:EXT:lang/locallang_core.xml:cm.edit
 								spriteIcon = actions-page-open
@@ -386,8 +368,8 @@ return array(
 								callbackAction = editPageProperties
 							}
 
-							600 = ITEM
-							600 {
+							400 = ITEM
+							400 {
 								name = info
 								label = LLL:EXT:lang/locallang_core.xml:cm.info
 								spriteIcon = actions-document-info
@@ -395,8 +377,8 @@ return array(
 								callbackAction = openInfoPopUp
 							}
 
-							700 = ITEM
-							700 {
+							500 = ITEM
+							500 {
 								name = history
 								label = LLL:EXT:lang/locallang_misc.xml:CM_history
 								spriteIcon = actions-document-history-open
@@ -404,10 +386,48 @@ return array(
 								callbackAction = openHistoryPopUp
 							}
 
-							800 = DIVIDER
+							600 = DIVIDER
 
-							900 = SUBMENU
+							700 = ITEM
+							700 {
+								name = hide
+								label = LLL:EXT:lang/locallang_common.xml:hide
+								spriteIcon = apps-pagetree-page-not-in-menu
+								displayCondition = getRecord|nav_hide = 0 && canBeHiddenAndUnhidden != 0
+								callbackAction = hideNodeInMenu
+							}
+
+							800 = ITEM
+							800 {
+								name = show
+								label = LLL:EXT:lang/locallang_common.xml:show
+								spriteIcon = apps-pagetree-page-default
+								displayCondition = getRecord|nav_hide = 1 && canBeHiddenAndUnhidden != 0
+								callbackAction = showNodeInMenu
+							}
+
+							900 = ITEM
 							900 {
+								name = disable
+								label = LLL:EXT:lang/locallang_common.xml:disable
+								spriteIcon = actions-edit-hide
+								displayCondition = getRecord|hidden = 0 && canBeDisabledAndEnabled != 0
+								callbackAction = disablePage
+							}
+
+							1000 = ITEM
+							1000 {
+								name = enable
+								label = LLL:EXT:lang/locallang_common.xml:enable
+								spriteIcon = actions-edit-unhide
+								displayCondition = getRecord|hidden = 1 && canBeDisabledAndEnabled != 0
+								callbackAction = enablePage
+							}
+
+							1100 = DIVIDER
+
+							1200 = SUBMENU
+							1200 {
 								label = LLL:EXT:lang/locallang_core.xml:cm.copyPasteActions
 
 								100 = ITEM
@@ -487,8 +507,8 @@ return array(
 								}
 							}
 
-							1000 = SUBMENU
-							1000 {
+							1300 = SUBMENU
+							1300 {
 								label = LLL:EXT:lang/locallang_core.xml:cm.branchActions
 
 								100 = ITEM
