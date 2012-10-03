@@ -38,6 +38,11 @@ class ConfigurationItemRepository {
 	protected $objectManager;
 
 	/**
+	 * @var \TYPO3\CMS\Core\Configuration\ConfigurationManager
+	 */
+	protected $configurationManager;
+
+	/**
 	 * Injects the object manager
 	 *
 	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
@@ -45,6 +50,16 @@ class ConfigurationItemRepository {
 	 */
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * Inject configuration manager
+	 *
+	 * @param \TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Core\Configuration\ConfigurationManager $configurationManager) {
+		$this->configurationManager = $configurationManager;
 	}
 
 	/**
@@ -194,7 +209,7 @@ class ConfigurationItemRepository {
 	protected function mergeWithExistingConfiguration(array $configuration, array $extension) {
 		try {
 			$currentExtensionConfig = unserialize(
-				\TYPO3\CMS\Core\Configuration\ConfigurationManager::getConfigurationValueByPath(
+				$this->configurationManager->getConfigurationValueByPath(
 					'EXT/extConf/' . $extension['key']
 				)
 			);

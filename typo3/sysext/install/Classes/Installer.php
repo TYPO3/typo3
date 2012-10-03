@@ -1687,7 +1687,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	 * @todo Define visibility
 	 */
 	public function generateConfigForm($type = '') {
-		$default_config_content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(PATH_site . \TYPO3\CMS\Core\Configuration\ConfigurationManager::DEFAULT_CONFIGURATION_FILE);
+		$default_config_content = \TYPO3\CMS\Core\Utility\GeneralUtility::getUrl(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getDefaultConfigurationFileResource());
 		$commentArr = $this->getDefaultConfigArrayComments($default_config_content);
 		switch ($type) {
 		case 'get_form':
@@ -3213,29 +3213,29 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 				foreach ($this->INSTALL['LocalConfiguration'] as $key => $value) {
 					switch ((string) $key) {
 					case 'disable_exec_function':
-						if (strcmp(\TYPO3\CMS\Core\Configuration\ConfigurationManager::getConfigurationValueByPath('BE/disable_exec_function'), $value)) {
+						if (strcmp(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getConfigurationValueByPath('BE/disable_exec_function'), $value)) {
 							$localConfigurationPathValuePairs['BE/disable_exec_function'] = $value ? 1 : 0;
 						}
 						break;
 					case 'sitename':
-						if (strcmp(\TYPO3\CMS\Core\Configuration\ConfigurationManager::getConfigurationValueByPath('SYS/sitename'), $value)) {
+						if (strcmp(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getConfigurationValueByPath('SYS/sitename'), $value)) {
 							$localConfigurationPathValuePairs['SYS/sitename'] = $value;
 						}
 						break;
 					case 'encryptionKey':
-						if (strcmp(\TYPO3\CMS\Core\Configuration\ConfigurationManager::getConfigurationValueByPath('SYS/encryptionKey'), $value)) {
+						if (strcmp(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getConfigurationValueByPath('SYS/encryptionKey'), $value)) {
 							$localConfigurationPathValuePairs['SYS/encryptionKey'] = $value;
 							// The session object in this request must use the new encryption key to write to the right session folder
 							$GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = $value;
 						}
 						break;
 					case 'compat_version':
-						if (strcmp(\TYPO3\CMS\Core\Configuration\ConfigurationManager::getConfigurationValueByPath('SYS/compat_version'), $value)) {
+						if (strcmp(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getConfigurationValueByPath('SYS/compat_version'), $value)) {
 							$localConfigurationPathValuePairs['SYS/compat_version'] = $value;
 						}
 						break;
 					case 'im_combine_filename':
-						if (strcmp(\TYPO3\CMS\Core\Configuration\ConfigurationManager::getConfigurationValueByPath('GFX/im_combine_filename'), $value)) {
+						if (strcmp(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getConfigurationValueByPath('GFX/im_combine_filename'), $value)) {
 							$localConfigurationPathValuePairs['GFX/im_combine_filename'] = $value;
 						}
 						break;
@@ -3244,13 +3244,13 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 					case 'gdlib_png':
 
 					case 'im':
-						if (strcmp(\TYPO3\CMS\Core\Configuration\ConfigurationManager::getConfigurationValueByPath('GFX/' . $key), $value)) {
+						if (strcmp(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getConfigurationValueByPath('GFX/' . $key), $value)) {
 							$localConfigurationPathValuePairs['GFX/' . $key] = $value ? 1 : 0;
 						}
 						break;
 					case 'im_path':
 						list($value, $version) = explode('|', $value);
-						if (strcmp(\TYPO3\CMS\Core\Configuration\ConfigurationManager::getConfigurationValueByPath('GFX/' . $key), $value)) {
+						if (strcmp(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getConfigurationValueByPath('GFX/' . $key), $value)) {
 							$localConfigurationPathValuePairs['GFX/' . $key] = $value;
 						}
 						if (doubleval($version) > 0 && doubleval($version) < 4) {
@@ -3260,18 +3260,18 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 							// Assume ImageMagick 6.x
 							$value_ext = 'im6';
 						}
-						if (strcmp(strtolower(\TYPO3\CMS\Core\Configuration\ConfigurationManager::getConfigurationValueByPath('GFX/im_version_5')), $value_ext)) {
+						if (strcmp(strtolower(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getConfigurationValueByPath('GFX/im_version_5')), $value_ext)) {
 							$localConfigurationPathValuePairs['GFX/im_version_5'] = $value_ext;
 						}
 						break;
 					case 'im_path_lzw':
 						list($value) = explode('|', $value);
-						if (strcmp(\TYPO3\CMS\Core\Configuration\ConfigurationManager::getConfigurationValueByPath('GFX/' . $key), $value)) {
+						if (strcmp(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getConfigurationValueByPath('GFX/' . $key), $value)) {
 							$localConfigurationPathValuePairs['GFX/' . $key] = $value;
 						}
 						break;
 					case 'TTFdpi':
-						if (strcmp(\TYPO3\CMS\Core\Configuration\ConfigurationManager::getConfigurationValueByPath('GFX/TTFdpi'), $value)) {
+						if (strcmp(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->getConfigurationValueByPath('GFX/TTFdpi'), $value)) {
 							$localConfigurationPathValuePairs['GFX/TTFdpi'] = $value;
 						}
 						break;
@@ -3303,7 +3303,7 @@ REMOTE_ADDR was \'' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE
 	protected function setLocalConfigurationValues(array $pathValuePairs) {
 		// Get the template file
 		$templateFile = @file_get_contents((PATH_site . $this->templateFilePath . 'WriteToLocalConfControl.html'));
-		if (\TYPO3\CMS\Core\Configuration\ConfigurationManager::setLocalConfigurationValuesByPathValuePairs($pathValuePairs)) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValuesByPathValuePairs($pathValuePairs)) {
 			// Get the template part from the file
 			$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###CONTINUE###');
 			// Get the subpart for messages

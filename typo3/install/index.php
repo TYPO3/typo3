@@ -43,8 +43,8 @@ require '../sysext/core/Classes/Core/Bootstrap.php';
 require '../sysext/install/Classes/InstallBootstrap.php';
 \TYPO3\CMS\Install\InstallBootstrap::checkEnabledInstallToolOrDie();
 \TYPO3\CMS\Core\Core\Bootstrap::getInstance()
-	->registerExtDirectComponents()
 	->populateLocalConfiguration()
+	->registerExtDirectComponents()
 	->initializeCachingFramework()
 	->registerAutoloader()
 	->checkUtf8DatabaseSettingsOrDie()
