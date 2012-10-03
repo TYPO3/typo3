@@ -215,15 +215,6 @@ class DownloadController extends \TYPO3\CMS\Extensionmanager\Controller\Abstract
 		}
 		$this->view->assign('updateComments', $updateComments)->assign('extensionKey', $extensionKey);
 	}
-
-	/**
-	 * @param $key
-	 * @return NULL|string
-	 */
-	protected function translate($key, $arguments = NULL) {
-		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'extensionmanager', $arguments);
-	}
-
 }
 
 

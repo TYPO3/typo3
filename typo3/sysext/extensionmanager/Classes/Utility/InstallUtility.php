@@ -138,6 +138,28 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
+	 * Helper function to install an extension
+	 * also processes db updates and clears the cache if the extension asks for it
+	 *
+	 * @param string $extensionKey
+	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
+	 * @return void
+	 */
+	public function install($extensionKey) {
+		$extension = $this->enrichExtensionWithDetails($extensionKey);
+		$this->processDatabaseUpdates($extension);
+		$this->ensureConfiguredDirectoriesExist($extension);
+		if ($extension['clearcacheonload']) {
+			$GLOBALS['typo3CacheManager']->flushCaches();
+		}
+		if (!$this->isLoaded($extensionKey)) {
+			$this->loadExtension($extensionKey);
+		}
+		$this->reloadCaches();
+		$this->saveDefaultConfiguration($extension['key']);
+	}
+
+	/**
 	 * Helper function to uninstall an extension
 	 *
 	 * @param string $extensionKey
@@ -154,32 +176,13 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 	/**
-	 * Wrapper function for unloading extensions
+	 * Wrapper function to check for loaded extensions
 	 *
 	 * @param string $extensionKey
+	 * @return boolean TRUE if extension is loaded
 	 */
-	protected function unloadExtension($extensionKey) {
-		\TYPO3\CMS\Core\Extension\ExtensionManager::unloadExtension($extensionKey);
-	}
-
-	/**
-	 * Helper function to install an extension
-	 * also processes db updates and clears the cache if the extension asks for it
-	 *
-	 * @param string $extensionKey
-	 * @throws \TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException
-	 * @return void
-	 */
-	public function install($extensionKey) {
-		$extension = $this->enrichExtensionWithDetails($extensionKey);
-		$this->processDatabaseUpdates($extension);
-		$this->ensureConfiguredDirectoriesExist($extension);
-		if ($extension['clearcacheonload']) {
-			$GLOBALS['typo3CacheManager']->flushCaches();
-		}
-		$this->loadExtension($extensionKey);
-		$this->reloadCaches();
-		$this->saveDefaultConfiguration($extension['key']);
+	public function isLoaded($extensionKey) {
+		return \TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded($extensionKey);
 	}
 
 	/**
@@ -190,6 +193,27 @@ class InstallUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function loadExtension($extensionKey) {
 		\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtension($extensionKey);
+	}
+
+	/**
+	 * Wrapper function for unloading extensions
+	 *
+	 * @param string $extensionKey
+	 * @return void
+	 */
+	protected function unloadExtension($extensionKey) {
+		\TYPO3\CMS\Core\Extension\ExtensionManager::unloadExtension($extensionKey);
+	}
+
+	/**
+	 * Checks if an extension is available in the system
+	 *
+	 * @param $extensionKey
+	 * @return boolean
+	 */
+	public function isAvailable($extensionKey) {
+		$availableExtensions = $this->listUtility->getAvailableExtensions();
+		return array_key_exists($extensionKey, $availableExtensions);
 	}
 
 	/**

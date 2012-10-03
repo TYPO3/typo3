@@ -81,6 +81,12 @@
 			<trans-unit id="extensionList.uploadExtension" xml:space="preserve">
 				<source>Upload Extension .t3x/.zip</source>
 			</trans-unit>
+			<trans-unit id="extensionList.overwriteExtension" xml:space="preserve">
+				<source>Overwrite</source>
+			</trans-unit>
+			<trans-unit id="extensionList.overwritingDisabled" xml:space="preserve">
+				<source>Extension is already available and overwriting was not enabled</source>
+			</trans-unit>
 			<trans-unit id="extensionList.loading" xml:space="preserve">
 				<source>Loading form...</source>
 			</trans-unit>

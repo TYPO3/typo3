@@ -51,6 +51,16 @@ class AbstractController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		return $view;
 	}
 
+	/**
+	 * Translation shortcut
+	 *
+	 * @param $key
+	 * @param NULL|array $arguments
+	 * @return NULL|string
+	 */
+	protected function translate($key, $arguments = NULL) {
+		return \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, 'extensionmanager', $arguments);
+	}
 }
 
 
