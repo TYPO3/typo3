@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Core\Configuration;
+use TYPO3\CMS\Core\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -37,7 +38,7 @@ namespace TYPO3\CMS\Core\Configuration;
  * @subpackage t3lib
  * @author Helge Funk <helge.funk@e-net.info>
  */
-class ConfigurationManager {
+class ConfigurationManager implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Path to default TYPO3_CONF_VARS file, relative to PATH_site
@@ -61,7 +62,7 @@ class ConfigurationManager {
 	 *
 	 * @var array
 	 */
-	static protected $whiteListedLocalConfigurationPaths = array(
+	protected $whiteListedLocalConfigurationPaths = array(
 		'EXT/extConf',
 		'EXTCONF',
 		'INSTALL/wizardDone',
@@ -73,8 +74,19 @@ class ConfigurationManager {
 	 *
 	 * @return array
 	 */
-	static public function getDefaultConfiguration() {
-		return require PATH_site . static::DEFAULT_CONFIGURATION_FILE;
+	public function getDefaultConfiguration() {
+		return require $this->getDefaultConfigurationFileResource();
+	}
+
+	/**
+	 * Get the file resource of the default configuration file,
+	 * currently the path and filename.
+	 *
+	 * @return string
+	 * @access private
+	 */
+	public function getDefaultConfigurationFileResource() {
+		return PATH_site . self::DEFAULT_CONFIGURATION_FILE;
 	}
 
 	/**
@@ -82,8 +94,30 @@ class ConfigurationManager {
 	 *
 	 * @return array Content array of local configuration file
 	 */
-	static public function getLocalConfiguration() {
-		return require PATH_site . static::LOCAL_CONFIGURATION_FILE;
+	public function getLocalConfiguration() {
+		return require $this->getLocalConfigurationFileResource();
+	}
+
+	/**
+	 * Get the file resource of the local configuration file,
+	 * currently the path and filename.
+	 *
+	 * @return string
+	 * @access private
+	 */
+	public function getLocalConfigurationFileResource() {
+		return PATH_site . self::LOCAL_CONFIGURATION_FILE;
+	}
+
+	/**
+	 * Get the file resource of the aditional configuration file,
+	 * currently the path and filename.
+	 *
+	 * @return string
+	 * @access private
+	 */
+	public function getAdditionalConfigurationFileResource() {
+		return PATH_site . self::ADDITIONAL_CONFIGURATION_FILE;
 	}
 
 	/**
@@ -92,9 +126,9 @@ class ConfigurationManager {
 	 * @param array $configurationToMerge Override configuration array
 	 * @return void
 	 */
-	static public function updateLocalConfiguration(array $configurationToMerge) {
-		$newLocalConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(static::getLocalConfiguration(), $configurationToMerge);
-		static::writeLocalConfiguration($newLocalConfiguration);
+	public function updateLocalConfiguration(array $configurationToMerge) {
+		$newLocalConfiguration = Utility\GeneralUtility::array_merge_recursive_overrule($this->getLocalConfiguration(), $configurationToMerge);
+		$this->writeLocalConfiguration($newLocalConfiguration);
 	}
 
 	/**
@@ -103,8 +137,8 @@ class ConfigurationManager {
 	 * @param string $path Path to search for
 	 * @return mixed Value at path
 	 */
-	static public function getDefaultConfigurationValueByPath($path) {
-		return \TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath(static::getDefaultConfiguration(), $path);
+	public function getDefaultConfigurationValueByPath($path) {
+		return Utility\ArrayUtility::getValueByPath($this->getDefaultConfiguration(), $path);
 	}
 
 	/**
@@ -113,8 +147,8 @@ class ConfigurationManager {
 	 * @param string $path Path to search for
 	 * @return mixed Value at path
 	 */
-	static public function getLocalConfigurationValueByPath($path) {
-		return \TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath(static::getLocalConfiguration(), $path);
+	public function getLocalConfigurationValueByPath($path) {
+		return Utility\ArrayUtility::getValueByPath($this->getLocalConfiguration(), $path);
 	}
 
 	/**
@@ -124,8 +158,8 @@ class ConfigurationManager {
 	 * @param string $path Path to search for
 	 * @return mixed
 	 */
-	static public function getConfigurationValueByPath($path) {
-		return \TYPO3\CMS\Core\Utility\ArrayUtility::getValueByPath(\TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule(static::getDefaultConfiguration(), static::getLocalConfiguration()), $path);
+	public function getConfigurationValueByPath($path) {
+		return Utility\ArrayUtility::getValueByPath(Utility\GeneralUtility::array_merge_recursive_overrule($this->getDefaultConfiguration(), $this->getLocalConfiguration()), $path);
 	}
 
 	/**
@@ -135,12 +169,12 @@ class ConfigurationManager {
 	 * @param mixed $value Value to set
 	 * @return boolean TRUE on success
 	 */
-	static public function setLocalConfigurationValueByPath($path, $value) {
+	public function setLocalConfigurationValueByPath($path, $value) {
 		$result = FALSE;
-		if (static::isValidLocalConfigurationPath($path)) {
-			$localConfiguration = static::getLocalConfiguration();
-			$localConfiguration = \TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath($localConfiguration, $path, $value);
-			$result = static::writeLocalConfiguration($localConfiguration);
+		if ($this->isValidLocalConfigurationPath($path)) {
+			$localConfiguration = $this->getLocalConfiguration();
+			$localConfiguration = Utility\ArrayUtility::setValueByPath($localConfiguration, $path, $value);
+			$result = $this->writeLocalConfiguration($localConfiguration);
 		}
 		return $result;
 	}
@@ -151,14 +185,76 @@ class ConfigurationManager {
 	 * @param array $pairs Key is path, value is value to set
 	 * @return boolean TRUE on success
 	 */
-	static public function setLocalConfigurationValuesByPathValuePairs(array $pairs) {
-		$localConfiguration = static::getLocalConfiguration();
+	public function setLocalConfigurationValuesByPathValuePairs(array $pairs) {
+		$localConfiguration = $this->getLocalConfiguration();
 		foreach ($pairs as $path => $value) {
-			if (static::isValidLocalConfigurationPath($path)) {
-				$localConfiguration = \TYPO3\CMS\Core\Utility\ArrayUtility::setValueByPath($localConfiguration, $path, $value);
+			if ($this->isValidLocalConfigurationPath($path)) {
+				$localConfiguration = Utility\ArrayUtility::setValueByPath($localConfiguration, $path, $value);
 			}
 		}
-		return static::writeLocalConfiguration($localConfiguration);
+		return $this->writeLocalConfiguration($localConfiguration);
+	}
+
+	/**
+	 * Checks if the configuration can be written
+	 *
+	 * @return boolean
+	 * @access private
+	 */
+	public function canWriteConfiguration() {
+		$result = TRUE;
+		if (!@is_writable(PATH_typo3conf)) {
+			$result = FALSE;
+		}
+		if (!@is_writable(($this->getLocalConfigurationFileResource())) && !@is_writable((PATH_site . self::LOCALCONF_FILE))) {
+			$result = FALSE;
+		}
+		return $result;
+	}
+
+	/**
+	 * Reads the configuration array and exports it to the global variable
+	 *
+	 * @access private
+	 * @return void
+	 */
+	public function exportConfiguration() {
+		if (@is_file(($this->getLocalConfigurationFileResource()))) {
+			$localConfiguration = $this->getLocalConfiguration();
+			if (is_array($localConfiguration)) {
+				$GLOBALS['TYPO3_CONF_VARS'] = Utility\GeneralUtility::array_merge_recursive_overrule($this->getDefaultConfiguration(), $localConfiguration);
+			} else {
+				throw new \UnexpectedValueException('LocalConfiguration invalid.', 1349272276);
+			}
+			if (@is_file((PATH_site . self::ADDITIONAL_CONFIGURATION_FILE))) {
+				require PATH_site . self::ADDITIONAL_CONFIGURATION_FILE;
+			}
+		} elseif (@is_file((PATH_site . self::LOCALCONF_FILE))) {
+			$GLOBALS['TYPO3_CONF_VARS'] = $this->getDefaultConfiguration();
+			// Legacy localconf.php handling
+			// @deprecated: Can be removed if old localconf.php is not supported anymore
+			global $TYPO3_CONF_VARS, $typo_db, $typo_db_username, $typo_db_password, $typo_db_host, $typo_db_extTableDef_script;
+			require PATH_site . self::LOCALCONF_FILE;
+			// If the localconf.php was not upgraded to LocalConfiguration.php, the default extListArray
+			// from t3lib/stddb/DefaultConfiguration.php is still set. In this case we just unset
+			// this key here, so t3lib_extMgm::getLoadedExtensionListArray() falls back to use extList string
+			// @deprecated: This case can be removed later if localconf.php is not supported anymore
+			unset($TYPO3_CONF_VARS['EXT']['extListArray']);
+			// Write the old globals into the new place in the configuration array
+			$GLOBALS['TYPO3_CONF_VARS']['DB'] = array();
+			$GLOBALS['TYPO3_CONF_VARS']['DB']['database'] = $typo_db;
+			$GLOBALS['TYPO3_CONF_VARS']['DB']['username'] = $typo_db_username;
+			$GLOBALS['TYPO3_CONF_VARS']['DB']['password'] = $typo_db_password;
+			$GLOBALS['TYPO3_CONF_VARS']['DB']['host'] = $typo_db_host;
+			$GLOBALS['TYPO3_CONF_VARS']['DB']['extTablesDefinitionScript'] = $typo_db_extTableDef_script;
+			unset($GLOBALS['typo_db']);
+			unset($GLOBALS['typo_db_username']);
+			unset($GLOBALS['typo_db_password']);
+			unset($GLOBALS['typo_db_host']);
+			unset($GLOBALS['typo_db_extTableDef_script']);
+		} else {
+			throw new \RuntimeException('Neither ' . self::LOCAL_CONFIGURATION_FILE . ' (recommended) nor ' . self::LOCALCONF_FILE . ' (obsolete) could be found!', 1349272337);
+		}
 	}
 
 	/**
@@ -167,17 +263,31 @@ class ConfigurationManager {
 	 * @param array $configuration The local configuration to be written
 	 * @throws \RuntimeException
 	 * @return boolean TRUE on success
+	 * @access private
 	 */
-	static protected function writeLocalConfiguration(array $configuration) {
-		$localConfigurationFile = PATH_site . static::LOCAL_CONFIGURATION_FILE;
+	public function writeLocalConfiguration(array $configuration) {
+		$localConfigurationFile = $this->getLocalConfigurationFileResource();
 		if (!@is_file($localConfigurationFile) || !@is_writable($localConfigurationFile)) {
 			throw new \RuntimeException($localConfigurationFile . ' does not exist or is not writable.', 1346323822);
 		}
-		$configuration = \TYPO3\CMS\Core\Utility\ArrayUtility::sortByKeyRecursive($configuration);
-		$result = \TYPO3\CMS\Core\Utility\GeneralUtility::writeFile(
+		$configuration = Utility\ArrayUtility::sortByKeyRecursive($configuration);
+		$result = Utility\GeneralUtility::writeFile(
 			$localConfigurationFile,
-			'<?php' . LF . 'return ' . \TYPO3\CMS\Core\Utility\ArrayUtility::arrayExport($configuration) . ';' . LF . '?>'
+			'<?php' . LF . 'return ' . Utility\ArrayUtility::arrayExport($configuration) . ';' . LF . '?>'
 		);
+		return $result === FALSE ? FALSE : TRUE;
+	}
+
+	/**
+	 * Write additional configuration array to typo3conf/AdditionalConfiguration.php
+	 *
+	 * @param array $additionalConfigurationLines The configuration lines to be written
+	 * @throws \RuntimeException
+	 * @return boolean TRUE on success
+	 * @access private
+	 */
+	public function writeAdditionalConfiguration(array $additionalConfigurationLines) {
+		$result = Utility\GeneralUtility::writeFile(PATH_site . self::ADDITIONAL_CONFIGURATION_FILE, '<?php' . LF . implode(LF, $additionalConfigurationLines) . LF . '?>');
 		return $result === FALSE ? FALSE : TRUE;
 	}
 
@@ -187,14 +297,14 @@ class ConfigurationManager {
 	 * @param string $path Path to search for
 	 * @return boolean TRUE if access is allowed
 	 */
-	static protected function isValidLocalConfigurationPath($path) {
+	protected function isValidLocalConfigurationPath($path) {
 		// Early return for white listed paths
-		foreach (static::$whiteListedLocalConfigurationPaths as $whiteListedPath) {
-			if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($path, $whiteListedPath)) {
+		foreach ($this->whiteListedLocalConfigurationPaths as $whiteListedPath) {
+			if (Utility\GeneralUtility::isFirstPartOfStr($path, $whiteListedPath)) {
 				return TRUE;
 			}
 		}
-		return \TYPO3\CMS\Core\Utility\ArrayUtility::isValidPath(static::getDefaultConfiguration(), $path);
+		return Utility\ArrayUtility::isValidPath($this->getDefaultConfiguration(), $path);
 	}
 
 }

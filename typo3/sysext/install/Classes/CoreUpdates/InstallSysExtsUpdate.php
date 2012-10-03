@@ -309,7 +309,7 @@ class InstallSysExtsUpdate extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 	 * @return void
 	 */
 	protected function markWizardAsDone() {
-		\TYPO3\CMS\Core\Configuration\ConfigurationManager::setLocalConfigurationValueByPath(
+		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\ConfigurationManager')->setLocalConfigurationValueByPath(
 			'INSTALL/wizardDone/' . get_class($this),
 			json_encode($this->systemExtensions)
 		);
