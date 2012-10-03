@@ -99,45 +99,39 @@ class FileListController {
 		$this->overwriteExistingFiles = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('overwriteExistingFiles');
 		// Setting module name:
 		$this->MCONF = $GLOBALS['MCONF'];
-			// Create the folder object, even try parent folders
-		while ($this->folderObject === NULL && count(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $combinedIdentifier, TRUE)) > 1) {
-			try {
-				if ($combinedIdentifier) {
-					$fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-					$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
-					// Disallow the rendering of the processing folder (e.g. could be called manually)
-					// and all folders without any defined storage
-					if ($this->folderObject && ($this->folderObject->getStorage()->getUid() == 0 || trim($this->folderObject->getStorage()->getProcessingFolder()->getIdentifier(), '/') == trim($this->folderObject->getIdentifier(), '/'))) {
-						$this->folderObject = NULL;
-					}
+		try {
+			if ($combinedIdentifier) {
+				/** @var $fileFactory \TYPO3\CMS\Core\Resource\ResourceFactory */
+				$fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+				$this->folderObject = $fileFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
+				// Disallow the rendering of the processing folder (e.g. could be called manually)
+				// and all folders without any defined storage
+				if ($this->folderObject && ($this->folderObject->getStorage()->getUid() == 0 || trim($this->folderObject->getStorage()->getProcessingFolder()->getIdentifier(), '/') == trim($this->folderObject->getIdentifier(), '/'))) {
+					$storage = $fileFactory->getStorageObjectFromCombinedIdentifier($combinedIdentifier);
+					$this->folderObject = $storage->getRootLevelFolder();
+				}
+			} else {
+				// Take the first object of the first storage
+				$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
+				$fileStorage = reset($fileStorages);
+				if ($fileStorage) {
+					// Validating the input "id" (the path, directory!) and
+					// checking it against the mounts of the user. - now done in the controller
+					$this->folderObject = $fileStorage->getRootLevelFolder();
 				} else {
-					// Take the first object of the first storage
-					$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
-					$fileStorage = reset($fileStorages);
-					if ($fileStorage) {
-						// Validating the input "id" (the path, directory!) and
-						// checking it against the mounts of the user. - now done in the controller
-						$this->folderObject = $fileStorage->getRootLevelFolder();
-					} else {
-						$this->folderObject = NULL;
-					}
+					throw new \RuntimeException('Could not find any folder to be displayed.', 1349276894);
 				}
-			} catch (\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $fileException) {
-				// Set folder object to null and throw a message later on
-				$this->folderObject = NULL;
-				if ($this->id == $combinedIdentifier) {
-					$this->errorMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
-						sprintf($GLOBALS['LANG']->getLL('folderNotFoundMessage', TRUE),
-								htmlspecialchars($this->id)
-						),
-						$GLOBALS['LANG']->getLL('folderNotFoundTitle', TRUE),
-						\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE);
-				}
-
-				$combinedIdentifierParts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $combinedIdentifier, TRUE);
-				array_pop($combinedIdentifierParts);
-				$combinedIdentifier = implode('/', $combinedIdentifierParts) . '/';
 			}
+		} catch (\TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException $fileException) {
+			// Set folder object to null and throw a message later on
+			$this->folderObject = NULL;
+			$this->errorMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+				sprintf($GLOBALS['LANG']->getLL('folderNotFoundMessage', TRUE),
+						htmlspecialchars($this->id)
+				),
+				$GLOBALS['LANG']->getLL('folderNotFoundTitle', TRUE),
+				\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE
+			);
 		}
 		// Configure the "menu" - which is used internally to save the values of sorting, displayThumbs etc.
 		$this->menuConfig();
