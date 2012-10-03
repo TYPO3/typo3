@@ -485,6 +485,24 @@ return array(
 									displayCondition = canBeRemoved != 0 && isMountPoint != 1
 									callbackAction = removeNode
 								}
+
+								1100 = ITEM
+								1100 {
+									name = hide
+									label = LLL:EXT:lang/locallang_common.xml:hide
+									spriteIcon = apps-pagetree-page-not-in-menu
+									displayCondition = getRecord|nav_hide = 0 && canBeHidedAndUnhided != 0
+									callbackAction = hidePageInMenu
+								}
+
+								1200 = ITEM
+								1200 {
+									name = show
+									label = LLL:EXT:lang/locallang_common.xml:show
+									spriteIcon = apps-pagetree-page-default
+									displayCondition = getRecord|nav_hide = 1 && canBeHidedAndUnhided != 0
+									callbackAction = showPageInMenu
+								}
 							}
 
 							1000 = SUBMENU

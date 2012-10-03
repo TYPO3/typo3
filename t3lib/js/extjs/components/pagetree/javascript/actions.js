@@ -695,6 +695,42 @@ TYPO3.Components.PageTree.Actions = {
 	},
 
 	/**
+	 * Shows a page in menu
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
+	showPageInMenu: function(node) {
+		TYPO3.Components.PageTree.Commands.showNode(
+			node.attributes.nodeData,
+			function(response) {
+				if (this.evaluateResponse(response)) {
+					this.updateNode(node, node.isExpanded(), response);
+				}
+			},
+			this
+		);
+	},
+
+	/**
+	 * Hides a page in menu
+	 *
+	 * @param {Ext.tree.TreeNode} node
+	 * @return {void}
+	 */
+	hidePageInMenu: function(node) {
+		TYPO3.Components.PageTree.Commands.hideNode(
+			node.attributes.nodeData,
+			function(response) {
+				if (this.evaluateResponse(response)) {
+					this.updateNode(node, node.isExpanded(), response);
+				}
+			},
+			this
+		);
+	},
+
+	/**
 	 * Reloads the content frame with the current module and node id
 	 *
 	 * @param {Ext.tree.TreeNode} node

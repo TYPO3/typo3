@@ -42,6 +42,9 @@
 			<trans-unit id="disabled" xml:space="preserve">
 				<source>Disabled</source>
 			</trans-unit>
+			<trans-unit id="hide" xml:space="preserve">
+				<source>Hide in menu</source>
+			</trans-unit>
 			<trans-unit id="down" xml:space="preserve">
 				<source>Down</source>
 			</trans-unit>
@@ -62,6 +65,9 @@
 			</trans-unit>
 			<trans-unit id="enabled" xml:space="preserve">
 				<source>Enabled</source>
+			</trans-unit>
+			<trans-unit id="show" xml:space="preserve">
+				<source>Show in menu</source>
 			</trans-unit>
 			<trans-unit id="file" xml:space="preserve">
 				<source>File</source>

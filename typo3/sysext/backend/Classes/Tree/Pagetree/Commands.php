@@ -83,6 +83,28 @@ class Commands {
 	}
 
 	/**
+	 * Shows the page in menu
+	 *
+	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
+	 * @return void
+	 */
+	static public function showNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node) {
+		$data['pages'][$node->getWorkspaceId()]['nav_hide'] = 0;
+		self::processTceCmdAndDataMap(array(), $data);
+	}
+
+	/**
+	 * Hides the page in menu
+	 *
+	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
+	 * @return void
+	 */
+	static public function hideNode(\TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node) {
+		$data['pages'][$node->getWorkspaceId()]['nav_hide'] = 1;
+		self::processTceCmdAndDataMap(array(), $data);
+	}
+
+	/**
 	 * Delete the page
 	 *
 	 * @param \TYPO3\CMS\Backend\Tree\Pagetree\PagetreeNode $node
