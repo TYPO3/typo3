@@ -749,7 +749,7 @@ class ClickMenu {
 			}
 			// Info
 			if (!in_array('info', $this->disabledItems)) {
-				$menuItems['info'] = $this->DB_info($identifier, '');
+				$menuItems['info'] = $this->fileInfo($identifier);
 			}
 			$menuItems[] = 'spacer';
 			// Copy:
@@ -899,6 +899,16 @@ class ClickMenu {
 		}
 		$editOnClick = 'if(' . $conf . '){' . $loc . '.location.href=top.TS.PATH_typo3+\'' . $this->clipObj->pasteUrl('_FILE', $path, 0) . '&redirect=\'+top.rawurlencode(' . $this->frameLocation(($loc . '.document')) . '.pathname+' . $this->frameLocation(($loc . '.document')) . '.search);  }hideCM();top.nav.refresh();';
 		return $this->linkItem($this->label('pasteinto'), $this->excludeIcon(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-paste-into')), $editOnClick . 'return false;');
+	}
+
+	/**
+	 * Adding ClickMenu element for file info
+	 *
+	 * @param string $identifier The combined identifier of the file.
+	 * @return array Item array, element in $menuItems
+	 */
+	protected function fileInfo($identifier) {
+		return $this->DB_info('_FILE', $identifier);
 	}
 
 	/***************************************
