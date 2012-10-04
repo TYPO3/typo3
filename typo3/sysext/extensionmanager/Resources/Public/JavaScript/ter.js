@@ -10,6 +10,18 @@ jQuery(document).ready(function() {
 		"fnDrawCallback": bindDownload
 	});
 
+	jQuery('#terVersionTable').dataTable({
+		"bJQueryUI":true,
+		"bLengthChange":false,
+		'iDisplayLength':15,
+		"bStateSave":false,
+		"bInfo":false,
+		"bPaginate":false,
+		"bFilter":false,
+		"aaSorting":[[0, 'desc']],
+		"fnDrawCallback":bindDownload
+	});
+
 	jQuery('#terSearchTable').dataTable({
 		"sPaginationType":"full_numbers",
 		"bJQueryUI":true,

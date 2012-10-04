@@ -14,7 +14,7 @@
 		<f:form.submit value="Reset Search"/>
 	</f:form>
 	<f:widget.paginate objects="{extensions}" as="paginatedExtensions" configuration="{itemsPerPage: 15, maximumNumberOfLinks: 2}">
-	<table id="terTable" class="typo3-extension-list">
+	<table id="terVersionTable" class="typo3-extension-list">
 			<f:render partial="List/TerShowVersionsTable" arguments="{paginatedExtensions:paginatedExtensions}" />
 	</table>
 	</f:widget.paginate>
