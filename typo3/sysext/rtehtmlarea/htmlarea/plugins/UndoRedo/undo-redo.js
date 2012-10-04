@@ -166,7 +166,8 @@ HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
 			if ((!Ext.isIE && !(Ext.isOpera && navigator.userAgent.toLowerCase().indexOf('presto/2.1') != -1)) || (Ext.isIE && selection.type.toLowerCase() != 'control')) {
 					// Catch error in FF when the selection contains no usable range
 				try {
-					bookmark = this.editor.getBookmark(this.editor._createRange(selection));
+					var range = this.editor._createRange(selection);
+					bookmark = this.editor.getBookmark(range);
 				} catch (e) {
 					bookmark = null;
 				}
@@ -174,9 +175,13 @@ HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
 				// Get the bookmarked html text and remove the bookmark
 			if (bookmark) {
 				bookmarkedText = this.editor.getInnerHTML();
+					// Working aroung buggy Google Chrome 22 (selection broken by inserted bookmark node)
+				if (Ext.isChrome) {
+					this.editor.setHTML(bookmarkedText);
+				}
 				var range = this.editor.moveToBookmark(bookmark);
 					// Restore Firefox selection
-				if (Ext.isGecko) {
+				if (Ext.isGecko || Ext.isChrome) {
 					this.editor.emptySelection(selection);
 					this.editor.addRangeToSelection(selection, range);
 				}
