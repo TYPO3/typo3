@@ -72,7 +72,7 @@ class t3lib_dbTest extends tx_phpunit_testcase {
 		for ($i = 0; $i < 256; $i ++) {
 			$binaryString .= chr($i);
 		}
-		
+
 		$this->fixture->exec_INSERTquery(
 			$this->testTable,
 			array('fieldblob' => $binaryString)
@@ -148,6 +148,79 @@ class t3lib_dbTest extends tx_phpunit_testcase {
 			'foo\_bar\%',
 			$this->fixture->escapeStrForLike('foo_bar%', 'table')
 		);
+	}
+
+	/////////////////////////////////////////////////
+	// Tests concerning stripOrderByForOrderByKeyword
+	/////////////////////////////////////////////////
+
+
+	/**
+	 * Data Provider for stripGroupByForGroupByKeyword()
+	 *
+	 * @see stripOrderByForOrderByKeyword()
+	 * @return array
+	 */
+	public function stripOrderByForOrderByKeywordDataProvider() {
+		return array(
+			'single ORDER BY' => array('ORDER BY name, tstamp', 'name, tstamp'),
+			'single ORDER BY in lower case' => array('order by name, tstamp', 'name, tstamp'),
+			'ORDER BY with additional space behind' => array('ORDER BY  name, tstamp', 'name, tstamp'),
+			'ORDER BY without space between the words' => array('ORDERBY name, tstamp', 'name, tstamp'),
+			'ORDER BY added twice' => array('ORDER BY ORDER BY name, tstamp', 'name, tstamp'),
+			'ORDER BY added twice without spaces in the first occurrence' => array('ORDERBY ORDER BY  name, tstamp', 'name, tstamp'),
+			'ORDER BY added twice without spaces in the second occurrence' => array('ORDER BYORDERBY name, tstamp', 'name, tstamp'),
+			'ORDER BY added twice without spaces' => array('ORDERBYORDERBY name, tstamp', 'name, tstamp'),
+			'ORDER BY added twice without spaces afterwards' => array('ORDERBYORDERBYname, tstamp', 'name, tstamp'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider stripOrderByForOrderByKeywordDataProvider
+	 * @param string $orderByClause The clause to test
+	 * @param string $expectedResult The expected result
+	 * @return void
+	 */
+	public function stripOrderByForOrderByKeyword($orderByClause, $expectedResult) {
+		$strippedQuery = $this->fixture->stripOrderBy($orderByClause);
+		$this->assertEquals($expectedResult, $strippedQuery);
+	}
+
+	/////////////////////////////////////////////////
+	// Tests concerning stripGroupByForGroupByKeyword
+	/////////////////////////////////////////////////
+
+	/**
+	 * Data Provider for stripGroupByForGroupByKeyword()
+	 *
+	 * @see stripGroupByForGroupByKeyword()
+	 * @return array
+	 */
+	public function stripGroupByForGroupByKeywordDataProvider() {
+		return array(
+			'single GROUP BY' => array('GROUP BY name, tstamp', 'name, tstamp'),
+			'single GROUP BY in lower case' => array('group by name, tstamp', 'name, tstamp'),
+			'GROUP BY with additional space behind' => array('GROUP BY  name, tstamp', 'name, tstamp'),
+			'GROUP BY without space between the words' => array('GROUPBY name, tstamp', 'name, tstamp'),
+			'GROUP BY added twice' => array('GROUP BY GROUP BY name, tstamp', 'name, tstamp'),
+			'GROUP BY added twice without spaces in the first occurrence' => array('GROUPBY GROUP BY  name, tstamp', 'name, tstamp'),
+			'GROUP BY added twice without spaces in the second occurrence' => array('GROUP BYGROUPBY name, tstamp', 'name, tstamp'),
+			'GROUP BY added twice without spaces' => array('GROUPBYGROUPBY name, tstamp', 'name, tstamp'),
+			'GROUP BY added twice without spaces afterwards' => array('GROUPBYGROUPBYname, tstamp', 'name, tstamp'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider stripGroupByForGroupByKeywordDataProvider
+	 * @param string $groupByClause The clause to test
+	 * @param string $expectedResult The expected result
+	 * @return void
+	 */
+	public function stripGroupByForGroupByKeyword($groupByClause, $expectedResult) {
+		$strippedQuery = $this->fixture->stripGroupBy($groupByClause);
+		$this->assertEquals($expectedResult, $strippedQuery);
 	}
 }
 ?>
