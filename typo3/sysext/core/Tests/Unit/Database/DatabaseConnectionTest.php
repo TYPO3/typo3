@@ -106,6 +106,77 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals('foo\\_bar\\%', $this->fixture->escapeStrForLike('foo_bar%', 'table'));
 	}
 
+	/////////////////////////////////////////////////
+	// Tests concerning stripOrderByForOrderByClause
+	/////////////////////////////////////////////////
+
+
+	/**
+	 * Data Provider for stripGroupByForGroupByClause()
+	 *
+	 * @see stripOrderByForOrderByClause()
+	 * @return array
+	 */
+	public function stripOrderByForOrderByClauseDataProvider() {
+		return array(
+			'single ORDER BY' => array('ORDER BY name, tstamp', 'name, tstamp'),
+			'ORDER BY with additional space behind' => array('ORDER BY  name, tstamp', 'name, tstamp'),
+			'ORDER BY without space between the words' => array('ORDERBY name, tstamp', 'name, tstamp'),
+			'ORDER BY added twice' => array('ORDER BY ORDER BY name, tstamp', 'name, tstamp'),
+			'ORDER BY added twice without spaces in the first occurrence' => array('ORDERBY ORDER BY  name, tstamp', 'name, tstamp'),
+			'ORDER BY added twice without spaces in the second occurrence' => array('ORDER BYORDERBY name, tstamp', 'name, tstamp'),
+			'ORDER BY added twice without spaces' => array('ORDERBYORDERBY name, tstamp', 'name, tstamp'),
+			'ORDER BY added twice without spaces afterwards' => array('ORDERBYORDERBYname, tstamp', 'name, tstamp'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider stripOrderByForOrderByClauseDataProvider
+	 * @param string $orderByClause The clause to test
+	 * @param string $expectedResult The expected result
+	 * @return void
+	 */
+	public function stripOrderByForOrderByClause($orderByClause, $expectedResult) {
+		$strippedQuery = $this->fixture->stripOrderBy($orderByClause);
+		$this->assertEquals($expectedResult, $strippedQuery);
+	}
+
+	/////////////////////////////////////////////////
+	// Tests concerning stripGroupByForGroupByClause
+	/////////////////////////////////////////////////
+
+	/**
+	 * Data Provider for stripGroupByForGroupByClause()
+	 *
+	 * @see stripGroupByForGroupByClause()
+	 * @return array
+	 */
+	public function stripGroupByForGroupByClauseDataProvider() {
+		return array(
+			'single GROUP BY' => array('GROUP BY name, tstamp', 'name, tstamp'),
+			'GROUP BY with additional space behind' => array('GROUP BY  name, tstamp', 'name, tstamp'),
+			'GROUP BY without space between the words' => array('GROUPBY name, tstamp', 'name, tstamp'),
+			'GROUP BY added twice' => array('GROUP BY GROUP BY name, tstamp', 'name, tstamp'),
+			'GROUP BY added twice without spaces in the first occurrence' => array('GROUPBY GROUP BY  name, tstamp', 'name, tstamp'),
+			'GROUP BY added twice without spaces in the second occurrence' => array('GROUP BYGROUPBY name, tstamp', 'name, tstamp'),
+			'GROUP BY added twice without spaces' => array('GROUPBYGROUPBY name, tstamp', 'name, tstamp'),
+			'GROUP BY added twice without spaces afterwards' => array('GROUPBYGROUPBYname, tstamp', 'name, tstamp'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider stripGroupByForGroupByClauseDataProvider
+	 * @param string $groupByClause The clause to test
+	 * @param string $expectedResult The expected result
+	 * @return void
+	 */
+	public function stripGroupByForGroupByClause($groupByClause, $expectedResult) {
+		$strippedQuery = $this->fixture->stripGroupBy($groupByClause);
+		$this->assertEquals($expectedResult, $strippedQuery);
+	}
+
 }
 
 ?>
