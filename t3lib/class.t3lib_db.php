@@ -818,7 +818,7 @@ class t3lib_DB {
 	 * @see exec_SELECTquery(), stripGroupBy()
 	 */
 	function stripOrderBy($str) {
-		return preg_replace('/^ORDER[[:space:]]+BY[[:space:]]+/i', '', trim($str));
+		return preg_replace('/^(?:ORDER[[:space:]]*BY[[:space:]]*)+/i', '', trim($str));
 	}
 
 	/**
@@ -831,7 +831,7 @@ class t3lib_DB {
 	 * @see exec_SELECTquery(), stripOrderBy()
 	 */
 	function stripGroupBy($str) {
-		return preg_replace('/^GROUP[[:space:]]+BY[[:space:]]+/i', '', trim($str));
+		return preg_replace('/^(?:GROUP[[:space:]]*BY[[:space:]]*)+/i', '', trim($str));
 	}
 
 	/**
