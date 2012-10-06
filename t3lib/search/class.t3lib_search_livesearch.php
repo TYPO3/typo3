@@ -411,7 +411,10 @@ class t3lib_search_livesearch {
 		$orderBy = '';
 
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl']) && array_key_exists('sortby', $GLOBALS['TCA'][$tableName]['ctrl'])) {
-			$orderBy = 'ORDER BY ' . $GLOBALS['TCA'][$tableName]['ctrl']['sortby'];
+			$sortBy = trim($GLOBALS['TCA'][$tableName]['ctrl']['sortby']);
+			if (!empty($sortBy)) {
+				$orderBy = 'ORDER BY ' . $sortBy;
+			}
 		} else {
 			$orderBy = $GLOBALS['TCA'][$tableName]['ctrl']['default_sortby'];
 		}
