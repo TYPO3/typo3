@@ -778,7 +778,7 @@ class DatabaseConnection {
 	 * @todo Define visibility
 	 */
 	public function stripOrderBy($str) {
-		return preg_replace('/^ORDER[[:space:]]+BY[[:space:]]+/i', '', trim($str));
+		return preg_replace('/^(?:ORDER[[:space:]]*BY[[:space:]]*)+/i', '', trim($str));
 	}
 
 	/**
@@ -792,7 +792,7 @@ class DatabaseConnection {
 	 * @todo Define visibility
 	 */
 	public function stripGroupBy($str) {
-		return preg_replace('/^GROUP[[:space:]]+BY[[:space:]]+/i', '', trim($str));
+		return preg_replace('/^(?:GROUP[[:space:]]*BY[[:space:]]*)+/i', '', trim($str));
 	}
 
 	/**

@@ -106,6 +106,60 @@ class DatabaseConnectionTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals('foo\\_bar\\%', $this->fixture->escapeStrForLike('foo_bar%', 'table'));
 	}
 
+	/////////////////////////////////////////////////
+	// Tests concerning stripOrderByForOrderByClause
+	/////////////////////////////////////////////////
+	/**
+	 * @test
+	 */
+	public function stripOrderByForOrderByClause() {
+
+		$orderByClauses = array(
+			'ORDER BY name, tstamp DESC',
+			'ORDER BY  name, tstamp DESC',
+			'ORDERBY name, tstamp DESC',
+			'ORDER BY ORDER BY name, tstamp DESC',
+			'ORDERBY ORDER BY  name, tstamp DESC',
+			'ORDER BYORDERBY name, tstamp DESC',
+			'ORDERBYORDERBY name, tstamp DESC',
+			'ORDERBYORDERBYname, tstamp DESC',
+			'ORDERBYORDERBY ORDER BY name, tstamp DESC'
+		);
+
+		foreach ($orderByClauses as $orderByClause) {
+			$out = $this->fixture->stripOrderBy($orderByClause);
+			$this->assertRegExp('/^(?:ORDER[[:space:]]*BY[[:space:]]*)+name, tstamp DESC/i', $orderByClause);
+			$this->assertEquals('name, tstamp DESC', $out);
+		}
+	}
+
+	/////////////////////////////////////////////////
+	// Tests concerning stripGroupByForGroupByClause
+	/////////////////////////////////////////////////
+	/**
+	 * @test
+	 */
+	public function stripGroupByForGroupByClause() {
+
+		$groupByClauses = array(
+			'GROUP BY name, tstamp',
+			'GROUP BY  name, tstamp',
+			'GROUPBY name, tstamp',
+			'GROUP BY GROUP BY name, tstamp',
+			'GROUPBY GROUP BY  name, tstamp',
+			'GROUP BYGROUPBY name, tstamp',
+			'GROUPBYGROUPBY name, tstamp',
+			'GROUPBYGROUPBYname, tstamp',
+			'GROUPBYGROUPBY GROUP BY name, tstamp'
+		);
+
+		foreach ($groupByClauses as $groupByClause) {
+			$out = $this->fixture->stripGroupBy($groupByClause);
+			$this->assertRegExp('/^(?:GROUP[[:space:]]*BY[[:space:]]*)+name, tstamp/i', $groupByClause);
+			$this->assertEquals('name, tstamp', $out);
+		}
+	}
+
 }
 
 ?>
