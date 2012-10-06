@@ -164,26 +164,23 @@ HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
 		if (this.getEditorMode() === 'wysiwyg' && this.editor.isEditable()) {
 			if ((!HTMLArea.isIEBeforeIE9 && !(Ext.isOpera && navigator.userAgent.toLowerCase().indexOf('presto/2.1') != -1)) || (HTMLArea.isIEBeforeIE9 && this.editor.getSelection().getType() !== 'Control')) {
 					// Catch error in FF when the selection contains no usable range
-				try {
-					bookmark = this.editor.getBookMark().get(this.editor.getSelection().createRange());
-				} catch (e) {
+				//try {
+					var range = this.editor.getSelection().createRange();
+					bookmark = this.editor.getBookMark().get(range, true);
+				/*} catch (e) {
 					bookmark = null;
-				}
+				}*/
 			}
 				// Get the bookmarked html text and remove the bookmark
-			if (bookmark) {
+			if (HTMLArea.isIEBeforeIE9 && bookmark) {
 				bookmarkedText = this.editor.getInnerHTML();
-				var range = this.editor.getBookMark().moveTo(bookmark);
-					// Restore Firefox selection
-				if (Ext.isGecko) {
-					this.editor.getSelection().selectRange(range);
-				}
+				this.editor.getBookMark().moveTo(bookmark);
 			}
 		}
 		return {
-			text		: this.editor.getInnerHTML(),
-			bookmark	: bookmark,
-			bookmarkedText	: bookmarkedText
+			text: this.editor.getInnerHTML(),
+			bookmark: bookmark,
+			bookmarkedText: bookmarkedText
 		};
 	},
 	/*
@@ -217,7 +214,11 @@ HTMLArea.UndoRedo = Ext.extend(HTMLArea.Plugin, {
 	setContent: function (undoPosition) {
 		var bookmark = this.undoQueue[undoPosition].bookmark;
 		if (bookmark) {
-			this.editor.setHTML(this.undoQueue[undoPosition].bookmarkedText);
+			if (HTMLArea.isIEBeforeIE9) {
+				this.editor.setHTML(this.undoQueue[undoPosition].bookmarkedText);
+			} else {
+				this.editor.setHTML(this.undoQueue[undoPosition].text);
+			}
 			this.editor.getSelection().selectRange(this.editor.getBookMark().moveTo(bookmark));
 			this.editor.scrollToCaret();
 		} else {
