@@ -305,6 +305,7 @@ $TCA['sys_category'] = array(
 		'delete' => 'deleted',
 		'default_sortby' => 'ORDER BY title ASC',
 		'dividers2tabs' => TRUE,
+		'rootLevel' => -1,
 		'versioningWS' => 2,
 		'versioning_followPages' => TRUE,
 		'origUid' => 't3_origuid',
