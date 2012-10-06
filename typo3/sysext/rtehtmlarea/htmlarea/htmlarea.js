@@ -2375,6 +2375,43 @@ HTMLArea.Editor = Ext.extend(Ext.util.Observable, {
 		}
 	},
 	/*
+	 * Get the node given its position in the document tree.
+	 * Adapted from FCKeditor
+	 * See HTMLArea.DOM.Node::getPositionWithinTree
+	 *
+	 * @param	array		position: the position of the node in the document tree
+	 * @param	boolean		normalized: if true, a normalized position is given
+	 *
+	 * @return	objet		the node
+	 */
+	getNodeByPosition: function (position, normalized) {
+		var current = this.document.documentElement;
+		for (var i = 0, n = position.length; current && i < n; i++) {
+			var target = position[i];
+			if (normalized) {
+				var currentIndex = -1;
+				for (var j = 0, m = current.childNodes.length; j < m; j++) {
+					var candidate = current.childNodes[j];
+					if (
+						candidate.nodeType == HTMLArea.DOM.TEXT_NODE
+						&& candidate.previousSibling
+						&& candidate.previousSibling.nodeType == HTMLArea.DOM.TEXT_NODE
+					) {
+						continue;
+					}
+					currentIndex++;
+					if (currentIndex == target) {
+						current = candidate;
+						break;
+					}
+				}
+			} else {
+				current = current.childNodes[target];
+			}
+		}
+		return current ? current : null;
+	},
+	/*
 	 * Instantiate the specified plugin and register it with the editor
 	 *
 	 * @param	string		plugin: the name of the plugin
@@ -3085,6 +3122,31 @@ HTMLArea.DOM = function () {
 				}
 			}
 			return ancestor;
+		},
+		/*
+		 * Get the position of the node within the children of its parent
+		 * Adapted from FCKeditor
+		 *
+		 * @param	object		node: the DOM node
+		 * @param	boolean		normalized: if true, a normalized position is calculated
+		 *
+		 * @return	integer		the position of the node
+		 */
+		getPositionWithinParent: function (node, normalized) {
+			var current = node,
+				position = 0;
+			while (current = current.previousSibling) {
+				// For a normalized position, do not count any empty text node or any text node following another one
+				if (
+					normalized
+					&& current.nodeType == HTMLArea.DOM.TEXT_NODE
+					&& (!current.nodeValue.length || (current.previousSibling && current.previousSibling.nodeType == HTMLArea.DOM.TEXT_NODE))
+				) {
+					continue;
+				}
+				position++;
+			}
+			return position;
 		},
 		/*
 		 * Determine whether a given node has any allowed attributes
@@ -4545,6 +4607,32 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 	},
 	/*
 	 * Get a bookMark
+	 *
+	 * @param	object		range: the range to bookMark
+	 * @param	boolean		nonIntrusive: if true, a non-intrusive bookmark is requested
+	 *
+	 * @return	object		the bookMark
+	 */
+	get: function (range, nonIntrusive) {
+		var bookMark;
+		if (HTMLArea.isIEBeforeIE9) {
+			// Bookmarking will not work on control ranges
+			try {
+				bookMark = range.getBookmark();
+			} catch (e) {
+				bookMark = null;
+			}
+		} else {
+			if (nonIntrusive) {
+				bookMark = this.getNonIntrusiveBookMark(range, true);
+			} else {
+				bookMark = this.getIntrusiveBookMark(range);
+			}
+		}
+		return bookMark;
+	},
+	/*
+	 * Get an intrusive bookMark
 	 * Adapted from FCKeditor
 	 * This is an "intrusive" way to create a bookMark. It includes <span> tags
 	 * in the range boundaries. The advantage of it is that it is possible to
@@ -4554,54 +4642,141 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 	 *
 	 * @return	object		the bookMark
 	 */
-	get: function (range) {
-		var bookMark;
-		if (HTMLArea.isIEBeforeIE9) {
-				// Bookmarking will not work on control ranges
-			try {
-				bookMark = range.getBookmark();
-			} catch (e) {
-				bookMark = null;
-			}
-		} else {
-				// Create the bookmark info (random IDs).
-			var bookMark = {
-				startId : (new Date()).valueOf() + Math.floor(Math.random()*1000) + 'S',
-				endId   : (new Date()).valueOf() + Math.floor(Math.random()*1000) + 'E'
-			};
-			var startSpan;
-			var endSpan;
-			var rangeClone = range.cloneRange();
-				// For collapsed ranges, add just the start marker
-			if (!range.collapsed ) {
-				endSpan = this.document.createElement('span');
-				endSpan.style.display = 'none';
-				endSpan.id = bookMark.endId;
-				endSpan.setAttribute('data-htmlarea-bookmark', true);
-				endSpan.innerHTML = '&nbsp;';
-				rangeClone.collapse(false);
-				rangeClone.insertNode(endSpan);
-			}
-			startSpan = this.document.createElement('span');
-			startSpan.style.display = 'none';
-			startSpan.id = bookMark.startId;
-			startSpan.setAttribute('data-htmlarea-bookmark', true);
-			startSpan.innerHTML = '&nbsp;';
-			var rangeClone = range.cloneRange();
-			rangeClone.collapse(true);
-			rangeClone.insertNode(startSpan);
-			bookMark.startNode = startSpan;
-			bookMark.endNode = endSpan;
-				// Update the range position.
-			if (endSpan) {
-				range.setEndBefore(endSpan);
-				range.setStartAfter(startSpan);
-			} else {
-				range.setEndAfter(startSpan);
-				range.collapse(false);
-			}
-			return bookMark;
+	getIntrusiveBookMark: function (range) {
+		// Create the bookmark info (random IDs).
+		var bookMark = {
+			nonIntrusive: false,
+			startId: (new Date()).valueOf() + Math.floor(Math.random()*1000) + 'S',
+			endId: (new Date()).valueOf() + Math.floor(Math.random()*1000) + 'E'
+		};
+		var startSpan;
+		var endSpan;
+		var rangeClone = range.cloneRange();
+		// For collapsed ranges, add just the start marker
+		if (!range.collapsed ) {
+			endSpan = this.document.createElement('span');
+			endSpan.style.display = 'none';
+			endSpan.id = bookMark.endId;
+			endSpan.setAttribute('data-htmlarea-bookmark', true);
+			endSpan.innerHTML = '&nbsp;';
+			rangeClone.collapse(false);
+			rangeClone.insertNode(endSpan);
 		}
+		startSpan = this.document.createElement('span');
+		startSpan.style.display = 'none';
+		startSpan.id = bookMark.startId;
+		startSpan.setAttribute('data-htmlarea-bookmark', true);
+		startSpan.innerHTML = '&nbsp;';
+		var rangeClone = range.cloneRange();
+		rangeClone.collapse(true);
+		rangeClone.insertNode(startSpan);
+		bookMark.startNode = startSpan;
+		bookMark.endNode = endSpan;
+		// Update the range position.
+		if (endSpan) {
+			range.setEndBefore(endSpan);
+			range.setStartAfter(startSpan);
+		} else {
+			range.setEndAfter(startSpan);
+			range.collapse(false);
+		}
+		return bookMark;
+	},
+	/*
+	 * Get a non-intrusive bookMark
+	 * Adapted from FCKeditor
+	 *
+	 * @param	object		range: the range to bookMark
+	 * @param	boolean		normalized: if true, normalized enpoints are calculated
+	 *
+	 * @return	object		the bookMark
+	 */
+	getNonIntrusiveBookMark: function (range, normalized) {
+		var startContainer = range.startContainer,
+			endContainer = range.endContainer,
+			startOffset = range.startOffset,
+			endOffset = range.endOffset,
+			collapsed = range.collapsed,
+			child,
+			previous,
+			bookMark = {};
+		if (!startContainer || !endContainer) {
+			bookMark = {
+				nonIntrusive: true,
+				start: 0,
+				end: 0
+			};
+		} else {
+			if (normalized) {
+				// Find out if the start is pointing to a text node that might be normalized
+				if (startContainer.nodeType == HTMLArea.DOM.NODE_ELEMENT) {
+					child = startContainer.childNodes[startOffset];
+					// In this case, move the start to that text node
+					if (
+						child
+						&& child.nodeType == HTMLArea.DOM.NODE_TEXT
+						&& startOffset > 0
+						&& child.previousSibling.nodeType == HTMLArea.DOM.NODE_TEXT
+					) {
+						startContainer = child;
+						startOffset = 0;
+					}
+					// Get the normalized offset
+					if (child && child.nodeType == HTMLArea.DOM.NODE_ELEMENT) {
+						startOffset = HTMLArea.DOM.getPositionWithinParent(child, true);
+					}
+				}
+				// Normalize the start
+				while (
+					startContainer.nodeType == HTMLArea.DOM.NODE_TEXT
+					&& (previous = startContainer.previousSibling)
+					&& previous.nodeType == HTMLArea.DOM.NODE_TEXT
+				) {
+					startContainer = previous;
+					startOffset += previous.nodeValue.length;
+				}
+				// Process the end only if not collapsed
+				if (!collapsed) {
+					// Find out if the start is pointing to a text node that will be normalized
+					if (endContainer.nodeType == HTMLArea.DOM.NODE_ELEMENT) {
+						child = endContainer.childNodes[endOffset];
+						// In this case, move the end to that text node
+						if (
+							child
+							&& child.nodeType == HTMLArea.DOM.NODE_TEXT
+							&& endOffset > 0
+							&& child.previousSibling.nodeType == HTMLArea.DOM.NODE_TEXT
+						) {
+							endContainer = child;
+							endOffset = 0;
+						}
+						// Get the normalized offset
+						if (child && child.nodeType == HTMLArea.DOM.NODE_ELEMENT) {
+							endOffset = HTMLArea.DOM.getPositionWithinParent(child, true);
+						}
+					}
+					// Normalize the end
+					while (
+						endContainer.nodeType == HTMLArea.DOM.NODE_TEXT
+						&& (previous = endContainer.previousSibling)
+						&& previous.nodeType == HTMLArea.DOM.NODE_TEXT
+					) {
+						endContainer = previous;
+						endOffset += previous.nodeValue.length;
+					}
+				}
+			}
+			bookMark = {
+				start: this.editor.domNode.getPositionWithinTree(startContainer, normalized),
+				end: collapsed ? null : getPositionWithinTree(endContainer, normalized),
+				startOffset: startOffset,
+				endOffset: endOffset,
+				normalized: normalized,
+				collapsed: collapsed,
+				nonIntrusive: true
+			};
+		}
+		return bookMark;
 	},
 	/*
 	 * Get the end point of the bookMark
@@ -4620,8 +4795,7 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 		}
 	},
 	/*
-	 * Move the range to the bookmark
-	 * Adapted from FCKeditor
+	 * Get a range and move it to the bookMark
 	 *
 	 * @param	object		bookMark: the bookmark to move to
 	 *
@@ -4634,30 +4808,75 @@ HTMLArea.DOM.BookMark = Ext.extend(HTMLArea.DOM.BookMark, {
 				range.moveToBookmark(bookMark);
 			}
 		} else {
-			var startSpan  = this.getEndPoint(bookMark, true);
-			var endSpan    = this.getEndPoint(bookMark, false);
-			var parent;
-			if (startSpan) {
-					// If the previous sibling is a text node, let the anchorNode have it as parent
-				if (startSpan.previousSibling && startSpan.previousSibling.nodeType === HTMLArea.DOM.TEXT_NODE) {
-					range.setStart(startSpan.previousSibling, startSpan.previousSibling.data.length);
-				} else {
-					range.setStartBefore(startSpan);
-				}
-				HTMLArea.DOM.removeFromParent(startSpan);
+			if (bookMark.nonIntrusive) {
+				range = this.moveToNonIntrusiveBookMark(range, bookMark);
 			} else {
-					// For some reason, the startSpan was removed or its id attribute was removed so that it cannot be retrieved
-				range.setStart(this.document.body, 0);
+				range = this.moveToIntrusiveBookMark(range, bookMark);
 			}
-				// If the bookmarked range was collapsed, the end span will not be available
-			if (endSpan) {
-					// If the next sibling is a text node, let the focusNode have it as parent
-				if (endSpan.nextSibling && endSpan.nextSibling.nodeType === HTMLArea.DOM.TEXT_NODE) {
-					range.setEnd(endSpan.nextSibling, 0);
-				} else {
-					range.setEndBefore(endSpan);
-				}
-				HTMLArea.DOM.removeFromParent(endSpan);
+		}
+		return range;
+	},
+	/*
+	 * Move the range to the intrusive bookMark
+	 * Adapted from FCKeditor
+	 *
+	 * @param	object		range: the range to be moved
+	 * @param	object		bookMark: the bookmark to move to
+	 *
+	 * @return	object		the range that was bookmarked
+	 */
+	moveToIntrusiveBookMark: function (range, bookMark) {
+		var startSpan = this.getEndPoint(bookMark, true),
+			endSpan = this.getEndPoint(bookMark, false),
+			parent;
+		if (startSpan) {
+			// If the previous sibling is a text node, let the anchorNode have it as parent
+			if (startSpan.previousSibling && startSpan.previousSibling.nodeType === HTMLArea.DOM.TEXT_NODE) {
+				range.setStart(startSpan.previousSibling, startSpan.previousSibling.data.length);
+			} else {
+				range.setStartBefore(startSpan);
+			}
+			HTMLArea.DOM.removeFromParent(startSpan);
+		} else {
+			// For some reason, the startSpan was removed or its id attribute was removed so that it cannot be retrieved
+			range.setStart(this.document.body, 0);
+		}
+		// If the bookmarked range was collapsed, the end span will not be available
+		if (endSpan) {
+			// If the next sibling is a text node, let the focusNode have it as parent
+			if (endSpan.nextSibling && endSpan.nextSibling.nodeType === HTMLArea.DOM.TEXT_NODE) {
+				range.setEnd(endSpan.nextSibling, 0);
+			} else {
+				range.setEndBefore(endSpan);
+			}
+			HTMLArea.DOM.removeFromParent(endSpan);
+		} else {
+			range.collapse(true);
+		}
+		return range;
+	},
+	/*
+	 * Move the range to the non-intrusive bookMark
+	 * Adapted from FCKeditor
+	 *
+	 * @param	object		range: the range to be moved
+	 * @param	object		bookMark: the bookMark to move to
+	 *
+	 * @return	object		the range that was bookmarked
+	 */
+	moveToNonIntrusiveBookMark: function (range, bookMark) {
+		if (bookMark.start) {
+			// Get the start information
+			var startContainer = this.editor.getNodeByPosition(bookMark.start, bookMark.normalized),
+				startOffset = bookMark.startOffset;
+			// Set the start boundary
+			range.setStart(startContainer, startOffset);
+			// Get the end information
+			var endContainer = bookMark.end && this.editor.getNodeByPosition(bookMark.end, bookMark.normalized),
+				endOffset = bookMark.endOffset;
+			// Set the end boundary. If not available, collapse the range
+			if (endContainer) {
+				range.setEnd(endContainer, endOffset);
 			} else {
 				range.collapse(true);
 			}
@@ -4801,6 +5020,34 @@ HTMLArea.DOM.Node = Ext.extend(HTMLArea.DOM.Node, {
 			}
 			this.selection.selectNodeContents(element, false);
 		}
+	},
+	/*
+	 * Get the position of the node within the document tree.
+	 * The tree address returned is an array of integers, with each integer
+	 * indicating a child index of a DOM node, starting from
+	 * document.documentElement.
+	 * The position cannot be used for finding back the DOM tree node once
+	 * the DOM tree structure has been modified.
+	 * Adapted from FCKeditor
+	 *
+	 * @param	object		node: the DOM node
+	 * @param	boolean		normalized: if true, a normalized position is calculated
+	 *
+	 * @return	array		the position of the node
+	 */
+	getPositionWithinTree: function (node, normalized) {
+		var documentElement = this.document.documentElement,
+			current = node,
+			position = [];
+		while (current && current != documentElement) {
+			var parentNode = current.parentNode;
+			if (parentNode) {
+				// Get the current node position
+				position.unshift(HTMLArea.DOM.getPositionWithinParent(current, normalized));
+			}
+			current = parentNode;
+		}
+		return position;
 	},
 	/*
 	 * Clean Apple wrapping span and font elements under the specified node
