@@ -1528,7 +1528,7 @@ class PageLayoutView extends \TYPO3\CMS\Recordlist\RecordList\AbstractDatabaseRe
 				$recs[$c] = $row['uid'];
 				// Create the list of the next three ids (for editing links...)
 				for ($a = 0; $a < $nextTree; $a++) {
-					if (isset($recs[$c - $a])) {
+					if (isset($recs[$c - $a]) && !\TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->tt_contentData['nextThree'][$recs[$c - $a]], $row['uid'])) {
 						$this->tt_contentData['nextThree'][$recs[$c - $a]] .= $row['uid'] . ',';
 					}
 				}
