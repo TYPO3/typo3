@@ -167,6 +167,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	 */
 	public function addToCompareListAction($uid) {
 		$this->moduleData->attachUidCompareUser($uid);
+		$this->moduleDataStorageService->persistModuleData($this->moduleData);
 		$this->forward('index');
 	}
 
@@ -178,6 +179,7 @@ class BackendUserController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCont
 	 */
 	public function removeFromCompareListAction($uid) {
 		$this->moduleData->detachUidCompareUser($uid);
+		$this->moduleDataStorageService->persistModuleData($this->moduleData);
 		$this->forward('index');
 	}
 
