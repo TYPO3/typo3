@@ -46,7 +46,8 @@ class TypoScriptConstantsViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abs
 		'boolean' => 'renderCheckbox',
 		'user' => 'renderUserFunction',
 		'small' => 'renderSmallTextField',
-		'string' => 'renderTextField'
+		'string' => 'renderTextField',
+		'input' => 'renderTextField'	// only for backwards compatibility
 	);
 
 	public $tagName = 'input';
