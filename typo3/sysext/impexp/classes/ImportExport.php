@@ -80,7 +80,7 @@ class ImportExport {
 	/**
 	 * @todo Define visibility
 	 */
-	public $fileadminFolderName = 'fileadmin';
+	public $fileadminFolderName = '';
 
 	// Whether "import" or "export" mode of object. Set through init() function
 	/**
@@ -310,6 +310,7 @@ class ImportExport {
 		$this->compress = function_exists('gzcompress');
 		$this->dontCompress = $dontCompress;
 		$this->mode = $mode;
+		$this->fileadminFolderName = $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : 'fileadmin';
 	}
 
 	/**************************
