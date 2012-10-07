@@ -85,13 +85,21 @@ class SoftReferenceIndex {
 	/**
 	 * @todo Define visibility
 	 */
-	public $fileAdminDir = 'fileadmin';
+	public $fileAdminDir = '';
 
 	// Internal:
 	/**
 	 * @todo Define visibility
 	 */
 	public $tokenID_basePrefix = '';
+
+	/**
+	 * Class construct to set global variable
+	 *
+	 */
+	public function __construct() {
+		$this->fileAdminDir = !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : 'fileadmin';
+	}
 
 	/**
 	 * Main function through which all processing happens
