@@ -76,7 +76,7 @@ class tx_impexp {
 
 		// Configuration, general
 	var $showStaticRelations = FALSE;		// If set, static relations (not exported) will be shown in overview as well
-	var $fileadminFolderName = 'fileadmin';	// Name of the "fileadmin" folder where files for export/import should be located
+	var $fileadminFolderName = '';			// Name of the "fileadmin" folder where files for export/import should be located
 
 	var $mode = '';							// Whether "import" or "export" mode of object. Set through init() function
 	var $update = FALSE;					// Updates all records that has same UID instead of creating new!
@@ -144,8 +144,8 @@ class tx_impexp {
 	function init($dontCompress=0,$mode='')	{
 		$this->compress = function_exists('gzcompress');
 		$this->dontCompress = $dontCompress;
-
 		$this->mode = $mode;
+		$this->fileadminFolderName = !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : 'fileadmin';
 	}
 
 
