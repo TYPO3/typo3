@@ -402,12 +402,15 @@ class GifBuilder extends \TYPO3\CMS\Core\Imaging\GraphicalFunctions {
 			foreach ($sKeyArray as $theKey) {
 				$theValue = $this->setup[$theKey];
 				if (intval($theKey) && ($conf = $this->setup[$theKey . '.'])) {
-					$isStdWrapped = array();
-					foreach ($conf as $key => $value) {
-						$parameter = rtrim($key, '.');
-						if (!$isStdWrapped[$parameter] && isset($conf[$parameter . '.'])) {
-							$conf[$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter . '.']);
-							$isStdWrapped[$parameter] = 1;
+					// All properties of TEXT sub-object have already been stdWrapped earlier in ->checkTextObj()
+					if($theValue!='TEXT'){
+						$isStdWrapped = array();
+						foreach($conf as $key => $value) {
+							$parameter = rtrim($key,'.');
+							if(!$isStdWrapped[$parameter] && isset($conf[$parameter.'.'])) {
+								$conf[$parameter] = $this->cObj->stdWrap($conf[$parameter], $conf[$parameter.'.']);
+								$isStdWrapped[$parameter] = 1;
+							}
 						}
 					}
 					switch ($theValue) {
