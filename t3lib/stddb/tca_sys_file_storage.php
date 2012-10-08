@@ -25,7 +25,8 @@ $TCA['sys_file_storage'] = array(
 			'label' => 'LLL:EXT:lang/locallang_tca.xlf:sys_file_storage.name',
 			'config' => array(
 				'type' => 'input',
-				'size' => '30'
+				'size' => '30',
+				'eval' => 'required'
 			)
 		),
 		'description' => array(
