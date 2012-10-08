@@ -333,9 +333,6 @@ class ElementInformationController {
 
 		foreach ($fieldList as $name) {
 			// Ignored fields
-			if ($name === 'size') {
-				continue;
-			}
 			if (!isset($GLOBALS['TCA'][$this->table]['columns'][$name])) {
 				continue;
 			}

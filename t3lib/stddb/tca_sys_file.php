@@ -5,7 +5,7 @@ if (!defined('TYPO3_MODE')) {
 $TCA['sys_file'] = array(
 	'ctrl' => $TCA['sys_file']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'storage, name, description, alternative, type, mime_type, size, sha1'
+		'showRecordFieldList' => 'storage, name, description, alternative, type, mime_type, sha1'
 	),
 	'feInterface' => $TCA['sys_file']['feInterface'],
 	'columns' => array(
