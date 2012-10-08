@@ -573,7 +573,7 @@ class ResourceStorage {
 			return FALSE;
 		}
 		$isReadCheck = FALSE;
-		if (in_array($action, array('read'))) {
+		if ($action === 'read') {
 			$isReadCheck = TRUE;
 		}
 		$isWriteCheck = FALSE;
@@ -619,7 +619,7 @@ class ResourceStorage {
 			return FALSE;
 		}
 		$isReadCheck = FALSE;
-		if (in_array($action, array('read'))) {
+		if ($action === 'read') {
 			$isReadCheck = TRUE;
 		}
 		$isWriteCheck = FALSE;
@@ -1962,8 +1962,6 @@ class ResourceStorage {
 		}
 		return $this->processingFolder;
 	}
-
 }
-
 
 ?>
