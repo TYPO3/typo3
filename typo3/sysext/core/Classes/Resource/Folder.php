@@ -69,6 +69,24 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 	protected $name;
 
 	/**
+	 * The filters this folder should use for a file list.
+	 *
+	 * @var callable[]
+	 */
+	protected $fileAndFolderNameFilters = array();
+
+	/**
+	 * Modes for filter usage in getFiles()/getFolders()
+	 */
+	const FILTER_MODE_NO_FILTERS = 0;
+	// Merge local filters into storage's filters
+	const FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS = 1;
+	// Only use the filters provided by the storage
+	const FILTER_MODE_USE_STORAGE_FILTERS = 2;
+	// Only use the filters provided by the current class
+	const FILTER_MODE_USE_OWN_FILTERS = 3;
+
+	/**
 	 * Initialization of the folder
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\ResourceStorage $storage
@@ -151,23 +169,38 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 	}
 
 	/**
-	 * Returns a list of files in this folder, optionally filtered by the given pattern.
-	 * For performance reasons the returned items can be limited to a given range
+	 * Returns a list of files in this folder, optionally filtered. There are several filter modes available, see the
+	 * FILTER_MODE_* constants for more information.
+	 *
+	 * For performance reasons the returned items can also be limited to a given range
 	 *
 	 * @param integer $start The item to start at
 	 * @param integer $numberOfItems The number of items to return
-	 * @param boolean $useFilters
+	 * @param integer $filterMode The filter mode to use for the file list.
 	 * @return \TYPO3\CMS\Core\Resource\File[]
 	 */
-	public function getFiles($start = 0, $numberOfItems = 0, $useFilters = TRUE) {
-		// TODO fetch
+	public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS) {
+		$useFilters = TRUE;
+
+		// Fallback for compatibility with the old method signature variable $useFilters that was used instead of $filterMode
+		if ($filterMode === TRUE) {
+			$filterMode = self::FILTER_MODE_USE_STORAGE_FILTERS;
+		} elseif ($filterMode === FALSE) {
+			$useFilters = FALSE;
+		} else {
+			list($backedUpFilters, $useFilters) = $this->prepareFiltersInStorage($filterMode);
+		}
+
 		/** @var $factory \TYPO3\CMS\Core\Resource\ResourceFactory */
 		$factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
 		$fileArray = $this->storage->getFileList($this->identifier, $start, $numberOfItems, $useFilters);
 		$fileObjects = array();
 		foreach ($fileArray as $fileInfo) {
-			$fileObjects[] = $factory->createFileObject($fileInfo);
+			$fileObjects[$fileInfo['name']] = $factory->createFileObject($fileInfo);
 		}
+
+		$this->restoreBackedUpFiltersInStorage($backedUpFilters);
+
 		return $fileObjects;
 	}
 
@@ -202,15 +235,18 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 	}
 
 	/**
-	 * Returns a list of all subfolders
+	 * Returns a list of subfolders
 	 *
 	 * @param integer $start The item to start at
 	 * @param integer $numberOfItems The number of items to return
+	 * @param integer $filterMode The filter mode to use for the file list.
 	 * @return \TYPO3\CMS\Core\Resource\Folder[]
 	 */
-	public function getSubfolders($start = 0, $numberOfItems = 0) {
+	public function getSubfolders($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS) {
+		list($backedUpFilters, $useFilters) = $this->prepareFiltersInStorage($filterMode);
+
 		$folderObjects = array();
-		$folderArray = $this->storage->getFolderList($this->identifier, $start, $numberOfItems);
+		$folderArray = $this->storage->getFolderList($this->identifier, $start, $numberOfItems, $useFilters);
 		if (count($folderArray) > 0) {
 			/** @var $factory \TYPO3\CMS\Core\Resource\ResourceFactory */
 			$factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
@@ -221,6 +257,9 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 				$folderObjects[$folder['name']] = $factory->createFolderObject($this->storage, $this->identifier . $folder['name'] . '/', $folder['name']);
 			}
 		}
+
+		$this->restoreBackedUpFiltersInStorage($backedUpFilters);
+
 		return $folderObjects;
 	}
 
@@ -360,6 +399,69 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 		if (isset($properties['name'])) {
 			$this->name = $properties['name'];
 		}
+	}
+
+	/**
+	 * Prepares the filters in this folder's storage according to a set filter mode.
+	 *
+	 * @param integer $filterMode The filter mode to use; one of the FILTER_MODE_* constants
+	 * @return array The backed up filters as an array (NULL if filters were not backed up) and whether to use filters or not (boolean)
+	 */
+	protected function prepareFiltersInStorage($filterMode) {
+		$backedUpFilters = NULL;
+		$useFilters = TRUE;
+
+		switch ($filterMode) {
+			case self::FILTER_MODE_USE_OWN_FILTERS:
+				$backedUpFilters = $this->storage->getFileAndFolderNameFilters();
+				$this->storage->setFileAndFolderNameFilters($this->fileAndFolderNameFilters);
+
+				break;
+
+			case self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS:
+				if (count($this->fileAndFolderNameFilters) > 0) {
+					$backedUpFilters = $this->storage->getFileAndFolderNameFilters();
+					foreach ($this->fileAndFolderNameFilters as $filter) {
+						$this->storage->addFileAndFolderNameFilter($filter);
+					}
+				}
+
+				break;
+
+			case self::FILTER_MODE_USE_STORAGE_FILTERS:
+				// nothing to do here
+
+				break;
+
+			case self::FILTER_MODE_NO_FILTERS:
+				$useFilters = FALSE;
+
+				break;
+		}
+		return array($backedUpFilters, $useFilters);
+	}
+
+	/**
+	 * Restores the filters of a storage.
+	 *
+	 * @param array $backedUpFilters The filters to restore; might be NULL if no filters have been backed up, in
+	 *                               which case this method does nothing.
+	 * @see prepareFiltersInStorage()
+	 */
+	protected function restoreBackedUpFiltersInStorage($backedUpFilters) {
+		if ($backedUpFilters !== NULL) {
+			$this->storage->setFileAndFolderNameFilters($backedUpFilters);
+		}
+	}
+
+	/**
+	 * Sets the filters to use when listing files. These are only used if the filter mode is one of
+	 * FILTER_MODE_USE_OWN_FILTERS and FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS
+	 *
+	 * @param array $filters
+	 */
+	public function setFileAndFolderNameFilters(array $filters) {
+		$this->fileAndFolderNameFilters = $filters;
 	}
 
 }
