@@ -286,8 +286,14 @@ class ElementInformationController {
 		$code .= $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:labels.table') . ': ' . $GLOBALS['LANG']->sL($GLOBALS['TCA'][$this->table]['ctrl']['title']) . ' (' . $this->table . ') - UID: ' . $this->uid . '<br />';
 		$this->content .= $this->doc->section('', $code);
 		// References:
-		$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem'), $this->makeRef($this->table, $this->row['uid']));
-		$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesFromThisItem'), $this->makeRefFrom($this->table, $this->row['uid']));
+		$references = $this->makeRef($this->table, $this->row['uid']);
+		if (!empty($references)) {
+			$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem'), $references);
+		}
+		$referencesFrom = $this->makeRefFrom($this->table, $this->row['uid']);
+		if (!empty($referencesFrom)) {
+			$this->content .= $this->doc->section($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesFromThisItem'), $referencesFrom);
+		}
 	}
 
 	/**
@@ -354,8 +360,12 @@ class ElementInformationController {
 		$this->content .= $this->doc->section('', $tableCode);
 		// References:
 		if ($this->fileObject->isIndexed()) {
-			$header = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem');
-			$this->content .= $this->doc->section($header, $this->makeRef('_FILE', $this->fileObject));
+			$references = $this->makeRef('_FILE', $this->fileObject);
+
+			if (!empty($references)) {
+				$header = $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.xml:show_item.php.referencesToThisItem');
+				$this->content .= $this->doc->section($header, $references);
+			}
 		}
 	}
 
