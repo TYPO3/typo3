@@ -3074,17 +3074,31 @@ class DataHandler {
 		// Register if there are references to take care of or MM is used on an inline field (no change to value):
 		if ($this->isReferenceField($conf) || $inlineSubType == 'mm') {
 			$allowedTables = $conf['type'] == 'group' ? $conf['allowed'] : $conf['foreign_table'] . ',' . $conf['neg_foreign_table'];
+			$allowedTablesArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $allowedTables, TRUE);
 			$prependName = $conf['type'] == 'group' ? $conf['prepend_tname'] : $conf['neg_foreign_table'];
 			$mmTable = isset($conf['MM']) && $conf['MM'] ? $conf['MM'] : '';
-			$localizeForeignTable = isset($conf['foreign_table']) && \TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($conf['foreign_table']);
-			$localizeReferences = $localizeForeignTable && isset($conf['localizeReferencesAtParentLocalization']) && $conf['localizeReferencesAtParentLocalization'];
-			$localizeChildren = $localizeForeignTable && isset($conf['behaviour']['localizeChildrenAtParentLocalization']) && $conf['behaviour']['localizeChildrenAtParentLocalization'];
+
+			// Check whether allowed tables can be localized:
+			$localizeTables = array();
+			foreach ($allowedTablesArray as $allowedTable) {
+				$localizeTables[$allowedTable] = \TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable($allowedTable);
+			}
+
+			$localizeForeignTable = (!empty($conf['foreign_table']) && !empty($localizeTables[$conf['foreign_table']]));
+			$localizeReferences = (count($localizeTables) > 0 && !empty($conf['localizeReferencesAtParentLocalization']));
+			$localizeChildren = ($localizeForeignTable && !empty($conf['behaviour']['localizeChildrenAtParentLocalization']));
+
 			/** @var $dbAnalysis \TYPO3\CMS\Core\Database\RelationHandler */
 			$dbAnalysis = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
 			$dbAnalysis->start($value, $allowedTables, $mmTable, $uid, $table, $conf);
+
 			// Localize referenced records of select fields:
 			if ($language > 0 && ($localizeReferences && empty($mmTable) || $localizeChildren && $localizationMode === 'select' && $inlineSubType === 'mm')) {
 				foreach ($dbAnalysis->itemArray as $index => $item) {
+					// No action required if referenced tables cannot be localized (current value will be used):
+					if (empty($localizeTables[$item['table']])) {
+						continue;
+					}
 					// Since select fields can reference many records, check whether there's already a localization:
 					$recordLocalization = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordLocalization($item['table'], $item['id'], $language);
 					if ($recordLocalization) {
