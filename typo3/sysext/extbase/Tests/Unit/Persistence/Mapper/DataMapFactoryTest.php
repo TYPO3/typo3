@@ -381,6 +381,25 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertSame($dataMap->getSubclasses(), $expectedSubclasses);
 	}
 
+	/**
+	 * @return array
+	 */
+	public function classNameTableNameMappings() {
+		return array(
+			'Core classes' => array('TYPO3\\CMS\\Belog\\Domain\\Model\\LogEntry', 'tx_belog_domain_model_logentry'),
+			'Extension classes' => array('ExtbaseTeam\\BlogExample\\Domain\\Model\\Blog', 'tx_blogexample_domain_model_blog'),
+			'Extension classes without namespace' => array('Tx_News_Domain_Model_News', 'tx_news_domain_model_news'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider classNameTableNameMappings
+	 */
+	public function resolveTableNameReturnsExpectedTablenames($className, $expected) {
+		$dataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('dummy'));
+		$this->assertSame($expected, $dataMapFactory->_call('resolveTableName', $className));
+	}
 }
 
 

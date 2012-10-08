@@ -131,20 +131,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		$recordType = NULL;
 		$subclasses = array();
-		if (strpos($className, '\\') !== FALSE) {
-			$classNameParts = explode('\\', $className, 4);
-			if (isset($classNameParts[0]) && $classNameParts[0] === 'TYPO3' && isset($classNameParts[1]) && $classNameParts[1] === 'CMS') {
-				$extensionKey = $classNameParts[2];
-				$classNameWithoutVendorAndProduct = $classNameParts[3];
-			} else {
-				$extensionKey = $classNameParts[1];
-				$classNameWithoutVendorAndProduct = $classNameParts[2];
-			}
-			$classNameWithoutVendorAndProduct = str_replace('\\', '_', $classNameWithoutVendorAndProduct);
-			$tableName = strtolower('tx_' . $extensionKey . '_' . $classNameWithoutVendorAndProduct);
-		} else {
-			$tableName = strtolower($className);
-		}
+		$tableName = $this->resolveTableName($className);
 		$columnMapping = array();
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$classSettings = $frameworkConfiguration['persistence']['classes'][$className];
@@ -192,6 +179,28 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		// debug($dataMap);
 		return $dataMap;
+	}
+
+	/**
+	 * Resolve the table name for the given class name
+	 *
+	 * @param string $className
+	 * @return string The table name
+	 */
+	protected function resolveTableName($className) {
+		if (strpos($className, '\\') !== FALSE) {
+			$classNameParts = explode('\\', $className, 6);
+			// Skip vendor and product name for core classes
+			if (strpos($className, 'TYPO3\\CMS\\') === 0) {
+				$classPartsToSkip = 2;
+			} else {
+				$classPartsToSkip = 1;
+			}
+			$tableName = 'tx_' . strtolower(implode('_', array_slice($classNameParts, $classPartsToSkip)));
+		} else {
+			$tableName = strtolower($className);
+		}
+		return $tableName;
 	}
 
 	/**
