@@ -96,6 +96,27 @@ class FolderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 	/**
 	 * @test
 	 */
+	public function getFilesReturnsArrayWithFilenamesAsKeys() {
+		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
+		$mockedStorage->expects($this->once())->method('getFileList')->will($this->returnValue(array(
+				'somefile.png' => array(
+					'name' => 'somefile.png'
+				),
+				'somefile.jpg' => array(
+					'name' => 'somefile.jpg'
+				)
+			)
+		));
+		$fixture = $this->createFolderFixture('/somePath', 'someName', $mockedStorage);
+
+		$fileList = $fixture->getFiles();
+
+		$this->assertEquals(array('somefile.png', 'somefile.jpg'), array_keys($fileList));
+	}
+
+	/**
+	 * @test
+	 */
 	public function getSubfolderCallsFactoryWithCorrectArguments() {
 		$mockedStorage = $this->getMock('TYPO3\\CMS\\Core\\Resource\\ResourceStorage', array(), array(), '', FALSE);
 		$mockedStorage->expects($this->once())->method('hasFolderInFolder')->with($this->equalTo('someSubfolder'))->will($this->returnValue(TRUE));
