@@ -100,7 +100,7 @@ class FileListController {
 		// Setting module name:
 		$this->MCONF = $GLOBALS['MCONF'];
 			// Create the folder object, even try parent folders
-		while ($this->folderObject === NULL && count(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $combinedIdentifier, TRUE)) > 1) {
+		while ($this->folderObject === NULL && count(\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('/', $combinedIdentifier, TRUE)) >= 1) {
 			try {
 				if ($combinedIdentifier) {
 					$fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
