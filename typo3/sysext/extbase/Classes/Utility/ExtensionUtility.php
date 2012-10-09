@@ -61,7 +61,8 @@ class ExtensionUtility {
 		}
 			// Check if vendor name is prepended to extensionName in the format {vendorName}.{extensionName}
 		$vendorName = NULL;
-		if (FALSE !== $delimiterPosition = strrpos($extensionName, '.')) {
+		$delimiterPosition = strrpos($extensionName, '.');
+		if ($delimiterPosition !== FALSE) {
 			$vendorName = str_replace('.', '\\', substr($extensionName, 0, $delimiterPosition));
 			$extensionName = substr($extensionName, $delimiterPosition + 1);
 		}
@@ -144,6 +145,10 @@ tt_content.' . $pluginSignature . ' {
 		}
 		if (empty($extensionName)) {
 			throw new \InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
+		}
+		$delimiterPosition = strrpos($extensionName, '.');
+		if ($delimiterPosition !== FALSE) {
+			$extensionName = substr($extensionName, $delimiterPosition + 1);
 		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
