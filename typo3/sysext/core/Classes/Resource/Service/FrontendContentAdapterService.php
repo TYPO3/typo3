@@ -45,7 +45,6 @@ class FrontendContentAdapterService {
 				'captions' => 'imagecaption',
 				'links' => 'image_link',
 				'alternativeTexts' => 'altText',
-				'sysFileUids' => 'sysFileUids'
 			),
 			'media' => array(
 				'paths' => 'media',
@@ -83,8 +82,10 @@ class FrontendContentAdapterService {
 						'captions' => array(),
 						'links' => array(),
 						'alternativeTexts' => array(),
-						'sysFileUids' => array()
+						$migrateFieldName . '_fileUids' => array()
 					);
+					$oldFieldNames[$migrateFieldName . '_fileUids'] = $migrateFieldName . '_fileUids';
+
 					foreach ($files as $file) {
 						/** @var $file \TYPO3\CMS\Core\Resource\FileReference */
 						$fileFieldContents['paths'][] = '../../' . $file->getPublicUrl();
@@ -92,11 +93,11 @@ class FrontendContentAdapterService {
 						$fileFieldContents['captions'][] = $file->getProperty('description');
 						$fileFieldContents['links'][] = $file->getProperty('link');
 						$fileFieldContents['alternativeTexts'][] = $file->getProperty('alternative');
-						$fileFieldContents['sysFileUids'][] = $file->getUid();
+						$fileFieldContents[$migrateFieldName .  '_fileUids'][] = $file->getOriginalFile()->getUid();
 					}
 					foreach ($oldFieldNames as $oldFieldType => $oldFieldName) {
 						// For paths, make comma separated list
-						if ($oldFieldType === 'paths') {
+						if ($oldFieldType === 'paths' || substr($oldFieldType, -9) == '_fileUids') {
 							$fieldContents = implode(',', $fileFieldContents[$oldFieldType]);
 						} else {
 							// For all other fields, separate by newline
