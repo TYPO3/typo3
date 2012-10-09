@@ -594,7 +594,20 @@ var TBE_EDITOR_str_replace = TBE_EDITOR.str_replace;
 
 
 var typo3form = {
+	fieldSetNull: function(fieldName, isNull) {
+		if (document[TBE_EDITOR.formname][fieldName]) {
+			var formFieldItemWrapper = Element.up(document[TBE_EDITOR.formname][fieldName], '.t3-form-field-item');
+
+			if (isNull) {
+				formFieldItemWrapper.addClassName('disabled');
+			} else {
+				formFieldItemWrapper.removeClassName('disabled');
+			}
+		}
+	},
 	fieldSet: function(theField, evallist, is_in, checkbox, checkboxValue) {
+		var i;
+
 		if (document[TBE_EDITOR.formname][theField]) {
 			var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
 			var theValue = document[TBE_EDITOR.formname][theField].value;
@@ -604,6 +617,17 @@ var typo3form = {
 			} else {
 				document[TBE_EDITOR.formname][theField+"_hr"].value = evalFunc.outputObjValue(theFObj, theValue);
 				if (document[TBE_EDITOR.formname][theField+"_cb"])	document[TBE_EDITOR.formname][theField+"_cb"].checked = "on";
+			}
+
+			var controlName = theField.replace(new RegExp('^' + TBE_EDITOR.prependFormFieldNames), 'control[active]');
+			var controlFields = document[TBE_EDITOR.formname][controlName];
+
+			if (controlFields) {
+				for (i = 0; i < controlFields.length; i++) {
+					if (controlFields[i].type === 'checkbox' && !controlFields[i].checked) {
+						typo3form.fieldSetNull(theField, true);
+					}
+				}
 			}
 		}
 	},

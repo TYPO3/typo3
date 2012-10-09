@@ -15,9 +15,38 @@
 	<td colspan="2" class="formField-header"><span style="color:###FONTCOLOR_HEAD###;"###CLASSATTR_4###><strong>###FIELD_NAME###</strong></span></td>
 </tr>
 <tr ###BGCOLOR######CLASSATTR_1###>
-	<td colspan="2" class="formField-field" valign="top"><span class="t3-form-field-container"><img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-contentchangedImg" alt="" /><img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-reqImg" alt="" />###FIELD_ITEM######FIELD_PAL_LINK_ICON###</span></td>
+	<td colspan="2" class="formField-field" valign="top">
+		<span class="t3-form-field-container">
+			<img name="cm_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-contentchangedImg" alt="" />
+			<img name="req_###FIELD_TABLE###_###FIELD_ID###_###FIELD_FIELD###" src="clear.gif" class="t3-TCEforms-reqImg" alt="" />
+			###FIELD_ITEM_NULLVALUE###
+			<div class="t3-form-field-item">
+				<div class="t3-form-field-disable"></div>
+				###FIELD_ITEM###
+			</div>
+			###FIELD_PAL_LINK_ICON###
+		</span>
+	</td>
 </tr>
 <!-- ###FIELDTEMPLATE### end -->
+
+
+<!-- ###PALETTEFIELDTEMPLATE### begin -->
+<span class="t3-form-palette-field-container">
+	<label###ATTRIBUTES_LABEL###>
+		###CONTENT_NAME###
+	</label>
+	<span###ATTRIBUTES_FIELD###>
+		<img name="cm_###CONTENT_TABLE###_###CONTENT_ID###_###CONTENT_FIELD###" src="clear.gif" class="t3-form-palette-icon-contentchanged" alt="" />
+		<img name="req_###CONTENT_TABLE###_###CONTENT_ID###_###CONTENT_FIELD###" src="clear.gif" class="t3-form-palette-icon-required" alt="" />
+		###CONTENT_ITEM_NULLVALUE###
+		<div class="t3-form-field-item">
+			<div class="t3-form-field-disable"></div>
+			###CONTENT_ITEM###
+		</div>
+	</span>
+</span>
+<!-- ###PALETTEFIELDTEMPLATE### end -->
 
 
 <!-- ###PALETTE_FIELDTEMPLATE### begin -->
