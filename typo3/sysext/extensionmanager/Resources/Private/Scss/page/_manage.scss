@@ -134,6 +134,44 @@
 }
 
 
+// Icons
+.icon {
+	display: inline-block;
+
+	width: 16px;
+	height: 16px;
+
+	text-indent: -999em;
+
+	background: 0 0 no-repeat;
+}
+
+// Icons: activate, deactivate
+.icon-deactivate {
+	background-image: url(../Images/deactivate.png);
+}
+
+.icon-activate {
+	background-image: url(../Images/activate.png);
+}
+
+// Icons: actions
+.configureExtension {
+}
+
+.icon-download {
+	background-image: url(../Images/download.png);
+}
+
+.icon-configure {
+	background-image: url(../Images/configure.png);
+}
+
+.icon-download-data {
+	background-image: url(../Images/download-sql.png);
+}
+
+
 
 // Paginator
 .dataTables_info {
