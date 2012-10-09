@@ -1722,6 +1722,28 @@ button.ui-button::-moz-focus-inner {
 .typo3-extension-list tr:hover {
   background: #ececec; }
 
+.icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  text-indent: -999em;
+  background: 0 0 no-repeat; }
+
+.icon-deactivate {
+  background-image: url(../Images/deactivate.png); }
+
+.icon-activate {
+  background-image: url(../Images/activate.png); }
+
+.icon-download {
+  background-image: url(../Images/download.png); }
+
+.icon-configure {
+  background-image: url(../Images/configure.png); }
+
+.icon-download-data {
+  background-image: url(../Images/download-sql.png); }
+
 .dataTables_info {
   display: none; }
 

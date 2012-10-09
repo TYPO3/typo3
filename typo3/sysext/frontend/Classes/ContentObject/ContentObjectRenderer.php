@@ -5024,22 +5024,29 @@ class ContentObjectRenderer {
 				$imageResource = $gifCreator->getImageDimensions($theImage);
 				break;
 			default:
-				if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($file)) {
-					$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
-				} else {
-					if ($fileArray['import.']) {
-						$ifile = $this->stdWrap('', $fileArray['import.']);
-						if ($ifile) {
-							if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($ifile)) {
-								$file = $ifile;
-							} else {
-								$file = $fileArray['import'] . $ifile;
+				try {
+					if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($file)) {
+						$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
+					} else {
+						if ($fileArray['import.']) {
+							$ifile = $this->stdWrap('', $fileArray['import.']);
+							if ($ifile) {
+								if (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($ifile)) {
+									$file = $ifile;
+								} else {
+									$file = $fileArray['import'] . $ifile;
+								}
 							}
 						}
+						// clean ../ sections of the path and resolve to proper string. This is necessary for the Tx_File_BackwardsCompatibility_TslibContentAdapter to work.
+						$file = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($file);
+						$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
 					}
-					// clean ../ sections of the path and resolve to proper string. This is necessary for the Tx_File_BackwardsCompatibility_TslibContentAdapter to work.
-					$file = \TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath($file);
-					$fileObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($file);
+				} catch(\TYPO3\CMS\Core\Resource\Exception $exception) {
+					/** @var \TYPO3\CMS\Core\Log\Logger $logger */
+					$logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger();
+					$logger->warning('The image "' . $file . '" could not be found and won\'t be included in frontend output');
+					return NULL;
 				}
 				if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
 					$processingConfiguration = array();
@@ -5307,15 +5314,23 @@ class ContentObjectRenderer {
 		$parts = explode(':', $key);
 		$fileUidOrCurrentKeyword = $parts[0];
 		$requestedFileInformationKey = $parts[1];
-		if ($fileUidOrCurrentKeyword === 'current') {
-			$fileObject = $this->getCurrentFile();
-		} elseif (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($fileUidOrCurrentKeyword)) {
-			/** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
-			$fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
-			$fileObject = $fileFactory->getFileObject($fileUidOrCurrentKeyword);
-		} else {
+		try {
+			if ($fileUidOrCurrentKeyword === 'current') {
+				$fileObject = $this->getCurrentFile();
+			} elseif (\TYPO3\CMS\Core\Utility\MathUtility::canBeInterpretedAsInteger($fileUidOrCurrentKeyword)) {
+				/** @var \TYPO3\CMS\Core\Resource\ResourceFactory $fileFactory */
+				$fileFactory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
+				$fileObject = $fileFactory->getFileObject($fileUidOrCurrentKeyword);
+			} else {
+				$fileObject = NULL;
+			}
+		} catch (\TYPO3\CMS\Core\Resource\Exception $exception) {
+			/** @var \TYPO3\CMS\Core\Log\Logger $logger */
+			$logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Log\LogManager')->getLogger();
+			$logger->warning('The file "' . $fileUidOrCurrentKeyword . '" could not be found and won\'t be included in frontend output');
 			$fileObject = NULL;
 		}
+
 		if ($fileObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
 			// All properties of the \TYPO3\CMS\Core\Resource\FileInterface are available here:
 			switch ($requestedFileInformationKey) {

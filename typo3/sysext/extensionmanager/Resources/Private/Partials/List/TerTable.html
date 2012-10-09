@@ -11,10 +11,8 @@
 </thead>
 <tbody>
 <f:for each="{paginatedExtensions}" as="extension">
-	<f:cycle values="{0: 'odd', 1: 'even'}" as="zebraClass">
-		<tr class="{zebraClass} {em:installationStateCssClass(needle:extension.extensionKey, haystack:availableAndInstalled)}">
-	</f:cycle>
-	<f:render partial="List/TerSingleLine.html" arguments="{extension:extension}" />
+	<tr class="{em:installationStateCssClass(needle:extension.extensionKey, haystack:availableAndInstalled)}">
+		<f:render partial="List/TerSingleLine.html" arguments="{extension:extension}" />
 	</tr>
 </f:for>
 </tbody>

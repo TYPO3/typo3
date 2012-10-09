@@ -49,6 +49,8 @@ class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Act
 	public function render($extension) {
 		$tag = '';
 		if ($extension['installed'] && file_exists(PATH_site . $extension['siteRelPath'] . '/ext_conf_template.txt')) {
+
+			// Building URI
 			$uriBuilder = $this->controllerContext->getUriBuilder();
 			$action = 'showConfigurationForm';
 			$uri = $uriBuilder->reset()->uriFor($action, array(
@@ -57,8 +59,19 @@ class ConfigureExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Act
 				)
 			), 'Configuration');
 			$this->tag->addAttribute('href', $uri);
+
+			// class-attribute
+			$this->tag->addAttribute('class', 'icon icon-configure');
+
 			$label = 'Configure';
+
+			// title-attribute
+			$this->tag->addAttribute('title', $label);
+
+			// Content
 			$this->tag->setContent($label);
+
+			// Render
 			$tag = $this->tag->render();
 		}
 		return $tag;

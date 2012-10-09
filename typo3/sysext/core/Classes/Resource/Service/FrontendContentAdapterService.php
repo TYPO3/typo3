@@ -106,11 +106,6 @@ class FrontendContentAdapterService {
 							$row[$oldFieldName] = $fieldContents;
 						}
 					}
-					if (count($files) > 0) {
-
-					} elseif ($row['image'] > 0) {
-						throw new \RuntimeException('inconsistent count field in "' . $table . '".' . $migrateFieldName, 1333754565);
-					}
 				}
 			}
 		}
