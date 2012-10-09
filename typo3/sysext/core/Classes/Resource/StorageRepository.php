@@ -59,9 +59,12 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 */
 	public function findByStorageType($storageType) {
 		$storageObjects = array();
-		$whereClause = 'deleted=0 AND hidden=0';
-		$whereClause .= ' AND ' . $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($storageType, $this->table);
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $whereClause);
+		$whereClause = $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($storageType, $this->table);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',
+			$this->table,
+			$whereClause . $this->getWhereClauseForEnabledFields()
+		);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$storageObjects[] = $this->createDomainObject($row);
 		}
@@ -77,11 +80,15 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 */
 	public function findAll() {
 		$storageObjects = array();
-		$whereClause = 'deleted=0 AND hidden=0';
+		$whereClause = NULL;
 		if ($this->type != '') {
-			$whereClause .= ' AND ' . $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->type, $this->table);
+			$whereClause = $this->typeField . ' = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($this->type, $this->table);
 		}
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', $this->table, $whereClause);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
+			'*',
+			$this->table,
+			($whereClause ? $whereClause : '1=1') . $this->getWhereClauseForEnabledFields()
+		);
 		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 			$storageObjects[] = $this->createDomainObject($row);
 		}
@@ -144,6 +151,22 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 		return $this->factory->getStorageObject($databaseRow['uid'], $databaseRow);
 	}
 
+	/**
+	 * get the WHERE clause for the enabled fields of this TCA table
+	 * depending on the context
+	 *
+	 * @return string the additional where clause, something like " AND deleted=0 AND hidden=0"
+	 */
+	protected function getWhereClauseForEnabledFields() {
+		if (is_object($GLOBALS['TSFE'])) {
+			// frontend context
+			$whereClause = $GLOBALS['TSFE']->sys_page->enableFields($this->table);
+		} else {
+			// backend context
+			$whereClause = \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($this->table);
+		}
+		return $whereClause;
+	}
 }
 
 
