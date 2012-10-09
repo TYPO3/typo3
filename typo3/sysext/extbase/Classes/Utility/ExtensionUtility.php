@@ -161,6 +161,9 @@ tt_content.' . $pluginSignature . ' {
 		if (empty($extensionName)) {
 			throw new \InvalidArgumentException('The extension name was invalid (must not be empty and must match /[A-Za-z][_A-Za-z0-9]/)', 1239891989);
 		}
+		if (FALSE !== $delimiterPosition = strrpos($extensionName, '.')) {
+			$extensionName = substr($extensionName, $delimiterPosition + 1);
+		}
 		$extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
 		$pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
 		\TYPO3\CMS\Core\Extension\ExtensionManager::addPlugin(array($pluginTitle, $pluginSignature, $pluginIconPathAndFilename), $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType']);
