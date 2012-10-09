@@ -246,12 +246,10 @@ class DocumentTemplate {
 	 */
 	public $parseTimeFlag = 0;
 
-	// INTERNAL
-	// Default charset. see function initCharset()
 	/**
-	 * @todo Define visibility
+	 * internal character set, nowadays utf-8 for everything
 	 */
-	public $charset = 'utf-8';
+	protected $charset = 'utf-8';
 
 	// Internal: Indicates if a <div>-output section is open
 	/**
@@ -737,7 +735,6 @@ class DocumentTemplate {
 			}
 		}
 		// Send HTTP header for selected charset. Added by Robert Lemke 23.10.2003
-		$this->initCharset();
 		header('Content-Type:text/html;charset=' . $this->charset);
 		// Standard HTML tag
 		$htmlTag = '<html xmlns="http://www.w3.org/1999/xhtml">';
@@ -1236,10 +1233,10 @@ class DocumentTemplate {
 	 *
 	 * @return string <meta> tag with charset from $this->charset or $GLOBALS['LANG']->charSet
 	 * @todo Define visibility
+	 * @deprecated since TYPO3 6.0, remove in 6.2. The charset is utf-8 all the time for the backend now
 	 */
 	public function initCharset() {
-		// Set charset to the charset provided by the current backend users language selection:
-		$this->charset = $GLOBALS['LANG']->charSet ? $GLOBALS['LANG']->charSet : $this->charset;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
 		// Return meta tag:
 		return '<meta http-equiv="Content-Type" content="text/html; charset=' . $this->charset . '" />';
 	}

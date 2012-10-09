@@ -408,7 +408,7 @@ class FlexFormTools {
 		$spaceInd = $GLOBALS['TYPO3_CONF_VARS']['BE']['compactFlexFormXML'] ? -1 : 4;
 		$output = \TYPO3\CMS\Core\Utility\GeneralUtility::array2xml($array, '', 0, 'T3FlexForms', $spaceInd, $options);
 		if ($addPrologue) {
-			$output = '<?xml version="1.0" encoding="' . $GLOBALS['LANG']->charSet . '" standalone="yes" ?>' . LF . $output;
+			$output = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>' . LF . $output;
 		}
 		return $output;
 	}
