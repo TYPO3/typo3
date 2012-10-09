@@ -783,19 +783,40 @@ class ElementBrowser {
 					$this->expandFolder = $cmpPath;
 				}
 			}
+			// Create upload/create folder forms, if a path is given
 			if ($this->expandFolder) {
 				$selectedFolder = FALSE;
 				$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
-				// It's a file
+
 				if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
+					// It's a folder
 					$selectedFolder = $fileOrFolderObject;
 				} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+					// It's a file
 					// @todo: find the parent folder, right now done a bit ugly, because the file does not
 					// support finding the parent folder of a file on purpose
 					$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
 					$selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
 				}
 			}
+			// Or get the user's default upload folder
+			if (!$selectedFolder) {
+				$selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+			}
+			// Build the file upload and folder creation form
+			$uploadForm = '';
+			$createFolder = '';
+			if ($selectedFolder && !$this->isReadOnlyFolder($selectedFolder)) {
+				$uploadForm = ($this->act === 'file') ? $this->uploadForm($selectedFolder) : '';
+				if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
+					$createFolder = $this->createFolder($selectedFolder);
+				}
+			}
+			// Insert the upload form on top, if so configured
+			if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+				$content .= $uploadForm;
+			}
+
 			// Render the filelist if there is a folder selected
 			if ($selectedFolder) {
 				$files = $this->expandFolder($selectedFolder, $this->P['params']['allowedExtensions']);
@@ -813,7 +834,13 @@ class ElementBrowser {
 							<td class="c-wCell" valign="top">' . $files . '</td>
 						</tr>
 					</table>
+					<br />
 					';
+			// Adding create folder + upload forms if applicable
+			if (!$GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
+				$content .= $uploadForm;
+			}
+			$content .= $createFolder . '<br />';
 			break;
 		case 'spec':
 			if (is_array($this->thisConfig['userLinks.'])) {
@@ -1104,22 +1131,41 @@ class ElementBrowser {
 				$storage->addFileAndFolderNameFilter(array($filterObject, 'filterFileList'));
 			}
 		}
-		// Create upload/create folder forms, if a path is given:
+		// Create upload/create folder forms, if a path is given
 		if ($this->expandFolder) {
-			$this->selectedFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
+			$this->selectedFolder = FALSE;
+			$fileOrFolderObject = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
+			if ($fileOrFolderObject instanceof t3lib_file_Folder) {
+				// It's a folder
+				$this->selectedFolder = $fileOrFolderObject;
+			} elseif ($fileOrFolderObject instanceof t3lib_file_FileInterface) {
+				// It's a file
+				// @todo: find the parent folder, right now done a bit ugly, because the file does not
+				// support finding the parent folder of a file on purpose
+				$folderIdentifier = dirname($fileOrFolderObject->getIdentifier());
+				$this->selectedFolder = $fileOrFolderObject->getStorage()->getFolder($folderIdentifier);
+			}
 		}
-		// @todo implement upload stuff (default upload folder of a storaget etc)
+		// Or get the user's default upload folder
 		if (!$this->selectedFolder) {
-			$fileStorages = $GLOBALS['BE_USER']->getFileStorages();
-			$fileStorage = reset($fileStorages);
-			$this->selectedFolder = $fileStorage->getRootLevelFolder();
+			$this->selectedFolder = $GLOBALS['BE_USER']->getDefaultUploadFolder();
+		}
+			// Build the file upload and folder creation form
+		$uploadForm = '';
+		$createFolder = '';
+		if ($this->selectedFolder && !$this->isReadOnlyFolder($this->selectedFolder)) {
+			$uploadForm = ($this->act === 'file') ? $this->uploadForm($this->selectedFolder) : '';
+			if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
+				$createFolder =  $this->createFolder($this->selectedFolder);
+			}
 		}
 		if ($this->selectedFolder) {
 			$uploadForm = $this->uploadForm($this->selectedFolder);
 			$createFolder = $this->createFolder($this->selectedFolder);
 		} else {
-			$uploadForm = ($createFolder = '');
+			$uploadForm = $createFolder = '';
 		}
+		// Insert the upload form on top, if so configured
 		if ($GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
 			$content .= $uploadForm;
 		}
@@ -1160,9 +1206,7 @@ class ElementBrowser {
 		if (!$GLOBALS['BE_USER']->getTSConfigVal('options.uploadFieldsInTopOfEB')) {
 			$content .= $uploadForm;
 		}
-		if ($GLOBALS['BE_USER']->isAdmin() || $GLOBALS['BE_USER']->getTSConfigVal('options.createFoldersInEB')) {
-			$content .= $createFolder;
-		}
+		$content .= $createFolder;
 		// Add some space
 		$content .= '<br /><br />';
 		// Setup indexed elements:
@@ -1193,7 +1237,7 @@ class ElementBrowser {
 		if ($this->expandFolder) {
 			$this->selectedFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($this->expandFolder);
 		}
-		if ($this->selectedFolder) {
+		if ($this->selectedFolder && !$this->isReadOnlyFolder($this->selectedFolder)) {
 			$createFolder = $this->createFolder($this->selectedFolder);
 		} else {
 			$createFolder = '';
