@@ -517,11 +517,8 @@ class BasicFileUtility {
 			if (!$charset) {
 				if (TYPO3_MODE == 'FE') {
 					$charset = $GLOBALS['TSFE']->renderCharset;
-				} elseif (is_object($GLOBALS['LANG'])) {
-					// BE assumed:
-					$charset = $GLOBALS['LANG']->charSet;
 				} else {
-					// best guess
+					// Backend
 					$charset = 'utf-8';
 				}
 			}
