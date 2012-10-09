@@ -37,12 +37,17 @@ table#typo3-altdoc-header input,
 .t3-tceforms-input-wrapper,
 .t3-tceforms-input-wrapper-hover,
 .t3-tceforms-input-wrapper-datetime,
-.t3-tceforms-input-wrapper-datetime-hover {
+.t3-tceforms-input-wrapper-datetime-hover,
+.t3-tceforms-widget-null-wrapper {
 	display: block;
 	float: left;
 	position: relative;
 }
 
+
+.t3-tceforms-widget-null-wrapper {
+	margin-right: 5px;
+}
 
 
 .t3-tceforms-input-wrapper .t3-tceforms-input-clearer,
@@ -492,4 +497,9 @@ TCEforms Sections
     position:absolute;
     right:3px;
     top:4px;
+}
+
+.t3-form-field-container input[disabled] {
+	background: #f4f4f4;
+	color: #696362;
 }

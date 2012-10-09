@@ -594,6 +594,22 @@ var TBE_EDITOR_str_replace = TBE_EDITOR.str_replace;
 
 
 var typo3form = {
+	fieldSetNull: function(fieldName, isNull) {
+		if (document[TBE_EDITOR.formname][fieldName]) {
+			if (isNull) {
+				document[TBE_EDITOR.formname][fieldName].value = '%%%NULL%%%';
+				document[TBE_EDITOR.formname][fieldName + '_hr'].value = '';
+				document[TBE_EDITOR.formname][fieldName + '_hr'].setAttribute('disabled', 'disabled');
+
+				if (document[TBE_EDITOR.formname][fieldName + '_cb']) {
+					document[TBE_EDITOR.formname][fieldName + '_cb'].checked = '';
+				}
+			} else {
+				document[TBE_EDITOR.formname][fieldName].value = '';
+				document[TBE_EDITOR.formname][fieldName + '_hr'].removeAttribute('disabled');
+			}
+		}
+	},
 	fieldSet: function(theField, evallist, is_in, checkbox, checkboxValue) {
 		if (document[TBE_EDITOR.formname][theField]) {
 			var theFObj = new evalFunc_dummy (evallist,is_in, checkbox, checkboxValue);
@@ -604,6 +620,10 @@ var typo3form = {
 			} else {
 				document[TBE_EDITOR.formname][theField+"_hr"].value = evalFunc.outputObjValue(theFObj, theValue);
 				if (document[TBE_EDITOR.formname][theField+"_cb"])	document[TBE_EDITOR.formname][theField+"_cb"].checked = "on";
+			}
+
+			if (theValue === '' && document[TBE_EDITOR.formname][theField].getAttribute('data-null-value')) {
+				typo3form.fieldSetNull(theField, true);
 			}
 		}
 	},

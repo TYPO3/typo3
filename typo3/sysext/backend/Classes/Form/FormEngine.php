@@ -286,6 +286,13 @@ class FormEngine {
 	 */
 	public $prependFormFieldNames_file = 'data_files';
 
+	/**
+	 * The string to prepend activatable form field names with.
+	 *
+	 * @var string
+	 */
+	protected $prependFormFieldNamesActivate = 'control[activate]';
+
 	// The name attribute of the form.
 	/**
 	 * @todo Define visibility
@@ -1007,6 +1014,8 @@ class FormEngine {
 				$PA['itemFormElName'] = $this->prependFormFieldNames . '[' . $table . '][' . $row['uid'] . '][' . $field . ']';
 				// Form field name, in case of file uploads
 				$PA['itemFormElName_file'] = $this->prependFormFieldNames_file . '[' . $table . '][' . $row['uid'] . '][' . $field . ']';
+				// Form field name, to activate elements:
+				$PA['itemFormElNameActivate'] = $this->prependFormFieldNamesActivate . '[' . $table . '][' . $row['uid'] . '][' . $field . ']';
 				// The value to show in the form field.
 				$PA['itemFormElValue'] = $row[$field];
 				$PA['itemFormElID'] = $this->prependFormFieldNames . '_' . $table . '_' . $row['uid'] . '_' . $field;
@@ -1302,6 +1311,9 @@ class FormEngine {
 				break;
 			}
 		}
+
+		$item .= $this->renderNullValueWidget($table, $field, $config, $row, $PA);
+
 		$paramsList = '\'' . $PA['itemFormElName'] . '\',\'' . implode(',', $evalList) . '\',\'' . trim($config['is_in']) . '\',' . (isset($config['checkbox']) ? 1 : 0) . ',\'' . $config['checkbox'] . '\'';
 		if (in_array('date', $evalList) || in_array('datetime', $evalList)) {
 			$item .= '<span class="t3-tceforms-input-wrapper-datetime" onmouseOver="if (document.getElementById(\'' . $inputId . '\').value) {this.className=\'t3-tceforms-input-wrapper-datetime-hover\';} else {this.className=\'t3-tceforms-input-wrapper-datetime\';};" onmouseOut="this.className=\'t3-tceforms-input-wrapper-datetime\';">';
@@ -1312,6 +1324,7 @@ class FormEngine {
 		} else {
 			$item .= '<span class="t3-tceforms-input-wrapper" onmouseOver="if (document.getElementById(\'' . $inputId . '\').value) {this.className=\'t3-tceforms-input-wrapper-hover\';} else {this.className=\'t3-tceforms-input-wrapper\';};" onmouseOut="this.className=\'t3-tceforms-input-wrapper\';">';
 		}
+
 		$PA['fieldChangeFunc'] = array_merge(array('typo3form.fieldGet' => 'typo3form.fieldGet(' . $paramsList . ');'), $PA['fieldChangeFunc']);
 		// Old function "checkbox" now the option to set the date / remove the date
 		if (isset($config['checkbox'])) {
@@ -1320,9 +1333,11 @@ class FormEngine {
 		$mLgd = $config['max'] ? $config['max'] : 256;
 		$iOnChange = implode('', $PA['fieldChangeFunc']);
 		$cssClasses[] = 'hasDefaultValue';
+		$isNullValue = $this->isNullValue($table, $field, $config, $row, $PA);
+		$dataNullValue = ($isNullValue ? ' data-null-value="true"' : '');
 		$item .= '<input type="text" ' . $this->getPlaceholderAttribute($table, $field, $config, $row) . 'id="' . $inputId . '" ' . 'class="' . implode(' ', $cssClasses) . '" ' . 'name="' . $PA['itemFormElName'] . '_hr" ' . 'value=""' . 'style="' . $cssStyle . '" ' . 'maxlength="' . $mLgd . '" ' . 'onchange="' . htmlspecialchars($iOnChange) . '"' . $PA['onFocus'] . ' />';
 		// This is the EDITABLE form field.
-		$item .= '<input type="hidden" name="' . $PA['itemFormElName'] . '" value="' . htmlspecialchars($PA['itemFormElValue']) . '" />';
+		$item .= '<input type="hidden" name="' . $PA['itemFormElName'] . '" value="' . htmlspecialchars($PA['itemFormElValue']) . '"' . $dataNullValue . ' />';
 		// This is the ACTUAL form field - values from the EDITABLE field must be transferred to this field which is the one that is written to the database.
 		$item .= $fieldAppendix . '</span><div style="clear:both;"></div>';
 		$this->extJSCODE .= 'typo3form.fieldSet(' . $paramsList . ');';
@@ -1343,7 +1358,59 @@ function ' . $evalData . '(value) {
 		$altItem .= '<input type="hidden" name="' . $PA['itemFormElName'] . '" value="' . htmlspecialchars($PA['itemFormElValue']) . '" />';
 		// Wrap a wizard around the item?
 		$item = $this->renderWizards(array($item, $altItem), $config['wizards'], $table, $row, $field, $PA, $PA['itemFormElName'] . '_hr', $specConf);
+
 		return $item;
+	}
+
+	/**
+	 * Renders a view widget to handle and activate NULL values.
+	 * The widget is enabled by using 'null' in the 'eval' TCA definition.
+	 *
+	 * @param string $table Name of the table
+	 * @param string $field Name of the field
+	 * @param array $config TCA configuration of the field
+	 * @param array $row Accordant data
+	 * @param array $PA Parameters array with rendering instructions
+	 * @return string Widget (if any).
+	 */
+	protected function renderNullValueWidget($table, $field, array $config, array $row, array $PA) {
+		$widget = '';
+
+		if (!empty($config['eval']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($config['eval'], 'null')) {
+			$isNull = ($PA['itemFormElValue'] === NULL);
+
+			$checked = ($isNull ? '' : ' checked="checked"');
+			$onChange = htmlspecialchars(
+				'typo3form.fieldSetNull(\'' . $PA['itemFormElName'] . '\', !this.checked)'
+			);
+
+			$widget = '<span class="t3-tceforms-widget-null-wrapper">' .
+				'<input type="checkbox" name="' . $PA['itemFormElNameActivate'] . '" value="1" onchange="' . $onChange . '"' . $checked . ' />' .
+			'</span>';
+		}
+
+		return $widget;
+	}
+
+	/**
+	 * Renders a view widget to handle and activate NULL values.
+	 * The widget is enabled by using 'null' in the 'eval' TCA definition.
+	 *
+	 * @param string $table Name of the table
+	 * @param string $field Name of the field
+	 * @param array $config TCA configuration of the field
+	 * @param array $row Accordant data
+	 * @param array $PA Parameters array with rendering instructions
+	 * @return string Widget (if any).
+	 */
+	protected function isNullValue($table, $field, array $config, array $row, array $PA) {
+		$result = FALSE;
+
+		if ($PA['itemFormElValue'] === NULL && !empty($config['eval']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($config['eval'], 'null')) {
+			$result = TRUE;
+		}
+
+		return $result;
 	}
 
 	/**

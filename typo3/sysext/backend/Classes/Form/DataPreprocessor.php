@@ -267,13 +267,14 @@ class DataPreprocessor {
 		foreach ($copyOfColumns as $field => $fieldConfig) {
 			// Set $data variable for the field, either inputted value from $row - or if not found, the default value as defined in the "config" array
 			if (isset($row[$field])) {
-				$data = $row[$field];
+				$data = (string) $row[$field];
+			} elseif (array_key_exists($field, $row) && !empty($fieldConfig['config']['eval']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($fieldConfig['config']['eval'], 'null')) {
+				$data = NULL;
 			} else {
-				$data = $fieldConfig['config']['default'];
+				$data = (string) $fieldConfig['config']['default'];
 			}
 			$data = $this->renderRecord_SW($data, $fieldConfig, $TSconfig, $table, $row, $field);
-			// Set the field in the accumulation array IF the $data variabel is set:
-			$totalRecordContent[$field] = isset($data) ? $data : '';
+			$totalRecordContent[$field] = $data;
 		}
 		// Further processing may apply for each field in the record depending on the settings in the "types" configuration (the list of fields to currently display for a record in TCEforms).
 		// For instance this could be processing instructions for the Rich Text Editor.

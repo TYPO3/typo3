@@ -298,6 +298,11 @@ class DataHandler {
 	 */
 	public $exclude_array;
 
+	/**
+	 * @var array
+	 */
+	protected $control = array();
+
 	// Set with incoming data array
 	/**
 	 * @todo Define visibility
@@ -488,6 +493,13 @@ class DataHandler {
 	 * @var \TYPO3\CMS\Core\DataHandling\DataHandler
 	 */
 	protected $outerMostInstance = NULL;
+
+	/**
+	 * @param array $control
+	 */
+	public function setControl(array $control) {
+		$this->control = $control;
+	}
 
 	/**
 	 * Initializing.
@@ -1216,7 +1228,7 @@ class DataHandler {
 						if (isset($GLOBALS['TCA'][$table]['columns'][$field])) {
 							// Evaluating the value
 							$res = $this->checkValue($table, $field, $fieldValue, $id, $status, $realPid, $tscPID);
-							if (isset($res['value'])) {
+							if (array_key_exists('value', $res)) {
 								$fieldArray[$field] = $res['value'];
 							}
 							// Add the value of the original record to the diff-storage content:
@@ -1382,6 +1394,12 @@ class DataHandler {
 	 * @todo Define visibility
 	 */
 	public function checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $uploadedFiles, $tscPID) {
+		// Convert to NULL value if defined in TCA
+		if ($value === '%%%NULL%%%' && !empty($tcaFieldConf['eval']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($tcaFieldConf['eval'], 'null')) {
+			$res = array('value' => NULL);
+			return $res;
+		}
+
 		$PP = array($table, $id, $curValue, $status, $realPid, $recFID, $tscPID);
 		switch ($tcaFieldConf['type']) {
 		case 'text':
@@ -5926,7 +5944,9 @@ class DataHandler {
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
 			// Unset the fields which are similar:
 			foreach ($fieldArray as $col => $val) {
-				if (!$GLOBALS['TCA'][$table]['columns'][$col]['config']['MM'] && (!strcmp($val, $currentRecord[$col]) || $cRecTypes[$col] == 'int' && $currentRecord[$col] == 0 && !strcmp($val, ''))) {
+				$isAlreadyNull = ($val === NULL && $currentRecord[$col] === NULL);
+				$isNotNull = ($val !== NULL);
+				if (!$GLOBALS['TCA'][$table]['columns'][$col]['config']['MM'] && ($isAlreadyNull || $isNotNull && (!strcmp($val, $currentRecord[$col]) || $cRecTypes[$col] == 'int' && $currentRecord[$col] == 0 && !strcmp($val, '')))) {
 					unset($fieldArray[$col]);
 				} else {
 					if (!isset($this->mmHistoryRecords[($table . ':' . $id)]['oldRecord'][$col])) {
