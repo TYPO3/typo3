@@ -289,7 +289,21 @@ class t3lib_Compressor {
 
 		foreach ($filesToInclude as $key => $filename) {
 			if (t3lib_div::isValidUrl($filename)) {
-				$filesToInclude[$key] = $this->retrieveExternalFile($filename);
+					// check if it is possibly a local file with fully qualified URL
+				if (t3lib_div::isOnCurrentHost($filename) &&
+					t3lib_div::isFirstPartOfStr(
+						$filename,
+						t3lib_div::getIndpEnv('TYPO3_SITE_URL')
+					)
+				) {
+						// attempt to turn it into a local file path
+					$localFilename = substr($filename, strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
+					if (@is_file(t3lib_div::resolveBackPath($this->rootPath . $localFilename))) {
+						$filesToInclude[$key] = $localFilename;
+					} else {
+						$filesToInclude[$key] = $this->retrieveExternalFile($filename);
+					}
+				}
 				$filename = $filesToInclude[$key];
 			}
 			$filepath = t3lib_div::resolveBackPath($this->rootPath . $filename);
@@ -362,7 +376,7 @@ class t3lib_Compressor {
 		if (!file_exists(PATH_site . $targetFile) || ($this->createGzipped && !file_exists(PATH_site . $targetFile . '.gzip'))) {
 			$contents = t3lib_div::getUrl($filenameAbsolute);
 				// Perform some safe CSS optimizations.
-			$contents = str_replace("\r", '', $contents); // Strip any and all carriage returns.
+			$contents = str_replace(CR, '', $contents); // Strip any and all carriage returns.
 				// Match and process strings, comments and everything else, one chunk at a time.
 				// To understand this regex, read: "Mastering Regular Expressions 3rd Edition" chapter 6.
 			$contents = preg_replace_callback('%
@@ -664,7 +678,12 @@ class t3lib_Compressor {
 	protected function retrieveExternalFile($url) {
 		$externalContent = t3lib_div::getUrl($url);
 		$filename = $this->targetDirectory . 'external-' . md5($url);
-		t3lib_div::writeFile(PATH_site . $filename, $externalContent);
+			// write only if file does not exist and md5 of the content is not the same as fetched one
+		if (!file_exists(PATH_site . $filename) &&
+			(md5($externalContent) !== md5(t3lib_div::getUrl(PATH_site . $filename)))
+		) {
+			t3lib_div::writeFile(PATH_site . $filename, $externalContent);
+		}
 		return $filename;
 	}
 
