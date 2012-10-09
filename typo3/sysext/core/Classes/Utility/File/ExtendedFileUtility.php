@@ -383,9 +383,14 @@ class ExtendedFileUtility extends \TYPO3\CMS\Core\Utility\File\BasicFileUtility 
 		// for backwards compatibility: the combined file identifier was the path+filename
 		$fileObject = $this->getFileObject($cmds['data']);
 		// @todo implement the recycler feature which has been removed from the original implementation
-		// Copies the file
+		// checks to delete the file
 		if ($fileObject instanceof \TYPO3\CMS\Core\Resource\File) {
-			$refIndexRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'sys_refindex', 'ref_table=\'sys_file\' AND ref_uid=' . $fileObject->getUid());
+			$refIndexRecords = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
+				'*',
+				'sys_refindex',
+				'deleted=0 AND ref_table="sys_file" AND ref_uid=' . intval($fileObject->getUid())
+			);
+			// check if the file still has references
 			if (count($refIndexRecords) > 0) {
 				$shortcutContent = array();
 				foreach ($refIndexRecords as $row) {
