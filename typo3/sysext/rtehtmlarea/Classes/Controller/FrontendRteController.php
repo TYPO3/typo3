@@ -252,7 +252,7 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		// Set the save option for the RTE:
 		$this->TCEform->additionalJS_submit[] = $this->setSaveRTE($this->TCEform->RTEcounter, $this->TCEform->formName, $textAreaId);
 		// Loading ExtJs JavaScript files and inline code, if not configured in TS setup
-		if (!$GLOBALS['TSFE']->isINTincScript() || !is_array($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.'])) {
+		if (!is_array($GLOBALS['TSFE']->pSetup['javascriptLibs.']['ExtJs.'])) {
 			$this->pageRenderer->loadExtJs();
 			$this->pageRenderer->enableExtJSQuickTips();
 		}
@@ -263,9 +263,6 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 		$this->addRteJsFiles($this->TCEform->RTEcounter);
 		$this->pageRenderer->addJsFile($this->buildJSMainLangFile($this->TCEform->RTEcounter));
 		$this->pageRenderer->addJsInlineCode('HTMLArea-init', $this->getRteInitJsCode(), TRUE);
-		if ($GLOBALS['TSFE']->isINTincScript()) {
-			$GLOBALS['TSFE']->additionalHeaderData['rtehtmlarea'] = $this->pageRenderer->render();
-		}
 		/* =======================================
 		 * DRAW THE EDITOR
 		 * =======================================
@@ -325,18 +322,11 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 	/**
 	 * Gets instance of PageRenderer
 	 *
-	 * @return 	t3lib_PageRenderer
+	 * @return 	PageRenderer
 	 */
 	public function getPageRenderer() {
 		if (!isset($this->pageRenderer)) {
-			if ($GLOBALS['TSFE']->isINTincScript()) {
-				// We use an instance of t3lib_PageRenderer to render additional header data
-				// because this script is invoked after header has been rendered by $GLOBALS['TSFE']->getPageRenderer()
-				$this->pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Page\\PageRenderer');
-				$this->pageRenderer->setTemplateFile($this->extHttpPath . 'templates/rtehtmlarea_pageheader_frontend.html');
-			} else {
-				$this->pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
-			}
+			$this->pageRenderer = $GLOBALS['TSFE']->getPageRenderer();
 			$this->pageRenderer->setBackPath(TYPO3_mainDir);
 		}
 		return $this->pageRenderer;
@@ -356,8 +346,5 @@ class FrontendRteController extends \TYPO3\CMS\Rtehtmlarea\RteHtmlAreaBase {
 			'/*]]>*/'
 		));
 	}
-
 }
-
-
 ?>
