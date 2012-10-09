@@ -153,6 +153,15 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	}
 
 	/**
+	 * Returns the basename (the name without extension) of this file.
+	 *
+	 * @return string
+	 */
+	public function getNameWithoutExtension() {
+		return pathinfo($this->getName(), PATHINFO_FILENAME);
+	}
+
+	/**
 	 * Returns the size of this file
 	 *
 	 * @return integer
@@ -215,7 +224,11 @@ abstract class AbstractFile implements \TYPO3\CMS\Core\Resource\FileInterface {
 	 * @return string The file extension
 	 */
 	public function getExtension() {
-		return strtolower(pathinfo($this->getName(), PATHINFO_EXTENSION));
+		$pathinfo = pathinfo($this->getName());
+
+		$extension = strtolower($pathinfo['extension']);
+
+		return $extension;
 	}
 
 	/**

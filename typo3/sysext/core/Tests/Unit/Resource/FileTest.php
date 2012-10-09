@@ -360,6 +360,41 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$fixture->write('asdf');
 	}
 
+	public function filenameExtensionDataProvider() {
+		return array(
+			array('somefile.jpg', 'somefile', 'jpg'),
+			array('SomeFile.PNG', 'SomeFile', 'png'),
+			array('somefile', 'somefile', ''),
+			array('somefile.tar.gz', 'somefile', 'gz'),
+			array('somefile.tar.bz2', 'somefile', 'bz2'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider filenameExtensionDataProvider
+	 */
+	public function getNameWithoutExtensionReturnsCorrectName($originalFilename, $expectedBasename) {
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array(
+			'name' => $originalFilename,
+			'identifier' => '/' . $originalFilename
+		));
+		$this->assertSame($expectedBasename, $fixture->getNameWithoutExtension());
+	}
+
+	/**
+	 * @test
+	 * @dataProvider filenameExtensionDataProvider
+	 */
+	public function getExtensionReturnsCorrectExtension($originalFilename, $expectedBasename, $expectedExtension) {
+		$fixture = new \TYPO3\CMS\Core\Resource\File(array(
+			'name' => $originalFilename,
+			'identifier' => '/' . $originalFilename
+		));
+		$this->assertSame($expectedExtension, $fixture->getExtension());
+	}
+
+
 }
 
 ?>

@@ -68,6 +68,13 @@ interface FileInterface extends \TYPO3\CMS\Core\Resource\ResourceInterface {
 	public function getSha1();
 
 	/**
+	 * Returns the basename (the name without extension) of this file.
+	 *
+	 * @return string
+	 *
+	public function getNameWithoutExtension();
+
+	/**
 	 * Get the file extension
 	 *
 	 * @return string The file extension
