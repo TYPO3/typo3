@@ -51,16 +51,28 @@ class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\
 		if (!file_exists(($filePrefix . '/ext_tables.sql')) && !file_exists(($filePrefix . '/ext_tables_static+adt.sql'))) {
 			return '';
 		}
+
+		// Building URI
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 		$uriBuilder->reset();
 		$uri = $uriBuilder->uriFor('downloadExtensionData', array(
 			'extension' => $extension['key']
 		), 'Action');
 		$this->tag->addAttribute('href', $uri);
-		$cssClass = 'downloadExtensionData';
+
+		// Class Classes
+		$cssClass = 'icon icon-download-data';
 		$this->tag->addAttribute('class', $cssClass);
+
 		$label = 'Download SQL Dump';
+
+		// title-attribute
+		$this->tag->addAttribute('title', $label);
+
+		// Content
 		$this->tag->setContent($label);
+
+		// Render
 		return $this->tag->render();
 	}
 
