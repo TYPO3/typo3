@@ -151,6 +151,24 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * @return integer uid of the inserted record
 	 */
 	public function createLocalStorage($name, $basePath, $pathType, $description = '') {
+
+			// create the FlexForm for the driver configuration
+		$flexFormData = array(
+			'data' => array(
+				'sDEF' => array(
+					'lDEF' => array(
+						'basePath' => array('vDEF' => rtrim($basePath, '/') . '/'),
+						'pathType' => array('vDEF' => $pathType)
+					)
+				)
+			)
+		);
+
+		/** @var $flexObj \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
+		$flexObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Configuration\\FlexForm\\FlexFormTools');
+		$flexFormXml = $flexObj->flexArray2Xml($flexFormData, TRUE);
+
+			// create the record
 		$field_values = array(
 			'pid' => 0,
 			'tstamp' => $GLOBALS['EXEC_TIME'],
@@ -158,21 +176,7 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 			'name' => $name,
 			'description' => $description,
 			'driver' => 'Local',
-			'configuration' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-				<T3FlexForms>
-					<data>
-						<sheet index="sDEF">
-							<language index="lDEF">
-								<field index="basePath">
-									<value index="vDEF">' . rtrim($basePath, '/') . '/</value>
-								</field>
-								<field index="pathType">
-									<value index="vDEF">' . $pathType . '</value>
-								</field>
-							</language>
-						</sheet>
-					</data>
-				</T3FlexForms>',
+			'configuration' => $flexFormXml,
 			'is_online' => 1,
 			'is_browsable' => 1,
 			'is_public' => 1,
