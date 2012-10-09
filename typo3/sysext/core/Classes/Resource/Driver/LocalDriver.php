@@ -258,11 +258,8 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			if (!$charset) {
 				if (TYPO3_MODE === 'FE') {
 					$charset = $GLOBALS['TSFE']->renderCharset;
-				} elseif (is_object($GLOBALS['LANG'])) {
-					// BE assumed:
-					$charset = $GLOBALS['LANG']->charSet;
 				} else {
-					// best guess
+					// default for Backend
 					$charset = 'utf-8';
 				}
 			}
