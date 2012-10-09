@@ -390,6 +390,7 @@ class EditDocumentController {
 	 */
 	public function processData() {
 		// GPvars specifically for processing:
+		$control = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('control');
 		$this->data = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('data');
 		$this->cmd = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
 		$this->mirror = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('mirror');
@@ -402,6 +403,10 @@ class EditDocumentController {
 		/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
 		$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 		$tce->stripslashes_values = 0;
+
+		if (!empty($control)) {
+			$tce->setControl($control);
+		}
 		if (isset($_POST['_translation_savedok_x'])) {
 			$tce->updateModeL10NdiffData = 'FORCE_FFUPD';
 		}

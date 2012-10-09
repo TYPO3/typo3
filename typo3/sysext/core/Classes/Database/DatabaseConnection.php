@@ -455,7 +455,7 @@ class DatabaseConnection {
 			$fields = array();
 			if (is_array($fields_values) && count($fields_values)) {
 				// Quote and escape values
-				$nArr = $this->fullQuoteArray($fields_values, $table, $no_quote_fields);
+				$nArr = $this->fullQuoteArray($fields_values, $table, $no_quote_fields, TRUE);
 				foreach ($nArr as $k => $v) {
 					$fields[] = $k . '=' . $v;
 				}
@@ -678,11 +678,16 @@ class DatabaseConnection {
 	 *
 	 * @param string $str Input string
 	 * @param string $table Table name for which to quote string. Just enter the table that the field-value is selected from (and any DBAL will look up which handler to use and then how to quote the string!).
+	 * @param boolean $allowNull Whether to allow NULL values
 	 * @return string Output string; Wrapped in single quotes and quotes in the string (" / ') and \ will be backslashed (or otherwise based on DBAL handler)
 	 * @see quoteStr()
 	 * @todo Define visibility
 	 */
-	public function fullQuoteStr($str, $table) {
+	public function fullQuoteStr($str, $table, $allowNull = FALSE) {
+		if ($allowNull && $str === NULL) {
+			return 'NULL';
+		}
+
 		return '\'' . mysql_real_escape_string($str, $this->link) . '\'';
 	}
 
@@ -692,11 +697,12 @@ class DatabaseConnection {
 	 * @param array $arr Array with values (either associative or non-associative array)
 	 * @param string $table Table name for which to quote
 	 * @param string/array $noQuote List/array of keys NOT to quote (eg. SQL functions) - ONLY for associative arrays
+	 * @param boolean $allowNull Whether to allow NULL values
 	 * @return array The input array with the values quoted
 	 * @see cleanIntArray()
 	 * @todo Define visibility
 	 */
-	public function fullQuoteArray($arr, $table, $noQuote = FALSE) {
+	public function fullQuoteArray($arr, $table, $noQuote = FALSE, $allowNull = FALSE) {
 		if (is_string($noQuote)) {
 			$noQuote = explode(',', $noQuote);
 		} elseif (!is_array($noQuote)) {
@@ -704,7 +710,7 @@ class DatabaseConnection {
 		}
 		foreach ($arr as $k => $v) {
 			if ($noQuote === FALSE || !in_array($k, $noQuote)) {
-				$arr[$k] = $this->fullQuoteStr($v, $table);
+				$arr[$k] = $this->fullQuoteStr($v, $table, $allowNull);
 			}
 		}
 		return $arr;

@@ -286,6 +286,13 @@ class FormEngine {
 	 */
 	public $prependFormFieldNames_file = 'data_files';
 
+	/**
+	 * The string to prepend form field names that are active (not NULL).
+	 *
+	 * @var string
+	 */
+	protected $prependFormFieldNamesActive = 'control[active]';
+
 	// The name attribute of the form.
 	/**
 	 * @todo Define visibility
@@ -401,6 +408,13 @@ class FormEngine {
 	 * @todo Define visibility
 	 */
 	public $fieldTemplate = '<strong>###FIELD_NAME###</strong><br />###FIELD_ITEM###<hr />';
+
+	/**
+	 * Template subpart for palette fields.
+	 *
+	 * @var string
+	 */
+	protected $paletteFieldTemplate;
 
 	// Wrapping template code for a section
 	/**
@@ -1007,6 +1021,9 @@ class FormEngine {
 				$PA['itemFormElName'] = $this->prependFormFieldNames . '[' . $table . '][' . $row['uid'] . '][' . $field . ']';
 				// Form field name, in case of file uploads
 				$PA['itemFormElName_file'] = $this->prependFormFieldNames_file . '[' . $table . '][' . $row['uid'] . '][' . $field . ']';
+				// Form field name, to activate elements
+				// If the "eval" list contains "null", elements can be deactivated which results in storing NULL to database
+				$PA['itemFormElNameActive'] = $this->prependFormFieldNamesActive . '[' . $table . '][' . $row['uid'] . '][' . $field . ']';
 				// The value to show in the form field.
 				$PA['itemFormElValue'] = $row[$field];
 				$PA['itemFormElID'] = $this->prependFormFieldNames . '_' . $table . '_' . $row['uid'] . '_' . $field;
@@ -1096,7 +1113,8 @@ class FormEngine {
 							'ID' => $row['uid'],
 							'FIELD' => $field,
 							'TABLE' => $table,
-							'ITEM' => $item
+							'ITEM' => $item,
+							'ITEM_NULLVALUE' => $this->renderNullValueWidget($table, $field, $row, $PA),
 						);
 						$out = $this->addUserTemplateMarkers($out, $table, $field, $row, $PA);
 					} else {
@@ -1107,7 +1125,8 @@ class FormEngine {
 							'TABLE' => $table,
 							'ID' => $row['uid'],
 							'PAL_LINK_ICON' => $thePalIcon,
-							'FIELD' => $field
+							'FIELD' => $field,
+							'ITEM_NULLVALUE' => $this->renderNullValueWidget($table, $field, $row, $PA),
 						);
 						$out = $this->addUserTemplateMarkers($out, $table, $field, $row, $PA);
 						// String:
@@ -1344,6 +1363,58 @@ function ' . $evalData . '(value) {
 		// Wrap a wizard around the item?
 		$item = $this->renderWizards(array($item, $altItem), $config['wizards'], $table, $row, $field, $PA, $PA['itemFormElName'] . '_hr', $specConf);
 		return $item;
+	}
+
+	/**
+	 * Renders a view widget to handle and activate NULL values.
+	 * The widget is enabled by using 'null' in the 'eval' TCA definition.
+	 *
+	 * @param string $table Name of the table
+	 * @param string $field Name of the field
+	 * @param array $row Accordant data of the record row
+	 * @param array $PA Parameters array with rendering instructions
+	 * @return string Widget (if any).
+	 */
+	protected function renderNullValueWidget($table, $field, array $row, array $PA) {
+		$widget = '';
+
+		$config = $PA['fieldConf']['config'];
+		if (!empty($config['eval']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($config['eval'], 'null')) {
+			$isNull = ($PA['itemFormElValue'] === NULL);
+
+			$checked = ($isNull ? '' : ' checked="checked"');
+			$onChange = htmlspecialchars(
+				'typo3form.fieldSetNull(\'' . $PA['itemFormElName'] . '\', !this.checked)'
+			);
+
+			$widget = '<span class="t3-tceforms-widget-null-wrapper">' .
+				'<input type="hidden" name="' . $PA['itemFormElNameActive'] . '" value="0" />' .
+				'<input type="checkbox" name="' . $PA['itemFormElNameActive'] . '" value="1" onchange="' . $onChange . '"' . $checked . ' />' .
+			'</span>';
+		}
+
+		return $widget;
+	}
+
+	/**
+	 * Determines whether the current field value is considered as NULL value.
+	 * Using NULL values is enabled by using 'null' in the 'eval' TCA definition.
+	 *
+	 * @param string $table Name of the table
+	 * @param string $field Name of the field
+	 * @param array $row Accordant data
+	 * @param array $PA Parameters array with rendering instructions
+	 * @return boolean
+	 */
+	protected function isNullValue($table, $field, array $row, array $PA) {
+		$result = FALSE;
+
+		$config = $PA['fieldConf']['config'];
+		if ($PA['itemFormElValue'] === NULL && !empty($config['eval']) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList($config['eval'], 'null')) {
+			$result = TRUE;
+		}
+
+		return $result;
 	}
 
 	/**
@@ -4752,6 +4823,7 @@ function ' . $evalData . '(value) {
 		$this->totalWrap = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###TOTALWRAP###');
 		// Wrapping a single field:
 		$this->fieldTemplate = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###FIELDTEMPLATE###');
+		$this->paletteFieldTemplate = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###PALETTEFIELDTEMPLATE###');
 		$this->palFieldTemplate = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###PALETTE_FIELDTEMPLATE###');
 		$this->palFieldTemplateHeader = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###PALETTE_FIELDTEMPLATE_HEADER###');
 		$this->sectionWrap = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###SECTION_WRAP###');
@@ -4989,8 +5061,23 @@ function ' . $evalData . '(value) {
 				}
 			} else {
 				$lastLineWasLinebreak = FALSE;
-				$fieldIdentifierForJs = $content['TABLE'] . '_' . $content['ID'] . '_' . $content['FIELD'];
-				$iRow[$row][] = '<span class="t3-form-palette-field-container">' . '<label' . $labelAttributes . '>' . $content['NAME'] . '</label>' . '<span' . $fieldAttributes . '>' . '<img name="cm_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-contentchanged" alt="" />' . '<img name="req_' . $fieldIdentifierForJs . '" src="clear.gif" class="t3-form-palette-icon-required" alt="" />' . $content['ITEM'] . '</span>' . '</span>';
+
+				$paletteMarkers = array(
+					'###CONTENT_TABLE###' => $content['TABLE'],
+					'###CONTENT_ID###' => $content['ID'],
+					'###CONTENT_FIELD###' => $content['FIELD'],
+					'###CONTENT_NAME###' => $content['NAME'],
+					'###CONTENT_ITEM###' => $content['ITEM'],
+					'###CONTENT_ITEM_NULLVALUE###' => $content['ITEM_NULLVALUE'],
+					'###ATTRIBUTES_LABEL###' => $labelAttributes,
+					'###ATTRIBUTES_FIELD###' => $fieldAttributes,
+				);
+				$iRow[$row][] = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray(
+					$this->paletteFieldTemplate,
+					$paletteMarkers,
+					FALSE,
+					TRUE
+				);
 			}
 		}
 		// Final wrapping into the fieldset:
