@@ -169,8 +169,26 @@ class t3lib_Compressor {
 			// it and include it in the temporary file name
 		$unique = '';
 
-		foreach ($filesToInclude as $filename) {
-			$filepath = t3lib_div::resolveBackPath(PATH_typo3 . $filename);
+		foreach ($filesToInclude as $key => $filename) {
+			if (t3lib_div::isValidUrl($filename)) {
+					// check if it is possibly a local file with fully qualified URL
+				if (t3lib_div::isOnCurrentHost($filename) &&
+					t3lib_div::isFirstPartOfStr(
+						$filename,
+						t3lib_div::getIndpEnv('TYPO3_SITE_URL')
+					)
+				) {
+						// attempt to turn it into a local file path
+					$localFilename = substr($filename, strlen(t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
+					if (@is_file(t3lib_div::resolveBackPath($this->rootPath . $localFilename))) {
+						$filesToInclude[$key] = $localFilename;
+					} else {
+						$filesToInclude[$key] = $this->retrieveExternalFile($filename);
+					}
+				}
+				$filename = $filesToInclude[$key];
+			}
+			$filepath = t3lib_div::resolveBackPath($this->rootPath . $filename);
 			$unique .= $filename . filemtime($filepath) . filesize($filepath);
 		}
 		$targetFile = $this->targetDirectory . 'merged-' . md5($unique) . '.css';
@@ -235,7 +253,7 @@ class t3lib_Compressor {
 		if (!file_exists(PATH_site . $targetFile) || ($this->createGzipped && !file_exists(PATH_site . $targetFile . '.gzip'))) {
 			$contents = t3lib_div::getUrl($filenameAbsolute);
 				// Perform some safe CSS optimizations.
-			$contents = str_replace("\r", '', $contents); // Strip any and all carriage returns.
+			$contents = str_replace(CR, '', $contents); // Strip any and all carriage returns.
 				// Match and process strings, comments and everything else, one chunk at a time.
 				// To understand this regex, read: "Mastering Regular Expressions 3rd Edition" chapter 6.
 			$contents = preg_replace_callback('%
@@ -422,6 +440,25 @@ class t3lib_Compressor {
 			return $filename;
 		}
 	}
+
+	/**
+	 * Retrieves an external file and stores it locally.
+	 *
+	 * @param string $url
+	 * @return string Temporary local filename for the externally-retrieved file
+	 */
+	protected function retrieveExternalFile($url) {
+		$externalContent = t3lib_div::getUrl($url);
+		$filename = $this->targetDirectory . 'external-' . md5($url);
+			// write only if file does not exist and md5 of the content is not the same as fetched one
+		if (!file_exists(PATH_site . $filename) &&
+			(md5($externalContent) !== md5(t3lib_div::getUrl(PATH_site . $filename)))
+		) {
+			t3lib_div::writeFile(PATH_site . $filename, $externalContent);
+		}
+		return $filename;
+	}
+
 }
 
 if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['t3lib/class.t3lib_compressor.php'])) {
