@@ -659,6 +659,7 @@ tt_content.image.20 {
 
 	# Image source
 	imgList.field = image
+	imgList.override.field = image_fileUids
 	imgPath = uploads/pics/
 
 	# Single image rendering
