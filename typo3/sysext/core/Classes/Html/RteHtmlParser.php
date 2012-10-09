@@ -423,11 +423,12 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 					// Check file existence (in relative dir to this installation!)
 					if ($filepath && @is_file($filepath)) {
 						// If "magic image":
-						$folder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier($this->rteImageStorageDir());
-						if ($folder instanceof \TYPO3\CMS\Core\Resource\Folder) {
-							$storageConfiguration = $folder->getStorage()->getConfiguration();
-							$rteImageStorageDir = rtrim($storageConfiguration['basePath'], '/') . '/' . $folder->getName() . '/';
-							$pathPre = $rteImageStorageDir . 'RTEmagicC_';
+						$magicFolder = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFolderObjectFromCombinedIdentifier(
+							$this->rteImageStorageDir()
+						);
+						if ($magicFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
+							$magicFolderPath = $magicFolder->getPublicUrl();
+							$pathPre = $magicFolderPath . 'RTEmagicC_';
 							if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($path, $pathPre)) {
 								// Find original file
 								if ($attribArray['data-htmlarea-file-uid']) {
@@ -436,9 +437,9 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 									// Backward compatibility mode
 									$pI = pathinfo(substr($path, strlen($pathPre)));
 									$filename = substr($pI['basename'], 0, -strlen(('.' . $pI['extension'])));
-									$origFilePath = PATH_site . $rteImageStorageDir . 'RTEmagicP_' . $filename;
+									$origFilePath = PATH_site . $magicFolderPath . 'RTEmagicP_' . $filename;
 									if (@is_file($origFilePath)) {
-										$originalFileObject = $folder->addFile($origFilePath, $filename, 'changeName');
+										$originalFileObject = $magicFolder->addFile($origFilePath, $filename, 'changeName');
 										$attribArray['data-htmlarea-file-uid'] = $originalFileObject->getUid();
 									}
 								}
@@ -549,10 +550,38 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 				$absRef = trim($attribArray['src']);
 				// Unless the src attribute is already pointing to an external URL:
 				if (strtolower(substr($absRef, 0, 4)) != 'http') {
-					$attribArray['src'] = substr($attribArray['src'], strlen($this->relBackPath));
-					// If site is in a subpath (eg. /~user_jim/) this path needs to be removed because it will be added with $siteUrl
-					$attribArray['src'] = preg_replace('#^' . preg_quote($sitePath, '#') . '#', '', $attribArray['src']);
-					$attribArray['src'] = $siteUrl . $attribArray['src'];
+					$isMagicImage = FALSE;
+					$fileFactory = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance();
+					$magicFolder = $fileFactory->getFolderObjectFromCombinedIdentifier(
+						$this->rteImageStorageDir()
+					);
+					if ($magicFolder instanceof \TYPO3\CMS\Core\Resource\Folder) {
+						$magicFolderPath = $magicFolder->getPublicUrl();
+						$pathPre = $magicFolderPath . 'RTEmagicC_';
+						if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($attribArray['src'], $pathPre)) {
+							$isMagicImage = TRUE;
+						}
+					}
+					if ($attribArray['data-htmlarea-file-uid'] && !$isMagicImage) {
+						$fileObject = $fileFactory->getFileObject($attribArray['data-htmlarea-file-uid']);
+						$filePath = $fileObject->getForLocalProcessing(FALSE);
+						$attribArray['src'] = $siteUrl . substr($filePath, strlen(PATH_site));
+					} else {
+						$attribArray['src'] = substr($attribArray['src'], strlen($this->relBackPath));
+						// if site is in a subpath (eg. /~user_jim/) this path needs to be removed because it will be added with $siteUrl
+						$attribArray['src'] = preg_replace('#^' . preg_quote($sitePath, '#') . '#', '', $attribArray['src']);
+						// If the image is not magic and does not have a file uid, try to add the uid
+						if (!$attribArray['data-htmlarea-file-uid'] && !$isMagicImage) {
+							$fileOrFolderObject = $fileFactory->retrieveFileOrFolderObject($attribArray['src']);
+							if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+								$fileIdentifier = $fileOrFolderObject->getIdentifier();
+								$fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
+								$attribArray['data-htmlarea-file-uid'] = $fileObject->getUid();
+								$attribArray['data-htmlarea-file-table'] = 'sys_file';
+							}
+						}
+						$attribArray['src'] = $siteUrl . $attribArray['src'];
+					}
 					if (!isset($attribArray['alt'])) {
 						$attribArray['alt'] = '';
 					}
@@ -742,8 +771,21 @@ class RteHtmlParser extends \TYPO3\CMS\Core\Html\HtmlParser {
 							}
 							$external = TRUE;
 						} elseif ($fileChar) {
-							// file (internal)
-							$href = $siteUrl . $link_param;
+							// It is an internal file or folder
+							// Try to transform the href into a FAL reference
+							$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($link_param);
+							if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
+								// It's a folder
+								$folderIdentifier = $fileOrFolderObject->getIdentifier();
+								$href = $siteUrl . '?file:' . rawurlencode($folderIdentifier);
+							} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
+								// It's a file
+								$fileIdentifier = $fileOrFolderObject->getIdentifier();
+								$fileObject = $fileOrFolderObject->getStorage()->getFile($fileIdentifier);
+								$href = $siteUrl . '?file:' . $fileObject->getUid();
+							} else {
+								$href = $siteUrl . $link_param;
+							}
 						} else {
 							// integer or alias (alias is without slashes or periods or commas, that is 'nospace,alphanum_x,lower,unique' according to tables.php!!)
 							// Splitting the parameter by ',' and if the array counts more than 1 element it's a id/type/parameters triplet
