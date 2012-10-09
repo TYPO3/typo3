@@ -76,6 +76,18 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 * @return \TYPO3\CMS\Core\Resource\ResourceStorage[]
 	 */
 	public function findAll() {
+			// check if we have never created a storage before (no records, regardless of the enableFields),
+			// only fetch one record for that (is enough). If no record is found, create the fileadmin/ storage
+		$checkForStorageObjects = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('uid', $this->table, '1=1', '', '', '1');
+		if (count($checkForStorageObjects) === 0) {
+			$this->createLocalStorage(
+				'fileadmin/ (auto-created)',
+				$GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'],
+				'relative',
+				'This is the local fileadmin/ directory. This storage mount has been created automatically by TYPO3.'
+			);
+		}
+
 		$storageObjects = array();
 		$whereClause = 'deleted=0 AND hidden=0';
 		if ($this->type != '') {
@@ -86,10 +98,6 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 			$storageObjects[] = $this->createDomainObject($row);
 		}
 		$GLOBALS['TYPO3_DB']->sql_free_result($res);
-		if (count($storageObjects) === 0) {
-			$this->createLocalStorage('fileadmin/ (auto-created)', $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'], 'relative', 'This is the local fileadmin/ directory. This storage mount has been created automatically by TYPO3.');
-			$storageObjects = self::findAll();
-		}
 		return $storageObjects;
 	}
 
