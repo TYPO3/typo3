@@ -80,10 +80,10 @@ HTMLArea.TextIndicator = Ext.extend(HTMLArea.Plugin, {
 	 */
 	onCssParsingComplete: function () {
 		var button = this.getButton('TextIndicator'),
-			selection = this.editor.getSelection(),
-			selectionEmpty = selection.isEmpty(),
-			ancestors = selection.getAllAncestors(),
-			endPointsInSameBlock = selection.endPointsInSameBlock();
+			selection = this.editor._getSelection(),
+			selectionEmpty = this.editor._selectionEmpty(selection),
+			ancestors = this.editor.getAllAncestors(),
+			endPointsInSameBlock = this.editor.endPointsInSameBlock();
 		if (button) {
 			this.onUpdateToolbar(button, this.getEditorMode(), selectionEmpty, ancestors, endPointsInSameBlock);
 		}
