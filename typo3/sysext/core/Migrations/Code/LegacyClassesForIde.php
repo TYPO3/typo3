@@ -554,7 +554,7 @@ class t3lib_tree_pagetree_extdirect_Commands extends \TYPO3\CMS\Backend\Tree\Pag
 /**
  * @deprecated since 6.0 will be removed in 7.0
  */
-class t3lib_tree_pagetree_extdirect_Tree extends \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeDataProvide {}
+class t3lib_tree_pagetree_extdirect_Tree extends \TYPO3\CMS\Backend\Tree\Pagetree\ExtdirectTreeDataProvider {}
 
 /**
  * @deprecated since 6.0 will be removed in 7.0
