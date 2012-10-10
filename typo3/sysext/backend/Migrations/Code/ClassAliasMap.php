@@ -130,5 +130,8 @@ return array(
 	'TYPO3Logo' => 'TYPO3\\CMS\\Backend\\View\\LogoView',
 	'cms_newContentElementWizardsHook' => 'TYPO3\\CMS\\Backend\\Wizard\\NewContentElementWizardHookInterface',
 	'SC_wizard_tsconfig' => 'TYPO3\\CMS\\Backend\\Wizard\\TsconfigWizard',
+	't3lib_extjs_ExtDirectRouter' => 'TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectRouter',
+	't3lib_extjs_ExtDirectApi' => 'TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectApi',
+	't3lib_extjs_ExtDirectDebug' => 'TYPO3\\CMS\\Core\\ExtDirect\\ExtDirectDebug',
 );
 ?>
