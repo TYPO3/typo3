@@ -139,12 +139,18 @@ class tx_rtehtmlarea_language extends tx_rtehtmlarea_api {
 				}
 			}
 			$GLOBALS['TYPO3_DB']->sql_free_result($res);
-			if ($this->htmlAreaRTE->is_FE()) {
-				$GLOBALS['TSFE']->csConvObj->convArray($nameArray, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset'], $this->htmlAreaRTE->OutputCharset);
-			} else {
-				$GLOBALS['LANG']->csConvObj->convArray($nameArray, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset'], $GLOBALS['LANG']->charSet);
+			$fromCharset = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['static_info_tables']['charset'];
+			if (!$fromCharset) {
+				$fromCharset = 'utf-8';
 			}
-			uasort($nameArray, 'strcoll');
+			if ($this->htmlAreaRTE->is_FE()) {
+				$GLOBALS['TSFE']->csConvObj->convArray($nameArray, $fromCharset, $this->htmlAreaRTE->OutputCharset);
+			} else {
+				$GLOBALS['LANG']->csConvObj->convArray($nameArray, $fromCharset, $GLOBALS['LANG']->charSet);
+			}
+			if (uasort($nameArray, 'strcoll') === FALSE) {
+				$nameArray = array();
+			}
 		}
 		return $nameArray;
 	}
