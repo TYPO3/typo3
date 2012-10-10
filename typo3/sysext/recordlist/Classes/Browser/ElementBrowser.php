@@ -1134,11 +1134,11 @@ class ElementBrowser {
 		// Create upload/create folder forms, if a path is given
 		if ($this->expandFolder) {
 			$this->selectedFolder = FALSE;
-			$fileOrFolderObject = t3lib_file_Factory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
-			if ($fileOrFolderObject instanceof t3lib_file_Folder) {
+			$fileOrFolderObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->retrieveFileOrFolderObject($this->expandFolder);
+			if ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\Folder) {
 				// It's a folder
 				$this->selectedFolder = $fileOrFolderObject;
-			} elseif ($fileOrFolderObject instanceof t3lib_file_FileInterface) {
+			} elseif ($fileOrFolderObject instanceof \TYPO3\CMS\Core\Resource\FileInterface) {
 				// It's a file
 				// @todo: find the parent folder, right now done a bit ugly, because the file does not
 				// support finding the parent folder of a file on purpose
