@@ -132,10 +132,10 @@ HTMLArea.Language = Ext.extend(HTMLArea.Plugin, {
 					// Monitor the language combo's store being loaded
 				select.mon(select.getStore(), 'load', function () {
 					this.addLanguageMarkingRules();
-					var selection = this.editor.getSelection(),
-						selectionEmpty = selection.isEmpty(),
-						ancestors = selection.getAllAncestors(),
-						endPointsInSameBlock = selection.endPointsInSameBlock();
+					var selection = this.editor._getSelection(),
+						selectionEmpty = this.editor._selectionEmpty(selection),
+						ancestors = this.editor.getAllAncestors(),
+						endPointsInSameBlock = this.editor.endPointsInSameBlock();
 					this.onUpdateToolbar(select, this.getEditorMode(), selectionEmpty, ancestors, endPointsInSameBlock);
 				}, this);
 			}

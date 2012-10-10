@@ -127,10 +127,10 @@ HTMLArea.SelectFont = Ext.extend(HTMLArea.Plugin, {
 			var select = this.getButton(dropDown[0]);
 			if (select) {
 				select.mon(select.getStore(), 'load', function () {
-					var selection = this.editor.getSelection(),
-						selectionEmpty = selection.isEmpty(),
-						ancestors = selection.getAllAncestors(),
-						endPointsInSameBlock = selection.endPointsInSameBlock();
+					var selection = this.editor._getSelection(),
+						selectionEmpty = this.editor._selectionEmpty(selection),
+						ancestors = this.editor.getAllAncestors(),
+						endPointsInSameBlock = this.editor.endPointsInSameBlock();
 					this.onUpdateToolbar(select, this.getEditorMode(), selectionEmpty, ancestors, endPointsInSameBlock);
 				}, this);
 			}
