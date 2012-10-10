@@ -251,8 +251,8 @@ HTMLArea.PlainText = Ext.extend(HTMLArea.Plugin, {
 		if (!this.getButton('PasteToggle').inactive) {
 			switch (this.currentBehaviour) {
 				case 'plainText':
-						// Only IE and WebKit will allow access to the clipboard content, in plain text only however
-					if (Ext.isIE || Ext.isWebKit) {
+						// Only IE and Chrome will allow access to the clipboard content, in plain text only however
+					if (Ext.isIE || Ext.isChrome) {
 						var clipboardText = this.grabClipboardText(event);
 						if (clipboardText) {
 							this.editor.insertHTML(clipboardText);
