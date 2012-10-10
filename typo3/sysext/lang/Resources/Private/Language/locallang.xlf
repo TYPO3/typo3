@@ -9,9 +9,6 @@
 			<trans-unit id="state.notAvailable" xml:space="preserve">
 				<source>Not available</source>
 			</trans-unit>
-			<trans-unit id="state.updateAvailable" xml:space="preserve">
-				<source>Update available</source>
-			</trans-unit>
 			<trans-unit id="state.failed" xml:space="preserve">
 				<source>Failed</source>
 			</trans-unit>
@@ -21,6 +18,9 @@
 			<trans-unit id="state.invalid" xml:space="preserve">
 				<source>Invalid</source>
 			</trans-unit>
+			<trans-unit id="state.updated" xml:space="preserve">
+				<source>Updated</source>
+			</trans-unit>
 			<trans-unit id="state.checking" xml:space="preserve">
 				<source>Checking...</source>
 			</trans-unit>
@@ -28,9 +28,6 @@
 				<source>Not checked</source>
 			</trans-unit>
 
-			<trans-unit id="button.check" xml:space="preserve">
-				<source>Check against repository</source>
-			</trans-unit>
 			<trans-unit id="button.update" xml:space="preserve">
 				<source>Update from repository</source>
 			</trans-unit>
@@ -59,9 +56,6 @@
 			</trans-unit>
 			<trans-unit id="flashmessage.multipleErrors" xml:space="preserve">
 				<source>Several requests have been failed. Please check your internet connection!</source>
-			</trans-unit>
-			<trans-unit id="flashmessage.checkComplete" xml:space="preserve">
-				<source>The translation check has been successfully completed.</source>
 			</trans-unit>
 			<trans-unit id="flashmessage.updateComplete" xml:space="preserve">
 				<source>The translation update has been successfully completed.</source>
