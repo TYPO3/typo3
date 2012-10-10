@@ -14,7 +14,6 @@
 		<f:for each="{extensions}" as="extension">
 			<tr
 				class="translationListRow"
-				data-checkurl="<f:uri.action action="checkTranslation" arguments="{extension:'{extension.key}', locales:'{languageSelectionForm.selectedLanguagesLocaleList}'}" />"
 				data-updateurl="<f:uri.action action="updateTranslation" arguments="{extension:'{extension.key}', locales:'{languageSelectionForm.selectedLanguagesLocaleList}'}" />"
 			>
 				<td class="icon">
@@ -26,7 +25,6 @@
 						class="language languageStateNone translationListCell"
 						data-extension="{extension.key}"
 						data-locale="{selectedLanguage.locale}"
-						data-checkurl="<f:uri.action action="checkTranslation" arguments="{extension:'{extension.key}', locales:'{selectedLanguage.locale}'}" />"
 						data-updateurl="<f:uri.action action="updateTranslation" arguments="{extension:'{extension.key}', locales:'{selectedLanguage.locale}'}" />"
 					>
 						<span class="stateIconNone"><f:translate key="state.notChecked"/></span>

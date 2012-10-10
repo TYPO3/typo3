@@ -18,7 +18,8 @@ var languageModule = {
 		available: 1,
 		failed: 2,
 		ok: 3,
-		invalid: 4
+		invalid: 4,
+		updated: 5
 	},
 
 	/**
@@ -74,10 +75,9 @@ var languageModule = {
 	 * Execute AJAX call for given cell of the translation matrix
 	 *
 	 * @param mixed cell The cell to process
-	 * @param string type Type of the AJAX call
 	 * @return void
 	 */
-	processCell: function(cell, type) {
+	processCell: function(cell) {
 			// Intialize
 		var $cell = jQuery(cell);
 		languageModule.toggleEventHandlers('off');
@@ -85,7 +85,7 @@ var languageModule = {
 		$cell.html(jQuery('#stateIconChecking').html());
 
 			// Process AJAX call
-		languageModule.executeAjaxCall($cell.data(type + 'url'), function(response, error) {
+		languageModule.executeAjaxCall($cell.data('updateurl'), function(response, error) {
 			var state = 'Error';
 			if (error === undefined || error === null) {
 				var locale = $cell.data('locale');
@@ -98,7 +98,7 @@ var languageModule = {
 				return;
 			}
 			languageModule.updateCellState($cell, state);
-			languageModule.displaySuccess('flashmessage.' + type + 'Complete');
+			languageModule.displaySuccess('flashmessage.updateComplete');
 			languageModule.toggleEventHandlers('on');
 		});
 	},
@@ -107,10 +107,9 @@ var languageModule = {
 	 * Execute AJAX calls for given rows of the translation matrix
 	 *
 	 * @param mixed rows Rows to process
-	 * @param string type Type of the AJAX call
 	 * @return void
 	 */
-	processRows: function(rows, type) {
+	processRows: function(rows) {
 			// Intialize processing within first run
 		if (rows) {
 			languageModule.addElementsToStack(rows);
@@ -120,7 +119,7 @@ var languageModule = {
 
 			// Stop processing if stack is empty
 		if (languageModule.isStackEmpty()) {
-			languageModule.displaySuccess('flashmessage.' + type + 'Complete');
+			languageModule.displaySuccess('flashmessage.updateComplete');
 			languageModule.toggleEventHandlers('on');
 			return;
 		}
@@ -137,7 +136,7 @@ var languageModule = {
 		$cells.html(jQuery('#stateIconChecking').html());
 
 			// Process AJAX call
-		languageModule.executeAjaxCall($row.data(type + 'url'), function(response, error) {
+		languageModule.executeAjaxCall($row.data('updateurl'), function(response, error) {
 			if (error !== undefined && error !== null) {
 				$cells.html(jQuery('#stateIconError').html());
 				if (error === 'abort') {
@@ -158,7 +157,7 @@ var languageModule = {
 					languageModule.updateCellState($cell, state);
 				});
 			}
-			languageModule.processRows(null, type);
+			languageModule.processRows();
 		});
 	},
 
@@ -225,21 +224,16 @@ var languageModule = {
 		var className = 'waiting';
 		var fadeSpeed = 150;
 		if (action === 'on') {
-			jQuery('.checkItem').on('click', languageModule.checkTranslations).removeClass(className);
 			jQuery('.updateItem').on('click', languageModule.updateTranslations).removeClass(className);
 			jQuery('.cancelItem').off().fadeOut(fadeSpeed);
 			jQuery('.selectionList input, .selectionList label').off().parent().removeClass(className);
 			jQuery('.selectionList input:checkbox').on('change', languageModule.submitSelectionForm);
 			jQuery('.selectionList tr, .selectionList td').removeClass(className);
 			jQuery('.translationList tr, .translationList td').removeClass(className);
-			jQuery('.languageState1').on('click', function() {
+			jQuery('.languageStateNone').on('click', function() {
 				languageModule.updateSingleTranslation(this);
 			});
-			jQuery('.languageStateNone').on('click', function() {
-				languageModule.checkSingleTranslation(this);
-			});
 		} else {
-			jQuery('.checkItem').off().addClass(className);
 			jQuery('.updateItem').off().addClass(className);
 			jQuery('.cancelItem').on('click', languageModule.cancelProcess).fadeIn(fadeSpeed);
 			jQuery('.selectionList input:checkbox').off();
@@ -248,7 +242,6 @@ var languageModule = {
 			}).parent().addClass(className);
 			jQuery('.selectionList tr, .selectionList td').addClass(className);
 			jQuery('.translationList tr, .translationList td').addClass(className);
-			jQuery('.languageState1').off();
 			jQuery('.languageStateNone').off();
 		}
 	},
@@ -329,30 +322,12 @@ var languageModule = {
 	},
 
 	/**
-	 * Check for new translations
-	 *
-	 * @return void
-	 */
-	checkTranslations: function() {
-		languageModule.processRows('.translationListRow', 'check');
-	},
-
-	/**
-	 * Check for new translation for a single element
-	 *
-	 * @return void
-	 */
-	checkSingleTranslation: function(element) {
-		languageModule.processCell(element, 'check');
-	},
-
-	/**
 	 * Update translations
 	 *
 	 * @return void
 	 */
 	updateTranslations: function() {
-		languageModule.processRows('.translationListRow', 'update');
+		languageModule.processRows('.translationListRow');
 	},
 
 	/**
@@ -362,7 +337,7 @@ var languageModule = {
 	 * @return void
 	 */
 	updateSingleTranslation: function(element) {
-		languageModule.processCell(element, 'update');
+		languageModule.processCell(element);
 	},
 
 	/**

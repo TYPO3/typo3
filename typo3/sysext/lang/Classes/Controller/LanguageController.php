@@ -43,6 +43,7 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	const TRANSLATION_FAILED = 2;
 	const TRANSLATION_OK = 3;
 	const TRANSLATION_INVALID = 4;
+	const TRANSLATION_UPDATED = 5;
 
 	/**
 	 * @var \TYPO3\CMS\Lang\Domain\Repository\LanguageRepository
@@ -65,26 +66,15 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	protected $terConnection;
 
 	/**
-	 * @var \TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
-	 */
-	protected $cache;
-
-	/**
 	 * @var array
 	 */
-	protected $icons = array();
-
-	/**
-	 * Keep cache for one day
-	 * @var integer
-	 */
-	protected $cacheLifetime = 86400;
+	protected $translationStates = array();
 
 	/**
 	 * JSON actions
 	 * @var array
 	 */
-	protected $jsonActions = array('checkTranslation', 'updateTranslation');
+	protected $jsonActions = array('updateTranslation');
 
 	/**
 	 * Inject the language repository
@@ -143,20 +133,6 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	}
 
 	/**
-	 * Initialize cache frontend
-	 *
-	 * @return void
-	 */
-	public function initializeAction() {
-		$cacheIdentifier = $this->request->getControllerExtensionKey();
-		$cacheFrontend = $GLOBALS['typo3CacheManager'];
-		if (!$cacheFrontend->hasCache($cacheIdentifier)) {
-			throw new \Exception('The cache with identifier "' . $cacheIdentifier . '" is not available.', 1341301708);
-		}
-		$this->cache = $cacheFrontend->getCache($cacheIdentifier);
-	}
-
-	/**
 	 * Index action
 	 *
 	 * @param \TYPO3\CMS\Lang\Domain\Model\LanguageSelectionForm $languageSelectionForm
@@ -194,16 +170,14 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$this->redirect('index');
 	}
 
-
 	/**
-	 * Check translation state for one extension
+	 * Update translation for one extension
 	 *
 	 * @param string $extension The extension key
-	 * @param mixed $locales List or array of locales to check
-	 * @param boolean $update Update translations if is TRUE
+	 * @param mixed $locales List or array of locales to update
 	 * @return void
 	 */
-	public function checkTranslationAction($extension, $locales, $update = FALSE) {
+	public function updateTranslationAction($extension, $locales) {
 		if (is_string($locales)) {
 			$locales = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $locales);
 		}
@@ -213,7 +187,7 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			$state = static::TRANSLATION_INVALID;
 			try {
 				$state = $this->getTranslationStateForExtension($extension, $locale);
-				if ($update && $state === static::TRANSLATION_AVAILABLE) {
+				if ($state === static::TRANSLATION_AVAILABLE) {
 					$state = $this->updateTranslationForExtension($extension, $locale);
 				}
 			} catch (\Exception $exception) {
@@ -230,17 +204,6 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 	}
 
 	/**
-	 * Update translation for one extension
-	 *
-	 * @param string $extension The extension key
-	 * @param mixed $locales List or array of locales to update
-	 * @return void
-	 */
-	public function updateTranslationAction($extension, $locales) {
-		$this->checkTranslationAction($extension, $locales, TRUE);
-	}
-
-	/**
 	 * Returns the translation state for an extension
 	 *
 	 * @param string $extensionKey The extension key
@@ -252,9 +215,9 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 			return static::TRANSLATION_INVALID;
 		}
 
-		$identifier = 'translationState-' .  $extensionKey . '-' . $locale;
-		if ($this->cache->has($identifier)) {
-			return $this->cache->get($identifier);
+		$identifier = $extensionKey . '-' . $locale;
+		if (isset($this->translationStates[$identifier])) {
+			return $this->translationStates[$identifier];
 		}
 
 		$selectedLanguages = $this->languageRepository->findSelected();
@@ -264,35 +227,31 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 
 		$mirrorUrl = $this->repositoryHelper->getMirrors()->getMirrorUrl();
 		$status = $this->terConnection->fetchTranslationStatus($extensionKey, $mirrorUrl);
-		$states = array();
 
 		foreach ($selectedLanguages as $language) {
-			$selectedLocale = $language->getLocale();
+			$stateLocale = $language->getLocale();
+			$stateIdentifier = $extensionKey . '-' . $stateLocale;
+			$this->translationStates[$stateIdentifier] = static::TRANSLATION_INVALID;
 
-			if (empty($status[$selectedLocale]) || !is_array($status[$selectedLocale])) {
-				$states[$selectedLocale] = static::TRANSLATION_NOT_AVAILABLE;
+			if (empty($status[$stateLocale]) || !is_array($status[$stateLocale])) {
+				$this->translationStates[$stateIdentifier] = static::TRANSLATION_NOT_AVAILABLE;
 				continue;
 			}
 
-			$md5 = $this->getTranslationFileMd5($extensionKey, $selectedLocale);
-			if ($md5 !== $status[$selectedLocale]['md5']) {
-				$states[$selectedLocale] = static::TRANSLATION_AVAILABLE;
+			$md5 = $this->getTranslationFileMd5($extensionKey, $stateLocale);
+			if ($md5 !== $status[$stateLocale]['md5']) {
+				$this->translationStates[$stateIdentifier] = static::TRANSLATION_AVAILABLE;
 				continue;
 			}
 
-			$states[$selectedLocale] = static::TRANSLATION_OK;
-		}
-
-		if (!isset($states[$locale])) {
-			$states[$locale] = static::TRANSLATION_INVALID;
+			$this->translationStates[$stateIdentifier] = static::TRANSLATION_OK;
 		}
 
 		foreach ($states as $stateLocale => $state) {
-			$identifier = 'translationState-' .  $extensionKey . '-' . $stateLocale;
-			$this->cache->set($identifier, $state, array(), $this->cacheLifetime);
+			$this->translationStates[$extensionKey . '-' . $stateLocale] = $state;
 		}
 
-		return $states[$locale];
+		return $this->translationStates[$identifier];
 	}
 
 	/**
@@ -329,11 +288,8 @@ class LanguageController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControl
 		$mirrorUrl = $this->repositoryHelper->getMirrors()->getMirrorUrl();
 		$updateResult = $this->terConnection->updateTranslation($extensionKey, $locale, $mirrorUrl);
 		if ($updateResult === TRUE) {
-			$state = static::TRANSLATION_OK;
+			$state = static::TRANSLATION_UPDATED;
 		}
-
-		$identifier = 'translationState-' .  $extensionKey . '-' . $locale;
-		$this->cache->set($identifier, $state, array(), $this->cacheLifetime);
 
 		return $state;
 	}
