@@ -101,7 +101,7 @@ return array(
 	't3lib_tree_pagetree_Commands' => 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\Commands',
 	't3lib_tree_pagetree_DataProvider' => 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\DataProvider',
 	't3lib_tree_pagetree_extdirect_Commands' => 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeCommands',
-	't3lib_tree_pagetree_extdirect_Tree' => 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeDataProvide',
+	't3lib_tree_pagetree_extdirect_Tree' => 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeDataProvider',
 	't3lib_tree_pagetree_Indicator' => 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\Indicator',
 	't3lib_tree_pagetree_interfaces_IndicatorProvider' => 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\IndicatorProviderInterface',
 	't3lib_tree_pagetree_Node' => 'TYPO3\\CMS\\Backend\\Tree\\Pagetree\\PagetreeNode',

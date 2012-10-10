@@ -113,7 +113,7 @@ class Bootstrap {
 	 */
 	public function registerExtDirectComponents() {
 		if (TYPO3_MODE === 'BE') {
-			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.DataProvider', PATH_t3lib . 'tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php:TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeDataProvide', 'web', 'user,group');
+			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.DataProvider', PATH_t3lib . 'tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php:TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeDataProvider', 'web', 'user,group');
 			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.Commands', PATH_t3lib . 'tree/pagetree/extdirect/class.t3lib_tree_pagetree_extdirect_tree.php:TYPO3\\CMS\\Backend\\Tree\\Pagetree\\ExtdirectTreeCommands', 'web', 'user,group');
 			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.Components.PageTree.ContextMenuDataProvider', PATH_t3lib . 'contextmenu/pagetree/extdirect/class.t3lib_contextmenu_pagetree_extdirect_contextmenu.php:TYPO3\\CMS\\Backend\\ContextMenu\\Pagetree\\Extdirect\\ContextMenuConfiguration', 'web', 'user,group');
 			\TYPO3\CMS\Core\Extension\ExtensionManager::registerExtDirectComponent('TYPO3.LiveSearchActions.ExtDirect', PATH_t3lib . 'extjs/dataprovider/class.extdirect_dataprovider_backendlivesearch.php:extDirect_DataProvider_BackendLiveSearch', 'web_list', 'user,group');
