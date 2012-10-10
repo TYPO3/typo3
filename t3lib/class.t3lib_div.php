@@ -5811,8 +5811,8 @@ final class t3lib_div {
 	public static function flushOutputBuffers() {
 		$obContent = '';
 
-		while ($obContent .= ob_get_clean()) {
-			;
+		while ($content = ob_get_clean()) {
+			$obContent .= $content;
 		}
 
 			// if previously a "Content-Encoding: whatever" has been set, we have to unset it
