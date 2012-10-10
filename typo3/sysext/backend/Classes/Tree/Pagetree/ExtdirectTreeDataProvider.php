@@ -33,7 +33,7 @@ namespace TYPO3\CMS\Backend\Tree\Pagetree;
  * @package TYPO3
  * @subpackage t3lib
  */
-class ExtdirectTreeDataProvide extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTree {
+class ExtdirectTreeDataProvider extends \TYPO3\CMS\Backend\Tree\AbstractExtJsTree {
 
 	/**
 	 * Data Provider
