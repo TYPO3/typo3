@@ -365,8 +365,8 @@ class FileTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			array('somefile.jpg', 'somefile', 'jpg'),
 			array('SomeFile.PNG', 'SomeFile', 'png'),
 			array('somefile', 'somefile', ''),
-			array('somefile.tar.gz', 'somefile', 'gz'),
-			array('somefile.tar.bz2', 'somefile', 'bz2'),
+			array('somefile.tar.gz', 'somefile.tar', 'gz'),
+			array('somefile.tar.bz2', 'somefile.tar', 'bz2'),
 		);
 	}
 
