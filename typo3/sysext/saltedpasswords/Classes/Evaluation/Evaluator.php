@@ -72,14 +72,20 @@ class Evaluator {
 		if ($isEnabled) {
 			$set = FALSE;
 			$isMD5 = preg_match('/[0-9abcdef]{32,32}/', $value);
-			$isSaltedHash = \TYPO3\CMS\Core\Utility\GeneralUtility::inList('$1$,$2$,$2a,$P$', substr($value, 0, 3));
-			$this->objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, $this->mode);
+			$isDeprecatedSaltedHash = \TYPO3\CMS\Core\Utility\GeneralUtility::inList('C$,M$', substr($value, 0, 2));
+			/** @var $objInstanceSaltedPW \TYPO3\CMS\Saltedpasswords\Salt\SaltInterface */
+			$objInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance(NULL, $this->mode);
 			if ($isMD5) {
 				$set = TRUE;
-				$value = 'M' . $this->objInstanceSaltedPW->getHashedPassword($value);
-			} elseif (!$isSaltedHash) {
-				$set = TRUE;
-				$value = $this->objInstanceSaltedPW->getHashedPassword($value);
+				$value = 'M' . $objInstanceSaltedPW->getHashedPassword($value);
+			} else {
+				// Determine method used for the (possibly) salted hashed password
+				$tempValue = $isDeprecatedSaltedHash ? substr($value, 1) : $value;
+				$tempObjInstanceSaltedPW = \TYPO3\CMS\Saltedpasswords\Salt\SaltFactory::getSaltingInstance($tempValue);
+				if (!is_object($tempObjInstanceSaltedPW)) {
+					$set = TRUE;
+					$value = $objInstanceSaltedPW->getHashedPassword($value);
+				}
 			}
 		}
 		return $value;
