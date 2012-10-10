@@ -100,7 +100,7 @@ class FileSystemNavigationFrameController {
 					"file[upload][1][target]": path,
 					"file[upload][1][data]": 1,
 					"file[upload][1][charset]": "utf-8",
-					"ajaxID": "TYPO3\\CMS\\Backend\\Controller\\File\\FileController::process"
+					"ajaxID": "TYPO3_tcefile::process"
 				}
 			};
 
