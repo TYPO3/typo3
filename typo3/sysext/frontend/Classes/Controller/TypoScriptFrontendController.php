@@ -2871,6 +2871,9 @@ class TypoScriptFrontendController {
 								header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 								header('Content-Type: ' . $mimeType);
 								header('Content-Disposition: attachment; filename="' . basename($absoluteFileName) . '"');
+								$juStat = stat($this->jumpurl);
+								header('Content-Length: '.$juStat['size']);
+								\TYPO3\CMS\Core\Utility\GeneralUtility::flushOutputBuffers();
 								readfile($absoluteFileName);
 								die;
 							} else {
