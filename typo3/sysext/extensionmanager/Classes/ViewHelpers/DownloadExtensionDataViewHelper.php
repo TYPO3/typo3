@@ -59,8 +59,8 @@ class DownloadExtensionDataViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\
 		$this->tag->addAttribute('href', $uri);
 		$cssClass = 'downloadExtensionData';
 		$this->tag->addAttribute('class', $cssClass);
-		$label = 'Download SQL Dump';
-		$this->tag->setContent($label);
+		$this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.downloadsql', 'extensionmanager'));
+		$this->tag->setContent(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-extension-sqldump'));
 		return $this->tag->render();
 	}
 

@@ -1,6 +1,9 @@
 {namespace em=TYPO3\CMS\Extensionmanager\ViewHelpers}
 
 <f:layout name="main" />
+<f:section name="docHeaderRow1">
+    <f:be.buttons.icon uri="{f:uri.action(action:'form',controller:'UploadExtensionFile')}" icon="actions-edit-upload" title="{f:translate(key:'extensionList.uploadExtension')}"/>
+</f:section>
 <f:section name="docHeaderRow2">
 </f:section>
 <f:section name="Content">
@@ -8,20 +11,19 @@
 		<div class="typo3-extensionmanager-headerRowLeft">
 		</div>
 		<div class="typo3-extensionmanager-headerRowRight">
-			<f:link.action action="form" controller="UploadExtensionFile" class="uploadExtension">Upload Extension .t3x/.zip</f:link.action>
-			<div class="uploadForm" style="display:none;">Loading form...<span class="spinner"></span></div>
+			<div class="uploadForm" style="display:none;"><f:translate key="extensionList.loading"/><span class="spinner"></span></div>
 		</div>
 	</div>
 	<table id="typo3-extension-list" class="typo3-extension-list">
 		<thead>
 			<tr>
-				<th title="Update">Upd.</th>
-				<th title="Activate / Deactivate">A/D</th>
-				<th>Extension</th>
-				<th>Key</th>
-				<th>Version</th>
-				<th>Actions</th>
-				<th>State</th>
+				<th title="{f:translate(key:'extensionList.header.title.update')}"><f:translate key="extensionList.header.update"/></th>
+				<th title="{f:translate(key:'extensionList.header.title.activate')}"><f:translate key="extensionList.header.activate"/></th>
+				<th><f:translate key="extensionList.header.extensionName"/></th>
+				<th><f:translate key="extensionList.header.extensionKey"/></th>
+				<th><f:translate key="extensionList.header.extensionVersion"/></th>
+				<th><f:translate key="extensionList.header.extensionActions"/></th>
+				<th><f:translate key="extensionList.header.extensionState"/></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -42,7 +44,7 @@
 							arguments="{extension:extension.key, integerVersion: extension.terObject.integerVersion}"
 							class="updateAvailable"
 							format="json"
-						>Update</f:link.action>
+						><f:translate key="extensionList.update"/></f:link.action>
 					</f:if>
 				</td>
 				<td>
@@ -68,7 +70,7 @@
 				<td>
 					<em:configureExtension extension="{extension}" />
 					<em:removeExtension extension="{extension}" />
-					<f:link.action action="downloadExtensionZip" controller="Action" arguments="{extension:extension.key}" class="zipDownload">Download as zip</f:link.action>
+                    <f:be.buttons.icon uri="{f:uri.action(action:'downloadExtensionZip',controller:'Action',arguments:'{extension:extension.key}')}" icon="actions-system-extension-download" title="{f:translate(key:'extensionList.downloadzip')}"/>
 					<em:downloadExtensionData extension="{extension}" />
 				</td>
 				<td class="{extension.state}">
