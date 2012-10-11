@@ -2666,6 +2666,9 @@
 								header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 								header('Content-Type: '.$mimeType);
 								header('Content-Disposition: attachment; filename="'.basename($absoluteFileName) . '"');
+								$juStat = stat($this->jumpurl);
+								header('Content-Length: '.$juStat['size']);
+								t3lib_div::flushOutputBuffers();
 								readfile($absoluteFileName);
 								exit;
 							} else die('jumpurl Secure: "'.$this->jumpurl.'" was not a valid file!');
