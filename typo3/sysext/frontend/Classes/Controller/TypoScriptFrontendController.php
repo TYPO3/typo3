@@ -2853,6 +2853,8 @@ class TypoScriptFrontendController {
 								header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 								header('Content-Type: ' . $mimeType);
 								header('Content-Disposition: attachment; filename="' . basename($absoluteFileName) . '"');
+								header('Content-Length: ' . filesize($absoluteFileName));
+								\TYPO3\CMS\Core\Utility\GeneralUtility::flushOutputBuffers();
 								readfile($absoluteFileName);
 								die;
 							} else {
