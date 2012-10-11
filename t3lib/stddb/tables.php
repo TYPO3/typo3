@@ -765,10 +765,12 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'actions-system-cache-clear-impact-low',
 	'actions-system-cache-clear-impact-medium',
 	'actions-system-cache-clear-rte',
+	'actions-system-extension-configure',
 	'actions-system-extension-documentation',
 	'actions-system-extension-download',
 	'actions-system-extension-import',
 	'actions-system-extension-install',
+	'actions-system-extension-sqldump',
 	'actions-system-extension-uninstall',
 	'actions-system-extension-update',
 	'actions-system-help-open',
@@ -1009,6 +1011,7 @@ $GLOBALS['TBE_STYLES']['spriteIconApi']['coreSpriteImageNames'] = array(
 	'status-warning-in-use',
 	'status-warning-lock'
 );
+
 $GLOBALS['TBE_STYLES']['spriteIconApi']['spriteIconRecordOverlayPriorities'] = array(
 	'deleted',
 	'hidden',

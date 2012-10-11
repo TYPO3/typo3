@@ -54,6 +54,87 @@
 			<trans-unit id="extConfTemplate.submitButton" xml:space="preserve">
 				<source>Submit</source>
 			</trans-unit>
+			<trans-unit id="extensionList.configure" xml:space="preserve">
+				<source>Configure</source>
+			</trans-unit>
+			<trans-unit id="extensionList.downloadsql" xml:space="preserve">
+				<source>Download SQL Dump</source>
+			</trans-unit>
+			<trans-unit id="extensionList.remove" xml:space="preserve">
+				<source>Remove</source>
+			</trans-unit>
+			<trans-unit id="extensionList.update" xml:space="preserve">
+				<source>Update</source>
+			</trans-unit>
+			<trans-unit id="extensionList.deactivate" xml:space="preserve">
+				<source>Deactivate</source>
+			</trans-unit>
+			<trans-unit id="extensionList.activate" xml:space="preserve">
+				<source>Activate</source>
+			</trans-unit>
+			<trans-unit id="extensionList.downloadzip" xml:space="preserve">
+				<source>Download as zip</source>
+			</trans-unit>
+			<trans-unit id="extensionList.uploadExtension" xml:space="preserve">
+				<source>Upload Extension .t3x/.zip</source>
+			</trans-unit>
+			<trans-unit id="extensionList.loading" xml:space="preserve">
+				<source>Loading form...</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.update" xml:space="preserve">
+				<source>Upd.</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.title.update" xml:space="preserve">
+				<source>Update</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.activate" xml:space="preserve">
+				<source>A/D</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.title.activate" xml:space="preserve">
+				<source>Activate / Deactivate</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.extensionName" xml:space="preserve">
+				<source>Extension</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.extensionKey" xml:space="preserve">
+				<source>Key</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.extensionVersion" xml:space="preserve">
+				<source>Version</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.extensionActions" xml:space="preserve">
+				<source>Actions</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.extensionState" xml:space="preserve">
+				<source>State</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.uploadComment" xml:space="preserve">
+				<source>Upload Comment</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.lastUpdate" xml:space="preserve">
+				<source>Last Updated</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.description" xml:space="preserve">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="extensionList.header.author" xml:space="preserve">
+				<source>Author</source>
+			</trans-unit>
+			<trans-unit id="searchTemplate.submitButton" xml:space="preserve">
+				<source>Submit</source>
+			</trans-unit>
+			<trans-unit id="searchTemplate.resetSearchButton" xml:space="preserve">
+				<source>Reset Search</source>
+			</trans-unit>
+			<trans-unit id="searchTemplate.yourSearch" xml:space="preserve">
+				<source>Your search</source>
+			</trans-unit>
+			<trans-unit id="uploadTemplate.uploadButton" xml:space="preserve">
+				<source>Upload!</source>
+			</trans-unit>
+			<trans-unit id="uploadTemplate.extensionLabel" xml:space="preserve">
+				<source>Extension</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

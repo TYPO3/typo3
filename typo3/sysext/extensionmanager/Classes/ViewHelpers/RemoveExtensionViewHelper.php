@@ -66,8 +66,8 @@ class RemoveExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Link\Action
 			$cssClass .= ' isLoadedWarning';
 		}
 		$this->tag->addAttribute('class', $cssClass);
-		$label = 'Remove';
-		$this->tag->setContent($label);
+		$this->tag->addAttribute('title', \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.remove', 'extensionmanager'));
+		$this->tag->setContent(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-edit-delete'));
 		return $this->tag->render();
 	}
 
