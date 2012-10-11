@@ -196,15 +196,27 @@ class UriBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 	/**
-	 * @test
+	 * return array
 	 */
-	public function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSet() {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'));
+	public function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSetDataProvider() {
+		return array(
+			'Arguments to be excluded in the beginning' => array(array('M' => 'moduleKey', 'id' => 'pageId', 'foo' => 'bar'), array('M', 'id'), 'mod.php?foo=bar'),
+			'Arguments to be excluded in the end' => array(array('foo' => 'bar', 'id' => 'pageId', 'M' => 'moduleKey'), array('M', 'id'), 'mod.php?foo=bar'),
+			'Arguments in nested array to be excluded' => array(array('tx_foo' => array('bar' => 'baz'), 'id' => 'pageId', 'M' => 'moduleKey'), array('id', 'tx_foo[bar]'), 'mod.php?M=moduleKey'),
+		);
+	}
+
+
+	/**
+	 * @test
+	 * @dataProvider buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSetDataProvider
+	 */
+	public function buildBackendUriRemovesSpecifiedQueryParametersIfArgumentsToBeExcludedFromQueryStringIsSet(array $parameters, array $excluded, $expected) {
+		\TYPO3\CMS\Core\Utility\GeneralUtility::_GETset($parameters);
 		$this->uriBuilder->setAddQueryString(TRUE);
-		$this->uriBuilder->setArgumentsToBeExcludedFromQueryString(array('M', 'id'));
-		$expectedResult = 'mod.php?foo=bar';
+		$this->uriBuilder->setArgumentsToBeExcludedFromQueryString($excluded);
 		$actualResult = $this->uriBuilder->buildBackendUri();
-		$this->assertEquals($expectedResult, $actualResult);
+		$this->assertEquals($expected, $actualResult);
 	}
 
 	/**

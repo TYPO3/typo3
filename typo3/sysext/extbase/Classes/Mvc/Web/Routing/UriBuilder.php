@@ -563,7 +563,8 @@ class UriBuilder {
 		if ($this->addQueryString === TRUE) {
 			$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
 			foreach ($this->argumentsToBeExcludedFromQueryString as $argumentToBeExcluded) {
-				unset($arguments[$argumentToBeExcluded]);
+				$argumentToBeExcluded = \TYPO3\CMS\Core\Utility\GeneralUtility::explodeUrl2Array($argumentToBeExcluded, TRUE);
+				$arguments = \TYPO3\CMS\Core\Utility\GeneralUtility::arrayDiffAssocRecursive($arguments, $argumentToBeExcluded);
 			}
 		} else {
 			$arguments = array(
