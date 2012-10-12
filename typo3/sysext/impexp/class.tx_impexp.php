@@ -144,8 +144,8 @@ class tx_impexp {
 	function init($dontCompress=0,$mode='')	{
 		$this->compress = function_exists('gzcompress');
 		$this->dontCompress = $dontCompress;
-
 		$this->mode = $mode;
+		$this->fileadminFolderName = !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : 'fileadmin';
 	}
 
 
