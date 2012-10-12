@@ -39,6 +39,19 @@
 			<trans-unit id="files" xml:space="preserve">
 				<source>Files</source>
 			</trans-unit>
+			<trans-unit id="file_filter" xml:space="preserve">
+				<source>Filter Files</source>
+			</trans-unit>
+			<trans-unit id="file_filter_recursive" xml:space="preserve">
+				<source>search folders recursively</source>
+			</trans-unit>
+			<trans-unit id="file_filter_searchfor" xml:space="preserve">
+				<source>Contains:</source>
+			</trans-unit>
+			<trans-unit id="file_filter_search" xml:space="preserve">
+				<source>search</source>
+			</trans-unit>
+
 			<trans-unit id="target" xml:space="preserve">
 				<source>Target</source>
 			</trans-unit>

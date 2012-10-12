@@ -322,7 +322,7 @@ class LocalDriver extends \TYPO3\CMS\Core\Resource\Driver\AbstractDriver {
 			// go on to the next iterator item now as we might skip this one early
 			$iterator->next();
 			$identifier = $path . $iteratorItem;
-			if ($this->applyFilterMethodsToDirectoryItem($filterMethods, $iteratorItem, $identifier, $path) === FALSE) {
+			if ($this->applyFilterMethodsToDirectoryItem($filterMethods, $iteratorItem, $identifier, $path, isset($itemRows[$identifier]) ? array('indexData' => $itemRows[$identifier]) : array()) === FALSE) {
 				continue;
 			}
 			if (isset($itemRows[$identifier])) {
