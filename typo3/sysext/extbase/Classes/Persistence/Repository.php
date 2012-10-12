@@ -47,6 +47,16 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	protected $queryFactory;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface
+	 */
+	protected $backend;
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
+	 */
+	protected $session;
+
+	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface
 	 */
 	protected $persistenceManager;
@@ -99,6 +109,27 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 	 */
 	public function injectIdentityMap(\TYPO3\CMS\Extbase\Persistence\Generic\IdentityMap $identityMap) {
 		$this->identityMap = $identityMap;
+	}
+
+	/**
+	 * Injects the Persistence Backend
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend The persistence backend
+	 * @return void
+	 */
+	public function injectBackend(\TYPO3\CMS\Extbase\Persistence\Generic\BackendInterface $backend) {
+		$this->backend = $backend;
+	}
+
+	/**
+	 *
+	 * Injects the Persistence Session
+	 *
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Session $session The persistence session
+	 * @return void
+	 */
+	public function injectSession(\TYPO3\CMS\Extbase\Persistence\Generic\Session $session) {
+			$this->session = $session;
 	}
 
 	/**
@@ -173,13 +204,11 @@ class Repository implements \TYPO3\CMS\Extbase\Persistence\RepositoryInterface, 
 		if (!$newObject instanceof $this->objectType) {
 			throw new \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException('The new object given to replace was not of the type (' . $this->objectType . ') this repository manages.', 1248363439);
 		}
-		$backend = $this->persistenceManager->getBackend();
-		$session = $this->persistenceManager->getSession();
-		$uuid = $backend->getIdentifierByObject($existingObject);
+		$uuid = $this->persistenceManager->getIdentifierByObject($existingObject);
 		if ($uuid !== NULL) {
-			$backend->replaceObject($existingObject, $newObject);
-			$session->unregisterReconstitutedObject($existingObject);
-			$session->registerReconstitutedObject($newObject);
+			$this->backend->replaceObject($existingObject, $newObject);
+			$this->session->unregisterReconstitutedObject($existingObject);
+			$this->session->registerReconstitutedObject($newObject);
 			if ($this->removedObjects->contains($existingObject)) {
 				$this->removedObjects->detach($existingObject);
 				$this->removedObjects->attach($newObject);
