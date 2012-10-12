@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Core\Log\Processor;
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class AbstractProcessor implements \TYPO3\CMS\Core\Log\Processor\Processor {
+abstract class AbstractProcessor implements \TYPO3\CMS\Core\Log\Processor\ProcessorInterface {
 
 	/**
 	 * Constructs this log processor

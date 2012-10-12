@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Processor;
  * @package TYPO3
  * @subpackage t3lib
  */
-class ProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase implements \TYPO3\CMS\Core\Log\Processor\Processor {
+class ProcessorTest extends \TYPO3\CMS\Core\Tests\UnitTestCase implements \TYPO3\CMS\Core\Log\Processor\ProcessorInterface {
 
 	/**
 	 * @var bool

@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\CMS\Core\Log\Processor;
+namespace TYPO3\CMS\Core\Log\Writer;
 
 /***************************************************************
  * Copyright notice
@@ -24,24 +24,22 @@ namespace TYPO3\CMS\Core\Log\Processor;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Log processor interface
- *
- * Processors provide additional data in an automatic way, without having to
- * collect that data yourself.
+ * Log writer interface
  *
  * @author Ingo Renner <ingo@typo3.org>
  * @package TYPO3
  * @subpackage t3lib
  */
-interface Processor
+interface WriterInterface
 {
 	/**
-	 * Processes a log record and adds additional data.
+	 * Writes the log record
 	 *
-	 * @param \TYPO3\CMS\Core\Log\LogRecord $logRecord The log record to process
-	 * @return \TYPO3\CMS\Core\Log\LogRecord The processed log record with additional data
+	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
+	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface $this
+	 * @throws \Exception
 	 */
-	public function processLogRecord(\TYPO3\CMS\Core\Log\LogRecord $logRecord);
+	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record);
 
 }
 
