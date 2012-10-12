@@ -45,7 +45,7 @@ class MemcachedBackendTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 			$this->markTestSkipped('memcache extension was not available');
 		}
 		try {
-			if (!fsockopen('localhost', 11211)) {
+			if (!fsockopen('127.0.0.1', 11211)) {
 				$this->markTestSkipped('memcached not reachable');
 			}
 		} catch (\Exception $e) {
