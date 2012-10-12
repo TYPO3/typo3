@@ -3815,11 +3815,12 @@ class t3lib_TCEmain {
 				$parentRecord = t3lib_BEfunc::getRecordWSOL($table, $id);
 				$language = intval($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
 				$transOrigPointer = intval($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
+				$transOrigTable = t3lib_BEfunc::getOriginalTranslationTable($table);
 				$childTransOrigPointerField = $GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'];
 
 				if ($parentRecord && is_array($parentRecord) && $language > 0 && $transOrigPointer) {
 					$inlineSubType = $this->getInlineFieldType($config);
-					$transOrigRecord = t3lib_BEfunc::getRecordWSOL($table, $transOrigPointer);
+					$transOrigRecord = t3lib_BEfunc::getRecordWSOL($transOrigTable, $transOrigPointer);
 
 					if ($inlineSubType !== FALSE) {
 						$removeArray = array();
@@ -3827,7 +3828,7 @@ class t3lib_TCEmain {
 							// Fetch children from original language parent:
 						/** @var $dbAnalysisOriginal t3lib_loadDBGroup */
 						$dbAnalysisOriginal = t3lib_div::makeInstance('t3lib_loadDBGroup');
-						$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $table, $config);
+						$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $transOrigTable, $config);
 						$elementsOriginal = array();
 						foreach ($dbAnalysisOriginal->itemArray as $item) {
 							$elementsOriginal[$item['id']] = $item;
