@@ -1116,7 +1116,7 @@ class InlineElement {
 			$parentRecord = $this->getRecord(0, $parent['table'], $parent['uid']);
 			$cmd = array();
 			$cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = $parent['field'] . ',' . $type;
-			/** @var \TYPO3\CMS\Core\DataHandling\DataHandler */
+			/** @var $tce \TYPO3\CMS\Core\DataHandling\DataHandler */
 			$tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
 			$tce->stripslashes_values = FALSE;
 			$tce->start(array(), $cmd);
@@ -1286,7 +1286,6 @@ class InlineElement {
 	 * @todo Define visibility
 	 */
 	public function getRelatedRecords($table, $field, $row, &$PA, $config) {
-		$records = array();
 		$pid = $row['pid'];
 		$elements = $PA['itemFormElValue'];
 		$foreignTable = $config['foreign_table'];
@@ -1294,14 +1293,16 @@ class InlineElement {
 		if ($localizationMode != FALSE) {
 			$language = intval($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
 			$transOrigPointer = intval($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
+			$transOrigTable = \TYPO3\CMS\Backend\Utility\BackendUtility::getOriginalTranslationTable($table);
+
 			if ($language > 0 && $transOrigPointer) {
 				// Localization in mode 'keep', isn't a real localization, but keeps the children of the original parent record:
 				if ($localizationMode == 'keep') {
-					$transOrigRec = $this->getRecord(0, $table, $transOrigPointer);
+					$transOrigRec = $this->getRecord(0, $transOrigTable, $transOrigPointer);
 					$elements = $transOrigRec[$field];
 					$pid = $transOrigRec['pid'];
 				} elseif ($localizationMode == 'select') {
-					$transOrigRec = $this->getRecord(0, $table, $transOrigPointer);
+					$transOrigRec = $this->getRecord(0, $transOrigTable, $transOrigPointer);
 					$pid = $transOrigRec['pid'];
 					$recordsOriginal = $this->getRelatedRecordsArray($pid, $foreignTable, $transOrigRec[$field]);
 				}

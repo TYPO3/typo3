@@ -576,6 +576,21 @@ class BackendUtility {
 	}
 
 	/**
+	 * Gets the original translation pointer table.
+	 * For e.g. pages_language_overlay this would be pages.
+	 *
+	 * @param string $table Name of the table
+	 * @return string Pointer table (if any)
+	 */
+	static public function getOriginalTranslationTable($table) {
+		if (!empty($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'])) {
+			$table = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerTable'];
+		}
+
+		return $table;
+	}
+
+	/**
 	 * Determines whether a table is localizable and has the languageField and transOrigPointerField set in $GLOBALS['TCA'].
 	 *
 	 * @param string $table The table to check
