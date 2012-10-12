@@ -92,8 +92,9 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getLogger($name = '') {
 		/** @var $logger \TYPO3\CMS\Core\Log\Logger */
 		$logger = NULL;
-		// Transform class names to the dot-name style
-		$name = str_replace('_', '.', $name);
+		// Transform namespaces and underscore class names to the dot-name style
+		$separators = array('_', '\\');
+		$name = str_replace($separators, '.', $name);
 		if (isset($this->loggers[$name])) {
 			$logger = $this->loggers[$name];
 		} else {
