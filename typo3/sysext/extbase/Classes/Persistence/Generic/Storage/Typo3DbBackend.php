@@ -923,18 +923,27 @@ class Typo3DbBackend implements \TYPO3\CMS\Extbase\Persistence\Generic\Storage\B
 	 */
 	protected function addSysLanguageStatement($tableName, array &$sql) {
 		if (is_array($GLOBALS['TCA'][$tableName]['ctrl'])) {
-			if (isset($GLOBALS['TCA'][$tableName]['ctrl']['languageField']) && $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] !== NULL) {
+			if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])) {
 				// Select all entries for the current language
-				$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (' . $GLOBALS['TSFE']->sys_language_uid . ',-1)';
-				// If any language is set -> get those entries which are not translated yet
-				// They will be removed by t3lib_page::getRecordOverlay if not matching overlay mode
-				if ($GLOBALS['TSFE']->sys_language_uid && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])) {
-					$additionalWhereClause .= ' OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0 AND ' . $tableName . '.uid NOT IN (' . 'SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . ' FROM ' . $tableName . ' WHERE ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '>0 AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '>0';
-					// Add delete clause to ensure all entries are loaded
-					if (isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
-						$additionalWhereClause .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
+				if (isset($GLOBALS['TSFE']) && is_object($GLOBALS['TSFE'])) {
+					$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (' . $GLOBALS['TSFE']->sys_language_uid . ',-1)';
+					// If any language is set -> get those entries which are not translated yet
+					// They will be removed by t3lib_page::getRecordOverlay if not matching overlay mode
+					if ($GLOBALS['TSFE']->sys_language_uid && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])) {
+						$additionalWhereClause .= ' OR (' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '=0' .
+							' AND ' . $tableName . '.uid NOT IN (' . 'SELECT ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] .
+							' FROM ' . $tableName .
+							' WHERE ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] . '>0' .
+							' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . '>0';
+
+						// Add delete clause to ensure all entries are loaded
+						if (isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
+							$additionalWhereClause .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
+						}
+						$additionalWhereClause .= '))';
 					}
-					$additionalWhereClause .= '))';
+				} else {
+					$additionalWhereClause = $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['languageField'] . ' IN (0,-1)';
 				}
 				$sql['additionalWhereClause'][] = '(' . $additionalWhereClause . ')';
 			}
