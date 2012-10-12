@@ -89,6 +89,7 @@ class DataHandlerHook {
 		if ($command == 'version') {
 			$commandIsProcessed = TRUE;
 			$action = (string) $value['action'];
+			$comment = (isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment);
 			switch ($action) {
 			case 'new':
 				// check if page / branch versioning is needed,
@@ -104,7 +105,12 @@ class DataHandlerHook {
 				}
 				break;
 			case 'swap':
-				$this->version_swap($table, $id, $value['swapWith'], $value['swapIntoWS'], $tcemainObj);
+					$this->version_swap($table, $id, $value['swapWith'], $value['swapIntoWS'],
+						$tcemainObj,
+						$comment,
+						TRUE,
+						$value['notificationAlternativeRecipients']
+					);
 				break;
 			case 'clearWSID':
 				$this->version_clearWSID($table, $id, FALSE, $tcemainObj);
@@ -115,7 +121,12 @@ class DataHandlerHook {
 			case 'setStage':
 				$elementIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $id, TRUE);
 				foreach ($elementIds as $elementId) {
-					$this->version_setStage($table, $elementId, $value['stageId'], isset($value['comment']) && $value['comment'] ? $value['comment'] : $this->generalComment, TRUE, $tcemainObj, $value['notificationAlternativeRecipients']);
+						$this->version_setStage($table, $elementId, $value['stageId'],
+							$comment,
+							TRUE,
+							$tcemainObj,
+							$value['notificationAlternativeRecipients']
+						);
 				}
 				break;
 			}
@@ -664,9 +675,12 @@ class DataHandlerHook {
 	 * @param integer $swapWith UID of the archived version to swap with!
 	 * @param boolean $swapIntoWS If set, swaps online into workspace instead of publishing out of workspace.
 	 * @param \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj TCEmain object
+	 * @param string $comment Notification comment
+	 * @param boolean $notificationEmailInfo Accumulate state changes in memory for compiled notification email?
+	 * @param array $notificationAlternativeRecipients comma separated list of recipients to notificate instead of normal be_users
 	 * @return void
 	 */
-	protected function version_swap($table, $id, $swapWith, $swapIntoWS = 0, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj) {
+	protected function version_swap($table, $id, $swapWith, $swapIntoWS = 0, \TYPO3\CMS\Core\DataHandling\DataHandler $tcemainObj, $comment = '', $notificationEmailInfo = FALSE, $notificationAlternativeRecipients = array()) {
 		// First, check if we may actually edit the online record
 		if ($tcemainObj->checkRecordUpdateAccess($table, $id)) {
 			// Select the two versions:
@@ -836,6 +850,20 @@ class DataHandlerHook {
 											}
 											$theLogId = $tcemainObj->log($table, $swapWith, 2, $propArr['pid'], 0, $label, 10, array($propArr['header'], $table . ':' . $swapWith), $propArr['event_pid']);
 											$tcemainObj->setHistory($table, $swapWith, $theLogId);
+
+											$stageId = -20; // Tx_Workspaces_Service_Stages::STAGE_PUBLISH_EXECUTE_ID;
+											if ($notificationEmailInfo) {
+												$notificationEmailInfoKey = $wsAccess['uid'] . ':' . $stageId . ':' . $comment;
+												$this->notificationEmailInfo[$notificationEmailInfoKey]['shared'] = array($wsAccess, $stageId, $comment);
+												$this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = $table . ':' . $id;
+												$this->notificationEmailInfo[$notificationEmailInfoKey]['alternativeRecipients'] = $notificationAlternativeRecipients;
+											} else {
+												$this->notifyStageChange($wsAccess, $stageId, $table, $id, $comment, $tcemainObj, $notificationAlternativeRecipients);
+											}
+												// Write to log with stageId -20
+											$tcemainObj->newlog2('Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', $table, $id);
+											$tcemainObj->log($table, $id, 6, 0, 0, 'Published', 30, array('comment' => $comment, 'stage' => $stageId));
+
 											// Clear cache:
 											$tcemainObj->clear_cache($table, $id);
 											// Checking for "new-placeholder" and if found, delete it (BUT FIRST after swapping!):
