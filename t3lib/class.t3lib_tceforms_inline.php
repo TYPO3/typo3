@@ -1198,7 +1198,7 @@ class t3lib_TCEforms_inline {
 			$cmd = array();
 			$cmd[$parent['table']][$parent['uid']]['inlineLocalizeSynchronize'] = $parent['field'] . ',' . $type;
 
-			/* @var t3lib_TCEmain */
+			/** @var $tce t3lib_TCEmain */
 			$tce = t3lib_div::makeInstance('t3lib_TCEmain');
 			$tce->stripslashes_values = FALSE;
 			$tce->start(array(), $cmd);
@@ -1389,7 +1389,6 @@ class t3lib_TCEforms_inline {
 	 * @return	array		The records related to the parent item as associative array.
 	 */
 	function getRelatedRecords($table, $field, $row, &$PA, $config) {
-		$records = array();
 		$pid = $row['pid'];
 		$elements = $PA['itemFormElValue'];
 		$foreignTable = $config['foreign_table'];
@@ -1399,15 +1398,17 @@ class t3lib_TCEforms_inline {
 		if ($localizationMode != FALSE) {
 			$language = intval($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
 			$transOrigPointer = intval($row[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
+			$transOrigTable = t3lib_BEfunc::getOriginalTranslationTable($table);
+
 			if ($language > 0 && $transOrigPointer) {
 					// Localization in mode 'keep', isn't a real localization, but keeps the children of the original parent record:
 				if ($localizationMode == 'keep') {
-					$transOrigRec = $this->getRecord(0, $table, $transOrigPointer);
+					$transOrigRec = $this->getRecord(0, $transOrigTable, $transOrigPointer);
 					$elements = $transOrigRec[$field];
 					$pid = $transOrigRec['pid'];
 						// Localization in modes 'select', 'all' or 'sync' offer a dynamic localization and synchronization with the original language record:
 				} elseif ($localizationMode == 'select') {
-					$transOrigRec = $this->getRecord(0, $table, $transOrigPointer);
+					$transOrigRec = $this->getRecord(0, $transOrigTable, $transOrigPointer);
 					$pid = $transOrigRec['pid'];
 					$recordsOriginal = $this->getRelatedRecordsArray($pid, $foreignTable, $transOrigRec[$field]);
 				}
