@@ -447,7 +447,7 @@ abstract class AbstractDriver {
 	 */
 	protected function applyFilterMethodsToDirectoryItem(array $filterMethods, $itemName, $itemIdentifier, $parentIdentifier, array $additionalInformation = array()) {
 		foreach ($filterMethods as $filter) {
-			if (is_array($filter)) {
+			if (is_callable($filter)) {
 				$result = call_user_func($filter, $itemName, $itemIdentifier, $parentIdentifier, $additionalInformation, $this);
 				// We have to use -1 as the „don't include“ return value, as call_user_func() will return FALSE
 				// If calling the method succeeded and thus we can't use that as a return value.
