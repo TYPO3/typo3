@@ -11,7 +11,7 @@ branches:
     - master
 
 services:
-  - memcache
+  - memcached
 
 before_script:
 # Install build dependencies
