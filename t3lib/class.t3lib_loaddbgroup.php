@@ -534,7 +534,6 @@ class t3lib_loadDBGroup {
 	function readForeignField($uid, $conf) {
 		$key = 0;
 		$uid = intval($uid);
-		$whereClause = '';
 		$foreign_table = $conf['foreign_table'];
 		$foreign_table_field = $conf['foreign_table_field'];
 		$useDeleteClause = $this->undeleteRecord ? FALSE : TRUE;
