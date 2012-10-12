@@ -319,7 +319,7 @@ class Container implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Extbase\Object\Container\ClassInfo
 	 */
 	private function getClassInfo($className) {
-		$classNameHash = sha1($className);
+		$classNameHash = str_replace('\\', '-', $className);
 		$classInfo = $this->getClassInfoCache()->get($classNameHash);
 		if (!$classInfo instanceof \TYPO3\CMS\Extbase\Object\Container\ClassInfo) {
 			$classInfo = $this->getClassInfoFactory()->buildClassInfoFromClassName($className);
