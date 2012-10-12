@@ -111,10 +111,10 @@ class Logger {
 	 * Adds a writer to this logger
 	 *
 	 * @param integer $minimumLevel
-	 * @param \TYPO3\CMS\Core\Log\Writer\Writer $writer Writer object
+	 * @param \TYPO3\CMS\Core\Log\Writer\WriterInterface $writer Writer object
 	 * @return \TYPO3\CMS\Core\Log\Logger $this
 	 */
-	public function addWriter($minimumLevel, \TYPO3\CMS\Core\Log\Writer\Writer $writer) {
+	public function addWriter($minimumLevel, \TYPO3\CMS\Core\Log\Writer\WriterInterface $writer) {
 		\TYPO3\CMS\Core\Log\LogLevel::validateLevel($minimumLevel);
 		// Cycle through all the log levels which are as severe as or higher
 		// than $minimumLevel and add $writer to each severity level
@@ -143,10 +143,10 @@ class Logger {
 	 * Adds a processor to the logger.
 	 *
 	 * @param integer $minimumLevel
-	 * @param \TYPO3\CMS\Core\Log\Processor\Processor $processor The processor to add.
+	 * @param \TYPO3\CMS\Core\Log\Processor\ProcessorInterface $processor The processor to add.
 	 * @return void
 	 */
-	public function addProcessor($minimumLevel, \TYPO3\CMS\Core\Log\Processor\Processor $processor) {
+	public function addProcessor($minimumLevel, \TYPO3\CMS\Core\Log\Processor\ProcessorInterface $processor) {
 		\TYPO3\CMS\Core\Log\LogLevel::validateLevel($minimumLevel);
 		// Cycle through all the log levels which are as severe as or higher
 		// than $minimumLevel and add $processor to each severity level

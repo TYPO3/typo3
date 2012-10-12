@@ -123,7 +123,7 @@ class SyslogWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 * Writes the log record to syslog
 	 *
 	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
-	 * @return \TYPO3\CMS\Core\Log\Writer\Writer
+	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface
 	 * @throws \RuntimeException
 	 */
 	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {

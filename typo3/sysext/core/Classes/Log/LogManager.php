@@ -138,7 +138,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface {
 		$configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_WRITER, $logger->getName());
 		foreach ($configuration as $severityLevel => $writer) {
 			foreach ($writer as $logWriterClassName => $logWriterOptions) {
-				/** @var $logWriter \TYPO3\CMS\Core\Log\Writer\Writer */
+				/** @var $logWriter \TYPO3\CMS\Core\Log\Writer\WriterInterface */
 				$logWriter = NULL;
 				try {
 					$logWriter = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($logWriterClassName, $logWriterOptions);
@@ -161,7 +161,7 @@ class LogManager implements \TYPO3\CMS\Core\SingletonInterface {
 		$configuration = $this->getConfigurationForLogger(self::CONFIGURATION_TYPE_PROCESSOR, $logger->getName());
 		foreach ($configuration as $severityLevel => $processor) {
 			foreach ($processor as $logProcessorClassName => $logProcessorOptions) {
-				/** @var $logProcessor \TYPO3\CMS\Core\Log\Processor\Processor */
+				/** @var $logProcessor \TYPO3\CMS\Core\Log\Processor\ProcessorInterface */
 				$logProcessor = NULL;
 				try {
 					$logProcessor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($logProcessorClassName, $logProcessorOptions);

@@ -63,7 +63,7 @@ class DatabaseWriter extends \TYPO3\CMS\Core\Log\Writer\AbstractWriter {
 	 * Writes the log record
 	 *
 	 * @param \TYPO3\CMS\Core\Log\LogRecord $record Log record
-	 * @return \TYPO3\CMS\Core\Log\Writer\Writer $this
+	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface $this
 	 * @throws \RuntimeException
 	 */
 	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {

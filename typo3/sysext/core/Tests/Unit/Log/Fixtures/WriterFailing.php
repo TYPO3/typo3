@@ -29,13 +29,13 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log\Fixtures;
  *
  * @author Steffen Gebert <steffen.gebert@typo3.org>
  */
-class WriterFailing implements \TYPO3\CMS\Core\Log\Writer\Writer {
+class WriterFailing implements \TYPO3\CMS\Core\Log\Writer\WriterInterface {
 
 	/**
 	 * Try to write the log entry - but throw an exception in our case
 	 *
 	 * @param \TYPO3\CMS\Core\Log\LogRecord $record
-	 * @return \TYPO3\CMS\Core\Log\Writer\Writer|void
+	 * @return \TYPO3\CMS\Core\Log\Writer\WriterInterface|void
 	 * @throws \RuntimeException
 	 */
 	public function writeLog(\TYPO3\CMS\Core\Log\LogRecord $record) {

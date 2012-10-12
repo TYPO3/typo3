@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Core\Log\Writer;
  * @package TYPO3
  * @subpackage t3lib
  */
-abstract class AbstractWriter implements \TYPO3\CMS\Core\Log\Writer\Writer {
+abstract class AbstractWriter implements \TYPO3\CMS\Core\Log\Writer\WriterInterface {
 
 	/**
 	 * Constructs this log writer
