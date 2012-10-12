@@ -92,6 +92,14 @@ class t3lib_softrefproc {
 	var $tokenID_basePrefix = '';
 
 	/**
+	 * Class construct to set global variable
+	 *
+	 */
+	public function __construct() {
+		$this->fileAdminDir = !empty($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir']) ? $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] : 'fileadmin';
+	}
+
+	/**
 	 * Main function through which all processing happens
 	 *
 	 * @param	string		Database table name
