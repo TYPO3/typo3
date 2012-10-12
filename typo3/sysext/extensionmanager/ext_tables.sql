@@ -3,6 +3,7 @@
 #
 CREATE TABLE tx_extensionmanager_domain_model_repository (
   uid int(11) unsigned NOT NULL auto_increment,
+  pid int(11) unsigned DEFAULT '0' NOT NULL,
   title varchar(150) NOT NULL default '',
   description mediumtext,
   wsdl_url varchar(100) NOT NULL default '',
@@ -17,6 +18,7 @@ CREATE TABLE tx_extensionmanager_domain_model_repository (
 #
 CREATE TABLE tx_extensionmanager_domain_model_extension (
   uid int(11) NOT NULL auto_increment,
+  pid int(11) unsigned DEFAULT '0' NOT NULL,
   extension_key varchar(60) NOT NULL default '',
   repository int(11) unsigned NOT NULL default '1',
   version varchar(10) NOT NULL default '',

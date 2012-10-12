@@ -48,6 +48,18 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	}
 
 	/**
+	 * Do not include pid in queries
+	 *
+	 * @return void
+	 */
+	public function initializeObject() {
+		/** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface */
+		$defaultQuerySettings = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
+		$defaultQuerySettings->setRespectStoragePage(FALSE);
+		$this->setDefaultQuerySettings($defaultQuerySettings);
+	}
+
+	/**
 	 * Count all extensions
 	 *
 	 * @return integer
@@ -61,7 +73,7 @@ class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	/**
 	 * Finds all extensions
 	 *
-	 * @return array|Tx_Extbase_Persistence_QueryResultInterface
+	 * @return array|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface
 	 */
 	public function findAll() {
 		$query = $this->createQuery();

@@ -33,6 +33,18 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
 class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 	/**
+	 * Do not include pid in queries
+	 *
+	 * @return void
+	 */
+	public function initializeObject() {
+		/** @var $defaultQuerySettings \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface */
+		$defaultQuerySettings = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QuerySettingsInterface');
+		$defaultQuerySettings->setRespectStoragePage(FALSE);
+		$this->setDefaultQuerySettings($defaultQuerySettings);
+	}
+
+	/**
 	 * Updates ExtCount and lastUpdated in Repository eg after import
 	 *
 	 * @param integer $extCount
