@@ -218,7 +218,7 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 			// -> the identifier for subfolders is not composed of the
 			// current item's identifier for these
 			foreach ($folderArray as $folder) {
-				$folderObjects[] = $factory->createFolderObject($this->storage, $this->identifier . $folder['name'] . '/', $folder['name']);
+				$folderObjects[$folder['name']] = $factory->createFolderObject($this->storage, $this->identifier . $folder['name'] . '/', $folder['name']);
 			}
 		}
 		return $folderObjects;
