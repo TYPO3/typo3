@@ -204,11 +204,13 @@ class Folder implements \TYPO3\CMS\Core\Resource\FolderInterface {
 	/**
 	 * Returns a list of all subfolders
 	 *
+	 * @param integer $start The item to start at
+	 * @param integer $numberOfItems The number of items to return
 	 * @return \TYPO3\CMS\Core\Resource\Folder[]
 	 */
-	public function getSubfolders() {
+	public function getSubfolders($start = 0, $numberOfItems = 0) {
 		$folderObjects = array();
-		$folderArray = $this->storage->getFolderList($this->identifier);
+		$folderArray = $this->storage->getFolderList($this->identifier, $start, $numberOfItems);
 		if (count($folderArray) > 0) {
 			/** @var $factory \TYPO3\CMS\Core\Resource\ResourceFactory */
 			$factory = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\ResourceFactory');
