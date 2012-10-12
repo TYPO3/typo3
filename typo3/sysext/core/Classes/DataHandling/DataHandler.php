@@ -3837,17 +3837,20 @@ class DataHandler {
 				$parentRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $id);
 				$language = intval($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['languageField']]);
 				$transOrigPointer = intval($parentRecord[$GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']]);
+				$transOrigTable = \TYPO3\CMS\Backend\Utility\BackendUtility::getOriginalTranslationTable($table);
 				$childTransOrigPointerField = $GLOBALS['TCA'][$foreignTable]['ctrl']['transOrigPointerField'];
+
 				if ($parentRecord && is_array($parentRecord) && $language > 0 && $transOrigPointer) {
 					$inlineSubType = $this->getInlineFieldType($config);
-					$transOrigRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($table, $transOrigPointer);
+					$transOrigRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordWSOL($transOrigTable, $transOrigPointer);
+
 					if ($inlineSubType !== FALSE) {
 						$removeArray = array();
 						$mmTable = $inlineSubType == 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '';
 						// Fetch children from original language parent:
 						/** @var $dbAnalysisOriginal \TYPO3\CMS\Core\Database\RelationHandler */
 						$dbAnalysisOriginal = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\RelationHandler');
-						$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $table, $config);
+						$dbAnalysisOriginal->start($transOrigRecord[$field], $foreignTable, $mmTable, $transOrigRecord['uid'], $transOrigTable, $config);
 						$elementsOriginal = array();
 						foreach ($dbAnalysisOriginal->itemArray as $item) {
 							$elementsOriginal[$item['id']] = $item;
