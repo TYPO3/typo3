@@ -61,7 +61,7 @@ class t3lib_frontendedit {
 
 			// Include classes for editing IF editing module in Admin Panel is open
 		if ($GLOBALS['BE_USER']->isFrontendEditingActive()) {
-			$GLOBALS['TSFE']->includeTCA();
+			$GLOBALS['TSFE']->includeTCA(0);
 			if ($this->isEditAction()) {
 				$this->editAction();
 			}
