@@ -379,7 +379,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 */
 	protected function getWhereClause($id, $searchFilter = '') {
 		$where = $GLOBALS['BE_USER']->getPagePermsClause(1) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages');
-		if (is_numeric($id) && $id >= 0) {
+		if (is_int($id) && $id >= 0) {
 			$where .= ' AND pid= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(intval($id), 'pages');
 		}
 		if ($searchFilter !== '') {

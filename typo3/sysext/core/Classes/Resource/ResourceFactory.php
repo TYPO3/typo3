@@ -407,7 +407,7 @@ class ResourceFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return \TYPO3\CMS\Core\Resource\FileReference
 	 */
 	public function getFileReferenceObject($uid, array $fileReferenceData = array()) {
-		if (!is_numeric($uid)) {
+		if (!is_int($uid)) {
 			throw new \InvalidArgumentException('uid of fileusage (sys_file_reference) has to be numeric.', 1300086584);
 		}
 		if (!$this->fileReferenceInstances[$uid]) {

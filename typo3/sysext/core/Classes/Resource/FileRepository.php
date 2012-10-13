@@ -197,7 +197,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 	 */
 	public function findFileReferenceByUid($uid) {
 		$fileReferenceObject = FALSE;
-		if (!is_numeric($uid)) {
+		if (!is_int($uid)) {
 			throw new \InvalidArgumentException('uid of record has to be numeric.', 1316889798);
 		}
 		$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetSingleRow('*', 'sys_file_reference', 'uid=' . $uid . ' AND deleted=0' . ' AND hidden=0');

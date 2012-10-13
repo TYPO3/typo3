@@ -215,7 +215,7 @@ class CreatePagesWizardModuleFunctionController extends \TYPO3\CMS\Backend\Modul
 	 */
 	protected function getFormLine($index) {
 		$backPath = $GLOBALS['BACK_PATH'];
-		if (is_numeric($index)) {
+		if (is_int($index)) {
 			$backgroundClass = $index % 2 === 0 ? 'bgColor4' : 'bgColor6';
 			$label = $index + 1;
 		} else {
