@@ -143,7 +143,7 @@ abstract class t3lib_spritemanager_AbstractHandler implements t3lib_spritemanage
 
 				// this method is only needed for TCA tables where
 				// typeicon_classes are not configured
-			if (!is_array($GLOBALS['TCA'][$tableName]['ctrl']['typeicon_classes'])) {
+			if (is_array($GLOBALS['TCA'][$tableName]) && !is_array($GLOBALS['TCA'][$tableName]['ctrl']['typeicon_classes'])) {
 				$tcaCtrl = $GLOBALS['TCA'][$tableName]['ctrl'];
 
 					// adding the default Icon (without types)
