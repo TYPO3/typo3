@@ -180,9 +180,9 @@ class ContainerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	/**
 	 * @test
 	 */
-	public function getInstanceUsesClassNameSha1AsCacheKey() {
+	public function getInstanceUsesClassNameMd5AsCacheKey() {
 		$className = 'TYPO3\\CMS\\Extbase\\Tests\\Unit\\Object\\Container\\Fixtures\\NamespacedClass';
-		$classNameHash = sha1($className);
+		$classNameHash = md5($className);
 		$mockedCache = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\Container\\ClassInfoCache', array('has', 'set', 'get'));
 		$container = $this->getMock('TYPO3\\CMS\\Extbase\\Object\\Container\\Container', array('log', 'getClassInfoCache'));
 		$container->expects($this->any())->method('getClassInfoCache')->will($this->returnValue($mockedCache));
