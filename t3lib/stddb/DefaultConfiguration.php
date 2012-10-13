@@ -680,7 +680,9 @@ return array(
 	'LOG' => array(
 		'writerConfiguration' => array(
 			\TYPO3\CMS\Core\Log\LogLevel::DEBUG => array(
-				'TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter' => array()
+				'TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter' => array(
+					'logFile' => 'typo3temp/logs/typo3.log'
+				)
 			)
 		),
 		'deprecated' => array(
