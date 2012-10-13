@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Web;
 class RequestBuilderTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder
+	 * @var \TYPO3\CMS\Extbase\Mvc\Web\RequestBuilder|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $requestBuilder;
 

@@ -81,7 +81,7 @@ class RequestBuilder implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $allowedControllerActions = array();
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 

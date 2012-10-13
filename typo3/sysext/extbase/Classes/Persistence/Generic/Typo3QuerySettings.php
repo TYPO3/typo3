@@ -266,7 +266,7 @@ class Typo3QuerySettings implements \TYPO3\CMS\Extbase\Persistence\Generic\Query
 	/**
 	 * Sets the state, if the QueryResult should be returned unmapped.
 	 *
-	 * @var boolean $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 * @param boolean $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
 	 * @return void
 	 */
 	public function setReturnRawQueryResult($returnRawQueryResult) {

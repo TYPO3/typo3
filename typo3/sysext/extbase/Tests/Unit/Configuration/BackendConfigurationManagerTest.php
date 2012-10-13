@@ -41,12 +41,12 @@ class BackendConfigurationManagerTest extends \TYPO3\CMS\Extbase\Tests\Unit\Base
 	protected $typo3DbBackup;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager
+	 * @var \TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $backendConfigurationManager;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Service\TypoScriptService
+	 * @var \TYPO3\CMS\Extbase\Service\TypoScriptService|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $mockTypoScriptService;
 

@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Service;
 class CacheServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Service\CacheService
+	 * @var \TYPO3\CMS\Extbase\Service\CacheService|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $cacheService;
 

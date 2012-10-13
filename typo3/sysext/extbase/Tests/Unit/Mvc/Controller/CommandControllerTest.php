@@ -31,7 +31,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 class CommandControllerTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\CommandController
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\CommandController|\PHPUnit_Framework_MockObject_MockObject|\Tx_Phpunit_Interface_AccessibleObject
 	 */
 	protected $commandController;
 
