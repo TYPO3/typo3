@@ -1277,9 +1277,16 @@ class AbstractMenuContentObject {
 		}
 		// Override url if current page is a shortcut
 		if ($this->menuArr[$key]['doktype'] == \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT && $this->menuArr[$key]['shortcut_mode'] != \TYPO3\CMS\Frontend\Page\PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE) {
+
+			$menuItem = $this->determineOriginalShortcutPage($this->menuArr[$key]);
+
 			$shortcut = NULL;
 			try {
-				$shortcut = $GLOBALS['TSFE']->getPageShortcut($this->menuArr[$key]['shortcut'], $this->menuArr[$key]['shortcut_mode'], $this->menuArr[$key]['uid']);
+				$shortcut = $GLOBALS['TSFE']->getPageShortcut(
+					$menuItem['shortcut'],
+					$menuItem['shortcut_mode'],
+					$menuItem['uid']
+				);
 			} catch (\Exception $ex) {
 
 			}
@@ -1289,7 +1296,7 @@ class AbstractMenuContentObject {
 			// Only setting url, not target
 			$LD['totalURL'] = $this->parent_cObj->typoLink_URL(array(
 				'parameter' => $shortcut['uid'],
-				'additionalParams' => $this->mconf['addParams'] . $MP_params . $this->I['val']['additionalParams'] . $this->menuArr[$key]['_ADD_GETVARS']
+				'additionalParams' => $this->mconf['addParams'] . $MP_params . $this->I['val']['additionalParams'] . $menuItem['_ADD_GETVARS'],
 			));
 		}
 		// Manipulation in case of access restricted pages:
@@ -1342,6 +1349,38 @@ class AbstractMenuContentObject {
 		$list['TARGET'] = $LD['target'];
 		$list['onClick'] = $onClick;
 		return $list;
+	}
+
+	/**
+	 * Determines original shortcut destination in page overlays.
+	 *
+	 * Since the pages records used for menu rendering are overlaid by default,
+	 * the original 'shortcut' value is lost, if a translation did not define one.
+	 * The behaviour in TSFE can be compared to the 'mergeIfNotBlank' feature, but
+	 * it's hardcoded there and not related to the mentioned setting at all.
+	 *
+	 * @param array $page
+	 * @return array
+	 * @todo Once the page_language_overlay behaviour was removed, this method can be removed again
+	 */
+	protected function determineOriginalShortcutPage(array $page) {
+		// Check if modification is required
+		if (
+			$GLOBALS['TSFE']->sys_language_uid > 0
+			&& empty($page['shortcut'])
+			&& !empty($page['uid'])
+			&& !empty($page['_PAGES_OVERLAY'])
+			&& !empty($page['_PAGES_OVERLAY_UID'])
+		) {
+			// Using raw record since the record was overlaid and is correct already:
+			$originalPage = $this->sys_page->getRawRecord('pages', $page['uid']);
+
+			if (!empty($originalPage['shortcut'])) {
+				$page['shortcut'] = $originalPage['shortcut'];
+			}
+		}
+
+		return $page;
 	}
 
 	/**
