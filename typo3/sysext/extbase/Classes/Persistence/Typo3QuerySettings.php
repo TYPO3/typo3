@@ -152,7 +152,7 @@ class Tx_Extbase_Persistence_Typo3QuerySettings implements Tx_Extbase_Persistenc
 	/**
 	 * Sets the state, if the QueryResult should be returned unmapped.
 	 *
-	 * @var boolean $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
+	 * @param boolean $returnRawQueryResult TRUE, if the QueryResult should be returned unmapped; otherwise FALSE.
 	 * @return void
 	 */
 	public function setReturnRawQueryResult($returnRawQueryResult) {

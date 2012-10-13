@@ -77,7 +77,7 @@ class Tx_Extbase_MVC_Web_RequestBuilder implements t3lib_Singleton {
 	protected $allowedControllerActions = array();
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager
+	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
