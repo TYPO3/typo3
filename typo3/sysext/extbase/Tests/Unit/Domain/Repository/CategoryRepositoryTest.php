@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for the Tx_Extbase_Domain_Repository_CategoryRepository class.
+ * Testcase for the \TYPO3\CMS\Extbase\Domain\Repository\CategoryRepository class.
  *
  * @author Oliver Klee <typo3-coding@oliverklee.de>
  */

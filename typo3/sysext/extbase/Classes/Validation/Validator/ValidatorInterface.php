@@ -36,7 +36,7 @@ namespace TYPO3\CMS\Extbase\Validation\Validator;
  *
  * For Extbase >= 1.4.0, the following methods need to exist:
  * - __construct($options) to set validation options
- * - validate($object) to check whether the given object is valid. Returns a Tx_Extbase_Error_Result object which can then be checked for validity.
+ * - validate($object) to check whether the given object is valid. Returns a \TYPO3\CMS\Extbase\Error\Result object which can then be checked for validity.
  *
  * Please see the source file for proper documentation of the above methods.
  *

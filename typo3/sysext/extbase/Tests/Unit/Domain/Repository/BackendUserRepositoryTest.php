@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Repository;
  * This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for Tx_Extbase_Domain_Repository_BackendUserRepository.
+ * Testcase for \TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository
  *
  * @author Markus Günther <mail@markus-guenther.de>
  * @author Oliver Klee <typo3-coding@oliverklee.de>

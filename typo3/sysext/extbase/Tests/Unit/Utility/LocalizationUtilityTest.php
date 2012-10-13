@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for class Tx_Extbase_Utility_Localization
+ * Testcase for class \TYPO3\CMS\Extbase\Utility\LocalizationUtility
  */
 class LocalizationUtilityTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

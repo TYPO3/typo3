@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Extbase\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Repository for Tx_Extbase_Domain_Model_BackendUserGroup.
+ * Repository for \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup.
  *
  * @author Markus Günther <mail@markus-guenther.de>
  * @api

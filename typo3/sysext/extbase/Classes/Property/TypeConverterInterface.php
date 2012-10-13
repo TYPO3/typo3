@@ -96,7 +96,7 @@ interface TypeConverterInterface
 	 * - an arbitrary object, or a simple type (which has been created while mapping).
 	 * This is the normal case.
 	 * - NULL, indicating that this object should *not* be mapped (i.e. a "File Upload" Converter could return NULL if no file has been uploaded, and a silent failure should occur.
-	 * - An instance of Tx_Extbase_Error_Error -- This will be a user-visible error message lateron.
+	 * - An instance of \TYPO3\CMS\Extbase\Error\Error - This will be a user-visible error message lateron.
 	 * Furthermore, it should throw an Exception if an unexpected failure occured or a configuration issue happened.
 	 *
 	 * @param mixed $source

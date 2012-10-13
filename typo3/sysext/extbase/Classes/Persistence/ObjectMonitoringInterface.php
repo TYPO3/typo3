@@ -26,8 +26,8 @@ namespace TYPO3\CMS\Extbase\Persistence;
 /**
  * An interface how to monitor changes on an object and its properties. All domain objects which should be persisted need to implement the below interface.
  *
- * @see Tx_Extbase_DomainObject_AbstractEntity
- * @see Tx_Extbase_DomainObject_AbstractValueObject
+ * @see \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+ * @see \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
  */
 interface ObjectMonitoringInterface
 {

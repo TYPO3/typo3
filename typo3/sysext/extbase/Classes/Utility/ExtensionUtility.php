@@ -48,7 +48,7 @@ class ExtensionUtility {
 	 * @param string $pluginName must be a unique id for your plugin in UpperCamelCase (the string length of the extension key added to the length of the plugin name should be less than 32!)
 	 * @param array $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
 	 * @param array $nonCacheableControllerActions is an optional array of controller name and  action names which should not be cached (array as defined in $controllerActions)
-	 * @param string $pluginType either Tx_Extbase_Utility_Extension::TYPE_PLUGIN (default) or Tx_Extbase_Utility_Extension::TYPE_CONTENT_ELEMENT
+	 * @param string $pluginType either \TYPO3\CMS\Extbase\Utility\ExtensionUtility::TYPE_PLUGIN (default) or \TYPO3\CMS\Extbase\Utility\ExtensionUtility::TYPE_CONTENT_ELEMENT
 	 * @throws \InvalidArgumentException
 	 * @return void
 	 */

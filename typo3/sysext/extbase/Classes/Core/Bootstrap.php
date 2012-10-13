@@ -223,7 +223,7 @@ class Bootstrap implements \TYPO3\CMS\Extbase\Core\BootstrapInterface {
 		$response = $requestHandler->handleRequest();
 		// If response is NULL after handling the request we need to stop
 		// This happens for instance, when a USER object was converted to a USER_INT
-		// @see Tx_Extbase_MVC_Web_FrontendRequestHandler::handleRequest()
+		// @see TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler::handleRequest()
 		if ($response === NULL) {
 			$this->reflectionService->shutdown();
 			return '';

@@ -27,7 +27,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for the Tx_Extbase_Utility_Arrays class.
+ * Testcase for the \TYPO3\CMS\Extbase\Utility\ArrayUtility class.
  *
  * @author Tymoteusz Motylewski <t.motylewski@gmail.com>
  */

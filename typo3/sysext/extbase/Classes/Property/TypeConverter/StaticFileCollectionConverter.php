@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Property\TypeConverter;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Converter which transforms simple types to Tx_Extbase_Domain_Model_FileCollection.
+ * Converter which transforms simple types to \TYPO3\CMS\Extbase\Domain\Model\FileCollection.
  *
  * @api experimental! This class is experimental and subject to change!
  */

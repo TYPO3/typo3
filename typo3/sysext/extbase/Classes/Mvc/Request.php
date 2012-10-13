@@ -506,7 +506,7 @@ class Request implements \TYPO3\CMS\Extbase\Mvc\RequestInterface {
 	/**
 	 * Set errors that occured during the request (e.g. argument mapping errors)
 	 *
-	 * @param array $errors An array of Tx_Extbase_Error_Error objects
+	 * @param array $errors An array of \TYPO3\CMS\Extbase\Error\Error objects
 	 *
 	 * @return void
 	 * @deprecated since Extbase 1.4.0, will be removed with Extbase 6.1

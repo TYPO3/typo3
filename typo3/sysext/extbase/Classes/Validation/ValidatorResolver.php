@@ -100,7 +100,7 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Get a validator for a given data type. Returns a validator implementing
-	 * the Tx_Extbase_Validation_Validator_ValidatorInterface or NULL if no validator
+	 * the \TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface or NULL if no validator
 	 * could be resolved.
 	 *
 	 * @param string $validatorName Either one of the built-in data types or fully qualified validator class name

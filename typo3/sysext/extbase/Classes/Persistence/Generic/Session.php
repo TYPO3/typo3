@@ -30,7 +30,7 @@ class Session implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Objects which were reconstituted. The relevant objects are registered by
-	 * the Tx_Extbase_Persistence_Mapper_DataMapper.
+	 * the \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper.
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage
 	 */

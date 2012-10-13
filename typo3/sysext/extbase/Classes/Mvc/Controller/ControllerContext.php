@@ -149,8 +149,6 @@ class ControllerContext {
 	}
 
 	/**
-	 * Tx_Extbase_MVC_Web_Routing_UriBuilder $uriBuilder
-	 *
 	 * @param \TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder $uriBuilder
 	 * @return void
 	 */

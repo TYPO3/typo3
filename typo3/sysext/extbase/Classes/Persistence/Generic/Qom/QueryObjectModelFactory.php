@@ -66,7 +66,7 @@ class QueryObjectModelFactory implements \TYPO3\CMS\Core\SingletonInterface {
 	 *
 	 * @param string $statement The statement
 	 * @param array $boundVariables An array of variables to bind to the statement
-	 * @param object|string $language The language of the statement. Must be a supported languanguage defined as Tx_Extbase_Persistence_QOM_QueryObjectModelFactory::TYPO3_*
+	 * @param object|string $language The language of the statement. Must be a supported languanguage defined as \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelFactory::TYPO3_*
 	 * @return \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement
 	 */
 	public function statement($statement, array $boundVariables = array(), $language = \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Statement::TYPO3_SQL_MYSQL) {

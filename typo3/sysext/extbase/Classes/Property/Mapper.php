@@ -163,7 +163,7 @@ class Mapper implements \TYPO3\CMS\Core\SingletonInterface {
 	/**
 	 * Add errors to the mapping result from an object validator (property errors).
 	 *
-	 * @param array Array of Tx_Extbase_Validation_PropertyError
+	 * @param array Array of \TYPO3\CMS\Extbase\Validation\PropertyError
 	 * @return void
 	 */
 	protected function addErrorsFromObjectValidator($errors) {

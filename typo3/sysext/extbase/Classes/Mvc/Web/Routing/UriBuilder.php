@@ -640,7 +640,7 @@ class UriBuilder {
 	}
 
 	/**
-	 * Recursively iterates through the specified arguments and turns instances of type Tx_Extbase_DomainObject_AbstractEntity
+	 * Recursively iterates through the specified arguments and turns instances of type \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 	 * into an arrays containing the uid of the domain object.
 	 *
 	 * @param array $arguments The arguments to be iterated

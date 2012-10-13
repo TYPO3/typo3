@@ -77,7 +77,7 @@ class PropertyReflection extends \ReflectionProperty {
 	/**
 	 * Returns the value of the reflected property - even if it is protected.
 	 *
-	 * @param object $object Instance of the declaring class Tx_Extbase_Reflection_to read the value from
+	 * @param object $object Instance of the declaring class \TYPO3\CMS\Extbase\Reflection to read the value from
 	 * @return mixed Value of the property
 	 * @throws \TYPO3\CMS\Extbase\Reflection\Exception
 	 * @todo Maybe support private properties as well, as of PHP 5.3.0 we can do

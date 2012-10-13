@@ -169,7 +169,7 @@ class Command {
 	}
 
 	/**
-	 * Returns an array of Tx_Extbase_MVC_CLI_CommandArgumentDefinition that contains
+	 * Returns an array of \TYPO3\CMS\Extbase\Mvc\Cli\CommandArgumentDefinition that contains
 	 * information about required/optional arguments of this command.
 	 * If the command does not expect any arguments, an empty array is returned
 	 *

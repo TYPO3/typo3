@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for class Tx_Extbase_Utility_Extension
+ * Testcase for class \TYPO3\CMS\Extbase\Utility\ExtensionUtility
  */
 class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
@@ -77,7 +77,7 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Extension::registerPlugin
+	 * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
 	 */
 	public function configurePluginWorksForMinimalisticSetup() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
@@ -93,7 +93,7 @@ class ExtensionUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Extension::registerPlugin
+	 * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
 	 */
 	public function configurePluginCreatesCorrectDefaultTypoScriptSetup() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
@@ -122,7 +122,7 @@ plugin.tx_myextension {
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Extension::registerPlugin
+	 * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
 	 */
 	public function configurePluginWorksForASingleControllerAction() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
@@ -148,7 +148,7 @@ plugin.tx_myextension {
 	/**
 	 * @test
 	 * @expectedException \InvalidArgumentException
-	 * @see Tx_Extbase_Utility_Extension::registerPlugin
+	 * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
 	 */
 	public function configurePluginThrowsExceptionIfExtensionNameIsEmpty() {
 		\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('', 'SomePlugin', array(
@@ -159,7 +159,7 @@ plugin.tx_myextension {
 	/**
 	 * @test
 	 * @expectedException \InvalidArgumentException
-	 * @see Tx_Extbase_Utility_Extension::registerPlugin
+	 * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
 	 */
 	public function configurePluginThrowsExceptionIfPluginNameIsEmpty() {
 		\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin('MyExtension', '', array(
@@ -169,7 +169,7 @@ plugin.tx_myextension {
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Extension::registerPlugin
+	 * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
 	 */
 	public function configurePluginRespectsDefaultActionAsANonCacheableAction() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
@@ -197,7 +197,7 @@ plugin.tx_myextension {
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Extension::registerPlugin
+	 * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
 	 */
 	public function configurePluginRespectsNonDefaultActionAsANonCacheableAction() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
@@ -225,7 +225,7 @@ plugin.tx_myextension {
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Extension::registerPlugin
+	 * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
 	 */
 	public function configurePluginWorksForMultipleControllerActionsWithCacheableActionAsDefault() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();
@@ -258,7 +258,7 @@ plugin.tx_myextension {
 
 	/**
 	 * @test
-	 * @see Tx_Extbase_Utility_Extension::registerPlugin
+	 * @see \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin
 	 */
 	public function configurePluginWorksForMultipleControllerActionsWithNonCacheableActionAsDefault() {
 		$GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.'] = array();

@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  * Testcase for the DateTime converter
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @covers Tx_Extbase_Property_TypeConverter_DateTimeConverter<extended>
+ * @covers \TYPO3\CMS\Extbase\Property\TypeConverter\DateTimeConverter<extended>
  */
 class DateTimeConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

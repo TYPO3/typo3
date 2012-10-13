@@ -24,7 +24,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Property\TypeConverter;
  * Testcase for the Integer converter
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @covers Tx_Extbase_Property_TypeConverter_StringToIntegerConverter<extended>
+ * @covers \TYPO3\CMS\Extbase\Property\TypeConverter\IntegerConverter<extended>
  */
 class IntegerConverterTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 

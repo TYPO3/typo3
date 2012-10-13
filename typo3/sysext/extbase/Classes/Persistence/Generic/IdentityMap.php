@@ -30,7 +30,8 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
  * An identity mapper to map nodes to objects
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
- * @see Tx_Extbase_Persistence_Mapper_DataMapper , Tx_Extbase_Persistence_Backend
+ * @see \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+ * @see \TYPO3\CMS\Extbase\Persistence\Generic\Backend
  */
 class IdentityMap implements \TYPO3\CMS\Core\SingletonInterface {
 

@@ -83,7 +83,7 @@ interface ComparisonInterface extends \TYPO3\CMS\Extbase\Persistence\Generic\Qom
 	/**
 	 * Gets the operator.
 	 *
-	 * @return string one of Tx_Extbase_Persistence_QueryObjectModelConstantsInterface.OPERATOR_*
+	 * @return string one of \TYPO3\CMS\Extbase\Persistence\QueryObjectModelConstantsInterface.OPERATOR_*
 	 */
 	public function getOperator();
 

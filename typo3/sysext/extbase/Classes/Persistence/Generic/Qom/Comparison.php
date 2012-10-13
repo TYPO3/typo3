@@ -92,7 +92,7 @@ class Comparison implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Compariso
 	 * Constructs this Comparison instance
 	 *
 	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand1
-	 * @param int $operator one of Tx_Extbase_Persistence_QueryInterface.OPERATOR_*
+	 * @param int $operator one of \TYPO3\CMS\Extbase\Persistence\QueryInterface.OPERATOR_*
 	 * @param mixed $operand2
 	 */
 	public function __construct(\TYPO3\CMS\Extbase\Persistence\Generic\Qom\DynamicOperandInterface $operand1, $operator, $operand2) {
@@ -113,7 +113,7 @@ class Comparison implements \TYPO3\CMS\Extbase\Persistence\Generic\Qom\Compariso
 	/**
 	 * Gets the operator.
 	 *
-	 * @return string one of Tx_Extbase_Persistence_QOM_QueryObjectModelConstantsInterface.JCR_OPERATOR_*
+	 * @return string one of \TYPO3\CMS\Extbase\Persistence\Generic\Qom\QueryObjectModelConstantsInterface.JCR_OPERATOR_*
 	 */
 	public function getOperator() {
 		return $this->operator;

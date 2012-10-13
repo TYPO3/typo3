@@ -58,7 +58,7 @@ class MappingResults {
 	/**
 	 * Returns all errors that occured so far
 	 *
-	 * @return array Array of Tx_Extbase_Error_Error
+	 * @return array Array of \TYPO3\CMS\Extbase\Error\Error
 	 */
 	public function getErrors() {
 		return $this->errors;

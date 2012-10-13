@@ -25,11 +25,11 @@ namespace TYPO3\CMS\Extbase\DomainObject;
  ***************************************************************/
 /**
  * A Domain Object Interface. All domain objects which should be persisted need to implement the below interface.
- * Usually you will need to subclass Tx_Extbase_DomainObject_AbstractEntity and Tx_Extbase_DomainObject_AbstractValueObject
+ * Usually you will need to subclass \TYPO3\CMS\Extbase\DomainObject\AbstractEntity and \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
  * instead.
  *
- * @see Tx_Extbase_DomainObject_AbstractEntity
- * @see Tx_Extbase_DomainObject_AbstractValueObject
+ * @see \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+ * @see \TYPO3\CMS\Extbase\DomainObject\AbstractValueObject
  */
 interface DomainObjectInterface
 {

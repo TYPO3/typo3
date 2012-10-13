@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Domain\Model;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * Testcase for Tx_Extbase_Domain_Model_BackendUserGroup.
+ * Testcase for \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup.
  *
  * @author Markus Günther <mail@markus-guenther>
  * @scope prototype

@@ -29,7 +29,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 /**
  * Defines constants used in the query object model.
  *
- * @deprecated since Extbase 1.1; use Tx_Extbase_Persistence_QueryInterface::* instead
+ * @deprecated since Extbase 1.1; use \TYPO3\CMS\Extbase\Persistence\QueryInterface::* instead
  */
 interface QueryObjectModelConstantsInterface
 {

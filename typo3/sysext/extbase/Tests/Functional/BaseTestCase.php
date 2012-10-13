@@ -32,7 +32,7 @@
  * rows defined in fixtures to it.
  *
  * This class is used in the FAL<->extbase connection tests like
- * Tx_Extbase_Tests_Functional_Domain_Model_FileContextTest. It is
+ * \TYPO3\CMS\Extbase\Tests\Functional\Domain\Model\FileContextTest. It is
  * currently marked as experimental!
  *
  * @api experimental! This class is experimental and subject to change!
