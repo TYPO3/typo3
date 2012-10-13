@@ -233,7 +233,8 @@ class Argument {
 	 */
 	public function injectReflectionService(\TYPO3\CMS\Extbase\Reflection\Service $reflectionService) {
 		$this->reflectionService = $reflectionService;
-		$this->dataTypeClassSchema = strpos($this->dataType, '_') !== FALSE ? $this->reflectionService->getClassSchema($this->dataType) : NULL;
+		// Check for classnames (which have at least one underscore or backslash)
+		$this->dataTypeClassSchema = strpbrk($this->dataType, '_\\') !== FALSE ? $this->reflectionService->getClassSchema($this->dataType) : NULL;
 	}
 
 	/**

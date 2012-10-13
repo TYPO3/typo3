@@ -182,6 +182,53 @@ class ArgumentTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function validClassNameDataTypes() {
+		return array(
+			array('Tx_Foo_Bar'),
+			array('ExtbaseTeam\\BlogExample\\Foo\\Bar'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider validClassNameDataTypes
+	 */
+	public function classSchemaIsBuiltForClassNameDataTypesWhenReflectionServiceIsInjected($dataType) {
+		/** @var $argument \TYPO3\CMS\Extbase\Mvc\Controller\Argument|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$argument = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('dummy'), array(), '', FALSE);
+		$argument->_set('dataType', $dataType);
+		$reflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service');
+		$reflectionService->expects($this->once())->method('getClassSchema')->with($dataType);
+		$argument->injectReflectionService($reflectionService);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function primitiveOrBuiltInObjectsDataTypes() {
+		return array(
+			array('integer'),
+			array('array'),
+			array('DateTime'),
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider primitiveOrBuiltInObjectsDataTypes
+	 */
+	public function classSchemaIsNotBuiltForPrimitiveDataTypesWhenReflectionServiceIsInjected($dataType) {
+		/** @var $argument \TYPO3\CMS\Extbase\Mvc\Controller\Argument|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface */
+		$argument = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Mvc\\Controller\\Argument', array('dummy'), array(), '', FALSE);
+		$argument->_set('dataType', $dataType);
+		$reflectionService = $this->getMock('TYPO3\\CMS\\Extbase\\Reflection\\Service');
+		$reflectionService->expects($this->never())->method('getClassSchema');
+		$argument->injectReflectionService($reflectionService);
+	}
+
+	/**
 	 * @test
 	 * @author Karsten Dambekalns <karsten@typo3.org>
 	 */
