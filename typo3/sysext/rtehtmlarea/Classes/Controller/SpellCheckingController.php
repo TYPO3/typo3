@@ -522,7 +522,7 @@ var selectedDictionary = "' . $this->dictionary . '";
 		$words = preg_split($this->parserCharset == 'utf-8' ? '/\\P{L}+/u' : '/\\W+/', $stringText);
 		while (list(, $word) = each($words)) {
 			$word = preg_replace('/ /' . ($this->parserCharset == 'utf-8' ? 'u' : ''), '', $word);
-			if ($word && !is_numeric($word)) {
+			if ($word && !ctype_digit($word)) {
 				if ($this->pspell_is_available && !$this->forceCommandMode) {
 					if (!pspell_check($this->pspell_link, $word)) {
 						if (!in_array($word, $this->misspelled)) {

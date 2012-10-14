@@ -117,7 +117,7 @@ class SuggestElement {
 		// If the $uid is numeric, we have an already existing element, so get the
 		// TSconfig of the page itself or the element container (for non-page elements)
 		// otherwise it's a new element, so use given id of parent page (i.e., don't modify it here)
-		if (is_numeric($uid)) {
+		if (ctype_digit($uid)) {
 			if ($table == 'pages') {
 				$pageId = $uid;
 			} else {

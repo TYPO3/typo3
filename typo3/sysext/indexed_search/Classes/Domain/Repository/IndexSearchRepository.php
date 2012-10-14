@@ -128,7 +128,7 @@ class IndexSearchRepository {
 		$this->sortOrder = $searchData['sortOrder'];
 		$this->descendingSortOrderFlag = $searchData['desc'];
 		$this->resultpagePointer = $searchData['pointer'];
-		if (isset($searchData['numberOfResults']) && is_numeric($searchData['numberOfResults'])) {
+		if (isset($searchData['numberOfResults']) && ctype_digit($searchData['numberOfResults'])) {
 			$this->numberOfResults = intval($searchData['numberOfResults']);
 		}
 	}

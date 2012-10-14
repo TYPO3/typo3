@@ -126,7 +126,7 @@ class BlowfishSalt extends \TYPO3\CMS\Saltedpasswords\Salt\Md5Salt {
 		$setting = substr($setting, strlen($this->getSetting()));
 		$firstSplitPos = strpos($setting, '$');
 		// Hashcount existing
-		if ($firstSplitPos !== FALSE && $firstSplitPos <= 2 && is_numeric(substr($setting, 0, $firstSplitPos))) {
+		if ($firstSplitPos !== FALSE && $firstSplitPos <= 2 && ctype_digit(substr($setting, 0, $firstSplitPos))) {
 			$countLog2 = intval(substr($setting, 0, $firstSplitPos));
 		}
 		return $countLog2;

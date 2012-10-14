@@ -77,9 +77,9 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 		$hookElements = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'];
 		if (is_array($hookElements)) {
 			foreach ($hookElements as $classRef) {
-				/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
+				/** @var $hookObject \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface */
 				$hookObject = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
-				if ($hookObject instanceof \t3lib_tree_pagetree_interfaces_collectionprocessor) {
+				if ($hookObject instanceof \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface) {
 					$this->processCollectionHookObjects[] = $hookObject;
 				}
 			}
@@ -159,7 +159,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			}
 		}
 		foreach ($this->processCollectionHookObjects as $hookObject) {
-			/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
+			/** @var $hookObject \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface */
 			$hookObject->postProcessGetNodes($node, $mountPoint, $level, $nodeCollection);
 		}
 		return $nodeCollection;
@@ -201,7 +201,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 		} else {
 			$mountPoints = array($mountPoints);
 		}
-		$isNumericSearchFilter = is_numeric($searchFilter) && $searchFilter > 0;
+		$isNumericSearchFilter = ctype_digit($searchFilter) && $searchFilter > 0;
 		$nodeId = intval($node->getId());
 		foreach ($records as $record) {
 			$record = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNodeRecord($record['uid']);
@@ -277,7 +277,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			}
 		}
 		foreach ($this->processCollectionHookObjects as $hookObject) {
-			/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
+			/** @var $hookObject \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface */
 			$hookObject->postProcessFilteredNodes($node, $searchFilter, $mountPoint, $nodeCollection);
 		}
 		return $nodeCollection;
@@ -364,7 +364,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			$nodeCollection->append($subNode);
 		}
 		foreach ($this->processCollectionHookObjects as $hookObject) {
-			/** @var $hookObject t3lib_tree_pagetree_interfaces_collectionprocessor */
+			/** @var $hookObject \TYPO3\CMS\Backend\Tree\Pagetree\CollectionProcessorInterface */
 			$hookObject->postProcessGetTreeMounts($searchFilter, $nodeCollection);
 		}
 		return $nodeCollection;
@@ -379,11 +379,12 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	 */
 	protected function getWhereClause($id, $searchFilter = '') {
 		$where = $GLOBALS['BE_USER']->getPagePermsClause(1) . \TYPO3\CMS\Backend\Utility\BackendUtility::deleteClause('pages') . \TYPO3\CMS\Backend\Utility\BackendUtility::versioningPlaceholderClause('pages');
-		if (is_numeric($id) && $id >= 0) {
-			$where .= ' AND pid= ' . $GLOBALS['TYPO3_DB']->fullQuoteStr(intval($id), 'pages');
+		if (ctype_digit($id) && $id >= 0) {
+			$where .= ' AND pid= ' . intval($id);
 		}
 		if ($searchFilter !== '') {
-			if (is_numeric($searchFilter) && $searchFilter > 0) {
+			$searchWhere = '';
+			if (ctype_digit($searchFilter) && $searchFilter > 0) {
 				$searchWhere .= 'uid = ' . intval($searchFilter) . ' OR ';
 			}
 			$searchFilter = $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . $searchFilter . '%', 'pages');
