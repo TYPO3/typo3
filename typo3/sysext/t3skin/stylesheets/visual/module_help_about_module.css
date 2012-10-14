@@ -1,28 +1,27 @@
 /* - - - - - - - - - - - - - - - - - - - - -
-Help > About modules (alt_intro.php)
+Help > About modules
 
 - - - - - - - - - - - - - - - - - - - - - */
 
-table#typo3-about-modules {
-	background: #ffffff;
+/** Styles for the modules listing table */
+
+table#typo3-aboutmodules {
 	border-collapse: collapse;
 }
 
-table#typo3-about-modules tr.c-first td {
+table#typo3-aboutmodules tr.c-first td {
 	border-top: 1px solid #ccc;
 }
 
-table#typo3-about-modules tr.c-endrow td {
+table#typo3-aboutmodules tr.c-endrow td {
+	background: #ffffff;
 	border-bottom: 1px solid #ccc;
 }
 
-table#typo3-about-modules tr.c-first,
-table#typo3-about-modules tr.c-endrow,
-table#typo3-about-modules tr.c-subitem-row {
+table#typo3-aboutmodules tr.c-first,
+table#typo3-aboutmodules tr.c-endrow,
+table#typo3-aboutmodules tr.c-subitem-row {
+	background: #ffffff;
 	border-left: 1px solid #ccc;
 	border-right: 1px solid #ccc;
-}
-
-table#typo3-about-modules tr.c-mainitem {
-	background-color: #f8f8f8;
 }
