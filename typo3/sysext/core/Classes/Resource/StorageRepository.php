@@ -212,7 +212,45 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 		}
 		return $whereClause;
 	}
-}
+
+	/**
+	 * Returns the object type this repository is managing.
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getEntityClassName() {
+		// TODO: Implement getEntityClassName() method.
+	}
+
+	/**
+	 * Finds an object matching the given identifier.
+	 *
+	 * @param mixed $identifier The identifier of the object to find
+	 *
+	 * @return object The matching object if found, otherwise NULL
+	 * @api
+	 */
+	public function findByIdentifier($identifier) {
+		// TODO: Implement findByIdentifier() method.
+	}
+
+	/**
+	 * Magic call method for repository methods.
+	 *
+	 * Provides three methods
+	 *  - findBy<PropertyName>($value, $caseSensitive = TRUE)
+	 *  - findOneBy<PropertyName>($value, $caseSensitive = TRUE)
+	 *  - countBy<PropertyName>($value, $caseSensitive = TRUE)
+	 *
+	 * @param string $method Name of the method
+	 * @param array $arguments The arguments
+	 * @return mixed The result of the repository method
+	 * @api
+	 */
+	public function __call($method, $arguments) {
+		// TODO: Implement __call() method.
+	}}
 
 
 ?>

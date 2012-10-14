@@ -33,8 +33,7 @@ namespace TYPO3\CMS\Core\Resource;
  * @package TYPO3
  * @subpackage t3lib
  */
-interface ResourceInterface
-{
+interface ResourceInterface {
 	/**
 	 * Returns the identifier of this file
 	 *
