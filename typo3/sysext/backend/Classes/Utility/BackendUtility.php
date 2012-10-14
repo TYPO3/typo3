@@ -3773,7 +3773,12 @@ class BackendUtility {
 	/**
 	 * Prints TYPO3 Copyright notice for About Modules etc. modules.
 	 *
-	 * @return void
+	 * Warning:
+	 * DO NOT prevent this notice from being shown in ANY WAY.
+	 * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
+	 * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use a stylesheet to obstruct the display.
+	 *
+	 * @return string Text/Image (HTML) for copyright notice.
 	 */
 	static public function TYPO3_copyRightNotice() {
 		// Copyright Notice
@@ -3784,7 +3789,17 @@ class BackendUtility {
 		} else {
 			$warrantyNote = sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:no.warranty'), '<a href="' . TYPO3_URL_LICENSE . '" target="_blank">', '</a>');
 		}
-		$cNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . '<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/loginlogo_transp.gif', 'width="75" height="19" vspace="2" hspace="4"') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.logo') . '" align="left" />' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.cms') . ' ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:version.short') . ' ' . htmlspecialchars(TYPO3_version) . '</a>. ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:copyright') . ' &copy; ' . htmlspecialchars(TYPO3_copyright_year) . ' Kasper Sk&aring;rh&oslash;j. ' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:extension.copyright') . ' ' . sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:details.link'), ('<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>')) . ' ' . strip_tags($warrantyNote, '<a>') . ' ' . sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:free.software'), ('<a href="' . TYPO3_URL_LICENSE . '" target="_blank">'), '</a> ') . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:keep.notice');
+		$cNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' .
+				'<img' . \TYPO3\CMS\Backend\Utility\IconUtility::skinImg($GLOBALS['BACK_PATH'], 'gfx/loginlogo_transp.gif', 'width="75" height="24" vspace="2" hspace="4"') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.logo') . '" align="left" />' .
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.cms') . ' ' .
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:version.short') . ' ' .
+				htmlspecialchars(TYPO3_version) . '</a>. ' .
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:copyright') . ' &copy; ' . htmlspecialchars(TYPO3_copyright_year) . ' Kasper Sk&aring;rh&oslash;j. ' .
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:extension.copyright') . ' ' .
+				sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:details.link'), ('<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>')) . ' ' .
+				strip_tags($warrantyNote, '<a>') . ' ' .
+				sprintf($GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:free.software'), ('<a href="' . TYPO3_URL_LICENSE . '" target="_blank">'), '</a> ') .
+				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:keep.notice');
 		return $cNotice;
 	}
 

@@ -44,7 +44,14 @@ class ModulesController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 * @return void
 	 */
 	public function indexAction() {
-		$this->view->assign('TYPO3Version', TYPO3_version)->assign('copyRightNotice', \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice())->assign('warningMessages', \TYPO3\CMS\Backend\Utility\BackendUtility::displayWarningMessages())->assign('modules', $this->getModulesData());
+		$this->view->assignMultiple(
+			array(
+				'TYPO3Version' => TYPO3_version,
+				'copyRightNotice' => \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice(),
+				'warningMessages' => \TYPO3\CMS\Backend\Utility\BackendUtility::displayWarningMessages(),
+				'modules' => $this->getModulesData()
+			)
+		);
 	}
 
 	/**
