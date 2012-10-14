@@ -46,7 +46,7 @@
 				<source>Traditional Backend</source>
 			</trans-unit>
 			<trans-unit id="headline" xml:space="preserve">
-				<source>Login to the TYPO3 Backend on ###SITENAME###</source>
+				<source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
 			</trans-unit>
 			<trans-unit id="info.about" xml:space="preserve">
 				<source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
@@ -103,7 +103,7 @@
 				<source>Warranty is supplied by %s; %sclick for details.%s</source>
 			</trans-unit>
 			<trans-unit id="no.warranty" xml:space="preserve">
-				<source>TYPO3 comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</source>
+				<source>TYPO3 CMS comes with ABSOLUTELY NO WARRANTY; %sclick for details.%s</source>
 			</trans-unit>
 			<trans-unit id="typo3.logo" xml:space="preserve">
 				<source>TYPO3 logo</source>

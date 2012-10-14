@@ -4071,7 +4071,12 @@ final class t3lib_BEfunc {
 	/**
 	 * Prints TYPO3 Copyright notice for About Modules etc. modules.
 	 *
-	 * @return	void
+	 * Warning:
+	 * DO NOT prevent this notice from being shown in ANY WAY.
+	 * According to the GPL license an interactive application must show such a notice on start-up ('If the program is interactive, make it output a short notice... ' - see GPL.txt)
+	 * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use a stylesheet to obstruct the display.
+	 *
+	 * @return string Text/Image (HTML) for copyright notice.
 	 */
 	public static function TYPO3_copyRightNotice() {
 			// COPYRIGHT NOTICE:
@@ -4088,8 +4093,9 @@ final class t3lib_BEfunc {
 				'<a href="' . TYPO3_URL_LICENSE . '" target="_blank">', '</a>'
 			);
 		}
+
 		$cNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' .
-				'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/loginlogo_transp.gif', 'width="75" height="19" vspace="2" hspace="4"') . ' alt="' .
+				'<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/loginlogo_transp.gif', 'width="75" height="24" vspace="2" hspace="4"') . ' alt="' .
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.logo') . '" align="left" />' .
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:typo3.cms') . ' ' .
 				$GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_login.xml:version.short') . ' ' .
