@@ -7,7 +7,7 @@
 				<source>Web Content Management System</source>
 			</trans-unit>
 			<trans-unit id="introtext2" xml:space="preserve">
-				<source>This is a brief description of the available modules:</source>
+				<source>This is a brief description of the available modules.</source>
 			</trans-unit>
 			<trans-unit id="endText" xml:space="preserve">
 				<source>Features may vary depending on your website and permissions</source>

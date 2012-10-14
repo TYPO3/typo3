@@ -1,7 +1,7 @@
 <f:layout name="Default" />
 
 <f:section name="Content">
-	<h1>TYPO3 {TYPO3Version}<br />
+	<h1>TYPO3 CMS {TYPO3Version}<br />
 		<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext" />
 	</h1>
 
@@ -13,24 +13,25 @@
 		<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:introtext2" />
 	</h3>
 
-	<table border="0" cellpadding="0" cellspacing="0" id="typo3-about-modules">
+	<table border="0" cellpadding="0" cellspacing="0" id="typo3-aboutmodules">
 		<tbody>
 			<f:for each="{modules}" as="mainModule">
 				<tr class="c-mainitem">
 					<td colspan="3">
-						<f:image src="{mainModule.icon}" alt="" />
-						&nbsp;
 						<f:if condition="{mainModules.subModules -> f:count()} > 0">
 							<f:then>
-								<strong>{mainModule.label}</strong>
+								<h3><f:image src="{mainModule.icon}" alt="" /> {mainModule.label}</h3>
 							</f:then>
 							<f:else>
-								<a
-									href="#"
-									onclick="top.goToModule('{mainModule.name}'); return false;"
-								>
-									<strong>{mainModule.label}</strong>
-								</a>
+								<h3>
+									<a href="#" onclick="top.goToModule('{mainModule.name}'); return false;">
+										<f:image src="{mainModule.icon}" alt="" />
+									</a>
+
+									<a href="#" onclick="top.goToModule('{mainModule.name}'); return false;">
+										{mainModule.label}
+									</a>
+								</h3>
 							</f:else>
 						</f:if>
 					</td>
@@ -42,8 +43,14 @@
 					</f:if>
 
 					<tr class="c-subitem-row">
-						<td align="center">
-							<f:image src="{subModule.icon}" alt="" />
+						<td>
+							<a
+								href="#"
+								onclick="top.goToModule('{mainModule.name}_{subModule.name}'); return false;"
+								title="{subModule.shortDescription}"
+							>
+								<f:image src="{subModule.icon}" alt="{subModule.label}" />
+							</a>
 						</td>
 						<td>
 							<a
@@ -55,10 +62,19 @@
 							</a>
 						</td>
 						<td class="module-description">
-							<strong>
-								{subModule.shortDescription}
-							</strong>
-							<br />
+							<f:if condition="{subModule.shortDescription}">
+								<strong>
+									<a
+										href="#"
+										onclick="top.goToModule('{mainModule.name}'); return false;"
+										title="{subModule.shortDescription}"
+									>
+										{subModule.shortDescription}
+									</a>
+								</strong>
+								<br />
+							</f:if>
+
 							{subModule.longDescription -> f:format.raw()}
 						</td>
 					</tr>
@@ -73,7 +89,7 @@
 
 	<br />
 
-	<p class="c-features">
+	<p>
 		<em>
 			(<f:translate key="LLL:EXT:lang/locallang_alt_intro.xlf:endText" />)
 		</em>
