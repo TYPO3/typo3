@@ -79,7 +79,7 @@ class TypoScriptTemplateInfoHook {
 		$savingsuccess = FALSE;
 		if ($parameters['type'] == $this->ajaxSaveType) {
 			$pageId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('pageId');
-			if (!is_numeric($pageId) || $pageId < 1) {
+			if (!ctype_digit($pageId) || $pageId < 1) {
 				return FALSE;
 			}
 			// If given use the requested template_uid

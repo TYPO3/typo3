@@ -1236,7 +1236,7 @@ class SchedulerModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClas
 					$cronErrorCode = $e->getCode();
 					// Check if the frequency is a valid number
 					// If yes, assume it is a frequency in seconds, and unset cron error code
-					if (is_numeric($frequency)) {
+					if (ctype_digit($frequency)) {
 						$this->submittedData['interval'] = intval($frequency);
 						unset($cronErrorCode);
 					}

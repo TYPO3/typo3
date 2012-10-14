@@ -165,7 +165,7 @@ class TceformsUpdateWizard extends \TYPO3\CMS\Install\Updates\AbstractUpdate {
 
 	protected function migrateField($table, $row, $fieldname, $fieldConfiguration) {
 		$fieldItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $row[$fieldname], TRUE);
-		if (empty($fieldItems) || is_numeric($row[$fieldname])) {
+		if (empty($fieldItems) || ctype_digit($row[$fieldname])) {
 			return array();
 		}
 		if (isset($fieldConfiguration['titleTexts'])) {

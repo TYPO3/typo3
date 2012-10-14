@@ -109,7 +109,7 @@ class BulkUpdateFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldPro
 		$result = TRUE;
 		// Check if number of records is indeed a number and greater or equals to 0
 		// If not, fail validation and issue error message
-		if (!is_numeric($submittedData['scheduler_saltedpasswordsBulkUpdateNumberOfRecords']) || intval($submittedData['scheduler_saltedpasswordsBulkUpdateNumberOfRecords']) < 0) {
+		if (!ctype_digit($submittedData['scheduler_saltedpasswordsBulkUpdateNumberOfRecords'])) {
 			$result = FALSE;
 			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:saltedpasswords/locallang.xml:ext.saltedpasswords.tasks.bulkupdate.invalidNumberOfRecords'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}

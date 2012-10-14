@@ -83,7 +83,7 @@ class RecyclerGarbageCollectionAdditionalFieldProvider implements \TYPO3\CMS\Sch
 		$result = TRUE;
 		// Check if number of days is indeed a number and greater or equals to 0
 		// If not, fail validation and issue error message
-		if (!is_numeric($submittedData['scheduler_recyclerGarbageCollection_numberOfDays']) || intval($submittedData['scheduler_recyclerGarbageCollection_numberOfDays']) < 0) {
+		if (!ctype_digit($submittedData['scheduler_recyclerGarbageCollection_numberOfDays'])) {
 			$result = FALSE;
 			$parentObject->addMessage($GLOBALS['LANG']->sL('LLL:EXT:scheduler/mod1/locallang.xml:msg.invalidNumberOfDays'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}
