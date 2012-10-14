@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Belog\Domain\Repository;
  * @package TYPO3
  * @subpackage belog
  */
-class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class LogEntryRepository extends \TYPO3\CMS\Extbase\Persistence\Generic\Repository {
 
 	/**
 	 * backend users, with UID as key

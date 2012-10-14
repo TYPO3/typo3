@@ -35,7 +35,7 @@ namespace TYPO3\CMS\Belog\Domain\Repository;
  * @package TYPO3
  * @subpackage belog
  */
-class WorkspaceRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class WorkspaceRepository extends \TYPO3\CMS\Extbase\Persistence\Generic\Repository {
 
 	/**
 	 * Initializes the repository.

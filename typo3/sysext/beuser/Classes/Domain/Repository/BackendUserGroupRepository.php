@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
  * @package TYPO3
  * @subpackage beuser
  */
-class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class BackendUserGroupRepository extends \TYPO3\CMS\Extbase\Persistence\Generic\Repository {
 
 
 }

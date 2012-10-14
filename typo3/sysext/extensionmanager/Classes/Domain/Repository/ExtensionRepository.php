@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
  * @package Extension Manager
  * @subpackage Repository
  */
-class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Generic\Repository {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper

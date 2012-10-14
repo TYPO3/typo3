@@ -30,7 +30,7 @@ namespace TYPO3\CMS\Extensionmanager\Domain\Repository;
  * @package Extension Manager
  * @subpackage Repository
  */
-class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class RepositoryRepository extends \TYPO3\CMS\Extbase\Persistence\Generic\Repository {
 
 	/**
 	 * Do not include pid in queries

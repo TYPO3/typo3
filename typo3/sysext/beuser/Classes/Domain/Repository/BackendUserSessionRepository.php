@@ -32,7 +32,7 @@ namespace TYPO3\CMS\Beuser\Domain\Repository;
  * @package TYPO3
  * @subpackage beuser
  */
-class BackendUserSessionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class BackendUserSessionRepository extends \TYPO3\CMS\Extbase\Persistence\Generic\Repository {
 
 	/**
 	 * Find Sessions for specific BackendUser

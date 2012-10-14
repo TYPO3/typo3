@@ -31,7 +31,7 @@ namespace TYPO3\CMS\About\Domain\Repository;
  * @subpackage about
  * @author Felix Kopp <felix-source@phorax.com>
  */
-class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
+class ExtensionRepository extends \TYPO3\CMS\Extbase\Persistence\Generic\Repository {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
