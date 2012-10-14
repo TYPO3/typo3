@@ -43,6 +43,7 @@ The following configuration is the minimum required:
 - 200 MB of disk space
 - AllowOverride in the Apache configuration includes "Indexes" and "FileInfo"
   (see FAQ below)
+- Apache stack size 8MB (or more). (see FAQ below)
 
 The following configuration is recommended:
 - Apache 2.x
@@ -232,6 +233,16 @@ A:	If you use MySQL 5.x or newer, try setting it to "compatible" mode. Open the
 	is the web site domain), navigate to "All configuration". find "setDBinit",
 	and add this line to the top of the input field:
 		SET SESSION sql_mode='MYSQL40'
+
+Q:	Some modules or extensions make Apache crash on Windows. What is the cause?
+A:	Fluid uses complex regular expressions which require a lot of stack space
+	during the first processing. On Windows the default stack size for Apache
+	is a lot smaller than on unix. You can increase the size to 8MB (default on
+	unix) by adding to the httpd.conf:
+		<IfModule mpm_winnt_module>
+			ThreadStackSize 8388608
+		</IfModule>
+	Restart Apache after this change.
 
 Q:	What do I have to do regarding security?
 A:	You have to make sure that you keep your TYPO3-core and the extensions
