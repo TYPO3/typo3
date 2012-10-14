@@ -289,7 +289,7 @@ class LoginController {
 			'LOGINBOX_IMAGE' => $this->makeLoginBoxImage(),
 			'FORM' => $content,
 			'NEWS' => $this->makeLoginNews(),
-			'COPYRIGHT' => $this->makeCopyrightNotice(),
+			'COPYRIGHT' => \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice(),
 			'CSS_CLASSES' => !empty($additionalCssClasses) ? 'class="' . implode(' ', $additionalCssClasses) . '"' : '',
 			'CSS_OPENIDCLASS' => 't3-login-openid-' . (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('openid') ? 'enabled' : 'disabled'),
 			// The labels will be replaced later on, thus the other parts above
@@ -440,23 +440,14 @@ class LoginController {
 	 * Therefore preventing this notice from being properly shown is a violation of the license, regardless of whether you remove it or use a stylesheet to obstruct the display.
 	 *
 	 * @return string Text/Image (HTML) for copyright notice.
+	 *
 	 * @todo Define visibility
+	 * @deprecated since TYPO3 6.0, will be removed in TYPO3 6.2
+	 * @see \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice()
 	 */
 	public function makeCopyrightNotice() {
-		// Get values from TYPO3_CONF_VARS:
-		$loginCopyrightWarrantyProvider = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyProvider']));
-		$loginCopyrightWarrantyURL = strip_tags(trim($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightWarrantyURL']));
-		$loginImageSmall = trim($GLOBALS['TBE_STYLES']['loginBoxImageSmall']) ? trim($GLOBALS['TBE_STYLES']['loginBoxImageSmall']) : 'gfx/loginlogo_transp.gif';
-		// Make warranty note:
-		if (strlen($loginCopyrightWarrantyProvider) >= 2 && strlen($loginCopyrightWarrantyURL) >= 10) {
-			$warrantyNote = sprintf($GLOBALS['LANG']->getLL('warranty.by'), htmlspecialchars($loginCopyrightWarrantyProvider), '<a href="' . htmlspecialchars($loginCopyrightWarrantyURL) . '" target="_blank">', '</a>');
-		} else {
-			$warrantyNote = sprintf($GLOBALS['LANG']->getLL('no.warranty'), '<a href="' . TYPO3_URL_LICENSE . '" target="_blank">', '</a>');
-		}
-		// Compile full copyright notice:
-		$copyrightNotice = '<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . '<img src="' . $loginImageSmall . '" alt="' . $GLOBALS['LANG']->getLL('typo3.logo') . '" align="left" />' . $GLOBALS['LANG']->getLL('typo3.cms') . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['loginCopyrightShowVersion'] ? ' ' . $GLOBALS['LANG']->getLL('version.short') . ' ' . htmlspecialchars(TYPO3_version) : '') . '</a>. ' . $GLOBALS['LANG']->getLL('copyright') . ' &copy; ' . TYPO3_copyright_year . ' Kasper Sk&#229;rh&#248;j. ' . $GLOBALS['LANG']->getLL('extension.copyright') . ' ' . sprintf($GLOBALS['LANG']->getLL('details.link'), ('<a href="' . TYPO3_URL_GENERAL . '" target="_blank">' . TYPO3_URL_GENERAL . '</a>')) . '<br /> ' . $warrantyNote . ' ' . sprintf($GLOBALS['LANG']->getLL('free.software'), ('<a href="' . TYPO3_URL_LICENSE . '" target="_blank">'), '</a> ') . $GLOBALS['LANG']->getLL('keep.notice');
-		// Return notice:
-		return $copyrightNotice;
+		\TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+		return \TYPO3\CMS\Backend\Utility\BackendUtility::TYPO3_copyRightNotice();
 	}
 
 	/**
