@@ -43,12 +43,14 @@ class Tx_Aboutmodules_Controller_ModulesController  extends Tx_Extbase_MVC_Contr
 	 * @return void
 	 */
 	public function indexAction() {
-		$this->view
-			->assign('TYPO3Version', TYPO3_version)
-			->assign('copyRightNotice', t3lib_BEfunc::TYPO3_copyRightNotice())
-			->assign('warningMessages', t3lib_BEfunc::displayWarningMessages())
-			->assign('modules', $this->getModulesData())
-		;
+		$this->view->assignMultiple(
+			array(
+				'TYPO3Version' => TYPO3_version,
+				'copyRightNotice' => t3lib_BEfunc::TYPO3_copyRightNotice(),
+				'warningMessages' => t3lib_BEfunc::displayWarningMessages(),
+				'modules' => $this->getModulesData()
+			)
+		);
 	}
 
 	/**
