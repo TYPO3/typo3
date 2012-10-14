@@ -235,6 +235,17 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 		return $this->factory->getFileReferenceObject($databaseRow['uid'], $databaseRow);
 	}
 
+	/**
+	 * Returns the object type this repository is managing.
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getEntityClassName() {
+		return $this->objectType;
+	}
+
+
 }
 
 

@@ -212,7 +212,17 @@ class StorageRepository extends \TYPO3\CMS\Core\Resource\AbstractRepository {
 		}
 		return $whereClause;
 	}
-}
 
+	/**
+	 * Returns the object type this repository is managing.
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getEntityClassName() {
+		return $this->objectType;
+	}
+
+}
 
 ?>

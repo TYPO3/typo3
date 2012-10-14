@@ -232,6 +232,52 @@ abstract class AbstractRepository implements \TYPO3\CMS\Extbase\Persistence\Repo
 		throw new \BadMethodCallException('Repository does not support the createQuery() method.', 1313185908);
 	}
 
+	/**
+	 * Finds an object matching the given identifier.
+	 *
+	 * @param mixed $identifier The identifier of the object to find
+	 *
+	 * @return object The matching object if found, otherwise NULL
+	 * @api
+	 */
+	public function findByIdentifier($identifier) {
+		return $this->findByUid($identifier);
+	}
+
+	/**
+	 * Magic call method for repository methods.
+	 *
+	 * Provides three methods
+	 *  - findBy<PropertyName>($value, $caseSensitive = TRUE)
+	 *  - findOneBy<PropertyName>($value, $caseSensitive = TRUE)
+	 *  - countBy<PropertyName>($value, $caseSensitive = TRUE)
+	 *
+	 * @param string $method Name of the method
+	 * @param array $arguments The arguments
+	 *
+	 * @return mixed The result of the repository method
+	 * @api
+	 */
+	public function __call($method, $arguments) {
+		if (substr($method, 0, 6) === 'findBy' && strlen($method) > 7) {
+			$propertyName = strtolower(substr(substr($method, 6), 0, 1)) . substr(substr($method, 6), 1);
+			$query = $this->createQuery();
+			$result = $query->matching($query->equals($propertyName, $arguments[0]))->execute();
+			return $result;
+		} elseif (substr($method, 0, 9) === 'findOneBy' && strlen($method) > 10) {
+			$propertyName = strtolower(substr(substr($method, 9), 0, 1)) . substr(substr($method, 9), 1);
+			$query = $this->createQuery();
+			$object = $query->matching($query->equals($propertyName, $arguments[0]))->setLimit(1)->execute()->getFirst();
+			return $object;
+		} elseif (substr($method, 0, 7) === 'countBy' && strlen($method) > 8) {
+			$propertyName = strtolower(substr(substr($method, 7), 0, 1)) . substr(substr($method, 7), 1);
+			$query = $this->createQuery();
+			$result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();
+			return $result;
+		}
+		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException('The method "' . $method . '" is not supported by the repository.', 1233180480);
+	}
+
 }
 
 

@@ -113,7 +113,16 @@ class ProcessedFileRepository extends \TYPO3\CMS\Core\Resource\AbstractRepositor
 		}
 	}
 
-}
+	/**
+	 * Returns the object type this repository is managing.
+	 *
+	 * @return string
+	 * @api
+	 */
+	public function getEntityClassName() {
+		return $this->objectType;
+	}
 
+}
 
 ?>
