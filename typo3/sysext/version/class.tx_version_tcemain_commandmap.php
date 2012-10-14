@@ -688,6 +688,12 @@ class tx_version_tcemain_CommandMap {
 		if (isset($elementProperties['swapIntoWS'])) {
 			$commonSwapProperties['swapIntoWS'] = $elementProperties['swapIntoWS'];
 		}
+		if (isset($elementProperties['comment'])) {
+			$commonSwapProperties['comment'] = $elementProperties['comment'];
+		}
+		if (isset($elementProperties['notificationAlternativeRecipients'])) {
+			$commonSwapProperties['notificationAlternativeRecipients'] = $elementProperties['notificationAlternativeRecipients'];
+		}
 
 		return $commonSwapProperties;
 	}
