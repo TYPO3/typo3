@@ -99,7 +99,7 @@ class SC_mod_help_about_index {
 		#$TBE_TEMPLATE->bgColor = '#cccccc';
 		$TBE_TEMPLATE->backPath = $GLOBALS['BACK_PATH'];
 
-		$minorText = sprintf($LANG->getLL('minor'), 'TYPO3 Ver. '.htmlspecialchars(TYPO3_version).', Copyright &copy; '.htmlspecialchars(TYPO3_copyright_year), 'Kasper Sk&aring;rh&oslash;j');
+		$minorText = sprintf($GLOBALS['LANG']->getLL('cms_description'), htmlspecialchars(TYPO3_version), '&copy; ' . htmlspecialchars(TYPO3_copyright_year), 'Kasper Sk&aring;rh&oslash;j');
 
 		$content='
 			<div id="typo3-mod-help-about-index-php-outer">
