@@ -255,6 +255,10 @@ HTMLArea.TYPO3Link = Ext.extend(HTMLArea.Plugin, {
 			if (el != null && /^a$/i.test(el.nodeName)) {
 				node = el;
 			}
+			// Get the created link or parent
+			node = this.editor.getParentElement();
+			// Re-establish the range of the selection
+			range = this.editor._createRange(selection);
 			if (node) {
 					// Export trailing br that IE may include in the link
 				if (Ext.isIE) {
