@@ -128,8 +128,18 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	var $thisConfig;
 	var $confValues;
 	public $language;
+	/**
+	 * TYPO3 language code of the content language
+	 */
 	public $contentTypo3Language;
+	/**
+	 * ISO language code of the content language
+	 */
 	public $contentISOLanguage;
+	/**
+	 * Language service object for localization to the content language
+	 */
+	protected $contentLanguageService;
 	public $contentCharset;
 	public $OutputCharset;
 	var $editorCSS;
@@ -322,7 +332,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					}
 				}
 			}
-
+			// Create content laguage service
+			$this->contentLanguageService = t3lib_div::makeInstance('language');
+			$this->contentLanguageService->init($this->contentTypo3Language);
 				// Character sets: interface and content
 			$this->charset = $LANG->charSet;
 			$this->OutputCharset = $this->charset;
@@ -1343,17 +1355,14 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 		return json_encode($toolbar);
 	}
 
+	/**
+	 * Localize a string using the language of the content element rather than the language of the BE interface
+	 *
+	 * @param	string		string: the label to be localized
+	 * @return	string		Localized string.
+	 */
 	public function getLLContent($string) {
-		global $LANG;
-
-		$BE_lang = $LANG->lang;
-		$BE_charSet = $LANG->charSet;
-		$LANG->lang = $this->contentTypo3Language;
-		$LANG->charSet = $this->contentCharset;
-		$LLString = $LANG->JScharCode($LANG->sL($string));
-		$LANG->lang = $BE_lang;
-		$LANG->charSet = $BE_charSet;
-		return $LLString;
+		return $this->contentLanguageService->JScharCode($this->contentLanguageService->sL($string));
 	}
 
 	public function getPageConfigLabel($string,$JScharCode=1) {

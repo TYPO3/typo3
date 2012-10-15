@@ -199,8 +199,15 @@ class tx_rtehtmlarea_folderTree extends rteFolderTree {
 class tx_rtehtmlarea_browse_links extends browse_links {
 
 	var $editorNo;
-	var $contentTypo3Language;
-	var $contentTypo3Charset;
+	/**
+	 * TYPO3 language code of the content language
+	 */
+	public $contentTypo3Language;
+	var $contentTypo3Charset = 'utf-8';
+	/**
+	 * Language service object for localization to the content language
+	 */
+	protected $contentLanguageService;
 	public $additionalAttributes = array();
 	public $buttonConfig = array();
 	public $RTEProperties = array();
@@ -224,6 +231,9 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	function init()	{
 
 		$this->initVariables();
+		// Create content laguage service
+		$this->contentLanguageService = t3lib_div::makeInstance('language');
+		$this->contentLanguageService->init($this->contentTypo3Language);
 		$this->initConfiguration();
 
 			// Creating backend template object:
@@ -1107,22 +1117,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 * @return	string		Localized string.
 	 */
 	public function getLLContent($string) {
-		global $LANG;
-
-		$BE_lang = $LANG->lang;
-		$BE_origCharSet = $LANG->origCharSet;
-		$BE_charSet = $LANG->charSet;
-
-		$LANG->lang = $this->contentTypo3Language;
-		$LANG->origCharSet = $LANG->csConvObj->charSetArray[$this->contentTypo3Language];
-		$LANG->origCharSet = $LANG->origCharSet ? $LANG->origCharSet : 'iso-8859-1';
-		$LANG->charSet = $this->contentTypo3Charset;
-		$LLString = $LANG->sL($string);
-
-		$LANG->lang = $BE_lang;
-		$LANG->origCharSet = $BE_origCharSet;
-		$LANG->charSet = $BE_charSet;
-		return $LLString;
+		return $this->contentLanguageService->sL($string);
 	}
 
 	/**
