@@ -201,11 +201,18 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	public $confValues;
 
 	public $language;
-
+	/**
+	 * TYPO3 language code of the content language
+	 */
 	public $contentTypo3Language;
-
+	/**
+	 * ISO language code of the content language
+	 */
 	public $contentISOLanguage;
-
+	/**
+	 * Language service object for localization to the content language
+	 */
+	protected $contentLanguageService;
 	public $charset = 'utf-8';
 
 	public $contentCharset = 'utf-8';
@@ -243,7 +250,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 
 	// Array of registered plugins indexed by their plugin Id's
 	protected $fullScreen = FALSE;
-
+	// Page renderer object
 	protected $pageRenderer;
 
 	/**
@@ -422,6 +429,9 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 					}
 				}
 			}
+			// Create content laguage service
+			$this->contentLanguageService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
+			$this->contentLanguageService->init($this->contentTypo3Language);
 			/* =======================================
 			 * TOOLBAR CONFIGURATION
 			 * =======================================
@@ -1242,11 +1252,7 @@ class RteHtmlAreaBase extends \TYPO3\CMS\Backend\Rte\AbstractRte {
 	 * @return 	string		Localized string.
 	 */
 	public function getLLContent($string) {
-		$BE_lang = $GLOBALS['LANG']->lang;
-		$GLOBALS['LANG']->lang = $this->contentTypo3Language;
-		$LLString = $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL($string));
-		$GLOBALS['LANG']->lang = $BE_lang;
-		return $LLString;
+		return $this->contentLanguageService->JScharCode($this->contentLanguageService->sL($string));
 	}
 
 	public function getPageConfigLabel($string, $JScharCode = 1) {
