@@ -288,14 +288,15 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 * This method is meant as a helper for regular expression results.
 	 *
 	 * @param string &$quotedValue Value to unquote
+	 * @return void
 	 */
 	protected function unquoteString(&$quotedValue) {
 		switch ($quotedValue[0]) {
-		case '"':
-			$quotedValue = str_replace('\\"', '"', trim($quotedValue, '"'));
+			case '"':
+				$quotedValue = str_replace('\\"', '"', trim($quotedValue, '"'));
 			break;
-		case '\'':
-			$quotedValue = str_replace('\\\'', '\'', trim($quotedValue, '\''));
+			case '\'':
+				$quotedValue = str_replace('\\\'', '\'', trim($quotedValue, '\''));
 			break;
 		}
 		$quotedValue = str_replace('\\\\', '\\', $quotedValue);
@@ -306,17 +307,24 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 * FALSE is returned
 	 *
 	 * @param string $validatorName Either the fully qualified class name of the validator or the short name of a built-in validator
-	 * @return string Name of the validator object or FALSE
+	 * @return string|boolean Name of the validator object or FALSE
 	 */
 	protected function resolveValidatorObjectName($validatorName) {
-		if (strpos($validatorName, '_') !== FALSE && class_exists($validatorName)) {
+		if ((strpbrk($validatorName, '_\\') !== FALSE) && class_exists($validatorName)) {
 			return $validatorName;
 		}
 		list($extensionName, $extensionValidatorName) = explode(':', $validatorName);
-		if (!$extensionValidatorName) {
-			$possibleClassName = 'Tx_Extbase_Validation_Validator_' . $this->unifyDataType($validatorName) . 'Validator';
+		if (empty($extensionValidatorName)) {
+			$possibleClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . $this->unifyDataType($validatorName) . 'Validator';
 		} else {
-			$possibleClassName = 'Tx_' . $extensionName . '_Validation_Validator_' . $extensionValidatorName . 'Validator';
+			if (strpos($extensionName, '.') !== FALSE) {
+				$extensionNameParts = explode('.', $extensionName);
+				$extensionName = array_pop($extensionNameParts);
+				$vendorName = implode('\\', $extensionNameParts);
+				$possibleClassName = $vendorName . '\\' . $extensionName . '\\Validation\\Validator\\' . $extensionValidatorName . 'Validator';
+			} else {
+				$possibleClassName = 'Tx_' . $extensionName . '_Validation_Validator_' . $extensionValidatorName . 'Validator';
+			}
 		}
 		if (class_exists($possibleClassName)) {
 			return $possibleClassName;
@@ -332,26 +340,24 @@ class ValidatorResolver implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	protected function unifyDataType($type) {
 		switch ($type) {
-		case 'int':
-			$type = 'Integer';
-			break;
-		case 'bool':
-			$type = 'Boolean';
-			break;
-		case 'double':
-			$type = 'Float';
-			break;
-		case 'numeric':
-			$type = 'Number';
-			break;
-		case 'mixed':
-			$type = 'Raw';
-			break;
+			case 'int':
+				$type = 'Integer';
+				break;
+			case 'bool':
+				$type = 'Boolean';
+				break;
+			case 'double':
+				$type = 'Float';
+				break;
+			case 'numeric':
+				$type = 'Number';
+				break;
+			case 'mixed':
+				$type = 'Raw';
+				break;
 		}
 		return ucfirst($type);
 	}
 
 }
-
-
 ?>
