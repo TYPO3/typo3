@@ -138,7 +138,7 @@ class SC_mod_help_about_index {
 
 
 	protected function renderAboutTypo3() {
-		$minorText = sprintf($GLOBALS['LANG']->getLL('minor'), 'TYPO3 Ver. ' . htmlspecialchars(TYPO3_version) . ', Copyright &copy; ' . htmlspecialchars(TYPO3_copyright_year), 'Kasper Sk&aring;rh&oslash;j');
+		$minorText = sprintf($GLOBALS['LANG']->getLL('cms_description'), htmlspecialchars(TYPO3_version),  '&copy; ' . htmlspecialchars(TYPO3_copyright_year), 'Kasper Sk&aring;rh&oslash;j');
 		$content = '
 			<img' . t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'gfx/typo3logo.gif', 'width="123" height="34"') . ' alt="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_mod_help_about.xml:typo3_logo', TRUE) . '" />
 			<div class="typo3-mod-help-about-index-php-inner">
