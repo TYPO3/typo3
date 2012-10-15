@@ -1871,6 +1871,52 @@ class GeneralUtilityTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		$this->assertEquals('', \TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl(rawurlencode($url)));
 	}
 
+	////////////////////////////////////////
+	// Tests concerning sanitizeLocalUrl
+	////////////////////////////////////////
+
+	/**
+	 * @test
+	 */
+	public function unlink_tempfileRemovesValidFileInTypo3temp() {
+		$fixtureFile = __DIR__ . '/Fixtures/clear.gif';
+		$testFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
+		@copy($fixtureFile, $testFilename);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($testFilename);
+		$fileExists = file_exists($testFilename);
+		@unlink($testFilename);
+		$this->assertFalse($fileExists);
+	}
+
+	/**
+	 * @test
+	 */
+	public function unlink_tempfileReturnsTrueIfFileWasRemoved() {
+		$fixtureFile = __DIR__ . '/Fixtures/clear.gif';
+		$testFilename = PATH_site . 'typo3temp/' . uniqid('test_') . '.gif';
+		@copy($fixtureFile, $testFilename);
+		$returnValue = \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile($testFilename);
+		@unlink($testFilename);
+		$this->assertTrue($returnValue);
+	}
+
+	/**
+	 * @test
+	 */
+	public function unlink_tempfileReturnsNullIfFileDoesNotExist() {
+		$returnValue = \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile(PATH_site . 'typo3temp/' . uniqid('i_do_not_exist'));
+		$this->assertNull($returnValue);
+	}
+
+	/**
+	 * @test
+	 */
+	public function unlink_tempfileReturnsNullIfFileIsNowWithinTypo3temp() {
+		$returnValue = \TYPO3\CMS\Core\Utility\GeneralUtility::unlink_tempfile('/tmp/typo3-unit-test-unlink_tempfile');
+		$this->assertNull($returnValue);
+	}
+
+
 	//////////////////////////////////////
 	// Tests concerning addSlashesOnArray
 	//////////////////////////////////////
