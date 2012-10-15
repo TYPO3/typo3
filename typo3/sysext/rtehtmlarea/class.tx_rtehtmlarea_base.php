@@ -128,8 +128,18 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	var $thisConfig;
 	var $confValues;
 	public $language;
+	/**
+	 * TYPO3 language code of the content language
+	 */
 	public $contentTypo3Language;
+	/**
+	 * ISO language code of the content language
+	 */
 	public $contentISOLanguage;
+	/**
+	 * Language service object for localization to the content language
+	 */
+	protected $contentLanguageService;
 	public $charset = 'utf-8';
 	public $contentCharset = 'utf-8';
 	public $OutputCharset = 'utf-8';
@@ -323,7 +333,9 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 					}
 				}
 			}
-
+			// Create content laguage service
+			$this->contentLanguageService = t3lib_div::makeInstance('language');
+			$this->contentLanguageService->init($this->contentTypo3Language);
 			/* =======================================
 			 * TOOLBAR CONFIGURATION
 			 * =======================================
@@ -1256,13 +1268,7 @@ class tx_rtehtmlarea_base extends t3lib_rteapi {
 	 * @return	string		Localized string.
 	 */
 	public function getLLContent($string) {
-		$BE_lang = $GLOBALS['LANG']->lang;
-
-		$GLOBALS['LANG']->lang = $this->contentTypo3Language;
-		$LLString = $GLOBALS['LANG']->JScharCode($GLOBALS['LANG']->sL($string));
-
-		$GLOBALS['LANG']->lang = $BE_lang;
-		return $LLString;
+		return $this->contentLanguageService->JScharCode($this->contentLanguageService->sL($string));
 	}
 
 	public function getPageConfigLabel($string,$JScharCode=1) {

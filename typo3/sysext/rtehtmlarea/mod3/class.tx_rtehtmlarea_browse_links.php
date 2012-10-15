@@ -199,8 +199,16 @@ class tx_rtehtmlarea_folderTree extends rteFolderTree {
 class tx_rtehtmlarea_browse_links extends browse_links {
 
 	var $editorNo;
-	var $contentTypo3Language;
+	/**
+	 * TYPO3 language code of the content language
+	 */
+	public $contentTypo3Language;
 	var $contentTypo3Charset = 'utf-8';
+	/**
+	 * Language service object for localization to the content language
+	 */
+	protected $contentLanguageService;
+
 	public $additionalAttributes = array();
 	public $buttonConfig = array();
 	public $RTEProperties = array();
@@ -224,6 +232,9 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	function init()	{
 
 		$this->initVariables();
+		// Create content laguage service
+		$this->contentLanguageService = t3lib_div::makeInstance('language');
+		$this->contentLanguageService->init($this->contentTypo3Language);
 		$this->initConfiguration();
 
 			// Creating backend template object:
@@ -1128,13 +1139,7 @@ class tx_rtehtmlarea_browse_links extends browse_links {
 	 * @return	string		Localized string.
 	 */
 	public function getLLContent($string) {
-		$BE_lang = $GLOBALS['LANG']->lang;
-
-		$GLOBALS['LANG']->lang = $this->contentTypo3Language;
-		$LLString = $GLOBALS['LANG']->sL($string);
-
-		$GLOBALS['LANG']->lang = $BE_lang;
-		return $LLString;
+		return $this->contentLanguageService->sL($string);
 	}
 
 	/**
