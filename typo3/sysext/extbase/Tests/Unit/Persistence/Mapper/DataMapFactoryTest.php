@@ -29,9 +29,20 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Mapper;
 class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @test
+	 * @return array
 	 */
-	public function setRelationsDetectsOneToOneRelation() {
+	public function oneToOneRelation() {
+		return array(
+			array('Tx_Myext_Domain_Model_Foo'),
+			array('TYPO3\\CMS\\Extbase\\Domain\\Model\\FrontendUser')
+		);
+	}
+
+	/**
+	 * @test
+	 * @dataProvider oneToOneRelation
+	 */
+	public function setRelationsDetectsOneToOneRelation($className) {
 		$mockColumnMap = $this->getMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\ColumnMap', array(), array(), '', FALSE);
 		$columnConfiguration = array(
 			'type' => 'select',
@@ -39,7 +50,7 @@ class DataMapFactoryTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 			'foreign_field' => 'parentid'
 		);
 		$propertyMetaData = array(
-			'type' => 'Tx_Myext_Domain_Model_Foo',
+			'type' => $className,
 			'elementType' => NULL
 		);
 		$mockDataMapFactory = $this->getAccessibleMock('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapFactory', array('setOneToOneRelation', 'setOneToManyRelation', 'setManyToManyRelation'), array(), '', FALSE);

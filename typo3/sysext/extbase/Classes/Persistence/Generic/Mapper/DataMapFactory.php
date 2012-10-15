@@ -319,7 +319,7 @@ class DataMapFactory implements \TYPO3\CMS\Core\SingletonInterface {
 				$columnMap = $this->setManyToManyRelation($columnMap, $columnConfiguration);
 			} elseif (isset($propertyMetaData['elementType'])) {
 				$columnMap = $this->setOneToManyRelation($columnMap, $columnConfiguration);
-			} elseif (isset($propertyMetaData['type']) && strpos($propertyMetaData['type'], '_') !== FALSE) {
+			} elseif (isset($propertyMetaData['type']) && strpbrk($propertyMetaData['type'], '_\\') !== FALSE) {
 				$columnMap = $this->setOneToOneRelation($columnMap, $columnConfiguration);
 			} else {
 				$columnMap->setTypeOfRelation(\TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap::RELATION_NONE);

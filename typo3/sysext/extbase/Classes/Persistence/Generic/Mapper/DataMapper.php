@@ -469,7 +469,7 @@ class DataMapper implements \TYPO3\CMS\Core\SingletonInterface {
 				} else {
 					$propertyValue = $objects;
 				}
-			} elseif (strpos($propertyMetaData['type'], '_') !== FALSE) {
+			} elseif (strpbrk($propertyMetaData['type'], '_\\') !== FALSE) {
 				if (is_object($result) && $result instanceof \TYPO3\CMS\Extbase\Persistence\QueryResultInterface) {
 					$propertyValue = $result->getFirst();
 				} else {
