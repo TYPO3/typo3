@@ -431,6 +431,20 @@ class ClassLoaderTest extends \TYPO3\CMS\Core\Tests\UnitTestCase {
 		\TYPO3\CMS\Core\Core\ClassLoader::unregisterAutoloader();
 	}
 
+	/**
+	 * @test
+	 */
+	public function compatibilityClassLoaderRewritesClassFilesCorrectly() {
+		$classLoader = $this->getAccessibleMock('TYPO3\\CMS\\Core\\Compatibility\\CompatbilityClassLoaderPhpBelow50307', array('dummy'), array(), '', FALSE);
+		$classPathOfFileToRewrite = realpath(__DIR__ . '/Fixtures/LegacyClassFixture.php');
+		$rewrittenContent = $classLoader->_call('rewriteMethodTypeHintsFromClassPath', $classPathOfFileToRewrite);
+		$originalContent = file_get_contents($classPathOfFileToRewrite);
+		$this->assertNotEquals($originalContent, $rewrittenContent);
+		$this->assertContains('public function foo(\TYPO3\CMS\Core\Utility\GeneralUtility $foo) {', $rewrittenContent);
+		$this->assertContains('abstract public function bar(\TYPO3\CMS\Core\Utility\GeneralUtility $bar);', $rewrittenContent);
+		$this->assertContains('public function nothing() {', $rewrittenContent);
+		$this->assertContains('protected function stillNothing(Tx_Core_Tests_Unit_Core_Fixtures_LegacyClassFixture $nothing) {', $rewrittenContent);
+	}
 }
 
 ?>
