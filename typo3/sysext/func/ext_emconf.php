@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "func".
 #
-# Auto generated 10-10-2011 14:47
+# Auto generated 16-10-2012 14:18
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
