@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "tstemplate_analyzer".
 #
-# Auto generated 25-10-2011 13:11
+# Auto generated 16-10-2012 14:20
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next

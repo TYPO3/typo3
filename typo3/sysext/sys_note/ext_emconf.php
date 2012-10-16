@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "sys_note".
 #
-# Auto generated 25-10-2011 13:11
+# Auto generated 16-10-2012 14:19
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next

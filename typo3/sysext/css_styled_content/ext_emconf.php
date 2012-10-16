@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "css_styled_content".
 #
-# Auto generated 25-10-2011 13:10
+# Auto generated 16-10-2012 14:17
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
 	'version' => '1.1.0',
-	'_md5_values_when_last_written' => 'a:31:{s:21:"ext_conf_template.txt";s:4:"75d9";s:12:"ext_icon.gif";s:4:"1845";s:17:"ext_localconf.php";s:4:"ada5";s:14:"ext_tables.php";s:4:"e4a0";s:15:"flexform_ds.xml";s:4:"22b2";s:16:"locallang_db.xlf";s:4:"a4f1";s:16:"pageTSconfig.txt";s:4:"2520";s:15:"css/example.css";s:4:"86e7";s:24:"css/example_outlines.css";s:4:"85b2";s:14:"css/readme.txt";s:4:"ee9d";s:31:"css/img/background_gradient.gif";s:4:"7681";s:28:"css/img/red_arrow_bullet.gif";s:4:"82d6";s:12:"doc/TODO.txt";s:4:"6534";s:14:"doc/manual.sxw";s:4:"68ac";s:37:"pi1/class.tx_cssstyledcontent_pi1.php";s:4:"b09a";s:17:"pi1/locallang.xlf";s:4:"2a96";s:20:"static/constants.txt";s:4:"16bb";s:20:"static/editorcfg.txt";s:4:"f961";s:16:"static/setup.txt";s:4:"dc0d";s:25:"static/v3.8/constants.txt";s:4:"ce02";s:21:"static/v3.8/setup.txt";s:4:"1068";s:25:"static/v3.9/constants.txt";s:4:"c519";s:21:"static/v3.9/setup.txt";s:4:"7661";s:25:"static/v4.2/constants.txt";s:4:"1a6e";s:21:"static/v4.2/setup.txt";s:4:"3118";s:25:"static/v4.3/constants.txt";s:4:"3945";s:21:"static/v4.3/setup.txt";s:4:"7556";s:25:"static/v4.4/constants.txt";s:4:"be03";s:21:"static/v4.4/setup.txt";s:4:"2a99";s:25:"static/v4.5/constants.txt";s:4:"be03";s:21:"static/v4.5/setup.txt";s:4:"6d58";}',
+	'_md5_values_when_last_written' => 'a:31:{s:21:"ext_conf_template.txt";s:4:"75d9";s:12:"ext_icon.gif";s:4:"1845";s:17:"ext_localconf.php";s:4:"ada5";s:14:"ext_tables.php";s:4:"e4a0";s:15:"flexform_ds.xml";s:4:"22b2";s:16:"locallang_db.xlf";s:4:"a4f1";s:16:"pageTSconfig.txt";s:4:"2520";s:15:"css/example.css";s:4:"86e7";s:24:"css/example_outlines.css";s:4:"85b2";s:14:"css/readme.txt";s:4:"ee9d";s:31:"css/img/background_gradient.gif";s:4:"7681";s:28:"css/img/red_arrow_bullet.gif";s:4:"82d6";s:14:"doc/manual.sxw";s:4:"68ac";s:12:"doc/TODO.txt";s:4:"6534";s:37:"pi1/class.tx_cssstyledcontent_pi1.php";s:4:"b512";s:17:"pi1/locallang.xlf";s:4:"2a96";s:20:"static/constants.txt";s:4:"c207";s:20:"static/editorcfg.txt";s:4:"f961";s:16:"static/setup.txt";s:4:"db68";s:25:"static/v3.8/constants.txt";s:4:"ce02";s:21:"static/v3.8/setup.txt";s:4:"cbea";s:25:"static/v3.9/constants.txt";s:4:"c519";s:21:"static/v3.9/setup.txt";s:4:"e461";s:25:"static/v4.2/constants.txt";s:4:"1a6e";s:21:"static/v4.2/setup.txt";s:4:"7d4e";s:25:"static/v4.3/constants.txt";s:4:"3945";s:21:"static/v4.3/setup.txt";s:4:"0418";s:25:"static/v4.4/constants.txt";s:4:"be03";s:21:"static/v4.4/setup.txt";s:4:"7278";s:25:"static/v4.5/constants.txt";s:4:"e622";s:21:"static/v4.5/setup.txt";s:4:"013d";}',
 	'constraints' => array(
 		'depends' => array(
 			'cms' => '',

@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "extra_page_cm_options".
 #
-# Auto generated 25-10-2011 13:10
+# Auto generated 16-10-2012 14:18
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
