@@ -1,5 +1,6 @@
 <?php
 namespace TYPO3\CMS\Workspaces\Controller;
+use TYPO3\CMS\Core\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -146,18 +147,18 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		$this->pageRenderer->addJsFile($resourcePath . 'typo3lang.js');
 		$this->pageRenderer->addJsInlineCode('workspaces.preview.lll', '
 		TYPO3.lang = {
-			visualPreview: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.visualPreview', TRUE) . '\',
-			listView: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.listView', TRUE) . '\',
-			livePreview: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreview', TRUE) . '\',
-			livePreviewDetail: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreviewDetail', TRUE) . '\',
-			workspacePreview: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreview', TRUE) . '\',
-			workspacePreviewDetail: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreviewDetail', TRUE) . '\',
-			modeSlider: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeSlider', TRUE) . '\',
-			modeVbox: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeVbox', TRUE) . '\',
-			modeHbox: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeHbox', TRUE) . '\',
-			discard: \'' . $GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:label_doaction_discard', TRUE) . '\',
-			nextStage: \'' . $nextStage['title'] . '\',
-			previousStage: \'' . $previousStage['title'] . '\'
+			visualPreview: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.visualPreview', TRUE)) . ',
+			listView: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.listView', TRUE)) . ',
+			livePreview: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreview', TRUE)) . ',
+			livePreviewDetail: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.livePreviewDetail', TRUE)) . ',
+			workspacePreview: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreview', TRUE)) . ',
+			workspacePreviewDetail: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.workspacePreviewDetail', TRUE)) . ',
+			modeSlider: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeSlider', TRUE)) . ',
+			modeVbox: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeVbox', TRUE)) . ',
+			modeHbox: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:preview.modeHbox', TRUE)) . ',
+			discard: ' . Utility\GeneralUtility::quoteJSvalue($GLOBALS['LANG']->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xml:label_doaction_discard', TRUE)) . ',
+			nextStage: ' . Utility\GeneralUtility::quoteJSvalue($nextStage['title']) . ',
+			previousStage: ' . Utility\GeneralUtility::quoteJSvalue($previousStage['title']) . '
 		};TYPO3.l10n.initialize();
 ');
 		$resourcePath = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('workspaces') . 'Resources/Public/';
