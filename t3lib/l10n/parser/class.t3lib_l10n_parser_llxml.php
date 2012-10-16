@@ -86,7 +86,11 @@ class t3lib_l10n_parser_Llxml extends t3lib_l10n_parser_AbstractXml {
 			// Check if the source llxml file contains localized records
 		$localizedBodyOfFileTag = $root->data->xpath("languageKey[@index='" . $this->languageKey . "']");
 
-		$parsedData = $this->getParsedDataForElement($bodyOfFileTag, $element);
+		if ($element === 'source' || $this->languageKey === 'default') {
+			$parsedData = $this->getParsedDataForElement($bodyOfFileTag, $element);
+		} else {
+			$parsedData = array();
+		}
 		if ($element === 'target' && isset($localizedBodyOfFileTag[0]) && $localizedBodyOfFileTag[0] instanceof SimpleXMLElement) {
 			$parsedDataTarget = $this->getParsedDataForElement($localizedBodyOfFileTag[0], $element);
 			$mergedData = array_merge($parsedData, $parsedDataTarget);
