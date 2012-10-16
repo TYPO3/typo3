@@ -92,9 +92,15 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 	 * @return void
 	 */
 	public function indexAction($previewWS = NULL) {
-		// @todo language doesn't always come throught the L parameter
-		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
-		$language = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('L'));
+			// Get all the GET parameters to pass them on to the frames
+		$queryParameters = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET();
+			// Remove the GET parameters related to the workspaces module and the page id
+		unset($queryParameters['tx_workspaces_web_workspacesworkspaces']);
+		unset($queryParameters['M']);
+		unset($queryParameters['id']);
+			// Assemble a query string from the retrieved parameters
+		$queryString = \TYPO3\CMS\Core\Utility\GeneralUtility::implodeArrayForUrl('', $queryParameters);
+
 		// fetch the next and previous stage
 		$workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), ($filter = 1), ($stage = -99), $this->pageId, ($recursionLevel = 0), ($selectionType = 'tables_modify'));
 		list(, $nextStage) = $this->stageService->getNextStageForElementCollection($workspaceItemsArray);
@@ -117,7 +123,7 @@ class PreviewController extends \TYPO3\CMS\Workspaces\Controller\AbstractControl
 		$wsSettingsParams = '&tx_workspaces_web_workspacesworkspaces[controller]=Review';
 		$wsSettingsUrl = $wsSettingsPath . $wsSettingsUri . $wsSettingsParams;
 		$viewDomain = \TYPO3\CMS\Backend\Utility\BackendUtility::getViewDomain($this->pageId);
-		$wsBaseUrl = $viewDomain . '/index.php?id=' . $this->pageId . '&L=' . $language;
+		$wsBaseUrl = $viewDomain . '/index.php?id=' . $this->pageId . $queryString;
 		// @todo - handle new pages here
 		// branchpoints are not handled anymore because this feature is not supposed anymore
 		if (\TYPO3\CMS\Workspaces\Service\WorkspaceService::isNewPage($this->pageId)) {
