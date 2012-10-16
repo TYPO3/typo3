@@ -47,7 +47,7 @@ class tx_saltedpasswords_evalTest extends tx_phpunit_testcase {
 	protected $fixture;
 
 	public function setUp() {
-		$this->fixture = $this->getMock('tx_saltedpasswords_eval', array('dummy'));
+		$this->fixture = new tx_saltedpasswords_eval();
 		unset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['saltedpasswords']);
 	}
 
@@ -86,6 +86,5 @@ class tx_saltedpasswords_evalTest extends tx_phpunit_testcase {
 		$this->assertSame($originalPassword, $saltedPassword);
 	}
 }
-
 
 ?>
