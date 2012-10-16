@@ -50,6 +50,13 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 	protected $nodeCounter = 0;
 
 	/**
+	 * TRUE to show the path of each mountpoint in the tree
+	 *
+	 * @var bool
+	 */
+	protected $showRootlineAboveMounts = FALSE;
+
+	/**
 	 * Hidden Records
 	 *
 	 * @var array<string>
@@ -73,6 +80,9 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 			$nodeLimit = $GLOBALS['TYPO3_CONF_VARS']['BE']['pageTree']['preloadLimit'];
 		}
 		$this->nodeLimit = abs(intval($nodeLimit));
+
+		$this->showRootlineAboveMounts = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPathAboveMounts');
+
 		$this->hiddenRecords = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $GLOBALS['BE_USER']->getTSConfigVal('options.hideRecords.pages'));
 		$hookElements = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/tree/pagetree/class.t3lib_tree_pagetree_dataprovider.php']['postProcessCollections'];
 		if (is_array($hookElements)) {
@@ -148,6 +158,10 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 				}
 				$subNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNewNode($subpage, $mountPoint);
 				$subNode->setIsMountPoint($isMountPoint);
+				if ($isMountPoint && $this->showRootlineAboveMounts) {
+					$rootline = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getMountPointPath($subpage['uid']);
+					$subNode->setReadableRootline($rootline);
+				}
 				if ($this->nodeCounter < $this->nodeLimit) {
 					$childNodes = $this->getNodes($subNode, $mountPoint, $level + 1);
 					$subNode->setChildNodes($childNodes);
@@ -314,7 +328,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 		if (!count($mountPoints)) {
 			return $nodeCollection;
 		}
-		$showRootlineAboveMounts = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPathAboveMounts');
+
 		foreach ($mountPoints as $mountPoint) {
 			if ($mountPoint === 0) {
 				$sitename = 'TYPO3';
@@ -343,7 +357,7 @@ class DataProvider extends \TYPO3\CMS\Backend\Tree\AbstractTreeDataProvider {
 					continue;
 				}
 				$subNode = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getNewNode($record, $mountPoint);
-				if ($showRootlineAboveMounts && !$isTemporaryMountPoint) {
+				if ($this->showRootlineAboveMounts && !$isTemporaryMountPoint) {
 					$rootline = \TYPO3\CMS\Backend\Tree\Pagetree\Commands::getMountPointPath($record['uid']);
 					$subNode->setReadableRootline($rootline);
 				}
