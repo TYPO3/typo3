@@ -124,13 +124,13 @@ class t3lib_l10n_parser_llxmlTest extends tx_phpunit_testcase {
 	/**
 	 * @test
 	 */
-	public function canParseLlxmlInFrenchAndReturnsDefaultLabelsIfNoTranslationIsFound() {
+	public function canParseLlxmlInFrenchAndReturnsNullLabelsIfNoTranslationIsFound() {
 		$LOCAL_LANG = $this->parser->getParsedData($this->llxmlFileNames['locallangOnlyDefaultLanguage'], 'fr');
 
 		$expectedLabels = array(
-			'label1' => 'This is label #1',
-			'label2' => 'This is label #2',
-			'label3' => 'This is label #3',
+			'label1' => NULL,
+			'label2' => NULL,
+			'label3' => NULL,
 		);
 
 		foreach ($expectedLabels as $key => $expectedLabel) {
