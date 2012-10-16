@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "tstemplate_analyzer".
 #
-# Auto generated 04-07-2012 10:30
+# Auto generated 16-10-2012 14:08
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -33,7 +33,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => 'Curby Soft Multimedia',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'version' => '4.7.4',
+	'version' => '4.7.5',
 	'_md5_values_when_last_written' => 'a:5:{s:9:"ChangeLog";s:4:"b76f";s:31:"class.tx_tstemplateanalyzer.php";s:4:"c072";s:12:"ext_icon.gif";s:4:"5630";s:14:"ext_tables.php";s:4:"6463";s:13:"locallang.xlf";s:4:"a3a5";}',
 	'constraints' => array(
 		'depends' => array(
