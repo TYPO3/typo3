@@ -1,0 +1,3 @@
+## TS setup for accessibility icons feature
+
+lib.parseFunc_RTE.tags.link.postUserFunc = tx_rtehtmlarea_pi4->removeAccessibilityIcon
