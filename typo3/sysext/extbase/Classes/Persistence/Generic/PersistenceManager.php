@@ -164,7 +164,10 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 			$removedObjects->addAll($repository->getRemovedObjects());
 		}
 		foreach ($this->session->getReconstitutedObjects() as $reconstitutedObject) {
-			if (class_exists(str_replace('_Model_', '_Repository_', get_class($reconstitutedObject)) . 'Repository')) {
+			$className = get_class($reconstitutedObject);
+			$delimiter = strpos($className, '_') !== FALSE ? '_' : '\\';
+			$possibleRepositoryClassName = str_replace($delimiter . 'Model' . $delimiter, $delimiter . 'Repository' . $delimiter, $className) . 'Repository';
+			if (class_exists($possibleRepositoryClassName)) {
 				$aggregateRootObjects->attach($reconstitutedObject);
 			}
 		}
@@ -306,6 +309,4 @@ class PersistenceManager implements \TYPO3\CMS\Extbase\Persistence\PersistenceMa
 		throw new \TYPO3\CMS\Extbase\Persistence\Generic\Exception\NotImplementedException(__METHOD__);
 	}
 }
-
-
 ?>
