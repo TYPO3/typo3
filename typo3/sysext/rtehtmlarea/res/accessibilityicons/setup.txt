@@ -1,0 +1,3 @@
+## TS setup for accessibility icons feature
+
+lib.parseFunc_RTE.tags.link.postUserFunc = TYPO3\CMS\Rtehtmlarea\Controller\AccessibilityLinkController->removeAccessibilityIcon
