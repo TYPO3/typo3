@@ -48,6 +48,13 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 	protected $nodeCounter = 0;
 
 	/**
+	 * TRUE to show the path of each mountpoint in the tree
+	 *
+	 * @var bool
+	 */
+	protected $showRootlineAboveMounts = FALSE;
+
+	/**
 	 * Hidden Records
 	 *
 	 * @var array
@@ -71,6 +78,8 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 			$nodeLimit = $GLOBALS['TYPO3_CONF_VARS']['BE']['pageTree']['preloadLimit'];
 		}
 		$this->nodeLimit = abs(intval($nodeLimit));
+
+		$this->showRootlineAboveMounts = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPathAboveMounts');
 
 		$this->hiddenRecords = t3lib_div::trimExplode(
 			',',
@@ -160,6 +169,10 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 
 				$subNode = t3lib_tree_pagetree_Commands::getNewNode($subpage, $mountPoint);
 				$subNode->setIsMountPoint($isMountPoint);
+				if ($isMountPoint && $this->showRootlineAboveMounts) {
+					$rootline = t3lib_tree_pagetree_Commands::getMountPointPath($subpage['uid']);
+					$subNode->setReadableRootline($rootline);
+				}
 				if ($this->nodeCounter < $this->nodeLimit) {
 					$childNodes = $this->getNodes($subNode, $mountPoint, $level + 1);
 					$subNode->setChildNodes($childNodes);
@@ -358,7 +371,6 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 			return $nodeCollection;
 		}
 
-		$showRootlineAboveMounts = $GLOBALS['BE_USER']->getTSConfigVal('options.pageTree.showPathAboveMounts');
 		foreach ($mountPoints as $mountPoint) {
 			if ($mountPoint === 0) {
 				$sitename = 'TYPO3';
@@ -390,7 +402,7 @@ class t3lib_tree_pagetree_DataProvider extends t3lib_tree_AbstractDataProvider {
 				}
 
 				$subNode = t3lib_tree_pagetree_Commands::getNewNode($record, $mountPoint);
-				if ($showRootlineAboveMounts && !$isTemporaryMountPoint) {
+				if ($this->showRootlineAboveMounts && !$isTemporaryMountPoint) {
 					$rootline = t3lib_tree_pagetree_Commands::getMountPointPath($record['uid']);
 					$subNode->setReadableRootline($rootline);
 				}
