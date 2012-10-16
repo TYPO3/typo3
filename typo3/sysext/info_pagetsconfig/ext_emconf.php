@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "info_pagetsconfig".
 #
-# Auto generated 26-01-2011 20:08
+# Auto generated 16-10-2012 14:52
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
