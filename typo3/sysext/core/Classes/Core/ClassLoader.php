@@ -143,6 +143,8 @@ class ClassLoader {
 	static public function autoload($className) {
 		$className = ltrim($className, '\\');
 		$realClassName = static::getClassNameForAlias($className);
+		$aliasClassName = static::getAliasForClassName($className);
+		$hasAliasClassName = ($aliasClassName !== $className);
 		$lookUpClassName = ($hasRealClassName = $className !== $realClassName) ? $realClassName : $className;
 		// Use core and extension registry
 		$classPath = static::getClassPathByRegistryLookup($lookUpClassName);
@@ -161,6 +163,9 @@ class ClassLoader {
 		}
 		if ($hasRealClassName && !class_exists($className, FALSE)) {
 			class_alias($realClassName, $className);
+		}
+		if ($hasAliasClassName && !class_exists($aliasClassName, FALSE)) {
+			class_alias($className, $aliasClassName);
 		}
 	}
 
