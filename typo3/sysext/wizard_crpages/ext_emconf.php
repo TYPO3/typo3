@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "wizard_crpages".
 #
-# Auto generated 26-01-2011 20:08
+# Auto generated 16-10-2012 14:54
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
