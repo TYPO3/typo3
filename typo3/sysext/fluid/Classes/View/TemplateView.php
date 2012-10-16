@@ -436,7 +436,16 @@ class TemplateView extends \TYPO3\CMS\Fluid\View\AbstractTemplateView {
 		$pattern = str_replace('@layoutRoot', $this->getLayoutRootPath(), $pattern);
 		$subpackageKey = $this->controllerContext->getRequest()->getControllerSubpackageKey();
 		$controllerName = $this->controllerContext->getRequest()->getControllerName();
-		$subpackageParts = $subpackageKey !== NULL ? explode(\TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR, $subpackageKey) : array();
+		if ($subpackageKey !== NULL) {
+			if (strpos($subpackageKey, \TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR) !== FALSE) {
+				$namespaceSeparator = \TYPO3\CMS\Fluid\Fluid::NAMESPACE_SEPARATOR;
+			} else {
+				$namespaceSeparator = \TYPO3\CMS\Fluid\Fluid::LEGACY_NAMESPACE_SEPARATOR;
+			}
+			$subpackageParts = explode($namespaceSeparator, $subpackageKey);
+		} else {
+			$subpackageParts = array();
+		}
 		$results = array();
 		$i = $controllerName === NULL ? 0 : -1;
 		do {
