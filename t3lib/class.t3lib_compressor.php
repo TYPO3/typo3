@@ -506,7 +506,7 @@ class t3lib_Compressor {
 		}
 
 			// if the file is from a special TYPO3 internal directory, add the missing typo3/ prefix
-		if (is_file(PATH_site . TYPO3_mainDir . $filename)) {
+		if (is_file(realpath(PATH_site . TYPO3_mainDir . $filename))) {
 			$filename = TYPO3_mainDir . $filename;
 		}
 
