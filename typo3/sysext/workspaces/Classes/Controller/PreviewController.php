@@ -104,9 +104,14 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 	 * @return void
 	 */
 	public function indexAction($previewWS = NULL) {
-		// @todo language doesn't always come throught the L parameter
-		// @todo Evaluate how the intval() call can be used with Extbase validators/filters
-		$language = intval(t3lib_div::_GP('L'));
+			// Get all the GET parameters to pass them on to the frames
+		$queryParameters = t3lib_div::_GET();
+			// Remove the GET parameters related to the workspaces module and the page id
+		unset($queryParameters['tx_workspaces_web_workspacesworkspaces']);
+		unset($queryParameters['M']);
+		unset($queryParameters['id']);
+			// Assemble a query string from the retrieved parameters
+		$queryString = t3lib_div::implodeArrayForUrl('', $queryParameters);
 
 			// fetch the next and previous stage
 		$workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($this->stageService->getWorkspaceId(), $filter = 1, $stage = -99, $this->pageId, $recursionLevel = 0, $selectionType = 'tables_modify');
@@ -135,7 +140,7 @@ class Tx_Workspaces_Controller_PreviewController extends Tx_Workspaces_Controlle
 		$wsSettingsUrl = $wsSettingsPath . $wsSettingsUri . $wsSettingsParams;
 
 		$viewDomain = t3lib_BEfunc::getViewDomain($this->pageId);
-		$wsBaseUrl =  $viewDomain . '/index.php?id=' . $this->pageId . '&L=' . $language;
+		$wsBaseUrl =  $viewDomain . '/index.php?id=' . $this->pageId . $queryString;
 
 		// @todo - handle new pages here
 		// branchpoints are not handled anymore because this feature is not supposed anymore
