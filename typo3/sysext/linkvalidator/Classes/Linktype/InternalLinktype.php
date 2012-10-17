@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Linkvalidator\Linktype;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstract {
+class InternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 
 	const DELETED = 'deleted';
 	const HIDDEN = 'hidden';
@@ -62,7 +64,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 *
 	 * @param string $url Url to check as page-id or page-id#anchor (if anchor is present)
 	 * @param array $softRefEntry: The soft reference entry which builds the context of that url
-	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
+	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
@@ -101,7 +103,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 *
 	 * @param string $page Page uid to check
 	 * @param array $softRefEntry The soft reference entry which builds the context of that url
-	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
+	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
 	protected function checkPage($page, $softRefEntry, $reference) {
@@ -133,7 +135,7 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 * @param string $page Uid of the page to which the link is pointing
 	 * @param string $anchor Uid of the content element to check
 	 * @param array $softRefEntry The soft reference entry which builds the context of that url
-	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
+	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
 	protected function checkContent($page, $anchor, $softRefEntry, $reference) {
@@ -244,12 +246,12 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	 * @return string Parsed broken url
 	 */
 	public function getBrokenUrl($row) {
-		$domain = rtrim(t3lib_div::getIndpEnv('TYPO3_SITE_URL'), '/');
-		$rootLine = t3lib_BEfunc::BEgetRootLine($row['record_pid']);
+		$domain = rtrim(\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'), '/');
+		$rootLine = \TYPO3\CMS\Backend\Utility\BackendUtility::BEgetRootLine($row['record_pid']);
 		// checks alternate domains
 		if (count($rootLine) > 0) {
-			$protocol = t3lib_div::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
-			$domainRecord = t3lib_BEfunc::firstDomainRecord($rootLine);
+			$protocol = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL') ? 'https://' : 'http://';
+			$domainRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::firstDomainRecord($rootLine);
 			if (!empty($domainRecord)) {
 				$domain = $protocol . $domainRecord;
 			}
@@ -258,5 +260,6 @@ class tx_linkvalidator_linktype_Internal extends tx_linkvalidator_linktype_Abstr
 	}
 
 }
+
 
 ?>

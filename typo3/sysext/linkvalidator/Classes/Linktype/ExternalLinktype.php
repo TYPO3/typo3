@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Linkvalidator\Linktype;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstract {
+class ExternalLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 
 	/**
 	 * Cached list of the URLs, which were already checked for the current processing
@@ -59,7 +61,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	 *
 	 * @param string $url The URL to check
 	 * @param array $softRefEntry The soft reference entry which builds the context of that URL
-	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
+	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
@@ -78,7 +80,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 			'strict_redirects' => TRUE
 		);
 		/** @var t3lib_http_Request|HTTP_Request2 $request */
-		$request = t3lib_div::makeInstance('t3lib_http_Request', $url, 'HEAD', $config);
+		$request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Http\\HttpRequest', $url, 'HEAD', $config);
 		// Observe cookies
 		$request->setCookieJar(TRUE);
 		try {
@@ -91,7 +93,7 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 				/** @var HTTP_Request2_Response $response */
 				$response = $request->send();
 			}
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			$isValidUrl = FALSE;
 			// A redirect loop occurred
 			if ($e->getCode() === 40) {
@@ -170,5 +172,6 @@ class tx_linkvalidator_linktype_External extends tx_linkvalidator_linktype_Abstr
 	}
 
 }
+
 
 ?>

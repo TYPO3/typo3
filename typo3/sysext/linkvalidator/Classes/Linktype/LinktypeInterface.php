@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Linkvalidator\Linktype;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,14 +30,14 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-interface tx_linkvalidator_linktype_Interface
+interface LinktypeInterface
 {
 	/**
 	 * Checks a given link for validity
 	 *
 	 * @param string $url Url to check
 	 * @param array $softRefEntry The soft reference entry which builds the context of that url
-	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
+	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance of tx_linkvalidator_Processor
 	 * @return string Validation error message or success code
 	 */
 	public function checkLink($url, $softRefEntry, $reference);
@@ -74,4 +76,5 @@ interface tx_linkvalidator_linktype_Interface
 	public function getErrorMessage($errorParams);
 
 }
+
 ?>

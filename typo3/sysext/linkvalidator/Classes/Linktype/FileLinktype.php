@@ -1,7 +1,10 @@
 <?php
+namespace TYPO3\CMS\Linkvalidator\Linktype;
+
 /***************************************************************
  *  Copyright notice
  *
+ *  (c) 2005 - 2010 Jochen Rieger (j.rieger@connecta.ag)
  *  (c) 2010 - 2011 Michael Miousse (michael.miousse@infoglobe.ca)
  *  All rights reserved
  *
@@ -22,53 +25,39 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 /**
- * This class provides Check Base plugin implementation
+ * This class provides Check File Links plugin implementation
  *
+ * @author Dimitri König <dk@cabag.ch>
  * @author Michael Miousse <michael.miousse@infoglobe.ca>
  * @package TYPO3
  * @subpackage linkvalidator
  */
-abstract class tx_linkvalidator_linktype_Abstract implements tx_linkvalidator_linktype_Interface {
+class FileLinktype extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 
 	/**
-	 * Contains parameters needed for the rendering of the error message
+	 * Checks a given URL + /path/filename.ext for validity
 	 *
-	 * @var array
+	 * @param string $url Url to check
+	 * @param array $softRefEntry The soft reference entry which builds the context of that url
+	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance of tx_linkvalidator_Processor
+	 * @return boolean TRUE on success or FALSE on error
 	 */
-	protected $errorParams = array();
-
-	/**
-	 * Base type fetching method, based on the type that softRefParserObj returns
-	 *
-	 * @param array $value Reference properties
-	 * @param string $type Current type
-	 * @param string $key Validator hook name
-	 * @return string Fetched type
-	 */
-	public function fetchType($value, $type, $key) {
-		if ($value['type'] == $key) {
-			$type = $value['type'];
+	public function checkLink($url, $softRefEntry, $reference) {
+		if (!@file_exists((PATH_site . rawurldecode($url)))) {
+			return FALSE;
 		}
-		return $type;
+		return TRUE;
 	}
 
 	/**
-	 * Set the value of the protected property errorParams
+	 * Generate the localized error message from the error params saved from the parsing
 	 *
-	 * @param array $value All parameters needed for the rendering of the error message
-	 * @return void
+	 * @param array $errorParams All parameters needed for the rendering of the error message
+	 * @return string Validation error message
 	 */
-	protected function setErrorParams($value) {
-		$this->errorParams = $value;
-	}
-
-	/**
-	 * Get the value of the private property errorParams
-	 *
-	 * @return array All parameters needed for the rendering of the error message
-	 */
-	public function getErrorParams() {
-		return $this->errorParams;
+	public function getErrorMessage($errorParams) {
+		$response = $GLOBALS['LANG']->getLL('list.report.filenotexisting');
+		return $response;
 	}
 
 	/**
@@ -78,9 +67,11 @@ abstract class tx_linkvalidator_linktype_Abstract implements tx_linkvalidator_li
 	 * @return string Parsed broken url
 	 */
 	public function getBrokenUrl($row) {
-		return $row['url'];
+		$brokenUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . $row['url'];
+		return $brokenUrl;
 	}
 
 }
+
 
 ?>

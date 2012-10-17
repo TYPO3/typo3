@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Linkvalidator\Report;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,10 +32,10 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
+class LinkValidatorReport extends \TYPO3\CMS\Backend\Module\AbstractFunctionModule {
 
 	/**
-	 * @var template
+	 * @var \TYPO3\CMS\Backend\Template\DocumentTemplate
 	 */
 	public $doc;
 
@@ -66,7 +68,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	/**
 	 * Link validation class
 	 *
-	 * @var tx_linkvalidator_Processor
+	 * @var \TYPO3\CMS\Linkvalidator\LinkAnalyzer
 	 */
 	protected $processor;
 
@@ -156,17 +158,17 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 */
 	public function main() {
 		$GLOBALS['LANG']->includeLLFile('EXT:linkvalidator/modfuncreport/locallang.xml');
-		$this->searchLevel = t3lib_div::_GP('search_levels');
+		$this->searchLevel = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('search_levels');
 		if (isset($this->pObj->id)) {
-			$this->modTS = t3lib_BEfunc::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
+			$this->modTS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig($this->pObj->id, 'mod.linkvalidator');
 			$this->modTS = $this->modTS['properties'];
 		}
-		$update = t3lib_div::_GP('updateLinkList');
+		$update = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('updateLinkList');
 		$prefix = '';
 		if (!empty($update)) {
 			$prefix = 'check';
 		}
-		$set = t3lib_div::_GP($prefix . 'SET');
+		$set = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP($prefix . 'SET');
 		$this->pObj->handleExternalFunctionValue();
 		if (isset($this->searchLevel)) {
 			$this->pObj->MOD_SETTINGS['searchlevel'] = $this->searchLevel;
@@ -192,10 +194,10 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		$GLOBALS['BE_USER']->pushModuleData('web_info', $this->pObj->MOD_SETTINGS);
 		$this->initialize();
 		// Setting up the context sensitive menu
-		$this->resPath = ($this->doc->backPath . t3lib_extMgm::extRelPath('linkvalidator')) . 'res/';
+		$this->resPath = ($this->doc->backPath . \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('linkvalidator')) . 'res/';
 		$this->pageRenderer = $this->doc->getPageRenderer();
 		// Localization
-		$this->pageRenderer->addInlineLanguageLabelFile(t3lib_extMgm::extPath('linkvalidator', 'modfuncreport/locallang.xml'));
+		$this->pageRenderer->addInlineLanguageLabelFile(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('linkvalidator', 'modfuncreport/locallang.xml'));
 		$this->pageRenderer->addJsInlineCode('linkvalidator', 'function toggleActionButton(prefix) {
 			var buttonDisable = true;
 			Ext.select(\'.\' + prefix ,false).each(function(checkBox,i){
@@ -220,7 +222,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			$this->updateListHtml = ('<input type="submit" name="updateLinkList" id="updateLinkList" value="' . $GLOBALS['LANG']->getLL('label_update')) . '"/>';
 		}
 		$this->refreshListHtml = ('<input type="submit" name="refreshLinkList" id="refreshLinkList"  value="' . $GLOBALS['LANG']->getLL('label_refresh')) . '"/>';
-		$this->processor = t3lib_div::makeInstance('tx_linkvalidator_Processor');
+		$this->processor = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Linkvalidator\\LinkAnalyzer');
 		$this->updateBrokenLinks();
 		$brokenLinkOverView = $this->processor->getLinkCounts($this->pObj->id);
 		$this->checkOptHtml = $this->getCheckOptions($brokenLinkOverView);
@@ -288,14 +290,14 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	protected function initialize() {
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $linkType => $classRef) {
-				$this->hookObjectsArr[$linkType] = t3lib_div::getUserObj($classRef);
+				$this->hookObjectsArr[$linkType] = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
 			}
 		}
-		$this->doc = t3lib_div::makeInstance('template');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
-		$this->doc->setModuleTemplate(t3lib_extMgm::extPath('linkvalidator') . 'modfuncreport/mod_template.html');
-		$this->relativePath = t3lib_extMgm::extRelPath('linkvalidator');
-		$this->pageRecord = t3lib_BEfunc::readPageAccess($this->pObj->id, $GLOBALS['BE_USER']->getPagePermsClause(1));
+		$this->doc->setModuleTemplate(\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('linkvalidator') . 'modfuncreport/mod_template.html');
+		$this->relativePath = \TYPO3\CMS\Core\Extension\ExtensionManager::extRelPath('linkvalidator');
+		$this->pageRecord = \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess($this->pObj->id, $GLOBALS['BE_USER']->getPagePermsClause(1));
 		$this->isAccessibleForCurrentUser = FALSE;
 		if ($this->pObj->id && is_array($this->pageRecord) || !$this->pObj->id && $this->isCurrentUserAdmin()) {
 			$this->isAccessibleForCurrentUser = TRUE;
@@ -316,7 +318,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		$searchFields = array();
 		// Get the searchFields from TypoScript
 		foreach ($this->modTS['searchFields.'] as $table => $fieldList) {
-			$fields = t3lib_div::trimExplode(',', $fieldList);
+			$fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $fieldList);
 			foreach ($fields as $field) {
 				if ((!$searchFields || !is_array($searchFields[$table])) || array_search($field, $searchFields[$table]) == FALSE) {
 					$searchFields[$table][] = $field;
@@ -332,7 +334,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			}
 			$this->processor->init($searchFields, $pageList);
 			// Check if button press
-			$update = t3lib_div::_GP('updateLinkList');
+			$update = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('updateLinkList');
 			if (!empty($update)) {
 				$this->processor->getLinkStatistics($this->checkOpt, $this->modTS['checkhidden']);
 			}
@@ -349,8 +351,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			$this->content = $this->renderBrokenLinksTable();
 		} else {
 			// If no access or if ID == zero
-			/** @var t3lib_FlashMessage $message */
-			$message = t3lib_div::makeInstance('t3lib_FlashMessage', $GLOBALS['LANG']->getLL('no.access'), $GLOBALS['LANG']->getLL('no.access.title'), t3lib_FlashMessage::ERROR);
+			/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
+			$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('no.access'), $GLOBALS['LANG']->getLL('no.access.title'), \TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			$this->content .= $message->render();
 		}
 	}
@@ -396,7 +398,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	protected function renderBrokenLinksTable() {
 		$items = ($brokenLinksMarker = array());
 		$brokenLinkItems = '';
-		$brokenLinksTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###NOBROKENLINKS_CONTENT###');
+		$brokenLinksTemplate = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->doc->moduleTemplate, '###NOBROKENLINKS_CONTENT###');
 		$keyOpt = array();
 		if (is_array($this->checkOpt)) {
 			$keyOpt = array_keys($this->checkOpt);
@@ -409,8 +411,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 			if ($res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_linkvalidator_link', ((('record_pid in (' . $pageList) . ') and link_type in (\'') . implode('\',\'', $keyOpt)) . '\')', '', 'record_uid ASC, uid ASC')) {
 				// Display table with broken links
 				if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) > 0) {
-					$brokenLinksTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_CONTENT###');
-					$brokenLinksItemTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_ITEM###');
+					$brokenLinksTemplate = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_CONTENT###');
+					$brokenLinksItemTemplate = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->doc->moduleTemplate, '###BROKENLINKS_ITEM###');
 					// Table header
 					$brokenLinksMarker = $this->startTable();
 					// Table rows containing the broken links
@@ -425,8 +427,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		} else {
 			$brokenLinksMarker = $this->getNoBrokenLinkMessage($brokenLinksMarker);
 		}
-		$brokenLinksTemplate = t3lib_parsehtml::substituteMarkerArray($brokenLinksTemplate, $brokenLinksMarker, '###|###', TRUE);
-		$content = t3lib_parsehtml::substituteSubpart($brokenLinksTemplate, '###BROKENLINKS_ITEM', $brokenLinkItems);
+		$brokenLinksTemplate = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($brokenLinksTemplate, $brokenLinksMarker, '###|###', TRUE);
+		$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($brokenLinksTemplate, '###BROKENLINKS_ITEM', $brokenLinkItems);
 		return $content;
 	}
 
@@ -438,8 +440,8 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 */
 	protected function getNoBrokenLinkMessage(array $brokenLinksMarker) {
 		$brokenLinksMarker['LIST_HEADER'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('list.header'));
-		/** @var t3lib_FlashMessage $message */
-		$message = t3lib_div::makeInstance('t3lib_FlashMessage', $GLOBALS['LANG']->getLL('list.no.broken.links'), $GLOBALS['LANG']->getLL('list.no.broken.links.title'), t3lib_FlashMessage::OK);
+		/** @var \TYPO3\CMS\Core\Messaging\FlashMessage $message */
+		$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $GLOBALS['LANG']->getLL('list.no.broken.links'), $GLOBALS['LANG']->getLL('list.no.broken.links.title'), \TYPO3\CMS\Core\Messaging\FlashMessage::OK);
 		$brokenLinksMarker['NO_BROKEN_LINKS'] = $message->render();
 		return $brokenLinksMarker;
 	}
@@ -460,7 +462,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		$makerTableHead['tablehead_lastcheck'] = $GLOBALS['LANG']->getLL('list.tableHead.lastCheck');
 		// Add CSH to the header of each column
 		foreach ($makerTableHead as $column => $label) {
-			$label = t3lib_BEfunc::wrapInHelp('linkvalidator', $column, $label);
+			$label = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', $column, $label);
 			$makerTableHead[$column] = $label;
 		}
 		// Add section header
@@ -483,7 +485,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		$hookObj = $this->hookObjectsArr[$row['link_type']];
 		$brokenUrl = $hookObj->getBrokenUrl($row);
 		$params = ((('&edit[' . $table) . '][') . $row['record_uid']) . ']=edit';
-		$actionLinks = (((((('<a href="#" onclick="' . t3lib_BEfunc::editOnClick($params, $GLOBALS['BACK_PATH'], ((((t3lib_div::getIndpEnv('REQUEST_URI') . '?id=') . $this->pObj->id) . '&search_levels=') . $this->searchLevel))) . '"') . ' title="') . $GLOBALS['LANG']->getLL('list.edit')) . '">') . t3lib_iconWorks::getSpriteIcon('actions-document-open')) . '</a>';
+		$actionLinks = (((((('<a href="#" onclick="' . \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick($params, $GLOBALS['BACK_PATH'], ((((\TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REQUEST_URI') . '?id=') . $this->pObj->id) . '&search_levels=') . $this->searchLevel))) . '"') . ' title="') . $GLOBALS['LANG']->getLL('list.edit')) . '">') . \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open')) . '</a>';
 		$elementHeadline = $row['headline'];
 		if (empty($elementHeadline)) {
 			$elementHeadline = ('<i>' . $GLOBALS['LANG']->getLL('list.no.headline')) . '</i>';
@@ -500,11 +502,11 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		// Fallback, if there is no label
 		$fieldName = !empty($fieldName) ? $fieldName : $row['field'];
 		// column "Element"
-		$element = t3lib_iconWorks::getSpriteIconForRecord($table, $row, array('title' => ($table . ':') . $row['record_uid']));
+		$element = \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIconForRecord($table, $row, array('title' => ($table . ':') . $row['record_uid']));
 		$element .= $elementHeadline;
 		$element .= ' ' . sprintf($GLOBALS['LANG']->getLL('list.field'), $fieldName);
 		$markerArray['actionlink'] = $actionLinks;
-		$markerArray['path'] = t3lib_BEfunc::getRecordPath($row['record_pid'], '', 0, 0);
+		$markerArray['path'] = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecordPath($row['record_pid'], '', 0, 0);
 		$markerArray['element'] = $element;
 		$markerArray['headlink'] = $row['link_title'];
 		$markerArray['linktarget'] = $brokenUrl;
@@ -520,7 +522,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		$message = sprintf($GLOBALS['LANG']->getLL('list.msg.lastRun'), $lastRunDate, $lastRunTime);
 		$markerArray['lastcheck'] = $message;
 		// Return the table html code as string
-		return t3lib_parsehtml::substituteMarkerArray($brokenLinksItemTemplate, $markerArray, '###|###', TRUE, TRUE);
+		return \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($brokenLinksItemTemplate, $markerArray, '###|###', TRUE, TRUE);
 	}
 
 	/**
@@ -538,18 +540,18 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 		} else {
 			$additionalAttr = ' onclick="toggleActionButton(\'refresh\');" class="refresh" ';
 		}
-		$checkOptionsTemplate = t3lib_parsehtml::getSubpart($this->doc->moduleTemplate, '###CHECKOPTIONS_SECTION###');
-		$hookSectionTemplate = t3lib_parsehtml::getSubpart($checkOptionsTemplate, '###HOOK_SECTION###');
+		$checkOptionsTemplate = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($this->doc->moduleTemplate, '###CHECKOPTIONS_SECTION###');
+		$hookSectionTemplate = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($checkOptionsTemplate, '###HOOK_SECTION###');
 		$markerArray['statistics_header'] = $this->doc->sectionHeader($GLOBALS['LANG']->getLL('report.statistics.header'));
 		$totalCountLabel = $GLOBALS['LANG']->getLL('overviews.nbtotal');
-		$totalCountLabel = t3lib_BEfunc::wrapInHelp('linkvalidator', 'checkboxes', $totalCountLabel);
+		$totalCountLabel = \TYPO3\CMS\Backend\Utility\BackendUtility::wrapInHelp('linkvalidator', 'checkboxes', $totalCountLabel);
 		$markerArray['total_count_label'] = $totalCountLabel;
 		if (empty($brokenLinkOverView['brokenlinkCount'])) {
 			$markerArray['total_count'] = '0';
 		} else {
 			$markerArray['total_count'] = $brokenLinkOverView['brokenlinkCount'];
 		}
-		$linktypes = t3lib_div::trimExplode(',', $this->modTS['linktypes'], 1);
+		$linktypes = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->modTS['linktypes'], 1);
 		$hookSectionContent = '';
 		if (is_array($linktypes)) {
 			if (!empty($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
@@ -565,13 +567,13 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 						$translation = $translation ? $translation : $type;
 						$option = (((((((((((((((((('<input type="checkbox" ' . $additionalAttr) . '  id="') . $prefix) . 'SET_') . $type) . '" name="') . $prefix) . 'SET[') . $type) . ']" value="1"') . ($this->pObj->MOD_SETTINGS[$type] ? ' checked="checked"' : '')) . '/>') . '<label for="') . $prefix) . 'SET[') . $type) . ']">') . htmlspecialchars($translation)) . '</label>';
 						$hookSectionMarker['option'] = $option;
-						$hookSectionContent .= t3lib_parsehtml::substituteMarkerArray($hookSectionTemplate, $hookSectionMarker, '###|###', TRUE, TRUE);
+						$hookSectionContent .= \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($hookSectionTemplate, $hookSectionMarker, '###|###', TRUE, TRUE);
 					}
 				}
 			}
 		}
-		$checkOptionsTemplate = t3lib_parsehtml::substituteSubpart($checkOptionsTemplate, '###HOOK_SECTION###', $hookSectionContent);
-		return t3lib_parsehtml::substituteMarkerArray($checkOptionsTemplate, $markerArray, '###|###', TRUE, TRUE);
+		$checkOptionsTemplate = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($checkOptionsTemplate, '###HOOK_SECTION###', $hookSectionContent);
+		return \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($checkOptionsTemplate, $markerArray, '###|###', TRUE, TRUE);
 	}
 
 	/**
@@ -591,7 +593,7 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	 */
 	protected function getDocHeaderButtons() {
 		$buttons = array(
-			'csh' => t3lib_BEfunc::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']),
+			'csh' => \TYPO3\CMS\Backend\Utility\BackendUtility::cshItem('_MOD_web_func', '', $GLOBALS['BACK_PATH']),
 			'shortcut' => $this->getShortcutButton(),
 			'save' => ''
 		);
@@ -661,5 +663,6 @@ class tx_linkvalidator_ModFuncReport extends t3lib_extobjbase {
 	}
 
 }
+
 
 ?>

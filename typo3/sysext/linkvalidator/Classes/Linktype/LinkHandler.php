@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Linkvalidator\Linktype;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -30,7 +32,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Abstract {
+class LinkHandler extends \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype {
 
 	const DELETED = 'deleted';
 	/**
@@ -46,7 +48,7 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 	 * @todo Define visibility
 	 */
 	public function __construct() {
-		$this->tsconfig = t3lib_BEfunc::getModTSconfig(1, 'mod.tx_linkhandler');
+		$this->tsconfig = \TYPO3\CMS\Backend\Utility\BackendUtility::getModTSconfig(1, 'mod.tx_linkhandler');
 	}
 
 	/**
@@ -54,7 +56,7 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 	 *
 	 * @param string $url Url to check
 	 * @param array $softRefEntry The soft reference entry which builds the context of that url
-	 * @param tx_linkvalidator_Processor $reference Parent instance of tx_linkvalidator_Processor
+	 * @param \TYPO3\CMS\Linkvalidator\LinkAnalyzer $reference Parent instance of tx_linkvalidator_Processor
 	 * @return boolean TRUE on success or FALSE on error
 	 */
 	public function checkLink($url, $softRefEntry, $reference) {
@@ -127,5 +129,6 @@ class tx_linkvalidator_linktype_LinkHandler extends tx_linkvalidator_linktype_Ab
 	}
 
 }
+
 
 ?>

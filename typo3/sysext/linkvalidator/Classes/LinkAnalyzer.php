@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Linkvalidator;
+
 /**
  * This class provides Processing plugin implementation
  *
@@ -7,7 +9,7 @@
  * @package TYPO3
  * @subpackage linkvalidator
  */
-class tx_linkvalidator_Processor {
+class LinkAnalyzer {
 
 	/**
 	 * Array of tables and fields to search for broken links
@@ -79,7 +81,7 @@ class tx_linkvalidator_Processor {
 		// Hook to handle own checks
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'])) {
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks'] as $key => $classRef) {
-				$this->hookObjectsArr[$key] = t3lib_div::getUserObj($classRef);
+				$this->hookObjectsArr[$key] = \TYPO3\CMS\Core\Utility\GeneralUtility::getUserObj($classRef);
 			}
 		}
 	}
@@ -95,7 +97,7 @@ class tx_linkvalidator_Processor {
 		$this->searchFields = $searchField;
 		$this->pidList = $pid;
 		foreach ($searchField as $tableName => $table) {
-			t3lib_div::loadTCA($tableName);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($tableName);
 		}
 	}
 
@@ -120,7 +122,7 @@ class tx_linkvalidator_Processor {
 					$where = ('deleted = 0 AND pid IN (' . $this->pidList) . ')';
 				}
 				if (!$considerHidden) {
-					$where .= t3lib_BEfunc::BEenableFields($table);
+					$where .= \TYPO3\CMS\Backend\Utility\BackendUtility::BEenableFields($table);
 				}
 				// If table is not configured, assume the extension is not installed and therefore no need to check it
 				if (!is_array($GLOBALS['TCA'][$table])) {
@@ -171,7 +173,7 @@ class tx_linkvalidator_Processor {
 							$record['url'] = $url;
 							$record['url_response'] = serialize($response);
 							$GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_linkvalidator_link', $record);
-						} elseif (t3lib_div::_GP('showalllinks')) {
+						} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('showalllinks')) {
 							$response = array();
 							$response['valid'] = TRUE;
 							$this->brokenLinkCounts[$table]++;
@@ -198,8 +200,8 @@ class tx_linkvalidator_Processor {
 	public function analyzeRecord(array &$results, $table, array $fields, array $record) {
 		// Put together content of all relevant fields
 		$haystack = '';
-		/** @var t3lib_parsehtml $htmlParser */
-		$htmlParser = t3lib_div::makeInstance('t3lib_parsehtml');
+		/** @var \TYPO3\CMS\Core\Html\HtmlParser $htmlParser */
+		$htmlParser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Html\\HtmlParser');
 		$idRecord = $record['uid'];
 		// Get all references
 		foreach ($fields as $field) {
@@ -209,11 +211,11 @@ class tx_linkvalidator_Processor {
 			// Check if a TCA configured field has soft references defined (see TYPO3 Core API document)
 			if ($conf['softref'] && strlen($valueField)) {
 				// Explode the list of soft references/parameters
-				$softRefs = t3lib_BEfunc::explodeSoftRefParserList($conf['softref']);
+				$softRefs = \TYPO3\CMS\Backend\Utility\BackendUtility::explodeSoftRefParserList($conf['softref']);
 				// Traverse soft references
 				foreach ($softRefs as $spKey => $spParams) {
-					/** @var t3lib_softrefproc $softRefObj Create or get the soft reference object */
-					$softRefObj =& t3lib_BEfunc::softRefParserObj($spKey);
+					/** @var \TYPO3\CMS\Core\Database\SoftReferenceIndex $softRefObj Create or get the soft reference object */
+					$softRefObj =& \TYPO3\CMS\Backend\Utility\BackendUtility::softRefParserObj($spKey);
 					// If there is an object returned...
 					if (is_object($softRefObj)) {
 						// Do processing
@@ -247,7 +249,7 @@ class tx_linkvalidator_Processor {
 			$type = '';
 			$idRecord = $record['uid'];
 			if (!empty($r)) {
-				/** @var tx_linkvalidator_linktype_Abstract $hookObj */
+				/** @var \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype $hookObj */
 				foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
 					$type = $hookObj->fetchType($r, $type, $keyArr);
 					// Store the type that was found
@@ -270,7 +272,7 @@ class tx_linkvalidator_Processor {
 	 *
 	 * @param array $resultArray findRef parsed records
 	 * @param array $results Array of broken links
-	 * @param t3lib_parsehtml $htmlParser Instance of html parser
+	 * @param \TYPO3\CMS\Core\Html\HtmlParser $htmlParser Instance of html parser
 	 * @param array $record The current record
 	 * @param string $field The current field
 	 * @param string $table The current table
@@ -305,7 +307,7 @@ class tx_linkvalidator_Processor {
 					}
 				}
 			}
-			/** @var tx_linkvalidator_linktype_Abstract $hookObj */
+			/** @var \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype $hookObj */
 			foreach ($this->hookObjectsArr as $keyArr => $hookObj) {
 				$type = $hookObj->fetchType($currentR, $type, $keyArr);
 				// Store the type that was found
@@ -404,5 +406,6 @@ class tx_linkvalidator_Processor {
 	}
 
 }
+
 
 ?>
