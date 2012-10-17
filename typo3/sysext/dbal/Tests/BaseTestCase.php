@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Tests;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -44,7 +46,7 @@ abstract class BaseTestCase extends tx_phpunit_testcase {
 	 */
 	protected function buildAccessibleProxy($className) {
 		$accessibleClassName = uniqid('AccessibleTestProxy');
-		$class = new ReflectionClass($className);
+		$class = new \ReflectionClass($className);
 		$abstractModifier = $class->isAbstract() ? 'abstract ' : '';
 		eval(((((('
 			' . $abstractModifier) . 'class ') . $accessibleClassName) . ' extends ') . $className) . ' {
@@ -80,5 +82,6 @@ abstract class BaseTestCase extends tx_phpunit_testcase {
 	}
 
 }
+
 
 ?>

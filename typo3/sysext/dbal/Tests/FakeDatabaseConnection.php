@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Tests;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -28,7 +30,7 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class FakeDbConnection {
+class FakeDatabaseConnection {
 
 	/**
 	 * Creates a fake database connection.
@@ -38,15 +40,15 @@ class FakeDbConnection {
 	 * @param string $driver Driver to use (e.g., 'oci8')
 	 * @return ADOConnection
 	 */
-	static public function connect(ux_t3lib_db $db, $driver) {
+	static public function connect(\ux_t3lib_db $db, $driver) {
 		// Make sure to have a clean configuration
 		$db->clearCachedFieldInfo();
 		$db->_call('initInternalVariables');
-		require_once t3lib_extMgm::extPath('adodb') . 'adodb/adodb.inc.php';
-		require_once ((t3lib_extMgm::extPath('adodb') . 'adodb/drivers/adodb-') . $driver) . '.inc.php';
+		require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('adodb') . 'adodb/adodb.inc.php';
+		require_once ((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('adodb') . 'adodb/drivers/adodb-') . $driver) . '.inc.php';
 		$handlerKey = '_DEFAULT';
 		$db->lastHandlerKey = $handlerKey;
-		$db->handlerInstance[$handlerKey] = t3lib_div::makeInstance('ADODB_' . $driver);
+		$db->handlerInstance[$handlerKey] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('ADODB_' . $driver);
 		// From method handler_init()
 		$db->handlerInstance[$handlerKey]->DataDictionary = NewDataDictionary($db->handlerInstance[$handlerKey]);
 		// DataDictionary being set, a connectionID may be arbitrarily chosen
@@ -54,5 +56,6 @@ class FakeDbConnection {
 	}
 
 }
+
 
 ?>

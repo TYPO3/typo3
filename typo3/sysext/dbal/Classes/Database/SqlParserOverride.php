@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Database;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -35,7 +37,7 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class ux_t3lib_sqlparser extends t3lib_sqlparser {
+class SqlParserOverride extends \TYPO3\CMS\Core\Database\SqlParser {
 
 	/**
 	 * Gets value in quotes from $parseString.
@@ -629,7 +631,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 								} else {
 									$compareValue = ($v['value'][1] . $this->compileAddslashes(trim($v['value'][0], '%'))) . $v['value'][1];
 								}
-								if (t3lib_div::isFirstPartOfStr($v['comparator'], 'NOT')) {
+								if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($v['comparator'], 'NOT')) {
 									$output .= 'NOT ';
 								}
 								// To be on the safe side
@@ -649,9 +651,9 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 									}
 								} else {
 									if ($isLob) {
-										$output .= ((('(dbms_lob.instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field']))) . '), ') . t3lib_div::strtolower($compareValue)) . ',1,1) > 0)';
+										$output .= ((('(dbms_lob.instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field']))) . '), ') . \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($compareValue)) . ',1,1) > 0)';
 									} else {
-										$output .= ((('(instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field']))) . '), ') . t3lib_div::strtolower($compareValue)) . ',1,1) > 0)';
+										$output .= ((('(instr(LOWER(' . trim((($v['table'] ? $v['table'] . '.' : '') . $v['field']))) . '), ') . \TYPO3\CMS\Core\Utility\GeneralUtility::strtolower($compareValue)) . ',1,1) > 0)';
 									}
 								}
 								break;
@@ -678,7 +680,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 								}
 								$output .= ' ' . $v['comparator'];
 								// Detecting value type; list or plain:
-								if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', TAB, CR, LF), '', $v['comparator'])))) {
+								if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('NOTIN,IN', strtoupper(str_replace(array(' ', TAB, CR, LF), '', $v['comparator'])))) {
 									if (isset($v['subquery'])) {
 										$output .= (' (' . $this->compileSELECT($v['subquery'])) . ')';
 									} else {
@@ -688,7 +690,7 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 										}
 										$output .= (' (' . trim(implode(',', $valueBuffer))) . ')';
 									}
-								} elseif (t3lib_div::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
+								} elseif (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('BETWEEN,NOT BETWEEN', $v['comparator'])) {
 									$lbound = $v['values'][0];
 									$ubound = $v['values'][1];
 									$output .= ((' ' . $lbound[1]) . $this->compileAddslashes($lbound[0])) . $lbound[1];
@@ -715,5 +717,6 @@ class ux_t3lib_sqlparser extends t3lib_sqlparser {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Hooks;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
+class ExtensionManagerHooks implements tx_em_Index_CheckDatabaseUpdatesHook {
 
 	/**
 	 * Maximal length for an identifier in Oracle.
@@ -81,7 +83,7 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 	 * @param tx_em_Install $parent: The calling parent object
 	 * @return string Either empty string or a pre-processing user form
 	 */
-	public function preProcessDatabaseUpdates($extKey, array $extInfo, array $diff, t3lib_install $instObj, tx_em_Install $parent) {
+	public function preProcessDatabaseUpdates($extKey, array $extInfo, array $diff, \t3lib_install $instObj, \tx_em_Install $parent) {
 		$content = '';
 		// Remapping is only mandatory for Oracle:
 		if ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['type'] !== 'adodb' || $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['config']['driver'] !== 'oci8') {
@@ -89,8 +91,8 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 			return '';
 		}
 		$this->init();
-		if (t3lib_div::_GP('dbal')) {
-			$this->updateMapping(t3lib_div::_GP('dbal'), $instObj);
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dbal')) {
+			$this->updateMapping(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('dbal'), $instObj);
 		}
 		// Search all table and field names which should be remapped
 		$tableCandidates = array();
@@ -189,12 +191,12 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 			break;
 		default:
 			$dependencies = array_keys($extInfo['EM_CONF']['constraints']['depends']);
-			if (t3lib_div::inArray($dependencies, 'extbase')) {
+			if (\TYPO3\CMS\Core\Utility\GeneralUtility::inArray($dependencies, 'extbase')) {
 				$this->storeExtbaseMappingSuggestions($suggestions, $extKey, $extInfo, $tables, $fields);
 			}
 		}
 		// Existing mapping take precedence over suggestions
-		$suggestions = t3lib_div::array_merge_recursive_overrule($suggestions, $this->mapping);
+		$suggestions = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($suggestions, $this->mapping);
 		return $suggestions;
 	}
 
@@ -279,7 +281,7 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 	 * @return void
 	 * @api
 	 */
-	public function updateMapping(array $data, t3lib_install $instObj) {
+	public function updateMapping(array $data, \t3lib_install $instObj) {
 		$newMapping = $this->mapping;
 		foreach ($data['tables'] as $table => $newName) {
 			$newName = trim($newName);
@@ -331,14 +333,15 @@ class tx_dbal_em implements tx_em_Index_CheckDatabaseUpdatesHook {
 	 * @param array $extInfo: Extension information array
 	 * @param string $fileContent: Content of the current extension sql file
 	 * @param t3lib_install $instObj: Instance of the installer
-	 * @param t3lib_install_Sql $instSqlObj: Instance of the installer sql object
+	 * @param \TYPO3\CMS\Install\Sql\SchemaMigrator $instSqlObj: Instance of the installer sql object
 	 * @param tx_em_Install $parent: The calling parent object
 	 * @return string Either empty string or table create strings
 	 */
-	public function appendTableDefinitions($extKey, array $extInfo, $fileContent, t3lib_install $instObj, t3lib_install_Sql $instSqlObj, tx_em_Install $parent) {
+	public function appendTableDefinitions($extKey, array $extInfo, $fileContent, \t3lib_install $instObj, \TYPO3\CMS\Install\Sql\SchemaMigrator $instSqlObj, \tx_em_Install $parent) {
 
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\ExtensionManager;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,24 +33,24 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class tx_dbal_tsparserext {
+class MessageDisplay {
 
 	/**
 	 * Renders a message for EM.
 	 *
 	 * @param array $params
-	 * @param t3lib_tsStyleConfig $tsObj
+	 * @param \TYPO3\CMS\Core\TypoScript\ConfigurationForm $tsObj
 	 * @return string
 	 * @todo Define visibility
 	 */
-	public function displayMessage(array &$params, t3lib_tsStyleConfig $tsObj) {
+	public function displayMessage(array &$params, \TYPO3\CMS\Core\TypoScript\ConfigurationForm $tsObj) {
 		$out = ('
 			<div>
 				<div class="typo3-message message-information">
 					<div class="message-header">PostgreSQL</div>
 					<div class="message-body">
 						If you use a PostgreSQL database, make sure to run SQL scripts located in<br />
-						<tt>' . t3lib_extMgm::extPath('dbal')) . 'res/postgresql/</tt><br />
+						<tt>' . \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal')) . 'res/postgresql/</tt><br />
 						to ensure best compatibility with TYPO3.
 					</div>
 				</div>
@@ -58,5 +60,6 @@ class tx_dbal_tsparserext {
 	}
 
 }
+
 
 ?>

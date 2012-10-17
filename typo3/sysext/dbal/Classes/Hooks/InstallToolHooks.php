@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Hooks;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class tx_dbal_installtool {
+class InstallToolHooks {
 
 	/**
 	 * @var string
@@ -60,7 +62,7 @@ class tx_dbal_installtool {
 		$this->supportedDrivers = $this->getSupportedDrivers();
 		$this->availableDrivers = $this->getAvailableDrivers();
 		$configDriver =& $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal']['handlerCfg']['_DEFAULT']['config']['driver'];
-		$this->driver = t3lib_div::_GET('driver');
+		$this->driver = \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('driver');
 		if (!$this->driver && $configDriver) {
 			$this->driver = $configDriver;
 		}
@@ -93,10 +95,10 @@ class tx_dbal_installtool {
 	 *
 	 * @param array $markers
 	 * @param integer $step
-	 * @param tx_install $instObj
+	 * @param \TYPO3\CMS\Install\Installer $instObj
 	 * @return void
 	 */
-	public function executeStepOutput(array &$markers, $step, tx_install $instObj) {
+	public function executeStepOutput(array &$markers, $step, \TYPO3\CMS\Install\Installer $instObj) {
 		switch ($step) {
 		case 2:
 			$this->createConnectionForm($markers, $instObj);
@@ -112,10 +114,10 @@ class tx_dbal_installtool {
 	 *
 	 * @param array $lines This parameter is obsolet as of TYPO3 6.0
 	 * @param integer $step
-	 * @param tx_install $instObj
+	 * @param \TYPO3\CMS\Install\Installer $instObj
 	 * @return void
 	 */
-	public function executeWriteLocalconf(array &$lines, $step, tx_install $instObj) {
+	public function executeWriteLocalconf(array &$lines, $step, \TYPO3\CMS\Install\Installer $instObj) {
 		switch ($step) {
 		case 3:
 
@@ -154,7 +156,7 @@ class tx_dbal_installtool {
 					)
 				)
 			);
-			t3lib_Configuration::setLocalConfigurationValuesByPathValuePairs('EXTCONF/dbal/handlerCfg', $config);
+			\TYPO3\CMS\Core\Configuration\ConfigurationManager::setLocalConfigurationValuesByPathValuePairs('EXTCONF/dbal/handlerCfg', $config);
 			break;
 		}
 	}
@@ -163,37 +165,37 @@ class tx_dbal_installtool {
 	 * Creates a specialized form to configure the DBMS connection.
 	 *
 	 * @param array $markers
-	 * @param tx_install $instObj
+	 * @param \TYPO3\CMS\Install\Installer $instObj
 	 * @return void
 	 */
-	protected function createConnectionForm(array &$markers, tx_install $instObj) {
+	protected function createConnectionForm(array &$markers, \TYPO3\CMS\Install\Installer $instObj) {
 		// Normalize current driver
 		if (!$this->driver) {
 			$this->driver = $this->getDefaultDriver();
 		}
 		// Get the template file
-		$templateFile = @file_get_contents(((t3lib_extMgm::extPath('dbal') . $this->templateFilePath) . 'install.html'));
+		$templateFile = @file_get_contents(((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal') . $this->templateFilePath) . 'install.html'));
 		// Get the template part from the file
-		$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
+		$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 		// Get the subpart for the connection form
-		$formSubPart = t3lib_parsehtml::getSubpart($template, '###CONNECTION_FORM###');
+		$formSubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###CONNECTION_FORM###');
 		if ($this->getNumberOfAvailableDrivers() == 1 && $this->getDefaultDriver() === 'mysql') {
 			// Only MySQL is actually available (PDO support may be compiled in
 			// PHP itself and as such DBAL was activated, behaves as if DBAL were
 			// not activated
 			$driverSubPart = '<input type="hidden" name="TYPO3_INSTALL[Database][typo_db_driver]" value="mysql" />';
 		} else {
-			$driverTemplate = t3lib_parsehtml::getSubpart($formSubPart, '###DATABASE_DRIVER###');
+			$driverTemplate = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($formSubPart, '###DATABASE_DRIVER###');
 			$driverSubPart = $this->prepareDatabaseDrivers($driverTemplate);
 		}
-		$formSubPart = t3lib_parsehtml::substituteSubpart($formSubPart, '###DATABASE_DRIVER###', $driverSubPart);
+		$formSubPart = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($formSubPart, '###DATABASE_DRIVER###', $driverSubPart);
 		// Get the subpart related to selected database driver
 		if ($this->driver === '' || $this->driver === 'mysql') {
-			$driverOptionsSubPart = t3lib_parsehtml::getSubpart($template, '###DRIVER_MYSQL###');
+			$driverOptionsSubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###DRIVER_MYSQL###');
 		} else {
-			$driverOptionsSubPart = t3lib_parsehtml::getSubpart($template, ('###DRIVER_' . t3lib_div::strtoupper($this->driver)) . '###');
+			$driverOptionsSubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, ('###DRIVER_' . \TYPO3\CMS\Core\Utility\GeneralUtility::strtoupper($this->driver)) . '###');
 			if ($driverOptionsSubPart === '') {
-				$driverOptionsSubPart = t3lib_parsehtml::getSubpart($template, '###DRIVER_DEFAULT###');
+				$driverOptionsSubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###DRIVER_DEFAULT###');
 			}
 		}
 		// Define driver-specific markers
@@ -281,7 +283,7 @@ class tx_dbal_installtool {
 		);
 		$subPartMarkers = array_merge($subPartMarkers, $driverMarkers);
 		// Add step marker for main template
-		$markers['step'] = t3lib_parsehtml::substituteMarkerArray($formSubPart, $subPartMarkers, '###|###', 1, 1);
+		$markers['step'] = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($formSubPart, $subPartMarkers, '###|###', 1, 1);
 	}
 
 	/**
@@ -292,8 +294,8 @@ class tx_dbal_installtool {
 	 */
 	protected function prepareDatabaseDrivers($template) {
 		$subParts = array(
-			'abstractionLayer' => t3lib_parsehtml::getSubpart($template, '###ABSTRACTION_LAYER###'),
-			'vendor' => t3lib_parsehtml::getSubpart($template, '###VENDOR###')
+			'abstractionLayer' => \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###ABSTRACTION_LAYER###'),
+			'vendor' => \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###VENDOR###')
 		);
 		// Create the drop-down list of available drivers
 		$dropdown = '';
@@ -309,14 +311,14 @@ class tx_dbal_installtool {
 				if ($driver === $this->driver) {
 					$markers['selected'] .= ' selected="selected"';
 				}
-				$options[] = t3lib_parsehtml::substituteMarkerArray($subParts['vendor'], $markers, '###|###', 1);
+				$options[] = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($subParts['vendor'], $markers, '###|###', 1);
 			}
-			$subPart = t3lib_parsehtml::substituteSubpart($subParts['abstractionLayer'], '###VENDOR###', implode('
+			$subPart = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($subParts['abstractionLayer'], '###VENDOR###', implode('
 ', $options));
-			$dropdown .= t3lib_parsehtml::substituteMarker($subPart, '###LABELABSTRACTIONLAYER###', $abstractionLayer);
+			$dropdown .= \TYPO3\CMS\Core\Html\HtmlParser::substituteMarker($subPart, '###LABELABSTRACTIONLAYER###', $abstractionLayer);
 		}
-		$form = t3lib_parsehtml::substituteSubpart($template, '###ABSTRACTION_LAYER###', $dropdown);
-		$form = t3lib_parsehtml::substituteMarker($form, '###LABELDRIVER###', 'Driver');
+		$form = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($template, '###ABSTRACTION_LAYER###', $dropdown);
+		$form = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarker($form, '###LABELDRIVER###', 'Driver');
 		return $form;
 	}
 
@@ -423,9 +425,9 @@ class tx_dbal_installtool {
 	 * Creates a specialized form to configure the database.
 	 *
 	 * @param array $markers
-	 * @param tx_install $instObj
+	 * @param \TYPO3\CMS\Install\Installer $instObj
 	 */
-	protected function createDatabaseForm(array &$markers, tx_install $instObj) {
+	protected function createDatabaseForm(array &$markers, \TYPO3\CMS\Install\Installer $instObj) {
 		$error_missingConnect = ((('
 			<p class="typo3-message message-error">
 				<strong>
@@ -444,13 +446,13 @@ class tx_dbal_installtool {
 		// There should be a database host connection at this point
 		if ($result = $GLOBALS['TYPO3_DB']->sql_pconnect(TYPO3_db_host, TYPO3_db_username, TYPO3_db_password)) {
 			// Get the template file
-			$templateFile = @file_get_contents(((t3lib_extMgm::extPath('dbal') . $this->templateFilePath) . 'install.html'));
+			$templateFile = @file_get_contents(((\TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal') . $this->templateFilePath) . 'install.html'));
 			// Get the template part from the file
-			$template = t3lib_parsehtml::getSubpart($templateFile, '###TEMPLATE###');
+			$template = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($templateFile, '###TEMPLATE###');
 			// Get the subpart for the database choice step
-			$formSubPart = t3lib_parsehtml::getSubpart($template, '###DATABASE_FORM###');
+			$formSubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($template, '###DATABASE_FORM###');
 			// Get the subpart for the database options
-			$step3DatabaseOptionsSubPart = t3lib_parsehtml::getSubpart($formSubPart, '###DATABASEOPTIONS###');
+			$step3DatabaseOptionsSubPart = \TYPO3\CMS\Core\Html\HtmlParser::getSubpart($formSubPart, '###DATABASEOPTIONS###');
 			$dbArr = $instObj->getDatabaseList();
 			$dbIncluded = FALSE;
 			foreach ($dbArr as $dbname) {
@@ -461,7 +463,7 @@ class tx_dbal_installtool {
 					'databaseName' => htmlspecialchars($dbname)
 				);
 				// Add the option HTML to an array
-				$step3DatabaseOptions[] = t3lib_parsehtml::substituteMarkerArray($step3DatabaseOptionsSubPart, $step3DatabaseOptionMarkers, '###|###', 1, 1);
+				$step3DatabaseOptions[] = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($step3DatabaseOptionsSubPart, $step3DatabaseOptionMarkers, '###|###', 1, 1);
 				if ($dbname === TYPO3_db) {
 					$dbIncluded = TRUE;
 				}
@@ -474,10 +476,10 @@ class tx_dbal_installtool {
 					'databaseName' => htmlspecialchars(TYPO3_db) . ' (NO ACCESS!)'
 				);
 				// Add the option HTML to an array
-				$step3DatabaseOptions[] = t3lib_parsehtml::substituteMarkerArray($step3DatabaseOptionsSubPart, $step3DatabaseOptionMarkers, '###|###', 1, 1);
+				$step3DatabaseOptions[] = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($step3DatabaseOptionsSubPart, $step3DatabaseOptionMarkers, '###|###', 1, 1);
 			}
 			// Substitute the subpart for the database options
-			$content = t3lib_parsehtml::substituteSubpart($formSubPart, '###DATABASEOPTIONS###', implode(chr(10), $step3DatabaseOptions));
+			$content = \TYPO3\CMS\Core\Html\HtmlParser::substituteSubpart($formSubPart, '###DATABASEOPTIONS###', implode(chr(10), $step3DatabaseOptions));
 			// Define the markers content
 			$step3SubPartMarkers = array(
 				'step' => $instObj->step + 1,
@@ -487,7 +489,7 @@ class tx_dbal_installtool {
 				'continue' => 'Continue'
 			);
 			// Add step marker for main template
-			$markers['step'] = t3lib_parsehtml::substituteMarkerArray($content, $step3SubPartMarkers, '###|###', 1, 1);
+			$markers['step'] = \TYPO3\CMS\Core\Html\HtmlParser::substituteMarkerArray($content, $step3SubPartMarkers, '###|###', 1, 1);
 		} else {
 			// Add step marker for main template when no connection
 			$markers['step'] = $error_missingConnect;
@@ -495,5 +497,6 @@ class tx_dbal_installtool {
 	}
 
 }
+
 
 ?>

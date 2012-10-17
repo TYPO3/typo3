@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Controller;
+
 /**
  * Script class; Backend module for DBAL extension
  *
@@ -7,7 +9,7 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class tx_dbal_module1 extends t3lib_SCbase {
+class ModuleController extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
 	/**
 	 * @var string
@@ -38,9 +40,9 @@ class tx_dbal_module1 extends t3lib_SCbase {
 	public function main() {
 		$this->thisScript = 'mod.php?M=' . $this->MCONF['name'];
 		// Clean up settings:
-		$this->MOD_SETTINGS = t3lib_BEfunc::getModuleData($this->MOD_MENU, t3lib_div::_GP('SET'), $this->MCONF['name']);
+		$this->MOD_SETTINGS = \TYPO3\CMS\Backend\Utility\BackendUtility::getModuleData($this->MOD_MENU, \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('SET'), $this->MCONF['name']);
 		// Draw the header
-		$this->doc = t3lib_div::makeInstance('noDoc');
+		$this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\StandardDocumentTemplate');
 		$this->doc->backPath = $GLOBALS['BACK_PATH'];
 		$this->doc->form = '<form action="" method="post">';
 		// JavaScript
@@ -54,7 +56,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 		$this->content .= $this->doc->startPage($GLOBALS['LANG']->getLL('title'));
 		$this->content .= $this->doc->header($GLOBALS['LANG']->getLL('title'));
 		$this->content .= $this->doc->spacer(5);
-		$this->content .= $this->doc->section('', $this->doc->funcMenu('', t3lib_BEfunc::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
+		$this->content .= $this->doc->section('', $this->doc->funcMenu('', \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(0, 'SET[function]', $this->MOD_SETTINGS['function'], $this->MOD_MENU['function'])));
 		// Debug log:
 		switch ($this->MOD_SETTINGS['function']) {
 		case 'info':
@@ -90,7 +92,7 @@ class tx_dbal_module1 extends t3lib_SCbase {
 	 * @return string HTML output
 	 */
 	protected function printSqlCheck() {
-		$input = t3lib_div::_GP('tx_dbal');
+		$input = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_dbal');
 		$out = ((((((((((((((((((((((((((((((((('
 			<form name="sql_check" action="' . $this->thisScript) . '" method="post" enctype="') . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype']) . '">
 			<script type="text/javascript">
@@ -248,7 +250,7 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 	 */
 	protected function printCachedInfo() {
 		// Get cmd:
-		if ((string) t3lib_div::_GP('cmd') === 'clear') {
+		if ((string) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd') === 'clear') {
 			$GLOBALS['TYPO3_DB']->clearCachedFieldInfo();
 			$GLOBALS['TYPO3_DB']->cacheFieldInfo();
 		}
@@ -328,7 +330,7 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 		// Disable debugging in any case...
 		$GLOBALS['TYPO3_DB']->debug = FALSE;
 		// Get cmd:
-		$cmd = (string) t3lib_div::_GP('cmd');
+		$cmd = (string) \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('cmd');
 		switch ($cmd) {
 		case 'flush':
 			$res = $GLOBALS['TYPO3_DB']->exec_TRUNCATEquery('tx_dbal_debuglog');
@@ -367,7 +369,7 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 						</tr>';
 			}
 			// Printing direct joins:
-			$outStr .= '<h4>Direct joins:</h4>' . t3lib_utility_Debug::viewArray($tableIndex);
+			$outStr .= '<h4>Direct joins:</h4>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($tableIndex);
 			// Printing total dependencies:
 			foreach ($tableIndex as $priTable => $a) {
 				foreach ($tableIndex as $tableN => $v) {
@@ -378,7 +380,7 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 					}
 				}
 			}
-			$outStr .= '<h4>Total dependencies:</h4>' . t3lib_utility_Debug::viewArray($tableIndex);
+			$outStr .= '<h4>Total dependencies:</h4>' . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray($tableIndex);
 			// Printing data rows:
 			$outStr .= ('
 					<table border="1" cellspacing="0">' . implode('', $tRows)) . '
@@ -400,7 +402,7 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 				$tRows[] = ((((((('
 						<tr>
 							<td>' . htmlspecialchars($row['exec_time'])) . '</td>
-							<td>') . t3lib_utility_Debug::viewArray(unserialize($row['serdata']))) . '</td>
+							<td>') . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray(unserialize($row['serdata']))) . '</td>
 							<td>') . htmlspecialchars($row['script'])) . '</td>
 							<td>') . htmlspecialchars($row['query'])) . '</td>
 						</tr>';
@@ -438,7 +440,7 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 			while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 				$tRows[] = ((((((('
 						<tr>
-							<td>' . t3lib_BEfunc::datetime($row['tstamp'])) . '</td>
+							<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp'])) . '</td>
 							<td>') . htmlspecialchars($row['script'])) . '</td>
 							<td>') . htmlspecialchars($row['tablename'])) . '</td>
 								<td>') . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['whereclause']))) . '</td>
@@ -450,7 +452,7 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 			break;
 		default:
 			// Look for request to view specific script exec:
-			$specTime = t3lib_div::_GP('specTime');
+			$specTime = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('specTime');
 			if ($specTime) {
 				$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('exec_time,errorFlag,table_join,serdata,query', 'tx_dbal_debuglog', 'tstamp=' . (int) $specTime);
 				$tRows = array();
@@ -468,7 +470,7 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 								<td>' . htmlspecialchars($row['exec_time'])) . '</td>
 								<td>') . ($row['errorFlag'] ? 1 : 0)) . '</td>
 								<td>') . htmlspecialchars($row['table_join'])) . '</td>
-								<td>') . t3lib_utility_Debug::viewArray(unserialize($row['serdata']))) . '</td>
+								<td>') . \TYPO3\CMS\Core\Utility\DebugUtility::viewArray(unserialize($row['serdata']))) . '</td>
 								<td>') . str_replace(array('\'\'', '""', 'IS NULL', 'IS NOT NULL'), array('<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">\'\'</span>', '<span style="background-color:#ff0000;color:#ffffff;padding:2px;font-weight:bold;">""</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NULL</span>', '<span style="background-color:#00ff00;color:#ffffff;padding:2px;font-weight:bold;">IS NOT NULL</span>'), htmlspecialchars($row['query']))) . '</td>
 							</tr>';
 				}
@@ -486,7 +488,7 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 				while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 					$tRows[] = ((((((((((((('
 							<tr>
-								<td>' . t3lib_BEfunc::datetime($row['tstamp'])) . '</td>
+								<td>' . \TYPO3\CMS\Backend\Utility\BackendUtility::datetime($row['tstamp'])) . '</td>
 								<td>') . htmlspecialchars($row['qrycount'])) . '</td>
 								<td>') . ($row['error'] ? '<strong style="color:#f00">ERR</strong>' : '')) . '</td>
 								<td>') . htmlspecialchars($row['calc_sum'])) . '</td>
@@ -507,12 +509,13 @@ updateQryForm(\'') . $input['QUERY']) . '\');
 					<a href="') . $this->thisScript) . '">LOG</a> -
 					<a href="') . $this->thisScript) . '&amp;cmd=where">WHERE</a> -
 
-					<a href="') . htmlspecialchars(t3lib_div::linkThisScript())) . '" target="tx_debuglog">[New window]</a>
+					<a href="') . htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::linkThisScript())) . '" target="tx_debuglog">[New window]</a>
 					<hr />
 		';
 		return $menu . $outStr;
 	}
 
 }
+
 
 ?>

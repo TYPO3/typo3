@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Tests;
+
 /**
  * Testcase for class ux_t3lib_db. Testing MS SQL database handling.
  *
@@ -6,7 +8,7 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class dbMssqlTest extends BaseTestCase {
+class DatabaseMssqlTest extends \TYPO3\CMS\Dbal\Tests\BaseTestCase {
 
 	/**
 	 * @var t3lib_db
@@ -30,11 +32,11 @@ class dbMssqlTest extends BaseTestCase {
 		require 'fixtures/mssql.config.php';
 		$className = self::buildAccessibleProxy('ux_t3lib_db');
 		$GLOBALS['TYPO3_DB'] = new $className();
-		$parserClassName = self::buildAccessibleProxy('ux_t3lib_sqlparser');
+		$parserClassName = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\SqlParser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName();
 		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
 		// Initialize a fake MS SQL connection
-		FakeDbConnection::connect($GLOBALS['TYPO3_DB'], 'mssql');
+		\TYPO3\CMS\Dbal\Tests\FakeDatabaseConnection::connect($GLOBALS['TYPO3_DB'], 'mssql');
 		$this->assertTrue($GLOBALS['TYPO3_DB']->isConnected());
 	}
 
@@ -198,5 +200,6 @@ class dbMssqlTest extends BaseTestCase {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -32,27 +34,27 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class tx_dbal_autoloader {
+class Autoloader {
 
 	/**
 	 * Activates DBAL if it is supported.
 	 *
-	 * @param tx_install $instObj
+	 * @param \TYPO3\CMS\Install\Installer $instObj
 	 * @return void
 	 */
-	public function execute(tx_install $instObj) {
+	public function execute(\TYPO3\CMS\Install\Installer $instObj) {
 		if ($instObj->mode == '123') {
 			switch ($instObj->step) {
 			case 1:
-				if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
+				if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal') && $this->isDbalSupported()) {
 					$this->activateDbal();
 					// Reload page to have Install Tool actually load DBAL
-					$redirectUrl = t3lib_div::getIndpEnv('TYPO3_REQUEST_URL');
-					t3lib_utility_Http::redirect($redirectUrl);
+					$redirectUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+					\TYPO3\CMS\Core\Utility\HttpUtility::redirect($redirectUrl);
 				}
 				break;
 			case 2:
-				if (!t3lib_extMgm::isLoaded('dbal') && $this->isDbalSupported()) {
+				if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal') && $this->isDbalSupported()) {
 					$this->activateDbal();
 				}
 				break;
@@ -81,11 +83,11 @@ class tx_dbal_autoloader {
 	 * @return void
 	 */
 	protected function activateDbal() {
-		if (!t3lib_extMgm::isLoaded('adodb')) {
-			t3lib_extMgm::loadExtension('adodb');
+		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('adodb')) {
+			\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtension('adodb');
 		}
-		if (!t3lib_extMgm::isLoaded('dbal')) {
-			t3lib_extMgm::loadExtension('dbal');
+		if (!\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal')) {
+			\TYPO3\CMS\Core\Extension\ExtensionManager::loadExtension('dbal');
 		}
 	}
 
@@ -95,14 +97,15 @@ class tx_dbal_autoloader {
 	 * @return void
 	 */
 	protected function deactivateDbal() {
-		if (t3lib_extMgm::isLoaded('dbal')) {
-			t3lib_extMgm::unloadExtension('dbal');
+		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('dbal')) {
+			\TYPO3\CMS\Core\Extension\ExtensionManager::unloadExtension('dbal');
 		}
-		if (t3lib_extMgm::isLoaded('adodb')) {
-			t3lib_extMgm::unloadExtension('adodb');
+		if (\TYPO3\CMS\Core\Extension\ExtensionManager::isLoaded('adodb')) {
+			\TYPO3\CMS\Core\Extension\ExtensionManager::unloadExtension('adodb');
 		}
 	}
 
 }
+
 
 ?>

@@ -1,5 +1,5 @@
 <?php
-$extensionPath = t3lib_extMgm::extPath('dbal');
+$extensionPath = \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal');
 return array(
 	'tx_dbal_autoloader' => $extensionPath . 'class.tx_dbal_autoloader.php',
 	'tx_dbal_em' => $extensionPath . 'class.tx_dbal_em.php',

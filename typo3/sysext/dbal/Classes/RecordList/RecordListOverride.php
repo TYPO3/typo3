@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\RecordList;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -39,7 +41,7 @@
  * @package TYPO3
  * @subpackage DBAL
  */
-class ux_localRecordList extends localRecordList {
+class RecordListOverride extends \TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList {
 
 	/**
 	 * Creates part of query for searching after a word ($this->searchString) fields in input table
@@ -55,7 +57,7 @@ class ux_localRecordList extends localRecordList {
 		// Make query, only if table is valid and a search string is actually defined:
 		if ($GLOBALS['TCA'][$table] && $this->searchString) {
 			// Loading full table description - we need to traverse fields:
-			t3lib_div::loadTCA($table);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table);
 			// Initialize field array:
 			$sfields = array();
 			$or = '';
@@ -94,5 +96,6 @@ class ux_localRecordList extends localRecordList {
 	}
 
 }
+
 
 ?>

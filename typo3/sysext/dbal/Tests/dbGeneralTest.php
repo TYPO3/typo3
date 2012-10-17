@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010-2011 Xavier Perseguers <xavier@typo3.org>
+ *  (c) 2009-2011 Xavier Perseguers <xavier@typo3.org>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -21,12 +21,11 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once 'BaseTestCase.php';
-require_once 'FakeDbConnection.php';
+require_once 'TYPO3\\CMS\\Dbal\\Tests\\TYPO3\\CMS\\Dbal\\Tests\\BaseTestCase.php';
 /*
- * @deprecated since 6.0, the classname dbPostgresqlTest and this file is obsolete
+ * @deprecated since 6.0, the classname dbGeneralTest and this file is obsolete
  * and will be removed by 7.0. The class was renamed and is now located at:
- * typo3/sysext/dbal/Tests/DatabasePostgreesqlTest.php
+ * typo3/sysext/dbal/Tests/DatabaseGeneralTest.php
  */
-require_once t3lib_extMgm::extPath('dbal') . 'Tests/DatabasePostgreesqlTest.php';
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal') . 'Tests/DatabaseGeneralTest.php';
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Database;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -41,7 +43,7 @@
  * @package TYPO3
  * @subpackage tx_dbal
  */
-class ux_t3lib_DB extends t3lib_DB {
+class DatabaseConntectionOverride extends \TYPO3\CMS\Core\Database\DatabaseConnection {
 
 	// Internal, static:
 	/**
@@ -173,7 +175,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	/**
 	 * SQL parser
 	 *
-	 * @var t3lib_sqlparser
+	 * @var \TYPO3\CMS\Core\Database\SqlParser
 	 * @todo Define visibility
 	 */
 	public $SQLparser;
@@ -187,14 +189,14 @@ class ux_t3lib_DB extends t3lib_DB {
 	public $Installer;
 
 	/**
-	 * @var t3lib_install_Sql
+	 * @var \TYPO3\CMS\Install\Sql\SchemaMigrator
 	 */
 	protected $installerSql = NULL;
 
 	/**
 	 * Cache for queries
 	 *
-	 * @var t3lib_cache_frontend_VariableFrontend
+	 * @var \TYPO3\CMS\Core\Cache\Frontend\VariableFrontend
 	 */
 	protected $queryCache;
 
@@ -204,10 +206,10 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	public function __construct() {
 		// Set SQL parser object for internal use:
-		$this->SQLparser = t3lib_div::makeInstance('t3lib_sqlparser');
-		$this->Installer = t3lib_div::makeInstance('t3lib_install');
-		$this->installerSql = t3lib_div::makeInstance('t3lib_install_Sql');
-		$this->queryCache = t3lib_div::makeInstance('t3lib_cache_Manager')->getCache('dbal');
+		$this->SQLparser = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\SqlParser');
+		$this->Installer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_install');
+		$this->installerSql = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Install\\Sql\\SchemaMigrator');
+		$this->queryCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\Cache_Manager')->getCache('dbal');
 		// Set internal variables with configuration:
 		$this->conf = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['dbal'];
 		$this->initInternalVariables();
@@ -241,7 +243,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return void
 	 */
 	public function clearCachedFieldInfo() {
-		$phpCodeCache = t3lib_div::makeInstance('t3lib_cache_Manager')->getCache('cache_phpcode');
+		$phpCodeCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\Cache_Manager')->getCache('cache_phpcode');
 		$phpCodeCache->flushByTag('t3lib_db');
 	}
 
@@ -251,7 +253,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return void
 	 */
 	public function cacheFieldInfo() {
-		$phpCodeCache = t3lib_div::makeInstance('t3lib_cache_Manager')->getCache('cache_phpcode');
+		$phpCodeCache = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Cache\\Cache_Manager')->getCache('cache_phpcode');
 		// try to fetch cache
 		// cache is flushed when admin_query() is called
 		if ($phpCodeCache->has($this->cacheIdentifier)) {
@@ -287,7 +289,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @return void
 	 */
 	protected function analyzeCachingTables() {
-		$this->parseAndAnalyzeSql(t3lib_cache::getDatabaseTableDefinitions());
+		$this->parseAndAnalyzeSql(\TYPO3\CMS\Core\Cache\Cache::getDatabaseTableDefinitions());
 	}
 
 	/**
@@ -431,7 +433,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	public function exec_INSERTquery($table, $fields_values, $no_quote_fields = '') {
 		if ($this->debug) {
-			$pt = t3lib_div::milliseconds();
+			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
 		}
 		// Do field mapping if needed:
 		$ORIG_tableName = $table;
@@ -505,7 +507,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						} else {
 							$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans(FALSE);
 							// Should never ever happen
-							throw new RuntimeException('Could not update BLOB >>>> no WHERE clause found!', 1321860519);
+							throw new \RuntimeException('Could not update BLOB >>>> no WHERE clause found!', 1321860519);
 						}
 					}
 				}
@@ -529,7 +531,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						} else {
 							$this->handlerInstance[$this->lastHandlerKey]->CompleteTrans(FALSE);
 							// Should never ever happen
-							throw new RuntimeException('Could not update CLOB >>>> no WHERE clause found!', 1310027337);
+							throw new \RuntimeException('Could not update CLOB >>>> no WHERE clause found!', 1310027337);
 						}
 					}
 				}
@@ -544,7 +546,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
 		if ($this->debug) {
-			$this->debugHandler('exec_INSERTquery', t3lib_div::milliseconds() - $pt, array(
+			$this->debugHandler('exec_INSERTquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, array(
 				'handlerType' => $hType,
 				'args' => array($table, $fields_values),
 				'ORIG_tablename' => $ORIG_tableName
@@ -595,7 +597,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	public function exec_UPDATEquery($table, $where, $fields_values, $no_quote_fields = '') {
 		if ($this->debug) {
-			$pt = t3lib_div::milliseconds();
+			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
 		}
 		// Do table/field mapping:
 		$ORIG_tableName = $table;
@@ -656,7 +658,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
 		if ($this->debug) {
-			$this->debugHandler('exec_UPDATEquery', t3lib_div::milliseconds() - $pt, array(
+			$this->debugHandler('exec_UPDATEquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, array(
 				'handlerType' => $hType,
 				'args' => array($table, $where, $fields_values),
 				'ORIG_from_table' => $ORIG_tableName
@@ -678,7 +680,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	public function exec_DELETEquery($table, $where) {
 		if ($this->debug) {
-			$pt = t3lib_div::milliseconds();
+			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
 		}
 		// Do table/field mapping:
 		$ORIG_tableName = $table;
@@ -712,7 +714,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
 		if ($this->debug) {
-			$this->debugHandler('exec_DELETEquery', t3lib_div::milliseconds() - $pt, array(
+			$this->debugHandler('exec_DELETEquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, array(
 				'handlerType' => $hType,
 				'args' => array($table, $where),
 				'ORIG_from_table' => $ORIG_tableName
@@ -738,7 +740,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	public function exec_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '') {
 		if ($this->debug) {
-			$pt = t3lib_div::milliseconds();
+			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
 		}
 		// Map table / field names if needed:
 		$ORIG_tableName = $from_table;
@@ -769,7 +771,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			break;
 		case 'adodb':
 			if ($limit != '') {
-				$splitLimit = t3lib_div::intExplode(',', $limit);
+				$splitLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $limit);
 				// Splitting the limit values:
 				if ($splitLimit[1]) {
 					// If there are two parameters, do mapping differently than otherwise:
@@ -821,7 +823,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			if ($this->conf['debugOptions']['numberRows']) {
 				$data['numberRows'] = $this->sql_num_rows($sqlResult);
 			}
-			$this->debugHandler('exec_SELECTquery', t3lib_div::milliseconds() - $pt, $data);
+			$this->debugHandler('exec_SELECTquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, $data);
 		}
 		// Return result handler.
 		return $sqlResult;
@@ -835,7 +837,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	public function exec_TRUNCATEquery($table) {
 		if ($this->debug) {
-			$pt = t3lib_div::milliseconds();
+			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
 		}
 		// Do table/field mapping:
 		$ORIG_tableName = $table;
@@ -865,7 +867,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			debug(array($this->lastQuery, $this->sql_error()));
 		}
 		if ($this->debug) {
-			$this->debugHandler('exec_TRUNCATEquery', t3lib_div::milliseconds() - $pt, array(
+			$this->debugHandler('exec_TRUNCATEquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, array(
 				'handlerType' => $hType,
 				'args' => array($table),
 				'ORIG_from_table' => $ORIG_tableName
@@ -1123,7 +1125,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			}
 			return $query;
 		} else {
-			throw new InvalidArgumentException('TYPO3 Fatal Error: "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !', 1270853880);
+			throw new \InvalidArgumentException('TYPO3 Fatal Error: "Where" clause argument for UPDATE query was not a string in $this->UPDATEquery() !', 1270853880);
 		}
 	}
 
@@ -1148,7 +1150,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			}
 			return $query;
 		} else {
-			throw new InvalidArgumentException('TYPO3 Fatal Error: "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !', 1310027383);
+			throw new \InvalidArgumentException('TYPO3 Fatal Error: "Where" clause argument for DELETE query was not a string in $this->DELETEquery() !', 1310027383);
 		}
 	}
 
@@ -1169,7 +1171,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		if ($hType === 'adodb' && $this->runningADOdbDriver('postgres')) {
 			// Possibly rewrite the LIMIT to be PostgreSQL-compatible
-			$splitLimit = t3lib_div::intExplode(',', $limit);
+			$splitLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $limit);
 			// Splitting the limit values:
 			if ($splitLimit[1]) {
 				// If there are two parameters, do mapping differently than otherwise:
@@ -1274,15 +1276,15 @@ class ux_t3lib_DB extends t3lib_DB {
 	 * @param string See exec_SELECTquery()
 	 * @param string See exec_SELECTquery()
 	 * @param array $input_parameters An array of values with as many elements as there are bound parameters in the SQL statement being executed. All values are treated as t3lib_db_PreparedStatement::PARAM_AUTOTYPE.
-	 * @return t3lib_db_PreparedStatement Prepared statement
+	 * @return \TYPO3\CMS\Core\Database\PreparedStatement Prepared statement
 	 */
 	public function prepare_SELECTquery($select_fields, $from_table, $where_clause, $groupBy = '', $orderBy = '', $limit = '', array $input_parameters = array()) {
 		if ($this->debug) {
-			$pt = t3lib_div::milliseconds();
+			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
 		}
 		$precompiledParts = array();
 		if ($this->queryCache) {
-			$cacheKey = 'prepare_SELECTquery-' . tx_dbal_querycache::getCacheKey(array(
+			$cacheKey = 'prepare_SELECTquery-' . \TYPO3\CMS\Dbal\QueryCache::getCacheKey(array(
 				'selectFields' => $select_fields,
 				'fromTable' => $from_table,
 				'whereClause' => $where_clause,
@@ -1297,7 +1299,7 @@ class ux_t3lib_DB extends t3lib_DB {
 						'args' => array($from_table, $select_fields, $where_clause, $groupBy, $orderBy, $limit, $input_parameters),
 						'precompiledParts' => $precompiledParts
 					);
-					$this->debugHandler('prepare_SELECTquery (cache hit)', t3lib_div::milliseconds() - $pt, $data);
+					$this->debugHandler('prepare_SELECTquery (cache hit)', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, $data);
 				}
 			}
 		}
@@ -1332,25 +1334,25 @@ class ux_t3lib_DB extends t3lib_DB {
 			if ($this->queryCache) {
 				try {
 					$this->queryCache->set($cacheKey, $precompiledParts);
-				} catch (t3lib_cache_Exception $e) {
+				} catch (\TYPO3\CMS\Core\Cache\\Exception $e) {
 					if ($this->debug) {
-						t3lib_div::devLog($e->getMessage(), 'dbal', 1);
+						\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($e->getMessage(), 'dbal', 1);
 					}
 				}
 			}
 		}
-		$preparedStatement = t3lib_div::makeInstance('t3lib_db_PreparedStatement', '', $from_table, $precompiledParts);
+		$preparedStatement = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Database\\PreparedStatement', '', $from_table, $precompiledParts);
 		/* @var $preparedStatement t3lib_db_PreparedStatement */
 		// Bind values to parameters
 		foreach ($input_parameters as $key => $value) {
-			$preparedStatement->bindValue($key, $value, t3lib_db_PreparedStatement::PARAM_AUTOTYPE);
+			$preparedStatement->bindValue($key, $value, \TYPO3\CMS\Core\Database\PreparedStatement::PARAM_AUTOTYPE);
 		}
 		if ($this->debug) {
 			$data = array(
 				'args' => array($from_table, $select_fields, $where_clause, $groupBy, $orderBy, $limit, $input_parameters),
 				'ORIG_from_table' => $ORIG_tableName
 			);
-			$this->debugHandler('prepare_SELECTquery', t3lib_div::milliseconds() - $pt, $data);
+			$this->debugHandler('prepare_SELECTquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, $data);
 		}
 		// Return prepared statement
 		return $preparedStatement;
@@ -1381,7 +1383,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		$hType = (string) $this->handlerCfg[$this->lastHandlerKey]['type'];
 		if ($hType === 'adodb' && $this->runningADOdbDriver('postgres')) {
 			// Possibly rewrite the LIMIT to be PostgreSQL-compatible
-			$splitLimit = t3lib_div::intExplode(',', $limit);
+			$splitLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $limit);
 			// Splitting the limit values:
 			if ($splitLimit[1]) {
 				// If there are two parameters, do mapping differently than otherwise:
@@ -1393,12 +1395,12 @@ class ux_t3lib_DB extends t3lib_DB {
 		$queryComponents['LIMIT'] = $limit;
 		$queryComponents['SELECT'] = $this->SQLparser->parseFieldList($select_fields);
 		if ($this->SQLparser->parse_error) {
-			throw new InvalidArgumentException($this->SQLparser->parse_error, 1310027408);
+			throw new \InvalidArgumentException($this->SQLparser->parse_error, 1310027408);
 		}
 		$queryComponents['FROM'] = $this->SQLparser->parseFromTables($from_table);
 		$queryComponents['WHERE'] = $this->SQLparser->parseWhereClause($where_clause, '', $queryComponents['parameters']);
 		if (!is_array($queryComponents['WHERE'])) {
-			throw new InvalidArgumentException('Could not parse where clause', 1310027427);
+			throw new \InvalidArgumentException('Could not parse where clause', 1310027427);
 		}
 		$queryComponents['GROUPBY'] = $this->SQLparser->parseFieldList($groupBy);
 		$queryComponents['ORDERBY'] = $this->SQLparser->parseFieldList($orderBy);
@@ -1468,7 +1470,7 @@ class ux_t3lib_DB extends t3lib_DB {
 	 */
 	public function exec_PREPAREDquery($query, array $precompiledParts) {
 		if ($this->debug) {
-			$pt = t3lib_div::milliseconds();
+			$pt = \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds();
 		}
 		// Get handler key and select API:
 		switch ($precompiledParts['handler']) {
@@ -1481,7 +1483,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			$limit = $precompiledParts['LIMIT'];
 			if ($this->runningADOdbDriver('postgres')) {
 				// Possibly rewrite the LIMIT to be PostgreSQL-compatible
-				$splitLimit = t3lib_div::intExplode(',', $limit);
+				$splitLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $limit);
 				// Splitting the limit values:
 				if ($splitLimit[1]) {
 					// If there are two parameters, do mapping differently than otherwise:
@@ -1491,7 +1493,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				}
 			}
 			if ($limit != '') {
-				$splitLimit = t3lib_div::intExplode(',', $limit);
+				$splitLimit = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $limit);
 				// Splitting the limit values:
 				if ($splitLimit[1]) {
 					// If there are two parameters, do mapping differently than otherwise:
@@ -1533,7 +1535,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			if ($this->conf['debugOptions']['numberRows']) {
 				$data['numberRows'] = $this->sql_num_rows($sqlResult);
 			}
-			$this->debugHandler('exec_PREPAREDquery', t3lib_div::milliseconds() - $pt, $data);
+			$this->debugHandler('exec_PREPAREDquery', \TYPO3\CMS\Core\Utility\GeneralUtility::milliseconds() - $pt, $data);
 		}
 		// Return result handler.
 		return $sqlResult;
@@ -1572,7 +1574,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		}
 		$select_fields = $this->SQLparser->parseFieldList($select_fields);
 		if ($this->SQLparser->parse_error) {
-			throw new InvalidArgumentException($this->SQLparser->parse_error, 1310027490);
+			throw new \InvalidArgumentException($this->SQLparser->parse_error, 1310027490);
 		}
 		$select_fields = $this->_quoteFieldNames($select_fields);
 		return $this->SQLparser->compileFieldList($select_fields);
@@ -1677,7 +1679,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			$where_clause = $this->_quoteWhereClause($where_clause);
 			$where_clause = $this->SQLparser->compileWhereClause($where_clause);
 		} else {
-			throw new InvalidArgumentException('Could not parse where clause', 1310027511);
+			throw new \InvalidArgumentException('Could not parse where clause', 1310027511);
 		}
 		return $where_clause;
 	}
@@ -1741,8 +1743,9 @@ class ux_t3lib_DB extends t3lib_DB {
 					}
 				} else {
 					// Detecting value type; list or plain:
-					if (t3lib_div::inList('NOTIN,IN', strtoupper(str_replace(array(' ', '
-', '', '	'), '', $where_clause[$k]['comparator'])))) {
+					if (\TYPO3\CMS\Core\Utility\GeneralUtility::inList('NOTIN,IN', strtoupper(str_replace(array(' ', '
+', '
+', '	'), '', $where_clause[$k]['comparator'])))) {
 						if (isset($v['subquery'])) {
 							$where_clause[$k]['subquery'] = $this->quoteSELECTsubquery($v['subquery']);
 						}
@@ -1876,7 +1879,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			$str = $this->handlerInstance[$this->lastHandlerKey]->quoteStr($str);
 			break;
 		default:
-			throw new RuntimeException('No handler found!!!', 1310027655);
+			throw new \RuntimeException('No handler found!!!', 1310027655);
 			break;
 		}
 		return $str;
@@ -1929,7 +1932,7 @@ class ux_t3lib_DB extends t3lib_DB {
 			$str = $this->handlerInstance[$this->lastHandlerKey]->MetaType($str, $table, $max_length);
 			break;
 		default:
-			throw new RuntimeException('No handler found!!!', 1310027685);
+			throw new \RuntimeException('No handler found!!!', 1310027685);
 			break;
 		}
 		return $str;
@@ -2417,7 +2420,7 @@ class ux_t3lib_DB extends t3lib_DB {
 		}
 		// This method is heavily used by Extbase, try to handle it with DBAL-native methods
 		$queryParts = $this->SQLparser->parseSQL($query);
-		if (is_array($queryParts) && t3lib_div::inList('SELECT,UPDATE,INSERT,DELETE', $queryParts['type'])) {
+		if (is_array($queryParts) && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('SELECT,UPDATE,INSERT,DELETE', $queryParts['type'])) {
 			return $this->exec_query($queryParts);
 		}
 		switch ($this->handlerCfg['_DEFAULT']['type']) {
@@ -2776,10 +2779,10 @@ class ux_t3lib_DB extends t3lib_DB {
 				$this->map_genericQueryParsed($parsedQuery);
 				break;
 			case 'CREATEDATABASE':
-				throw new InvalidArgumentException('Creating a database with DBAL is not supported. Did you really read the manual?', 1310027716);
+				throw new \InvalidArgumentException('Creating a database with DBAL is not supported. Did you really read the manual?', 1310027716);
 				break;
 			default:
-				throw new InvalidArgumentException(((('ERROR: Invalid Query type (' . $parsedQuery['type']) . ') for ->admin_query() function!: "') . htmlspecialchars($query)) . '"', 1310027740);
+				throw new \InvalidArgumentException(((('ERROR: Invalid Query type (' . $parsedQuery['type']) . ') for ->admin_query() function!: "') . htmlspecialchars($query)) . '"', 1310027740);
 				break;
 			}
 			// Setting query array (for other applications to access if needed)
@@ -2813,7 +2816,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				break;
 			}
 		} else {
-			throw new InvalidArgumentException(((('ERROR: Query could not be parsed: "' . htmlspecialchars($parsedQuery)) . '". Query: "') . htmlspecialchars($query)) . '"', 1310027793);
+			throw new \InvalidArgumentException(((('ERROR: Query could not be parsed: "' . htmlspecialchars($parsedQuery)) . '". Query: "') . htmlspecialchars($query)) . '"', 1310027793);
 		}
 	}
 
@@ -2843,7 +2846,7 @@ class ux_t3lib_DB extends t3lib_DB {
 					$handlerKey = $this->table2handlerKeys[$vArray['table']] ? $this->table2handlerKeys[$vArray['table']] : '_DEFAULT';
 					// In case of separate handler keys for joined tables:
 					if ($outputHandlerKey && $handlerKey != $outputHandlerKey) {
-						throw new RuntimeException(('DBAL fatal error: Tables in this list "' . $tableList) . '" didn\'t use the same DB handler!', 1310027833);
+						throw new \RuntimeException(('DBAL fatal error: Tables in this list "' . $tableList) . '" didn\'t use the same DB handler!', 1310027833);
 					}
 					$outputHandlerKey = $handlerKey;
 				}
@@ -2854,7 +2857,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				// Return handler key:
 				$this->cache_handlerKeyFromTableList[$key] = $outputHandlerKey;
 			} else {
-				throw new RuntimeException(((('DBAL fatal error: No handler found in handler_getFromTableList() for: "' . $tableList) . '" (') . $tableArray) . ')', 1310027933);
+				throw new \RuntimeException(((('DBAL fatal error: No handler found in handler_getFromTableList() for: "' . $tableList) . '" (') . $tableArray) . ')', 1310027933);
 			}
 		}
 		return $this->cache_handlerKeyFromTableList[$key];
@@ -2896,19 +2899,19 @@ class ux_t3lib_DB extends t3lib_DB {
 					if (mysql_select_db($cfgArray['config']['database'], $link)) {
 						$output = TRUE;
 					}
-					$setDBinit = t3lib_div::trimExplode(LF, str_replace('\' . LF . \'', LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']), TRUE);
+					$setDBinit = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(LF, str_replace('\' . LF . \'', LF, $GLOBALS['TYPO3_CONF_VARS']['SYS']['setDBinit']), TRUE);
 					foreach ($setDBinit as $v) {
 						if (mysql_query($v, $link) === FALSE) {
-							t3lib_div::sysLog(('Could not initialize DB connection with query "' . $v) . '".', 'Core', 3);
+							\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(('Could not initialize DB connection with query "' . $v) . '".', 'Core', 3);
 						}
 					}
 				} else {
-					t3lib_div::sysLog(((('Could not connect to MySQL server ' . $cfgArray['config']['host']) . ' with user ') . $cfgArray['config']['username']) . '.', 'Core', 4);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(((('Could not connect to MySQL server ' . $cfgArray['config']['host']) . ' with user ') . $cfgArray['config']['username']) . '.', 'Core', 4);
 				}
 				break;
 			case 'adodb':
 				$output = TRUE;
-				require_once t3lib_extMgm::extPath('adodb') . 'adodb/adodb.inc.php';
+				require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('adodb') . 'adodb/adodb.inc.php';
 				if (!defined('ADODB_FORCE_NULLS')) {
 					define('ADODB_FORCE_NULLS', 1);
 				}
@@ -2933,7 +2936,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				}
 				if (!$this->handlerInstance[$handlerKey]->isConnected()) {
 					$dsn = ((((((($cfgArray['config']['driver'] . '://') . $cfgArray['config']['username']) . (strlen($cfgArray['config']['password']) ? ':XXXX@' : '')) . $cfgArray['config']['host']) . (isset($cfgArray['config']['port']) ? ':' . $cfgArray['config']['port'] : '')) . '/') . $cfgArray['config']['database']) . ($GLOBALS['TYPO3_CONF_VARS']['SYS']['no_pconnect'] ? '' : '?persistent=1');
-					t3lib_div::sysLog(((('Could not connect to DB server using ADOdb on ' . $cfgArray['config']['host']) . ' with user ') . $cfgArray['config']['username']) . '.', 'Core', 4);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(((('Could not connect to DB server using ADOdb on ' . $cfgArray['config']['host']) . ' with user ') . $cfgArray['config']['username']) . '.', 'Core', 4);
 					error_log(('DBAL error: Connection to ' . $dsn) . ' failed. Maybe PHP doesn\'t support the database?');
 					$output = FALSE;
 				} else {
@@ -2948,26 +2951,26 @@ class ux_t3lib_DB extends t3lib_DB {
 				break;
 			case 'userdefined':
 				// Find class file:
-				$fileName = t3lib_div::getFileAbsFileName($cfgArray['config']['classFile']);
+				$fileName = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($cfgArray['config']['classFile']);
 				if (@is_file($fileName)) {
 					require_once $fileName;
 				} else {
-					throw new RuntimeException(('DBAL error: "' . $fileName) . '" was not a file to include.', 1310027975);
+					throw new \RuntimeException(('DBAL error: "' . $fileName) . '" was not a file to include.', 1310027975);
 				}
 				// Initialize:
-				$this->handlerInstance[$handlerKey] = t3lib_div::makeInstance($cfgArray['config']['class']);
+				$this->handlerInstance[$handlerKey] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance($cfgArray['config']['class']);
 				$this->handlerInstance[$handlerKey]->init($cfgArray, $this);
 				if (is_object($this->handlerInstance[$handlerKey])) {
 					$output = TRUE;
 				}
 				break;
 			default:
-				throw new RuntimeException(('ERROR: Invalid handler type: "' . $cfgArray['type']) . '"', 1310027995);
+				throw new \RuntimeException(('ERROR: Invalid handler type: "' . $cfgArray['type']) . '"', 1310027995);
 				break;
 			}
 			return $output;
 		} else {
-			throw new RuntimeException(('ERROR: No handler for key "' . $handlerKey) . '"', 1310028018);
+			throw new \RuntimeException(('ERROR: No handler for key "' . $handlerKey) . '"', 1310028018);
 		}
 	}
 
@@ -3472,7 +3475,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				}
 			}
 		} else {
-			throw new InvalidArgumentException('ERROR, mapping: No table found in parsed Query array...', 1310028048);
+			throw new \InvalidArgumentException('ERROR, mapping: No table found in parsed Query array...', 1310028048);
 		}
 	}
 
@@ -3554,7 +3557,7 @@ class ux_t3lib_DB extends t3lib_DB {
 				break;
 			case 'exec_SELECTquery':
 				// Get explain data:
-				if ($this->conf['debugOptions']['EXPLAIN'] && t3lib_div::inList('adodb,native', $inData['handlerType'])) {
+				if ($this->conf['debugOptions']['EXPLAIN'] && \TYPO3\CMS\Core\Utility\GeneralUtility::inList('adodb,native', $inData['handlerType'])) {
 					$data['EXPLAIN'] = $this->debug_explain($this->lastQuery);
 				}
 				// Check parsing of Query:
@@ -3684,5 +3687,6 @@ class ux_t3lib_DB extends t3lib_DB {
 	}
 
 }
+
 
 ?>

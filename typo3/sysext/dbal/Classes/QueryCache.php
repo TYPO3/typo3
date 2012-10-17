@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,7 +33,7 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class tx_dbal_querycache {
+class QueryCache {
 
 	/**
 	 * Returns a proper cache key.
@@ -48,5 +50,6 @@ class tx_dbal_querycache {
 	}
 
 }
+
 
 ?>

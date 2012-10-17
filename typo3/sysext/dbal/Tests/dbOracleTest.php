@@ -21,12 +21,12 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once 'BaseTestCase.php';
-require_once 'FakeDbConnection.php';
+require_once 'TYPO3\\CMS\\Dbal\\Tests\\TYPO3\\CMS\\Dbal\\Tests\\BaseTestCase.php';
+require_once 'TYPO3\\CMS\\Dbal\\Tests\\FakeDatabaseConnection.php';
 /*
- * @deprecated since 6.0, the classname dbMssqlTest and this file is obsolete
+ * @deprecated since 6.0, the classname dbOracleTest and this file is obsolete
  * and will be removed by 7.0. The class was renamed and is now located at:
- * typo3/sysext/dbal/Tests/DatabaseMssqlTest.php
+ * typo3/sysext/dbal/Tests/DatabaseOracleTest.php
  */
-require_once t3lib_extMgm::extPath('dbal') . 'Tests/DatabaseMssqlTest.php';
+require_once \TYPO3\CMS\Core\Extension\ExtensionManager::extPath('dbal') . 'Tests/DatabaseOracleTest.php';
 ?>

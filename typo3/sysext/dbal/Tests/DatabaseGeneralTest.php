@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Tests;
+
 /**
  * Testcase for class ux_t3lib_db.
  *
@@ -6,7 +8,7 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class dbGeneralTest extends BaseTestCase {
+class DatabaseGeneralTest extends \TYPO3\CMS\Dbal\Tests\BaseTestCase {
 
 	/**
 	 * @var t3lib_db
@@ -77,8 +79,8 @@ class dbGeneralTest extends BaseTestCase {
 	 */
 	protected function createFakeExtension($tableDefinition) {
 		// Prepare a fake extension configuration
-		$ext_tables = t3lib_div::tempnam('ext_tables');
-		t3lib_div::writeFile($ext_tables, $tableDefinition);
+		$ext_tables = \TYPO3\CMS\Core\Utility\GeneralUtility::tempnam('ext_tables');
+		\TYPO3\CMS\Core\Utility\GeneralUtility::writeFile($ext_tables, $tableDefinition);
 		$this->temporaryFiles[] = $ext_tables;
 		$GLOBALS['TYPO3_LOADED_EXT']['test_dbal'] = array(
 			'ext_tables.sql' => $ext_tables
@@ -231,7 +233,7 @@ class dbGeneralTest extends BaseTestCase {
 			':tag10' => 'tag-two',
 			':tag100' => 'tag-three'
 		);
-		$className = self::buildAccessibleProxy('t3lib_db_PreparedStatement');
+		$className = self::buildAccessibleProxy('TYPO3\\CMS\\Core\\Database\\PreparedStatement');
 		$query = $sql;
 		$precompiledQueryParts = array();
 		$statement = new $className($sql, 'cache');
@@ -243,5 +245,6 @@ class dbGeneralTest extends BaseTestCase {
 	}
 
 }
+
 
 ?>

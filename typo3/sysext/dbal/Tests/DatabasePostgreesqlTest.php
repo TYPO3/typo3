@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Tests;
+
 /**
  * Testcase for class ux_t3lib_db. Testing PostgreSQL database handling.
  *
@@ -6,7 +8,7 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class dbPostgresqlTest extends BaseTestCase {
+class DatabasePostgreesqlTest extends \TYPO3\CMS\Dbal\Tests\BaseTestCase {
 
 	/**
 	 * @var t3lib_db
@@ -30,11 +32,11 @@ class dbPostgresqlTest extends BaseTestCase {
 		require 'fixtures/postgresql.config.php';
 		$className = self::buildAccessibleProxy('ux_t3lib_db');
 		$GLOBALS['TYPO3_DB'] = new $className();
-		$parserClassName = self::buildAccessibleProxy('ux_t3lib_sqlparser');
+		$parserClassName = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\SqlParser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName();
 		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
 		// Initialize a fake PostgreSQL connection (using 'postgres7' as 'postgres' is remapped to it in AdoDB)
-		FakeDbConnection::connect($GLOBALS['TYPO3_DB'], 'postgres7');
+		\TYPO3\CMS\Dbal\Tests\FakeDatabaseConnection::connect($GLOBALS['TYPO3_DB'], 'postgres7');
 		$this->assertTrue($GLOBALS['TYPO3_DB']->isConnected());
 	}
 
@@ -172,5 +174,6 @@ class dbPostgresqlTest extends BaseTestCase {
 	}
 
 }
+
 
 ?>

@@ -1,4 +1,6 @@
 <?php
+namespace TYPO3\CMS\Dbal\Tests;
+
 /**
  * Testcase for class ux_t3lib_db. Testing Oracle database handling.
  *
@@ -6,7 +8,7 @@
  * @package TYPO3
  * @subpackage dbal
  */
-class dbOracleTest extends BaseTestCase {
+class DatabaseOracleTest extends \TYPO3\CMS\Dbal\Tests\BaseTestCase {
 
 	/**
 	 * @var t3lib_db
@@ -30,11 +32,11 @@ class dbOracleTest extends BaseTestCase {
 		require 'fixtures/oci8.config.php';
 		$className = self::buildAccessibleProxy('ux_t3lib_db');
 		$GLOBALS['TYPO3_DB'] = new $className();
-		$parserClassName = self::buildAccessibleProxy('ux_t3lib_sqlparser');
+		$parserClassName = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\SqlParser');
 		$GLOBALS['TYPO3_DB']->SQLparser = new $parserClassName();
 		$this->assertFalse($GLOBALS['TYPO3_DB']->isConnected());
 		// Initialize a fake Oracle connection
-		FakeDbConnection::connect($GLOBALS['TYPO3_DB'], 'oci8');
+		\TYPO3\CMS\Dbal\Tests\FakeDatabaseConnection::connect($GLOBALS['TYPO3_DB'], 'oci8');
 		$this->assertTrue($GLOBALS['TYPO3_DB']->isConnected());
 	}
 
@@ -130,7 +132,7 @@ class dbOracleTest extends BaseTestCase {
 		$insert = $GLOBALS['TYPO3_DB']->SQLparser->_callRef('compileINSERT', $components);
 		$this->assertEquals(4, count($insert));
 		for ($i = 0; $i < count($insert); $i++) {
-			foreach (t3lib_div::trimExplode(',', 'uid,pid,tr_iso_nr,tr_parent_iso_nr,tr_name_en') as $field) {
+			foreach (\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', 'uid,pid,tr_iso_nr,tr_parent_iso_nr,tr_name_en') as $field) {
 				$this->assertTrue(isset($insert[$i][$field]), ('Could not find ' . $field) . ' column');
 			}
 		}
@@ -875,5 +877,6 @@ class dbOracleTest extends BaseTestCase {
 	}
 
 }
+
 
 ?>

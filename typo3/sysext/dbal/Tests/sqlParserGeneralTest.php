@@ -21,7 +21,9 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-require_once 'BaseTestCase.php';
+require_once 'TYPO3\\CMS\\Dbal\\Tests\\BaseTestCase.php';
+namespace TYPO3\CMS\Dbal\Tests;
+
 /**
  * Testcase for class ux_t3lib_sqlparser
  *
@@ -29,10 +31,10 @@ require_once 'BaseTestCase.php';
  * @package TYPO3
  * @subpackage dbal
  */
-class sqlParserGeneralTest extends BaseTestCase {
+class SqlParserGeneralTest extends \TYPO3\CMS\Dbal\Tests\BaseTestCase {
 
 	/**
-	 * @var ux_t3lib_sqlparser (extended to make protected methods public)
+	 * @var \TYPO3\CMS\Dbal\Database\SqlParserOverride (extended to make protected methods public)
 	 */
 	protected $fixture;
 
@@ -40,7 +42,7 @@ class sqlParserGeneralTest extends BaseTestCase {
 	 * Prepares the environment before running a test.
 	 */
 	public function setUp() {
-		$className = self::buildAccessibleProxy('ux_t3lib_sqlparser');
+		$className = self::buildAccessibleProxy('ux_TYPO3\\CMS\\Core\\Database\\SqlParser');
 		$this->fixture = new $className();
 	}
 
@@ -729,5 +731,6 @@ FROM pages WHERE pid IN (1,2,3,4)';
 	}
 
 }
+
 
 ?>
