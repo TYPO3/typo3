@@ -24,7 +24,7 @@ function updateFromTer(url, forceUpdate) {
 			jQuery('.updateFromTer .spinner').hide();
 
 			if (data.errorMessage.length) {
-				TYPO3.Flashmessage.display(TYPO3.Severity.warning, 'Update Extension List', data.errorMessage, 10);
+				TYPO3.Flashmessage.display(TYPO3.Severity.warning, TYPO3.l10n.localize('extensionList.updateFromTerFlashMessage.title'), data.errorMessage, 10);
 			}
 			jQuery('.updateFromTer .text').html(
 				data.message

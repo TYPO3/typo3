@@ -64,7 +64,7 @@ class DownloadExtensionViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\FormViewH
 			'extension' => $extension->getUid()
 		), 'Download');
 		$this->tag->addAttribute('href', $uri);
-		$label = '<input type="submit" value="Import and Install" />';
+		$label = '<input type="submit" value="' . \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('extensionList.downloadViewHelper.submit', 'extensionmanager') . '" />';
 		$this->tag->setContent($label . $pathSelector);
 		$this->tag->addAttribute('class', 'download');
 		return '<div id="' . $extension->getExtensionKey() . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';

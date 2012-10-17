@@ -138,6 +138,66 @@
 			<trans-unit id="uploadTemplate.extensionLabel" xml:space="preserve">
 				<source>Extension</source>
 			</trans-unit>
+			<trans-unit id="extensionList.removalConfirmation.title" xml:space="preserve">
+				<source>Extension Removal</source>
+			</trans-unit>
+			<trans-unit id="extensionList.removalConfirmation.message" xml:space="preserve">
+				<source>The extension is currently installed. Uninstall extension?</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateConfirmation.title" xml:space="preserve">
+				<source>Update?</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateConfirmation.message" xml:space="preserve">
+				<source>Update Comments:</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateConfirmation.questionVersionComments" xml:space="preserve">
+				<source>Version Comments</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFlashMessage.title" xml:space="preserve">
+				<source>Extension Update</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFlashMessage.message" xml:space="preserve">
+				<source>{0} updated!</source>
+			</trans-unit>
+			<trans-unit id="extensionList.removalConfirmation.question" xml:space="preserve">
+				<source>Are you sure you want to remove the extension?</source>
+			</trans-unit>
+			<trans-unit id="extensionList.dependencies.title" xml:space="preserve">
+				<source>Dependencies</source>
+			</trans-unit>
+			<trans-unit id="extensionList.dependenciesResolveDownloadError.title" xml:space="preserve">
+				<source>Download Error</source>
+			</trans-unit>
+			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.message" xml:space="preserve">
+				<source>Your installation of {0} was successful.</source>
+			</trans-unit>
+			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.header" xml:space="preserve">
+				<source>Log</source>
+			</trans-unit>
+			<trans-unit id="extensionList.dependenciesResolveDownloadSuccess.item" xml:space="preserve">
+				<source>Extensions</source>
+			</trans-unit>
+			<trans-unit id="extensionList.dependenciesResolveFlashMessage.title" xml:space="preserve">
+				<source>{0} installed.</source>
+			</trans-unit>
+			<trans-unit id="extensionList.uploadFlashMessage.title" xml:space="preserve">
+				<source>Extension Upload</source>
+			</trans-unit>
+			<trans-unit id="extensionList.uploadFlashMessage.message" xml:space="preserve">
+				<source>{0} uploaded!</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFromTerFlashMessage.title" xml:space="preserve">
+				<source>Update Extension List</source>
+			</trans-unit>
+			<trans-unit id="extensionList.downloadViewHelper.submit" xml:space="preserve">
+				<source>Import and Install</source>
+			</trans-unit>
+			<trans-unit id="extensionList.showAllVersions.label" xml:space="preserve">
+				<source>Show all versions</source>
+			</trans-unit>
+			<trans-unit id="extensionList.updateFromTer.label" xml:space="preserve">
+				<source>Update Extension List</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
